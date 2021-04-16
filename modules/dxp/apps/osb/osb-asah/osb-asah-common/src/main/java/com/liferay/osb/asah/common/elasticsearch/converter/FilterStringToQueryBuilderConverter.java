@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -155,6 +156,11 @@ public class FilterStringToQueryBuilderConverter {
 		String fieldName = terms[0];
 		String operator = terms[1];
 		String valueString = terms[2];
+
+		Map<String, String> fieldNames =
+			filterStringConverterHelper.getFieldNameConversionMap();
+
+		fieldName = fieldNames.getOrDefault(fieldName, fieldName);
 
 		try {
 			QueryBuilder queryBuilder =

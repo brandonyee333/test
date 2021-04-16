@@ -205,11 +205,10 @@ public class ElasticsearchAssetRepositoryImpl
 				return null;
 			}
 
-			String fieldName = toFieldName(arguments.get(0));
+			Map<String, String> fieldNames = getFieldNameConversionMap();
 
-			if (fieldName.equals("title")) {
-				fieldName = "name";
-			}
+			String fieldName = toFieldName(
+				fieldNames.getOrDefault(arguments.get(0), arguments.get(0)));
 
 			QueryBuilder queryBuilder = QueryBuilders.regexpQuery(
 				fieldName,
@@ -220,6 +219,15 @@ public class ElasticsearchAssetRepositoryImpl
 			}
 
 			return queryBuilder;
+		}
+
+		@Override
+		public Map<String, String> getFieldNameConversionMap() {
+			return new HashMap<String, String>() {
+				{
+					put("title", "name");
+				}
+			};
 		}
 
 	}
