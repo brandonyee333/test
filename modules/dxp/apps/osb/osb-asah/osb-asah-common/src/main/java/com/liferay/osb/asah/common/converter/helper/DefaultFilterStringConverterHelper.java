@@ -199,4 +199,8 @@ public class DefaultFilterStringConverterHelper
 		return queryBuilder;
 	}
 
+	protected String toFieldName(String fieldName) {
+		return fieldName.replace('/', '.');
+	}
+
 }

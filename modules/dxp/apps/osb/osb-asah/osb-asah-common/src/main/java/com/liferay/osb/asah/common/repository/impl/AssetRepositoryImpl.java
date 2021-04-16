@@ -15,13 +15,10 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Asset;
-import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -50,7 +47,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 
 	public long countAssets(String filterString) {
 		SelectJoinStep<Record1<Integer>> selectJoinStep = _getSelectJoinStep(
-			null, _dslContext.selectCount());
+			filterString, _dslContext.selectCount());
 
 		return selectJoinStep.where(
 			FilterStringToConditionConverter.convert(filterString)
@@ -62,14 +59,13 @@ public class AssetRepositoryImpl extends BaseRepository {
 	}
 
 	public long countAssets(
-		String assetType, String keyword,
-		List<PropertyFilter> propertyFilters) {
+		String assetType, String keyword, String filterString) {
 
 		SelectJoinStep<Record1<Integer>> selectJoinStep = _getSelectJoinStep(
-			propertyFilters, _dslContext.selectCount());
+			filterString, _dslContext.selectCount());
 
 		return selectJoinStep.where(
-			_getConditions(assetType, keyword, propertyFilters)
+			_getConditions(assetType, keyword, filterString)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -79,7 +75,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 
 	public List<Asset> searchAssets(String filterString, Pageable pageable) {
 		SelectJoinStep<Record> selectJoinStep = _getSelectJoinStep(
-			null, _dslContext.select());
+			filterString, _dslContext.select());
 
 		return selectJoinStep.where(
 			FilterStringToConditionConverter.convert(filterString)
@@ -96,14 +92,14 @@ public class AssetRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Asset> searchAssets(
-		String assetType, String keyword, List<PropertyFilter> propertyFilters,
+		String assetType, String keyword, String filterString,
 		Pageable pageable) {
 
 		SelectJoinStep<Record> selectJoinStep = _getSelectJoinStep(
-			propertyFilters, _dslContext.select());
+			filterString, _dslContext.select());
 
 		return selectJoinStep.where(
-			_getConditions(assetType, keyword, propertyFilters)
+			_getConditions(assetType, keyword, filterString)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
@@ -116,70 +112,16 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	private boolean _containsAssetKeywordPropertyFilter(
-		List<PropertyFilter> propertyFilters) {
-
-		if (propertyFilters == null) {
-			return false;
+	private boolean _containsAssetKeywordFilter(String filterString) {
+		if (StringUtils.contains(filterString, "keywords/")) {
+			return true;
 		}
+		return false;
 
-		Stream<PropertyFilter> stream = propertyFilters.stream();
-
-		return stream.anyMatch(
-			propertyFilter -> StringUtils.startsWith(
-				propertyFilter.getPropertyName(), "keywords"));
-	}
-
-	private Condition _getCondition(List<PropertyFilter> propertyFilters) {
-		List<Condition> conditions = new ArrayList<>();
-
-		for (PropertyFilter propertyFilter : propertyFilters) {
-			conditions.add(_getCondition(propertyFilter));
-		}
-
-		return DSL.and(conditions);
-	}
-
-	private Condition _getCondition(PropertyFilter propertyFilter) {
-		Condition condition = _getCondition(
-			propertyFilter.getOperator(), propertyFilter.getPropertyName(),
-			propertyFilter.getPropertyValue());
-
-		if (propertyFilter.isNegate()) {
-			condition = DSL.not(condition);
-		}
-
-		List<PropertyFilter> propertyFilters =
-			propertyFilter.getPropertyFilters();
-
-		if (propertyFilters.isEmpty()) {
-			return condition;
-		}
-
-		return DSL.and(condition, _getCondition(propertyFilters));
-	}
-
-	private Condition _getCondition(
-		String operator, String propertyName, String propertyValue) {
-
-		if (Objects.equals(operator, "~")) {
-			return DSL.field(
-				propertyName
-			).similarTo(
-				propertyValue
-			);
-		}
-
-		return DSL.field(
-			propertyName
-		).eq(
-			propertyValue
-		);
 	}
 
 	private List<Condition> _getConditions(
-		String assetType, String keyword,
-		List<PropertyFilter> propertyFilters) {
+		String assetType, String keyword, String filterString) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -215,20 +157,20 @@ public class AssetRepositoryImpl extends BaseRepository {
 					)));
 		}
 
-		if ((propertyFilters != null) && !propertyFilters.isEmpty()) {
-			conditions.add(_getCondition(propertyFilters));
+		if (StringUtils.isNotBlank(filterString)) {
+			conditions.add(
+				FilterStringToConditionConverter.convert(filterString));
 		}
 
 		return conditions;
 	}
 
 	private <T extends Record> SelectJoinStep<T> _getSelectJoinStep(
-		List<PropertyFilter> propertyFilters,
-		SelectSelectStep<T> selectSelectStep) {
+		String filterString, SelectSelectStep<T> selectSelectStep) {
 
 		SelectJoinStep<T> selectJoinStep = selectSelectStep.from("Asset");
 
-		if (_containsAssetKeywordPropertyFilter(propertyFilters)) {
+		if (_containsAssetKeywordFilter(filterString)) {
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
 					"assetkeyword"

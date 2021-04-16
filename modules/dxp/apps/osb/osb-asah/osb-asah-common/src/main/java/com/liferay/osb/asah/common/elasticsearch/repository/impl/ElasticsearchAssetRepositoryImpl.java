@@ -14,17 +14,17 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
+import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Asset;
-import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -61,12 +61,11 @@ public class ElasticsearchAssetRepositoryImpl
 
 	@Override
 	public long countAssets(
-		String assetType, String keyword,
-		List<PropertyFilter> propertyFilters) {
+		String assetType, String keyword, String filterString) {
 
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(),
-			_buildQueryBuilder(assetType, keyword, propertyFilters));
+			_buildQueryBuilder(assetType, keyword, filterString));
 	}
 
 	@Override
@@ -115,7 +114,7 @@ public class ElasticsearchAssetRepositoryImpl
 
 	@Override
 	public List<Asset> searchAssets(
-		String assetType, String keyword, List<PropertyFilter> propertyFilters,
+		String assetType, String keyword, String filterString,
 		Pageable pageable) {
 
 		return toList(
@@ -125,7 +124,7 @@ public class ElasticsearchAssetRepositoryImpl
 					searchSourceBuilder -> {
 						searchSourceBuilder.query(
 							_buildQueryBuilder(
-								assetType, keyword, propertyFilters));
+								assetType, keyword, filterString));
 
 						setSearchSourceBuilderPage(
 							searchSourceBuilder, pageable);
@@ -142,74 +141,17 @@ public class ElasticsearchAssetRepositoryImpl
 		return _faroInfoElasticsearchInvoker;
 	}
 
-	private void _addBoolQueryBuilderPropertyFilters(
-		BoolQueryBuilder boolQueryBuilder,
-		List<PropertyFilter> propertyFilters) {
-
-		if ((propertyFilters == null) || propertyFilters.isEmpty()) {
-			return;
-		}
-
-		for (PropertyFilter propertyFilter : propertyFilters) {
-			QueryBuilder propertyQueryBuilder = _buildPropertyQueryBuilder(
-				propertyFilter);
-
-			boolQueryBuilder.filter(propertyQueryBuilder);
-		}
-	}
-
-	private QueryBuilder _buildPropertyQueryBuilder(
-		PropertyFilter propertyFilter) {
-
-		QueryBuilder queryBuilder = _buildPropertyQueryBuilder(
-			propertyFilter.getOperator(), propertyFilter.getPropertyName(),
-			propertyFilter.getPropertyValue());
-
-		if (propertyFilter.isNegate()) {
-			queryBuilder = BoolQueryBuilderUtil.mustNot(queryBuilder);
-		}
-
-		List<PropertyFilter> propertyFilters =
-			propertyFilter.getPropertyFilters();
-
-		if (propertyFilters.isEmpty()) {
-			return queryBuilder;
-		}
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			queryBuilder);
-
-		_addBoolQueryBuilderPropertyFilters(
-			boolQueryBuilder, propertyFilter.getPropertyFilters());
-
-		return boolQueryBuilder;
-	}
-
-	private QueryBuilder _buildPropertyQueryBuilder(
-		String operator, String propertyName, String propertyValue) {
-
-		if (Objects.equals(propertyName, "title")) {
-			propertyName = "name";
-		}
-
-		if (Objects.equals(operator, "~")) {
-			return QueryBuilders.regexpQuery(propertyName, propertyValue);
-		}
-
-		return QueryBuilders.termQuery(propertyName, propertyValue);
-	}
-
 	private QueryBuilder _buildQueryBuilder(String filterString) {
 		if (StringUtils.isEmpty(filterString)) {
 			return QueryBuilders.matchAllQuery();
 		}
 
-		return FilterStringToQueryBuilderConverter.convert(filterString);
+		return FilterStringToQueryBuilderConverter.convert(
+			filterString, _assetFilterStringConverterHelper);
 	}
 
 	private QueryBuilder _buildQueryBuilder(
-		String assetType, String keywords,
-		List<PropertyFilter> propertyFilters) {
+		String assetType, String keywords, String filterString) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("assetType", assetType));
@@ -235,12 +177,51 @@ public class ElasticsearchAssetRepositoryImpl
 				));
 		}
 
-		_addBoolQueryBuilderPropertyFilters(boolQueryBuilder, propertyFilters);
+		if (StringUtils.isNotEmpty(filterString)) {
+			boolQueryBuilder.filter(
+				FilterStringToQueryBuilderConverter.convert(
+					filterString, _assetFilterStringConverterHelper));
+		}
 
 		return boolQueryBuilder;
 	}
 
+	private final AssetFilterStringConverterHelper
+		_assetFilterStringConverterHelper =
+			new AssetFilterStringConverterHelper();
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	private static class AssetFilterStringConverterHelper
+		extends DefaultFilterStringConverterHelper {
+
+		@Override
+		public QueryBuilder getCustomFunctionQueryBuilder(
+			List<String> arguments, String customFunctionName,
+			boolean negated) {
+
+			if (!customFunctionName.equalsIgnoreCase("similarTo")) {
+				return null;
+			}
+
+			String fieldName = toFieldName(arguments.get(0));
+
+			if (fieldName.equals("title")) {
+				fieldName = "name";
+			}
+
+			QueryBuilder queryBuilder = QueryBuilders.regexpQuery(
+				fieldName,
+				StringUtil.unquoteAndDecodeInnerQuotes(arguments.get(1)));
+
+			if (negated) {
+				return BoolQueryBuilderUtil.mustNot(queryBuilder);
+			}
+
+			return queryBuilder;
+		}
+
+	}
 
 }

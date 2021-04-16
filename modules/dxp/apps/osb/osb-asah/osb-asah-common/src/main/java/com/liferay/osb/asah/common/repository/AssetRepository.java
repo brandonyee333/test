@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Asset;
-import com.liferay.osb.asah.common.model.PropertyFilter;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +36,7 @@ public interface AssetRepository extends CrudRepository<Asset, Long> {
 	public long countAssets(String filterString);
 
 	public long countAssets(
-		String assetType, String keyword, List<PropertyFilter> propertyFilters);
+		String assetType, String keyword, String filterString);
 
 	public List<Asset> findByAssetType(String assetType);
 
@@ -47,7 +46,7 @@ public interface AssetRepository extends CrudRepository<Asset, Long> {
 	public List<Asset> searchAssets(String filterString, Pageable pageable);
 
 	public List<Asset> searchAssets(
-		String assetType, String keyword, List<PropertyFilter> propertyFilters,
+		String assetType, String keyword, String filterString,
 		Pageable pageable);
 
 }
