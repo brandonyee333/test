@@ -32,6 +32,7 @@ import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Marcellus Tavares
@@ -45,7 +46,23 @@ public class AssetRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countAssets(String filterString) {
+	public long countByAssetTypeAndFilterStringAndKeyword(
+		String assetType, @Nullable String filterString,
+		@Nullable String keyword) {
+
+		SelectJoinStep<Record1<Integer>> selectJoinStep = _getSelectJoinStep(
+			filterString, _dslContext.selectCount());
+
+		return selectJoinStep.where(
+			_getConditions(assetType, filterString, keyword)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
+	public long countByFilterString(@Nullable String filterString) {
 		SelectJoinStep<Record1<Integer>> selectJoinStep = _getSelectJoinStep(
 			filterString, _dslContext.selectCount());
 
@@ -58,27 +75,15 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public long countAssets(
-		String assetType, String keyword, String filterString) {
+	public List<Asset> findByAssetTypeAndFilterStringAndKeyword(
+		String assetType, @Nullable String filterString,
+		@Nullable String keyword, Pageable pageable) {
 
-		SelectJoinStep<Record1<Integer>> selectJoinStep = _getSelectJoinStep(
-			filterString, _dslContext.selectCount());
-
-		return selectJoinStep.where(
-			_getConditions(assetType, keyword, filterString)
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
-	}
-
-	public List<Asset> searchAssets(String filterString, Pageable pageable) {
 		SelectJoinStep<Record> selectJoinStep = _getSelectJoinStep(
 			filterString, _dslContext.select());
 
 		return selectJoinStep.where(
-			FilterStringToConditionConverter.convert(filterString)
+			_getConditions(assetType, filterString, keyword)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
@@ -91,15 +96,14 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public List<Asset> searchAssets(
-		String assetType, String keyword, String filterString,
-		Pageable pageable) {
+	public List<Asset> findByFilterString(
+		@Nullable String filterString, Pageable pageable) {
 
 		SelectJoinStep<Record> selectJoinStep = _getSelectJoinStep(
 			filterString, _dslContext.select());
 
 		return selectJoinStep.where(
-			_getConditions(assetType, keyword, filterString)
+			FilterStringToConditionConverter.convert(filterString)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
@@ -121,7 +125,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Condition> _getConditions(
-		String assetType, String keyword, String filterString) {
+		String assetType, String filterString, String keyword) {
 
 		List<Condition> conditions = new ArrayList<>();
 

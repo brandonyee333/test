@@ -22,6 +22,7 @@ import java.util.Optional;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -33,20 +34,22 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AssetRepository extends CrudRepository<Asset, Long> {
 
-	public long countAssets(String filterString);
+	public long countByAssetTypeAndFilterStringAndKeyword(
+		String assetType, @Nullable String filterString,
+		@Nullable String keyword);
 
-	public long countAssets(
-		String assetType, String keyword, String filterString);
+	public long countByFilterString(@Nullable String filterString);
 
 	public List<Asset> findByAssetType(String assetType);
+
+	public List<Asset> findByAssetTypeAndFilterStringAndKeyword(
+		String assetType, @Nullable String filterString,
+		@Nullable String keyword, Pageable pageable);
 
 	public Optional<Asset> findByDataSourceAssetPKAndDataSourceId(
 		String dataSourceAssetPK, Long dataSourceId);
 
-	public List<Asset> searchAssets(String filterString, Pageable pageable);
-
-	public List<Asset> searchAssets(
-		String assetType, String keyword, String filterString,
-		Pageable pageable);
+	public List<Asset> findByFilterString(
+		@Nullable String filterString, Pageable pageable);
 
 }

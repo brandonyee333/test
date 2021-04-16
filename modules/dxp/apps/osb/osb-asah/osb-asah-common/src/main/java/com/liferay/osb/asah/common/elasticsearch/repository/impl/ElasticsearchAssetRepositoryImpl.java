@@ -24,7 +24,9 @@ import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +41,7 @@ import org.json.JSONObject;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -54,18 +57,19 @@ public class ElasticsearchAssetRepositoryImpl
 	implements AssetRepository {
 
 	@Override
-	public long countAssets(String filterString) {
-		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(), _buildQueryBuilder(filterString));
-	}
-
-	@Override
-	public long countAssets(
-		String assetType, String keyword, String filterString) {
+	public long countByAssetTypeAndFilterStringAndKeyword(
+		@Nullable String assetType, @Nullable String filterString,
+		@Nullable String keyword) {
 
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(),
-			_buildQueryBuilder(assetType, keyword, filterString));
+			_buildQueryBuilder(assetType, filterString, keyword));
+	}
+
+	@Override
+	public long countByFilterString(@Nullable String filterString) {
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(), _buildQueryBuilder(filterString));
 	}
 
 	@Override
@@ -75,6 +79,25 @@ public class ElasticsearchAssetRepositoryImpl
 				getCollectionName(),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("assetType", assetType))));
+	}
+
+	@Override
+	public List<Asset> findByAssetTypeAndFilterStringAndKeyword(
+		@Nullable String assetType, @Nullable String filterString,
+		@Nullable String keyword, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_buildQueryBuilder(
+								assetType, filterString, keyword));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
 	}
 
 	@Override
@@ -98,7 +121,9 @@ public class ElasticsearchAssetRepositoryImpl
 	}
 
 	@Override
-	public List<Asset> searchAssets(String filterString, Pageable pageable) {
+	public List<Asset> findByFilterString(
+		@Nullable String filterString, Pageable pageable) {
+
 		return toList(
 			new JSONArray(
 				_faroInfoElasticsearchInvoker.get(
@@ -106,25 +131,6 @@ public class ElasticsearchAssetRepositoryImpl
 					searchSourceBuilder -> {
 						searchSourceBuilder.query(
 							_buildQueryBuilder(filterString));
-
-						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
-					})));
-	}
-
-	@Override
-	public List<Asset> searchAssets(
-		String assetType, String keyword, String filterString,
-		Pageable pageable) {
-
-		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_buildQueryBuilder(
-								assetType, keyword, filterString));
 
 						setSearchSourceBuilderPage(
 							searchSourceBuilder, pageable);
@@ -151,7 +157,7 @@ public class ElasticsearchAssetRepositoryImpl
 	}
 
 	private QueryBuilder _buildQueryBuilder(
-		String assetType, String keywords, String filterString) {
+		String assetType, String filterString, String keywords) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("assetType", assetType));
