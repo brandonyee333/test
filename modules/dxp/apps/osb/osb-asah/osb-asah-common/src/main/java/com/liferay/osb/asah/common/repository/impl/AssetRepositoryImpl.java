@@ -120,8 +120,8 @@ public class AssetRepositoryImpl extends BaseRepository {
 		if (StringUtils.contains(filterString, "keywords/")) {
 			return true;
 		}
-		return false;
 
+		return false;
 	}
 
 	private List<Condition> _getConditions(
