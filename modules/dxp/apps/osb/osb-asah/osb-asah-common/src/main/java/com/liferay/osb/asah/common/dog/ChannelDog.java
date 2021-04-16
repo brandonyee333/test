@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAssetDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -341,7 +340,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 				}
 
 				if (channelIdsJSONArray.length() == 0) {
-					_faroInfoAssetDog.deleteAsset(
+					_assetDog.deleteAsset(
 						assetJSONObject,
 						DateUtil.newDayLocalDateTimeString(
 							_timeZoneDog.getZoneId()));
@@ -569,6 +568,9 @@ public class ChannelDog extends BaseFaroInfoDog {
 	@Autowired
 	private ActivityGroupDog _activityGroupDog;
 
+	@Autowired
+	private AssetDog _assetDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
@@ -580,9 +582,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private FaroInfoAssetDog _faroInfoAssetDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;
