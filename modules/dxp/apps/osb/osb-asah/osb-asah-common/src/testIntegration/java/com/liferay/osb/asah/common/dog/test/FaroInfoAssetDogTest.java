@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAssetDog;
+import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -44,7 +44,7 @@ public class FaroInfoAssetDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testGetKeywordsOmitsDuplicateKeywords() {
-		List<String> keywords = _faroInfoAssetDog.getKeywords();
+		List<String> keywords = _assetDog.getKeywords();
 
 		Assert.assertEquals(
 			keywords.toString(),
@@ -58,7 +58,7 @@ public class FaroInfoAssetDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testGetKeywordsOmitsFormKeywords() {
-		List<String> keywords = _faroInfoAssetDog.getKeywords();
+		List<String> keywords = _assetDog.getKeywords();
 
 		Assert.assertEquals(
 			keywords.toString(),
@@ -68,6 +68,6 @@ public class FaroInfoAssetDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@Autowired
-	private FaroInfoAssetDog _faroInfoAssetDog;
+	private AssetDog _assetDog;
 
 }
