@@ -36,7 +36,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class FaroInfoAssetDogTest extends BaseFaroInfoDogTestCase {
+public class AssetDogTest {
 
 	@ElasticsearchIndex(
 		name = "assets", resourcePath = "assets_duplicate_keywords.json",
