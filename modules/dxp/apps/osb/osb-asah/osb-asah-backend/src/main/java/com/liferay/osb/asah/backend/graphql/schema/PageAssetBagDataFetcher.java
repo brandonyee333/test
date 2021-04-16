@@ -26,10 +26,10 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,35 +49,38 @@ public class PageAssetBagDataFetcher
 
 		List<PropertyFilter> propertyFilters = ListUtil.map(
 			dataFetchingEnvironment.getArgument("propertyFilters"),
-			(Function<Map<String, Object>, PropertyFilter>)
-				propertyFilterMap -> {
-					PropertyFilter propertyFilter = PropertyFilter.of(
-						propertyFilterMap);
-
-					if (Objects.equals(
-							propertyFilter.getPropertyName(), "keywords")) {
-
-						propertyFilter.setPropertyName("keywords.keyword");
-
-						propertyFilter.and(
-							new PropertyFilter(
-								"keywords.type = keyword", false));
-					}
-
-					return propertyFilter;
-				});
+			PropertyFilter::of);
 
 		int size = dataFetchingEnvironment.getArgument("size");
 		int start = dataFetchingEnvironment.getArgument("start");
 
 		Page<Asset> assetPage = _assetDog.getAssetPage(
-			"Page", dataFetchingEnvironment.getArgument("keywords"),
-			propertyFilters, start / size, size,
+			"Page", _toFilterString(propertyFilters),
+			dataFetchingEnvironment.getArgument("keywords"), start / size, size,
 			_getSort(dataFetchingEnvironment.getArgument("sort")));
 
 		return new ResultBag<>(
 			ListUtil.map(assetPage.getContent(), PageAssetDTO::new),
 			assetPage.getTotalElements());
+	}
+
+	private void _appendPropertyFilterString(
+		List<String> filterStrings, PropertyFilter propertyFilter) {
+
+		if (!Objects.equals(propertyFilter.getPropertyName(), "keywords")) {
+			filterStrings.add(propertyFilter.toFilterString());
+
+			return;
+		}
+
+		propertyFilter.setPropertyName("keywords.keyword");
+
+		filterStrings.add(propertyFilter.toFilterString());
+
+		PropertyFilter keywordTypePropertyFilter = new PropertyFilter(
+			"keywords.type = keyword", false);
+
+		filterStrings.add(keywordTypePropertyFilter.toFilterString());
 	}
 
 	private Sort _getSort(Map<String, String> sort) {
@@ -86,6 +89,20 @@ public class PageAssetBagDataFetcher
 		}
 
 		return Sort.of(sort);
+	}
+
+	private String _toFilterString(List<PropertyFilter> propertyFilters) {
+		if ((propertyFilters == null) || propertyFilters.isEmpty()) {
+			return null;
+		}
+
+		List<String> filterStrings = new ArrayList<>();
+
+		for (PropertyFilter propertyFilter : propertyFilters) {
+			_appendPropertyFilterString(filterStrings, propertyFilter);
+		}
+
+		return String.join("and", filterStrings);
 	}
 
 	@Autowired

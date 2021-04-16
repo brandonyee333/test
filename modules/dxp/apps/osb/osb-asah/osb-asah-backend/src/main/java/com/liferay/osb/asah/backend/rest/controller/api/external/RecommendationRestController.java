@@ -179,7 +179,8 @@ public class RecommendationRestController extends BaseRestController {
 			"canonicalUrl = " + canonicalUrl, false);
 
 		Page<Asset> assetPage = _assetDog.getAssetPage(
-			"Page", null, Arrays.asList(propertyFilter), 0, 1, Sort.desc("id"));
+			"Page", propertyFilter.toFilterString(), null, 0, 1,
+			Sort.desc("id"));
 
 		if (assetPage.getTotalElements() == 1) {
 			List<Asset> assets = assetPage.getContent();
