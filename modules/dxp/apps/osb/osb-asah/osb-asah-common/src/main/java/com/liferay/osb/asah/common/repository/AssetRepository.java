@@ -39,6 +39,8 @@ public interface AssetRepository extends CrudRepository<Asset, Long> {
 	public long countAssets(
 		String assetType, String keyword, List<PropertyFilter> propertyFilters);
 
+	public List<Asset> findByAssetType(String assetType);
+
 	public Optional<Asset> findByDataSourceAssetPKAndDataSourceId(
 		String dataSourceAssetPK, Long dataSourceId);
 

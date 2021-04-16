@@ -70,6 +70,15 @@ public class ElasticsearchAssetRepositoryImpl
 	}
 
 	@Override
+	public List<Asset> findByAssetType(String assetType) {
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("assetType", assetType))));
+	}
+
+	@Override
 	public Optional<Asset> findByDataSourceAssetPKAndDataSourceId(
 		String dataSourceAssetPK, Long dataSourceId) {
 
