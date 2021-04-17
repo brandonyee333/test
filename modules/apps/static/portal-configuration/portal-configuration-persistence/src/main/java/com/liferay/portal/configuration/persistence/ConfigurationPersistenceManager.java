@@ -205,7 +205,7 @@ public class ConfigurationPersistenceManager
 	@Override
 	public void store(
 			final String pid,
-			@SuppressWarnings("rawtypes") final Dictionary dictionary)
+			final @SuppressWarnings("rawtypes") Dictionary dictionary)
 		throws IOException {
 
 		if (System.getSecurityManager() != null) {
