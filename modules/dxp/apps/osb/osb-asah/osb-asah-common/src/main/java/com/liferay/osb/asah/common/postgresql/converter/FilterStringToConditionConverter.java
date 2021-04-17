@@ -296,12 +296,12 @@ public class FilterStringToConditionConverter {
 		else if (stringFunction.equalsIgnoreCase("endsWith")) {
 			condition = field.similarTo("%" + value);
 		}
-		else if (stringFunction.equalsIgnoreCase("startsWith")) {
-			condition = field.similarTo(value + "%");
-		}
 		else if (stringFunction.equalsIgnoreCase("similarTo")) {
 			condition = field.similarTo(
 				StringUtils.replaceChars(value, ".*", "_%"));
+		}
+		else if (stringFunction.equalsIgnoreCase("startsWith")) {
+			condition = field.similarTo(value + "%");
 		}
 		else {
 			return new IllegalArgumentException(
