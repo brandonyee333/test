@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.data.annotation.Transient;
-
 /**
  * @author Rachael Koestartyo
  */
@@ -81,10 +79,7 @@ public class Distribution {
 		_values = values;
 	}
 
-	@Transient
 	private Integer _count;
-
-	@Transient
 	private List<Object> _values;
 
 }
