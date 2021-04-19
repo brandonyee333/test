@@ -64,6 +64,7 @@ import org.json.JSONObject;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -79,7 +80,7 @@ public class ElasticsearchAccountRepositoryImpl
 	implements AccountRepository {
 
 	@Override
-	public long countAccounts(String filterString) {
+	public long countAccounts(@Nullable String filterString) {
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(), _getQueryBuilder(filterString));
 	}
@@ -123,8 +124,9 @@ public class ElasticsearchAccountRepositoryImpl
 
 	@Override
 	public List<Distribution> getAccountDistributions(
-		Long channelId, String fieldName, String fieldType, String filterString,
-		Long individualSegmentId, Pageable pageable) {
+		@Nullable Long channelId, String fieldName, String fieldType,
+		@Nullable String filterString, @Nullable Long individualSegmentId,
+		Pageable pageable) {
 
 		fieldName = "organization." + fieldName + ".value";
 
@@ -199,8 +201,8 @@ public class ElasticsearchAccountRepositoryImpl
 
 	@Override
 	public List<Account> searchAccounts(
-		Long channelId, String filterString, Pageable pageable,
-		Sort segmentSort) {
+		@Nullable Long channelId, @Nullable String filterString,
+		Pageable pageable, @Nullable Sort segmentSort) {
 
 		try {
 			CollectionGetResponse collectionGetResponse =

@@ -60,6 +60,7 @@ import org.jooq.impl.DSL;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Rachael Koestartyo
@@ -78,7 +79,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countAccounts(String filterString) {
+	public long countAccounts(@Nullable String filterString) {
 		Table<Record> fieldTable = _buildFieldTable(
 			ConditionUtil.toCondition(
 				filterString, _accountsFilterStringConverterHelper),
@@ -105,8 +106,9 @@ public class AccountRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Distribution> getAccountDistributions(
-		Long channelId, String fieldName, String fieldType, String filterString,
-		Long individualSegmentId, Pageable pageable) {
+		@Nullable Long channelId, String fieldName, String fieldType,
+		@Nullable String filterString, @Nullable Long individualSegmentId,
+		Pageable pageable) {
 
 		Set<Long> accountIds = new HashSet<>();
 
@@ -217,8 +219,8 @@ public class AccountRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Account> searchAccounts(
-		Long channelId, String filterString, Pageable pageable,
-		Sort segmentSort) {
+		@Nullable Long channelId, @Nullable String filterString,
+		Pageable pageable, @Nullable Sort segmentSort) {
 
 		SortField sortField = null;
 

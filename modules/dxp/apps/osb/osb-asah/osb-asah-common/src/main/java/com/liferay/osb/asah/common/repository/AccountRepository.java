@@ -24,6 +24,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -35,7 +36,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepository extends CrudRepository<Account, Long> {
 
-	public long countAccounts(String filterString);
+	public long countAccounts(@Nullable String filterString);
 
 	public List<Account> findAllByDataSourceId(Long dataSourceId);
 
@@ -45,11 +46,12 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
 		String accountPK, Long dataSourceId);
 
 	public List<Distribution> getAccountDistributions(
-		Long channelId, String fieldName, String fieldType, String filterString,
-		Long individualSegmentId, Pageable pageable);
+		@Nullable Long channelId, String fieldName, String fieldType,
+		@Nullable String filterString, @Nullable Long individualSegmentId,
+		Pageable pageable);
 
 	public List<Account> searchAccounts(
-		Long channelId, String filterString, Pageable pageable,
-		Sort segmentSort);
+		@Nullable Long channelId, @Nullable String filterString,
+		Pageable pageable, @Nullable Sort segmentSort);
 
 }

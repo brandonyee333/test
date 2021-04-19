@@ -53,6 +53,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -161,8 +162,9 @@ public class AccountDog {
 	}
 
 	public Page<Distribution> getDistributionsPage(
-		Long channelId, String fieldName, String fieldType, String filterString,
-		Long individualSegmentId, int numberOfBins, int size, String[] sorts) {
+		@Nullable Long channelId, String fieldName, String fieldType,
+		@Nullable String filterString, @Nullable Long individualSegmentId,
+		int numberOfBins, int size, @Nullable String[] sorts) {
 
 		if (fieldType.equals("Number")) {
 			size = numberOfBins;
@@ -267,8 +269,8 @@ public class AccountDog {
 	}
 
 	public Page<Account> searchAccountsPage(
-		Long channelId, String filterString, int page, int size,
-		String[] sorts) {
+		@Nullable Long channelId, @Nullable String filterString, int page,
+		int size, @Nullable String[] sorts) {
 
 		String[] fieldSorts = new String[0];
 		String[] segmentSorts = new String[0];
