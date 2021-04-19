@@ -28,6 +28,7 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
+import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -50,11 +51,11 @@ public class AssetRepositoryImpl extends BaseRepository {
 		String assetType, @Nullable String filterString,
 		@Nullable String keyword) {
 
-		SelectJoinStep<Record1<Integer>> selectJoinStep = _getSelectJoinStep(
-			filterString, _dslContext.selectCount());
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
 
-		return selectJoinStep.where(
-			_getConditions(assetType, filterString, keyword)
+		return selectSelectStep.from(
+			_getAssetTable(assetType, filterString, keyword)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -63,11 +64,11 @@ public class AssetRepositoryImpl extends BaseRepository {
 	}
 
 	public long countByFilterString(@Nullable String filterString) {
-		SelectJoinStep<Record1<Integer>> selectJoinStep = _getSelectJoinStep(
-			filterString, _dslContext.selectCount());
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
 
-		return selectJoinStep.where(
-			FilterStringToConditionConverter.convert(filterString)
+		return selectSelectStep.from(
+			_getAssetTable(null, filterString, null)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -79,11 +80,10 @@ public class AssetRepositoryImpl extends BaseRepository {
 		String assetType, @Nullable String filterString,
 		@Nullable String keyword, Pageable pageable) {
 
-		SelectJoinStep<Record> selectJoinStep = _getSelectJoinStep(
-			filterString, _dslContext.select());
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return selectJoinStep.where(
-			_getConditions(assetType, filterString, keyword)
+		return selectSelectStep.from(
+			_getAssetTable(assetType, filterString, keyword)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
@@ -99,11 +99,10 @@ public class AssetRepositoryImpl extends BaseRepository {
 	public List<Asset> findByFilterString(
 		@Nullable String filterString, Pageable pageable) {
 
-		SelectJoinStep<Record> selectJoinStep = _getSelectJoinStep(
-			filterString, _dslContext.select());
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return selectJoinStep.where(
-			FilterStringToConditionConverter.convert(filterString)
+		return selectSelectStep.from(
+			_getAssetTable(null, filterString, null)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
@@ -124,17 +123,51 @@ public class AssetRepositoryImpl extends BaseRepository {
 		return false;
 	}
 
+	private Table<Record> _getAssetTable(
+		String assetType, String filterString, String keyword) {
+
+		SelectJoinStep<Record> selectJoinStep = _dslContext.selectDistinct(
+			DSL.table(
+				"Asset"
+			).asterisk()
+		).from(
+			"Asset"
+		);
+
+		if (_containsAssetKeywordFilter(filterString)) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"assetkeyword"
+				).as(
+					"keywords"
+				)
+			).on(
+				DSL.field(
+					"id"
+				).eq(
+					DSL.field("keywords.assetid")
+				)
+			);
+		}
+
+		return selectJoinStep.where(
+			_getConditions(assetType, filterString, keyword)
+		).asTable();
+	}
+
 	private List<Condition> _getConditions(
 		String assetType, String filterString, String keyword) {
 
 		List<Condition> conditions = new ArrayList<>();
 
-		conditions.add(
-			DSL.field(
-				"assetType"
-			).eq(
-				assetType
-			));
+		if (StringUtils.isNotBlank(assetType)) {
+			conditions.add(
+				DSL.field(
+					"assetType"
+				).eq(
+					assetType
+				));
+		}
 
 		if (StringUtils.isNotBlank(keyword)) {
 			conditions.add(
@@ -167,30 +200,6 @@ public class AssetRepositoryImpl extends BaseRepository {
 		}
 
 		return conditions;
-	}
-
-	private <T extends Record> SelectJoinStep<T> _getSelectJoinStep(
-		String filterString, SelectSelectStep<T> selectSelectStep) {
-
-		SelectJoinStep<T> selectJoinStep = selectSelectStep.from("Asset");
-
-		if (_containsAssetKeywordFilter(filterString)) {
-			selectJoinStep = selectJoinStep.join(
-				DSL.table(
-					"assetkeyword"
-				).as(
-					"keywords"
-				)
-			).on(
-				DSL.field(
-					"id"
-				).eq(
-					DSL.field("keywords.assetid")
-				)
-			);
-		}
-
-		return selectJoinStep;
 	}
 
 	private final DSLContext _dslContext;
