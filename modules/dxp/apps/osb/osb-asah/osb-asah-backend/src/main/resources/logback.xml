@@ -2,5 +2,6 @@
 
 <configuration>
 	<include resource="org/springframework/boot/logging/logback/base.xml" />
+	<include resource="logback-common.xml" />
 	<logger level="error" name="io.improbable.keanu.algorithms.mcmc.nuts.NUTSSampler" />
 </configuration>
