@@ -156,13 +156,22 @@ public class AssetDog {
 	public List<String> getKeywords() {
 		Set<String> keywords = new TreeSet<>();
 
-		List<Asset> assets = _assetRepository.findByAssetType("Page");
+		int size = 50;
 
-		for (Asset asset : assets) {
-			Set<AssetKeyword> assetKeywords = asset.getAssetKeywords();
+		long total = _assetRepository.countByAssetType("Page");
 
-			assetKeywords.forEach(
-				assetKeyword -> keywords.add(assetKeyword.getKeyword()));
+		int pages = (int)total / 50;
+
+		for (int page = 0; page <= pages; page++) {
+			List<Asset> assets = _assetRepository.findByAssetType(
+				"Page", PageRequest.of(page, size));
+
+			for (Asset asset : assets) {
+				Set<AssetKeyword> assetKeywords = asset.getAssetKeywords();
+
+				assetKeywords.forEach(
+					assetKeyword -> keywords.add(assetKeyword.getKeyword()));
+			}
 		}
 
 		return new ArrayList<>(keywords);
