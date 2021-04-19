@@ -256,6 +256,41 @@ definition {
 		PortletEntry.save();
 	}
 
+	macro addDMShortcutPG {
+		DMNavigator.gotoAddDocumentTypePG(dmDocumentTypeName = "Shortcut");
+
+		Click(locator1 = "DocumentsAndMediaAddShortcut#SELECT_SITE_BUTTON");
+
+		IFrame.selectModalFrame();
+
+		AssertClick(
+			key_siteName = "${siteName}",
+			locator1 = "SitesSelectSite#CHOOSE_BUTTON",
+			value1 = "Choose");
+
+		SelectFrameTop(value1 = "relative=top");
+
+		Click(locator1 = "DocumentsAndMediaAddShortcut#SELECT_DOCUMENT_BUTTON");
+
+		IFrame.selectModalFrame();
+
+		if (isSet(dmFolderName)) {
+			AssertClick(
+				key_dmFolderName = "${dmFolderName}",
+				locator1 = "DocumentsAndMediaAddShortcut#SELECT_FILE_FOLDER_NAME",
+				value1 = "${dmFolderName}");
+		}
+
+		AssertClick.assertPartialTextClickAt(
+			key_dmDocumentTitle = "${dmDocumentTitle}",
+			locator1 = "DocumentsAndMediaAddShortcut#SELECT_FILE_DOCUMENT_TITLE",
+			value1 = "${dmDocumentTitle}");
+
+		SelectFrameTop(value1 = "relative=top");
+
+		Button.clickSave();
+	}
+
 	macro addDocumentTypeCmdCP {
 		DMNavigator.gotoAddDocumentType(dmDocumentTypeName = "${dmDocumentTypeName}");
 
@@ -1328,6 +1363,35 @@ definition {
 			value1 = "${dmDocumentKeyword}");
 
 		Click(locator1 = "Icon#BASIC_SEARCH");
+	}
+
+	macro setRootFolder {
+		Portlet.gotoPortletOptions(portletOption = "Configuration");
+
+		SelectFrame(locator1 = "DocumentsAndMedia#CONFIGURATION_IFRAME");
+
+		Panel.expandPanel(panelHeading = "Folders Listing");
+
+		AssertClick(
+			locator1 = "Button#SELECT",
+			value1 = "Select");
+
+		SelectFrame(locator1 = "relative=top");
+
+		SelectFrame(locator1 = "DocumentsAndMediaSelectFolder#SELECT_FOLDER_IFRAME");
+
+		AssertClick(
+			key_dmFolderName = "${dmRootFolderName}",
+			locator1 = "DocumentsAndMedia#CHOOSE_FOLDER_BUTTON",
+			value1 = "Choose");
+
+		SelectFrame(locator1 = "relative=top");
+
+		SelectFrame(locator1 = "DocumentsAndMedia#CONFIGURATION_IFRAME");
+
+		PortletEntry.save();
+
+		IFrame.closeFrame();
 	}
 
 	macro tearDownCP {
