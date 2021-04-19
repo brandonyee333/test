@@ -263,8 +263,8 @@ public class AnalyticsEventsRestControllerTest {
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToString(
-				"dependencies/analytics_events_message_invalid_events_" +
-					"removed.json",
+				"dependencies" +
+					"/analytics_events_message_invalid_events_removed.json",
 				this),
 			argumentCaptor.getValue(), false);
 	}

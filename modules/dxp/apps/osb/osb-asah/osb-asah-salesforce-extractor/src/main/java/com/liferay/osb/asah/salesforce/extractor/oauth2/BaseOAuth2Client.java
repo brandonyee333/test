@@ -104,7 +104,7 @@ public abstract class BaseOAuth2Client {
 				_log.info(
 					String.format(
 						"%s: Unable to obtain refreshed access token due to " +
-							"invalid client ID, client secret, and/or" +
+							"invalid client ID, client secret, and/or " +
 								"refresh token, or insufficient permissions",
 						ProjectIdThreadLocal.getProjectId()));
 			}
