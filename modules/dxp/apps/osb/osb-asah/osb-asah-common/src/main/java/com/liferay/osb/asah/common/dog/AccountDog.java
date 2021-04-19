@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -157,6 +158,26 @@ public class AccountDog {
 				"There is no account with ID " + accountId));
 
 		return populateAccount(account, channelId);
+	}
+
+	public Page<Distribution> getDistributionsPage(
+		Long channelId, String fieldName, String fieldType, String filterString,
+		Long individualSegmentId, int numberOfBins, int size, String[] sorts) {
+
+		if (fieldType.equals("Number")) {
+			size = numberOfBins;
+		}
+
+		PageRequest pageRequest = PageRequest.of(
+			0, size, _getSort("count", sorts));
+
+		List<Distribution> distribution =
+			_accountRepository.getAccountDistributions(
+				channelId, fieldName, fieldType, filterString,
+				individualSegmentId, pageRequest);
+
+		return PageableExecutionUtils.getPage(
+			distribution, pageRequest, distribution::size);
 	}
 
 	public Account populateAccount(Account account, Long channelId) {
@@ -323,6 +344,27 @@ public class AccountDog {
 			));
 
 		return populateAccount(account, null);
+	}
+
+	private Sort _getSort(String defaultFieldName, String[] sorts) {
+		if (ArrayUtils.isEmpty(sorts)) {
+			return Sort.by(Sort.Order.desc(defaultFieldName));
+		}
+
+		List<Sort.Order> orders = new ArrayList<>();
+
+		for (int i = 0; i < (sorts.length - 1); i = i + 2) {
+			String sort = sorts[i];
+
+			if (Objects.equals(sorts[i + 1], "asc")) {
+				orders.add(Sort.Order.asc(sort));
+			}
+			else {
+				orders.add(Sort.Order.desc(sort));
+			}
+		}
+
+		return Sort.by(orders);
 	}
 
 	private List<Account> _populateAccounts(

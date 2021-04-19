@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.dto.AccountDTO;
+import com.liferay.osb.asah.backend.dto.DistributionDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
@@ -24,29 +25,18 @@ import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBu
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.rest.response.function.NumbersDistributionTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
-import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 
 import org.json.JSONObject;
 
@@ -89,75 +79,6 @@ public class AccountsRestController extends BaseRestController {
 		return _toPageDTO(accounts);
 	}
 
-	@GetMapping("/distribution")
-	public String getAccountsDistribution(
-			@RequestParam(required = false) String channelId,
-			@RequestParam String fieldMappingId,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(required = false) String individualSegmentId,
-			@RequestParam(defaultValue = "10") int numberOfBins,
-			@RequestParam(defaultValue = "100") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
-
-		JSONObject fieldMappingJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"field-mappings", fieldMappingId);
-
-		if (fieldMappingJSONObject == null) {
-			throw new IllegalArgumentException(
-				"Invalid field mapping ID " + fieldMappingId);
-		}
-
-		String ownerType = fieldMappingJSONObject.getString("ownerType");
-
-		if (!ownerType.equals("account")) {
-			throw new IllegalArgumentException(
-				"Unable to use non-account field " +
-					fieldMappingJSONObject.getString("fieldName") + " to " +
-						"distribute accounts");
-		}
-
-		String fieldName =
-			"organization." + fieldMappingJSONObject.getString("fieldName") +
-				".value";
-
-		String fieldType = fieldMappingJSONObject.getString("fieldType");
-
-		TransformationJSONArrayFunction transformationJSONArrayFunction = null;
-
-		if (fieldType.equals("Number")) {
-			size = numberOfBins;
-
-			transformationJSONArrayFunction =
-				new NumbersDistributionTransformationJSONArrayFunction();
-		}
-		else {
-			transformationJSONArrayFunction =
-				new TermsAggregationTransformationJSONArrayFunction(
-					null, fieldName,
-					bucket -> JSONUtil.put(
-						"count", bucket.getDocCount()
-					).put(
-						"values", JSONUtil.put(bucket.getKeyAsString())
-					));
-		}
-
-		return toTransformationGetResponse(
-			null, "accounts", faroInfoElasticsearchInvoker, 0,
-			_getAccountsQueryBuilder(
-				channelId, filterString, individualSegmentId),
-			size,
-			new HashMap<String, String>() {
-				{
-					put("count", "_count");
-					put("name", "_key");
-				}
-			},
-			sorts, fieldName, transformationJSONArrayFunction,
-			"accounts-distribution-transformations");
-	}
-
 	@GetMapping(params = "apply")
 	public String getAccountTransformations(
 			@RequestParam String apply,
@@ -198,6 +119,40 @@ public class AccountsRestController extends BaseRestController {
 			"account-transformations");
 	}
 
+	@GetMapping("/distribution")
+	public PageDTO<DistributionDTO> getDistributionDTOsPageDTO(
+		@RequestParam(required = false) Long channelId,
+		@RequestParam Long fieldMappingId,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(required = false) Long individualSegmentId,
+		@RequestParam(defaultValue = "10") int numberOfBins,
+		@RequestParam(defaultValue = "100") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
+
+		JSONObject fieldMappingJSONObject = faroInfoElasticsearchInvoker.fetch(
+			"field-mappings", String.valueOf(fieldMappingId));
+
+		if (fieldMappingJSONObject == null) {
+			throw new IllegalArgumentException(
+				"Invalid field mapping ID " + fieldMappingId);
+		}
+
+		String ownerType = fieldMappingJSONObject.getString("ownerType");
+
+		if (!ownerType.equals("account")) {
+			throw new IllegalArgumentException(
+				"Unable to use non-account field " +
+					fieldMappingJSONObject.getString("fieldName") + " to " +
+						"distribute accounts");
+		}
+
+		return _toDistributionDTOsPageDTO(
+			_accountDog.getDistributionsPage(
+				channelId, fieldMappingJSONObject.getString("fieldName"),
+				fieldMappingJSONObject.getString("fieldType"), filterString,
+				individualSegmentId, numberOfBins, size, sorts));
+	}
+
 	@GetMapping(params = "!apply", value = "/{id}/individual-segments")
 	public String getIndividualSegments(
 			@PathVariable String id,
@@ -228,74 +183,6 @@ public class AccountsRestController extends BaseRestController {
 			null,
 			new TermsAggregationTransformationJSONArrayFunction(apply, null),
 			"individual-segment-transformations");
-	}
-
-	private QueryBuilder _getAccountsQueryBuilder(
-			String channelId, String filterString, String individualSegmentId)
-		throws Exception {
-
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		if (StringUtils.isNotEmpty(filterString)) {
-			boolQueryBuilder.filter(
-				FilterStringToQueryBuilderConverter.convert(filterString));
-		}
-
-		if (StringUtils.isEmpty(individualSegmentId) &&
-			StringUtils.isEmpty(channelId)) {
-
-			return boolQueryBuilder;
-		}
-
-		SearchResponse searchResponse = faroInfoElasticsearchInvoker.search(
-			"individuals",
-			searchSourceBuilder -> {
-				NestedAggregationBuilder aggregationBuilder =
-					AggregationBuilders.nested(
-						"accounts", "dataSourceAccountPKs");
-
-				aggregationBuilder.subAggregation(
-					AggregationBuilders.terms(
-						"accountPKs"
-					).field(
-						"dataSourceAccountPKs.accountPKs"
-					).size(
-						Integer.MAX_VALUE
-					));
-
-				searchSourceBuilder.aggregation(aggregationBuilder);
-
-				BoolQueryBuilder individualsBoolQueryBuilder =
-					QueryBuilders.boolQuery();
-
-				BoolQueryBuilderUtil.filterTerm(
-					individualsBoolQueryBuilder, "channelIds", channelId);
-				BoolQueryBuilderUtil.filterTerm(
-					individualsBoolQueryBuilder, "individualSegmentIds",
-					individualSegmentId);
-
-				searchSourceBuilder.query(individualsBoolQueryBuilder);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		InternalNested internalNested = aggregations.get("accounts");
-
-		Aggregations nestedAggregations = internalNested.getAggregations();
-
-		Terms terms = nestedAggregations.get("accountPKs");
-
-		Set<String> accountPKs = new HashSet<>();
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			accountPKs.add(bucket.getKeyAsString());
-		}
-
-		boolQueryBuilder.filter(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery("accountPK", accountPKs)));
-
-		return boolQueryBuilder;
 	}
 
 	private List<Long> _getIndividualSegmentIds(Long segmentId) {
@@ -340,6 +227,25 @@ public class AccountsRestController extends BaseRestController {
 		).filter(
 			FilterStringToQueryBuilderConverter.convert(filterString)
 		);
+	}
+
+	private PageDTO<DistributionDTO> _toDistributionDTOsPageDTO(
+		DistributionDTO distributionDTO, Page<Distribution> distributions) {
+
+		return new PageDTO<>(
+			"_embedded", distributionDTO, distributions.getNumber(),
+			distributions.getSize(), distributions.getTotalElements(),
+			distributions.getTotalPages());
+	}
+
+	private PageDTO<DistributionDTO> _toDistributionDTOsPageDTO(
+		Page<Distribution> distributions) {
+
+		return _toDistributionDTOsPageDTO(
+			new DistributionDTO(
+				distributions.getContent(),
+				"accounts-distribution-transformations"),
+			distributions);
 	}
 
 	private PageDTO<AccountDTO> _toPageDTO(
