@@ -145,13 +145,12 @@ public class AssetRepositoryImpl extends BaseRepository {
 	private Table<Record> _getAssetTable(
 		String assetType, String filterString, String keyword) {
 
-		SelectJoinStep<Record> selectJoinStep = _dslContext.selectDistinct(
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			DSL.table(
 				"Asset"
-			).asterisk()
-		).from(
-			"Asset"
-		);
+			).asterisk());
+
+		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from("Asset");
 
 		if (_containsAssetKeywordFilter(filterString)) {
 			selectJoinStep = selectJoinStep.join(
