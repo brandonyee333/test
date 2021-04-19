@@ -347,7 +347,7 @@ public class FinalizeUserSessionArm {
 	@PostConstruct
 	private void _init() throws Exception {
 		StorageConfiguration.Builder builder = StorageConfiguration.builder(
-			_userSessionEventsStoragePath);
+			_userSessionEventsStoragePathTemplate);
 
 		builder.fileFormat(StorageConfiguration.FileFormat.SNAPPY_PARQUET);
 
@@ -747,6 +747,6 @@ public class FinalizeUserSessionArm {
 	@Value(
 		"${osb.asah.user.session.events.storage.path:/tmp/user_session_events.snappy.parquet}"
 	)
-	private String _userSessionEventsStoragePath;
+	private String _userSessionEventsStoragePathTemplate;
 
 }

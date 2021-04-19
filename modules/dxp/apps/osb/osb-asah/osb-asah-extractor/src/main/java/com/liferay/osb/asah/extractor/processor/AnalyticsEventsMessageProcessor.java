@@ -246,7 +246,7 @@ public class AnalyticsEventsMessageProcessor {
 	@PostConstruct
 	private void _init() throws Exception {
 		StorageConfiguration.Builder builder = StorageConfiguration.builder(
-			_analyticsEventsStoragePath);
+			_analyticsEventsStoragePathTemplate);
 
 		builder.fileFormat(StorageConfiguration.FileFormat.SNAPPY_PARQUET);
 
@@ -453,7 +453,7 @@ public class AnalyticsEventsMessageProcessor {
 	@Value(
 		"${osb.asah.analytics.events.storage.path:/tmp/analytics_events.snappy.parquet}"
 	)
-	private String _analyticsEventsStoragePath;
+	private String _analyticsEventsStoragePathTemplate;
 
 	@Autowired
 	private AnalyticsEventStorageDog _analyticsEventStorageDog;
