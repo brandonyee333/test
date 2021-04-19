@@ -46,7 +46,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.apache.avro.Schema;
@@ -121,7 +120,9 @@ public class FinalizeUserSessionArm {
 			processSession(userSession);
 		}
 
-		_storage.flush();
+		Storage storage = _getOrCreateStorage();
+
+		storage.flush();
 	}
 
 	public void reprocessSession(UserSession userSession) throws Exception {
@@ -190,7 +191,9 @@ public class FinalizeUserSessionArm {
 
 	@PreDestroy
 	private void _destroy() {
-		_storage.close();
+		for (Storage storage : _storages.values()) {
+			storage.close();
+		}
 	}
 
 	private String _getCompleteReason(UserSession userSession) {
@@ -262,6 +265,39 @@ public class FinalizeUserSessionArm {
 		}
 
 		return exitPageJSONObject.getString("url");
+	}
+
+	private Storage _getOrCreateStorage() throws Exception {
+		Storage storage = _storages.get(ProjectIdThreadLocal.getProjectId());
+
+		if (storage != null) {
+			return storage;
+		}
+
+		StorageConfiguration.Builder builder = StorageConfiguration.builder(
+			StringUtils.replace(
+				_userSessionEventsStoragePathTemplate, "{projectId}",
+				ProjectIdThreadLocal.getProjectId()));
+
+		builder.fileFormat(StorageConfiguration.FileFormat.SNAPPY_PARQUET);
+
+		Schema.Parser parser = new Schema.Parser();
+
+		builder.fileSchema(
+			parser.parse(
+				ResourceUtil.readResourceToString(
+					"dependencies/user_session_event.avsc", getClass())));
+
+		builder.googleBucket(
+			StringUtils.replace(
+				_userSessionEventsBucketTemplate, "{region}",
+				System.getenv("LCP_PROJECT_CLUSTER")));
+
+		storage = _storageFactory.getStorage(builder.build());
+
+		_storages.put(ProjectIdThreadLocal.getProjectId(), storage);
+
+		return storage;
 	}
 
 	private Map<Pair<String, Date>, String> _getPageEventDateMap(
@@ -345,37 +381,15 @@ public class FinalizeUserSessionArm {
 		);
 	}
 
-	@PostConstruct
-	private void _init() throws Exception {
-		StorageConfiguration.Builder builder = StorageConfiguration.builder(
-			StringUtils.replace(
-				_userSessionEventsStoragePathTemplate, "{projectId}",
-				ProjectIdThreadLocal.getProjectId()));
+	private void _storeUserSessionAnalyticsEvents(UserSession userSession)
+		throws Exception {
 
-		builder.fileFormat(StorageConfiguration.FileFormat.SNAPPY_PARQUET);
-
-		Schema.Parser parser = new Schema.Parser();
-
-		builder.fileSchema(
-			parser.parse(
-				ResourceUtil.readResourceToString(
-					"dependencies/user_session_event.avsc", getClass())));
-
-		builder.googleBucket(
-			StringUtils.replace(
-				_userSessionEventsBucketTemplate, "{region}",
-				System.getenv("LCP_PROJECT_CLUSTER")));
-
-		_storage = _storageFactory.getStorage(builder.build());
-	}
-
-	private void _storeUserSessionAnalyticsEvents(UserSession userSession) {
 		ElasticsearchDump.Builder builder = new ElasticsearchDump.Builder();
 
 		builder.from(
 			"user-session-analytics-events", _cerebroInfoElasticsearchInvoker,
 			QueryBuilders.termQuery("sessionId", userSession.getId()));
-		builder.to(_storage);
+		builder.to(_getOrCreateStorage());
 
 		ElasticsearchDump elasticsearchDump = builder.build();
 
@@ -737,10 +751,10 @@ public class FinalizeUserSessionArm {
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
-	private Storage _storage;
-
 	@Autowired
 	private StorageFactory _storageFactory;
+
+	private final Map<String, Storage> _storages = new HashMap<>();
 
 	@Value(
 		"${osb.asah.user.session.events.google.bucket:analytics-cloud-session-events-{region}}"
