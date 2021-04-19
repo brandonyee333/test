@@ -15,9 +15,11 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -92,7 +94,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 			pageable.getOffset()
 		).fetch(
 		).map(
-			record -> new Asset(record.intoMap())
+			this::_toAsset
 		);
 	}
 
@@ -111,7 +113,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 			pageable.getOffset()
 		).fetch(
 		).map(
-			record -> new Asset(record.intoMap())
+			this::_toAsset
 		);
 	}
 
@@ -121,6 +123,23 @@ public class AssetRepositoryImpl extends BaseRepository {
 		}
 
 		return false;
+	}
+
+	private List<AssetKeyword> _findAssetKeywordsByAssetId(Long assetId) {
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"AssetKeyword"
+		).where(
+			DSL.field(
+				"assetId"
+			).eq(
+				assetId
+			)
+		).fetch(
+		).map(
+			record -> new AssetKeyword(record.intoMap())
+		);
 	}
 
 	private Table<Record> _getAssetTable(
@@ -200,6 +219,19 @@ public class AssetRepositoryImpl extends BaseRepository {
 		}
 
 		return conditions;
+	}
+
+	private Asset _toAsset(Record assetRecord) {
+		Asset asset = new Asset(assetRecord.intoMap());
+
+		List<AssetKeyword> assetKeywords = _findAssetKeywordsByAssetId(
+			asset.getId());
+
+		if (!assetKeywords.isEmpty()) {
+			asset.setAssetKeywords(new HashSet<>(assetKeywords));
+		}
+
+		return asset;
 	}
 
 	private final DSLContext _dslContext;

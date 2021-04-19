@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.liferay.osb.asah.common.util.BeanUtils;
+
+import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
@@ -27,6 +30,10 @@ import org.springframework.data.relational.core.mapping.Table;
 public class AssetKeyword {
 
 	public AssetKeyword() {
+	}
+
+	public AssetKeyword(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
 	}
 
 	public AssetKeyword(String keyword, String type) {
