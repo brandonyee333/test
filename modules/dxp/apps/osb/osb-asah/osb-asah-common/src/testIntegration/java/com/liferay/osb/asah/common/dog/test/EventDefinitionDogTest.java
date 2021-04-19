@@ -24,10 +24,17 @@ import com.liferay.osb.asah.test.util.postgresql.PostgreSQLTables;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -182,6 +189,99 @@ public class EventDefinitionDogTest {
 				EventDefinition.Type.CUSTOM, null);
 
 		Assert.assertEquals("TestEvent (1)", eventDefinition2.getDisplayName());
+	}
+
+	@PostgreSQLTables(resourcePath = "test_block_event_definition.sql")
+	@Test
+	public void testBlockEventDefinition() {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("subscribed");
+
+		Assert.assertNotNull(eventDefinition);
+
+		_eventDefinitionDog.blockEventDefinitions(
+			Collections.singletonList(eventDefinition.getId()));
+
+		eventDefinition = _eventDefinitionDog.fetchEventDefinitionByName(
+			"subscribed");
+
+		Assert.assertNull(eventDefinition.getDescription());
+		Assert.assertNull(eventDefinition.getDisplayName());
+
+		BlockedEventDefinition blockedEventDefinition =
+			eventDefinition.getBlockedEventDefinition();
+
+		Assert.assertNotNull(blockedEventDefinition);
+
+		ZonedDateTime zonedDateTime = ZonedDateTime.of(
+			2021, 4, 19, 12, 35, 0, 0, ZoneId.of("UTC"));
+
+		Assert.assertEquals(
+			Date.from(zonedDateTime.toInstant()),
+			blockedEventDefinition.getLastSeenDate());
+
+		Assert.assertEquals(
+			"http://localhost:8089/web/guest/home",
+			blockedEventDefinition.getLastSeenURL());
+	}
+
+	@PostgreSQLTables(resourcePath = "test_block_event_definitions.sql")
+	@Test
+	public void testBlockEventDefinitions() {
+		Page<EventDefinition> eventDefinitions =
+			_eventDefinitionDog.getEventDefinitionsPage(
+				false, null, 0, 3, Sort.asc("name"),
+				EventDefinition.Type.CUSTOM);
+
+		Stream<EventDefinition> stream = eventDefinitions.stream();
+
+		List<Long> eventDefinitionIds = stream.map(
+			EventDefinition::getId
+		).collect(
+			Collectors.toList()
+		);
+
+		_eventDefinitionDog.blockEventDefinitions(eventDefinitionIds);
+
+		ZonedDateTime addNotificationZonedDateTime = ZonedDateTime.of(
+			2021, 4, 19, 0, 0, 0, 0, ZoneId.of("UTC"));
+		ZonedDateTime subscribedZonedDateTime = ZonedDateTime.of(
+			2021, 3, 29, 0, 0, 0, 0, ZoneId.of("UTC"));
+		ZonedDateTime unsubscribedZonedDateTime = ZonedDateTime.of(
+			2021, 2, 16, 0, 0, 0, 0, ZoneId.of("UTC"));
+
+		Map<String, BlockedEventDefinition> expectedBlockedEventDefinitions =
+			new HashMap<String, BlockedEventDefinition>() {
+				{
+					put(
+						"addNotification",
+						new BlockedEventDefinition(
+							Date.from(addNotificationZonedDateTime.toInstant()),
+							"http://localhost:8089/web/guest/home"));
+					put(
+						"subscribed",
+						new BlockedEventDefinition(
+							Date.from(subscribedZonedDateTime.toInstant()),
+							"http://localhost:80/web/guest/home"));
+					put(
+						"unsubscribed",
+						new BlockedEventDefinition(
+							Date.from(unsubscribedZonedDateTime.toInstant()),
+							"http://localhost:8087/web/guest/home"));
+				}
+			};
+
+		for (Long eventDefinitionId : eventDefinitionIds) {
+			EventDefinition eventDefinition =
+				_eventDefinitionDog.getEventDefinition(eventDefinitionId);
+
+			Assert.assertNull(eventDefinition.getDescription());
+			Assert.assertNull(eventDefinition.getDisplayName());
+
+			Assert.assertEquals(
+				expectedBlockedEventDefinitions.get(eventDefinition.getName()),
+				eventDefinition.getBlockedEventDefinition());
+		}
 	}
 
 	@Test
