@@ -173,13 +173,13 @@ public class AccountDog {
 		PageRequest pageRequest = PageRequest.of(
 			0, size, _getSort("count", sorts));
 
-		List<Distribution> distribution =
+		List<Distribution> distributions =
 			_accountRepository.getAccountDistributions(
 				channelId, fieldName, fieldType, filterString,
 				individualSegmentId, pageRequest);
 
 		return PageableExecutionUtils.getPage(
-			distribution, pageRequest, distribution::size);
+			distributions, pageRequest, distributions::size);
 	}
 
 	public Account populateAccount(Account account, Long channelId) {
