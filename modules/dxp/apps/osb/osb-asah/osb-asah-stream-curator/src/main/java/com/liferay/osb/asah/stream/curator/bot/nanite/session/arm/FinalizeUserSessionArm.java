@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.storage.StorageFactory;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.Instant;
@@ -347,7 +348,9 @@ public class FinalizeUserSessionArm {
 	@PostConstruct
 	private void _init() throws Exception {
 		StorageConfiguration.Builder builder = StorageConfiguration.builder(
-			_userSessionEventsStoragePathTemplate);
+			StringUtils.replace(
+				_userSessionEventsStoragePathTemplate, "{projectId}",
+				ProjectIdThreadLocal.getProjectId()));
 
 		builder.fileFormat(StorageConfiguration.FileFormat.SNAPPY_PARQUET);
 
@@ -745,7 +748,7 @@ public class FinalizeUserSessionArm {
 	private String _userSessionEventsBucketTemplate;
 
 	@Value(
-		"${osb.asah.user.session.events.storage.path:/tmp/user_session_events.snappy.parquet}"
+		"${osb.asah.user.session.events.storage.path:/tmp/{projectId}/user_session_events.snappy.parquet}"
 	)
 	private String _userSessionEventsStoragePathTemplate;
 
