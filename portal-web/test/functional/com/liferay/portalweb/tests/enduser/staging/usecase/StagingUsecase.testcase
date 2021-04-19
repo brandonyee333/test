@@ -374,8 +374,8 @@ definition {
 
 	@priority = "5"
 	test ImportLARsOnStagedSite {
-		property portal.acceptance = "false";
-		property testray.component.names = "Training";
+		property portal.acceptance = "true";
+		property testray.component.names = "Training,Web Content Administration";
 
 		Navigator.gotoStagedSitePage(
 			pageName = "Staging Test Page",
