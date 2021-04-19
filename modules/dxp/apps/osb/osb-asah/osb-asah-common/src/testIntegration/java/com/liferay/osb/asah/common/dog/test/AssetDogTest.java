@@ -44,7 +44,7 @@ public class AssetDogTest {
 	)
 	@Test
 	public void testGetKeywordsOmitsDuplicateKeywords() {
-		List<String> keywords = _assetDog.getKeywords();
+		List<String> keywords = _assetDog.getKeywords("Page");
 
 		Assert.assertEquals(
 			keywords.toString(),
@@ -58,7 +58,7 @@ public class AssetDogTest {
 	)
 	@Test
 	public void testGetKeywordsOmitsFormKeywords() {
-		List<String> keywords = _assetDog.getKeywords();
+		List<String> keywords = _assetDog.getKeywords("Page");
 
 		Assert.assertEquals(
 			keywords.toString(),

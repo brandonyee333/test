@@ -63,7 +63,7 @@ public class InterestThresholdScoreNanite extends BaseNanite {
 			}
 		}
 
-		List<String> keywords = _assetDog.getKeywords();
+		List<String> keywords = _assetDog.getKeywords("Page");
 
 		if (keywords.isEmpty()) {
 			if (_log.isWarnEnabled()) {

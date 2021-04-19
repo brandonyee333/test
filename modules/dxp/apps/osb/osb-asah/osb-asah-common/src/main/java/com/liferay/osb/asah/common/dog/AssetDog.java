@@ -153,18 +153,18 @@ public class AssetDog {
 				assetType, filterString, keyword));
 	}
 
-	public List<String> getKeywords() {
+	public List<String> getKeywords(String assetType) {
 		Set<String> keywords = new TreeSet<>();
 
 		int size = 50;
 
-		long total = _assetRepository.countByAssetType("Page");
+		long total = _assetRepository.countByAssetType(assetType);
 
 		int pages = (int)total / 50;
 
 		for (int page = 0; page <= pages; page++) {
 			List<Asset> assets = _assetRepository.findByAssetType(
-				"Page", PageRequest.of(page, size));
+				assetType, PageRequest.of(page, size));
 
 			for (Asset asset : assets) {
 				Set<AssetKeyword> assetKeywords = asset.getAssetKeywords();
