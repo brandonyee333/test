@@ -246,11 +246,11 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 
 		Class<T> entityClass = (Class<T>)typeArgumentClasses[0];
 
-		return _objectMapper.convertValue(jsonObject, entityClass);
+		return objectMapper.convertValue(jsonObject, entityClass);
 	}
 
 	protected JSONObject toJSONObject(T entity) {
-		return _objectMapper.convertValue(entity, JSONObject.class);
+		return objectMapper.convertValue(entity, JSONObject.class);
 	}
 
 	protected List<T> toList(JSONArray jsonArray) {
@@ -266,6 +266,6 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 	protected static final int ELASTICSEARCH_MAX_SIZE = 10000;
 
 	@Autowired
-	private ObjectMapper _objectMapper;
+	protected ObjectMapper objectMapper;
 
 }

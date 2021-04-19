@@ -20,23 +20,40 @@ import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
+import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
+import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.rest.response.function.NumbersDistributionTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
+import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
@@ -100,6 +117,82 @@ public class ElasticsearchAccountRepositoryImpl
 				))
 		).map(
 			this::toEntity
+		);
+	}
+
+	@Override
+	public List<Distribution> getAccountDistributions(
+		Long channelId, String fieldName, String fieldType, String filterString,
+		Long individualSegmentId, Pageable pageable) {
+
+		fieldName = "organization." + fieldName + ".value";
+
+		TransformationJSONArrayFunction transformationJSONArrayFunction = null;
+
+		if (fieldType.equals("Number")) {
+			transformationJSONArrayFunction =
+				new NumbersDistributionTransformationJSONArrayFunction();
+		}
+		else {
+			transformationJSONArrayFunction =
+				new TermsAggregationTransformationJSONArrayFunction(
+					null, fieldName,
+					bucket -> JSONUtil.put(
+						"count", bucket.getDocCount()
+					).put(
+						"values", JSONUtil.put(bucket.getKeyAsString())
+					));
+		}
+
+		TransformationGetResponse transformationGetResponse =
+			new TransformationGetResponse();
+
+		transformationGetResponse.setCollectionName(getCollectionName());
+		transformationGetResponse.setElasticsearchInvoker(
+			_faroInfoElasticsearchInvoker);
+		transformationGetResponse.setPage(pageable.getPageNumber());
+		transformationGetResponse.setQueryBuilder(
+			_getAccountsQueryBuilder(
+				channelId, filterString, individualSegmentId));
+		transformationGetResponse.setSize(pageable.getPageSize());
+		transformationGetResponse.setSorts(
+			new HashMap<String, String>() {
+				{
+					put("count", "_count");
+					put("name", "_key");
+				}
+			},
+			_getSorts(pageable.getSort()));
+		transformationGetResponse.setSupportedFieldName(fieldName);
+		transformationGetResponse.setTransformationJSONArrayFunction(
+			transformationJSONArrayFunction);
+		transformationGetResponse.setTransformationName(
+			"accounts-distribution-transformations");
+
+		JSONObject jsonObject = null;
+
+		try {
+			jsonObject = new JSONObject(transformationGetResponse.respond());
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			return Collections.emptyList();
+		}
+
+		JSONObject embeddedJSONObject = jsonObject.getJSONObject("_embedded");
+
+		JSONArray accountsDistributionTransformationsJSONArray =
+			embeddedJSONObject.getJSONArray(
+				"accounts-distribution-transformations");
+
+		Stream<Object> stream = JSONUtil.toObjectStream(
+			accountsDistributionTransformationsJSONArray);
+
+		return stream.map(
+			object -> objectMapper.convertValue(object, Distribution.class)
+		).collect(
+			Collectors.toList()
 		);
 	}
 
@@ -262,6 +355,76 @@ public class ElasticsearchAccountRepositoryImpl
 		}
 
 		return responseJSONObject;
+	}
+
+	private QueryBuilder _getAccountsQueryBuilder(
+		Long channelId, String filterString, Long individualSegmentId) {
+
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+		if (StringUtils.isNotEmpty(filterString)) {
+			boolQueryBuilder.filter(
+				FilterStringToQueryBuilderConverter.convert(filterString));
+		}
+
+		if ((channelId == null) && (individualSegmentId == null)) {
+			return boolQueryBuilder;
+		}
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			"individuals",
+			searchSourceBuilder -> {
+				NestedAggregationBuilder aggregationBuilder =
+					AggregationBuilders.nested(
+						"accounts", "dataSourceAccountPKs");
+
+				aggregationBuilder.subAggregation(
+					AggregationBuilders.terms(
+						"accountPKs"
+					).field(
+						"dataSourceAccountPKs.accountPKs"
+					).size(
+						Integer.MAX_VALUE
+					));
+
+				searchSourceBuilder.aggregation(aggregationBuilder);
+
+				BoolQueryBuilder individualsBoolQueryBuilder =
+					QueryBuilders.boolQuery();
+
+				if (channelId != null) {
+					BoolQueryBuilderUtil.filterTerm(
+						individualsBoolQueryBuilder, "channelIds",
+						String.valueOf(channelId));
+				}
+
+				if (individualSegmentId != null) {
+					BoolQueryBuilderUtil.filterTerm(
+						individualsBoolQueryBuilder, "individualSegmentIds",
+						String.valueOf(individualSegmentId));
+				}
+
+				searchSourceBuilder.query(individualsBoolQueryBuilder);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		InternalNested internalNested = aggregations.get("accounts");
+
+		Aggregations nestedAggregations = internalNested.getAggregations();
+
+		Terms terms = nestedAggregations.get("accountPKs");
+
+		Set<String> accountPKs = new HashSet<>();
+
+		for (Terms.Bucket bucket : terms.getBuckets()) {
+			accountPKs.add(bucket.getKeyAsString());
+		}
+
+		boolQueryBuilder.filter(
+			QueryBuilders.termsQuery("accountPK", accountPKs));
+
+		return boolQueryBuilder;
 	}
 
 	private QueryBuilder _getQueryBuilder(String filterString) {
