@@ -183,8 +183,8 @@ CREATE TABLE IF NOT EXISTS EventDefinition (
 	blocked BOOLEAN DEFAULT false,
 	description TEXT,
 	displayName TEXT UNIQUE,
-	name TEXT UNIQUE,
-	type VARCHAR(255) NOT NULL
+	name VARCHAR(255) UNIQUE,
+	type TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS EventDefinitionEventAttributeDefinition (
