@@ -51,6 +51,30 @@ public class ElasticsearchAccountRepositoryTest
 	}
 
 	@ElasticsearchIndex(
+		name = "accounts", resourcePath = "accounts_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "field-mappings", resourcePath = "field_mappings.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individual-segments", resourcePath = "individual_segments.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Override
+	@Test
+	public void testGetDistributionAccounts() throws Exception {
+		setUpDataSources();
+
+		super.testGetDistributionAccounts();
+	}
+
+	@ElasticsearchIndex(
 		name = "accounts", resourcePath = "accounts.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)

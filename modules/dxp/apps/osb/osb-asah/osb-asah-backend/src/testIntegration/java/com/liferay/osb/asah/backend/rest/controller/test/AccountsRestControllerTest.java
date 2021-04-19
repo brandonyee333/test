@@ -119,53 +119,59 @@ public class AccountsRestControllerTest {
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_accounts_distribution_filtered.json",
 				this),
-			new JSONObject(
-				_accountsRestController.getAccountsDistribution(
-					"1", "366573389382719637", null, "366637689379787789", 10,
-					100, null)),
+			_objectMapper.convertValue(
+				_accountsRestController.getDistributionDTOsPageDTO(
+					1L, 366573389382719637L, null, 366637689379787789L, 10, 100,
+					null),
+				JSONObject.class),
 			false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_accounts_distribution_filtered.json",
 				this),
-			new JSONObject(
-				_accountsRestController.getAccountsDistribution(
-					"1", "366573389382719637",
+			_objectMapper.convertValue(
+				_accountsRestController.getDistributionDTOsPageDTO(
+					1L, 366573389382719637L,
 					"organization/billingState/value eq 'New York'", null, 10,
-					100, null)),
+					100, null),
+				JSONObject.class),
 			false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_accounts_distribution_sorted.json",
 				this),
-			new JSONObject(
-				_accountsRestController.getAccountsDistribution(
-					"1", "366573390725218943", null, null, 10, 100,
-					new String[] {"name", "desc"})),
+			_objectMapper.convertValue(
+				_accountsRestController.getDistributionDTOsPageDTO(
+					1L, 366573390725218943L, null, null, 10, 100,
+					new String[] {"name", "desc"}),
+				JSONObject.class),
 			false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_accounts_terms_distribution.json", this),
-			new JSONObject(
-				_accountsRestController.getAccountsDistribution(
-					"1", "366573390725218943", null, null, 10, 100, null)),
+			_objectMapper.convertValue(
+				_accountsRestController.getDistributionDTOsPageDTO(
+					1L, 366573390725218943L, null, null, 10, 100, null),
+				JSONObject.class),
 			false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies" +
 					"/expected_accounts_terms_distribution_truncated.json",
 				this),
-			new JSONObject(
-				_accountsRestController.getAccountsDistribution(
-					"1", "366573390725218943", null, null, 10, 1, null)),
+			_objectMapper.convertValue(
+				_accountsRestController.getDistributionDTOsPageDTO(
+					1L, 366573390725218943L, null, null, 10, 1, null),
+				JSONObject.class),
 			false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_accounts_numbers_distribution.json",
 				this),
-			new JSONObject(
-				_accountsRestController.getAccountsDistribution(
-					"1", "366573389382719637", null, null, 10, 100, null)),
+			_objectMapper.convertValue(
+				_accountsRestController.getDistributionDTOsPageDTO(
+					1L, 366573389382719637L, null, null, 10, 100, null),
+				JSONObject.class),
 			false);
 	}
 
@@ -174,12 +180,10 @@ public class AccountsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test(expected = Exception.class)
-	public void testGetAccountsDistributionInvalidFieldMapping1()
-		throws Exception {
-
+	public void testGetAccountsDistributionInvalidFieldMapping1() {
 		try {
-			_accountsRestController.getAccountsDistribution(
-				"1", "366573390725218129", null, null, 10, 100, null);
+			_accountsRestController.getDistributionDTOsPageDTO(
+				1L, 366573390725218129L, null, null, 10, 100, null);
 		}
 		catch (Exception e) {
 			Assert.assertThat(
@@ -195,12 +199,10 @@ public class AccountsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test(expected = Exception.class)
-	public void testGetAccountsDistributionInvalidFieldMapping2()
-		throws Exception {
-
+	public void testGetAccountsDistributionInvalidFieldMapping2() {
 		try {
-			_accountsRestController.getAccountsDistribution(
-				"1", "340477857996688156", null, null, 10, 100, null);
+			_accountsRestController.getDistributionDTOsPageDTO(
+				1L, 340477857996688156L, null, null, 10, 100, null);
 		}
 		catch (Exception e) {
 			Assert.assertThat(

@@ -14,20 +14,26 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import org.elasticsearch.index.query.QueryBuilders;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,6 +43,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
+
+import org.yaml.snakeyaml.util.ArrayUtils;
 
 /**
  * @author Rachael Koestartyo
@@ -96,7 +104,7 @@ public abstract class BaseAccountRepositoryTestCase
 		field1.setSourceName("Field 1");
 		field1.setValue("field one");
 
-		_fieldRepository.save(field1);
+		fieldRepository.save(field1);
 
 		Field field2 = new Field();
 
@@ -111,7 +119,7 @@ public abstract class BaseAccountRepositoryTestCase
 		field2.setSourceName("Field 1");
 		field2.setValue("field two");
 
-		_fieldRepository.save(field2);
+		fieldRepository.save(field2);
 
 		Field field3 = new Field();
 
@@ -126,7 +134,7 @@ public abstract class BaseAccountRepositoryTestCase
 		field3.setSourceName("Field 3");
 		field3.setValue("field three");
 
-		_fieldRepository.save(field3);
+		fieldRepository.save(field3);
 
 		Segment segment = new Segment();
 
@@ -144,15 +152,121 @@ public abstract class BaseAccountRepositoryTestCase
 		segment.setStatus("INACTIVE");
 		segment.setType(Segment.Type.DYNAMIC);
 
-		_segmentRepository.save(segment);
+		segmentRepository.save(segment);
+	}
+
+	@Override
+	public void tearDown() {
+		super.tearDown();
+
+		segmentRepository.deleteAll();
+
+		_channelRepository.deleteAll();
+		_dataSourceRepository.deleteAll();
+		fieldRepository.deleteAll();
+
+		elasticsearchInvoker.delete(
+			"field-mappings", QueryBuilders.matchAllQuery());
+		elasticsearchInvoker.delete(
+			"individuals", QueryBuilders.matchAllQuery());
 	}
 
 	@Test
 	public void testCountAccounts() {
 		Assert.assertEquals(
 			1,
-			_accountRepository.countAccounts(
+			accountRepository.countAccounts(
 				"organization/field1/value eq 'field two'"));
+	}
+
+	@Test
+	public void testGetDistributionAccounts() throws Exception {
+		List<Distribution> distributions =
+			accountRepository.getAccountDistributions(
+				1L, "numberOfEmployees", "Number", null, 366637689379787789L,
+				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("count"))));
+
+		_assertEquals(
+			distributions.get(0), 1,
+			ArrayUtils.toUnmodifiableList(new Integer[] {20000, 20000}));
+
+		distributions = accountRepository.getAccountDistributions(
+			1L, "numberOfEmployees", "Number",
+			"organization/billingState/value eq 'New York'", null,
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("count"))));
+
+		_assertEquals(
+			distributions.get(0), 1,
+			ArrayUtils.toUnmodifiableList(new Integer[] {20000, 20000}));
+
+		distributions = accountRepository.getAccountDistributions(
+			1L, "shippingPostalCode", "Text", null, null,
+			PageRequest.of(0, 100, Sort.by(Sort.Order.desc("name"))));
+
+		_assertEquals(
+			distributions.get(0), 1,
+			ArrayUtils.toUnmodifiableList(new String[] {"91789"}));
+		_assertEquals(
+			distributions.get(1), 1,
+			ArrayUtils.toUnmodifiableList(new String[] {"91765"}));
+
+		distributions = accountRepository.getAccountDistributions(
+			1L, "shippingPostalCode", "Text", null, null,
+			PageRequest.of(0, 100, Sort.by(Sort.Order.asc("count"))));
+
+		_assertEquals(
+			distributions.get(0), 1,
+			ArrayUtils.toUnmodifiableList(new String[] {"91765"}));
+		_assertEquals(
+			distributions.get(1), 1,
+			ArrayUtils.toUnmodifiableList(new String[] {"91789"}));
+
+		distributions = accountRepository.getAccountDistributions(
+			1L, "shippingPostalCode", "Text", null, null,
+			PageRequest.of(0, 1, Sort.by(Sort.Order.asc("count"))));
+
+		Assert.assertEquals(distributions.toString(), 1, distributions.size());
+
+		_assertEquals(
+			distributions.get(0), 1,
+			ArrayUtils.toUnmodifiableList(new String[] {"91765"}));
+
+		distributions = accountRepository.getAccountDistributions(
+			1L, "numberOfEmployees", "Number", null, null,
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("values"))));
+
+		Assert.assertEquals(distributions.toString(), 10, distributions.size());
+
+		_assertEquals(
+			distributions.get(0), 1,
+			ArrayUtils.toUnmodifiableList(new Integer[] {2000, 3800}));
+		_assertEquals(
+			distributions.get(1), 0,
+			ArrayUtils.toUnmodifiableList(new Integer[] {3800, 5600}));
+		_assertEquals(
+			distributions.get(2), 0,
+			ArrayUtils.toUnmodifiableList(new Integer[] {5600, 7400}));
+		_assertEquals(
+			distributions.get(3), 0,
+			ArrayUtils.toUnmodifiableList(new Integer[] {7400, 9200}));
+		_assertEquals(
+			distributions.get(4), 0,
+			ArrayUtils.toUnmodifiableList(new Integer[] {9200, 11000}));
+		_assertEquals(
+			distributions.get(5), 0,
+			ArrayUtils.toUnmodifiableList(new Integer[] {11000, 12800}));
+		_assertEquals(
+			distributions.get(6), 0,
+			ArrayUtils.toUnmodifiableList(new Integer[] {12800, 14600}));
+		_assertEquals(
+			distributions.get(7), 0,
+			ArrayUtils.toUnmodifiableList(new Integer[] {14600, 16400}));
+		_assertEquals(
+			distributions.get(8), 0,
+			ArrayUtils.toUnmodifiableList(new Integer[] {16400, 18200}));
+		_assertEquals(
+			distributions.get(9), 1,
+			ArrayUtils.toUnmodifiableList(new Integer[] {18200, 20000}));
 	}
 
 	@Test
@@ -160,13 +274,13 @@ public abstract class BaseAccountRepositoryTestCase
 		PageRequest pageRequest = PageRequest.of(
 			0, 20, Sort.by(Sort.Order.asc("organization/field1/value")));
 
-		List<Account> accounts = _accountRepository.searchAccounts(
+		List<Account> accounts = accountRepository.searchAccounts(
 			null, "organization/field1/value eq 'field two'", pageRequest,
 			Sort.by(Sort.Order.asc("individualCount")));
 
 		Assert.assertEquals(accounts.toString(), 1, accounts.size());
 
-		Optional<Account> accountOptional = _accountRepository.findById(
+		Optional<Account> accountOptional = accountRepository.findById(
 			_accountId);
 
 		Assert.assertEquals(accountOptional.orElse(null), accounts.get(0));
@@ -174,24 +288,72 @@ public abstract class BaseAccountRepositoryTestCase
 
 	@Override
 	protected CrudRepository<Account, Long> getCrudRepository() {
-		return _accountRepository;
+		return accountRepository;
+	}
+
+	protected void setUpDataSources() {
+		Channel channel = new Channel();
+
+		channel.setId(1L);
+		channel.setIsNew(true);
+
+		_channelRepository.save(channel);
+
+		DataSource dataSource = FaroInfoTestUtil.buildSalesforceDataSource();
+
+		dataSource.setId(337984445922213329L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildSalesforceDataSource();
+
+		dataSource.setId(342312716287315687L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildSalesforceDataSource();
+
+		dataSource.setId(342312716287315688L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildSalesforceDataSource();
+
+		dataSource.setId(414985450066315739L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+	}
+
+	@Autowired
+	protected AccountRepository accountRepository;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	protected ElasticsearchInvoker elasticsearchInvoker;
+
+	@Autowired
+	protected FieldRepository fieldRepository;
+
+	@Autowired
+	protected SegmentRepository segmentRepository;
+
+	private void _assertEquals(
+		Distribution distribution, int expectedCount,
+		List<Object> expectedValues) {
+
+		Assert.assertEquals(expectedCount, (int)distribution.getCount());
+		Assert.assertEquals(expectedValues, distribution.getValues());
 	}
 
 	private Long _accountId;
-
-	@Autowired
-	private AccountRepository _accountRepository;
 
 	@Autowired
 	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private FieldRepository _fieldRepository;
-
-	@Autowired
-	private SegmentRepository _segmentRepository;
 
 }
