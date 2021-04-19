@@ -55,7 +55,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.apache.avro.Schema;
@@ -92,7 +91,17 @@ public class AnalyticsEventsMessageProcessor {
 
 				ProjectIdThreadLocal.forProject(
 					analyticsEventsMessage.getProjectId(),
-					() -> _processMessage(analyticsEventsMessage));
+					() -> {
+						try {
+							_processMessage(analyticsEventsMessage);
+						}
+						catch (Exception e) {
+							_log.error(
+								"Unable to process analytics events message " +
+									analyticsEventsMessage.toJSON(),
+								e);
+						}
+					});
 			}
 		}
 	}
@@ -128,7 +137,9 @@ public class AnalyticsEventsMessageProcessor {
 
 	@PreDestroy
 	private void _destroy() {
-		_storage.close();
+		for (Storage storage : _storages.values()) {
+			storage.close();
+		}
 	}
 
 	private String _generateAnalyticsEventId(
@@ -219,6 +230,36 @@ public class AnalyticsEventsMessageProcessor {
 		return context;
 	}
 
+	private Storage _getOrCreateStorage() throws Exception {
+		Storage storage = _storages.get(ProjectIdThreadLocal.getProjectId());
+
+		if (storage != null) {
+			return storage;
+		}
+
+		StorageConfiguration.Builder builder = StorageConfiguration.builder(
+			StringUtils.replace(
+				_analyticsEventsStoragePathTemplate, "{projectId}",
+				ProjectIdThreadLocal.getProjectId()));
+
+		builder.fileFormat(StorageConfiguration.FileFormat.SNAPPY_PARQUET);
+
+		Schema.Parser parser = new Schema.Parser();
+
+		builder.fileSchema(
+			parser.parse(
+				ResourceUtil.readResourceToString(
+					"dependencies/analytics_event.avsc", getClass())));
+
+		builder.googleBucket(_analyticsEventsBucket);
+
+		storage = _storageFactory.getStorage(builder.build());
+
+		_storages.put(ProjectIdThreadLocal.getProjectId(), storage);
+
+		return storage;
+	}
+
 	private Map<String, String> _getSafeEventProperties(
 		Map<String, String> eventProperties) {
 
@@ -241,25 +282,6 @@ public class AnalyticsEventsMessageProcessor {
 				JSONUtil.toLongSet(
 					individualJSONObject.getJSONArray(
 						"individualSegmentIds"))));
-	}
-
-	@PostConstruct
-	private void _init() throws Exception {
-		StorageConfiguration.Builder builder = StorageConfiguration.builder(
-			_analyticsEventsStoragePathTemplate);
-
-		builder.fileFormat(StorageConfiguration.FileFormat.SNAPPY_PARQUET);
-
-		Schema.Parser parser = new Schema.Parser();
-
-		builder.fileSchema(
-			parser.parse(
-				ResourceUtil.readResourceToString(
-					"dependencies/analytics_event.avsc", getClass())));
-
-		builder.googleBucket(_analyticsEventsBucket);
-
-		_storage = _storageFactory.getStorage(builder.build());
 	}
 
 	private boolean _isCrawler(Map<String, String> context) {
@@ -311,8 +333,8 @@ public class AnalyticsEventsMessageProcessor {
 		return true;
 	}
 
-	private void _processMessage(
-		AnalyticsEventsMessage analyticsEventsMessage) {
+	private void _processMessage(AnalyticsEventsMessage analyticsEventsMessage)
+		throws Exception {
 
 		if (!_isDataSourceActive(analyticsEventsMessage)) {
 			if (_log.isDebugEnabled()) {
@@ -405,18 +427,24 @@ public class AnalyticsEventsMessageProcessor {
 			analyticsEvents.add(analyticsEvent);
 		}
 
-		analyticsEvents.forEach(this::_sendAndStoreAnalyticsEvent);
+		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+			_sendAndStoreAnalyticsEvent(analyticsEvent);
+		}
 
 		_analyticsEventsCounter.inc(analyticsEvents.size());
 	}
 
-	private void _sendAndStoreAnalyticsEvent(AnalyticsEvent analyticsEvent) {
+	private void _sendAndStoreAnalyticsEvent(AnalyticsEvent analyticsEvent)
+		throws Exception {
+
+		Storage storage = _getOrCreateStorage();
+
 		for (Channel channel :
 				_analyticsEventsChannels.getChannels(analyticsEvent)) {
 
 			_messageBus.sendMessage(channel, analyticsEvent.toJSON());
 
-			_storage.write(analyticsEvent.toJSON());
+			storage.write(analyticsEvent.toJSON());
 		}
 
 		_analyticsEventStorageDog.store(analyticsEvent);
@@ -451,7 +479,7 @@ public class AnalyticsEventsMessageProcessor {
 	private AnalyticsEventsChannels _analyticsEventsChannels;
 
 	@Value(
-		"${osb.asah.analytics.events.storage.path:/tmp/analytics_events.snappy.parquet}"
+		"${osb.asah.analytics.events.storage.path:/tmp/{projectId}/analytics_events.snappy.parquet}"
 	)
 	private String _analyticsEventsStoragePathTemplate;
 
@@ -482,9 +510,9 @@ public class AnalyticsEventsMessageProcessor {
 	@Autowired
 	private SegmentDog _segmentDog;
 
-	private Storage _storage;
-
 	@Autowired
 	private StorageFactory _storageFactory;
+
+	private final Map<String, Storage> _storages = new HashMap<>();
 
 }
