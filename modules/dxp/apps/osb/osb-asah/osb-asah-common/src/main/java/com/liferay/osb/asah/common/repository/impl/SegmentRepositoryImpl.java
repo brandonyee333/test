@@ -40,8 +40,7 @@ import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
-
-import javax.annotation.Nullable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Inácio Nery

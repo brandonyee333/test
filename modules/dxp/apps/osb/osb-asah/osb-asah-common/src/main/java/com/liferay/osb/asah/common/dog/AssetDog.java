@@ -32,8 +32,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.annotation.Nullable;
-
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -44,6 +42,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**

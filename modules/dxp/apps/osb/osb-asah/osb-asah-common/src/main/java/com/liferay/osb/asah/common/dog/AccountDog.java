@@ -175,7 +175,8 @@ public class AccountDog {
 		}
 
 		PageRequest pageRequest = PageRequest.of(
-			0, size, _getSort("count", sorts));
+			0, size,
+			SortUtil.getSort(Sort.by(Sort.Order.desc("count")), sorts));
 
 		List<Distribution> distributions =
 			_accountRepository.getAccountDistributions(
@@ -398,27 +399,6 @@ public class AccountDog {
 		}
 
 		return accountPKs;
-	}
-
-	private Sort _getSort(String defaultFieldName, String[] sorts) {
-		if (ArrayUtils.isEmpty(sorts)) {
-			return Sort.by(Sort.Order.desc(defaultFieldName));
-		}
-
-		List<Sort.Order> orders = new ArrayList<>();
-
-		for (int i = 0; i < (sorts.length - 1); i = i + 2) {
-			String sort = sorts[i];
-
-			if (Objects.equals(sorts[i + 1], "asc")) {
-				orders.add(Sort.Order.asc(sort));
-			}
-			else {
-				orders.add(Sort.Order.desc(sort));
-			}
-		}
-
-		return Sort.by(orders);
 	}
 
 	private List<Account> _populateAccounts(

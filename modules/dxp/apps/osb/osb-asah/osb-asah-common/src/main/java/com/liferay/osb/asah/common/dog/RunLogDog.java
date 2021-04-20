@@ -23,8 +23,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.Date;
 import java.util.Optional;
 
-import javax.annotation.Nullable;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -32,6 +30,7 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**

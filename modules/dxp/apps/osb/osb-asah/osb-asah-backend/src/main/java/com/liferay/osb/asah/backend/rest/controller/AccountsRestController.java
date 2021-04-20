@@ -61,10 +61,9 @@ public class AccountsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		Page<Account> accounts = _accountDog.searchAccountsPage(
-			channelId, filterString, page, size, sorts);
-
-		return _toPageDTO(accounts);
+		return _toPageDTO(
+			_accountDog.searchAccountsPage(
+				channelId, filterString, page, null, size, sorts));
 	}
 
 	@GetMapping("/distribution")
@@ -145,34 +144,36 @@ public class AccountsRestController extends BaseRestController {
 	}
 
 	private PageDTO<DistributionDTO> _toDistributionDTOsPageDTO(
-		DistributionDTO distributionDTO, Page<Distribution> distributions) {
+		DistributionDTO distributionDTO, Page<Distribution> distributionsPage) {
 
 		return new PageDTO<>(
-			"_embedded", distributionDTO, distributions.getNumber(),
-			distributions.getSize(), distributions.getTotalElements(),
-			distributions.getTotalPages());
+			"_embedded", distributionDTO, distributionsPage.getNumber(),
+			distributionsPage.getSize(), distributionsPage.getTotalElements(),
+			distributionsPage.getTotalPages());
 	}
 
 	private PageDTO<DistributionDTO> _toDistributionDTOsPageDTO(
-		Page<Distribution> distributions) {
+		Page<Distribution> distributionsPage) {
 
 		return _toDistributionDTOsPageDTO(
 			new DistributionDTO(
-				distributions.getContent(),
+				distributionsPage.getContent(),
 				"accounts-distribution-transformations"),
-			distributions);
+			distributionsPage);
 	}
 
 	private PageDTO<AccountDTO> _toPageDTO(
-		AccountDTO accountDTO, Page<Account> accounts) {
+		AccountDTO accountDTO, Page<Account> accountsPage) {
 
 		return new PageDTO<>(
-			"_embedded", accountDTO, accounts.getNumber(), accounts.getSize(),
-			accounts.getTotalElements(), accounts.getTotalPages());
+			"_embedded", accountDTO, accountsPage.getNumber(),
+			accountsPage.getSize(), accountsPage.getTotalElements(),
+			accountsPage.getTotalPages());
 	}
 
-	private PageDTO<AccountDTO> _toPageDTO(Page<Account> accounts) {
-		return _toPageDTO(new AccountDTO(accounts.getContent()), accounts);
+	private PageDTO<AccountDTO> _toPageDTO(Page<Account> accountsPage) {
+		return _toPageDTO(
+			new AccountDTO(accountsPage.getContent()), accountsPage);
 	}
 
 	private PageDTO<SegmentDTO> _toSegmentPageDTO(Page<Segment> segmentsPage) {
