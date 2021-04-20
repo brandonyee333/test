@@ -103,8 +103,9 @@ public class PagesRestController extends BaseRestController {
 		@RequestParam(defaultValue = "D") String interval,
 		@RequestParam(defaultValue = "7") int rangeKey,
 		@RequestParam(defaultValue = "30") int size,
-		@RequestParam(name = "startDate", required = false) LocalDate
-			startLocalDate) {
+		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+		@RequestParam(name = "startDate", required = false)
+		LocalDate startLocalDate) {
 
 		if (StringUtils.isBlank(canonicalURL)) {
 			return Collections.emptyMap();
@@ -136,8 +137,9 @@ public class PagesRestController extends BaseRestController {
 		@RequestParam(defaultValue = "D") String interval,
 		@RequestParam(defaultValue = "7") int rangeKey,
 		@RequestParam(defaultValue = "30") int size,
-		@RequestParam(name = "startDate", required = false) LocalDate
-			startLocalDate) {
+		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+		@RequestParam(name = "startDate", required = false)
+		LocalDate startLocalDate) {
 
 		if (StringUtils.isBlank(canonicalURL)) {
 			return Collections.emptyMap();
@@ -192,8 +194,9 @@ public class PagesRestController extends BaseRestController {
 		LocalDate endLocalDate,
 		@RequestParam(defaultValue = "D") String interval,
 		@RequestParam(defaultValue = "7") int rangeKey,
-		@RequestParam(name = "startDate", required = false) LocalDate
-			startLocalDate) {
+		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+		@RequestParam(name = "startDate", required = false)
+		LocalDate startLocalDate) {
 
 		if (StringUtils.isBlank(canonicalURL)) {
 			return Collections.emptyMap();
