@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.rest.controller;
 import com.liferay.osb.asah.backend.dto.AccountDTO;
 import com.liferay.osb.asah.backend.dto.DistributionDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -101,8 +102,8 @@ public class AccountsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "!apply", value = "/{id}/individual-segments")
-	public String getIndividualSegments(
-			@PathVariable String id,
+	public PageDTO<SegmentDTO> getSegmentDTOsPageDTO(
+			@PathVariable Long id,
 			@RequestParam(name = "filter", required = false) String
 				filterString,
 			@RequestParam(defaultValue = "0") int page,
@@ -110,9 +111,9 @@ public class AccountsRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		return toCollectionGetResponse(
-			"individual-segments", null, page,
-			_getIndividualSegmentsQueryBuilder(id, filterString), size, sorts);
+		return _toSegmentPageDTO(
+			_segmentDog.searchAccountSegmentsPage(
+				id, filterString, page, size, sorts));
 	}
 
 	@GetMapping(params = "apply", value = "/{id}/individual-segments")
@@ -172,6 +173,20 @@ public class AccountsRestController extends BaseRestController {
 
 	private PageDTO<AccountDTO> _toPageDTO(Page<Account> accounts) {
 		return _toPageDTO(new AccountDTO(accounts.getContent()), accounts);
+	}
+
+	private PageDTO<SegmentDTO> _toSegmentPageDTO(Page<Segment> segmentsPage) {
+		return _toSegmentPageDTO(
+			new SegmentDTO(segmentsPage.getContent()), segmentsPage);
+	}
+
+	private PageDTO<SegmentDTO> _toSegmentPageDTO(
+		SegmentDTO segmentDTO, Page<Segment> segmentsPage) {
+
+		return new PageDTO<>(
+			"_embedded", segmentDTO, segmentsPage.getNumber(),
+			segmentsPage.getSize(), segmentsPage.getTotalElements(),
+			segmentsPage.getTotalPages());
 	}
 
 	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(

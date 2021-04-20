@@ -365,6 +365,31 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return segment;
 	}
 
+	public Page<Segment> searchAccountSegmentsPage(
+			Long accountId, @Nullable String filterString, int page, int size,
+			@Nullable String[] sorts)
+		throws Exception {
+
+		Segment segment = fetchSegment("Account: " + accountId, "INACTIVE");
+
+		if (segment == null) {
+			throw new Exception(
+				"Unable to find individual segment associated with account " +
+					accountId);
+		}
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size, SortUtil.getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_segmentRepository.searchAccountSegments(
+				filterString, pageRequest,
+				_getIndividualSegmentIds(segment.getId())),
+			pageRequest,
+			() -> _segmentRepository.countAccountSegments(
+				filterString, _getIndividualSegmentIds(segment.getId())));
+	}
+
 	public List<Segment> searchDynamicSegments(
 		String filterString, int page, int size, String[] sorts) {
 
@@ -414,7 +439,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	@CacheEvict("getReferencedAssetIds")
-	public void setReferencedFields(Segment segment) throws Exception {
+	public void setReferencedFields(Segment segment) {
 		Map<String, Set<String>> referencedObjectIds = _getReferencedObjectIds(
 			segment.getFilter(), null);
 
