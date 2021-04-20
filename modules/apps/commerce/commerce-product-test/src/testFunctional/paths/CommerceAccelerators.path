@@ -330,6 +330,11 @@
 <tr>
 	<td>SELECT_PRODUCT_RELATIONS</td>
 	<td>//div[contains(text(), '${productName}')]/../..//td//input[@type='checkbox']</td>
+	<td></td>	
+</tr>
+<tr>
+<td>PRODUCT_CARD_QUANTITY_SELECTOR_SELECT_FIELD_OPTION_VALUE</td>
+	<td>//p[@title='${key_productName}']//../..//select[(@class='form-control quantity-selector')]//option[@value='${key_optionValue}']</td>
 	<td></td>
 </tr>
 <tr>
