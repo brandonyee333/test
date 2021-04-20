@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -180,6 +181,24 @@ public class AccountDog {
 
 		return PageableExecutionUtils.getPage(
 			distributions, pageRequest, distributions::size);
+	}
+
+	public Page<Transformation> getTransformationsPage(
+		String apply, @Nullable Long channelId, @Nullable String filterString,
+		int page, int size) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size,
+			SortUtil.getSort(
+				Sort.by(Sort.Order.desc("totalElements")),
+				new String[] {"totalElements", "desc", "terms", "asc"}));
+
+		List<Transformation> transformations =
+			_accountRepository.getAccountTransformations(
+				apply, channelId, filterString, pageRequest);
+
+		return PageableExecutionUtils.getPage(
+			transformations, pageRequest, transformations::size);
 	}
 
 	public Account populateAccount(Account account, Long channelId) {

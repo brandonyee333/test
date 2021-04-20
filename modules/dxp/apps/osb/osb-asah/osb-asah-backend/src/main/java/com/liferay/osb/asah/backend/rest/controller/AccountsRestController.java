@@ -17,26 +17,13 @@ package com.liferay.osb.asah.backend.rest.controller;
 import com.liferay.osb.asah.backend.dto.AccountDTO;
 import com.liferay.osb.asah.backend.dto.DistributionDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.common.dog.AccountDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
-import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.util.ListUtil;
-
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.search.join.ScoreMode;
-
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import com.liferay.osb.asah.common.model.Transformation;
 
 import org.json.JSONObject;
 
@@ -77,46 +64,6 @@ public class AccountsRestController extends BaseRestController {
 			channelId, filterString, page, size, sorts);
 
 		return _toPageDTO(accounts);
-	}
-
-	@GetMapping(params = "apply")
-	public String getAccountTransformations(
-			@RequestParam String apply,
-			@RequestParam(required = false) String channelId,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size)
-		throws Exception {
-
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString);
-
-		if (StringUtils.isNotEmpty(channelId)) {
-			if (queryBuilder != null) {
-				queryBuilder = BoolQueryBuilderUtil.filter(
-					queryBuilder
-				).filter(
-					QueryBuilders.nestedQuery(
-						"individualCounts",
-						QueryBuilders.termQuery(
-							"individualCounts.channelId", channelId),
-						ScoreMode.None)
-				);
-			}
-			else {
-				queryBuilder = QueryBuilders.nestedQuery(
-					"individualCounts",
-					QueryBuilders.termQuery(
-						"individualCounts.channelId", channelId),
-					ScoreMode.None);
-			}
-		}
-
-		return toTransformationGetResponse(
-			"accounts", page, queryBuilder, size, null, null,
-			new TermsAggregationTransformationJSONArrayFunction(apply, null),
-			"account-transformations");
 	}
 
 	@GetMapping("/distribution")
@@ -185,48 +132,17 @@ public class AccountsRestController extends BaseRestController {
 			"individual-segment-transformations");
 	}
 
-	private List<Long> _getIndividualSegmentIds(Long segmentId) {
-		List<Long> individualIds = JSONUtil.toLongList(
-			faroInfoElasticsearchInvoker.get(
-				"individuals",
-				QueryBuilders.termQuery(
-					"individualSegmentIds", String.valueOf(segmentId))),
-			"id");
+	@GetMapping(params = "apply")
+	public PageDTO<TransformationDTO> getTransformationDTOsPageDTO(
+		@RequestParam String apply,
+		@RequestParam(required = false) Long channelId,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size) {
 
-		if (individualIds.isEmpty()) {
-			return Collections.emptyList();
-		}
-
-		return _membershipDog.getActiveIndividualSegmentIds(individualIds);
-	}
-
-	private QueryBuilder _getIndividualSegmentsQueryBuilder(
-			String accountId, String filterString)
-		throws Exception {
-
-		Segment segment = _segmentDog.fetchSegment(
-			"Account: " + accountId, "INACTIVE");
-
-		if (segment == null) {
-			throw new Exception(
-				"Unable to find individual segment associated with account " +
-					accountId);
-		}
-
-		QueryBuilder queryBuilder = QueryBuilders.termsQuery(
-			"id",
-			ListUtil.map(
-				_getIndividualSegmentIds(segment.getId()), String::valueOf));
-
-		if (StringUtils.isEmpty(filterString)) {
-			return queryBuilder;
-		}
-
-		return BoolQueryBuilderUtil.filter(
-			queryBuilder
-		).filter(
-			FilterStringToQueryBuilderConverter.convert(filterString)
-		);
+		return _toTransformationDTOsPageDTO(
+			_accountDog.getTransformationsPage(
+				apply, channelId, filterString, page, size));
 	}
 
 	private PageDTO<DistributionDTO> _toDistributionDTOsPageDTO(
@@ -260,11 +176,35 @@ public class AccountsRestController extends BaseRestController {
 		return _toPageDTO(new AccountDTO(accounts.getContent()), accounts);
 	}
 
-	@Autowired
-	private AccountDog _accountDog;
+	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+		Page<Transformation> transformationsPage) {
+
+		return _toTransformationDTOsPageDTO(
+			"account-transformations", transformationsPage);
+	}
+
+	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+		String transformationKey, Page<Transformation> transformationsPage) {
+
+		return _toTransformationDTOsPageDTO(
+			new TransformationDTO(
+				transformationKey, transformationsPage.getContent()),
+			transformationsPage);
+	}
+
+	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+		TransformationDTO transformationDTO,
+		Page<Transformation> transformationsPage) {
+
+		return new PageDTO<>(
+			"_embedded", transformationDTO, transformationsPage.getNumber(),
+			transformationsPage.getSize(),
+			transformationsPage.getTotalElements(),
+			transformationsPage.getTotalPages());
+	}
 
 	@Autowired
-	private MembershipDog _membershipDog;
+	private AccountDog _accountDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;
