@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.helper.AccountsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -30,7 +31,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.elasticsearch.action.search.SearchResponse;
@@ -215,6 +219,94 @@ public class AccountRepositoryImpl extends BaseRepository {
 			record -> new Distribution(
 				(Integer)record.get("count"),
 				Collections.singletonList(record.get("values")))
+		);
+	}
+
+	public List<Transformation> getAccountTransformations(
+		String apply, @Nullable Long channelId, @Nullable String filterString,
+		Pageable pageable) {
+
+		Matcher matcher = _groupByPattern.matcher(apply);
+
+		if (!matcher.matches()) {
+			throw new IllegalArgumentException(
+				"Apply string " + apply + " does not match pattern " +
+					StringEscapeUtils.unescapeJava(_groupByPattern.toString()));
+		}
+
+		String contains = matcher.group("containsField");
+
+		String groupByField = matcher.group("groupByField");
+
+		String fieldName = groupByField.replace("organization/", "");
+
+		fieldName = fieldName.replace("/value", "");
+
+		AggregateFunction<Object> aggregateFunction = DSL.max(
+			DSL.field("modifiedDate"));
+		Field<Object> modifiedDateField = DSL.field("modifiedDate");
+		Field<Object> nameField = DSL.field("name");
+		Field<Object> ownerIdField = DSL.field("ownerId");
+		Field<Object> valueField = DSL.field("value");
+
+		Condition condition = ConditionUtil.toCondition(
+			filterString, _accountsFilterStringConverterHelper);
+
+		condition = condition.and(_getIncludeCondition(contains));
+
+		SelectSelectStep<Record> modifiedDateSelectSelectStep =
+			_dslContext.select();
+
+		Table<Record> maxModifiedDateTable =
+			modifiedDateSelectSelectStep.select(
+				aggregateFunction.as("modifiedDate"), nameField.as("name"),
+				ownerIdField.as("ownerId")
+			).from(
+				"Field"
+			).where(
+				condition.and(nameField.eq(fieldName))
+			).groupBy(
+				ownerIdField, nameField
+			).asTable(
+				"maxModifiedDateTable"
+			);
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.select(
+			valueField.as("terms"),
+			DSL.count(
+				ownerIdField
+			).as(
+				"totalelements"
+			)
+		).from(
+			"Field"
+		).join(
+			maxModifiedDateTable
+		).on(
+			DSL.and(
+				modifiedDateField.eq(maxModifiedDateTable.field("modifiedDate"))
+			).and(
+				nameField.eq(maxModifiedDateTable.field("name"))
+			).and(
+				ownerIdField.eq(maxModifiedDateTable.field("ownerId"))
+			)
+		).groupBy(
+			valueField
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Transformation(
+				new Transformation.Term(
+					Collections.singletonMap(
+						groupByField, record.get("terms"))),
+				(Integer)record.get("totalelements"))
 		);
 	}
 
@@ -643,9 +735,25 @@ public class AccountRepositoryImpl extends BaseRepository {
 		return accountPKField.in(accountPKs);
 	}
 
+	private Condition _getIncludeCondition(String contains) {
+		if (contains == null) {
+			return DSL.noCondition();
+		}
+
+		return DSL.field(
+			"value"
+		).containsIgnoreCase(
+			contains
+		);
+	}
+
 	private Map<String, String> _getSortFieldNameConversionMap() {
 		return Collections.singletonMap("name", "values");
 	}
+
+	private static final Pattern _groupByPattern = Pattern.compile(
+		"groupby\\(\\((?<groupByField>[^)]+)\\)\\)" +
+			"(/contains\\(\\((?<containsField>[^)]+)\\)\\))?");
 
 	private final AccountsFilterStringConverterHelper
 		_accountsFilterStringConverterHelper;

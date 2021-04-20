@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.model.Transformation;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +49,10 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
 	public List<Distribution> getAccountDistributions(
 		@Nullable Long channelId, String fieldName, String fieldType,
 		@Nullable String filterString, @Nullable Long individualSegmentId,
+		Pageable pageable);
+
+	public List<Transformation> getAccountTransformations(
+		String apply, @Nullable Long channelId, @Nullable String filterString,
 		Pageable pageable);
 
 	public List<Account> searchAccounts(

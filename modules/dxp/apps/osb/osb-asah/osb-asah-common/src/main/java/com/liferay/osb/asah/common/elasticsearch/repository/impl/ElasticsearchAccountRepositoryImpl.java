@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBu
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
@@ -45,6 +46,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -194,6 +196,89 @@ public class ElasticsearchAccountRepositoryImpl
 
 		return stream.map(
 			object -> objectMapper.convertValue(object, Distribution.class)
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	@Override
+	public List<Transformation> getAccountTransformations(
+		String apply, @Nullable Long channelId, @Nullable String filterString,
+		Pageable pageable) {
+
+		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
+			filterString);
+
+		if (channelId != null) {
+			if (queryBuilder != null) {
+				queryBuilder = BoolQueryBuilderUtil.filter(
+					queryBuilder
+				).filter(
+					QueryBuilders.nestedQuery(
+						"individualCounts",
+						QueryBuilders.termQuery(
+							"individualCounts.channelId", channelId),
+						ScoreMode.None)
+				);
+			}
+			else {
+				queryBuilder = QueryBuilders.nestedQuery(
+					"individualCounts",
+					QueryBuilders.termQuery(
+						"individualCounts.channelId", channelId),
+					ScoreMode.None);
+			}
+		}
+
+		TransformationGetResponse transformationGetResponse =
+			new TransformationGetResponse();
+
+		transformationGetResponse.setCollectionName(getCollectionName());
+		transformationGetResponse.setElasticsearchInvoker(
+			_faroInfoElasticsearchInvoker);
+		transformationGetResponse.setPage(pageable.getPageNumber());
+		transformationGetResponse.setQueryBuilder(queryBuilder);
+		transformationGetResponse.setSize(pageable.getPageSize());
+		transformationGetResponse.setSorts(
+			new HashMap<String, String>() {
+				{
+					put("terms", "_key");
+					put("totalElements", "_count");
+				}
+			},
+			_getSorts(pageable.getSort()));
+		transformationGetResponse.setTransformationJSONArrayFunction(
+			new TermsAggregationTransformationJSONArrayFunction(apply, null));
+		transformationGetResponse.setTransformationName(
+			"account-transformations");
+
+		JSONObject jsonObject = null;
+
+		try {
+			jsonObject = new JSONObject(transformationGetResponse.respond());
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			return Collections.emptyList();
+		}
+
+		JSONObject embeddedJSONObject = jsonObject.getJSONObject("_embedded");
+
+		JSONArray accountTransformationsJSONArray =
+			embeddedJSONObject.getJSONArray("account-transformations");
+
+		Stream<Object> stream = JSONUtil.toObjectStream(
+			accountTransformationsJSONArray);
+
+		return stream.map(
+			object -> {
+				JSONObject curJSONObject = (JSONObject)object;
+
+				return new Transformation(
+					JSONUtil.toMap(curJSONObject.getJSONObject("terms")),
+					curJSONObject.getInt("totalElements"));
+			}
 		).collect(
 			Collectors.toList()
 		);
