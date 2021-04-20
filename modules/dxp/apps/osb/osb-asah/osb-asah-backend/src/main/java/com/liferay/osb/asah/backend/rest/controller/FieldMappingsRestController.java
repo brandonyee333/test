@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransf
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -329,12 +329,7 @@ public class FieldMappingsRestController extends BaseRestController {
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
 
 	private final Map<String, String> _naniteClassNames =
-		new HashMap<String, String>() {
-			{
-				put("CSV#individual", "CSVIndividualsNanite");
-				put("LIFERAY#individual", "DXPIndividualsNanite");
-			}
-		};
+		Collections.singletonMap("CSV#individual", "CSVIndividualsNanite");
 
 	@Autowired
 	private SegmentDog _segmentDog;
