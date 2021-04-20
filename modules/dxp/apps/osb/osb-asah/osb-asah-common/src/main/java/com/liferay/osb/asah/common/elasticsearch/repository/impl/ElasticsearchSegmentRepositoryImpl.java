@@ -75,6 +75,15 @@ public class ElasticsearchSegmentRepositoryImpl
 	implements SegmentRepository {
 
 	@Override
+	public long countAccountSegments(
+		@Nullable String filterString, @Nullable List<Long> segmentIds) {
+
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(),
+			_getSegmentsQueryBuilder(filterString, segmentIds));
+	}
+
+	@Override
 	public long countByIdAfter(Long id) {
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
@@ -412,6 +421,23 @@ public class ElasticsearchSegmentRepositoryImpl
 		).collect(
 			Collectors.toList()
 		);
+	}
+
+	public List<Segment> searchAccountSegments(
+		@Nullable String filterString, Pageable pageable,
+		@Nullable List<Long> segmentIds) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_getSegmentsQueryBuilder(filterString, segmentIds));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
 	}
 
 	@Override

@@ -40,6 +40,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SegmentRepository extends CrudRepository<Segment, Long> {
 
+	public long countAccountSegments(
+		@Nullable String filterString, @Nullable List<Long> segmentIds);
+
 	public long countByIdAfter(Long id);
 
 	public long countPreviewDisabledSegments(
@@ -90,6 +93,10 @@ public interface SegmentRepository extends CrudRepository<Segment, Long> {
 
 	public List<Transformation> getSegmentTransformations(
 		String apply, @Nullable String filterString, Pageable pageable,
+		@Nullable List<Long> segmentIds);
+
+	public List<Segment> searchAccountSegments(
+		@Nullable String filterString, Pageable pageable,
 		@Nullable List<Long> segmentIds);
 
 	public List<Segment> searchDynamicSegments(

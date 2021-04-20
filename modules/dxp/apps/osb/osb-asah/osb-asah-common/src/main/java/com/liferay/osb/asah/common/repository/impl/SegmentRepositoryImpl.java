@@ -55,6 +55,23 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
+	public long countAccountSegments(
+		@Nullable String filterString, @Nullable List<Long> segmentIds) {
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return selectSelectStep.from(
+			"Segment"
+		).where(
+			_getConditions(filterString, segmentIds)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
 	public long countPreviewDisabledSegments(
 		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
 		String filterString) {
@@ -144,6 +161,29 @@ public class SegmentRepositoryImpl extends BaseRepository {
 					Collections.singletonMap(
 						groupByField, record.get("terms"))),
 				(Integer)record.get("totalelements"))
+		);
+	}
+
+	public List<Segment> searchAccountSegments(
+		@Nullable String filterString, Pageable pageable,
+		@Nullable List<Long> segmentIds) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"Segment"
+		).where(
+			_getConditions(filterString, segmentIds)
+		).orderBy(
+			getSortFields(
+				_getSortFieldNameConversionMap(), pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Segment(record.intoMap())
 		);
 	}
 
@@ -298,6 +338,25 @@ public class SegmentRepositoryImpl extends BaseRepository {
 					"channelId"
 				).in(
 					channelIds
+				));
+		}
+
+		conditions.add(FilterStringToConditionConverter.convert(filterString));
+
+		return conditions;
+	}
+
+	private List<Condition> _getConditions(
+		String filterString, List<Long> segmentIds) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if ((segmentIds != null) && !segmentIds.isEmpty()) {
+			conditions.add(
+				DSL.field(
+					"id"
+				).in(
+					segmentIds
 				));
 		}
 
