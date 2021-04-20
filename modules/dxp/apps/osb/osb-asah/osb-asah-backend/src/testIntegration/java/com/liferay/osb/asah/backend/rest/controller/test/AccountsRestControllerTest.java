@@ -222,16 +222,18 @@ public class AccountsRestControllerTest {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_account_transformations_1.json", this),
-			new JSONObject(
-				_accountsRestController.getAccountTransformations(
-					"groupby((accountPK))", null, null, 0, 20)),
+			_objectMapper.convertValue(
+				_accountsRestController.getTransformationDTOsPageDTO(
+					"groupby((accountPK))", null, null, 0, 20),
+				JSONObject.class),
 			false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_account_transformations_2.json", this),
-			new JSONObject(
-				_accountsRestController.getAccountTransformations(
-					"groupby((accountPK))", "999", null, 0, 20)),
+			_objectMapper.convertValue(
+				_accountsRestController.getTransformationDTOsPageDTO(
+					"groupby((accountPK))", 999L, null, 0, 20),
+				JSONObject.class),
 			false);
 	}
 
@@ -256,9 +258,10 @@ public class AccountsRestControllerTest {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_individual_segments.json", this),
-			new JSONObject(
-				_accountsRestController.getIndividualSegments(
-					"342313459339515838", null, 0, 20, null)),
+			_objectMapper.convertValue(
+				_accountsRestController.getSegmentDTOsPageDTO(
+					342313459339515838L, null, 0, 20, null),
+				JSONObject.class),
 			false);
 	}
 
@@ -284,9 +287,10 @@ public class AccountsRestControllerTest {
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_individual_segment_transformations.json",
 				this),
-			new JSONObject(
-				_accountsRestController.getIndividualSegmentTransformations(
-					"342313459339515838", "groupby((filter))", null, 0, 20)),
+			_objectMapper.convertValue(
+				_accountsRestController.getSegmentTransformationDTOsPageDTO(
+					342313459339515838L, "groupby((filter))", null, 0, 20),
+				JSONObject.class),
 			false);
 	}
 

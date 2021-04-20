@@ -150,6 +150,10 @@ public class IndividualSegmentsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
+		name = "individual-segments", resourcePath = "individual_segments.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -158,9 +162,10 @@ public class IndividualSegmentsRestControllerTest {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_individual_segment_accounts.json", this),
-			new JSONObject(
-				_individualSegmentsRestController.getAccounts(
-					"366637689379787789", null, 0, 20, null)),
+			_objectMapper.convertValue(
+				_individualSegmentsRestController.getAccountDTOsPageDTO(
+					366637689379787789L, null, 0, 20, null),
+				JSONObject.class),
 			false);
 	}
 

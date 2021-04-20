@@ -176,7 +176,7 @@ public abstract class BaseAccountRepositoryTestCase
 		Assert.assertEquals(
 			1,
 			accountRepository.countAccounts(
-				"organization/field1/value eq 'field two'"));
+				null, "organization/field1/value eq 'field two'"));
 	}
 
 	@Test
@@ -275,7 +275,7 @@ public abstract class BaseAccountRepositoryTestCase
 			0, 20, Sort.by(Sort.Order.asc("organization/field1/value")));
 
 		List<Account> accounts = accountRepository.searchAccounts(
-			null, "organization/field1/value eq 'field two'", pageRequest,
+			null, null, "organization/field1/value eq 'field two'", pageRequest,
 			Sort.by(Sort.Order.asc("individualCount")));
 
 		Assert.assertEquals(accounts.toString(), 1, accounts.size());
