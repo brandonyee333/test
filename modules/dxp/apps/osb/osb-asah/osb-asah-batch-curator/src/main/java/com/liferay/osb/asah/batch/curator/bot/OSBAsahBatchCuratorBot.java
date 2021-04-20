@@ -224,7 +224,8 @@ public class OSBAsahBatchCuratorBot {
 
 		_asahTaskScheduler.schedule(
 			new CronTrigger(cronExpression, TimeZone.getTimeZone(timeZoneId)),
-			runnable, scopedScheduledTaskId);
+			() -> ProjectIdThreadLocal.forProject(projectId, runnable),
+			scopedScheduledTaskId);
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
