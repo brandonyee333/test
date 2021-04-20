@@ -14,27 +14,18 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.backend.dto.AccountDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.common.dog.AccountDog;
+import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
-import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -80,18 +71,18 @@ public class IndividualSegmentsRestController
 	}
 
 	@GetMapping("/{id}/accounts")
-	public String getAccounts(
-			@PathVariable String id,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
+	public PageDTO<AccountDTO> getAccountDTOsPageDTO(
+		@PathVariable Long id,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		return toCollectionGetResponse(
-			"accounts", null, page, _getAccountsQueryBuilder(id, filterString),
-			size, sorts);
+		Segment segment = segmentDog.getSegment(id);
+
+		return _toAccountDTOsPageDTO(
+			_accountDog.searchAccountsPage(
+				segment.getChannelId(), filterString, page, id, size, sorts));
 	}
 
 	@GetMapping("/preview-disabled-segments")
@@ -128,42 +119,23 @@ public class IndividualSegmentsRestController
 			SegmentDTO.class);
 	}
 
-	private QueryBuilder _getAccountsQueryBuilder(
-		String individualSegmentId, String filterString) {
+	private PageDTO<AccountDTO> _toAccountDTOsPageDTO(
+		AccountDTO accountDTO, Page<Account> accountsPage) {
 
-		Set<String> accountPKs = new HashSet<>();
-
-		List<Object> individualDataSourceAccountPKs = JSONUtil.toObjectList(
-			faroInfoElasticsearchInvoker.get(
-				"individuals",
-				QueryBuilders.termQuery(
-					"individualSegmentIds", individualSegmentId)),
-			"dataSourceAccountPKs");
-
-		for (Object jsonArrayObject : individualDataSourceAccountPKs) {
-			JSONArray jsonArray = (JSONArray)jsonArrayObject;
-
-			for (int i = 0; i < jsonArray.length(); i++) {
-				JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-				accountPKs.addAll(
-					JSONUtil.toStringList(
-						jsonObject.getJSONArray("accountPKs")));
-			}
-		}
-
-		QueryBuilder queryBuilder = QueryBuilders.termsQuery(
-			"accountPK", accountPKs);
-
-		if (StringUtils.isEmpty(filterString)) {
-			return queryBuilder;
-		}
-
-		return BoolQueryBuilderUtil.filter(
-			queryBuilder
-		).filter(
-			FilterStringToQueryBuilderConverter.convert(filterString)
-		);
+		return new PageDTO<>(
+			"_embedded", accountDTO, accountsPage.getNumber(),
+			accountsPage.getSize(), accountsPage.getTotalElements(),
+			accountsPage.getTotalPages());
 	}
+
+	private PageDTO<AccountDTO> _toAccountDTOsPageDTO(
+		Page<Account> accountsPage) {
+
+		return _toAccountDTOsPageDTO(
+			new AccountDTO(accountsPage.getContent()), accountsPage);
+	}
+
+	@Autowired
+	private AccountDog _accountDog;
 
 }

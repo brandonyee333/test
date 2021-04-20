@@ -46,6 +46,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.elasticsearch.index.query.QueryBuilders;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -289,7 +292,7 @@ public class AccountDog {
 
 	public Page<Account> searchAccountsPage(
 		@Nullable Long channelId, @Nullable String filterString, int page,
-		int size, @Nullable String[] sorts) {
+		@Nullable Long segmentId, int size, @Nullable String[] sorts) {
 
 		String[] fieldSorts = new String[0];
 		String[] segmentSorts = new String[0];
@@ -322,12 +325,14 @@ public class AccountDog {
 
 		List<Account> accounts = _populateAccounts(
 			_accountRepository.searchAccounts(
-				channelId, filterString, pageRequest, segmentSort),
-			channelId);
+				_getAccountPKs(segmentId), channelId, filterString, pageRequest,
+				segmentSort),
+			null);
 
 		return PageableExecutionUtils.getPage(
 			accounts, pageRequest,
-			() -> _accountRepository.countAccounts(filterString));
+			() -> _accountRepository.countAccounts(
+				_getAccountPKs(segmentId), filterString));
 	}
 
 	public Account updateAccount(
@@ -365,6 +370,34 @@ public class AccountDog {
 			));
 
 		return populateAccount(account, null);
+	}
+
+	private Set<String> _getAccountPKs(Long segmentId) {
+		if (segmentId == null) {
+			return null;
+		}
+
+		Set<String> accountPKs = new HashSet<>();
+
+		List<Object> individualDataSourceAccountPKs = JSONUtil.toObjectList(
+			_elasticsearchInvoker.get(
+				"individuals",
+				QueryBuilders.termQuery("individualSegmentIds", segmentId)),
+			"dataSourceAccountPKs");
+
+		for (Object jsonArrayObject : individualDataSourceAccountPKs) {
+			JSONArray jsonArray = (JSONArray)jsonArrayObject;
+
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+				accountPKs.addAll(
+					JSONUtil.toStringList(
+						jsonObject.getJSONArray("accountPKs")));
+			}
+		}
+
+		return accountPKs;
 	}
 
 	private Sort _getSort(String defaultFieldName, String[] sorts) {
