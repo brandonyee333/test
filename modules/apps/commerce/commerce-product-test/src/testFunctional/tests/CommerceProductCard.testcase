@@ -151,17 +151,17 @@ definition {
 
 		CommerceAccelerators.initializeNewSiteViaAccelerator(siteName = "Minium");
 
-			CommerceNavigator.gotoPortlet(
+		CommerceNavigator.gotoPortlet(
 			category = "Product Management",
 			portlet = "Products");
 
-			CommerceNavigator.searchEntry(entryName = "Shock Absorber");
+		CommerceNavigator.searchEntry(entryName = "Shock Absorber");
 
 		CommerceNavigator.gotoEntry(entryName = "Shock Absorber");
 
-			PortletEntry.changeLocale(
-				fieldName = "Name",
-				locale = "es-ES");
+		PortletEntry.changeLocale(
+			fieldName = "Name",
+			locale = "es-ES");
 
 		Type(
 			locator1 = "TextInput#NAME",
