@@ -55,6 +55,14 @@
 	</Match>
 	<Match>
 		<Bug pattern="REDOS" />
+		<Class name="com.liferay.osb.asah.common.repository.impl.AccountRepositoryImpl" />
+	</Match>
+	<Match>
+		<Bug pattern="REDOS" />
+		<Class name="com.liferay.osb.asah.common.repository.impl.SegmentRepositoryImpl" />
+	</Match>
+	<Match>
+		<Bug pattern="REDOS" />
 		<Class name="com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction" />
 	</Match>
 	<Match>

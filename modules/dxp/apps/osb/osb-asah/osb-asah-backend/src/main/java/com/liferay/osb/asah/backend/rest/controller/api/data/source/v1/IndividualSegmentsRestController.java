@@ -530,13 +530,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
-		Page<Transformation> transformations) {
-
-		return _toTransformationDTOsPageDTO(
-			"individual-segment-transformations", transformations);
-	}
-
-	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
 		String transformationKey, Page<Transformation> transformations) {
 
 		return _toTransformationDTOsPageDTO(
