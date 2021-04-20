@@ -116,20 +116,18 @@ public class AccountsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "apply", value = "/{id}/individual-segments")
-	public String getIndividualSegmentTransformations(
-			@PathVariable String id, @RequestParam String apply,
+	public PageDTO<TransformationDTO> getSegmentTransformationDTOsPageDTO(
+			@PathVariable Long id, @RequestParam String apply,
 			@RequestParam(name = "filter", required = false) String
 				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size)
 		throws Exception {
 
-		return toTransformationGetResponse(
-			"individual-segments", page,
-			_getIndividualSegmentsQueryBuilder(id, filterString), size, null,
-			null,
-			new TermsAggregationTransformationJSONArrayFunction(apply, null),
-			"individual-segment-transformations");
+		return _toTransformationDTOsPageDTO(
+			"individual-segment-transformations",
+			_segmentDog.getTransformationsPage(
+				id, apply, filterString, page, size));
 	}
 
 	@GetMapping(params = "apply")

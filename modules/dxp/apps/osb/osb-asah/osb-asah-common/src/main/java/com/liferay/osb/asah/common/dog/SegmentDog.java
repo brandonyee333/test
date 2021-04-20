@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
@@ -48,9 +49,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -280,13 +285,58 @@ public class SegmentDog extends BaseFaroInfoDog {
 			PageRequest.of(page, size), _segmentRepository::count);
 	}
 
+	public Page<Transformation> getTransformationsPage(
+			Long accountId, String apply, @Nullable String filterString,
+			int page, int size)
+		throws Exception {
+
+		Segment segment = fetchSegment("Account: " + accountId, "INACTIVE");
+
+		if (segment == null) {
+			throw new Exception(
+				"Unable to find individual segment associated with account " +
+					accountId);
+		}
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size,
+			SortUtil.getSort(
+				Sort.by(Sort.Order.desc("totalElements")),
+				new String[] {"totalElements", "desc", "terms", "asc"}));
+
+		List<Transformation> transformations =
+			_segmentRepository.getSegmentTransformations(
+				apply, filterString, pageRequest,
+				_getIndividualSegmentIds(segment.getId()));
+
+		return PageableExecutionUtils.getPage(
+			transformations, pageRequest, transformations::size);
+	}
+
+	public Page<Transformation> getTransformationsPage(
+		String apply, @Nullable String filterString, int page, int size) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size,
+			SortUtil.getSort(
+				Sort.by(Sort.Order.desc("totalElements")),
+				new String[] {"totalElements", "desc", "terms", "asc"}));
+
+		List<Transformation> transformations =
+			_segmentRepository.getSegmentTransformations(
+				apply, filterString, pageRequest, null);
+
+		return PageableExecutionUtils.getPage(
+			transformations, pageRequest, transformations::size);
+	}
+
 	public boolean isIncludeAnonymousUsers(Long segmentId) {
 		Segment segment = getSegment(segmentId);
 
 		return BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers());
 	}
 
-	public Segment replaceSegment(Segment segment) throws Exception {
+	public Segment replaceSegment(Segment segment) {
 		Long segmentId = segment.getId();
 
 		if (segmentId == null) {
@@ -521,6 +571,21 @@ public class SegmentDog extends BaseFaroInfoDog {
 			referencedJSONObject.getString(dataSourceIdFieldName));
 
 		return null;
+	}
+
+	private List<Long> _getIndividualSegmentIds(Long segmentId) {
+		List<Long> individualIds = JSONUtil.toLongList(
+			elasticsearchInvoker.get(
+				"individuals",
+				QueryBuilders.termQuery(
+					"individualSegmentIds", String.valueOf(segmentId))),
+			"id");
+
+		if (individualIds.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		return _membershipDog.getActiveIndividualSegmentIds(individualIds);
 	}
 
 	private Map<String, Set<String>> _getReferencedObjectIds(

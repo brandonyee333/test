@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.dto.MembershipDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
+import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.backend.rest.response.embedded.MembershipChangesEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.dog.MembershipDog;
@@ -30,6 +31,7 @@ import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.Faro
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.rest.response.function.MembershipChangesHistogramTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
@@ -102,23 +104,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			_getIndividualsQueryBuilder(
 				includeAnonymousUsers, id, filterString),
 			size, sorts);
-	}
-
-	@GetMapping(params = "apply")
-	public String getIndividualSegmentTransformations(
-			@RequestParam String apply,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size)
-		throws Exception {
-
-		return toTransformationGetResponse(
-			"individual-segments", page,
-			FilterStringToQueryBuilderConverter.convert(filterString), size,
-			null, null,
-			new TermsAggregationTransformationJSONArrayFunction(apply, null),
-			"individual-segment-transformations");
 	}
 
 	@GetMapping(params = "apply", value = "/{id}/individuals")
@@ -226,12 +211,12 @@ public class IndividualSegmentsRestController extends BaseRestController {
 				individualIds.add(Long.valueOf(bucket.getKeyAsString()));
 			}
 
-			return _toPageDTO(
+			return _toMembershipDTOsPageDTO(
 				membershipDog.getMembershipsPage(
 					individualIds, id, "ACTIVE", page, size, sorts));
 		}
 
-		return _toPageDTO(
+		return _toMembershipDTOsPageDTO(
 			membershipDog.getMembershipsPage(id, "ACTIVE", page, size, sorts));
 	}
 
@@ -275,6 +260,19 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		return toSegmentDTOPageDTO(
 			segmentDog.searchSegmentsPage(
 				dataSourceId, filterString, page, size, sorts));
+	}
+
+	@GetMapping(params = "apply")
+	public PageDTO<TransformationDTO> getTransformationDTOsPageDTO(
+		@RequestParam String apply,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size) {
+
+		return _toTransformationDTOsPageDTO(
+			"individual-segment-transformations",
+			_segmentDog.getTransformationsPage(
+				apply, filterString, page, size));
 	}
 
 	@PostMapping("/{id}/memberships")
@@ -521,7 +519,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		return false;
 	}
 
-	private PageDTO<MembershipDTO> _toPageDTO(
+	private PageDTO<MembershipDTO> _toMembershipDTOsPageDTO(
 		Page<Membership> membershipsPage) {
 
 		return new PageDTO<>(
@@ -531,11 +529,40 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			membershipsPage.getTotalPages());
 	}
 
+	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+		Page<Transformation> transformations) {
+
+		return _toTransformationDTOsPageDTO(
+			"individual-segment-transformations", transformations);
+	}
+
+	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+		String transformationKey, Page<Transformation> transformations) {
+
+		return _toTransformationDTOsPageDTO(
+			new TransformationDTO(
+				transformationKey, transformations.getContent()),
+			transformations);
+	}
+
+	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+		TransformationDTO transformationDTO,
+		Page<Transformation> transformations) {
+
+		return new PageDTO<>(
+			"_embedded", transformationDTO, transformations.getNumber(),
+			transformations.getSize(), transformations.getTotalElements(),
+			transformations.getTotalPages());
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		IndividualSegmentsRestController.class);
 
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }
