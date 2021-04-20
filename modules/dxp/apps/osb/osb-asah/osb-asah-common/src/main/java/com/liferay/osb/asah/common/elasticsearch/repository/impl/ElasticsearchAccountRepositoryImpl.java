@@ -82,9 +82,11 @@ public class ElasticsearchAccountRepositoryImpl
 	implements AccountRepository {
 
 	@Override
-	public long countAccounts(@Nullable String filterString) {
+	public long countAccounts(
+		@Nullable Set<String> accountPKs, @Nullable String filterString) {
+
 		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(), _getQueryBuilder(filterString));
+			getCollectionName(), _getQueryBuilder(accountPKs, filterString));
 	}
 
 	@Override
@@ -286,8 +288,9 @@ public class ElasticsearchAccountRepositoryImpl
 
 	@Override
 	public List<Account> searchAccounts(
-		@Nullable Long channelId, @Nullable String filterString,
-		Pageable pageable, @Nullable Sort segmentSort) {
+		@Nullable Set<String> accountPKs, @Nullable Long channelId,
+		@Nullable String filterString, Pageable pageable,
+		@Nullable Sort segmentSort) {
 
 		try {
 			CollectionGetResponse collectionGetResponse =
@@ -297,7 +300,7 @@ public class ElasticsearchAccountRepositoryImpl
 			collectionGetResponse.setElasticsearchInvoker(
 				_faroInfoElasticsearchInvoker);
 			collectionGetResponse.setQueryBuilder(
-				_getQueryBuilder(filterString));
+				_getQueryBuilder(accountPKs, filterString));
 
 			if (pageable.isPaged()) {
 				collectionGetResponse.setPage(pageable.getPageNumber());
@@ -515,8 +518,25 @@ public class ElasticsearchAccountRepositoryImpl
 		return boolQueryBuilder;
 	}
 
-	private QueryBuilder _getQueryBuilder(String filterString) {
-		return FilterStringToQueryBuilderConverter.convert(filterString);
+	private QueryBuilder _getQueryBuilder(
+		Set<String> accountPKs, String filterString) {
+
+		if ((accountPKs == null) || accountPKs.isEmpty()) {
+			return FilterStringToQueryBuilderConverter.convert(filterString);
+		}
+
+		QueryBuilder queryBuilder = QueryBuilders.termsQuery(
+			"accountPK", accountPKs);
+
+		if (StringUtils.isEmpty(filterString)) {
+			return queryBuilder;
+		}
+
+		return BoolQueryBuilderUtil.filter(
+			queryBuilder
+		).filter(
+			FilterStringToQueryBuilderConverter.convert(filterString)
+		);
 	}
 
 	private String[] _getSorts(Sort sort) {

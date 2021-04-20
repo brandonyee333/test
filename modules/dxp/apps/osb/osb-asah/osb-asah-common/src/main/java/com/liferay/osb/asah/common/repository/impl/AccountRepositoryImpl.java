@@ -83,7 +83,9 @@ public class AccountRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countAccounts(@Nullable String filterString) {
+	public long countAccounts(
+		@Nullable Set<String> accountPKs, @Nullable String filterString) {
+
 		Table<Record> fieldTable = _buildFieldTable(
 			ConditionUtil.toCondition(
 				filterString, _accountsFilterStringConverterHelper),
@@ -92,16 +94,27 @@ public class AccountRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
+		Condition condition = DSL.field(
+			"id"
+		).eq(
+			fieldTable.field("ownerId")
+		);
+
+		if ((accountPKs != null) && !accountPKs.isEmpty()) {
+			condition = condition.and(
+				DSL.field(
+					"accountPK"
+				).in(
+					accountPKs
+				));
+		}
+
 		return selectSelectStep.from(
 			"Account"
 		).join(
 			fieldTable
 		).on(
-			DSL.field(
-				"id"
-			).eq(
-				fieldTable.field("ownerId")
-			)
+			condition
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -311,8 +324,9 @@ public class AccountRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Account> searchAccounts(
-		@Nullable Long channelId, @Nullable String filterString,
-		Pageable pageable, @Nullable Sort segmentSort) {
+		@Nullable Set<String> accountPKs, @Nullable Long channelId,
+		@Nullable String filterString, Pageable pageable,
+		@Nullable Sort segmentSort) {
 
 		SortField sortField = null;
 
@@ -369,6 +383,15 @@ public class AccountRepositoryImpl extends BaseRepository {
 			).orderBy(
 				getSortFields(segmentSort, segmentTable)
 			);
+		}
+
+		if ((accountPKs != null) && !accountPKs.isEmpty()) {
+			selectOnConditionStep.where(
+				DSL.field(
+					"account.accountPK"
+				).in(
+					accountPKs
+				));
 		}
 
 		if (pageable.isPaged()) {

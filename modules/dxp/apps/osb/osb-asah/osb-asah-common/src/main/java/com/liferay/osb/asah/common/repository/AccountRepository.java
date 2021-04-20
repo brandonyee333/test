@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.model.Transformation;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +38,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepository extends CrudRepository<Account, Long> {
 
-	public long countAccounts(@Nullable String filterString);
+	public long countAccounts(
+		@Nullable Set<String> accountPKs, @Nullable String filterString);
 
 	public List<Account> findAllByDataSourceId(Long dataSourceId);
 
@@ -56,7 +58,8 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
 		Pageable pageable);
 
 	public List<Account> searchAccounts(
-		@Nullable Long channelId, @Nullable String filterString,
-		Pageable pageable, @Nullable Sort segmentSort);
+		@Nullable Set<String> accountPKs, @Nullable Long channelId,
+		@Nullable String filterString, Pageable pageable,
+		@Nullable Sort segmentSort);
 
 }
