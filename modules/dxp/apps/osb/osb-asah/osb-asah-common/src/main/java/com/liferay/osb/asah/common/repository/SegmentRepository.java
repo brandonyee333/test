@@ -16,10 +16,13 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.DXPEntityType;
+import com.liferay.osb.asah.common.model.Transformation;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.annotation.Nullable;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
@@ -84,6 +87,10 @@ public interface SegmentRepository extends CrudRepository<Segment, Long> {
 		@Param("ids") List<Long> ids, @Param("status") String status);
 
 	public List<Long> findReferencedAssetIds();
+
+	public List<Transformation> getSegmentTransformations(
+		String apply, @Nullable String filterString, Pageable pageable,
+		@Nullable List<Long> segmentIds);
 
 	public List<Segment> searchDynamicSegments(
 		String filterString, Pageable pageable);

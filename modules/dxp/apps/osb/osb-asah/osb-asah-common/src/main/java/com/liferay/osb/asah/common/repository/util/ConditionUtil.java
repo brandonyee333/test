@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.util;
 
+import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 
@@ -25,6 +26,11 @@ import org.jooq.tools.StringUtils;
  * @author Rachael Koestartyo
  */
 public class ConditionUtil {
+
+	public static Condition toCondition(String filterString) {
+		return toCondition(
+			filterString, new DefaultFilterStringConverterHelper());
+	}
 
 	public static Condition toCondition(
 		String filterString,

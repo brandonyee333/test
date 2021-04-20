@@ -16,13 +16,18 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.DXPEntityType;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
+import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import org.jooq.Condition;
@@ -35,6 +40,8 @@ import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
+
+import javax.annotation.Nullable;
 
 /**
  * @author Inácio Nery
@@ -79,6 +86,64 @@ public class SegmentRepositoryImpl extends BaseRepository {
 			0, Long.class
 		).orElse(
 			0L
+		);
+	}
+
+	public List<Transformation> getSegmentTransformations(
+		String apply, @Nullable String filterString, Pageable pageable,
+		@Nullable List<Long> segmentIds) {
+
+		Matcher matcher = _groupByPattern.matcher(apply);
+
+		if (!matcher.matches()) {
+			throw new IllegalArgumentException(
+				"Apply string " + apply + " does not match pattern " +
+					StringEscapeUtils.unescapeJava(_groupByPattern.toString()));
+		}
+
+		String contains = matcher.group("containsField");
+
+		String groupByField = matcher.group("groupByField");
+
+		Field<Object> valueField = DSL.field(groupByField);
+
+		Condition condition = ConditionUtil.toCondition(filterString);
+
+		condition = condition.and(_getIncludeCondition(contains, groupByField));
+
+		if ((segmentIds != null) && !segmentIds.isEmpty()) {
+			condition = condition.and(
+				DSL.field(
+					"id"
+				).in(
+					segmentIds
+				));
+		}
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.select(
+			valueField.as("terms"),
+			DSL.count(
+				DSL.field("id")
+			).as(
+				"totalelements"
+			)
+		).from(
+			"Segment"
+		).where(
+			condition
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Transformation(
+				new Transformation.Term(
+					Collections.singletonMap(
+						groupByField, record.get("terms"))),
+				(Integer)record.get("totalelements"))
 		);
 	}
 
@@ -267,6 +332,18 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		return conditions;
 	}
 
+	private Condition _getIncludeCondition(String contains, String fieldName) {
+		if (contains == null) {
+			return DSL.noCondition();
+		}
+
+		return DSL.field(
+			fieldName
+		).containsIgnoreCase(
+			contains
+		);
+	}
+
 	private List<Condition> _getPreviewDisabledSegmentsConditions(
 		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
 		String filterString) {
@@ -305,6 +382,10 @@ public class SegmentRepositoryImpl extends BaseRepository {
 	private Map<String, String> _getSortFieldNameConversionMap() {
 		return Collections.singletonMap("author/name", "authorName");
 	}
+
+	private static final Pattern _groupByPattern = Pattern.compile(
+		"groupby\\(\\((?<groupByField>[^)]+)\\)\\)" +
+			"(/contains\\(\\((?<containsField>[^)]+)\\)\\))?");
 
 	private final DSLContext _dslContext;
 

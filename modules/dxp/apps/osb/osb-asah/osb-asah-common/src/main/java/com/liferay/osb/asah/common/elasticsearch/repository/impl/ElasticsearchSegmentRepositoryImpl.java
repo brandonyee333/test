@@ -21,13 +21,18 @@ import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBu
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
+import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
+import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -54,6 +59,7 @@ import org.json.JSONObject;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -348,6 +354,67 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	@Override
+	public List<Transformation> getSegmentTransformations(
+		String apply, String filterString, Pageable pageable,
+		List<Long> segmentIds) {
+
+		TransformationGetResponse transformationGetResponse =
+			new TransformationGetResponse();
+
+		transformationGetResponse.setCollectionName(getCollectionName());
+		transformationGetResponse.setElasticsearchInvoker(
+			_faroInfoElasticsearchInvoker);
+		transformationGetResponse.setPage(pageable.getPageNumber());
+		transformationGetResponse.setQueryBuilder(
+			_getSegmentsQueryBuilder(filterString, segmentIds));
+		transformationGetResponse.setSize(pageable.getPageSize());
+		transformationGetResponse.setSorts(
+			new HashMap<String, String>() {
+				{
+					put("terms", "_key");
+					put("totalElements", "_count");
+				}
+			},
+			_getSorts(pageable.getSort()));
+		transformationGetResponse.setTransformationJSONArrayFunction(
+			new TermsAggregationTransformationJSONArrayFunction(apply, null));
+		transformationGetResponse.setTransformationName(
+			"individual-segment-transformations");
+
+		JSONObject jsonObject = null;
+
+		try {
+			jsonObject = new JSONObject(transformationGetResponse.respond());
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			return Collections.emptyList();
+		}
+
+		JSONObject embeddedJSONObject = jsonObject.getJSONObject("_embedded");
+
+		JSONArray individualSegmentTransformationsJSONArray =
+			embeddedJSONObject.getJSONArray(
+				"individual-segment-transformations");
+
+		Stream<Object> stream = JSONUtil.toObjectStream(
+			individualSegmentTransformationsJSONArray);
+
+		return stream.map(
+			object -> {
+				JSONObject curJSONObject = (JSONObject)object;
+
+				return new Transformation(
+					JSONUtil.toMap(curJSONObject.getJSONObject("terms")),
+					curJSONObject.getInt("totalElements"));
+			}
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	@Override
 	public List<Segment> searchDynamicSegments(
 		String filterString, Pageable pageable) {
 
@@ -533,6 +600,44 @@ public class ElasticsearchSegmentRepositoryImpl
 		}
 
 		return boolQueryBuilder.filter(queryBuilder);
+	}
+
+	private QueryBuilder _getSegmentsQueryBuilder(
+		String filterString, List<Long> segmentIds) {
+
+		QueryBuilder queryBuilder = QueryBuilders.termsQuery(
+			"id", ListUtil.map(segmentIds, String::valueOf));
+
+		if (StringUtils.isEmpty(filterString)) {
+			return queryBuilder;
+		}
+
+		return BoolQueryBuilderUtil.filter(
+			queryBuilder
+		).filter(
+			FilterStringToQueryBuilderConverter.convert(filterString)
+		);
+	}
+
+	private String[] _getSorts(Sort sort) {
+		if (sort == null) {
+			return null;
+		}
+
+		List<String> sorts = new LinkedList<>();
+
+		for (Sort.Order order : sort) {
+			sorts.add(order.getProperty());
+
+			if (order.isAscending()) {
+				sorts.add("asc");
+			}
+			else {
+				sorts.add("desc");
+			}
+		}
+
+		return sorts.toArray(new String[0]);
 	}
 
 	private static final Log _log = LogFactory.getLog(
