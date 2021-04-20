@@ -168,8 +168,8 @@ public abstract class BaseNanite implements Nanite {
 	private void _log(String message) {
 		Log log = getLog();
 
-		if (log.isInfoEnabled()) {
-			log.info(message);
+		if (log.isDebugEnabled()) {
+			log.debug(message);
 		}
 	}
 
