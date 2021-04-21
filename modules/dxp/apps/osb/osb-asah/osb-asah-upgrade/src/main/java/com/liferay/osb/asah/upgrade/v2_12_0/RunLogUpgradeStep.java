@@ -14,8 +14,10 @@
 
 package com.liferay.osb.asah.upgrade.v2_12_0;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
@@ -35,9 +37,30 @@ public class RunLogUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) {
+		_upgradeRunLogIndexMapping(WeDeployDataService.OSB_ASAH_DXP_RAW);
+		_upgradeRunLogIndexMapping(WeDeployDataService.OSB_ASAH_FARO_INFO);
+		_upgradeRunLogIndexMapping(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+
 		_upgradeRunLogJSONObjects(_dxpRawElasticsearchInvoker);
 		_upgradeRunLogJSONObjects(_faroInfoElasticsearchInvoker);
 		_upgradeRunLogJSONObjects(_salesforceRawElasticsearchInvoker);
+	}
+
+	private void _upgradeRunLogIndexMapping(
+		WeDeployDataService weDeployDataService) {
+
+		_elasticsearchIndexManager.updateMapping(
+			"run-logs",
+			JSONUtil.put(
+				"properties",
+				JSONUtil.put(
+					"context",
+					JSONUtil.put(
+						"properties",
+						JSONUtil.put(
+							"totalOperations", JSONUtil.put("type", "long"))))
+			).toString(),
+			"run-logs", weDeployDataService);
 	}
 
 	private JSONObject _upgradeRunLogJSONObject(
@@ -84,6 +107,9 @@ public class RunLogUpgradeStep implements UpgradeStep {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

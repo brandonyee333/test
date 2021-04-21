@@ -2,6 +2,13 @@
 	"mappings": {
 		"run-logs": {
 			"properties": {
+				"context": {
+					"properties": {
+						"totalOperations": {
+							"type": "long"
+						}
+					}
+				},
 				"dataSourceId": {
 					"type": "keyword"
 				},
@@ -16,9 +23,6 @@
 				},
 				"status": {
 					"type": "keyword"
-				},
-				"totalOperations": {
-					"type": "long"
 				}
 			}
 		}
