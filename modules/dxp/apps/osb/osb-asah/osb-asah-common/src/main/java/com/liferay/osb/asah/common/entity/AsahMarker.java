@@ -40,9 +40,7 @@ public class AsahMarker implements Persistable<String> {
 	}
 
 	public AsahMarker(String id) {
-		_id = id;
-
-		_isNew = Boolean.TRUE;
+		this(id, new JSONObject());
 	}
 
 	public AsahMarker(String id, JSONObject contextJSONObject) {
