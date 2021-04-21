@@ -136,14 +136,7 @@ public class EventDefinitionDog {
 	}
 
 	public void unblockEventDefinitions(List<Long> eventDefinitionIds) {
-		long count = _eventDefinitionRepository.countEventDefinitions(
-			false, null, EventDefinition.Type.CUSTOM);
-
-		if ((count + eventDefinitionIds.size()) > _EVENT_DEFINITION_THRESHOLD) {
-			throw new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				"Processing request will exceed custom event definition limit");
-		}
+		_validateEventDefinitionLimit(eventDefinitionIds.size());
 
 		eventDefinitionIds.forEach(this::_unblockEventDefinition);
 	}
@@ -243,6 +236,8 @@ public class EventDefinitionDog {
 		eventDefinition.setDisplayName(
 			_getDisplayName(null, eventDefinition.getName()));
 
+		_validateEventDefinitionLimit(1);
+
 		_eventDefinitionRepository.save(eventDefinition);
 	}
 
@@ -255,6 +250,19 @@ public class EventDefinitionDog {
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"Unable to sort event definitions by " + sortColumn);
+		}
+	}
+
+	private void _validateEventDefinitionLimit(int unblockEventDefinitionSize) {
+		long count = _eventDefinitionRepository.countEventDefinitions(
+			false, null, EventDefinition.Type.CUSTOM);
+
+		if ((count + unblockEventDefinitionSize) >
+				_EVENT_DEFINITION_THRESHOLD) {
+
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"Processing request will exceed custom event definition limit");
 		}
 	}
 
