@@ -172,6 +172,14 @@ public class EventDefinitionDog {
 	private void _blockEventDefinition(Long eventDefinitionId) {
 		EventDefinition eventDefinition = getEventDefinition(eventDefinitionId);
 
+		EventDefinition.Type eventDefinitionType = eventDefinition.getType();
+
+		if (!eventDefinitionType.equals(EventDefinition.Type.CUSTOM)) {
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"Event definition is not of type custom");
+		}
+
 		eventDefinition.setBlocked(true);
 
 		Event lastSeenEvent = _eventRepository.findLastSeenEvent(
