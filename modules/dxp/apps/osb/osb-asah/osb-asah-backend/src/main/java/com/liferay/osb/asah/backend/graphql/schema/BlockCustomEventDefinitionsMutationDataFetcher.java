@@ -38,11 +38,11 @@ public class BlockCustomEventDefinitionsMutationDataFetcher
 
 	@Override
 	public Void get(DataFetchingEnvironment dataFetchingEnvironment) {
-		List<String> eventDefinitionIdsList =
-			dataFetchingEnvironment.getArgument("eventDefinitionIds");
+		List<String> eventDefinitionIds = dataFetchingEnvironment.getArgument(
+			"eventDefinitionIds");
 
 		_eventDefinitionDog.blockEventDefinitions(
-			ListUtil.map(eventDefinitionIdsList, Long::valueOf));
+			ListUtil.map(eventDefinitionIds, Long::valueOf));
 
 		return null;
 	}
