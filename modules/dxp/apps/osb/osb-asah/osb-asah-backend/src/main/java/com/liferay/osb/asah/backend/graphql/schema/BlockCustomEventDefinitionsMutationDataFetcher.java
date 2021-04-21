@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
 @GraphQLTypeWiring(
 	fieldName = "blockCustomEventDefinitions", typeName = "MutationType"
 )
-public class BlockEventDefinitionsMutationDataFetcher
+public class BlockCustomEventDefinitionsMutationDataFetcher
 	implements DataFetcher<Void> {
 
 	@Override
