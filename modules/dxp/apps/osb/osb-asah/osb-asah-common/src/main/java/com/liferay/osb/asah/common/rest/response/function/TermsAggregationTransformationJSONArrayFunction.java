@@ -64,7 +64,7 @@ public class TermsAggregationTransformationJSONArrayFunction
 					MatcherUtil.getGroupByPattern());
 		}
 
-		contains = matcher.group("containsField");
+		containsField = matcher.group("containsField");
 
 		String groupByField = matcher.group("groupByField");
 
@@ -74,10 +74,10 @@ public class TermsAggregationTransformationJSONArrayFunction
 	}
 
 	public TermsAggregationTransformationJSONArrayFunction(
-		String contains, String fieldName,
+		String containsField, String fieldName,
 		Function<Terms.Bucket, Object> responseFormatterFunction) {
 
-		this.contains = contains;
+		this.containsField = containsField;
 		this.fieldName = fieldName.replace('/', '.');
 		this.responseFormatterFunction = responseFormatterFunction;
 	}
@@ -126,7 +126,7 @@ public class TermsAggregationTransformationJSONArrayFunction
 				}
 
 				QueryBuilder includeQueryBuilder = getIncludeQueryBuilder(
-					contains, fieldName);
+					containsField, fieldName);
 
 				if (includeQueryBuilder != null) {
 					boolQueryBuilder.filter(includeQueryBuilder);
@@ -186,16 +186,16 @@ public class TermsAggregationTransformationJSONArrayFunction
 	}
 
 	protected QueryBuilder getIncludeQueryBuilder(
-		String contains, String fieldName) {
+		String containsField, String fieldName) {
 
-		if (contains == null) {
+		if (containsField == null) {
 			return null;
 		}
 
 		return QueryBuilders.regexpQuery(
 			fieldName,
 			FilterStringToQueryBuilderConverter.buildIgnoreCaseRegExp(
-				StringUtil.unquote(contains)));
+				StringUtil.unquote(containsField)));
 	}
 
 	protected JSONArray getTransformationJSONArray(
@@ -236,7 +236,7 @@ public class TermsAggregationTransformationJSONArrayFunction
 		return false;
 	}
 
-	protected final String contains;
+	protected final String containsField;
 	protected final String fieldName;
 	protected final Function<Terms.Bucket, Object> responseFormatterFunction;
 	protected long totalElements;

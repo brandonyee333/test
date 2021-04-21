@@ -45,10 +45,10 @@ public class NestedTermsAggregationTransformationJSONArrayFunction
 	extends TermsAggregationTransformationJSONArrayFunction {
 
 	public NestedTermsAggregationTransformationJSONArrayFunction(
-		String contains, String fieldName, String path,
+		String containsField, String fieldName, String path,
 		Function<Terms.Bucket, Object> responseFormatterFunction) {
 
-		super(contains, fieldName, responseFormatterFunction);
+		super(containsField, fieldName, responseFormatterFunction);
 
 		_path = path;
 	}
@@ -100,7 +100,7 @@ public class NestedTermsAggregationTransformationJSONArrayFunction
 				}
 
 				QueryBuilder includeQueryBuilder = getIncludeQueryBuilder(
-					contains, fieldName);
+					containsField, fieldName);
 
 				if (includeQueryBuilder != null) {
 					boolQueryBuilder.filter(includeQueryBuilder);
@@ -136,14 +136,14 @@ public class NestedTermsAggregationTransformationJSONArrayFunction
 
 	@Override
 	protected QueryBuilder getIncludeQueryBuilder(
-		String contains, String fieldName) {
+		String containsField, String fieldName) {
 
-		if (contains == null) {
+		if (containsField == null) {
 			return null;
 		}
 
 		return QueryBuilders.nestedQuery(
-			_path, super.getIncludeQueryBuilder(contains, fieldName),
+			_path, super.getIncludeQueryBuilder(containsField, fieldName),
 			ScoreMode.None);
 	}
 

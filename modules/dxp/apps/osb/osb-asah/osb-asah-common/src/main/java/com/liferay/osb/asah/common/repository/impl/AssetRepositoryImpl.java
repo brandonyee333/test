@@ -31,7 +31,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectJoinStep;
@@ -134,20 +133,22 @@ public class AssetRepositoryImpl extends BaseRepository {
 					MatcherUtil.getGroupByPattern());
 		}
 
-		String contains = matcher.group("containsField");
-
+		String containsField = matcher.group("containsField");
 		String groupByField = matcher.group("groupByField");
-
-		Field<Object> valueField = DSL.field(groupByField);
 
 		Condition condition = ConditionUtil.toCondition(filterString);
 
-		condition = condition.and(_getIncludeCondition(contains, groupByField));
+		condition = condition.and(
+			_getIncludeCondition(containsField, groupByField));
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.select(
-			valueField.as("terms"),
+			DSL.field(
+				groupByField
+			).as(
+				"terms"
+			),
 			DSL.count(
 				DSL.field("id")
 			).as(
@@ -274,15 +275,17 @@ public class AssetRepositoryImpl extends BaseRepository {
 		return conditions;
 	}
 
-	private Condition _getIncludeCondition(String contains, String fieldName) {
-		if (contains == null) {
+	private Condition _getIncludeCondition(
+		String containsField, String fieldName) {
+
+		if (containsField == null) {
 			return DSL.noCondition();
 		}
 
 		return DSL.field(
 			fieldName
 		).containsIgnoreCase(
-			contains
+			containsField
 		);
 	}
 

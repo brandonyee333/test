@@ -248,7 +248,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 					MatcherUtil.getGroupByPattern());
 		}
 
-		String contains = matcher.group("containsField");
+		String containsField = matcher.group("containsField");
 
 		String groupByField = matcher.group("groupByField");
 
@@ -266,7 +266,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 		Condition condition = ConditionUtil.toCondition(
 			filterString, _accountsFilterStringConverterHelper);
 
-		condition = condition.and(_getIncludeCondition(contains));
+		condition = condition.and(_getIncludeCondition(containsField));
 
 		SelectSelectStep<Record> modifiedDateSelectSelectStep =
 			_dslContext.select();

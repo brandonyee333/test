@@ -72,20 +72,22 @@ public class FieldRepositoryImpl extends BaseRepository {
 					MatcherUtil.getGroupByPattern());
 		}
 
-		String contains = matcher.group("containsField");
-
+		String containsField = matcher.group("containsField");
 		String groupByField = matcher.group("groupByField");
-
-		Field<Object> valueField = DSL.field(groupByField);
 
 		Condition condition = ConditionUtil.toCondition(filterString);
 
-		condition = condition.and(_getIncludeCondition(contains, groupByField));
+		condition = condition.and(
+			_getIncludeCondition(containsField, groupByField));
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.select(
-			valueField.as("terms"),
+			DSL.field(
+				groupByField
+			).as(
+				"terms"
+			),
 			DSL.count(
 				DSL.field("id")
 			).as(
@@ -131,15 +133,17 @@ public class FieldRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	private Condition _getIncludeCondition(String contains, String fieldName) {
-		if (contains == null) {
+	private Condition _getIncludeCondition(
+		String containsField, String fieldName) {
+
+		if (containsField == null) {
 			return DSL.noCondition();
 		}
 
 		return DSL.field(
 			fieldName
 		).containsIgnoreCase(
-			contains
+			containsField
 		);
 	}
 
