@@ -21,6 +21,7 @@ import com.liferay.osb.asah.upgrade.v2_10_0.DeleteActivityNaniteAsahTasksUpgrade
 import com.liferay.osb.asah.upgrade.v2_10_0.PageReferrersUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_10_0.UserSessionsInteractionsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_11_0.EngagementsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_12_0.AsahMarkerUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_0.RunLogUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +49,14 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"2.10.0", "2.11.0", _engagementsUpgradeStep);
 
-		upgradeProcess.addUpgradeSteps("2.11.0", "2.12.0", _runLogUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"2.11.0", "2.12.0", _asahMarkerUpgradeStep, _runLogUpgradeStep);
 
 		return upgradeProcess;
 	}
+
+	@Autowired
+	private AsahMarkerUpgradeStep _asahMarkerUpgradeStep;
 
 	@Autowired
 	private DeleteActivityNaniteAsahTasksUpgradeStep
