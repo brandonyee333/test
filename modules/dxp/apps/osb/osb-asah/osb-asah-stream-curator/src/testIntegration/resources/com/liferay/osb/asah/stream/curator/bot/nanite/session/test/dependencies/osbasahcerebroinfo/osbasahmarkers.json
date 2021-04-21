@@ -1,6 +1,8 @@
 [
 	{
-		"id": "SessionNanite",
-		"lastSuccessfulSessionFinalizerDate": "${now-30m}"
+		"context": {
+			"lastSuccessfulSessionFinalizerDate": "${now-30m}"
+		},
+		"id": "SessionNanite"
 	}
 ]
