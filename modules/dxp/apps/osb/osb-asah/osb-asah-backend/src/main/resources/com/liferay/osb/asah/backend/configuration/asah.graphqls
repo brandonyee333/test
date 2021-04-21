@@ -586,6 +586,10 @@ type MutationType {
 		value: String!
 	): String
 
+	unblockCustomEventDefinitions(
+		eventDefinitionIds: [String]!
+	): [Boolean]
+
 	updateEventAttributeDefinition(
 		dataType: EventAttributeDefinitionDataType
 		description: String
