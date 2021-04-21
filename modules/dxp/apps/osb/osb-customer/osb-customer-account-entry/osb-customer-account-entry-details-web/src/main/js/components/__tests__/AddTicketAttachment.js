@@ -8,7 +8,7 @@ describe('AddTicketAttachment', () => {
 		const {container} = render(
 			<AddTicketAttachment
 				addTicketAttachmentURL="/"
-				fileRepositoryName="United States"
+				fileRepositoryMessage="Your file will be uploaded to a file server in the United States."
 				generateTokenURL="/"
 				knowledgeBaseArticle="/"
 				uploadURL="/"

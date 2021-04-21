@@ -45,7 +45,7 @@ FileRepository fileRepository = fileRepositoryManager.getDataRegionFileRepositor
 		AccountDetails.AddTicketAttachment,
 		{
 			addTicketAttachmentURL: '<%= addTicketAttachmentURL %>',
-			fileRepositoryName: '<%= fileRepository.getName() %>',
+			fileRepositoryMessage: '<%= LanguageUtil.get(request, "your-file-will-be-uploaded-to-a-file-server-in-" + fileRepository.getName()) %>',
 			generateTokenURL: '<%= generateTokenURL %>',
 			knowledgeBaseArticle: '<%= accountEntryDetailsConfiguration.dataAccessKnowledgeBaseArticle() %>',
 			uploadURL: '<%= fileRepositoryWebService.getUploadURL(fileRepository.getFileRepositoryId()) %>',

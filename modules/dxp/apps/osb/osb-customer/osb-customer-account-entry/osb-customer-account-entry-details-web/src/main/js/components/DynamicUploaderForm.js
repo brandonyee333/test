@@ -17,7 +17,7 @@ import Button from './Button';
 export default class DynamicUploaderForm extends React.Component {
 	static propTypes = {
 		addTicketAttachmentURL: PropTypes.string.isRequired,
-		fileRepositoryName: PropTypes.string.isRequired,
+		fileRepositoryMessage: PropTypes.string.isRequired,
 		generateTokenURL: PropTypes.string.isRequired,
 		knowledgeBaseArticle: PropTypes.string.isRequired,
 		uploadURL: PropTypes.string.isRequired
@@ -417,10 +417,7 @@ export default class DynamicUploaderForm extends React.Component {
 
 				<Alert type="info">
 					<span>
-						{langSub(
-							Liferay.Language.get('your-file-will-be-uploaded-to-a-file-server-in-x'),
-							[this.props.fileRepositoryName]
-						)}
+						{this.props.fileRepositoryMessage}
 					</span>
 
 					<div
