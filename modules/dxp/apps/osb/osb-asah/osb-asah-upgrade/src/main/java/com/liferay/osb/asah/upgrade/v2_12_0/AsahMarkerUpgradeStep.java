@@ -14,8 +14,10 @@
 
 package com.liferay.osb.asah.upgrade.v2_12_0;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
@@ -25,6 +27,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -35,11 +38,38 @@ public class AsahMarkerUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) {
+		_upgradeOSBAsahMarkerIndexMapping(
+			WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
+		_upgradeOSBAsahMarkerIndexMapping(WeDeployDataService.OSB_ASAH_DXP_RAW);
+		_upgradeOSBAsahMarkerIndexMapping(
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
+		_upgradeOSBAsahMarkerIndexMapping(
+			WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+
 		_upgradeOSBAsahMarkerJSONObjects(_cerebroInfoElasticsearchInvoker);
 		_upgradeOSBAsahMarkerJSONObjects(_dxpRawElasticsearchInvoker);
 		_upgradeOSBAsahMarkerJSONObjects(_faroInfoElasticsearchInvoker);
-
 		_upgradeSalesforceRawOSBAsahMarkerJSONObjects();
+	}
+
+	private void _upgradeOSBAsahMarkerIndexMapping(
+		WeDeployDataService weDeployDataService) {
+
+		JSONObject indexConfigurationJSONObject = new JSONObject(
+			_elasticsearchIndexManager.readIndexConfiguration(
+				"OSBAsahMarkers", weDeployDataService));
+
+		JSONObject mappingPropertiesJSONObject = (JSONObject)JSONUtil.getValue(
+			indexConfigurationJSONObject, "JSONObject/mappings",
+			"JSONObject/OSBAsahMarkers", "JSONObject/properties");
+
+		_elasticsearchIndexManager.updateMapping(
+			"OSBAsahMarkers",
+			JSONUtil.put(
+				"properties",
+				mappingPropertiesJSONObject.getJSONObject("context")
+			).toString(),
+			"OSBAsahMarkers", weDeployDataService);
 	}
 
 	private JSONObject _upgradeOSBAsahMarkerJSONObject(
@@ -105,6 +135,9 @@ public class AsahMarkerUpgradeStep implements UpgradeStep {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

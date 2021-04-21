@@ -2,44 +2,48 @@
 	"mappings": {
 		"OSBAsahMarkers": {
 			"properties": {
-				"body": {
+				"context": {
 					"properties": {
-						"dataSourceId": {
+						"body": {
+							"properties": {
+								"dataSourceId": {
+									"type": "keyword"
+								},
+								"dataSourceType": {
+									"type": "keyword"
+								},
+								"ownerType": {
+									"type": "keyword"
+								},
+								"reprocessDay": {
+									"type": "keyword"
+								}
+							}
+						},
+						"lastRunDate": {
+							"type": "date"
+						},
+						"lastSuccessfulAnalyticsEventId": {
 							"type": "keyword"
 						},
-						"dataSourceType": {
+						"lastSuccessfulCSVIndividualId": {
 							"type": "keyword"
 						},
-						"ownerType": {
+						"lastSuccessfulDay": {
+							"type": "date"
+						},
+						"lastSuccessfulUserId": {
 							"type": "keyword"
 						},
-						"reprocessDay": {
+						"score": {
+							"type": "double"
+						},
+						"type": {
 							"type": "keyword"
 						}
 					}
 				},
 				"id": {
-					"type": "keyword"
-				},
-				"lastRunDate": {
-					"type": "date"
-				},
-				"lastSuccessfulAnalyticsEventId": {
-					"type": "keyword"
-				},
-				"lastSuccessfulCSVIndividualId": {
-					"type": "keyword"
-				},
-				"lastSuccessfulDay": {
-					"type": "date"
-				},
-				"lastSuccessfulUserId": {
-					"type": "keyword"
-				},
-				"score": {
-					"type": "double"
-				},
-				"type": {
 					"type": "keyword"
 				}
 			}

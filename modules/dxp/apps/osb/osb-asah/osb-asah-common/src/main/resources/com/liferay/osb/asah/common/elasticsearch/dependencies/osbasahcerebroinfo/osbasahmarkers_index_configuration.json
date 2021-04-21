@@ -2,17 +2,21 @@
 	"mappings": {
 		"OSBAsahMarkers": {
 			"properties": {
+				"context": {
+					"properties": {
+						"lastSuccessfulAnalyticsEventId": {
+							"type": "keyword"
+						},
+						"lastSuccessfulRunDate": {
+							"type": "date"
+						},
+						"lastSuccessfulSessionFinalizerDate": {
+							"type": "date"
+						}
+					}
+				},
 				"id": {
 					"type": "keyword"
-				},
-				"lastSuccessfulAnalyticsEventId": {
-					"type": "keyword"
-				},
-				"lastSuccessfulRunDate": {
-					"type": "date"
-				},
-				"lastSuccessfulSessionFinalizerDate": {
-					"type": "date"
 				}
 			}
 		}

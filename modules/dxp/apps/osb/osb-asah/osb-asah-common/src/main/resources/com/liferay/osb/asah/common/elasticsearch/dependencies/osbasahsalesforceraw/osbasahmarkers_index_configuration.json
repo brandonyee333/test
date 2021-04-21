@@ -2,54 +2,58 @@
 	"mappings": {
 		"OSBAsahMarkers": {
 			"properties": {
-				"id": {
-					"type": "keyword"
-				},
-				"osbAsahDataSourceId": {
-					"type": "keyword"
-				},
-				"tables": {
+				"context": {
 					"properties": {
-						"Account": {
-							"properties": {
-								"fields": {
-									"type": "keyword"
-								},
-								"lastSuccessfulDeletedTime": {
-									"type": "long"
-								},
-								"lastSuccessfulUpdatedTime": {
-									"type": "long"
-								}
-							}
+						"osbAsahDataSourceId": {
+							"type": "keyword"
 						},
-						"Contact": {
+						"tables": {
 							"properties": {
-								"fields": {
-									"type": "keyword"
+								"Account": {
+									"properties": {
+										"fields": {
+											"type": "keyword"
+										},
+										"lastSuccessfulDeletedTime": {
+											"type": "long"
+										},
+										"lastSuccessfulUpdatedTime": {
+											"type": "long"
+										}
+									}
 								},
-								"lastSuccessfulDeletedTime": {
-									"type": "long"
+								"Contact": {
+									"properties": {
+										"fields": {
+											"type": "keyword"
+										},
+										"lastSuccessfulDeletedTime": {
+											"type": "long"
+										},
+										"lastSuccessfulUpdatedTime": {
+											"type": "long"
+										}
+									}
 								},
-								"lastSuccessfulUpdatedTime": {
-									"type": "long"
-								}
-							}
-						},
-						"Lead": {
-							"properties": {
-								"fields": {
-									"type": "keyword"
-								},
-								"lastSuccessfulDeletedTime": {
-									"type": "long"
-								},
-								"lastSuccessfulUpdatedTime": {
-									"type": "long"
+								"Lead": {
+									"properties": {
+										"fields": {
+											"type": "keyword"
+										},
+										"lastSuccessfulDeletedTime": {
+											"type": "long"
+										},
+										"lastSuccessfulUpdatedTime": {
+											"type": "long"
+										}
+									}
 								}
 							}
 						}
 					}
+				},
+				"id": {
+					"type": "keyword"
 				}
 			}
 		}
