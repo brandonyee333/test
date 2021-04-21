@@ -50,8 +50,7 @@ public class RunLogDog {
 			Optional<RunLog> runLogOptional =
 				_runLogRepository.
 					findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
-						Optional.ofNullable(dataSourceId), naniteClassName,
-						Optional.ofNullable(status));
+						dataSourceId, naniteClassName, status);
 
 			return runLogOptional.orElse(null);
 		}

@@ -24,6 +24,8 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -31,6 +33,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.json.JSONObject;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -48,21 +51,20 @@ public class ElasticsearchRunLogRepositoryImpl
 	@Override
 	public Optional<RunLog>
 		findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
-			Optional<Long> dataSourceIdOptional, String naniteClassName,
-			Optional<String> statusOptional) {
+			@Nullable Long dataSourceId, String naniteClassName,
+			@Nullable String status) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("naniteClassName", naniteClassName));
 
-		if (statusOptional.isPresent()) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("status", statusOptional.get()));
+		if (StringUtils.isNotBlank(status)) {
+			boolQueryBuilder.filter(QueryBuilders.termQuery("status", status));
 		}
 
-		if (dataSourceIdOptional.isPresent()) {
+		if (dataSourceId != null) {
 			boolQueryBuilder.filter(
 				QueryBuilders.termQuery(
-					"dataSourceId", dataSourceIdOptional.get()));
+					"dataSourceId", dataSourceId.toString()));
 		}
 		else {
 			boolQueryBuilder.filter(

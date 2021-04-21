@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -27,6 +29,7 @@ import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Marcellus Tavares
@@ -42,16 +45,15 @@ public class RunLogRepositoryImpl extends BaseRepository {
 
 	public Optional<RunLog>
 		findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
-			Optional<Long> dataSourceIdOptional, String naniteClassName,
-			Optional<String> statusOptional) {
+			@Nullable Long dataSourceId, String naniteClassName,
+			@Nullable String status) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
 			"RunLog"
 		).where(
-			_getConditions(
-				dataSourceIdOptional, naniteClassName, statusOptional)
+			_getConditions(dataSourceId, naniteClassName, status)
 		).limit(
 			1
 		).fetchOptional(
@@ -61,18 +63,18 @@ public class RunLogRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Condition> _getConditions(
-		Optional<Long> dataSourceIdOptional, String naniteClassName,
-		Optional<String> statusOptional) {
+		Long dataSourceId, String naniteClassName, String status) {
 
 		List<Condition> conditions = new ArrayList<>();
 
-		dataSourceIdOptional.ifPresent(
-			dataSourceId -> conditions.add(
+		if (dataSourceId != null) {
+			conditions.add(
 				DSL.field(
 					"dataSourceId"
 				).eq(
 					dataSourceId
-				)));
+				));
+		}
 
 		conditions.add(
 			DSL.field(
@@ -81,13 +83,14 @@ public class RunLogRepositoryImpl extends BaseRepository {
 				naniteClassName
 			));
 
-		statusOptional.ifPresent(
-			status -> conditions.add(
+		if (StringUtils.isNotBlank(status)) {
+			conditions.add(
 				DSL.field(
 					"status"
 				).eq(
 					status
-				)));
+				));
+		}
 
 		return conditions;
 	}

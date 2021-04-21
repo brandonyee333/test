@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -33,7 +34,7 @@ public interface RunLogRepository extends CrudRepository<RunLog, Long> {
 
 	public Optional<RunLog>
 		findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
-			Optional<Long> dataSourceIdOptional, String naniteClassName,
-			Optional<String> statusOptional);
+			@Nullable Long dataSourceId, String naniteClassName,
+			@Nullable String status);
 
 }
