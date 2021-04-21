@@ -1,4 +1,4 @@
-/**
+s/**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * The contents of this file are subject to the terms of the Liferay Enterprise
@@ -42,7 +42,7 @@ public class DistributionDTO {
 	public DistributionDTO(
 		List<Distribution> distributions, String transformationKey) {
 
-		_distributionDTOMap = Collections.singletonMap(
+		_distributionDTOsMap = Collections.singletonMap(
 			transformationKey,
 			SetUtil.map(distributions, DistributionDTO::new));
 	}
@@ -74,8 +74,8 @@ public class DistributionDTO {
 	}
 
 	@JsonAnyGetter
-	public Map<String, Set<DistributionDTO>> getDistributionDTOMap() {
-		return _distributionDTOMap;
+	public Map<String, Set<DistributionDTO>> getDistributionDTOsMap() {
+		return _distributionDTOsMap;
 	}
 
 	@JsonProperty("values")
@@ -97,7 +97,7 @@ public class DistributionDTO {
 	}
 
 	private Integer _count;
-	private Map<String, Set<DistributionDTO>> _distributionDTOMap =
+	private Map<String, Set<DistributionDTO>> _distributionDTOsMap =
 		new HashMap<>();
 	private List<Object> _values;
 

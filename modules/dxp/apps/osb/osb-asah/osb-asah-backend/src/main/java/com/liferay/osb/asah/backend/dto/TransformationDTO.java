@@ -37,7 +37,7 @@ public class TransformationDTO {
 	public TransformationDTO(
 		String transformationKey, List<Transformation> transformations) {
 
-		_transformationDTOMap = Collections.singletonMap(
+		_transformationDTOsMap = Collections.singletonMap(
 			transformationKey,
 			SetUtil.map(transformations, TransformationDTO::new));
 	}
@@ -79,8 +79,8 @@ public class TransformationDTO {
 	}
 
 	@JsonAnyGetter
-	public Map<String, Set<TransformationDTO>> getTransformationDTOMap() {
-		return _transformationDTOMap;
+	public Map<String, Set<TransformationDTO>> getTransformationDTOsMap() {
+		return _transformationDTOsMap;
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class TransformationDTO {
 
 	private TermDTO _termDTO;
 	private Integer _totalElements;
-	private Map<String, Set<TransformationDTO>> _transformationDTOMap =
+	private Map<String, Set<TransformationDTO>> _transformationDTOsMap =
 		new HashMap<>();
 
 }
