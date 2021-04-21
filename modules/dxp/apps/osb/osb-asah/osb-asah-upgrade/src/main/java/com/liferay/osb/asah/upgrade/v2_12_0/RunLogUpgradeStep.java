@@ -67,7 +67,7 @@ public class RunLogUpgradeStep implements UpgradeStep {
 
 		JSONArrayIterator.of(
 			"run-logs", elasticsearchInvoker,
-			runLogJSONObject -> _faroInfoElasticsearchInvoker.update(
+			runLogJSONObject -> elasticsearchInvoker.update(
 				"run-logs", runLogJSONObject.getString("id"),
 				_upgradeRunLogJSONObject(runLogJSONObject)));
 	}
