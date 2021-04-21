@@ -269,13 +269,13 @@ public class DataSourcesRestController extends BaseRestController {
 		String status = runLog.getStatus();
 
 		if (status.equals("STARTED")) {
-			JSONObject contextJSONObject = runLog.getContextJSONObject();
+			JSONObject runLogContextJSONObject = runLog.getContextJSONObject();
 
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()
 			).put(
 				"processedOperations",
-				contextJSONObject.getInt("processedOperations")
+				runLogContextJSONObject.getInt("processedOperations")
 			).put(
 				"status", "IN_PROGRESS"
 			).put(
@@ -616,12 +616,13 @@ public class DataSourcesRestController extends BaseRestController {
 		int processedOperations = 0;
 		int totalOperations = 0;
 
-		JSONObject contextJSONObject =
+		JSONObject salesforceExtractorNaniteRunLogContextJSONObject =
 			salesforceExtractorNaniteRunLog.getContextJSONObject();
 
 		for (String tableName : tableNames) {
-			int totalTableNameOperations = contextJSONObject.optInt(
-				"total" + tableName + "Operations");
+			int totalTableNameOperations =
+				salesforceExtractorNaniteRunLogContextJSONObject.optInt(
+					"total" + tableName + "Operations");
 
 			if (totalTableNameOperations == 0) {
 				continue;
@@ -629,7 +630,9 @@ public class DataSourcesRestController extends BaseRestController {
 
 			totalOperations += totalTableNameOperations;
 
-			if (contextJSONObject.getBoolean("initial" + tableName + "Run")) {
+			if (salesforceExtractorNaniteRunLogContextJSONObject.getBoolean(
+					"initial" + tableName + "Run")) {
+
 				processedOperations += salesforceRawElasticsearchInvoker.count(
 					tableName,
 					QueryBuilders.termQuery(
