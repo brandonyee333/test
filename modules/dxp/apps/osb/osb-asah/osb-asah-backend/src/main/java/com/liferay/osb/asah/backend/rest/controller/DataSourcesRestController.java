@@ -67,7 +67,7 @@ import org.springframework.web.client.HttpClientErrorException;
 public class DataSourcesRestController extends BaseRestController {
 
 	@DeleteMapping("/{id}")
-	public void deleteDataSource(@PathVariable Long id) throws Exception {
+	public void deleteDataSource(@PathVariable Long id) {
 		_salesforceExtractorConfigurationDog.deleteConfiguration(id);
 
 		DataSource dataSource = _dataSourceDog.getDataSource(id);
@@ -107,12 +107,10 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@GetMapping
 	public PageDTO<DataSourceDTO> getDataSourceDTOsPageDTO(
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		Page<DataSource> dataSourcesPage = _dataSourceDog.getDataSourcesPage(
 			filterString, page, size, sorts);
@@ -146,30 +144,31 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@GetMapping("/{id}/salesforce-accounts/fields")
 	public String getSalesforceAccountsFields(
-			@PathVariable String id, @RequestParam(defaultValue = "20") int end,
+			@PathVariable Long id, @RequestParam(defaultValue = "20") int end,
 			@RequestParam(defaultValue = "0") int start)
 		throws Exception {
 
 		return _exchange(
-			Long.valueOf(id),
-			() -> _dataSourceHttp.getSalesforceAccountsFields(id, end, start));
+			id,
+			() -> _dataSourceHttp.getSalesforceAccountsFields(
+				String.valueOf(id), end, start));
 	}
 
 	@GetMapping("/{id}/salesforce-users/fields")
 	public String getSalesforceUsersFields(
-			@PathVariable String id, @RequestParam(defaultValue = "20") int end,
+			@PathVariable Long id, @RequestParam(defaultValue = "20") int end,
 			@RequestParam(defaultValue = "0") int start)
 		throws Exception {
 
 		return _exchange(
-			Long.valueOf(id),
-			() -> _dataSourceHttp.getSalesforceUsersFields(id, end, start));
+			id,
+			() -> _dataSourceHttp.getSalesforceUsersFields(
+				String.valueOf(id), end, start));
 	}
 
 	@PatchMapping("/{id}")
 	public String patchDataSource(
-			@PathVariable String id, @RequestBody DataSourceDTO dataSourceDTO)
-		throws Exception {
+		@PathVariable String id, @RequestBody DataSourceDTO dataSourceDTO) {
 
 		dataSourceDTO.setId(id);
 
@@ -183,9 +182,7 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	@PostMapping
-	public String postDataSource(@RequestBody DataSourceDTO dataSourceDTO)
-		throws Exception {
-
+	public String postDataSource(@RequestBody DataSourceDTO dataSourceDTO) {
 		_beforeAdd(dataSourceDTO);
 
 		DataSource dataSource = _dataSourceDog.addDataSource(
@@ -199,8 +196,7 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@PutMapping("/{id}")
 	public String putDataSource(
-			@PathVariable String id, @RequestBody DataSourceDTO dataSourceDTO)
-		throws Exception {
+		@PathVariable String id, @RequestBody DataSourceDTO dataSourceDTO) {
 
 		dataSourceDTO.setId(id);
 

@@ -49,10 +49,8 @@ public class AssetsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		Page<Asset> assetPage = _assetDog.getAssetPage(
-			filterString, page, size, sorts);
-
-		return _toPageDTO(assetPage);
+		return _toPageDTO(
+			_assetDog.getAssetPage(filterString, page, size, sorts));
 	}
 
 	@GetMapping(params = "apply")

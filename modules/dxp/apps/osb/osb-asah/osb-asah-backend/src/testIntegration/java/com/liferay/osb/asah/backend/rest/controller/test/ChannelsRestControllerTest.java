@@ -191,7 +191,7 @@ public class ChannelsRestControllerTest {
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_channelsRestController.patchChannel(
-				channelJSONObject.getString("id"),
+				channelJSONObject.getLong("id"),
 				inputChannelJSONObject.toString()),
 			JSONObject.class);
 
@@ -232,7 +232,7 @@ public class ChannelsRestControllerTest {
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_channelsRestController.patchChannel(
-				"123456789", inputChannelJSONObject.toString()),
+				123456789L, inputChannelJSONObject.toString()),
 			JSONObject.class);
 
 		JSONObject actualChannelJSONObject = responseJSONObject.getJSONObject(
@@ -274,7 +274,7 @@ public class ChannelsRestControllerTest {
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_channelsRestController.patchChannel(
-				"123456789", inputChannelJSONObject.toString()),
+				123456789L, inputChannelJSONObject.toString()),
 			JSONObject.class);
 
 		JSONObject actualChannelJSONObject = responseJSONObject.getJSONObject(
@@ -350,7 +350,7 @@ public class ChannelsRestControllerTest {
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_channelsRestController.patchChannel(
-				"4324324324", inputChannelJSONObject.toString()),
+				4324324324L, inputChannelJSONObject.toString()),
 			JSONObject.class);
 
 		JSONArray removedGroupIdsJSONArray = responseJSONObject.optJSONArray(

@@ -171,13 +171,11 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@GetMapping("/{id}/memberships")
 	public PageDTO<MembershipDTO> getMembershipDTOsPageDTO(
-			@PathVariable Long id,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
+		@PathVariable Long id,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		if (!segmentDog.isIncludeAnonymousUsers(id)) {
 			List<Long> individualIds = new ArrayList<>();
@@ -228,9 +226,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
 	public SegmentDTO getSegmentDTO(
-			@PathVariable Long id,
-			@RequestParam(required = false) String expand)
-		throws Exception {
+		@PathVariable Long id, @RequestParam(required = false) String expand) {
 
 		SegmentDTO segmentDTO = new SegmentDTO(segmentDog.getSegment(id));
 
@@ -255,13 +251,11 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@GetMapping(params = "!apply")
 	public PageDTO<SegmentDTO> getSegmentDTOsPageDTOs(
-			@RequestParam(required = false) Long dataSourceId,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
+		@RequestParam(required = false) Long dataSourceId,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return toSegmentDTOPageDTO(
 			segmentDog.searchSegmentsPage(

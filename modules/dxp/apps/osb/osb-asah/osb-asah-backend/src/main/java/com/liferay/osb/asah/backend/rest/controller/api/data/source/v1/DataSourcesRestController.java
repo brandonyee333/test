@@ -52,7 +52,7 @@ public class DataSourcesRestController {
 	}
 
 	@GetMapping("/{id}")
-	public String getDataSource(@PathVariable Long id) throws Exception {
+	public String getDataSource(@PathVariable Long id) {
 		DataSource dataSource = _dataSourceDog.getDataSource(id);
 
 		_sanitize(dataSource);

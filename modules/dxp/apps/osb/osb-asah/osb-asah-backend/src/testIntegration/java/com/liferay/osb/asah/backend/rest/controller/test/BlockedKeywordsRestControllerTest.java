@@ -95,7 +95,7 @@ public class BlockedKeywordsRestControllerTest {
 	@Test
 	public void testGetBlockedKeyword() {
 		BlockedKeywordDTO blockedKeywordDTO =
-			_blockedKeywordsRestController.getBlockedKeyword(
+			_blockedKeywordsRestController.getBlockedKeywordDTO(
 				351238757269547424L);
 
 		Assert.assertEquals(

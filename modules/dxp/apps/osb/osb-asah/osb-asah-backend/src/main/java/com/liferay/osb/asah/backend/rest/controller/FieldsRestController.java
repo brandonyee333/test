@@ -48,7 +48,7 @@ public class FieldsRestController extends BaseRestController {
 	}
 
 	@GetMapping("/{id}")
-	public FieldDTO getField(@PathVariable Long id) throws Exception {
+	public FieldDTO getFieldDTO(@PathVariable Long id) {
 		return new FieldDTO(_fieldDog.getField(id));
 	}
 
@@ -77,8 +77,7 @@ public class FieldsRestController extends BaseRestController {
 
 	@PutMapping("/{id}")
 	public FieldDTO putField(
-			@PathVariable Long id, @RequestBody FieldDTO fieldDTO)
-		throws Exception {
+		@PathVariable Long id, @RequestBody FieldDTO fieldDTO) {
 
 		Field field = _fieldDog.updateField(
 			id, _objectMapper.convertValue(fieldDTO, Field.class));

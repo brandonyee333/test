@@ -54,7 +54,7 @@ public class FieldsRestControllerTest {
 				new FieldDTO(_fieldDog.getField(357046433509858076L)),
 				JSONObject.class),
 			_objectMapper.convertValue(
-				_fieldsRestController.getField(357046433509858076L),
+				_fieldsRestController.getFieldDTO(357046433509858076L),
 				JSONObject.class),
 			false);
 	}

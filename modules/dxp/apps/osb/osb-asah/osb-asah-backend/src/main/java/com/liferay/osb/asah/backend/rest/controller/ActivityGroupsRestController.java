@@ -68,7 +68,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ActivityGroupsRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
-	public ActivityGroupDTO getActivityGroup(@PathVariable Long id) {
+	public ActivityGroupDTO getActivityGroupDTO(@PathVariable Long id) {
 		return new ActivityGroupDTO(_activityGroupDog.getActivityGroup(id));
 	}
 
@@ -117,9 +117,8 @@ public class ActivityGroupsRestController extends BaseRestController {
 	}
 
 	private void _addExpansion(
-			Map<String, ActivityGroupDTO> activityGroupDTOs, String expand,
-			String filterString)
-		throws Exception {
+		Map<String, ActivityGroupDTO> activityGroupDTOs, String expand,
+		String filterString) {
 
 		Set<String> expandParts = new HashSet<>(
 			Arrays.asList(expand.split(",")));
@@ -253,8 +252,7 @@ public class ActivityGroupsRestController extends BaseRestController {
 	}
 
 	private QueryBuilder _getExpandQueryBuilder(
-			Collection<String> activityGroupIds, String filterString)
-		throws Exception {
+		Collection<String> activityGroupIds, String filterString) {
 
 		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
 			filterString, _faroInfoActivitiesFilterStringConverterHelper);

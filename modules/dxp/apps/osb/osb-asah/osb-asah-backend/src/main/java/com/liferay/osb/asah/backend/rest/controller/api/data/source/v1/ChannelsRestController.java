@@ -53,12 +53,10 @@ public class ChannelsRestController {
 
 	@GetMapping
 	public PageDTO<ChannelDTO> getChannelDTOsPageDTO(
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return _toPageDTO(
 			_channelDog.getChannelsPage(filterString, page, size, sorts));
@@ -66,7 +64,7 @@ public class ChannelsRestController {
 
 	@PatchMapping("/{id}")
 	public ChannelDTO patchChannel(
-		@PathVariable String id, @RequestBody String json) {
+		@PathVariable Long id, @RequestBody String json) {
 
 		Set<Long> groupIds = new HashSet<>();
 
@@ -83,13 +81,13 @@ public class ChannelsRestController {
 		}
 
 		Set<Long> removedGroupIds = _channelDog.getRemovedGroupIds(
-			Long.valueOf(id),
+			id,
 			NumberUtils.createLong(jsonObject.optString("dataSourceId", null)),
 			groupIds);
 
 		return new ChannelDTO(
 			_channelDog.patchChannel(
-				Long.valueOf(id),
+				id,
 				NumberUtils.createLong(
 					jsonObject.optString("dataSourceId", null)),
 				groupIds, jsonObject.optString("name")),

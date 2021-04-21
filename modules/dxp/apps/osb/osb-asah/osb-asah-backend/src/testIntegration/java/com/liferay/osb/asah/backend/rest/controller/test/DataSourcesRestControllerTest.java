@@ -310,7 +310,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONArray jsonArray = new JSONArray(
 			_dataSourcesRestController.getSalesforceAccountsFields(
-				String.valueOf(salesforceDataSource.getId()), 3, 0));
+				salesforceDataSource.getId(), 3, 0));
 
 		Assert.assertEquals(3, jsonArray.length());
 	}
@@ -1230,7 +1230,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONArray jsonArray = new JSONArray(
 			_dataSourcesRestController.getSalesforceUsersFields(
-				String.valueOf(salesforceDataSource.getId()), 3, 0));
+				salesforceDataSource.getId(), 3, 0));
 
 		Assert.assertEquals(3, jsonArray.length());
 	}

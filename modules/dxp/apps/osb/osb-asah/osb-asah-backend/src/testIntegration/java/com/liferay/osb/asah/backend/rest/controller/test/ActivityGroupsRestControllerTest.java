@@ -51,7 +51,7 @@ public class ActivityGroupsRestControllerTest {
 			_elasticsearchInvoker.fetch(
 				"activity-groups", "348853726639670821"),
 			_objectMapper.convertValue(
-				_activityGroupsRestController.getActivityGroup(
+				_activityGroupsRestController.getActivityGroupDTO(
 					348853726639670821L),
 				JSONObject.class),
 			false);

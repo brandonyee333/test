@@ -20,7 +20,6 @@ import com.liferay.osb.asah.backend.dto.AssetDTO;
 import com.liferay.osb.asah.backend.rest.controller.AssetsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dog.AssetDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -65,11 +64,6 @@ public class AssetsRestControllerTest {
 	)
 	@Test
 	public void testGetAssetDTOsPageDTO() throws Exception {
-		System.out.println(
-			_objectMapper.convertValue(
-				_assetsRestController.getAssetDTOsPageDTO(null, 0, 20, null),
-				JSONObject.class
-			).toString());
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_assets.json", this),
@@ -100,9 +94,6 @@ public class AssetsRestControllerTest {
 
 	@Autowired
 	private AssetsRestController _assetsRestController;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
