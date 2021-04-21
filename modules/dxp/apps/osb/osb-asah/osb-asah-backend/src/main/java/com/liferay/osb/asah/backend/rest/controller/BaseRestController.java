@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.rest.response.DeleteResponse;
@@ -36,6 +37,7 @@ import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import org.json.JSONArray;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -241,6 +243,9 @@ public abstract class BaseRestController {
 			queryBuilder, size, null, null, supportedFieldName,
 			transformationJSONArrayFunction, transformationName);
 	}
+
+	@Autowired
+	protected AsahMarkerDog asahMarkerDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	protected ElasticsearchInvoker cerebroInfoElasticsearchInvoker;

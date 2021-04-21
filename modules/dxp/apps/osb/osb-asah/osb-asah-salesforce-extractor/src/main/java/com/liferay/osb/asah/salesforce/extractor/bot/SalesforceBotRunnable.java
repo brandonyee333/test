@@ -16,9 +16,11 @@ package com.liferay.osb.asah.salesforce.extractor.bot;
 
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.exception.InterruptBotException;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.Nanite;
 
@@ -26,8 +28,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 /**
  * @author Brian Wing Shun Chan
@@ -37,10 +37,11 @@ import org.elasticsearch.index.query.QueryBuilders;
 public class SalesforceBotRunnable implements Runnable {
 
 	public SalesforceBotRunnable(
-		ConfigurationManager configurationManager,
+		AsahMarkerDog asahMarkerDog, ConfigurationManager configurationManager,
 		ElasticsearchInvoker elasticsearchInvoker, Project project,
 		SalesforceConfigurableBot salesforceConfigurableBot) {
 
+		_asahMarkerDog = asahMarkerDog;
 		_configurationManager = configurationManager;
 		_project = project;
 		_salesforceConfigurableBot = salesforceConfigurableBot;
@@ -113,19 +114,9 @@ public class SalesforceBotRunnable implements Runnable {
 		}
 	}
 
-	private void _deleteOSBAsahMarker(String osbAsahDataSourceId) {
-		try {
-			_salesforceRawElasticsearchInvoker.delete(
-				"OSBAsahMarkers",
-				QueryBuilders.termQuery(
-					"osbAsahDataSourceId", osbAsahDataSourceId));
-		}
-		catch (Exception e) {
-			_log.error(
-				"Recreate the entire Elasticsearch service because there is " +
-					"stale data",
-				e);
-		}
+	private void _deleteAsahMarker(String osbAsahDataSourceId) {
+		_asahMarkerDog.deleteAsahMarker(
+			osbAsahDataSourceId, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 	}
 
 	private void _run(Configuration[] configurations) {
@@ -133,13 +124,13 @@ public class SalesforceBotRunnable implements Runnable {
 
 		if (_stop) {
 			if (_obsoleteDataSourceId != null) {
-				_deleteOSBAsahMarker(_obsoleteDataSourceId);
+				_deleteAsahMarker(_obsoleteDataSourceId);
 
 				_obsoleteDataSourceId = null;
 			}
 
 			if (_staleDataSourceId != null) {
-				_deleteOSBAsahMarker(_staleDataSourceId);
+				_deleteAsahMarker(_staleDataSourceId);
 
 				_staleDataSourceId = null;
 			}
@@ -174,6 +165,7 @@ public class SalesforceBotRunnable implements Runnable {
 	private static final Log _log = LogFactory.getLog(
 		SalesforceBotRunnable.class);
 
+	private final AsahMarkerDog _asahMarkerDog;
 	private final ConfigurationManager _configurationManager;
 	private int _delay;
 	private String _obsoleteDataSourceId;

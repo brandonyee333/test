@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoInterestDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -49,10 +50,13 @@ public class InterestThresholdScoreNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		JSONObject osbAsahMarkerJSONObject = getOSBAsahMarkerJSONObject();
+		AsahMarker asahMarker = getAsahMarker();
 
-		String lastSuccessfulDayDateString = osbAsahMarkerJSONObject.optString(
-			"lastSuccessfulDay", null);
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
+
+		String lastSuccessfulDayDateString =
+			asahMarkerContextJSONObject.optString("lastSuccessfulDay", null);
 
 		if (lastSuccessfulDayDateString != null) {
 			Date lastSuccessfulDayDate = DateUtil.toUTCDate(

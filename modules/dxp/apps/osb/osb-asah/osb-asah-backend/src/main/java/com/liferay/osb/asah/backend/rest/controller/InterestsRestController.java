@@ -17,10 +17,12 @@ package com.liferay.osb.asah.backend.rest.controller;
 import com.liferay.osb.asah.backend.rest.response.embedded.InterestsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.rest.response.function.InterestsHistogramTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -125,12 +127,18 @@ public class InterestsRestController
 	private QueryBuilder _getInterestThresholdQueryBuilder(
 		QueryBuilder queryBuilder) {
 
-		JSONObject osbAsahMarkerJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"OSBAsahMarkers", "InterestThresholdScoreNanite");
+		AsahMarker asahMarker = asahMarkerDog.fetchAsahMarker(
+			"InterestThresholdScoreNanite",
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-		if ((osbAsahMarkerJSONObject == null) ||
-			!osbAsahMarkerJSONObject.has("score")) {
+		if (asahMarker == null) {
+			return queryBuilder;
+		}
 
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
+
+		if (!asahMarkerContextJSONObject.has("score")) {
 			return queryBuilder;
 		}
 
@@ -138,7 +146,7 @@ public class InterestsRestController
 			QueryBuilders.rangeQuery(
 				"score"
 			).gte(
-				osbAsahMarkerJSONObject.getDouble("score")
+				asahMarkerContextJSONObject.getDouble("score")
 			));
 
 		if (queryBuilder == null) {

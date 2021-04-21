@@ -464,22 +464,26 @@ public class DataSourceDog {
 				"csv-individuals");
 		}
 		else if (providerType.equals("LIFERAY")) {
+			_asahMarkerDog.deleteAsahMarker(
+				dataSourceId.toString(), WeDeployDataService.OSB_ASAH_DXP_RAW);
 			_deleteData(
 				dataSourceId, "osbAsahDataSourceId",
-				_dxpRawElasticsearchInvoker, "OSBAsahMarkers", "audit-events",
-				"groups", "organizations", "roles", "teams", "user-groups",
-				"users");
+				_dxpRawElasticsearchInvoker, "audit-events", "groups",
+				"organizations", "roles", "teams", "user-groups", "users");
 			_deleteData(
 				dataSourceId, "dataSourceId", _elasticsearchInvoker,
 				"organizations");
 			_deleteIndividualReferences(dataSourceId);
 		}
 		else if (providerType.equals("SALESFORCE")) {
+			_asahMarkerDog.deleteAsahMarker(
+				dataSourceId.toString(),
+				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 			_deleteAccountReferences(dataSourceId);
 			_deleteData(
 				dataSourceId, "osbAsahDataSourceId",
 				_salesforceElasticsearchInvoker, "Account", "Contact", "Lead",
-				"OSBAsahMarkers", "individuals");
+				"individuals");
 			_deleteData(
 				dataSourceId, "dataSourceId", _elasticsearchInvoker, "fields");
 		}
@@ -748,6 +752,9 @@ public class DataSourceDog {
 
 	@Autowired
 	private AccountRepository _accountRepository;
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;

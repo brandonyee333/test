@@ -14,15 +14,18 @@
 
 package com.liferay.osb.asah.common.rest.response.function;
 
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,9 +68,10 @@ public class VisitedPagesTransformationJSONArrayFunction
 	implements TransformationJSONArrayFunction {
 
 	public VisitedPagesTransformationJSONArrayFunction(
-		MembershipDog membershipDog, Long ownerId, String ownerType,
-		SegmentDog segmentDog, boolean visitedPages) {
+		AsahMarkerDog asahMarkerDog, MembershipDog membershipDog, Long ownerId,
+		String ownerType, SegmentDog segmentDog, boolean visitedPages) {
 
+		_asahMarkerDog = asahMarkerDog;
 		_membershipDog = membershipDog;
 		_ownerId = ownerId;
 		_ownerType = ownerType;
@@ -282,16 +286,20 @@ public class VisitedPagesTransformationJSONArrayFunction
 		Pair<String, SortOrder> primarySortOrderPair, int size,
 		boolean sortByVisitCount) {
 
-		JSONObject osbAsahMarkerJSONObject = elasticsearchInvoker.fetch(
-			"OSBAsahMarkers", "IndividualInterestScoresNanite");
+		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
+			"IndividualInterestScoresNanite",
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-		if (osbAsahMarkerJSONObject == null) {
+		if (asahMarker == null) {
 			return null;
 		}
 
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
+
 		BoolQueryBuilderUtil.filterTerm(
 			boolQueryBuilder, "day",
-			osbAsahMarkerJSONObject.optString("lastSuccessfulDay", null));
+			asahMarkerContextJSONObject.optString("lastSuccessfulDay", null));
 
 		SearchResponse searchResponse = elasticsearchInvoker.search(
 			collectionName,
@@ -465,6 +473,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 	private static final Pattern _pattern = Pattern.compile(
 		"\\[(?<title>[^]]+)] \\[(?<url>[^]]+)]");
 
+	private final AsahMarkerDog _asahMarkerDog;
 	private final MembershipDog _membershipDog;
 	private final Long _ownerId;
 	private final String _ownerType;

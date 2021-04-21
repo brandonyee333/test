@@ -15,9 +15,15 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import org.json.JSONObject;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,17 +33,39 @@ import org.springframework.stereotype.Component;
 public class FaroInfoInterestDog extends BaseFaroInfoDog {
 
 	public void addOrUpdateInterestThreshold(double score) {
-		elasticsearchInvoker.update(
-			"OSBAsahMarkers", "InterestThresholdScoreNanite",
-			JSONUtil.put(
-				"lastSuccessfulDay", DateUtil.newDayDateString()
-			).put(
-				"score", score
-			));
+		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
+			"InterestThresholdScoreNanite",
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+		if (asahMarker == null) {
+			_asahMarkerDog.addAsahMarker(
+				new AsahMarker(
+					"InterestThresholdScoreNanite",
+					JSONUtil.put(
+						"lastSuccessfulDay", DateUtil.newDayDateString()
+					).put(
+						"score", score
+					)),
+				WeDeployDataService.OSB_ASAH_FARO_INFO);
+		}
+		else {
+			JSONObject asahMarkerContextJSONObject =
+				asahMarker.getContextJSONObject();
+
+			asahMarkerContextJSONObject.put(
+				"lastSuccessfulDay", DateUtil.newDayDateString());
+			asahMarkerContextJSONObject.put("score", score);
+
+			_asahMarkerDog.updateAsahMarker(
+				asahMarker, WeDeployDataService.OSB_ASAH_FARO_INFO);
+		}
 	}
 
 	@CacheEvict({"getInterests", "getInterestTransformations"})
 	public void clearCache() {
 	}
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 }

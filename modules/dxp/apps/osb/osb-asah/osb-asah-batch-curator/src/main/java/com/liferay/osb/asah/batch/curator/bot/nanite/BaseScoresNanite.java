@@ -16,7 +16,9 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Map;
 
@@ -48,10 +50,10 @@ public abstract class BaseScoresNanite extends BaseNanite {
 			}
 		}
 
-		JSONObject osbAsahMarkerJSONObject = getOSBAsahMarkerJSONObject();
+		AsahMarker asahMarker = getAsahMarker();
 
 		String lastSuccessfulDayDateString = _getLastSuccessfulDayDateString(
-			contextJSONObject, osbAsahMarkerJSONObject);
+			asahMarker, contextJSONObject);
 
 		if (lastSuccessfulDayDateString == null) {
 			lastSuccessfulDayDateString = _getFirstDayDateString();
@@ -90,11 +92,14 @@ public abstract class BaseScoresNanite extends BaseNanite {
 				return;
 			}
 
-			osbAsahMarkerJSONObject.put(
+			JSONObject asahMarkerContextJSONObject =
+				asahMarker.getContextJSONObject();
+
+			asahMarkerContextJSONObject.put(
 				"lastSuccessfulDay", lastSuccessfulDayDateString);
 
-			faroInfoElasticsearchInvoker.update(
-				"OSBAsahMarkers", osbAsahMarkerJSONObject);
+			asahMarkerDog.updateAsahMarker(
+				asahMarker, WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 			afterOSBAsahMarkerUpdated(lastSuccessfulDayDateString);
 
@@ -177,11 +182,14 @@ public abstract class BaseScoresNanite extends BaseNanite {
 	}
 
 	private String _getLastSuccessfulDayDateString(
-			JSONObject contextJSONObject, JSONObject osbAsahMarkerJSONObject)
+			AsahMarker asahMarker, JSONObject contextJSONObject)
 		throws Exception {
 
-		String lastSuccessfulDayDateString = osbAsahMarkerJSONObject.optString(
-			"lastSuccessfulDay", null);
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
+
+		String lastSuccessfulDayDateString =
+			asahMarkerContextJSONObject.optString("lastSuccessfulDay", null);
 
 		if (contextJSONObject != null) {
 			synchronized (this) {
@@ -204,11 +212,11 @@ public abstract class BaseScoresNanite extends BaseNanite {
 
 					lastSuccessfulDayDateString = reprocessDayDateString;
 
-					osbAsahMarkerJSONObject.put(
+					asahMarkerContextJSONObject.put(
 						"lastSuccessfulDay", lastSuccessfulDayDateString);
 
-					faroInfoElasticsearchInvoker.update(
-						"OSBAsahMarkers", osbAsahMarkerJSONObject);
+					asahMarkerDog.updateAsahMarker(
+						asahMarker, WeDeployDataService.OSB_ASAH_FARO_INFO);
 				}
 			}
 		}

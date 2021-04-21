@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.upgrade.v2_11_0;
 
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -42,7 +43,8 @@ public class EngagementsUpgradeStep implements UpgradeStep {
 			true, "run-logs");
 
 		for (String naniteClassName : _NANITE_CLASS_NAMES) {
-			_elasticsearchInvoker.delete("OSBAsahMarkers", naniteClassName);
+			_asahMarkerDog.deleteAsahMarker(
+				naniteClassName, WeDeployDataService.OSB_ASAH_FARO_INFO);
 		}
 	}
 
@@ -51,6 +53,9 @@ public class EngagementsUpgradeStep implements UpgradeStep {
 		"IndividualEngagementScoresNanite",
 		"IndividualSegmentEngagementScoresNanite"
 	};
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;

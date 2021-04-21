@@ -14,7 +14,8 @@
 
 package com.liferay.osb.asah.common.upgrade;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
@@ -49,15 +50,18 @@ public class UpgradeCheck {
 			try {
 				ProjectIdThreadLocal.setProjectId(project.getId());
 
-				JSONObject osbAsahMarkerJSONObject =
-					_elasticsearchInvoker.fetch("OSBAsahMarkers", "Upgrade");
+				AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
+					"Upgrade", WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-				if (osbAsahMarkerJSONObject == null) {
+				if (asahMarker == null) {
 					continue;
 				}
 
+				JSONObject asahMarkerContextJSONObject =
+					asahMarker.getContextJSONObject();
+
 				if (!Objects.equals(
-						osbAsahMarkerJSONObject.optString("version"),
+						asahMarkerContextJSONObject.optString("version"),
 						ReleaseInfo.getVersion())) {
 
 					return false;
@@ -94,8 +98,8 @@ public class UpgradeCheck {
 
 	private static final Log _log = LogFactory.getLog(UpgradeCheck.class);
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
 	private ProjectDog _projectDog;

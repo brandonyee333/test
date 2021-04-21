@@ -15,8 +15,9 @@
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -25,6 +26,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -51,13 +53,17 @@ public class FaroInfoInterestsFilterStringConverterHelper
 				"Invalid field name :" + fieldName);
 		}
 
-		JSONObject osbAsahMarkerJSONObject = _elasticsearchInvoker.fetch(
-			"OSBAsahMarkers", "IndividualInterestScoresNanite");
+		AsahMarker asahMarker = _asahMarkerDog.getAsahMarker(
+			"IndividualInterestScoresNanite",
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
 
 		return BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery(
 				"dateRecorded",
-				osbAsahMarkerJSONObject.getString("lastSuccessfulDay"))
+				asahMarkerContextJSONObject.getString("lastSuccessfulDay"))
 		).filter(
 			QueryBuilders.rangeQuery(
 				"score"
@@ -67,7 +73,7 @@ public class FaroInfoInterestsFilterStringConverterHelper
 		);
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 }

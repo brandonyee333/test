@@ -15,9 +15,11 @@
 package com.liferay.osb.asah.salesforce.extractor.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ArrayUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -159,13 +161,16 @@ public class SalesforceExtractorNanite implements Nanite {
 
 	private Object[] _buildRunLogAdditionalFields(
 			List<DescribeSObjectResult> describeSObjectResults,
-			JSONObject osbAsahMarkerJSONObject)
+			AsahMarker asahMarker)
 		throws Exception {
 
 		Object[] runLogAdditionalFields =
 			new Object[4 * describeSObjectResults.size()];
 
-		JSONObject tablesJSONObject = osbAsahMarkerJSONObject.getJSONObject(
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
+
+		JSONObject tablesJSONObject = asahMarkerContextJSONObject.getJSONObject(
 			"tables");
 
 		for (int i = 0; i < describeSObjectResults.size(); i++) {
@@ -223,15 +228,17 @@ public class SalesforceExtractorNanite implements Nanite {
 		return runLogAdditionalFields;
 	}
 
-	private void _deleteStaleTables(
-			JSONObject osbAsahMarkerJSONObject, String[] tableNames)
+	private void _deleteStaleTables(AsahMarker asahMarker, String[] tableNames)
 		throws Exception {
 
 		boolean deletedStaleTable = false;
 
 		Set<String> tableNamesSet = new HashSet<>(Arrays.asList(tableNames));
 
-		JSONObject tablesJSONObject = osbAsahMarkerJSONObject.getJSONObject(
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
+
+		JSONObject tablesJSONObject = asahMarkerContextJSONObject.getJSONObject(
 			"tables");
 
 		Set<String> keySet = tablesJSONObject.keySet();
@@ -272,7 +279,7 @@ public class SalesforceExtractorNanite implements Nanite {
 
 				if (_log.isInfoEnabled()) {
 					String osbAsahDataSourceId =
-						osbAsahMarkerJSONObject.getString(
+						asahMarkerContextJSONObject.getString(
 							"osbAsahDataSourceId");
 
 					_log.info(
@@ -291,11 +298,27 @@ public class SalesforceExtractorNanite implements Nanite {
 		}
 
 		if (deletedStaleTable) {
-			osbAsahMarkerJSONObject.put("tables", tablesJSONObject);
+			asahMarkerContextJSONObject.put("tables", tablesJSONObject);
 
-			_elasticsearchInvoker.replace(
-				"OSBAsahMarkers", osbAsahMarkerJSONObject);
+			_asahMarkerDog.updateAsahMarker(
+				asahMarker, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 		}
+	}
+
+	private AsahMarker _getAsahMarker() {
+		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
+			_salesforceExtractorConfiguration.getDataSourceId(),
+			WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+
+		if (asahMarker == null) {
+			asahMarker = _asahMarkerDog.addAsahMarker(
+				new AsahMarker(
+					_salesforceExtractorConfiguration.getDataSourceId(),
+					JSONUtil.put("tables", new JSONObject())),
+				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+		}
+
+		return asahMarker;
 	}
 
 	private File _getFile(
@@ -313,24 +336,6 @@ public class SalesforceExtractorNanite implements Nanite {
 
 			return file;
 		}
-	}
-
-	private JSONObject _getOSBAsahMarkerJSONObject() {
-		JSONObject osbAsahMarkerJSONObject = _elasticsearchInvoker.fetch(
-			"OSBAsahMarkers", _osbAsahDataSourceIdTermQueryBuilder);
-
-		if (osbAsahMarkerJSONObject == null) {
-			osbAsahMarkerJSONObject = new JSONObject();
-
-			_setOSBAsahDataSourceId(osbAsahMarkerJSONObject);
-
-			osbAsahMarkerJSONObject.put("tables", new JSONObject());
-
-			return _elasticsearchInvoker.add(
-				"OSBAsahMarkers", osbAsahMarkerJSONObject);
-		}
-
-		return osbAsahMarkerJSONObject;
 	}
 
 	private Date _getStartDate(Date endDate, long startTime) {
@@ -421,10 +426,12 @@ public class SalesforceExtractorNanite implements Nanite {
 	}
 
 	private void _populateNewTable(
-		DescribeSObjectResult describeSObjectResult,
-		JSONObject osbAsahMarkerJSONObject) {
+		AsahMarker asahMarker, DescribeSObjectResult describeSObjectResult) {
 
-		JSONObject tablesJSONObject = osbAsahMarkerJSONObject.getJSONObject(
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
+
+		JSONObject tablesJSONObject = asahMarkerContextJSONObject.getJSONObject(
 			"tables");
 
 		if (!_isNewTable(describeSObjectResult, tablesJSONObject)) {
@@ -498,10 +505,10 @@ public class SalesforceExtractorNanite implements Nanite {
 					"lastSuccessfulUpdatedTime", lastSuccessfulDate.getTime()
 				));
 
-			osbAsahMarkerJSONObject.put("tables", tablesJSONObject);
+			asahMarkerContextJSONObject.put("tables", tablesJSONObject);
 
-			_elasticsearchInvoker.replace(
-				"OSBAsahMarkers", osbAsahMarkerJSONObject);
+			_asahMarkerDog.updateAsahMarker(
+				asahMarker, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 		}
 		catch (Exception e) {
 			if (e instanceof InterruptBotException) {
@@ -601,7 +608,7 @@ public class SalesforceExtractorNanite implements Nanite {
 	private void _run() throws Exception {
 		long time = System.currentTimeMillis();
 
-		JSONObject osbAsahMarkerJSONObject = _getOSBAsahMarkerJSONObject();
+		AsahMarker asahMarker = _getAsahMarker();
 
 		String[] tableNames = _tableNames;
 
@@ -616,8 +623,7 @@ public class SalesforceExtractorNanite implements Nanite {
 		_runLogDog.log(
 			Long.valueOf(_salesforceExtractorConfiguration.getDataSourceId()),
 			this, "STARTED", WeDeployDataService.OSB_ASAH_SALESFORCE_RAW,
-			_buildRunLogAdditionalFields(
-				describeSObjectResults, osbAsahMarkerJSONObject));
+			_buildRunLogAdditionalFields(describeSObjectResults, asahMarker));
 
 		try {
 			for (DescribeSObjectResult describeSObjectResult :
@@ -625,8 +631,7 @@ public class SalesforceExtractorNanite implements Nanite {
 
 				_throwNewInterruptBotException();
 
-				_populateNewTable(
-					describeSObjectResult, osbAsahMarkerJSONObject);
+				_populateNewTable(asahMarker, describeSObjectResult);
 			}
 
 			for (DescribeSObjectResult describeSObjectResult :
@@ -634,13 +639,12 @@ public class SalesforceExtractorNanite implements Nanite {
 
 				_throwNewInterruptBotException();
 
-				_syncExistingTable(
-					describeSObjectResult, osbAsahMarkerJSONObject);
+				_syncExistingTable(asahMarker, describeSObjectResult);
 			}
 
 			_throwNewInterruptBotException();
 
-			_deleteStaleTables(osbAsahMarkerJSONObject, tableNames);
+			_deleteStaleTables(asahMarker, tableNames);
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
@@ -673,18 +677,14 @@ public class SalesforceExtractorNanite implements Nanite {
 		}
 	}
 
-	private void _setOSBAsahDataSourceId(JSONObject jsonObject) {
-		jsonObject.put(
-			"osbAsahDataSourceId",
-			_salesforceExtractorConfiguration.getDataSourceId());
-	}
-
 	private void _syncExistingTable(
-			DescribeSObjectResult describeSObjectResult,
-			JSONObject osbAsahMarkerJSONObject)
+			AsahMarker asahMarker, DescribeSObjectResult describeSObjectResult)
 		throws Exception {
 
-		JSONObject tablesJSONObject = osbAsahMarkerJSONObject.getJSONObject(
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
+
+		JSONObject tablesJSONObject = asahMarkerContextJSONObject.getJSONObject(
 			"tables");
 
 		JSONObject tableJSONObject = tablesJSONObject.getJSONObject(
@@ -789,10 +789,10 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		tablesJSONObject.put(describeSObjectResult.getName(), tableJSONObject);
 
-		osbAsahMarkerJSONObject.put("tables", tablesJSONObject);
+		asahMarkerContextJSONObject.put("tables", tablesJSONObject);
 
-		_elasticsearchInvoker.replace(
-			"OSBAsahMarkers", osbAsahMarkerJSONObject);
+		_asahMarkerDog.updateAsahMarker(
+			asahMarker, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
@@ -858,10 +858,10 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		tablesJSONObject.put(describeSObjectResult.getName(), tableJSONObject);
 
-		osbAsahMarkerJSONObject.put("tables", tablesJSONObject);
+		asahMarkerContextJSONObject.put("tables", tablesJSONObject);
 
-		_elasticsearchInvoker.replace(
-			"OSBAsahMarkers", osbAsahMarkerJSONObject);
+		_asahMarkerDog.updateAsahMarker(
+			asahMarker, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 	}
 
 	private void _throwNewInterruptBotException() {
@@ -897,6 +897,9 @@ public class SalesforceExtractorNanite implements Nanite {
 
 	private static final Log _log = LogFactory.getLog(
 		SalesforceExtractorNanite.class);
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;

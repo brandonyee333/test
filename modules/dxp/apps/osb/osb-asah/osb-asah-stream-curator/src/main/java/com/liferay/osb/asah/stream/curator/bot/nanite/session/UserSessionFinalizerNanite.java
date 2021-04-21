@@ -19,11 +19,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.date.CountdownTimer;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -91,10 +92,13 @@ public class UserSessionFinalizerNanite implements Nanite {
 	}
 
 	public void run(boolean force) throws Exception {
-		JSONObject osbAsahMarkerJSONObject = _getOSBAsahMarkerJSONObject();
+		AsahMarker asahMarker = _getAsahMarker();
+
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
 
 		String lastSuccessfulSessionFinalizerDate =
-			osbAsahMarkerJSONObject.optString(
+			asahMarkerContextJSONObject.optString(
 				"lastSuccessfulSessionFinalizerDate", "now-30m");
 
 		String dateString = DateUtil.newDateString();
@@ -153,25 +157,24 @@ public class UserSessionFinalizerNanite implements Nanite {
 			}
 		}
 
-		_cerebroInfoElasticsearchInvoker.update(
-			"OSBAsahMarkers",
-			osbAsahMarkerJSONObject.put(
-				"lastSuccessfulSessionFinalizerDate", dateString));
+		asahMarkerContextJSONObject.put(
+			"lastSuccessfulSessionFinalizerDate", dateString);
+
+		_asahMarkerDog.updateAsahMarker(
+			asahMarker, WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
 	}
 
-	private JSONObject _getOSBAsahMarkerJSONObject() {
-		JSONObject osbAsahMarkerJSONObject =
-			_cerebroInfoElasticsearchInvoker.fetch(
-				"OSBAsahMarkers", "SessionNanite");
+	private AsahMarker _getAsahMarker() {
+		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
+			"SessionNanite", WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
 
-		if (osbAsahMarkerJSONObject == null) {
-			osbAsahMarkerJSONObject = JSONUtil.put("id", "SessionNanite");
-
-			_cerebroInfoElasticsearchInvoker.add(
-				"OSBAsahMarkers", osbAsahMarkerJSONObject);
+		if (asahMarker == null) {
+			asahMarker = _asahMarkerDog.addAsahMarker(
+				new AsahMarker("SessionNanite"),
+				WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
 		}
 
-		return osbAsahMarkerJSONObject;
+		return asahMarker;
 	}
 
 	private QueryBuilder _getQueryBuilder(boolean force) {
@@ -202,6 +205,9 @@ public class UserSessionFinalizerNanite implements Nanite {
 
 	private static final Log _log = LogFactory.getLog(
 		UserSessionFinalizerNanite.class);
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;

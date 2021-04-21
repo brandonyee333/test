@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -125,26 +128,23 @@ public abstract class BaseNanite implements Nanite {
 		}
 	}
 
-	protected abstract Log getLog();
-
-	protected JSONObject getOSBAsahMarkerJSONObject() {
+	protected AsahMarker getAsahMarker() {
 		Class<?> clazz = getClass();
 
-		JSONObject osbAsahMarkerJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"OSBAsahMarkers", clazz.getSimpleName());
+		AsahMarker asahMarker = asahMarkerDog.fetchAsahMarker(
+			clazz.getSimpleName(), WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-		if (osbAsahMarkerJSONObject == null) {
-			osbAsahMarkerJSONObject = new JSONObject();
-
-			osbAsahMarkerJSONObject.put("id", clazz.getSimpleName());
-			osbAsahMarkerJSONObject.put("type", "nanite");
-
-			faroInfoElasticsearchInvoker.add(
-				"OSBAsahMarkers", osbAsahMarkerJSONObject);
+		if (asahMarker == null) {
+			asahMarker = asahMarkerDog.addAsahMarker(
+				new AsahMarker(
+					clazz.getSimpleName(), JSONUtil.put("type", "nanite")),
+				WeDeployDataService.OSB_ASAH_FARO_INFO);
 		}
 
-		return osbAsahMarkerJSONObject;
+		return asahMarker;
 	}
+
+	protected abstract Log getLog();
 
 	protected void monitorProcessedCount(int count) {
 		Class<?> clazz = getClass();
@@ -161,6 +161,9 @@ public abstract class BaseNanite implements Nanite {
 
 		child.set(size);
 	}
+
+	@Autowired
+	protected AsahMarkerDog asahMarkerDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;

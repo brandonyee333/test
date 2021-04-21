@@ -16,7 +16,9 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Date;
 
@@ -41,9 +43,12 @@ public class StaleDynamicIndividualSegmentsNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		JSONObject osbAsahMarkerJSONObject = getOSBAsahMarkerJSONObject();
+		AsahMarker asahMarker = getAsahMarker();
 
-		String lastRunDateString = osbAsahMarkerJSONObject.optString(
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
+
+		String lastRunDateString = asahMarkerContextJSONObject.optString(
 			"lastRunDate", null);
 
 		if (lastRunDateString != null) {
@@ -76,10 +81,11 @@ public class StaleDynamicIndividualSegmentsNanite extends BaseNanite {
 				"removeFilter", sb.toString()
 			));
 
-		osbAsahMarkerJSONObject.put("lastRunDate", DateUtil.newDayDateString());
+		asahMarkerContextJSONObject.put(
+			"lastRunDate", DateUtil.newDayDateString());
 
-		faroInfoElasticsearchInvoker.update(
-			"OSBAsahMarkers", osbAsahMarkerJSONObject);
+		asahMarkerDog.updateAsahMarker(
+			asahMarker, WeDeployDataService.OSB_ASAH_FARO_INFO);
 	}
 
 	@Override

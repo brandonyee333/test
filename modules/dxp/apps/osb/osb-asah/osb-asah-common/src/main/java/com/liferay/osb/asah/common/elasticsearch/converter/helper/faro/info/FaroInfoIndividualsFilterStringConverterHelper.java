@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -23,6 +24,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
@@ -729,12 +731,20 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			throw new IllegalArgumentException("Expecting score filter");
 		}
 
-		JSONObject interestThresholdScoreNaniteJSONObject =
-			_faroInfoElasticsearchInvoker.fetch(
-				"OSBAsahMarkers", "InterestThresholdScoreNanite");
+		AsahMarker interestThresholdScoreNaniteAsahMarker =
+			_asahMarkerDog.fetchAsahMarker(
+				"InterestThresholdScoreNanite",
+				WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-		if ((interestThresholdScoreNaniteJSONObject == null) ||
-			!interestThresholdScoreNaniteJSONObject.has("score")) {
+		if (interestThresholdScoreNaniteAsahMarker == null) {
+			return BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery());
+		}
+
+		JSONObject interestThresholdScoreNaniteAsahMarkerContextJSONObject =
+			interestThresholdScoreNaniteAsahMarker.getContextJSONObject();
+
+		if (!interestThresholdScoreNaniteAsahMarkerContextJSONObject.has(
+				"score")) {
 
 			return BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery());
 		}
@@ -747,19 +757,24 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 		boolean interested = Boolean.parseBoolean(matcher.group(2));
 
-		double value = interestThresholdScoreNaniteJSONObject.optDouble(
-			"score", 0.0);
+		double value =
+			interestThresholdScoreNaniteAsahMarkerContextJSONObject.optDouble(
+				"score", 0.0);
 
-		JSONObject individualInterestScoresNaniteJSONObject =
-			_faroInfoElasticsearchInvoker.fetch(
-				"OSBAsahMarkers", "IndividualInterestScoresNanite");
+		AsahMarker individualInterestScoresNaniteAsahMarker =
+			_asahMarkerDog.fetchAsahMarker(
+				"IndividualInterestScoresNanite",
+				WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-		if (individualInterestScoresNaniteJSONObject == null) {
+		if (individualInterestScoresNaniteAsahMarker == null) {
 			return _getInterestCriteriaQueryBuilderWhenNoInterests(
 				interested, value);
 		}
 
-		if (!individualInterestScoresNaniteJSONObject.has(
+		JSONObject individualInterestScoresNaniteAsahMarkerContextJSONObject =
+			individualInterestScoresNaniteAsahMarker.getContextJSONObject();
+
+		if (!individualInterestScoresNaniteAsahMarkerContextJSONObject.has(
 				"lastSuccessfulDay")) {
 
 			return _getInterestCriteriaQueryBuilderWhenNoInterests(
@@ -918,6 +933,9 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			add("ne");
 		}
 	};
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticSearchInvoker;

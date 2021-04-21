@@ -237,9 +237,9 @@ public class AdminRestController extends BaseRestController {
 
 		_naniteListSchema.validate(jsonArray);
 
-		_faroElasticsearchInvoker.delete(
-			"OSBAsahMarkers",
-			QueryBuilders.termsQuery("id", JSONUtil.toStringList(jsonArray)));
+		asahMarkerDog.deleteAsahMarkers(
+			JSONUtil.toStringList(jsonArray),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		_nanitesHttp.run(jsonArray);
 	}
@@ -448,9 +448,6 @@ public class AdminRestController extends BaseRestController {
 
 	private final Map<String, ElasticsearchInvoker> _elasticsearchInvokers =
 		new HashMap<>();
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroElasticsearchInvoker;
 
 	@Autowired
 	private MembershipChangeRepository _membershipChangeRepository;

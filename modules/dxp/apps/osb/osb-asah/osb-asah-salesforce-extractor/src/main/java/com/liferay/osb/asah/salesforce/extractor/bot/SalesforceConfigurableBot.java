@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -189,6 +190,7 @@ public class SalesforceConfigurableBot {
 		for (Project project : projects) {
 			SalesforceBotRunnable salesforceBotRunnable =
 				new SalesforceBotRunnable(
+					_asahMarkerDog,
 					_salesforceExtractorConfigurationManagerImpl,
 					_salesforceRawElasticsearchInvoker, project, this);
 
@@ -229,6 +231,9 @@ public class SalesforceConfigurableBot {
 	private static final Gauge _threadPoolSizeGauge = PrometheusUtil.gauge(
 		"extractor_thread_pool_size",
 		"The number of threads in extractor's thread pool", "bot");
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
 	private AutowireCapableBeanFactory _autowireCapableBeanFactory;

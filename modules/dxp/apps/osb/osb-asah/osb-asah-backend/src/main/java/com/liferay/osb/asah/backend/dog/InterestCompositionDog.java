@@ -17,10 +17,12 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.model.Composition;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.Sort;
@@ -278,14 +280,18 @@ public class InterestCompositionDog {
 		BoolQueryBuilderUtil.filterTerms(
 			boolQueryBuilder, "ownerId", individualIds);
 
-		JSONObject osbAsahMarkerJSONObject =
-			_faroInfoElasticsearchInvoker.fetch(
-				"OSBAsahMarkers", "IndividualInterestScoresNanite");
+		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
+			"IndividualInterestScoresNanite",
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-		if (osbAsahMarkerJSONObject != null) {
+		if (asahMarker != null) {
+			JSONObject asahMarkerContextJSONObject =
+				asahMarker.getContextJSONObject();
+
 			BoolQueryBuilderUtil.filterTerm(
 				boolQueryBuilder, "dateRecorded",
-				osbAsahMarkerJSONObject.optString("lastSuccessfulDay", null));
+				asahMarkerContextJSONObject.optString(
+					"lastSuccessfulDay", null));
 		}
 
 		if (!StringUtils.isBlank(keywords)) {
@@ -310,13 +316,18 @@ public class InterestCompositionDog {
 	private QueryBuilder _getInterestThresholdQueryBuilder(
 		QueryBuilder queryBuilder) {
 
-		JSONObject osbAsahMarkerJSONObject =
-			_faroInfoElasticsearchInvoker.fetch(
-				"OSBAsahMarkers", "InterestThresholdScoreNanite");
+		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
+			"InterestThresholdScoreNanite",
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-		if ((osbAsahMarkerJSONObject == null) ||
-			!osbAsahMarkerJSONObject.has("score")) {
+		if (asahMarker == null) {
+			return queryBuilder;
+		}
 
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
+
+		if (!asahMarkerContextJSONObject.has("score")) {
 			return queryBuilder;
 		}
 
@@ -324,7 +335,7 @@ public class InterestCompositionDog {
 			QueryBuilders.rangeQuery(
 				"score"
 			).gte(
-				osbAsahMarkerJSONObject.getDouble("score")
+				asahMarkerContextJSONObject.getDouble("score")
 			));
 
 		if (queryBuilder == null) {
@@ -333,6 +344,9 @@ public class InterestCompositionDog {
 
 		return boolQueryBuilder.filter(queryBuilder);
 	}
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
