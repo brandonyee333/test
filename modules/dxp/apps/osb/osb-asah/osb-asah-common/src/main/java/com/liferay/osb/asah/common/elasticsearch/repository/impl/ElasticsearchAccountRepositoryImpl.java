@@ -211,25 +211,23 @@ public class ElasticsearchAccountRepositoryImpl
 		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
 			filterString);
 
-		if (channelId != null) {
-			if (queryBuilder != null) {
-				queryBuilder = BoolQueryBuilderUtil.filter(
-					queryBuilder
-				).filter(
-					QueryBuilders.nestedQuery(
-						"individualCounts",
-						QueryBuilders.termQuery(
-							"individualCounts.channelId", channelId),
-						ScoreMode.None)
-				);
-			}
-			else {
-				queryBuilder = QueryBuilders.nestedQuery(
+		if ((queryBuilder != null) && (channelId != null)) {
+			queryBuilder = BoolQueryBuilderUtil.filter(
+				queryBuilder
+			).filter(
+				QueryBuilders.nestedQuery(
 					"individualCounts",
 					QueryBuilders.termQuery(
 						"individualCounts.channelId", channelId),
-					ScoreMode.None);
-			}
+					ScoreMode.None)
+			);
+		}
+		else if (channelId != null) {
+			queryBuilder = QueryBuilders.nestedQuery(
+				"individualCounts",
+				QueryBuilders.termQuery(
+					"individualCounts.channelId", channelId),
+				ScoreMode.None);
 		}
 
 		TransformationGetResponse transformationGetResponse =
