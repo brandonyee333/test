@@ -135,6 +135,19 @@ public class EventDefinitionDog {
 				blocked, keyword, type));
 	}
 
+	public void unblockEventDefinitions(List<Long> eventDefinitionIds) {
+		long count = _eventDefinitionRepository.countEventDefinitions(
+			false, null, EventDefinition.Type.CUSTOM);
+
+		if ((count + eventDefinitionIds.size()) > _EVENT_DEFINITION_THRESHOLD) {
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"Processing request will exceed custom event definition limit");
+		}
+
+		eventDefinitionIds.forEach(this::_unblockEventDefinition);
+	}
+
 	public EventDefinition updateEventDefinition(
 		BlockedEventDefinition blockedEventDefinition, String description,
 		String displayName, Long eventDefinitionId) {
@@ -220,6 +233,17 @@ public class EventDefinitionDog {
 		}
 
 		return displayName;
+	}
+
+	private void _unblockEventDefinition(Long eventDefinitionId) {
+		EventDefinition eventDefinition = getEventDefinition(eventDefinitionId);
+
+		eventDefinition.setBlocked(false);
+		eventDefinition.setBlockedEventDefinition(null);
+		eventDefinition.setDisplayName(
+			_getDisplayName(null, eventDefinition.getName()));
+
+		_eventDefinitionRepository.save(eventDefinition);
 	}
 
 	private void _validate(Sort sort) {
