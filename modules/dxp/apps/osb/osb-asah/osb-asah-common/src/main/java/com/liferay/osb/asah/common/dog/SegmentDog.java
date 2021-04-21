@@ -365,14 +365,14 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public Page<Segment> searchAccountSegmentsPage(
-			Long accountId, @Nullable String filterString, int page, int size,
-			@Nullable String[] sorts)
-		throws Exception {
+		Long accountId, @Nullable String filterString, int page, int size,
+		@Nullable String[] sorts) {
 
 		Segment segment = fetchSegment("Account: " + accountId, "INACTIVE");
 
 		if (segment == null) {
-			throw new Exception(
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
 				"Unable to find individual segment associated with account " +
 					accountId);
 		}

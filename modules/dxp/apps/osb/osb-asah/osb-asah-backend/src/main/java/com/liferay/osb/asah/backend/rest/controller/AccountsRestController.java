@@ -102,13 +102,11 @@ public class AccountsRestController extends BaseRestController {
 
 	@GetMapping(params = "!apply", value = "/{id}/individual-segments")
 	public PageDTO<SegmentDTO> getSegmentDTOsPageDTO(
-			@PathVariable Long id,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
+		@PathVariable Long id,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return _toSegmentPageDTO(
 			_segmentDog.searchAccountSegmentsPage(
