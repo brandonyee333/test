@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -92,7 +93,7 @@ public class ElasticsearchEventRepositoryImpl implements EventRepository {
 	}
 
 	@Override
-	public Event findLastSeenEvent(Long eventDefinitionId) {
+	public Optional<Event> findLastSeenEvent(@Nullable Long eventDefinitionId) {
 		throw new UnsupportedOperationException();
 	}
 

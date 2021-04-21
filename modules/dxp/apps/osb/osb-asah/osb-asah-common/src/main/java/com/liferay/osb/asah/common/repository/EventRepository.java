@@ -18,10 +18,12 @@ import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -39,6 +41,6 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 		@Param("eventAttributeDefinitionId") Long eventAttributeDefinitionId,
 		@Param("size") int size);
 
-	public Event findLastSeenEvent(Long eventDefinitionId);
+	public Optional<Event> findLastSeenEvent(@Nullable Long eventDefinitionId);
 
 }

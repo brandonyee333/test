@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.Event;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -27,6 +28,7 @@ import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Leslie Wong
@@ -40,7 +42,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public Event findLastSeenEvent(Long eventDefinitionId) {
+	public Optional<Event> findLastSeenEvent(@Nullable Long eventDefinitionId) {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		Field<?> field = DSL.field("eventDate");
@@ -53,7 +55,7 @@ public class EventRepositoryImpl extends BaseRepository {
 			field.desc()
 		).limit(
 			1
-		).fetchOne(
+		).fetchOptional(
 			record -> new Event(record.intoMap())
 		);
 	}
