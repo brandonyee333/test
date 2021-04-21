@@ -160,8 +160,8 @@ public class SalesforceExtractorNanite implements Nanite {
 	}
 
 	private Object[] _buildRunLogAdditionalFields(
-			List<DescribeSObjectResult> describeSObjectResults,
-			AsahMarker asahMarker)
+			AsahMarker asahMarker,
+			List<DescribeSObjectResult> describeSObjectResults)
 		throws Exception {
 
 		Object[] runLogAdditionalFields =
@@ -623,7 +623,7 @@ public class SalesforceExtractorNanite implements Nanite {
 		_runLogDog.log(
 			Long.valueOf(_salesforceExtractorConfiguration.getDataSourceId()),
 			this, "STARTED", WeDeployDataService.OSB_ASAH_SALESFORCE_RAW,
-			_buildRunLogAdditionalFields(describeSObjectResults, asahMarker));
+			_buildRunLogAdditionalFields(asahMarker, describeSObjectResults));
 
 		try {
 			for (DescribeSObjectResult describeSObjectResult :
