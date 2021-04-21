@@ -15,12 +15,15 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.model.Transformation;
 
 import java.util.List;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -32,12 +35,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FieldRepository extends CrudRepository<Field, Long> {
 
+	public long countFields(@Nullable String filterString);
+
 	public boolean existsByDataSourceId(Long dataSourceId);
 
 	public List<Field>
 		findByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
-			String context, Long dataSourceId, String name, Long ownerId,
-			String ownerType);
+			String context, @Nullable Long dataSourceId, @Nullable String name,
+			@Nullable Long ownerId, String ownerType);
 
 	public List<Field>
 		findByContextAndDataSourceIdNotAndNameNotInAndOwnerIdAndOwnerType(
@@ -52,5 +57,11 @@ public interface FieldRepository extends CrudRepository<Field, Long> {
 
 	public List<Field> findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
 		@Param("context") String context, @Param("ownerId") Long ownerId);
+
+	public List<Transformation> getFieldTransformations(
+		String apply, @Nullable String filterString, Pageable pageable);
+
+	public List<Field> searchFields(
+		@Nullable String filterString, Pageable pageable);
 
 }

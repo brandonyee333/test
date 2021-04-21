@@ -22,9 +22,12 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Rachael Koestartyo
@@ -50,6 +53,10 @@ public class FieldDTO {
 		_value = field.getValue();
 	}
 
+	public FieldDTO(List<Field> fields) {
+		_fieldDTOs = SetUtil.map(fields, FieldDTO::new);
+	}
+
 	@JsonProperty("context")
 	public String getContext() {
 		return _context;
@@ -63,6 +70,11 @@ public class FieldDTO {
 	@JsonProperty("dataSourceName")
 	public String getDataSourceName() {
 		return _dataSourceName;
+	}
+
+	@JsonProperty("fields")
+	public Set<FieldDTO> getFieldDTOs() {
+		return _fieldDTOs;
 	}
 
 	@JsonProperty("fieldType")
@@ -117,6 +129,7 @@ public class FieldDTO {
 	private String _context;
 	private String _dataSourceId;
 	private String _dataSourceName;
+	private Set<FieldDTO> _fieldDTOs;
 	private String _fieldType;
 	private String _id;
 	private Date _modifiedDate;

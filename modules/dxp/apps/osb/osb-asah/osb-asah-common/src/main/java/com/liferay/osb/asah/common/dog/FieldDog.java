@@ -20,12 +20,14 @@ import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -59,8 +61,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -194,6 +201,35 @@ public class FieldDog {
 		return _fieldRepository.
 			findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
 				context, ownerId);
+	}
+
+	public Page<Transformation> getTransformationsPage(
+		String apply, @Nullable String filterString, int page, int size) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size,
+			SortUtil.getSort(
+				Sort.by(Sort.Order.desc("totalElements")),
+				new String[] {"totalElements", "desc", "terms", "asc"}));
+
+		List<Transformation> transformations =
+			_fieldRepository.getFieldTransformations(
+				apply, filterString, pageRequest);
+
+		return PageableExecutionUtils.getPage(
+			transformations, pageRequest, transformations::size);
+	}
+
+	public Page<Field> searchFieldsPage(
+		@Nullable String filterString, int page, int size,
+		@Nullable String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size, SortUtil.getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_fieldRepository.searchFields(filterString, pageRequest),
+			pageRequest, () -> _fieldRepository.countFields(filterString));
 	}
 
 	public JSONObject updateContextFields(

@@ -16,11 +16,25 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
+import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
+import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -29,6 +43,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -44,6 +61,13 @@ public class ElasticsearchFieldRepositoryImpl
 	implements FieldRepository {
 
 	@Override
+	public long countFields(@Nullable String filterString) {
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(),
+			FilterStringToQueryBuilderConverter.convert(filterString));
+	}
+
+	@Override
 	public boolean existsByDataSourceId(Long dataSourceId) {
 		return _faroInfoElasticsearchInvoker.exists(
 			getCollectionName(),
@@ -53,8 +77,8 @@ public class ElasticsearchFieldRepositoryImpl
 	@Override
 	public List<Field>
 		findByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
-			String context, Long dataSourceId, String name, Long ownerId,
-			String ownerType) {
+			String context, @Nullable Long dataSourceId, @Nullable String name,
+			@Nullable Long ownerId, String ownerType) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("context", context)
@@ -153,6 +177,95 @@ public class ElasticsearchFieldRepositoryImpl
 		return toList(fieldsJSONArray);
 	}
 
+	public List<Transformation> getFieldTransformations(
+		String apply, @Nullable String filterString, Pageable pageable) {
+
+		TransformationGetResponse transformationGetResponse =
+			new TransformationGetResponse();
+
+		transformationGetResponse.setCollectionName(getCollectionName());
+		transformationGetResponse.setElasticsearchInvoker(
+			_faroInfoElasticsearchInvoker);
+		transformationGetResponse.setPage(pageable.getPageNumber());
+		transformationGetResponse.setQueryBuilder(
+			FilterStringToQueryBuilderConverter.convert(filterString));
+		transformationGetResponse.setSize(pageable.getPageSize());
+		transformationGetResponse.setSorts(
+			new HashMap<String, String>() {
+				{
+					put("terms", "_key");
+					put("totalElements", "_count");
+				}
+			},
+			_getSorts(pageable.getSort()));
+		transformationGetResponse.setTransformationJSONArrayFunction(
+			new TermsAggregationTransformationJSONArrayFunction(apply, null));
+		transformationGetResponse.setTransformationName(
+			"field-transformations");
+
+		JSONObject jsonObject = null;
+
+		try {
+			jsonObject = new JSONObject(transformationGetResponse.respond());
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			return Collections.emptyList();
+		}
+
+		JSONObject embeddedJSONObject = jsonObject.getJSONObject("_embedded");
+
+		JSONArray fieldTransformationsJSONArray =
+			embeddedJSONObject.getJSONArray("field-transformations");
+
+		Stream<Object> stream = JSONUtil.toObjectStream(
+			fieldTransformationsJSONArray);
+
+		return stream.map(
+			object -> {
+				JSONObject curJSONObject = (JSONObject)object;
+
+				return new Transformation(
+					JSONUtil.toMap(curJSONObject.getJSONObject("terms")),
+					curJSONObject.getInt("totalElements"));
+			}
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	public List<Field> searchFields(
+		@Nullable String filterString, Pageable pageable) {
+
+		try {
+			CollectionGetResponse collectionGetResponse =
+				new CollectionGetResponse();
+
+			collectionGetResponse.setCollectionName(getCollectionName());
+			collectionGetResponse.setElasticsearchInvoker(
+				_faroInfoElasticsearchInvoker);
+			collectionGetResponse.setPage(pageable.getPageNumber());
+			collectionGetResponse.setQueryBuilder(
+				FilterStringToQueryBuilderConverter.convert(filterString));
+			collectionGetResponse.setSize(pageable.getPageSize());
+			collectionGetResponse.setSorts(_getSorts(pageable.getSort()));
+
+			JSONObject jsonObject = new JSONObject(
+				collectionGetResponse.respond());
+
+			JSONObject embeddedJSONObject = jsonObject.getJSONObject(
+				"_embedded");
+
+			return toList(embeddedJSONObject.getJSONArray(getCollectionName()));
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			return Collections.emptyList();
+		}
+	}
+
 	@Override
 	protected String getCollectionName() {
 		return "fields";
@@ -162,6 +275,30 @@ public class ElasticsearchFieldRepositoryImpl
 	protected ElasticsearchInvoker getElasticsearchInvoker() {
 		return _faroInfoElasticsearchInvoker;
 	}
+
+	private String[] _getSorts(Sort sort) {
+		if (sort == null) {
+			return null;
+		}
+
+		List<String> sorts = new LinkedList<>();
+
+		for (Sort.Order order : sort) {
+			sorts.add(order.getProperty());
+
+			if (order.isAscending()) {
+				sorts.add("asc");
+			}
+			else {
+				sorts.add("desc");
+			}
+		}
+
+		return sorts.toArray(new String[0]);
+	}
+
+	private static final Log _log = LogFactory.getLog(
+		ElasticsearchFieldRepositoryImpl.class);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
