@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.test.util.postgresql.PostgreSQLTables;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -33,8 +34,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -233,13 +232,8 @@ public class EventDefinitionDogTest {
 				false, null, 0, 3, Sort.asc("name"),
 				EventDefinition.Type.CUSTOM);
 
-		Stream<EventDefinition> stream = eventDefinitions.stream();
-
-		List<Long> eventDefinitionIds = stream.map(
-			EventDefinition::getId
-		).collect(
-			Collectors.toList()
-		);
+		List<Long> eventDefinitionIds = ListUtil.map(
+			eventDefinitions.getContent(), EventDefinition::getId);
 
 		_eventDefinitionDog.blockEventDefinitions(eventDefinitionIds);
 

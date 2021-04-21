@@ -16,13 +16,12 @@ package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,14 +41,8 @@ public class BlockEventDefinitionsMutationDataFetcher
 		List<String> eventDefinitionIdStrings =
 			dataFetchingEnvironment.getArgument("eventDefinitionIds");
 
-		Stream<String> stream = eventDefinitionIdStrings.stream();
-
 		_eventDefinitionDog.blockEventDefinitions(
-			stream.map(
-				Long::valueOf
-			).collect(
-				Collectors.toList()
-			));
+			ListUtil.map(eventDefinitionIdStrings, Long::valueOf));
 
 		return null;
 	}

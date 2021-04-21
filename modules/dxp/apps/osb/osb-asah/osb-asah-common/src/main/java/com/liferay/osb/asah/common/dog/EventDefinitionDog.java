@@ -172,9 +172,7 @@ public class EventDefinitionDog {
 	private void _blockEventDefinition(Long eventDefinitionId) {
 		EventDefinition eventDefinition = getEventDefinition(eventDefinitionId);
 
-		EventDefinition.Type eventDefinitionType = eventDefinition.getType();
-
-		if (!eventDefinitionType.equals(EventDefinition.Type.CUSTOM)) {
+		if (eventDefinition.getType() != EventDefinition.Type.CUSTOM) {
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"Event definition is not of type custom");
@@ -182,8 +180,7 @@ public class EventDefinitionDog {
 
 		eventDefinition.setBlocked(true);
 
-		Event lastSeenEvent = _eventRepository.findLastSeenEvent(
-			eventDefinitionId);
+		Event lastSeenEvent = _fetchLastSeenEvent(eventDefinitionId);
 
 		if (lastSeenEvent != null) {
 			eventDefinition.setBlockedEventDefinition(
@@ -201,6 +198,13 @@ public class EventDefinitionDog {
 		eventDefinition.setDisplayName(null);
 
 		_eventDefinitionRepository.save(eventDefinition);
+	}
+
+	private Event _fetchLastSeenEvent(Long eventDefinitionId) {
+		Optional<Event> lastSeenEventOptional =
+			_eventRepository.findLastSeenEvent(eventDefinitionId);
+
+		return lastSeenEventOptional.orElse(null);
 	}
 
 	private String _getDisplayName(String displayName, String name) {
