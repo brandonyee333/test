@@ -93,11 +93,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		Condition condition = DSL.field(
-			"id"
-		).eq(
-			fieldTable.field("ownerId")
-		);
+		Condition condition = DSL.noCondition();
 
 		if ((accountPKs != null) && !accountPKs.isEmpty()) {
 			condition = condition.and(
@@ -113,6 +109,12 @@ public class AccountRepositoryImpl extends BaseRepository {
 		).join(
 			fieldTable
 		).on(
+			DSL.field(
+				"id"
+			).eq(
+				fieldTable.field("ownerId")
+			)
+		).where(
 			condition
 		).fetchOptional(
 			0, Long.class
