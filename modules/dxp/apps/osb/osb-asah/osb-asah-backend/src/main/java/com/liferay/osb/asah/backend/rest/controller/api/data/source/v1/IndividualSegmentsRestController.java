@@ -182,6 +182,18 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		if (!segmentDog.isIncludeAnonymousUsers(id)) {
 			List<Long> individualIds = new ArrayList<>();
 
+			BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+				QueryBuilders.existsQuery("demographics.email")
+			).filter(
+				QueryBuilders.termsQuery(
+					"individualSegmentIds", String.valueOf(id))
+			);
+
+			if (StringUtils.isNotEmpty(filterString)) {
+				boolQueryBuilder.filter(
+					FilterStringToQueryBuilderConverter.convert(filterString));
+			}
+
 			SearchResponse searchResponse = faroInfoElasticsearchInvoker.search(
 				"individuals",
 				searchSourceBuilder -> {
@@ -193,13 +205,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 						).size(
 							Integer.MAX_VALUE
 						));
-					searchSourceBuilder.query(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.existsQuery("demographics.email")
-						).filter(
-							QueryBuilders.termsQuery(
-								"individualSegmentIds", String.valueOf(id))
-						));
+					searchSourceBuilder.query(boolQueryBuilder);
 					searchSourceBuilder.size(0);
 				});
 
