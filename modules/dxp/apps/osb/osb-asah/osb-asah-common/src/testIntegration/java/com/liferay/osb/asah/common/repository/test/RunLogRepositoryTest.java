@@ -67,8 +67,7 @@ public class RunLogRepositoryTest extends BaseRepositoryTestCase<RunLog> {
 		Optional<RunLog> runLogOptional =
 			_runLogRepository.
 				findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
-					Optional.of(_runLog.getDataSourceId()), "IndividualNanite",
-					Optional.empty());
+					_runLog.getDataSourceId(), "IndividualNanite", null);
 
 		Assert.assertTrue(runLogOptional.isPresent());
 		Assert.assertEquals(_runLog, runLogOptional.get());
@@ -79,8 +78,7 @@ public class RunLogRepositoryTest extends BaseRepositoryTestCase<RunLog> {
 		Optional<RunLog> runLogOptional =
 			_runLogRepository.
 				findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
-					Optional.of(_runLog.getDataSourceId()), "SegmentNanite",
-					Optional.empty());
+					_runLog.getDataSourceId(), "SegmentNanite", null);
 
 		Assert.assertFalse(runLogOptional.isPresent());
 	}
@@ -90,7 +88,7 @@ public class RunLogRepositoryTest extends BaseRepositoryTestCase<RunLog> {
 		Optional<RunLog> runLogOptional =
 			_runLogRepository.
 				findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
-					Optional.empty(), "IndividualNanite", Optional.empty());
+					null, "IndividualNanite", null);
 
 		Assert.assertTrue(runLogOptional.isPresent());
 		Assert.assertEquals(_runLog, runLogOptional.get());

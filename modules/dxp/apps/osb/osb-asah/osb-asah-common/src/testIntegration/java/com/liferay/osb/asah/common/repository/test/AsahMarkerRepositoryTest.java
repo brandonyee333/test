@@ -51,9 +51,13 @@ public class AsahMarkerRepositoryTest {
 
 	@Test
 	public void testFindById() {
+		String asahMarkerId = _asahMarker1.getId();
+
+		Assert.assertNotNull(asahMarkerId);
+
 		Assert.assertEquals(
 			Optional.of(_asahMarker1),
-			_asahMarkerRepository.findById(_asahMarker1.getId()));
+			_asahMarkerRepository.findById(asahMarkerId));
 	}
 
 	private AsahMarker _asahMarker1;
