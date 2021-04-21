@@ -20,16 +20,26 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
+import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -41,6 +51,7 @@ import org.json.JSONObject;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
@@ -154,6 +165,66 @@ public class ElasticsearchAssetRepositoryImpl
 	}
 
 	@Override
+	public List<Transformation> getAssetTransformations(
+		String apply, @Nullable String filterString, Pageable pageable) {
+
+		TransformationGetResponse transformationGetResponse =
+			new TransformationGetResponse();
+
+		transformationGetResponse.setCollectionName(getCollectionName());
+		transformationGetResponse.setElasticsearchInvoker(
+			_faroInfoElasticsearchInvoker);
+		transformationGetResponse.setPage(pageable.getPageNumber());
+		transformationGetResponse.setQueryBuilder(
+			FilterStringToQueryBuilderConverter.convert(
+				filterString, _assetFilterStringConverterHelper));
+		transformationGetResponse.setSize(pageable.getPageSize());
+		transformationGetResponse.setSorts(
+			new HashMap<String, String>() {
+				{
+					put("terms", "_key");
+					put("totalElements", "_count");
+				}
+			},
+			_getSorts(pageable.getSort()));
+		transformationGetResponse.setTransformationJSONArrayFunction(
+			new TermsAggregationTransformationJSONArrayFunction(apply, null));
+		transformationGetResponse.setTransformationName(
+			"asset-transformations");
+
+		JSONObject jsonObject = null;
+
+		try {
+			jsonObject = new JSONObject(transformationGetResponse.respond());
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			return Collections.emptyList();
+		}
+
+		JSONObject embeddedJSONObject = jsonObject.getJSONObject("_embedded");
+
+		JSONArray fieldTransformationsJSONArray =
+			embeddedJSONObject.getJSONArray("asset-transformations");
+
+		Stream<Object> stream = JSONUtil.toObjectStream(
+			fieldTransformationsJSONArray);
+
+		return stream.map(
+			object -> {
+				JSONObject curJSONObject = (JSONObject)object;
+
+				return new Transformation(
+					JSONUtil.toMap(curJSONObject.getJSONObject("terms")),
+					curJSONObject.getInt("totalElements"));
+			}
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	@Override
 	protected String getCollectionName() {
 		return "assets";
 	}
@@ -207,6 +278,30 @@ public class ElasticsearchAssetRepositoryImpl
 
 		return boolQueryBuilder;
 	}
+
+	private String[] _getSorts(Sort sort) {
+		if (sort == null) {
+			return null;
+		}
+
+		List<String> sorts = new LinkedList<>();
+
+		for (Sort.Order order : sort) {
+			sorts.add(order.getProperty());
+
+			if (order.isAscending()) {
+				sorts.add("asc");
+			}
+			else {
+				sorts.add("desc");
+			}
+		}
+
+		return sorts.toArray(new String[0]);
+	}
+
+	private static final Log _log = LogFactory.getLog(
+		ElasticsearchAssetRepositoryImpl.class);
 
 	private final AssetFilterStringConverterHelper
 		_assetFilterStringConverterHelper =

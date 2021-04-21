@@ -16,10 +16,10 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.dto.AssetDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.common.dog.AssetDog;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Asset;
-import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.model.Transformation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -56,20 +56,15 @@ public class AssetsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "apply")
-	public String getAssetTransformations(
-			@RequestParam String apply,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size)
-		throws Exception {
+	public PageDTO<TransformationDTO> getAssetTransformationDTOsPageDTO(
+		@RequestParam String apply,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size) {
 
-		return toTransformationGetResponse(
-			"assets", page,
-			FilterStringToQueryBuilderConverter.convert(filterString), size,
-			null, null,
-			new TermsAggregationTransformationJSONArrayFunction(apply, null),
-			"asset-transformations");
+		return _toTransformationDTOsPageDTO(
+			"asset-transformations",
+			_assetDog.getTransformationsPage(apply, filterString, page, size));
 	}
 
 	private PageDTO<AssetDTO> _toPageDTO(
@@ -82,6 +77,26 @@ public class AssetsRestController extends BaseRestController {
 
 	private PageDTO<AssetDTO> _toPageDTO(Page<Asset> assetPage) {
 		return _toPageDTO(new AssetDTO(assetPage.getContent()), assetPage);
+	}
+
+	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+		String transformationKey, Page<Transformation> transformationsPage) {
+
+		return _toTransformationDTOsPageDTO(
+			new TransformationDTO(
+				transformationKey, transformationsPage.getContent()),
+			transformationsPage);
+	}
+
+	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+		TransformationDTO transformationDTO,
+		Page<Transformation> transformationsPage) {
+
+		return new PageDTO<>(
+			"_embedded", transformationDTO, transformationsPage.getNumber(),
+			transformationsPage.getSize(),
+			transformationsPage.getTotalElements(),
+			transformationsPage.getTotalPages());
 	}
 
 	@Autowired

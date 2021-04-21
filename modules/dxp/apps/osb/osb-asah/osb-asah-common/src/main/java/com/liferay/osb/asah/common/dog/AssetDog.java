@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -174,6 +175,23 @@ public class AssetDog {
 		}
 
 		return new ArrayList<>(keywords);
+	}
+
+	public Page<Transformation> getTransformationsPage(
+		String apply, @Nullable String filterString, int page, int size) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size,
+			SortUtil.getSort(
+				Sort.by(Sort.Order.desc("totalElements")),
+				new String[] {"totalElements", "desc", "terms", "asc"}));
+
+		List<Transformation> transformations =
+			_assetRepository.getAssetTransformations(
+				apply, filterString, pageRequest);
+
+		return PageableExecutionUtils.getPage(
+			transformations, pageRequest, transformations::size);
 	}
 
 	public Asset updateAsset(Asset asset) {

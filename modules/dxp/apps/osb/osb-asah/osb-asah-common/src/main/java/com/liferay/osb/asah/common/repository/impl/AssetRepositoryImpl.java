@@ -16,16 +16,22 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
+import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectJoinStep;
@@ -114,6 +120,54 @@ public class AssetRepositoryImpl extends BaseRepository {
 		).fetch(
 		).map(
 			this::_toAsset
+		);
+	}
+
+	public List<Transformation> getAssetTransformations(
+		String apply, @Nullable String filterString, Pageable pageable) {
+
+		Matcher matcher = MatcherUtil.getMatcher(apply);
+
+		if (!matcher.matches()) {
+			throw new IllegalArgumentException(
+				"Apply string " + apply + " does not match pattern " +
+					MatcherUtil.getGroupByPattern());
+		}
+
+		String contains = matcher.group("containsField");
+
+		String groupByField = matcher.group("groupByField");
+
+		Field<Object> valueField = DSL.field(groupByField);
+
+		Condition condition = ConditionUtil.toCondition(filterString);
+
+		condition = condition.and(_getIncludeCondition(contains, groupByField));
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.select(
+			valueField.as("terms"),
+			DSL.count(
+				DSL.field("id")
+			).as(
+				"totalelements"
+			)
+		).from(
+			"Asset"
+		).where(
+			condition
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Transformation(
+				new Transformation.Term(
+					Collections.singletonMap(
+						groupByField, record.get("terms"))),
+				(Integer)record.get("totalelements"))
 		);
 	}
 
@@ -218,6 +272,18 @@ public class AssetRepositoryImpl extends BaseRepository {
 		}
 
 		return conditions;
+	}
+
+	private Condition _getIncludeCondition(String contains, String fieldName) {
+		if (contains == null) {
+			return DSL.noCondition();
+		}
+
+		return DSL.field(
+			fieldName
+		).containsIgnoreCase(
+			contains
+		);
 	}
 
 	private Asset _toAsset(Record assetRecord) {

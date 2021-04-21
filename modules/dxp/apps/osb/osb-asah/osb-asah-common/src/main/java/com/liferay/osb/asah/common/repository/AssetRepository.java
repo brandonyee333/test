@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.model.Transformation;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,5 +54,8 @@ public interface AssetRepository extends CrudRepository<Asset, Long> {
 
 	public List<Asset> findByFilterString(
 		@Nullable String filterString, Pageable pageable);
+
+	public List<Transformation> getAssetTransformations(
+		String apply, @Nullable String filterString, Pageable pageable);
 
 }
