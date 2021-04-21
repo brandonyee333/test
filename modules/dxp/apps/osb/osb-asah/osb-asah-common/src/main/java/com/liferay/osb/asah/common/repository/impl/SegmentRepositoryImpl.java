@@ -19,15 +19,14 @@ import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import org.jooq.Condition;
@@ -109,12 +108,12 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		String apply, @Nullable String filterString, Pageable pageable,
 		@Nullable List<Long> segmentIds) {
 
-		Matcher matcher = _groupByPattern.matcher(apply);
+		Matcher matcher = MatcherUtil.getMatcher(apply);
 
 		if (!matcher.matches()) {
 			throw new IllegalArgumentException(
 				"Apply string " + apply + " does not match pattern " +
-					StringEscapeUtils.unescapeJava(_groupByPattern.toString()));
+					MatcherUtil.getGroupByPattern());
 		}
 
 		String contains = matcher.group("containsField");
@@ -440,10 +439,6 @@ public class SegmentRepositoryImpl extends BaseRepository {
 	private Map<String, String> _getSortFieldNameConversionMap() {
 		return Collections.singletonMap("author/name", "authorName");
 	}
-
-	private static final Pattern _groupByPattern = Pattern.compile(
-		"groupby\\(\\((?<groupByField>[^)]+)\\)\\)" +
-			"(/contains\\(\\((?<containsField>[^)]+)\\)\\))?");
 
 	private final DSLContext _dslContext;
 

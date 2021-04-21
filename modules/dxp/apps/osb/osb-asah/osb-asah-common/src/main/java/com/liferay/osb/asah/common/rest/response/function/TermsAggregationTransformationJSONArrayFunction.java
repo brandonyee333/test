@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.util.MatcherUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.ArrayList;
@@ -26,9 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import org.elasticsearch.action.search.SearchResponse;
@@ -57,12 +56,12 @@ public class TermsAggregationTransformationJSONArrayFunction
 		String apply,
 		Function<Terms.Bucket, Object> responseFormatterFunction) {
 
-		Matcher matcher = _groupByPattern.matcher(apply);
+		Matcher matcher = MatcherUtil.getMatcher(apply);
 
 		if (!matcher.matches()) {
 			throw new IllegalArgumentException(
 				"Apply string " + apply + " does not match pattern " +
-					StringEscapeUtils.unescapeJava(_groupByPattern.toString()));
+					MatcherUtil.getGroupByPattern());
 		}
 
 		contains = matcher.group("containsField");
@@ -241,9 +240,5 @@ public class TermsAggregationTransformationJSONArrayFunction
 	protected final String fieldName;
 	protected final Function<Terms.Bucket, Object> responseFormatterFunction;
 	protected long totalElements;
-
-	private static final Pattern _groupByPattern = Pattern.compile(
-		"groupby\\(\\((?<groupByField>[^)]+)\\)\\)" +
-			"(/contains\\(\\((?<containsField>[^)]+)\\)\\))?");
 
 }

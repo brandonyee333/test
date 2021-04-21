@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.helper.AccountsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+import com.liferay.osb.asah.common.util.MatcherUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -32,9 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.elasticsearch.action.search.SearchResponse;
@@ -239,12 +238,12 @@ public class AccountRepositoryImpl extends BaseRepository {
 		String apply, @Nullable Long channelId, @Nullable String filterString,
 		Pageable pageable) {
 
-		Matcher matcher = _groupByPattern.matcher(apply);
+		Matcher matcher = MatcherUtil.getMatcher(apply);
 
 		if (!matcher.matches()) {
 			throw new IllegalArgumentException(
 				"Apply string " + apply + " does not match pattern " +
-					StringEscapeUtils.unescapeJava(_groupByPattern.toString()));
+					MatcherUtil.getGroupByPattern());
 		}
 
 		String contains = matcher.group("containsField");
@@ -773,10 +772,6 @@ public class AccountRepositoryImpl extends BaseRepository {
 	private Map<String, String> _getSortFieldNameConversionMap() {
 		return Collections.singletonMap("name", "values");
 	}
-
-	private static final Pattern _groupByPattern = Pattern.compile(
-		"groupby\\(\\((?<groupByField>[^)]+)\\)\\)" +
-			"(/contains\\(\\((?<containsField>[^)]+)\\)\\))?");
 
 	private final AccountsFilterStringConverterHelper
 		_accountsFilterStringConverterHelper;
