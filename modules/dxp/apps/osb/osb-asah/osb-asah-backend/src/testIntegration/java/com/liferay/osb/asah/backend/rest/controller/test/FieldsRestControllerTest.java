@@ -68,7 +68,9 @@ public class FieldsRestControllerTest {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_fields.json", this),
-			new JSONObject(_fieldsRestController.getFields(null, 0, 20, null)),
+			_objectMapper.convertValue(
+				_fieldsRestController.getFieldDTOsPageDTO(null, 0, 20, null),
+				JSONObject.class),
 			false);
 	}
 
@@ -81,9 +83,10 @@ public class FieldsRestControllerTest {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_field_transformations.json", this),
-			new JSONObject(
-				_fieldsRestController.getFieldTransformations(
-					"groupby((name))", null, 0, 20)),
+			_objectMapper.convertValue(
+				_fieldsRestController.getTransformationDTOsPageDTO(
+					"groupby((name))", null, 0, 20),
+				JSONObject.class),
 			false);
 	}
 

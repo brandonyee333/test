@@ -88,9 +88,10 @@ public class AssetsRestControllerTest {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_asset_transformations.json", this),
-			new JSONObject(
-				_assetsRestController.getAssetTransformations(
-					"groupby((assetType))", null, 0, 20)),
+			_objectMapper.convertValue(
+				_assetsRestController.getAssetTransformationDTOsPageDTO(
+					"groupby((assetType))", null, 0, 20),
+				JSONObject.class),
 			false);
 	}
 
