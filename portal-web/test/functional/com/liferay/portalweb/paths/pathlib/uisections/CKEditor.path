@@ -69,6 +69,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>TOOLBAR_IMAGE_BUTTON</td>
+	<td>//a[contains(@class,'cke_button') and contains(@class,'image')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>TOOLBAR_SIZE_BUTTON</td>
 	<td>//a[contains(@class,'cke_combo_button') and contains(.,'Size')]/span</td>
 	<td></td>
