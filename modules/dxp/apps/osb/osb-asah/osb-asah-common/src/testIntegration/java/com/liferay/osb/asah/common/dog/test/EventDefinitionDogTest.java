@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.test.util.postgresql.PostgreSQLTables;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
@@ -29,6 +30,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -419,6 +421,91 @@ public class EventDefinitionDogTest {
 				false, "applied", 0, 5, Sort.asc("name"),
 				EventDefinition.Type.CUSTOM),
 			Collections.singletonList("codeApplied"));
+	}
+
+	@PostgreSQLTables(resourcePath = "test_unblock_event_definition.sql")
+	@Test
+	public void testUnblockEventDefinition() {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("subscribed");
+
+		Long eventDefinitionId = eventDefinition.getId();
+
+		_eventDefinitionDog.unblockEventDefinitions(
+			Collections.singletonList(eventDefinitionId));
+
+		eventDefinition = _eventDefinitionDog.getEventDefinition(
+			eventDefinitionId);
+
+		Assert.assertFalse(eventDefinition.isBlocked());
+		Assert.assertNull(eventDefinition.getBlockedEventDefinition());
+		Assert.assertNull(eventDefinition.getDescription());
+		Assert.assertEquals("subscribed", eventDefinition.getDisplayName());
+	}
+
+	@PostgreSQLTables(
+		resourcePath = "test_unblock_event_definition_limit_overflow.sql"
+	)
+	@Test(expected = OSBAsahException.class)
+	public void testUnblockEventDefinitionLimitOverflow() {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("subscribed100");
+
+		Long eventDefinitionId = eventDefinition.getId();
+
+		_eventDefinitionDog.unblockEventDefinitions(
+			Collections.singletonList(eventDefinitionId));
+	}
+
+	@PostgreSQLTables(resourcePath = "test_unblock_event_definitions.sql")
+	@Test
+	public void testUnblockEventDefinitions() {
+		List<Long> eventDefinitionIds = ListUtil.map(
+			Arrays.asList(
+				"addedToCart", "addedToWishList", "checkedOut",
+				"orderCancelled"),
+			name -> {
+				EventDefinition eventDefinition =
+					_eventDefinitionDog.fetchEventDefinitionByName(name);
+
+				return eventDefinition.getId();
+			});
+
+		_eventDefinitionDog.unblockEventDefinitions(eventDefinitionIds);
+
+		for (Long eventDefinitionId : eventDefinitionIds) {
+			EventDefinition eventDefinition =
+				_eventDefinitionDog.getEventDefinition(eventDefinitionId);
+
+			Assert.assertFalse(eventDefinition.isBlocked());
+			Assert.assertNull(eventDefinition.getBlockedEventDefinition());
+			Assert.assertNull(eventDefinition.getDescription());
+			Assert.assertEquals(
+				eventDefinition.getName(), eventDefinition.getDisplayName());
+		}
+
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("reviewAdded");
+
+		Assert.assertTrue(eventDefinition.isBlocked());
+		Assert.assertNotNull(eventDefinition.getBlockedEventDefinition());
+		Assert.assertNull(eventDefinition.getDescription());
+		Assert.assertNull(eventDefinition.getDisplayName());
+	}
+
+	@PostgreSQLTables(
+		resourcePath = "test_unblock_event_definitions_limit_overflow.sql"
+	)
+	@Test(expected = OSBAsahException.class)
+	public void testUnblockEventDefinitionsLimitOverflow() {
+		Page<EventDefinition> eventDefinitions =
+			_eventDefinitionDog.getEventDefinitionsPage(
+				true, null, 0, 5, Sort.asc("name"),
+				EventDefinition.Type.CUSTOM);
+
+		_eventDefinitionDog.unblockEventDefinitions(
+			ListUtil.map(
+				eventDefinitions.getContent(), EventDefinition::getId));
 	}
 
 	@Test
