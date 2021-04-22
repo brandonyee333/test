@@ -464,7 +464,7 @@ public class SearchQueryHelper {
 			if (assetType == AssetType.PAGE) {
 				keywordsQueryBuilder.should(
 					QueryBuilders.wildcardQuery(
-						"url.search", "*" + term + "*"));
+						"canonicalUrl.search", "*" + term + "*"));
 			}
 		}
 
