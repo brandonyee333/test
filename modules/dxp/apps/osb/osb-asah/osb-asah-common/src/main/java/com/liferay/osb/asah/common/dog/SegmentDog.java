@@ -592,7 +592,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 			collectionName, id);
 
 		referencedAssetDataSourceIds.add(
-			referencedJSONObject.getString(dataSourceIdFieldName));
+			String.valueOf(
+				referencedJSONObject.getLong(dataSourceIdFieldName)));
 
 		return null;
 	}
