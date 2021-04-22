@@ -76,6 +76,13 @@ CREATE TABLE IF NOT EXISTS ChannelDataSource (
 	PRIMARY KEY (channelId, dataSourceId)
 );
 
+CREATE TABLE IF NOT EXISTS CSVIndividual (
+	id BIGSERIAL PRIMARY KEY,
+	dataSourceId BIGINT,
+	dataSourceIndividualPK BIGINT,
+	fields JSON
+);
+
 CREATE TABLE IF NOT EXISTS DataControlTask (
 	id BIGSERIAL PRIMARY KEY,
 	batchId BIGINT,
