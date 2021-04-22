@@ -22,6 +22,7 @@ import java.util.Optional;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -35,7 +36,8 @@ public interface EventDefinitionRepository
 	extends CrudRepository<EventDefinition, Long> {
 
 	public long countEventDefinitions(
-		Boolean blocked, String keyword, EventDefinition.Type type);
+		@Nullable Boolean blocked, @Nullable String keyword,
+		@Nullable EventDefinition.Type type);
 
 	public List<EventDefinition> findAll(Pageable pageable);
 
@@ -45,7 +47,7 @@ public interface EventDefinitionRepository
 	public Optional<EventDefinition> findByName(String name);
 
 	public List<EventDefinition> searchEventDefinitions(
-		Boolean blocked, String keyword, Pageable pageable,
-		EventDefinition.Type type);
+		@Nullable Boolean blocked, @Nullable String keyword, Pageable pageable,
+		@Nullable EventDefinition.Type type);
 
 }

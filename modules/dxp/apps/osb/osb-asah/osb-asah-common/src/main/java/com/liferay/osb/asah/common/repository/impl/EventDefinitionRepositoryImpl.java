@@ -35,6 +35,7 @@ import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Leslie Wong
@@ -49,7 +50,8 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 	}
 
 	public long countEventDefinitions(
-		Boolean blocked, String keyword, EventDefinition.Type type) {
+		@Nullable Boolean blocked, @Nullable String keyword,
+		@Nullable EventDefinition.Type type) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -66,8 +68,8 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 	}
 
 	public List<EventDefinition> searchEventDefinitions(
-		Boolean blocked, String keyword, Pageable pageable,
-		EventDefinition.Type type) {
+		@Nullable Boolean blocked, @Nullable String keyword, Pageable pageable,
+		@Nullable EventDefinition.Type type) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
