@@ -16,7 +16,9 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.tes
 
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -1035,22 +1037,21 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"interests.filter(filter='(name eq ''abc'') and (score eq " +
 				"''false'')')");
 
-		faroInfoElasticsearchInvoker.add(
-			"OSBAsahMarkers",
-			JSONUtil.put(
-				"id", "IndividualInterestScoresNanite"
-			).put(
-				"lastSuccessfulDay", DateUtil.newDayDateString()
-			));
-		faroInfoElasticsearchInvoker.add(
-			"OSBAsahMarkers",
-			JSONUtil.put(
-				"id", "InterestThresholdScoreNanite"
-			).put(
-				"lastSuccessfulDay", DateUtil.newDayDateString()
-			).put(
-				"score", 0.3
-			));
+		_asahMarkerDog.addAsahMarker(
+			new AsahMarker(
+				"IndividualInterestScoresNanite",
+				JSONUtil.put("lastSuccessfulDay", DateUtil.newDayDateString())),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+		_asahMarkerDog.addAsahMarker(
+			new AsahMarker(
+				"InterestThresholdScoreNanite",
+				JSONUtil.put(
+					"lastSuccessfulDay", DateUtil.newDayDateString()
+				).put(
+					"score", 0.3
+				)),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		testFilterString(
 			"individuals",
@@ -1338,6 +1339,9 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 					"between(completeDate, ''2090-09-11'', ''2090-09-12'')')",
 			"346468603851271125");
 	}
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper

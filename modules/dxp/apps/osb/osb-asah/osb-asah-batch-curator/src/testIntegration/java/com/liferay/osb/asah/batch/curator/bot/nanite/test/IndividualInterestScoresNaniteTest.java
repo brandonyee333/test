@@ -21,11 +21,14 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.NaniteTestConfiguration;
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
@@ -194,13 +197,10 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 				"interests.filter(filter='(name eq ''" + keyword + "'') and " +
 					"(score eq ''true'')')"));
 
-		faroInfoElasticsearchInvoker.add(
-			"OSBAsahMarkers",
-			JSONUtil.put(
-				"id", "InterestThresholdScoreNanite"
-			).put(
-				"score", 0.3
-			));
+		_asahMarkerDog.addAsahMarker(
+			new AsahMarker(
+				"InterestThresholdScoreNanite", JSONUtil.put("score", 0.3)),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		_updateDynamicMembershipsNanite.run(
 			_getContextJSONObject(
@@ -384,6 +384,9 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
 	private static final double
 		_MAX_DAYS_BEFORE_INTEREST_SCORE_BELOW_THRESHOLD = 60;
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	private JSONObject _assetJSONObject1;
 	private JSONObject _assetJSONObject2;

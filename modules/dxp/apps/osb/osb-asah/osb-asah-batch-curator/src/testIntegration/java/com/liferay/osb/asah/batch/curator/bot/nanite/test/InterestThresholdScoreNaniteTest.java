@@ -18,8 +18,11 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.InterestThresholdScoreNanit
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.InterestScoreArm;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -177,15 +180,24 @@ public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 	}
 
 	private double _getInterestThresholdScore() {
-		JSONObject osbAsahMarkerJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"OSBAsahMarkers",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("id", "InterestThresholdScoreNanite")));
+		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
+			"InterestThresholdScoreNanite",
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-		return osbAsahMarkerJSONObject.getDouble("score");
+		if (asahMarker == null) {
+			return 0;
+		}
+
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
+
+		return asahMarkerContextJSONObject.getDouble("score");
 	}
 
 	private static final double _DELTA = 0.00001;
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	private JSONObject _dataSourceJSONObject;
 	private JSONObject _individualJSONObject;

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.rest.response.function.test;
 
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -65,7 +66,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 	public void testApply() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
 			new VisitedPagesTransformationJSONArrayFunction(
-				_membershipDog, null, null, _segmentDog, true);
+				_asahMarkerDog, _membershipDog, null, null, _segmentDog, true);
 
 		JSONAssert.assertEquals(
 			new JSONArray(
@@ -89,7 +90,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 	public void testApplyNoAssets() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
 			new VisitedPagesTransformationJSONArrayFunction(
-				_membershipDog, null, null, _segmentDog, false);
+				_asahMarkerDog, _membershipDog, null, null, _segmentDog, false);
 
 		JSONArray transformationJSONArray =
 			transformationJSONArrayFunction.apply(
@@ -111,7 +112,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 	public void testApplyNoOSBAsahMarker() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
 			new VisitedPagesTransformationJSONArrayFunction(
-				_membershipDog, null, null, _segmentDog, true);
+				_asahMarkerDog, _membershipDog, null, null, _segmentDog, true);
 
 		JSONArray transformationJSONArray =
 			transformationJSONArrayFunction.apply(
@@ -122,7 +123,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 
 		transformationJSONArrayFunction =
 			new VisitedPagesTransformationJSONArrayFunction(
-				_membershipDog, null, null, _segmentDog, false);
+				_asahMarkerDog, _membershipDog, null, null, _segmentDog, false);
 
 		JSONAssert.assertEquals(
 			new JSONArray(
@@ -147,7 +148,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 	public void testApplyNoVisitedPages() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
 			new VisitedPagesTransformationJSONArrayFunction(
-				_membershipDog, null, null, _segmentDog, true);
+				_asahMarkerDog, _membershipDog, null, null, _segmentDog, true);
 
 		JSONArray transformationJSONArray =
 			transformationJSONArrayFunction.apply(
@@ -181,8 +182,8 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 	public void testApplyWithOwner() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
 			new VisitedPagesTransformationJSONArrayFunction(
-				_membershipDog, 386700291682772906L, "account", _segmentDog,
-				true);
+				_asahMarkerDog, _membershipDog, 386700291682772906L, "account",
+				_segmentDog, true);
 
 		JSONAssert.assertEquals(
 			new JSONArray(
@@ -197,8 +198,8 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 
 		transformationJSONArrayFunction =
 			new VisitedPagesTransformationJSONArrayFunction(
-				_membershipDog, 386700289195644932L, "individual-segment",
-				_segmentDog, true);
+				_asahMarkerDog, _membershipDog, 386700289195644932L,
+				"individual-segment", _segmentDog, true);
 
 		JSONAssert.assertEquals(
 			new JSONArray(
@@ -228,7 +229,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 	public void testApplyWithPagination() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
 			new VisitedPagesTransformationJSONArrayFunction(
-				_membershipDog, null, null, _segmentDog, true);
+				_asahMarkerDog, _membershipDog, null, null, _segmentDog, true);
 
 		JSONAssert.assertEquals(
 			new JSONArray(
@@ -266,7 +267,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 	public void testApplyWithSort() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
 			new VisitedPagesTransformationJSONArrayFunction(
-				_membershipDog, null, null, _segmentDog, true);
+				_asahMarkerDog, _membershipDog, null, null, _segmentDog, true);
 
 		JSONAssert.assertEquals(
 			new JSONArray(
@@ -279,6 +280,9 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 				"url", null),
 			true);
 	}
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;

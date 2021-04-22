@@ -19,14 +19,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -193,18 +196,17 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		String keyword = keywordJSONObject.getString("keyword");
 
-		faroInfoElasticsearchInvoker.add(
-			"OSBAsahMarkers",
-			JSONUtil.put(
-				"id", "InterestThresholdScoreNanite"
-			).put(
-				"lastSuccessfulDay", dayDateString
-			).put(
-				"score", 0.3
-			)
-		).put(
-			"type", "nanite"
-		);
+		_asahMarkerDog.addAsahMarker(
+			new AsahMarker(
+				"InterestThresholdScoreNanite",
+				JSONUtil.put(
+					"lastSuccessfulDay", dayDateString
+				).put(
+					"score", 0.3
+				).put(
+					"type", "nanite"
+				)),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		Long individualSegmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''" + keyword + "'') and " +
@@ -271,18 +273,17 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 				assetJSONObject, dayDateString, String.valueOf(individual2Id),
 				0.1, 4));
 
-		faroInfoElasticsearchInvoker.add(
-			"OSBAsahMarkers",
-			JSONUtil.put(
-				"id", "InterestThresholdScoreNanite"
-			).put(
-				"lastSuccessfulDay", dayDateString
-			).put(
-				"score", 0.3
-			)
-		).put(
-			"type", "nanite"
-		);
+		_asahMarkerDog.addAsahMarker(
+			new AsahMarker(
+				"InterestThresholdScoreNanite",
+				JSONUtil.put(
+					"lastSuccessfulDay", dayDateString
+				).put(
+					"score", 0.3
+				).put(
+					"type", "nanite"
+				)),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		Long individualSegmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''test'') and (score eq " +
@@ -618,16 +619,15 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		faroInfoElasticsearchInvoker.add("interests", jsonArray);
 
-		faroInfoElasticsearchInvoker.add(
-			"OSBAsahMarkers",
-			JSONUtil.put(
-				"id", "IndividualInterestScoresNanite"
-			).put(
-				"lastSuccessfulDay", dayDateString
-			)
-		).put(
-			"type", "nanite"
-		);
+		_asahMarkerDog.addAsahMarker(
+			new AsahMarker(
+				"IndividualInterestScoresNanite",
+				JSONUtil.put(
+					"lastSuccessfulDay", dayDateString
+				).put(
+					"type", "nanite"
+				)),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 	}
 
 	private JSONObject _getContextJSONObject(
@@ -651,6 +651,9 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		return segment.getId();
 	}
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;

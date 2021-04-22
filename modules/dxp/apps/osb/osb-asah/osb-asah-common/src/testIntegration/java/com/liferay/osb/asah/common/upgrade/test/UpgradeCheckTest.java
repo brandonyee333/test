@@ -14,8 +14,9 @@
 
 package com.liferay.osb.asah.common.upgrade.test;
 
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
@@ -64,7 +65,7 @@ public class UpgradeCheckTest {
 		_upgradeCheck = new UpgradeCheck();
 
 		ReflectionTestUtils.setField(
-			_upgradeCheck, "_elasticsearchInvoker", _elasticsearchInvoker);
+			_upgradeCheck, "_asahMarkerDog", _asahMarkerDog);
 		ReflectionTestUtils.setField(_upgradeCheck, "_projectDog", _projectDog);
 	}
 
@@ -119,20 +120,16 @@ public class UpgradeCheckTest {
 	private void _addUpgradeMarker(String projectId, String version) {
 		ProjectIdThreadLocal.forProject(
 			projectId,
-			() -> _elasticsearchInvoker.add(
-				"OSBAsahMarkers",
-				JSONUtil.put(
-					"id", "Upgrade"
-				).put(
-					"version", version
-				)));
+			() -> _asahMarkerDog.addAsahMarker(
+				new AsahMarker("Upgrade", JSONUtil.put("version", version)),
+				WeDeployDataService.OSB_ASAH_FARO_INFO));
 	}
 
 	@Autowired
-	private ElasticsearchIndexManager _elasticsearchIndexManager;
+	private AsahMarkerDog _asahMarkerDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	@Autowired
+	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Mock
 	private ProjectDog _projectDog;
