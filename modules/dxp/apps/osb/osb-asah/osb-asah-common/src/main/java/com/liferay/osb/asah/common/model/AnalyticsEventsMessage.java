@@ -189,6 +189,7 @@ public class AnalyticsEventsMessage implements Serializable {
 			return _eventId;
 		}
 
+		@Size(max = 25)
 		public Map<@NotBlank @Size(max = 255) String, @Size(max = 1024) String>
 			getProperties() {
 
