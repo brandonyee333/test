@@ -119,8 +119,6 @@ public class AsahTaskRunnable implements Runnable {
 				 nanite.isLogRunEnabled()) &&
 				_asahTaskManager.checkNanite(naniteClassName)) {
 
-				_deleteAsahTask();
-
 				continue;
 			}
 
@@ -142,10 +140,9 @@ public class AsahTaskRunnable implements Runnable {
 					String.valueOf(_asahTaskId), _contextJSONObject,
 					System.currentTimeMillis() - start, e);
 			}
-			finally {
-				_deleteAsahTask();
-			}
 		}
+
+		_deleteAsahTask();
 	}
 
 	private static final Log _log = LogFactory.getLog(AsahTaskRunnable.class);
