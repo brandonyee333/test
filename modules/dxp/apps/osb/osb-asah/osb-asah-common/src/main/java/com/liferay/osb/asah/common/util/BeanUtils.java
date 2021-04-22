@@ -28,6 +28,10 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.jooq.JSON;
+
+import org.json.JSONObject;
+
 import org.springframework.core.ResolvableType;
 import org.springframework.data.relational.core.mapping.Column;
 
@@ -115,6 +119,11 @@ public class BeanUtils {
 
 					targetPropertyValue = new LinkedHashSet<>(
 						Arrays.asList((Long[])array.getArray()));
+				}
+				else if (targetPropertyValue instanceof JSON) {
+					JSON jsonValue = (JSON)targetPropertyValue;
+
+					targetPropertyValue = new JSONObject(jsonValue.toString());
 				}
 
 				targetPropertyWriteMethod.invoke(target, targetPropertyValue);
