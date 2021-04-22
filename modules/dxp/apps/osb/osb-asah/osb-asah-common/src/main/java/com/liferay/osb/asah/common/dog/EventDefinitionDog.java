@@ -255,7 +255,7 @@ public class EventDefinitionDog {
 
 	private void _validateEventDefinitionLimit(int unblockEventDefinitionSize) {
 		long count = _eventDefinitionRepository.countEventDefinitions(
-			false, null, EventDefinition.Type.CUSTOM);
+			Boolean.FALSE, null, EventDefinition.Type.CUSTOM);
 
 		if ((count + unblockEventDefinitionSize) >
 				_EVENT_DEFINITION_THRESHOLD) {
