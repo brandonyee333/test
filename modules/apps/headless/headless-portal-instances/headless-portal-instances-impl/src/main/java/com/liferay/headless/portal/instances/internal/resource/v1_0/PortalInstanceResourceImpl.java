@@ -132,7 +132,9 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 		_portalInstancesLocalService.synchronizePortalInstances();
 
 		if (portalInstanceInitializer != null) {
-			portalInstanceInitializer.initialize(company.getCompanyId());
+			portalInstanceInitializer.initialize(
+				company.getCompanyId(), contextHttpServletRequest,
+				portalInstance.getPortalInstanceInitializerPayload());
 		}
 
 		return _toPortalInstance(company);
