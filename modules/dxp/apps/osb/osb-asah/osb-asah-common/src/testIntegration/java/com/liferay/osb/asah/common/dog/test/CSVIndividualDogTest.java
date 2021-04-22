@@ -12,19 +12,18 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.entity.AsahTask;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoCSVIndividualDog;
+import com.liferay.osb.asah.common.entity.CSVIndividual;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.util.Arrays;
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,32 +39,21 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class FaroInfoCSVIndividualDogTest extends BaseFaroInfoDogTestCase {
+public class CSVIndividualDogTest {
 
 	@Test
 	public void testAddCSVIndividuals() {
-		JSONArray jsonArray = JSONUtil.putAll(
-			JSONUtil.put(
-				"dataSourceId", "123"
-			).put(
-				"foo", "bar"
-			),
-			JSONUtil.put(
-				"dataSourceId", "123"
-			).put(
-				"foo2", "bar2"
-			));
+		_csvIndividualDog.addCSVIndividuals(
+			Arrays.asList(new CSVIndividual(123L), new CSVIndividual(123L)));
 
-		_faroInfoCSVIndividualDog.addCSVIndividuals(jsonArray);
+		List<CSVIndividual> csvIndividuals =
+			_csvIndividualDog.getCSVIndividuals(123L);
 
-		JSONArray csvIndividualsJSONArray = faroInfoElasticsearchInvoker.get(
-			"csv-individuals");
+		Assert.assertEquals(
+			csvIndividuals.toString(), 2, csvIndividuals.size());
 
-		Assert.assertEquals(2, csvIndividualsJSONArray.length());
-
-		JSONAssert.assertEquals(jsonArray, csvIndividualsJSONArray, false);
-
-		_assertIds(csvIndividualsJSONArray);
+		csvIndividuals.forEach(
+			csvIndividual -> Assert.assertNotNull(csvIndividual.getId()));
 
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks();
 
@@ -85,18 +73,10 @@ public class FaroInfoCSVIndividualDogTest extends BaseFaroInfoDogTestCase {
 			asahTask.getContextJSONObject(), false);
 	}
 
-	private void _assertIds(JSONArray jsonArray) {
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			Assert.assertNotNull(jsonObject.getString("id"));
-		}
-	}
-
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
-	private FaroInfoCSVIndividualDog _faroInfoCSVIndividualDog;
+	private CSVIndividualDog _csvIndividualDog;
 
 }
