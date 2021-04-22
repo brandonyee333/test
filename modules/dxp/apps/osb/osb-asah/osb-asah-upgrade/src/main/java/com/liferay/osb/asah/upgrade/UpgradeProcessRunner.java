@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -145,9 +144,6 @@ public class UpgradeProcessRunner {
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private ProjectDog _projectDog;
