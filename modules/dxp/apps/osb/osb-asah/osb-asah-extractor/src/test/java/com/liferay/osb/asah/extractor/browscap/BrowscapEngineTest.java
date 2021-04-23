@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.extractor.fiftyonedegrees;
+package com.liferay.osb.asah.extractor.browscap;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,143 +27,127 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author Inácio Nery
  */
 @RunWith(SpringRunner.class)
-public class FiftyOneDegreesEngineTest {
+public class BrowscapEngineTest {
 
 	@Test
 	public void testGetBrowser1() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice(_USER_AGENT_MAC_OS_CHROME_DESKTOP);
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			_USER_AGENT_MAC_OS_CHROME_DESKTOP);
 
-		Assert.assertEquals(
-			"Chrome", fiftyOneDegreesEngineDevice.getBrowserName());
+		Assert.assertEquals("Chrome", browscapDevice.getBrowserName());
 	}
 
 	@Test
 	public void testGetBrowser2() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice(
-				_USER_AGENT_MAC_OS_FIREFOX_DESKTOP);
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			_USER_AGENT_MAC_OS_FIREFOX_DESKTOP);
 
-		Assert.assertEquals(
-			"Firefox", fiftyOneDegreesEngineDevice.getBrowserName());
+		Assert.assertEquals("Firefox", browscapDevice.getBrowserName());
 	}
 
 	@Test
 	public void testGetCrawler1() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice(_CRAWLER_AGENT_YANDEX);
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			_CRAWLER_AGENT_YANDEX);
 
-		Assert.assertEquals("True", fiftyOneDegreesEngineDevice.getCrawler());
+		Assert.assertEquals("True", browscapDevice.getCrawler());
 	}
 
 	@Test
 	public void testGetCrawler2() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice(_CRAWLER_AGENT_GOOGLEBOT);
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			_CRAWLER_AGENT_GOOGLEBOT);
 
-		Assert.assertEquals("True", fiftyOneDegreesEngineDevice.getCrawler());
+		Assert.assertEquals("True", browscapDevice.getCrawler());
 	}
 
 	@Test
 	public void testGetCrawler3() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice(_USER_AGENT_ANDROID_CHROME_MOBILE);
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			_USER_AGENT_ANDROID_CHROME_MOBILE);
 
-		Assert.assertEquals("False", fiftyOneDegreesEngineDevice.getCrawler());
+		Assert.assertEquals("False", browscapDevice.getCrawler());
 	}
 
 	@Test
 	public void testGetDeviceType1() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice(_USER_AGENT_ANDROID_CHROME_MOBILE);
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			_USER_AGENT_ANDROID_CHROME_MOBILE);
 
-		Assert.assertEquals(
-			"SmartPhone", fiftyOneDegreesEngineDevice.getDeviceType());
+		Assert.assertEquals("SmartPhone", browscapDevice.getDeviceType());
 	}
 
 	@Test
 	public void testGetDeviceType2() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice(_USER_AGENT_MAC_OS_CHROME_DESKTOP);
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			_USER_AGENT_MAC_OS_CHROME_DESKTOP);
 
-		Assert.assertEquals(
-			"Desktop", fiftyOneDegreesEngineDevice.getDeviceType());
+		Assert.assertEquals("Desktop", browscapDevice.getDeviceType());
 	}
 
 	@Test
 	public void testGetDeviceType3() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice(_USER_AGENT_IOS_WEBKIT_IPOD);
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			_USER_AGENT_IOS_WEBKIT_IPOD);
 
-		Assert.assertEquals(
-			"Mobile", fiftyOneDegreesEngineDevice.getDeviceType());
+		Assert.assertEquals("Mobile", browscapDevice.getDeviceType());
 	}
 
 	@Test
 	public void testGetDeviceType4() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice(_USER_AGENT_ANDROID_WEBKIT_TABLET);
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			_USER_AGENT_ANDROID_WEBKIT_TABLET);
 
-		Assert.assertEquals(
-			"Tablet", fiftyOneDegreesEngineDevice.getDeviceType());
+		Assert.assertEquals("Tablet", browscapDevice.getDeviceType());
 	}
 
 	@Test
 	public void testGetDeviceType5() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice(_USER_AGENT_IOS_WEBKIT_IPAD);
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			_USER_AGENT_IOS_WEBKIT_IPAD);
 
-		Assert.assertEquals(
-			"Tablet", fiftyOneDegreesEngineDevice.getDeviceType());
+		Assert.assertEquals("Tablet", browscapDevice.getDeviceType());
 	}
 
 	@Test
 	public void testGetDeviceType6() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice("");
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice("");
 
-		Assert.assertEquals(
-			"Unknown", fiftyOneDegreesEngineDevice.getDeviceType());
+		Assert.assertEquals("Unknown", browscapDevice.getDeviceType());
 	}
 
 	@Test
 	public void testGetDeviceType7() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice("   ");
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice("   ");
 
-		Assert.assertEquals(
-			"Unknown", fiftyOneDegreesEngineDevice.getDeviceType());
+		Assert.assertEquals("Unknown", browscapDevice.getDeviceType());
 	}
 
 	@Test
 	public void testGetDeviceType8() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice(null);
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(null);
 
-		Assert.assertEquals(
-			"Unknown", fiftyOneDegreesEngineDevice.getDeviceType());
+		Assert.assertEquals("Unknown", browscapDevice.getDeviceType());
 	}
 
 	@Test
 	public void testGetPlatform1() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice(_USER_AGENT_MAC_OS_CHROME_DESKTOP);
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			_USER_AGENT_MAC_OS_CHROME_DESKTOP);
 
-		Assert.assertEquals(
-			"macOS", fiftyOneDegreesEngineDevice.getPlatformName());
+		Assert.assertEquals("macOS", browscapDevice.getPlatformName());
 	}
 
 	@Test
 	public void testGetPlatform2() {
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice(_USER_AGENT_ANDROID_CHROME_MOBILE);
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			_USER_AGENT_ANDROID_CHROME_MOBILE);
 
-		Assert.assertEquals(
-			"Android", fiftyOneDegreesEngineDevice.getPlatformName());
+		Assert.assertEquals("Android", browscapDevice.getPlatformName());
 	}
 
 	@Configuration
-	@Import(FiftyOneDegreesEngine.class)
+	@Import(BrowscapEngine.class)
 	public static class TestConfiguration {
 	}
 
@@ -203,6 +187,6 @@ public class FiftyOneDegreesEngineTest {
 			"Gecko/20100101 Firefox/45.0";
 
 	@Autowired
-	private FiftyOneDegreesEngine _fiftyOneDegreesEngine;
+	private BrowscapEngine _browscapEngine;
 
 }

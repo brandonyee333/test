@@ -39,8 +39,8 @@ import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.extractor.fiftyonedegrees.FiftyOneDegreesDevice;
-import com.liferay.osb.asah.extractor.fiftyonedegrees.FiftyOneDegreesEngine;
+import com.liferay.osb.asah.extractor.browscap.BrowscapDevice;
+import com.liferay.osb.asah.extractor.browscap.BrowscapEngine;
 import com.liferay.osb.asah.extractor.ip.geocoder.IPGeocoder;
 import com.liferay.osb.asah.extractor.ip.geocoder.IPInfo;
 
@@ -191,13 +191,12 @@ public class AnalyticsEventsMessageProcessor {
 			context.put(entry.getKey(), StringUtil.get(entry.getValue()));
 		}
 
-		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
-			_fiftyOneDegreesEngine.getDevice(
-				MapUtil.getString(context, "userAgent"));
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			MapUtil.getString(context, "userAgent"));
 
-		if (fiftyOneDegreesEngineDevice != null) {
+		if (browscapDevice != null) {
 			Map<String, String> convertedValues = _objectMapper.convertValue(
-				fiftyOneDegreesEngineDevice, Map.class);
+				browscapDevice, Map.class);
 
 			context.putAll(convertedValues);
 		}
@@ -490,6 +489,9 @@ public class AnalyticsEventsMessageProcessor {
 	private AnalyticsEventStorageDog _analyticsEventStorageDog;
 
 	@Autowired
+	private BrowscapEngine _browscapEngine;
+
+	@Autowired
 	private DataSourceDog _dataSourceDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
@@ -497,9 +499,6 @@ public class AnalyticsEventsMessageProcessor {
 
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
-
-	@Autowired
-	private FiftyOneDegreesEngine _fiftyOneDegreesEngine;
 
 	@Autowired
 	private IPGeocoder _ipGeocoder;
