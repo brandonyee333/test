@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <included>
+	<include resource="org/springframework/boot/logging/logback/base.xml" />
 	<if condition="!&quot;OSB_ASAH_LOKI_URL_IS_UNDEFINED&quot;.equals(&quot;${OSB_ASAH_LOKI_URL}&quot;)">
 		<then>
 			<appender class="com.github.loki4j.logback.Loki4jAppender" name="LOKI">
