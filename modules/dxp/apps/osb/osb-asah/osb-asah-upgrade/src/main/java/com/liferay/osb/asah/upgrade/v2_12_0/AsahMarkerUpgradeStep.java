@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
 public class AsahMarkerUpgradeStep implements UpgradeStep {
 
 	@Override
-	public void upgrade(String version) {
+	public void upgrade(String version) throws Exception {
 		_upgradeOSBAsahMarkerIndexMapping(
 			WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
 		_upgradeOSBAsahMarkerIndexMapping(WeDeployDataService.OSB_ASAH_DXP_RAW);
@@ -99,16 +99,20 @@ public class AsahMarkerUpgradeStep implements UpgradeStep {
 	}
 
 	private void _upgradeOSBAsahMarkerJSONObjects(
-		ElasticsearchInvoker elasticsearchInvoker) {
+			ElasticsearchInvoker elasticsearchInvoker)
+		throws Exception {
 
 		JSONArrayIterator.of(
 			"OSBAsahMarkers", elasticsearchInvoker,
 			osbAsahMarker -> elasticsearchInvoker.update(
 				"OSBAsahMarkers", osbAsahMarker.getString("id"),
-				_upgradeOSBAsahMarkerJSONObject(osbAsahMarker)));
+				_upgradeOSBAsahMarkerJSONObject(osbAsahMarker))
+		).iterate();
 	}
 
-	private void _upgradeSalesforceRawOSBAsahMarkerJSONObjects() {
+	private void _upgradeSalesforceRawOSBAsahMarkerJSONObjects()
+		throws Exception {
+
 		JSONArrayIterator.of(
 			"OSBAsahMarkers", _salesforceRawElasticsearchInvoker,
 			osbAsahMarker -> {
@@ -129,7 +133,8 @@ public class AsahMarkerUpgradeStep implements UpgradeStep {
 						"osbAsahDataSourceId", osbAsahDataSourceId));
 
 				return null;
-			});
+			}
+		).iterate();
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
