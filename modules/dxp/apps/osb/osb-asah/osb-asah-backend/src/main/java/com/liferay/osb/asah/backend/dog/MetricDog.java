@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.petra.string.CharPool;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +39,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.elasticsearch.search.aggregations.AggregationBuilder;
@@ -448,12 +448,12 @@ public class MetricDog {
 			BiConsumer<T, String> assetIdSetterBiConsumer =
 				assetResolver.getSetterBiConsumer();
 
-			String[] keys = StringUtils.splitPreserveAllTokens(
-				termsBucket.getKeyAsString(), CharPool.AT);
+			String[] keys = StringUtils.splitByWholeSeparatorPreserveAllTokens(
+				termsBucket.getKeyAsString(), _PRIMARY_KEY_SEPARATOR);
 
 			assetIdSetterBiConsumer.accept(assetMetric, keys[0]);
 
-			assetMetric.setAssetTitle(keys[1]);
+			assetMetric.setAssetTitle(StringEscapeUtils.unescapeHtml(keys[1]));
 			assetMetric.setDataSourceId(keys[2]);
 
 			_setModelMetrics(
@@ -612,6 +612,8 @@ public class MetricDog {
 		assetMetric.setURLs(
 			ListUtil.map(termsBuckets, Terms.Bucket::getKeyAsString));
 	}
+
+	private static final String _PRIMARY_KEY_SEPARATOR = "#@!#";
 
 	@Autowired
 	private DataDog _dataDog;

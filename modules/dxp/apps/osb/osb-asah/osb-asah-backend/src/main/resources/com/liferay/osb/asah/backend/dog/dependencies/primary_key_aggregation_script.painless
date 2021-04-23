@@ -7,7 +7,7 @@ else {
 	primaryKey += "null";
 }
 
-primaryKey += "@";
+primaryKey += "#@!#";
 
 if (doc.title.length > 0) {
 	primaryKey += doc.title.value;
@@ -16,7 +16,7 @@ else {
 	primaryKey += "null";
 }
 
-primaryKey += "@";
+primaryKey += "#@!#";
 
 if (doc.dataSourceId.length > 0) {
 	primaryKey += doc.dataSourceId.value;
