@@ -459,9 +459,7 @@ public class DataSourceDog {
 		String providerType = dataSource.getProviderType();
 
 		if (providerType.equals("CSV")) {
-			_deleteData(
-				dataSourceId, "dataSourceId", _elasticsearchInvoker,
-				"csv-individuals");
+			_csvIndividualDog.deleteCSVIndividuals(dataSourceId);
 		}
 		else if (providerType.equals("LIFERAY")) {
 			_asahMarkerDog.deleteAsahMarker(
@@ -761,6 +759,9 @@ public class DataSourceDog {
 
 	@Autowired
 	private ChannelDog _channelDog;
+
+	@Autowired
+	private CSVIndividualDog _csvIndividualDog;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;

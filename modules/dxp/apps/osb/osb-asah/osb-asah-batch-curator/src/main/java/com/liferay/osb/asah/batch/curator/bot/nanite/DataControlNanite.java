@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.RawDataExporter;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -36,6 +37,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -175,14 +180,16 @@ public class DataControlNanite extends BaseNanite {
 			return;
 		}
 
-		QueryBuilder csvIndividualQueryBuilder = _buildIndividualQueryBuilder(
-			"CSV", individualJSONObject, "dataSourceIndividualPK");
+		Map<Long, List<Long>> dataSourceIdIndividualsPKs =
+			_getDataSourceIdIndividualsPKs("CSV", individualJSONObject);
 
-		if (csvIndividualQueryBuilder != null) {
-			faroInfoElasticsearchInvoker.delete(
-				"csv-individuals",
-				_buildIndividualQueryBuilder(
-					"CSV", individualJSONObject, "dataSourceIndividualPK"));
+		if (!dataSourceIdIndividualsPKs.isEmpty()) {
+			for (Map.Entry<Long, List<Long>> entry :
+					dataSourceIdIndividualsPKs.entrySet()) {
+
+				_csvIndividualDog.deleteCSVIndividuals(
+					entry.getKey(), entry.getValue());
+			}
 		}
 
 		individualJSONObject.put("demographics", new JSONArray());
@@ -327,6 +334,45 @@ public class DataControlNanite extends BaseNanite {
 		zipFileBuilder.build();
 	}
 
+	private Map<Long, List<Long>> _getDataSourceIdIndividualsPKs(
+		String dataSourceType, JSONObject individualJSONObject) {
+
+		Map<Long, List<Long>> dataSourceIdIndividualPKs = new HashMap<>();
+
+		JSONArray dataSourceIndividualPKsJSONArray =
+			individualJSONObject.getJSONArray("dataSourceIndividualPKs");
+
+		for (int i = 0; i < dataSourceIndividualPKsJSONArray.length(); i++) {
+			JSONObject dataSourceIndividualPKJSONObject =
+				dataSourceIndividualPKsJSONArray.getJSONObject(i);
+
+			if (!StringUtils.equals(
+					dataSourceIndividualPKJSONObject.getString(
+						"dataSourceType"),
+					dataSourceType)) {
+
+				continue;
+			}
+
+			Long dataSourceId = Long.valueOf(
+				dataSourceIndividualPKJSONObject.getString("dataSourceId"));
+
+			List<Long> individualPKs =
+				dataSourceIdIndividualPKs.computeIfAbsent(
+					dataSourceId, id -> new ArrayList<>());
+
+			JSONArray individualPKsJSONArray =
+				dataSourceIndividualPKJSONObject.getJSONArray("individualPKs");
+
+			for (int j = 0; j < individualPKsJSONArray.length(); j++) {
+				individualPKs.add(
+					Long.valueOf(individualPKsJSONArray.getString(j)));
+			}
+		}
+
+		return dataSourceIdIndividualPKs;
+	}
+
 	private JSONObject _runDataControlTask(
 		JSONObject dataControlTaskJSONObject) {
 
@@ -437,6 +483,9 @@ public class DataControlNanite extends BaseNanite {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
+	@Autowired
+	private CSVIndividualDog _csvIndividualDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;

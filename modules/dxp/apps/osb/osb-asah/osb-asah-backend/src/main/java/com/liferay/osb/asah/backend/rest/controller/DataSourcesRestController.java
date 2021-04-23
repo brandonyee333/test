@@ -20,6 +20,7 @@ import com.liferay.osb.asah.backend.dto.DataSourceDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -280,10 +281,7 @@ public class DataSourcesRestController extends BaseRestController {
 				"status", "IN_PROGRESS"
 			).put(
 				"totalOperations",
-				faroInfoElasticsearchInvoker.count(
-					"csv-individuals",
-					QueryBuilders.termQuery(
-						"dataSourceId", String.valueOf(dataSourceId)))
+				_csvIndividualDog.getCSVIndividualsCount(dataSourceId)
 			);
 		}
 
@@ -706,6 +704,9 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@Autowired
 	private ConfigurationHttp _configurationHttp;
+
+	@Autowired
+	private CSVIndividualDog _csvIndividualDog;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;

@@ -14,7 +14,11 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoCSVIndividualDog;
+import com.liferay.osb.asah.common.dog.CSVIndividualDog;
+import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.json.JSONUtil;
+
+import java.util.List;
 
 import org.json.JSONArray;
 
@@ -32,11 +36,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class CSVIndividualsRestController extends BaseRestController {
 
 	@PostMapping
-	public void postCSVIndividuals(@RequestBody String json) {
-		_faroInfoCSVIndividualDog.addCSVIndividuals(new JSONArray(json));
+	public void postCSVIndividuals(@RequestBody String json) throws Exception {
+		List<CSVIndividual> csvIndividuals = JSONUtil.toList(
+			new JSONArray(json),
+			jsonObject -> {
+				CSVIndividual csvIndividual = new CSVIndividual();
+
+				csvIndividual.setDataSourceId(
+					Long.valueOf(jsonObject.getString("dataSourceId")));
+				csvIndividual.setFieldsJSONObject(
+					jsonObject.optJSONObject("fields"));
+
+				return csvIndividual;
+			});
+
+		_csvIndividualDog.addCSVIndividuals(csvIndividuals);
 	}
 
 	@Autowired
-	private FaroInfoCSVIndividualDog _faroInfoCSVIndividualDog;
+	private CSVIndividualDog _csvIndividualDog;
 
 }

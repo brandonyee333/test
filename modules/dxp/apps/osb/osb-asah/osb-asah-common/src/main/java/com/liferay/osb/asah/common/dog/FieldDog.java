@@ -711,15 +711,10 @@ public class FieldDog {
 		String providerType = dataSource.getProviderType();
 
 		if (providerType.equals("CSV")) {
-			return _elasticsearchInvoker.fetch(
-				"csv-individuals",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"dataSourceId", String.valueOf(dataSource.getId()))
-				).filter(
-					QueryBuilders.termQuery(
-						"fields." + uniqueIdFieldName, uniqueId)
-				));
+			return _objectMapper.convertValue(
+				_csvIndividualDog.fetchCSVIndividual(
+					dataSource.getId(), uniqueIdFieldName, uniqueId),
+				JSONObject.class);
 		}
 		else if (providerType.equals("LIFERAY")) {
 			return _dxpRawElasticsearchInvoker.fetch(
@@ -1494,6 +1489,9 @@ public class FieldDog {
 	}
 
 	private static final Log _log = LogFactory.getLog(FieldDog.class);
+
+	@Autowired
+	private CSVIndividualDog _csvIndividualDog;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
