@@ -87,13 +87,15 @@ public class IndividualSegmentsRestController
 
 	@GetMapping("/preview-disabled-segments")
 	public PageDTO<SegmentDTO> getPreviewDisabledSegmentDTOsPageDTOs(
-			@RequestParam Long dataSourceId,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
+		@RequestParam Long dataSourceId,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
+
+		if (size < 1) {
+			size = 1;
+		}
 
 		return toSegmentDTOPageDTO(
 			segmentDog.searchPreviewDisabledSegmentsPage(
