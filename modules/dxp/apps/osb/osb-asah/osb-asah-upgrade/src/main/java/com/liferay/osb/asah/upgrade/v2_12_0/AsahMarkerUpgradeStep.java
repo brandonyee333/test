@@ -67,7 +67,9 @@ public class AsahMarkerUpgradeStep implements UpgradeStep {
 			"OSBAsahMarkers",
 			JSONUtil.put(
 				"properties",
-				mappingPropertiesJSONObject.getJSONObject("context")
+				JSONUtil.put(
+					"context",
+					mappingPropertiesJSONObject.getJSONObject("context"))
 			).toString(),
 			"OSBAsahMarkers", weDeployDataService);
 	}
