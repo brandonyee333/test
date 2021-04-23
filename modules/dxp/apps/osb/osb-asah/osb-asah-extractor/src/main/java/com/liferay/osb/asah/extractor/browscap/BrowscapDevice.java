@@ -17,6 +17,7 @@ package com.liferay.osb.asah.extractor.browscap;
 import com.blueconic.browscap.BrowsCapField;
 import com.blueconic.browscap.Capabilities;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -42,7 +43,9 @@ public class BrowscapDevice {
 	}
 
 	public String getDeviceType() {
-		return _capabilities.getDeviceType();
+		String deviceType = _capabilities.getDeviceType();
+
+		return _replacements.getOrDefault(deviceType, deviceType);
 	}
 
 	public String getPlatformName() {
@@ -50,5 +53,12 @@ public class BrowscapDevice {
 	}
 
 	private final Capabilities _capabilities;
+	private final Map<String, String> _replacements =
+		new HashMap<String, String>() {
+			{
+				put("Mobile Device", "Mobile");
+				put("Mobile Phone", "SmartPhone");
+			}
+		};
 
 }
