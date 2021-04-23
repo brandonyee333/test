@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -77,11 +78,31 @@ public class UpgradeProcessRunner {
 		return asahMarkerContextJSONObject.getString("version");
 	}
 
+	private String _getCurrentVersionOldFormat() {
+		JSONObject jsonObject = _faroInfoElasticsearchInvoker.fetch(
+			"OSBAsahMarkers", "Upgrade");
+
+		if (jsonObject == null) {
+			return null;
+		}
+
+		return jsonObject.optString("version", null);
+	}
+
 	private void _run() throws Exception {
+		String currentVersion = _getCurrentVersionOldFormat();
+
+		if (currentVersion != null) {
+			_asahMarkerDog.deleteAsahMarker(
+				"Upgrade", WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+			_saveCurrentVersion(null, currentVersion);
+		}
+
 		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
 			"Upgrade", WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-		String currentVersion = _getCurrentVersion(asahMarker);
+		currentVersion = _getCurrentVersion(asahMarker);
 
 		List<UpgradeStep> upgradeSteps = _upgradeProcess.getUpgradeSteps(
 			currentVersion);
@@ -144,6 +165,9 @@ public class UpgradeProcessRunner {
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private ProjectDog _projectDog;
