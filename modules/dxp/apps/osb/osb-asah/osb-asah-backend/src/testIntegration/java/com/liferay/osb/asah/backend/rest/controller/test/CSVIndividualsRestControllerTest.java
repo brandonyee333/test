@@ -45,17 +45,17 @@ import org.springframework.test.context.ContextConfiguration;
 public class CSVIndividualsRestControllerTest {
 
 	@Test
-	public void testPostCSVIndividuals() {
+	public void testPostCSVIndividuals() throws Exception {
 		JSONArray jsonArray = JSONUtil.putAll(
 			JSONUtil.put(
 				"dataSourceId", "123"
 			).put(
-				"foo", "bar"
+				"fields", JSONUtil.put("foo", "bar")
 			),
 			JSONUtil.put(
 				"dataSourceId", "123"
 			).put(
-				"foo2", "bar2"
+				"fields", JSONUtil.put("foo2", "bar2")
 			));
 
 		_csvIndividualsRestController.postCSVIndividuals(jsonArray.toString());
