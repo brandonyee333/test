@@ -510,6 +510,18 @@
 	<td>//h4[contains(.,'Attachments')]//..//button[contains(@class,'btn-primary')]</td>
 	<td></td>
 </tr>
+<!--CHANNELS-->
+<tr>
+	<td>SEARCH_TABLES_CHANNELS</td>
+	<td>//h4[contains(text(),'${key_nameTableChannels}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ASSERT_COLUMN_STATUS_TAX_CALCULATIONS</td>
+	<td>//a[contains(text(),'${key_nameColumn}')]/../../..//span[contains(text(),'')]//span</td>
+	<td></td>
+</tr>
+
 <!--PRODUCT-->
 <tr>
 	<td>ANY_AUTOCOMPLETE_TEXT_FIELD</td>
