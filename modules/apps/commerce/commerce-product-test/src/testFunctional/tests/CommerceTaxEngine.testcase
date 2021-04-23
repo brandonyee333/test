@@ -112,7 +112,6 @@ definition {
 		AssertNotChecked.assertNotCheckedNotVisible(
 			key_toggleSwitchLabel = "Active",
 			locator1 = "ToggleSwitch#ANY_TOGGLE_SWITCH");
-
 	}
 
 	@description = "This is a test for COMMERCE-6258. UI lifecycle for activating a tax engine (Fixed)"
@@ -201,7 +200,6 @@ definition {
 		AssertNotChecked.assertNotCheckedNotVisible(
 			key_toggleSwitchLabel = "Active",
 			locator1 = "ToggleSwitch#ANY_TOGGLE_SWITCH");
-			
 	}
 
 	@description = "This is a test for COMMERCE-6259. Add tax rates to the newly activated engine (ByAddress)"
@@ -211,6 +209,7 @@ definition {
 		property portal.acceptance = "false";
 
 		// TODO COMMERCE-6259 AddTaxRateToByAddressTaxEngine Pending Implementation
+
 	}
 
 	@description = "This is a test for COMMERCE-6259. Add tax rates to the newly activated engine (Fixed)"

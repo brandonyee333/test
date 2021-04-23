@@ -511,6 +511,7 @@
 	<td></td>
 </tr>
 <!--CHANNELS-->
+
 <tr>
 	<td>SEARCH_TABLES_CHANNELS</td>
 	<td>//h4[contains(text(),'${key_nameTableChannels}')]</td>
