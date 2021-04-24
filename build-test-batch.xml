@@ -3700,7 +3700,6 @@ log.sanitizer.enabled=false</echo>
 		<run-functional-test
 			app.server.type="tomcat"
 			database.type="db2"
-			database.version="11.1"
 			test.build.fix.pack.zip.url="${test.build.fix.pack.zip.url}"
 			test.fix.pack.base.url="${test.fix.pack.base.url}"
 			test.license.xml.url="${test.license.xml.url}"
@@ -3747,7 +3746,6 @@ log.sanitizer.enabled=false</echo>
 		<run-functional-test
 			app.server.type="tomcat"
 			database.type="mariadb"
-			database.version="10.2"
 			test.build.fix.pack.zip.url="${test.build.fix.pack.zip.url}"
 			test.fix.pack.base.url="${test.fix.pack.base.url}"
 			test.license.xml.url="${test.license.xml.url}"
@@ -3795,7 +3793,6 @@ log.sanitizer.enabled=false</echo>
 		<run-functional-test
 			app.server.type="tomcat"
 			database.type="oracle"
-			database.version="12.2"
 			test.build.fix.pack.zip.url="${test.build.fix.pack.zip.url}"
 			test.fix.pack.base.url="${test.fix.pack.base.url}"
 			test.license.xml.url="${test.license.xml.url}"
@@ -3819,7 +3816,6 @@ log.sanitizer.enabled=false</echo>
 		<run-functional-test
 			app.server.type="tomcat"
 			database.type="postgresql"
-			database.version="10"
 			test.build.fix.pack.zip.url="${test.build.fix.pack.zip.url}"
 			test.fix.pack.base.url="${test.fix.pack.base.url}"
 			test.license.xml.url="${test.license.xml.url}"
@@ -3843,7 +3839,6 @@ log.sanitizer.enabled=false</echo>
 		<run-functional-test
 			app.server.type="tomcat"
 			database.type="sybase"
-			database.version="16.0"
 			test.build.fix.pack.zip.url="${test.build.fix.pack.zip.url}"
 			test.fix.pack.base.url="${test.fix.pack.base.url}"
 			test.license.xml.url="${test.license.xml.url}"
