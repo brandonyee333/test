@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.NumbersDistributionTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.util.ArrayUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -158,9 +159,14 @@ public class ElasticsearchAccountRepositoryImpl
 		transformationGetResponse.setElasticsearchInvoker(
 			_faroInfoElasticsearchInvoker);
 		transformationGetResponse.setPage(pageable.getPageNumber());
-		transformationGetResponse.setQueryBuilder(
-			_getAccountsQueryBuilder(
-				channelId, filterString, individualSegmentId));
+
+		QueryBuilder queryBuilder = _getAccountsQueryBuilder(
+			channelId, filterString, individualSegmentId);
+
+		if (queryBuilder != null) {
+			transformationGetResponse.setQueryBuilder(queryBuilder);
+		}
+
 		transformationGetResponse.setSize(pageable.getPageSize());
 		transformationGetResponse.setSorts(
 			new HashMap<String, String>() {
@@ -208,6 +214,14 @@ public class ElasticsearchAccountRepositoryImpl
 		String apply, @Nullable Long channelId, @Nullable String filterString,
 		Pageable pageable) {
 
+		TransformationGetResponse transformationGetResponse =
+			new TransformationGetResponse();
+
+		transformationGetResponse.setCollectionName(getCollectionName());
+		transformationGetResponse.setElasticsearchInvoker(
+			_faroInfoElasticsearchInvoker);
+		transformationGetResponse.setPage(pageable.getPageNumber());
+
 		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
 			filterString);
 
@@ -230,14 +244,10 @@ public class ElasticsearchAccountRepositoryImpl
 				ScoreMode.None);
 		}
 
-		TransformationGetResponse transformationGetResponse =
-			new TransformationGetResponse();
+		if (queryBuilder != null) {
+			transformationGetResponse.setQueryBuilder(queryBuilder);
+		}
 
-		transformationGetResponse.setCollectionName(getCollectionName());
-		transformationGetResponse.setElasticsearchInvoker(
-			_faroInfoElasticsearchInvoker);
-		transformationGetResponse.setPage(pageable.getPageNumber());
-		transformationGetResponse.setQueryBuilder(queryBuilder);
 		transformationGetResponse.setSize(pageable.getPageSize());
 		transformationGetResponse.setSorts(
 			new HashMap<String, String>() {
@@ -297,8 +307,13 @@ public class ElasticsearchAccountRepositoryImpl
 			collectionGetResponse.setCollectionName(getCollectionName());
 			collectionGetResponse.setElasticsearchInvoker(
 				_faroInfoElasticsearchInvoker);
-			collectionGetResponse.setQueryBuilder(
-				_getQueryBuilder(accountPKs, filterString));
+
+			QueryBuilder queryBuilder = _getQueryBuilder(
+				accountPKs, filterString);
+
+			if (queryBuilder != null) {
+				collectionGetResponse.setQueryBuilder(queryBuilder);
+			}
 
 			if (pageable.isPaged()) {
 				collectionGetResponse.setPage(pageable.getPageNumber());
@@ -323,7 +338,7 @@ public class ElasticsearchAccountRepositoryImpl
 
 			String[] segmentSorts = _getSorts(segmentSort);
 
-			if (segmentSorts.length > 0) {
+			if (ArrayUtil.isNotEmpty(segmentSorts)) {
 				List<Pair<String, SortOrder>> sortOrderPairs =
 					SortBuilderUtil.getSortOrderPairs(segmentSorts);
 

@@ -37,6 +37,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -187,8 +188,14 @@ public class ElasticsearchFieldRepositoryImpl
 		transformationGetResponse.setElasticsearchInvoker(
 			_faroInfoElasticsearchInvoker);
 		transformationGetResponse.setPage(pageable.getPageNumber());
-		transformationGetResponse.setQueryBuilder(
-			FilterStringToQueryBuilderConverter.convert(filterString));
+
+		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
+			filterString);
+
+		if (queryBuilder != null) {
+			transformationGetResponse.setQueryBuilder(queryBuilder);
+		}
+
 		transformationGetResponse.setSize(pageable.getPageSize());
 		transformationGetResponse.setSorts(
 			new HashMap<String, String>() {
@@ -246,8 +253,14 @@ public class ElasticsearchFieldRepositoryImpl
 			collectionGetResponse.setElasticsearchInvoker(
 				_faroInfoElasticsearchInvoker);
 			collectionGetResponse.setPage(pageable.getPageNumber());
-			collectionGetResponse.setQueryBuilder(
-				FilterStringToQueryBuilderConverter.convert(filterString));
+
+			QueryBuilder queryBuilder =
+				FilterStringToQueryBuilderConverter.convert(filterString);
+
+			if (queryBuilder != null) {
+				collectionGetResponse.setQueryBuilder(queryBuilder);
+			}
+
 			collectionGetResponse.setSize(pageable.getPageSize());
 			collectionGetResponse.setSorts(_getSorts(pageable.getSort()));
 

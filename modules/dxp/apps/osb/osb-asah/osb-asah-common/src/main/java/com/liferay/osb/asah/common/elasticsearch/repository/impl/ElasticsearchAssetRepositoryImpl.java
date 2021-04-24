@@ -175,9 +175,14 @@ public class ElasticsearchAssetRepositoryImpl
 		transformationGetResponse.setElasticsearchInvoker(
 			_faroInfoElasticsearchInvoker);
 		transformationGetResponse.setPage(pageable.getPageNumber());
-		transformationGetResponse.setQueryBuilder(
-			FilterStringToQueryBuilderConverter.convert(
-				filterString, _assetFilterStringConverterHelper));
+
+		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
+			filterString, _assetFilterStringConverterHelper);
+
+		if (queryBuilder != null) {
+			transformationGetResponse.setQueryBuilder(queryBuilder);
+		}
+
 		transformationGetResponse.setSize(pageable.getPageSize());
 		transformationGetResponse.setSorts(
 			new HashMap<String, String>() {

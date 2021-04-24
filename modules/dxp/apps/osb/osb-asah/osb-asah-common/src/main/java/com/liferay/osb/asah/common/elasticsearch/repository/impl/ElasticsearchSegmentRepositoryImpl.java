@@ -375,8 +375,14 @@ public class ElasticsearchSegmentRepositoryImpl
 		transformationGetResponse.setElasticsearchInvoker(
 			_faroInfoElasticsearchInvoker);
 		transformationGetResponse.setPage(pageable.getPageNumber());
-		transformationGetResponse.setQueryBuilder(
-			_getSegmentsQueryBuilder(filterString, segmentIds));
+
+		QueryBuilder queryBuilder = _getSegmentsQueryBuilder(
+			filterString, segmentIds);
+
+		if (queryBuilder != null) {
+			transformationGetResponse.setQueryBuilder(queryBuilder);
+		}
+
 		transformationGetResponse.setSize(pageable.getPageSize());
 		transformationGetResponse.setSorts(
 			new HashMap<String, String>() {

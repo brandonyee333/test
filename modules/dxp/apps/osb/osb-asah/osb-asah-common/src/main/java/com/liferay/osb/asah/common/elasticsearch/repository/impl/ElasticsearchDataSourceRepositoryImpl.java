@@ -31,6 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -191,8 +192,14 @@ public class ElasticsearchDataSourceRepositoryImpl
 			collectionGetResponse.setElasticsearchInvoker(
 				_faroInfoElasticsearchInvoker);
 			collectionGetResponse.setPage(pageable.getPageNumber());
-			collectionGetResponse.setQueryBuilder(
-				FilterStringToQueryBuilderConverter.convert(filterString));
+
+			QueryBuilder queryBuilder =
+				FilterStringToQueryBuilderConverter.convert(filterString);
+
+			if (queryBuilder != null) {
+				collectionGetResponse.setQueryBuilder(queryBuilder);
+			}
+
 			collectionGetResponse.setSize(pageable.getPageSize());
 
 			List<String> sorts = new LinkedList<>();
