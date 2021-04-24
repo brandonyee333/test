@@ -319,7 +319,8 @@ public class JSONUtil {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			values.put(jsonObject.getString(jsonObjectKey), jsonObject);
+			values.put(
+				String.valueOf(jsonObject.get(jsonObjectKey)), jsonObject);
 		}
 
 		return values;

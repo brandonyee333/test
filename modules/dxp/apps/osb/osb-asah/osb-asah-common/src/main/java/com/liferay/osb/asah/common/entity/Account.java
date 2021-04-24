@@ -230,6 +230,14 @@ public class Account implements Persistable<Long> {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class AccountActivityCount {
 
+		public AccountActivityCount() {
+		}
+
+		public AccountActivityCount(Long activitiesCount, Long channelId) {
+			_activitiesCount = activitiesCount;
+			_channelId = channelId;
+		}
+
 		@Override
 		public boolean equals(Object obj) {
 			if (this == obj) {
@@ -287,6 +295,14 @@ public class Account implements Persistable<Long> {
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class AccountIndividualCount {
+
+		public AccountIndividualCount() {
+		}
+
+		public AccountIndividualCount(Long channelId, Long individualCount) {
+			_channelId = channelId;
+			_individualCount = individualCount;
+		}
 
 		@Override
 		public boolean equals(Object obj) {

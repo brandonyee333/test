@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -38,6 +39,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -295,6 +297,83 @@ public class ElasticsearchAccountRepositoryImpl
 	}
 
 	@Override
+	public <S extends Account> S save(S account) {
+		JSONObject jsonObject = toJSONObject(account);
+
+		Set<Field> fields = account.getFields();
+
+		if ((fields != null) && !fields.isEmpty()) {
+			jsonObject.put("organization", new JSONObject());
+
+			for (Field field : fields) {
+				JSONObject organizationJSONObject = jsonObject.getJSONObject(
+					"organization");
+
+				organizationJSONObject.put(
+					field.getName(),
+					JSONUtil.put(
+						objectMapper.convertValue(field, JSONObject.class)));
+			}
+		}
+
+		Set<Account.AccountActivityCount> activitiesCounts =
+			account.getActivitiesCounts();
+
+		if ((activitiesCounts != null) && !activitiesCounts.isEmpty()) {
+			jsonObject.put("activitiesCounts", new JSONArray());
+
+			for (Account.AccountActivityCount activityCount :
+					activitiesCounts) {
+
+				JSONArray activitiesCountsJSONArray = jsonObject.getJSONArray(
+					"activitiesCounts");
+
+				activitiesCountsJSONArray.put(
+					JSONUtil.put(
+						"activitiesCount", activityCount.getActivitiesCount()
+					).put(
+						"channelId", activityCount.getChannelId()
+					));
+			}
+		}
+
+		Set<Account.AccountIndividualCount> individualCounts =
+			account.getIndividualCounts();
+
+		if ((individualCounts != null) && !individualCounts.isEmpty()) {
+			jsonObject.put("individualCounts", new JSONArray());
+
+			for (Account.AccountIndividualCount individualCount :
+					individualCounts) {
+
+				JSONArray individualsCountsJSONArray = jsonObject.getJSONArray(
+					"individualCounts");
+
+				individualsCountsJSONArray.put(
+					JSONUtil.put(
+						"channelId", individualCount.getChannelId()
+					).put(
+						"individualCount", individualCount.getIndividualCount()
+					));
+			}
+		}
+
+		if ((account.getId() != null) &&
+			_faroInfoElasticsearchInvoker.exists(
+				getCollectionName(), String.valueOf(account.getId()))) {
+
+			jsonObject = _faroInfoElasticsearchInvoker.update(
+				getCollectionName(), jsonObject);
+		}
+		else {
+			jsonObject = _faroInfoElasticsearchInvoker.add(
+				getCollectionName(), jsonObject);
+		}
+
+		return (S)toEntity(jsonObject);
+	}
+
+	@Override
 	public List<Account> searchAccounts(
 		@Nullable Set<String> accountPKs, @Nullable Long channelId,
 		@Nullable String filterString, Pageable pageable,
@@ -320,7 +399,9 @@ public class ElasticsearchAccountRepositoryImpl
 				collectionGetResponse.setSize(pageable.getPageSize());
 			}
 
-			collectionGetResponse.setSorts(_getSorts(pageable.getSort()));
+			String[] sorts = _getSorts(pageable.getSort());
+
+			collectionGetResponse.setSorts(sorts);
 
 			if (channelId == null) {
 				JSONObject jsonObject = new JSONObject(
@@ -333,8 +414,25 @@ public class ElasticsearchAccountRepositoryImpl
 					embeddedJSONObject.getJSONArray(getCollectionName()));
 			}
 
-			List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
 			List<String> newSorts = new ArrayList<>();
+
+			if (ArrayUtil.isNotEmpty(sorts)) {
+				List<Pair<String, SortOrder>> sortOrderPairs =
+					SortBuilderUtil.getSortOrderPairs(sorts);
+
+				for (Pair<String, SortOrder> sortOrderPair : sortOrderPairs) {
+					if (Objects.equals("id", sortOrderPair.getKey())) {
+						continue;
+					}
+
+					SortOrder sortOrder = sortOrderPair.getValue();
+
+					newSorts.add(sortOrderPair.getKey());
+					newSorts.add(sortOrder.toString());
+				}
+			}
+
+			List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
 
 			String[] segmentSorts = _getSorts(segmentSort);
 
@@ -343,6 +441,10 @@ public class ElasticsearchAccountRepositoryImpl
 					SortBuilderUtil.getSortOrderPairs(segmentSorts);
 
 				for (Pair<String, SortOrder> sortOrderPair : sortOrderPairs) {
+					if (Objects.equals("id", sortOrderPair.getKey())) {
+						continue;
+					}
+
 					if (StringUtils.equalsIgnoreCase(
 							sortOrderPair.getKey(), "activitiesCount")) {
 
