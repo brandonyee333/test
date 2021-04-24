@@ -330,7 +330,9 @@ public class ActivitiesNanite implements Nanite {
 
 			String title = _getEventPropertiesTitle(analyticsEvent);
 
-			if (!Objects.equals(asset.getTitle(), title)) {
+			if (StringUtils.isNotEmpty(title) &&
+				!Objects.equals(asset.getTitle(), title)) {
+
 				asset.setTitle(title);
 
 				_assetDog.updateAsset(asset);
