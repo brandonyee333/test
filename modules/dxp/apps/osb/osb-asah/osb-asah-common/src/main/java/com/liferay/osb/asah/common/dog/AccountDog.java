@@ -29,16 +29,13 @@ import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -412,15 +409,11 @@ public class AccountDog {
 			return Collections.emptyList();
 		}
 
-		Stream<Account> stream = accounts.stream();
+		for (Account account : accounts) {
+			populateAccount(account, channelId);
+		}
 
-		Map<Long, Account> accountsById = stream.collect(
-			Collectors.toMap(Account::getId, Function.identity()));
-
-		accountsById.forEach(
-			(accountId, account) -> populateAccount(account, channelId));
-
-		return new ArrayList<>(accountsById.values());
+		return accounts;
 	}
 
 	private static final Log _log = LogFactory.getLog(AccountDog.class);
