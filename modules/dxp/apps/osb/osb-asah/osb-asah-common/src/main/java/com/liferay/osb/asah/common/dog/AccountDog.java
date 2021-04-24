@@ -336,6 +336,10 @@ public class AccountDog {
 				_getAccountPKs(segmentId), filterString));
 	}
 
+	public Account updateAccount(Account account) {
+		return populateAccount(_accountRepository.save(account), null);
+	}
+
 	public Account updateAccount(
 			Account account, JSONObject dataJSONObject, DataSource dataSource)
 		throws Exception {

@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
+import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
@@ -361,6 +362,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 			_addAsahTask(segment);
 		}
 
+		_replaceAccount(segment);
+
 		return segment;
 	}
 
@@ -476,8 +479,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public Segment updateSegment(
-			long individualCount, long knownIndividualCount, Long segmentId)
-		throws Exception {
+		long individualCount, long knownIndividualCount, Long segmentId) {
 
 		Segment segment = new Segment();
 
@@ -489,9 +491,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return _updateSegment(getSegment(segmentId), segment);
 	}
 
-	public Segment updateSegment(Segment partialSegment, Long segmentId)
-		throws Exception {
-
+	public Segment updateSegment(Segment partialSegment, Long segmentId) {
 		return _updateSegment(getSegment(segmentId), partialSegment);
 	}
 
@@ -596,6 +596,20 @@ public class SegmentDog extends BaseFaroInfoDog {
 				referencedJSONObject.getLong(dataSourceIdFieldName)));
 
 		return null;
+	}
+
+	private Long _getAccountId(Segment segment) {
+		if (!Objects.equals(segment.getStatus(), "INACTIVE")) {
+			return null;
+		}
+
+		String name = segment.getName();
+
+		if (!name.startsWith(_ACCOUNT_PREFIX)) {
+			return null;
+		}
+
+		return Long.valueOf(name.substring(_ACCOUNT_PREFIX.length()));
 	}
 
 	private List<Long> _getIndividualSegmentIds(Long segmentId) {
@@ -814,6 +828,74 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return null;
 	}
 
+	private void _replaceAccount(Segment segment) {
+		Long accountId = _getAccountId(segment);
+
+		if (accountId == null) {
+			return;
+		}
+
+		Account account = _accountDog.getAccount(accountId, null);
+
+		if (Objects.nonNull(segment.getActivitiesCount())) {
+			JSONArray activitiesCountsJSONArray =
+				_faroInfoIndividualDog.getActivitiesCountsJSONArray(
+					BooleanUtils.toBooleanDefaultIfNull(
+						segment.getIncludeAnonymousUsers(), false),
+					segment.getId());
+
+			if (activitiesCountsJSONArray.length() > 0) {
+				Set<Account.AccountActivityCount> activitiesCounts =
+					new HashSet<>();
+
+				for (int i = 0; i < activitiesCountsJSONArray.length(); i++) {
+					JSONObject activitiesCountJSONObject =
+						activitiesCountsJSONArray.getJSONObject(i);
+
+					activitiesCounts.add(
+						new Account.AccountActivityCount(
+							activitiesCountJSONObject.optLong(
+								"activitiesCount", 0L),
+							activitiesCountJSONObject.getLong("channelId")));
+				}
+
+				account.setActivitiesCounts(activitiesCounts);
+			}
+		}
+
+		if (Objects.nonNull(segment.getIndividualCount())) {
+			JSONArray individualCountsJSONArray =
+				_faroInfoIndividualDog.getIndividualCountsJSONArray(
+					BooleanUtils.toBooleanDefaultIfNull(
+						segment.getIncludeAnonymousUsers(), false),
+					segment.getId());
+
+			if (individualCountsJSONArray.length() > 0) {
+				Set<Account.AccountIndividualCount> individualCounts =
+					new HashSet<>();
+
+				for (int i = 0; i < individualCountsJSONArray.length(); i++) {
+					JSONObject individualCountJSONObject =
+						individualCountsJSONArray.getJSONObject(i);
+
+					individualCounts.add(
+						new Account.AccountIndividualCount(
+							individualCountJSONObject.getLong("channelId"),
+							individualCountJSONObject.optLong(
+								"individualCount", 0L)));
+				}
+
+				account.setIndividualCounts(individualCounts);
+			}
+		}
+
+		account.setActiveIndividualsCount(segment.getActiveIndividualCount());
+		account.setActivitiesCount(segment.getActivitiesCount());
+		account.setIndividualCount(segment.getIndividualCount());
+
+		_accountDog.updateAccount(account);
+	}
+
 	private void _setState(Segment segment) {
 		if ((segment.getType() == null) ||
 			Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
@@ -859,8 +941,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	private Segment _updateSegment(
-			Segment existingSegment, Segment partialSegment)
-		throws Exception {
+		Segment existingSegment, Segment partialSegment) {
 
 		if ((Objects.isNull(partialSegment.getFilter()) ||
 			 Objects.equals(
@@ -890,8 +971,12 @@ public class SegmentDog extends BaseFaroInfoDog {
 			_addAsahTask(existingSegment);
 		}
 
+		_replaceAccount(existingSegment);
+
 		return existingSegment;
 	}
+
+	private static final String _ACCOUNT_PREFIX = "Account: ";
 
 	private static final String[] _REFERENCED_OBJECT_NAMES = {
 		"referencedAssetDataSourceIds", "referencedAssetIds",
