@@ -141,6 +141,7 @@ public class Field implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getOwnerId() {
 		return _ownerId;
 	}
