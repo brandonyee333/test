@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -39,6 +40,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -223,38 +225,60 @@ public class AccountDog {
 			account.setActivitiesCount(segment.getActivitiesCount());
 			account.setIndividualCount(segment.getIndividualCount());
 
-			if ((channelId == null) && (segment.getChannelId() != null)) {
-				Account.AccountActivityCount accountActivityCount =
-					new Account.AccountActivityCount();
+			JSONArray activitiesCountsJSONArray =
+				_faroInfoIndividualDog.getActivitiesCountsJSONArray(
+					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
+					segment.getId());
 
-				accountActivityCount.setActivitiesCount(
-					segment.getActivitiesCount());
-				accountActivityCount.setChannelId(segment.getChannelId());
+			if (activitiesCountsJSONArray.length() > 0) {
+				Set<Account.AccountActivityCount> activitiesCounts =
+					new HashSet<>();
 
-				account.setActivitiesCounts(
-					Collections.singleton(accountActivityCount));
+				for (int i = 0; i < activitiesCountsJSONArray.length(); i++) {
+					JSONObject activitiesCountJSONObject =
+						activitiesCountsJSONArray.getJSONObject(i);
 
-				Account.AccountIndividualCount accountIndividualCount =
-					new Account.AccountIndividualCount();
+					activitiesCounts.add(
+						new Account.AccountActivityCount(
+							activitiesCountJSONObject.optLong(
+								"activitiesCount", 0L),
+							activitiesCountJSONObject.getLong("channelId")));
+				}
 
-				accountIndividualCount.setChannelId(segment.getChannelId());
-				accountIndividualCount.setIndividualCount(
-					segment.getIndividualCount());
-
-				account.setIndividualCounts(
-					Collections.singleton(accountIndividualCount));
+				account.setActivitiesCounts(activitiesCounts);
 			}
-			else if ((channelId != null) &&
-					 (channelId != segment.getChannelId())) {
 
-				account.setActiveIndividualsCount(0L);
-				account.setActivitiesCount(0L);
-				account.setIndividualCount(0L);
+			JSONArray individualCountsJSONArray =
+				_faroInfoIndividualDog.getIndividualCountsJSONArray(
+					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
+					segment.getId());
+
+			if (individualCountsJSONArray.length() > 0) {
+				Set<Account.AccountIndividualCount> individualCounts =
+					new HashSet<>();
+
+				for (int i = 0; i < individualCountsJSONArray.length(); i++) {
+					JSONObject individualCountJSONObject =
+						individualCountsJSONArray.getJSONObject(i);
+
+					individualCounts.add(
+						new Account.AccountIndividualCount(
+							individualCountJSONObject.getLong("channelId"),
+							individualCountJSONObject.optLong(
+								"individualCount", 0L)));
+				}
+
+				account.setIndividualCounts(individualCounts);
 			}
 		}
-		else if (channelId != null) {
+
+		if (channelId != null) {
 			Set<Account.AccountActivityCount> activitiesCounts =
 				account.getActivitiesCounts();
+
+			if (activitiesCounts.isEmpty()) {
+				account.setActivitiesCount(0L);
+			}
 
 			for (Account.AccountActivityCount activitiesCount :
 					activitiesCounts) {
@@ -265,10 +289,16 @@ public class AccountDog {
 
 					break;
 				}
+
+				account.setActivitiesCount(0L);
 			}
 
 			Set<Account.AccountIndividualCount> individualCounts =
 				account.getIndividualCounts();
+
+			if (individualCounts.isEmpty()) {
+				account.setIndividualCount(0L);
+			}
 
 			for (Account.AccountIndividualCount individualCount :
 					individualCounts) {
@@ -279,6 +309,8 @@ public class AccountDog {
 
 					break;
 				}
+
+				account.setIndividualCount(0L);
 			}
 
 			account.setActivitiesCounts(null);
@@ -318,14 +350,14 @@ public class AccountDog {
 		Sort segmentSort = null;
 
 		if (ArrayUtils.isNotEmpty(segmentSorts)) {
-			segmentSort = SortUtil.getSort(segmentSorts);
+			segmentSort = SortUtil.getSort(null, segmentSorts);
 		}
 
 		List<Account> accounts = _populateAccounts(
 			_accountRepository.searchAccounts(
 				_getAccountPKs(segmentId), channelId, filterString, pageRequest,
 				segmentSort),
-			null);
+			channelId);
 
 		return PageableExecutionUtils.getPage(
 			accounts, pageRequest,
@@ -426,6 +458,9 @@ public class AccountDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
 	private FieldDog _fieldDog;
