@@ -695,7 +695,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			modifiedDate,
 			buildIndividualsQueryBuilder(
 				individualSegmentJSONObject.optString("channelId", null),
-				individualSegmentJSONObject.getString("filter"),
+				individualSegmentJSONObject.optString("filter", null),
 				individualSegmentJSONObject.optBoolean(
 					"includeAnonymousUsers")));
 	}
@@ -707,7 +707,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		Long individualSegmentId = individualSegmentJSONObject.getLong("id");
 		QueryBuilder queryBuilder = buildIndividualsQueryBuilder(
 			individualSegmentJSONObject.optString("channelId", null),
-			individualSegmentJSONObject.getString("filter"),
+			individualSegmentJSONObject.optString("filter", null),
 			individualSegmentJSONObject.optBoolean("includeAnonymousUsers"));
 
 		_updateDynamicAddMemberships(
@@ -724,7 +724,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			individualSegmentJSONObject.getLong("id"), modifiedDate,
 			buildIndividualsQueryBuilder(
 				individualSegmentJSONObject.optString("channelId", null),
-				individualSegmentJSONObject.getString("filter"),
+				individualSegmentJSONObject.optString("filter", null),
 				individualSegmentJSONObject.optBoolean(
 					"includeAnonymousUsers")));
 	}

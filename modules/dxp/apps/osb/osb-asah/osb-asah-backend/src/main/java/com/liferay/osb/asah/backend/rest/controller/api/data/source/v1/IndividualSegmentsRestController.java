@@ -48,6 +48,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -435,7 +436,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		}
 
 		if (includeAnonymousUsers == null) {
-			includeAnonymousUsers = segment.getIncludeAnonymousUsers();
+			includeAnonymousUsers = BooleanUtils.toBoolean(
+				segment.getIncludeAnonymousUsers());
 		}
 
 		if (!includeAnonymousUsers) {
@@ -462,7 +464,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		Segment segment = segmentDog.getSegment(
 			Long.valueOf(individualSegmentId));
 
-		if (!segment.getIncludeAnonymousUsers()) {
+		if (!BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers())) {
 			boolQueryBuilder.filter(
 				QueryBuilders.existsQuery("individualEmail"));
 		}
