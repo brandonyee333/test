@@ -242,11 +242,8 @@ public class ElasticsearchSegmentRepositoryImpl
 		}
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> searchSourceBuilder.query(
-						boolQueryBuilder))));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(), boolQueryBuilder));
 	}
 
 	@Override
