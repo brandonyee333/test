@@ -109,7 +109,7 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 		return _log;
 	}
 
-	protected void process(Segment segment) throws Exception {
+	protected void process(Segment segment) {
 		Long channelId = segment.getChannelId();
 		String name = segment.getName();
 		Long segmentId = segment.getId();

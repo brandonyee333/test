@@ -44,9 +44,8 @@ import org.springframework.stereotype.Component;
 public class MembershipDog extends BaseFaroInfoDog {
 
 	public Membership addMembership(
-			Date createDate, Long individualId, Long individualSegmentId,
-			Date modifiedDate, String status)
-		throws Exception {
+		Date createDate, Long individualId, Long individualSegmentId,
+		Date modifiedDate, String status) {
 
 		Membership membership = new Membership();
 
@@ -59,7 +58,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 		return addMembership(membership);
 	}
 
-	public Membership addMembership(Membership membership) throws Exception {
+	public Membership addMembership(Membership membership) {
 		membership = _membershipRepository.save(membership);
 
 		String status = membership.getStatus();
@@ -104,9 +103,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 		return membership;
 	}
 
-	public List<Membership> addMemberships(List<Membership> memberships)
-		throws Exception {
-
+	public List<Membership> addMemberships(List<Membership> memberships) {
 		if (memberships.isEmpty()) {
 			return memberships;
 		}
@@ -151,8 +148,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 	}
 
 	public void deactivateMembership(
-			Date deletionDate, Long individualId, Long individualSegmentId)
-		throws Exception {
+		Date deletionDate, Long individualId, Long individualSegmentId) {
 
 		deactivateMembership(
 			deletionDate,
@@ -161,9 +157,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 					individualId, individualSegmentId, "ACTIVE"));
 	}
 
-	public void deactivateMembership(Date deletionDate, Membership membership)
-		throws Exception {
-
+	public void deactivateMembership(Date deletionDate, Membership membership) {
 		if (membership == null) {
 			return;
 		}
@@ -212,9 +206,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 		}
 	}
 
-	public void deactivateMemberships(Date deletionDate, Long individualId)
-		throws Exception {
-
+	public void deactivateMemberships(Date deletionDate, Long individualId) {
 		for (Membership membership :
 				_membershipRepository.findByIndividualIdAndStatus(
 					individualId, "ACTIVE")) {

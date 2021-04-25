@@ -76,10 +76,8 @@ import org.springframework.stereotype.Component;
 public class SegmentDog extends BaseFaroInfoDog {
 
 	public Segment addSegment(
-			Long activitiesCount, Date createDate, String filter,
-			Date modifiedDate, String name, String scope, String type,
-			String status)
-		throws Exception {
+		Long activitiesCount, Date createDate, String filter, Date modifiedDate,
+		String name, String scope, String type, String status) {
 
 		Segment segment = new Segment();
 
@@ -95,7 +93,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return addSegment(segment);
 	}
 
-	public Segment addSegment(Segment segment) throws Exception {
+	public Segment addSegment(Segment segment) {
 		setReferencedFields(segment);
 
 		if ((segment.getType() == null) ||
@@ -211,7 +209,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return segmentOptional.orElse(null);
 	}
 
-	public List<Long> getReferencedAssetIds() throws Exception {
+	public List<Long> getReferencedAssetIds() {
 		return _segmentRepository.findReferencedAssetIds();
 	}
 

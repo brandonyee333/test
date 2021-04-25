@@ -161,7 +161,7 @@ public class DataSourcesRestControllerTest {
 	}
 
 	@Test
-	public void testDuplicateDataSourceName() throws Exception {
+	public void testDuplicateDataSourceName() {
 		JSONObject dataSourceJSONObject =
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
 				"Liferay", RandomTestUtil.randomURL());
@@ -197,7 +197,7 @@ public class DataSourcesRestControllerTest {
 	}
 
 	@Test
-	public void testGetCSVDataSourceProgress() throws Exception {
+	public void testGetCSVDataSourceProgress() {
 		JSONObject csvDataSourceJSONObject = _faroInfoElasticsearchInvoker.add(
 			"data-sources", FaroInfoTestUtil.buildCSVDataSourceJSONObject());
 
@@ -278,7 +278,7 @@ public class DataSourcesRestControllerTest {
 	}
 
 	@Test
-	public void testGetDataSources() throws Exception {
+	public void testGetDataSources() {
 		_dataSourcesRestController.postDataSource(
 			_objectMapper.convertValue(
 				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
@@ -316,7 +316,7 @@ public class DataSourcesRestControllerTest {
 	}
 
 	@Test
-	public void testGetSalesforceDataSourceAccountsProgress() throws Exception {
+	public void testGetSalesforceDataSourceAccountsProgress() {
 		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
@@ -580,9 +580,7 @@ public class DataSourcesRestControllerTest {
 	}
 
 	@Test
-	public void testGetSalesforceDataSourceIndividualsProgress1()
-		throws Exception {
-
+	public void testGetSalesforceDataSourceIndividualsProgress1() {
 		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
@@ -599,9 +597,7 @@ public class DataSourcesRestControllerTest {
 	}
 
 	@Test
-	public void testGetSalesforceDataSourceIndividualsProgress2()
-		throws Exception {
-
+	public void testGetSalesforceDataSourceIndividualsProgress2() {
 		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
@@ -635,9 +631,7 @@ public class DataSourcesRestControllerTest {
 	}
 
 	@Test
-	public void testGetSalesforceDataSourceIndividualsProgress3()
-		throws Exception {
-
+	public void testGetSalesforceDataSourceIndividualsProgress3() {
 		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
@@ -754,9 +748,7 @@ public class DataSourcesRestControllerTest {
 	}
 
 	@Test
-	public void testGetSalesforceDataSourceIndividualsProgress4()
-		throws Exception {
-
+	public void testGetSalesforceDataSourceIndividualsProgress4() {
 		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
@@ -791,9 +783,7 @@ public class DataSourcesRestControllerTest {
 	}
 
 	@Test
-	public void testGetSalesforceDataSourceIndividualsProgress5()
-		throws Exception {
-
+	public void testGetSalesforceDataSourceIndividualsProgress5() {
 		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
@@ -861,9 +851,7 @@ public class DataSourcesRestControllerTest {
 	}
 
 	@Test
-	public void testGetSalesforceDataSourceIndividualsProgress6()
-		throws Exception {
-
+	public void testGetSalesforceDataSourceIndividualsProgress6() {
 		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
@@ -914,9 +902,7 @@ public class DataSourcesRestControllerTest {
 	}
 
 	@Test
-	public void testGetSalesforceDataSourceIndividualsProgress7()
-		throws Exception {
-
+	public void testGetSalesforceDataSourceIndividualsProgress7() {
 		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
@@ -968,9 +954,7 @@ public class DataSourcesRestControllerTest {
 	}
 
 	@Test
-	public void testGetSalesforceDataSourceIndividualsProgress8()
-		throws Exception {
-
+	public void testGetSalesforceDataSourceIndividualsProgress8() {
 		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
@@ -1018,9 +1002,7 @@ public class DataSourcesRestControllerTest {
 	}
 
 	@Test
-	public void testGetSalesforceDataSourceIndividualsProgress9()
-		throws Exception {
-
+	public void testGetSalesforceDataSourceIndividualsProgress9() {
 		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 

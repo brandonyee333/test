@@ -301,8 +301,7 @@ public class FinalizeUserSessionArm {
 	}
 
 	private Map<Pair<String, Date>, String> _getPageEventDateMap(
-			JSONArray pagesJSONArray)
-		throws Exception {
+		JSONArray pagesJSONArray) {
 
 		Map<Pair<String, Date>, String> pageEventDateMap = new HashMap<>();
 
@@ -320,8 +319,7 @@ public class FinalizeUserSessionArm {
 	}
 
 	private List<Pair<String, Date>> _getURLEventDatePairs(
-			JSONArray pagesJSONArray)
-		throws Exception {
+		JSONArray pagesJSONArray) {
 
 		List<Pair<String, Date>> urlEventDatePairs = new ArrayList<>();
 

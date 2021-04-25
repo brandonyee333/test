@@ -361,9 +361,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	@PostMapping
-	public SegmentDTO postSegment(@RequestBody SegmentDTO segmentDTO)
-		throws Exception {
-
+	public SegmentDTO postSegment(@RequestBody SegmentDTO segmentDTO) {
 		segmentDTO.setActivitiesCount(0L);
 
 		Date now = new Date();

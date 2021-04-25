@@ -42,7 +42,7 @@ public class InterestScoreArm {
 				totalViews);
 	}
 
-	public double computeThresholdScore(String keyword) throws Exception {
+	public double computeThresholdScore(String keyword) {
 		double totalKeywordViews = 0.0;
 		double totalViews = 0.0;
 

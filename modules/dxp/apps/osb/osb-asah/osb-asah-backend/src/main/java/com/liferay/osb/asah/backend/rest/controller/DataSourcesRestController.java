@@ -145,9 +145,8 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@GetMapping("/{id}/salesforce-accounts/fields")
 	public String getSalesforceAccountsFields(
-			@PathVariable Long id, @RequestParam(defaultValue = "20") int end,
-			@RequestParam(defaultValue = "0") int start)
-		throws Exception {
+		@PathVariable Long id, @RequestParam(defaultValue = "20") int end,
+		@RequestParam(defaultValue = "0") int start) {
 
 		return _exchange(
 			id,
@@ -157,9 +156,8 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@GetMapping("/{id}/salesforce-users/fields")
 	public String getSalesforceUsersFields(
-			@PathVariable Long id, @RequestParam(defaultValue = "20") int end,
-			@RequestParam(defaultValue = "0") int start)
-		throws Exception {
+		@PathVariable Long id, @RequestParam(defaultValue = "20") int end,
+		@RequestParam(defaultValue = "0") int start) {
 
 		return _exchange(
 			id,
@@ -227,8 +225,7 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	private String _exchange(
-			Long dataSourceId, Supplier<ResponseEntity<String>> supplier)
-		throws Exception {
+		Long dataSourceId, Supplier<ResponseEntity<String>> supplier) {
 
 		DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
 
@@ -665,7 +662,7 @@ public class DataSourcesRestController extends BaseRestController {
 		);
 	}
 
-	private void _refreshConfiguration(DataSource dataSource) throws Exception {
+	private void _refreshConfiguration(DataSource dataSource) {
 		String providerType = dataSource.getProviderType();
 
 		if (!Objects.equals(providerType, "SALESFORCE")) {

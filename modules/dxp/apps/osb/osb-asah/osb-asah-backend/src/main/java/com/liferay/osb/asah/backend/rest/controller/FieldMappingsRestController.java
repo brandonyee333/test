@@ -61,7 +61,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FieldMappingsRestController extends BaseRestController {
 
 	@DeleteMapping("/{id}")
-	public void deleteFieldMapping(@PathVariable String id) throws Exception {
+	public void deleteFieldMapping(@PathVariable String id) {
 		JSONObject fieldMappingJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"field-mappings", id);
 
@@ -268,9 +268,7 @@ public class FieldMappingsRestController extends BaseRestController {
 		return responseJSON;
 	}
 
-	private void _addReprocessAsahTask(JSONObject fieldMappingJSONObject)
-		throws Exception {
-
+	private void _addReprocessAsahTask(JSONObject fieldMappingJSONObject) {
 		JSONObject dataSourceFieldNamesJSONObject =
 			fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
 
@@ -281,9 +279,7 @@ public class FieldMappingsRestController extends BaseRestController {
 		}
 	}
 
-	private void _addReprocessAsahTask(Long dataSourceId, String ownerType)
-		throws Exception {
-
+	private void _addReprocessAsahTask(Long dataSourceId, String ownerType) {
 		DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
 
 		String naniteClassName = _naniteClassNames.get(

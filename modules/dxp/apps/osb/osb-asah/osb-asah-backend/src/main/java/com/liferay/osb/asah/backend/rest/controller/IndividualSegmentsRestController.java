@@ -59,8 +59,7 @@ public class IndividualSegmentsRestController
 
 	@DeleteMapping("/{id}/memberships/{individualId}")
 	public void deleteIndividual(
-			@PathVariable Long id, @PathVariable Long individualId)
-		throws Exception {
+		@PathVariable Long id, @PathVariable Long individualId) {
 
 		membershipDog.deactivateMembership(new Date(), individualId, id);
 	}
@@ -104,8 +103,7 @@ public class IndividualSegmentsRestController
 
 	@PutMapping("/{id}")
 	public SegmentDTO putIndividualSegment(
-			@PathVariable Long id, @RequestBody SegmentDTO segmentDTO)
-		throws Exception {
+		@PathVariable Long id, @RequestBody SegmentDTO segmentDTO) {
 
 		segmentDTO.setActiveIndividualCount(null);
 		segmentDTO.setActivitiesCount(null);

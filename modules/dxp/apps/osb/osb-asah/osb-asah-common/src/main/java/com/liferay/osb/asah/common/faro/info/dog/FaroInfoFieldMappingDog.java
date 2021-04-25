@@ -104,8 +104,7 @@ public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 				QueryBuilders.termQuery("context", context)
 			).filter(
 				QueryBuilders.termQuery(
-					"dataSourceFieldNames." + String.valueOf(dataSourceId),
-					fieldName)
+					"dataSourceFieldNames." + dataSourceId, fieldName)
 			).filter(
 				QueryBuilders.termQuery("displayName", fieldName)
 			).filter(

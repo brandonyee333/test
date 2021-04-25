@@ -52,7 +52,7 @@ public class InterestsEmbeddedJSONObjectCreator
 	}
 
 	@Override
-	public JSONObject create(String id) throws Exception {
+	public JSONObject create(String id) {
 		if (StringUtils.isEmpty(_expand)) {
 			return null;
 		}
@@ -106,9 +106,8 @@ public class InterestsEmbeddedJSONObjectCreator
 	}
 
 	private JSONArray _getInterestAggregationJSONArray(
-			LocalDateTime endDayLocalDateTime, String name, String ownerId,
-			String ownerType, LocalDateTime startDayLocalDateTime)
-		throws Exception {
+		LocalDateTime endDayLocalDateTime, String name, String ownerId,
+		String ownerType, LocalDateTime startDayLocalDateTime) {
 
 		JSONArray interestAggregationJSONArray = new JSONArray();
 
