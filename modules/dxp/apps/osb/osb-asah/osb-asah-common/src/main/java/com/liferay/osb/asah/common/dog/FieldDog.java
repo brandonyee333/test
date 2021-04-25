@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.math.BigDecimal;
@@ -277,14 +278,23 @@ public class FieldDog {
 						context, dataSourceId, newFieldJSONObject,
 						oldFieldJSONObject, ownerType)) {
 
-					for (String key : JSONObject.getNames(newFieldJSONObject)) {
-						oldFieldJSONObject.put(
-							key, newFieldJSONObject.get(key));
-					}
+					Field newField = _objectMapper.convertValue(
+						newFieldJSONObject, Field.class);
+					Field oldField = _objectMapper.convertValue(
+						oldFieldJSONObject, Field.class);
 
-					_fieldRepository.save(
-						_objectMapper.convertValue(
-							oldFieldJSONObject, Field.class));
+					String newDataSourceId = String.valueOf(dataSourceId);
+					String oldDataSourceId = String.valueOf(
+						oldFieldJSONObject.get("dataSourceId"));
+
+					if (oldDataSourceId.equals(newDataSourceId)) {
+						BeanUtils.copyProperties(newField, oldField);
+
+						updateField(oldField.getId(), oldField);
+					}
+					else {
+						_fieldRepository.save(newField);
+					}
 				}
 				else {
 					iterator.remove();
@@ -380,14 +390,9 @@ public class FieldDog {
 						context, dataSourceId, newFieldJSONObject,
 						oldFieldJSONObject, ownerType)) {
 
-					for (String key : JSONObject.getNames(newFieldJSONObject)) {
-						oldFieldJSONObject.put(
-							key, newFieldJSONObject.get(key));
-					}
+					BeanUtils.copyProperties(newField, oldField);
 
-					_fieldRepository.save(
-						_objectMapper.convertValue(
-							oldFieldJSONObject, Field.class));
+					updateField(oldField.getId(), oldField);
 				}
 				else {
 					iterator.remove();
@@ -1325,14 +1330,14 @@ public class FieldDog {
 							newFieldJSONObject, Field.class));
 				}
 				else {
-					for (String key : JSONObject.getNames(newFieldJSONObject)) {
-						oldFieldJSONObject.put(
-							key, newFieldJSONObject.get(key));
-					}
+					Field newField = _objectMapper.convertValue(
+						newFieldJSONObject, Field.class);
+					Field oldField = _objectMapper.convertValue(
+						oldFieldJSONObject, Field.class);
 
-					_fieldRepository.save(
-						_objectMapper.convertValue(
-							oldFieldJSONObject, Field.class));
+					BeanUtils.copyProperties(newField, oldField);
+
+					updateField(oldField.getId(), oldField);
 				}
 			}
 
@@ -1406,18 +1411,12 @@ public class FieldDog {
 				_fieldRepository.saveAll(curNewFields);
 			}
 			else {
-				JSONObject newFieldJSONObject = _objectMapper.convertValue(
-					curNewFields.get(0), JSONObject.class);
-				JSONObject oldFieldJSONObject = _objectMapper.convertValue(
-					curOldFields.get(0), JSONObject.class);
+				Field curNewField = curNewFields.get(0);
+				Field curOldField = curOldFields.get(0);
 
-				for (String key : JSONObject.getNames(newFieldJSONObject)) {
-					oldFieldJSONObject.put(key, newFieldJSONObject.get(key));
-				}
+				BeanUtils.copyProperties(curNewField, curOldField);
 
-				_fieldRepository.save(
-					_objectMapper.convertValue(
-						oldFieldJSONObject, Field.class));
+				updateField(curOldField.getId(), curOldField);
 			}
 		}
 	}
