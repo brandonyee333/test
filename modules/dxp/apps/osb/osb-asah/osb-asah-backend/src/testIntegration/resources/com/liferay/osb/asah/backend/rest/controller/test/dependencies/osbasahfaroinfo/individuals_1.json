@@ -1,0 +1,442 @@
+[
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 0,
+				"channelId": "888"
+			}
+		],
+		"channelIds": [
+			"888"
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016C00000BKWWJQA5",
+					"0016C00000BKWWKQA5",
+					"0016C00000BKWWKQA6"
+				],
+				"dataSourceId": "342312716287315687"
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:44.412Z",
+		"dateModified": "2019-02-08T22:40:44.412Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2019-02-08T22:40:44.412Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "437984659206412898",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "lkeymar31@sfgate.com"
+				}
+			]
+		},
+		"id": "437984659206412898",
+		"individualSegmentIds": [
+			"327968823603500655",
+			"327968823603500657",
+			"327968823603500656"
+		]
+	},
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 0,
+				"channelId": "888"
+			}
+		],
+		"channelIds": [
+			"888"
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016C00000BKWWJQA5",
+					"0016C00000BKWWKQA5",
+					"0016C00000BKWWKQA6"
+				],
+				"dataSourceId": "342312716287315687"
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:44.412Z",
+		"dateModified": "2019-02-08T22:40:44.412Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2019-02-08T22:40:44.412Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "437984659206412899",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "lkeymar32@sfgates.com"
+				}
+			]
+		},
+		"id": "437984659206412899",
+		"individualSegmentIds": [
+			"327968823603500655",
+			"327968823603500657",
+			"327968823603500656"
+		]
+	},
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 0,
+				"channelId": "888"
+			}
+		],
+		"channelIds": [
+			"888"
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016C00000BKWWJQA5",
+					"0016C00000BKWWKQA5",
+					"0016C00000BKWWKQA6"
+				],
+				"dataSourceId": "342312716287315687"
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:44.412Z",
+		"dateModified": "2019-02-08T22:40:44.412Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2019-02-08T22:40:44.412Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "437984659206412900",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "lkeymar33@sfgates.com"
+				}
+			]
+		},
+		"id": "437984659206412900",
+		"individualSegmentIds": [
+			"327968823603500655",
+			"327968823603500657",
+			"327968823603500656"
+		]
+	},
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 0,
+				"channelId": "888"
+			}
+		],
+		"channelIds": [
+			"888"
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016C00000BKWWJQA5",
+					"0016C00000BKWWKQA5",
+					"0016C00000BKWWKQA6"
+				],
+				"dataSourceId": "342312716287315687"
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:44.412Z",
+		"dateModified": "2019-02-08T22:40:44.412Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2019-02-08T22:40:44.412Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "437984659206412901",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "lkeymar34@sfgates.com"
+				}
+			]
+		},
+		"id": "437984659206412901",
+		"individualSegmentIds": [
+			"327968823603500655",
+			"327968823603500657",
+			"327968823603500656"
+		]
+	},
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 0,
+				"channelId": "888"
+			}
+		],
+		"channelIds": [
+			"888"
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016C00000BKWWJQA5",
+					"0016C00000BKWWKQA5",
+					"0016C00000BKWWKQA6"
+				],
+				"dataSourceId": "342312716287315687"
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:44.412Z",
+		"dateModified": "2019-02-08T22:40:44.412Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2019-02-08T22:40:44.412Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "437984659206412902",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "lkeymar35@sfgates.com"
+				}
+			]
+		},
+		"id": "437984659206412902",
+		"individualSegmentIds": [
+			"327968823603500655",
+			"327968823603500657",
+			"327968823603500656"
+		]
+	},
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 0,
+				"channelId": "888"
+			}
+		],
+		"channelIds": [
+			"888"
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016C00000BKWWJQA5",
+					"0016C00000BKWWKQA5",
+					"0016C00000BKWWKQA6"
+				],
+				"dataSourceId": "342312716287315687"
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:44.412Z",
+		"dateModified": "2019-02-08T22:40:44.412Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2019-02-08T22:40:44.412Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "437984659206412903",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "lkeymar36@sfgates.com"
+				}
+			]
+		},
+		"id": "437984659206412903",
+		"individualSegmentIds": [
+			"327968823603500655",
+			"327968823603500657",
+			"327968823603500656"
+		]
+	},
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 0,
+				"channelId": "888"
+			}
+		],
+		"channelIds": [
+			"888"
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016C00000BKWWJQA5",
+					"0016C00000BKWWKQA6"
+				],
+				"dataSourceId": "342312716287315687"
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:44.412Z",
+		"dateModified": "2019-02-08T22:40:44.412Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2019-02-08T22:40:44.412Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "437984659206412904",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "lkeymar37@sfgates.com"
+				}
+			]
+		},
+		"id": "437984659206412904",
+		"individualSegmentIds": [
+			"327968823603500655",
+			"327968823603500657"
+		]
+	},
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 0,
+				"channelId": "888"
+			}
+		],
+		"channelIds": [
+			"888"
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016C00000BKWWJQA5",
+					"0016C00000BKWWKQA6"
+				],
+				"dataSourceId": "342312716287315687"
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:44.412Z",
+		"dateModified": "2019-02-08T22:40:44.412Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2019-02-08T22:40:44.412Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "437984659206412905",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "lkeymar38@sfgates.com"
+				}
+			]
+		},
+		"id": "437984659206412905",
+		"individualSegmentIds": [
+			"327968823603500655",
+			"327968823603500657"
+		]
+	},
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 0,
+				"channelId": "888"
+			}
+		],
+		"channelIds": [
+			"888"
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016C00000BKWWJQA5",
+					"0016C00000BKWWKQA6"
+				],
+				"dataSourceId": "342312716287315687"
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:44.412Z",
+		"dateModified": "2019-02-08T22:40:44.412Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2019-02-08T22:40:44.412Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "437984659206412906",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "lkeymar39@sfgates.com"
+				}
+			]
+		},
+		"id": "437984659206412906",
+		"individualSegmentIds": [
+			"327968823603500655",
+			"327968823603500657"
+		]
+	},
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 0,
+				"channelId": "888"
+			}
+		],
+		"channelIds": [
+			"888"
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016C00000BKWWJQA5"
+				],
+				"dataSourceId": "342312716287315687"
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:44.412Z",
+		"dateModified": "2019-02-08T22:40:44.412Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2019-02-08T22:40:44.412Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "437984659206412907",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "lkeymar40@sfgates.com"
+				}
+			]
+		},
+		"id": "437984659206412907",
+		"individualSegmentIds": [
+			"327968823603500655"
+		]
+	}
+]

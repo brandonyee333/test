@@ -76,6 +76,15 @@ public class AccountsRestControllerTest {
 		name = "accounts", resourcePath = "accounts_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
+	@ElasticsearchIndex(
+		name = "individual-segments",
+		resourcePath = "individual_segments_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@Test
 	public void testGetAccountDTOsPageDTO() throws Exception {
 		JSONAssert.assertEquals(

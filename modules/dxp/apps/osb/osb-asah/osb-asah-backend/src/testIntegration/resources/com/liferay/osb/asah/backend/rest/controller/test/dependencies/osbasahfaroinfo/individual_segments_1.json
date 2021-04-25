@@ -1,0 +1,77 @@
+[
+	{
+		"activitiesCount": 1,
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"dateCreated": "2018-12-15T16:02:01.824Z",
+		"dateModified": "2018-12-15T16:02:01.824Z",
+		"filter": "((dataSourceAccountPKs/accountPKs eq '0016C00000BKWWJQA5'))",
+		"filterMetadata": "32906",
+		"id": "327968823603500655",
+		"individualCount": 10,
+		"name": "Account: 342313459339515838",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+			"340477857996688156"
+		],
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "INACTIVE"
+	},
+	{
+		"activitiesCount": 0,
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"dateCreated": "2018-12-15T16:02:01.824Z",
+		"dateModified": "2018-12-15T16:02:01.824Z",
+		"filter": "((dataSourceAccountPKs/accountPKs eq '0016C00000BKWWKQA5'))",
+		"filterMetadata": "32906",
+		"id": "327968823603500656",
+		"individualCount": 8,
+		"name": "Account: 342313458385210529",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+			"340477857996688156"
+		],
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "INACTIVE"
+	},
+	{
+		"activitiesCount": 0,
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"dateCreated": "2018-12-15T16:02:01.824Z",
+		"dateModified": "2018-12-15T16:02:01.824Z",
+		"filter": "((dataSourceAccountPKs/accountPKs eq '0016C00000BKWWKQA6'))",
+		"filterMetadata": "32906",
+		"id": "327968823603500657",
+		"individualCount": 9,
+		"name": "Account: 342313458385210530",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+			"340477857996688156"
+		],
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "INACTIVE"
+	}
+]
