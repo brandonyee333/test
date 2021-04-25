@@ -144,8 +144,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public void disableDynamicSegments(
-			DXPEntityType dxpEntityType, Long segmentId)
-		throws Exception {
+		DXPEntityType dxpEntityType, Long segmentId) {
 
 		if (Objects.isNull(segmentId)) {
 			return;
@@ -154,16 +153,17 @@ public class SegmentDog extends BaseFaroInfoDog {
 		List<Segment> segments = _segmentRepository.searchSegments(
 			dxpEntityType, segmentId, "DISABLED", Segment.Type.DYNAMIC);
 
-		for (Segment segment : segments) {
-			segment.setState("DISABLED");
+		Segment partialSegment = new Segment();
 
-			_updateSegment(segment, segment);
+		partialSegment.setState("DISABLED");
+
+		for (Segment segment : segments) {
+			_updateSegment(segment, partialSegment);
 		}
 	}
 
 	public void disableDynamicSegments(
-			Long dataSourceId, List<Long> fieldMappingIds)
-		throws Exception {
+		Long dataSourceId, List<Long> fieldMappingIds) {
 
 		if ((dataSourceId == null) && fieldMappingIds.isEmpty()) {
 			return;
@@ -195,10 +195,12 @@ public class SegmentDog extends BaseFaroInfoDog {
 				"DISABLED", Segment.Type.DYNAMIC);
 		}
 
-		for (Segment segment : segments) {
-			segment.setState("DISABLED");
+		Segment partialSegment = new Segment();
 
-			_updateSegment(segment, segment);
+		partialSegment.setState("DISABLED");
+
+		for (Segment segment : segments) {
+			_updateSegment(segment, partialSegment);
 		}
 	}
 
@@ -445,6 +447,10 @@ public class SegmentDog extends BaseFaroInfoDog {
 		Map<String, Set<String>> referencedObjectIds = _getReferencedObjectIds(
 			segment.getFilter(), null);
 
+		if (referencedObjectIds.isEmpty()) {
+			return;
+		}
+
 		segment.setReferencedAssetDataSourceIds(
 			SetUtil.map(
 				referencedObjectIds.get("referencedAssetDataSourceIds"),
@@ -630,6 +636,10 @@ public class SegmentDog extends BaseFaroInfoDog {
 	private Map<String, Set<String>> _getReferencedObjectIds(
 		String filterString, String outerFunctionName) {
 
+		if (filterString == null) {
+			return Collections.emptyMap();
+		}
+
 		Map<String, Set<String>> referencedObjectSets = new HashMap<>();
 
 		for (String referencedObjectName : _REFERENCED_OBJECT_NAMES) {
@@ -670,7 +680,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 			functionData -> _processStringFunction(
 				functionData, outerFunctionName, referencedObjectSets));
 
-		if (referencedObjectIds == null) {
+		if ((referencedObjectIds == null) || referencedObjectIds.isEmpty()) {
 			referencedObjectIds = new HashMap<>();
 
 			for (String referencedObjectName : _REFERENCED_OBJECT_NAMES) {
@@ -840,8 +850,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		if (Objects.nonNull(segment.getActivitiesCount())) {
 			JSONArray activitiesCountsJSONArray =
 				_faroInfoIndividualDog.getActivitiesCountsJSONArray(
-					BooleanUtils.toBooleanDefaultIfNull(
-						segment.getIncludeAnonymousUsers(), false),
+					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 					segment.getId());
 
 			if (activitiesCountsJSONArray.length() > 0) {
@@ -866,8 +875,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		if (Objects.nonNull(segment.getIndividualCount())) {
 			JSONArray individualCountsJSONArray =
 				_faroInfoIndividualDog.getIndividualCountsJSONArray(
-					BooleanUtils.toBooleanDefaultIfNull(
-						segment.getIncludeAnonymousUsers(), false),
+					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 					segment.getId());
 
 			if (individualCountsJSONArray.length() > 0) {
@@ -943,10 +951,10 @@ public class SegmentDog extends BaseFaroInfoDog {
 	private Segment _updateSegment(
 		Segment existingSegment, Segment partialSegment) {
 
-		if ((Objects.isNull(partialSegment.getFilter()) ||
+		if ((StringUtils.isNotEmpty(partialSegment.getFilter()) &&
 			 Objects.equals(
-				 existingSegment.getFilter(), partialSegment.getFilter())) &&
-			(Objects.isNull(partialSegment.getIncludeAnonymousUsers()) ||
+				 existingSegment.getFilter(), partialSegment.getFilter())) ||
+			(!Objects.isNull(partialSegment.getIncludeAnonymousUsers()) &&
 			 Objects.equals(
 				 existingSegment.getIncludeAnonymousUsers(),
 				 partialSegment.getIncludeAnonymousUsers()))) {
