@@ -153,13 +153,11 @@ public class SegmentDog extends BaseFaroInfoDog {
 		List<Segment> segments = _segmentRepository.searchSegments(
 			dxpEntityType, segmentId, "DISABLED", Segment.Type.DYNAMIC);
 
-		Segment partialSegment = new Segment();
-
-		partialSegment.setState("DISABLED");
-
 		for (Segment segment : segments) {
-			_updateSegment(segment, partialSegment);
+			segment.setState("DISABLED");
 		}
+
+		_segmentRepository.saveAll(segments);
 	}
 
 	public void disableDynamicSegments(
@@ -195,13 +193,11 @@ public class SegmentDog extends BaseFaroInfoDog {
 				"DISABLED", Segment.Type.DYNAMIC);
 		}
 
-		Segment partialSegment = new Segment();
-
-		partialSegment.setState("DISABLED");
-
 		for (Segment segment : segments) {
-			_updateSegment(segment, partialSegment);
+			segment.setState("DISABLED");
 		}
+
+		_segmentRepository.saveAll(segments);
 	}
 
 	public boolean existsSegment(Long segmentId) {
@@ -494,7 +490,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		segment.setIndividualCount(knownIndividualCount);
 		segment.setKnownIndividualCount(knownIndividualCount);
 
-		return _updateSegment(getSegment(segmentId), segment);
+		return updateSegment(segment, segmentId);
 	}
 
 	public Segment updateSegment(Segment partialSegment, Long segmentId) {
@@ -504,6 +500,14 @@ public class SegmentDog extends BaseFaroInfoDog {
 	public void updateSegments(Long activitiesCount) {
 		_segmentRepository.updateActivitiesCountAndRemoveLastActivityDate(
 			activitiesCount);
+	}
+
+	public Segment updateSegmentState(Long segmentId, String state) {
+		Segment segment = getSegment(segmentId);
+
+		segment.setState(state);
+
+		return _segmentRepository.save(segment);
 	}
 
 	private static String _getAssetId(String[] terms) {

@@ -249,11 +249,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		_faroInfoIndividualDog.updateDynamicMemberships(
 			individualSegmentJSONObject, modifiedDate);
 
-		Segment segment = new Segment();
-
-		segment.setState("READY");
-
-		_segmentDog.updateSegment(segment, segmentId);
+		_segmentDog.updateSegmentState(segmentId, "READY");
 	}
 
 	private void _updateDynamicMembershipsForSegments(
