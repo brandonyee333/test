@@ -92,13 +92,9 @@ public class IndividualSegmentsRestController
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		if (size < 1) {
-			size = 1;
-		}
-
 		return toSegmentDTOPageDTO(
 			segmentDog.searchPreviewDisabledSegmentsPage(
-				dataSourceId, filterString, page, size, sorts));
+				dataSourceId, filterString, page, Math.max(1, size), sorts));
 	}
 
 	@PutMapping("/{id}")

@@ -45,6 +45,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
@@ -300,33 +301,14 @@ public class ElasticsearchAccountRepositoryImpl
 	public <S extends Account> S save(S account) {
 		JSONObject jsonObject = toJSONObject(account);
 
-		Set<Field> fields = account.getFields();
-
-		if ((fields != null) && !fields.isEmpty()) {
-			jsonObject.put("organization", new JSONObject());
-
-			for (Field field : fields) {
-				JSONObject organizationJSONObject = jsonObject.getJSONObject(
-					"organization");
-
-				organizationJSONObject.put(
-					field.getName(),
-					JSONUtil.put(
-						objectMapper.convertValue(field, JSONObject.class)));
-			}
-		}
-
 		Set<Account.AccountActivityCount> activitiesCounts =
 			account.getActivitiesCounts();
 
-		if ((activitiesCounts != null) && !activitiesCounts.isEmpty()) {
-			jsonObject.put("activitiesCounts", new JSONArray());
+		if (CollectionUtils.isNotEmpty(activitiesCounts)) {
+			JSONArray activitiesCountsJSONArray = new JSONArray();
 
 			for (Account.AccountActivityCount activityCount :
 					activitiesCounts) {
-
-				JSONArray activitiesCountsJSONArray = jsonObject.getJSONArray(
-					"activitiesCounts");
 
 				activitiesCountsJSONArray.put(
 					JSONUtil.put(
@@ -335,19 +317,18 @@ public class ElasticsearchAccountRepositoryImpl
 						"channelId", activityCount.getChannelId()
 					));
 			}
+
+			jsonObject.put("activitiesCounts", activitiesCountsJSONArray);
 		}
 
 		Set<Account.AccountIndividualCount> individualCounts =
 			account.getIndividualCounts();
 
-		if ((individualCounts != null) && !individualCounts.isEmpty()) {
-			jsonObject.put("individualCounts", new JSONArray());
+		if (CollectionUtils.isNotEmpty(individualCounts)) {
+			JSONArray individualsCountsJSONArray = new JSONArray();
 
 			for (Account.AccountIndividualCount individualCount :
 					individualCounts) {
-
-				JSONArray individualsCountsJSONArray = jsonObject.getJSONArray(
-					"individualCounts");
 
 				individualsCountsJSONArray.put(
 					JSONUtil.put(
@@ -356,6 +337,23 @@ public class ElasticsearchAccountRepositoryImpl
 						"individualCount", individualCount.getIndividualCount()
 					));
 			}
+
+			jsonObject.put("individualCounts", individualsCountsJSONArray);
+		}
+
+		Set<Field> fields = account.getFields();
+
+		if (CollectionUtils.isNotEmpty(fields)) {
+			JSONObject organizationJSONObject = new JSONObject();
+
+			for (Field field : fields) {
+				organizationJSONObject.put(
+					field.getName(),
+					JSONUtil.put(
+						objectMapper.convertValue(field, JSONObject.class)));
+			}
+
+			jsonObject.put("organization", organizationJSONObject);
 		}
 
 		if ((account.getId() != null) &&

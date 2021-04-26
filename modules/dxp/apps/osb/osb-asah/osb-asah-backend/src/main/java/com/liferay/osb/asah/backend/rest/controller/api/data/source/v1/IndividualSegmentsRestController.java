@@ -258,13 +258,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		if (size < 1) {
-			size = 1;
-		}
-
 		return toSegmentDTOPageDTO(
 			segmentDog.searchSegmentsPage(
-				dataSourceId, filterString, page, size, sorts));
+				dataSourceId, filterString, page, Math.max(1, size), sorts));
 	}
 
 	@GetMapping(params = "apply")

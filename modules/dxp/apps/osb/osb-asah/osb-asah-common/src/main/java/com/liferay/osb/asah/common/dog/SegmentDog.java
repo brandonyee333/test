@@ -606,20 +606,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return null;
 	}
 
-	private Long _getAccountId(Segment segment) {
-		if (!Objects.equals(segment.getStatus(), "INACTIVE")) {
-			return null;
-		}
-
-		String name = segment.getName();
-
-		if (!name.startsWith(_ACCOUNT_PREFIX)) {
-			return null;
-		}
-
-		return Long.valueOf(name.substring(_ACCOUNT_PREFIX.length()));
-	}
-
 	private List<Long> _getIndividualSegmentIds(Long segmentId) {
 		List<Long> individualIds = JSONUtil.toLongList(
 			elasticsearchInvoker.get(
@@ -841,13 +827,21 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	private void _replaceAccount(Segment segment) {
-		Long accountId = _getAccountId(segment);
-
-		if (accountId == null) {
+		if (!Objects.equals(segment.getStatus(), "INACTIVE")) {
 			return;
 		}
 
-		Account account = _accountDog.getAccount(accountId, null);
+		String name = segment.getName();
+
+		if (!name.startsWith(_ACCOUNT_PREFIX)) {
+			return;
+		}
+
+		Account account = _accountDog.getAccount(
+			Long.valueOf(name.substring(_ACCOUNT_PREFIX.length())), null);
+
+		account.setActiveIndividualsCount(segment.getActiveIndividualCount());
+		account.setActivitiesCount(segment.getActivitiesCount());
 
 		if (Objects.nonNull(segment.getActivitiesCount())) {
 			JSONArray activitiesCountsJSONArray =
@@ -874,6 +868,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 			}
 		}
 
+		account.setIndividualCount(segment.getIndividualCount());
+
 		if (Objects.nonNull(segment.getIndividualCount())) {
 			JSONArray individualCountsJSONArray =
 				_faroInfoIndividualDog.getIndividualCountsJSONArray(
@@ -899,10 +895,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 			}
 		}
 
-		account.setActiveIndividualsCount(segment.getActiveIndividualCount());
-		account.setActivitiesCount(segment.getActivitiesCount());
-		account.setIndividualCount(segment.getIndividualCount());
-
 		_accountDog.updateAccount(account);
 	}
 
@@ -917,7 +909,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		}
 	}
 
-	private void _updateMemberships(Segment segment) throws Exception {
+	private void _updateMemberships(Segment segment) {
 		if (Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
 			_addAsahTask(segment);
 
