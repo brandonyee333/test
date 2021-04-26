@@ -104,8 +104,8 @@ public class AsahMarkerUpgradeStep implements UpgradeStep {
 
 		JSONArrayIterator.of(
 			"OSBAsahMarkers", elasticsearchInvoker,
-			osbAsahMarker -> elasticsearchInvoker.update(
-				"OSBAsahMarkers", osbAsahMarker.getString("id"),
+			osbAsahMarker -> elasticsearchInvoker.replace(
+				"OSBAsahMarkers",
 				_upgradeOSBAsahMarkerJSONObject(osbAsahMarker))
 		).iterate();
 	}
