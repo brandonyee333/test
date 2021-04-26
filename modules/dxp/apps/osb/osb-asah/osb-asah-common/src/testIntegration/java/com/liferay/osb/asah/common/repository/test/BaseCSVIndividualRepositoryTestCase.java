@@ -50,8 +50,6 @@ public abstract class BaseCSVIndividualRepositoryTestCase
 
 		_channelRepository.save(channel1);
 
-		dataSource.setChannelId(channel1.getId());
-
 		dataSource.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource.setId(1L);

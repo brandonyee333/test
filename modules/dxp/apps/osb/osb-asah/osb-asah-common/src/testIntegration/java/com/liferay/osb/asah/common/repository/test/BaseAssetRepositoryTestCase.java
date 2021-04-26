@@ -181,8 +181,6 @@ public abstract class BaseAssetRepositoryTestCase
 
 		_channelRepository.save(channel);
 
-		dataSource.setChannelId(channel.getId());
-
 		dataSource.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource.setId(1L);

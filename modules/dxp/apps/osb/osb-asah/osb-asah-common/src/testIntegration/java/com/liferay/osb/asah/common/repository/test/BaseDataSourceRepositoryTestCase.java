@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceOrganization;
 import com.liferay.osb.asah.common.entity.DataSourceSite;
@@ -47,10 +46,6 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		dataSource1.setCredentialType("Token Authentication");
 
-		Channel channel1 = _addChannel(1, "Liferay Brazil");
-
-		dataSource1.setChannelId(channel1.getId());
-
 		dataSource1.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 
@@ -80,10 +75,6 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		dataSource2.setCredentialType("Basic Authentication");
 
-		Channel channel2 = _addChannel(2, "Liferay USA");
-
-		dataSource2.setChannelId(channel2.getId());
-
 		dataSource2.setProviderType("CSV");
 		dataSource2.setState("CREDENTIALS_VALID");
 		dataSource2.setURL("http://portal:8080");
@@ -92,10 +83,6 @@ public abstract class BaseDataSourceRepositoryTestCase
 		DataSource dataSource3 = new DataSource("Third Party");
 
 		dataSource3.setCredentialType("OAuth 2 Authentication");
-
-		Channel channel3 = _addChannel(3, "Third Party");
-
-		dataSource3.setChannelId(channel3.getId());
 
 		dataSource3.setProviderType("SALESFORCE");
 		dataSource3.setState("CREDENTIALS_INVALID");
@@ -109,9 +96,6 @@ public abstract class BaseDataSourceRepositoryTestCase
 	@Test
 	public void testCountDataSources() {
 		Assert.assertEquals(3, _dataSourceRepository.countDataSources(null));
-
-		Assert.assertEquals(
-			1, _dataSourceRepository.countDataSources("channelId eq 1"));
 
 		Assert.assertEquals(
 			1,
@@ -140,12 +124,6 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(
 			1, _dataSourceRepository.countDataSources("workspaceURL eq null"));
-
-		Assert.assertEquals(
-			2, _dataSourceRepository.countDataSources("channelId eq [1,2]"));
-
-		Assert.assertEquals(
-			0, _dataSourceRepository.countDataSources("channelId eq 4"));
 
 		Assert.assertEquals(
 			0, _dataSourceRepository.countDataSources("name eq 'Liferay'"));
@@ -310,14 +288,6 @@ public abstract class BaseDataSourceRepositoryTestCase
 		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
-			"channelId eq 1",
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
-
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
-
-		dataSources = _dataSourceRepository.searchDataSources(
 			"credentials/type eq 'Token Authentication'",
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
@@ -373,18 +343,6 @@ public abstract class BaseDataSourceRepositoryTestCase
 		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
-			"channelId eq [1,2]",
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 2, dataSources.size());
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			"channelId eq 4",
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 0, dataSources.size());
-
-		dataSources = _dataSourceRepository.searchDataSources(
 			"name eq 'Liferay'",
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
@@ -426,20 +384,9 @@ public abstract class BaseDataSourceRepositoryTestCase
 		return _dataSourceRepository;
 	}
 
-	private Channel _addChannel(long id, String name) {
-		Channel channel = new Channel(name);
-
-		channel.setId(id);
-		channel.setIsNew(true);
-
-		return _channelRepository.save(channel);
-	}
-
 	private void _assertDataSourceEquals(
 		DataSource expectedDataSource, DataSource actualDataSource) {
 
-		Assert.assertEquals(
-			expectedDataSource.getChannelId(), actualDataSource.getChannelId());
 		Assert.assertEquals(
 			expectedDataSource.getCredentialType(),
 			actualDataSource.getCredentialType());

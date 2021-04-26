@@ -103,9 +103,7 @@ public class RunLogRepositoryTest extends BaseRepositoryTestCase<RunLog, Long> {
 
 		dataSource.setCredentialType("OAuth 2 Authentication");
 
-		Channel channel = _channelRepository.save(new Channel("Channel"));
-
-		dataSource.setChannelId(channel.getId());
+		_channelRepository.save(new Channel("Channel"));
 
 		dataSource.setProviderType("SALESFORCE");
 		dataSource.setState("CREDENTIALS_INVALID");

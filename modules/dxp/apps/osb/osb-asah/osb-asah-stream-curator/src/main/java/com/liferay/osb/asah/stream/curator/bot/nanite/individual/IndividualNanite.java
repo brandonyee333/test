@@ -282,7 +282,7 @@ public class IndividualNanite implements Nanite {
 			DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
 
 			if (Objects.isNull(channelId)) {
-				channelId = dataSource.getChannelId();
+				channelId = _dataSourceDog.getChannelId(dataSourceId);
 			}
 
 			return _faroInfoIndividualDog.addIndividual(
