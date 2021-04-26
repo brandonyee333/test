@@ -195,7 +195,9 @@ public class SegmentDog extends BaseFaroInfoDog {
 			segment.setState("DISABLED");
 		}
 
-		_segmentRepository.saveAll(segments);
+		if (!segments.isEmpty()) {
+			_segmentRepository.saveAll(segments);
+		}
 	}
 
 	public boolean existsSegment(Long segmentId) {
