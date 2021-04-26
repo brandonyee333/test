@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS BlockedKeyword (
 CREATE TABLE IF NOT EXISTS Channel (
 	id BIGSERIAL PRIMARY KEY,
 	createDate TIMESTAMPTZ,
+	defaultChannel BOOLEAN DEFAULT false,
 	name TEXT
 );
 

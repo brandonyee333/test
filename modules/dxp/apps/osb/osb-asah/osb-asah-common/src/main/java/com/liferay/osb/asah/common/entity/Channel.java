@@ -93,6 +93,11 @@ public class Channel implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Boolean getDefaultChannel() {
+		return _defaultChannel;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@Override
 	public Long getId() {
@@ -107,6 +112,10 @@ public class Channel implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(_channelDataSources, _createDate, _id, _name);
+	}
+
+	public Boolean isDefaultChannel() {
+		return getDefaultChannel();
 	}
 
 	@Override
@@ -130,6 +139,10 @@ public class Channel implements Persistable<Long> {
 		}
 	}
 
+	public void setDefaultChannel(Boolean defaultChannel) {
+		_defaultChannel = defaultChannel;
+	}
+
 	public void setId(Long id) {
 		_id = id;
 	}
@@ -147,6 +160,9 @@ public class Channel implements Persistable<Long> {
 
 	@Transient
 	private Date _createDate = new Date();
+
+	@Transient
+	private Boolean _defaultChannel;
 
 	@Transient
 	private Long _id;

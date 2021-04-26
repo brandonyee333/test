@@ -69,11 +69,14 @@ import org.springframework.stereotype.Component;
 public class ChannelDog extends BaseFaroInfoDog {
 
 	public Channel addChannel(
-		Map<Long, Set<Long>> dataSources, String name, boolean updateFaro) {
+		Map<Long, Set<Long>> dataSources, boolean defaultChannel, String name,
+		boolean updateFaro) {
 
 		Channel channel = new Channel(_getChannelName(name));
 
 		channel.setChannelDataSources(_getChannelDataSources(dataSources));
+
+		channel.setDefaultChannel(defaultChannel);
 
 		channel = _channelRepository.save(channel);
 
@@ -92,7 +95,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 	}
 
 	public Channel addChannel(String name) {
-		return addChannel(Collections.emptyMap(), name, false);
+		return addChannel(Collections.emptyMap(), false, name, false);
 	}
 
 	public List<Channel> addChannels(
@@ -519,7 +522,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 		return Collections.singletonList(
 			addChannel(
-				Collections.singletonMap(dataSourceId, groupIds),
+				Collections.singletonMap(dataSourceId, groupIds), false,
 				_getChannelName(
 					dataSourceOptional.map(
 						DataSource::getName
@@ -539,7 +542,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 				addChannel(
 					Collections.singletonMap(
 						dataSourceId, Collections.singleton(entry.getKey())),
-					_getChannelName(entry.getValue()), true));
+					false, _getChannelName(entry.getValue()), true));
 		}
 
 		return channels;

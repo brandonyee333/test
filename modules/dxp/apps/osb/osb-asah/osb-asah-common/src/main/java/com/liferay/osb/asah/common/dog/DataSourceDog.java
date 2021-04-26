@@ -327,12 +327,10 @@ public class DataSourceDog {
 	}
 
 	private void _addDefaultChannel(DataSource dataSource) {
-		Channel channel = _channelDog.addChannel(
+		_channelDog.addChannel(
 			Collections.singletonMap(
 				dataSource.getId(), Collections.emptySet()),
-			dataSource.getName(), true);
-
-		dataSource.setChannelId(channel.getId());
+			true, dataSource.getName(), true);
 	}
 
 	private void _clearChannels(Long dataSourceId) {
