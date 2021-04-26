@@ -60,6 +60,19 @@ public class DataSourceDogTest {
 	}
 
 	@ElasticsearchIndex(
+		name = "channels", resourcePath = "channels.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetChannelId() {
+		Assert.assertNotNull(_dataSourceDog.getChannelId(405057430327289648L));
+	}
+
+	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
