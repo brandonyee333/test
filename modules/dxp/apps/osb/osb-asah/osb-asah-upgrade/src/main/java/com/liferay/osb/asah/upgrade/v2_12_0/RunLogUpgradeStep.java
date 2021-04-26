@@ -36,7 +36,7 @@ import org.springframework.stereotype.Component;
 public class RunLogUpgradeStep implements UpgradeStep {
 
 	@Override
-	public void upgrade(String version) {
+	public void upgrade(String version) throws Exception {
 		_upgradeRunLogIndexMapping(WeDeployDataService.OSB_ASAH_DXP_RAW);
 		_upgradeRunLogIndexMapping(WeDeployDataService.OSB_ASAH_FARO_INFO);
 		_upgradeRunLogIndexMapping(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
@@ -86,13 +86,15 @@ public class RunLogUpgradeStep implements UpgradeStep {
 	}
 
 	private void _upgradeRunLogJSONObjects(
-		ElasticsearchInvoker elasticsearchInvoker) {
+			ElasticsearchInvoker elasticsearchInvoker)
+		throws Exception {
 
 		JSONArrayIterator.of(
 			"run-logs", elasticsearchInvoker,
 			runLogJSONObject -> elasticsearchInvoker.update(
 				"run-logs", runLogJSONObject.getString("id"),
-				_upgradeRunLogJSONObject(runLogJSONObject)));
+				_upgradeRunLogJSONObject(runLogJSONObject))
+		).iterate();
 	}
 
 	private static final Set<String> _runLogProperties = new HashSet<String>() {
