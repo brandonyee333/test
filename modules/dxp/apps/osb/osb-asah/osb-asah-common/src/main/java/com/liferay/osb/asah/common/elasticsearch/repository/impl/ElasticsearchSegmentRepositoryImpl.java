@@ -213,10 +213,10 @@ public class ElasticsearchSegmentRepositoryImpl
 			List<Long> referencedFieldMappingIds, String state,
 			Segment.Type type) {
 
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		BoolQueryBuilder innerBoolQueryBuilder = QueryBuilders.boolQuery();
 
 		if (referencedAssetDataSourceIds != null) {
-			boolQueryBuilder.should(
+			innerBoolQueryBuilder.should(
 				QueryBuilders.termQuery(
 					"referencedAssetDataSourceIds",
 					String.valueOf(referencedAssetDataSourceIds)));
@@ -225,10 +225,12 @@ public class ElasticsearchSegmentRepositoryImpl
 		if ((referencedFieldMappingIds != null) &&
 			!referencedFieldMappingIds.isEmpty()) {
 
-			boolQueryBuilder.should(
+			innerBoolQueryBuilder.should(
 				QueryBuilders.termsQuery(
 					"referencedFieldMappingIds", referencedFieldMappingIds));
 		}
+
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
 		if (state != null) {
 			boolQueryBuilder.filter(
@@ -243,7 +245,8 @@ public class ElasticsearchSegmentRepositoryImpl
 
 		return toList(
 			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(), boolQueryBuilder));
+				getCollectionName(),
+				boolQueryBuilder.filter(innerBoolQueryBuilder)));
 	}
 
 	@Override
