@@ -95,6 +95,10 @@ public class AnalyticsEventsMessageProcessorTest {
 	}
 
 	@ElasticsearchIndex(
+		name = "channels", resourcePath = "channels.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -133,13 +137,27 @@ public class AnalyticsEventsMessageProcessorTest {
 		_elasticsearchInvoker.add(
 			"data-sources",
 			JSONUtil.put(
-				"channelId", "999"
-			).put(
 				"id", "990121114030678099"
 			).put(
 				"provider", JSONUtil.put("type", "LIFERAY")
 			).put(
 				"status", "ACTIVE"
+			));
+
+		_elasticsearchInvoker.add(
+			"channels",
+			JSONUtil.put(
+				"dataSources",
+				JSONUtil.put(
+					JSONUtil.put(
+						"groupIds", JSONUtil.put("20122")
+					).put(
+						"id", "990121114030678099"
+					))
+			).put(
+				"id", "999"
+			).put(
+				"name", "channelA"
 			));
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
@@ -190,6 +208,10 @@ public class AnalyticsEventsMessageProcessorTest {
 			analyticsEvents.toString(), 0, analyticsEvents.size());
 	}
 
+	@ElasticsearchIndex(
+		name = "channels", resourcePath = "channels.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO

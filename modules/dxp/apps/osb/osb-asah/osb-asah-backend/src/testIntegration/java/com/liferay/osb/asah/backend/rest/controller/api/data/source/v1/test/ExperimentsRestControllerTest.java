@@ -24,6 +24,7 @@ import com.liferay.osb.asah.backend.model.GoalMetric;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.ExperimentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dxp.DXPClient;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -86,6 +87,10 @@ public class ExperimentsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
+		name = "channels", resourcePath = "channels.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -103,7 +108,7 @@ public class ExperimentsRestControllerTest {
 		Experiment actualExperiment = _experimentsRestController.postExperiment(
 			expectedExperiment);
 
-		Assert.assertEquals("1", actualExperiment.getChannelId());
+		Assert.assertEquals("12345", actualExperiment.getChannelId());
 
 		Assert.assertNotNull(expectedExperiment.getId());
 		Assert.assertEquals(
@@ -196,6 +201,9 @@ public class ExperimentsRestControllerTest {
 
 	@MockBean
 	private DXPClient _dxpClient;
+
+	@Autowired
+	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Autowired
 	private ExperimentDog _experimentDog;

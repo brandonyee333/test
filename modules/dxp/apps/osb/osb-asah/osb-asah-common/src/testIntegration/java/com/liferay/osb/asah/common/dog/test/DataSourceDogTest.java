@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
@@ -48,14 +49,14 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testAddDataSourceWithDefaultChannel() throws Exception {
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
-			JSONObject.class);
+		DataSource dataSource = _dataSourceDog.addDataSource(
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+				DataSource.class));
 
-		Assert.assertNotNull(dataSourceJSONObject.getString("channelId"));
+		Channel channel = _dataSourceDog.fetchChannel(dataSource.getId());
+
+		Assert.assertTrue(channel.isDefaultChannel());
 	}
 
 	@ElasticsearchIndex(
