@@ -14,16 +14,17 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.backend.dto.DashboardDTO;
 import com.liferay.osb.asah.backend.test.util.BaseBeanTestCase;
 
 /**
  * @author André Miranda
  */
-public class DashboardTest extends BaseBeanTestCase<Dashboard> {
+public class DashboardDTOTest extends BaseBeanTestCase<DashboardDTO> {
 
 	@Override
-	protected Dashboard newInstance() {
-		return new Dashboard();
+	protected DashboardDTO newInstance() {
+		return new DashboardDTO();
 	}
 
 }

@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.dog.test;
 import com.liferay.osb.asah.backend.dog.DashboardDog;
 import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.dto.DashboardDTO;
 import com.liferay.osb.asah.backend.model.AssetType;
-import com.liferay.osb.asah.backend.model.Dashboard;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.ResultBag;
@@ -66,7 +66,7 @@ public class SearchTest {
 	)
 	@Test
 	public void testCustomAssetSearch() {
-		ResultBag<Dashboard> resultBag = _dashboardDog.getDashboardResultBag(
+		ResultBag<DashboardDTO> resultBag = _dashboardDog.getDashboardResultBag(
 			"1", "ASSET", 10, Sort.asc("assetTitle"), 0);
 
 		Assert.assertEquals(3, resultBag.getTotal());

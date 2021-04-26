@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.DashboardDog;
-import com.liferay.osb.asah.backend.model.Dashboard;
+import com.liferay.osb.asah.backend.dto.DashboardDTO;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
@@ -56,11 +56,11 @@ public class DashboardDogTest {
 	)
 	@Test
 	public void testGetDashboard() {
-		Dashboard dashboard = _dashboardDog.getDashboard(
+		DashboardDTO dashboardDTO = _dashboardDog.getDashboard(
 			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9");
 
-		Assert.assertNotNull(dashboard);
-		Assert.assertEquals("Asset Title 1", dashboard.getAssetTitle());
+		Assert.assertNotNull(dashboardDTO);
+		Assert.assertEquals("Asset Title 1", dashboardDTO.getAssetTitle());
 	}
 
 	@ElasticsearchIndex(
@@ -70,15 +70,15 @@ public class DashboardDogTest {
 	)
 	@Test
 	public void testGetDashboardBagAll() {
-		ResultBag<Dashboard> resultBag = _dashboardDog.getDashboardResultBag(
+		ResultBag<DashboardDTO> resultBag = _dashboardDog.getDashboardResultBag(
 			"1", null, 10, Sort.asc("assetTitle"), 0);
 
 		Assert.assertNotNull(resultBag);
 		Assert.assertEquals(3, resultBag.getTotal());
 
-		List<Dashboard> dashboards = resultBag.getResults();
+		List<DashboardDTO> dashboardDTOs = resultBag.getResults();
 
-		Assert.assertEquals(dashboards.toString(), 3, dashboards.size());
+		Assert.assertEquals(dashboardDTOs.toString(), 3, dashboardDTOs.size());
 	}
 
 	@ElasticsearchIndex(
@@ -88,19 +88,19 @@ public class DashboardDogTest {
 	)
 	@Test
 	public void testGetDashboardBagPaginated() {
-		ResultBag<Dashboard> resultBag = _dashboardDog.getDashboardResultBag(
+		ResultBag<DashboardDTO> resultBag = _dashboardDog.getDashboardResultBag(
 			"1", null, 1, Sort.asc("assetTitle"), 1);
 
 		Assert.assertNotNull(resultBag);
 		Assert.assertEquals(3, resultBag.getTotal());
 
-		List<Dashboard> dashboards = resultBag.getResults();
+		List<DashboardDTO> dashboardDTOs = resultBag.getResults();
 
-		Assert.assertEquals(dashboards.toString(), 1, dashboards.size());
+		Assert.assertEquals(dashboardDTOs.toString(), 1, dashboardDTOs.size());
 
-		Dashboard dashboard = dashboards.get(0);
+		DashboardDTO dashboardDTO = dashboardDTOs.get(0);
 
-		Assert.assertEquals("Asset Title 2", dashboard.getAssetTitle());
+		Assert.assertEquals("Asset Title 2", dashboardDTO.getAssetTitle());
 	}
 
 	@ElasticsearchIndex(
@@ -110,22 +110,22 @@ public class DashboardDogTest {
 	)
 	@Test
 	public void testUpdateDashboard() {
-		Dashboard dashboard = _dashboardDog.updateDashboard(
+		DashboardDTO dashboardDTO = _dashboardDog.updateDashboard(
 			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9",
 			"{\"rows\": [{\"panels\":[{\"title\":\"MyPanel\"," +
 				"\"width\":100,\"metric\":\"assetViewed\"," +
 					"\"chartType\":\"line\"}]}]}",
 			"123", "Pedro");
 
-		Assert.assertNotNull(dashboard);
-		Assert.assertEquals("1", dashboard.getAssetId());
-		Assert.assertEquals("Asset Title 1", dashboard.getAssetTitle());
-		Assert.assertEquals("default", dashboard.getCategory());
+		Assert.assertNotNull(dashboardDTO);
+		Assert.assertEquals("1", dashboardDTO.getAssetId());
+		Assert.assertEquals("Asset Title 1", dashboardDTO.getAssetTitle());
+		Assert.assertEquals("default", dashboardDTO.getCategory());
 		Assert.assertEquals(
 			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9",
-			dashboard.getId());
-		Assert.assertEquals("123", dashboard.getModifiedByUserId());
-		Assert.assertEquals("Pedro", dashboard.getModifiedByUserName());
+			dashboardDTO.getId());
+		Assert.assertEquals("123", dashboardDTO.getModifiedByUserId());
+		Assert.assertEquals("Pedro", dashboardDTO.getModifiedByUserName());
 	}
 
 	@Autowired

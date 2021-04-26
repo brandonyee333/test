@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.backend.model.Dashboard;
+import com.liferay.osb.asah.backend.dto.DashboardDTO;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
@@ -64,7 +64,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DashboardDog {
 
-	public Dashboard getDashboard(String dashboardId) {
+	public DashboardDTO getDashboard(String dashboardId) {
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"custom-asset-dashboards", _cerebroInfoElasticsearchInvoker,
 			_buildDashboardSearchSourceBuilder(dashboardId));
@@ -88,14 +88,14 @@ public class DashboardDog {
 		String source = searchHit.getSourceAsString();
 
 		try {
-			return _objectMapper.readValue(source, Dashboard.class);
+			return _objectMapper.readValue(source, DashboardDTO.class);
 		}
 		catch (IOException ioe) {
 			throw new RuntimeException("Unable to process search request", ioe);
 		}
 	}
 
-	public ResultBag<Dashboard> getDashboardResultBag(
+	public ResultBag<DashboardDTO> getDashboardResultBag(
 		String channelId, String keywords, int size, Sort sort, int start) {
 
 		SearchHits searchHits = _dataDog.querySearchHits(
@@ -104,19 +104,19 @@ public class DashboardDog {
 				SortBuilderUtil.fieldSort(sort),
 				_buildKeywordsQueryBuilder(channelId, keywords), size, start));
 
-		ResultBag<Dashboard> resultBag = new ResultBag<>();
+		ResultBag<DashboardDTO> resultBag = new ResultBag<>();
 
 		try {
-			List<Dashboard> dashboards = new ArrayList<>();
+			List<DashboardDTO> dashboardDTOs = new ArrayList<>();
 
 			for (SearchHit searchHit : searchHits) {
 				String source = searchHit.getSourceAsString();
 
-				dashboards.add(
-					_objectMapper.readValue(source, Dashboard.class));
+				dashboardDTOs.add(
+					_objectMapper.readValue(source, DashboardDTO.class));
 			}
 
-			resultBag.setResults(dashboards);
+			resultBag.setResults(dashboardDTOs);
 			resultBag.setTotal(HitsUtil.getTotalHitsCount(searchHits));
 
 			return resultBag;
@@ -126,7 +126,7 @@ public class DashboardDog {
 		}
 	}
 
-	public Dashboard updateDashboard(
+	public DashboardDTO updateDashboard(
 		String dashboardId, String definition, String modifiedByUserId,
 		String modifiedByUserName) {
 
@@ -145,7 +145,7 @@ public class DashboardDog {
 
 		try {
 			return _objectMapper.readValue(
-				jsonObject.toString(), Dashboard.class);
+				jsonObject.toString(), DashboardDTO.class);
 		}
 		catch (IOException ioe) {
 			throw new RuntimeException("Unable to process update request", ioe);

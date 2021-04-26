@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.DashboardDog;
-import com.liferay.osb.asah.backend.model.Dashboard;
+import com.liferay.osb.asah.backend.dto.DashboardDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
@@ -34,10 +34,10 @@ import org.springframework.stereotype.Component;
 @Component
 @GraphQLTypeWiring(fieldName = "dashboards", typeName = "QueryType")
 public class DashboardBagDataFetcher
-	implements DataFetcher<ResultBag<Dashboard>> {
+	implements DataFetcher<ResultBag<DashboardDTO>> {
 
 	@Override
-	public ResultBag<Dashboard> get(
+	public ResultBag<DashboardDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
 		String channelId = dataFetchingEnvironment.getArgument("channelId");

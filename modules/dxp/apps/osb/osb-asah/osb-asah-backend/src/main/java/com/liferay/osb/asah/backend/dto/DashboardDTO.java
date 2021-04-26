@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.model;
+package com.liferay.osb.asah.backend.dto;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +21,7 @@ import java.util.Objects;
 /**
  * @author André Miranda
  */
-public class Dashboard {
+public class DashboardDTO {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -29,22 +29,22 @@ public class Dashboard {
 			return true;
 		}
 
-		if (!(obj instanceof Dashboard)) {
+		if (!(obj instanceof DashboardDTO)) {
 			return false;
 		}
 
-		Dashboard dashboard = (Dashboard)obj;
+		DashboardDTO dashboardDTO = (DashboardDTO)obj;
 
-		if (Objects.equals(_assetId, dashboard._assetId) &&
-			Objects.equals(_assetTitle, dashboard._assetTitle) &&
-			Objects.equals(_category, dashboard._category) &&
-			Objects.equals(_createDate, dashboard._createDate) &&
-			Objects.equals(_definition, dashboard._definition) &&
-			Objects.equals(_id, dashboard._id) &&
-			Objects.equals(_modifiedDate, dashboard._modifiedDate) &&
-			Objects.equals(_modifiedByUserId, dashboard._modifiedByUserId) &&
+		if (Objects.equals(_assetId, dashboardDTO._assetId) &&
+			Objects.equals(_assetTitle, dashboardDTO._assetTitle) &&
+			Objects.equals(_category, dashboardDTO._category) &&
+			Objects.equals(_createDate, dashboardDTO._createDate) &&
+			Objects.equals(_definition, dashboardDTO._definition) &&
+			Objects.equals(_id, dashboardDTO._id) &&
+			Objects.equals(_modifiedDate, dashboardDTO._modifiedDate) &&
+			Objects.equals(_modifiedByUserId, dashboardDTO._modifiedByUserId) &&
 			Objects.equals(
-				_modifiedByUserName, dashboard._modifiedByUserName)) {
+				_modifiedByUserName, dashboardDTO._modifiedByUserName)) {
 
 			return true;
 		}

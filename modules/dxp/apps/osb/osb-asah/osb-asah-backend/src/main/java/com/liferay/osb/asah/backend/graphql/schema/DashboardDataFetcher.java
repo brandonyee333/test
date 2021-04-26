@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.DashboardDog;
-import com.liferay.osb.asah.backend.model.Dashboard;
+import com.liferay.osb.asah.backend.dto.DashboardDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
 import graphql.schema.DataFetcher;
@@ -29,10 +29,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "dashboard", typeName = "QueryType")
-public class DashboardDataFetcher implements DataFetcher<Dashboard> {
+public class DashboardDataFetcher implements DataFetcher<DashboardDTO> {
 
 	@Override
-	public Dashboard get(DataFetchingEnvironment dataFetchingEnvironment) {
+	public DashboardDTO get(DataFetchingEnvironment dataFetchingEnvironment) {
 		String dashboardId = dataFetchingEnvironment.getArgument("dashboardId");
 
 		return _dashboardDog.getDashboard(dashboardId);
