@@ -945,13 +945,13 @@ public class SegmentDog extends BaseFaroInfoDog {
 	private Segment _updateSegment(
 		Segment existingSegment, Segment partialSegment) {
 
-		if ((StringUtils.isNotEmpty(partialSegment.getFilter()) &&
-			 Objects.equals(
-				 existingSegment.getFilter(), partialSegment.getFilter())) ||
-			(!Objects.isNull(partialSegment.getIncludeAnonymousUsers()) &&
-			 Objects.equals(
-				 existingSegment.getIncludeAnonymousUsers(),
-				 partialSegment.getIncludeAnonymousUsers()))) {
+		if (StringUtils.isNotEmpty(partialSegment.getFilter()) &&
+			Objects.equals(
+				existingSegment.getFilter(), partialSegment.getFilter()) &&
+			!Objects.isNull(partialSegment.getIncludeAnonymousUsers()) &&
+			Objects.equals(
+				existingSegment.getIncludeAnonymousUsers(),
+				partialSegment.getIncludeAnonymousUsers())) {
 
 			BeanUtils.copyProperties(partialSegment, existingSegment);
 
