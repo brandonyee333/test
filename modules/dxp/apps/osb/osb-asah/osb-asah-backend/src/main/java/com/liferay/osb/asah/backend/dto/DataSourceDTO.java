@@ -59,7 +59,6 @@ public class DataSourceDTO {
 			_authorDTO = authorDTO;
 		}
 
-		_channelId = StringUtil.get(dataSource.getChannelId(), null);
 		_createDate = dataSource.getCreateDate();
 
 		CredentialDTO credentialDTO = new CredentialDTO(dataSource);
@@ -111,11 +110,6 @@ public class DataSourceDTO {
 	@JsonProperty("author")
 	public AuthorDTO getAuthorDTO() {
 		return _authorDTO;
-	}
-
-	@JsonProperty("channelId")
-	public String getChannelId() {
-		return _channelId;
 	}
 
 	@JsonProperty("contactsConfiguration")

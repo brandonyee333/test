@@ -137,7 +137,6 @@ public class DataSource implements Persistable<Long> {
 		DataSource dataSource = (DataSource)obj;
 
 		if (Objects.equals(_author, dataSource._author) &&
-			Objects.equals(_channelId, dataSource._channelId) &&
 			Objects.equals(_createDate, dataSource._createDate) &&
 			Objects.equals(_credential, dataSource._credential) &&
 			Objects.equals(_deletionDate, dataSource._deletionDate) &&
@@ -178,12 +177,6 @@ public class DataSource implements Persistable<Long> {
 		}
 
 		return _author.getName();
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(using = ToStringSerializer.class)
-	public Long getChannelId() {
-		return _channelId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -570,9 +563,9 @@ public class DataSource implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_author, _channelId, _createDate, _credential, _deletionDate,
-			_detail, _faroBackendSecuritySignature, _id, _modifiedDate, _name,
-			_provider, _state, _status, _url, _workspaceURL);
+			_author, _createDate, _credential, _deletionDate, _detail,
+			_faroBackendSecuritySignature, _id, _modifiedDate, _name, _provider,
+			_state, _status, _url, _workspaceURL);
 	}
 
 	@JsonIgnore
@@ -607,10 +600,6 @@ public class DataSource implements Persistable<Long> {
 		}
 
 		_author.setName(authorName);
-	}
-
-	public void setChannelId(Long channelId) {
-		_channelId = channelId;
 	}
 
 	public void setContactsSelected(Boolean contactsSelected) {
@@ -1162,9 +1151,6 @@ public class DataSource implements Persistable<Long> {
 
 	@Transient
 	private Author _author;
-
-	@Transient
-	private Long _channelId;
 
 	@Transient
 	private Date _createDate;
