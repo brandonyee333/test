@@ -161,6 +161,10 @@ public class DataSourceDog {
 			faroBackendSecuritySignature);
 	}
 
+	public Channel fetchChannel(Long dataSourceId) {
+		return _channelDog.fetchChannelByDataSourceId(dataSourceId);
+	}
+
 	public DataSource fetchDataSource(Long dataSourceId) {
 		Optional<DataSource> dataSourceOptional =
 			_dataSourceRepository.findById(dataSourceId);
@@ -169,13 +173,13 @@ public class DataSourceDog {
 	}
 
 	public Long getChannelId(Long dataSourceId) {
-		DataSource dataSource = fetchDataSource(dataSourceId);
+		Channel channel = fetchChannel(dataSourceId);
 
-		if (dataSource == null) {
+		if (channel == null) {
 			return null;
 		}
 
-		return dataSource.getChannelId();
+		return channel.getId();
 	}
 
 	public DataSource getDataSource(Long dataSourceId) {

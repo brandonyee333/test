@@ -150,6 +150,17 @@ public class ChannelDog extends BaseFaroInfoDog {
 		return channelOptional.orElse(null);
 	}
 
+	public Channel fetchChannelByDataSourceId(Long dataSourceId) {
+		List<Channel> channels = _channelRepository.findByDataSourceId(
+			dataSourceId);
+
+		if (channels.isEmpty()) {
+			return null;
+		}
+
+		return channels.get(0);
+	}
+
 	public Channel getChannel(Long channelId) {
 		Optional<Channel> channelOptional = _channelRepository.findById(
 			channelId);
