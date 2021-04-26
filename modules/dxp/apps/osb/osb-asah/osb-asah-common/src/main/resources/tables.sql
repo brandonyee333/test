@@ -122,7 +122,6 @@ CREATE TABLE IF NOT EXISTS DataSource (
 	id BIGSERIAL PRIMARY KEY,
 	authorId BIGINT,
 	authorName TEXT,
-	channelId BIGINT,
 	contactsSelected BOOLEAN,
 	createDate TIMESTAMPTZ,
 	credentialType TEXT,
