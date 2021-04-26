@@ -15,6 +15,9 @@
 						}
 					}
 				},
+				"defaultChannel": {
+					"type": "boolean"
+				},
 				"id": {
 					"type": "keyword"
 				},
