@@ -20,6 +20,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -89,12 +92,12 @@ public class DashboardDTO {
 		timezone = "UTC"
 	)
 	@JsonProperty
-	public Date getCreateDate() {
+	public LocalDateTime getCreateDate() {
 		if (_createDate == null) {
 			return null;
 		}
 
-		return new Date(_createDate.getTime());
+		return DateUtil.toLocalDateTime(_createDate, ZoneOffset.UTC);
 	}
 
 	public String getDefinition() {
@@ -118,12 +121,12 @@ public class DashboardDTO {
 		timezone = "UTC"
 	)
 	@JsonProperty
-	public Date getModifiedDate() {
+	public LocalDateTime getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
 		}
 
-		return new Date(_modifiedDate.getTime());
+		return DateUtil.toLocalDateTime(_modifiedDate, ZoneOffset.UTC);
 	}
 
 	@Override
