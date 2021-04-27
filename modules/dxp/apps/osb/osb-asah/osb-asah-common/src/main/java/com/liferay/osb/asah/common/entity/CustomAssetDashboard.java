@@ -19,8 +19,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
@@ -36,6 +38,10 @@ import org.springframework.data.relational.core.mapping.Table;
 public class CustomAssetDashboard implements Persistable<String> {
 
 	public CustomAssetDashboard() {
+	}
+
+	public CustomAssetDashboard(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
 	}
 
 	public CustomAssetDashboard(String id) {
