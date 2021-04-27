@@ -15,19 +15,19 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.custom;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.util.NaniteUtil;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,10 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.script.Script;
-
-import org.json.JSONObject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -70,29 +67,19 @@ public class CustomAssetDashboardNanite implements Nanite {
 	private void _addCustomAssetDashboards(
 		String customAssetPrimaryKey, List<AnalyticsEvent> analyticsEvents) {
 
-		JSONObject jsonObject = _toCustomAssetJSONObject(
-			analyticsEvents, customAssetPrimaryKey);
+		Optional<CustomAssetDashboard> customAssetDashboardOptional =
+			_customAssetDashboardRepository.findById(customAssetPrimaryKey);
 
-		Script script = null;
+		CustomAssetDashboard customAssetDashboard = _updateCustomAssetDashboard(
+			analyticsEvents,
+			customAssetDashboardOptional.orElse(new CustomAssetDashboard()),
+			customAssetPrimaryKey);
 
-		String assetTitle = jsonObject.optString("assetTitle");
-
-		if (StringUtils.isEmpty(assetTitle)) {
-			script = new Script("ctx.op = 'noop'");
-		}
-		else {
-			script = new Script(
-				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-				"ctx._source.assetTitle = params.assetTitle",
-				new HashMap() {
-					{
-						put("assetTitle", assetTitle);
-					}
-				});
+		if (!customAssetDashboardOptional.isPresent()) {
+			customAssetDashboard.setIsNew(true);
 		}
 
-		_cerebroInfoElasticsearchInvoker.upsert(
-			getCollectionName(), customAssetPrimaryKey, jsonObject, script);
+		_customAssetDashboardRepository.save(customAssetDashboard);
 	}
 
 	private String _getCustomAssetPrimaryKey(AnalyticsEvent analyticsEvent) {
@@ -154,8 +141,9 @@ public class CustomAssetDashboardNanite implements Nanite {
 		}
 	}
 
-	private JSONObject _toCustomAssetJSONObject(
-		List<AnalyticsEvent> analyticsEvents, String id) {
+	private CustomAssetDashboard _updateCustomAssetDashboard(
+		List<AnalyticsEvent> analyticsEvents,
+		CustomAssetDashboard customAssetDashboard, String id) {
 
 		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
 
@@ -169,32 +157,31 @@ public class CustomAssetDashboardNanite implements Nanite {
 		Map<String, String> eventProperties =
 			analyticsEvent.getEventProperties();
 
-		JSONObject jsonObject = new JSONObject();
-
-		jsonObject.put("assetId", eventProperties.get("assetId"));
+		customAssetDashboard.setAssetId(eventProperties.get("assetId"));
 
 		String title = eventProperties.get("title");
 
 		if (StringUtils.isNotEmpty(title)) {
-			jsonObject.put("assetTitle", title);
+			customAssetDashboard.setAssetTitle(title);
 		}
 
-		jsonObject.put(
-			"category", eventProperties.getOrDefault("category", "default"));
-		jsonObject.put("channelId", analyticsEvent.getChannelId());
-		jsonObject.put(
-			"createDate", DateUtil.toUTCString(analyticsEvent.getEventDate()));
-		jsonObject.put("dataSourceId", analyticsEvent.getDataSourceId());
-		jsonObject.put("id", id);
+		customAssetDashboard.setCategory(
+			eventProperties.getOrDefault("category", "default"));
+		customAssetDashboard.setChannelId(
+			Long.valueOf(analyticsEvent.getChannelId()));
+		customAssetDashboard.setCreateDate(analyticsEvent.getEventDate());
+		customAssetDashboard.setDataSourceId(
+			Long.valueOf(analyticsEvent.getDataSourceId()));
+		customAssetDashboard.setId(id);
 
-		return jsonObject;
+		return customAssetDashboard;
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		CustomAssetDashboardNanite.class);
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+	@Autowired
+	private CustomAssetDashboardRepository _customAssetDashboardRepository;
 
 	@MessageSubscriber.Autowired(
 		channel = Channel.ANALYTICS_EVENTS_CUSTOM_ASSET
