@@ -38,8 +38,18 @@ interface State {
 	target?: HTMLElement;
 	timestamp?: number;
 }
-declare type Action = {
-	target?: HTMLElement;
-	type: string;
-};
+declare type Action =
+	| {
+			type: 'hide';
+	  }
+	| {
+			type: 'hideDelayCompleted';
+	  }
+	| {
+			type: 'showDelayCompleted';
+	  }
+	| {
+			type: 'show';
+			target?: HTMLElement;
+	  };
 export default function reducer(state: State, action: Action): State;

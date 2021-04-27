@@ -42,6 +42,8 @@ const ALIGN_POSITIONS = [
 
 const SELECTOR_TOOLTIP = '.tooltip[role="tooltip"]';
 const SELECTOR_TRIGGER = `
+	[title]:not(data-tooltip-disable),
+	[data-title]:not(data-tooltip-disable),
 	.lfr-portal-tooltip,
 	.manage-collaborators-dialog .lexicon-icon[data-title]:not(.lfr-portal-tooltip),
 	.manage-collaborators-dialog .lexicon-icon[title]:not(.lfr-portal-tooltip),
