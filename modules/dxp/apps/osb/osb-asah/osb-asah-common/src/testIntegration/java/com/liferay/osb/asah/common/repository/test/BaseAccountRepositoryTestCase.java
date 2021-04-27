@@ -50,7 +50,7 @@ import org.yaml.snakeyaml.util.ArrayUtils;
  * @author Rachael Koestartyo
  */
 public abstract class BaseAccountRepositoryTestCase
-	extends BaseRepositoryTestCase<Account> {
+	extends BaseRepositoryTestCase<Account, Long> {
 
 	@Before
 	public void setUp() {

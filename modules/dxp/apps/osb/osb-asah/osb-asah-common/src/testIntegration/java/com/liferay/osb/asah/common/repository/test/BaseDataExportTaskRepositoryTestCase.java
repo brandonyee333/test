@@ -31,7 +31,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author Inácio Nery
  */
 public abstract class BaseDataExportTaskRepositoryTestCase
-	extends BaseRepositoryTestCase<DataExportTask> {
+	extends BaseRepositoryTestCase<DataExportTask, Long> {
 
 	@Before
 	public void setUp() {

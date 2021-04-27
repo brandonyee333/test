@@ -28,7 +28,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author Inácio Nery
  */
 public abstract class BasePreferenceRepositoryTestCase
-	extends BaseRepositoryTestCase<Preference> {
+	extends BaseRepositoryTestCase<Preference, Long> {
 
 	@Before
 	public void setUp() {

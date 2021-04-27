@@ -35,7 +35,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author Marcellus Tavares
  */
 public abstract class BaseDataControlTaskRepositoryTestCase
-	extends BaseRepositoryTestCase<DataControlTask> {
+	extends BaseRepositoryTestCase<DataControlTask, Long> {
 
 	@Before
 	public void setUp() {

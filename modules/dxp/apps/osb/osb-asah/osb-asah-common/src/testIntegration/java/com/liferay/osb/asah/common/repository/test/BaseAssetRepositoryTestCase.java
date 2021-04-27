@@ -40,7 +40,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author Rachael Koestartyo
  */
 public abstract class BaseAssetRepositoryTestCase
-	extends BaseRepositoryTestCase<Asset> {
+	extends BaseRepositoryTestCase<Asset, Long> {
 
 	@Before
 	public void setUp() {

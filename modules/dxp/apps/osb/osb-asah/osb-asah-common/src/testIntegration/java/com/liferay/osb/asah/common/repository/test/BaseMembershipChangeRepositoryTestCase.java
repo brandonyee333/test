@@ -36,7 +36,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author Marcellus Tavares
  */
 public abstract class BaseMembershipChangeRepositoryTestCase
-	extends BaseRepositoryTestCase<MembershipChange> {
+	extends BaseRepositoryTestCase<MembershipChange, Long> {
 
 	@Before
 	public void setUp() {

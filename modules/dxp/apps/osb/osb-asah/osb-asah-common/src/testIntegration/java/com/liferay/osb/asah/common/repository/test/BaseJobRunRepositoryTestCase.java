@@ -37,7 +37,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author Marcellus Tavares
  */
 public abstract class BaseJobRunRepositoryTestCase
-	extends BaseRepositoryTestCase<JobRun> {
+	extends BaseRepositoryTestCase<JobRun, Long> {
 
 	@Before
 	public void setUp() {

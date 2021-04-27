@@ -38,7 +38,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author Inácio Nery
  */
 public abstract class BaseActivityGroupRepositoryTestCase
-	extends BaseRepositoryTestCase<ActivityGroup> {
+	extends BaseRepositoryTestCase<ActivityGroup, Long> {
 
 	@Before
 	public void setUp() {

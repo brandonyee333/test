@@ -36,7 +36,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author Inácio Nery
  */
 public abstract class BaseChannelRepositoryTestCase
-	extends BaseRepositoryTestCase<Channel> {
+	extends BaseRepositoryTestCase<Channel, Long> {
 
 	@Before
 	public void setUp() {

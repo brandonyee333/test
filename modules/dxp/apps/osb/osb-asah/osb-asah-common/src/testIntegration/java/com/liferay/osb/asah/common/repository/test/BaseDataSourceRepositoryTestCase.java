@@ -39,7 +39,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author Inácio Nery
  */
 public abstract class BaseDataSourceRepositoryTestCase
-	extends BaseRepositoryTestCase<DataSource> {
+	extends BaseRepositoryTestCase<DataSource, Long> {
 
 	@Before
 	public void setUp() {

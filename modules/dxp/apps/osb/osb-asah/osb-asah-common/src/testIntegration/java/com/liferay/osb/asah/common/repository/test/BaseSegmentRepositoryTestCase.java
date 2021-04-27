@@ -36,7 +36,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author Inácio Nery
  */
 public abstract class BaseSegmentRepositoryTestCase
-	extends BaseRepositoryTestCase<Segment> {
+	extends BaseRepositoryTestCase<Segment, Long> {
 
 	@Before
 	public void setUp() {

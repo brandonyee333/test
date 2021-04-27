@@ -44,7 +44,7 @@ import org.springframework.test.context.ContextConfiguration;
 @DirtiesContext
 @RunWith(OSBAsahPostgreSQLSpring4ClassRunner.class)
 @SpringBootTest(properties = "osb.asah.postgresql.enabled=true")
-public class RunLogRepositoryTest extends BaseRepositoryTestCase<RunLog> {
+public class RunLogRepositoryTest extends BaseRepositoryTestCase<RunLog, Long> {
 
 	@Before
 	public void setUp() {

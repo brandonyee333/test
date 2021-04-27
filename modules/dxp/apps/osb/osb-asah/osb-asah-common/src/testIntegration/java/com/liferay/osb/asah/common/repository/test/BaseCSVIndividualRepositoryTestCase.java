@@ -35,7 +35,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author Marcellus Tavares
  */
 public abstract class BaseCSVIndividualRepositoryTestCase
-	extends BaseRepositoryTestCase<CSVIndividual> {
+	extends BaseRepositoryTestCase<CSVIndividual, Long> {
 
 	@Before
 	public void setUp() {
