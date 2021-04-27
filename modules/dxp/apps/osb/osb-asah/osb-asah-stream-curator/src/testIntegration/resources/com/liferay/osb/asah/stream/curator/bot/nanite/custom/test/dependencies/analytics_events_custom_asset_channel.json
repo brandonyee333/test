@@ -1,7 +1,7 @@
 [
 	{
 		"applicationId": "Custom",
-		"channelId": "1",
+		"channelId": 1,
 		"context": {
 			"browserName": "Firefox",
 			"canonicalUrl": "http://liferay.com/home",
@@ -14,7 +14,7 @@
 			"region": "Pernambuco",
 			"url": "http://liferay.com"
 		},
-		"dataSourceId": "www.liferay.com",
+		"dataSourceId": 1,
 		"eventDate": "2018-04-04T09:30:00.000Z",
 		"eventId": "assetViewed",
 		"eventProperties": {
@@ -33,7 +33,7 @@
 	},
 	{
 		"applicationId": "Custom",
-		"channelId": "1",
+		"channelId": 1,
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "http://liferay.com/home",
@@ -46,7 +46,7 @@
 			"region": "Pernambuco",
 			"url": "http://liferay.com"
 		},
-		"dataSourceId": "www.liferay.com",
+		"dataSourceId": 1,
 		"eventDate": "2018-04-04T09:30:00.000Z",
 		"eventId": "assetViewed",
 		"eventProperties": {
@@ -65,7 +65,7 @@
 	},
 	{
 		"applicationId": "Custom",
-		"channelId": "1",
+		"channelId": 1,
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "http://liferay.com/home",
@@ -78,7 +78,7 @@
 			"region": "Pernambuco",
 			"url": "http://liferay.com"
 		},
-		"dataSourceId": "www.liferay.com",
+		"dataSourceId": 1,
 		"eventDate": "2018-04-04T09:30:00.000Z",
 		"eventId": "assetClicked",
 		"eventProperties": {
@@ -96,7 +96,7 @@
 	},
 	{
 		"applicationId": "Custom",
-		"channelId": "1",
+		"channelId": 1,
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "http://liferay.com/home",
@@ -109,7 +109,7 @@
 			"region": "Pernambuco",
 			"url": "http://liferay.com"
 		},
-		"dataSourceId": "www.liferay.com",
+		"dataSourceId": 1,
 		"eventDate": "2018-04-04T09:30:00.000Z",
 		"eventId": "assetDepthReached",
 		"eventProperties": {
@@ -128,7 +128,7 @@
 	},
 	{
 		"applicationId": "Custom",
-		"channelId": "1",
+		"channelId": 1,
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "http://liferay.com/home",
@@ -141,7 +141,7 @@
 			"region": "Pernambuco",
 			"url": "http://liferay.com"
 		},
-		"dataSourceId": "www.liferay.com",
+		"dataSourceId": 1,
 		"eventDate": "2018-04-04T09:30:00.000Z",
 		"eventId": "assetDownloaded",
 		"eventProperties": {
@@ -159,7 +159,7 @@
 	},
 	{
 		"applicationId": "Custom",
-		"channelId": "1",
+		"channelId": 1,
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "http://liferay.com/home",
@@ -172,7 +172,7 @@
 			"region": "Pernambuco",
 			"url": "http://liferay.com"
 		},
-		"dataSourceId": "www.liferay.com",
+		"dataSourceId": 1,
 		"eventDate": "2018-04-04T09:30:00.000Z",
 		"eventId": "assetSubmitted",
 		"eventProperties": {

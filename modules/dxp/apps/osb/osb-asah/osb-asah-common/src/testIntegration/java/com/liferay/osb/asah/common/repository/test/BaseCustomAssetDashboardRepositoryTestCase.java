@@ -106,6 +106,22 @@ public abstract class BaseCustomAssetDashboardRepositoryTestCase
 				3L, null));
 	}
 
+	@Override
+	@Test
+	public void testSave() {
+		_customAssetDashboardRepository.delete(entityModels.get(0));
+
+		super.testSave();
+	}
+
+	@Override
+	@Test
+	public void testSaveAll() {
+		_customAssetDashboardRepository.deleteAll();
+
+		super.testSaveAll();
+	}
+
 	@Test
 	public void testSearchCustomAssetDashboards() {
 		List<CustomAssetDashboard> customAssetDashboards =
