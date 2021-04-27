@@ -62,6 +62,7 @@ import java.util.zip.ZipOutputStream;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -76,6 +77,7 @@ import org.json.JSONTokener;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -181,38 +183,42 @@ public class AdminRestController extends BaseRestController {
 
 	@PostMapping("/data/{weDeployDataServiceName}/{collectionName}")
 	public void postData(
-		@PathVariable String collectionName,
-		@PathVariable String weDeployDataServiceName,
-		@RequestBody String json) {
+			@PathVariable String collectionName,
+			@PathVariable String weDeployDataServiceName,
+			@RequestBody String json)
+		throws Exception {
 
 		if (collectionName.equals("accounts")) {
-			_addAccounts(new JSONArray(json));
+			_addEntities(_accountRepository, json, Account.class);
 		}
 		else if (collectionName.equals("activity-groups")) {
-			_addActivityGroups(new JSONArray(json));
+			_addEntities(_activityGroupRepository, json, ActivityGroup.class);
 		}
 		else if (collectionName.equals("blocked-keywords")) {
-			_addBlockedKeywords(new JSONArray(json));
+			_addEntities(_blockedKeywordRepository, json, BlockedKeyword.class);
 		}
 		else if (collectionName.equals("channels")) {
-			_addChannels(new JSONArray(json));
+			_addEntities(_channelRepository, json, Channel.class);
 		}
 		else if (collectionName.equals("custom-asset-dashboards")) {
-			_addCustomAssetDashboardChannels(new JSONArray(json));
+			_addEntities(
+				_customAssetDashboardRepository, json,
+				CustomAssetDashboard.class);
 		}
 		else if (collectionName.equals("data-sources")) {
-			_addDataSources(new JSONArray(json));
+			_addEntities(_dataSourceRepository, json, DataSource.class);
 
 			_nanitesHttp.refreshAnalytics();
 		}
 		else if (collectionName.equals("individual-segments")) {
-			_addSegments(new JSONArray(json));
+			_addEntities(_segmentRepository, json, Segment.class);
 		}
 		else if (collectionName.equals("membership-changes")) {
-			_addMembershipChanges(new JSONArray(json));
+			_addEntities(
+				_membershipChangeRepository, json, MembershipChange.class);
 		}
 		else if (collectionName.equals("memberships")) {
-			_addMemberships(new JSONArray(json));
+			_addEntities(_membershipRepository, json, Membership.class);
 		}
 		else if (collectionName.equals("preferences")) {
 			_addPreferences(new JSONArray(json));
@@ -252,92 +258,20 @@ public class AdminRestController extends BaseRestController {
 		_nanitesHttp.run(jsonArray);
 	}
 
-	private void _addAccounts(JSONArray jsonArray) {
+	private <T, ID> void _addEntities(
+			CrudRepository<T, ID> crudRepository, String json,
+			Class<T> modelClass)
+		throws Exception {
+
+		JSONArray jsonArray = new JSONArray(json);
+
 		for (int i = 0; i < jsonArray.length(); i++) {
-			Account account = _objectMapper.convertValue(
-				jsonArray.getJSONObject(i), Account.class);
+			T t = _objectMapper.convertValue(
+				jsonArray.getJSONObject(i), modelClass);
 
-			account.setIsNew(true);
+			BeanUtils.setProperty(t, "isNew", true);
 
-			_accountRepository.save(account);
-		}
-	}
-
-	private void _addActivityGroups(JSONArray jsonArray) {
-		for (int i = 0; i < jsonArray.length(); i++) {
-			ActivityGroup activityGroup = _objectMapper.convertValue(
-				jsonArray.getJSONObject(i), ActivityGroup.class);
-
-			activityGroup.setIsNew(true);
-
-			_activityGroupRepository.save(activityGroup);
-		}
-	}
-
-	private void _addBlockedKeywords(JSONArray jsonArray) {
-		for (int i = 0; i < jsonArray.length(); i++) {
-			BlockedKeyword blockedKeyword = _objectMapper.convertValue(
-				jsonArray.getJSONObject(i), BlockedKeyword.class);
-
-			blockedKeyword.setIsNew(true);
-
-			_blockedKeywordRepository.save(blockedKeyword);
-		}
-	}
-
-	private void _addChannels(JSONArray jsonArray) {
-		for (int i = 0; i < jsonArray.length(); i++) {
-			Channel channel = _objectMapper.convertValue(
-				jsonArray.getJSONObject(i), Channel.class);
-
-			channel.setIsNew(true);
-
-			_channelRepository.save(channel);
-		}
-	}
-
-	private void _addCustomAssetDashboardChannels(JSONArray jsonArray) {
-		for (int i = 0; i < jsonArray.length(); i++) {
-			CustomAssetDashboard customAssetDashboard =
-				_objectMapper.convertValue(
-					jsonArray.getJSONObject(i), CustomAssetDashboard.class);
-
-			customAssetDashboard.setIsNew(true);
-
-			_customAssetDashboardRepository.save(customAssetDashboard);
-		}
-	}
-
-	private void _addDataSources(JSONArray jsonArray) {
-		for (int i = 0; i < jsonArray.length(); i++) {
-			DataSource dataSource = _objectMapper.convertValue(
-				jsonArray.getJSONObject(i), DataSource.class);
-
-			dataSource.setIsNew(true);
-
-			_dataSourceRepository.save(dataSource);
-		}
-	}
-
-	private void _addMembershipChanges(JSONArray jsonArray) {
-		for (int i = 0; i < jsonArray.length(); i++) {
-			MembershipChange membershipChange = _objectMapper.convertValue(
-				jsonArray.getJSONObject(i), MembershipChange.class);
-
-			membershipChange.setIsNew(true);
-
-			_membershipChangeRepository.save(membershipChange);
-		}
-	}
-
-	private void _addMemberships(JSONArray jsonArray) {
-		for (int i = 0; i < jsonArray.length(); i++) {
-			Membership membership = _objectMapper.convertValue(
-				jsonArray.getJSONObject(i), Membership.class);
-
-			membership.setIsNew(true);
-
-			_membershipRepository.save(membership);
+			crudRepository.save(t);
 		}
 	}
 
@@ -351,17 +285,6 @@ public class AdminRestController extends BaseRestController {
 			preference.setIsNew(true);
 
 			_preferenceRepository.save(preference);
-		}
-	}
-
-	private void _addSegments(JSONArray jsonArray) {
-		for (int i = 0; i < jsonArray.length(); i++) {
-			Segment segment = _objectMapper.convertValue(
-				jsonArray.getJSONObject(i), Segment.class);
-
-			segment.setIsNew(true);
-
-			_segmentRepository.save(segment);
 		}
 	}
 
