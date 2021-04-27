@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
-import com.liferay.osb.asah.common.model.ResultBag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +25,7 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
@@ -44,39 +44,43 @@ public class CustomAssetDashboardRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public ResultBag<CustomAssetDashboard> searchCustomAssetDashboard(
-		Long channelId, String keyword, Pageable pageable) {
+	public long countCustomAssetDashboards(Long channelId, String keywords) {
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
 
-		ResultBag<CustomAssetDashboard> resultBag = new ResultBag<>();
+		return selectSelectStep.from(
+			"CustomAssetDashboard"
+		).where(
+			_getConditions(channelId, keywords)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
+	public List<CustomAssetDashboard> searchCustomAssetDashboards(
+		Long channelId, String keywords, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		selectSelectStep.from(
+		return selectSelectStep.from(
 			"CustomAssetDashboard"
 		).where(
-			_getConditions(channelId, keyword)
+			_getConditions(channelId, keywords)
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new CustomAssetDashboard(record.intoMap())
 		);
-
-		resultBag.setTotal(_dslContext.fetchCount(selectSelectStep));
-
-		List<CustomAssetDashboard> customAssetDashboards =
-			selectSelectStep.orderBy(
-				getSortFields(pageable.getSort(), null)
-			).limit(
-				pageable.getPageSize()
-			).offset(
-				pageable.getOffset()
-			).fetch(
-			).map(
-				record -> new CustomAssetDashboard(record.intoMap())
-			);
-
-		resultBag.setResults(customAssetDashboards);
-
-		return resultBag;
 	}
 
-	private List<Condition> _getConditions(Long channelId, String keyword) {
+	private List<Condition> _getConditions(Long channelId, String keywords) {
 		List<Condition> conditions = new ArrayList<>();
 
 		if (channelId != null) {
@@ -85,11 +89,11 @@ public class CustomAssetDashboardRepositoryImpl extends BaseRepository {
 			conditions.add(field.eq(channelId));
 		}
 
-		if (StringUtils.isNotEmpty(keyword)) {
+		if (StringUtils.isNotEmpty(keywords)) {
 			Field<Object> field = DSL.field("assetTitle");
 
 			conditions.add(
-				field.likeIgnoreCase(String.format("%%%s%%", keyword)));
+				field.likeIgnoreCase(String.format("%%%s%%", keywords)));
 		}
 
 		return conditions;

@@ -16,32 +16,21 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.ShardSearchFailure;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
@@ -60,45 +49,26 @@ public class ElasticsearchCustomAssetDashboardRepositoryImpl
 	implements CustomAssetDashboardRepository {
 
 	@Override
-	public ResultBag<CustomAssetDashboard> searchCustomAssetDashboard(
+	public long countCustomAssetDashboards(Long channelId, String keywords) {
+		return _cerebroInfoElasticsearchInvoker.count(
+			getCollectionName(), _buildQueryBuilder(channelId, keywords));
+	}
+
+	@Override
+	public List<CustomAssetDashboard> searchCustomAssetDashboards(
 		Long channelId, String keywords, Pageable pageable) {
 
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
+		return toList(
+			new JSONArray(
+				_cerebroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_buildQueryBuilder(channelId, keywords));
 
-		searchSourceBuilder.query(
-			_buildKeywordsQueryBuilder(channelId, keywords));
-
-		setSearchSourceBuilderPage(searchSourceBuilder, pageable);
-
-		SearchResponse searchResponse = _cerebroInfoElasticsearchInvoker.search(
-			"custom-asset-dashboards", searchSourceBuilder);
-
-		ResultBag<CustomAssetDashboard> resultBag = new ResultBag<>();
-
-		if (searchResponse.status() != RestStatus.OK) {
-			for (ShardSearchFailure shardSearchFailure :
-					searchResponse.getShardFailures()) {
-
-				_log.error(shardSearchFailure.getCause());
-			}
-
-			return resultBag;
-		}
-
-		SearchHits searchHits = searchResponse.getHits();
-
-		List<CustomAssetDashboard> customAssetDashboards = new ArrayList<>();
-
-		for (SearchHit searchHit : searchHits) {
-			customAssetDashboards.add(
-				toEntity(new JSONObject(searchHit.getSourceAsString())));
-		}
-
-		resultBag.setResults(customAssetDashboards);
-		resultBag.setTotal(HitsUtil.getTotalHitsCount(searchHits));
-
-		return resultBag;
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
 	}
 
 	@Override
@@ -111,9 +81,7 @@ public class ElasticsearchCustomAssetDashboardRepositoryImpl
 		return _cerebroInfoElasticsearchInvoker;
 	}
 
-	private QueryBuilder _buildKeywordsQueryBuilder(
-		Long channelId, String keywords) {
-
+	private QueryBuilder _buildQueryBuilder(Long channelId, String keywords) {
 		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 
 		BoolQueryBuilderUtil.filterTerm(
@@ -141,9 +109,6 @@ public class ElasticsearchCustomAssetDashboardRepositoryImpl
 
 		return QueryBuilders.matchAllQuery();
 	}
-
-	private static final Log _log = LogFactory.getLog(
-		ElasticsearchCustomAssetDashboardRepositoryImpl.class);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;

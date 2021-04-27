@@ -72,14 +72,12 @@ public class DashboardDog {
 	public ResultBag<DashboardDTO> getDashboardResultBag(
 		String channelId, String keywords, int size, Sort sort, int start) {
 
-		ResultBag<CustomAssetDashboard> resultBag =
-			_customAssetDashboardRepository.searchCustomAssetDashboard(
+		List<CustomAssetDashboard> customAssetDashboards =
+			_customAssetDashboardRepository.searchCustomAssetDashboards(
 				Long.valueOf(channelId), keywords,
 				PageRequest.of(start / size, size, sort));
 
-		List<CustomAssetDashboard> results = resultBag.getResults();
-
-		Stream<CustomAssetDashboard> stream = results.stream();
+		Stream<CustomAssetDashboard> stream = customAssetDashboards.stream();
 
 		List<DashboardDTO> dashboardDTOs = stream.map(
 			DashboardDTO::new
@@ -87,7 +85,10 @@ public class DashboardDog {
 			Collectors.toList()
 		);
 
-		return new ResultBag<>(dashboardDTOs, resultBag.getTotal());
+		return new ResultBag<>(
+			dashboardDTOs,
+			_customAssetDashboardRepository.countCustomAssetDashboards(
+				Long.valueOf(channelId), keywords));
 	}
 
 	public DashboardDTO updateDashboard(
