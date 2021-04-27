@@ -32,25 +32,25 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * @author Inácio Nery
  */
-public abstract class BaseRepositoryTestCase<T extends Persistable<Long>> {
+public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 
 	@After
 	public void tearDown() {
-		CrudRepository<T, Long> crudRepository = getCrudRepository();
+		CrudRepository<T, ID> crudRepository = getCrudRepository();
 
 		crudRepository.deleteAll();
 	}
 
 	@Test
 	public void testCount() {
-		CrudRepository<T, Long> crudRepository = getCrudRepository();
+		CrudRepository<T, ID> crudRepository = getCrudRepository();
 
 		Assert.assertEquals(entityModels.size(), crudRepository.count());
 	}
 
 	@Test
 	public void testDelete() {
-		CrudRepository<T, Long> crudRepository = getCrudRepository();
+		CrudRepository<T, ID> crudRepository = getCrudRepository();
 
 		crudRepository.delete(entityModels.get(0));
 
@@ -59,7 +59,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<Long>> {
 
 	@Test
 	public void testDeleteAll1() {
-		CrudRepository<T, Long> crudRepository = getCrudRepository();
+		CrudRepository<T, ID> crudRepository = getCrudRepository();
 
 		crudRepository.deleteAll();
 
@@ -68,7 +68,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<Long>> {
 
 	@Test
 	public void testDeleteAll2() {
-		CrudRepository<T, Long> crudRepository = getCrudRepository();
+		CrudRepository<T, ?> crudRepository = getCrudRepository();
 
 		crudRepository.deleteAll(entityModels);
 
@@ -79,11 +79,11 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<Long>> {
 	public void testDeleteById() {
 		T model = entityModels.get(0);
 
-		Long id = model.getId();
+		ID id = model.getId();
 
 		Assert.assertNotNull(id);
 
-		CrudRepository<T, Long> crudRepository = getCrudRepository();
+		CrudRepository<T, ID> crudRepository = getCrudRepository();
 
 		crudRepository.deleteById(id);
 
@@ -94,21 +94,21 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<Long>> {
 	public void testExistsById() {
 		T model = entityModels.get(0);
 
-		CrudRepository<T, Long> crudRepository = getCrudRepository();
+		CrudRepository<T, ID> crudRepository = getCrudRepository();
 
 		Assert.assertTrue(crudRepository.existsById(model.getId()));
 	}
 
 	@Test
 	public void testFindAll() {
-		CrudRepository<T, Long> crudRepository = getCrudRepository();
+		CrudRepository<T, ID> crudRepository = getCrudRepository();
 
 		Assert.assertEquals(entityModels, crudRepository.findAll());
 	}
 
 	@Test
 	public void testFindAllById() {
-		CrudRepository<T, Long> crudRepository = getCrudRepository();
+		CrudRepository<T, ID> crudRepository = getCrudRepository();
 
 		Assert.assertEquals(
 			entityModels,
@@ -119,11 +119,11 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<Long>> {
 	public void testFindById() {
 		T model = entityModels.get(0);
 
-		Long id = model.getId();
+		ID id = model.getId();
 
 		Assert.assertNotNull(id);
 
-		CrudRepository<T, Long> crudRepository = getCrudRepository();
+		CrudRepository<T, ID> crudRepository = getCrudRepository();
 
 		Optional<T> modelOptional = crudRepository.findById(id);
 
@@ -132,7 +132,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<Long>> {
 
 	@Test
 	public void testSave() {
-		CrudRepository<T, Long> crudRepository = getCrudRepository();
+		CrudRepository<T, ID> crudRepository = getCrudRepository();
 
 		Assert.assertEquals(
 			entityModels.get(0), crudRepository.save(entityModels.get(0)));
@@ -140,15 +140,15 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<Long>> {
 
 	@Test
 	public void testSaveAll() {
-		CrudRepository<T, Long> crudRepository = getCrudRepository();
+		CrudRepository<T, ID> crudRepository = getCrudRepository();
 
 		Assert.assertEquals(entityModels, crudRepository.saveAll(entityModels));
 	}
 
-	protected abstract CrudRepository<T, Long> getCrudRepository();
+	protected abstract CrudRepository<T, ID> getCrudRepository();
 
 	protected void setUpRepository(T... entityModels) {
-		CrudRepository<T, Long> crudRepository = getCrudRepository();
+		CrudRepository<T, ID> crudRepository = getCrudRepository();
 
 		this.entityModels = IterableUtils.toList(
 			crudRepository.saveAll(Arrays.asList(entityModels)));
