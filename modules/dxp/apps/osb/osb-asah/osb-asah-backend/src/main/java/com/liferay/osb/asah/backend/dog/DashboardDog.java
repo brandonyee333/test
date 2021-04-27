@@ -14,40 +14,25 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.backend.dto.DashboardDTO;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
-import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.time.Clock;
-import java.time.Instant;
-
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.loader.SchemaLoader;
@@ -56,6 +41,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -65,65 +51,43 @@ import org.springframework.stereotype.Component;
 public class DashboardDog {
 
 	public DashboardDTO getDashboard(String dashboardId) {
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"custom-asset-dashboards", _cerebroInfoElasticsearchInvoker,
-			_buildDashboardSearchSourceBuilder(dashboardId));
+		Optional<CustomAssetDashboard> customAssetDashboardOptional =
+			_customAssetDashboardRepository.findById(dashboardId);
 
-		long totalHitsCount = HitsUtil.getTotalHitsCount(searchHits);
-
-		if (totalHitsCount != 1) {
+		if (!customAssetDashboardOptional.isPresent()) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					String.format(
 						"Unable to retrieve the dashboard definition for the " +
-							"dashboard ID %s. Returned %d total hits.",
-						dashboardId, totalHitsCount));
+							"dashboard ID %s.",
+						dashboardId));
 			}
 
 			return null;
 		}
 
-		SearchHit searchHit = searchHits.getAt(0);
-
-		String source = searchHit.getSourceAsString();
-
-		try {
-			return _objectMapper.readValue(source, DashboardDTO.class);
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException("Unable to process search request", ioe);
-		}
+		return new DashboardDTO(customAssetDashboardOptional.get());
 	}
 
 	public ResultBag<DashboardDTO> getDashboardResultBag(
 		String channelId, String keywords, int size, Sort sort, int start) {
 
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"custom-asset-dashboards", _cerebroInfoElasticsearchInvoker,
-			DogUtil.buildSearchSourceBuilder(
-				SortBuilderUtil.fieldSort(sort),
-				_buildKeywordsQueryBuilder(channelId, keywords), size, start));
+		ResultBag<CustomAssetDashboard> resultBag =
+			_customAssetDashboardRepository.searchCustomAssetDashboard(
+				Long.valueOf(channelId), keywords,
+				PageRequest.of(start / size, size, sort));
 
-		ResultBag<DashboardDTO> resultBag = new ResultBag<>();
+		List<CustomAssetDashboard> results = resultBag.getResults();
 
-		try {
-			List<DashboardDTO> dashboardDTOs = new ArrayList<>();
+		Stream<CustomAssetDashboard> stream = results.stream();
 
-			for (SearchHit searchHit : searchHits) {
-				String source = searchHit.getSourceAsString();
+		List<DashboardDTO> dashboardDTOs = stream.map(
+			DashboardDTO::new
+		).collect(
+			Collectors.toList()
+		);
 
-				dashboardDTOs.add(
-					_objectMapper.readValue(source, DashboardDTO.class));
-			}
-
-			resultBag.setResults(dashboardDTOs);
-			resultBag.setTotal(HitsUtil.getTotalHitsCount(searchHits));
-
-			return resultBag;
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException("Unable to process search request", ioe);
-		}
+		return new ResultBag<>(dashboardDTOs, resultBag.getTotal());
 	}
 
 	public DashboardDTO updateDashboard(
@@ -132,67 +96,23 @@ public class DashboardDog {
 
 		_dashboardDefinitionSchema.validate(new JSONObject(definition));
 
-		JSONObject jsonObject = new JSONObject();
+		Optional<CustomAssetDashboard> customAssetDashboardOptional =
+			_customAssetDashboardRepository.findById(dashboardId);
 
-		jsonObject.put("definition", definition);
-		jsonObject.put("id", dashboardId);
-		jsonObject.put("modifiedByUserId", modifiedByUserId);
-		jsonObject.put("modifiedByUserName", modifiedByUserName);
-		jsonObject.put("modifiedDate", Instant.now(Clock.systemUTC()));
-
-		jsonObject = _cerebroInfoElasticsearchInvoker.update(
-			"custom-asset-dashboards", jsonObject);
-
-		try {
-			return _objectMapper.readValue(
-				jsonObject.toString(), DashboardDTO.class);
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException("Unable to process update request", ioe);
-		}
-	}
-
-	private SearchSourceBuilder _buildDashboardSearchSourceBuilder(
-		String dashboardId) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.query(QueryBuilders.termQuery("id", dashboardId));
-		searchSourceBuilder.size(1);
-
-		return searchSourceBuilder;
-	}
-
-	private QueryBuilder _buildKeywordsQueryBuilder(
-		String channelId, String keywords) {
-
-		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "channelId", channelId);
-
-		if (StringUtils.isNotBlank(keywords)) {
-			boolQueryBuilder.filter(
-				BoolQueryBuilderUtil.should(
-					QueryBuilders.queryStringQuery(
-						String.format(
-							"%s:*%s*", "assetTitle.search",
-							QueryUtil.escapeKeywords(keywords)))
-				).should(
-					QueryBuilders.matchQuery(
-						"assetTitle.search", keywords
-					).fuzziness(
-						Fuzziness.AUTO
-					)
-				));
+		if (!customAssetDashboardOptional.isPresent()) {
+			return null;
 		}
 
-		if (boolQueryBuilder.hasClauses()) {
-			return boolQueryBuilder;
-		}
+		CustomAssetDashboard customAssetDashboard =
+			customAssetDashboardOptional.get();
 
-		return QueryBuilders.matchAllQuery();
+		customAssetDashboard.setDefinition(definition);
+		customAssetDashboard.setModifiedByUserId(modifiedByUserId);
+		customAssetDashboard.setModifiedByUserName(modifiedByUserName);
+		customAssetDashboard.setModifiedDate(new Date());
+
+		return new DashboardDTO(
+			_customAssetDashboardRepository.save(customAssetDashboard));
 	}
 
 	@PostConstruct
@@ -215,15 +135,9 @@ public class DashboardDog {
 
 	private static final Log _log = LogFactory.getLog(DashboardDog.class);
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+	@Autowired
+	private CustomAssetDashboardRepository _customAssetDashboardRepository;
 
 	private Schema _dashboardDefinitionSchema;
-
-	@Autowired
-	private DataDog _dataDog;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 }

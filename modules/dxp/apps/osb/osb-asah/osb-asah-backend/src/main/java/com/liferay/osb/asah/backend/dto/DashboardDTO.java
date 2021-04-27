@@ -14,14 +14,34 @@
 
 package com.liferay.osb.asah.backend.dto;
 
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
+
+import java.util.Date;
 import java.util.Objects;
 
 /**
  * @author André Miranda
  */
 public class DashboardDTO {
+
+	public DashboardDTO() {
+	}
+
+	public DashboardDTO(CustomAssetDashboard customAssetDashboard) {
+		_assetId = customAssetDashboard.getAssetId();
+		_assetTitle = customAssetDashboard.getAssetTitle();
+		_category = customAssetDashboard.getCategory();
+		_createDate = customAssetDashboard.getCreateDate();
+		_definition = customAssetDashboard.getDefinition();
+		_id = String.valueOf(customAssetDashboard.getId());
+		_modifiedByUserId = customAssetDashboard.getModifiedByUserId();
+		_modifiedByUserName = customAssetDashboard.getModifiedByUserName();
+		_modifiedDate = customAssetDashboard.getModifiedDate();
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -64,8 +84,17 @@ public class DashboardDTO {
 		return _category;
 	}
 
-	public LocalDateTime getCreateDate() {
-		return _createDate;
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty
+	public Date getCreateDate() {
+		if (_createDate == null) {
+			return null;
+		}
+
+		return new Date(_createDate.getTime());
 	}
 
 	public String getDefinition() {
@@ -84,8 +113,17 @@ public class DashboardDTO {
 		return _modifiedByUserName;
 	}
 
-	public LocalDateTime getModifiedDate() {
-		return _modifiedDate;
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
+			return null;
+		}
+
+		return new Date(_modifiedDate.getTime());
 	}
 
 	@Override
@@ -108,7 +146,9 @@ public class DashboardDTO {
 	}
 
 	public void setCreateDate(LocalDateTime createDate) {
-		_createDate = createDate;
+		if (createDate != null) {
+			_createDate = DateUtil.toUTCDate(createDate);
+		}
 	}
 
 	public void setDefinition(String definition) {
@@ -128,17 +168,19 @@ public class DashboardDTO {
 	}
 
 	public void setModifiedDate(LocalDateTime modifiedDate) {
-		_modifiedDate = modifiedDate;
+		if (modifiedDate != null) {
+			_modifiedDate = DateUtil.toUTCDate(modifiedDate);
+		}
 	}
 
 	private String _assetId;
 	private String _assetTitle;
 	private String _category;
-	private LocalDateTime _createDate;
+	private Date _createDate;
 	private String _definition;
 	private String _id;
 	private String _modifiedByUserId;
 	private String _modifiedByUserName;
-	private LocalDateTime _modifiedDate;
+	private Date _modifiedDate;
 
 }

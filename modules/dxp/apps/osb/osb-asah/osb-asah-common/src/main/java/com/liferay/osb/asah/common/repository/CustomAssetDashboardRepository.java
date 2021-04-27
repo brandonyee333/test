@@ -15,8 +15,10 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
+import com.liferay.osb.asah.common.model.ResultBag;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -29,5 +31,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomAssetDashboardRepository
 	extends CrudRepository<CustomAssetDashboard, String> {
+
+	public ResultBag<CustomAssetDashboard> searchCustomAssetDashboard(
+		Long channelId, String keyword, Pageable pageable);
 
 }
