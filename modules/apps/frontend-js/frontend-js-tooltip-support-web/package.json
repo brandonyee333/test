@@ -4,6 +4,7 @@
 		"@liferay/frontend-js-react-web": "*",
 		"react": "16.12.0"
 	},
+	"main": "index.js",
 	"name": "frontend-js-tooltip-support-web",
 	"private": true,
 	"scripts": {
