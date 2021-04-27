@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.entity.Channel;
+import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.MembershipChange;
@@ -37,6 +38,7 @@ import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
@@ -116,6 +118,9 @@ public class AdminRestController extends BaseRestController {
 		else if (collectionName.equals("channels")) {
 			_channelRepository.deleteAll();
 		}
+		else if (collectionName.equals("custom-asset-dashboards")) {
+			_customAssetDashboardRepository.deleteAll();
+		}
 		else if (collectionName.equals("data-sources")) {
 			_dataSourceRepository.deleteAll();
 		}
@@ -191,6 +196,9 @@ public class AdminRestController extends BaseRestController {
 		}
 		else if (collectionName.equals("channels")) {
 			_addChannels(new JSONArray(json));
+		}
+		else if (collectionName.equals("custom-asset-dashboards")) {
+			_addCustomAssetDashboardChannels(new JSONArray(json));
 		}
 		else if (collectionName.equals("data-sources")) {
 			_addDataSources(new JSONArray(json));
@@ -285,6 +293,18 @@ public class AdminRestController extends BaseRestController {
 			channel.setIsNew(true);
 
 			_channelRepository.save(channel);
+		}
+	}
+
+	private void _addCustomAssetDashboardChannels(JSONArray jsonArray) {
+		for (int i = 0; i < jsonArray.length(); i++) {
+			CustomAssetDashboard customAssetDashboard =
+				_objectMapper.convertValue(
+					jsonArray.getJSONObject(i), CustomAssetDashboard.class);
+
+			customAssetDashboard.setIsNew(true);
+
+			_customAssetDashboardRepository.save(customAssetDashboard);
 		}
 	}
 
@@ -436,6 +456,9 @@ public class AdminRestController extends BaseRestController {
 
 	@Autowired
 	private ChannelRepository _channelRepository;
+
+	@Autowired
+	private CustomAssetDashboardRepository _customAssetDashboardRepository;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
