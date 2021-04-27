@@ -83,6 +83,20 @@ CREATE TABLE IF NOT EXISTS CSVIndividual (
 	fields JSON
 );
 
+CREATE TABLE IF NOT EXISTS CustomAssetDashboard (
+	id TEXT PRIMARY KEY,
+	assetId TEXT,
+	assetTitle TEXT,
+	category TEXT,
+	channelId BIGINT,
+	createDate TIMESTAMPTZ,
+	dataSourceId BIGINT,
+	definition TEXT,
+	modifiedByUserId TEXT,
+	modifiedByUserName TEXT,
+	modifiedDate TIMESTAMPTZ
+);
+
 CREATE TABLE IF NOT EXISTS DataControlTask (
 	id BIGSERIAL PRIMARY KEY,
 	batchId BIGINT,
