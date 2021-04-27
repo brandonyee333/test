@@ -112,6 +112,7 @@ public class Account implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
