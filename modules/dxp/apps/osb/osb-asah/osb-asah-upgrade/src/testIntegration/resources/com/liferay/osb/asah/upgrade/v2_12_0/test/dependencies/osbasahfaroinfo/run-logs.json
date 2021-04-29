@@ -24,6 +24,10 @@
 		"status": "INTERRUPTED"
 	},
 	{
+		"context": {
+			"extraPropertyA": 27,
+			"extraPropertyB": true
+		},
 		"dateLogged": "2020-11-30T03:36:48.077Z",
 		"id": "456886320875798205",
 		"naniteClassName": "ExperimentNanite",

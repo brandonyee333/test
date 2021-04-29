@@ -65,6 +65,25 @@ public class RunLogUpgradeStepTest {
 				"status", "COMPLETED"
 			),
 			_elasticsearchInvoker.get("run-logs", "458153372317996126"), true);
+
+		JSONAssert.assertEquals(
+			JSONUtil.put(
+				"context",
+				JSONUtil.put(
+					"extraPropertyA", 27
+				).put(
+					"extraPropertyB", true
+				)
+			).put(
+				"dateLogged", "2020-11-30T03:36:48.077Z"
+			).put(
+				"id", "456886320875798205"
+			).put(
+				"naniteClassName", "ExperimentNanite"
+			).put(
+				"status", "INTERRUPTED"
+			),
+			_elasticsearchInvoker.get("run-logs", "456886320875798205"), true);
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
