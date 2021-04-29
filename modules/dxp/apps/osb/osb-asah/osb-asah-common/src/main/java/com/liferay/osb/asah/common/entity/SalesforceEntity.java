@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +45,10 @@ public class SalesforceEntity implements Persistable<String> {
 	public SalesforceEntity() {
 	}
 
+	public SalesforceEntity(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
+	}
+
 	public SalesforceEntity(
 		String id, Long dataSourceId, JSONObject fieldsJSONObject,
 		SalesforceEntity.Type type) {
@@ -52,6 +57,8 @@ public class SalesforceEntity implements Persistable<String> {
 		_dataSourceId = dataSourceId;
 		_fieldsJSONObject = fieldsJSONObject;
 		_type = type;
+
+		_isNew = Boolean.TRUE;
 	}
 
 	@Override
@@ -151,11 +158,6 @@ public class SalesforceEntity implements Persistable<String> {
 			return _value;
 		}
 
-		@Override
-		public String toString() {
-			return _value;
-		}
-
 		private Type(String value) {
 			_value = value;
 		}
@@ -182,7 +184,7 @@ public class SalesforceEntity implements Persistable<String> {
 	private String _id;
 
 	@Transient
-	private Boolean _isNew;
+	private Boolean _isNew = Boolean.FALSE;
 
 	@Transient
 	private Type _type;
