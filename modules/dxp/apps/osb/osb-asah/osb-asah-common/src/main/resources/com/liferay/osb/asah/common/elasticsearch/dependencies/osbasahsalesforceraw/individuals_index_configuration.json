@@ -2,6 +2,17 @@
 	"mappings": {
 		"individuals": {
 			"date_detection": false,
+			"dynamic_templates": [
+				{
+					"template_string_properties": {
+						"mapping": {
+							"type": "keyword"
+						},
+						"match": "*",
+						"match_mapping_type": "string"
+					}
+				}
+			],
 			"properties": {
 				"accountPKs": {
 					"type": "keyword"

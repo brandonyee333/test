@@ -23,6 +23,8 @@ import com.liferay.osb.asah.upgrade.v2_10_0.UserSessionsInteractionsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_11_0.EngagementsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_0.AsahMarkerUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_0.RunLogUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_13_0.SalesforceAuditEventUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_13_0.SalesforceUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -52,6 +54,10 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"2.11.0", "2.12.0", _asahMarkerUpgradeStep, _runLogUpgradeStep);
 
+		upgradeProcess.addUpgradeSteps(
+			"2.12.0", "2.13.0", _salesforceAuditEventUpgradeStep,
+			_salesforceUpgradeStep);
+
 		return upgradeProcess;
 	}
 
@@ -73,6 +79,12 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private RunLogUpgradeStep _runLogUpgradeStep;
+
+	@Autowired
+	private SalesforceAuditEventUpgradeStep _salesforceAuditEventUpgradeStep;
+
+	@Autowired
+	private SalesforceUpgradeStep _salesforceUpgradeStep;
 
 	@Autowired
 	private SnapshotsUpgradeStep _snapshotsUpgradeStep;

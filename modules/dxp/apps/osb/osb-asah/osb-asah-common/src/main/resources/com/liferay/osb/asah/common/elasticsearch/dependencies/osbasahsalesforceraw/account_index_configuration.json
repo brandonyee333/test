@@ -9,7 +9,7 @@
 							"type": "keyword"
 						},
 						"match": "*",
-						"match_mapping_type": "*"
+						"match_mapping_type": "string"
 					}
 				}
 			]
