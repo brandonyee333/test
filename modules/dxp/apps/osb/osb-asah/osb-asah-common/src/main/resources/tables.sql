@@ -315,6 +315,14 @@ CREATE TABLE IF NOT EXISTS SalesforceAuditEvent (
 	userId TEXT
 );
 
+CREATE TABLE IF NOT EXISTS SalesforceEntity (
+	id TEXT,
+	dataSourceId BIGINT,
+	fields JSON,
+	type TEXT,
+	PRIMARY KEY (dataSourceId, id, type)
+);
+
 CREATE TABLE IF NOT EXISTS Segment (
 	id BIGSERIAL PRIMARY KEY,
 	activeIndividualCount BIGINT,
