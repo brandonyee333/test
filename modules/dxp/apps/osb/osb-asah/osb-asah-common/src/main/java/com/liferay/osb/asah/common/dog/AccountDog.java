@@ -66,14 +66,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountDog {
 
-	public Account addAccount(JSONObject dataJSONObject, DataSource dataSource)
+	public Account addAccount(
+			String accountPK, JSONObject dataJSONObject, DataSource dataSource)
 		throws Exception {
 
 		Date date = new Date();
 
 		Account account = new Account();
 
-		account.setAccountPK(dataJSONObject.getString("id"));
+		account.setAccountPK(accountPK);
 		account.setCreateDate(date);
 		account.setDataSourceId(dataSource.getId());
 		account.setModifiedDate(date);
