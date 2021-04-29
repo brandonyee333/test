@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.salesforce.extractor.rest.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.salesforce.extractor.client.SalesforcePartnerClientInvoker;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationManagerImpl;
@@ -51,12 +54,16 @@ public class SalesforceUsersRestController extends BaseRestController {
 
 	@GetMapping("/fields")
 	public String getFields(
-		@RequestParam String dataSourceId,
+		@RequestParam Long dataSourceId,
 		@RequestParam(defaultValue = "20") int end,
 		@RequestParam(defaultValue = "0") int start) {
 
-		return getFields("individuals", dataSourceId, end, start);
+		return getFields(
+			dataSourceId, end, start, SalesforceEntity.Type.INDIVIDUAL);
 	}
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SalesforceExtractorConfigurationManagerImpl

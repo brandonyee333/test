@@ -38,7 +38,8 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 		String id, int end, int start) {
 
 		return new ResponseEntity<>(
-			_accountsRestController.getFields(id, end, start), HttpStatus.OK);
+			_accountsRestController.getFields(Long.valueOf(id), end, start),
+			HttpStatus.OK);
 	}
 
 	@Override
@@ -57,7 +58,8 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 		String id, int end, int start) {
 
 		return new ResponseEntity<>(
-			_salesforceUsersRestController.getFields(id, end, start),
+			_salesforceUsersRestController.getFields(
+				Long.valueOf(id), end, start),
 			HttpStatus.OK);
 	}
 

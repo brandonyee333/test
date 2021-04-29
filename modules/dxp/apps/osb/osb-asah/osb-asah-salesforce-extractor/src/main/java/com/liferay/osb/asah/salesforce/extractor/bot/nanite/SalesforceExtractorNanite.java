@@ -14,12 +14,17 @@
 
 package com.liferay.osb.asah.salesforce.extractor.bot.nanite;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
+import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ArrayUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -66,13 +71,11 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermQueryBuilder;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -95,10 +98,6 @@ public class SalesforceExtractorNanite implements Nanite {
 		else {
 			_tableNames = Arrays.copyOf(tableNames, tableNames.length);
 		}
-
-		_osbAsahDataSourceIdTermQueryBuilder = QueryBuilders.termQuery(
-			"osbAsahDataSourceId",
-			_salesforceExtractorConfiguration.getDataSourceId());
 	}
 
 	@Override
@@ -128,28 +127,28 @@ public class SalesforceExtractorNanite implements Nanite {
 	}
 
 	private void _addAuditEvent(
-		String eventType, JSONObject jsonObject, String recordId,
-		String typeName) {
+		String entityTypeName, JSONObject additionalInfoJSONObject,
+		String recordId, SalesforceAuditEvent.Type type) {
 
-		JSONObject auditEventJSONObject = JSONUtil.put(
-			"additionalInfo", jsonObject
-		).put(
-			"auditEventDate", DateUtil.newDateString()
-		).put(
-			"eventType", eventType
-		).put(
-			"osbAsahDataSourceId",
-			_salesforceExtractorConfiguration.getDataSourceId()
-		).put(
-			"recordId", recordId
-		).put(
-			"typeName", typeName
-		);
+		SalesforceAuditEvent salesforceAuditEvent = new SalesforceAuditEvent();
+
+		salesforceAuditEvent.setAdditionalInfoJSONObject(
+			additionalInfoJSONObject);
+		salesforceAuditEvent.setAuditEventDate(new Date());
+		salesforceAuditEvent.setDataSourceId(
+			Long.valueOf(_salesforceExtractorConfiguration.getDataSourceId()));
+		salesforceAuditEvent.setEntityTypeName(entityTypeName);
+		salesforceAuditEvent.setRecordId(recordId);
+		salesforceAuditEvent.setType(type);
 
 		try {
-			_elasticsearchInvoker.add("audit-events", auditEventJSONObject);
+			_salesforceAuditEventDog.addSalesforceAuditEvent(
+				salesforceAuditEvent);
 		}
 		catch (Exception e) {
+			JSONObject auditEventJSONObject = _objectMapper.convertValue(
+				salesforceAuditEvent, JSONObject.class);
+
 			_log.error(
 				String.format(
 					"%s: Unable to populate audit events with JSON %s",
@@ -249,31 +248,35 @@ public class SalesforceExtractorNanite implements Nanite {
 			String tableName = iterator.next();
 
 			if (!tableNamesSet.contains(tableName) &&
-				_elasticsearchInvoker.exists(
-					tableName, _osbAsahDataSourceIdTermQueryBuilder)) {
+				(_salesforceEntityDog.getSalesforceEntitiesCount(
+					Long.valueOf(
+						_salesforceExtractorConfiguration.getDataSourceId()),
+					SalesforceEntity.Type.of(tableName)) > 0)) {
 
 				while (true) {
-					JSONArray jsonArray = new JSONArray(
-						_elasticsearchInvoker.get(
-							tableName,
-							searchSourceBuilder -> {
-								searchSourceBuilder.query(
-									_osbAsahDataSourceIdTermQueryBuilder);
-								searchSourceBuilder.size(500);
-							}));
+					Page<SalesforceEntity> salesforceEntityPage =
+						_salesforceEntityDog.getSalesforceEntityPage(
+							Long.valueOf(
+								_salesforceExtractorConfiguration.
+									getDataSourceId()),
+							0, 500, SalesforceEntity.Type.of(tableName));
 
-					if (jsonArray.length() == 0) {
+					if (salesforceEntityPage.getNumberOfElements() == 0) {
 						break;
 					}
 
-					for (int i = 0; i < jsonArray.length(); i++) {
-						JSONObject jsonObject = jsonArray.getJSONObject(i);
+					for (SalesforceEntity salesforceEntity :
+							salesforceEntityPage.getContent()) {
 
-						_elasticsearchInvoker.delete(tableName, jsonObject);
+						_salesforceEntityDog.deleteSalesforceEntity(
+							salesforceEntity);
 
 						_addAuditEvent(
-							"DELETE", jsonObject, jsonObject.getString("id"),
-							tableName);
+							tableName,
+							_objectMapper.convertValue(
+								salesforceEntity, JSONObject.class),
+							salesforceEntity.getId(),
+							SalesforceAuditEvent.Type.DELETE);
 					}
 				}
 
@@ -460,8 +463,17 @@ public class SalesforceExtractorNanite implements Nanite {
 				describeSObjectResult,
 				(JSONArray jsonArray) -> {
 					try {
-						_elasticsearchInvoker.save(
-							describeSObjectResult.getName(), jsonArray);
+						_salesforceEntityDog.saveSalesforceEntities(
+							JSONUtil.toList(
+								jsonArray,
+								jsonObject -> new SalesforceEntity(
+									jsonObject.getString("id"),
+									Long.valueOf(
+										jsonObject.getString(
+											"osbAsahDataSourceId")),
+									jsonObject,
+									SalesforceEntity.Type.of(
+										describeSObjectResult.getName()))));
 					}
 					catch (Exception e) {
 						_log.error(
@@ -558,10 +570,13 @@ public class SalesforceExtractorNanite implements Nanite {
 							describeSObjectResult, exceptions,
 							_salesforceConfigurableBot::isStop,
 							_salesforceExtractorConfiguration.getDataSourceId(),
-							(JSONArray jsonArray) -> {
+							(List<SalesforceAuditEvent>
+								salesforceAuditEvents) -> {
+
 								try {
-									_elasticsearchInvoker.add(
-										"audit-events", jsonArray);
+									_salesforceAuditEventDog.
+										addSalesforceAuditEvents(
+											salesforceAuditEvents);
 								}
 								catch (Exception e) {
 									_log.error(
@@ -569,7 +584,9 @@ public class SalesforceExtractorNanite implements Nanite {
 											"%s: Unable to populate audit " +
 												"events with JSON %s",
 											ProjectIdThreadLocal.getProjectId(),
-											jsonArray),
+											_objectMapper.convertValue(
+												salesforceAuditEvents,
+												JSONArray.class)),
 										e);
 
 									return e;
@@ -756,8 +773,17 @@ public class SalesforceExtractorNanite implements Nanite {
 					describeSObjectResult,
 					(JSONArray jsonArray) -> {
 						try {
-							_elasticsearchInvoker.save(
-								describeSObjectResult.getName(), jsonArray);
+							_salesforceEntityDog.saveSalesforceEntities(
+								JSONUtil.toList(
+									jsonArray,
+									jsonObject -> new SalesforceEntity(
+										jsonObject.getString("id"),
+										Long.valueOf(
+											jsonObject.getString(
+												"osbAsahDataSourceId")),
+										jsonObject,
+										SalesforceEntity.Type.of(
+											describeSObjectResult.getName()))));
 						}
 						catch (Exception e) {
 							_log.error(
@@ -826,16 +852,22 @@ public class SalesforceExtractorNanite implements Nanite {
 		int deleteRecordsCount = 0;
 
 		for (DeletedRecord deletedRecord : deletedRecords) {
-			JSONObject deletedRecordJSONObject = _elasticsearchInvoker.fetch(
-				describeSObjectResult.getName(), deletedRecord.getId());
+			SalesforceEntity deletedSalesforceEntity =
+				_salesforceEntityDog.fetchSalesforceEntity(
+					Long.valueOf(
+						_salesforceExtractorConfiguration.getDataSourceId()),
+					deletedRecord.getId(),
+					SalesforceEntity.Type.of(describeSObjectResult.getName()));
 
-			if ((deletedRecordJSONObject != null) &&
-				_elasticsearchInvoker.delete(
-					describeSObjectResult.getName(), deletedRecord.getId())) {
+			if (deletedSalesforceEntity != null) {
+				_salesforceEntityDog.deleteSalesforceEntity(
+					deletedSalesforceEntity);
 
 				_addAuditEvent(
-					"DELETE", deletedRecordJSONObject, deletedRecord.getId(),
-					describeSObjectResult.getName());
+					describeSObjectResult.getName(),
+					_objectMapper.convertValue(
+						deletedSalesforceEntity, JSONObject.class),
+					deletedRecord.getId(), SalesforceAuditEvent.Type.DELETE);
 
 				deleteRecordsCount++;
 			}
@@ -904,19 +936,23 @@ public class SalesforceExtractorNanite implements Nanite {
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	private final TermQueryBuilder _osbAsahDataSourceIdTermQueryBuilder;
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private RunLogDog _runLogDog;
+
+	@Autowired
+	private SalesforceAuditEventDog _salesforceAuditEventDog;
 
 	@Autowired
 	private SalesforceBulkClientInvoker _salesforceBulkClientInvoker;
 
 	@Autowired
 	private SalesforceConfigurableBot _salesforceConfigurableBot;
+
+	@Autowired
+	private SalesforceEntityDog _salesforceEntityDog;
 
 	private final SalesforceExtractorConfiguration
 		_salesforceExtractorConfiguration;

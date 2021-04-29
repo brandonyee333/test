@@ -14,35 +14,28 @@
 
 package com.liferay.osb.asah.salesforce.extractor.bot.nanite;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
+import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
+import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
 import com.liferay.osb.asah.salesforce.extractor.util.TimeUtil;
 
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermQueryBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregation;
-import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.composite.TermsValuesSourceBuilder;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -60,28 +53,25 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 
 		_salesforceExtractorConfiguration = salesforceExtractorConfiguration;
 
-		_osbAsahDataSourceIdTermQueryBuilder = QueryBuilders.termQuery(
-			"osbAsahDataSourceId",
-			_salesforceExtractorConfiguration.getDataSourceId());
+		_dataSourceId = Long.valueOf(
+			salesforceExtractorConfiguration.getDataSourceId());
 	}
 
 	@Override
 	public void run() throws Exception {
 		_runLogDog.log(
-			Long.valueOf(_salesforceExtractorConfiguration.getDataSourceId()),
-			this, "STARTED", WeDeployDataService.OSB_ASAH_SALESFORCE_RAW,
-			"totalOperations",
-			_elasticsearchInvoker.count(
-				"audit-events",
-				QueryBuilders.termsQuery("typeName", "Lead", "Contact")));
+			_dataSourceId, this, "STARTED",
+			WeDeployDataService.OSB_ASAH_SALESFORCE_RAW, "totalOperations",
+			_salesforceAuditEventDog.getSalesforceAuditEventsCount(
+				_dataSourceId, SalesforceEntity.Type.LEAD.toString(),
+				SalesforceEntity.Type.CONTACT.toString()));
 
 		try {
 			_run();
 
 			_runLogDog.log(
-				Long.valueOf(
-					_salesforceExtractorConfiguration.getDataSourceId()),
-				this, "COMPLETED", WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+				_dataSourceId, this, "COMPLETED",
+				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 
 			_asahTaskDog.scheduleAsahTask(
 				"SalesforceIndividualsNanite",
@@ -94,37 +84,36 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		}
 		catch (Exception e) {
 			_runLogDog.log(
-				Long.valueOf(
-					_salesforceExtractorConfiguration.getDataSourceId()),
-				this, "FAILED", WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+				_dataSourceId, this, "FAILED",
+				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 
 			throw e;
 		}
 	}
 
 	private void _addAuditEvent(
-		String eventType, JSONObject jsonObject, String recordId,
-		String typeName) {
+		JSONObject additionalInfoJSONObject, String recordId,
+		SalesforceAuditEvent.Type salesforceAuditEventType,
+		SalesforceEntity.Type salesforceEntityType) {
 
-		JSONObject auditEventJSONObject = JSONUtil.put(
-			"additionalInfo", jsonObject
-		).put(
-			"dateCreated", DateUtil.newDateString()
-		).put(
-			"eventType", eventType
-		).put(
-			"osbAsahDataSourceId",
-			_salesforceExtractorConfiguration.getDataSourceId()
-		).put(
-			"recordId", recordId
-		).put(
-			"typeName", typeName
-		);
+		SalesforceAuditEvent salesforceAuditEvent = new SalesforceAuditEvent();
+
+		salesforceAuditEvent.setAdditionalInfoJSONObject(
+			additionalInfoJSONObject);
+		salesforceAuditEvent.setAuditEventDate(new Date());
+		salesforceAuditEvent.setDataSourceId(_dataSourceId);
+		salesforceAuditEvent.setEntityTypeName(salesforceEntityType.toString());
+		salesforceAuditEvent.setRecordId(recordId);
+		salesforceAuditEvent.setType(salesforceAuditEventType);
 
 		try {
-			_elasticsearchInvoker.add("audit-events", auditEventJSONObject);
+			_salesforceAuditEventDog.addSalesforceAuditEvent(
+				salesforceAuditEvent);
 		}
 		catch (Exception e) {
+			JSONObject auditEventJSONObject = _objectMapper.convertValue(
+				salesforceAuditEvent, JSONObject.class);
+
 			_log.error(
 				String.format(
 					"%s: Unable to add audit event with JSON %s",
@@ -134,7 +123,94 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		}
 	}
 
-	private JSONObject _buildIndividualJSONObject(
+	private SalesforceEntity _buildIndividualSalesforceEntity(
+		String id, JSONObject jsonObject, SalesforceEntity.Type type) {
+
+		JSONObject salesforceIndividualFieldsJSONObject = null;
+
+		if (type == SalesforceEntity.Type.CONTACT) {
+			String accountId = jsonObject.optString("AccountId", null);
+
+			String salesforceAccountName = null;
+
+			if (accountId != null) {
+				SalesforceEntity salesforceAccountEntity =
+					_saleforceEntityDog.getSalesforceEntity(
+						_dataSourceId, accountId,
+						SalesforceEntity.Type.ACCOUNT);
+
+				JSONObject salesforceAccountFieldsJSONObject =
+					salesforceAccountEntity.getFieldsJSONObject();
+
+				salesforceAccountName =
+					salesforceAccountFieldsJSONObject.optString("Name", null);
+			}
+
+			String emailAddress = jsonObject.optString("Email", null);
+
+			String birthDateString = jsonObject.optString("Birthdate", null);
+
+			if (NumberUtils.isCreatable(birthDateString) &&
+				(Long.parseLong(birthDateString) < 0)) {
+
+				birthDateString = DateUtil.toString(birthDateString);
+			}
+
+			salesforceIndividualFieldsJSONObject =
+				_buildSalesforceIndividualFieldsJSONObject(
+					_getAccountPKsJSONArray(accountId, emailAddress),
+					birthDateString, jsonObject.optString("MailingCity", null),
+					salesforceAccountName, id,
+					jsonObject.optString("MailingCountry", null),
+					jsonObject.optString("CurrencyIsoCode", null),
+					jsonObject.optString("Department", null),
+					jsonObject.optString("Description", null),
+					jsonObject.optString("DoNotCall", null), emailAddress,
+					jsonObject.optString("Fax", null),
+					jsonObject.optString("FirstName", null),
+					jsonObject.optString("Name", null), null,
+					jsonObject.optString("LastName", null), null,
+					jsonObject.optString("MiddleName", null),
+					jsonObject.optString("MobilePhone", null),
+					jsonObject.optString("Phone", null),
+					jsonObject.optString("MailingPostalCode", null),
+					jsonObject.optString("Salutation", null),
+					jsonObject.optString("MailingState", null),
+					jsonObject.optString("MailingStreet", null),
+					jsonObject.optString("Suffix", null),
+					jsonObject.optString("Title", null));
+		}
+		else if (type == SalesforceEntity.Type.LEAD) {
+			salesforceIndividualFieldsJSONObject =
+				_buildSalesforceIndividualFieldsJSONObject(
+					null, null, jsonObject.optString("City", null),
+					jsonObject.optString("Company", null), null,
+					jsonObject.optString("Country", null),
+					jsonObject.optString("CurrencyIsoCode", null), null,
+					jsonObject.optString("Description", null), null,
+					jsonObject.optString("Email", null),
+					jsonObject.optString("Fax", null),
+					jsonObject.optString("FirstName", null),
+					jsonObject.optString("Name", null),
+					jsonObject.optString("Industry", null),
+					jsonObject.optString("LastName", null), id,
+					jsonObject.optString("MiddleName", null),
+					jsonObject.optString("MobilePhone", null),
+					jsonObject.optString("Phone", null),
+					jsonObject.optString("PostalCode", null),
+					jsonObject.optString("Salutation", null),
+					jsonObject.optString("State", null),
+					jsonObject.optString("Street", null),
+					jsonObject.optString("Suffix", null),
+					jsonObject.optString("Title", null));
+		}
+
+		return new SalesforceEntity(
+			id, _dataSourceId, salesforceIndividualFieldsJSONObject,
+			SalesforceEntity.Type.INDIVIDUAL);
+	}
+
+	private JSONObject _buildSalesforceIndividualFieldsJSONObject(
 		JSONArray accountPKsJSONArray, String birthDateString, String city,
 		String company, String contactId, String country,
 		String currencyIsoCode, String department, String description,
@@ -199,88 +275,6 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		);
 	}
 
-	private JSONObject _buildIndividualJSONObject(
-		JSONObject jsonObject, String typeName) {
-
-		JSONObject individualJSONObject = new JSONObject();
-
-		if (typeName.equals("Contact")) {
-			String accountId = jsonObject.optString("AccountId", null);
-
-			JSONObject accountJSONObject = new JSONObject();
-
-			if (accountId != null) {
-				accountJSONObject = _elasticsearchInvoker.get(
-					"Account", accountId);
-			}
-
-			String emailAddress = jsonObject.optString("Email", null);
-
-			String birthDateString = jsonObject.optString("Birthdate", null);
-
-			if (NumberUtils.isCreatable(birthDateString) &&
-				(Long.parseLong(birthDateString) < 0)) {
-
-				birthDateString = DateUtil.toString(birthDateString);
-			}
-
-			individualJSONObject = _buildIndividualJSONObject(
-				_getAccountPKsJSONArray(accountId, emailAddress),
-				birthDateString, jsonObject.optString("MailingCity", null),
-				accountJSONObject.optString("Name", null),
-				jsonObject.getString("id"),
-				jsonObject.optString("MailingCountry", null),
-				jsonObject.optString("CurrencyIsoCode", null),
-				jsonObject.optString("Department", null),
-				jsonObject.optString("Description", null),
-				jsonObject.optString("DoNotCall", null), emailAddress,
-				jsonObject.optString("Fax", null),
-				jsonObject.optString("FirstName", null),
-				jsonObject.optString("Name", null), null,
-				jsonObject.optString("LastName", null), null,
-				jsonObject.optString("MiddleName", null),
-				jsonObject.optString("MobilePhone", null),
-				jsonObject.optString("Phone", null),
-				jsonObject.optString("MailingPostalCode", null),
-				jsonObject.optString("Salutation", null),
-				jsonObject.optString("MailingState", null),
-				jsonObject.optString("MailingStreet", null),
-				jsonObject.optString("Suffix", null),
-				jsonObject.optString("Title", null));
-		}
-		else if (typeName.equals("Lead")) {
-			individualJSONObject = _buildIndividualJSONObject(
-				null, null, jsonObject.optString("City", null),
-				jsonObject.optString("Company", null), null,
-				jsonObject.optString("Country", null),
-				jsonObject.optString("CurrencyIsoCode", null), null,
-				jsonObject.optString("Description", null), null,
-				jsonObject.optString("Email", null),
-				jsonObject.optString("Fax", null),
-				jsonObject.optString("FirstName", null),
-				jsonObject.optString("Name", null),
-				jsonObject.optString("Industry", null),
-				jsonObject.optString("LastName", null),
-				jsonObject.getString("id"),
-				jsonObject.optString("MiddleName", null),
-				jsonObject.optString("MobilePhone", null),
-				jsonObject.optString("Phone", null),
-				jsonObject.optString("PostalCode", null),
-				jsonObject.optString("Salutation", null),
-				jsonObject.optString("State", null),
-				jsonObject.optString("Street", null),
-				jsonObject.optString("Suffix", null),
-				jsonObject.optString("Title", null));
-		}
-
-		individualJSONObject.put("modifiedDate", DateUtil.newDateString());
-		individualJSONObject.put(
-			"osbAsahDataSourceId",
-			_salesforceExtractorConfiguration.getDataSourceId());
-
-		return individualJSONObject;
-	}
-
 	private JSONArray _getAccountPKsJSONArray(
 		String accountId, String emailAddress) {
 
@@ -292,218 +286,212 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			return JSONUtil.put(accountId);
 		}
 
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
+		List<String> accountPKs =
+			_saleforceEntityDog.getSalesforceEntityFieldValuesGroupByField(
+				_dataSourceId, "Email", emailAddress, "AccountId",
+				SalesforceEntity.Type.CONTACT);
 
-		TermsValuesSourceBuilder termsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("accountPKs");
-
-		termsValuesSourceBuilder.field("AccountId");
-
-		CompositeAggregationBuilder compositeAggregationBuilder =
-			AggregationBuilders.composite(
-				"composite", Collections.singletonList(termsValuesSourceBuilder)
-			).size(
-				10000
-			);
-
-		searchSourceBuilder.aggregation(compositeAggregationBuilder);
-
-		searchSourceBuilder.query(
-			BoolQueryBuilderUtil.filter(
-				_osbAsahDataSourceIdTermQueryBuilder
-			).filter(
-				QueryBuilders.termQuery("Email", emailAddress)
-			));
-
-		searchSourceBuilder.size(0);
-
-		JSONArray jsonArray = new JSONArray();
-
-		while (true) {
-			SearchResponse searchResponse = _elasticsearchInvoker.search(
-				"Contact", searchSourceBuilder);
-
-			Aggregations aggregations = searchResponse.getAggregations();
-
-			CompositeAggregation compositeAggregation = aggregations.get(
-				"composite");
-
-			List<? extends CompositeAggregation.Bucket> buckets =
-				compositeAggregation.getBuckets();
-
-			if (buckets.isEmpty()) {
-				break;
-			}
-
-			for (CompositeAggregation.Bucket bucket : buckets) {
-				Map<String, Object> keys = bucket.getKey();
-
-				jsonArray.put(keys.get("accountPKs"));
-			}
-
-			compositeAggregationBuilder.aggregateAfter(
-				compositeAggregation.afterKey());
-		}
-
-		return jsonArray;
+		return new JSONArray(accountPKs);
 	}
 
-	private JSONObject _mergeContactsAndLeads(String emailAddress) {
-		JSONObject individualJSONObject = null;
+	private SalesforceEntity _mergeContactsAndLeads(String emailAddress) {
+		SalesforceEntity individualSalesforceEntity = null;
 
-		JSONArray contactsJSONArray = _elasticsearchInvoker.get(
-			"Contact",
-			BoolQueryBuilderUtil.filter(
-				_osbAsahDataSourceIdTermQueryBuilder
-			).filter(
-				QueryBuilders.termQuery("Email", emailAddress)
-			));
+		List<SalesforceEntity> contactSalesforceEntities =
+			_saleforceEntityDog.getSalesforceEntities(
+				_dataSourceId, "Email", emailAddress,
+				SalesforceEntity.Type.CONTACT);
 
-		JSONArray leadsJSONArray = _elasticsearchInvoker.get(
-			"Lead",
-			BoolQueryBuilderUtil.filter(
-				_osbAsahDataSourceIdTermQueryBuilder
-			).filter(
-				QueryBuilders.termQuery("Email", emailAddress)
-			));
+		for (SalesforceEntity contactSalesforceEntity :
+				contactSalesforceEntities) {
 
-		for (int i = 0; i < contactsJSONArray.length(); i++) {
-			JSONObject contactJSONObject = contactsJSONArray.getJSONObject(i);
-
-			individualJSONObject = JSONUtil.merge(
-				individualJSONObject,
-				_buildIndividualJSONObject(contactJSONObject, "Contact"));
+			individualSalesforceEntity = _mergeIndividualSalesforceEntity(
+				individualSalesforceEntity,
+				_buildIndividualSalesforceEntity(
+					contactSalesforceEntity.getId(),
+					contactSalesforceEntity.getFieldsJSONObject(),
+					contactSalesforceEntity.getType()));
 		}
 
-		for (int i = 0; i < leadsJSONArray.length(); i++) {
-			JSONObject leadJSONObject = leadsJSONArray.getJSONObject(i);
+		List<SalesforceEntity> leadSalesforceEntities =
+			_saleforceEntityDog.getSalesforceEntities(
+				_dataSourceId, "Email", emailAddress,
+				SalesforceEntity.Type.LEAD);
 
-			individualJSONObject = JSONUtil.merge(
-				_buildIndividualJSONObject(leadJSONObject, "Lead"),
-				individualJSONObject);
+		for (SalesforceEntity leadSalesforceEntity : leadSalesforceEntities) {
+			individualSalesforceEntity = _mergeIndividualSalesforceEntity(
+				_buildIndividualSalesforceEntity(
+					leadSalesforceEntity.getId(),
+					leadSalesforceEntity.getFieldsJSONObject(),
+					leadSalesforceEntity.getType()),
+				individualSalesforceEntity);
 		}
 
-		return individualJSONObject;
+		return individualSalesforceEntity;
 	}
 
-	private void _process(JSONObject auditEventJSONObject) {
+	private SalesforceEntity _mergeIndividualSalesforceEntity(
+		SalesforceEntity salesforceEntity1,
+		SalesforceEntity salesforceEntity2) {
+
+		if (salesforceEntity1 == null) {
+			return new SalesforceEntity(
+				salesforceEntity2.getId(), salesforceEntity2.getDataSourceId(),
+				salesforceEntity2.getFieldsJSONObject(),
+				salesforceEntity2.getType());
+		}
+
+		if (salesforceEntity2 == null) {
+			return new SalesforceEntity(
+				salesforceEntity1.getId(), salesforceEntity1.getDataSourceId(),
+				salesforceEntity1.getFieldsJSONObject(),
+				salesforceEntity1.getType());
+		}
+
+		return new SalesforceEntity(
+			salesforceEntity2.getId(), salesforceEntity2.getDataSourceId(),
+			JSONUtil.merge(
+				salesforceEntity1.getFieldsJSONObject(),
+				salesforceEntity2.getFieldsJSONObject()),
+			salesforceEntity2.getType());
+	}
+
+	private void _process(SalesforceAuditEvent salesforceAuditEvent) {
 		JSONObject additionalInfoJSONObject =
-			auditEventJSONObject.getJSONObject("additionalInfo");
+			salesforceAuditEvent.getAdditionalInfoJSONObject();
 
-		String emailAddress = additionalInfoJSONObject.optString("Email");
+		List<SalesforceEntity> individualSalesforceEntities =
+			_saleforceEntityDog.getSalesforceEntities(
+				_dataSourceId, "email",
+				additionalInfoJSONObject.optString("Email"),
+				SalesforceEntity.Type.INDIVIDUAL);
 
-		JSONObject oldIndividualJSONObject = _elasticsearchInvoker.fetch(
-			"individuals",
-			BoolQueryBuilderUtil.filter(
-				_osbAsahDataSourceIdTermQueryBuilder
-			).filter(
-				QueryBuilders.termQuery("email", emailAddress)
-			));
+		SalesforceEntity oldIndividualSalesforceEntity = null;
 
-		JSONObject newIndividualJSONObject = null;
+		if (individualSalesforceEntities.size() == 1) {
+			oldIndividualSalesforceEntity = individualSalesforceEntities.get(0);
+		}
 
-		if (!Objects.equals(
-				auditEventJSONObject.getString("eventType"), "DELETE")) {
+		SalesforceEntity newIndividualSalesforceEntity = null;
 
-			String typeName = auditEventJSONObject.getString("typeName");
+		if (salesforceAuditEvent.getType() !=
+				SalesforceAuditEvent.Type.DELETE) {
 
-			JSONObject individualJSONObject = _buildIndividualJSONObject(
-				_elasticsearchInvoker.get(
-					typeName, auditEventJSONObject.getString("recordId")),
-				typeName);
+			SalesforceEntity.Type salesforceEntityType =
+				SalesforceEntity.Type.valueOf(
+					salesforceAuditEvent.getEntityTypeName());
 
-			if (oldIndividualJSONObject == null) {
-				newIndividualJSONObject = individualJSONObject;
+			SalesforceEntity salesforceEntity =
+				_saleforceEntityDog.getSalesforceEntity(
+					salesforceAuditEvent.getDataSourceId(),
+					salesforceAuditEvent.getRecordId(), salesforceEntityType);
+
+			SalesforceEntity individualSalesforceEntity =
+				_buildIndividualSalesforceEntity(
+					salesforceEntity.getId(),
+					salesforceEntity.getFieldsJSONObject(),
+					salesforceEntityType);
+
+			if (oldIndividualSalesforceEntity == null) {
+				newIndividualSalesforceEntity = individualSalesforceEntity;
 			}
 			else {
-				if (typeName.equals("Contact")) {
-					newIndividualJSONObject = JSONUtil.merge(
-						oldIndividualJSONObject, individualJSONObject);
+				if (salesforceEntityType == SalesforceEntity.Type.CONTACT) {
+					newIndividualSalesforceEntity =
+						_mergeIndividualSalesforceEntity(
+							oldIndividualSalesforceEntity,
+							individualSalesforceEntity);
 				}
-				else if (typeName.equals("Lead")) {
-					newIndividualJSONObject = JSONUtil.merge(
-						individualJSONObject, oldIndividualJSONObject);
+				else if (salesforceEntityType == SalesforceEntity.Type.LEAD) {
+					newIndividualSalesforceEntity =
+						_mergeIndividualSalesforceEntity(
+							individualSalesforceEntity,
+							oldIndividualSalesforceEntity);
 				}
 			}
 		}
-		else if (oldIndividualJSONObject != null) {
-			newIndividualJSONObject = _mergeContactsAndLeads(emailAddress);
+		else if (oldIndividualSalesforceEntity != null) {
+			newIndividualSalesforceEntity = _mergeContactsAndLeads(
+				additionalInfoJSONObject.optString("Email"));
 
-			if (newIndividualJSONObject == null) {
-				_elasticsearchInvoker.delete(
-					"individuals", oldIndividualJSONObject);
+			if (newIndividualSalesforceEntity == null) {
+				_saleforceEntityDog.deleteSalesforceEntity(
+					oldIndividualSalesforceEntity);
 
 				_addAuditEvent(
-					"DELETE", oldIndividualJSONObject,
-					oldIndividualJSONObject.getString("id"), "individuals");
+					oldIndividualSalesforceEntity.getFieldsJSONObject(),
+					oldIndividualSalesforceEntity.getId(),
+					SalesforceAuditEvent.Type.DELETE,
+					SalesforceEntity.Type.INDIVIDUAL);
 			}
 		}
 
-		if ((newIndividualJSONObject != null) &&
-			(oldIndividualJSONObject != null)) {
+		if ((newIndividualSalesforceEntity != null) &&
+			(oldIndividualSalesforceEntity != null)) {
 
-			newIndividualJSONObject.put(
-				"id", oldIndividualJSONObject.getString("id"));
+			newIndividualSalesforceEntity.setId(
+				oldIndividualSalesforceEntity.getId());
 		}
 
-		if (newIndividualJSONObject != null) {
-			JSONObject jsonObject = _elasticsearchInvoker.save(
-				"individuals", newIndividualJSONObject);
+		if (newIndividualSalesforceEntity != null) {
+			SalesforceEntity salesforceIndividual =
+				_saleforceEntityDog.saveSalesforceEntity(
+					newIndividualSalesforceEntity);
 
 			_addAuditEvent(
-				"UPDATE", jsonObject, jsonObject.getString("id"),
-				"individuals");
+				salesforceIndividual.getFieldsJSONObject(),
+				salesforceIndividual.getId(), SalesforceAuditEvent.Type.UPDATE,
+				SalesforceEntity.Type.INDIVIDUAL);
 		}
 
-		_elasticsearchInvoker.delete("audit-events", auditEventJSONObject);
+		_salesforceAuditEventDog.deleteSalesforceAuditEvent(
+			salesforceAuditEvent);
 	}
 
 	private void _run() {
-		for (String typeName : new String[] {"Lead", "Contact"}) {
+		for (String entityTypeName :
+				new String[] {
+					SalesforceEntity.Type.LEAD.toString(),
+					SalesforceEntity.Type.CONTACT.toString()
+				}) {
+
 			long time = System.currentTimeMillis();
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					String.format(
 						"%s: Curate %s", ProjectIdThreadLocal.getProjectId(),
-						typeName));
+						entityTypeName));
 			}
+
+			int page = 0;
 
 			int processedCount = 0;
 
 			while (true) {
-				JSONArray jsonArray = new JSONArray(
-					_elasticsearchInvoker.get(
-						"audit-events",
-						searchSourceBuilder -> {
-							searchSourceBuilder.query(
-								BoolQueryBuilderUtil.filter(
-									_osbAsahDataSourceIdTermQueryBuilder
-								).filter(
-									QueryBuilders.termQuery(
-										"typeName", typeName)
-								));
-							searchSourceBuilder.size(500);
-							searchSourceBuilder.sort("id");
-						}));
+				List<SalesforceAuditEvent> salesforceAuditEvents =
+					_salesforceAuditEventDog.getSalesforceAuditEvents(
+						_dataSourceId, entityTypeName, page++, 500,
+						Sort.desc("id"));
 
-				if (jsonArray.length() == 0) {
+				if (salesforceAuditEvents.isEmpty()) {
 					break;
 				}
 
-				for (int i = 0; i < jsonArray.length(); i++) {
-					_process(jsonArray.getJSONObject(i));
+				for (SalesforceAuditEvent salesforceAuditEvent :
+						salesforceAuditEvents) {
+
+					_process(salesforceAuditEvent);
 				}
 
-				processedCount += jsonArray.length();
+				processedCount += salesforceAuditEvents.size();
 
 				if (_log.isInfoEnabled()) {
 					_log.info(
 						String.format(
 							"%s: Curated %s %s records",
 							ProjectIdThreadLocal.getProjectId(), processedCount,
-							typeName));
+							entityTypeName));
 				}
 			}
 
@@ -511,7 +499,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 				_log.info(
 					String.format(
 						"%s: Curated %s in %s",
-						ProjectIdThreadLocal.getProjectId(), typeName,
+						ProjectIdThreadLocal.getProjectId(), entityTypeName,
 						TimeUtil.format(time)));
 			}
 		}
@@ -523,13 +511,19 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	private final Long _dataSourceId;
 
-	private final TermQueryBuilder _osbAsahDataSourceIdTermQueryBuilder;
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private RunLogDog _runLogDog;
+
+	@Autowired
+	private SalesforceEntityDog _saleforceEntityDog;
+
+	@Autowired
+	private SalesforceAuditEventDog _salesforceAuditEventDog;
 
 	private final SalesforceExtractorConfiguration
 		_salesforceExtractorConfiguration;

@@ -14,8 +14,7 @@
 
 package com.liferay.osb.asah.salesforce.extractor.xml;
 
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
 import com.liferay.osb.asah.common.util.ArrayUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.salesforce.extractor.bot.exception.InterruptBotException;
@@ -26,6 +25,7 @@ import com.sforce.soap.partner.DescribeSObjectResult;
 import com.sforce.soap.partner.Field;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,13 +51,14 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 	public SalesforceBulkContentHandler(
 		DescribeSObjectResult describeSObjectResult, List<Exception> exceptions,
 		Supplier<Boolean> isStopSupplier, String osbAsahDataSourceId,
-		Function<JSONArray, Exception> saveAuditEventJSONArrayFunction,
+		Function<List<SalesforceAuditEvent>, Exception>
+			saveSalesforceAuditEventsFunction,
 		Function<JSONArray, Exception> saveJSONArrayFunction) {
 
 		_exceptions = exceptions;
 		_isStopSupplier = isStopSupplier;
 		_osbAsahDataSourceId = osbAsahDataSourceId;
-		_saveAuditEventJSONArrayFunction = saveAuditEventJSONArrayFunction;
+		_saveSalesforceAuditEventsFunction = saveSalesforceAuditEventsFunction;
 		_saveJSONArrayFunction = saveJSONArrayFunction;
 
 		_fields = SchemaUtil.getFields(describeSObjectResult);
@@ -90,8 +91,8 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 	public void endDocument() {
 		if (!_jsonObjects.isEmpty()) {
 			_addException(
-				_saveAuditEventJSONArrayFunction.apply(
-					new JSONArray(_auditEventJSONObjects)));
+				_saveSalesforceAuditEventsFunction.apply(
+					_salesforceAuditEvents));
 			_addException(
 				_saveJSONArrayFunction.apply(new JSONArray(_jsonObjects)));
 		}
@@ -157,31 +158,25 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 
 			jsonObject.put("osbAsahDataSourceId", _osbAsahDataSourceId);
 
-			_auditEventJSONObjects.add(
-				JSONUtil.put(
-					"additionalInfo", jsonObject
-				).put(
-					"auditEventDate", DateUtil.newDateString()
-				).put(
-					"eventType", "UPDATE"
-				).put(
-					"osbAsahDataSourceId", _osbAsahDataSourceId
-				).put(
-					"recordId", jsonObject.getString("id")
-				).put(
-					"typeName", _typeName
-				));
+			SalesforceAuditEvent salesforceAuditEvent =
+				new SalesforceAuditEvent();
+
+			salesforceAuditEvent.setAdditionalInfoJSONObject(jsonObject);
+			salesforceAuditEvent.setAuditEventDate(new Date());
+			salesforceAuditEvent.setDataSourceId(
+				Long.valueOf(_osbAsahDataSourceId));
+			salesforceAuditEvent.setEntityTypeName(_typeName);
+			salesforceAuditEvent.setRecordId(jsonObject.getString("id"));
+			salesforceAuditEvent.setType(SalesforceAuditEvent.Type.UPDATE);
+
+			_salesforceAuditEvents.add(salesforceAuditEvent);
 
 			_jsonObjects.add(jsonObject);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (InterruptBotException ibe) {
+			_log.error(ibe, ibe);
 
-			if (e instanceof InterruptBotException) {
-				throw new InterruptBotException();
-			}
-
-			throw new RuntimeException(e);
+			throw ibe;
 		}
 		finally {
 			_count++;
@@ -190,10 +185,10 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 
 			if ((_count % _DELTA) == 0) {
 				_addException(
-					_saveAuditEventJSONArrayFunction.apply(
-						new JSONArray(_auditEventJSONObjects)));
+					_saveSalesforceAuditEventsFunction.apply(
+						_salesforceAuditEvents));
 
-				_auditEventJSONObjects.clear();
+				_salesforceAuditEvents.clear();
 
 				_addException(
 					_saveJSONArrayFunction.apply(new JSONArray(_jsonObjects)));
@@ -241,7 +236,6 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 	private static final Log _log = LogFactory.getLog(
 		SalesforceBulkContentHandler.class);
 
-	private final List<JSONObject> _auditEventJSONObjects = new ArrayList<>();
 	private int _count;
 	private final List<Exception> _exceptions;
 	private final Map<String, Field> _fields;
@@ -251,9 +245,11 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 	private final Map<String, char[]> _recordFieldChars = new HashMap<>();
 	private String _recordFieldName;
 	private String _recordType;
-	private final Function<JSONArray, Exception>
-		_saveAuditEventJSONArrayFunction;
+	private final List<SalesforceAuditEvent> _salesforceAuditEvents =
+		new ArrayList<>();
 	private final Function<JSONArray, Exception> _saveJSONArrayFunction;
+	private final Function<List<SalesforceAuditEvent>, Exception>
+		_saveSalesforceAuditEventsFunction;
 	private final String _typeName;
 
 }

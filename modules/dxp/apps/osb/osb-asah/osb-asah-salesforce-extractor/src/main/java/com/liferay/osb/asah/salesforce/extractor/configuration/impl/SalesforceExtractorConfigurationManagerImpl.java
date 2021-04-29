@@ -17,12 +17,10 @@ package com.liferay.osb.asah.salesforce.extractor.configuration.impl;
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceBotRunnable;
 import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceConfigurableBot;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
@@ -417,9 +415,6 @@ public class SalesforceExtractorConfigurationManagerImpl
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private ProjectDog _projectDog;

@@ -20,13 +20,11 @@ import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.Nanite;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorIndividualsNanite;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorNanite;
@@ -191,8 +189,8 @@ public class SalesforceConfigurableBot {
 			SalesforceBotRunnable salesforceBotRunnable =
 				new SalesforceBotRunnable(
 					_asahMarkerDog,
-					_salesforceExtractorConfigurationManagerImpl,
-					_salesforceRawElasticsearchInvoker, project, this);
+					_salesforceExtractorConfigurationManagerImpl, project,
+					this);
 
 			_salesforceBotRunnables.put(project, salesforceBotRunnable);
 			_scheduledProjects.put(
@@ -241,9 +239,6 @@ public class SalesforceConfigurableBot {
 	@Autowired
 	private DataSourceDog _dataSourceDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
 	@Autowired
 	private ObjectMapper _objectMapper;
 
@@ -256,9 +251,6 @@ public class SalesforceConfigurableBot {
 	@Autowired
 	private SalesforceExtractorConfigurationManagerImpl
 		_salesforceExtractorConfigurationManagerImpl;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 	private final ScheduledExecutorService _scheduledExecutorService =
 		Executors.newScheduledThreadPool(1);

@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.salesforce.extractor.rest.controller;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
+import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,10 +26,10 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Rachael Koestartyo
@@ -37,27 +37,30 @@ import org.json.JSONObject;
 public class BaseRestController {
 
 	protected String getFields(
-		String collectionName, String dataSourceId, int end, int start) {
+		Long dataSourceId, int end, int start,
+		SalesforceEntity.Type salesforceEntityType) {
 
 		JSONArray fieldsJSONArray = new JSONArray();
 
+		int size = end - start;
+
+		for (SalesforceEntity salesforceEntity :
+				_salesforceEntityDog.getSalesforceEntities(
+					dataSourceId, start / size, size, salesforceEntityType)) {
+
+			fieldsJSONArray.put(salesforceEntity.getFieldsJSONObject());
+		}
+
+		return _getFields(fieldsJSONArray);
+	}
+
+	private String _getFields(JSONArray fieldsJSONArray) {
 		Map<String, Set<String>> fieldValuesMap = new HashMap<>();
 
-		JSONArray jsonArray = new JSONArray(
-			_elasticsearchInvoker.get(
-				collectionName,
-				searchSourceBuilder -> {
-					searchSourceBuilder.from(start);
-					searchSourceBuilder.query(
-						QueryBuilders.termQuery(
-							"osbAsahDataSourceId", dataSourceId));
-					searchSourceBuilder.size(end - start);
-				}));
+		for (int i = 0; i < fieldsJSONArray.length(); i++) {
+			JSONObject fieldsJSONObject = fieldsJSONArray.getJSONObject(i);
 
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject userJSONObject = jsonArray.getJSONObject(i);
-
-			Iterator<String> keys = userJSONObject.keys();
+			Iterator<String> keys = fieldsJSONObject.keys();
 
 			while (keys.hasNext()) {
 				Set<String> values = null;
@@ -73,7 +76,7 @@ public class BaseRestController {
 					fieldValuesMap.put(key, values);
 				}
 
-				String value = String.valueOf(userJSONObject.get(key));
+				String value = String.valueOf(fieldsJSONObject.get(key));
 
 				if (!StringUtils.isBlank(value)) {
 					values.add(value);
@@ -81,8 +84,10 @@ public class BaseRestController {
 			}
 		}
 
+		JSONArray jsonArray = new JSONArray();
+
 		for (Map.Entry<String, Set<String>> entry : fieldValuesMap.entrySet()) {
-			fieldsJSONArray.put(
+			jsonArray.put(
 				JSONUtil.put(
 					"name", entry.getKey()
 				).put(
@@ -90,10 +95,10 @@ public class BaseRestController {
 				));
 		}
 
-		return fieldsJSONArray.toString();
+		return jsonArray.toString();
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	@Autowired
+	private SalesforceEntityDog _salesforceEntityDog;
 
 }

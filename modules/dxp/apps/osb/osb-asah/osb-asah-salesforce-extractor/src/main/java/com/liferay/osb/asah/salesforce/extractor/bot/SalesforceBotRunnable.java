@@ -17,7 +17,6 @@ package com.liferay.osb.asah.salesforce.extractor.bot;
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -38,15 +37,12 @@ public class SalesforceBotRunnable implements Runnable {
 
 	public SalesforceBotRunnable(
 		AsahMarkerDog asahMarkerDog, ConfigurationManager configurationManager,
-		ElasticsearchInvoker elasticsearchInvoker, Project project,
-		SalesforceConfigurableBot salesforceConfigurableBot) {
+		Project project, SalesforceConfigurableBot salesforceConfigurableBot) {
 
 		_asahMarkerDog = asahMarkerDog;
 		_configurationManager = configurationManager;
 		_project = project;
 		_salesforceConfigurableBot = salesforceConfigurableBot;
-
-		_salesforceRawElasticsearchInvoker = elasticsearchInvoker;
 	}
 
 	public boolean isStop() {
@@ -172,7 +168,6 @@ public class SalesforceBotRunnable implements Runnable {
 	private final Project _project;
 	private boolean _running;
 	private final SalesforceConfigurableBot _salesforceConfigurableBot;
-	private final ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 	private String _staleDataSourceId;
 	private boolean _stop;
 
