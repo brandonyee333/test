@@ -25,7 +25,10 @@ import java.util.List;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.json.JSONArray;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -78,12 +81,21 @@ public class ElasticsearchCSVIndividualRepositoryImpl
 	}
 
 	@Override
-	public List<CSVIndividual> findByDataSourceId(Long dataSourceId) {
+	public List<CSVIndividual> findByDataSourceId(
+		Long dataSourceId, Pageable pageable) {
+
 		return toList(
-			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
-				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId))));
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							QueryBuilders.termQuery(
+								"dataSourceId", String.valueOf(dataSourceId)));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
 	}
 
 	@Override

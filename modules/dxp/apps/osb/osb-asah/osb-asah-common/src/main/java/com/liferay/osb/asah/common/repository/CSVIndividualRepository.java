@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.CSVIndividual;
 import java.util.List;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -42,7 +43,8 @@ public interface CSVIndividualRepository
 	public void deleteByDataSourceIdAndDataSourceIndividualPKIn(
 		Long dataSourceId, List<String> dataSourceIndividualPKs);
 
-	public List<CSVIndividual> findByDataSourceId(Long dataSourceId);
+	public List<CSVIndividual> findByDataSourceId(
+		Long dataSourceId, Pageable pageable);
 
 	public List<CSVIndividual> findByDataSourceIdAndFieldKeyEquals(
 		Long dataSourceId, String fieldKey, String fieldValue);

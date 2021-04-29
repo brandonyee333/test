@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.CSVIndividual;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
 
 import java.util.List;
@@ -24,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -81,8 +83,11 @@ public class CSVIndividualDog {
 		return csvIndividuals.get(0);
 	}
 
-	public List<CSVIndividual> getCSVIndividuals(Long dataSourceId) {
-		return _csvIndividualRepository.findByDataSourceId(dataSourceId);
+	public List<CSVIndividual> getCSVIndividuals(
+		Long dataSourceId, int page, int size, Sort sort) {
+
+		return _csvIndividualRepository.findByDataSourceId(
+			dataSourceId, PageRequest.of(page, size, sort));
 	}
 
 	public long getCSVIndividualsCount(Long dataSourceId) {
