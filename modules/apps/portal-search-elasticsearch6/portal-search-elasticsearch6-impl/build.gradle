@@ -1,5 +1,5 @@
-String elasticsearchVersion = "6.5.0"
-String luceneVersion = "7.5.0"
+String elasticsearchVersion = "6.8.6"
+String luceneVersion = "7.7.2"
 
 configurations {
 	elasticsearchPlugins {
@@ -55,6 +55,7 @@ dependencies {
 	compileInclude group: "org.elasticsearch", name: "elasticsearch", version: elasticsearchVersion
 	compileInclude group: "org.elasticsearch", name: "elasticsearch-cli", version: elasticsearchVersion
 	compileInclude group: "org.elasticsearch", name: "elasticsearch-core", version: elasticsearchVersion
+	compileInclude group: "org.elasticsearch", name: "elasticsearch-ssl-config", version: elasticsearchVersion
 	compileInclude group: "org.elasticsearch", name: "elasticsearch-x-content", version: elasticsearchVersion
 	compileInclude group: "org.elasticsearch.client", name: "sniffer", version: "5.5.3"
 	compileInclude group: "org.elasticsearch.client", name: "transport", version: elasticsearchVersion
