@@ -90,9 +90,12 @@ public class DataSourcesRestControllerTest {
 					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
 					DataSourceDTO.class)));
 
-		JSONObject accountJSONObject = new JSONObject(
+		JSONObject accountJSONObject = FaroInfoTestUtil.buildAccountJSONObject(
+			dataSourceJSONObject);
+
+		accountJSONObject = new JSONObject(
 			_accountDog.addAccount(
-				FaroInfoTestUtil.buildAccountJSONObject(dataSourceJSONObject),
+				accountJSONObject.getString("id"), accountJSONObject,
 				_objectMapper.convertValue(
 					dataSourceJSONObject, DataSource.class)));
 

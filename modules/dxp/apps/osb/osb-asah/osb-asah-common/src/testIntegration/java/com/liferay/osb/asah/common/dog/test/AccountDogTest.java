@@ -66,7 +66,7 @@ public class AccountDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddAccount() throws Exception {
 		Account account = _accountDog.addAccount(
-			JSONUtil.put("id", "123"), _salesforceDataSource);
+			"123", new JSONObject(), _salesforceDataSource);
 
 		_assertAccountIndividualSegment();
 		_assertAsahTaskIndividualSegmentContext();
@@ -76,7 +76,7 @@ public class AccountDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testDeleteAccount() throws Exception {
 		Account account = _accountDog.addAccount(
-			JSONUtil.put("id", "123"), _salesforceDataSource);
+			"123", new JSONObject(), _salesforceDataSource);
 
 		Long accountId = null;
 
@@ -123,7 +123,7 @@ public class AccountDogTest extends BaseFaroInfoDogTestCase {
 		throws Exception {
 
 		Account account = _accountDog.addAccount(
-			JSONUtil.put("id", "123"), _salesforceDataSource);
+			"123", new JSONObject(), _salesforceDataSource);
 
 		_assertAccountIndividualSegment();
 		_assertAsahTaskIndividualSegmentContext();

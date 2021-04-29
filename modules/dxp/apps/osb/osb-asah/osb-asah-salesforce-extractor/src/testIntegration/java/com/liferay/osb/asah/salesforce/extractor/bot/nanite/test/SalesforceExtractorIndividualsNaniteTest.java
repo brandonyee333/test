@@ -14,15 +14,21 @@
 
 package com.liferay.osb.asah.salesforce.extractor.bot.nanite.test;
 
+import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
+import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorIndividualsNanite;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.test.util.SalesforceExtractorTestUtil;
 import com.liferay.osb.asah.salesforce.extractor.spring.OSBAsahSalesforceExtractorSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
+
+import java.util.Arrays;
+import java.util.Date;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -60,126 +66,95 @@ public class SalesforceExtractorIndividualsNaniteTest {
 
 		_elasticsearchIndexManager.checkIndices();
 
-		JSONObject accountJSONObject = JSONUtil.put(
-			"id", "1"
-		).put(
-			"Name", "Liferay, Inc."
-		).put(
-			"osbAsahDataSourceId", "0"
-		);
+		SalesforceEntity accountSalesforceEntity = new SalesforceEntity(
+			"1", 0L, JSONUtil.put("Name", "Liferay, Inc."),
+			SalesforceEntity.Type.ACCOUNT);
 
-		_elasticsearchInvoker.add(
-			"Account",
-			new JSONArray() {
-				{
-					put(accountJSONObject);
-				}
-			});
+		_contactSalesforceEntity = new SalesforceEntity(
+			"2", 0L,
+			JSONUtil.put(
+				"AccountId", "1"
+			).put(
+				"Birthdate", "-1176968214861"
+			).put(
+				"Department", "IT"
+			).put(
+				"Description", "Test"
+			).put(
+				"DoNotCall", "true"
+			).put(
+				"Email", "test@liferay.com"
+			).put(
+				"FirstName", "Test"
+			).put(
+				"Industry", "Agriculture"
+			).put(
+				"LastName", "Test"
+			).put(
+				"MailingCity", "Diamond Bar"
+			).put(
+				"MailingCountry", "United States"
+			).put(
+				"MailingPostalCode", "91765"
+			).put(
+				"MailingState", "California"
+			).put(
+				"MailingStreet", "1400 Montefino Ave."
+			).put(
+				"Name", "Test Test"
+			).put(
+				"Phone", "(000) 000-0000"
+			).put(
+				"Title", "Administrator"
+			),
+			SalesforceEntity.Type.CONTACT);
 
-		JSONObject contactJSONObject = JSONUtil.put(
-			"AccountId", "1"
-		).put(
-			"Birthdate", "-1176968214861"
-		).put(
-			"Department", "IT"
-		).put(
-			"Description", "Test"
-		).put(
-			"DoNotCall", "true"
-		).put(
-			"Email", "test@liferay.com"
-		).put(
-			"FirstName", "Test"
-		).put(
-			"id", "2"
-		).put(
-			"Industry", "Agriculture"
-		).put(
-			"LastName", "Test"
-		).put(
-			"MailingCity", "Diamond Bar"
-		).put(
-			"MailingCountry", "United States"
-		).put(
-			"MailingPostalCode", "91765"
-		).put(
-			"MailingState", "California"
-		).put(
-			"MailingStreet", "1400 Montefino Ave."
-		).put(
-			"Name", "Test Test"
-		).put(
-			"osbAsahDataSourceId", "0"
-		).put(
-			"Phone", "(000) 000-0000"
-		).put(
-			"Title", "Administrator"
-		);
+		_leadSalesforceEntity = new SalesforceEntity(
+			"3", 0L,
+			JSONUtil.put(
+				"City", "Diamond Bar"
+			).put(
+				"Company", "Liferay, Inc."
+			).put(
+				"Country", "United States"
+			).put(
+				"Description", "Test"
+			).put(
+				"Email", "test@liferay.com"
+			).put(
+				"FirstName", "Test"
+			).put(
+				"id", "3"
+			).put(
+				"Industry", "Agriculture"
+			).put(
+				"LastName", "Test"
+			).put(
+				"Name", "Test Test"
+			).put(
+				"Phone", "(000) 000-0000"
+			).put(
+				"PostalCode", "91765"
+			).put(
+				"State", "California"
+			).put(
+				"Street", "1400 Montefino Ave."
+			).put(
+				"Title", "Administrator"
+			),
+			SalesforceEntity.Type.LEAD);
 
-		_elasticsearchInvoker.add(
-			"Contact",
-			new JSONArray() {
-				{
-					put(contactJSONObject);
-				}
-			});
+		_salesforceEntityDog.saveSalesforceEntities(
+			Arrays.asList(
+				accountSalesforceEntity, _contactSalesforceEntity,
+				_leadSalesforceEntity));
 
-		JSONObject leadJSONObject = JSONUtil.put(
-			"City", "Diamond Bar"
-		).put(
-			"Company", "Liferay, Inc."
-		).put(
-			"Country", "United States"
-		).put(
-			"Description", "Test"
-		).put(
-			"Email", "test@liferay.com"
-		).put(
-			"FirstName", "Test"
-		).put(
-			"id", "3"
-		).put(
-			"Industry", "Agriculture"
-		).put(
-			"LastName", "Test"
-		).put(
-			"Name", "Test Test"
-		).put(
-			"osbAsahDataSourceId", "0"
-		).put(
-			"Phone", "(000) 000-0000"
-		).put(
-			"PostalCode", "91765"
-		).put(
-			"State", "California"
-		).put(
-			"Street", "1400 Montefino Ave."
-		).put(
-			"Title", "Administrator"
-		);
-
-		_elasticsearchInvoker.add(
-			"Lead",
-			new JSONArray() {
-				{
-					put(leadJSONObject);
-				}
-			});
-
-		_elasticsearchInvoker.add(
-			"audit-events",
-			new JSONArray() {
-				{
-					put(
-						_buildAuditEventJSONObject(
-							"UPDATE", contactJSONObject,
-							contactJSONObject.getString("id"), "Contact"));
-					put(
-						_buildAuditEventJSONObject(
-							"UPDATE", leadJSONObject,
-							leadJSONObject.getString("id"), "Lead"));
-				}
-			});
+		_salesforceAuditEventDog.addSalesforceAuditEvents(
+			Arrays.asList(
+				_buildSalesforceAuditEvent(
+					_contactSalesforceEntity, SalesforceAuditEvent.Type.UPDATE),
+				_buildSalesforceAuditEvent(
+					_leadSalesforceEntity, SalesforceAuditEvent.Type.UPDATE)));
 	}
 
 	@After
@@ -217,46 +192,34 @@ public class SalesforceExtractorIndividualsNaniteTest {
 
 	}
 
-	private JSONObject _buildAuditEventJSONObject(
-		String eventType, JSONObject jsonObject, String recordId,
-		String typeName) {
+	private SalesforceAuditEvent _buildSalesforceAuditEvent(
+		SalesforceEntity salesforceEntity, SalesforceAuditEvent.Type type) {
 
-		return JSONUtil.put(
-			"additionalInfo", jsonObject
-		).put(
-			"eventType", eventType
-		).put(
-			"id", RandomTestUtil.randomId()
-		).put(
-			"osbAsahDataSourceId", "0"
-		).put(
-			"recordId", recordId
-		).put(
-			"typeName", typeName
-		);
+		SalesforceAuditEvent salesforceAuditEvent = new SalesforceAuditEvent();
+
+		salesforceAuditEvent.setAdditionalInfoJSONObject(
+			salesforceEntity.getFieldsJSONObject());
+		salesforceAuditEvent.setAuditEventDate(new Date());
+		salesforceAuditEvent.setDataSourceId(
+			salesforceEntity.getDataSourceId());
+		salesforceAuditEvent.setEntityTypeName(
+			String.valueOf(salesforceEntity.getType()));
+		salesforceAuditEvent.setRecordId(salesforceEntity.getId());
+		salesforceAuditEvent.setType(type);
+
+		return salesforceAuditEvent;
 	}
 
-	private void _delete(String typeName) {
-		JSONArray jsonArray = _elasticsearchInvoker.get(typeName);
+	private void _delete(SalesforceEntity salesforceEntity) {
+		_salesforceEntityDog.deleteSalesforceEntity(salesforceEntity);
 
-		JSONObject jsonObject = jsonArray.getJSONObject(0);
-
-		_elasticsearchInvoker.add(
-			"audit-events",
-			new JSONArray() {
-				{
-					put(
-						_buildAuditEventJSONObject(
-							"DELETE", jsonObject, jsonObject.getString("id"),
-							typeName));
-				}
-			});
-
-		_elasticsearchInvoker.delete(typeName, QueryBuilders.matchAllQuery());
+		_salesforceAuditEventDog.addSalesforceAuditEvent(
+			_buildSalesforceAuditEvent(
+				salesforceEntity, SalesforceAuditEvent.Type.DELETE));
 	}
 
 	private void _testDeleteContact() throws Exception {
-		_delete("Contact");
+		_delete(_contactSalesforceEntity);
 
 		_salesforceExtractorIndividualsNanite.run();
 
@@ -272,7 +235,7 @@ public class SalesforceExtractorIndividualsNaniteTest {
 	}
 
 	private void _testDeleteLead() throws Exception {
-		_delete("Lead");
+		_delete(_leadSalesforceEntity);
 
 		_salesforceExtractorIndividualsNanite.run();
 
@@ -306,11 +269,21 @@ public class SalesforceExtractorIndividualsNaniteTest {
 			individualJSONObject.optString("osbAsahDataSourceId"));
 	}
 
+	private SalesforceEntity _contactSalesforceEntity;
+
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	private SalesforceEntity _leadSalesforceEntity;
+
+	@Autowired
+	private SalesforceAuditEventDog _salesforceAuditEventDog;
+
+	@Autowired
+	private SalesforceEntityDog _salesforceEntityDog;
 
 	@Autowired
 	private SalesforceExtractorIndividualsNanite

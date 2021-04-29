@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.CSVIndividual;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
@@ -47,7 +48,7 @@ public class CSVIndividualDogTest {
 			Arrays.asList(new CSVIndividual(123L), new CSVIndividual(123L)));
 
 		List<CSVIndividual> csvIndividuals =
-			_csvIndividualDog.getCSVIndividuals(123L);
+			_csvIndividualDog.getCSVIndividuals(123L, 0, 20, Sort.asc("id"));
 
 		Assert.assertEquals(
 			csvIndividuals.toString(), 2, csvIndividuals.size());
