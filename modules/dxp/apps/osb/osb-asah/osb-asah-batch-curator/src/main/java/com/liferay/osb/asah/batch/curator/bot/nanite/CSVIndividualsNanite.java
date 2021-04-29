@@ -14,10 +14,16 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.entity.RunLog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
+import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -69,8 +75,7 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 		return _runningMap.getOrDefault(dataSourceId, false);
 	}
 
-	@Override
-	protected void processDataJSONObject(JSONObject dataJSONObject)
+	protected void processCSVIndividual(CSVIndividual csvIndividual)
 		throws Exception {
 
 		JSONObject emailFieldMappingJSONObject =
@@ -81,24 +86,86 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 			return;
 		}
 
-		String dataSourceId = dataJSONObject.getString("dataSourceId");
-
 		JSONObject dataSourceFieldNamesJSONObject =
 			emailFieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
 
 		String emailDataSourceFieldName =
-			dataSourceFieldNamesJSONObject.optString(dataSourceId, null);
+			dataSourceFieldNamesJSONObject.optString(
+				String.valueOf(csvIndividual.getDataSourceId()), null);
 
 		if (emailDataSourceFieldName == null) {
 			return;
 		}
 
-		JSONObject fieldsJSONObject = dataJSONObject.getJSONObject("fields");
+		JSONObject fieldsJSONObject = csvIndividual.getFieldsJSONObject();
 
 		processData(
-			dataJSONObject.getString("dataSourceIndividualPK"),
-			dataJSONObject.getString("dataSourceId"), dataJSONObject,
+			String.valueOf(csvIndividual.getDataSourceIndividualPK()),
+			String.valueOf(csvIndividual.getDataSourceId()), fieldsJSONObject,
 			fieldsJSONObject.optString(emailDataSourceFieldName, null));
+	}
+
+	@Override
+	protected void processDataJSONObject(JSONObject dataJSONObject)
+		throws Exception {
+	}
+
+	protected void reprocessUpdateDataSource(String dataSourceId)
+		throws Exception {
+
+		RunLog runLog = runLogDog.log(
+			Long.valueOf(dataSourceId), this, "STARTED",
+			WeDeployDataService.OSB_ASAH_FARO_INFO, "processedOperations", 0,
+			"reprocess", true);
+
+		try {
+			int page = 0;
+
+			while (true) {
+				if (isInterrupted(dataSourceId)) {
+					setInterrupted(dataSourceId, false);
+
+					return;
+				}
+
+				List<CSVIndividual> csvIndividuals =
+					_csvIndividualDog.getCSVIndividuals(
+						Long.valueOf(dataSourceId), page, 50, Sort.desc("id"));
+
+				if (csvIndividuals.isEmpty()) {
+					break;
+				}
+
+				for (CSVIndividual csvIndividual : csvIndividuals) {
+					processCSVIndividual(csvIndividual);
+
+					JSONObject runLogContextJSONObject =
+						runLog.getContextJSONObject();
+
+					int processedOperations =
+						runLogContextJSONObject.getInt("processedOperations") +
+							1;
+
+					runLogContextJSONObject.put(
+						"processedOperations", processedOperations);
+
+					runLogDog.updateRunLogContextJSONObject(
+						runLogContextJSONObject, runLog.getId(),
+						WeDeployDataService.OSB_ASAH_FARO_INFO);
+				}
+			}
+
+			runLogDog.log(
+				Long.valueOf(dataSourceId), this, "COMPLETED",
+				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
+		}
+		catch (Exception e) {
+			runLogDog.log(
+				Long.valueOf(dataSourceId), this, "STARTED",
+				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
+
+			throw e;
+		}
 	}
 
 	@Override
@@ -110,6 +177,9 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 	protected void setRunning(String dataSourceId, boolean running) {
 		_runningMap.put(dataSourceId, running);
 	}
+
+	@Autowired
+	private CSVIndividualDog _csvIndividualDog;
 
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;

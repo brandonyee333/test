@@ -14,11 +14,18 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
+import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.RunLog;
+import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.SalesforceEntity;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -29,6 +36,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -112,7 +120,179 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 	}
 
 	@Override
-	protected void reprocessUpdateDataSource(String dataSourceId) {
+	protected void processDataSourceAuditEvents(String dataSourceId)
+		throws Exception {
+
+		Log log = getLog();
+
+		if (log.isInfoEnabled()) {
+			log.info(
+				"Processing audit events for data source ID " + dataSourceId);
+		}
+
+		runLogDog.log(
+			Long.valueOf(dataSourceId), this, "STARTED",
+			WeDeployDataService.OSB_ASAH_FARO_INFO, "totalOperations",
+			_salesforceAuditEventDog.getSalesforceAuditEventsCount(
+				Long.valueOf(dataSourceId), "individuals"));
+
+		try {
+			int page = 0;
+
+			while (true) {
+				if (isInterrupted(dataSourceId)) {
+					setInterrupted(dataSourceId, false);
+
+					return;
+				}
+
+				List<SalesforceAuditEvent> salesforceAuditEvents =
+					_salesforceAuditEventDog.getSalesforceAuditEvents(
+						Long.valueOf(dataSourceId), "individuals", page++, 500,
+						Sort.desc("id"));
+
+				if (salesforceAuditEvents.isEmpty()) {
+					break;
+				}
+
+				for (SalesforceAuditEvent salesforceAuditEvent :
+						salesforceAuditEvents) {
+
+					processSalesforceAuditEvent(salesforceAuditEvent);
+				}
+			}
+
+			runLogDog.log(
+				Long.valueOf(dataSourceId), this, "COMPLETED",
+				WeDeployDataService.OSB_ASAH_FARO_INFO);
+		}
+		catch (Exception e) {
+			runLogDog.log(
+				Long.valueOf(dataSourceId), this, "FAILED",
+				WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+			throw e;
+		}
+	}
+
+	protected void processSalesforceAuditEvent(
+			SalesforceAuditEvent salesforceAuditEvent)
+		throws Exception {
+
+		SalesforceAuditEvent.Type salesforceAuditEventType =
+			salesforceAuditEvent.getType();
+
+		Log log = getLog();
+
+		if ((salesforceAuditEventType == SalesforceAuditEvent.Type.ADD) ||
+			(salesforceAuditEventType == SalesforceAuditEvent.Type.UPDATE)) {
+
+			SalesforceEntity individualSalesforceEntity =
+				_salesforceEntityDog.fetchSalesforceEntity(
+					salesforceAuditEvent.getDataSourceId(),
+					salesforceAuditEvent.getRecordId(),
+					SalesforceEntity.Type.INDIVIDUAL);
+
+			if (individualSalesforceEntity != null) {
+				JSONObject individualSalesforceEntityFieldsJSONObject =
+					individualSalesforceEntity.getFieldsJSONObject();
+
+				processData(
+					individualSalesforceEntity.getId(),
+					String.valueOf(
+						individualSalesforceEntity.getDataSourceId()),
+					individualSalesforceEntityFieldsJSONObject,
+					individualSalesforceEntityFieldsJSONObject.optString(
+						"email", null));
+			}
+		}
+		else if (salesforceAuditEventType == SalesforceAuditEvent.Type.DELETE) {
+			JSONObject additionalInfoJSONObject =
+				salesforceAuditEvent.getAdditionalInfoJSONObject();
+
+			delete(
+				String.valueOf(salesforceAuditEvent.getDataSourceId()),
+				salesforceAuditEvent.getAuditEventDate(),
+				additionalInfoJSONObject.getString("Email"));
+		}
+		else if (log.isWarnEnabled()) {
+			log.warn(
+				"Unknown event type " + salesforceAuditEventType +
+					" for audit event " + salesforceAuditEvent.getId());
+		}
+
+		_salesforceAuditEventDog.deleteSalesforceAuditEvent(
+			salesforceAuditEvent);
+	}
+
+	@Override
+	protected void reprocessUpdateDataSource(String dataSourceId)
+		throws Exception {
+
+		RunLog runLog = runLogDog.log(
+			Long.valueOf(dataSourceId), this, "STARTED",
+			WeDeployDataService.OSB_ASAH_FARO_INFO, "processedOperations", 0,
+			"reprocess", true);
+
+		try {
+			int page = 0;
+
+			while (true) {
+				if (isInterrupted(dataSourceId)) {
+					setInterrupted(dataSourceId, false);
+
+					return;
+				}
+
+				List<SalesforceEntity> individualSalesforceEntities =
+					_salesforceEntityDog.getSalesforceEntities(
+						Long.valueOf(dataSourceId), page++, 50,
+						SalesforceEntity.Type.INDIVIDUAL);
+
+				if (individualSalesforceEntities.isEmpty()) {
+					break;
+				}
+
+				for (SalesforceEntity individualSalesforceEntity :
+						individualSalesforceEntities) {
+
+					JSONObject fieldsJSONObject =
+						individualSalesforceEntity.getFieldsJSONObject();
+
+					processData(
+						individualSalesforceEntity.getId(),
+						String.valueOf(
+							individualSalesforceEntity.getDataSourceId()),
+						fieldsJSONObject,
+						fieldsJSONObject.optString("email", null));
+
+					JSONObject runLogContextJSONObject =
+						runLog.getContextJSONObject();
+
+					int processedOperations =
+						runLogContextJSONObject.getInt("processedOperations") +
+							1;
+
+					runLogContextJSONObject.put(
+						"processedOperations", processedOperations);
+
+					runLogDog.updateRunLogContextJSONObject(
+						runLogContextJSONObject, runLog.getId(),
+						WeDeployDataService.OSB_ASAH_FARO_INFO);
+				}
+			}
+
+			runLogDog.log(
+				Long.valueOf(dataSourceId), this, "COMPLETED",
+				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
+		}
+		catch (Exception e) {
+			runLogDog.log(
+				Long.valueOf(dataSourceId), this, "STARTED",
+				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
+
+			throw e;
+		}
 	}
 
 	@Override
@@ -127,6 +307,12 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 
 	private final Map<String, Boolean> _interruptedMap = new HashMap<>();
 	private final Map<String, Boolean> _runningMap = new HashMap<>();
+
+	@Autowired
+	private SalesforceAuditEventDog _salesforceAuditEventDog;
+
+	@Autowired
+	private SalesforceEntityDog _salesforceEntityDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;

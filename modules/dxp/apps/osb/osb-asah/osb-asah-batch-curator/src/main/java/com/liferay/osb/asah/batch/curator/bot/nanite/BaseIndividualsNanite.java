@@ -269,7 +269,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 		ElasticsearchInvoker dataSourceElasticsearchInvoker =
 			getDataSourceElasticsearchInvoker();
 
-		_runLogDog.log(
+		runLogDog.log(
 			Long.valueOf(dataSourceId), this, "STARTED",
 			WeDeployDataService.OSB_ASAH_FARO_INFO, "totalOperations",
 			dataSourceElasticsearchInvoker.count(
@@ -302,12 +302,12 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 				getAuditEventsDataSourceIdQueryBuilder(dataSourceId)
 			).iterate();
 
-			_runLogDog.log(
+			runLogDog.log(
 				Long.valueOf(dataSourceId), this, "COMPLETED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO);
 		}
 		catch (Exception e) {
-			_runLogDog.log(
+			runLogDog.log(
 				Long.valueOf(dataSourceId), this, "FAILED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO);
 
@@ -318,7 +318,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 	protected void reprocessUpdateDataSource(String dataSourceId)
 		throws Exception {
 
-		RunLog runLog = _runLogDog.log(
+		RunLog runLog = runLogDog.log(
 			Long.valueOf(dataSourceId), this, "STARTED",
 			WeDeployDataService.OSB_ASAH_FARO_INFO, "processedOperations", 0,
 			"reprocess", true);
@@ -346,7 +346,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 						runLogContextJSONObject.put(
 							"processedOperations", processedOperations);
 
-						_runLogDog.updateRunLogContextJSONObject(
+						runLogDog.updateRunLogContextJSONObject(
 							runLogContextJSONObject, runLog.getId(),
 							WeDeployDataService.OSB_ASAH_FARO_INFO);
 					}
@@ -363,12 +363,12 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 					getDataSourceIdFieldName(), dataSourceId)
 			).iterate();
 
-			_runLogDog.log(
+			runLogDog.log(
 				Long.valueOf(dataSourceId), this, "COMPLETED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
 		}
 		catch (Exception e) {
-			_runLogDog.log(
+			runLogDog.log(
 				Long.valueOf(dataSourceId), this, "STARTED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
 
@@ -382,13 +382,13 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 	protected abstract void setRunning(String dataSourceId, boolean running);
 
 	@Autowired
+	protected RunLogDog runLogDog;
+
+	@Autowired
 	private DataSourceDog _dataSourceDog;
 
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
-
-	@Autowired
-	private RunLogDog _runLogDog;
 
 	@Autowired
 	private SuppressionDog _suppressionDog;
