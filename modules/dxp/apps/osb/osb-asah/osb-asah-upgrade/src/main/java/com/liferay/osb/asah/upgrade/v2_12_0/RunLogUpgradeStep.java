@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.upgrade.v2_12_0;
 
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
@@ -23,6 +24,8 @@ import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
@@ -93,6 +96,8 @@ public class RunLogUpgradeStep implements UpgradeStep {
 			"run-logs", elasticsearchInvoker,
 			runLogJSONObject -> elasticsearchInvoker.replace(
 				"run-logs", _upgradeRunLogJSONObject(runLogJSONObject))
+		).setQueryBuilder(
+			BoolQueryBuilderUtil.mustNot(QueryBuilders.existsQuery("context"))
 		).iterate();
 	}
 

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.upgrade.v2_12_0;
 
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
@@ -107,6 +108,8 @@ public class AsahMarkerUpgradeStep implements UpgradeStep {
 			osbAsahMarker -> elasticsearchInvoker.replace(
 				"OSBAsahMarkers",
 				_upgradeOSBAsahMarkerJSONObject(osbAsahMarker))
+		).setQueryBuilder(
+			BoolQueryBuilderUtil.mustNot(QueryBuilders.existsQuery("context"))
 		).iterate();
 	}
 
@@ -134,6 +137,8 @@ public class AsahMarkerUpgradeStep implements UpgradeStep {
 
 				return null;
 			}
+		).setQueryBuilder(
+			BoolQueryBuilderUtil.mustNot(QueryBuilders.existsQuery("context"))
 		).iterate();
 	}
 
