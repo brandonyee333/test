@@ -92,6 +92,9 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		_salesforceExtractorConfiguration = salesforceExtractorConfiguration;
 
+		_dataSourceId = Long.valueOf(
+			salesforceExtractorConfiguration.getDataSourceId());
+
 		if (tableNames == null) {
 			_tableNames = salesforceExtractorConfiguration.getTableNames();
 		}
@@ -127,19 +130,19 @@ public class SalesforceExtractorNanite implements Nanite {
 	}
 
 	private void _addAuditEvent(
-		String entityTypeName, JSONObject additionalInfoJSONObject,
-		String recordId, SalesforceAuditEvent.Type type) {
+		JSONObject additionalInfoJSONObject, String recordId,
+		SalesforceAuditEvent.Type salesforceAuditEventType,
+		SalesforceEntity.Type salesforceEntityType) {
 
 		SalesforceAuditEvent salesforceAuditEvent = new SalesforceAuditEvent();
 
 		salesforceAuditEvent.setAdditionalInfoJSONObject(
 			additionalInfoJSONObject);
 		salesforceAuditEvent.setAuditEventDate(new Date());
-		salesforceAuditEvent.setDataSourceId(
-			Long.valueOf(_salesforceExtractorConfiguration.getDataSourceId()));
-		salesforceAuditEvent.setEntityTypeName(entityTypeName);
+		salesforceAuditEvent.setDataSourceId(_dataSourceId);
+		salesforceAuditEvent.setEntityTypeName(salesforceEntityType.toString());
 		salesforceAuditEvent.setRecordId(recordId);
-		salesforceAuditEvent.setType(type);
+		salesforceAuditEvent.setType(salesforceAuditEventType);
 
 		try {
 			_salesforceAuditEventDog.addSalesforceAuditEvent(
@@ -249,17 +252,13 @@ public class SalesforceExtractorNanite implements Nanite {
 
 			if (!tableNamesSet.contains(tableName) &&
 				(_salesforceEntityDog.getSalesforceEntitiesCount(
-					Long.valueOf(
-						_salesforceExtractorConfiguration.getDataSourceId()),
-					SalesforceEntity.Type.of(tableName)) > 0)) {
+					_dataSourceId, SalesforceEntity.Type.of(tableName)) > 0)) {
 
 				while (true) {
 					Page<SalesforceEntity> salesforceEntityPage =
 						_salesforceEntityDog.getSalesforceEntityPage(
-							Long.valueOf(
-								_salesforceExtractorConfiguration.
-									getDataSourceId()),
-							0, 500, SalesforceEntity.Type.of(tableName));
+							_dataSourceId, 0, 50,
+							SalesforceEntity.Type.of(tableName));
 
 					if (salesforceEntityPage.getNumberOfElements() == 0) {
 						break;
@@ -272,11 +271,11 @@ public class SalesforceExtractorNanite implements Nanite {
 							salesforceEntity);
 
 						_addAuditEvent(
-							tableName,
 							_objectMapper.convertValue(
 								salesforceEntity, JSONObject.class),
 							salesforceEntity.getId(),
-							SalesforceAuditEvent.Type.DELETE);
+							SalesforceAuditEvent.Type.DELETE,
+							SalesforceEntity.Type.of(tableName));
 					}
 				}
 
@@ -638,8 +637,8 @@ public class SalesforceExtractorNanite implements Nanite {
 				_salesforceExtractorConfiguration, tableNames);
 
 		_runLogDog.log(
-			Long.valueOf(_salesforceExtractorConfiguration.getDataSourceId()),
-			this, "STARTED", WeDeployDataService.OSB_ASAH_SALESFORCE_RAW,
+			_dataSourceId, this, "STARTED",
+			WeDeployDataService.OSB_ASAH_SALESFORCE_RAW,
 			_buildRunLogAdditionalFields(asahMarker, describeSObjectResults));
 
 		try {
@@ -671,9 +670,8 @@ public class SalesforceExtractorNanite implements Nanite {
 			}
 
 			_runLogDog.log(
-				Long.valueOf(
-					_salesforceExtractorConfiguration.getDataSourceId()),
-				this, "COMPLETED", WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+				_dataSourceId, this, "COMPLETED",
+				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 
 			_asahTaskDog.scheduleAsahTask(
 				"SalesforceAccountsNanite",
@@ -686,9 +684,8 @@ public class SalesforceExtractorNanite implements Nanite {
 		}
 		catch (Exception e) {
 			_runLogDog.log(
-				Long.valueOf(
-					_salesforceExtractorConfiguration.getDataSourceId()),
-				this, "FAILED", WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+				_dataSourceId, this, "FAILED",
+				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 
 			throw e;
 		}
@@ -854,9 +851,7 @@ public class SalesforceExtractorNanite implements Nanite {
 		for (DeletedRecord deletedRecord : deletedRecords) {
 			SalesforceEntity deletedSalesforceEntity =
 				_salesforceEntityDog.fetchSalesforceEntity(
-					Long.valueOf(
-						_salesforceExtractorConfiguration.getDataSourceId()),
-					deletedRecord.getId(),
+					_dataSourceId, deletedRecord.getId(),
 					SalesforceEntity.Type.of(describeSObjectResult.getName()));
 
 			if (deletedSalesforceEntity != null) {
@@ -864,10 +859,11 @@ public class SalesforceExtractorNanite implements Nanite {
 					deletedSalesforceEntity);
 
 				_addAuditEvent(
-					describeSObjectResult.getName(),
 					_objectMapper.convertValue(
 						deletedSalesforceEntity, JSONObject.class),
-					deletedRecord.getId(), SalesforceAuditEvent.Type.DELETE);
+					deletedRecord.getId(), SalesforceAuditEvent.Type.DELETE,
+					SalesforceEntity.Type.valueOf(
+						describeSObjectResult.getName()));
 
 				deleteRecordsCount++;
 			}
@@ -935,6 +931,8 @@ public class SalesforceExtractorNanite implements Nanite {
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	private final Long _dataSourceId;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

@@ -58,7 +58,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 	}
 
 	@Override
-	public void run() throws Exception {
+	public void run() {
 		_runLogDog.log(
 			_dataSourceId, this, "STARTED",
 			WeDeployDataService.OSB_ASAH_SALESFORCE_RAW, "totalOperations",
