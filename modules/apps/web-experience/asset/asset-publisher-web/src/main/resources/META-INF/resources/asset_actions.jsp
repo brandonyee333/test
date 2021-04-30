@@ -68,7 +68,7 @@ List<AssetEntryAction> assetEntryActions = assetPublisherDisplayContext.getAsset
 
 				data.put("destroyOnHide", true);
 				data.put("id", HtmlUtil.escape(portletDisplay.getNamespace()) + "editAsset");
-				data.put("title", LanguageUtil.format(request, "edit-x", HtmlUtil.escape(assetRenderer.getTitle(locale)), false));
+				data.put("title", LanguageUtil.format(request, "edit-x", assetRenderer.getTitle(locale), false));
 				%>
 
 				<liferay-ui:icon
