@@ -196,6 +196,66 @@ CREATE TABLE IF NOT EXISTS Event (
 	userId TEXT
 );
 
+CREATE TABLE IF NOT EXISTS Experiment (
+	id BIGSERIAL PRIMARY KEY,
+	channelId BIGINT NOT NULL,
+	confidenceLevel BIGINT,
+	createDate TIMESTAMPTZ,
+	dataSourceId TEXT,
+	description TEXT,
+	dxpExperienceId TEXT,
+	dxpExperienceName TEXT,
+	dxpGroupId TEXT,
+	dxpLayoutId TEXT,
+	dxpSegmentId TEXT,
+	dxpSegmentName TEXT,
+	finishedDate TIMESTAMPTZ,
+	metric TEXT,
+	modifiedDate TIMESTAMPTZ,
+	name TEXT,
+	pageRelativePath TEXT,
+	pageTitle TEXT,
+	pageURL TEXT,
+	processedDate TIMESTAMPTZ,
+	publishedDXPVariantId TEXT,
+	startedDate TIMESTAMPTZ,
+	status TEXT,
+	target TEXT,
+	type TEXT,
+	winnerDXPVariantId TEXT
+);
+
+CREATE TABLE IF NOT EXISTS ExperimentMetric (
+	id BIGSERIAL PRIMARY KEY,
+	experimentId BIGINT,
+	completion BIGINT,
+	confidenceLevel BIGINT,
+	elapsedDays BIGINT,
+	estimatedDaysLeft BIGINT,
+	processedDate TIMESTAMPTZ
+);
+
+CREATE TABLE IF NOT EXISTS ExperimentVariant (
+	id BIGSERIAL PRIMARY KEY,
+	changes INTEGER,
+	control BOOLEAN,
+	dxpVariantId TEXT,
+	dxpVariantName TEXT,
+	experimentId BIGINT,
+	trafficSplit BIGINT
+);
+
+CREATE TABLE IF NOT EXISTS ExperimentVariantMetric (
+	id BIGSERIAL PRIMARY KEY,
+	confidenceInterval REAL[],
+	control BOOLEAN,
+	dxpVariantId TEXT,
+	experimentMetricId BIGINT,
+	improvement REAL,
+	median REAL,
+	probabilityToWin REAL
+);
+
 CREATE TABLE IF NOT EXISTS EventAttribute (
 	id BIGSERIAL PRIMARY KEY,
 	attributeValue VARCHAR(1024),
