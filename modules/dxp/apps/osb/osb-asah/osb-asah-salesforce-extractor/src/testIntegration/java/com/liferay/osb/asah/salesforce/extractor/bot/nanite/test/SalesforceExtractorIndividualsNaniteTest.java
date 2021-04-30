@@ -255,18 +255,24 @@ public class SalesforceExtractorIndividualsNaniteTest {
 
 		JSONObject individualJSONObject = individualsJSONArray.getJSONObject(0);
 
-		JSONArray accountPKsJSONArray = individualJSONObject.getJSONArray(
+		JSONObject individualFieldsJSONObject =
+			individualJSONObject.getJSONObject("fields");
+
+		JSONArray accountPKsJSONArray = individualFieldsJSONObject.getJSONArray(
 			"accountPKs");
 
 		Assert.assertEquals("1", accountPKsJSONArray.get(0));
 
-		Assert.assertEquals("2", individualJSONObject.getString("contactId"));
 		Assert.assertEquals(
-			"true", individualJSONObject.getString("doNotCall"));
-		Assert.assertEquals("3", individualJSONObject.getString("leadId"));
-		Assert.assertNotNull(individualJSONObject.optString("modifiedDate"));
+			"2", individualFieldsJSONObject.getString("contactId"));
+		Assert.assertEquals(
+			"true", individualFieldsJSONObject.getString("doNotCall"));
+		Assert.assertEquals(
+			"3", individualFieldsJSONObject.getString("leadId"));
 		Assert.assertNotNull(
-			individualJSONObject.optString("osbAsahDataSourceId"));
+			individualFieldsJSONObject.optString("modifiedDate"));
+		Assert.assertNotNull(
+			individualFieldsJSONObject.optString("osbAsahDataSourceId"));
 	}
 
 	private SalesforceEntity _contactSalesforceEntity;
