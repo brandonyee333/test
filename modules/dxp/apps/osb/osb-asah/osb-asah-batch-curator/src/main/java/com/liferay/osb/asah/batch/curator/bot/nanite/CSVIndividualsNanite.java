@@ -45,12 +45,12 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 	}
 
 	@Override
-	protected boolean isInterrupted(String dataSourceId) {
+	protected boolean isInterrupted(Long dataSourceId) {
 		return _interruptedMap.getOrDefault(dataSourceId, false);
 	}
 
 	@Override
-	protected boolean isRunning(String dataSourceId) {
+	protected boolean isRunning(Long dataSourceId) {
 		return _runningMap.getOrDefault(dataSourceId, false);
 	}
 
@@ -80,20 +80,20 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 
 		processData(
 			String.valueOf(csvIndividual.getDataSourceIndividualPK()),
-			String.valueOf(csvIndividual.getDataSourceId()), fieldsJSONObject,
+			csvIndividual.getDataSourceId(), fieldsJSONObject,
 			fieldsJSONObject.optString(emailDataSourceFieldName, null));
 	}
 
 	@Override
-	protected void processDataSourceAuditEvents(String dataSourceId) {
+	protected void processDataSourceAuditEvents(Long dataSourceId) {
 		throw new UnsupportedOperationException();
 	}
 
-	protected void reprocessUpdateDataSource(String dataSourceId)
+	protected void reprocessUpdateDataSource(Long dataSourceId)
 		throws Exception {
 
 		RunLog runLog = runLogDog.log(
-			Long.valueOf(dataSourceId), this, "STARTED",
+			dataSourceId, this, "STARTED",
 			WeDeployDataService.OSB_ASAH_FARO_INFO, "processedOperations", 0,
 			"reprocess", true);
 
@@ -109,7 +109,7 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 
 				List<CSVIndividual> csvIndividuals =
 					_csvIndividualDog.getCSVIndividuals(
-						Long.valueOf(dataSourceId), page, 50, Sort.desc("id"));
+						dataSourceId, page, 50, Sort.desc("id"));
 
 				if (csvIndividuals.isEmpty()) {
 					break;
@@ -135,12 +135,12 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 			}
 
 			runLogDog.log(
-				Long.valueOf(dataSourceId), this, "COMPLETED",
+				dataSourceId, this, "COMPLETED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
 		}
 		catch (Exception e) {
 			runLogDog.log(
-				Long.valueOf(dataSourceId), this, "STARTED",
+				dataSourceId, this, "STARTED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
 
 			throw e;
@@ -148,12 +148,12 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 	}
 
 	@Override
-	protected void setInterrupted(String dataSourceId, boolean interrupted) {
+	protected void setInterrupted(Long dataSourceId, boolean interrupted) {
 		_interruptedMap.put(dataSourceId, interrupted);
 	}
 
 	@Override
-	protected void setRunning(String dataSourceId, boolean running) {
+	protected void setRunning(Long dataSourceId, boolean running) {
 		_runningMap.put(dataSourceId, running);
 	}
 
@@ -163,7 +163,7 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
 
-	private final Map<String, Boolean> _interruptedMap = new HashMap<>();
-	private final Map<String, Boolean> _runningMap = new HashMap<>();
+	private final Map<Long, Boolean> _interruptedMap = new HashMap<>();
+	private final Map<Long, Boolean> _runningMap = new HashMap<>();
 
 }

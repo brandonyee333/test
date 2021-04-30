@@ -47,17 +47,17 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 	}
 
 	@Override
-	protected boolean isInterrupted(String dataSourceId) {
+	protected boolean isInterrupted(Long dataSourceId) {
 		return _interruptedMap.getOrDefault(dataSourceId, false);
 	}
 
 	@Override
-	protected boolean isRunning(String dataSourceId) {
+	protected boolean isRunning(Long dataSourceId) {
 		return _runningMap.getOrDefault(dataSourceId, false);
 	}
 
 	@Override
-	protected void processDataSourceAuditEvents(String dataSourceId)
+	protected void processDataSourceAuditEvents(Long dataSourceId)
 		throws Exception {
 
 		Log log = getLog();
@@ -68,10 +68,10 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 		}
 
 		runLogDog.log(
-			Long.valueOf(dataSourceId), this, "STARTED",
+			dataSourceId, this, "STARTED",
 			WeDeployDataService.OSB_ASAH_FARO_INFO, "totalOperations",
 			_salesforceAuditEventDog.getSalesforceAuditEventsCount(
-				Long.valueOf(dataSourceId), "individuals"));
+				dataSourceId, "individuals"));
 
 		try {
 			int page = 0;
@@ -85,7 +85,7 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 
 				List<SalesforceAuditEvent> salesforceAuditEvents =
 					_salesforceAuditEventDog.getSalesforceAuditEvents(
-						Long.valueOf(dataSourceId), "individuals", page++, 500,
+						dataSourceId, "individuals", page++, 500,
 						Sort.desc("id"));
 
 				if (salesforceAuditEvents.isEmpty()) {
@@ -100,12 +100,12 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 			}
 
 			runLogDog.log(
-				Long.valueOf(dataSourceId), this, "COMPLETED",
+				dataSourceId, this, "COMPLETED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO);
 		}
 		catch (Exception e) {
 			runLogDog.log(
-				Long.valueOf(dataSourceId), this, "FAILED",
+				dataSourceId, this, "FAILED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 			throw e;
@@ -136,8 +136,7 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 
 				processData(
 					individualSalesforceEntity.getId(),
-					String.valueOf(
-						individualSalesforceEntity.getDataSourceId()),
+					individualSalesforceEntity.getDataSourceId(),
 					individualSalesforceEntityFieldsJSONObject,
 					individualSalesforceEntityFieldsJSONObject.optString(
 						"email", null));
@@ -148,7 +147,7 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 				salesforceAuditEvent.getAdditionalInfoJSONObject();
 
 			delete(
-				String.valueOf(salesforceAuditEvent.getDataSourceId()),
+				salesforceAuditEvent.getDataSourceId(),
 				salesforceAuditEvent.getAuditEventDate(),
 				additionalInfoJSONObject.getString("Email"));
 		}
@@ -163,11 +162,11 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 	}
 
 	@Override
-	protected void reprocessUpdateDataSource(String dataSourceId)
+	protected void reprocessUpdateDataSource(Long dataSourceId)
 		throws Exception {
 
 		RunLog runLog = runLogDog.log(
-			Long.valueOf(dataSourceId), this, "STARTED",
+			dataSourceId, this, "STARTED",
 			WeDeployDataService.OSB_ASAH_FARO_INFO, "processedOperations", 0,
 			"reprocess", true);
 
@@ -183,7 +182,7 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 
 				List<SalesforceEntity> individualSalesforceEntities =
 					_salesforceEntityDog.getSalesforceEntities(
-						Long.valueOf(dataSourceId), page++, 50,
+						dataSourceId, page++, 50,
 						SalesforceEntity.Type.INDIVIDUAL);
 
 				if (individualSalesforceEntities.isEmpty()) {
@@ -198,8 +197,7 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 
 					processData(
 						individualSalesforceEntity.getId(),
-						String.valueOf(
-							individualSalesforceEntity.getDataSourceId()),
+						individualSalesforceEntity.getDataSourceId(),
 						fieldsJSONObject,
 						fieldsJSONObject.optString("email", null));
 
@@ -220,12 +218,12 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 			}
 
 			runLogDog.log(
-				Long.valueOf(dataSourceId), this, "COMPLETED",
+				dataSourceId, this, "COMPLETED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
 		}
 		catch (Exception e) {
 			runLogDog.log(
-				Long.valueOf(dataSourceId), this, "STARTED",
+				dataSourceId, this, "STARTED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
 
 			throw e;
@@ -233,17 +231,17 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 	}
 
 	@Override
-	protected void setInterrupted(String dataSourceId, boolean interrupted) {
+	protected void setInterrupted(Long dataSourceId, boolean interrupted) {
 		_interruptedMap.put(dataSourceId, interrupted);
 	}
 
 	@Override
-	protected void setRunning(String dataSourceId, boolean running) {
+	protected void setRunning(Long dataSourceId, boolean running) {
 		_runningMap.put(dataSourceId, running);
 	}
 
-	private final Map<String, Boolean> _interruptedMap = new HashMap<>();
-	private final Map<String, Boolean> _runningMap = new HashMap<>();
+	private final Map<Long, Boolean> _interruptedMap = new HashMap<>();
+	private final Map<Long, Boolean> _runningMap = new HashMap<>();
 
 	@Autowired
 	private SalesforceAuditEventDog _salesforceAuditEventDog;

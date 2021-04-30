@@ -44,7 +44,8 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		String dataSourceId = contextJSONObject.getString("dataSourceId");
+		Long dataSourceId = Long.valueOf(
+			contextJSONObject.getString("dataSourceId"));
 		String type = contextJSONObject.getString("type");
 
 		if (type.equals("audit-events")) {
@@ -76,7 +77,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 	}
 
 	protected void delete(
-			String dataSourceId, Date deletionDate, String emailAddress)
+			Long dataSourceId, Date deletionDate, String emailAddress)
 		throws Exception {
 
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
@@ -93,7 +94,8 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 		if (dataSourceIndividualPKsJSONArray.length() == 1) {
 			JSONArray individualPKsJSONArray =
 				FaroInfoIndividualUtil.getIndividualPKsJSONArray(
-					dataSourceId, dataSourceIndividualPKsJSONArray);
+					String.valueOf(dataSourceId),
+					dataSourceIndividualPKsJSONArray);
 
 			if (individualPKsJSONArray.length() > 0) {
 				_faroInfoIndividualDog.deleteIndividual(
@@ -104,24 +106,23 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 		}
 
 		_faroInfoIndividualDog.removeDataSourceIndividualPKs(
-			individualJSONObject, Long.valueOf(dataSourceId));
+			individualJSONObject, dataSourceId);
 
 		_faroInfoIndividualDog.updateIndividual(
 			null, getEmptyDataJSONObject(),
-			_dataSourceDog.getDataSource(Long.valueOf(dataSourceId)),
-			individualJSONObject);
+			_dataSourceDog.getDataSource(dataSourceId), individualJSONObject);
 	}
 
 	protected JSONObject getEmptyDataJSONObject() {
 		return new JSONObject();
 	}
 
-	protected abstract boolean isInterrupted(String dataSourceId);
+	protected abstract boolean isInterrupted(Long dataSourceId);
 
-	protected abstract boolean isRunning(String dataSourceId);
+	protected abstract boolean isRunning(Long dataSourceId);
 
 	protected void processData(
-			String dataId, String dataSourceId, JSONObject dataJSONObject,
+			String dataId, Long dataSourceId, JSONObject dataJSONObject,
 			String emailAddress)
 		throws Exception {
 
@@ -131,8 +132,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 			return;
 		}
 
-		DataSource dataSource = _dataSourceDog.getDataSource(
-			Long.valueOf(dataSourceId));
+		DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
 
 		if (Objects.equal(dataSource.getState(), "IN_PROGRESS_DELETING")) {
 			Log log = getLog();
@@ -166,16 +166,16 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 		}
 	}
 
-	protected abstract void processDataSourceAuditEvents(String dataSourceId)
+	protected abstract void processDataSourceAuditEvents(Long dataSourceId)
 		throws Exception;
 
-	protected abstract void reprocessUpdateDataSource(String dataSourceId)
+	protected abstract void reprocessUpdateDataSource(Long dataSourceId)
 		throws Exception;
 
 	protected abstract void setInterrupted(
-		String dataSourceId, boolean interrupted);
+		Long dataSourceId, boolean interrupted);
 
-	protected abstract void setRunning(String dataSourceId, boolean running);
+	protected abstract void setRunning(Long dataSourceId, boolean running);
 
 	@Autowired
 	protected RunLogDog runLogDog;
