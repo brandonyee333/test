@@ -16,7 +16,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
 import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.RunLog;
 import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
@@ -31,9 +30,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,55 +40,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
-
-	@Override
-	protected String getAuditEventDataIdFieldName() {
-		return "recordId";
-	}
-
-	@Override
-	protected String getAuditEventEmail(JSONObject auditEventJSONObject) {
-		JSONObject additionalInfoJSONObject =
-			auditEventJSONObject.getJSONObject("additionalInfo");
-
-		return additionalInfoJSONObject.getString("Email");
-	}
-
-	@Override
-	protected String getAuditEventsCollectionName() {
-		return "audit-events";
-	}
-
-	@Override
-	protected QueryBuilder getAuditEventsDataSourceIdQueryBuilder(
-		String dataSourceId) {
-
-		return BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("osbAsahDataSourceId", dataSourceId)
-		).filter(
-			QueryBuilders.termQuery("typeName", "individuals")
-		);
-	}
-
-	@Override
-	protected String getDataCollectionName() {
-		return "individuals";
-	}
-
-	@Override
-	protected String getDataIdFieldName() {
-		return "id";
-	}
-
-	@Override
-	protected ElasticsearchInvoker getDataSourceElasticsearchInvoker() {
-		return _salesforceRawElasticsearchInvoker;
-	}
-
-	@Override
-	protected String getDataSourceType() {
-		return "SALESFORCE";
-	}
 
 	@Override
 	protected Log getLog() {
@@ -107,16 +54,6 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 	@Override
 	protected boolean isRunning(String dataSourceId) {
 		return _runningMap.getOrDefault(dataSourceId, false);
-	}
-
-	@Override
-	protected void processDataJSONObject(JSONObject dataJSONObject)
-		throws Exception {
-
-		processData(
-			dataJSONObject.getString("id"),
-			dataJSONObject.getString("osbAsahDataSourceId"), dataJSONObject,
-			dataJSONObject.optString("email", null));
 	}
 
 	@Override

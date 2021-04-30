@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.dog.CSVIndividualDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.CSVIndividual;
 import com.liferay.osb.asah.common.entity.RunLog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
@@ -39,26 +38,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CSVIndividualsNanite extends BaseIndividualsNanite {
-
-	@Override
-	protected String getDataCollectionName() {
-		return "csv-individuals";
-	}
-
-	@Override
-	protected ElasticsearchInvoker getDataSourceElasticsearchInvoker() {
-		return faroInfoElasticsearchInvoker;
-	}
-
-	@Override
-	protected String getDataSourceIdFieldName() {
-		return "dataSourceId";
-	}
-
-	@Override
-	protected String getDataSourceType() {
-		return "CSV";
-	}
 
 	@Override
 	protected Log getLog() {
@@ -106,8 +85,8 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 	}
 
 	@Override
-	protected void processDataJSONObject(JSONObject dataJSONObject)
-		throws Exception {
+	protected void processDataSourceAuditEvents(String dataSourceId) {
+		throw new UnsupportedOperationException();
 	}
 
 	protected void reprocessUpdateDataSource(String dataSourceId)

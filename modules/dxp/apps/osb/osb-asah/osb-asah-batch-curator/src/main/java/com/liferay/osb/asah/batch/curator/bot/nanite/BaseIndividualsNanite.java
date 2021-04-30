@@ -16,18 +16,13 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.google.api.client.util.Objects;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.RunLog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Date;
 
@@ -35,7 +30,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -118,39 +112,6 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 			individualJSONObject);
 	}
 
-	protected String getAuditEventDataIdFieldName() {
-		return null;
-	}
-
-	protected String getAuditEventEmail(JSONObject auditEventJSONObject) {
-		return null;
-	}
-
-	protected String getAuditEventsCollectionName() {
-		return null;
-	}
-
-	protected QueryBuilder getAuditEventsDataSourceIdQueryBuilder(
-		String dataSourceId) {
-
-		return QueryBuilders.termQuery(
-			getDataSourceIdFieldName(), dataSourceId);
-	}
-
-	protected abstract String getDataCollectionName();
-
-	protected String getDataIdFieldName() {
-		return null;
-	}
-
-	protected abstract ElasticsearchInvoker getDataSourceElasticsearchInvoker();
-
-	protected String getDataSourceIdFieldName() {
-		return "osbAsahDataSourceId";
-	}
-
-	protected abstract String getDataSourceType();
-
 	protected JSONObject getEmptyDataJSONObject() {
 		return new JSONObject();
 	}
@@ -158,54 +119,6 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 	protected abstract boolean isInterrupted(String dataSourceId);
 
 	protected abstract boolean isRunning(String dataSourceId);
-
-	protected void processAuditEventJSONObject(JSONObject auditEventJSONObject)
-		throws Exception {
-
-		ElasticsearchInvoker dataSourceElasticsearchInvoker =
-			getDataSourceElasticsearchInvoker();
-
-		String dataSourceIdFieldName = getDataSourceIdFieldName();
-
-		String eventType = auditEventJSONObject.getString("eventType");
-
-		Log log = getLog();
-
-		if (eventType.equals("ADD") || eventType.equals("UPDATE")) {
-			JSONObject dataJSONObject = dataSourceElasticsearchInvoker.fetch(
-				getDataCollectionName(),
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						dataSourceIdFieldName,
-						auditEventJSONObject.getString(dataSourceIdFieldName))
-				).filter(
-					QueryBuilders.termQuery(
-						getDataIdFieldName(),
-						auditEventJSONObject.get(
-							getAuditEventDataIdFieldName()))
-				));
-
-			if (dataJSONObject != null) {
-				processDataJSONObject(dataJSONObject);
-			}
-		}
-		else if (eventType.equals("DELETE")) {
-			delete(
-				auditEventJSONObject.getString(dataSourceIdFieldName),
-				DateUtil.toUTCDate(
-					auditEventJSONObject.getString("dateCreated")),
-				getAuditEventEmail(auditEventJSONObject));
-		}
-		else if (log.isWarnEnabled()) {
-			log.warn(
-				"Unknown event type " + eventType + " for audit event " +
-					auditEventJSONObject.getString("id"));
-		}
-
-		dataSourceElasticsearchInvoker.delete(
-			getAuditEventsCollectionName(),
-			auditEventJSONObject.getString("id"));
-	}
 
 	protected void processData(
 			String dataId, String dataSourceId, JSONObject dataJSONObject,
@@ -253,128 +166,11 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 		}
 	}
 
-	protected abstract void processDataJSONObject(JSONObject dataJSONObject)
+	protected abstract void processDataSourceAuditEvents(String dataSourceId)
 		throws Exception;
 
-	protected void processDataSourceAuditEvents(String dataSourceId)
-		throws Exception {
-
-		Log log = getLog();
-
-		if (log.isInfoEnabled()) {
-			log.info(
-				"Processing audit events for data source ID " + dataSourceId);
-		}
-
-		ElasticsearchInvoker dataSourceElasticsearchInvoker =
-			getDataSourceElasticsearchInvoker();
-
-		runLogDog.log(
-			Long.valueOf(dataSourceId), this, "STARTED",
-			WeDeployDataService.OSB_ASAH_FARO_INFO, "totalOperations",
-			dataSourceElasticsearchInvoker.count(
-				getAuditEventsCollectionName(),
-				getAuditEventsDataSourceIdQueryBuilder(dataSourceId)));
-
-		try {
-			JSONArrayIterator.of(
-				getAuditEventsCollectionName(),
-				getDataSourceElasticsearchInvoker(),
-				auditEventJSONObject -> {
-					try {
-						if (isInterrupted(dataSourceId)) {
-							setInterrupted(dataSourceId, false);
-
-							return JSONArrayIterator.INTERRUPT;
-						}
-
-						processAuditEventJSONObject(auditEventJSONObject);
-					}
-					catch (Exception e) {
-						return e;
-					}
-
-					return null;
-				}
-			).setMonitoringConsumers(
-				this::monitorProcessedCount, this::monitorQueueSize
-			).setQueryBuilder(
-				getAuditEventsDataSourceIdQueryBuilder(dataSourceId)
-			).iterate();
-
-			runLogDog.log(
-				Long.valueOf(dataSourceId), this, "COMPLETED",
-				WeDeployDataService.OSB_ASAH_FARO_INFO);
-		}
-		catch (Exception e) {
-			runLogDog.log(
-				Long.valueOf(dataSourceId), this, "FAILED",
-				WeDeployDataService.OSB_ASAH_FARO_INFO);
-
-			throw e;
-		}
-	}
-
-	protected void reprocessUpdateDataSource(String dataSourceId)
-		throws Exception {
-
-		RunLog runLog = runLogDog.log(
-			Long.valueOf(dataSourceId), this, "STARTED",
-			WeDeployDataService.OSB_ASAH_FARO_INFO, "processedOperations", 0,
-			"reprocess", true);
-
-		try {
-			JSONArrayIterator.of(
-				getDataCollectionName(), getDataSourceElasticsearchInvoker(),
-				dataJSONObject -> {
-					try {
-						if (isInterrupted(dataSourceId)) {
-							setInterrupted(dataSourceId, false);
-
-							return JSONArrayIterator.INTERRUPT;
-						}
-
-						processDataJSONObject(dataJSONObject);
-
-						JSONObject runLogContextJSONObject =
-							runLog.getContextJSONObject();
-
-						int processedOperations =
-							runLogContextJSONObject.getInt(
-								"processedOperations") + 1;
-
-						runLogContextJSONObject.put(
-							"processedOperations", processedOperations);
-
-						runLogDog.updateRunLogContextJSONObject(
-							runLogContextJSONObject, runLog.getId(),
-							WeDeployDataService.OSB_ASAH_FARO_INFO);
-					}
-					catch (Exception e) {
-						return e;
-					}
-
-					return null;
-				}
-			).setMonitoringConsumers(
-				this::monitorProcessedCount, this::monitorQueueSize
-			).setQueryBuilder(
-				QueryBuilders.termQuery(
-					getDataSourceIdFieldName(), dataSourceId)
-			).iterate();
-
-			runLogDog.log(
-				Long.valueOf(dataSourceId), this, "COMPLETED",
-				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
-		}
-		catch (Exception e) {
-			runLogDog.log(
-				Long.valueOf(dataSourceId), this, "STARTED",
-				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
-
-			throw e;
-		}
-	}
+	protected abstract void reprocessUpdateDataSource(String dataSourceId)
+		throws Exception;
 
 	protected abstract void setInterrupted(
 		String dataSourceId, boolean interrupted);
