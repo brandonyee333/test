@@ -131,8 +131,7 @@ public class FieldDogTest extends BaseFaroInfoDogTestCase {
 	private void _testDateField(Object date, String expectedDateString)
 		throws Exception {
 
-		JSONObject contextJSONObject = _fieldDog.buildContextJSONObject(
-			"demographics",
+		JSONObject csvIndividualJSONObject =
 			FaroInfoTestUtil.buildCSVIndividualJSONObject(
 				_dataSourceJSONObject.getString("id"),
 				RandomTestUtil.randomUUID(),
@@ -140,7 +139,10 @@ public class FieldDogTest extends BaseFaroInfoDogTestCase {
 					{
 						put("date", date);
 					}
-				}),
+				});
+
+		JSONObject contextJSONObject = _fieldDog.buildContextJSONObject(
+			"demographics", csvIndividualJSONObject.getJSONObject("fields"),
 			_objectMapper.convertValue(_dataSourceJSONObject, DataSource.class),
 			"individual");
 

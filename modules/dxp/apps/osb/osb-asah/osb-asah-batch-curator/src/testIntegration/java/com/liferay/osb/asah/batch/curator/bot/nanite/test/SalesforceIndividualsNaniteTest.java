@@ -141,21 +141,26 @@ public class SalesforceIndividualsNaniteTest
 		).put(
 			"recordId", individualJSONObject.getString("id")
 		).put(
-			"typeName", "individuals"
+			"typeName", "INDIVIDUAL"
 		);
 	}
 
 	private static JSONObject _buildSalesforceIndividualJSONObject(
 		String dataSourceId, Map<String, Object> fieldsMap, String id) {
 
-		JSONObject individualJSONObject = new JSONObject(fieldsMap);
+		JSONObject individualFieldsJSONObject = new JSONObject(fieldsMap);
 
-		return individualJSONObject.put(
+		individualFieldsJSONObject.put("id", id);
+		individualFieldsJSONObject.put(
+			"modifiedDate", DateUtil.newDateString());
+		individualFieldsJSONObject.put("osbAsahDataSourceId", dataSourceId);
+
+		return JSONUtil.put(
+			"dataSourceId", dataSourceId
+		).put(
+			"fields", individualFieldsJSONObject
+		).put(
 			"id", id
-		).put(
-			"modifiedDate", DateUtil.newDateString()
-		).put(
-			"osbAsahDataSourceId", dataSourceId
 		);
 	}
 
