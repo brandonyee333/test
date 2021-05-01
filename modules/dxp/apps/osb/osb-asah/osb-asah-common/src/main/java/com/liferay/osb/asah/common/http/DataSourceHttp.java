@@ -22,11 +22,11 @@ import org.springframework.http.ResponseEntity;
 public interface DataSourceHttp {
 
 	public ResponseEntity<String> getSalesforceAccountsFields(
-		String id, int end, int start);
+		Long id, int end, int start);
 
-	public ResponseEntity<String> getSalesforceOwner(String id);
+	public ResponseEntity<String> getSalesforceOwner(Long id);
 
 	public ResponseEntity<String> getSalesforceUsersFields(
-		String id, int end, int start);
+		Long id, int end, int start);
 
 }
