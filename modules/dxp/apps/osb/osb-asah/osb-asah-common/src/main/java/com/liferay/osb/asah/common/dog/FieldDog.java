@@ -145,7 +145,7 @@ public class FieldDog {
 		String providerType = dataSource.getProviderType();
 
 		if (providerType.equals("CSV")) {
-			return dataJSONObject.getJSONObject("fields");
+			return dataJSONObject;
 		}
 		else if (providerType.equals("LIFERAY")) {
 			if (context.equals("custom")) {
