@@ -109,7 +109,7 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 
 				List<CSVIndividual> csvIndividuals =
 					_csvIndividualDog.getCSVIndividuals(
-						dataSourceId, page, 50, Sort.desc("id"));
+						dataSourceId, page++, 50, Sort.desc("id"));
 
 				if (csvIndividuals.isEmpty()) {
 					break;
