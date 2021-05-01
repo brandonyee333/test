@@ -150,8 +150,7 @@ public class DataSourcesRestController extends BaseRestController {
 
 		return _exchange(
 			id,
-			() -> _dataSourceHttp.getSalesforceAccountsFields(
-				String.valueOf(id), end, start));
+			() -> _dataSourceHttp.getSalesforceAccountsFields(id, end, start));
 	}
 
 	@GetMapping("/{id}/salesforce-users/fields")
@@ -160,9 +159,7 @@ public class DataSourcesRestController extends BaseRestController {
 		@RequestParam(defaultValue = "0") int start) {
 
 		return _exchange(
-			id,
-			() -> _dataSourceHttp.getSalesforceUsersFields(
-				String.valueOf(id), end, start));
+			id, () -> _dataSourceHttp.getSalesforceUsersFields(id, end, start));
 	}
 
 	@PatchMapping("/{id}")

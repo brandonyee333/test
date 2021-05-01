@@ -35,15 +35,14 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 
 	@Override
 	public ResponseEntity<String> getSalesforceAccountsFields(
-		String id, int end, int start) {
+		Long id, int end, int start) {
 
 		return new ResponseEntity<>(
-			_accountsRestController.getFields(Long.valueOf(id), end, start),
-			HttpStatus.OK);
+			_accountsRestController.getFields(id, end, start), HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<String> getSalesforceOwner(String id) {
+	public ResponseEntity<String> getSalesforceOwner(Long id) {
 		try {
 			return new ResponseEntity<>(
 				_salesforceUsersRestController.get(id), HttpStatus.OK);
@@ -55,11 +54,10 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 
 	@Override
 	public ResponseEntity<String> getSalesforceUsersFields(
-		String id, int end, int start) {
+		Long id, int end, int start) {
 
 		return new ResponseEntity<>(
-			_salesforceUsersRestController.getFields(
-				Long.valueOf(id), end, start),
+			_salesforceUsersRestController.getFields(id, end, start),
 			HttpStatus.OK);
 	}
 

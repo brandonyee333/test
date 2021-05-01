@@ -35,7 +35,7 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 
 	@Override
 	public ResponseEntity<String> getSalesforceAccountsFields(
-		String id, int end, int start) {
+		Long id, int end, int start) {
 
 		return _http.exchangeResponseEntity(
 			ServiceConstants.URL_SALESFORCE_EXTRACTOR,
@@ -45,7 +45,7 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 	}
 
 	@Override
-	public ResponseEntity<String> getSalesforceOwner(String id) {
+	public ResponseEntity<String> getSalesforceOwner(Long id) {
 		return _http.exchangeResponseEntity(
 			ServiceConstants.URL_SALESFORCE_EXTRACTOR,
 			"/salesforce-users?dataSourceId=" + id, HttpMethod.GET, "");
@@ -53,7 +53,7 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 
 	@Override
 	public ResponseEntity<String> getSalesforceUsersFields(
-		String id, int end, int start) {
+		Long id, int end, int start) {
 
 		return _http.exchangeResponseEntity(
 			ServiceConstants.URL_SALESFORCE_EXTRACTOR,

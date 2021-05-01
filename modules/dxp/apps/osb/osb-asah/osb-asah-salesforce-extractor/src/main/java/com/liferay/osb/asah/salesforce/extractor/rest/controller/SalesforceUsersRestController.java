@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.salesforce.extractor.rest.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.salesforce.extractor.client.SalesforcePartnerClientInvoker;
@@ -38,11 +36,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class SalesforceUsersRestController extends BaseRestController {
 
 	@GetMapping
-	public String get(@RequestParam String dataSourceId) throws Exception {
+	public String get(@RequestParam Long dataSourceId) throws Exception {
 		GetUserInfoResult getUserInfoResult =
 			_salesforcePartnerClientInvoker.getUserInfoResult(
 				_salesforceExtractorConfigurationManagerImpl.getConfiguration(
-					dataSourceId));
+					String.valueOf(dataSourceId)));
 
 		return String.valueOf(
 			JSONUtil.put(
@@ -61,9 +59,6 @@ public class SalesforceUsersRestController extends BaseRestController {
 		return getFields(
 			dataSourceId, end, start, SalesforceEntity.Type.INDIVIDUAL);
 	}
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SalesforceExtractorConfigurationManagerImpl

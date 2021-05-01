@@ -96,8 +96,7 @@ public class SalesforceExtractorConfigurationDog {
 
 	private JSONObject _buildOAuthOwnerJSONObject(DataSource dataSource) {
 		ResponseEntity<String> responseEntity =
-			_dataSourceHttp.getSalesforceOwner(
-				String.valueOf(dataSource.getId()));
+			_dataSourceHttp.getSalesforceOwner(dataSource.getId());
 
 		if (responseEntity.getStatusCode() == HttpStatus.OK) {
 			return new JSONObject(responseEntity.getBody());
