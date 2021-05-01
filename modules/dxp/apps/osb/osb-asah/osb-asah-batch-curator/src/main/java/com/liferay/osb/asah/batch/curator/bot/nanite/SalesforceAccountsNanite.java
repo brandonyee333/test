@@ -93,7 +93,7 @@ public class SalesforceAccountsNanite extends BaseNanite {
 			dataSourceId, this, "STARTED",
 			WeDeployDataService.OSB_ASAH_FARO_INFO, "totalOperations",
 			_salesforceAuditEventDog.getSalesforceAuditEventsCount(
-				dataSourceId, "Account"));
+				dataSourceId, SalesforceEntity.Type.ACCOUNT.toString()));
 
 		try {
 			int page = 0;
@@ -101,7 +101,8 @@ public class SalesforceAccountsNanite extends BaseNanite {
 			while (true) {
 				List<SalesforceAuditEvent> salesforceAuditEvents =
 					_salesforceAuditEventDog.getSalesforceAuditEvents(
-						dataSourceId, "Account", page++, 50, Sort.asc("id"));
+						dataSourceId, SalesforceEntity.Type.ACCOUNT.toString(),
+						page++, 50, Sort.asc("id"));
 
 				if (salesforceAuditEvents.isEmpty()) {
 					break;
