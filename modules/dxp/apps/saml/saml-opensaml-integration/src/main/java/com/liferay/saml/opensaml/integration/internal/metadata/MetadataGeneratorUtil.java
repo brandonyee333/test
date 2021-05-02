@@ -17,6 +17,7 @@ package com.liferay.saml.opensaml.integration.internal.metadata;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.saml.constants.SamlPortletKeys;
 import com.liferay.saml.opensaml.integration.internal.util.OpenSamlUtil;
 import com.liferay.saml.runtime.exception.CredentialException;
 import com.liferay.saml.runtime.exception.EntityIdException;
@@ -133,14 +134,17 @@ public class MetadataGeneratorUtil {
 			OpenSamlUtil.buildSingleSignOnService(
 				SAMLConstants.SAML2_REDIRECT_BINDING_URI,
 				StringBundler.concat(
-					portalURL, PortalUtil.getPathMain(), "/portal/saml/sso"));
+					portalURL, PortalUtil.getPathMain(),
+					"/portal/saml/redirect/sso"));
 
 		singleSignOnServices.add(singleSignOnService);
 
 		singleSignOnService = OpenSamlUtil.buildSingleSignOnService(
 			SAMLConstants.SAML2_POST_BINDING_URI,
 			StringBundler.concat(
-				portalURL, PortalUtil.getPathMain(), "/portal/saml/sso"));
+				portalURL, "/?p_p_id=", SamlPortletKeys.SAML,
+				"&p_p_lifecycle=1&_", SamlPortletKeys.SAML,
+				"_javax.portlet.action=/saml/web_sso"));
 
 		singleSignOnServices.add(singleSignOnService);
 
@@ -151,7 +155,9 @@ public class MetadataGeneratorUtil {
 			OpenSamlUtil.buildSingleLogoutService(
 				SAMLConstants.SAML2_POST_BINDING_URI,
 				StringBundler.concat(
-					portalURL, PortalUtil.getPathMain(), "/portal/saml/slo"));
+					portalURL, "/?p_p_id=", SamlPortletKeys.SAML,
+					"&p_p_lifecycle=1&_", SamlPortletKeys.SAML,
+					"_javax.portlet.action=/saml/slo"));
 
 		singleLogoutServices.add(postSingleLogoutService);
 
@@ -159,7 +165,8 @@ public class MetadataGeneratorUtil {
 			OpenSamlUtil.buildSingleLogoutService(
 				SAMLConstants.SAML2_REDIRECT_BINDING_URI,
 				StringBundler.concat(
-					portalURL, PortalUtil.getPathMain(), "/portal/saml/slo"));
+					portalURL, PortalUtil.getPathMain(),
+					"/portal/saml/redirect/slo"));
 
 		singleLogoutServices.add(redirectSingleLogoutService);
 
@@ -222,7 +229,9 @@ public class MetadataGeneratorUtil {
 			OpenSamlUtil.buildAssertionConsumerService(
 				SAMLConstants.SAML2_POST_BINDING_URI, 1, true,
 				StringBundler.concat(
-					portalURL, PortalUtil.getPathMain(), "/portal/saml/acs"));
+					portalURL, "/?p_p_id=", SamlPortletKeys.SAML,
+					"&p_p_lifecycle=1&_", SamlPortletKeys.SAML,
+					"_javax.portlet.action=/saml/assertion_consumer_service"));
 
 		assertionConsumerServices.add(assertionConsumerService);
 
@@ -246,7 +255,9 @@ public class MetadataGeneratorUtil {
 			OpenSamlUtil.buildSingleLogoutService(
 				SAMLConstants.SAML2_POST_BINDING_URI,
 				StringBundler.concat(
-					portalURL, PortalUtil.getPathMain(), "/portal/saml/slo"));
+					portalURL, "/?p_p_id=", SamlPortletKeys.SAML,
+					"&p_p_lifecycle=1&_", SamlPortletKeys.SAML,
+					"_javax.portlet.action=/saml/slo"));
 
 		singleLogoutServices.add(postSingleLogoutService);
 
@@ -254,7 +265,8 @@ public class MetadataGeneratorUtil {
 			OpenSamlUtil.buildSingleLogoutService(
 				SAMLConstants.SAML2_REDIRECT_BINDING_URI,
 				StringBundler.concat(
-					portalURL, PortalUtil.getPathMain(), "/portal/saml/slo"));
+					portalURL, PortalUtil.getPathMain(),
+					"/portal/saml/redirect/slo"));
 
 		singleLogoutServices.add(redirectSingleLogoutService);
 
@@ -262,8 +274,9 @@ public class MetadataGeneratorUtil {
 			OpenSamlUtil.buildSingleLogoutService(
 				SAMLConstants.SAML2_SOAP11_BINDING_URI,
 				StringBundler.concat(
-					portalURL, PortalUtil.getPathMain(),
-					"/portal/saml/slo_soap"));
+					portalURL, "/?p_p_id=", SamlPortletKeys.SAML,
+					"&p_p_lifecycle=1&_", SamlPortletKeys.SAML,
+					"_javax.portlet.action=/saml/slo_soap"));
 
 		singleLogoutServices.add(soapSingleLogoutService);
 

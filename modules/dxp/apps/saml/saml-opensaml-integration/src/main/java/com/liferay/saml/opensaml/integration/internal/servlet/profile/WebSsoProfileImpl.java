@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.saml.constants.SamlPortletKeys;
 import com.liferay.saml.constants.SamlWebKeys;
 import com.liferay.saml.opensaml.integration.internal.binding.SamlBinding;
 import com.liferay.saml.opensaml.integration.internal.metadata.MetadataManager;
@@ -1003,15 +1004,13 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 			HttpServletRequest httpServletRequest)
 		throws PortalException {
 
-		StringBundler sb = new StringBundler(3);
+		StringBundler sb = new StringBundler(6);
 
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
-		sb.append(themeDisplay.getPathMain());
-
-		sb.append("/portal/saml/auth_redirect?redirect=");
+		sb.append("/?p_p_id=");
+		sb.append(SamlPortletKeys.SAML);
+		sb.append("&p_p_lifecycle=1&_");
+		sb.append(SamlPortletKeys.SAML);
+		sb.append("_javax.portlet.action=/saml/auth_redirect&redirect=");
 
 		SAMLBindingContext samlBindingContext = messageContext.getSubcontext(
 			SAMLBindingContext.class);
@@ -1390,10 +1389,13 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 
 		sb.append("/portal/login?redirect=");
 
-		StringBundler redirectSB = new StringBundler(4);
+		StringBundler redirectSB = new StringBundler(7);
 
-		redirectSB.append(themeDisplay.getPathMain());
-		redirectSB.append("/portal/saml/sso");
+		redirectSB.append("/?p_p_id=");
+		redirectSB.append(SamlPortletKeys.SAML);
+		redirectSB.append("&p_p_lifecycle=1&_");
+		redirectSB.append(SamlPortletKeys.SAML);
+		redirectSB.append("_javax.portlet.action=/saml/web_sso");
 
 		SAMLPeerEntityContext samlPeerEntityContext =
 			samlMessageContext.getSubcontext(SAMLPeerEntityContext.class);
@@ -1413,13 +1415,13 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 			if ((samlMessageInfoContext != null) &&
 				(samlMessageInfoContext.getMessageId() != null)) {
 
-				redirectSB.append("?saml_message_id=");
+				redirectSB.append("&saml_message_id=");
 				redirectSB.append(
 					URLCodec.encodeURL(samlMessageInfoContext.getMessageId()));
 			}
 		}
 		else if (samlPeerEntityContext.getEntityId() != null) {
-			redirectSB.append("?entityId=");
+			redirectSB.append("&entityId=");
 			redirectSB.append(
 				URLCodec.encodeURL(samlPeerEntityContext.getEntityId()));
 		}
