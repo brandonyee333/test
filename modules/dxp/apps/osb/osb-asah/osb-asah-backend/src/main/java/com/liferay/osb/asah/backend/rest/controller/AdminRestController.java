@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Preference;
@@ -40,6 +41,7 @@ import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
@@ -122,6 +124,9 @@ public class AdminRestController extends BaseRestController {
 		}
 		else if (collectionName.equals("custom-asset-dashboards")) {
 			_customAssetDashboardRepository.deleteAll();
+		}
+		else if (collectionName.equals("experiments")) {
+			_experimentRepository.deleteAll();
 		}
 		else if (collectionName.equals("data-sources")) {
 			_dataSourceRepository.deleteAll();
@@ -209,6 +214,9 @@ public class AdminRestController extends BaseRestController {
 			_addEntities(_dataSourceRepository, json, DataSource.class);
 
 			_nanitesHttp.refreshAnalytics();
+		}
+		else if (collectionName.equals("experiments")) {
+			_addEntities(_experimentRepository, json, Experiment.class);
 		}
 		else if (collectionName.equals("individual-segments")) {
 			_addEntities(_segmentRepository, json, Segment.class);
@@ -394,6 +402,9 @@ public class AdminRestController extends BaseRestController {
 
 	private final Map<String, ElasticsearchInvoker> _elasticsearchInvokers =
 		new HashMap<>();
+
+	@Autowired
+	private ExperimentRepository _experimentRepository;
 
 	@Autowired
 	private MembershipChangeRepository _membershipChangeRepository;
