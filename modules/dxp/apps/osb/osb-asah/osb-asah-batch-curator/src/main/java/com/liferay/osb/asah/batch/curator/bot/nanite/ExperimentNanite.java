@@ -15,17 +15,19 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.DXPClient;
+import com.liferay.osb.asah.common.entity.Experiment;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
 import com.liferay.osb.asah.common.http.ExperimentHttp;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
+import com.liferay.osb.asah.common.model.Goal;
+import com.liferay.osb.asah.common.model.GoalMetric;
+import com.liferay.osb.asah.common.repository.ExperimentRepository;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,15 +36,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.Range;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,14 +61,17 @@ public class ExperimentNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		JSONArrayIterator.of(
-			"experiments", faroInfoElasticsearchInvoker, this::_updateExperiment
-		).setQueryBuilder(
-			QueryBuilders.termQuery(
-				"status", ExperimentStatus.RUNNING.toString())
-		).setStopOnExceptions(
-			false
-		).iterate();
+		for (Experiment experiment :
+				_experimentRepository.findByExperimentStatus(
+					ExperimentStatus.RUNNING)) {
+
+			try {
+				_updateExperiment(experiment);
+			}
+			catch (Exception e) {
+				_log.error(e, e);
+			}
+		}
 	}
 
 	@Override
@@ -77,7 +80,7 @@ public class ExperimentNanite extends BaseNanite {
 	}
 
 	private ExperimentVariantMetric _findControlExperimentVariantMetric(
-		List<ExperimentVariantMetric> experimentVariantMetrics) {
+		Set<ExperimentVariantMetric> experimentVariantMetrics) {
 
 		Stream<ExperimentVariantMetric> stream =
 			experimentVariantMetrics.stream();
@@ -92,11 +95,8 @@ public class ExperimentNanite extends BaseNanite {
 	}
 
 	private ExperimentVariantMetric _getWinnerExperimentVariantMetric(
-			String metric, JSONArray variantMetricsJSONArray)
-		throws Exception {
-
-		List<ExperimentVariantMetric> experimentVariantMetrics =
-			_toExperimentVariantMetrics(variantMetricsJSONArray);
+		GoalMetric goalMetric,
+		Set<ExperimentVariantMetric> experimentVariantMetrics) {
 
 		ExperimentVariantMetric controlExperimentVariantMetric =
 			_findControlExperimentVariantMetric(experimentVariantMetrics);
@@ -120,7 +120,7 @@ public class ExperimentNanite extends BaseNanite {
 				experimentVariantMetric.getConfidenceIntervalRange();
 
 			if (_hasExperimentVariantMetricImproved(
-					controlConfidenceIntervalRange, metric,
+					controlConfidenceIntervalRange, goalMetric,
 					variantConfidenceIntervalRange)) {
 
 				improvedExperimentVariantMetrics.add(experimentVariantMetric);
@@ -133,7 +133,7 @@ public class ExperimentNanite extends BaseNanite {
 		}
 
 		if (!improvedExperimentVariantMetrics.isEmpty()) {
-			if (Objects.equals(metric, "BOUNCE_RATE")) {
+			if (Objects.equals(goalMetric, GoalMetric.BOUNCE_RATE)) {
 				return Collections.min(
 					improvedExperimentVariantMetrics,
 					Comparator.comparing(ExperimentVariantMetric::getMedian));
@@ -152,10 +152,10 @@ public class ExperimentNanite extends BaseNanite {
 	}
 
 	private boolean _hasExperimentVariantMetricImproved(
-		Range<Double> controlConfidenceIntervalRange, String metric,
+		Range<Double> controlConfidenceIntervalRange, GoalMetric goalMetric,
 		Range<Double> variantConfidenceIntervalRange) {
 
-		if (Objects.equals(metric, "BOUNCE_RATE") &&
+		if (Objects.equals(goalMetric, GoalMetric.BOUNCE_RATE) &&
 			variantConfidenceIntervalRange.isBeforeRange(
 				controlConfidenceIntervalRange)) {
 
@@ -172,75 +172,53 @@ public class ExperimentNanite extends BaseNanite {
 	}
 
 	private void _putOrReplaceMetric(
-		JSONArray metricsJSONArray, JSONObject newMetricsJSONObject) {
+		Set<ExperimentMetric> experimentMetrics,
+		ExperimentMetric newExperimentMetric) {
 
-		OffsetDateTime newProcessedOffsetDateTime = OffsetDateTime.parse(
-			newMetricsJSONObject.getString("processedDate"));
+		LocalDateTime newProcessedDate = newExperimentMetric.getProcessedDate();
 
-		LocalDate newProcessedLocalDate =
-			newProcessedOffsetDateTime.toLocalDate();
+		LocalDate newProcessedLocalDate = newProcessedDate.toLocalDate();
 
-		for (int i = 0; i < metricsJSONArray.length(); i++) {
-			JSONObject metricsJSONObject = metricsJSONArray.getJSONObject(i);
+		Stream<ExperimentMetric> stream = experimentMetrics.stream();
 
-			OffsetDateTime processedOffsetDateTime = OffsetDateTime.parse(
-				metricsJSONObject.getString("processedDate"));
+		stream.map(
+			experimentMetric -> {
+				LocalDateTime processedDate =
+					experimentMetric.getProcessedDate();
 
-			LocalDate processedLocalDate =
-				processedOffsetDateTime.toLocalDate();
+				LocalDate processedLocalDate = processedDate.toLocalDate();
 
-			if (processedLocalDate.isEqual(newProcessedLocalDate)) {
-				metricsJSONArray.put(i, newMetricsJSONObject);
+				if (processedLocalDate.isEqual(newProcessedLocalDate)) {
+					return newExperimentMetric;
+				}
 
-				return;
-			}
-		}
-
-		metricsJSONArray.put(newMetricsJSONObject);
+				return experimentMetric;
+			});
 	}
 
-	private List<ExperimentVariantMetric> _toExperimentVariantMetrics(
-			JSONArray experimentVariantMetricsJSONArray)
-		throws Exception {
+	private JSONObject _updateExperiment(Experiment experiment) {
+		Set<ExperimentMetric> experimentMetrics =
+			experiment.getExperimentMetrics();
 
-		TypeFactory typeFactory = TypeFactory.defaultInstance();
+		String experimentId = String.valueOf(experiment.getId());
 
-		return _objectMapper.readValue(
-			experimentVariantMetricsJSONArray.toString(),
-			typeFactory.constructCollectionType(
-				List.class, ExperimentVariantMetric.class));
-	}
+		ExperimentMetric experimentMetric = _objectMapper.convertValue(
+			_experimentHttp.getExperimentMetricsJSONObject(experimentId),
+			ExperimentMetric.class);
 
-	private JSONObject _updateExperiment(JSONObject experimentJSONObject)
-		throws Exception {
+		_putOrReplaceMetric(experimentMetrics, experimentMetric);
 
-		JSONArray metricsJSONArray = experimentJSONObject.optJSONArray(
-			"metrics");
+		Long estimatedDaysLeft = experimentMetric.getEstimatedDaysLeft();
 
-		if (metricsJSONArray == null) {
-			metricsJSONArray = new JSONArray();
-		}
+		if ((estimatedDaysLeft != null) && (estimatedDaysLeft <= 0)) {
+			experiment.setFinishedDate(new Date());
 
-		String experimentId = experimentJSONObject.getString("id");
-
-		JSONObject metricsJSONObject =
-			_experimentHttp.getExperimentMetricsJSONObject(experimentId);
-
-		_putOrReplaceMetric(metricsJSONArray, metricsJSONObject);
-
-		experimentJSONObject.put("metrics", metricsJSONArray);
-
-		if (metricsJSONObject.optLong("estimatedDaysLeft", 1) <= 0) {
-			experimentJSONObject.put(
-				"finishedDate", DateUtil.toUTCString(new Date()));
-
-			JSONObject goalJSONObject = experimentJSONObject.getJSONObject(
-				"goal");
+			Goal goal = experiment.getGoal();
 
 			ExperimentVariantMetric experimentVariantMetric =
 				_getWinnerExperimentVariantMetric(
-					goalJSONObject.getString("metric"),
-					metricsJSONObject.getJSONArray("variantMetrics"));
+					goal.getGoalMetric(),
+					experimentMetric.getExperimentVariantMetrics());
 
 			ExperimentStatus experimentStatus =
 				ExperimentStatus.FINISHED_WINNER;
@@ -253,24 +231,23 @@ public class ExperimentNanite extends BaseNanite {
 			else {
 				winnerDXPVariantId = experimentVariantMetric.getDXPVariantId();
 
-				experimentJSONObject.put(
-					"winnerDXPVariantId", winnerDXPVariantId);
+				experiment.setWinnerDXPVariantId(winnerDXPVariantId);
 			}
 
-			experimentJSONObject.put("status", experimentStatus);
+			experiment.setExperimentStatus(experimentStatus);
 
 			_dxpClient.updateDXPExperimentStatus(
-				experimentJSONObject.getLong("dataSourceId"),
-				Long.valueOf(experimentId), experimentStatus,
-				winnerDXPVariantId);
+				experiment.getDataSourceId(), experiment.getId(),
+				experimentStatus, winnerDXPVariantId);
 		}
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Updated metrics for experiment " + experimentId);
 		}
 
-		return faroInfoElasticsearchInvoker.update(
-			"experiments", experimentJSONObject);
+		_experimentRepository.save(experiment);
+
+		return _objectMapper.convertValue(experiment, JSONObject.class);
 	}
 
 	private static final Log _log = LogFactory.getLog(ExperimentNanite.class);
@@ -280,6 +257,9 @@ public class ExperimentNanite extends BaseNanite {
 
 	@Autowired
 	private ExperimentHttp _experimentHttp;
+
+	@Autowired
+	private ExperimentRepository _experimentRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
