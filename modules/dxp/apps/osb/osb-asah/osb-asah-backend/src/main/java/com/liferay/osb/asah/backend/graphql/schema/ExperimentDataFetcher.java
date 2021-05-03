@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
-import com.liferay.osb.asah.common.entity.Experiment;
+import com.liferay.osb.asah.backend.dto.ExperimentDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
 import graphql.schema.DataFetcher;
@@ -31,10 +31,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "experiment", typeName = "QueryType")
-public class ExperimentDataFetcher implements DataFetcher<Experiment> {
+public class ExperimentDataFetcher implements DataFetcher<ExperimentDTO> {
 
 	@Override
-	public Experiment get(DataFetchingEnvironment dataFetchingEnvironment) {
+	public ExperimentDTO get(DataFetchingEnvironment dataFetchingEnvironment) {
 		String experimentId = dataFetchingEnvironment.getArgument(
 			"experimentId");
 
@@ -42,7 +42,8 @@ public class ExperimentDataFetcher implements DataFetcher<Experiment> {
 
 		context.put("experimentId", experimentId);
 
-		return _experimentDog.fetchExperiment(Long.valueOf(experimentId));
+		return new ExperimentDTO(
+			_experimentDog.fetchExperiment(Long.valueOf(experimentId)));
 	}
 
 	@Autowired

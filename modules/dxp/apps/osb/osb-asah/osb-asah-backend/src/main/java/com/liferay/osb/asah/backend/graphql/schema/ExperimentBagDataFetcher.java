@@ -15,10 +15,12 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
+import com.liferay.osb.asah.backend.dto.ExperimentDTO;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -35,10 +37,10 @@ import org.springframework.stereotype.Component;
 @Component
 @GraphQLTypeWiring(fieldName = "experiments", typeName = "QueryType")
 public class ExperimentBagDataFetcher
-	implements DataFetcher<ResultBag<Experiment>> {
+	implements DataFetcher<ResultBag<ExperimentDTO>> {
 
 	@Override
-	public ResultBag<Experiment> get(
+	public ResultBag<ExperimentDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
 		String channelId = dataFetchingEnvironment.getArgument("channelId");
@@ -50,7 +52,8 @@ public class ExperimentBagDataFetcher
 		List<Experiment> experiments = _experimentDog.getExperiments(
 			Long.valueOf(channelId), keywords, start, size, Sort.of(sort));
 
-		return new ResultBag<>(experiments, experiments.size());
+		return new ResultBag<>(
+			ListUtil.map(experiments, ExperimentDTO::new), experiments.size());
 	}
 
 	@Autowired
