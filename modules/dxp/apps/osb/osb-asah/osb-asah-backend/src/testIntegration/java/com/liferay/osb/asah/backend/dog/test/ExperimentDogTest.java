@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -205,13 +204,11 @@ public class ExperimentDogTest {
 	)
 	@Test
 	public void testGetExperimentsAll() {
-		ResultBag<Experiment> resultBag = _experimentDog.getExperimentResultBag(
-			"1", null, 10, Sort.asc("name.raw"), 0);
+		List<Experiment> experiments = _experimentDog.getExperiments(
+			1L, null, 0, 10, Sort.asc("name.raw"));
 
-		Assert.assertNotNull(resultBag);
-		Assert.assertEquals(3, resultBag.getTotal());
-
-		List<Experiment> experiments = resultBag.getResults();
+		Assert.assertNotNull(experiments);
+		Assert.assertEquals(experiments.toString(), 3, experiments.size());
 
 		Assert.assertEquals(experiments.toString(), 3, experiments.size());
 	}
@@ -253,13 +250,11 @@ public class ExperimentDogTest {
 	)
 	@Test
 	public void testGetExperimentsPaginated() {
-		ResultBag<Experiment> resultBag = _experimentDog.getExperimentResultBag(
-			"1", null, 1, Sort.asc("name.raw"), 1);
+		List<Experiment> experiments = _experimentDog.getExperiments(
+			1L, null, 1, 1, Sort.asc("name.raw"));
 
-		Assert.assertNotNull(resultBag);
-		Assert.assertEquals(1, resultBag.getTotal());
-
-		List<Experiment> experiments = resultBag.getResults();
+		Assert.assertNotNull(experiments);
+		Assert.assertEquals(experiments.toString(), 1, experiments.size());
 
 		Assert.assertEquals(experiments.toString(), 1, experiments.size());
 

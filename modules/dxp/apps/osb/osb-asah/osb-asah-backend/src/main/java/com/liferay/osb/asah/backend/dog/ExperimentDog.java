@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
@@ -26,25 +24,19 @@ import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
-import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.entity.ExperimentVariant;
 import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
-import com.liferay.osb.asah.common.model.ExperimentMetricsBag;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.model.Goal;
 import com.liferay.osb.asah.common.model.GoalMetric;
 import com.liferay.osb.asah.common.model.PageMetricType;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-
-import java.io.IOException;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -54,29 +46,23 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.metrics.CardinalityAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
-import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -95,13 +81,7 @@ public class ExperimentDog {
 			experiment.setModifiedDate(experiment.getCreateDate());
 		}
 
-		JSONObject experimentJSONObject = _faroInfoElasticsearchInvoker.add(
-			"experiments",
-			_objectMapper.convertValue(experiment, JSONObject.class));
-
-		experiment.setId(Long.valueOf(experimentJSONObject.optString("id")));
-
-		return experiment;
+		return _experimentRepository.save(experiment);
 	}
 
 	public ExperimentMetric calculateExperimentMetric(Long experimentId) {
@@ -127,38 +107,21 @@ public class ExperimentDog {
 				experiment.getDataSourceId(), experiment.getId());
 		}
 
-		return _faroInfoElasticsearchInvoker.delete(
-			"experiments", String.valueOf(experimentId));
+		try {
+			_experimentRepository.delete(experiment);
+		}
+		catch (Exception e) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public Experiment fetchExperiment(Long experimentId) {
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"experiments", _faroInfoElasticsearchInvoker,
-			_buildExperimentSearchSourceBuilder(experimentId));
+		Optional<Experiment> experimentOptional =
+			_experimentRepository.findById(experimentId);
 
-		long totalHitsCount = HitsUtil.getTotalHitsCount(searchHits);
-
-		if (totalHitsCount != 1) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					String.format(
-						"Unable to retrieve experiment for the ID %s. Total " +
-							"hits returned %d.",
-						experimentId, totalHitsCount));
-			}
-
-			return null;
-		}
-
-		SearchHit searchHit = searchHits.getAt(0);
-
-		try {
-			return _objectMapper.readValue(
-				searchHit.getSourceAsString(), Experiment.class);
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException("Unable to process search request", ioe);
-		}
+		return experimentOptional.orElse(null);
 	}
 
 	public Experiment getExperiment(Long experimentId) {
@@ -212,27 +175,14 @@ public class ExperimentDog {
 					"draft");
 		}
 
-		ExperimentMetricsBag experimentMetricsBag = _fetchExperimentMetricsBag(
-			experiment.getId());
-
-		if (experimentMetricsBag == null) {
-			return Collections.emptyList();
-		}
-
-		return experimentMetricsBag.getExperimentMetrics();
+		return new ArrayList<>(experiment.getExperimentMetrics());
 	}
 
-	public ResultBag<Experiment> getExperimentResultBag(
-		String channelId, String keywords, int size, Sort sort, int start) {
+	public List<Experiment> getExperiments(
+		Long channelId, String keywords, int page, int size, Sort sort) {
 
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"experiments", _faroInfoElasticsearchInvoker,
-			DogUtil.buildSearchSourceBuilder(
-				SortBuilderUtil.fieldSort(sort),
-				_buildKeywordsQueryBuilder(channelId, keywords), size, start));
-
-		return DogUtil.createResultBag(
-			Experiment.class, _objectMapper, searchHits);
+		return _experimentRepository.searchExperimentsByChannelIdAndKeywords(
+			channelId, keywords, PageRequest.of(page, size, sort));
 	}
 
 	public List<HistogramMetric> getExperimentSessionHistogramMetrics(
@@ -349,72 +299,7 @@ public class ExperimentDog {
 	public Experiment updateExperiment(Experiment experiment) {
 		experiment.setModifiedDate(new Date());
 
-		_faroInfoElasticsearchInvoker.update(
-			"experiments",
-			_objectMapper.convertValue(experiment, JSONObject.class));
-
-		return experiment;
-	}
-
-	private SearchSourceBuilder _buildExperimentMetricsSearchSourceBuilder(
-		Long experimentId) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.fetchSource("metrics", null);
-		searchSourceBuilder.query(QueryBuilders.termQuery("id", experimentId));
-		searchSourceBuilder.size(1);
-
-		return searchSourceBuilder;
-	}
-
-	private SearchSourceBuilder _buildExperimentSearchSourceBuilder(
-		Long experimentId) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.fetchSource(null, "metrics");
-		searchSourceBuilder.query(
-			QueryBuilders.termQuery("id", String.valueOf(experimentId)));
-		searchSourceBuilder.size(1);
-
-		return searchSourceBuilder;
-	}
-
-	private QueryBuilder _buildKeywordsQueryBuilder(
-		String channelId, String keywords) {
-
-		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "channelId", channelId);
-
-		if (StringUtils.isNotBlank(keywords)) {
-			boolQueryBuilder.filter(
-				BoolQueryBuilderUtil.should(
-					QueryBuilders.queryStringQuery(
-						String.format(
-							"name:*%1$s* OR description:*%1$s*",
-							QueryUtil.escapeKeywords(keywords)))
-				).should(
-					QueryBuilders.multiMatchQuery(
-						keywords, "name", "description"
-					).fuzziness(
-						Fuzziness.AUTO
-					)
-				).should(
-					QueryBuilders.wildcardQuery(
-						"pageURL.search", "*" + keywords + "*")
-				));
-		}
-
-		if (boolQueryBuilder.hasClauses()) {
-			return boolQueryBuilder;
-		}
-
-		return QueryBuilders.matchAllQuery();
+		return _experimentRepository.save(experiment);
 	}
 
 	private SearchSourceBuilder _buildTotalSessionsSearchSourceBuilder(
@@ -485,44 +370,12 @@ public class ExperimentDog {
 		return experimentMetric;
 	}
 
-	private ExperimentMetricsBag _fetchExperimentMetricsBag(Long experimentId) {
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"experiments", _faroInfoElasticsearchInvoker,
-			_buildExperimentMetricsSearchSourceBuilder(experimentId));
-
-		long totalHitsCount = HitsUtil.getTotalHitsCount(searchHits);
-
-		if (totalHitsCount != 1) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					String.format(
-						"Unable to retrieve experiment metrics for " +
-							"experiment ID %s. Returned %d total hits.",
-						experimentId, totalHitsCount));
-			}
-
-			return null;
-		}
-
-		SearchHit searchHit = searchHits.getAt(0);
-
-		try {
-			return _objectMapper.readValue(
-				searchHit.getSourceAsString(), ExperimentMetricsBag.class);
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException("Unable to process search request", ioe);
-		}
-	}
-
 	private Long _getChannelId(Experiment experiment) {
-		Long channelId = experiment.getChannelId();
-
-		if (channelId != null) {
-			return channelId;
+		if (experiment.getChannelId() != null) {
+			return experiment.getChannelId();
 		}
 
-		channelId = _dataSourceDog.getDefaultChannelId(
+		Long channelId = _dataSourceDog.getDefaultChannelId(
 			experiment.getDataSourceId());
 
 		if (channelId != null) {
@@ -692,8 +545,6 @@ public class ExperimentDog {
 		}
 	}
 
-	private static final Log _log = LogFactory.getLog(ExperimentDog.class);
-
 	@Autowired
 	private DataDog _dataDog;
 
@@ -706,13 +557,13 @@ public class ExperimentDog {
 	@Autowired
 	private ExperimentMetricDog _experimentMetricDog;
 
+	@Autowired
+	private ExperimentRepository _experimentRepository;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private HistogramDog _histogramDog;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 }
