@@ -14,18 +14,23 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
+import com.liferay.osb.asah.backend.dto.ExperimentDTO;
+import com.liferay.osb.asah.backend.dto.ExperimentMetricDTO;
+import com.liferay.osb.asah.backend.dto.ExperimentVariantDTO;
+import com.liferay.osb.asah.backend.dto.GoalDTO;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
-import com.liferay.osb.asah.backend.model.ExperimentVariants;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.entity.ExperimentVariant;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.model.Goal;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.List;
 import java.util.Set;
@@ -58,22 +63,27 @@ public class ExperimentsRestController extends BaseRestController {
 	}
 
 	@GetMapping("/{id}/calculate-metrics")
-	public ExperimentMetric getCalculateExperimentMetric(
+	public ExperimentMetricDTO getCalculateExperimentMetric(
 		@PathVariable Long id) {
 
-		return _experimentDog.calculateExperimentMetric(id);
+		return new ExperimentMetricDTO(
+			_experimentDog.calculateExperimentMetric(id));
 	}
 
 	@GetMapping("/{id}")
-	public Experiment getExperiment(@PathVariable Long id) {
-		return _experimentDog.getExperiment(id);
+	public ExperimentDTO getExperiment(@PathVariable Long id) {
+		return new ExperimentDTO(_experimentDog.getExperiment(id));
 	}
 
 	@PatchMapping("/{id}")
 	public void patchExperiment(
-		@PathVariable Long id, @RequestBody @Valid Experiment experiment) {
+		@PathVariable Long id,
+		@RequestBody @Valid ExperimentDTO experimentDTO) {
 
-		experiment.setId(id);
+		Experiment experiment = _objectMapper.convertValue(
+			experimentDTO, Experiment.class);
+
+		experiment.setId(Long.valueOf(id));
 
 		ExperimentSettings experimentSettings = null;
 
@@ -85,10 +95,12 @@ public class ExperimentsRestController extends BaseRestController {
 	}
 
 	@PostMapping
-	public Experiment postExperiment(
-		@RequestBody @Valid Experiment experiment) {
+	public ExperimentDTO postExperiment(
+		@RequestBody @Valid ExperimentDTO experimentDTO) {
 
-		return _experimentDog.addExperiment(experiment);
+		return new ExperimentDTO(
+			_experimentDog.addExperiment(
+				_objectMapper.convertValue(experimentDTO, Experiment.class)));
 	}
 
 	@PostMapping("/{id}/estimated-days-duration")
@@ -114,21 +126,26 @@ public class ExperimentsRestController extends BaseRestController {
 	@PutMapping("/{id}/dxp-variants")
 	public void putExperimentVariants(
 		@PathVariable Long id,
-		@RequestBody @Valid ExperimentVariants experimentVariants) {
+		@RequestBody @Valid ExperimentVariantDTO experimentVariantDTO) {
 
 		Experiment experiment = _experimentDog.getExperiment(id);
 
 		experiment.setExperimentVariants(
-			experimentVariants.getExperimentVariants());
+			SetUtil.map(
+				experimentVariantDTO.getExperimentVariantDTOs(),
+				currentDXPVariantDTO -> _objectMapper.convertValue(
+					experiment, ExperimentVariant.class)));
 
 		_experimentDog.updateExperiment(experiment);
 	}
 
 	@PutMapping("/{id}/goal")
-	public void putGoal(@PathVariable Long id, @RequestBody @Valid Goal goal) {
+	public void putGoal(
+		@PathVariable Long id, @RequestBody @Valid GoalDTO goalDTO) {
+
 		Experiment experiment = _experimentDog.getExperiment(id);
 
-		experiment.setGoal(goal);
+		experiment.setGoal(_objectMapper.convertValue(goalDTO, Goal.class));
 
 		_experimentDog.updateExperiment(experiment);
 	}
@@ -178,5 +195,8 @@ public class ExperimentsRestController extends BaseRestController {
 
 	@Autowired
 	private ExperimentDog _experimentDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

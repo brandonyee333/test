@@ -15,8 +15,10 @@
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
+import com.liferay.osb.asah.backend.dto.ExperimentDTO;
+import com.liferay.osb.asah.backend.dto.ExperimentVariantDTO;
+import com.liferay.osb.asah.backend.dto.GoalDTO;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
-import com.liferay.osb.asah.backend.model.ExperimentVariants;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.ExperimentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dxp.DXPClient;
@@ -71,20 +73,22 @@ public class ExperimentsRestControllerTest {
 	)
 	@Test
 	public void testPatchExperiment() {
-		Experiment expectedExperiment = new Experiment();
+		Experiment experiment = new Experiment();
 
-		expectedExperiment.setGoal(new Goal(GoalMetric.BOUNCE_RATE, null));
-		expectedExperiment.setName("New Experiment Name");
+		experiment.setGoal(new Goal(GoalMetric.BOUNCE_RATE, null));
+		experiment.setName("New Experiment Name");
 
-		_experimentsRestController.patchExperiment(1L, expectedExperiment);
+		ExperimentDTO expectedExperimentDTO = new ExperimentDTO(experiment);
 
-		Experiment actualExperiment = _experimentsRestController.getExperiment(
-			1L);
+		_experimentsRestController.patchExperiment(1L, expectedExperimentDTO);
+
+		ExperimentDTO actualExperimentDTO =
+			_experimentsRestController.getExperiment(1L);
 
 		Assert.assertEquals(
-			expectedExperiment.getGoal(), actualExperiment.getGoal());
-		Assert.assertEquals(
-			expectedExperiment.getName(), actualExperiment.getName());
+			expectedExperimentDTO.getName(), actualExperimentDTO.getName());
+		_assertGoalDTO(
+			expectedExperimentDTO.getGoal(), actualExperimentDTO.getGoal());
 	}
 
 	@ElasticsearchIndex(
@@ -97,36 +101,38 @@ public class ExperimentsRestControllerTest {
 	)
 	@Test
 	public void testPostExperiment() {
-		Experiment expectedExperiment = new Experiment();
+		Experiment experiment = new Experiment();
 
-		expectedExperiment.setDataSourceId(331238757269547423L);
-		expectedExperiment.setDXPExperienceId("1");
-		expectedExperiment.setDXPExperienceName("Experience Name");
-		expectedExperiment.setDXPSegmentId("123");
-		expectedExperiment.setDXPSegmentName("Segment Name");
-		expectedExperiment.setName("Experiment Name");
+		experiment.setDataSourceId(331238757269547423L);
+		experiment.setDXPExperienceId("1");
+		experiment.setDXPExperienceName("Experience Name");
+		experiment.setDXPSegmentId("123");
+		experiment.setDXPSegmentName("Segment Name");
+		experiment.setName("Experiment Name");
 
-		Experiment actualExperiment = _experimentsRestController.postExperiment(
-			expectedExperiment);
+		ExperimentDTO expectedExperimentDTO = new ExperimentDTO(experiment);
+
+		ExperimentDTO actualExperimentDTO =
+			_experimentsRestController.postExperiment(expectedExperimentDTO);
 
 		Assert.assertEquals(
-			Long.valueOf(12345), actualExperiment.getChannelId());
+			Long.valueOf(12345), actualExperimentDTO.getChannelId());
 
-		Assert.assertNotNull(actualExperiment.getId());
+		Assert.assertNotNull(actualExperimentDTO.getId());
 		Assert.assertEquals(
-			expectedExperiment.getName(), actualExperiment.getName());
+			expectedExperimentDTO.getName(), actualExperimentDTO.getName());
 		Assert.assertEquals(
-			expectedExperiment.getDXPExperienceId(),
-			actualExperiment.getDXPExperienceId());
+			expectedExperimentDTO.getDXPExperienceId(),
+			actualExperimentDTO.getDXPExperienceId());
 		Assert.assertEquals(
-			expectedExperiment.getDXPExperienceName(),
-			actualExperiment.getDXPExperienceName());
+			expectedExperimentDTO.getDXPExperienceName(),
+			actualExperimentDTO.getDXPExperienceName());
 		Assert.assertEquals(
-			expectedExperiment.getDXPSegmentId(),
-			actualExperiment.getDXPSegmentId());
+			expectedExperimentDTO.getDXPSegmentId(),
+			actualExperimentDTO.getDXPSegmentId());
 		Assert.assertEquals(
-			expectedExperiment.getDXPSegmentName(),
-			actualExperiment.getDXPSegmentName());
+			expectedExperimentDTO.getDXPSegmentName(),
+			actualExperimentDTO.getDXPSegmentName());
 	}
 
 	@Test(expected = OSBAsahException.class)
@@ -150,7 +156,7 @@ public class ExperimentsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testPutDXPVariants() {
+	public void testPutExperimentVariants() {
 		Set<ExperimentVariant> expectedExperimentVariants =
 			new HashSet<ExperimentVariant>() {
 				{
@@ -163,15 +169,18 @@ public class ExperimentsRestControllerTest {
 				}
 			};
 
-		_experimentsRestController.putExperimentVariants(
-			1L, new ExperimentVariants(expectedExperimentVariants));
+		ExperimentVariantDTO expectedExperimentVariantDTO =
+			new ExperimentVariantDTO(expectedExperimentVariants);
 
-		Experiment actualExperiment = _experimentsRestController.getExperiment(
-			1L);
+		_experimentsRestController.putExperimentVariants(
+			1L, expectedExperimentVariantDTO);
+
+		ExperimentDTO actualExperimentDTO =
+			_experimentsRestController.getExperiment(1L);
 
 		Assert.assertEquals(
-			expectedExperimentVariants,
-			actualExperiment.getExperimentVariants());
+			expectedExperimentVariantDTO.getExperimentVariantDTOs(),
+			actualExperimentDTO.getExperimentVariants());
 	}
 
 	@ElasticsearchIndex(
@@ -180,17 +189,28 @@ public class ExperimentsRestControllerTest {
 	)
 	@Test
 	public void testPutGoal() {
-		Goal expectedGoal = new Goal();
+		Goal goal = new Goal();
 
-		expectedGoal.setGoalMetric(GoalMetric.BOUNCE_RATE);
-		expectedGoal.setTarget("");
+		goal.setGoalMetric(GoalMetric.BOUNCE_RATE);
+		goal.setTarget("");
 
-		_experimentsRestController.putGoal(1L, expectedGoal);
+		GoalDTO expectedGoalDTO = new GoalDTO(goal);
 
-		Experiment actualExperiment = _experimentsRestController.getExperiment(
-			1L);
+		_experimentsRestController.putGoal(1L, expectedGoalDTO);
 
-		Assert.assertEquals(expectedGoal, actualExperiment.getGoal());
+		ExperimentDTO actualExperimentDTO =
+			_experimentsRestController.getExperiment(1L);
+
+		_assertGoalDTO(expectedGoalDTO, actualExperimentDTO.getGoal());
+	}
+
+	private void _assertGoalDTO(
+		GoalDTO actualGoalDTO, GoalDTO expectedGoalDTO) {
+
+		Assert.assertEquals(
+			expectedGoalDTO.getGoalMetric(), actualGoalDTO.getGoalMetric());
+		Assert.assertEquals(
+			expectedGoalDTO.getTarget(), actualGoalDTO.getTarget());
 	}
 
 	private ExperimentVariant _createExperimentVariant(
