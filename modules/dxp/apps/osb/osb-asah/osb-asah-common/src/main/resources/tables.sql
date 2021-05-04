@@ -155,6 +155,13 @@ CREATE TABLE IF NOT EXISTS DataSource (
 	workspaceURL TEXT
 );
 
+CREATE TABLE IF NOT EXISTS DataSourceFieldMapping (
+	dataSourceId BIGINT,
+	fieldMappingId BIGINT,
+	fieldName TEXT,
+	PRIMARY KEY (dataSourceId, fieldMappingId)
+);
+
 CREATE TABLE IF NOT EXISTS DataSourceOrganization (
 	dataSourceId BIGINT,
 	enableAllChildren BOOLEAN,
@@ -232,6 +239,22 @@ CREATE TABLE IF NOT EXISTS Field (
 	ownerType TEXT,
 	sourceName TEXT,
 	value TEXT
+);
+
+CREATE TABLE IF NOT EXISTS FieldMapping (
+	id BIGSERIAL PRIMARY KEY,
+	authorId TEXT,
+	authorName TEXT,
+	context TEXT,
+	createDate TIMESTAMPTZ,
+	displayName TEXT,
+	displayType TEXT,
+	fieldName TEXT,
+	fieldType TEXT,
+	modifiedDate TIMESTAMPTZ,
+	ownerType TEXT,
+	strategyConfiguration JSON,
+	strategyKey TEXT
 );
 
 CREATE TABLE IF NOT EXISTS InterestTopic (
