@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="FieldMapping.findByContextAndDataSourceIdAndFieldNameAndOwnerType">
+		<![CDATA[
+			SELECT
+				DISTINCT ON (FieldMapping.id) FieldMapping.id distinctId,
+				FieldMapping.*
+			FROM
+				FieldMapping
+			INNER JOIN
+				DataSourceFieldMapping ON
+					FieldMapping.id = DataSourceFieldMapping.fieldMappingId
+			WHERE
+				DataSourceFieldMapping.dataSourceId = :dataSourceId AND
+				FieldMapping.context = :context AND
+				FieldMapping.fieldName = :fieldName AND
+				FieldMapping.ownerType = :ownerType
+		]]>
+	</entry>
+	<entry key="FieldMapping.findByContextAndDataSourceIdAndOwnerType">
+		<![CDATA[
+			SELECT
+				DISTINCT ON (FieldMapping.id) FieldMapping.id distinctId,
+				FieldMapping.*
+			FROM
+				FieldMapping
+			INNER JOIN
+				DataSourceFieldMapping ON
+					FieldMapping.id = DataSourceFieldMapping.fieldMappingId
+			WHERE
+				DataSourceFieldMapping.dataSourceId = :dataSourceId AND
+				FieldMapping.context = :context AND
+				FieldMapping.ownerType = :ownerType
+		]]>
+	</entry>
+	<entry key="FieldMapping.findByDataSourceFieldNameAndDataSourceIdAndOwnerType">
+		<![CDATA[
+			SELECT
+				FieldMapping.*
+			FROM
+				FieldMapping
+			INNER JOIN
+				DataSourceFieldMapping ON
+					FieldMapping.id = DataSourceFieldMapping.fieldMappingId
+			WHERE
+				DataSourceFieldMapping.dataSourceId = :dataSourceId AND
+				DataSourceFieldMapping.fieldName = :dataSourceFieldName AND
+				FieldMapping.ownerType = :ownerType
+		]]>
+	</entry>
+</properties>
