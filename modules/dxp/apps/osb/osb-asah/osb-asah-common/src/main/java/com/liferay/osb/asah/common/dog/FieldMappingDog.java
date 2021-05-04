@@ -14,33 +14,46 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.dog.util.SortUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
+import com.liferay.osb.asah.common.entity.FieldMapping;
+import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.DataSourceFieldMappingRepository;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.BeanUtils;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Michael Bowerman
+ * @author Rachael Koestartyo
  */
 @Component
-public class FieldMappingDog extends BaseFaroInfoDog {
+public class FieldMappingDog {
 
 	public void addEmailFieldMapping(Long dataSourceId) {
 		String dataSourceFieldName = _getEmailDataSourceFieldName(dataSourceId);
@@ -60,6 +73,12 @@ public class FieldMappingDog extends BaseFaroInfoDog {
 			"http://schema.org/email", "individual");
 	}
 
+	public FieldMapping addFieldMapping(FieldMapping fieldMapping) {
+		fieldMapping = _fieldMappingRepository.save(fieldMapping);
+
+		return getFieldMapping(fieldMapping.getId());
+	}
+
 	public void addFieldMapping(
 		String context, String dataSourceFieldName, Long dataSourceId,
 		String displayType, String fieldName, String fieldType,
@@ -71,159 +90,252 @@ public class FieldMappingDog extends BaseFaroInfoDog {
 			return;
 		}
 
-		JSONObject fieldMappingJSONObject = elasticsearchInvoker.fetch(
-			"field-mappings",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("context", context)
-			).filter(
-				QueryBuilders.termQuery("displayName", fieldName)
-			).filter(
-				QueryBuilders.termQuery("fieldType", fieldType)
-			).filter(
-				QueryBuilders.termQuery("ownerType", ownerType)
-			));
+		Optional<FieldMapping> fieldMappingOptional =
+			_fieldMappingRepository.
+				findByContextAndDisplayNameAndFieldTypeAndOwnerType(
+					context, fieldName, fieldType, ownerType);
 
-		if (fieldMappingJSONObject != null) {
-			JSONObject dataSourceFieldNamesJSONObject =
-				fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
+		if (fieldMappingOptional.isPresent()) {
+			FieldMapping fieldMapping = fieldMappingOptional.get();
 
-			dataSourceFieldNamesJSONObject.put(
-				String.valueOf(dataSourceId), dataSourceFieldName);
+			fieldMapping.addDataSourceFieldMapping(
+				new DataSourceFieldMapping(
+					dataSourceId, fieldMapping.getId(), dataSourceFieldName));
+			fieldMapping.setModifiedDate(new Date());
 
-			elasticsearchInvoker.update(
-				"field-mappings",
-				fieldMappingJSONObject.put(
-					"dateModified", DateUtil.newDateString()));
+			_fieldMappingRepository.save(fieldMapping);
 
 			return;
 		}
 
-		fieldMappingJSONObject = elasticsearchInvoker.fetch(
-			"field-mappings",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("context", context)
-			).filter(
-				QueryBuilders.termQuery(
-					"dataSourceFieldNames." + dataSourceId, fieldName)
-			).filter(
-				QueryBuilders.termQuery("displayName", fieldName)
-			).filter(
-				QueryBuilders.termQuery("ownerType", ownerType)
-			));
+		fieldMappingOptional =
+			_fieldMappingRepository.findByContextAndDisplayNameAndOwnerType(
+				context, fieldName, ownerType);
 
-		if (fieldMappingJSONObject != null) {
-			removeDataSourceFieldName(fieldMappingJSONObject, dataSourceId);
+		if (fieldMappingOptional.isPresent()) {
+			FieldMapping fieldMapping = fieldMappingOptional.get();
+
+			removeDataSourceFieldName(dataSourceId, fieldMapping.getId());
 		}
 
-		String dateString = DateUtil.newDateString();
+		Date date = new Date();
 
-		elasticsearchInvoker.add(
-			"field-mappings",
-			JSONUtil.put(
-				"author", _getDataSourceAuthorJSONObject(dataSourceId)
-			).put(
-				"context", context
-			).put(
-				"dataSourceFieldNames",
-				JSONUtil.put(String.valueOf(dataSourceId), dataSourceFieldName)
-			).put(
-				"dateCreated", dateString
-			).put(
-				"dateModified", dateString
-			).put(
-				"displayName", fieldName
-			).put(
-				"displayType", displayType
-			).put(
-				"fieldName",
-				_getSanitizedFieldName(context, fieldName, ownerType)
-			).put(
-				"fieldType", fieldType
-			).put(
-				"ownerType", ownerType
-			).put(
-				"strategy", JSONUtil.put("key", "MOST_RECENT")
-			));
+		FieldMapping fieldMapping = new FieldMapping();
+
+		fieldMapping.addDataSourceFieldMapping(
+			new DataSourceFieldMapping(dataSourceId, dataSourceFieldName));
+
+		fieldMapping.setAuthor(_getDataSourceAuthor(dataSourceId));
+		fieldMapping.setContext(context);
+		fieldMapping.setCreateDate(date);
+		fieldMapping.setModifiedDate(date);
+		fieldMapping.setDisplayName(fieldName);
+		fieldMapping.setDisplayType(displayType);
+		fieldMapping.setFieldName(
+			_getSanitizedFieldName(context, fieldName, ownerType));
+		fieldMapping.setFieldType(fieldType);
+		fieldMapping.setOwnerType(ownerType);
+		fieldMapping.setStrategy(FieldMapping.Strategy.DEFAULT);
+
+		_fieldMappingRepository.save(fieldMapping);
 	}
 
-	public boolean deleteFieldMapping(JSONObject fieldMappingJSONObject) {
-		JSONObject authorJSONObject = fieldMappingJSONObject.getJSONObject(
-			"author");
+	public long countIndividualFieldMappings(String name) {
+		return _fieldMappingRepository.countIndividualFieldMappings(name);
+	}
 
-		if (Objects.equals(authorJSONObject.getString("id"), "FARO_SYSTEM") &&
-			Objects.equals(authorJSONObject.getString("name"), "FARO_SYSTEM")) {
+	public boolean deleteFieldMapping(FieldMapping fieldMapping) {
+		if (Objects.equals(fieldMapping.getAuthorId(), "FARO_SYSTEM") &&
+			Objects.equals(fieldMapping.getAuthorName(), "FARO_SYSTEM")) {
 
 			return false;
 		}
 
-		elasticsearchInvoker.delete("field-mappings", fieldMappingJSONObject);
+		_fieldMappingRepository.delete(fieldMapping);
 
 		return true;
 	}
 
-	public JSONObject fetchFieldMappingJSONObject(
-		String context, String fieldName, String ownerType) {
+	public FieldMapping fetchFieldMapping(Long fieldMappingId) {
+		Optional<FieldMapping> fieldMappingOptional =
+			_fieldMappingRepository.findById(fieldMappingId);
 
-		return elasticsearchInvoker.fetch(
-			"field-mappings",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("context", context)
-			).filter(
-				QueryBuilders.termQuery("fieldName", fieldName)
-			).filter(
-				QueryBuilders.termQuery("ownerType", ownerType)
-			));
+		FieldMapping fieldMapping = fieldMappingOptional.orElse(null);
+
+		_setDataSourceFieldNames(fieldMapping);
+
+		return fieldMapping;
 	}
 
-	public List<String> getDataSourceFieldMappingIds(
+	public FieldMapping fetchFieldMapping(
+		String context, String fieldName, String ownerType) {
+
+		Optional<FieldMapping> fieldMappingOptional =
+			_fieldMappingRepository.findByContextAndFieldNameAndOwnerType(
+				context, fieldName, ownerType);
+
+		FieldMapping fieldMapping = fieldMappingOptional.orElse(null);
+
+		_setDataSourceFieldNames(fieldMapping);
+
+		return fieldMapping;
+	}
+
+	public List<Long> getDataSourceFieldMappingIds(
 		Long dataSourceId, boolean previewDelete) {
 
-		List<String> dataSourceFieldMappingIds = new ArrayList<>();
+		List<Long> dataSourceFieldMappingIds = new ArrayList<>();
 
-		JSONArray jsonArray = elasticsearchInvoker.get(
-			"field-mappings",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.existsQuery(
-					"dataSourceFieldNames." + dataSourceId)));
+		List<DataSourceFieldMapping> dataSourceFieldMappings =
+			_dataSourceFieldMappingRepository.findByDataSourceId(dataSourceId);
 
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
+		Map<Long, List<DataSourceFieldMapping>> dataSourceFieldMappingsMap =
+			new HashMap<>();
 
-			JSONObject dataSourceFieldNamesJSONObject =
-				jsonObject.getJSONObject("dataSourceFieldNames");
+		for (DataSourceFieldMapping dataSourceFieldMapping :
+				dataSourceFieldMappings) {
 
-			if (previewDelete &&
-				(dataSourceFieldNamesJSONObject.length() > 1)) {
+			List<DataSourceFieldMapping> curDataSourceFieldMappings =
+				new ArrayList<>();
 
+			if (dataSourceFieldMappingsMap.containsKey(
+					dataSourceFieldMapping.getFieldMappingId())) {
+
+				curDataSourceFieldMappings = dataSourceFieldMappingsMap.get(
+					dataSourceFieldMapping.getFieldMappingId());
+			}
+
+			curDataSourceFieldMappings.add(dataSourceFieldMapping);
+
+			dataSourceFieldMappingsMap.put(
+				dataSourceFieldMapping.getFieldMappingId(),
+				curDataSourceFieldMappings);
+		}
+
+		for (Map.Entry<Long, List<DataSourceFieldMapping>> entry :
+				dataSourceFieldMappingsMap.entrySet()) {
+
+			List<DataSourceFieldMapping> curDataSourceFieldMappings =
+				entry.getValue();
+
+			if (previewDelete && (curDataSourceFieldMappings.size() > 1)) {
 				continue;
 			}
 
-			dataSourceFieldMappingIds.add(jsonObject.getString("id"));
+			dataSourceFieldMappingIds.add(entry.getKey());
 		}
 
 		return dataSourceFieldMappingIds;
 	}
 
-	public JSONObject removeDataSourceFieldName(
-		JSONObject fieldMappingJSONObject, Long dataSourceId) {
+	public FieldMapping getFieldMapping(Long fieldMappingId) {
+		Optional<FieldMapping> fieldOptional = _fieldMappingRepository.findById(
+			fieldMappingId);
 
-		JSONObject dataSourceFieldNamesJSONObject =
-			fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
+		FieldMapping fieldMapping = fieldOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no field with ID " + fieldMappingId));
 
-		dataSourceFieldNamesJSONObject.remove(String.valueOf(dataSourceId));
+		_setDataSourceFieldNames(fieldMapping);
 
-		return elasticsearchInvoker.replace(
-			"field-mappings", fieldMappingJSONObject);
+		return fieldMapping;
 	}
 
-	private JSONObject _getDataSourceAuthorJSONObject(Long dataSourceId) {
+	public List<FieldMapping> getFieldMappings(Set<Long> fieldMappingIds) {
+		List<FieldMapping> fieldMappings = new ArrayList<>();
+
+		Iterable<FieldMapping> fieldMappingsIterable =
+			_fieldMappingRepository.findAllById(fieldMappingIds);
+
+		fieldMappingsIterable.forEach(fieldMappings::add);
+
+		return fieldMappings;
+	}
+
+	public Page<Transformation> getTransformationsPage(
+		String apply, @Nullable String filterString, int page, int size) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size,
+			SortUtil.getSort(
+				Sort.by(Sort.Order.desc("totalElements")),
+				new String[] {"totalElements", "desc", "terms", "asc"}));
+
+		List<Transformation> transformations =
+			_fieldMappingRepository.getFieldMappingTransformations(
+				apply, filterString, pageRequest);
+
+		return PageableExecutionUtils.getPage(
+			transformations, pageRequest, transformations::size);
+	}
+
+	public FieldMapping removeDataSourceFieldName(
+		Long dataSourceId, Long fieldMappingId) {
+
+		FieldMapping fieldMapping = fetchFieldMapping(fieldMappingId);
+
+		if (fieldMapping != null) {
+			Map<String, String> dataSourceFieldNames =
+				fieldMapping.getDataSourceFieldNames();
+
+			dataSourceFieldNames.remove(String.valueOf(dataSourceId));
+
+			fieldMapping.setDataSourceFieldNames(dataSourceFieldNames);
+
+			_fieldMappingRepository.save(fieldMapping);
+		}
+
+		return fetchFieldMapping(fieldMappingId);
+	}
+
+	public Page<FieldMapping> searchFieldMappingsPage(
+		@Nullable String filterString, int page, int size,
+		@Nullable String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size,
+			SortUtil.getSort(Sort.by(Sort.Order.asc("fieldName")), sorts));
+
+		return PageableExecutionUtils.getPage(
+			_fieldMappingRepository.searchFieldMappings(
+				filterString, pageRequest),
+			pageRequest,
+			() -> _fieldMappingRepository.countFieldMappings(filterString));
+	}
+
+	public Page<FieldMapping> searchIndividualFieldMappingsPage(
+		@Nullable String name, int page, int size, String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size, SortUtil.getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_fieldMappingRepository.searchIndividualFieldMappings(
+				name, pageRequest),
+			pageRequest,
+			() -> _fieldMappingRepository.countIndividualFieldMappings(name));
+	}
+
+	public FieldMapping updateFieldMapping(
+		Long fieldMappingId, FieldMapping fieldMapping) {
+
+		FieldMapping existingFieldMapping = fetchFieldMapping(fieldMappingId);
+
+		BeanUtils.copyProperties(fieldMapping, existingFieldMapping);
+
+		return _fieldMappingRepository.save(fieldMapping);
+	}
+
+	private FieldMapping.Author _getDataSourceAuthor(Long dataSourceId) {
 		DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
 
-		return JSONUtil.put(
-			"id", String.valueOf(dataSourceId)
-		).put(
-			"name", dataSource.getName()
-		);
+		FieldMapping.Author author = new FieldMapping.Author();
+
+		author.setId(String.valueOf(dataSourceId));
+		author.setName(dataSource.getName());
+
+		return author;
 	}
 
 	private String _getEmailDataSourceFieldName(Long dataSourceId) {
@@ -267,21 +379,44 @@ public class FieldMappingDog extends BaseFaroInfoDog {
 	private boolean _hasFieldMapping(
 		String context, String fieldName, String ownerType) {
 
-		return elasticsearchInvoker.exists(
-			"field-mappings",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("context", context)
-			).filter(
-				QueryBuilders.termQuery("fieldName", fieldName)
-			).filter(
-				QueryBuilders.termQuery("ownerType", ownerType)
-			));
+		return _fieldMappingRepository.existsByContextAndFieldNameAndOwnerType(
+			context, fieldName, ownerType);
 	}
 
-	private static final Log _log = LogFactory.getLog(
-		FieldMappingDog.class);
+	private void _setDataSourceFieldNames(FieldMapping fieldMapping) {
+		if (fieldMapping == null) {
+			return;
+		}
+
+		Map<String, String> dataSourceFieldNames = new HashMap<>();
+
+		List<DataSourceFieldMapping> dataSourceFieldMappings =
+			_dataSourceFieldMappingRepository.findByFieldMappingId(
+				fieldMapping.getId());
+
+		for (DataSourceFieldMapping dataSourceFieldMapping :
+				dataSourceFieldMappings) {
+
+			dataSourceFieldNames.put(
+				String.valueOf(dataSourceFieldMapping.getDataSourceId()),
+				dataSourceFieldMapping.getFieldName());
+		}
+
+		fieldMapping.setDataSourceFieldNames(dataSourceFieldNames);
+	}
+
+	private static final Log _log = LogFactory.getLog(FieldMappingDog.class);
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private DataSourceFieldMappingRepository _dataSourceFieldMappingRepository;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
 
 }
