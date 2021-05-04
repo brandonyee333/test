@@ -44,6 +44,8 @@ public class CSVIndividualsRestController extends BaseRestController {
 
 				csvIndividual.setDataSourceId(
 					Long.valueOf(jsonObject.getString("dataSourceId")));
+				csvIndividual.setDataSourceIndividualPK(
+					jsonObject.getString("dataSourceIndividualPK"));
 				csvIndividual.setFieldsJSONObject(
 					jsonObject.optJSONObject("fields"));
 
