@@ -187,6 +187,22 @@ public class ElasticsearchFieldRepositoryImpl
 		return toList(fieldsJSONArray);
 	}
 
+	@Override
+	public List<Field> findByFieldTypeAndOwnerTypeAndValueIn(
+		String fieldType, String ownerType, List<String> values) {
+
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("fieldType", fieldType)
+				).filter(
+					QueryBuilders.termQuery("ownerType", ownerType)
+				).filter(
+					QueryBuilders.termsQuery("value", values)
+				)));
+	}
+
 	public List<Transformation> getFieldTransformations(
 		String apply, @Nullable String filterString, Pageable pageable) {
 
