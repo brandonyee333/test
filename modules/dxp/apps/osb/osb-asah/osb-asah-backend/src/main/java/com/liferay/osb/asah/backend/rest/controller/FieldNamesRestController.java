@@ -15,18 +15,20 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.entity.FieldMapping;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
+import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.util.ArrayUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 
@@ -53,50 +55,36 @@ public class FieldNamesRestController extends BaseRestController {
 		Set<String> fieldNames = new TreeSet<>();
 
 		if (StringUtils.isNotEmpty(label)) {
-			long count = faroInfoElasticsearchInvoker.count(
-				"field-mappings",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("fieldName", label)
-				).filter(
-					QueryBuilders.termQuery("ownerType", ownerType)
-				));
+			long count = _fieldMappingRepository.countByFieldNameAndOwnerType(
+				label, ownerType);
 
 			if (count > 0) {
 				fieldNames.add(label);
 			}
 
-			for (String dataSourceId :
+			for (Long dataSourceId :
 					ListUtil.map(
-						_dataSourceDog.getDataSources(),
-						dataSource -> String.valueOf(dataSource.getId()))) {
+						_dataSourceDog.getDataSources(), DataSource::getId)) {
 
-				JSONArray fieldMappingsJSONArray =
-					faroInfoElasticsearchInvoker.get(
-						"field-mappings",
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery(
-								"dataSourceFieldNames." + dataSourceId, label)
-						).filter(
-							QueryBuilders.termQuery("ownerType", ownerType)
-						));
+				List<FieldMapping> fieldMappings =
+					_fieldMappingRepository.
+						findByDataSourceFieldNameAndDataSourceIdAndOwnerType(
+							label, dataSourceId, ownerType);
 
-				JSONUtil.addToStringCollection(
-					fieldNames, fieldMappingsJSONArray, "fieldName");
+				for (FieldMapping fieldMapping : fieldMappings) {
+					fieldNames.add(fieldMapping.getFieldName());
+				}
 			}
 		}
 
 		if (ArrayUtil.isNotEmpty(values)) {
-			JSONArray fieldsJSONArray = faroInfoElasticsearchInvoker.get(
-				"fields",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("fieldType", "Text")
-				).filter(
-					QueryBuilders.termQuery("ownerType", ownerType)
-				).filter(
-					QueryBuilders.termsQuery("value", Arrays.asList(values))
-				));
+			List<Field> fields =
+				_fieldRepository.findByFieldTypeAndOwnerTypeAndValueIn(
+					"Text", ownerType, Arrays.asList(values));
 
-			JSONUtil.addToStringCollection(fieldNames, fieldsJSONArray, "name");
+			for (Field field : fields) {
+				fieldNames.add(field.getName());
+			}
 		}
 
 		JSONArray fieldNamesJSONArray = new JSONArray(fieldNames);
@@ -106,5 +94,11 @@ public class FieldNamesRestController extends BaseRestController {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
+
+	@Autowired
+	private FieldRepository _fieldRepository;
 
 }
