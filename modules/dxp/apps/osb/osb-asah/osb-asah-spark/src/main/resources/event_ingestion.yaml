@@ -1,0 +1,27 @@
+aws:
+    access:
+        key:
+            id: $AWS_ACCESS_KEY_ID
+    secret:
+        access:
+            key: $AWS_SECRET_ACCESS_KEY
+    storage:
+        path: s3a://analytics-cloud-aws-personalize
+google:
+    project:
+        id: liferaycloud-customer-ac-uat
+    pubsub:
+        deadline: 5
+        max_messages: 1000
+        subscription_path: projects/my-project/subscriptions/my_subscription
+    storage:
+        path:
+            analytics-events: gs://analytics-cloud-analytics-events-uat
+            content-recommendations: gs://analytics-cloud-content-recommendations-uat
+spark:
+    jars:
+        packages: "io.delta:delta-core_2.11:0.6.1"
+    table:
+        fileformat: delta
+        partition_by: projectId
+        table-path: delta
