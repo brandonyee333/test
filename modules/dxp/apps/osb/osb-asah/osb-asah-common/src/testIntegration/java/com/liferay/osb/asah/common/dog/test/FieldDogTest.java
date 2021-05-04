@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
+import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -46,7 +47,7 @@ import org.springframework.test.context.ContextConfiguration;
 public class FieldDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		_dataSourceJSONObject = _objectMapper.convertValue(
 			_dataSourceDog.addDataSource(
 				_objectMapper.convertValue(
@@ -54,9 +55,8 @@ public class FieldDogTest extends BaseFaroInfoDogTestCase {
 					DataSource.class)),
 			JSONObject.class);
 
-		faroInfoElasticsearchInvoker.add(
-			"field-mappings",
-			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
+		_fieldMappingDog.addFieldMapping(
+			FaroInfoTestUtil.buildIndividualFieldMapping(
 				_dataSourceJSONObject.getString("id"), "date", "date", "Date"));
 	}
 
@@ -164,6 +164,9 @@ public class FieldDogTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private FieldDog _fieldDog;
+
+	@Autowired
+	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

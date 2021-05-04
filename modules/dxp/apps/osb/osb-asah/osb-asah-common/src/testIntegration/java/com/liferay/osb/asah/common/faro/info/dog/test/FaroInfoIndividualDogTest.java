@@ -19,9 +19,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -64,14 +66,12 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 		_salesforceDataSource = FaroInfoTestUtil.buildSalesforceDataSource();
 
 		for (String fieldName : _FIELD_NAMES) {
-			faroInfoElasticsearchInvoker.add(
-				"field-mappings",
-				FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
+			_fieldMappingRepository.save(
+				FaroInfoTestUtil.buildIndividualFieldMapping(
 					_liferayDataSourceJSONObject.getString("id"), fieldName,
 					fieldName, "Text"));
-			faroInfoElasticsearchInvoker.add(
-				"field-mappings",
-				FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
+			_fieldMappingRepository.save(
+				FaroInfoTestUtil.buildIndividualFieldMapping(
 					String.valueOf(_salesforceDataSource.getId()), fieldName,
 					fieldName, "Text"));
 		}
@@ -131,36 +131,33 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	public void testAddAndUpdateLiferayIndividualCustomFields()
 		throws Exception {
 
-		faroInfoElasticsearchInvoker.add(
-			"field-mappings",
-			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
+		FieldMapping fieldMapping =
+			FaroInfoTestUtil.buildIndividualFieldMapping(
 				_liferayDataSourceJSONObject.getString("id"), "address",
-				"address", "Text"
-			).put(
-				"context", "custom"
-			).put(
-				"displayType", "text-box"
-			));
-		faroInfoElasticsearchInvoker.add(
-			"field-mappings",
-			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
-				_liferayDataSourceJSONObject.getString("id"), "spokenLanguages",
-				"spokenLanguages", "Text"
-			).put(
-				"context", "custom"
-			).put(
-				"displayType", "checkbox"
-			));
-		faroInfoElasticsearchInvoker.add(
-			"field-mappings",
-			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
-				_liferayDataSourceJSONObject.getString("id"), "favoriteNumber",
-				"favoriteNumber", "Number"
-			).put(
-				"context", "custom"
-			).put(
-				"displayType", "input-field"
-			));
+				"address", "Text");
+
+		fieldMapping.setContext("custom");
+		fieldMapping.setDisplayType("text-box");
+
+		_fieldMappingRepository.save(fieldMapping);
+
+		fieldMapping = FaroInfoTestUtil.buildIndividualFieldMapping(
+			_liferayDataSourceJSONObject.getString("id"), "spokenLanguages",
+			"spokenLanguages", "Text");
+
+		fieldMapping.setContext("custom");
+		fieldMapping.setDisplayType("checkbox");
+
+		_fieldMappingRepository.save(fieldMapping);
+
+		fieldMapping = FaroInfoTestUtil.buildIndividualFieldMapping(
+			_liferayDataSourceJSONObject.getString("id"), "favoriteNumber",
+			"favoriteNumber", "Number");
+
+		fieldMapping.setContext("custom");
+		fieldMapping.setDisplayType("input-field");
+
+		_fieldMappingRepository.save(fieldMapping);
 
 		JSONObject userJSONObject = JSONUtil.put(
 			"contact",
@@ -371,7 +368,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@Test
-	public void testBuildIndividualsQueryBuilder() throws Exception {
+	public void testBuildIndividualsQueryBuilder() {
 		QueryBuilder queryBuilder =
 			_faroInfoIndividualDog.buildIndividualsQueryBuilder(
 				null, "(((demographics/age/value gt '50')))", false);
@@ -715,9 +712,8 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		dataSourceJSONObject.put("id", "402139209179557944");
 
-		faroInfoElasticsearchInvoker.add(
-			"field-mappings",
-			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
+		_fieldMappingRepository.save(
+			FaroInfoTestUtil.buildIndividualFieldMapping(
 				dataSourceJSONObject.getString("id"), "emailAddress", "email",
 				"Text"));
 
@@ -940,6 +936,9 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
 
 	private JSONObject _liferayDataSourceJSONObject;
 

@@ -14,13 +14,18 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.osb.asah.backend.dto.FieldMappingDTO;
 import com.liferay.osb.asah.backend.rest.controller.FieldMappingsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+
+import java.util.Collections;
 
 import org.hamcrest.CoreMatchers;
 
@@ -43,16 +48,19 @@ public class FieldMappingsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test(expected = Exception.class)
-	public void testDuplicateFieldMappingFieldName() throws Exception {
-		String fieldMappingJSON = String.valueOf(
-			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
-				JSONUtil.put("351238757269547424", "givenName"), "givenName",
-				"Text"));
+	public void testDuplicateFieldMappingFieldName() {
+		FieldMapping fieldMapping =
+			FaroInfoTestUtil.buildIndividualFieldMapping(
+				Collections.singletonMap("351238757269547424", "givenName"),
+				"givenName", "Text");
 
-		_fieldMappingsRestController.postFieldMapping(fieldMappingJSON);
+		FieldMappingDTO fieldMappingDTO = _objectMapper.convertValue(
+			fieldMapping, FieldMappingDTO.class);
+
+		_fieldMappingsRestController.postFieldMapping(fieldMappingDTO);
 
 		try {
-			_fieldMappingsRestController.postFieldMapping(fieldMappingJSON);
+			_fieldMappingsRestController.postFieldMapping(fieldMappingDTO);
 		}
 		catch (Exception e) {
 			Assert.assertThat(
@@ -65,5 +73,8 @@ public class FieldMappingsRestControllerTest {
 
 	@Autowired
 	private FieldMappingsRestController _fieldMappingsRestController;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

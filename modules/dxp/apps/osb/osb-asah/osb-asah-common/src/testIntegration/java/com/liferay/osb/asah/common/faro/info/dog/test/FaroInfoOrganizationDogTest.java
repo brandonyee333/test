@@ -21,12 +21,14 @@ import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOrganizationDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.DXPRawTestUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -55,18 +57,16 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 		_liferayDataSourceJSONObject.put("id", RandomTestUtil.randomId());
 
-		faroInfoElasticsearchInvoker.add(
-			"field-mappings",
-			FaroInfoTestUtil.buildFieldMappingJSONObject(
+		_fieldMappingRepository.save(
+			FaroInfoTestUtil.buildFieldMapping(
 				null, "custom",
-				JSONUtil.put(
+				Collections.singletonMap(
 					_liferayDataSourceJSONObject.getString("id"), "address"),
 				"address", "Text", "organization"));
-		faroInfoElasticsearchInvoker.add(
-			"field-mappings",
-			FaroInfoTestUtil.buildFieldMappingJSONObject(
+		_fieldMappingRepository.save(
+			FaroInfoTestUtil.buildFieldMapping(
 				null, "custom",
-				JSONUtil.put(
+				Collections.singletonMap(
 					_liferayDataSourceJSONObject.getString("id"),
 					"dateFounded"),
 				"dateFounded", "Date", "organization"));
@@ -181,6 +181,9 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private FaroInfoOrganizationDog _faroInfoOrganizationDog;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
 
 	private JSONObject _liferayDataSourceJSONObject;
 

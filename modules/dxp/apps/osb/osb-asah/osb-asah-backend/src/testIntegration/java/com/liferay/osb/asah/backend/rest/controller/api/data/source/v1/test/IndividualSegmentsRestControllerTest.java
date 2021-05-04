@@ -20,8 +20,10 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.IndividualSegmentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -60,19 +62,15 @@ public class IndividualSegmentsRestControllerTest
 	extends BaseRestControllerTestCase {
 
 	@Test
-	public void testExpandReferencedObjects() throws Exception {
+	public void testExpandReferencedObjects() {
 		JSONObject assetJSONObject = _faroInfoElasticsearchInvoker.add(
 			"assets", FaroInfoTestUtil.buildAssetJSONObject("Page", "1"));
-		JSONObject accountFieldMappingJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"field-mappings",
-				FaroInfoTestUtil.buildAccountFieldMappingJSONObject(
-					"1", "shippingPostalCode", "shippingPostalCode", "Text"));
-		JSONObject individualFieldMappingJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"field-mappings",
-				FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
-					"1", "email", "email", "Text"));
+		FieldMapping accountFieldMapping = _fieldMappingRepository.save(
+			FaroInfoTestUtil.buildAccountFieldMapping(
+				"1", "shippingPostalCode", "shippingPostalCode", "Text"));
+		FieldMapping individualFieldMapping = _fieldMappingRepository.save(
+			FaroInfoTestUtil.buildIndividualFieldMapping(
+				"1", "email", "email", "Text"));
 		JSONObject groupJSONObject = _dxpRawElasticsearchInvoker.add(
 			"groups", JSONUtil.put("name", "groupName"));
 		JSONObject organizationJSONObject = _faroInfoElasticsearchInvoker.add(
@@ -93,9 +91,7 @@ public class IndividualSegmentsRestControllerTest
 				Long.valueOf(assetJSONObject.getString("id"))));
 		segment.setReferencedFieldMappingIds(
 			SetUtil.of(
-				Long.valueOf(accountFieldMappingJSONObject.getString("id")),
-				Long.valueOf(
-					individualFieldMappingJSONObject.getString("id"))));
+				accountFieldMapping.getId(), individualFieldMapping.getId()));
 		segment.setReferencedGroupIds(
 			Collections.singleton(
 				Long.valueOf(groupJSONObject.getString("id"))));
@@ -131,8 +127,8 @@ public class IndividualSegmentsRestControllerTest
 				_getIds("assets", referencedObjectsJSONObject)));
 		Assert.assertThat(
 			new String[] {
-				accountFieldMappingJSONObject.getString("id"),
-				individualFieldMappingJSONObject.getString("id")
+				String.valueOf(accountFieldMapping.getId()),
+				String.valueOf(individualFieldMapping.getId())
 			},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("field-mappings", referencedObjectsJSONObject)));
@@ -253,6 +249,9 @@ public class IndividualSegmentsRestControllerTest
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	@Qualifier(

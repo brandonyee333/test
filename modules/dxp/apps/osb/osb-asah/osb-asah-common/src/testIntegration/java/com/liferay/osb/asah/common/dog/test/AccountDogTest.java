@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -56,9 +57,8 @@ public class AccountDogTest extends BaseFaroInfoDogTestCase {
 	public void setUp() {
 		_salesforceDataSource = FaroInfoTestUtil.buildSalesforceDataSource();
 
-		faroInfoElasticsearchInvoker.add(
-			"field-mappings",
-			FaroInfoTestUtil.buildAccountFieldMappingJSONObject(
+		_fieldMappingRepository.save(
+			FaroInfoTestUtil.buildAccountFieldMapping(
 				String.valueOf(_salesforceDataSource.getId()), "country",
 				"country", "Text"));
 	}
@@ -229,6 +229,9 @@ public class AccountDogTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

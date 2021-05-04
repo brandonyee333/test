@@ -42,8 +42,7 @@ public class PreferenceDogTest {
 		Assert.assertEquals(
 			String.valueOf(13 * DateUtil.MONTH), preference.getValue());
 
-		String dataRetentionPeriod = String.valueOf(
-			String.valueOf(7 * DateUtil.MONTH));
+		String dataRetentionPeriod = String.valueOf(7 * DateUtil.MONTH);
 
 		_preferenceDog.savePreference(
 			"data-retention-period", dataRetentionPeriod);

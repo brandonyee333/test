@@ -65,7 +65,7 @@ public class IndividualsRestControllerTest {
 				this),
 			new JSONObject(
 				_individualsRestController.getIndividualsDistribution(
-					"366588394714972833", "(accountId eq '342313458385210529')",
+					366588394714972833L, "(accountId eq '342313458385210529')",
 					10, 100, null)),
 			true);
 		JSONAssert.assertEquals(
@@ -74,7 +74,7 @@ public class IndividualsRestControllerTest {
 				this),
 			new JSONObject(
 				_individualsRestController.getIndividualsDistribution(
-					"366588394714972833",
+					366588394714972833L,
 					"(individualSegmentIds eq '327968823603500655')", 10, 100,
 					null)),
 			true);
@@ -84,7 +84,7 @@ public class IndividualsRestControllerTest {
 				this),
 			new JSONObject(
 				_individualsRestController.getIndividualsDistribution(
-					"331238757947565158", null, 10, 100,
+					331238757947565158L, null, 10, 100,
 					new String[] {"name", "desc"})),
 			true);
 		JSONAssert.assertEquals(
@@ -93,7 +93,7 @@ public class IndividualsRestControllerTest {
 				this),
 			new JSONObject(
 				_individualsRestController.getIndividualsDistribution(
-					"366588394714972833", null, 5, 100, null)),
+					366588394714972833L, null, 5, 100, null)),
 			true);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
@@ -101,7 +101,7 @@ public class IndividualsRestControllerTest {
 				this),
 			new JSONObject(
 				_individualsRestController.getIndividualsDistribution(
-					"331238757947565158", null, 10, 100, null)),
+					331238757947565158L, null, 10, 100, null)),
 			true);
 	}
 
@@ -119,7 +119,7 @@ public class IndividualsRestControllerTest {
 
 		try {
 			_individualsRestController.getIndividualsDistribution(
-				"331238757947565234", null, 10, 100, null);
+				331238757947565234L, null, 10, 100, null);
 		}
 		catch (Exception e) {
 			Assert.assertThat(

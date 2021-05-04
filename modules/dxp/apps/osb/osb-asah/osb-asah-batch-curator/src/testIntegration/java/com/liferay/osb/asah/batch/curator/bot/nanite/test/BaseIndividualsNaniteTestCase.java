@@ -20,9 +20,11 @@ import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -75,22 +77,20 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 	}
 
 	protected void addEmailFieldMapping() {
-		faroInfoElasticsearchInvoker.add(
-			"field-mappings",
-			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
+		_fieldMappingRepository.save(
+			FaroInfoTestUtil.buildIndividualFieldMapping(
 				getDataSourceId(), getEmailDataSourceFieldName(), "email",
 				"http://schema.org/email"));
 	}
 
 	protected void addStandardFieldMappings() {
-		faroInfoElasticsearchInvoker.add(
-			"field-mappings",
-			JSONUtil.putAll(
-				FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
+		_fieldMappingRepository.saveAll(
+			Arrays.asList(
+				FaroInfoTestUtil.buildIndividualFieldMapping(
 					getDataSourceId(), "lastName", "familyName", "Text"),
-				FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
+				FaroInfoTestUtil.buildIndividualFieldMapping(
 					getDataSourceId(), "firstName", "givenName", "Text"),
-				FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
+				FaroInfoTestUtil.buildIndividualFieldMapping(
 					getDataSourceId(), "jobTitle", "jobTitle", "Text")));
 	}
 
@@ -292,6 +292,10 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 	private DataSourceDog _dataSourceDog;
 
 	private JSONObject _dataSourceJSONObject;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
+
 	private String _individual1PK;
 	private String _individual2PK;
 

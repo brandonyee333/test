@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.rest.controller.DefinitionsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -52,12 +54,17 @@ public class DefinitionsRestControllerTest {
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_definitions_individual_attributes.json",
 				this),
-			new JSONObject(
-				_definitionsRestController.getIndividualAttributes(null)),
-			true);
+			_objectMapper.convertValue(
+				_definitionsRestController.getIndividualFieldMappingDTOsPageDTO(
+					null),
+				JSONObject.class),
+			false);
 	}
 
 	@Autowired
 	private DefinitionsRestController _definitionsRestController;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

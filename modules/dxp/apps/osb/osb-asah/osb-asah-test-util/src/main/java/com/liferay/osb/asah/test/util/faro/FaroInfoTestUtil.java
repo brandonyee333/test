@@ -17,11 +17,13 @@ package com.liferay.osb.asah.test.util.faro;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -38,37 +40,14 @@ import org.json.JSONObject;
  */
 public class FaroInfoTestUtil {
 
-	public static JSONObject buildAccountFieldMappingJSONObject(
+	public static FieldMapping buildAccountFieldMapping(
 		String dataSourceId, String dataSourceFieldName, String fieldName,
 		String fieldType) {
 
-		String dateString = DateUtil.newDateString();
-
-		return JSONUtil.put(
-			"author", _getAuthorJSONObject()
-		).put(
-			"context", "organization"
-		).put(
-			"dataSourceFieldNames",
-			JSONUtil.put(dataSourceId, dataSourceFieldName)
-		).put(
-			"dateCreated", dateString
-		).put(
-			"dateModified", dateString
-		).put(
-			"fieldName", fieldName
-		).put(
-			"fieldType", fieldType
-		).put(
-			"ownerType", "account"
-		).put(
-			"strategy",
-			JSONUtil.put(
-				"configuration", new JSONObject()
-			).put(
-				"key", "MOST_RECENT"
-			)
-		);
+		return buildFieldMapping(
+			_getFieldMappingAuthor(), "organization",
+			Collections.singletonMap(dataSourceId, dataSourceFieldName),
+			fieldName, fieldType, "account");
 	}
 
 	public static JSONObject buildAccountIndividualSegmentJSONObject(
@@ -469,37 +448,27 @@ public class FaroInfoTestUtil {
 		);
 	}
 
-	public static JSONObject buildFieldMappingJSONObject(
-		JSONObject authorJSONObject, String context,
-		JSONObject dataSourceFieldNamesJSONObject, String fieldName,
+	public static FieldMapping buildFieldMapping(
+		FieldMapping.Author author, String context,
+		Map<String, String> dataSourceFieldNames, String fieldName,
 		String fieldType, String ownerType) {
 
-		String dateString = DateUtil.newDateString();
+		FieldMapping fieldMapping = new FieldMapping();
 
-		return JSONUtil.put(
-			"author", authorJSONObject
-		).put(
-			"context", context
-		).put(
-			"dataSourceFieldNames", dataSourceFieldNamesJSONObject
-		).put(
-			"dateCreated", dateString
-		).put(
-			"dateModified", dateString
-		).put(
-			"fieldName", fieldName
-		).put(
-			"fieldType", fieldType
-		).put(
-			"ownerType", ownerType
-		).put(
-			"strategy",
-			JSONUtil.put(
-				"configuration", new JSONObject()
-			).put(
-				"key", "MOST_RECENT"
-			)
-		);
+		Date date = new Date();
+
+		fieldMapping.setAuthor(author);
+		fieldMapping.setContext(context);
+		fieldMapping.setCreateDate(date);
+		fieldMapping.setDataSourceFieldNames(dataSourceFieldNames);
+		fieldMapping.setFieldName(fieldName);
+		fieldMapping.setFieldType(fieldType);
+		fieldMapping.setModifiedDate(date);
+		fieldMapping.setOwnerType(ownerType);
+		fieldMapping.setStrategyConfiguration(new JSONObject());
+		fieldMapping.setStrategyKey("MOST_RECENT");
+
+		return fieldMapping;
 	}
 
 	public static JSONObject buildIndividualFieldJSONObject(
@@ -531,33 +500,33 @@ public class FaroInfoTestUtil {
 		);
 	}
 
-	public static JSONObject buildIndividualFieldMappingJSONObject(
-		JSONObject dataSourceFieldNamesJSONObject, String fieldName,
-		String fieldType) {
-
-		return buildFieldMappingJSONObject(
-			_getAuthorJSONObject(), "demographics",
-			dataSourceFieldNamesJSONObject, fieldName, fieldType, "individual");
-	}
-
-	public static JSONObject buildIndividualFieldMappingJSONObject(
-		JSONObject authorJSONObject, String dataSourceId,
+	public static FieldMapping buildIndividualFieldMapping(
+		FieldMapping.Author author, String dataSourceId,
 		String dataSourceFieldName, String fieldName, String fieldType) {
 
-		return buildFieldMappingJSONObject(
-			authorJSONObject, "demographics",
-			JSONUtil.put(dataSourceId, dataSourceFieldName), fieldName,
-			fieldType, "individual");
+		return buildFieldMapping(
+			author, "demographics",
+			Collections.singletonMap(dataSourceId, dataSourceFieldName),
+			fieldName, fieldType, "individual");
 	}
 
-	public static JSONObject buildIndividualFieldMappingJSONObject(
+	public static FieldMapping buildIndividualFieldMapping(
+		Map<String, String> dataSourceFieldNames, String fieldName,
+		String fieldType) {
+
+		return buildFieldMapping(
+			_getFieldMappingAuthor(), "demographics", dataSourceFieldNames,
+			fieldName, fieldType, "individual");
+	}
+
+	public static FieldMapping buildIndividualFieldMapping(
 		String dataSourceId, String dataSourceFieldName, String fieldName,
 		String fieldType) {
 
-		return buildFieldMappingJSONObject(
-			_getAuthorJSONObject(), "demographics",
-			JSONUtil.put(dataSourceId, dataSourceFieldName), fieldName,
-			fieldType, "individual");
+		return buildFieldMapping(
+			_getFieldMappingAuthor(), "demographics",
+			Collections.singletonMap(dataSourceId, dataSourceFieldName),
+			fieldName, fieldType, "individual");
 	}
 
 	public static JSONArray buildIndividualInterestsJSONArray(
@@ -1097,6 +1066,12 @@ public class FaroInfoTestUtil {
 			"provider");
 
 		return providerJSONObject.getString("type");
+	}
+
+	private static FieldMapping.Author _getFieldMappingAuthor() {
+		return new FieldMapping.Author(
+			RandomStringUtils.randomNumeric(5, 7),
+			RandomTestUtil.randomFullName());
 	}
 
 	private static JSONObject _getOAuth2CredentialsJSONObject() {
