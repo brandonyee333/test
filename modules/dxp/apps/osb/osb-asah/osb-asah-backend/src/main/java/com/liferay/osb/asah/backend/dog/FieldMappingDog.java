@@ -36,7 +36,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author Marcellus Tavares
  */
-@Component
+@Component("com.liferay.osb.asah.backend.dog.FieldMappingDog")
 public class FieldMappingDog {
 
 	public ResultBag<FieldMapping> getFieldMappingResultBag(

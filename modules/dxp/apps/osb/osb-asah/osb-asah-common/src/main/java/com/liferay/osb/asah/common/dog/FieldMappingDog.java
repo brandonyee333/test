@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog;
+package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
@@ -40,7 +40,7 @@ import org.springframework.stereotype.Component;
  * @author Michael Bowerman
  */
 @Component
-public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
+public class FieldMappingDog extends BaseFaroInfoDog {
 
 	public void addEmailFieldMapping(Long dataSourceId) {
 		String dataSourceFieldName = _getEmailDataSourceFieldName(dataSourceId);
@@ -279,7 +279,7 @@ public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		FaroInfoFieldMappingDog.class);
+		FieldMappingDog.class);
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
