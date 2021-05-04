@@ -3,6 +3,7 @@
 		"applicationId": "Page",
 		"context": {
 			"browserName": "Firefox",
+			"canonicalUrl": "http://liferay.com",
 			"city": "Recife",
 			"contentLanguageId": "en-US",
 			"country": "Brazil",
@@ -26,6 +27,7 @@
 		"applicationId": "Page",
 		"context": {
 			"browserName": "Firefox",
+			"canonicalUrl": "http://liferay.com/home",
 			"city": "Recife",
 			"contentLanguageId": "en-US",
 			"country": "Brazil",

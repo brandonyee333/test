@@ -4,6 +4,7 @@
 		"channelId": "1",
 		"context": {
 			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/home",
 			"city": "Recife",
 			"contentLanguageId": "en-US",
 			"country": "Brazil",
@@ -28,6 +29,7 @@
 		"channelId": "1",
 		"context": {
 			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/home",
 			"city": "Recife",
 			"contentLanguageId": "en-US",
 			"country": "Brazil",
@@ -52,6 +54,7 @@
 		"channelId": "1",
 		"context": {
 			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/home",
 			"city": "Recife",
 			"contentLanguageId": "en-US",
 			"country": "Brazil",
@@ -76,6 +79,7 @@
 		"channelId": "1",
 		"context": {
 			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/home",
 			"city": "Recife",
 			"contentLanguageId": "en-US",
 			"country": "Brazil",
@@ -99,6 +103,7 @@
 		"channelId": "1",
 		"context": {
 			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/home",
 			"city": "Recife",
 			"contentLanguageId": "en-US",
 			"country": "Brazil",
@@ -122,6 +127,7 @@
 		"channelId": "1",
 		"context": {
 			"browserName": "Firefox",
+			"canonicalUrl": "http://liferay.com/home",
 			"city": "Recife",
 			"contentLanguageId": "pt-BR",
 			"country": "Brazil",
@@ -145,6 +151,7 @@
 		"channelId": "1",
 		"context": {
 			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/home",
 			"city": "Recife",
 			"contentLanguageId": "en-US",
 			"country": "Brazil",

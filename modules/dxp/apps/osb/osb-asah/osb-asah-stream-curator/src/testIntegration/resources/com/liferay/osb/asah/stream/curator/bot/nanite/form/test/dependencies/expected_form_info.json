@@ -5,7 +5,8 @@
 		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
 		"browserName": "Chrome",
 		"canonicalUrls": [
-			"http://liferay.com/home"
+			"http://liferay.com/home",
+			"http://liferay.com/web/forms/form/1"
 		],
 		"channelId": "1",
 		"city": "Recife",

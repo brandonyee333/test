@@ -1,6 +1,10 @@
 [
 	{
 		"browserName": "Firefox",
+		"canonicalUrls": [
+			"http://liferay.com",
+			"http://liferay.com/home"
+		],
 		"channelId": "1",
 		"city": "Recife",
 		"country": "Brazil",
