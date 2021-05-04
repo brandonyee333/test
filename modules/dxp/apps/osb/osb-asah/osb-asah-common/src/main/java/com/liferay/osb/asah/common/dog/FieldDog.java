@@ -25,9 +25,10 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
@@ -516,19 +517,18 @@ public class FieldDog {
 
 		Long dataSourceId = dataSource.getId();
 
-		JSONArray fieldMappingsJSONArray = _getFieldMappingsJSONArray(
-			context, String.valueOf(dataSourceId), ownerType);
+		List<FieldMapping> fieldMappings = _getFieldMappings(
+			context, dataSourceId, ownerType);
 
-		for (int i = 0; i < fieldMappingsJSONArray.length(); i++) {
-			JSONObject fieldMappingJSONObject =
-				fieldMappingsJSONArray.getJSONObject(i);
+		for (FieldMapping fieldMapping : fieldMappings) {
+			fieldMapping = _fieldMappingDog.fetchFieldMapping(
+				fieldMapping.getId());
 
-			JSONObject dataSourceFieldNamesJSONObject =
-				fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
+			Map<String, String> dataSourceFieldNames =
+				fieldMapping.getDataSourceFieldNames();
 
-			String dataSourceFieldName =
-				dataSourceFieldNamesJSONObject.optString(
-					String.valueOf(dataSourceId), null);
+			String dataSourceFieldName = dataSourceFieldNames.getOrDefault(
+				String.valueOf(dataSourceId), null);
 
 			Object value = fieldsJSONObject.opt(dataSourceFieldName);
 
@@ -536,12 +536,12 @@ public class FieldDog {
 				continue;
 			}
 
-			String fieldName = fieldMappingJSONObject.getString("fieldName");
-			String fieldType = fieldMappingJSONObject.getString("fieldType");
+			String fieldName = fieldMapping.getFieldName();
+			String fieldType = fieldMapping.getFieldType();
 
 			value = _deserializeValue(
-				fieldMappingJSONObject.optString("displayType"), fieldName,
-				fieldType, value.toString());
+				fieldMapping.getDisplayType(), fieldName, fieldType,
+				value.toString());
 
 			String modifiedDateString = _getModifiedDateString(
 				dataJSONObject, dataSource, ownerType);
@@ -581,19 +581,18 @@ public class FieldDog {
 
 		Long dataSourceId = dataSource.getId();
 
-		JSONArray fieldMappingsJSONArray = _getFieldMappingsJSONArray(
-			context, String.valueOf(dataSourceId), ownerType);
+		List<FieldMapping> fieldMappings = _getFieldMappings(
+			context, dataSourceId, ownerType);
 
-		for (int i = 0; i < fieldMappingsJSONArray.length(); i++) {
-			JSONObject fieldMappingJSONObject =
-				fieldMappingsJSONArray.getJSONObject(i);
+		for (FieldMapping fieldMapping : fieldMappings) {
+			fieldMapping = _fieldMappingDog.fetchFieldMapping(
+				fieldMapping.getId());
 
-			JSONObject dataSourceFieldNamesJSONObject =
-				fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
+			Map<String, String> dataSourceFieldNames =
+				fieldMapping.getDataSourceFieldNames();
 
-			String dataSourceFieldName =
-				dataSourceFieldNamesJSONObject.optString(
-					String.valueOf(dataSourceId), null);
+			String dataSourceFieldName = dataSourceFieldNames.getOrDefault(
+				String.valueOf(dataSourceId), null);
 
 			Object value = fieldsJSONObject.opt(dataSourceFieldName);
 
@@ -601,12 +600,12 @@ public class FieldDog {
 				continue;
 			}
 
-			String fieldName = fieldMappingJSONObject.getString("fieldName");
-			String fieldType = fieldMappingJSONObject.getString("fieldType");
+			String fieldName = fieldMapping.getFieldName();
+			String fieldType = fieldMapping.getFieldType();
 
 			value = _deserializeValue(
-				fieldMappingJSONObject.optString("displayType"), fieldName,
-				fieldType, value.toString());
+				fieldMapping.getDisplayType(), fieldName, fieldType,
+				value.toString());
 
 			String modifiedDateString = _getModifiedDateString(
 				dataJSONObject, dataSource, ownerType);
@@ -766,37 +765,19 @@ public class FieldDog {
 		return null;
 	}
 
-	private JSONArray _getFieldMappingsJSONArray(
-		String context, String dataSourceId, String ownerType) {
+	private List<FieldMapping> _getFieldMappings(
+		String context, Long dataSourceId, String ownerType) {
 
-		return _elasticsearchInvoker.get(
-			"field-mappings",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("context", context)
-			).filter(
-				QueryBuilders.existsQuery(
-					"dataSourceFieldNames." + dataSourceId)
-			).filter(
-				QueryBuilders.termQuery("ownerType", ownerType)
-			));
+		return _fieldMappingRepository.findByContextAndDataSourceIdAndOwnerType(
+			context, dataSourceId, ownerType);
 	}
 
-	private JSONArray _getFieldMappingsJSONArray(
-		String context, String dataSourceId, String fieldName,
-		String ownerType) {
+	private List<FieldMapping> _getFieldMappings(
+		String context, Long dataSourceId, String fieldName, String ownerType) {
 
-		return _elasticsearchInvoker.get(
-			"field-mappings",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("context", context)
-			).filter(
-				QueryBuilders.existsQuery(
-					"dataSourceFieldNames." + dataSourceId)
-			).filter(
-				QueryBuilders.termQuery("fieldName", fieldName)
-			).filter(
-				QueryBuilders.termQuery("ownerType", ownerType)
-			));
+		return _fieldMappingRepository.
+			findByContextAndDataSourceIdAndFieldNameAndOwnerType(
+				context, dataSourceId, fieldName, ownerType);
 	}
 
 	private List<Field> _getFields(
@@ -871,19 +852,17 @@ public class FieldDog {
 			return Collections.emptyList();
 		}
 
-		JSONObject uniqueIdFieldMappingJSONObject =
-			_faroInfoFieldMappingDog.fetchFieldMappingJSONObject(
-				uniqueIdContext, uniqueIdFieldName, ownerType);
+		FieldMapping uniqueIdFieldMapping = _fieldMappingDog.fetchFieldMapping(
+			uniqueIdContext, uniqueIdFieldName, ownerType);
 
-		if (uniqueIdFieldMappingJSONObject == null) {
+		if (uniqueIdFieldMapping == null) {
 			return Collections.emptyList();
 		}
 
-		JSONObject fieldMappingJSONObject =
-			_faroInfoFieldMappingDog.fetchFieldMappingJSONObject(
-				context, fieldName, ownerType);
+		FieldMapping fieldMapping = _fieldMappingDog.fetchFieldMapping(
+			context, fieldName, ownerType);
 
-		if (fieldMappingJSONObject == null) {
+		if (fieldMapping == null) {
 			return Collections.emptyList();
 		}
 
@@ -896,15 +875,18 @@ public class FieldDog {
 
 		List<Field> newFields = new ArrayList<>();
 
-		JSONObject dataSourceFieldNamesJSONObject =
-			fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
+		Map<String, String> dataSourceFieldNames =
+			fieldMapping.getDataSourceFieldNames();
 
-		for (String dataSourceId : dataSourceFieldNamesJSONObject.keySet()) {
-			JSONObject uniqueIdDataSourceFieldNamesJSONObject =
-				uniqueIdFieldMappingJSONObject.getJSONObject(
-					"dataSourceFieldNames");
+		for (Map.Entry<String, String> entry :
+				dataSourceFieldNames.entrySet()) {
 
-			if (!uniqueIdDataSourceFieldNamesJSONObject.has(dataSourceId)) {
+			String dataSourceId = entry.getKey();
+
+			Map<String, String> uniqueIdDataSourceFieldNames =
+				uniqueIdFieldMapping.getDataSourceFieldNames();
+
+			if (!uniqueIdDataSourceFieldNames.containsKey(dataSourceId)) {
 				continue;
 			}
 
@@ -923,7 +905,7 @@ public class FieldDog {
 
 			JSONObject dataJSONObject = _fetchDataJSONObject(
 				dataSource, ownerType, String.valueOf(uniqueIdField.getValue()),
-				uniqueIdDataSourceFieldNamesJSONObject.getString(dataSourceId));
+				uniqueIdDataSourceFieldNames.get(dataSourceId));
 
 			if (dataJSONObject == null) {
 				continue;
@@ -932,8 +914,7 @@ public class FieldDog {
 			JSONObject fieldsJSONObject = getFieldsJSONObject(
 				context, dataJSONObject, dataSource);
 
-			String dataSourceFieldName =
-				dataSourceFieldNamesJSONObject.getString(dataSourceId);
+			String dataSourceFieldName = dataSourceFieldNames.get(dataSourceId);
 
 			Object value = fieldsJSONObject.opt(dataSourceFieldName);
 
@@ -941,11 +922,11 @@ public class FieldDog {
 				continue;
 			}
 
-			String fieldType = fieldMappingJSONObject.getString("fieldType");
+			String fieldType = fieldMapping.getFieldType();
 
 			value = _deserializeValue(
-				fieldMappingJSONObject.optString("displayType"), fieldName,
-				fieldType, value.toString());
+				fieldMapping.getDisplayType(), fieldName, fieldType,
+				value.toString());
 
 			String modifiedDateString = _getModifiedDateString(
 				dataJSONObject, dataSource, ownerType);
@@ -955,8 +936,8 @@ public class FieldDog {
 					Field field = _buildField(
 						context, dataSource.getId(), dataSource.getName(),
 						fieldType, modifiedDateString,
-						fieldMappingJSONObject.getString("fieldName"), ownerId,
-						ownerType, dataSourceFieldName, currentValue);
+						fieldMapping.getFieldName(), ownerId, ownerType,
+						dataSourceFieldName, currentValue);
 
 					newFields.add(field);
 				}
@@ -964,9 +945,8 @@ public class FieldDog {
 			else {
 				Field field = _buildField(
 					context, dataSource.getId(), dataSource.getName(),
-					fieldType, modifiedDateString,
-					fieldMappingJSONObject.getString("fieldName"), ownerId,
-					ownerType, dataSourceFieldName, value);
+					fieldType, modifiedDateString, fieldMapping.getFieldName(),
+					ownerId, ownerType, dataSourceFieldName, value);
 
 				if (newFields.isEmpty() ||
 					_isUpdateField(
@@ -990,19 +970,17 @@ public class FieldDog {
 			return new JSONArray();
 		}
 
-		JSONObject uniqueIdFieldMappingJSONObject =
-			_faroInfoFieldMappingDog.fetchFieldMappingJSONObject(
-				uniqueIdContext, uniqueIdFieldName, ownerType);
+		FieldMapping uniqueIdFieldMapping = _fieldMappingDog.fetchFieldMapping(
+			uniqueIdContext, uniqueIdFieldName, ownerType);
 
-		if (uniqueIdFieldMappingJSONObject == null) {
+		if (uniqueIdFieldMapping == null) {
 			return new JSONArray();
 		}
 
-		JSONObject fieldMappingJSONObject =
-			_faroInfoFieldMappingDog.fetchFieldMappingJSONObject(
-				context, fieldName, ownerType);
+		FieldMapping fieldMapping = _fieldMappingDog.fetchFieldMapping(
+			context, fieldName, ownerType);
 
-		if (fieldMappingJSONObject == null) {
+		if (fieldMapping == null) {
 			return new JSONArray();
 		}
 
@@ -1015,15 +993,18 @@ public class FieldDog {
 
 		JSONArray newFieldsJSONArray = new JSONArray();
 
-		JSONObject dataSourceFieldNamesJSONObject =
-			fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
+		Map<String, String> dataSourceFieldNames =
+			fieldMapping.getDataSourceFieldNames();
 
-		for (String dataSourceId : dataSourceFieldNamesJSONObject.keySet()) {
-			JSONObject uniqueIdDataSourceFieldNamesJSONObject =
-				uniqueIdFieldMappingJSONObject.getJSONObject(
-					"dataSourceFieldNames");
+		for (Map.Entry<String, String> entry :
+				dataSourceFieldNames.entrySet()) {
 
-			if (!uniqueIdDataSourceFieldNamesJSONObject.has(dataSourceId)) {
+			String dataSourceId = entry.getKey();
+
+			Map<String, String> uniqueIdDataSourceFieldNames =
+				uniqueIdFieldMapping.getDataSourceFieldNames();
+
+			if (!uniqueIdDataSourceFieldNames.containsKey(dataSourceId)) {
 				continue;
 			}
 
@@ -1044,7 +1025,7 @@ public class FieldDog {
 			JSONObject dataJSONObject = _fetchDataJSONObject(
 				dataSource, ownerType,
 				uniqueIdFieldJSONObject.getString("value"),
-				uniqueIdDataSourceFieldNamesJSONObject.getString(dataSourceId));
+				uniqueIdDataSourceFieldNames.get(dataSourceId));
 
 			if (dataJSONObject == null) {
 				continue;
@@ -1053,8 +1034,7 @@ public class FieldDog {
 			JSONObject fieldsJSONObject = getFieldsJSONObject(
 				context, dataJSONObject, dataSource);
 
-			String dataSourceFieldName =
-				dataSourceFieldNamesJSONObject.getString(dataSourceId);
+			String dataSourceFieldName = dataSourceFieldNames.get(dataSourceId);
 
 			Object value = fieldsJSONObject.opt(dataSourceFieldName);
 
@@ -1062,11 +1042,11 @@ public class FieldDog {
 				continue;
 			}
 
-			String fieldType = fieldMappingJSONObject.getString("fieldType");
+			String fieldType = fieldMapping.getFieldType();
 
 			value = _deserializeValue(
-				fieldMappingJSONObject.optString("displayType"), fieldName,
-				fieldType, value.toString());
+				fieldMapping.getDisplayType(), fieldName, fieldType,
+				value.toString());
 
 			String modifiedDateString = _getModifiedDateString(
 				dataJSONObject, dataSource, ownerType);
@@ -1075,8 +1055,7 @@ public class FieldDog {
 				for (Object currentValue : (List<?>)value) {
 					JSONObject fieldJSONObject = _buildFieldJSONObject(
 						context, dataSourceId, dataSource.getName(), fieldType,
-						modifiedDateString,
-						fieldMappingJSONObject.getString("fieldName"),
+						modifiedDateString, fieldMapping.getFieldName(),
 						String.valueOf(ownerId), ownerType, dataSourceFieldName,
 						currentValue);
 
@@ -1086,8 +1065,7 @@ public class FieldDog {
 			else {
 				JSONObject fieldJSONObject = _buildFieldJSONObject(
 					context, dataSourceId, dataSource.getName(), fieldType,
-					modifiedDateString,
-					fieldMappingJSONObject.getString("fieldName"),
+					modifiedDateString, fieldMapping.getFieldName(),
 					String.valueOf(ownerId), ownerType, dataSourceFieldName,
 					value);
 
@@ -1104,31 +1082,32 @@ public class FieldDog {
 		return newFieldsJSONArray;
 	}
 
-	private JSONObject _getStrategyJSONObject(
-		String context, String dataSourceId, String fieldName,
-		String ownerType) {
+	private FieldMapping.Strategy _getStrategy(
+		String context, Long dataSourceId, String fieldName, String ownerType) {
 
-		JSONArray fieldMappingsJSONArray = _getFieldMappingsJSONArray(
+		List<FieldMapping> fieldMappings = _getFieldMappings(
 			context, dataSourceId, fieldName, ownerType);
 
-		JSONObject fieldMappingJSONObject =
-			fieldMappingsJSONArray.getJSONObject(0);
+		FieldMapping fieldMapping = fieldMappings.get(0);
 
-		return fieldMappingJSONObject.getJSONObject("strategy");
+		FieldMapping.Strategy strategy = fieldMapping.getStrategy();
+
+		if (strategy == null) {
+			return FieldMapping.Strategy.DEFAULT;
+		}
+
+		return strategy;
 	}
 
 	private boolean _isMultiValueField(
 		String context, Long dataSourceId, String fieldName, String ownerType) {
 
-		JSONArray fieldMappingsJSONArray = _getFieldMappingsJSONArray(
-			context, String.valueOf(dataSourceId), fieldName, ownerType);
+		List<FieldMapping> fieldMappings = _getFieldMappings(
+			context, dataSourceId, fieldName, ownerType);
 
-		JSONObject fieldMappingJSONObject =
-			fieldMappingsJSONArray.getJSONObject(0);
+		FieldMapping fieldMapping = fieldMappings.get(0);
 
-		if (Objects.equals(
-				fieldMappingJSONObject.optString("displayType"), "checkbox")) {
-
+		if (Objects.equals(fieldMapping.getDisplayType(), "checkbox")) {
 			return true;
 		}
 
@@ -1149,15 +1128,14 @@ public class FieldDog {
 			return false;
 		}
 
-		JSONObject fieldMappingStrategyJSONObject = _getStrategyJSONObject(
-			context, newDataSourceId, oldField.getName(), ownerType);
+		FieldMapping.Strategy fieldMappingStrategy = _getStrategy(
+			context, dataSourceId, oldField.getName(), ownerType);
 
 		if (Objects.equals(
-				fieldMappingStrategyJSONObject.getString("key"),
-				"PRIORITY_DATASOURCE")) {
+				fieldMappingStrategy.getKey(), "PRIORITY_DATASOURCE")) {
 
 			JSONObject configurationJSONObject =
-				fieldMappingStrategyJSONObject.getJSONObject("configuration");
+				fieldMappingStrategy.getConfigurationJSONObject();
 
 			String configurationDataSourceId =
 				configurationJSONObject.getString("dataSourceId");
@@ -1202,16 +1180,15 @@ public class FieldDog {
 			return false;
 		}
 
-		JSONObject fieldMappingStrategyJSONObject = _getStrategyJSONObject(
-			context, newDataSourceId, oldFieldJSONObject.getString("name"),
+		FieldMapping.Strategy fieldMappingStrategy = _getStrategy(
+			context, dataSourceId, oldFieldJSONObject.getString("name"),
 			ownerType);
 
 		if (Objects.equals(
-				fieldMappingStrategyJSONObject.getString("key"),
-				"PRIORITY_DATASOURCE")) {
+				fieldMappingStrategy.getKey(), "PRIORITY_DATASOURCE")) {
 
 			JSONObject configurationJSONObject =
-				fieldMappingStrategyJSONObject.getJSONObject("configuration");
+				fieldMappingStrategy.getConfigurationJSONObject();
 
 			String configurationDataSourceId =
 				configurationJSONObject.getString("dataSourceId");
@@ -1506,7 +1483,10 @@ public class FieldDog {
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
+	private FieldMappingDog _fieldMappingDog;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private FieldRepository _fieldRepository;

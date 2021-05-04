@@ -14,8 +14,10 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
@@ -23,8 +25,6 @@ import com.liferay.osb.asah.common.rest.response.function.NumbersDistributionTra
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 
 import java.util.HashMap;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,7 +47,7 @@ public class IndividualsRestController
 
 	@GetMapping("/distribution")
 	public String getIndividualsDistribution(
-			@RequestParam String fieldMappingId,
+			@RequestParam Long fieldMappingId,
 			@RequestParam(name = "filter", required = false) String
 				filterString,
 			@RequestParam(defaultValue = "10") int numberOfBins,
@@ -55,28 +55,26 @@ public class IndividualsRestController
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		JSONObject fieldMappingJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"field-mappings", fieldMappingId);
+		FieldMapping fieldMapping = _fieldMappingDog.fetchFieldMapping(
+			fieldMappingId);
 
-		if (fieldMappingJSONObject == null) {
+		if (fieldMapping == null) {
 			throw new IllegalArgumentException(
 				"Invalid field mapping ID " + fieldMappingId);
 		}
 
-		String ownerType = fieldMappingJSONObject.getString("ownerType");
+		String ownerType = fieldMapping.getOwnerType();
 
 		if (!ownerType.equals("individual")) {
 			throw new IllegalArgumentException(
 				"Unable to use non-individual field " +
-					fieldMappingJSONObject.getString("fieldName") + " to " +
-						"distribute individuals");
+					fieldMapping.getFieldName() + " to distribute individuals");
 		}
 
 		String fieldName =
-			"demographics." + fieldMappingJSONObject.getString("fieldName") +
-				".value";
+			"demographics." + fieldMapping.getFieldName() + ".value";
 
-		String fieldType = fieldMappingJSONObject.getString("fieldType");
+		String fieldType = fieldMapping.getFieldType();
 
 		TransformationJSONArrayFunction transformationJSONArrayFunction = null;
 
@@ -115,5 +113,8 @@ public class IndividualsRestController
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
+
+	@Autowired
+	private FieldMappingDog _fieldMappingDog;
 
 }

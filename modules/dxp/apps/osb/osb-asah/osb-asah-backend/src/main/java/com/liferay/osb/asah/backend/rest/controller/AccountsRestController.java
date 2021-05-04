@@ -20,13 +20,13 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.common.dog.AccountDog;
+import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -76,28 +76,27 @@ public class AccountsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "100") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		JSONObject fieldMappingJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"field-mappings", String.valueOf(fieldMappingId));
+		FieldMapping fieldMapping = _fieldMappingDog.fetchFieldMapping(
+			fieldMappingId);
 
-		if (fieldMappingJSONObject == null) {
+		if (fieldMapping == null) {
 			throw new IllegalArgumentException(
 				"Invalid field mapping ID " + fieldMappingId);
 		}
 
-		String ownerType = fieldMappingJSONObject.getString("ownerType");
+		String ownerType = fieldMapping.getOwnerType();
 
 		if (!ownerType.equals("account")) {
 			throw new IllegalArgumentException(
 				"Unable to use non-account field " +
-					fieldMappingJSONObject.getString("fieldName") + " to " +
-						"distribute accounts");
+					fieldMapping.getFieldName() + " to distribute accounts");
 		}
 
 		return _toDistributionDTOsPageDTO(
 			_accountDog.getDistributionsPage(
-				channelId, fieldMappingJSONObject.getString("fieldName"),
-				fieldMappingJSONObject.getString("fieldType"), filterString,
-				individualSegmentId, numberOfBins, size, sorts));
+				channelId, fieldMapping.getFieldName(),
+				fieldMapping.getFieldType(), filterString, individualSegmentId,
+				numberOfBins, size, sorts));
 	}
 
 	@GetMapping(params = "!apply", value = "/{id}/individual-segments")
@@ -217,6 +216,9 @@ public class AccountsRestController extends BaseRestController {
 
 	@Autowired
 	private AccountDog _accountDog;
+
+	@Autowired
+	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

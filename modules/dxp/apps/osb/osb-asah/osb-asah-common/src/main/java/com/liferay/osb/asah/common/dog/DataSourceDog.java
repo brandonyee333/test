@@ -19,12 +19,14 @@ import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
+import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.repository.DataSourceFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.security.Encryptor;
@@ -39,6 +41,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -114,8 +117,7 @@ public class DataSourceDog {
 				"Unable to delete a data source without ID");
 		}
 
-		_deleteFieldMappings(
-			dataSourceId, processedCountMonitorConsumer, queueMonitorConsumer);
+		_deleteFieldMappings(dataSourceId);
 
 		_dataSourceRepository.deleteById(dataSourceId);
 
@@ -495,39 +497,35 @@ public class DataSourceDog {
 			true, collectionNames);
 	}
 
-	private void _deleteFieldMappings(
-			Long dataSourceId, Consumer<Integer> processedCountMonitorConsumer,
-			Consumer<Integer> queueMonitorConsumer)
-		throws Exception {
-
+	private void _deleteFieldMappings(Long dataSourceId) {
 		List<Long> disabledFieldMappingIds = new ArrayList<>();
 
-		JSONArrayIterator.of(
-			"field-mappings", _elasticsearchInvoker,
-			fieldMappingJSONObject -> {
-				fieldMappingJSONObject =
-					_faroInfoFieldMappingDog.removeDataSourceFieldName(
-						fieldMappingJSONObject, dataSourceId);
+		List<DataSourceFieldMapping> dataSourceFieldMappings =
+			_dataSourceFieldMappingRepository.findByDataSourceId(dataSourceId);
 
-				JSONObject dataSourceFieldNamesJSONObject =
-					fieldMappingJSONObject.getJSONObject(
-						"dataSourceFieldNames");
+		for (DataSourceFieldMapping dataSourceFieldMapping :
+				dataSourceFieldMappings) {
 
-				if ((dataSourceFieldNamesJSONObject.length() == 0) &&
-					_faroInfoFieldMappingDog.deleteFieldMapping(
-						fieldMappingJSONObject)) {
+			if (!Objects.equals(
+					dataSourceId, dataSourceFieldMapping.getDataSourceId())) {
 
-					disabledFieldMappingIds.add(
-						fieldMappingJSONObject.getLong("id"));
-				}
-
-				return null;
+				continue;
 			}
-		).setMonitoringConsumers(
-			processedCountMonitorConsumer, queueMonitorConsumer
-		).setQueryBuilder(
-			QueryBuilders.existsQuery("dataSourceFieldNames." + dataSourceId)
-		).iterate();
+
+			FieldMapping fieldMapping =
+				_fieldMappingDog.removeDataSourceFieldName(
+					dataSourceId, dataSourceFieldMapping.getFieldMappingId());
+
+			Map<String, String> dataSourceFieldNames =
+				fieldMapping.getDataSourceFieldNames();
+
+			if (dataSourceFieldNames.isEmpty() &&
+				_fieldMappingDog.deleteFieldMapping(fieldMapping)) {
+
+				disabledFieldMappingIds.add(
+					dataSourceFieldMapping.getFieldMappingId());
+			}
+		}
 
 		_segmentDog.disableDynamicSegments(
 			dataSourceId, disabledFieldMappingIds);
@@ -757,6 +755,9 @@ public class DataSourceDog {
 	private CSVIndividualDog _csvIndividualDog;
 
 	@Autowired
+	private DataSourceFieldMappingRepository _dataSourceFieldMappingRepository;
+
+	@Autowired
 	private DataSourceRepository _dataSourceRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
@@ -769,13 +770,13 @@ public class DataSourceDog {
 	private Encryptor _encryptor;
 
 	@Autowired
-	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
-
-	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
 	private FieldDog _fieldDog;
+
+	@Autowired
+	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;

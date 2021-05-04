@@ -15,9 +15,10 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.dog.CSVIndividualDog;
+import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.RunLog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -57,20 +58,18 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 	protected void processCSVIndividual(CSVIndividual csvIndividual)
 		throws Exception {
 
-		JSONObject emailFieldMappingJSONObject =
-			_faroInfoFieldMappingDog.fetchFieldMappingJSONObject(
-				"demographics", "email", "individual");
+		FieldMapping emailFieldMapping = _fieldMappingDog.fetchFieldMapping(
+			"demographics", "email", "individual");
 
-		if (emailFieldMappingJSONObject == null) {
+		if (emailFieldMapping == null) {
 			return;
 		}
 
-		JSONObject dataSourceFieldNamesJSONObject =
-			emailFieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
+		Map<String, String> dataSourceFieldNames =
+			emailFieldMapping.getDataSourceFieldNames();
 
-		String emailDataSourceFieldName =
-			dataSourceFieldNamesJSONObject.optString(
-				String.valueOf(csvIndividual.getDataSourceId()), null);
+		String emailDataSourceFieldName = dataSourceFieldNames.getOrDefault(
+			String.valueOf(csvIndividual.getDataSourceId()), null);
 
 		if (emailDataSourceFieldName == null) {
 			return;
@@ -79,7 +78,7 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 		JSONObject fieldsJSONObject = csvIndividual.getFieldsJSONObject();
 
 		processData(
-			String.valueOf(csvIndividual.getDataSourceIndividualPK()),
+			csvIndividual.getDataSourceIndividualPK(),
 			csvIndividual.getDataSourceId(), fieldsJSONObject,
 			fieldsJSONObject.optString(emailDataSourceFieldName, null));
 	}
@@ -161,7 +160,7 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 	private CSVIndividualDog _csvIndividualDog;
 
 	@Autowired
-	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
+	private FieldMappingDog _fieldMappingDog;
 
 	private final Map<Long, Boolean> _interruptedMap = new HashMap<>();
 	private final Map<Long, Boolean> _runningMap = new HashMap<>();

@@ -14,28 +14,26 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.backend.dto.FieldMappingDTO;
+import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.dog.FieldMappingDog;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.math3.util.Pair;
 
-import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,47 +47,57 @@ import org.springframework.web.bind.annotation.RestController;
 public class DefinitionsRestController extends BaseRestController {
 
 	@GetMapping("/individual-attributes")
-	public String getIndividualAttributes(
-			@RequestParam(required = false) String name)
-		throws Exception {
+	public PageDTO<FieldMappingDTO> getIndividualFieldMappingDTOsPageDTO(
+		@RequestParam(required = false) String name) {
 
-		String responseJSON = toCollectionGetResponse(
-			"field-mappings", null, 0, _getQueryBuilder(name),
-			(int)faroInfoElasticsearchInvoker.count(
-				"field-mappings", _getQueryBuilder(name)),
-			new String[] {"fieldName", "asc"});
+		Page<FieldMapping> fieldMappingsPage =
+			_fieldMappingDog.searchIndividualFieldMappingsPage(
+				name, 0,
+				Math.max(
+					1,
+					(int)_fieldMappingDog.countIndividualFieldMappings(name)),
+				new String[] {"fieldName", "asc"});
 
-		JSONObject responseJSONObject = new JSONObject(responseJSON);
+		Map<String, FieldMappingDTO> fieldMappingDTOs = Stream.of(
+			fieldMappingsPage.getContent()
+		).flatMap(
+			List::stream
+		).map(
+			FieldMappingDTO::new
+		).collect(
+			LinkedHashMap::new,
+			(map, fieldMappingDTO) -> map.put(
+				fieldMappingDTO.getId(), fieldMappingDTO),
+			Map::putAll
+		);
 
-		_addDataSources(responseJSONObject);
+		_addDataSources(fieldMappingDTOs);
 
-		return responseJSONObject.toString();
+		return _toPageDTO(
+			new FieldMappingDTO(fieldMappingDTOs.values()), fieldMappingsPage);
 	}
 
-	private void _addDataSources(JSONObject responseJSONObject) {
-		JSONObject embeddedJSONObject = responseJSONObject.getJSONObject(
-			"_embedded");
+	private void _addDataSources(
+		Map<String, FieldMappingDTO> fieldMappingDTOs) {
 
-		JSONArray fieldMappingsJSONArray = embeddedJSONObject.getJSONArray(
-			"field-mappings");
+		for (Map.Entry<String, FieldMappingDTO> entry :
+				fieldMappingDTOs.entrySet()) {
 
-		for (int i = 0; i < fieldMappingsJSONArray.length(); i++) {
-			JSONObject jsonObject = fieldMappingsJSONArray.getJSONObject(i);
-
-			JSONObject dataSourceFieldNamesJSONObject =
-				jsonObject.getJSONObject("dataSourceFieldNames");
-
-			Iterator<String> keys = dataSourceFieldNamesJSONObject.keys();
+			FieldMappingDTO fieldMappingDTO = entry.getValue();
 
 			List<Pair<String, String>> pairs = new ArrayList<>();
 
-			while (keys.hasNext()) {
-				String key = keys.next();
+			Map<String, String> dataSourceFieldNames =
+				fieldMappingDTO.getDataSourceFieldNames();
+
+			for (Map.Entry<String, String> dataSourceFieldNameEntry :
+					dataSourceFieldNames.entrySet()) {
 
 				pairs.add(
 					new Pair<>(
-						_dataSourceDog.getDataSourceName(Long.valueOf(key)),
-						dataSourceFieldNamesJSONObject.getString(key)));
+						_dataSourceDog.getDataSourceName(
+							Long.valueOf(dataSourceFieldNameEntry.getKey())),
+						dataSourceFieldNameEntry.getValue()));
 			}
 
 			pairs.sort(Comparator.comparing(Pair::getKey));
@@ -105,37 +113,23 @@ public class DefinitionsRestController extends BaseRestController {
 					));
 			}
 
-			jsonObject.put("dataSources", pairsJSONArray);
+			fieldMappingDTO.setDataSourcesJSONArray(pairsJSONArray);
 		}
 	}
 
-	private QueryBuilder _getQueryBuilder(String name) {
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.existsQuery("dataSourceFieldNames")
-		).filter(
-			QueryBuilders.termQuery("ownerType", "individual")
-		);
+	private PageDTO<FieldMappingDTO> _toPageDTO(
+		FieldMappingDTO fieldMappingDTO, Page<FieldMapping> fieldMappingsPage) {
 
-		if (StringUtils.isNotBlank(name)) {
-			boolQueryBuilder.filter(
-				BoolQueryBuilderUtil.should(
-					QueryBuilders.queryStringQuery(
-						String.format(
-							"%s:*%s*", "fieldName",
-							QueryUtil.escapeKeywords(name)))
-				).should(
-					QueryBuilders.matchQuery(
-						"fieldName", name
-					).fuzziness(
-						Fuzziness.AUTO
-					)
-				));
-		}
-
-		return boolQueryBuilder;
+		return new PageDTO<>(
+			"_embedded", fieldMappingDTO, fieldMappingsPage.getNumber(),
+			fieldMappingsPage.getSize(), fieldMappingsPage.getTotalElements(),
+			fieldMappingsPage.getTotalPages());
 	}
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private FieldMappingDog _fieldMappingDog;
 
 }

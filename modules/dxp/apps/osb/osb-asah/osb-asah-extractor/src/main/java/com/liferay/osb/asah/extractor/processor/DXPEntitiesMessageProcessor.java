@@ -17,12 +17,12 @@ package com.liferay.osb.asah.extractor.processor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOrganizationDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
@@ -271,7 +271,7 @@ public class DXPEntitiesMessageProcessor {
 		String displayType = objectJSONObject.getString("displayType");
 		String name = objectJSONObject.getString("name");
 
-		_faroInfoFieldMappingDog.addFieldMapping(
+		_fieldMappingDog.addFieldMapping(
 			"custom", name, objectJSONObject.getLong("osbAsahDataSourceId"),
 			displayType, StringUtils.removeEnd(name, "-" + dataType),
 			_getFieldType(dataType, displayType),
@@ -433,7 +433,7 @@ public class DXPEntitiesMessageProcessor {
 		String dataType = objectJSONObject.getString("dataType");
 		String name = objectJSONObject.getString("name");
 
-		_faroInfoFieldMappingDog.addFieldMapping(
+		_fieldMappingDog.addFieldMapping(
 			"demographics", name,
 			objectJSONObject.getLong("osbAsahDataSourceId"), null,
 			_defaultLiferayFieldMappingMaps.getOrDefault(name, name),
@@ -505,13 +505,13 @@ public class DXPEntitiesMessageProcessor {
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
-
-	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
 	private FaroInfoOrganizationDog _faroInfoOrganizationDog;
+
+	@Autowired
+	private FieldMappingDog _fieldMappingDog;
 
 	@MessageSubscriber.Autowired(channel = Channel.DXP_ENTITIES_MESSAGE)
 	private MessageSubscriber _messageSubscriber;

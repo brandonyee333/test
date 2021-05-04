@@ -21,9 +21,9 @@ import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
@@ -404,10 +404,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 		Long dataSourceId, String filterString, int page, int size,
 		String[] sorts) {
 
-		List<Long> dataSourceFieldMappingIds = ListUtil.map(
-			_faroInfoFieldMappingDog.getDataSourceFieldMappingIds(
-				dataSourceId, true),
-			Long::valueOf);
+		List<Long> dataSourceFieldMappingIds =
+			_fieldMappingDog.getDataSourceFieldMappingIds(dataSourceId, true);
 
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
@@ -572,16 +570,15 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		String fieldName = fieldNameParts[1];
 
-		JSONObject fieldMappingJSONObject =
-			_faroInfoFieldMappingDog.fetchFieldMappingJSONObject(
-				context, fieldName, ownerType);
+		FieldMapping fieldMapping = _fieldMappingDog.fetchFieldMapping(
+			context, fieldName, ownerType);
 
-		if (fieldMappingJSONObject == null) {
+		if (fieldMapping == null) {
 			return new Exception(
 				"Unable to get field mapping with field name " + fieldName);
 		}
 
-		referencedFieldMappingIds.add(fieldMappingJSONObject.getString("id"));
+		referencedFieldMappingIds.add(String.valueOf(fieldMapping.getId()));
 
 		return null;
 	}
@@ -998,10 +995,10 @@ public class SegmentDog extends BaseFaroInfoDog {
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
+	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
 	private MembershipDog _membershipDog;
