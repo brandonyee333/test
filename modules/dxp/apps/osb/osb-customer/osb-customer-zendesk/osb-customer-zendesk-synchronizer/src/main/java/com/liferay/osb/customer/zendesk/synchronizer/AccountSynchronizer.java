@@ -60,6 +60,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -614,7 +615,7 @@ public class AccountSynchronizer {
 			partnerJiraProject, partnerName, getSupportLevel(productPurchases),
 			getStatus(productPurchases), getSupportLanguage(accountEntry),
 			getSupportRegion(account), account.getTierAsString(),
-			getTags(productPurchases));
+			getTags(accountEntry, productPurchases));
 
 		if (!externalIdMappers) {
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
@@ -693,8 +694,13 @@ public class AccountSynchronizer {
 		return account.getRegionAsString();
 	}
 
-	protected Set<String> getTags(List<ProductPurchase> productPurchases)
+	protected Set<String> getTags(
+			AccountEntry accountEntry, List<ProductPurchase> productPurchases)
 		throws Exception {
+
+		if (!accountEntry.isActiveTicketSupport()) {
+			return Collections.emptySet();
+		}
 
 		Set<String> tags = new HashSet<>();
 

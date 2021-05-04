@@ -39,7 +39,6 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Entitlement;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -142,12 +141,7 @@ public class SynchronizeAccountMessageListener extends BaseMessageListener {
 					account.getKey(), 1, 1000);
 
 			if (accountEntry != null) {
-				List<ProductPurchase> productPurchases =
-					_accountReader.getProductPurchases(koroneikiAccountKey);
-
-				if (_accountReader.isSyncAccount(productPurchases)) {
-					synchronizeCustomers(account, contacts, accountEntry);
-				}
+				synchronizeCustomers(account, contacts, accountEntry);
 			}
 
 			synchronizePartners(account, contacts);
@@ -226,13 +220,26 @@ public class SynchronizeAccountMessageListener extends BaseMessageListener {
 			ContactRole[] contactRoles = contact.getContactRoles();
 
 			for (ContactRole contactRole : contactRoles) {
-				if (ArrayUtil.contains(
-						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
-						contactRole.getName())) {
+				String contactRoleName = contactRole.getName();
 
-					customerUsersMap.put(user.getUuid(), user);
+				if (accountEntry.isActiveTicketSupport()) {
+					if (ArrayUtil.contains(
+							ContactRoleConstants.SUPPORT_CONTACT_ROLES,
+							contactRoleName)) {
 
-					break;
+						customerUsersMap.put(user.getUuid(), user);
+
+						break;
+					}
+				}
+				else {
+					if (contactRoleName.equals(
+							ContactRoleConstants.NAME_SUPPORT_CLOSED_WATCHER)) {
+
+						customerUsersMap.put(user.getUuid(), user);
+
+						break;
+					}
 				}
 			}
 		}

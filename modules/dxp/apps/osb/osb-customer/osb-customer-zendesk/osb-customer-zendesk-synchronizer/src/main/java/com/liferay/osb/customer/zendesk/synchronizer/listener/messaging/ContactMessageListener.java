@@ -163,7 +163,8 @@ public class ContactMessageListener extends BaseMessageListener {
 		try {
 			String name = contactRole.getName();
 
-			if ((accountEntry != null) && !accountEntry.isActiveSupport() &&
+			if ((accountEntry != null) &&
+				!accountEntry.isActiveTicketSupport() &&
 				!name.equals(
 					ContactRoleConstants.NAME_SUPPORT_CLOSED_WATCHER)) {
 
@@ -228,7 +229,8 @@ public class ContactMessageListener extends BaseMessageListener {
 			for (ContactRole curContactRole : contactRoles) {
 				String name = curContactRole.getName();
 
-				if ((accountEntry != null) && !accountEntry.isActiveSupport() &&
+				if ((accountEntry != null) &&
+					!accountEntry.isActiveTicketSupport() &&
 					!name.equals(
 						ContactRoleConstants.NAME_SUPPORT_CLOSED_WATCHER)) {
 

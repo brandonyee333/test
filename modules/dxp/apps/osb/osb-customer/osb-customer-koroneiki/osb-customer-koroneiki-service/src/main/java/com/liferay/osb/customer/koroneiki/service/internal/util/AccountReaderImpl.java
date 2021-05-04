@@ -218,6 +218,7 @@ public class AccountReaderImpl implements AccountReader {
 			String name = product.getName();
 
 			if (name.equals(ProductConstants.NAME_GOLD) ||
+				name.equals(ProductConstants.NAME_LIMITED) ||
 				name.equals(ProductConstants.NAME_PLATINUM)) {
 
 				if (productPurchase.getPerpetual()) {
@@ -248,7 +249,6 @@ public class AccountReaderImpl implements AccountReader {
 			String name = product.getName();
 
 			if (name.equals(ProductConstants.NAME_GOLD) ||
-				name.equals(ProductConstants.NAME_LIMITED) ||
 				name.equals(ProductConstants.NAME_PLATINUM)) {
 
 				if (productPurchase.getPerpetual()) {
