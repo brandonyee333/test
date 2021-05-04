@@ -14,32 +14,38 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.osb.asah.backend.dto.FieldMappingDTO;
+import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
+import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,110 +67,98 @@ import org.springframework.web.bind.annotation.RestController;
 public class FieldMappingsRestController extends BaseRestController {
 
 	@DeleteMapping("/{id}")
-	public void deleteFieldMapping(@PathVariable String id) {
-		JSONObject fieldMappingJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"field-mappings", id);
+	public void deleteFieldMapping(@PathVariable Long id) {
+		FieldMapping fieldMapping = _fieldMappingDog.fetchFieldMapping(id);
 
-		if (fieldMappingJSONObject == null) {
+		if (fieldMapping == null) {
 			return;
 		}
 
-		faroInfoElasticsearchInvoker.delete("field-mappings", id);
+		_fieldMappingDog.deleteFieldMapping(fieldMapping);
 
-		_addReprocessAsahTask(fieldMappingJSONObject);
+		_addReprocessAsahTask(fieldMapping);
 	}
 
 	@GetMapping("/{id}")
-	public String getFieldMapping(@PathVariable String id) throws Exception {
-		return toItemGetResponse("field-mappings", id);
+	public FieldMappingDTO getFieldMappingDTO(@PathVariable Long id) {
+		return new FieldMappingDTO(_fieldMappingDog.getFieldMapping(id));
 	}
 
 	@GetMapping(params = "!apply")
-	public String getFieldMappings(
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
+	public PageDTO<FieldMappingDTO> getFieldMappingDTOsPageDTO(
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		return toCollectionGetResponse(
-			"field-mappings", null, page,
-			FilterStringToQueryBuilderConverter.convert(filterString), size,
-			sorts);
+		return _toPageDTO(
+			_fieldMappingDog.searchFieldMappingsPage(
+				filterString, page, Math.max(1, size), sorts));
 	}
 
 	@GetMapping(params = "apply")
-	public String getFieldMappingTransformations(
-			@RequestParam String apply,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size)
-		throws Exception {
+	public PageDTO<TransformationDTO> getTransformationDTOsPageDTO(
+		@RequestParam String apply,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size) {
 
-		return toTransformationGetResponse(
-			"field-mappings", page,
-			FilterStringToQueryBuilderConverter.convert(filterString), size,
-			null, null,
-			new TermsAggregationTransformationJSONArrayFunction(apply, null),
-			"field-mapping-transformations");
+		return _toTransformationDTOsPageDTO(
+			"field-mapping-transformations",
+			_fieldMappingDog.getTransformationsPage(
+				apply, filterString, page, size));
 	}
 
 	@PatchMapping("/{id}")
 	public String patchFieldMapping(
-			@PathVariable String id, @RequestBody Map<String, Object> map)
-		throws Exception {
+		@PathVariable Long id, @RequestBody Map<String, Object> map) {
 
-		JSONObject fieldMappingJSONObject = faroInfoElasticsearchInvoker.get(
-			"field-mappings", id);
+		FieldMapping fieldMapping = _fieldMappingDog.fetchFieldMapping(id);
 
-		JSONObject dataSourceFieldNamesJSONObject =
-			fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
-
-		String dataSourceId = String.valueOf(map.get("dataSourceId"));
-		Object dataSourceFieldName = map.get("fieldName");
+		String dataSourceFieldName = String.valueOf(map.get("fieldName"));
+		Long dataSourceId = Long.valueOf(
+			String.valueOf(map.get("dataSourceId")));
 		List<Long> deletedFieldMappingIds = new ArrayList<>();
 
 		if ((dataSourceFieldName == null) ||
-			StringUtils.isEmpty(String.valueOf(dataSourceFieldName))) {
+			StringUtils.isEmpty(dataSourceFieldName)) {
 
-			dataSourceFieldNamesJSONObject.remove(dataSourceId);
+			fieldMapping = _fieldMappingDog.removeDataSourceFieldName(
+				dataSourceId, id);
 
-			if ((dataSourceFieldNamesJSONObject.length() == 0) &&
-				_faroInfoFieldMappingDog.deleteFieldMapping(
-					fieldMappingJSONObject)) {
+			Set<DataSourceFieldMapping> dataSourceFieldMappings =
+				fieldMapping.getDataSourceFieldMappings();
+
+			if (dataSourceFieldMappings.isEmpty() &&
+				_fieldMappingDog.deleteFieldMapping(fieldMapping)) {
 
 				deletedFieldMappingIds.add(Long.valueOf(id));
 			}
 		}
 		else {
-			dataSourceFieldNamesJSONObject.put(
-				dataSourceId, dataSourceFieldName);
+			fieldMapping.addDataSourceFieldMapping(
+				new DataSourceFieldMapping(dataSourceId, dataSourceFieldName));
 		}
 
 		String responseJSON = null;
 
 		if (deletedFieldMappingIds.isEmpty()) {
-			responseJSON = toPatchResponse(
-				"field-mappings", id, fieldMappingJSONObject.toString());
+			fieldMapping = _fieldMappingDog.updateFieldMapping(
+				fieldMapping.getId(), fieldMapping);
 		}
 
 		_segmentDog.disableDynamicSegments(null, deletedFieldMappingIds);
 
 		_addReprocessAsahTask(
-			Long.valueOf(dataSourceId),
-			fieldMappingJSONObject.getString("ownerType"));
+			Long.valueOf(dataSourceId), fieldMapping.getOwnerType());
 
 		return responseJSON;
 	}
 
 	@PatchMapping
 	public String patchFieldMappings(
-			@RequestParam String context, @RequestParam String dataSourceId,
-			@RequestParam String ownerType,
-			@RequestBody Map<String, String> map)
-		throws Exception {
+		@RequestParam String context, @RequestParam Long dataSourceId,
+		@RequestParam String ownerType, @RequestBody Map<String, String> map) {
 
 		JSONArray responseJSONArray = new JSONArray();
 
@@ -173,18 +167,10 @@ public class FieldMappingsRestController extends BaseRestController {
 		for (Map.Entry<String, String> entry : map.entrySet()) {
 			String fieldName = entry.getKey();
 
-			JSONObject fieldMappingJSONObject =
-				faroInfoElasticsearchInvoker.fetch(
-					"field-mappings",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("context", context)
-					).filter(
-						QueryBuilders.termQuery("fieldName", fieldName)
-					).filter(
-						QueryBuilders.termQuery("ownerType", ownerType)
-					));
+			FieldMapping fieldMapping = _fieldMappingDog.fetchFieldMapping(
+				context, fieldName, ownerType);
 
-			if (fieldMappingJSONObject == null) {
+			if (fieldMapping == null) {
 				_log.error(
 					"Unable to get field mapping with context \"" + context +
 						"\", field name \"" + fieldName +
@@ -194,34 +180,36 @@ public class FieldMappingsRestController extends BaseRestController {
 			}
 
 			String dataSourceFieldName = entry.getValue();
-			JSONObject dataSourceFieldNamesJSONObject =
-				fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
 			boolean fieldMappingDeleted = false;
-			String fieldMappingId = fieldMappingJSONObject.getString("id");
+			Long fieldMappingId = fieldMapping.getId();
 
 			if (StringUtils.isEmpty(dataSourceFieldName)) {
-				dataSourceFieldNamesJSONObject.remove(dataSourceId);
+				fieldMapping = _fieldMappingDog.removeDataSourceFieldName(
+					dataSourceId, fieldMappingId);
 
-				if ((dataSourceFieldNamesJSONObject.length() == 0) &&
-					_faroInfoFieldMappingDog.deleteFieldMapping(
-						fieldMappingJSONObject)) {
+				Set<DataSourceFieldMapping> dataSourceFieldMappings =
+					fieldMapping.getDataSourceFieldMappings();
 
-					deletedFieldMappingIds.add(Long.valueOf(fieldMappingId));
+				if (dataSourceFieldMappings.isEmpty() &&
+					_fieldMappingDog.deleteFieldMapping(fieldMapping)) {
+
+					deletedFieldMappingIds.add(fieldMappingId);
 
 					fieldMappingDeleted = true;
 				}
 			}
 			else {
-				dataSourceFieldNamesJSONObject.put(
-					dataSourceId, dataSourceFieldName);
+				fieldMapping.addDataSourceFieldMapping(
+					new DataSourceFieldMapping(
+						dataSourceId, dataSourceFieldName));
+
+				_fieldMappingDog.updateFieldMapping(
+					fieldMapping.getId(), fieldMapping);
 			}
 
 			if (!fieldMappingDeleted) {
 				responseJSONArray.put(
-					new JSONObject(
-						toPatchResponse(
-							"field-mappings", fieldMappingId,
-							fieldMappingJSONObject.toString())));
+					_objectMapper.convertValue(fieldMapping, JSONObject.class));
 			}
 			else {
 				responseJSONArray.put(JSONObject.NULL);
@@ -236,46 +224,59 @@ public class FieldMappingsRestController extends BaseRestController {
 	}
 
 	@PostMapping
-	public String postFieldMapping(@RequestBody String json) throws Exception {
-		JSONObject jsonObject = new JSONObject(json);
+	public String postFieldMapping(
+		@RequestBody FieldMappingDTO fieldMappingDTO) {
 
-		String fieldName = jsonObject.getString("fieldName");
+		String fieldName = fieldMappingDTO.getFieldName();
 
-		if (_faroInfoFieldMappingDog.fetchFieldMappingJSONObject(
-				jsonObject.getString("context"), fieldName,
-				jsonObject.getString("ownerType")) != null) {
+		if (_fieldMappingDog.fetchFieldMapping(
+				fieldMappingDTO.getContext(), fieldName,
+				fieldMappingDTO.getOwnerType()) != null) {
 
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST, "Duplicate field name " + fieldName);
 		}
 
-		String responseJSON = toPostResponse("field-mappings", json);
+		_beforeAdd(fieldMappingDTO);
 
-		_addReprocessAsahTask(new JSONObject(responseJSON));
+		FieldMapping fieldMapping = _fieldMappingDog.addFieldMapping(
+			_objectMapper.convertValue(fieldMappingDTO, FieldMapping.class));
 
-		return responseJSON;
+		_addReprocessAsahTask(fieldMapping);
+
+		JSONObject fieldMappingJSONObject = _objectMapper.convertValue(
+			fieldMapping, JSONObject.class);
+
+		return fieldMappingJSONObject.toString();
 	}
 
 	@PutMapping("/{id}")
 	public String putFieldMapping(
-			@PathVariable String id, @RequestBody String json)
-		throws Exception {
+		@PathVariable String id, @RequestBody FieldMappingDTO fieldMappingDTO) {
 
-		String responseJSON = toPutResponse("field-mappings", id, json);
+		fieldMappingDTO.setId(id);
 
-		_addReprocessAsahTask(new JSONObject(responseJSON));
+		_beforeUpdate(fieldMappingDTO);
 
-		return responseJSON;
+		FieldMapping fieldMapping = _fieldMappingDog.updateFieldMapping(
+			Long.valueOf(id),
+			_objectMapper.convertValue(fieldMappingDTO, FieldMapping.class));
+
+		_addReprocessAsahTask(fieldMapping);
+
+		JSONObject fieldMappingJSONObject = _objectMapper.convertValue(
+			fieldMapping, JSONObject.class);
+
+		return fieldMappingJSONObject.toString();
 	}
 
-	private void _addReprocessAsahTask(JSONObject fieldMappingJSONObject) {
-		JSONObject dataSourceFieldNamesJSONObject =
-			fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
+	private void _addReprocessAsahTask(FieldMapping fieldMapping) {
+		Map<String, String> dataSourceFieldNames =
+			fieldMapping.getDataSourceFieldNames();
 
-		for (String dataSourceId : dataSourceFieldNamesJSONObject.keySet()) {
+		for (String dataSourceId : dataSourceFieldNames.keySet()) {
 			_addReprocessAsahTask(
-				Long.valueOf(dataSourceId),
-				fieldMappingJSONObject.getString("ownerType"));
+				Long.valueOf(dataSourceId), fieldMapping.getOwnerType());
 		}
 	}
 
@@ -312,6 +313,50 @@ public class FieldMappingsRestController extends BaseRestController {
 			));
 	}
 
+	private void _beforeAdd(FieldMappingDTO fieldMappingDTO) {
+		Date now = new Date();
+
+		fieldMappingDTO.setCreateDate(now);
+
+		fieldMappingDTO.setId(null);
+
+		fieldMappingDTO.setModifiedDate(now);
+	}
+
+	private void _beforeUpdate(FieldMappingDTO fieldMappingDTO) {
+		fieldMappingDTO.setModifiedDate(new Date());
+	}
+
+	private PageDTO<FieldMappingDTO> _toPageDTO(
+		Page<FieldMapping> fieldMappingsPage) {
+
+		return new PageDTO<>(
+			"_embedded", new FieldMappingDTO(fieldMappingsPage.getContent()),
+			fieldMappingsPage.getNumber(), fieldMappingsPage.getSize(),
+			fieldMappingsPage.getTotalElements(),
+			fieldMappingsPage.getTotalPages());
+	}
+
+	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+		String transformationKey, Page<Transformation> transformationsPage) {
+
+		return _toTransformationDTOsPageDTO(
+			new TransformationDTO(
+				transformationKey, transformationsPage.getContent()),
+			transformationsPage);
+	}
+
+	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+		TransformationDTO transformationDTO,
+		Page<Transformation> transformationsPage) {
+
+		return new PageDTO<>(
+			"_embedded", transformationDTO, transformationsPage.getNumber(),
+			transformationsPage.getSize(),
+			transformationsPage.getTotalElements(),
+			transformationsPage.getTotalPages());
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		FieldMappingsRestController.class);
 
@@ -322,10 +367,13 @@ public class FieldMappingsRestController extends BaseRestController {
 	private DataSourceDog _dataSourceDog;
 
 	@Autowired
-	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
+	private FieldMappingDog _fieldMappingDog;
 
 	private final Map<String, String> _naniteClassNames =
 		Collections.singletonMap("CSV#individual", "CSVIndividualsNanite");
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;
