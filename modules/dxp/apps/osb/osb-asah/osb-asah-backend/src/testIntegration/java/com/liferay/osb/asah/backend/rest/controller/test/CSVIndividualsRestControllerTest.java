@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.List;
 
@@ -50,10 +51,14 @@ public class CSVIndividualsRestControllerTest {
 			JSONUtil.put(
 				"dataSourceId", "123"
 			).put(
+				"dataSourceIndividualPK", RandomTestUtil.randomUUID()
+			).put(
 				"fields", JSONUtil.put("foo", "bar")
 			),
 			JSONUtil.put(
 				"dataSourceId", "123"
+			).put(
+				"dataSourceIndividualPK", RandomTestUtil.randomUUID()
 			).put(
 				"fields", JSONUtil.put("foo2", "bar2")
 			));
