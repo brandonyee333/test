@@ -56,7 +56,7 @@ public class CSVIndividualDog {
 	}
 
 	public void deleteCSVIndividuals(
-		Long dataSourceId, List<Long> dataSourceIndividualPKs) {
+		Long dataSourceId, List<String> dataSourceIndividualPKs) {
 
 		_csvIndividualRepository.
 			deleteByDataSourceIdAndDataSourceIndividualPKIn(

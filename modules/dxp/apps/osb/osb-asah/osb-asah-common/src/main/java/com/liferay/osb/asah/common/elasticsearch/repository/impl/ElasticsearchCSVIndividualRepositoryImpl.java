@@ -58,19 +58,18 @@ public class ElasticsearchCSVIndividualRepositoryImpl
 
 	@Override
 	public void deleteByDataSourceIdAndDataSourceIndividualPKIn(
-		Long dataSourceId, List<Long> dataSourceIndividualPKs) {
+		Long dataSourceId, List<String> dataSourceIndividualPKs) {
 
 		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 
-		for (Long dataSourceIndividualPK : dataSourceIndividualPKs) {
+		for (String dataSourceIndividualPK : dataSourceIndividualPKs) {
 			boolQueryBuilder.should(
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
 						"dataSourceId", String.valueOf(dataSourceId))
 				).filter(
 					QueryBuilders.termQuery(
-						"dataSourceIndividualPK",
-						String.valueOf(dataSourceIndividualPK))
+						"dataSourceIndividualPK", dataSourceIndividualPK)
 				));
 		}
 

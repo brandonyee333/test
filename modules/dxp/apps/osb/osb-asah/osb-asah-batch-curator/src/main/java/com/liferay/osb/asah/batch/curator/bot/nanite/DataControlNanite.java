@@ -104,8 +104,7 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private void _addSuppression(
-			JSONObject dataControlTaskJSONObject, String emailAddress)
-		throws Exception {
+		JSONObject dataControlTaskJSONObject, String emailAddress) {
 
 		emailAddress = StringUtils.lowerCase(emailAddress);
 
@@ -180,11 +179,11 @@ public class DataControlNanite extends BaseNanite {
 			return;
 		}
 
-		Map<Long, List<Long>> dataSourceIdIndividualsPKs =
+		Map<Long, List<String>> dataSourceIdIndividualsPKs =
 			_getDataSourceIdIndividualsPKs("CSV", individualJSONObject);
 
 		if (!dataSourceIdIndividualsPKs.isEmpty()) {
-			for (Map.Entry<Long, List<Long>> entry :
+			for (Map.Entry<Long, List<String>> entry :
 					dataSourceIdIndividualsPKs.entrySet()) {
 
 				_csvIndividualDog.deleteCSVIndividuals(
@@ -334,10 +333,10 @@ public class DataControlNanite extends BaseNanite {
 		zipFileBuilder.build();
 	}
 
-	private Map<Long, List<Long>> _getDataSourceIdIndividualsPKs(
+	private Map<Long, List<String>> _getDataSourceIdIndividualsPKs(
 		String dataSourceType, JSONObject individualJSONObject) {
 
-		Map<Long, List<Long>> dataSourceIdIndividualPKs = new HashMap<>();
+		Map<Long, List<String>> dataSourceIdIndividualPKs = new HashMap<>();
 
 		JSONArray dataSourceIndividualPKsJSONArray =
 			individualJSONObject.getJSONArray("dataSourceIndividualPKs");
@@ -357,7 +356,7 @@ public class DataControlNanite extends BaseNanite {
 			Long dataSourceId = Long.valueOf(
 				dataSourceIndividualPKJSONObject.getString("dataSourceId"));
 
-			List<Long> individualPKs =
+			List<String> individualPKs =
 				dataSourceIdIndividualPKs.computeIfAbsent(
 					dataSourceId, id -> new ArrayList<>());
 
@@ -365,8 +364,7 @@ public class DataControlNanite extends BaseNanite {
 				dataSourceIndividualPKJSONObject.getJSONArray("individualPKs");
 
 			for (int j = 0; j < individualPKsJSONArray.length(); j++) {
-				individualPKs.add(
-					Long.valueOf(individualPKsJSONArray.getString(j)));
+				individualPKs.add(individualPKsJSONArray.getString(j));
 			}
 		}
 

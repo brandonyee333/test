@@ -40,7 +40,7 @@ public interface CSVIndividualRepository
 
 	@Modifying
 	public void deleteByDataSourceIdAndDataSourceIndividualPKIn(
-		Long dataSourceId, List<Long> dataSourceIndividualPKs);
+		Long dataSourceId, List<String> dataSourceIndividualPKs);
 
 	public List<CSVIndividual> findByDataSourceId(Long dataSourceId);
 

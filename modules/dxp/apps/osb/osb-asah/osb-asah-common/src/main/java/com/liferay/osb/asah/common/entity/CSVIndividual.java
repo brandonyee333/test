@@ -90,8 +90,7 @@ public class CSVIndividual implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(using = ToStringSerializer.class)
-	public Long getDataSourceIndividualPK() {
+	public String getDataSourceIndividualPK() {
 		return _dataSourceIndividualPK;
 	}
 
@@ -130,7 +129,7 @@ public class CSVIndividual implements Persistable<Long> {
 		_dataSourceId = dataSourceId;
 	}
 
-	public void setDataSourceIndividualPK(Long dataSourceIndividualPK) {
+	public void setDataSourceIndividualPK(String dataSourceIndividualPK) {
 		_dataSourceIndividualPK = dataSourceIndividualPK;
 	}
 
@@ -150,7 +149,7 @@ public class CSVIndividual implements Persistable<Long> {
 	private Long _dataSourceId;
 
 	@Transient
-	private Long _dataSourceIndividualPK;
+	private String _dataSourceIndividualPK;
 
 	@Transient
 	private JSONObject _fieldsJSONObject;
