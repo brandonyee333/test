@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.model.GoalMetric;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -73,7 +74,7 @@ public class ClickThroughRateExperimentMetricCalculatorTest
 		assertExperimentMetric(experimentMetric, 95, 2, 12);
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getExperimentVariantMetrics();
+			new ArrayList<>(experimentMetric.getExperimentVariantMetrics());
 
 		experimentVariantMetrics.sort(
 			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
@@ -126,7 +127,7 @@ public class ClickThroughRateExperimentMetricCalculatorTest
 		assertExperimentMetric(experimentMetric, 95, 2, 13);
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getExperimentVariantMetrics();
+			new ArrayList<>(experimentMetric.getExperimentVariantMetrics());
 
 		experimentVariantMetrics.sort(
 			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
@@ -176,7 +177,7 @@ public class ClickThroughRateExperimentMetricCalculatorTest
 		assertExperimentMetric(experimentMetric, 95, 1, 13);
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getExperimentVariantMetrics();
+			new ArrayList<>(experimentMetric.getExperimentVariantMetrics());
 
 		experimentVariantMetrics.sort(
 			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));

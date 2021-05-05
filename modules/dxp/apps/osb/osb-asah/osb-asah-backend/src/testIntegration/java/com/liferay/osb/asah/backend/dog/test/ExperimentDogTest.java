@@ -30,12 +30,17 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.math.BigDecimal;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.ToDoubleFunction;
+import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -72,7 +77,7 @@ public class ExperimentDogTest {
 		Mockito.verify(
 			_dxpClient, Mockito.times(1)
 		).deleteDXPExperiment(
-			Mockito.eq(333962835564819755L), Mockito.eq("2")
+			Mockito.eq(333962835564819755L), Mockito.eq(2L)
 		);
 
 		Assert.assertNull(_experimentDog.fetchExperiment("2"));
@@ -127,16 +132,20 @@ public class ExperimentDogTest {
 		Assert.assertNull(experimentMetric.getEstimatedDaysLeft());
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getExperimentVariantMetrics();
+			new ArrayList<>(experimentMetric.getExperimentVariantMetrics());
 
 		Assert.assertEquals(
 			experimentVariantMetrics.toString(), 2,
 			experimentVariantMetrics.size());
 
 		_assertExperimentVariantMetric(
-			experimentVariantMetrics.get(0), new double[] {0, 0}, 0, 0, 0, "1");
+			experimentVariantMetrics.get(0),
+			new BigDecimal[] {BigDecimal.valueOf(0.0), BigDecimal.valueOf(0.0)},
+			0, 0, 0, "1");
 		_assertExperimentVariantMetric(
-			experimentVariantMetrics.get(1), new double[] {0, 0}, 0, 0, 0, "2");
+			experimentVariantMetrics.get(1),
+			new BigDecimal[] {BigDecimal.valueOf(0.0), BigDecimal.valueOf(0.0)},
+			0, 0, 0, "2");
 	}
 
 	@ElasticsearchIndex(
@@ -173,18 +182,20 @@ public class ExperimentDogTest {
 			Long.valueOf(12), experimentMetric.getEstimatedDaysLeft());
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getExperimentVariantMetrics();
+			new ArrayList<>(experimentMetric.getExperimentVariantMetrics());
 
 		Assert.assertEquals(
 			experimentVariantMetrics.toString(), 2,
 			experimentVariantMetrics.size());
 
 		_assertExperimentVariantMetric(
-			experimentVariantMetrics.get(0), new double[] {0.6, 2.6}, 0.4, 0.5,
-			0.25, "1");
+			experimentVariantMetrics.get(0),
+			new BigDecimal[] {BigDecimal.valueOf(0.6), BigDecimal.valueOf(2.6)},
+			0.4, 0.5, 0.25, "1");
 		_assertExperimentVariantMetric(
-			experimentVariantMetrics.get(1), new double[] {0.7, 3.5}, 0.6, 0.6,
-			0.5, "2");
+			experimentVariantMetrics.get(1),
+			new BigDecimal[] {BigDecimal.valueOf(0.7), BigDecimal.valueOf(3.5)},
+			0.6, 0.6, 0.5, "2");
 	}
 
 	@ElasticsearchIndex(
@@ -351,13 +362,15 @@ public class ExperimentDogTest {
 
 	private void _assertExperimentVariantMetric(
 		ExperimentVariantMetric actualExperimentVariantMetric,
-		double[] expectedConfidenceIntervalArray, double expectetedImprovement,
-		double expectedMedian, double expectedProbabilityToWin,
-		String expectedDXPVariantId) {
+		BigDecimal[] expectedConfidenceIntervalArray,
+		double expectetedImprovement, double expectedMedian,
+		double expectedProbabilityToWin, String expectedDXPVariantId) {
 
 		Assert.assertArrayEquals(
-			expectedConfidenceIntervalArray,
-			actualExperimentVariantMetric.getConfidenceIntervalArray(), .1);
+			_mapToDoubleArray(expectedConfidenceIntervalArray),
+			_mapToDoubleArray(
+				actualExperimentVariantMetric.getConfidenceIntervalArray()),
+			.1);
 		Assert.assertEquals(
 			expectedMedian, actualExperimentVariantMetric.getMedian(), .1);
 		Assert.assertEquals(
@@ -379,6 +392,17 @@ public class ExperimentDogTest {
 			expectedHistogramMetricKey, actualHistogramMetric.getKey());
 		Assert.assertEquals(
 			expectedHistogramMetricValue, actualHistogramMetric.getValue(), .1);
+	}
+
+	private double[] _mapToDoubleArray(BigDecimal[] bigDecimalArray) {
+		ToDoubleFunction<BigDecimal> toDoubleFunction =
+			bigDecimal -> bigDecimal.doubleValue();
+
+		return Stream.of(
+			bigDecimalArray
+		).mapToDouble(
+			toDoubleFunction
+		).toArray();
 	}
 
 	@MockBean

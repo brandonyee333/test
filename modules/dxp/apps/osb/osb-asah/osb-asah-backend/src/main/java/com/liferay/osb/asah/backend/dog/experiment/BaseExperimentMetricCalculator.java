@@ -36,6 +36,8 @@ import io.improbable.keanu.tensor.bool.BooleanTensor;
 import io.improbable.keanu.tensor.bool.JVMBooleanTensor;
 import io.improbable.keanu.tensor.dbl.DoubleTensor;
 
+import java.math.BigDecimal;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -48,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.apache.commons.math3.stat.descriptive.rank.Percentile;
@@ -174,7 +177,7 @@ public abstract class BaseExperimentMetricCalculator<T>
 	}
 
 	protected List<Variant<T>> getVariants(Experiment experiment) {
-		List<ExperimentVariant> experimentVariants =
+		Set<ExperimentVariant> experimentVariants =
 			experiment.getExperimentVariants();
 
 		if (experimentVariants == null) {
@@ -203,7 +206,7 @@ public abstract class BaseExperimentMetricCalculator<T>
 		return value;
 	}
 
-	private double[] _calculateConfidenceIntervalArray(
+	private BigDecimal[] _calculateConfidenceIntervalArray(
 		double confidenceLevel, DoubleTensor doubleTensor,
 		GoalMetric goalMetric) {
 
@@ -239,7 +242,9 @@ public abstract class BaseExperimentMetricCalculator<T>
 			upperBound = percentile.evaluate(data, upperQuantile);
 		}
 
-		return new double[] {lowerBound, upperBound};
+		return new BigDecimal[] {
+			BigDecimal.valueOf(lowerBound), BigDecimal.valueOf(upperBound)
+		};
 	}
 
 	private double _calculateImprovement(
@@ -338,7 +343,10 @@ public abstract class BaseExperimentMetricCalculator<T>
 			new ExperimentVariantMetric(
 				variant.isControl(), variant.getDXPVariantId());
 
-		experimentVariantMetric.setConfidenceIntervalArray(new double[] {0, 0});
+		experimentVariantMetric.setConfidenceIntervalArray(
+			new BigDecimal[] {
+				BigDecimal.valueOf(0.0), BigDecimal.valueOf(0.0)
+			});
 		experimentVariantMetric.setImprovement(0);
 		experimentVariantMetric.setMedian(0);
 		experimentVariantMetric.setProbabilityToWin(0);

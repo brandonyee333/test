@@ -117,8 +117,9 @@ public class DichotomousDataExperimentMetricCalculator
 
 		ExperimentDataPoint<Double> experimentDataPoint =
 			_experimentDataDog.fetchDichotomousDataPoint(
-				experiment.getDataSourceId(), experiment.getDXPExperienceId(),
-				null, ExperimentUtil.getPageMetricType(experiment),
+				String.valueOf(experiment.getDataSourceId()),
+				experiment.getDXPExperienceId(), null,
+				ExperimentUtil.getPageMetricType(experiment),
 				experiment.getPageURL(), timeRange, null);
 
 		double rate = dxpVariantSettings.getTrafficSplit() / 100;
@@ -146,8 +147,9 @@ public class DichotomousDataExperimentMetricCalculator
 
 		ExperimentDataPoint<Double> experimentDataPoint =
 			_experimentDataDog.fetchDichotomousDataPoint(
-				experiment.getDataSourceId(), experiment.getDXPExperienceId(),
-				experiment.getId(),
+				String.valueOf(experiment.getDataSourceId()),
+				experiment.getDXPExperienceId(),
+				String.valueOf(experiment.getId()),
 				ExperimentUtil.getPageMetricType(experiment), null, timeRange,
 				experimentVariant.getDXPVariantId());
 
