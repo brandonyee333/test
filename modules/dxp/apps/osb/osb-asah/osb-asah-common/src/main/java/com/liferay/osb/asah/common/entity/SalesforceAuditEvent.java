@@ -75,7 +75,7 @@ public class SalesforceAuditEvent implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@Column("additionalInfo")
+	@Column("additionalinfo")
 	@JsonProperty("additionalInfo")
 	public JSONObject getAdditionalInfoJSONObject() {
 		return _additionalInfoJSONObject;
