@@ -279,7 +279,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 			BaseAssetModel oldAssetModel = (BaseAssetModel)oldModel;
 			BaseAssetModel newAssetModel = (BaseAssetModel)newModel;
 
-			oldAssetModel.addCanonicalUrls(newAssetModel.getCanonicalUrls());
+			oldAssetModel.addCanonicalURLs(newAssetModel.getCanonicalUrls());
 			oldAssetModel.addURLs(newAssetModel.getURLs());
 		}
 	}
@@ -393,7 +393,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		if (model.isAsset()) {
 			BaseAssetModel baseAssetModel = (BaseAssetModel)model;
 
-			baseAssetModel.addCanonicalUrl(canonicalUrl);
+			baseAssetModel.addCanonicalURL(canonicalUrl);
 			baseAssetModel.addURL(url);
 		}
 		else {

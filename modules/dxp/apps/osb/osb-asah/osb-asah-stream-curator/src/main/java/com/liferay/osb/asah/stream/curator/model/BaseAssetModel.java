@@ -22,12 +22,12 @@ import java.util.Set;
  */
 public abstract class BaseAssetModel extends BaseModel {
 
-	public void addCanonicalUrl(String canonicalUrl) {
-		_canonicalUrls.add(canonicalUrl);
+	public void addCanonicalURL(String canonicalURL) {
+		_canonicalUrls.add(canonicalURL);
 	}
 
-	public void addCanonicalUrls(Set<String> canonicalUrls) {
-		_canonicalUrls.addAll(canonicalUrls);
+	public void addCanonicalURLs(Set<String> canonicalURLs) {
+		_canonicalUrls.addAll(canonicalURLs);
 	}
 
 	public void addURL(String url) {
