@@ -479,9 +479,9 @@ public class DataSourceDog {
 				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 			_deleteAccountReferences(dataSourceId);
 			_deleteData(
-				dataSourceId, "osbAsahDataSourceId",
-				_salesforceElasticsearchInvoker, "Account", "Contact", "Lead",
-				"individuals");
+				dataSourceId, "dataSourceId",
+				_salesforceRawElasticsearchInvoker, "Account", "Contact",
+				"Lead", "individuals");
 			_deleteData(
 				dataSourceId, "dataSourceId", _elasticsearchInvoker, "fields");
 		}
@@ -617,7 +617,7 @@ public class DataSourceDog {
 			_dxpRawElasticsearchInvoker.delete("run-logs", queryBuilder);
 		}
 		else if (providerType.equals("SALESFORCE")) {
-			_salesforceElasticsearchInvoker.delete("run-logs", queryBuilder);
+			_salesforceRawElasticsearchInvoker.delete("run-logs", queryBuilder);
 		}
 	}
 
@@ -784,12 +784,12 @@ public class DataSourceDog {
 	@Autowired
 	private NanitesHttp _nanitesHttp;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _salesforceElasticsearchInvoker;
-
 	@Autowired
 	private SalesforceExtractorConfigurationDog
 		_salesforceExtractorConfigurationDog;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
+	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 	@Autowired
 	private SegmentDog _segmentDog;
