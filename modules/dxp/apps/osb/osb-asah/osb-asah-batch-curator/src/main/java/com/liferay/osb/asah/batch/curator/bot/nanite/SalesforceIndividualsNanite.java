@@ -70,7 +70,7 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 			dataSourceId, this, "STARTED",
 			WeDeployDataService.OSB_ASAH_FARO_INFO, "totalOperations",
 			_salesforceAuditEventDog.getSalesforceAuditEventsCount(
-				dataSourceId, SalesforceEntity.Type.INDIVIDUAL.toString()));
+				dataSourceId, SalesforceEntity.Type.INDIVIDUAL.getValue()));
 
 		try {
 			int page = 0;
@@ -85,7 +85,7 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 				List<SalesforceAuditEvent> salesforceAuditEvents =
 					_salesforceAuditEventDog.getSalesforceAuditEvents(
 						dataSourceId,
-						SalesforceEntity.Type.INDIVIDUAL.toString(), page++, 50,
+						SalesforceEntity.Type.INDIVIDUAL.getValue(), page++, 50,
 						Sort.desc("id"));
 
 				if (salesforceAuditEvents.isEmpty()) {

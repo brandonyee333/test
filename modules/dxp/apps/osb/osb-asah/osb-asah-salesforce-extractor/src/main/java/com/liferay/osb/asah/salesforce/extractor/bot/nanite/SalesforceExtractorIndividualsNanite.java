@@ -63,8 +63,8 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			_dataSourceId, this, "STARTED",
 			WeDeployDataService.OSB_ASAH_SALESFORCE_RAW, "totalOperations",
 			_salesforceAuditEventDog.getSalesforceAuditEventsCount(
-				_dataSourceId, SalesforceEntity.Type.LEAD.toString(),
-				SalesforceEntity.Type.CONTACT.toString()));
+				_dataSourceId, SalesforceEntity.Type.LEAD.getValue(),
+				SalesforceEntity.Type.CONTACT.getValue()));
 
 		try {
 			_run();
@@ -102,7 +102,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			additionalInfoJSONObject);
 		salesforceAuditEvent.setAuditEventDate(new Date());
 		salesforceAuditEvent.setDataSourceId(_dataSourceId);
-		salesforceAuditEvent.setEntityTypeName(salesforceEntityType.toString());
+		salesforceAuditEvent.setEntityTypeName(salesforceEntityType.getValue());
 		salesforceAuditEvent.setRecordId(recordId);
 		salesforceAuditEvent.setType(salesforceAuditEventType);
 
@@ -378,7 +378,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 				SalesforceAuditEvent.Type.DELETE) {
 
 			SalesforceEntity.Type salesforceEntityType =
-				SalesforceEntity.Type.valueOf(
+				SalesforceEntity.Type.of(
 					salesforceAuditEvent.getEntityTypeName());
 
 			SalesforceEntity salesforceEntity =
@@ -451,8 +451,8 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 	private void _run() {
 		for (String entityTypeName :
 				new String[] {
-					SalesforceEntity.Type.LEAD.toString(),
-					SalesforceEntity.Type.CONTACT.toString()
+					SalesforceEntity.Type.LEAD.getValue(),
+					SalesforceEntity.Type.CONTACT.getValue()
 				}) {
 
 			long time = System.currentTimeMillis();

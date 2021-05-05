@@ -140,7 +140,7 @@ public class SalesforceExtractorNanite implements Nanite {
 			additionalInfoJSONObject);
 		salesforceAuditEvent.setAuditEventDate(new Date());
 		salesforceAuditEvent.setDataSourceId(_dataSourceId);
-		salesforceAuditEvent.setEntityTypeName(salesforceEntityType.toString());
+		salesforceAuditEvent.setEntityTypeName(salesforceEntityType.getValue());
 		salesforceAuditEvent.setRecordId(recordId);
 		salesforceAuditEvent.setType(salesforceAuditEventType);
 
@@ -862,8 +862,7 @@ public class SalesforceExtractorNanite implements Nanite {
 					_objectMapper.convertValue(
 						deletedSalesforceEntity, JSONObject.class),
 					deletedRecord.getId(), SalesforceAuditEvent.Type.DELETE,
-					SalesforceEntity.Type.valueOf(
-						describeSObjectResult.getName()));
+					SalesforceEntity.Type.of(describeSObjectResult.getName()));
 
 				deleteRecordsCount++;
 			}
