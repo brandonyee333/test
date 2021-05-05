@@ -257,7 +257,7 @@ public class ExperimentDogTest {
 			"1", null, 1, Sort.asc("name.raw"), 1);
 
 		Assert.assertNotNull(resultBag);
-		Assert.assertEquals(3, resultBag.getTotal());
+		Assert.assertEquals(1, resultBag.getTotal());
 
 		List<Experiment> experiments = resultBag.getResults();
 
