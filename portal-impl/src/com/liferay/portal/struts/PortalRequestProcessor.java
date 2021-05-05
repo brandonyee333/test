@@ -380,6 +380,17 @@ public class PortalRequestProcessor {
 		return false;
 	}
 
+	public static String getFullURL(HttpServletRequest request) {
+		StringBuilder requestURL = new StringBuilder(request.getRequestURL().toString());
+		String queryString = request.getQueryString();
+
+		if (queryString == null) {
+			return requestURL.toString();
+		} else {
+			return requestURL.append('?').append(queryString).toString();
+		}
+	}
+
 	private void _process(
 			ActionMapping actionMapping, HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse)
@@ -417,6 +428,9 @@ public class PortalRequestProcessor {
 			throw exception;
 		}
 		catch (Exception exception) {
+			System.out.println("Unable to get outputstream, incoming request is: " + getFullURL(httpServletRequest) + " , METHOD: " + httpServletRequest.getMethod());
+
+			System.out.println("---action is: " + action.toString() + "---");
 			throw new ServletException(exception);
 		}
 	}
