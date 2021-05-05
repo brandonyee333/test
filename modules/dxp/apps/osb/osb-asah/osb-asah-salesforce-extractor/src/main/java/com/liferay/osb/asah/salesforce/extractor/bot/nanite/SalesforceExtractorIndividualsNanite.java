@@ -205,6 +205,9 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 					jsonObject.optString("Title", null));
 		}
 
+		salesforceIndividualFieldsJSONObject.put(
+			"modifiedDate", DateUtil.newDateString());
+
 		return new SalesforceEntity(
 			id, _dataSourceId, salesforceIndividualFieldsJSONObject,
 			SalesforceEntity.Type.INDIVIDUAL);
