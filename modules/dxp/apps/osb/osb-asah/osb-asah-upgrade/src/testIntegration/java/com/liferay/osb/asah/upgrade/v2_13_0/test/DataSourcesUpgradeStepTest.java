@@ -44,11 +44,11 @@ public class DataSourcesUpgradeStepTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testDeleteIndexAndAliasUpgrade() throws Exception {
+	public void testUpgrade() throws Exception {
 		Assert.assertTrue(
 			_elasticsearchIndexManager.exists("test_osbasahfaroinfo_channels"));
 
@@ -65,7 +65,7 @@ public class DataSourcesUpgradeStepTest {
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
-				"dependencies/expected_data-sources.json", this),
+				"dependencies/expected_data_sources.json", this),
 			_elasticsearchInvoker.get("data-sources"), false);
 	}
 
