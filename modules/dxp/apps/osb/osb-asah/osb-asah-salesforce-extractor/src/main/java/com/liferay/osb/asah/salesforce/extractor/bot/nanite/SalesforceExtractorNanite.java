@@ -230,8 +230,8 @@ public class SalesforceExtractorNanite implements Nanite {
 		return runLogAdditionalFields;
 	}
 
-	private void _deleteStaleTables(AsahMarker asahMarker, String[] tableNames)
-		throws Exception {
+	private void _deleteStaleTables(
+		AsahMarker asahMarker, String[] tableNames) {
 
 		boolean deletedStaleTable = false;
 
@@ -319,6 +319,8 @@ public class SalesforceExtractorNanite implements Nanite {
 					JSONUtil.put("tables", new JSONObject())),
 				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 		}
+
+		asahMarker.setIsNew(Boolean.FALSE);
 
 		return asahMarker;
 	}
