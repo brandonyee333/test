@@ -628,7 +628,7 @@ public class DataSourcesRestController extends BaseRestController {
 				processedOperations += salesforceRawElasticsearchInvoker.count(
 					tableName,
 					QueryBuilders.termQuery(
-						"osbAsahDataSourceId",
+						"dataSourceId",
 						String.valueOf(
 							salesforceExtractorNaniteRunLog.
 								getDataSourceId())));
