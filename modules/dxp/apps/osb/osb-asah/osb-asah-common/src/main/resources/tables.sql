@@ -311,6 +311,8 @@ CREATE TABLE IF NOT EXISTS SalesforceAuditEvent (
 	additionalInfo JSON,
 	createDate TIMESTAMPTZ,
 	dataSourceId BIGINT,
+	entityTypeName TEXT,
+	recordId TEXT,
 	type TEXT,
 	userId TEXT
 );

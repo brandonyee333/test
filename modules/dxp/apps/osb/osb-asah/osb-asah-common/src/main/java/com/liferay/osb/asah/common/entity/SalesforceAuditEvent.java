@@ -61,10 +61,11 @@ public class SalesforceAuditEvent implements Persistable<Long> {
 				JSONUtil.toMap(_additionalInfoJSONObject),
 				JSONUtil.toMap(
 					salesforceAuditEvent._additionalInfoJSONObject)) &&
-			Objects.equals(
-				_auditEventDate, salesforceAuditEvent._auditEventDate) &&
 			Objects.equals(_dataSourceId, salesforceAuditEvent._dataSourceId) &&
+			Objects.equals(
+				_entityTypeName, salesforceAuditEvent._entityTypeName) &&
 			Objects.equals(_id, salesforceAuditEvent._id) &&
+			Objects.equals(_recordId, salesforceAuditEvent._recordId) &&
 			Objects.equals(_type, salesforceAuditEvent._type) &&
 			Objects.equals(_userId, salesforceAuditEvent._userId)) {
 
@@ -136,7 +137,7 @@ public class SalesforceAuditEvent implements Persistable<Long> {
 	public int hashCode() {
 		return Objects.hash(
 			JSONUtil.toMap(_additionalInfoJSONObject), _auditEventDate,
-			_dataSourceId, _id, _type, _userId);
+			_dataSourceId, _entityTypeName, _id, _recordId, _type, _userId);
 	}
 
 	@JsonIgnore
