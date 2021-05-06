@@ -141,7 +141,7 @@ public class SalesforceIndividualsNaniteTest
 		).put(
 			"recordId", individualJSONObject.getString("id")
 		).put(
-			"typeName", "INDIVIDUAL"
+			"typeName", "individuals"
 		);
 	}
 

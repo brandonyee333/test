@@ -521,10 +521,9 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"Account",
 			JSONUtil.put(
-				"Name", "Test Account"
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
-				"osbAsahDataSourceId",
-				String.valueOf(salesforceDataSource.getId())
+				"Name", "Test Account"
 			));
 
 		progressJSONObject = new JSONObject(
@@ -666,19 +665,17 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"Contact",
 			JSONUtil.put(
-				"Name", "Test Contact"
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
-				"osbAsahDataSourceId",
-				String.valueOf(salesforceDataSource.getId())
+				"Name", "Test Contact"
 			));
 
 		_salesforceRawElasticsearchInvoker.add(
 			"Lead",
 			JSONUtil.put(
-				"Name", "Test Lead"
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
-				"osbAsahDataSourceId",
-				String.valueOf(salesforceDataSource.getId())
+				"Name", "Test Lead"
 			));
 
 		JSONObject progressJSONObject = new JSONObject(

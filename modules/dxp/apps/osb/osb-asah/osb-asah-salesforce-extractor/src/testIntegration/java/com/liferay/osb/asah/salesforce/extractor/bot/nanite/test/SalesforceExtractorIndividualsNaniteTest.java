@@ -202,8 +202,11 @@ public class SalesforceExtractorIndividualsNaniteTest {
 		salesforceAuditEvent.setCreateDate(new Date());
 		salesforceAuditEvent.setDataSourceId(
 			salesforceEntity.getDataSourceId());
-		salesforceAuditEvent.setEntityTypeName(
-			String.valueOf(salesforceEntity.getType()));
+
+		SalesforceEntity.Type salesforceEntityType = salesforceEntity.getType();
+
+		salesforceAuditEvent.setEntityTypeName(salesforceEntityType.getValue());
+
 		salesforceAuditEvent.setRecordId(salesforceEntity.getId());
 		salesforceAuditEvent.setType(type);
 
@@ -218,7 +221,7 @@ public class SalesforceExtractorIndividualsNaniteTest {
 				salesforceEntity, SalesforceAuditEvent.Type.DELETE));
 	}
 
-	private void _testDeleteContact() throws Exception {
+	private void _testDeleteContact() {
 		_delete(_contactSalesforceEntity);
 
 		_salesforceExtractorIndividualsNanite.run();
@@ -234,7 +237,7 @@ public class SalesforceExtractorIndividualsNaniteTest {
 		Assert.assertNull(individualJSONObject.optString("contactId", null));
 	}
 
-	private void _testDeleteLead() throws Exception {
+	private void _testDeleteLead() {
 		_delete(_leadSalesforceEntity);
 
 		_salesforceExtractorIndividualsNanite.run();
@@ -245,7 +248,7 @@ public class SalesforceExtractorIndividualsNaniteTest {
 		Assert.assertEquals(0, individualsJSONArray.length());
 	}
 
-	private void _testMergeIndividual() throws Exception {
+	private void _testMergeIndividual() {
 		_salesforceExtractorIndividualsNanite.run();
 
 		JSONArray individualsJSONArray = _elasticsearchInvoker.get(

@@ -681,13 +681,13 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				dataSourceId1,
 			_salesforceRawElasticsearchInvoker.exists(
 				"individuals",
-				QueryBuilders.termQuery("osbAsahDataSourceId", dataSourceId1)));
+				QueryBuilders.termQuery("dataSourceId", dataSourceId1)));
 		Assert.assertTrue(
 			"Unable to find entry in individuals collection with data source " +
 				"ID " + dataSourceId2,
 			_salesforceRawElasticsearchInvoker.exists(
 				"individuals",
-				QueryBuilders.termQuery("osbAsahDataSourceId", dataSourceId2)));
+				QueryBuilders.termQuery("dataSourceId", dataSourceId2)));
 	}
 
 	@Test
@@ -853,6 +853,8 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		_salesforceRawElasticsearchInvoker.add(
 			"individuals",
 			JSONUtil.put(
+				"dataSourceId", dataSourceId
+			).put(
 				"email", RandomTestUtil.randomEmailAddress()
 			).put(
 				"firstName", RandomTestUtil.randomString()
@@ -864,8 +866,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				"lastName", RandomTestUtil.randomString()
 			).put(
 				"modifiedDate", DateUtil.newDayDateString()
-			).put(
-				"osbAsahDataSourceId", dataSourceId
 			).put(
 				"subscription", RandomTestUtil.randomString()
 			));

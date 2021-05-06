@@ -64,7 +64,7 @@
 		"eventType": "UPDATE",
 		"osbAsahDataSourceId": "342837044336786766",
 		"recordId": "0016C00000BKWWLQA5",
-		"typeName": "ACCOUNT"
+		"typeName": "Account"
 	},
 	{
 		"additionalInfo": {
@@ -131,6 +131,6 @@
 		"eventType": "UPDATE",
 		"osbAsahDataSourceId": "342837044336786766",
 		"recordId": "0016C00000BKWWLQA6",
-		"typeName": "ACCOUNT"
+		"typeName": "Account"
 	}
 ]
