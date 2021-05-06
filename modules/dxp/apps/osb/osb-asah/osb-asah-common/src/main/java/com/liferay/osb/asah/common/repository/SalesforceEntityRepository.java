@@ -19,9 +19,13 @@ import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import java.util.List;
 import java.util.Optional;
 
+import org.json.JSONObject;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -54,5 +58,11 @@ public interface SalesforceEntityRepository
 
 	public List<SalesforceEntity> findByDataSourceIdAndType(
 		Long dataSourceId, SalesforceEntity.Type type, Pageable pageable);
+
+	@Modifying
+	public void updateSalesforceEntityFields(
+		@Param("dataSourceId") Long dataSourceId,
+		@Param("fields") JSONObject fieldsJSONObject, @Param("id") String id,
+		@Param("type") SalesforceEntity.Type type);
 
 }

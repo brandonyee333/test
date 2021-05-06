@@ -296,6 +296,26 @@ public class ElasticsearchSalesforceEntityRepositoryImpl
 		);
 	}
 
+	@Override
+	public void updateSalesforceEntityFields(
+		Long dataSourceId, JSONObject fieldsJSONObject, String id,
+		SalesforceEntity.Type type) {
+
+		Optional<SalesforceEntity> salesforceEntityOptional =
+			findByDataSourceIdAndIdAndType(dataSourceId, id, type);
+
+		SalesforceEntity salesforceEntity = salesforceEntityOptional.orElse(
+			null);
+
+		if (salesforceEntity == null) {
+			return;
+		}
+
+		salesforceEntity.setFieldsJSONObject(fieldsJSONObject);
+
+		save(salesforceEntity);
+	}
+
 	protected List<SalesforceEntity> toList(JSONArray jsonArray) {
 		Stream<Object> stream = JSONUtil.toObjectStream(jsonArray);
 
