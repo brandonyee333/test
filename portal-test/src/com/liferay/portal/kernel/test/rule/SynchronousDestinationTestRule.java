@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.test.rule;
 
-import com.liferay.petra.lang.SafeClosable;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
@@ -189,7 +189,7 @@ public class SynchronousDestinationTestRule
 			_destinations = ReflectionTestUtil.getFieldValue(
 				MessageBusUtil.getMessageBus(), "_destinations");
 
-			_forceSyncSafeClosable = ProxyModeThreadLocal.setWithSafeClosable(
+			_forceSyncSafeCloseable = ProxyModeThreadLocal.setWithSafeCloseable(
 				true);
 
 			replaceDestination(DestinationNames.AUDIT);
@@ -340,8 +340,8 @@ public class SynchronousDestinationTestRule
 		}
 
 		public void restorePreviousSync() {
-			if (_forceSyncSafeClosable != null) {
-				_forceSyncSafeClosable.close();
+			if (_forceSyncSafeCloseable != null) {
+				_forceSyncSafeCloseable.close();
 			}
 
 			for (Destination destination : _asyncServiceDestinations) {
@@ -435,7 +435,7 @@ public class SynchronousDestinationTestRule
 		private final List<Destination> _asyncServiceDestinations =
 			new ArrayList<>();
 		private Map<String, Destination> _destinations;
-		private SafeClosable _forceSyncSafeClosable;
+		private SafeCloseable _forceSyncSafeCloseable;
 		private final List<InvokerMessageListener>
 			_schedulerInvokerMessageListeners = new ArrayList<>();
 		private Sync _sync;

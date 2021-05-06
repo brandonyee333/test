@@ -23,6 +23,7 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
 import com.liferay.petra.lang.SafeClosable;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.change.tracking.sql.CTSQLModeThreadLocal;
@@ -72,10 +73,11 @@ public class CTDisplayRendererRegistry {
 			return null;
 		}
 
-		try (SafeClosable safeClosable1 =
-				CTCollectionThreadLocal.setCTCollectionId(ctCollectionId);
-			SafeClosable safeClosable2 = CTSQLModeThreadLocal.setCTSQLMode(
-				ctSQLMode)) {
+		try (SafeCloseable safeCloseable1 =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
+					ctCollectionId);
+			SafeCloseable safeCloseable2 =
+				CTSQLModeThreadLocal.setCTSQLModeWithSafeCloseable(ctSQLMode)) {
 
 			return (T)ctService.updateWithUnsafeFunction(
 				ctPersistence -> ctPersistence.fetchByPrimaryKey(modelClassPK));
@@ -249,10 +251,12 @@ public class CTDisplayRendererRegistry {
 		String name = null;
 
 		if (ctDisplayRenderer != null) {
-			try (SafeClosable safeClosable1 =
-					CTCollectionThreadLocal.setCTCollectionId(ctCollectionId);
-				SafeClosable safeClosable2 = CTSQLModeThreadLocal.setCTSQLMode(
-					ctSQLMode)) {
+			try (SafeCloseable safeCloseable1 =
+					CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
+						ctCollectionId);
+				SafeCloseable safeCloseable2 =
+					CTSQLModeThreadLocal.setCTSQLModeWithSafeCloseable(
+						ctSQLMode)) {
 
 				name = ctDisplayRenderer.getTitle(locale, model);
 			}
@@ -364,10 +368,10 @@ public class CTDisplayRendererRegistry {
 			return;
 		}
 
-		try (SafeClosable safeClosable1 =
-				CTCollectionThreadLocal.setCTCollectionId(ctCollectionId);
-			SafeClosable safeClosable2 = CTSQLModeThreadLocal.setCTSQLMode(
-				ctSQLMode);
+		try (SafeCloseable safeCloseable1 =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(ctCollectionId);
+			SafeCloseable safeCloseable2 = CTSQLModeThreadLocal.
+				setCTSQLModeWithSafeCloseable(ctSQLMode);
 			UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter()) {
 
 			PipingServletResponse pipingServletResponse =

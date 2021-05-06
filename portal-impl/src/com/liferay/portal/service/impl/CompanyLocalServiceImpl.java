@@ -19,8 +19,8 @@ import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.petra.encryptor.Encryptor;
 import com.liferay.petra.encryptor.EncryptorException;
 import com.liferay.petra.function.UnsafeConsumer;
-import com.liferay.petra.lang.SafeClosable;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.db.partition.DBPartitionUtil;
@@ -208,8 +208,9 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		updateVirtualHostname(company.getCompanyId(), virtualHostname);
 
-		SafeClosable safeClosable = CompanyThreadLocal.setInitializingCompanyId(
-			company.getCompanyId());
+		SafeCloseable safeCloseable =
+			CompanyThreadLocal.setInitializingCompanyIdWithSafeCloseable(
+				company.getCompanyId());
 
 		try {
 			if (newDBPartitionAdded) {
@@ -258,7 +259,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 					@Override
 					public Void call() throws Exception {
-						safeClosable.close();
+						safeCloseable.close();
 
 						return null;
 					}
@@ -268,7 +269,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			return company;
 		}
 		catch (Exception exception) {
-			safeClosable.close();
+			safeCloseable.close();
 
 			throw exception;
 		}
@@ -469,8 +470,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		throws E {
 
 		for (Company company : companies) {
-			try (SafeClosable safeClosable =
-					CompanyThreadLocal.setWithSafeClosable(
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setWithSafeCloseable(
 						company.getCompanyId())) {
 
 				unsafeConsumer.accept(company);
@@ -498,8 +499,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		throws E {
 
 		for (long companyId : companyIds) {
-			try (SafeClosable safeClosable =
-					CompanyThreadLocal.setWithSafeClosable(companyId)) {
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setWithSafeCloseable(companyId)) {
 
 				unsafeConsumer.accept(companyId);
 			}

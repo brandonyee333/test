@@ -27,7 +27,7 @@ import com.liferay.change.tracking.service.CTEntryLocalService;
 import com.liferay.change.tracking.service.CTProcessLocalService;
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.layout.test.util.LayoutTestUtil;
-import com.liferay.petra.lang.SafeClosable;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
@@ -102,8 +102,8 @@ public class LayoutCTTest {
 	public void testAddLayout() throws Exception {
 		Layout layout = null;
 
-		try (SafeClosable safeClosable1 =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable1 =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout = LayoutTestUtil.addLayout(_group);
@@ -111,8 +111,8 @@ public class LayoutCTTest {
 			Assert.assertEquals(
 				layout, _layoutLocalService.fetchLayout(layout.getPlid()));
 
-			try (SafeClosable safeClosable2 =
-					CTCollectionThreadLocal.setCTCollectionId(
+			try (SafeCloseable safeCloseable2 =
+					CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 						CTConstants.CT_COLLECTION_ID_PRODUCTION)) {
 
 				Assert.assertNull(
@@ -132,8 +132,8 @@ public class LayoutCTTest {
 
 	@Test
 	public void testDeleteCTCollectionAdd() throws Exception {
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			LayoutTestUtil.addLayout(_group);
@@ -158,8 +158,8 @@ public class LayoutCTTest {
 	public void testDeleteCTCollectionModify() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout.setTitle(RandomTestUtil.randomString());
@@ -186,8 +186,8 @@ public class LayoutCTTest {
 	public void testDeleteCTCollectionPublishDelete() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			_layoutLocalService.deleteLayout(layout);
@@ -215,8 +215,8 @@ public class LayoutCTTest {
 	public void testDeleteCTCollectionPublishModify() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout.setTitle(RandomTestUtil.randomString());
@@ -248,8 +248,8 @@ public class LayoutCTTest {
 
 		String originalFriendlyURL = layout.getFriendlyURL();
 
-		try (SafeClosable safeClosable1 =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable1 =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			Assert.assertEquals(
@@ -259,8 +259,8 @@ public class LayoutCTTest {
 
 			layout = _layoutLocalService.updateLayout(layout);
 
-			try (SafeClosable safeClosable2 =
-					CTCollectionThreadLocal.setCTCollectionId(
+			try (SafeCloseable safeCloseable2 =
+					CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 						CTConstants.CT_COLLECTION_ID_PRODUCTION)) {
 
 				Layout productionLayout = _layoutLocalService.fetchLayout(
@@ -287,8 +287,8 @@ public class LayoutCTTest {
 
 		String description = layout.getDescription();
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			String ctDescription = RandomTestUtil.randomString();
@@ -316,8 +316,8 @@ public class LayoutCTTest {
 
 		Assert.assertEquals(description, layout.getDescription());
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			Layout newLayout = LayoutTestUtil.addLayout(_group);
@@ -342,8 +342,8 @@ public class LayoutCTTest {
 
 		Layout layout2 = null;
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			_layoutLocalService.deleteLayout(layout1);
@@ -377,8 +377,8 @@ public class LayoutCTTest {
 		String friendlyURLA = layout1.getFriendlyURL();
 		String friendlyURLB = layout2.getFriendlyURL();
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout1.setFriendlyURL("/friendlyURLSwap");
@@ -415,8 +415,8 @@ public class LayoutCTTest {
 		Layout deletedLayout = LayoutTestUtil.addLayout(_group);
 		Layout modifiedLayout = LayoutTestUtil.addLayout(_group);
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			LayoutTestUtil.addLayout(_group);
@@ -499,8 +499,8 @@ public class LayoutCTTest {
 		AssetEntry assetEntry2 = _assetEntryLocalService.getEntry(
 			Layout.class.getName(), layout2.getPlid());
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			_layoutLocalService.updateAsset(
@@ -550,8 +550,8 @@ public class LayoutCTTest {
 
 		Layout layout1 = LayoutTestUtil.addLayout(_group);
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout1.setFriendlyURL(friendlyURL);
@@ -586,8 +586,8 @@ public class LayoutCTTest {
 				"Unable to execute background task", loggingEvent.getMessage());
 		}
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			Layout layout3 = _layoutLocalService.fetchLayout(layout1.getPlid());
@@ -611,8 +611,8 @@ public class LayoutCTTest {
 
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout.setFriendlyURL(ctFriendlyURL);
@@ -661,8 +661,8 @@ public class LayoutCTTest {
 
 		Assert.assertEquals(layout.getFriendlyURL(), conflictingFriendlyURL);
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout = _layoutLocalService.fetchLayout(layout.getPlid());
@@ -677,8 +677,8 @@ public class LayoutCTTest {
 	public void testPublishModifiedLayout() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout.setFriendlyURL("/testModifyLayout");
@@ -704,8 +704,8 @@ public class LayoutCTTest {
 
 		String title = layout.getTitle();
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout = _layoutLocalService.updateLayout(layout);
@@ -742,8 +742,8 @@ public class LayoutCTTest {
 
 		layout = _layoutLocalService.updateLayout(layout);
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout.setModifiedDate(
@@ -777,8 +777,8 @@ public class LayoutCTTest {
 
 		layout = _layoutLocalService.updateLayout(layout);
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout.setModifiedDate(modifiedDate);
@@ -813,8 +813,8 @@ public class LayoutCTTest {
 
 		String title = RandomTestUtil.randomString();
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout.setTitle(title);
@@ -837,8 +837,8 @@ public class LayoutCTTest {
 	public void testPublishModifiedLayoutWithTargetDeleted() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout.setFriendlyURL("/testModifyLayout");
@@ -884,8 +884,8 @@ public class LayoutCTTest {
 	public void testPublishNewLayout() throws Exception {
 		Layout layout = null;
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout = LayoutTestUtil.addLayout(_group);
@@ -902,8 +902,8 @@ public class LayoutCTTest {
 	public void testPublishRemovedLayout() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			_layoutLocalService.deleteLayout(layout);
@@ -919,8 +919,8 @@ public class LayoutCTTest {
 	public void testRemoveLayout() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout = _layoutLocalService.deleteLayout(layout);
@@ -928,8 +928,8 @@ public class LayoutCTTest {
 			Assert.assertNull(
 				_layoutLocalService.fetchLayout(layout.getPlid()));
 
-			try (SafeClosable safeClosable2 =
-					CTCollectionThreadLocal.setCTCollectionId(
+			try (SafeCloseable safeCloseable2 =
+					CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 						CTConstants.CT_COLLECTION_ID_PRODUCTION)) {
 
 				Assert.assertEquals(
@@ -949,8 +949,8 @@ public class LayoutCTTest {
 
 	@Test
 	public void testScratchedAddThenDelete() throws Exception {
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			Layout layout = LayoutTestUtil.addLayout(_group);
@@ -993,8 +993,8 @@ public class LayoutCTTest {
 	public void testScratchedModifyThenDelete() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
-		try (SafeClosable safeClosable =
-				CTCollectionThreadLocal.setCTCollectionId(
+		try (SafeCloseable safeCloseable =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection.getCtCollectionId())) {
 
 			layout.setTitle(RandomTestUtil.randomString());
