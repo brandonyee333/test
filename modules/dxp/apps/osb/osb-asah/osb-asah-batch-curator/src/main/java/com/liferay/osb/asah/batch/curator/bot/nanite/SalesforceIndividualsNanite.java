@@ -148,7 +148,7 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 
 			delete(
 				salesforceAuditEvent.getDataSourceId(),
-				salesforceAuditEvent.getAuditEventDate(),
+				salesforceAuditEvent.getCreateDate(),
 				additionalInfoJSONObject.getString("Email"));
 		}
 		else if (log.isWarnEnabled()) {

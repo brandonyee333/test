@@ -61,6 +61,7 @@ public class SalesforceAuditEvent implements Persistable<Long> {
 				JSONUtil.toMap(_additionalInfoJSONObject),
 				JSONUtil.toMap(
 					salesforceAuditEvent._additionalInfoJSONObject)) &&
+			Objects.equals(_createDate, salesforceAuditEvent._createDate) &&
 			Objects.equals(_dataSourceId, salesforceAuditEvent._dataSourceId) &&
 			Objects.equals(
 				_entityTypeName, salesforceAuditEvent._entityTypeName) &&
@@ -88,12 +89,13 @@ public class SalesforceAuditEvent implements Persistable<Long> {
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
-	public Date getAuditEventDate() {
-		if (_auditEventDate == null) {
+	@JsonProperty("createDate")
+	public Date getCreateDate() {
+		if (_createDate == null) {
 			return null;
 		}
 
-		return new Date(_auditEventDate.getTime());
+		return new Date(_createDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -136,7 +138,7 @@ public class SalesforceAuditEvent implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			JSONUtil.toMap(_additionalInfoJSONObject), _auditEventDate,
+			JSONUtil.toMap(_additionalInfoJSONObject), _createDate,
 			_dataSourceId, _entityTypeName, _id, _recordId, _type, _userId);
 	}
 
@@ -156,9 +158,9 @@ public class SalesforceAuditEvent implements Persistable<Long> {
 		_additionalInfoJSONObject = additionalInfoJSONObject;
 	}
 
-	public void setAuditEventDate(Date auditEventDate) {
-		if (auditEventDate != null) {
-			_auditEventDate = new Date(auditEventDate.getTime());
+	public void setCreateDate(Date createDate) {
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
 		}
 	}
 
@@ -200,7 +202,7 @@ public class SalesforceAuditEvent implements Persistable<Long> {
 	private JSONObject _additionalInfoJSONObject;
 
 	@Transient
-	private Date _auditEventDate;
+	private Date _createDate;
 
 	@Transient
 	private Long _dataSourceId;

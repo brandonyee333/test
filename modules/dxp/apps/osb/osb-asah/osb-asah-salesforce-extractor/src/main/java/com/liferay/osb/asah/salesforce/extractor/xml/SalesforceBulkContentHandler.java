@@ -162,7 +162,7 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 				new SalesforceAuditEvent();
 
 			salesforceAuditEvent.setAdditionalInfoJSONObject(jsonObject);
-			salesforceAuditEvent.setAuditEventDate(new Date());
+			salesforceAuditEvent.setCreateDate(new Date());
 			salesforceAuditEvent.setDataSourceId(
 				Long.valueOf(_osbAsahDataSourceId));
 			salesforceAuditEvent.setEntityTypeName(_typeName);

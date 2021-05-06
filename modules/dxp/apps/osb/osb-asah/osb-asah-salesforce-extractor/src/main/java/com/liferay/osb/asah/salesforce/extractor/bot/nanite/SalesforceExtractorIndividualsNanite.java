@@ -100,7 +100,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 
 		salesforceAuditEvent.setAdditionalInfoJSONObject(
 			additionalInfoJSONObject);
-		salesforceAuditEvent.setAuditEventDate(new Date());
+		salesforceAuditEvent.setCreateDate(new Date());
 		salesforceAuditEvent.setDataSourceId(_dataSourceId);
 		salesforceAuditEvent.setEntityTypeName(salesforceEntityType.getValue());
 		salesforceAuditEvent.setRecordId(recordId);

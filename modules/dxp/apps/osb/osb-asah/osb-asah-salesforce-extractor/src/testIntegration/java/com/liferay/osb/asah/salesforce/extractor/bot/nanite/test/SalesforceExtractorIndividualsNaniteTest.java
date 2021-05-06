@@ -199,7 +199,7 @@ public class SalesforceExtractorIndividualsNaniteTest {
 
 		salesforceAuditEvent.setAdditionalInfoJSONObject(
 			salesforceEntity.getFieldsJSONObject());
-		salesforceAuditEvent.setAuditEventDate(new Date());
+		salesforceAuditEvent.setCreateDate(new Date());
 		salesforceAuditEvent.setDataSourceId(
 			salesforceEntity.getDataSourceId());
 		salesforceAuditEvent.setEntityTypeName(
