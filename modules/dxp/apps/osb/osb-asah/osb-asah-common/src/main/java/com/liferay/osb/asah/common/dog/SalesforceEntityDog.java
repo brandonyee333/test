@@ -18,11 +18,10 @@ import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.repository.SalesforceEntityRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import org.apache.commons.collections4.IterableUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -113,17 +112,32 @@ public class SalesforceEntityDog {
 	public List<SalesforceEntity> saveSalesforceEntities(
 		List<SalesforceEntity> salesforceEntities) {
 
+		List<SalesforceEntity> savedSalesforceEntities = new ArrayList<>();
+
 		for (SalesforceEntity salesforceEntity : salesforceEntities) {
 			if (!_salesforceEntityRepository.existsByDataSourceIdAndIdAndType(
 					salesforceEntity.getDataSourceId(),
 					salesforceEntity.getId(), salesforceEntity.getType())) {
 
 				salesforceEntity.setIsNew(Boolean.TRUE);
+
+				savedSalesforceEntities.add(
+					_salesforceEntityRepository.save(salesforceEntity));
+			}
+			else {
+				_salesforceEntityRepository.updateSalesforceEntityFields(
+					salesforceEntity.getDataSourceId(),
+					salesforceEntity.getFieldsJSONObject(),
+					salesforceEntity.getId(), salesforceEntity.getType());
+
+				savedSalesforceEntities.add(
+					getSalesforceEntity(
+						salesforceEntity.getDataSourceId(),
+						salesforceEntity.getId(), salesforceEntity.getType()));
 			}
 		}
 
-		return IterableUtils.toList(
-			_salesforceEntityRepository.saveAll(salesforceEntities));
+		return savedSalesforceEntities;
 	}
 
 	public SalesforceEntity saveSalesforceEntity(
