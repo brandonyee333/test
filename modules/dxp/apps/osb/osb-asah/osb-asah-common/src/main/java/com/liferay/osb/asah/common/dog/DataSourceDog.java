@@ -161,25 +161,11 @@ public class DataSourceDog {
 			faroBackendSecuritySignature);
 	}
 
-	public Channel fetchChannel(Long dataSourceId) {
-		return _channelDog.fetchChannelByDataSourceId(dataSourceId);
-	}
-
 	public DataSource fetchDataSource(Long dataSourceId) {
 		Optional<DataSource> dataSourceOptional =
 			_dataSourceRepository.findById(dataSourceId);
 
 		return dataSourceOptional.orElse(null);
-	}
-
-	public Long getChannelId(Long dataSourceId) {
-		Channel channel = fetchChannel(dataSourceId);
-
-		if (channel == null) {
-			return null;
-		}
-
-		return channel.getId();
 	}
 
 	public DataSource getDataSource(Long dataSourceId) {
@@ -246,6 +232,16 @@ public class DataSourceDog {
 			_dataSourceRepository.searchDataSources(filterString, pageRequest),
 			pageRequest,
 			() -> _dataSourceRepository.countDataSources(filterString));
+	}
+
+	public Long getDefaultChannelId(Long dataSourceId) {
+		Channel defaultChannel = _channelDog.fetchDefaultChannel(dataSourceId);
+
+		if (defaultChannel == null) {
+			return null;
+		}
+
+		return defaultChannel.getId();
 	}
 
 	public boolean isAnalyticsConfigured() {
