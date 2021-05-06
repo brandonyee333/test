@@ -83,7 +83,13 @@ public class AsahMarkerDog {
 		Optional<AsahMarker> asahMarkerOptional = _findAsahMarker(
 			asahMarkerId, weDeployDataService);
 
-		return asahMarkerOptional.orElse(null);
+		AsahMarker asahMarker = asahMarkerOptional.orElse(null);
+
+		if (asahMarker != null) {
+			asahMarker.setIsNew(Boolean.FALSE);
+		}
+
+		return asahMarker;
 	}
 
 	public AsahMarker getAsahMarker(
@@ -92,10 +98,17 @@ public class AsahMarkerDog {
 		Optional<AsahMarker> asahMarkerOptional = _findAsahMarker(
 			asahMarkerId, weDeployDataService);
 
-		return asahMarkerOptional.orElseThrow(
-			() -> new OSBAsahException(
+		if (!asahMarkerOptional.isPresent()) {
+			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
-				"There is no Asah Marker with ID " + asahMarkerId));
+				"There is no Asah Marker with ID " + asahMarkerId);
+		}
+
+		AsahMarker asahMarker = asahMarkerOptional.get();
+
+		asahMarker.setIsNew(Boolean.FALSE);
+
+		return asahMarker;
 	}
 
 	public AsahMarker updateAsahMarker(

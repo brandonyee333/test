@@ -139,6 +139,8 @@ public abstract class BaseNanite implements Nanite {
 				new AsahMarker(
 					clazz.getSimpleName(), JSONUtil.put("type", "nanite")),
 				WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+			asahMarker.setIsNew(Boolean.FALSE);
 		}
 
 		return asahMarker;

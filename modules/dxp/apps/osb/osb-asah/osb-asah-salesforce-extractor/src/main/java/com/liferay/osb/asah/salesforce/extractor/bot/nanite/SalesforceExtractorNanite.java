@@ -318,9 +318,9 @@ public class SalesforceExtractorNanite implements Nanite {
 					_salesforceExtractorConfiguration.getDataSourceId(),
 					JSONUtil.put("tables", new JSONObject())),
 				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
-		}
 
-		asahMarker.setIsNew(Boolean.FALSE);
+			asahMarker.setIsNew(Boolean.FALSE);
+		}
 
 		return asahMarker;
 	}

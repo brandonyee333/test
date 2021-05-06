@@ -172,6 +172,8 @@ public class UserSessionFinalizerNanite implements Nanite {
 			asahMarker = _asahMarkerDog.addAsahMarker(
 				new AsahMarker("SessionNanite"),
 				WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
+
+			asahMarker.setIsNew(Boolean.FALSE);
 		}
 
 		return asahMarker;
