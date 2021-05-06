@@ -52,7 +52,7 @@ public class SalesforceUpgradeStepTest {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/osbasahsalesforceraw/new_account.json", this),
-			_elasticsearchInvoker.get("account"), false);
+			_elasticsearchInvoker.get("Account"), false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/osbasahsalesforceraw/new_individuals.json", this),

@@ -23,8 +23,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
-import java.util.Objects;
-
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
@@ -47,9 +45,9 @@ public class SalesforceUpgradeStep implements UpgradeStep {
 			"Account", SalesforceEntity.Type.ACCOUNT);
 		_upgradeSalesforceEntityJSONObjects(
 			"Contact", SalesforceEntity.Type.CONTACT);
+		_upgradeSalesforceEntityJSONObjects("Lead", SalesforceEntity.Type.LEAD);
 		_upgradeSalesforceEntityJSONObjects(
 			"individuals", SalesforceEntity.Type.INDIVIDUAL);
-		_upgradeSalesforceEntityJSONObjects("Lead", SalesforceEntity.Type.LEAD);
 	}
 
 	private void _upgradeSalesforceEntityIndexMapping(String collectionName) {
@@ -75,26 +73,23 @@ public class SalesforceUpgradeStep implements UpgradeStep {
 		JSONObject salesforceEntityJSONObject,
 		SalesforceEntity.Type salesforceEntityType) {
 
-		JSONObject newSalesforceAccountJSONObject = new JSONObject();
+		JSONObject jsonObject = new JSONObject();
 
-		newSalesforceAccountJSONObject.put(
-			"type", salesforceEntityType.toString());
-
-		for (String key : salesforceEntityJSONObject.keySet()) {
-			if (Objects.equals(key, "id")) {
-				newSalesforceAccountJSONObject.put(
-					key, salesforceEntityJSONObject.get(key));
-			}
-			else if (Objects.equals(key, "osbAsahDataSourceId")) {
-				newSalesforceAccountJSONObject.put(
-					"dataSourceId", salesforceEntityJSONObject.get(key));
-			}
+		if (salesforceEntityJSONObject.has("osbAsahDataSourceId")) {
+			jsonObject.put(
+				"dataSourceId",
+				salesforceEntityJSONObject.get("osbAsahDataSourceId"));
 		}
 
-		newSalesforceAccountJSONObject.put(
-			"fields", salesforceEntityJSONObject);
+		jsonObject.put("fields", salesforceEntityJSONObject);
 
-		return newSalesforceAccountJSONObject;
+		if (salesforceEntityJSONObject.has("id")) {
+			jsonObject.put("id", salesforceEntityJSONObject.get("id"));
+		}
+
+		jsonObject.put("type", salesforceEntityType.toString());
+
+		return jsonObject;
 	}
 
 	private void _upgradeSalesforceEntityJSONObjects(
