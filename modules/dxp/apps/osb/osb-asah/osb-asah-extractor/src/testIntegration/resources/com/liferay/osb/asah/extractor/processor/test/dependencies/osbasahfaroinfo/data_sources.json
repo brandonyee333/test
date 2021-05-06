@@ -9,7 +9,6 @@
 		"status": "INACTIVE"
 	},
 	{
-		"channelId": "123",
 		"id": "350121114030678021",
 		"name": "192.168.108.90",
 		"provider": {
@@ -19,7 +18,6 @@
 		"status": "ACTIVE"
 	},
 	{
-		"channelId": "456",
 		"id": "880121114030678088",
 		"name": "LIFERAY-DATASOURCE-INACTIVE",
 		"provider": {

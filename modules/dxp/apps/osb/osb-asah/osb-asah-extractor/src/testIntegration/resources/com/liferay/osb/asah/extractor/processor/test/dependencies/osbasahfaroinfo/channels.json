@@ -10,6 +10,7 @@
 			}
 		],
 		"dateCreated": "2020-04-07T06:10:23.417Z",
+		"defaultChannel": true,
 		"id": "123",
 		"name": "channelA"
 	},
@@ -23,6 +24,7 @@
 			}
 		],
 		"dateCreated": "2020-04-07T06:10:23.417Z",
+		"defaultChannel": true,
 		"id": "456",
 		"name": "channelB"
 	}

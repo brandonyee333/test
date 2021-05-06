@@ -14,11 +14,9 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SalesforceEntityRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
@@ -120,17 +118,6 @@ public class SalesforceEntityRepositoryTest {
 	private DataSource _addDataSource() {
 		DataSource dataSource = new DataSource("Liferay Brazil");
 
-		dataSource.setCredentialType("Token Authentication");
-
-		Channel channel = new Channel("channel1");
-
-		channel.setId(11L);
-		channel.setIsNew(true);
-
-		_channelRepository.save(channel);
-
-		dataSource.setChannelId(channel.getId());
-
 		dataSource.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource.setId(1L);
@@ -142,9 +129,6 @@ public class SalesforceEntityRepositoryTest {
 
 		return _dataSourceRepository.save(dataSource);
 	}
-
-	@Autowired
-	private ChannelRepository _channelRepository;
 
 	private DataSource _dataSource;
 

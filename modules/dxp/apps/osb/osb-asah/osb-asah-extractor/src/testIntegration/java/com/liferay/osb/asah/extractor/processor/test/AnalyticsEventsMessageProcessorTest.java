@@ -155,6 +155,8 @@ public class AnalyticsEventsMessageProcessorTest {
 						"id", "990121114030678099"
 					))
 			).put(
+				"defaultChannel", true
+			).put(
 				"id", "999"
 			).put(
 				"name", "channelA"
