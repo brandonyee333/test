@@ -67,11 +67,24 @@ public class SamlSameSiteLaxCookiesFilter extends BaseSamlPortalFilter {
 	public boolean isFilterEnabled(
 		HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse) {
-
+		System.out.println("In samesite Filter, Incoming request is: " + getFullURL(httpServletRequest) + " , METHOD: " + httpServletRequest.getMethod());
 		if (Objects.equals("GET", httpServletRequest.getMethod()) ||
 			ParamUtil.getBoolean(httpServletRequest, "continue") ||
 			(!ParamUtil.getBoolean(httpServletRequest, "noscript") &&
 			 (httpServletRequest.getSession(false) != null))) {
+
+			System.out.println("Return false, because: ");
+
+			if (Objects.equals("GET", httpServletRequest.getMethod())) {
+				System.out.println("it's a GET");
+			}
+			if (ParamUtil.getBoolean(httpServletRequest, "continue")) {
+				System.out.println("It has param 'continue'");
+			}
+			if (!ParamUtil.getBoolean(httpServletRequest, "noscript") &&
+				(httpServletRequest.getSession(false) != null)) {
+				System.out.println("It does not have param 'noscript' and has a session");
+			}
 
 			return false;
 		}
@@ -171,4 +184,14 @@ public class SamlSameSiteLaxCookiesFilter extends BaseSamlPortalFilter {
 	)
 	private volatile ResourceBundleLoader _resourceBundleLoader;
 
+	public static String getFullURL(HttpServletRequest request) {
+		StringBuilder requestURL = new StringBuilder(request.getRequestURL().toString());
+		String queryString = request.getQueryString();
+
+		if (queryString == null) {
+			return requestURL.toString();
+		} else {
+			return requestURL.append('?').append(queryString).toString();
+		}
+	}
 }

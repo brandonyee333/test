@@ -663,10 +663,23 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 		return messageContext;
 	}
 
+	public static String getFullURL(HttpServletRequest request) {
+		StringBuilder requestURL = new StringBuilder(request.getRequestURL().toString());
+		String queryString = request.getQueryString();
+
+		if (queryString == null) {
+			return requestURL.toString();
+		} else {
+			return requestURL.append('?').append(queryString).toString();
+		}
+	}
+
 	protected void doProcessAuthnRequest(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse)
 		throws Exception {
+
+		System.out.println("In doProcessAuthnRequest, Incoming request is: " + getFullURL(httpServletRequest) + " , METHOD: " + httpServletRequest.getMethod());
 
 		SamlSsoRequestContext samlSsoRequestContext = decodeAuthnRequest(
 			httpServletRequest, httpServletResponse);
@@ -732,6 +745,16 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 			 (user != null) &&
 			 (samlSsoRequestContext.getStage() ==
 				 SamlSsoRequestContext.STAGE_INITIAL))) {
+
+			if (sessionExpired) {
+				System.out.println("Redirect to login because session Expired");
+			}
+			if (user == null) {
+				System.out.println("Redirect to login because user is null");
+			}
+			if ((authnRequest != null) && authnRequest.isForceAuthn() && (user != null) && (samlSsoRequestContext.getStage() == SamlSsoRequestContext.STAGE_INITIAL)) {
+				System.out.println("Redirect to login because authnRequest is not null, and authnRequest is ForceAuthn, and user is not null, and context stage is STAGE_INITIAL");
+			}
 
 			boolean forceAuthn = false;
 

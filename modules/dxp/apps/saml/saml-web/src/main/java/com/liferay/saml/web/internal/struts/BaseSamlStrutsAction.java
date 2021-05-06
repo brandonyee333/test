@@ -43,7 +43,7 @@ public abstract class BaseSamlStrutsAction implements StrutsAction {
 		if (!isEnabled()) {
 			return "/common/referer_js.jsp";
 		}
-
+		System.out.println("In BaseStrutsAction, Incoming request is: " + getFullURL(httpServletRequest) + " , METHOD: " + httpServletRequest.getMethod());
 		httpServletRequest.setAttribute(
 			WebKeys.RESOURCE_BUNDLE_LOADER, resourceBundleLoader);
 
@@ -112,4 +112,14 @@ public abstract class BaseSamlStrutsAction implements StrutsAction {
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseSamlStrutsAction.class);
 
+	public static String getFullURL(HttpServletRequest request) {
+		StringBuilder requestURL = new StringBuilder(request.getRequestURL().toString());
+		String queryString = request.getQueryString();
+
+		if (queryString == null) {
+			return requestURL.toString();
+		} else {
+			return requestURL.append('?').append(queryString).toString();
+		}
+	}
 }
