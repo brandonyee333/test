@@ -49,6 +49,10 @@ public interface ChannelRepository extends CrudRepository<Channel, Long> {
 	public List<Channel> findByDataSourceId(
 		@Param("dataSourceId") Long dataSourceId);
 
+	public List<Channel> findByDataSourceIdAndDefaultChannel(
+		@Param("dataSourceId") Long dataSourceId,
+		@Param("defaultChannel") Boolean defaultChannel);
+
 	public List<Channel> findByDataSourceIdAndGroupIds(
 		@Param("dataSourceId") Long dataSourceId,
 		@Param("groupsIds") Set<Long> groupsIds);

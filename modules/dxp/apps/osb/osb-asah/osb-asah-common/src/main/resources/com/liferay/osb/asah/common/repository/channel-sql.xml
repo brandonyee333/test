@@ -11,6 +11,7 @@
 		<![CDATA[
 			SELECT
 				Channel.createDate,
+				Channel.defaultChannel,
 				Channel.id,
 				Channel.name,
 				ChannelDataSource.channelId,
@@ -27,10 +28,33 @@
 				Channel.id
 		]]>
 	</entry>
+	<entry key="Channel.findByDataSourceIdAndDefaultChannel">
+		<![CDATA[
+			SELECT
+				Channel.createDate,
+				Channel.defaultChannel,
+				Channel.id,
+				Channel.name,
+				ChannelDataSource.channelId,
+				ChannelDataSource.dataSourceId,
+				ChannelDataSource.groupIds
+			FROM
+				Channel
+			JOIN
+				ChannelDataSource ON
+					Channel.id = ChannelDataSource.channelId
+			WHERE
+				ChannelDataSource.dataSourceId = :dataSourceId AND
+				Channel.defaultChannel = :defaultChannel
+			ORDER BY
+				Channel.id
+		]]>
+	</entry>
 	<entry key="Channel.findByDataSourceIdAndGroupIds">
 		<![CDATA[
 			SELECT
 				Channel.createDate,
+				Channel.defaultChannel,
 				Channel.id,
 				Channel.name,
 				ChannelDataSource.channelId,

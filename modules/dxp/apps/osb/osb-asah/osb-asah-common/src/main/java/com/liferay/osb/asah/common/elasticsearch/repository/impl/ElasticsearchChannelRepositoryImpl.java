@@ -111,6 +111,21 @@ public class ElasticsearchChannelRepositoryImpl
 	}
 
 	@Override
+	public List<Channel> findByDataSourceIdAndDefaultChannel(
+		Long dataSourceId, Boolean defaultChannel) {
+
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"dataSources.id", String.valueOf(dataSourceId))
+				).filter(
+					QueryBuilders.termQuery("defaultChannel", defaultChannel)
+				)));
+	}
+
+	@Override
 	public List<Channel> findByDataSourceIdAndGroupIds(
 		Long dataSourceId, Set<Long> groupsIds) {
 
