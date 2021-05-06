@@ -49,8 +49,7 @@ public class DataSourcesUpgradeStep implements UpgradeStep {
 
 			jsonObject.remove("channelId");
 
-			_faroInfoElasticsearchInvoker.update(
-				"data-sources", jsonObject.getString("id"), jsonObject);
+			_faroInfoElasticsearchInvoker.replace("data-sources", jsonObject);
 		}
 	}
 
