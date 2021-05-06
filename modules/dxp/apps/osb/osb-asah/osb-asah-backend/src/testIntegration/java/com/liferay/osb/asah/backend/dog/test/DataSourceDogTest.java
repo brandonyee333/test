@@ -69,7 +69,8 @@ public class DataSourceDogTest {
 	)
 	@Test
 	public void testGetChannelId() {
-		Assert.assertNotNull(_dataSourceDog.getChannelId(405057430327289648L));
+		Assert.assertNotNull(
+			_dataSourceDog.getDefaultChannelId(405057430327289648L));
 	}
 
 	@ElasticsearchIndex(

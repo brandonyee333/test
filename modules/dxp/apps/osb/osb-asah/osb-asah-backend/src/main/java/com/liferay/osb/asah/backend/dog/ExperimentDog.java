@@ -524,7 +524,7 @@ public class ExperimentDog {
 			return Long.valueOf(experiment.getChannelId());
 		}
 
-		Long channelId = _dataSourceDog.getChannelId(
+		Long channelId = _dataSourceDog.getDefaultChannelId(
 			Long.valueOf(experiment.getDataSourceId()));
 
 		if (channelId != null) {

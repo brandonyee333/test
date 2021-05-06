@@ -54,9 +54,8 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
 				DataSource.class));
 
-		Channel channel = _dataSourceDog.fetchChannel(dataSource.getId());
-
-		Assert.assertTrue(channel.isDefaultChannel());
+		Assert.assertNotNull(
+			_dataSourceDog.getDefaultChannelId(dataSource.getId()));
 	}
 
 	@ElasticsearchIndex(

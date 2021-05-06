@@ -62,7 +62,7 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 			FaroInfoTestUtil.buildAccountJSONObject(dataSourceJSONObject));
 
 		String channelId = String.valueOf(
-			_dataSourceDog.getChannelId(dataSource.getId()));
+			_dataSourceDog.getDefaultChannelId(dataSource.getId()));
 
 		faroInfoElasticsearchInvoker.add(
 			"individual-segments",

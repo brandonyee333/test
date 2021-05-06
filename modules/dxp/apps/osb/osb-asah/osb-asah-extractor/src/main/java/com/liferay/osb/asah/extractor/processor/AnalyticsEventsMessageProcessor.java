@@ -374,7 +374,7 @@ public class AnalyticsEventsMessageProcessor {
 
 		if (StringUtil.isNull(channelId) || StringUtils.isBlank(channelId)) {
 			channelId = String.valueOf(
-				_dataSourceDog.getChannelId(Long.valueOf(dataSourceId)));
+				_dataSourceDog.getDefaultChannelId(Long.valueOf(dataSourceId)));
 
 			if (StringUtils.isBlank(channelId)) {
 				if (_log.isDebugEnabled()) {
