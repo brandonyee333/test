@@ -12,7 +12,8 @@
 	"csfConfig": {
 		"js": {
 			"lint": {
-				"globals": {}
+				"globals": {
+				}
 			}
 		},
 		"path:**/src/main/js/**/*.js": {
