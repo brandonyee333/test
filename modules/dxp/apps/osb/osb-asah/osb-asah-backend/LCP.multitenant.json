@@ -1,7 +1,7 @@
 {
-	"cpu": 2,
+	"cpu": 4,
 	"env": {
-		"JAVA_OPTS_EXT": "-Xmx2765m",
+		"JAVA_OPTS_EXT": "-Xmx5530m",
 		"LOGGING_PATTERN_CONSOLE": "${CONSOLE_LOG_PATTERN:%clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr(%X{osbAsahProjectId:-none}){green} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"
 	},
 	"id": "osbasahbackend",
@@ -10,7 +10,7 @@
 		"cdn": false,
 		"targetPort": 8080
 	},
-	"memory": 3072,
+	"memory": 6144,
 	"ports": [
 		{
 			"external": false,

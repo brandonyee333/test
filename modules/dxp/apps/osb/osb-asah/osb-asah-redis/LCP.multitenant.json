@@ -1,7 +1,7 @@
 {
 	"cpu": 1,
 	"id": "osbasahredis",
-	"memory": 2048,
+	"memory": 4096,
 	"ports": [
 		{
 			"external": false,
