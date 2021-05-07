@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
-import com.liferay.osb.asah.backend.dto.DashboardDTO;
+import com.liferay.osb.asah.backend.dto.CustomAssetDashboardDTO;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
@@ -30,10 +30,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "dashboard", typeName = "MutationType")
-public class DashboardMutationDataFetcher implements DataFetcher<DashboardDTO> {
+public class CustomAssetDashboardMutationDataFetcher
+	implements DataFetcher<CustomAssetDashboardDTO> {
 
 	@Override
-	public DashboardDTO get(DataFetchingEnvironment dataFetchingEnvironment) {
+	public CustomAssetDashboardDTO get(DataFetchingEnvironment dataFetchingEnvironment) {
 		String dashboardId = dataFetchingEnvironment.getArgument("dashboardId");
 		String definition = dataFetchingEnvironment.getArgument("definition");
 		String modifiedByUserId = dataFetchingEnvironment.getArgument(
@@ -49,7 +50,7 @@ public class DashboardMutationDataFetcher implements DataFetcher<DashboardDTO> {
 			return null;
 		}
 
-		return new DashboardDTO(customAssetDashboard);
+		return new CustomAssetDashboardDTO(customAssetDashboard);
 	}
 
 	@Autowired

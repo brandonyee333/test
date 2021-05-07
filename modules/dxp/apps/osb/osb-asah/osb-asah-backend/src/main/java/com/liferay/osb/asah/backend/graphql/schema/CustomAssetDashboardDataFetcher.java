@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
-import com.liferay.osb.asah.backend.dto.DashboardDTO;
+import com.liferay.osb.asah.backend.dto.CustomAssetDashboardDTO;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
@@ -30,10 +30,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "dashboard", typeName = "QueryType")
-public class DashboardDataFetcher implements DataFetcher<DashboardDTO> {
+public class CustomAssetDashboardDataFetcher implements DataFetcher<CustomAssetDashboardDTO> {
 
 	@Override
-	public DashboardDTO get(DataFetchingEnvironment dataFetchingEnvironment) {
+	public CustomAssetDashboardDTO get(DataFetchingEnvironment dataFetchingEnvironment) {
 		CustomAssetDashboard customAssetDashboard =
 			_customAssetDashboardDog.fetchCustomAssetDashboard(
 				dataFetchingEnvironment.getArgument("dashboardId"));
@@ -42,7 +42,7 @@ public class DashboardDataFetcher implements DataFetcher<DashboardDTO> {
 			return null;
 		}
 
-		return new DashboardDTO(customAssetDashboard);
+		return new CustomAssetDashboardDTO(customAssetDashboard);
 	}
 
 	@Autowired

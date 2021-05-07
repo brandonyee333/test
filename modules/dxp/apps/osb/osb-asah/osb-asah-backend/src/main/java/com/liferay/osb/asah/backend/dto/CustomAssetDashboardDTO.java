@@ -29,12 +29,12 @@ import java.util.Objects;
 /**
  * @author André Miranda
  */
-public class DashboardDTO {
+public class CustomAssetDashboardDTO {
 
-	public DashboardDTO() {
+	public CustomAssetDashboardDTO() {
 	}
 
-	public DashboardDTO(CustomAssetDashboard customAssetDashboard) {
+	public CustomAssetDashboardDTO(CustomAssetDashboard customAssetDashboard) {
 		_assetId = customAssetDashboard.getAssetId();
 		_assetTitle = customAssetDashboard.getAssetTitle();
 		_category = customAssetDashboard.getCategory();
@@ -52,22 +52,22 @@ public class DashboardDTO {
 			return true;
 		}
 
-		if (!(obj instanceof DashboardDTO)) {
+		if (!(obj instanceof CustomAssetDashboardDTO)) {
 			return false;
 		}
 
-		DashboardDTO dashboardDTO = (DashboardDTO)obj;
+		CustomAssetDashboardDTO customAssetDashboardDTO = (CustomAssetDashboardDTO)obj;
 
-		if (Objects.equals(_assetId, dashboardDTO._assetId) &&
-			Objects.equals(_assetTitle, dashboardDTO._assetTitle) &&
-			Objects.equals(_category, dashboardDTO._category) &&
-			Objects.equals(_createDate, dashboardDTO._createDate) &&
-			Objects.equals(_definition, dashboardDTO._definition) &&
-			Objects.equals(_id, dashboardDTO._id) &&
-			Objects.equals(_modifiedDate, dashboardDTO._modifiedDate) &&
-			Objects.equals(_modifiedByUserId, dashboardDTO._modifiedByUserId) &&
+		if (Objects.equals(_assetId, customAssetDashboardDTO._assetId) &&
+			Objects.equals(_assetTitle, customAssetDashboardDTO._assetTitle) &&
+			Objects.equals(_category, customAssetDashboardDTO._category) &&
+			Objects.equals(_createDate, customAssetDashboardDTO._createDate) &&
+			Objects.equals(_definition, customAssetDashboardDTO._definition) &&
+			Objects.equals(_id, customAssetDashboardDTO._id) &&
+			Objects.equals(_modifiedDate, customAssetDashboardDTO._modifiedDate) &&
+			Objects.equals(_modifiedByUserId, customAssetDashboardDTO._modifiedByUserId) &&
 			Objects.equals(
-				_modifiedByUserName, dashboardDTO._modifiedByUserName)) {
+				_modifiedByUserName, customAssetDashboardDTO._modifiedByUserName)) {
 
 			return true;
 		}

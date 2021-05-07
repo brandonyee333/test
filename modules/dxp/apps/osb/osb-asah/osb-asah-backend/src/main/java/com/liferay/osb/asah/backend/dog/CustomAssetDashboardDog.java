@@ -14,9 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.liferay.osb.asah.backend.dto.DashboardDTO;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 
@@ -24,10 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
