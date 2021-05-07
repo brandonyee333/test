@@ -104,6 +104,9 @@ public class AddRecordMVCActionCommand extends BaseMVCActionCommand {
 		_addRecordMVCCommandHelper.updateRequiredFieldsAccordingToVisibility(
 			ddmForm, ddmFormValues, themeDisplay.getLocale());
 
+		_addRecordMVCCommandHelper.resetFieldValueAccordingToVisibility(
+			ddmForm, ddmFormValues, themeDisplay.getLocale());
+
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			DDLRecord.class.getName(), actionRequest);
 

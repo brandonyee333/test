@@ -19,7 +19,12 @@ import com.liferay.dynamic.data.mapping.form.evaluator.DDMFormEvaluator;
 import com.liferay.dynamic.data.mapping.form.evaluator.DDMFormFieldEvaluationResult;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
+import com.liferay.dynamic.data.mapping.model.LocalizedValue;
+import com.liferay.dynamic.data.mapping.model.UnlocalizedValue;
+import com.liferay.dynamic.data.mapping.model.Value;
+import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.Portal;
 
 import java.util.Collection;
@@ -38,6 +43,23 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = AddRecordMVCCommandHelper.class)
 public class AddRecordMVCCommandHelper {
+
+	public void resetFieldValueAccordingToVisibility(
+			DDMForm ddmForm, DDMFormValues ddmFormValues, Locale locale)
+		throws Exception {
+
+		DDMFormEvaluationResult ddmFormEvaluationResult = evaluate(
+			ddmForm, ddmFormValues, locale);
+
+		Set<String> invisibleFields = getInvisibleFields(
+			ddmFormEvaluationResult);
+
+		if (invisibleFields.isEmpty()) {
+			return;
+		}
+
+		removeValue(ddmFormValues, invisibleFields);
+	}
 
 	public void updateRequiredFieldsAccordingToVisibility(
 			DDMForm ddmForm, DDMFormValues ddmFormValues, Locale locale)
@@ -111,6 +133,40 @@ public class AddRecordMVCCommandHelper {
 			field -> invisibleFields.contains(field.getName()));
 
 		stream.forEach(this::removeRequiredProperty);
+	}
+
+	protected void removeValue(
+		DDMFormFieldValue ddmFormFieldValue, Locale defaultLocale) {
+
+		DDMFormField ddmFormField = ddmFormFieldValue.getDDMFormField();
+
+		if (ddmFormField.isLocalizable()) {
+			Value value = new LocalizedValue(defaultLocale);
+
+			value.addString(defaultLocale, StringPool.BLANK);
+
+			ddmFormFieldValue.setValue(value);
+		}
+		else {
+			ddmFormFieldValue.setValue(new UnlocalizedValue(StringPool.BLANK));
+		}
+	}
+
+	protected void removeValue(
+		DDMFormValues ddmFormValues, Set<String> invisibleFields) {
+
+		List<DDMFormFieldValue> ddmFormFieldValues =
+			ddmFormValues.getDDMFormFieldValues();
+
+		Stream<DDMFormFieldValue> stream = ddmFormFieldValues.stream();
+
+		stream = stream.filter(
+			ddmFormFieldValue -> invisibleFields.contains(
+				ddmFormFieldValue.getName()));
+
+		stream.forEach(
+			ddmFormFieldValue -> removeValue(
+				ddmFormFieldValue, ddmFormValues.getDefaultLocale()));
 	}
 
 	@Reference
