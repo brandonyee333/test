@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
 import com.liferay.osb.asah.backend.dto.DashboardDTO;
+import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
 import graphql.schema.DataFetcher;
@@ -40,8 +41,15 @@ public class DashboardMutationDataFetcher implements DataFetcher<DashboardDTO> {
 		String modifiedByUserName = dataFetchingEnvironment.getArgument(
 			"modifiedByUserName");
 
-		return _customAssetDashboardDog.updateDashboard(
-			dashboardId, definition, modifiedByUserId, modifiedByUserName);
+		CustomAssetDashboard customAssetDashboard =
+			_customAssetDashboardDog.updateCustomAssetDashboard(
+				dashboardId, definition, modifiedByUserId, modifiedByUserName);
+
+		if (customAssetDashboard == null) {
+			return null;
+		}
+
+		return new DashboardDTO(customAssetDashboard);
 	}
 
 	@Autowired

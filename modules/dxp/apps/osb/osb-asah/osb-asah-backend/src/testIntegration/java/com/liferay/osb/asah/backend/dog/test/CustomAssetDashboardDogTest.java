@@ -18,7 +18,6 @@ import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
 import com.liferay.osb.asah.backend.dto.DashboardDTO;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -122,22 +121,23 @@ public class CustomAssetDashboardDogTest {
 	)
 	@Test
 	public void testUpdateCustomAssetDashboard() {
-		DashboardDTO dashboardDTO = _customAssetDashboardDog.updateDashboard(
-			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9",
-			"{\"rows\": [{\"panels\":[{\"title\":\"MyPanel\"," +
-				"\"width\":100,\"metric\":\"assetViewed\"," +
-					"\"chartType\":\"line\"}]}]}",
-			"123", "Pedro");
+		CustomAssetDashboard customAssetDashboard =
+			_customAssetDashboardDog.updateCustomAssetDashboard(
+				"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9",
+				"{\"rows\": [{\"panels\":[{\"title\":\"MyPanel\"," +
+					"\"width\":100,\"metric\":\"assetViewed\"," +
+						"\"chartType\":\"line\"}]}]}",
+				"123", "Pedro");
 
-		Assert.assertNotNull(dashboardDTO);
-		Assert.assertEquals("1", dashboardDTO.getAssetId());
-		Assert.assertEquals("Asset Title 1", dashboardDTO.getAssetTitle());
-		Assert.assertEquals("default", dashboardDTO.getCategory());
+		Assert.assertNotNull(customAssetDashboard);
+		Assert.assertEquals("1", customAssetDashboard.getAssetId());
+		Assert.assertEquals("Asset Title 1", customAssetDashboard.getAssetTitle());
+		Assert.assertEquals("default", customAssetDashboard.getCategory());
 		Assert.assertEquals(
 			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9",
-			dashboardDTO.getId());
-		Assert.assertEquals("123", dashboardDTO.getModifiedByUserId());
-		Assert.assertEquals("Pedro", dashboardDTO.getModifiedByUserName());
+			customAssetDashboard.getId());
+		Assert.assertEquals("123", customAssetDashboard.getModifiedByUserId());
+		Assert.assertEquals("Pedro", customAssetDashboard.getModifiedByUserName());
 	}
 
 	@Autowired

@@ -73,29 +73,25 @@ public class CustomAssetDashboardDog {
 					channelId, keywords));
 	}
 
-	public DashboardDTO updateDashboard(
+	public CustomAssetDashboard updateCustomAssetDashboard(
 		String dashboardId, String definition, String modifiedByUserId,
 		String modifiedByUserName) {
 
 		_dashboardDefinitionSchema.validate(new JSONObject(definition));
 
-		Optional<CustomAssetDashboard> customAssetDashboardOptional =
-			_customAssetDashboardRepository.findById(dashboardId);
+		CustomAssetDashboard customAssetDashboard =
+			fetchCustomAssetDashboard(dashboardId);
 
-		if (!customAssetDashboardOptional.isPresent()) {
+		if (customAssetDashboard == null) {
 			return null;
 		}
-
-		CustomAssetDashboard customAssetDashboard =
-			customAssetDashboardOptional.get();
 
 		customAssetDashboard.setDefinition(definition);
 		customAssetDashboard.setModifiedByUserId(modifiedByUserId);
 		customAssetDashboard.setModifiedByUserName(modifiedByUserName);
 		customAssetDashboard.setModifiedDate(new Date());
 
-		return new DashboardDTO(
-			_customAssetDashboardRepository.save(customAssetDashboard));
+		return _customAssetDashboardRepository.save(customAssetDashboard);
 	}
 
 	@PostConstruct
