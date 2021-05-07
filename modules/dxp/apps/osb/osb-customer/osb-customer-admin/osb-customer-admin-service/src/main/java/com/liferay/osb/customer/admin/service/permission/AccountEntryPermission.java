@@ -18,6 +18,7 @@ import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
@@ -116,15 +117,19 @@ public class AccountEntryPermission {
 		try {
 			User user = permissionChecker.getUser();
 
-			List<ContactRole> contactRoles =
-				_contactRoleWebService.getAccountContactRoles(
-					koroneikiAccountKey, user.getUuid(), 1, 1);
-
-			if (!contactRoles.isEmpty()) {
+			if (isPartner(koroneikiAccountKey, user.getUuid())) {
 				return true;
 			}
 
-			if (isPartner(koroneikiAccountKey, user.getUuid())) {
+			List<ContactRole> contactRoles =
+				_contactRoleWebService.getAccountContactRoles(
+					koroneikiAccountKey, user.getUuid(), 1, 1000);
+
+			if (contactRoles.contains(
+					ContactRoleConstants.NAME_SUPPORT_DEVELOPER) ||
+				contactRoles.contains(
+					ContactRoleConstants.NAME_SUPPORT_WATCHER)) {
+
 				return true;
 			}
 		}
