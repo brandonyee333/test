@@ -36,6 +36,10 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
 import io.prometheus.client.Counter;
 
+import java.nio.charset.StandardCharsets;
+
+import java.security.MessageDigest;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,6 +49,7 @@ import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -99,17 +104,25 @@ public class IndividualNanite implements Nanite {
 				ProjectIdThreadLocal.setProjectId(
 					messageJSONObject.getString("projectId"));
 
-				if (!_suppressionDog.isSuppressed(
-						null,
-						messageJSONObject.getString("emailAddressHashed"))) {
+				String emailAddressHashed = messageJSONObject.getString(
+					"emailAddressHashed");
 
+				if ((emailAddressHashed == null) ||
+					MessageDigest.isEqual(
+						emailAddressHashed.getBytes(StandardCharsets.UTF_8),
+						_BLANK_EMAIL_HASH.getBytes(StandardCharsets.UTF_8))) {
+
+					continue;
+				}
+
+				if (!_suppressionDog.isSuppressed(null, emailAddressHashed)) {
 					Long channelId = JSONUtil.optLong(
 						null, messageJSONObject, "channelId");
 
 					JSONObject individualJSONObject = _updateIndividual(
 						messageJSONObject.getJSONObject("analyticsData"),
 						channelId, messageJSONObject.getLong("dataSourceId"),
-						messageJSONObject.getString("emailAddressHashed"),
+						emailAddressHashed,
 						messageJSONObject.getString("userId"));
 
 					_updatePagesAndAssets(
@@ -399,6 +412,8 @@ public class IndividualNanite implements Nanite {
 			),
 			true, script, "user-sessions");
 	}
+
+	private static final String _BLANK_EMAIL_HASH = DigestUtils.sha256Hex("");
 
 	private static final Log _log = LogFactory.getLog(IndividualNanite.class);
 
