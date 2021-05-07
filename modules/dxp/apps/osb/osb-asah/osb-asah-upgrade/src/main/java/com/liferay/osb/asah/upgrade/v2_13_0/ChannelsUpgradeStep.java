@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.upgrade.v2_14_0;
+package com.liferay.osb.asah.upgrade.v2_13_0;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.json.JSONUtil;

@@ -23,9 +23,9 @@ import com.liferay.osb.asah.upgrade.v2_10_0.UserSessionsInteractionsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_11_0.EngagementsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_0.AsahMarkerUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_0.RunLogUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_13_0.ChannelsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_13_0.DataSourcesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_13_0.SalesforceUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_14_0.ChannelsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_14_0.DataSourcesUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -56,10 +56,8 @@ public class UpgradeProcessConfiguration {
 			"2.11.0", "2.12.0", _asahMarkerUpgradeStep, _runLogUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.12.0", "2.13.0", _salesforceUpgradeStep);
-
-		upgradeProcess.addUpgradeSteps(
-			"2.13.0", "2.14.0", _dataSourcesUpgradeStep, _channelsUpgradeStep);
+			"2.12.0", "2.13.0", _dataSourcesUpgradeStep, _channelsUpgradeStep,
+			_salesforceUpgradeStep);
 
 		return upgradeProcess;
 	}
