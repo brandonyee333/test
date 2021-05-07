@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
-import com.liferay.osb.asah.backend.dto.DashboardDTO;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.model.Sort;
@@ -58,9 +57,12 @@ public class CustomAssetDashboardDogTest {
 	)
 	@Test
 	public void testGetCustomAssetDashboard() {
+		String customAssetDashboardId =
+			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9";
+
 		CustomAssetDashboard customAssetDashboard =
 			_customAssetDashboardDog.fetchCustomAssetDashboard(
-				"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9");
+				customAssetDashboardId);
 
 		Assert.assertNotNull(customAssetDashboard);
 		Assert.assertEquals(
@@ -108,7 +110,8 @@ public class CustomAssetDashboardDogTest {
 		Assert.assertEquals(
 			customAssetDashboards.toString(), 1, customAssetDashboards.size());
 
-		CustomAssetDashboard customAssetDashboard = customAssetDashboards.get(0);
+		CustomAssetDashboard customAssetDashboard = customAssetDashboards.get(
+			0);
 
 		Assert.assertEquals(
 			"Asset Title 2", customAssetDashboard.getAssetTitle());
@@ -121,9 +124,12 @@ public class CustomAssetDashboardDogTest {
 	)
 	@Test
 	public void testUpdateCustomAssetDashboard() {
+		String customAssetDashboardId =
+			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9";
+
 		CustomAssetDashboard customAssetDashboard =
 			_customAssetDashboardDog.updateCustomAssetDashboard(
-				"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9",
+				customAssetDashboardId,
 				"{\"rows\": [{\"panels\":[{\"title\":\"MyPanel\"," +
 					"\"width\":100,\"metric\":\"assetViewed\"," +
 						"\"chartType\":\"line\"}]}]}",
@@ -131,13 +137,15 @@ public class CustomAssetDashboardDogTest {
 
 		Assert.assertNotNull(customAssetDashboard);
 		Assert.assertEquals("1", customAssetDashboard.getAssetId());
-		Assert.assertEquals("Asset Title 1", customAssetDashboard.getAssetTitle());
+		Assert.assertEquals(
+			"Asset Title 1", customAssetDashboard.getAssetTitle());
 		Assert.assertEquals("default", customAssetDashboard.getCategory());
 		Assert.assertEquals(
 			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9",
 			customAssetDashboard.getId());
 		Assert.assertEquals("123", customAssetDashboard.getModifiedByUserId());
-		Assert.assertEquals("Pedro", customAssetDashboard.getModifiedByUserName());
+		Assert.assertEquals(
+			"Pedro", customAssetDashboard.getModifiedByUserName());
 	}
 
 	@Autowired

@@ -30,10 +30,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "dashboard", typeName = "QueryType")
-public class CustomAssetDashboardDataFetcher implements DataFetcher<CustomAssetDashboardDTO> {
+public class CustomAssetDashboardDataFetcher
+	implements DataFetcher<CustomAssetDashboardDTO> {
 
 	@Override
-	public CustomAssetDashboardDTO get(DataFetchingEnvironment dataFetchingEnvironment) {
+	public CustomAssetDashboardDTO get(
+		DataFetchingEnvironment dataFetchingEnvironment) {
+
 		CustomAssetDashboard customAssetDashboard =
 			_customAssetDashboardDog.fetchCustomAssetDashboard(
 				dataFetchingEnvironment.getArgument("dashboardId"));

@@ -24,7 +24,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * @author André Miranda

@@ -34,7 +34,9 @@ public class CustomAssetDashboardMutationDataFetcher
 	implements DataFetcher<CustomAssetDashboardDTO> {
 
 	@Override
-	public CustomAssetDashboardDTO get(DataFetchingEnvironment dataFetchingEnvironment) {
+	public CustomAssetDashboardDTO get(
+		DataFetchingEnvironment dataFetchingEnvironment) {
+
 		String dashboardId = dataFetchingEnvironment.getArgument("dashboardId");
 		String definition = dataFetchingEnvironment.getArgument("definition");
 		String modifiedByUserId = dataFetchingEnvironment.getArgument(

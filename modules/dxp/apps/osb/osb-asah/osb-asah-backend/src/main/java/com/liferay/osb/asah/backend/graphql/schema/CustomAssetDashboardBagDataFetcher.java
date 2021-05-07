@@ -20,8 +20,8 @@ import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
-
 import com.liferay.osb.asah.common.util.ListUtil;
+
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -55,7 +55,9 @@ public class CustomAssetDashboardBagDataFetcher
 				Sort.of(sort));
 
 		return new ResultBag<>(
-			ListUtil.map(customAssetDashboardPage.getContent(), CustomAssetDashboardDTO::new),
+			ListUtil.map(
+				customAssetDashboardPage.getContent(),
+				CustomAssetDashboardDTO::new),
 			customAssetDashboardPage.getTotalElements());
 	}
 

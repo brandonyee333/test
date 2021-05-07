@@ -63,9 +63,8 @@ public class CustomAssetDashboardDog {
 			_customAssetDashboardRepository.searchCustomAssetDashboards(
 				channelId, keywords, pageRequest),
 			pageRequest,
-			() ->
-				_customAssetDashboardRepository.countCustomAssetDashboards(
-					channelId, keywords));
+			() -> _customAssetDashboardRepository.countCustomAssetDashboards(
+				channelId, keywords));
 	}
 
 	public CustomAssetDashboard updateCustomAssetDashboard(
@@ -74,8 +73,8 @@ public class CustomAssetDashboardDog {
 
 		_dashboardDefinitionSchema.validate(new JSONObject(definition));
 
-		CustomAssetDashboard customAssetDashboard =
-			fetchCustomAssetDashboard(dashboardId);
+		CustomAssetDashboard customAssetDashboard = fetchCustomAssetDashboard(
+			dashboardId);
 
 		if (customAssetDashboard == null) {
 			return null;
@@ -107,7 +106,8 @@ public class CustomAssetDashboardDog {
 		}
 	}
 
-	private static final Log _log = LogFactory.getLog(CustomAssetDashboardDog.class);
+	private static final Log _log = LogFactory.getLog(
+		CustomAssetDashboardDog.class);
 
 	@Autowired
 	private CustomAssetDashboardRepository _customAssetDashboardRepository;
