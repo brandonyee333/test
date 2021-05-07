@@ -13,7 +13,7 @@ function build_and_push_docker_images {
 
 	for file_name in `ls`
 	do
-		if [ -z "$(ls -A ${file_name}/.wedeploy-profile-* 2> /dev/null)" ] ||
+		if [ -z "$(ls -A ${file_name}/LCP.*.json 2> /dev/null)" ] ||
 		   [ ! -e ${file_name}/Dockerfile ]
 		then
 			continue
@@ -159,73 +159,68 @@ function date {
 }
 
 function generate_wedeploy_profile {
-	local file_name=${1}
-	local dir_name=${2}
+	local profile_name=${1}
+	local service_name=${2}
+	local file_path=${3}
 
-	mkdir -p .wedeploy_profiles/${dir_name}/${file_name}
+	local destination_file_path=.wedeploy_profiles/${profile_name}/${service_name}
 
-	cp ${file_name}/LCP.json .wedeploy_profiles/${dir_name}/${file_name}
+	mkdir -p ${destination_file_path}
 
-	local file_content=$(<${file_name}/LCP.json)
+	cp ${file_path} ${destination_file_path}/LCP.json
+
+	local file_content=$(<${destination_file_path}/LCP.json)
 
 	if [[ ${file_content} != *\"image\"* ]]
 	then
-		sed "s@\"id\"@\"image\": \"$(get_docker_image_tag ${file_name})\", \"id\"@" .wedeploy_profiles/${dir_name}/${file_name}/LCP.json
+		sed "s@\"id\"@\"image\": \"$(get_docker_image_tag ${service_name})\", \"id\"@" ${destination_file_path}/LCP.json
 
-		python -m json.tool --sort-keys .wedeploy_profiles/${dir_name}/${file_name}/LCP.json > .wedeploy_profiles/${dir_name}/${file_name}/LCP.json.formatted
+		python -m json.tool --sort-keys ${destination_file_path}/LCP.json > ${destination_file_path}/LCP.json.formatted
 
-		mv .wedeploy_profiles/${dir_name}/${file_name}/LCP.json.formatted .wedeploy_profiles/${dir_name}/${file_name}/LCP.json
+		mv ${destination_file_path}/LCP.json.formatted ${destination_file_path}/LCP.json
 
-		sed $'s/    /\t/g' .wedeploy_profiles/${dir_name}/${file_name}/LCP.json
+		sed $'s/    /\t/g' ${destination_file_path}/LCP.json
 
-		perl -e 'chomp if eof' -pi .wedeploy_profiles/${dir_name}/${file_name}/LCP.json
+		perl -e 'chomp if eof' -pi ${destination_file_path}/LCP.json
 
-		rm -f .wedeploy_profiles/${dir_name}/${file_name}/LCP.json.bak
+		rm -f ${destination_file_path}/LCP.json.bak
 	fi
 }
 
 function generate_wedeploy_profiles {
 	rm -fr .wedeploy_profiles
 
-	for file_name in `ls`
+	for file_path in **/LCP.*.json
 	do
-		local pattern="${file_name}/.wedeploy-*"
+		local service_name="${file_path%%/*}"
+		local profile_name="$(basename ${file_path#$service_name/LCP.} .json)"
 
-		local markers=(${pattern})
-
-		local marker=${markers[0]}
-
-		if [ ! -f ${marker} ]
-		then
-			continue
-		fi
-
-		generate_wedeploy_profile ${file_name} ${marker##*.wedeploy-profile-}
+		generate_wedeploy_profile ${profile_name} ${service_name} ${file_path}
 
 		if [ ! ${PREVIOUS_GIT_HASH} ] ||
-		   [ $(basename ${marker}) != ".wedeploy-profile-customer" ]
+		   [ ${profile_name} != "customer" ]
 		then
 			continue;
 		fi
 
-		if [ $(git diff ${PREVIOUS_GIT_HASH} ${file_name} | wc -l) -gt 0 ]
+		if [ $(git diff ${PREVIOUS_GIT_HASH} ${service_name} | wc -l) -gt 0 ]
 		then
-			generate_wedeploy_profile ${file_name} customer-upgrade
+			generate_wedeploy_profile ${profile_name}-upgrade ${service_name} ${file_path}
 
 			continue;
 		fi
 
-		if [ ! -f ${file_name}/build.gradle ]
+		if [ ! -f ${service_name}/build.gradle ]
 		then
 			continue;
 		fi
 
-		local file_content=$(<${file_name}/build.gradle)
+		local file_content=$(<${service_name}/build.gradle)
 
 		if [ $(git diff ${PREVIOUS_GIT_HASH} osb-asah-common | wc -l) -gt 0 ] &&
 		   [[ ${file_content} == *\":dxp:apps:osb:osb-asah:osb-asah-common\"* ]]
 		then
-			generate_wedeploy_profile ${file_name} customer-upgrade
+			generate_wedeploy_profile ${profile_name}-upgrade ${service_name} ${file_path}
 		fi
 	done
 
