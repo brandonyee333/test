@@ -47,9 +47,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomAssetDashboardDog {
 
-	public CustomAssetDashboard fetchCustomAssetDashboard(String dashboardId) {
+	public CustomAssetDashboard fetchCustomAssetDashboard(
+		String customAssetDashboardId) {
+
 		Optional<CustomAssetDashboard> customAssetDashboardOptional =
-			_customAssetDashboardRepository.findById(dashboardId);
+			_customAssetDashboardRepository.findById(customAssetDashboardId);
 
 		return customAssetDashboardOptional.orElse(null);
 	}
@@ -68,13 +70,13 @@ public class CustomAssetDashboardDog {
 	}
 
 	public CustomAssetDashboard updateCustomAssetDashboard(
-		String dashboardId, String definition, String modifiedByUserId,
-		String modifiedByUserName) {
+		String customAssetDashboardId, String definition,
+		String modifiedByUserId, String modifiedByUserName) {
 
 		_dashboardDefinitionSchema.validate(new JSONObject(definition));
 
 		CustomAssetDashboard customAssetDashboard = fetchCustomAssetDashboard(
-			dashboardId);
+			customAssetDashboardId);
 
 		if (customAssetDashboard == null) {
 			return null;

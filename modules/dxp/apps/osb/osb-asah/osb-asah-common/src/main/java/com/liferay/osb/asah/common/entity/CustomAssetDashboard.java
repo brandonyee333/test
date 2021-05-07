@@ -58,20 +58,22 @@ public class CustomAssetDashboard implements Persistable<String> {
 			return false;
 		}
 
-		CustomAssetDashboard dataSource = (CustomAssetDashboard)obj;
+		CustomAssetDashboard customAssetDashboard = (CustomAssetDashboard)obj;
 
-		if (Objects.equals(_assetId, dataSource._assetId) &&
-			Objects.equals(_assetTitle, dataSource._assetTitle) &&
-			Objects.equals(_category, dataSource._category) &&
-			Objects.equals(_channelId, dataSource._channelId) &&
-			Objects.equals(_createDate, dataSource._createDate) &&
-			Objects.equals(_dataSourceId, dataSource._dataSourceId) &&
-			Objects.equals(_definition, dataSource._definition) &&
-			Objects.equals(_id, dataSource._id) &&
-			Objects.equals(_modifiedByUserId, dataSource._modifiedByUserId) &&
+		if (Objects.equals(_assetId, customAssetDashboard._assetId) &&
+			Objects.equals(_assetTitle, customAssetDashboard._assetTitle) &&
+			Objects.equals(_category, customAssetDashboard._category) &&
+			Objects.equals(_channelId, customAssetDashboard._channelId) &&
+			Objects.equals(_createDate, customAssetDashboard._createDate) &&
+			Objects.equals(_dataSourceId, customAssetDashboard._dataSourceId) &&
+			Objects.equals(_definition, customAssetDashboard._definition) &&
+			Objects.equals(_id, customAssetDashboard._id) &&
 			Objects.equals(
-				_modifiedByUserName, dataSource._modifiedByUserName) &&
-			Objects.equals(_modifiedDate, dataSource._modifiedDate)) {
+				_modifiedByUserId, customAssetDashboard._modifiedByUserId) &&
+			Objects.equals(
+				_modifiedByUserName,
+				customAssetDashboard._modifiedByUserName) &&
+			Objects.equals(_modifiedDate, customAssetDashboard._modifiedDate)) {
 
 			return true;
 		}
