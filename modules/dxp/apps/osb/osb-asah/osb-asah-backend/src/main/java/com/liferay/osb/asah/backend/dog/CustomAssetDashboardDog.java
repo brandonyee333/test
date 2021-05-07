@@ -50,23 +50,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomAssetDashboardDog {
 
-	public DashboardDTO getDashboard(String dashboardId) {
+	public CustomAssetDashboard fetchCustomAssetDashboard(String dashboardId) {
 		Optional<CustomAssetDashboard> customAssetDashboardOptional =
 			_customAssetDashboardRepository.findById(dashboardId);
 
-		if (!customAssetDashboardOptional.isPresent()) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					String.format(
-						"Unable to retrieve the dashboard definition for the " +
-							"dashboard ID %s.",
-						dashboardId));
-			}
-
-			return null;
-		}
-
-		return new DashboardDTO(customAssetDashboardOptional.get());
+		return customAssetDashboardOptional.orElse(null);
 	}
 
 	public ResultBag<DashboardDTO> getDashboardResultBag(

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.dog.test;
 import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
 import com.liferay.osb.asah.backend.dto.DashboardDTO;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -46,7 +47,8 @@ public class CustomAssetDashboardDogTest {
 	)
 	@Test
 	public void testDashboardNotFound() {
-		Assert.assertNull(_customAssetDashboardDog.getDashboard("0"));
+		Assert.assertNull(
+			_customAssetDashboardDog.fetchCustomAssetDashboard("0"));
 	}
 
 	@ElasticsearchIndex(
@@ -56,11 +58,13 @@ public class CustomAssetDashboardDogTest {
 	)
 	@Test
 	public void testGetDashboard() {
-		DashboardDTO dashboardDTO = _customAssetDashboardDog.getDashboard(
-			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9");
+		CustomAssetDashboard customAssetDashboard =
+			_customAssetDashboardDog.fetchCustomAssetDashboard(
+				"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9");
 
-		Assert.assertNotNull(dashboardDTO);
-		Assert.assertEquals("Asset Title 1", dashboardDTO.getAssetTitle());
+		Assert.assertNotNull(customAssetDashboard);
+		Assert.assertEquals(
+			"Asset Title 1", customAssetDashboard.getAssetTitle());
 	}
 
 	@ElasticsearchIndex(
