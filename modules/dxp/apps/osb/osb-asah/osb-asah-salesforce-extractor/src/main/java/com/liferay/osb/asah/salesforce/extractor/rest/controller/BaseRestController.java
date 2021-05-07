@@ -55,6 +55,8 @@ public class BaseRestController {
 	}
 
 	private String _getFields(JSONArray fieldsJSONArray) {
+		JSONArray jsonArray = new JSONArray();
+
 		Map<String, Set<String>> fieldValuesMap = new HashMap<>();
 
 		for (int i = 0; i < fieldsJSONArray.length(); i++) {
@@ -83,8 +85,6 @@ public class BaseRestController {
 				}
 			}
 		}
-
-		JSONArray jsonArray = new JSONArray();
 
 		for (Map.Entry<String, Set<String>> entry : fieldValuesMap.entrySet()) {
 			jsonArray.put(
