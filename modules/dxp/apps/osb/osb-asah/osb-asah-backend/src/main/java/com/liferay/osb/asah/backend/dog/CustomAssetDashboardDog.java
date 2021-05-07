@@ -99,7 +99,7 @@ public class CustomAssetDashboardDog {
 		Class<?> clazz = getClass();
 
 		try (InputStream inputStream = clazz.getResourceAsStream(
-				"dashboard_definition_schema.json")) {
+				"custom_asset_dashboard_definition_schema.json")) {
 
 			_dashboardDefinitionSchema = SchemaLoader.load(
 				new JSONObject(new JSONTokener(inputStream)));
@@ -108,7 +108,7 @@ public class CustomAssetDashboardDog {
 			_log.error(ioe);
 
 			throw new IllegalStateException(
-				"Unable to read dashboard definition schema", ioe);
+				"Unable to read custom asset dashboard definition schema", ioe);
 		}
 	}
 
