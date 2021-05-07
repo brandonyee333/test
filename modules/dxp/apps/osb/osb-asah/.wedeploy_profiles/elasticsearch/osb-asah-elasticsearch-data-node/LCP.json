@@ -1,24 +1,27 @@
 {
-	"cpu": 8,
+	"cpu": 4,
 	"env": {
 		"ES_JAVA_OPTS": "-Xms8g -Xmx8g"
 	},
-	"id": "esmaster",
-	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-elasticsearch-master-node-20210504-30b73c2",
+	"environments": {
+		"infra": {
+			"deploy": false
+		}
+	},
+	"id": "esdata",
+	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-elasticsearch-data-node-20210507-f522cc7",
 	"kind": "StatefulSet",
 	"livenessProbe": {
 		"failureThreshold": 15,
-		"httpGet": {
-			"path": "/_cluster/health",
-			"port": 9200
-		},
 		"initialDelaySeconds": 60,
 		"periodSeconds": 60,
 		"successThreshold": 1,
+		"tcpSocket": {
+			"port": 9300
+		},
 		"timeoutSeconds": 60
 	},
 	"memory": 16384,
-	"podManagementPolicy": "Parallel",
 	"ports": [
 		{
 			"external": false,
@@ -31,17 +34,16 @@
 	],
 	"readinessProbe": {
 		"failureThreshold": 15,
-		"httpGet": {
-			"path": "/",
-			"port": 9200
-		},
 		"initialDelaySeconds": 10,
 		"periodSeconds": 60,
 		"successThreshold": 1,
+		"tcpSocket": {
+			"port": 9300
+		},
 		"timeoutSeconds": 60
 	},
-	"scale": 5,
+	"scale": 6,
 	"volumes": {
-		"datamaster": "/usr/share/elasticsearch/data"
+		"data": "/usr/share/elasticsearch/data"
 	}
 }
