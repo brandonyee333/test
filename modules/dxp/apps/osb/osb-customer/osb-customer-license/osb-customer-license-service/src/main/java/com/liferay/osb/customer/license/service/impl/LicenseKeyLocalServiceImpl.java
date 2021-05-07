@@ -22,7 +22,6 @@ import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.LicenseEntryLocalService;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
-import com.liferay.osb.customer.koroneiki.web.service.ProductConsumptionWebService;
 import com.liferay.osb.customer.license.constants.LicenseKeyConstants;
 import com.liferay.osb.customer.license.exception.DuplicateIPAddressException;
 import com.liferay.osb.customer.license.exception.DuplicateMACAddressException;
@@ -42,10 +41,6 @@ import com.liferay.osb.customer.license.model.LicenseKeySet;
 import com.liferay.osb.customer.license.service.base.LicenseKeyLocalServiceBaseImpl;
 import com.liferay.osb.customer.license.util.LicenseUtil;
 import com.liferay.osb.customer.license.util.comparator.LicenseKeyExpirationDateComparator;
-import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
-import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -655,15 +650,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
 			licenseKeyId);
 
-		if (active && !licenseKey.isActive()) {
-			if (!licenseKey.isComplimentary()) {
-				_addProductConsumption(user, licenseKey);
-			}
-		}
-		else if (!active && licenseKey.isActive()) {
-			_deleteProductConsumption(user, licenseKey);
-		}
-
 		licenseKey.setModifiedUserId(user.getUserId());
 		licenseKey.setModifiedUserName(user.getFullName());
 		licenseKey.setModifiedDate(new Date());
@@ -868,10 +854,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setComplimentary(complimentary);
 		licenseKey.setActive(active);
 
-		if (!complimentary && active) {
-			_addProductConsumption(user, licenseKey);
-		}
-
 		return licenseKeyPersistence.update(licenseKey);
 	}
 
@@ -1043,24 +1025,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		}
 
 		for (LicenseKey clusterLicenseKey : clusterLicenseKeys) {
-			boolean updateKoroneikiProductPurchaseKey = false;
-			boolean updateComplimentary = false;
-			boolean updateActive = false;
-
-			if (!koroneikiProductPurchaseKey.equals(
-					clusterLicenseKey.getKoroneikiProductPurchaseKey())) {
-
-				updateKoroneikiProductPurchaseKey = true;
-			}
-
-			if (complimentary != clusterLicenseKey.isComplimentary()) {
-				updateComplimentary = true;
-			}
-
-			if (active != clusterLicenseKey.isActive()) {
-				updateActive = true;
-			}
-
 			clusterLicenseKey.setModifiedUserId(user.getUserId());
 			clusterLicenseKey.setModifiedUserName(user.getFullName());
 			clusterLicenseKey.setModifiedDate(now);
@@ -1071,26 +1035,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			clusterLicenseKey.setComplimentary(complimentary);
 			clusterLicenseKey.setActive(active);
 
-			clusterLicenseKey = licenseKeyPersistence.update(clusterLicenseKey);
-
-			if (updateKoroneikiProductPurchaseKey) {
-				_deleteProductConsumption(user, clusterLicenseKey);
-
-				if (active && !complimentary) {
-					_addProductConsumption(user, clusterLicenseKey);
-				}
-			}
-			else if (active) {
-				if (!complimentary && (updateComplimentary || updateActive)) {
-					_addProductConsumption(user, licenseKey);
-				}
-				else if (complimentary && updateComplimentary) {
-					_deleteProductConsumption(user, licenseKey);
-				}
-			}
-			else if (updateActive) {
-				_deleteProductConsumption(user, licenseKey);
-			}
+			licenseKeyPersistence.update(clusterLicenseKey);
 		}
 	}
 
@@ -1131,24 +1076,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		}
 
 		for (LicenseKey clusterLicenseKey : clusterLicenseKeys) {
-			boolean updateKoroneikiProductPurchaseKey = false;
-			boolean updateComplimentary = false;
-			boolean updateActive = false;
-
-			if (!koroneikiProductPurchaseKey.equals(
-					clusterLicenseKey.getKoroneikiProductPurchaseKey())) {
-
-				updateKoroneikiProductPurchaseKey = true;
-			}
-
-			if (complimentary != clusterLicenseKey.isComplimentary()) {
-				updateComplimentary = true;
-			}
-
-			if (active != clusterLicenseKey.isActive()) {
-				updateActive = true;
-			}
-
 			if (clusterLicenseKey.getLicenseKeyId() ==
 					licenseKey.getLicenseKeyId()) {
 
@@ -1164,26 +1091,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			clusterLicenseKey.setClusterId(clusterId);
 			clusterLicenseKey.setComplimentary(complimentary);
 
-			clusterLicenseKey = licenseKeyPersistence.update(clusterLicenseKey);
-
-			if (updateKoroneikiProductPurchaseKey) {
-				_deleteProductConsumption(user, clusterLicenseKey);
-
-				if (active && !complimentary) {
-					_addProductConsumption(user, clusterLicenseKey);
-				}
-			}
-			else if (active) {
-				if (!complimentary && (updateComplimentary || updateActive)) {
-					_addProductConsumption(user, licenseKey);
-				}
-				else if (complimentary && updateComplimentary) {
-					_deleteProductConsumption(user, licenseKey);
-				}
-			}
-			else if (updateActive) {
-				_deleteProductConsumption(user, licenseKey);
-			}
+			licenseKeyPersistence.update(clusterLicenseKey);
 		}
 	}
 
@@ -1461,54 +1369,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		}
 	}
 
-	private void _addProductConsumption(User user, LicenseKey licenseKey)
-		throws Exception {
-
-		ProductConsumption productConsumption = new ProductConsumption();
-
-		productConsumption.setEndDate(licenseKey.getExpirationDate());
-
-		ProductEntry productEntry = _productEntryLocalService.getProductEntry(
-			licenseKey.getProductEntryId());
-
-		productConsumption.setProductKey(productEntry.getKoroneikiProductKey());
-
-		if (Validator.isNotNull(licenseKey.getKoroneikiProductPurchaseKey())) {
-			productConsumption.setProductPurchaseKey(
-				licenseKey.getKoroneikiProductPurchaseKey());
-		}
-
-		productConsumption.setStartDate(licenseKey.getStartDate());
-
-		ExternalLink externalLink = new ExternalLink();
-
-		externalLink.setDomain(ExternalLinkDomain.CUSTOMER);
-		externalLink.setEntityName(ExternalLinkEntityName.CUSTOMER_LICENSE_KEY);
-		externalLink.setEntityId(String.valueOf(licenseKey.getLicenseKeyId()));
-
-		productConsumption.setExternalLinks(new ExternalLink[] {externalLink});
-
-		_productConsumptionWebService.addProductConsumption(
-			user.getFullName(), user.getUuid(),
-			licenseKey.getKoroneikiAccountKey(), productConsumption);
-	}
-
-	private void _deleteProductConsumption(User user, LicenseKey licenseKey)
-		throws Exception {
-
-		List<ProductConsumption> productConsumptions =
-			_productConsumptionWebService.getProductConsumptions(
-				ExternalLinkDomain.CUSTOMER,
-				ExternalLinkEntityName.CUSTOMER_LICENSE_KEY,
-				String.valueOf(licenseKey.getLicenseKeyId()), 1, 1000);
-
-		for (ProductConsumption productConsumption : productConsumptions) {
-			_productConsumptionWebService.deleteProductConsumption(
-				user.getFullName(), user.getUuid(),
-				productConsumption.getKey());
-		}
-	}
-
 	@ServiceReference(type = AccountEntryLocalService.class)
 	private AccountEntryLocalService _accountEntryLocalService;
 
@@ -1520,9 +1380,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	@ServiceReference(type = LicenseEntryLocalService.class)
 	private LicenseEntryLocalService _licenseEntryLocalService;
-
-	@ServiceReference(type = ProductConsumptionWebService.class)
-	private ProductConsumptionWebService _productConsumptionWebService;
 
 	@ServiceReference(type = ProductEntryLocalService.class)
 	private ProductEntryLocalService _productEntryLocalService;

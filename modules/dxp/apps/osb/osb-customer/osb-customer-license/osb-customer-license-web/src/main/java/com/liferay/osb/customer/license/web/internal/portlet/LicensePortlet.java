@@ -52,6 +52,7 @@ import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -75,6 +76,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -381,6 +383,23 @@ public class LicensePortlet extends MVCPortlet {
 	}
 
 	@Override
+	protected String getPath(
+		PortletRequest portletRequest, PortletResponse portletResponse) {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		if (!_roleLocalService.hasUserRole(
+				themeDisplay.getUserId(),
+				OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+
+			return "/license/deprecated_message.jsp";
+		}
+
+		return super.getPath(portletRequest, portletResponse);
+	}
+
+	@Override
 	protected String getRedirect(
 		ActionRequest actionRequest, ActionResponse actionResponse) {
 
@@ -598,5 +617,8 @@ public class LicensePortlet extends MVCPortlet {
 
 	@Reference
 	private ProductPurchaseWebService _productPurchaseWebService;
+
+	@Reference
+	private RoleLocalService _roleLocalService;
 
 }
