@@ -15,6 +15,7 @@
 			}
 		],
 		"dateCreated": "${now-1h}",
+		"defaultChannel": true,
 		"id": "12345",
 		"name": "channel1"
 	},
