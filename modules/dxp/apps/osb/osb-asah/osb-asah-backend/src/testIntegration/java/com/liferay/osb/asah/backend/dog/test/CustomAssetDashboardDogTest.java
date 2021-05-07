@@ -32,6 +32,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 /**
  * @author André Miranda
@@ -46,7 +47,7 @@ public class CustomAssetDashboardDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testDashboardNotFound() {
+	public void testCustomAssetDashboardNotFound() {
 		Assert.assertNull(
 			_customAssetDashboardDog.fetchCustomAssetDashboard("0"));
 	}
@@ -57,7 +58,7 @@ public class CustomAssetDashboardDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testGetDashboard() {
+	public void testGetCustomAssetDashboard() {
 		CustomAssetDashboard customAssetDashboard =
 			_customAssetDashboardDog.fetchCustomAssetDashboard(
 				"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9");
@@ -73,16 +74,19 @@ public class CustomAssetDashboardDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testGetDashboardBagAll() {
-		ResultBag<DashboardDTO> resultBag = _customAssetDashboardDog.getDashboardResultBag(
-			"1", null, 10, Sort.asc("assetTitle"), 0);
+	public void testGetCustomAssetDashboardPageAll() {
+		Page<CustomAssetDashboard> customAssetDashboardPage =
+			_customAssetDashboardDog.getCustomAssetDashboardPage(
+				1L, null, 0, 10, Sort.asc("assetTitle"));
 
-		Assert.assertNotNull(resultBag);
-		Assert.assertEquals(3, resultBag.getTotal());
+		Assert.assertNotNull(customAssetDashboardPage);
+		Assert.assertEquals(3, customAssetDashboardPage.getTotalElements());
 
-		List<DashboardDTO> dashboardDTOs = resultBag.getResults();
+		List<CustomAssetDashboard> customAssetDashboards =
+			customAssetDashboardPage.getContent();
 
-		Assert.assertEquals(dashboardDTOs.toString(), 3, dashboardDTOs.size());
+		Assert.assertEquals(
+			customAssetDashboards.toString(), 3, customAssetDashboards.size());
 	}
 
 	@ElasticsearchIndex(
@@ -91,20 +95,24 @@ public class CustomAssetDashboardDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testGetDashboardBagPaginated() {
-		ResultBag<DashboardDTO> resultBag = _customAssetDashboardDog.getDashboardResultBag(
-			"1", null, 1, Sort.asc("assetTitle"), 1);
+	public void testGetCustomAssetDashboardPagePaginated() {
+		Page<CustomAssetDashboard> customAssetDashboardPage =
+			_customAssetDashboardDog.getCustomAssetDashboardPage(
+				1L, null, 1, 1, Sort.asc("assetTitle"));
 
-		Assert.assertNotNull(resultBag);
-		Assert.assertEquals(3, resultBag.getTotal());
+		Assert.assertNotNull(customAssetDashboardPage);
+		Assert.assertEquals(3, customAssetDashboardPage.getTotalElements());
 
-		List<DashboardDTO> dashboardDTOs = resultBag.getResults();
+		List<CustomAssetDashboard> customAssetDashboards =
+			customAssetDashboardPage.getContent();
 
-		Assert.assertEquals(dashboardDTOs.toString(), 1, dashboardDTOs.size());
+		Assert.assertEquals(
+			customAssetDashboards.toString(), 1, customAssetDashboards.size());
 
-		DashboardDTO dashboardDTO = dashboardDTOs.get(0);
+		CustomAssetDashboard customAssetDashboard = customAssetDashboards.get(0);
 
-		Assert.assertEquals("Asset Title 2", dashboardDTO.getAssetTitle());
+		Assert.assertEquals(
+			"Asset Title 2", customAssetDashboard.getAssetTitle());
 	}
 
 	@ElasticsearchIndex(
@@ -113,7 +121,7 @@ public class CustomAssetDashboardDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testUpdateDashboard() {
+	public void testUpdateCustomAssetDashboard() {
 		DashboardDTO dashboardDTO = _customAssetDashboardDog.updateDashboard(
 			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9",
 			"{\"rows\": [{\"panels\":[{\"title\":\"MyPanel\"," +

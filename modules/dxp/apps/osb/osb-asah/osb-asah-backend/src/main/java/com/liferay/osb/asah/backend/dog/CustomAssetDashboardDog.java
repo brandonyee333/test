@@ -41,7 +41,9 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -57,26 +59,18 @@ public class CustomAssetDashboardDog {
 		return customAssetDashboardOptional.orElse(null);
 	}
 
-	public ResultBag<DashboardDTO> getDashboardResultBag(
-		String channelId, String keywords, int size, Sort sort, int start) {
+	public Page<CustomAssetDashboard> getCustomAssetDashboardPage(
+		Long channelId, String keywords, int page, int size, Sort sort) {
 
-		List<CustomAssetDashboard> customAssetDashboards =
+		PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+		return PageableExecutionUtils.getPage(
 			_customAssetDashboardRepository.searchCustomAssetDashboards(
-				Long.valueOf(channelId), keywords,
-				PageRequest.of(start / size, size, sort));
-
-		Stream<CustomAssetDashboard> stream = customAssetDashboards.stream();
-
-		List<DashboardDTO> dashboardDTOs = stream.map(
-			DashboardDTO::new
-		).collect(
-			Collectors.toList()
-		);
-
-		return new ResultBag<>(
-			dashboardDTOs,
-			_customAssetDashboardRepository.countCustomAssetDashboards(
-				Long.valueOf(channelId), keywords));
+				channelId, keywords, pageRequest),
+			pageRequest,
+			() ->
+				_customAssetDashboardRepository.countCustomAssetDashboards(
+					channelId, keywords));
 	}
 
 	public DashboardDTO updateDashboard(

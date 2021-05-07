@@ -21,6 +21,7 @@ import com.liferay.osb.asah.backend.dto.DashboardDTO;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -33,6 +34,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 /**
  * @author André Miranda
@@ -65,11 +67,12 @@ public class SearchTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testCustomAssetSearch() {
-		ResultBag<DashboardDTO> resultBag = _customAssetDashboardDog.getDashboardResultBag(
-			"1", "ASSET", 10, Sort.asc("assetTitle"), 0);
+	public void testCustomAssetDashboardSearch() {
+		Page<CustomAssetDashboard> customAssetDashboardPage =
+			_customAssetDashboardDog.getCustomAssetDashboardPage(
+				1L, "ASSET", 0, 10, Sort.asc("assetTitle"));
 
-		Assert.assertEquals(3, resultBag.getTotal());
+		Assert.assertEquals(3, customAssetDashboardPage.getTotalElements());
 	}
 
 	@ElasticsearchIndex(
