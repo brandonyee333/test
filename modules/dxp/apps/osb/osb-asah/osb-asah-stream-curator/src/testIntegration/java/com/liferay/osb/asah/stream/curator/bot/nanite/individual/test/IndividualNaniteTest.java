@@ -27,6 +27,8 @@ import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -136,6 +138,38 @@ public class IndividualNaniteTest {
 				).should(
 					QueryBuilders.termQuery("knownIndividual", false)
 				)));
+	}
+
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_4_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "pages_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "user-sessions", resourcePath = "session_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.IDENTITY_MESSAGE,
+		resourcePath = "identity_message_4.json"
+	)
+	@Test
+	public void testMergeIndividualWithEmptyEmailAddress() {
+		_individualNanite.run();
+
+		JSONArray individualsJSONArray = _faroInfoElasticsearchInvoker.get(
+			"individuals",
+			QueryBuilders.termQuery(
+				"emailAddressHashed", DigestUtils.sha256Hex("")));
+
+		Assert.assertEquals(0, individualsJSONArray.length());
 	}
 
 	@ElasticsearchIndex(

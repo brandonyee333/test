@@ -1,0 +1,48 @@
+[
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 1,
+				"channelId": "1"
+			},
+			{
+				"activitiesCount": 1,
+				"channelId": "2"
+			}
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "1",
+				"individualPKs": [
+					"2"
+				]
+			}
+		],
+		"id": "200",
+		"individualSegmentIds": [
+		]
+	},
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 1,
+				"channelId": "1"
+			},
+			{
+				"activitiesCount": 1,
+				"channelId": "2"
+			}
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "1",
+				"individualPKs": [
+					"3"
+				]
+			}
+		],
+		"id": "200",
+		"individualSegmentIds": [
+		]
+	}
+]
