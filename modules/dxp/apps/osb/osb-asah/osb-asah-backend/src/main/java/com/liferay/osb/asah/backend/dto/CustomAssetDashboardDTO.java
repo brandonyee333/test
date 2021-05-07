@@ -46,35 +46,6 @@ public class CustomAssetDashboardDTO {
 		_modifiedDate = customAssetDashboard.getModifiedDate();
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-
-		if (!(obj instanceof CustomAssetDashboardDTO)) {
-			return false;
-		}
-
-		CustomAssetDashboardDTO customAssetDashboardDTO = (CustomAssetDashboardDTO)obj;
-
-		if (Objects.equals(_assetId, customAssetDashboardDTO._assetId) &&
-			Objects.equals(_assetTitle, customAssetDashboardDTO._assetTitle) &&
-			Objects.equals(_category, customAssetDashboardDTO._category) &&
-			Objects.equals(_createDate, customAssetDashboardDTO._createDate) &&
-			Objects.equals(_definition, customAssetDashboardDTO._definition) &&
-			Objects.equals(_id, customAssetDashboardDTO._id) &&
-			Objects.equals(_modifiedDate, customAssetDashboardDTO._modifiedDate) &&
-			Objects.equals(_modifiedByUserId, customAssetDashboardDTO._modifiedByUserId) &&
-			Objects.equals(
-				_modifiedByUserName, customAssetDashboardDTO._modifiedByUserName)) {
-
-			return true;
-		}
-
-		return false;
-	}
-
 	public String getAssetId() {
 		return _assetId;
 	}
@@ -127,13 +98,6 @@ public class CustomAssetDashboardDTO {
 		}
 
 		return DateUtil.toLocalDateTime(_modifiedDate, ZoneOffset.UTC);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(
-			_assetId, _assetTitle, _category, _createDate, _definition, _id,
-			_modifiedDate, _modifiedByUserId, _modifiedByUserName);
 	}
 
 	public void setAssetId(String assetId) {
