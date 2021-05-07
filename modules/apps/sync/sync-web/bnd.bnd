@@ -1,5 +1,5 @@
 Bundle-Name: Liferay Sync Web
 Bundle-SymbolicName: com.liferay.sync.web
-Bundle-Version: 1.0.51
+Bundle-Version: 1.0.52
 Liferay-Releng-Module-Group-Title: Sync Connector
 -dsannotations-options: inherit
