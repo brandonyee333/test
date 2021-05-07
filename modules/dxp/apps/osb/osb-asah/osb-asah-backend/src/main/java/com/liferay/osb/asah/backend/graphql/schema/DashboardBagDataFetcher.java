@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.DashboardDog;
+import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
 import com.liferay.osb.asah.backend.dto.DashboardDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.ResultBag;
@@ -46,11 +46,11 @@ public class DashboardBagDataFetcher
 		int size = dataFetchingEnvironment.getArgument("size");
 		int start = dataFetchingEnvironment.getArgument("start");
 
-		return _dashboardDog.getDashboardResultBag(
+		return _customAssetDashboardDog.getDashboardResultBag(
 			channelId, keywords, size, Sort.of(sort), start);
 	}
 
 	@Autowired
-	private DashboardDog _dashboardDog;
+	private CustomAssetDashboardDog _customAssetDashboardDog;
 
 }

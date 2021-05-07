@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
-import com.liferay.osb.asah.backend.dog.DashboardDog;
+import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
 import com.liferay.osb.asah.backend.dto.DashboardDTO;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.ResultBag;
@@ -37,7 +37,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class DashboardDogTest {
+public class CustomAssetDashboardDogTest {
 
 	@ElasticsearchIndex(
 		name = "custom-asset-dashboards",
@@ -46,7 +46,7 @@ public class DashboardDogTest {
 	)
 	@Test
 	public void testDashboardNotFound() {
-		Assert.assertNull(_dashboardDog.getDashboard("0"));
+		Assert.assertNull(_customAssetDashboardDog.getDashboard("0"));
 	}
 
 	@ElasticsearchIndex(
@@ -56,7 +56,7 @@ public class DashboardDogTest {
 	)
 	@Test
 	public void testGetDashboard() {
-		DashboardDTO dashboardDTO = _dashboardDog.getDashboard(
+		DashboardDTO dashboardDTO = _customAssetDashboardDog.getDashboard(
 			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9");
 
 		Assert.assertNotNull(dashboardDTO);
@@ -70,7 +70,7 @@ public class DashboardDogTest {
 	)
 	@Test
 	public void testGetDashboardBagAll() {
-		ResultBag<DashboardDTO> resultBag = _dashboardDog.getDashboardResultBag(
+		ResultBag<DashboardDTO> resultBag = _customAssetDashboardDog.getDashboardResultBag(
 			"1", null, 10, Sort.asc("assetTitle"), 0);
 
 		Assert.assertNotNull(resultBag);
@@ -88,7 +88,7 @@ public class DashboardDogTest {
 	)
 	@Test
 	public void testGetDashboardBagPaginated() {
-		ResultBag<DashboardDTO> resultBag = _dashboardDog.getDashboardResultBag(
+		ResultBag<DashboardDTO> resultBag = _customAssetDashboardDog.getDashboardResultBag(
 			"1", null, 1, Sort.asc("assetTitle"), 1);
 
 		Assert.assertNotNull(resultBag);
@@ -110,7 +110,7 @@ public class DashboardDogTest {
 	)
 	@Test
 	public void testUpdateDashboard() {
-		DashboardDTO dashboardDTO = _dashboardDog.updateDashboard(
+		DashboardDTO dashboardDTO = _customAssetDashboardDog.updateDashboard(
 			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9",
 			"{\"rows\": [{\"panels\":[{\"title\":\"MyPanel\"," +
 				"\"width\":100,\"metric\":\"assetViewed\"," +
@@ -129,6 +129,6 @@ public class DashboardDogTest {
 	}
 
 	@Autowired
-	private DashboardDog _dashboardDog;
+	private CustomAssetDashboardDog _customAssetDashboardDog;
 
 }

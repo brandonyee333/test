@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.backend.dog.DashboardDog;
+import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 
@@ -47,6 +47,6 @@ public class DashboardGraphQLRestControllerTest
 	}
 
 	@Autowired
-	private DashboardDog _dashboardDog;
+	private CustomAssetDashboardDog _customAssetDashboardDog;
 
 }

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
-import com.liferay.osb.asah.backend.dog.DashboardDog;
+import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
 import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.DashboardDTO;
@@ -66,7 +66,7 @@ public class SearchTest {
 	)
 	@Test
 	public void testCustomAssetSearch() {
-		ResultBag<DashboardDTO> resultBag = _dashboardDog.getDashboardResultBag(
+		ResultBag<DashboardDTO> resultBag = _customAssetDashboardDog.getDashboardResultBag(
 			"1", "ASSET", 10, Sort.asc("assetTitle"), 0);
 
 		Assert.assertEquals(3, resultBag.getTotal());
@@ -91,7 +91,7 @@ public class SearchTest {
 	}
 
 	@Autowired
-	private DashboardDog _dashboardDog;
+	private CustomAssetDashboardDog _customAssetDashboardDog;
 
 	@Autowired
 	private MetricDog _metricDog;

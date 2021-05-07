@@ -48,7 +48,7 @@ import org.springframework.stereotype.Component;
  * @author André Miranda
  */
 @Component
-public class DashboardDog {
+public class CustomAssetDashboardDog {
 
 	public DashboardDTO getDashboard(String dashboardId) {
 		Optional<CustomAssetDashboard> customAssetDashboardOptional =
@@ -134,7 +134,7 @@ public class DashboardDog {
 		}
 	}
 
-	private static final Log _log = LogFactory.getLog(DashboardDog.class);
+	private static final Log _log = LogFactory.getLog(CustomAssetDashboardDog.class);
 
 	@Autowired
 	private CustomAssetDashboardRepository _customAssetDashboardRepository;
