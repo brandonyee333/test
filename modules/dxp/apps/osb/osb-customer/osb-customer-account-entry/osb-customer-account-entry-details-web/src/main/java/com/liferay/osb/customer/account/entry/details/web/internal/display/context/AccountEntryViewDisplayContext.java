@@ -34,7 +34,6 @@ import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalServiceUtil;
-import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AuditEntryWebService;
@@ -462,20 +461,13 @@ public class AccountEntryViewDisplayContext {
 		List<ProductPurchase> productPurchases =
 			_productPurchaseWebService.search(sb.toString(), 1, 1000);
 
-		for (ProductPurchase productPurchase : productPurchases) {
+		ProductPurchase productPurchase = _accountReader.getSLAProductPurchase(
+			productPurchases);
+
+		if (productPurchase != null) {
 			Product product = productPurchase.getProduct();
 
-			String name = product.getName();
-
-			if (name.equals(ProductConstants.NAME_GOLD)) {
-				return ProductConstants.NAME_GOLD;
-			}
-			else if (name.equals(ProductConstants.NAME_LIMITED)) {
-				return ProductConstants.NAME_LIMITED;
-			}
-			else if (name.equals(ProductConstants.NAME_PLATINUM)) {
-				return ProductConstants.NAME_PLATINUM;
-			}
+			return product.getName();
 		}
 
 		return StringPool.BLANK;
