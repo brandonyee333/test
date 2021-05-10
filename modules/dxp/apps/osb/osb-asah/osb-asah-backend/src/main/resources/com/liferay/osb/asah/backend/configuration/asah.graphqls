@@ -4,6 +4,12 @@ enum AcquisitionType {
 	SOURCE_MEDIUM
 }
 
+enum AnalysisType {
+	AVERAGE
+	TOTAL
+	UNIQUE
+}
+
 enum AssetType {
 	BLOG
 	DOCUMENT
@@ -284,6 +290,13 @@ interface DXPEntity {
 type DXPEntityBag {
 	dxpEntities: [DXPEntity]
 	total: Int
+}
+
+type EventAnalysis {
+	count: Int
+	page: Int
+	totalEvents: Int
+	value: Int
 }
 
 type EventAttributeDefinition {
@@ -831,6 +844,15 @@ type QueryType {
 		sort: Sort!,
 		start: Int!
 	): AssetMetricBag
+
+	eventAnalysis(
+		analysisType: AnalysisType!,
+		channelId: String!,
+		eventDefinitionId: String!,
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String
+	): EventAnalysis
 
 	eventAttributeDefinition(
 		displayName: String,

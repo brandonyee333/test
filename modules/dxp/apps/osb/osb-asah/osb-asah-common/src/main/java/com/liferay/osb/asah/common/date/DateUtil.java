@@ -300,6 +300,12 @@ public class DateUtil {
 		return toUTCString(new Date());
 	}
 
+	public static Date toDate(LocalDateTime localDateTime, ZoneId zoneId) {
+		ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
+
+		return Date.from(zonedDateTime.toInstant());
+	}
+
 	public static LocalDate toLocalDate(long date, ZoneId zoneId) {
 		Instant instant = Instant.ofEpochMilli(date);
 

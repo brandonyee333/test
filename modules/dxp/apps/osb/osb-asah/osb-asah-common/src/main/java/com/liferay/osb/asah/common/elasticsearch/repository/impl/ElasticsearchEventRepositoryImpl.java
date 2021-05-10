@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
 import com.liferay.osb.asah.common.repository.EventRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,14 @@ public class ElasticsearchEventRepositoryImpl implements EventRepository {
 
 	@Override
 	public long count() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Long countByChannelIdAndEventDefinitionIdAndEventDateBetween(
+		Long channelId, long eventDefinitionId, Date rangeStartDate,
+		Date rangeEndDate) {
+
 		throw new UnsupportedOperationException();
 	}
 

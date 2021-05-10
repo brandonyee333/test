@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,10 @@ import org.springframework.stereotype.Repository;
 )
 @Repository
 public interface EventRepository extends CrudRepository<Event, Long> {
+
+	public Long countByChannelIdAndEventDefinitionIdAndEventDateBetween(
+		Long channelId, long eventDefinitionId, Date rangeStartDate,
+		Date rangeEndDate);
 
 	public long countByEventDefinitionId(long eventDefinitionId);
 
