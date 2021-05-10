@@ -69,7 +69,9 @@
 			name="does-not-contain-personal-data"
 		>
 			<c:if test="<%= !ticketAttachment.isRegionRestricted() %>">
-				<liferay-ui:icon image="checked" />
+				<liferay-ui:icon
+					image="checked"
+				/>
 			</c:if>
 		</liferay-ui:search-container-column-text>
 
