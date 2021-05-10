@@ -109,6 +109,27 @@ definition {
 			dmDocumentTitle = "DM Document Title");
 	}
 
+	@description = "This test covers LPS-130154. It ensures that the user can search for a document based on the content."
+	@priority = "4"
+	test CanSearchForDocumentBasedOnContent {
+		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
+
+		DMDocument.addCP(
+			dmDocumentDescription = "DM Document Description",
+			dmDocumentFile = "Document_5.txt",
+			dmDocumentTitle = "Document_5.txt");
+
+		AssertConsoleTextNotPresent(value1 = "WriteLimitReachedException");
+
+		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
+
+		Search.searchCP(searchTerm = "gJybWNXR76fTX0TlIu8mFP2dNVtTGdq");
+
+		DMDocument.viewSearchResultsCP(
+			dmDocumentTitle = "Document_5.txt",
+			dmParentFolder = "Home");
+	}
+
 	@description = "This case covers LPS-110213. It ensures that a document file can be downloaded after moving it between folders."
 	@priority = "5"
 	test DownloadDocumentAfterMoveBetweenFolders {
