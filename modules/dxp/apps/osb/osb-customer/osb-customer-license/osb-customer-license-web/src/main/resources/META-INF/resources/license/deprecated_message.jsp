@@ -26,6 +26,6 @@
 	<aui:row>
 		This page has been deprecated.<br /><br />
 
-		Various 5.2, 6.0 and 7.x developer licenses have been pre-generated and are available to download here: <a href="https://drive.google.com/drive/folders/15Jb5sjWNi3oKPNszb_eOobbhjVQ2QiG4">https://drive.google.com/drive/folders/15Jb5sjWNi3oKPNszb_eOobbhjVQ2QiG4</a>
+		Various 5.2, 6.0, and 7.x developer licenses have been pregenerated and are available to download here: <a href="https://drive.google.com/drive/folders/15Jb5sjWNi3oKPNszb_eOobbhjVQ2QiG4">https://drive.google.com/drive/folders/15Jb5sjWNi3oKPNszb_eOobbhjVQ2QiG4</a>
 	</aui:row>
 </div>
