@@ -53,7 +53,7 @@ public class BrowscapEngine {
 					BrowsCapField.PLATFORM));
 		}
 		catch (IOException | ParseException e) {
-			_logger.error("Unable to load browscap parser data", e);
+			_logger.error("Unable to load Browscap parser data", e);
 
 			throw new IllegalStateException(e);
 		}
