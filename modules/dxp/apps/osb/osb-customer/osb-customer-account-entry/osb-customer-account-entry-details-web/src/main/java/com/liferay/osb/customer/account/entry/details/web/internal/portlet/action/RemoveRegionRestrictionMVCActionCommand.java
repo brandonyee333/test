@@ -74,7 +74,7 @@ public class RemoveRegionRestrictionMVCActionCommand
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		EditAccountEnvironmentMVCActionCommand.class);
+		RemoveRegionRestrictionMVCActionCommand.class);
 
 	@Reference
 	private TicketAttachmentService _ticketAttachmentService;

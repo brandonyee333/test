@@ -68,7 +68,7 @@ public class DeleteTicketAttachmentMVCActionCommand
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		EditAccountEnvironmentMVCActionCommand.class);
+		DeleteTicketAttachmentMVCActionCommand.class);
 
 	@Reference
 	private TicketAttachmentService _ticketAttachmentService;
