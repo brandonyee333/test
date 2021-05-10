@@ -9,4 +9,4 @@
 # distribution rights of the Software.
 #
 
-from liferay.event_ingestion.application import EventIngestionApplication
+from liferay.delta_table_ingestion.application import DeltaTableIngestionApplication

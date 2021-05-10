@@ -1,0 +1,15 @@
+delta:
+    table:
+        ingestion:
+            checkpoint: gs://analytics-cloud-analytics-events-delta-ingestion-checkpoint-uat
+            name: Analytics Events Delta Table Ingestion
+            trigger: 10 seconds
+        path: gs://analytics-cloud-analytics-events
+        schema: >
+            {"type": "struct", "fields": [{"name": "applicationId", "type": "string", "nullable": false, "metadata": {}}, {"name": "channelId", "type": "string", "nullable": false, "metadata": {}}, {"name": "context", "type": {"type": "map", "keyType": "string", "valueType": "string", "valueContainsNull": true}, "nullable": true, "metadata": {}}, {"name": "eventDate", "type": "string", "nullable": false, "metadata": {}}, {"name": "eventId", "type": "string", "nullable": false, "metadata": {}}, {"name": "eventProperties", "type": {"type": "map", "keyType": "string", "valueType": "string", "valueContainsNull": true}, "nullable": true, "metadata": {}}, {"name": "projectId", "type": "string", "nullable": false, "metadata": {}}, {"name": "sessionId", "type": "string", "nullable": false, "metadata": {}}, {"name": "userId", "type": "string", "nullable": false, "metadata": {}}, {"name": "variantId", "type": "string", "nullable": true, "metadata": {}}]}
+google:
+    pubsub:
+        subscription: projects/168189407052/locations/us-west1-c/subscriptions/ac-message-sink-sub
+spark:
+    jars:
+        packages: "io.delta:delta-core_2.11:0.6.1"
