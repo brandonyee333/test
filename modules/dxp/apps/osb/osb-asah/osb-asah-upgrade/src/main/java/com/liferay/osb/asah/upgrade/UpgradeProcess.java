@@ -61,10 +61,6 @@ public class UpgradeProcess {
 	}
 
 	public String getToVersionString(String fromVersionString) {
-		if (fromVersionString == null) {
-			fromVersionString = "0.0.0";
-		}
-
 		return Optional.ofNullable(
 			_upgradeStepsMap.get(fromVersionString)
 		).map(
@@ -75,10 +71,6 @@ public class UpgradeProcess {
 	}
 
 	public List<UpgradeStep> getUpgradeSteps(String fromVersionString) {
-		if (fromVersionString == null) {
-			fromVersionString = "0.0.0";
-		}
-
 		return Optional.ofNullable(
 			_upgradeStepsMap.get(fromVersionString)
 		).map(
