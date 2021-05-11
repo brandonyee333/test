@@ -17,10 +17,6 @@ package com.liferay.osb.asah.upgrade;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.upgrade.v0_0_0.ProjectsIndexUpgradeStep;
 import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_10_0.DeleteActivityNaniteAsahTasksUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_10_0.PageReferrersUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_10_0.UserSessionsInteractionsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_11_0.EngagementsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_0.AsahMarkerUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_0.RunLogUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_13_0.ChannelsUpgradeStep;
@@ -46,13 +42,6 @@ public class UpgradeProcessConfiguration {
 			_snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.9.0", "2.10.0", _deleteActivityNaniteAsahTasksUpgradeStep,
-			_pageReferrersUpgradeStep, _userSessionsInteractionsUpgradeStep);
-
-		upgradeProcess.addUpgradeSteps(
-			"2.10.0", "2.11.0", _engagementsUpgradeStep);
-
-		upgradeProcess.addUpgradeSteps(
 			"2.11.0", "2.12.0", _asahMarkerUpgradeStep, _runLogUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
@@ -72,16 +61,6 @@ public class UpgradeProcessConfiguration {
 	private DataSourcesUpgradeStep _dataSourcesUpgradeStep;
 
 	@Autowired
-	private DeleteActivityNaniteAsahTasksUpgradeStep
-		_deleteActivityNaniteAsahTasksUpgradeStep;
-
-	@Autowired
-	private EngagementsUpgradeStep _engagementsUpgradeStep;
-
-	@Autowired
-	private PageReferrersUpgradeStep _pageReferrersUpgradeStep;
-
-	@Autowired
 	private ProjectsIndexUpgradeStep _projectsIndexUpgradeStep;
 
 	@Autowired
@@ -92,9 +71,5 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private SnapshotsUpgradeStep _snapshotsUpgradeStep;
-
-	@Autowired
-	private UserSessionsInteractionsUpgradeStep
-		_userSessionsInteractionsUpgradeStep;
 
 }
