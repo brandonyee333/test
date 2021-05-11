@@ -131,13 +131,13 @@
 	<entry key="Segment.findReferencedAssetIds">
 		<![CDATA[
 			SELECT
-				Segment.referencedAssetIds
-			FROM
-				Segment
-			GROUP BY
-				Segment.referencedAssetIds
-			ORDER BY
-				COUNT(Segment.referencedAssetIds) DESC
+				UNNEST(COALESCE(ARRAY_AGG(DISTINCT referencedAssetIdsUnnest), '{}'))
+			from
+				Segment,
+				UNNEST(Segment.referencedAssetIds) referencedAssetIdsUnnest
+			where
+				Segment.referencedAssetIds IS NOT NULL AND
+				Segment.referencedAssetIds <> '{}'
 		]]>
 	</entry>
 	<entry key="Segment.updateActivitiesCountAndRemoveLastActivityDate">
