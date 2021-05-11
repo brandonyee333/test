@@ -116,6 +116,9 @@ public class UpgradeProcessRunner {
 			currentVersion = _saveCurrentVersion(asahMarker, toVersionString);
 
 			upgradeSteps = _upgradeProcess.getUpgradeSteps(currentVersion);
+
+			asahMarker = _asahMarkerDog.fetchAsahMarker(
+				"Upgrade", WeDeployDataService.OSB_ASAH_FARO_INFO);
 		}
 	}
 
