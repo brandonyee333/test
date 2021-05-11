@@ -132,10 +132,10 @@
 		<![CDATA[
 			SELECT
 				UNNEST(COALESCE(ARRAY_AGG(DISTINCT referencedAssetIdsUnnest), '{}'))
-			from
+			FROM
 				Segment,
 				UNNEST(Segment.referencedAssetIds) referencedAssetIdsUnnest
-			where
+			WHERE
 				Segment.referencedAssetIds IS NOT NULL AND
 				Segment.referencedAssetIds <> '{}'
 		]]>
