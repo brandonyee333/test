@@ -336,7 +336,7 @@ public class ElasticsearchSegmentRepositoryImpl
 
 	@Override
 	public List<Long> findReferencedAssetIds() {
-		List<Long> individualIds = new ArrayList<>();
+		List<Long> referencedAssetIds = new ArrayList<>();
 
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			getCollectionName(),
@@ -357,10 +357,10 @@ public class ElasticsearchSegmentRepositoryImpl
 		Terms terms = aggregations.get("referencedAssetIds");
 
 		for (Terms.Bucket bucket : terms.getBuckets()) {
-			individualIds.add(Long.valueOf(bucket.getKeyAsString()));
+			referencedAssetIds.add(Long.valueOf(bucket.getKeyAsString()));
 		}
 
-		return individualIds;
+		return referencedAssetIds;
 	}
 
 	@Override
