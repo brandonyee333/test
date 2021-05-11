@@ -186,7 +186,7 @@ public class SearchCTTest {
 			_group.getGroupId(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString());
 
-		JournalArticle modifiedJournalArticle = JournalTestUtil.addArticle(
+		JournalArticle modifiedJournalArticle1 = JournalTestUtil.addArticle(
 			_group.getGroupId(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString());
 
@@ -207,23 +207,20 @@ public class SearchCTTest {
 			deletedJournalArticle = _journalArticleLocalService.deleteArticle(
 				deletedJournalArticle);
 
-			modifiedJournalArticle.setTitle("testModifyJournalArticle");
-
-			modifiedJournalArticle =
-				_journalArticleLocalService.updateJournalArticle(
-					modifiedJournalArticle);
+			modifiedJournalArticle2 = JournalTestUtil.updateArticle(
+				modifiedJournalArticle1, "testModifyJournalArticle");
 		}
 
 		assertProductionHits(
 			_JOURNAL_ARTICLE_CLASS, deletedJournalArticle,
-			modifiedJournalArticle, unmodifiedJournalArticle);
+			modifiedJournalArticle1, unmodifiedJournalArticle);
 
 		_ctProcessLocalService.addCTProcess(
 			_ctCollection.getUserId(), _ctCollection.getCtCollectionId());
 
 		assertProductionHits(
-			_JOURNAL_ARTICLE_CLASS, addedJournalArticle, modifiedJournalArticle,
-			unmodifiedJournalArticle);
+			_JOURNAL_ARTICLE_CLASS, addedJournalArticle,
+			modifiedJournalArticle2, unmodifiedJournalArticle);
 
 		_undoCTCollection = _ctCollectionLocalService.undoCTCollection(
 			_ctCollection.getCtCollectionId(), _ctCollection.getUserId(),
@@ -235,7 +232,7 @@ public class SearchCTTest {
 
 		assertProductionHits(
 			_JOURNAL_ARTICLE_CLASS, deletedJournalArticle,
-			modifiedJournalArticle, unmodifiedJournalArticle);
+			modifiedJournalArticle1, unmodifiedJournalArticle);
 	}
 
 	@Test
