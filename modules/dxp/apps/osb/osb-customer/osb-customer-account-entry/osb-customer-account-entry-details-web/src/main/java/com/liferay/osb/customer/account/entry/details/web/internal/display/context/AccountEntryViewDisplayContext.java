@@ -341,6 +341,14 @@ public class AccountEntryViewDisplayContext {
 			if (productEntry.isEnterpriseSearch()) {
 				enterpriseSearchEnvironments.add(productEntry.getEnvironment());
 			}
+		}
+
+		for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
+			Product product = productPurchaseView.getProduct();
+
+			ProductEntry productEntry =
+				ProductEntryLocalServiceUtil.getProductEntryByKoroneikiKey(
+					product.getKey());
 
 			if (!productEntry.isAccountEnvironments()) {
 				continue;
