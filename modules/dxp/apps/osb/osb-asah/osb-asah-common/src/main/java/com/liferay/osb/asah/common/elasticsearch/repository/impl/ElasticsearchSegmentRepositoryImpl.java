@@ -354,6 +354,10 @@ public class ElasticsearchSegmentRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
+		if (aggregations == null) {
+			return referencedAssetIds;
+		}
+
 		Terms terms = aggregations.get("referencedAssetIds");
 
 		for (Terms.Bucket bucket : terms.getBuckets()) {
