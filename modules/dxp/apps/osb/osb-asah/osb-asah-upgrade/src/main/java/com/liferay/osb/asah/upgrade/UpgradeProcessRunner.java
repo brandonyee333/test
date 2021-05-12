@@ -74,9 +74,13 @@ public class UpgradeProcessRunner {
 			return asahMarker;
 		}
 
-		return _asahMarkerDog.addAsahMarker(
+		asahMarker = _asahMarkerDog.addAsahMarker(
 			new AsahMarker("Upgrade", JSONUtil.put("version", "0.0.0")),
 			WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+		asahMarker.setIsNew(Boolean.FALSE);
+
+		return asahMarker;
 	}
 
 	private String _getCurrentVersion(AsahMarker asahMarker) {
