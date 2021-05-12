@@ -23,9 +23,11 @@ import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
+import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.RunLog;
+import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -35,8 +37,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.Date;
 import java.util.Objects;
 import java.util.function.Supplier;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
@@ -347,14 +347,9 @@ public class DataSourcesRestController extends BaseRestController {
 			).put(
 				"processedOperations",
 				totalOperations -
-					salesforceRawElasticsearchInvoker.count(
-						"audit-events",
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery(
-								"osbAsahDataSourceId", dataSourceId)
-						).filter(
-							QueryBuilders.termQuery("typeName", "Account")
-						))
+					_salesforceAuditEventDog.getSalesforceAuditEventsCount(
+						salesforceExtractorNaniteRunLog.getDataSourceId(),
+						"Account")
 			).put(
 				"status", "IN_PROGRESS"
 			).put(
@@ -454,15 +449,9 @@ public class DataSourcesRestController extends BaseRestController {
 			).put(
 				"processedOperations",
 				(totalOperations * 2) -
-					salesforceRawElasticsearchInvoker.count(
-						"audit-events",
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery(
-								"osbAsahDataSourceId", dataSourceId)
-						).filter(
-							QueryBuilders.termsQuery(
-								"typeName", "Contact", "Lead")
-						))
+					_salesforceAuditEventDog.getSalesforceAuditEventsCount(
+						salesforceExtractorNaniteRunLog.getDataSourceId(),
+						"Contact", "Lead")
 			).put(
 				"status", "IN_PROGRESS"
 			).put(
@@ -532,14 +521,9 @@ public class DataSourcesRestController extends BaseRestController {
 			).put(
 				"processedOperations",
 				totalOperations -
-					salesforceRawElasticsearchInvoker.count(
-						"audit-events",
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery(
-								"osbAsahDataSourceId", dataSourceId)
-						).filter(
-							QueryBuilders.termQuery("typeName", "individuals")
-						))
+					_salesforceAuditEventDog.getSalesforceAuditEventsCount(
+						salesforceExtractorNaniteRunLog.getDataSourceId(),
+						"individuals")
 			).put(
 				"status", "IN_PROGRESS"
 			).put(
@@ -625,26 +609,16 @@ public class DataSourcesRestController extends BaseRestController {
 			if (salesforceExtractorNaniteRunLogContextJSONObject.getBoolean(
 					"initial" + tableName + "Run")) {
 
-				processedOperations += salesforceRawElasticsearchInvoker.count(
-					tableName,
-					QueryBuilders.termQuery(
-						"dataSourceId",
-						String.valueOf(
-							salesforceExtractorNaniteRunLog.
-								getDataSourceId())));
+				processedOperations +=
+					_salesforceEntityDog.getSalesforceEntitiesCount(
+						salesforceExtractorNaniteRunLog.getDataSourceId(),
+						SalesforceEntity.Type.of(tableName));
 			}
 			else {
-				processedOperations += salesforceRawElasticsearchInvoker.count(
-					"audit-events",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery(
-							"osbAsahDataSourceId",
-							String.valueOf(
-								salesforceExtractorNaniteRunLog.
-									getDataSourceId()))
-					).filter(
-						QueryBuilders.termQuery("typeName", tableName)
-					));
+				processedOperations +=
+					_salesforceAuditEventDog.getSalesforceAuditEventsCount(
+						salesforceExtractorNaniteRunLog.getDataSourceId(),
+						tableName);
 			}
 		}
 
@@ -713,6 +687,12 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@Autowired
 	private RunLogDog _runLogDog;
+
+	@Autowired
+	private SalesforceAuditEventDog _salesforceAuditEventDog;
+
+	@Autowired
+	private SalesforceEntityDog _salesforceEntityDog;
 
 	@Autowired
 	private SalesforceExtractorConfigurationDog
