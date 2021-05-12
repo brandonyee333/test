@@ -156,9 +156,9 @@ public class AssetDog {
 	public List<Asset> getAssets(Set<Long> assetIds) {
 		List<Asset> assets = new ArrayList<>();
 
-		Iterable<Asset> assetsIterable = _assetRepository.findAllById(assetIds);
+		Iterable<Asset> iterable = _assetRepository.findAllById(assetIds);
 
-		assetsIterable.forEach(assets::add);
+		iterable.forEach(assets::add);
 
 		return assets;
 	}
