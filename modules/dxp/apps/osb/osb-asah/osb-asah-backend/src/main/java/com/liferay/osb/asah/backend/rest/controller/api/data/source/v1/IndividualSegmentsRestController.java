@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.backend.rest.response.embedded.MembershipChangesEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -486,10 +487,14 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			JSONUtil.toJSONArray(
 				_assetDog.getAssets(segment.getReferencedAssetIds()),
 				asset -> objectMapper.convertValue(asset, JSONObject.class)));
+		jsonObject.put(
+			"field-mappings",
+			JSONUtil.toJSONArray(
+				_fieldMappingDog.getFieldMappings(
+					segment.getReferencedFieldMappingIds()),
+				fieldMapping -> objectMapper.convertValue(
+					fieldMapping, JSONObject.class)));
 
-		_addReferencedObject(
-			"field-mappings", faroInfoElasticsearchInvoker,
-			segment.getReferencedFieldMappingIds(), jsonObject);
 		_addReferencedObject(
 			"groups", dxpRawElasticsearchInvoker,
 			segment.getReferencedGroupIds(), jsonObject);
@@ -565,6 +570,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
+
+	@Autowired
+	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;
