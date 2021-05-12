@@ -100,6 +100,8 @@ public class FieldRepositoryImpl extends BaseRepository {
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
+			pageable.getPageSize()
+		).offset(
 			pageable.getOffset()
 		).fetch(
 		).map(
@@ -117,7 +119,7 @@ public class FieldRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
-			"Segment"
+			"Field"
 		).where(
 			ConditionUtil.toCondition(filterString)
 		).orderBy(
