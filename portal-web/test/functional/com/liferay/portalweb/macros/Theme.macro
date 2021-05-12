@@ -130,7 +130,7 @@ definition {
 
 		AssertTextPresent(
 			locator1 = "Portlet#PORTLET_CONTENT",
-			value1 = "Please configure this portlet to make it visible to all users.");
+			value1 = "${portletContent}");
 
 		// Refresh step is a workaround for LPS-91762
 
