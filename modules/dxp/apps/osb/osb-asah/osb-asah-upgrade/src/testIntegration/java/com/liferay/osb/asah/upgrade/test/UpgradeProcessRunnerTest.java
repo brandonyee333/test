@@ -74,13 +74,13 @@ public class UpgradeProcessRunnerTest {
 			ProjectIdThreadLocal.getProjectId());
 
 		Mockito.when(
-			_upgradeProcess.getUpgradeSteps(Mockito.isNull())
+			_upgradeProcess.getUpgradeSteps(Mockito.eq("0.0.0"))
 		).thenReturn(
 			Collections.singletonList(upgradeStep)
 		);
 
 		Mockito.when(
-			_upgradeProcess.getToVersionString(Mockito.isNull())
+			_upgradeProcess.getToVersionString(Mockito.eq("0.0.0"))
 		).thenReturn(
 			"1.0.0"
 		);
@@ -101,9 +101,9 @@ public class UpgradeProcessRunnerTest {
 			() -> _elasticsearchInvoker.add(
 				"OSBAsahMarkers",
 				JSONUtil.put(
-					"id", "Upgrade"
+					"context", JSONUtil.put("version", "2.11.0")
 				).put(
-					"version", "2.11.0"
+					"id", "Upgrade"
 				)));
 
 		Mockito.when(
