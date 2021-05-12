@@ -129,6 +129,10 @@ public class FieldDog {
 		_fieldRepository.deleteById(fieldId);
 	}
 
+	public void deleteFields(Long dataSourceId) {
+		_fieldRepository.deleteByDataSourceId(dataSourceId);
+	}
+
 	public Field getField(Long fieldId) {
 		Optional<Field> fieldOptional = _fieldRepository.findById(fieldId);
 

@@ -36,6 +36,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class SalesforceEntityDog {
 
+	public void deleteSalesforceEntities(Long dataSourceId) {
+		_salesforceEntityRepository.deleteByDataSourceId(dataSourceId);
+	}
+
 	public void deleteSalesforceEntity(SalesforceEntity salesforceEntity) {
 		_salesforceEntityRepository.delete(salesforceEntity);
 	}

@@ -39,6 +39,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class RunLogDog {
 
+	public void deleteRunLogs(
+		Long dataSourceId, WeDeployDataService weDeployDataService) {
+
+		try {
+			WeDeployServiceThreadLocal.setWeDeployDataService(
+				weDeployDataService);
+
+			_runLogRepository.deleteByDataSourceId(dataSourceId);
+		}
+		finally {
+			WeDeployServiceThreadLocal.remove();
+		}
+	}
+
 	public RunLog fetchLatestRunLog(
 		@Nullable Long dataSourceId, String naniteClassName,
 		@Nullable String status, WeDeployDataService weDeployDataService) {

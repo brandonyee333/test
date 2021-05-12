@@ -55,7 +55,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.search.join.ScoreMode;
 
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -293,8 +292,7 @@ public class DataSourceDog {
 	}
 
 	public DataSource updateDataSourceDetails(
-			Long dataSourceId, Boolean contactsSelected, Boolean sitesSelected)
-		throws Exception {
+		Long dataSourceId, Boolean contactsSelected, Boolean sitesSelected) {
 
 		DataSource dataSource = getDataSource(dataSourceId);
 
@@ -476,12 +474,8 @@ public class DataSourceDog {
 				dataSourceId.toString(),
 				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 			_deleteAccountReferences(dataSourceId);
-			_deleteData(
-				dataSourceId, "dataSourceId",
-				_salesforceRawElasticsearchInvoker, "Account", "Contact",
-				"Lead", "individuals");
-			_deleteData(
-				dataSourceId, "dataSourceId", _elasticsearchInvoker, "fields");
+			_fieldDog.deleteFields(dataSourceId);
+			_salesforceEntityDog.deleteSalesforceEntities(dataSourceId);
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
@@ -604,18 +598,19 @@ public class DataSourceDog {
 	}
 
 	private void _deleteRunLogs(DataSource dataSource) {
-		QueryBuilder queryBuilder = QueryBuilders.termQuery(
-			"dataSourceId", String.valueOf(dataSource.getId()));
-
-		_elasticsearchInvoker.delete("run-logs", queryBuilder);
+		_runLogDog.deleteRunLogs(
+			dataSource.getId(), WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		String providerType = dataSource.getProviderType();
 
 		if (providerType.equals("LIFERAY")) {
-			_dxpRawElasticsearchInvoker.delete("run-logs", queryBuilder);
+			_runLogDog.deleteRunLogs(
+				dataSource.getId(), WeDeployDataService.OSB_ASAH_DXP_RAW);
 		}
 		else if (providerType.equals("SALESFORCE")) {
-			_salesforceRawElasticsearchInvoker.delete("run-logs", queryBuilder);
+			_runLogDog.deleteRunLogs(
+				dataSource.getId(),
+				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 		}
 	}
 
@@ -780,7 +775,16 @@ public class DataSourceDog {
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
+	private FieldDog _fieldDog;
+
+	@Autowired
 	private NanitesHttp _nanitesHttp;
+
+	@Autowired
+	private RunLogDog _runLogDog;
+
+	@Autowired
+	private SalesforceEntityDog _salesforceEntityDog;
 
 	@Autowired
 	private SalesforceExtractorConfigurationDog
