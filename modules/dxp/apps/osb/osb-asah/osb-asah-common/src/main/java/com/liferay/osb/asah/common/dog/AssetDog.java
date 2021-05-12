@@ -153,6 +153,16 @@ public class AssetDog {
 				assetType, filterString, keyword));
 	}
 
+	public List<Asset> getAssets(Set<Long> assetIds) {
+		List<Asset> assets = new ArrayList<>();
+
+		Iterable<Asset> assetsIterable = _assetRepository.findAllById(assetIds);
+
+		assetsIterable.forEach(assets::add);
+
+		return assets;
+	}
+
 	public List<String> getKeywords(String assetType) {
 		Set<String> keywords = new TreeSet<>();
 

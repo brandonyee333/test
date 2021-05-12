@@ -22,6 +22,7 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.backend.rest.response.embedded.MembershipChangesEmbeddedJSONObjectCreator;
+import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -227,7 +228,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
 	public SegmentDTO getSegmentDTO(
-		@PathVariable Long id, @RequestParam(required = false) String expand) {
+			@PathVariable Long id,
+			@RequestParam(required = false) String expand)
+		throws Exception {
 
 		SegmentDTO segmentDTO = new SegmentDTO(segmentDog.getSegment(id));
 
@@ -471,14 +474,19 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			FilterStringToQueryBuilderConverter.convert(filterString));
 	}
 
-	private JSONObject _getReferencedObjectsJSONObject(Long segmentId) {
+	private JSONObject _getReferencedObjectsJSONObject(Long segmentId)
+		throws Exception {
+
 		JSONObject jsonObject = new JSONObject();
 
 		Segment segment = segmentDog.getSegment(segmentId);
 
-		_addReferencedObject(
-			"assets", faroInfoElasticsearchInvoker,
-			segment.getReferencedAssetIds(), jsonObject);
+		jsonObject.put(
+			"assets",
+			JSONUtil.toJSONArray(
+				_assetDog.getAssets(segment.getReferencedAssetIds()),
+				asset -> objectMapper.convertValue(asset, JSONObject.class)));
+
 		_addReferencedObject(
 			"field-mappings", faroInfoElasticsearchInvoker,
 			segment.getReferencedFieldMappingIds(), jsonObject);
@@ -550,6 +558,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	private static final Log _log = LogFactory.getLog(
 		IndividualSegmentsRestController.class);
+
+	@Autowired
+	private AssetDog _assetDog;
 
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
