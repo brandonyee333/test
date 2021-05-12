@@ -481,14 +481,14 @@ public class SegmentDog extends BaseFaroInfoDog {
 	public Segment updateSegment(
 		long individualCount, long knownIndividualCount, Long segmentId) {
 
-		Segment segment = new Segment();
+		Segment existingSegment = getSegment(segmentId);
 
-		segment.setAnonymousIndividualCount(
+		existingSegment.setAnonymousIndividualCount(
 			individualCount - knownIndividualCount);
-		segment.setIndividualCount(knownIndividualCount);
-		segment.setKnownIndividualCount(knownIndividualCount);
+		existingSegment.setIndividualCount(individualCount);
+		existingSegment.setKnownIndividualCount(knownIndividualCount);
 
-		return updateSegment(segment, segmentId);
+		return _segmentRepository.save(existingSegment);
 	}
 
 	public Segment updateSegment(Segment partialSegment, Long segmentId) {
