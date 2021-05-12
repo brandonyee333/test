@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +77,7 @@ public class FieldMappingDog {
 	public FieldMapping addFieldMapping(FieldMapping fieldMapping) {
 		fieldMapping = _fieldMappingRepository.save(fieldMapping);
 
-		return getFieldMapping(fieldMapping.getId());
+		return fetchFieldMapping(fieldMapping.getId());
 	}
 
 	public void addFieldMapping(
@@ -156,7 +157,19 @@ public class FieldMappingDog {
 		return true;
 	}
 
+	public boolean existsById(Long fieldMappingId) {
+		if (fieldMappingId == null) {
+			return false;
+		}
+
+		return _fieldMappingRepository.existsById(fieldMappingId);
+	}
+
 	public FieldMapping fetchFieldMapping(Long fieldMappingId) {
+		if (fieldMappingId == null) {
+			return null;
+		}
+
 		Optional<FieldMapping> fieldMappingOptional =
 			_fieldMappingRepository.findById(fieldMappingId);
 
@@ -226,6 +239,30 @@ public class FieldMappingDog {
 		}
 
 		return dataSourceFieldMappingIds;
+	}
+
+	public Map<String, String> getDataSourceFieldNames(
+		FieldMapping fieldMapping) {
+
+		if (fieldMapping == null) {
+			return Collections.emptyMap();
+		}
+
+		Map<String, String> dataSourceFieldNames = new HashMap<>();
+
+		List<DataSourceFieldMapping> dataSourceFieldMappings =
+			_dataSourceFieldMappingRepository.findByFieldMappingId(
+				fieldMapping.getId());
+
+		for (DataSourceFieldMapping dataSourceFieldMapping :
+				dataSourceFieldMappings) {
+
+			dataSourceFieldNames.put(
+				String.valueOf(dataSourceFieldMapping.getDataSourceId()),
+				dataSourceFieldMapping.getFieldName());
+		}
+
+		return dataSourceFieldNames;
 	}
 
 	public FieldMapping getFieldMapping(Long fieldMappingId) {
@@ -388,21 +425,8 @@ public class FieldMappingDog {
 			return;
 		}
 
-		Map<String, String> dataSourceFieldNames = new HashMap<>();
-
-		List<DataSourceFieldMapping> dataSourceFieldMappings =
-			_dataSourceFieldMappingRepository.findByFieldMappingId(
-				fieldMapping.getId());
-
-		for (DataSourceFieldMapping dataSourceFieldMapping :
-				dataSourceFieldMappings) {
-
-			dataSourceFieldNames.put(
-				String.valueOf(dataSourceFieldMapping.getDataSourceId()),
-				dataSourceFieldMapping.getFieldName());
-		}
-
-		fieldMapping.setDataSourceFieldNames(dataSourceFieldNames);
+		fieldMapping.setDataSourceFieldNames(
+			getDataSourceFieldNames(fieldMapping));
 	}
 
 	private static final Log _log = LogFactory.getLog(FieldMappingDog.class);

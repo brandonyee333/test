@@ -62,7 +62,7 @@ public class IndividualSegmentsRestControllerTest
 	extends BaseRestControllerTestCase {
 
 	@Test
-	public void testExpandReferencedObjects() {
+	public void testExpandReferencedObjects() throws Exception {
 		JSONObject assetJSONObject = _faroInfoElasticsearchInvoker.add(
 			"assets", FaroInfoTestUtil.buildAssetJSONObject("Page", "1"));
 		FieldMapping accountFieldMapping = _fieldMappingRepository.save(

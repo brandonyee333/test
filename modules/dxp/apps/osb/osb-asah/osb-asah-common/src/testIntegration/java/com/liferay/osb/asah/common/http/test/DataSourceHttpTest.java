@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -250,7 +251,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertFalse(
 			"Field mapping should have been deleted on data source deletion",
-			_fieldMappingRepository.existsById(fieldMapping.getId()));
+			_fieldMappingDog.existsById(fieldMapping.getId()));
 	}
 
 	@Test
@@ -434,7 +435,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Assert.assertTrue(
 			"Field mappings created by the default user should not be " +
 				"deleted on data source deletion",
-			_fieldMappingRepository.existsById(fieldMapping.getId()));
+			_fieldMappingDog.existsById(fieldMapping.getId()));
 	}
 
 	@Test
@@ -878,6 +879,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
+
+	@Autowired
+	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
 	private FieldMappingRepository _fieldMappingRepository;

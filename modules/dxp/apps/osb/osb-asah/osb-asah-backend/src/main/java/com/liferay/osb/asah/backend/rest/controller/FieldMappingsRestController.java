@@ -132,7 +132,7 @@ public class FieldMappingsRestController extends BaseRestController {
 			if (dataSourceFieldMappings.isEmpty() &&
 				_fieldMappingDog.deleteFieldMapping(fieldMapping)) {
 
-				deletedFieldMappingIds.add(Long.valueOf(id));
+				deletedFieldMappingIds.add(id);
 			}
 		}
 		else {
@@ -149,8 +149,7 @@ public class FieldMappingsRestController extends BaseRestController {
 
 		_segmentDog.disableDynamicSegments(null, deletedFieldMappingIds);
 
-		_addReprocessAsahTask(
-			Long.valueOf(dataSourceId), fieldMapping.getOwnerType());
+		_addReprocessAsahTask(dataSourceId, fieldMapping.getOwnerType());
 
 		return responseJSON;
 	}
@@ -218,7 +217,7 @@ public class FieldMappingsRestController extends BaseRestController {
 
 		_segmentDog.disableDynamicSegments(null, deletedFieldMappingIds);
 
-		_addReprocessAsahTask(Long.valueOf(dataSourceId), ownerType);
+		_addReprocessAsahTask(dataSourceId, ownerType);
 
 		return responseJSONArray.toString();
 	}

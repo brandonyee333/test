@@ -51,7 +51,7 @@ import org.springframework.test.context.ContextConfiguration;
 public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		_liferayDataSourceJSONObject =
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
 

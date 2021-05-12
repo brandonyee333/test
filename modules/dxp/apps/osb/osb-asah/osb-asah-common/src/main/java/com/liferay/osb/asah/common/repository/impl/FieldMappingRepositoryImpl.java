@@ -177,7 +177,9 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
 			"FieldMapping");
 
-		if (filterString.contains("dataSourceFieldNames")) {
+		if (!StringUtils.isEmpty(filterString) &&
+			filterString.contains("dataSourceFieldNames")) {
+
 			selectJoinStep = selectJoinStep.join(
 				DSL.select(
 					DSL.field("dataSourceId"), DSL.field("fieldMappingId"),

@@ -521,11 +521,8 @@ public class FieldDog {
 			context, dataSourceId, ownerType);
 
 		for (FieldMapping fieldMapping : fieldMappings) {
-			fieldMapping = _fieldMappingDog.fetchFieldMapping(
-				fieldMapping.getId());
-
 			Map<String, String> dataSourceFieldNames =
-				fieldMapping.getDataSourceFieldNames();
+				_fieldMappingDog.getDataSourceFieldNames(fieldMapping);
 
 			String dataSourceFieldName = dataSourceFieldNames.getOrDefault(
 				String.valueOf(dataSourceId), null);
@@ -585,11 +582,8 @@ public class FieldDog {
 			context, dataSourceId, ownerType);
 
 		for (FieldMapping fieldMapping : fieldMappings) {
-			fieldMapping = _fieldMappingDog.fetchFieldMapping(
-				fieldMapping.getId());
-
 			Map<String, String> dataSourceFieldNames =
-				fieldMapping.getDataSourceFieldNames();
+				_fieldMappingDog.getDataSourceFieldNames(fieldMapping);
 
 			String dataSourceFieldName = dataSourceFieldNames.getOrDefault(
 				String.valueOf(dataSourceId), null);
