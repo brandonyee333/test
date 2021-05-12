@@ -413,27 +413,16 @@ public class SegmentRepositoryImpl extends BaseRepository {
 
 		conditions.add(
 			DSL.or(
-				DSL.val(
-					dataSourceId
-				).eq(
-					(Field<Long>)DSL.any(
-						DSL.field("referencedAssetDataSourceIds"))
+				DSL.field(
+					"referencedAssetDataSourceIds"
+				).in(
+					Collections.singletonList(dataSourceId)
 				),
-				DSL.exists(
-					DSL.selectOne(
-					).from(
-						DSL.unnest(
-							DSL.field("referencedFieldMappingIds")
-						).as(
-							"referencedFieldMappingId"
-						)
-					).where(
-						DSL.field(
-							"referencedFieldMappingId"
-						).in(
-							dataSourceFieldMappingIds
-						)
-					))));
+				DSL.field(
+					"referencedFieldMappingIds"
+				).in(
+					dataSourceFieldMappingIds
+				)));
 
 		conditions.add(FilterStringToConditionConverter.convert(filterString));
 
