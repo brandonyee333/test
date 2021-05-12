@@ -54,6 +54,10 @@ public class RunLogRepositoryImpl extends BaseRepository {
 			"RunLog"
 		).where(
 			_getConditions(dataSourceId, naniteClassName, status)
+		).orderBy(
+			DSL.field(
+				"dateLogged"
+			).desc()
 		).limit(
 			1
 		).fetchOptional(
