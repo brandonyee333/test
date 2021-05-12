@@ -36,6 +36,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -280,14 +281,8 @@ public class FieldMappingDog {
 	}
 
 	public List<FieldMapping> getFieldMappings(Set<Long> fieldMappingIds) {
-		List<FieldMapping> fieldMappings = new ArrayList<>();
-
-		Iterable<FieldMapping> fieldMappingsIterable =
-			_fieldMappingRepository.findAllById(fieldMappingIds);
-
-		fieldMappingsIterable.forEach(fieldMappings::add);
-
-		return fieldMappings;
+		return IterableUtils.toList(
+			_fieldMappingRepository.findAllById(fieldMappingIds));
 	}
 
 	public Page<Transformation> getTransformationsPage(

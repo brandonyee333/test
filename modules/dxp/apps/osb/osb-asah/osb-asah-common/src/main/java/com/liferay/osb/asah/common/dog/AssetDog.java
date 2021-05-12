@@ -33,6 +33,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.collections4.IterableUtils;
+
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -154,13 +156,7 @@ public class AssetDog {
 	}
 
 	public List<Asset> getAssets(Set<Long> assetIds) {
-		List<Asset> assets = new ArrayList<>();
-
-		Iterable<Asset> iterable = _assetRepository.findAllById(assetIds);
-
-		iterable.forEach(assets::add);
-
-		return assets;
+		return IterableUtils.toList(_assetRepository.findAllById(assetIds));
 	}
 
 	public List<String> getKeywords(String assetType) {
