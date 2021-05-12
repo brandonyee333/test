@@ -69,10 +69,19 @@ public class ElasticsearchFieldRepositoryImpl
 	}
 
 	@Override
+	public void deleteByDataSourceId(Long dataSourceId) {
+		_faroInfoElasticsearchInvoker.delete(
+			getCollectionName(),
+			QueryBuilders.termQuery(
+				"dataSourceId", String.valueOf(dataSourceId)));
+	}
+
+	@Override
 	public boolean existsByDataSourceId(Long dataSourceId) {
 		return _faroInfoElasticsearchInvoker.exists(
 			getCollectionName(),
-			QueryBuilders.termQuery("dataSourceId", dataSourceId));
+			QueryBuilders.termQuery(
+				"dataSourceId", String.valueOf(dataSourceId)));
 	}
 
 	@Override

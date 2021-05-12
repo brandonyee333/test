@@ -49,6 +49,16 @@ public class ElasticsearchRunLogRepositoryImpl
 	implements RunLogRepository {
 
 	@Override
+	public void deleteByDataSourceId(Long dataSourceId) {
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		elasticsearchInvoker.delete(
+			getCollectionName(),
+			QueryBuilders.termQuery(
+				"dataSourceId", String.valueOf(dataSourceId)));
+	}
+
+	@Override
 	public Optional<RunLog>
 		findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
 			@Nullable Long dataSourceId, String naniteClassName,

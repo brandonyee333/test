@@ -2,6 +2,11 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
+	<entry key="Field.deleteByDataSourceId">
+		<![CDATA[
+			DELETE FROM Field WHERE Field.dataSourceId = :dataSourceId
+		]]>
+	</entry>
 	<entry key="Field.findByContextAndOwnerIdGroupByMaxModifiedDateAndName">
 		<![CDATA[
 			SELECT
@@ -26,6 +31,18 @@
 						MaxModifiedDateField.maxModifiedDate AND
 					Field.name = MaxModifiedDateField.name AND
 					Field.ownerId = MaxModifiedDateField.ownerId
+		]]>
+	</entry>
+	<entry key="Field.findByFieldTypeAndOwnerTypeAndValueIn">
+		<![CDATA[
+			SELECT
+				Field.*
+			FROM
+				Field
+			WHERE
+				Field.fieldType = :fieldType AND
+				Field.ownerType = :ownerType AND
+				Field.value IN (:values)
 		]]>
 	</entry>
 </properties>

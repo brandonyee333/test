@@ -41,6 +41,9 @@ public interface SalesforceEntityRepository
 	public long countByDataSourceIdAndType(
 		Long dataSourceId, SalesforceEntity.Type type);
 
+	@Modifying
+	public void deleteByDataSourceId(@Param("dataSourceId") Long dataSourceId);
+
 	public boolean existsByDataSourceIdAndIdAndType(
 		Long dataSourceId, String id, SalesforceEntity.Type type);
 

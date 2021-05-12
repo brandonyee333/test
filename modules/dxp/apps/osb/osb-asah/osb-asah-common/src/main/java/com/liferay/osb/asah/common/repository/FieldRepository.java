@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
@@ -36,6 +37,9 @@ import org.springframework.stereotype.Repository;
 public interface FieldRepository extends CrudRepository<Field, Long> {
 
 	public long countFields(@Nullable String filterString);
+
+	@Modifying
+	public void deleteByDataSourceId(@Param("dataSourceId") Long dataSourceId);
 
 	public boolean existsByDataSourceId(Long dataSourceId);
 

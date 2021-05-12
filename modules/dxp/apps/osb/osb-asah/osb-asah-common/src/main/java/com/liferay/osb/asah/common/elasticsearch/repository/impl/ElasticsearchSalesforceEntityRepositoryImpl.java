@@ -34,6 +34,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
@@ -99,6 +100,17 @@ public class ElasticsearchSalesforceEntityRepositoryImpl
 		Iterable<? extends SalesforceEntity> salesforceEntities) {
 
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void deleteByDataSourceId(Long dataSourceId) {
+		QueryBuilder queryBuilder = QueryBuilders.termQuery(
+			"dataSourceId", String.valueOf(dataSourceId));
+
+		_salesforceRawElasticsearchInvoker.delete("Account", queryBuilder);
+		_salesforceRawElasticsearchInvoker.delete("Contact", queryBuilder);
+		_salesforceRawElasticsearchInvoker.delete("Lead", queryBuilder);
+		_salesforceRawElasticsearchInvoker.delete("individuals", queryBuilder);
 	}
 
 	@Override
