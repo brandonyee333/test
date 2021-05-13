@@ -1,0 +1,10 @@
+{
+	"operationName": "EventAnalysis",
+	"variables": {
+		"analysisType": "TOTAL",
+		"channelId": "2468",
+		"eventDefinitionId": "12345",
+		"rangeEnd": "2021-05-12",
+		"rangeStart": "2021-05-11"
+	}
+}
