@@ -848,10 +848,8 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	private String _getIndexAlias(String collectionName) {
-		String indexName = ElasticsearchIndexUtil.getIndexName(
+		return ElasticsearchIndexUtil.getIndexAlias(
 			collectionName, _weDeployDataService);
-
-		return _aliases.getOrDefault(indexName, indexName);
 	}
 
 	private SearchRequestBuilder _prepareSearch(String indexName) {
