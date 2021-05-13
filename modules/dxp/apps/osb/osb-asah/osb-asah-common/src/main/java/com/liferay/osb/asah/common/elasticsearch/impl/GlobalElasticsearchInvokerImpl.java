@@ -38,11 +38,6 @@ public class GlobalElasticsearchInvokerImpl extends ElasticsearchInvokerImpl {
 	}
 
 	@Override
-	public String getIndexAlias(String collectionName) {
-		return collectionName;
-	}
-
-	@Override
 	public void refreshAliases() {
 	}
 

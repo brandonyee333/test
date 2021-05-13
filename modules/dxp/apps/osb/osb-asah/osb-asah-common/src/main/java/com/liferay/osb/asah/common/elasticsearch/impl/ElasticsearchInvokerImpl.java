@@ -112,7 +112,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		bulkRequestBuilder.setRefreshPolicy(
 			WriteRequest.RefreshPolicy.IMMEDIATE);
 
-		String indexAlias = getIndexAlias(collectionName);
+		String indexAlias = _getIndexAlias(collectionName);
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -181,7 +181,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		jsonObject.put("id", id);
 
 		IndexRequestBuilder indexRequestBuilder = _client.prepareIndex(
-			getIndexAlias(collectionName), collectionName, id);
+			_getIndexAlias(collectionName), collectionName, id);
 
 		indexRequestBuilder.setRefreshPolicy(
 			WriteRequest.RefreshPolicy.IMMEDIATE);
@@ -213,7 +213,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	@Override
 	public long count(String collectionName, QueryBuilder queryBuilder) {
 		SearchRequestBuilder searchRequestBuilder = _prepareSearch(
-			getIndexAlias(collectionName));
+			_getIndexAlias(collectionName));
 
 		searchRequestBuilder.setQuery(queryBuilder);
 		searchRequestBuilder.setSize(0);
@@ -251,7 +251,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 				queryBuilder);
 
 			deleteByQueryRequestBuilder.refresh(true);
-			deleteByQueryRequestBuilder.source(getIndexAlias(collectionName));
+			deleteByQueryRequestBuilder.source(_getIndexAlias(collectionName));
 
 			ClientUtil.waitForConnection(_client);
 
@@ -268,7 +268,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	@Override
 	public boolean delete(String collectionName, String id) {
 		DeleteRequestBuilder deleteRequestBuilder = _client.prepareDelete(
-			getIndexAlias(collectionName), collectionName, id);
+			_getIndexAlias(collectionName), collectionName, id);
 
 		deleteRequestBuilder.setRefreshPolicy(
 			WriteRequest.RefreshPolicy.IMMEDIATE);
@@ -330,7 +330,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	public boolean exists(String collectionName, String id) {
 		try {
 			GetRequestBuilder getRequestBuilder = _client.prepareGet(
-				getIndexAlias(collectionName), null, id);
+				_getIndexAlias(collectionName), null, id);
 
 			getRequestBuilder.setFetchSource(false);
 			getRequestBuilder.setStoredFields("_none_");
@@ -358,7 +358,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		String sourceInclude) {
 
 		SearchRequestBuilder searchRequestBuilder = _prepareSearch(
-			getIndexAlias(collectionName));
+			_getIndexAlias(collectionName));
 
 		if (sortBuilder != null) {
 			searchRequestBuilder.addSort(sortBuilder);
@@ -396,7 +396,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	public JSONObject fetch(String collectionName, String id) {
 		try {
 			GetRequestBuilder getRequestBuilder = _client.prepareGet(
-				getIndexAlias(collectionName), null, id);
+				_getIndexAlias(collectionName), null, id);
 
 			ClientUtil.waitForConnection(_client);
 
@@ -415,7 +415,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public JSONArray get(String collectionName) {
-		return _get(_prepareSearch(getIndexAlias(collectionName)));
+		return _get(_prepareSearch(_getIndexAlias(collectionName)));
 	}
 
 	@Override
@@ -445,7 +445,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		}
 
 		SearchRequestBuilder searchRequestBuilder = _prepareSearch(
-			getIndexAlias(collectionName));
+			_getIndexAlias(collectionName));
 
 		searchRequestBuilder.addSort(SortBuilderUtil.fieldSort("id"));
 		searchRequestBuilder.setQuery(queryBuilder);
@@ -465,14 +465,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		}
 
 		return jsonObject;
-	}
-
-	@Override
-	public String getIndexAlias(String collectionName) {
-		String indexName = ElasticsearchIndexUtil.getIndexName(
-			collectionName, _weDeployDataService);
-
-		return _aliases.getOrDefault(indexName, indexName);
 	}
 
 	@Override
@@ -514,7 +506,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	@Override
 	public JSONObject replace(String collectionName, JSONObject jsonObject) {
 		IndexRequestBuilder indexRequestBuilder = _client.prepareIndex(
-			getIndexAlias(collectionName), collectionName,
+			_getIndexAlias(collectionName), collectionName,
 			String.valueOf(jsonObject.get("id")));
 
 		indexRequestBuilder.setRefreshPolicy(
@@ -620,13 +612,13 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		return _update(
 			jsonObject,
 			_client.prepareUpdate(
-				getIndexAlias(collectionName), collectionName, id));
+				_getIndexAlias(collectionName), collectionName, id));
 	}
 
 	@Override
 	public JSONObject update(String collectionName, String id, Script script) {
 		UpdateRequestBuilder updateRequestBuilder = _client.prepareUpdate(
-			getIndexAlias(collectionName), collectionName, id);
+			_getIndexAlias(collectionName), collectionName, id);
 
 		updateRequestBuilder.setFetchSource(true);
 		updateRequestBuilder.setRefreshPolicy(
@@ -743,7 +735,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		Script script) {
 
 		UpdateRequestBuilder updateRequestBuilder = _client.prepareUpdate(
-			getIndexAlias(collectionName), collectionName, id);
+			_getIndexAlias(collectionName), collectionName, id);
 
 		updateRequestBuilder.setFetchSource(true);
 		updateRequestBuilder.setRefreshPolicy(
@@ -766,7 +758,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		String collectionName, SearchSourceBuilder searchSourceBuilder) {
 
 		SearchRequestBuilder searchRequestBuilder = _prepareSearch(
-			getIndexAlias(collectionName));
+			_getIndexAlias(collectionName));
 
 		if (searchSourceBuilder.size() == -1) {
 			int from = searchSourceBuilder.from();
@@ -818,7 +810,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		for (String collectionName : collectionNames) {
 			SearchRequestBuilder searchRequestBuilder = _prepareSearch(
-				getIndexAlias(collectionName));
+				_getIndexAlias(collectionName));
 
 			searchRequestBuilder.setQuery(queryBuilder);
 			searchRequestBuilder.setSize(0);
@@ -848,11 +840,18 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 			SearchHits searchHits = searchResponse.getHits();
 
 			if (HitsUtil.hasHits(searchHits)) {
-				indices.add(getIndexAlias(collectionNames[i]));
+				indices.add(_getIndexAlias(collectionNames[i]));
 			}
 		}
 
 		return indices;
+	}
+
+	private String _getIndexAlias(String collectionName) {
+		String indexName = ElasticsearchIndexUtil.getIndexName(
+			collectionName, _weDeployDataService);
+
+		return _aliases.getOrDefault(indexName, indexName);
 	}
 
 	private SearchRequestBuilder _prepareSearch(String indexName) {

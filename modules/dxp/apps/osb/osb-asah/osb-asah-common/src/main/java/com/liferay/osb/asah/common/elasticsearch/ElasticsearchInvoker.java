@@ -93,8 +93,6 @@ public interface ElasticsearchInvoker {
 	public JSONObject get(String collectionName, String id)
 		throws ResourceNotFoundException;
 
-	public String getIndexAlias(String collectionName);
-
 	public MultiSearchResponse multiSearch(
 		String collectionName, List<SearchSourceBuilder> searchRequestBuilders);
 
