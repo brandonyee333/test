@@ -112,7 +112,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		bulkRequestBuilder.setRefreshPolicy(
 			WriteRequest.RefreshPolicy.IMMEDIATE);
 
-		String indexAlias = _getIndexAlias(collectionName);
+		String indexAlias = _checkIndexAlias(collectionName);
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -181,7 +181,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		jsonObject.put("id", id);
 
 		IndexRequestBuilder indexRequestBuilder = _client.prepareIndex(
-			_getIndexAlias(collectionName), collectionName, id);
+			_checkIndexAlias(collectionName), collectionName, id);
 
 		indexRequestBuilder.setRefreshPolicy(
 			WriteRequest.RefreshPolicy.IMMEDIATE);
@@ -752,6 +752,27 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		GetResult getResult = updateResponse.getGetResult();
 
 		return new JSONObject(getResult.getSource());
+	}
+
+	private String _checkIndexAlias(String collectionName) {
+		String indexName = ElasticsearchIndexUtil.getIndexName(
+			collectionName, _weDeployDataService);
+
+		String indexAlias = _aliases.get(indexName);
+
+		if (indexAlias != null) {
+			return indexAlias;
+		}
+
+		refreshAliases();
+
+		indexAlias = _aliases.get(indexName);
+
+		if (indexAlias == null) {
+			return indexName;
+		}
+
+		return indexAlias;
 	}
 
 	private SearchRequestBuilder _createSearchRequestBuilder(
