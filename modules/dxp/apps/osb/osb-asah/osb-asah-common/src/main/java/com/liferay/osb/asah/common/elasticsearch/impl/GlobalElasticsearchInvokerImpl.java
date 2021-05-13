@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.elasticsearch.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 
 import org.elasticsearch.client.Client;
 
@@ -24,10 +23,8 @@ import org.elasticsearch.client.Client;
  */
 public class GlobalElasticsearchInvokerImpl extends ElasticsearchInvokerImpl {
 
-	public GlobalElasticsearchInvokerImpl(
-		Client client, ElasticsearchIndexManager elasticsearchIndexManager) {
-
-		super(client, elasticsearchIndexManager, null);
+	public GlobalElasticsearchInvokerImpl(Client client) {
+		super(client, null, null);
 	}
 
 	@Override
@@ -35,10 +32,6 @@ public class GlobalElasticsearchInvokerImpl extends ElasticsearchInvokerImpl {
 		createElasticsearchBulkRequestBuilder() {
 
 		throw new UnsupportedOperationException("");
-	}
-
-	@Override
-	public void refreshAliases() {
 	}
 
 }

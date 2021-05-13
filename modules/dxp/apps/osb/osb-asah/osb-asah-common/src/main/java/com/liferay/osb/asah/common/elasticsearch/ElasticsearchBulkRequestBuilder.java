@@ -16,8 +16,6 @@ package com.liferay.osb.asah.common.elasticsearch;
 
 import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -39,17 +37,19 @@ import org.json.JSONObject;
 public class ElasticsearchBulkRequestBuilder {
 
 	public static ElasticsearchBulkRequestBuilder create(
-		Map<String, String> aliases, Client client, String indexNamespace) {
+		Client client, ElasticsearchAliases elasticsearchAliases,
+		String indexNamespace) {
 
 		return new ElasticsearchBulkRequestBuilder(
-			aliases, client, indexNamespace);
+			client, elasticsearchAliases, indexNamespace);
 	}
 
 	public ElasticsearchBulkRequestBuilder add(
 		String collectionName, JSONObject jsonObject) {
 
 		addByIndexName(
-			collectionName, getIndexAlias(collectionName), jsonObject);
+			collectionName, _elasticsearchAliases.check(collectionName),
+			jsonObject);
 
 		return this;
 	}
@@ -76,7 +76,7 @@ public class ElasticsearchBulkRequestBuilder {
 		String collectionName, String id) {
 
 		DeleteRequestBuilder deleteRequestBuilder = _client.prepareDelete(
-			getIndexAlias(collectionName), collectionName, id);
+			_elasticsearchAliases.get(collectionName), collectionName, id);
 
 		_bulkRequestBuilder.add(deleteRequestBuilder);
 
@@ -115,13 +115,6 @@ public class ElasticsearchBulkRequestBuilder {
 		return null;
 	}
 
-	public String getIndexAlias(String collectionName) {
-		return _aliases.getOrDefault(
-			ElasticsearchIndexUtil.getIndexName(
-				collectionName, _indexNamespace),
-			_indexNamespace + "_" + collectionName.toLowerCase());
-	}
-
 	public boolean hasActions() {
 		if (_bulkRequestBuilder.numberOfActions() > 0) {
 			return true;
@@ -144,7 +137,7 @@ public class ElasticsearchBulkRequestBuilder {
 		String collectionName, JSONObject jsonObject) {
 
 		IndexRequestBuilder indexRequestBuilder = _client.prepareIndex(
-			getIndexAlias(collectionName), collectionName,
+			_elasticsearchAliases.get(collectionName), collectionName,
 			jsonObject.getString("id"));
 
 		indexRequestBuilder.setSource(jsonObject.toString(), XContentType.JSON);
@@ -158,14 +151,15 @@ public class ElasticsearchBulkRequestBuilder {
 		String collectionName, JSONObject jsonObject) {
 
 		return updateByIndexName(
-			collectionName, getIndexAlias(collectionName), jsonObject);
+			collectionName, _elasticsearchAliases.get(collectionName),
+			jsonObject);
 	}
 
 	public ElasticsearchBulkRequestBuilder update(
 		String collectionName, String id, Script script) {
 
 		UpdateRequestBuilder updateRequestBuilder = _client.prepareUpdate(
-			getIndexAlias(collectionName), collectionName, id);
+			_elasticsearchAliases.get(collectionName), collectionName, id);
 
 		updateRequestBuilder.setFetchSource(false);
 		updateRequestBuilder.setRetryOnConflict(5);
@@ -194,7 +188,7 @@ public class ElasticsearchBulkRequestBuilder {
 		String collectionName, JSONObject jsonObject) {
 
 		UpdateRequestBuilder updateRequestBuilder = _client.prepareUpdate(
-			getIndexAlias(collectionName), collectionName,
+			_elasticsearchAliases.get(collectionName), collectionName,
 			jsonObject.optString("id", _timeOrderedUuidGenerator.generateId()));
 
 		updateRequestBuilder.setDoc(jsonObject.toString(), XContentType.JSON);
@@ -209,10 +203,11 @@ public class ElasticsearchBulkRequestBuilder {
 	}
 
 	private ElasticsearchBulkRequestBuilder(
-		Map<String, String> aliases, Client client, String indexNamespace) {
+		Client client, ElasticsearchAliases elasticsearchAliases,
+		String indexNamespace) {
 
-		_aliases = aliases;
 		_client = client;
+		_elasticsearchAliases = elasticsearchAliases;
 		_indexNamespace = indexNamespace;
 
 		_reset();
@@ -229,9 +224,9 @@ public class ElasticsearchBulkRequestBuilder {
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchBulkRequestBuilder.class);
 
-	private final Map<String, String> _aliases;
 	private BulkRequestBuilder _bulkRequestBuilder;
 	private final Client _client;
+	private final ElasticsearchAliases _elasticsearchAliases;
 	private final String _indexNamespace;
 	private WriteRequest.RefreshPolicy _refreshPolicy =
 		WriteRequest.RefreshPolicy.NONE;

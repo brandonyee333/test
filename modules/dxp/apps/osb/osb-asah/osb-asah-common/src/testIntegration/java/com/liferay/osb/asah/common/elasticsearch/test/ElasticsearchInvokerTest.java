@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.elasticsearch.test;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchAliases;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchConnection;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
@@ -73,7 +74,10 @@ public class ElasticsearchInvokerTest {
 	public void setUp() {
 		_elasticsearchInvoker = new ElasticsearchInvokerImpl(
 			_elasticsearchConnection.getTransportClient(),
-			_elasticsearchIndexManager, WeDeployDataService.OSB_ASAH_FARO_INFO);
+			new ElasticsearchAliases(
+				_elasticsearchIndexManager,
+				WeDeployDataService.OSB_ASAH_FARO_INFO),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		_collectionName = RandomTestUtil.randomString();
 

@@ -98,8 +98,6 @@ public interface ElasticsearchInvoker {
 
 	public RefreshResponse refresh();
 
-	public void refreshAliases();
-
 	public JSONObject replace(String collectionName, JSONObject jsonObject);
 
 	public void save(String collectionName, JSONArray jsonArray);

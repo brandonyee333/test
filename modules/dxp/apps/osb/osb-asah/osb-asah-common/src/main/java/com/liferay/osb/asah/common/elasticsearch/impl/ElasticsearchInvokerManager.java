@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch.impl;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchAliases;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchConnection;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -60,21 +61,24 @@ public class ElasticsearchInvokerManager {
 		for (WeDeployDataService weDeployDataService :
 				WeDeployDataService.values()) {
 
+			ElasticsearchAliases elasticsearchAliases =
+				new ElasticsearchAliases(
+					_elasticsearchIndexManager, weDeployDataService);
+
 			_elasticsearchInvokers.put(
 				"cacheable#" + weDeployDataService.toString(),
 				new CacheableElasticsearchInvokerImpl(
 					_elasticsearchConnection.getTransportClient(),
-					_elasticsearchIndexManager, weDeployDataService));
+					elasticsearchAliases, weDeployDataService));
 			_elasticsearchInvokers.put(
 				weDeployDataService.toString(),
 				new ElasticsearchInvokerImpl(
 					_elasticsearchConnection.getTransportClient(),
-					_elasticsearchIndexManager, weDeployDataService));
+					elasticsearchAliases, weDeployDataService));
 		}
 
 		_globalElasticsearchInvoker = new GlobalElasticsearchInvokerImpl(
-			_elasticsearchConnection.getTransportClient(),
-			_elasticsearchIndexManager);
+			_elasticsearchConnection.getTransportClient());
 	}
 
 	@Autowired

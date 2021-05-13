@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch.impl;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchAliases;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.spring.annotation.CachePut;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
@@ -31,10 +31,10 @@ public class CacheableElasticsearchInvokerImpl
 	extends ElasticsearchInvokerImpl {
 
 	public CacheableElasticsearchInvokerImpl(
-		Client client, ElasticsearchIndexManager elasticsearchIndexManager,
+		Client client, ElasticsearchAliases elasticsearchAliases,
 		WeDeployDataService weDeployDataService) {
 
-		super(client, elasticsearchIndexManager, weDeployDataService);
+		super(client, elasticsearchAliases, weDeployDataService);
 	}
 
 	@CachePut
