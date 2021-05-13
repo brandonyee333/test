@@ -188,7 +188,7 @@ public class ElasticsearchBulkRequestBuilder {
 		String collectionName, JSONObject jsonObject) {
 
 		UpdateRequestBuilder updateRequestBuilder = _client.prepareUpdate(
-			_elasticsearchAliases.get(collectionName), collectionName,
+			_elasticsearchAliases.check(collectionName), collectionName,
 			jsonObject.optString("id", _timeOrderedUuidGenerator.generateId()));
 
 		updateRequestBuilder.setDoc(jsonObject.toString(), XContentType.JSON);

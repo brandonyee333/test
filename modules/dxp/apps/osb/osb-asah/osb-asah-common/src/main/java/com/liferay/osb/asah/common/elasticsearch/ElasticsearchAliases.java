@@ -35,6 +35,10 @@ public class ElasticsearchAliases {
 	}
 
 	public String check(String collectionName) {
+		if (_weDeployDataService == null) {
+			return collectionName;
+		}
+
 		String indexName = ElasticsearchIndexUtil.getIndexName(
 			collectionName, _weDeployDataService);
 
@@ -56,6 +60,10 @@ public class ElasticsearchAliases {
 	}
 
 	public String get(String collectionName) {
+		if (_weDeployDataService == null) {
+			return collectionName;
+		}
+
 		return ElasticsearchIndexUtil.getIndexAlias(
 			collectionName, _weDeployDataService);
 	}

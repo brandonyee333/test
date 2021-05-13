@@ -78,7 +78,8 @@ public class ElasticsearchInvokerManager {
 		}
 
 		_globalElasticsearchInvoker = new GlobalElasticsearchInvokerImpl(
-			_elasticsearchConnection.getTransportClient());
+			_elasticsearchConnection.getTransportClient(),
+			new ElasticsearchAliases(_elasticsearchIndexManager, null));
 	}
 
 	@Autowired

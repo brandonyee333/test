@@ -726,7 +726,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		Script script) {
 
 		UpdateRequestBuilder updateRequestBuilder = _client.prepareUpdate(
-			_elasticsearchAliases.get(collectionName), collectionName, id);
+			_elasticsearchAliases.check(collectionName), collectionName, id);
 
 		updateRequestBuilder.setFetchSource(true);
 		updateRequestBuilder.setRefreshPolicy(

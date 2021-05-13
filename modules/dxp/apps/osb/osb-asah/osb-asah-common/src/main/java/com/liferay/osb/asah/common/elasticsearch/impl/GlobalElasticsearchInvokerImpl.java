@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch.impl;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchAliases;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 
 import org.elasticsearch.client.Client;
@@ -23,8 +24,10 @@ import org.elasticsearch.client.Client;
  */
 public class GlobalElasticsearchInvokerImpl extends ElasticsearchInvokerImpl {
 
-	public GlobalElasticsearchInvokerImpl(Client client) {
-		super(client, null, null);
+	public GlobalElasticsearchInvokerImpl(
+		Client client, ElasticsearchAliases elasticsearchAliases) {
+
+		super(client, elasticsearchAliases, null);
 	}
 
 	@Override
