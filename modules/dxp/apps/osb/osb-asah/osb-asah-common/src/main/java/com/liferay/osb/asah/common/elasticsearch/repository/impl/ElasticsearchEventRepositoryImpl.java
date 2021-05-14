@@ -55,6 +55,14 @@ public class ElasticsearchEventRepositoryImpl implements EventRepository {
 	}
 
 	@Override
+	public long countUniqueIndividuals(
+		Long channelId, long eventDefinitionId, Date rangeEndDate,
+		Date rangeStartDate) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public void delete(Event event) {
 		throw new UnsupportedOperationException();
 	}

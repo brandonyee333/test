@@ -41,7 +41,7 @@ public class EventAnalysisDataFetcher extends BaseDataFetcher<EventAnalysis> {
 			AnalysisType.valueOf(environment.getArgument("analysisType")),
 			Long.valueOf(environment.getArgument("channelId")),
 			Long.valueOf(environment.getArgument("eventDefinitionId")),
-			searchQueryContext);
+			searchQueryContext.getTimeRange());
 	}
 
 	@Autowired

@@ -14,15 +14,15 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.EventAnalysis;
+import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventRepository;
 
 import java.time.ZoneId;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,30 +35,35 @@ public class EventAnalysisDog {
 
 	public EventAnalysis getEventAnalysis(
 		AnalysisType analysisType, Long channelId, Long eventDefinitionId,
-		SearchQueryContext searchQueryContext) {
+		TimeRange timeRange) {
 
 		EventAnalysis eventAnalysis = new EventAnalysis();
 
 		eventAnalysis.setCount(1);
 		eventAnalysis.setPage(0);
 
-		TimeRange timeRange = searchQueryContext.getTimeRange();
+		Date rangeEndDate = DateUtil.toDate(
+			timeRange.getEndLocalDateTime(),
+			ZoneId.of(TimeZoneDogUtil.getTimeZoneId()));
+		Date rangeStartDate = DateUtil.toDate(
+			timeRange.getStartLocalDateTime(),
+			ZoneId.of(TimeZoneDogUtil.getTimeZoneId()));
+
 
 		long totalEvents =
 			_eventRepository.
 				countByChannelIdAndEventDefinitionIdAndEventDateBetween(
-					channelId, eventDefinitionId,
-					DateUtil.toDate(
-						timeRange.getStartLocalDateTime(),
-						ZoneId.of(TimeZoneDogUtil.getTimeZoneId())),
-					DateUtil.toDate(
-						timeRange.getEndLocalDateTime(),
-						ZoneId.of(TimeZoneDogUtil.getTimeZoneId())));
+					channelId, eventDefinitionId, rangeStartDate, rangeEndDate);
 
 		eventAnalysis.setTotalEvents(totalEvents);
 
 		if (analysisType.equals(AnalysisType.TOTAL)) {
 			eventAnalysis.setValue(totalEvents);
+		}
+		else if (analysisType.equals(AnalysisType.UNIQUE)) {
+			eventAnalysis.setValue(
+				_eventRepository.countUniqueIndividuals(
+					channelId, eventDefinitionId, rangeEndDate, rangeStartDate));
 		}
 
 		return eventAnalysis;

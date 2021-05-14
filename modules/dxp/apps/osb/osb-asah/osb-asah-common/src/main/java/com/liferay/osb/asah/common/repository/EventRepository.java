@@ -42,6 +42,10 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 
 	public long countByEventDefinitionId(long eventDefinitionId);
 
+	public long countUniqueIndividuals(
+		Long channelId, long eventDefinitionId, Date rangeEndDate,
+		Date rangeStartDate);
+
 	public List<EventAttributeValue> findDistinctAttributeValues(
 		@Param("eventAttributeDefinitionId") Long eventAttributeDefinitionId,
 		@Param("size") int size);
