@@ -95,8 +95,6 @@ definition {
 			key_bodyText = "Test",
 			key_fieldName = "Copy of Paragraph",
 			locator1 = "FormFields#FIELD_TARGET_LABEL_AND_BODY_TEXT");
-
-			
 	}
 
 	@description = "Verify that a Paragraph Field can be edited"
