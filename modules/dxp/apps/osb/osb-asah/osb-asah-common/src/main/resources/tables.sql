@@ -192,6 +192,7 @@ CREATE TABLE IF NOT EXISTS Event (
 	dataSourceId TEXT,
 	eventDate TIMESTAMPTZ,
 	eventDefinitionId BIGINT,
+	individualId BIGINT,
 	url TEXT,
 	userId TEXT
 );
