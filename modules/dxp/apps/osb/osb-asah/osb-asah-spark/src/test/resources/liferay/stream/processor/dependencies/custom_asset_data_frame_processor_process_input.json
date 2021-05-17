@@ -1,0 +1,222 @@
+[
+	{
+		"applicationId": "Custom",
+		"channelId": 1,
+		"context": {
+			"browserName": "Firefox",
+			"canonicalUrl": "http://liferay.com/home",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": 1,
+		"eventDate": "2018-04-04T09:30:00.000Z",
+		"eventId": "assetViewed",
+		"eventProperties": {
+			"assetId": "1",
+			"formEnabled": true,
+			"title": "Asset Title"
+		},
+		"id": "1",
+		"individualId": "100",
+		"projectId": "test",
+		"segmentNames": [
+			"Developer",
+			"Support"
+		],
+		"userId": "1"
+	},
+	{
+		"applicationId": "Custom",
+		"channelId": 1,
+		"context": {
+			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/home",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Windows",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": 1,
+		"eventDate": "2018-04-04T09:31:00.000Z",
+		"eventId": "assetViewed",
+		"eventProperties": {
+			"assetId": "1",
+			"formEnabled": true,
+			"title": "Asset Title"
+		},
+		"id": "2",
+		"individualId": "100",
+		"projectId": "test",
+		"segmentNames": [
+			"Developer",
+			"Support"
+		],
+		"userId": "1"
+	},
+	{
+		"applicationId": "Custom",
+		"channelId": 1,
+		"context": {
+			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/home",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Windows",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": 1,
+		"eventDate": "2018-04-04T09:31:05.000Z",
+		"eventId": "assetClicked",
+		"eventProperties": {
+			"assetId": "1",
+			"title": "Asset Title"
+		},
+		"id": "3",
+		"individualId": "100",
+		"projectId": "test",
+		"segmentNames": [
+			"Developer",
+			"Support"
+		],
+		"userId": "1"
+	},
+	{
+		"applicationId": "Custom",
+		"channelId": 1,
+		"context": {
+			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/home",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Windows",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": 1,
+		"eventDate": "2018-04-04T09:31:10.000Z",
+		"eventId": "assetDepthReached",
+		"eventProperties": {
+			"assetId": "1",
+			"depth": "90",
+			"title": "Asset Title"
+		},
+		"id": "7",
+		"individualId": "100",
+		"projectId": "test",
+		"segmentNames": [
+			"Developer",
+			"Support"
+		],
+		"userId": "1"
+	},
+	{
+		"applicationId": "Custom",
+		"channelId": 1,
+		"context": {
+			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/home",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Windows",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": 1,
+		"eventDate": "2018-04-04T09:31:12.000Z",
+		"eventId": "assetDownloaded",
+		"eventProperties": {
+			"assetId": "1",
+			"title": "Asset Title"
+		},
+		"id": "8",
+		"individualId": "100",
+		"projectId": "test",
+		"segmentNames": [
+			"Developer",
+			"Support"
+		],
+		"userId": "1"
+	},
+	{
+		"applicationId": "Custom",
+		"channelId": 1,
+		"context": {
+			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/home",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Windows",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": 1,
+		"eventDate": "2018-04-04T09:31:30.000Z",
+		"eventId": "assetSubmitted",
+		"eventProperties": {
+			"assetId": "1",
+			"title": "Asset Title"
+		},
+		"id": "9",
+		"individualId": "100",
+		"projectId": "test",
+		"segmentNames": [
+			"Developer",
+			"Support"
+		],
+		"userId": "1"
+	},
+	{
+		"applicationId": "Custom",
+		"channelId": 1,
+		"context": {
+			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/home",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Windows",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": 1,
+		"eventDate": "2018-04-04T09:32:05.000Z",
+		"eventId": "assetClicked",
+		"eventProperties": {
+			"assetId": "1",
+			"title": "Asset Title"
+		},
+		"id": "10",
+		"individualId": "100",
+		"projectId": "test",
+		"segmentNames": [
+			"Developer",
+			"Support"
+		],
+		"userId": "1"
+	}
+]

@@ -1,0 +1,18 @@
+[
+	{
+		"abandonments": 0,
+		"assetId": "1",
+		"category": "default",
+		"channelId": "1",
+		"clicks": 2,
+		"downloads": 1,
+		"normalized_event_date": "2018-04-04T09:00:00.000Z",
+		"projectId": "test",
+		"read_time": 65,
+		"submission_time": 30,
+		"submissions": 1,
+		"userId": "1",
+		"variantId": "",
+		"views": 2
+	}
+]

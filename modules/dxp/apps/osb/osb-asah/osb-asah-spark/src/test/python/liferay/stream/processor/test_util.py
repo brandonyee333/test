@@ -36,7 +36,7 @@ def read_data_frame(file_name, spark_session, schema=None):
 	data_frame_reader = spark_session.read
 
 	if schema is not None:
-		data_frame_reader = data_frame_reader.schema(schema)\
+		data_frame_reader = data_frame_reader.schema(schema)
 
 	return data_frame_reader.option(
 		'multiLine', 'true'
