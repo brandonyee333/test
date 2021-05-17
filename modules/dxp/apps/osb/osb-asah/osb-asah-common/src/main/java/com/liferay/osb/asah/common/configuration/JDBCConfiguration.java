@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jdbc.core.convert.JdbcCustomConversions;
 import org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
@@ -136,6 +137,7 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 	@ConditionalOnProperty(
 		havingValue = "true", value = "osb.asah.postgresql.enabled"
 	)
+	@Primary
 	public DataSource postgreSQLDataSource() {
 		return new PostgreSQLDataSource(_hikaryMaximumPoolSize);
 	}
