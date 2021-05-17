@@ -11,6 +11,7 @@
 
 from liferay.common.spark import BaseSparkJob
 from liferay.stream.processor.blog import BlogDataFrameProcessor
+from liferay.stream.processor.custom_asset import CustomAssetDataFrameProcessor
 from liferay.stream.processor.document_library import DocumentLibraryDataFrameProcessor
 from liferay.stream.processor.form import FormDataFrameProcessor, \
 	FormFieldDataFrameProcessor, \
@@ -28,6 +29,7 @@ class CuratorSparkJob(BaseSparkJob):
 
 		processors = [
 			BlogDataFrameProcessor(batch_id, 'blogs', self),
+			CustomAssetDataFrameProcessor(batch_id, 'custom-assets', self),
 			DocumentLibraryDataFrameProcessor(
 				batch_id, 'document-libraries', self
 			),
