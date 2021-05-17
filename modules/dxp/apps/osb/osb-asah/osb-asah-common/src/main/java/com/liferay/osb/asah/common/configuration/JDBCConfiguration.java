@@ -139,7 +139,7 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 	)
 	@Primary
 	public DataSource postgreSQLDataSource() {
-		return new PostgreSQLDataSource(_hikaryMaximumPoolSize);
+		return new PostgreSQLDataSource(_hikariMaximumPoolSize);
 	}
 
 	@Bean
@@ -159,7 +159,7 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 		hikariDataSource.setJdbcUrl(_buildTrinoJdbcUrl());
 		hikariDataSource.setLeakDetectionThreshold(
 			TimeUnit.SECONDS.toMillis(20));
-		hikariDataSource.setMaximumPoolSize(_hikaryMaximumPoolSize);
+		hikariDataSource.setMaximumPoolSize(_hikariMaximumPoolSize);
 		hikariDataSource.setMaxLifetime(TimeUnit.SECONDS.toMillis(120));
 		hikariDataSource.setUsername(CredentialConstants.TRINO_USER);
 
@@ -188,6 +188,6 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 	}
 
 	@Value("${spring.datasource.hikari.maximum-pool-size:10}")
-	private int _hikaryMaximumPoolSize;
+	private int _hikariMaximumPoolSize;
 
 }

@@ -41,8 +41,8 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  */
 public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 
-	public PostgreSQLDataSource(int hikaryMaxPoolSize) {
-		_hikariMaximumPoolSize = hikaryMaxPoolSize;
+	public PostgreSQLDataSource(int hikariMaxPoolSize) {
+		_hikariMaximumPoolSize = hikariMaxPoolSize;
 	}
 
 	@Override
