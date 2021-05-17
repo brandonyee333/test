@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.lang.StringUtils;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -45,12 +44,31 @@ public class EventRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
+	public long countTotalEvents(
+		@Nullable Long channelId, @Nullable Long eventDefinitionId,
+		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate) {
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return selectSelectStep.from(
+			"Event"
+		).where(
+			_getConditions(
+				channelId, eventDefinitionId, rangeEndDate, rangeStartDate)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
 	public long countUniqueIndividuals(
 		@Nullable Long channelId, @Nullable Long eventDefinitionId,
 		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.select(DSL.countDistinct(DSL.field("individualId")));
+			_dslContext.select(_getUniqueIndividualsField());
 
 		return selectSelectStep.from(
 			"Event"
@@ -82,6 +100,28 @@ public class EventRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public long getAverageEventCountPerIndividual(
+		@Nullable Long channelId, @Nullable Long eventDefinitionId,
+		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate) {
+
+		Field<Integer> totalEventCount = DSL.count();
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.select(
+				totalEventCount.div(_getUniqueIndividualsField()));
+
+		return selectSelectStep.from(
+			"Event"
+		).where(
+			_getConditions(
+				channelId, eventDefinitionId, rangeEndDate, rangeStartDate)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
 	private List<Condition> _getConditions(
 		Long channelId, Long eventDefinitionId, Date rangeEndDate,
 		Date rangeStartDate) {
@@ -107,6 +147,10 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		return conditions;
+	}
+
+	private Field<Integer> _getUniqueIndividualsField() {
+		return DSL.countDistinct(DSL.field("individualId"));
 	}
 
 	private final DSLContext _dslContext;

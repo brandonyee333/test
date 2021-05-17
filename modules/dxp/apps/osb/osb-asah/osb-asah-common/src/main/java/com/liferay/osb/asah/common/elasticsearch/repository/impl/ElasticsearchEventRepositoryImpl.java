@@ -56,8 +56,8 @@ public class ElasticsearchEventRepositoryImpl implements EventRepository {
 
 	@Override
 	public long countUniqueIndividuals(
-		Long channelId, long eventDefinitionId, Date rangeEndDate,
-		Date rangeStartDate) {
+		@Nullable Long channelId, @Nullable Long eventDefinitionId,
+		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate) {
 
 		throw new UnsupportedOperationException();
 	}
@@ -111,6 +111,14 @@ public class ElasticsearchEventRepositoryImpl implements EventRepository {
 
 	@Override
 	public Optional<Event> findLastSeenEvent(@Nullable Long eventDefinitionId) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public long getAverageEventCountPerIndividual(
+		@Nullable Long channelId, @Nullable Long eventDefinitionId,
+		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate) {
+
 		throw new UnsupportedOperationException();
 	}
 

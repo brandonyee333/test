@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventRepository;
 
 import java.time.ZoneId;
+
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,6 @@ public class EventAnalysisDog {
 			timeRange.getStartLocalDateTime(),
 			ZoneId.of(TimeZoneDogUtil.getTimeZoneId()));
 
-
 		long totalEvents =
 			_eventRepository.
 				countByChannelIdAndEventDefinitionIdAndEventDateBetween(
@@ -57,13 +57,20 @@ public class EventAnalysisDog {
 
 		eventAnalysis.setTotalEvents(totalEvents);
 
-		if (analysisType.equals(AnalysisType.TOTAL)) {
+		if (analysisType.equals(AnalysisType.AVERAGE)) {
+			eventAnalysis.setValue(
+				_eventRepository.getAverageEventCountPerIndividual(
+					channelId, eventDefinitionId, rangeEndDate,
+					rangeStartDate));
+		}
+		else if (analysisType.equals(AnalysisType.TOTAL)) {
 			eventAnalysis.setValue(totalEvents);
 		}
 		else if (analysisType.equals(AnalysisType.UNIQUE)) {
 			eventAnalysis.setValue(
 				_eventRepository.countUniqueIndividuals(
-					channelId, eventDefinitionId, rangeEndDate, rangeStartDate));
+					channelId, eventDefinitionId, rangeEndDate,
+					rangeStartDate));
 		}
 
 		return eventAnalysis;
