@@ -72,11 +72,8 @@ public class FieldMappingDTO {
 		if (CollectionUtils.isNotEmpty(_dataSourceFieldMappings) &&
 			MapUtils.isEmpty(_dataSourceFieldNames)) {
 
-			Iterator<DataSourceFieldMapping> iterator =
-				_dataSourceFieldMappings.iterator();
-
-			while (iterator.hasNext()) {
-				DataSourceFieldMapping dataSourceFieldMapping = iterator.next();
+			for (DataSourceFieldMapping dataSourceFieldMapping :
+					_dataSourceFieldMappings) {
 
 				_dataSourceFieldNames.put(
 					String.valueOf(dataSourceFieldMapping.getDataSourceId()),
