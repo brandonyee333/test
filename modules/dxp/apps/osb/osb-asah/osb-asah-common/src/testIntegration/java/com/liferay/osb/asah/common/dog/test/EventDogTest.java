@@ -64,7 +64,8 @@ public class EventDogTest {
 		Event event = _eventDog.addEvent(
 			"analyticsEventId", "Page", "http://localhost:8080",
 			channel.getId(), date, "123456", Collections.emptySet(), date,
-			eventDefinition.getId(), "http://localhost:8080/test", "abcdef");
+			eventDefinition.getId(), 1L, "http://localhost:8080/test",
+			"abcdef");
 
 		Assert.assertEquals("analyticsEventId", event.getAnalyticsEventId());
 		Assert.assertEquals("Page", event.getApplicationId());
@@ -101,7 +102,7 @@ public class EventDogTest {
 			"analyticsEventId", "Page", "http://localhost:8080",
 			channel.getId(), date, "dataSourceId",
 			Collections.singleton(eventAttribute), date,
-			eventDefinition.getId(), "http://localhost:8080", "abcdef");
+			eventDefinition.getId(), 1L, "http://localhost:8080", "abcdef");
 
 		Assert.assertEquals(
 			eventAttributeDefinition.getId(),
@@ -144,7 +145,8 @@ public class EventDogTest {
 							"testValue2", eventAttributeDefinitionId));
 				}
 			},
-			date, eventDefinition.getId(), "http://localhost:8080", "userId");
+			date, eventDefinition.getId(), 1L, "http://localhost:8080",
+			"userId");
 
 		Assert.assertEquals(
 			new ArrayList<EventAttributeValue>() {
