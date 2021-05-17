@@ -14,13 +14,20 @@
 
 package com.liferay.osb.asah.common.configuration;
 
+import com.liferay.osb.asah.common.constants.CredentialConstants;
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLDataSource;
 import com.liferay.osb.asah.common.postgresql.converter.JSONObjectToPGobjectConverter;
 import com.liferay.osb.asah.common.postgresql.converter.PGobjectToJSONObjectConverter;
 
+import com.zaxxer.hikari.HikariDataSource;
+
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 import javax.sql.DataSource;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -136,6 +143,46 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 	@Bean
 	public TransactionManager transactionManager(DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
+	}
+
+	@Bean("trinoDataSource")
+	@ConditionalOnProperty(
+		havingValue = "true", value = "osb.asah.postgresql.enabled"
+	)
+	public DataSource trinoDataSource() {
+		HikariDataSource hikariDataSource = new HikariDataSource();
+
+		hikariDataSource.setConnectionTimeout(TimeUnit.SECONDS.toMillis(30));
+		hikariDataSource.setIdleTimeout(TimeUnit.SECONDS.toMillis(60));
+		hikariDataSource.setJdbcUrl(_buildTrinoJdbcUrl());
+		hikariDataSource.setLeakDetectionThreshold(
+			TimeUnit.SECONDS.toMillis(20));
+		hikariDataSource.setMaximumPoolSize(_hikaryMaximumPoolSize);
+		hikariDataSource.setMaxLifetime(TimeUnit.SECONDS.toMillis(120));
+		hikariDataSource.setUsername(CredentialConstants.TRINO_USER);
+
+		return hikariDataSource;
+	}
+
+	private String _buildTrinoJdbcUrl() {
+		StringBuilder sb = new StringBuilder("jdbc:trino://");
+
+		String[] transportAddressParts = StringUtils.split(
+			ServiceConstants.TRINO_SERVER_IP, ':');
+
+		sb.append(transportAddressParts[0]);
+
+		sb.append(":");
+
+		int port = 8080;
+
+		if (transportAddressParts.length == 2) {
+			port = Integer.parseInt(transportAddressParts[1]);
+		}
+
+		sb.append(port);
+
+		return sb.toString();
 	}
 
 	@Value("${spring.datasource.hikari.maximum-pool-size:10}")
