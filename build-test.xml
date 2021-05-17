@@ -5902,7 +5902,10 @@ war.path=${app.server.portal.dir}/</echo>
 				<if>
 					<and>
 						<isset property="databases.size" />
-						<equals arg1="${database.type}" arg2="mysql" />
+						<or>
+							<equals arg1="${database.type}" arg2="mysql" />
+							<equals arg1="${database.type}" arg2="mariadb" />
+						</or>
 					</and>
 					<then>
 						<var name="database.index" value="1" />
@@ -5927,6 +5930,22 @@ create database lportal${database.index} character set utf8;</echo>
 
 						<var name="database.index" unset="true" />
 					</then>
+					<elseif>
+						<and>
+							<isset property="databases.size" />
+							<equals arg1="${database.type}" arg2="postgresql" />
+						</and>
+						<then>
+							<echo file="create.sql">
+drop database lportal;
+create database lportal encoding = 'UNICODE';</echo>
+
+							<echo append="true" file="create.sql">
+
+drop database lportal${databases.size};
+create database lportal${databases.size} encoding = 'UNICODE';</echo>
+						</then>
+					</elseif>
 					<else>
 						<if>
 							<or>
@@ -6002,6 +6021,18 @@ connect to lportal;</replacevalue>
 							<replacetoken>create database lportal pagesize 8192;</replacetoken>
 							<replacevalue>create database lportal pagesize 32768 temporary tablespace managed by automatic storage;</replacevalue>
 						</replace>
+
+						<if>
+							<isset property="databases.size" />
+							<then>
+								<echo append="true" file="create.sql">
+
+disconnect lportal;
+create database lportal${databases.size} pagesize 32768 temporary tablespace managed by automatic storage;
+update db cfg for lportal${databases.size} using logprimary 2;
+update db cfg for lportal${databases.size} using logsecond 254;</echo>
+							</then>
+						</if>
 					</then>
 					<elseif>
 						<equals arg1="${database.type}" arg2="oracle" />
@@ -6013,6 +6044,32 @@ connect to lportal;</replacevalue>
 								<replacevalue>grant connect,resource to &amp;1;
 	grant unlimited tablespace to &amp;1;</replacevalue>
 							</replace>
+
+							<if>
+								<isset property="databases.size" />
+								<then>
+									<replace
+										file="create.sql"
+									>
+										<replacetoken>grant connect,resource to &amp;1;
+	grant unlimited tablespace to &amp;1;</replacetoken>
+										<replacevalue>grant all privileges to &amp;1;</replacevalue>
+									</replace>
+									<replace
+										file="create.sql"
+									>
+										<replacetoken>quit</replacetoken>
+										<replacevalue></replacevalue>
+									</replace>
+
+									<echo append="true" file="create.sql">
+	drop user lportal1 cascade;
+	create user lportal1 identified by lportal1;
+	grant connect,resource to lportal1;
+	grant unlimited tablespace to lportal1;
+	quit</echo>
+								</then>
+							</if>
 						</then>
 					</elseif>
 					<elseif>
@@ -6072,6 +6129,40 @@ use lportal</replacetoken>
 go]]></replacevalue>
 								</replacefilter>
 							</replace>
+
+							<if>
+								<isset property="databases.size" />
+								<then>
+									<echo append="true" file="create.sql">
+
+use master
+go
+
+drop database lportal${databases.size}
+go
+
+create database lportal${databases.size}
+go
+
+alter database lportal${databases.size} on default=1400
+go
+
+alter database lportal${databases.size} with override
+go
+
+exec sp_dboption 'lportal${databases.size}', 'allow nulls by default' , true
+go
+
+exec sp_dboption 'lportal${databases.size}', 'select into/bulkcopy/pllsort' , true
+go
+
+use lportal${databases.size}
+go
+
+checkpoint
+go</echo>
+								</then>
+							</if>
 						</then>
 					</elseif>
 				</if>
