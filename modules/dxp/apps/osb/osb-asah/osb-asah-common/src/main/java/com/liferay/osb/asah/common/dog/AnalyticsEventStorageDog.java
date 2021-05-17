@@ -61,6 +61,7 @@ public class AnalyticsEventStorageDog {
 				analyticsEvent.getCreateDate(),
 				analyticsEvent.getDataSourceId(), eventAttributes,
 				analyticsEvent.getEventDate(), eventDefinition.getId(),
+				Long.valueOf(analyticsEvent.getIndividualId()),
 				MapUtil.getString(eventContext, "url"),
 				analyticsEvent.getUserId());
 		}

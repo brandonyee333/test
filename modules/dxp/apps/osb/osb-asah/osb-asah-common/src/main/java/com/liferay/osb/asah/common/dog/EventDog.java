@@ -36,7 +36,7 @@ public class EventDog {
 		String analyticsEventId, String applicationId, String canonicalURL,
 		Long channelId, Date createDate, String dataSourceId,
 		Set<EventAttribute> eventAttributes, Date eventDate,
-		Long eventDefinitionId, String url, String userId) {
+		Long eventDefinitionId, Long individualId, String url, String userId) {
 
 		Event event = new Event();
 
@@ -49,6 +49,7 @@ public class EventDog {
 		event.setEventAttributes(eventAttributes);
 		event.setEventDate(eventDate);
 		event.setEventDefinitionId(eventDefinitionId);
+		event.setIndividualId(individualId);
 		event.setURL(url);
 		event.setUserId(userId);
 
