@@ -29,7 +29,6 @@ import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +38,6 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -130,8 +128,8 @@ public class FieldMappingDTO {
 	}
 
 	@JsonProperty("dataSources")
-	public JSONArray getDataSourcesJSONArray() {
-		return _dataSourcesJSONArray;
+	public List<Map<String, String>> getDataSources() {
+		return _dataSources;
 	}
 
 	@JsonProperty("displayName")
@@ -211,8 +209,8 @@ public class FieldMappingDTO {
 		_dataSourceFieldNames = dataSourceFieldNames;
 	}
 
-	public void setDataSourcesJSONArray(JSONArray dataSourcesJSONArray) {
-		_dataSourcesJSONArray = dataSourcesJSONArray;
+	public void setDataSources(List<Map<String, String>> dataSources) {
+		_dataSources = dataSources;
 	}
 
 	public void setDisplayName(String displayName) {
@@ -392,7 +390,7 @@ public class FieldMappingDTO {
 	private Date _createDate;
 	private Set<DataSourceFieldMapping> _dataSourceFieldMappings;
 	private Map<String, String> _dataSourceFieldNames;
-	private JSONArray _dataSourcesJSONArray;
+	private List<Map<String, String>> _dataSources;
 	private String _displayName;
 	private String _displayType;
 	private Set<FieldMappingDTO> _fieldMappingDTOs;

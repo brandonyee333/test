@@ -19,18 +19,16 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.entity.FieldMapping;
-import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 import org.apache.commons.math3.util.Pair;
-
-import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -102,18 +100,19 @@ public class DefinitionsRestController extends BaseRestController {
 
 			pairs.sort(Comparator.comparing(Pair::getKey));
 
-			JSONArray pairsJSONArray = new JSONArray();
+			List<Map<String, String>> dataSources = new ArrayList<>();
 
 			for (Pair<String, String> pair : pairs) {
-				pairsJSONArray.put(
-					JSONUtil.put(
-						"dataSourceFieldName", pair.getValue()
-					).put(
-						"dataSourceName", pair.getKey()
-					));
+				dataSources.add(
+					new HashMap<String, String>() {
+						{
+							put("dataSourceFieldName", pair.getValue());
+							put("dataSourceName", pair.getKey());
+						}
+					});
 			}
 
-			fieldMappingDTO.setDataSourcesJSONArray(pairsJSONArray);
+			fieldMappingDTO.setDataSources(dataSources);
 		}
 	}
 
