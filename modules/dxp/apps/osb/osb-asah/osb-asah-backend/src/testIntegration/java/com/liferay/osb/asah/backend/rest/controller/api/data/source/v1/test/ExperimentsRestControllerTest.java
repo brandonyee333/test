@@ -21,8 +21,8 @@ import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.Experimen
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
-import com.liferay.osb.asah.common.entity.DXPVariant;
 import com.liferay.osb.asah.common.entity.Experiment;
+import com.liferay.osb.asah.common.entity.ExperimentVariant;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.Goal;
 import com.liferay.osb.asah.common.model.GoalMetric;
@@ -149,12 +149,17 @@ public class ExperimentsRestControllerTest {
 	)
 	@Test
 	public void testPutDXPVariants() {
-		List<DXPVariant> expectedDXPVariants = new ArrayList<DXPVariant>() {
-			{
-				add(_createDXPVariant(50, true, "1", "DXP Variant 1"));
-				add(_createDXPVariant(35, false, "2", "DXP Variant 2"));
-			}
-		};
+		List<ExperimentVariant> expectedDXPVariants =
+			new ArrayList<ExperimentVariant>() {
+				{
+					add(
+						_createExperimentVariant(
+							50, true, "1", "DXP Variant 1"));
+					add(
+						_createExperimentVariant(
+							35, false, "2", "DXP Variant 2"));
+				}
+			};
 
 		_experimentsRestController.putDXPVariants(
 			"1", new DXPVariants(expectedDXPVariants));
@@ -163,7 +168,7 @@ public class ExperimentsRestControllerTest {
 			"1");
 
 		Assert.assertEquals(
-			expectedDXPVariants, actualExperiment.getDXPVariants());
+			expectedDXPVariants, actualExperiment.getExperimentVariants());
 	}
 
 	@ElasticsearchIndex(
@@ -185,18 +190,18 @@ public class ExperimentsRestControllerTest {
 		Assert.assertEquals(expectedGoal, actualExperiment.getGoal());
 	}
 
-	private DXPVariant _createDXPVariant(
+	private ExperimentVariant _createExperimentVariant(
 		Integer changes, boolean control, String dxpVariantId,
 		String dxpVariantName) {
 
-		DXPVariant dxpVariant = new DXPVariant();
+		ExperimentVariant experimentVariant = new ExperimentVariant();
 
-		dxpVariant.setChanges(changes);
-		dxpVariant.setControl(control);
-		dxpVariant.setDXPVariantId(dxpVariantId);
-		dxpVariant.setDXPVariantName(dxpVariantName);
+		experimentVariant.setChanges(changes);
+		experimentVariant.setControl(control);
+		experimentVariant.setDXPVariantId(dxpVariantId);
+		experimentVariant.setDXPVariantName(dxpVariantName);
 
-		return dxpVariant;
+		return experimentVariant;
 	}
 
 	@MockBean

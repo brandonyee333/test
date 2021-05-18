@@ -15,16 +15,16 @@
 package com.liferay.osb.asah.backend.model;
 
 import com.liferay.osb.asah.backend.test.util.BaseBeanTestCase;
-import com.liferay.osb.asah.common.entity.DXPVariant;
+import com.liferay.osb.asah.common.entity.ExperimentVariant;
 
 /**
  * @author André Miranda
  */
-public class DXPVariantTest extends BaseBeanTestCase<DXPVariant> {
+public class DXPVariantTest extends BaseBeanTestCase<ExperimentVariant> {
 
 	@Override
-	protected DXPVariant newInstance() {
-		return new DXPVariant();
+	protected ExperimentVariant newInstance() {
+		return new ExperimentVariant();
 	}
 
 }

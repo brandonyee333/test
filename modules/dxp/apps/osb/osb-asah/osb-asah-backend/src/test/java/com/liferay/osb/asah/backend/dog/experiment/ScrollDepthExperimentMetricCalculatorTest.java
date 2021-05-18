@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.backend.dog.experiment;
 
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.ExperimentMetrics;
-import com.liferay.osb.asah.common.entity.VariantMetrics;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
+import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
 import com.liferay.osb.asah.common.model.Goal;
 import com.liferay.osb.asah.common.model.GoalMetric;
 
@@ -64,22 +64,23 @@ public class ScrollDepthExperimentMetricCalculatorTest
 						false, "Variant", 50, "scroll_depth_variant_a_day1.txt",
 						"scroll_depth_variant_a_day2.txt")));
 
-		ExperimentMetrics experimentMetrics =
-			experimentMetricCalculator.calculateMetrics(experiment);
+		ExperimentMetric experimentMetric =
+			experimentMetricCalculator.calculateMetric(experiment);
 
-		assertExperimentMetrics(experimentMetrics, 95, 2, 12);
+		assertExperimentMetric(experimentMetric, 95, 2, 12);
 
-		List<VariantMetrics> variantMetricsList =
-			experimentMetrics.getVariantMetricsList();
+		List<ExperimentVariantMetric> experimentVariantMetrics =
+			experimentMetric.getVariantMetrics();
 
-		variantMetricsList.sort(
-			Comparator.comparing(VariantMetrics::getDXPVariantId));
+		experimentVariantMetrics.sort(
+			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
 
-		assertVariantMetrics(
-			variantMetricsList.get(0), 2.11, 92.04, "Control", 0, 45.70, 50.08);
-		assertVariantMetrics(
-			variantMetricsList.get(1), 1.79, 92.77, "Variant", -0.34, 45.56,
-			49.92);
+		assertExperimentVariantMetric(
+			2.11, 92.04, "Control", experimentVariantMetrics.get(0), 0, 45.70,
+			50.08);
+		assertExperimentVariantMetric(
+			1.79, 92.77, "Variant", experimentVariantMetrics.get(1), -0.34,
+			45.56, 49.92);
 	}
 
 	@Test
@@ -111,25 +112,26 @@ public class ScrollDepthExperimentMetricCalculatorTest
 						"scroll_depth_variant_b_day1.txt",
 						"scroll_depth_variant_b_day2.txt")));
 
-		ExperimentMetrics experimentMetrics =
-			experimentMetricCalculator.calculateMetrics(experiment);
+		ExperimentMetric experimentMetric =
+			experimentMetricCalculator.calculateMetric(experiment);
 
-		assertExperimentMetrics(experimentMetrics, 95, 2, 12);
+		assertExperimentMetric(experimentMetric, 95, 2, 12);
 
-		List<VariantMetrics> variantMetricsList =
-			experimentMetrics.getVariantMetricsList();
+		List<ExperimentVariantMetric> experimentVariantMetrics =
+			experimentMetric.getVariantMetrics();
 
-		variantMetricsList.sort(
-			Comparator.comparing(VariantMetrics::getDXPVariantId));
+		experimentVariantMetrics.sort(
+			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
 
-		assertVariantMetrics(
-			variantMetricsList.get(0), 2.09, 92.04, "Control", 0, 45.70, 32.76);
-		assertVariantMetrics(
-			variantMetricsList.get(1), 1.81, 92.78, "Variant A", -0.26, 45.58,
-			34.13);
-		assertVariantMetrics(
-			variantMetricsList.get(2), 1.92, 93.22, "Variant B", -7.79, 42.14,
-			33.11);
+		assertExperimentVariantMetric(
+			2.09, 92.04, "Control", experimentVariantMetrics.get(0), 0, 45.70,
+			32.76);
+		assertExperimentVariantMetric(
+			1.81, 92.78, "Variant A", experimentVariantMetrics.get(1), -0.26,
+			45.58, 34.13);
+		assertExperimentVariantMetric(
+			1.92, 93.22, "Variant B", experimentVariantMetrics.get(2), -7.79,
+			42.14, 33.11);
 	}
 
 	@Ignore
@@ -159,21 +161,21 @@ public class ScrollDepthExperimentMetricCalculatorTest
 						Collections.singletonList(
 							new ExperimentDataPoint<>(0, new Double[0])))));
 
-		ExperimentMetrics experimentMetrics =
-			experimentMetricCalculator.calculateMetrics(experiment);
+		ExperimentMetric experimentMetric =
+			experimentMetricCalculator.calculateMetric(experiment);
 
-		assertExperimentMetrics(experimentMetrics, 95, 1, 13);
+		assertExperimentMetric(experimentMetric, 95, 1, 13);
 
-		List<VariantMetrics> variantMetricsList =
-			experimentMetrics.getVariantMetricsList();
+		List<ExperimentVariantMetric> experimentVariantMetrics =
+			experimentMetric.getVariantMetrics();
 
-		variantMetricsList.sort(
-			Comparator.comparing(VariantMetrics::getDXPVariantId));
+		experimentVariantMetrics.sort(
+			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
 
-		assertVariantMetrics(
-			variantMetricsList.get(0), 0, 0, "Control", 0, 0, 50);
-		assertVariantMetrics(
-			variantMetricsList.get(1), 0, 0, "Variant", 0, 0, 50);
+		assertExperimentVariantMetric(
+			0, 0, "Control", experimentVariantMetrics.get(0), 0, 0, 50);
+		assertExperimentVariantMetric(
+			0, 0, "Variant", experimentVariantMetrics.get(1), 0, 0, 50);
 	}
 
 }

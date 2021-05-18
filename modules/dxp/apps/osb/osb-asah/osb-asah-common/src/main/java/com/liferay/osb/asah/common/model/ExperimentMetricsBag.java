@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.liferay.osb.asah.common.entity.ExperimentMetrics;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,16 +27,16 @@ import java.util.List;
 public class ExperimentMetricsBag {
 
 	@JsonProperty("metrics")
-	public List<ExperimentMetrics> getExperimentMetricsList() {
+	public List<ExperimentMetric> getExperimentMetricsList() {
 		return _experimentMetricsList;
 	}
 
 	public void setExperimentMetricsList(
-		List<ExperimentMetrics> experimentMetricsList) {
+		List<ExperimentMetric> experimentMetricsList) {
 
 		_experimentMetricsList = experimentMetricsList;
 	}
 
-	private List<ExperimentMetrics> _experimentMetricsList = new ArrayList<>();
+	private List<ExperimentMetric> _experimentMetricsList = new ArrayList<>();
 
 }

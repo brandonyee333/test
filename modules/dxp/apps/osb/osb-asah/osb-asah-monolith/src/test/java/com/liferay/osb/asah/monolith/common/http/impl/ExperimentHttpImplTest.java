@@ -55,7 +55,7 @@ public class ExperimentHttpImplTest {
 
 		Mockito.verify(
 			_experimentsRestController
-		).getCalculateExperimentMetrics(
+		).getCalculateExperimentMetric(
 			id
 		);
 	}

@@ -20,7 +20,7 @@ import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataPoint;
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentMetricDog;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.entity.ExperimentMetrics;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -52,14 +52,14 @@ public class ExperimentMetricDogTest {
 		_mockVariantData("37729", 1000, 500);
 		_mockVariantData("DEFAULT", 800, 250);
 
-		ExperimentMetrics experimentMetrics =
-			_experimentMetricDog.calculateMetrics(
+		ExperimentMetric experimentMetric =
+			_experimentMetricDog.calculateMetric(
 				_experimentDog.getExperiment("4"));
 
-		Assert.assertEquals(25.42, experimentMetrics.getCompletion(), 0.1D);
+		Assert.assertEquals(25.42, experimentMetric.getCompletion(), 0.1D);
 
 		Assert.assertEquals(
-			Long.valueOf(18), experimentMetrics.getEstimatedDaysLeft());
+			Long.valueOf(18), experimentMetric.getEstimatedDaysLeft());
 	}
 
 	@ElasticsearchIndex(
@@ -71,13 +71,13 @@ public class ExperimentMetricDogTest {
 		_mockVariantData("37729", 0, 0);
 		_mockVariantData("DEFAULT", 10, 5);
 
-		ExperimentMetrics experimentMetrics =
-			_experimentMetricDog.calculateMetrics(
+		ExperimentMetric experimentMetric =
+			_experimentMetricDog.calculateMetric(
 				_experimentDog.getExperiment("4"));
 
-		Assert.assertEquals(0D, experimentMetrics.getCompletion(), 0D);
+		Assert.assertEquals(0D, experimentMetric.getCompletion(), 0D);
 
-		Assert.assertNull(experimentMetrics.getEstimatedDaysLeft());
+		Assert.assertNull(experimentMetric.getEstimatedDaysLeft());
 	}
 
 	@ElasticsearchIndex(
@@ -89,14 +89,14 @@ public class ExperimentMetricDogTest {
 		_mockVariantData("37729", 10000, 5000D);
 		_mockVariantData("DEFAULT", 800, 250D);
 
-		ExperimentMetrics experimentMetrics =
-			_experimentMetricDog.calculateMetrics(
+		ExperimentMetric experimentMetric =
+			_experimentMetricDog.calculateMetric(
 				_experimentDog.getExperiment("4"));
 
-		Assert.assertEquals(61.3, experimentMetrics.getCompletion(), 0.1D);
+		Assert.assertEquals(61.3, experimentMetric.getCompletion(), 0.1D);
 
 		Assert.assertEquals(
-			Long.valueOf(18), experimentMetrics.getEstimatedDaysLeft());
+			Long.valueOf(18), experimentMetric.getEstimatedDaysLeft());
 	}
 
 	private void _mockVariantData(

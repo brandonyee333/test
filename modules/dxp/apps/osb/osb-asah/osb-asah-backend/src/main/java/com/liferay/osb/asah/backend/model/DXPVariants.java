@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.liferay.osb.asah.common.entity.DXPVariant;
+import com.liferay.osb.asah.common.entity.ExperimentVariant;
 
 import java.util.List;
 
@@ -32,21 +32,21 @@ public class DXPVariants {
 	public DXPVariants() {
 	}
 
-	public DXPVariants(List<DXPVariant> dxpVariants) {
+	public DXPVariants(List<ExperimentVariant> dxpVariants) {
 		_dxpVariants = dxpVariants;
 	}
 
 	@JsonProperty("dxpVariants")
 	@NotEmpty
 	@Valid
-	public List<DXPVariant> getDXPVariants() {
+	public List<ExperimentVariant> getDXPVariants() {
 		return _dxpVariants;
 	}
 
-	public void setDXPVariants(List<DXPVariant> dxpVariants) {
+	public void setDXPVariants(List<ExperimentVariant> dxpVariants) {
 		_dxpVariants = dxpVariants;
 	}
 
-	private List<DXPVariant> _dxpVariants;
+	private List<ExperimentVariant> _dxpVariants;
 
 }

@@ -20,8 +20,8 @@ import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.ExperimentMetrics;
-import com.liferay.osb.asah.common.entity.VariantMetrics;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
+import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
@@ -120,22 +120,23 @@ public class ExperimentDogTest {
 	)
 	@Test
 	public void testGetEmptyExperimentMetricsRunningExperiment() {
-		ExperimentMetrics experimentMetrics =
-			_experimentDog.getExperimentMetrics("1");
+		ExperimentMetric experimentMetric = _experimentDog.getExperimentMetric(
+			"1");
 
-		Assert.assertEquals(2, experimentMetrics.getElapsedDays());
-		Assert.assertNull(experimentMetrics.getEstimatedDaysLeft());
+		Assert.assertEquals(2, experimentMetric.getElapsedDays());
+		Assert.assertNull(experimentMetric.getEstimatedDaysLeft());
 
-		List<VariantMetrics> variantMetricsList =
-			experimentMetrics.getVariantMetricsList();
+		List<ExperimentVariantMetric> experimentVariantMetrics =
+			experimentMetric.getVariantMetrics();
 
 		Assert.assertEquals(
-			variantMetricsList.toString(), 2, variantMetricsList.size());
+			experimentVariantMetrics.toString(), 2,
+			experimentVariantMetrics.size());
 
-		_assertVariantMetrics(
-			variantMetricsList.get(0), new double[] {0, 0}, 0, 0, 0, "1");
-		_assertVariantMetrics(
-			variantMetricsList.get(1), new double[] {0, 0}, 0, 0, 0, "2");
+		_assertExperimentVariantMetric(
+			experimentVariantMetrics.get(0), new double[] {0, 0}, 0, 0, 0, "1");
+		_assertExperimentVariantMetric(
+			experimentVariantMetrics.get(1), new double[] {0, 0}, 0, 0, 0, "2");
 	}
 
 	@ElasticsearchIndex(
@@ -155,7 +156,7 @@ public class ExperimentDogTest {
 	)
 	@Test(expected = OSBAsahException.class)
 	public void testGetExperimentMetricsDraftExperiment() {
-		_experimentDog.getExperimentMetrics("2");
+		_experimentDog.getExperimentMetric("2");
 	}
 
 	@ElasticsearchIndex(
@@ -164,25 +165,26 @@ public class ExperimentDogTest {
 	)
 	@Test
 	public void testGetExperimentMetricsRunningExperiment() {
-		ExperimentMetrics experimentMetrics =
-			_experimentDog.getExperimentMetrics("3");
+		ExperimentMetric experimentMetric = _experimentDog.getExperimentMetric(
+			"3");
 
-		Assert.assertEquals(2, experimentMetrics.getElapsedDays());
+		Assert.assertEquals(2, experimentMetric.getElapsedDays());
 		Assert.assertEquals(
-			Long.valueOf(12), experimentMetrics.getEstimatedDaysLeft());
+			Long.valueOf(12), experimentMetric.getEstimatedDaysLeft());
 
-		List<VariantMetrics> variantMetricsList =
-			experimentMetrics.getVariantMetricsList();
+		List<ExperimentVariantMetric> experimentVariantMetrics =
+			experimentMetric.getVariantMetrics();
 
 		Assert.assertEquals(
-			variantMetricsList.toString(), 2, variantMetricsList.size());
+			experimentVariantMetrics.toString(), 2,
+			experimentVariantMetrics.size());
 
-		_assertVariantMetrics(
-			variantMetricsList.get(0), new double[] {0.6, 2.6}, 0.4, 0.5, 0.25,
-			"1");
-		_assertVariantMetrics(
-			variantMetricsList.get(1), new double[] {0.7, 3.5}, 0.6, 0.6, 0.5,
-			"2");
+		_assertExperimentVariantMetric(
+			experimentVariantMetrics.get(0), new double[] {0.6, 2.6}, 0.4, 0.5,
+			0.25, "1");
+		_assertExperimentVariantMetric(
+			experimentVariantMetrics.get(1), new double[] {0.7, 3.5}, 0.6, 0.6,
+			0.5, "2");
 	}
 
 	@ElasticsearchIndex(
@@ -347,6 +349,28 @@ public class ExperimentDogTest {
 		Assert.assertEquals(3, variant2UniqueVisitors.longValue());
 	}
 
+	private void _assertExperimentVariantMetric(
+		ExperimentVariantMetric actualExperimentVariantMetric,
+		double[] expectedConfidenceIntervalArray, double expectetedImprovement,
+		double expectedMedian, double expectedProbabilityToWin,
+		String expectedDXPVariantId) {
+
+		Assert.assertArrayEquals(
+			expectedConfidenceIntervalArray,
+			actualExperimentVariantMetric.getConfidenceIntervalArray(), .1);
+		Assert.assertEquals(
+			expectedMedian, actualExperimentVariantMetric.getMedian(), .1);
+		Assert.assertEquals(
+			expectedProbabilityToWin,
+			actualExperimentVariantMetric.getProbabilityToWin(), .1);
+		Assert.assertEquals(
+			expectedDXPVariantId,
+			actualExperimentVariantMetric.getDXPVariantId());
+		Assert.assertEquals(
+			expectetedImprovement,
+			actualExperimentVariantMetric.getImprovement(), .1);
+	}
+
 	private void _assertSessionHistogramMetric(
 		String expectedHistogramMetricKey, double expectedHistogramMetricValue,
 		HistogramMetric actualHistogramMetric) {
@@ -355,26 +379,6 @@ public class ExperimentDogTest {
 			expectedHistogramMetricKey, actualHistogramMetric.getKey());
 		Assert.assertEquals(
 			expectedHistogramMetricValue, actualHistogramMetric.getValue(), .1);
-	}
-
-	private void _assertVariantMetrics(
-		VariantMetrics actualVariantMetrics,
-		double[] expectedConfidenceIntervalArray, double expectetedImprovement,
-		double expectedMedian, double expectedProbabilityToWin,
-		String expectedDXPVariantId) {
-
-		Assert.assertArrayEquals(
-			expectedConfidenceIntervalArray,
-			actualVariantMetrics.getConfidenceIntervalArray(), .1);
-		Assert.assertEquals(
-			expectedMedian, actualVariantMetrics.getMedian(), .1);
-		Assert.assertEquals(
-			expectedProbabilityToWin,
-			actualVariantMetrics.getProbabilityToWin(), .1);
-		Assert.assertEquals(
-			expectedDXPVariantId, actualVariantMetrics.getDXPVariantId());
-		Assert.assertEquals(
-			expectetedImprovement, actualVariantMetrics.getImprovement(), .1);
 	}
 
 	@MockBean

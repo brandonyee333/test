@@ -17,9 +17,9 @@ package com.liferay.osb.asah.backend.dog.experiment;
 import com.liferay.osb.asah.backend.constants.ExperimentConstants;
 import com.liferay.osb.asah.backend.constants.SamplerType;
 import com.liferay.osb.asah.backend.model.TimeRange;
-import com.liferay.osb.asah.common.entity.DXPVariant;
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.ExperimentMetrics;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
+import com.liferay.osb.asah.common.entity.ExperimentVariant;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 
 import io.improbable.keanu.algorithms.NetworkSamples;
@@ -55,12 +55,12 @@ public class DichotomousDataExperimentMetricCalculator
 	extends BaseExperimentMetricCalculator<Double> {
 
 	@Override
-	public ExperimentMetrics calculateMetrics(Experiment experiment) {
+	public ExperimentMetric calculateMetric(Experiment experiment) {
 		List<Variant<Double>> variants = getVariants(experiment);
 
 		for (Variant<Double> variant : variants) {
 			if ((variant.getFailures() < 5) || (variant.getSuccesses() < 5)) {
-				return createEmptyExperimentMetrics(experiment, variants);
+				return createEmptyExperimentMetric(experiment, variants);
 			}
 		}
 
@@ -100,33 +100,8 @@ public class DichotomousDataExperimentMetricCalculator
 				variant.getDXPVariantId(), doubleTensor.slice(1, i));
 		}
 
-		return createExperimentMetrics(
+		return createExperimentMetric(
 			experiment, variantDoubleTensorMap, variants);
-	}
-
-	@Override
-	protected Variant<Double> mapVariant(
-		DXPVariant dxpVariant, Experiment experiment) {
-
-		Variant<Double> variant = new Variant<>(
-			dxpVariant.isControl(), dxpVariant.getDXPVariantId(),
-			dxpVariant.getTrafficSplit());
-
-		TimeRange timeRange = _getTimeRange(
-			experiment.getStartedDateLocalDateTime());
-
-		ExperimentDataPoint<Double> experimentDataPoint =
-			_experimentDataDog.fetchDichotomousDataPoint(
-				experiment.getDataSourceId(), experiment.getDXPExperienceId(),
-				experiment.getId(),
-				ExperimentUtil.getPageMetricType(experiment), null, timeRange,
-				dxpVariant.getDXPVariantId());
-
-		variant.addExperimentDataPoint(experimentDataPoint);
-
-		setVariantProperties(timeRange.getDeltaDays(), variant);
-
-		return variant;
 	}
 
 	@Override
@@ -152,6 +127,31 @@ public class DichotomousDataExperimentMetricCalculator
 			new ExperimentDataPoint<>(
 				(long)(experimentDataPoint.getTrials() * rate),
 				experimentDataPoint.getValue() * rate));
+
+		setVariantProperties(timeRange.getDeltaDays(), variant);
+
+		return variant;
+	}
+
+	@Override
+	protected Variant<Double> mapVariant(
+		Experiment experiment, ExperimentVariant experimentVariant) {
+
+		Variant<Double> variant = new Variant<>(
+			experimentVariant.isControl(), experimentVariant.getDXPVariantId(),
+			experimentVariant.getTrafficSplit());
+
+		TimeRange timeRange = _getTimeRange(
+			experiment.getStartedDateLocalDateTime());
+
+		ExperimentDataPoint<Double> experimentDataPoint =
+			_experimentDataDog.fetchDichotomousDataPoint(
+				experiment.getDataSourceId(), experiment.getDXPExperienceId(),
+				experiment.getId(),
+				ExperimentUtil.getPageMetricType(experiment), null, timeRange,
+				experimentVariant.getDXPVariantId());
+
+		variant.addExperimentDataPoint(experimentDataPoint);
 
 		setVariantProperties(timeRange.getDeltaDays(), variant);
 

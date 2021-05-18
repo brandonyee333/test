@@ -18,9 +18,9 @@ import com.liferay.osb.asah.backend.dog.ExperimentDog;
 import com.liferay.osb.asah.backend.model.DXPVariants;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
-import com.liferay.osb.asah.common.entity.DXPVariant;
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.ExperimentMetrics;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
+import com.liferay.osb.asah.common.entity.ExperimentVariant;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.model.Goal;
@@ -57,10 +57,10 @@ public class ExperimentsRestController extends BaseRestController {
 	}
 
 	@GetMapping("/{id}/calculate-metrics")
-	public ExperimentMetrics getCalculateExperimentMetrics(
+	public ExperimentMetric getCalculateExperimentMetric(
 		@PathVariable String id) {
 
-		return _experimentDog.calculateExperimentMetrics(id);
+		return _experimentDog.calculateExperimentMetric(id);
 	}
 
 	@GetMapping("/{id}")
@@ -116,7 +116,7 @@ public class ExperimentsRestController extends BaseRestController {
 
 		Experiment experiment = _experimentDog.getExperiment(id);
 
-		experiment.setDXPVariants(dxpVariants.getDXPVariants());
+		experiment.setExperimentVariants(dxpVariants.getDXPVariants());
 
 		_experimentDog.updateExperiment(experiment);
 	}
@@ -133,13 +133,14 @@ public class ExperimentsRestController extends BaseRestController {
 	}
 
 	private List<DXPVariantSettings> _createDXPVariantSettings(
-		List<DXPVariant> dxpVariants) {
+		List<ExperimentVariant> experimentVariants) {
 
 		return ListUtil.map(
-			dxpVariants,
-			dxpVariant -> new DXPVariantSettings(
-				dxpVariant.isControl(), dxpVariant.getDXPVariantId(),
-				dxpVariant.getTrafficSplit()));
+			experimentVariants,
+			experimentVariant -> new DXPVariantSettings(
+				experimentVariant.isControl(),
+				experimentVariant.getDXPVariantId(),
+				experimentVariant.getTrafficSplit()));
 	}
 
 	private ExperimentSettings _createExperimentSettings(
@@ -155,7 +156,7 @@ public class ExperimentsRestController extends BaseRestController {
 
 		experimentSettings.setConfidenceLevel(confidenceLevel);
 		experimentSettings.setDXPVariantsSettings(
-			_createDXPVariantSettings(experiment.getDXPVariants()));
+			_createDXPVariantSettings(experiment.getExperimentVariants()));
 
 		return experimentSettings;
 	}

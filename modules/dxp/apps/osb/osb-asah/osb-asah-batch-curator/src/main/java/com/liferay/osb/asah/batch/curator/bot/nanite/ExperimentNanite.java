@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.DXPClient;
-import com.liferay.osb.asah.common.entity.VariantMetrics;
+import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
 import com.liferay.osb.asah.common.http.ExperimentHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
@@ -76,76 +76,82 @@ public class ExperimentNanite extends BaseNanite {
 		return _log;
 	}
 
-	private VariantMetrics _findControlVariantMetrics(
-		List<VariantMetrics> variantMetricsList) {
+	private ExperimentVariantMetric _findControlExperimentVariantMetric(
+		List<ExperimentVariantMetric> experimentVariantMetrics) {
 
-		Stream<VariantMetrics> stream = variantMetricsList.stream();
+		Stream<ExperimentVariantMetric> stream =
+			experimentVariantMetrics.stream();
 
-		Optional<VariantMetrics> controlVariantMetricsOptional = stream.filter(
-			VariantMetrics::isControl
-		).findFirst();
+		Optional<ExperimentVariantMetric>
+			controlExperimentVariantMetricsOptional = stream.filter(
+				ExperimentVariantMetric::isControl
+			).findFirst();
 
-		return controlVariantMetricsOptional.orElseThrow(
+		return controlExperimentVariantMetricsOptional.orElseThrow(
 			IllegalStateException::new);
 	}
 
-	private VariantMetrics _getWinnerVariantMetrics(
+	private ExperimentVariantMetric _getWinnerExperimentVariantMetric(
 			String metric, JSONArray variantMetricsJSONArray)
 		throws Exception {
 
-		List<VariantMetrics> variantMetricsList = _toVariantMetricsList(
-			variantMetricsJSONArray);
+		List<ExperimentVariantMetric> experimentVariantMetrics =
+			_toExperimentVariantMetrics(variantMetricsJSONArray);
 
-		VariantMetrics controlVariantMetrics = _findControlVariantMetrics(
-			variantMetricsList);
+		ExperimentVariantMetric controlExperimentVariantMetric =
+			_findControlExperimentVariantMetric(experimentVariantMetrics);
 
 		Range<Double> controlConfidenceIntervalRange =
-			controlVariantMetrics.getConfidenceIntervalRange();
+			controlExperimentVariantMetric.getConfidenceIntervalRange();
 
-		List<VariantMetrics> improvedVariantMetrics = new ArrayList<>();
-		List<VariantMetrics> tiedVariantMetrics = new ArrayList<>();
+		List<ExperimentVariantMetric> improvedExperimentVariantMetrics =
+			new ArrayList<>();
+		List<ExperimentVariantMetric> tiedExperimentVariantMetrics =
+			new ArrayList<>();
 
-		for (VariantMetrics variantMetrics : variantMetricsList) {
-			if (variantMetrics.isControl()) {
+		for (ExperimentVariantMetric experimentVariantMetric :
+				experimentVariantMetrics) {
+
+			if (experimentVariantMetric.isControl()) {
 				continue;
 			}
 
 			Range<Double> variantConfidenceIntervalRange =
-				variantMetrics.getConfidenceIntervalRange();
+				experimentVariantMetric.getConfidenceIntervalRange();
 
-			if (_hasVariantMetricsImproved(
+			if (_hasExperimentVariantMetricImproved(
 					controlConfidenceIntervalRange, metric,
 					variantConfidenceIntervalRange)) {
 
-				improvedVariantMetrics.add(variantMetrics);
+				improvedExperimentVariantMetrics.add(experimentVariantMetric);
 			}
 			else if (variantConfidenceIntervalRange.isOverlappedBy(
 						controlConfidenceIntervalRange)) {
 
-				tiedVariantMetrics.add(variantMetrics);
+				tiedExperimentVariantMetrics.add(experimentVariantMetric);
 			}
 		}
 
-		if (!improvedVariantMetrics.isEmpty()) {
+		if (!improvedExperimentVariantMetrics.isEmpty()) {
 			if (Objects.equals(metric, "BOUNCE_RATE")) {
 				return Collections.min(
-					improvedVariantMetrics,
-					Comparator.comparing(VariantMetrics::getMedian));
+					improvedExperimentVariantMetrics,
+					Comparator.comparing(ExperimentVariantMetric::getMedian));
 			}
 
 			return Collections.max(
-				improvedVariantMetrics,
-				Comparator.comparing(VariantMetrics::getMedian));
+				improvedExperimentVariantMetrics,
+				Comparator.comparing(ExperimentVariantMetric::getMedian));
 		}
 
-		if (tiedVariantMetrics.isEmpty()) {
-			return controlVariantMetrics;
+		if (tiedExperimentVariantMetrics.isEmpty()) {
+			return controlExperimentVariantMetric;
 		}
 
 		return null;
 	}
 
-	private boolean _hasVariantMetricsImproved(
+	private boolean _hasExperimentVariantMetricImproved(
 		Range<Double> controlConfidenceIntervalRange, String metric,
 		Range<Double> variantConfidenceIntervalRange) {
 
@@ -165,7 +171,7 @@ public class ExperimentNanite extends BaseNanite {
 		return false;
 	}
 
-	private void _putOrReplaceMetrics(
+	private void _putOrReplaceMetric(
 		JSONArray metricsJSONArray, JSONObject newMetricsJSONObject) {
 
 		OffsetDateTime newProcessedOffsetDateTime = OffsetDateTime.parse(
@@ -193,16 +199,16 @@ public class ExperimentNanite extends BaseNanite {
 		metricsJSONArray.put(newMetricsJSONObject);
 	}
 
-	private List<VariantMetrics> _toVariantMetricsList(
-			JSONArray variantMetricsJSONArray)
+	private List<ExperimentVariantMetric> _toExperimentVariantMetrics(
+			JSONArray experimentVariantMetricsJSONArray)
 		throws Exception {
 
 		TypeFactory typeFactory = TypeFactory.defaultInstance();
 
 		return _objectMapper.readValue(
-			variantMetricsJSONArray.toString(),
+			experimentVariantMetricsJSONArray.toString(),
 			typeFactory.constructCollectionType(
-				List.class, VariantMetrics.class));
+				List.class, ExperimentVariantMetric.class));
 	}
 
 	private JSONObject _updateExperiment(JSONObject experimentJSONObject)
@@ -220,7 +226,7 @@ public class ExperimentNanite extends BaseNanite {
 		JSONObject metricsJSONObject =
 			_experimentHttp.getExperimentMetricsJSONObject(experimentId);
 
-		_putOrReplaceMetrics(metricsJSONArray, metricsJSONObject);
+		_putOrReplaceMetric(metricsJSONArray, metricsJSONObject);
 
 		experimentJSONObject.put("metrics", metricsJSONArray);
 
@@ -231,20 +237,21 @@ public class ExperimentNanite extends BaseNanite {
 			JSONObject goalJSONObject = experimentJSONObject.getJSONObject(
 				"goal");
 
-			VariantMetrics variantMetrics = _getWinnerVariantMetrics(
-				goalJSONObject.getString("metric"),
-				metricsJSONObject.getJSONArray("variantMetrics"));
+			ExperimentVariantMetric experimentVariantMetric =
+				_getWinnerExperimentVariantMetric(
+					goalJSONObject.getString("metric"),
+					metricsJSONObject.getJSONArray("variantMetrics"));
 
 			ExperimentStatus experimentStatus =
 				ExperimentStatus.FINISHED_WINNER;
 
 			String winnerDXPVariantId = null;
 
-			if (variantMetrics == null) {
+			if (experimentVariantMetric == null) {
 				experimentStatus = ExperimentStatus.FINISHED_NO_WINNER;
 			}
 			else {
-				winnerDXPVariantId = variantMetrics.getDXPVariantId();
+				winnerDXPVariantId = experimentVariantMetric.getDXPVariantId();
 
 				experimentJSONObject.put(
 					"winnerDXPVariantId", winnerDXPVariantId);

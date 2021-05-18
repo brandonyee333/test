@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.backend.dog.experiment;
 
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.ExperimentMetrics;
-import com.liferay.osb.asah.common.entity.VariantMetrics;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
+import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,48 +41,48 @@ import org.springframework.core.io.Resource;
  */
 public abstract class BaseExperimentMetricCalculatorTestCase {
 
-	protected void assertExperimentMetrics(
-		ExperimentMetrics actualExperimentMetrics,
-		double expectedConfidenceLevel, long expectedElapsedDays,
-		long expectedEstimatedDaysLeft) {
+	protected void assertExperimentMetric(
+		ExperimentMetric actualExperimentMetric, double expectedConfidenceLevel,
+		long expectedElapsedDays, long expectedEstimatedDaysLeft) {
 
 		Assert.assertEquals(
 			expectedConfidenceLevel,
-			actualExperimentMetrics.getConfidenceLevel(), 1);
+			actualExperimentMetric.getConfidenceLevel(), 1);
 		Assert.assertEquals(
-			expectedElapsedDays, actualExperimentMetrics.getElapsedDays());
+			expectedElapsedDays, actualExperimentMetric.getElapsedDays());
 		Assert.assertEquals(
 			expectedEstimatedDaysLeft,
-			(long)actualExperimentMetrics.getEstimatedDaysLeft());
+			(long)actualExperimentMetric.getEstimatedDaysLeft());
 	}
 
-	protected void assertVariantMetrics(
-		VariantMetrics variantMetrics, double confidenceIntervalLeft,
-		double confidenceIntervalRight, String dxpVariantId, double improvement,
-		double median, double probabilityToWin) {
+	protected void assertExperimentVariantMetric(
+		double confidenceIntervalLeft, double confidenceIntervalRight,
+		String dxpVariantId, ExperimentVariantMetric experimentVariantMetric,
+		double improvement, double median, double probabilityToWin) {
 
-		Assert.assertEquals(dxpVariantId, variantMetrics.getDXPVariantId());
+		Assert.assertEquals(
+			dxpVariantId, experimentVariantMetric.getDXPVariantId());
 
 		percentageBasedAssertEquals(
 			confidenceIntervalLeft,
-			variantMetrics.getConfidenceIntervalArray()[0],
+			experimentVariantMetric.getConfidenceIntervalArray()[0],
 			getMarginOfErrorPercentageForInterval());
 
 		percentageBasedAssertEquals(
 			confidenceIntervalRight,
-			variantMetrics.getConfidenceIntervalArray()[1],
+			experimentVariantMetric.getConfidenceIntervalArray()[1],
 			getMarginOfErrorPercentageForInterval());
 
 		Assert.assertEquals(
-			improvement, variantMetrics.getImprovement(),
+			improvement, experimentVariantMetric.getImprovement(),
 			getMarginOfErrorForImprovement());
 
 		percentageBasedAssertEquals(
-			median, variantMetrics.getMedian(),
+			median, experimentVariantMetric.getMedian(),
 			getMarginOfErrorPercentageForMedian());
 
 		Assert.assertEquals(
-			probabilityToWin, variantMetrics.getProbabilityToWin(),
+			probabilityToWin, experimentVariantMetric.getProbabilityToWin(),
 			getMarginOfErrorForProbabilityToWin());
 	}
 

@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.dog.experiment;
 
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.ExperimentMetrics;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 public interface ExperimentMetricCalculator {
 
-	public ExperimentMetrics calculateMetrics(Experiment experiment);
+	public ExperimentMetric calculateMetric(Experiment experiment);
 
 	public Long estimateDaysDuration(
 		List<DXPVariantSettings> dxpVariantsSettings, Experiment experiment);

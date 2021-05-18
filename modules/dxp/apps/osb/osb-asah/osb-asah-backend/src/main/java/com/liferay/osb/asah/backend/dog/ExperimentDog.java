@@ -29,10 +29,10 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.entity.DXPVariant;
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.ExperimentMetrics;
-import com.liferay.osb.asah.common.entity.VariantMetrics;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
+import com.liferay.osb.asah.common.entity.ExperimentVariant;
+import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.ExperimentMetricsBag;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
@@ -104,8 +104,8 @@ public class ExperimentDog {
 		return experiment;
 	}
 
-	public ExperimentMetrics calculateExperimentMetrics(String experimentId) {
-		return _experimentMetricDog.calculateMetrics(
+	public ExperimentMetric calculateExperimentMetric(String experimentId) {
+		return _experimentMetricDog.calculateMetric(
 			getExperiment(experimentId));
 	}
 
@@ -191,20 +191,18 @@ public class ExperimentDog {
 			dxpVariantsSettings, experiment);
 	}
 
-	public ExperimentMetrics getExperimentMetrics(String experimentId) {
-		List<ExperimentMetrics> experimentMetricsList =
-			getExperimentMetricsList(experimentId);
+	public ExperimentMetric getExperimentMetric(String experimentId) {
+		List<ExperimentMetric> experimentMetrics = getExperimentMetrics(
+			experimentId);
 
-		if (experimentMetricsList.isEmpty()) {
-			return _createEmptyExperimentMetrics(experimentId);
+		if (experimentMetrics.isEmpty()) {
+			return _createEmptyExperimentMetric(experimentId);
 		}
 
-		return experimentMetricsList.get(experimentMetricsList.size() - 1);
+		return experimentMetrics.get(experimentMetrics.size() - 1);
 	}
 
-	public List<ExperimentMetrics> getExperimentMetricsList(
-		String experimentId) {
-
+	public List<ExperimentMetric> getExperimentMetrics(String experimentId) {
 		Experiment experiment = getExperiment(experimentId);
 
 		if (experiment.getExperimentStatus() == ExperimentStatus.DRAFT) {
@@ -468,23 +466,24 @@ public class ExperimentDog {
 		return searchSourceBuilder;
 	}
 
-	private ExperimentMetrics _createEmptyExperimentMetrics(
-		String experimentId) {
-
-		ExperimentMetrics experimentMetrics = new ExperimentMetrics();
+	private ExperimentMetric _createEmptyExperimentMetric(String experimentId) {
+		ExperimentMetric experimentMetric = new ExperimentMetric();
 
 		Experiment experiment = getExperiment(experimentId);
 
-		for (DXPVariant dxpVariant : experiment.getDXPVariants()) {
-			experimentMetrics.addVariantMetrics(
-				new VariantMetrics(
-					dxpVariant.isControl(), dxpVariant.getDXPVariantId()));
+		for (ExperimentVariant experimentVariant :
+				experiment.getExperimentVariants()) {
+
+			experimentMetric.addExperimentVariantMetric(
+				new ExperimentVariantMetric(
+					experimentVariant.isControl(),
+					experimentVariant.getDXPVariantId()));
 		}
 
-		experimentMetrics.setElapsedDays(_getExperimentElapsedDays(experiment));
-		experimentMetrics.setEstimatedDaysLeft(null);
+		experimentMetric.setElapsedDays(_getExperimentElapsedDays(experiment));
+		experimentMetric.setEstimatedDaysLeft(null);
 
-		return experimentMetrics;
+		return experimentMetric;
 	}
 
 	private ExperimentMetricsBag _fetchExperimentMetricsBag(
@@ -582,11 +581,14 @@ public class ExperimentDog {
 
 		double dxpVariantsTrafficSum = 0;
 
-		for (DXPVariant dxpVariant : experiment.getDXPVariants()) {
-			DXPVariantSettings dxpVariantSettings = dxpVariantsSettingsMap.get(
-				dxpVariant.getDXPVariantId());
+		for (ExperimentVariant experimentVariant :
+				experiment.getExperimentVariants()) {
 
-			dxpVariant.setTrafficSplit(dxpVariantSettings.getTrafficSplit());
+			DXPVariantSettings dxpVariantSettings = dxpVariantsSettingsMap.get(
+				experimentVariant.getDXPVariantId());
+
+			experimentVariant.setTrafficSplit(
+				dxpVariantSettings.getTrafficSplit());
 
 			dxpVariantsTrafficSum += dxpVariantSettings.getTrafficSplit();
 		}

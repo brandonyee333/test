@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.dog.experiment;
 
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.ExperimentMetrics;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.Goal;
 import com.liferay.osb.asah.common.model.GoalMetric;
@@ -33,11 +33,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExperimentMetricDog {
 
-	public ExperimentMetrics calculateMetrics(Experiment experiment) {
+	public ExperimentMetric calculateMetric(Experiment experiment) {
 		ExperimentMetricCalculator experimentMetricCalculator =
 			_getExperimentMetricCalculator(experiment);
 
-		return experimentMetricCalculator.calculateMetrics(experiment);
+		return experimentMetricCalculator.calculateMetric(experiment);
 	}
 
 	public Long estimateDaysDuration(

@@ -31,7 +31,7 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author André Miranda
  */
 @GraphQLType
-public class DXPVariant {
+public class ExperimentVariant {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -39,17 +39,18 @@ public class DXPVariant {
 			return true;
 		}
 
-		if (!(obj instanceof DXPVariant)) {
+		if (!(obj instanceof ExperimentVariant)) {
 			return false;
 		}
 
-		DXPVariant dxpVariant = (DXPVariant)obj;
+		ExperimentVariant experimentVariant = (ExperimentVariant)obj;
 
-		if (Objects.equals(_changes, dxpVariant._changes) &&
-			Objects.equals(_control, dxpVariant._control) &&
-			Objects.equals(_dxpVariantId, dxpVariant._dxpVariantId) &&
-			Objects.equals(_dxpVariantName, dxpVariant._dxpVariantName) &&
-			Objects.equals(_trafficSplit, dxpVariant._trafficSplit)) {
+		if (Objects.equals(_changes, experimentVariant._changes) &&
+			Objects.equals(_control, experimentVariant._control) &&
+			Objects.equals(_dxpVariantId, experimentVariant._dxpVariantId) &&
+			Objects.equals(
+				_dxpVariantName, experimentVariant._dxpVariantName) &&
+			Objects.equals(_trafficSplit, experimentVariant._trafficSplit)) {
 
 			return true;
 		}

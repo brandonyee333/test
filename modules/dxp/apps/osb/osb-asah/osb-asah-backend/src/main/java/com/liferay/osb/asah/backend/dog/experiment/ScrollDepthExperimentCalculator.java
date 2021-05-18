@@ -16,9 +16,9 @@ package com.liferay.osb.asah.backend.dog.experiment;
 
 import com.liferay.osb.asah.backend.constants.ExperimentConstants;
 import com.liferay.osb.asah.backend.constants.SamplerType;
-import com.liferay.osb.asah.common.entity.DXPVariant;
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.ExperimentMetrics;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
+import com.liferay.osb.asah.common.entity.ExperimentVariant;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 
 import io.improbable.keanu.algorithms.NetworkSamples;
@@ -52,7 +52,7 @@ public class ScrollDepthExperimentCalculator
 	extends BaseExperimentMetricCalculator<Double[]> {
 
 	@Override
-	public ExperimentMetrics calculateMetrics(Experiment experiment) {
+	public ExperimentMetric calculateMetric(Experiment experiment) {
 		List<Variant<Double[]>> variants = getVariants(experiment);
 
 		for (Variant<Double[]> variant : variants) {
@@ -60,7 +60,7 @@ public class ScrollDepthExperimentCalculator
 				variant.getExperimentDataPoints();
 
 			if (dataPoints.isEmpty()) {
-				return createEmptyExperimentMetrics(experiment, variants);
+				return createEmptyExperimentMetric(experiment, variants);
 			}
 		}
 
@@ -96,29 +96,8 @@ public class ScrollDepthExperimentCalculator
 				variant.getDXPVariantId(), doubleTensor.slice(1, i));
 		}
 
-		return createExperimentMetrics(
+		return createExperimentMetric(
 			experiment, variantDoubleTensorMap, variants);
-	}
-
-	@Override
-	protected Variant<Double[]> mapVariant(
-		DXPVariant dxpVariant, Experiment experiment) {
-
-		Variant<Double[]> variant = new Variant<>(
-			dxpVariant.isControl(), dxpVariant.getDXPVariantId(),
-			dxpVariant.getTrafficSplit());
-
-		List<ExperimentDataPoint<Double[]>> experimentDataPoints =
-			_experimentDataDog.fetchContinuousDataPoints(
-				ExperimentUtil.getPageMetricType(experiment),
-				experiment.getStartedDateLocalDateTime(),
-				dxpVariant.getDXPVariantId());
-
-		variant.setExperimentDataPoints(experimentDataPoints);
-
-		setVariantEstimatedTrafficRate(variant);
-
-		return variant;
 	}
 
 	@Override
@@ -144,6 +123,27 @@ public class ScrollDepthExperimentCalculator
 		).forEach(
 			variant::addExperimentDataPoint
 		);
+
+		setVariantEstimatedTrafficRate(variant);
+
+		return variant;
+	}
+
+	@Override
+	protected Variant<Double[]> mapVariant(
+		Experiment experiment, ExperimentVariant experimentVariant) {
+
+		Variant<Double[]> variant = new Variant<>(
+			experimentVariant.isControl(), experimentVariant.getDXPVariantId(),
+			experimentVariant.getTrafficSplit());
+
+		List<ExperimentDataPoint<Double[]>> experimentDataPoints =
+			_experimentDataDog.fetchContinuousDataPoints(
+				ExperimentUtil.getPageMetricType(experiment),
+				experiment.getStartedDateLocalDateTime(),
+				experimentVariant.getDXPVariantId());
+
+		variant.setExperimentDataPoints(experimentDataPoints);
 
 		setVariantEstimatedTrafficRate(variant);
 

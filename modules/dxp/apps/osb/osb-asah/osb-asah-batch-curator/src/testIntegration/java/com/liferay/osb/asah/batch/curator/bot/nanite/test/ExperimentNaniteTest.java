@@ -63,9 +63,9 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 			).put(
 				"variantMetrics",
 				JSONUtil.putAll(
-					_createVariantMetricsJSONObject(
+					_createExperimentVariantMetricJSONObject(
 						new double[] {30, 45}, true, "1"),
-					_createVariantMetricsJSONObject(
+					_createExperimentVariantMetricJSONObject(
 						new double[] {20, 32}, false, "2"))
 			),
 			null);
@@ -90,9 +90,9 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 			).put(
 				"variantMetrics",
 				JSONUtil.putAll(
-					_createVariantMetricsJSONObject(
+					_createExperimentVariantMetricJSONObject(
 						new double[] {30, 45}, true, "10"),
-					_createVariantMetricsJSONObject(
+					_createExperimentVariantMetricJSONObject(
 						new double[] {15, 28}, false, "20"))
 			),
 			"10");
@@ -121,9 +121,9 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 			).put(
 				"variantMetrics",
 				JSONUtil.putAll(
-					_createVariantMetricsJSONObject(
+					_createExperimentVariantMetricJSONObject(
 						new double[] {30, 45}, true, "10"),
-					_createVariantMetricsJSONObject(
+					_createExperimentVariantMetricJSONObject(
 						new double[] {15, 28}, false, "20"))
 			),
 			"20");
@@ -154,7 +154,7 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 		Assert.assertNull(experimentJSONObject.optString("finishedDate", null));
 	}
 
-	private JSONObject _createVariantMetricsJSONObject(
+	private JSONObject _createExperimentVariantMetricJSONObject(
 		double[] confidenceInterval, boolean control, String dxpVariantId) {
 
 		return JSONUtil.put(

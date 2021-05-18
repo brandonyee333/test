@@ -67,7 +67,8 @@ public final class Experiment {
 			Objects.equals(_dxpLayoutId, experiment._dxpLayoutId) &&
 			Objects.equals(_dxpSegmentId, experiment._dxpSegmentId) &&
 			Objects.equals(_dxpSegmentName, experiment._dxpSegmentName) &&
-			Objects.equals(_dxpVariants, experiment._dxpVariants) &&
+			Objects.equals(
+				_experimentVariants, experiment._experimentVariants) &&
 			Objects.equals(_experimentStatus, experiment._experimentStatus) &&
 			Objects.equals(_experimentType, experiment._experimentType) &&
 			Objects.equals(_finishedDate, experiment._finishedDate) &&
@@ -168,13 +169,6 @@ public final class Experiment {
 		return _dxpSegmentName;
 	}
 
-	@GraphQLProperty("dxpVariants")
-	@JsonProperty("dxpVariants")
-	@Valid
-	public List<DXPVariant> getDXPVariants() {
-		return _dxpVariants;
-	}
-
 	@GraphQLProperty("status")
 	@JsonProperty("status")
 	public ExperimentStatus getExperimentStatus() {
@@ -185,6 +179,13 @@ public final class Experiment {
 	@JsonProperty("type")
 	public ExperimentType getExperimentType() {
 		return _experimentType;
+	}
+
+	@GraphQLProperty("dxpVariants")
+	@JsonProperty("dxpVariants")
+	@Valid
+	public List<ExperimentVariant> getExperimentVariants() {
+		return _experimentVariants;
 	}
 
 	@JsonFormat(
@@ -316,7 +317,7 @@ public final class Experiment {
 		return Objects.hash(
 			_channelId, _confidenceLevel, _createDate, _dataSourceId,
 			_description, _dxpExperienceId, _dxpExperienceName, _dxpGroupId,
-			_dxpLayoutId, _dxpSegmentId, _dxpSegmentName, _dxpVariants,
+			_dxpLayoutId, _dxpSegmentId, _dxpSegmentName, _experimentVariants,
 			_experimentStatus, _experimentType, _finishedDate, _goal, _id,
 			_modifiedDate, _name, _pageRelativePath, _pageTitle, _pageURL,
 			_processedDate, _publishedDXPVariantId, _startedDate,
@@ -369,16 +370,18 @@ public final class Experiment {
 		_dxpSegmentName = dxpSegmentName;
 	}
 
-	public void setDXPVariants(List<DXPVariant> dxpVariants) {
-		_dxpVariants = dxpVariants;
-	}
-
 	public void setExperimentStatus(ExperimentStatus experimentStatus) {
 		_experimentStatus = experimentStatus;
 	}
 
 	public void setExperimentType(ExperimentType experimentType) {
 		_experimentType = experimentType;
+	}
+
+	public void setExperimentVariants(
+		List<ExperimentVariant> experimentVariants) {
+
+		_experimentVariants = experimentVariants;
 	}
 
 	public void setFinishedDate(Date finishedDate) {
@@ -448,9 +451,9 @@ public final class Experiment {
 	private String _dxpLayoutId;
 	private String _dxpSegmentId;
 	private String _dxpSegmentName;
-	private List<DXPVariant> _dxpVariants;
 	private ExperimentStatus _experimentStatus = ExperimentStatus.DRAFT;
 	private ExperimentType _experimentType = ExperimentType.AB;
+	private List<ExperimentVariant> _experimentVariants;
 	private Date _finishedDate;
 	private Goal _goal;
 	private String _id;

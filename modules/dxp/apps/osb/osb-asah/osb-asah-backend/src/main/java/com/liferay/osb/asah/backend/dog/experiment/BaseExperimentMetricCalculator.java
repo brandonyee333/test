@@ -16,10 +16,10 @@ package com.liferay.osb.asah.backend.dog.experiment;
 
 import com.liferay.osb.asah.backend.constants.ExperimentConstants;
 import com.liferay.osb.asah.backend.constants.SamplerType;
-import com.liferay.osb.asah.common.entity.DXPVariant;
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.ExperimentMetrics;
-import com.liferay.osb.asah.common.entity.VariantMetrics;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
+import com.liferay.osb.asah.common.entity.ExperimentVariant;
+import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.Goal;
 import com.liferay.osb.asah.common.model.GoalMetric;
@@ -85,36 +85,36 @@ public abstract class BaseExperimentMetricCalculator<T>
 		return _estimateDaysLeft(experiment, variants);
 	}
 
-	protected ExperimentMetrics createEmptyExperimentMetrics(
+	protected ExperimentMetric createEmptyExperimentMetric(
 		Experiment experiment, List<Variant<T>> variants) {
 
-		ExperimentMetrics experimentMetrics = new ExperimentMetrics();
+		ExperimentMetric experimentMetric = new ExperimentMetric();
 
 		for (Variant<T> variant : variants) {
-			experimentMetrics.addVariantMetrics(
-				_createEmptyVariantMetrics(variant));
+			experimentMetric.addExperimentVariantMetric(
+				_createEmptyVariantMetric(variant));
 		}
 
-		experimentMetrics.setConfidenceLevel(0);
-		experimentMetrics.setElapsedDays(_getExperimentElapsedDays(experiment));
-		experimentMetrics.setEstimatedDaysLeft(null);
-		experimentMetrics.setProcessedDate(LocalDateTime.now(ZoneOffset.UTC));
+		experimentMetric.setConfidenceLevel(0);
+		experimentMetric.setElapsedDays(_getExperimentElapsedDays(experiment));
+		experimentMetric.setEstimatedDaysLeft(null);
+		experimentMetric.setProcessedDate(LocalDateTime.now(ZoneOffset.UTC));
 
-		return experimentMetrics;
+		return experimentMetric;
 	}
 
-	protected ExperimentMetrics createExperimentMetrics(
+	protected ExperimentMetric createExperimentMetric(
 		Experiment experiment, Map<String, DoubleTensor> variantDoubleTensorMap,
 		List<Variant<T>> variants) {
 
-		ExperimentMetrics experimentMetrics = new ExperimentMetrics();
+		ExperimentMetric experimentMetric = new ExperimentMetric();
 
 		Variant<T> controlVariant = findControlVariant(variants);
 		Goal goal = experiment.getGoal();
 
 		for (Variant<T> variant : variants) {
-			experimentMetrics.addVariantMetrics(
-				_createVariantMetrics(
+			experimentMetric.addExperimentVariantMetric(
+				_createVariantMetric(
 					experiment.getConfidenceLevel(), controlVariant,
 					goal.getGoalMetric(), variant, variantDoubleTensorMap));
 		}
@@ -122,14 +122,14 @@ public abstract class BaseExperimentMetricCalculator<T>
 		setVariantsEstimatedSampleSize(
 			experiment.getConfidenceLevel(), variants);
 
-		experimentMetrics.setCompletion(_getExperimentCompletion(variants));
-		experimentMetrics.setConfidenceLevel(experiment.getConfidenceLevel());
-		experimentMetrics.setElapsedDays(_getExperimentElapsedDays(experiment));
-		experimentMetrics.setEstimatedDaysLeft(
+		experimentMetric.setCompletion(_getExperimentCompletion(variants));
+		experimentMetric.setConfidenceLevel(experiment.getConfidenceLevel());
+		experimentMetric.setElapsedDays(_getExperimentElapsedDays(experiment));
+		experimentMetric.setEstimatedDaysLeft(
 			_estimateDaysLeft(experiment, variants));
-		experimentMetrics.setProcessedDate(LocalDateTime.now(ZoneOffset.UTC));
+		experimentMetric.setProcessedDate(LocalDateTime.now(ZoneOffset.UTC));
 
-		return experimentMetrics;
+		return experimentMetric;
 	}
 
 	protected NetworkSamples createPosteriorNetworkSamples(
@@ -174,21 +174,23 @@ public abstract class BaseExperimentMetricCalculator<T>
 	}
 
 	protected List<Variant<T>> getVariants(Experiment experiment) {
-		List<DXPVariant> dxpVariants = experiment.getDXPVariants();
+		List<ExperimentVariant> experimentVariants =
+			experiment.getExperimentVariants();
 
-		if (dxpVariants == null) {
+		if (experimentVariants == null) {
 			return Collections.emptyList();
 		}
 
 		return ListUtil.map(
-			dxpVariants, dxpVariant -> mapVariant(dxpVariant, experiment));
+			experimentVariants,
+			experimentVariant -> mapVariant(experiment, experimentVariant));
 	}
 
 	protected abstract Variant<T> mapVariant(
-		DXPVariant dxpVariant, Experiment experiment);
+		DXPVariantSettings dxpVariantSettings, Experiment experiment);
 
 	protected abstract Variant<T> mapVariant(
-		DXPVariantSettings dxpVariantSettings, Experiment experiment);
+		Experiment experiment, ExperimentVariant experimentVariant);
 
 	protected abstract void setVariantsEstimatedSampleSize(
 		double confidenceLevel, List<Variant<T>> variants);
@@ -329,35 +331,39 @@ public abstract class BaseExperimentMetricCalculator<T>
 		return doubleTensor.sum() / tensorLength * 100;
 	}
 
-	private VariantMetrics _createEmptyVariantMetrics(Variant<T> variant) {
-		VariantMetrics variantMetrics = new VariantMetrics(
-			variant.isControl(), variant.getDXPVariantId());
+	private ExperimentVariantMetric _createEmptyVariantMetric(
+		Variant<T> variant) {
 
-		variantMetrics.setConfidenceIntervalArray(new double[] {0, 0});
-		variantMetrics.setImprovement(0);
-		variantMetrics.setMedian(0);
-		variantMetrics.setProbabilityToWin(0);
+		ExperimentVariantMetric experimentVariantMetric =
+			new ExperimentVariantMetric(
+				variant.isControl(), variant.getDXPVariantId());
 
-		return variantMetrics;
+		experimentVariantMetric.setConfidenceIntervalArray(new double[] {0, 0});
+		experimentVariantMetric.setImprovement(0);
+		experimentVariantMetric.setMedian(0);
+		experimentVariantMetric.setProbabilityToWin(0);
+
+		return experimentVariantMetric;
 	}
 
-	private VariantMetrics _createVariantMetrics(
+	private ExperimentVariantMetric _createVariantMetric(
 		double confidenceLevel, Variant<T> controlVariant,
 		GoalMetric goalMetric, Variant<T> variant,
 		Map<String, DoubleTensor> variantDoubleTensorMap) {
 
-		VariantMetrics variantMetrics = new VariantMetrics(
-			variant.isControl(), variant.getDXPVariantId());
+		ExperimentVariantMetric experimentVariantMetric =
+			new ExperimentVariantMetric(
+				variant.isControl(), variant.getDXPVariantId());
 
 		DoubleTensor variantDoubleTensor = variantDoubleTensorMap.get(
 			variant.getDXPVariantId());
 
-		variantMetrics.setConfidenceIntervalArray(
+		experimentVariantMetric.setConfidenceIntervalArray(
 			_calculateConfidenceIntervalArray(
 				confidenceLevel, variantDoubleTensor, goalMetric));
-		variantMetrics.setMedian(
+		experimentVariantMetric.setMedian(
 			_calculateMedian(variantDoubleTensor, goalMetric));
-		variantMetrics.setProbabilityToWin(
+		experimentVariantMetric.setProbabilityToWin(
 			_calculateProbabilityToWin(
 				goalMetric, variant, variantDoubleTensor,
 				variantDoubleTensorMap));
@@ -367,12 +373,13 @@ public abstract class BaseExperimentMetricCalculator<T>
 				variantDoubleTensorMap.get(controlVariant.getDXPVariantId()),
 				goalMetric);
 
-			variantMetrics.setImprovement(
+			experimentVariantMetric.setImprovement(
 				_calculateImprovement(
-					controlMedian, goalMetric, variantMetrics.getMedian()));
+					controlMedian, goalMetric,
+					experimentVariantMetric.getMedian()));
 		}
 
-		return variantMetrics;
+		return experimentVariantMetric;
 	}
 
 	private Long _estimateDaysLeft(

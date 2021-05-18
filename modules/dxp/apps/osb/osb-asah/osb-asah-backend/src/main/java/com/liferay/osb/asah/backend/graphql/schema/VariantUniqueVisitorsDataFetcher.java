@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
-import com.liferay.osb.asah.common.entity.DXPVariant;
+import com.liferay.osb.asah.common.entity.ExperimentVariant;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
 import graphql.schema.DataFetcher;
@@ -35,14 +35,15 @@ public class VariantUniqueVisitorsDataFetcher implements DataFetcher<Long> {
 
 	@Override
 	public Long get(DataFetchingEnvironment dataFetchingEnvironment) {
-		DXPVariant dxpVariant = dataFetchingEnvironment.getSource();
+		ExperimentVariant experimentVariant =
+			dataFetchingEnvironment.getSource();
 
 		Map<String, Object> context = dataFetchingEnvironment.getContext();
 
 		String experimentId = (String)context.get("experimentId");
 
 		return _experimentDog.getVariantUniqueVisitors(
-			experimentId, dxpVariant.getDXPVariantId());
+			experimentId, experimentVariant.getDXPVariantId());
 	}
 
 	@Autowired

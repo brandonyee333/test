@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.backend.dog.experiment;
 
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.ExperimentMetrics;
-import com.liferay.osb.asah.common.entity.VariantMetrics;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
+import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
 import com.liferay.osb.asah.common.model.Goal;
 import com.liferay.osb.asah.common.model.GoalMetric;
 
@@ -67,21 +67,21 @@ public class BounceRateExperimentMetricCalculatorTest
 							new ExperimentDataPoint<>(3200, 1789D),
 							new ExperimentDataPoint<>(3523, 3002D)))));
 
-		ExperimentMetrics experimentMetrics =
-			experimentMetricCalculator.calculateMetrics(experiment);
+		ExperimentMetric experimentMetric =
+			experimentMetricCalculator.calculateMetric(experiment);
 
-		assertExperimentMetrics(experimentMetrics, 95, 2, 12);
+		assertExperimentMetric(experimentMetric, 95, 2, 12);
 
-		List<VariantMetrics> variantMetricsList =
-			experimentMetrics.getVariantMetricsList();
+		List<ExperimentVariantMetric> experimentVariantMetrics =
+			experimentMetric.getVariantMetrics();
 
-		variantMetricsList.sort(
-			Comparator.comparing(VariantMetrics::getDXPVariantId));
+		experimentVariantMetrics.sort(
+			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
 
-		assertVariantMetrics(
-			variantMetricsList.get(0), 71, 72, "Control", 0, 72, 0);
-		assertVariantMetrics(
-			variantMetricsList.get(1), 69, 69, "Variant", 3, 69, 99);
+		assertExperimentVariantMetric(
+			71, 72, "Control", experimentVariantMetrics.get(0), 0, 72, 0);
+		assertExperimentVariantMetric(
+			69, 69, "Variant", experimentVariantMetrics.get(1), 3, 69, 99);
 	}
 
 	@Test
@@ -118,23 +118,23 @@ public class BounceRateExperimentMetricCalculatorTest
 							new ExperimentDataPoint<>(2065, 1245D),
 							new ExperimentDataPoint<>(1645, 1135D)))));
 
-		ExperimentMetrics experimentMetrics =
-			experimentMetricCalculator.calculateMetrics(experiment);
+		ExperimentMetric experimentMetric =
+			experimentMetricCalculator.calculateMetric(experiment);
 
-		assertExperimentMetrics(experimentMetrics, 95, 2, 12);
+		assertExperimentMetric(experimentMetric, 95, 2, 12);
 
-		List<VariantMetrics> variantMetricsList =
-			experimentMetrics.getVariantMetricsList();
+		List<ExperimentVariantMetric> experimentVariantMetrics =
+			experimentMetric.getVariantMetrics();
 
-		variantMetricsList.sort(
-			Comparator.comparing(VariantMetrics::getDXPVariantId));
+		experimentVariantMetrics.sort(
+			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
 
-		assertVariantMetrics(
-			variantMetricsList.get(0), 71, 72, "Control", 0, 71, 0);
-		assertVariantMetrics(
-			variantMetricsList.get(1), 69, 69, "Variant A", 2, 69, 1);
-		assertVariantMetrics(
-			variantMetricsList.get(2), 63, 64, "Variant B", 11, 63, 99);
+		assertExperimentVariantMetric(
+			71, 72, "Control", experimentVariantMetrics.get(0), 0, 71, 0);
+		assertExperimentVariantMetric(
+			69, 69, "Variant A", experimentVariantMetrics.get(1), 2, 69, 1);
+		assertExperimentVariantMetric(
+			63, 64, "Variant B", experimentVariantMetrics.get(2), 11, 63, 99);
 	}
 
 	@Ignore
@@ -165,21 +165,21 @@ public class BounceRateExperimentMetricCalculatorTest
 						Collections.singletonList(
 							new ExperimentDataPoint<>(0, 0D)))));
 
-		ExperimentMetrics experimentMetrics =
-			experimentMetricCalculator.calculateMetrics(experiment);
+		ExperimentMetric experimentMetric =
+			experimentMetricCalculator.calculateMetric(experiment);
 
-		assertExperimentMetrics(experimentMetrics, 95, 1, 13);
+		assertExperimentMetric(experimentMetric, 95, 1, 13);
 
-		List<VariantMetrics> variantMetricsList =
-			experimentMetrics.getVariantMetricsList();
+		List<ExperimentVariantMetric> experimentVariantMetrics =
+			experimentMetric.getVariantMetrics();
 
-		variantMetricsList.sort(
-			Comparator.comparing(VariantMetrics::getDXPVariantId));
+		experimentVariantMetrics.sort(
+			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
 
-		assertVariantMetrics(
-			variantMetricsList.get(0), 0, 0, "Control", 0, 0, 50);
-		assertVariantMetrics(
-			variantMetricsList.get(1), 0, 0, "Variant", 0, 0, 50);
+		assertExperimentVariantMetric(
+			0, 0, "Control", experimentVariantMetrics.get(0), 0, 0, 50);
+		assertExperimentVariantMetric(
+			0, 0, "Variant", experimentVariantMetrics.get(1), 0, 0, 50);
 	}
 
 }

@@ -24,12 +24,12 @@ import org.apache.commons.lang3.Range;
 /**
  * @author Marcellus Tavares
  */
-public class VariantMetrics {
+public class ExperimentVariantMetric {
 
-	public VariantMetrics() {
+	public ExperimentVariantMetric() {
 	}
 
-	public VariantMetrics(boolean control, String dxpVariantId) {
+	public ExperimentVariantMetric(boolean control, String dxpVariantId) {
 		_control = control;
 		_dxpVariantId = dxpVariantId;
 	}

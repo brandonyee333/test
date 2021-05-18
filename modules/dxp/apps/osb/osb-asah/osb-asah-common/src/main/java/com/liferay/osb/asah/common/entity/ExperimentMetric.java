@@ -25,10 +25,12 @@ import java.util.List;
 /**
  * @author Marcellus Tavares
  */
-public class ExperimentMetrics {
+public class ExperimentMetric {
 
-	public void addVariantMetrics(VariantMetrics variantMetrics) {
-		_variantMetricsList.add(variantMetrics);
+	public void addExperimentVariantMetric(
+		ExperimentVariantMetric experimentVariantMetric) {
+
+		_experimentVariantMetric.add(experimentVariantMetric);
 	}
 
 	public double getCompletion() {
@@ -53,8 +55,8 @@ public class ExperimentMetrics {
 	}
 
 	@JsonProperty("variantMetrics")
-	public List<VariantMetrics> getVariantMetricsList() {
-		return _variantMetricsList;
+	public List<ExperimentVariantMetric> getVariantMetrics() {
+		return _experimentVariantMetric;
 	}
 
 	public void setCompletion(double completion) {
@@ -81,7 +83,8 @@ public class ExperimentMetrics {
 	private double _confidenceLevel;
 	private long _elapsedDays;
 	private Long _estimatedDaysLeft;
+	private final List<ExperimentVariantMetric> _experimentVariantMetric =
+		new ArrayList<>();
 	private LocalDateTime _processedDate;
-	private final List<VariantMetrics> _variantMetricsList = new ArrayList<>();
 
 }
