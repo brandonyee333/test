@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,19 +30,19 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-@GraphQLTypeWiring(fieldName = "metricsHistogram", typeName = "Experiment")
-public class ExperimentMetricsListDataFetcher
-	implements DataFetcher<List<ExperimentMetrics>> {
+@GraphQLTypeWiring(fieldName = "metrics", typeName = "Experiment")
+public class ExperimentMetricsDataFetcher
+	implements DataFetcher<ExperimentMetrics> {
 
 	@Override
-	public List<ExperimentMetrics> get(
+	public ExperimentMetrics get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
 		Map<String, Object> context = dataFetchingEnvironment.getContext();
 
 		String experimentId = (String)context.get("experimentId");
 
-		return _experimentDog.getExperimentMetricsList(experimentId);
+		return _experimentDog.getExperimentMetrics(experimentId);
 	}
 
 	@Autowired
