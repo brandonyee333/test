@@ -17,6 +17,9 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 
+import org.junit.Ignore;
+import org.junit.Test;
+
 /**
  * @author Geyson Silva
  */
@@ -40,6 +43,13 @@ public class ExperimentsGraphQLRestControllerTest
 	@Override
 	public String getQueryPath() {
 		return "experiments_query.graphql";
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testQuery() throws Exception {
+		super.testQuery();
 	}
 
 }
