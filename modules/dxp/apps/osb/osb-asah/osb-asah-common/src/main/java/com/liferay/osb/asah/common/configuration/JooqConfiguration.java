@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 /**
@@ -38,14 +39,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 public class JooqConfiguration {
 
 	@Bean
-	public ConnectionProvider defaultConnectionProvider(
-		DataSource dataSource) {
-
-		return new DataSourceConnectionProvider(
-			new TransactionAwareDataSourceProxy(dataSource));
-	}
-
-	@Bean
+	@Primary
 	public org.jooq.Configuration defaultConfiguration(
 		ConnectionProvider connectionProvider) {
 
@@ -57,7 +51,41 @@ public class JooqConfiguration {
 	}
 
 	@Bean
+	@Primary
+	public ConnectionProvider defaultConnectionProvider(DataSource dataSource) {
+		return new DataSourceConnectionProvider(
+			new TransactionAwareDataSourceProxy(dataSource));
+	}
+
+	@Bean
+	@Primary
 	public DSLContext defaultDSLContext(org.jooq.Configuration configuration) {
+		return new DefaultDSLContext(configuration);
+	}
+
+	@Bean("trinoConfiguration")
+	public org.jooq.Configuration trinoConfiguration(
+		@Qualifier("trinoConnectionProvider") ConnectionProvider
+			connectionProvider) {
+
+		DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
+
+		defaultConfiguration.set(connectionProvider);
+
+		return defaultConfiguration;
+	}
+
+	@Bean
+	public ConnectionProvider trinoConnectionProvider(
+		@Qualifier("trinoDataSource") DataSource dataSource) {
+
+		return new DataSourceConnectionProvider(dataSource);
+	}
+
+	@Bean("trinoDSLContext")
+	public DSLContext trinoDSLContext(
+		@Qualifier("trinoConfiguration") org.jooq.Configuration configuration) {
+
 		return new DefaultDSLContext(configuration);
 	}
 
