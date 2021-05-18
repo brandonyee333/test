@@ -16,10 +16,13 @@ package com.liferay.osb.asah.common.configuration;
 
 import javax.sql.DataSource;
 
+import org.jooq.ConnectionProvider;
+import org.jooq.DSLContext;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +38,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 public class JooqConfiguration {
 
 	@Bean
-	public DataSourceConnectionProvider dataSourceConnectionProvider(
+	public ConnectionProvider defaultConnectionProvider(
 		DataSource dataSource) {
 
 		return new DataSourceConnectionProvider(
@@ -43,21 +46,19 @@ public class JooqConfiguration {
 	}
 
 	@Bean
-	public DefaultConfiguration defaultConfiguration(
-		DataSourceConnectionProvider dataSourceConnectionProvider) {
+	public org.jooq.Configuration defaultConfiguration(
+		ConnectionProvider connectionProvider) {
 
 		DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
 
-		defaultConfiguration.set(dataSourceConnectionProvider);
+		defaultConfiguration.set(connectionProvider);
 
 		return defaultConfiguration;
 	}
 
 	@Bean
-	public DefaultDSLContext defaultDSLContext(
-		DefaultConfiguration defaultConfiguration) {
-
-		return new DefaultDSLContext(defaultConfiguration);
+	public DSLContext defaultDSLContext(org.jooq.Configuration configuration) {
+		return new DefaultDSLContext(configuration);
 	}
 
 }
