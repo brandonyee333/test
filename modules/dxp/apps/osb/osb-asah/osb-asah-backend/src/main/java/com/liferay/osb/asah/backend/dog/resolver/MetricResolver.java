@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.dog.resolver;
 
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.backend.model.MetricType;
+import com.liferay.osb.asah.common.model.MetricType;
 
 import java.util.Collections;
 import java.util.HashSet;

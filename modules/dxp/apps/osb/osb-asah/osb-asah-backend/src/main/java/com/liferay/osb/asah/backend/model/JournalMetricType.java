@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.TrendClassification;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;

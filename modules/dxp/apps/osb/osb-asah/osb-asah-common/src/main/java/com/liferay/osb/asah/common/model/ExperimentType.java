@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.model;
+package com.liferay.osb.asah.common.model;
 
 /**
  * @author Marcellus Tavares

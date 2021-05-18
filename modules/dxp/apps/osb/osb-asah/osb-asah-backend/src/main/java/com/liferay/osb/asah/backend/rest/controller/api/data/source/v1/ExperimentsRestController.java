@@ -15,15 +15,15 @@
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
-import com.liferay.osb.asah.backend.model.DXPVariant;
 import com.liferay.osb.asah.backend.model.DXPVariants;
-import com.liferay.osb.asah.backend.model.Experiment;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
-import com.liferay.osb.asah.backend.model.Goal;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
+import com.liferay.osb.asah.common.entity.DXPVariant;
+import com.liferay.osb.asah.common.entity.Experiment;
+import com.liferay.osb.asah.common.entity.ExperimentMetrics;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
-import com.liferay.osb.asah.common.model.ExperimentMetrics;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
+import com.liferay.osb.asah.common.model.Goal;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
 

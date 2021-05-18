@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.model;
 
 import com.liferay.osb.asah.backend.test.util.BaseEnumTestCase;
+import com.liferay.osb.asah.common.model.TrendClassification;
 
 import org.junit.Assert;
 import org.junit.Test;

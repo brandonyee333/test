@@ -19,9 +19,9 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.resolver.AssetResolver;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetType;
-import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.PageMetric;
-import com.liferay.osb.asah.backend.model.PageMetricType;
+import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.PageMetricType;
 
 import java.util.HashMap;
 import java.util.HashSet;

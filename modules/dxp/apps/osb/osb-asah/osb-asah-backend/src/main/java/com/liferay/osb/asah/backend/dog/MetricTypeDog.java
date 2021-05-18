@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.configuration.DogConfiguration;
 import com.liferay.osb.asah.backend.model.AssetType;
-import com.liferay.osb.asah.backend.model.MetricType;
+import com.liferay.osb.asah.common.model.MetricType;
 
 import java.util.HashMap;
 import java.util.List;

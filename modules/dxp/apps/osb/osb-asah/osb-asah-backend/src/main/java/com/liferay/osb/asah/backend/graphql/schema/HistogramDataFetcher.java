@@ -21,9 +21,9 @@ import com.liferay.osb.asah.backend.dog.VisitorHistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
-import com.liferay.osb.asah.backend.model.MetricType;
-import com.liferay.osb.asah.backend.model.PageMetricType;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.PageMetricType;
 
 import graphql.execution.ExecutionTypeInfo;
 

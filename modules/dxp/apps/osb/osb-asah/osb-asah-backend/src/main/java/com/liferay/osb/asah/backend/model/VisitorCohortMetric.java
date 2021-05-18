@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.common.model.MetricType;
+
 import java.util.Set;
 
 /**

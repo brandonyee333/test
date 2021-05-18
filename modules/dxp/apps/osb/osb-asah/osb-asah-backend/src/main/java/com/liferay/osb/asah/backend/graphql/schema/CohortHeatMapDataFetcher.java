@@ -18,9 +18,9 @@ import com.liferay.osb.asah.backend.dog.MetricTypeDog;
 import com.liferay.osb.asah.backend.dog.VisitorCohortHeatMapDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.CohortHeatMapMetric;
-import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.model.MetricType;
 
 import graphql.execution.ExecutionTypeInfo;
 

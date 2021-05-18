@@ -15,9 +15,9 @@
 package com.liferay.osb.asah.backend.dog.resolver;
 
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.backend.model.MetricType;
-import com.liferay.osb.asah.backend.model.TrendClassification;
 import com.liferay.osb.asah.backend.test.util.BaseBeanTestCase;
+import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.TrendClassification;
 import com.liferay.osb.asah.test.util.util.AssertTestUtil;
 
 import java.util.function.BiConsumer;

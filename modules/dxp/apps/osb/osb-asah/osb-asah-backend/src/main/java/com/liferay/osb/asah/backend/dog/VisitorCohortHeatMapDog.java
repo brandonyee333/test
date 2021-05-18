@@ -22,10 +22,10 @@ import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.CohortHeatMapMetric;
 import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.backend.model.VisitorCohortMetric;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.model.MetricType;
 
 import java.time.Clock;
 import java.time.LocalDate;

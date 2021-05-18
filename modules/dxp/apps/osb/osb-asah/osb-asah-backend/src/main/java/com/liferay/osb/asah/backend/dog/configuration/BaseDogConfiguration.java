@@ -17,9 +17,9 @@ package com.liferay.osb.asah.backend.dog.configuration;
 import com.liferay.osb.asah.backend.dog.DogUtil;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
-import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
+import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.petra.string.StringBundler;
 
 import java.util.HashMap;

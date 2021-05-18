@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
+import com.liferay.osb.asah.common.entity.ExperimentMetrics;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.ExperimentMetrics;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;

@@ -19,7 +19,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.backend.model.MetricType;
+import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Collections;

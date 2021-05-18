@@ -16,6 +16,8 @@ package com.liferay.osb.asah.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liferay.osb.asah.common.entity.DXPVariant;
+
 import java.util.List;
 
 import javax.validation.Valid;

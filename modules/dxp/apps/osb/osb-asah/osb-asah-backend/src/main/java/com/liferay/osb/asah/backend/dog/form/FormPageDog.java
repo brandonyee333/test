@@ -24,7 +24,7 @@ import com.liferay.osb.asah.backend.model.FormFieldMetricType;
 import com.liferay.osb.asah.backend.model.FormPageMetric;
 import com.liferay.osb.asah.backend.model.FormPageMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.backend.model.MetricType;
+import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.petra.string.StringPool;
 
 import java.util.ArrayList;

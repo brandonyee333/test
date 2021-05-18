@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.backend.dog.experiment;
 
-import com.liferay.osb.asah.backend.model.Experiment;
-import com.liferay.osb.asah.backend.model.Goal;
-import com.liferay.osb.asah.backend.model.GoalMetric;
-import com.liferay.osb.asah.backend.model.PageMetricType;
+import com.liferay.osb.asah.common.entity.Experiment;
+import com.liferay.osb.asah.common.model.Goal;
+import com.liferay.osb.asah.common.model.GoalMetric;
+import com.liferay.osb.asah.common.model.PageMetricType;
 
 import org.apache.commons.math3.util.FastMath;
 

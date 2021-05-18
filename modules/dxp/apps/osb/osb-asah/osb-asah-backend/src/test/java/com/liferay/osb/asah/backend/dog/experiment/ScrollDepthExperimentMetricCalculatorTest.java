@@ -14,11 +14,11 @@
 
 package com.liferay.osb.asah.backend.dog.experiment;
 
-import com.liferay.osb.asah.backend.model.Experiment;
-import com.liferay.osb.asah.backend.model.Goal;
-import com.liferay.osb.asah.backend.model.GoalMetric;
-import com.liferay.osb.asah.common.model.ExperimentMetrics;
-import com.liferay.osb.asah.common.model.VariantMetrics;
+import com.liferay.osb.asah.common.entity.Experiment;
+import com.liferay.osb.asah.common.entity.ExperimentMetrics;
+import com.liferay.osb.asah.common.entity.VariantMetrics;
+import com.liferay.osb.asah.common.model.Goal;
+import com.liferay.osb.asah.common.model.GoalMetric;
 
 import java.io.IOException;
 

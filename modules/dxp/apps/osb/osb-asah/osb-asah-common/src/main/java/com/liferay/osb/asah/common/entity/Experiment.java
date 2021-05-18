@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.model;
+package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,6 +22,8 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
+import com.liferay.osb.asah.common.model.ExperimentType;
+import com.liferay.osb.asah.common.model.Goal;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

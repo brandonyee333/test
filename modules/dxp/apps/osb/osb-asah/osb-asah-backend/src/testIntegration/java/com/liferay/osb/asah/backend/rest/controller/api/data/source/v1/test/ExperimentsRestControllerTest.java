@@ -15,17 +15,17 @@
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
-import com.liferay.osb.asah.backend.model.DXPVariant;
 import com.liferay.osb.asah.backend.model.DXPVariants;
-import com.liferay.osb.asah.backend.model.Experiment;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
-import com.liferay.osb.asah.backend.model.Goal;
-import com.liferay.osb.asah.backend.model.GoalMetric;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.ExperimentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.common.entity.DXPVariant;
+import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
+import com.liferay.osb.asah.common.model.Goal;
+import com.liferay.osb.asah.common.model.GoalMetric;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;

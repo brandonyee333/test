@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.backend.dog.experiment;
 
-import com.liferay.osb.asah.backend.model.Experiment;
+import com.liferay.osb.asah.common.entity.Experiment;
+import com.liferay.osb.asah.common.entity.ExperimentMetrics;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
-import com.liferay.osb.asah.common.model.ExperimentMetrics;
 
 import java.util.List;
 

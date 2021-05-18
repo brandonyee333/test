@@ -19,10 +19,10 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.DXPClient;
+import com.liferay.osb.asah.common.entity.VariantMetrics;
 import com.liferay.osb.asah.common.http.ExperimentHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
-import com.liferay.osb.asah.common.model.VariantMetrics;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;

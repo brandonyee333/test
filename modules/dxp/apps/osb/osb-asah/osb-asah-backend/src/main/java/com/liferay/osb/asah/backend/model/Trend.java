@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.common.model.TrendClassification;
+
 import java.math.BigDecimal;
 
 import java.util.Objects;

@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liferay.osb.asah.common.entity.ExperimentMetrics;
+
 import java.util.ArrayList;
 import java.util.List;
 
