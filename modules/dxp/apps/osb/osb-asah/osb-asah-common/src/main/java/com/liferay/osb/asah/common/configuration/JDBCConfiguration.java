@@ -156,7 +156,7 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 
 		hikariDataSource.setConnectionTimeout(TimeUnit.SECONDS.toMillis(30));
 		hikariDataSource.setIdleTimeout(TimeUnit.SECONDS.toMillis(60));
-		hikariDataSource.setJdbcUrl(_buildTrinoJdbcUrl());
+		hikariDataSource.setJdbcUrl(_buildTrinoJDBCURL());
 		hikariDataSource.setLeakDetectionThreshold(
 			TimeUnit.SECONDS.toMillis(20));
 		hikariDataSource.setMaximumPoolSize(_hikariMaximumPoolSize);
@@ -166,7 +166,7 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 		return hikariDataSource;
 	}
 
-	private String _buildTrinoJdbcUrl() {
+	private String _buildTrinoJDBCURL() {
 		StringBuilder sb = new StringBuilder("jdbc:trino://");
 
 		String[] transportAddressParts = StringUtils.split(
