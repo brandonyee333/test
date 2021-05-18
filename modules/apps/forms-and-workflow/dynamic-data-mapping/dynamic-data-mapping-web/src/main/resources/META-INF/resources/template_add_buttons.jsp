@@ -94,7 +94,7 @@ String message = "add";
 				while (itr.hasNext()) {
 					TemplateHandler templateHandler = itr.next();
 
-					if (!PortletPermissionUtil.contains(permissionChecker, scopeGroupId, layout, templateHandler.getResourceName(), ActionKeys.ADD_PORTLET_DISPLAY_TEMPLATE)) {
+					if (!PortletPermissionUtil.contains(permissionChecker, scopeGroupId, layout, templateHandler.getResourceName(), ActionKeys.ADD_PORTLET_DISPLAY_TEMPLATE, false, false)) {
 						itr.remove();
 					}
 				}
