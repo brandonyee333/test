@@ -33,6 +33,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -117,7 +118,9 @@ public class ContentRecommendationDataprocMessageProcessor
 
 		try {
 			File sparkJobResultFile = _googleStorageArchiver.readSparkJobResult(
-				_contentRecommendationsBucket,
+				StringUtils.replace(
+					_contentRecommendationsBucketTemplate, "{region}",
+					System.getenv("LCP_PROJECT_CLUSTER")),
 				String.format("%s/%s", jobId, jobRunId),
 				DateUtil.toUTCDate(jobRunJSONObject.getString("createdDate")),
 				"");
@@ -175,9 +178,9 @@ public class ContentRecommendationDataprocMessageProcessor
 		ContentRecommendationDataprocMessageProcessor.class);
 
 	@Value(
-		"${osb.asah.content.recommendations.google.bucket:analytics-cloud-content-recommendations-uat}"
+		"${osb.asah.content.recommendations.google.bucket:analytics-cloud-content-recommendations-{region}}}"
 	)
-	private String _contentRecommendationsBucket;
+	private String _contentRecommendationsBucketTemplate;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
