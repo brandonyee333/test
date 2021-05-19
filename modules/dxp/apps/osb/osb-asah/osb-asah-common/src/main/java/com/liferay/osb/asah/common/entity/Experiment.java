@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
@@ -384,6 +385,7 @@ public final class Experiment implements Persistable<Long> {
 		_dxpSegmentName = dxpSegmentName;
 	}
 
+	@JsonDeserialize(as = LinkedHashSet.class)
 	public void setExperimentMetrics(Set<ExperimentMetric> experimentMetrics) {
 		_experimentMetrics = experimentMetrics;
 	}
@@ -396,6 +398,7 @@ public final class Experiment implements Persistable<Long> {
 		_experimentType = experimentType;
 	}
 
+	@JsonDeserialize(as = LinkedHashSet.class)
 	public void setExperimentVariants(
 		Set<ExperimentVariant> experimentVariants) {
 

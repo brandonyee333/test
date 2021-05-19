@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
@@ -160,6 +161,7 @@ public class ExperimentMetric implements Persistable<Long> {
 		_estimatedDaysLeft = estimatedDaysLeft;
 	}
 
+	@JsonDeserialize(as = LinkedHashSet.class)
 	public void setExperimentVariantMetrics(
 		Set<ExperimentVariantMetric> experimentVariantMetrics) {
 
