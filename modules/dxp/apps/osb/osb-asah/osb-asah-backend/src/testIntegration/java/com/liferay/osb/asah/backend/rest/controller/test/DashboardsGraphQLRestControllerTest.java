@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -20,8 +20,8 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.extractor.processor.DXPEntitiesMessageProcessor;
 import com.liferay.osb.asah.extractor.spring.OSBAsahExtractorSpringBootApplication;
-import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
+import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;

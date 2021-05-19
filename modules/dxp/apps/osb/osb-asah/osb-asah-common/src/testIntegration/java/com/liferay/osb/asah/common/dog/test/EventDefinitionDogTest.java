@@ -22,7 +22,7 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.test.util.postgresql.PostgreSQLTables;
+import com.liferay.osb.asah.test.util.annotation.PostgreSQLTables;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 

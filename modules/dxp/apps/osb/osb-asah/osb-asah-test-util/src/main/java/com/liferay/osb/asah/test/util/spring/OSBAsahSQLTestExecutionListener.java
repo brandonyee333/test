@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.test.util.spring;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
-import com.liferay.osb.asah.test.util.postgresql.PostgreSQLTables;
+import com.liferay.osb.asah.test.util.annotation.PostgreSQLTables;
 
 import java.io.IOException;
 

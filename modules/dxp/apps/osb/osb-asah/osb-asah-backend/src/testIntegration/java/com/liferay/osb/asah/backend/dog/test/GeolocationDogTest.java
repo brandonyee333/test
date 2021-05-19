@@ -23,7 +23,7 @@ import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;

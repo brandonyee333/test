@@ -21,8 +21,8 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
 import com.liferay.osb.asah.stream.curator.bot.nanite.document.library.DocumentLibraryNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
-import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
+import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.json.JSONArray;

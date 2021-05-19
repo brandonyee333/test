@@ -21,7 +21,7 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.custom.CustomAssetDashboardNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
-import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
+import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 

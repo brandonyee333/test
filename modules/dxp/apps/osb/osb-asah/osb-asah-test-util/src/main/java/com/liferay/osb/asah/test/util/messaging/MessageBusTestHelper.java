@@ -27,7 +27,7 @@ import com.liferay.osb.asah.common.messaging.impl.PubSubClient;
 import com.liferay.osb.asah.common.messaging.impl.PubSubClientFactory;
 import com.liferay.osb.asah.common.messaging.impl.PubSubMessageBusImpl;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
+import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
 import java.util.List;

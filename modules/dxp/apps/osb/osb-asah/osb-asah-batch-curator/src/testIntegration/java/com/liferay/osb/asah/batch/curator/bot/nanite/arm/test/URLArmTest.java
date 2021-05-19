@@ -18,7 +18,7 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.arm.URLArm;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.ArrayList;

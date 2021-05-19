@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.junit.Assert;

@@ -22,9 +22,9 @@ import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManage
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndices;
-import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
+import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndices;
+import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
 
 import java.io.IOException;

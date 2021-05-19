@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.test.util.postgresql.PostgreSQLTables;
+import com.liferay.osb.asah.test.util.annotation.PostgreSQLTables;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Collections;
