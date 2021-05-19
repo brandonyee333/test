@@ -61,7 +61,7 @@ public class OSBAsahPostgreSQLTestExecutionListener
 
 	@Override
 	public void afterTestMethod(TestContext testContext) throws SQLException {
-		try (Connection connection = _dataSource.getConnection()) {
+		try (Connection connection = _postgreSQLDataSource.getConnection()) {
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
 
 			ResultSet resultSet = databaseMetaData.getTables(
@@ -81,7 +81,7 @@ public class OSBAsahPostgreSQLTestExecutionListener
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
 					new ClassPathResource("data.sql")),
-				_dataSource);
+				_postgreSQLDataSource);
 		}
 	}
 
@@ -138,11 +138,11 @@ public class OSBAsahPostgreSQLTestExecutionListener
 					new ClassPathResource(
 						"dependencies/" + postgreSQLTables.resourcePath(),
 						clazz)),
-				_dataSource);
+				_postgreSQLDataSource);
 		}
 	}
 
 	@Autowired
-	private DataSource _dataSource;
+	private DataSource _postgreSQLDataSource;
 
 }
