@@ -62,7 +62,9 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 
 		testContextManager.registerTestExecutionListeners(
 			autowireCapableBeanFactory.createBean(
-				OSBAsahElasticsearchTestExecutionListener.class));
+				OSBAsahElasticsearchTestExecutionListener.class),
+			autowireCapableBeanFactory.createBean(
+				OSBAsahSQLTestExecutionListener.class));
 	}
 
 }
