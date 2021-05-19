@@ -251,7 +251,10 @@ public class AnalyticsEventsMessageProcessor {
 				ResourceUtil.readResourceToString(
 					"dependencies/analytics_event.avsc", getClass())));
 
-		builder.googleBucket(_analyticsEventsBucket);
+		builder.googleBucket(
+			StringUtils.replace(
+				_analyticsEventsBucketTemplate, "{region}",
+				System.getenv("LCP_PROJECT_CLUSTER")));
 
 		storage = _storageFactory.getStorage(builder.build());
 
@@ -473,9 +476,9 @@ public class AnalyticsEventsMessageProcessor {
 	};
 
 	@Value(
-		"${osb.asah.analytics.events.google.bucket:analytics-cloud-analytics-events}"
+		"${osb.asah.analytics.events.google.bucket:analytics-cloud-analytics-events-{region}}"
 	)
-	private String _analyticsEventsBucket;
+	private String _analyticsEventsBucketTemplate;
 
 	@Autowired
 	private AnalyticsEventsChannels _analyticsEventsChannels;
