@@ -25,18 +25,18 @@
 		</liferay-util:buffer>
 
 		<liferay-util:buffer
-			var="oldHtml"
+			var="oldHTML"
 		>
 			data-fm-namespace="<%= namespace %>"
 		</liferay-util:buffer>
 
 		<liferay-util:buffer
-			var="newHtml"
+			var="newHTML"
 		>
 			data-fm-namespace="<%= namespace.concat(HtmlUtil.escapeAttribute(name)) %>"
 		</liferay-util:buffer>
 
-		<%= StringUtil.replace(html, oldHtml, newHtml) %>
+		<%= StringUtil.replace(html, oldHTML, newHTML) %>
 	</c:when>
 	<c:otherwise>
 		<liferay-util:include page="/html/taglib/aui/form/start.portal.jsp" servletContext="<%= application %>" />

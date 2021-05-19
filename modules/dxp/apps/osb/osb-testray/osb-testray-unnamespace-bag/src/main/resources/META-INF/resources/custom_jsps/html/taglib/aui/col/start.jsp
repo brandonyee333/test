@@ -25,18 +25,18 @@
 		</liferay-util:buffer>
 
 		<liferay-util:buffer
-			var="oldHtml"
+			var="oldHTML"
 		>
 			id="<portlet:namespace />
 		</liferay-util:buffer>
 
 		<liferay-util:buffer
-			var="newHtml"
+			var="newHTML"
 		>
 			id="
 		</liferay-util:buffer>
 
-		<%= StringUtil.replace(html, oldHtml, newHtml) %>
+		<%= StringUtil.replace(html, oldHTML, newHTML) %>
 	</c:when>
 	<c:otherwise>
 		<liferay-util:include page="/html/taglib/aui/col/start.portal.jsp" servletContext="<%= application %>" />
