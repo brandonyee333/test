@@ -166,7 +166,10 @@ public class DXPBatchEntitiesRestController {
 				"%s/batch-%d", _dxpBatchEntitiesStoragePath,
 				System.currentTimeMillis()));
 
-		builder.googleBucket(_dxpBatchEntitiesBucket);
+		builder.googleBucket(
+			StringUtils.replace(
+				_dxpBatchEntitiesBucketTemplate, "{region}",
+				System.getenv("LCP_PROJECT_CLUSTER")));
 		builder.googleBucketFolder(googleBucketFolder);
 
 		return builder.build();
@@ -176,9 +179,9 @@ public class DXPBatchEntitiesRestController {
 		DXPBatchEntitiesRestController.class);
 
 	@Value(
-		"${osb.asah.dxp.batch.entities.google.bucket:analytics-cloud-dxp-batch-entities}"
+		"${osb.asah.dxp.batch.entities.google.bucket:analytics-cloud-dxp-batch-entities-{region}}"
 	)
-	private String _dxpBatchEntitiesBucket;
+	private String _dxpBatchEntitiesBucketTemplate;
 
 	@Value("${osb.asah.dxp.batch.entities.storage.path:/tmp/}")
 	private String _dxpBatchEntitiesStoragePath;

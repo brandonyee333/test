@@ -26,6 +26,7 @@ import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -157,7 +158,10 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 		Storage.BlobListOption... blobListOptions) {
 
 		Page<Blob> blobs = _storage.list(
-			_dxpBatchEntitiesBucket, blobListOptions);
+			StringUtils.replace(
+				_dxpBatchEntitiesBucketTemplate, "{region}",
+				System.getenv("LCP_PROJECT_CLUSTER")),
+			blobListOptions);
 
 		return blobs.iterateAll();
 	}
@@ -193,9 +197,9 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 		DeleteDXPBatchEntitiesNanite.class);
 
 	@Value(
-		"${osb.asah.dxp.batch.entities.google.bucket:analytics-cloud-dxp-batch-entities}"
+		"${osb.asah.dxp.batch.entities.google.bucket:analytics-cloud-dxp-batch-entities-{region}}"
 	)
-	private String _dxpBatchEntitiesBucket;
+	private String _dxpBatchEntitiesBucketTemplate;
 
 	private Storage _storage;
 
