@@ -50,10 +50,10 @@ import org.springframework.test.context.support.AbstractTestExecutionListener;
 @ConditionalOnProperty(
 	havingValue = "true", value = "osb.asah.postgresql.enabled"
 )
-public class OSBAsahPostgreSQLTestExecutionListener
+public class OSBAsahSQLTestExecutionListener
 	extends AbstractTestExecutionListener {
 
-	public OSBAsahPostgreSQLTestExecutionListener() {
+	public OSBAsahSQLTestExecutionListener() {
 		if (!_isPostgreSQLUp()) {
 			throw new IllegalStateException(
 				"Integration test infrastructure is not up. Please run " +

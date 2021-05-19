@@ -1,7 +1,7 @@
 <FindBugsFilter>
 	<Match>
 		<Bug pattern="SQL_INJECTION_JDBC" />
-		<Class name="com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLTestExecutionListener" />
+		<Class name="com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener" />
 		<Method name="afterTestMethod" />
 	</Match>
 	<Match>
@@ -11,7 +11,7 @@
 	</Match>
 	<Match>
 		<Bug pattern="UNENCRYPTED_SOCKET" />
-		<Class name="com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLTestExecutionListener" />
+		<Class name="com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener" />
 		<Method name="_pingHost" />
 	</Match>
 	<Match>

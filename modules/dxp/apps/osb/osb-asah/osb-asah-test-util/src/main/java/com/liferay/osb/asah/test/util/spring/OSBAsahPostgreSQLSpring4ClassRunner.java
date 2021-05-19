@@ -64,7 +64,7 @@ public class OSBAsahPostgreSQLSpring4ClassRunner
 
 		testContextManager.registerTestExecutionListeners(
 			autowireCapableBeanFactory.createBean(
-				OSBAsahPostgreSQLTestExecutionListener.class));
+				OSBAsahSQLTestExecutionListener.class));
 	}
 
 }
