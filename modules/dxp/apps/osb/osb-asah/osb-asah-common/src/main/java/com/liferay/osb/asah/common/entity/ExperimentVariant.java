@@ -14,24 +14,34 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
+import com.liferay.osb.asah.common.util.BeanUtils;
 
+import java.util.Map;
 import java.util.Objects;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author André Miranda
  */
 @GraphQLType
-public class ExperimentVariant {
+@Table
+public class ExperimentVariant implements Persistable<Long> {
+
+	public ExperimentVariant() {
+	}
+
+	public ExperimentVariant(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -50,6 +60,7 @@ public class ExperimentVariant {
 			Objects.equals(_dxpVariantId, experimentVariant._dxpVariantId) &&
 			Objects.equals(
 				_dxpVariantName, experimentVariant._dxpVariantName) &&
+			Objects.equals(_id, experimentVariant._id) &&
 			Objects.equals(_trafficSplit, experimentVariant._trafficSplit)) {
 
 			return true;
@@ -58,29 +69,36 @@ public class ExperimentVariant {
 		return false;
 	}
 
-	@Min(0)
-	@NotNull
+	@AccessType(AccessType.Type.PROPERTY)
 	public Integer getChanges() {
 		return _changes;
 	}
 
-	@GraphQLProperty("dxpVariantId")
+	@AccessType(AccessType.Type.PROPERTY)
+	public Boolean getControl() {
+		return _control;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("dxpVariantId")
-	@NotBlank
 	public String getDXPVariantId() {
 		return _dxpVariantId;
 	}
 
-	@GraphQLProperty("dxpVariantName")
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("dxpVariantName")
-	@NotBlank
 	public String getDXPVariantName() {
 		return _dxpVariantName;
 	}
 
-	@Max(100)
-	@Min(0)
-	@NotNull
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
+	@Override
+	public Long getId() {
+		return _id;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public Double getTrafficSplit() {
 		return _trafficSplit;
 	}
@@ -91,9 +109,18 @@ public class ExperimentVariant {
 			_changes, _control, _dxpVariantId, _dxpVariantName, _trafficSplit);
 	}
 
-	@NotNull
 	public Boolean isControl() {
-		return _control;
+		return getControl();
+	}
+
+	@JsonIgnore
+	@Override
+	public boolean isNew() {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public void setChanges(Integer changes) {
@@ -112,14 +139,37 @@ public class ExperimentVariant {
 		_dxpVariantName = dxpVariantName;
 	}
 
+	public void setId(Long id) {
+		_id = id;
+	}
+
+	public void setIsNew(Boolean isNew) {
+		_isNew = isNew;
+	}
+
 	public void setTrafficSplit(Double trafficSplit) {
 		_trafficSplit = trafficSplit;
 	}
 
+	@Transient
 	private Integer _changes;
+
+	@Transient
 	private Boolean _control;
+
+	@Transient
 	private String _dxpVariantId;
+
+	@Transient
 	private String _dxpVariantName;
+
+	@Transient
+	private Long _id;
+
+	@Transient
+	private Boolean _isNew;
+
+	@Transient
 	private Double _trafficSplit;
 
 }

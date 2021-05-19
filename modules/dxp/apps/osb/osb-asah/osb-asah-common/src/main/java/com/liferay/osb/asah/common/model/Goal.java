@@ -16,17 +16,17 @@ package com.liferay.osb.asah.common.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.liferay.osb.asah.common.graphql.GraphQLProperty;
-import com.liferay.osb.asah.common.graphql.GraphQLType;
-
 import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Column;
+
 /**
  * @author Marcellus Tavares
  */
-@GraphQLType
 public class Goal {
 
 	public Goal() {
@@ -58,13 +58,15 @@ public class Goal {
 		return false;
 	}
 
-	@GraphQLProperty("metric")
+	@AccessType(AccessType.Type.PROPERTY)
+	@Column("metric")
 	@JsonProperty("metric")
 	@NotNull
 	public GoalMetric getGoalMetric() {
 		return _goalMetric;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getTarget() {
 		return _target;
 	}
@@ -82,7 +84,10 @@ public class Goal {
 		_target = target;
 	}
 
+	@Transient
 	private GoalMetric _goalMetric;
+
+	@Transient
 	private String _target;
 
 }

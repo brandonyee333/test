@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
 public class DXPClient extends BaseDXPClient {
 
 	public JSONObject deleteDXPExperiment(
-		Long dataSourceId, String experimentId) {
+		Long dataSourceId, Long experimentId) {
 
 		String path = String.format(
 			"/o/segments-asah/v1.0/experiments/%s", experimentId);

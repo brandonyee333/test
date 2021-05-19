@@ -17,32 +17,53 @@ package com.liferay.osb.asah.common.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.graphql.GraphQLProperty;
-import com.liferay.osb.asah.common.graphql.GraphQLType;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.model.ExperimentType;
 import com.liferay.osb.asah.common.model.Goal;
+import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import java.util.Date;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.URL;
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Embedded;
+import org.springframework.data.relational.core.mapping.MappedCollection;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author André Miranda
  */
-@GraphQLType
-public final class Experiment {
+@Table
+public final class Experiment implements Persistable<Long> {
+
+	public Experiment() {
+	}
+
+	public Experiment(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
+	}
+
+	public void addExperimentMetric(ExperimentMetric experimentMetric) {
+		_experimentMetrics.add(experimentMetric);
+	}
+
+	public void addExperimentVariant(ExperimentVariant experimentVariant) {
+		_experimentVariants.add(experimentVariant);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -92,19 +113,21 @@ public final class Experiment {
 		return false;
 	}
 
-	public String getChannelId() {
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getChannelId() {
 		return _channelId;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public Double getConfidenceLevel() {
 		return _confidenceLevel;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
-	@NotNull
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -113,81 +136,81 @@ public final class Experiment {
 		return new Date(_createDate.getTime());
 	}
 
-	@GraphQLProperty("createDate")
-	@JsonIgnore
-	public String getCreateDateISO() {
-		if (_createDate == null) {
-			return null;
-		}
-
-		return DateUtil.toUTCString(_createDate);
-	}
-
-	@NotBlank
-	public String getDataSourceId() {
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getDescription() {
 		return _description;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("dxpExperienceId")
-	@NotBlank
 	public String getDXPExperienceId() {
 		return _dxpExperienceId;
 	}
 
-	@GraphQLProperty("dxpExperienceName")
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("dxpExperienceName")
-	@NotBlank
 	public String getDXPExperienceName() {
 		return _dxpExperienceName;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("dxpGroupId")
 	public String getDXPGroupId() {
 		return _dxpGroupId;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("dxpLayoutId")
-	@NotBlank
 	public String getDXPLayoutId() {
 		return _dxpLayoutId;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("dxpSegmentId")
-	@NotBlank
 	public String getDXPSegmentId() {
 		return _dxpSegmentId;
 	}
 
-	@GraphQLProperty("dxpSegmentName")
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("dxpSegmentName")
-	@NotBlank
 	public String getDXPSegmentName() {
 		return _dxpSegmentName;
 	}
 
-	@GraphQLProperty("status")
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonProperty("metrics")
+	@MappedCollection(idColumn = "experimentid")
+	public Set<ExperimentMetric> getExperimentMetrics() {
+		return _experimentMetrics;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@Column("status")
 	@JsonProperty("status")
 	public ExperimentStatus getExperimentStatus() {
 		return _experimentStatus;
 	}
 
-	@GraphQLProperty("type")
+	@AccessType(AccessType.Type.PROPERTY)
+	@Column("type")
 	@JsonProperty("type")
 	public ExperimentType getExperimentType() {
 		return _experimentType;
 	}
 
-	@GraphQLProperty("dxpVariants")
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("dxpVariants")
-	@Valid
-	public List<ExperimentVariant> getExperimentVariants() {
+	@MappedCollection(idColumn = "experimentid")
+	public Set<ExperimentVariant> getExperimentVariants() {
 		return _experimentVariants;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -200,25 +223,22 @@ public final class Experiment {
 		return new Date(_finishedDate.getTime());
 	}
 
-	@GraphQLProperty("finishedDate")
-	@JsonIgnore
-	public String getFinishedDateISO() {
-		if (_finishedDate == null) {
-			return null;
-		}
-
-		return DateUtil.toUTCString(_finishedDate);
-	}
-
-	@Valid
+	@AccessType(AccessType.Type.PROPERTY)
+	@Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
+	@MappedCollection(idColumn = "experimentid")
 	public Goal getGoal() {
 		return _goal;
 	}
 
-	public String getId() {
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
+	@JsonSerialize(using = ToStringSerializer.class)
+	@Override
+	public Long getId() {
 		return _id;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -231,36 +251,27 @@ public final class Experiment {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	@GraphQLProperty("modifiedDate")
-	@JsonIgnore
-	public String getModifiedDateISO() {
-		if (_modifiedDate == null) {
-			return null;
-		}
-
-		return DateUtil.toUTCString(_modifiedDate);
-	}
-
-	@NotBlank
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getName() {
 		return _name;
 	}
 
-	@NotBlank
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getPageRelativePath() {
 		return _pageRelativePath;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getPageTitle() {
 		return _pageTitle;
 	}
 
-	@NotBlank
-	@URL
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getPageURL() {
 		return _pageURL;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -273,10 +284,12 @@ public final class Experiment {
 		return new Date(_processedDate.getTime());
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getPublishedDXPVariantId() {
 		return _publishedDXPVariantId;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -289,16 +302,6 @@ public final class Experiment {
 		return new Date(_startedDate.getTime());
 	}
 
-	@GraphQLProperty("startedDate")
-	@JsonIgnore
-	public String getStartedDateISO() {
-		if (_startedDate == null) {
-			return null;
-		}
-
-		return DateUtil.toUTCString(_startedDate);
-	}
-
 	@JsonIgnore
 	public LocalDateTime getStartedDateLocalDateTime() {
 		if (_startedDate == null) {
@@ -308,6 +311,7 @@ public final class Experiment {
 		return DateUtil.toLocalDateTime(_startedDate, ZoneOffset.UTC);
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getWinnerDXPVariantId() {
 		return _winnerDXPVariantId;
 	}
@@ -324,7 +328,17 @@ public final class Experiment {
 			_winnerDXPVariantId);
 	}
 
-	public void setChannelId(String channelId) {
+	@JsonIgnore
+	@Override
+	public boolean isNew() {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public void setChannelId(Long channelId) {
 		_channelId = channelId;
 	}
 
@@ -338,7 +352,7 @@ public final class Experiment {
 		}
 	}
 
-	public void setDataSourceId(String dataSourceId) {
+	public void setDataSourceId(Long dataSourceId) {
 		_dataSourceId = dataSourceId;
 	}
 
@@ -370,6 +384,10 @@ public final class Experiment {
 		_dxpSegmentName = dxpSegmentName;
 	}
 
+	public void setExperimentMetrics(Set<ExperimentMetric> experimentMetrics) {
+		_experimentMetrics = experimentMetrics;
+	}
+
 	public void setExperimentStatus(ExperimentStatus experimentStatus) {
 		_experimentStatus = experimentStatus;
 	}
@@ -379,7 +397,7 @@ public final class Experiment {
 	}
 
 	public void setExperimentVariants(
-		List<ExperimentVariant> experimentVariants) {
+		Set<ExperimentVariant> experimentVariants) {
 
 		_experimentVariants = experimentVariants;
 	}
@@ -394,8 +412,12 @@ public final class Experiment {
 		_goal = goal;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		_id = id;
+	}
+
+	public void setIsNew(Boolean isNew) {
+		_isNew = isNew;
 	}
 
 	public void setModifiedDate(Date modifiedDate) {
@@ -440,31 +462,88 @@ public final class Experiment {
 		_winnerDXPVariantId = winnerDXPVariantId;
 	}
 
-	private String _channelId;
+	@Transient
+	private Long _channelId;
+
+	@Transient
 	private Double _confidenceLevel;
+
+	@Transient
 	private Date _createDate;
-	private String _dataSourceId;
+
+	@Transient
+	private Long _dataSourceId;
+
+	@Transient
 	private String _description;
+
+	@Transient
 	private String _dxpExperienceId;
+
+	@Transient
 	private String _dxpExperienceName;
+
+	@Transient
 	private String _dxpGroupId;
+
+	@Transient
 	private String _dxpLayoutId;
+
+	@Transient
 	private String _dxpSegmentId;
+
+	@Transient
 	private String _dxpSegmentName;
+
+	@Transient
+	private Set<ExperimentMetric> _experimentMetrics = new LinkedHashSet<>();
+
+	@Transient
 	private ExperimentStatus _experimentStatus = ExperimentStatus.DRAFT;
+
+	@Transient
 	private ExperimentType _experimentType = ExperimentType.AB;
-	private List<ExperimentVariant> _experimentVariants;
+
+	@Transient
+	private Set<ExperimentVariant> _experimentVariants = new LinkedHashSet<>();
+
+	@Transient
 	private Date _finishedDate;
+
+	@Transient
 	private Goal _goal;
-	private String _id;
+
+	@Transient
+	private Long _id;
+
+	@Transient
+	private Boolean _isNew;
+
+	@Transient
 	private Date _modifiedDate;
+
+	@Transient
 	private String _name;
+
+	@Transient
 	private String _pageRelativePath;
+
+	@Transient
 	private String _pageTitle;
+
+	@Transient
 	private String _pageURL;
+
+	@Transient
 	private Date _processedDate;
+
+	@Transient
 	private String _publishedDXPVariantId;
+
+	@Transient
 	private Date _startedDate;
+
+	@Transient
 	private String _winnerDXPVariantId;
 
 }

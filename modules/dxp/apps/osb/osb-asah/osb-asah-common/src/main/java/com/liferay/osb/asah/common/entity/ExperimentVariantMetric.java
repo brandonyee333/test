@@ -17,14 +17,28 @@ package com.liferay.osb.asah.common.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liferay.osb.asah.common.util.BeanUtils;
+
+import java.math.BigDecimal;
+
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.lang3.Range;
+
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Marcellus Tavares
  */
-public class ExperimentVariantMetric {
+@Table
+public class ExperimentVariantMetric implements Persistable<Long> {
 
 	public ExperimentVariantMetric() {
 	}
@@ -34,8 +48,43 @@ public class ExperimentVariantMetric {
 		_dxpVariantId = dxpVariantId;
 	}
 
+	public ExperimentVariantMetric(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof ExperimentVariantMetric)) {
+			return false;
+		}
+
+		ExperimentVariantMetric experimentVariantMetric =
+			(ExperimentVariantMetric)obj;
+
+		if (Objects.equals(_control, experimentVariantMetric._control) &&
+			Objects.equals(
+				_dxpVariantId, experimentVariantMetric._dxpVariantId) &&
+			Objects.equals(_id, experimentVariantMetric._id) &&
+			Objects.equals(
+				_improvement, experimentVariantMetric._improvement) &&
+			Objects.equals(_median, experimentVariantMetric._median) &&
+			Objects.equals(
+				_probabilityToWin, experimentVariantMetric._probabilityToWin)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@Column("confidenceinterval")
 	@JsonProperty("confidenceInterval")
-	public double[] getConfidenceIntervalArray() {
+	public BigDecimal[] getConfidenceIntervalArray() {
 		return Arrays.copyOf(
 			_confidenceIntervalArray, _confidenceIntervalArray.length);
 	}
@@ -49,31 +98,68 @@ public class ExperimentVariantMetric {
 		}
 
 		return Range.between(
-			_confidenceIntervalArray[0], _confidenceIntervalArray[1]);
+			_confidenceIntervalArray[0].doubleValue(),
+			_confidenceIntervalArray[1].doubleValue());
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	public boolean getControl() {
+		return _control;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("dxpVariantId")
 	public String getDXPVariantId() {
 		return _dxpVariantId;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
+	@Override
+	public Long getId() {
+		return _id;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public double getImprovement() {
 		return _improvement;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public double getMedian() {
 		return _median;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public double getProbabilityToWin() {
 		return _probabilityToWin;
 	}
 
-	public boolean isControl() {
-		return _control;
+	@Override
+	public int hashCode() {
+		return Objects.hash(
+			_control, _dxpVariantId, _id, _improvement, _median,
+			_probabilityToWin);
 	}
 
-	public void setConfidenceIntervalArray(double[] confidenceIntervalArray) {
+	@AccessType(AccessType.Type.PROPERTY)
+	public boolean isControl() {
+		return getControl();
+	}
+
+	@JsonIgnore
+	@Override
+	public boolean isNew() {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public void setConfidenceIntervalArray(
+		BigDecimal[] confidenceIntervalArray) {
+
 		_confidenceIntervalArray = Arrays.copyOf(
 			confidenceIntervalArray, confidenceIntervalArray.length);
 	}
@@ -86,8 +172,16 @@ public class ExperimentVariantMetric {
 		_dxpVariantId = dxpVariantId;
 	}
 
+	public void setId(Long id) {
+		_id = id;
+	}
+
 	public void setImprovement(double improvement) {
 		_improvement = improvement;
+	}
+
+	public void setIsNew(Boolean isNew) {
+		_isNew = isNew;
 	}
 
 	public void setMedian(double median) {
@@ -98,11 +192,30 @@ public class ExperimentVariantMetric {
 		_probabilityToWin = probabilityToWin;
 	}
 
-	private double[] _confidenceIntervalArray = {0.0, 0.0};
+	@Transient
+	private BigDecimal[] _confidenceIntervalArray = {
+		BigDecimal.valueOf(0.0), BigDecimal.valueOf(0.0)
+	};
+
+	@Transient
 	private boolean _control;
+
+	@Transient
 	private String _dxpVariantId;
+
+	@Transient
+	private Long _id;
+
+	@Transient
 	private double _improvement;
+
+	@Transient
+	private Boolean _isNew;
+
+	@Transient
 	private double _median;
+
+	@Transient
 	private double _probabilityToWin;
 
 }
