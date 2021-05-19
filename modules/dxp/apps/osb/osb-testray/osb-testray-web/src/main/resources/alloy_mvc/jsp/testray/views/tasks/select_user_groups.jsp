@@ -46,12 +46,12 @@
 	</div>
 </div>
 
-<portlet:actionURL var="addTestrayTaskUrl">
+<portlet:actionURL var="addTestrayTaskURL">
 	<portlet:param name="controller" value="tasks" />
 	<portlet:param name="action" value="add" />
 </portlet:actionURL>
 
-<aui:form action="${addTestrayTaskUrl}" method="post" name="fm2" onSubmit="event.preventDefault(); ${htmlNamespace}submit();">
+<aui:form action="${addTestrayTaskURL}" method="post" name="fm2" onSubmit="event.preventDefault(); ${htmlNamespace}submit();">
 	<aui:input name="redirect" type="hidden" value="${selectUserGroupsURL}" />
 
 	<aui:input name="addUserGroupIds" type="hidden" value="" />
