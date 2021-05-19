@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.storage.StorageFactory;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.io.File;
 
@@ -163,7 +164,10 @@ public class DXPBatchEntitiesRestController {
 
 		StorageConfiguration.Builder builder = StorageConfiguration.builder(
 			String.format(
-				"%s/batch-%d", _dxpBatchEntitiesStoragePath,
+				"%s/batch-%d",
+				StringUtils.replace(
+					_dxpBatchEntitiesStoragePathTemplate, "{projectId}",
+					ProjectIdThreadLocal.getProjectId()),
 				System.currentTimeMillis()));
 
 		builder.googleBucket(
@@ -186,7 +190,7 @@ public class DXPBatchEntitiesRestController {
 	@Value(
 		"${osb.asah.dxp.batch.entities.storage.path:/tmp/{projectId}/dxp_batch_entities.json"
 	)
-	private String _dxpBatchEntitiesStoragePath;
+	private String _dxpBatchEntitiesStoragePathTemplate;
 
 	@Autowired
 	private StorageFactory _storageFactory;
