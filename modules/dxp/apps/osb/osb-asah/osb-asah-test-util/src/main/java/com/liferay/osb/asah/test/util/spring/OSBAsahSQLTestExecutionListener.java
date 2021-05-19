@@ -49,9 +49,6 @@ public class OSBAsahSQLTestExecutionListener
 
 	@Override
 	public void afterTestMethod(TestContext testContext) throws SQLException {
-		SQLResource sqlResource = AnnotatedElementUtils.getMergedAnnotation(
-			testContext.getTestMethod(), SQLResource.class);
-
 		try (Connection connection = _postgreSQLDataSource.getConnection()) {
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
 
@@ -69,7 +66,12 @@ public class OSBAsahSQLTestExecutionListener
 				}
 			}
 
-			if (StringUtils.isBlank(sqlResource.dataSource())) {
+			SQLResource sqlResource = AnnotatedElementUtils.getMergedAnnotation(
+				testContext.getTestMethod(), SQLResource.class);
+
+			if ((sqlResource != null) &&
+				StringUtils.isBlank(sqlResource.dataSource())) {
+
 				DatabasePopulatorUtils.execute(
 					new ResourceDatabasePopulator(
 						new ClassPathResource("data.sql")),
