@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SalesforceEntityRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +40,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @DirtiesContext
-@RunWith(OSBAsahPostgreSQLSpring4ClassRunner.class)
+@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(properties = "osb.asah.postgresql.enabled=true")
 public class SalesforceEntityRepositoryTest {
 
