@@ -14,6 +14,10 @@
 
 package com.liferay.osb.asah.test.util.spring;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -34,6 +38,13 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 	public OSBAsahSpringJUnit4ClassRunner(Class<?> clazz) throws Exception {
 		super(clazz);
 
+		if (!_isElasticsearchUp() || !_isPostgreSQLUp()) {
+			throw new IllegalStateException(
+				"Integration test infrastructure is not up. Please run " +
+					"\"docker-compose -f docker-compose.integration-test.yml " +
+					"up -d\" from the root project directory.");
+		}
+
 		System.setProperty(
 			"spring.autoconfigure.exclude",
 			String.join(
@@ -47,6 +58,26 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 		System.setProperty("spring.profiles.active", "test");
 
 		_registerOSBAsahTestExecutionListener();
+	}
+
+	private boolean _isPostgreSQLUp() {
+		return _pingHost(ServiceConstants.POSTGRESQL_SERVER_IP, 5432, 3000);
+	}
+
+	private boolean _isElasticsearchUp() {
+		return _pingHost(
+			ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP, 9200, 3000);
+	}
+
+	private boolean _pingHost(String hostname, int port, int timeout) {
+		try (Socket socket = new Socket()) {
+			socket.connect(new InetSocketAddress(hostname, port), timeout);
+
+			return true;
+		}
+		catch (IOException ioe) {
+			return false;
+		}
 	}
 
 	private void _registerOSBAsahTestExecutionListener() {

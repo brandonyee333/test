@@ -53,15 +53,6 @@ import org.springframework.test.context.support.AbstractTestExecutionListener;
 public class OSBAsahSQLTestExecutionListener
 	extends AbstractTestExecutionListener {
 
-	public OSBAsahSQLTestExecutionListener() {
-		if (!_isPostgreSQLUp()) {
-			throw new IllegalStateException(
-				"Integration test infrastructure is not up. Please run " +
-					"\"docker-compose -f docker-compose.integration-test.yml " +
-						"up -d\" from the root project directory.");
-		}
-	}
-
 	@Override
 	public void afterTestMethod(TestContext testContext) throws SQLException {
 		SQLResource sqlResource =
@@ -129,21 +120,6 @@ public class OSBAsahSQLTestExecutionListener
 		}
 
 		return "dependencies/" + sqlResource.resourcePath();
-	}
-
-	private boolean _isPostgreSQLUp() {
-		return _pingHost(ServiceConstants.POSTGRESQL_SERVER_IP, 5432, 3000);
-	}
-
-	private boolean _pingHost(String hostname, int port, int timeout) {
-		try (Socket socket = new Socket()) {
-			socket.connect(new InetSocketAddress(hostname, port), timeout);
-
-			return true;
-		}
-		catch (IOException ioe) {
-			return false;
-		}
 	}
 
 	private void _prepareTables(

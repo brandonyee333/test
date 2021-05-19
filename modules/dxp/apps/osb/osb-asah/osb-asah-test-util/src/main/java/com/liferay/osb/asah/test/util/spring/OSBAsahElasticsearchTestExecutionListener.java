@@ -49,15 +49,6 @@ import org.springframework.test.context.support.AbstractTestExecutionListener;
 public class OSBAsahElasticsearchTestExecutionListener
 	extends AbstractTestExecutionListener {
 
-	public OSBAsahElasticsearchTestExecutionListener() {
-		if (!_isElasticsearchUp()) {
-			throw new IllegalStateException(
-				"Integration test infrastructure is not up. Please run " +
-					"\"docker-compose -f docker-compose.integration-test.yml " +
-						"up -d\" from the root project directory.");
-		}
-	}
-
 	@Override
 	public void afterTestClass(TestContext testContext) {
 		Class<?> clazz = testContext.getTestClass();
@@ -154,22 +145,6 @@ public class OSBAsahElasticsearchTestExecutionListener
 
 			pubSubMessageBusTestHelper.prepareMessageBusChannel(
 				testContext.getTestClass(), messageBusChannel);
-		}
-	}
-
-	private boolean _isElasticsearchUp() {
-		return _pingHost(
-			ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP, 9200, 3000);
-	}
-
-	private boolean _pingHost(String hostname, int port, int timeout) {
-		try (Socket socket = new Socket()) {
-			socket.connect(new InetSocketAddress(hostname, port), timeout);
-
-			return true;
-		}
-		catch (IOException ioe) {
-			return false;
 		}
 	}
 
