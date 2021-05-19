@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.test.util.annotation.PostgreSQLTables;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.junit.runner.RunWith;
@@ -26,7 +26,7 @@ import org.springframework.test.context.TestPropertySource;
  * @author Leslie Wong
  */
 @DirtiesContext
-@PostgreSQLTables(
+@SQLResource(
 	resourcePath = "blocked_custom_event_definitions_graphql_rest_controller_test.sql"
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)

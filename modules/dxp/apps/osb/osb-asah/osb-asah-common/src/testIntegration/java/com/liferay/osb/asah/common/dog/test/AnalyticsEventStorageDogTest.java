@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.test.util.annotation.PostgreSQLTables;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Collections;
@@ -54,7 +54,7 @@ import org.springframework.test.context.ContextConfiguration;
 @SpringBootTest(properties = "osb.asah.postgresql.enabled=true")
 public class AnalyticsEventStorageDogTest {
 
-	@PostgreSQLTables(resourcePath = "test_store_blocked_event.sql")
+	@SQLResource(resourcePath = "test_store_blocked_event.sql")
 	@Test
 	public void testStoreBlockedEvent() {
 		long expectedEventAttributeDefinitionCount =
@@ -82,7 +82,7 @@ public class AnalyticsEventStorageDogTest {
 			0.0);
 	}
 
-	@PostgreSQLTables(resourcePath = "test_store_definition_limit_reached.sql")
+	@SQLResource(resourcePath = "test_store_definition_limit_reached.sql")
 	@Test
 	public void testStoreEventDefinitionLimitReached() {
 		long expectedEventAttributeDefinitionCount =

@@ -21,7 +21,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
-public @interface PostgreSQLTables {
+public @interface SQLResource {
 
 	public String dataSource() default "";
 

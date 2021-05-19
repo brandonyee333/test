@@ -21,7 +21,7 @@ import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.test.util.annotation.PostgreSQLTables;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
@@ -434,7 +434,7 @@ public class EventAttributeDefinitionDogTest {
 			));
 	}
 
-	@PostgreSQLTables(
+	@SQLResource(
 		resourcePath = "test_get_event_attribute_definitions_with_keyword.sql"
 	)
 	@Test
@@ -451,7 +451,7 @@ public class EventAttributeDefinitionDogTest {
 			});
 	}
 
-	@PostgreSQLTables(
+	@SQLResource(
 		resourcePath = "test_get_event_attribute_definitions_with_keyword.sql"
 	)
 	@Test
@@ -471,7 +471,7 @@ public class EventAttributeDefinitionDogTest {
 			});
 	}
 
-	@PostgreSQLTables(
+	@SQLResource(
 		resourcePath = "test_get_event_attribute_definitions_with_keyword.sql"
 	)
 	@Test

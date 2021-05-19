@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.test.util.spring;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
-import com.liferay.osb.asah.test.util.annotation.PostgreSQLTables;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 
 import java.io.IOException;
 
@@ -64,9 +64,9 @@ public class OSBAsahSQLTestExecutionListener
 
 	@Override
 	public void afterTestMethod(TestContext testContext) throws SQLException {
-		PostgreSQLTables postgreSQLTables =
+		SQLResource sqlResource =
 			AnnotatedElementUtils.getMergedAnnotation(
-				testContext.getTestMethod(), PostgreSQLTables.class);
+				testContext.getTestMethod(), SQLResource.class);
 
 		try (Connection connection = _postgreSQLDataSource.getConnection()) {
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
@@ -85,7 +85,7 @@ public class OSBAsahSQLTestExecutionListener
 				}
 			}
 
-			if (StringUtils.isBlank(postgreSQLTables.dataSource())) {
+			if (StringUtils.isBlank(sqlResource.dataSource())) {
 				DatabasePopulatorUtils.execute(
 					new ResourceDatabasePopulator(
 						new ClassPathResource("data.sql")),
@@ -98,37 +98,37 @@ public class OSBAsahSQLTestExecutionListener
 	public void beforeTestClass(TestContext testContext) {
 		Class<?> clazz = testContext.getTestClass();
 
-		PostgreSQLTables[] postgreSQLTables = clazz.getAnnotationsByType(
-			PostgreSQLTables.class);
+		SQLResource[] sqlResources = clazz.getAnnotationsByType(
+			SQLResource.class);
 
-		if (postgreSQLTables.length == 0) {
+		if (sqlResources.length == 0) {
 			return;
 		}
-		else if (postgreSQLTables.length > 1) {
+		else if (sqlResources.length > 1) {
 			throw new IllegalArgumentException(
 				"Only 1 PostgreSQLTables annotation allowed");
 		}
 
-		_prepareTables(clazz, postgreSQLTables[0]);
+		_prepareTables(clazz, sqlResources[0]);
 	}
 
 	@Override
 	public void beforeTestMethod(TestContext testContext) {
-		PostgreSQLTables postgreSQLTables =
+		SQLResource sqlResource =
 			AnnotatedElementUtils.getMergedAnnotation(
-				testContext.getTestMethod(), PostgreSQLTables.class);
+				testContext.getTestMethod(), SQLResource.class);
 
-		if (postgreSQLTables != null) {
-			_prepareTables(testContext.getTestClass(), postgreSQLTables);
+		if (sqlResource != null) {
+			_prepareTables(testContext.getTestClass(), sqlResource);
 		}
 	}
 
-	private String _getResourcePath(PostgreSQLTables postgreSQLTables) {
-		if (StringUtils.startsWith(postgreSQLTables.resourcePath(), "/")) {
-			return postgreSQLTables.resourcePath();
+	private String _getResourcePath(SQLResource sqlResource) {
+		if (StringUtils.startsWith(sqlResource.resourcePath(), "/")) {
+			return sqlResource.resourcePath();
 		}
 
-		return "dependencies/" + postgreSQLTables.resourcePath();
+		return "dependencies/" + sqlResource.resourcePath();
 	}
 
 	private boolean _isPostgreSQLUp() {
@@ -147,14 +147,14 @@ public class OSBAsahSQLTestExecutionListener
 	}
 
 	private void _prepareTables(
-		Class<?> clazz, PostgreSQLTables postgreSQLTables) {
+		Class<?> clazz, SQLResource sqlResource) {
 
-		if (!Objects.equals(postgreSQLTables.resourcePath(), "")) {
+		if (!Objects.equals(sqlResource.resourcePath(), "")) {
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
 					new ClassPathResource(
-						_getResourcePath(postgreSQLTables), clazz)),
-				_resolveDataSource(postgreSQLTables.dataSource()));
+						_getResourcePath(sqlResource), clazz)),
+				_resolveDataSource(sqlResource.dataSource()));
 		}
 	}
 

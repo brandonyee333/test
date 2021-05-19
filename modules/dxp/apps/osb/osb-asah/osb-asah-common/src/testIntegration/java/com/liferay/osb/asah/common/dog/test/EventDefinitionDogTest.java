@@ -22,7 +22,7 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.test.util.annotation.PostgreSQLTables;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -100,7 +100,7 @@ public class EventDefinitionDogTest {
 			"Test Event (2)", eventDefinition3.getDisplayName());
 	}
 
-	@PostgreSQLTables(resourcePath = "test_add_definition_limit_reached.sql")
+	@SQLResource(resourcePath = "test_add_definition_limit_reached.sql")
 	@Test
 	public void testAddDefinitionLimitReached() {
 		EventDefinition eventDefinition =
@@ -192,7 +192,7 @@ public class EventDefinitionDogTest {
 		Assert.assertEquals("TestEvent (1)", eventDefinition2.getDisplayName());
 	}
 
-	@PostgreSQLTables(resourcePath = "test_block_event_definition.sql")
+	@SQLResource(resourcePath = "test_block_event_definition.sql")
 	@Test
 	public void testBlockEventDefinition() {
 		EventDefinition eventDefinition =
@@ -226,7 +226,7 @@ public class EventDefinitionDogTest {
 			blockedEventDefinition.getLastSeenURL());
 	}
 
-	@PostgreSQLTables(resourcePath = "test_block_event_definitions.sql")
+	@SQLResource(resourcePath = "test_block_event_definitions.sql")
 	@Test
 	public void testBlockEventDefinitions() {
 		Page<EventDefinition> eventDefinitions =
@@ -377,7 +377,7 @@ public class EventDefinitionDogTest {
 			});
 	}
 
-	@PostgreSQLTables(
+	@SQLResource(
 		resourcePath = "test_get_event_definitions_with_keyword.sql"
 	)
 	@Test
@@ -394,7 +394,7 @@ public class EventDefinitionDogTest {
 			});
 	}
 
-	@PostgreSQLTables(
+	@SQLResource(
 		resourcePath = "test_get_event_definitions_with_keyword.sql"
 	)
 	@Test
@@ -411,7 +411,7 @@ public class EventDefinitionDogTest {
 			});
 	}
 
-	@PostgreSQLTables(
+	@SQLResource(
 		resourcePath = "test_get_event_definitions_with_keyword.sql"
 	)
 	@Test
@@ -423,7 +423,7 @@ public class EventDefinitionDogTest {
 			Collections.singletonList("codeApplied"));
 	}
 
-	@PostgreSQLTables(resourcePath = "test_unblock_event_definition.sql")
+	@SQLResource(resourcePath = "test_unblock_event_definition.sql")
 	@Test
 	public void testUnblockEventDefinition() {
 		EventDefinition eventDefinition =
@@ -443,7 +443,7 @@ public class EventDefinitionDogTest {
 		Assert.assertEquals("subscribed", eventDefinition.getDisplayName());
 	}
 
-	@PostgreSQLTables(
+	@SQLResource(
 		resourcePath = "test_unblock_event_definition_limit_overflow.sql"
 	)
 	@Test(expected = OSBAsahException.class)
@@ -457,7 +457,7 @@ public class EventDefinitionDogTest {
 			Collections.singletonList(eventDefinitionId));
 	}
 
-	@PostgreSQLTables(resourcePath = "test_unblock_event_definitions.sql")
+	@SQLResource(resourcePath = "test_unblock_event_definitions.sql")
 	@Test
 	public void testUnblockEventDefinitions() {
 		List<Long> eventDefinitionIds = ListUtil.map(
@@ -493,7 +493,7 @@ public class EventDefinitionDogTest {
 		Assert.assertNull(eventDefinition.getDisplayName());
 	}
 
-	@PostgreSQLTables(
+	@SQLResource(
 		resourcePath = "test_unblock_event_definitions_limit_overflow.sql"
 	)
 	@Test(expected = OSBAsahException.class)
