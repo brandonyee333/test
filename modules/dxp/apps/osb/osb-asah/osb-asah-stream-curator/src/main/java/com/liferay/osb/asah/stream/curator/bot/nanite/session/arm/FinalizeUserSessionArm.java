@@ -760,7 +760,7 @@ public class FinalizeUserSessionArm {
 	private String _userSessionEventsBucketTemplate;
 
 	@Value(
-		"${osb.asah.user.session.events.storage.path:/tmp/{projectId}/user_session_events.snappy.parquet}"
+		"${osb.asah.user.session.events.storage.path:/storage/{projectId}/user_session_events.snappy.parquet}"
 	)
 	private String _userSessionEventsStoragePathTemplate;
 

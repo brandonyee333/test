@@ -188,7 +188,7 @@ public class DXPBatchEntitiesRestController {
 	private String _dxpBatchEntitiesBucketTemplate;
 
 	@Value(
-		"${osb.asah.dxp.batch.entities.storage.path:/tmp/{projectId}/dxp_batch_entities.json"
+		"${osb.asah.dxp.batch.entities.storage.path:/storage/{projectId}/dxp_batch_entities.json"
 	)
 	private String _dxpBatchEntitiesStoragePathTemplate;
 

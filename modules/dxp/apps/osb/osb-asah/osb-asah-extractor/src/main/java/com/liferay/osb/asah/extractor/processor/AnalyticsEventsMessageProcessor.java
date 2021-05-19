@@ -484,7 +484,7 @@ public class AnalyticsEventsMessageProcessor {
 	private AnalyticsEventsChannels _analyticsEventsChannels;
 
 	@Value(
-		"${osb.asah.analytics.events.storage.path:/tmp/{projectId}/analytics_events.snappy.parquet}"
+		"${osb.asah.analytics.events.storage.path:/storage/{projectId}/analytics_events.snappy.parquet}"
 	)
 	private String _analyticsEventsStoragePathTemplate;
 
