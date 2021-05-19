@@ -23,6 +23,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface PostgreSQLTables {
 
+	public String dataSource() default "";
+
 	public String resourcePath() default "";
 
 }

@@ -32,7 +32,10 @@ import java.util.Objects;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.io.ClassPathResource;
@@ -61,6 +64,10 @@ public class OSBAsahPostgreSQLTestExecutionListener
 
 	@Override
 	public void afterTestMethod(TestContext testContext) throws SQLException {
+		PostgreSQLTables postgreSQLTables =
+			AnnotatedElementUtils.getMergedAnnotation(
+				testContext.getTestMethod(), PostgreSQLTables.class);
+
 		try (Connection connection = _postgreSQLDataSource.getConnection()) {
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
 
@@ -78,10 +85,12 @@ public class OSBAsahPostgreSQLTestExecutionListener
 				}
 			}
 
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					new ClassPathResource("data.sql")),
-				_postgreSQLDataSource);
+			if (StringUtils.isBlank(postgreSQLTables.dataSource())) {
+				DatabasePopulatorUtils.execute(
+					new ResourceDatabasePopulator(
+						new ClassPathResource("data.sql")),
+					_postgreSQLDataSource);
+			}
 		}
 	}
 
@@ -114,6 +123,14 @@ public class OSBAsahPostgreSQLTestExecutionListener
 		}
 	}
 
+	private String _getResourcePath(PostgreSQLTables postgreSQLTables) {
+		if (StringUtils.startsWith(postgreSQLTables.resourcePath(), "/")) {
+			return postgreSQLTables.resourcePath();
+		}
+
+		return "dependencies/" + postgreSQLTables.resourcePath();
+	}
+
 	private boolean _isPostgreSQLUp() {
 		return _pingHost(ServiceConstants.POSTGRESQL_SERVER_IP, 5432, 3000);
 	}
@@ -136,13 +153,24 @@ public class OSBAsahPostgreSQLTestExecutionListener
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
 					new ClassPathResource(
-						"dependencies/" + postgreSQLTables.resourcePath(),
-						clazz)),
-				_postgreSQLDataSource);
+						_getResourcePath(postgreSQLTables), clazz)),
+				_resolveDataSource(postgreSQLTables.dataSource()));
 		}
+	}
+
+	private DataSource _resolveDataSource(String dataSource) {
+		if (Objects.equals(dataSource, "trinoDataSource")) {
+			return _trinoDataSource;
+		}
+
+		return _postgreSQLDataSource;
 	}
 
 	@Autowired
 	private DataSource _postgreSQLDataSource;
+
+	@Autowired
+	@Qualifier("trinoDataSource")
+	private DataSource _trinoDataSource;
 
 }
