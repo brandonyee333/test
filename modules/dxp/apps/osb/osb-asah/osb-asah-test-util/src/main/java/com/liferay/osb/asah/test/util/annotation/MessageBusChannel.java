@@ -12,7 +12,9 @@
  *
  */
 
-package com.liferay.osb.asah.test.util.elasticsearch;
+package com.liferay.osb.asah.test.util.annotation;
+
+import com.liferay.osb.asah.common.messaging.Channel;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -20,12 +22,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author André Miranda
+ * @author Marcellus Tavares
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
-public @interface ElasticsearchIndices {
+public @interface MessageBusChannel {
 
-	public ElasticsearchIndex[] value();
+	public Channel channel();
+
+	public String resourcePath() default "";
 
 }

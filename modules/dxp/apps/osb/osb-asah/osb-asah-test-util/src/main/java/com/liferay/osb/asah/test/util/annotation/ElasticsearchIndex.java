@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.test.util.elasticsearch;
+package com.liferay.osb.asah.test.util.annotation;
 
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 

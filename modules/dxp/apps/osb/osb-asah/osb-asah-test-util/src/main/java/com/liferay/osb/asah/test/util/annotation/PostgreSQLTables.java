@@ -12,23 +12,18 @@
  *
  */
 
-package com.liferay.osb.asah.test.util.elasticsearch;
-
-import com.liferay.osb.asah.common.messaging.Channel;
+package com.liferay.osb.asah.test.util.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * @author Marcellus Tavares
- */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
-public @interface MessageBusChannel {
+public @interface PostgreSQLTables {
 
-	public Channel channel();
+	public String dataSource() default "";
 
 	public String resourcePath() default "";
 
