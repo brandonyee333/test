@@ -377,9 +377,7 @@ public class EventDefinitionDogTest {
 			});
 	}
 
-	@SQLResource(
-		resourcePath = "test_get_event_definitions_with_keyword.sql"
-	)
+	@SQLResource(resourcePath = "test_get_event_definitions_with_keyword.sql")
 	@Test
 	public void testGetEventDefinitionsWithKeywordMatchDescription() {
 		_assertEventDefinitions(
@@ -394,9 +392,7 @@ public class EventDefinitionDogTest {
 			});
 	}
 
-	@SQLResource(
-		resourcePath = "test_get_event_definitions_with_keyword.sql"
-	)
+	@SQLResource(resourcePath = "test_get_event_definitions_with_keyword.sql")
 	@Test
 	public void testGetEventDefinitionsWithKeywordMatchDisplayName() {
 		_assertEventDefinitions(
@@ -411,9 +407,7 @@ public class EventDefinitionDogTest {
 			});
 	}
 
-	@SQLResource(
-		resourcePath = "test_get_event_definitions_with_keyword.sql"
-	)
+	@SQLResource(resourcePath = "test_get_event_definitions_with_keyword.sql")
 	@Test
 	public void testGetEventDefinitionsWithKeywordMatchName() {
 		_assertEventDefinitions(

@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.test.util.spring;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -26,11 +25,6 @@ import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndices;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
-
-import java.io.IOException;
-
-import java.net.InetSocketAddress;
-import java.net.Socket;
 
 import java.util.Objects;
 import java.util.Set;

@@ -14,13 +14,7 @@
 
 package com.liferay.osb.asah.test.util.spring;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
-
-import java.io.IOException;
-
-import java.net.InetSocketAddress;
-import java.net.Socket;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -55,9 +49,8 @@ public class OSBAsahSQLTestExecutionListener
 
 	@Override
 	public void afterTestMethod(TestContext testContext) throws SQLException {
-		SQLResource sqlResource =
-			AnnotatedElementUtils.getMergedAnnotation(
-				testContext.getTestMethod(), SQLResource.class);
+		SQLResource sqlResource = AnnotatedElementUtils.getMergedAnnotation(
+			testContext.getTestMethod(), SQLResource.class);
 
 		try (Connection connection = _postgreSQLDataSource.getConnection()) {
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
@@ -105,9 +98,8 @@ public class OSBAsahSQLTestExecutionListener
 
 	@Override
 	public void beforeTestMethod(TestContext testContext) {
-		SQLResource sqlResource =
-			AnnotatedElementUtils.getMergedAnnotation(
-				testContext.getTestMethod(), SQLResource.class);
+		SQLResource sqlResource = AnnotatedElementUtils.getMergedAnnotation(
+			testContext.getTestMethod(), SQLResource.class);
 
 		if (sqlResource != null) {
 			_prepareTables(testContext.getTestClass(), sqlResource);
@@ -122,9 +114,7 @@ public class OSBAsahSQLTestExecutionListener
 		return "dependencies/" + sqlResource.resourcePath();
 	}
 
-	private void _prepareTables(
-		Class<?> clazz, SQLResource sqlResource) {
-
+	private void _prepareTables(Class<?> clazz, SQLResource sqlResource) {
 		if (!Objects.equals(sqlResource.resourcePath(), "")) {
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(

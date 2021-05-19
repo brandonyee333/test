@@ -26,10 +26,10 @@ import org.springframework.test.context.TestPropertySource;
  * @author Leslie Wong
  */
 @DirtiesContext
+@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SQLResource(
 	resourcePath = "blocked_custom_event_definitions_graphql_rest_controller_test.sql"
 )
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @TestPropertySource(properties = "osb.asah.postgresql.enabled=true")
 public class BlockedCustomEventDefinitionsGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {

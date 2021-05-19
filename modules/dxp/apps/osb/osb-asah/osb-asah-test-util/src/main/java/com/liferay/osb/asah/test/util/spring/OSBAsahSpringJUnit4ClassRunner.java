@@ -15,9 +15,12 @@
 package com.liferay.osb.asah.test.util.spring;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
+
 import java.io.IOException;
+
 import java.net.InetSocketAddress;
 import java.net.Socket;
+
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -42,7 +45,7 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 			throw new IllegalStateException(
 				"Integration test infrastructure is not up. Please run " +
 					"\"docker-compose -f docker-compose.integration-test.yml " +
-					"up -d\" from the root project directory.");
+						"up -d\" from the root project directory.");
 		}
 
 		System.setProperty(
@@ -60,13 +63,13 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 		_registerOSBAsahTestExecutionListener();
 	}
 
-	private boolean _isPostgreSQLUp() {
-		return _pingHost(ServiceConstants.POSTGRESQL_SERVER_IP, 5432, 3000);
-	}
-
 	private boolean _isElasticsearchUp() {
 		return _pingHost(
 			ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP, 9200, 3000);
+	}
+
+	private boolean _isPostgreSQLUp() {
+		return _pingHost(ServiceConstants.POSTGRESQL_SERVER_IP, 5432, 3000);
 	}
 
 	private boolean _pingHost(String hostname, int port, int timeout) {
