@@ -58,6 +58,26 @@ public class DocumentLibrariesRestController extends BaseRestController {
 				Optional.ofNullable(endLocalDate)));
 	}
 
+	@GetMapping("/preview-count")
+	public String getPreviewCount(
+		String assetId, @RequestParam(required = false) String channelId,
+		@RequestParam(required = false) String dataSourceId,
+		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+		@RequestParam(name = "endDate", required = false)
+		LocalDate endLocalDate,
+		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+		@RequestParam(name = "startDate", required = false)
+		LocalDate startLocalDate) {
+
+		return String.valueOf(
+			_assetMetricDog.getMetricValue(
+				assetId, Optional.ofNullable(channelId), "document-libraries",
+				Optional.ofNullable(dataSourceId),
+				DocumentLibraryMetricType.PREVIEWS,
+				Optional.ofNullable(startLocalDate),
+				Optional.ofNullable(endLocalDate)));
+	}
+
 	@Autowired
 	private AssetMetricDog _assetMetricDog;
 
