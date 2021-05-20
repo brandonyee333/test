@@ -45,7 +45,7 @@ public class DocumentLibrariesRestControllerTest {
 		Assert.assertEquals(
 			"10",
 			_documentLibrariesRestController.getDownloadCount(
-				"26413838", "480920708921930199", "480920708626120699", null,
+				"26413838", "480920708921930174", "480920708626120668", null,
 				null));
 	}
 
@@ -58,8 +58,34 @@ public class DocumentLibrariesRestControllerTest {
 		Assert.assertEquals(
 			"8",
 			_documentLibrariesRestController.getDownloadCount(
-				"26413838", "480920708921930199", "480920708626120699",
-				LocalDate.of(2021, 5, 1), LocalDate.of(2021, 5, 20)));
+				"26413838", "480920708921930174", "480920708626120668",
+				LocalDate.of(2021, 5, 20), LocalDate.of(2021, 5, 1)));
+	}
+
+	@ElasticsearchIndex(
+		name = "document-libraries", resourcePath = "document-libraries.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testGetPreviewCount() {
+		Assert.assertEquals(
+			"11",
+			_documentLibrariesRestController.getPreviewCount(
+				"26413838", "480920708921930174", "480920708626120668", null,
+				null));
+	}
+
+	@ElasticsearchIndex(
+		name = "document-libraries", resourcePath = "document-libraries.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testGetPreviewCountWithDates() {
+		Assert.assertEquals(
+			"3",
+			_documentLibrariesRestController.getPreviewCount(
+				"26413838", "480920708921930174", "480920708626120668",
+				LocalDate.of(2021, 5, 20), LocalDate.of(2021, 5, 1)));
 	}
 
 	@Autowired
