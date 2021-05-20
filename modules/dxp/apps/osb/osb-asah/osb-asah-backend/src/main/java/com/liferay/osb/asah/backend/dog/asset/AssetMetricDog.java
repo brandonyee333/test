@@ -17,10 +17,10 @@ package com.liferay.osb.asah.backend.dog.asset;
 import com.liferay.osb.asah.backend.dog.DataDog;
 import com.liferay.osb.asah.backend.dog.DogUtil;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
-import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.model.MetricType;
 
 import java.time.LocalDate;
 

@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.DocumentLibrariesRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
