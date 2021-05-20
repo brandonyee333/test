@@ -53,8 +53,8 @@ public class DocumentLibrariesRestController extends BaseRestController {
 			_assetMetricDog.getMetricValue(
 				assetId, Optional.ofNullable(channelId), "document-libraries",
 				Optional.ofNullable(dataSourceId),
-				DocumentLibraryMetricType.DOWNLOADS,
 				Optional.ofNullable(startLocalDate),
+				DocumentLibraryMetricType.DOWNLOADS,
 				Optional.ofNullable(endLocalDate)));
 	}
 
@@ -73,8 +73,8 @@ public class DocumentLibrariesRestController extends BaseRestController {
 			_assetMetricDog.getMetricValue(
 				assetId, Optional.ofNullable(channelId), "document-libraries",
 				Optional.ofNullable(dataSourceId),
-				DocumentLibraryMetricType.PREVIEWS,
 				Optional.ofNullable(startLocalDate),
+				DocumentLibraryMetricType.PREVIEWS,
 				Optional.ofNullable(endLocalDate)));
 	}
 

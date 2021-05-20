@@ -48,7 +48,7 @@ public class AssetMetricDog {
 	public long getMetricValue(
 		String assetId, Optional<String> channelIdOptional,
 		String collectionName, Optional<String> dataSourceIdOptional,
-		MetricType metricType, Optional<LocalDate> endLocalDateOptional,
+		Optional<LocalDate> endLocalDateOptional, MetricType metricType,
 		Optional<LocalDate> startLocalDateOptional) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
