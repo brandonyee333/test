@@ -30,7 +30,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
@@ -41,14 +40,15 @@ import org.springframework.test.context.support.AbstractTestExecutionListener;
 /**
  * @author Leslie Wong
  */
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
 public class OSBAsahSQLTestExecutionListener
 	extends AbstractTestExecutionListener {
 
 	@Override
 	public void afterTestMethod(TestContext testContext) throws SQLException {
+		if (!_isTestExecutionListenerEnabled()) {
+			return;
+		}
+
 		try (Connection connection = _postgreSQLDataSource.getConnection()) {
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
 
@@ -66,22 +66,19 @@ public class OSBAsahSQLTestExecutionListener
 				}
 			}
 
-			SQLResource sqlResource = AnnotatedElementUtils.getMergedAnnotation(
-				testContext.getTestMethod(), SQLResource.class);
-
-			if ((sqlResource != null) &&
-				StringUtils.isBlank(sqlResource.dataSource())) {
-
-				DatabasePopulatorUtils.execute(
-					new ResourceDatabasePopulator(
-						new ClassPathResource("data.sql")),
-					_postgreSQLDataSource);
-			}
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("data.sql")),
+				_postgreSQLDataSource);
 		}
 	}
 
 	@Override
 	public void beforeTestClass(TestContext testContext) {
+		if (!_isTestExecutionListenerEnabled()) {
+			return;
+		}
+
 		Class<?> clazz = testContext.getTestClass();
 
 		SQLResource[] sqlResources = clazz.getAnnotationsByType(
@@ -100,6 +97,10 @@ public class OSBAsahSQLTestExecutionListener
 
 	@Override
 	public void beforeTestMethod(TestContext testContext) {
+		if (!_isTestExecutionListenerEnabled()) {
+			return;
+		}
+
 		SQLResource sqlResource = AnnotatedElementUtils.getMergedAnnotation(
 			testContext.getTestMethod(), SQLResource.class);
 
@@ -114,6 +115,14 @@ public class OSBAsahSQLTestExecutionListener
 		}
 
 		return "dependencies/" + sqlResource.resourcePath();
+	}
+
+	private boolean _isTestExecutionListenerEnabled() {
+		if (_postgreSQLDataSource != null) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private void _prepareTables(Class<?> clazz, SQLResource sqlResource) {
@@ -134,10 +143,11 @@ public class OSBAsahSQLTestExecutionListener
 		return _postgreSQLDataSource;
 	}
 
-	@Autowired
+	@Autowired(required = false)
+	@Qualifier("postgreSQLDataSource")
 	private DataSource _postgreSQLDataSource;
 
-	@Autowired
+	@Autowired(required = false)
 	@Qualifier("trinoDataSource")
 	private DataSource _trinoDataSource;
 

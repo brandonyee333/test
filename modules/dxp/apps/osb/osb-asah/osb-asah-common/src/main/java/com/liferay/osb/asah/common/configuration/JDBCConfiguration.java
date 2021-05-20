@@ -133,7 +133,7 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 		};
 	}
 
-	@Bean
+	@Bean("postgreSQLDataSource")
 	@ConditionalOnProperty(
 		havingValue = "true", value = "osb.asah.postgresql.enabled"
 	)
