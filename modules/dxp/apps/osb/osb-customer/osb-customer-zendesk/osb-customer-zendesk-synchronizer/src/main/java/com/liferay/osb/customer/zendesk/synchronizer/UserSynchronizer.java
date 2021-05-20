@@ -125,7 +125,7 @@ public class UserSynchronizer {
 
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
 				user.getUuid(), StringPool.BLANK, zendeskLocale, fullName, null,
-				tags);
+				zendeskUser.getRole(), tags);
 		}
 	}
 
@@ -154,13 +154,13 @@ public class UserSynchronizer {
 		if (zendeskUserId != 0) {
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
 				user.getUuid(), StringPool.BLANK, zendeskLocale, fullName,
-				organizationName, getTags(user));
+				organizationName, null, getTags(user));
 		}
 		else {
 			ZendeskUser zendeskUser =
 				_zendeskUserWebService.createOrUpdateZendeskUser(
 					user.getUuid(), user.getEmailAddress(), zendeskLocale,
-					fullName, organizationName, getTags(user));
+					fullName, organizationName, null, getTags(user));
 
 			zendeskUserId = zendeskUser.getZendeskUserId();
 
@@ -224,6 +224,17 @@ public class UserSynchronizer {
 		}
 		else {
 			addPhone(userId, phone);
+		}
+	}
+
+	public void updateRole(User user) throws Exception {
+		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
+			user.getEmailAddress());
+
+		if (zendeskUser.isAgent()) {
+			zendeskUser.setRole("end-user");
+
+			sync(user, zendeskUser);
 		}
 	}
 

@@ -621,7 +621,7 @@ public class AccountSynchronizer {
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
 				null, getDefaultUserEmail(accountEntry.getAccountEntryId()),
 				ZendeskLocales.US, accountEntry.getCode(),
-				accountEntry.getName(), null);
+				accountEntry.getName(), null, null);
 		}
 	}
 

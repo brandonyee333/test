@@ -32,7 +32,7 @@ public interface ZendeskUserWebService {
 
 	public ZendeskUser createOrUpdateZendeskUser(
 			String externalId, String email, String zendeskLocale, String name,
-			String organizationName, Set<String> tags)
+			String organizationName, String role, Set<String> tags)
 		throws Exception;
 
 	public void createZendeskUserOrganizationSubscription(

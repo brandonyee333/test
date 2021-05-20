@@ -54,7 +54,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 
 	public ZendeskUser createOrUpdateZendeskUser(
 			String externalId, String email, String zendeskLocale, String name,
-			String organizationName, Set<String> tags)
+			String organizationName, String role, Set<String> tags)
 		throws Exception {
 
 		String endpoint =
@@ -62,7 +62,8 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 				ZendeskRESTEndpoints.USERS_CREATE_OR_UPDATE;
 
 		JSONObject jsonObject = getZendeskUserJSONObject(
-			externalId, email, zendeskLocale, name, organizationName, tags);
+			externalId, email, zendeskLocale, name, organizationName, role,
+			tags);
 
 		JSONObject responseJSONObject = zendeskBaseWebService.post(
 			endpoint, jsonObject.toString());
@@ -173,7 +174,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 
 	protected JSONObject getZendeskUserJSONObject(
 		String externalId, String email, String zendeskLocale, String name,
-		String organizationName, Set<String> tags) {
+		String organizationName, String role, Set<String> tags) {
 
 		JSONObject userJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -198,6 +199,10 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 			organizationJSONObject.put("name", organizationName);
 
 			userJSONObject.put("organization", organizationJSONObject);
+		}
+
+		if (Validator.isNotNull(role)) {
+			userJSONObject.put("role", role);
 		}
 
 		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();

@@ -40,7 +40,7 @@ public class AsyncZendeskUserWebService
 	@Override
 	public ZendeskUser createOrUpdateZendeskUser(
 			String externalId, String email, String zendeskLocale, String name,
-			String organizationName, Set<String> tags)
+			String organizationName, String role, Set<String> tags)
 		throws Exception {
 
 		String endpoint =
@@ -48,7 +48,8 @@ public class AsyncZendeskUserWebService
 				ZendeskRESTEndpoints.USERS_CREATE_OR_UPDATE;
 
 		JSONObject jsonObject = getZendeskUserJSONObject(
-			externalId, email, zendeskLocale, name, organizationName, tags);
+			externalId, email, zendeskLocale, name, organizationName, role,
+			tags);
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "post", null, jsonObject,

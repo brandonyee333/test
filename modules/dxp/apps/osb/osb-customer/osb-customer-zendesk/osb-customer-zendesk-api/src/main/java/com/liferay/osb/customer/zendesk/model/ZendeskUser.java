@@ -42,12 +42,24 @@ public class ZendeskUser {
 		return _name;
 	}
 
+	public String getRole() {
+		return _role;
+	}
+
 	public Set<String> getTags() {
 		return _tags;
 	}
 
 	public long getZendeskUserId() {
 		return _zendeskUserId;
+	}
+
+	public boolean isAgent() {
+		if (_role.equals("agent")) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public boolean isEndUser() {
