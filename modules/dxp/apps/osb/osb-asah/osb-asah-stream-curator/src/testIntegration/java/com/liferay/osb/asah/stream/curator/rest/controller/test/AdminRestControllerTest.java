@@ -34,7 +34,10 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author André Miranda
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
+@SpringBootTest(
+	classes = OSBAsahCuratorSpringBootApplication.class,
+	properties = "osb.asah.user.session.events.storage.path:/tmp/user_session_events.snappy.parquet"
+)
 public class AdminRestControllerTest {
 
 	@ElasticsearchIndex(

@@ -42,7 +42,10 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Marcellus Tavares
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahExtractorSpringBootApplication.class)
+@SpringBootTest(
+	classes = OSBAsahExtractorSpringBootApplication.class,
+	properties = "osb.asah.analytics.events.storage.path:/tmp/analytics_events.snappy.parquet"
+)
 public class AnalyticsEventsMessageProcessorTest {
 
 	@ElasticsearchIndex(
