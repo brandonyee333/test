@@ -20,6 +20,9 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.io.File;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -63,8 +66,18 @@ public class DataExportTaskDog {
 	}
 
 	public File getDataExportTaskFile(Long dataExportTaskId) {
-		return new File(
+		Path path = Paths.get(
 			_exportPath, FilenameUtils.getName(dataExportTaskId + ".json"));
+
+		path = path.normalize();
+
+		if (!path.startsWith(_exportPath)) {
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"Invalid file name: " + dataExportTaskId);
+		}
+
+		return path.toFile();
 	}
 
 	public List<DataExportTask> getDataExportTasks(
