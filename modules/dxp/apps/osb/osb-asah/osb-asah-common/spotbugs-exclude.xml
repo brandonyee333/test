@@ -17,16 +17,6 @@
 	</Match>
 	<Match>
 		<Bug pattern="PATH_TRAVERSAL_IN" />
-		<Class name="com.liferay.osb.asah.common.zip.ZipFileBuilder" />
-		<Method name="&lt;init&gt;" />
-	</Match>
-	<Match>
-		<Bug pattern="PATH_TRAVERSAL_IN" />
-		<Class name="com.liferay.osb.asah.common.util.CSVUtil" />
-		<Method name="createCSVFile" />
-	</Match>
-	<Match>
-		<Bug pattern="PATH_TRAVERSAL_IN" />
 		<Class name="com.liferay.osb.asah.common.storage.impl.JSONFileEncoder" />
 		<Method name="open" />
 	</Match>
@@ -37,6 +27,16 @@
 			<Method name="_archiveSuccessFile" />
 			<Method name="_rollover" />
 		</Or>
+	</Match>
+	<Match>
+		<Bug pattern="PATH_TRAVERSAL_IN" />
+		<Class name="com.liferay.osb.asah.common.util.CSVUtil" />
+		<Method name="createCSVFile" />
+	</Match>
+	<Match>
+		<Bug pattern="PATH_TRAVERSAL_IN" />
+		<Class name="com.liferay.osb.asah.common.zip.ZipFileBuilder" />
+		<Method name="&lt;init&gt;" />
 	</Match>
 	<Match>
 		<Bug pattern="PATH_TRAVERSAL_OUT" />
@@ -50,13 +50,13 @@
 	</Match>
 	<Match>
 		<Bug pattern="PATH_TRAVERSAL_OUT" />
-		<Class name="com.liferay.osb.asah.common.zip.ZipFileBuilder" />
-		<Method name="build" />
+		<Class name="com.liferay.osb.asah.common.util.CSVUtil" />
+		<Method name="createCSVFile" />
 	</Match>
 	<Match>
 		<Bug pattern="PATH_TRAVERSAL_OUT" />
-		<Class name="com.liferay.osb.asah.common.util.CSVUtil" />
-		<Method name="createCSVFile" />
+		<Class name="com.liferay.osb.asah.common.zip.ZipFileBuilder" />
+		<Method name="build" />
 	</Match>
 	<Match>
 		<Bug pattern="REDOS" />
