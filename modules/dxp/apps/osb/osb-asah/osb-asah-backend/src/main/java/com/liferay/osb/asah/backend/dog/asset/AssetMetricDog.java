@@ -84,7 +84,7 @@ public class AssetMetricDog {
 		return _searchQueryHelper.createRangeQueryBuilder(
 			"eventDate",
 			TimeRange.of(
-				startLocalDateOptional.get(), endLocalDateOptional.get()),
+				endLocalDateOptional.get(), startLocalDateOptional.get()),
 			_timeZoneDog.getTimeZoneId());
 	}
 

@@ -53,9 +53,9 @@ public class DocumentLibrariesRestController extends BaseRestController {
 			_assetMetricDog.getMetricValue(
 				assetId, Optional.ofNullable(channelId), "document-libraries",
 				Optional.ofNullable(dataSourceId),
-				Optional.ofNullable(startLocalDate),
+				Optional.ofNullable(endLocalDate),
 				DocumentLibraryMetricType.DOWNLOADS,
-				Optional.ofNullable(endLocalDate)));
+				Optional.ofNullable(startLocalDate)));
 	}
 
 	@GetMapping("/preview-count")
@@ -73,9 +73,9 @@ public class DocumentLibrariesRestController extends BaseRestController {
 			_assetMetricDog.getMetricValue(
 				assetId, Optional.ofNullable(channelId), "document-libraries",
 				Optional.ofNullable(dataSourceId),
-				Optional.ofNullable(startLocalDate),
+				Optional.ofNullable(endLocalDate),
 				DocumentLibraryMetricType.PREVIEWS,
-				Optional.ofNullable(endLocalDate)));
+				Optional.ofNullable(startLocalDate)));
 	}
 
 	@Autowired
