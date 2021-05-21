@@ -331,12 +331,12 @@ type Experiment {
 	description: String
 	dxpExperienceName: String
 	dxpSegmentName: String
-	dxpVariants: [DXPVariant]
+	dxpVariants: [ExperimentVariant]
 	finishedDate: String
 	goal: Goal
 	id: String
-	metrics: ExperimentMetrics
-	metricsHistogram: [ExperimentMetrics]
+	metrics: ExperimentMetric
+	metricsHistogram: [ExperimentMetric]
 	modifiedDate: String
 	name: String
 	pageURL: String
