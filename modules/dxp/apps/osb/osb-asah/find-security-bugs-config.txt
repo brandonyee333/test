@@ -7,4 +7,5 @@ com/liferay/osb/asah/common/util/ProjectIdThreadLocal.getProjectId()Ljava/lang/S
 java/io/File.<init>(Ljava/lang/String;)V:0#1,2
 java/nio/file/Path.toString()Ljava/lang/String;:0
 java/nio/file/Paths.get(Ljava/lang/String;[Ljava/lang/String;)Ljava/nio/file/Path;:0,1
+org/apache/commons/io/FilenameUtils.getName(Ljava/lang/String;)Ljava/lang/String;:0
 org/apache/commons/lang3/StringUtils.replace(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;:0,2
