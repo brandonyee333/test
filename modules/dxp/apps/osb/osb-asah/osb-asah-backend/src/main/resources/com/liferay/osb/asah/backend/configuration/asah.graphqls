@@ -280,16 +280,6 @@ type DXPEntityBag {
 	total: Int
 }
 
-type DXPVariant {
-	changes: Int
-	control: Boolean
-	dxpVariantId: String
-	dxpVariantName: String
-	sessionsHistogram: [HistogramMetric]
-	trafficSplit: Float
-	uniqueVisitors: Int
-}
-
 type EventAttributeDefinition {
 	dataType: EventAttributeDefinitionDataType
 	description: String
@@ -354,13 +344,23 @@ type ExperimentBag {
 	total: Int
 }
 
-type ExperimentMetrics {
+type ExperimentMetric {
 	completion: Float
 	confidenceLevel: Float
 	elapsedDays: Int
 	estimatedDaysLeft: Int
 	processedDate: String
 	variantMetrics: [VariantMetrics]
+}
+
+type ExperimentVariant {
+	changes: Int
+	control: Boolean
+	dxpVariantId: String
+	dxpVariantName: String
+	sessionsHistogram: [HistogramMetric]
+	trafficSplit: Float
+	uniqueVisitors: Int
 }
 
 type FormFieldMetric {
