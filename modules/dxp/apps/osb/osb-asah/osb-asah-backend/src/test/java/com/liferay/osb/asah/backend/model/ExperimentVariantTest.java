@@ -14,39 +14,17 @@
 
 package com.liferay.osb.asah.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.liferay.osb.asah.backend.test.util.BaseBeanTestCase;
 import com.liferay.osb.asah.common.entity.ExperimentVariant;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
-import org.hibernate.validator.constraints.NotEmpty;
-
 /**
- * @author Marcellus Tavares
+ * @author André Miranda
  */
-public class DXPVariants {
+public class ExperimentVariantTest extends BaseBeanTestCase<ExperimentVariant> {
 
-	public DXPVariants() {
+	@Override
+	protected ExperimentVariant newInstance() {
+		return new ExperimentVariant();
 	}
-
-	public DXPVariants(List<ExperimentVariant> dxpVariants) {
-		_dxpVariants = dxpVariants;
-	}
-
-	@JsonProperty("dxpVariants")
-	@NotEmpty
-	@Valid
-	public List<ExperimentVariant> getDXPVariants() {
-		return _dxpVariants;
-	}
-
-	public void setDXPVariants(List<ExperimentVariant> dxpVariants) {
-		_dxpVariants = dxpVariants;
-	}
-
-	private List<ExperimentVariant> _dxpVariants;
 
 }
