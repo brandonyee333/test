@@ -53,7 +53,7 @@ public class ExperimentMetricDogTest {
 		_mockVariantData("DEFAULT", 800, 250);
 
 		ExperimentMetric experimentMetric =
-			_experimentMetricDog.calculateMetric(
+			_experimentMetricDog.calculateExperimentMetric(
 				_experimentDog.getExperiment("4"));
 
 		Assert.assertEquals(25.42, experimentMetric.getCompletion(), 0.1D);
@@ -72,7 +72,7 @@ public class ExperimentMetricDogTest {
 		_mockVariantData("DEFAULT", 10, 5);
 
 		ExperimentMetric experimentMetric =
-			_experimentMetricDog.calculateMetric(
+			_experimentMetricDog.calculateExperimentMetric(
 				_experimentDog.getExperiment("4"));
 
 		Assert.assertEquals(0D, experimentMetric.getCompletion(), 0D);
@@ -90,7 +90,7 @@ public class ExperimentMetricDogTest {
 		_mockVariantData("DEFAULT", 800, 250D);
 
 		ExperimentMetric experimentMetric =
-			_experimentMetricDog.calculateMetric(
+			_experimentMetricDog.calculateExperimentMetric(
 				_experimentDog.getExperiment("4"));
 
 		Assert.assertEquals(61.3, experimentMetric.getCompletion(), 0.1D);

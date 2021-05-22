@@ -49,14 +49,14 @@ public class ExperimentMetric {
 		return _estimatedDaysLeft;
 	}
 
+	@JsonProperty("variantMetrics")
+	public List<ExperimentVariantMetric> getExperimentVariantMetrics() {
+		return _experimentVariantMetric;
+	}
+
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 	public LocalDateTime getProcessedDate() {
 		return _processedDate;
-	}
-
-	@JsonProperty("variantMetrics")
-	public List<ExperimentVariantMetric> getVariantMetrics() {
-		return _experimentVariantMetric;
 	}
 
 	public void setCompletion(double completion) {

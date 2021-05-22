@@ -127,7 +127,7 @@ public class ExperimentDogTest {
 		Assert.assertNull(experimentMetric.getEstimatedDaysLeft());
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getVariantMetrics();
+			experimentMetric.getExperimentVariantMetrics();
 
 		Assert.assertEquals(
 			experimentVariantMetrics.toString(), 2,
@@ -173,7 +173,7 @@ public class ExperimentDogTest {
 			Long.valueOf(12), experimentMetric.getEstimatedDaysLeft());
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getVariantMetrics();
+			experimentMetric.getExperimentVariantMetrics();
 
 		Assert.assertEquals(
 			experimentVariantMetrics.toString(), 2,

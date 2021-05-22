@@ -45,7 +45,7 @@ public class ExperimentVariants {
 
 	public void setExperimentVariants(
 		List<ExperimentVariant> experimentVariants) {
-		
+
 		_experimentVariants = experimentVariants;
 	}
 

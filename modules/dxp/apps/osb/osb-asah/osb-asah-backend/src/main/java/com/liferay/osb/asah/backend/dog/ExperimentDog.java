@@ -105,7 +105,7 @@ public class ExperimentDog {
 	}
 
 	public ExperimentMetric calculateExperimentMetric(String experimentId) {
-		return _experimentMetricDog.calculateMetric(
+		return _experimentMetricDog.calculateExperimentMetric(
 			getExperiment(experimentId));
 	}
 
@@ -219,7 +219,7 @@ public class ExperimentDog {
 			return Collections.emptyList();
 		}
 
-		return experimentMetricsBag.getExperimentMetricsList();
+		return experimentMetricsBag.getExperimentMetrics();
 	}
 
 	public ResultBag<Experiment> getExperimentResultBag(

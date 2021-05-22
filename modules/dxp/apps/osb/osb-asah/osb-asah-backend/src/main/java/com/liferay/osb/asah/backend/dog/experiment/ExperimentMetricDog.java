@@ -33,11 +33,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExperimentMetricDog {
 
-	public ExperimentMetric calculateMetric(Experiment experiment) {
+	public ExperimentMetric calculateExperimentMetric(Experiment experiment) {
 		ExperimentMetricCalculator experimentMetricCalculator =
 			_getExperimentMetricCalculator(experiment);
 
-		return experimentMetricCalculator.calculateMetric(experiment);
+		return experimentMetricCalculator.calculateExperimentMetric(experiment);
 	}
 
 	public Long estimateDaysDuration(

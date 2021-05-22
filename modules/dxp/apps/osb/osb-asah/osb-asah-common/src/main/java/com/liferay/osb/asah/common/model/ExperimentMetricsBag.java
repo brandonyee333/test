@@ -27,16 +27,14 @@ import java.util.List;
 public class ExperimentMetricsBag {
 
 	@JsonProperty("metrics")
-	public List<ExperimentMetric> getExperimentMetricsList() {
-		return _experimentMetricsList;
+	public List<ExperimentMetric> getExperimentMetrics() {
+		return _experimentMetrics;
 	}
 
-	public void setExperimentMetricsList(
-		List<ExperimentMetric> experimentMetricsList) {
-
-		_experimentMetricsList = experimentMetricsList;
+	public void setExperimentMetrics(List<ExperimentMetric> experimentMetrics) {
+		_experimentMetrics = experimentMetrics;
 	}
 
-	private List<ExperimentMetric> _experimentMetricsList = new ArrayList<>();
+	private List<ExperimentMetric> _experimentMetrics = new ArrayList<>();
 
 }

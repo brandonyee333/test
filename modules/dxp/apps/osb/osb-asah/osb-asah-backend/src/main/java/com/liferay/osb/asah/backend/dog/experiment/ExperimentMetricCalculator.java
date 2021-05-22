@@ -25,7 +25,7 @@ import java.util.List;
  */
 public interface ExperimentMetricCalculator {
 
-	public ExperimentMetric calculateMetric(Experiment experiment);
+	public ExperimentMetric calculateExperimentMetric(Experiment experiment);
 
 	public Long estimateDaysDuration(
 		List<DXPVariantSettings> dxpVariantsSettings, Experiment experiment);

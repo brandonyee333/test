@@ -68,12 +68,12 @@ public class BounceRateExperimentMetricCalculatorTest
 							new ExperimentDataPoint<>(3523, 3002D)))));
 
 		ExperimentMetric experimentMetric =
-			experimentMetricCalculator.calculateMetric(experiment);
+			experimentMetricCalculator.calculateExperimentMetric(experiment);
 
 		assertExperimentMetric(experimentMetric, 95, 2, 12);
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getVariantMetrics();
+			experimentMetric.getExperimentVariantMetrics();
 
 		experimentVariantMetrics.sort(
 			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
@@ -119,12 +119,12 @@ public class BounceRateExperimentMetricCalculatorTest
 							new ExperimentDataPoint<>(1645, 1135D)))));
 
 		ExperimentMetric experimentMetric =
-			experimentMetricCalculator.calculateMetric(experiment);
+			experimentMetricCalculator.calculateExperimentMetric(experiment);
 
 		assertExperimentMetric(experimentMetric, 95, 2, 12);
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getVariantMetrics();
+			experimentMetric.getExperimentVariantMetrics();
 
 		experimentVariantMetrics.sort(
 			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
@@ -166,12 +166,12 @@ public class BounceRateExperimentMetricCalculatorTest
 							new ExperimentDataPoint<>(0, 0D)))));
 
 		ExperimentMetric experimentMetric =
-			experimentMetricCalculator.calculateMetric(experiment);
+			experimentMetricCalculator.calculateExperimentMetric(experiment);
 
 		assertExperimentMetric(experimentMetric, 95, 1, 13);
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getVariantMetrics();
+			experimentMetric.getExperimentVariantMetrics();
 
 		experimentVariantMetrics.sort(
 			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));

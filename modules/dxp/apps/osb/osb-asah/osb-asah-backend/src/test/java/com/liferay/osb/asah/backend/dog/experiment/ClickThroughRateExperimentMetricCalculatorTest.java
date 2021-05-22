@@ -68,12 +68,12 @@ public class ClickThroughRateExperimentMetricCalculatorTest
 							new ExperimentDataPoint<>(1523, 165D)))));
 
 		ExperimentMetric experimentMetric =
-			experimentMetricCalculator.calculateMetric(experiment);
+			experimentMetricCalculator.calculateExperimentMetric(experiment);
 
 		assertExperimentMetric(experimentMetric, 95, 2, 12);
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getVariantMetrics();
+			experimentMetric.getExperimentVariantMetrics();
 
 		experimentVariantMetrics.sort(
 			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
@@ -121,12 +121,12 @@ public class ClickThroughRateExperimentMetricCalculatorTest
 							new ExperimentDataPoint<>(1645, 135D)))));
 
 		ExperimentMetric experimentMetric =
-			experimentMetricCalculator.calculateMetric(experiment);
+			experimentMetricCalculator.calculateExperimentMetric(experiment);
 
 		assertExperimentMetric(experimentMetric, 95, 2, 13);
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getVariantMetrics();
+			experimentMetric.getExperimentVariantMetrics();
 
 		experimentVariantMetrics.sort(
 			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
@@ -171,12 +171,12 @@ public class ClickThroughRateExperimentMetricCalculatorTest
 							new ExperimentDataPoint<>(0, 0D)))));
 
 		ExperimentMetric experimentMetric =
-			experimentMetricCalculator.calculateMetric(experiment);
+			experimentMetricCalculator.calculateExperimentMetric(experiment);
 
 		assertExperimentMetric(experimentMetric, 95, 1, 13);
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getVariantMetrics();
+			experimentMetric.getExperimentVariantMetrics();
 
 		experimentVariantMetrics.sort(
 			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));

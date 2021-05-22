@@ -92,7 +92,7 @@ public abstract class BaseExperimentMetricCalculator<T>
 
 		for (Variant<T> variant : variants) {
 			experimentMetric.addExperimentVariantMetric(
-				_createEmptyVariantMetric(variant));
+				_createEmptyExperimentVariantMetric(variant));
 		}
 
 		experimentMetric.setConfidenceLevel(0);
@@ -114,7 +114,7 @@ public abstract class BaseExperimentMetricCalculator<T>
 
 		for (Variant<T> variant : variants) {
 			experimentMetric.addExperimentVariantMetric(
-				_createVariantMetric(
+				_createExperimentVariantMetric(
 					experiment.getConfidenceLevel(), controlVariant,
 					goal.getGoalMetric(), variant, variantDoubleTensorMap));
 		}
@@ -331,7 +331,7 @@ public abstract class BaseExperimentMetricCalculator<T>
 		return doubleTensor.sum() / tensorLength * 100;
 	}
 
-	private ExperimentVariantMetric _createEmptyVariantMetric(
+	private ExperimentVariantMetric _createEmptyExperimentVariantMetric(
 		Variant<T> variant) {
 
 		ExperimentVariantMetric experimentVariantMetric =
@@ -346,7 +346,7 @@ public abstract class BaseExperimentMetricCalculator<T>
 		return experimentVariantMetric;
 	}
 
-	private ExperimentVariantMetric _createVariantMetric(
+	private ExperimentVariantMetric _createExperimentVariantMetric(
 		double confidenceLevel, Variant<T> controlVariant,
 		GoalMetric goalMetric, Variant<T> variant,
 		Map<String, DoubleTensor> variantDoubleTensorMap) {

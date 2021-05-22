@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
-import com.liferay.osb.asah.backend.model.DXPVariants;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
+import com.liferay.osb.asah.backend.model.ExperimentVariants;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.ExperimentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dxp.DXPClient;
@@ -149,7 +149,7 @@ public class ExperimentsRestControllerTest {
 	)
 	@Test
 	public void testPutDXPVariants() {
-		List<ExperimentVariant> expectedDXPVariants =
+		List<ExperimentVariant> expectedExperimentVariants =
 			new ArrayList<ExperimentVariant>() {
 				{
 					add(
@@ -161,14 +161,15 @@ public class ExperimentsRestControllerTest {
 				}
 			};
 
-		_experimentsRestController.putDXPVariants(
-			"1", new DXPVariants(expectedDXPVariants));
+		_experimentsRestController.putExperimentVariants(
+			"1", new ExperimentVariants(expectedExperimentVariants));
 
 		Experiment actualExperiment = _experimentsRestController.getExperiment(
 			"1");
 
 		Assert.assertEquals(
-			expectedDXPVariants, actualExperiment.getExperimentVariants());
+			expectedExperimentVariants,
+			actualExperiment.getExperimentVariants());
 	}
 
 	@ElasticsearchIndex(

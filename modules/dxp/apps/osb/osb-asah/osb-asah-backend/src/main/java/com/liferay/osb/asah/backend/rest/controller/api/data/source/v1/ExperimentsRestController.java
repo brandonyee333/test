@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
-import com.liferay.osb.asah.backend.model.DXPVariants;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
+import com.liferay.osb.asah.backend.model.ExperimentVariants;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
@@ -111,12 +111,14 @@ public class ExperimentsRestController extends BaseRestController {
 	}
 
 	@PutMapping("/{id}/dxp-variants")
-	public void putDXPVariants(
-		@PathVariable String id, @RequestBody @Valid DXPVariants dxpVariants) {
+	public void putExperimentVariants(
+		@PathVariable String id,
+		@RequestBody @Valid ExperimentVariants experimentVariants) {
 
 		Experiment experiment = _experimentDog.getExperiment(id);
 
-		experiment.setExperimentVariants(dxpVariants.getDXPVariants());
+		experiment.setExperimentVariants(
+			experimentVariants.getExperimentVariants());
 
 		_experimentDog.updateExperiment(experiment);
 	}

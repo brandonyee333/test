@@ -55,7 +55,7 @@ public class DichotomousDataExperimentMetricCalculator
 	extends BaseExperimentMetricCalculator<Double> {
 
 	@Override
-	public ExperimentMetric calculateMetric(Experiment experiment) {
+	public ExperimentMetric calculateExperimentMetric(Experiment experiment) {
 		List<Variant<Double>> variants = getVariants(experiment);
 
 		for (Variant<Double> variant : variants) {

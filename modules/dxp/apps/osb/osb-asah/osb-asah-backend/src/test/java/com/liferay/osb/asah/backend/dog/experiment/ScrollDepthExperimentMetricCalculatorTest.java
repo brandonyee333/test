@@ -65,12 +65,12 @@ public class ScrollDepthExperimentMetricCalculatorTest
 						"scroll_depth_variant_a_day2.txt")));
 
 		ExperimentMetric experimentMetric =
-			experimentMetricCalculator.calculateMetric(experiment);
+			experimentMetricCalculator.calculateExperimentMetric(experiment);
 
 		assertExperimentMetric(experimentMetric, 95, 2, 12);
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getVariantMetrics();
+			experimentMetric.getExperimentVariantMetrics();
 
 		experimentVariantMetrics.sort(
 			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
@@ -113,12 +113,12 @@ public class ScrollDepthExperimentMetricCalculatorTest
 						"scroll_depth_variant_b_day2.txt")));
 
 		ExperimentMetric experimentMetric =
-			experimentMetricCalculator.calculateMetric(experiment);
+			experimentMetricCalculator.calculateExperimentMetric(experiment);
 
 		assertExperimentMetric(experimentMetric, 95, 2, 12);
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getVariantMetrics();
+			experimentMetric.getExperimentVariantMetrics();
 
 		experimentVariantMetrics.sort(
 			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
@@ -162,12 +162,12 @@ public class ScrollDepthExperimentMetricCalculatorTest
 							new ExperimentDataPoint<>(0, new Double[0])))));
 
 		ExperimentMetric experimentMetric =
-			experimentMetricCalculator.calculateMetric(experiment);
+			experimentMetricCalculator.calculateExperimentMetric(experiment);
 
 		assertExperimentMetric(experimentMetric, 95, 1, 13);
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
-			experimentMetric.getVariantMetrics();
+			experimentMetric.getExperimentVariantMetrics();
 
 		experimentVariantMetrics.sort(
 			Comparator.comparing(ExperimentVariantMetric::getDXPVariantId));
