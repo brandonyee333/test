@@ -128,7 +128,7 @@ public class ExperimentDogTest {
 		ExperimentMetric experimentMetric = _experimentDog.getExperimentMetric(
 			"1");
 
-		Assert.assertEquals(2, experimentMetric.getElapsedDays());
+		Assert.assertEquals(2, experimentMetric.getElapsedDays(), 0.0);
 		Assert.assertNull(experimentMetric.getEstimatedDaysLeft());
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
@@ -177,7 +177,7 @@ public class ExperimentDogTest {
 		ExperimentMetric experimentMetric = _experimentDog.getExperimentMetric(
 			"3");
 
-		Assert.assertEquals(2, experimentMetric.getElapsedDays());
+		Assert.assertEquals(2, experimentMetric.getElapsedDays(), 0.0);
 		Assert.assertEquals(
 			Long.valueOf(12), experimentMetric.getEstimatedDaysLeft());
 

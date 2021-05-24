@@ -49,7 +49,7 @@ public abstract class BaseExperimentMetricCalculatorTestCase {
 			expectedConfidenceLevel,
 			actualExperimentMetric.getConfidenceLevel(), 1);
 		Assert.assertEquals(
-			expectedElapsedDays, actualExperimentMetric.getElapsedDays());
+			expectedElapsedDays, actualExperimentMetric.getElapsedDays(), 0.0);
 		Assert.assertEquals(
 			expectedEstimatedDaysLeft,
 			(long)actualExperimentMetric.getEstimatedDaysLeft());

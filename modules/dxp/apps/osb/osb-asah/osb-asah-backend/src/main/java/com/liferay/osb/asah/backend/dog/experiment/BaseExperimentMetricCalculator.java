@@ -98,7 +98,7 @@ public abstract class BaseExperimentMetricCalculator<T>
 				_createEmptyExperimentVariantMetric(variant));
 		}
 
-		experimentMetric.setConfidenceLevel(0);
+		experimentMetric.setConfidenceLevel(0.0);
 		experimentMetric.setElapsedDays(_getExperimentElapsedDays(experiment));
 		experimentMetric.setEstimatedDaysLeft(null);
 		experimentMetric.setProcessedDate(LocalDateTime.now(ZoneOffset.UTC));
@@ -347,9 +347,9 @@ public abstract class BaseExperimentMetricCalculator<T>
 			new BigDecimal[] {
 				BigDecimal.valueOf(0.0), BigDecimal.valueOf(0.0)
 			});
-		experimentVariantMetric.setImprovement(0);
-		experimentVariantMetric.setMedian(0);
-		experimentVariantMetric.setProbabilityToWin(0);
+		experimentVariantMetric.setImprovement(0.0);
+		experimentVariantMetric.setMedian(0.0);
+		experimentVariantMetric.setProbabilityToWin(0.0);
 
 		return experimentVariantMetric;
 	}
