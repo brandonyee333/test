@@ -103,7 +103,7 @@ public class ExperimentVariantMetric implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public boolean getControl() {
+	public Boolean getControl() {
 		return _control;
 	}
 
@@ -121,17 +121,17 @@ public class ExperimentVariantMetric implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public double getImprovement() {
+	public Double getImprovement() {
 		return _improvement;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public double getMedian() {
+	public Double getMedian() {
 		return _median;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public double getProbabilityToWin() {
+	public Double getProbabilityToWin() {
 		return _probabilityToWin;
 	}
 
@@ -143,7 +143,7 @@ public class ExperimentVariantMetric implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public boolean isControl() {
+	public Boolean isControl() {
 		return getControl();
 	}
 
@@ -164,7 +164,7 @@ public class ExperimentVariantMetric implements Persistable<Long> {
 			confidenceIntervalArray, confidenceIntervalArray.length);
 	}
 
-	public void setControl(boolean control) {
+	public void setControl(Boolean control) {
 		_control = control;
 	}
 
@@ -176,7 +176,7 @@ public class ExperimentVariantMetric implements Persistable<Long> {
 		_id = id;
 	}
 
-	public void setImprovement(double improvement) {
+	public void setImprovement(Double improvement) {
 		_improvement = improvement;
 	}
 
@@ -184,11 +184,11 @@ public class ExperimentVariantMetric implements Persistable<Long> {
 		_isNew = isNew;
 	}
 
-	public void setMedian(double median) {
+	public void setMedian(Double median) {
 		_median = median;
 	}
 
-	public void setProbabilityToWin(double probabilityToWin) {
+	public void setProbabilityToWin(Double probabilityToWin) {
 		_probabilityToWin = probabilityToWin;
 	}
 
@@ -198,7 +198,7 @@ public class ExperimentVariantMetric implements Persistable<Long> {
 	};
 
 	@Transient
-	private boolean _control;
+	private Boolean _control;
 
 	@Transient
 	private String _dxpVariantId;
@@ -207,15 +207,15 @@ public class ExperimentVariantMetric implements Persistable<Long> {
 	private Long _id;
 
 	@Transient
-	private double _improvement;
+	private Double _improvement;
 
 	@Transient
 	private Boolean _isNew;
 
 	@Transient
-	private double _median;
+	private Double _median;
 
 	@Transient
-	private double _probabilityToWin;
+	private Double _probabilityToWin;
 
 }

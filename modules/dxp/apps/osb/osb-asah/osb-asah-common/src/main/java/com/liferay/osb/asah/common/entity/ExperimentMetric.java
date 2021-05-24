@@ -86,17 +86,17 @@ public class ExperimentMetric implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public double getCompletion() {
+	public Double getCompletion() {
 		return _completion;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public double getConfidenceLevel() {
+	public Double getConfidenceLevel() {
 		return _confidenceLevel;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public long getElapsedDays() {
+	public Long getElapsedDays() {
 		return _elapsedDays;
 	}
 
@@ -145,15 +145,15 @@ public class ExperimentMetric implements Persistable<Long> {
 		return false;
 	}
 
-	public void setCompletion(double completion) {
+	public void setCompletion(Double completion) {
 		_completion = completion;
 	}
 
-	public void setConfidenceLevel(double confidenceLevel) {
+	public void setConfidenceLevel(Double confidenceLevel) {
 		_confidenceLevel = confidenceLevel;
 	}
 
-	public void setElapsedDays(long elapsedDays) {
+	public void setElapsedDays(Long elapsedDays) {
 		_elapsedDays = elapsedDays;
 	}
 
@@ -181,13 +181,13 @@ public class ExperimentMetric implements Persistable<Long> {
 	}
 
 	@Transient
-	private double _completion;
+	private Double _completion;
 
 	@Transient
-	private double _confidenceLevel;
+	private Double _confidenceLevel;
 
 	@Transient
-	private long _elapsedDays;
+	private Long _elapsedDays;
 
 	@Transient
 	private Long _estimatedDaysLeft;
