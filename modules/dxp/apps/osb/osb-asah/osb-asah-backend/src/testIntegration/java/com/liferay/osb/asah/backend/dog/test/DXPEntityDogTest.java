@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
@@ -27,6 +28,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.elasticsearch.index.query.QueryBuilders;
+
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +48,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
 public class DXPEntityDogTest {
+
+	@After
+	public void tearDown() {
+		_faroInfoElasticsearchInvoker.delete(
+			"channels", QueryBuilders.matchAllQuery());
+
+		_dxpEntityDog.deleteByType(DXPEntity.Type.GROUP);
+		_dxpEntityDog.deleteByType(DXPEntity.Type.ORGANIZATION);
+		_dxpEntityDog.deleteByType(DXPEntity.Type.ROLE);
+		_dxpEntityDog.deleteByType(DXPEntity.Type.TEAM);
+		_dxpEntityDog.deleteByType(DXPEntity.Type.USER);
+		_dxpEntityDog.deleteByType(DXPEntity.Type.USER_GROUP);
+	}
 
 	@ElasticsearchIndex(
 		name = "groups", resourcePath = "groups.json",
@@ -218,5 +235,8 @@ public class DXPEntityDogTest {
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }

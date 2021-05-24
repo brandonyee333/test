@@ -48,6 +48,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class DXPEntityDog {
 
+	public void deleteByType(DXPEntity.Type type) {
+		_dxpEntityRepository.deleteByType(type);
+	}
+
 	public List<? extends DXPEntity> getDXPEntities(
 		String channelId, String keywords, DXPEntity.Type type, int size,
 		Sort sort, int start) {
