@@ -1,8 +1,10 @@
 [
 	{
-		"id": "405057436532876741",
-		"name": "Mac Users",
-		"osbAsahDataSourceId": "405057430327289648",
-		"userGroupId": "35452"
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"name": "Mac Users",
+			"userGroupId": "35452"
+		},
+		"id": "405057436532876741"
 	}
 ]

@@ -1,14 +1,18 @@
 [
 	{
-		"groupId": "20121",
-		"id": "405057435148143169",
-		"name": "Guest",
-		"osbAsahDataSourceId": "405057430327289648"
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"groupId": "20121",
+			"name": "Guest"
+		},
+		"id": "405057435148143169"
 	},
 	{
-		"groupId": "20125",
-		"id": "405057436480425079",
-		"name": "Global",
-		"osbAsahDataSourceId": "405057430327289648"
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"groupId": "20125",
+			"name": "Global"
+		},
+		"id": "405057436480425079"
 	}
 ]

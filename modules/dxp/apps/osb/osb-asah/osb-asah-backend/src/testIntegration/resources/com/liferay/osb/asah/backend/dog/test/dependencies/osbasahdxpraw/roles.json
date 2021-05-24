@@ -1,26 +1,34 @@
 [
 	{
-		"id": "405057439101255435",
-		"name": "Administrator",
-		"osbAsahDataSourceId": "405057430327289648",
-		"roleId": "20104"
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"name": "Administrator",
+			"roleId": "20104"
+		},
+		"id": "405057439101255435"
 	},
 	{
-		"id": "405057439859160765",
-		"name": "Power User",
-		"osbAsahDataSourceId": "405057430327289648",
-		"roleId": "20108"
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"name": "Power User",
+			"roleId": "20108"
+		},
+		"id": "405057439859160765"
 	},
 	{
-		"id": "405057439817243554",
-		"name": "Owner",
-		"osbAsahDataSourceId": "405057430327289648",
-		"roleId": "20107"
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"name": "Owner",
+			"roleId": "20107"
+		},
+		"id": "405057439817243554"
 	},
 	{
-		"id": "405057439774488100",
-		"name": "Guest",
-		"osbAsahDataSourceId": "405057430327289648",
-		"roleId": "20106"
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"name": "Guest",
+			"roleId": "20106"
+		},
+		"id": "405057439774488100"
 	}
 ]

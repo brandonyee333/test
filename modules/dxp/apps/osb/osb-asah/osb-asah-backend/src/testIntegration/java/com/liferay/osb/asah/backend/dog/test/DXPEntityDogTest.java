@@ -17,7 +17,6 @@ package com.liferay.osb.asah.backend.dog.test;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -50,41 +49,45 @@ public class DXPEntityDogTest {
 		name = "groups", resourcePath = "groups.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
+	@ElasticsearchIndex(
+		name = "channels", resourcePath = "channels.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@Test
 	public void testGetGroupResultBag() {
-		_testGetResultBag(
+		_testGetDXPEntities(
 			null, "groups", Arrays.asList("Global", "Guest"), 2, null,
-			Sort.asc("name"));
-		_testGetResultBag(
+			Sort.asc("fields.name"));
+		_testGetDXPEntities(
 			"414686271857066676", "groups", Arrays.asList("Global", "Guest"), 2,
-			null, Sort.asc("name"));
-		_testGetResultBag(
+			null, Sort.asc("fields.name"));
+		_testGetDXPEntities(
 			"414686271857066677", "groups", Collections.emptyList(), 0, null,
-			Sort.asc("name"));
+			Sort.asc("fields.name"));
 	}
 
 	@ElasticsearchIndex(
 		name = "organizations", resourcePath = "organizations.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
 	@Test
 	public void testGetOrganizationResultBag() {
-		_testGetResultBag(
+		_testGetDXPEntities(
 			null, "organizations",
 			Arrays.asList("engineering", "marketing", "sales engineering"), 3,
-			null, Sort.asc("name"));
+			null, Sort.asc("fields.name"));
 	}
 
 	@ElasticsearchIndex(
 		name = "organizations", resourcePath = "organizations.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
 	@Test
 	public void testGetOrganizationResultBagSearch() {
-		_testGetResultBag(
+		_testGetDXPEntities(
 			null, "organizations",
 			Arrays.asList("engineering", "sales engineering"), 2, "engine",
-			Sort.asc("name"));
+			Sort.asc("fields.name"));
 	}
 
 	@ElasticsearchIndex(
@@ -93,10 +96,10 @@ public class DXPEntityDogTest {
 	)
 	@Test
 	public void testGetRoleResultBag() {
-		_testGetResultBag(
+		_testGetDXPEntities(
 			null, "roles",
 			Arrays.asList("Administrator", "Guest", "Owner", "Power User"), 4,
-			null, Sort.asc("name"));
+			null, Sort.asc("fields.name"));
 	}
 
 	@ElasticsearchIndex(
@@ -109,13 +112,13 @@ public class DXPEntityDogTest {
 	)
 	@Test
 	public void testGetTeamResultBag() {
-		_testGetResultBag(
+		_testGetDXPEntities(
 			"414686271857066676", "teams",
 			Arrays.asList("teamA", "teamB", "teamC", "teamD"), 4, null,
-			Sort.asc("name"));
-		_testGetResultBag(
+			Sort.asc("fields.name"));
+		_testGetDXPEntities(
 			"414686271857066677", "teams", Arrays.asList("teamE"), 1, null,
-			Sort.asc("name"));
+			Sort.asc("fields.name"));
 	}
 
 	@ElasticsearchIndex(
@@ -124,9 +127,9 @@ public class DXPEntityDogTest {
 	)
 	@Test
 	public void testGetUserGroupResultBag() {
-		_testGetResultBag(
+		_testGetDXPEntities(
 			null, "user-groups", Arrays.asList("Mac Users"), 1, null,
-			Sort.asc("name"));
+			Sort.asc("fields.name"));
 	}
 
 	@ElasticsearchIndex(
@@ -139,20 +142,20 @@ public class DXPEntityDogTest {
 	)
 	@Test
 	public void testGetUserResultBag() {
-		_testGetResultBag(
+		_testGetDXPEntities(
 			null, "users",
 			Arrays.asList(
 				"Bruno Admin", "Bruno Badmin", "Test1 Test1", "Test2 Test2",
 				"Test3 Test3"),
-			5, null, Sort.asc("name"));
-		_testGetResultBag(
+			5, null, Sort.asc("fields.name"));
+		_testGetDXPEntities(
 			"414686271857066676", "users",
 			Arrays.asList(
 				"Bruno Admin", "Bruno Badmin", "Test1 Test1", "Test2 Test2"),
-			4, null, Sort.asc("name"));
-		_testGetResultBag(
+			4, null, Sort.asc("fields.name"));
+		_testGetDXPEntities(
 			"414686271857066677", "users", Arrays.asList("Test3 Test3"), 1,
-			null, Sort.asc("name"));
+			null, Sort.asc("fields.name"));
 	}
 
 	@ElasticsearchIndex(
@@ -161,10 +164,10 @@ public class DXPEntityDogTest {
 	)
 	@Test
 	public void testGetUserResultBagCaseInsensitiveSearch() {
-		_testGetResultBag(
+		_testGetDXPEntities(
 			null, "users",
 			Arrays.asList("Test1 Test1", "Test2 Test2", "Test3 Test3"), 3,
-			"test", Sort.asc("name"));
+			"test", Sort.asc("fields.name"));
 	}
 
 	@ElasticsearchIndex(
@@ -177,14 +180,14 @@ public class DXPEntityDogTest {
 	)
 	@Test
 	public void testGetUserResultBagSearch() {
-		_testGetResultBag(
+		_testGetDXPEntities(
 			null, "users",
 			Arrays.asList("Test1 Test1", "Test2 Test2", "Test3 Test3"), 3,
-			"Test", Sort.asc("name"));
-		_testGetResultBag(
+			"Test", Sort.asc("fields.name"));
+		_testGetDXPEntities(
 			"414686271857066676", "users",
 			Arrays.asList("Test1 Test1", "Test2 Test2"), 2, "Test",
-			Sort.asc("name"));
+			Sort.asc("fields.name"));
 	}
 
 	@ElasticsearchIndex(
@@ -193,24 +196,24 @@ public class DXPEntityDogTest {
 	)
 	@Test
 	public void testGetUserResultBagSearchAndSort() {
-		_testGetResultBag(
+		_testGetDXPEntities(
 			null, "users", Arrays.asList("Bruno Badmin", "Bruno Admin"), 2,
-			"Bruno", Sort.desc("name"));
+			"Bruno", Sort.desc("fields.name"));
 	}
 
-	private void _testGetResultBag(
+	private void _testGetDXPEntities(
 		String channelId, String collectionName, List<String> expectedNames,
 		int expectedTotal, String keywords, Sort sort) {
 
-		ResultBag<? extends DXPEntity> dxpEntityResultBag =
-			_dxpEntityDog.getDXPEntityResultBag(
-				channelId, collectionName, keywords, 10, sort, 0);
-
-		Assert.assertEquals(expectedTotal, dxpEntityResultBag.getTotal());
+		List<? extends DXPEntity> dxpEntities = _dxpEntityDog.getDXPEntities(
+			channelId, keywords,
+			DXPEntity.Type.ofCollectionName(collectionName), 10, sort, 0);
 
 		Assert.assertEquals(
-			expectedNames,
-			ListUtil.map(dxpEntityResultBag.getResults(), DXPEntity::getName));
+			dxpEntities.toString(), expectedTotal, dxpEntities.size());
+
+		Assert.assertEquals(
+			expectedNames, ListUtil.map(dxpEntities, DXPEntity::getName));
 	}
 
 	@Autowired

@@ -1,37 +1,47 @@
 [
 	{
-		"groupId": 20121,
-		"id": "405057437515771690",
-		"name": "teamA",
-		"osbAsahDataSourceId": "405057430327289648",
-		"teamId": "35472"
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"groupId": 20121,
+			"name": "teamA",
+			"teamId": "35472"
+		},
+		"id": "405057437515771690"
 	},
 	{
-		"groupId": 20121,
-		"id": "405057437515771691",
-		"name": "teamB",
-		"osbAsahDataSourceId": "405057430327289648",
-		"teamId": "35473"
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"groupId": 20121,
+			"name": "teamB",
+			"teamId": "35473"
+		},
+		"id": "405057437515771691"
 	},
 	{
-		"groupId": 20121,
-		"id": "405057437515771692",
-		"name": "teamC",
-		"osbAsahDataSourceId": "405057430327289648",
-		"teamId": "35474"
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"groupId": 20121,
+			"name": "teamC",
+			"teamId": "35474"
+		},
+		"id": "405057437515771692"
 	},
 	{
-		"groupId": 20123,
-		"id": "405057437515771693",
-		"name": "teamD",
-		"osbAsahDataSourceId": "405057430327289648",
-		"teamId": "35475"
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"groupId": 20123,
+			"name": "teamD",
+			"teamId": "35475"
+		},
+		"id": "405057437515771693"
 	},
 	{
-		"groupId": 20122,
-		"id": "405057437515771694",
-		"name": "teamE",
-		"osbAsahDataSourceId": "405057430327289649",
-		"teamId": "35476"
+		"dataSourceId": "405057430327289649",
+		"fields": {
+			"groupId": 20122,
+			"name": "teamE",
+			"teamId": "35476"
+		},
+		"id": "405057437515771694"
 	}
 ]

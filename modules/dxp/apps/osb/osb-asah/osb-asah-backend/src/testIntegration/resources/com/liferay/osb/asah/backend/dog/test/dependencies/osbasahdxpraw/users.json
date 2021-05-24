@@ -1,42 +1,53 @@
 [
 	{
-		"firstName": "Bruno",
-		"id": "386700253541400286",
-		"lastName": "Admin",
-		"osbAsahDataSourceId": "405057430327289648",
-		"screenName": "bruno.admin"
-	},
-	{
-		"firstName": "Bruno",
-		"id": "386700253541400287",
-		"lastName": "Badmin",
-		"osbAsahDataSourceId": "405057430327289648",
-		"screenName": "bruno.badmin"
-	},
-	{
-		"firstName": "Test1",
-		"id": "386700253541400288",
-		"lastName": "Test1",
-		"osbAsahDataSourceId": "405057430327289648",
-		"screenName": "test1.test1"
-	},
-	{
-		"firstName": "Test2",
-		"id": "386700253541400289",
-		"lastName": "Test2",
-		"osbAsahDataSourceId": "405057430327289648",
-		"screenName": "test2.test2"
-	},
-	{
-		"firstName": "Test3",
-		"id": "386700253541400290",
-		"lastName": "Test3",
-		"memberships": {
-			"com.liferay.portal.kernel.model.Group": [
-				"20121"
-			]
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"firstName": "Bruno",
+			"lastName": "Admin",
+			"screenName": "bruno.admin"
 		},
-		"osbAsahDataSourceId": "405057430327289649",
-		"screenName": "test3.test3"
+		"id": "386700253541400286"
+	},
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"firstName": "Bruno",
+			"lastName": "Badmin",
+			"screenName": "bruno.badmin"
+		},
+		"id": "386700253541400287"
+	},
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"firstName": "Test1",
+			"lastName": "Test1",
+			"screenName": "test1.test1"
+		},
+		"id": "386700253541400288"
+	},
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"firstName": "Test2",
+			"lastName": "Test2",
+			"screenName": "test2.test2"
+		},
+		"gender": "male",
+		"id": "386700253541400289"
+	},
+	{
+		"dataSourceId": "405057430327289649",
+		"fields": {
+			"firstName": "Test3",
+			"lastName": "Test3",
+			"memberships": {
+				"com.liferay.portal.kernel.model.Group": [
+					"20121"
+				]
+			},
+			"screenName": "test3.test3"
+		},
+		"id": "386700253541400290"
 	}
 ]
