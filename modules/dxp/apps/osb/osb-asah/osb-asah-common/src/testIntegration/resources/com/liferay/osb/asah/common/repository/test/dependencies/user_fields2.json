@@ -1,0 +1,25 @@
+{
+	"birthday": 392026033072,
+	"contact": {
+		"emailAddress": "jane.doe@liferay.com",
+		"firstName": "Jane",
+		"gender": "female",
+		"jobTitle": "electrician",
+		"lastName": "Doe",
+		"modifiedDate": 1573759049837,
+		"userId": "37202749"
+	},
+	"emailAddress": "jane.doe@liferay.com",
+	"firstName": "Jane",
+	"jobTitle": "electrician",
+	"lastName": "Doe",
+	"memberships": {
+		"com.liferay.portal.kernel.model.Group": [
+			"20122"
+		]
+	},
+	"modifiedDate": 1573759049837,
+	"screenName": "jane.doe",
+	"userId": "37202749",
+	"uuid": "hexa2"
+}
