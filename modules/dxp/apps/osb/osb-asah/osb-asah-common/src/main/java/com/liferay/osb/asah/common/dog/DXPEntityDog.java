@@ -14,11 +14,6 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.backend.dog.DataDog;
-import com.liferay.osb.asah.backend.dog.DogUtil;
-import com.liferay.osb.asah.backend.model.DXPEntity;
-import com.liferay.osb.asah.backend.model.Organization;
-import com.liferay.osb.asah.backend.model.User;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
@@ -26,9 +21,12 @@ import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.model.Organization;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.model.User;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
