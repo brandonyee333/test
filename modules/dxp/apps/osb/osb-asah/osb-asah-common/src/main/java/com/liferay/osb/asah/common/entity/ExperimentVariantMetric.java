@@ -28,9 +28,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.Range;
 
 import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -38,7 +36,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcellus Tavares
  */
 @Table
-public class ExperimentVariantMetric implements Persistable<Long> {
+public class ExperimentVariantMetric {
 
 	public ExperimentVariantMetric() {
 	}
@@ -68,7 +66,6 @@ public class ExperimentVariantMetric implements Persistable<Long> {
 		if (Objects.equals(_control, experimentVariantMetric._control) &&
 			Objects.equals(
 				_dxpVariantId, experimentVariantMetric._dxpVariantId) &&
-			Objects.equals(_id, experimentVariantMetric._id) &&
 			Objects.equals(
 				_improvement, experimentVariantMetric._improvement) &&
 			Objects.equals(_median, experimentVariantMetric._median) &&
@@ -114,13 +111,6 @@ public class ExperimentVariantMetric implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@Id
-	@Override
-	public Long getId() {
-		return _id;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
 	public Double getImprovement() {
 		return _improvement;
 	}
@@ -138,23 +128,12 @@ public class ExperimentVariantMetric implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_control, _dxpVariantId, _id, _improvement, _median,
-			_probabilityToWin);
+			_control, _dxpVariantId, _improvement, _median, _probabilityToWin);
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Boolean isControl() {
 		return getControl();
-	}
-
-	@JsonIgnore
-	@Override
-	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
-			return true;
-		}
-
-		return false;
 	}
 
 	public void setConfidenceIntervalArray(
@@ -172,16 +151,8 @@ public class ExperimentVariantMetric implements Persistable<Long> {
 		_dxpVariantId = dxpVariantId;
 	}
 
-	public void setId(Long id) {
-		_id = id;
-	}
-
 	public void setImprovement(Double improvement) {
 		_improvement = improvement;
-	}
-
-	public void setIsNew(Boolean isNew) {
-		_isNew = isNew;
 	}
 
 	public void setMedian(Double median) {
@@ -204,13 +175,7 @@ public class ExperimentVariantMetric implements Persistable<Long> {
 	private String _dxpVariantId;
 
 	@Transient
-	private Long _id;
-
-	@Transient
 	private Double _improvement;
-
-	@Transient
-	private Boolean _isNew;
 
 	@Transient
 	private Double _median;

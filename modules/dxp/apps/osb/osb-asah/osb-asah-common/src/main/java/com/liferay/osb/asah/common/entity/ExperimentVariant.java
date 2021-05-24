@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.common.graphql.GraphQLType;
@@ -24,9 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -34,7 +31,7 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @GraphQLType
 @Table
-public class ExperimentVariant implements Persistable<Long> {
+public class ExperimentVariant {
 
 	public ExperimentVariant() {
 	}
@@ -60,7 +57,6 @@ public class ExperimentVariant implements Persistable<Long> {
 			Objects.equals(_dxpVariantId, experimentVariant._dxpVariantId) &&
 			Objects.equals(
 				_dxpVariantName, experimentVariant._dxpVariantName) &&
-			Objects.equals(_id, experimentVariant._id) &&
 			Objects.equals(_trafficSplit, experimentVariant._trafficSplit)) {
 
 			return true;
@@ -92,13 +88,6 @@ public class ExperimentVariant implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@Id
-	@Override
-	public Long getId() {
-		return _id;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
 	public Double getTrafficSplit() {
 		return _trafficSplit;
 	}
@@ -111,16 +100,6 @@ public class ExperimentVariant implements Persistable<Long> {
 
 	public Boolean isControl() {
 		return getControl();
-	}
-
-	@JsonIgnore
-	@Override
-	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
-			return true;
-		}
-
-		return false;
 	}
 
 	public void setChanges(Integer changes) {
@@ -139,14 +118,6 @@ public class ExperimentVariant implements Persistable<Long> {
 		_dxpVariantName = dxpVariantName;
 	}
 
-	public void setId(Long id) {
-		_id = id;
-	}
-
-	public void setIsNew(Boolean isNew) {
-		_isNew = isNew;
-	}
-
 	public void setTrafficSplit(Double trafficSplit) {
 		_trafficSplit = trafficSplit;
 	}
@@ -162,12 +133,6 @@ public class ExperimentVariant implements Persistable<Long> {
 
 	@Transient
 	private String _dxpVariantName;
-
-	@Transient
-	private Long _id;
-
-	@Transient
-	private Boolean _isNew;
 
 	@Transient
 	private Double _trafficSplit;
