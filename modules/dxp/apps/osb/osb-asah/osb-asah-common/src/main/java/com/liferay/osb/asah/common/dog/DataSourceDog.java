@@ -465,8 +465,8 @@ public class DataSourceDog {
 			_asahMarkerDog.deleteAsahMarker(
 				dataSourceId.toString(), WeDeployDataService.OSB_ASAH_DXP_RAW);
 			_deleteData(
-				dataSourceId, "audit-events", "groups", "organizations",
-				"roles", "teams", "user-groups", "users");
+				dataSourceId, "groups", "organizations", "roles", "teams",
+				"user-groups", "users");
 			_deleteIndividualReferences(dataSourceId);
 		}
 		else if (providerType.equals("SALESFORCE")) {
