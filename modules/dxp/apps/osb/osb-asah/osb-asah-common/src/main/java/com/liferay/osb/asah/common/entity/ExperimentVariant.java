@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.liferay.osb.asah.common.graphql.GraphQLType;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Map;
@@ -29,7 +28,6 @@ import org.springframework.data.relational.core.mapping.Table;
 /**
  * @author André Miranda
  */
-@GraphQLType
 @Table
 public class ExperimentVariant {
 
