@@ -71,7 +71,7 @@ public class DXPEntityDog {
 		_dxpEntityRepository.deleteByType(type);
 	}
 
-	public DXPEntity fetchByFields(
+	public DXPEntity fetchByFieldsAndType(
 		Map<String, Object> fields, DXPEntity.Type type) {
 
 		List<DXPEntity> dxpEntities =

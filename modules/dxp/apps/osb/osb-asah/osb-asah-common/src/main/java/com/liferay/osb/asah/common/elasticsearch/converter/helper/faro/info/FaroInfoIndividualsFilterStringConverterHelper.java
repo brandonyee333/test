@@ -14,9 +14,12 @@
 
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -25,6 +28,7 @@ import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
@@ -37,6 +41,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -884,23 +889,25 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 	}
 
 	private QueryBuilder _getUserIdQueryBuilder(boolean negate, String userId) {
-		JSONObject userJSONObject = _dxpRawElasticsearchInvoker.fetch(
-			"users", userId);
+		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
+			Collections.singletonMap("id", userId), DXPEntity.Type.USER);
 
-		if (userJSONObject == null) {
+		if (dxpEntity == null) {
 			return null;
 		}
+
+		JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
 
 		QueryBuilder queryBuilder = QueryBuilders.nestedQuery(
 			"dataSourceIndividualPKs",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery(
 					"dataSourceIndividualPKs.dataSourceId",
-					userJSONObject.getString("osbAsahDataSourceId"))
+					dxpEntity.getDataSourceId())
 			).filter(
 				QueryBuilders.termsQuery(
 					"dataSourceIndividualPKs.individualPKs",
-					userJSONObject.getString("uuid"))
+					fieldsJSONObject.getString("uuid"))
 			),
 			ScoreMode.None);
 
@@ -947,8 +954,8 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
 	private FaroInfoActivitiesFilterStringConverterHelper
@@ -971,6 +978,9 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 	@Autowired
 	private MembershipDog _membershipDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;
