@@ -6,7 +6,8 @@
 			"lastName": "Admin",
 			"screenName": "bruno.admin"
 		},
-		"id": "386700253541400286"
+		"id": "386700253541400286",
+		"type": "USER"
 	},
 	{
 		"dataSourceId": "405057430327289648",
@@ -15,7 +16,8 @@
 			"lastName": "Badmin",
 			"screenName": "bruno.badmin"
 		},
-		"id": "386700253541400287"
+		"id": "386700253541400287",
+		"type": "USER"
 	},
 	{
 		"dataSourceId": "405057430327289648",
@@ -24,7 +26,8 @@
 			"lastName": "Test1",
 			"screenName": "test1.test1"
 		},
-		"id": "386700253541400288"
+		"id": "386700253541400288",
+		"type": "USER"
 	},
 	{
 		"dataSourceId": "405057430327289648",
@@ -34,7 +37,8 @@
 			"screenName": "test2.test2"
 		},
 		"gender": "male",
-		"id": "386700253541400289"
+		"id": "386700253541400289",
+		"type": "USER"
 	},
 	{
 		"dataSourceId": "405057430327289649",
@@ -48,6 +52,7 @@
 			},
 			"screenName": "test3.test3"
 		},
-		"id": "386700253541400290"
+		"id": "386700253541400290",
+		"type": "USER"
 	}
 ]

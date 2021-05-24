@@ -3,31 +3,114 @@
 		"users": {
 			"date_detection": false,
 			"properties": {
-				"agreedToTermsOfUse": {
+				"dataSourceId": {
 					"type": "keyword"
 				},
-				"comments": {
-					"type": "keyword"
-				},
-				"companyId": {
-					"type": "keyword"
-				},
-				"contact": {
+				"fields": {
 					"properties": {
-						"accountId": {
+						"agreedToTermsOfUse": {
 							"type": "keyword"
 						},
-						"birthday": {
-							"type": "keyword"
-						},
-						"classNameId": {
-							"type": "keyword"
-						},
-						"classPK": {
+						"comments": {
 							"type": "keyword"
 						},
 						"companyId": {
 							"type": "keyword"
+						},
+						"contact": {
+							"properties": {
+								"accountId": {
+									"type": "keyword"
+								},
+								"birthday": {
+									"type": "keyword"
+								},
+								"classNameId": {
+									"type": "keyword"
+								},
+								"classPK": {
+									"type": "keyword"
+								},
+								"companyId": {
+									"type": "keyword"
+								},
+								"contactId": {
+									"type": "keyword"
+								},
+								"createDate": {
+									"type": "keyword"
+								},
+								"emailAddress": {
+									"type": "keyword"
+								},
+								"employeeNumber": {
+									"type": "keyword"
+								},
+								"employeeStatusId": {
+									"type": "keyword"
+								},
+								"facebookSn": {
+									"type": "keyword"
+								},
+								"firstName": {
+									"type": "keyword"
+								},
+								"gender": {
+									"type": "keyword"
+								},
+								"hoursOfOperation": {
+									"type": "keyword"
+								},
+								"jabberSn": {
+									"type": "keyword"
+								},
+								"jobClass": {
+									"type": "keyword"
+								},
+								"jobTitle": {
+									"type": "keyword"
+								},
+								"lastName": {
+									"type": "keyword"
+								},
+								"male": {
+									"type": "keyword"
+								},
+								"middleName": {
+									"type": "keyword"
+								},
+								"modifiedDate": {
+									"type": "keyword"
+								},
+								"mvccVersion": {
+									"type": "keyword"
+								},
+								"parentContactId": {
+									"type": "keyword"
+								},
+								"prefixId": {
+									"type": "keyword"
+								},
+								"skypeSn": {
+									"type": "keyword"
+								},
+								"smsSn": {
+									"type": "keyword"
+								},
+								"suffixId": {
+									"type": "keyword"
+								},
+								"twitterSn": {
+									"type": "keyword"
+								},
+								"userId": {
+									"type": "keyword"
+								},
+								"userName": {
+									"type": "keyword"
+								}
+							},
+							"type": "object"
 						},
 						"contactId": {
 							"type": "keyword"
@@ -35,41 +118,49 @@
 						"createDate": {
 							"type": "keyword"
 						},
+						"defaultUser": {
+							"type": "keyword"
+						},
 						"emailAddress": {
 							"type": "keyword"
 						},
-						"employeeNumber": {
+						"emailAddressVerified": {
 							"type": "keyword"
 						},
-						"employeeStatusId": {
+						"expando": {
+							"type": "object"
+						},
+						"externalReferenceCode": {
 							"type": "keyword"
 						},
-						"facebookSn": {
+						"facebookId": {
 							"type": "keyword"
 						},
 						"firstName": {
+							"normalizer": "case_insensitive_sort",
 							"type": "keyword"
 						},
-						"gender": {
+						"googleUserId": {
 							"type": "keyword"
 						},
-						"hoursOfOperation": {
-							"type": "keyword"
-						},
-						"jabberSn": {
-							"type": "keyword"
-						},
-						"jobClass": {
+						"greeting": {
 							"type": "keyword"
 						},
 						"jobTitle": {
 							"type": "keyword"
 						},
-						"lastName": {
+						"languageId": {
 							"type": "keyword"
 						},
-						"male": {
+						"lastName": {
+							"normalizer": "case_insensitive_sort",
 							"type": "keyword"
+						},
+						"ldapServerId": {
+							"type": "keyword"
+						},
+						"memberships": {
+							"type": "object"
 						},
 						"middleName": {
 							"type": "keyword"
@@ -77,116 +168,34 @@
 						"modifiedDate": {
 							"type": "keyword"
 						},
-						"mvccVersion": {
+						"openId": {
 							"type": "keyword"
 						},
-						"parentContactId": {
+						"portraitId": {
 							"type": "keyword"
 						},
-						"prefixId": {
+						"screenName": {
 							"type": "keyword"
 						},
-						"skypeSn": {
+						"status": {
 							"type": "keyword"
 						},
-						"smsSn": {
-							"type": "keyword"
-						},
-						"suffixId": {
-							"type": "keyword"
-						},
-						"twitterSn": {
+						"timeZoneId": {
 							"type": "keyword"
 						},
 						"userId": {
 							"type": "keyword"
 						},
-						"userName": {
+						"uuid": {
 							"type": "keyword"
 						}
-					}
-				},
-				"contactId": {
-					"type": "keyword"
-				},
-				"createDate": {
-					"type": "keyword"
-				},
-				"defaultUser": {
-					"type": "keyword"
-				},
-				"emailAddress": {
-					"type": "keyword"
-				},
-				"emailAddressVerified": {
-					"type": "keyword"
-				},
-				"expando": {
+					},
 					"type": "object"
-				},
-				"externalReferenceCode": {
-					"type": "keyword"
-				},
-				"facebookId": {
-					"type": "keyword"
-				},
-				"firstName": {
-					"normalizer": "case_insensitive_sort",
-					"type": "keyword"
-				},
-				"googleUserId": {
-					"type": "keyword"
-				},
-				"greeting": {
-					"type": "keyword"
 				},
 				"id": {
 					"type": "keyword"
 				},
-				"jobTitle": {
-					"type": "keyword"
-				},
-				"languageId": {
-					"type": "keyword"
-				},
-				"lastName": {
-					"normalizer": "case_insensitive_sort",
-					"type": "keyword"
-				},
-				"ldapServerId": {
-					"type": "keyword"
-				},
-				"memberships": {
-					"type": "object"
-				},
-				"middleName": {
-					"type": "keyword"
-				},
-				"modifiedDate": {
-					"type": "keyword"
-				},
-				"openId": {
-					"type": "keyword"
-				},
-				"osbAsahDataSourceId": {
-					"type": "keyword"
-				},
-				"portraitId": {
-					"type": "keyword"
-				},
-				"screenName": {
-					"type": "keyword"
-				},
-				"status": {
-					"type": "keyword"
-				},
-				"timeZoneId": {
-					"type": "keyword"
-				},
-				"userId": {
-					"type": "keyword"
-				},
-				"uuid": {
+				"type": {
 					"type": "keyword"
 				}
 			}

@@ -3,20 +3,28 @@
 		"teams": {
 			"date_detection": false,
 			"properties": {
-				"groupId": {
+				"dataSourceId": {
 					"type": "keyword"
+				},
+				"fields": {
+					"properties": {
+						"groupId": {
+							"type": "keyword"
+						},
+						"name": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"teamId": {
+							"type": "keyword"
+						}
+					},
+					"type": "object"
 				},
 				"id": {
 					"type": "keyword"
 				},
-				"name": {
-					"normalizer": "case_insensitive_sort",
-					"type": "keyword"
-				},
-				"osbAsahDataSourceId": {
-					"type": "keyword"
-				},
-				"teamId": {
+				"type": {
 					"type": "keyword"
 				}
 			}

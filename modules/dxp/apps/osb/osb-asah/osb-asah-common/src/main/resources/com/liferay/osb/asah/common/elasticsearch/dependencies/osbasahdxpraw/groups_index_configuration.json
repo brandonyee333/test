@@ -3,83 +3,91 @@
 		"groups": {
 			"date_detection": false,
 			"properties": {
-				"active": {
+				"dataSourceId": {
 					"type": "keyword"
 				},
-				"classNameId": {
-					"type": "keyword"
-				},
-				"classPK": {
-					"type": "keyword"
-				},
-				"companyId": {
-					"type": "keyword"
-				},
-				"creatorUserId": {
-					"type": "keyword"
-				},
-				"description": {
-					"type": "keyword"
-				},
-				"descriptionCurrentValue": {
-					"type": "keyword"
-				},
-				"descriptiveName": {
-					"type": "keyword"
-				},
-				"friendlyURL": {
-					"type": "keyword"
-				},
-				"groupId": {
-					"type": "keyword"
-				},
-				"groupKey": {
-					"type": "keyword"
+				"fields": {
+					"properties": {
+						"active": {
+							"type": "keyword"
+						},
+						"classNameId": {
+							"type": "keyword"
+						},
+						"classPK": {
+							"type": "keyword"
+						},
+						"companyId": {
+							"type": "keyword"
+						},
+						"creatorUserId": {
+							"type": "keyword"
+						},
+						"description": {
+							"type": "keyword"
+						},
+						"descriptionCurrentValue": {
+							"type": "keyword"
+						},
+						"descriptiveName": {
+							"type": "keyword"
+						},
+						"friendlyURL": {
+							"type": "keyword"
+						},
+						"groupId": {
+							"type": "keyword"
+						},
+						"groupKey": {
+							"type": "keyword"
+						},
+						"inheritContent": {
+							"type": "keyword"
+						},
+						"liveGroupId": {
+							"type": "keyword"
+						},
+						"manualMembership": {
+							"type": "keyword"
+						},
+						"membershipRestriction": {
+							"type": "keyword"
+						},
+						"mvccVersion": {
+							"type": "keyword"
+						},
+						"name": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"nameCurrentValue": {
+							"type": "keyword"
+						},
+						"parentGroupId": {
+							"type": "keyword"
+						},
+						"remoteStagingGroupCount": {
+							"type": "keyword"
+						},
+						"site": {
+							"type": "keyword"
+						},
+						"treePath": {
+							"type": "keyword"
+						},
+						"type": {
+							"type": "keyword"
+						},
+						"uuid": {
+							"type": "keyword"
+						}
+					},
+					"type": "object"
 				},
 				"id": {
 					"type": "keyword"
 				},
-				"inheritContent": {
-					"type": "keyword"
-				},
-				"liveGroupId": {
-					"type": "keyword"
-				},
-				"manualMembership": {
-					"type": "keyword"
-				},
-				"membershipRestriction": {
-					"type": "keyword"
-				},
-				"mvccVersion": {
-					"type": "keyword"
-				},
-				"name": {
-					"normalizer": "case_insensitive_sort",
-					"type": "keyword"
-				},
-				"nameCurrentValue": {
-					"type": "keyword"
-				},
-				"osbAsahDataSourceId": {
-					"type": "keyword"
-				},
-				"parentGroupId": {
-					"type": "keyword"
-				},
-				"remoteStagingGroupCount": {
-					"type": "keyword"
-				},
-				"site": {
-					"type": "keyword"
-				},
-				"treePath": {
-					"type": "keyword"
-				},
 				"type": {
-					"type": "keyword"
-				},
-				"uuid": {
 					"type": "keyword"
 				}
 			}

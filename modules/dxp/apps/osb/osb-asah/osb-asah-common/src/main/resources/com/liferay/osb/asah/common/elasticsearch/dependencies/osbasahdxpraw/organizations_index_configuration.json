@@ -3,74 +3,82 @@
 		"organizations": {
 			"date_detection": false,
 			"properties": {
-				"comments": {
+				"dataSourceId": {
 					"type": "keyword"
 				},
-				"companyId": {
-					"type": "keyword"
-				},
-				"countryId": {
-					"type": "keyword"
-				},
-				"createDate": {
-					"type": "keyword"
-				},
-				"externalReferenceCode": {
-					"type": "keyword"
+				"fields": {
+					"properties": {
+						"comments": {
+							"type": "keyword"
+						},
+						"companyId": {
+							"type": "keyword"
+						},
+						"countryId": {
+							"type": "keyword"
+						},
+						"createDate": {
+							"type": "keyword"
+						},
+						"externalReferenceCode": {
+							"type": "keyword"
+						},
+						"logoId": {
+							"type": "keyword"
+						},
+						"modifiedDate": {
+							"type": "keyword"
+						},
+						"mvccVersion": {
+							"type": "keyword"
+						},
+						"name": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"nameTreePath": {
+							"type": "keyword"
+						},
+						"organizationId": {
+							"type": "keyword"
+						},
+						"parentName": {
+							"type": "keyword"
+						},
+						"parentOrganizationId": {
+							"type": "keyword"
+						},
+						"recursable": {
+							"type": "keyword"
+						},
+						"regionId": {
+							"type": "keyword"
+						},
+						"statusId": {
+							"type": "keyword"
+						},
+						"treePath": {
+							"type": "keyword"
+						},
+						"type": {
+							"type": "keyword"
+						},
+						"userId": {
+							"type": "keyword"
+						},
+						"userName": {
+							"type": "keyword"
+						},
+						"uuid": {
+							"type": "keyword"
+						}
+					},
+					"type": "object"
 				},
 				"id": {
 					"type": "keyword"
 				},
-				"logoId": {
-					"type": "keyword"
-				},
-				"modifiedDate": {
-					"type": "keyword"
-				},
-				"mvccVersion": {
-					"type": "keyword"
-				},
-				"name": {
-					"normalizer": "case_insensitive_sort",
-					"type": "keyword"
-				},
-				"nameTreePath": {
-					"type": "keyword"
-				},
-				"organizationId": {
-					"type": "keyword"
-				},
-				"osbAsahDataSourceId": {
-					"type": "keyword"
-				},
-				"parentName": {
-					"type": "keyword"
-				},
-				"parentOrganizationId": {
-					"type": "keyword"
-				},
-				"recursable": {
-					"type": "keyword"
-				},
-				"regionId": {
-					"type": "keyword"
-				},
-				"statusId": {
-					"type": "keyword"
-				},
-				"treePath": {
-					"type": "keyword"
-				},
 				"type": {
-					"type": "keyword"
-				},
-				"userId": {
-					"type": "keyword"
-				},
-				"userName": {
-					"type": "keyword"
-				},
-				"uuid": {
 					"type": "keyword"
 				}
 			}
