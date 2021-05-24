@@ -74,8 +74,8 @@ public class IndividualSegmentsRestControllerTest
 				"1", "email", "email", "Text"));
 		JSONObject groupJSONObject = _dxpRawElasticsearchInvoker.add(
 			"groups", JSONUtil.put("name", "groupName"));
-		JSONObject organizationJSONObject = _faroInfoElasticsearchInvoker.add(
-			"organizations", FaroInfoTestUtil.buildOrganizationJSONObject("1"));
+		JSONObject organizationJSONObject = _dxpRawElasticsearchInvoker.add(
+			"organizations", JSONUtil.put("name", "organizationName"));
 		JSONObject roleJSONObject = _dxpRawElasticsearchInvoker.add(
 			"roles", JSONUtil.put("name", "roleName"));
 		JSONObject teamJSONObject = _dxpRawElasticsearchInvoker.add(

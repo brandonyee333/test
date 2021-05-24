@@ -23,13 +23,14 @@ import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.backend.rest.response.embedded.MembershipChangesEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -397,8 +398,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	protected SegmentDog segmentDog;
 
 	private void _addReferencedObject(
-		String collectionName, ElasticsearchInvoker elasticsearchInvoker,
-		Set<Long> referencedIds, JSONObject referencedObjectsJSONObject) {
+		String collectionName, Set<Long> referencedIds,
+		JSONObject referencedObjectsJSONObject) {
 
 		if ((referencedIds == null) || referencedIds.isEmpty()) {
 			referencedObjectsJSONObject.put(collectionName, new JSONArray());
@@ -406,12 +407,37 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			return;
 		}
 
-		referencedObjectsJSONObject.put(
-			collectionName,
-			elasticsearchInvoker.get(
+		JSONArray jsonArray = null;
+
+		if (DXPEntity.Type.ofCollectionName(collectionName) != null) {
+			Stream<Long> stream = referencedIds.stream();
+
+			List<? extends DXPEntity> dxpEntities =
+				_dxpEntityDog.findByAfterAndFieldsAndType(
+					null,
+					Collections.singletonMap(
+						"id",
+						stream.map(
+							String::valueOf
+						).collect(
+							Collectors.toList()
+						)),
+					0, DXPEntity.Type.ofCollectionName(collectionName));
+
+			jsonArray = new JSONArray(
+				ListUtil.map(
+					dxpEntities,
+					dxpEntity -> _objectMapper.convertValue(
+						dxpEntity, JSONObject.class)));
+		}
+		else {
+			jsonArray = faroInfoElasticsearchInvoker.get(
 				collectionName,
 				QueryBuilders.termsQuery(
-					"id", ListUtil.map(referencedIds, String::valueOf))));
+					"id", ListUtil.map(referencedIds, String::valueOf)));
+		}
+
+		referencedObjectsJSONObject.put(collectionName, jsonArray);
 	}
 
 	private QueryBuilder _getIndividualsQueryBuilder(
@@ -496,23 +522,18 @@ public class IndividualSegmentsRestController extends BaseRestController {
 					fieldMapping, JSONObject.class)));
 
 		_addReferencedObject(
-			"groups", dxpRawElasticsearchInvoker,
-			segment.getReferencedGroupIds(), jsonObject);
+			"groups", segment.getReferencedGroupIds(), jsonObject);
 		_addReferencedObject(
-			"organizations", faroInfoElasticsearchInvoker,
-			segment.getReferencedOrganizationIds(), jsonObject);
-		_addReferencedObject(
-			"roles", dxpRawElasticsearchInvoker, segment.getReferencedRoleIds(),
+			"organizations", segment.getReferencedOrganizationIds(),
 			jsonObject);
 		_addReferencedObject(
-			"teams", dxpRawElasticsearchInvoker, segment.getReferencedTeamIds(),
-			jsonObject);
+			"roles", segment.getReferencedRoleIds(), jsonObject);
 		_addReferencedObject(
-			"user-groups", dxpRawElasticsearchInvoker,
-			segment.getReferencedUserGroupIds(), jsonObject);
+			"teams", segment.getReferencedTeamIds(), jsonObject);
 		_addReferencedObject(
-			"users", dxpRawElasticsearchInvoker, segment.getReferencedUserIds(),
-			jsonObject);
+			"user-groups", segment.getReferencedUserGroupIds(), jsonObject);
+		_addReferencedObject(
+			"users", segment.getReferencedUserIds(), jsonObject);
 
 		return jsonObject;
 	}
@@ -568,11 +589,17 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	private AssetDog _assetDog;
 
 	@Autowired
+	private DXPEntityDog _dxpEntityDog;
+
+	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
 
 	@Autowired
 	private FieldMappingDog _fieldMappingDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;
