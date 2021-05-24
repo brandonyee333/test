@@ -62,7 +62,7 @@ public class SearchQueryContext {
 		return _experienceId;
 	}
 
-	public String getExperimentId() {
+	public Long getExperimentId() {
 		return _experimentId;
 	}
 
@@ -158,7 +158,7 @@ public class SearchQueryContext {
 		_experienceId = experienceId;
 	}
 
-	public void setExperimentId(String experimentId) {
+	public void setExperimentId(Long experimentId) {
 		_experimentId = experimentId;
 	}
 
@@ -217,7 +217,7 @@ public class SearchQueryContext {
 	private String _channelId;
 	private String _dataSourceId;
 	private String _experienceId;
-	private String _experimentId;
+	private Long _experimentId;
 	private Geolocation _geolocation = Geolocation.any();
 	private Boolean _includeActiveSessions = false;
 	private Boolean _includePrevious = true;

@@ -73,7 +73,7 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 		Mockito.verify(
 			_dxpClient
 		).updateDXPExperimentStatus(
-			Mockito.eq(1L), Mockito.eq("1"),
+			Mockito.eq(1L), Mockito.eq(1L),
 			Mockito.eq(ExperimentStatus.FINISHED_NO_WINNER),
 			Mockito.isNull(String.class)
 		);
@@ -100,7 +100,7 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 		Mockito.verify(
 			_dxpClient
 		).updateDXPExperimentStatus(
-			Mockito.eq(1L), Mockito.eq("1"),
+			Mockito.eq(1L), Mockito.eq(1L),
 			Mockito.eq(ExperimentStatus.FINISHED_WINNER), Mockito.eq("10")
 		);
 	}
@@ -131,7 +131,7 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 		Mockito.verify(
 			_dxpClient
 		).updateDXPExperimentStatus(
-			Mockito.eq(1L), Mockito.eq("1"),
+			Mockito.eq(1L), Mockito.eq(1L),
 			Mockito.eq(ExperimentStatus.FINISHED_WINNER), Mockito.eq("20")
 		);
 	}

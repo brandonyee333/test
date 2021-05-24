@@ -48,7 +48,7 @@ public class DXPClient extends BaseDXPClient {
 
 	public JSONObject runDXPExperiment(
 		Double confidenceLevel, Long dataSourceId,
-		List<DXPVariantSettings> dxpVariantSettingsList, String experimentId) {
+		List<DXPVariantSettings> dxpVariantSettingsList, Long experimentId) {
 
 		String path = String.format(
 			"/o/segments-asah/v1.0/experiments/%s/run", experimentId);
@@ -77,8 +77,8 @@ public class DXPClient extends BaseDXPClient {
 	}
 
 	public JSONObject updateDXPExperimentStatus(
-		Long dataSourceId, String experimentId,
-		ExperimentStatus experimentStatus, String dxpVariantId) {
+		Long dataSourceId, Long experimentId, ExperimentStatus experimentStatus,
+		String dxpVariantId) {
 
 		String path = String.format(
 			"/o/segments-asah/v1.0/experiments/%s/status", experimentId);

@@ -80,13 +80,13 @@ public class ExperimentDataDog {
 	}
 
 	public ExperimentDataPoint<Double> fetchDichotomousDataPoint(
-		String dataSourceId, String dxpExperienceId, String experimentId,
+		Long dataSourceId, String dxpExperienceId, Long experimentId,
 		MetricType metricType, String pageURL, TimeRange timeRange,
 		String variantId) {
 
 		SearchQueryContext searchQueryContext = new SearchQueryContext() {
 			{
-				setDataSourceId(dataSourceId);
+				setDataSourceId(String.valueOf(dataSourceId));
 				setExperienceId(dxpExperienceId);
 				setExperimentId(experimentId);
 				setTimeRange(timeRange);

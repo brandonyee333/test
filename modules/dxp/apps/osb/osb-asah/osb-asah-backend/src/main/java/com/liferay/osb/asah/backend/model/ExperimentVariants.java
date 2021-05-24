@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.common.entity.ExperimentVariant;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -32,23 +32,23 @@ public class ExperimentVariants {
 	public ExperimentVariants() {
 	}
 
-	public ExperimentVariants(List<ExperimentVariant> experimentVariants) {
+	public ExperimentVariants(Set<ExperimentVariant> experimentVariants) {
 		_experimentVariants = experimentVariants;
 	}
 
 	@JsonProperty("dxpVariants")
 	@NotEmpty
 	@Valid
-	public List<ExperimentVariant> getExperimentVariants() {
+	public Set<ExperimentVariant> getExperimentVariants() {
 		return _experimentVariants;
 	}
 
 	public void setExperimentVariants(
-		List<ExperimentVariant> experimentVariants) {
+		Set<ExperimentVariant> experimentVariants) {
 
 		_experimentVariants = experimentVariants;
 	}
 
-	private List<ExperimentVariant> _experimentVariants;
+	private Set<ExperimentVariant> _experimentVariants;
 
 }

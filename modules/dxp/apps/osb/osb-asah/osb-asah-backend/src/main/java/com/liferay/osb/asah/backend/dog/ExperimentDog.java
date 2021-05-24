@@ -88,7 +88,7 @@ import org.springframework.stereotype.Component;
 public class ExperimentDog {
 
 	public Experiment addExperiment(Experiment experiment) {
-		experiment.setChannelId(String.valueOf(_getChannelId(experiment)));
+		experiment.setChannelId(_getChannelId(experiment));
 		experiment.setId(null);
 
 		if (experiment.getModifiedDate() == null) {
@@ -99,17 +99,17 @@ public class ExperimentDog {
 			"experiments",
 			_objectMapper.convertValue(experiment, JSONObject.class));
 
-		experiment.setId(experimentJSONObject.optString("id"));
+		experiment.setId(Long.valueOf(experimentJSONObject.optString("id")));
 
 		return experiment;
 	}
 
-	public ExperimentMetric calculateExperimentMetric(String experimentId) {
+	public ExperimentMetric calculateExperimentMetric(Long experimentId) {
 		return _experimentMetricDog.calculateExperimentMetric(
 			getExperiment(experimentId));
 	}
 
-	public boolean deleteExperiment(String experimentId, boolean updateDXP) {
+	public boolean deleteExperiment(Long experimentId, boolean updateDXP) {
 		Experiment experiment = getExperiment(experimentId);
 
 		ExperimentStatus experimentStatus = experiment.getExperimentStatus();
@@ -124,14 +124,14 @@ public class ExperimentDog {
 
 		if (updateDXP) {
 			_dxpClient.deleteDXPExperiment(
-				Long.valueOf(experiment.getDataSourceId()), experiment.getId());
+				experiment.getDataSourceId(), experiment.getId());
 		}
 
 		return _faroInfoElasticsearchInvoker.delete(
-			"experiments", experimentId);
+			"experiments", String.valueOf(experimentId));
 	}
 
-	public Experiment fetchExperiment(String experimentId) {
+	public Experiment fetchExperiment(Long experimentId) {
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"experiments", _faroInfoElasticsearchInvoker,
 			_buildExperimentSearchSourceBuilder(experimentId));
@@ -161,7 +161,7 @@ public class ExperimentDog {
 		}
 	}
 
-	public Experiment getExperiment(String experimentId) {
+	public Experiment getExperiment(Long experimentId) {
 		Experiment experiment = fetchExperiment(experimentId);
 
 		if (experiment == null) {
@@ -175,7 +175,7 @@ public class ExperimentDog {
 
 	public Long getExperimentEstimatedDaysDuration(
 		double confidenceLevel, List<DXPVariantSettings> dxpVariantsSettings,
-		String experimentId) {
+		Long experimentId) {
 
 		if ((confidenceLevel < 80) || (confidenceLevel > 99)) {
 			throw new OSBAsahException(
@@ -191,7 +191,7 @@ public class ExperimentDog {
 			dxpVariantsSettings, experiment);
 	}
 
-	public ExperimentMetric getExperimentMetric(String experimentId) {
+	public ExperimentMetric getExperimentMetric(Long experimentId) {
 		List<ExperimentMetric> experimentMetrics = getExperimentMetrics(
 			experimentId);
 
@@ -202,7 +202,7 @@ public class ExperimentDog {
 		return experimentMetrics.get(experimentMetrics.size() - 1);
 	}
 
-	public List<ExperimentMetric> getExperimentMetrics(String experimentId) {
+	public List<ExperimentMetric> getExperimentMetrics(Long experimentId) {
 		Experiment experiment = getExperiment(experimentId);
 
 		if (experiment.getExperimentStatus() == ExperimentStatus.DRAFT) {
@@ -236,7 +236,7 @@ public class ExperimentDog {
 	}
 
 	public List<HistogramMetric> getExperimentSessionHistogramMetrics(
-		String experimentId, String variantId) {
+		Long experimentId, String variantId) {
 
 		Experiment experiment = fetchExperiment(experimentId);
 
@@ -262,7 +262,7 @@ public class ExperimentDog {
 		return histogramMetricBag.getMetrics();
 	}
 
-	public Long getExperimentSessions(String experimentId) {
+	public Long getExperimentSessions(Long experimentId) {
 		Aggregations aggregations = _dataDog.queryAggregations(
 			"pages", _buildTotalSessionsSearchSourceBuilder(experimentId));
 
@@ -273,9 +273,7 @@ public class ExperimentDog {
 		return DogUtil.getCardinalityAsLong(aggregations.get("sessions_count"));
 	}
 
-	public Long getVariantUniqueVisitors(
-		String experimentId, String variantId) {
-
+	public Long getVariantUniqueVisitors(Long experimentId, String variantId) {
 		Aggregations aggregations = _dataDog.queryAggregations(
 			"pages",
 			_buildVariantUniqueVisitorsSearchSourceBuilder(
@@ -359,7 +357,7 @@ public class ExperimentDog {
 	}
 
 	private SearchSourceBuilder _buildExperimentMetricsSearchSourceBuilder(
-		String experimentId) {
+		Long experimentId) {
 
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
@@ -372,13 +370,14 @@ public class ExperimentDog {
 	}
 
 	private SearchSourceBuilder _buildExperimentSearchSourceBuilder(
-		String experimentId) {
+		Long experimentId) {
 
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
 
 		searchSourceBuilder.fetchSource(null, "metrics");
-		searchSourceBuilder.query(QueryBuilders.termQuery("id", experimentId));
+		searchSourceBuilder.query(
+			QueryBuilders.termQuery("id", String.valueOf(experimentId)));
 		searchSourceBuilder.size(1);
 
 		return searchSourceBuilder;
@@ -419,7 +418,7 @@ public class ExperimentDog {
 	}
 
 	private SearchSourceBuilder _buildTotalSessionsSearchSourceBuilder(
-		String experimentId) {
+		Long experimentId) {
 
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
@@ -441,7 +440,7 @@ public class ExperimentDog {
 	}
 
 	private SearchSourceBuilder _buildVariantUniqueVisitorsSearchSourceBuilder(
-		String experimentId, String variantId) {
+		Long experimentId, String variantId) {
 
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
@@ -466,7 +465,7 @@ public class ExperimentDog {
 		return searchSourceBuilder;
 	}
 
-	private ExperimentMetric _createEmptyExperimentMetric(String experimentId) {
+	private ExperimentMetric _createEmptyExperimentMetric(Long experimentId) {
 		ExperimentMetric experimentMetric = new ExperimentMetric();
 
 		Experiment experiment = getExperiment(experimentId);
@@ -486,9 +485,7 @@ public class ExperimentDog {
 		return experimentMetric;
 	}
 
-	private ExperimentMetricsBag _fetchExperimentMetricsBag(
-		String experimentId) {
-
+	private ExperimentMetricsBag _fetchExperimentMetricsBag(Long experimentId) {
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"experiments", _faroInfoElasticsearchInvoker,
 			_buildExperimentMetricsSearchSourceBuilder(experimentId));
@@ -519,12 +516,14 @@ public class ExperimentDog {
 	}
 
 	private Long _getChannelId(Experiment experiment) {
-		if (StringUtils.isNotEmpty(experiment.getChannelId())) {
-			return Long.valueOf(experiment.getChannelId());
+		Long channelId = experiment.getChannelId();
+
+		if (channelId != null) {
+			return channelId;
 		}
 
-		Long channelId = _dataSourceDog.getDefaultChannelId(
-			Long.valueOf(experiment.getDataSourceId()));
+		channelId = _dataSourceDog.getDefaultChannelId(
+			experiment.getDataSourceId());
 
 		if (channelId != null) {
 			return channelId;
@@ -657,7 +656,7 @@ public class ExperimentDog {
 			}
 
 			_dxpClient.updateDXPExperimentStatus(
-				Long.valueOf(experiment.getDataSourceId()), experiment.getId(),
+				experiment.getDataSourceId(), experiment.getId(),
 				experimentStatus, dxpVariantId);
 
 			return;
@@ -671,7 +670,7 @@ public class ExperimentDog {
 
 		_dxpClient.runDXPExperiment(
 			experimentSettings.getConfidenceLevel(),
-			Long.valueOf(experiment.getDataSourceId()),
+			experiment.getDataSourceId(),
 			experimentSettings.getDXPVariantsSettings(), experiment.getId());
 	}
 
