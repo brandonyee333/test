@@ -14,11 +14,17 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
+import com.liferay.osb.asah.backend.dto.DXPEntityDTO;
+import com.liferay.osb.asah.backend.dto.DXPOrganizationDTO;
+import com.liferay.osb.asah.backend.dto.DXPUserDTO;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.model.Organization;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.model.User;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.execution.ExecutionTypeInfo;
 
@@ -41,10 +47,10 @@ import org.springframework.stereotype.Component;
 @GraphQLTypeWiring(fieldName = "userGroups", typeName = "QueryType")
 @GraphQLTypeWiring(fieldName = "users", typeName = "QueryType")
 public class DXPEntityBagDataFetcher
-	implements DataFetcher<ResultBag<? extends DXPEntity>> {
+	implements DataFetcher<ResultBag<? extends DXPEntityDTO>> {
 
 	@Override
-	public ResultBag<? extends DXPEntity> get(
+	public ResultBag<? extends DXPEntityDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
 		Page<? extends DXPEntity> dxpEntitiesPage =
@@ -58,7 +64,19 @@ public class DXPEntityBagDataFetcher
 					_getCollectionName(dataFetchingEnvironment)));
 
 		return new ResultBag<>(
-			dxpEntitiesPage.getContent(), dxpEntitiesPage.getTotalElements());
+			ListUtil.map(
+				dxpEntitiesPage.toList(),
+				dxpEntity -> {
+					if (dxpEntity instanceof User) {
+						return new DXPUserDTO((User)dxpEntity);
+					}
+					else if (dxpEntity instanceof Organization) {
+						return new DXPOrganizationDTO((Organization)dxpEntity);
+					}
+
+					return new DXPEntityDTO(dxpEntity);
+				}),
+			dxpEntitiesPage.getTotalElements());
 	}
 
 	private String _getCollectionName(

@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.configuration;
 
+import com.liferay.osb.asah.backend.dto.DXPOrganizationDTO;
+import com.liferay.osb.asah.backend.dto.DXPUserDTO;
 import com.liferay.osb.asah.backend.model.BlogMetric;
 import com.liferay.osb.asah.backend.model.DocumentLibraryMetric;
 import com.liferay.osb.asah.backend.model.FormMetric;
@@ -21,8 +23,6 @@ import com.liferay.osb.asah.backend.model.JournalMetric;
 import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.Organization;
-import com.liferay.osb.asah.common.model.User;
 
 import graphql.GraphQL;
 
@@ -119,11 +119,13 @@ public class GraphQLConfiguration {
 		return typeResolutionEnvironment -> {
 			GraphQLSchema graphQLSchema = typeResolutionEnvironment.getSchema();
 
-			if (typeResolutionEnvironment.getObject() instanceof Organization) {
+			if (typeResolutionEnvironment.getObject() instanceof
+					DXPOrganizationDTO) {
+
 				return (GraphQLObjectType)graphQLSchema.getType("Organization");
 			}
 
-			if (typeResolutionEnvironment.getObject() instanceof User) {
+			if (typeResolutionEnvironment.getObject() instanceof DXPUserDTO) {
 				return (GraphQLObjectType)graphQLSchema.getType("User");
 			}
 
