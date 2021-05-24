@@ -42,7 +42,7 @@ public class ExperimentDataFetcher implements DataFetcher<Experiment> {
 
 		context.put("experimentId", experimentId);
 
-		return _experimentDog.fetchExperiment(experimentId);
+		return _experimentDog.fetchExperiment(Long.valueOf(experimentId));
 	}
 
 	@Autowired

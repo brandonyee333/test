@@ -376,11 +376,12 @@ public class SearchQueryHelper {
 	}
 
 	private void _addExperimentIdFilter(
-		BoolQueryBuilder boolQueryBuilder, String experimentId) {
+		BoolQueryBuilder boolQueryBuilder, Long experimentId) {
 
 		if (experimentId != null) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("experimentId", experimentId));
+				QueryBuilders.termQuery(
+					"experimentId", String.valueOf(experimentId)));
 		}
 	}
 

@@ -46,7 +46,7 @@ public class ExperimentSessionHistogramMetricsDataFetcher
 		String experimentId = (String)context.get("experimentId");
 
 		return _experimentDog.getExperimentSessionHistogramMetrics(
-			experimentId,
+			Long.valueOf(experimentId),
 			_getDXPVariantId(dataFetchingEnvironment.getSource()));
 	}
 

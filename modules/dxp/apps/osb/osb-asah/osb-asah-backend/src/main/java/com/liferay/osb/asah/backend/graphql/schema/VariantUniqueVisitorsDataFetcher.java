@@ -43,7 +43,7 @@ public class VariantUniqueVisitorsDataFetcher implements DataFetcher<Long> {
 		String experimentId = (String)context.get("experimentId");
 
 		return _experimentDog.getVariantUniqueVisitors(
-			experimentId, experimentVariant.getDXPVariantId());
+			Long.valueOf(experimentId), experimentVariant.getDXPVariantId());
 	}
 
 	@Autowired

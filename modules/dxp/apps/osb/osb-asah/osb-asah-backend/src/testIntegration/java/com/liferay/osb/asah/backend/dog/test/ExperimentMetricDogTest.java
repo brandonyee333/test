@@ -54,7 +54,7 @@ public class ExperimentMetricDogTest {
 
 		ExperimentMetric experimentMetric =
 			_experimentMetricDog.calculateExperimentMetric(
-				_experimentDog.getExperiment("4"));
+				_experimentDog.getExperiment(4L));
 
 		Assert.assertEquals(25.42, experimentMetric.getCompletion(), 0.1D);
 
@@ -73,7 +73,7 @@ public class ExperimentMetricDogTest {
 
 		ExperimentMetric experimentMetric =
 			_experimentMetricDog.calculateExperimentMetric(
-				_experimentDog.getExperiment("4"));
+				_experimentDog.getExperiment(4L));
 
 		Assert.assertEquals(0D, experimentMetric.getCompletion(), 0D);
 
@@ -91,7 +91,7 @@ public class ExperimentMetricDogTest {
 
 		ExperimentMetric experimentMetric =
 			_experimentMetricDog.calculateExperimentMetric(
-				_experimentDog.getExperiment("4"));
+				_experimentDog.getExperiment(4L));
 
 		Assert.assertEquals(61.3, experimentMetric.getCompletion(), 0.1D);
 

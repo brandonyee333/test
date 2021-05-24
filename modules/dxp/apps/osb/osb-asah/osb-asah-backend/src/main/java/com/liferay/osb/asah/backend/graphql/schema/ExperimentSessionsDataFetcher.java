@@ -38,7 +38,7 @@ public class ExperimentSessionsDataFetcher implements DataFetcher<Long> {
 
 		String experimentId = (String)context.get("experimentId");
 
-		return _experimentDog.getExperimentSessions(experimentId);
+		return _experimentDog.getExperimentSessions(Long.valueOf(experimentId));
 	}
 
 	@Autowired

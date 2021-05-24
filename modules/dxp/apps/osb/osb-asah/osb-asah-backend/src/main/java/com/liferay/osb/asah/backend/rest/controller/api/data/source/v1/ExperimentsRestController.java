@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import javax.validation.Valid;
@@ -52,25 +53,25 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExperimentsRestController extends BaseRestController {
 
 	@DeleteMapping("/{id}")
-	public void deleteExperiment(@PathVariable String id) {
+	public void deleteExperiment(@PathVariable Long id) {
 		_experimentDog.deleteExperiment(id, false);
 	}
 
 	@GetMapping("/{id}/calculate-metrics")
 	public ExperimentMetric getCalculateExperimentMetric(
-		@PathVariable String id) {
+		@PathVariable Long id) {
 
 		return _experimentDog.calculateExperimentMetric(id);
 	}
 
 	@GetMapping("/{id}")
-	public Experiment getExperiment(@PathVariable String id) {
+	public Experiment getExperiment(@PathVariable Long id) {
 		return _experimentDog.getExperiment(id);
 	}
 
 	@PatchMapping("/{id}")
 	public void patchExperiment(
-		@PathVariable String id, @RequestBody @Valid Experiment experiment) {
+		@PathVariable Long id, @RequestBody @Valid Experiment experiment) {
 
 		experiment.setId(id);
 
@@ -92,7 +93,7 @@ public class ExperimentsRestController extends BaseRestController {
 
 	@PostMapping("/{id}/estimated-days-duration")
 	public Long postExperimentEstimatedDaysDuration(
-		@PathVariable String id,
+		@PathVariable Long id,
 		@RequestBody @Valid ExperimentSettings experimentSettings) {
 
 		List<DXPVariantSettings> dxpVariantsSettings =
@@ -112,7 +113,7 @@ public class ExperimentsRestController extends BaseRestController {
 
 	@PutMapping("/{id}/dxp-variants")
 	public void putExperimentVariants(
-		@PathVariable String id,
+		@PathVariable Long id,
 		@RequestBody @Valid ExperimentVariants experimentVariants) {
 
 		Experiment experiment = _experimentDog.getExperiment(id);
@@ -124,9 +125,7 @@ public class ExperimentsRestController extends BaseRestController {
 	}
 
 	@PutMapping("/{id}/goal")
-	public void putGoal(
-		@PathVariable String id, @RequestBody @Valid Goal goal) {
-
+	public void putGoal(@PathVariable Long id, @RequestBody @Valid Goal goal) {
 		Experiment experiment = _experimentDog.getExperiment(id);
 
 		experiment.setGoal(goal);
@@ -135,7 +134,7 @@ public class ExperimentsRestController extends BaseRestController {
 	}
 
 	private List<DXPVariantSettings> _createDXPVariantSettings(
-		List<ExperimentVariant> experimentVariants) {
+		Set<ExperimentVariant> experimentVariants) {
 
 		return ListUtil.map(
 			experimentVariants,

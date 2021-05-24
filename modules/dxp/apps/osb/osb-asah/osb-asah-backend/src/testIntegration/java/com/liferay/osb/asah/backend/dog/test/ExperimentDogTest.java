@@ -65,14 +65,14 @@ public class ExperimentDogTest {
 	)
 	@Test
 	public void testDeleteExperiment() {
-		Experiment experiment = _experimentDog.fetchExperiment("2");
+		Experiment experiment = _experimentDog.fetchExperiment(2L);
 
 		Assert.assertNotNull(experiment);
 
 		Assert.assertEquals(
 			ExperimentStatus.DRAFT, experiment.getExperimentStatus());
 
-		_experimentDog.deleteExperiment("2", true);
+		_experimentDog.deleteExperiment(2L, true);
 
 		Mockito.verify(
 			_dxpClient, Mockito.times(1)
@@ -80,7 +80,7 @@ public class ExperimentDogTest {
 			Mockito.eq(333962835564819755L), Mockito.eq(2L)
 		);
 
-		Assert.assertNull(_experimentDog.fetchExperiment("2"));
+		Assert.assertNull(_experimentDog.fetchExperiment(2L));
 	}
 
 	@ElasticsearchIndex(
@@ -89,14 +89,14 @@ public class ExperimentDogTest {
 	)
 	@Test(expected = OSBAsahException.class)
 	public void testDeleteExperimentNotAllowed() {
-		Experiment experiment = _experimentDog.fetchExperiment("1");
+		Experiment experiment = _experimentDog.fetchExperiment(1L);
 
 		Assert.assertNotNull(experiment);
 
 		Assert.assertEquals(
 			ExperimentStatus.RUNNING, experiment.getExperimentStatus());
 
-		_experimentDog.deleteExperiment("1", true);
+		_experimentDog.deleteExperiment(1L, true);
 	}
 
 	@ElasticsearchIndex(
@@ -105,7 +105,7 @@ public class ExperimentDogTest {
 	)
 	@Test
 	public void testExperimentNotFound() {
-		Experiment experiment = _experimentDog.fetchExperiment("0");
+		Experiment experiment = _experimentDog.fetchExperiment(0L);
 
 		Assert.assertNull(experiment);
 	}
@@ -116,7 +116,7 @@ public class ExperimentDogTest {
 	)
 	@Test(expected = OSBAsahException.class)
 	public void testExperimentNotFoundWhileEstimatingDaysDuration() {
-		_experimentDog.getExperimentEstimatedDaysDuration(95, null, "0");
+		_experimentDog.getExperimentEstimatedDaysDuration(95, null, 0L);
 	}
 
 	@ElasticsearchIndex(
@@ -126,7 +126,7 @@ public class ExperimentDogTest {
 	@Test
 	public void testGetEmptyExperimentMetricsRunningExperiment() {
 		ExperimentMetric experimentMetric = _experimentDog.getExperimentMetric(
-			"1");
+			1L);
 
 		Assert.assertEquals(2, experimentMetric.getElapsedDays(), 0.0);
 		Assert.assertNull(experimentMetric.getEstimatedDaysLeft());
@@ -154,7 +154,7 @@ public class ExperimentDogTest {
 	)
 	@Test
 	public void testGetExperiment() {
-		Experiment experiment = _experimentDog.getExperiment("2");
+		Experiment experiment = _experimentDog.getExperiment(2L);
 
 		Assert.assertEquals("Regular test", experiment.getName());
 	}
@@ -165,7 +165,7 @@ public class ExperimentDogTest {
 	)
 	@Test(expected = OSBAsahException.class)
 	public void testGetExperimentMetricsDraftExperiment() {
-		_experimentDog.getExperimentMetric("2");
+		_experimentDog.getExperimentMetric(2L);
 	}
 
 	@ElasticsearchIndex(
@@ -175,7 +175,7 @@ public class ExperimentDogTest {
 	@Test
 	public void testGetExperimentMetricsRunningExperiment() {
 		ExperimentMetric experimentMetric = _experimentDog.getExperimentMetric(
-			"3");
+			3L);
 
 		Assert.assertEquals(2, experimentMetric.getElapsedDays(), 0.0);
 		Assert.assertEquals(
@@ -226,7 +226,7 @@ public class ExperimentDogTest {
 	@Test
 	public void testGetExperimentSessionHistogramMetrics() {
 		List<HistogramMetric> experimentSessionHistogramMetrics =
-			_experimentDog.getExperimentSessionHistogramMetrics("1", null);
+			_experimentDog.getExperimentSessionHistogramMetrics(1L, null);
 
 		Assert.assertEquals(
 			experimentSessionHistogramMetrics.toString(), 3,
@@ -278,7 +278,7 @@ public class ExperimentDogTest {
 	@Test
 	public void testGetExperimentVariant1SessionHistogramMetrics() {
 		List<HistogramMetric> experimentSessionHistogramMetrics =
-			_experimentDog.getExperimentSessionHistogramMetrics("1", "1");
+			_experimentDog.getExperimentSessionHistogramMetrics(1L, "1");
 
 		Assert.assertEquals(
 			experimentSessionHistogramMetrics.toString(), 3,
@@ -309,7 +309,7 @@ public class ExperimentDogTest {
 	@Test
 	public void testGetExperimentVariant2SessionHistogramMetrics() {
 		List<HistogramMetric> experimentSessionHistogramMetrics =
-			_experimentDog.getExperimentSessionHistogramMetrics("1", "2");
+			_experimentDog.getExperimentSessionHistogramMetrics(1L, "2");
 
 		Assert.assertEquals(
 			experimentSessionHistogramMetrics.toString(), 3,
@@ -335,7 +335,7 @@ public class ExperimentDogTest {
 	)
 	@Test
 	public void testGetTotalSessions() {
-		Long totalSessions = _experimentDog.getExperimentSessions("1");
+		Long totalSessions = _experimentDog.getExperimentSessions(1L);
 
 		Assert.assertNotNull(totalSessions);
 		Assert.assertEquals(9L, totalSessions.longValue());
@@ -348,13 +348,13 @@ public class ExperimentDogTest {
 	@Test
 	public void testGetVariantUniqueVisitors() {
 		Long variant1UniqueVisitors = _experimentDog.getVariantUniqueVisitors(
-			"1", "1");
+			1L, "1");
 
 		Assert.assertNotNull(variant1UniqueVisitors);
 		Assert.assertEquals(3, variant1UniqueVisitors.longValue());
 
 		Long variant2UniqueVisitors = _experimentDog.getVariantUniqueVisitors(
-			"1", "2");
+			1L, "2");
 
 		Assert.assertNotNull(variant2UniqueVisitors);
 		Assert.assertEquals(3, variant2UniqueVisitors.longValue());

@@ -35,7 +35,8 @@ public class ExperimentHttpImpl implements ExperimentHttp {
 	@Override
 	public JSONObject getExperimentMetricsJSONObject(String id) {
 		return _objectMapper.convertValue(
-			_experimentsRestController.getCalculateExperimentMetric(id),
+			_experimentsRestController.getCalculateExperimentMetric(
+				Long.valueOf(id)),
 			JSONObject.class);
 	}
 

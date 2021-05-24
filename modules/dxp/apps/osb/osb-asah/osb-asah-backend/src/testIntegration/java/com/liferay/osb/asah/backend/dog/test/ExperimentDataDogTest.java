@@ -88,7 +88,7 @@ public class ExperimentDataDogTest {
 
 		_assertDataPoint(
 			_experimentDataDog.fetchDichotomousDataPoint(
-				"1", "1", "1", PageMetricType.BOUNCE_RATE,
+				1L, "1", 1L, PageMetricType.BOUNCE_RATE,
 				"http://192.168.108.90:8080/",
 				TimeRange.of(localDate.minusDays(2)), null),
 			9, 7D);
@@ -145,7 +145,7 @@ public class ExperimentDataDogTest {
 
 		_assertDataPoint(
 			_experimentDataDog.fetchDichotomousDataPoint(
-				"1", "1", "1", PageMetricType.BOUNCE_RATE,
+				1L, "1", 1L, PageMetricType.BOUNCE_RATE,
 				"http://192.168.108.90:8080/",
 				TimeRange.of(localDate.minusDays(2)), "1"),
 			5, 3D);

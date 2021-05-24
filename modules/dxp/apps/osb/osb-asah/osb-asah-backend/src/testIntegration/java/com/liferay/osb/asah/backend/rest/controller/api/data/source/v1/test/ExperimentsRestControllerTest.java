@@ -32,7 +32,8 @@ import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -57,9 +58,9 @@ public class ExperimentsRestControllerTest {
 	)
 	@Test
 	public void testDeleteExperiment() {
-		_experimentsRestController.deleteExperiment("1");
+		_experimentsRestController.deleteExperiment(1L);
 
-		Assert.assertNull(_experimentDog.fetchExperiment("1"));
+		Assert.assertNull(_experimentDog.fetchExperiment(1L));
 
 		Mockito.verifyZeroInteractions(_dxpClient);
 	}
@@ -75,10 +76,10 @@ public class ExperimentsRestControllerTest {
 		expectedExperiment.setGoal(new Goal(GoalMetric.BOUNCE_RATE, null));
 		expectedExperiment.setName("New Experiment Name");
 
-		_experimentsRestController.patchExperiment("1", expectedExperiment);
+		_experimentsRestController.patchExperiment(1L, expectedExperiment);
 
 		Experiment actualExperiment = _experimentsRestController.getExperiment(
-			"1");
+			1L);
 
 		Assert.assertEquals(
 			expectedExperiment.getGoal(), actualExperiment.getGoal());
@@ -98,7 +99,7 @@ public class ExperimentsRestControllerTest {
 	public void testPostExperiment() {
 		Experiment expectedExperiment = new Experiment();
 
-		expectedExperiment.setDataSourceId("331238757269547423");
+		expectedExperiment.setDataSourceId(331238757269547423L);
 		expectedExperiment.setDXPExperienceId("1");
 		expectedExperiment.setDXPExperienceName("Experience Name");
 		expectedExperiment.setDXPSegmentId("123");
@@ -108,7 +109,8 @@ public class ExperimentsRestControllerTest {
 		Experiment actualExperiment = _experimentsRestController.postExperiment(
 			expectedExperiment);
 
-		Assert.assertEquals("12345", actualExperiment.getChannelId());
+		Assert.assertEquals(
+			Long.valueOf(12345), actualExperiment.getChannelId());
 
 		Assert.assertNotNull(expectedExperiment.getId());
 		Assert.assertEquals(
@@ -140,7 +142,7 @@ public class ExperimentsRestControllerTest {
 			});
 
 		_experimentsRestController.postExperimentEstimatedDaysDuration(
-			"1", experimentSettings);
+			1L, experimentSettings);
 	}
 
 	@ElasticsearchIndex(
@@ -149,8 +151,8 @@ public class ExperimentsRestControllerTest {
 	)
 	@Test
 	public void testPutDXPVariants() {
-		List<ExperimentVariant> expectedExperimentVariants =
-			new ArrayList<ExperimentVariant>() {
+		Set<ExperimentVariant> expectedExperimentVariants =
+			new HashSet<ExperimentVariant>() {
 				{
 					add(
 						_createExperimentVariant(
@@ -162,10 +164,10 @@ public class ExperimentsRestControllerTest {
 			};
 
 		_experimentsRestController.putExperimentVariants(
-			"1", new ExperimentVariants(expectedExperimentVariants));
+			1L, new ExperimentVariants(expectedExperimentVariants));
 
 		Experiment actualExperiment = _experimentsRestController.getExperiment(
-			"1");
+			1L);
 
 		Assert.assertEquals(
 			expectedExperimentVariants,
@@ -183,10 +185,10 @@ public class ExperimentsRestControllerTest {
 		expectedGoal.setGoalMetric(GoalMetric.BOUNCE_RATE);
 		expectedGoal.setTarget("");
 
-		_experimentsRestController.putGoal("1", expectedGoal);
+		_experimentsRestController.putGoal(1L, expectedGoal);
 
 		Experiment actualExperiment = _experimentsRestController.getExperiment(
-			"1");
+			1L);
 
 		Assert.assertEquals(expectedGoal, actualExperiment.getGoal());
 	}

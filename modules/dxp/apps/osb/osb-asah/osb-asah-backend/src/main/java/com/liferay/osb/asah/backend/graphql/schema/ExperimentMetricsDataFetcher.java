@@ -43,7 +43,7 @@ public class ExperimentMetricsDataFetcher
 
 		String experimentId = (String)context.get("experimentId");
 
-		return _experimentDog.getExperimentMetrics(experimentId);
+		return _experimentDog.getExperimentMetrics(Long.valueOf(experimentId));
 	}
 
 	@Autowired

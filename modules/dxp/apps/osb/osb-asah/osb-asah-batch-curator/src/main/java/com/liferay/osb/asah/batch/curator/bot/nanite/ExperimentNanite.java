@@ -260,8 +260,9 @@ public class ExperimentNanite extends BaseNanite {
 			experimentJSONObject.put("status", experimentStatus);
 
 			_dxpClient.updateDXPExperimentStatus(
-				experimentJSONObject.getLong("dataSourceId"), experimentId,
-				experimentStatus, winnerDXPVariantId);
+				experimentJSONObject.getLong("dataSourceId"),
+				Long.valueOf(experimentId), experimentStatus,
+				winnerDXPVariantId);
 		}
 
 		if (_log.isInfoEnabled()) {

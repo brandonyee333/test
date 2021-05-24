@@ -488,7 +488,7 @@ public class MetricDogTest {
 	public void testPagesExperimentFilter() {
 		PageMetric pageMetric = _metricDog.getAssetMetric(
 			_createSearchQuery(
-				null, AssetType.PAGE, "10", TimeRange.LAST_7_DAYS, null),
+				null, AssetType.PAGE, 10L, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
 				{
 					add(PageMetricType.VIEWS.getName());
@@ -659,7 +659,7 @@ public class MetricDogTest {
 	}
 
 	private SearchQueryContext _createSearchQuery(
-		String assetId, AssetType assetType, String experimentId,
+		String assetId, AssetType assetType, Long experimentId,
 		TimeRange timeRange, String variantId) {
 
 		return new SearchQueryContext(assetId, assetType) {
