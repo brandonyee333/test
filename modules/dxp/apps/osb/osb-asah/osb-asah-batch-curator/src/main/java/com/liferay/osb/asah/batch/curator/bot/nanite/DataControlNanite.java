@@ -16,14 +16,18 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DXPEntityDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.RawDataExporter;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.CSVIndividualDog;
+import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.http.EmailHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
@@ -166,8 +170,9 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private void _deleteData(String emailAddress) {
-		_dxpRawElasticsearchInvoker.delete(
-			"users", QueryBuilders.termQuery("emailAddress", emailAddress));
+		_dxpEntityDog.deleteByFieldNameEqualsAndType(
+			"fields.emailAddress", emailAddress, DXPEntity.Type.USER);
+
 		_salesforceRawElasticsearchInvoker.delete(
 			"individuals", QueryBuilders.termQuery("email", emailAddress));
 
@@ -231,9 +236,7 @@ public class DataControlNanite extends BaseNanite {
 		zipFileBuilder.addToZip(
 			"dxp_users.json",
 			zipOutputStream -> _writeToZip(
-				"users", _dxpRawElasticsearchInvoker,
-				QueryBuilders.termQuery("emailAddress", emailAddress),
-				zipOutputStream));
+				"users", "fields.emailAddress", emailAddress, zipOutputStream));
 		zipFileBuilder.addToZip(
 			"individuals.json",
 			zipOutputStream -> _writeToZip(
@@ -477,6 +480,18 @@ public class DataControlNanite extends BaseNanite {
 		dataExporter.export();
 	}
 
+	private void _writeToZip(
+			String collectionName, String fieldName, String fieldValue,
+			ZipOutputStream zipOutputStream)
+		throws Exception {
+
+		DataExporter dataExporter = new DXPEntityDataExporter(
+			collectionName, fieldName, fieldValue, _jsonFactory, _dxpEntityDog,
+			_objectMapper, zipOutputStream);
+
+		dataExporter.export();
+	}
+
 	private static final Log _log = LogFactory.getLog(DataControlNanite.class);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
@@ -485,8 +500,8 @@ public class DataControlNanite extends BaseNanite {
 	@Autowired
 	private CSVIndividualDog _csvIndividualDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
 	private EmailHttp _emailHttp;
@@ -499,6 +514,9 @@ public class DataControlNanite extends BaseNanite {
 			disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
 		}
 	};
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;

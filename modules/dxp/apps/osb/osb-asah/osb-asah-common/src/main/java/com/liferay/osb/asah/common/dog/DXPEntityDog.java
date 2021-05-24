@@ -49,8 +49,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class DXPEntityDog {
 
+	public void deleteByFieldNameEqualsAndType(
+		String fieldName, String fieldValue, DXPEntity.Type type) {
+
+		_dxpEntityRepository.deleteByFieldNameEqualsAndType(
+			fieldName, fieldValue, type);
+	}
+
 	public void deleteByType(DXPEntity.Type type) {
 		_dxpEntityRepository.deleteByType(type);
+	}
+
+	public List<? extends DXPEntity> findByFieldsAndType(
+		Long after, Map<String, Object> fields, int size, DXPEntity.Type type) {
+
+		return _dxpEntityRepository.findByFieldsAndType(
+			after, fields, size, type);
 	}
 
 	public List<? extends DXPEntity> getDXPEntities(
