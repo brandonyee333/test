@@ -25,9 +25,6 @@ public abstract class BaseNaniteTestCase {
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	protected ElasticsearchInvoker cerebroInfoElasticsearchInvoker;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	protected ElasticsearchInvoker dxpRawElasticsearchInvoker;
-
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
 

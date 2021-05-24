@@ -1281,9 +1281,6 @@ public class DataSourcesRestControllerTest {
 	@Autowired
 	private DataSourcesRestController _dataSourcesRestController;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
-
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
