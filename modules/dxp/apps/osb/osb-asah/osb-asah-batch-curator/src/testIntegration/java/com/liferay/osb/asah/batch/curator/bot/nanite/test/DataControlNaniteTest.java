@@ -17,7 +17,9 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DataControlNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
+import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -27,6 +29,9 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -127,11 +132,15 @@ public class DataControlNaniteTest extends BaseNaniteTestCase {
 			"jane.doe@liferay.com",
 			suppressionJSONObject.getString("emailAddress"));
 
-		Assert.assertNull(
-			_dxpRawElasticsearchInvoker.fetch(
-				"users",
-				QueryBuilders.termQuery(
-					"emailAddress", "john.doe@liferay.com")));
+		List<DXPEntity> dxpEntities =
+			_dxpEntityRepository.findByAfterAndFieldsAndType(
+				null,
+				Collections.singletonMap(
+					"fields.emailAddress", "john.doe@liferay.com"),
+				0, DXPEntity.Type.USER);
+
+		Assert.assertTrue(dxpEntities.isEmpty());
+
 		Assert.assertNull(
 			faroInfoElasticsearchInvoker.fetch(
 				"individuals",
@@ -155,8 +164,8 @@ public class DataControlNaniteTest extends BaseNaniteTestCase {
 	@Autowired
 	private DataControlNanite _dataControlNanite;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+	@Autowired
+	private DXPEntityRepository _dxpEntityRepository;
 
 	private Path _exportPath;
 

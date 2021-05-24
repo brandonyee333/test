@@ -20,10 +20,12 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNan
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
@@ -464,15 +466,16 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 			"data-sources",
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
-		JSONObject roleJSONObject = dxpRawElasticsearchInvoker.add(
-			"roles",
-			JSONUtil.put(
-				"name", "Administrator"
-			).put(
-				"osbAsahDataSourceId", dataSourceJSONObject.getString("id")
-			).put(
-				"roleId", "33120"
-			));
+		DXPEntity dxpEntity = new DXPEntity();
+
+		dxpEntity.setDataSourceId(
+			Long.valueOf(dataSourceJSONObject.getString("id")));
+		dxpEntity.setName("Administrator");
+		dxpEntity.setFieldsJSONObject(JSONUtil.put("roleId", "33120"));
+
+		JSONObject roleJSONObject = _objectMapper.convertValue(
+			_dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.ROLE),
+			JSONObject.class);
 
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.add(
 			"individuals",
@@ -652,6 +655,9 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
+
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;

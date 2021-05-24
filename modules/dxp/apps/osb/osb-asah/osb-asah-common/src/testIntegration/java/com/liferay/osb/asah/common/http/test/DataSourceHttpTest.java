@@ -17,11 +17,13 @@ package com.liferay.osb.asah.common.http.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -794,8 +796,10 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 					FaroInfoTestUtil.buildPageAssetJSONObject(dataSourceId)),
 				"pageViewed", new String[0]));
 
-		_dxpRawElasticsearchInvoker.add(
-			"users",
+		DXPEntity dxpEntity = new DXPEntity();
+
+		dxpEntity.setDataSourceId(Long.valueOf(dataSourceId));
+		dxpEntity.setFieldsJSONObject(
 			JSONUtil.put(
 				"contact",
 				JSONUtil.put(
@@ -812,12 +816,12 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"modifiedDate", System.currentTimeMillis()
 			).put(
-				"osbAsahDataSourceId", dataSourceId
-			).put(
 				"userId", RandomTestUtil.randomNumber()
 			).put(
 				"uuid", RandomTestUtil.randomUUID()
 			));
+
+		_dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.USER);
 	}
 
 	private void _addDataToSalesforceDataSource(
@@ -872,8 +876,8 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	@Autowired
 	private DataSourceDog _dataSourceDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;

@@ -73,17 +73,20 @@ public class IndividualSegmentsRestControllerTest
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				"1", "email", "email", "Text"));
 		JSONObject groupJSONObject = _dxpRawElasticsearchInvoker.add(
-			"groups", JSONUtil.put("name", "groupName"));
+			"groups",
+			JSONUtil.put("fields", JSONUtil.put("name", "groupName")));
 		JSONObject organizationJSONObject = _dxpRawElasticsearchInvoker.add(
-			"organizations", JSONUtil.put("name", "organizationName"));
+			"organizations",
+			JSONUtil.put("fields", JSONUtil.put("name", "organizationName")));
 		JSONObject roleJSONObject = _dxpRawElasticsearchInvoker.add(
-			"roles", JSONUtil.put("name", "roleName"));
+			"roles", JSONUtil.put("fields", JSONUtil.put("name", "roleName")));
 		JSONObject teamJSONObject = _dxpRawElasticsearchInvoker.add(
-			"teams", JSONUtil.put("name", "teamName"));
+			"teams", JSONUtil.put("fields", JSONUtil.put("name", "teamName")));
 		JSONObject userGroupJSONObject = _dxpRawElasticsearchInvoker.add(
-			"user-groups", JSONUtil.put("name", "userGroupName"));
+			"user-groups",
+			JSONUtil.put("fields", JSONUtil.put("name", "userGroupName")));
 		JSONObject userJSONObject = _dxpRawElasticsearchInvoker.add(
-			"users", JSONUtil.put("name", "userName"));
+			"users", JSONUtil.put("fields", JSONUtil.put("name", "userName")));
 
 		Segment segment = new Segment();
 
