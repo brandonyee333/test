@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
@@ -31,6 +34,7 @@ import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -39,6 +43,7 @@ import io.prometheus.client.Gauge;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -533,15 +538,23 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 				));
 		}
 		else {
-			associatedIdsJSONArray = _dxpRawElasticsearchInvoker.get(
-				dxpEntityType.getCollectionName(),
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"osbAsahDataSourceId", String.valueOf(dataSourceId))
-				).filter(
-					QueryBuilders.termsQuery(
-						dxpEntityType.getIdFieldName(), classPKs)
-				));
+			associatedIdsJSONArray = new JSONArray(
+				ListUtil.map(
+					_dxpEntityDog.findByAfterAndFieldsAndType(
+						null,
+						new HashMap<String, Object>() {
+							{
+								put(
+									"dataSourceId",
+									String.valueOf(dataSourceId));
+								put(
+									"fields." + dxpEntityType.getIdFieldName(),
+									classPKs);
+							}
+						},
+						0, dxpEntityType),
+					dxpEntity -> _objectMapper.convertValue(
+						dxpEntity, JSONObject.class)));
 		}
 
 		return JSONUtil.toStringList(associatedIdsJSONArray, "id");
@@ -1117,8 +1130,8 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 	private String[] _collections;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
@@ -1135,5 +1148,8 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private MembershipDog _membershipDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }
