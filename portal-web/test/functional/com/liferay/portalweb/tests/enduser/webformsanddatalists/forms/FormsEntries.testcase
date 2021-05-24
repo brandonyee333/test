@@ -169,7 +169,7 @@ definition {
 		FormPortlet.submitSuccessfully();
 
 		Navigator.openURL();
-	
+
 		ProductMenu.gotoPortlet(
 			category = "Content & Data",
 			portlet = "Forms");
@@ -180,12 +180,11 @@ definition {
 
 		AssertElementPresent(
 			key_text = "1 Entry",
-			locator1="FormViewBuilder#ENTRY_HEADER_CONTENT");
+			locator1 = "FormViewBuilder#ENTRY_HEADER_CONTENT");
 
 		AssertElementPresent(
 			key_value = "There are no entries",
 			locator1 = "FormFields#VALIDATION_ERROR_ENTRIES");
-
 	}
 
 	@description = "Verify that Entries for the Numeric Field display a Field List, Average, Maximum Value, Minimum Value, and Sum in the Summary Tab"
