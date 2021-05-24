@@ -58,10 +58,6 @@ public class Organization extends DXPEntity {
 		return _parentName;
 	}
 
-	public String getType() {
-		return _type;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(getId(), getName(), _parentName, _type);
@@ -69,10 +65,6 @@ public class Organization extends DXPEntity {
 
 	public void setParentName(String parentName) {
 		_parentName = parentName;
-	}
-
-	public void setType(String type) {
-		_type = type;
 	}
 
 	private String _parentName;

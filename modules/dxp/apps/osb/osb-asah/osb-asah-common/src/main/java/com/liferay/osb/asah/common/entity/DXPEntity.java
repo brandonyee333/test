@@ -14,24 +14,43 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
+import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.BeanUtils;
+
+import java.util.Map;
 import java.util.Objects;
 
+import org.json.JSONObject;
+
 import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Matthew Kong
  */
-public class DXPEntity {
+@Table
+public class DXPEntity implements Persistable<Long> {
+
+	public DXPEntity() {
+	}
+
+	public DXPEntity(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
-		}
-
-		if (obj == null) {
-			return false;
 		}
 
 		if (!(obj instanceof DXPEntity)) {
@@ -40,9 +59,12 @@ public class DXPEntity {
 
 		DXPEntity dxpEntity = (DXPEntity)obj;
 
-		if (Objects.equals(_dataSourceName, dxpEntity._dataSourceName) &&
+		if (Objects.equals(_dataSourceId, dxpEntity._dataSourceId) &&
 			Objects.equals(_id, dxpEntity._id) &&
-			Objects.equals(_name, dxpEntity._name)) {
+			Objects.equals(
+				JSONUtil.toMap(_fieldsJSONObject),
+				JSONUtil.toMap(dxpEntity._fieldsJSONObject)) &&
+			Objects.equals(getType(), dxpEntity.getType())) {
 
 			return true;
 		}
@@ -50,12 +72,33 @@ public class DXPEntity {
 		return false;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getDataSourceId() {
+		return _dataSourceId;
+	}
+
 	public String getDataSourceName() {
 		return _dataSourceName;
 	}
 
-	public String getId() {
+	@AccessType(AccessType.Type.PROPERTY)
+	@Column("fields")
+	@JsonProperty("fields")
+	public JSONObject getFieldsJSONObject() {
+		return _fieldsJSONObject;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
+	@JsonSerialize(using = ToStringSerializer.class)
+	@Override
+	public Long getId() {
 		return _id;
+	}
+
+	@JsonIgnore
+	public String getIdFieldValue() {
+		return _fieldsJSONObject.getString(getType().getIdFieldName());
 	}
 
 	public String getName() {
@@ -69,15 +112,38 @@ public class DXPEntity {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_id, _name);
+		return Objects.hash(
+			_dataSourceId, _id, JSONUtil.toMap(_fieldsJSONObject), getType());
+	}
+
+	@JsonIgnore
+	@Override
+	public boolean isNew() {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public void setDataSourceId(Long dataSourceId) {
+		_dataSourceId = dataSourceId;
 	}
 
 	public void setDataSourceName(String dataSourceName) {
 		_dataSourceName = dataSourceName;
 	}
 
-	public void setId(String id) {
+	public void setFieldsJSONObject(JSONObject fieldsJSONObject) {
+		_fieldsJSONObject = fieldsJSONObject;
+	}
+
+	public void setId(Long id) {
 		_id = id;
+	}
+
+	public void setIsNew(Boolean isNew) {
+		_isNew = isNew;
 	}
 
 	public void setName(String name) {
@@ -332,8 +398,22 @@ public class DXPEntity {
 
 	}
 
+	@Transient
+	private Long _dataSourceId;
+
+	@Transient
 	private String _dataSourceName;
-	private String _id;
+
+	@Transient
+	private JSONObject _fieldsJSONObject;
+
+	@Transient
+	private Long _id;
+
+	@Transient
+	private Boolean _isNew;
+
+	@Transient
 	private String _name;
 
 	@Transient
