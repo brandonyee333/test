@@ -49,6 +49,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class DXPEntityDog {
 
+	public DXPEntity addDXPEntity(DXPEntity dxpEntity, DXPEntity.Type type) {
+		dxpEntity.setId(null);
+
+		dxpEntity.setType(type);
+
+		return _mapDXPEntity(_dxpEntityRepository.save(dxpEntity));
+	}
+
+	public void delete(DXPEntity dxpEntity) {
+		_dxpEntityRepository.delete(dxpEntity);
+	}
+
 	public void deleteByFieldNameEqualsAndType(
 		String fieldName, String fieldValue, DXPEntity.Type type) {
 
@@ -60,11 +72,34 @@ public class DXPEntityDog {
 		_dxpEntityRepository.deleteByType(type);
 	}
 
-	public List<? extends DXPEntity> findByFieldsAndType(
+	public User fetchUserByFields(Map<String, Object> fields) {
+		List<DXPEntity> dxpEntities =
+			_dxpEntityRepository.findByAfterAndFieldsAndType(
+				null, fields, 0, DXPEntity.Type.USER);
+
+		if ((dxpEntities == null) || dxpEntities.isEmpty()) {
+			return null;
+		}
+
+		return _mapDXPUser(new HashMap(), dxpEntities.get(0));
+	}
+
+	public List<? extends DXPEntity> findByAfterAndFieldsAndType(
 		Long after, Map<String, Object> fields, int size, DXPEntity.Type type) {
 
 		return _dxpEntityRepository.findByAfterAndFieldsAndType(
 			after, fields, size, type);
+	}
+
+	public List<User> findUsersByMembershipClassNameAndMembershipId(
+		String membershipClassName, String membershipId) {
+
+		return ListUtil.map(
+			_processDXPEntities(
+				this::_mapDXPUser,
+				_dxpEntityRepository.findByMembershipClassNameAndMembershipId(
+					membershipClassName, Long.valueOf(membershipId))),
+			dxpEntity -> (User)dxpEntity);
 	}
 
 	public Page<? extends DXPEntity> getDXPEntitiesPage(
@@ -85,6 +120,10 @@ public class DXPEntityDog {
 				dataSourceIds, keywords, type));
 	}
 
+	public DXPEntity updateDXPEntity(DXPEntity dxpEntity) {
+		return _mapDXPEntity(_dxpEntityRepository.save(dxpEntity));
+	}
+
 	private List<Long> _getDataSourceIds(Long channelId) {
 		List<Long> dataSourceIds = new ArrayList<>();
 
@@ -99,6 +138,10 @@ public class DXPEntityDog {
 		}
 
 		return dataSourceIds;
+	}
+
+	private DXPEntity _mapDXPEntity(DXPEntity dxpEntity) {
+		return _mapDXPEntity(new HashMap<>(), dxpEntity);
 	}
 
 	private List<? extends DXPEntity> _mapDXPEntity(

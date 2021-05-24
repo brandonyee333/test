@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -41,6 +42,11 @@ import org.springframework.data.relational.core.mapping.Table;
 public class DXPEntity implements Persistable<Long> {
 
 	public DXPEntity() {
+	}
+
+	public DXPEntity(Long dataSourceId, JSONObject fieldsJSONObject) {
+		_dataSourceId = dataSourceId;
+		_fieldsJSONObject = fieldsJSONObject;
 	}
 
 	public DXPEntity(Map<String, Object> source) {
@@ -73,6 +79,7 @@ public class DXPEntity implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonAlias("osbAsahDataSourceId")
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
