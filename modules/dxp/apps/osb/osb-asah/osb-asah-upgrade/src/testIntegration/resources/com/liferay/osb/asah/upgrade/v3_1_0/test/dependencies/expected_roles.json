@@ -1,0 +1,34 @@
+[
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"name": "Administrator",
+			"roleId": "20104"
+		},
+		"id": "405057439101255435"
+	},
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"name": "Power User",
+			"roleId": "20108"
+		},
+		"id": "405057439859160765"
+	},
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"name": "Owner",
+			"roleId": "20107"
+		},
+		"id": "405057439817243554"
+	},
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"name": "Guest",
+			"roleId": "20106"
+		},
+		"id": "405057439774488100"
+	}
+]

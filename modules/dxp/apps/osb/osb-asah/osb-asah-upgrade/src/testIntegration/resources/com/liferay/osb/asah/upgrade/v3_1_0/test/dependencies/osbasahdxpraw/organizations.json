@@ -1,0 +1,26 @@
+[
+	{
+		"id": "402139267512234420",
+		"name": "sales engineering",
+		"organizationPK": 33120,
+		"osbAsahDataSourceId": "405057430327289648",
+		"parentName": "",
+		"type": "organization"
+	},
+	{
+		"id": "402139268847589064",
+		"name": "engineering",
+		"organizationPK": 33134,
+		"osbAsahDataSourceId": "405057430327289648",
+		"parentName": "Test",
+		"type": "organization"
+	},
+	{
+		"id": "402139268847589080",
+		"name": "marketing",
+		"organizationPK": 33140,
+		"osbAsahDataSourceId": "405057430327289648",
+		"parentName": "Test",
+		"type": "organization"
+	}
+]

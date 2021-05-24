@@ -1,0 +1,26 @@
+[
+	{
+		"id": "405057439101255435",
+		"name": "Administrator",
+		"osbAsahDataSourceId": "405057430327289648",
+		"roleId": "20104"
+	},
+	{
+		"id": "405057439859160765",
+		"name": "Power User",
+		"osbAsahDataSourceId": "405057430327289648",
+		"roleId": "20108"
+	},
+	{
+		"id": "405057439817243554",
+		"name": "Owner",
+		"osbAsahDataSourceId": "405057430327289648",
+		"roleId": "20107"
+	},
+	{
+		"id": "405057439774488100",
+		"name": "Guest",
+		"osbAsahDataSourceId": "405057430327289648",
+		"roleId": "20106"
+	}
+]
