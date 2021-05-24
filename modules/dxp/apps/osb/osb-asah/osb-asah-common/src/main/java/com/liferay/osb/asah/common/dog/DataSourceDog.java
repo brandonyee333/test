@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.entity.FieldMapping;
@@ -37,6 +38,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.security.KeyPair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -463,12 +465,8 @@ public class DataSourceDog {
 			_asahMarkerDog.deleteAsahMarker(
 				dataSourceId.toString(), WeDeployDataService.OSB_ASAH_DXP_RAW);
 			_deleteData(
-				dataSourceId, "osbAsahDataSourceId",
-				_dxpRawElasticsearchInvoker, "audit-events", "groups",
-				"organizations", "roles", "teams", "user-groups", "users");
-			_deleteData(
-				dataSourceId, "dataSourceId", _elasticsearchInvoker,
-				"organizations");
+				dataSourceId, "audit-events", "groups", "organizations",
+				"roles", "teams", "user-groups", "users");
 			_deleteIndividualReferences(dataSourceId);
 		}
 		else if (providerType.equals("SALESFORCE")) {
@@ -487,14 +485,23 @@ public class DataSourceDog {
 		}
 	}
 
-	private void _deleteData(
-		Long dataSourceId, String dataSourceIdFieldName,
-		ElasticsearchInvoker elasticsearchInvoker, String... collectionNames) {
+	private void _deleteData(Long dataSourceId, String... collectionNames) {
+		for (String collectionName : collectionNames) {
+			if (DXPEntity.Type.ofCollectionName(collectionName) == null) {
+				continue;
+			}
 
-		elasticsearchInvoker.deleteByQuery(
-			QueryBuilders.termQuery(
-				dataSourceIdFieldName, String.valueOf(dataSourceId)),
-			true, collectionNames);
+			_dxpEntityDog.deleteByFieldNameEqualsAndType(
+				"dataSourceId", String.valueOf(dataSourceId),
+				DXPEntity.Type.ofCollectionName(collectionName));
+
+			if (StringUtils.equals(collectionName, "organizations")) {
+				_elasticsearchInvoker.deleteByQuery(
+					QueryBuilders.termQuery(
+						"dataSourceId", String.valueOf(dataSourceId)),
+					true, collectionName);
+			}
+		}
 	}
 
 	private void _deleteFieldMappings(Long dataSourceId) {
@@ -534,34 +541,21 @@ public class DataSourceDog {
 	private void _deleteIndividualReferences(Long dataSourceId)
 		throws Exception {
 
-		_deleteIndividualReferences(
-			"groupIds",
-			_getDataIds(
-				"groups", dataSourceId, "osbAsahDataSourceId",
-				_dxpRawElasticsearchInvoker));
-		_deleteIndividualReferences(
-			"organizationIds",
-			_getDataIds(
-				"organizations", dataSourceId, "dataSourceId",
-				_elasticsearchInvoker));
-		_deleteIndividualReferences(
-			"roleIds",
-			_getDataIds(
-				"roles", dataSourceId, "osbAsahDataSourceId",
-				_dxpRawElasticsearchInvoker));
-		_deleteIndividualReferences(
-			"teamIds",
-			_getDataIds(
-				"teams", dataSourceId, "osbAsahDataSourceId",
-				_dxpRawElasticsearchInvoker));
-		_deleteIndividualReferences(
-			"userGroupIds",
-			_getDataIds(
-				"user-groups", dataSourceId, "osbAsahDataSourceId",
-				_dxpRawElasticsearchInvoker));
+		for (String collectionName :
+				Arrays.asList(
+					"groups", "organizations", "roles", "teams",
+					"user-groups")) {
+
+			DXPEntity.Type dxpEntityType = DXPEntity.Type.ofCollectionName(
+				collectionName);
+
+			_deleteIndividualReferences(
+				dxpEntityType.getIdFieldName(),
+				_getDataIds(collectionName, dataSourceId));
+		}
 	}
 
-	private void _deleteIndividualReferences(String fieldName, List<String> ids)
+	private void _deleteIndividualReferences(String fieldName, List<Long> ids)
 		throws Exception {
 
 		JSONArrayIterator.of(
@@ -612,16 +606,19 @@ public class DataSourceDog {
 		}
 	}
 
-	private List<String> _getDataIds(
-		String collectionName, Long dataSourceId, String dataSourceIdFieldName,
-		ElasticsearchInvoker elasticsearchInvoker) {
+	private List<Long> _getDataIds(String collectionName, Long dataSourceId) {
+		List<? extends DXPEntity> dxpEntities =
+			_dxpEntityDog.findByAfterAndFieldsAndType(
+				null, Collections.singletonMap("dataSourceId", dataSourceId), 0,
+				DXPEntity.Type.ofCollectionName(collectionName));
 
-		return JSONUtil.toStringList(
-			elasticsearchInvoker.get(
-				collectionName,
-				QueryBuilders.termQuery(
-					dataSourceIdFieldName, String.valueOf(dataSourceId))),
-			"id");
+		Stream<? extends DXPEntity> stream = dxpEntities.stream();
+
+		return stream.map(
+			DXPEntity::getId
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	private String _getDataSourceName(String name) {
@@ -760,8 +757,8 @@ public class DataSourceDog {
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
