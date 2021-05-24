@@ -67,9 +67,9 @@ public final class Experiment {
 			Objects.equals(_dxpLayoutId, experiment._dxpLayoutId) &&
 			Objects.equals(_dxpSegmentId, experiment._dxpSegmentId) &&
 			Objects.equals(_dxpSegmentName, experiment._dxpSegmentName) &&
+			Objects.equals(_experimentStatus, experiment._experimentStatus) &&
 			Objects.equals(
 				_experimentVariants, experiment._experimentVariants) &&
-			Objects.equals(_experimentStatus, experiment._experimentStatus) &&
 			Objects.equals(_experimentType, experiment._experimentType) &&
 			Objects.equals(_finishedDate, experiment._finishedDate) &&
 			Objects.equals(_goal, experiment._goal) &&
