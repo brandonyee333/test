@@ -705,6 +705,12 @@
 	<td></td>
 </tr>
 
+<tr>
+	<td>ENTRY_HEADER_CONTENT</td>
+	<td>//h3[@class='header-title']/span | //span[contains(@class,'title') and contains(text(),'${key_text}')]</td>
+	<td></td>
+</tr>
+
 </tbody>
 </table>
 </body>
