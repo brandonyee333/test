@@ -86,7 +86,14 @@ public class ExperimentDataDog {
 
 		SearchQueryContext searchQueryContext = new SearchQueryContext() {
 			{
-				setDataSourceId(String.valueOf(dataSourceId));
+				setDataSourceId(
+					Optional.ofNullable(
+						dataSourceId
+					).map(
+						String::valueOf
+					).orElse(
+						null
+					));
 				setExperienceId(dxpExperienceId);
 				setExperimentId(experimentId);
 				setTimeRange(timeRange);
