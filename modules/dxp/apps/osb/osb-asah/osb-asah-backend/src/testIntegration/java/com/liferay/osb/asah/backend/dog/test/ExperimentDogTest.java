@@ -39,6 +39,7 @@ import java.time.ZoneOffset;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Stream;
 
@@ -371,17 +372,34 @@ public class ExperimentDogTest {
 			_mapToDoubleArray(
 				actualExperimentVariantMetric.getConfidenceIntervalArray()),
 			.1);
+
 		Assert.assertEquals(
-			expectedMedian, actualExperimentVariantMetric.getMedian(), .1);
+			expectedMedian,
+			Optional.ofNullable(
+				actualExperimentVariantMetric.getMedian()
+			).orElse(
+				0.0
+			),
+			.1);
 		Assert.assertEquals(
 			expectedProbabilityToWin,
-			actualExperimentVariantMetric.getProbabilityToWin(), .1);
+			Optional.ofNullable(
+				actualExperimentVariantMetric.getProbabilityToWin()
+			).orElse(
+				0.0
+			),
+			.1);
 		Assert.assertEquals(
 			expectedDXPVariantId,
 			actualExperimentVariantMetric.getDXPVariantId());
 		Assert.assertEquals(
 			expectetedImprovement,
-			actualExperimentVariantMetric.getImprovement(), .1);
+			Optional.ofNullable(
+				actualExperimentVariantMetric.getImprovement()
+			).orElse(
+				0.0
+			),
+			.1);
 	}
 
 	private void _assertSessionHistogramMetric(

@@ -75,7 +75,7 @@ public class ExperimentMetricDogTest {
 			_experimentMetricDog.calculateExperimentMetric(
 				_experimentDog.getExperiment(4L));
 
-		Assert.assertEquals(0D, experimentMetric.getCompletion(), 0D);
+		Assert.assertNull(experimentMetric.getCompletion());
 
 		Assert.assertNull(experimentMetric.getEstimatedDaysLeft());
 	}

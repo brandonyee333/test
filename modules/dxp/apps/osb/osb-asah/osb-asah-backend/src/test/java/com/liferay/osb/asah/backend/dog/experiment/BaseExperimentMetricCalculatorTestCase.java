@@ -26,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
@@ -76,15 +77,30 @@ public abstract class BaseExperimentMetricCalculatorTestCase {
 			getMarginOfErrorPercentageForInterval());
 
 		Assert.assertEquals(
-			improvement, experimentVariantMetric.getImprovement(),
+			improvement,
+			Optional.ofNullable(
+				experimentVariantMetric.getImprovement()
+			).orElse(
+				0.0
+			),
 			getMarginOfErrorForImprovement());
 
 		percentageBasedAssertEquals(
-			median, experimentVariantMetric.getMedian(),
+			median,
+			Optional.ofNullable(
+				experimentVariantMetric.getMedian()
+			).orElse(
+				0.0
+			),
 			getMarginOfErrorPercentageForMedian());
 
 		Assert.assertEquals(
-			probabilityToWin, experimentVariantMetric.getProbabilityToWin(),
+			probabilityToWin,
+			Optional.ofNullable(
+				experimentVariantMetric.getProbabilityToWin()
+			).orElse(
+				0.0
+			),
 			getMarginOfErrorForProbabilityToWin());
 	}
 
