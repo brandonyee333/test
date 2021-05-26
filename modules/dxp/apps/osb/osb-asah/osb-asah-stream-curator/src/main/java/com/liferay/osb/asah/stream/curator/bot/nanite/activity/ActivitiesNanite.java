@@ -181,15 +181,14 @@ public class ActivitiesNanite implements Nanite {
 		if (activityGroup != null) {
 			return _activityGroupDog.updatedActivityGroup(
 				activityGroup.getId(), analyticsEvent.getEventDate(),
-				DateUtil.toUTCDate(eventLocalDateTime));
+				eventLocalDateTime);
 		}
 
 		return _activityGroupDog.addActivityGroup(
 			"BROWSE", Long.valueOf(channelId), Long.valueOf(dataSourceId),
-			dayDate, analyticsEvent.getEventDate(),
-			DateUtil.toUTCDate(eventLocalDateTime), _getOwnerId(analyticsEvent),
-			analyticsEvent.getEventDate(),
-			DateUtil.toUTCDate(eventLocalDateTime), userId);
+			dayDate, analyticsEvent.getEventDate(), eventLocalDateTime,
+			_getOwnerId(analyticsEvent), analyticsEvent.getEventDate(),
+			eventLocalDateTime, userId);
 	}
 
 	private void _addActivityJSONObject(

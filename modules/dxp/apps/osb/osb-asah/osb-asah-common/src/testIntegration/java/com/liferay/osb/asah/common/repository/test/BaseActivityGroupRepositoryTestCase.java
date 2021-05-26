@@ -49,10 +49,10 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		activityGroup.setDataSourceId(34L);
 		activityGroup.setDayDate(new Date());
 		activityGroup.setEndDate(new Date());
-		activityGroup.setEndLocalDate(new Date());
+		activityGroup.setEndLocalDateTime(LocalDateTime.now());
 		activityGroup.setOwnerId(56L);
 		activityGroup.setStartDate(new Date());
-		activityGroup.setStartLocalDate(new Date());
+		activityGroup.setStartLocalDateTime(LocalDateTime.now());
 		activityGroup.setUserId("347780e0-7a66-11e8-a0fc-8356dd2944fd");
 
 		setUpRepository(activityGroup);

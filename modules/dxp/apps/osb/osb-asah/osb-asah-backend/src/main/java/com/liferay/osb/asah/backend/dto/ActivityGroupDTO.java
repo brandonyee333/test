@@ -19,11 +19,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
+
+import java.time.LocalDateTime;
 
 import java.util.Collection;
 import java.util.Date;
@@ -48,11 +52,11 @@ public class ActivityGroupDTO {
 		_dataSourceId = StringUtil.get(activityGroup.getDataSourceId(), null);
 		_dayDate = activityGroup.getDayDate();
 		_endDate = activityGroup.getEndDate();
-		_endLocalDate = activityGroup.getEndLocalDate();
+		_endLocalDateTime = activityGroup.getEndLocalDateTime();
 		_id = StringUtil.get(activityGroup.getId(), null);
 		_ownerId = StringUtil.get(activityGroup.getOwnerId(), null);
 		_startDate = activityGroup.getStartDate();
-		_startLocalDate = activityGroup.getStartLocalDate();
+		_startLocalDateTime = activityGroup.getStartLocalDateTime();
 		_userId = activityGroup.getUserId();
 	}
 
@@ -118,17 +122,10 @@ public class ActivityGroupDTO {
 	}
 
 	@JsonAlias("endLocalDate")
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
 	@JsonProperty("endTimeLocal")
-	public Date getEndLocalDate() {
-		if (_endLocalDate == null) {
-			return null;
-		}
-
-		return new Date(_endLocalDate.getTime());
+	@JsonSerialize(using = ToStringSerializer.class)
+	public LocalDateTime getEndLocalDateTime() {
+		return _endLocalDateTime;
 	}
 
 	@JsonProperty("id")
@@ -156,17 +153,10 @@ public class ActivityGroupDTO {
 	}
 
 	@JsonAlias("startLocalDate")
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
 	@JsonProperty("startTimeLocal")
-	public Date getStartLocalDate() {
-		if (_startLocalDate == null) {
-			return null;
-		}
-
-		return new Date(_startLocalDate.getTime());
+	@JsonSerialize(using = ToStringSerializer.class)
+	public LocalDateTime getStartLocalDateTime() {
+		return _startLocalDateTime;
 	}
 
 	@JsonProperty("userId")
@@ -202,10 +192,8 @@ public class ActivityGroupDTO {
 		}
 	}
 
-	public void setEndLocalDate(Date endLocalDate) {
-		if (endLocalDate != null) {
-			_endLocalDate = new Date(endLocalDate.getTime());
-		}
+	public void setEndLocalDateTime(LocalDateTime endLocalDateTime) {
+		_endLocalDateTime = endLocalDateTime;
 	}
 
 	public void setId(String id) {
@@ -222,10 +210,8 @@ public class ActivityGroupDTO {
 		}
 	}
 
-	public void setStartLocalDate(Date startLocalDate) {
-		if (startLocalDate != null) {
-			_startLocalDate = new Date(startLocalDate.getTime());
-		}
+	public void setStartLocalDateTime(LocalDateTime startLocalDateTime) {
+		_startLocalDateTime = startLocalDateTime;
 	}
 
 	public void setUserId(String userId) {
@@ -239,11 +225,11 @@ public class ActivityGroupDTO {
 	private Date _dayDate;
 	private Map<String, Object> _embedded;
 	private Date _endDate;
-	private Date _endLocalDate;
+	private LocalDateTime _endLocalDateTime;
 	private String _id;
 	private String _ownerId;
 	private Date _startDate;
-	private Date _startLocalDate;
+	private LocalDateTime _startLocalDateTime;
 	private String _userId;
 
 }

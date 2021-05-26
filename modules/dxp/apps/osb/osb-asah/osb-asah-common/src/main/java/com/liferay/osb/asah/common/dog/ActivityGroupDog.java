@@ -18,6 +18,8 @@ import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
+import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,8 +45,8 @@ public class ActivityGroupDog {
 
 	public ActivityGroup addActivityGroup(
 		String activityType, Long channelId, Long dataSourceId, Date dayDate,
-		Date endDate, Date endLocalDate, Long ownerId, Date startDate,
-		Date startLocalDate, String userId) {
+		Date endDate, LocalDateTime endLocalDate, Long ownerId, Date startDate,
+		LocalDateTime startLocalDate, String userId) {
 
 		ActivityGroup activityGroup = new ActivityGroup();
 
@@ -53,10 +55,10 @@ public class ActivityGroupDog {
 		activityGroup.setDataSourceId(dataSourceId);
 		activityGroup.setDayDate(dayDate);
 		activityGroup.setEndDate(endDate);
-		activityGroup.setEndLocalDate(endLocalDate);
+		activityGroup.setEndLocalDateTime(endLocalDate);
 		activityGroup.setOwnerId(ownerId);
 		activityGroup.setStartDate(startDate);
-		activityGroup.setStartLocalDate(startLocalDate);
+		activityGroup.setStartLocalDateTime(startLocalDate);
 		activityGroup.setUserId(userId);
 
 		return _activityGroupRepository.save(activityGroup);
@@ -102,12 +104,12 @@ public class ActivityGroupDog {
 	}
 
 	public ActivityGroup updatedActivityGroup(
-		Long activityGroupId, Date endDate, Date endLocalDate) {
+		Long activityGroupId, Date endDate, LocalDateTime endLocalDateTime) {
 
 		ActivityGroup activityGroup = getActivityGroup(activityGroupId);
 
 		activityGroup.setEndDate(endDate);
-		activityGroup.setEndLocalDate(endLocalDate);
+		activityGroup.setEndLocalDateTime(endLocalDateTime);
 
 		return _activityGroupRepository.save(activityGroup);
 	}
