@@ -268,7 +268,8 @@ CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
 	dataType TEXT NOT NULL,
 	description TEXT,
 	displayName TEXT UNIQUE,
-	name VARCHAR(255) UNIQUE
+	name VARCHAR(255) UNIQUE,
+	type TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS EventDefinition (
