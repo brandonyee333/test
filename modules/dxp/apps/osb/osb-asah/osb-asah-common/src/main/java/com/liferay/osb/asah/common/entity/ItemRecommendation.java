@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.List;
@@ -83,6 +84,7 @@ public class ItemRecommendation implements Persistable<String> {
 		return Objects.hash(_id, _itemId, _jobId, _recommendedItemIds);
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isNew() {
 		if ((_id == null) || ((_isNew != null) && _isNew)) {

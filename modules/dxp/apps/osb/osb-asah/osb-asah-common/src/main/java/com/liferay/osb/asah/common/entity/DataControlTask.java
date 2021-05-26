@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
@@ -150,6 +151,7 @@ public final class DataControlTask implements Persistable<Long> {
 			_status);
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isNew() {
 		if ((_id == null) || ((_isNew != null) && _isNew)) {

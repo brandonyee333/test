@@ -14,6 +14,10 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -74,6 +78,7 @@ public class DataExportTask implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
+	@JsonSerialize(using = ToStringSerializer.class)
 	@Override
 	public Long getId() {
 		return _id;
@@ -104,6 +109,7 @@ public class DataExportTask implements Persistable<Long> {
 			_completedDate, _createDate, _id, _startedDate, _status, _type);
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isNew() {
 		if ((_id == null) || ((_isNew != null) && _isNew)) {

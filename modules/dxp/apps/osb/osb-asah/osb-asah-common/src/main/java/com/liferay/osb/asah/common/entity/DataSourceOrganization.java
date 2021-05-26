@@ -15,8 +15,6 @@
 package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.util.BeanUtils;
 
@@ -84,7 +82,6 @@ public class DataSourceOrganization {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("id")
-	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getOrganizationId() {
 		return _organizationId;
 	}

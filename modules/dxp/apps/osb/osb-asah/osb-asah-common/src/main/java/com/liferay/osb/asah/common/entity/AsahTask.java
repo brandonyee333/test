@@ -14,7 +14,10 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.util.Objects;
 
@@ -101,6 +104,7 @@ public class AsahTask implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
+	@JsonSerialize(using = ToStringSerializer.class)
 	@Override
 	public Long getId() {
 		return _id;
@@ -117,6 +121,7 @@ public class AsahTask implements Persistable<Long> {
 			_className, _contextJSONObject, _cronExpression, _id, _projectId);
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isNew() {
 		if ((_id == null) || ((_isNew != null) && _isNew)) {

@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
@@ -84,6 +86,7 @@ public class Preference implements Persistable<Long> {
 		return Objects.hash(_id, _key, _value);
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isNew() {
 		if ((_id == null) || ((_isNew != null) && _isNew)) {

@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
@@ -128,6 +129,7 @@ public class Suppression implements Persistable<Long> {
 		return Objects.hash(_createDate, _emailAddress, _id);
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isNew() {
 		if ((_id == null) || ((_isNew != null) && _isNew)) {

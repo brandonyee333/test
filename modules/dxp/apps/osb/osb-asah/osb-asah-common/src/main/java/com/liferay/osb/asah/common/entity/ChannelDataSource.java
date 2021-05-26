@@ -15,6 +15,8 @@
 package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.util.Objects;
 import java.util.Set;
@@ -60,11 +62,13 @@ public class ChannelDataSource {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("id")
+	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	public Set<Long> getGroupIds() {
 		return _groupIds;
 	}

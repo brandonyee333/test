@@ -230,46 +230,55 @@ public class Segment implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	public Set<Long> getReferencedAssetDataSourceIds() {
 		return _referencedAssetDataSourceIds;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	public Set<Long> getReferencedAssetIds() {
 		return _referencedAssetIds;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	public Set<Long> getReferencedFieldMappingIds() {
 		return _referencedFieldMappingIds;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	public Set<Long> getReferencedGroupIds() {
 		return _referencedGroupIds;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	public Set<Long> getReferencedOrganizationIds() {
 		return _referencedOrganizationIds;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	public Set<Long> getReferencedRoleIds() {
 		return _referencedRoleIds;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	public Set<Long> getReferencedTeamIds() {
 		return _referencedTeamIds;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	public Set<Long> getReferencedUserGroupIds() {
 		return _referencedUserGroupIds;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	public Set<Long> getReferencedUserIds() {
 		return _referencedUserIds;
 	}

@@ -91,6 +91,7 @@ public class Asset implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	public Set<Long> getChannelIds() {
 		return _channelIds;
 	}
@@ -101,6 +102,7 @@ public class Asset implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
