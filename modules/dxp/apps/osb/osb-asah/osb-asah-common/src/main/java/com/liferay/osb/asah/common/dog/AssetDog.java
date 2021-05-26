@@ -60,7 +60,11 @@ public class AssetDog {
 	}
 
 	public void deleteAsset(Asset asset, String deletionDayDateString) {
-		_assetRepository.deleteById(asset.getId());
+		Long assetId = asset.getId();
+
+		if (assetId != null) {
+			_assetRepository.deleteById(assetId);
+		}
 
 		Set<AssetKeyword> assetKeywords = asset.getAssetKeywords();
 
