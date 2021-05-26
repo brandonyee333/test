@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
@@ -24,23 +22,21 @@ import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
+
+import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -68,31 +64,19 @@ public class ElasticsearchExperimentRepositoryImpl
 
 	@Override
 	public List<Experiment> searchExperimentsByChannelIdAndKeywords(
-		Long channelId, String keywords, Pageable pageable) {
+		Long channelId, @Nullable String keywords, Pageable pageable) {
 
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			getCollectionName(),
-			searchSourceBuilder -> {
-				searchSourceBuilder.query(
-					_buildKeywordsQueryBuilder(channelId, keywords));
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_buildKeywordsQueryBuilder(channelId, keywords));
 
-				setSearchSourceBuilderPage(searchSourceBuilder, pageable);
-			});
-
-		List<Experiment> experiments = new ArrayList<>();
-
-		try {
-			for (SearchHit searchHit : searchResponse.getHits()) {
-				experiments.add(
-					_objectMapper.readValue(
-						searchHit.getSourceAsString(), Experiment.class));
-			}
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		return experiments;
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
 	}
 
 	@Override
@@ -139,13 +123,7 @@ public class ElasticsearchExperimentRepositoryImpl
 		return QueryBuilders.matchAllQuery();
 	}
 
-	private static final Log _log = LogFactory.getLog(
-		ElasticsearchExperimentRepositoryImpl.class);
-
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 }
