@@ -49,42 +49,6 @@ public class HookTest {
 	}
 
 	@Test
-	public void testLanguage1() throws Exception {
-		Assert.assertEquals(
-			"Estrellas", LanguageUtil.get(LocaleUtil.SPAIN, "stars"));
-	}
-
-	@Test
-	public void testLanguage2() throws Exception {
-		Assert.assertEquals(
-			"Sterne", LanguageUtil.get(LocaleUtil.GERMAN, "stars"));
-	}
-
-	@Test
-	public void testLanguage3() throws Exception {
-		Assert.assertEquals(
-			"Ricardo Kaka", LanguageUtil.get(LocaleUtil.BRAZIL, "stars"));
-	}
-
-	@Test
-	public void testLanguage4() throws Exception {
-		Assert.assertEquals(
-			"Cristiano Ronaldo",
-			LanguageUtil.get(LocaleUtil.PORTUGAL, "stars"));
-	}
-
-	@Test
-	public void testLanguage5() throws Exception {
-		Assert.assertEquals(
-			"David Beckham", LanguageUtil.get(LocaleUtil.UK, "stars"));
-	}
-
-	@Test
-	public void testLanguage6() throws Exception {
-		Assert.assertEquals("Stars", LanguageUtil.get(LocaleUtil.US, "stars"));
-	}
-
-	@Test
 	public void testPortalProperties() throws Exception {
 		Assert.assertFalse(LanguageUtil.isBetaLocale(LocaleUtil.US));
 	}
