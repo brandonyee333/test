@@ -112,6 +112,11 @@ public class EventAttributeDefinition implements Persistable<Long> {
 		return _name;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	public Type getType() {
+		return _type;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(
@@ -160,9 +165,19 @@ public class EventAttributeDefinition implements Persistable<Long> {
 		_name = name;
 	}
 
+	public void setType(Type type) {
+		_type = type;
+	}
+
 	public static enum DataType {
 
 		BOOLEAN, DATE, DURATION, NUMBER, STRING
+
+	}
+
+	public static enum Type {
+
+		ALL, GLOBAL, LOCAL
 
 	}
 
@@ -187,5 +202,8 @@ public class EventAttributeDefinition implements Persistable<Long> {
 
 	@Transient
 	private String _name;
+
+	@Transient
+	private Type _type;
 
 }
