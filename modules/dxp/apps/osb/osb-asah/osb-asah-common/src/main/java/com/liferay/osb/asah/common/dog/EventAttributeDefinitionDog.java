@@ -68,6 +68,7 @@ public class EventAttributeDefinitionDog {
 				new EventDefinitionEventAttributeDefinition(
 					eventDefinitionId, sampleValue)));
 		eventAttributeDefinition.setName(name);
+		eventAttributeDefinition.setType(EventAttributeDefinition.Type.LOCAL);
 
 		return _eventAttributeDefinitionRepository.save(
 			eventAttributeDefinition);
