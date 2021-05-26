@@ -204,9 +204,7 @@ List<AMImageConfigurationEntry> selectedConfigurationEntries = (List)request.get
 
 					<%
 					Map<String, String> properties = amImageConfigurationEntry.getProperties();
-					%>
 
-					<%
 					String maxWidth = properties.get("max-width");
 					%>
 

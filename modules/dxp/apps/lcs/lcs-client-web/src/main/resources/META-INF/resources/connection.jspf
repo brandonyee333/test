@@ -130,9 +130,7 @@ String lcsProjectName = GetterUtil.getString(request.getAttribute(LCSClientWebKe
 			Set<String> activeServiceLabels = (Set<String>)request.getAttribute(LCSClientWebKeys.LCS_ACTIVE_SERVICES);
 
 			LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor = (LCSClusterEntryTokenAdvisor)request.getAttribute(LCSClusterEntryTokenAdvisor.class.getName());
-			%>
 
-			<%
 			for (String activeTaskLabel : activeServiceLabels) {
 			%>
 

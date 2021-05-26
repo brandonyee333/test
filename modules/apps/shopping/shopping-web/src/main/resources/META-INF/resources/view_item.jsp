@@ -87,9 +87,7 @@ renderResponse.setTitle(item.getName());
 
 			<%
 			}
-			%>
 
-			<%
 			for (ShoppingItemPrice itemPrice : itemPrices) {
 				if (itemPrice.getStatus() == ShoppingItemPriceConstants.STATUS_INACTIVE) {
 					continue;
