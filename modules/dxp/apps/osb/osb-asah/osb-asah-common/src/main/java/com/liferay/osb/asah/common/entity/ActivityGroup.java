@@ -15,10 +15,15 @@
 package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
+
+import java.time.LocalDateTime;
 
 import java.util.Date;
 import java.util.Map;
@@ -60,11 +65,13 @@ public class ActivityGroup implements Persistable<Long> {
 			Objects.equals(_dataSourceId, activityGroup._dataSourceId) &&
 			Objects.equals(_dayDate, activityGroup._dayDate) &&
 			Objects.equals(_endDate, activityGroup._endDate) &&
-			Objects.equals(_endLocalDate, activityGroup._endLocalDate) &&
+			Objects.equals(
+				_endLocalDateTime, activityGroup._endLocalDateTime) &&
 			Objects.equals(_id, activityGroup._id) &&
 			Objects.equals(_ownerId, activityGroup._ownerId) &&
 			Objects.equals(_startDate, activityGroup._startDate) &&
-			Objects.equals(_startLocalDate, activityGroup._startLocalDate) &&
+			Objects.equals(
+				_startLocalDateTime, activityGroup._startLocalDateTime) &&
 			Objects.equals(_userId, activityGroup._userId)) {
 
 			return true;
@@ -79,11 +86,13 @@ public class ActivityGroup implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getChannelId() {
 		return _channelId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
@@ -117,27 +126,22 @@ public class ActivityGroup implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
 	@JsonProperty("endTimeLocal")
-	public Date getEndLocalDate() {
-		if (_endLocalDate == null) {
-			return null;
-		}
-
-		return new Date(_endLocalDate.getTime());
+	@JsonSerialize(using = ToStringSerializer.class)
+	public LocalDateTime getEndLocalDateTime() {
+		return _endLocalDateTime;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
+	@JsonSerialize(using = ToStringSerializer.class)
 	@Override
 	public Long getId() {
 		return _id;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getOwnerId() {
 		return _ownerId;
 	}
@@ -157,17 +161,10 @@ public class ActivityGroup implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
 	@JsonProperty("startTimeLocal")
-	public Date getStartLocalDate() {
-		if (_startLocalDate == null) {
-			return null;
-		}
-
-		return new Date(_startLocalDate.getTime());
+	@JsonSerialize(using = ToStringSerializer.class)
+	public LocalDateTime getStartLocalDateTime() {
+		return _startLocalDateTime;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -179,9 +176,11 @@ public class ActivityGroup implements Persistable<Long> {
 	public int hashCode() {
 		return Objects.hash(
 			_activityType, _channelId, _dataSourceId, _dayDate, _endDate,
-			_endLocalDate, _id, _ownerId, _startDate, _startLocalDate, _userId);
+			_endLocalDateTime, _id, _ownerId, _startDate, _startLocalDateTime,
+			_userId);
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isNew() {
 		if ((_id == null) || ((_isNew != null) && _isNew)) {
@@ -215,10 +214,8 @@ public class ActivityGroup implements Persistable<Long> {
 		}
 	}
 
-	public void setEndLocalDate(Date endLocalDate) {
-		if (endLocalDate != null) {
-			_endLocalDate = new Date(endLocalDate.getTime());
-		}
+	public void setEndLocalDateTime(LocalDateTime endLocalDateTime) {
+		_endLocalDateTime = endLocalDateTime;
 	}
 
 	public void setId(Long id) {
@@ -239,10 +236,8 @@ public class ActivityGroup implements Persistable<Long> {
 		}
 	}
 
-	public void setStartLocalDate(Date startLocalDate) {
-		if (startLocalDate != null) {
-			_startLocalDate = new Date(startLocalDate.getTime());
-		}
+	public void setStartLocalDateTime(LocalDateTime startLocalDateTime) {
+		_startLocalDateTime = startLocalDateTime;
 	}
 
 	public void setUserId(String userId) {
@@ -265,7 +260,7 @@ public class ActivityGroup implements Persistable<Long> {
 	private Date _endDate;
 
 	@Transient
-	private Date _endLocalDate;
+	private LocalDateTime _endLocalDateTime;
 
 	@Transient
 	private Long _id;
@@ -280,7 +275,7 @@ public class ActivityGroup implements Persistable<Long> {
 	private Date _startDate;
 
 	@Transient
-	private Date _startLocalDate;
+	private LocalDateTime _startLocalDateTime;
 
 	@Transient
 	private String _userId;
