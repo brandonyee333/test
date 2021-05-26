@@ -22,6 +22,7 @@ import java.util.List;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -37,6 +38,6 @@ public interface ExperimentRepository extends CrudRepository<Experiment, Long> {
 		ExperimentStatus experimentStatus);
 
 	public List<Experiment> searchExperimentsByChannelIdAndKeywords(
-		Long channelId, String keywords, Pageable pageable);
+		Long channelId, @Nullable String keywords, Pageable pageable);
 
 }

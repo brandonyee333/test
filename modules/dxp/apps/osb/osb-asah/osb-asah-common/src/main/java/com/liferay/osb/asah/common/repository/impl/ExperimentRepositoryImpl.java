@@ -38,6 +38,7 @@ import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Marcos Martins
@@ -52,7 +53,7 @@ public class ExperimentRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Experiment> searchExperimentsByChannelIdAndKeywords(
-		Long channelId, String keywords, Pageable pageable) {
+		Long channelId, @Nullable String keywords, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 

@@ -64,6 +64,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -179,7 +180,8 @@ public class ExperimentDog {
 	}
 
 	public List<Experiment> getExperiments(
-		Long channelId, String keywords, int page, int size, Sort sort) {
+		Long channelId, @Nullable String keywords, int page, int size,
+		Sort sort) {
 
 		return _experimentRepository.searchExperimentsByChannelIdAndKeywords(
 			channelId, keywords, PageRequest.of(page, size, sort));

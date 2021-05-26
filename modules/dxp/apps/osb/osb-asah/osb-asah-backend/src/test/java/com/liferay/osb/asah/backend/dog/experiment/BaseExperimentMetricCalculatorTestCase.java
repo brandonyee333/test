@@ -21,6 +21,8 @@ import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.math.BigDecimal;
+
 import java.nio.charset.StandardCharsets;
 
 import java.util.ArrayList;
@@ -64,14 +66,15 @@ public abstract class BaseExperimentMetricCalculatorTestCase {
 		Assert.assertEquals(
 			dxpVariantId, experimentVariantMetric.getDXPVariantId());
 
+		BigDecimal[] confidenceIntervals =
+			experimentVariantMetric.getConfidenceIntervals();
+
 		percentageBasedAssertEquals(
-			confidenceIntervalLeft,
-			experimentVariantMetric.getConfidenceIntervals()[0].doubleValue(),
+			confidenceIntervalLeft, confidenceIntervals[0].doubleValue(),
 			getMarginOfErrorPercentageForInterval());
 
 		percentageBasedAssertEquals(
-			confidenceIntervalRight,
-			experimentVariantMetric.getConfidenceIntervals()[1].doubleValue(),
+			confidenceIntervalRight, confidenceIntervals[1].doubleValue(),
 			getMarginOfErrorPercentageForInterval());
 
 		Assert.assertEquals(
