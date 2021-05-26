@@ -1671,14 +1671,25 @@ public class LayoutSetPersistenceImpl
 	@Override
 	public void cacheResult(List<LayoutSet> layoutSets) {
 		for (LayoutSet layoutSet : layoutSets) {
-			if (EntityCacheUtil.getResult(
-					LayoutSetModelImpl.ENTITY_CACHE_ENABLED,
-					LayoutSetImpl.class, layoutSet.getPrimaryKey()) == null) {
+			LayoutSet cachedLayoutSet = (LayoutSet)EntityCacheUtil.getResult(
+				LayoutSetModelImpl.ENTITY_CACHE_ENABLED, LayoutSetImpl.class,
+				layoutSet.getPrimaryKey());
 
+			if (cachedLayoutSet == null) {
 				cacheResult(layoutSet);
 			}
 			else {
-				layoutSet.resetOriginalValues();
+				LayoutSetModelImpl layoutSetModelImpl =
+					(LayoutSetModelImpl)layoutSet;
+				LayoutSetModelImpl cachedLayoutSetModelImpl =
+					(LayoutSetModelImpl)cachedLayoutSet;
+
+				layoutSetModelImpl.setCompanyFallbackVirtualHostname(
+					cachedLayoutSetModelImpl.
+						getCompanyFallbackVirtualHostname());
+
+				layoutSetModelImpl.setVirtualHostname(
+					cachedLayoutSetModelImpl.getVirtualHostname());
 			}
 		}
 	}
@@ -1941,23 +1952,23 @@ public class LayoutSetPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (layoutSet.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				layoutSet.setCreateDate(now);
+				layoutSet.setCreateDate(date);
 			}
 			else {
-				layoutSet.setCreateDate(serviceContext.getCreateDate(now));
+				layoutSet.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!layoutSetModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				layoutSet.setModifiedDate(now);
+				layoutSet.setModifiedDate(date);
 			}
 			else {
-				layoutSet.setModifiedDate(serviceContext.getModifiedDate(now));
+				layoutSet.setModifiedDate(serviceContext.getModifiedDate(date));
 			}
 		}
 

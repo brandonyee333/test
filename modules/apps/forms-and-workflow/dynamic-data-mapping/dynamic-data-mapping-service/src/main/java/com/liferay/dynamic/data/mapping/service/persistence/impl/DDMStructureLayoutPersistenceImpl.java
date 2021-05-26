@@ -1746,15 +1746,23 @@ public class DDMStructureLayoutPersistenceImpl
 	@Override
 	public void cacheResult(List<DDMStructureLayout> ddmStructureLayouts) {
 		for (DDMStructureLayout ddmStructureLayout : ddmStructureLayouts) {
-			if (entityCache.getResult(
+			DDMStructureLayout cachedDDMStructureLayout =
+				(DDMStructureLayout)entityCache.getResult(
 					DDMStructureLayoutModelImpl.ENTITY_CACHE_ENABLED,
 					DDMStructureLayoutImpl.class,
-					ddmStructureLayout.getPrimaryKey()) == null) {
+					ddmStructureLayout.getPrimaryKey());
 
+			if (cachedDDMStructureLayout == null) {
 				cacheResult(ddmStructureLayout);
 			}
 			else {
-				ddmStructureLayout.resetOriginalValues();
+				DDMStructureLayoutModelImpl ddmStructureLayoutModelImpl =
+					(DDMStructureLayoutModelImpl)ddmStructureLayout;
+				DDMStructureLayoutModelImpl cachedDDMStructureLayoutModelImpl =
+					(DDMStructureLayoutModelImpl)cachedDDMStructureLayout;
+
+				ddmStructureLayoutModelImpl.setDDMFormLayout(
+					cachedDDMStructureLayoutModelImpl.getDDMFormLayout());
 			}
 		}
 	}
@@ -2044,25 +2052,25 @@ public class DDMStructureLayoutPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (ddmStructureLayout.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				ddmStructureLayout.setCreateDate(now);
+				ddmStructureLayout.setCreateDate(date);
 			}
 			else {
 				ddmStructureLayout.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!ddmStructureLayoutModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				ddmStructureLayout.setModifiedDate(now);
+				ddmStructureLayout.setModifiedDate(date);
 			}
 			else {
 				ddmStructureLayout.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

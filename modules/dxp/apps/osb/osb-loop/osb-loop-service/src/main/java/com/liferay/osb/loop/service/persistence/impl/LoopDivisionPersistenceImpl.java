@@ -1121,24 +1121,24 @@ public class LoopDivisionPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (loopDivision.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				loopDivision.setCreateDate(now);
+				loopDivision.setCreateDate(date);
 			}
 			else {
-				loopDivision.setCreateDate(serviceContext.getCreateDate(now));
+				loopDivision.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!loopDivisionModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				loopDivision.setModifiedDate(now);
+				loopDivision.setModifiedDate(date);
 			}
 			else {
 				loopDivision.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

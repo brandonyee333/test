@@ -2334,25 +2334,25 @@ public class WSRPConsumerPortletPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (wsrpConsumerPortlet.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				wsrpConsumerPortlet.setCreateDate(now);
+				wsrpConsumerPortlet.setCreateDate(date);
 			}
 			else {
 				wsrpConsumerPortlet.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!wsrpConsumerPortletModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				wsrpConsumerPortlet.setModifiedDate(now);
+				wsrpConsumerPortlet.setModifiedDate(date);
 			}
 			else {
 				wsrpConsumerPortlet.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

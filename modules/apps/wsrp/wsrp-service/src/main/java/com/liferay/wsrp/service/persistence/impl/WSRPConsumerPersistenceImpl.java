@@ -1963,24 +1963,24 @@ public class WSRPConsumerPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (wsrpConsumer.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				wsrpConsumer.setCreateDate(now);
+				wsrpConsumer.setCreateDate(date);
 			}
 			else {
-				wsrpConsumer.setCreateDate(serviceContext.getCreateDate(now));
+				wsrpConsumer.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!wsrpConsumerModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				wsrpConsumer.setModifiedDate(now);
+				wsrpConsumer.setModifiedDate(date);
 			}
 			else {
 				wsrpConsumer.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

@@ -335,25 +335,25 @@ public class WatsonHistoryAuditPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonHistoryAudit.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonHistoryAudit.setCreateDate(now);
+				watsonHistoryAudit.setCreateDate(date);
 			}
 			else {
 				watsonHistoryAudit.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonHistoryAuditModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonHistoryAudit.setModifiedDate(now);
+				watsonHistoryAudit.setModifiedDate(date);
 			}
 			else {
 				watsonHistoryAudit.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

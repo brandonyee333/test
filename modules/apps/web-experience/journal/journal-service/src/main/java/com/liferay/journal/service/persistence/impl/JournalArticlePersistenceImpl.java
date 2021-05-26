@@ -32501,15 +32501,25 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void cacheResult(List<JournalArticle> journalArticles) {
 		for (JournalArticle journalArticle : journalArticles) {
-			if (entityCache.getResult(
+			JournalArticle cachedJournalArticle =
+				(JournalArticle)entityCache.getResult(
 					JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
-					JournalArticleImpl.class, journalArticle.getPrimaryKey()) ==
-						null) {
+					JournalArticleImpl.class, journalArticle.getPrimaryKey());
 
+			if (cachedJournalArticle == null) {
 				cacheResult(journalArticle);
 			}
 			else {
-				journalArticle.resetOriginalValues();
+				JournalArticleModelImpl journalArticleModelImpl =
+					(JournalArticleModelImpl)journalArticle;
+				JournalArticleModelImpl cachedJournalArticleModelImpl =
+					(JournalArticleModelImpl)cachedJournalArticle;
+
+				journalArticleModelImpl.setDefaultLanguageId(
+					cachedJournalArticleModelImpl.getDefaultLanguageId());
+
+				journalArticleModelImpl.setDocument(
+					cachedJournalArticleModelImpl.getDocument());
 			}
 		}
 	}
@@ -32825,24 +32835,25 @@ public class JournalArticlePersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (journalArticle.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				journalArticle.setCreateDate(now);
+				journalArticle.setCreateDate(date);
 			}
 			else {
-				journalArticle.setCreateDate(serviceContext.getCreateDate(now));
+				journalArticle.setCreateDate(
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!journalArticleModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				journalArticle.setModifiedDate(now);
+				journalArticle.setModifiedDate(date);
 			}
 			else {
 				journalArticle.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

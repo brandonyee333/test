@@ -634,24 +634,24 @@ public class TestrayCasePersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (testrayCase.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				testrayCase.setCreateDate(now);
+				testrayCase.setCreateDate(date);
 			}
 			else {
-				testrayCase.setCreateDate(serviceContext.getCreateDate(now));
+				testrayCase.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!testrayCaseModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				testrayCase.setModifiedDate(now);
+				testrayCase.setModifiedDate(date);
 			}
 			else {
 				testrayCase.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

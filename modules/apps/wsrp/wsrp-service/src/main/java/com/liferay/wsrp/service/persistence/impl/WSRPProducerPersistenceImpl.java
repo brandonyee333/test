@@ -2266,24 +2266,24 @@ public class WSRPProducerPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (wsrpProducer.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				wsrpProducer.setCreateDate(now);
+				wsrpProducer.setCreateDate(date);
 			}
 			else {
-				wsrpProducer.setCreateDate(serviceContext.getCreateDate(now));
+				wsrpProducer.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!wsrpProducerModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				wsrpProducer.setModifiedDate(now);
+				wsrpProducer.setModifiedDate(date);
 			}
 			else {
 				wsrpProducer.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

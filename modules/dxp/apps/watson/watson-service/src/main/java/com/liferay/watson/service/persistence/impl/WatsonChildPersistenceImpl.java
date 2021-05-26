@@ -303,24 +303,24 @@ public class WatsonChildPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonChild.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonChild.setCreateDate(now);
+				watsonChild.setCreateDate(date);
 			}
 			else {
-				watsonChild.setCreateDate(serviceContext.getCreateDate(now));
+				watsonChild.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonChildModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonChild.setModifiedDate(now);
+				watsonChild.setModifiedDate(date);
 			}
 			else {
 				watsonChild.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

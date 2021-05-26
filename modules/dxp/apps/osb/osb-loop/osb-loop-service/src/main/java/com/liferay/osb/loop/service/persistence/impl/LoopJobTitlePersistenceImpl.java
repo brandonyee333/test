@@ -581,24 +581,24 @@ public class LoopJobTitlePersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (loopJobTitle.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				loopJobTitle.setCreateDate(now);
+				loopJobTitle.setCreateDate(date);
 			}
 			else {
-				loopJobTitle.setCreateDate(serviceContext.getCreateDate(now));
+				loopJobTitle.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!loopJobTitleModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				loopJobTitle.setModifiedDate(now);
+				loopJobTitle.setModifiedDate(date);
 			}
 			else {
 				loopJobTitle.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

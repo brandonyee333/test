@@ -832,25 +832,25 @@ public class GitHubContributorPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (gitHubContributor.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				gitHubContributor.setCreateDate(now);
+				gitHubContributor.setCreateDate(date);
 			}
 			else {
 				gitHubContributor.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!gitHubContributorModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				gitHubContributor.setModifiedDate(now);
+				gitHubContributor.setModifiedDate(date);
 			}
 			else {
 				gitHubContributor.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

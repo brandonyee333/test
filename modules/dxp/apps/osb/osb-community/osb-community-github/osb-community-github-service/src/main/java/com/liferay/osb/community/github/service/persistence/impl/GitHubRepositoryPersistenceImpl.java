@@ -661,25 +661,25 @@ public class GitHubRepositoryPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (gitHubRepository.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				gitHubRepository.setCreateDate(now);
+				gitHubRepository.setCreateDate(date);
 			}
 			else {
 				gitHubRepository.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!gitHubRepositoryModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				gitHubRepository.setModifiedDate(now);
+				gitHubRepository.setModifiedDate(date);
 			}
 			else {
 				gitHubRepository.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

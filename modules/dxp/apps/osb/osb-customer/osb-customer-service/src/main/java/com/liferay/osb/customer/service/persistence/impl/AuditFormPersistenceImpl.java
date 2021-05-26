@@ -27,14 +27,20 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -270,6 +276,38 @@ public class AuditFormPersistenceImpl
 	@Override
 	public AuditForm updateImpl(AuditForm auditForm) {
 		boolean isNew = auditForm.isNew();
+
+		if (!(auditForm instanceof AuditFormModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(auditForm.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(auditForm);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in auditForm proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom AuditForm implementation " +
+					auditForm.getClass());
+		}
+
+		AuditFormModelImpl auditFormModelImpl = (AuditFormModelImpl)auditForm;
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		Date date = new Date();
+
+		if (isNew && (auditForm.getCreateDate() == null)) {
+			if (serviceContext == null) {
+				auditForm.setCreateDate(date);
+			}
+			else {
+				auditForm.setCreateDate(serviceContext.getCreateDate(date));
+			}
+		}
 
 		Session session = null;
 

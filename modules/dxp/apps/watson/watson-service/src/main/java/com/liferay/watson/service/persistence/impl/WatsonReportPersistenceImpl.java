@@ -327,24 +327,24 @@ public class WatsonReportPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonReport.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonReport.setCreateDate(now);
+				watsonReport.setCreateDate(date);
 			}
 			else {
-				watsonReport.setCreateDate(serviceContext.getCreateDate(now));
+				watsonReport.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonReportModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonReport.setModifiedDate(now);
+				watsonReport.setModifiedDate(date);
 			}
 			else {
 				watsonReport.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

@@ -1102,24 +1102,25 @@ public class ShoppingCouponPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (shoppingCoupon.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				shoppingCoupon.setCreateDate(now);
+				shoppingCoupon.setCreateDate(date);
 			}
 			else {
-				shoppingCoupon.setCreateDate(serviceContext.getCreateDate(now));
+				shoppingCoupon.setCreateDate(
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!shoppingCouponModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				shoppingCoupon.setModifiedDate(now);
+				shoppingCoupon.setModifiedDate(date);
 			}
 			else {
 				shoppingCoupon.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

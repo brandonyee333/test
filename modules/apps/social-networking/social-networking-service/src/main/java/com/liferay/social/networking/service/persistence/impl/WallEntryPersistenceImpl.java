@@ -1831,23 +1831,23 @@ public class WallEntryPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (wallEntry.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				wallEntry.setCreateDate(now);
+				wallEntry.setCreateDate(date);
 			}
 			else {
-				wallEntry.setCreateDate(serviceContext.getCreateDate(now));
+				wallEntry.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!wallEntryModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				wallEntry.setModifiedDate(now);
+				wallEntry.setModifiedDate(date);
 			}
 			else {
-				wallEntry.setModifiedDate(serviceContext.getModifiedDate(now));
+				wallEntry.setModifiedDate(serviceContext.getModifiedDate(date));
 			}
 		}
 

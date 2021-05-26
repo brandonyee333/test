@@ -638,25 +638,25 @@ public class TestrayFactorCategoryPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (testrayFactorCategory.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				testrayFactorCategory.setCreateDate(now);
+				testrayFactorCategory.setCreateDate(date);
 			}
 			else {
 				testrayFactorCategory.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!testrayFactorCategoryModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				testrayFactorCategory.setModifiedDate(now);
+				testrayFactorCategory.setModifiedDate(date);
 			}
 			else {
 				testrayFactorCategory.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

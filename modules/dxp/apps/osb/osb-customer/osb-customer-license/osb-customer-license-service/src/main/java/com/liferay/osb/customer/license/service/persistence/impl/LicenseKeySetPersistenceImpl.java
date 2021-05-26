@@ -2072,24 +2072,24 @@ public class LicenseKeySetPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (licenseKeySet.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				licenseKeySet.setCreateDate(now);
+				licenseKeySet.setCreateDate(date);
 			}
 			else {
-				licenseKeySet.setCreateDate(serviceContext.getCreateDate(now));
+				licenseKeySet.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!licenseKeySetModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				licenseKeySet.setModifiedDate(now);
+				licenseKeySet.setModifiedDate(date);
 			}
 			else {
 				licenseKeySet.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

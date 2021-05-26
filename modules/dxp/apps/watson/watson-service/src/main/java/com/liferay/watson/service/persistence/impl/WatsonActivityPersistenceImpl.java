@@ -309,24 +309,25 @@ public class WatsonActivityPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonActivity.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonActivity.setCreateDate(now);
+				watsonActivity.setCreateDate(date);
 			}
 			else {
-				watsonActivity.setCreateDate(serviceContext.getCreateDate(now));
+				watsonActivity.setCreateDate(
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonActivityModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonActivity.setModifiedDate(now);
+				watsonActivity.setModifiedDate(date);
 			}
 			else {
 				watsonActivity.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

@@ -347,25 +347,25 @@ public class WatsonIncidentRelAuditPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonIncidentRelAudit.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonIncidentRelAudit.setCreateDate(now);
+				watsonIncidentRelAudit.setCreateDate(date);
 			}
 			else {
 				watsonIncidentRelAudit.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonIncidentRelAuditModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonIncidentRelAudit.setModifiedDate(now);
+				watsonIncidentRelAudit.setModifiedDate(date);
 			}
 			else {
 				watsonIncidentRelAudit.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

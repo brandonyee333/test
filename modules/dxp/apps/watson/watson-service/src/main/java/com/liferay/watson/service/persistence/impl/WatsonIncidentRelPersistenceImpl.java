@@ -332,25 +332,25 @@ public class WatsonIncidentRelPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonIncidentRel.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonIncidentRel.setCreateDate(now);
+				watsonIncidentRel.setCreateDate(date);
 			}
 			else {
 				watsonIncidentRel.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonIncidentRelModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonIncidentRel.setModifiedDate(now);
+				watsonIncidentRel.setModifiedDate(date);
 			}
 			else {
 				watsonIncidentRel.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

@@ -309,24 +309,25 @@ public class WatsonDocumentPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonDocument.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonDocument.setCreateDate(now);
+				watsonDocument.setCreateDate(date);
 			}
 			else {
-				watsonDocument.setCreateDate(serviceContext.getCreateDate(now));
+				watsonDocument.setCreateDate(
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonDocumentModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonDocument.setModifiedDate(now);
+				watsonDocument.setModifiedDate(date);
 			}
 			else {
 				watsonDocument.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

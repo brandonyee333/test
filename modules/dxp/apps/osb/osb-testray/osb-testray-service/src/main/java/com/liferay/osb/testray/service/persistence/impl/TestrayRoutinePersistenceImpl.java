@@ -309,24 +309,25 @@ public class TestrayRoutinePersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (testrayRoutine.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				testrayRoutine.setCreateDate(now);
+				testrayRoutine.setCreateDate(date);
 			}
 			else {
-				testrayRoutine.setCreateDate(serviceContext.getCreateDate(now));
+				testrayRoutine.setCreateDate(
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!testrayRoutineModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				testrayRoutine.setModifiedDate(now);
+				testrayRoutine.setModifiedDate(date);
 			}
 			else {
 				testrayRoutine.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

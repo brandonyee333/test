@@ -2085,25 +2085,25 @@ public class ExternalIdMapperPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (externalIdMapper.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				externalIdMapper.setCreateDate(now);
+				externalIdMapper.setCreateDate(date);
 			}
 			else {
 				externalIdMapper.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!externalIdMapperModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				externalIdMapper.setModifiedDate(now);
+				externalIdMapper.setModifiedDate(date);
 			}
 			else {
 				externalIdMapper.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

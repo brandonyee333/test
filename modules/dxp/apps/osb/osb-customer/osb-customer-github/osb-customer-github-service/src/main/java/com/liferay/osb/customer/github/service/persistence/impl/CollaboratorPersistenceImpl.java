@@ -28,6 +28,8 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -42,6 +44,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -3094,6 +3097,20 @@ public class CollaboratorPersistenceImpl
 
 		CollaboratorModelImpl collaboratorModelImpl =
 			(CollaboratorModelImpl)collaborator;
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		Date date = new Date();
+
+		if (isNew && (collaborator.getCreateDate() == null)) {
+			if (serviceContext == null) {
+				collaborator.setCreateDate(date);
+			}
+			else {
+				collaborator.setCreateDate(serviceContext.getCreateDate(date));
+			}
+		}
 
 		Session session = null;
 

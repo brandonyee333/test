@@ -616,23 +616,23 @@ public class FeedPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (feed.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				feed.setCreateDate(now);
+				feed.setCreateDate(date);
 			}
 			else {
-				feed.setCreateDate(serviceContext.getCreateDate(now));
+				feed.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!feedModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				feed.setModifiedDate(now);
+				feed.setModifiedDate(date);
 			}
 			else {
-				feed.setModifiedDate(serviceContext.getModifiedDate(now));
+				feed.setModifiedDate(serviceContext.getModifiedDate(date));
 			}
 		}
 

@@ -329,24 +329,25 @@ public class WatsonListTypePersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonListType.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonListType.setCreateDate(now);
+				watsonListType.setCreateDate(date);
 			}
 			else {
-				watsonListType.setCreateDate(serviceContext.getCreateDate(now));
+				watsonListType.setCreateDate(
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonListTypeModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonListType.setModifiedDate(now);
+				watsonListType.setModifiedDate(date);
 			}
 			else {
 				watsonListType.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

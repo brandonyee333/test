@@ -335,25 +335,25 @@ public class WatsonAddressAuditPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonAddressAudit.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonAddressAudit.setCreateDate(now);
+				watsonAddressAudit.setCreateDate(date);
 			}
 			else {
 				watsonAddressAudit.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonAddressAuditModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonAddressAudit.setModifiedDate(now);
+				watsonAddressAudit.setModifiedDate(date);
 			}
 			else {
 				watsonAddressAudit.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

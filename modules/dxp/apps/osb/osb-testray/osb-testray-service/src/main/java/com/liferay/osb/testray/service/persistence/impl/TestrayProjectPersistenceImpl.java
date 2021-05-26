@@ -617,24 +617,25 @@ public class TestrayProjectPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (testrayProject.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				testrayProject.setCreateDate(now);
+				testrayProject.setCreateDate(date);
 			}
 			else {
-				testrayProject.setCreateDate(serviceContext.getCreateDate(now));
+				testrayProject.setCreateDate(
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!testrayProjectModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				testrayProject.setModifiedDate(now);
+				testrayProject.setModifiedDate(date);
 			}
 			else {
 				testrayProject.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

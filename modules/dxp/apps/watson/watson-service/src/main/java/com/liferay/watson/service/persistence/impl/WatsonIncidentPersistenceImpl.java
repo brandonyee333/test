@@ -309,24 +309,25 @@ public class WatsonIncidentPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonIncident.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonIncident.setCreateDate(now);
+				watsonIncident.setCreateDate(date);
 			}
 			else {
-				watsonIncident.setCreateDate(serviceContext.getCreateDate(now));
+				watsonIncident.setCreateDate(
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonIncidentModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonIncident.setModifiedDate(now);
+				watsonIncident.setModifiedDate(date);
 			}
 			else {
 				watsonIncident.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

@@ -2331,24 +2331,24 @@ public class ShoppingItemPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (shoppingItem.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				shoppingItem.setCreateDate(now);
+				shoppingItem.setCreateDate(date);
 			}
 			else {
-				shoppingItem.setCreateDate(serviceContext.getCreateDate(now));
+				shoppingItem.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!shoppingItemModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				shoppingItem.setModifiedDate(now);
+				shoppingItem.setModifiedDate(date);
 			}
 			else {
 				shoppingItem.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

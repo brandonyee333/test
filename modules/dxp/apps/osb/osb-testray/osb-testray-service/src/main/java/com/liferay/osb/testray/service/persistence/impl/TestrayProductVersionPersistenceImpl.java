@@ -641,25 +641,25 @@ public class TestrayProductVersionPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (testrayProductVersion.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				testrayProductVersion.setCreateDate(now);
+				testrayProductVersion.setCreateDate(date);
 			}
 			else {
 				testrayProductVersion.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!testrayProductVersionModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				testrayProductVersion.setModifiedDate(now);
+				testrayProductVersion.setModifiedDate(date);
 			}
 			else {
 				testrayProductVersion.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

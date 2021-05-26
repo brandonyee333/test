@@ -2477,25 +2477,25 @@ public class ShoppingCategoryPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (shoppingCategory.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				shoppingCategory.setCreateDate(now);
+				shoppingCategory.setCreateDate(date);
 			}
 			else {
 				shoppingCategory.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!shoppingCategoryModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				shoppingCategory.setModifiedDate(now);
+				shoppingCategory.setModifiedDate(date);
 			}
 			else {
 				shoppingCategory.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

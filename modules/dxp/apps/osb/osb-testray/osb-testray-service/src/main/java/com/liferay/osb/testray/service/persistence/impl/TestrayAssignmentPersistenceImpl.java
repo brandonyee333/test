@@ -312,25 +312,25 @@ public class TestrayAssignmentPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (testrayAssignment.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				testrayAssignment.setCreateDate(now);
+				testrayAssignment.setCreateDate(date);
 			}
 			else {
 				testrayAssignment.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!testrayAssignmentModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				testrayAssignment.setModifiedDate(now);
+				testrayAssignment.setModifiedDate(date);
 			}
 			else {
 				testrayAssignment.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

@@ -1573,24 +1573,24 @@ public class ShoppingCartPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (shoppingCart.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				shoppingCart.setCreateDate(now);
+				shoppingCart.setCreateDate(date);
 			}
 			else {
-				shoppingCart.setCreateDate(serviceContext.getCreateDate(now));
+				shoppingCart.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!shoppingCartModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				shoppingCart.setModifiedDate(now);
+				shoppingCart.setModifiedDate(date);
 			}
 			else {
 				shoppingCart.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

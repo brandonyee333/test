@@ -2855,24 +2855,24 @@ public class ShoppingOrderPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (shoppingOrder.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				shoppingOrder.setCreateDate(now);
+				shoppingOrder.setCreateDate(date);
 			}
 			else {
-				shoppingOrder.setCreateDate(serviceContext.getCreateDate(now));
+				shoppingOrder.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!shoppingOrderModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				shoppingOrder.setModifiedDate(now);
+				shoppingOrder.setModifiedDate(date);
 			}
 			else {
 				shoppingOrder.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

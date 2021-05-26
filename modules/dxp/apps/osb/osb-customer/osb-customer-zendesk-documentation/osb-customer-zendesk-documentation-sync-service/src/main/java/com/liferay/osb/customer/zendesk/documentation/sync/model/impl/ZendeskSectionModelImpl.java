@@ -448,8 +448,14 @@ public class ZendeskSectionModelImpl
 		return _modifiedDate;
 	}
 
+	public boolean hasSetModifiedDate() {
+		return _setModifiedDate;
+	}
+
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		_setModifiedDate = true;
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -802,6 +808,7 @@ public class ZendeskSectionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_setModifiedDate = false;
 		_originalZendeskCategoryId = _zendeskCategoryId;
 
 		_setOriginalZendeskCategoryId = false;
@@ -930,6 +937,7 @@ public class ZendeskSectionModelImpl
 
 	private long _zendeskSectionId;
 	private Date _modifiedDate;
+	private boolean _setModifiedDate;
 	private long _zendeskCategoryId;
 	private long _originalZendeskCategoryId;
 	private boolean _setOriginalZendeskCategoryId;

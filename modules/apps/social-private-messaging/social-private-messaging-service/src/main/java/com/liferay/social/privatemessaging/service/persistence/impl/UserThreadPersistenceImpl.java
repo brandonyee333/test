@@ -2731,23 +2731,24 @@ public class UserThreadPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (userThread.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				userThread.setCreateDate(now);
+				userThread.setCreateDate(date);
 			}
 			else {
-				userThread.setCreateDate(serviceContext.getCreateDate(now));
+				userThread.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!userThreadModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				userThread.setModifiedDate(now);
+				userThread.setModifiedDate(date);
 			}
 			else {
-				userThread.setModifiedDate(serviceContext.getModifiedDate(now));
+				userThread.setModifiedDate(
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

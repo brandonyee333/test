@@ -1684,25 +1684,25 @@ public class MeetupsRegistrationPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (meetupsRegistration.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				meetupsRegistration.setCreateDate(now);
+				meetupsRegistration.setCreateDate(date);
 			}
 			else {
 				meetupsRegistration.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!meetupsRegistrationModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				meetupsRegistration.setModifiedDate(now);
+				meetupsRegistration.setModifiedDate(date);
 			}
 			else {
 				meetupsRegistration.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

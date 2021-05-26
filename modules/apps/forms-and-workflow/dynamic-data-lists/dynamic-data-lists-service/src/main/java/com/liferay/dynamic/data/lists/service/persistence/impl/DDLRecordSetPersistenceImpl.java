@@ -3123,15 +3123,22 @@ public class DDLRecordSetPersistenceImpl
 	@Override
 	public void cacheResult(List<DDLRecordSet> ddlRecordSets) {
 		for (DDLRecordSet ddlRecordSet : ddlRecordSets) {
-			if (entityCache.getResult(
+			DDLRecordSet cachedDDLRecordSet =
+				(DDLRecordSet)entityCache.getResult(
 					DDLRecordSetModelImpl.ENTITY_CACHE_ENABLED,
-					DDLRecordSetImpl.class, ddlRecordSet.getPrimaryKey()) ==
-						null) {
+					DDLRecordSetImpl.class, ddlRecordSet.getPrimaryKey());
 
+			if (cachedDDLRecordSet == null) {
 				cacheResult(ddlRecordSet);
 			}
 			else {
-				ddlRecordSet.resetOriginalValues();
+				DDLRecordSetModelImpl ddlRecordSetModelImpl =
+					(DDLRecordSetModelImpl)ddlRecordSet;
+				DDLRecordSetModelImpl cachedDDLRecordSetModelImpl =
+					(DDLRecordSetModelImpl)cachedDDLRecordSet;
+
+				ddlRecordSetModelImpl.setDDMFormValues(
+					cachedDDLRecordSetModelImpl.getDDMFormValues());
 			}
 		}
 	}
@@ -3408,24 +3415,24 @@ public class DDLRecordSetPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (ddlRecordSet.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				ddlRecordSet.setCreateDate(now);
+				ddlRecordSet.setCreateDate(date);
 			}
 			else {
-				ddlRecordSet.setCreateDate(serviceContext.getCreateDate(now));
+				ddlRecordSet.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!ddlRecordSetModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				ddlRecordSet.setModifiedDate(now);
+				ddlRecordSet.setModifiedDate(date);
 			}
 			else {
 				ddlRecordSet.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

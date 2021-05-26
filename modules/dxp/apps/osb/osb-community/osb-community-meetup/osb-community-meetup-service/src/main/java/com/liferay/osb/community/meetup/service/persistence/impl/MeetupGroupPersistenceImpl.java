@@ -305,24 +305,24 @@ public class MeetupGroupPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (meetupGroup.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				meetupGroup.setCreateDate(now);
+				meetupGroup.setCreateDate(date);
 			}
 			else {
-				meetupGroup.setCreateDate(serviceContext.getCreateDate(now));
+				meetupGroup.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!meetupGroupModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				meetupGroup.setModifiedDate(now);
+				meetupGroup.setModifiedDate(date);
 			}
 			else {
 				meetupGroup.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

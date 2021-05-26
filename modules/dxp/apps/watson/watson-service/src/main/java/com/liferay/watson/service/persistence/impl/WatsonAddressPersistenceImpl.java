@@ -328,24 +328,24 @@ public class WatsonAddressPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonAddress.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonAddress.setCreateDate(now);
+				watsonAddress.setCreateDate(date);
 			}
 			else {
-				watsonAddress.setCreateDate(serviceContext.getCreateDate(now));
+				watsonAddress.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonAddressModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonAddress.setModifiedDate(now);
+				watsonAddress.setModifiedDate(date);
 			}
 			else {
 				watsonAddress.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

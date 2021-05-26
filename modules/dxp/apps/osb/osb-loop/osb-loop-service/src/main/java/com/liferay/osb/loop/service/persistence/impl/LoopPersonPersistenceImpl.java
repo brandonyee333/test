@@ -552,23 +552,24 @@ public class LoopPersonPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (loopPerson.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				loopPerson.setCreateDate(now);
+				loopPerson.setCreateDate(date);
 			}
 			else {
-				loopPerson.setCreateDate(serviceContext.getCreateDate(now));
+				loopPerson.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!loopPersonModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				loopPerson.setModifiedDate(now);
+				loopPerson.setModifiedDate(date);
 			}
 			else {
-				loopPerson.setModifiedDate(serviceContext.getModifiedDate(now));
+				loopPerson.setModifiedDate(
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

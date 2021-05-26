@@ -28,6 +28,8 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -42,6 +44,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -2389,6 +2392,21 @@ public class AccountAttachmentPersistenceImpl
 
 		AccountAttachmentModelImpl accountAttachmentModelImpl =
 			(AccountAttachmentModelImpl)accountAttachment;
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		Date date = new Date();
+
+		if (isNew && (accountAttachment.getCreateDate() == null)) {
+			if (serviceContext == null) {
+				accountAttachment.setCreateDate(date);
+			}
+			else {
+				accountAttachment.setCreateDate(
+					serviceContext.getCreateDate(date));
+			}
+		}
 
 		Session session = null;
 

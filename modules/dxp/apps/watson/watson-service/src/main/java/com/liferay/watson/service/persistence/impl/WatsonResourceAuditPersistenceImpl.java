@@ -315,25 +315,25 @@ public class WatsonResourceAuditPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonResourceAudit.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonResourceAudit.setCreateDate(now);
+				watsonResourceAudit.setCreateDate(date);
 			}
 			else {
 				watsonResourceAudit.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonResourceAuditModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonResourceAudit.setModifiedDate(now);
+				watsonResourceAudit.setModifiedDate(date);
 			}
 			else {
 				watsonResourceAudit.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

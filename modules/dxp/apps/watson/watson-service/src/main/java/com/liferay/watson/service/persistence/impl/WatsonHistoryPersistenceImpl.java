@@ -328,24 +328,24 @@ public class WatsonHistoryPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonHistory.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonHistory.setCreateDate(now);
+				watsonHistory.setCreateDate(date);
 			}
 			else {
-				watsonHistory.setCreateDate(serviceContext.getCreateDate(now));
+				watsonHistory.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonHistoryModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonHistory.setModifiedDate(now);
+				watsonHistory.setModifiedDate(date);
 			}
 			else {
 				watsonHistory.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

@@ -1535,25 +1535,25 @@ public class AccountEnvironmentAttachmentPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (accountEnvironmentAttachment.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				accountEnvironmentAttachment.setCreateDate(now);
+				accountEnvironmentAttachment.setCreateDate(date);
 			}
 			else {
 				accountEnvironmentAttachment.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!accountEnvironmentAttachmentModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				accountEnvironmentAttachment.setModifiedDate(now);
+				accountEnvironmentAttachment.setModifiedDate(date);
 			}
 			else {
 				accountEnvironmentAttachment.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

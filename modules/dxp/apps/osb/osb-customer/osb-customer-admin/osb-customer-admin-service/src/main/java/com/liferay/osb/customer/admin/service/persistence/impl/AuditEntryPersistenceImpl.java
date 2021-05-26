@@ -28,6 +28,8 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -2983,6 +2985,20 @@ public class AuditEntryPersistenceImpl
 
 		AuditEntryModelImpl auditEntryModelImpl =
 			(AuditEntryModelImpl)auditEntry;
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		Date date = new Date();
+
+		if (isNew && (auditEntry.getCreateDate() == null)) {
+			if (serviceContext == null) {
+				auditEntry.setCreateDate(date);
+			}
+			else {
+				auditEntry.setCreateDate(serviceContext.getCreateDate(date));
+			}
+		}
 
 		Session session = null;
 

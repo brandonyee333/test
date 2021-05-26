@@ -307,24 +307,24 @@ public class WatsonPersonPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonPerson.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonPerson.setCreateDate(now);
+				watsonPerson.setCreateDate(date);
 			}
 			else {
-				watsonPerson.setCreateDate(serviceContext.getCreateDate(now));
+				watsonPerson.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonPersonModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonPerson.setModifiedDate(now);
+				watsonPerson.setModifiedDate(date);
 			}
 			else {
 				watsonPerson.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

@@ -2823,23 +2823,24 @@ public class DocProjectPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (docProject.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				docProject.setCreateDate(now);
+				docProject.setCreateDate(date);
 			}
 			else {
-				docProject.setCreateDate(serviceContext.getCreateDate(now));
+				docProject.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!docProjectModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				docProject.setModifiedDate(now);
+				docProject.setModifiedDate(date);
 			}
 			else {
-				docProject.setModifiedDate(serviceContext.getModifiedDate(now));
+				docProject.setModifiedDate(
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

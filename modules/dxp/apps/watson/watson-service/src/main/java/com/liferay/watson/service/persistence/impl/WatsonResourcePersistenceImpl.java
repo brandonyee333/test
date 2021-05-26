@@ -309,24 +309,25 @@ public class WatsonResourcePersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonResource.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonResource.setCreateDate(now);
+				watsonResource.setCreateDate(date);
 			}
 			else {
-				watsonResource.setCreateDate(serviceContext.getCreateDate(now));
+				watsonResource.setCreateDate(
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonResourceModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonResource.setModifiedDate(now);
+				watsonResource.setModifiedDate(date);
 			}
 			else {
 				watsonResource.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

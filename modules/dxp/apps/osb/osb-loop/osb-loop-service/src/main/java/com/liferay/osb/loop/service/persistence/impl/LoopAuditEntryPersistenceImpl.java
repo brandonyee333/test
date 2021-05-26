@@ -309,24 +309,25 @@ public class LoopAuditEntryPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (loopAuditEntry.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				loopAuditEntry.setCreateDate(now);
+				loopAuditEntry.setCreateDate(date);
 			}
 			else {
-				loopAuditEntry.setCreateDate(serviceContext.getCreateDate(now));
+				loopAuditEntry.setCreateDate(
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!loopAuditEntryModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				loopAuditEntry.setModifiedDate(now);
+				loopAuditEntry.setModifiedDate(date);
 			}
 			else {
 				loopAuditEntry.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

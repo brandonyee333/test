@@ -603,23 +603,23 @@ public class LoopTopicPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (loopTopic.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				loopTopic.setCreateDate(now);
+				loopTopic.setCreateDate(date);
 			}
 			else {
-				loopTopic.setCreateDate(serviceContext.getCreateDate(now));
+				loopTopic.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!loopTopicModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				loopTopic.setModifiedDate(now);
+				loopTopic.setModifiedDate(date);
 			}
 			else {
-				loopTopic.setModifiedDate(serviceContext.getModifiedDate(now));
+				loopTopic.setModifiedDate(serviceContext.getModifiedDate(date));
 			}
 		}
 

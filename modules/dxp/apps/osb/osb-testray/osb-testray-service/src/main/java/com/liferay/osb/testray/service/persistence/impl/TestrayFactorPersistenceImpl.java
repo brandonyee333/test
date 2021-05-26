@@ -1170,24 +1170,24 @@ public class TestrayFactorPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (testrayFactor.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				testrayFactor.setCreateDate(now);
+				testrayFactor.setCreateDate(date);
 			}
 			else {
-				testrayFactor.setCreateDate(serviceContext.getCreateDate(now));
+				testrayFactor.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!testrayFactorModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				testrayFactor.setModifiedDate(now);
+				testrayFactor.setModifiedDate(date);
 			}
 			else {
 				testrayFactor.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

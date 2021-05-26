@@ -315,25 +315,25 @@ public class WatsonDocumentAuditPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonDocumentAudit.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonDocumentAudit.setCreateDate(now);
+				watsonDocumentAudit.setCreateDate(date);
 			}
 			else {
 				watsonDocumentAudit.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonDocumentAuditModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonDocumentAudit.setModifiedDate(now);
+				watsonDocumentAudit.setModifiedDate(date);
 			}
 			else {
 				watsonDocumentAudit.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

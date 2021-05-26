@@ -852,25 +852,25 @@ public class TestrayCaseResultWarningPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (testrayCaseResultWarning.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				testrayCaseResultWarning.setCreateDate(now);
+				testrayCaseResultWarning.setCreateDate(date);
 			}
 			else {
 				testrayCaseResultWarning.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!testrayCaseResultWarningModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				testrayCaseResultWarning.setModifiedDate(now);
+				testrayCaseResultWarning.setModifiedDate(date);
 			}
 			else {
 				testrayCaseResultWarning.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

@@ -308,24 +308,24 @@ public class WatsonVehiclePersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonVehicle.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonVehicle.setCreateDate(now);
+				watsonVehicle.setCreateDate(date);
 			}
 			else {
-				watsonVehicle.setCreateDate(serviceContext.getCreateDate(now));
+				watsonVehicle.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonVehicleModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonVehicle.setModifiedDate(now);
+				watsonVehicle.setModifiedDate(date);
 			}
 			else {
 				watsonVehicle.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

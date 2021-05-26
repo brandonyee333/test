@@ -1974,24 +1974,24 @@ public class ReleaseNotesPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (releaseNotes.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				releaseNotes.setCreateDate(now);
+				releaseNotes.setCreateDate(date);
 			}
 			else {
-				releaseNotes.setCreateDate(serviceContext.getCreateDate(now));
+				releaseNotes.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!releaseNotesModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				releaseNotes.setModifiedDate(now);
+				releaseNotes.setModifiedDate(date);
 			}
 			else {
 				releaseNotes.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

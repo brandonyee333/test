@@ -327,25 +327,25 @@ public class WatsonRelationshipAuditPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonRelationshipAudit.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonRelationshipAudit.setCreateDate(now);
+				watsonRelationshipAudit.setCreateDate(date);
 			}
 			else {
 				watsonRelationshipAudit.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonRelationshipAuditModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonRelationshipAudit.setModifiedDate(now);
+				watsonRelationshipAudit.setModifiedDate(date);
 			}
 			else {
 				watsonRelationshipAudit.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

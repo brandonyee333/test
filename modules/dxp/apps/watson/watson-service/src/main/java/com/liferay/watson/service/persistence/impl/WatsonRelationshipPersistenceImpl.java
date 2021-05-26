@@ -315,25 +315,25 @@ public class WatsonRelationshipPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (watsonRelationship.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				watsonRelationship.setCreateDate(now);
+				watsonRelationship.setCreateDate(date);
 			}
 			else {
 				watsonRelationship.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!watsonRelationshipModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				watsonRelationship.setModifiedDate(now);
+				watsonRelationship.setModifiedDate(date);
 			}
 			else {
 				watsonRelationship.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 
