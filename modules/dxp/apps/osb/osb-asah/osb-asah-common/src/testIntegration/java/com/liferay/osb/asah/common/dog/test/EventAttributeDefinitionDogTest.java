@@ -189,7 +189,8 @@ public class EventAttributeDefinitionDogTest {
 	public void testCountEventAttributeDefinitions() {
 		Assert.assertEquals(
 			Long.valueOf(30),
-			_eventAttributeDefinitionDog.countEventAttributeDefinitions(null));
+			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
+				null, EventAttributeDefinition.Type.LOCAL));
 	}
 
 	@Test
@@ -197,7 +198,7 @@ public class EventAttributeDefinitionDogTest {
 		Assert.assertEquals(
 			Long.valueOf(2),
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				"file"));
+				"file", EventAttributeDefinition.Type.LOCAL));
 	}
 
 	@Test
@@ -394,7 +395,8 @@ public class EventAttributeDefinitionDogTest {
 	public void testGetEventAttributeDefinitions() {
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
-				null, 0, 5, Sort.asc("name")),
+				null, 0, 5, Sort.asc("name"),
+				EventAttributeDefinition.Type.LOCAL),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
 				{
 					put("articleId", EventAttributeDefinition.DataType.STRING);
@@ -441,7 +443,8 @@ public class EventAttributeDefinitionDogTest {
 	public void testGetEventAttributeDefinitionsWithKeywordMatchDescription() {
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
-				"seller", 0, 5, Sort.asc("name")),
+				"seller", 0, 5, Sort.asc("name"),
+				EventAttributeDefinition.Type.LOCAL),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
 				{
 					put(
@@ -458,7 +461,8 @@ public class EventAttributeDefinitionDogTest {
 	public void testGetEventAttributeDefinitionsWithKeywordMatchDisplayName() {
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
-				"number of", 0, 5, Sort.asc("name")),
+				"number of", 0, 5, Sort.asc("name"),
+				EventAttributeDefinition.Type.LOCAL),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
 				{
 					put(
@@ -478,7 +482,8 @@ public class EventAttributeDefinitionDogTest {
 	public void testGetEventAttributeDefinitionsWithKeywordMatchName() {
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
-				"ity", 0, 5, Sort.asc("name")),
+				"ity", 0, 5, Sort.asc("name"),
+				EventAttributeDefinition.Type.LOCAL),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
 				{
 					put(

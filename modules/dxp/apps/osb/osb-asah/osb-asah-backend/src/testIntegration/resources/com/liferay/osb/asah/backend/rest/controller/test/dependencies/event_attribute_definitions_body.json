@@ -7,6 +7,7 @@
 		"sort": {
 			"column": "name",
 			"type": "ASC"
-		}
+		},
+		"type": "LOCAL"
 	}
 }

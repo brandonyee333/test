@@ -1,6 +1,6 @@
 INSERT INTO Channel(createDate, name) VALUES('2021-03-03 18:12:00-07', 'testChannelName');
 
-INSERT INTO EventAttributeDefinition(dataType, displayName, name) VALUES('NUMBER', 'Item Price', 'itemPrice');
+INSERT INTO EventAttributeDefinition(dataType, displayName, name, type) VALUES('NUMBER', 'Item Price', 'itemPrice', 'LOCAL');
 
 INSERT INTO EventDefinition(displayName, name, type) VALUES('Added To Cart', 'addedToCart', 'CUSTOM');
 

@@ -1,12 +1,13 @@
-query EventAttributeDefinitions($keyword: String, $page: Int!, $size: Int!, $sort: Sort!) {
-    eventAttributeDefinitions(keyword: $keyword, page: $page, size: $size, sort: $sort) {
+query EventAttributeDefinitions($keyword: String, $page: Int!, $size: Int!, $sort: Sort!, $type: EventAttributeDefinitionType!) {
+    eventAttributeDefinitions(keyword: $keyword, page: $page, size: $size, sort: $sort, type: $type) {
         eventAttributeDefinitions {
             ... on EventAttributeDefinition {
                 dataType
                 description
                 displayName
-                sampleValue
                 name
+                sampleValue
+                type
                 __typename
             }
             __typename

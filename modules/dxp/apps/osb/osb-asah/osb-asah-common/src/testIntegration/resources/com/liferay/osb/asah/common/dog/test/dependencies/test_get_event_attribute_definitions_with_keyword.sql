@@ -1,8 +1,8 @@
-INSERT INTO EventAttributeDefinition(description, dataType, displayName, name) VALUES('Seller added description', 'STRING', 'Item Description', 'itemDescription');
-INSERT INTO EventAttributeDefinition(description, dataType, displayName, name) VALUES(null, 'NUMBER', 'Item Price', 'itemPrice');
-INSERT INTO EventAttributeDefinition(description, dataType, displayName, name) VALUES('How much of the same item the buyer wanted', 'NUMBER', 'Number of items', 'itemQuantity');
-INSERT INTO EventAttributeDefinition(description, dataType, displayName, name) VALUES('Whether the item is new or used', 'STRING', 'Item Status', 'itemQuality');
-INSERT INTO EventAttributeDefinition(description, dataType, displayName, name) VALUES('Amount of feedback given to item', 'NUMBER', 'Number of Reviews', 'numberOfReviews');
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES('Seller added description', 'STRING', 'Item Description', 'itemDescription', 'LOCAL');
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES(null, 'NUMBER', 'Item Price', 'itemPrice', 'LOCAL');
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES('How much of the same item the buyer wanted', 'NUMBER', 'Number of items', 'itemQuantity', 'LOCAL');
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES('Whether the item is new or used', 'STRING', 'Item Status', 'itemQuality', 'LOCAL');
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES('Amount of feedback given to item', 'NUMBER', 'Number of Reviews', 'numberOfReviews', 'LOCAL');
 
 INSERT INTO EventDefinition(displayName, name, type) VALUES('Added To Cart', 'addedToCart', 'CUSTOM');
 

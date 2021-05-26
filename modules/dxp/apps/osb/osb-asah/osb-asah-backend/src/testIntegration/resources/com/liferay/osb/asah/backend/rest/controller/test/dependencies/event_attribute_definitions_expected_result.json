@@ -9,7 +9,8 @@
 					"description": null,
 					"displayName": "articleId",
 					"name": "articleId",
-					"sampleValue": null
+					"sampleValue": null,
+					"type": "LOCAL"
 				},
 				{
 					"__typename": "EventAttributeDefinition",
@@ -17,7 +18,8 @@
 					"description": null,
 					"displayName": "assetId",
 					"name": "assetId",
-					"sampleValue": null
+					"sampleValue": null,
+					"type": "LOCAL"
 				},
 				{
 					"__typename": "EventAttributeDefinition",
@@ -25,7 +27,8 @@
 					"description": null,
 					"displayName": "commentId",
 					"name": "commentId",
-					"sampleValue": null
+					"sampleValue": null,
+					"type": "LOCAL"
 				},
 				{
 					"__typename": "EventAttributeDefinition",
@@ -33,7 +36,8 @@
 					"description": null,
 					"displayName": "elementId",
 					"name": "elementId",
-					"sampleValue": null
+					"sampleValue": null,
+					"type": "LOCAL"
 				},
 				{
 					"__typename": "EventAttributeDefinition",
@@ -41,7 +45,8 @@
 					"description": null,
 					"displayName": "entryId",
 					"name": "entryId",
-					"sampleValue": null
+					"sampleValue": null,
+					"type": "LOCAL"
 				}
 			],
 			"total": 10
