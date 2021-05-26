@@ -363,14 +363,14 @@ public class ExperimentDogTest {
 
 	private void _assertExperimentVariantMetric(
 		ExperimentVariantMetric actualExperimentVariantMetric,
-		BigDecimal[] expectedConfidenceIntervalArray,
-		double expectetedImprovement, double expectedMedian,
-		double expectedProbabilityToWin, String expectedDXPVariantId) {
+		BigDecimal[] expectedConfidenceIntervals, double expectetedImprovement,
+		double expectedMedian, double expectedProbabilityToWin,
+		String expectedDXPVariantId) {
 
 		Assert.assertArrayEquals(
-			_mapToDoubleArray(expectedConfidenceIntervalArray),
-			_mapToDoubleArray(
-				actualExperimentVariantMetric.getConfidenceIntervalArray()),
+			_mapToDoubles(expectedConfidenceIntervals),
+			_mapToDoubles(
+				actualExperimentVariantMetric.getConfidenceIntervals()),
 			.1);
 
 		Assert.assertEquals(
@@ -412,7 +412,7 @@ public class ExperimentDogTest {
 			expectedHistogramMetricValue, actualHistogramMetric.getValue(), .1);
 	}
 
-	private double[] _mapToDoubleArray(BigDecimal[] bigDecimalArray) {
+	private double[] _mapToDoubles(BigDecimal[] bigDecimalArray) {
 		ToDoubleFunction<BigDecimal> toDoubleFunction =
 			bigDecimal -> bigDecimal.doubleValue();
 

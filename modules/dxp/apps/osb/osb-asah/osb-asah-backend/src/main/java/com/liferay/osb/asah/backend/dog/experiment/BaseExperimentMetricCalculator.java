@@ -206,7 +206,7 @@ public abstract class BaseExperimentMetricCalculator<T>
 		return value;
 	}
 
-	private BigDecimal[] _calculateConfidenceIntervalArray(
+	private BigDecimal[] _calculateConfidenceIntervals(
 		double confidenceLevel, DoubleTensor doubleTensor,
 		GoalMetric goalMetric) {
 
@@ -343,7 +343,7 @@ public abstract class BaseExperimentMetricCalculator<T>
 			new ExperimentVariantMetric(
 				variant.isControl(), variant.getDXPVariantId());
 
-		experimentVariantMetric.setConfidenceIntervalArray(
+		experimentVariantMetric.setConfidenceIntervals(
 			new BigDecimal[] {
 				BigDecimal.valueOf(0.0), BigDecimal.valueOf(0.0)
 			});
@@ -366,8 +366,8 @@ public abstract class BaseExperimentMetricCalculator<T>
 		DoubleTensor variantDoubleTensor = variantDoubleTensorMap.get(
 			variant.getDXPVariantId());
 
-		experimentVariantMetric.setConfidenceIntervalArray(
-			_calculateConfidenceIntervalArray(
+		experimentVariantMetric.setConfidenceIntervals(
+			_calculateConfidenceIntervals(
 				confidenceLevel, variantDoubleTensor, goalMetric));
 		experimentVariantMetric.setMedian(
 			_calculateMedian(variantDoubleTensor, goalMetric));

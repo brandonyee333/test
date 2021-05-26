@@ -78,25 +78,24 @@ public class ExperimentVariantMetric {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Column("confidenceinterval")
-	@JsonProperty("confidenceInterval")
-	public BigDecimal[] getConfidenceIntervalArray() {
-		return Arrays.copyOf(
-			_confidenceIntervalArray, _confidenceIntervalArray.length);
-	}
-
 	@JsonIgnore
 	public Range<Double> getConfidenceIntervalRange() {
-		if ((_confidenceIntervalArray == null) ||
-			(_confidenceIntervalArray.length < 2)) {
+		if ((_confidenceIntervals == null) ||
+			(_confidenceIntervals.length < 2)) {
 
 			return Range.is(0D);
 		}
 
 		return Range.between(
-			_confidenceIntervalArray[0].doubleValue(),
-			_confidenceIntervalArray[1].doubleValue());
+			_confidenceIntervals[0].doubleValue(),
+			_confidenceIntervals[1].doubleValue());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@Column("confidenceinterval")
+	@JsonProperty("confidenceInterval")
+	public BigDecimal[] getConfidenceIntervals() {
+		return Arrays.copyOf(_confidenceIntervals, _confidenceIntervals.length);
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -136,11 +135,9 @@ public class ExperimentVariantMetric {
 		return getControl();
 	}
 
-	public void setConfidenceIntervalArray(
-		BigDecimal[] confidenceIntervalArray) {
-
-		_confidenceIntervalArray = Arrays.copyOf(
-			confidenceIntervalArray, confidenceIntervalArray.length);
+	public void setConfidenceIntervals(BigDecimal[] confidenceIntervals) {
+		_confidenceIntervals = Arrays.copyOf(
+			confidenceIntervals, confidenceIntervals.length);
 	}
 
 	public void setControl(Boolean control) {
@@ -164,7 +161,7 @@ public class ExperimentVariantMetric {
 	}
 
 	@Transient
-	private BigDecimal[] _confidenceIntervalArray = {
+	private BigDecimal[] _confidenceIntervals = {
 		BigDecimal.valueOf(0.0), BigDecimal.valueOf(0.0)
 	};
 
