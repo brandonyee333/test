@@ -241,7 +241,12 @@ public class ExperimentDog {
 		Experiment experiment, ExperimentSettings experimentSettings,
 		boolean updateDXP) {
 
-		Experiment existingExperiment = getExperiment(experiment.getId());
+		Experiment existingExperiment = getExperiment(
+			Optional.ofNullable(
+				experiment.getId()
+			).orElse(
+				0L
+			));
 
 		if (experiment.getDescription() != null) {
 			existingExperiment.setDescription(experiment.getDescription());
