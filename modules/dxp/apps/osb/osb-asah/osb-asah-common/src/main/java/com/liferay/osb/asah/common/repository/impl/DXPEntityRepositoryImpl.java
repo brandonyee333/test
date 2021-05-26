@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.model.Sort;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,6 +34,7 @@ import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Marcos Martins
@@ -73,7 +74,9 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		dxpEntities.forEach(this::delete);
 	}
 
-	public void deleteAll(String collectionName) {
+	public void deleteByFieldNameEqualsAndType(
+		String fieldName, String fieldValue, DXPEntity.Type type) {
+
 		DeleteUsingStep<Record> deleteUsingStep = _dslContext.delete(
 			DSL.table(DXPEntity.class.getSimpleName()));
 
@@ -81,8 +84,10 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			DSL.field(
 				"type"
 			).eq(
-				collectionName
+				type.toString()
 			)
+		).and(
+			_createCondition(fieldName, fieldValue)
 		).execute();
 	}
 
@@ -90,9 +95,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		throw new UnsupportedOperationException();
 	}
 
-	public void deleteByPropertyValue(
-		DXPEntity.Type dxpEntityType, String fieldName, String fieldValue) {
-
+	public void deleteByType(DXPEntity.Type type) {
 		DeleteUsingStep<Record> deleteUsingStep = _dslContext.delete(
 			DSL.table(DXPEntity.class.getSimpleName()));
 
@@ -100,13 +103,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			DSL.field(
 				"type"
 			).eq(
-				dxpEntityType.getCollectionName()
-			)
-		).and(
-			DSL.field(
-				_createFieldPath(fieldName)
-			).eq(
-				fieldValue
+				type.getCollectionName()
 			)
 		).execute();
 	}
@@ -151,13 +148,8 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		throw new UnsupportedOperationException();
 	}
 
-	public Optional<DXPEntity> findById(Long id) {
-		throw new UnsupportedOperationException();
-	}
-
-	public List<DXPEntity> findByProperties(
-		Long after, String collectionName, Map<String, Object> properties,
-		int size) {
+	public List<DXPEntity> findByFieldsAndType(
+		Long after, Map<String, Object> fields, DXPEntity.Type type, int size) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
@@ -167,12 +159,11 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			DSL.field(
 				"type"
 			).eq(
-				collectionName
+				type.toString()
 			)
 		);
 
-		Set<Map.Entry<String, Object>> propertiesEntrySet =
-			properties.entrySet();
+		Set<Map.Entry<String, Object>> propertiesEntrySet = fields.entrySet();
 
 		for (Map.Entry<String, Object> propertyEntrySet : propertiesEntrySet) {
 			selectConditionStep.and(
@@ -202,8 +193,12 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public List<DXPEntity> findUsersByMembershipId(
-		DXPEntity.Type dxpEntityType, String membershipId) {
+	public Optional<DXPEntity> findById(Long id) {
+		throw new UnsupportedOperationException();
+	}
+
+	public List<DXPEntity> findByMembershipClassNameAndMembershipId(
+		String memebershipClassName, Long membershipId) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
@@ -213,14 +208,14 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			DSL.field(
 				"type"
 			).eq(
-				"users"
+				DXPEntity.Type.USER.toString()
 			)
 		).and(
 			DSL.field(
 				"fields->'memberships'->>{0}", String.class,
-				dxpEntityType.getClassName()
+				memebershipClassName
 			).contains(
-				membershipId
+				String.valueOf(membershipId)
 			)
 		).fetch(
 		).map(
@@ -228,9 +223,9 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public List<DXPEntity> searchByDataSourceIdsAndKeywordsAndCollectionName(
-		String collectionName, List<Long> dataSourceIds, String keywords,
-		int size, Sort sort, int start) {
+	public List<DXPEntity> searchByDataSourceIdsAndKeywordsAndType(
+		List<Long> dataSourceIds, String keywords, DXPEntity.Type type,
+		Pageable pageable) {
 
 		throw new UnsupportedOperationException();
 	}
@@ -240,6 +235,10 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 
 		if (StringUtils.startsWith(key, "fields.memberships.")) {
 			return field.contains(value);
+		}
+
+		if (value instanceof Collection) {
+			return field.in((Collection)value);
 		}
 
 		return field.eq(value);

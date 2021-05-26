@@ -15,12 +15,12 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -33,24 +33,19 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DXPEntityRepository extends CrudRepository<DXPEntity, Long> {
 
-	public void deleteAll(String collectionName);
+	public void deleteByFieldNameEqualsAndType(
+		String fieldName, String fieldValue, DXPEntity.Type type);
 
-	public void deleteByPropertyValue(
-		DXPEntity.Type dxpEntityType, String fieldName, String fieldValue);
+	public void deleteByType(DXPEntity.Type type);
 
-	public DXPEntity fetchByDataSourceIdAndEntityTypeIdFieldValue(
-		String dataSourceId, DXPEntity.Type dxpEntityType,
-		String dxpEntityTypeIdValue);
+	public List<DXPEntity> findByFieldsAndType(
+		Long after, Map<String, Object> fields, DXPEntity.Type type, int size);
 
-	public List<DXPEntity> findByProperties(
-		Long after, String collectionName, Map<String, Object> properties,
-		int size);
+	public List<DXPEntity> findByMembershipClassNameAndMembershipId(
+		String membershipClassName, Long membershipId);
 
-	public List<DXPEntity> findUsersByMembershipId(
-		DXPEntity.Type dxpEntityType, String membershipId);
-
-	public List<DXPEntity> searchByDataSourceIdsAndKeywordsAndCollectionName(
-		String collectionName, List<Long> dataSourceIds, String keywords,
-		int size, Sort sort, int start);
+	public List<DXPEntity> searchByDataSourceIdsAndKeywordsAndType(
+		List<Long> dataSourceIds, String keywords, DXPEntity.Type type,
+		Pageable pageable);
 
 }
