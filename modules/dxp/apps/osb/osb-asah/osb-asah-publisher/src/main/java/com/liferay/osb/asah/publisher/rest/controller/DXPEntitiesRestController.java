@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.publisher.rest.controller;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
-import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
@@ -67,7 +67,7 @@ public class DXPEntitiesRestController {
 					"objectJSONObject");
 				String type = jsonObject.getString("type");
 
-				if (type.equals(DXPEntityType.CLASS_NAME_CONTACT)) {
+				if (type.equals(DXPEntity.Type.CLASS_NAME_CONTACT)) {
 					if (action.equalsIgnoreCase("add")) {
 						action = "update";
 					}
@@ -88,7 +88,7 @@ public class DXPEntitiesRestController {
 
 					_processGenderField(objectJSONObject);
 
-					type = DXPEntityType.CLASS_NAME_USER;
+					type = DXPEntity.Type.CLASS_NAME_USER;
 				}
 
 				if (dataSourceId == null) {

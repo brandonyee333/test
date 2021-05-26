@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
@@ -30,7 +31,6 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
-import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -86,7 +86,7 @@ public class DXPEntitiesMessageProcessor {
 	}
 
 	private void _addAssociations(
-		DXPEntityType dxpEntityType, JSONObject jsonObject) {
+		DXPEntity.Type dxpEntityType, JSONObject jsonObject) {
 
 		if (dxpEntityType.isUser()) {
 			return;
@@ -167,11 +167,11 @@ public class DXPEntitiesMessageProcessor {
 	}
 
 	private String _getOwnerType(String className) {
-		if (className.equals(DXPEntityType.CLASS_NAME_USER)) {
+		if (className.equals(DXPEntity.Type.CLASS_NAME_USER)) {
 			return "individual";
 		}
 
-		if (className.equals(DXPEntityType.CLASS_NAME_ORGANIZATION)) {
+		if (className.equals(DXPEntity.Type.CLASS_NAME_ORGANIZATION)) {
 			return "organization";
 		}
 
@@ -179,7 +179,7 @@ public class DXPEntitiesMessageProcessor {
 	}
 
 	private void _processAssociationObject(
-		String action, DXPEntityType dxpEntityType,
+		String action, DXPEntity.Type dxpEntityType,
 		JSONObject objectJSONObject) {
 
 		String dataSourceId = objectJSONObject.getString("osbAsahDataSourceId");
@@ -292,7 +292,7 @@ public class DXPEntitiesMessageProcessor {
 			"context");
 		JSONObject objectJSONObject = messageJSONObject.getJSONObject("object");
 
-		DXPEntityType dxpEntityType = DXPEntityType.of(
+		DXPEntity.Type dxpEntityType = DXPEntity.Type.of(
 			contextJSONObject.getString("type"));
 
 		if ((dxpEntityType == null) ||
@@ -309,7 +309,7 @@ public class DXPEntitiesMessageProcessor {
 	}
 
 	private void _processObject(
-		String action, DXPEntityType dxpEntityType,
+		String action, DXPEntity.Type dxpEntityType,
 		JSONObject objectJSONObject) {
 
 		if (action.equalsIgnoreCase("addAssociation") ||

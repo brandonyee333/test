@@ -24,12 +24,12 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -268,7 +268,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject addIndividualAssociation(
-		DXPEntityType dxpEntityType, String id,
+		DXPEntity.Type dxpEntityType, String id,
 		JSONObject individualJSONObject) {
 
 		JSONArray jsonArray = individualJSONObject.optJSONArray(
@@ -292,7 +292,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject addIndividualAssociation(
-		long classPK, Long dataSourceId, DXPEntityType dxpEntityType,
+		long classPK, Long dataSourceId, DXPEntity.Type dxpEntityType,
 		JSONObject individualJSONObject) {
 
 		if (individualJSONObject == null) {
@@ -392,7 +392,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject deleteIndividualAssociation(
-		long classPK, Long dataSourceId, DXPEntityType dxpEntityType,
+		long classPK, Long dataSourceId, DXPEntity.Type dxpEntityType,
 		JSONObject individualJSONObject) {
 
 		if (individualJSONObject == null) {
@@ -496,7 +496,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	}
 
 	public List<String> getAssociatedIds(
-		Long dataSourceId, DXPEntityType dxpEntityType, List<Long> classPKs) {
+		Long dataSourceId, DXPEntity.Type dxpEntityType, List<Long> classPKs) {
 
 		JSONArray associatedIdsJSONArray = null;
 
@@ -1083,7 +1083,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		}
 
 		for (String type : membershipsJSONObject.keySet()) {
-			DXPEntityType dxpEntityType = DXPEntityType.of(type);
+			DXPEntity.Type dxpEntityType = DXPEntity.Type.of(type);
 
 			if (dxpEntityType == null) {
 				continue;

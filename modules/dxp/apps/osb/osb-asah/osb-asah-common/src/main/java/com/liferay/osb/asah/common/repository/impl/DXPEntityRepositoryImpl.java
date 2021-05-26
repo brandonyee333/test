@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.List;
@@ -92,7 +91,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 	}
 
 	public void deleteByPropertyValue(
-		DXPEntityType dxpEntityType, String fieldName, String fieldValue) {
+		DXPEntity.Type dxpEntityType, String fieldName, String fieldValue) {
 
 		DeleteUsingStep<Record> deleteUsingStep = _dslContext.delete(
 			DSL.table(DXPEntity.class.getSimpleName()));
@@ -113,7 +112,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 	}
 
 	public DXPEntity fetchByDataSourceIdAndEntityTypeIdFieldValue(
-		String dataSourceId, DXPEntityType dxpEntityType,
+		String dataSourceId, DXPEntity.Type dxpEntityType,
 		String dxpEntityTypeIdValue) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
@@ -204,7 +203,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 	}
 
 	public List<DXPEntity> findUsersByMembershipId(
-		DXPEntityType dxpEntityType, String membershipId) {
+		DXPEntity.Type dxpEntityType, String membershipId) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 

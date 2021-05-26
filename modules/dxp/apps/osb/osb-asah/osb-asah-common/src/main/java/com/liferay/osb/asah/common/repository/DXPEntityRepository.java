@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.List;
@@ -37,10 +36,10 @@ public interface DXPEntityRepository extends CrudRepository<DXPEntity, Long> {
 	public void deleteAll(String collectionName);
 
 	public void deleteByPropertyValue(
-		DXPEntityType dxpEntityType, String fieldName, String fieldValue);
+		DXPEntity.Type dxpEntityType, String fieldName, String fieldValue);
 
 	public DXPEntity fetchByDataSourceIdAndEntityTypeIdFieldValue(
-		String dataSourceId, DXPEntityType dxpEntityType,
+		String dataSourceId, DXPEntity.Type dxpEntityType,
 		String dxpEntityTypeIdValue);
 
 	public List<DXPEntity> findByProperties(
@@ -48,7 +47,7 @@ public interface DXPEntityRepository extends CrudRepository<DXPEntity, Long> {
 		int size);
 
 	public List<DXPEntity> findUsersByMembershipId(
-		DXPEntityType dxpEntityType, String membershipId);
+		DXPEntity.Type dxpEntityType, String membershipId);
 
 	public List<DXPEntity> searchByDataSourceIdsAndKeywordsAndCollectionName(
 		String collectionName, List<Long> dataSourceIds, String keywords,

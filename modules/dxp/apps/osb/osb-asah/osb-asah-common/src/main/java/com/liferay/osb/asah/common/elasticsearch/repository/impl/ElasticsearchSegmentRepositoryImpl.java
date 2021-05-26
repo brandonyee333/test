@@ -18,9 +18,9 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
@@ -522,7 +522,8 @@ public class ElasticsearchSegmentRepositoryImpl
 
 	@Override
 	public List<Segment> searchSegments(
-		DXPEntityType dxpEntityType, Long id, String state, Segment.Type type) {
+		DXPEntity.Type dxpEntityType, Long id, String state,
+		Segment.Type type) {
 
 		try {
 			CollectionGetResponse collectionGetResponse =

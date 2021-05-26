@@ -18,11 +18,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -354,7 +354,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 		JSONObject individualJSONObject =
 			_faroInfoIndividualDog.addIndividualAssociation(
 				33134, 402139209179557944L,
-				DXPEntityType.of(DXPEntityType.CLASS_NAME_ORGANIZATION),
+				DXPEntity.Type.of(DXPEntity.Type.CLASS_NAME_ORGANIZATION),
 				faroInfoElasticsearchInvoker.fetch(
 					"individuals",
 					QueryBuilders.termQuery(
@@ -481,7 +481,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 		JSONObject individualJSONObject =
 			_faroInfoIndividualDog.deleteIndividualAssociation(
 				33134, 402139209179557944L,
-				DXPEntityType.of(DXPEntityType.CLASS_NAME_ORGANIZATION),
+				DXPEntity.Type.of(DXPEntity.Type.CLASS_NAME_ORGANIZATION),
 				faroInfoElasticsearchInvoker.fetch(
 					"individuals",
 					QueryBuilders.termQuery(
@@ -727,7 +727,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 				).put(
 					"memberships",
 					JSONUtil.put(
-						DXPEntityType.CLASS_NAME_ORGANIZATION,
+						DXPEntity.Type.CLASS_NAME_ORGANIZATION,
 						JSONUtil.putAll(33120, 33134))
 				).put(
 					"osbAsahDataSourceId", dataSourceJSONObject.getString("id")

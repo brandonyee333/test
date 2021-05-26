@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.repository;
 
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Transformation;
 
 import java.util.List;
@@ -106,7 +106,7 @@ public interface SegmentRepository extends CrudRepository<Segment, Long> {
 		String filterString, Pageable pageable);
 
 	public List<Segment> searchSegments(
-		DXPEntityType dxpEntityType, Long id, String state, Segment.Type type);
+		DXPEntity.Type dxpEntityType, Long id, String state, Segment.Type type);
 
 	public List<Segment> searchSegments(
 		List<Long> channelIds, String filterString, Pageable pageable);

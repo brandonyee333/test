@@ -22,12 +22,12 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Channel;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -143,7 +143,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public void disableDynamicSegments(
-		DXPEntityType dxpEntityType, Long segmentId) {
+		DXPEntity.Type dxpEntityType, Long segmentId) {
 
 		if (Objects.isNull(segmentId)) {
 			return;
@@ -697,7 +697,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 					"referencedAssetIds", referencedObjectSets);
 			}
 
-			DXPEntityType dxpEntityType = DXPEntityType.ofIndividualFieldName(
+			DXPEntity.Type dxpEntityType = DXPEntity.Type.ofIndividualFieldName(
 				terms[0]);
 
 			if (dxpEntityType != null) {

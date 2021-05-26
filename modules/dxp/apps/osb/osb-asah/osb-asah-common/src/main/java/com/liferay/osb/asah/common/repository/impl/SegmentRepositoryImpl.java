@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
@@ -240,7 +240,7 @@ public class SegmentRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Segment> searchSegments(
-		DXPEntityType dxpEntityType, Long segmentId, String state,
+		DXPEntity.Type dxpEntityType, Long segmentId, String state,
 		Segment.Type type) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
@@ -300,7 +300,7 @@ public class SegmentRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Condition> _getConditions(
-		DXPEntityType dxpEntityType, Long segmentId, String state,
+		DXPEntity.Type dxpEntityType, Long segmentId, String state,
 		Segment.Type type) {
 
 		List<Condition> conditions = new ArrayList<>();
