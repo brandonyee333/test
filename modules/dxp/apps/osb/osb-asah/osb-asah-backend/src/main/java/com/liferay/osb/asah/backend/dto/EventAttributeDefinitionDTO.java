@@ -62,6 +62,8 @@ public class EventAttributeDefinitionDTO {
 				eventDefinitionEventAttributeDefinitions.get(0);
 
 		_sampleValue = eventDefinitionEventAttributeDefinition.getSampleValue();
+
+		_type = eventAttributeDefinition.getType();
 	}
 
 	public EventAttributeDefinitionDTO(
@@ -122,11 +124,17 @@ public class EventAttributeDefinitionDTO {
 		return _sampleValue;
 	}
 
+	@JsonProperty("type")
+	public EventAttributeDefinition.Type getType() {
+		return _type;
+	}
+
 	private EventAttributeDefinition.DataType _dataType;
 	private String _description;
 	private String _displayName;
 	private String _id;
 	private String _name;
 	private String _sampleValue;
+	private EventAttributeDefinition.Type _type;
 
 }
