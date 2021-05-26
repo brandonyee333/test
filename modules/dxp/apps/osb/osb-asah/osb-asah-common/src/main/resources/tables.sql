@@ -13,10 +13,10 @@ CREATE TABLE IF NOT EXISTS ActivityGroup (
 	dataSourceId BIGINT,
 	dayDate TIMESTAMPTZ,
 	endDate TIMESTAMPTZ,
-	endLocalDate TIMESTAMPTZ,
+	endLocalDateTime TIMESTAMP,
 	ownerId BIGINT,
 	startDate TIMESTAMPTZ,
-	startLocalDate TIMESTAMPTZ,
+	startLocalDateTime TIMESTAMP,
 	userId TEXT
 );
 
