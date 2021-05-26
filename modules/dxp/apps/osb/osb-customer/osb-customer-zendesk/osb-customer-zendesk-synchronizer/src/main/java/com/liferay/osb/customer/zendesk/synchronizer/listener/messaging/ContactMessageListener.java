@@ -198,7 +198,7 @@ public class ContactMessageListener extends BaseMessageListener {
 			if (accountName.equals("Liferay, Inc.") &&
 				contactRoleName.equals(ContactRoleConstants.NAME_MEMBER)) {
 
-				_userSynchronizer.updateRole(user);
+				_userSynchronizer.removeAgentRole(user);
 			}
 
 			if (!ArrayUtil.contains(

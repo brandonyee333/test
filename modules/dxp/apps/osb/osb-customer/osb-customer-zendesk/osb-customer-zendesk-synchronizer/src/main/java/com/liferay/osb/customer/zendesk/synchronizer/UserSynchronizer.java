@@ -93,6 +93,17 @@ public class UserSynchronizer {
 		}
 	}
 
+	public void removeAgentRole(User user) throws Exception {
+		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
+			user.getEmailAddress());
+
+		if (zendeskUser.isAgent()) {
+			zendeskUser.setRole("end-user");
+
+			sync(user, zendeskUser);
+		}
+	}
+
 	public void sync(User user, ZendeskUser zendeskUser) throws Exception {
 		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
 			return;
@@ -224,17 +235,6 @@ public class UserSynchronizer {
 		}
 		else {
 			addPhone(userId, phone);
-		}
-	}
-
-	public void updateRole(User user) throws Exception {
-		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
-			user.getEmailAddress());
-
-		if (zendeskUser.isAgent()) {
-			zendeskUser.setRole("end-user");
-
-			sync(user, zendeskUser);
 		}
 	}
 
