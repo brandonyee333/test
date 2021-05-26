@@ -23,6 +23,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -35,7 +36,8 @@ import org.springframework.stereotype.Repository;
 public interface EventAttributeDefinitionRepository
 	extends CrudRepository<EventAttributeDefinition, Long> {
 
-	public long countEventAttributeDefinitions(String keyword);
+	public long countEventAttributeDefinitions(
+		@Nullable String keyword, @Nullable EventAttributeDefinition.Type type);
 
 	public List<EventAttributeDefinition> findAll(Pageable pageable);
 
@@ -48,6 +50,7 @@ public interface EventAttributeDefinitionRepository
 	public EventAttributeDefinition findByName(String name);
 
 	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
-		String keyword, Pageable pageable);
+		@Nullable String keyword, Pageable pageable,
+		@Nullable EventAttributeDefinition.Type type);
 
 }

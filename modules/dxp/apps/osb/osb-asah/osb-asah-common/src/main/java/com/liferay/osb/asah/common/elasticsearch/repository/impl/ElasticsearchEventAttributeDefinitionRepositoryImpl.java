@@ -22,6 +22,7 @@ import java.util.Optional;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -41,7 +42,10 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 	}
 
 	@Override
-	public long countEventAttributeDefinitions(String keyword) {
+	public long countEventAttributeDefinitions(
+		@Nullable String keyword,
+		@Nullable EventAttributeDefinition.Type type) {
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -132,7 +136,8 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 
 	@Override
 	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
-		String keyword, Pageable pageable) {
+		@Nullable String keyword, Pageable pageable,
+		@Nullable EventAttributeDefinition.Type type) {
 
 		throw new UnsupportedOperationException();
 	}

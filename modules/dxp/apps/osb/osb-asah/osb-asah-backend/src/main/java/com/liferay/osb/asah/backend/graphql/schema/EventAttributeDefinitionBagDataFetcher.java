@@ -48,11 +48,15 @@ public class EventAttributeDefinitionBagDataFetcher
 
 		String keyword = dataFetchingEnvironment.getArgument("keyword");
 
+		EventAttributeDefinition.Type type =
+			EventAttributeDefinition.Type.valueOf(
+				dataFetchingEnvironment.getArgument("type"));
+
 		Page<EventAttributeDefinition> eventAttributeDefinitionsPage =
 			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
 				keyword, dataFetchingEnvironment.getArgument("page"),
 				dataFetchingEnvironment.getArgument("size"),
-				Sort.of(dataFetchingEnvironment.getArgument("sort")));
+				Sort.of(dataFetchingEnvironment.getArgument("sort")), type);
 
 		Stream<EventAttributeDefinition> stream =
 			eventAttributeDefinitionsPage.stream();

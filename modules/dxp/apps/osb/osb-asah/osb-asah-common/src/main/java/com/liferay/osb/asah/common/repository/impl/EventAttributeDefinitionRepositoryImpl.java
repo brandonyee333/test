@@ -34,6 +34,7 @@ import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Leslie Wong
@@ -47,14 +48,17 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countEventAttributeDefinitions(String keyword) {
+	public long countEventAttributeDefinitions(
+		@Nullable String keyword,
+		@Nullable EventAttributeDefinition.Type type) {
+
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
 			"EventAttributeDefinition"
 		).where(
-			_getConditions(keyword)
+			_getConditions(keyword, type)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -63,7 +67,8 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 	}
 
 	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
-		String keyword, Pageable pageable) {
+		@Nullable String keyword, Pageable pageable,
+		@Nullable EventAttributeDefinition.Type type) {
 
 		Map<Long, EventAttributeDefinition> eventAttributeDefinitionsById =
 			new LinkedHashMap<>();
@@ -71,7 +76,7 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		SelectSelectStep<?> selectSelectStep = _dslContext.select();
 
 		Table<?> table = _getTopEventAttributeDefinitionsTable(
-			keyword, pageable);
+			keyword, pageable, type);
 
 		Field<Object> field = DSL.field("eventAttributeDefinitionId");
 
@@ -105,7 +110,9 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		return new ArrayList<>(eventAttributeDefinitionsById.values());
 	}
 
-	private List<Condition> _getConditions(String keyword) {
+	private List<Condition> _getConditions(
+		String keyword, EventAttributeDefinition.Type type) {
+
 		List<Condition> conditions = new ArrayList<>();
 
 		if (StringUtils.isNotEmpty(keyword)) {
@@ -120,18 +127,24 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 					nameField.containsIgnoreCase(keyword)));
 		}
 
+		if ((type != null) && !type.equals(EventAttributeDefinition.Type.ALL)) {
+			Field<Object> field = DSL.field("type");
+
+			conditions.add(field.eq(type.toString()));
+		}
+
 		return conditions;
 	}
 
 	private Table<?> _getTopEventAttributeDefinitionsTable(
-		String keyword, Pageable pageable) {
+		String keyword, Pageable pageable, EventAttributeDefinition.Type type) {
 
 		SelectSelectStep<?> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
 			"EventAttributeDefinition"
 		).where(
-			_getConditions(keyword)
+			_getConditions(keyword, type)
 		).groupBy(
 			DSL.field("id")
 		).orderBy(
