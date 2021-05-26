@@ -112,7 +112,7 @@ public class ExperimentsRestControllerTest {
 		Assert.assertEquals(
 			Long.valueOf(12345), actualExperiment.getChannelId());
 
-		Assert.assertNotNull(expectedExperiment.getId());
+		Assert.assertNotNull(actualExperiment.getId());
 		Assert.assertEquals(
 			expectedExperiment.getName(), actualExperiment.getName());
 		Assert.assertEquals(
