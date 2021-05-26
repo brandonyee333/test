@@ -14,16 +14,18 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -341,29 +343,21 @@ public class ChannelDog extends BaseFaroInfoDog {
 		JSONArrayIterator.of(
 			"assets", elasticsearchInvoker,
 			assetJSONObject -> {
-				JSONArray channelIdsJSONArray = assetJSONObject.getJSONArray(
-					"channelIds");
+				Asset asset = _objectMapper.convertValue(
+					assetJSONObject, Asset.class);
 
-				Iterator<Object> iterator = channelIdsJSONArray.iterator();
+				Set<Long> assetChannelIds = asset.getChannelIds();
 
-				while (iterator.hasNext()) {
-					String channelId = (String)iterator.next();
+				assetChannelIds.removeAll(channelIds);
 
-					if (channelIds.contains(Long.valueOf(channelId))) {
-						iterator.remove();
-					}
-				}
-
-				if (channelIdsJSONArray.length() == 0) {
+				if (assetChannelIds.isEmpty()) {
 					_assetDog.deleteAsset(
-						assetJSONObject,
+						asset,
 						DateUtil.newDayLocalDateTimeString(
 							_timeZoneDog.getZoneId()));
 				}
 				else {
-					elasticsearchInvoker.update(
-						"assets", assetJSONObject.getString("id"),
-						JSONUtil.put("channelIds", channelIdsJSONArray));
+					_assetDog.updateAsset(asset);
 				}
 
 				return null;
@@ -597,6 +591,9 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;

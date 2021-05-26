@@ -37,9 +37,6 @@ import org.apache.commons.collections4.IterableUtils;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -62,19 +59,13 @@ public class AssetDog {
 		return _assetRepository.save(asset);
 	}
 
-	public void deleteAsset(
-		JSONObject assetJSONObject, String deletionDayDateString) {
+	public void deleteAsset(Asset asset, String deletionDayDateString) {
+		_assetRepository.deleteById(asset.getId());
 
-		Long assetId = Long.valueOf(assetJSONObject.getString("id"));
+		Set<AssetKeyword> assetKeywords = asset.getAssetKeywords();
 
-		_assetRepository.deleteById(assetId);
-
-		JSONArray keywordsJSONArray = assetJSONObject.optJSONArray("keywords");
-
-		if (keywordsJSONArray != null) {
-			for (int i = 0; i < keywordsJSONArray.length(); i++) {
-				JSONObject jsonObject = keywordsJSONArray.getJSONObject(i);
-
+		if (assetKeywords != null) {
+			for (AssetKeyword assetKeyword : assetKeywords) {
 				_elasticsearchInvoker.delete(
 					"interests",
 					BoolQueryBuilderUtil.filter(
@@ -87,7 +78,7 @@ public class AssetDog {
 						)
 					).filter(
 						QueryBuilders.termQuery(
-							"name", jsonObject.getString("keyword"))
+							"name", assetKeyword.getKeyword())
 					));
 
 				_elasticsearchInvoker.delete(
@@ -102,7 +93,7 @@ public class AssetDog {
 						)
 					).filter(
 						QueryBuilders.termQuery(
-							"interestName", jsonObject.getString("keyword"))
+							"interestName", assetKeyword.getKeyword())
 					));
 			}
 		}
