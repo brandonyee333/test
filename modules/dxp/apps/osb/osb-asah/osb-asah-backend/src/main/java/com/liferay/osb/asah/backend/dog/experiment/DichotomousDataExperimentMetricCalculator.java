@@ -16,11 +16,11 @@ package com.liferay.osb.asah.backend.dog.experiment;
 
 import com.liferay.osb.asah.backend.constants.ExperimentConstants;
 import com.liferay.osb.asah.backend.constants.SamplerType;
-import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.entity.ExperimentVariant;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
+import com.liferay.osb.asah.common.model.TimeRange;
 
 import io.improbable.keanu.algorithms.NetworkSamples;
 import io.improbable.keanu.network.BayesianNetwork;

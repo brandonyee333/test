@@ -22,11 +22,11 @@ import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
-import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.petra.string.StringPool;
 
 import java.time.Clock;

@@ -16,12 +16,12 @@ package com.liferay.osb.asah.backend.dog.helper;
 
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
-import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.backend.model.VisitorCohortMetric;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.petra.string.StringPool;
 
 import java.time.Clock;
