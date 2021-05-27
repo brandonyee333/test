@@ -72,7 +72,6 @@ public abstract class BaseExperimentMetricCalculatorTestCase {
 		percentageBasedAssertEquals(
 			confidenceIntervalLeft, confidenceIntervals[0].doubleValue(),
 			getMarginOfErrorPercentageForInterval());
-
 		percentageBasedAssertEquals(
 			confidenceIntervalRight, confidenceIntervals[1].doubleValue(),
 			getMarginOfErrorPercentageForInterval());
