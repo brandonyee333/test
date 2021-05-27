@@ -730,10 +730,10 @@ public class JournalArticleStagedModelDataHandler
 				articleElement.attributeValue("latest"));
 
 			if (portletDataContext.isDataStrategyMirror()) {
-				serviceContext.setUuid(article.getUuid());
 				serviceContext.setAttribute(
 					"articleResourceUuid", articleResourceUuid);
 				serviceContext.setAttribute("urlTitle", article.getUrlTitle());
+				serviceContext.setUuid(article.getUuid());
 
 				boolean preloaded = GetterUtil.getBoolean(
 					articleElement.attributeValue("preloaded"));

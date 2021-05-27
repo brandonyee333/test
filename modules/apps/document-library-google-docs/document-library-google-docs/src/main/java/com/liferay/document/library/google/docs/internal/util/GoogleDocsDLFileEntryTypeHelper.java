@@ -85,8 +85,8 @@ public class GoogleDocsDLFileEntryTypeHelper {
 
 		ServiceContext serviceContext = new ServiceContext();
 
-		serviceContext.setAddGuestPermissions(true);
 		serviceContext.setAddGroupPermissions(true);
+		serviceContext.setAddGuestPermissions(true);
 		serviceContext.setScopeGroupId(_company.getGroupId());
 		serviceContext.setUserId(defaultUserId);
 
@@ -137,8 +137,8 @@ public class GoogleDocsDLFileEntryTypeHelper {
 
 		ServiceContext serviceContext = new ServiceContext();
 
-		serviceContext.setAddGuestPermissions(true);
 		serviceContext.setAddGroupPermissions(true);
+		serviceContext.setAddGuestPermissions(true);
 		serviceContext.setScopeGroupId(_company.getGroupId());
 		serviceContext.setUserId(defaultUserId);
 

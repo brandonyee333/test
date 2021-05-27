@@ -123,14 +123,14 @@ public class ServiceContextFactory {
 			}
 		}
 
-		serviceContext.setPortalURL(PortalUtil.getPortalURL(request));
-		serviceContext.setPathMain(PortalUtil.getPathMain());
 		serviceContext.setPathFriendlyURLPrivateGroup(
 			PortalUtil.getPathFriendlyURLPrivateGroup());
 		serviceContext.setPathFriendlyURLPrivateUser(
 			PortalUtil.getPathFriendlyURLPrivateUser());
 		serviceContext.setPathFriendlyURLPublic(
 			PortalUtil.getPathFriendlyURLPublic());
+		serviceContext.setPathMain(PortalUtil.getPathMain());
+		serviceContext.setPortalURL(PortalUtil.getPortalURL(request));
 
 		// Attributes
 
