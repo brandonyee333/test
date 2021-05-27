@@ -18,6 +18,7 @@ import javax.sql.DataSource;
 
 import org.jooq.ConnectionProvider;
 import org.jooq.DSLContext;
+import org.jooq.SQLDialect;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
@@ -71,6 +72,7 @@ public class JooqConfiguration {
 		DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
 
 		defaultConfiguration.set(connectionProvider);
+		defaultConfiguration.setSQLDialect(SQLDialect.POSTGRES);
 
 		return defaultConfiguration;
 	}
