@@ -407,12 +407,12 @@ public class ExperimentDogTest {
 			expectedHistogramMetricValue, actualHistogramMetric.getValue(), .1);
 	}
 
-	private double[] _mapToDoubles(BigDecimal[] bigDecimalArray) {
+	private double[] _mapToDoubles(BigDecimal[] bigDecimals) {
 		ToDoubleFunction<BigDecimal> toDoubleFunction =
 			bigDecimal -> bigDecimal.doubleValue();
 
 		return Stream.of(
-			bigDecimalArray
+			bigDecimals
 		).mapToDouble(
 			toDoubleFunction
 		).toArray();
