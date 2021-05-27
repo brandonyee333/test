@@ -18,7 +18,7 @@ import com.liferay.osb.asah.backend.dog.resolver.AssetResolver;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.CustomAssetMetric;
-import com.liferay.osb.asah.backend.model.CustomAssetMetricType;
+import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
 
 import java.util.HashSet;
