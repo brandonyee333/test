@@ -95,8 +95,8 @@ public class ExperimentNanite extends BaseNanite {
 	}
 
 	private ExperimentVariantMetric _getWinnerExperimentVariantMetric(
-		GoalMetric goalMetric,
-		Set<ExperimentVariantMetric> experimentVariantMetrics) {
+		Set<ExperimentVariantMetric> experimentVariantMetrics,
+		GoalMetric goalMetric) {
 
 		ExperimentVariantMetric controlExperimentVariantMetric =
 			_findControlExperimentVariantMetric(experimentVariantMetrics);
@@ -196,7 +196,7 @@ public class ExperimentNanite extends BaseNanite {
 			});
 	}
 
-	private JSONObject _updateExperiment(Experiment experiment) {
+	private void _updateExperiment(Experiment experiment) {
 		Set<ExperimentMetric> experimentMetrics =
 			experiment.getExperimentMetrics();
 
@@ -217,8 +217,8 @@ public class ExperimentNanite extends BaseNanite {
 
 			ExperimentVariantMetric experimentVariantMetric =
 				_getWinnerExperimentVariantMetric(
-					goal.getGoalMetric(),
-					experimentMetric.getExperimentVariantMetrics());
+					experimentMetric.getExperimentVariantMetrics(),
+					goal.getGoalMetric());
 
 			ExperimentStatus experimentStatus =
 				ExperimentStatus.FINISHED_WINNER;
@@ -246,8 +246,6 @@ public class ExperimentNanite extends BaseNanite {
 		}
 
 		_experimentRepository.save(experiment);
-
-		return _objectMapper.convertValue(experiment, JSONObject.class);
 	}
 
 	private static final Log _log = LogFactory.getLog(ExperimentNanite.class);
