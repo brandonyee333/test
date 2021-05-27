@@ -125,11 +125,11 @@ public class AdminRestController extends BaseRestController {
 		else if (collectionName.equals("custom-asset-dashboards")) {
 			_customAssetDashboardRepository.deleteAll();
 		}
-		else if (collectionName.equals("experiments")) {
-			_experimentRepository.deleteAll();
-		}
 		else if (collectionName.equals("data-sources")) {
 			_dataSourceRepository.deleteAll();
+		}
+		else if (collectionName.equals("experiments")) {
+			_experimentRepository.deleteAll();
 		}
 		else if (collectionName.equals("individual-segments")) {
 			_segmentRepository.deleteAll();
