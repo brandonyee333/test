@@ -83,7 +83,7 @@ public class ExperimentsRestController extends BaseRestController {
 		Experiment experiment = _objectMapper.convertValue(
 			experimentDTO, Experiment.class);
 
-		experiment.setId(Long.valueOf(id));
+		experiment.setId(id);
 
 		ExperimentSettings experimentSettings = null;
 
