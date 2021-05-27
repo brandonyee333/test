@@ -23,7 +23,7 @@ import java.util.Optional;
  */
 public enum Interval {
 
-	DAY("D"), MONTH("M"), WEEK("W");
+	DAY("D"), HOUR("H"), MONTH("M"), WEEK("W");
 
 	public static Interval of(String interval) {
 		return Optional.ofNullable(
@@ -45,6 +45,7 @@ public enum Interval {
 		new HashMap<String, Interval>() {
 			{
 				put("D", DAY);
+				put("H", HOUR);
 				put("M", MONTH);
 				put("W", WEEK);
 			}
