@@ -271,6 +271,7 @@ public class SitesImpl implements Sites {
 				"layoutPrototypeLinkEnabled", linkEnabled);
 			serviceContext.setAttribute(
 				"layoutPrototypeUuid", layoutPrototype.getUuid());
+
 			Locale targetSiteDefaultLocale = PortalUtil.getSiteDefaultLocale(
 				targetLayout.getGroupId());
 

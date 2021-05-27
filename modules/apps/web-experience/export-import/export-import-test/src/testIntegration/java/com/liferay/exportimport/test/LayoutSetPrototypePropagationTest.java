@@ -269,6 +269,7 @@ public class LayoutSetPrototypePropagationTest
 
 		Layout layout = LayoutTestUtil.addLayout(
 			group.getGroupId(), "test", false);
+
 		LayoutTestUtil.addLayout(
 			_layoutSetPrototypeGroup.getGroupId(), "test", true);
 

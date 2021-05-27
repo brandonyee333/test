@@ -189,11 +189,11 @@ RoleSearchTerms searchTerms = (RoleSearchTerms)roleSearchContainer.getSearchTerm
 							long modelResourceRoleId = GetterUtil.getLong(resourcePrimKey);
 
 							Role modelResourceRole = null;
-							if (stricterRoleVisibilityConfiguration.
-								restrictPermissionSelectorRoleVisibility()) {
+
+							if (stricterRoleVisibilityConfiguration.restrictPermissionSelectorRoleVisibility()) {
 								modelResourceRole = RoleServiceUtil.getRole(modelResourceRoleId);
 							}
-			else {
+							else {
 								modelResourceRole = RoleLocalServiceUtil.getRole(modelResourceRoleId);
 							}
 
@@ -301,23 +301,23 @@ RoleSearchTerms searchTerms = (RoleSearchTerms)roleSearchContainer.getSearchTerm
 						}
 
 						int count = 0;
-						if (stricterRoleVisibilityConfiguration.
-							restrictPermissionSelectorRoleVisibility()) {
-								count = RoleServiceUtil.getGroupRolesAndTeamRolesCount(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId);
+
+						if (stricterRoleVisibilityConfiguration.restrictPermissionSelectorRoleVisibility()) {
+							count = RoleServiceUtil.getGroupRolesAndTeamRolesCount(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId);
 						}
-			else {
-								count = RoleLocalServiceUtil.getGroupRolesAndTeamRolesCount(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId);
+						else {
+							count = RoleLocalServiceUtil.getGroupRolesAndTeamRolesCount(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId);
 						}
 
 						roleSearchContainer.setTotal(count);
 
 						List<Role> roles = null;
-						if (stricterRoleVisibilityConfiguration.
-							restrictPermissionSelectorRoleVisibility()) {
-								roles = RoleServiceUtil.getGroupRolesAndTeamRoles(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId, roleSearchContainer.getStart(), roleSearchContainer.getResultEnd());
+
+						if (stricterRoleVisibilityConfiguration.restrictPermissionSelectorRoleVisibility()) {
+							roles = RoleServiceUtil.getGroupRolesAndTeamRoles(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId, roleSearchContainer.getStart(), roleSearchContainer.getResultEnd());
 						}
-			else {
-								roles = RoleLocalServiceUtil.getGroupRolesAndTeamRoles(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId, roleSearchContainer.getStart(), roleSearchContainer.getResultEnd());
+						else {
+							roles = RoleLocalServiceUtil.getGroupRolesAndTeamRoles(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId, roleSearchContainer.getStart(), roleSearchContainer.getResultEnd());
 						}
 
 						roleSearchContainer.setResults(roles);

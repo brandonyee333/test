@@ -674,6 +674,7 @@ public class BaseExportImportContentProcessorTest {
 		LayoutTestUtil.addLayout(_liveGroup, true);
 
 		exportImportLayouts(true);
+
 		Layout importedPrivateLayout =
 			LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(
 				_stagingPrivateLayout.getUuid(), _liveGroup.getGroupId(), true);
