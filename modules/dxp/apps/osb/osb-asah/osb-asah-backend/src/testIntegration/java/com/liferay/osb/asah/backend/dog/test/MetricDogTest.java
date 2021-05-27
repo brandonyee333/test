@@ -25,7 +25,7 @@ import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.PageMetric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
-import com.liferay.osb.asah.backend.model.TimeRange;
+import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;

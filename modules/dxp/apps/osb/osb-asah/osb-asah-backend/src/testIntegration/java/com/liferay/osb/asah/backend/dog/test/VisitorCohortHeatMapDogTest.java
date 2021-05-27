@@ -18,7 +18,7 @@ import com.liferay.osb.asah.backend.dog.VisitorCohortHeatMapDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.CohortHeatMapMetric;
-import com.liferay.osb.asah.backend.model.Interval;
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.MetricType;

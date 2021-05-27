@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
-import com.liferay.osb.asah.backend.model.TimeRange;
+import com.liferay.osb.asah.common.model.TimeRange;
 
 import graphql.execution.ExecutionTypeInfo;
 

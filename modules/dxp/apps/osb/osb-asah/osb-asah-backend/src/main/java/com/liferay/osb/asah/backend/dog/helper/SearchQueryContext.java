@@ -16,9 +16,9 @@ package com.liferay.osb.asah.backend.dog.helper;
 
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Geolocation;
-import com.liferay.osb.asah.backend.model.Interval;
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.backend.model.Technology;
-import com.liferay.osb.asah.backend.model.TimeRange;
+import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 
 /**
