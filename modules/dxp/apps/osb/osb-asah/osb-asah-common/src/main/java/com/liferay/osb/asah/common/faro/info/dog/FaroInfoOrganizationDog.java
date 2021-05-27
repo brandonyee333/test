@@ -20,8 +20,6 @@ import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,10 +76,8 @@ public class FaroInfoOrganizationDog extends BaseFaroInfoDog {
 				"dateModified", DateUtil.newDateString()
 			).put(
 				"removeQueryBuilder",
-				QueryBuilders.termQuery(
-					"referencedOrganizationIds",
+				"referencedOrganizationIds eq " +
 					organizationJSONObject.getString("id")
-				).toString()
 			));
 	}
 
@@ -119,10 +115,8 @@ public class FaroInfoOrganizationDog extends BaseFaroInfoDog {
 				"dateModified", DateUtil.newDateString()
 			).put(
 				"removeQueryBuilder",
-				QueryBuilders.termsQuery(
-					"referencedOrganizationIds",
+				"referencedOrganizationIds eq " +
 					organizationJSONObject.getString("id")
-				).toString()
 			));
 
 		return organizationJSONObject;
