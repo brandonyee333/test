@@ -46,17 +46,22 @@ public class EventAttributeDefinitionBagDataFetcher
 	public ResultBag<EventAttributeDefinitionDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		String keyword = dataFetchingEnvironment.getArgument("keyword");
+		Long eventDefinitionId = null;
 
-		EventAttributeDefinition.Type type =
-			EventAttributeDefinition.Type.valueOf(
-				dataFetchingEnvironment.getArgument("type"));
+		if (dataFetchingEnvironment.containsArgument("eventDefinitionId")) {
+			eventDefinitionId = Long.valueOf(
+				dataFetchingEnvironment.getArgument("eventDefinitionId"));
+		}
 
 		Page<EventAttributeDefinition> eventAttributeDefinitionsPage =
 			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
-				keyword, dataFetchingEnvironment.getArgument("page"),
+				eventDefinitionId,
+				dataFetchingEnvironment.getArgument("keyword"),
+				dataFetchingEnvironment.getArgument("page"),
 				dataFetchingEnvironment.getArgument("size"),
-				Sort.of(dataFetchingEnvironment.getArgument("sort")), type);
+				Sort.of(dataFetchingEnvironment.getArgument("sort")),
+				EventAttributeDefinition.Type.valueOf(
+					dataFetchingEnvironment.getArgument("type")));
 
 		Stream<EventAttributeDefinition> stream =
 			eventAttributeDefinitionsPage.stream();

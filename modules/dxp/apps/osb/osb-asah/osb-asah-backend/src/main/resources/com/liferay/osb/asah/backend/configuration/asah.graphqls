@@ -838,6 +838,7 @@ type QueryType {
 	): EventAttributeDefinition
 
 	eventAttributeDefinitions(
+		eventDefinitionId: String,
 		keyword: String,
 		page: Int!,
 		size: Int!,
