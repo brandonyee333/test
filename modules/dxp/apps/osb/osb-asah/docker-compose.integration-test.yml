@@ -31,4 +31,11 @@ services:
         ports:
             - "8095:8095"
         restart: always
+    test_trino:
+        build: ./osb-asah-trino
+        container_name: trino
+        depends_on:
+            - test_postgresql
+        ports:
+            - "9090:8080"
 version: "2.3"
