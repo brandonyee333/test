@@ -92,9 +92,7 @@ public abstract class BaseReindexUpgradeStep implements UpgradeStep {
 			}
 
 			newIndexName = _reindexHelper.createIndex(
-				indexAlias,
-				_elasticsearchIndexManager.readIndexConfiguration(
-					collectionName, getWeDeployDataService()),
+				indexAlias, getIndexConfiguration(collectionName),
 				baseIndexName, version);
 
 			if (_log.isInfoEnabled()) {
@@ -134,6 +132,11 @@ public abstract class BaseReindexUpgradeStep implements UpgradeStep {
 		_reindexHelper.reindex(
 			newIndexName, getParams(), getQueryBuilder(), getScript(),
 			oldIndexName);
+	}
+
+	protected String getIndexConfiguration(String collectionName) {
+		return _elasticsearchIndexManager.readIndexConfiguration(
+			collectionName, getWeDeployDataService());
 	}
 
 	private static final Log _log = LogFactory.getLog(
