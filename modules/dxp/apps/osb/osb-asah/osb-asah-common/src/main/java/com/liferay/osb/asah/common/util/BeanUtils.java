@@ -19,6 +19,9 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 
 import java.sql.Array;
+import java.sql.Timestamp;
+
+import java.time.LocalDateTime;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -114,7 +117,15 @@ public class BeanUtils {
 						targetPropertyValue.toString()));
 			}
 			else {
-				if (targetPropertyValue instanceof Array) {
+				if ((targetPropertyClass != null) &&
+					targetPropertyClass.isAssignableFrom(LocalDateTime.class) &&
+					(targetPropertyValue instanceof Timestamp)) {
+
+					Timestamp timestamp = (Timestamp)targetPropertyValue;
+
+					targetPropertyValue = timestamp.toLocalDateTime();
+				}
+				else if (targetPropertyValue instanceof Array) {
 					Array array = (Array)targetPropertyValue;
 
 					targetPropertyValue = new LinkedHashSet<>(
