@@ -143,8 +143,8 @@ public class ExperimentRepositoryImpl extends BaseRepository {
 		Map<Long, Experiment> experimentsById = stream.collect(
 			Collectors.toMap(Experiment::getId, Function.identity()));
 
-		_populateExperimentVariants(experimentsById);
 		_populateExperimentMetrics(experimentsById);
+		_populateExperimentVariants(experimentsById);
 
 		return new ArrayList<>(experimentsById.values());
 	}
