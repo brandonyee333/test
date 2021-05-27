@@ -4,7 +4,8 @@ USE hive.default;
 
 CREATE TABLE IF NOT EXISTS CustomAsset (
 	abandonments BIGINT,
-    assetId VARCHAR,
+	assetId VARCHAR,
+	assetPrimaryKey VARCHAR,
 	category VARCHAR,
 	channelId BIGINT,
 	clicks BIGINT,
