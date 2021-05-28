@@ -51,6 +51,23 @@ public class CustomAssetMetricRepositoryTest {
 
 	@SQLResource(
 		dataSource = "trinoDataSource",
+		resourcePath = "custom_asset_metric_read_time_histogram_last_7_days.sql"
+	)
+	@Test
+	public void testGetReadingTimeHistogramMetricsLast24Hours() {
+		List<Tuple2<LocalDateTime, BigDecimal>> tuples =
+			_customAssetMetricRepository.getHistogramMetrics(
+				1L, CustomAssetMetricType.READING_TIME, "e131fabc",
+				Interval.DAY, TimeRange.LAST_7_DAYS);
+
+		Assert.assertEquals(tuples.toString(), 1, tuples.size());
+		Assert.assertEquals(
+			SetUtil.of(BigDecimal.valueOf(750.0)),
+			SetUtil.map(tuples, Tuple2::getT2));
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
 		resourcePath = "custom_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
