@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.saml.constants.SamlCommandQueryConstants;
 import com.liferay.saml.constants.SamlWebKeys;
 import com.liferay.saml.opensaml.integration.internal.binding.SamlBinding;
 import com.liferay.saml.opensaml.integration.internal.metadata.MetadataManager;
@@ -1008,15 +1009,11 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 			HttpServletRequest httpServletRequest)
 		throws PortalException {
 
-		StringBundler sb = new StringBundler(3);
+		StringBundler sb = new StringBundler(4);
 
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
-		sb.append(themeDisplay.getPathMain());
-
-		sb.append("/portal/saml/auth_redirect?redirect=");
+		sb.append(_portal.getRelativeHomeURL(httpServletRequest));
+		sb.append(SamlCommandQueryConstants.AUTH_REDIRECT);
+		sb.append("&redirect=");
 
 		SAMLBindingContext samlBindingContext = messageContext.getSubcontext(
 			SAMLBindingContext.class);
@@ -1356,9 +1353,10 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 	}
 
 	protected void redirectToLogin(
-		HttpServletRequest httpServletRequest,
-		HttpServletResponse httpServletResponse,
-		SamlSsoRequestContext samlSsoRequestContext, boolean forceAuthn) {
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse,
+			SamlSsoRequestContext samlSsoRequestContext, boolean forceAuthn)
+		throws PortalException {
 
 		HttpSession httpSession = httpServletRequest.getSession();
 
@@ -1397,8 +1395,8 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 
 		StringBundler redirectSB = new StringBundler(4);
 
-		redirectSB.append(themeDisplay.getPathMain());
-		redirectSB.append("/portal/saml/sso");
+		redirectSB.append(_portal.getRelativeHomeURL(httpServletRequest));
+		redirectSB.append(SamlCommandQueryConstants.WEB_SSO);
 
 		SAMLPeerEntityContext samlPeerEntityContext =
 			samlMessageContext.getSubcontext(SAMLPeerEntityContext.class);
@@ -1418,13 +1416,13 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 			if ((samlMessageInfoContext != null) &&
 				(samlMessageInfoContext.getMessageId() != null)) {
 
-				redirectSB.append("?saml_message_id=");
+				redirectSB.append("&saml_message_id=");
 				redirectSB.append(
 					URLCodec.encodeURL(samlMessageInfoContext.getMessageId()));
 			}
 		}
 		else if (samlPeerEntityContext.getEntityId() != null) {
-			redirectSB.append("?entityId=");
+			redirectSB.append("&entityId=");
 			redirectSB.append(
 				URLCodec.encodeURL(samlPeerEntityContext.getEntityId()));
 		}

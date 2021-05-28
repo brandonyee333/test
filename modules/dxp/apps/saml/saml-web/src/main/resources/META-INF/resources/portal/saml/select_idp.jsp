@@ -2,19 +2,19 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 --%>
 
-<%@ include file="/html/portal/init.jsp" %>
+<%@ include file="/init.jsp" %>
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
@@ -24,9 +24,11 @@ JSONObject samlSsoLoginContext = (JSONObject)request.getAttribute("SAML_SSO_LOGI
 JSONArray relevantIdpConnectionsJSONArray = samlSsoLoginContext.getJSONArray("relevantIdpConnections");
 %>
 
-<aui:form action='<%= PortalUtil.getPortalURL(request) + "/c/portal/login" %>' method="get" name="fm" style="padding: 1rem;">
-	<aui:input name="saveLastPath" type="hidden" value="<%= false %>" />
+<liferay-portlet:resourceURL id="/saml/send_authn_request" var="sendAuthnRequestURL" />
+
+<aui:form action="<%= sendAuthnRequestURL %>" id="fm" name="fm" style="padding: 1rem;">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="saveLastPath" type="hidden" value="<%= false %>" />
 
 	<c:choose>
 		<c:when test="<%= relevantIdpConnectionsJSONArray.length() > 0 %>">
