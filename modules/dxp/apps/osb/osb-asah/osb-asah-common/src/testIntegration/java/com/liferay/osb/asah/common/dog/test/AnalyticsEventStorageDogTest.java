@@ -59,7 +59,7 @@ public class AnalyticsEventStorageDogTest {
 	public void testStoreBlockedEvent() {
 		long expectedEventAttributeDefinitionCount =
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				null, EventAttributeDefinition.Type.LOCAL);
+				null, null, EventAttributeDefinition.Type.LOCAL);
 		long expectedEventDefinitionCount =
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, EventDefinition.Type.CUSTOM);
@@ -80,7 +80,7 @@ public class AnalyticsEventStorageDogTest {
 		Assert.assertEquals(
 			expectedEventAttributeDefinitionCount,
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				null, EventAttributeDefinition.Type.LOCAL),
+				null, null, EventAttributeDefinition.Type.LOCAL),
 			0.0);
 	}
 
@@ -89,7 +89,7 @@ public class AnalyticsEventStorageDogTest {
 	public void testStoreEventDefinitionLimitReached() {
 		long expectedEventAttributeDefinitionCount =
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				null, EventAttributeDefinition.Type.LOCAL);
+				null, null, EventAttributeDefinition.Type.LOCAL);
 		long expectedEventDefinitionCount =
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, EventDefinition.Type.CUSTOM);
@@ -110,7 +110,7 @@ public class AnalyticsEventStorageDogTest {
 		Assert.assertEquals(
 			expectedEventAttributeDefinitionCount,
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				null, EventAttributeDefinition.Type.LOCAL),
+				null, null, EventAttributeDefinition.Type.LOCAL),
 			0.0);
 	}
 
@@ -118,7 +118,7 @@ public class AnalyticsEventStorageDogTest {
 	public void testStoreExistingDefinitionNewAttributeDefinition() {
 		long expectedEventAttributeDefinitionCount =
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				null, EventAttributeDefinition.Type.LOCAL) + 1;
+				null, null, EventAttributeDefinition.Type.LOCAL) + 1;
 		long expectedEventDefinitionCount =
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, EventDefinition.Type.CUSTOM);
@@ -137,7 +137,7 @@ public class AnalyticsEventStorageDogTest {
 		Assert.assertEquals(
 			expectedEventAttributeDefinitionCount,
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				null, EventAttributeDefinition.Type.LOCAL),
+				null, null, EventAttributeDefinition.Type.LOCAL),
 			0.0);
 		Assert.assertEquals(
 			expectedEventCount, _eventDog.countEvents(eventDefinition.getId()),
@@ -156,7 +156,7 @@ public class AnalyticsEventStorageDogTest {
 	public void testStoreExistingDefinitionNewAttributeDefinitionReference() {
 		long expectedEventAttributeDefinitionCount =
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				null, EventAttributeDefinition.Type.LOCAL);
+				null, null, EventAttributeDefinition.Type.LOCAL);
 		long expectedEventDefinitionCount =
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, EventDefinition.Type.CUSTOM);
@@ -180,7 +180,7 @@ public class AnalyticsEventStorageDogTest {
 		Assert.assertEquals(
 			expectedEventAttributeDefinitionCount,
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				null, EventAttributeDefinition.Type.LOCAL),
+				null, null, EventAttributeDefinition.Type.LOCAL),
 			0.0);
 		Assert.assertEquals(
 			expectedEventCount, _eventDog.countEvents(eventDefinition.getId()),
@@ -198,7 +198,7 @@ public class AnalyticsEventStorageDogTest {
 	public void testStoreExistingEventDefinition() {
 		long expectedEventAttributeDefinitionCount =
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				null, EventAttributeDefinition.Type.LOCAL);
+				null, null, EventAttributeDefinition.Type.LOCAL);
 		long expectedEventDefinitionCount =
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, EventDefinition.Type.CUSTOM);
@@ -217,7 +217,7 @@ public class AnalyticsEventStorageDogTest {
 		Assert.assertEquals(
 			expectedEventAttributeDefinitionCount,
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				null, EventAttributeDefinition.Type.LOCAL),
+				null, null, EventAttributeDefinition.Type.LOCAL),
 			0.0);
 		Assert.assertEquals(
 			expectedEventCount, _eventDog.countEvents(eventDefinition.getId()),
@@ -233,7 +233,7 @@ public class AnalyticsEventStorageDogTest {
 	public void testStoreNewEventDefinition() {
 		long expectedEventAttributeDefinitionCount =
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				null, EventAttributeDefinition.Type.LOCAL);
+				null, null, EventAttributeDefinition.Type.LOCAL);
 		long expectedEventDefinitionCount =
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, EventDefinition.Type.CUSTOM) + 1;
@@ -246,7 +246,7 @@ public class AnalyticsEventStorageDogTest {
 		Assert.assertEquals(
 			expectedEventAttributeDefinitionCount,
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				null, EventAttributeDefinition.Type.LOCAL),
+				null, null, EventAttributeDefinition.Type.LOCAL),
 			0.0);
 		Assert.assertEquals(
 			expectedEventDefinitionCount,
