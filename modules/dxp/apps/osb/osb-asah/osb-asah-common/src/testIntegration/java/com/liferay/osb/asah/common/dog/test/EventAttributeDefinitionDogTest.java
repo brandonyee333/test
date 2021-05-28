@@ -437,6 +437,49 @@ public class EventAttributeDefinitionDogTest {
 	}
 
 	@SQLResource(
+		resourcePath = "test_get_event_attribute_definitions_global.sql"
+	)
+	@Test
+	public void testGetEventAttributeDefinitionsGlobal() {
+		_assertEventAttributeDefinitions(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
+				null, null, 0, 5, Sort.asc("name"),
+				EventAttributeDefinition.Type.GLOBAL),
+			new HashMap<String, EventAttributeDefinition.DataType>() {
+				{
+					put(
+						"canonicalUrl",
+						EventAttributeDefinition.DataType.STRING);
+					put("url", EventAttributeDefinition.DataType.STRING);
+				}
+			});
+	}
+
+	@SQLResource(
+		resourcePath = "test_get_event_attribute_definitions_with_event_definition_id.sql"
+	)
+	@Test
+	public void testGetEventAttributeDefinitionsWithEventDefinitionId() {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("savedToList");
+
+		_assertEventAttributeDefinitions(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
+				eventDefinition.getId(), null, 0, 5, Sort.asc("name"),
+				EventAttributeDefinition.Type.LOCAL),
+			new HashMap<String, EventAttributeDefinition.DataType>() {
+				{
+					put(
+						"itemDescription",
+						EventAttributeDefinition.DataType.STRING);
+					put(
+						"numberOfReviews",
+						EventAttributeDefinition.DataType.NUMBER);
+				}
+			});
+	}
+
+	@SQLResource(
 		resourcePath = "test_get_event_attribute_definitions_with_keyword.sql"
 	)
 	@Test
