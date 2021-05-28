@@ -27,7 +27,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
-import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
@@ -49,16 +48,15 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 	}
 
 	public long countEventAttributeDefinitions(
-		@Nullable String keyword,
+		@Nullable Long eventDefinitionId, @Nullable String keyword,
 		@Nullable EventAttributeDefinition.Type type) {
 
-		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.selectCount();
+		SelectSelectStep<?> selectSelectStep = _dslContext.select();
 
-		return selectSelectStep.from(
-			"EventAttributeDefinition"
-		).where(
-			_getConditions(keyword, type)
+		return selectSelectStep.select(
+			DSL.countDistinct(DSL.field("name"))
+		).from(
+			_getEventAttributeDefinitionsTable(eventDefinitionId, keyword, type)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -67,27 +65,31 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 	}
 
 	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
-		@Nullable String keyword, Pageable pageable,
-		@Nullable EventAttributeDefinition.Type type) {
+		@Nullable Long eventDefinitionId, @Nullable String keyword,
+		Pageable pageable, @Nullable EventAttributeDefinition.Type type) {
 
 		Map<Long, EventAttributeDefinition> eventAttributeDefinitionsById =
 			new LinkedHashMap<>();
 
 		SelectSelectStep<?> selectSelectStep = _dslContext.select();
 
-		Table<?> table = _getTopEventAttributeDefinitionsTable(
-			keyword, pageable, type);
-
-		Field<Object> field = DSL.field("eventAttributeDefinitionId");
+		Field<Object> idField = DSL.field("id");
 
 		selectSelectStep.from(
-			"EventDefinitionEventAttributeDefinition"
+			"EventAttributeDefinition"
 		).join(
-			table
+			"EventDefinitionEventAttributeDefinition"
 		).on(
-			field.eq(DSL.field(table + ".id"))
+			idField.eq(
+				DSL.field(
+					"EventDefinitionEventAttributeDefinition." +
+						"eventAttributeDefinitionId"))
+		).where(
+			_getTopDistinctEventAttributeDefinitionNamesCondition(
+				eventDefinitionId, keyword, pageable, type)
 		).orderBy(
-			getSortFields(pageable.getSort(), table)
+			getSortFields(
+				pageable.getSort(), DSL.table("EventAttributeDefinition"))
 		).fetch(
 		).forEach(
 			record -> {
@@ -111,9 +113,16 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Condition> _getConditions(
-		String keyword, EventAttributeDefinition.Type type) {
+		Long eventDefinitionId, String keyword,
+		EventAttributeDefinition.Type type) {
 
 		List<Condition> conditions = new ArrayList<>();
+
+		if (eventDefinitionId != null) {
+			Field<Object> field = DSL.field("eventDefinitionId");
+
+			conditions.add(field.eq(eventDefinitionId));
+		}
 
 		if (StringUtils.isNotEmpty(keyword)) {
 			Field<Object> descriptionField = DSL.field("description");
@@ -136,26 +145,54 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		return conditions;
 	}
 
-	private Table<?> _getTopEventAttributeDefinitionsTable(
-		String keyword, Pageable pageable, EventAttributeDefinition.Type type) {
+	private Table<?> _getEventAttributeDefinitionsTable(
+		Long eventDefinitionId, String keyword,
+		EventAttributeDefinition.Type type) {
 
 		SelectSelectStep<?> selectSelectStep = _dslContext.select();
 
+		Field<Object> field = DSL.field("id");
+
 		return selectSelectStep.from(
 			"EventAttributeDefinition"
+		).join(
+			"EventDefinitionEventAttributeDefinition"
+		).on(
+			field.eq(
+				DSL.field(
+					"EventDefinitionEventAttributeDefinition." +
+						"eventAttributeDefinitionId"))
 		).where(
-			_getConditions(keyword, type)
-		).groupBy(
-			DSL.field("id")
-		).orderBy(
-			getSortFields(pageable.getSort(), null)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
+			_getConditions(eventDefinitionId, keyword, type)
 		).asTable(
-			"topEventAttributeDefinitions"
+			"eventAttributeDefinitionsTable"
 		);
+	}
+
+	private Condition _getTopDistinctEventAttributeDefinitionNamesCondition(
+		Long eventDefinitionId, String keyword, Pageable pageable,
+		EventAttributeDefinition.Type type) {
+
+		Field<Object> field = DSL.field("name");
+
+		SelectSelectStep<?> selectSelectStep = _dslContext.selectDistinct(
+			DSL.field("name"));
+
+		Table<?> table = _getEventAttributeDefinitionsTable(
+			eventDefinitionId, keyword, type);
+
+		return field.in(
+			selectSelectStep.from(
+				table
+			).groupBy(
+				DSL.field(table + ".name")
+			).orderBy(
+				getSortFields(pageable.getSort(), null)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
 	}
 
 	private final DSLContext _dslContext;

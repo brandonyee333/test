@@ -43,7 +43,7 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 
 	@Override
 	public long countEventAttributeDefinitions(
-		@Nullable String keyword,
+		@Nullable Long eventDefinitionId, @Nullable String keyword,
 		@Nullable EventAttributeDefinition.Type type) {
 
 		throw new UnsupportedOperationException();
@@ -136,8 +136,8 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 
 	@Override
 	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
-		@Nullable String keyword, Pageable pageable,
-		@Nullable EventAttributeDefinition.Type type) {
+		@Nullable Long eventDefinitionId, @Nullable String keyword,
+		Pageable pageable, @Nullable EventAttributeDefinition.Type type) {
 
 		throw new UnsupportedOperationException();
 	}
