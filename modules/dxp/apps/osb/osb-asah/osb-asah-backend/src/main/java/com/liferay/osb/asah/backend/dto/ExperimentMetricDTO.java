@@ -84,13 +84,43 @@ public class ExperimentMetricDTO {
 		return _processedDate;
 	}
 
-	private final Double _completion;
-	private final Double _confidenceLevel;
-	private final Long _elapsedDays;
-	private final Long _estimatedDaysLeft;
+	public void setCompletion(Double completion) {
+		_completion = completion;
+	}
+
+	public void setConfidenceLevel(Double confidenceLevel) {
+		_confidenceLevel = confidenceLevel;
+	}
+
+	public void setElapsedDays(Long elapsedDays) {
+		_elapsedDays = elapsedDays;
+	}
+
+	public void setEstimatedDaysLeft(Long estimatedDaysLeft) {
+		_estimatedDaysLeft = estimatedDaysLeft;
+	}
+
+	public void setExperimentVariantMetricDTOs(
+		Set<ExperimentVariantMetricDTO> experimentVariantMetricDTOs) {
+
+		_experimentVariantMetricDTOs = experimentVariantMetricDTOs;
+	}
+
+	public void setId(Long id) {
+		_id = id;
+	}
+
+	public void setProcessedDate(LocalDateTime processedDate) {
+		_processedDate = processedDate;
+	}
+
+	private Double _completion;
+	private Double _confidenceLevel;
+	private Long _elapsedDays;
+	private Long _estimatedDaysLeft;
 	private Set<ExperimentVariantMetricDTO> _experimentVariantMetricDTOs =
 		new HashSet<>();
-	private final Long _id;
-	private final LocalDateTime _processedDate;
+	private Long _id;
+	private LocalDateTime _processedDate;
 
 }

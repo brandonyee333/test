@@ -89,12 +89,37 @@ public class ExperimentVariantDTO {
 		return _trafficSplit;
 	}
 
+	public void setChanges(Integer changes) {
+		_changes = changes;
+	}
+
+	public void setControl(Boolean control) {
+		_control = control;
+	}
+
+	public void setDXPVariantId(String dxpVariantId) {
+		_dxpVariantId = dxpVariantId;
+	}
+
+	public void setDXPVariantName(String dxpVariantName) {
+		_dxpVariantName = dxpVariantName;
+	}
+
+	public void setExperimentVariantDTOs(
+		Set<ExperimentVariantDTO> experimentVariantDTOs) {
+
+		_experimentVariantDTOs = experimentVariantDTOs;
+	}
+
+	public void setTrafficSplit(Double trafficSplit) {
+		_trafficSplit = trafficSplit;
+	}
+
 	private Integer _changes;
 	private Boolean _control;
 	private String _dxpVariantId;
 	private String _dxpVariantName;
-	private final Set<ExperimentVariantDTO> _experimentVariantDTOs =
-		new HashSet<>();
+	private Set<ExperimentVariantDTO> _experimentVariantDTOs = new HashSet<>();
 	private Double _trafficSplit;
 
 }

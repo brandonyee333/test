@@ -42,7 +42,15 @@ public class GoalDTO {
 		return _target;
 	}
 
-	private final String _goalMetric;
-	private final String _target;
+	public void setGoalMetric(String goalMetric) {
+		_goalMetric = goalMetric;
+	}
+
+	public void setTarget(String target) {
+		_target = target;
+	}
+
+	private String _goalMetric;
+	private String _target;
 
 }

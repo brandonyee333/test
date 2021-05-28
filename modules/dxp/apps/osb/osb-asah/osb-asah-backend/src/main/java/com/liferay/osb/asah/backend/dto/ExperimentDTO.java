@@ -339,6 +339,132 @@ public class ExperimentDTO {
 		return _winnerDXPVariantId;
 	}
 
+	public void setChannelId(Long channelId) {
+		_channelId = channelId;
+	}
+
+	public void setConfidenceLevel(Double confidenceLevel) {
+		_confidenceLevel = confidenceLevel;
+	}
+
+	public void setCreateDate(Date createDate) {
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
+		}
+	}
+
+	public void setDataSourceId(String dataSourceId) {
+		_dataSourceId = dataSourceId;
+	}
+
+	public void setDescription(String description) {
+		_description = description;
+	}
+
+	public void setDXPExperienceId(String dxpExperienceId) {
+		_dxpExperienceId = dxpExperienceId;
+	}
+
+	public void setDXPExperienceName(String dxpExperienceName) {
+		_dxpExperienceName = dxpExperienceName;
+	}
+
+	public void setDXPGroupId(String dxpGroupId) {
+		_dxpGroupId = dxpGroupId;
+	}
+
+	public void setDXPLayoutId(String dxpLayoutId) {
+		_dxpLayoutId = dxpLayoutId;
+	}
+
+	public void setDXPSegmentId(String dxpSegmentId) {
+		_dxpSegmentId = dxpSegmentId;
+	}
+
+	public void setDXPSegmentName(String dxpSegmentName) {
+		_dxpSegmentName = dxpSegmentName;
+	}
+
+	public void setExperimentDTOs(Set<ExperimentDTO> experimentDTOs) {
+		_experimentDTOs = experimentDTOs;
+	}
+
+	public void setExperimentMetricDTOs(
+		Set<ExperimentMetricDTO> experimentMetricDTOs) {
+
+		_experimentMetricDTOs = experimentMetricDTOs;
+	}
+
+	public void setExperimentStatus(String experimentStatus) {
+		_experimentStatus = experimentStatus;
+	}
+
+	public void setExperimentType(String experimentType) {
+		_experimentType = experimentType;
+	}
+
+	public void setExperimentVariantDTOs(
+		Set<ExperimentVariantDTO> experimentVariantDTOs) {
+
+		_experimentVariantDTOs = experimentVariantDTOs;
+	}
+
+	public void setFinishedDate(Date finishedDate) {
+		if (finishedDate != null) {
+			_finishedDate = new Date(finishedDate.getTime());
+		}
+	}
+
+	public void setGoalDTO(GoalDTO goalDTO) {
+		_goalDTO = goalDTO;
+	}
+
+	public void setId(String id) {
+		_id = id;
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		if (modifiedDate != null) {
+			_modifiedDate = new Date(modifiedDate.getTime());
+		}
+	}
+
+	public void setName(String name) {
+		_name = name;
+	}
+
+	public void setPageRelativePath(String pageRelativePath) {
+		_pageRelativePath = pageRelativePath;
+	}
+
+	public void setPageTitle(String pageTitle) {
+		_pageTitle = pageTitle;
+	}
+
+	public void setPageURL(String pageURL) {
+		_pageURL = pageURL;
+	}
+
+	public void setProcessedDate(Date processedDate) {
+		if (processedDate != null) {
+			_processedDate = new Date(processedDate.getTime());
+		}
+	}
+
+	public void setPublishedDXPVariantId(String publishedDXPVariantId) {
+		_publishedDXPVariantId = publishedDXPVariantId;
+	}
+
+	public void setStartedDate(Date startedDate) {
+		if (startedDate != null) {
+			_startedDate = new Date(startedDate.getTime());
+		}
+	}
+
+	public void setWinnerDXPVariantId(String winnerDXPVariantId) {
+		_winnerDXPVariantId = winnerDXPVariantId;
+	}
+
 	private Long _channelId;
 	private Double _confidenceLevel;
 	private Date _createDate;

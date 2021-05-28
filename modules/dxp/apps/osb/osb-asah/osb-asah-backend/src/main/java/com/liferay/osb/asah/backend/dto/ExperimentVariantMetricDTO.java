@@ -66,11 +66,37 @@ public class ExperimentVariantMetricDTO {
 		return _probabilityToWin;
 	}
 
-	private final BigDecimal[] _confidenceIntervals;
-	private final boolean _control;
-	private final String _dxpVariantId;
-	private final Double _improvement;
-	private final Double _median;
-	private final Double _probabilityToWin;
+	public void setConfidenceIntervals(BigDecimal[] confidenceIntervals) {
+		if (confidenceIntervals != null) {
+			_confidenceIntervals = confidenceIntervals.clone();
+		}
+	}
+
+	public void setControl(boolean control) {
+		_control = control;
+	}
+
+	public void setDXPVariantId(String dxpVariantId) {
+		_dxpVariantId = dxpVariantId;
+	}
+
+	public void setImprovement(Double improvement) {
+		_improvement = improvement;
+	}
+
+	public void setMedian(Double median) {
+		_median = median;
+	}
+
+	public void setProbabilityToWin(Double probabilityToWin) {
+		_probabilityToWin = probabilityToWin;
+	}
+
+	private BigDecimal[] _confidenceIntervals;
+	private boolean _control;
+	private String _dxpVariantId;
+	private Double _improvement;
+	private Double _median;
+	private Double _probabilityToWin;
 
 }
