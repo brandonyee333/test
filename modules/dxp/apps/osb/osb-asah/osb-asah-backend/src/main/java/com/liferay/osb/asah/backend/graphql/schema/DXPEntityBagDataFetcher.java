@@ -26,6 +26,8 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLFieldDefinition;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,13 +48,16 @@ public class DXPEntityBagDataFetcher
 	public ResultBag<? extends DXPEntity> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		return _dxpEntityDog.getDXPEntityResultBag(
+		List<? extends DXPEntity> dxpEntities = _dxpEntityDog.getDXPEntities(
 			dataFetchingEnvironment.getArgument("channelId"),
-			_getCollectionName(dataFetchingEnvironment),
 			dataFetchingEnvironment.getArgument("keywords"),
+			DXPEntity.Type.ofCollectionName(
+				_getCollectionName(dataFetchingEnvironment)),
 			dataFetchingEnvironment.getArgument("size"),
 			Sort.of(dataFetchingEnvironment.getArgument("sort")),
 			dataFetchingEnvironment.getArgument("start"));
+
+		return new ResultBag<>(dxpEntities, dxpEntities.size());
 	}
 
 	private String _getCollectionName(
