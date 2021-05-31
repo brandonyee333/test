@@ -38,12 +38,11 @@ public abstract class AbstractSingleResourceTemplate extends AbstractTemplate {
 	public AbstractSingleResourceTemplate(
 		TemplateResource templateResource,
 		TemplateResource errorTemplateResource, Map<String, Object> context,
-		TemplateContextHelper templateContextHelper, String templateManagerName,
-		boolean restricted, TemplateResourceCache templateResourceCache) {
+		TemplateContextHelper templateContextHelper, boolean restricted,
+		TemplateResourceCache templateResourceCache) {
 
 		super(
-			errorTemplateResource, context, templateContextHelper,
-			templateManagerName, restricted);
+			errorTemplateResource, context, templateContextHelper, restricted);
 
 		if (templateResource == null) {
 			throw new IllegalArgumentException("Template resource is null");
@@ -54,6 +53,24 @@ public abstract class AbstractSingleResourceTemplate extends AbstractTemplate {
 		if (templateResourceCache.isEnabled()) {
 			cacheTemplateResource(templateResourceCache);
 		}
+	}
+
+	/**
+	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	 *             #AbstractSingleResourceTemplate(TemplateResource,
+	 *             TemplateResource, Map, TemplateContextHelper, boolean,
+	 *             TemplateResourceCache)}}
+	 */
+	@Deprecated
+	public AbstractSingleResourceTemplate(
+		TemplateResource templateResource,
+		TemplateResource errorTemplateResource, Map<String, Object> context,
+		TemplateContextHelper templateContextHelper, String templateManagerName,
+		boolean restricted, TemplateResourceCache templateResourceCache) {
+
+		this(
+			templateResource, errorTemplateResource, context,
+			templateContextHelper, false, null);
 	}
 
 	/**

@@ -55,8 +55,7 @@ public class VelocityTemplate extends AbstractSingleResourceTemplate {
 
 		super(
 			templateResource, errorTemplateResource, context,
-			templateContextHelper, TemplateConstants.LANG_TYPE_VM, restricted,
-			templateResourceCache);
+			templateContextHelper, restricted, templateResourceCache);
 
 		_velocityEngine = velocityEngine;
 		_privileged = privileged;

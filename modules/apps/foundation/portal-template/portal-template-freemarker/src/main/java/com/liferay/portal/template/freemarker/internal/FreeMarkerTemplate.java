@@ -74,8 +74,7 @@ public class FreeMarkerTemplate extends AbstractSingleResourceTemplate {
 
 		super(
 			templateResource, errorTemplateResource, context,
-			templateContextHelper, TemplateConstants.LANG_TYPE_FTL, restricted,
-			templateResourceCache);
+			templateContextHelper, restricted, templateResourceCache);
 
 		_configuration = configuration;
 		_privileged = privileged;

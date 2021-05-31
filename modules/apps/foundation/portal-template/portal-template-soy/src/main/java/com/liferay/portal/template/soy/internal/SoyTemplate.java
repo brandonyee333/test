@@ -72,8 +72,7 @@ public class SoyTemplate extends AbstractMultiResourceTemplate {
 
 		super(
 			templateResources, errorTemplateResource, context,
-			templateContextHelper, TemplateConstants.LANG_TYPE_SOY, 0,
-			restricted);
+			templateContextHelper, restricted);
 
 		_templateContextHelper = templateContextHelper;
 		_privileged = privileged;
