@@ -14,20 +14,15 @@
 
 package com.liferay.portal.template.velocity.internal;
 
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.kernel.cache.MultiVMPool;
-import com.liferay.portal.kernel.cache.SingleVMPool;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.template.DefaultTemplateResourceLoader;
-import com.liferay.portal.template.velocity.configuration.VelocityEngineConfiguration;
 
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
@@ -37,8 +32,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Peter Fellwock
  */
 @Component(
-	configurationPid = "com.liferay.portal.template.velocity.configuration.VelocityEngineConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
+	immediate = true,
 	service = {
 		TemplateResourceLoader.class, VelocityTemplateResourceLoader.class
 	}
@@ -79,31 +73,14 @@ public class VelocityTemplateResourceLoader implements TemplateResourceLoader {
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		_velocityEngineConfiguration = ConfigurableUtil.createConfigurable(
-			VelocityEngineConfiguration.class, properties);
-
 		_defaultTemplateResourceLoader = new DefaultTemplateResourceLoader(
-			TemplateConstants.LANG_TYPE_VM, null,
-			_velocityEngineConfiguration.resourceModificationCheckInterval(),
-			_multiVMPool, _singleVMPool);
-	}
-
-	@Reference(unbind = "-")
-	protected void setMultiVMPool(MultiVMPool multiVMPool) {
-		_multiVMPool = multiVMPool;
-	}
-
-	@Reference(unbind = "-")
-	protected void setSingleVMPool(SingleVMPool singleVMPool) {
-		_singleVMPool = singleVMPool;
+			TemplateConstants.LANG_TYPE_VM, _velocityTemplateResourceCache);
 	}
 
 	private static volatile DefaultTemplateResourceLoader
 		_defaultTemplateResourceLoader;
-	private static volatile VelocityEngineConfiguration
-		_velocityEngineConfiguration;
 
-	private MultiVMPool _multiVMPool;
-	private SingleVMPool _singleVMPool;
+	@Reference
+	private VelocityTemplateResourceCache _velocityTemplateResourceCache;
 
 }
