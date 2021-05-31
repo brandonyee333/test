@@ -362,6 +362,14 @@ public class SecurityPortletContainerWrapper implements PortletContainer {
 
 		String url = getOriginalURL(request);
 
+		if (principalException instanceof
+				PrincipalException.MustHaveSessionCSRFToken) {
+
+			httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
+			return ActionResult.EMPTY_ACTION_RESULT;
+		}
+
 		if (_log.isWarnEnabled()) {
 			_log.warn(
 				String.format(
@@ -418,6 +426,12 @@ public class SecurityPortletContainerWrapper implements PortletContainer {
 			HttpHeaders.CACHE_CONTROL_NO_CACHE_VALUE);
 
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
+		if (principalException instanceof
+				PrincipalException.MustHaveSessionCSRFToken) {
+
+			return;
+		}
 
 		if (_log.isWarnEnabled()) {
 			_log.warn(
