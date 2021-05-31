@@ -16,11 +16,8 @@ package com.liferay.portal.template;
 
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheException;
-import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.cache.PortalCacheListener;
-import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Tina Tian
@@ -29,18 +26,22 @@ public class TemplateResourcePortalCacheListener
 	implements PortalCacheListener<String, TemplateResource> {
 
 	public TemplateResourcePortalCacheListener(
+		PortalCache<TemplateResource, ?> portalCache) {
+
+		_portalCache = portalCache;
+	}
+
+	/**
+	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	 *             #TemplateResourcePortalCacheListener(PortalCache)}
+	 */
+	@Deprecated
+	public TemplateResourcePortalCacheListener(
 		String templateResourceLoaderName) {
 
-		String portalCacheName = TemplateResource.class.getName();
-
-		portalCacheName = portalCacheName.concat(
-			StringPool.POUND
-		).concat(
-			templateResourceLoaderName
-		);
-
-		_portalCache = PortalCacheHelperUtil.getPortalCache(
-			PortalCacheManagerNames.SINGLE_VM, portalCacheName);
+		throw new UnsupportedOperationException(
+			"This constructor is deprecated and replaced by " +
+				"#TemplateResourcePortalCacheListener(PortalCache");
 	}
 
 	@Override
