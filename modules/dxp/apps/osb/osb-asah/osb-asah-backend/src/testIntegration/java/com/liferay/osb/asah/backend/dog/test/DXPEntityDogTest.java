@@ -54,7 +54,7 @@ public class DXPEntityDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetGroupResultBag() {
+	public void testGetGroups() {
 		_testGetDXPEntities(
 			null, "groups", Arrays.asList("Global", "Guest"), 2, null,
 			Sort.asc("fields.name"));
@@ -71,7 +71,7 @@ public class DXPEntityDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
 	@Test
-	public void testGetOrganizationResultBag() {
+	public void testGetOrganizations() {
 		_testGetDXPEntities(
 			null, "organizations",
 			Arrays.asList("engineering", "marketing", "sales engineering"), 3,
@@ -83,7 +83,7 @@ public class DXPEntityDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
 	@Test
-	public void testGetOrganizationResultBagSearch() {
+	public void testGetOrganizationsSearch() {
 		_testGetDXPEntities(
 			null, "organizations",
 			Arrays.asList("engineering", "sales engineering"), 2, "engine",
@@ -95,7 +95,7 @@ public class DXPEntityDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
 	@Test
-	public void testGetRoleResultBag() {
+	public void testGetRoles() {
 		_testGetDXPEntities(
 			null, "roles",
 			Arrays.asList("Administrator", "Guest", "Owner", "Power User"), 4,
@@ -111,7 +111,7 @@ public class DXPEntityDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
 	@Test
-	public void testGetTeamResultBag() {
+	public void testGetTeams() {
 		_testGetDXPEntities(
 			"414686271857066676", "teams",
 			Arrays.asList("teamA", "teamB", "teamC", "teamD"), 4, null,
@@ -126,7 +126,7 @@ public class DXPEntityDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
 	@Test
-	public void testGetUserGroupResultBag() {
+	public void testGetUserGroups() {
 		_testGetDXPEntities(
 			null, "user-groups", Arrays.asList("Mac Users"), 1, null,
 			Sort.asc("fields.name"));
@@ -141,7 +141,7 @@ public class DXPEntityDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
 	@Test
-	public void testGetUserResultBag() {
+	public void testGetUsers() {
 		_testGetDXPEntities(
 			null, "users",
 			Arrays.asList(
@@ -163,7 +163,7 @@ public class DXPEntityDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
 	@Test
-	public void testGetUserResultBagCaseInsensitiveSearch() {
+	public void testGetUsersCaseInsensitiveSearch() {
 		_testGetDXPEntities(
 			null, "users",
 			Arrays.asList("Test1 Test1", "Test2 Test2", "Test3 Test3"), 3,
@@ -179,7 +179,7 @@ public class DXPEntityDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
 	@Test
-	public void testGetUserResultBagSearch() {
+	public void testGetUsersSearch() {
 		_testGetDXPEntities(
 			null, "users",
 			Arrays.asList("Test1 Test1", "Test2 Test2", "Test3 Test3"), 3,
@@ -195,7 +195,7 @@ public class DXPEntityDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
 	@Test
-	public void testGetUserResultBagSearchAndSort() {
+	public void testGetUsersSearchAndSort() {
 		_testGetDXPEntities(
 			null, "users", Arrays.asList("Bruno Badmin", "Bruno Admin"), 2,
 			"Bruno", Sort.desc("fields.name"));
