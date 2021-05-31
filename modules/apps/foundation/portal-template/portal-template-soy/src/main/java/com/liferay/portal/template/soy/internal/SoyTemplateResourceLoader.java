@@ -14,20 +14,15 @@
 
 package com.liferay.portal.template.soy.internal;
 
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.kernel.cache.MultiVMPool;
-import com.liferay.portal.kernel.cache.SingleVMPool;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.template.DefaultTemplateResourceLoader;
-import com.liferay.portal.template.soy.configuration.SoyTemplateEngineConfiguration;
 
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
@@ -36,8 +31,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Miroslav Ligas
  */
 @Component(
-	configurationPid = "com.liferay.portal.template.soy.configuration.SoyTemplateEngineConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
+	immediate = true,
 	service = {SoyTemplateResourceLoader.class, TemplateResourceLoader.class}
 )
 public class SoyTemplateResourceLoader implements TemplateResourceLoader {
@@ -76,31 +70,14 @@ public class SoyTemplateResourceLoader implements TemplateResourceLoader {
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		_soyTemplateEngineConfiguration = ConfigurableUtil.createConfigurable(
-			SoyTemplateEngineConfiguration.class, properties);
-
 		_defaultTemplateResourceLoader = new DefaultTemplateResourceLoader(
-			TemplateConstants.LANG_TYPE_SOY, null,
-			_soyTemplateEngineConfiguration.resourceModificationCheck(),
-			_multiVMPool, _singleVMPool);
-	}
-
-	@Reference(unbind = "-")
-	protected void setMultiVMPool(MultiVMPool multiVMPool) {
-		_multiVMPool = multiVMPool;
-	}
-
-	@Reference(unbind = "-")
-	protected void setSingleVMPool(SingleVMPool singleVMPool) {
-		_singleVMPool = singleVMPool;
+			TemplateConstants.LANG_TYPE_SOY, _soyTemplateResourceCache);
 	}
 
 	private static volatile DefaultTemplateResourceLoader
 		_defaultTemplateResourceLoader;
-	private static volatile SoyTemplateEngineConfiguration
-		_soyTemplateEngineConfiguration;
 
-	private MultiVMPool _multiVMPool;
-	private SingleVMPool _singleVMPool;
+	@Reference
+	private SoyTemplateResourceCache _soyTemplateResourceCache;
 
 }
