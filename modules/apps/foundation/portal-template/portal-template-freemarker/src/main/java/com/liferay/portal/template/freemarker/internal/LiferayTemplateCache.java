@@ -63,7 +63,9 @@ public class LiferayTemplateCache extends TemplateCache {
 
 	@Override
 	public void clear() {
-		_portalCache.removeAll();
+		if (_portalCache != null) {
+			_portalCache.removeAll();
+		}
 	}
 
 	@Override
@@ -139,11 +141,14 @@ public class LiferayTemplateCache extends TemplateCache {
 				"Unable to find FreeMarker template with ID " + templateId);
 		}
 
-		MaybeMissingTemplate maybeMissingTemplate = _portalCache.get(
-			templateResource);
+		MaybeMissingTemplate maybeMissingTemplate = null;
 
-		if (maybeMissingTemplate != null) {
-			return maybeMissingTemplate;
+		if (_portalCache != null) {
+			maybeMissingTemplate = _portalCache.get(templateResource);
+
+			if (maybeMissingTemplate != null) {
+				return maybeMissingTemplate;
+			}
 		}
 
 		Template template = new Template(
@@ -153,9 +158,7 @@ public class LiferayTemplateCache extends TemplateCache {
 		try {
 			maybeMissingTemplate = _constructor.newInstance(template);
 
-			if (_freeMarkerEngineConfiguration.resourceModificationCheck() !=
-					0) {
-
+			if (_portalCache != null) {
 				_portalCache.put(templateResource, maybeMissingTemplate);
 			}
 
