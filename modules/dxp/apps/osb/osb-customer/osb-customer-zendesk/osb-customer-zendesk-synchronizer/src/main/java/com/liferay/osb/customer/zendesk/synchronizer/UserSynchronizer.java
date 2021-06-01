@@ -14,6 +14,8 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer;
 
+import com.liferay.mail.kernel.model.MailMessage;
+import com.liferay.mail.kernel.service.MailService;
 import com.liferay.osb.customer.admin.constants.EntitlementConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
@@ -30,10 +32,12 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskUserIdentityConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
+import com.liferay.osb.customer.zendesk.model.ZendeskUserRelated;
 import com.liferay.osb.customer.zendesk.util.PhoneUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskLocaleUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserIdentityWebService;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskUserRelatedWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactAccountView;
@@ -53,6 +57,9 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -98,9 +105,18 @@ public class UserSynchronizer {
 			user.getEmailAddress());
 
 		if (zendeskUser.isAgent()) {
-			zendeskUser.setRole("end-user");
+			ZendeskUserRelated zendeskUserRelated =
+				_zendeskUserRelatedWebService.getZendeskUserRelated(
+					zendeskUser.getZendeskUserId());
 
-			sync(user, zendeskUser);
+			if (zendeskUserRelated.getAssignedTickets() > 0) {
+				sendEmail(zendeskUser.getName(), zendeskUser.getEmail());
+			}
+			else {
+				zendeskUser.setRole("end-user");
+
+				sync(user, zendeskUser);
+			}
 		}
 	}
 
@@ -404,6 +420,29 @@ public class UserSynchronizer {
 		return false;
 	}
 
+	protected void sendEmail(String fullName, String emailAddress)
+		throws AddressException {
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append("Please downgrade ");
+		sb.append(fullName);
+		sb.append(StringPool.SPACE);
+		sb.append(emailAddress);
+		sb.append(" on Zendesk. They have non-closed tickets assigned to them");
+		sb.append(StringPool.PERIOD);
+
+		InternetAddress from = new InternetAddress("noreply@liferay.com");
+		InternetAddress to = new InternetAddress("zendesk-admin@liferay.com");
+
+		String mailSubject = "Reassign Tickets and Downgrade Full Agent";
+
+		MailMessage mailMessage = new MailMessage(
+			from, to, mailSubject, sb.toString(), true);
+
+		_mailService.sendEmail(mailMessage);
+	}
+
 	@Reference
 	private AccountEntryLocalService _accountEntryLocalService;
 
@@ -429,6 +468,9 @@ public class UserSynchronizer {
 	private ContactRoleWebService _contactRoleWebService;
 
 	@Reference
+	private MailService _mailService;
+
+	@Reference
 	private OrganizationLocalService _organizationLocalService;
 
 	@Reference
@@ -451,6 +493,9 @@ public class UserSynchronizer {
 
 	@Reference
 	private ZendeskUserIdentityWebService _zendeskUserIdentityWebService;
+
+	@Reference
+	private ZendeskUserRelatedWebService _zendeskUserRelatedWebService;
 
 	@Reference
 	private ZendeskUserWebService _zendeskUserWebService;

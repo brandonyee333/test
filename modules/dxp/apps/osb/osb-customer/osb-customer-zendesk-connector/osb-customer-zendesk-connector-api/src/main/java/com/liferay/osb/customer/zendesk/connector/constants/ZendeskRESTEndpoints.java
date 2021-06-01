@@ -50,6 +50,8 @@ public interface ZendeskRESTEndpoints {
 	public static final String ORGANIZATIONS_CREATE_OR_UPDATE =
 		"organizations/create_or_update.json";
 
+	public static final String RELATED = "/related.json";
+
 	public static final String TICKET_FIELDS = "ticket_fields.json";
 
 	public static final String TICKET_METRICS = "ticket_metrics.json";
