@@ -19,14 +19,12 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.DeleteUsingStep;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.SelectConditionStep;
@@ -58,10 +56,9 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			return;
 		}
 
-		DeleteUsingStep<Record> deleteUsingStep = _dslContext.delete(
-			DSL.table(DXPEntity.class.getSimpleName()));
-
-		deleteUsingStep.where(
+		_dslContext.delete(
+			DSL.table("DXPEntity")
+		).where(
 			DSL.field(
 				"id"
 			).eq(
@@ -77,10 +74,9 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 	public void deleteByFieldNameEqualsAndType(
 		String fieldName, String fieldValue, DXPEntity.Type type) {
 
-		DeleteUsingStep<Record> deleteUsingStep = _dslContext.delete(
-			DSL.table(DXPEntity.class.getSimpleName()));
-
-		deleteUsingStep.where(
+		_dslContext.delete(
+			DSL.table("DXPEntity")
+		).where(
 			DSL.field(
 				"type"
 			).eq(
@@ -96,10 +92,9 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 	}
 
 	public void deleteByType(DXPEntity.Type type) {
-		DeleteUsingStep<Record> deleteUsingStep = _dslContext.delete(
-			DSL.table(DXPEntity.class.getSimpleName()));
-
-		deleteUsingStep.where(
+		_dslContext.delete(
+			DSL.table("DXPEntity")
+		).where(
 			DSL.field(
 				"type"
 			).eq(
