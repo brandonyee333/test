@@ -132,7 +132,7 @@ public class ElasticsearchDXPEntityRepositoryImpl
 
 	@Override
 	public List<DXPEntity> findByFieldsAndType(
-		Long after, Map<String, Object> fields, DXPEntity.Type type, int size) {
+		Long after, Map<String, Object> fields, int size, DXPEntity.Type type) {
 
 		SearchResponse searchResponse = _dxpRawElasticsearchInvoker.search(
 			type.getCollectionName(),

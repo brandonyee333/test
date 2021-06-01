@@ -149,7 +149,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 	}
 
 	public List<DXPEntity> findByFieldsAndType(
-		Long after, Map<String, Object> fields, DXPEntity.Type type, int size) {
+		Long after, Map<String, Object> fields, int size, DXPEntity.Type type) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 

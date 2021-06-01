@@ -113,7 +113,7 @@ public abstract class BaseDXPEntityRepositoryTestCase
 						dxpEntity.getIdFieldValue());
 				}
 			},
-			type, 1);
+			1, type);
 
 		Assert.assertTrue(dxpEntities.isEmpty());
 	}
@@ -139,7 +139,7 @@ public abstract class BaseDXPEntityRepositoryTestCase
 						ListUtil.map(entityModels, DXPEntity::getIdFieldValue));
 				}
 			},
-			DXPEntity.Type.USER, 1);
+			1, DXPEntity.Type.USER);
 
 		Assert.assertTrue(dxpEntities.isEmpty());
 	}
@@ -159,7 +159,7 @@ public abstract class BaseDXPEntityRepositoryTestCase
 					put("fields.emailAddress", "john.doe@liferay.com");
 				}
 			},
-			dxpEntity.getType(), 1);
+			1, dxpEntity.getType());
 
 		Assert.assertTrue(dxpEntities.isEmpty());
 	}
@@ -200,7 +200,7 @@ public abstract class BaseDXPEntityRepositoryTestCase
 					put("fields.memberships." + _CLASS_NAME_GROUP, "20122");
 				}
 			},
-			DXPEntity.Type.USER, 3);
+			3, DXPEntity.Type.USER);
 
 		Assert.assertEquals(dxpEntities.toString(), 1, dxpEntities.size());
 	}
@@ -211,8 +211,8 @@ public abstract class BaseDXPEntityRepositoryTestCase
 
 		List<DXPEntity> dxpEntities = _dxpEntityRepository.findByFieldsAndType(
 			dxpEntity.getId(),
-			Collections.singletonMap("fields.jobTitle", "electrician"),
-			DXPEntity.Type.USER, 2);
+			Collections.singletonMap("fields.jobTitle", "electrician"), 2,
+			DXPEntity.Type.USER);
 
 		DXPEntity expectedDXPEntity = entityModels.get(1);
 		DXPEntity actualDXPEntity = dxpEntities.get(0);

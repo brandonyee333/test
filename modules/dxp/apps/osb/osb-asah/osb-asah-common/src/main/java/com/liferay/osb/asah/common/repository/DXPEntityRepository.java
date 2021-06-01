@@ -39,7 +39,7 @@ public interface DXPEntityRepository extends CrudRepository<DXPEntity, Long> {
 	public void deleteByType(DXPEntity.Type type);
 
 	public List<DXPEntity> findByFieldsAndType(
-		Long after, Map<String, Object> fields, DXPEntity.Type type, int size);
+		Long after, Map<String, Object> fields, int size, DXPEntity.Type type);
 
 	public List<DXPEntity> findByMembershipClassNameAndMembershipId(
 		String membershipClassName, Long membershipId);
