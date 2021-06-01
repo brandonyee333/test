@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -101,38 +102,6 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 				type.getCollectionName()
 			)
 		).execute();
-	}
-
-	public DXPEntity fetchByDataSourceIdAndEntityTypeIdFieldValue(
-		String dataSourceId, DXPEntity.Type dxpEntityType,
-		String dxpEntityTypeIdValue) {
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		List<DXPEntity> dxpEntities = selectSelectStep.from(
-			DSL.table(DXPEntity.class.getSimpleName())
-		).where(
-			DSL.field(
-				"dataSourceId"
-			).eq(
-				Long.valueOf(dataSourceId)
-			)
-		).and(
-			DSL.field(
-				"fields->>{0}", String.class, dxpEntityType.getIdFieldName()
-			).eq(
-				dxpEntityTypeIdValue
-			)
-		).fetch(
-		).map(
-			record -> new DXPEntity(record.intoMap())
-		);
-
-		if (dxpEntities.isEmpty()) {
-			return null;
-		}
-
-		return dxpEntities.get(0);
 	}
 
 	public Iterable<DXPEntity> findAll() {
