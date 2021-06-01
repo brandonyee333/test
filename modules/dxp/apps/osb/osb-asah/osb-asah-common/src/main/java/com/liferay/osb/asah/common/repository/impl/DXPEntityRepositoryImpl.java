@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,6 +33,7 @@ import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Marcos Martins
@@ -127,12 +127,9 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			)
 		);
 
-		Set<Map.Entry<String, Object>> propertiesEntrySet = fields.entrySet();
-
-		for (Map.Entry<String, Object> propertyEntrySet : propertiesEntrySet) {
+		for (Map.Entry<String, Object> field : fields.entrySet()) {
 			selectConditionStep.and(
-				_createCondition(
-					propertyEntrySet.getKey(), propertyEntrySet.getValue()));
+				_createCondition(field.getKey(), field.getValue()));
 		}
 
 		if (after != null) {
@@ -188,24 +185,24 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 	}
 
 	public List<DXPEntity> searchByDataSourceIdsAndKeywordsAndType(
-		List<Long> dataSourceIds, String keywords, DXPEntity.Type type,
-		Pageable pageable) {
+		List<Long> dataSourceIds, @Nullable String keywords,
+		DXPEntity.Type type, Pageable pageable) {
 
 		throw new UnsupportedOperationException();
 	}
 
-	private Condition _createCondition(String key, Object value) {
-		Field<Object> field = DSL.field(_createFieldPath(key));
+	private Condition _createCondition(String fieldKey, Object fieldValue) {
+		Field<Object> field = DSL.field(_createFieldPath(fieldKey));
 
-		if (StringUtils.startsWith(key, "fields.memberships.")) {
-			return field.contains(value);
+		if (StringUtils.startsWith(fieldKey, "fields.memberships.")) {
+			return field.contains(fieldValue);
 		}
 
-		if (value instanceof Collection) {
-			return field.in((Collection)value);
+		if (fieldValue instanceof Collection) {
+			return field.in((Collection)fieldValue);
 		}
 
-		return field.eq(value);
+		return field.eq(fieldValue);
 	}
 
 	private String _createFieldPath(String fieldName) {
