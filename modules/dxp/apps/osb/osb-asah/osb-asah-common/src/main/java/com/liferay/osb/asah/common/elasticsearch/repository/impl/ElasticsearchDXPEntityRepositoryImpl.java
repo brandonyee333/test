@@ -59,6 +59,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -211,8 +212,8 @@ public class ElasticsearchDXPEntityRepositoryImpl
 
 	@Override
 	public List<DXPEntity> searchByDataSourceIdsAndKeywordsAndType(
-		List<Long> dataSourceIds, String keywords, DXPEntity.Type type,
-		Pageable pageable) {
+		List<Long> dataSourceIds, @Nullable String keywords,
+		DXPEntity.Type type, Pageable pageable) {
 
 		try {
 			CollectionGetResponse collectionGetResponse =

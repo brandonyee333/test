@@ -51,11 +51,11 @@ public class DXPEntityBagDataFetcher
 		List<? extends DXPEntity> dxpEntities = _dxpEntityDog.getDXPEntities(
 			dataFetchingEnvironment.getArgument("channelId"),
 			dataFetchingEnvironment.getArgument("keywords"),
-			DXPEntity.Type.ofCollectionName(
-				_getCollectionName(dataFetchingEnvironment)),
 			dataFetchingEnvironment.getArgument("size"),
 			Sort.of(dataFetchingEnvironment.getArgument("sort")),
-			dataFetchingEnvironment.getArgument("start"));
+			dataFetchingEnvironment.getArgument("start"),
+			DXPEntity.Type.ofCollectionName(
+				_getCollectionName(dataFetchingEnvironment)));
 
 		return new ResultBag<>(dxpEntities, dxpEntities.size());
 	}

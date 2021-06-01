@@ -22,6 +22,7 @@ import java.util.Map;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -45,7 +46,7 @@ public interface DXPEntityRepository extends CrudRepository<DXPEntity, Long> {
 		String membershipClassName, Long membershipId);
 
 	public List<DXPEntity> searchByDataSourceIdsAndKeywordsAndType(
-		List<Long> dataSourceIds, String keywords, DXPEntity.Type type,
-		Pageable pageable);
+		List<Long> dataSourceIds, @Nullable String keywords,
+		DXPEntity.Type type, Pageable pageable);
 
 }

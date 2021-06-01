@@ -40,6 +40,7 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -53,13 +54,13 @@ public class DXPEntityDog {
 	}
 
 	public List<? extends DXPEntity> getDXPEntities(
-		String channelId, String keywords, DXPEntity.Type type, int size,
-		Sort sort, int start) {
+		@Nullable Long channelId, @Nullable String keywords, int size,
+		Sort sort, int start, DXPEntity.Type type) {
 
 		List<Long> dataSourceIds = new ArrayList<>();
 
 		if (channelId != null) {
-			Channel channel = _channelDog.fetchChannel(Long.valueOf(channelId));
+			Channel channel = _channelDog.fetchChannel(channelId);
 
 			if (channel != null) {
 				dataSourceIds = ListUtil.map(

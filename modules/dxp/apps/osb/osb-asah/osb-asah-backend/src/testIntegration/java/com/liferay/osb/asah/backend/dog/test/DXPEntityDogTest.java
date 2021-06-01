@@ -76,10 +76,10 @@ public class DXPEntityDogTest {
 			null, "groups", Arrays.asList("Global", "Guest"), 2, null,
 			Sort.asc("fields.name"));
 		_testGetDXPEntities(
-			"414686271857066676", "groups", Arrays.asList("Global", "Guest"), 2,
+			414686271857066676L, "groups", Arrays.asList("Global", "Guest"), 2,
 			null, Sort.asc("fields.name"));
 		_testGetDXPEntities(
-			"414686271857066677", "groups", Collections.emptyList(), 0, null,
+			414686271857066677L, "groups", Collections.emptyList(), 0, null,
 			Sort.asc("fields.name"));
 	}
 
@@ -130,11 +130,11 @@ public class DXPEntityDogTest {
 	@Test
 	public void testGetTeams() {
 		_testGetDXPEntities(
-			"414686271857066676", "teams",
+			414686271857066676L, "teams",
 			Arrays.asList("teamA", "teamB", "teamC", "teamD"), 4, null,
 			Sort.asc("fields.name"));
 		_testGetDXPEntities(
-			"414686271857066677", "teams", Arrays.asList("teamE"), 1, null,
+			414686271857066677L, "teams", Arrays.asList("teamE"), 1, null,
 			Sort.asc("fields.name"));
 	}
 
@@ -166,13 +166,13 @@ public class DXPEntityDogTest {
 				"Test3 Test3"),
 			5, null, Sort.asc("fields.name"));
 		_testGetDXPEntities(
-			"414686271857066676", "users",
+			414686271857066676L, "users",
 			Arrays.asList(
 				"Bruno Admin", "Bruno Badmin", "Test1 Test1", "Test2 Test2"),
 			4, null, Sort.asc("fields.name"));
 		_testGetDXPEntities(
-			"414686271857066677", "users", Arrays.asList("Test3 Test3"), 1,
-			null, Sort.asc("fields.name"));
+			414686271857066677L, "users", Arrays.asList("Test3 Test3"), 1, null,
+			Sort.asc("fields.name"));
 	}
 
 	@ElasticsearchIndex(
@@ -202,7 +202,7 @@ public class DXPEntityDogTest {
 			Arrays.asList("Test1 Test1", "Test2 Test2", "Test3 Test3"), 3,
 			"Test", Sort.asc("fields.name"));
 		_testGetDXPEntities(
-			"414686271857066676", "users",
+			414686271857066676L, "users",
 			Arrays.asList("Test1 Test1", "Test2 Test2"), 2, "Test",
 			Sort.asc("fields.name"));
 	}
@@ -219,12 +219,12 @@ public class DXPEntityDogTest {
 	}
 
 	private void _testGetDXPEntities(
-		String channelId, String collectionName, List<String> expectedNames,
+		Long channelId, String collectionName, List<String> expectedNames,
 		int expectedTotal, String keywords, Sort sort) {
 
 		List<? extends DXPEntity> dxpEntities = _dxpEntityDog.getDXPEntities(
-			channelId, keywords,
-			DXPEntity.Type.ofCollectionName(collectionName), 10, sort, 0);
+			channelId, keywords, 10, sort, 0,
+			DXPEntity.Type.ofCollectionName(collectionName));
 
 		Assert.assertEquals(
 			dxpEntities.toString(), expectedTotal, dxpEntities.size());
