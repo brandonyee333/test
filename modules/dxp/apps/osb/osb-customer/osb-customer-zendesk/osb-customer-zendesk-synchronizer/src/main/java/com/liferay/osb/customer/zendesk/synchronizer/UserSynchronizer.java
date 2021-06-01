@@ -429,16 +429,15 @@ public class UserSynchronizer {
 		sb.append(fullName);
 		sb.append(StringPool.SPACE);
 		sb.append(emailAddress);
-		sb.append(" on Zendesk. They have non-closed tickets assigned to them");
-		sb.append(StringPool.PERIOD);
+		sb.append(" on Zendesk. They have non-closed tickets assigned to ");
+		sb.append("them.");
 
 		InternetAddress from = new InternetAddress("noreply@liferay.com");
 		InternetAddress to = new InternetAddress("zendesk-admin@liferay.com");
 
-		String mailSubject = "Reassign Tickets and Downgrade Full Agent";
-
 		MailMessage mailMessage = new MailMessage(
-			from, to, mailSubject, sb.toString(), true);
+			from, to, "Reassign Tickets and Downgrade Full Agent",
+			sb.toString(), true);
 
 		_mailService.sendEmail(mailMessage);
 	}
