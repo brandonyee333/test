@@ -125,12 +125,18 @@ public class AccountEntryPermission {
 				_contactRoleWebService.getAccountContactRoles(
 					koroneikiAccountKey, user.getUuid(), 1, 1000);
 
-			if (contactRoles.contains(
-					ContactRoleConstants.NAME_SUPPORT_DEVELOPER) ||
-				contactRoles.contains(
-					ContactRoleConstants.NAME_SUPPORT_WATCHER)) {
+			if (contactRoles.isEmpty()) {
+				return false;
+			}
 
-				return true;
+			for (ContactRole contactRole : contactRoles) {
+				String name = contactRole.getName();
+
+				if (name.equals(ContactRoleConstants.NAME_SUPPORT_DEVELOPER) ||
+					name.equals(ContactRoleConstants.NAME_SUPPORT_WATCHER)) {
+
+					return true;
+				}
 			}
 		}
 		catch (Exception e) {
