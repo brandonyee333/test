@@ -18,8 +18,6 @@
 
 <%
 String image = (String)request.getAttribute("liferay-ui:png_image:image");
-String height = (String)request.getAttribute("liferay-ui:png_image:height");
-String width = (String)request.getAttribute("liferay-ui:png_image:width");
 %>
 
 <div
@@ -33,6 +31,6 @@ String width = (String)request.getAttribute("liferay-ui:png_image:width");
 		</c:otherwise>
 	</c:choose>
 
-	height: <%= height %>px; width: <%= width %>px;"
+	height: <%= (String)request.getAttribute("liferay-ui:png_image:height") %>px; width: <%= (String)request.getAttribute("liferay-ui:png_image:width") %>px;"
 >
 </div>

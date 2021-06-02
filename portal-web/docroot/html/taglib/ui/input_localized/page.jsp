@@ -205,10 +205,9 @@
 
 			<%
 			for (Locale availableLocale : availableLocales) {
-				String availableLanguageId = LocaleUtil.toLanguageId(availableLocale);
 			%>
 
-				available['<%= availableLanguageId %>'] = '<%= availableLocale.getDisplayName(locale) %>';
+				available['<%= LocaleUtil.toLanguageId(availableLocale) %>'] = '<%= availableLocale.getDisplayName(locale) %>';
 
 			<%
 			}
@@ -220,10 +219,9 @@
 
 			<%
 			for (Locale errorLocale : errorLocales) {
-				String errorLocaleId = LocaleUtil.toLanguageId(errorLocale);
 			%>
 
-				errors['<%= errorLocaleId %>'] = '<%= errorLocale.getDisplayName(locale) %>';
+				errors['<%= LocaleUtil.toLanguageId(errorLocale) %>'] = '<%= errorLocale.getDisplayName(locale) %>';
 
 			<%
 			}

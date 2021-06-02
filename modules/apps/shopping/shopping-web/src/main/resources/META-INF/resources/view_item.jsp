@@ -79,11 +79,9 @@ renderResponse.setTitle(item.getName());
 
 			while (enu.hasMoreElements()) {
 				String propsKey = (String)enu.nextElement();
-
-				String propsValue = props.getProperty(propsKey, StringPool.BLANK);
 			%>
 
-				<h6 class="text-default"><%= propsKey %>: <%= propsValue %></h6>
+				<h6 class="text-default"><%= propsKey %>: <%= props.getProperty(propsKey, StringPool.BLANK) %></h6>
 
 			<%
 			}

@@ -76,12 +76,11 @@ portlets = ListUtil.sort(portlets, new PortletTitleComparator(application, local
 
 	<%
 	String panelId = renderResponse.getNamespace() + "portletCategory" + portletCategoryIndex;
-	String title = Validator.isNotNull(externalPortletCategory) ? externalPortletCategory : LanguageUtil.get(request, portletCategory.getName());
 	%>
 
 	<div class="lfr-content-category panel-page-category">
 		<a class="collapse-icon collapse-icon-middle collapsed list-group-heading" data-toggle="collapse" href="#<%= panelId %>">
-			<%= title %>
+			<%= Validator.isNotNull(externalPortletCategory) ? externalPortletCategory : LanguageUtil.get(request, portletCategory.getName()) %>
 
 			<aui:icon cssClass="collapse-icon-closed" image="angle-right" markupView="lexicon" />
 

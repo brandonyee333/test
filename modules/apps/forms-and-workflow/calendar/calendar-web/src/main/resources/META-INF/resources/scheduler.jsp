@@ -26,9 +26,7 @@ boolean hideDayView = ParamUtil.getBoolean(request, "hideDayView");
 boolean hideMonthView = ParamUtil.getBoolean(request, "hideMonthView");
 boolean hideWeekView = ParamUtil.getBoolean(request, "hideWeekView");
 String permissionsCalendarBookingURL = ParamUtil.getString(request, "permissionsCalendarBookingURL");
-boolean preventPersistence = ParamUtil.getBoolean(request, "preventPersistence");
 boolean readOnly = ParamUtil.getBoolean(request, "readOnly");
-boolean showAddEventBtn = ParamUtil.getBoolean(request, "showAddEventBtn");
 String viewCalendarBookingURL = ParamUtil.getString(request, "viewCalendarBookingURL");
 %>
 
@@ -157,13 +155,9 @@ String viewCalendarBookingURL = ParamUtil.getString(request, "viewCalendarBookin
 			java.util.Calendar dateJCalendar = CalendarFactoryUtil.getCalendar(userTimeZone);
 
 			dateJCalendar.setTimeInMillis(date);
-
-			int dateYear = dateJCalendar.get(java.util.Calendar.YEAR);
-			int dateMonth = dateJCalendar.get(java.util.Calendar.MONTH);
-			int dateDay = dateJCalendar.get(java.util.Calendar.DAY_OF_MONTH);
 			%>
 
-			date: new Date(<%= dateYear %>, <%= dateMonth %>, <%= dateDay %>),
+			date: new Date(<%= dateJCalendar.get(java.util.Calendar.YEAR) %>, <%= dateJCalendar.get(java.util.Calendar.MONTH) %>, <%= dateJCalendar.get(java.util.Calendar.DAY_OF_MONTH) %>),
 
 			<c:if test="<%= !themeDisplay.isSignedIn() || ((defaultCalendar != null) && !CalendarPermission.contains(themeDisplay.getPermissionChecker(), defaultCalendar, CalendarActionKeys.MANAGE_BOOKINGS)) %>">
 				disabled: true,
@@ -174,9 +168,9 @@ String viewCalendarBookingURL = ParamUtil.getString(request, "viewCalendarBookin
 			firstDayOfWeek: <%= weekStartsOn %>,
 			items: A.Object.values(Liferay.CalendarUtil.availableCalendars),
 			portletNamespace: '<portlet:namespace />',
-			preventPersistence: <%= preventPersistence %>,
+			preventPersistence: <%= ParamUtil.getBoolean(request, "preventPersistence") %>,
 			render: true,
-			showAddEventBtn: <%= showAddEventBtn %>,
+			showAddEventBtn: <%= ParamUtil.getBoolean(request, "showAddEventBtn") %>,
 			strings: {
 				agenda: '<liferay-ui:message key="agenda" />',
 				day: '<liferay-ui:message key="day" />',
@@ -188,13 +182,9 @@ String viewCalendarBookingURL = ParamUtil.getString(request, "viewCalendarBookin
 
 			<%
 			java.util.Calendar todayJCalendar = CalendarFactoryUtil.getCalendar(userTimeZone);
-
-			int todayYear = todayJCalendar.get(java.util.Calendar.YEAR);
-			int todayMonth = todayJCalendar.get(java.util.Calendar.MONTH);
-			int todayDay = todayJCalendar.get(java.util.Calendar.DAY_OF_MONTH);
 			%>
 
-			todayDate: new Date(<%= todayYear %>, <%= todayMonth %>, <%= todayDay %>),
+			todayDate: new Date(<%= todayJCalendar.get(java.util.Calendar.YEAR) %>, <%= todayJCalendar.get(java.util.Calendar.MONTH) %>, <%= todayJCalendar.get(java.util.Calendar.DAY_OF_MONTH) %>),
 			views: views
 		}
 	);

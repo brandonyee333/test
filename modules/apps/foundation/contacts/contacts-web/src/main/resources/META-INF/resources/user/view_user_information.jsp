@@ -192,12 +192,10 @@ if (addresses.isEmpty()) {
 				if (region != null) {
 					regionName = region.getName();
 				}
-
-				String mailingName = LanguageUtil.get(request, address.getType().getName());
 			%>
 
 				<li class="<%= address.isPrimary() ? "primary" : "" %>">
-					<span class="property-type"><%= mailingName %></span>
+					<span class="property-type"><%= LanguageUtil.get(request, address.getType().getName()) %></span>
 
 					<c:if test="<%= Validator.isNotNull(street1) %>">
 						<%= HtmlUtil.escape(street1) %>,

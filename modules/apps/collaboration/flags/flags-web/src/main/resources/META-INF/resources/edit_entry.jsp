@@ -18,10 +18,8 @@
 
 <%
 String className = ParamUtil.getString(request, "className");
-long classPK = ParamUtil.getLong(request, "classPK");
 String contentTitle = ParamUtil.getString(request, "contentTitle");
 String contentURL = ParamUtil.getString(request, "contentURL");
-long reportedUserId = ParamUtil.getLong(request, "reportedUserId");
 %>
 
 <style type="text/css">
@@ -143,11 +141,11 @@ long reportedUserId = ParamUtil.getLong(request, "reportedUserId");
 			{
 				captchaText: captchaText,
 				className: '<%= HtmlUtil.escape(className) %>',
-				classPK: '<%= classPK %>',
+				classPK: '<%= ParamUtil.getLong(request, "classPK") %>',
 				contentTitle: '<%= HtmlUtil.escape(contentTitle) %>',
 				contentURL: '<%= HtmlUtil.escape(contentURL) %>',
 				reason: reason,
-				reportedUserId: '<%= reportedUserId %>',
+				reportedUserId: '<%= ParamUtil.getLong(request, "reportedUserId") %>',
 				reporterEmailAddress: reporterEmailAddress
 			}
 		);

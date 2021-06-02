@@ -82,14 +82,9 @@ boolean comment = GetterUtil.getBoolean((String)request.getAttribute("view_comme
 				</div>
 
 				<div class="content">
-
-					<%
-					String content = HtmlUtil.replaceNewLine(MicroblogsUtil.getProcessedContent(microblogsEntry, ServiceContextFactory.getInstance(request)));
-					%>
-
 					<span>
 						<p>
-							<%= content %>
+							<%= HtmlUtil.replaceNewLine(MicroblogsUtil.getProcessedContent(microblogsEntry, ServiceContextFactory.getInstance(request))) %>
 						</p>
 					</span>
 				</div>

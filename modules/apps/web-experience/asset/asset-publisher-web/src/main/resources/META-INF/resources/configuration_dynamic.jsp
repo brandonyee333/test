@@ -700,10 +700,9 @@ String selectStyle = (String)request.getAttribute("configuration.jsp-selectStyle
 
 		<%
 		for (AssetRendererFactory<?> curRendererFactory : classTypesAssetRendererFactories) {
-			String className = AssetPublisherUtil.getClassName(curRendererFactory);
 		%>
 
-			<portlet:namespace />toggle<%= className %>(removeOrderBySubtype);
+			<portlet:namespace />toggle<%= AssetPublisherUtil.getClassName(curRendererFactory) %>(removeOrderBySubtype);
 
 		<%
 		}

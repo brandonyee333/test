@@ -159,168 +159,168 @@ RoleSearchTerms searchTerms = (RoleSearchTerms)roleSearchContainer.getSearchTerm
 			<aui:input name="resourceId" type="hidden" value="<%= resource.getResourceId() %>" />
 
 			<%
-						boolean filterGroupRoles = !ResourceActionsUtil.isPortalModelResource(modelResource);
+			boolean filterGroupRoles = !ResourceActionsUtil.isPortalModelResource(modelResource);
 
-						List<String> actions = ResourceActionsUtil.getResourceActions(portletResource, modelResource);
+			List<String> actions = ResourceActionsUtil.getResourceActions(portletResource, modelResource);
 
-						RoleVisibilityConfiguration stricterRoleVisibilityConfiguration = ConfigurationProviderUtil.getCompanyConfiguration(RoleVisibilityConfiguration.class, themeDisplay.getCompanyId());
+			RoleVisibilityConfiguration stricterRoleVisibilityConfiguration = ConfigurationProviderUtil.getCompanyConfiguration(RoleVisibilityConfiguration.class, themeDisplay.getCompanyId());
 
-						if (modelResource.equals(Group.class.getName())) {
-							long modelResourceGroupId = GetterUtil.getLong(resourcePrimKey);
+			if (modelResource.equals(Group.class.getName())) {
+				long modelResourceGroupId = GetterUtil.getLong(resourcePrimKey);
 
-							Group modelResourceGroup = GroupLocalServiceUtil.getGroup(modelResourceGroupId);
+				Group modelResourceGroup = GroupLocalServiceUtil.getGroup(modelResourceGroupId);
 
-							if (modelResourceGroup.isLayoutPrototype() || modelResourceGroup.isLayoutSetPrototype() || modelResourceGroup.isUserGroup()) {
-								actions = new ArrayList<String>(actions);
+				if (modelResourceGroup.isLayoutPrototype() || modelResourceGroup.isLayoutSetPrototype() || modelResourceGroup.isUserGroup()) {
+					actions = new ArrayList<String>(actions);
 
-								actions.remove(ActionKeys.ADD_LAYOUT_BRANCH);
-								actions.remove(ActionKeys.ADD_LAYOUT_SET_BRANCH);
-								actions.remove(ActionKeys.ASSIGN_MEMBERS);
-								actions.remove(ActionKeys.ASSIGN_USER_ROLES);
-								actions.remove(ActionKeys.MANAGE_ANNOUNCEMENTS);
-								actions.remove(ActionKeys.MANAGE_STAGING);
-								actions.remove(ActionKeys.MANAGE_TEAMS);
-								actions.remove(ActionKeys.PUBLISH_STAGING);
-								actions.remove(ActionKeys.VIEW_MEMBERS);
-								actions.remove(ActionKeys.VIEW_STAGING);
-							}
-						}
-						else if (modelResource.equals(Role.class.getName())) {
-							long modelResourceRoleId = GetterUtil.getLong(resourcePrimKey);
+					actions.remove(ActionKeys.ADD_LAYOUT_BRANCH);
+					actions.remove(ActionKeys.ADD_LAYOUT_SET_BRANCH);
+					actions.remove(ActionKeys.ASSIGN_MEMBERS);
+					actions.remove(ActionKeys.ASSIGN_USER_ROLES);
+					actions.remove(ActionKeys.MANAGE_ANNOUNCEMENTS);
+					actions.remove(ActionKeys.MANAGE_STAGING);
+					actions.remove(ActionKeys.MANAGE_TEAMS);
+					actions.remove(ActionKeys.PUBLISH_STAGING);
+					actions.remove(ActionKeys.VIEW_MEMBERS);
+					actions.remove(ActionKeys.VIEW_STAGING);
+				}
+			}
+			else if (modelResource.equals(Role.class.getName())) {
+				long modelResourceRoleId = GetterUtil.getLong(resourcePrimKey);
 
-							Role modelResourceRole = null;
+				Role modelResourceRole = null;
 
-							if (stricterRoleVisibilityConfiguration.restrictPermissionSelectorRoleVisibility()) {
-								modelResourceRole = RoleServiceUtil.getRole(modelResourceRoleId);
-							}
-							else {
-								modelResourceRole = RoleLocalServiceUtil.getRole(modelResourceRoleId);
-							}
+				if (stricterRoleVisibilityConfiguration.restrictPermissionSelectorRoleVisibility()) {
+					modelResourceRole = RoleServiceUtil.getRole(modelResourceRoleId);
+				}
+				else {
+					modelResourceRole = RoleLocalServiceUtil.getRole(modelResourceRoleId);
+				}
 
-							String name = modelResourceRole.getName();
+				String name = modelResourceRole.getName();
 
-							if (name.equals(RoleConstants.GUEST) || name.equals(RoleConstants.USER)) {
-								actions = new ArrayList<String>(actions);
+				if (name.equals(RoleConstants.GUEST) || name.equals(RoleConstants.USER)) {
+					actions = new ArrayList<String>(actions);
 
-								actions.remove(ActionKeys.ASSIGN_MEMBERS);
-								actions.remove(ActionKeys.DELETE);
-								actions.remove(ActionKeys.UPDATE);
-							}
+					actions.remove(ActionKeys.ASSIGN_MEMBERS);
+					actions.remove(ActionKeys.DELETE);
+					actions.remove(ActionKeys.UPDATE);
+				}
 
-							if ((modelResourceRole.getType() == RoleConstants.TYPE_ORGANIZATION) || (modelResourceRole.getType() == RoleConstants.TYPE_SITE)) {
-								filterGroupRoles = true;
-							}
-						}
+				if ((modelResourceRole.getType() == RoleConstants.TYPE_ORGANIZATION) || (modelResourceRole.getType() == RoleConstants.TYPE_SITE)) {
+					filterGroupRoles = true;
+				}
+			}
 
-						if (roleTypes == null) {
-							roleTypes = RoleConstants.TYPES_REGULAR_AND_SITE;
+			if (roleTypes == null) {
+				roleTypes = RoleConstants.TYPES_REGULAR_AND_SITE;
 
-							if (ResourceActionsUtil.isPortalModelResource(modelResource)) {
-								if (modelResource.equals(Organization.class.getName()) || modelResource.equals(User.class.getName())) {
-									roleTypes = RoleConstants.TYPES_ORGANIZATION_AND_REGULAR;
-								}
-								else {
-									roleTypes = RoleConstants.TYPES_REGULAR;
-								}
-							}
-							else {
-								if (group != null) {
-									Group parentGroup = null;
-
-									if (group.isLayout()) {
-										parentGroup = GroupLocalServiceUtil.fetchGroup(group.getParentGroupId());
-									}
-
-									if (parentGroup != null) {
-										roleTypes = _getGroupRoleTypes(parentGroup, roleTypes);
-									}
-									else {
-										roleTypes = _getGroupRoleTypes(group, roleTypes);
-									}
-								}
-							}
-						}
-
-						long modelResourceRoleId = 0;
-
-						if (modelResource.equals(Role.class.getName())) {
-							modelResourceRoleId = GetterUtil.getLong(resourcePrimKey);
-						}
-
-						boolean filterGuestRole = false;
-						boolean permissionCheckGuestEnabled = PropsValues.PERMISSIONS_CHECK_GUEST_ENABLED;
-
-						if (Objects.equals(modelResource, Layout.class.getName())) {
-							Layout resourceLayout = LayoutLocalServiceUtil.getLayout(GetterUtil.getLong(resourcePrimKey));
-
-							if (resourceLayout.isPrivateLayout()) {
-								Group resourceLayoutGroup = resourceLayout.getGroup();
-
-								if (!resourceLayoutGroup.isLayoutSetPrototype() && !permissionCheckGuestEnabled) {
-									filterGuestRole = true;
-								}
-							}
-						}
-						else if (Validator.isNotNull(portletResource)) {
-							int pos = resourcePrimKey.indexOf(PortletConstants.LAYOUT_SEPARATOR);
-
-							if (pos > 0) {
-								long resourcePlid = GetterUtil.getLong(resourcePrimKey.substring(0, pos));
-
-								Layout resourceLayout = LayoutLocalServiceUtil.getLayout(resourcePlid);
-
-								if (resourceLayout.isPrivateLayout()) {
-									Group resourceLayoutGroup = resourceLayout.getGroup();
-
-									if (!resourceLayoutGroup.isLayoutPrototype() && !resourceLayoutGroup.isLayoutSetPrototype() && !permissionCheckGuestEnabled) {
-										filterGuestRole = true;
-									}
-								}
-							}
-						}
-
-						List<String> excludedRoleNames = new ArrayList<>();
-
-						excludedRoleNames.add(RoleConstants.ADMINISTRATOR);
-
-						if (filterGroupRoles) {
-							excludedRoleNames.add(RoleConstants.ORGANIZATION_ADMINISTRATOR);
-							excludedRoleNames.add(RoleConstants.ORGANIZATION_OWNER);
-							excludedRoleNames.add(RoleConstants.SITE_ADMINISTRATOR);
-							excludedRoleNames.add(RoleConstants.SITE_OWNER);
-						}
-
-						if (filterGuestRole) {
-							excludedRoleNames.add(RoleConstants.GUEST);
-						}
-
-						long teamGroupId = group.getGroupId();
+				if (ResourceActionsUtil.isPortalModelResource(modelResource)) {
+					if (modelResource.equals(Organization.class.getName()) || modelResource.equals(User.class.getName())) {
+						roleTypes = RoleConstants.TYPES_ORGANIZATION_AND_REGULAR;
+					}
+					else {
+						roleTypes = RoleConstants.TYPES_REGULAR;
+					}
+				}
+				else {
+					if (group != null) {
+						Group parentGroup = null;
 
 						if (group.isLayout()) {
-							teamGroupId = group.getParentGroupId();
+							parentGroup = GroupLocalServiceUtil.fetchGroup(group.getParentGroupId());
 						}
 
-						int count = 0;
-
-						if (stricterRoleVisibilityConfiguration.restrictPermissionSelectorRoleVisibility()) {
-							count = RoleServiceUtil.getGroupRolesAndTeamRolesCount(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId);
+						if (parentGroup != null) {
+							roleTypes = _getGroupRoleTypes(parentGroup, roleTypes);
 						}
 						else {
-							count = RoleLocalServiceUtil.getGroupRolesAndTeamRolesCount(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId);
+							roleTypes = _getGroupRoleTypes(group, roleTypes);
 						}
+					}
+				}
+			}
 
-						roleSearchContainer.setTotal(count);
+			long modelResourceRoleId = 0;
 
-						List<Role> roles = null;
+			if (modelResource.equals(Role.class.getName())) {
+				modelResourceRoleId = GetterUtil.getLong(resourcePrimKey);
+			}
 
-						if (stricterRoleVisibilityConfiguration.restrictPermissionSelectorRoleVisibility()) {
-							roles = RoleServiceUtil.getGroupRolesAndTeamRoles(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId, roleSearchContainer.getStart(), roleSearchContainer.getResultEnd());
+			boolean filterGuestRole = false;
+			boolean permissionCheckGuestEnabled = PropsValues.PERMISSIONS_CHECK_GUEST_ENABLED;
+
+			if (Objects.equals(modelResource, Layout.class.getName())) {
+				Layout resourceLayout = LayoutLocalServiceUtil.getLayout(GetterUtil.getLong(resourcePrimKey));
+
+				if (resourceLayout.isPrivateLayout()) {
+					Group resourceLayoutGroup = resourceLayout.getGroup();
+
+					if (!resourceLayoutGroup.isLayoutSetPrototype() && !permissionCheckGuestEnabled) {
+						filterGuestRole = true;
+					}
+				}
+			}
+			else if (Validator.isNotNull(portletResource)) {
+				int pos = resourcePrimKey.indexOf(PortletConstants.LAYOUT_SEPARATOR);
+
+				if (pos > 0) {
+					long resourcePlid = GetterUtil.getLong(resourcePrimKey.substring(0, pos));
+
+					Layout resourceLayout = LayoutLocalServiceUtil.getLayout(resourcePlid);
+
+					if (resourceLayout.isPrivateLayout()) {
+						Group resourceLayoutGroup = resourceLayout.getGroup();
+
+						if (!resourceLayoutGroup.isLayoutPrototype() && !resourceLayoutGroup.isLayoutSetPrototype() && !permissionCheckGuestEnabled) {
+							filterGuestRole = true;
 						}
-						else {
-							roles = RoleLocalServiceUtil.getGroupRolesAndTeamRoles(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId, roleSearchContainer.getStart(), roleSearchContainer.getResultEnd());
-						}
+					}
+				}
+			}
 
-						roleSearchContainer.setResults(roles);
+			List<String> excludedRoleNames = new ArrayList<>();
+
+			excludedRoleNames.add(RoleConstants.ADMINISTRATOR);
+
+			if (filterGroupRoles) {
+				excludedRoleNames.add(RoleConstants.ORGANIZATION_ADMINISTRATOR);
+				excludedRoleNames.add(RoleConstants.ORGANIZATION_OWNER);
+				excludedRoleNames.add(RoleConstants.SITE_ADMINISTRATOR);
+				excludedRoleNames.add(RoleConstants.SITE_OWNER);
+			}
+
+			if (filterGuestRole) {
+				excludedRoleNames.add(RoleConstants.GUEST);
+			}
+
+			long teamGroupId = group.getGroupId();
+
+			if (group.isLayout()) {
+				teamGroupId = group.getParentGroupId();
+			}
+
+			int count = 0;
+
+			if (stricterRoleVisibilityConfiguration.restrictPermissionSelectorRoleVisibility()) {
+				count = RoleServiceUtil.getGroupRolesAndTeamRolesCount(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId);
+			}
+			else {
+				count = RoleLocalServiceUtil.getGroupRolesAndTeamRolesCount(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId);
+			}
+
+			roleSearchContainer.setTotal(count);
+
+			List<Role> roles = null;
+
+			if (stricterRoleVisibilityConfiguration.restrictPermissionSelectorRoleVisibility()) {
+				roles = RoleServiceUtil.getGroupRolesAndTeamRoles(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId, roleSearchContainer.getStart(), roleSearchContainer.getResultEnd());
+			}
+			else {
+				roles = RoleLocalServiceUtil.getGroupRolesAndTeamRoles(company.getCompanyId(), searchTerms.getKeywords(), excludedRoleNames, roleTypes, modelResourceRoleId, teamGroupId, roleSearchContainer.getStart(), roleSearchContainer.getResultEnd());
+			}
+
+			roleSearchContainer.setResults(roles);
 			%>
 
 			<liferay-ui:search-container
