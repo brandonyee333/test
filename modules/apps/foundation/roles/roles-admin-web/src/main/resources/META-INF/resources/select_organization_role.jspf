@@ -200,11 +200,11 @@ if (step == 1) {
 
 			portletURL.setParameter("step", "1");
 
-			String breadcrumbs = "<a href=\"" + portletURL.toString() + "\">" + LanguageUtil.get(request, "organizations") + "</a> &raquo; " + HtmlUtil.escape(organization.getName());
+			String taglibBreadcrumbs = "<a href=\"" + portletURL.toString() + "\">" + LanguageUtil.get(request, "organizations") + "</a> &raquo; " + HtmlUtil.escape(organization.getName());
 			%>
 
-			<div class="breadcrumbs">
-				<%= breadcrumbs %>
+			<div class="taglibBreadcrumbs">
+				<%= taglibBreadcrumbs %>
 			</div>
 
 			<%
