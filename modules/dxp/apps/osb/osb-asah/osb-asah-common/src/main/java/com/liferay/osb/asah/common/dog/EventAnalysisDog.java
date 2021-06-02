@@ -52,8 +52,8 @@ public class EventAnalysisDog {
 
 		long totalEvents =
 			_eventRepository.
-				countByChannelIdAndEventDefinitionIdAndEventDateBetween(
-					channelId, eventDefinitionId, rangeStartDate, rangeEndDate);
+				countByChannelIdAndEventDateBetweenAndEventDefinitionId(
+					channelId, rangeStartDate, rangeEndDate, eventDefinitionId);
 
 		eventAnalysis.setTotalEvents(totalEvents);
 

@@ -42,9 +42,9 @@ public class ElasticsearchEventRepositoryImpl implements EventRepository {
 	}
 
 	@Override
-	public Long countByChannelIdAndEventDefinitionIdAndEventDateBetween(
-		Long channelId, long eventDefinitionId, Date rangeStartDate,
-		Date rangeEndDate) {
+	public Long countByChannelIdAndEventDateBetweenAndEventDefinitionId(
+		Long channelId, Date rangeStartDate, Date rangeEndDate,
+		long eventDefinitionId) {
 
 		throw new UnsupportedOperationException();
 	}

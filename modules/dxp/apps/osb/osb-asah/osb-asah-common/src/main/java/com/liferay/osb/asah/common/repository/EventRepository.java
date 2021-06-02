@@ -36,9 +36,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EventRepository extends CrudRepository<Event, Long> {
 
-	public Long countByChannelIdAndEventDefinitionIdAndEventDateBetween(
-		Long channelId, long eventDefinitionId, Date rangeStartDate,
-		Date rangeEndDate);
+	public Long countByChannelIdAndEventDateBetweenAndEventDefinitionId(
+		Long channelId, Date rangeStartDate, Date rangeEndDate,
+		long eventDefinitionId);
 
 	public long countByEventDefinitionId(long eventDefinitionId);
 
