@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -26,16 +27,23 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.Mockito;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -48,6 +56,15 @@ import org.springframework.test.context.ContextConfiguration;
 @SpringBootTest(properties = "osb.asah.postgresql.enabled=true")
 @SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
 public class CustomAssetMetricRepositoryTest {
+
+	@Before
+	public void setUp() {
+		Mockito.when(
+			_timeZoneDog.getTimeZoneId()
+		).thenReturn(
+			"UTC"
+		);
+	}
 
 	@SQLResource(
 		dataSource = "trinoDataSource",
@@ -85,7 +102,59 @@ public class CustomAssetMetricRepositoryTest {
 			SetUtil.map(tuples, Tuple2::getT2));
 	}
 
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "custom_asset_metric_views_histogram_last_24_hours.sql"
+	)
+	@Test
+	public void testGetViewsHistogramMetricsLast24HoursDifferentTimezone() {
+		List<LocalDateTime> buckets = _getBuckets(
+			_customAssetMetricRepository.getHistogramMetrics(
+				1L, CustomAssetMetricType.VIEWS, "e131fabc", Interval.HOUR,
+				TimeRange.LAST_24_HOURS));
+
+		Mockito.when(
+			_timeZoneDog.getTimeZoneId()
+		).thenReturn(
+			"America/Fortaleza"
+		);
+
+		List<LocalDateTime> bucketsShifted = _getBuckets(
+			_customAssetMetricRepository.getHistogramMetrics(
+				1L, CustomAssetMetricType.VIEWS, "e131fabc", Interval.HOUR,
+				TimeRange.LAST_24_HOURS));
+
+		Assert.assertEquals(
+			bucketsShifted.toString(), buckets.size(), bucketsShifted.size());
+
+		for (int i = 0; i < buckets.size(); i++) {
+
+			// America/Fortaleza expected delta to UTC is 3 hours
+
+			Duration duration = Duration.between(
+				bucketsShifted.get(i), buckets.get(i));
+
+			Assert.assertEquals(3, duration.toHours());
+		}
+	}
+
+	private List<LocalDateTime> _getBuckets(
+		List<Tuple2<LocalDateTime, BigDecimal>> tuples) {
+
+		Stream<Tuple2<LocalDateTime, BigDecimal>> stream = tuples.stream();
+
+		return stream.map(
+			Tuple2::getT1
+		).sorted(
+		).collect(
+			Collectors.toList()
+		);
+	}
+
 	@Autowired
 	private CustomAssetMetricRepository _customAssetMetricRepository;
+
+	@MockBean
+	private TimeZoneDog _timeZoneDog;
 
 }
