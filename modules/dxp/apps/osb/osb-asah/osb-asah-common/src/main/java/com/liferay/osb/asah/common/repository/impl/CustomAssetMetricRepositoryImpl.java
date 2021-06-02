@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -24,6 +25,7 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import java.math.BigDecimal;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import java.util.List;
 
@@ -52,8 +54,9 @@ public class CustomAssetMetricRepositoryImpl
 		Long channelId, CustomAssetMetricType customAssetMetricType,
 		String customAssetPrimaryKey, Interval interval, TimeRange timeRange) {
 
-		Field<LocalDateTime> eventDateField = DSL.field(
-			"eventDate", LocalDateTime.class);
+		Field<OffsetDateTime> eventDateField = DSL.field(
+			"at_timezone({0}, {1})", OffsetDateTime.class,
+			DSL.field("eventDate"), DSL.inline(_timeZoneDog.getTimeZoneId()));
 
 		if (interval != Interval.HOUR) {
 			eventDateField = DSL.trunc(eventDateField, DatePart.DAY);
@@ -90,7 +93,12 @@ public class CustomAssetMetricRepositoryImpl
 			eventDateField
 		).fetch(
 		).map(
-			record2 -> new Tuple2<>(record2.value1(), record2.value2())
+			record2 -> {
+				OffsetDateTime offsetDateTime = record2.value1();
+
+				return new Tuple2<>(
+					offsetDateTime.toLocalDateTime(), record2.value2());
+			}
 		);
 	}
 
@@ -136,5 +144,8 @@ public class CustomAssetMetricRepositoryImpl
 	@Autowired
 	@Qualifier("trinoDSLContext")
 	private DSLContext _dslContext;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }
