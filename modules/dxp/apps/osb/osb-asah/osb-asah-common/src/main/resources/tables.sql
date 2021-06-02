@@ -197,6 +197,38 @@ CREATE TABLE IF NOT EXISTS Event (
 	userId TEXT
 );
 
+CREATE TABLE IF NOT EXISTS EventAttribute (
+	id BIGSERIAL PRIMARY KEY,
+	attributeValue VARCHAR(1024),
+	eventAttributeDefinitionId BIGINT,
+	eventId BIGINT REFERENCES Event
+);
+
+CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
+	id BIGSERIAL PRIMARY KEY,
+	dataType TEXT NOT NULL,
+	description TEXT,
+	displayName TEXT UNIQUE,
+	name VARCHAR(255) UNIQUE,
+	type TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS EventDefinition (
+	id BIGSERIAL PRIMARY KEY,
+	blocked BOOLEAN DEFAULT false,
+	description TEXT,
+	displayName TEXT UNIQUE,
+	name VARCHAR(255) UNIQUE,
+	type TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS EventDefinitionEventAttributeDefinition (
+	eventAttributeDefinitionId BIGINT,
+	eventDefinitionId BIGINT,
+	sampleValue TEXT,
+	PRIMARY KEY (eventAttributeDefinitionId, eventDefinitionId)
+);
+
 CREATE TABLE IF NOT EXISTS Experiment (
 	id BIGSERIAL PRIMARY KEY,
 	channelId BIGINT NOT NULL,
@@ -255,38 +287,6 @@ CREATE TABLE IF NOT EXISTS ExperimentVariantMetric (
 	improvement REAL,
 	median REAL,
 	probabilityToWin REAL
-);
-
-CREATE TABLE IF NOT EXISTS EventAttribute (
-	id BIGSERIAL PRIMARY KEY,
-	attributeValue VARCHAR(1024),
-	eventAttributeDefinitionId BIGINT,
-	eventId BIGINT REFERENCES Event
-);
-
-CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
-	id BIGSERIAL PRIMARY KEY,
-	dataType TEXT NOT NULL,
-	description TEXT,
-	displayName TEXT UNIQUE,
-	name VARCHAR(255) UNIQUE,
-	type TEXT NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS EventDefinition (
-	id BIGSERIAL PRIMARY KEY,
-	blocked BOOLEAN DEFAULT false,
-	description TEXT,
-	displayName TEXT UNIQUE,
-	name VARCHAR(255) UNIQUE,
-	type TEXT NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS EventDefinitionEventAttributeDefinition (
-	eventAttributeDefinitionId BIGINT,
-	eventDefinitionId BIGINT,
-	sampleValue TEXT,
-	PRIMARY KEY (eventAttributeDefinitionId, eventDefinitionId)
 );
 
 CREATE TABLE IF NOT EXISTS Field (
