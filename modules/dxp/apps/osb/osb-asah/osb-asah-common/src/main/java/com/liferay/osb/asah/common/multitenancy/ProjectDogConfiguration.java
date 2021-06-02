@@ -53,11 +53,11 @@ public class ProjectDogConfiguration {
 			_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
 				projectId);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
 				"Unable to create snapshot lifecycle policy for project " +
 					projectId,
-				e);
+				exception);
 		}
 	}
 

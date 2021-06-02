@@ -140,8 +140,9 @@ public class BeanUtils {
 				targetPropertyWriteMethod.invoke(target, targetPropertyValue);
 			}
 		}
-		catch (Exception e) {
-			_log.error("Unable to write property " + targetPropertyName, e);
+		catch (Exception exception) {
+			_log.error(
+				"Unable to write property " + targetPropertyName, exception);
 		}
 	}
 
@@ -174,8 +175,9 @@ public class BeanUtils {
 
 				sourceMap.put(sourcePropertyName, value);
 			}
-			catch (Exception e) {
-				_log.error("Unable to read property " + sourcePropertyName, e);
+			catch (Exception exception) {
+				_log.error(
+					"Unable to read property " + sourcePropertyName, exception);
 			}
 		}
 

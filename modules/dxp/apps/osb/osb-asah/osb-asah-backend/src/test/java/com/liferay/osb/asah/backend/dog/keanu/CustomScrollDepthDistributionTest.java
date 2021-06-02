@@ -161,7 +161,7 @@ public class CustomScrollDepthDistributionTest {
 		Assert.assertEquals(1.0, sumOfAreas, .01);
 	}
 
-	private static <T> void _feedValue(
+	private <T> void _feedValue(
 		LogProbGraph logProbGraph, Vertex<T> input, T value) {
 
 		Vertex<T> placeholderVertex = logProbGraph.getPlaceholder(input);

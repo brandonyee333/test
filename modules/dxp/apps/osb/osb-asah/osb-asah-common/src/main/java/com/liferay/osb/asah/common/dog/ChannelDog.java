@@ -86,8 +86,8 @@ public class ChannelDog extends BaseFaroInfoDog {
 			try {
 				_channelHttp.addChannel(channel);
 			}
-			catch (Exception e) {
-				_log.error(e, e);
+			catch (Exception exception) {
+				_log.error(exception, exception);
 
 				_handleFaroError(channel);
 			}

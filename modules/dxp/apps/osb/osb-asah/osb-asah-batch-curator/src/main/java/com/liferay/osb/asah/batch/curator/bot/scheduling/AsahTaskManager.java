@@ -91,8 +91,8 @@ public class AsahTaskManager {
 				executeAsahTask(asahTask, true);
 			}
 		}
-		catch (Exception e) {
-			_log.error("Unable to run existing tasks on startup", e);
+		catch (Exception exception) {
+			_log.error("Unable to run existing tasks on startup", exception);
 		}
 	}
 
@@ -117,8 +117,8 @@ public class AsahTaskManager {
 				unscheduleAsahTask(asahTask.getId());
 			}
 		}
-		catch (Exception e) {
-			_log.error("Unable to unschedule existing tasks", e);
+		catch (Exception exception) {
+			_log.error("Unable to unschedule existing tasks", exception);
 		}
 
 		_asahTaskDog.deleteAsahTasks();
@@ -140,8 +140,8 @@ public class AsahTaskManager {
 						this, project.getId(), naniteClassNames));
 			}
 		}
-		catch (Exception e) {
-			_log.error("Unable to run nanites for all projects", e);
+		catch (Exception exception) {
+			_log.error("Unable to run nanites for all projects", exception);
 		}
 	}
 
@@ -178,8 +178,9 @@ public class AsahTaskManager {
 				scheduleAsahTask(asahTask);
 			}
 		}
-		catch (Exception e) {
-			_log.error("Unable to schedule existing tasks on startup", e);
+		catch (Exception exception) {
+			_log.error(
+				"Unable to schedule existing tasks on startup", exception);
 		}
 	}
 

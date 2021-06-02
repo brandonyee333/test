@@ -264,8 +264,8 @@ public class InterestCompositionDog {
 				boolQueryBuilder
 			).iterate();
 		}
-		catch (Exception e) {
-			throw new RuntimeException("Unable to get individuals", e);
+		catch (Exception exception) {
+			throw new RuntimeException("Unable to get individuals", exception);
 		}
 
 		return individualIds;

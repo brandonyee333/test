@@ -132,12 +132,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			try {
 				_run(jobRun);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				jobRun.setJobRunStatus(JobRunStatus.FAILED);
 
 				_updateJobRun(jobRun);
 
-				throw e;
+				throw exception;
 			}
 		}
 	}

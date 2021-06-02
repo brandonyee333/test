@@ -116,9 +116,13 @@ public class AnalyticsEventStorageDogTest {
 
 	@Test
 	public void testStoreExistingDefinitionNewAttributeDefinition() {
-		long expectedEventAttributeDefinitionCount =
+		long eventAttributeDefinitionCount =
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				null, null, EventAttributeDefinition.Type.LOCAL) + 1;
+				null, null, EventAttributeDefinition.Type.LOCAL);
+
+		long expectedEventAttributeDefinitionCount =
+			eventAttributeDefinitionCount + 1;
+
 		long expectedEventDefinitionCount =
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, EventDefinition.Type.CUSTOM);
@@ -234,9 +238,11 @@ public class AnalyticsEventStorageDogTest {
 		long expectedEventAttributeDefinitionCount =
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
 				null, null, EventAttributeDefinition.Type.LOCAL);
-		long expectedEventDefinitionCount =
-			_eventDefinitionDog.countEventDefinitions(
-				false, null, EventDefinition.Type.CUSTOM) + 1;
+
+		long eventDefinitionCount = _eventDefinitionDog.countEventDefinitions(
+			false, null, EventDefinition.Type.CUSTOM);
+
+		long expectedEventDefinitionCount = eventDefinitionCount + 1;
 
 		_storeAnalyticsEvent(
 			"newEventDefinition",

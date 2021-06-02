@@ -676,9 +676,9 @@ public class FieldDog {
 					return DateUtil.toUTCString(
 						simpleDateFormat.parse(valueString));
 				}
-				catch (Exception e) {
+				catch (Exception exception) {
 					if (_log.isDebugEnabled()) {
-						_log.debug(e, e);
+						_log.debug(exception, exception);
 					}
 				}
 
@@ -696,11 +696,11 @@ public class FieldDog {
 
 			return valueString;
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
 				"Unable to deserialize value " + valueString + " from field " +
 					fieldName + " to " + fieldType,
-				e);
+				exception);
 		}
 
 		return null;

@@ -52,14 +52,31 @@ import org.apache.commons.logging.LogFactory;
 public class NLPUtil {
 
 	public static Set<String> getKeywords(String text) {
-		return _instance._getKeywords(text);
+		return _nlpUtil._getKeywords(text);
 	}
 
 	public static boolean isEnglish(String text) {
-		return _instance._isEnglish(text);
+		return _nlpUtil._isEnglish(text);
 	}
 
-	private static String _buildKeyword(List<LabeledWord> labeledWords) {
+	private NLPUtil() {
+		Properties properties = new Properties();
+
+		properties.setProperty("annotators", "tokenize,ssplit,pos,parse");
+		properties.setProperty("parse.maxlen", "100");
+
+		_stanfordCoreNLP = new StanfordCoreNLP(properties);
+
+		try {
+			DetectorFactory.loadProfile(
+				ResourceUtil.readResourcesToList("profiles/*"));
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+	}
+
+	private String _buildKeyword(List<LabeledWord> labeledWords) {
 		StringBuilder sb = new StringBuilder();
 
 		for (int i = 0; i < labeledWords.size(); i++) {
@@ -101,121 +118,6 @@ public class NLPUtil {
 		}
 
 		return sb.toString();
-	}
-
-	private static boolean _isSkipConstituentLabeledWords(
-		List<LabeledWord> labeledWords) {
-
-		for (LabeledWord labeledWord : labeledWords) {
-			Label label = labeledWord.tag();
-
-			String labelString = label.value();
-
-			if (labelString.equals(",") || labelString.equals(":") ||
-				labelString.equals("IN") || labelString.equals("PRP") ||
-				labelString.equals("VB") || labelString.equals("VBD") ||
-				labelString.equals("VBG") || labelString.equals("VBN") ||
-				labelString.equals("VBP") || labelString.equals("VBZ")) {
-
-				if (_log.isDebugEnabled()) {
-					_log.debug("Removing: " + labelString);
-				}
-
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	private static void _removeConstituentLabeledWords(
-		List<LabeledWord> labeledWords) {
-
-		LabeledWord labeledWord = labeledWords.get(0);
-
-		Label label = labeledWord.tag();
-
-		String labelString = label.value();
-
-		while (labelString.equals("CD") || labelString.equals("DT") ||
-			   labelString.equals("PRP$")) {
-
-			labeledWords.remove(0);
-
-			if (labeledWords.isEmpty()) {
-				break;
-			}
-
-			labeledWord = labeledWords.get(0);
-
-			label = labeledWord.tag();
-
-			labelString = label.value();
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Removing: " + labelString);
-			}
-		}
-	}
-
-	private static List<LabeledWord> _removeParentheticals(
-		List<LabeledWord> labeledWords) {
-
-		int leftParenthesisIndex = -1;
-		int rightParenthesisIndex = -1;
-
-		for (int i = labeledWords.size() - 1; i > 0; i--) {
-			LabeledWord labeledWord = labeledWords.get(i);
-
-			Label label = labeledWord.tag();
-
-			String labelString = label.value();
-
-			if (labelString.equals("-RRB-")) {
-				rightParenthesisIndex = i;
-			}
-			else if (labelString.equals("-LRB-")) {
-				leftParenthesisIndex = i;
-			}
-
-			if ((leftParenthesisIndex != -1) && (rightParenthesisIndex != -1) &&
-				(leftParenthesisIndex < rightParenthesisIndex)) {
-
-				List<LabeledWord> beforeLeftParenthesisLabeledWords =
-					labeledWords.subList(0, leftParenthesisIndex);
-
-				List<LabeledWord> beforeRightParenthesisLabeledWords =
-					labeledWords.subList(
-						rightParenthesisIndex + 1, labeledWords.size());
-
-				beforeLeftParenthesisLabeledWords.addAll(
-					beforeRightParenthesisLabeledWords);
-
-				labeledWords = beforeLeftParenthesisLabeledWords;
-
-				leftParenthesisIndex = -1;
-				rightParenthesisIndex = -1;
-			}
-		}
-
-		return labeledWords;
-	}
-
-	private NLPUtil() {
-		Properties properties = new Properties();
-
-		properties.setProperty("annotators", "tokenize,ssplit,pos,parse");
-		properties.setProperty("parse.maxlen", "100");
-
-		_stanfordCoreNLP = new StanfordCoreNLP(properties);
-
-		try {
-			DetectorFactory.loadProfile(
-				ResourceUtil.readResourcesToList("profiles/*"));
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
 	}
 
 	private List<String> _buildKeywords(String text) {
@@ -343,16 +245,114 @@ public class NLPUtil {
 				}
 			}
 		}
-		catch (LangDetectException lde) {
-			_log.error(lde);
+		catch (LangDetectException langDetectException) {
+			_log.error(langDetectException);
 		}
 
 		return false;
 	}
 
+	private boolean _isSkipConstituentLabeledWords(
+		List<LabeledWord> labeledWords) {
+
+		for (LabeledWord labeledWord : labeledWords) {
+			Label label = labeledWord.tag();
+
+			String labelString = label.value();
+
+			if (labelString.equals(",") || labelString.equals(":") ||
+				labelString.equals("IN") || labelString.equals("PRP") ||
+				labelString.equals("VB") || labelString.equals("VBD") ||
+				labelString.equals("VBG") || labelString.equals("VBN") ||
+				labelString.equals("VBP") || labelString.equals("VBZ")) {
+
+				if (_log.isDebugEnabled()) {
+					_log.debug("Removing: " + labelString);
+				}
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private void _removeConstituentLabeledWords(
+		List<LabeledWord> labeledWords) {
+
+		LabeledWord labeledWord = labeledWords.get(0);
+
+		Label label = labeledWord.tag();
+
+		String labelString = label.value();
+
+		while (labelString.equals("CD") || labelString.equals("DT") ||
+			   labelString.equals("PRP$")) {
+
+			labeledWords.remove(0);
+
+			if (labeledWords.isEmpty()) {
+				break;
+			}
+
+			labeledWord = labeledWords.get(0);
+
+			label = labeledWord.tag();
+
+			labelString = label.value();
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Removing: " + labelString);
+			}
+		}
+	}
+
+	private List<LabeledWord> _removeParentheticals(
+		List<LabeledWord> labeledWords) {
+
+		int leftParenthesisIndex = -1;
+		int rightParenthesisIndex = -1;
+
+		for (int i = labeledWords.size() - 1; i > 0; i--) {
+			LabeledWord labeledWord = labeledWords.get(i);
+
+			Label label = labeledWord.tag();
+
+			String labelString = label.value();
+
+			if (labelString.equals("-RRB-")) {
+				rightParenthesisIndex = i;
+			}
+			else if (labelString.equals("-LRB-")) {
+				leftParenthesisIndex = i;
+			}
+
+			if ((leftParenthesisIndex != -1) && (rightParenthesisIndex != -1) &&
+				(leftParenthesisIndex < rightParenthesisIndex)) {
+
+				List<LabeledWord> beforeLeftParenthesisLabeledWords =
+					labeledWords.subList(0, leftParenthesisIndex);
+
+				List<LabeledWord> beforeRightParenthesisLabeledWords =
+					labeledWords.subList(
+						rightParenthesisIndex + 1, labeledWords.size());
+
+				beforeLeftParenthesisLabeledWords.addAll(
+					beforeRightParenthesisLabeledWords);
+
+				labeledWords = beforeLeftParenthesisLabeledWords;
+
+				leftParenthesisIndex = -1;
+				rightParenthesisIndex = -1;
+			}
+		}
+
+		return labeledWords;
+	}
+
 	private static final Log _log = LogFactory.getLog(NLPUtil.class);
 
-	private static final NLPUtil _instance = new NLPUtil();
+	private static final NLPUtil _nlpUtil = new NLPUtil();
 
 	private final StanfordCoreNLP _stanfordCoreNLP;
 

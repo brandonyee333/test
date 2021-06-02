@@ -50,8 +50,8 @@ public class Encryptor {
 				cipher.doFinal(_decoder.decode(encryptedString)),
 				StandardCharsets.UTF_8);
 		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
 		}
 	}
 
@@ -68,8 +68,8 @@ public class Encryptor {
 					cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8))),
 				StandardCharsets.UTF_8);
 		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
 		}
 	}
 
@@ -113,8 +113,8 @@ public class Encryptor {
 
 			return _encoder.encodeToString(signature.sign());
 		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
 		}
 	}
 

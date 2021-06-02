@@ -328,7 +328,7 @@ public class EventDefinitionDogTest {
 	}
 
 	@Test
-	public void testFetchEventDefinitionByDisplayNameNonExistent() {
+	public void testFetchEventDefinitionByDisplayNameNonexistent() {
 		Assert.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByDisplayName(
 				"Does Not Exist"));

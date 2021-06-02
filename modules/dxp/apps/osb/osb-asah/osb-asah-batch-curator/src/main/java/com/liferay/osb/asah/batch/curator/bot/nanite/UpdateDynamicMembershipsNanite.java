@@ -225,8 +225,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 						baseMembershipJSONObject, individualJSONObject,
 						individualSegmentJSONObject, modifiedDate);
 				}
-				catch (Exception e) {
-					return e;
+				catch (Exception exception) {
+					return exception;
 				}
 
 				return null;
@@ -267,8 +267,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 						_objectMapper.convertValue(segment, JSONObject.class),
 						modifiedDate);
 				}
-				catch (Exception e) {
-					_log.error(e, e);
+				catch (Exception exception) {
+					_log.error(exception, exception);
 				}
 			}
 
@@ -295,8 +295,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 								segment, JSONObject.class),
 							modifiedDate);
 					}
-					catch (Exception e) {
-						_log.error(e, e);
+					catch (Exception exception) {
+						_log.error(exception, exception);
 					}
 				}
 
@@ -319,8 +319,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 								segment, JSONObject.class),
 							modifiedDate);
 					}
-					catch (Exception e) {
-						_log.error(e, e);
+					catch (Exception exception) {
+						_log.error(exception, exception);
 					}
 				}
 

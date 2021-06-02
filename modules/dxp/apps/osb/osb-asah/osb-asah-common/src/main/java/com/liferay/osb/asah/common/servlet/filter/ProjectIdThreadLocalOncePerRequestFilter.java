@@ -79,7 +79,7 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 
 			filterChain.doFilter(httpServletRequest, httpServletResponse);
 		}
-		catch (InvalidProjectIdException ipie) {
+		catch (InvalidProjectIdException invalidProjectIdException) {
 			httpServletResponse.sendError(
 				HttpServletResponse.SC_BAD_REQUEST, "INVALID_PROJECT_ID");
 		}

@@ -228,17 +228,18 @@ public class FieldMappingsRestController extends BaseRestController {
 
 		String fieldName = fieldMappingDTO.getFieldName();
 
-		if (_fieldMappingDog.fetchFieldMapping(
-				fieldMappingDTO.getContext(), fieldName,
-				fieldMappingDTO.getOwnerType()) != null) {
+		FieldMapping fieldMapping = _fieldMappingDog.fetchFieldMapping(
+			fieldMappingDTO.getContext(), fieldName,
+			fieldMappingDTO.getOwnerType());
 
+		if (fieldMapping != null) {
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST, "Duplicate field name " + fieldName);
 		}
 
 		_beforeAdd(fieldMappingDTO);
 
-		FieldMapping fieldMapping = _fieldMappingDog.addFieldMapping(
+		fieldMapping = _fieldMappingDog.addFieldMapping(
 			_objectMapper.convertValue(fieldMappingDTO, FieldMapping.class));
 
 		_addReprocessAsahTask(fieldMapping);

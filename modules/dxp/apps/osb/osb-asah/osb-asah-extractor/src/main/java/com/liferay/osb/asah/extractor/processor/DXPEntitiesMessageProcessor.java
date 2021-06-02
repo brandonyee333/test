@@ -117,9 +117,9 @@ public class DXPEntitiesMessageProcessor {
 					jsonObject.get(dxpEntityType.getIdFieldName()))
 			).iterate();
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (_log.isInfoEnabled()) {
-				_log.info(e, e);
+				_log.info(exception, exception);
 			}
 		}
 	}
@@ -244,14 +244,17 @@ public class DXPEntitiesMessageProcessor {
 		}
 
 		if (!dxpEntityType.isUser()) {
+			List<String> associatedIds =
+				_faroInfoIndividualDog.getAssociatedIds(
+					Long.valueOf(dataSourceId), dxpEntityType,
+					Collections.singletonList(classPK));
+
 			_asahTaskDog.scheduleAsahTask(
 				"UpdateDynamicMembershipsNanite",
 				JSONUtil.put(
 					queryBuilderName,
 					dxpEntityType.getIndividualSegmentFieldName() + " eq " +
-						_faroInfoIndividualDog.getAssociatedIds(
-							Long.valueOf(dataSourceId), dxpEntityType,
-							Collections.singletonList(classPK))
+						associatedIds
 				).put(
 					"dateModified", DateUtil.newDateString()
 				));
@@ -340,9 +343,9 @@ public class DXPEntitiesMessageProcessor {
 				_segmentDog.disableDynamicSegments(
 					dxpEntityType, jsonObject.getLong("id"));
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (_log.isInfoEnabled()) {
-					_log.info(e, e);
+					_log.info(exception, exception);
 				}
 			}
 
@@ -416,9 +419,9 @@ public class DXPEntitiesMessageProcessor {
 					objectJSONObject, dataSource, organizationJSONObject);
 			}
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (_log.isInfoEnabled()) {
-				_log.info(e, e);
+				_log.info(exception, exception);
 			}
 		}
 	}
@@ -467,9 +470,9 @@ public class DXPEntitiesMessageProcessor {
 					dataSource, individualJSONObject);
 			}
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (_log.isInfoEnabled()) {
-				_log.info(e, e);
+				_log.info(exception, exception);
 			}
 		}
 	}

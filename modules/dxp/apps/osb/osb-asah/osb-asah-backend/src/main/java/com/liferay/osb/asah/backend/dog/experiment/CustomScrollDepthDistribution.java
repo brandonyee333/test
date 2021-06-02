@@ -384,17 +384,6 @@ public class CustomScrollDepthDistribution implements ContinuousDistribution {
 		return sample(keanuRandom.nextDouble(shape), shape);
 	}
 
-	private static DoubleTensor _replacePositiveInfinity(
-		DoubleTensor input, double newValue) {
-
-		DoubleTensor largeValueTensor = DoubleTensor.create(Double.MAX_VALUE);
-
-		DoubleTensor comparisonMask = input.greaterThanOrEqualToMask(
-			largeValueTensor);
-
-		return input.setWithMask(comparisonMask, newValue);
-	}
-
 	private CustomScrollDepthDistribution(
 		DoubleTensor q0DoubleTensor, DoubleTensor q25DoubleTensor,
 		DoubleTensor q50DoubleTensor, DoubleTensor q75DoubleTensor,
@@ -584,6 +573,17 @@ public class CustomScrollDepthDistribution implements ContinuousDistribution {
 		).replaceNaN(
 			0D
 		);
+	}
+
+	private DoubleTensor _replacePositiveInfinity(
+		DoubleTensor input, double newValue) {
+
+		DoubleTensor largeValueTensor = DoubleTensor.create(Double.MAX_VALUE);
+
+		DoubleTensor comparisonMask = input.greaterThanOrEqualToMask(
+			largeValueTensor);
+
+		return input.setWithMask(comparisonMask, newValue);
 	}
 
 	private final DoubleTensor _q0DoubleTensor;

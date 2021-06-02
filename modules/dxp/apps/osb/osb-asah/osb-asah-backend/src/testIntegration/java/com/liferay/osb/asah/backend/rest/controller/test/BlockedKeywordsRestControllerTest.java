@@ -82,9 +82,9 @@ public class BlockedKeywordsRestControllerTest {
 			_blockedKeywordsRestController.deleteBlockedKeywords(
 				Collections.emptyList());
 		}
-		catch (OSBAsahException osbae) {
+		catch (OSBAsahException osbAsahException) {
 			Assert.assertEquals(
-				"Empty blocked keyword IDs", osbae.getMessage());
+				"Empty blocked keyword IDs", osbAsahException.getMessage());
 		}
 	}
 
@@ -218,9 +218,11 @@ public class BlockedKeywordsRestControllerTest {
 					"keywords", new JSONArray()
 				).toString());
 		}
-		catch (OSBAsahException osbae) {
-			Assert.assertEquals(HttpStatus.BAD_REQUEST, osbae.getHttpStatus());
-			Assert.assertEquals("Empty keywords", osbae.getMessage());
+		catch (OSBAsahException osbAsahException) {
+			Assert.assertEquals(
+				HttpStatus.BAD_REQUEST, osbAsahException.getHttpStatus());
+			Assert.assertEquals(
+				"Empty keywords", osbAsahException.getMessage());
 		}
 	}
 

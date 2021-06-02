@@ -38,8 +38,8 @@ public class AsahRetryRejectedExecutionHandler
 		try {
 			Thread.sleep(5000);
 		}
-		catch (InterruptedException ie) {
-			_log.error(ie, ie);
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
 		}
 
 		threadPoolExecutor.execute(runnable);

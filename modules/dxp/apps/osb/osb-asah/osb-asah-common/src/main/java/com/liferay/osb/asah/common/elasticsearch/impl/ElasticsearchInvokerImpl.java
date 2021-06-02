@@ -254,7 +254,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 			deleteByQueryRequestBuilder.get();
 		}
-		catch (IndexNotFoundException infe) {
+		catch (IndexNotFoundException indexNotFoundException) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Index does not exist for collection " + collectionName);
@@ -338,7 +338,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 			return getResponse.isExists();
 		}
-		catch (IndexNotFoundException infe) {
+		catch (IndexNotFoundException indexNotFoundException) {
 			return false;
 		}
 	}
@@ -405,7 +405,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 			return new JSONObject(getResponse.getSourceAsString());
 		}
-		catch (IndexNotFoundException infe) {
+		catch (IndexNotFoundException indexNotFoundException) {
 			return null;
 		}
 	}
@@ -702,7 +702,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 			try {
 				Thread.sleep(5000);
 			}
-			catch (InterruptedException ie) {
+			catch (InterruptedException interruptedException) {
 				Thread thread = Thread.currentThread();
 
 				thread.interrupt();

@@ -18,7 +18,6 @@ import com.liferay.osb.asah.backend.model.GetterAndSetterPair;
 import com.liferay.petra.string.StringPool;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
@@ -102,7 +101,7 @@ public abstract class BaseBeanTestCase<T> {
 					field = clazz.getDeclaredField(
 						StringPool.UNDERLINE + fieldName);
 				}
-				catch (Exception e) {
+				catch (Exception exception) {
 					field = clazz.getDeclaredField(fieldName);
 				}
 
@@ -219,8 +218,7 @@ public abstract class BaseBeanTestCase<T> {
 	private void _invokeGetMethod(
 			String fieldName, Method getMethod, T instance,
 			Object expectedObject)
-		throws IllegalAccessException, IllegalArgumentException,
-			   InvocationTargetException {
+		throws Exception {
 
 		Object actualObject = getMethod.invoke(instance);
 
@@ -242,9 +240,10 @@ public abstract class BaseBeanTestCase<T> {
 
 			return clazz.newInstance();
 		}
-		catch (IllegalAccessException | InstantiationException e) {
+		catch (IllegalAccessException | InstantiationException exception) {
 			throw new RuntimeException(
-				"Unable to instantiate class for field " + fieldName, e);
+				"Unable to instantiate class for field " + fieldName,
+				exception);
 		}
 	}
 

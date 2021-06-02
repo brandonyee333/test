@@ -114,8 +114,8 @@ public class ActivitiesNanite implements Nanite {
 				analyticsEvents = _messageSubscriber.pullMessages(
 					50, AnalyticsEvent::toAnalyticsEvent);
 			}
-			catch (Exception e) {
-				_log.error(e, e);
+			catch (Exception exception) {
+				_log.error(exception, exception);
 			}
 
 			if ((analyticsEvents == null) || analyticsEvents.isEmpty()) {
@@ -148,11 +148,11 @@ public class ActivitiesNanite implements Nanite {
 				_addActivityGroup(analyticsEvent), analyticsEvent,
 				applicationId, _dataSourceAssetPKFieldNames.get(applicationId));
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
 				"Unable to process the analytics event " +
 					analyticsEvent.toJSON(),
-				e);
+				exception);
 		}
 		finally {
 			ProjectIdThreadLocal.remove();

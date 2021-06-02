@@ -63,8 +63,8 @@ public class SalesforceExtractorConfigurationManagerImpl
 		try {
 			configuration = _toConfiguration(dataSource);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
 			return false;
 		}
@@ -126,7 +126,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 					(SalesforceExtractorConfigurationImpl)
 						salesforceExtractorConfiguration);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (_log.isInfoEnabled()) {
 					_log.info(
 						salesforceExtractorConfiguration.getProjectId() +
@@ -284,12 +284,12 @@ public class SalesforceExtractorConfigurationManagerImpl
 						configuration.getDataSourceId(),
 					configuration);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
 						projectId + ": Unable to add configuration for data " +
 							"source " + dataSource.getId(),
-						e);
+						exception);
 				}
 			}
 		}
@@ -331,7 +331,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 				_salesforceOAuth2Client.refreshOAuthToken(
 					salesforceExtractorConfigurationImpl);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (_log.isInfoEnabled()) {
 					_log.info(
 						String.format(
@@ -397,7 +397,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 		try {
 			salesforcePartnerClient.describeGlobal(1);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			return false;
 		}
 

@@ -100,11 +100,14 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			membershipJSONObject = faroInfoElasticsearchInvoker.fetch(
 				"memberships", membershipJSONObject.getString("id"));
 
+			String individualSegmentActivityFilterDuration =
+				_getIndividualSegmentActivityFilterDuration(
+					membershipJSONObject);
+
 			Assert.assertEquals(
 				"Membership should be deactivated if no activities were " +
 					"found for an individual within " +
-						_getIndividualSegmentActivityFilterDuration(
-							membershipJSONObject),
+						individualSegmentActivityFilterDuration,
 				"INACTIVE", membershipJSONObject.getString("status"));
 
 			Assert.assertFalse(
@@ -201,11 +204,13 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			JSONObject membershipJSONObject =
 				membershipsJSONArray.getJSONObject(i);
 
+			String individualSegmentActivityFilterDuration =
+				_getIndividualSegmentActivityFilterDuration(
+					membershipJSONObject);
+
 			Assert.assertTrue(
 				"Membership should remain active if activities were found " +
-					"within " +
-						_getIndividualSegmentActivityFilterDuration(
-							membershipJSONObject),
+					"within " + individualSegmentActivityFilterDuration,
 				faroInfoElasticsearchInvoker.exists(
 					"memberships",
 					BoolQueryBuilderUtil.filter(

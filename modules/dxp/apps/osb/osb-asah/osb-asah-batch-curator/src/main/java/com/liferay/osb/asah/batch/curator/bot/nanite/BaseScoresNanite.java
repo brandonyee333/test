@@ -142,8 +142,8 @@ public abstract class BaseScoresNanite extends BaseNanite {
 
 					process(context, dayDateString, jsonObject);
 				}
-				catch (Exception e) {
-					return e;
+				catch (Exception exception) {
+					return exception;
 				}
 
 				return null;
@@ -193,30 +193,31 @@ public abstract class BaseScoresNanite extends BaseNanite {
 
 		if (contextJSONObject != null) {
 			synchronized (this) {
-				String reprocessDayDateString = contextJSONObject.getString(
-					"reprocessDay");
+				if (lastSuccessfulDayDateString != null) {
+					String reprocessDayDateString = contextJSONObject.getString(
+						"reprocessDay");
 
-				if ((lastSuccessfulDayDateString != null) &&
-					(DateUtil.getDeltaMilliseconds(
-						reprocessDayDateString, lastSuccessfulDayDateString) >
-							0)) {
+					long deltaMilliseconds = DateUtil.getDeltaMilliseconds(
+						reprocessDayDateString, lastSuccessfulDayDateString);
 
-					if (isRunning()) {
-						setInterrupted(true);
+					if (deltaMilliseconds > 0) {
+						if (isRunning()) {
+							setInterrupted(true);
 
-						while (isRunning()) {
+							while (isRunning()) {
+							}
+
+							setInterrupted(false);
 						}
 
-						setInterrupted(false);
+						lastSuccessfulDayDateString = reprocessDayDateString;
+
+						asahMarkerContextJSONObject.put(
+							"lastSuccessfulDay", lastSuccessfulDayDateString);
+
+						asahMarkerDog.updateAsahMarker(
+							asahMarker, WeDeployDataService.OSB_ASAH_FARO_INFO);
 					}
-
-					lastSuccessfulDayDateString = reprocessDayDateString;
-
-					asahMarkerContextJSONObject.put(
-						"lastSuccessfulDay", lastSuccessfulDayDateString);
-
-					asahMarkerDog.updateAsahMarker(
-						asahMarker, WeDeployDataService.OSB_ASAH_FARO_INFO);
 				}
 			}
 		}

@@ -194,12 +194,12 @@ public class AccountsRestControllerTest {
 			_accountsRestController.getDistributionDTOsPageDTO(
 				1L, 366573390725218129L, null, null, 10, 100, null);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			Assert.assertThat(
-				e.getMessage(),
+				exception.getMessage(),
 				CoreMatchers.containsString("Invalid field mapping ID"));
 
-			throw e;
+			throw exception;
 		}
 	}
 
@@ -213,12 +213,12 @@ public class AccountsRestControllerTest {
 			_accountsRestController.getDistributionDTOsPageDTO(
 				1L, 340477857996688156L, null, null, 10, 100, null);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			Assert.assertThat(
-				e.getMessage(),
+				exception.getMessage(),
 				CoreMatchers.containsString("Unable to use non-account field"));
 
-			throw e;
+			throw exception;
 		}
 	}
 

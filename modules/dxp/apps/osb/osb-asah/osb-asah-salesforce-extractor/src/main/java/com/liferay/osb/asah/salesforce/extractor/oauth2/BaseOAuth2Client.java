@@ -80,11 +80,13 @@ public abstract class BaseOAuth2Client {
 					}),
 				String.class);
 		}
-		catch (RestClientException rce) {
-			if (rce instanceof HttpClientErrorException) {
-				HttpClientErrorException hcee = (HttpClientErrorException)rce;
+		catch (RestClientException restClientException) {
+			if (restClientException instanceof HttpClientErrorException) {
+				HttpClientErrorException httpClientErrorException =
+					(HttpClientErrorException)restClientException;
 
-				responseEntity = new ResponseEntity<>(hcee.getStatusCode());
+				responseEntity = new ResponseEntity<>(
+					httpClientErrorException.getStatusCode());
 			}
 		}
 

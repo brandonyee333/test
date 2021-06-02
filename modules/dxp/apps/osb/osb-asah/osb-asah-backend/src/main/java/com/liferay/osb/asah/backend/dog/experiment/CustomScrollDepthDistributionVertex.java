@@ -127,7 +127,7 @@ public class CustomScrollDepthDistributionVertex
 
 	@Override
 	public LogProbGraph logProbGraph() {
-		DoublePlaceholderVertex xDoublePlaceHolderVertex =
+		DoublePlaceholderVertex xDoublePlaceholderVertex =
 			new DoublePlaceholderVertex(getShape());
 
 		DoublePlaceholderVertex q0DoublePlaceholderVertex =
@@ -143,7 +143,7 @@ public class CustomScrollDepthDistributionVertex
 
 		return LogProbGraph.builder(
 		).input(
-			this, xDoublePlaceHolderVertex
+			this, xDoublePlaceholderVertex
 		).input(
 			_q0DoubleVertex, q0DoublePlaceholderVertex
 		).input(
@@ -158,7 +158,7 @@ public class CustomScrollDepthDistributionVertex
 			CustomScrollDepthDistribution.logProbOutput(
 				q0DoublePlaceholderVertex, q25DoublePlaceholderVertex,
 				q50DoublePlaceholderVertex, q75DoublePlaceholderVertex,
-				q100DoublePlaceholderVertex, xDoublePlaceHolderVertex)
+				q100DoublePlaceholderVertex, xDoublePlaceholderVertex)
 		).build();
 	}
 

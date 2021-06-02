@@ -127,7 +127,7 @@ public class UpgradeProcess {
 					try {
 						value = Integer.parseInt(array[i]);
 					}
-					catch (Exception e) {
+					catch (Exception exception) {
 						if (_log.isWarnEnabled()) {
 							_log.warn(
 								"Unable to parse " + array[i] + " to integer");

@@ -164,8 +164,8 @@ public class ElasticsearchConnection {
 
 			return IOUtils.toString(inputStream, Charset.defaultCharset());
 		}
-		catch (Exception e) {
-			throw new IllegalStateException(e);
+		catch (Exception exception) {
+			throw new IllegalStateException(exception);
 		}
 	}
 
@@ -176,10 +176,10 @@ public class ElasticsearchConnection {
 
 				break;
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (i == 0) {
 					throw new IllegalStateException(
-						"Unable to connect to Elasticsearch server", e);
+						"Unable to connect to Elasticsearch server", exception);
 				}
 			}
 
@@ -190,7 +190,7 @@ public class ElasticsearchConnection {
 			try {
 				Thread.sleep(_retryDelay);
 			}
-			catch (InterruptedException ie) {
+			catch (InterruptedException interruptedException) {
 				Thread thread = Thread.currentThread();
 
 				thread.interrupt();

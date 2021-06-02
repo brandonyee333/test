@@ -79,7 +79,7 @@ public class PreferenceMutationDataFetcher implements DataFetcher<Preference> {
 						try {
 							new JSONArray(value);
 						}
-						catch (Exception e) {
+						catch (Exception exception) {
 							return false;
 						}
 

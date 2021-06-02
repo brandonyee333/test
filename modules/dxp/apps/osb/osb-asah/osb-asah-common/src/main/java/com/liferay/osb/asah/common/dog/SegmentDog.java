@@ -508,28 +508,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return _segmentRepository.save(segment);
 	}
 
-	private static String _getAssetId(String[] terms) {
-		if (terms.length != 3) {
-			throw new IllegalArgumentException(
-				"Invalid terms length: " + terms.length);
-		}
-
-		String fieldName = terms[0];
-		String operator = terms[1];
-
-		if ((!fieldName.startsWith("activities/") &&
-			 !fieldName.equals("activityKey")) ||
-			(!operator.equalsIgnoreCase("eq") &&
-			 !operator.equalsIgnoreCase("ne"))) {
-
-			return null;
-		}
-
-		String activityKey = StringUtil.unquote(terms[2]);
-
-		return activityKey.substring(activityKey.lastIndexOf("#") + 1);
-	}
-
 	private void _addAsahTask(Segment segment) {
 		if (Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
 			_asahTaskDog.scheduleAsahTask(
@@ -605,6 +583,28 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return null;
 	}
 
+	private String _getAssetId(String[] terms) {
+		if (terms.length != 3) {
+			throw new IllegalArgumentException(
+				"Invalid terms length: " + terms.length);
+		}
+
+		String fieldName = terms[0];
+		String operator = terms[1];
+
+		if ((!fieldName.startsWith("activities/") &&
+			 !fieldName.equals("activityKey")) ||
+			(!operator.equalsIgnoreCase("eq") &&
+			 !operator.equalsIgnoreCase("ne"))) {
+
+			return null;
+		}
+
+		String activityKey = StringUtil.unquote(terms[2]);
+
+		return activityKey.substring(activityKey.lastIndexOf("#") + 1);
+	}
+
 	private List<Long> _getIndividualSegmentIds(Long segmentId) {
 		List<Long> individualIds = JSONUtil.toLongList(
 			elasticsearchInvoker.get(
@@ -655,8 +655,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 								innerReferencedObjectIds.get(entry.getKey()));
 						});
 				}
-				catch (Exception e) {
-					return e;
+				catch (Exception exception) {
+					return exception;
 				}
 
 				return null;
@@ -721,8 +721,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 				terms[0], null,
 				referencedObjectSets.get("referencedFieldMappingIds"));
 		}
-		catch (Exception e) {
-			return e;
+		catch (Exception exception) {
+			return exception;
 		}
 	}
 
@@ -797,8 +797,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 						values.addAll(referencedObjectIds.get(entry.getKey()));
 					});
 			}
-			catch (Exception e) {
-				return e;
+			catch (Exception exception) {
+				return exception;
 			}
 		}
 		else if (Objects.equals(name, "contains") ||

@@ -71,15 +71,16 @@ public class Http {
 		try {
 			return exchange(url, path, httpMethod, body);
 		}
-		catch (ResourceAccessException rae) {
-			Throwable throwable = rae.getCause();
+		catch (ResourceAccessException resourceAccessException) {
+			Throwable throwable = resourceAccessException.getCause();
 
 			if (!(throwable instanceof UnknownHostException)) {
-				throw rae;
+				throw resourceAccessException;
 			}
 
 			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to reach " + url + ": " + rae);
+				_log.warn(
+					"Unable to reach " + url + ": " + resourceAccessException);
 			}
 		}
 

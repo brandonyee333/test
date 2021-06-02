@@ -136,11 +136,12 @@ public class InterestsRestControllerTest {
 		try {
 			_interestsRestController.getTerms(100, 0.01, 11, "xxx-yyy-zzz");
 		}
-		catch (OSBAsahException osbae) {
-			Assert.assertEquals(HttpStatus.BAD_REQUEST, osbae.getHttpStatus());
+		catch (OSBAsahException osbAsahException) {
+			Assert.assertEquals(
+				HttpStatus.BAD_REQUEST, osbAsahException.getHttpStatus());
 			Assert.assertEquals(
 				"termsPerTopic * topicsLength must not exceed 1000",
-				osbae.getMessage());
+				osbAsahException.getMessage());
 		}
 	}
 
@@ -163,10 +164,12 @@ public class InterestsRestControllerTest {
 			_interestsRestController.getTermsRelated(
 				10, 15, Collections.emptyList(), 0.01);
 		}
-		catch (OSBAsahException osbae) {
-			Assert.assertEquals(HttpStatus.BAD_REQUEST, osbae.getHttpStatus());
+		catch (OSBAsahException osbAsahException) {
 			Assert.assertEquals(
-				"page * size + size must not exceed 100", osbae.getMessage());
+				HttpStatus.BAD_REQUEST, osbAsahException.getHttpStatus());
+			Assert.assertEquals(
+				"page * size + size must not exceed 100",
+				osbAsahException.getMessage());
 		}
 	}
 
@@ -240,11 +243,12 @@ public class InterestsRestControllerTest {
 		try {
 			_interestsRestController.getTerms(3, 0.01, 3, "xxx-yyy-zzz");
 		}
-		catch (OSBAsahException osbae) {
-			Assert.assertEquals(HttpStatus.BAD_REQUEST, osbae.getHttpStatus());
+		catch (OSBAsahException osbAsahException) {
+			Assert.assertEquals(
+				HttpStatus.BAD_REQUEST, osbAsahException.getHttpStatus());
 			Assert.assertEquals(
 				"There is no individual with user ID xxx-yyy-zzz",
-				osbae.getMessage());
+				osbAsahException.getMessage());
 		}
 	}
 

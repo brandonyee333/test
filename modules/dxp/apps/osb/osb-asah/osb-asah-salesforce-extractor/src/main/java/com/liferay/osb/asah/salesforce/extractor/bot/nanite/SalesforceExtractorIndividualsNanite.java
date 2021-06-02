@@ -82,12 +82,12 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 					"type", "audit-events"
 				));
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_runLogDog.log(
 				_dataSourceId, this, "FAILED",
 				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 
-			throw e;
+			throw exception;
 		}
 	}
 
@@ -110,7 +110,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			_salesforceAuditEventDog.addSalesforceAuditEvent(
 				salesforceAuditEvent);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			JSONObject auditEventJSONObject = _objectMapper.convertValue(
 				salesforceAuditEvent, JSONObject.class);
 
@@ -119,7 +119,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 					"%s: Unable to add audit event with JSON %s",
 					ProjectIdThreadLocal.getProjectId(),
 					auditEventJSONObject.toString()),
-				e);
+				exception);
 		}
 	}
 
@@ -135,7 +135,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 
 			if (accountId != null) {
 				SalesforceEntity salesforceAccountEntity =
-					_saleforceEntityDog.getSalesforceEntity(
+					_salesforceEntityDog.getSalesforceEntity(
 						_dataSourceId, accountId,
 						SalesforceEntity.Type.ACCOUNT);
 
@@ -292,7 +292,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		}
 
 		List<String> accountPKs =
-			_saleforceEntityDog.getSalesforceEntityFieldValuesGroupByField(
+			_salesforceEntityDog.getSalesforceEntityFieldValuesGroupByField(
 				_dataSourceId, "Email", emailAddress, "AccountId",
 				SalesforceEntity.Type.CONTACT);
 
@@ -303,7 +303,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		SalesforceEntity individualSalesforceEntity = null;
 
 		List<SalesforceEntity> contactSalesforceEntities =
-			_saleforceEntityDog.getSalesforceEntities(
+			_salesforceEntityDog.getSalesforceEntities(
 				_dataSourceId, "Email", emailAddress,
 				SalesforceEntity.Type.CONTACT);
 
@@ -319,7 +319,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		}
 
 		List<SalesforceEntity> leadSalesforceEntities =
-			_saleforceEntityDog.getSalesforceEntities(
+			_salesforceEntityDog.getSalesforceEntities(
 				_dataSourceId, "Email", emailAddress,
 				SalesforceEntity.Type.LEAD);
 
@@ -366,7 +366,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			salesforceAuditEvent.getAdditionalInfoJSONObject();
 
 		List<SalesforceEntity> individualSalesforceEntities =
-			_saleforceEntityDog.getSalesforceEntities(
+			_salesforceEntityDog.getSalesforceEntities(
 				_dataSourceId, "email",
 				additionalInfoJSONObject.optString("Email"),
 				SalesforceEntity.Type.INDIVIDUAL);
@@ -387,7 +387,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 					salesforceAuditEvent.getEntityTypeName());
 
 			SalesforceEntity salesforceEntity =
-				_saleforceEntityDog.getSalesforceEntity(
+				_salesforceEntityDog.getSalesforceEntity(
 					salesforceAuditEvent.getDataSourceId(),
 					salesforceAuditEvent.getRecordId(), salesforceEntityType);
 
@@ -420,7 +420,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 				additionalInfoJSONObject.optString("Email"));
 
 			if (newIndividualSalesforceEntity == null) {
-				_saleforceEntityDog.deleteSalesforceEntity(
+				_salesforceEntityDog.deleteSalesforceEntity(
 					oldIndividualSalesforceEntity);
 
 				_addAuditEvent(
@@ -440,7 +440,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 
 		if (newIndividualSalesforceEntity != null) {
 			SalesforceEntity salesforceIndividual =
-				_saleforceEntityDog.saveSalesforceEntity(
+				_salesforceEntityDog.saveSalesforceEntity(
 					newIndividualSalesforceEntity);
 
 			_addAuditEvent(
@@ -525,10 +525,10 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 	private RunLogDog _runLogDog;
 
 	@Autowired
-	private SalesforceEntityDog _saleforceEntityDog;
+	private SalesforceAuditEventDog _salesforceAuditEventDog;
 
 	@Autowired
-	private SalesforceAuditEventDog _salesforceAuditEventDog;
+	private SalesforceEntityDog _salesforceEntityDog;
 
 	private final SalesforceExtractorConfiguration
 		_salesforceExtractorConfiguration;

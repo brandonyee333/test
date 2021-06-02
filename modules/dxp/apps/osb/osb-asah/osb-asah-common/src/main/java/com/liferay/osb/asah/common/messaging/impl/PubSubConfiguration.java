@@ -56,8 +56,8 @@ public class PubSubConfiguration {
 
 				target = uri.getAuthority();
 			}
-			catch (Exception e) {
-				_log.error(e, e);
+			catch (Exception exception) {
+				_log.error(exception, exception);
 			}
 
 			ManagedChannelBuilder managedChannelBuilder =

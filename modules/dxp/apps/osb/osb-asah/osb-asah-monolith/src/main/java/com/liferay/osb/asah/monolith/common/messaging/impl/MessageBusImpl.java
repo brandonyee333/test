@@ -114,8 +114,8 @@ public class MessageBusImpl implements MessageBus {
 		try {
 			_executorService.awaitTermination(3, TimeUnit.SECONDS);
 		}
-		catch (InterruptedException ie) {
-			_log.error(ie);
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException);
 		}
 		finally {
 			_executorService.shutdownNow();
@@ -133,8 +133,9 @@ public class MessageBusImpl implements MessageBus {
 				try {
 					messageListener.onMessage(message);
 				}
-				catch (Exception e) {
-					_log.error("Unable to deliver message: " + message, e);
+				catch (Exception exception) {
+					_log.error(
+						"Unable to deliver message: " + message, exception);
 				}
 			});
 	}

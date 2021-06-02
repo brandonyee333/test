@@ -466,8 +466,8 @@ public class FilterStringToQueryBuilderConverterTest {
 				filterString +
 					" did not throw an instance of IllegalArgumentException");
 		}
-		catch (Exception e) {
-			Throwable cause = e.getCause();
+		catch (Exception exception) {
+			Throwable cause = exception.getCause();
 
 			Assert.assertTrue(cause instanceof IllegalArgumentException);
 

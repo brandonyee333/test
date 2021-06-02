@@ -127,7 +127,7 @@ public class SalesforceIndividualsNaniteTest
 		return "email";
 	}
 
-	private static JSONObject _buildAuditEventJSONObject(
+	private JSONObject _buildAuditEventJSONObject(
 		String dataSourceId, JSONObject individualJSONObject) {
 
 		return JSONUtil.put(
@@ -145,7 +145,7 @@ public class SalesforceIndividualsNaniteTest
 		);
 	}
 
-	private static JSONObject _buildSalesforceIndividualJSONObject(
+	private JSONObject _buildSalesforceIndividualJSONObject(
 		String dataSourceId, Map<String, Object> fieldsMap, String id) {
 
 		JSONObject individualFieldsJSONObject = new JSONObject(fieldsMap);

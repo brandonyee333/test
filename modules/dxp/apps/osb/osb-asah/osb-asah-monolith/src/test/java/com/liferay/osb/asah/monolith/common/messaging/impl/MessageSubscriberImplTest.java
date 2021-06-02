@@ -43,17 +43,17 @@ public class MessageSubscriberImplTest {
 
 	@Before
 	public void setUp() {
-		_messageSubscriber = new MessageSubscriberImpl(
+		_messageSubscriberImpl = new MessageSubscriberImpl(
 			Channel.ANALYTICS_EVENTS_PAGE, "Analytics");
 	}
 
 	@Test
 	public void testEnqueue() {
-		ReflectionTestUtils.setField(_messageSubscriber, "_queue", _queue);
+		ReflectionTestUtils.setField(_messageSubscriberImpl, "_queue", _queue);
 
 		String message = RandomTestUtil.randomString();
 
-		_messageSubscriber.enqueue(message);
+		_messageSubscriberImpl.enqueue(message);
 
 		Mockito.verify(
 			_queue
@@ -79,17 +79,17 @@ public class MessageSubscriberImplTest {
 		String message2 = RandomTestUtil.randomString();
 		String message3 = RandomTestUtil.randomString();
 
-		_messageSubscriber.enqueue(message1);
-		_messageSubscriber.enqueue(message2);
-		_messageSubscriber.enqueue(message3);
+		_messageSubscriberImpl.enqueue(message1);
+		_messageSubscriberImpl.enqueue(message2);
+		_messageSubscriberImpl.enqueue(message3);
 
-		List<String> messages = _messageSubscriber.pullMessages(4);
+		List<String> messages = _messageSubscriberImpl.pullMessages(4);
 
 		Assert.assertTrue(
 			messages.containsAll(Arrays.asList(message1, message2, message3)));
 	}
 
-	private MessageSubscriberImpl _messageSubscriber;
+	private MessageSubscriberImpl _messageSubscriberImpl;
 
 	@Mock
 	private Queue<String> _queue;

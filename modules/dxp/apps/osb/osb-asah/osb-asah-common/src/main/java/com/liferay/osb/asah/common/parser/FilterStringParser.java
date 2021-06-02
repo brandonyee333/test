@@ -45,12 +45,12 @@ public class FilterStringParser {
 					int closeParenthesisIndex =
 						_getMatchingCloseParenthesisIndex(filterString, index);
 
-					Exception e = parseInnerFilterFunction.apply(
+					Exception exception = parseInnerFilterFunction.apply(
 						filterString.substring(
 							index + 1, closeParenthesisIndex));
 
-					if (e != null) {
-						throw e;
+					if (exception != null) {
+						throw exception;
 					}
 
 					index = _getNextLogicalOperatorEndIndex(
@@ -69,9 +69,9 @@ public class FilterStringParser {
 
 			return getParseResultSupplier.get();
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			throw new FilterStringParserException(
-				"Unable to process filter " + filterString, e);
+				"Unable to process filter " + filterString, exception);
 		}
 	}
 
@@ -142,11 +142,11 @@ public class FilterStringParser {
 		String thirdTerm = filterString.substring(
 			thirdTermBeginIndex, thirdTermEndIndex);
 
-		Exception e = processLogicFunctionFunction.apply(
+		Exception exception = processLogicFunctionFunction.apply(
 			new String[] {firstTerm, secondTerm, thirdTerm});
 
-		if (e != null) {
-			throw e;
+		if (exception != null) {
+			throw exception;
 		}
 
 		return thirdTermEndIndex;
@@ -217,12 +217,12 @@ public class FilterStringParser {
 					"no operand was found after it");
 		}
 
-		Exception e = processLogicalOperatorFunction.apply(
+		Exception exception = processLogicalOperatorFunction.apply(
 			filterString.substring(
 				logicalOperatorStartIndex, logicalOperatorEndIndex));
 
-		if (e != null) {
-			throw e;
+		if (exception != null) {
+			throw exception;
 		}
 
 		return logicalOperatorEndIndex;
@@ -308,11 +308,11 @@ public class FilterStringParser {
 				functionOpenParenthesisIndex + 1,
 				functionCloseParenthesisIndex));
 
-		Exception e = processStringFunctionFunction.apply(
+		Exception exception = processStringFunctionFunction.apply(
 			new Object[] {arguments, negated, stringFunction});
 
-		if (e != null) {
-			throw e;
+		if (exception != null) {
+			throw exception;
 		}
 
 		return functionCloseParenthesisIndex;

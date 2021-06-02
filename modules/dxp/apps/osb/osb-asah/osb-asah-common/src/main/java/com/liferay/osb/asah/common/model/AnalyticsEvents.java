@@ -36,7 +36,7 @@ public class AnalyticsEvents {
 		int pageViewsCount = 0;
 
 		for (AnalyticsEvent analyticsEvent : analyticsEventsList) {
-			if (!_nonInteractionEvents.contains(analyticsEvent.getEventId())) {
+			if (!_noninteractionEvents.contains(analyticsEvent.getEventId())) {
 				interactionsCount++;
 			}
 
@@ -119,7 +119,7 @@ public class AnalyticsEvents {
 		return _urls;
 	}
 
-	private static final Set<String> _nonInteractionEvents =
+	private static final Set<String> _noninteractionEvents =
 		new HashSet<String>() {
 			{
 				add("blogViewed");

@@ -57,8 +57,9 @@ public class DataDog {
 
 			return searchResponse;
 		}
-		catch (Exception e) {
-			throw new RuntimeException("Unable to process search request", e);
+		catch (Exception exception) {
+			throw new RuntimeException(
+				"Unable to process search request", exception);
 		}
 		finally {
 			long elapsedTime = System.currentTimeMillis() - start;

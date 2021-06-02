@@ -91,8 +91,8 @@ public class FilterStringToQueryBuilderConverter {
 						convert(
 							innerFilterString, filterStringConverterHelper));
 				}
-				catch (Exception e) {
-					return e;
+				catch (Exception exception) {
+					return exception;
 				}
 
 				return null;
@@ -173,8 +173,8 @@ public class FilterStringToQueryBuilderConverter {
 				return null;
 			}
 		}
-		catch (Exception e) {
-			return e;
+		catch (Exception exception) {
+			return exception;
 		}
 
 		fieldName = _toWeDeployFieldName(fieldName);
@@ -269,8 +269,8 @@ public class FilterStringToQueryBuilderConverter {
 				return null;
 			}
 		}
-		catch (Exception e) {
-			return e;
+		catch (Exception exception) {
+			return exception;
 		}
 
 		if (stringFunction.equalsIgnoreCase("between")) {

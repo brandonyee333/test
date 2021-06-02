@@ -98,7 +98,7 @@ public class ReindexHelper {
 				try {
 					Thread.sleep(60000);
 				}
-				catch (InterruptedException ie) {
+				catch (InterruptedException interruptedException) {
 					Thread thread = Thread.currentThread();
 
 					thread.interrupt();
@@ -230,7 +230,7 @@ public class ReindexHelper {
 			try {
 				Thread.sleep(5000);
 			}
-			catch (InterruptedException ie) {
+			catch (InterruptedException interruptedException) {
 				Thread thread = Thread.currentThread();
 
 				thread.interrupt();

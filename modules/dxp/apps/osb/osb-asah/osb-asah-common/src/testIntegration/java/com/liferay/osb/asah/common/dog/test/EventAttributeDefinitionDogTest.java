@@ -240,7 +240,7 @@ public class EventAttributeDefinitionDogTest {
 	}
 
 	@Test
-	public void testFetchEventAttributeDefinitionByDisplayNameNonExistent() {
+	public void testFetchEventAttributeDefinitionByDisplayNameNonexistent() {
 		Assert.assertNull(
 			_eventAttributeDefinitionDog.
 				fetchEventAttributeDefinitionByDisplayName("Does Not Exist"));

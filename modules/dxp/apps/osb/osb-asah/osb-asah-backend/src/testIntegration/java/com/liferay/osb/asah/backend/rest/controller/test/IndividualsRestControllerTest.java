@@ -121,12 +121,12 @@ public class IndividualsRestControllerTest {
 			_individualsRestController.getIndividualsDistribution(
 				331238757947565234L, null, 10, 100, null);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			Assert.assertThat(
-				e.getMessage(),
+				exception.getMessage(),
 				CoreMatchers.containsString("Invalid field mapping ID"));
 
-			throw e;
+			throw exception;
 		}
 	}
 

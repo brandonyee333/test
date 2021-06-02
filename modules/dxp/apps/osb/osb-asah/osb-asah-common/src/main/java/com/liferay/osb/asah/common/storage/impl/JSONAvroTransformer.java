@@ -198,7 +198,7 @@ public class JSONAvroTransformer {
 			try {
 				return _toType(field, fieldSchemaType, fieldValue);
 			}
-			catch (IllegalStateException ise) {
+			catch (IllegalStateException illegalStateException) {
 			}
 		}
 

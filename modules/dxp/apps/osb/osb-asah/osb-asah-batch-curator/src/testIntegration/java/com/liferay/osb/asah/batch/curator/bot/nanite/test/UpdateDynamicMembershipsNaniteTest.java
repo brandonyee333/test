@@ -387,15 +387,14 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 			_membershipDog.isMember(
 				individualJSONObject.getLong("id"), segment.getId()));
 
-		JSONObject contextJSONObject = JSONUtil.put(
-			"addQueryBuilder",
-			"((referencedOrganizationIds eq [" +
-				organizationJSONObject.getString("id") + "]))"
-		).put(
-			"dateModified", DateUtil.newDateString()
-		);
-
-		_updateDynamicMembershipsNanite.run(contextJSONObject);
+		_updateDynamicMembershipsNanite.run(
+			JSONUtil.put(
+				"addQueryBuilder",
+				"((referencedOrganizationIds eq [" +
+					organizationJSONObject.getString("id") + "]))"
+			).put(
+				"dateModified", DateUtil.newDateString()
+			));
 
 		Assert.assertTrue(
 			_membershipDog.isMember(
@@ -405,15 +404,14 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 			"individuals",
 			individualJSONObject.put("organizationIds", new JSONArray()));
 
-		contextJSONObject = JSONUtil.put(
-			"dateModified", DateUtil.newDateString()
-		).put(
-			"removeQueryBuilder",
-			"((referencedOrganizationIds eq [" +
-				organizationJSONObject.getString("id") + "]))"
-		);
-
-		_updateDynamicMembershipsNanite.run(contextJSONObject);
+		_updateDynamicMembershipsNanite.run(
+			JSONUtil.put(
+				"dateModified", DateUtil.newDateString()
+			).put(
+				"removeQueryBuilder",
+				"((referencedOrganizationIds eq [" +
+					organizationJSONObject.getString("id") + "]))"
+			));
 
 		Assert.assertFalse(
 			_membershipDog.isMember(
@@ -497,14 +495,14 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 			_membershipDog.isMember(
 				individualJSONObject.getLong("id"), segment.getId()));
 
-		JSONObject contextJSONObject = JSONUtil.put(
-			"addQueryBuilder",
-			"((referencedRoleIds eq [" + roleJSONObject.getString("id") + "]))"
-		).put(
-			"dateModified", DateUtil.newDateString()
-		);
-
-		_updateDynamicMembershipsNanite.run(contextJSONObject);
+		_updateDynamicMembershipsNanite.run(
+			JSONUtil.put(
+				"addQueryBuilder",
+				"((referencedRoleIds eq [" + roleJSONObject.getString("id") +
+					"]))"
+			).put(
+				"dateModified", DateUtil.newDateString()
+			));
 
 		Assert.assertTrue(
 			_membershipDog.isMember(
@@ -514,14 +512,14 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 			"individuals",
 			individualJSONObject.put("roleIds", new JSONArray()));
 
-		contextJSONObject = JSONUtil.put(
-			"dateModified", DateUtil.newDateString()
-		).put(
-			"removeQueryBuilder",
-			"((referencedRoleIds eq [" + roleJSONObject.getString("id") + "]))"
-		);
-
-		_updateDynamicMembershipsNanite.run(contextJSONObject);
+		_updateDynamicMembershipsNanite.run(
+			JSONUtil.put(
+				"dateModified", DateUtil.newDateString()
+			).put(
+				"removeQueryBuilder",
+				"((referencedRoleIds eq [" + roleJSONObject.getString("id") +
+					"]))"
+			));
 
 		Assert.assertFalse(
 			_membershipDog.isMember(

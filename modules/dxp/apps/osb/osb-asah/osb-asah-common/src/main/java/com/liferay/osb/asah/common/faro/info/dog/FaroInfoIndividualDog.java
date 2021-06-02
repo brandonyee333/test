@@ -1034,8 +1034,8 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 						modifiedDate, individualId, individualSegmentId,
 						modifiedDate, "ACTIVE");
 				}
-				catch (Exception e) {
-					return e;
+				catch (Exception exception) {
+					return exception;
 				}
 
 				return null;

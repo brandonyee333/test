@@ -31,15 +31,15 @@ public class JSONObjectToPGobjectConverter
 	@Override
 	public PGobject convert(JSONObject jsonObject) {
 		try {
-			PGobject pgObject = new PGobject();
+			PGobject pGobject = new PGobject();
 
-			pgObject.setType("json");
-			pgObject.setValue(jsonObject.toString());
+			pGobject.setType("json");
+			pGobject.setValue(jsonObject.toString());
 
-			return pgObject;
+			return pGobject;
 		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
 		}
 	}
 

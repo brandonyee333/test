@@ -54,8 +54,10 @@ public class MetricUtil {
 				}
 			}
 		}
-		catch (IntrospectionException | ReflectiveOperationException e) {
-			_log.error(e, e);
+		catch (IntrospectionException | ReflectiveOperationException
+					exception) {
+
+			_log.error(exception, exception);
 		}
 
 		return availableMetrics;

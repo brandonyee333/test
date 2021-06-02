@@ -39,12 +39,12 @@ public class RetryConfiguration {
 				setExceptionClassifier(
 					(Classifier<Throwable, RetryPolicy>)classifier -> {
 						if (classifier instanceof HttpClientErrorException) {
-							HttpClientErrorException hcee =
+							HttpClientErrorException httpClientErrorException =
 								(HttpClientErrorException)classifier;
 
-							if ((hcee.getStatusCode() ==
+							if ((httpClientErrorException.getStatusCode() ==
 									HttpStatus.FORBIDDEN) ||
-								(hcee.getStatusCode() ==
+								(httpClientErrorException.getStatusCode() ==
 									HttpStatus.UNAUTHORIZED)) {
 
 								return _neverRetryPolicy;

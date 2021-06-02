@@ -94,8 +94,8 @@ public class ElasticsearchDump {
 		try {
 			_elasticsearchInvoker.clearScroll(_scrollId);
 		}
-		catch (Exception e) {
-			_log.error("Unable to clear scroll ID " + _scrollId, e);
+		catch (Exception exception) {
+			_log.error("Unable to clear scroll ID " + _scrollId, exception);
 		}
 	}
 

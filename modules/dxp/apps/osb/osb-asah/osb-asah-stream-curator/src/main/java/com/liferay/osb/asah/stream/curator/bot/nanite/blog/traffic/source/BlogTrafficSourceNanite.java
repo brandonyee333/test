@@ -133,7 +133,7 @@ public class BlogTrafficSourceNanite extends BaseNanite<BlogTrafficSource> {
 				MapUtil.getString(analyticsEvent.getContext(), "referrer")));
 	}
 
-	private static String _getTrafficSourcesDomain(String referrer) {
+	private String _getTrafficSourcesDomain(String referrer) {
 		Matcher matcher = _pattern.matcher(referrer);
 
 		if (!matcher.matches()) {

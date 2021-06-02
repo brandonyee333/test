@@ -86,7 +86,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 		return ProjectTopicName.of(_gcpProjectId, _getTopicId(channel));
 	}
 
-	public PubSubClientFactory getPubSubclientFactory() {
+	public PubSubClientFactory getPubSubClientFactory() {
 		return _pubSubClientFactory;
 	}
 
@@ -101,8 +101,8 @@ public class PubSubMessageBusImpl implements MessageBus {
 
 			subscriber.startAsync();
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 	}
 
@@ -118,10 +118,10 @@ public class PubSubMessageBusImpl implements MessageBus {
 			return new MessageSubscriberImpl(
 				_pubSubClientFactory, subscription);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new IllegalStateException(e);
+			throw new IllegalStateException(exception);
 		}
 	}
 
@@ -143,8 +143,8 @@ public class PubSubMessageBusImpl implements MessageBus {
 				publisher.publish(createPubsubMessage(message));
 			}
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 	}
 
@@ -198,7 +198,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 				_log.info("Created topic " + projectTopicName.toString());
 			}
 		}
-		catch (AlreadyExistsException aee) {
+		catch (AlreadyExistsException alreadyExistsException) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					"Topic already exists " + projectTopicName.toString());
@@ -277,7 +277,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 			return subscriptionAdminClient.getSubscription(
 				projectSubscriptionName);
 		}
-		catch (NotFoundException nfe) {
+		catch (NotFoundException notFoundException) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					"Creating subscription " +

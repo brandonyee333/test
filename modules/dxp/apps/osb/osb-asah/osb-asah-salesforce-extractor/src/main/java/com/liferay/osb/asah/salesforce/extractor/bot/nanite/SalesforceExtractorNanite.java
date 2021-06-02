@@ -148,7 +148,7 @@ public class SalesforceExtractorNanite implements Nanite {
 			_salesforceAuditEventDog.addSalesforceAuditEvent(
 				salesforceAuditEvent);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			JSONObject auditEventJSONObject = _objectMapper.convertValue(
 				salesforceAuditEvent, JSONObject.class);
 
@@ -157,7 +157,7 @@ public class SalesforceExtractorNanite implements Nanite {
 					"%s: Unable to populate audit events with JSON %s",
 					ProjectIdThreadLocal.getProjectId(),
 					auditEventJSONObject.toString()),
-				e);
+				exception);
 		}
 	}
 
@@ -250,9 +250,12 @@ public class SalesforceExtractorNanite implements Nanite {
 		while (iterator.hasNext()) {
 			String tableName = iterator.next();
 
+			long salesforceEntitiesCount =
+				_salesforceEntityDog.getSalesforceEntitiesCount(
+					_dataSourceId, SalesforceEntity.Type.of(tableName));
+
 			if (!tableNamesSet.contains(tableName) &&
-				(_salesforceEntityDog.getSalesforceEntitiesCount(
-					_dataSourceId, SalesforceEntity.Type.of(tableName)) > 0)) {
+				(salesforceEntitiesCount > 0)) {
 
 				while (true) {
 					Page<SalesforceEntity> salesforceEntityPage =
@@ -361,9 +364,10 @@ public class SalesforceExtractorNanite implements Nanite {
 
 					return startDate;
 				}
-				catch (Exception e) {
-					if (e instanceof UnexpectedErrorFault) {
-						UnexpectedErrorFault uef = (UnexpectedErrorFault)e;
+				catch (Exception exception) {
+					if (exception instanceof UnexpectedErrorFault) {
+						UnexpectedErrorFault uef =
+							(UnexpectedErrorFault)exception;
 
 						if (uef.getExceptionCode() !=
 								ExceptionCode.INVALID_REPLICATION_DATE) {
@@ -372,8 +376,9 @@ public class SalesforceExtractorNanite implements Nanite {
 								_log.debug(
 									String.format(
 										"%s: %s",
-										ProjectIdThreadLocal.getProjectId(), e),
-									e);
+										ProjectIdThreadLocal.getProjectId(),
+										exception),
+									exception);
 							}
 
 							return startDate;
@@ -476,15 +481,15 @@ public class SalesforceExtractorNanite implements Nanite {
 									SalesforceEntity.Type.of(
 										describeSObjectResult.getName()))));
 					}
-					catch (Exception e) {
+					catch (Exception exception) {
 						_log.error(
 							String.format(
 								"%s: Unable to populate %s with JSON %s",
 								ProjectIdThreadLocal.getProjectId(),
 								describeSObjectResult.getName(), jsonArray),
-							e);
+							exception);
 
-						return e;
+						return exception;
 					}
 
 					return null;
@@ -523,8 +528,8 @@ public class SalesforceExtractorNanite implements Nanite {
 			_asahMarkerDog.updateAsahMarker(
 				asahMarker, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 		}
-		catch (Exception e) {
-			if (e instanceof InterruptBotException) {
+		catch (Exception exception) {
+			if (exception instanceof InterruptBotException) {
 				throw new InterruptBotException();
 			}
 
@@ -533,7 +538,7 @@ public class SalesforceExtractorNanite implements Nanite {
 					"%s: Unable to populate %s",
 					ProjectIdThreadLocal.getProjectId(),
 					describeSObjectResult.getName()),
-				e);
+				exception);
 		}
 	}
 
@@ -579,7 +584,7 @@ public class SalesforceExtractorNanite implements Nanite {
 										addSalesforceAuditEvents(
 											salesforceAuditEvents);
 								}
-								catch (Exception e) {
+								catch (Exception exception) {
 									_log.error(
 										String.format(
 											"%s: Unable to populate audit " +
@@ -588,9 +593,9 @@ public class SalesforceExtractorNanite implements Nanite {
 											_objectMapper.convertValue(
 												salesforceAuditEvents,
 												JSONArray.class)),
-										e);
+										exception);
 
-									return e;
+									return exception;
 								}
 
 								return null;
@@ -684,12 +689,12 @@ public class SalesforceExtractorNanite implements Nanite {
 					"type", "audit-events"
 				));
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_runLogDog.log(
 				_dataSourceId, this, "FAILED",
 				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 
-			throw e;
+			throw exception;
 		}
 	}
 
@@ -784,15 +789,15 @@ public class SalesforceExtractorNanite implements Nanite {
 										SalesforceEntity.Type.of(
 											describeSObjectResult.getName()))));
 						}
-						catch (Exception e) {
+						catch (Exception exception) {
 							_log.error(
 								String.format(
 									"%s: Unable to update %s with JSON %s",
 									ProjectIdThreadLocal.getProjectId(),
 									describeSObjectResult.getName(), jsonArray),
-								e);
+								exception);
 
-							return e;
+							return exception;
 						}
 
 						return null;

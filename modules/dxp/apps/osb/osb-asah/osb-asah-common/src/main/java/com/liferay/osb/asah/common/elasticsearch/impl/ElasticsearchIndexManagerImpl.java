@@ -111,7 +111,7 @@ public class ElasticsearchIndexManagerImpl
 
 			actionFuture.get();
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
 				_log.warn("Unable to add alias for " + indexName);
 			}
@@ -422,8 +422,8 @@ public class ElasticsearchIndexManagerImpl
 				"com/liferay/osb/asah/common/elasticsearch/dependencies/" +
 					weDeployDataServiceName + resourceName);
 		}
-		catch (Exception e) {
-			throw new IllegalStateException(e);
+		catch (Exception exception) {
+			throw new IllegalStateException(exception);
 		}
 	}
 
@@ -620,8 +620,8 @@ public class ElasticsearchIndexManagerImpl
 
 			return IOUtils.toString(inputStream, Charset.defaultCharset());
 		}
-		catch (Exception e) {
-			throw new IllegalStateException(e);
+		catch (Exception exception) {
+			throw new IllegalStateException(exception);
 		}
 	}
 

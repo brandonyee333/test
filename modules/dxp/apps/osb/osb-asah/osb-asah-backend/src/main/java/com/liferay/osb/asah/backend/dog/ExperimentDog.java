@@ -111,7 +111,7 @@ public class ExperimentDog {
 		try {
 			_experimentRepository.delete(experiment);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			return false;
 		}
 

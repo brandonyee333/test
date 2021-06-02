@@ -301,9 +301,9 @@ public class DogUtil {
 				return objectMapper.readValue(
 					searchHit.getSourceAsString(), modelClass);
 			}
-			catch (IOException ioe) {
+			catch (IOException ioException) {
 				throw new RuntimeException(
-					"Unable to process search request", ioe);
+					"Unable to process search request", ioException);
 			}
 		};
 	}

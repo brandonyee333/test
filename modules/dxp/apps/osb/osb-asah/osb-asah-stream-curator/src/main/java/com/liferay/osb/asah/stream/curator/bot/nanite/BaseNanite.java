@@ -71,10 +71,10 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		try {
 			doRun();
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			Log log = getLog();
 
-			log.error(e, e);
+			log.error(exception, exception);
 		}
 	}
 

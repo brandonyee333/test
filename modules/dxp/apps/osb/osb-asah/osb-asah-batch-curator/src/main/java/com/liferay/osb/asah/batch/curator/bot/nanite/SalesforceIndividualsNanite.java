@@ -103,12 +103,12 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 				dataSourceId, this, "COMPLETED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			runLogDog.log(
 				dataSourceId, this, "FAILED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-			throw e;
+			throw exception;
 		}
 	}
 
@@ -221,12 +221,12 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 				dataSourceId, this, "COMPLETED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			runLogDog.log(
 				dataSourceId, this, "STARTED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
 
-			throw e;
+			throw exception;
 		}
 	}
 

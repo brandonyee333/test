@@ -55,10 +55,10 @@ public abstract class BaseSecurityOncePerRequestFilter
 
 		try {
 			if (isInvalidRequest(httpServletRequest)) {
-				if (httpServletRequest.getHeader(
-						HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE) !=
-							null) {
+				String header = httpServletRequest.getHeader(
+					HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE);
 
+				if (header != null) {
 					httpServletResponse.sendError(
 						HttpServletResponse.SC_FORBIDDEN, "INVALID_TOKEN");
 				}
@@ -72,14 +72,14 @@ public abstract class BaseSecurityOncePerRequestFilter
 
 			filterChain.doFilter(httpServletRequest, httpServletResponse);
 		}
-		catch (IOException ioe) {
-			throw ioe;
+		catch (IOException ioException) {
+			throw ioException;
 		}
-		catch (ServletException se) {
-			throw se;
+		catch (ServletException servletException) {
+			throw servletException;
 		}
-		catch (Exception e) {
-			throw new ServletException(e);
+		catch (Exception exception) {
+			throw new ServletException(exception);
 		}
 	}
 

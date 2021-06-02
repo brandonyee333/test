@@ -96,11 +96,11 @@ public class AnalyticsEventsMessageProcessor {
 						try {
 							_processMessage(analyticsEventsMessage);
 						}
-						catch (Exception e) {
+						catch (Exception exception) {
 							_log.error(
 								"Unable to process analytics events message " +
 									analyticsEventsMessage.toJSON(),
-								e);
+								exception);
 						}
 					});
 			}
@@ -177,8 +177,7 @@ public class AnalyticsEventsMessageProcessor {
 	}
 
 	private Map<String, String> _getContext(
-			AnalyticsEventsMessage analyticsEventsMessage)
-		throws IllegalArgumentException {
+		AnalyticsEventsMessage analyticsEventsMessage) {
 
 		Map<String, String> context = new HashMap<>();
 

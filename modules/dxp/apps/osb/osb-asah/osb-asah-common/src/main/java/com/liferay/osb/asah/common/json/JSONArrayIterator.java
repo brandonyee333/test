@@ -138,15 +138,15 @@ public class JSONArrayIterator {
 				try {
 					object = _processJSONArrayUnsafeFunction.apply(jsonArray);
 				}
-				catch (Exception e) {
+				catch (Exception exception) {
 					if (_stopOnExceptions) {
-						throw e;
+						throw exception;
 					}
 					else if (Objects.equals(INTERRUPT, object)) {
 						return;
 					}
 
-					_log.error(e, e);
+					_log.error(exception, exception);
 				}
 			}
 
@@ -163,12 +163,12 @@ public class JSONArrayIterator {
 							return;
 						}
 					}
-					catch (Exception e) {
+					catch (Exception exception) {
 						if (_stopOnExceptions) {
-							throw e;
+							throw exception;
 						}
 
-						_log.error(e, e);
+						_log.error(exception, exception);
 					}
 				}
 			}

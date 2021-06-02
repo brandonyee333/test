@@ -61,8 +61,8 @@ public class FilterStringToConditionConverter {
 						convert(
 							innerFilterString, filterStringConverterHelper));
 				}
-				catch (Exception e) {
-					return e;
+				catch (Exception exception) {
+					return exception;
 				}
 
 				return null;
@@ -194,8 +194,8 @@ public class FilterStringToConditionConverter {
 				return null;
 			}
 		}
-		catch (Exception e) {
-			return e;
+		catch (Exception exception) {
+			return exception;
 		}
 
 		fieldName = _toFieldName(fieldName);
@@ -247,8 +247,8 @@ public class FilterStringToConditionConverter {
 				return null;
 			}
 		}
-		catch (Exception e) {
-			return e;
+		catch (Exception exception) {
+			return exception;
 		}
 
 		if (stringFunction.equalsIgnoreCase("between")) {

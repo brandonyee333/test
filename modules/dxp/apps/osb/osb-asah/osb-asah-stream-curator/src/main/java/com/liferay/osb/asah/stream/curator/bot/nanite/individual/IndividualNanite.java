@@ -138,8 +138,8 @@ public class IndividualNanite implements Nanite {
 
 				_identityMessagesCount.inc();
 			}
-			catch (Exception e) {
-				_log.error(e.getMessage(), e);
+			catch (Exception exception) {
+				_log.error(exception.getMessage(), exception);
 			}
 			finally {
 				ProjectIdThreadLocal.remove();
@@ -247,8 +247,8 @@ public class IndividualNanite implements Nanite {
 					_faroInfoActivityDog.updateOwnerId(
 						activityJSONObject, individualJSONObject);
 				}
-				catch (Exception e) {
-					return e;
+				catch (Exception exception) {
+					return exception;
 				}
 
 				return null;

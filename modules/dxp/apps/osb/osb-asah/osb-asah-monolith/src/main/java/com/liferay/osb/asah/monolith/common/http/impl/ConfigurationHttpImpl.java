@@ -76,7 +76,7 @@ public class ConfigurationHttpImpl implements ConfigurationHttp {
 
 	private ConfigurationManager _getConfigurationManager(String providerType) {
 		if (providerType.equals("SALESFORCE")) {
-			return _salesforceConfigurationManagerImpl;
+			return _salesforceExtractorConfigurationManagerImpl;
 		}
 
 		throw new RuntimeException("Invalid data source type " + providerType);
@@ -84,6 +84,6 @@ public class ConfigurationHttpImpl implements ConfigurationHttp {
 
 	@Autowired
 	private SalesforceExtractorConfigurationManagerImpl
-		_salesforceConfigurationManagerImpl;
+		_salesforceExtractorConfigurationManagerImpl;
 
 }

@@ -41,11 +41,11 @@ public class SnapshotsUpgradeStep implements UpgradeStep {
 			_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
 				ProjectIdThreadLocal.getProjectId());
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
 				"Unable to create snapshot lifecycle policy for project " +
 					ProjectIdThreadLocal.getProjectId(),
-				e);
+				exception);
 		}
 	}
 

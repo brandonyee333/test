@@ -89,7 +89,7 @@ public class ClientUtil {
 			try {
 				Thread.sleep(10000);
 			}
-			catch (InterruptedException ie) {
+			catch (InterruptedException interruptedException) {
 				Thread thread = Thread.currentThread();
 
 				thread.interrupt();

@@ -63,17 +63,17 @@ public class SalesforceBotRunnable implements Runnable {
 						_salesforceConfigurableBot.refreshConfiguration(
 							configuration);
 					}
-					catch (Exception e) {
-						_log.error(e, e);
+					catch (Exception exception) {
+						_log.error(exception, exception);
 					}
 				}
 
 				try {
 					_run(configurations);
 				}
-				catch (InterruptBotException ibe) {
+				catch (InterruptBotException interruptBotException) {
 					if (_log.isInfoEnabled()) {
-						_log.info("Bot was interrupted", ibe);
+						_log.info("Bot was interrupted", interruptBotException);
 					}
 
 					return;
@@ -104,8 +104,8 @@ public class SalesforceBotRunnable implements Runnable {
 			try {
 				Thread.sleep(500);
 			}
-			catch (InterruptedException ie) {
-				_log.error(ie, ie);
+			catch (InterruptedException interruptedException) {
+				_log.error(interruptedException, interruptedException);
 			}
 		}
 	}
@@ -145,11 +145,11 @@ public class SalesforceBotRunnable implements Runnable {
 							configuration, nanite);
 					}
 				}
-				catch (InterruptBotException ibe) {
-					throw ibe;
+				catch (InterruptBotException interruptBotException) {
+					throw interruptBotException;
 				}
-				catch (Exception e) {
-					_log.error(e, e);
+				catch (Exception exception) {
+					_log.error(exception, exception);
 				}
 			}
 		}

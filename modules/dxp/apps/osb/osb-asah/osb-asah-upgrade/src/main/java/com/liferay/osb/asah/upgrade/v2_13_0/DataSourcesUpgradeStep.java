@@ -36,7 +36,7 @@ public class DataSourcesUpgradeStep implements UpgradeStep {
 		JSONArray dataSources = _faroInfoElasticsearchInvoker.get(
 			"data-sources");
 
-		Iterator iterator = dataSources.iterator();
+		Iterator<Object> iterator = dataSources.iterator();
 
 		while (iterator.hasNext()) {
 			JSONObject jsonObject = (JSONObject)iterator.next();

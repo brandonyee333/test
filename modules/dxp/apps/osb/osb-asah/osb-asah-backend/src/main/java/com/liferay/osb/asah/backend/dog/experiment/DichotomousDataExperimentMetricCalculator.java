@@ -242,15 +242,23 @@ public class DichotomousDataExperimentMetricCalculator
 		int i = 0;
 
 		for (Variant variant : variants) {
+			double alphaSuccessRate = globalWeight * totalSuccessRate;
+
+			double alphaVarianteSuccessRate =
+				alphaSuccessRate +
+					((1 - globalWeight) * variant.getSuccessRate());
+
 			alphas[i] =
-				(((globalWeight * totalSuccessRate) +
-					((1 - globalWeight) * variant.getSuccessRate())) *
-						variant.getTrials()) + _ALPHA_PRIOR;
+				(alphaVarianteSuccessRate * variant.getTrials()) + _ALPHA_PRIOR;
+
+			double betaSuccessRate = globalWeight * (1 - totalSuccessRate);
+
+			double betaVarianteSuccessRate =
+				betaSuccessRate +
+					((1 - globalWeight) * (1 - variant.getSuccessRate()));
 
 			betas[i] =
-				(((globalWeight * (1 - totalSuccessRate)) +
-					((1 - globalWeight) * (1 - variant.getSuccessRate()))) *
-						variant.getTrials()) + _BETA_PRIOR;
+				(betaVarianteSuccessRate * variant.getTrials()) + _BETA_PRIOR;
 
 			i++;
 		}
@@ -269,11 +277,15 @@ public class DichotomousDataExperimentMetricCalculator
 
 		double target = controlSuccessRate + epsilon;
 
+		double controlSuccessRateComplement = 1 - controlSuccessRate;
+
+		double controlRate =
+			(target * (1 - target) / trafficSplitRatio) +
+				(controlSuccessRate * controlSuccessRateComplement);
+
 		return (int)FastMath.ceil(
 			FastMath.pow(statisticAlpha + statisticBeta, 2) /
-				FastMath.pow(epsilon, 2) *
-					((target * (1 - target) / trafficSplitRatio) +
-						(controlSuccessRate * (1 - controlSuccessRate))));
+				FastMath.pow(epsilon, 2) * controlRate);
 	}
 
 	private TimeRange _getTimeRange(LocalDateTime startedDateLocalDateTime) {

@@ -52,8 +52,8 @@ public class LocalStorage implements Storage {
 		try {
 			_open();
 		}
-		catch (Exception e) {
-			throw new IllegalStateException(e);
+		catch (Exception exception) {
+			throw new IllegalStateException(exception);
 		}
 	}
 
@@ -62,11 +62,11 @@ public class LocalStorage implements Storage {
 		try {
 			_fileEncoder.close();
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
 				"Unable to close local storage for path " +
 					_storageConfiguration.getPath(),
-				e);
+				exception);
 		}
 	}
 
@@ -75,8 +75,8 @@ public class LocalStorage implements Storage {
 		try {
 			_rollover();
 		}
-		catch (Exception ioe) {
-			_log.error(ioe, ioe);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 	}
 
@@ -94,8 +94,8 @@ public class LocalStorage implements Storage {
 				_storageConfiguration.getGoogleBucketFolder(),
 				sparkJobResultDateAfter, sparkJobResultPathPrefix);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 
 		return null;
@@ -126,8 +126,8 @@ public class LocalStorage implements Storage {
 
 			_archiveSuccessFile();
 		}
-		catch (IOException ioe) {
-			_log.error(ioe, ioe);
+		catch (IOException ioException) {
+			_log.error(ioException, ioException);
 
 			status = false;
 		}
@@ -146,8 +146,8 @@ public class LocalStorage implements Storage {
 
 			return true;
 		}
-		catch (Exception e) {
-			_log.error("Unable to write data " + data, e);
+		catch (Exception exception) {
+			_log.error("Unable to write data " + data, exception);
 
 			return false;
 		}
@@ -175,7 +175,7 @@ public class LocalStorage implements Storage {
 		_archiveFile(successFile);
 	}
 
-	private void _deleteFile(File file) throws IOException {
+	private void _deleteFile(File file) throws Exception {
 		if (!file.exists()) {
 			return;
 		}
@@ -230,7 +230,7 @@ public class LocalStorage implements Storage {
 		_fileEncoder.open();
 	}
 
-	private void _renameFile(File srcFile, File targetFile) throws IOException {
+	private void _renameFile(File srcFile, File targetFile) throws Exception {
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				String.format("Renaming file %s to %s ", srcFile, targetFile));

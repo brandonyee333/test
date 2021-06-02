@@ -90,8 +90,8 @@ public class UserSessionNanite implements Nanite {
 		try {
 			_run();
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 	}
 
@@ -182,8 +182,8 @@ public class UserSessionNanite implements Nanite {
 					_objectMapper.readValue(
 						jsonObject.toString(), UserSession.class));
 			}
-			catch (Exception e) {
-				_log.error(e, e);
+			catch (Exception exception) {
+				_log.error(exception, exception);
 			}
 		}
 	}
@@ -409,8 +409,8 @@ public class UserSessionNanite implements Nanite {
 						_createUserSession(analyticsEvents, false, userId);
 					}
 				}
-				catch (Exception e) {
-					_log.error(e, e);
+				catch (Exception exception) {
+					_log.error(exception, exception);
 				}
 			}
 			else {
@@ -516,8 +516,8 @@ public class UserSessionNanite implements Nanite {
 					_objectMapper.readValue(
 						userSessionJSONObject.toString(), UserSession.class));
 			}
-			catch (Exception e) {
-				_log.error(e, e);
+			catch (Exception exception) {
+				_log.error(exception, exception);
 			}
 		}
 	}

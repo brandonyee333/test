@@ -343,17 +343,17 @@ public class ExperimentDogTest {
 	)
 	@Test
 	public void testGetVariantUniqueVisitors() {
-		Long variant1UniqueVisitors = _experimentDog.getVariantUniqueVisitors(
+		Long variantUniqueVisitors1 = _experimentDog.getVariantUniqueVisitors(
 			1L, "1");
 
-		Assert.assertNotNull(variant1UniqueVisitors);
-		Assert.assertEquals(3, variant1UniqueVisitors.longValue());
+		Assert.assertNotNull(variantUniqueVisitors1);
+		Assert.assertEquals(3, variantUniqueVisitors1.longValue());
 
-		Long variant2UniqueVisitors = _experimentDog.getVariantUniqueVisitors(
+		Long variantUniqueVisitors2 = _experimentDog.getVariantUniqueVisitors(
 			1L, "2");
 
-		Assert.assertNotNull(variant2UniqueVisitors);
-		Assert.assertEquals(3, variant2UniqueVisitors.longValue());
+		Assert.assertNotNull(variantUniqueVisitors2);
+		Assert.assertEquals(3, variantUniqueVisitors2.longValue());
 	}
 
 	private void _assertExperimentVariantMetric(

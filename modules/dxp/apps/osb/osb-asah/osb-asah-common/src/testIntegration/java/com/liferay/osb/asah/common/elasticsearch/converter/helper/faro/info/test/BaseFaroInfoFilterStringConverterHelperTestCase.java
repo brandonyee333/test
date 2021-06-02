@@ -80,12 +80,12 @@ public abstract class BaseFaroInfoFilterStringConverterHelperTestCase {
 
 			Assert.fail();
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (expectedExceptionClass == null) {
 				return;
 			}
 
-			Throwable throwable = e;
+			Throwable throwable = exception;
 
 			while (throwable.getCause() != null) {
 				throwable = throwable.getCause();

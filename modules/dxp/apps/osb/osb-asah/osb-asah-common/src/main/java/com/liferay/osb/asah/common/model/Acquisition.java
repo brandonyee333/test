@@ -56,8 +56,8 @@ public class Acquisition implements Serializable {
 
 			referrerHost = uri.getHost();
 		}
-		catch (Exception e) {
-			throw new IllegalArgumentException(e);
+		catch (Exception exception) {
+			throw new IllegalArgumentException(exception);
 		}
 
 		_source = decode(queryParams.getFirst("utm_source"));
@@ -211,7 +211,7 @@ public class Acquisition implements Serializable {
 		try {
 			return UriUtils.decode(value, StandardCharsets.UTF_8.name());
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			return null;
 		}
 	}

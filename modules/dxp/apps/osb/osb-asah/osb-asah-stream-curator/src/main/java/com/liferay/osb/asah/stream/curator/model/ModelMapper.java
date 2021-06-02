@@ -34,8 +34,8 @@ public class ModelMapper {
 		try {
 			return new JSONArray(_objectMapper.writeValueAsString(models));
 		}
-		catch (JsonProcessingException jpe) {
-			throw new RuntimeException(jpe);
+		catch (JsonProcessingException jsonProcessingException) {
+			throw new RuntimeException(jsonProcessingException);
 		}
 	}
 
@@ -46,8 +46,8 @@ public class ModelMapper {
 			return _objectMapper.readValue(
 				jsonArray.toString(), _getCollectionType(clazz));
 		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
 		}
 	}
 

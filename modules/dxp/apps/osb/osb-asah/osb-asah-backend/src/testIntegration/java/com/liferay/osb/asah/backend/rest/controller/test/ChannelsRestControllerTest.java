@@ -144,8 +144,9 @@ public class ChannelsRestControllerTest {
 							dataSourceJSONObject.getString("id"),
 							"combined"))));
 		}
-		catch (OSBAsahException osbae) {
-			Assert.assertEquals("Unable to create channel", osbae.getMessage());
+		catch (OSBAsahException osbAsahException) {
+			Assert.assertEquals(
+				"Unable to create channel", osbAsahException.getMessage());
 
 			Assert.assertEquals(
 				0,

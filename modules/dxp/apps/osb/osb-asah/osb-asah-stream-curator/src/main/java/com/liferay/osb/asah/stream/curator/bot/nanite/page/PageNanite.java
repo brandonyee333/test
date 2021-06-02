@@ -256,7 +256,7 @@ public class PageNanite extends BaseNanite<Page> {
 				page.setSearchTerm(searchTerm);
 			}
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
 				_log.warn("Unable to add search term for page " + page.getId());
 			}

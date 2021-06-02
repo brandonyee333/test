@@ -47,7 +47,7 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 			return new ResponseEntity<>(
 				_salesforceUsersRestController.get(id), HttpStatus.OK);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}

@@ -235,20 +235,24 @@ public class DataSourcesRestController extends BaseRestController {
 
 			return responseEntity.getBody();
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_refreshConfiguration(dataSource);
 
-			if (e instanceof HttpClientErrorException) {
-				HttpClientErrorException hcee = (HttpClientErrorException)e;
+			if (exception instanceof HttpClientErrorException) {
+				HttpClientErrorException httpClientErrorException =
+					(HttpClientErrorException)exception;
 
-				if (hcee.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
+				if (httpClientErrorException.getStatusCode() ==
+						HttpStatus.INTERNAL_SERVER_ERROR) {
+
 					throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
 				}
 
-				throw new HttpClientErrorException(hcee.getStatusCode());
+				throw new HttpClientErrorException(
+					httpClientErrorException.getStatusCode());
 			}
 
-			throw e;
+			throw exception;
 		}
 	}
 
@@ -338,18 +342,20 @@ public class DataSourcesRestController extends BaseRestController {
 				salesforceAccountsNaniteRunLog.getContextJSONObject();
 
 			int totalOperations =
-				2 *
-					salesforceAccountsNaniteContextJSONObject.getInt(
-						"totalOperations");
+				salesforceAccountsNaniteContextJSONObject.getInt(
+					"totalOperations");
+			totalOperations = 2 * totalOperations;
+
+			long salesforceAuditEventsCount =
+				_salesforceAuditEventDog.getSalesforceAuditEventsCount(
+					salesforceExtractorNaniteRunLog.getDataSourceId(),
+					"Account");
 
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()
 			).put(
 				"processedOperations",
-				totalOperations -
-					_salesforceAuditEventDog.getSalesforceAuditEventsCount(
-						salesforceExtractorNaniteRunLog.getDataSourceId(),
-						"Account")
+				totalOperations - salesforceAuditEventsCount
 			).put(
 				"status", "IN_PROGRESS"
 			).put(
@@ -362,8 +368,8 @@ public class DataSourcesRestController extends BaseRestController {
 		Date salesforceAccountsNaniteEndDate =
 			salesforceAccountsNaniteRunLog.getDateLogged();
 
-		if (salesforceAccountsNaniteEndDate.compareTo(
-				salesforceExtractorNaniteCompletedDate) <= 0) {
+		if (!salesforceAccountsNaniteEndDate.after(
+				salesforceExtractorNaniteCompletedDate)) {
 
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()
@@ -444,14 +450,16 @@ public class DataSourcesRestController extends BaseRestController {
 				salesforceExtractorIndividualsNaniteRunLogContextJSONObject.
 					getInt("totalOperations");
 
+			long salesforceAuditEventsCount =
+				_salesforceAuditEventDog.getSalesforceAuditEventsCount(
+					salesforceExtractorNaniteRunLog.getDataSourceId(),
+					"Contact", "Lead");
+
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()
 			).put(
 				"processedOperations",
-				(totalOperations * 2) -
-					_salesforceAuditEventDog.getSalesforceAuditEventsCount(
-						salesforceExtractorNaniteRunLog.getDataSourceId(),
-						"Contact", "Lead")
+				(totalOperations * 2) - salesforceAuditEventsCount
 			).put(
 				"status", "IN_PROGRESS"
 			).put(
@@ -464,8 +472,8 @@ public class DataSourcesRestController extends BaseRestController {
 		Date salesforceExtractorIndividualsNaniteEndDate =
 			salesforceExtractorIndividualsNaniteRunLog.getDateLogged();
 
-		if (salesforceExtractorIndividualsNaniteEndDate.compareTo(
-				salesforceExtractorNaniteCompletedDate) <= 0) {
+		if (!salesforceExtractorIndividualsNaniteEndDate.after(
+				salesforceExtractorNaniteCompletedDate)) {
 
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()
@@ -512,18 +520,21 @@ public class DataSourcesRestController extends BaseRestController {
 				salesforceIndividualsNaniteRunLog.getContextJSONObject();
 
 			int totalOperations =
-				3 *
-					salesforceIndividualsNaniteRunLogContextJSONObject.getInt(
-						"totalOperations");
+				salesforceIndividualsNaniteRunLogContextJSONObject.getInt(
+					"totalOperations");
+
+			totalOperations = 3 * totalOperations;
+
+			long salesforceAuditEventsCount =
+				_salesforceAuditEventDog.getSalesforceAuditEventsCount(
+					salesforceExtractorNaniteRunLog.getDataSourceId(),
+					"individuals");
 
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()
 			).put(
 				"processedOperations",
-				totalOperations -
-					_salesforceAuditEventDog.getSalesforceAuditEventsCount(
-						salesforceExtractorNaniteRunLog.getDataSourceId(),
-						"individuals")
+				totalOperations - salesforceAuditEventsCount
 			).put(
 				"status", "IN_PROGRESS"
 			).put(
@@ -536,8 +547,8 @@ public class DataSourcesRestController extends BaseRestController {
 		Date salesforceIndividualsNaniteEndDate =
 			salesforceIndividualsNaniteRunLog.getDateLogged();
 
-		if (salesforceIndividualsNaniteEndDate.compareTo(
-				salesforceExtractorIndividualsNaniteCompletedDate) <= 0) {
+		if (!salesforceIndividualsNaniteEndDate.after(
+				salesforceExtractorIndividualsNaniteCompletedDate)) {
 
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()

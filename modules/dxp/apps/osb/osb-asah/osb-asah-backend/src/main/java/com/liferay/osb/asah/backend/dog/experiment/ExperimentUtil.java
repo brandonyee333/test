@@ -31,16 +31,16 @@ public class ExperimentUtil {
 
 		confidenceLevel /= 100;
 
+		double alpha = (1.0 - confidenceLevel) / 2.0;
+
 		if (variantsSize == 2) {
-			return (1 - confidenceLevel) / 2.0;
+			return alpha;
 		}
 
 		// Apply Šidák correction if there are 3 or more variants.
 		// https://en.wikipedia.org/wiki/%C5%A0id%C3%A1k_correction
 
-		return 1.0 -
-			FastMath.pow(
-				1.0 - ((1.0 - confidenceLevel) / 2.0), 1.0 / variantsSize);
+		return 1.0 - FastMath.pow(1.0 - alpha, 1.0 / variantsSize);
 	}
 
 	public static PageMetricType getPageMetricType(Experiment experiment) {

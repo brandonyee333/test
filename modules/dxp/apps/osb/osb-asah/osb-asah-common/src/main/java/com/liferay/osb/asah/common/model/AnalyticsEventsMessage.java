@@ -156,8 +156,8 @@ public class AnalyticsEventsMessage implements Serializable {
 		try {
 			return _objectMapper.writeValueAsString(this);
 		}
-		catch (JsonProcessingException jpe) {
-			throw new RuntimeException(jpe);
+		catch (JsonProcessingException jsonProcessingException) {
+			throw new RuntimeException(jsonProcessingException);
 		}
 	}
 

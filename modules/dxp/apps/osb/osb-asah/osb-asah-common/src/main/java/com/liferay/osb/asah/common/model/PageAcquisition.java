@@ -92,8 +92,8 @@ public class PageAcquisition extends Acquisition {
 				return true;
 			}
 		}
-		catch (Exception e) {
-			throw new IllegalArgumentException(e);
+		catch (Exception exception) {
+			throw new IllegalArgumentException(exception);
 		}
 
 		return false;

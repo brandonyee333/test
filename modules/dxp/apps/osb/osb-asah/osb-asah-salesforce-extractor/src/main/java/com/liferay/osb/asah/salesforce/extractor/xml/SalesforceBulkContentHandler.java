@@ -173,10 +173,10 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 
 			_jsonObjects.add(jsonObject);
 		}
-		catch (InterruptBotException ibe) {
-			_log.error(ibe, ibe);
+		catch (InterruptBotException interruptBotException) {
+			_log.error(interruptBotException, interruptBotException);
 
-			throw ibe;
+			throw interruptBotException;
 		}
 		finally {
 			_count++;

@@ -89,11 +89,10 @@ public class OSBAsahElasticsearchTestExecutionListener
 				testContext.getTestMethod(), MessageBusChannel.class);
 
 		if (messageBusChannel != null) {
-			MessageBusTestHelper pubSubMessageBusTestHelper =
+			MessageBusTestHelper messageBusTestHelper =
 				new MessageBusTestHelper(_messageBus);
 
-			pubSubMessageBusTestHelper.clearMessageBusChannel(
-				messageBusChannel);
+			messageBusTestHelper.clearMessageBusChannel(messageBusChannel);
 		}
 	}
 
@@ -134,10 +133,10 @@ public class OSBAsahElasticsearchTestExecutionListener
 				testContext.getTestMethod(), MessageBusChannel.class);
 
 		if (messageBusChannel != null) {
-			MessageBusTestHelper pubSubMessageBusTestHelper =
+			MessageBusTestHelper messageBusTestHelper =
 				new MessageBusTestHelper(_messageBus);
 
-			pubSubMessageBusTestHelper.prepareMessageBusChannel(
+			messageBusTestHelper.prepareMessageBusChannel(
 				testContext.getTestClass(), messageBusChannel);
 		}
 	}

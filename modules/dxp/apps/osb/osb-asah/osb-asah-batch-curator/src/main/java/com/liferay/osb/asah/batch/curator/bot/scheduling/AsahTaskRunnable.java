@@ -133,12 +133,12 @@ public class AsahTaskRunnable implements Runnable {
 					String.valueOf(_asahTaskId), _contextJSONObject,
 					System.currentTimeMillis() - start);
 			}
-			catch (Exception e) {
-				_log.error(e, e);
+			catch (Exception exception) {
+				_log.error(exception, exception);
 
 				nanite.logFailed(
 					String.valueOf(_asahTaskId), _contextJSONObject,
-					System.currentTimeMillis() - start, e);
+					System.currentTimeMillis() - start, exception);
 			}
 		}
 

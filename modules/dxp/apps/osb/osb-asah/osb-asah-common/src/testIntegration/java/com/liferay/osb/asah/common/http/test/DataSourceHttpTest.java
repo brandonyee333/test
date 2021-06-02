@@ -733,12 +733,12 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				_objectMapper.convertValue(
 					liferayDataSourceJSONObject, DataSource.class));
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			Assert.assertThat(
-				e.getMessage(),
+				exception.getMessage(),
 				CoreMatchers.containsString("Duplicate data source name"));
 
-			throw e;
+			throw exception;
 		}
 	}
 

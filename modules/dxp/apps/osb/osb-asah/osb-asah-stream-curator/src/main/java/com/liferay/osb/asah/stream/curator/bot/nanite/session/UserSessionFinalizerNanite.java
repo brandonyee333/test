@@ -72,8 +72,8 @@ public class UserSessionFinalizerNanite implements Nanite {
 		try {
 			projects = _projectDog.getProjects();
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 
 		for (Project project : projects) {
@@ -82,8 +82,8 @@ public class UserSessionFinalizerNanite implements Nanite {
 
 				run(false);
 			}
-			catch (Exception e) {
-				_log.error(e, e);
+			catch (Exception exception) {
+				_log.error(exception, exception);
 			}
 			finally {
 				ProjectIdThreadLocal.remove();

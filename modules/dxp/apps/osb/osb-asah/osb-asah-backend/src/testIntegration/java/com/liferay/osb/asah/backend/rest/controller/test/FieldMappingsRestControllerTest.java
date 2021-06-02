@@ -62,12 +62,12 @@ public class FieldMappingsRestControllerTest {
 		try {
 			_fieldMappingsRestController.postFieldMapping(fieldMappingDTO);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			Assert.assertThat(
-				e.getMessage(),
+				exception.getMessage(),
 				CoreMatchers.containsString("Duplicate field name"));
 
-			throw e;
+			throw exception;
 		}
 	}
 

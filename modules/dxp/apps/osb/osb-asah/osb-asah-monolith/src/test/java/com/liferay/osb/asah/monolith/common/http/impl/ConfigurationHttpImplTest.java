@@ -48,8 +48,8 @@ public class ConfigurationHttpImplTest {
 		_configurationHttp = new ConfigurationHttpImpl();
 
 		ReflectionTestUtils.setField(
-			_configurationHttp, "_salesforceConfigurationManagerImpl",
-			_salesforceConfigurationManagerImpl);
+			_configurationHttp, "_salesforceExtractorConfigurationManagerImpl",
+			_salesforceExtractorConfigurationManagerImpl);
 
 		_setUpObjectMapper();
 	}
@@ -62,7 +62,7 @@ public class ConfigurationHttpImplTest {
 		_configurationHttp.addConfiguration(salesforceDataSource, "SALESFORCE");
 
 		Mockito.verify(
-			_salesforceConfigurationManagerImpl
+			_salesforceExtractorConfigurationManagerImpl
 		).addConfiguration(
 			salesforceDataSource
 		);
@@ -82,7 +82,7 @@ public class ConfigurationHttpImplTest {
 			String.valueOf(salesforceDataSource.getId()), "SALESFORCE");
 
 		Mockito.verify(
-			_salesforceConfigurationManagerImpl
+			_salesforceExtractorConfigurationManagerImpl
 		).deleteConfiguration(
 			String.valueOf(salesforceDataSource.getId())
 		);
@@ -91,7 +91,7 @@ public class ConfigurationHttpImplTest {
 	@Test
 	public void testGetState() {
 		Mockito.when(
-			_salesforceConfigurationManagerImpl.getState(
+			_salesforceExtractorConfigurationManagerImpl.getState(
 				Mockito.any(DataSource.class))
 		).thenReturn(
 			"CREDENTIALS_VALID"
@@ -105,7 +105,7 @@ public class ConfigurationHttpImplTest {
 			_configurationHttp.getState(salesforceDataSource, "SALESFORCE"));
 
 		Mockito.verify(
-			_salesforceConfigurationManagerImpl
+			_salesforceExtractorConfigurationManagerImpl
 		).getState(
 			salesforceDataSource
 		);
@@ -120,7 +120,7 @@ public class ConfigurationHttpImplTest {
 			salesforceDataSource, "SALESFORCE");
 
 		Mockito.verify(
-			_salesforceConfigurationManagerImpl
+			_salesforceExtractorConfigurationManagerImpl
 		).refresh(
 			salesforceDataSource
 		);
@@ -135,7 +135,7 @@ public class ConfigurationHttpImplTest {
 			salesforceDataSource, "SALESFORCE");
 
 		Mockito.verify(
-			_salesforceConfigurationManagerImpl
+			_salesforceExtractorConfigurationManagerImpl
 		).updateConfiguration(
 			salesforceDataSource
 		);
@@ -158,6 +158,6 @@ public class ConfigurationHttpImplTest {
 
 	@Mock
 	private SalesforceExtractorConfigurationManagerImpl
-		_salesforceConfigurationManagerImpl;
+		_salesforceExtractorConfigurationManagerImpl;
 
 }

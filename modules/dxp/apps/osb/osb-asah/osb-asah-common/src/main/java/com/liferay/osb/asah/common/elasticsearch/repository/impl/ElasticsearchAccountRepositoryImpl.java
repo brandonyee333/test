@@ -190,8 +190,8 @@ public class ElasticsearchAccountRepositoryImpl
 		try {
 			jsonObject = new JSONObject(transformationGetResponse.respond());
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
 			return Collections.emptyList();
 		}
@@ -270,8 +270,8 @@ public class ElasticsearchAccountRepositoryImpl
 		try {
 			jsonObject = new JSONObject(transformationGetResponse.respond());
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
 			return Collections.emptyList();
 		}

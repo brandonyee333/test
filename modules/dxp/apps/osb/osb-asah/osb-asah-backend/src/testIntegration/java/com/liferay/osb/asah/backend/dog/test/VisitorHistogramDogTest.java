@@ -50,28 +50,6 @@ public class VisitorHistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "pages",
-		resourcePath = "visitor_histogram_page_last_24_hours_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@Test
-	public void sttestVisitorHistogramMetricsLast24Hours() {
-		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
-			Interval.DAY, TimeRange.LAST_24_HOURS);
-
-		Assert.assertEquals(
-			histogramMetrics.toString(), 24, histogramMetrics.size());
-
-		double[] expectedValues = {
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 1, 0, 0, 0, 0, 0, 0,
-			0
-		};
-
-		Assert.assertArrayEquals(
-			expectedValues, _getActualValues(histogramMetrics), 0);
-	}
-
-	@ElasticsearchIndex(
-		name = "pages",
 		resourcePath = "visitor_histogram_page_last_7_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
@@ -84,6 +62,28 @@ public class VisitorHistogramDogTest {
 			histogramMetrics.toString(), 7, histogramMetrics.size());
 
 		double[] expectedValues = {0, 0, 1, 0, 0, 0, 1};
+
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "pages",
+		resourcePath = "visitor_histogram_page_last_24_hours_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testVisitorHistogramMetricsLast24Hours() {
+		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
+			Interval.DAY, TimeRange.LAST_24_HOURS);
+
+		Assert.assertEquals(
+			histogramMetrics.toString(), 24, histogramMetrics.size());
+
+		double[] expectedValues = {
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 1, 0, 0, 0, 0, 0, 0,
+			0
+		};
 
 		Assert.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);

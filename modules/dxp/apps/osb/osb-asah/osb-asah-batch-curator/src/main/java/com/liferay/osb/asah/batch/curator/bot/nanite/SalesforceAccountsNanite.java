@@ -119,12 +119,12 @@ public class SalesforceAccountsNanite extends BaseNanite {
 				dataSourceId, this, "COMPLETED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_runLogDog.log(
 				dataSourceId, this, "FAILED",
 				WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-			throw e;
+			throw exception;
 		}
 	}
 

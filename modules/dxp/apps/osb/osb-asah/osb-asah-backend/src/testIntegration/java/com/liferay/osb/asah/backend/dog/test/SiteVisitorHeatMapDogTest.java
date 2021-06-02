@@ -299,9 +299,8 @@ public class SiteVisitorHeatMapDogTest {
 		double[] expectedValues = _getExpectedValues(
 			expectedValuesMap, "-07:00", heatMapMetrics.size());
 
-		double[] actualValues = _getActualValues(heatMapMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(heatMapMetrics), 0);
 
 		heatMapMetrics = _siteVisitorHeatMapDog.getHeatMapMetrics(
 			null, "1", TimeRange.LAST_90_DAYS, "-03:00");
@@ -322,9 +321,8 @@ public class SiteVisitorHeatMapDogTest {
 		expectedValues = _getExpectedValues(
 			expectedValuesMap, "-03:00", heatMapMetrics.size());
 
-		actualValues = _getActualValues(heatMapMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(heatMapMetrics), 0);
 	}
 
 	@ElasticsearchIndex(

@@ -36,10 +36,11 @@ public class InterestScoreArm {
 		double individualKeywordViews, double individualViews, double score,
 		double totalKeywordViews, double totalViews) {
 
-		return score +
-			_computeDayScore(
-				individualKeywordViews, individualViews, totalKeywordViews,
-				totalViews);
+		double computeDayScore = _computeDayScore(
+			individualKeywordViews, individualViews, totalKeywordViews,
+			totalViews);
+
+		return score + computeDayScore;
 	}
 
 	public double computeThresholdScore(String keyword) {

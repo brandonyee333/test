@@ -151,12 +151,12 @@ public class SalesforceBulkClientInvoker
 			}
 			while (elapsedTime < _TIMEOUT);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
 				String.format(
 					"%s: Unable to get batch info",
 					ProjectIdThreadLocal.getProjectId()),
-				e);
+				exception);
 		}
 		finally {
 			if (_log.isInfoEnabled()) {

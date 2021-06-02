@@ -89,10 +89,10 @@ public class IPGeocoder {
 			_lookupService = new LookupService(
 				ipGeocoderFile, LookupService.GEOIP_MEMORY_CACHE);
 		}
-		catch (IOException ioe) {
-			_logger.error("Unable to load MaxMind Geo IP data", ioe);
+		catch (IOException ioException) {
+			_logger.error("Unable to load MaxMind Geo IP data", ioException);
 
-			throw new IllegalStateException(ioe);
+			throw new IllegalStateException(ioException);
 		}
 	}
 
@@ -140,28 +140,20 @@ public class IPGeocoder {
 				throw new IOException("Unable to create path");
 			}
 		}
-		catch (SecurityException se) {
-			throw new IOException("Unable to create path", se);
+		catch (SecurityException securityException) {
+			throw new IOException("Unable to create path", securityException);
 		}
 
-		BufferedInputStream bufferedInputStream = new BufferedInputStream(
-			inputStream);
-		BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(
-			new FileOutputStream(file));
+		try (BufferedInputStream bufferedInputStream = new BufferedInputStream(
+				inputStream);
+			BufferedOutputStream bufferedOutputStream =
+				new BufferedOutputStream(new FileOutputStream(file))) {
 
-		try {
 			int i = 0;
 
 			while ((i = bufferedInputStream.read()) != -1) {
 				bufferedOutputStream.write(i);
 			}
-		}
-		finally {
-			bufferedOutputStream.flush();
-
-			bufferedInputStream.close();
-
-			bufferedOutputStream.close();
 		}
 	}
 

@@ -68,8 +68,8 @@ public class DataprocSparkManager {
 				return DataprocJobState.FAILED;
 			}
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 
 		return DataprocJobState.UNKNOWN;
@@ -88,8 +88,8 @@ public class DataprocSparkManager {
 
 			return job.getJobUuid();
 		}
-		catch (IOException ioe) {
-			_log.error(ioe.getMessage(), ioe);
+		catch (IOException ioException) {
+			_log.error(ioException.getMessage(), ioException);
 		}
 
 		return null;

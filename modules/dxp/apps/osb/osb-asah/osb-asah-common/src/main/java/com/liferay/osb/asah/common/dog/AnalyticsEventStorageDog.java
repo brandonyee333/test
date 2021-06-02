@@ -64,8 +64,8 @@ public class AnalyticsEventStorageDog {
 				MapUtil.getString(eventContext, "url"),
 				analyticsEvent.getUserId());
 		}
-		catch (Exception e) {
-			_log.error("Unable to store event", e);
+		catch (Exception exception) {
+			_log.error("Unable to store event", exception);
 		}
 	}
 

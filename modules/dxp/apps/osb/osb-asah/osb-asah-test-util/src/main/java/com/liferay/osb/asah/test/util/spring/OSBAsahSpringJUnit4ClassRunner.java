@@ -78,7 +78,7 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 
 			return true;
 		}
-		catch (IOException ioe) {
+		catch (IOException ioException) {
 			return false;
 		}
 	}

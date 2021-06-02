@@ -52,10 +52,10 @@ public class BrowscapEngine {
 					BrowsCapField.DEVICE_TYPE, BrowsCapField.IS_CRAWLER,
 					BrowsCapField.PLATFORM));
 		}
-		catch (IOException | ParseException e) {
-			_logger.error("Unable to load Browscap parser data", e);
+		catch (IOException | ParseException exception) {
+			_logger.error("Unable to load Browscap parser data", exception);
 
-			throw new IllegalStateException(e);
+			throw new IllegalStateException(exception);
 		}
 	}
 

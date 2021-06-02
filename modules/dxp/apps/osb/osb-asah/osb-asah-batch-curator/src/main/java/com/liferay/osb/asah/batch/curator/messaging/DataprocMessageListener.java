@@ -61,9 +61,10 @@ public class DataprocMessageListener implements MessageListener {
 				dataprocMessageProcessor -> dataprocMessageProcessor.process(
 					jsonObject.getJSONObject("message")));
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
-				"An error occurred while processing message " + message, e);
+				"An error occurred while processing message " + message,
+				exception);
 		}
 	}
 

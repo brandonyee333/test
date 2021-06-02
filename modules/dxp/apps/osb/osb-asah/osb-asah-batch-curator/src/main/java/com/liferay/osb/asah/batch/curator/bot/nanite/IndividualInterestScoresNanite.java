@@ -118,8 +118,8 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 							));
 					}
 				}
-				catch (Exception e) {
-					return e;
+				catch (Exception exception) {
+					return exception;
 				}
 
 				return elasticsearchBulkRequestBuilder;

@@ -102,8 +102,8 @@ public class RemoteAddressOncePerRequestFilter extends OncePerRequestFilter {
 					new IPV4AddressValidator(hostAllowed));
 			}
 		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
 		}
 	}
 
@@ -164,7 +164,7 @@ public class RemoteAddressOncePerRequestFilter extends OncePerRequestFilter {
 			try {
 				inetAddress = InetAddress.getByName(ipAddress);
 			}
-			catch (UnknownHostException uhe) {
+			catch (UnknownHostException unknownHostException) {
 				return false;
 			}
 

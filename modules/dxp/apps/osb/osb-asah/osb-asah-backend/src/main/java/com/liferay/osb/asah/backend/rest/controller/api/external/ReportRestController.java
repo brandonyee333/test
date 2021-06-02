@@ -722,13 +722,14 @@ public class ReportRestController extends BaseRestController {
 	public ResultBagEntityModel<SegmentDTO> getSegmentDTOResultBagEntityModel(
 		@RequestParam(defaultValue = "0") Integer page) {
 
-		Page<Segment> segmentPage = _segmentDog.getSegmentsPage(
+		Page<Segment> segmentsPage = _segmentDog.getSegmentsPage(
 			page, _PAGE_SIZE);
 
 		return _toResultBagEntityModel(
 			_getSegmentResultBagEntityModel(page + 1), page,
-			_getSegmentResultBagEntityModel(page - 1), segmentPage.getContent(),
-			segmentPage.getTotalElements(), this::_toSegmentEntityModel);
+			_getSegmentResultBagEntityModel(page - 1),
+			segmentsPage.getContent(), segmentsPage.getTotalElements(),
+			this::_toSegmentEntityModel);
 	}
 
 	@GetMapping("/segments/{segmentId}")
@@ -801,8 +802,8 @@ public class ReportRestController extends BaseRestController {
 			return new String(
 				urlDecoder.decode(url), StandardCharsets.UTF_8.toString());
 		}
-		catch (UnsupportedEncodingException uee) {
-			throw new IllegalStateException(uee);
+		catch (UnsupportedEncodingException unsupportedEncodingException) {
+			throw new IllegalStateException(unsupportedEncodingException);
 		}
 	}
 
@@ -817,8 +818,8 @@ public class ReportRestController extends BaseRestController {
 			return urlEncoder.encodeToString(
 				url.getBytes(StandardCharsets.UTF_8.toString()));
 		}
-		catch (UnsupportedEncodingException uee) {
-			throw new IllegalStateException(uee);
+		catch (UnsupportedEncodingException unsupportedEncodingException) {
+			throw new IllegalStateException(unsupportedEncodingException);
 		}
 	}
 

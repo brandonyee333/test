@@ -88,25 +88,6 @@ public class ReportAccountDog {
 		return DogUtil.createResultBag(this::_mapAccount, searchHits);
 	}
 
-	private static Object _getPropertyValue(
-		JSONObject organizationJSONObject, String fieldName) {
-
-		JSONArray propertyJSONArray = organizationJSONObject.optJSONArray(
-			fieldName);
-
-		if (propertyJSONArray == null) {
-			return null;
-		}
-
-		JSONObject propertyJSONObject = propertyJSONArray.optJSONObject(0);
-
-		if (propertyJSONObject == null) {
-			return null;
-		}
-
-		return propertyJSONObject.get("value");
-	}
-
 	private SearchSourceBuilder _buildSearchSourceBuilder(
 		String[] fetchSourceExcludes, QueryBuilder queryBuilder, int size,
 		int start) {
@@ -168,6 +149,25 @@ public class ReportAccountDog {
 		}
 
 		return properties;
+	}
+
+	private Object _getPropertyValue(
+		JSONObject organizationJSONObject, String fieldName) {
+
+		JSONArray propertyJSONArray = organizationJSONObject.optJSONArray(
+			fieldName);
+
+		if (propertyJSONArray == null) {
+			return null;
+		}
+
+		JSONObject propertyJSONObject = propertyJSONArray.optJSONObject(0);
+
+		if (propertyJSONObject == null) {
+			return null;
+		}
+
+		return propertyJSONObject.get("value");
 	}
 
 	private Account _mapAccount(SearchHit searchHit) {

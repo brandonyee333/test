@@ -390,8 +390,8 @@ public class DataSourceDog {
 							dataSource, individualJSONObject);
 					}
 				}
-				catch (Exception e) {
-					return e;
+				catch (Exception exception) {
+					return exception;
 				}
 
 				return null;

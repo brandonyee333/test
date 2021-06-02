@@ -28,8 +28,8 @@ import org.springframework.data.convert.ReadingConverter;
 public class PGobjectToJSONObjectConverter
 	implements Converter<PGobject, JSONObject> {
 
-	public JSONObject convert(PGobject pgObject) {
-		return new JSONObject(pgObject.getValue());
+	public JSONObject convert(PGobject pGobject) {
+		return new JSONObject(pGobject.getValue());
 	}
 
 }

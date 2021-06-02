@@ -335,11 +335,13 @@ public class ScrollDepthExperimentCalculator
 			ExperimentConstants.DEFAULT_MINIMUM_DETECTABLE_EFFECT_PERCENTAGE *
 				controlMean;
 
-		double sampleSizeControl = FastMath.ceil(
-			(FastMath.pow(statisticAlpha + statisticBeta, 2) *
+		double controlRate =
+			FastMath.pow(statisticAlpha + statisticBeta, 2) *
 				FastMath.pow(pooledStdDev, 2) *
-					(1.0 + (1.0 / trafficSplitRatio))) /
-						FastMath.pow(epsilon, 2));
+					(1.0 + (1.0 / trafficSplitRatio));
+
+		double sampleSizeControl = FastMath.ceil(
+			controlRate / FastMath.pow(epsilon, 2));
 
 		double sampleSizeVariant = FastMath.ceil(
 			trafficSplitRatio * sampleSizeControl);

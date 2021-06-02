@@ -66,8 +66,8 @@ public class ZipFileBuilder {
 					try {
 						unsafeConsumer.accept(zipOutputStream);
 					}
-					catch (Exception e) {
-						_log.error(e, e);
+					catch (Exception exception) {
+						_log.error(exception, exception);
 					}
 
 					zipOutputStream.closeEntry();

@@ -198,7 +198,7 @@ public class GraphQLConfiguration {
 			builder,
 			_scanAnnotatedGraphQLTypes("com.liferay.osb.asah.backend"));
 
-		for (DataFetcher dataFetcher : _dataFetchers) {
+		for (DataFetcher<?> dataFetcher : _dataFetchers) {
 			Class<?> clazz = dataFetcher.getClass();
 
 			Set<GraphQLTypeWiring> graphQLTypeWirings =
@@ -244,11 +244,11 @@ public class GraphQLConfiguration {
 				try {
 					return Class.forName(beanDefinition.getBeanClassName());
 				}
-				catch (ClassNotFoundException cnfe) {
+				catch (ClassNotFoundException classNotFoundException) {
 					throw new IllegalStateException(
 						"Unable to load class " +
 							beanDefinition.getBeanClassName(),
-						cnfe);
+						classNotFoundException);
 				}
 			}
 		).collect(
@@ -308,6 +308,6 @@ public class GraphQLConfiguration {
 		GraphQLConfiguration.class);
 
 	@Autowired
-	private List<DataFetcher> _dataFetchers;
+	private List<DataFetcher<?>> _dataFetchers;
 
 }

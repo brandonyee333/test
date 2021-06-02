@@ -99,8 +99,8 @@ public class PageReferrer extends BasePageModel {
 			_referrerCanonicalUrl = URLUtil.decode(canonicalURI.toString());
 			_referrerHost = canonicalURI.getHost();
 		}
-		catch (Exception e) {
-			throw new IllegalArgumentException(e);
+		catch (Exception exception) {
+			throw new IllegalArgumentException(exception);
 		}
 	}
 

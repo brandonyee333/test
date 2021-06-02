@@ -116,8 +116,8 @@ public class GoogleStorageArchiver {
 
 				zipOutputStream.write(bytes, 0, bytes.length);
 			}
-			catch (IOException ioe) {
-				_log.error(ioe.getMessage(), ioe);
+			catch (IOException ioException) {
+				_log.error(ioException.getMessage(), ioException);
 			}
 		}
 
@@ -136,9 +136,10 @@ public class GoogleStorageArchiver {
 		try {
 			content = Files.readAllBytes(file.toPath());
 		}
-		catch (IOException ioe) {
+		catch (IOException ioException) {
 			_log.error(
-				String.format("Unable to read file %s bytes", file), ioe);
+				String.format("Unable to read file %s bytes", file),
+				ioException);
 
 			return;
 		}
@@ -193,9 +194,10 @@ public class GoogleStorageArchiver {
 		try {
 			_executorService.awaitTermination(1, TimeUnit.MINUTES);
 		}
-		catch (InterruptedException ie) {
+		catch (InterruptedException interruptedException) {
 			_log.error(
-				"Interrupted while waiting for termination of executor", ie);
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
 		}
 	}
 
@@ -229,12 +231,12 @@ public class GoogleStorageArchiver {
 		try {
 			return _storage.create(blobInfo, content);
 		}
-		catch (StorageException se) {
+		catch (StorageException storageException) {
 			_log.error(
 				String.format(
 					"Unable to upload blob %s to the bucket %s",
 					blobInfo.getName(), blobInfo.getBucket()),
-				se);
+				storageException);
 
 			if (attempt < 3) {
 				_uploadBlob(++attempt, blobInfo, content);

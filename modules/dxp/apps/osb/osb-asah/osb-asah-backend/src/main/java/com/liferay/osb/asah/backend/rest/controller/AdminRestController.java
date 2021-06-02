@@ -178,11 +178,11 @@ public class AdminRestController extends BaseRestController {
 			_naniteListSchema = SchemaLoader.load(
 				new JSONObject(new JSONTokener(inputStream)));
 		}
-		catch (IOException ioe) {
-			_log.error(ioe);
+		catch (IOException ioException) {
+			_log.error(ioException);
 
 			throw new IllegalStateException(
-				"Unable to read nanite list schema", ioe);
+				"Unable to read nanite list schema", ioException);
 		}
 	}
 

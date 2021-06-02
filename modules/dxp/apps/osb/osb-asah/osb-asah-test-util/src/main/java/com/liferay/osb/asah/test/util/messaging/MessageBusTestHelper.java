@@ -53,7 +53,7 @@ public class MessageBusTestHelper {
 
 	public void clearMessageBusChannel(Channel channel) {
 		PubSubClientFactory pubSubClientFactory =
-			_pubSubMessageBusImpl.getPubSubclientFactory();
+			_pubSubMessageBusImpl.getPubSubClientFactory();
 
 		try (PubSubClient<SubscriptionAdminClient>
 				subscriptionAdminClientPubSubClient =
@@ -77,8 +77,8 @@ public class MessageBusTestHelper {
 				}
 			}
 		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
 		}
 	}
 
@@ -121,7 +121,7 @@ public class MessageBusTestHelper {
 			_pubSubMessageBusImpl.getProjectTopicName(channel);
 
 		PubSubClientFactory pubSubClientFactory =
-			_pubSubMessageBusImpl.getPubSubclientFactory();
+			_pubSubMessageBusImpl.getPubSubClientFactory();
 
 		return pubSubClientFactory.createPublisher(
 			channel.isOrderingEnabled(), projectTopicName);
@@ -129,7 +129,7 @@ public class MessageBusTestHelper {
 
 	private void _pullAllSubscriptionMessages(Subscription subscription) {
 		MessageSubscriberImpl messageSubscriberImpl = new MessageSubscriberImpl(
-			_pubSubMessageBusImpl.getPubSubclientFactory(), subscription);
+			_pubSubMessageBusImpl.getPubSubClientFactory(), subscription);
 
 		while (true) {
 			List<String> messages = messageSubscriberImpl.pullMessages(50);

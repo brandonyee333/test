@@ -222,7 +222,7 @@ public class SalesforcePartnerClientInvoker
 
 			return salesforcePartnerClient;
 		}
-		catch (ConnectionException ce) {
+		catch (ConnectionException connectionException) {
 			_salesforceOAuth2Client.refreshOAuthToken(
 				(SalesforceExtractorConfigurationImpl)
 					salesforceExtractorConfiguration);

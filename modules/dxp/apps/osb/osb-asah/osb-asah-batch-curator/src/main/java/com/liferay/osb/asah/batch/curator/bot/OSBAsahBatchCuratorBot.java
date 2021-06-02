@@ -78,8 +78,8 @@ public class OSBAsahBatchCuratorBot {
 			ProjectIdThreadLocal.forProjects(
 				_projectDog.getProjects(), this::_init);
 		}
-		catch (Exception e) {
-			_log.error("Unable to schedule nanites", e);
+		catch (Exception exception) {
+			_log.error("Unable to schedule nanites", exception);
 		}
 	}
 
@@ -112,9 +112,10 @@ public class OSBAsahBatchCuratorBot {
 				_projectDog.getProjects(),
 				_contentRecommendationDataSolutionNaniteRunnable);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
-				"Unable to execute ContentRecommendationDataSolutionNanite", e);
+				"Unable to execute ContentRecommendationDataSolutionNanite",
+				exception);
 		}
 	}
 
@@ -139,9 +140,10 @@ public class OSBAsahBatchCuratorBot {
 				_projectDog.getProjects(),
 				_dataprocSparkManagerMonitoringNaniteRunnable);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
-				"Unable to execute DataprocSparkManagerMonitoringNanite", e);
+				"Unable to execute DataprocSparkManagerMonitoringNanite",
+				exception);
 		}
 	}
 
