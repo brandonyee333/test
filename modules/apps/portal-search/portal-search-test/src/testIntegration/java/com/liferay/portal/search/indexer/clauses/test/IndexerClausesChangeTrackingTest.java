@@ -127,9 +127,11 @@ public class IndexerClausesChangeTrackingTest {
 
 			updateJournalArticle(journalArticle, "Delta Article");
 
-			assertSearch("[]", consumer);
+			assertSearch("[Gamma Article]", consumer);
 
-			assertSearch("[Delta Article]", withoutIndexerClauses(), consumer);
+			assertSearch(
+				"[Delta Article, Gamma Article, Omega Article]",
+				withoutIndexerClauses(), consumer);
 		}
 
 		assertSearch("[Gamma Article]", consumer);
@@ -170,7 +172,9 @@ public class IndexerClausesChangeTrackingTest {
 
 			assertSearch("[]", consumer);
 
-			assertSearch("[Delta Message]", withoutIndexerClauses(), consumer);
+			assertSearch(
+				"[Delta Message, Omega Message]", withoutIndexerClauses(),
+				consumer);
 		}
 
 		assertSearch("[Gamma Message]", consumer);
@@ -210,11 +214,12 @@ public class IndexerClausesChangeTrackingTest {
 			updateJournalArticle(journalArticle, "Delta Article");
 			updateMessage(mbMessage, "Delta Message");
 
-			assertSearch("[]", consumer);
+			assertSearch("[Gamma Article]", consumer);
 
 			assertSearch(
-				"[Delta Article, Delta Message]", withoutIndexerClauses(),
-				consumer);
+				"[Delta Article, Delta Message, Gamma Article, Omega " +
+					"Article, Omega Message]",
+				withoutIndexerClauses(), consumer);
 		}
 
 		assertSearch("[Gamma Article, Gamma Message]", consumer);
