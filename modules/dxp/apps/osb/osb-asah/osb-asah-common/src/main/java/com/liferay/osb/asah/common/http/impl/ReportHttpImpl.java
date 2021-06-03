@@ -14,19 +14,14 @@
 
 package com.liferay.osb.asah.common.http.impl;
 
-import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.http.ReportHttp;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.spring.http.Http;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
@@ -55,28 +50,14 @@ public class ReportHttpImpl implements ReportHttp {
 			String.format("/reports/segments?after=%s", after));
 	}
 
-	private HttpHeaders _getHttpHeaders(String url) {
-		return new HttpHeaders() {
-			{
-				set(
-					HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE,
-					DigestUtils.sha256Hex(_osbAsahSecurityToken.concat(url)));
-			}
-		};
-	}
-
 	private JSONObject _httpGetJSONObject(String path) {
 		String response = _http.exchange(
-			ServiceConstants.URL_BACKEND, path, HttpMethod.GET, null,
-			_getHttpHeaders(ServiceConstants.URL_BACKEND));
+			ServiceConstants.URL_BACKEND_INTERNAL, path, HttpMethod.GET, null);
 
 		return new JSONObject(response);
 	}
 
 	@Autowired
 	private Http _http;
-
-	@Value("${osb.asah.security.token:}")
-	private String _osbAsahSecurityToken;
 
 }
