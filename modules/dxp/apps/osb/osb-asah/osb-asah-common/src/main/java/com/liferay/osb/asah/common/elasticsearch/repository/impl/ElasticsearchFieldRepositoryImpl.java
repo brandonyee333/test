@@ -161,7 +161,7 @@ public class ElasticsearchFieldRepositoryImpl
 	public List<Field> findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
 		String context, Long ownerId) {
 
-		JSONObject jsonObject = null;
+		JSONObject jsonObject = new JSONObject();
 
 		if (context.equals("custom")) {
 			if (_faroInfoElasticsearchInvoker.exists(

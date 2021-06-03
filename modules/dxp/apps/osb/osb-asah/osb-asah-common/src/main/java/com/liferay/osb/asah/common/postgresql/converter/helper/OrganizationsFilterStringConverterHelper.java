@@ -52,19 +52,16 @@ public class OrganizationsFilterStringConverterHelper
 
 		Organization organization = organizationOptional.get();
 
-		Long dataSourceId = organization.getDataSourceId();
-		Long organizationPK = organization.getOrganizationPK();
-
 		Condition condition = DSL.and(
 			DSL.field(
 				"dataSourceId"
 			).eq(
-				dataSourceId
+				organization.getDataSourceId()
 			),
 			DSL.field(
 				"organizationPK"
 			).eq(
-				organizationPK
+				organization.getOrganizationPK()
 			));
 
 		if (operator.equalsIgnoreCase("eq")) {

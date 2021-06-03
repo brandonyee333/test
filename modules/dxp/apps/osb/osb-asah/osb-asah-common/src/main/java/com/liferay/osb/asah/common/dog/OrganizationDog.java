@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -70,20 +69,19 @@ public class OrganizationDog {
 
 		organization = _organizationRepository.save(organization);
 
+		Long organizationId = organization.getId();
+
 		List<Field> customFields = _fieldDog.addFields(
-			"custom", dataJSONObject, dataSource, organization.getId(),
+			"custom", dataJSONObject, dataSource, organizationId,
 			"organization");
 
 		if (CollectionUtils.isNotEmpty(customFields)) {
 			organization.setCustomFields(new HashSet<>(customFields));
 
-			_organizationRepository.save(organization);
+			organization = _organizationRepository.save(organization);
 		}
 
-		Optional<Organization> organizationOptional =
-			_organizationRepository.findById(organization.getId());
-
-		return populateOrganization(organizationOptional.orElse(null));
+		return populateOrganization(organization);
 	}
 
 	public void deleteOrganization(Organization organization) {

@@ -187,7 +187,9 @@ public class Organization implements Persistable<Long> {
 	}
 
 	public void setCreateDate(Date createDate) {
-		_createDate = createDate;
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
+		}
 	}
 
 	public void setCustomFields(Set<Field> fields) {
