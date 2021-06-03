@@ -81,8 +81,8 @@ public class FieldMappingDogTest {
 
 		Optional<FieldMapping> fieldMappingOptional =
 			_fieldMappingRepository.
-				findByContextAndDisplayNameAndFieldTypeAndOwnerType(
-					"custom", name, "Text", "individual");
+				findByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType(
+					"custom", name, "input-field", "Text", "individual");
 
 		fieldMapping = fieldMappingOptional.get();
 
