@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -48,7 +50,10 @@ public class EventAttributeDefinitionBagDataFetcher
 
 		Long eventDefinitionId = null;
 
-		if (dataFetchingEnvironment.containsArgument("eventDefinitionId")) {
+		String eventDefinitionIdString = dataFetchingEnvironment.getArgument(
+			"eventDefinitionId");
+
+		if (StringUtils.isNotBlank(eventDefinitionIdString)) {
 			eventDefinitionId = Long.valueOf(
 				dataFetchingEnvironment.getArgument("eventDefinitionId"));
 		}
