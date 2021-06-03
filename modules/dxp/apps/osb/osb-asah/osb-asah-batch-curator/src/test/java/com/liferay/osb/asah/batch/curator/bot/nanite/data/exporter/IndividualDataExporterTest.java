@@ -28,7 +28,7 @@ import org.json.JSONObject;
 
 import org.junit.Test;
 
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -43,7 +43,7 @@ public class IndividualDataExporterTest {
 		ReportHttp reportHttp = Mockito.mock(ReportHttp.class);
 
 		Mockito.when(
-			reportHttp.getIndividualsJSONObject(Matchers.eq("0"))
+			reportHttp.getIndividualsJSONObject(ArgumentMatchers.eq("0"))
 		).thenReturn(
 			ResourceUtil.readResourceToJSONObject(
 				"individuals_report.json", this)
@@ -51,7 +51,7 @@ public class IndividualDataExporterTest {
 
 		Mockito.when(
 			reportHttp.getIndividualsJSONObject(
-				Matchers.eq("379649990292756725"))
+				ArgumentMatchers.eq("379649990292756725"))
 		).thenReturn(
 			ResourceUtil.readResourceToJSONObject("empty_report.json", this)
 		);

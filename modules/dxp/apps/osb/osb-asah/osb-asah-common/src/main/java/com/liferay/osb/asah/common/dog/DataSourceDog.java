@@ -641,12 +641,12 @@ public class DataSourceDog {
 		if (providerType.equals("CSV")) {
 			return JSONUtil.put("fields", new JSONObject());
 		}
-		else if (providerType.equals("LIFERAY")) {
+
+		if (providerType.equals("LIFERAY")) {
 			return JSONUtil.put("contact", new JSONObject());
 		}
-		else if (providerType.equals("SALESFORCE")) {
-		}
-		else if (_log.isWarnEnabled()) {
+
+		if (!providerType.equals("SALESFORCE") && _log.isWarnEnabled()) {
 			_log.warn(
 				"Invalid provider type " + providerType + " for data source " +
 					dataSource.getId());

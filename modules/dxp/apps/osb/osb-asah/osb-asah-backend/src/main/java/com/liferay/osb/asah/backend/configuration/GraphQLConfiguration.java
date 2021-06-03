@@ -96,20 +96,22 @@ public class GraphQLConfiguration {
 			if (object instanceof BlogMetric) {
 				return (GraphQLObjectType)graphQLSchema.getType("BlogMetric");
 			}
-			else if (object instanceof DocumentLibraryMetric) {
+
+			if (object instanceof DocumentLibraryMetric) {
 				return (GraphQLObjectType)graphQLSchema.getType(
 					"DocumentMetric");
 			}
-			else if (object instanceof FormMetric) {
+
+			if (object instanceof FormMetric) {
 				return (GraphQLObjectType)graphQLSchema.getType("FormMetric");
 			}
-			else if (object instanceof JournalMetric) {
+
+			if (object instanceof JournalMetric) {
 				return (GraphQLObjectType)graphQLSchema.getType(
 					"JournalMetric");
 			}
-			else {
-				return (GraphQLObjectType)graphQLSchema.getType("PageMetric");
-			}
+
+			return (GraphQLObjectType)graphQLSchema.getType("PageMetric");
 		};
 	}
 
@@ -120,7 +122,8 @@ public class GraphQLConfiguration {
 			if (typeResolutionEnvironment.getObject() instanceof Organization) {
 				return (GraphQLObjectType)graphQLSchema.getType("Organization");
 			}
-			else if (typeResolutionEnvironment.getObject() instanceof User) {
+
+			if (typeResolutionEnvironment.getObject() instanceof User) {
 				return (GraphQLObjectType)graphQLSchema.getType("User");
 			}
 

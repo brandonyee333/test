@@ -126,7 +126,7 @@ public class JournalNanite extends BaseNanite<Journal> {
 
 			journal.setAssetId(eventProperties.get("classPK"));
 			journal.setRatingsScore(
-				Float.valueOf(eventProperties.get("score")));
+				Float.parseFloat(eventProperties.get("score")));
 		}
 		else if (Objects.equals(eventId, "webContentViewed")) {
 			journal.addViews(1);

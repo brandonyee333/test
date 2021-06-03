@@ -147,7 +147,7 @@ public class SortBuilderUtil {
 
 			String fieldName = sortParts[0];
 
-			fieldName = fieldName.replaceAll("/", ".");
+			fieldName = fieldName.replace('/', '.');
 
 			if (sort.contains(",")) {
 				SortOrder sortOrder = SortOrder.ASC;

@@ -54,7 +54,7 @@ public class SessionsRestController extends BaseRestController {
 
 		if (StringUtils.isNotBlank(filterString)) {
 			queryBuilder = FilterStringToQueryBuilderConverter.convert(
-				filterString.replaceAll("context/", ""));
+				filterString.replace("context/", ""));
 		}
 
 		fieldName = fieldName.replace("context/", "");

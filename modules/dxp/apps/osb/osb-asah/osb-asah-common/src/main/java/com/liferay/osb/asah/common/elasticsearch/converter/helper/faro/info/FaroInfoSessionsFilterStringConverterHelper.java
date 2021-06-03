@@ -127,7 +127,8 @@ public class FaroInfoSessionsFilterStringConverterHelper
 			return BoolQueryBuilderUtil.mustNot(
 				QueryBuilders.existsQuery(fieldName));
 		}
-		else if (operator.equalsIgnoreCase("gt")) {
+
+		if (operator.equalsIgnoreCase("gt")) {
 			return QueryBuilders.rangeQuery(
 				fieldName
 			).gt(
@@ -136,7 +137,8 @@ public class FaroInfoSessionsFilterStringConverterHelper
 				_timeZoneDog.getTimeZoneId()
 			);
 		}
-		else if (operator.equalsIgnoreCase("ge")) {
+
+		if (operator.equalsIgnoreCase("ge")) {
 			return QueryBuilders.rangeQuery(
 				fieldName
 			).gte(
@@ -145,7 +147,8 @@ public class FaroInfoSessionsFilterStringConverterHelper
 				_timeZoneDog.getTimeZoneId()
 			);
 		}
-		else if (operator.equalsIgnoreCase("lt")) {
+
+		if (operator.equalsIgnoreCase("lt")) {
 			return QueryBuilders.rangeQuery(
 				fieldName
 			).lt(
@@ -154,7 +157,8 @@ public class FaroInfoSessionsFilterStringConverterHelper
 				_timeZoneDog.getTimeZoneId()
 			);
 		}
-		else if (operator.equalsIgnoreCase("le")) {
+
+		if (operator.equalsIgnoreCase("le")) {
 			return QueryBuilders.rangeQuery(
 				fieldName
 			).lte(
@@ -163,7 +167,8 @@ public class FaroInfoSessionsFilterStringConverterHelper
 				_timeZoneDog.getTimeZoneId()
 			);
 		}
-		else if (operator.equalsIgnoreCase("ne")) {
+
+		if (operator.equalsIgnoreCase("ne")) {
 			if (value != null) {
 				return BoolQueryBuilderUtil.mustNot(
 					QueryBuilders.termQuery(fieldName, value));

@@ -31,8 +31,8 @@ public class AccountsFilterStringConverterHelper
 
 	@Override
 	public Condition getInferredCondition(String fieldName) {
-		if (!(fieldName.startsWith("organization") &&
-			  fieldName.endsWith("value"))) {
+		if (!fieldName.startsWith("organization") ||
+			!fieldName.endsWith("value")) {
 
 			return null;
 		}

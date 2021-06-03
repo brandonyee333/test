@@ -69,15 +69,18 @@ public class DataExportNanite extends BaseNanite {
 			return new AccountDataExporter(
 				_jsonFactory, outputStream, _reportHttp);
 		}
-		else if (type == DataExportTask.Type.INDIVIDUAL) {
+
+		if (type == DataExportTask.Type.INDIVIDUAL) {
 			return new IndividualDataExporter(
 				_jsonFactory, outputStream, _reportHttp);
 		}
-		else if (type == DataExportTask.Type.PAGE) {
+
+		if (type == DataExportTask.Type.PAGE) {
 			return new PageDataExporter(
 				_jsonFactory, outputStream, _cerebroInfoElasticsearchInvoker);
 		}
-		else if (type == DataExportTask.Type.SEGMENT) {
+
+		if (type == DataExportTask.Type.SEGMENT) {
 			return new SegmentDataExporter(
 				_jsonFactory, outputStream, _reportHttp);
 		}

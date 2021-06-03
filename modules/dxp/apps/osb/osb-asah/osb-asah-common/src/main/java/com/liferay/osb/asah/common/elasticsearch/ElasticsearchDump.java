@@ -115,14 +115,12 @@ public class ElasticsearchDump {
 					searchSourceBuilder.sort("id", SortOrder.ASC);
 				},
 				120);
-
-			_scrollId = searchResponse.getScrollId();
 		}
 		else {
 			searchResponse = _elasticsearchInvoker.searchScroll(_scrollId, 120);
-
-			_scrollId = searchResponse.getScrollId();
 		}
+
+		_scrollId = searchResponse.getScrollId();
 
 		SearchHits searchHits = searchResponse.getHits();
 

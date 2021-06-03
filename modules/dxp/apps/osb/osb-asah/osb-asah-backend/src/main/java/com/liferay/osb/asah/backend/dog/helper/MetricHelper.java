@@ -279,7 +279,8 @@ public class MetricHelper {
 
 			return _countWeeks(deltaDays, timeRange.getEndLocalDate());
 		}
-		else if (Interval.MONTH.equals(interval)) {
+
+		if (Interval.MONTH.equals(interval)) {
 			if (includePrevious) {
 				LocalDate startLocalDate = timeRange.getStartLocalDate();
 
@@ -317,7 +318,8 @@ public class MetricHelper {
 			return firstWeekdayLocalDate + StringPool.SLASH +
 				lastWeekdayLocalDate;
 		}
-		else if (Interval.MONTH.equals(interval)) {
+
+		if (Interval.MONTH.equals(interval)) {
 			LocalDate currentPeriodStartLocalDate =
 				timeRange.getStartLocalDate();
 
@@ -356,7 +358,8 @@ public class MetricHelper {
 
 			return startLocalDate + StringPool.SLASH + endLocalDate;
 		}
-		else if (Interval.MONTH.equals(interval)) {
+
+		if (Interval.MONTH.equals(interval)) {
 			LocalDate localDate = localDateTime.toLocalDate();
 
 			LocalDate startLocalDate = localDate.withDayOfMonth(1);

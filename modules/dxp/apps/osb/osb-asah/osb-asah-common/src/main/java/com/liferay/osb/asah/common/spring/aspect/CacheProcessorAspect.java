@@ -145,7 +145,8 @@ public class CacheProcessorAspect {
 
 			return;
 		}
-		else if (!ArrayUtils.isEmpty(cacheEvict.value())) {
+
+		if (!ArrayUtils.isEmpty(cacheEvict.value())) {
 			if (cacheEvict.allProjects()) {
 				ProjectIdThreadLocal.forProjects(
 					_projectDog.getProjects(),
@@ -157,7 +158,8 @@ public class CacheProcessorAspect {
 
 			return;
 		}
-		else if ((returnObject == null) || !(boolean)returnObject) {
+
+		if ((returnObject == null) || !(boolean)returnObject) {
 			return;
 		}
 
@@ -344,7 +346,8 @@ public class CacheProcessorAspect {
 
 				return currentLocalDate.isEqual(rangeEndLocalDate);
 			}
-			else if (variablesJSONObject.optInt("rangeKey") > 0) {
+
+			if (variablesJSONObject.optInt("rangeKey") > 0) {
 				return false;
 			}
 		}

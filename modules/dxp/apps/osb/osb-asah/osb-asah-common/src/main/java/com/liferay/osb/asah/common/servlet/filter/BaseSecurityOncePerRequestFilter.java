@@ -72,11 +72,8 @@ public abstract class BaseSecurityOncePerRequestFilter
 
 			filterChain.doFilter(httpServletRequest, httpServletResponse);
 		}
-		catch (IOException ioException) {
-			throw ioException;
-		}
-		catch (ServletException servletException) {
-			throw servletException;
+		catch (IOException | ServletException exception) {
+			throw exception;
 		}
 		catch (Exception exception) {
 			throw new ServletException(exception);

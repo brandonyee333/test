@@ -52,6 +52,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -1219,7 +1220,7 @@ public class DataSourcesRestControllerTest {
 
 	private void _mock() {
 		Mockito.when(
-			_cacheManager.getCache(Mockito.anyString())
+			_cacheManager.getCache(ArgumentMatchers.anyString())
 		).thenReturn(
 			_cache
 		);
@@ -1232,7 +1233,7 @@ public class DataSourcesRestControllerTest {
 
 		Mockito.when(
 			_salesforceExtractorConfigurationDog.getState(
-				Mockito.any(DataSource.class))
+				ArgumentMatchers.any(DataSource.class))
 		).thenReturn(
 			"CREDENTIALS_VALID"
 		);

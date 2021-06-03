@@ -37,6 +37,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 
@@ -74,13 +75,13 @@ public class UpgradeProcessRunnerTest {
 			ProjectIdThreadLocal.getProjectId());
 
 		Mockito.when(
-			_upgradeProcess.getUpgradeSteps(Mockito.eq("0.0.0"))
+			_upgradeProcess.getUpgradeSteps(ArgumentMatchers.eq("0.0.0"))
 		).thenReturn(
 			Collections.singletonList(upgradeStep)
 		);
 
 		Mockito.when(
-			_upgradeProcess.getToVersionString(Mockito.eq("0.0.0"))
+			_upgradeProcess.getToVersionString(ArgumentMatchers.eq("0.0.0"))
 		).thenReturn(
 			"1.0.0"
 		);
@@ -113,7 +114,7 @@ public class UpgradeProcessRunnerTest {
 		);
 
 		Mockito.when(
-			_upgradeProcess.getUpgradeSteps(Mockito.eq("2.11.0"))
+			_upgradeProcess.getUpgradeSteps(ArgumentMatchers.eq("2.11.0"))
 		).thenReturn(
 			Collections.singletonList(
 				version -> {
@@ -121,7 +122,7 @@ public class UpgradeProcessRunnerTest {
 		);
 
 		Mockito.when(
-			_upgradeProcess.getToVersionString(Mockito.eq("2.11.0"))
+			_upgradeProcess.getToVersionString(ArgumentMatchers.eq("2.11.0"))
 		).thenReturn(
 			"2.12.0"
 		);

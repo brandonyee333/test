@@ -94,6 +94,7 @@ public class RunLogRepositoryTest extends BaseRepositoryTestCase<RunLog, Long> {
 		Assert.assertEquals(_runLog, runLogOptional.get());
 	}
 
+	@Override
 	protected CrudRepository<RunLog, Long> getCrudRepository() {
 		return _runLogRepository;
 	}

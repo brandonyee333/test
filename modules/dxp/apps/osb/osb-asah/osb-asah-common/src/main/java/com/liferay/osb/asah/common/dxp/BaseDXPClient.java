@@ -79,7 +79,8 @@ public abstract class BaseDXPClient {
 				new BasicAuthorizationInterceptor(
 					dataSource.getLogin(), dataSource.getPassword()));
 		}
-		else if (credentialType.equals("Token Authentication")) {
+
+		if (credentialType.equals("Token Authentication")) {
 			HttpHeaders httpHeaders = new HttpHeaders() {
 				{
 					set(

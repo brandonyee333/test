@@ -58,7 +58,8 @@ public class MembershipChangesEmbeddedJSONObjectCreator
 			if (expandPart.equals("account-names")) {
 				return _getAccountNamesJSONObjects(jsonArray);
 			}
-			else if (_log.isWarnEnabled()) {
+
+			if (_log.isWarnEnabled()) {
 				_log.warn("Invalid expand: " + expandPart);
 			}
 		}

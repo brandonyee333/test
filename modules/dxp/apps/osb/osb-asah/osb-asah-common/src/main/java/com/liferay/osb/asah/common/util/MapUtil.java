@@ -120,7 +120,7 @@ public class MapUtil {
 		value = value.trim();
 
 		if (value.contains("\r")) {
-			value = value.replaceAll("\r\n", "\n");
+			value = value.replace("\r\n", "\n");
 		}
 
 		return value;

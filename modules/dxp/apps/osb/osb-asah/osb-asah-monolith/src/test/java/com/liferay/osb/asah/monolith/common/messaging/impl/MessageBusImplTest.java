@@ -28,7 +28,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.test.util.ReflectionTestUtils;
@@ -100,13 +100,13 @@ public class MessageBusImplTest {
 		Mockito.verify(
 			dataSourcesMessageListener1, Mockito.times(1)
 		).onMessage(
-			Matchers.eq(message)
+			ArgumentMatchers.eq(message)
 		);
 
 		Mockito.verify(
 			dataSourcesMessageListener2, Mockito.times(1)
 		).onMessage(
-			Matchers.eq(message)
+			ArgumentMatchers.eq(message)
 		);
 
 		Mockito.verifyZeroInteractions(upgradeCheckMessageListener);

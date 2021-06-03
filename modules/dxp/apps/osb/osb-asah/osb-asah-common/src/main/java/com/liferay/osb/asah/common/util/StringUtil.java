@@ -63,22 +63,28 @@ public class StringUtil {
 		if (string.startsWith("'") && string.endsWith("'")) {
 			return unquoteAndDecodeInnerQuotes(string);
 		}
-		else if (string.equalsIgnoreCase("false")) {
+
+		if (string.equalsIgnoreCase("false")) {
 			return false;
 		}
-		else if (string.equalsIgnoreCase("null")) {
+
+		if (string.equalsIgnoreCase("null")) {
 			return null;
 		}
-		else if (string.equalsIgnoreCase("true")) {
+
+		if (string.equalsIgnoreCase("true")) {
 			return true;
 		}
-		else if (string.startsWith("[")) {
+
+		if (string.startsWith("[")) {
 			return new JSONArray(string);
 		}
-		else if (string.startsWith("{")) {
+
+		if (string.startsWith("{")) {
 			return new JSONObject(string);
 		}
-		else if (NumberUtils.isCreatable(string)) {
+
+		if (NumberUtils.isCreatable(string)) {
 			if (string.contains(".")) {
 				return Double.valueOf(string);
 			}
@@ -109,7 +115,7 @@ public class StringUtil {
 
 		s = unquote(s);
 
-		return s.replaceAll("''", "'");
+		return s.replace("''", "'");
 	}
 
 }

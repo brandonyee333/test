@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
-import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -1128,8 +1127,5 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private MembershipDog _membershipDog;
-
-	@Autowired
-	private SegmentDog _segmentDog;
 
 }

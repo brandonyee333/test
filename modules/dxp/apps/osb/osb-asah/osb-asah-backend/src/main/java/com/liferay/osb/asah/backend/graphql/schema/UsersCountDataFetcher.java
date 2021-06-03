@@ -75,17 +75,17 @@ public class UsersCountDataFetcher extends BaseDataFetcher<Long> {
 
 			return _userDog.getKnownUsersCount(metricType, searchQueryContext);
 		}
-		else if (Objects.equals(
-					graphQLFieldDefinition.getName(),
-					"nonsegmentedKnownUsersCount")) {
+
+		if (Objects.equals(
+				graphQLFieldDefinition.getName(),
+				"nonsegmentedKnownUsersCount")) {
 
 			return _userDog.getNonsegmentedKnownUsersCount(
 				metricType, searchQueryContext);
 		}
-		else {
-			return _userDog.getSegmentedKnownUsersCount(
-				metricType, searchQueryContext);
-		}
+
+		return _userDog.getSegmentedKnownUsersCount(
+			metricType, searchQueryContext);
 	}
 
 	@Autowired

@@ -28,6 +28,7 @@ import org.springframework.data.convert.ReadingConverter;
 public class PGobjectToJSONObjectConverter
 	implements Converter<PGobject, JSONObject> {
 
+	@Override
 	public JSONObject convert(PGobject pGobject) {
 		return new JSONObject(pGobject.getValue());
 	}

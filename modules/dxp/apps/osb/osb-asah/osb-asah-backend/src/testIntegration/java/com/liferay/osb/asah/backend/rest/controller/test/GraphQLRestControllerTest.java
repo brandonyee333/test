@@ -31,6 +31,7 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,14 +136,14 @@ public class GraphQLRestControllerTest {
 			Mockito.verify(
 				_qraphQL, Mockito.times(3)
 			).execute(
-				Mockito.any(ExecutionInput.class)
+				ArgumentMatchers.any(ExecutionInput.class)
 			);
 		}
 		else {
 			Mockito.verify(
 				_qraphQL, Mockito.times(1)
 			).execute(
-				Mockito.any(ExecutionInput.class)
+				ArgumentMatchers.any(ExecutionInput.class)
 			);
 		}
 

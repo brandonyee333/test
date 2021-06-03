@@ -23,7 +23,7 @@ import java.io.ByteArrayOutputStream;
 
 import org.junit.Test;
 
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -38,13 +38,14 @@ public class AccountDataExporterTest {
 		ReportHttp reportHttp = Mockito.mock(ReportHttp.class);
 
 		Mockito.when(
-			reportHttp.getAccountsJSONObject(Matchers.eq("0"))
+			reportHttp.getAccountsJSONObject(ArgumentMatchers.eq("0"))
 		).thenReturn(
 			ResourceUtil.readResourceToJSONObject("accounts_report.json", this)
 		);
 
 		Mockito.when(
-			reportHttp.getAccountsJSONObject(Matchers.eq("388160510048870753"))
+			reportHttp.getAccountsJSONObject(
+				ArgumentMatchers.eq("388160510048870753"))
 		).thenReturn(
 			ResourceUtil.readResourceToJSONObject("empty_report.json", this)
 		);

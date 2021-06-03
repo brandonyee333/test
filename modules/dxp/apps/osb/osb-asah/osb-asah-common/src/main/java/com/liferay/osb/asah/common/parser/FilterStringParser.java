@@ -184,7 +184,8 @@ public class FilterStringParser {
 			if (c == ',') {
 				return i;
 			}
-			else if (c == '\'') {
+
+			if (c == '\'') {
 				i = _getEndQuoteIndex(s, i);
 			}
 		}
@@ -286,7 +287,8 @@ public class FilterStringParser {
 			if (Character.isWhitespace(c) || (c == '(')) {
 				return i;
 			}
-			else if (c == '\'') {
+
+			if (c == '\'') {
 				i = _getEndQuoteIndex(s, i);
 			}
 		}

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.salesforce.extractor.bot;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
@@ -238,9 +236,6 @@ public class SalesforceConfigurableBot {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private ProjectDog _projectDog;

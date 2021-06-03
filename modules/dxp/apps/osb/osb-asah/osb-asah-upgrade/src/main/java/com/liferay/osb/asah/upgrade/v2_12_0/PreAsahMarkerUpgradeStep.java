@@ -26,7 +26,6 @@ import java.util.Objects;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -62,6 +61,7 @@ public class PreAsahMarkerUpgradeStep extends BaseReindexUpgradeStep {
 		_reindex(version, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 	}
 
+	@Override
 	protected String getIndexConfiguration(String collectionName) {
 		try {
 			return ResourceUtil.readResourceToString(

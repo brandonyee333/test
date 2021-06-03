@@ -120,16 +120,20 @@ public class TestExecutionListenerUtil {
 		if (unit.equals("M")) {
 			return ChronoUnit.MONTHS;
 		}
-		else if (unit.equals("d")) {
+
+		if (unit.equals("d")) {
 			return ChronoUnit.DAYS;
 		}
-		else if (unit.equals("h")) {
+
+		if (unit.equals("h")) {
 			return ChronoUnit.HOURS;
 		}
-		else if (unit.equals("m")) {
+
+		if (unit.equals("m")) {
 			return ChronoUnit.MINUTES;
 		}
-		else if (unit.equals("y")) {
+
+		if (unit.equals("y")) {
 			return ChronoUnit.YEARS;
 		}
 

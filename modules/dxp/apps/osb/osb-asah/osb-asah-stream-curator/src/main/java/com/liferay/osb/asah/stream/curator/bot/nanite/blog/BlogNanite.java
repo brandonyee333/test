@@ -126,7 +126,8 @@ public class BlogNanite extends BaseNanite<Blog> {
 			blog.setRatings(1);
 
 			blog.setAssetId(eventProperties.get("classPK"));
-			blog.setRatingsScore(Float.valueOf(eventProperties.get("score")));
+			blog.setRatingsScore(
+				Float.parseFloat(eventProperties.get("score")));
 		}
 		else if (Objects.equals(eventId, "blogClicked")) {
 			blog.addClicks(1);

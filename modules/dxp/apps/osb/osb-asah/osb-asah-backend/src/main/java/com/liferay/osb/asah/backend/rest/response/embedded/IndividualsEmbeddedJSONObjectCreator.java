@@ -71,17 +71,21 @@ public class IndividualsEmbeddedJSONObjectCreator
 					getIndividualAccountNamesJSONObjects(
 						_elasticsearchInvoker, jsonArray);
 			}
-			else if (expandPart.equals("accounts")) {
+
+			if (expandPart.equals("accounts")) {
 				return FaroInfoIndividualUtil.getIndividualAccountsJSONObjects(
 					_elasticsearchInvoker, jsonArray);
 			}
-			else if (expandPart.equals("data-sources")) {
+
+			if (expandPart.equals("data-sources")) {
 				return _getDataSourceJSONObjects(jsonArray);
 			}
-			else if (expandPart.equals("individual-segments")) {
+
+			if (expandPart.equals("individual-segments")) {
 				return _getIndividualSegmentJSONObjects(jsonArray);
 			}
-			else if (_log.isWarnEnabled()) {
+
+			if (_log.isWarnEnabled()) {
 				_log.warn("Invalid expand: " + expandPart);
 			}
 		}

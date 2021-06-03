@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
@@ -424,7 +425,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		String[] sorts) {
 
 		List<Long> channelIds = ListUtil.map(
-			_channelDog.getChannels(dataSourceId), channel -> channel.getId());
+			_channelDog.getChannels(dataSourceId), Channel::getId);
 
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
@@ -673,8 +674,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 			for (String referencedObjectName : _REFERENCED_OBJECT_NAMES) {
 				referencedObjectIds.put(referencedObjectName, new HashSet<>());
 			}
-
-			return referencedObjectIds;
 		}
 
 		return referencedObjectIds;

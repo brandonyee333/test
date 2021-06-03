@@ -149,8 +149,9 @@ public class JobDog {
 			if (jobRun.getJobRunStatus() == JobRunStatus.FAILED) {
 				return JobStatus.FAILED;
 			}
-			else if ((jobRun.getJobRunStatus() == JobRunStatus.RUNNING) ||
-					 (jobRun.getJobRunStatus() == JobRunStatus.UNKNOWN)) {
+
+			if ((jobRun.getJobRunStatus() == JobRunStatus.RUNNING) ||
+				(jobRun.getJobRunStatus() == JobRunStatus.UNKNOWN)) {
 
 				return JobStatus.RUNNING;
 			}

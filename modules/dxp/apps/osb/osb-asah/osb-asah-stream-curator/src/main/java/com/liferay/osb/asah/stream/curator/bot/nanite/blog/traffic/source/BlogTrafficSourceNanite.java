@@ -145,13 +145,16 @@ public class BlogTrafficSourceNanite extends BaseNanite<BlogTrafficSource> {
 		if (domain.contains("facebook.com")) {
 			return "facebook";
 		}
-		else if (domain.contains("linkedin.com")) {
+
+		if (domain.contains("linkedin.com")) {
 			return "linkedin";
 		}
-		else if (domain.contains("pinterest.com")) {
+
+		if (domain.contains("pinterest.com")) {
 			return "pinterest";
 		}
-		else if (domain.contains("twitter.com")) {
+
+		if (domain.contains("twitter.com")) {
 			return "twitter";
 		}
 

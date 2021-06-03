@@ -203,6 +203,7 @@ public class ElasticsearchFieldRepositoryImpl
 				)));
 	}
 
+	@Override
 	public List<Transformation> getFieldTransformations(
 		String apply, @Nullable String filterString, Pageable pageable) {
 
@@ -267,6 +268,7 @@ public class ElasticsearchFieldRepositoryImpl
 		);
 	}
 
+	@Override
 	public List<Field> searchFields(
 		@Nullable String filterString, Pageable pageable) {
 

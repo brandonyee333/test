@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.monolith.common.http.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.salesforce.extractor.rest.controller.AccountsRestController;
 import com.liferay.osb.asah.salesforce.extractor.rest.controller.SalesforceUsersRestController;
@@ -63,9 +61,6 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 
 	@Autowired
 	private AccountsRestController _accountsRestController;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SalesforceUsersRestController _salesforceUsersRestController;

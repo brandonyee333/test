@@ -55,12 +55,12 @@ public class FilterStringToQueryBuilderConverter {
 				if (Character.isLowerCase(c)) {
 					return "(" + c + "|" + Character.toUpperCase(c) + ")";
 				}
-				else if (Character.isUpperCase(c)) {
+
+				if (Character.isUpperCase(c)) {
 					return "(" + Character.toLowerCase(c) + "|" + c + ")";
 				}
-				else {
-					return String.valueOf(c);
-				}
+
+				return String.valueOf(c);
 			}
 		).collect(
 			Collectors.joining("", ".*?", ".*?")

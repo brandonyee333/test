@@ -157,7 +157,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 				return false;
 			}
 		).map(
-			entry -> entry.getValue()
+			Map.Entry::getValue
 		).collect(
 			Collectors.toList()
 		).toArray(

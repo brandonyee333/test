@@ -73,7 +73,8 @@ public class ActivitiesFilterStringConverterHelper
 			if (operator.equals("eq")) {
 				return field.eq(Long.valueOf(StringUtil.unquote(valueString)));
 			}
-			else if (operator.equals("ne")) {
+
+			if (operator.equals("ne")) {
 				return field.ne(Long.valueOf(StringUtil.unquote(valueString)));
 			}
 		}

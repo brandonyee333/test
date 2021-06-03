@@ -36,6 +36,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -73,8 +74,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchange(
-			Mockito.any(), Mockito.contains("geolocations"),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.any(), ArgumentMatchers.contains("geolocations"),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -82,8 +83,9 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.contains("domain_organic_unique"), Mockito.any(),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.contains("domain_organic_unique"),
+			ArgumentMatchers.any(), ArgumentMatchers.any(HttpMethod.class),
+			ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -93,8 +95,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.contains("url_organic"), Mockito.any(),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.contains("url_organic"), ArgumentMatchers.any(),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -104,8 +106,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.contains("url_adwords"), Mockito.any(),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.contains("url_adwords"), ArgumentMatchers.any(),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		List<TrafficSource> trafficSources =
@@ -146,8 +148,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchange(
-			Mockito.any(), Mockito.any(), Mockito.any(HttpMethod.class),
-			Mockito.any()
+			ArgumentMatchers.any(), ArgumentMatchers.any(),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -155,8 +157,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.any(), Mockito.any(), Mockito.any(HttpMethod.class),
-			Mockito.any()
+			ArgumentMatchers.any(), ArgumentMatchers.any(),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -169,8 +171,9 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.contains("domain_organic_unique"), Mockito.any(),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.contains("domain_organic_unique"),
+			ArgumentMatchers.any(), ArgumentMatchers.any(HttpMethod.class),
+			ArgumentMatchers.any()
 		);
 
 		_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
@@ -183,8 +186,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchange(
-			Mockito.any(), Mockito.contains("geolocations"),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.any(), ArgumentMatchers.contains("geolocations"),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		List<TrafficSource> trafficSources =
@@ -212,8 +215,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchange(
-			Mockito.any(), Mockito.any(), Mockito.any(HttpMethod.class),
-			Mockito.any()
+			ArgumentMatchers.any(), ArgumentMatchers.any(),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -221,8 +224,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.any(), Mockito.any(), Mockito.any(HttpMethod.class),
-			Mockito.any()
+			ArgumentMatchers.any(), ArgumentMatchers.any(),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		_rootRestController.getTrafficSources(RandomTestUtil.randomString());
@@ -238,8 +241,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchange(
-			Mockito.any(), Mockito.contains("geolocations"),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.any(), ArgumentMatchers.contains("geolocations"),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -247,8 +250,9 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.contains("domain_organic_unique"), Mockito.any(),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.contains("domain_organic_unique"),
+			ArgumentMatchers.any(), ArgumentMatchers.any(HttpMethod.class),
+			ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -258,8 +262,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.contains("url_organic"), Mockito.any(),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.contains("url_organic"), ArgumentMatchers.any(),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -269,8 +273,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.contains("url_adwords"), Mockito.any(),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.contains("url_adwords"), ArgumentMatchers.any(),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		List<TrafficSource> trafficSources =
@@ -324,8 +328,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchange(
-			Mockito.any(), Mockito.contains("geolocations"),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.any(), ArgumentMatchers.contains("geolocations"),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -333,8 +337,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.any(), Mockito.any(), Mockito.any(HttpMethod.class),
-			Mockito.any()
+			ArgumentMatchers.any(), ArgumentMatchers.any(),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		List<TrafficSource> trafficSources =
@@ -369,8 +373,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchange(
-			Mockito.any(), Mockito.contains("geolocations"),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.any(), ArgumentMatchers.contains("geolocations"),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -383,8 +387,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.any(), Mockito.any(), Mockito.any(HttpMethod.class),
-			Mockito.any()
+			ArgumentMatchers.any(), ArgumentMatchers.any(),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
@@ -398,8 +402,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchange(
-			Mockito.any(), Mockito.contains("geolocations"),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.any(), ArgumentMatchers.contains("geolocations"),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -407,8 +411,9 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.contains("domain_organic_unique"), Mockito.any(),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.contains("domain_organic_unique"),
+			ArgumentMatchers.any(), ArgumentMatchers.any(HttpMethod.class),
+			ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -418,8 +423,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.contains("url_organic"), Mockito.any(),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.contains("url_organic"), ArgumentMatchers.any(),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -432,8 +437,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.contains("url_adwords"), Mockito.any(),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.contains("url_adwords"), ArgumentMatchers.any(),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
@@ -447,8 +452,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchange(
-			Mockito.any(), Mockito.contains("geolocations"),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.any(), ArgumentMatchers.contains("geolocations"),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -461,8 +466,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.contains("url_organic"), Mockito.any(),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.contains("url_organic"), ArgumentMatchers.any(),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		Mockito.doAnswer(
@@ -472,8 +477,8 @@ public class RootRestControllerTest {
 		).when(
 			_http
 		).exchangeResponseEntity(
-			Mockito.contains("url_adwords"), Mockito.any(),
-			Mockito.any(HttpMethod.class), Mockito.any()
+			ArgumentMatchers.contains("url_adwords"), ArgumentMatchers.any(),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
 		_rootRestController.getTrafficSources(RandomTestUtil.randomURL());

@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 
 import org.json.JSONArray;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.boot.test.context.TestConfiguration;
@@ -63,7 +64,8 @@ public class DataSourceHttpTestConfiguration {
 		).when(
 			dataSourceHttp
 		).getSalesforceAccountsFields(
-			Mockito.any(), Mockito.anyInt(), Mockito.anyInt()
+			ArgumentMatchers.any(), ArgumentMatchers.anyInt(),
+			ArgumentMatchers.anyInt()
 		);
 
 		Mockito.doAnswer(
@@ -91,7 +93,8 @@ public class DataSourceHttpTestConfiguration {
 		).when(
 			dataSourceHttp
 		).getSalesforceUsersFields(
-			Mockito.any(), Mockito.anyInt(), Mockito.anyInt()
+			ArgumentMatchers.any(), ArgumentMatchers.anyInt(),
+			ArgumentMatchers.anyInt()
 		);
 
 		return dataSourceHttp;

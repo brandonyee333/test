@@ -26,6 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,8 @@ public class AsahTaskSchedulerTest {
 	public void setUp() {
 		Mockito.when(
 			_threadPoolTaskScheduler.schedule(
-				Mockito.any(Runnable.class), Mockito.any(Trigger.class))
+				ArgumentMatchers.any(Runnable.class),
+				ArgumentMatchers.any(Trigger.class))
 		).thenReturn(
 			Mockito.mock(ScheduledFuture.class)
 		);
@@ -63,7 +65,8 @@ public class AsahTaskSchedulerTest {
 		Mockito.verify(
 			_threadPoolTaskScheduler, Mockito.times(1)
 		).schedule(
-			Mockito.eq(runnable), Mockito.any(CronTrigger.class)
+			ArgumentMatchers.eq(runnable),
+			ArgumentMatchers.any(CronTrigger.class)
 		);
 
 		Map<String, ScheduledFuture<?>> scheduledFuturesMap =
@@ -106,7 +109,7 @@ public class AsahTaskSchedulerTest {
 		Mockito.verify(
 			scheduledFuture, Mockito.times(1)
 		).cancel(
-			Mockito.eq(false)
+			ArgumentMatchers.eq(false)
 		);
 	}
 

@@ -88,10 +88,12 @@ public class ElasticsearchPropertyUtil {
 			return new ByteArrayInputStream(
 				stringValue.getBytes(StandardCharsets.UTF_8));
 		}
-		else if (elasticsearchPropertyType.equals("boolean")) {
+
+		if (elasticsearchPropertyType.equals("boolean")) {
 			return Boolean.valueOf(String.valueOf(value));
 		}
-		else if (elasticsearchPropertyType.equals("double")) {
+
+		if (elasticsearchPropertyType.equals("double")) {
 			BigDecimal bigDecimal = new BigDecimal(String.valueOf(value));
 
 			return bigDecimal.toPlainString();

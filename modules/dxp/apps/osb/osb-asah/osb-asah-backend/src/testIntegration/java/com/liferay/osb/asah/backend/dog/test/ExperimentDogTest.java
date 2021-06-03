@@ -46,6 +46,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,7 @@ public class ExperimentDogTest {
 		Mockito.verify(
 			_dxpClient, Mockito.times(1)
 		).deleteDXPExperiment(
-			Mockito.eq(333962835564819755L), Mockito.eq(2L)
+			ArgumentMatchers.eq(333962835564819755L), ArgumentMatchers.eq(2L)
 		);
 
 		Assert.assertNull(_experimentDog.fetchExperiment(2L));
@@ -347,13 +348,13 @@ public class ExperimentDogTest {
 			1L, "1");
 
 		Assert.assertNotNull(variantUniqueVisitors1);
-		Assert.assertEquals(3, variantUniqueVisitors1.longValue());
+		Assert.assertEquals(3L, variantUniqueVisitors1.longValue());
 
 		Long variantUniqueVisitors2 = _experimentDog.getVariantUniqueVisitors(
 			1L, "2");
 
 		Assert.assertNotNull(variantUniqueVisitors2);
-		Assert.assertEquals(3, variantUniqueVisitors2.longValue());
+		Assert.assertEquals(3L, variantUniqueVisitors2.longValue());
 	}
 
 	private void _assertExperimentVariantMetric(
@@ -408,8 +409,7 @@ public class ExperimentDogTest {
 	}
 
 	private double[] _mapToDoubles(BigDecimal[] bigDecimals) {
-		ToDoubleFunction<BigDecimal> toDoubleFunction =
-			bigDecimal -> bigDecimal.doubleValue();
+		ToDoubleFunction<BigDecimal> toDoubleFunction = BigDecimal::doubleValue;
 
 		return Stream.of(
 			bigDecimals

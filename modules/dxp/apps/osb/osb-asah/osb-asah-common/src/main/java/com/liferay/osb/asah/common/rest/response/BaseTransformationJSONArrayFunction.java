@@ -206,19 +206,21 @@ public abstract class BaseTransformationJSONArrayFunction
 		if (computeFunctionString.equals("day")) {
 			return DateHistogramInterval.DAY;
 		}
-		else if (computeFunctionString.equals("hour")) {
+
+		if (computeFunctionString.equals("hour")) {
 			return DateHistogramInterval.HOUR;
 		}
-		else if (computeFunctionString.equals("month")) {
+
+		if (computeFunctionString.equals("month")) {
 			return DateHistogramInterval.MONTH;
 		}
-		else if (computeFunctionString.equals("week")) {
+
+		if (computeFunctionString.equals("week")) {
 			return DateHistogramInterval.WEEK;
 		}
-		else {
-			throw new IllegalArgumentException(
-				"Unsupported compute function: " + computeFunctionString);
-		}
+
+		throw new IllegalArgumentException(
+			"Unsupported compute function: " + computeFunctionString);
 	}
 
 	protected boolean isEmpty(Aggregations aggregations) {

@@ -127,35 +127,36 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 				(String)StringUtil.toObject(valueString), fieldName,
 				operator.equalsIgnoreCase("ne"));
 		}
-		else if (fieldName.equals("accountId") &&
-				 _isEqualityOperator(operator)) {
 
+		if (fieldName.equals("accountId") && _isEqualityOperator(operator)) {
 			return _getAccountIdQueryBuilder(
 				(String)StringUtil.toObject(valueString), null,
 				operator.equalsIgnoreCase("ne"));
 		}
-		else if (fieldName.equals("dataSourceAccountPKs/accountPKs") &&
-				 _isEqualityOperator(operator)) {
+
+		if (fieldName.equals("dataSourceAccountPKs/accountPKs") &&
+			_isEqualityOperator(operator)) {
 
 			return _getAccountIdQueryBuilder(
 				null, (String)StringUtil.toObject(valueString),
 				operator.equalsIgnoreCase("ne"));
 		}
-		else if (fieldName.equals("dataSourceId") &&
-				 _isEqualityOperator(operator)) {
 
+		if (fieldName.equals("dataSourceId") && _isEqualityOperator(operator)) {
 			return _getDataSourceIdQueryBuilder(
 				(String)StringUtil.toObject(valueString),
 				operator.equalsIgnoreCase("ne"));
 		}
-		else if (fieldName.equals("dataSourceIndividualPKs/individualPKs") &&
-				 _isEqualityOperator(operator)) {
+
+		if (fieldName.equals("dataSourceIndividualPKs/individualPKs") &&
+			_isEqualityOperator(operator)) {
 
 			return _getIndividualPKQueryBuilder(
 				(String)StringUtil.toObject(valueString),
 				operator.equalsIgnoreCase("ne"));
 		}
-		else if (fieldName.equals("userId") && _isEqualityOperator(operator)) {
+
+		if (fieldName.equals("userId") && _isEqualityOperator(operator)) {
 			return _getUserIdQueryBuilder(
 				operator.equalsIgnoreCase("ne"),
 				(String)StringUtil.toObject(valueString));
@@ -481,7 +482,8 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			if (type.equals("accounts")) {
 				return _getAccountsFilterFunctionQueryBuilder(filterString);
 			}
-			else if (type.equals("activities")) {
+
+			if (type.equals("activities")) {
 				return _getActivitiesFilterFunctionQueryBuilder(filterString);
 			}
 		}
@@ -572,7 +574,8 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			return _getAccountsFilterByCountFunctionQueryBuilder(
 				checkEqualityOnly, minDocCount, negate, queryBuilder, value);
 		}
-		else if (type.equals("activities")) {
+
+		if (type.equals("activities")) {
 			return _getActivitiesFilterByCountFunctionQueryBuilder(
 				checkEqualityOnly, minDocCount, negate, queryBuilder, value);
 		}
@@ -598,13 +601,16 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		if (type.equals("accounts")) {
 			return _getAccountsFilterFunctionQueryBuilder(filterString);
 		}
-		else if (type.equals("activities")) {
+
+		if (type.equals("activities")) {
 			return _getActivitiesFilterFunctionQueryBuilder(filterString);
 		}
-		else if (type.equals("interests")) {
+
+		if (type.equals("interests")) {
 			return _getInterestsFilterFunctionQueryBuilder(filterString);
 		}
-		else if (type.equals("organizations")) {
+
+		if (type.equals("organizations")) {
 			return _getOrganizationsFilterFunctionQueryBuilder(filterString);
 		}
 
@@ -712,7 +718,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 	private QueryBuilder _getInterestCriteriaQueryBuilderWhenNoInterests(
 		boolean score, double value) {
 
-		if ((score && (value <= 0)) || (!score && (value > 0))) {
+		if (score == (value <= 0)) {
 			return QueryBuilders.matchAllQuery();
 		}
 
@@ -784,7 +790,8 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		if (interested && (value <= 0)) {
 			return QueryBuilders.matchAllQuery();
 		}
-		else if (!interested && (value < 0)) {
+
+		if (!interested && (value < 0)) {
 			return BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery());
 		}
 

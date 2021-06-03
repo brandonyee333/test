@@ -30,6 +30,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,9 +105,10 @@ public class ExperimentMetricDogTest {
 
 		Mockito.when(
 			_experimentDataDog.fetchDichotomousDataPoint(
-				Mockito.any(), Mockito.any(), Mockito.any(),
-				Mockito.any(MetricType.class), Mockito.any(),
-				Mockito.any(TimeRange.class), Mockito.eq(dxpVariantId))
+				ArgumentMatchers.any(), ArgumentMatchers.any(),
+				ArgumentMatchers.any(), ArgumentMatchers.any(MetricType.class),
+				ArgumentMatchers.any(), ArgumentMatchers.any(TimeRange.class),
+				ArgumentMatchers.eq(dxpVariantId))
 		).thenReturn(
 			new ExperimentDataPoint<>(trials, value)
 		);

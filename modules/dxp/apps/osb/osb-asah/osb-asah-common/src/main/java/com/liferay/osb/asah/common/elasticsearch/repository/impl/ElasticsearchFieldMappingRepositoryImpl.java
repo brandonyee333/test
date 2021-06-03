@@ -378,6 +378,7 @@ public class ElasticsearchFieldMappingRepositoryImpl
 		}
 	}
 
+	@Override
 	public List<FieldMapping> searchIndividualFieldMappings(
 		@Nullable String name, Pageable pageable) {
 

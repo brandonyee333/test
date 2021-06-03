@@ -434,6 +434,7 @@ public class ElasticsearchSegmentRepositoryImpl
 		);
 	}
 
+	@Override
 	public List<Segment> searchAccountSegments(
 		@Nullable String filterString, Pageable pageable,
 		@Nullable List<Long> segmentIds) {

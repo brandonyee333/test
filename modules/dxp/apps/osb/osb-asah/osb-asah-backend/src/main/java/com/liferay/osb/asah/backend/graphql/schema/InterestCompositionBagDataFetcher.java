@@ -62,7 +62,8 @@ public class InterestCompositionBagDataFetcher
 				Sort.of(dataFetchingEnvironment.getArgument("sort")),
 				dataFetchingEnvironment.getArgument("start"));
 		}
-		else if (name.equals("individualInterests")) {
+
+		if (name.equals("individualInterests")) {
 			return _interestCompositionDog.getIndividualCompositionResultBag(
 				dataFetchingEnvironment.getArgument("channelId"),
 				dataFetchingEnvironment.getArgument("keywords"),

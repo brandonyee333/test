@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,9 +74,9 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 		Mockito.verify(
 			_dxpClient
 		).updateDXPExperimentStatus(
-			Mockito.eq(1L), Mockito.eq(1L),
-			Mockito.eq(ExperimentStatus.FINISHED_NO_WINNER),
-			Mockito.isNull(String.class)
+			ArgumentMatchers.eq(1L), ArgumentMatchers.eq(1L),
+			ArgumentMatchers.eq(ExperimentStatus.FINISHED_NO_WINNER),
+			ArgumentMatchers.isNull(String.class)
 		);
 	}
 
@@ -100,8 +101,9 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 		Mockito.verify(
 			_dxpClient
 		).updateDXPExperimentStatus(
-			Mockito.eq(1L), Mockito.eq(1L),
-			Mockito.eq(ExperimentStatus.FINISHED_WINNER), Mockito.eq("10")
+			ArgumentMatchers.eq(1L), ArgumentMatchers.eq(1L),
+			ArgumentMatchers.eq(ExperimentStatus.FINISHED_WINNER),
+			ArgumentMatchers.eq("10")
 		);
 	}
 
@@ -131,15 +133,17 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 		Mockito.verify(
 			_dxpClient
 		).updateDXPExperimentStatus(
-			Mockito.eq(1L), Mockito.eq(1L),
-			Mockito.eq(ExperimentStatus.FINISHED_WINNER), Mockito.eq("20")
+			ArgumentMatchers.eq(1L), ArgumentMatchers.eq(1L),
+			ArgumentMatchers.eq(ExperimentStatus.FINISHED_WINNER),
+			ArgumentMatchers.eq("20")
 		);
 	}
 
 	@Test
 	public void testNotFinishedExperiment() throws Exception {
 		Mockito.when(
-			_experimentHttp.getExperimentMetricsJSONObject(Mockito.anyString())
+			_experimentHttp.getExperimentMetricsJSONObject(
+				ArgumentMatchers.anyString())
 		).thenReturn(
 			JSONUtil.put("estimatedDaysLeft", 1)
 		);
@@ -172,7 +176,8 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 		throws Exception {
 
 		Mockito.when(
-			_experimentHttp.getExperimentMetricsJSONObject(Mockito.anyString())
+			_experimentHttp.getExperimentMetricsJSONObject(
+				ArgumentMatchers.anyString())
 		).thenReturn(
 			responseBody
 		);

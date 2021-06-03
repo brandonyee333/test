@@ -128,13 +128,16 @@ public class DXPEntitiesMessageProcessor {
 		if (displayType.equals("boolean")) {
 			return "Boolean";
 		}
-		else if (displayType.equals("date")) {
+
+		if (displayType.equals("date")) {
 			return "Date";
 		}
-		else if (dataType.equals("Decimal") || dataType.equals("Integer")) {
+
+		if (dataType.equals("Decimal") || dataType.equals("Integer")) {
 			return "Number";
 		}
-		else if (dataType.equals("Text")) {
+
+		if (dataType.equals("Text")) {
 			return "Text";
 		}
 
@@ -165,7 +168,8 @@ public class DXPEntitiesMessageProcessor {
 		if (className.equals(DXPEntityType.CLASS_NAME_USER)) {
 			return "individual";
 		}
-		else if (className.equals(DXPEntityType.CLASS_NAME_ORGANIZATION)) {
+
+		if (className.equals(DXPEntityType.CLASS_NAME_ORGANIZATION)) {
 			return "organization";
 		}
 

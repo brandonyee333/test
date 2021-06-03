@@ -34,6 +34,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.test.util.ReflectionTestUtils;
@@ -56,8 +57,8 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 
 		Mockito.when(
 			elasticsearchInvoker.fetch(
-				Mockito.eq(nanite.getCollectionName()),
-				Mockito.any(QueryBuilder.class))
+				ArgumentMatchers.eq(nanite.getCollectionName()),
+				ArgumentMatchers.any(QueryBuilder.class))
 		).thenReturn(
 			new JSONObject(
 				ResourceUtil.readResourceToString(
@@ -97,8 +98,8 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 		Mockito.verify(
 			elasticsearchInvoker, Mockito.times(1)
 		).update(
-			Mockito.eq(nanite.getCollectionName()), Mockito.anyString(),
-			argumentCaptor.capture()
+			ArgumentMatchers.eq(nanite.getCollectionName()),
+			ArgumentMatchers.anyString(), argumentCaptor.capture()
 		);
 
 		Script script = argumentCaptor.getValue();

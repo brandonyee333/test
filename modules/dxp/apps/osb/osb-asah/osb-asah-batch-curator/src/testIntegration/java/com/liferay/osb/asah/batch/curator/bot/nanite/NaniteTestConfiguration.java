@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +87,7 @@ public class NaniteTestConfiguration {
 		).when(
 			asahTaskDog
 		).scheduleAsahTask(
-			Mockito.any(AsahTask.class)
+			ArgumentMatchers.any(AsahTask.class)
 		);
 
 		return asahTaskDog;

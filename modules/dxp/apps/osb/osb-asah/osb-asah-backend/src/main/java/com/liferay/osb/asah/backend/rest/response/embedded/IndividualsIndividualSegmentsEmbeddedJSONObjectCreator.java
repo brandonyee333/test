@@ -65,7 +65,8 @@ public class IndividualsIndividualSegmentsEmbeddedJSONObjectCreator
 			if (expandPart.equals("active-membership")) {
 				return _getMembershipJSONObjects(jsonArray);
 			}
-			else if (_log.isWarnEnabled()) {
+
+			if (_log.isWarnEnabled()) {
 				_log.warn("Invalid expand: " + expandPart);
 			}
 		}

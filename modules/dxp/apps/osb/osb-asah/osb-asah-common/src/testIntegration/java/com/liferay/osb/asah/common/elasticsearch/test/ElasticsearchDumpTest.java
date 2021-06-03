@@ -25,6 +25,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.test.context.ContextConfiguration;
@@ -57,7 +58,7 @@ public class ElasticsearchDumpTest {
 		Mockito.verify(
 			storage, Mockito.times(8)
 		).write(
-			Mockito.anyString()
+			ArgumentMatchers.anyString()
 		);
 	}
 

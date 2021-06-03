@@ -67,7 +67,7 @@ public class PageDTO<T> {
 	private List<T> _results;
 	private long _total;
 
-	private class Page {
+	private static class Page {
 
 		public Page(
 			Integer number, Integer size, Long totalElements,

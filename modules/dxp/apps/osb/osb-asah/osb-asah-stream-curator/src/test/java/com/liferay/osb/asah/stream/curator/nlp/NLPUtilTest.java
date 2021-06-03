@@ -164,7 +164,7 @@ public class NLPUtilTest {
 		double precision = (double)correctKeywordsCount / actualKeywordsCount;
 		double recall = (double)correctKeywordsCount / expectedKeywordsCount;
 
-		return 2.0 * ((precision * recall) / (precision + recall));
+		return 2.0 * (precision * recall / (precision + recall));
 	}
 
 	private String _normalizeKeyword(String keyword) {

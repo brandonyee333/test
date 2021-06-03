@@ -97,7 +97,8 @@ public class DXPEntityDog {
 
 			return _createResultBag(this::_mapDXPEntity, searchHits);
 		}
-		else if (collectionName.equals("organizations")) {
+
+		if (collectionName.equals("organizations")) {
 			SearchHits searchHits = _dataDog.querySearchHits(
 				collectionName, _faroInfoElasticsearchInvoker,
 				DogUtil.buildSearchSourceBuilder(
@@ -107,7 +108,8 @@ public class DXPEntityDog {
 
 			return _createResultBag(this::_mapOrganization, searchHits);
 		}
-		else if (collectionName.equals("users")) {
+
+		if (collectionName.equals("users")) {
 			SearchHits searchHits = _dataDog.querySearchHits(
 				collectionName, _dxpRawElasticsearchInvoker,
 				DogUtil.buildSearchSourceBuilder(

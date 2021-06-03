@@ -113,12 +113,10 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 				if (latestBlob == null) {
 					latestBlob = blob;
 				}
-				else {
-					if (blob.getCreateTime() > latestBlob.getCreateTime()) {
-						_deleteBlob(latestBlob);
+				else if (blob.getCreateTime() > latestBlob.getCreateTime()) {
+					_deleteBlob(latestBlob);
 
-						latestBlob = blob;
-					}
+					latestBlob = blob;
 				}
 			}
 		}

@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -92,7 +93,7 @@ public class ConfigurationHttpImplTest {
 	public void testGetState() {
 		Mockito.when(
 			_salesforceExtractorConfigurationManagerImpl.getState(
-				Mockito.any(DataSource.class))
+				ArgumentMatchers.any(DataSource.class))
 		).thenReturn(
 			"CREDENTIALS_VALID"
 		);

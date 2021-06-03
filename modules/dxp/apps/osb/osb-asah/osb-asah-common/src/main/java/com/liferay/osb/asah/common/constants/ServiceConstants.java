@@ -82,7 +82,8 @@ public class ServiceConstants {
 			return "https://osbasah" + serviceName + "-" + LCP_PROJECT_ID +
 				"." + _LCP_SERVICE_DOMAIN;
 		}
-		else if (StringUtils.isNotEmpty(_DOMAIN_SUFFIX)) {
+
+		if (StringUtils.isNotEmpty(_DOMAIN_SUFFIX)) {
 			return "https://osbasah" + serviceName + "-" + _DOMAIN_SUFFIX;
 		}
 

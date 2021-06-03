@@ -91,7 +91,7 @@ public class SalesforcePartnerClientInvoker
 
 		List<DescribeSObjectResult> describeSObjectResults =
 			getDescribeSObjectResults(
-				salesforceExtractorConfiguration, new String[] {typeName});
+				salesforceExtractorConfiguration, typeName);
 
 		return describeSObjectResults.get(0);
 	}

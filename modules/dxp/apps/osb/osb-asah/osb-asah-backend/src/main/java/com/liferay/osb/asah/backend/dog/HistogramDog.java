@@ -301,7 +301,8 @@ public class HistogramDog {
 
 			return startLocalDate + StringPool.SLASH + endLocalDate;
 		}
-		else if (Interval.MONTH.equals(interval)) {
+
+		if (Interval.MONTH.equals(interval)) {
 			LocalDate startLocalDate = localDateTime.toLocalDate();
 
 			LocalDate endLocalDate = startLocalDate.withDayOfMonth(

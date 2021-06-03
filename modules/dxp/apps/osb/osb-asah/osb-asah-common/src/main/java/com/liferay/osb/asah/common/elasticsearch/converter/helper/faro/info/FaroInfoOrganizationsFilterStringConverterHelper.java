@@ -62,7 +62,8 @@ public class FaroInfoOrganizationsFilterStringConverterHelper
 		if (operator.equalsIgnoreCase("eq")) {
 			return queryBuilder;
 		}
-		else if (operator.equalsIgnoreCase("ne")) {
+
+		if (operator.equalsIgnoreCase("ne")) {
 			return BoolQueryBuilderUtil.mustNot(queryBuilder);
 		}
 

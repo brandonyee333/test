@@ -152,7 +152,8 @@ public class FieldDog {
 		if (providerType.equals("CSV")) {
 			return dataJSONObject;
 		}
-		else if (providerType.equals("LIFERAY")) {
+
+		if (providerType.equals("LIFERAY")) {
 			if (context.equals("custom")) {
 				JSONObject expandoJSONObject = dataJSONObject.optJSONObject(
 					"expando");
@@ -194,7 +195,8 @@ public class FieldDog {
 
 			return dataJSONObject;
 		}
-		else if (providerType.equals("SALESFORCE")) {
+
+		if (providerType.equals("SALESFORCE")) {
 			return dataJSONObject;
 		}
 
@@ -653,10 +655,12 @@ public class FieldDog {
 					Collectors.toList()
 				);
 			}
-			else if (fieldType.equals("Boolean")) {
+
+			if (fieldType.equals("Boolean")) {
 				return Boolean.valueOf(valueString);
 			}
-			else if (fieldType.equals("Date")) {
+
+			if (fieldType.equals("Date")) {
 				if (NumberUtils.isCreatable(valueString)) {
 					if (Long.parseLong(valueString) < 0) {
 						return DateUtil.toString(valueString);
@@ -690,7 +694,8 @@ public class FieldDog {
 
 				return DateUtil.toString(dates.get(0));
 			}
-			else if (fieldType.equals("Number")) {
+
+			if (fieldType.equals("Number")) {
 				return new BigDecimal(valueString);
 			}
 
@@ -718,7 +723,8 @@ public class FieldDog {
 					dataSource.getId(), uniqueIdFieldName, uniqueId),
 				JSONObject.class);
 		}
-		else if (providerType.equals("LIFERAY")) {
+
+		if (providerType.equals("LIFERAY")) {
 			return _dxpRawElasticsearchInvoker.fetch(
 				"users",
 				BoolQueryBuilderUtil.filter(
@@ -730,24 +736,25 @@ public class FieldDog {
 						"contact." + uniqueIdFieldName, uniqueId)
 				));
 		}
-		else if (providerType.equals("SALESFORCE")) {
+
+		if (providerType.equals("SALESFORCE")) {
 			if (ownerType.equals("account")) {
 				return _salesforceRawElasticsearchInvoker.fetch(
 					"Account",
 					QueryBuilders.termQuery(uniqueIdFieldName, uniqueId));
 			}
-			else if (ownerType.equals("individual")) {
+
+			if (ownerType.equals("individual")) {
 				return _salesforceRawElasticsearchInvoker.fetch(
 					"individuals",
 					QueryBuilders.termQuery(uniqueIdFieldName, uniqueId));
 			}
-			else {
-				if (_log.isWarnEnabled()) {
-					_log.warn("Invalid owner type: " + ownerType);
-				}
 
-				return null;
+			if (_log.isWarnEnabled()) {
+				_log.warn("Invalid owner type: " + ownerType);
 			}
+
+			return null;
 		}
 
 		if (_log.isWarnEnabled()) {
@@ -812,7 +819,8 @@ public class FieldDog {
 		if (providerType.equals("CSV")) {
 			return DateUtil.toUTCString(dataSource.getModifiedDate());
 		}
-		else if (providerType.equals("LIFERAY")) {
+
+		if (providerType.equals("LIFERAY")) {
 			if (dataJSONObject.isNull("modifiedDate")) {
 				return DateUtil.toUTCString(
 					new Date(dataJSONObject.getLong("createDate")));
@@ -821,16 +829,17 @@ public class FieldDog {
 			return DateUtil.toUTCString(
 				new Date(dataJSONObject.getLong("modifiedDate")));
 		}
-		else if (providerType.equals("SALESFORCE")) {
+
+		if (providerType.equals("SALESFORCE")) {
 			if (ownerType.equals("account")) {
 				return dataJSONObject.getString("LastModifiedDate");
 			}
-			else if (ownerType.equals("individual")) {
+
+			if (ownerType.equals("individual")) {
 				return dataJSONObject.getString("modifiedDate");
 			}
-			else {
-				throw new Exception("Invalid owner type: " + ownerType);
-			}
+
+			throw new Exception("Invalid owner type: " + ownerType);
 		}
 
 		throw new Exception(
@@ -1118,7 +1127,8 @@ public class FieldDog {
 		if (oldDataSourceId.equals(newDataSourceId)) {
 			return true;
 		}
-		else if (newField.getValue() == null) {
+
+		if (newField.getValue() == null) {
 			return false;
 		}
 
@@ -1170,7 +1180,8 @@ public class FieldDog {
 		if (oldDataSourceId.equals(newDataSourceId)) {
 			return true;
 		}
-		else if (newFieldJSONObject.opt("value") == null) {
+
+		if (newFieldJSONObject.opt("value") == null) {
 			return false;
 		}
 

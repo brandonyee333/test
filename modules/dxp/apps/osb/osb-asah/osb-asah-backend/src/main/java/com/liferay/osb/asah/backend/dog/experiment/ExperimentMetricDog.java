@@ -65,13 +65,12 @@ public class ExperimentMetricDog {
 		if (!goalMetric.isContinuous()) {
 			return _dichotomousDataExperimentMetricCalculator;
 		}
-		else if (goalMetric == GoalMetric.MAX_SCROLL_DEPTH) {
+
+		if (goalMetric == GoalMetric.MAX_SCROLL_DEPTH) {
 			return _scrollDepthExperimentCalculator;
 		}
-		else {
-			throw new IllegalStateException(
-				"Unexpected goal metric " + goalMetric);
-		}
+
+		throw new IllegalStateException("Unexpected goal metric " + goalMetric);
 	}
 
 	@Autowired

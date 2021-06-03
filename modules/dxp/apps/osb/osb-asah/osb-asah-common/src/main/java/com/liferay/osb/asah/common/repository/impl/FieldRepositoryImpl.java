@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.MatcherUtil;
@@ -24,7 +25,6 @@ import java.util.regex.Matcher;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
@@ -113,7 +113,7 @@ public class FieldRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public List<com.liferay.osb.asah.common.entity.Field> searchFields(
+	public List<Field> searchFields(
 		@Nullable String filterString, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
@@ -130,8 +130,7 @@ public class FieldRepositoryImpl extends BaseRepository {
 			pageable.getOffset()
 		).fetch(
 		).map(
-			record -> new com.liferay.osb.asah.common.entity.Field(
-				record.intoMap())
+			record -> new Field(record.intoMap())
 		);
 	}
 

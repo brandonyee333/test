@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.http.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
@@ -64,8 +62,5 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 
 	@Autowired
 	private Http _http;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 }

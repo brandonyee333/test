@@ -173,7 +173,7 @@ public class VisitorHistogramDog {
 					continue;
 				}
 
-				metric.addPreviousValue(Double.valueOf(entry.getValue()));
+				metric.addPreviousValue((double)entry.getValue());
 
 				metrics.put(timeKey, metric);
 			}
@@ -202,7 +202,7 @@ public class VisitorHistogramDog {
 				continue;
 			}
 
-			metric.addValue(Double.valueOf(entry.getValue()));
+			metric.addValue((double)entry.getValue());
 
 			metrics.put(timeKey, metric);
 		}
@@ -258,16 +258,20 @@ public class VisitorHistogramDog {
 
 			return localDateTime.plusDays(1);
 		}
-		else if (TimeRange.LAST_7_DAYS.equals(timeRange)) {
+
+		if (TimeRange.LAST_7_DAYS.equals(timeRange)) {
 			return localDateTime.plusDays(7);
 		}
-		else if (TimeRange.LAST_28_DAYS.equals(timeRange)) {
+
+		if (TimeRange.LAST_28_DAYS.equals(timeRange)) {
 			return localDateTime.plusDays(28);
 		}
-		else if (TimeRange.LAST_30_DAYS.equals(timeRange)) {
+
+		if (TimeRange.LAST_30_DAYS.equals(timeRange)) {
 			return localDateTime.plusDays(30);
 		}
-		else if (TimeRange.LAST_90_DAYS.equals(timeRange)) {
+
+		if (TimeRange.LAST_90_DAYS.equals(timeRange)) {
 			if (localDateTime.getDayOfWeek() != DayOfWeek.SUNDAY) {
 				localDateTime = localDateTime.minusWeeks(1);
 			}
@@ -276,10 +280,12 @@ public class VisitorHistogramDog {
 
 			return localDateTime.plusWeeks(13);
 		}
-		else if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
+
+		if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
 			return localDateTime.plusWeeks(180);
 		}
-		else if (TimeRange.LAST_YEAR.equals(timeRange)) {
+
+		if (TimeRange.LAST_YEAR.equals(timeRange)) {
 			return localDateTime.plusYears(1);
 		}
 

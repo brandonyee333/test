@@ -65,7 +65,8 @@ public class HistogramDataFetcher extends BaseDataFetcher<HistogramMetricBag> {
 			return _individualHistogramDog.getHistogramMetricBag(
 				metricType, searchQueryContext);
 		}
-		else if (metricType == PageMetricType.VISITORS) {
+
+		if (metricType == PageMetricType.VISITORS) {
 			return _visitorHistogramDog.getHistogramMetricBag(
 				searchQueryContext.isIncludePrevious(), metricType,
 				searchQueryContext);

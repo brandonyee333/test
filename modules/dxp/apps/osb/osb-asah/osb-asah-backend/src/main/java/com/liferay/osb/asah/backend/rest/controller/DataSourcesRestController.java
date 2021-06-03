@@ -134,7 +134,8 @@ public class DataSourcesRestController extends BaseRestController {
 		if (Objects.equals(providerType, "CSV")) {
 			return String.valueOf(_getCSVDataSourceProgressJSONObject(id));
 		}
-		else if (Objects.equals(providerType, "SALESFORCE")) {
+
+		if (Objects.equals(providerType, "SALESFORCE")) {
 			return String.valueOf(
 				_getSalesforceDataSourceProgressJSONObject(id));
 		}
@@ -313,7 +314,8 @@ public class DataSourcesRestController extends BaseRestController {
 				"status", "FAILED"
 			);
 		}
-		else if (salesforceExtractorNaniteRunLogStatus.equals("STARTED")) {
+
+		if (salesforceExtractorNaniteRunLogStatus.equals("STARTED")) {
 			return _getSalesforceExtractorNaniteProgressJSONObject(
 				salesforceExtractorNaniteRunLog, 2, "Account");
 		}
@@ -413,7 +415,8 @@ public class DataSourcesRestController extends BaseRestController {
 				"status", "FAILED"
 			);
 		}
-		else if (salesforceExtractorNaniteRunLogStatus.equals("STARTED")) {
+
+		if (salesforceExtractorNaniteRunLogStatus.equals("STARTED")) {
 			return _getSalesforceExtractorNaniteProgressJSONObject(
 				salesforceExtractorNaniteRunLog, 3, "Contact", "Lead");
 		}

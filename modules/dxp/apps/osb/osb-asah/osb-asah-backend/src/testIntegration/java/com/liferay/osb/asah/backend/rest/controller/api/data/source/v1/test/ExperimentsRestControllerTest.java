@@ -22,7 +22,6 @@ import com.liferay.osb.asah.backend.model.ExperimentSettings;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.ExperimentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dxp.DXPClient;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentVariant;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
@@ -229,9 +228,6 @@ public class ExperimentsRestControllerTest {
 
 	@MockBean
 	private DXPClient _dxpClient;
-
-	@Autowired
-	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Autowired
 	private ExperimentDog _experimentDog;

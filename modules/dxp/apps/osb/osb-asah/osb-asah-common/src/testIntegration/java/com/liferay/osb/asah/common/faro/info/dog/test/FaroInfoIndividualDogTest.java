@@ -537,7 +537,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			individualJSONObject);
 
 		_assertDataSourceIndividualPKs(
-			JSONUtil.putAll(new Object[] {uuid1, uuid2}), individualJSONObject);
+			JSONUtil.putAll(uuid1, uuid2), individualJSONObject);
 
 		individualJSONObject = _faroInfoIndividualDog.updateIndividual(
 			uuid2, dataJSONObject.put("test", "test"),
@@ -546,7 +546,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			individualJSONObject);
 
 		_assertDataSourceIndividualPKs(
-			JSONUtil.putAll(new Object[] {uuid1, uuid2}), individualJSONObject);
+			JSONUtil.putAll(uuid1, uuid2), individualJSONObject);
 	}
 
 	@ElasticsearchIndex(

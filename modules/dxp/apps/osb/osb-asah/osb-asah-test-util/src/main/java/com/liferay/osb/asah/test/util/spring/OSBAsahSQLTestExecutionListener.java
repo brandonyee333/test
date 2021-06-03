@@ -87,7 +87,8 @@ public class OSBAsahSQLTestExecutionListener
 		if (sqlResources.length == 0) {
 			return;
 		}
-		else if (sqlResources.length > 1) {
+
+		if (sqlResources.length > 1) {
 			throw new IllegalArgumentException(
 				"Only 1 PostgreSQLTables annotation allowed");
 		}

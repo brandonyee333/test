@@ -52,32 +52,39 @@ public class DXPEntityType {
 		if (className.equals(CLASS_NAME_EXPANDO_COLUMN)) {
 			return new DXPEntityType(className, null, null, null, null);
 		}
-		else if (className.equals(CLASS_NAME_GROUP)) {
+
+		if (className.equals(CLASS_NAME_GROUP)) {
 			return new DXPEntityType(
 				className, "groups", "groupId", "groupIds",
 				"referencedGroupIds");
 		}
-		else if (className.equals(CLASS_NAME_ORGANIZATION)) {
+
+		if (className.equals(CLASS_NAME_ORGANIZATION)) {
 			return new DXPEntityType(
 				className, "organizations", "organizationId", "organizationIds",
 				"referencedOrganizationIds");
 		}
-		else if (className.equals(CLASS_NAME_ROLE)) {
+
+		if (className.equals(CLASS_NAME_ROLE)) {
 			return new DXPEntityType(
 				className, "roles", "roleId", "roleIds", "referencedRoleIds");
 		}
-		else if (className.equals(CLASS_NAME_TEAM)) {
+
+		if (className.equals(CLASS_NAME_TEAM)) {
 			return new DXPEntityType(
 				className, "teams", "teamId", "teamIds", "referencedTeamIds");
 		}
-		else if (className.equals(CLASS_NAME_USER)) {
+
+		if (className.equals(CLASS_NAME_USER)) {
 			return new DXPEntityType(
 				className, "users", "userId", "userId", "referencedUserIds");
 		}
-		else if (className.equals(CLASS_NAME_USER_FIELD)) {
+
+		if (className.equals(CLASS_NAME_USER_FIELD)) {
 			return new DXPEntityType(className, null, null, null, null);
 		}
-		else if (className.equals(CLASS_NAME_USER_GROUP)) {
+
+		if (className.equals(CLASS_NAME_USER_GROUP)) {
 			return new DXPEntityType(
 				className, "user-groups", "userGroupId", "userGroupIds",
 				"referencedUserGroupIds");
@@ -92,19 +99,24 @@ public class DXPEntityType {
 		if (individualFieldName.equals("groupIds")) {
 			return of(CLASS_NAME_GROUP);
 		}
-		else if (individualFieldName.equals("organizationIds")) {
+
+		if (individualFieldName.equals("organizationIds")) {
 			return of(CLASS_NAME_ORGANIZATION);
 		}
-		else if (individualFieldName.equals("roleIds")) {
+
+		if (individualFieldName.equals("roleIds")) {
 			return of(CLASS_NAME_ROLE);
 		}
-		else if (individualFieldName.equals("teamIds")) {
+
+		if (individualFieldName.equals("teamIds")) {
 			return of(CLASS_NAME_TEAM);
 		}
-		else if (individualFieldName.equals("userGroupIds")) {
+
+		if (individualFieldName.equals("userGroupIds")) {
 			return of(CLASS_NAME_USER_GROUP);
 		}
-		else if (individualFieldName.equals("userId")) {
+
+		if (individualFieldName.equals("userId")) {
 			return of(CLASS_NAME_USER);
 		}
 

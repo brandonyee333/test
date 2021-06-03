@@ -106,7 +106,7 @@ public class DocumentLibraryNanite extends BaseNanite<DocumentLibrary> {
 
 			documentLibrary.setAssetId(eventProperties.get("classPK"));
 			documentLibrary.setRatingsScore(
-				Float.valueOf(eventProperties.get("score")));
+				Float.parseFloat(eventProperties.get("score")));
 		}
 		else if (Objects.equals(eventId, "documentDownloaded")) {
 			documentLibrary.addDownloads(1);

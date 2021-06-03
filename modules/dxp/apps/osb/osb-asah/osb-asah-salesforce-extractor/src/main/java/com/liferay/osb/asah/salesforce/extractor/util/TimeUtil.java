@@ -26,8 +26,8 @@ public class TimeUtil {
 		long milliseconds = System.currentTimeMillis() - time;
 
 		long hours = milliseconds / DateUtil.HOUR;
-		long minutes = (milliseconds / DateUtil.MINUTE) % 60;
-		long seconds = (milliseconds / DateUtil.SECOND) % 60;
+		long minutes = milliseconds / DateUtil.MINUTE % 60;
+		long seconds = milliseconds / DateUtil.SECOND % 60;
 
 		return String.format("%03d:%02d:%02d", hours, minutes, seconds);
 	}

@@ -35,6 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -75,7 +76,7 @@ public class MultiTenantProjectDogImplTest {
 		Mockito.verify(
 			_postCreationConsumer, Mockito.times(1)
 		).accept(
-			Mockito.eq("project4")
+			ArgumentMatchers.eq("project4")
 		);
 		Mockito.verify(
 			_nanitesHttp, Mockito.times(1)

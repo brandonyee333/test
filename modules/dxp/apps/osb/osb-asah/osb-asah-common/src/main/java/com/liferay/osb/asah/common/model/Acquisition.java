@@ -102,43 +102,50 @@ public class Acquisition implements Serializable {
 		if (Objects.equals(_medium, "affiliate")) {
 			return "affiliates";
 		}
-		else if (Objects.isNull(_medium)) {
+
+		if (Objects.isNull(_medium)) {
 			return "direct";
 		}
-		else if (Objects.equals(_medium, "banner") ||
-				 Objects.equals(_medium, "cpm") ||
-				 Objects.equals(_medium, "display")) {
+
+		if (Objects.equals(_medium, "banner") ||
+			Objects.equals(_medium, "cpm") ||
+			Objects.equals(_medium, "display")) {
 
 			return "display";
 		}
-		else if (Objects.equals(_medium, "email")) {
+
+		if (Objects.equals(_medium, "email")) {
 			return "email";
 		}
-		else if (Objects.equals(_medium, "organic")) {
+
+		if (Objects.equals(_medium, "organic")) {
 			return "organic";
 		}
-		else if (Objects.equals(_medium, "content-text") ||
-				 Objects.equals(_medium, "cpa") ||
-				 Objects.equals(_medium, "cpp") ||
-				 Objects.equals(_medium, "cpv")) {
+
+		if (Objects.equals(_medium, "content-text") ||
+			Objects.equals(_medium, "cpa") || Objects.equals(_medium, "cpp") ||
+			Objects.equals(_medium, "cpv")) {
 
 			return "other advertising";
 		}
-		else if (Objects.equals(_medium, "cpc") ||
-				 Objects.equals(_medium, "paidsearch") ||
-				 Objects.equals(_medium, "ppc")) {
+
+		if (Objects.equals(_medium, "cpc") ||
+			Objects.equals(_medium, "paidsearch") ||
+			Objects.equals(_medium, "ppc")) {
 
 			return "paid search";
 		}
-		else if (Objects.equals(_medium, "referral")) {
+
+		if (Objects.equals(_medium, "referral")) {
 			return "referral";
 		}
-		else if (Objects.equals(_medium, "sm") ||
-				 Objects.equals(_medium, "social") ||
-				 Objects.equals(_medium, "social media") ||
-				 Objects.equals(_medium, "social network") ||
-				 Objects.equals(_medium, "social-media") ||
-				 Objects.equals(_medium, "social-network")) {
+
+		if (Objects.equals(_medium, "sm") ||
+			Objects.equals(_medium, "social") ||
+			Objects.equals(_medium, "social media") ||
+			Objects.equals(_medium, "social network") ||
+			Objects.equals(_medium, "social-media") ||
+			Objects.equals(_medium, "social-network")) {
 
 			return "social";
 		}

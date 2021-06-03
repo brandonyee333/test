@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceOrganization;
 import com.liferay.osb.asah.common.entity.DataSourceSite;
-import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
@@ -215,6 +214,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 			_dataSourceRepository.existsByProviderType("LIFERAY"));
 	}
 
+	@Override
 	@Test
 	public void testFindAll() {
 		Assert.assertEquals(
@@ -408,9 +408,6 @@ public abstract class BaseDataSourceRepositoryTestCase
 		Assert.assertEquals(
 			expectedDataSource.getURL(), actualDataSource.getURL());
 	}
-
-	@Autowired
-	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;

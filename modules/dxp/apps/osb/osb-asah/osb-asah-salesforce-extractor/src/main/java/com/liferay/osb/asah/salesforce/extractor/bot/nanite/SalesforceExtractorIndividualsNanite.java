@@ -400,19 +400,17 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			if (oldIndividualSalesforceEntity == null) {
 				newIndividualSalesforceEntity = individualSalesforceEntity;
 			}
-			else {
-				if (salesforceEntityType == SalesforceEntity.Type.CONTACT) {
-					newIndividualSalesforceEntity =
-						_mergeIndividualSalesforceEntity(
-							oldIndividualSalesforceEntity,
-							individualSalesforceEntity);
-				}
-				else if (salesforceEntityType == SalesforceEntity.Type.LEAD) {
-					newIndividualSalesforceEntity =
-						_mergeIndividualSalesforceEntity(
-							individualSalesforceEntity,
-							oldIndividualSalesforceEntity);
-				}
+			else if (salesforceEntityType == SalesforceEntity.Type.CONTACT) {
+				newIndividualSalesforceEntity =
+					_mergeIndividualSalesforceEntity(
+						oldIndividualSalesforceEntity,
+						individualSalesforceEntity);
+			}
+			else if (salesforceEntityType == SalesforceEntity.Type.LEAD) {
+				newIndividualSalesforceEntity =
+					_mergeIndividualSalesforceEntity(
+						individualSalesforceEntity,
+						oldIndividualSalesforceEntity);
 			}
 		}
 		else if (oldIndividualSalesforceEntity != null) {

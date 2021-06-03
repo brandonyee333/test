@@ -332,7 +332,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 			model.setKnownIndividual(
 				FaroInfoIndividualUtil.isKnownIndividual(individualJSONObject));
 			model.setSegmentNames(
-				new HashSet<String>(
+				new HashSet<>(
 					_segmentDog.getSegmentNames(
 						Long.valueOf(analyticsEvent.getChannelId()),
 						JSONUtil.toLongSet(

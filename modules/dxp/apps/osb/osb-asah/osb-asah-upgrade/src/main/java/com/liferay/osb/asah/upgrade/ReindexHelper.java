@@ -84,27 +84,7 @@ public class ReindexHelper {
 
 	public void deleteIndex(String indexName) {
 		for (int i = 10; i >= 0; i--) {
-			if (_isSnapshotInProgress()) {
-				if ((i == 0) && _log.isInfoEnabled()) {
-					_log.info("Unable to delete index " + indexName);
-
-					return;
-				}
-
-				if (_log.isInfoEnabled()) {
-					_log.info("Snapshot is in progress. Retrying in 1 minute.");
-				}
-
-				try {
-					Thread.sleep(60000);
-				}
-				catch (InterruptedException interruptedException) {
-					Thread thread = Thread.currentThread();
-
-					thread.interrupt();
-				}
-			}
-			else {
+			if (!_isSnapshotInProgress()) {
 				_elasticsearchIndexManager.delete(indexName);
 
 				if (_log.isInfoEnabled()) {
@@ -112,6 +92,25 @@ public class ReindexHelper {
 				}
 
 				return;
+			}
+
+			if ((i == 0) && _log.isInfoEnabled()) {
+				_log.info("Unable to delete index " + indexName);
+
+				return;
+			}
+
+			if (_log.isInfoEnabled()) {
+				_log.info("Snapshot is in progress. Retrying in 1 minute.");
+			}
+
+			try {
+				Thread.sleep(60000);
+			}
+			catch (InterruptedException interruptedException) {
+				Thread thread = Thread.currentThread();
+
+				thread.interrupt();
 			}
 		}
 	}

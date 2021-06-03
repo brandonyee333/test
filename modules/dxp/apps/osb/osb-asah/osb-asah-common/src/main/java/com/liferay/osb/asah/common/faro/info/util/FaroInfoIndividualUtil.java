@@ -226,10 +226,12 @@ public class FaroInfoIndividualUtil {
 		if ((familyName == null) && (givenName == null)) {
 			return null;
 		}
-		else if (familyName == null) {
+
+		if (familyName == null) {
 			return String.valueOf(givenName);
 		}
-		else if (givenName == null) {
+
+		if (givenName == null) {
 			return String.valueOf(familyName);
 		}
 

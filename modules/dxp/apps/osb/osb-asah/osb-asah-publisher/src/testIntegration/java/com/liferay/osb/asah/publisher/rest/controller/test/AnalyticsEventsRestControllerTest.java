@@ -40,6 +40,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -106,7 +107,7 @@ public class AnalyticsEventsRestControllerTest {
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			Mockito.any(), argumentCaptor.capture()
+			ArgumentMatchers.any(), argumentCaptor.capture()
 		);
 
 		JSONObject messageJSONObject = new JSONObject(
@@ -146,7 +147,7 @@ public class AnalyticsEventsRestControllerTest {
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			Mockito.any(), argumentCaptor.capture()
+			ArgumentMatchers.any(), argumentCaptor.capture()
 		);
 
 		JSONObject messageJSONObject = new JSONObject(
@@ -180,7 +181,7 @@ public class AnalyticsEventsRestControllerTest {
 		).when(
 			_messageBus
 		).sendMessage(
-			Mockito.any(), Mockito.anyString()
+			ArgumentMatchers.any(), ArgumentMatchers.anyString()
 		);
 
 		ResponseEntity<String> responseEntity = _exchange(
@@ -213,7 +214,7 @@ public class AnalyticsEventsRestControllerTest {
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			Mockito.any(), argumentCaptor.capture()
+			ArgumentMatchers.any(), argumentCaptor.capture()
 		);
 
 		JSONAssert.assertEquals(body, argumentCaptor.getValue(), false);
@@ -258,7 +259,7 @@ public class AnalyticsEventsRestControllerTest {
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			Mockito.any(), argumentCaptor.capture()
+			ArgumentMatchers.any(), argumentCaptor.capture()
 		);
 
 		JSONAssert.assertEquals(
@@ -340,7 +341,7 @@ public class AnalyticsEventsRestControllerTest {
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			Mockito.any(), argumentCaptor.capture()
+			ArgumentMatchers.any(), argumentCaptor.capture()
 		);
 
 		JSONObject messageJSONObject = new JSONObject(

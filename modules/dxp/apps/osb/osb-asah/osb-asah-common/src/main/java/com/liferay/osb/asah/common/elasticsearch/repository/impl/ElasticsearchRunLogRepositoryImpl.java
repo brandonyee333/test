@@ -117,21 +117,19 @@ public class ElasticsearchRunLogRepositoryImpl
 		if (weDeployDataService == WeDeployDataService.OSB_ASAH_DXP_RAW) {
 			return _dxpRawElasticsearchInvoker;
 		}
-		else if (weDeployDataService ==
-					WeDeployDataService.OSB_ASAH_FARO_INFO) {
 
+		if (weDeployDataService == WeDeployDataService.OSB_ASAH_FARO_INFO) {
 			return _faroInfoElasticsearchInvoker;
 		}
-		else if (weDeployDataService ==
-					WeDeployDataService.OSB_ASAH_SALESFORCE_RAW) {
+
+		if (weDeployDataService ==
+				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW) {
 
 			return _salesforceRawElasticsearchInvoker;
 		}
-		else {
-			throw new IllegalStateException(
-				"Unexpected WeDeploy data service value " +
-					weDeployDataService);
-		}
+
+		throw new IllegalStateException(
+			"Unexpected WeDeploy data service value " + weDeployDataService);
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)

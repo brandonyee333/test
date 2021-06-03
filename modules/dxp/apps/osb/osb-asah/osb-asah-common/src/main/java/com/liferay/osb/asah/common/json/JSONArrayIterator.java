@@ -142,7 +142,8 @@ public class JSONArrayIterator {
 					if (_stopOnExceptions) {
 						throw exception;
 					}
-					else if (Objects.equals(INTERRUPT, object)) {
+
+					if (Objects.equals(INTERRUPT, object)) {
 						return;
 					}
 
@@ -159,7 +160,8 @@ public class JSONArrayIterator {
 						if (object instanceof Exception) {
 							throw (Exception)object;
 						}
-						else if (Objects.equals(INTERRUPT, object)) {
+
+						if (Objects.equals(INTERRUPT, object)) {
 							return;
 						}
 					}

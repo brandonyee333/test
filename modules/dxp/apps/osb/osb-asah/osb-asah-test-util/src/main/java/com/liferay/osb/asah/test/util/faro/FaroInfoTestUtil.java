@@ -1050,10 +1050,12 @@ public class FaroInfoTestUtil {
 				RandomTestUtil.randomEmailAddress(),
 				RandomStringUtils.randomAlphanumeric(6, 10));
 		}
-		else if (type.equals("OAuth 2 Authentication")) {
+
+		if (type.equals("OAuth 2 Authentication")) {
 			return _getOAuth2CredentialsJSONObject();
 		}
-		else if (type.equals("Token Authentication")) {
+
+		if (type.equals("Token Authentication")) {
 			return _getTokenAuthenticationCredentialsJSONObject();
 		}
 

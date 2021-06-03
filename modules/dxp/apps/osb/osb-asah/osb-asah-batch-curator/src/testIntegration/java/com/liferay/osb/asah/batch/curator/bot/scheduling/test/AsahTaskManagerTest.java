@@ -31,6 +31,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,7 +128,7 @@ public class AsahTaskManagerTest {
 		Mockito.verify(
 			_asahTaskScheduler, Mockito.times(3)
 		).execute(
-			Mockito.any(AsahTaskRunnable.class)
+			ArgumentMatchers.any(AsahTaskRunnable.class)
 		);
 	}
 
@@ -150,8 +151,8 @@ public class AsahTaskManagerTest {
 		Mockito.verify(
 			_asahTaskScheduler, Mockito.times(1)
 		).schedule(
-			Mockito.eq("0 0 0 * * ?"), argumentCaptor.capture(),
-			Mockito.eq("450553576847486530")
+			ArgumentMatchers.eq("0 0 0 * * ?"), argumentCaptor.capture(),
+			ArgumentMatchers.eq("450553576847486530")
 		);
 
 		AsahTaskRunnable asahTaskRunnable = argumentCaptor.getValue();

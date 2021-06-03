@@ -28,6 +28,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.json.JSONArray;
 
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -59,8 +60,8 @@ public abstract class BaseNaniteTestCase {
 
 		Mockito.when(
 			elasticsearchInvoker.get(
-				Mockito.eq(nanite.getCollectionName()),
-				Mockito.any(QueryBuilder.class))
+				ArgumentMatchers.eq(nanite.getCollectionName()),
+				ArgumentMatchers.any(QueryBuilder.class))
 		).thenReturn(
 			new JSONArray(
 				ResourceUtil.readResourceToString(
@@ -86,7 +87,8 @@ public abstract class BaseNaniteTestCase {
 
 		Mockito.when(
 			elasticsearchInvoker.get(
-				Mockito.eq("individuals"), Mockito.any(QueryBuilder.class))
+				ArgumentMatchers.eq("individuals"),
+				ArgumentMatchers.any(QueryBuilder.class))
 		).thenReturn(
 			new JSONArray()
 		);
@@ -101,14 +103,15 @@ public abstract class BaseNaniteTestCase {
 
 			Mockito.when(
 				elasticsearchInvoker.exists(
-					Mockito.eq("individuals"), Mockito.isNull(String.class))
+					ArgumentMatchers.eq("individuals"),
+					ArgumentMatchers.isNull(String.class))
 			).thenReturn(
 				true
 			);
 
 			Mockito.when(
 				faroInfoIndividualDog.getIndividualJSONObject(
-					Mockito.anyLong(), Mockito.anyString())
+					ArgumentMatchers.anyLong(), ArgumentMatchers.anyString())
 			).thenReturn(
 				null
 			);
@@ -124,7 +127,8 @@ public abstract class BaseNaniteTestCase {
 
 		Mockito.when(
 			messageSubscriber.pullMessages(
-				Mockito.anyInt(), Mockito.any(UnsafeFunction.class))
+				ArgumentMatchers.anyInt(),
+				ArgumentMatchers.any(UnsafeFunction.class))
 		).thenReturn(
 			AnalyticsEvent.toAnalyticsEvents(
 				ResourceUtil.readResourceToString(
@@ -150,7 +154,8 @@ public abstract class BaseNaniteTestCase {
 		Mockito.verify(
 			elasticsearchInvoker, Mockito.times(1)
 		).save(
-			Mockito.eq(nanite.getCollectionName()), argumentCaptor.capture()
+			ArgumentMatchers.eq(nanite.getCollectionName()),
+			argumentCaptor.capture()
 		);
 
 		JSONAssert.assertEquals(

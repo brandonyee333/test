@@ -59,11 +59,13 @@ public class DataprocSparkManager {
 			if (JobStatus.State.DONE.equals(jobStatusState)) {
 				return DataprocJobState.COMPLETED;
 			}
-			else if (JobStatus.State.RUNNING.equals(jobStatusState)) {
+
+			if (JobStatus.State.RUNNING.equals(jobStatusState)) {
 				return DataprocJobState.RUNNING;
 			}
-			else if (JobStatus.State.CANCELLED.equals(jobStatusState) ||
-					 JobStatus.State.ERROR.equals(jobStatusState)) {
+
+			if (JobStatus.State.CANCELLED.equals(jobStatusState) ||
+				JobStatus.State.ERROR.equals(jobStatusState)) {
 
 				return DataprocJobState.FAILED;
 			}
@@ -189,10 +191,8 @@ public class DataprocSparkManager {
 					"spark.yarn.appMasterEnv." + entry.getKey(),
 					entry.getValue());
 			}
-			else {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Skipping variable: " + entry.getKey());
-				}
+			else if (_log.isDebugEnabled()) {
+				_log.debug("Skipping variable: " + entry.getKey());
 			}
 		}
 

@@ -55,6 +55,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -859,7 +860,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	private void _mock() {
 		Mockito.when(
 			_salesforceExtractorConfigurationDog.getState(
-				Mockito.any(DataSource.class))
+				ArgumentMatchers.any(DataSource.class))
 		).thenReturn(
 			"CREDENTIALS_VALID"
 		);

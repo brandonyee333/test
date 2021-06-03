@@ -16,6 +16,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.test.util.ReflectionTestUtils;
@@ -34,7 +35,8 @@ public abstract class BaseNaniteTestCase {
 
 		Mockito.when(
 			elasticsearchInvoker.exists(
-				Mockito.eq("individuals"), Mockito.isNull(String.class))
+				ArgumentMatchers.eq("individuals"),
+				ArgumentMatchers.isNull(String.class))
 		).thenReturn(
 			true
 		);

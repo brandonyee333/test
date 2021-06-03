@@ -46,6 +46,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,7 +128,7 @@ public class ChannelsRestControllerTest {
 		).when(
 			_channelHttp
 		).addChannel(
-			Mockito.any(Channel.class)
+			ArgumentMatchers.any(Channel.class)
 		);
 
 		try {
@@ -304,7 +305,7 @@ public class ChannelsRestControllerTest {
 		Mockito.verify(
 			_channelHttp, Mockito.times(2)
 		).addChannel(
-			Mockito.any(Channel.class)
+			ArgumentMatchers.any(Channel.class)
 		);
 	}
 
@@ -327,7 +328,7 @@ public class ChannelsRestControllerTest {
 		Mockito.verify(
 			_channelHttp, Mockito.times(3)
 		).addChannel(
-			Mockito.any(Channel.class)
+			ArgumentMatchers.any(Channel.class)
 		);
 	}
 

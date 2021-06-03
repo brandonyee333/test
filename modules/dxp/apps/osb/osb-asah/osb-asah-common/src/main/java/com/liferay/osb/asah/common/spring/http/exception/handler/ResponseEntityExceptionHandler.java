@@ -137,10 +137,8 @@ public class ResponseEntityExceptionHandler {
 		if (_shouldLogError(exception, handlerMethod)) {
 			_log.error("Unable to process request", exception);
 		}
-		else {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Unable to process request", exception);
-			}
+		else if (_log.isDebugEnabled()) {
+			_log.debug("Unable to process request", exception);
 		}
 
 		OSBAsahError osbAsahError = new OSBAsahError(
