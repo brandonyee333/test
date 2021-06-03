@@ -274,6 +274,12 @@ public class AccountReaderImpl implements AccountReader {
 		Date now = new Date();
 
 		for (ProductPurchase productPurchase : productPurchases) {
+			if (productPurchase.getStatus() !=
+					ProductPurchase.Status.APPROVED) {
+
+				continue;
+			}
+
 			Product product = productPurchase.getProduct();
 
 			if (_isSyncProduct(product)) {
