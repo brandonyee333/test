@@ -18,19 +18,21 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
+import com.liferay.osb.asah.common.dog.OrganizationDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOrganizationDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -394,33 +396,27 @@ public class DXPEntitiesMessageProcessor {
 	private void _processOrganizationObject(
 		String action, DataSource dataSource, JSONObject objectJSONObject) {
 
-		String organizationPK = objectJSONObject.optString("organizationId");
+		String organizationPK = objectJSONObject.optString(
+			"organizationId", null);
 
 		if (organizationPK == null) {
 			return;
 		}
 
-		JSONObject organizationJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"organizations",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery(
-					"dataSourceId", String.valueOf(dataSource.getId()))
-			).filter(
-				QueryBuilders.termsQuery("organizationPK", organizationPK)
-			));
+		Organization organization =
+			_organizationRepository.findByDataSourceIdAndOrganizationPK(
+				dataSource.getId(), Long.valueOf(organizationPK));
 
 		try {
 			if (action.equalsIgnoreCase("delete")) {
-				_faroInfoOrganizationDog.deleteOrganization(
-					organizationJSONObject);
+				_organizationDog.deleteOrganization(organization);
 			}
-			else if (organizationJSONObject == null) {
-				_faroInfoOrganizationDog.addOrganization(
-					objectJSONObject, dataSource);
+			else if (organization == null) {
+				_organizationDog.addOrganization(objectJSONObject, dataSource);
 			}
 			else {
-				_faroInfoOrganizationDog.updateOrganization(
-					objectJSONObject, dataSource, organizationJSONObject);
+				_organizationDog.updateOrganization(
+					objectJSONObject, dataSource, organization);
 			}
 		}
 		catch (Exception exception) {
@@ -515,13 +511,16 @@ public class DXPEntitiesMessageProcessor {
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
-	private FaroInfoOrganizationDog _faroInfoOrganizationDog;
-
-	@Autowired
 	private FieldMappingDog _fieldMappingDog;
 
 	@MessageSubscriber.Autowired(channel = Channel.DXP_ENTITIES_MESSAGE)
 	private MessageSubscriber _messageSubscriber;
+
+	@Autowired
+	private OrganizationDog _organizationDog;
+
+	@Autowired
+	private OrganizationRepository _organizationRepository;
 
 	@Autowired
 	private SegmentDog _segmentDog;
