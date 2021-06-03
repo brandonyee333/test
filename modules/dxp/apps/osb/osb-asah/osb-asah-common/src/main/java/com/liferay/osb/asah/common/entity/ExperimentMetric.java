@@ -33,6 +33,7 @@ import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -77,7 +78,9 @@ public class ExperimentMetric implements Persistable<Long> {
 				_experimentVariantMetrics,
 				experimentMetric._experimentVariantMetrics) &&
 			Objects.equals(_id, experimentMetric._id) &&
-			Objects.equals(_processedDate, experimentMetric._processedDate)) {
+			Objects.equals(
+				_processedLocalDateTime,
+				experimentMetric._processedLocalDateTime)) {
 
 			return true;
 		}
@@ -120,19 +123,21 @@ public class ExperimentMetric implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@Column("processeddate")
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
-	public LocalDateTime getProcessedDate() {
-		return _processedDate;
+	@JsonProperty("processedDate")
+	public LocalDateTime getProcessedLocalDateTime() {
+		return _processedLocalDateTime;
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(
 			_completion, _confidenceLevel, _elapsedDays, _estimatedDaysLeft,
-			_experimentVariantMetrics, _id, _processedDate);
+			_experimentVariantMetrics, _id, _processedLocalDateTime);
 	}
 
 	@JsonIgnore
@@ -176,8 +181,10 @@ public class ExperimentMetric implements Persistable<Long> {
 		_isNew = isNew;
 	}
 
-	public void setProcessedDate(LocalDateTime processedDate) {
-		_processedDate = processedDate;
+	public void setProcessedLocalDateTime(
+		LocalDateTime processedLocalDateTime) {
+
+		_processedLocalDateTime = processedLocalDateTime;
 	}
 
 	@Transient
@@ -203,6 +210,6 @@ public class ExperimentMetric implements Persistable<Long> {
 	private Boolean _isNew;
 
 	@Transient
-	private LocalDateTime _processedDate;
+	private LocalDateTime _processedLocalDateTime;
 
 }

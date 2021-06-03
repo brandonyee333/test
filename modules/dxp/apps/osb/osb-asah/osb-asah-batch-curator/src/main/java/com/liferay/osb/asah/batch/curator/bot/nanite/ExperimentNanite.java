@@ -175,18 +175,21 @@ public class ExperimentNanite extends BaseNanite {
 		Set<ExperimentMetric> experimentMetrics,
 		ExperimentMetric newExperimentMetric) {
 
-		LocalDateTime newProcessedDate = newExperimentMetric.getProcessedDate();
+		LocalDateTime newProcessedLocalDateTime =
+			newExperimentMetric.getProcessedLocalDateTime();
 
-		LocalDate newProcessedLocalDate = newProcessedDate.toLocalDate();
+		LocalDate newProcessedLocalDate =
+			newProcessedLocalDateTime.toLocalDate();
 
 		Stream<ExperimentMetric> stream = experimentMetrics.stream();
 
 		stream.map(
 			experimentMetric -> {
-				LocalDateTime processedDate =
-					experimentMetric.getProcessedDate();
+				LocalDateTime processedLocalDateTime =
+					experimentMetric.getProcessedLocalDateTime();
 
-				LocalDate processedLocalDate = processedDate.toLocalDate();
+				LocalDate processedLocalDate =
+					processedLocalDateTime.toLocalDate();
 
 				if (processedLocalDate.isEqual(newProcessedLocalDate)) {
 					return newExperimentMetric;

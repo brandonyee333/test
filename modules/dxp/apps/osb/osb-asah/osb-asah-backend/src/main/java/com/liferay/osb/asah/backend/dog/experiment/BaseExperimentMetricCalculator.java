@@ -101,7 +101,8 @@ public abstract class BaseExperimentMetricCalculator<T>
 		experimentMetric.setConfidenceLevel(0.0);
 		experimentMetric.setElapsedDays(_getExperimentElapsedDays(experiment));
 		experimentMetric.setEstimatedDaysLeft(null);
-		experimentMetric.setProcessedDate(LocalDateTime.now(ZoneOffset.UTC));
+		experimentMetric.setProcessedLocalDateTime(
+			LocalDateTime.now(ZoneOffset.UTC));
 
 		return experimentMetric;
 	}
@@ -130,7 +131,8 @@ public abstract class BaseExperimentMetricCalculator<T>
 		experimentMetric.setElapsedDays(_getExperimentElapsedDays(experiment));
 		experimentMetric.setEstimatedDaysLeft(
 			_estimateDaysLeft(experiment, variants));
-		experimentMetric.setProcessedDate(LocalDateTime.now(ZoneOffset.UTC));
+		experimentMetric.setProcessedLocalDateTime(
+			LocalDateTime.now(ZoneOffset.UTC));
 
 		return experimentMetric;
 	}

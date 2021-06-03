@@ -107,7 +107,8 @@ public abstract class BaseExperimentRepositoryTestCase
 
 		LocalDate processedLocalDate = now.minusDays(2);
 
-		experimentMetric.setProcessedDate(processedLocalDate.atStartOfDay());
+		experimentMetric.setProcessedLocalDateTime(
+			processedLocalDate.atStartOfDay());
 
 		ExperimentVariantMetric experimentVariantMetric1 =
 			new ExperimentVariantMetric(true, "1");

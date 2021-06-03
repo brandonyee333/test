@@ -39,7 +39,7 @@ public class ExperimentMetricDTO {
 		_elapsedDays = experimentMetric.getElapsedDays();
 		_estimatedDaysLeft = experimentMetric.getEstimatedDaysLeft();
 		_id = experimentMetric.getId();
-		_processedDate = experimentMetric.getProcessedDate();
+		_processedLocalDateTime = experimentMetric.getProcessedLocalDateTime();
 
 		Set<ExperimentVariantMetricDTO> experimentVariantMetricDTOs =
 			SetUtil.map(
@@ -80,8 +80,9 @@ public class ExperimentMetricDTO {
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
-	public LocalDateTime getProcessedDate() {
-		return _processedDate;
+	@JsonProperty("processedDate")
+	public LocalDateTime getProcessedLocalDateTime() {
+		return _processedLocalDateTime;
 	}
 
 	public void setCompletion(Double completion) {
@@ -110,8 +111,10 @@ public class ExperimentMetricDTO {
 		_id = id;
 	}
 
-	public void setProcessedDate(LocalDateTime processedDate) {
-		_processedDate = processedDate;
+	public void setProcessedLocalDateTime(
+		LocalDateTime processedLocalDateTime) {
+
+		_processedLocalDateTime = processedLocalDateTime;
 	}
 
 	private Double _completion;
@@ -121,6 +124,6 @@ public class ExperimentMetricDTO {
 	private Set<ExperimentVariantMetricDTO> _experimentVariantMetricDTOs =
 		new HashSet<>();
 	private Long _id;
-	private LocalDateTime _processedDate;
+	private LocalDateTime _processedLocalDateTime;
 
 }
