@@ -163,7 +163,21 @@ public class ElasticsearchFieldRepositoryImpl
 
 		JSONObject jsonObject = null;
 
-		if (context.equals("organization")) {
+		if (context.equals("custom")) {
+			if (_faroInfoElasticsearchInvoker.exists(
+					"individuals", String.valueOf(ownerId))) {
+
+				jsonObject = _faroInfoElasticsearchInvoker.get(
+					"individuals", String.valueOf(ownerId));
+			}
+			else if (_faroInfoElasticsearchInvoker.exists(
+						"organizations", String.valueOf(ownerId))) {
+
+				jsonObject = _faroInfoElasticsearchInvoker.get(
+					"organizations", String.valueOf(ownerId));
+			}
+		}
+		else if (context.equals("organization")) {
 			jsonObject = _faroInfoElasticsearchInvoker.get(
 				"accounts", String.valueOf(ownerId));
 		}
