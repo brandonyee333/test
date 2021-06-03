@@ -98,6 +98,8 @@ public class DataExportTaskDog {
 			dataExportTask.setStartedDate(new Date());
 		}
 
+		dataExportTask.setStatus(status);
+
 		return _dataExportTaskRepository.save(dataExportTask);
 	}
 
