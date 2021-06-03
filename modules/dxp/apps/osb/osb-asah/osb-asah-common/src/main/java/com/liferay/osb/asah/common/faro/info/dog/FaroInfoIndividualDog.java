@@ -463,6 +463,10 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
+		if (aggregations == null) {
+			return jsonArray;
+		}
+
 		InternalNested internalNested = aggregations.get("activitiesCounts");
 
 		Aggregations internalAggregations = internalNested.getAggregations();

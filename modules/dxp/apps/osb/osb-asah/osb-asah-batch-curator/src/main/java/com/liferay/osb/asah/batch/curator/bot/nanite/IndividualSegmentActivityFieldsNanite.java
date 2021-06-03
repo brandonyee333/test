@@ -206,6 +206,10 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
+		if (aggregations == null) {
+			return 0;
+		}
+
 		Nested nested = aggregations.get("activitiesCounts");
 
 		Aggregations nestedAggregations = nested.getAggregations();
