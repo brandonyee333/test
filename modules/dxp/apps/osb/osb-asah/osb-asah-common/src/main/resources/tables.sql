@@ -389,6 +389,20 @@ CREATE TABLE IF NOT EXISTS MembershipChange (
 	operation TEXT
 );
 
+CREATE TABLE IF NOT EXISTS Organization (
+	id BIGSERIAL PRIMARY KEY,
+	createDate TIMESTAMPTZ,
+	dataSourceId BIGINT,
+	modifiedDate TIMESTAMPTZ,
+	name TEXT,
+	nameTreePath TEXT,
+	organizationPK BIGINT,
+	parentName TEXT,
+	parentOrganizationPK BIGINT,
+	treePath TEXT,
+	type TEXT
+);
+
 CREATE TABLE IF NOT EXISTS Preference (
 	id BIGSERIAL PRIMARY KEY,
 	key TEXT UNIQUE,
