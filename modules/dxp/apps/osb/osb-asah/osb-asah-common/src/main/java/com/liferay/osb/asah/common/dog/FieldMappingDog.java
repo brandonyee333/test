@@ -94,8 +94,8 @@ public class FieldMappingDog {
 
 		Optional<FieldMapping> fieldMappingOptional =
 			_fieldMappingRepository.
-				findByContextAndDisplayNameAndFieldTypeAndOwnerType(
-					context, fieldName, fieldType, ownerType);
+				findByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType(
+					context, fieldName, displayType, fieldType, ownerType);
 
 		if (fieldMappingOptional.isPresent()) {
 			FieldMapping fieldMapping = fieldMappingOptional.get();

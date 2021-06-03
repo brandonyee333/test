@@ -61,9 +61,9 @@ public interface FieldMappingRepository
 		@Param("ownerType") String ownerType);
 
 	public Optional<FieldMapping>
-		findByContextAndDisplayNameAndFieldTypeAndOwnerType(
-			String context, String displayName, String fieldType,
-			String ownerType);
+		findByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType(
+			String context, String displayName, String displayType,
+			String fieldType, String ownerType);
 
 	public Optional<FieldMapping> findByContextAndDisplayNameAndOwnerType(
 		String context, String displayName, String ownerType);

@@ -150,9 +150,9 @@ public class ElasticsearchFieldMappingRepositoryImpl
 
 	@Override
 	public Optional<FieldMapping>
-		findByContextAndDisplayNameAndFieldTypeAndOwnerType(
-			String context, String displayName, @Nullable String fieldType,
-			String ownerType) {
+		findByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType(
+			String context, String displayName, String displayType,
+			@Nullable String fieldType, String ownerType) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("context", context)
@@ -161,6 +161,11 @@ public class ElasticsearchFieldMappingRepositoryImpl
 		).filter(
 			QueryBuilders.termQuery("ownerType", ownerType)
 		);
+
+		if (StringUtils.isNotEmpty(displayType)) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("displayType", displayType));
+		}
 
 		if (StringUtils.isNotEmpty(fieldType)) {
 			boolQueryBuilder.filter(
@@ -177,8 +182,8 @@ public class ElasticsearchFieldMappingRepositoryImpl
 	public Optional<FieldMapping> findByContextAndDisplayNameAndOwnerType(
 		String context, String displayName, String ownerType) {
 
-		return findByContextAndDisplayNameAndFieldTypeAndOwnerType(
-			context, displayName, null, ownerType);
+		return findByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType(
+			context, displayName, null, null, ownerType);
 	}
 
 	@Override
