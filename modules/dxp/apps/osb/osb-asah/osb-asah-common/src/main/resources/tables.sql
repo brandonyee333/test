@@ -162,6 +162,14 @@ CREATE TABLE IF NOT EXISTS DataSourceFieldMapping (
 	PRIMARY KEY (dataSourceId, fieldMappingId)
 );
 
+CREATE TABLE IF NOT EXISTS DataSourceIndividual (
+	accountPKs TEXT[],
+	dataSourceId BIGINT,
+	individualId BIGINT,
+	individualPKs TEXT[],
+	PRIMARY KEY (dataSourceId, individualId)
+);
+
 CREATE TABLE IF NOT EXISTS DataSourceOrganization (
 	dataSourceId BIGINT,
 	enableAllChildren BOOLEAN,
@@ -323,6 +331,30 @@ CREATE TABLE IF NOT EXISTS FieldMapping (
 	ownerType TEXT,
 	strategyConfiguration JSON,
 	strategyKey TEXT
+);
+
+CREATE TABLE IF NOT EXISTS Individual (
+	id BIGSERIAL PRIMARY KEY,
+	channelIds BIGINT[],
+	createDate TIMESTAMPTZ,
+	emailAddressHashed TEXT,
+	firstEnrichmentDate TIMESTAMPTZ,
+	groupIds BIGINT[],
+	lastEnrichmentDate TIMESTAMPTZ,
+	modifiedDate TIMESTAMPTZ,
+	organizationIds BIGINT[],
+	roleIds BIGINT[],
+	segmentIds BIGINT[],
+	teamIds BIGINT[],
+	userGroupIds BIGINT[]
+);
+
+CREATE TABLE IF NOT EXISTS IndividualChannel (
+	activitiesCount INTEGER,
+	channelId BIGINT,
+	individualId BIGINT,
+	lastActivityDate TIMESTAMPTZ,
+	PRIMARY KEY (channelId, individualId)
 );
 
 CREATE TABLE IF NOT EXISTS InterestTopic (
