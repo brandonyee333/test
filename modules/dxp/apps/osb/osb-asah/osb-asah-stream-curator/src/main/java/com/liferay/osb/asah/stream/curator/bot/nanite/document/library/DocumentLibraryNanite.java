@@ -133,9 +133,15 @@ public class DocumentLibraryNanite extends BaseNanite<DocumentLibrary> {
 			return;
 		}
 
-		oldDocumentLibrary.setRatings(1);
-		oldDocumentLibrary.setRatingsScore(
-			newDocumentLibrary.getRatingsScore());
+		if (newDocumentLibrary.getRatingsScore() < 0) {
+			oldDocumentLibrary.setRatings(0);
+			oldDocumentLibrary.setRatingsScore(0);
+		}
+		else {
+			oldDocumentLibrary.setRatings(1);
+			oldDocumentLibrary.setRatingsScore(
+				newDocumentLibrary.getRatingsScore());
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
