@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="Individual.findByAnySegmentIds">
+		<![CDATA[
+			SELECT
+				Individual.*
+			FROM
+				Individual
+			WHERE
+				ANY(Individual.segmentIds) = :segmentId
+		]]>
+	</entry>
+	<entry key="Individual.findByEmailAddress">
+		<![CDATA[
+			SELECT
+				Individual.*
+			FROM
+				Individual
+			INNER JOIN
+				Field ON
+					Individual.id = Field.ownerId AND
+					LOWER(Individual.emailAddress) = LOWER(Field.value)
+			WHERE
+				Field.name = 'email' AND
+				Field.value = :emailAddress
+		]]>
+	</entry>
+</properties>
