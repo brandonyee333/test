@@ -491,6 +491,24 @@ public class ElasticsearchAccountRepositoryImpl
 	}
 
 	@Override
+	public List<Account> searchAccounts(
+		String filterString, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							FilterStringToQueryBuilderConverter.convert(
+								filterString));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
+	}
+
+	@Override
 	protected String getCollectionName() {
 		return "accounts";
 	}

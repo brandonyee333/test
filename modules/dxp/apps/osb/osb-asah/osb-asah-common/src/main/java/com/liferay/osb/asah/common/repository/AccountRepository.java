@@ -58,4 +58,6 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
 		@Nullable String filterString, Pageable pageable,
 		@Nullable Sort segmentSort);
 
+	public List<Account> searchAccounts(String filterString, Pageable pageable);
+
 }

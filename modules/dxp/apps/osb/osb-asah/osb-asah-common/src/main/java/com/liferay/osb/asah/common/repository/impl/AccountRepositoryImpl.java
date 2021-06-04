@@ -405,6 +405,45 @@ public class AccountRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public List<Account> searchAccounts(
+		String filterString, Pageable pageable) {
+
+		Table<Record> fieldTable = _buildFieldTable(
+			ConditionUtil.toCondition(
+				filterString, _accountsFilterStringConverterHelper),
+			DSL.field(
+				"id"
+			).asc());
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		SelectOnConditionStep<Record> selectOnConditionStep =
+			selectSelectStep.from(
+				"Account"
+			).join(
+				fieldTable
+			).on(
+				DSL.field(
+					"account.id"
+				).eq(
+					fieldTable.field("ownerId")
+				)
+			);
+
+		if (pageable.isPaged()) {
+			selectOnConditionStep.limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			);
+		}
+
+		return selectOnConditionStep.fetch(
+		).map(
+			record -> new Account(record.intoMap())
+		);
+	}
+
 	private Table<Record> _buildFieldTable(
 		Condition condition, SortField sortField) {
 

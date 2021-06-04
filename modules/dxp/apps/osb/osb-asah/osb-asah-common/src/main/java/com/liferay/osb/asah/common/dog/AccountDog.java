@@ -321,6 +321,14 @@ public class AccountDog {
 		return account;
 	}
 
+	public List<Account> searchAccounts(
+		String filterString, int page, int size) {
+
+		PageRequest pageRequest = PageRequest.of(page, size);
+
+		return _accountRepository.searchAccounts(filterString, pageRequest);
+	}
+
 	public Page<Account> searchAccountsPage(
 		@Nullable Long channelId, @Nullable String filterString, int page,
 		@Nullable Long segmentId, int size, @Nullable String[] sorts) {
