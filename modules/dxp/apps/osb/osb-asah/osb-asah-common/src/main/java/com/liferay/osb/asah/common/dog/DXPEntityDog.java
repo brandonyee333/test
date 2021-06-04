@@ -77,7 +77,8 @@ public class DXPEntityDog {
 		if (StringUtils.equals(type.getCollectionName(), "organizations")) {
 			return _processDXPEntities(this::_mapOrganization, dxpEntities);
 		}
-		else if (StringUtils.equals(type.getCollectionName(), "users")) {
+
+		if (StringUtils.equals(type.getCollectionName(), "users")) {
 			return _processDXPEntities(this::_mapDXPUser, dxpEntities);
 		}
 
