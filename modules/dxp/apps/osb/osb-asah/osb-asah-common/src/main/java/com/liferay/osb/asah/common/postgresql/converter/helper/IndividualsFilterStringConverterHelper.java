@@ -113,7 +113,7 @@ public class IndividualsFilterStringConverterHelper
 			return DSL.not(condition);
 		}
 
-		return null;
+		return condition;
 	}
 
 	@Override
@@ -918,7 +918,7 @@ public class IndividualsFilterStringConverterHelper
 
 		List<Long> individualIds = new ArrayList<>();
 
-		SearchResponse searchResponse = _cerebroInfoElasticSearchInvoker.search(
+		SearchResponse searchResponse = _cerebroInfoElasticsearchInvoker.search(
 			"user-sessions",
 			searchSourceBuilder -> {
 				searchSourceBuilder.aggregation(
@@ -1024,7 +1024,7 @@ public class IndividualsFilterStringConverterHelper
 	private AsahMarkerDog _asahMarkerDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticSearchInvoker;
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;

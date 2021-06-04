@@ -415,7 +415,10 @@ public class AccountRepositoryImpl extends BaseRepository {
 				"id"
 			).asc());
 
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"Account"
+			).asterisk());
 
 		SelectOnConditionStep<Record> selectOnConditionStep =
 			selectSelectStep.from(
@@ -461,7 +464,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 		).where(
 			condition
 		).groupBy(
-			ownerIdField, nameField
+			ownerIdField, nameField, DSL.field("id")
 		);
 
 		if (sortField != null) {

@@ -41,7 +41,7 @@ public class AccountsFilterStringConverterHelper
 
 		fieldName = fieldNames[1];
 
-		Field<Object> nameField = DSL.field("name");
+		Field<Object> nameField = DSL.field("field.name");
 
 		return nameField.eq(fieldName);
 	}

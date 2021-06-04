@@ -677,7 +677,9 @@ public class Individual implements Persistable<Long> {
 		}
 
 		public void setLastActivityDate(Date lastActivityDate) {
-			_lastActivityDate = lastActivityDate;
+			if (lastActivityDate != null) {
+				_lastActivityDate = new Date(lastActivityDate.getTime());
+			}
 		}
 
 		@Transient

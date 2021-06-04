@@ -45,7 +45,10 @@ public class IndividualChannel {
 		_activitiesCount = activitiesCount;
 		_channelId = channelId;
 		_individualId = individualId;
-		_lastActivityDate = lastActivityDate;
+
+		if (lastActivityDate != null) {
+			_lastActivityDate = new Date(lastActivityDate.getTime());
+		}
 	}
 
 	public IndividualChannel(Map<String, Object> source) {
@@ -126,7 +129,9 @@ public class IndividualChannel {
 	}
 
 	public void setLastActivityDate(Date lastActivityDate) {
-		_lastActivityDate = lastActivityDate;
+		if (lastActivityDate != null) {
+			_lastActivityDate = new Date(lastActivityDate.getTime());
+		}
 	}
 
 	@Transient

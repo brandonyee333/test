@@ -19,12 +19,12 @@ import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilter
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
-import java.util.Collections;
+import java.math.BigDecimal;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -53,11 +53,12 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public boolean existsByChannelIdAndFilterAndId(
-		Long channelId, String filter, Long individualId) {
+	public boolean existsByChannelIdAndFilterStringAndId(
+		@Nullable Long channelId, @Nullable String filterString,
+		@Nullable Long individualId) {
 
 		Condition condition = ConditionUtil.toCondition(
-			filter, _individualsFilterStringConverterHelper);
+			filterString, _individualsFilterStringConverterHelper);
 
 		if (individualId != null) {
 			condition.and(
@@ -71,9 +72,11 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		if (channelId != null) {
 			condition.and(
 				DSL.field(
-					"individual.channelids"
+					DSL.cast(
+						DSL.array(DSL.field("individual.channelids")),
+						Long[].class)
 				).contains(
-					channelId
+					DSL.cast(DSL.array(new Long[] {channelId}), Long[].class)
 				));
 		}
 
@@ -87,15 +90,83 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				DSL.field(
 					"individual.id"
 				).eq(
-					"datasourceindividual.individualid"
+					DSL.field("datasourceindividual.individualid")
+				)
+			).join(
+				"Field"
+			).on(
+				DSL.field(
+					"individual.id"
+				).eq(
+					DSL.field("field.ownerid")
 				)
 			).where(
 				condition
 			));
 	}
 
-	public boolean existsByFilterAndId(String filter, Long individualId) {
-		return existsByChannelIdAndFilterAndId(null, filter, individualId);
+	public boolean existsByFilterStringAndId(
+		@Nullable String filterString, @Nullable Long individualId) {
+
+		return existsByChannelIdAndFilterStringAndId(
+			null, filterString, individualId);
+	}
+
+	public List<Individual.ActivitiesCount> findActivitiesCounts(
+		boolean includeAnonymousUsers, Long segmentId) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		Condition condition = DSL.field(
+			DSL.cast(
+				DSL.array(DSL.field("individual.segmentids")), Long[].class)
+		).contains(
+			DSL.cast(DSL.array(segmentId), Long[].class)
+		);
+
+		if (!includeAnonymousUsers) {
+			condition.and(
+				DSL.field(
+					"individual.emailAddressHashed"
+				).isNotNull());
+		}
+
+		return selectSelectStep.select(
+			DSL.sum(
+				DSL.field(
+					"activitiesCount"
+				).cast(
+					Long.class
+				)
+			).as(
+				"activitiesCount"
+			),
+			DSL.field("channelId")
+		).from(
+			"IndividualChannel"
+		).join(
+			"Individual"
+		).on(
+			DSL.field(
+				"individualchannel.individualId"
+			).eq(
+				DSL.field("individual.id")
+			)
+		).where(
+			condition
+		).groupBy(
+			DSL.field("channelId")
+		).fetch(
+		).map(
+			record -> {
+				BigDecimal activitiesCount = (BigDecimal)record.get(
+					"activitiesCount");
+				Long channelId = (Long)record.get("channelId");
+
+				return new Individual.ActivitiesCount(
+					activitiesCount.longValue(), channelId);
+			}
+		);
 	}
 
 	public Optional<Individual>
@@ -105,11 +176,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return selectSelectStep.select(
-			DSL.table(
-				"Individual"
-			).asterisk()
-		).from(
+		return selectSelectStep.from(
 			"Individual"
 		).join(
 			"DataSourceIndividual"
@@ -117,7 +184,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			DSL.field(
 				"individual.id"
 			).eq(
-				"datasourceindividual.individualId"
+				DSL.field("datasourceindividual.individualid")
 			)
 		).where(
 			DSL.and(
@@ -127,14 +194,18 @@ public class IndividualRepositoryImpl extends BaseRepository {
 					dataSourceId
 				),
 				DSL.field(
-					"datasourceindividual.individualpks"
+					DSL.cast(
+						DSL.array(
+							DSL.field("datasourceindividual.individualpks")),
+						String[].class)
 				).contains(
-					individualPK
+					DSL.cast(
+						DSL.array(new Object[] {individualPK}), String[].class)
 				),
 				DSL.field(
-					fieldName
+					DSL.cast(DSL.array(DSL.field(fieldName)), Long[].class)
 				).notContains(
-					Collections.singleton(associatedId)
+					DSL.cast(DSL.array(new Long[] {associatedId}), Long[].class)
 				))
 		).limit(
 			1
@@ -160,7 +231,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			DSL.field(
 				"individual.id"
 			).eq(
-				"datasourceindividual.individualId"
+				DSL.field("datasourceindividual.individualId")
 			)
 		).where(
 			DSL.field(
@@ -195,7 +266,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			DSL.field(
 				"datasourceindividual.individualId"
 			).eq(
-				"individual.id"
+				DSL.field("individual.id")
 			)
 		).where(
 			DSL.and(
@@ -205,9 +276,11 @@ public class IndividualRepositoryImpl extends BaseRepository {
 					dataSourceId
 				),
 				DSL.field(
-					"individualPKs"
+					DSL.cast(
+						DSL.array(DSL.field("individualPKs")), String[].class)
 				).contains(
-					individualPK
+					DSL.cast(
+						DSL.array(new Object[] {individualPK}), String[].class)
 				))
 		).limit(
 			1
@@ -217,7 +290,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 	}
 
 	public Optional<Individual> findByEmailAddressOrEmailAddressHashed(
-		@Nullable String emailAddress, String emailAddressHashed) {
+		@Nullable String emailAddress, @Nullable String emailAddressHashed) {
 
 		if (StringUtils.isBlank(emailAddress)) {
 			return _individualRepository.findByEmailAddressHashed(
@@ -235,60 +308,14 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		return individualOptional;
 	}
 
-	public List<Individual.ActivitiesCount> getActivitiesCounts(
-		boolean includeAnonymousUsers, Long segmentId) {
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		Condition condition = DSL.field(
-			"individual.segmentids"
-		).contains(
-			segmentId
-		);
-
-		if (!includeAnonymousUsers) {
-			condition.and(
-				DSL.field(
-					"individual.emailaddresshashed"
-				).isNotNull());
-		}
-
-		return selectSelectStep.select(
-			DSL.sum(
-				DSL.field(
-					"individualchannel.activitiescount"
-				).cast(
-					Long.class
-				)
-			).as(
-				"activitiescount"
-			),
-			DSL.field("individualchannel.channelid")
-		).from(
-			"IndividualChannel"
-		).join(
-			"Individual"
-		).on(
-			DSL.field(
-				"individualchannel.individualId"
-			).eq(
-				"individual.id"
-			)
-		).where(
-			condition
-		).fetch(
-		).map(
-			record -> new Individual.ActivitiesCount(record.intoMap())
-		);
-	}
-
-	public Map<Long, Long> getIndividualCounts(
+	public Map<Long, Long> findIndividualCounts(
 		boolean includeAnonymousUsers, Long segmentId) {
 
 		Condition condition = DSL.field(
-			"individual.segmentids"
+			DSL.cast(
+				DSL.array(DSL.field("individual.segmentids")), Long[].class)
 		).contains(
-			segmentId
+			DSL.cast(DSL.array(segmentId), Long[].class)
 		);
 
 		if (!includeAnonymousUsers) {
@@ -303,17 +330,9 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		selectSelectStep.select(
-			DSL.table(
-				"IndividualChannel"
-			).field(
-				"channelId"
-			),
+			DSL.field("channelid"),
 			DSL.countDistinct(
-				DSL.table(
-					"IndividualChannel"
-				).field(
-					"individualId"
-				)
+				DSL.field("individualId")
 			).as(
 				"individualcounts"
 			)
@@ -325,17 +344,22 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			DSL.field(
 				"individualchannel.individualId"
 			).eq(
-				"individual.id"
+				DSL.field("individual.id")
 			)
 		).where(
 			condition
 		).groupBy(
-			DSL.field("channelId")
+			DSL.field("individualchannel.channelId")
 		).fetch(
 		).map(
-			record -> individualCounts.put(
-				(Long)record.get("channelid"),
-				(Long)record.get("individualcounts"))
+			record -> {
+				Integer count = (Integer)record.get("individualcounts");
+
+				individualCounts.put(
+					(Long)record.get("channelid"), count.longValue());
+
+				return null;
+			}
 		);
 
 		return individualCounts;
@@ -399,20 +423,20 @@ public class IndividualRepositoryImpl extends BaseRepository {
 	}
 
 	public void updateAssociatedIds(
-		String fieldName, Set<Long> ids, Long individualId) {
+		String fieldName, Long[] ids, Long individualId) {
 
 		UpdateSetFirstStep<Record> update = _dslContext.update(
 			DSL.table("Individual"));
 
 		update.set(
-			DSL.field(fieldName), ids
+			DSL.field(fieldName), DSL.array(ids)
 		).where(
 			DSL.field(
 				"id"
 			).eq(
 				individualId
 			)
-		);
+		).execute();
 	}
 
 	private final DSLContext _dslContext;

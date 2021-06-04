@@ -9,7 +9,7 @@
 			FROM
 				Individual
 			WHERE
-				ANY(Individual.segmentIds) = :segmentId
+				:segmentId = ANY(Individual.segmentIds)
 		]]>
 	</entry>
 	<entry key="Individual.findByEmailAddress">
@@ -20,8 +20,7 @@
 				Individual
 			INNER JOIN
 				Field ON
-					Individual.id = Field.ownerId AND
-					LOWER(Individual.emailAddress) = LOWER(Field.value)
+					Individual.id = Field.ownerId
 			WHERE
 				Field.name = 'email' AND
 				Field.value = :emailAddress

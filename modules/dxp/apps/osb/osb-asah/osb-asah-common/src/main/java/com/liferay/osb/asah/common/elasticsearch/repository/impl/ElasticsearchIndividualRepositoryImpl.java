@@ -77,19 +77,28 @@ public class ElasticsearchIndividualRepositoryImpl
 	implements IndividualRepository {
 
 	@Override
-	public boolean existsByChannelIdAndFilterAndId(
-		Long channelId, String filter, Long individualId) {
+	public boolean existsByChannelIdAndFilterStringAndId(
+		@Nullable Long channelId, @Nullable String filterString,
+		@Nullable Long individualId) {
 
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			FilterStringToQueryBuilderConverter.convert(
-				filter, _faroInfoIndividualsFilterStringConverterHelper)
-		).filter(
-			QueryBuilders.termQuery("id", individualId)
-		);
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
 		if (channelId != null) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("channelIds", channelId));
+				QueryBuilders.termQuery(
+					"channelIds", String.valueOf(channelId)));
+		}
+
+		if (!StringUtils.isEmpty(filterString)) {
+			boolQueryBuilder.filter(
+				FilterStringToQueryBuilderConverter.convert(
+					filterString,
+					_faroInfoIndividualsFilterStringConverterHelper));
+		}
+
+		if (individualId != null) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("id", String.valueOf(individualId)));
 		}
 
 		return _faroInfoElasticsearchInvoker.exists(
@@ -97,132 +106,15 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
-	public boolean existsByFilterAndId(String filter, Long individualId) {
-		return existsByChannelIdAndFilterAndId(null, filter, individualId);
+	public boolean existsByFilterStringAndId(
+		@Nullable String filterString, @Nullable Long individualId) {
+
+		return existsByChannelIdAndFilterStringAndId(
+			null, filterString, individualId);
 	}
 
 	@Override
-	public List<Individual> findByAnySegmentIds(Long segmentId) {
-		return toList(
-			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
-				QueryBuilders.termQuery(
-					"individualSegmentIds", String.valueOf(segmentId))));
-	}
-
-	@Override
-	public Optional<Individual>
-		findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
-			Long associatedId, Long dataSourceId, String fieldName,
-			String individualPK) {
-
-		BoolQueryBuilderUtil.filter(
-			QueryBuilders.nestedQuery(
-				"dataSourceIndividualPKs",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.dataSourceId", dataSourceId)
-				).filter(
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.individualPKs", individualPK)
-				),
-				ScoreMode.None)
-		).mustNot(
-			QueryBuilders.termQuery(fieldName, associatedId)
-		);
-
-		return Optional.empty();
-	}
-
-	public List<Individual> findByDataSourceId(
-		Long dataSourceId, Pageable pageable) {
-
-		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							QueryBuilders.nestedQuery(
-								"dataSourceIndividualPKs",
-								QueryBuilders.termQuery(
-									"dataSourceIndividualPKs.dataSourceId",
-									String.valueOf(dataSourceId)),
-								ScoreMode.None));
-
-						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
-					})));
-	}
-
-	@Override
-	public Optional<Individual> findByDataSourceIdAndIndividualPK(
-		Long dataSourceId, String individualPK) {
-
-		return Optional.ofNullable(
-			toEntity(
-				_faroInfoElasticsearchInvoker.fetch(
-					getCollectionName(),
-					QueryBuilders.nestedQuery(
-						"dataSourceIndividualPKs",
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery(
-								"dataSourceIndividualPKs.dataSourceId",
-								String.valueOf(dataSourceId))
-						).filter(
-							QueryBuilders.termsQuery(
-								"dataSourceIndividualPKs.individualPKs",
-								individualPK)
-						),
-						ScoreMode.None))));
-	}
-
-	@Override
-	public Optional<Individual> findByEmailAddress(String emailAddress) {
-		return Optional.ofNullable(
-			toEntity(
-				_faroInfoElasticsearchInvoker.fetch(
-					getCollectionName(),
-					QueryBuilders.termQuery(
-						"demographics.email.value", emailAddress))));
-	}
-
-	@Override
-	public Optional<Individual> findByEmailAddressHashed(
-		String emailAddressHashed) {
-
-		return Optional.ofNullable(
-			toEntity(
-				_faroInfoElasticsearchInvoker.fetch(
-					getCollectionName(),
-					QueryBuilders.termQuery(
-						"emailAddressHashed", emailAddressHashed))));
-	}
-
-	@Override
-	public Optional<Individual> findByEmailAddressOrEmailAddressHashed(
-		@Nullable String emailAddress, String emailAddressHashed) {
-
-		if (StringUtils.isBlank(emailAddress)) {
-			return findByEmailAddressHashed(emailAddressHashed);
-		}
-
-		return Optional.ofNullable(
-			toEntity(
-				_faroInfoElasticsearchInvoker.fetch(
-					getCollectionName(),
-					BoolQueryBuilderUtil.should(
-						QueryBuilders.termQuery(
-							"demographics.email.value", emailAddress)
-					).should(
-						QueryBuilders.termQuery(
-							"emailAddressHashed",
-							DigestUtils.sha256Hex(emailAddress))
-					))));
-	}
-
-	@Override
-	public List<Individual.ActivitiesCount> getActivitiesCounts(
+	public List<Individual.ActivitiesCount> findActivitiesCounts(
 		boolean includeAnonymousUsers, Long segmentId) {
 
 		JSONArray jsonArray = new JSONArray();
@@ -297,7 +189,131 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
-	public Map<Long, Long> getIndividualCounts(
+	public List<Individual> findByAnySegmentIds(Long segmentId) {
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				QueryBuilders.termQuery(
+					"individualSegmentIds", String.valueOf(segmentId))));
+	}
+
+	@Override
+	public Optional<Individual>
+		findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
+			Long associatedId, Long dataSourceId, String fieldName,
+			String individualPK) {
+
+		return Optional.ofNullable(
+			toEntity(
+				_faroInfoElasticsearchInvoker.fetch(
+					getCollectionName(),
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.nestedQuery(
+							"dataSourceIndividualPKs",
+							BoolQueryBuilderUtil.filter(
+								QueryBuilders.termQuery(
+									"dataSourceIndividualPKs.dataSourceId",
+									String.valueOf(dataSourceId))
+							).filter(
+								QueryBuilders.termQuery(
+									"dataSourceIndividualPKs.individualPKs",
+									individualPK)
+							),
+							ScoreMode.None)
+					).mustNot(
+						QueryBuilders.termQuery(fieldName, associatedId)
+					))));
+	}
+
+	public List<Individual> findByDataSourceId(
+		Long dataSourceId, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							QueryBuilders.nestedQuery(
+								"dataSourceIndividualPKs",
+								QueryBuilders.termQuery(
+									"dataSourceIndividualPKs.dataSourceId",
+									String.valueOf(dataSourceId)),
+								ScoreMode.None));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
+	}
+
+	@Override
+	public Optional<Individual> findByDataSourceIdAndIndividualPK(
+		Long dataSourceId, String individualPK) {
+
+		return Optional.ofNullable(
+			toEntity(
+				_faroInfoElasticsearchInvoker.fetch(
+					getCollectionName(),
+					QueryBuilders.nestedQuery(
+						"dataSourceIndividualPKs",
+						BoolQueryBuilderUtil.filter(
+							QueryBuilders.termQuery(
+								"dataSourceIndividualPKs.dataSourceId",
+								String.valueOf(dataSourceId))
+						).filter(
+							QueryBuilders.termsQuery(
+								"dataSourceIndividualPKs.individualPKs",
+								individualPK)
+						),
+						ScoreMode.None))));
+	}
+
+	@Override
+	public Optional<Individual> findByEmailAddress(String emailAddress) {
+		return Optional.ofNullable(
+			toEntity(
+				_faroInfoElasticsearchInvoker.fetch(
+					getCollectionName(),
+					QueryBuilders.termQuery(
+						"demographics.email.value", emailAddress))));
+	}
+
+	@Override
+	public Optional<Individual> findByEmailAddressHashed(
+		String emailAddressHashed) {
+
+		return Optional.ofNullable(
+			toEntity(
+				_faroInfoElasticsearchInvoker.fetch(
+					getCollectionName(),
+					QueryBuilders.termQuery(
+						"emailAddressHashed", emailAddressHashed))));
+	}
+
+	@Override
+	public Optional<Individual> findByEmailAddressOrEmailAddressHashed(
+		@Nullable String emailAddress, @Nullable String emailAddressHashed) {
+
+		if (StringUtils.isBlank(emailAddress)) {
+			return findByEmailAddressHashed(emailAddressHashed);
+		}
+
+		return Optional.ofNullable(
+			toEntity(
+				_faroInfoElasticsearchInvoker.fetch(
+					getCollectionName(),
+					BoolQueryBuilderUtil.should(
+						QueryBuilders.termQuery(
+							"demographics.email.value", emailAddress)
+					).should(
+						QueryBuilders.termQuery(
+							"emailAddressHashed",
+							DigestUtils.sha256Hex(emailAddress))
+					))));
+	}
+
+	@Override
+	public Map<Long, Long> findIndividualCounts(
 		boolean includeAnonymousUsers, Long segmentId) {
 
 		Map<Long, Long> individualCounts = new HashMap<>();
@@ -363,8 +379,8 @@ public class ElasticsearchIndividualRepositoryImpl
 					JSONUtil.toJSONArray(
 						new ArrayList<>(channelIds), String::valueOf));
 			}
-			catch (Exception e) {
-				throw new RuntimeException(e);
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
 			}
 		}
 
@@ -393,8 +409,8 @@ public class ElasticsearchIndividualRepositoryImpl
 									dataSourceAccountPK.getDataSourceId())
 							));
 					}
-					catch (JsonProcessingException jpe) {
-						throw new RuntimeException(jpe);
+					catch (JsonProcessingException jsonProcessingException) {
+						throw new RuntimeException(jsonProcessingException);
 					}
 				}
 			}
@@ -429,8 +445,8 @@ public class ElasticsearchIndividualRepositoryImpl
 											getIndividualPKs()))
 							));
 					}
-					catch (JsonProcessingException jpe) {
-						throw new RuntimeException(jpe);
+					catch (JsonProcessingException jsonProcessingException) {
+						throw new RuntimeException(jsonProcessingException);
 					}
 				}
 			}
@@ -546,7 +562,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	@Override
 	public void updateAssociatedIds(
-		String fieldName, Set<Long> ids, Long individualId) {
+		String fieldName, Long[] ids, Long individualId) {
 
 		_faroInfoElasticsearchInvoker.update(
 			getCollectionName(), String.valueOf(individualId),

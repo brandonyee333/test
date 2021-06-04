@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverter
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
+import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.LinkedList;
@@ -86,7 +87,7 @@ public class FilterStringToConditionConverter {
 		}
 
 		if (value instanceof Long) {
-			field = DSL.field(fieldName, Long.class);
+			field = DSL.cast(DSL.field(fieldName), Long.class);
 		}
 		else {
 			field = DSL.field(fieldName);
@@ -127,6 +128,10 @@ public class FilterStringToConditionConverter {
 		}
 		else {
 			throw new IllegalArgumentException("Invalid operator: " + operator);
+		}
+
+		if (inferredCondition != null) {
+			condition = inferredCondition.and(condition);
 		}
 
 		return condition;
@@ -200,8 +205,12 @@ public class FilterStringToConditionConverter {
 
 		fieldName = _toFieldName(fieldName);
 
-		Condition inferredCondition =
-			filterStringConverterHelper.getInferredCondition(fieldName);
+		if ((filterStringConverterHelper instanceof
+				IndividualsFilterStringConverterHelper) &&
+			fieldName.startsWith("demographics")) {
+
+			return null;
+		}
 
 		Object value = StringUtil.toObject(valueString);
 
@@ -215,12 +224,11 @@ public class FilterStringToConditionConverter {
 			}
 		}
 
+		Condition inferredCondition =
+			filterStringConverterHelper.getInferredCondition(fieldName);
+
 		Condition condition = _buildCondition(
 			fieldName, inferredCondition, operator, value);
-
-		if (inferredCondition != null) {
-			condition = condition.and(inferredCondition);
-		}
 
 		conditions.add(condition);
 
@@ -267,15 +275,27 @@ public class FilterStringToConditionConverter {
 
 		String fieldName = _toFieldName(arguments.get(0));
 
+		if ((filterStringConverterHelper instanceof
+				IndividualsFilterStringConverterHelper) &&
+			fieldName.startsWith("demographics")) {
+
+			return null;
+		}
+
 		String fieldValue = arguments.get(1);
 
 		String value = StringUtil.unquoteAndDecodeInnerQuotes(fieldValue);
+
+		Map<String, String> fieldNames =
+			filterStringConverterHelper.getFieldNameConversionMap();
+
+		fieldName = fieldNames.getOrDefault(fieldName, fieldName);
 
 		Condition inferredCondition =
 			filterStringConverterHelper.getInferredCondition(fieldName);
 
 		if (inferredCondition != null) {
-			fieldName = "value";
+			fieldName = "field.value";
 		}
 
 		Field<Object> field = DSL.field(fieldName);
@@ -309,7 +329,7 @@ public class FilterStringToConditionConverter {
 		}
 
 		if (inferredCondition != null) {
-			condition = condition.and(inferredCondition);
+			condition = inferredCondition.and(condition);
 		}
 
 		if (negated) {

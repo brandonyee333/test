@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.entity.Individual;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
@@ -38,10 +37,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IndividualRepository extends CrudRepository<Individual, Long> {
 
-	public boolean existsByChannelIdAndFilterAndId(
-		Long channelId, String filter, Long individualId);
+	public boolean existsByChannelIdAndFilterStringAndId(
+		@Nullable Long channelId, @Nullable String filterString,
+		@Nullable Long individualId);
 
-	public boolean existsByFilterAndId(String filter, Long individualId);
+	public boolean existsByFilterStringAndId(
+		@Nullable String filterString, @Nullable Long individualId);
+
+	public List<Individual.ActivitiesCount> findActivitiesCounts(
+		boolean includeAnonymousUsers, Long segmentId);
 
 	public List<Individual> findByAnySegmentIds(
 		@Param("segmentId") Long segmentId);
@@ -63,12 +67,9 @@ public interface IndividualRepository extends CrudRepository<Individual, Long> {
 		String emailAddressHashed);
 
 	public Optional<Individual> findByEmailAddressOrEmailAddressHashed(
-		@Nullable String emailAddress, String emailAddressHashed);
+		@Nullable String emailAddress, @Nullable String emailAddressHashed);
 
-	public List<Individual.ActivitiesCount> getActivitiesCounts(
-		boolean includeAnonymousUsers, Long segmentId);
-
-	public Map<Long, Long> getIndividualCounts(
+	public Map<Long, Long> findIndividualCounts(
 		boolean includeAnonymousUsers, Long segmentId);
 
 	public List<Individual> searchIndividuals(
@@ -76,7 +77,7 @@ public interface IndividualRepository extends CrudRepository<Individual, Long> {
 
 	@Modifying
 	public void updateAssociatedIds(
-		@Param("fieldName") String fieldName, @Param("ids") Set<Long> ids,
+		@Param("fieldName") String fieldName, @Param("ids") Long[] ids,
 		@Param("individualId") Long individualId);
 
 }
