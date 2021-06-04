@@ -158,8 +158,6 @@ public class ElasticsearchFieldMappingRepositoryImpl
 			QueryBuilders.termQuery("context", context)
 		).filter(
 			QueryBuilders.termQuery("displayName", displayName)
-		).filter(
-			QueryBuilders.termQuery("ownerType", ownerType)
 		);
 
 		if (StringUtils.isNotEmpty(displayType)) {
@@ -171,6 +169,9 @@ public class ElasticsearchFieldMappingRepositoryImpl
 			boolQueryBuilder.filter(
 				QueryBuilders.termQuery("fieldType", fieldType));
 		}
+
+		boolQueryBuilder.filter(
+			QueryBuilders.termQuery("ownerType", ownerType));
 
 		JSONObject fieldMappingJSONObject = _faroInfoElasticsearchInvoker.fetch(
 			getCollectionName(), boolQueryBuilder);
