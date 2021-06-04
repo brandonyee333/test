@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -541,31 +542,31 @@ public class Segment implements Persistable<Long> {
 	private String _name;
 
 	@Transient
-	private Set<Long> _referencedAssetDataSourceIds;
+	private Set<Long> _referencedAssetDataSourceIds = new HashSet<>();
 
 	@Transient
-	private Set<Long> _referencedAssetIds;
+	private Set<Long> _referencedAssetIds = new HashSet<>();
 
 	@Transient
-	private Set<Long> _referencedFieldMappingIds;
+	private Set<Long> _referencedFieldMappingIds = new HashSet<>();
 
 	@Transient
-	private Set<Long> _referencedGroupIds;
+	private Set<Long> _referencedGroupIds = new HashSet<>();
 
 	@Transient
-	private Set<Long> _referencedOrganizationIds;
+	private Set<Long> _referencedOrganizationIds = new HashSet<>();
 
 	@Transient
-	private Set<Long> _referencedRoleIds;
+	private Set<Long> _referencedRoleIds = new HashSet<>();
 
 	@Transient
-	private Set<Long> _referencedTeamIds;
+	private Set<Long> _referencedTeamIds = new HashSet<>();
 
 	@Transient
-	private Set<Long> _referencedUserGroupIds;
+	private Set<Long> _referencedUserGroupIds = new HashSet<>();
 
 	@Transient
-	private Set<Long> _referencedUserIds;
+	private Set<Long> _referencedUserIds = new HashSet<>();
 
 	@Transient
 	private String _scope;
