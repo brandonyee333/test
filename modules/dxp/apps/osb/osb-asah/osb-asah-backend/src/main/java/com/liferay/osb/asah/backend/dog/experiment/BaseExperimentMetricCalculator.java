@@ -30,7 +30,6 @@ import io.improbable.keanu.algorithms.NetworkSamples;
 import io.improbable.keanu.algorithms.PosteriorSamplingAlgorithm;
 import io.improbable.keanu.algorithms.mcmc.NetworkSamplesGenerator;
 import io.improbable.keanu.network.BayesianNetwork;
-import io.improbable.keanu.network.KeanuProbabilisticModel;
 import io.improbable.keanu.network.KeanuProbabilisticModelWithGradient;
 import io.improbable.keanu.tensor.bool.BooleanTensor;
 import io.improbable.keanu.tensor.bool.JVMBooleanTensor;
@@ -161,7 +160,8 @@ public abstract class BaseExperimentMetricCalculator<T>
 
 		NetworkSamplesGenerator networkSamplesGenerator =
 			posteriorSamplingAlgorithm.generatePosteriorSamples(
-				keanuProbabilisticModel, bayesianNetwork.getLatentVertices());
+				new KeanuProbabilisticModelWithGradient(bayesianNetwork),
+				bayesianNetwork.getLatentVertices());
 
 		networkSamplesGenerator.dropCount(dropCount);
 
