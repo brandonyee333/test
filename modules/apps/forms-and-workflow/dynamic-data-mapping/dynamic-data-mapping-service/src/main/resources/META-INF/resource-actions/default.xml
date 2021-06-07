@@ -13,9 +13,7 @@
 			<supports>
 				<action-key>ADD_DATA_PROVIDER_INSTANCE</action-key>
 			</supports>
-			<site-member-defaults>
-				<action-key>ADD_DATA_PROVIDER_INSTANCE</action-key>
-			</site-member-defaults>
+			<site-member-defaults />
 			<guest-defaults />
 			<guest-unsupported>
 				<action-key>ADD_DATA_PROVIDER_INSTANCE</action-key>
