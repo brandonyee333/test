@@ -96,7 +96,7 @@ const getDateFormat = (locale) => {
 	};
 };
 
-const transformToDate = (
+const getInitialValue = (
 	defaultLanguageId,
 	date,
 	locale,
@@ -107,13 +107,13 @@ const transformToDate = (
 			return moment(date, [
 				getLocaleDateFormat(locale),
 				'YYYY-MM-DD',
-			]).toDate();
+			]).format(getLocaleDateFormat(locale));
 		}
 
 		return moment(date, [
 			getLocaleDateFormat(defaultLanguageId),
 			'YYYY-MM-DD',
-		]).toDate();
+		]).format(getLocaleDateFormat(defaultLanguageId));
 	}
 
 	return date;
@@ -187,7 +187,7 @@ const DatePicker = ({
 
 	const initialValueMemoized = useMemo(
 		() =>
-			transformToDate(
+			getInitialValue(
 				defaultLanguageId,
 				initialValue,
 				locale,
@@ -235,9 +235,7 @@ const DatePicker = ({
 				}
 			}
 			else if (initialValueMemoized) {
-				inputRef.current.value = moment(initialValueMemoized).format(
-					dateMask.toUpperCase()
-				);
+				inputRef.current.value = initialValueMemoized;
 			}
 			else {
 				inputRef.current.value = '';
