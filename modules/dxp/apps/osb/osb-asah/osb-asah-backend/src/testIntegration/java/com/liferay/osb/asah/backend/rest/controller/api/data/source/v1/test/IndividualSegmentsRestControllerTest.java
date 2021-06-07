@@ -36,6 +36,7 @@ import io.restassured.response.ValidatableResponse;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 import org.hamcrest.Matchers;
 
@@ -235,6 +236,59 @@ public class IndividualSegmentsRestControllerTest
 			"individual-segments");
 
 		Assert.assertEquals(1, individualSegmentsJSONArray.length());
+	}
+
+	@ElasticsearchIndex(
+		name = "individual-segments",
+		resourcePath = "individual_segments_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetSegmentDTO() throws Exception {
+		SegmentDTO segmentDTO = _individualSegmentsRestController.getSegmentDTO(
+			327968823603500655L, "referenced-objects");
+
+		Assert.assertEquals("d-age-gt-50", segmentDTO.getName());
+
+		Set<String> referencedAssetDataSourceIds =
+			segmentDTO.getReferencedAssetDataSourceIds();
+
+		Assert.assertTrue(referencedAssetDataSourceIds.isEmpty());
+
+		Set<String> referencedAssetIds = segmentDTO.getReferencedAssetIds();
+
+		Assert.assertTrue(referencedAssetIds.isEmpty());
+
+		Set<String> referencedFieldMappingIds =
+			segmentDTO.getReferencedFieldMappingIds();
+
+		Assert.assertTrue(referencedFieldMappingIds.isEmpty());
+
+		Set<String> referencedGroupIds = segmentDTO.getReferencedGroupIds();
+
+		Assert.assertTrue(referencedGroupIds.isEmpty());
+
+		Set<String> referencedOrganizationIds =
+			segmentDTO.getReferencedOrganizationIds();
+
+		Assert.assertTrue(referencedOrganizationIds.isEmpty());
+
+		Set<String> referencedRoleIds = segmentDTO.getReferencedRoleIds();
+
+		Assert.assertTrue(referencedRoleIds.isEmpty());
+
+		Set<String> referencedTeamIds = segmentDTO.getReferencedTeamIds();
+
+		Assert.assertTrue(referencedTeamIds.isEmpty());
+
+		Set<String> referencedUserGroupIds =
+			segmentDTO.getReferencedUserGroupIds();
+
+		Assert.assertTrue(referencedUserGroupIds.isEmpty());
+
+		Set<String> referencedUserIds = segmentDTO.getReferencedUserIds();
+
+		Assert.assertTrue(referencedUserIds.isEmpty());
 	}
 
 	private String[] _getIds(
