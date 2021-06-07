@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.EventAnalysis;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -45,10 +45,10 @@ public class EventAnalysisDog {
 
 		Date rangeEndDate = DateUtil.toDate(
 			timeRange.getEndLocalDateTime(),
-			ZoneId.of(TimeZoneDogUtil.getTimeZoneId()));
+			ZoneId.of(_timeZoneDog.getTimeZoneId()));
 		Date rangeStartDate = DateUtil.toDate(
 			timeRange.getStartLocalDateTime(),
-			ZoneId.of(TimeZoneDogUtil.getTimeZoneId()));
+			ZoneId.of(_timeZoneDog.getTimeZoneId()));
 
 		long totalEvents =
 			_eventRepository.
@@ -78,5 +78,8 @@ public class EventAnalysisDog {
 
 	@Autowired
 	private EventRepository _eventRepository;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }
