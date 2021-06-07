@@ -362,15 +362,10 @@ public class SecurityPortletContainerWrapper implements PortletContainer {
 
 		String url = getOriginalURL(request);
 
-		if (principalException instanceof
-				PrincipalException.MustHaveSessionCSRFToken) {
+		if (_log.isWarnEnabled() &&
+			!(principalException instanceof
+				PrincipalException.MustHaveSessionCSRFToken)) {
 
-			httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
-
-			return ActionResult.EMPTY_ACTION_RESULT;
-		}
-
-		if (_log.isWarnEnabled()) {
 			_log.warn(
 				String.format(
 					"User %s is not allowed to access URL %s and portlet %s: " +
