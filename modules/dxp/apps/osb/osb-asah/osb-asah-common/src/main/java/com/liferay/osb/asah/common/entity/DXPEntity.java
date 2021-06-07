@@ -232,7 +232,8 @@ public class DXPEntity implements Persistable<Long> {
 			if (className.equals(CLASS_NAME_USER_FIELD)) {
 				return Type.USER_FIELD;
 			}
-			else if (className.equals(CLASS_NAME_USER_GROUP)) {
+
+			if (className.equals(CLASS_NAME_USER_GROUP)) {
 				return Type.USER_GROUP;
 			}
 

@@ -79,6 +79,17 @@ public class ElasticsearchDXPEntityRepositoryImpl
 	}
 
 	@Override
+	public long countByDataSourceIdsAndKeywordsAndType(
+		List<Long> dataSourceIds, @Nullable String keywords,
+		DXPEntity.Type type) {
+
+		return _dxpRawElasticsearchInvoker.count(
+			type.getCollectionName(),
+			_createQueryBuilder(
+				type.getCollectionName(), dataSourceIds, keywords));
+	}
+
+	@Override
 	public void delete(DXPEntity dxpEntity) {
 		DXPEntity.Type type = dxpEntity.getType();
 
@@ -97,7 +108,7 @@ public class ElasticsearchDXPEntityRepositoryImpl
 	}
 
 	@Override
-	public void deleteByFieldNameEqualsAndType(
+	public void deleteByFieldNameAndFieldValueAndType(
 		String fieldName, String fieldValue, DXPEntity.Type type) {
 
 		_dxpRawElasticsearchInvoker.delete(
@@ -132,8 +143,9 @@ public class ElasticsearchDXPEntityRepositoryImpl
 	}
 
 	@Override
-	public List<DXPEntity> findByFieldsAndType(
-		Long after, Map<String, Object> fields, int size, DXPEntity.Type type) {
+	public List<DXPEntity> findByAfterAndFieldsAndType(
+		@Nullable Long after, Map<String, Object> fields, int size,
+		DXPEntity.Type type) {
 
 		SearchResponse searchResponse = _dxpRawElasticsearchInvoker.search(
 			type.getCollectionName(),

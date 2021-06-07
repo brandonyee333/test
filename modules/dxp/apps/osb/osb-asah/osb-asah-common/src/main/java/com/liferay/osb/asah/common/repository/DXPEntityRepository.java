@@ -34,13 +34,18 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DXPEntityRepository extends CrudRepository<DXPEntity, Long> {
 
-	public void deleteByFieldNameEqualsAndType(
+	public long countByDataSourceIdsAndKeywordsAndType(
+		List<Long> dataSourceIds, @Nullable String keywords,
+		DXPEntity.Type type);
+
+	public void deleteByFieldNameAndFieldValueAndType(
 		String fieldName, String fieldValue, DXPEntity.Type type);
 
 	public void deleteByType(DXPEntity.Type type);
 
-	public List<DXPEntity> findByFieldsAndType(
-		Long after, Map<String, Object> fields, int size, DXPEntity.Type type);
+	public List<DXPEntity> findByAfterAndFieldsAndType(
+		@Nullable Long after, Map<String, Object> fields, int size,
+		DXPEntity.Type type);
 
 	public List<DXPEntity> findByMembershipClassNameAndMembershipId(
 		String membershipClassName, Long membershipId);

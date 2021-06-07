@@ -37,6 +37,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Matthew Kong
@@ -222,15 +223,18 @@ public class DXPEntityDogTest {
 		Long channelId, String collectionName, List<String> expectedNames,
 		int expectedTotal, String keywords, Sort sort) {
 
-		List<? extends DXPEntity> dxpEntities = _dxpEntityDog.getDXPEntities(
-			channelId, keywords, 10, sort, 0,
-			DXPEntity.Type.ofCollectionName(collectionName));
+		Page<? extends DXPEntity> dxpEntitiesPage =
+			_dxpEntityDog.getDXPEntitiesPage(
+				channelId, keywords, 10, sort, 0,
+				DXPEntity.Type.ofCollectionName(collectionName));
 
 		Assert.assertEquals(
-			dxpEntities.toString(), expectedTotal, dxpEntities.size());
+			dxpEntitiesPage.toString(), expectedTotal,
+			dxpEntitiesPage.getTotalElements());
 
 		Assert.assertEquals(
-			expectedNames, ListUtil.map(dxpEntities, DXPEntity::getName));
+			expectedNames,
+			ListUtil.map(dxpEntitiesPage.getContent(), DXPEntity::getName));
 	}
 
 	@Autowired

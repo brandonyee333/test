@@ -155,9 +155,6 @@ public abstract class BaseExperimentMetricCalculator<T>
 				"Unrecognized sampler type: " + samplerType);
 		}
 
-		KeanuProbabilisticModel keanuProbabilisticModel =
-			new KeanuProbabilisticModelWithGradient(bayesianNetwork);
-
 		NetworkSamplesGenerator networkSamplesGenerator =
 			posteriorSamplingAlgorithm.generatePosteriorSamples(
 				new KeanuProbabilisticModelWithGradient(bayesianNetwork),

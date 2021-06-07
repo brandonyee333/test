@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
@@ -52,6 +54,24 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		throw new UnsupportedOperationException();
 	}
 
+	public long countByDataSourceIdsAndKeywordsAndType(
+		List<Long> dataSourceIds, @Nullable String keywords,
+		DXPEntity.Type type) {
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return selectSelectStep.from(
+			DSL.table(DXPEntity.class.getSimpleName())
+		).where(
+			_getConditions(dataSourceIds, keywords, type)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
 	public void delete(DXPEntity dxpEntity) {
 		if (dxpEntity.getId() == null) {
 			return;
@@ -68,11 +88,15 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		).execute();
 	}
 
+	public void deleteAll() {
+		throw new UnsupportedOperationException();
+	}
+
 	public void deleteAll(Iterable<? extends DXPEntity> dxpEntities) {
 		dxpEntities.forEach(this::delete);
 	}
 
-	public void deleteByFieldNameEqualsAndType(
+	public void deleteByFieldNameAndFieldValueAndType(
 		String fieldName, String fieldValue, DXPEntity.Type type) {
 
 		_dslContext.delete(
@@ -99,9 +123,13 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			DSL.field(
 				"type"
 			).eq(
-				type.getCollectionName()
+				type.toString()
 			)
 		).execute();
+	}
+
+	public boolean existsById(Long id) {
+		throw new UnsupportedOperationException();
 	}
 
 	public Iterable<DXPEntity> findAll() {
@@ -112,8 +140,9 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		throw new UnsupportedOperationException();
 	}
 
-	public List<DXPEntity> findByFieldsAndType(
-		Long after, Map<String, Object> fields, int size, DXPEntity.Type type) {
+	public List<DXPEntity> findByAfterAndFieldsAndType(
+		@Nullable Long after, Map<String, Object> fields, int size,
+		DXPEntity.Type type) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
@@ -138,15 +167,14 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 					"id"
 				).greaterThan(
 					after
-				)
-			).orderBy(
-				DSL.field("id")
-			);
+				));
 		}
 
 		if (size > 0) {
 			selectConditionStep.limit(size);
 		}
+
+		selectConditionStep.orderBy(DSL.field("id"));
 
 		return selectConditionStep.fetch(
 		).map(
@@ -188,7 +216,22 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		List<Long> dataSourceIds, @Nullable String keywords,
 		DXPEntity.Type type, Pageable pageable) {
 
-		throw new UnsupportedOperationException();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			DSL.table(DXPEntity.class.getSimpleName())
+		).where(
+			_getConditions(dataSourceIds, keywords, type)
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new DXPEntity(record.intoMap())
+		);
 	}
 
 	private Condition _createCondition(String fieldKey, Object fieldValue) {
@@ -232,6 +275,85 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		}
 
 		return String.join("", keys);
+	}
+
+	private List<Condition> _getConditions(
+		List<Long> dataSourceIds, String keywords, DXPEntity.Type type) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(
+			DSL.field(
+				"type"
+			).eq(
+				type.toString()
+			));
+
+		if (dataSourceIds == null) {
+			if (type.isUser()) {
+				conditions.add(
+					DSL.or(
+						DSL.field(
+							"fields->firstName", String.class
+						).contains(
+							keywords
+						),
+						DSL.field(
+							"fields->lastName", String.class
+						).contains(
+							keywords
+						)));
+
+				return conditions;
+			}
+
+			conditions.add(
+				DSL.field(
+					"fields->name", String.class
+				).contains(
+					keywords
+				));
+
+			return conditions;
+		}
+
+		if ((type.isGroup() || type.isTeam()) &&
+			StringUtils.isNotBlank(keywords)) {
+
+			conditions.add(
+				DSL.field(
+					"fields->name", String.class
+				).contains(
+					keywords
+				));
+		}
+		else if (type.isUser() && StringUtils.isNotBlank(keywords)) {
+			conditions.add(
+				DSL.or(
+					DSL.field(
+						"fields->firstName", String.class
+					).contains(
+						keywords
+					),
+					DSL.field(
+						"fields->lastName", String.class
+					).contains(
+						keywords
+					)));
+		}
+
+		if (dataSourceIds.isEmpty()) {
+			return conditions;
+		}
+
+		conditions.add(
+			DSL.field(
+				"dataSourceId"
+			).in(
+				dataSourceIds
+			));
+
+		return conditions;
 	}
 
 	private final DSLContext _dslContext;

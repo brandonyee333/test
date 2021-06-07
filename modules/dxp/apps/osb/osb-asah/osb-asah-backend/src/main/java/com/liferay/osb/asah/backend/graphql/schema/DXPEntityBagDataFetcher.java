@@ -26,9 +26,8 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLFieldDefinition;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 /**
@@ -48,16 +47,18 @@ public class DXPEntityBagDataFetcher
 	public ResultBag<? extends DXPEntity> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		List<? extends DXPEntity> dxpEntities = _dxpEntityDog.getDXPEntities(
-			dataFetchingEnvironment.getArgument("channelId"),
-			dataFetchingEnvironment.getArgument("keywords"),
-			dataFetchingEnvironment.getArgument("size"),
-			Sort.of(dataFetchingEnvironment.getArgument("sort")),
-			dataFetchingEnvironment.getArgument("start"),
-			DXPEntity.Type.ofCollectionName(
-				_getCollectionName(dataFetchingEnvironment)));
+		Page<? extends DXPEntity> dxpEntitiesPage =
+			_dxpEntityDog.getDXPEntitiesPage(
+				dataFetchingEnvironment.getArgument("channelId"),
+				dataFetchingEnvironment.getArgument("keywords"),
+				dataFetchingEnvironment.getArgument("size"),
+				Sort.of(dataFetchingEnvironment.getArgument("sort")),
+				dataFetchingEnvironment.getArgument("start"),
+				DXPEntity.Type.ofCollectionName(
+					_getCollectionName(dataFetchingEnvironment)));
 
-		return new ResultBag<>(dxpEntities, dxpEntities.size());
+		return new ResultBag<>(
+			dxpEntitiesPage.getContent(), dxpEntitiesPage.getTotalElements());
 	}
 
 	private String _getCollectionName(

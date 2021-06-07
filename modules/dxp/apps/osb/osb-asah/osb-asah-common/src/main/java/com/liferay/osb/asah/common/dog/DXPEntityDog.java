@@ -34,12 +34,12 @@ import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -52,7 +52,7 @@ public class DXPEntityDog {
 	public void deleteByFieldNameEqualsAndType(
 		String fieldName, String fieldValue, DXPEntity.Type type) {
 
-		_dxpEntityRepository.deleteByFieldNameEqualsAndType(
+		_dxpEntityRepository.deleteByFieldNameAndFieldValueAndType(
 			fieldName, fieldValue, type);
 	}
 
@@ -63,14 +63,29 @@ public class DXPEntityDog {
 	public List<? extends DXPEntity> findByFieldsAndType(
 		Long after, Map<String, Object> fields, int size, DXPEntity.Type type) {
 
-		return _dxpEntityRepository.findByFieldsAndType(
+		return _dxpEntityRepository.findByAfterAndFieldsAndType(
 			after, fields, size, type);
 	}
 
-	public List<? extends DXPEntity> getDXPEntities(
+	public Page<? extends DXPEntity> getDXPEntitiesPage(
 		@Nullable Long channelId, @Nullable String keywords, int size,
 		Sort sort, int start, DXPEntity.Type type) {
 
+		List<Long> dataSourceIds = _getDataSourceIds(channelId);
+
+		PageRequest pageRequest = PageRequest.of(start / size, size, sort);
+
+		return PageableExecutionUtils.getPage(
+			_mapDXPEntity(
+				_dxpEntityRepository.searchByDataSourceIdsAndKeywordsAndType(
+					dataSourceIds, keywords, type, pageRequest),
+				type),
+			pageRequest,
+			() -> _dxpEntityRepository.countByDataSourceIdsAndKeywordsAndType(
+				dataSourceIds, keywords, type));
+	}
+
+	private List<Long> _getDataSourceIds(Long channelId) {
 		List<Long> dataSourceIds = new ArrayList<>();
 
 		if (channelId != null) {
@@ -83,16 +98,17 @@ public class DXPEntityDog {
 			}
 		}
 
-		List<DXPEntity> dxpEntities =
-			_dxpEntityRepository.searchByDataSourceIdsAndKeywordsAndType(
-				dataSourceIds, keywords, type,
-				PageRequest.of(start / size, size, sort));
+		return dataSourceIds;
+	}
 
-		if (StringUtils.equals(type.getCollectionName(), "organizations")) {
+	private List<? extends DXPEntity> _mapDXPEntity(
+		List<DXPEntity> dxpEntities, DXPEntity.Type type) {
+
+		if (type.isOrganization()) {
 			return _processDXPEntities(this::_mapOrganization, dxpEntities);
 		}
 
-		if (StringUtils.equals(type.getCollectionName(), "users")) {
+		if (type.isUser()) {
 			return _processDXPEntities(this::_mapDXPUser, dxpEntities);
 		}
 
