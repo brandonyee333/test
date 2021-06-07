@@ -21,8 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONObject;
-
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
@@ -53,8 +51,6 @@ public class NaniteTestConfiguration {
 			invocation -> {
 				AsahTask asahTask = invocation.getArgument(0, AsahTask.class);
 
-				JSONObject contextJSONObject = asahTask.getContextJSONObject();
-
 				if (_nanitesMap.isEmpty()) {
 					for (Nanite nanite : _nanites) {
 						Class<?> clazz = nanite.getClass();
@@ -79,7 +75,7 @@ public class NaniteTestConfiguration {
 					individualSegmentActivityFieldsNanite.run();
 				}
 				else {
-					nanite.run(contextJSONObject);
+					nanite.run(asahTask.getContextJSONObject());
 				}
 
 				return null;

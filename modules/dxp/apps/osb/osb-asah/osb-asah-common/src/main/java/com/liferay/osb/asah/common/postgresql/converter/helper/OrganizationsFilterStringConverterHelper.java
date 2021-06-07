@@ -67,7 +67,8 @@ public class OrganizationsFilterStringConverterHelper
 		if (operator.equalsIgnoreCase("eq")) {
 			return condition;
 		}
-		else if (operator.equalsIgnoreCase("ne")) {
+
+		if (operator.equalsIgnoreCase("ne")) {
 			return DSL.not(condition);
 		}
 

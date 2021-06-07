@@ -141,9 +141,6 @@ public abstract class BaseExperimentMetricCalculator<T>
 		BayesianNetwork bayesianNetwork, int dropCount, int sampleSize,
 		SamplerType samplerType) {
 
-		KeanuProbabilisticModel keanuProbabilisticModel =
-			new KeanuProbabilisticModelWithGradient(bayesianNetwork);
-
 		PosteriorSamplingAlgorithm posteriorSamplingAlgorithm;
 
 		if (samplerType == SamplerType.METROPOLIS_HASTINGS) {
@@ -158,6 +155,9 @@ public abstract class BaseExperimentMetricCalculator<T>
 			throw new IllegalStateException(
 				"Unrecognized sampler type: " + samplerType);
 		}
+
+		KeanuProbabilisticModel keanuProbabilisticModel =
+			new KeanuProbabilisticModelWithGradient(bayesianNetwork);
 
 		NetworkSamplesGenerator networkSamplesGenerator =
 			posteriorSamplingAlgorithm.generatePosteriorSamples(
