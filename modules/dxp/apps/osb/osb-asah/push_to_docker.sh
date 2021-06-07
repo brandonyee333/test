@@ -96,6 +96,13 @@ function build_docker_image {
 }
 
 function check_repository {
+if [ ! "$(git rev-list -n 1 $PREVIOUS_GIT_HASH)" ]
+	then
+		echo "Invalid previous git hash.";
+
+		exit
+	fi
+
 	if [ ! -f ~/.asah/client.zip ]
 	then
 		echo "${HOME}/.asah/client.zip does not exist.";
