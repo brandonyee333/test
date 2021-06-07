@@ -23,6 +23,10 @@ As another example, these services serve the data of an Analytics Cloud customer
 
 ## Services
 
+### Diagram
+
+<img src="./asah.drawio.svg">
+
 ### osb-asah-backend
 
 This service exposes endpoints to the [Faro frontend](https://github.com/liferay/com-liferay-osb-faro-private) and Liferay Portal.
@@ -39,7 +43,7 @@ This service processes raw data into intelligent information using scheduled rou
 
 This service extracts and saves events from [osb-asah-queue](#osb-asah-queue).
 
-### osb-asah-publisher
+### [osb-asah-publisher](osb-asah-publisher/README.markdown)
 
 This service receives events from HTTP requests made by users' browsers, and publishes them to [osb-asah-queue](#osb-asah-queue).
 
