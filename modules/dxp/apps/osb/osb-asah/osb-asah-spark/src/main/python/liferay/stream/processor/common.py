@@ -55,10 +55,12 @@ class AnalyticsEventsDataFrameProcessor(object):
 			'row_number = 1'
 		)
 
+		score_col_value = F.col('eventProperties.score').cast('float')
+
 		return data_frame.withColumn(
-			'ratings', F.lit(1)
+			'ratings', F.when(score_col_value < 0, F.lit(0)).otherwise(F.lit(1))
 		).withColumn(
-			'ratingsScore', F.col('eventProperties.score').cast('float')
+			'ratingsScore', F.when(score_col_value < 0, F.lit(0)).otherwise(score_col_value)
 		).select(
 			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
 			'normalized_event_date', 'primaryKey', 'ratings', 'ratingsScore'
