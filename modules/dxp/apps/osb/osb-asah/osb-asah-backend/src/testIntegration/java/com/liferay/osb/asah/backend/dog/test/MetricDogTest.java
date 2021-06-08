@@ -20,6 +20,8 @@ import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.BlogMetric;
 import com.liferay.osb.asah.backend.model.BlogMetricType;
+import com.liferay.osb.asah.backend.model.DocumentLibraryMetric;
+import com.liferay.osb.asah.backend.model.DocumentLibraryMetricType;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.PageMetric;
@@ -181,6 +183,29 @@ public class MetricDogTest {
 		Metric metric = assetMetric.getDefaultMetric();
 
 		Assert.assertEquals(7, metric.getValue(), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "document-libraries",
+		resourcePath = "document_library_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testDocumentLibraryMetrics() {
+		DocumentLibraryMetric documentLibraryMetric = _metricDog.getAssetMetric(
+			_createSearchQuery(
+				"1", AssetType.DOCUMENT, null, TimeRange.LAST_7_DAYS, null),
+			new HashSet<String>() {
+				{
+					add(DocumentLibraryMetricType.RATINGS.getName());
+				}
+			});
+
+		Assert.assertNotNull(documentLibraryMetric);
+
+		Metric ratingsMetric = documentLibraryMetric.getRatingsMetric();
+
+		Assert.assertEquals(0.5, ratingsMetric.getValue(), 0.1);
 	}
 
 	@ElasticsearchIndex(

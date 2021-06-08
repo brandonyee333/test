@@ -1,0 +1,50 @@
+[
+	{
+		"applicationId": "Ratings",
+		"context": {
+			"crawler": "False"
+		},
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.document.library.kernel.model.DLFileEntry",
+			"classPK": "1",
+			"ratingType": "stars",
+			"score": "0.8"
+		},
+		"id": "2",
+		"projectId": "test",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"context": {
+			"crawler": "False"
+		},
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.document.library.kernel.model.DLFileEntry",
+			"classPK": "1",
+			"ratingType": "stars",
+			"score": "0.6"
+		},
+		"id": "5",
+		"projectId": "test",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"context": {
+			"crawler": "False"
+		},
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.document.library.kernel.model.DLFileEntry",
+			"classPK": "1",
+			"ratingType": "stars",
+			"score": "-1"
+		},
+		"id": "5",
+		"projectId": "test",
+		"userId": "1"
+	}
+]

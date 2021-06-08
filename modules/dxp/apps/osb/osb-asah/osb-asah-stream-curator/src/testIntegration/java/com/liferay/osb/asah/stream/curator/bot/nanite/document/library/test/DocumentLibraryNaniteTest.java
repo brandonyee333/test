@@ -88,6 +88,25 @@ public class DocumentLibraryNaniteTest extends BaseNaniteTestCase {
 		Assert.assertEquals(0.6, jsonObject.getDouble("ratingsScore"), 0);
 	}
 
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_DOCUMENT,
+		resourcePath = "analytics_events_document_channel_3.json"
+	)
+	@Test
+	public void testDocumentLibraryRatingsMetric2() throws Exception {
+		_documentLibraryNanite.run();
+
+		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
+			"document-libraries");
+
+		Assert.assertEquals(1, jsonArray.length());
+
+		JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+		Assert.assertEquals(0, jsonObject.getInt("ratings"));
+		Assert.assertEquals(0.0, jsonObject.getDouble("ratingsScore"), 0);
+	}
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
