@@ -98,7 +98,7 @@ function build_docker_image {
 function check_repository {
 if [ ! "$(git rev-list -n 1 $PREVIOUS_GIT_HASH)" ]
 	then
-		echo "Invalid previous git hash.";
+		echo "The previous Git hash is invalid.";
 
 		exit
 	fi
