@@ -585,7 +585,7 @@ if (portletTitleBasedNavigation && (folderId != DLFolderConstants.DEFAULT_PARENT
 							<c:if test='<%= ArrayUtil.contains(entryColumns, "modified-date") %>'>
 								<liferay-ui:search-container-column-date
 									name="modified-date"
-									value="<%= curFolder.getLastPostDate() %>"
+									value="<%= curFolder.getModifiedDate() %>"
 								/>
 							</c:if>
 
