@@ -148,7 +148,6 @@ definition {
 	@description = "LPS-88573 - Verify that when an instance from Asset is added to the list of process, the count number should be reflected on the Process List"
 	@priority = "5"
 	test TableDisplaysCorrectNumbersWhenAssetAdded {
-
 		ApplicationsMenu.gotoPortlet(
 			category = "Workflow",
 			panel = "Applications",
@@ -173,11 +172,10 @@ definition {
 			entryTitle = "Blogs Entry Title");
 
 		WorkflowMetrics.checkWorkflowReports(
-			key_workflowProcessName = "Single Approver",
-			key_overdueValue = "0",
 			key_onTimeValue = "0",
-			key_totalPendingValue = "1");
-
+			key_overdueValue = "0",
+			key_totalPendingValue = "1",
+			key_workflowProcessName = "Single Approver");
 	}
 
 	@description = "LPS-88573 - Verify that the table entries are ordered by Overdue, from biggest to the smaller value, by default"
