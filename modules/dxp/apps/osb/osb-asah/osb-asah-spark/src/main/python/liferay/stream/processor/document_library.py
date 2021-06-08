@@ -95,6 +95,9 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			F.sum('previews').alias('previews')
 		)
 
+		if len(data_frame.head(1)) == 0:
+			return data_frame_with_rating_score.fillna(0)
+
 		return data_frame.join(
 			data_frame_with_rating_score,
 			how='left',
