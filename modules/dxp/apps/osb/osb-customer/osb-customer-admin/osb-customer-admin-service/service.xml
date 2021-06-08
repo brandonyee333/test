@@ -402,6 +402,16 @@
 			<finder-column name="licenses" />
 		</finder>
 	</entity>
+	<entity local-service="true" name="ProjectSolution" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="salesforceProjectKey" primary="true" type="String" />
+
+		<!-- Other fields -->
+
+		<column name="value" type="String" />
+	</entity>
 	<exceptions>
 		<exception>AccountAttachmentSize</exception>
 		<exception>AccountEntryKoroneikiAccountKey</exception>

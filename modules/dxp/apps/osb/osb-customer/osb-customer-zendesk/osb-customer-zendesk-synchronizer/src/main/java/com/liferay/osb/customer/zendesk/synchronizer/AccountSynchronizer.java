@@ -18,9 +18,11 @@ import com.liferay.osb.customer.admin.constants.AccountEntryConstants;
 import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.ProductEntry;
+import com.liferay.osb.customer.admin.model.ProjectSolution;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
+import com.liferay.osb.customer.admin.service.ProjectSolutionLocalService;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.constants.ProductPurchaseConstants;
@@ -29,6 +31,7 @@ import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ExternalLinkWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
@@ -43,6 +46,8 @@ import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.customer.zendesk.web.service.search.Query;
 import com.liferay.osb.customer.zendesk.web.service.search.QueryFactory;
 import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
+import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
+import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
@@ -722,6 +727,29 @@ public class AccountSynchronizer {
 			}
 		}
 
+		List<ExternalLink> externalLinks =
+			_externalLinkWebService.getExternalLinks(
+				accountEntry.getKoroneikiAccountKey(), 1, 1000);
+
+		for (ExternalLink externalLink : externalLinks) {
+			String domain = externalLink.getDomain();
+			String entityName = externalLink.getEntityName();
+
+			if (domain.equals(ExternalLinkDomain.SALESFORCE) &&
+				entityName.equals(ExternalLinkEntityName.SALESFORCE_PROJECT)) {
+
+				ProjectSolution projectSolution =
+					_projectSolutionLocalService.fetchProjectSolution(
+						externalLink.getEntityId());
+
+				if (projectSolution != null) {
+					tags.add(projectSolution.getTag());
+				}
+
+				break;
+			}
+		}
+
 		return tags;
 	}
 
@@ -824,10 +852,16 @@ public class AccountSynchronizer {
 	private ExternalIdMapperLocalService _externalIdMapperLocalService;
 
 	@Reference
+	private ExternalLinkWebService _externalLinkWebService;
+
+	@Reference
 	private ProductEntryLocalService _productEntryLocalService;
 
 	@Reference
 	private ProductPurchaseWebService _productPurchaseWebService;
+
+	@Reference
+	private ProjectSolutionLocalService _projectSolutionLocalService;
 
 	@Reference
 	private QueryFactory _queryFactory;
