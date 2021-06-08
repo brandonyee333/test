@@ -183,18 +183,21 @@ public class MetadataManagerImpl
 				httpServletRequest,
 				isSSLRequired() || _portal.isSecure(httpServletRequest));
 			String localEntityId = _localEntityManager.getLocalEntityId();
+			String relativeHomeURL = _portal.getRelativeHomeURL(
+				httpServletRequest);
 
 			if (_samlProviderConfigurationHelper.isRoleIdp()) {
 				return MetadataGeneratorUtil.buildIdpEntityDescriptor(
-					portalURL, localEntityId, isWantAuthnRequestSigned(),
-					isSignMetadata(), getSigningCredential(),
-					encryptionCredential);
+					portalURL, relativeHomeURL, localEntityId,
+					isWantAuthnRequestSigned(), isSignMetadata(),
+					getSigningCredential(), encryptionCredential);
 			}
 			else if (_samlProviderConfigurationHelper.isRoleSp()) {
 				return MetadataGeneratorUtil.buildSpEntityDescriptor(
-					portalURL, localEntityId, isSignAuthnRequest(),
-					isSignMetadata(), isWantAssertionsSigned(),
-					getSigningCredential(), encryptionCredential);
+					portalURL, relativeHomeURL, localEntityId,
+					isSignAuthnRequest(), isSignMetadata(),
+					isWantAssertionsSigned(), getSigningCredential(),
+					encryptionCredential);
 			}
 
 			return null;
@@ -296,8 +299,8 @@ public class MetadataManagerImpl
 
 		String contextPath = httpServletRequest.getContextPath();
 
-		if (Validator.isNotNull(contextPath) &&
-			!contextPath.equals(StringPool.SLASH)) {
+		if ((contextPath != null) && !contextPath.equals(StringPool.SLASH) &&
+			requestURI.startsWith(contextPath)) {
 
 			requestURI = requestURI.substring(contextPath.length());
 		}

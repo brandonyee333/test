@@ -2,24 +2,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 --%>
 
-<%@ include file="/html/portal/init.jsp" %>
+<%@ include file="/init.jsp" %>
 
 <%
 JSONObject samlSloRequestInfoJSONObject = (JSONObject)request.getAttribute("SAML_SLO_REQUEST_INFO");
 
+String entityId = samlSloRequestInfoJSONObject.getString("entityId");
 int status = samlSloRequestInfoJSONObject.getInt("status");
+
+String sloLogoutRenderCommand = PortalUtil.getRelativeHomeURL(request) + SamlCommandQueryConstants.SLO_LOGOUT;
 %>
 
 <noscript>
@@ -37,7 +40,7 @@ int status = samlSloRequestInfoJSONObject.getInt("status");
 			<div class="portlet-msg-error">
 				<liferay-ui:message key="single-sign-out-request-failed" />
 
-				<a href="?cmd=logout&entityId=<%= samlSloRequestInfoJSONObject.getString("entityId") %>">
+				<a href="<%= sloLogoutRenderCommand %>&cmd=logout&entityId=<%= entityId %>">
 					<liferay-ui:message key="retry" />
 				</a>
 			</div>
@@ -57,6 +60,8 @@ int status = samlSloRequestInfoJSONObject.getInt("status");
 
 <aui:script>
 	if (window.parent.Liferay.SAML.SLO) {
-		window.parent.Liferay.SAML.SLO.updateStatus(<%= samlSloRequestInfoJSONObject %>);
+		window.parent.Liferay.SAML.SLO.updateStatus(
+			<%= samlSloRequestInfoJSONObject %>
+		);
 	}
 </aui:script>

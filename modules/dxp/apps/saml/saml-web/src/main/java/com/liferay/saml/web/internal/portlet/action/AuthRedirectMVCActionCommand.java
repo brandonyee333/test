@@ -12,11 +12,14 @@
  *
  */
 
-package com.liferay.saml.web.internal.struts;
+package com.liferay.saml.web.internal.portlet.action;
 
-import com.liferay.portal.kernel.struts.StrutsAction;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.saml.constants.SamlPortletKeys;
 import com.liferay.saml.runtime.configuration.SamlProviderConfigurationHelper;
-import com.liferay.saml.runtime.servlet.profile.SingleLogoutProfile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,17 +28,34 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Mika Koivisto
+ * @author Tomas Polesovsky
+ * @author Arthur Chan
  */
 @Component(
 	immediate = true,
 	property = {
-		"path=/portal/saml/slo", "path=/portal/saml/slo_logout",
-		"path=/portal/saml/slo_soap"
+		"auth.token.ignore.mvc.action=true",
+		"javax.portlet.name=" + SamlPortletKeys.SAML,
+		"mvc.command.name=/saml/auth_redirect"
 	},
-	service = StrutsAction.class
+	service = MVCActionCommand.class
 )
-public class SingleLogoutAction extends BaseSamlStrutsAction {
+public class AuthRedirectMVCActionCommand extends BaseSamlMVCActionCommand {
+
+	@Override
+	public boolean isEnabled() {
+		if (super.isEnabled()) {
+			return samlProviderConfigurationHelper.isRoleSp();
+		}
+
+		return false;
+	}
+
+	@Override
+	@Reference(unbind = "-")
+	public void setPortal(Portal portal) {
+		super.setPortal(portal);
+	}
 
 	@Override
 	@Reference(unbind = "-")
@@ -47,28 +67,20 @@ public class SingleLogoutAction extends BaseSamlStrutsAction {
 	}
 
 	@Override
-	protected String doExecute(
+	protected void doProcessAction(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse)
 		throws Exception {
 
-		String requestURI = httpServletRequest.getRequestURI();
+		String redirect = ParamUtil.getString(httpServletRequest, "redirect");
 
-		if (samlProviderConfigurationHelper.isRoleIdp() &&
-			requestURI.endsWith("/slo_logout")) {
+		redirect = portal.escapeRedirect(redirect);
 
-			_singleLogoutProfile.processIdpLogout(
-				httpServletRequest, httpServletResponse);
-		}
-		else {
-			_singleLogoutProfile.processSingleLogout(
-				httpServletRequest, httpServletResponse);
+		if (Validator.isNull(redirect)) {
+			redirect = portal.getHomeURL(httpServletRequest);
 		}
 
-		return null;
+		httpServletResponse.sendRedirect(redirect);
 	}
-
-	@Reference
-	private SingleLogoutProfile _singleLogoutProfile;
 
 }

@@ -28,10 +28,13 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.JSPNavigationItemList" %><%@
 page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
+page import="com.liferay.portal.kernel.json.JSONArray" %><%@
+page import="com.liferay.portal.kernel.json.JSONObject" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
 page import="com.liferay.portal.kernel.repository.model.FileEntry" %><%@
+page import="com.liferay.portal.kernel.servlet.SessionErrors" %><%@
 page import="com.liferay.portal.kernel.upload.UploadServletRequestConfigurationHelperUtil" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
 page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
@@ -43,6 +46,7 @@ page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.UnicodeProperties" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
+page import="com.liferay.saml.constants.SamlCommandQueryConstants" %><%@
 page import="com.liferay.saml.constants.SamlProviderConfigurationKeys" %><%@
 page import="com.liferay.saml.constants.SamlWebKeys" %><%@
 page import="com.liferay.saml.opensaml.integration.field.expression.handler.UserFieldExpressionHandler" %><%@
@@ -97,14 +101,5 @@ page import="java.util.Objects" %>
 <%
 String currentURL = PortalUtil.getCurrentURL(request);
 
-LocalEntityManager localEntityManager = (LocalEntityManager)request.getAttribute(LocalEntityManager.class.getName());
-NameIdTypeValues nameIdTypeValues = NameIdTypeValuesUtil.getNameIdTypeValues();
-GeneralTabDefaultViewDisplayContext generalTabDefaultViewDisplayContext = (GeneralTabDefaultViewDisplayContext)renderRequest.getAttribute(GeneralTabDefaultViewDisplayContext.class.getName());
 SamlProviderConfigurationHelper samlProviderConfigurationHelper = (SamlProviderConfigurationHelper)request.getAttribute(SamlProviderConfigurationHelper.class.getName());
-
-SamlProviderConfiguration samlProviderConfiguration = null;
-
-if (samlProviderConfigurationHelper != null) {
-	samlProviderConfiguration = samlProviderConfigurationHelper.getSamlProviderConfiguration();
-}
 %>

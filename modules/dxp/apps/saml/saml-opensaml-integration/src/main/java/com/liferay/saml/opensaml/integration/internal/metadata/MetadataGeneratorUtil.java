@@ -14,9 +14,9 @@
 
 package com.liferay.saml.opensaml.integration.internal.metadata;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.saml.constants.SamlCommandQueryConstants;
 import com.liferay.saml.opensaml.integration.internal.util.OpenSamlUtil;
 import com.liferay.saml.runtime.exception.CredentialException;
 import com.liferay.saml.runtime.exception.EntityIdException;
@@ -59,9 +59,9 @@ import org.opensaml.xmlsec.encryption.impl.KeySizeBuilder;
 public class MetadataGeneratorUtil {
 
 	public static EntityDescriptor buildIdpEntityDescriptor(
-			String portalURL, String entityId, boolean wantAuthnRequestSigned,
-			boolean signMetadata, Credential credential,
-			Credential encryptionCredential)
+			String portalURL, String relativeHomeURL, String entityId,
+			boolean wantAuthnRequestSigned, boolean signMetadata,
+			Credential credential, Credential encryptionCredential)
 		throws Exception {
 
 		if (Validator.isNull(entityId)) {
@@ -81,8 +81,8 @@ public class MetadataGeneratorUtil {
 			entityDescriptor.getRoleDescriptors();
 
 		RoleDescriptor roleDescriptor = buildIdpSsoDescriptor(
-			portalURL, entityId, wantAuthnRequestSigned, credential,
-			encryptionCredential);
+			portalURL, relativeHomeURL, entityId, wantAuthnRequestSigned,
+			credential, encryptionCredential);
 
 		Extensions extensions = (Extensions)XMLObjectSupport.buildXMLObject(
 			Extensions.DEFAULT_ELEMENT_NAME);
@@ -103,8 +103,9 @@ public class MetadataGeneratorUtil {
 	}
 
 	public static IDPSSODescriptor buildIdpSsoDescriptor(
-			String portalURL, String entityId, boolean wantAuthnRequestSigned,
-			Credential credential, Credential encryptionCredential)
+			String portalURL, String relativeHomeURL, String entityId,
+			boolean wantAuthnRequestSigned, Credential credential,
+			Credential encryptionCredential)
 		throws Exception {
 
 		IDPSSODescriptor idpSSODescriptor =
@@ -132,15 +133,14 @@ public class MetadataGeneratorUtil {
 		SingleSignOnService singleSignOnService =
 			OpenSamlUtil.buildSingleSignOnService(
 				SAMLConstants.SAML2_REDIRECT_BINDING_URI,
-				StringBundler.concat(
-					portalURL, PortalUtil.getPathMain(), "/portal/saml/sso"));
+				portalURL + PortalUtil.getPathMain() +
+					"/portal/saml/redirect/sso");
 
 		singleSignOnServices.add(singleSignOnService);
 
 		singleSignOnService = OpenSamlUtil.buildSingleSignOnService(
 			SAMLConstants.SAML2_POST_BINDING_URI,
-			StringBundler.concat(
-				portalURL, PortalUtil.getPathMain(), "/portal/saml/sso"));
+			portalURL + relativeHomeURL + SamlCommandQueryConstants.WEB_SSO);
 
 		singleSignOnServices.add(singleSignOnService);
 
@@ -150,16 +150,15 @@ public class MetadataGeneratorUtil {
 		SingleLogoutService postSingleLogoutService =
 			OpenSamlUtil.buildSingleLogoutService(
 				SAMLConstants.SAML2_POST_BINDING_URI,
-				StringBundler.concat(
-					portalURL, PortalUtil.getPathMain(), "/portal/saml/slo"));
+				portalURL + relativeHomeURL + SamlCommandQueryConstants.SLO);
 
 		singleLogoutServices.add(postSingleLogoutService);
 
 		SingleLogoutService redirectSingleLogoutService =
 			OpenSamlUtil.buildSingleLogoutService(
 				SAMLConstants.SAML2_REDIRECT_BINDING_URI,
-				StringBundler.concat(
-					portalURL, PortalUtil.getPathMain(), "/portal/saml/slo"));
+				portalURL + PortalUtil.getPathMain() +
+					"/portal/saml/redirect/slo");
 
 		singleLogoutServices.add(redirectSingleLogoutService);
 
@@ -167,9 +166,10 @@ public class MetadataGeneratorUtil {
 	}
 
 	public static EntityDescriptor buildSpEntityDescriptor(
-			String portalURL, String entityId, boolean signAuthnRequests,
-			boolean signMetadata, boolean wantAssertionsSigned,
-			Credential credential, Credential encryptionCredential)
+			String portalURL, String relativeHomeURL, String entityId,
+			boolean signAuthnRequests, boolean signMetadata,
+			boolean wantAssertionsSigned, Credential credential,
+			Credential encryptionCredential)
 		throws Exception {
 
 		EntityDescriptor entityDescriptor =
@@ -181,8 +181,8 @@ public class MetadataGeneratorUtil {
 			entityDescriptor.getRoleDescriptors();
 
 		RoleDescriptor roleDescriptor = buildSpSsoDescriptor(
-			portalURL, entityId, signAuthnRequests, wantAssertionsSigned,
-			credential, encryptionCredential);
+			portalURL, relativeHomeURL, entityId, signAuthnRequests,
+			wantAssertionsSigned, credential, encryptionCredential);
 
 		Extensions extensions = (Extensions)XMLObjectSupport.buildXMLObject(
 			Extensions.DEFAULT_ELEMENT_NAME);
@@ -203,9 +203,9 @@ public class MetadataGeneratorUtil {
 	}
 
 	public static SPSSODescriptor buildSpSsoDescriptor(
-			String portalURL, String entityId, boolean signAuthnRequests,
-			boolean wantAssertionsSigned, Credential credential,
-			Credential encryptionCredential)
+			String portalURL, String relativeHomeURL, String entityId,
+			boolean signAuthnRequests, boolean wantAssertionsSigned,
+			Credential credential, Credential encryptionCredential)
 		throws Exception {
 
 		SPSSODescriptor spSSODescriptor = OpenSamlUtil.buildSpSsoDescriptor();
@@ -221,8 +221,7 @@ public class MetadataGeneratorUtil {
 		AssertionConsumerService assertionConsumerService =
 			OpenSamlUtil.buildAssertionConsumerService(
 				SAMLConstants.SAML2_POST_BINDING_URI, 1, true,
-				StringBundler.concat(
-					portalURL, PortalUtil.getPathMain(), "/portal/saml/acs"));
+				portalURL + relativeHomeURL + SamlCommandQueryConstants.ACS);
 
 		assertionConsumerServices.add(assertionConsumerService);
 
@@ -245,25 +244,23 @@ public class MetadataGeneratorUtil {
 		SingleLogoutService postSingleLogoutService =
 			OpenSamlUtil.buildSingleLogoutService(
 				SAMLConstants.SAML2_POST_BINDING_URI,
-				StringBundler.concat(
-					portalURL, PortalUtil.getPathMain(), "/portal/saml/slo"));
+				portalURL + relativeHomeURL + SamlCommandQueryConstants.SLO);
 
 		singleLogoutServices.add(postSingleLogoutService);
 
 		SingleLogoutService redirectSingleLogoutService =
 			OpenSamlUtil.buildSingleLogoutService(
 				SAMLConstants.SAML2_REDIRECT_BINDING_URI,
-				StringBundler.concat(
-					portalURL, PortalUtil.getPathMain(), "/portal/saml/slo"));
+				portalURL + PortalUtil.getPathMain() +
+					"/portal/saml/redirect/slo");
 
 		singleLogoutServices.add(redirectSingleLogoutService);
 
 		SingleLogoutService soapSingleLogoutService =
 			OpenSamlUtil.buildSingleLogoutService(
 				SAMLConstants.SAML2_SOAP11_BINDING_URI,
-				StringBundler.concat(
-					portalURL, PortalUtil.getPathMain(),
-					"/portal/saml/slo_soap"));
+				portalURL + relativeHomeURL +
+					SamlCommandQueryConstants.SLO_SOAP);
 
 		singleLogoutServices.add(soapSingleLogoutService);
 
