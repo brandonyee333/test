@@ -1,0 +1,42 @@
+[
+	{
+		"applicationId": "Ratings",
+		"channelId": "420253908131944590",
+		"clientIP": "70.93.236.140",
+		"createDate": "2021-02-02T01:26:15.287Z",
+		"dataSourceId": "370975939087274525",
+		"eventDate": "2021-02-02T01:26:14.373Z",
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.document.library.kernel.model.DLFileEntry",
+			"classPK": "249967369",
+			"score": "1"
+		},
+		"id": "c2fa00b7f79491b4161b9c40dedf9fcda90bd3516f3af6accd14193ee7cc79bf",
+		"knownIndividual": true,
+		"normalizedEventDate": 1612227600000,
+		"projectId": "asah652a6babdba143d086a19db542781bc2",
+		"sessionId": "469326669073633210",
+		"userId": "704a2bc8-92bd-453f-be09-fecc8d81be06"
+	},
+	{
+		"applicationId": "Ratings",
+		"channelId": "420253908131944590",
+		"clientIP": "70.93.236.140",
+		"createDate": "2021-02-02T01:26:15.287Z",
+		"dataSourceId": "370975939087274525",
+		"eventDate": "2021-02-02T01:28:14.373Z",
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.document.library.kernel.model.DLFileEntry",
+			"classPK": "249967370",
+			"score": "-1"
+		},
+		"id": "c3fa00b7f79491b4161b9c40dedf9fcda90bd3516f3af6accd14193ee7cc79bf",
+		"knownIndividual": true,
+		"normalizedEventDate": 1612227600000,
+		"projectId": "asah652a6babdba143d086a19db542781bc2",
+		"sessionId": "469326669073633210",
+		"userId": "704a2bc8-92bd-453f-be09-fecc8d81be06"
+	}
+]

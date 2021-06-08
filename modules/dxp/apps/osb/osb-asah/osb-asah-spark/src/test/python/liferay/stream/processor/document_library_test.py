@@ -115,3 +115,24 @@ def test_document_library_data_frame_processor_process(
 	assert 3 == row.previews
 	assert 1 == row.ratings
 	assert 2.0 == row.ratingsScore
+
+def test_document_library_rating_metric_data_frame_processor_process(
+	 document_library_data_frame_processor, spark_session
+):
+
+	actual_data_frame = document_library_data_frame_processor.process(
+		test_util.read_session_events_data_frame(
+			'document_library_rating_metric_data_frame_processor_process_input.json',
+			spark_session
+		),
+		write=False
+	)
+
+	actual_data_frame_rows = actual_data_frame.collect()
+
+	assert 2 == len(actual_data_frame_rows)
+
+	row = actual_data_frame_rows[0]
+
+	assert 0 == row.ratings
+	assert 0.0 == row.ratingsScore
