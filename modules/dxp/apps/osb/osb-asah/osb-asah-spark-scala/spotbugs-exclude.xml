@@ -1,0 +1,8 @@
+<FindBugsFilter>
+	<Match>
+		<Bug pattern="MS_PKGPROTECT" />
+	</Match>
+	<Match>
+		<Class name="com.liferay.osb.asah.spark.scala.OSBAsahSparkScalaApplication" />
+	</Match>
+</FindBugsFilter>
