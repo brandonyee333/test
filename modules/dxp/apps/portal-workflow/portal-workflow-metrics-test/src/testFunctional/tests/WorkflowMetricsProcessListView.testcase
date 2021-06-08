@@ -146,11 +146,37 @@ definition {
 	}
 
 	@description = "LPS-88573 - Verify that when an instance from Asset is added to the list of process, the count number should be reflected on the Process List"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test TableDisplaysCorrectNumbersWhenAssetAdded {
 
-		// TODO LRQA-67514 TableDisplaysCorrectNumbersWhenAssetAdded pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
+
+		Navigator.gotoNavItem(navItem = "Configuration");
+
+		Workflow.configureWorkflow(
+			workflowDefinition = "Single Approver",
+			workflowResourceValue = "Blogs Entry");
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			panel = "Site Administration",
+			portlet = "Blogs");
+
+		Blogs.addWithWorkflow(
+			entryContent = "Blogs Entry Content",
+			entrySubtitle = "Subtitle",
+			entryTitle = "Blogs Entry Title");
+
+		WorkflowMetrics.checkWorkflowReports(
+			key_workflowProcessName = "Single Approver",
+			key_overdueValue = "0",
+			key_onTimeValue = "0",
+			key_totalPendingValue = "1");
 
 	}
 
