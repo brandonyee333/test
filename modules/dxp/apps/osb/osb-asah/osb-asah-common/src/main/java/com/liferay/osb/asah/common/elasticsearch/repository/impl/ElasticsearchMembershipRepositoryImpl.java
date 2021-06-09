@@ -43,7 +43,6 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
@@ -51,10 +50,6 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Inácio Nery
  */
-@ConditionalOnProperty(
-	havingValue = "false", matchIfMissing = true,
-	value = "osb.asah.postgresql.enabled"
-)
 @Repository
 public class ElasticsearchMembershipRepositoryImpl
 	extends BaseElasticsearchRepository<Membership, Long>

@@ -57,7 +57,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -65,10 +64,6 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Marcos Martins
  */
-@ConditionalOnProperty(
-	havingValue = "false", matchIfMissing = true,
-	value = "osb.asah.postgresql.enabled"
-)
 @Repository
 public class ElasticsearchDXPEntityRepositoryImpl
 	implements DXPEntityRepository {

@@ -27,16 +27,11 @@ import org.elasticsearch.script.Script;
 
 import org.json.JSONObject;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 /**
  * @author Marcellus Tavares
  */
-@ConditionalOnProperty(
-	havingValue = "false", matchIfMissing = true,
-	value = "osb.asah.postgresql.enabled"
-)
 @Repository
 public class ElasticsearchMembershipChangeRepositoryImpl
 	extends BaseElasticsearchRepository<MembershipChange, Long>

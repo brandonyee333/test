@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -29,9 +28,6 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Leslie Wong
  */
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
 @Repository
 public interface EventAttributeDefinitionRepository
 	extends CrudRepository<EventAttributeDefinition, Long> {

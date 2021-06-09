@@ -20,16 +20,11 @@ import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.util.WeDeployServiceThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 /**
  * @author Marcellus Tavares
  */
-@ConditionalOnProperty(
-	havingValue = "false", matchIfMissing = true,
-	value = "osb.asah.postgresql.enabled"
-)
 @Repository
 public class ElasticsearchAsahMarkerRepositoryImpl
 	extends BaseElasticsearchRepository<AsahMarker, String>

@@ -22,16 +22,11 @@ import com.liferay.osb.asah.common.repository.ProjectRepository;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 /**
  * @author André Miranda
  */
-@ConditionalOnProperty(
-	havingValue = "false", matchIfMissing = true,
-	value = "osb.asah.postgresql.enabled"
-)
 @Repository
 public class ElasticsearchProjectRepositoryImpl
 	extends BaseElasticsearchRepository<Project, String>

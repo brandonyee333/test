@@ -30,16 +30,11 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 /**
  * @author Inácio Nery
  */
-@ConditionalOnProperty(
-	havingValue = "false", matchIfMissing = true,
-	value = "osb.asah.postgresql.enabled"
-)
 @Repository
 public class ElasticsearchPreferenceRepositoryImpl
 	extends BaseElasticsearchRepository<Preference, Long>

@@ -42,9 +42,7 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Marcellus Tavares
  */
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
+@ConditionalOnProperty(havingValue = "true", value = "osb.asah.trino.enabled")
 @Repository
 public class CustomAssetMetricRepositoryImpl
 	implements CustomAssetMetricRepository {

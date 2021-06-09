@@ -32,17 +32,12 @@ import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONObject;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
  * @author Marcellus Tavares
  */
-@ConditionalOnProperty(
-	havingValue = "false", matchIfMissing = true,
-	value = "osb.asah.postgresql.enabled"
-)
 @Repository
 public class ElasticsearchRunLogRepositoryImpl
 	extends BaseElasticsearchRepository<RunLog, Long>

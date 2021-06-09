@@ -33,9 +33,6 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 /**
  * @author Inácio Nery
  */
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
 @Configuration
 public class JooqConfiguration {
 

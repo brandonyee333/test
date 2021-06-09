@@ -28,15 +28,11 @@ import org.jooq.Record;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.lang.Nullable;
 
 /**
  * @author Marcellus Tavares
  */
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
 public class RunLogRepositoryImpl extends BaseRepository {
 
 	public RunLogRepositoryImpl(DSLContext dslContext) {

@@ -36,16 +36,12 @@ import org.jooq.Record;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
 /**
  * @author Marcos Martins
  */
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
 public class ExperimentRepositoryImpl extends BaseRepository {
 
 	public ExperimentRepositoryImpl(DSLContext dslContext) {

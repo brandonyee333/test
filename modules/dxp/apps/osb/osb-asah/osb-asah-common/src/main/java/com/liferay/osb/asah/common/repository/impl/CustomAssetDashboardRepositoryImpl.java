@@ -29,15 +29,11 @@ import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 
 /**
  * @author André Miranda
  */
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
 public class CustomAssetDashboardRepositoryImpl extends BaseRepository {
 
 	public CustomAssetDashboardRepositoryImpl(DSLContext dslContext) {

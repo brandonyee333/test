@@ -25,15 +25,11 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 
 /**
  * @author Inácio Nery
  */
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
 public class ActivityGroupRepositoryImpl extends BaseRepository {
 
 	public ActivityGroupRepositoryImpl(
