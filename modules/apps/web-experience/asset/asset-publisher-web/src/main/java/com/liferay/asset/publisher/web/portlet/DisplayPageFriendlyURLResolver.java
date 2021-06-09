@@ -85,7 +85,7 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 
 			if (!WorkflowPermissionUtil.hasPermission(
 					permissionChecker, groupId,
-					"com.liferay.journal.mode.JournalArticle",
+					"com.liferay.journal.model.JournalArticle",
 					journalArticle.getId(), ActionKeys.VIEW)) {
 
 				throw new PrincipalException();
