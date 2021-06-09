@@ -16,6 +16,7 @@ package com.liferay.osb.customer.account.entry.details.web.internal.display.cont
 
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -59,6 +60,8 @@ public class ProductPurchaseViewDisplay {
 
 		Date now = new Date();
 
+		_initProductConsumptions(
+			productPurchaseView.getProductConsumptions(), now);
 		_initProductPurchases(productPurchaseView.getProductPurchases(), now);
 
 		if (StringUtil.equalsIgnoreCase(_status, "approved")) {
@@ -77,6 +80,10 @@ public class ProductPurchaseViewDisplay {
 		else {
 			_state = "cancelled";
 		}
+	}
+
+	public String getCurrentProvisionedCount() {
+		return String.valueOf(_currentProvisionedCount);
 	}
 
 	public String getName() {
@@ -144,6 +151,20 @@ public class ProductPurchaseViewDisplay {
 		}
 
 		return StringPool.DASH;
+	}
+
+	private void _initProductConsumptions(
+		ProductConsumption[] productConsumptions, Date now) {
+
+		if (productConsumptions != null) {
+			for (ProductConsumption productConsumption : productConsumptions) {
+				if ((productConsumption.getEndDate() == null) ||
+					now.before(productConsumption.getEndDate())) {
+
+					_currentProvisionedCount += 1;
+				}
+			}
+		}
 	}
 
 	private void _initProductPurchases(
@@ -232,6 +253,7 @@ public class ProductPurchaseViewDisplay {
 		}
 	}
 
+	private int _currentProvisionedCount;
 	private final Format _dateFormat;
 	private Date _endDate;
 	private final HttpServletRequest _httpServletRequest;
