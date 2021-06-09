@@ -58,7 +58,7 @@ public class DXPEntityDataExporter extends BaseDataExporter {
 			"results",
 			new JSONArray(
 				ListUtil.map(
-					_dxpEntityDog.findByFieldsAndType(
+					_dxpEntityDog.findByAfterAndFieldsAndType(
 						Long.valueOf(after),
 						Collections.singletonMap(_fieldName, _fieldValue),
 						_PAGE_SIZE,

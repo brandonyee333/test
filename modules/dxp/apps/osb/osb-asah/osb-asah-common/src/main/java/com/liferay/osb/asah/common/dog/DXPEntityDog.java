@@ -81,7 +81,7 @@ public class DXPEntityDog {
 			return null;
 		}
 
-		return _mapDXPUser(new HashMap(), dxpEntities.get(0));
+		return _mapUser(new HashMap(), dxpEntities.get(0));
 	}
 
 	public List<? extends DXPEntity> findByAfterAndFieldsAndType(
@@ -96,7 +96,7 @@ public class DXPEntityDog {
 
 		return ListUtil.map(
 			_processDXPEntities(
-				this::_mapDXPUser,
+				this::_mapUser,
 				_dxpEntityRepository.findByMembershipClassNameAndMembershipId(
 					membershipClassName, Long.valueOf(membershipId))),
 			dxpEntity -> (User)dxpEntity);
@@ -111,7 +111,7 @@ public class DXPEntityDog {
 		PageRequest pageRequest = PageRequest.of(start / size, size, sort);
 
 		return PageableExecutionUtils.getPage(
-			_mapDXPEntity(
+			_mapDXPEntities(
 				_dxpEntityRepository.searchByDataSourceIdsAndKeywordsAndType(
 					dataSourceIds, keywords, type, pageRequest),
 				type),
@@ -140,11 +140,7 @@ public class DXPEntityDog {
 		return dataSourceIds;
 	}
 
-	private DXPEntity _mapDXPEntity(DXPEntity dxpEntity) {
-		return _mapDXPEntity(new HashMap<>(), dxpEntity);
-	}
-
-	private List<? extends DXPEntity> _mapDXPEntity(
+	private List<? extends DXPEntity> _mapDXPEntities(
 		List<DXPEntity> dxpEntities, DXPEntity.Type type) {
 
 		if (type.isOrganization()) {
@@ -152,10 +148,24 @@ public class DXPEntityDog {
 		}
 
 		if (type.isUser()) {
-			return _processDXPEntities(this::_mapDXPUser, dxpEntities);
+			return _processDXPEntities(this::_mapUser, dxpEntities);
 		}
 
 		return _processDXPEntities(this::_mapDXPEntity, dxpEntities);
+	}
+
+	private DXPEntity _mapDXPEntity(DXPEntity dxpEntity) {
+		DXPEntity.Type type = dxpEntity.getType();
+
+		if (type.isOrganization()) {
+			return _mapOrganization(new HashMap<>(), dxpEntity);
+		}
+
+		if (type.isUser()) {
+			return _mapUser(new HashMap<>(), dxpEntity);
+		}
+
+		return _mapDXPEntity(new HashMap<>(), dxpEntity);
 	}
 
 	private DXPEntity _mapDXPEntity(
@@ -184,36 +194,6 @@ public class DXPEntityDog {
 		return dxpEntity;
 	}
 
-	private User _mapDXPUser(
-		Map<Long, String> dataSourceNames, DXPEntity dxpEntity) {
-
-		User user = new User();
-
-		user.setDataSourceName(
-			dataSourceNames.computeIfAbsent(
-				dxpEntity.getDataSourceId(),
-				dataSourceId -> {
-					DataSource dataSource = _dataSourceDog.fetchDataSource(
-						dataSourceId);
-
-					if (dataSource != null) {
-						return dataSource.getName();
-					}
-
-					return null;
-				}));
-
-		JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
-
-		user.setFirstName(fieldsJSONObject.getString("firstName"));
-		user.setLastName(fieldsJSONObject.getString("lastName"));
-		user.setScreenName(fieldsJSONObject.getString("screenName"));
-
-		user.setId(dxpEntity.getId());
-
-		return user;
-	}
-
 	private Organization _mapOrganization(
 		Map<Long, String> dataSourceNames, DXPEntity dxpEntity) {
 
@@ -236,10 +216,44 @@ public class DXPEntityDog {
 
 		JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
 
-		organization.setName(fieldsJSONObject.getString("name"));
-		organization.setParentName(fieldsJSONObject.getString("parentName"));
+		organization.setDataSourceId(dxpEntity.getDataSourceId());
+		organization.setFieldsJSONObject(fieldsJSONObject);
+		organization.setName(fieldsJSONObject.optString("name"));
+		organization.setParentName(fieldsJSONObject.optString("parentName"));
 
 		return organization;
+	}
+
+	private User _mapUser(
+		Map<Long, String> dataSourceNames, DXPEntity dxpEntity) {
+
+		User user = new User();
+
+		user.setDataSourceName(
+			dataSourceNames.computeIfAbsent(
+				dxpEntity.getDataSourceId(),
+				dataSourceId -> {
+					DataSource dataSource = _dataSourceDog.fetchDataSource(
+						dataSourceId);
+
+					if (dataSource != null) {
+						return dataSource.getName();
+					}
+
+					return null;
+				}));
+
+		JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
+
+		user.setDataSourceId(dxpEntity.getDataSourceId());
+		user.setFieldsJSONObject(fieldsJSONObject);
+		user.setFirstName(fieldsJSONObject.optString("firstName"));
+		user.setLastName(fieldsJSONObject.optString("lastName"));
+		user.setScreenName(fieldsJSONObject.optString("screenName"));
+
+		user.setId(dxpEntity.getId());
+
+		return user;
 	}
 
 	private List<? extends DXPEntity> _processDXPEntities(
