@@ -17,7 +17,6 @@ package com.liferay.osb.asah.extractor.processor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.dog.AnalyticsEventStorageDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -449,9 +448,7 @@ public class AnalyticsEventsMessageProcessor {
 			storage.write(analyticsEvent.toJSON());
 		}
 
-		if (ServiceConstants.OSB_ASAH_POSTGRESQL_ENABLED) {
-			_analyticsEventStorageDog.store(analyticsEvent);
-		}
+		_analyticsEventStorageDog.store(analyticsEvent);
 	}
 
 	private static final String[]

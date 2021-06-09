@@ -37,9 +37,6 @@ public class ServiceConstants {
 	public static final boolean OSB_ASAH_MULTITENANCY_ENABLED =
 		Boolean.parseBoolean(System.getenv("OSB_ASAH_MULTITENANCY_ENABLED"));
 
-	public static final boolean OSB_ASAH_POSTGRESQL_ENABLED =
-		Boolean.parseBoolean(System.getenv("OSB_ASAH_POSTGRESQL_ENABLED"));
-
 	public static final String POSTGRESQL_SERVER_IP;
 
 	public static final String TRINO_SERVER_IP;
