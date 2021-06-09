@@ -32,21 +32,19 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jdbc.core.convert.JdbcCustomConversions;
 import org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
-import org.springframework.data.relational.core.dialect.AnsiDialect;
-import org.springframework.data.relational.core.dialect.Dialect;
-import org.springframework.data.relational.core.dialect.PostgresDialect;
 import org.springframework.data.relational.core.mapping.NamingStrategy;
 import org.springframework.data.relational.core.mapping.RelationalPersistentProperty;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.TransactionManager;
 
 /**
@@ -61,43 +59,12 @@ import org.springframework.transaction.TransactionManager;
 public class JDBCConfiguration extends AbstractJdbcConfiguration {
 
 	@Bean
-	@ConditionalOnProperty(
-		havingValue = "false", matchIfMissing = true,
-		value = "osb.asah.postgresql.enabled"
-	)
-	public DataSource elasticsearchDataSource() {
-		return new SimpleDriverDataSource();
-	}
-
-	@Bean
 	@Override
 	public JdbcCustomConversions jdbcCustomConversions() {
 		return new JdbcCustomConversions(
 			Arrays.asList(
 				new JSONObjectToPGobjectConverter(),
 				new PGobjectToJSONObjectConverter()));
-	}
-
-	@Bean
-	@Override
-	public Dialect jdbcDialect(
-		NamedParameterJdbcOperations namedParameterJdbcOperations) {
-
-		JdbcTemplate jdbcTemplate =
-			(JdbcTemplate)namedParameterJdbcOperations.getJdbcOperations();
-
-		if (jdbcTemplate.getDataSource() instanceof SimpleDriverDataSource) {
-			return AnsiDialect.INSTANCE;
-		}
-
-		if (jdbcTemplate.getDataSource() instanceof PostgreSQLDataSource) {
-			return PostgresDialect.INSTANCE;
-		}
-
-		throw new IllegalArgumentException(
-			String.format(
-				"Invalid dialect for %s. Please provide a valid dialect.",
-				jdbcTemplate));
 	}
 
 	@Bean
@@ -135,9 +102,6 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 	}
 
 	@Bean("postgreSQLDataSource")
-	@ConditionalOnProperty(
-		havingValue = "true", value = "osb.asah.postgresql.enabled"
-	)
 	@Primary
 	public DataSource postgreSQLDataSource() {
 		return new PostgreSQLDataSource(_hikariMaximumPoolSize);
@@ -150,7 +114,7 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 
 	@Bean("trinoDataSource")
 	@ConditionalOnProperty(
-		havingValue = "true", value = "osb.asah.postgresql.enabled"
+		havingValue = "true", value = "osb.asah.trino.enabled"
 	)
 	public DataSource trinoDataSource() {
 		HikariDataSource hikariDataSource = new HikariDataSource();
