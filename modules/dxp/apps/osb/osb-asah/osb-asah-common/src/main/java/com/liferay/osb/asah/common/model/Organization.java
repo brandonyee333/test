@@ -59,6 +59,11 @@ public class Organization extends DXPEntity {
 	}
 
 	@Override
+	public Type getType() {
+		return DXPEntity.Type.ORGANIZATION;
+	}
+
+	@Override
 	public int hashCode() {
 		return Objects.hash(getId(), getName(), _parentName, _type);
 	}

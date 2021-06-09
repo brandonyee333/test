@@ -65,6 +65,11 @@ public class User extends DXPEntity {
 	}
 
 	@Override
+	public Type getType() {
+		return DXPEntity.Type.USER;
+	}
+
+	@Override
 	public int hashCode() {
 		return Objects.hash(
 			getId(), getName(), _firstName, _lastName, _screenName);
