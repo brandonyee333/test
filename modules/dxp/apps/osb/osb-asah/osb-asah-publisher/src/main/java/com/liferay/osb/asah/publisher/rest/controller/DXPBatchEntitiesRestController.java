@@ -113,7 +113,7 @@ public class DXPBatchEntitiesRestController {
 
 		ServletFileUpload servletFileUpload = new ServletFileUpload();
 
-		long maxSize = 2 * 1024 * 1024 * 1024;
+		long maxSize = 2L * 1024 * 1024 * 1024;
 
 		servletFileUpload.setFileSizeMax(maxSize);
 		servletFileUpload.setSizeMax(maxSize);
