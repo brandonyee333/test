@@ -20,7 +20,7 @@ definition {
 		}
 
 		var curl = '''
-			${portalURL}/api/jsonws/blogs.blogsentry/add-entry \
+			${portalURL}/api/jsonws/blogsentry/add-entry \
 			-u test@liferay.com:test \
 			-d title=${entryTitle} \
 			-d subtitle=${entrySubtitle} \
