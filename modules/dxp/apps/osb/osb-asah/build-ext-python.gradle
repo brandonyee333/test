@@ -84,7 +84,7 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 			copy {
 				from pythonSource + "/__main__.py"
 				into "$buildDir/libs"
-				rename "(.*)__main__.py", "\$1osb-asah-spark-driver.py"
+				rename "(.*)__main__.py", "\$1osb-asah-spark-python-driver.py"
 			}
 
 			delete pythonTempDir
