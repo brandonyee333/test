@@ -105,7 +105,10 @@ public class DXPBatchEntitiesRestController {
 	}
 
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<?> post(HttpServletRequest httpServletRequest)
+	public ResponseEntity<?> post(
+			@RequestHeader(value = HeaderConstants.DATA_SOURCE_ID) String
+				dataSourceId,
+			HttpServletRequest httpServletRequest)
 		throws Exception {
 
 		ServletFileUpload servletFileUpload = new ServletFileUpload();
@@ -119,16 +122,6 @@ public class DXPBatchEntitiesRestController {
 			httpServletRequest);
 
 		while (fileItemIterator.hasNext()) {
-			String dataSourceId = httpServletRequest.getParameter(
-				"dataSourceId");
-
-			if (StringUtils.isBlank(dataSourceId)) {
-				_log.error("Data source ID is empty");
-
-				return new ResponseEntity(
-					Collections.emptyList(), HttpStatus.BAD_REQUEST);
-			}
-
 			FileItemStream fileItemStream = fileItemIterator.next();
 
 			String fieldName = fileItemStream.getFieldName();
