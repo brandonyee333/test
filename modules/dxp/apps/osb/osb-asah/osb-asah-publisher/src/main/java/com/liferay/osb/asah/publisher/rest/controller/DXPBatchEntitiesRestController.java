@@ -62,10 +62,8 @@ public class DXPBatchEntitiesRestController {
 
 	@GetMapping(produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public ResponseEntity<Resource> get(
-			@RequestHeader(
-				required = false, value = HeaderConstants.DATA_SOURCE_ID
-			)
-			String dataSourceId,
+			@RequestHeader(value = HeaderConstants.DATA_SOURCE_ID) String
+				dataSourceId,
 			@RequestParam("resourceName") String resourceName,
 			@DateTimeFormat(pattern = "EEE, dd MMM yyyy HH:mm:ss zzz")
 			@RequestHeader(required = false, value = "If-Modified-Since")
