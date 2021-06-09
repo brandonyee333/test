@@ -20,19 +20,13 @@ import com.liferay.osb.asah.common.model.Transformation;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author Marcellus Tavares
  */
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
-@Repository
 public interface AssetRepository extends CrudRepository<Asset, Long> {
 
 	public long countByAssetType(String assetType);

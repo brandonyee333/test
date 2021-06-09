@@ -18,19 +18,13 @@ import com.liferay.osb.asah.common.entity.DataSource;
 
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author Inácio Nery
  */
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
-@Repository
 public interface DataSourceRepository extends CrudRepository<DataSource, Long> {
 
 	public long countDataSources(String filterString);

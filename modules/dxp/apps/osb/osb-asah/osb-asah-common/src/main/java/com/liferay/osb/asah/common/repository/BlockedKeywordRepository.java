@@ -19,20 +19,14 @@ import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author André Miranda
  */
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
-@Repository
 public interface BlockedKeywordRepository
 	extends CrudRepository<BlockedKeyword, Long> {
 

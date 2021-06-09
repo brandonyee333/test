@@ -19,19 +19,13 @@ import com.liferay.osb.asah.common.model.ExperimentStatus;
 
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author Marcos Martins
  */
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
-@Repository
 public interface ExperimentRepository extends CrudRepository<Experiment, Long> {
 
 	public List<Experiment> findByExperimentStatus(

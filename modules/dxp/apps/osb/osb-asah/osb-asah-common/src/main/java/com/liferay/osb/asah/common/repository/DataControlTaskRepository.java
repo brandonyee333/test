@@ -19,18 +19,12 @@ import com.liferay.osb.asah.common.entity.DataControlTask;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author Marcellus Tavares
  */
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
-@Repository
 public interface DataControlTaskRepository
 	extends CrudRepository<DataControlTask, Long> {
 
