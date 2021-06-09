@@ -18,15 +18,10 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.junit.runner.RunWith;
 
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.TestPropertySource;
-
 /**
  * @author Leslie Wong
  */
-@DirtiesContext
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@TestPropertySource(properties = "osb.asah.postgresql.enabled=true")
 public class EventDefinitionsGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
 

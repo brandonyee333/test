@@ -19,7 +19,6 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.junit.runner.RunWith;
 
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -27,7 +26,6 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(properties = "osb.asah.postgresql.enabled=true")
 public class FieldMappingRepositoryTest
 	extends BaseFieldMappingRepositoryTestCase {
 }

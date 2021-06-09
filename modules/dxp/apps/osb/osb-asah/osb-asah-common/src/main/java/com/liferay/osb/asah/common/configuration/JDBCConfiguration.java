@@ -29,12 +29,16 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.postgresql.ds.PGSimpleDataSource;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jdbc.core.convert.JdbcCustomConversions;
 import org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
@@ -44,6 +48,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.TransactionManager;
 
@@ -103,8 +109,47 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 
 	@Bean("postgreSQLDataSource")
 	@Primary
+	@Profile("prod")
 	public DataSource postgreSQLDataSource() {
 		return new PostgreSQLDataSource(_hikariMaximumPoolSize);
+	}
+
+	@Bean("postgreSQLDataSource")
+	@Primary
+	@Profile("test")
+	public DataSource testpostgreSQLDataSource() {
+		PGSimpleDataSource pgSimpleDataSource = new PGSimpleDataSource();
+
+		pgSimpleDataSource.setServerName("localhost");
+		pgSimpleDataSource.setPortNumber(5432);
+		pgSimpleDataSource.setDatabaseName("osbasah");
+		pgSimpleDataSource.setUser("postgres");
+		pgSimpleDataSource.setPassword("password");
+		pgSimpleDataSource.setCurrentSchema("test");
+
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(
+				new ClassPathResource("functions.sql")),
+			pgSimpleDataSource);
+
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(new ClassPathResource("tables.sql")),
+			pgSimpleDataSource);
+
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(
+				true, true, null, new ClassPathResource("constraints.sql")),
+			pgSimpleDataSource);
+
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(new ClassPathResource("indexes.sql")),
+			pgSimpleDataSource);
+
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(new ClassPathResource("data.sql")),
+			pgSimpleDataSource);
+
+		return pgSimpleDataSource;
 	}
 
 	@Bean

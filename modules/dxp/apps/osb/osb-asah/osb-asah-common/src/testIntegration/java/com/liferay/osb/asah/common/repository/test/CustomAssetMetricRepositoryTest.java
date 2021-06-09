@@ -53,7 +53,7 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @DirtiesContext
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(properties = "osb.asah.postgresql.enabled=true")
+@SpringBootTest(properties = "osb.asah.trino.enabled=true")
 @SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
 public class CustomAssetMetricRepositoryTest {
 

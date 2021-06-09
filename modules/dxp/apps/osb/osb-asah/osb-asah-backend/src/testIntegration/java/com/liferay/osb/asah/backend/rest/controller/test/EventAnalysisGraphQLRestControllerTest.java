@@ -16,15 +16,10 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.TestPropertySource;
-
 /**
  * @author Leslie Wong
  */
-@DirtiesContext
 @SQLResource(resourcePath = "event_analysis_graphql_rest_controller_test.sql")
-@TestPropertySource(properties = "osb.asah.postgresql.enabled=true")
 public class EventAnalysisGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
 
