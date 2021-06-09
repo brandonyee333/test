@@ -62,6 +62,9 @@ public class JooqConfiguration {
 	}
 
 	@Bean("trinoConfiguration")
+	@ConditionalOnProperty(
+		havingValue = "true", value = "osb.asah.trino.enabled"
+	)
 	public org.jooq.Configuration trinoConfiguration(
 		@Qualifier("trinoConnectionProvider") ConnectionProvider
 			connectionProvider) {
@@ -75,6 +78,9 @@ public class JooqConfiguration {
 	}
 
 	@Bean
+	@ConditionalOnProperty(
+		havingValue = "true", value = "osb.asah.trino.enabled"
+	)
 	public ConnectionProvider trinoConnectionProvider(
 		@Qualifier("trinoDataSource") DataSource dataSource) {
 
@@ -82,6 +88,9 @@ public class JooqConfiguration {
 	}
 
 	@Bean("trinoDSLContext")
+	@ConditionalOnProperty(
+		havingValue = "true", value = "osb.asah.trino.enabled"
+	)
 	public DSLContext trinoDSLContext(
 		@Qualifier("trinoConfiguration") org.jooq.Configuration configuration) {
 
