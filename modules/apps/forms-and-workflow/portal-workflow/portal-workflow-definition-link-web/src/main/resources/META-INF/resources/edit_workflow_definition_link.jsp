@@ -37,7 +37,7 @@ renderResponse.setTitle(resource);
 		<aui:input name="resource" type="hidden" value="<%= resource %>" />
 
 		<div class="col-xs-4">
-			<aui:select label="<%= resource %>" name='<%= "workflowDefinitionName@" + className %>' title="workflow-definition">
+			<aui:select label="<%= resource %>" name='<%= "workflowDefinitionName@" + HtmlUtil.escape(className) %>' title="workflow-definition">
 
 				<%
 				String defaultWorkflowDefinitionLabel = workflowDefinitionLinkDisplayContext.getDefaultWorkflowDefinitionLabel(className);
