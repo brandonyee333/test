@@ -90,6 +90,24 @@ public class BlogNaniteTest extends BaseNaniteTestCase {
 		Assert.assertEquals(0.2, jsonObject.getDouble("ratingsScore"), 0);
 	}
 
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_BLOG,
+		resourcePath = "analytics_events_blog_channel_3.json"
+	)
+	@Test
+	public void testBlogRatingsMetric2() {
+		_blogNanite.run();
+
+		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get("blogs");
+
+		Assert.assertEquals(1, jsonArray.length());
+
+		JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+		Assert.assertEquals(0, jsonObject.getInt("ratings"));
+		Assert.assertEquals(0.0, jsonObject.getDouble("ratingsScore"), 0);
+	}
+
 	@Autowired
 	private BlogNanite _blogNanite;
 

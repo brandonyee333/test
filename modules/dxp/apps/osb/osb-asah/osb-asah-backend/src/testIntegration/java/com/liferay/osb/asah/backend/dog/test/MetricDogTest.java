@@ -114,6 +114,28 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
+		name = "blogs", resourcePath = "asset_metric_blog_info_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testBlogRatingMetric() {
+		BlogMetric blogMetric = _metricDog.getAssetMetric(
+			_createSearchQuery(
+				"1", AssetType.BLOG, null, TimeRange.LAST_7_DAYS, null),
+			new HashSet<String>() {
+				{
+					add(BlogMetricType.RATINGS.getName());
+				}
+			});
+
+		Assert.assertNotNull(blogMetric);
+
+		Metric ratingsMetric = blogMetric.getRatingsMetric();
+
+		Assert.assertEquals(0.6, ratingsMetric.getValue(), 0.1);
+	}
+
+	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "asset_metric_blog_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
