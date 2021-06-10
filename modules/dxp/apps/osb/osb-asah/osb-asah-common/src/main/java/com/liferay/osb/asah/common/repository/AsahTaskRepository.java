@@ -18,11 +18,13 @@ import com.liferay.osb.asah.common.entity.AsahTask;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author André Miranda
  */
+@Primary
 public interface AsahTaskRepository extends CrudRepository<AsahTask, Long> {
 
 	public List<AsahTask> findByClassName(String className);

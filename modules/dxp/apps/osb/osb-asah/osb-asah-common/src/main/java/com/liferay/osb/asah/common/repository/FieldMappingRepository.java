@@ -22,6 +22,7 @@ import io.lettuce.core.dynamic.annotation.Param;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
@@ -29,6 +30,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Rachael Koestartyo
  */
+@Primary
 public interface FieldMappingRepository
 	extends CrudRepository<FieldMapping, Long> {
 

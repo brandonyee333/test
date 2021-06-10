@@ -19,12 +19,14 @@ import com.liferay.osb.asah.common.entity.Suppression;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Marcellus Tavares
  */
+@Primary
 public interface SuppressionRepository
 	extends CrudRepository<Suppression, Long> {
 

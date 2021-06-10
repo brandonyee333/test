@@ -18,12 +18,14 @@ import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author André Miranda
  */
+@Primary
 public interface CustomAssetDashboardRepository
 	extends CrudRepository<CustomAssetDashboard, String> {
 

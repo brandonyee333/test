@@ -22,12 +22,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Marcellus Tavares
  */
+@Primary
 public interface JobRunRepository extends CrudRepository<JobRun, Long> {
 
 	public long countByJobId(Long jobId);

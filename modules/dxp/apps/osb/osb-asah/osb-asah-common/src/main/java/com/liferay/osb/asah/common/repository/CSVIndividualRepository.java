@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.CSVIndividual;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
@@ -25,6 +26,7 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * @author Marcellus Tavares
  */
+@Primary
 public interface CSVIndividualRepository
 	extends CrudRepository<CSVIndividual, Long> {
 

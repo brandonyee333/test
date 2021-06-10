@@ -16,10 +16,12 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Project;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author André Miranda
  */
+@Primary
 public interface ProjectRepository extends CrudRepository<Project, String> {
 }

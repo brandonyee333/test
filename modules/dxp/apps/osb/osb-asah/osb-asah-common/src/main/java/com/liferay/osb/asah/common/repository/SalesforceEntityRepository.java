@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import org.json.JSONObject;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
@@ -29,6 +30,7 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Marcellus Tavares
  */
+@Primary
 public interface SalesforceEntityRepository
 	extends CrudRepository<SalesforceEntity, String> {
 

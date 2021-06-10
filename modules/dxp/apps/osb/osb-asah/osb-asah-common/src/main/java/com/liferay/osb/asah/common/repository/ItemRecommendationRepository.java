@@ -18,12 +18,14 @@ import com.liferay.osb.asah.common.entity.ItemRecommendation;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Marcellus Tavares
  */
+@Primary
 public interface ItemRecommendationRepository
 	extends CrudRepository<ItemRecommendation, String> {
 

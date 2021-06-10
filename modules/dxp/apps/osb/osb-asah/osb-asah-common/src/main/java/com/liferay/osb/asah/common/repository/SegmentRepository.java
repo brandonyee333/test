@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
@@ -31,6 +32,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Inácio Nery
  */
+@Primary
 public interface SegmentRepository extends CrudRepository<Segment, Long> {
 
 	public long countAccountSegments(

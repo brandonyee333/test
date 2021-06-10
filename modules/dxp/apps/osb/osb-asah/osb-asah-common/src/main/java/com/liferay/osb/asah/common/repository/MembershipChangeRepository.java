@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.MembershipChange;
 
 import java.util.Optional;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -25,6 +26,7 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Marcellus Tavares
  */
+@Primary
 public interface MembershipChangeRepository
 	extends CrudRepository<MembershipChange, Long> {
 

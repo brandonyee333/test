@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.model.Transformation;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
@@ -26,6 +27,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Rachael Koestartyo
  */
+@Primary
 public interface OrganizationRepository
 	extends CrudRepository<Organization, Long> {
 

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
@@ -30,6 +31,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Rachael Koestartyo
  */
+@Primary
 public interface AccountRepository extends CrudRepository<Account, Long> {
 
 	public long countAccounts(

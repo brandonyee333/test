@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.DataSource;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -25,6 +26,7 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Inácio Nery
  */
+@Primary
 public interface DataSourceRepository extends CrudRepository<DataSource, Long> {
 
 	public long countDataSources(String filterString);

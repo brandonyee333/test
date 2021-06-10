@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.RunLog;
 
 import java.util.Optional;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -26,6 +27,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Marcellus Tavares
  */
+@Primary
 public interface RunLogRepository extends CrudRepository<RunLog, Long> {
 
 	@Modifying

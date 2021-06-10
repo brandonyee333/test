@@ -18,11 +18,13 @@ import com.liferay.osb.asah.common.entity.DataExportTask;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Inácio Nery
  */
+@Primary
 public interface DataExportTaskRepository
 	extends CrudRepository<DataExportTask, Long> {
 

@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.model.ExperimentStatus;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
@@ -26,6 +27,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Marcos Martins
  */
+@Primary
 public interface ExperimentRepository extends CrudRepository<Experiment, Long> {
 
 	public List<Experiment> findByExperimentStatus(

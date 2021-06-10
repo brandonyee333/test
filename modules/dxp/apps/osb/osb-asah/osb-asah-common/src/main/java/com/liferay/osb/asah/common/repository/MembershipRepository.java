@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.Membership;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
@@ -26,6 +27,7 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Inácio Nery
  */
+@Primary
 public interface MembershipRepository extends CrudRepository<Membership, Long> {
 
 	public long countByIndividualIdInAndIndividualSegmentIdAndStatus(

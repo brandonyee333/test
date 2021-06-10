@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
@@ -26,6 +27,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Marcos Martins
  */
+@Primary
 public interface DXPEntityRepository extends CrudRepository<DXPEntity, Long> {
 
 	public long countByDataSourceIdsAndKeywordsAndType(

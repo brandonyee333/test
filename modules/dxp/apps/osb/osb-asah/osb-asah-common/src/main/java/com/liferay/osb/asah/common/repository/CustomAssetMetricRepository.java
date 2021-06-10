@@ -25,9 +25,12 @@ import java.time.LocalDateTime;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
+
 /**
  * @author Marcellus Tavares
  */
+@Primary
 public interface CustomAssetMetricRepository {
 
 	public List<Tuple2<LocalDateTime, BigDecimal>> getHistogramMetrics(

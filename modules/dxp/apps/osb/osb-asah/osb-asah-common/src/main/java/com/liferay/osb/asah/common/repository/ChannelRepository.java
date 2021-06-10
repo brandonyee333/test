@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.Channel;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
@@ -27,6 +28,7 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Inácio Nery
  */
+@Primary
 public interface ChannelRepository extends CrudRepository<Channel, Long> {
 
 	public long countByNameContainingIgnoreCase(String name);
