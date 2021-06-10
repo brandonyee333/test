@@ -743,7 +743,7 @@ public class AccountSynchronizer {
 						externalLink.getEntityId());
 
 				if (projectSolution != null) {
-					tags.add(projectSolution.getTag());
+					tags.add(projectSolution.getZendeskTag());
 				}
 
 				break;

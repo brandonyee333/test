@@ -25,9 +25,11 @@ public class ProjectSolutionImpl extends ProjectSolutionBaseImpl {
 	public ProjectSolutionImpl() {
 	}
 
-	public String getTag() {
+	public String getZendeskTag() {
+		String value = getValue();
+
 		return StringUtil.replace(
-			getValue().toLowerCase(), StringPool.SPACE, StringPool.UNDERLINE);
+			value.toLowerCase(), StringPool.SPACE, StringPool.UNDERLINE);
 	}
 
 }

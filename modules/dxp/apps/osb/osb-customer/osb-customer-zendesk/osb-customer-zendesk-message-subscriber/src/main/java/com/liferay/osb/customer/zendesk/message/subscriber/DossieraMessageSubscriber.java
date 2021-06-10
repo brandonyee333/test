@@ -36,11 +36,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kyle Bischof
  */
 @Component(
-	immediate = true,
-	property = {
-		"topic.pattern=dossiera.provisioning.create",
-		"topic.pattern=dossiera.provisioning.update"
-	},
+	immediate = true, property = "topic.pattern=dossiera.provisioning.create",
 	service = DossieraMessageSubscriber.class
 )
 public class DossieraMessageSubscriber
@@ -57,40 +53,40 @@ public class DossieraMessageSubscriber
 			return;
 		}
 
-		String value = projectJSONObject.getString("_projectSolution");
-
 		ProjectSolution projectSolution =
 			_projectSolutionLocalService.fetchProjectSolution(
 				salesforceProjectKey);
 
+		String projectSolutionValue = projectJSONObject.getString(
+			"_projectSolution");
+
+		if ((projectSolution == null) &&
+			Validator.isNull(projectSolutionValue)) {
+
+			return;
+		}
+
 		if (projectSolution == null) {
-			if (Validator.isNotNull(value)) {
-				_projectSolutionLocalService.addProjectSolution(
-					salesforceProjectKey, value);
-			}
-			else {
-				return;
-			}
+			_projectSolutionLocalService.addProjectSolution(
+				salesforceProjectKey, projectSolutionValue);
 		}
 		else {
-			if (Validator.isNull(value)) {
+			if (Validator.isNull(projectSolutionValue)) {
 				_projectSolutionLocalService.deleteProjectSolution(
 					salesforceProjectKey);
 			}
 			else {
 				_projectSolutionLocalService.updateProjectSolution(
-					salesforceProjectKey, value);
+					salesforceProjectKey, projectSolutionValue);
 			}
 		}
 
 		List<Account> accounts = _accountWebService.getAccounts(
 			ExternalLinkDomain.SALESFORCE,
 			ExternalLinkEntityName.SALESFORCE_PROJECT, salesforceProjectKey, 1,
-			1);
+			1000);
 
-		if (!accounts.isEmpty()) {
-			Account account = accounts.get(0);
-
+		for (Account account : accounts) {
 			AccountEntry accountEntry =
 				_accountEntryLocalService.fetchKoroneikiAccountEntry(
 					account.getKey());
