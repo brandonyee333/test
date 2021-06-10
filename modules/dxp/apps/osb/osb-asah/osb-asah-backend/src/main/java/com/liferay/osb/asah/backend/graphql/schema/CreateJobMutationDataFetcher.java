@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
+import com.liferay.osb.asah.backend.dto.JobDTO;
 import com.liferay.osb.asah.common.dog.JobDog;
-import com.liferay.osb.asah.common.entity.Job;
 import com.liferay.osb.asah.common.entity.JobParameter;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.JobRunDataPeriod;
@@ -34,21 +34,22 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "createJob", typeName = "MutationType")
-public class CreateJobMutationDataFetcher implements DataFetcher<Job> {
+public class CreateJobMutationDataFetcher implements DataFetcher<JobDTO> {
 
 	@Override
-	public Job get(DataFetchingEnvironment dataFetchingEnvironment) {
-		return _jobDog.addJob(
-			SetUtil.map(
-				dataFetchingEnvironment.getArgument("parameters"),
-				JobParameter::of),
-			JobRunDataPeriod.valueOf(
-				dataFetchingEnvironment.getArgument("runDataPeriod")),
-			JobRunFrequency.valueOf(
-				dataFetchingEnvironment.getArgument("runFrequency")),
-			JobType.valueOf(dataFetchingEnvironment.getArgument("type")),
-			dataFetchingEnvironment.getArgument("name"),
-			dataFetchingEnvironment.getArgument("runNow"));
+	public JobDTO get(DataFetchingEnvironment dataFetchingEnvironment) {
+		return new JobDTO(
+			_jobDog.addJob(
+				SetUtil.map(
+					dataFetchingEnvironment.getArgument("parameters"),
+					JobParameter::of),
+				JobRunDataPeriod.valueOf(
+					dataFetchingEnvironment.getArgument("runDataPeriod")),
+				JobRunFrequency.valueOf(
+					dataFetchingEnvironment.getArgument("runFrequency")),
+				JobType.valueOf(dataFetchingEnvironment.getArgument("type")),
+				dataFetchingEnvironment.getArgument("name"),
+				dataFetchingEnvironment.getArgument("runNow")));
 	}
 
 	@Autowired
