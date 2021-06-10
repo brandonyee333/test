@@ -50,6 +50,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.security.util.InMemoryResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.TransactionManager;
 
@@ -126,6 +127,12 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 		pgSimpleDataSource.setUser(CredentialConstants.POSTGRESQL_USER);
 		pgSimpleDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
 		pgSimpleDataSource.setCurrentSchema("test");
+
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(
+				new InMemoryResource(
+					"SET TIME ZONE 'UTC'; CREATE SCHEMA IF NOT EXISTS test")),
+			pgSimpleDataSource);
 
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
