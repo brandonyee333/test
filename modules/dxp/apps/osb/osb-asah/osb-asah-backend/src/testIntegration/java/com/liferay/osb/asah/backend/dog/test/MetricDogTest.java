@@ -56,7 +56,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class MetricDogTest {
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "asset_metric_blog_info.json",
+		name = "blogs", resourcePath = "asset_metric_blog_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -74,7 +74,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "asset_metric_blog_info.json",
+		name = "blogs", resourcePath = "asset_metric_blog_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -136,7 +136,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "asset_metric_blog_info.json",
+		name = "blogs", resourcePath = "asset_metric_blog_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
