@@ -161,8 +161,14 @@ public class BlogNanite extends BaseNanite<Blog> {
 			return;
 		}
 
-		oldBlog.setRatings(1);
-		oldBlog.setRatingsScore(newBlog.getRatingsScore());
+		if (newBlog.getRatingsScore() < 0) {
+			oldBlog.setRatings(0);
+			oldBlog.setRatingsScore(0);
+		}
+		else {
+			oldBlog.setRatings(1);
+			oldBlog.setRatingsScore(newBlog.getRatingsScore());
+		}
 	}
 
 	private void _setReadTime(Blog oldBlog, Blog newBlog) {
