@@ -24,13 +24,7 @@ import com.liferay.osb.asah.publisher.cache.AnalyticsEventsMessageCache;
 import io.prometheus.client.Histogram;
 import io.prometheus.client.SimpleTimer;
 
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-
 import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -124,27 +118,6 @@ public class AnalyticsEventsRestController {
 						_getInvalidEventIndices(errors.getFieldErrors())) {
 
 					events.remove(index);
-				}
-
-				ZonedDateTime now = ZonedDateTime.now(ZoneId.of("GMT"));
-
-				// Tolerate 1 hour of discrepancy between sever and client dates
-
-				now = now.plusHours(1);
-
-				Iterator<AnalyticsEventsMessage.Event> iterator =
-					events.iterator();
-
-				while (iterator.hasNext()) {
-					AnalyticsEventsMessage.Event event = iterator.next();
-
-					Date eventDate = event.getEventDate();
-
-					Instant eventDateInstant = eventDate.toInstant();
-
-					if (eventDateInstant.isAfter(now.toInstant())) {
-						iterator.remove();
-					}
 				}
 
 				analyticsEventsMessage.setEvents(events);
