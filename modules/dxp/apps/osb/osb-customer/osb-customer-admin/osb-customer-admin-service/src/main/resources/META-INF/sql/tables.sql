@@ -133,6 +133,11 @@ create table OSB_ProductEntry (
 	versionsListType VARCHAR(75) null
 );
 
+create table OSB_ProjectSolution (
+	salesforceProjectKey VARCHAR(75) not null primary key,
+	value VARCHAR(75) null
+);
+
 create table OSB_SupportRegion (
 	supportRegionId LONG not null primary key,
 	companyId LONG,

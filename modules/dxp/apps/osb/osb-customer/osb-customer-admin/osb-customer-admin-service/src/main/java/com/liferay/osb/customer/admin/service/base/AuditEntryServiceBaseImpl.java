@@ -28,6 +28,7 @@ import com.liferay.osb.customer.admin.service.persistence.ExternalIdMapperPersis
 import com.liferay.osb.customer.admin.service.persistence.LicenseEntryPersistence;
 import com.liferay.osb.customer.admin.service.persistence.ProductEntryFinder;
 import com.liferay.osb.customer.admin.service.persistence.ProductEntryPersistence;
+import com.liferay.osb.customer.admin.service.persistence.ProjectSolutionPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -707,6 +708,49 @@ public abstract class AuditEntryServiceBaseImpl
 	}
 
 	/**
+	 * Returns the project solution local service.
+	 *
+	 * @return the project solution local service
+	 */
+	public com.liferay.osb.customer.admin.service.ProjectSolutionLocalService
+		getProjectSolutionLocalService() {
+
+		return projectSolutionLocalService;
+	}
+
+	/**
+	 * Sets the project solution local service.
+	 *
+	 * @param projectSolutionLocalService the project solution local service
+	 */
+	public void setProjectSolutionLocalService(
+		com.liferay.osb.customer.admin.service.ProjectSolutionLocalService
+			projectSolutionLocalService) {
+
+		this.projectSolutionLocalService = projectSolutionLocalService;
+	}
+
+	/**
+	 * Returns the project solution persistence.
+	 *
+	 * @return the project solution persistence
+	 */
+	public ProjectSolutionPersistence getProjectSolutionPersistence() {
+		return projectSolutionPersistence;
+	}
+
+	/**
+	 * Sets the project solution persistence.
+	 *
+	 * @param projectSolutionPersistence the project solution persistence
+	 */
+	public void setProjectSolutionPersistence(
+		ProjectSolutionPersistence projectSolutionPersistence) {
+
+		this.projectSolutionPersistence = projectSolutionPersistence;
+	}
+
+	/**
 	 * Returns the counter local service.
 	 *
 	 * @return the counter local service
@@ -1086,6 +1130,15 @@ public abstract class AuditEntryServiceBaseImpl
 
 	@BeanReference(type = ProductEntryFinder.class)
 	protected ProductEntryFinder productEntryFinder;
+
+	@BeanReference(
+		type = com.liferay.osb.customer.admin.service.ProjectSolutionLocalService.class
+	)
+	protected com.liferay.osb.customer.admin.service.ProjectSolutionLocalService
+		projectSolutionLocalService;
+
+	@BeanReference(type = ProjectSolutionPersistence.class)
+	protected ProjectSolutionPersistence projectSolutionPersistence;
 
 	@ServiceReference(
 		type = com.liferay.counter.kernel.service.CounterLocalService.class

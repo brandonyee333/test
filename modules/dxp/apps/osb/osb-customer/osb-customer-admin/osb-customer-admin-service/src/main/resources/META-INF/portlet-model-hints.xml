@@ -143,4 +143,8 @@
 		<field name="licenses" type="boolean" />
 		<field name="versionsListType" type="String" />
 	</model>
+	<model name="com.liferay.osb.customer.admin.model.ProjectSolution">
+		<field name="salesforceProjectKey" type="String" />
+		<field name="value" type="String" />
+	</model>
 </model-hints>

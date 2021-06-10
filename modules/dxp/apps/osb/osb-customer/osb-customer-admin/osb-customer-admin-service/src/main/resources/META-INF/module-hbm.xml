@@ -11,6 +11,7 @@
 	<import class="com.liferay.osb.customer.admin.model.ExternalIdMapper" />
 	<import class="com.liferay.osb.customer.admin.model.LicenseEntry" />
 	<import class="com.liferay.osb.customer.admin.model.ProductEntry" />
+	<import class="com.liferay.osb.customer.admin.model.ProjectSolution" />
 	<class name="com.liferay.osb.customer.admin.model.impl.AccountAttachmentImpl" table="OSB_AccountAttachment">
 		<id name="accountAttachmentId" type="long">
 			<generator class="assigned" />
@@ -154,5 +155,11 @@
 		<property name="accountEnvironments" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="licenses" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="versionsListType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.customer.admin.model.impl.ProjectSolutionImpl" table="OSB_ProjectSolution">
+		<id name="salesforceProjectKey" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="value" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 </hibernate-mapping>

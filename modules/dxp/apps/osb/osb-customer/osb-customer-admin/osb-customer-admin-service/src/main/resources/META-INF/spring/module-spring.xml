@@ -36,4 +36,6 @@
 	<bean class="com.liferay.osb.customer.admin.service.impl.ProductEntryServiceImpl" id="com.liferay.osb.customer.admin.service.ProductEntryService" />
 	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.ProductEntryPersistenceImpl" id="com.liferay.osb.customer.admin.service.persistence.ProductEntryPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.ProductEntryFinderImpl" id="com.liferay.osb.customer.admin.service.persistence.ProductEntryFinder" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.ProjectSolutionLocalServiceImpl" id="com.liferay.osb.customer.admin.service.ProjectSolutionLocalService" />
+	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.ProjectSolutionPersistenceImpl" id="com.liferay.osb.customer.admin.service.persistence.ProjectSolutionPersistence" parent="basePersistence" />
 </beans>
