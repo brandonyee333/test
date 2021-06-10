@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.publisher.spring.OSBAsahPublisherSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisEnabledTestConfiguration;
 
 import org.assertj.core.api.Assertions;
@@ -144,13 +145,52 @@ public class AnalyticsEventsRestControllerTest {
 	}
 
 	@Test
-	public void testPushAnalyticsEventsMessageIfInvalidEvents()
+	public void testPushAnalyticsEventsMessageIfEmptyEvents() throws Exception {
+		ResponseEntity<String> responseEntity = _exchange(
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					"dependencies/analytics_events_message_empty_events.json",
+					this)));
+
+		Assertions.assertThat(
+			responseEntity.getStatusCode()
+		).isEqualTo(
+			HttpStatus.valueOf(200)
+		);
+
+		Mockito.verify(
+			_messageBus, Mockito.never()
+		).sendMessage(
+			ArgumentMatchers.any(), ArgumentMatchers.any()
+		);
+	}
+
+	@Test
+	public void testPushAnalyticsEventsMessageIfInvalidDataSourceId()
 		throws Exception {
 
 		ResponseEntity<String> responseEntity = _exchange(
 			ResourceUtil.readResourceToString(
-				"dependencies/analytics_events_message_invalid_events.json",
+				"dependencies" +
+					"/analytics_events_message_invalid_data_source_id.json",
 				this));
+
+		Assertions.assertThat(
+			responseEntity.getStatusCode()
+		).isEqualTo(
+			HttpStatus.valueOf(400)
+		);
+	}
+
+	@Test
+	public void testPushAnalyticsEventsMessageIfInvalidEvents()
+		throws Exception {
+
+		ResponseEntity<String> responseEntity = _exchange(
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					"dependencies/analytics_events_message_invalid_events.json",
+					this)));
 
 		Assertions.assertThat(
 			responseEntity.getStatusCode()
@@ -175,6 +215,38 @@ public class AnalyticsEventsRestControllerTest {
 			argumentCaptor.getValue(), false);
 	}
 
+	@Test
+	public void testPushAnalyticsEventsMessageIfInvalidXForwardedFor()
+		throws Exception {
+
+		String body = ResourceUtil.readResourceToString(
+			"dependencies/analytics_events_message.json", this);
+
+		HttpHeaders httpHeaders = new HttpHeaders();
+
+		httpHeaders.add(HeaderConstants.PROJECT_ID, "test");
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+		ResponseEntity<String> responseEntity = _exchange(body, httpHeaders);
+
+		Assertions.assertThat(
+			responseEntity.getBody()
+		).isEqualTo(
+			"[]"
+		);
+
+		ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(
+			String.class);
+
+		Mockito.verify(
+			_messageBus, Mockito.times(1)
+		).sendMessage(
+			ArgumentMatchers.any(), argumentCaptor.capture()
+		);
+
+		JSONAssert.assertEquals(body, argumentCaptor.getValue(), false);
+	}
+
 	private <T> ResponseEntity<String> _exchange(T body) {
 		HttpHeaders httpHeaders = new HttpHeaders();
 
@@ -183,6 +255,12 @@ public class AnalyticsEventsRestControllerTest {
 		httpHeaders.add(HttpHeaders.USER_AGENT, "Google Chrome");
 		httpHeaders.add("X-Forwarded-For", "localhost");
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+		return _exchange(body, httpHeaders);
+	}
+
+	private <T> ResponseEntity<String> _exchange(
+		T body, HttpHeaders httpHeaders) {
 
 		HttpEntity<T> requestEntity = new HttpEntity<>(body, httpHeaders);
 

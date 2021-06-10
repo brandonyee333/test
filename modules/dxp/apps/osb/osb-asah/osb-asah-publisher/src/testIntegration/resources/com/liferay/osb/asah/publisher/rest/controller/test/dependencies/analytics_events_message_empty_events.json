@@ -1,0 +1,13 @@
+{
+	"clientIP": "localhost",
+	"context": {
+		"instanceId": 1234,
+		"languageId": "en_US",
+		"url": "http://www.liferay.com"
+	},
+	"dataSourceId": "WXYZ",
+	"events": [
+	],
+	"protocolVersion": "1.x",
+	"userId": "1234"
+}
