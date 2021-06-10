@@ -1,0 +1,96 @@
+[
+	{
+		"action": "add",
+		"dataSourceId": "349978106408647035",
+		"objectJSONObject": {
+			"companyId": 20097,
+			"createDate": "1604986275864",
+			"emailAddress": "jack.grealish@test.com",
+			"firstName": "Jack",
+			"jobTitle": "",
+			"languageId": "en_US",
+			"lastName": "Grealish",
+			"middleName": "",
+			"modifiedDate": "1604986275864",
+			"screenName": "jack.grealish",
+			"timeZoneId": "UTC",
+			"userId": 42060,
+			"uuid": "d80d2ada-28b3-679b-b656-008236d78db7"
+		},
+		"type": "com.liferay.portal.kernel.model.User"
+	},
+	{
+		"action": "add",
+		"dataSourceId": "349978106408647035",
+		"objectJSONObject": {
+			"companyId": 20097,
+			"createDate": "1604986275866",
+			"emailAddress": "jack.wilshere@test.com",
+			"firstName": "Jack",
+			"jobTitle": "",
+			"languageId": "en_US",
+			"lastName": "Wilshere",
+			"middleName": "",
+			"modifiedDate": "1604986275866",
+			"screenName": "jack.grealish",
+			"timeZoneId": "UTC",
+			"userId": 42063,
+			"uuid": "d80d2ada-28b3-679b-b656-008254dsfsdc"
+		},
+		"type": "com.liferay.portal.kernel.model.User"
+	},
+	{
+		"action": "addAssociation",
+		"dataSourceId": "349978106408647035",
+		"objectJSONObject": {
+			"classPK": 20109,
+			"emailAddress": "jack.grealish@test.com",
+			"userId": 42060
+		},
+		"type": "com.liferay.portal.kernel.model.Role"
+	},
+	{
+		"action": "update",
+		"dataSourceId": "349978106408647035",
+		"objectJSONObject": {
+			"contact": {
+				"birthday": 0,
+				"classPK": 42060,
+				"contactId": 42061,
+				"emailAddress": "jack.grealish@test.com",
+				"firstName": "Jack",
+				"jobTitle": "",
+				"lastName": "Grealish",
+				"male": true,
+				"parentContactId": 0
+			},
+			"createDate": "1604986275864",
+			"emailAddress": "jack.grealish@test.com",
+			"modifiedDate": "1604986275864",
+			"userId": 42060
+		},
+		"type": "com.liferay.portal.kernel.model.User"
+	},
+	{
+		"action": "update",
+		"dataSourceId": "349978106408647035",
+		"objectJSONObject": {
+			"contact": {
+				"birthday": 0,
+				"classPK": 42063,
+				"contactId": 42064,
+				"emailAddress": "jack.wilshere@test.com",
+				"firstName": "Jack",
+				"jobTitle": "",
+				"lastName": "Wilshere",
+				"male": true,
+				"parentContactId": 0
+			},
+			"createDate": "1604986275864",
+			"emailAddress": "jack.wilshere@test.com",
+			"modifiedDate": "1604986275864",
+			"userId": 42063
+		},
+		"type": "com.liferay.portal.kernel.model.User"
+	}
+]
