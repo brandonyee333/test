@@ -416,7 +416,7 @@ public class ElasticsearchIndividualRepositoryImpl
 			}
 
 			jsonObject.put(
-				"dataSourceIndividualPKs", dataSourceAccountPKsJSONArray);
+				"dataSourceAccountPKs", dataSourceAccountPKsJSONArray);
 		}
 
 		Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =

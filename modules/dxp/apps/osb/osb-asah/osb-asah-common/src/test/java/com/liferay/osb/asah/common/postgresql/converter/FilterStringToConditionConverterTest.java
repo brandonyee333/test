@@ -133,9 +133,9 @@ public class FilterStringToConditionConverterTest {
 			DSL.and(
 				DSL.or(
 					DSL.field(
-						"column1"
+						DSL.cast(DSL.field("column1"), Long.class)
 					).gt(
-						42
+						42L
 					),
 					DSL.or(
 						DSL.field(
@@ -194,9 +194,9 @@ public class FilterStringToConditionConverterTest {
 							-53.21
 						),
 						DSL.field(
-							"column6"
+							DSL.cast(DSL.field("column6"), Long.class)
 						).le(
-							-8192
+							-8192L
 						)))),
 			"((column1 ne 'null' and column2 ne null) or ((column3 eq 'true' " +
 				"and column4 eq true) or (column5 gt -53.21 and column6 le " +
@@ -259,9 +259,9 @@ public class FilterStringToConditionConverterTest {
 	public void testIntegerValue() throws Exception {
 		_assertEquals(
 			DSL.field(
-				"column1"
+				DSL.cast(DSL.field("column1"), Long.class)
 			).eq(
-				123
+				123L
 			),
 			"column1 eq 123");
 	}
