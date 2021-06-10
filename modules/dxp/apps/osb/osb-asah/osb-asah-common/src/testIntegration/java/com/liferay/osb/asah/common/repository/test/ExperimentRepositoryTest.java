@@ -15,16 +15,21 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.junit.runner.RunWith;
 
+import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Marcos Martins
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@DirtiesContext
+@Import(JDBCTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class ExperimentRepositoryTest extends BaseExperimentRepositoryTestCase {
 }

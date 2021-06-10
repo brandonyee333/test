@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
@@ -35,12 +36,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Rachael Koestartyo
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@DirtiesContext
+@Import(JDBCTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class AccountRepositoryTest extends BaseAccountRepositoryTestCase {
 

@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Optional;
@@ -28,12 +29,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Marcellus Tavares
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@DirtiesContext
+@Import(JDBCTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class AsahMarkerRepositoryTest {
 
