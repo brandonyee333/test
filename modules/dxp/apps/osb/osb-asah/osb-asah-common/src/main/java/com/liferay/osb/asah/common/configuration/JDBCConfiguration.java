@@ -117,14 +117,14 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 	@Bean("postgreSQLDataSource")
 	@Primary
 	@Profile("test")
-	public DataSource testpostgreSQLDataSource() {
+	public DataSource testPostgreSQLDataSource() {
 		PGSimpleDataSource pgSimpleDataSource = new PGSimpleDataSource();
 
 		pgSimpleDataSource.setServerName("localhost");
 		pgSimpleDataSource.setPortNumber(5432);
-		pgSimpleDataSource.setDatabaseName("osbasah");
-		pgSimpleDataSource.setUser("postgres");
-		pgSimpleDataSource.setPassword("password");
+		pgSimpleDataSource.setDatabaseName(CredentialConstants.POSTGRESQL_DB);
+		pgSimpleDataSource.setUser(CredentialConstants.POSTGRESQL_USER);
+		pgSimpleDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
 		pgSimpleDataSource.setCurrentSchema("test");
 
 		DatabasePopulatorUtils.execute(
