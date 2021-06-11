@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.repository.JobRunRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -57,17 +57,16 @@ public class JobRunDog {
 		JSONObject contextJSONObject, Job job, JobRunStatus jobRunStatus,
 		String step, String trigger) {
 
-		LocalDateTime localDateTime = LocalDateTime.now(
-			_timeZoneDog.getZoneId());
+		LocalDateTime nowLocalDateTime = LocalDateTime.now(ZoneOffset.UTC);
 
 		JobRun jobRun = new JobRun();
 
 		jobRun.setContextJSONObject(contextJSONObject);
-		jobRun.setCreateLocalDateTime(localDateTime);
+		jobRun.setCreateLocalDateTime(nowLocalDateTime);
 		jobRun.setJobId(job.getId());
 		jobRun.setJobRunStatus(jobRunStatus);
 		jobRun.setJobType(String.valueOf(job.getJobType()));
-		jobRun.setModifiedLocalDateTime(localDateTime);
+		jobRun.setModifiedLocalDateTime(nowLocalDateTime);
 		jobRun.setStep(step);
 		jobRun.setTrigger(trigger);
 
@@ -147,7 +146,7 @@ public class JobRunDog {
 
 		int count = 0;
 
-		LocalDateTime nowLocalDateTime = LocalDateTime.now(ZoneId.of("UTC"));
+		LocalDateTime nowLocalDateTime = LocalDateTime.now(ZoneOffset.UTC);
 
 		CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(
 			jobRunFrequency.getCronExpression(), TimeZone.getTimeZone("UTC"));
@@ -156,7 +155,7 @@ public class JobRunDog {
 			startDate = cronSequenceGenerator.next(startDate);
 
 			LocalDateTime nextJobRunLocalDateTime = DateUtil.toLocalDateTime(
-				startDate, ZoneId.of("UTC"));
+				startDate, ZoneOffset.UTC);
 
 			if ((nextJobRunLocalDateTime.getMonthValue() >
 					nowLocalDateTime.getMonthValue()) ||
@@ -183,16 +182,14 @@ public class JobRunDog {
 			return 0;
 		}
 
-		Date startDate = DateUtil.toDate(
-			job.getModifiedLocalDateTime(), _timeZoneDog.getZoneId());
+		Date startDate = DateUtil.toUTCDate(job.getModifiedLocalDateTime());
 
 		JobRun lastScheduledJobRun = _fetchLastScheduledJobRun(
 			currentMonthJobRuns);
 
 		if (lastScheduledJobRun != null) {
-			startDate = DateUtil.toDate(
-				lastScheduledJobRun.getCreateLocalDateTime(),
-				_timeZoneDog.getZoneId());
+			startDate = DateUtil.toUTCDate(
+				lastScheduledJobRun.getCreateLocalDateTime());
 		}
 
 		return _countCurrentMonthScheduledJobRuns(

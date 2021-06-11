@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.dog;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Job;
 import com.liferay.osb.asah.common.entity.JobParameter;
@@ -34,6 +33,7 @@ import com.liferay.osb.asah.common.repository.JobRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -66,10 +66,10 @@ public class JobDog {
 
 		Job job = new Job();
 
-		LocalDateTime date = LocalDateTime.now(_timeZoneDog.getZoneId());
+		LocalDateTime nowLocalDateTime = LocalDateTime.now(ZoneOffset.UTC);
 
-		job.setCreateLocalDateTime(date);
-		job.setModifiedLocalDateTime(date);
+		job.setCreateLocalDateTime(nowLocalDateTime);
+		job.setModifiedLocalDateTime(nowLocalDateTime);
 
 		job.setName(name);
 		job.setJobParameters(jobParameters);
@@ -115,14 +115,12 @@ public class JobDog {
 			return null;
 		}
 
-		Date startDate = DateUtil.toDate(
-			job.getModifiedLocalDateTime(), _timeZoneDog.getZoneId());
+		Date startDate = DateUtil.toUTCDate(job.getModifiedLocalDateTime());
 
 		JobRun jobRun = _jobRunDog.fetchLatestJobRun(jobId, "SCHEDULE");
 
 		if (jobRun != null) {
-			startDate = DateUtil.toDate(
-				jobRun.getCreateLocalDateTime(), _timeZoneDog.getZoneId());
+			startDate = DateUtil.toUTCDate(jobRun.getCreateLocalDateTime());
 		}
 
 		CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(
@@ -218,8 +216,7 @@ public class JobDog {
 
 		JobRunFrequency oldJobRunFrequency = job.getJobRunFrequency();
 
-		job.setModifiedLocalDateTime(
-			LocalDateTime.now(_timeZoneDog.getZoneId()));
+		job.setModifiedLocalDateTime(LocalDateTime.now(ZoneOffset.UTC));
 		job.setName(name);
 		job.setJobParameters(jobParameters);
 		job.setJobRunFrequency(jobRunFrequency);
@@ -328,8 +325,5 @@ public class JobDog {
 
 	@Autowired
 	private RecommendationDog _recommendationDog;
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
 
 }
