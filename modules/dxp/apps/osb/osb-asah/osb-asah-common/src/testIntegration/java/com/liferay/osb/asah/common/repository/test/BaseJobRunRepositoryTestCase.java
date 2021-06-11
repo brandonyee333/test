@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.Job;
 import com.liferay.osb.asah.common.entity.JobParameter;
 import com.liferay.osb.asah.common.entity.JobRun;
@@ -26,6 +27,7 @@ import com.liferay.osb.asah.common.repository.JobRepository;
 import com.liferay.osb.asah.common.repository.JobRunRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.junit.Before;
@@ -65,12 +67,12 @@ public abstract class BaseJobRunRepositoryTestCase
 	private Job _addJob() {
 		Job job = new Job();
 
-		job.setCreateDate(new Date());
+		job.setCreateLocalDateTime(LocalDateTime.now(_timeZoneDog.getZoneId()));
 		job.setJobType(JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY);
 		job.setJobRunFrequency(JobRunFrequency.MANUAL);
 		job.setJobRunDataPeriod(JobRunDataPeriod.LAST_30_DAYS);
 		job.setJobParameters(SetUtil.of(new JobParameter("parameter1", "1.2")));
-		job.setModifiedDate(new Date());
+		job.setModifiedLocalDateTime(LocalDateTime.now(_timeZoneDog.getZoneId()));
 		job.setName("Product Recommendation Job");
 
 		return _jobRepository.save(job);
@@ -83,5 +85,8 @@ public abstract class BaseJobRunRepositoryTestCase
 
 	@Autowired
 	private JobRunRepository _jobRunRepository;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.dog;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Job;
 import com.liferay.osb.asah.common.entity.JobParameter;
@@ -31,6 +32,8 @@ import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.JobRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+
+import java.time.LocalDateTime;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -63,10 +66,10 @@ public class JobDog {
 
 		Job job = new Job();
 
-		Date date = new Date();
+		LocalDateTime date = LocalDateTime.now(_timeZoneDog.getZoneId());
 
-		job.setCreateDate(date);
-		job.setModifiedDate(date);
+		job.setCreateLocalDateTime(date);
+		job.setModifiedLocalDateTime(date);
 
 		job.setName(name);
 		job.setJobParameters(jobParameters);
@@ -112,7 +115,8 @@ public class JobDog {
 			return null;
 		}
 
-		Date startDate = job.getModifiedDate();
+		Date startDate = DateUtil.toDate(
+			job.getModifiedLocalDateTime(), _timeZoneDog.getZoneId());
 
 		JobRun jobRun = _jobRunDog.fetchLatestJobRun(jobId, "SCHEDULE");
 
@@ -213,7 +217,7 @@ public class JobDog {
 
 		JobRunFrequency oldJobRunFrequency = job.getJobRunFrequency();
 
-		job.setModifiedDate(new Date());
+		job.setModifiedLocalDateTime(LocalDateTime.now(_timeZoneDog.getZoneId()));
 		job.setName(name);
 		job.setJobParameters(jobParameters);
 		job.setJobRunFrequency(jobRunFrequency);
@@ -322,5 +326,8 @@ public class JobDog {
 
 	@Autowired
 	private RecommendationDog _recommendationDog;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

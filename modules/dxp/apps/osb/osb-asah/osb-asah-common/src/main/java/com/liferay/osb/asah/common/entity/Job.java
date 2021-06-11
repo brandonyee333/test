@@ -14,18 +14,17 @@
 
 package com.liferay.osb.asah.common.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.JobRunDataPeriod;
 import com.liferay.osb.asah.common.model.JobRunFrequency;
 import com.liferay.osb.asah.common.model.JobType;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 import java.util.Objects;
 import java.util.Set;
 
@@ -76,17 +75,11 @@ public class Job implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
+	@Column("createdate")
 	@JsonProperty("createdDate")
-	public Date getCreateDate() {
-		if (_createDate == null) {
-			return null;
-		}
-
-		return new Date(_createDate.getTime());
+	@JsonSerialize(using = ToStringSerializer.class)
+	public LocalDateTime getCreateLocalDateTime() {
+		return _createLocalDateTime;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -126,17 +119,11 @@ public class Job implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
+	@Column("modifieddate")
 	@JsonProperty("lastUpdatedDate")
-	public Date getModifiedDate() {
-		if (_modifiedDate == null) {
-			return null;
-		}
-
-		return new Date(_modifiedDate.getTime());
+	@JsonSerialize(using = ToStringSerializer.class)
+	public LocalDateTime getModifiedLocalDateTime() {
+		return _modifiedLocalDateTime;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -147,8 +134,8 @@ public class Job implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_createDate, _id, _jobParameters, _jobRunDataPeriod,
-			_jobRunFrequency, _jobType, _modifiedDate, _name);
+			_createLocalDateTime, _id, _jobParameters, _jobRunDataPeriod,
+			_jobRunFrequency, _jobType, _modifiedLocalDateTime, _name);
 	}
 
 	@JsonIgnore
@@ -165,10 +152,8 @@ public class Job implements Persistable<Long> {
 		_asahTaskId = asahTaskId;
 	}
 
-	public void setCreateDate(Date createDate) {
-		if (createDate != null) {
-			_createDate = new Date(createDate.getTime());
-		}
+	public void setCreateLocalDateTime(LocalDateTime createLocalDateTime) {
+		_createLocalDateTime = createLocalDateTime;
 	}
 
 	public void setId(Long id) {
@@ -195,10 +180,8 @@ public class Job implements Persistable<Long> {
 		_jobType = jobType;
 	}
 
-	public void setModifiedDate(Date modifiedDate) {
-		if (modifiedDate != null) {
-			_modifiedDate = new Date(modifiedDate.getTime());
-		}
+	public void setModifiedLocalDateTime(LocalDateTime modifiedLocalDateTime) {
+		_modifiedLocalDateTime = modifiedLocalDateTime;
 	}
 
 	public void setName(String name) {
@@ -206,13 +189,14 @@ public class Job implements Persistable<Long> {
 	}
 
 	protected boolean equalsJob(Job job) {
-		if (Objects.equals(_createDate, job._createDate) &&
+		if (Objects.equals(_createLocalDateTime, job._createLocalDateTime) &&
 			Objects.equals(_id, job._id) &&
 			Objects.equals(_jobParameters, job._jobParameters) &&
 			Objects.equals(_jobRunDataPeriod, job._jobRunDataPeriod) &&
 			Objects.equals(_jobRunFrequency, job._jobRunFrequency) &&
 			Objects.equals(_jobType, job._jobType) &&
-			Objects.equals(_modifiedDate, job._modifiedDate) &&
+			Objects.equals(
+				_modifiedLocalDateTime, job._modifiedLocalDateTime) &&
 			Objects.equals(_name, job._name)) {
 
 			return true;
@@ -225,7 +209,7 @@ public class Job implements Persistable<Long> {
 	private Long _asahTaskId;
 
 	@Transient
-	private Date _createDate;
+	private LocalDateTime _createLocalDateTime;
 
 	@Transient
 	private Long _id;
@@ -246,7 +230,7 @@ public class Job implements Persistable<Long> {
 	private JobType _jobType;
 
 	@Transient
-	private Date _modifiedDate;
+	private LocalDateTime _modifiedLocalDateTime;
 
 	@Transient
 	private String _name;

@@ -183,7 +183,8 @@ public class JobRunDog {
 			return 0;
 		}
 
-		Date startDate = job.getModifiedDate();
+		Date startDate = DateUtil.toDate(
+			job.getModifiedLocalDateTime(), _timeZoneDog.getZoneId());
 
 		JobRun lastScheduledJobRun = _fetchLastScheduledJobRun(
 			currentMonthJobRuns);
