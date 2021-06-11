@@ -24,6 +24,7 @@ if (SessionMessages.contains(renderRequest, "language")) {
 }
 
 String output = ParamUtil.getString(renderRequest, "output", "text");
+
 if (SessionMessages.contains(renderRequest, "output")) {
 	output = (String)SessionMessages.get(renderRequest, "output");
 }
