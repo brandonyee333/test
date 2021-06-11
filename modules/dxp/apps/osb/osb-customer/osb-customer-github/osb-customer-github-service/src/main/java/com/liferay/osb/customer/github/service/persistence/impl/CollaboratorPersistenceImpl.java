@@ -3098,12 +3098,12 @@ public class CollaboratorPersistenceImpl
 		CollaboratorModelImpl collaboratorModelImpl =
 			(CollaboratorModelImpl)collaborator;
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Date date = new Date();
-
 		if (isNew && (collaborator.getCreateDate() == null)) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			Date date = new Date();
+
 			if (serviceContext == null) {
 				collaborator.setCreateDate(date);
 			}

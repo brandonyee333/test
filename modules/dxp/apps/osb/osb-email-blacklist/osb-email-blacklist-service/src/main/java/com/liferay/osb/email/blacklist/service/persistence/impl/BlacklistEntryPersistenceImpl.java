@@ -603,12 +603,12 @@ public class BlacklistEntryPersistenceImpl
 		BlacklistEntryModelImpl blacklistEntryModelImpl =
 			(BlacklistEntryModelImpl)blacklistEntry;
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Date date = new Date();
-
 		if (isNew && (blacklistEntry.getCreateDate() == null)) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			Date date = new Date();
+
 			if (serviceContext == null) {
 				blacklistEntry.setCreateDate(date);
 			}

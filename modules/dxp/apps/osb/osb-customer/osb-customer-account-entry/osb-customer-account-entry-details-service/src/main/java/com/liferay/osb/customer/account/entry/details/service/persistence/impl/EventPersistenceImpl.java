@@ -2943,12 +2943,12 @@ public class EventPersistenceImpl
 
 		EventModelImpl eventModelImpl = (EventModelImpl)event;
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Date date = new Date();
-
 		if (isNew && (event.getCreateDate() == null)) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			Date date = new Date();
+
 			if (serviceContext == null) {
 				event.setCreateDate(date);
 			}

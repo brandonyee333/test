@@ -2195,12 +2195,12 @@ public class TicketAttachmentPersistenceImpl
 		TicketAttachmentModelImpl ticketAttachmentModelImpl =
 			(TicketAttachmentModelImpl)ticketAttachment;
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Date date = new Date();
-
 		if (isNew && (ticketAttachment.getCreateDate() == null)) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			Date date = new Date();
+
 			if (serviceContext == null) {
 				ticketAttachment.setCreateDate(date);
 			}

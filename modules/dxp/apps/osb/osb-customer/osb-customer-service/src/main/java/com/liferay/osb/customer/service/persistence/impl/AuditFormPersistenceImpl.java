@@ -295,12 +295,12 @@ public class AuditFormPersistenceImpl
 
 		AuditFormModelImpl auditFormModelImpl = (AuditFormModelImpl)auditForm;
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Date date = new Date();
-
 		if (isNew && (auditForm.getCreateDate() == null)) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			Date date = new Date();
+
 			if (serviceContext == null) {
 				auditForm.setCreateDate(date);
 			}

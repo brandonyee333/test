@@ -2986,12 +2986,12 @@ public class AuditEntryPersistenceImpl
 		AuditEntryModelImpl auditEntryModelImpl =
 			(AuditEntryModelImpl)auditEntry;
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Date date = new Date();
-
 		if (isNew && (auditEntry.getCreateDate() == null)) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			Date date = new Date();
+
 			if (serviceContext == null) {
 				auditEntry.setCreateDate(date);
 			}

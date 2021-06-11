@@ -1983,12 +1983,12 @@ public class ZendeskArticlePersistenceImpl
 		ZendeskArticleModelImpl zendeskArticleModelImpl =
 			(ZendeskArticleModelImpl)zendeskArticle;
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Date date = new Date();
-
 		if (!zendeskArticleModelImpl.hasSetModifiedDate()) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			Date date = new Date();
+
 			if (serviceContext == null) {
 				zendeskArticle.setModifiedDate(date);
 			}

@@ -1158,12 +1158,12 @@ public class WatsonTokenAuthEntryPersistenceImpl
 		WatsonTokenAuthEntryModelImpl watsonTokenAuthEntryModelImpl =
 			(WatsonTokenAuthEntryModelImpl)watsonTokenAuthEntry;
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Date date = new Date();
-
 		if (isNew && (watsonTokenAuthEntry.getCreateDate() == null)) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			Date date = new Date();
+
 			if (serviceContext == null) {
 				watsonTokenAuthEntry.setCreateDate(date);
 			}

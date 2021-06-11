@@ -1157,12 +1157,12 @@ public class ZendeskSectionPersistenceImpl
 		ZendeskSectionModelImpl zendeskSectionModelImpl =
 			(ZendeskSectionModelImpl)zendeskSection;
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Date date = new Date();
-
 		if (!zendeskSectionModelImpl.hasSetModifiedDate()) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			Date date = new Date();
+
 			if (serviceContext == null) {
 				zendeskSection.setModifiedDate(date);
 			}

@@ -2393,12 +2393,12 @@ public class AccountAttachmentPersistenceImpl
 		AccountAttachmentModelImpl accountAttachmentModelImpl =
 			(AccountAttachmentModelImpl)accountAttachment;
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Date date = new Date();
-
 		if (isNew && (accountAttachment.getCreateDate() == null)) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			Date date = new Date();
+
 			if (serviceContext == null) {
 				accountAttachment.setCreateDate(date);
 			}

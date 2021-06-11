@@ -1079,12 +1079,12 @@ public class TokenAuthEntryPersistenceImpl
 		TokenAuthEntryModelImpl tokenAuthEntryModelImpl =
 			(TokenAuthEntryModelImpl)tokenAuthEntry;
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Date date = new Date();
-
 		if (isNew && (tokenAuthEntry.getCreateDate() == null)) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			Date date = new Date();
+
 			if (serviceContext == null) {
 				tokenAuthEntry.setCreateDate(date);
 			}
