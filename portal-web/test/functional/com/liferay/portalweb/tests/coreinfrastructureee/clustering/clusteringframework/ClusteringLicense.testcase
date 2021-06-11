@@ -283,7 +283,7 @@ definition {
 		Alert.viewErrorMessage(errorMessage = "licensed for this cluster has been exceeded");
 		Alert.viewErrorMessage(errorMessage = "grace period");
 
-		Alert.closeMessage(messageType = "ERROR");
+		Alert._closeMessage(messageType = "ERROR");
 
 		UserBar.signOut();
 
@@ -307,7 +307,7 @@ definition {
 
 		Alert.viewErrorMessage(errorMessage = "will be automatically deactivated and shut down");
 
-		Alert.closeMessage(messageType = "ERROR");
+		Alert._closeMessage(messageType = "ERROR");
 
 		UserBar.signOut();
 

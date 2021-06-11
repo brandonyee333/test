@@ -20,6 +20,53 @@ definition {
 		echo("outgoing IP Address of ${nodePort} is ${ipAddress}");
 	}
 
+	@description = "This will get the log content for a specific clustered server bundle"
+	macro getLogFileSpecificServer {
+		var leadingPortNumber = StringUtil.replace("${nodePort}", "080", "");
+		var bundleIndex = ${leadingPortNumber} - 8;
+
+		AntCommand(
+			locator1 = "build-test.xml",
+			value1 = "copy-cluster-log -Dapp.server.bundle.index=${bundleIndex}");
+
+		var liferayHome = PropsUtil.get("liferay.home.dir.name");
+		var fileContent = FileUtil.read("${liferayHome}/cluster${bundleIndex}.log");
+
+		return "${fileContent}";
+	}
+
+	@description = "This will shutdown the server at a specific bundle at ${base_branch}-bundles-${bundle_index}\tomcat."
+	macro shutdownSpecificServer {
+		var leadingPortNumber = StringUtil.replace("${nodePort}", "080", "");
+		var bundleIndex = ${leadingPortNumber} - 8;
+
+		AntCommand(
+			locator1 = "build-test.xml",
+			value1 = "stop-app-server -Dapp.server.bundle.index=${bundleIndex}");
+	}
+
+	@description = "This will start the server at a specific bundle at ${base_branch}-bundles-${bundle_index}\tomcat."
+	macro startSpecificServer {
+		var leadingPortNumber = StringUtil.replace("${nodePort}", "080", "");
+		var bundleIndex = ${leadingPortNumber} - 8;
+
+		if ("${deleteLiferayHome}" == "false") {
+			AntCommand(
+				locator1 = "build-test.xml",
+				value1 = "start-app-server -Dapp.server.bundle.index=${bundleIndex} -Ddelete.liferay.home=false");
+		}
+		else if ("${keepCachedAppServerData}" == "true") {
+			AntCommand(
+				locator1 = "build-test.xml",
+				value1 = "start-app-server -Dapp.server.bundle.index=${bundleIndex} -Dkeep.cached.app.server.data=true");
+		}
+		else {
+			AntCommand(
+				locator1 = "build-test.xml",
+				value1 = "start-app-server -Dapp.server.bundle.index=${bundleIndex}");
+		}
+	}
+
 	macro viewClusterStatusInConsole {
 		AssertConsoleTextPresent(value1 = "Accepted view");
 
@@ -38,6 +85,20 @@ definition {
 		AssertConsoleTextPresent(value1 = "com.liferay.portal.cache.ehcache.multiple");
 
 		AssertConsoleTextPresent(value1 = "com.liferay.portal.scheduler.multiple");
+	}
+
+	@description = "This will view the text shows at a specific bundle at ${base_branch}-bundles-${bundle_index}/logs."
+	macro viewTextPresentOnSpecificNode {
+		if ("${nodePort}" == "8080") {
+			AssertConsoleTextPresent(value1 = "${expectedText}");
+		}
+		else {
+			var nodeLog = Clustering.getLogFileSpecificServer(nodePort = "${nodePort}");
+
+			if (!(contains("${nodeLog}", "${expectedText}"))) {
+				fail("Failed to find expected text: ${expectedText} on cluser node at ${nodePort}");
+			}
+		}
 	}
 
 	@description = "This will wait 5 minutes for node at port ${nodePort} to shutdown"
