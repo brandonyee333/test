@@ -70,7 +70,38 @@ definition {
 	@priority = "4"
 	test OnlyTotalPendingColumnIsPopulatedWhenNoSLA {
 
-		// TODO LRQA-67563 OnlyTotalPendingColumnIsPopulatedWhenNoSLA pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
+
+		Navigator.gotoNavItem(navItem = "Configuration");
+
+		Workflow.configureWorkflow(
+			workflowDefinition = "Single Approver",
+			workflowResourceValue = "Blogs Entry");
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			panel = "Site Administration",
+			portlet = "Blogs");
+
+		Blogs.addWithWorkflow(
+			entryContent = "Blogs Entry Content",
+			entrySubtitle = "Subtitle",
+			entryTitle = "Blogs Entry Title");
+
+		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
+
+		AssertElementPresent(locator1 = "WorkflowMetrics#METRICS_NO_SLA_MESSAGE");
+		
+		WorkflowMetrics.checkPendingWorkflowValues(
+			key_ontime = "0",
+			key_overdue = "0",
+			key_pending = "1",
+			key_untracked = "1");
 
 	}
 
