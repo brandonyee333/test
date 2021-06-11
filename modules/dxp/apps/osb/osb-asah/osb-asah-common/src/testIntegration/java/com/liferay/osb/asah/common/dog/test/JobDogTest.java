@@ -308,8 +308,8 @@ public class JobDogTest {
 				continue;
 			}
 
-			LocalDateTime createDateLocalDateTime = DateUtil.toLocalDateTime(
-				jobRun.getCreateDate(), ZoneId.of("UTC"));
+			LocalDateTime createDateLocalDateTime =
+				jobRun.getCreateLocalDateTime();
 
 			if (createDateLocalDateTime.getMonthValue() ==
 					nowLocalDateTime.getMonthValue()) {

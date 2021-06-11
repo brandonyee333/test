@@ -45,7 +45,8 @@ public abstract class BaseJobRepositoryTestCase
 		job.setJobRunFrequency(JobRunFrequency.MANUAL);
 		job.setJobRunDataPeriod(JobRunDataPeriod.LAST_30_DAYS);
 		job.setJobParameters(SetUtil.of(new JobParameter("parameter1", "1.2")));
-		job.setModifiedLocalDateTime(LocalDateTime.now(_timeZoneDog.getZoneId()));
+		job.setModifiedLocalDateTime(
+			LocalDateTime.now(_timeZoneDog.getZoneId()));
 		job.setName("Product Recommendation Job");
 
 		setUpRepository(job);
@@ -61,4 +62,5 @@ public abstract class BaseJobRepositoryTestCase
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
+
 }

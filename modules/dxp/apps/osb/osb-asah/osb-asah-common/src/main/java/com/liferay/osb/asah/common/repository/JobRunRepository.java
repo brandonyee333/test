@@ -17,7 +17,8 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.entity.JobRun;
 import com.liferay.osb.asah.common.model.JobRunStatus;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -44,8 +45,9 @@ public interface JobRunRepository extends CrudRepository<JobRun, Long> {
 
 	public List<JobRun> findByJobId(Long jobId, Pageable pageable);
 
-	public List<JobRun> findByJobIdAndCreateDateBetween(
-		Long jobId, Date startCreateDate, Date endCreateDate);
+	public List<JobRun> findByJobIdAndCreateLocalDateTimeBetween(
+		Long jobId, LocalDateTime startCreateLocalDateTime,
+		LocalDateTime endCreateLocalDateTime);
 
 	public List<JobRun> findByJobRunStatusAndJobTypeAndStep(
 		JobRunStatus jobRunStatus, String jobType, String step);

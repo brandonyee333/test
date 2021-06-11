@@ -25,6 +25,8 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.JobRunStatus;
 
+import java.time.LocalDateTime;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -59,7 +61,7 @@ public class JobRun implements Persistable<Long> {
 			Objects.equals(
 				JSONUtil.toMap(_contextJSONObject),
 				JSONUtil.toMap(jobRun._contextJSONObject)) &&
-			Objects.equals(_createDate, jobRun._createDate) &&
+			Objects.equals(_createLocalDateTime, jobRun._createLocalDateTime) &&
 			Objects.equals(_id, jobRun._id) &&
 			Objects.equals(_jobRef, jobRun._jobRef) &&
 			Objects.equals(_jobRunStatus, jobRun._jobRunStatus) &&
@@ -92,17 +94,11 @@ public class JobRun implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
+	@Column("createdate")
 	@JsonProperty("createdDate")
-	public Date getCreateDate() {
-		if (_createDate == null) {
-			return null;
-		}
-
-		return new Date(_createDate.getTime());
+	@JsonSerialize(using = ToStringSerializer.class)
+	public LocalDateTime getCreateLocalDateTime() {
+		return _createLocalDateTime;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -141,17 +137,11 @@ public class JobRun implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
+	@Column("modifieddate")
 	@JsonProperty("lastUpdatedDate")
-	public Date getModifiedDate() {
-		if (_modifiedDate == null) {
-			return null;
-		}
-
-		return new Date(_modifiedDate.getTime());
+	@JsonSerialize(using = ToStringSerializer.class)
+	public LocalDateTime getModifiedLocalDateTime() {
+		return _modifiedLocalDateTime;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -167,8 +157,8 @@ public class JobRun implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_completedDate, _contextJSONObject, _createDate, _id, _jobRef,
-			_jobRunStatus, _trigger);
+			_completedDate, _contextJSONObject, _createLocalDateTime, _id,
+			_jobRef, _jobRunStatus, _trigger);
 	}
 
 	@JsonIgnore
@@ -191,10 +181,8 @@ public class JobRun implements Persistable<Long> {
 		_contextJSONObject = contextJSONObject;
 	}
 
-	public void setCreateDate(Date createDate) {
-		if (createDate != null) {
-			_createDate = new Date(createDate.getTime());
-		}
+	public void setCreateLocalDateTime(LocalDateTime createLocalDateTime) {
+		_createLocalDateTime = createLocalDateTime;
 	}
 
 	public void setId(Long id) {
@@ -233,10 +221,8 @@ public class JobRun implements Persistable<Long> {
 		_jobRef.setType(jobType);
 	}
 
-	public void setModifiedDate(Date modifiedDate) {
-		if (modifiedDate != null) {
-			_modifiedDate = new Date(modifiedDate.getTime());
-		}
+	public void setModifiedLocalDateTime(LocalDateTime modifiedLocalDateTime) {
+		_modifiedLocalDateTime = modifiedLocalDateTime;
 	}
 
 	public void setStep(String step) {
@@ -263,7 +249,7 @@ public class JobRun implements Persistable<Long> {
 	private JSONObject _contextJSONObject;
 
 	@Transient
-	private Date _createDate;
+	private LocalDateTime _createLocalDateTime;
 
 	@Transient
 	private Long _id;
@@ -278,7 +264,7 @@ public class JobRun implements Persistable<Long> {
 	private JobRunStatus _jobRunStatus;
 
 	@Transient
-	private Date _modifiedDate;
+	private LocalDateTime _modifiedLocalDateTime;
 
 	@Transient
 	private String _step;

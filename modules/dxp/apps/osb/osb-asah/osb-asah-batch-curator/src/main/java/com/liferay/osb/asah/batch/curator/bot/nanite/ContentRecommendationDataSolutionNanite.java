@@ -67,6 +67,7 @@ import com.amazonaws.services.personalize.model.SolutionSummary;
 import com.amazonaws.services.personalize.model.SolutionVersion;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocSparkManager;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.JobRun;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.JobRunStatus;
@@ -74,9 +75,10 @@ import com.liferay.osb.asah.common.repository.JobRunRepository;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
+import java.time.LocalDateTime;
+
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -771,7 +773,8 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	private void _updateJobRun(JobRun jobRun) {
-		jobRun.setModifiedDate(new Date());
+		jobRun.setModifiedLocalDateTime(
+			LocalDateTime.now(_timeZoneDog.getZoneId()));
 
 		_jobRunRepository.save(jobRun);
 	}
@@ -823,5 +826,8 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 	@Autowired
 	private JobRunRepository _jobRunRepository;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

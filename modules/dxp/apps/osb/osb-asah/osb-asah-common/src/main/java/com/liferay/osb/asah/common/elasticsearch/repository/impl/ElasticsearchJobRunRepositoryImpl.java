@@ -23,7 +23,8 @@ import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.repository.JobRunRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -92,8 +93,9 @@ public class ElasticsearchJobRunRepositoryImpl
 	}
 
 	@Override
-	public List<JobRun> findByJobIdAndCreateDateBetween(
-		Long jobId, Date startCreateDate, Date endCreateDate) {
+	public List<JobRun> findByJobIdAndCreateLocalDateTimeBetween(
+		Long jobId, LocalDateTime startCreateLocalDateTime,
+		LocalDateTime endCreateLocalDateTime) {
 
 		return toList(
 			new JSONArray(
@@ -104,9 +106,9 @@ public class ElasticsearchJobRunRepositoryImpl
 							QueryBuilders.rangeQuery("createdDate");
 
 						rangeQueryBuilder.gte(
-							DateUtil.toUTCString(startCreateDate));
+							DateUtil.toUTCString(startCreateLocalDateTime));
 						rangeQueryBuilder.lt(
-							DateUtil.toUTCString(endCreateDate));
+							DateUtil.toUTCString(endCreateLocalDateTime));
 
 						searchSourceBuilder.query(
 							BoolQueryBuilderUtil.filter(

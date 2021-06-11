@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.repository.JobRunRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.time.LocalDateTime;
+
 import java.util.Date;
 
 import org.junit.Before;
@@ -49,7 +50,8 @@ public abstract class BaseJobRunRepositoryTestCase
 
 		jobRun.setCompletedDate(new Date());
 		jobRun.setContextJSONObject(JSONUtil.put("key", "value"));
-		jobRun.setCreateDate(new Date());
+		jobRun.setCreateLocalDateTime(
+			LocalDateTime.now(_timeZoneDog.getZoneId()));
 		jobRun.setJobId(job.getId());
 		jobRun.setJobRunStatus(JobRunStatus.RUNNING);
 		jobRun.setTrigger("manual");
@@ -72,7 +74,8 @@ public abstract class BaseJobRunRepositoryTestCase
 		job.setJobRunFrequency(JobRunFrequency.MANUAL);
 		job.setJobRunDataPeriod(JobRunDataPeriod.LAST_30_DAYS);
 		job.setJobParameters(SetUtil.of(new JobParameter("parameter1", "1.2")));
-		job.setModifiedLocalDateTime(LocalDateTime.now(_timeZoneDog.getZoneId()));
+		job.setModifiedLocalDateTime(
+			LocalDateTime.now(_timeZoneDog.getZoneId()));
 		job.setName("Product Recommendation Job");
 
 		return _jobRepository.save(job);

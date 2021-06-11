@@ -121,7 +121,8 @@ public class JobDog {
 		JobRun jobRun = _jobRunDog.fetchLatestJobRun(jobId, "SCHEDULE");
 
 		if (jobRun != null) {
-			startDate = jobRun.getCreateDate();
+			startDate = DateUtil.toDate(
+				jobRun.getCreateLocalDateTime(), _timeZoneDog.getZoneId());
 		}
 
 		CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(
@@ -217,7 +218,8 @@ public class JobDog {
 
 		JobRunFrequency oldJobRunFrequency = job.getJobRunFrequency();
 
-		job.setModifiedLocalDateTime(LocalDateTime.now(_timeZoneDog.getZoneId()));
+		job.setModifiedLocalDateTime(
+			LocalDateTime.now(_timeZoneDog.getZoneId()));
 		job.setName(name);
 		job.setJobParameters(jobParameters);
 		job.setJobRunFrequency(jobRunFrequency);

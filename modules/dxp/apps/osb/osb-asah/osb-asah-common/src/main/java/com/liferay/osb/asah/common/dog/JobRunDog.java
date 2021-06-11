@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.repository.JobRunRepository;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -58,16 +57,17 @@ public class JobRunDog {
 		JSONObject contextJSONObject, Job job, JobRunStatus jobRunStatus,
 		String step, String trigger) {
 
-		Date date = new Date();
+		LocalDateTime localDateTime = LocalDateTime.now(
+			_timeZoneDog.getZoneId());
 
 		JobRun jobRun = new JobRun();
 
 		jobRun.setContextJSONObject(contextJSONObject);
-		jobRun.setCreateDate(date);
+		jobRun.setCreateLocalDateTime(localDateTime);
 		jobRun.setJobId(job.getId());
 		jobRun.setJobRunStatus(jobRunStatus);
 		jobRun.setJobType(String.valueOf(job.getJobType()));
-		jobRun.setModifiedDate(date);
+		jobRun.setModifiedLocalDateTime(localDateTime);
 		jobRun.setStep(step);
 		jobRun.setTrigger(trigger);
 
@@ -190,7 +190,9 @@ public class JobRunDog {
 			currentMonthJobRuns);
 
 		if (lastScheduledJobRun != null) {
-			startDate = lastScheduledJobRun.getCreateDate();
+			startDate = DateUtil.toDate(
+				lastScheduledJobRun.getCreateLocalDateTime(),
+				_timeZoneDog.getZoneId());
 		}
 
 		return _countCurrentMonthScheduledJobRuns(
@@ -225,11 +227,9 @@ public class JobRunDog {
 
 		LocalDateTime startLocalDateTime = endLocalDateTime.withDayOfMonth(1);
 
-		startLocalDateTime = startLocalDateTime.with(LocalTime.MIDNIGHT);
-
-		return _jobRunRepository.findByJobIdAndCreateDateBetween(
-			jobId, Date.from(startLocalDateTime.toInstant(ZoneOffset.UTC)),
-			Date.from(endLocalDateTime.toInstant(ZoneOffset.UTC)));
+		return _jobRunRepository.findByJobIdAndCreateLocalDateTimeBetween(
+			jobId, startLocalDateTime.with(LocalTime.MIDNIGHT),
+			endLocalDateTime);
 	}
 
 	@Autowired
