@@ -795,7 +795,7 @@ definition {
 	@description = "This is a test for COMMERCE-6304. UseFriendlyURL"
 	@priority = "3"
 	test UseFriendlyURL {
-		property portal.acceptance = "Intern Test";
+		property portal.acceptance = "commerce-ci-run";
 		property test.name.skip.portal.instance = "CPCommerceProducts#UseFriendlyURL";
 
 		// TODO Review
