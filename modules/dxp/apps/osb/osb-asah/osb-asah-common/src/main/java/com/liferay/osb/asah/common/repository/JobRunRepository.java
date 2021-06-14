@@ -46,8 +46,8 @@ public interface JobRunRepository extends CrudRepository<JobRun, Long> {
 	public List<JobRun> findByJobId(Long jobId, Pageable pageable);
 
 	public List<JobRun> findByJobIdAndCreateLocalDateTimeBetween(
-		Long jobId, LocalDateTime startCreateLocalDateTime,
-		LocalDateTime endCreateLocalDateTime);
+		Long jobId, LocalDateTime endCreateLocalDateTime,
+		LocalDateTime startCreateLocalDateTime);
 
 	public List<JobRun> findByJobRunStatusAndJobTypeAndStep(
 		JobRunStatus jobRunStatus, String jobType, String step);

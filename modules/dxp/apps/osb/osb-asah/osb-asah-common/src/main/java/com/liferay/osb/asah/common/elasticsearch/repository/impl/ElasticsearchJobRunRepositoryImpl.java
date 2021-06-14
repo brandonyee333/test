@@ -94,8 +94,8 @@ public class ElasticsearchJobRunRepositoryImpl
 
 	@Override
 	public List<JobRun> findByJobIdAndCreateLocalDateTimeBetween(
-		Long jobId, LocalDateTime startCreateLocalDateTime,
-		LocalDateTime endCreateLocalDateTime) {
+		Long jobId, LocalDateTime endCreateLocalDateTime,
+		LocalDateTime startCreateLocalDateTime) {
 
 		return toList(
 			new JSONArray(
