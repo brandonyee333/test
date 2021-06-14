@@ -12,6 +12,8 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 
 	apply plugin: PythonPlugin
 	apply plugin: "com.liferay.source.formatter"
+	apply plugin: "eclipse"
+	apply plugin: "idea"
 
 	task installPackageDependencies(type: VenvTask)
 	task installProjectEnvDependencies(type: VenvTask)
@@ -93,6 +95,10 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 
 	task assemble {
 		dependsOn packagePython
+	}
+
+	task clean {
+		delete buildDir
 	}
 
 	task test {
