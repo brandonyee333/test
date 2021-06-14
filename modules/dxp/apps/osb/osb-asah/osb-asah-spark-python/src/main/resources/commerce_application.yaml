@@ -70,10 +70,11 @@ google:
 product:
     content:
         recommendation:
+            coalesce:
+                partition:
+                    count:
             max:
                 rank: 10
-            score:
-                function: "tanimoto_coefficient"
     interaction:
         recommendation:
             enable: true
