@@ -13,7 +13,8 @@ from abc import ABCMeta, \
 	abstractmethod
 
 from pyspark.ml.linalg import DenseVector, \
-	VectorUDT
+	VectorUDT, \
+	Vectors
 from pyspark.sql.functions import udf
 from pyspark.sql.types import DoubleType
 
@@ -83,3 +84,67 @@ class ToDenseVectorUDFFunction(BaseUDFFunction):
 	@staticmethod
 	def udf_function(vector):
 		return DenseVector(list(vector))
+
+class VectorDotProductUDFFunction(BaseUDFFunction):
+
+	def __init__(self, spark_session):
+		super(VectorDotProductUDFFunction, self).__init__(spark_session)
+
+	@staticmethod
+	def get_function_name():
+		return 'vectorDotProduct'
+
+	@staticmethod
+	def get_return_type():
+		return DoubleType()
+
+	@staticmethod
+	def udf_function(vector1, vector2):
+		return float(vector1.dot(vector2))
+
+class VectorMergeUDFFunction(BaseUDFFunction):
+
+	def __init__(self, spark_session):
+		super(VectorMergeUDFFunction, self).__init__(spark_session)
+
+	@staticmethod
+	def get_function_name():
+		return 'vectorMerge'
+
+	@staticmethod
+	def get_return_type():
+		return VectorUDT()
+
+	@staticmethod
+	def udf_function(vectors):
+		data = dict()
+
+		vector_size = 0
+
+		for vector in vectors:
+			vector_size = int(vector.size)
+
+			for index in vector.indices:
+				index = int(index)
+
+				if data.get(index) is None:
+					data[index] = vector[index]
+
+		return Vectors.sparse(vector_size, data)
+
+class VectorNormUDFFunction(BaseUDFFunction):
+
+	def __init__(self, spark_session):
+		super(VectorNormUDFFunction, self).__init__(spark_session)
+
+	@staticmethod
+	def get_function_name():
+		return 'vectorNorm'
+
+	@staticmethod
+	def get_return_type():
+		return DoubleType()
+
+	@staticmethod
+	def udf_function(vector, order=2):
+		return float(vector.norm(p=order))
