@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
@@ -31,9 +30,6 @@ import org.springframework.stereotype.Repository;
 /**
  * @author Rachael Koestartyo
  */
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
 @Repository
 public interface IndividualRepository extends CrudRepository<Individual, Long> {
 
