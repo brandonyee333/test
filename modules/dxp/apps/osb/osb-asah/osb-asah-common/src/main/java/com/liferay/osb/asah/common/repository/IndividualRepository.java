@@ -20,17 +20,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author Rachael Koestartyo
  */
-@Repository
+@Primary
 public interface IndividualRepository extends CrudRepository<Individual, Long> {
 
 	public boolean existsByChannelIdAndFilterStringAndId(
