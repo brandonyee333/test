@@ -89,7 +89,6 @@ allprojects {
 
 configure(javaSubprojects) {
 	apply plugin: "com.liferay.spring.boot.defaults"
-	apply plugin: "java"
 
 	configurations {
 		testIntegrationCompile.extendsFrom testCompile
