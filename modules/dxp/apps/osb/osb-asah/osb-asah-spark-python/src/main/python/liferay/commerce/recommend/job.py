@@ -22,14 +22,19 @@ from pyspark.ml.recommendation import ALS
 from pyspark.ml.tuning import CrossValidator, \
 	ParamGridBuilder
 from pyspark.sql import Window
-from pyspark.sql.functions import coalesce, \
+from pyspark.sql.functions import array, \
+	array_distinct, \
+	array_sort, \
+	coalesce, \
 	col, \
+	collect_list, \
 	collect_set, \
 	current_date, \
 	dense_rank, \
 	explode, \
 	expr, \
 	lit, \
+	rank, \
 	regexp_replace, \
 	row_number, \
 	size as col_size, \
@@ -68,6 +73,25 @@ class ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob(BaseJSONDa
 		data_frame = data_frame.drop('CPDefinitionId')
 
 		return data_frame
+
+class CutLineageSparkJob(BaseSparkJob):
+
+	def __init__(self, spark_application, table_name):
+		super().__init__(spark_application)
+
+		self._table_name = table_name
+
+	def run(self):
+		data_frame = self.spark_session.table(self._table_name)
+
+		data_frame = self.spark_session.createDataFrame(
+			data_frame.rdd,
+			data_frame.schema
+		)
+
+		data_frame.createOrReplaceTempView(self._table_name)
+
+		self.spark_session.catalog.cacheTable(self._table_name)
 
 class FrequentPatternDataPreparationSparkJob(BaseSparkJob):
 
@@ -451,6 +475,12 @@ class ProductContentPipelineSparkJob(BaseSparkJob):
 			'entryClassPK', 'features'
 		)
 
+		pipeline_data = pipeline_data.groupBy('entryClassPK').agg(
+			collect_list('features').alias('vector_list')
+		).withColumn(
+			'features', expr('vectorMerge(vector_list)')
+		).drop('vector_list')
+
 		pipeline_data.createOrReplaceTempView('pipeline_data')
 
 		self.spark_session.catalog.cacheTable('pipeline_data')
@@ -467,6 +497,66 @@ class ProductContentRecommendationJSONDataFrameWriter(BaseJSONDataFrameWriterSpa
 			'ProductContentRecommendation', 'product_content_recommendations'
 		)
 
+class ProductContentRecommendationPreparationSparkJob(BaseSparkJob):
+
+	def __init__(self, spark_application):
+		super(
+			ProductContentRecommendationPreparationSparkJob,
+			self
+		).__init__(spark_application)
+
+	def run(self):
+		coalesce_partition_count = self.spark_application_configuration.get(
+			'product.content.recommendation.coalesce.partition.count'
+		)
+
+		pipeline_data_frame = self.spark_session.table('pipeline_data')
+
+		all_pairs_data_frame = pipeline_data_frame.select(
+			'entryClassPK'
+		).crossJoin(
+			pipeline_data_frame.selectExpr(
+				'entryClassPK AS entryClassPK2'
+			)
+		).withColumn(
+			'key',
+			array_sort(
+				array_distinct(
+					array(['entryClassPK', 'entryClassPK2'])
+				)
+			)
+		)
+
+		if coalesce_partition_count:
+			all_pairs_data_frame = all_pairs_data_frame.coalesce(
+				coalesce_partition_count
+			)
+
+		all_pairs_data_frame.createOrReplaceTempView('all_pairs')
+
+		self.spark_session.catalog.cacheTable('all_pairs')
+
+		score_pairs_data_frame = all_pairs_data_frame.dropDuplicates(
+			subset=['key']
+		).filter(
+			col_size('key') > 1
+		)
+
+		score_pairs_data_frame = score_pairs_data_frame.join(
+			pipeline_data_frame,
+			on='entryClassPK'
+		).join(
+			pipeline_data_frame.selectExpr(
+				'entryClassPK AS entryClassPK2',
+				'features AS features2'
+			),
+			on='entryClassPK2'
+		)
+
+		score_pairs_data_frame.createOrReplaceTempView('score_pairs')
+
+		self.spark_session.catalog.cacheTable('score_pairs')
+
 class ProductContentRecommendationSparkJob(BaseSparkJob):
 
 	def __init__(self, spark_application):
@@ -476,27 +566,40 @@ class ProductContentRecommendationSparkJob(BaseSparkJob):
 		).__init__(spark_application)
 
 	def run(self):
-		pipeline_data_frame = self.spark_session.table('pipeline_data')
+		score_pairs_data_frame = self.spark_session.table('score_pairs')
 
-		cross_join_data_frame = pipeline_data_frame.crossJoin(
-			pipeline_data_frame.selectExpr(
-				'entryClassPK as entryClassPK2', 'features as features2'
+		score_pairs_data_frame = score_pairs_data_frame.selectExpr(
+		   'key', 'features', 'features2'
+		)
+		score_pairs_data_frame = score_pairs_data_frame.withColumn(
+			'dotProduct', expr('vectorDotProduct(features, features2)')
+		)
+		score_pairs_data_frame = score_pairs_data_frame.withColumn(
+			'norm1', expr('vectorNorm(features)')
+		)
+		score_pairs_data_frame = score_pairs_data_frame.withColumn(
+			'norm2', expr('vectorNorm(features2)')
+		)
+		score_pairs_data_frame = score_pairs_data_frame.select(
+			'key',
+			expr(
+				'dotProduct / (pow(norm1, 2) + pow(norm2, 2) - dotProduct)'
+				' AS score'
 			)
 		)
 
-		score_function = self.spark_application_configuration.get(
-			'product.content.recommendation.score.function'
+		all_pairs_data_frame = self.spark_session.table('all_pairs')
+
+		recommendations_data_frame = all_pairs_data_frame.join(
+			score_pairs_data_frame,
+			on=['key']
 		)
 
-		score_data_frame = cross_join_data_frame.selectExpr(
-			'*', score_function + '(features, features2) AS score'
-		)
-
-		window = Window.partitionBy(col('entryClassPK')).orderBy(
+		window = Window.partitionBy('entryClassPK').orderBy(
 			col('score').desc()
 		)
 
-		recommendations_data_frame = score_data_frame.select(
+		recommendations_data_frame = recommendations_data_frame.select(
 			'*',
 			dense_rank().over(window).alias('rank')
 		)
@@ -506,9 +609,8 @@ class ProductContentRecommendationSparkJob(BaseSparkJob):
 		)
 
 		recommendations_data_frame = recommendations_data_frame.filter(
-			'rank > 1 AND rank <= {}'.format(max_rank)
+			'rank >= 1 AND rank <= {}'.format(max_rank)
 		)
-
 		recommendations_data_frame = recommendations_data_frame.withColumn(
 			'createDate', current_date()
 		)
@@ -524,10 +626,10 @@ class ProductContentRecommendationSparkJob(BaseSparkJob):
 			'recommendedEntryClassPK',
 			col('entryClassPK2').cast('long')
 		)
-
 		recommendations_data_frame = recommendations_data_frame.drop(
 			'entryClassPK2'
-		).drop('features').drop('features2')
+		)
+		recommendations_data_frame = recommendations_data_frame.drop('key')
 
 		recommendations_data_frame.createOrReplaceTempView(
 			'product_content_recommendations'
