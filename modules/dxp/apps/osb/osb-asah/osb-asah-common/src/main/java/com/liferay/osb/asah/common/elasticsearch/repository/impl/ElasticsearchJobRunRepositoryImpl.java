@@ -105,10 +105,10 @@ public class ElasticsearchJobRunRepositoryImpl
 						RangeQueryBuilder rangeQueryBuilder =
 							QueryBuilders.rangeQuery("createdDate");
 
-						rangeQueryBuilder.gte(
-							DateUtil.toUTCString(startCreateLocalDateTime));
 						rangeQueryBuilder.lt(
 							DateUtil.toUTCString(endCreateLocalDateTime));
+						rangeQueryBuilder.gte(
+							DateUtil.toUTCString(startCreateLocalDateTime));
 
 						searchSourceBuilder.query(
 							BoolQueryBuilderUtil.filter(
