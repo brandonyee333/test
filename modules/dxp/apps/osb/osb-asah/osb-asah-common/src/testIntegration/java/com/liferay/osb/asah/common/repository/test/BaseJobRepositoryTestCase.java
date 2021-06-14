@@ -43,12 +43,12 @@ public abstract class BaseJobRepositoryTestCase
 		LocalDateTime nowLocalDateTime = LocalDateTime.now(ZoneOffset.UTC);
 
 		job.setCreateLocalDateTime(nowLocalDateTime);
-		job.setModifiedLocalDateTime(nowLocalDateTime);
 
 		job.setJobType(JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY);
 		job.setJobRunFrequency(JobRunFrequency.MANUAL);
 		job.setJobRunDataPeriod(JobRunDataPeriod.LAST_30_DAYS);
 		job.setJobParameters(SetUtil.of(new JobParameter("parameter1", "1.2")));
+		job.setModifiedLocalDateTime(nowLocalDateTime);
 		job.setName("Product Recommendation Job");
 
 		setUpRepository(job);
