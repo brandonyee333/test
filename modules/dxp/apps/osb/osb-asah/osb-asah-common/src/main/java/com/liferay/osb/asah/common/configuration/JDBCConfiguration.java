@@ -110,7 +110,7 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 
 	@Bean("postgreSQLDataSource")
 	@Primary
-	@Profile("prod")
+	@Profile({"dev", "prod"})
 	public DataSource postgreSQLDataSource() {
 		return new PostgreSQLDataSource(_hikariMaximumPoolSize);
 	}
