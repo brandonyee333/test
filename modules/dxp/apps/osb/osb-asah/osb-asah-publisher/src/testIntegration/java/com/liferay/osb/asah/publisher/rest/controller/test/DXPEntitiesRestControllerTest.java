@@ -89,7 +89,7 @@ public class DXPEntitiesRestControllerTest {
 			String.class);
 
 		Mockito.verify(
-			_messageBus, Mockito.times(5)
+			_messageBus, Mockito.times(6)
 		).sendMessage(
 			ArgumentMatchers.any(), argumentCaptor.capture()
 		);
