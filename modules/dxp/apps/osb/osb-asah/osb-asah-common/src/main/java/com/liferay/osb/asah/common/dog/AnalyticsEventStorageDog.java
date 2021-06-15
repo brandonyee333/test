@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
+import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
@@ -41,13 +42,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class AnalyticsEventStorageDog {
 
-	public void store(AnalyticsEvent analyticsEvent) {
+	public Event store(AnalyticsEvent analyticsEvent) {
 		try {
 			EventDefinition eventDefinition = _resolveEventDefinition(
 				analyticsEvent);
 
 			if (eventDefinition.isBlocked()) {
-				return;
+				return null;
 			}
 
 			Set<EventAttribute> eventAttributes = _resolveEventAttributes(
@@ -55,7 +56,7 @@ public class AnalyticsEventStorageDog {
 
 			Map<String, String> eventContext = analyticsEvent.getContext();
 
-			_eventDog.addEvent(
+			return _eventDog.addEvent(
 				analyticsEvent.getId(), analyticsEvent.getApplicationId(),
 				MapUtil.getString(eventContext, "canonicalUrl"),
 				Long.valueOf(analyticsEvent.getChannelId()),
@@ -68,6 +69,8 @@ public class AnalyticsEventStorageDog {
 		}
 		catch (Exception exception) {
 			_log.error("Unable to store event", exception);
+
+			return null;
 		}
 	}
 

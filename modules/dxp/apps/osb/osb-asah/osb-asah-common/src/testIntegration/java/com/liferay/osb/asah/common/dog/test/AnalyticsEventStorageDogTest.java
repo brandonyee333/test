@@ -21,6 +21,8 @@ import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.entity.Channel;
+import com.liferay.osb.asah.common.entity.Event;
+import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinition;
@@ -31,9 +33,11 @@ import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -233,6 +237,57 @@ public class AnalyticsEventStorageDogTest {
 	}
 
 	@Test
+	public void testStoreGlobalEventAttributes() {
+		Event actualEvent = _storeAnalyticsEvent(
+			"pageViewed",
+			new HashMap<String, String>() {
+				{
+					put("canonicalUrl", "https://www.liferay.com");
+					put("description", "Welcome to Liferay Inc.");
+					put("keywords", "portal,dxp");
+					put("referrer", "google.com");
+					put("title", "Liferay");
+					put("url", "https://www.liferay.com");
+				}
+			},
+			Collections.emptyMap());
+
+		Set<EventAttribute> actualEventAttributes =
+			actualEvent.getEventAttributes();
+
+		_assertEventAttributeValue(
+			actualEventAttributes,
+			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
+				"canonicalUrl"),
+			"https://www.liferay.com");
+		_assertEventAttributeValue(
+			actualEventAttributes,
+			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
+				"pageDescription"),
+			"Welcome to Liferay Inc.");
+		_assertEventAttributeValue(
+			actualEventAttributes,
+			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
+				"pageKeywords"),
+			"portal,dxp");
+		_assertEventAttributeValue(
+			actualEventAttributes,
+			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
+				"referrer"),
+			"google.com");
+		_assertEventAttributeValue(
+			actualEventAttributes,
+			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
+				"pageTitle"),
+			"Liferay");
+		_assertEventAttributeValue(
+			actualEventAttributes,
+			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
+				"url"),
+			"https://www.liferay.com");
+	}
+
+	@Test
 	public void testStoreNewEventDefinition() {
 		long expectedEventAttributeDefinitionCount =
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
@@ -267,6 +322,27 @@ public class AnalyticsEventStorageDogTest {
 			1, _eventDog.countEvents(eventDefinition.getId()), 0.0);
 	}
 
+	private void _assertEventAttributeValue(
+		Set<EventAttribute> actualEventAttributes,
+		EventAttributeDefinition expectedEventAttributeDefinition,
+		String expectedEventAttributeValue) {
+
+		Stream<EventAttribute> stream = actualEventAttributes.stream();
+
+		Map<Long, EventAttribute> actualEventAttributesMap = stream.collect(
+			Collectors.toMap(
+				EventAttribute::getEventAttributeDefinitionId,
+				Function.identity()));
+
+		EventAttribute actualEventAttribute = actualEventAttributesMap.get(
+			expectedEventAttributeDefinition.getId());
+
+		Assert.assertNotNull(actualEventAttribute);
+		Assert.assertEquals(
+			expectedEventAttributeValue,
+			actualEventAttribute.getAttributeValue());
+	}
+
 	private Set<Long> _getEventDefinitionIds(
 		String eventAttribributeDefinitionName) {
 
@@ -289,7 +365,7 @@ public class AnalyticsEventStorageDogTest {
 		);
 	}
 
-	private void _storeAnalyticsEvent(
+	private Event _storeAnalyticsEvent(
 		String eventId, Map<String, String> eventContext,
 		Map<String, String> eventProperties) {
 
@@ -313,7 +389,7 @@ public class AnalyticsEventStorageDogTest {
 
 		analyticsEvent.setUserId(uuid.toString());
 
-		_analyticsEventStorageDog.store(analyticsEvent);
+		return _analyticsEventStorageDog.store(analyticsEvent);
 	}
 
 	@Autowired
