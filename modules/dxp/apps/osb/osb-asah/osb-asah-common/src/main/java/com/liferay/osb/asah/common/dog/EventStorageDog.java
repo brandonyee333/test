@@ -40,7 +40,7 @@ import org.springframework.stereotype.Component;
  * @author Leslie Wong
  */
 @Component
-public class AnalyticsEventStorageDog {
+public class EventStorageDog {
 
 	public Event store(AnalyticsEvent analyticsEvent) {
 		try {
@@ -226,8 +226,7 @@ public class AnalyticsEventStorageDog {
 		return eventAttributes;
 	}
 
-	private static final Log _log = LogFactory.getLog(
-		AnalyticsEventStorageDog.class);
+	private static final Log _log = LogFactory.getLog(EventStorageDog.class);
 
 	private static final Map<String, String>
 		_globalEventAttributeDefinitionNames = new HashMap<String, String>() {

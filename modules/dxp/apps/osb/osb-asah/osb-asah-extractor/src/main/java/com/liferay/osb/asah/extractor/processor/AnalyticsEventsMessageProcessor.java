@@ -17,8 +17,8 @@ package com.liferay.osb.asah.extractor.processor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.dog.AnalyticsEventStorageDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.EventStorageDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -448,7 +448,7 @@ public class AnalyticsEventsMessageProcessor {
 			storage.write(analyticsEvent.toJSON());
 		}
 
-		_analyticsEventStorageDog.store(analyticsEvent);
+		_eventStorageDog.store(analyticsEvent);
 	}
 
 	private static final String[]
@@ -485,13 +485,13 @@ public class AnalyticsEventsMessageProcessor {
 	private String _analyticsEventsStoragePathTemplate;
 
 	@Autowired
-	private AnalyticsEventStorageDog _analyticsEventStorageDog;
-
-	@Autowired
 	private BrowscapEngine _browscapEngine;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private EventStorageDog _eventStorageDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

@@ -15,11 +15,11 @@
 package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.AnalyticsEventStorageDog;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
+import com.liferay.osb.asah.common.dog.EventStorageDog;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttribute;
@@ -55,7 +55,7 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @Import(JDBCTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class AnalyticsEventStorageDogTest {
+public class EventStorageDogTest {
 
 	@SQLResource(resourcePath = "test_store_blocked_event.sql")
 	@Test
@@ -389,11 +389,8 @@ public class AnalyticsEventStorageDogTest {
 
 		analyticsEvent.setUserId(uuid.toString());
 
-		return _analyticsEventStorageDog.store(analyticsEvent);
+		return _eventStorageDog.store(analyticsEvent);
 	}
-
-	@Autowired
-	private AnalyticsEventStorageDog _analyticsEventStorageDog;
 
 	@Autowired
 	private ChannelDog _channelDog;
@@ -406,5 +403,8 @@ public class AnalyticsEventStorageDogTest {
 
 	@Autowired
 	private EventDog _eventDog;
+
+	@Autowired
+	private EventStorageDog _eventStorageDog;
 
 }

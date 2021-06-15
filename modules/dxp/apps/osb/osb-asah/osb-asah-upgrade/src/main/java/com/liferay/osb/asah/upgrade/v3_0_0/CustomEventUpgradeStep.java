@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.upgrade.v3_0_0;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.AnalyticsEventStorageDog;
+import com.liferay.osb.asah.common.dog.EventStorageDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
@@ -178,7 +178,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		analyticsEvent.setIndividualId(activityJSONObject.getString("ownerId"));
 		analyticsEvent.setUserId(activityJSONObject.getString("userId"));
 
-		_analyticsEventStorageDog.store(analyticsEvent);
+		_eventStorageDog.store(analyticsEvent);
 	}
 
 	private void _writeBatch(SearchHit[] searchHits) {
@@ -195,7 +195,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		CustomEventUpgradeStep.class);
 
 	@Autowired
-	private AnalyticsEventStorageDog _analyticsEventStorageDog;
+	private EventStorageDog _eventStorageDog;
 
 	@Autowired
 	private EventRepository _eventRepository;
