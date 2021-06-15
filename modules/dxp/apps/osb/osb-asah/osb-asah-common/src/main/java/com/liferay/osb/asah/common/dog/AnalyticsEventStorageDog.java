@@ -49,7 +49,7 @@ public class AnalyticsEventStorageDog {
 				return;
 			}
 
-			Set<EventAttribute> eventAttributes = _resolveEventAttributes(
+			Set<EventAttribute> eventAttributes = _resolveLocalEventAttributes(
 				eventDefinition.getId(), analyticsEvent.getEventProperties());
 
 			Map<String, String> eventContext = analyticsEvent.getContext();
@@ -84,7 +84,32 @@ public class AnalyticsEventStorageDog {
 		);
 	}
 
-	private Set<EventAttribute> _resolveEventAttributes(
+	private EventDefinition _resolveEventDefinition(
+		AnalyticsEvent analyticsEvent) {
+
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName(
+				analyticsEvent.getEventId());
+
+		if (eventDefinition == null) {
+			eventDefinition = _eventDefinitionDog.addEventDefinition(
+				null, null, analyticsEvent.getEventDate(),
+				analyticsEvent.getEventId(), EventDefinition.Type.CUSTOM,
+				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"));
+		}
+		else if (eventDefinition.isBlocked()) {
+			eventDefinition = _eventDefinitionDog.updateEventDefinition(
+				new BlockedEventDefinition(
+					analyticsEvent.getEventDate(),
+					MapUtil.getString(
+						analyticsEvent.getContext(), "canonicalUrl")),
+				null, null, eventDefinition.getId());
+		}
+
+		return eventDefinition;
+	}
+
+	private Set<EventAttribute> _resolveLocalEventAttributes(
 		Long eventDefinitionId, Map<String, String> eventProperties) {
 
 		Set<EventAttribute> eventAttributes = new HashSet<>();
@@ -134,31 +159,6 @@ public class AnalyticsEventStorageDog {
 		}
 
 		return eventAttributes;
-	}
-
-	private EventDefinition _resolveEventDefinition(
-		AnalyticsEvent analyticsEvent) {
-
-		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinitionByName(
-				analyticsEvent.getEventId());
-
-		if (eventDefinition == null) {
-			eventDefinition = _eventDefinitionDog.addEventDefinition(
-				null, null, analyticsEvent.getEventDate(),
-				analyticsEvent.getEventId(), EventDefinition.Type.CUSTOM,
-				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"));
-		}
-		else if (eventDefinition.isBlocked()) {
-			eventDefinition = _eventDefinitionDog.updateEventDefinition(
-				new BlockedEventDefinition(
-					analyticsEvent.getEventDate(),
-					MapUtil.getString(
-						analyticsEvent.getContext(), "canonicalUrl")),
-				null, null, eventDefinition.getId());
-		}
-
-		return eventDefinition;
 	}
 
 	private static final Log _log = LogFactory.getLog(
