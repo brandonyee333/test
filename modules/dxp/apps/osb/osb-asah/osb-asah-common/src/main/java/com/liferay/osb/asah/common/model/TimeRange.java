@@ -255,6 +255,46 @@ public class TimeRange {
 		return localDateTime.minusDays(getDeltaDays() - 1);
 	}
 
+	public TimeRange getTimeRangeIncludingPrevious() {
+		if (equals(LAST_24_HOURS)) {
+			LocalDateTime endLocalDateTime = getEndLocalDateTime();
+
+			LocalDateTime startLocalDateTime = getEndLocalDateTime();
+
+			startLocalDateTime = startLocalDateTime.withMinute(0);
+			startLocalDateTime = startLocalDateTime.withSecond(0);
+			startLocalDateTime = startLocalDateTime.withNano(0);
+
+			startLocalDateTime = startLocalDateTime.minusHours(47);
+
+			return of(endLocalDateTime, startLocalDateTime);
+		}
+
+		if (equals(YESTERDAY) || equals(LAST_7_DAYS) || equals(LAST_28_DAYS) ||
+			equals(LAST_30_DAYS) || equals(LAST_90_DAYS) ||
+			equals(LAST_180_DAYS) || equals(LAST_YEAR)) {
+
+			LocalDateTime endLocalDateTime = getEndLocalDateTime();
+
+			LocalDateTime startLocalDateTime = endLocalDateTime.with(
+				LocalTime.MIN);
+
+			startLocalDateTime = startLocalDateTime.minusDays(
+				(getDeltaDays() * 2) - 1);
+
+			return of(endLocalDateTime, startLocalDateTime);
+		}
+
+		LocalDate endLocalDate = getEndLocalDate();
+		LocalDate startLocalDate = getStartLocalDate();
+
+		endLocalDate = endLocalDate.plusDays(1);
+
+		startLocalDate = startLocalDate.minusDays(getDeltaDays());
+
+		return of(endLocalDate, startLocalDate);
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(_key, _rangeKey);

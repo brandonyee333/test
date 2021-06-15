@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.model;
 
 import com.liferay.osb.asah.common.model.TimeRange;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -239,6 +240,83 @@ public class TimeRangeTest {
 		TimeRange timeRange = TimeRange.of(365);
 
 		Assert.assertEquals(TimeRange.LAST_YEAR, timeRange);
+	}
+
+	@Test
+	public void testTimeRangeOfWithIncludePrevious1() {
+		TimeRange timeRange =
+			TimeRange.YESTERDAY.getTimeRangeIncludingPrevious();
+
+		Duration duration = Duration.between(
+			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(47, Math.abs(duration.toHours()));
+	}
+
+	@Test
+	public void testTimeRangeOfWithIncludePrevious2() {
+		TimeRange timeRange =
+			TimeRange.LAST_7_DAYS.getTimeRangeIncludingPrevious();
+
+		Duration duration = Duration.between(
+			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(335, Math.abs(duration.toHours()));
+	}
+
+	@Test
+	public void testTimeRangeOfWithIncludePrevious3() {
+		TimeRange timeRange =
+			TimeRange.LAST_28_DAYS.getTimeRangeIncludingPrevious();
+
+		Duration duration = Duration.between(
+			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(1343, Math.abs(duration.toHours()));
+	}
+
+	@Test
+	public void testTimeRangeOfWithIncludePrevious4() {
+		TimeRange timeRange =
+			TimeRange.LAST_30_DAYS.getTimeRangeIncludingPrevious();
+
+		Duration duration = Duration.between(
+			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(1439, Math.abs(duration.toHours()));
+	}
+
+	@Test
+	public void testTimeRangeOfWithIncludePrevious5() {
+		TimeRange timeRange =
+			TimeRange.LAST_90_DAYS.getTimeRangeIncludingPrevious();
+
+		Duration duration = Duration.between(
+			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(4319, Math.abs(duration.toHours()));
+	}
+
+	@Test
+	public void testTimeRangeOfWithIncludePrevious6() {
+		TimeRange timeRange =
+			TimeRange.LAST_180_DAYS.getTimeRangeIncludingPrevious();
+
+		Duration duration = Duration.between(
+			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(8639, Math.abs(duration.toHours()));
+	}
+
+	@Test
+	public void testTimeRangeOfWithIncludePrevious7() {
+		TimeRange timeRange =
+			TimeRange.YESTERDAY.getTimeRangeIncludingPrevious();
+
+		Duration duration = Duration.between(
+			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(47, Math.abs(duration.toHours()));
 	}
 
 }
