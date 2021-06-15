@@ -27,6 +27,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,6 +62,12 @@ public class CustomAssetMetricRepositoryTest {
 			_timeZoneDog.getTimeZoneId()
 		).thenReturn(
 			"UTC"
+		);
+
+		Mockito.when(
+			_timeZoneDog.getZoneId()
+		).thenReturn(
+			ZoneId.of("UTC")
 		);
 	}
 
