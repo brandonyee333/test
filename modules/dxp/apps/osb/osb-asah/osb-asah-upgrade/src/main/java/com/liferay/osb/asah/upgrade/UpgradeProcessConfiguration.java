@@ -23,6 +23,7 @@ import com.liferay.osb.asah.upgrade.v2_12_0.RunLogUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_13_0.ChannelsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_13_0.DataSourcesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_13_0.SalesforceUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_0.CustomEventUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -50,6 +51,9 @@ public class UpgradeProcessConfiguration {
 			"2.12.0", "2.13.0", _dataSourcesUpgradeStep, _channelsUpgradeStep,
 			_salesforceUpgradeStep);
 
+		upgradeProcess.addUpgradeSteps(
+			"2.13.0", "3.0.0", _customEventUpgradeStep);
+
 		return upgradeProcess;
 	}
 
@@ -58,6 +62,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private ChannelsUpgradeStep _channelsUpgradeStep;
+
+	@Autowired
+	private CustomEventUpgradeStep _customEventUpgradeStep;
 
 	@Autowired
 	private DataSourcesUpgradeStep _dataSourcesUpgradeStep;
