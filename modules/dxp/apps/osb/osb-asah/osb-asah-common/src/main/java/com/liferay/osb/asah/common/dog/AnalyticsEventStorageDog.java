@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinitio
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -49,8 +50,8 @@ public class AnalyticsEventStorageDog {
 				return;
 			}
 
-			Set<EventAttribute> eventAttributes = _resolveLocalEventAttributes(
-				eventDefinition.getId(), analyticsEvent.getEventProperties());
+			Set<EventAttribute> eventAttributes = _resolveEventAttributes(
+				analyticsEvent, eventDefinition.getId());
 
 			Map<String, String> eventContext = analyticsEvent.getContext();
 
@@ -84,6 +85,22 @@ public class AnalyticsEventStorageDog {
 		);
 	}
 
+	private Set<EventAttribute> _resolveEventAttributes(
+		AnalyticsEvent analyticsEvent, Long eventDefinitionId) {
+
+		return new HashSet<EventAttribute>() {
+			{
+				addAll(
+					_resolveGlobalEventAttributes(
+						analyticsEvent.getContext(), eventDefinitionId));
+				addAll(
+					_resolveLocalEventAttributes(
+						eventDefinitionId,
+						analyticsEvent.getEventProperties()));
+			}
+		};
+	}
+
 	private EventDefinition _resolveEventDefinition(
 		AnalyticsEvent analyticsEvent) {
 
@@ -107,6 +124,51 @@ public class AnalyticsEventStorageDog {
 		}
 
 		return eventDefinition;
+	}
+
+	private Set<EventAttribute> _resolveGlobalEventAttributes(
+		Map<String, String> eventContext, Long eventDefinitionId) {
+
+		Set<EventAttribute> eventAttributes = new HashSet<>();
+
+		for (Map.Entry<String, String> entry :
+				_globalEventAttributeDefinitionNames.entrySet()) {
+
+			String propertyName = entry.getKey();
+			String propertyValue = eventContext.get(entry.getValue());
+
+			EventAttributeDefinition eventAttributeDefinition =
+				_eventAttributeDefinitionDog.
+					fetchEventAttributeDefinitionByName(propertyName);
+
+			Long eventAttributeDefinitionId = eventAttributeDefinition.getId();
+
+			Set<EventDefinitionEventAttributeDefinition>
+				eventDefinitionEventAttributeDefinitions =
+					eventAttributeDefinition.
+						getEventDefinitionEventAttributeDefinitions();
+
+			Set<Long> eventDefinitionIds = _getEventDefinitionIds(
+				eventDefinitionEventAttributeDefinitions);
+
+			if ((eventAttributeDefinitionId != null) &&
+				!eventDefinitionIds.contains(eventDefinitionId)) {
+
+				eventDefinitionEventAttributeDefinitions.add(
+					new EventDefinitionEventAttributeDefinition(
+						eventDefinitionId, propertyValue));
+
+				_eventAttributeDefinitionDog.updateEventAttributeDefinition(
+					null, null, null, eventAttributeDefinitionId,
+					eventDefinitionEventAttributeDefinitions, null);
+			}
+
+			eventAttributes.add(
+				new EventAttribute(
+					propertyValue, eventAttributeDefinition.getId()));
+		}
+
+		return eventAttributes;
 	}
 
 	private Set<EventAttribute> _resolveLocalEventAttributes(
@@ -163,6 +225,18 @@ public class AnalyticsEventStorageDog {
 
 	private static final Log _log = LogFactory.getLog(
 		AnalyticsEventStorageDog.class);
+
+	private static final Map<String, String>
+		_globalEventAttributeDefinitionNames = new HashMap<String, String>() {
+			{
+				put("canonicalUrl", "canonicalUrl");
+				put("pageDescription", "description");
+				put("pageKeywords", "keywords");
+				put("pageTitle", "title");
+				put("referrer", "referrer");
+				put("url", "url");
+			}
+		};
 
 	@Autowired
 	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
