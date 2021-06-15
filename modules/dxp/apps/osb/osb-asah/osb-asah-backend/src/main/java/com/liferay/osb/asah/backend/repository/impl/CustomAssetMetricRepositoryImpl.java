@@ -12,14 +12,14 @@
  *
  */
 
-package com.liferay.osb.asah.common.repository.impl;
+package com.liferay.osb.asah.backend.repository.impl;
 
+import com.liferay.osb.asah.backend.repository.CustomAssetMetricRepository;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.Tuple2;
-import com.liferay.osb.asah.common.repository.CustomAssetMetricRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.math.BigDecimal;

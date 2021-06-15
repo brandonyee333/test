@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.repository;
+package com.liferay.osb.asah.backend.repository;
 
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.Interval;

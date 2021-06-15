@@ -12,15 +12,15 @@
  *
  */
 
-package com.liferay.osb.asah.common.repository.test;
+package com.liferay.osb.asah.backend.repository.test;
 
+import com.liferay.osb.asah.backend.repository.CustomAssetMetricRepository;
+import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.Tuple2;
-import com.liferay.osb.asah.common.repository.CustomAssetMetricRepository;
-import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -50,7 +50,7 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * @author Marcellus Tavares
  */
-@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @DirtiesContext
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(properties = "osb.asah.trino.enabled=true")
