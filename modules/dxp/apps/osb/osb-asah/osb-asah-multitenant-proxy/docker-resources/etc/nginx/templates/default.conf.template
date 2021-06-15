@@ -14,7 +14,7 @@ server {
             add_header "Content-Length" 0;
             add_header "Content-Type" "text/plain charset=UTF-8";
 
-            return 200;
+            return 204;
         }
 
         error_page 418 = @publisher_post;
