@@ -17,7 +17,9 @@ package com.liferay.osb.asah.upgrade.v3_0_0;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AnalyticsEventStorageDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
@@ -26,12 +28,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.SortOrder;
@@ -103,9 +107,24 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		SearchResponse searchResponse = null;
 
 		if (_scrollId == null) {
+			Optional<Event> lastEventOptional =
+				_eventRepository.findFirstByOrderByIdDesc();
+
+			String startId = lastEventOptional.map(
+				Event::getAnalyticsEventId
+			).orElse(
+				"0"
+			);
+
 			searchResponse = _faroInfoElasticsearchInvoker.searchScroll(
 				"activities",
 				searchSourceBuilder -> {
+					searchSourceBuilder.query(
+						QueryBuilders.rangeQuery(
+							"id"
+						).gt(
+							startId
+						));
 					searchSourceBuilder.trackTotalHits(false);
 					searchSourceBuilder.size(500);
 					searchSourceBuilder.sort("id", SortOrder.ASC);
@@ -177,6 +196,9 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 
 	@Autowired
 	private AnalyticsEventStorageDog _analyticsEventStorageDog;
+
+	@Autowired
+	private EventRepository _eventRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

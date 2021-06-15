@@ -46,6 +46,8 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 		@Param("eventAttributeDefinitionId") Long eventAttributeDefinitionId,
 		@Param("size") int size);
 
+	public Optional<Event> findFirstByOrderByIdDesc();
+
 	public Optional<Event> findLastSeenEvent(@Nullable Long eventDefinitionId);
 
 	public long getAverageEventCountPerIndividual(
