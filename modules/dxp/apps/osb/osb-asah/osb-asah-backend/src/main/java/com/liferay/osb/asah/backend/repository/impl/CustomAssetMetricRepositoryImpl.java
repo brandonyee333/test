@@ -14,17 +14,17 @@
 
 package com.liferay.osb.asah.backend.repository.impl;
 
+import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.CustomAssetMetricRepository;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.math.BigDecimal;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 import java.util.List;
@@ -48,7 +48,7 @@ public class CustomAssetMetricRepositoryImpl
 	implements CustomAssetMetricRepository {
 
 	@Override
-	public List<Tuple2<LocalDateTime, BigDecimal>> getHistogramMetrics(
+	public List<HistogramMetric> getHistogramMetrics(
 		Long channelId, CustomAssetMetricType customAssetMetricType,
 		String customAssetPrimaryKey, Interval interval, TimeRange timeRange) {
 
@@ -94,8 +94,14 @@ public class CustomAssetMetricRepositoryImpl
 			record2 -> {
 				OffsetDateTime offsetDateTime = record2.value1();
 
-				return new Tuple2<>(
-					offsetDateTime.toLocalDateTime(), record2.value2());
+				Metric metric = new Metric(customAssetMetricType);
+
+				metric.setValue(
+					record2.value2(
+					).doubleValue());
+
+				return new HistogramMetric(
+					String.valueOf(offsetDateTime.toLocalDateTime()), metric);
 			}
 		);
 	}

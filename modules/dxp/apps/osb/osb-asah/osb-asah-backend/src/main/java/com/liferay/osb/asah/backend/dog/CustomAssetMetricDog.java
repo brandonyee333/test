@@ -23,9 +23,6 @@ import com.liferay.osb.asah.backend.repository.CustomAssetMetricRepository;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.model.Tuple2;
-
-import java.math.BigDecimal;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -55,7 +52,7 @@ public class CustomAssetMetricDog {
 		CustomAssetMetricType customAssetMetricType,
 		SearchQueryContext searchQueryContext) {
 
-		List<Tuple2<LocalDateTime, BigDecimal>> histogramMetrics =
+		List<HistogramMetric> histogramMetrics =
 			_customAssetMetricRepository.getHistogramMetrics(
 				Long.valueOf(searchQueryContext.getChannelId()),
 				customAssetMetricType, searchQueryContext.getAssetId(),
@@ -76,20 +73,17 @@ public class CustomAssetMetricDog {
 		Map<String, Metric> metrics = _getHistogramMetricBuckets(
 			histogramMetricBag);
 
-		for (Tuple2<LocalDateTime, BigDecimal> histogramMetric :
-				histogramMetrics) {
-
-			Metric metric = metrics.get(histogramMetric.getT1());
-
-			BigDecimal histogramMetricValueBigDecimal = histogramMetric.getT2();
+		for (HistogramMetric histogramMetric : histogramMetrics) {
+			Metric metric = metrics.get(histogramMetric.getKey());
 
 			if (metric != null) {
-				metric.setValue(histogramMetricValueBigDecimal.doubleValue());
+				metric.setValue(histogramMetric.getValue());
 
 				continue;
 			}
 
-			LocalDateTime previousBucketLocalDateTime = histogramMetric.getT1();
+			LocalDateTime previousBucketLocalDateTime = LocalDateTime.parse(
+				histogramMetric.getKey());
 
 			String bucketKey = null;
 
@@ -108,8 +102,7 @@ public class CustomAssetMetricDog {
 			metric = metrics.get(bucketKey);
 
 			if (metric != null) {
-				metric.setPreviousValue(
-					histogramMetricValueBigDecimal.doubleValue());
+				metric.setPreviousValue(histogramMetric.getValue());
 			}
 		}
 

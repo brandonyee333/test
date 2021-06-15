@@ -14,14 +14,10 @@
 
 package com.liferay.osb.asah.backend.repository;
 
+import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.model.Tuple2;
-
-import java.math.BigDecimal;
-
-import java.time.LocalDateTime;
 
 import java.util.List;
 
@@ -33,7 +29,7 @@ import org.springframework.context.annotation.Primary;
 @Primary
 public interface CustomAssetMetricRepository {
 
-	public List<Tuple2<LocalDateTime, BigDecimal>> getHistogramMetrics(
+	public List<HistogramMetric> getHistogramMetrics(
 		Long channelId, CustomAssetMetricType customAssetMetricType,
 		String customAssetPrimaryKey, Interval interval, TimeRange timeRange);
 

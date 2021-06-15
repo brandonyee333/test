@@ -14,18 +14,16 @@
 
 package com.liferay.osb.asah.backend.repository.test;
 
+import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.repository.CustomAssetMetricRepository;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-
-import java.math.BigDecimal;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -72,15 +70,16 @@ public class CustomAssetMetricRepositoryTest {
 	)
 	@Test
 	public void testGetReadingTimeHistogramMetricsLast24Hours() {
-		List<Tuple2<LocalDateTime, BigDecimal>> tuples =
+		List<HistogramMetric> histogramMetrics =
 			_customAssetMetricRepository.getHistogramMetrics(
 				1L, CustomAssetMetricType.READING_TIME, "e131fabc",
 				Interval.DAY, TimeRange.LAST_7_DAYS);
 
-		Assert.assertEquals(tuples.toString(), 1, tuples.size());
 		Assert.assertEquals(
-			SetUtil.of(BigDecimal.valueOf(750.0)),
-			SetUtil.map(tuples, Tuple2::getT2));
+			histogramMetrics.toString(), 1, histogramMetrics.size());
+		Assert.assertEquals(
+			SetUtil.of(Double.valueOf(750)),
+			SetUtil.map(histogramMetrics, HistogramMetric::getValue));
 	}
 
 	@SQLResource(
@@ -89,17 +88,16 @@ public class CustomAssetMetricRepositoryTest {
 	)
 	@Test
 	public void testGetViewsHistogramMetricsLast24Hours() {
-		List<Tuple2<LocalDateTime, BigDecimal>> tuples =
+		List<HistogramMetric> histogramMetrics =
 			_customAssetMetricRepository.getHistogramMetrics(
 				1L, CustomAssetMetricType.VIEWS, "e131fabc", Interval.HOUR,
 				TimeRange.LAST_24_HOURS);
 
-		Assert.assertEquals(tuples.toString(), 3, tuples.size());
 		Assert.assertEquals(
-			SetUtil.of(
-				BigDecimal.valueOf(1), BigDecimal.valueOf(2),
-				BigDecimal.valueOf(4)),
-			SetUtil.map(tuples, Tuple2::getT2));
+			histogramMetrics.toString(), 3, histogramMetrics.size());
+		Assert.assertEquals(
+			SetUtil.of(Double.valueOf(1), Double.valueOf(2), Double.valueOf(4)),
+			SetUtil.map(histogramMetrics, HistogramMetric::getValue));
 	}
 
 	@SQLResource(
@@ -139,12 +137,14 @@ public class CustomAssetMetricRepositoryTest {
 	}
 
 	private List<LocalDateTime> _getBuckets(
-		List<Tuple2<LocalDateTime, BigDecimal>> tuples) {
+		List<HistogramMetric> histogramMetrics) {
 
-		Stream<Tuple2<LocalDateTime, BigDecimal>> stream = tuples.stream();
+		Stream<HistogramMetric> stream = histogramMetrics.stream();
 
 		return stream.map(
-			Tuple2::getT1
+			HistogramMetric::getKey
+		).map(
+			LocalDateTime::parse
 		).sorted(
 		).collect(
 			Collectors.toList()
