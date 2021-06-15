@@ -93,6 +93,8 @@ public class FieldRepositoryImpl extends BaseRepository {
 			"Field"
 		).where(
 			condition
+		).groupBy(
+			DSL.field(groupByField)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(

@@ -14,9 +14,12 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +28,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -76,8 +81,80 @@ public abstract class BaseFieldRepositoryTestCase
 
 		setUpRepository(field1, field2, field3);
 
+		_field1 = entityModels.get(0);
 		_field2 = entityModels.get(1);
 		_field3 = entityModels.get(2);
+	}
+
+	@Test
+	public void testCountFields() {
+		Assert.assertEquals(
+			1, _fieldRepository.countFields("name eq 'field3'"));
+	}
+
+	@Test
+	public void testDeleteByDataSourceId() {
+		_fieldRepository.deleteByDataSourceId(1L);
+
+		Assert.assertFalse(_fieldRepository.existsByDataSourceId(1L));
+	}
+
+	@Test
+	public void testExistsByDataSourceId() {
+		Assert.assertTrue(_fieldRepository.existsByDataSourceId(1L));
+	}
+
+	@Test
+	public void testFindByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType() {
+		List<Field> fields =
+			_fieldRepository.
+				findByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
+					"organization", 1L, "field1", 10L, "account");
+
+		Assert.assertEquals(fields.toString(), 2, fields.size());
+
+		_assertFieldEquals(_field1, fields.get(0));
+		_assertFieldEquals(_field2, fields.get(1));
+	}
+
+	@Test
+	public void testFindByContextAndDataSourceIdNotAndNameNotInAndOwnerIdAndOwnerType() {
+		List<Field> fields =
+			_fieldRepository.
+				findByContextAndDataSourceIdNotAndNameNotInAndOwnerIdAndOwnerType(
+					"organization", 2L, Collections.singletonList("field4"),
+					10L, "account");
+
+		Assert.assertEquals(fields.toString(), 3, fields.size());
+
+		_assertFieldEquals(_field1, fields.get(0));
+		_assertFieldEquals(_field2, fields.get(1));
+		_assertFieldEquals(_field3, fields.get(2));
+	}
+
+	@Test
+	public void testFindByContextAndNameAndOwnerIdAndOwnerType() {
+		List<Field> fields =
+			_fieldRepository.findByContextAndNameAndOwnerIdAndOwnerType(
+				"organization", "field1", 10L, "account");
+
+		Assert.assertEquals(fields.toString(), 2, fields.size());
+
+		_assertFieldEquals(_field1, fields.get(0));
+		_assertFieldEquals(_field2, fields.get(1));
+	}
+
+	@Test
+	public void testFindByContextAndOwnerIdAndOwnerType() {
+		List<Field> fields =
+			_fieldRepository.findByContextAndOwnerIdAndOwnerType(
+				"organization", 10L, "account");
+
+		Assert.assertEquals(fields.toString(), 3, fields.size());
+
+		_assertFieldEquals(_field1, fields.get(0));
+		_assertFieldEquals(_field2, fields.get(1));
+		_assertFieldEquals(_field3, fields.get(2));
 	}
 
 	@Test
@@ -91,6 +168,50 @@ public abstract class BaseFieldRepositoryTestCase
 
 		_assertFieldEquals(_field2, fields.get(0));
 		_assertFieldEquals(_field3, fields.get(1));
+	}
+
+	@Test
+	public void testFindByFieldTypeAndOwnerTypeAndValueIn() {
+		List<Field> fields =
+			_fieldRepository.findByFieldTypeAndOwnerTypeAndValueIn(
+				"Text", "account", Collections.singletonList("field three"));
+
+		Assert.assertEquals(fields.toString(), 1, fields.size());
+
+		_assertFieldEquals(_field3, fields.get(0));
+	}
+
+	@Test
+	public void testGetFieldTransformations() {
+		List<Transformation> transformations =
+			_fieldRepository.getFieldTransformations(
+				"groupby((name))", null,
+				PageRequest.of(
+					0, 10,
+					SortUtil.getSort(
+						Sort.by(Sort.Order.desc("totalElements")),
+						new String[] {
+							"totalElements", "desc", "terms", "asc"
+						})));
+
+		Assert.assertTrue(
+			transformations.contains(
+				new Transformation(
+					Collections.singletonMap("name", "field1"), 2)));
+		Assert.assertTrue(
+			transformations.contains(
+				new Transformation(
+					Collections.singletonMap("name", "field3"), 1)));
+	}
+
+	@Test
+	public void testSearchFields() {
+		List<Field> fields = _fieldRepository.searchFields(
+			"name eq 'field1'", PageRequest.of(0, 1));
+
+		Assert.assertEquals(fields.toString(), 1, fields.size());
+
+		_assertFieldEquals(_field1, fields.get(0));
 	}
 
 	@Override
@@ -117,6 +238,7 @@ public abstract class BaseFieldRepositoryTestCase
 		Assert.assertEquals(expectedField.getValue(), actualField.getValue());
 	}
 
+	private Field _field1;
 	private Field _field2;
 	private Field _field3;
 
