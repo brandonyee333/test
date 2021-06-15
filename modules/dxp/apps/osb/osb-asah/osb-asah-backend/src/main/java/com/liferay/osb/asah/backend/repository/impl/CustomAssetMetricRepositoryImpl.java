@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.repository.impl;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.CustomAssetMetricRepository;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.Interval;
@@ -84,8 +85,12 @@ public class CustomAssetMetricRepositoryImpl
 				DSL.field(
 					"eventDate"
 				).between(
-					timeRange.getStartLocalDateTime(),
-					timeRange.getEndLocalDateTime()
+					DateUtil.toDate(
+						timeRange.getStartLocalDateTime(),
+						_timeZoneDog.getZoneId()),
+					DateUtil.toDate(
+						timeRange.getEndLocalDateTime(),
+						_timeZoneDog.getZoneId())
 				))
 		).groupBy(
 			eventDateField
