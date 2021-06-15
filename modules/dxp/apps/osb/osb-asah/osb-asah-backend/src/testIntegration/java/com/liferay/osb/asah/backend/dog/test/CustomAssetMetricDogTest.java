@@ -72,7 +72,7 @@ public class CustomAssetMetricDogTest {
 
 		Assert.assertEquals(
 			Double.valueOf(7), lastHistogramMetric.getPreviousValue());
-		Assert.assertEquals(Double.valueOf(0), lastHistogramMetric.getValue());
+		Assert.assertEquals(Double.valueOf(4), lastHistogramMetric.getValue());
 	}
 
 	@Autowired
