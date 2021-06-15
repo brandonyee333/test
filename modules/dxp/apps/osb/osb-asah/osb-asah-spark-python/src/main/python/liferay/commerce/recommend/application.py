@@ -14,6 +14,7 @@ from abc import ABCMeta, \
 
 from liferay.commerce.configuration import CommerceConfiguration
 from liferay.commerce.recommend.job import ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob, \
+	CutLineageSparkJob, \
 	FrequentPatternDataPreparationSparkJob, \
 	FrequentPatternOrderJSONDataFrameReaderSparkJob, \
 	FrequentPatternPostProcessRecommendationSparkJob, \
@@ -24,6 +25,7 @@ from liferay.commerce.recommend.job import ContextUserInteractionRecommendationJ
 	ProductContentJSONDataFrameReaderSparkJob, \
 	ProductContentPipelineSparkJob, \
 	ProductContentRecommendationJSONDataFrameWriter, \
+	ProductContentRecommendationPreparationSparkJob, \
 	ProductContentRecommendationSparkJob, \
 	ProductInteractionJSONDataFrameReaderSparkJob, \
 	ProductInteractionRecommendationJSONDataFrameWriterSparkJob, \
@@ -31,7 +33,10 @@ from liferay.commerce.recommend.job import ContextUserInteractionRecommendationJ
 	UserInteractionCollaborativeFilteringSparkJob, \
 	UserInteractionDataPreparationSparkJob
 from liferay.commerce.udf import TanimotoCoefficientUDFFunction, \
-	ToDenseVectorUDFFunction
+	ToDenseVectorUDFFunction, \
+	VectorDotProductUDFFunction, \
+	VectorMergeUDFFunction, \
+	VectorNormUDFFunction
 from liferay.common.spark import BaseSparkApplication, \
 	SparkJobPipeline
 
@@ -123,7 +128,11 @@ class ProductContentRecommendationApplication(BaseCommerceSparkApplication):
 	def __init__(self):
 		super(ProductContentRecommendationApplication, self).__init__()
 
-		TanimotoCoefficientUDFFunction(self.spark_session)
+		VectorDotProductUDFFunction(self.spark_session)
+
+		VectorMergeUDFFunction(self.spark_session)
+
+		VectorNormUDFFunction(self.spark_session)
 
 	def _create_spark_job_pipeline(self):
 		jobs = list()
@@ -131,6 +140,10 @@ class ProductContentRecommendationApplication(BaseCommerceSparkApplication):
 		jobs.append(ProductContentJSONDataFrameReaderSparkJob(self))
 
 		jobs.append(ProductContentPipelineSparkJob(self))
+
+		jobs.append(CutLineageSparkJob(self, 'pipeline_data'))
+
+		jobs.append(ProductContentRecommendationPreparationSparkJob(self))
 
 		jobs.append(ProductContentRecommendationSparkJob(self))
 
