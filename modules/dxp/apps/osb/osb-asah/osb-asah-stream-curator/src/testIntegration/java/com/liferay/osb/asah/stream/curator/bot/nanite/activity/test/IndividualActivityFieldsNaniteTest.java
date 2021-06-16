@@ -16,10 +16,13 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.activity.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.stream.curator.bot.nanite.activity.ActivitiesNanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.activity.IndividualActivityFieldsNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -196,11 +199,22 @@ public class IndividualActivityFieldsNaniteTest {
 			FaroInfoTestUtil.buildAssetJSONObject(applicationId, dataSourceId));
 
 		for (int i = 0; i < activitiesCount; i++) {
-			_activitiesNanite.addActivityJSONObject(
+			_faroInfoActivityDog.addActivity(
 				FaroInfoTestUtil.buildActivityJSONObject(
 					activityGroupJSONObject, assetJSONObject, channelId,
-					eventId, new String[0]),
-				applicationId, eventId, individualJSONObject.getLong("id"));
+					eventId, new String[0]));
+
+			if (_faroInfoActivityDog.isActivity(applicationId, eventId)) {
+				_messageBus.sendMessage(
+					Channel.ACTIVE_INDIVIDUAL_IDS,
+					JSONUtil.put(
+						"channelId", channelId
+					).put(
+						"ownerId", individualJSONObject.get("id")
+					).put(
+						"projectId", ProjectIdThreadLocal.getProjectId()
+					).toString());
+			}
 		}
 	}
 
@@ -269,10 +283,10 @@ public class IndividualActivityFieldsNaniteTest {
 			lastActivityDateJSONObject.getString("lastActivityDate"));
 	}
 
-	@Autowired
-	private ActivitiesNanite _activitiesNanite;
-
 	private JSONObject _dataSourceJSONObject;
+
+	@Autowired
+	private FaroInfoActivityDog _faroInfoActivityDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
@@ -282,5 +296,8 @@ public class IndividualActivityFieldsNaniteTest {
 
 	@Autowired
 	private IndividualActivityFieldsNanite _individualActivityFieldsNanite;
+
+	@Autowired
+	private MessageBus _messageBus;
 
 }
