@@ -13,7 +13,7 @@ definition {
 	}
 
 	macro viewErrorMessage {
-		AssertTextEquals(
+		AssertTextEquals.assertPartialText(
 			locator1 = "Message#ERROR",
 			value1 = "${errorMessage}");
 
