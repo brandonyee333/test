@@ -420,9 +420,15 @@ public class EventAttributeDefinitionDogTest {
 		Assert.assertEquals(
 			new HashSet<String>() {
 				{
+					add("canonicalUrl");
 					add("formId");
 					add("page");
+					add("pageDescription");
+					add("pageKeywords");
+					add("pageTitle");
+					add("referrer");
 					add("title");
+					add("url");
 				}
 			},
 			stream.map(
@@ -439,13 +445,21 @@ public class EventAttributeDefinitionDogTest {
 	public void testGetEventAttributeDefinitionsGlobal() {
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
-				null, null, 0, 5, Sort.asc("name"),
+				null, null, 0, 10, Sort.asc("name"),
 				EventAttributeDefinition.Type.GLOBAL),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
 				{
 					put(
 						"canonicalUrl",
 						EventAttributeDefinition.DataType.STRING);
+					put(
+						"pageDescription",
+						EventAttributeDefinition.DataType.STRING);
+					put(
+						"pageKeywords",
+						EventAttributeDefinition.DataType.STRING);
+					put("pageTitle", EventAttributeDefinition.DataType.STRING);
+					put("referrer", EventAttributeDefinition.DataType.STRING);
 					put("url", EventAttributeDefinition.DataType.STRING);
 				}
 			});

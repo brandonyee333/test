@@ -1,10 +1,8 @@
-INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES('Canonical URL of page', 'STRING', 'Canonical URL', 'canonicalUrl', 'GLOBAL');
 INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES('Seller added description', 'STRING', 'Item Description', 'itemDescription', 'LOCAL');
 INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES(null, 'NUMBER', 'Item Price', 'itemPrice', 'LOCAL');
 INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES('How much of the same item the buyer wanted', 'NUMBER', 'Number of items', 'itemQuantity', 'LOCAL');
 INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES('Whether the item is new or used', 'STRING', 'Item Status', 'itemQuality', 'LOCAL');
 INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES('Amount of feedback given to item', 'NUMBER', 'Number of Reviews', 'numberOfReviews', 'LOCAL');
-INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES('URL of page', 'STRING', 'URL', 'url', 'GLOBAL');
 
 INSERT INTO EventDefinition(displayName, name, type) VALUES('Added To Cart', 'addedToCart', 'CUSTOM');
 INSERT INTO EventDefinition(displayName, name, type) VALUES('Removed From Cart', 'removedFromCart', 'CUSTOM');
