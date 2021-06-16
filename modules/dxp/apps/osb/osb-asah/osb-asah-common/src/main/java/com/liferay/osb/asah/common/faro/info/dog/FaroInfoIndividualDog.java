@@ -426,6 +426,10 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 				partialIndividualJSONObject.toMap()));
 	}
 
+	public boolean existsIndividual(String individualId) {
+		return elasticsearchInvoker.exists("individuals", individualId);
+	}
+
 	public JSONObject fetchIndividualJSONObject(
 		Long dataSourceId, String userId) {
 

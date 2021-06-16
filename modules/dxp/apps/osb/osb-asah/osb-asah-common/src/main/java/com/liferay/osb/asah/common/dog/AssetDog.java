@@ -51,10 +51,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class AssetDog {
 
-	public Asset addAsset(Asset asset) {
-		if (!asset.isNew()) {
-			throw new IllegalArgumentException("Unable to add asset not new");
-		}
+	public Asset addAsset(
+		Set<AssetKeyword> assetKeywords, String assetType, String canonicalURL,
+		Set<Long> channelIds, String dataSourceAssetPK, Long dataSourceId,
+		String description, String title, String url) {
+
+		Asset asset = new Asset();
+
+		asset.setAssetKeywords(assetKeywords);
+		asset.setAssetType(assetType);
+		asset.setCanonicalURL(canonicalURL);
+		asset.setChannelIds(channelIds);
+		asset.setDataSourceAssetPK(dataSourceAssetPK);
+		asset.setDataSourceId(dataSourceId);
+		asset.setDescription(description);
+		asset.setTitle(title);
+		asset.setURL(url);
 
 		return _assetRepository.save(asset);
 	}

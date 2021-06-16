@@ -18,9 +18,10 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
-import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,9 @@ import java.util.Map;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +43,42 @@ import org.springframework.stereotype.Component;
 @Component
 public class FaroInfoActivityDog extends BaseFaroInfoDog {
 
-	public JSONObject addActivity(JSONObject activityJSONObject)
-		throws Exception {
+	public void addActivity(JSONArray activityJSONArray) {
+		elasticsearchInvoker.add("activities", activityJSONArray);
 
+		List<Long> referencedAssetIds = _segmentDog.getReferencedAssetIds();
+
+		JSONArray contextJSONArray = new JSONArray();
+
+		for (int i = 0; i < activityJSONArray.length(); i++) {
+			JSONObject activityJSONObject = activityJSONArray.getJSONObject(i);
+
+			JSONObject objectJSONObject = activityJSONObject.getJSONObject(
+				"object");
+
+			if (!referencedAssetIds.contains(objectJSONObject.getLong("id"))) {
+				continue;
+			}
+
+			contextJSONArray.put(
+				JSONUtil.put(
+					"dateModified", DateUtil.newDateString()
+				).put(
+					"filter",
+					"contains(filter, '" +
+						activityJSONObject.getString("activityKey") + "')"
+				).put(
+					"individualJSONObject",
+					elasticsearchInvoker.get(
+						"individuals", activityJSONObject.getString("ownerId"))
+				));
+		}
+
+		_asahTaskDog.scheduleAsahTask(
+			"UpdateDynamicMembershipsNanite", contextJSONArray);
+	}
+
+	public JSONObject addActivity(JSONObject activityJSONObject) {
 		activityJSONObject = elasticsearchInvoker.add(
 			"activities", activityJSONObject);
 
@@ -70,6 +106,70 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			));
 
 		return activityJSONObject;
+	}
+
+	public JSONObject fetchLatestFormViewedActivity(
+		Date eventDate, String userId) {
+
+		JSONArray formViewedActivityJSONArray = new JSONArray(
+			elasticsearchInvoker.get(
+				"activities",
+				searchSourceBuilder -> {
+					searchSourceBuilder.query(
+						BoolQueryBuilderUtil.filter(
+							QueryBuilders.rangeQuery(
+								"endTime"
+							).lt(
+								DateUtil.toUTCString(eventDate)
+							)
+						).filter(
+							QueryBuilders.termQuery("eventId", "formViewed")
+						).filter(
+							QueryBuilders.termQuery("userId", userId)
+						));
+
+					searchSourceBuilder.size(1);
+					searchSourceBuilder.sort(
+						SortBuilderUtil.fieldSort("endTime", SortOrder.DESC));
+				}));
+
+		if (formViewedActivityJSONArray.length() == 0) {
+			return null;
+		}
+
+		return formViewedActivityJSONArray.getJSONObject(0);
+	}
+
+	public String fetchLatestPageViewActivityId(String userId) {
+		JSONArray mostRecentPageViewActivitiesJSONArray = new JSONArray(
+			elasticsearchInvoker.get(
+				"activities",
+				searchSourceBuilder -> {
+					searchSourceBuilder.query(
+						BoolQueryBuilderUtil.filter(
+							QueryBuilders.termQuery("applicationId", "Page")
+						).filter(
+							QueryBuilders.termQuery("eventId", "pageViewed")
+						).filter(
+							QueryBuilders.termQuery("userId", userId)
+						));
+					searchSourceBuilder.size(1);
+					searchSourceBuilder.sort(
+						SortBuilderUtil.fieldSort("startTime", SortOrder.DESC));
+				}));
+
+		if (mostRecentPageViewActivitiesJSONArray.length() == 0) {
+			return null;
+		}
+
+		JSONObject mostRecentPageViewActivityJSONObject =
+			mostRecentPageViewActivitiesJSONArray.getJSONObject(0);
+
+		JSONObject eventPropertiesJSONObject =
+			mostRecentPageViewActivityJSONObject.getJSONObject(
+				"eventProperties");
+
+		return eventPropertiesJSONObject.optString("pageViewActivityId", null);
 	}
 
 	public QueryBuilder getEventsQueryBuilder(String ownerId) {

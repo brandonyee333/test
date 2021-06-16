@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
@@ -59,7 +58,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -158,9 +156,6 @@ public class ActivitiesNanite implements Nanite {
 			ProjectIdThreadLocal.remove();
 		}
 	}
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
 
 	private ActivityGroup _addActivityGroup(AnalyticsEvent analyticsEvent) {
 		String channelId = analyticsEvent.getChannelId();
@@ -353,23 +348,14 @@ public class ActivitiesNanite implements Nanite {
 
 		Map<String, String> context = analyticsEvent.getContext();
 
-		asset = new Asset();
-
-		asset.setAssetType(analyticsEvent.getApplicationId());
-		asset.setCanonicalURL(MapUtil.getString(context, "canonicalUrl"));
-		asset.setChannelIds(
-			SetUtil.of(Long.valueOf(analyticsEvent.getChannelId())));
-		asset.setDataSourceAssetPK(dataSourceAssetPK);
-		asset.setDataSourceId(Long.valueOf(analyticsEvent.getDataSourceId()));
-		asset.setDescription(MapUtil.getString(context, "description"));
-		asset.setTitle(_getTitle(analyticsEvent));
-		asset.setURL(MapUtil.getString(context, "url"));
-
-		if (Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
-			asset.setAssetKeywords(_getAssetKeywords(context));
-		}
-
-		return _assetDog.addAsset(asset);
+		return _assetDog.addAsset(
+			_getAssetKeywords(analyticsEvent.getApplicationId(), context),
+			analyticsEvent.getApplicationId(),
+			MapUtil.getString(context, "canonicalUrl"),
+			SetUtil.of(Long.valueOf(analyticsEvent.getChannelId())),
+			dataSourceAssetPK, Long.valueOf(analyticsEvent.getDataSourceId()),
+			MapUtil.getString(context, "description"),
+			_getTitle(analyticsEvent), MapUtil.getString(context, "url"));
 	}
 
 	private Set<AssetKeyword> _getAssetKeywords(Map<String, String> context) {
@@ -446,35 +432,11 @@ public class ActivitiesNanite implements Nanite {
 		}
 
 		if (Objects.equals(analyticsEvent.getEventId(), "formSubmitted")) {
-			JSONArray formViewedActivityJSONArray = new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					"activities",
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.rangeQuery(
-									"endTime"
-								).lt(
-									DateUtil.toUTCString(
-										analyticsEvent.getEventDate())
-								)
-							).filter(
-								QueryBuilders.termQuery("eventId", "formViewed")
-							).filter(
-								QueryBuilders.termQuery(
-									"userId", analyticsEvent.getUserId())
-							));
+			JSONObject formViewedActivityJSONObject =
+				_faroInfoActivityDog.fetchLatestFormViewedActivity(
+					analyticsEvent.getEventDate(), analyticsEvent.getUserId());
 
-						searchSourceBuilder.size(1);
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort(
-								"endTime", SortOrder.DESC));
-					}));
-
-			if (formViewedActivityJSONArray.length() > 0) {
-				JSONObject formViewedActivityJSONObject =
-					formViewedActivityJSONArray.getJSONObject(0);
-
+			if (formViewedActivityJSONObject != null) {
 				JSONObject formViewedActivityEventPropertiesJSONObject =
 					formViewedActivityJSONObject.getJSONObject(
 						"eventProperties");
@@ -516,7 +478,7 @@ public class ActivitiesNanite implements Nanite {
 		String ownerId = analyticsEvent.getIndividualId();
 
 		if ((ownerId != null) &&
-			_faroInfoElasticsearchInvoker.exists("individuals", ownerId)) {
+			_faroInfoIndividualDog.existsIndividual(ownerId)) {
 
 			return Long.valueOf(ownerId);
 		}
@@ -542,36 +504,8 @@ public class ActivitiesNanite implements Nanite {
 			return String.valueOf(UUID.randomUUID());
 		}
 
-		JSONArray mostRecentPageViewActivitiesJSONArray = new JSONArray(
-			faroInfoElasticsearchInvoker.get(
-				"activities",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery("applicationId", "Page")
-						).filter(
-							QueryBuilders.termQuery("eventId", "pageViewed")
-						).filter(
-							QueryBuilders.termQuery(
-								"userId", analyticsEvent.getUserId())
-						));
-					searchSourceBuilder.size(1);
-					searchSourceBuilder.sort(
-						SortBuilderUtil.fieldSort("startTime", SortOrder.DESC));
-				}));
-
-		if (mostRecentPageViewActivitiesJSONArray.length() == 0) {
-			return null;
-		}
-
-		JSONObject mostRecentPageViewActivityJSONObject =
-			mostRecentPageViewActivitiesJSONArray.getJSONObject(0);
-
-		JSONObject eventPropertiesJSONObject =
-			mostRecentPageViewActivityJSONObject.getJSONObject(
-				"eventProperties");
-
-		return eventPropertiesJSONObject.optString("pageViewActivityId", null);
+		return _faroInfoActivityDog.fetchLatestPageViewActivityId(
+			analyticsEvent.getUserId());
 	}
 
 	private String _getSessionId(AnalyticsEvent analyticsEvent, Long ownerId) {
@@ -654,9 +588,6 @@ public class ActivitiesNanite implements Nanite {
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
