@@ -195,10 +195,10 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		CustomEventUpgradeStep.class);
 
 	@Autowired
-	private EventStorageDog _eventStorageDog;
+	private EventRepository _eventRepository;
 
 	@Autowired
-	private EventRepository _eventRepository;
+	private EventStorageDog _eventStorageDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
