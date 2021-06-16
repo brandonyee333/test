@@ -125,8 +125,10 @@ definition {
 	@priority = "5"
 	@refactordone
 	test CanAddEntryWithEmbeddedVideo {
+		property dummy.socket.proxy.disabled = "true";
 		property portal.acceptance = "true";
 		property testray.component.names = "WYSIWYG";
+		property test.name.skip.portal.instance = "PGBlogs#CanAddEntryWithEmbeddedVideo";
 
 		Blogs.addEntry(
 			embedVideo = "https://www.youtube.com/watch?v=2EPZxIC5ogU",
