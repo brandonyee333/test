@@ -312,13 +312,19 @@ public class ActivitiesNanite implements Nanite {
 			Long analyticsEventChannelId = Long.valueOf(
 				analyticsEvent.getChannelId());
 
-			if (!channelIds.contains(analyticsEventChannelId)) {
-				channelIds.add(analyticsEventChannelId);
+			boolean updated = false;
 
-				_assetDog.updateAsset(asset);
+			if (channelIds.add(analyticsEventChannelId)) {
+				asset.setChannelIds(channelIds);
+
+				updated = true;
 			}
 
 			if (Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
+				if (updated) {
+					return _assetDog.updateAsset(asset);
+				}
+
 				return asset;
 			}
 
@@ -329,7 +335,11 @@ public class ActivitiesNanite implements Nanite {
 
 				asset.setTitle(title);
 
-				_assetDog.updateAsset(asset);
+				updated = true;
+			}
+
+			if (updated) {
+				return _assetDog.updateAsset(asset);
 			}
 
 			return asset;
