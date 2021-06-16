@@ -34,11 +34,15 @@ definition {
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		Alert.viewErrorMessage(errorMessage = "Grace period which already ended");
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "Grace period which already ended");
 
 		Navigator.openSpecificURL(url = "http://localhost:10080");
 
-		Alert.viewErrorMessage(errorMessage = "exceeded the maximum number of cluster nodes");
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "exceeded the maximum number of cluster nodes");
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "Message#ERROR_2",
@@ -73,13 +77,20 @@ definition {
 				password = "test",
 				userEmailAddress = "test@liferay.com");
 
-			Alert.viewErrorMessage(errorMessage = "licensed for this cluster has been exceeded");
-			Alert.viewErrorMessage(errorMessage = "grace period");
+			AssertTextEquals.assertPartialText(
+				locator1 = "Message#ERROR",
+				value1 = "licensed for this cluster has been exceeded");
+
+			AssertTextEquals.assertPartialText(
+				locator1 = "Message#ERROR",
+				value1 = "grace period");
 		}
 
 		Navigator.openSpecificURL(url = "http://localhost:12080");
 
-		Alert.viewErrorMessage(errorMessage = "This instance is not registered.");
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "This instance is not registered.");
 
 		for (var nodeNumber : list "12,11,10") {
 			Clustering.waitForNodeShutdown(nodePort = "${nodeNumber}080");
@@ -149,8 +160,13 @@ definition {
 				password = "test",
 				userEmailAddress = "test@liferay.com");
 
-			Alert.viewErrorMessage(errorMessage = "licensed for this cluster has been exceeded");
-			Alert.viewErrorMessage(errorMessage = "grace period");
+			AssertTextEquals.assertPartialText(
+				locator1 = "Message#ERROR",
+				value1 = "licensed for this cluster has been exceeded");
+
+			AssertTextEquals.assertPartialText(
+				locator1 = "Message#ERROR",
+				value1 = "grace period");
 		}
 
 		User.loginPG(
@@ -158,7 +174,9 @@ definition {
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		Alert.viewErrorMessage(errorMessage = "will be automatically deactivated and shut down");
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "will be automatically deactivated and shut down");
 
 		Clustering.waitForNodeShutdown(nodePort = "9080");
 
@@ -236,9 +254,17 @@ definition {
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		Alert.viewErrorMessage(errorMessage = "licensed for this cluster has been exceeded");
-		Alert.viewErrorMessage(errorMessage = "grace period");
-		Alert.viewErrorMessage(errorMessage = "will be automatically deactivated");
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "licensed for this cluster has been exceeded");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "grace period");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "will be automatically deactivated");
 
 		Clustering.waitForNodeShutdown(nodePort = "9080");
 
@@ -280,8 +306,13 @@ definition {
 
 		Page.assertNodePortPG(nodePort = "8080");
 
-		Alert.viewErrorMessage(errorMessage = "licensed for this cluster has been exceeded");
-		Alert.viewErrorMessage(errorMessage = "grace period");
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "licensed for this cluster has been exceeded");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "grace period");
 
 		Alert._closeMessage(messageType = "ERROR");
 
@@ -301,11 +332,18 @@ definition {
 
 			Page.assertNodePortPG(nodePort = "${nodeNumber}080");
 
-			Alert.viewErrorMessage(errorMessage = "licensed for this cluster has been exceeded");
-			Alert.viewErrorMessage(errorMessage = "grace period");
+			AssertTextEquals.assertPartialText(
+				locator1 = "Message#ERROR",
+				value1 = "licensed for this cluster has been exceeded");
+
+			AssertTextEquals.assertPartialText(
+				locator1 = "Message#ERROR",
+				value1 = "grace period");
 		}
 
-		Alert.viewErrorMessage(errorMessage = "will be automatically deactivated and shut down");
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "will be automatically deactivated and shut down");
 
 		Alert._closeMessage(messageType = "ERROR");
 
@@ -358,11 +396,18 @@ definition {
 
 			Page.assertNodePortPG(nodePort = "${nodeNumber}080");
 
-			Alert.viewErrorMessage(errorMessage = "licensed for this cluster has been exceeded");
-			Alert.viewErrorMessage(errorMessage = "grace period");
+			AssertTextEquals.assertPartialText(
+				locator1 = "Message#ERROR",
+				value1 = "licensed for this cluster has been exceeded");
+
+			AssertTextEquals.assertPartialText(
+				locator1 = "Message#ERROR",
+				value1 = "grace period");
 		}
 
-		Alert.viewErrorMessage(errorMessage = "will be automatically deactivated");
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "will be automatically deactivated");
 
 		Pause(locator1 = "360000");
 
@@ -372,12 +417,16 @@ definition {
 				password = "test",
 				userEmailAddress = "test@liferay.com");
 
-			Alert.viewErrorMessage(errorMessage = "Grace period which already ended");
+			AssertTextEquals.assertPartialText(
+				locator1 = "Message#ERROR",
+				value1 = "Grace period which already ended");
 		}
 
 		Navigator.openSpecificURL(url = "http://localhost:10080");
 
-		Alert.viewErrorMessage(errorMessage = "exceeded the maximum number of cluster nodes");
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "exceeded the maximum number of cluster nodes");
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "Message#ERROR_2",
