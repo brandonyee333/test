@@ -18,8 +18,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -167,13 +169,40 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 
 	@Override
 	public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
-		Stream<S> stream = StreamSupport.stream(entities.spliterator(), false);
+		List<S> list = new ArrayList<>();
 
-		return stream.map(
-			this::save
-		).collect(
-			Collectors.toList()
-		);
+		JSONArray jsonArray = new JSONArray();
+
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		entities.forEach(
+			entity -> {
+				JSONObject jsonObject = null;
+
+				if ((entity.getId() != null) &&
+					elasticsearchInvoker.exists(
+						getCollectionName(), String.valueOf(entity.getId()))) {
+
+					jsonObject = elasticsearchInvoker.update(
+						getCollectionName(), toJSONObject(entity));
+				}
+				else {
+					jsonObject = toJSONObject(entity);
+
+					String id = jsonObject.optString(
+						"id", _timeOrderedUuidGenerator.generateId());
+
+					jsonObject.put("id", id);
+
+					jsonArray.put(jsonObject);
+				}
+
+				list.add((S)toEntity(jsonObject));
+			});
+
+		elasticsearchInvoker.add(getCollectionName(), jsonArray);
+
+		return list;
 	}
 
 	protected Optional<T> findFirst(Consumer<SearchSourceBuilder> consumer) {
@@ -267,5 +296,8 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 
 	@Autowired
 	protected ObjectMapper objectMapper;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 }
