@@ -316,7 +316,7 @@ public class DataSourceDog {
 			_nanitesHttp.refreshAnalytics();
 
 			_asahTaskDog.scheduleAsahTask(
-				"IndividualSegmentActivityFieldsNanite", null);
+				"IndividualSegmentActivityFieldsNanite", (JSONObject)null);
 		}
 
 		return dataSource;

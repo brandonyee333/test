@@ -17,15 +17,19 @@ package com.liferay.osb.asah.common.dog;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AsahTaskRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.apache.commons.collections4.IterableUtils;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +87,30 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 		}
 
 		return asahTask;
+	}
+
+	public void scheduleAsahTask(String className, JSONArray contextJSONArray) {
+		try {
+			Iterable<AsahTask> asahTasks = _asahTaskRepository.saveAll(
+				JSONUtil.toList(
+					contextJSONArray,
+					contextJSONObject -> new AsahTask(
+						className, contextJSONObject,
+						ProjectIdThreadLocal.getProjectId())));
+
+			Stream<AsahTask> stream = StreamSupport.stream(
+				asahTasks.spliterator(), true);
+
+			stream.map(
+				AsahTask::getId
+			).forEach(
+				_nanitesHttp::executeAsahTask
+			);
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(
+				"Unable to schedule Asah Task", exception);
+		}
 	}
 
 	public AsahTask scheduleAsahTask(
