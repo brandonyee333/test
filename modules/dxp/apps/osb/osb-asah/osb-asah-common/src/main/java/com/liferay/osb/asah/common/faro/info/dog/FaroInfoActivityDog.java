@@ -194,10 +194,11 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		String[] applicationEventIds = _eventIds.get(applicationId);
 
 		if (applicationEventIds != null) {
-			List<String> applicationEventIdsList = Arrays.asList(
-				applicationEventIds);
-
-			return applicationEventIdsList.contains(eventId);
+			for (String applicationEventId : applicationEventIds) {
+				if (applicationEventId.equals(eventId)) {
+					return true;
+				}
+			}
 		}
 
 		return false;
