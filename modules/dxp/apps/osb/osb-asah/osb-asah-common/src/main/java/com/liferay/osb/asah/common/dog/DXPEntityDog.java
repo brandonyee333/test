@@ -51,7 +51,6 @@ public class DXPEntityDog {
 
 	public DXPEntity addDXPEntity(DXPEntity dxpEntity, DXPEntity.Type type) {
 		dxpEntity.setId(null);
-
 		dxpEntity.setType(type);
 
 		return _mapDXPEntity(_dxpEntityRepository.save(dxpEntity));
@@ -248,10 +247,9 @@ public class DXPEntityDog {
 		user.setDataSourceId(dxpEntity.getDataSourceId());
 		user.setFieldsJSONObject(fieldsJSONObject);
 		user.setFirstName(fieldsJSONObject.optString("firstName"));
+		user.setId(dxpEntity.getId());
 		user.setLastName(fieldsJSONObject.optString("lastName"));
 		user.setScreenName(fieldsJSONObject.optString("screenName"));
-
-		user.setId(dxpEntity.getId());
 
 		return user;
 	}
