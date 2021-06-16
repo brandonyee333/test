@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -71,26 +72,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ActivitiesNanite implements Nanite {
 
-	public void addActivityJSONObject(
-			JSONObject activityJSONObject, String applicationId, String eventId,
-			Long ownerId)
-		throws Exception {
-
-		_faroInfoActivityDog.addActivity(activityJSONObject);
-
-		if (_faroInfoActivityDog.isActivity(applicationId, eventId)) {
-			_messageBus.sendMessage(
-				Channel.ACTIVE_INDIVIDUAL_IDS,
-				JSONUtil.put(
-					"channelId", activityJSONObject.get("channelId")
-				).put(
-					"ownerId", String.valueOf(ownerId)
-				).put(
-					"projectId", ProjectIdThreadLocal.getProjectId()
-				).toString());
-		}
-	}
-
 	@Override
 	public String getCollectionName() {
 		return "activities";
@@ -103,57 +84,39 @@ public class ActivitiesNanite implements Nanite {
 
 	@Override
 	public void run() {
-		while (true) {
-			long start = System.currentTimeMillis();
-
-			List<AnalyticsEvent> analyticsEvents = null;
-
-			try {
-				analyticsEvents = _messageSubscriber.pullMessages(
-					50, AnalyticsEvent::toAnalyticsEvent);
-			}
-			catch (Exception exception) {
-				_log.error(exception, exception);
-			}
-
-			if ((analyticsEvents == null) || analyticsEvents.isEmpty()) {
-				break;
-			}
-
-			for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-				process(analyticsEvent);
-			}
-
-			if (_log.isInfoEnabled()) {
-				Class<?> clazz = getClass();
-
-				_log.info(
-					String.format(
-						"%s processed %d events in %d ms",
-						clazz.getSimpleName(), analyticsEvents.size(),
-						System.currentTimeMillis() - start));
-			}
-		}
-	}
-
-	protected void process(AnalyticsEvent analyticsEvent) {
 		try {
-			ProjectIdThreadLocal.setProjectId(analyticsEvent.getProjectId());
+			while (true) {
+				long start = System.currentTimeMillis();
 
-			String applicationId = analyticsEvent.getApplicationId();
+				List<AnalyticsEvent> analyticsEvents =
+					_messageSubscriber.pullMessages(
+						50, AnalyticsEvent::toAnalyticsEvent);
 
-			_addActivityJSONObject(
-				_addActivityGroup(analyticsEvent), analyticsEvent,
-				applicationId, _dataSourceAssetPKFieldNames.get(applicationId));
+				if (analyticsEvents.isEmpty()) {
+					break;
+				}
+
+				Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+				stream.collect(
+					Collectors.groupingBy(AnalyticsEvent::getProjectId)
+				).forEach(
+					this::_process
+				);
+
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
+
+					_log.info(
+						String.format(
+							"%s processed %d events in %d ms",
+							clazz.getSimpleName(), analyticsEvents.size(),
+							System.currentTimeMillis() - start));
+				}
+			}
 		}
 		catch (Exception exception) {
-			_log.error(
-				"Unable to process the analytics event " +
-					analyticsEvent.toJSON(),
-				exception);
-		}
-		finally {
-			ProjectIdThreadLocal.remove();
+			_log.error(exception, exception);
 		}
 	}
 
@@ -186,46 +149,49 @@ public class ActivitiesNanite implements Nanite {
 			eventLocalDateTime, userId);
 	}
 
-	private void _addActivityJSONObject(
-			ActivityGroup activityGroup, AnalyticsEvent analyticsEvent,
-			String applicationId, String dataSourceAssetPKFieldName)
-		throws Exception {
+	private void _addActivityJSONArray(JSONArray activityJSONArray) {
+		_faroInfoActivityDog.addActivity(activityJSONArray);
+
+		for (int i = 0; i < activityJSONArray.length(); i++) {
+			JSONObject activityJSONObject = activityJSONArray.getJSONObject(i);
+
+			if (_faroInfoActivityDog.isActivity(
+					activityJSONObject.getString("applicationId"),
+					activityJSONObject.getString("eventId"))) {
+
+				_messageBus.sendMessage(
+					Channel.ACTIVE_INDIVIDUAL_IDS,
+					JSONUtil.put(
+						"channelId", activityJSONObject.getString("channelId")
+					).put(
+						"ownerId", activityJSONObject.getString("ownerId")
+					).put(
+						"projectId", ProjectIdThreadLocal.getProjectId()
+					).toString());
+			}
+		}
+	}
+
+	private JSONObject _getActivityJSONObject(AnalyticsEvent analyticsEvent) {
+		Map<String, String> context = analyticsEvent.getContext();
+
+		String dataSourceAssetPK = _getDataSourceAssetPK(
+			analyticsEvent, context);
+
+		Asset asset = _getAsset(analyticsEvent, dataSourceAssetPK);
+
+		if (asset == null) {
+			return null;
+		}
 
 		String eventId = analyticsEvent.getEventId();
 
 		JSONObject objectJSONObject = new JSONObject();
 
-		Map<String, String> context = analyticsEvent.getContext();
-
-		objectJSONObject.put(
-			"canonicalUrl", MapUtil.getString(context, "canonicalUrl"));
-
-		String dataSourceAssetPK = null;
-
-		Map<String, String> eventProperties =
-			analyticsEvent.getEventProperties();
-
-		if (eventProperties != null) {
-			dataSourceAssetPK = eventProperties.get(dataSourceAssetPKFieldName);
-		}
-
-		if (dataSourceAssetPK == null) {
-			dataSourceAssetPK = MapUtil.getString(
-				context, dataSourceAssetPKFieldName);
-
-			if (dataSourceAssetPK == null) {
-				throw new IllegalArgumentException(
-					"No data source asset PK for analytics event " +
-						analyticsEvent.toJSON());
-			}
-		}
-
 		objectJSONObject.put("dataSourceAssetPK", dataSourceAssetPK);
 
-		Asset asset = _getAsset(analyticsEvent, dataSourceAssetPK);
-
-		if (asset == null) {
-			return;
+		if (context.containsKey("canonicalUrl")) {
+			objectJSONObject.put("canonicalUrl", context.get("canonicalUrl"));
 		}
 
 		String assetId = String.valueOf(asset.getId());
@@ -235,6 +201,8 @@ public class ActivitiesNanite implements Nanite {
 		objectJSONObject.put("name", _getTitle(analyticsEvent));
 		objectJSONObject.put("objectType", asset.getAssetType());
 		objectJSONObject.put("url", MapUtil.getString(context, "url"));
+
+		String applicationId = analyticsEvent.getApplicationId();
 
 		if (applicationId.equals("Comment")) {
 			applicationId = objectJSONObject.getString("objectType");
@@ -250,6 +218,8 @@ public class ActivitiesNanite implements Nanite {
 
 		String dayUTCString = DateUtil.toUTCString(
 			eventLocalDateTime.with(LocalTime.MIDNIGHT));
+
+		ActivityGroup activityGroup = _addActivityGroup(analyticsEvent);
 
 		JSONObject activityJSONObject = JSONUtil.put(
 			"activityKey", applicationId + "#" + eventId + "#" + assetId
@@ -294,14 +264,11 @@ public class ActivitiesNanite implements Nanite {
 			activityJSONObject.put("sessionId", sessionId);
 		}
 
-		addActivityJSONObject(
-			activityJSONObject, applicationId, eventId,
-			activityGroup.getOwnerId());
+		return activityJSONObject;
 	}
 
 	private Asset _getAsset(
-			AnalyticsEvent analyticsEvent, String dataSourceAssetPK)
-		throws Exception {
+		AnalyticsEvent analyticsEvent, String dataSourceAssetPK) {
 
 		Asset asset = _assetDog.fetchAsset(
 			dataSourceAssetPK, Long.valueOf(analyticsEvent.getDataSourceId()));
@@ -368,7 +335,13 @@ public class ActivitiesNanite implements Nanite {
 			_getTitle(analyticsEvent), MapUtil.getString(context, "url"));
 	}
 
-	private Set<AssetKeyword> _getAssetKeywords(Map<String, String> context) {
+	private Set<AssetKeyword> _getAssetKeywords(
+		String applicationId, Map<String, String> context) {
+
+		if (!Objects.equals(applicationId, "Page")) {
+			return null;
+		}
+
 		Set<AssetKeyword> keywords = new HashSet<>(
 			_getAssetKeywords(
 				MapUtil.getString(context, "description"), "description"));
@@ -419,15 +392,46 @@ public class ActivitiesNanite implements Nanite {
 		);
 	}
 
+	private String _getDataSourceAssetPK(
+		AnalyticsEvent analyticsEvent, Map<String, String> context) {
+
+		Map<String, String> eventProperties =
+			analyticsEvent.getEventProperties();
+
+		String dataSourceAssetPKFieldName = _dataSourceAssetPKFieldNames.get(
+			analyticsEvent.getApplicationId());
+
+		if (eventProperties != null) {
+			String dataSourceAssetPK = eventProperties.get(
+				dataSourceAssetPKFieldName);
+
+			if (dataSourceAssetPK != null) {
+				return dataSourceAssetPK;
+			}
+		}
+
+		String dataSourceAssetPK = MapUtil.getString(
+			context, dataSourceAssetPKFieldName);
+
+		if (dataSourceAssetPK != null) {
+			return dataSourceAssetPK;
+		}
+
+		throw new IllegalArgumentException(
+			"No data source asset PK for analytics event " +
+				analyticsEvent.toJSON());
+	}
+
 	private JSONObject _getEventPropertiesJSONObject(
-			AnalyticsEvent analyticsEvent)
-		throws Exception {
+		AnalyticsEvent analyticsEvent) {
 
 		JSONObject eventPropertiesJSONObject = new JSONObject();
 
+		Map<String, String> eventProperties =
+			analyticsEvent.getEventProperties();
+
 		for (String eventPropertyKey : _EVENT_PROPERTY_KEYS) {
-			String value = MapUtil.getString(
-				analyticsEvent.getEventProperties(), eventPropertyKey);
+			String value = eventProperties.get(eventPropertyKey);
 
 			if (value != null) {
 				eventPropertiesJSONObject.put(eventPropertyKey, value);
@@ -469,9 +473,7 @@ public class ActivitiesNanite implements Nanite {
 		return eventPropertiesJSONObject;
 	}
 
-	private String _getEventPropertiesTitle(AnalyticsEvent analyticsEvent)
-		throws Exception {
-
+	private String _getEventPropertiesTitle(AnalyticsEvent analyticsEvent) {
 		JSONObject eventPropertiesJSONObject = _getEventPropertiesJSONObject(
 			analyticsEvent);
 
@@ -556,7 +558,7 @@ public class ActivitiesNanite implements Nanite {
 		return userSessionJSONObject.getString("id");
 	}
 
-	private String _getTitle(AnalyticsEvent analyticsEvent) throws Exception {
+	private String _getTitle(AnalyticsEvent analyticsEvent) {
 		if (!Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
 			String name = _getEventPropertiesTitle(analyticsEvent);
 
@@ -566,6 +568,30 @@ public class ActivitiesNanite implements Nanite {
 		}
 
 		return MapUtil.getString(analyticsEvent.getContext(), "title");
+	}
+
+	private void _process(
+		String projectId, List<AnalyticsEvent> analyticsEvents) {
+
+		try {
+			ProjectIdThreadLocal.setProjectId(projectId);
+
+			Stream<AnalyticsEvent> analyticsEventsStream =
+				analyticsEvents.parallelStream();
+
+			_addActivityJSONArray(
+				analyticsEventsStream.distinct(
+				).map(
+					this::_getActivityJSONObject
+				).filter(
+					Objects::nonNull
+				).collect(
+					Collector.of(JSONArray::new, JSONArray::put, JSONArray::put)
+				));
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
 	}
 
 	private static final String[] _EVENT_PROPERTY_KEYS = {
