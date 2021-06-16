@@ -41,9 +41,7 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-@ConditionalOnProperty(
-	havingValue = "true", value = "osb.asah.postgresql.enabled"
-)
+@ConditionalOnProperty(havingValue = "true", value = "osb.asah.trino.enabled")
 public class CustomAssetMetricDog {
 
 	public HistogramMetricBag getHistogramMetricBag(
