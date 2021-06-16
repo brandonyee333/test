@@ -522,7 +522,7 @@ public class ActivitiesNanite implements Nanite {
 		}
 
 		JSONObject individualJSONObject =
-			_faroInfoIndividualDog.getIndividualJSONObject(
+			_faroInfoIndividualDog.fetchIndividualJSONObject(
 				Long.valueOf(analyticsEvent.getDataSourceId()),
 				analyticsEvent.getUserId());
 

@@ -426,6 +426,24 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 				partialIndividualJSONObject.toMap()));
 	}
 
+	public JSONObject fetchIndividualJSONObject(
+		Long dataSourceId, String userId) {
+
+		return elasticsearchInvoker.fetch(
+			"individuals",
+			QueryBuilders.nestedQuery(
+				"dataSourceIndividualPKs",
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"dataSourceIndividualPKs.dataSourceId",
+						String.valueOf(dataSourceId))
+				).filter(
+					QueryBuilders.termsQuery(
+						"dataSourceIndividualPKs.individualPKs", userId)
+				),
+				ScoreMode.None));
+	}
+
 	public JSONObject fetchIndividualJSONObject(String individualId) {
 		return elasticsearchInvoker.fetch("individuals", individualId);
 	}
@@ -560,24 +578,6 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		}
 
 		return jsonArray;
-	}
-
-	public JSONObject getIndividualJSONObject(
-		Long dataSourceId, String userId) {
-
-		return elasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.nestedQuery(
-				"dataSourceIndividualPKs",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.dataSourceId",
-						String.valueOf(dataSourceId))
-				).filter(
-					QueryBuilders.termsQuery(
-						"dataSourceIndividualPKs.individualPKs", userId)
-				),
-				ScoreMode.None));
 	}
 
 	public String getIndividualName(String individualId) {

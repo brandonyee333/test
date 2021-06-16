@@ -113,7 +113,7 @@ public class AnalyticsEventsMessageProcessor {
 		String userId = analyticsEventsMessage.getUserId();
 
 		JSONObject individualJSONObject =
-			_faroInfoIndividualDog.getIndividualJSONObject(
+			_faroInfoIndividualDog.fetchIndividualJSONObject(
 				dataSourceId, userId);
 
 		if (individualJSONObject == null) {

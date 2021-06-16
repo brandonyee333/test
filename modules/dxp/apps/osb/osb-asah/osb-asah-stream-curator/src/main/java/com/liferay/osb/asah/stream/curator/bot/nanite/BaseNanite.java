@@ -323,7 +323,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		}
 
 		JSONObject individualJSONObject =
-			_faroInfoIndividualDog.getIndividualJSONObject(
+			_faroInfoIndividualDog.fetchIndividualJSONObject(
 				Long.valueOf(analyticsEvent.getDataSourceId()),
 				analyticsEvent.getUserId());
 

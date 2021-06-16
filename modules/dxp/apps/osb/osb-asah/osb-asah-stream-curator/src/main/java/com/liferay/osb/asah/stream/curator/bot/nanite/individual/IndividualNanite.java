@@ -267,7 +267,7 @@ public class IndividualNanite implements Nanite {
 		throws Exception {
 
 		JSONObject individualJSONObject1 =
-			_faroInfoIndividualDog.getIndividualJSONObject(
+			_faroInfoIndividualDog.fetchIndividualJSONObject(
 				dataSourceId, userId);
 
 		if ((individualJSONObject1 != null) &&

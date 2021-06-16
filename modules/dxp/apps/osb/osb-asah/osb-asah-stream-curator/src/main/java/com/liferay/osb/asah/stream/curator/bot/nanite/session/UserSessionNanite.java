@@ -197,7 +197,7 @@ public class UserSessionNanite implements Nanite {
 			return null;
 		}
 
-		return _faroInfoIndividualDog.getIndividualJSONObject(
+		return _faroInfoIndividualDog.fetchIndividualJSONObject(
 			Long.valueOf(analyticsEvent.getDataSourceId()),
 			analyticsEvent.getUserId());
 	}
