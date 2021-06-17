@@ -413,7 +413,7 @@ public class DXPEntity implements Persistable<Long> {
 	private String _dataSourceName;
 
 	@Transient
-	private JSONObject _fieldsJSONObject;
+	private JSONObject _fieldsJSONObject = new JSONObject();
 
 	@Transient
 	private Long _id;
