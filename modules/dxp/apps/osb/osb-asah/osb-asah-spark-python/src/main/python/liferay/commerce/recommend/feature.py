@@ -17,9 +17,7 @@ from pyspark.ml.feature import CountVectorizer, \
 	StringIndexer, \
 	Tokenizer, \
 	VectorAssembler
-from pyspark.sql.functions import col, \
-	collect_list, \
-	when
+from pyspark.sql import functions as F
 
 import logging
 
@@ -152,14 +150,14 @@ class MAPEvaluator(Evaluator):
 
 		data_frame = data_frame.withColumn(
 			self._prediction_column_name,
-			col(self._prediction_column_name).cast('double')
+			F.col(self._prediction_column_name).cast('double')
 		)
 
 		data_frame = data_frame.groupBy(self._query_column_name)
 
 		data_frame = data_frame.agg(
-			collect_list(self._label_column_name).alias('gt'),
-			collect_list('binary').alias('pred')
+			F.collect_list(self._label_column_name).alias('gt'),
+			F.collect_list('binary').alias('pred')
 		)
 
 		rdd = data_frame.rdd
@@ -167,4 +165,4 @@ class MAPEvaluator(Evaluator):
 		return rdd.map(lambda r: sum(r.pred) / sum(r.gt)).mean()
 
 	def _get_binary_expression(self, column_name, threshold):
-		return when(col(column_name) > threshold, 1.0).otherwise(0.0)
+		return F.when(F.col(column_name) > threshold, 1.0).otherwise(0.0)

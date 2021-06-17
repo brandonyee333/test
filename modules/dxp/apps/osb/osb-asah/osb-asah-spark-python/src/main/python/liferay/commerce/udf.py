@@ -15,15 +15,15 @@ from abc import ABCMeta, \
 from pyspark.ml.linalg import DenseVector, \
 	VectorUDT, \
 	Vectors
-from pyspark.sql.functions import udf
-from pyspark.sql.types import DoubleType
+from pyspark.sql import functions as F, \
+	types as T
 
 import numpy as np
 
 class BaseUDFFunction(object, metaclass=ABCMeta):
 
 	def __init__(self, spark_session):
-		udf_function = udf(self.udf_function, self.get_return_type())
+		udf_function = F.udf(self.udf_function, self.get_return_type())
 
 		spark_session.udf.register(self.get_function_name(), udf_function)
 
@@ -53,7 +53,7 @@ class TanimotoCoefficientUDFFunction(BaseUDFFunction):
 
 	@staticmethod
 	def get_return_type():
-		return DoubleType()
+		return T.DoubleType()
 
 	@staticmethod
 	def udf_function(col1, col2):
@@ -96,7 +96,7 @@ class VectorDotProductUDFFunction(BaseUDFFunction):
 
 	@staticmethod
 	def get_return_type():
-		return DoubleType()
+		return T.DoubleType()
 
 	@staticmethod
 	def udf_function(vector1, vector2):
@@ -143,7 +143,7 @@ class VectorNormUDFFunction(BaseUDFFunction):
 
 	@staticmethod
 	def get_return_type():
-		return DoubleType()
+		return T.DoubleType()
 
 	@staticmethod
 	def udf_function(vector, order=2):

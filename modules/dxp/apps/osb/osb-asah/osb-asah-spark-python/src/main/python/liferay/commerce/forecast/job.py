@@ -17,15 +17,8 @@ from liferay.commerce.forecast.constants import CommerceMLForecastPeriod, \
 from liferay.commerce.forecast.udf import ForecastUDFHelper
 from liferay.common.spark import BaseSparkJob
 
-from pyspark.sql import Window
-from pyspark.sql.functions import PandasUDFType, \
-	col, \
-	count, \
-	date_trunc, \
-	lit, \
-	pandas_udf, \
-	row_number, \
-	sum as spark_sum
+from pyspark.sql import Window, \
+	functions as F
 
 class AccountCategoryForecastJSONDataFrameWriterSparkJob(BaseJSONDataFrameWriterSparkJob):
 
@@ -79,16 +72,16 @@ class ForecastDataPrepareSparkJob(BaseSparkJob):
 		)
 
 		order_forecast_data_frame = data_frame_grouped.agg(
-			spark_sum('actual').alias('actual')
+			F.sum('actual').alias('actual')
 		)
 
 		window_spec = Window.partitionBy(self._scope.columns)
 
-		window_spec = window_spec.orderBy(col('timestamp').desc())
+		window_spec = window_spec.orderBy(F.col('timestamp').desc())
 
 		order_forecast_data_frame = order_forecast_data_frame.withColumn(
 			'row_number',
-			row_number().over(window_spec)
+			F.row_number().over(window_spec)
 		)
 
 		forecast_data_minimum_length = self.spark_application_configuration.get(
@@ -112,7 +105,7 @@ class ForecastDataPrepareSparkJob(BaseSparkJob):
 		)
 
 		order_forecast_data_frame_count = data_frame_grouped.agg(
-			count(
+			F.count(
 				'*'
 			).alias(
 				'count'
@@ -160,7 +153,7 @@ class ForecastOrderJSONDataFrameReader(BaseJSONDataFrameReaderSparkJob):
 		)
 
 		data_frame = data_frame.withColumn(
-			'orderDate', date_trunc(self._period.label, col('orderDate'))
+			'orderDate', F.date_trunc(self._period.label, F.col('orderDate'))
 		)
 
 		return data_frame.selectExpr(
@@ -231,10 +224,10 @@ class ForecastSparkJob(BaseSparkJob):
 
 		forecast_function = forecast_udf_helper.get_instance()
 
-		return pandas_udf(
+		return F.pandas_udf(
 			f=lambda df: forecast_function.fit_predict(df),
 			returnType=forecast_udf_helper.get_schema(),
-			functionType=PandasUDFType.GROUPED_MAP
+			functionType=F.PandasUDFType.GROUPED_MAP
 		)
 
 	def run(self):

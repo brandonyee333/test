@@ -21,24 +21,8 @@ from pyspark.ml.fpm import FPGrowth
 from pyspark.ml.recommendation import ALS
 from pyspark.ml.tuning import CrossValidator, \
 	ParamGridBuilder
-from pyspark.sql import Window
-from pyspark.sql.functions import array, \
-	array_distinct, \
-	array_sort, \
-	coalesce, \
-	col, \
-	collect_list, \
-	collect_set, \
-	current_date, \
-	dense_rank, \
-	explode, \
-	expr, \
-	lit, \
-	rank, \
-	regexp_replace, \
-	row_number, \
-	size as col_size, \
-	when
+from pyspark.sql import Window, \
+	functions as F
 
 import logging
 
@@ -55,18 +39,18 @@ class ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob(BaseJSONDa
 		)
 
 	def _pre_process(self, data_frame):
-		data_frame = data_frame.withColumn('createDate', current_date())
+		data_frame = data_frame.withColumn('createDate', F.current_date())
 		data_frame = data_frame.withColumn(
 			'jobId',
-			lit(self.spark_application_configuration.get('spark.app.id'))
+			F.lit(self.spark_application_configuration.get('spark.app.id'))
 		)
 		data_frame = data_frame.withColumn(
 			'entryClassPK',
-			col('commerceAccountId').cast('long')
+			F.col('commerceAccountId').cast('long')
 		)
 		data_frame = data_frame.withColumn(
 			'recommendedEntryClassPK',
-			col('CPDefinitionId').cast('long')
+			F.col('CPDefinitionId').cast('long')
 		)
 
 		data_frame = data_frame.drop('commerceAccountId')
@@ -113,7 +97,7 @@ class FrequentPatternDataPreparationSparkJob(BaseSparkJob):
 		items_grouped_data = items_data_frame.groupBy('orderId')
 
 		items_data_frame = items_grouped_data.agg(
-			collect_set('CPDefinitionId').alias('items')
+			F.collect_set('CPDefinitionId').alias('items')
 		)
 
 		items_data_frame.createOrReplaceTempView('items')
@@ -174,16 +158,16 @@ class FrequentPatternPostProcessRecommendationSparkJob(BaseSparkJob):
 
 		association_rules_data_frame = association_rules_data_frame.withColumn(
 			'antecedent_support',
-			expr('antecedent_freq / {}'.format(order_count))
+			F.expr('antecedent_freq / {}'.format(order_count))
 		)
 
 		association_rules_data_frame = association_rules_data_frame.withColumn(
-			'consequent_support', expr('confidence/lift')
+			'consequent_support', F.expr('confidence/lift')
 		)
 
 		association_rules_data_frame = association_rules_data_frame.withColumn(
 			'lambda',
-			expr(
+			F.expr(
 				'GREATEST(antecedent_support + consequent_support - 1, '
 				'1 / {})'.format(order_count)
 			)
@@ -191,29 +175,29 @@ class FrequentPatternPostProcessRecommendationSparkJob(BaseSparkJob):
 
 		association_rules_data_frame = association_rules_data_frame.withColumn(
 			'delta',
-			expr('1 / GREATEST(antecedent_support, consequent_support)')
+			F.expr('1 / GREATEST(antecedent_support, consequent_support)')
 		)
 
 		association_rules_data_frame = association_rules_data_frame.withColumn(
-			'stdLift', expr('(lift - lambda)/(delta - lambda)')
+			'stdLift', F.expr('(lift - lambda)/(delta - lambda)')
 		)
 
 		association_rules_data_frame = association_rules_data_frame.select(
 			'antecedent',
-			explode('consequent').alias('consequent'), 'confidence', 'lift',
+			F.explode('consequent').alias('consequent'), 'confidence', 'lift',
 			'stdLift'
 		)
 
 		window_spec = Window.partitionBy('antecedent')
 
 		window_spec = window_spec.orderBy(
-			col('stdLift').desc(),
-			col('lift').desc()
+			F.col('stdLift').desc(),
+			F.col('lift').desc()
 		)
 
 		association_rules_data_frame = association_rules_data_frame.withColumn(
 			'row_num',
-			row_number().over(window_spec)
+			F.row_number().over(window_spec)
 		)
 
 		itemset_items_max_count = self.spark_application_configuration.get(
@@ -266,7 +250,7 @@ class FrequentPatternRecommendationJSONDataFrameWriterSparkJob(BaseJSONDataFrame
 	def _pre_process(self, data_frame):
 		data_frame = data_frame.withColumnRenamed('antecedent', 'antecedentIds')
 		data_frame = data_frame.withColumn(
-			'antecedentIdsLength', col_size('antecedentIds')
+			'antecedentIdsLength', F.size('antecedentIds')
 		)
 		data_frame = data_frame.drop('confidence')
 		data_frame = data_frame.drop('lift')
@@ -364,7 +348,7 @@ class ProductContentJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob)
 
 	def _get_product_specification_ids(self, products_data_frame):
 		data_frame = products_data_frame.select(
-			explode('productSpecifications').alias('productSpecifications')
+			F.explode('productSpecifications').alias('productSpecifications')
 		)
 
 		data_frame = data_frame.select('productSpecifications.specificationId')
@@ -380,7 +364,7 @@ class ProductContentJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob)
 
 		product_specifications_data_frame = products_data_frame.select(
 			"id",
-			explode("productSpecifications").alias("productSpecifications")
+			F.explode("productSpecifications").alias("productSpecifications")
 		)
 
 		locale = self.spark_application_configuration.get("commerce.ml.locale")
@@ -394,11 +378,11 @@ class ProductContentJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob)
 
 			data_frame = product_specifications_data_frame.withColumn(
 				specification_column_name,
-				when(
+				F.when(
 					product_specifications_data_frame[
 						'productSpecifications.specificationId'] ==
 					product_specification_id,
-					col('productSpecifications.value').getItem(locale)
+					F.col('productSpecifications.value').getItem(locale)
 				)
 			)
 
@@ -458,9 +442,9 @@ class ProductContentPipelineSparkJob(BaseSparkJob):
 		]
 
 		products_data_frame = products_data_frame.withColumn(
-			'description', coalesce(col('description'), col('name'))
+			'description', F.coalesce(F.col('description'), F.col('name'))
 		).withColumn(
-			'description', regexp_replace('description', r'[^\w\s]', '')
+			'description', F.regexp_replace('description', r'[^\w\s]', '')
 		).persist(StorageLevel.MEMORY_AND_DISK_2)
 
 		extracted_features = self._commerce_feature_extractor.extract_features(
@@ -476,9 +460,9 @@ class ProductContentPipelineSparkJob(BaseSparkJob):
 		)
 
 		pipeline_data = pipeline_data.groupBy('entryClassPK').agg(
-			collect_list('features').alias('vector_list')
+			F.collect_list('features').alias('vector_list')
 		).withColumn(
-			'features', expr('vectorMerge(vector_list)')
+			'features', F.expr('vectorMerge(vector_list)')
 		).drop('vector_list')
 
 		pipeline_data.createOrReplaceTempView('pipeline_data')
@@ -520,9 +504,9 @@ class ProductContentRecommendationPreparationSparkJob(BaseSparkJob):
 			)
 		).withColumn(
 			'key',
-			array_sort(
-				array_distinct(
-					array(['entryClassPK', 'entryClassPK2'])
+			F.array_sort(
+				F.array_distinct(
+					F.array(['entryClassPK', 'entryClassPK2'])
 				)
 			)
 		)
@@ -539,7 +523,7 @@ class ProductContentRecommendationPreparationSparkJob(BaseSparkJob):
 		score_pairs_data_frame = all_pairs_data_frame.dropDuplicates(
 			subset=['key']
 		).filter(
-			col_size('key') > 1
+			F.size('key') > 1
 		)
 
 		score_pairs_data_frame = score_pairs_data_frame.join(
@@ -572,17 +556,17 @@ class ProductContentRecommendationSparkJob(BaseSparkJob):
 		   'key', 'features', 'features2'
 		)
 		score_pairs_data_frame = score_pairs_data_frame.withColumn(
-			'dotProduct', expr('vectorDotProduct(features, features2)')
+			'dotProduct', F.expr('vectorDotProduct(features, features2)')
 		)
 		score_pairs_data_frame = score_pairs_data_frame.withColumn(
-			'norm1', expr('vectorNorm(features)')
+			'norm1', F.expr('vectorNorm(features)')
 		)
 		score_pairs_data_frame = score_pairs_data_frame.withColumn(
-			'norm2', expr('vectorNorm(features2)')
+			'norm2', F.expr('vectorNorm(features2)')
 		)
 		score_pairs_data_frame = score_pairs_data_frame.select(
 			'key',
-			expr(
+			F.expr(
 				'dotProduct / (pow(norm1, 2) + pow(norm2, 2) - dotProduct)'
 				' AS score'
 			)
@@ -596,12 +580,12 @@ class ProductContentRecommendationSparkJob(BaseSparkJob):
 		)
 
 		window = Window.partitionBy('entryClassPK').orderBy(
-			col('score').desc()
+			F.col('score').desc()
 		)
 
 		recommendations_data_frame = recommendations_data_frame.select(
 			'*',
-			dense_rank().over(window).alias('rank')
+			F.dense_rank().over(window).alias('rank')
 		)
 
 		max_rank = self.spark_application_configuration.get(
@@ -612,19 +596,19 @@ class ProductContentRecommendationSparkJob(BaseSparkJob):
 			'rank >= 1 AND rank <= {}'.format(max_rank)
 		)
 		recommendations_data_frame = recommendations_data_frame.withColumn(
-			'createDate', current_date()
+			'createDate', F.current_date()
 		)
 		recommendations_data_frame = recommendations_data_frame.withColumn(
 			'jobId',
-			lit(self.spark_application_configuration.get('spark.app.id'))
+			F.lit(self.spark_application_configuration.get('spark.app.id'))
 		)
 		recommendations_data_frame = recommendations_data_frame.withColumn(
 			'entryClassPK',
-			col('entryClassPK').cast('long')
+			F.col('entryClassPK').cast('long')
 		)
 		recommendations_data_frame = recommendations_data_frame.withColumn(
 			'recommendedEntryClassPK',
-			col('entryClassPK2').cast('long')
+			F.col('entryClassPK2').cast('long')
 		)
 		recommendations_data_frame = recommendations_data_frame.drop(
 			'entryClassPK2'
@@ -688,7 +672,7 @@ class ProductInteractionRecommendationSparkJob(BaseSparkJob):
 			'product.interaction.recommendation.score.function'
 		)
 
-		window = Window.partitionBy(col('id')).orderBy(col('score').desc())
+		window = Window.partitionBy(F.col('id')).orderBy(F.col('score').desc())
 
 		recommendations_data_frame = item_factors_data_frame.crossJoin(
 			item_factors_data_frame.selectExpr(
@@ -707,7 +691,7 @@ class ProductInteractionRecommendationSparkJob(BaseSparkJob):
 
 		recommendations_data_frame = recommendations_data_frame.select(
 			'*',
-			dense_rank().over(window).alias('rank')
+			F.dense_rank().over(window).alias('rank')
 		)
 
 		max_rank = self.spark_application_configuration.get(
@@ -719,18 +703,18 @@ class ProductInteractionRecommendationSparkJob(BaseSparkJob):
 		)
 
 		recommendations_data_frame = recommendations_data_frame.withColumn(
-			'createDate', current_date()
+			'createDate', F.current_date()
 		)
 		recommendations_data_frame = recommendations_data_frame.withColumn(
-			'jobId', lit(spark_context.applicationId)
+			'jobId', F.lit(spark_context.applicationId)
 		)
 		recommendations_data_frame = recommendations_data_frame.withColumn(
 			'entryClassPK',
-			col('id').cast('long')
+			F.col('id').cast('long')
 		)
 		recommendations_data_frame = recommendations_data_frame.withColumn(
 			'recommendedEntryClassPK',
-			col('id2').cast('long')
+			F.col('id2').cast('long')
 		)
 
 		recommendations_data_frame = recommendations_data_frame.drop('features')
@@ -979,7 +963,7 @@ class UserInteractionDataPreparationSparkJob(BaseSparkJob):
 
 		user_item_ratings_data_frame = user_item_ratings_data_frame.drop("sku")
 		user_item_ratings_data_frame = user_item_ratings_data_frame.withColumn(
-			'rating', lit(1.0)
+			'rating', F.lit(1.0)
 		)
 
 		user_item_ratings_data_frame.createOrReplaceTempView(

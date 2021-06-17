@@ -15,11 +15,7 @@ from liferay.commerce.forecast.constants import CommerceMLForecastPeriod, \
 	CommerceMLForecastTarget
 from liferay.commerce.forecast.sarima import CommerceSARIMAX
 
-from pyspark.sql.types import DoubleType, \
-	LongType, \
-	StringType, \
-	StructField, \
-	StructType
+from pyspark.sql import types as T
 
 import logging
 import os
@@ -74,20 +70,20 @@ class ForecastUDFHelper(object):
 
 	@staticmethod
 	def get_schema():
-		schema = StructType(
+		schema = T.StructType(
 			[
-				StructField('assetCategoryId', LongType()),
-				StructField('commerceAccountId', LongType()),
-				StructField('sku', StringType()),
-				StructField('scope', StringType()),
-				StructField('period', StringType()),
-				StructField('target', StringType()),
-				StructField('forecast', DoubleType()),
-				StructField('timestamp', LongType()),
-				StructField('forecastLowerBound', DoubleType()),
-				StructField('forecastUpperBound', DoubleType()),
-				StructField('modelAttributes', StringType()),
-				StructField('error', StringType())
+				T.StructField('assetCategoryId', T.LongType()),
+				T.StructField('commerceAccountId', T.LongType()),
+				T.StructField('sku', T.StringType()),
+				T.StructField('scope', T.StringType()),
+				T.StructField('period', T.StringType()),
+				T.StructField('target', T.StringType()),
+				T.StructField('forecast', T.DoubleType()),
+				T.StructField('timestamp', T.LongType()),
+				T.StructField('forecastLowerBound', T.DoubleType()),
+				T.StructField('forecastUpperBound', T.DoubleType()),
+				T.StructField('modelAttributes', T.StringType()),
+				T.StructField('error', T.StringType())
 			]
 		)
 
