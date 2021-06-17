@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
 import com.liferay.osb.asah.common.entity.Event;
+import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
@@ -189,10 +190,14 @@ public class EventDefinitionDog {
 		Event lastSeenEvent = _fetchLastSeenEvent(eventDefinitionId);
 
 		if (lastSeenEvent != null) {
+			EventAttribute eventAttribute =
+				_eventAttributeDog.getEventAttribute(
+					"canonicalUrl", lastSeenEvent.getId());
+
 			eventDefinition.setBlockedEventDefinition(
 				new BlockedEventDefinition(
 					lastSeenEvent.getEventDate(),
-					lastSeenEvent.getCanonicalURL()));
+					eventAttribute.getAttributeValue()));
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
@@ -269,6 +274,9 @@ public class EventDefinitionDog {
 	private static final int _EVENT_DEFINITION_THRESHOLD = 100;
 
 	private static final Log _log = LogFactory.getLog(EventDefinitionDog.class);
+
+	@Autowired
+	private EventAttributeDog _eventAttributeDog;
 
 	@Autowired
 	private EventDefinitionRepository _eventDefinitionRepository;
