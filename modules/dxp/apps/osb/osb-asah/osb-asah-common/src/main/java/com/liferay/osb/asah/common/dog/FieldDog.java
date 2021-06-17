@@ -21,8 +21,8 @@ import com.joestelmach.natty.Parser;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
@@ -725,16 +725,20 @@ public class FieldDog {
 		}
 
 		if (providerType.equals("LIFERAY")) {
-			return _dxpRawElasticsearchInvoker.fetch(
-				"users",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"osbAsahDataSourceId",
-						String.valueOf(dataSource.getId()))
-				).filter(
-					QueryBuilders.termQuery(
-						"contact." + uniqueIdFieldName, uniqueId)
-				));
+			DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
+				new HashMap<String, Object>() {
+					{
+						put("dataSourceId", String.valueOf(dataSource.getId()));
+						put("fields.contact." + uniqueIdFieldName, uniqueId);
+					}
+				},
+				DXPEntity.Type.USER);
+
+			if (dxpEntity != null) {
+				return _objectMapper.convertValue(dxpEntity, JSONObject.class);
+			}
+
+			return null;
 		}
 
 		if (providerType.equals("SALESFORCE")) {
@@ -1481,8 +1485,8 @@ public class FieldDog {
 	@Autowired
 	private DataSourceDog _dataSourceDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
