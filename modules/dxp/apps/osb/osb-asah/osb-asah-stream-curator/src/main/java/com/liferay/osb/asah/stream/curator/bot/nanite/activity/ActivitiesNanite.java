@@ -49,12 +49,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -172,13 +175,23 @@ public class ActivitiesNanite implements Nanite {
 		}
 	}
 
+	private void _clearMaps() {
+		_assets.clear();
+		_formViewedActivies.clear();
+		_pageViewActivityIds.clear();
+	}
+
 	private JSONObject _getActivityJSONObject(AnalyticsEvent analyticsEvent) {
 		Map<String, String> context = analyticsEvent.getContext();
 
 		String dataSourceAssetPK = _getDataSourceAssetPK(
 			analyticsEvent, context);
 
-		Asset asset = _getAsset(analyticsEvent, dataSourceAssetPK);
+		JSONObject eventPropertiesJSONObject = _getEventPropertiesJSONObject(
+			analyticsEvent);
+
+		Asset asset = _getAsset(
+			analyticsEvent, dataSourceAssetPK, eventPropertiesJSONObject);
 
 		if (asset == null) {
 			return null;
@@ -198,7 +211,8 @@ public class ActivitiesNanite implements Nanite {
 
 		objectJSONObject.put("id", assetId);
 
-		objectJSONObject.put("name", _getTitle(analyticsEvent));
+		objectJSONObject.put(
+			"name", _getTitle(analyticsEvent, eventPropertiesJSONObject));
 		objectJSONObject.put("objectType", asset.getAssetType());
 		objectJSONObject.put("url", MapUtil.getString(context, "url"));
 
@@ -242,7 +256,7 @@ public class ActivitiesNanite implements Nanite {
 		).put(
 			"eventId", eventId
 		).put(
-			"eventProperties", _getEventPropertiesJSONObject(analyticsEvent)
+			"eventProperties", eventPropertiesJSONObject
 		).put(
 			"groupId", String.valueOf(activityGroup.getId())
 		).put(
@@ -264,14 +278,38 @@ public class ActivitiesNanite implements Nanite {
 			activityJSONObject.put("sessionId", sessionId);
 		}
 
+		if (Objects.equals(analyticsEvent.getEventId(), "formViewed")) {
+			TreeMap<Date, JSONObject> formViewedActivity =
+				_formViewedActivies.get(analyticsEvent.getUserId());
+
+			if (formViewedActivity == null) {
+				formViewedActivity = new TreeMap<>();
+			}
+
+			formViewedActivity.put(
+				analyticsEvent.getEventDate(), activityJSONObject);
+
+			_formViewedActivies.put(
+				analyticsEvent.getUserId(), formViewedActivity);
+		}
+
 		return activityJSONObject;
 	}
 
 	private Asset _getAsset(
-		AnalyticsEvent analyticsEvent, String dataSourceAssetPK) {
+		AnalyticsEvent analyticsEvent, String dataSourceAssetPK,
+		JSONObject eventPropertiesJSONObject) {
 
-		Asset asset = _assetDog.fetchAsset(
-			dataSourceAssetPK, Long.valueOf(analyticsEvent.getDataSourceId()));
+		ImmutablePair<String, String> assetPair = new ImmutablePair<>(
+			dataSourceAssetPK, analyticsEvent.getDataSourceId());
+
+		Asset asset = _assets.get(assetPair);
+
+		if (asset == null) {
+			asset = _assetDog.fetchAsset(
+				dataSourceAssetPK,
+				Long.valueOf(analyticsEvent.getDataSourceId()));
+		}
 
 		if (asset != null) {
 			Set<Long> channelIds = asset.getChannelIds();
@@ -289,13 +327,15 @@ public class ActivitiesNanite implements Nanite {
 
 			if (Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
 				if (updated) {
+					_assets.put(assetPair, asset);
+
 					return _assetDog.updateAsset(asset);
 				}
 
 				return asset;
 			}
 
-			String title = _getEventPropertiesTitle(analyticsEvent);
+			String title = _getEventPropertiesTitle(eventPropertiesJSONObject);
 
 			if (StringUtils.isNotEmpty(title) &&
 				!Objects.equals(asset.getTitle(), title)) {
@@ -306,6 +346,8 @@ public class ActivitiesNanite implements Nanite {
 			}
 
 			if (updated) {
+				_assets.put(assetPair, asset);
+
 				return _assetDog.updateAsset(asset);
 			}
 
@@ -332,7 +374,8 @@ public class ActivitiesNanite implements Nanite {
 			SetUtil.of(Long.valueOf(analyticsEvent.getChannelId())),
 			dataSourceAssetPK, Long.valueOf(analyticsEvent.getDataSourceId()),
 			MapUtil.getString(context, "description"),
-			_getTitle(analyticsEvent), MapUtil.getString(context, "url"));
+			_getTitle(analyticsEvent, eventPropertiesJSONObject),
+			MapUtil.getString(context, "url"));
 	}
 
 	private Set<AssetKeyword> _getAssetKeywords(
@@ -451,6 +494,37 @@ public class ActivitiesNanite implements Nanite {
 					analyticsEvent.getEventDate(), analyticsEvent.getUserId());
 
 			if (formViewedActivityJSONObject != null) {
+				TreeMap<Date, JSONObject> formViewedEventProperties =
+					_formViewedActivies.get(analyticsEvent.getUserId());
+
+				if (formViewedEventProperties == null) {
+					formViewedEventProperties = new TreeMap<>();
+				}
+
+				formViewedEventProperties.put(
+					DateUtil.toUTCDate(
+						formViewedActivityJSONObject.getString("endTime")),
+					formViewedActivityJSONObject);
+
+				_formViewedActivies.put(
+					analyticsEvent.getUserId(), formViewedEventProperties);
+			}
+
+			TreeMap<Date, JSONObject> formViewedEventProperties =
+				_formViewedActivies.get(analyticsEvent.getUserId());
+
+			if (formViewedEventProperties != null) {
+				Map.Entry<Date, JSONObject> formViewedEventPropertiesEntry =
+					formViewedEventProperties.floorEntry(
+						analyticsEvent.getEventDate());
+
+				if (formViewedEventPropertiesEntry != null) {
+					formViewedActivityJSONObject =
+						formViewedEventPropertiesEntry.getValue();
+				}
+			}
+
+			if (formViewedActivityJSONObject != null) {
 				JSONObject formViewedActivityEventPropertiesJSONObject =
 					formViewedActivityJSONObject.getJSONObject(
 						"eventProperties");
@@ -473,9 +547,8 @@ public class ActivitiesNanite implements Nanite {
 		return eventPropertiesJSONObject;
 	}
 
-	private String _getEventPropertiesTitle(AnalyticsEvent analyticsEvent) {
-		JSONObject eventPropertiesJSONObject = _getEventPropertiesJSONObject(
-			analyticsEvent);
+	private String _getEventPropertiesTitle(
+		JSONObject eventPropertiesJSONObject) {
 
 		String title = eventPropertiesJSONObject.optString("title");
 
@@ -513,11 +586,26 @@ public class ActivitiesNanite implements Nanite {
 		if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
 			Objects.equals(analyticsEvent.getEventId(), "pageViewed")) {
 
-			return String.valueOf(UUID.randomUUID());
+			String pageViewActivityId = String.valueOf(UUID.randomUUID());
+
+			_pageViewActivityIds.put(
+				analyticsEvent.getUserId(), pageViewActivityId);
+
+			return pageViewActivityId;
 		}
 
-		return _faroInfoActivityDog.fetchLatestPageViewActivityId(
-			analyticsEvent.getUserId());
+		if (_pageViewActivityIds.containsKey(analyticsEvent.getUserId())) {
+			return _pageViewActivityIds.get(analyticsEvent.getUserId());
+		}
+
+		String pageViewActivityId =
+			_faroInfoActivityDog.fetchLatestPageViewActivityId(
+				analyticsEvent.getUserId());
+
+		_pageViewActivityIds.put(
+			analyticsEvent.getUserId(), pageViewActivityId);
+
+		return pageViewActivityId;
 	}
 
 	private String _getSessionId(AnalyticsEvent analyticsEvent, Long ownerId) {
@@ -558,12 +646,14 @@ public class ActivitiesNanite implements Nanite {
 		return userSessionJSONObject.getString("id");
 	}
 
-	private String _getTitle(AnalyticsEvent analyticsEvent) {
-		if (!Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
-			String name = _getEventPropertiesTitle(analyticsEvent);
+	private String _getTitle(
+		AnalyticsEvent analyticsEvent, JSONObject eventPropertiesJSONObject) {
 
-			if (name != null) {
-				return name;
+		if (!Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
+			String title = _getEventPropertiesTitle(eventPropertiesJSONObject);
+
+			if (title != null) {
+				return title;
 			}
 		}
 
@@ -576,8 +666,10 @@ public class ActivitiesNanite implements Nanite {
 		try {
 			ProjectIdThreadLocal.setProjectId(projectId);
 
+			_clearMaps();
+
 			Stream<AnalyticsEvent> analyticsEventsStream =
-				analyticsEvents.parallelStream();
+				analyticsEvents.stream();
 
 			_addActivityJSONArray(
 				analyticsEventsStream.distinct(
@@ -619,6 +711,8 @@ public class ActivitiesNanite implements Nanite {
 	@Autowired
 	private AssetDog _assetDog;
 
+	private final Map<Pair<String, String>, Asset> _assets = new HashMap<>();
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
@@ -628,11 +722,16 @@ public class ActivitiesNanite implements Nanite {
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
+	private final Map<String, TreeMap<Date, JSONObject>> _formViewedActivies =
+		new HashMap<>();
+
 	@Autowired
 	private MessageBus _messageBus;
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_ACTIVITY)
 	private MessageSubscriber _messageSubscriber;
+
+	private final Map<String, String> _pageViewActivityIds = new HashMap<>();
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
