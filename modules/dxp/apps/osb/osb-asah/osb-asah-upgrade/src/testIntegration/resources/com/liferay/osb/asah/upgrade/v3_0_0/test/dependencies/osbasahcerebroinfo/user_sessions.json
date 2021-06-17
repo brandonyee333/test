@@ -1,0 +1,38 @@
+[
+	{
+		"acquisition": {
+			"channel": "referral",
+			"medium": "referral",
+			"source": "www.liferay.com"
+		},
+		"bounced": true,
+		"browserName": "Chrome",
+		"canonicalUrls": [
+			"https://customer.liferay.com/documentation/search"
+		],
+		"city": "Tokyo",
+		"completeDate": "${now-1hT00:00:00.000Z}",
+		"completeReason": "logout",
+		"completed": true,
+		"country": "Japan",
+		"dataSourceId": "355524992631037473",
+		"date": "${now-1d}",
+		"deviceType": "Desktop",
+		"duration": 0,
+		"entryPage": "https://customer.liferay.com/documentation/search",
+		"exitPage": null,
+		"firstEventDate": "${now-1hT00:00:00.000Z}",
+		"id": "436904627046006863",
+		"individualId": "346468603851271125",
+		"lastEventDate": "${now-1hT00:00:00.000Z}",
+		"platformName": "macOS",
+		"referrers": [
+			""
+		],
+		"region": "Tokyo",
+		"urls": [
+			"https://customer.liferay.com/en/documentation/search?p_p_id=1_WAR_osbknowledgebaseportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_1_WAR_osbknowledgebaseportlet_mvcPath=%2Fsearch%2Fview.jsp&_1_WAR_osbknowledgebaseportlet_delta=75&_1_WAR_osbknowledgebaseportlet_keywords=liferay_home&_1_WAR_osbknowledgebaseportlet_resetCur=false&_1_WAR_osbknowledgebaseportlet_cur=2"
+		],
+		"userId": "AWPen_4BK3S7moZQAAvm"
+	}
+]
