@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -90,12 +91,22 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			_liferayDataSourceAssetIdsJSONObject.put(
 				liferayDataSourceId, assetIdsJSONArray);
 
+			JSONObject organizationJSONObject =
+				FaroInfoTestUtil.buildOrganizationJSONObject(
+					liferayDataSourceId);
+
 			_liferayDataSourceOrganizationIdsJSONObject.put(
 				liferayDataSourceId,
-				faroInfoElasticsearchInvoker.add(
+				_dxpRawElasticsearchInvoker.add(
 					"organizations",
-					FaroInfoTestUtil.buildOrganizationJSONObject(
-						liferayDataSourceId)));
+					JSONUtil.put(
+						"dataSourceId",
+						organizationJSONObject.get("dataSourceId")
+					).put(
+						"fields", organizationJSONObject
+					).put(
+						"type", DXPEntity.Type.ORGANIZATION
+					)));
 		}
 
 		for (String fieldName : _FIELD_NAMES) {
@@ -410,7 +421,12 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONObject groupJSONObject = _dxpRawElasticsearchInvoker.add(
-			"groups", JSONUtil.put("osbAsahDataSourceId", dataSourceId));
+			"groups",
+			JSONUtil.put(
+				"dataSourceId", dataSourceId
+			).put(
+				"type", DXPEntity.Type.GROUP
+			));
 
 		_assertAddSetsReferencedObjectIds(
 			new Long[] {dataSourceId},
@@ -605,7 +621,12 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONObject roleJSONObject = _dxpRawElasticsearchInvoker.add(
-			"roles", JSONUtil.put("osbAsahDataSourceId", dataSourceId));
+			"roles",
+			JSONUtil.put(
+				"dataSourceId", dataSourceId
+			).put(
+				"type", DXPEntity.Type.ROLE
+			));
 
 		_assertAddSetsReferencedObjectIds(
 			new Long[] {dataSourceId},
@@ -637,7 +658,12 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONObject teamJSONObject = _dxpRawElasticsearchInvoker.add(
-			"teams", JSONUtil.put("osbAsahDataSourceId", dataSourceId));
+			"teams",
+			JSONUtil.put(
+				"dataSourceId", dataSourceId
+			).put(
+				"type", DXPEntity.Type.TEAM.name()
+			));
 
 		_assertAddSetsReferencedObjectIds(
 			new Long[] {dataSourceId},
@@ -652,7 +678,12 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONObject userGroupJSONObject = _dxpRawElasticsearchInvoker.add(
-			"user-groups", JSONUtil.put("osbAsahDataSourceId", dataSourceId));
+			"user-groups",
+			JSONUtil.put(
+				"dataSourceId", dataSourceId
+			).put(
+				"type", DXPEntity.Type.USER_GROUP
+			));
 
 		_assertAddSetsReferencedObjectIds(
 			new Long[] {dataSourceId},
@@ -667,7 +698,12 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONObject userJSONObject = _dxpRawElasticsearchInvoker.add(
-			"users", JSONUtil.put("osbAsahDataSourceId", dataSourceId));
+			"users",
+			JSONUtil.put(
+				"dataSourceId", dataSourceId
+			).put(
+				"type", DXPEntity.Type.USER
+			));
 
 		_assertAddSetsReferencedObjectIds(
 			new Long[] {dataSourceId},

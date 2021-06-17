@@ -71,6 +71,20 @@ public class DXPEntityDog {
 		_dxpEntityRepository.deleteByType(type);
 	}
 
+	public DXPEntity fetchByFields(
+		Map<String, Object> fields, DXPEntity.Type type) {
+
+		List<DXPEntity> dxpEntities =
+			_dxpEntityRepository.findByAfterAndFieldsAndType(
+				null, fields, 0, type);
+
+		if ((dxpEntities == null) || dxpEntities.isEmpty()) {
+			return null;
+		}
+
+		return _mapDXPEntity(dxpEntities.get(0));
+	}
+
 	public User fetchUserByFields(Map<String, Object> fields) {
 		List<DXPEntity> dxpEntities =
 			_dxpEntityRepository.findByAfterAndFieldsAndType(

@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -37,7 +36,6 @@ import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -563,8 +561,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	private Exception _addReferencedId(
-		String collectionName, String dataSourceIdFieldName,
-		ElasticsearchInvoker elasticsearchInvoker, String id, String key,
+		String collectionName, String id, String key,
 		Map<String, Set<String>> referencedObjectSets) {
 
 		Set<String> referencedIds = referencedObjectSets.get(key);
@@ -574,12 +571,21 @@ public class SegmentDog extends BaseFaroInfoDog {
 		Set<String> referencedAssetDataSourceIds = referencedObjectSets.get(
 			"referencedAssetDataSourceIds");
 
-		JSONObject referencedJSONObject = elasticsearchInvoker.get(
-			collectionName, id);
+		JSONObject referencedJSONObject = null;
+
+		if (DXPEntity.Type.ofCollectionName(collectionName) == null) {
+			referencedJSONObject = elasticsearchInvoker.get(collectionName, id);
+		}
+		else {
+			referencedJSONObject = _objectMapper.convertValue(
+				_dxpEntityDog.fetchByFields(
+					Collections.singletonMap("id", id),
+					DXPEntity.Type.ofCollectionName(collectionName)),
+				JSONObject.class);
+		}
 
 		referencedAssetDataSourceIds.add(
-			String.valueOf(
-				referencedJSONObject.getLong(dataSourceIdFieldName)));
+			String.valueOf(referencedJSONObject.getLong("dataSourceId")));
 
 		return null;
 	}
@@ -693,25 +699,17 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 			if (assetId != null) {
 				return _addReferencedId(
-					"assets", "dataSourceId", elasticsearchInvoker, assetId,
-					"referencedAssetIds", referencedObjectSets);
+					"assets", assetId, "referencedAssetIds",
+					referencedObjectSets);
 			}
 
 			DXPEntity.Type dxpEntityType = DXPEntity.Type.ofIndividualFieldName(
 				terms[0]);
 
 			if (dxpEntityType != null) {
-				if (dxpEntityType.isOrganization()) {
-					return _addReferencedId(
-						dxpEntityType.getCollectionName(), "dataSourceId",
-						elasticsearchInvoker, StringUtil.unquote(terms[2]),
-						dxpEntityType.getIndividualSegmentFieldName(),
-						referencedObjectSets);
-				}
-
 				return _addReferencedId(
-					dxpEntityType.getCollectionName(), "osbAsahDataSourceId",
-					_dxpRawElasticsearchInvoker, StringUtil.unquote(terms[2]),
+					dxpEntityType.getCollectionName(),
+					StringUtil.unquote(terms[2]),
 					dxpEntityType.getIndividualSegmentFieldName(),
 					referencedObjectSets);
 			}
@@ -736,9 +734,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		if (fieldName.equals("id") || fieldName.equals("parentId")) {
 			return _addReferencedId(
-				"organizations", "dataSourceId", elasticsearchInvoker,
-				StringUtil.unquote(terms[2]), "referencedOrganizationIds",
-				referencedObjectSets);
+				"organizations", StringUtil.unquote(terms[2]),
+				"referencedOrganizationIds", referencedObjectSets);
 		}
 
 		return _addReferencedFieldMappingId(
@@ -990,8 +987,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 	@Autowired
 	private ChannelDog _channelDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
