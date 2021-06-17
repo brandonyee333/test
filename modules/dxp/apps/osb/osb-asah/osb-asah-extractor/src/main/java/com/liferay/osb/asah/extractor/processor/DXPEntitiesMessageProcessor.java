@@ -189,7 +189,7 @@ public class DXPEntitiesMessageProcessor {
 		Long dataSourceId = Long.valueOf(
 			objectJSONObject.getString("osbAsahDataSourceId"));
 
-		User user = _dxpEntityDog.fetchUserByFields(
+		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
 			new HashMap() {
 				{
 					put("dataSourceId", dataSourceId);
@@ -197,21 +197,22 @@ public class DXPEntitiesMessageProcessor {
 						"fields." + DXPEntity.Type.USER.getIdFieldName(),
 						objectJSONObject.getLong("userId"));
 				}
-			});
+			},
+			DXPEntity.Type.USER);
 
-		if (user == null) {
+		if (dxpEntity == null) {
 			return;
 		}
 
-		JSONObject userFieldsJSONObject = user.getFieldsJSONObject();
+		JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
 
-		JSONObject membershipsJSONObject = userFieldsJSONObject.optJSONObject(
+		JSONObject membershipsJSONObject = fieldsJSONObject.optJSONObject(
 			"memberships");
 
 		if (membershipsJSONObject == null) {
 			membershipsJSONObject = new JSONObject();
 
-			userFieldsJSONObject.put("memberships", membershipsJSONObject);
+			fieldsJSONObject.put("memberships", membershipsJSONObject);
 		}
 
 		JSONArray membershipJSONArray = membershipsJSONObject.optJSONArray(
@@ -270,7 +271,7 @@ public class DXPEntitiesMessageProcessor {
 				));
 		}
 
-		_dxpEntityDog.updateDXPEntity(user);
+		_dxpEntityDog.updateDXPEntity(dxpEntity);
 	}
 
 	private void _processExpandoColumnObject(
@@ -315,7 +316,7 @@ public class DXPEntitiesMessageProcessor {
 	private void _processObject(
 		String action, JSONObject objectJSONObject, DXPEntity.Type type) {
 
-		DXPEntity dxpEntity = _dxpEntityDog.fetchUserByFields(
+		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
 			new HashMap<String, Object>() {
 				{
 					put(
@@ -323,7 +324,8 @@ public class DXPEntitiesMessageProcessor {
 						objectJSONObject.getString("osbAsahDataSourceId"));
 					put("userId", objectJSONObject.getLong("userId"));
 				}
-			});
+			},
+			DXPEntity.Type.USER);
 
 		if (action.equalsIgnoreCase("addAssociation") ||
 			action.equalsIgnoreCase("deleteAssociation")) {

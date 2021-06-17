@@ -85,18 +85,6 @@ public class DXPEntityDog {
 		return _mapDXPEntity(dxpEntities.get(0));
 	}
 
-	public User fetchUserByFields(Map<String, Object> fields) {
-		List<DXPEntity> dxpEntities =
-			_dxpEntityRepository.findByAfterAndFieldsAndType(
-				null, fields, 0, DXPEntity.Type.USER);
-
-		if ((dxpEntities == null) || dxpEntities.isEmpty()) {
-			return null;
-		}
-
-		return _mapUser(new HashMap(), dxpEntities.get(0));
-	}
-
 	public List<? extends DXPEntity> findByAfterAndFieldsAndType(
 		Long after, Map<String, Object> fields, int size, DXPEntity.Type type) {
 
