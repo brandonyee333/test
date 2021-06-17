@@ -24,6 +24,7 @@ import com.liferay.osb.asah.upgrade.v2_13_0.ChannelsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_13_0.DataSourcesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_13_0.SalesforceUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.CustomEventUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_0.UserSessionsUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -52,7 +53,8 @@ public class UpgradeProcessConfiguration {
 			_salesforceUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.13.0", "3.0.0", _customEventUpgradeStep);
+			"2.13.0", "3.0.0", _customEventUpgradeStep,
+			_userSessionsUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -83,5 +85,8 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private SnapshotsUpgradeStep _snapshotsUpgradeStep;
+
+	@Autowired
+	private UserSessionsUpgradeStep _userSessionsUpgradeStep;
 
 }
