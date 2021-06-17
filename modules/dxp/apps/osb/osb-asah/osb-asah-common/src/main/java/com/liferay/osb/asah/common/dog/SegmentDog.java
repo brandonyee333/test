@@ -578,7 +578,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		}
 		else {
 			referencedJSONObject = _objectMapper.convertValue(
-				_dxpEntityDog.fetchByFields(
+				_dxpEntityDog.fetchByFieldsAndType(
 					Collections.singletonMap("id", id),
 					DXPEntity.Type.ofCollectionName(collectionName)),
 				JSONObject.class);
