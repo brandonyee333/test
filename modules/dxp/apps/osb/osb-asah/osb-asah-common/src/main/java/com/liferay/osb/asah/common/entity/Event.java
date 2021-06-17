@@ -108,7 +108,7 @@ public class Event implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getDataSourceId() {
+	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
 
@@ -193,7 +193,7 @@ public class Event implements Persistable<Long> {
 		}
 	}
 
-	public void setDataSourceId(String dataSourceId) {
+	public void setDataSourceId(Long dataSourceId) {
 		_dataSourceId = dataSourceId;
 	}
 
@@ -247,7 +247,7 @@ public class Event implements Persistable<Long> {
 	private Date _createDate;
 
 	@Transient
-	private String _dataSourceId;
+	private Long _dataSourceId;
 
 	@Transient
 	private Set<EventAttribute> _eventAttributes = new HashSet<>();

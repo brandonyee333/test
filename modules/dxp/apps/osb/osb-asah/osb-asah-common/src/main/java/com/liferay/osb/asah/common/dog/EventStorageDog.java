@@ -61,7 +61,7 @@ public class EventStorageDog {
 				MapUtil.getString(eventContext, "canonicalUrl"),
 				Long.valueOf(analyticsEvent.getChannelId()),
 				analyticsEvent.getCreateDate(),
-				analyticsEvent.getDataSourceId(), eventAttributes,
+				Long.valueOf(analyticsEvent.getDataSourceId()), eventAttributes,
 				analyticsEvent.getEventDate(), eventDefinition.getId(),
 				Long.valueOf(analyticsEvent.getIndividualId()),
 				MapUtil.getString(eventContext, "url"),

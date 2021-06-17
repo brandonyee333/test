@@ -34,7 +34,7 @@ public class EventDog {
 
 	public Event addEvent(
 		String analyticsEventId, String applicationId, String canonicalURL,
-		Long channelId, Date createDate, String dataSourceId,
+		Long channelId, Date createDate, Long dataSourceId,
 		Set<EventAttribute> eventAttributes, Date eventDate,
 		Long eventDefinitionId, Long individualId, String url, String userId) {
 

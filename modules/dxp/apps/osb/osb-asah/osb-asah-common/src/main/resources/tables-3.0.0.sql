@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS Event (
 	canonicalURL TEXT,
 	channelId BIGINT NOT NULL,
 	createDate TIMESTAMPTZ,
-	dataSourceId TEXT,
+	dataSourceId BIGINT,
 	eventDate TIMESTAMPTZ,
 	eventDefinitionId BIGINT,
 	individualId BIGINT,

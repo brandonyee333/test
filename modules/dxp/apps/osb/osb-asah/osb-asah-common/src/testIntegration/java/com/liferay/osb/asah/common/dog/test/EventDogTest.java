@@ -62,7 +62,7 @@ public class EventDogTest {
 
 		Event event = _eventDog.addEvent(
 			"analyticsEventId", "Page", "http://localhost:8080",
-			channel.getId(), date, "123456", Collections.emptySet(), date,
+			channel.getId(), date, 123456L, Collections.emptySet(), date,
 			eventDefinition.getId(), 1L, "http://localhost:8080/test",
 			"abcdef");
 
@@ -71,7 +71,7 @@ public class EventDogTest {
 		Assert.assertEquals("http://localhost:8080", event.getCanonicalURL());
 		Assert.assertEquals(channel.getId(), event.getChannelId());
 		Assert.assertEquals(date, event.getCreateDate());
-		Assert.assertEquals("123456", event.getDataSourceId());
+		Assert.assertEquals(Long.valueOf(123456), event.getDataSourceId());
 		Assert.assertEquals(date, event.getEventDate());
 		Assert.assertEquals(
 			eventDefinition.getId(), event.getEventDefinitionId());
@@ -99,7 +99,7 @@ public class EventDogTest {
 
 		Event event = _eventDog.addEvent(
 			"analyticsEventId", "Page", "http://localhost:8080",
-			channel.getId(), date, "dataSourceId",
+			channel.getId(), date, 1L,
 			Collections.singleton(eventAttribute), date,
 			eventDefinition.getId(), 1L, "http://localhost:8080", "abcdef");
 
@@ -133,7 +133,7 @@ public class EventDogTest {
 
 		_eventDog.addEvent(
 			"analyticsEventId", "Page", "http://localhost:8080",
-			channel.getId(), date, "dataSourceId",
+			channel.getId(), date, 1L,
 			new HashSet<EventAttribute>() {
 				{
 					add(
