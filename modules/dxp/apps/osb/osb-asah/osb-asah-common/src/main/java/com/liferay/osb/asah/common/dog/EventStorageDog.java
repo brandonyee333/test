@@ -54,17 +54,13 @@ public class EventStorageDog {
 			Set<EventAttribute> eventAttributes = _resolveEventAttributes(
 				analyticsEvent, eventDefinition.getId());
 
-			Map<String, String> eventContext = analyticsEvent.getContext();
-
 			return _eventDog.addEvent(
 				analyticsEvent.getId(), analyticsEvent.getApplicationId(),
-				MapUtil.getString(eventContext, "canonicalUrl"),
 				Long.valueOf(analyticsEvent.getChannelId()),
 				analyticsEvent.getCreateDate(),
 				Long.valueOf(analyticsEvent.getDataSourceId()), eventAttributes,
 				analyticsEvent.getEventDate(), eventDefinition.getId(),
 				Long.valueOf(analyticsEvent.getIndividualId()),
-				MapUtil.getString(eventContext, "url"),
 				analyticsEvent.getUserId());
 		}
 		catch (Exception exception) {

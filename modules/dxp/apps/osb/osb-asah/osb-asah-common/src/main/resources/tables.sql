@@ -193,14 +193,12 @@ CREATE TABLE IF NOT EXISTS Event (
 	id BIGSERIAL PRIMARY KEY,
 	analyticsEventId TEXT UNIQUE,
 	applicationId TEXT,
-	canonicalURL TEXT,
 	channelId BIGINT NOT NULL,
 	createDate TIMESTAMPTZ,
 	dataSourceId BIGINT,
 	eventDate TIMESTAMPTZ,
 	eventDefinitionId BIGINT,
 	individualId BIGINT,
-	url TEXT,
 	userId TEXT
 );
 
