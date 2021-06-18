@@ -33,6 +33,7 @@ public class EventDefinitionDTO {
 	public EventDefinitionDTO(EventDefinition eventDefinition) {
 		_description = eventDefinition.getDescription();
 		_displayName = eventDefinition.getDisplayName();
+		_hidden = eventDefinition.isHidden();
 		_id = String.valueOf(eventDefinition.getId());
 		_name = eventDefinition.getName();
 		_type = eventDefinition.getType();
@@ -63,8 +64,14 @@ public class EventDefinitionDTO {
 		return _type;
 	}
 
+	@JsonProperty("hidden")
+	public boolean isHidden() {
+		return _hidden;
+	}
+
 	private String _description;
 	private String _displayName;
+	private boolean _hidden;
 	private String _id;
 	private String _name;
 	private EventDefinition.Type _type;

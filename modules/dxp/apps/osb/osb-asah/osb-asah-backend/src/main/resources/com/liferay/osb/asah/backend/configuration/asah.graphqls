@@ -325,6 +325,7 @@ type EventDefinition {
 	displayName: String
 	eventAttributeDefinitions: [EventAttributeDefinition]
 	id: String
+	hidden: Boolean
 	name: String
 	type: EventDefinitionType
 }
@@ -592,6 +593,10 @@ type MutationType {
 		status: String
 	): Experiment
 
+	hideEventDefinitions(
+		eventDefinitionIds: [String]!
+	): Boolean
+
 	preference(
 		key: String!
 		value: String!
@@ -609,6 +614,10 @@ type MutationType {
 	unblockCustomEventDefinitions(
 		eventDefinitionIds: [String]!
 	): [Boolean]
+
+	unhideEventDefinitions(
+		eventDefinitionIds: [String]!
+	): Boolean
 
 	updateEventAttributeDefinition(
 		dataType: EventAttributeDefinitionDataType
