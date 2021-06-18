@@ -28,7 +28,6 @@ CREATE TABLE IF NOT EXISTS Journal (
 	channelId BIGINT,
 	city VARCHAR,
 	clicks BIGINT,
-	contentLanguageId VARCHAR,
 	country VARCHAR,
 	deviceType VARCHAR,
 	eventDate TIMESTAMP,
