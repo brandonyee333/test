@@ -4408,6 +4408,47 @@ on the fly, without having to write upgrade processes.
 
 ---------------------------------------
 
+### Changed Default Value for Browser Cache Properties
+- **Date:** 2017-Sep-05
+- **JIRA Ticket:** LPS-74452
+
+#### What changed?
+
+The default values for the portal properties `browser.cache.disabled` and
+`browser.cache.signed.in.disabled` were changed to `true`.
+
+#### Who is affected?
+
+This affects anyone relying on proxies and load balancers to cache HTML content.
+
+#### How should I update my code?
+
+You should set both properties `browser.cache.disabled` and
+`browser.cache.signed.in.disabled` to `false`, as documented in
+`portal-legacy-7.0.properties`.
+
+#### Why was this change made?
+
+The load balancer and web proxy's behavior when Cache-Control headers are
+missing is not defined. In the past, many preferred to not cache the content for
+correctness; however, it is now common to cache the content for performance.
+
+When an aggressive caching load balancer or web proxy appears in the network
+architecture, the default value may result in security problems such as
+personalized content being mistakenly shared, including names or other
+personally identifiable information. As Liferay shifts towards use cases
+providing personalized experiences, this is becoming a serious problem.
+
+While this is ultimately a load balancer or web proxy configuration issue, it is
+perceived as a Liferay issue because it is Liferay content being cached, and is
+viewed negatively because leaking sensitive information in a production
+environment is a very serious security issue.
+
+A value of `true` will improve a portal administrator's experience, and a value
+of `false` can be considered during performance tuning, if needed.
+
+---------------------------------------
+
 ### Removed Exports from Dynamic Data Lists Web
 - **Date:** 2017-Nov-27
 - **JIRA Ticket:** LPS-75778
