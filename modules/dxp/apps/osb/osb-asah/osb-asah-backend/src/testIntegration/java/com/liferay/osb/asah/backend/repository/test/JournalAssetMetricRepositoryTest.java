@@ -79,7 +79,7 @@ public class JournalAssetMetricRepositoryTest {
 		resourcePath = "journal_asset_metric_views_histogram_last_7_days.sql"
 	)
 	@Test
-	public void testGetReadingTimeHistogramMetricsLast24Hours() {
+	public void testGetViewsHistogramMetricsLast7Days() {
 		List<HistogramMetric> histogramMetrics =
 			_journalAssetMetricRepositoryImpl.getHistogramMetrics(
 				"e131fabc", 1L, Interval.DAY, JournalMetricType.VIEWS,
