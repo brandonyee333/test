@@ -1,0 +1,8 @@
+{
+	"operationName": "HideEventDefinitions",
+	"variables": {
+		"eventDefinitionIds": [
+			"1000"
+		]
+	}
+}

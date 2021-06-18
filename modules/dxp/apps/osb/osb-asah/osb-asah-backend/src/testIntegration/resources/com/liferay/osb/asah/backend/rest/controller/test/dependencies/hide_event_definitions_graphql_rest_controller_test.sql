@@ -1,0 +1,1 @@
+INSERT INTO EventDefinition(id, hidden, name, type) VALUES(1000, false, 'addedToCart', 'CUSTOM');
