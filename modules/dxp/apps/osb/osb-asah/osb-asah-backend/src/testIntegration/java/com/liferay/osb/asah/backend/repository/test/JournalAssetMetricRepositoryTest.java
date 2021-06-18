@@ -82,7 +82,7 @@ public class JournalAssetMetricRepositoryTest {
 	public void testGetReadingTimeHistogramMetricsLast24Hours() {
 		List<HistogramMetric> histogramMetrics =
 			_journalAssetMetricRepositoryImpl.getHistogramMetrics(
-				1L, "e131fabc", Interval.DAY, JournalMetricType.VIEWS,
+				"e131fabc", 1L, Interval.DAY, JournalMetricType.VIEWS,
 				TimeRange.LAST_7_DAYS);
 
 		Assert.assertEquals(
@@ -100,7 +100,7 @@ public class JournalAssetMetricRepositoryTest {
 	public void testGetViewsHistogramMetricsLast24Hours() {
 		List<HistogramMetric> histogramMetrics =
 			_journalAssetMetricRepositoryImpl.getHistogramMetrics(
-				1L, "e131fabc", Interval.HOUR, JournalMetricType.VIEWS,
+				"e131fabc", 1L, Interval.HOUR, JournalMetricType.VIEWS,
 				TimeRange.LAST_24_HOURS);
 
 		Assert.assertEquals(
@@ -118,7 +118,7 @@ public class JournalAssetMetricRepositoryTest {
 	public void testGetViewsHistogramMetricsLast24HoursDifferentTimezone() {
 		List<LocalDateTime> buckets = _getBuckets(
 			_journalAssetMetricRepositoryImpl.getHistogramMetrics(
-				1L, "e131fabc", Interval.HOUR, CustomAssetMetricType.VIEWS,
+				"e131fabc", 1L, Interval.HOUR, CustomAssetMetricType.VIEWS,
 				TimeRange.LAST_24_HOURS));
 
 		Mockito.when(
@@ -129,7 +129,7 @@ public class JournalAssetMetricRepositoryTest {
 
 		List<LocalDateTime> bucketsShifted = _getBuckets(
 			_journalAssetMetricRepositoryImpl.getHistogramMetrics(
-				1L, "e131fabc", Interval.HOUR, CustomAssetMetricType.VIEWS,
+				"e131fabc", 1L, Interval.HOUR, CustomAssetMetricType.VIEWS,
 				TimeRange.LAST_24_HOURS));
 
 		Assert.assertEquals(
