@@ -47,7 +47,8 @@ public class BlockedCustomEventDefinitionBagDataFetcher
 
 		Page<EventDefinition> eventDefinitionsPage =
 			_eventDefinitionDog.getEventDefinitionsPage(
-				true, keyword, dataFetchingEnvironment.getArgument("page"),
+				true, null, keyword,
+				dataFetchingEnvironment.getArgument("page"),
 				dataFetchingEnvironment.getArgument("size"),
 				Sort.of(dataFetchingEnvironment.getArgument("sort")),
 				EventDefinition.Type.CUSTOM);

@@ -65,7 +65,7 @@ public class EventStorageDogTest {
 				null, null, EventAttributeDefinition.Type.LOCAL);
 		long expectedEventDefinitionCount =
 			_eventDefinitionDog.countEventDefinitions(
-				false, null, EventDefinition.Type.CUSTOM);
+				false, null, null, EventDefinition.Type.CUSTOM);
 		long expectedEventCount = _eventDog.countEvents(null);
 
 		_storeAnalyticsEvent(
@@ -76,7 +76,7 @@ public class EventStorageDogTest {
 		Assert.assertEquals(
 			expectedEventDefinitionCount,
 			_eventDefinitionDog.countEventDefinitions(
-				false, null, EventDefinition.Type.CUSTOM),
+				false, null, null, EventDefinition.Type.CUSTOM),
 			0.0);
 		Assert.assertEquals(
 			expectedEventCount, _eventDog.countEvents(null), 0.0);
@@ -95,7 +95,7 @@ public class EventStorageDogTest {
 				null, null, EventAttributeDefinition.Type.LOCAL);
 		long expectedEventDefinitionCount =
 			_eventDefinitionDog.countEventDefinitions(
-				false, null, EventDefinition.Type.CUSTOM);
+				false, null, null, EventDefinition.Type.CUSTOM);
 		long expectedEventCount = _eventDog.countEvents(null);
 
 		_storeAnalyticsEvent(
@@ -106,7 +106,7 @@ public class EventStorageDogTest {
 		Assert.assertEquals(
 			expectedEventDefinitionCount,
 			_eventDefinitionDog.countEventDefinitions(
-				false, null, EventDefinition.Type.CUSTOM),
+				false, null, null, EventDefinition.Type.CUSTOM),
 			0.0);
 		Assert.assertEquals(
 			expectedEventCount, _eventDog.countEvents(null), 0.0);
@@ -128,7 +128,7 @@ public class EventStorageDogTest {
 
 		long expectedEventDefinitionCount =
 			_eventDefinitionDog.countEventDefinitions(
-				false, null, EventDefinition.Type.CUSTOM);
+				false, null, null, EventDefinition.Type.CUSTOM);
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
@@ -152,7 +152,7 @@ public class EventStorageDogTest {
 		Assert.assertEquals(
 			expectedEventDefinitionCount,
 			_eventDefinitionDog.countEventDefinitions(
-				false, null, EventDefinition.Type.CUSTOM),
+				false, null, null, EventDefinition.Type.CUSTOM),
 			0.0);
 		Assert.assertEquals(
 			Collections.singleton(eventDefinition.getId()),
@@ -166,7 +166,7 @@ public class EventStorageDogTest {
 				null, null, EventAttributeDefinition.Type.LOCAL);
 		long expectedEventDefinitionCount =
 			_eventDefinitionDog.countEventDefinitions(
-				false, null, EventDefinition.Type.CUSTOM);
+				false, null, null, EventDefinition.Type.CUSTOM);
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
@@ -195,7 +195,7 @@ public class EventStorageDogTest {
 		Assert.assertEquals(
 			expectedEventDefinitionCount,
 			_eventDefinitionDog.countEventDefinitions(
-				false, null, EventDefinition.Type.CUSTOM),
+				false, null, null, EventDefinition.Type.CUSTOM),
 			0.0);
 		Assert.assertEquals(
 			expectedEventDefinitionIds, _getEventDefinitionIds("category"));
@@ -208,7 +208,7 @@ public class EventStorageDogTest {
 				null, null, EventAttributeDefinition.Type.LOCAL);
 		long expectedEventDefinitionCount =
 			_eventDefinitionDog.countEventDefinitions(
-				false, null, EventDefinition.Type.CUSTOM);
+				false, null, null, EventDefinition.Type.CUSTOM);
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
@@ -232,7 +232,7 @@ public class EventStorageDogTest {
 		Assert.assertEquals(
 			expectedEventDefinitionCount,
 			_eventDefinitionDog.countEventDefinitions(
-				false, null, EventDefinition.Type.CUSTOM),
+				false, null, null, EventDefinition.Type.CUSTOM),
 			0.0);
 	}
 
@@ -294,7 +294,7 @@ public class EventStorageDogTest {
 				null, null, EventAttributeDefinition.Type.LOCAL);
 
 		long eventDefinitionCount = _eventDefinitionDog.countEventDefinitions(
-			false, null, EventDefinition.Type.CUSTOM);
+			false, null, null, EventDefinition.Type.CUSTOM);
 
 		long expectedEventDefinitionCount = eventDefinitionCount + 1;
 
@@ -311,7 +311,7 @@ public class EventStorageDogTest {
 		Assert.assertEquals(
 			expectedEventDefinitionCount,
 			_eventDefinitionDog.countEventDefinitions(
-				false, null, EventDefinition.Type.CUSTOM),
+				false, null, null, EventDefinition.Type.CUSTOM),
 			0.0);
 
 		EventDefinition eventDefinition =
