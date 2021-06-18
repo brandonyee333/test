@@ -413,6 +413,29 @@ public class EventDefinitionDogTest {
 			Collections.singletonList("codeApplied"));
 	}
 
+	@Test
+	public void testHideEventDefinitions() {
+		EventDefinition assetClickedEventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("assetClicked");
+		EventDefinition assetDownloadedEventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("assetDownloaded");
+
+		_eventDefinitionDog.hideEventDefinitions(
+			Arrays.asList(
+				assetClickedEventDefinition.getId(),
+				assetDownloadedEventDefinition.getId()));
+
+		assetClickedEventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("assetClicked");
+
+		Assert.assertTrue(assetClickedEventDefinition.isHidden());
+
+		assetClickedEventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("assetDownloaded");
+
+		Assert.assertTrue(assetClickedEventDefinition.isHidden());
+	}
+
 	@SQLResource(resourcePath = "test_unblock_event_definition.sql")
 	@Test
 	public void testUnblockEventDefinition() {
@@ -496,6 +519,30 @@ public class EventDefinitionDogTest {
 		_eventDefinitionDog.unblockEventDefinitions(
 			ListUtil.map(
 				eventDefinitions.getContent(), EventDefinition::getId));
+	}
+
+	@Test
+	public void testUnhideEventDefinitions() {
+		EventDefinition assetClickedEventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("assetClicked");
+
+		Assert.assertFalse(assetClickedEventDefinition.isHidden());
+
+		_eventDefinitionDog.hideEventDefinitions(
+			Arrays.asList(assetClickedEventDefinition.getId()));
+
+		assetClickedEventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("assetClicked");
+
+		Assert.assertTrue(assetClickedEventDefinition.isHidden());
+
+		_eventDefinitionDog.unhideEventDefinitions(
+			Arrays.asList(assetClickedEventDefinition.getId()));
+
+		assetClickedEventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("assetClicked");
+
+		Assert.assertFalse(assetClickedEventDefinition.isHidden());
 	}
 
 	@Test
