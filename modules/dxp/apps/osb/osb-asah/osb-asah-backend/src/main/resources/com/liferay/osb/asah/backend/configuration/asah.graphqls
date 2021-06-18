@@ -884,6 +884,7 @@ type QueryType {
 
 	eventDefinitions(
 		eventType: EventDefinitionType!,
+		hidden: Boolean,
 		keyword: String,
 		page: Int!,
 		size: Int!,
