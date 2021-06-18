@@ -19,3 +19,24 @@ CREATE TABLE IF NOT EXISTS CustomAsset (
 	variantId VARCHAR,
 	views BIGINT
 );
+
+CREATE TABLE IF NOT EXISTS Journal (
+	assetId VARCHAR,
+	assetPrimaryKey VARCHAR,
+	browserName VARCHAR,
+	canonicalUrl VARCHAR,
+	city VARCHAR,
+	contentLanguageId VARCHAR,
+	country VARCHAR,
+	channelId BIGINT,
+	clicks BIGINT,
+	deviceType VARCHAR,
+	eventDate TIMESTAMP,
+	knownIndividual BOOLEAN,
+	platformName VARCHAR,
+	projectId VARCHAR,
+	region VARCHAR,
+	userId VARCHAR,
+	variantId VARCHAR,
+	views BIGINT
+);
