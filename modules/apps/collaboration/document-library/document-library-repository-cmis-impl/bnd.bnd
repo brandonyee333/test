@@ -29,7 +29,7 @@ Import-Package:\
 	!org.springframework.osgi.io.*,\
 	!org.springframework.osgi.util.*,\
 	\
-	com.liferay.portal.kernel.repository.model;version="[7.0.0,8.0.0)",\
+	com.liferay.portal.kernel.repository.model;version="[7.0.0,99.0.0)",\
 	\
 	*
 Liferay-Releng-Module-Group-Title: Document Library

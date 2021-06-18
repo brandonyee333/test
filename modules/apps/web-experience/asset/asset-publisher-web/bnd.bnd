@@ -10,7 +10,7 @@ Export-Package:\
 	com.liferay.asset.publisher.web.upgrade.v1_0_0,\
 	com.liferay.asset.publisher.web.util
 Import-Package:\
-	com.liferay.portal.kernel.portlet;version="[7.3.0,8)",\
+	com.liferay.portal.kernel.portlet;version="[7.3.0,99.0.0)",\
 	\
 	*
 Liferay-Releng-Module-Group-Title: Asset

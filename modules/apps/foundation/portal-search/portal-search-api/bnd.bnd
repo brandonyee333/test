@@ -17,7 +17,7 @@ Export-Package:\
 	com.liferay.portal.search.suggest,\
 	com.liferay.portal.search.summary
 Import-Package:\
-	com.liferay.portal.kernel.search;version="[7.1.0,8)",\
+	com.liferay.portal.kernel.search;version="[7.1.0,99.0.0)",\
 	\
 	*
 Liferay-Releng-Module-Group-Title: Search
