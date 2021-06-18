@@ -3435,6 +3435,8 @@ public class JournalArticleLocalServiceImpl
 			long groupId, String articleId, String urlTitle)
 		throws PortalException {
 
+		urlTitle = urlTitle.replaceAll("^/+", StringPool.BLANK);
+
 		String normalizedUrlTitle =
 			FriendlyURLNormalizerUtil.normalizeWithEncoding(urlTitle);
 
