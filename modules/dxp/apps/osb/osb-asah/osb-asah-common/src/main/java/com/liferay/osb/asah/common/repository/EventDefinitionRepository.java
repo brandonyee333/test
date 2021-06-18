@@ -34,8 +34,8 @@ public interface EventDefinitionRepository
 	extends CrudRepository<EventDefinition, Long> {
 
 	public long countEventDefinitions(
-		@Nullable Boolean blocked, @Nullable String keyword,
-		@Nullable EventDefinition.Type type);
+		@Nullable Boolean blocked, @Nullable Boolean hidden,
+		@Nullable String keyword, @Nullable EventDefinition.Type type);
 
 	public List<EventDefinition> findAll(Pageable pageable);
 
@@ -45,7 +45,8 @@ public interface EventDefinitionRepository
 	public Optional<EventDefinition> findByName(String name);
 
 	public List<EventDefinition> searchEventDefinitions(
-		@Nullable Boolean blocked, @Nullable String keyword, Pageable pageable,
+		@Nullable Boolean blocked, @Nullable Boolean hidden,
+		@Nullable String keyword, Pageable pageable,
 		@Nullable EventDefinition.Type type);
 
 	@Modifying

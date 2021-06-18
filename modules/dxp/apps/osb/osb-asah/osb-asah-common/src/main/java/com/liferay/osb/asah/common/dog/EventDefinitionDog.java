@@ -37,6 +37,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -56,7 +57,7 @@ public class EventDefinitionDog {
 		EventDefinition eventDefinition = new EventDefinition();
 
 		if ((type == EventDefinition.Type.CUSTOM) &&
-			(countEventDefinitions(false, null, type) >=
+			(countEventDefinitions(false, null, null, type) >=
 				_EVENT_DEFINITION_THRESHOLD)) {
 
 			eventDefinition.setBlocked(true);
@@ -84,10 +85,11 @@ public class EventDefinitionDog {
 	}
 
 	public Long countEventDefinitions(
-		Boolean blocked, String keyword, EventDefinition.Type type) {
+		Boolean blocked, @Nullable Boolean hidden, String keyword,
+		EventDefinition.Type type) {
 
 		return _eventDefinitionRepository.countEventDefinitions(
-			blocked, keyword, type);
+			blocked, hidden, keyword, type);
 	}
 
 	public EventDefinition fetchEventDefinitionByDisplayName(
@@ -121,8 +123,8 @@ public class EventDefinitionDog {
 	}
 
 	public Page<EventDefinition> getEventDefinitionsPage(
-		Boolean blocked, String keyword, int page, int size, Sort sort,
-		EventDefinition.Type type) {
+		Boolean blocked, @Nullable Boolean hidden, String keyword, int page,
+		int size, Sort sort, EventDefinition.Type type) {
 
 		_validate(sort);
 
@@ -130,10 +132,10 @@ public class EventDefinitionDog {
 
 		return PageableExecutionUtils.getPage(
 			_eventDefinitionRepository.searchEventDefinitions(
-				blocked, keyword, pageRequest, type),
+				blocked, hidden, keyword, pageRequest, type),
 			pageRequest,
 			() -> _eventDefinitionRepository.countEventDefinitions(
-				blocked, keyword, type));
+				blocked, hidden, keyword, type));
 	}
 
 	public void hideEventDefinitions(List<Long> eventDefinitionIds) {
@@ -270,7 +272,7 @@ public class EventDefinitionDog {
 
 	private void _validateEventDefinitionLimit(int unblockEventDefinitionSize) {
 		long count = _eventDefinitionRepository.countEventDefinitions(
-			Boolean.FALSE, null, EventDefinition.Type.CUSTOM);
+			Boolean.FALSE, null, null, EventDefinition.Type.CUSTOM);
 
 		if ((count + unblockEventDefinitionSize) >
 				_EVENT_DEFINITION_THRESHOLD) {

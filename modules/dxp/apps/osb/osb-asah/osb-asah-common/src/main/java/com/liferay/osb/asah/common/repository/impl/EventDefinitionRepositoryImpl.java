@@ -46,8 +46,8 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 	}
 
 	public long countEventDefinitions(
-		@Nullable Boolean blocked, @Nullable String keyword,
-		@Nullable EventDefinition.Type type) {
+		@Nullable Boolean blocked, @Nullable Boolean hidden,
+		@Nullable String keyword, @Nullable EventDefinition.Type type) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -55,7 +55,7 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 		return selectSelectStep.from(
 			"EventDefinition"
 		).where(
-			_getConditions(blocked, keyword, type)
+			_getConditions(blocked, hidden, keyword, type)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -64,7 +64,8 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 	}
 
 	public List<EventDefinition> searchEventDefinitions(
-		@Nullable Boolean blocked, @Nullable String keyword, Pageable pageable,
+		@Nullable Boolean blocked, @Nullable Boolean hidden,
+		@Nullable String keyword, Pageable pageable,
 		@Nullable EventDefinition.Type type) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
@@ -83,7 +84,7 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 		}
 
 		return selectJoinStep.where(
-			_getConditions(blocked, keyword, type)
+			_getConditions(blocked, hidden, keyword, type)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
@@ -109,7 +110,8 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Condition> _getConditions(
-		Boolean blocked, String keyword, EventDefinition.Type type) {
+		Boolean blocked, Boolean hidden, String keyword,
+		EventDefinition.Type type) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -117,6 +119,12 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 			Field<Object> field = DSL.field("blocked");
 
 			conditions.add(field.eq(blocked));
+		}
+
+		if (hidden != null) {
+			Field<Object> field = DSL.field("hidden");
+
+			conditions.add(field.eq(hidden));
 		}
 
 		if ((type != null) && !type.equals(EventDefinition.Type.ALL)) {
