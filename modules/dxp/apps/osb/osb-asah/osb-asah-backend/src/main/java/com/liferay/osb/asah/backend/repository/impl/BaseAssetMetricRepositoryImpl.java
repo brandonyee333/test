@@ -98,9 +98,9 @@ public abstract class BaseAssetMetricRepositoryImpl
 
 				Metric metric = new Metric(metryType);
 
-				metric.setValue(
-					record.value2(
-					).doubleValue());
+				BigDecimal bigDecimal = record.value2();
+
+				metric.setValue(bigDecimal.doubleValue());
 
 				return new HistogramMetric(
 					String.valueOf(offsetDateTime.toLocalDateTime()), metric);
