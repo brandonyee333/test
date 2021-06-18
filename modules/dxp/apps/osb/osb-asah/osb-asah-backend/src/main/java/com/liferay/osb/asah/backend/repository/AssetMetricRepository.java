@@ -28,7 +28,7 @@ import java.util.List;
 public interface AssetMetricRepository {
 
 	public List<HistogramMetric> getHistogramMetrics(
-		Long channelId, String customAssetPrimaryKey, Interval interval,
-		MetricType metryType, TimeRange timeRange);
+		String assetId, Long channelId, Interval interval, MetricType metryType,
+		TimeRange timeRange);
 
 }

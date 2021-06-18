@@ -47,8 +47,8 @@ public abstract class BaseAssetMetricRepositoryImpl
 
 	@Override
 	public List<HistogramMetric> getHistogramMetrics(
-		Long channelId, String customAssetPrimaryKey, Interval interval,
-		MetricType metryType, TimeRange timeRange) {
+		String assetId, Long channelId, Interval interval, MetricType metryType,
+		TimeRange timeRange) {
 
 		Field<OffsetDateTime> eventDateField = DSL.field(
 			"at_timezone({0}, {1})", OffsetDateTime.class,
@@ -65,9 +65,9 @@ public abstract class BaseAssetMetricRepositoryImpl
 		).where(
 			DSL.and(
 				DSL.field(
-					"assetPrimaryKey"
+					"assetId"
 				).eq(
-					customAssetPrimaryKey
+					assetId
 				),
 				DSL.field(
 					"channelId"
