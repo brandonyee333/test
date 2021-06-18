@@ -25,9 +25,7 @@ import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.time.Clock;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import java.util.List;
 import java.util.Map;
@@ -52,12 +50,14 @@ public class CustomAssetMetricDog {
 		CustomAssetMetricType customAssetMetricType,
 		SearchQueryContext searchQueryContext) {
 
+		TimeRange timeRange = searchQueryContext.getTimeRange();
+
 		List<HistogramMetric> histogramMetrics =
 			_customAssetMetricRepository.getHistogramMetrics(
 				Long.valueOf(searchQueryContext.getChannelId()),
 				customAssetMetricType, searchQueryContext.getAssetId(),
 				searchQueryContext.getInterval(),
-				_getTimeRange(searchQueryContext));
+				timeRange.getTimeRangeIncludingPrevious());
 
 		if (histogramMetrics.isEmpty()) {
 			return new HistogramMetricBag();
@@ -68,7 +68,7 @@ public class CustomAssetMetricDog {
 				Clock.system(_timeZoneDog.getZoneId()),
 				searchQueryContext.isIncludePrevious(),
 				searchQueryContext.getInterval(), customAssetMetricType,
-				searchQueryContext.getTimeRange());
+				timeRange);
 
 		Map<String, Metric> metrics = _getHistogramMetricBuckets(
 			histogramMetricBag);
@@ -87,13 +87,11 @@ public class CustomAssetMetricDog {
 
 			String bucketKey = null;
 
-			if (searchQueryContext.getTimeRange() == TimeRange.LAST_24_HOURS) {
+			if (timeRange == TimeRange.LAST_24_HOURS) {
 				bucketKey = String.valueOf(
 					previousBucketLocalDateTime.plusHours(24));
 			}
 			else {
-				TimeRange timeRange = searchQueryContext.getTimeRange();
-
 				bucketKey = String.valueOf(
 					previousBucketLocalDateTime.plusDays(
 						timeRange.getDeltaDays()));
@@ -120,56 +118,6 @@ public class CustomAssetMetricDog {
 
 		return histogramMetricStream.collect(
 			Collectors.toMap(HistogramMetric::getKey, Function.identity()));
-	}
-
-	private TimeRange _getTimeRange(SearchQueryContext searchQueryContext) {
-		TimeRange timeRange = searchQueryContext.getTimeRange();
-
-		if (!searchQueryContext.isIncludePrevious()) {
-			return timeRange;
-		}
-
-		if (timeRange == TimeRange.LAST_24_HOURS) {
-			LocalDateTime endLocalDateTime = timeRange.getEndLocalDateTime();
-
-			LocalDateTime startLocalDateTime = timeRange.getEndLocalDateTime();
-
-			startLocalDateTime = startLocalDateTime.withMinute(0);
-			startLocalDateTime = startLocalDateTime.withSecond(0);
-			startLocalDateTime = startLocalDateTime.withNano(0);
-
-			startLocalDateTime = startLocalDateTime.minusHours(47);
-
-			return TimeRange.of(endLocalDateTime, startLocalDateTime);
-		}
-
-		if (TimeRange.YESTERDAY.equals(timeRange) ||
-			TimeRange.LAST_7_DAYS.equals(timeRange) ||
-			TimeRange.LAST_28_DAYS.equals(timeRange) ||
-			TimeRange.LAST_30_DAYS.equals(timeRange) ||
-			TimeRange.LAST_90_DAYS.equals(timeRange) ||
-			TimeRange.LAST_180_DAYS.equals(timeRange) ||
-			TimeRange.LAST_YEAR.equals(timeRange)) {
-
-			LocalDateTime endLocalDateTime = timeRange.getEndLocalDateTime();
-
-			LocalDateTime startLocalDateTime = endLocalDateTime.with(
-				LocalTime.MIN);
-
-			startLocalDateTime = startLocalDateTime.minusDays(
-				(timeRange.getDeltaDays() * 2) - 1);
-
-			return TimeRange.of(endLocalDateTime, startLocalDateTime);
-		}
-
-		LocalDate endLocalDate = timeRange.getEndLocalDate();
-		LocalDate startLocalDate = timeRange.getStartLocalDate();
-
-		endLocalDate = endLocalDate.plusDays(1);
-
-		startLocalDate = startLocalDate.minusDays(timeRange.getDeltaDays() * 2);
-
-		return TimeRange.of(endLocalDate, startLocalDate);
 	}
 
 	@Autowired
