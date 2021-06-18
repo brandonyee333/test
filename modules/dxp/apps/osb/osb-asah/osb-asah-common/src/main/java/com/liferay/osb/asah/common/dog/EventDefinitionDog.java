@@ -136,10 +136,20 @@ public class EventDefinitionDog {
 				blocked, keyword, type));
 	}
 
+	public void hideEventDefinitions(List<Long> eventDefinitionIds) {
+		_eventDefinitionRepository.updateEventDefinitions(
+			eventDefinitionIds, Boolean.TRUE);
+	}
+
 	public void unblockEventDefinitions(List<Long> eventDefinitionIds) {
 		_validateEventDefinitionLimit(eventDefinitionIds.size());
 
 		eventDefinitionIds.forEach(this::_unblockEventDefinition);
+	}
+
+	public void unhideEventDefinitions(List<Long> eventDefinitionIds) {
+		_eventDefinitionRepository.updateEventDefinitions(
+			eventDefinitionIds, Boolean.FALSE);
 	}
 
 	public EventDefinition updateEventDefinition(

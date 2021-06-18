@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
@@ -45,5 +47,10 @@ public interface EventDefinitionRepository
 	public List<EventDefinition> searchEventDefinitions(
 		@Nullable Boolean blocked, @Nullable String keyword, Pageable pageable,
 		@Nullable EventDefinition.Type type);
+
+	@Modifying
+	public void updateEventDefinitions(
+		@Param("ids") List<Long> eventDefinitionIds,
+		@Param("hidden") Boolean hidden);
 
 }
