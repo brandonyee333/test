@@ -414,6 +414,28 @@ public class EventDefinitionDogTest {
 	}
 
 	@Test
+	public void testGetHiddenEventDefinitions() {
+		_assertEventDefinitions(
+			_eventDefinitionDog.getEventDefinitionsPage(
+				false, true, null, 0, 20, Sort.asc("name"),
+				EventDefinition.Type.DEFAULT),
+			new ArrayList<String>() {
+				{
+					add("assetDepthReached");
+					add("blogDepthReached");
+					add("fieldBlurred");
+					add("fieldFocused");
+					add("pageDepthReached");
+					add("pageLoaded");
+					add("pageUnloaded");
+					add("posted");
+					add("shared");
+					add("vote");
+				}
+			});
+	}
+
+	@Test
 	public void testHideEventDefinitions() {
 		EventDefinition assetClickedEventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("assetClicked");
