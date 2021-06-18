@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS EventDefinition (
 	blocked BOOLEAN DEFAULT false,
 	description TEXT,
 	displayName TEXT UNIQUE,
+	hidden BOOLEAN DEFAULT false,
 	name VARCHAR(255) UNIQUE,
 	type TEXT NOT NULL
 );

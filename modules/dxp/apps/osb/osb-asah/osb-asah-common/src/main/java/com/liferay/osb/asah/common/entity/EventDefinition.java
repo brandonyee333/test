@@ -57,6 +57,7 @@ public class EventDefinition implements Persistable<Long> {
 				eventDefinition._blockedEventDefinition) &&
 			Objects.equals(_description, eventDefinition._description) &&
 			Objects.equals(_displayName, eventDefinition._displayName) &&
+			Objects.equals(_hidden, eventDefinition._hidden) &&
 			Objects.equals(_id, eventDefinition._id) &&
 			Objects.equals(_name, eventDefinition._name) &&
 			Objects.equals(_type, eventDefinition._type)) {
@@ -104,12 +105,17 @@ public class EventDefinition implements Persistable<Long> {
 	public int hashCode() {
 		return Objects.hash(
 			_blocked, _blockedEventDefinition, _description, _displayName,
-			_type, _id, _name);
+			_type, _hidden, _id, _name);
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public boolean isBlocked() {
 		return _blocked;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public boolean isHidden() {
+		return _hidden;
 	}
 
 	@Override
@@ -137,6 +143,10 @@ public class EventDefinition implements Persistable<Long> {
 
 	public void setDisplayName(String displayName) {
 		_displayName = displayName;
+	}
+
+	public void setHidden(boolean hidden) {
+		_hidden = hidden;
 	}
 
 	public void setId(Long id) {
@@ -172,6 +182,9 @@ public class EventDefinition implements Persistable<Long> {
 
 	@Transient
 	private String _displayName;
+
+	@Transient
+	private boolean _hidden;
 
 	@Transient
 	private Long _id;
