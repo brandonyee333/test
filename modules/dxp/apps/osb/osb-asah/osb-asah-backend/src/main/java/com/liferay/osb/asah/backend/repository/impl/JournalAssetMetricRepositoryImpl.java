@@ -14,9 +14,15 @@
 
 package com.liferay.osb.asah.backend.repository.impl;
 
+import com.liferay.osb.asah.backend.model.AssetMetric;
+import com.liferay.osb.asah.backend.model.JournalMetric;
+import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
 
 import java.math.BigDecimal;
+
+import java.util.Collections;
+import java.util.Map;
 
 import org.jooq.Field;
 import org.jooq.impl.DSL;
@@ -34,6 +40,11 @@ public class JournalAssetMetricRepositoryImpl
 	extends BaseAssetMetricRepository {
 
 	@Override
+	protected AssetMetric createAssetMetric() {
+		return new JournalMetric();
+	}
+
+	@Override
 	protected Field<BigDecimal> getMetricField(MetricType metricType) {
 		Field<Long> longField = DSL.field(
 			metricType.getFieldName(), Long.class);
@@ -43,6 +54,22 @@ public class JournalAssetMetricRepositoryImpl
 		).as(
 			longField.getName()
 		);
+	}
+
+	@Override
+	protected Map<String, String> getMetricSetterMethodNames() {
+		return Collections.singletonMap(
+			JournalMetricType.VIEWS.getName(), "setViewsMetric");
+	}
+
+	@Override
+	protected MetricType getMetricType(String metricTypeName) {
+		return JournalMetricType.of(metricTypeName);
+	}
+
+	@Override
+	protected MetricType[] getMetricTypes() {
+		return JournalMetricType.values();
 	}
 
 	@Override
