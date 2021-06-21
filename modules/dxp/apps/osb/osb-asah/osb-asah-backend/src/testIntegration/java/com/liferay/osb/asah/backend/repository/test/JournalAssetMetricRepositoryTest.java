@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.repository.test;
 
+import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.JournalMetric;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
@@ -25,6 +26,11 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.util.List;
+import java.util.stream.Stream;
+
+import org.hamcrest.Matchers;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +38,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -62,6 +69,31 @@ public class JournalAssetMetricRepositoryTest
 		Metric viewsMetric = journalMetric.getViewsMetric();
 
 		Assert.assertEquals(7D, viewsMetric.getValue(), 0);
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "journal_asset_metric_views_histogram_last_24_hours.sql"
+	)
+	@Test
+	public void testGetViewsAssetMetrics() {
+		List<AssetMetric> assetMetrics = _assetMetricRepository.getAssetMetrics(
+			SetUtil.of("e131fabc", "e231fabc"), 1L,
+			SetUtil.of(JournalMetricType.VIEWS.getName()),
+			PageRequest.of(0, 10), TimeRange.LAST_24_HOURS);
+
+		Assert.assertEquals(assetMetrics.toString(), 2, assetMetrics.size());
+
+		Stream<AssetMetric> stream = assetMetrics.stream();
+
+		Assert.assertThat(
+			new Double[] {7D, 6D},
+			Matchers.arrayContainingInAnyOrder(
+				stream.map(
+					AssetMetric::getDefaultMetric
+				).map(
+					Metric::getValue
+				).toArray()));
 	}
 
 	@SQLResource(
