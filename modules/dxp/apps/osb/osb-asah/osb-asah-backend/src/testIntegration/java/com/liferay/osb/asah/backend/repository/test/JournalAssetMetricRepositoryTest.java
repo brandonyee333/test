@@ -46,6 +46,17 @@ public class JournalAssetMetricRepositoryTest
 
 	@SQLResource(
 		dataSource = "trinoDataSource",
+		resourcePath = "journal_asset_metric_views_histogram_last_24_hours.sql"
+	)
+	@Test
+	public void testGetAssetMetric() {
+		assertAssetMetric(
+			"e131fabc", 1L, SetUtil.of(JournalMetricType.VIEWS.getName()),
+			TimeRange.LAST_24_HOURS);
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
 		resourcePath = "journal_asset_metric_views_histogram_last_7_days.sql"
 	)
 	@Test
