@@ -1,14 +1,14 @@
-INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES('Seller added description', 'STRING', 'Item Description', 'itemDescription', 'LOCAL');
-INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES(null, 'NUMBER', 'Item Price', 'itemPrice', 'LOCAL');
-INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES('How much of the same item the buyer wanted', 'NUMBER', 'Number of items', 'itemQuantity', 'LOCAL');
-INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES('Whether the item is new or used', 'STRING', 'Item Status', 'itemQuality', 'LOCAL');
-INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES('Amount of feedback given to item', 'NUMBER', 'Number of Reviews', 'numberOfReviews', 'LOCAL');
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES ('Seller added description', 'STRING', 'Item Description', 'itemDescription', 'LOCAL');
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES (null, 'NUMBER', 'Item Price', 'itemPrice', 'LOCAL');
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES ('How much of the same item the buyer wanted', 'NUMBER', 'Number of items', 'itemQuantity', 'LOCAL');
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES ('Whether the item is new or used', 'STRING', 'Item Status', 'itemQuality', 'LOCAL');
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES ('Amount of feedback given to item', 'NUMBER', 'Number of Reviews', 'numberOfReviews', 'LOCAL');
 
-INSERT INTO EventDefinition(displayName, name, type) VALUES('Added To Cart', 'addedToCart', 'CUSTOM');
-INSERT INTO EventDefinition(displayName, name, type) VALUES('Removed From Cart', 'removedFromCart', 'CUSTOM');
-INSERT INTO EventDefinition(displayName, name, type) VALUES('Saved To List', 'savedToList', 'CUSTOM');
-INSERT INTO EventDefinition(displayName, name, type) VALUES('Subscribed', 'subscribed', 'CUSTOM');
-INSERT INTO EventDefinition(displayName, name, type) VALUES('Update Item', 'updateItem', 'CUSTOM');
+INSERT INTO EventDefinition(displayName, name, type) VALUES ('Added To Cart', 'addedToCart', 'CUSTOM');
+INSERT INTO EventDefinition(displayName, name, type) VALUES ('Removed From Cart', 'removedFromCart', 'CUSTOM');
+INSERT INTO EventDefinition(displayName, name, type) VALUES ('Saved To List', 'savedToList', 'CUSTOM');
+INSERT INTO EventDefinition(displayName, name, type) VALUES ('Subscribed', 'subscribed', 'CUSTOM');
+INSERT INTO EventDefinition(displayName, name, type) VALUES ('Update Item', 'updateItem', 'CUSTOM');
 
 INSERT INTO EventDefinitionEventAttributeDefinition(eventAttributeDefinitionId, eventDefinitionId, sampleValue) VALUES ((SELECT id from EventAttributeDefinition WHERE name='canonicalUrl'), (SELECT id from EventDefinition WHERE name='addedToCart'), 'http://localhost:8080');
 INSERT INTO EventDefinitionEventAttributeDefinition(eventAttributeDefinitionId, eventDefinitionId, sampleValue) VALUES ((SELECT id from EventAttributeDefinition WHERE name='canonicalUrl'), (SELECT id from EventDefinition WHERE name='removedFromCart'), 'http://localhost:8080');

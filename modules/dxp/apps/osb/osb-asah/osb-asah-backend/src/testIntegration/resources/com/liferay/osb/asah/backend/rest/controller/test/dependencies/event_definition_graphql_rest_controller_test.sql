@@ -1,9 +1,9 @@
-INSERT INTO EventAttributeDefinition(dataType, displayName, name, type) VALUES('NUMBER', 'Item Price', 'itemPrice', 'LOCAL');
-INSERT INTO EventAttributeDefinition(dataType, displayName, name, type) VALUES('NUMBER', 'Quantity', 'quantity', 'LOCAL');
-INSERT INTO EventAttributeDefinition(dataType, displayName, name, type) VALUES('STRING', 'Item Name', 'itemName', 'LOCAL');
+INSERT INTO EventAttributeDefinition(dataType, displayName, name, type) VALUES ('NUMBER', 'Item Price', 'itemPrice', 'LOCAL');
+INSERT INTO EventAttributeDefinition(dataType, displayName, name, type) VALUES ('NUMBER', 'Quantity', 'quantity', 'LOCAL');
+INSERT INTO EventAttributeDefinition(dataType, displayName, name, type) VALUES ('STRING', 'Item Name', 'itemName', 'LOCAL');
 
-INSERT INTO EventDefinition(description, displayName, name, type) VALUES('Added an item to shopping cart', 'Added To Cart', 'addedToCart', 'CUSTOM');
-INSERT INTO EventDefinition(description, displayName, name, type) VALUES('Saved item to wish list', 'Save To List', 'savedToList', 'CUSTOM');
+INSERT INTO EventDefinition(description, displayName, name, type) VALUES ('Added an item to shopping cart', 'Added To Cart', 'addedToCart', 'CUSTOM');
+INSERT INTO EventDefinition(description, displayName, name, type) VALUES ('Saved item to wish list', 'Save To List', 'savedToList', 'CUSTOM');
 
 INSERT INTO EventDefinitionEventAttributeDefinition(eventAttributeDefinitionId, eventDefinitionId, sampleValue) VALUES ((SELECT id from EventAttributeDefinition WHERE name='itemPrice'), (SELECT id from EventDefinition WHERE name='addedToCart'), '1500.00');
 INSERT INTO EventDefinitionEventAttributeDefinition(eventAttributeDefinitionId, eventDefinitionId, sampleValue) VALUES ((SELECT id from EventAttributeDefinition WHERE name='quantity'), (SELECT id from EventDefinition WHERE name='addedToCart'), '7');
