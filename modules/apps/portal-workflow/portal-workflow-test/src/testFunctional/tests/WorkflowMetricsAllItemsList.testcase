@@ -41,7 +41,6 @@ definition {
 	@description = "LPS-92053 - Verify that, at the items table, users should be able to click on process ID column and open a modal for the respective item details"
 	@priority = "3"
 	test ClickOnProcessIdColumnToSeeItemDetailsPage {
-
 		ApplicationsMenu.gotoPortlet(
 			category = "Workflow",
 			panel = "Applications",
@@ -72,7 +71,7 @@ definition {
 		ApplicationsMenu.gotoPortlet(
 			category = "Workflow",
 			panel = "Applications",
-			portlet = "Metrics");	
+			portlet = "Metrics");
 
 		WorkflowMetrics.goToDashboardAllItemsWithFilter(
 			workflowFilterOption = "COMPLETED",
@@ -94,14 +93,6 @@ definition {
 		AssertElementPresent(locator1 = "WorkflowAllItems#DETAIL_PAGE_SLA_MESSAGE");
 
 		AssertElementPresent(locator1 = "WorkflowAllItems#DETAIL_PAGE_TITLE");
-
-
-
-
-
-
-
-
 	}
 
 	@description = "LPS-86652 - Verify that every column displays the correct info for a item"
