@@ -28,7 +28,6 @@ import java.math.BigDecimal;
 
 import java.time.OffsetDateTime;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,22 +56,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		String assetId, Long channelId, Set<String> selectedMetrics,
 		TimeRange timeRange) {
 
-		List<Field<BigDecimal>> fields = new ArrayList<>();
-
-		fields.addAll(
-			Stream.of(
-				getMetricTypes()
-			).filter(
-				assetMetricType -> selectedMetrics.contains(
-					assetMetricType.getName())
-			).map(
-				this::getMetricField
-			).collect(
-				Collectors.toList()
-			));
-
 		Record record = dslContext.select(
-			fields
+			_getMetricFields(selectedMetrics)
 		).from(
 			getTableName()
 		).where(
@@ -182,6 +167,18 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	@Autowired
 	@Qualifier("trinoDSLContext")
 	protected DSLContext dslContext;
+
+	private List<Field<BigDecimal>> _getMetricFields(Set<String> metricNames) {
+		return Stream.of(
+			getMetricTypes()
+		).filter(
+			assetMetricType -> metricNames.contains(assetMetricType.getName())
+		).map(
+			this::getMetricField
+		).collect(
+			Collectors.toList()
+		);
+	}
 
 	private T _toMetric(Record record, Set<String> selectedMetrics) {
 		T assetMetric = createAssetMetric();
