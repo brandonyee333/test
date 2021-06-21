@@ -14,18 +14,24 @@
 
 package com.liferay.osb.asah.backend.repository;
 
+import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
 public interface AssetMetricRepository {
+
+	public AssetMetric getAssetMetric(
+		String assetId, Long channelId, Set<String> selectedMetrics,
+		TimeRange timeRange);
 
 	public List<HistogramMetric> getHistogramMetrics(
 		String assetId, Long channelId, Interval interval,

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.repository.impl;
 
+import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
@@ -24,15 +25,23 @@ import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
+import java.lang.reflect.Method;
+
 import java.math.BigDecimal;
 
 import java.time.OffsetDateTime;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.Field;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +53,64 @@ import org.springframework.beans.factory.annotation.Qualifier;
  */
 public abstract class BaseAssetMetricRepository
 	implements AssetMetricRepository {
+
+	@Override
+	public AssetMetric getAssetMetric(
+		String assetId, Long channelId, Set<String> selectedMetrics,
+		TimeRange timeRange) {
+
+		List<Field<? extends Object>> fields = new ArrayList<>();
+
+		fields.addAll(
+			Stream.of(
+				getMetricTypes()
+			).filter(
+				assetMetricType -> selectedMetrics.contains(
+					assetMetricType.getName())
+			).map(
+				this::getMetricField
+			).collect(
+				Collectors.toList()
+			));
+
+		List<AssetMetric> assetMetrics = dslContext.select(
+			fields
+		).from(
+			getTableName()
+		).where(
+			DSL.and(
+				DSL.field(
+					"assetId"
+				).eq(
+					assetId
+				),
+				DSL.field(
+					"channelId"
+				).eq(
+					channelId
+				),
+				DSL.field(
+					"projectId"
+				).eq(
+					ProjectIdThreadLocal.getProjectId()
+				),
+				DSL.field(
+					"eventDate"
+				).between(
+					DateUtil.toDate(
+						timeRange.getStartLocalDateTime(),
+						_timeZoneDog.getZoneId()),
+					DateUtil.toDate(
+						timeRange.getEndLocalDateTime(),
+						_timeZoneDog.getZoneId())
+				))
+		).fetch(
+		).map(
+			record -> _toMetric(record, selectedMetrics)
+		);
+
+		return assetMetrics.get(0);
+	}
 
 	@Override
 	public List<HistogramMetric> getHistogramMetrics(
@@ -108,17 +175,61 @@ public abstract class BaseAssetMetricRepository
 		);
 	}
 
+	protected abstract AssetMetric createAssetMetric();
+
 	protected String getAssetIdFieldName() {
 		return "assetId";
 	}
 
 	protected abstract Field<BigDecimal> getMetricField(MetricType metricType);
 
+	protected abstract Map<String, String> getMetricSetterMethodNames();
+
+	protected abstract MetricType getMetricType(String metricTypeName);
+
+	protected abstract MetricType[] getMetricTypes();
+
 	protected abstract String getTableName();
 
 	@Autowired
 	@Qualifier("trinoDSLContext")
 	protected DSLContext dslContext;
+
+	private AssetMetric _toMetric(Record record, Set<String> selectedMetrics) {
+		AssetMetric assetMetric = createAssetMetric();
+
+		Map<String, String> metricSetterMethodNames =
+			getMetricSetterMethodNames();
+
+		selectedMetrics.forEach(
+			selectedMetric -> {
+				String methodName = metricSetterMethodNames.get(selectedMetric);
+
+				try {
+					Class<? extends AssetMetric> assetMetricClass =
+						assetMetric.getClass();
+
+					Method method = assetMetricClass.getDeclaredMethod(
+						methodName, Metric.class);
+
+					MetricType metricType = getMetricType(selectedMetric);
+
+					Metric metric = new Metric(metricType);
+
+					BigDecimal metricValueBigDecimal = (BigDecimal)record.get(
+						metricType.getFieldName());
+
+					metric.setValue(metricValueBigDecimal.doubleValue());
+
+					method.invoke(assetMetric, metric);
+				}
+				catch (Exception exception) {
+					throw new RuntimeException(exception);
+				}
+			});
+
+		return assetMetric;
+	}
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
