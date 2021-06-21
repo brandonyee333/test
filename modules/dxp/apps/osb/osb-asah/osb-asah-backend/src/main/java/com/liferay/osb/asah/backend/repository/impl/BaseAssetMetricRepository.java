@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 
 import java.time.OffsetDateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,10 +40,12 @@ import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.WindowOverStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Alejo Ceballos
@@ -86,6 +89,68 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).fetchOne();
 
 		return _toMetric(record, selectedMetrics);
+	}
+
+	@Override
+	public List<AssetMetric> getAssetMetrics(
+		Set<String> assetIds, Long channelId, Set<String> selectedMetrics,
+		Pageable pageable, TimeRange timeRange) {
+
+		List<Field<? extends Object>> fields = new ArrayList<>(
+			_getMetricFields(selectedMetrics));
+
+		Field<String> assetIdField = DSL.field("assetId", String.class);
+
+		fields.add(assetIdField);
+
+		WindowOverStep<Integer> rowNumber = DSL.rowNumber();
+
+		Field<Integer> rowNumberField = rowNumber.over();
+
+		fields.add(rowNumberField.as("rowNumber"));
+
+		Long offset = Long.valueOf(pageable.getOffset());
+
+		return dslContext.select(
+		).from(
+			dslContext.select(
+				fields
+			).from(
+				getTableName()
+			).where(
+				DSL.and(
+					assetIdField.in(assetIds),
+					DSL.field(
+						"channelId"
+					).eq(
+						channelId
+					),
+					DSL.field(
+						"projectId"
+					).eq(
+						ProjectIdThreadLocal.getProjectId()
+					),
+					DSL.field(
+						"eventDate"
+					).between(
+						timeRange.getStartLocalDateTime(),
+						timeRange.getEndLocalDateTime()
+					))
+			).groupBy(
+				assetIdField
+			)
+		).where(
+			DSL.field(
+				"rowNumber"
+			).ge(
+				offset.intValue()
+			)
+		).limit(
+			pageable.getPageSize()
+		).fetch(
+		).map(
+			record -> _toMetric(record, selectedMetrics)
+		);
 	}
 
 	@Override

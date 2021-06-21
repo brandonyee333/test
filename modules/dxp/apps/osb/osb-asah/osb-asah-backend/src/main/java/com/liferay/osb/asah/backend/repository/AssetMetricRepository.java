@@ -23,6 +23,8 @@ import com.liferay.osb.asah.common.model.TimeRange;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.domain.Pageable;
+
 /**
  * @author Alejo Ceballos
  * @author Marcos Martins
@@ -32,6 +34,10 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 	public T getAssetMetric(
 		String assetId, Long channelId, Set<String> selectedMetrics,
 		TimeRange timeRange);
+
+	public List<AssetMetric> getAssetMetrics(
+		Set<String> assetIds, Long channelId, Set<String> selectedMetrics,
+		Pageable pageable, TimeRange timeRange);
 
 	public List<HistogramMetric> getHistogramMetrics(
 		String assetId, Long channelId, Interval interval,
