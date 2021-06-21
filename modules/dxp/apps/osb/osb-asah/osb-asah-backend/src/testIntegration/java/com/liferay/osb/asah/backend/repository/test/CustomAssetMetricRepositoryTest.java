@@ -113,7 +113,7 @@ public class CustomAssetMetricRepositoryTest {
 	)
 	@Test
 	public void testGetViewsHistogramMetricsLast24HoursDifferentTimezone() {
-		List<LocalDateTime> buckets = _getBuckets(
+		List<LocalDateTime> localDateTimes = _getLocalDateTimes(
 			_customAssetMetricRepository.getHistogramMetrics(
 				1L, CustomAssetMetricType.VIEWS, "e131fabc", Interval.HOUR,
 				TimeRange.LAST_24_HOURS));
@@ -124,26 +124,27 @@ public class CustomAssetMetricRepositoryTest {
 			"America/Fortaleza"
 		);
 
-		List<LocalDateTime> bucketsShifted = _getBuckets(
+		List<LocalDateTime> shiftedLocalDateTimes = _getLocalDateTimes(
 			_customAssetMetricRepository.getHistogramMetrics(
 				1L, CustomAssetMetricType.VIEWS, "e131fabc", Interval.HOUR,
 				TimeRange.LAST_24_HOURS));
 
 		Assert.assertEquals(
-			bucketsShifted.toString(), buckets.size(), bucketsShifted.size());
+			shiftedLocalDateTimes.toString(), localDateTimes.size(),
+			shiftedLocalDateTimes.size());
 
-		for (int i = 0; i < buckets.size(); i++) {
+		for (int i = 0; i < localDateTimes.size(); i++) {
 
 			// America/Fortaleza expected delta to UTC is 3 hours
 
 			Duration duration = Duration.between(
-				bucketsShifted.get(i), buckets.get(i));
+				shiftedLocalDateTimes.get(i), localDateTimes.get(i));
 
 			Assert.assertEquals(3, duration.toHours());
 		}
 	}
 
-	private List<LocalDateTime> _getBuckets(
+	private List<LocalDateTime> _getLocalDateTimes(
 		List<HistogramMetric> histogramMetrics) {
 
 		Stream<HistogramMetric> stream = histogramMetrics.stream();
