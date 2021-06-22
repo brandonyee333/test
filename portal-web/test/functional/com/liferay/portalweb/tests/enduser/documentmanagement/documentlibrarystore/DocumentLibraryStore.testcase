@@ -66,6 +66,7 @@ definition {
 	@priority = "5"
 	test AWSS3StoreSmoke {
 		property aws.store.enabled = "true";
+		property dummy.socket.proxy.disabled = "true";
 		property test.name.skip.portal.instance = "DocumentLibraryStore#AWSS3StoreSmoke";
 
 		JSONGroup.addGroup(groupName = "Test Site Name");
