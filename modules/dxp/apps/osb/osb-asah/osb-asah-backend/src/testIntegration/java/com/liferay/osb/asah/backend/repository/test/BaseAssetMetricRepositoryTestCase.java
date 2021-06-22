@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.repository.test;
 
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
@@ -39,6 +40,8 @@ import org.junit.Before;
 import org.mockito.Mockito;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import reactor.util.function.Tuple2;
 
 /**
  * @author Marcellus Tavares
@@ -98,6 +101,26 @@ public abstract class BaseAssetMetricRepositoryTestCase {
 				localDateTimes.get(i), shiftedLocalDateTimes.get(i));
 
 			Assert.assertEquals(timeZoneDifference, duration.toHours());
+		}
+	}
+
+	public void assertMetrics(
+		List<Tuple2<String, Double>> expectedMetricInfos,
+		List<Metric> metrics) {
+
+		Assert.assertEquals(
+			metrics.toString(), expectedMetricInfos.size(), metrics.size());
+
+		for (int i = 0; i < expectedMetricInfos.size(); i++) {
+			Tuple2<String, Double> expectedMetricInfo = expectedMetricInfos.get(
+				i);
+
+			Metric metric = metrics.get(i);
+
+			Assert.assertEquals(
+				expectedMetricInfo.getT1(), metric.getValueKey());
+			Assert.assertEquals(
+				expectedMetricInfo.getT2(), metric.getValue(), 0);
 		}
 	}
 
