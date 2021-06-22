@@ -507,6 +507,8 @@ definition {
 	}
 
 	test ViewSearchResultsScoreViaBlueprintsPreview {
+		property portal.acceptance = "brooke";
+
 		JSONWebcontent.addWebContent(
 			content = "WC Content",
 			groupName = "Guest",
