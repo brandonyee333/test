@@ -1,0 +1,252 @@
+[
+	{
+		"acquisition": {
+			"channel": "referral",
+			"medium": "referral",
+			"source": "www.liferay.com"
+		},
+		"bounced": true,
+		"browserName": "Chrome",
+		"canonicalUrls": [
+			"https://customer.liferay.com/documentation/search"
+		],
+		"city": "Tokyo",
+		"completeDate": "${now-1hT00:00:00.000Z}",
+		"completeReason": "logout",
+		"completed": true,
+		"country": "Japan",
+		"dataSourceId": "355524992631037473",
+		"date": "${now-1d}",
+		"deviceType": "Desktop",
+		"duration": 0,
+		"entryPage": "https://customer.liferay.com/documentation/search",
+		"exitPage": null,
+		"firstEventDate": "${now-1hT00:00:00.000Z}",
+		"id": "366909399944215918",
+		"individualId": "346468603851271125",
+		"lastEventDate": "${now-1hT00:00:00.000Z}",
+		"platformName": "macOS",
+		"referrers": [
+			""
+		],
+		"region": "Tokyo",
+		"urls": [
+			"https://customer.liferay.com/en/documentation/search?p_p_id=1_WAR_osbknowledgebaseportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_1_WAR_osbknowledgebaseportlet_mvcPath=%2Fsearch%2Fview.jsp&_1_WAR_osbknowledgebaseportlet_delta=75&_1_WAR_osbknowledgebaseportlet_keywords=liferay_home&_1_WAR_osbknowledgebaseportlet_resetCur=false&_1_WAR_osbknowledgebaseportlet_cur=2"
+		],
+		"userId": "AWPen_4BK3S7moZQAAvm"
+	},
+	{
+		"acquisition": {
+			"channel": "referral",
+			"medium": "referral",
+			"source": "www.liferay.com"
+		},
+		"bounced": true,
+		"browserName": "Chrome",
+		"canonicalUrls": [
+			"https://customer.liferay.com/documentation/search"
+		],
+		"city": "Tokyo",
+		"completeDate": "${todayT00:00:00.000Z}",
+		"completeReason": "logout",
+		"completed": true,
+		"country": "Japan",
+		"dataSourceId": "355524992631037473",
+		"date": "${now-1d}",
+		"deviceType": "Desktop",
+		"duration": 0,
+		"entryPage": "https://customer.liferay.com/documentation/search",
+		"exitPage": null,
+		"firstEventDate": "${today-1dT00:00:00.000Z}",
+		"id": "366909399944215919",
+		"individualId": "346468603851271125",
+		"lastEventDate": "${todayT00:00:00.000Z}",
+		"platformName": "macOS",
+		"referrers": [
+		],
+		"region": "Tokyo",
+		"urls": [
+			"https://customer.liferay.com/en/documentation/search?p_p_id=1_WAR_osbknowledgebaseportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_1_WAR_osbknowledgebaseportlet_mvcPath=%2Fsearch%2Fview.jsp&_1_WAR_osbknowledgebaseportlet_delta=75&_1_WAR_osbknowledgebaseportlet_keywords=liferay_home&_1_WAR_osbknowledgebaseportlet_resetCur=false&_1_WAR_osbknowledgebaseportlet_cur=2"
+		],
+		"userId": "AWPen_4BK3S7moZQAAvm"
+	},
+	{
+		"acquisition": {
+			"channel": "referral",
+			"medium": "referral",
+			"source": "www.liferay.com"
+		},
+		"bounced": true,
+		"browserName": "Chrome",
+		"canonicalUrls": [
+			"https://www.liferay.com/products/dxp/30-day-trial"
+		],
+		"city": "Budapest",
+		"completeDate": "${today-33dT00:00:00.000Z}",
+		"completeReason": "logout",
+		"completed": true,
+		"country": "Hungary",
+		"dataSourceId": "355524992631037473",
+		"date": "${today-33dT00:00:00.000Z}",
+		"deviceType": "Desktop",
+		"duration": 0,
+		"entryPage": "https://www.liferay.com/products/dxp/30-day-trial",
+		"exitPage": null,
+		"firstEventDate": "${today-33dT00:00:00.000Z}",
+		"id": "366909399944213421",
+		"individualId": "346468614337714393",
+		"lastEventDate": "${today-33dT00:00:00.000Z}",
+		"platformName": "Windows",
+		"referrers": [
+			"https://www.liferay.com/digital-experience-platform"
+		],
+		"region": "Budapest",
+		"urls": [
+			"https://www.liferay.com/products/dxp/30-day-trial"
+		],
+		"userId": "AWEtVApIdfQksSyQc9zq"
+	},
+	{
+		"acquisition": {
+			"channel": "direct",
+			"medium": null,
+			"source": null
+		},
+		"bounced": true,
+		"browserName": "Unknown Crawler",
+		"canonicalUrls": [
+			"https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy"
+		],
+		"city": "Mountain View",
+		"completeDate": "${today-29dT00:00:00.000Z}",
+		"completeReason": "logout",
+		"completed": true,
+		"country": "United States",
+		"dataSourceId": "331238757269547423",
+		"date": "${today-29dT00:00:00.000Z}",
+		"deviceType": "Desktop",
+		"duration": 0,
+		"entryPage": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
+		"exitPage": null,
+		"firstEventDate": "${today-29dT00:00:00.000Z}",
+		"id": "366909399979215564",
+		"individualId": "346468609906122549",
+		"lastEventDate": "${today-29dT00:00:00.000Z}",
+		"platformName": "Unknown",
+		"referrers": [
+		],
+		"region": "California",
+		"urls": [
+			"https://www.liferay.com/de/blog/en-us/digital-strategy/8-best-practices-for-your-omnichannel-strategy"
+		],
+		"userId": "dc994f00-8241-11e8-a0fc-8356dd2944fd"
+	},
+	{
+		"acquisition": {
+			"channel": "email",
+			"medium": "email",
+			"source": "mail.google.com"
+		},
+		"bounced": true,
+		"browserName": "Chrome",
+		"canonicalUrls": [
+			"https://customer.liferay.com/documentation/7.1/deploy"
+		],
+		"city": "San Jose",
+		"completeDate": "${today-8dT00:00:00.000Z}",
+		"completeReason": null,
+		"completed": true,
+		"country": "United States",
+		"dataSourceId": "331238757269547423",
+		"date": "${today-8dT00:00:00.000Z}",
+		"deviceType": "Desktop",
+		"duration": 0,
+		"entryPage": "https://customer.liferay.com/documentation/7.1/deploy",
+		"exitPage": null,
+		"firstEventDate": "${today-8dT00:00:00.000Z}",
+		"id": "366909399979213797",
+		"individualId": "346468608880878498",
+		"lastEventDate": "${today-8dT00:00:00.000Z}",
+		"platformName": "Windows",
+		"referrers": [
+			"https://web.liferay.com/marketplace/-/mp/application/15188711"
+		],
+		"region": "California",
+		"urls": [
+			"https://customer.liferay.com/documentation/7.1/deploy/-/official_documentation/deployment/setting-up-liferay-as-a-saml-service-provider?_ga=2.2597744.114294707.1536084187-376508236.1531466449#checkpoint-1"
+		],
+		"userId": "5316d060-aa80-11e8-8a1b-cf876f35456d"
+	},
+	{
+		"acquisition": {
+			"channel": "referral",
+			"medium": "referral",
+			"source": "https://customer.liferay.com/documentation/7.0/admin"
+		},
+		"bounced": true,
+		"browserName": "Chrome",
+		"canonicalUrls": [
+			"https://customer.liferay.com/documentation/search"
+		],
+		"city": "French Lick",
+		"completeDate": "${today-33dT00:00:00.000Z}",
+		"completeReason": "logout",
+		"completed": true,
+		"country": "United States",
+		"dataSourceId": "331238757269547423",
+		"date": "${today-33dT00:00:00.000Z}",
+		"deviceType": "Desktop",
+		"duration": 0,
+		"entryPage": "https://customer.liferay.com/documentation/search",
+		"exitPage": null,
+		"firstEventDate": "${today-33dT00:00:00.000Z}",
+		"id": "366909399979213898",
+		"individualId": "346468614337714393",
+		"lastEventDate": "${today-33dT00:00:00.000Z}",
+		"platformName": "Linux",
+		"referrers": [
+			"https://customer.liferay.com/documentation/7.0/admin"
+		],
+		"region": "Indiana",
+		"urls": [
+			"https://customer.liferay.com/documentation/search?p_p_id=1_WAR_osbknowledgebaseportlet&p_p_state=normal&_1_WAR_osbknowledgebaseportlet_keywords=openoffice"
+		],
+		"userId": "34209dc0-a1b7-11e8-bf1b-f987e25a7caa"
+	},
+	{
+		"acquisition": {
+			"channel": "referral",
+			"medium": "referral",
+			"source": "www.liferay.com"
+		},
+		"bounced": true,
+		"browserName": "Chrome",
+		"canonicalUrls": [
+			"https://customer.liferay.com/documentation/7.0/develop/tutorials"
+		],
+		"city": "Tokyo",
+		"completeDate": "2090-09-11T03:13:59.719Z",
+		"completeReason": "logout",
+		"completed": true,
+		"country": "Japan",
+		"dataSourceId": "331238757269547423",
+		"date": "2090-09-11T03:13:59.719Z",
+		"deviceType": "Desktop",
+		"duration": 0,
+		"entryPage": "https://customer.liferay.com/documentation/7.0/develop/tutorials",
+		"exitPage": null,
+		"firstEventDate": "2090-09-11T03:13:59.719Z",
+		"id": "310746565640329848",
+		"individualId": "346468603851271125",
+		"lastEventDate": "2090-09-11T03:13:59.719Z",
+		"platformName": "macOS",
+		"referrers": [
+			"https://customer.liferay.com/en/documentation/search?p_p_id=1_WAR_osbknowledgebaseportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_1_WAR_osbknowledgebaseportlet_mvcPath=%2Fsearch%2Fview.jsp&_1_WAR_osbknowledgebaseportlet_delta=75&_1_WAR_osbknowledgebaseportlet_keywords=liferay_home&_1_WAR_osbknowledgebaseportlet_resetCur=false&_1_WAR_osbknowledgebaseportlet_cur=2"
+		],
+		"region": "Tokyo",
+		"urls": [
+			"https://customer.liferay.com/en/documentation/7.0/develop/tutorials/-/official_documentation/tutorials/upgrading-data-schemas-in-development?redirect=https%3A%2F%2Fcustomer.liferay.com%2Fen%2Fdocumentation%2Fsearch%3Fp_p_id%3D1_WAR_osbknowledgebaseportlet%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26_1_WAR_osbknowledgebaseportlet_cur%3D2%26_1_WAR_osbknowledgebaseportlet_mvcPath%3D%252Fsearch%252Fview.jsp%26_1_WAR_osbknowledgebaseportlet_keywords%3Dliferay_home%26_1_WAR_osbknowledgebaseportlet_delta%3D75%26_1_WAR_osbknowledgebaseportlet_resetCur%3Dfalse"
+		],
+		"userId": "AWPen_4BK3S7moZQAAvm"
+	}
+]
