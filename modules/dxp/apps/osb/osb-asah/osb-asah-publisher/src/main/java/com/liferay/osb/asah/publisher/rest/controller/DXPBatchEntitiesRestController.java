@@ -71,7 +71,7 @@ public class DXPBatchEntitiesRestController {
 				dataSourceId,
 			@RequestParam("resourceName") String resourceName,
 			@RequestHeader(required = false, value = "If-Modified-Since") String
-				resourceLastModified)
+				ifModifiedSince)
 		throws Exception {
 
 		if (_log.isDebugEnabled()) {
@@ -83,7 +83,7 @@ public class DXPBatchEntitiesRestController {
 			_getStorageConfiguration(dataSourceId));
 
 		File file = storage.readSparkJobResult(
-			_parseModifiedDate(resourceLastModified), resourceName);
+			_parseDate(ifModifiedSince), resourceName);
 
 		if (file == null) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -174,7 +174,7 @@ public class DXPBatchEntitiesRestController {
 		return builder.build();
 	}
 
-	private Date _parseModifiedDate(String dateString) {
+	private Date _parseDate(String dateString) {
 		try {
 			Instant instant = Instant.from(
 				_dateTimeFormatter.parse(dateString));
