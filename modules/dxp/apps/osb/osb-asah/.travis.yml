@@ -3,7 +3,7 @@ before_cache:
     - rm -fr ${HOME}/.gradle/caches/*/plugin-resolution/
 before_install:
     - TMP_DAEMON=$(mktemp)
-    - sudo jq '."registry-mirrors" += ["https://mirror.gcr.io"]' /etc/docker/daemon.json > ${TMP_DAEMON}
+    - sudo jq '."registry-mirrors" += ["https://mirror.gcr.io", "https://registry.access.redhat.com"]' /etc/docker/daemon.json > ${TMP_DAEMON}
     - sudo mv ${TMP_DAEMON} /etc/docker/daemon.json
     - sudo systemctl daemon-reload
     - sudo systemctl restart docker
