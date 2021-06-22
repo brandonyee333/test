@@ -30,6 +30,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +38,7 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.Field;
@@ -66,32 +68,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).from(
 			getTableName()
 		).where(
-			DSL.and(
-				DSL.field(
-					getAssetIdFieldName()
-				).eq(
-					assetId
-				),
-				DSL.field(
-					"channelId"
-				).eq(
-					channelId
-				),
-				DSL.field(
-					"eventDate"
-				).between(
-					DateUtil.toUTCLocalDateTime(
-						timeRange.getStartLocalDateTime(),
-						_timeZoneDog.getZoneId()),
-					DateUtil.toUTCLocalDateTime(
-						timeRange.getEndLocalDateTime(),
-						_timeZoneDog.getZoneId())
-				),
-				DSL.field(
-					"projectId"
-				).eq(
-					ProjectIdThreadLocal.getProjectId()
-				))
+			_createWhereClause(Arrays.asList(assetId), channelId, timeRange)
 		).fetchOne();
 
 		return _toMetric(record, selectedMetrics);
@@ -176,32 +153,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).from(
 			getTableName()
 		).where(
-			DSL.and(
-				DSL.field(
-					"assetId"
-				).eq(
-					assetId
-				),
-				DSL.field(
-					"channelId"
-				).eq(
-					channelId
-				),
-				DSL.field(
-					"projectId"
-				).eq(
-					ProjectIdThreadLocal.getProjectId()
-				),
-				DSL.field(
-					"eventDate"
-				).between(
-					DateUtil.toUTCLocalDateTime(
-						timeRange.getStartLocalDateTime(),
-						_timeZoneDog.getZoneId()),
-					DateUtil.toUTCLocalDateTime(
-						timeRange.getEndLocalDateTime(),
-						_timeZoneDog.getZoneId())
-				))
+			_createWhereClause(Arrays.asList(assetId), channelId, timeRange)
 		).groupBy(
 			countryField
 		).orderBy(
@@ -229,32 +181,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).from(
 			getTableName()
 		).where(
-			DSL.and(
-				DSL.field(
-					getAssetIdFieldName()
-				).eq(
-					assetId
-				),
-				DSL.field(
-					"channelId"
-				).eq(
-					channelId
-				),
-				DSL.field(
-					"eventDate"
-				).between(
-					DateUtil.toUTCLocalDateTime(
-						timeRange.getStartLocalDateTime(),
-						_timeZoneDog.getZoneId()),
-					DateUtil.toUTCLocalDateTime(
-						timeRange.getEndLocalDateTime(),
-						_timeZoneDog.getZoneId())
-				),
-				DSL.field(
-					"projectId"
-				).eq(
-					ProjectIdThreadLocal.getProjectId()
-				))
+			_createWhereClause(Arrays.asList(assetId), channelId, timeRange)
 		).groupBy(
 			eventDateField
 		).fetch(
@@ -298,6 +225,61 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	@Autowired
 	@Qualifier("trinoDSLContext")
 	protected DSLContext dslContext;
+
+	private Condition _createWhereClause(
+		List<String> assetIds, Long channelId, TimeRange timeRange) {
+
+		Condition assetIdCondition = null;
+
+		if (assetIds.size() == 1) {
+			assetIdCondition = DSL.or(
+				DSL.field(
+					"assetId"
+				).eq(
+					assetIds.get(0)
+				),
+				DSL.field(
+					"assetPrimaryKey"
+				).eq(
+					assetIds.get(0)
+				));
+		}
+		else {
+			assetIdCondition = DSL.or(
+				DSL.field(
+					"assetId"
+				).in(
+					assetIds
+				),
+				DSL.field(
+					"assetPrimaryKey"
+				).in(
+					assetIds
+				));
+		}
+
+		return DSL.and(
+			assetIdCondition,
+			DSL.field(
+				"channelId"
+			).eq(
+				channelId
+			),
+			DSL.field(
+				"eventDate"
+			).between(
+				DateUtil.toUTCLocalDateTime(
+					timeRange.getStartLocalDateTime(),
+					_timeZoneDog.getZoneId()),
+				DateUtil.toUTCLocalDateTime(
+					timeRange.getEndLocalDateTime(), _timeZoneDog.getZoneId())
+			),
+			DSL.field(
+				"projectId"
+			).eq(
+				ProjectIdThreadLocal.getProjectId()
+			));
+	}
 
 	private Metric _getMetric(
 		MetricType metricType, Record2<String, BigDecimal> record) {
