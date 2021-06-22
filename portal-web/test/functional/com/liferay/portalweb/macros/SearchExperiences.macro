@@ -74,6 +74,59 @@ definition {
 		}
 	}
 
+	macro assertCopiedRawResponse {
+		WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");
+
+		WebContentNavigator.gotoAddCP();
+
+		PortletEntry.inputTitle(title = "Web Content Title");
+
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME_2");
+
+		Click(locator1 = "CKEditor#BODY");
+
+		var browserType = PropsUtil.get("browser.type");
+
+		if ("${browserType}" == "safari") {
+			KeyPress.keyDown(
+				key_editor = "content",
+				locator1 = "AlloyEditor#EDITOR",
+				value1 = "\COMMAND");
+
+			KeyPress(
+				key_editor = "content",
+				locator1 = "AlloyEditor#EDITOR",
+				value1 = "v");
+
+			KeyPress.keyUp(
+				key_editor = "content",
+				locator1 = "AlloyEditor#EDITOR",
+				value1 = "\COMMAND");
+		}
+
+		else {
+			RobotType.robotTypeShortcut(locator1 = "Ctrl + v");
+		}
+
+		WaitForElementPresent(
+			key_text = "hits",
+			locator1 = "CKEditor#BODY_TEXT");
+
+		takeScreenshot();
+
+		SelectFrame(value1 = "relative=top");
+
+		PortletEntry.publish();
+
+		WebContentNavigator.gotoPreviewEntryCP(webContentTitle = "Web Content Title");
+
+		SelectFrame(locator1 = "IFrame#MODAL_BODY");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "//div[@class='portlet-body']/div[contains(@class,'mt-2')]",
+			value1 = "hits");
+	}
+
 	macro createElement {
 		Navigator.gotoNavItem(navItem = "Elements");
 
