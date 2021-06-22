@@ -22,6 +22,12 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.io.File;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.zip.ZipInputStream;
@@ -39,7 +45,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -65,9 +70,8 @@ public class DXPBatchEntitiesRestController {
 			@RequestHeader(value = HeaderConstants.DATA_SOURCE_ID) String
 				dataSourceId,
 			@RequestParam("resourceName") String resourceName,
-			@DateTimeFormat(pattern = "EEE, dd MMM yyyy HH:mm:ss zzz")
-			@RequestHeader(required = false, value = "If-Modified-Since")
-			Date resourceLastModifiedDate)
+			@RequestHeader(required = false, value = "If-Modified-Since") String
+				resourceLastModified)
 		throws Exception {
 
 		if (_log.isDebugEnabled()) {
@@ -79,7 +83,7 @@ public class DXPBatchEntitiesRestController {
 			_getStorageConfiguration(dataSourceId));
 
 		File file = storage.readSparkJobResult(
-			resourceLastModifiedDate, resourceName);
+			_parseModifiedDate(resourceLastModified), resourceName);
 
 		if (file == null) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -170,8 +174,37 @@ public class DXPBatchEntitiesRestController {
 		return builder.build();
 	}
 
+	private Date _parseModifiedDate(String dateString) {
+		try {
+			Instant instant = Instant.from(
+				_dateTimeFormatter.parse(dateString));
+
+			ZonedDateTime zonedDateTime = instant.atZone(ZoneOffset.UTC);
+
+			Date date = Date.from(zonedDateTime.toInstant());
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(String.format("Resource modified date: %s", date));
+			}
+
+			return date;
+		}
+		catch (DateTimeParseException dateTimeParseException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Unable to parse last modified date",
+					dateTimeParseException);
+			}
+
+			return null;
+		}
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		DXPBatchEntitiesRestController.class);
+
+	private static final DateTimeFormatter _dateTimeFormatter =
+		DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz");
 
 	@Value(
 		"${osb.asah.dxp.batch.entities.google.bucket:analytics-cloud-dxp-batch-entities-{region}}"
