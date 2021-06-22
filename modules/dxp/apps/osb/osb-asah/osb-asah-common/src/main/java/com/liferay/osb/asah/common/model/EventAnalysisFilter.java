@@ -21,13 +21,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.commons.collections.map.CaseInsensitiveMap;
+
 /**
  * @author Leslie Wong
  */
 public class EventAnalysisFilter {
 
 	public EventAnalysisFilter(Map<String, Object> source) {
-		BeanUtils.copyProperties(source, this);
+		BeanUtils.copyProperties(new CaseInsensitiveMap(source), this);
 	}
 
 	public EventAnalysisFilter(

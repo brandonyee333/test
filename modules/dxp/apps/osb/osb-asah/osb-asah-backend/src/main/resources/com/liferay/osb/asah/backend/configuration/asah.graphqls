@@ -18,6 +18,13 @@ enum AssetType {
 	PAGE
 }
 
+enum AttributeType {
+	ACCOUNT,
+	EVENT,
+	INDIVIDUAL,
+	USER_SESSION
+}
+
 enum DataControlTaskStatus {
 	COMPLETED
 	ERROR
@@ -100,6 +107,14 @@ input DXPVariantSettings {
 	control: Boolean!
 	dxpVariantId: String!
 	trafficSplit: Float!
+}
+
+input EventAnalysisFilter {
+	attributeId: String!
+	attributeType: AttributeType!
+	dataType: EventAttributeDefinitionDataType!
+	operator: String!
+	values: [String]!
 }
 
 input ExperimentSettings {
@@ -857,6 +872,7 @@ type QueryType {
 	eventAnalysis(
 		analysisType: AnalysisType!,
 		channelId: String!,
+		eventAnalysisFilters: [EventAnalysisFilter],
 		eventDefinitionId: String!,
 		rangeEnd: String,
 		rangeKey: Int,

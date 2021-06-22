@@ -19,8 +19,13 @@ import com.liferay.osb.asah.common.dog.EventAnalysisDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.EventAnalysis;
+import com.liferay.osb.asah.common.model.EventAnalysisFilter;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetchingEnvironment;
+
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,9 +42,15 @@ public class EventAnalysisDataFetcher extends BaseDataFetcher<EventAnalysis> {
 		DataFetchingEnvironment environment,
 		SearchQueryContext searchQueryContext) {
 
+		List<EventAnalysisFilter> eventAnalysisFilters = ListUtil.map(
+			environment.getArgument("eventAnalysisFilters"),
+			eventAnalysisFilter -> new EventAnalysisFilter(
+				(Map<String, Object>)eventAnalysisFilter));
+
 		return _eventAnalysisDog.getEventAnalysis(
 			AnalysisType.valueOf(environment.getArgument("analysisType")),
 			Long.valueOf(environment.getArgument("channelId")),
+			eventAnalysisFilters,
 			Long.valueOf(environment.getArgument("eventDefinitionId")),
 			searchQueryContext.getTimeRange());
 	}
