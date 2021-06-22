@@ -75,11 +75,6 @@ public abstract class BaseAssetMetricRepositoryImpl
 					channelId
 				),
 				DSL.field(
-					"projectId"
-				).eq(
-					ProjectIdThreadLocal.getProjectId()
-				),
-				DSL.field(
 					"eventDate"
 				).between(
 					DateUtil.toDate(
@@ -88,6 +83,11 @@ public abstract class BaseAssetMetricRepositoryImpl
 					DateUtil.toDate(
 						timeRange.getEndLocalDateTime(),
 						_timeZoneDog.getZoneId())
+				),
+				DSL.field(
+					"projectId"
+				).eq(
+					ProjectIdThreadLocal.getProjectId()
 				))
 		).groupBy(
 			eventDateField
