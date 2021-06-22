@@ -89,7 +89,7 @@ public class EventDogTest {
 				"viewDuration");
 
 		EventAttribute eventAttribute = new EventAttribute(
-			"987654321", eventAttributeDefinition.getId());
+			"987654321", null, eventAttributeDefinition.getId());
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageUnloaded");
@@ -133,10 +133,10 @@ public class EventDogTest {
 				{
 					add(
 						new EventAttribute(
-							"testValue1", eventAttributeDefinitionId));
+							"testValue1", null, eventAttributeDefinitionId));
 					add(
 						new EventAttribute(
-							"testValue2", eventAttributeDefinitionId));
+							"testValue2", null, eventAttributeDefinitionId));
 				}
 			},
 			date, eventDefinition.getId(), 1L, "userId");

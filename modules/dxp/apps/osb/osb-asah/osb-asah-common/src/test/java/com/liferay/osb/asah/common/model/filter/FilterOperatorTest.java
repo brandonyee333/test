@@ -1,0 +1,454 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.common.model.filter;
+
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.jooq.impl.DSL;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+/**
+ * @author Leslie Wong
+ */
+public class FilterOperatorTest {
+
+	@Test
+	public void testBetweenFilterOperatorDate() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.DATE, "between",
+			new ArrayList<String>() {
+				{
+					add("2021-06-01");
+					add("2021-06-23");
+				}
+			});
+
+		LocalDate startLocalDate = LocalDate.parse("2021-06-01");
+		LocalDate endLocalDate = LocalDate.parse("2021-06-23");
+
+		Assert.assertEquals(
+			DSL.and(
+				DSL.field(
+					"testField"
+				).ge(
+					DateUtil.toDate(
+						startLocalDate.atStartOfDay(), ZoneId.of("UTC"))
+				),
+				DSL.field(
+					"testField"
+				).le(
+					DateUtil.toDate(
+						endLocalDate.atStartOfDay(), ZoneId.of("UTC"))
+				)),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testBetweenFilterOperatorDuration() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.DURATION, "between",
+			new ArrayList<String>() {
+				{
+					add("3600");
+					add("36000");
+				}
+			});
+
+		Assert.assertEquals(
+			DSL.and(
+				DSL.field(
+					"testField"
+				).ge(
+					3600
+				),
+				DSL.field(
+					"testField"
+				).le(
+					36000
+				)),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testBetweenFilterOperatorNumber() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.NUMBER, "between",
+			new ArrayList<String>() {
+				{
+					add("20");
+					add("27");
+				}
+			});
+
+		Assert.assertEquals(
+			DSL.and(
+				DSL.field(
+					"testField"
+				).ge(
+					20.0
+				),
+				DSL.field(
+					"testField"
+				).le(
+					27.0
+				)),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testContainsFilterOperator() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.STRING, "contains",
+			Collections.singletonList("testValue"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).containsIgnoreCase(
+				"testValue"
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testEndsWithFilterOperator() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.STRING, "endsWith",
+			Collections.singletonList("testValue"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).similarTo(
+				"%testValue"
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testEqualsFilterOperator() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.STRING, "eq",
+			Collections.singletonList("testValue"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).eq(
+				"testValue"
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testEqualsFilterOperatorNull() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.STRING, "eq",
+			Collections.singletonList(null));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).isNull(),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testFilterOperatorBadArgumentCount() {
+		FilterOperator.of(
+			EventAttributeDefinition.DataType.STRING, "contains",
+			new ArrayList<String>() {
+				{
+					add("test1");
+					add("test2");
+				}
+			});
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testFilterOperatorUnsupportedDataType() {
+		FilterOperator.of(
+			EventAttributeDefinition.DataType.STRING, "gt",
+			new ArrayList<String>() {
+				{
+					add("test");
+				}
+			});
+	}
+
+	@Test
+	public void testGreaterThanEqualsFilterOperatorDate() {
+		String dateString = "2021-06-01";
+
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.DATE, "ge",
+			Collections.singletonList(dateString));
+
+		LocalDate localDate = LocalDate.parse(dateString);
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).ge(
+				DateUtil.toDate(localDate.atStartOfDay(), ZoneId.of("UTC"))
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testGreaterThanEqualsFilterOperatorDuration() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.DURATION, "ge",
+			Collections.singletonList("123"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).ge(
+				123
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testGreaterThanEqualsFilterOperatorNumber() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.NUMBER, "ge",
+			Collections.singletonList("123"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).ge(
+				123.0
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testGreaterThanFilterOperatorDate() {
+		String dateString = "2021-06-01";
+
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.DATE, "gt",
+			Collections.singletonList(dateString));
+
+		LocalDate localDate = LocalDate.parse(dateString);
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).gt(
+				DateUtil.toDate(localDate.atStartOfDay(), ZoneId.of("UTC"))
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testGreaterThanFilterOperatorDuration() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.DURATION, "gt",
+			Collections.singletonList("123"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).gt(
+				123
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testGreaterThanFilterOperatorNumber() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.NUMBER, "gt",
+			Collections.singletonList("123"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).gt(
+				123.0
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testLessThanEqualsFilterOperatorDate() {
+		String dateString = "2020-06-01";
+
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.DATE, "le",
+			Collections.singletonList(dateString));
+
+		LocalDate localDate = LocalDate.parse(dateString);
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).le(
+				DateUtil.toDate(localDate.atStartOfDay(), ZoneId.of("UTC"))
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testLessThanEqualsFilterOperatorDuration() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.DURATION, "le",
+			Collections.singletonList("123"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).le(
+				123
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testLessThanEqualsFilterOperatorNumber() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.NUMBER, "le",
+			Collections.singletonList("123"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).le(
+				123.0
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testLessThanFilterOperatorDate() {
+		String dateString = "2021-06-01";
+
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.DATE, "lt",
+			Collections.singletonList(dateString));
+
+		LocalDate localDate = LocalDate.parse(dateString);
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).lt(
+				DateUtil.toDate(localDate.atStartOfDay(), ZoneId.of("UTC"))
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testLessThanFilterOperatorDuration() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.DURATION, "lt",
+			Collections.singletonList("123"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).lt(
+				123
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testLessThanFilterOperatorNumber() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.NUMBER, "lt",
+			Collections.singletonList("123"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).lt(
+				123.0
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testNotEqualsFilterOperator() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.STRING, "ne",
+			Collections.singletonList("testValue"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).ne(
+				"testValue"
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testNotEqualsFilterOperatorNull() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.STRING, "ne",
+			Collections.singletonList(null));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).isNotNull(),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testSimilarToFilterOperator() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.STRING, "similarTo",
+			Collections.singletonList("test.*Value"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).similarTo(
+				"test_%Value"
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testStartsWithFilterOperator() {
+		FilterOperator filterOperator = FilterOperator.of(
+			EventAttributeDefinition.DataType.STRING, "startsWith",
+			Collections.singletonList("testValue"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).similarTo(
+				"testValue%"
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+}
