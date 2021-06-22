@@ -131,6 +131,15 @@ public class OrganizationDog {
 		return organization;
 	}
 
+	public List<Organization> searchOrganizations(
+		String filterString, int page, int size) {
+
+		PageRequest pageRequest = PageRequest.of(page, size);
+
+		return _organizationRepository.searchOrganizations(
+			filterString, pageRequest);
+	}
+
 	public Organization updateOrganization(
 			JSONObject dataJSONObject, DataSource dataSource,
 			Organization organization)

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoOrganizationsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -44,6 +45,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
@@ -177,6 +179,25 @@ public class ElasticsearchOrganizationRepositoryImpl
 	}
 
 	@Override
+	public List<Organization> searchOrganizations(
+		String filterString, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							FilterStringToQueryBuilderConverter.convert(
+								filterString,
+								_faroInfoOrganizationsFilterStringConverterHelper));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
+	}
+
+	@Override
 	protected String getCollectionName() {
 		return "organizations";
 	}
@@ -212,5 +233,9 @@ public class ElasticsearchOrganizationRepositoryImpl
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FaroInfoOrganizationsFilterStringConverterHelper
+		_faroInfoOrganizationsFilterStringConverterHelper;
 
 }

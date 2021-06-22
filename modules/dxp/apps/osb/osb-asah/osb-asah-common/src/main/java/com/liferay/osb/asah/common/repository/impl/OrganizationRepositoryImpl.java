@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.helper.OrganizationsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
@@ -129,6 +130,26 @@ public class OrganizationRepositoryImpl extends BaseRepository {
 					Collections.singletonMap(
 						groupByField, record.get("terms"))),
 				(Integer)record.get("totalelements"))
+		);
+	}
+
+	public List<Organization> searchOrganizations(
+		String filterString, Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"Organization"
+		).where(
+			ConditionUtil.toCondition(
+				filterString, _organizationsFilterStringConverterHelper)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Organization(record.intoMap())
 		);
 	}
 

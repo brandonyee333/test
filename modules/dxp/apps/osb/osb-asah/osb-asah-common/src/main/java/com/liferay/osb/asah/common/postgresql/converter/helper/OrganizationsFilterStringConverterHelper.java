@@ -19,6 +19,8 @@ import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.jooq.Condition;
@@ -33,6 +35,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrganizationsFilterStringConverterHelper
 	extends DefaultFilterStringConverterHelper {
+
+	@Override
+	public Map<String, String> getFieldNameConversionMap() {
+		Map<String, String> map = new HashMap<>();
+
+		map.put("dataSourceId", "organization.dataSourceId");
+		map.put("id", "organization.id");
+		map.put("name", "organization.name");
+
+		return map;
+	}
 
 	@Override
 	public Condition getLogicFunctionCondition(
@@ -54,12 +67,12 @@ public class OrganizationsFilterStringConverterHelper
 
 		Condition condition = DSL.and(
 			DSL.field(
-				"dataSourceId"
+				"organization.dataSourceId"
 			).eq(
 				organization.getDataSourceId()
 			),
 			DSL.field(
-				"organizationPK"
+				"organization.parentOrganizationPK"
 			).eq(
 				organization.getOrganizationPK()
 			));

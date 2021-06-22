@@ -37,4 +37,7 @@ public interface OrganizationRepository
 	public List<Transformation> getOrganizationTransformations(
 		String apply, @Nullable String filterString, Pageable pageable);
 
+	public List<Organization> searchOrganizations(
+		String filterString, Pageable pageable);
+
 }
