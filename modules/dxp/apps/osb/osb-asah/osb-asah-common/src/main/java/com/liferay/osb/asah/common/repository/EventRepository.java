@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Event;
+import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
 
 import java.util.Date;
@@ -38,9 +39,17 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 
 	public long countByEventDefinitionId(long eventDefinitionId);
 
+	public long countTotalEvents(
+		@Nullable Long channelId,
+		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
+		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
+		@Nullable Date rangeStartDate);
+
 	public long countUniqueIndividuals(
-		@Nullable Long channelId, @Nullable Long eventDefinitionId,
-		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate);
+		@Nullable Long channelId,
+		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
+		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
+		@Nullable Date rangeStartDate);
 
 	public List<EventAttributeValue> findDistinctAttributeValues(
 		@Param("eventAttributeDefinitionId") Long eventAttributeDefinitionId,
@@ -51,7 +60,9 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 	public Optional<Event> findLastSeenEvent(@Nullable Long eventDefinitionId);
 
 	public long getAverageEventCountPerIndividual(
-		@Nullable Long channelId, @Nullable Long eventDefinitionId,
-		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate);
+		@Nullable Long channelId,
+		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
+		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
+		@Nullable Date rangeStartDate);
 
 }

@@ -18,12 +18,14 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.EventAnalysis;
+import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventRepository;
 
 import java.time.ZoneId;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,7 +37,8 @@ import org.springframework.stereotype.Component;
 public class EventAnalysisDog {
 
 	public EventAnalysis getEventAnalysis(
-		AnalysisType analysisType, Long channelId, Long eventDefinitionId,
+		AnalysisType analysisType, Long channelId,
+		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
 		TimeRange timeRange) {
 
 		EventAnalysis eventAnalysis = new EventAnalysis();
@@ -60,8 +63,8 @@ public class EventAnalysisDog {
 		if (analysisType.equals(AnalysisType.AVERAGE)) {
 			eventAnalysis.setValue(
 				_eventRepository.getAverageEventCountPerIndividual(
-					channelId, eventDefinitionId, rangeEndDate,
-					rangeStartDate));
+					channelId, eventAnalysisFilters, eventDefinitionId,
+					rangeEndDate, rangeStartDate));
 		}
 		else if (analysisType.equals(AnalysisType.TOTAL)) {
 			eventAnalysis.setValue(totalEvents);
@@ -69,8 +72,8 @@ public class EventAnalysisDog {
 		else if (analysisType.equals(AnalysisType.UNIQUE)) {
 			eventAnalysis.setValue(
 				_eventRepository.countUniqueIndividuals(
-					channelId, eventDefinitionId, rangeEndDate,
-					rangeStartDate));
+					channelId, eventAnalysisFilters, eventDefinitionId,
+					rangeEndDate, rangeStartDate));
 		}
 
 		return eventAnalysis;
