@@ -163,6 +163,65 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	}
 
 	@Override
+	public List<Metric> getGeolocationMetrics(
+		String assetId, Long channelId, MetricType metricType,
+		TimeRange timeRange) {
+
+		Field<String> countryField = DSL.field("country", String.class);
+		Field<BigDecimal> metricField = getMetricField(metricType);
+
+		return dslContext.select(
+			countryField, metricField
+		).from(
+			getTableName()
+		).where(
+			DSL.and(
+				DSL.field(
+					"assetId"
+				).eq(
+					assetId
+				),
+				DSL.field(
+					"channelId"
+				).eq(
+					channelId
+				),
+				DSL.field(
+					"projectId"
+				).eq(
+					ProjectIdThreadLocal.getProjectId()
+				),
+				DSL.field(
+					"eventDate"
+				).between(
+					DateUtil.toUTCLocalDateTime(
+						timeRange.getStartLocalDateTime(),
+						_timeZoneDog.getZoneId()),
+					DateUtil.toUTCLocalDateTime(
+						timeRange.getEndLocalDateTime(),
+						_timeZoneDog.getZoneId())
+				))
+		).groupBy(
+			countryField
+		).orderBy(
+			metricField.desc()
+		).fetch(
+		).map(
+			record -> {
+				Metric metric = new Metric(metricType);
+
+				metric.setValueKey(record.value1());
+
+				BigDecimal bigDecimal = record.value2();
+
+				metric.setValue(bigDecimal.doubleValue());
+
+				return metric;
+			}
+		);
+	}
+
+	@Override
 	public List<HistogramMetric> getHistogramMetrics(
 		String assetId, Long channelId, Interval interval,
 		MetricType metricType, TimeRange timeRange) {
