@@ -53,10 +53,9 @@ public class EventAnalysisDog {
 			timeRange.getStartLocalDateTime(),
 			ZoneId.of(_timeZoneDog.getTimeZoneId()));
 
-		long totalEvents =
-			_eventRepository.
-				countByChannelIdAndEventDateBetweenAndEventDefinitionId(
-					channelId, rangeStartDate, rangeEndDate, eventDefinitionId);
+		long totalEvents = _eventRepository.countTotalEvents(
+			channelId, eventAnalysisFilters, eventDefinitionId, rangeEndDate,
+			rangeStartDate);
 
 		eventAnalysis.setTotalEvents(totalEvents);
 
