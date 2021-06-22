@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.model.TrendClassification;
 
 import java.math.BigDecimal;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +41,14 @@ public class Metric {
 
 	public Metric(MetricType metricType) {
 		_metricType = metricType;
+	}
+
+	public void addMetric(Metric metric) {
+		if (_metrics == null) {
+			_metrics = new ArrayList<>();
+		}
+
+		_metrics.add(metric);
 	}
 
 	public void addPreviousValue(Double previousValue) {
