@@ -138,7 +138,7 @@ public class JournalAssetMetricRepositoryTest {
 
 		for (int i = 0; i < localDateTimes.size(); i++) {
 
-			// America/Fortaleza expected delta to UTC is 3 hours
+			// America/Fortaleza to UTC
 
 			Duration duration = Duration.between(
 				shiftedLocalDateTimes.get(i), localDateTimes.get(i));
