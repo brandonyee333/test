@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Event;
-import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AttributeType;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.filter.FilterOperator;
@@ -135,7 +134,8 @@ public class EventRepositoryImpl extends BaseRepository {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.select(
-				totalEventCount.div(_getUniqueIndividualsField()));
+				totalEventCount.div(
+					DSL.nullif(_getUniqueIndividualsField(), 0)));
 
 		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
 			"Event");
