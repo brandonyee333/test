@@ -68,6 +68,20 @@ public class JournalAssetMetricRepositoryTest
 
 	@SQLResource(
 		dataSource = "trinoDataSource",
+		resourcePath = "journal_asset_metric_views_device_last_30_days.sql"
+	)
+	@Test
+	public void testGetDeviceMetricsLast30Days() {
+		assertMetrics(
+			Arrays.asList(
+				new Tuple2("Desktop", 22D), new Tuple2("Mobile", 12D)),
+			_assetMetricRepository.getDeviceMetrics(
+				"e131fabc", 1L, JournalMetricType.VIEWS,
+				TimeRange.LAST_30_DAYS));
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
 		resourcePath = "journal_asset_metric_views_geolocation_last_30_days.sql"
 	)
 	@Test
