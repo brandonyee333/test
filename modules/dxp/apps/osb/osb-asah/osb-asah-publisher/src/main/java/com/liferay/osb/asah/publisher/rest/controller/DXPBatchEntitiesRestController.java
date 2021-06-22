@@ -126,15 +126,15 @@ public class DXPBatchEntitiesRestController {
 		while (fileItemIterator.hasNext()) {
 			FileItemStream fileItemStream = fileItemIterator.next();
 
-			String fieldName = fileItemStream.getFieldName();
+			String name = fileItemStream.getName();
 
 			if (_log.isDebugEnabled()) {
-				_log.debug("Received upload request " + fieldName);
+				_log.debug("Received upload request " + name);
 			}
 
 			Storage storage = _storageFactory.getStorage(
 				_getStorageConfiguration(
-					String.format("%s/%s", dataSourceId, fieldName)));
+					String.format("%s/%s", dataSourceId, name)));
 
 			ZipInputStream zipInputStream = new ZipInputStream(
 				fileItemStream.openStream());
