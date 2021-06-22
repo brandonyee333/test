@@ -31,6 +31,7 @@ import java.time.OffsetDateTime;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -162,6 +163,60 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).map(
 			record -> _getMetric(metricType, record)
 		);
+	}
+
+	@Override
+	public List<Metric> getDeviceMetrics(
+		String assetId, Long channelId, MetricType metricType,
+		TimeRange timeRange) {
+
+		Field<String> deviceTypeField = DSL.field("deviceType", String.class);
+		Field<BigDecimal> metricField = getMetricField(metricType);
+		Field<String> platformNameField = DSL.field(
+			"platformName", String.class);
+
+		Map<String, Metric> metrics = new LinkedHashMap<>();
+
+		dslContext.select(
+			deviceTypeField, metricField, platformNameField
+		).from(
+			getTableName()
+		).where(
+			_createWhereClause(Arrays.asList(assetId), channelId, timeRange)
+		).groupBy(
+			deviceTypeField, platformNameField
+		).orderBy(
+			deviceTypeField, metricField.desc()
+		).fetch(
+		).forEach(
+			record -> {
+				Metric deviceTypeMetric = new Metric(metricType);
+
+				String deviceType = record.value1();
+
+				deviceTypeMetric.setValueKey(deviceType);
+
+				metrics.putIfAbsent(deviceType, deviceTypeMetric);
+
+				deviceTypeMetric = metrics.get(deviceType);
+
+				Metric platformNameMetric = new Metric(metricType);
+
+				platformNameMetric.setValueKey(record.value3());
+
+				BigDecimal valueBigDecimal = record.value2();
+
+				platformNameMetric.setValue(valueBigDecimal.doubleValue());
+
+				deviceTypeMetric.addMetric(platformNameMetric);
+
+				deviceTypeMetric.setValue(
+					deviceTypeMetric.getValue() +
+						valueBigDecimal.doubleValue());
+			}
+		);
+
+		return new ArrayList<>(metrics.values());
 	}
 
 	@Override
