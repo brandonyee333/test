@@ -41,6 +41,7 @@ import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Record2;
 import org.jooq.WindowOverStep;
 import org.jooq.impl.DSL;
 
@@ -207,17 +208,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			metricField.desc()
 		).fetch(
 		).map(
-			record -> {
-				Metric metric = new Metric(metricType);
-
-				BigDecimal bigDecimal = record.value2();
-
-				metric.setValue(bigDecimal.doubleValue());
-
-				metric.setValueKey(record.value1());
-
-				return metric;
-			}
+			record -> _getMetric(metricType, record)
 		);
 	}
 
@@ -307,6 +298,20 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	@Autowired
 	@Qualifier("trinoDSLContext")
 	protected DSLContext dslContext;
+
+	private Metric _getMetric(
+		MetricType metricType, Record2<String, BigDecimal> record) {
+
+		Metric metric = new Metric(metricType);
+
+		BigDecimal bigDecimal = record.value2();
+
+		metric.setValue(bigDecimal.doubleValue());
+
+		metric.setValueKey(record.value1());
+
+		return metric;
+	}
 
 	private List<Field<BigDecimal>> _getMetricFields(Set<String> metricNames) {
 		return Stream.of(
