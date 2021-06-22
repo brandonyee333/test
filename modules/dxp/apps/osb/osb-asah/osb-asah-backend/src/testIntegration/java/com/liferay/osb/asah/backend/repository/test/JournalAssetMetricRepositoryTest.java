@@ -53,6 +53,21 @@ public class JournalAssetMetricRepositoryTest
 
 	@SQLResource(
 		dataSource = "trinoDataSource",
+		resourcePath = "journal_asset_metric_views_browser_last_30_days.sql"
+	)
+	@Test
+	public void testGetBrowserMetricsLast30Days() {
+		assertMetrics(
+			Arrays.asList(
+				new Tuple2("Firefox", 14D), new Tuple2("Chrome", 9D),
+				new Tuple2("Opera Desktop", 3D)),
+			_assetMetricRepository.getBrowserMetrics(
+				"e131fabc", 1L, JournalMetricType.VIEWS,
+				TimeRange.LAST_30_DAYS));
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
 		resourcePath = "journal_asset_metric_views_geolocation_last_30_days.sql"
 	)
 	@Test
