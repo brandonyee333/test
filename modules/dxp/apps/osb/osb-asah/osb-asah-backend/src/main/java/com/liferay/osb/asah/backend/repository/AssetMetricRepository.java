@@ -40,6 +40,10 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 		Set<String> assetIds, Long channelId, Set<String> selectedMetrics,
 		Pageable pageable, TimeRange timeRange);
 
+	public List<Metric> getBrowserMetrics(
+		String assetId, Long channelId, MetricType metricType,
+		TimeRange timeRange);
+
 	public List<Metric> getGeolocationMetrics(
 		String assetId, Long channelId, MetricType metricType,
 		TimeRange timeRange);

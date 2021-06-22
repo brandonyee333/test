@@ -141,6 +141,30 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	}
 
 	@Override
+	public List<Metric> getBrowserMetrics(
+		String assetId, Long channelId, MetricType metricType,
+		TimeRange timeRange) {
+
+		Field<String> browserNameField = DSL.field("browserName", String.class);
+		Field<BigDecimal> metricField = getMetricField(metricType);
+
+		return dslContext.select(
+			browserNameField, metricField
+		).from(
+			getTableName()
+		).where(
+			_createWhereClause(Arrays.asList(assetId), channelId, timeRange)
+		).groupBy(
+			browserNameField
+		).orderBy(
+			metricField.desc()
+		).fetch(
+		).map(
+			record -> _getMetric(metricType, record)
+		);
+	}
+
+	@Override
 	public List<Metric> getGeolocationMetrics(
 		String assetId, Long channelId, MetricType metricType,
 		TimeRange timeRange) {
