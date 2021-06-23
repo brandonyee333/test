@@ -2,11 +2,13 @@
 <head>
 <title>UsersAndOrganizationsEditUser</title>
 </head>
+
 <body>
-<table cellpadding="1" cellspacing="1" border="1">
+<table border="1" cellpadding="1" cellspacing="1">
 <thead>
 <tr><td rowspan="1" colspan="3">UsersAndOrganizationsEditUser</td></tr>
 </thead>
+
 <tbody>
 <tr>
 	<td>USER_INFORMATION_REMOVE</td>
@@ -229,7 +231,6 @@
 	<td>//fieldset[contains(@id,'additionalEmailAddresses')]//input[contains(@value,'${key_emailAddress}')]</td>
 	<td></td>
 </tr>
-
 <tr>
 	<td>USER_IDENTIFICATION_WEBSITES_URL</td>
 	<td>//fieldset[contains(@id,'websites')]//input[contains(@id,'websiteUrl')]</td>

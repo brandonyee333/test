@@ -2,11 +2,13 @@
 <head>
 <title>LoopLoginTermsofservice</title>
 </head>
+
 <body>
-<table cellpadding="1" cellspacing="1" border="1">
+<table border="1" cellpadding="1" cellspacing="1">
 <thead>
 <tr><td rowspan="1" colspan="3">LoopLoginTermsofservice</td></tr>
 </thead>
+
 <tbody>
 <tr>
 	<td>I_AGREE_BUTTON</td>

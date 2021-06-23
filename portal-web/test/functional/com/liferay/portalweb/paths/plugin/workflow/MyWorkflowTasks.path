@@ -2,11 +2,13 @@
 <head>
 <title>MyWorkflowTasks</title>
 </head>
+
 <body>
-<table cellpadding="1" cellspacing="1" border="1">
+<table border="1" cellpadding="1" cellspacing="1">
 <thead>
 <tr><td rowspan="1" colspan="3">MyWorkflowTasks</td></tr>
 </thead>
+
 <tbody>
 <tr>
 	<td>TABLE_GENERIC_ASSET_TITLE</td>
@@ -71,9 +73,9 @@
 	<td></td>
 </tr>
 <tr>
- 	<td>ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE_DUPLICATE</td>
- 	<td>//div[contains(@id,'workflowTasksSearchContainerSearchContainer')]//tr[contains(.,'${key_workflowTask}') and contains(.,'${key_workflowAssetTitle}')][2]/td[1]//a</td>
- 	<td></td>
+	<td>ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE_DUPLICATE</td>
+	<td>//div[contains(@id,'workflowTasksSearchContainerSearchContainer')]//tr[contains(.,'${key_workflowTask}') and contains(.,'${key_workflowAssetTitle}')][2]/td[1]//a</td>
+	<td></td>
 </tr>
 <tr>
 	<td>ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TYPE</td>
