@@ -261,7 +261,7 @@ public class TimeRangeTest {
 		Duration duration = Duration.between(
 			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
 
-		Assert.assertEquals(335, Math.abs(duration.toHours()));
+		Assert.assertEquals(13, Math.abs(duration.toDays()));
 	}
 
 	@Test
@@ -272,7 +272,7 @@ public class TimeRangeTest {
 		Duration duration = Duration.between(
 			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
 
-		Assert.assertEquals(1343, Math.abs(duration.toHours()));
+		Assert.assertEquals(55, Math.abs(duration.toDays()));
 	}
 
 	@Test
@@ -283,7 +283,7 @@ public class TimeRangeTest {
 		Duration duration = Duration.between(
 			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
 
-		Assert.assertEquals(1439, Math.abs(duration.toHours()));
+		Assert.assertEquals(59, Math.abs(duration.toDays()));
 	}
 
 	@Test
@@ -294,7 +294,7 @@ public class TimeRangeTest {
 		Duration duration = Duration.between(
 			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
 
-		Assert.assertEquals(4319, Math.abs(duration.toHours()));
+		Assert.assertEquals(179, Math.abs(duration.toDays()));
 	}
 
 	@Test
@@ -305,7 +305,7 @@ public class TimeRangeTest {
 		Duration duration = Duration.between(
 			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
 
-		Assert.assertEquals(8639, Math.abs(duration.toHours()));
+		Assert.assertEquals(359, Math.abs(duration.toDays()));
 	}
 
 	@Test

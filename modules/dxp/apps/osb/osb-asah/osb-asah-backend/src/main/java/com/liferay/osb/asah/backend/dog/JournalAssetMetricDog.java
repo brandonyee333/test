@@ -31,11 +31,11 @@ public class JournalAssetMetricDog extends BaseAssetMetricDog {
 
 	@Override
 	protected AssetMetricRepository getAssetMetricRepository() {
-		return _journalAssetMetricRepositoryImpl;
+		return _assetMetricRepository;
 	}
 
 	@Autowired
 	@Qualifier("JournalAssetMetricRepository")
-	private AssetMetricRepository _journalAssetMetricRepositoryImpl;
+	private AssetMetricRepository _assetMetricRepository;
 
 }

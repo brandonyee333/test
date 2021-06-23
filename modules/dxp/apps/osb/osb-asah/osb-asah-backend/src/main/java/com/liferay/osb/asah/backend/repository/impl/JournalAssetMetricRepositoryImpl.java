@@ -31,7 +31,7 @@ import org.springframework.stereotype.Repository;
 @ConditionalOnProperty(havingValue = "true", value = "osb.asah.trino.enabled")
 @Repository("JournalAssetMetricRepository")
 public class JournalAssetMetricRepositoryImpl
-	extends BaseAssetMetricRepositoryImpl {
+	extends BaseAssetMetricRepository {
 
 	@Override
 	protected Field<BigDecimal> getMetricField(MetricType metricType) {

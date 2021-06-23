@@ -42,7 +42,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
-public abstract class BaseAssetMetricRepositoryImpl
+public abstract class BaseAssetMetricRepository
 	implements AssetMetricRepository {
 
 	@Override
