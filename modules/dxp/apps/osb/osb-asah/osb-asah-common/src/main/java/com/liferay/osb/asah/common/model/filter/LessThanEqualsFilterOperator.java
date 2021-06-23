@@ -40,7 +40,7 @@ public class LessThanEqualsFilterOperator extends FilterOperator {
 
 	@Override
 	public Condition getCondition(Field field) {
-		return field.le(values.get(0));
+		return field.le(getValue(dataType, values.get(0)));
 	}
 
 	@Override

@@ -14,9 +14,13 @@
 
 package com.liferay.osb.asah.common.model.filter;
 
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import java.util.List;
 
@@ -81,6 +85,7 @@ public abstract class FilterOperator {
 
 		_validate(dataType, expectedArgumentCount, name, values);
 
+		this.dataType = dataType;
 		this.values = values;
 	}
 
@@ -90,16 +95,37 @@ public abstract class FilterOperator {
 
 		_validate(dataType, 1, name, values);
 
+		this.dataType = dataType;
 		this.values = values;
-	}
-
-	protected List<String> formatStringValues() {
-		return ListUtil.map(values, StringUtil::unquoteAndDecodeInnerQuotes);
 	}
 
 	protected abstract List<EventAttributeDefinition.DataType>
 		getSupportedDataTypes();
 
+	protected Object getValue(
+		EventAttributeDefinition.DataType dataType, String value) {
+
+		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
+			return Boolean.valueOf(value);
+		}
+		else if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
+			LocalDate localDate = LocalDate.parse(value);
+
+			return DateUtil.toDate(
+				localDate.atStartOfDay(),
+				ZoneId.of(TimeZoneDogUtil.getTimeZoneId()));
+		}
+		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
+			return Long.valueOf(value);
+		}
+		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
+			return Float.valueOf(value);
+		}
+
+		return StringUtil.unquoteAndDecodeInnerQuotes(value);
+	}
+
+	protected EventAttributeDefinition.DataType dataType;
 	protected List<String> values;
 
 	private void _validate(

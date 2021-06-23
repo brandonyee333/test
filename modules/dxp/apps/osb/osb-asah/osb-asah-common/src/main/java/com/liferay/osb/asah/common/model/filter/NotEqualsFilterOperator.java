@@ -39,10 +39,10 @@ public class NotEqualsFilterOperator extends FilterOperator {
 
 	@Override
 	public Condition getCondition(Field field) {
-		Object value = values.get(0);
+		String value = values.get(0);
 
 		if (value != null) {
-			return field.ne(value);
+			return field.ne(getValue(dataType, value));
 		}
 
 		return field.isNotNull();

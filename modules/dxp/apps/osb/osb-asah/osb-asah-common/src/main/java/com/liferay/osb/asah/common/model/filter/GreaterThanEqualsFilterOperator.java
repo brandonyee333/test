@@ -40,7 +40,7 @@ public class GreaterThanEqualsFilterOperator extends FilterOperator {
 
 	@Override
 	public Condition getCondition(Field field) {
-		return field.ge(values.get(0));
+		return field.ge(getValue(dataType, values.get(0)));
 	}
 
 	@Override

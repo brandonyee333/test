@@ -42,17 +42,13 @@ public class EqualsFilterOperator extends FilterOperator {
 
 	@Override
 	public Condition getCondition(Field field) {
-		Object value = values.get(0);
+		String value = values.get(0);
 
 		if (value == null) {
 			return field.isNull();
 		}
-		else if (value instanceof JSONArray) {
-			return field.in(JSONUtil.toObjectList((JSONArray)value));
-		}
-		else {
-			return field.eq(value);
-		}
+
+		return field.eq(getValue(dataType, value));
 	}
 
 	@Override

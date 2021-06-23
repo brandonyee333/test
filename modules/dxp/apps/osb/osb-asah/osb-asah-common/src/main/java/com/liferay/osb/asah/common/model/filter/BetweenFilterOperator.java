@@ -42,7 +42,9 @@ public class BetweenFilterOperator extends FilterOperator {
 
 	@Override
 	public Condition getCondition(Field field) {
-		return DSL.and(field.ge(values.get(0)), field.le(values.get(1)));
+		return DSL.and(
+			field.ge(getValue(dataType, values.get(0))),
+			field.le(getValue(dataType, values.get(1))));
 	}
 
 	@Override

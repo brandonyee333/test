@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Collections;
@@ -40,28 +39,16 @@ public class ContainsFilterOperator extends FilterOperator {
 	}
 
 	@Override
-	public List<String> formatStringValues() {
-		return ListUtil.map(
-			values,
-			argument -> StringUtil.unquoteAndDecodeInnerQuotes(
-				String.valueOf(argument)));
-	}
-
-	@Override
 	public Condition getCondition(Field field) {
-		List<String> values = formatStringValues();
-
-		return field.containsIgnoreCase(values.get(0));
+		return field.containsIgnoreCase(getValue(dataType, values.get(0)));
 	}
 
 	@Override
 	public QueryBuilder getQueryBuilder(String fieldName) {
-		List<String> values = formatStringValues();
-
 		return QueryBuilders.regexpQuery(
 			fieldName,
 			FilterStringToQueryBuilderConverter.buildIgnoreCaseRegExp(
-				values.get(0)));
+				StringUtil.unquoteAndDecodeInnerQuotes(values.get(0))));
 	}
 
 	@Override
