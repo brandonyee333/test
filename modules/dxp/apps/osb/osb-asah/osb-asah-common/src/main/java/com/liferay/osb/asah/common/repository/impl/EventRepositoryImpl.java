@@ -210,19 +210,20 @@ public class EventRepositoryImpl extends BaseRepository {
 					eventAnalysisFilter.getValues());
 
 				condition = condition.and(
-					filterOperator.getCondition(DSL.field("attributeValue")));
+					filterOperator.getCondition(
+						DSL.field(attributeType.getValueFieldName())));
 			}
 
 			conditions = conditions.or(condition);
 		}
 
-		Field<Object> field = DSL.field("eventId");
+		Field<Object> field = DSL.field(attributeType.getJoinFieldName());
 
 		SelectHavingConditionStep<Record1<Object>> selectHavingConditionStep =
 			_dslContext.select(
 				field
 			).from(
-				"EventAttribute"
+				attributeType.getTableName()
 			).where(
 				conditions
 			).groupBy(
@@ -234,7 +235,8 @@ public class EventRepositoryImpl extends BaseRepository {
 				)
 			);
 
-		Field<Object> joinFieldTableField = DSL.field("Event.id");
+		Field<Object> joinFieldTableField = DSL.field(
+			_getJoinFieldTableName(attributeType));
 
 		return joinFieldTableField.in(selectHavingConditionStep);
 	}
@@ -259,6 +261,14 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		return conditions;
+	}
+
+	private String _getJoinFieldTableName(AttributeType attributeType) {
+		if (attributeType.equals(AttributeType.EVENT)) {
+			return "id";
+		}
+
+		return "individualId";
 	}
 
 	private Field<Integer> _getUniqueIndividualsField() {
