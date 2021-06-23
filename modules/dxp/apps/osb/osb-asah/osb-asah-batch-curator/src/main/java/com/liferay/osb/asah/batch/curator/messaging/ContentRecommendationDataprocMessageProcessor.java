@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.storage.impl.GoogleStorageArchiver;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.File;
@@ -122,6 +123,7 @@ public class ContentRecommendationDataprocMessageProcessor
 					_contentRecommendationsBucketTemplate, "{region}",
 					System.getenv("LCP_PROJECT_CLUSTER")),
 				String.format("%s/%s", jobId, jobRunId),
+				ProjectIdThreadLocal.getProjectId(),
 				DateUtil.toUTCDate(jobRunJSONObject.getString("createdDate")),
 				"");
 

@@ -23,7 +23,6 @@ import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -54,20 +53,23 @@ import org.springframework.stereotype.Component;
 public class GoogleStorageArchiver {
 
 	public void archiveAsync(
-		String bucket, String bucketFolder, File file, String fileName) {
+		String bucket, String bucketFolder, File file, String fileName,
+		String projectId) {
 
 		_executorService.submit(
-			() -> _archive(bucket, bucketFolder, file, fileName));
+			() -> _archive(bucket, bucketFolder, file, fileName, projectId));
 	}
 
 	public File readSparkJobResult(
-			String bucket, String bucketFolder, Date sparkJobResultDateAfter,
-			String sparkJobResultPathPrefix)
+			String bucket, String bucketFolder, String projectId,
+			Date sparkJobResultDateAfter, String sparkJobResultPathPrefix)
 		throws Exception {
 
 		BlobId successBlobId = BlobId.of(
 			bucket,
-			_getBlobName(bucketFolder, sparkJobResultPathPrefix + "/_SUCCESS"));
+			_getBlobName(
+				bucketFolder, sparkJobResultPathPrefix + "/_SUCCESS",
+				projectId));
 
 		Blob successBlob = _storage.get(successBlobId);
 
@@ -93,7 +95,8 @@ public class GoogleStorageArchiver {
 		Page<Blob> blobs = _storage.list(
 			bucket,
 			Storage.BlobListOption.prefix(
-				_getBlobName(bucketFolder, sparkJobResultPathPrefix)));
+				_getBlobName(
+					bucketFolder, sparkJobResultPathPrefix, projectId)));
 
 		String tempFileName = _createTempFileName(".zip", "export");
 
@@ -129,7 +132,8 @@ public class GoogleStorageArchiver {
 	}
 
 	private void _archive(
-		String bucket, String bucketFolder, File file, String fileName) {
+		String bucket, String bucketFolder, File file, String fileName,
+		String projectId) {
 
 		byte[] content = null;
 
@@ -145,7 +149,9 @@ public class GoogleStorageArchiver {
 		}
 
 		Blob blob = _uploadBlob(
-			0, _buildBlobInfo(bucket, _getBlobName(bucketFolder, fileName)),
+			0,
+			_buildBlobInfo(
+				bucket, _getBlobName(bucketFolder, fileName, projectId)),
 			content);
 
 		if (blob == null) {
@@ -201,10 +207,12 @@ public class GoogleStorageArchiver {
 		}
 	}
 
-	private String _getBlobName(String bucketFolder, String fileName) {
+	private String _getBlobName(
+		String bucketFolder, String fileName, String projectId) {
+
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(ProjectIdThreadLocal.getProjectId());
+		sb.append(projectId);
 
 		if (bucketFolder != null) {
 			sb.append("/");

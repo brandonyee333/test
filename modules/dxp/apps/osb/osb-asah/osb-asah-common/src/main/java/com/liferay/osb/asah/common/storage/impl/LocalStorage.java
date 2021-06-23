@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.storage.impl;
 
 import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -92,7 +93,8 @@ public class LocalStorage implements Storage {
 			return _googleStorageArchiver.readSparkJobResult(
 				_storageConfiguration.getGoogleBucket(),
 				_storageConfiguration.getGoogleBucketFolder(),
-				sparkJobResultDateAfter, sparkJobResultPathPrefix);
+				ProjectIdThreadLocal.getProjectId(), sparkJobResultDateAfter,
+				sparkJobResultPathPrefix);
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -103,6 +105,15 @@ public class LocalStorage implements Storage {
 
 	public void setGoogleStorageArchiver(
 		GoogleStorageArchiver googleStorageArchiver) {
+
+		if ((googleStorageArchiver != null) && _log.isInfoEnabled()) {
+			_log.info(
+				String.format(
+					"Google storage archiver initialized for bucket %s and " +
+						"folder %s",
+					_storageConfiguration.getGoogleBucket(),
+					_storageConfiguration.getGoogleBucketFolder()));
+		}
 
 		_googleStorageArchiver = googleStorageArchiver;
 	}
@@ -158,10 +169,15 @@ public class LocalStorage implements Storage {
 			return;
 		}
 
+		if (_log.isInfoEnabled()) {
+			_log.info(String.format("Archiving file %s ", file));
+		}
+
 		_googleStorageArchiver.archiveAsync(
 			_storageConfiguration.getGoogleBucket(),
 			_storageConfiguration.getGoogleBucketFolder(), file,
-			_getArchiveFileName(file.getName()));
+			_getArchiveFileName(file.getName()),
+			ProjectIdThreadLocal.getProjectId());
 	}
 
 	private void _archiveSuccessFile() throws IOException {
