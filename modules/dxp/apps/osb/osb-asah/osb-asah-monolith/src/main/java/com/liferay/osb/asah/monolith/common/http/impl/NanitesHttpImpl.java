@@ -17,6 +17,8 @@ package com.liferay.osb.asah.monolith.common.http.impl;
 import com.liferay.osb.asah.batch.curator.rest.controller.NanitesRestController;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 
+import java.util.List;
+
 import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,11 @@ import org.springframework.stereotype.Component;
 @Component
 @Primary
 public class NanitesHttpImpl implements NanitesHttp {
+
+	@Override
+	public void executeAsahTask(List<Long> asahTaskIds) {
+		_nanitesRestController.post(asahTaskIds);
+	}
 
 	@Override
 	public void executeAsahTask(Long asahTaskId) {

@@ -14,12 +14,16 @@
 
 package com.liferay.osb.asah.common.http;
 
+import java.util.List;
+
 import org.json.JSONArray;
 
 /**
  * @author Shinn Lok
  */
 public interface NanitesHttp {
+
+	public void executeAsahTask(List<Long> asahTaskIds);
 
 	public void executeAsahTask(Long asahTaskId);
 

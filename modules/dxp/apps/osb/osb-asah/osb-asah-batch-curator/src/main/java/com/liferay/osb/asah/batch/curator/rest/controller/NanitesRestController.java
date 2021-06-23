@@ -23,6 +23,8 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.List;
+
 import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/nanites")
 @RestController
 public class NanitesRestController {
+
+	@PostMapping
+	public void post(@RequestBody List<Long> asahTaskIds) {
+		_asahTaskManager.executeAsahTask(asahTaskIds, false);
+	}
 
 	@PostMapping("/{asahTaskId}")
 	public void post(@PathVariable Long asahTaskId) {

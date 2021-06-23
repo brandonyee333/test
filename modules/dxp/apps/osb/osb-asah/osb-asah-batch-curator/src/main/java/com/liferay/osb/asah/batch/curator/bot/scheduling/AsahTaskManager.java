@@ -79,6 +79,12 @@ public class AsahTaskManager {
 		}
 	}
 
+	public void executeAsahTask(List<Long> asahTaskIds, boolean force) {
+		for (Long asahTaskId : asahTaskIds) {
+			executeAsahTask(_asahTaskDog.getAsahTask(asahTaskId), force);
+		}
+	}
+
 	public void executeAsahTask(Long asahTaskId, boolean force) {
 		executeAsahTask(_asahTaskDog.getAsahTask(asahTaskId), force);
 	}

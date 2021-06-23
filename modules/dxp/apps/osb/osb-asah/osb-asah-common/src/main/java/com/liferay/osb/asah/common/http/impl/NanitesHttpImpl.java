@@ -19,6 +19,8 @@ import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.spring.http.Http;
 
+import java.util.List;
+
 import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,13 @@ import org.springframework.stereotype.Component;
 @Component
 @MonolithExclude
 public class NanitesHttpImpl implements NanitesHttp {
+
+	@Override
+	public void executeAsahTask(List<Long> asahTaskIds) {
+		_http.exchangeIfUp(
+			ServiceConstants.URL_BATCH_CURATOR, "/nanites", HttpMethod.POST,
+			asahTaskIds);
+	}
 
 	@Override
 	public void executeAsahTask(Long asahTaskId) {
