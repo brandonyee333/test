@@ -17,8 +17,10 @@ package com.liferay.osb.asah.common.dog.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.OrganizationDog;
 import com.liferay.osb.asah.common.entity.AsahTask;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Organization;
@@ -91,6 +93,11 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 			_objectMapper.convertValue(
 				_liferayDataSourceJSONObject, DataSource.class));
 
+		Assert.assertNotNull(
+			_dxpEntityDog.fetchByFieldsAndType(
+				Collections.singletonMap("fields.name", organization.getName()),
+				DXPEntity.Type.ORGANIZATION));
+
 		Set<Field> fields = organization.getCustomFields();
 
 		Stream<Field> stream = fields.stream();
@@ -139,6 +146,11 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(0, _organizationRepository.count());
 
+		Assert.assertNull(
+			_dxpEntityDog.fetchByFieldsAndType(
+				Collections.singletonMap("id", organization.getId()),
+				DXPEntity.Type.ORGANIZATION));
+
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"UpdateDynamicMembershipsNanite");
 
@@ -183,6 +195,17 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertNotNull(dateFoundedField.getValue());
 
+		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
+			Collections.singletonMap("id", organization.getId()),
+			DXPEntity.Type.ORGANIZATION);
+
+		Assert.assertEquals("marketing", dxpEntity.getName());
+
+		Assert.assertEquals(
+			organization,
+			_objectMapper.convertValue(
+				dxpEntity.getFieldsJSONObject(), Organization.class));
+
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"UpdateDynamicMembershipsNanite");
 
@@ -191,6 +214,9 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
 	private FieldMappingRepository _fieldMappingRepository;

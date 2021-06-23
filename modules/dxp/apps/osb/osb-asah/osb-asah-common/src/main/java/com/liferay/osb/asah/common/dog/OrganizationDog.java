@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Organization;
@@ -81,7 +84,12 @@ public class OrganizationDog {
 			organization = _organizationRepository.save(organization);
 		}
 
-		return populateOrganization(organization);
+		organization = populateOrganization(organization);
+
+		_dxpEntityDog.addDXPEntity(
+			_createDXPOrganization(organization), DXPEntity.Type.ORGANIZATION);
+
+		return organization;
 	}
 
 	public void deleteOrganization(Organization organization) {
@@ -90,6 +98,8 @@ public class OrganizationDog {
 		}
 
 		_organizationRepository.delete(organization);
+
+		_dxpEntityDog.delete(_createDXPOrganization(organization));
 
 		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
@@ -169,6 +179,8 @@ public class OrganizationDog {
 
 		organization = _organizationRepository.save(organization);
 
+		_dxpEntityDog.updateDXPEntity(_createDXPOrganization(organization));
+
 		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
@@ -181,14 +193,36 @@ public class OrganizationDog {
 		return populateOrganization(organization);
 	}
 
+	private com.liferay.osb.asah.common.model.Organization
+		_createDXPOrganization(Organization organization) {
+
+		com.liferay.osb.asah.common.model.Organization dxpOrganization =
+			new com.liferay.osb.asah.common.model.Organization();
+
+		dxpOrganization.setFieldsJSONObject(
+			_objectMapper.convertValue(organization, JSONObject.class));
+
+		dxpOrganization.setId(organization.getId());
+
+		dxpOrganization.setDataSourceId(organization.getDataSourceId());
+
+		return dxpOrganization;
+	}
+
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
 	private FieldDog _fieldDog;
 
 	@Autowired
 	private FieldRepository _fieldRepository;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private OrganizationRepository _organizationRepository;
