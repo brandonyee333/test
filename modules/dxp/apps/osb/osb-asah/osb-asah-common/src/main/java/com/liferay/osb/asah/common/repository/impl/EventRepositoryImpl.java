@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Event;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AttributeType;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.filter.FilterOperator;
@@ -211,7 +212,7 @@ public class EventRepositoryImpl extends BaseRepository {
 
 				condition = condition.and(
 					filterOperator.getCondition(
-						DSL.field(attributeType.getValueFieldName())));
+						_getField(eventAnalysisFilter)));
 			}
 
 			conditions = conditions.or(condition);
@@ -261,6 +262,30 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		return conditions;
+	}
+
+	private Field _getField(EventAnalysisFilter eventAnalysisFilter) {
+		AttributeType attributeType = eventAnalysisFilter.getAttributeType();
+
+		String valueFieldName = attributeType.getValueFieldName();
+
+		EventAttributeDefinition.DataType dataType =
+			eventAnalysisFilter.getDataType();
+
+		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
+			return DSL.field("try_cast_boolean(" + valueFieldName + ")");
+		}
+		else if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
+			return DSL.field("try_cast_timestamp(" + valueFieldName + ")");
+		}
+		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
+			return DSL.field("try_cast_bigint(" + valueFieldName + ")");
+		}
+		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
+			return DSL.field("try_cast_float(" + valueFieldName + ")");
+		}
+
+		return DSL.field(valueFieldName);
 	}
 
 	private String _getJoinFieldTableName(AttributeType attributeType) {
