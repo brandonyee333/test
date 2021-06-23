@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -101,11 +102,12 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 			Stream<AsahTask> stream = StreamSupport.stream(
 				asahTasks.spliterator(), true);
 
-			stream.map(
-				AsahTask::getId
-			).forEach(
-				_nanitesHttp::executeAsahTask
-			);
+			_nanitesHttp.executeAsahTask(
+				stream.map(
+					AsahTask::getId
+				).collect(
+					Collectors.toList()
+				));
 		}
 		catch (Exception exception) {
 			throw new RuntimeException(
