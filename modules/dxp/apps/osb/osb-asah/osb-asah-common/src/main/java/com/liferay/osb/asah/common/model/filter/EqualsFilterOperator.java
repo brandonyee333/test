@@ -15,8 +15,10 @@
 package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilder;
@@ -32,8 +34,10 @@ import org.json.JSONArray;
  */
 public class EqualsFilterOperator extends FilterOperator {
 
-	public EqualsFilterOperator(List<String> values) {
-		super("eq", values);
+	public EqualsFilterOperator(
+		EventAttributeDefinition.DataType dataType, List<String> values) {
+
+		super(dataType, "eq", values);
 	}
 
 	@Override
@@ -66,6 +70,19 @@ public class EqualsFilterOperator extends FilterOperator {
 		else {
 			return QueryBuilders.termQuery(fieldName, value);
 		}
+	}
+
+	@Override
+	protected List<EventAttributeDefinition.DataType> getSupportedDataTypes() {
+		return new ArrayList<EventAttributeDefinition.DataType>() {
+			{
+				add(EventAttributeDefinition.DataType.BOOLEAN);
+				add(EventAttributeDefinition.DataType.DATE);
+				add(EventAttributeDefinition.DataType.DURATION);
+				add(EventAttributeDefinition.DataType.NUMBER);
+				add(EventAttributeDefinition.DataType.STRING);
+			}
+		};
 	}
 
 }

@@ -15,7 +15,9 @@
 package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilder;
@@ -30,8 +32,10 @@ import org.jooq.Field;
  */
 public class LessThanFilterOperator extends FilterOperator {
 
-	public LessThanFilterOperator(List<String> values) {
-		super("lt", values);
+	public LessThanFilterOperator(
+		EventAttributeDefinition.DataType dataType, List<String> values) {
+
+		super(dataType, "lt", values);
 	}
 
 	@Override
@@ -48,6 +52,17 @@ public class LessThanFilterOperator extends FilterOperator {
 		rangeQueryBuilder.timeZone(TimeZoneDogUtil.getTimeZoneId());
 
 		return rangeQueryBuilder;
+	}
+
+	@Override
+	protected List<EventAttributeDefinition.DataType> getSupportedDataTypes() {
+		return new ArrayList<EventAttributeDefinition.DataType>() {
+			{
+				add(EventAttributeDefinition.DataType.DATE);
+				add(EventAttributeDefinition.DataType.DURATION);
+				add(EventAttributeDefinition.DataType.NUMBER);
+			}
+		};
 	}
 
 }

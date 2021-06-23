@@ -15,7 +15,9 @@
 package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilder;
@@ -29,8 +31,10 @@ import org.jooq.Field;
  */
 public class NotEqualsFilterOperator extends FilterOperator {
 
-	public NotEqualsFilterOperator(List<String> values) {
-		super("ne", values);
+	public NotEqualsFilterOperator(
+		EventAttributeDefinition.DataType dataType, List<String> values) {
+
+		super(dataType, "ne", values);
 	}
 
 	@Override
@@ -54,6 +58,19 @@ public class NotEqualsFilterOperator extends FilterOperator {
 		}
 
 		return QueryBuilders.existsQuery(fieldName);
+	}
+
+	@Override
+	protected List<EventAttributeDefinition.DataType> getSupportedDataTypes() {
+		return new ArrayList<EventAttributeDefinition.DataType>() {
+			{
+				add(EventAttributeDefinition.DataType.BOOLEAN);
+				add(EventAttributeDefinition.DataType.DATE);
+				add(EventAttributeDefinition.DataType.DURATION);
+				add(EventAttributeDefinition.DataType.NUMBER);
+				add(EventAttributeDefinition.DataType.STRING);
+			}
+		};
 	}
 
 }

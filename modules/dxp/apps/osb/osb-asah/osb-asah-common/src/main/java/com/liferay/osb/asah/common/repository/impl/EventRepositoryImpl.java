@@ -207,6 +207,7 @@ public class EventRepositoryImpl extends BaseRepository {
 
 			for (EventAnalysisFilter eventAnalysisFilter : entry.getValue()) {
 				FilterOperator filterOperator = FilterOperator.of(
+					eventAnalysisFilter.getDataType(),
 					eventAnalysisFilter.getOperator(),
 					eventAnalysisFilter.getValues());
 

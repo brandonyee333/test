@@ -15,9 +15,11 @@
 package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilder;
@@ -31,8 +33,10 @@ import org.jooq.Field;
  */
 public class ContainsFilterOperator extends FilterOperator {
 
-	public ContainsFilterOperator(List<String> values) {
-		super("contains", values);
+	public ContainsFilterOperator(
+		EventAttributeDefinition.DataType dataType, List<String> values) {
+
+		super(dataType, "contains", values);
 	}
 
 	@Override
@@ -58,6 +62,12 @@ public class ContainsFilterOperator extends FilterOperator {
 			fieldName,
 			FilterStringToQueryBuilderConverter.buildIgnoreCaseRegExp(
 				values.get(0)));
+	}
+
+	@Override
+	protected List<EventAttributeDefinition.DataType> getSupportedDataTypes() {
+		return Collections.singletonList(
+			EventAttributeDefinition.DataType.STRING);
 	}
 
 }

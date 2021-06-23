@@ -15,7 +15,9 @@
 package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilder;
@@ -32,8 +34,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class BetweenFilterOperator extends FilterOperator {
 
-	public BetweenFilterOperator(List<String> values) {
-		super(2, "between", values);
+	public BetweenFilterOperator(
+		EventAttributeDefinition.DataType dataType, List<String> values) {
+
+		super(dataType, 2, "between", values);
 	}
 
 	@Override
@@ -52,6 +56,16 @@ public class BetweenFilterOperator extends FilterOperator {
 		).timeZone(
 			_timeZoneDog.getTimeZoneId()
 		);
+	}
+
+	protected List<EventAttributeDefinition.DataType> getSupportedDataTypes() {
+		return new ArrayList<EventAttributeDefinition.DataType>() {
+			{
+				add(EventAttributeDefinition.DataType.DATE);
+				add(EventAttributeDefinition.DataType.DURATION);
+				add(EventAttributeDefinition.DataType.NUMBER);
+			}
+		};
 	}
 
 	@Autowired

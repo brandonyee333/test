@@ -14,15 +14,10 @@
 
 package com.liferay.osb.asah.common.model.filter;
 
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-
-import java.util.Date;
 import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilder;
@@ -30,46 +25,47 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.jooq.Condition;
 import org.jooq.Field;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 /**
  * @author Leslie Wong
  */
 public abstract class FilterOperator {
 
-	public static FilterOperator of(String name, List<String> values) {
+	public static FilterOperator of(
+		EventAttributeDefinition.DataType dataType, String name,
+		List<String> values) {
+
 		if (name.equals("between")) {
-			return new BetweenFilterOperator(values);
+			return new BetweenFilterOperator(dataType, values);
 		}
 		else if (name.equals("contains")) {
-			return new ContainsFilterOperator(values);
+			return new ContainsFilterOperator(dataType, values);
 		}
 		else if (name.equals("endsWith")) {
-			return new EndsWithFilterOperator(values);
+			return new EndsWithFilterOperator(dataType, values);
 		}
 		else if (name.equals("eq")) {
-			return new EqualsFilterOperator(values);
+			return new EqualsFilterOperator(dataType, values);
 		}
 		else if (name.equals("ge")) {
-			return new GreaterThanEqualsFilterOperator(values);
+			return new GreaterThanEqualsFilterOperator(dataType, values);
 		}
 		else if (name.equals("gt")) {
-			return new GreaterThanFilterOperator(values);
+			return new GreaterThanFilterOperator(dataType, values);
 		}
 		else if (name.equals("le")) {
-			return new LessThanEqualsFilterOperator(values);
+			return new LessThanEqualsFilterOperator(dataType, values);
 		}
 		else if (name.equals("lt")) {
-			return new LessThanFilterOperator(values);
+			return new LessThanFilterOperator(dataType, values);
 		}
 		else if (name.equals("ne")) {
-			return new NotEqualsFilterOperator(values);
+			return new NotEqualsFilterOperator(dataType, values);
 		}
 		else if (name.equals("similarTo")) {
-			return new SimilarToFilterOperator(values);
+			return new SimilarToFilterOperator(dataType, values);
 		}
 		else if (name.equals("startsWith")) {
-			return new StartsWithFilterOperator(values);
+			return new StartsWithFilterOperator(dataType, values);
 		}
 
 		throw new IllegalArgumentException("Invalid operator: " + name);
@@ -80,43 +76,35 @@ public abstract class FilterOperator {
 	public abstract QueryBuilder getQueryBuilder(String fieldName);
 
 	protected FilterOperator(
-		int expectedArgumentCount, String name, List<String> values) {
+		EventAttributeDefinition.DataType dataType, int expectedArgumentCount,
+		String name, List<String> values) {
 
-		_validate(expectedArgumentCount, name, values);
-
-		this.values = values;
-	}
-
-	protected FilterOperator(String name, List<String> values) {
-		_validate(1, name, values);
+		_validate(dataType, expectedArgumentCount, name, values);
 
 		this.values = values;
 	}
 
-	protected List<Date> formatDateValues() {
-		return ListUtil.map(
-			values,
-			value -> {
-				LocalDate localDate = LocalDate.parse(value);
+	protected FilterOperator(
+		EventAttributeDefinition.DataType dataType, String name,
+		List<String> values) {
 
-				return DateUtil.toDate(
-					localDate.atStartOfDay(),
-					ZoneId.of(_timeZoneDog.getTimeZoneId()));
-			});
-	}
+		_validate(dataType, 1, name, values);
 
-	protected List<Long> formatNumberValues() {
-		return ListUtil.map(values, Long::valueOf);
+		this.values = values;
 	}
 
 	protected List<String> formatStringValues() {
 		return ListUtil.map(values, StringUtil::unquoteAndDecodeInnerQuotes);
 	}
 
+	protected abstract List<EventAttributeDefinition.DataType>
+		getSupportedDataTypes();
+
 	protected List<String> values;
 
 	private void _validate(
-		int expectedArgumentCount, String name, List<String> values) {
+		EventAttributeDefinition.DataType dataType, int expectedArgumentCount,
+		String name, List<String> values) {
 
 		if (expectedArgumentCount != values.size()) {
 			throw new IllegalArgumentException(
@@ -124,9 +112,15 @@ public abstract class FilterOperator {
 					"Expected %d value(s) for %s operation, got %d instead: %s",
 					expectedArgumentCount, name, values.size(), values));
 		}
-	}
 
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
+		List<EventAttributeDefinition.DataType> supportedDataTypes =
+			getSupportedDataTypes();
+
+		if (!supportedDataTypes.contains(dataType)) {
+			throw new IllegalArgumentException(
+				"Filter operation " + name + " does not support data type " +
+					dataType);
+		}
+	}
 
 }

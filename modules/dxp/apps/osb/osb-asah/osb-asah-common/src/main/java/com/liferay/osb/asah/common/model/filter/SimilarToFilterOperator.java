@@ -14,9 +14,11 @@
 
 package com.liferay.osb.asah.common.model.filter;
 
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -32,8 +34,10 @@ import org.jooq.Field;
  */
 public class SimilarToFilterOperator extends FilterOperator {
 
-	public SimilarToFilterOperator(List<String> values) {
-		super("similarTo", values);
+	public SimilarToFilterOperator(
+		EventAttributeDefinition.DataType dataType, List<String> values) {
+
+		super(dataType, "similarTo", values);
 	}
 
 	@Override
@@ -57,6 +61,12 @@ public class SimilarToFilterOperator extends FilterOperator {
 		List<String> values = formatStringValues();
 
 		return QueryBuilders.wildcardQuery(fieldName, values.get(0) + "*");
+	}
+
+	@Override
+	protected List<EventAttributeDefinition.DataType> getSupportedDataTypes() {
+		return Collections.singletonList(
+			EventAttributeDefinition.DataType.STRING);
 	}
 
 }
