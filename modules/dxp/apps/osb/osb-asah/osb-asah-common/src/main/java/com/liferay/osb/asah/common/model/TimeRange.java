@@ -255,7 +255,7 @@ public class TimeRange {
 		return localDateTime.minusDays(getDeltaDays() - 1);
 	}
 
-	public TimeRange getTimeRangeIncludingPrevious() {
+	public TimeRange getIncludePreviousTimeRange() {
 		if (equals(LAST_24_HOURS)) {
 			LocalDateTime endLocalDateTime = getEndLocalDateTime();
 

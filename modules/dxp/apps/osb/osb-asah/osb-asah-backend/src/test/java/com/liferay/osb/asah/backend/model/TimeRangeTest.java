@@ -243,9 +243,9 @@ public class TimeRangeTest {
 	}
 
 	@Test
-	public void testTimeRangeOfWithIncludePrevious1() {
+	public void testGetIncludePreviousTimeRange1() {
 		TimeRange timeRange =
-			TimeRange.YESTERDAY.getTimeRangeIncludingPrevious();
+			TimeRange.YESTERDAY.getIncludePreviousTimeRange();
 
 		Duration duration = Duration.between(
 			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
@@ -254,9 +254,9 @@ public class TimeRangeTest {
 	}
 
 	@Test
-	public void testTimeRangeOfWithIncludePrevious2() {
+	public void testGetIncludePreviousTimeRange2() {
 		TimeRange timeRange =
-			TimeRange.LAST_7_DAYS.getTimeRangeIncludingPrevious();
+			TimeRange.LAST_7_DAYS.getIncludePreviousTimeRange();
 
 		Duration duration = Duration.between(
 			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
@@ -265,9 +265,9 @@ public class TimeRangeTest {
 	}
 
 	@Test
-	public void testTimeRangeOfWithIncludePrevious3() {
+	public void testGetIncludePreviousTimeRange3() {
 		TimeRange timeRange =
-			TimeRange.LAST_28_DAYS.getTimeRangeIncludingPrevious();
+			TimeRange.LAST_28_DAYS.getIncludePreviousTimeRange();
 
 		Duration duration = Duration.between(
 			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
@@ -276,9 +276,9 @@ public class TimeRangeTest {
 	}
 
 	@Test
-	public void testTimeRangeOfWithIncludePrevious4() {
+	public void testGetIncludePreviousTimeRange4() {
 		TimeRange timeRange =
-			TimeRange.LAST_30_DAYS.getTimeRangeIncludingPrevious();
+			TimeRange.LAST_30_DAYS.getIncludePreviousTimeRange();
 
 		Duration duration = Duration.between(
 			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
@@ -287,9 +287,9 @@ public class TimeRangeTest {
 	}
 
 	@Test
-	public void testTimeRangeOfWithIncludePrevious5() {
+	public void testGetIncludePreviousTimeRange5() {
 		TimeRange timeRange =
-			TimeRange.LAST_90_DAYS.getTimeRangeIncludingPrevious();
+			TimeRange.LAST_90_DAYS.getIncludePreviousTimeRange();
 
 		Duration duration = Duration.between(
 			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
@@ -298,9 +298,9 @@ public class TimeRangeTest {
 	}
 
 	@Test
-	public void testTimeRangeOfWithIncludePrevious6() {
+	public void testGetIncludePreviousTimeRange6() {
 		TimeRange timeRange =
-			TimeRange.LAST_180_DAYS.getTimeRangeIncludingPrevious();
+			TimeRange.LAST_180_DAYS.getIncludePreviousTimeRange();
 
 		Duration duration = Duration.between(
 			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
@@ -309,9 +309,9 @@ public class TimeRangeTest {
 	}
 
 	@Test
-	public void testTimeRangeOfWithIncludePrevious7() {
+	public void testGetIncludePreviousTimeRange7() {
 		TimeRange timeRange =
-			TimeRange.YESTERDAY.getTimeRangeIncludingPrevious();
+			TimeRange.YESTERDAY.getIncludePreviousTimeRange();
 
 		Duration duration = Duration.between(
 			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
