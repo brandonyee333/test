@@ -11,6 +11,11 @@
 
 <tbody>
 <tr>
+	<td>ASSIGNEE_DROPDOWN</td>
+	<td>//button[contains(@class, 'dropdown-toggle filter-dropdown-button btn btn-secondary') and contains(text(),'Assignee')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>BULK_REASSIGN_MODAL</td>
 	<td>//div[contains(@class,'fade modal')]</td>
 	<td></td>
@@ -103,6 +108,16 @@
 <tr>
 	<td>PERMISSION_TOOLTIP</td>
 	<td>//td[contains(text(),'New Assignee')]//*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PROCESS_STEP_DROPDOWN_OPTION</td>
+	<td>//input/following-sibling::span//span[text()='${key_processName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERMISSION_TOOLTIP_MESSAGE</td>
+	<td>//span[contains(@title, '${key_tooltipMessage}')]</td>
 	<td></td>
 </tr>
 <tr>

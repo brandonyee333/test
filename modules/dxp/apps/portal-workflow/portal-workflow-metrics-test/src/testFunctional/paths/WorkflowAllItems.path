@@ -26,8 +26,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>REASSIGN_CHECKBOX_DISABLED</td>
+	<td>//div[contains(@class,'custom-control')]//input[@type='checkbox' and @disabled]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>REASSIGN_ICON</td>
 	<td>xpath=(//div[@class="quick-action-menu"]//button[1])[${task}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>REASSIGN_ICON_2</td>
+	<td>//div[@class="quick-action-menu"]//button[3]</td>
 	<td></td>
 </tr>
 <tr>
@@ -53,6 +63,11 @@
 <tr>
 	<td>APPROVE_DROPDOWN</td>
 	<td>//div[@class='dropdown-menu show']//button[@class='dropdown-item'][contains(text(),'Approve')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>REJECT_DROPDOWN</td>
+	<td>//div[@class='dropdown-menu show']//button[@class='dropdown-item'][contains(text(),'Reject')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -188,6 +203,11 @@
 <tr>
 	<td>CLEAR_ALL_BUTTON</td>
 	<td>//button[contains(text(),'Clear All')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PROCESS_STEP_FILTER</td>
+	<td>//span[contains(@class,'control-label-text') and contains(.,'${key_processFilter}')]</td>
 	<td></td>
 </tr>
 <tr>
