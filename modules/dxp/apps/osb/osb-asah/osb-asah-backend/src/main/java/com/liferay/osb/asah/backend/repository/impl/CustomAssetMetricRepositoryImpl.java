@@ -14,29 +14,14 @@
 
 package com.liferay.osb.asah.backend.repository.impl;
 
-import com.liferay.osb.asah.backend.model.HistogramMetric;
-import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.backend.repository.CustomAssetMetricRepository;
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
-import com.liferay.osb.asah.common.model.Interval;
-import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.model.MetricType;
 
 import java.math.BigDecimal;
 
-import java.time.OffsetDateTime;
-
-import java.util.List;
-
-import org.jooq.DSLContext;
-import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
@@ -44,77 +29,17 @@ import org.springframework.stereotype.Repository;
  * @author Marcellus Tavares
  */
 @ConditionalOnProperty(havingValue = "true", value = "osb.asah.trino.enabled")
-@Repository
-public class CustomAssetMetricRepositoryImpl
-	implements CustomAssetMetricRepository {
+@Repository("CustomAssetMetricRepository")
+public class CustomAssetMetricRepositoryImpl extends BaseAssetMetricRepository {
 
 	@Override
-	public List<HistogramMetric> getHistogramMetrics(
-		Long channelId, CustomAssetMetricType customAssetMetricType,
-		String customAssetPrimaryKey, Interval interval, TimeRange timeRange) {
-
-		Field<OffsetDateTime> eventDateField = DSL.field(
-			"at_timezone({0}, {1})", OffsetDateTime.class,
-			DSL.field("eventDate"), DSL.inline(_timeZoneDog.getTimeZoneId()));
-
-		if (interval != Interval.HOUR) {
-			eventDateField = DSL.trunc(eventDateField, DatePart.DAY);
-		}
-
-		return _dslContext.select(
-			eventDateField, _getMetricField(customAssetMetricType)
-		).from(
-			"hive.default.CustomAsset"
-		).where(
-			DSL.and(
-				DSL.field(
-					"assetPrimaryKey"
-				).eq(
-					customAssetPrimaryKey
-				),
-				DSL.field(
-					"channelId"
-				).eq(
-					channelId
-				),
-				DSL.field(
-					"projectId"
-				).eq(
-					ProjectIdThreadLocal.getProjectId()
-				),
-				DSL.field(
-					"eventDate"
-				).between(
-					DateUtil.toDate(
-						timeRange.getStartLocalDateTime(),
-						_timeZoneDog.getZoneId()),
-					DateUtil.toDate(
-						timeRange.getEndLocalDateTime(),
-						_timeZoneDog.getZoneId())
-				))
-		).groupBy(
-			eventDateField
-		).fetch(
-		).map(
-			record2 -> {
-				OffsetDateTime offsetDateTime = record2.value1();
-
-				Metric metric = new Metric(customAssetMetricType);
-
-				metric.setValue(
-					record2.value2(
-					).doubleValue());
-
-				return new HistogramMetric(
-					String.valueOf(offsetDateTime.toLocalDateTime()), metric);
-			}
-		);
+	protected String getAssetIdFieldName() {
+		return "assetPrimaryKey";
 	}
 
-	private Field<BigDecimal> _getMetricField(
-		CustomAssetMetricType customAssetMetricType) {
-
-		if (customAssetMetricType == CustomAssetMetricType.ABANDONMENTS) {
+	@Override
+	protected Field<BigDecimal> getMetricField(MetricType metricType) {
+		if (metricType == CustomAssetMetricType.ABANDONMENTS) {
 			return DSL.sum(
 				DSL.field(
 					CustomAssetMetricType.ABANDONMENTS.getFieldName(),
@@ -129,12 +54,12 @@ public class CustomAssetMetricRepositoryImpl
 		}
 
 		Field<Long> longField = DSL.field(
-			customAssetMetricType.getFieldName(), Long.class);
+			metricType.getFieldName(), Long.class);
 
-		if ((customAssetMetricType == CustomAssetMetricType.CLICKS) ||
-			(customAssetMetricType == CustomAssetMetricType.DOWNLOADS) ||
-			(customAssetMetricType == CustomAssetMetricType.SUBMISSIONS) ||
-			(customAssetMetricType == CustomAssetMetricType.VIEWS)) {
+		if ((metricType == CustomAssetMetricType.CLICKS) ||
+			(metricType == CustomAssetMetricType.DOWNLOADS) ||
+			(metricType == CustomAssetMetricType.SUBMISSIONS) ||
+			(metricType == CustomAssetMetricType.VIEWS)) {
 
 			return DSL.sum(
 				longField
@@ -150,11 +75,9 @@ public class CustomAssetMetricRepositoryImpl
 		);
 	}
 
-	@Autowired
-	@Qualifier("trinoDSLContext")
-	private DSLContext _dslContext;
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
+	@Override
+	protected String getTableName() {
+		return "hive.default.CustomAsset";
+	}
 
 }

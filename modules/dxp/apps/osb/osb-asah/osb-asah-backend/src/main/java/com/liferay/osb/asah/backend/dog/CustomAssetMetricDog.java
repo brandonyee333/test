@@ -14,26 +14,10 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.liferay.osb.asah.backend.dog.helper.MetricHelper;
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.model.HistogramMetric;
-import com.liferay.osb.asah.backend.model.HistogramMetricBag;
-import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.backend.repository.CustomAssetMetricRepository;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.model.CustomAssetMetricType;
-import com.liferay.osb.asah.common.model.TimeRange;
-
-import java.time.Clock;
-import java.time.LocalDateTime;
-
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -42,89 +26,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConditionalOnProperty(havingValue = "true", value = "osb.asah.trino.enabled")
-public class CustomAssetMetricDog {
+public class CustomAssetMetricDog extends BaseAssetMetricDog {
 
-	public HistogramMetricBag getHistogramMetricBag(
-		CustomAssetMetricType customAssetMetricType,
-		SearchQueryContext searchQueryContext) {
-
-		TimeRange timeRange = searchQueryContext.getTimeRange();
-
-		List<HistogramMetric> histogramMetrics =
-			_customAssetMetricRepository.getHistogramMetrics(
-				Long.valueOf(searchQueryContext.getChannelId()),
-				customAssetMetricType, searchQueryContext.getAssetId(),
-				searchQueryContext.getInterval(),
-				timeRange.getIncludePreviousTimeRange());
-
-		if (histogramMetrics.isEmpty()) {
-			return new HistogramMetricBag();
-		}
-
-		HistogramMetricBag histogramMetricBag =
-			_metricHelper.createHistogramMetricBag(
-				Clock.system(_timeZoneDog.getZoneId()),
-				searchQueryContext.isIncludePrevious(),
-				searchQueryContext.getInterval(), customAssetMetricType,
-				timeRange);
-
-		Map<String, Metric> metrics = _getHistogramMetricBuckets(
-			histogramMetricBag);
-
-		for (HistogramMetric histogramMetric : histogramMetrics) {
-			Metric metric = metrics.get(histogramMetric.getKey());
-
-			if (metric != null) {
-				metric.setValue(histogramMetric.getValue());
-
-				continue;
-			}
-
-			LocalDateTime previousBucketLocalDateTime = LocalDateTime.parse(
-				histogramMetric.getKey());
-
-			String bucketKey = null;
-
-			if (timeRange == TimeRange.LAST_24_HOURS) {
-				bucketKey = String.valueOf(
-					previousBucketLocalDateTime.plusHours(24));
-			}
-			else {
-				bucketKey = String.valueOf(
-					previousBucketLocalDateTime.plusDays(
-						timeRange.getDeltaDays()));
-			}
-
-			metric = metrics.get(bucketKey);
-
-			if (metric != null) {
-				metric.setPreviousValue(histogramMetric.getValue());
-			}
-		}
-
-		return histogramMetricBag;
-	}
-
-	private Map<String, Metric> _getHistogramMetricBuckets(
-		HistogramMetricBag histogramMetricBag) {
-
-		List<HistogramMetric> histogramMetrics =
-			histogramMetricBag.getMetrics();
-
-		Stream<HistogramMetric> histogramMetricStream =
-			histogramMetrics.stream();
-
-		return histogramMetricStream.collect(
-			Collectors.toMap(HistogramMetric::getKey, Function.identity()));
+	@Override
+	protected AssetMetricRepository getAssetMetricRepository() {
+		return _assetMetricRepository;
 	}
 
 	@Autowired
-	private CustomAssetMetricRepository _customAssetMetricRepository;
-
-	@Autowired
-	private MetricHelper _metricHelper;
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
+	@Qualifier("CustomAssetMetricRepository")
+	private AssetMetricRepository _assetMetricRepository;
 
 }

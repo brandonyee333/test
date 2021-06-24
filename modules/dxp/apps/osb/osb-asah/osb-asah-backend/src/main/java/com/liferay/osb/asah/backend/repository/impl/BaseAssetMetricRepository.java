@@ -65,7 +65,7 @@ public abstract class BaseAssetMetricRepository
 		).where(
 			DSL.and(
 				DSL.field(
-					"assetId"
+					getAssetIdFieldName()
 				).eq(
 					assetId
 				),
@@ -106,6 +106,10 @@ public abstract class BaseAssetMetricRepository
 					String.valueOf(offsetDateTime.toLocalDateTime()), metric);
 			}
 		);
+	}
+
+	protected String getAssetIdFieldName() {
+		return "assetId";
 	}
 
 	protected abstract Field<BigDecimal> getMetricField(MetricType metricType);
