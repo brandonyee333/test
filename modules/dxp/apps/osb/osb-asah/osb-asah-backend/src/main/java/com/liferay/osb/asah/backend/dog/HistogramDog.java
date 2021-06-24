@@ -159,8 +159,7 @@ public class HistogramDog {
 				Clock.system(_timeZoneDog.getZoneId()), includePrevious,
 				interval, metricType, timeRange);
 
-		Map<String, Metric> metrics = _getHistogramMetricBuckets(
-			histogramMetricBag);
+		Map<String, Metric> metrics = _getMetrics(histogramMetricBag);
 
 		DogConfiguration dogConfiguration =
 			_dogConfigurationBag.getDogConfiguration(assetType);
@@ -262,19 +261,6 @@ public class HistogramDog {
 		return dateHistogramAggregationBuilder;
 	}
 
-	private Map<String, Metric> _getHistogramMetricBuckets(
-		HistogramMetricBag histogramMetricBag) {
-
-		List<HistogramMetric> histogramMetrics =
-			histogramMetricBag.getMetrics();
-
-		Stream<HistogramMetric> histogramMetricStream =
-			histogramMetrics.stream();
-
-		return histogramMetricStream.collect(
-			Collectors.toMap(HistogramMetric::getKey, Function.identity()));
-	}
-
 	private Metric _getMetricFromPreviousTimestamp(
 		Interval interval, Map<String, Metric> metrics, String timestamp) {
 
@@ -287,6 +273,19 @@ public class HistogramDog {
 		}
 
 		return null;
+	}
+
+	private Map<String, Metric> _getMetrics(
+		HistogramMetricBag histogramMetricBag) {
+
+		List<HistogramMetric> histogramMetrics =
+			histogramMetricBag.getMetrics();
+
+		Stream<HistogramMetric> histogramMetricStream =
+			histogramMetrics.stream();
+
+		return histogramMetricStream.collect(
+			Collectors.toMap(HistogramMetric::getKey, Function.identity()));
 	}
 
 	private String _getPreviousValueKey(Interval interval, String timestamp) {

@@ -66,8 +66,7 @@ public abstract class BaseAssetMetricDog {
 				searchQueryContext.isIncludePrevious(),
 				searchQueryContext.getInterval(), metricType, timeRange);
 
-		Map<String, Metric> metrics = _getHistogramMetricBuckets(
-			histogramMetricBag);
+		Map<String, Metric> metrics = _getMetrics(histogramMetricBag);
 
 		for (HistogramMetric histogramMetric : histogramMetrics) {
 			Metric metric = metrics.get(histogramMetric.getKey());
@@ -105,7 +104,7 @@ public abstract class BaseAssetMetricDog {
 
 	protected abstract AssetMetricRepository getAssetMetricRepository();
 
-	private Map<String, Metric> _getHistogramMetricBuckets(
+	private Map<String, Metric> _getMetrics(
 		HistogramMetricBag histogramMetricBag) {
 
 		List<HistogramMetric> histogramMetrics =
