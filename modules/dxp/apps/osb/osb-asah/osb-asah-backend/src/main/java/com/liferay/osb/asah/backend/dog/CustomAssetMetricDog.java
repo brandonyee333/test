@@ -55,7 +55,7 @@ public class CustomAssetMetricDog {
 				Long.valueOf(searchQueryContext.getChannelId()),
 				customAssetMetricType, searchQueryContext.getAssetId(),
 				searchQueryContext.getInterval(),
-				timeRange.getTimeRangeIncludingPrevious());
+				timeRange.getIncludePreviousTimeRange());
 
 		if (histogramMetrics.isEmpty()) {
 			return new HistogramMetricBag();
