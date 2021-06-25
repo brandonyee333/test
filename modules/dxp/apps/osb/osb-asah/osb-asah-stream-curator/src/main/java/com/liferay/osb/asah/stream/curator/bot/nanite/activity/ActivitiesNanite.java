@@ -67,6 +67,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -93,7 +94,8 @@ public class ActivitiesNanite implements Nanite {
 
 				List<AnalyticsEvent> analyticsEvents =
 					_messageSubscriber.pullMessages(
-						50, AnalyticsEvent::toAnalyticsEvent);
+						_activitiesNanitePullMessagesSize,
+						AnalyticsEvent::toAnalyticsEvent);
 
 				if (analyticsEvents.isEmpty()) {
 					break;
@@ -704,6 +706,9 @@ public class ActivitiesNanite implements Nanite {
 				put("WebContent", "articleId");
 			}
 		};
+
+	@Value("${osb.asah.activities.nanite.pull.messages.size:50}")
+	private int _activitiesNanitePullMessagesSize;
 
 	@Autowired
 	private ActivityGroupDog _activityGroupDog;
