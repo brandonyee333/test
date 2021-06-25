@@ -19,6 +19,8 @@ import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.Arrays;
+
 import org.json.JSONArray;
 
 import org.junit.Before;
@@ -55,6 +57,21 @@ public class NanitesHttpImplTest {
 			_nanitesRestController
 		).post(
 			asahTask.getId()
+		);
+	}
+
+	@Test
+	public void testExecuteAsahTasks() {
+		AsahTask asahTask1 = new AsahTask(RandomTestUtil.randomNumber());
+		AsahTask asahTask2 = new AsahTask(RandomTestUtil.randomNumber());
+
+		_nanitesHttp.executeAsahTasks(
+			Arrays.asList(asahTask1.getId(), asahTask2.getId()));
+
+		Mockito.verify(
+			_nanitesRestController
+		).post(
+			Arrays.asList(asahTask1.getId(), asahTask2.getId())
 		);
 	}
 
