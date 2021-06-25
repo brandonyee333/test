@@ -35,17 +35,17 @@ import org.springframework.stereotype.Component;
 public class NanitesHttpImpl implements NanitesHttp {
 
 	@Override
-	public void executeAsahTask(List<Long> asahTaskIds) {
-		_http.exchangeIfUp(
-			ServiceConstants.URL_BATCH_CURATOR, "/nanites", HttpMethod.POST,
-			asahTaskIds);
-	}
-
-	@Override
 	public void executeAsahTask(Long asahTaskId) {
 		_http.exchangeIfUp(
 			ServiceConstants.URL_BATCH_CURATOR,
 			String.format("/nanites/%d", asahTaskId), HttpMethod.POST, null);
+	}
+
+	@Override
+	public void executeAsahTasks(List<Long> asahTaskIds) {
+		_http.exchangeIfUp(
+			ServiceConstants.URL_BATCH_CURATOR, "/nanites", HttpMethod.POST,
+			asahTaskIds);
 	}
 
 	@Override

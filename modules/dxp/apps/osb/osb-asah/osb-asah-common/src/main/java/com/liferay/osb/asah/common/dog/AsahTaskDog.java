@@ -102,7 +102,7 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 			Stream<AsahTask> stream = StreamSupport.stream(
 				asahTasks.spliterator(), true);
 
-			_nanitesHttp.executeAsahTask(
+			_nanitesHttp.executeAsahTasks(
 				stream.map(
 					AsahTask::getId
 				).collect(

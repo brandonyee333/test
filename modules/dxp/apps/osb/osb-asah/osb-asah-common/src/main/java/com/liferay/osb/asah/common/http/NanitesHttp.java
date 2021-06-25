@@ -23,9 +23,9 @@ import org.json.JSONArray;
  */
 public interface NanitesHttp {
 
-	public void executeAsahTask(List<Long> asahTaskIds);
-
 	public void executeAsahTask(Long asahTaskId);
+
+	public void executeAsahTasks(List<Long> asahTaskIds);
 
 	public void refreshAnalytics();
 

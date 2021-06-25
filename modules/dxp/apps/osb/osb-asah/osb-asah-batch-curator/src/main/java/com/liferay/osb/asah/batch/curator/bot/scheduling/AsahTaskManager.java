@@ -79,12 +79,6 @@ public class AsahTaskManager {
 		}
 	}
 
-	public void executeAsahTask(List<Long> asahTaskIds, boolean force) {
-		for (Long asahTaskId : asahTaskIds) {
-			executeAsahTask(_asahTaskDog.getAsahTask(asahTaskId), force);
-		}
-	}
-
 	public void executeAsahTask(Long asahTaskId, boolean force) {
 		executeAsahTask(_asahTaskDog.getAsahTask(asahTaskId), force);
 	}
@@ -99,6 +93,12 @@ public class AsahTaskManager {
 		}
 		catch (Exception exception) {
 			_log.error("Unable to run existing tasks on startup", exception);
+		}
+	}
+
+	public void executeAsahTasks(List<Long> asahTaskIds, boolean force) {
+		for (Long asahTaskId : asahTaskIds) {
+			executeAsahTask(_asahTaskDog.getAsahTask(asahTaskId), force);
 		}
 	}
 

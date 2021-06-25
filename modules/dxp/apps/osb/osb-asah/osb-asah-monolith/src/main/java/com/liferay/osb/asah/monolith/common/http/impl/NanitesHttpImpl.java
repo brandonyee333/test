@@ -33,13 +33,13 @@ import org.springframework.stereotype.Component;
 public class NanitesHttpImpl implements NanitesHttp {
 
 	@Override
-	public void executeAsahTask(List<Long> asahTaskIds) {
-		_nanitesRestController.post(asahTaskIds);
+	public void executeAsahTask(Long asahTaskId) {
+		_nanitesRestController.post(asahTaskId);
 	}
 
 	@Override
-	public void executeAsahTask(Long asahTaskId) {
-		_nanitesRestController.post(asahTaskId);
+	public void executeAsahTasks(List<Long> asahTaskIds) {
+		_nanitesRestController.post(asahTaskIds);
 	}
 
 	@Override

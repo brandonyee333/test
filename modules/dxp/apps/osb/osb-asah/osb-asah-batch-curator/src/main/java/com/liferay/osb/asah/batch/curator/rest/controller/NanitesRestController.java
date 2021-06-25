@@ -45,7 +45,7 @@ public class NanitesRestController {
 
 	@PostMapping
 	public void post(@RequestBody List<Long> asahTaskIds) {
-		_asahTaskManager.executeAsahTask(asahTaskIds, false);
+		_asahTaskManager.executeAsahTasks(asahTaskIds, false);
 	}
 
 	@PostMapping("/{asahTaskId}")
