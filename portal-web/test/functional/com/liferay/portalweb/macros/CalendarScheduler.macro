@@ -218,6 +218,8 @@ definition {
 				locator1 = "Calendar#SCHEDULER_VIEW_EVENT_DAY_AND_WEEK_VIEW"
 			);
 
+			Refresh();
+
 			AssertClick.assertPartialTextClickAt(
 				locator1 = "Calendar#SCHEDULER_VIEW_EVENT_DAY_AND_WEEK_VIEW",
 				value1 = "${eventTitle}"
