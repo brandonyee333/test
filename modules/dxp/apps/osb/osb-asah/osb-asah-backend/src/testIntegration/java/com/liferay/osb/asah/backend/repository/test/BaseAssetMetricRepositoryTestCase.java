@@ -84,7 +84,7 @@ public abstract class BaseAssetMetricRepositoryTestCase {
 
 		for (int i = 0; i < localDateTimes.size(); i++) {
 
-			// timeZoneId to UTC
+			// Time zone ID to UTC
 
 			Duration duration = Duration.between(
 				shiftedLocalDateTimes.get(i), localDateTimes.get(i));
