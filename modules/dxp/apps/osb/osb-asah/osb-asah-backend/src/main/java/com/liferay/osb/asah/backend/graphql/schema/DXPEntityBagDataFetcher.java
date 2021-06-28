@@ -21,9 +21,9 @@ import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.DXPOrganization;
+import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.execution.ExecutionTypeInfo;
@@ -71,7 +71,8 @@ public class DXPEntityBagDataFetcher
 						return new DXPUserDTO((DXPUser)dxpEntity);
 					}
 					else if (dxpEntity instanceof DXPOrganization) {
-						return new DXPOrganizationDTO((DXPOrganization)dxpEntity);
+						return new DXPOrganizationDTO(
+							(DXPOrganization)dxpEntity);
 					}
 
 					return new DXPEntityDTO(dxpEntity);

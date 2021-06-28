@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DXPOrganization;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
@@ -193,11 +194,8 @@ public class OrganizationDog {
 		return populateOrganization(organization);
 	}
 
-	private com.liferay.osb.asah.common.model.DXPOrganization
-		_createDXPOrganization(Organization organization) {
-
-		com.liferay.osb.asah.common.model.DXPOrganization dxpOrganization =
-			new com.liferay.osb.asah.common.model.DXPOrganization();
+	private DXPOrganization _createDXPOrganization(Organization organization) {
+		DXPOrganization dxpOrganization = new DXPOrganization();
 
 		dxpOrganization.setFieldsJSONObject(
 			_objectMapper.convertValue(organization, JSONObject.class));

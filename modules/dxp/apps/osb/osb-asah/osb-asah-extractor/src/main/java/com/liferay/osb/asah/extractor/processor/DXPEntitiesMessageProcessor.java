@@ -98,12 +98,12 @@ public class DXPEntitiesMessageProcessor {
 		try {
 			JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
 
-			List<DXPUser> users =
-				_dxpEntityDog.findUsersByMembershipClassNameAndMembershipId(
+			List<DXPUser> dxpUsers =
+				_dxpEntityDog.findDXPUsersByMembershipClassNameAndMembershipId(
 					dxpEntityType.getClassName(),
 					fieldsJSONObject.getString(dxpEntityType.getIdFieldName()));
 
-			users.forEach(
+			dxpUsers.forEach(
 				user -> {
 					JSONObject userFieldsJSONObject =
 						user.getFieldsJSONObject();

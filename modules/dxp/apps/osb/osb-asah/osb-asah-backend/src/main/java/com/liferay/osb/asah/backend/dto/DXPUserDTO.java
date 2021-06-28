@@ -23,10 +23,10 @@ import com.liferay.osb.asah.common.model.DXPUser;
 @GraphQLType
 public class DXPUserDTO extends DXPEntityDTO {
 
-	public DXPUserDTO(DXPUser user) {
-		super(user);
+	public DXPUserDTO(DXPUser dxpUser) {
+		super(dxpUser);
 
-		_screenName = user.getScreenName();
+		_screenName = dxpUser.getScreenName();
 	}
 
 	public String getScreenName() {

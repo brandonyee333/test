@@ -41,12 +41,12 @@ public class DXPOrganization extends DXPEntity {
 			return false;
 		}
 
-		DXPOrganization organization = (DXPOrganization)obj;
+		DXPOrganization dxpOrganization = (DXPOrganization)obj;
 
-		if (Objects.equals(getId(), organization.getId()) &&
-			Objects.equals(getName(), organization.getName()) &&
-			Objects.equals(_parentName, organization._parentName) &&
-			Objects.equals(_type, organization._type)) {
+		if (Objects.equals(getId(), dxpOrganization.getId()) &&
+			Objects.equals(getName(), dxpOrganization.getName()) &&
+			Objects.equals(_parentName, dxpOrganization._parentName) &&
+			Objects.equals(_type, dxpOrganization._type)) {
 
 			return true;
 		}

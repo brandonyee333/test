@@ -20,8 +20,8 @@ import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.model.DXPOrganization;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.DXPUser;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -92,12 +92,12 @@ public class DXPEntityDog {
 			after, fields, size, type);
 	}
 
-	public List<DXPUser> findUsersByMembershipClassNameAndMembershipId(
+	public List<DXPUser> findDXPUsersByMembershipClassNameAndMembershipId(
 		String membershipClassName, String membershipId) {
 
 		return ListUtil.map(
 			_processDXPEntities(
-				this::_mapUser,
+				this::_mapDXPUser,
 				_dxpEntityRepository.findByMembershipClassNameAndMembershipId(
 					membershipClassName, Long.valueOf(membershipId))),
 			dxpEntity -> (DXPUser)dxpEntity);
@@ -145,11 +145,11 @@ public class DXPEntityDog {
 		List<DXPEntity> dxpEntities, DXPEntity.Type type) {
 
 		if (type.isOrganization()) {
-			return _processDXPEntities(this::_mapOrganization, dxpEntities);
+			return _processDXPEntities(this::_mapDXPOrganization, dxpEntities);
 		}
 
 		if (type.isUser()) {
-			return _processDXPEntities(this::_mapUser, dxpEntities);
+			return _processDXPEntities(this::_mapDXPUser, dxpEntities);
 		}
 
 		return _processDXPEntities(this::_mapDXPEntity, dxpEntities);
@@ -159,11 +159,11 @@ public class DXPEntityDog {
 		DXPEntity.Type type = dxpEntity.getType();
 
 		if (type.isOrganization()) {
-			return _mapOrganization(new HashMap<>(), dxpEntity);
+			return _mapDXPOrganization(new HashMap<>(), dxpEntity);
 		}
 
 		if (type.isUser()) {
-			return _mapUser(new HashMap<>(), dxpEntity);
+			return _mapDXPUser(new HashMap<>(), dxpEntity);
 		}
 
 		return _mapDXPEntity(new HashMap<>(), dxpEntity);
@@ -195,12 +195,12 @@ public class DXPEntityDog {
 		return dxpEntity;
 	}
 
-	private DXPOrganization _mapOrganization(
+	private DXPOrganization _mapDXPOrganization(
 		Map<Long, String> dataSourceNames, DXPEntity dxpEntity) {
 
-		DXPOrganization organization = new DXPOrganization();
+		DXPOrganization dxpOrganization = new DXPOrganization();
 
-		organization.setDataSourceName(
+		dxpOrganization.setDataSourceName(
 			dataSourceNames.computeIfAbsent(
 				dxpEntity.getDataSourceId(),
 				dataSourceId -> {
@@ -213,19 +213,19 @@ public class DXPEntityDog {
 
 					return null;
 				}));
-		organization.setId(dxpEntity.getId());
+		dxpOrganization.setId(dxpEntity.getId());
 
 		JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
 
-		organization.setDataSourceId(dxpEntity.getDataSourceId());
-		organization.setFieldsJSONObject(fieldsJSONObject);
-		organization.setName(fieldsJSONObject.optString("name"));
-		organization.setParentName(fieldsJSONObject.optString("parentName"));
+		dxpOrganization.setDataSourceId(dxpEntity.getDataSourceId());
+		dxpOrganization.setFieldsJSONObject(fieldsJSONObject);
+		dxpOrganization.setName(fieldsJSONObject.optString("name"));
+		dxpOrganization.setParentName(fieldsJSONObject.optString("parentName"));
 
-		return organization;
+		return dxpOrganization;
 	}
 
-	private DXPUser _mapUser(
+	private DXPUser _mapDXPUser(
 		Map<Long, String> dataSourceNames, DXPEntity dxpEntity) {
 
 		DXPUser user = new DXPUser();

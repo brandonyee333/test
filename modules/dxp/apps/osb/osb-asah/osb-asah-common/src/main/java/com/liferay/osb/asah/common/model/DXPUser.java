@@ -41,13 +41,13 @@ public class DXPUser extends DXPEntity {
 			return false;
 		}
 
-		DXPUser user = (DXPUser)obj;
+		DXPUser dxpUser = (DXPUser)obj;
 
-		if (Objects.equals(getId(), user.getId()) &&
-			Objects.equals(getName(), user.getName()) &&
-			Objects.equals(_firstName, user._firstName) &&
-			Objects.equals(_lastName, user._lastName) &&
-			Objects.equals(_screenName, user._screenName)) {
+		if (Objects.equals(getId(), dxpUser.getId()) &&
+			Objects.equals(getName(), dxpUser.getName()) &&
+			Objects.equals(_firstName, dxpUser._firstName) &&
+			Objects.equals(_lastName, dxpUser._lastName) &&
+			Objects.equals(_screenName, dxpUser._screenName)) {
 
 			return true;
 		}

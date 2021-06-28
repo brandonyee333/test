@@ -24,11 +24,11 @@ import com.liferay.osb.asah.common.util.StringUtil;
 @GraphQLType
 public class DXPOrganizationDTO extends DXPEntityDTO {
 
-	public DXPOrganizationDTO(DXPOrganization organization) {
-		super(organization);
+	public DXPOrganizationDTO(DXPOrganization dxpOrganization) {
+		super(dxpOrganization);
 
-		_parentName = organization.getParentName();
-		_type = StringUtil.get(organization.getType());
+		_parentName = dxpOrganization.getParentName();
+		_type = StringUtil.get(dxpOrganization.getType());
 	}
 
 	public String getParentName() {
