@@ -33,7 +33,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
-import com.liferay.osb.asah.common.model.User;
+import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -98,7 +98,7 @@ public class DXPEntitiesMessageProcessor {
 		try {
 			JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
 
-			List<User> users =
+			List<DXPUser> users =
 				_dxpEntityDog.findUsersByMembershipClassNameAndMembershipId(
 					dxpEntityType.getClassName(),
 					fieldsJSONObject.getString(dxpEntityType.getIdFieldName()));

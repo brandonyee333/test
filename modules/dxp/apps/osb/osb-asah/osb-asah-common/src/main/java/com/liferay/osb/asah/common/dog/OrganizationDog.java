@@ -193,11 +193,11 @@ public class OrganizationDog {
 		return populateOrganization(organization);
 	}
 
-	private com.liferay.osb.asah.common.model.Organization
+	private com.liferay.osb.asah.common.model.DXPOrganization
 		_createDXPOrganization(Organization organization) {
 
-		com.liferay.osb.asah.common.model.Organization dxpOrganization =
-			new com.liferay.osb.asah.common.model.Organization();
+		com.liferay.osb.asah.common.model.DXPOrganization dxpOrganization =
+			new com.liferay.osb.asah.common.model.DXPOrganization();
 
 		dxpOrganization.setFieldsJSONObject(
 			_objectMapper.convertValue(organization, JSONObject.class));

@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.dto;
 
 import com.liferay.osb.asah.common.graphql.GraphQLType;
-import com.liferay.osb.asah.common.model.User;
+import com.liferay.osb.asah.common.model.DXPUser;
 
 /**
  * @author Marcos Martins
@@ -23,7 +23,7 @@ import com.liferay.osb.asah.common.model.User;
 @GraphQLType
 public class DXPUserDTO extends DXPEntityDTO {
 
-	public DXPUserDTO(User user) {
+	public DXPUserDTO(DXPUser user) {
 		super(user);
 
 		_screenName = user.getScreenName();

@@ -21,7 +21,7 @@ import java.util.Objects;
 /**
  * @author Matthew Kong
  */
-public class Organization extends DXPEntity {
+public class DXPOrganization extends DXPEntity {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -37,11 +37,11 @@ public class Organization extends DXPEntity {
 			return false;
 		}
 
-		if (!(obj instanceof Organization)) {
+		if (!(obj instanceof DXPOrganization)) {
 			return false;
 		}
 
-		Organization organization = (Organization)obj;
+		DXPOrganization organization = (DXPOrganization)obj;
 
 		if (Objects.equals(getId(), organization.getId()) &&
 			Objects.equals(getName(), organization.getName()) &&

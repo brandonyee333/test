@@ -19,9 +19,9 @@ import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.model.Organization;
+import com.liferay.osb.asah.common.model.DXPOrganization;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.model.User;
+import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -92,7 +92,7 @@ public class DXPEntityDog {
 			after, fields, size, type);
 	}
 
-	public List<User> findUsersByMembershipClassNameAndMembershipId(
+	public List<DXPUser> findUsersByMembershipClassNameAndMembershipId(
 		String membershipClassName, String membershipId) {
 
 		return ListUtil.map(
@@ -100,7 +100,7 @@ public class DXPEntityDog {
 				this::_mapUser,
 				_dxpEntityRepository.findByMembershipClassNameAndMembershipId(
 					membershipClassName, Long.valueOf(membershipId))),
-			dxpEntity -> (User)dxpEntity);
+			dxpEntity -> (DXPUser)dxpEntity);
 	}
 
 	public Page<? extends DXPEntity> getDXPEntitiesPage(
@@ -195,10 +195,10 @@ public class DXPEntityDog {
 		return dxpEntity;
 	}
 
-	private Organization _mapOrganization(
+	private DXPOrganization _mapOrganization(
 		Map<Long, String> dataSourceNames, DXPEntity dxpEntity) {
 
-		Organization organization = new Organization();
+		DXPOrganization organization = new DXPOrganization();
 
 		organization.setDataSourceName(
 			dataSourceNames.computeIfAbsent(
@@ -225,10 +225,10 @@ public class DXPEntityDog {
 		return organization;
 	}
 
-	private User _mapUser(
+	private DXPUser _mapUser(
 		Map<Long, String> dataSourceNames, DXPEntity dxpEntity) {
 
-		User user = new User();
+		DXPUser user = new DXPUser();
 
 		user.setDataSourceName(
 			dataSourceNames.computeIfAbsent(

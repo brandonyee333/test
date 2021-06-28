@@ -21,7 +21,7 @@ import java.util.Objects;
 /**
  * @author Matthew Kong
  */
-public class User extends DXPEntity {
+public class DXPUser extends DXPEntity {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -37,11 +37,11 @@ public class User extends DXPEntity {
 			return false;
 		}
 
-		if (!(obj instanceof User)) {
+		if (!(obj instanceof DXPUser)) {
 			return false;
 		}
 
-		User user = (User)obj;
+		DXPUser user = (DXPUser)obj;
 
 		if (Objects.equals(getId(), user.getId()) &&
 			Objects.equals(getName(), user.getName()) &&
