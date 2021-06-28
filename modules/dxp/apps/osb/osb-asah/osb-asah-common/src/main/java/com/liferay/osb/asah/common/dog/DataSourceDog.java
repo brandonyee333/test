@@ -22,7 +22,6 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.entity.FieldMapping;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -380,14 +379,14 @@ public class DataSourceDog {
 							"dataSourceIndividualPKs");
 
 					if (dataSourceIndividualPKsJSONArray.length() == 1) {
-						_faroInfoIndividualDog.deleteIndividual(
+						_individualDog.deleteIndividual(
 							deletionDate, individualJSONObject.getString("id"));
 					}
 					else {
-						_faroInfoIndividualDog.removeDataSourceIndividualPKs(
+						_individualDog.removeDataSourceIndividualPKs(
 							individualJSONObject, dataSourceId);
 
-						_faroInfoIndividualDog.updateIndividual(
+						_individualDog.updateIndividual(
 							null, _getEmptyDataJSONObject(dataSource),
 							dataSource, individualJSONObject);
 					}
@@ -767,13 +766,13 @@ public class DataSourceDog {
 	private Encryptor _encryptor;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
-
-	@Autowired
 	private FieldDog _fieldDog;
 
 	@Autowired
 	private FieldMappingDog _fieldMappingDog;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;

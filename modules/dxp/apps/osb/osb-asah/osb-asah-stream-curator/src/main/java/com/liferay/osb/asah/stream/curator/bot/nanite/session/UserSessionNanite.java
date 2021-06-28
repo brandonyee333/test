@@ -22,7 +22,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.Acquisition;
@@ -198,7 +198,7 @@ public class UserSessionNanite implements Nanite {
 			return null;
 		}
 
-		return _faroInfoIndividualDog.fetchIndividualJSONObject(
+		return _individualDog.fetchIndividualJSONObject(
 			Long.valueOf(analyticsEvent.getDataSourceId()),
 			analyticsEvent.getUserId());
 	}
@@ -530,7 +530,7 @@ public class UserSessionNanite implements Nanite {
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private FinalizeUserSessionArm _finalizeUserSessionArm;

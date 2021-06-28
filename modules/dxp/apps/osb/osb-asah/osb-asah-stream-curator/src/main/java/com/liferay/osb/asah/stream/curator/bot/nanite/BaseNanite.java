@@ -17,7 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
@@ -323,7 +323,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		}
 
 		JSONObject individualJSONObject =
-			_faroInfoIndividualDog.fetchIndividualJSONObject(
+			_individualDog.fetchIndividualJSONObject(
 				Long.valueOf(analyticsEvent.getDataSourceId()),
 				analyticsEvent.getUserId());
 
@@ -411,7 +411,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

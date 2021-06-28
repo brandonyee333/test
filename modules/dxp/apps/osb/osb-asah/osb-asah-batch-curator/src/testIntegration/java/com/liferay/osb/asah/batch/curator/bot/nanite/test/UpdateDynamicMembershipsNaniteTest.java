@@ -28,7 +28,7 @@ import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -429,11 +429,11 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 		Segment segment = _segmentRepository.save(
 			FaroInfoTestUtil.buildDynamicSegment(1L, "id gt '0'"));
 
-		JSONObject individual1JSONObject = _faroInfoIndividualDog.addIndividual(
+		JSONObject individual1JSONObject = _individualDog.addIndividual(
 			FaroInfoTestUtil.buildIndividualJSONObject(
 				"1", dataSourceJSONObject),
 			false);
-		JSONObject individual2JSONObject = _faroInfoIndividualDog.addIndividual(
+		JSONObject individual2JSONObject = _individualDog.addIndividual(
 			FaroInfoTestUtil.buildIndividualJSONObject(
 				"2", dataSourceJSONObject),
 			false);
@@ -660,7 +660,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private MembershipDog _membershipDog;

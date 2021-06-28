@@ -24,7 +24,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
@@ -210,7 +210,7 @@ public class IndividualNanite implements Nanite {
 			JSONObject knownIndividualJSONObject, String userId)
 		throws Exception {
 
-		_faroInfoIndividualDog.addDataSourceIndividualPK(
+		_individualDog.addDataSourceIndividualPK(
 			userId, dataSourceId, "LIFERAY", knownIndividualJSONObject);
 
 		String dateString = DateUtil.newDateString();
@@ -228,11 +228,11 @@ public class IndividualNanite implements Nanite {
 			"lastEnrichmentDate", dateString
 		);
 
-		_faroInfoIndividualDog.updateIndividual(
+		_individualDog.updateIndividual(
 			knownIndividualJSONObject.getString("id"),
 			knownIndividualJSONObject, false);
 
-		_faroInfoIndividualDog.deleteIndividual(
+		_individualDog.deleteIndividual(
 			new Date(), anonymousIndividualJSONObject.getString("id"));
 	}
 
@@ -267,7 +267,7 @@ public class IndividualNanite implements Nanite {
 		throws Exception {
 
 		JSONObject individualJSONObject1 =
-			_faroInfoIndividualDog.fetchIndividualJSONObject(
+			_individualDog.fetchIndividualJSONObject(
 				dataSourceId, userId);
 
 		if ((individualJSONObject1 != null) &&
@@ -298,7 +298,7 @@ public class IndividualNanite implements Nanite {
 				channelId = _dataSourceDog.getDefaultChannelId(dataSourceId);
 			}
 
-			return _faroInfoIndividualDog.addIndividual(
+			return _individualDog.addIndividual(
 				analyticsDataJSONObject, channelId, dataSource,
 				emailAddressHashed, userId);
 		}
@@ -309,7 +309,7 @@ public class IndividualNanite implements Nanite {
 				individualJSONObject1 = individualJSONObject2;
 			}
 
-			_faroInfoIndividualDog.addDataSourceIndividualPK(
+			_individualDog.addDataSourceIndividualPK(
 				userId, dataSource.getId(), dataSource.getProviderType(),
 				individualJSONObject1);
 
@@ -329,7 +329,7 @@ public class IndividualNanite implements Nanite {
 
 		String dateString = DateUtil.newDateString();
 
-		return _faroInfoIndividualDog.updateIndividual(
+		return _individualDog.updateIndividual(
 			individualJSONObject.getString("id"),
 			individualJSONObject.put(
 				"analyticsData", analyticsDataJSONObject
@@ -443,7 +443,7 @@ public class IndividualNanite implements Nanite {
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private IndividualDog _individualDog;
 
 	@MessageSubscriber.Autowired(channel = Channel.IDENTITY_MESSAGE)
 	private MessageSubscriber _messageSubscriber;

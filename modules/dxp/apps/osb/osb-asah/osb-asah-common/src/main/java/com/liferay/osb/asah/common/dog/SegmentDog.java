@@ -25,7 +25,6 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
@@ -840,7 +839,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		if (Objects.nonNull(segment.getActivitiesCount())) {
 			JSONArray activitiesCountsJSONArray =
-				_faroInfoIndividualDog.getActivitiesCountsJSONArray(
+				_individualDog.getActivitiesCountsJSONArray(
 					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 					segment.getId());
 
@@ -867,7 +866,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		if (Objects.nonNull(segment.getIndividualCount())) {
 			JSONArray individualCountsJSONArray =
-				_faroInfoIndividualDog.getIndividualCountsJSONArray(
+				_individualDog.getIndividualCountsJSONArray(
 					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 					segment.getId());
 
@@ -916,7 +915,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		for (Long individualId : individualIds) {
 			JSONObject individualJSONObject =
-				_faroInfoIndividualDog.fetchIndividualJSONObject(
+				_individualDog.fetchIndividualJSONObject(
 					String.valueOf(individualId));
 
 			if (individualJSONObject == null) {
@@ -991,10 +990,10 @@ public class SegmentDog extends BaseFaroInfoDog {
 	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
-	private FieldMappingDog _fieldMappingDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private MembershipDog _membershipDog;

@@ -17,7 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.activity.test;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
@@ -105,7 +105,7 @@ public class IndividualActivityFieldsNaniteTest {
 	public void testMixtureOfVariousActivities() throws Exception {
 		String channelId = RandomTestUtil.randomId();
 		String dateString = DateUtil.addDays(DateUtil.newDateString(), -1);
-		JSONObject individualJSONObject = _faroInfoIndividualDog.addIndividual(
+		JSONObject individualJSONObject = _individualDog.addIndividual(
 			FaroInfoTestUtil.buildIndividualJSONObject(
 				channelId, _dataSourceJSONObject),
 			false);
@@ -223,7 +223,7 @@ public class IndividualActivityFieldsNaniteTest {
 			String dateString, String eventId)
 		throws Exception {
 
-		JSONObject individualJSONObject = _faroInfoIndividualDog.addIndividual(
+		JSONObject individualJSONObject = _individualDog.addIndividual(
 			FaroInfoTestUtil.buildIndividualJSONObject(
 				channelId, _dataSourceJSONObject),
 			false);
@@ -292,7 +292,7 @@ public class IndividualActivityFieldsNaniteTest {
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private IndividualActivityFieldsNanite _individualActivityFieldsNanite;

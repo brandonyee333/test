@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -227,7 +226,7 @@ public class AccountDog {
 			account.setIndividualCount(segment.getIndividualCount());
 
 			JSONArray activitiesCountsJSONArray =
-				_faroInfoIndividualDog.getActivitiesCountsJSONArray(
+				_individualDog.getActivitiesCountsJSONArray(
 					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 					segment.getId());
 
@@ -250,7 +249,7 @@ public class AccountDog {
 			}
 
 			JSONArray individualCountsJSONArray =
-				_faroInfoIndividualDog.getIndividualCountsJSONArray(
+				_individualDog.getIndividualCountsJSONArray(
 					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 					segment.getId());
 
@@ -469,13 +468,13 @@ public class AccountDog {
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
-
-	@Autowired
 	private FieldDog _fieldDog;
 
 	@Autowired
 	private FieldRepository _fieldRepository;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

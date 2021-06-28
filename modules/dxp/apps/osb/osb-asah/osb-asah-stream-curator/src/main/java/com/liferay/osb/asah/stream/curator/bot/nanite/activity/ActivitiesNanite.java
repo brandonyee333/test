@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
@@ -639,7 +639,7 @@ public class ActivitiesNanite implements Nanite {
 		}
 
 		if ((ownerId != null) &&
-			_faroInfoIndividualDog.existsIndividual(ownerId)) {
+			_individualDog.existsIndividual(ownerId)) {
 
 			_ownerIds.put(ownerId, Long.valueOf(ownerId));
 
@@ -647,7 +647,7 @@ public class ActivitiesNanite implements Nanite {
 		}
 
 		JSONObject individualJSONObject =
-			_faroInfoIndividualDog.fetchIndividualJSONObject(
+			_individualDog.fetchIndividualJSONObject(
 				Long.valueOf(analyticsEvent.getDataSourceId()),
 				analyticsEvent.getUserId());
 
@@ -823,7 +823,7 @@ public class ActivitiesNanite implements Nanite {
 	private FaroInfoActivityDog _faroInfoActivityDog;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private IndividualDog _individualDog;
 
 	private final Cache<String, TreeMap<Date, JSONObject>> _formViewedActivies =
 		NaniteUtil.createCache();

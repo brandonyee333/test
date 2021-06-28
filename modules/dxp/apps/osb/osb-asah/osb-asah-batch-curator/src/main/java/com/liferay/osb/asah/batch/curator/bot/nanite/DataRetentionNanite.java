@@ -19,7 +19,7 @@ import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Preference;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -68,7 +68,7 @@ public class DataRetentionNanite extends BaseNanite {
 		JSONArrayIterator.of(
 			"individuals", faroInfoElasticsearchInvoker,
 			individualJSONObject -> {
-				_faroInfoIndividualDog.deleteIndividual(
+				_individualDog.deleteIndividual(
 					new Date(), individualJSONObject.getString("id"));
 
 				return null;
@@ -110,7 +110,7 @@ public class DataRetentionNanite extends BaseNanite {
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private PreferenceDog _preferenceDog;

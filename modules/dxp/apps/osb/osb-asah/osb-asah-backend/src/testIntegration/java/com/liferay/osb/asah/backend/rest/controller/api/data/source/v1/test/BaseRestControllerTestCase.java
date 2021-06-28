@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import io.restassured.RestAssured;
@@ -44,7 +44,7 @@ public abstract class BaseRestControllerTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		_faroInfoIndividualDog.updateDynamicMemberships(
+		_individualDog.updateDynamicMemberships(
 			JSONUtil.put(
 				"filter", "(((demographics/age/value gt '50')))"
 			).put(
@@ -160,7 +160,7 @@ public abstract class BaseRestControllerTestCase {
 	}
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private IndividualDog _individualDog;
 
 	@LocalServerPort
 	private int _serverPort;

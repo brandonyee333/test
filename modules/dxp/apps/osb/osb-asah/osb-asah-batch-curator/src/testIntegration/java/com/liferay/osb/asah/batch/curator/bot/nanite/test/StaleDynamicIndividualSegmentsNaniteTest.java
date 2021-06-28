@@ -23,7 +23,7 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -75,7 +75,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			FaroInfoTestUtil.buildPageAssetJSONObject(
 				_dataSourceJSONObject.getString("id")));
 
-		_individualJSONObject = _faroInfoIndividualDog.addIndividual(
+		_individualJSONObject = _individualDog.addIndividual(
 			FaroInfoTestUtil.buildIndividualJSONObject(
 				"1", _dataSourceJSONObject),
 			false);
@@ -295,7 +295,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 					"(((activities/" + duration + " eq 'Page#pageViewed#" +
 						_assetJSONObject.getString("id") + "')))"));
 
-			_faroInfoIndividualDog.updateIndividual(
+			_individualDog.updateIndividual(
 				_individualJSONObject.getString("id"),
 				JSONUtil.put(
 					"individualSegmentIds",
@@ -326,7 +326,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 						"United States'' and completeDate gt ''" + duration +
 							"'')'))"));
 
-			_faroInfoIndividualDog.updateIndividual(
+			_individualDog.updateIndividual(
 				_individualJSONObject.getString("id"),
 				JSONUtil.put(
 					"individualSegmentIds",
@@ -410,7 +410,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	private JSONObject _dataSourceJSONObject;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private IndividualDog _individualDog;
 
 	private JSONObject _individualJSONObject;
 

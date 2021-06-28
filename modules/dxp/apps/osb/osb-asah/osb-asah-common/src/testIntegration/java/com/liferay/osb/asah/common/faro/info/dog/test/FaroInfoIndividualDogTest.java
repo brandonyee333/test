@@ -17,11 +17,11 @@ package com.liferay.osb.asah.common.faro.info.dog.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.FieldMapping;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
@@ -81,7 +81,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	public void testAddAndUpdateLiferayIndividual() throws Exception {
 		String userId = RandomTestUtil.randomId();
 
-		JSONObject individualJSONObject = _faroInfoIndividualDog.addIndividual(
+		JSONObject individualJSONObject = _individualDog.addIndividual(
 			"3",
 			JSONUtil.put(
 				"contact",
@@ -119,7 +119,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		_assertIndividualMiddleName("James", individualJSONObject);
 
-		individualJSONObject = _faroInfoIndividualDog.updateIndividual(
+		individualJSONObject = _individualDog.updateIndividual(
 			individualJSONObject.getString("id"),
 			JSONUtil.put("contact", JSONUtil.put("middleName", "Joseph")),
 			false);
@@ -186,7 +186,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			"userId", 12345
 		);
 
-		JSONObject individualJSONObject = _faroInfoIndividualDog.addIndividual(
+		JSONObject individualJSONObject = _individualDog.addIndividual(
 			"1", userJSONObject,
 			_objectMapper.convertValue(
 				_liferayDataSourceJSONObject, DataSource.class));
@@ -221,7 +221,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			3, new String[] {"chinese", "english", "spanish"},
 			"spokenLanguages", individualJSONObject.getString("id"));
 
-		individualJSONObject = _faroInfoIndividualDog.updateIndividual(
+		individualJSONObject = _individualDog.updateIndividual(
 			"1",
 			userJSONObject.put(
 				"expando",
@@ -263,7 +263,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	public void testAddAndUpdateSalesforceIndividual() throws Exception {
 		String dataSourceId = String.valueOf(_salesforceDataSource.getId());
 
-		JSONObject individualJSONObject = _faroInfoIndividualDog.addIndividual(
+		JSONObject individualJSONObject = _individualDog.addIndividual(
 			"1",
 			JSONUtil.put(
 				"accountPKs", JSONUtil.put("123")
@@ -285,7 +285,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 				)),
 			individualJSONObject.getJSONArray("dataSourceAccountPKs"), false);
 
-		individualJSONObject = _faroInfoIndividualDog.updateIndividual(
+		individualJSONObject = _individualDog.updateIndividual(
 			individualJSONObject.getString("id"),
 			JSONUtil.put(
 				"accountPKs", JSONUtil.putAll("123", "456", "789")
@@ -309,7 +309,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		_salesforceDataSource.setId(1L);
 
-		individualJSONObject = _faroInfoIndividualDog.updateIndividual(
+		individualJSONObject = _individualDog.updateIndividual(
 			individualJSONObject.getString("id"),
 			JSONUtil.put(
 				"accountPKs", JSONUtil.put("321")
@@ -352,7 +352,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddIndividualAssociation() {
 		JSONObject individualJSONObject =
-			_faroInfoIndividualDog.addIndividualAssociation(
+			_individualDog.addIndividualAssociation(
 				33134, 402139209179557944L,
 				DXPEntity.Type.of(DXPEntity.Type.CLASS_NAME_ORGANIZATION),
 				faroInfoElasticsearchInvoker.fetch(
@@ -369,9 +369,8 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testBuildIndividualsQueryBuilder() {
-		QueryBuilder queryBuilder =
-			_faroInfoIndividualDog.buildIndividualsQueryBuilder(
-				null, "(((demographics/age/value gt '50')))", false);
+		QueryBuilder queryBuilder = _individualDog.buildIndividualsQueryBuilder(
+			null, "(((demographics/age/value gt '50')))", false);
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -406,7 +405,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 				)),
 			new JSONObject(queryBuilder.toString()), false);
 
-		queryBuilder = _faroInfoIndividualDog.buildIndividualsQueryBuilder(
+		queryBuilder = _individualDog.buildIndividualsQueryBuilder(
 			null, "(((demographics/age/value gt '50')))", true);
 
 		JSONAssert.assertEquals(
@@ -430,7 +429,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 								)))))),
 			new JSONObject(queryBuilder.toString()), false);
 
-		queryBuilder = _faroInfoIndividualDog.buildIndividualsQueryBuilder(
+		queryBuilder = _individualDog.buildIndividualsQueryBuilder(
 			"1234", "(((demographics/age/value gt '50')))", true);
 
 		JSONAssert.assertEquals(
@@ -479,7 +478,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testDeleteIndividualAssociation() {
 		JSONObject individualJSONObject =
-			_faroInfoIndividualDog.deleteIndividualAssociation(
+			_individualDog.deleteIndividualAssociation(
 				33134, 402139209179557944L,
 				DXPEntity.Type.of(DXPEntity.Type.CLASS_NAME_ORGANIZATION),
 				faroInfoElasticsearchInvoker.fetch(
@@ -520,7 +519,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			"uuid", uuid1
 		);
 
-		JSONObject individualJSONObject = _faroInfoIndividualDog.addIndividual(
+		JSONObject individualJSONObject = _individualDog.addIndividual(
 			uuid1, dataJSONObject,
 			_objectMapper.convertValue(
 				_liferayDataSourceJSONObject, DataSource.class));
@@ -530,7 +529,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		String uuid2 = RandomTestUtil.randomUUID();
 
-		individualJSONObject = _faroInfoIndividualDog.updateIndividual(
+		individualJSONObject = _individualDog.updateIndividual(
 			uuid2, dataJSONObject.put("uuid", uuid2),
 			_objectMapper.convertValue(
 				_liferayDataSourceJSONObject, DataSource.class),
@@ -539,7 +538,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 		_assertDataSourceIndividualPKs(
 			JSONUtil.putAll(uuid1, uuid2), individualJSONObject);
 
-		individualJSONObject = _faroInfoIndividualDog.updateIndividual(
+		individualJSONObject = _individualDog.updateIndividual(
 			uuid2, dataJSONObject.put("test", "test"),
 			_objectMapper.convertValue(
 				_liferayDataSourceJSONObject, DataSource.class),
@@ -563,7 +562,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(1, individualSegmentIdsJSONArray.length());
 
-		_faroInfoIndividualDog.removeIndividualSegmentId(
+		_individualDog.removeIndividualSegmentId(
 			individualJSONObject, 338511398116723458L);
 
 		individualJSONObject = faroInfoElasticsearchInvoker.fetch(
@@ -585,7 +584,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 				"individualSegmentIds", new JSONArray()
 			));
 
-		_faroInfoIndividualDog.updateDynamicAddMemberships(
+		_individualDog.updateDynamicAddMemberships(
 			true,
 			faroInfoElasticsearchInvoker.add(
 				"individual-segments",
@@ -630,7 +629,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 				"status", "ACTIVE"
 			));
 
-		_faroInfoIndividualDog.updateDynamicMemberships(
+		_individualDog.updateDynamicMemberships(
 			faroInfoElasticsearchInvoker.fetch(
 				"individual-segments", "338511451975440187"),
 			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"));
@@ -645,7 +644,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 		faroInfoElasticsearchInvoker.delete(
 			"individuals", individualJSONObject);
 
-		_faroInfoIndividualDog.updateDynamicMemberships(
+		_individualDog.updateDynamicMemberships(
 			faroInfoElasticsearchInvoker.fetch(
 				"individual-segments", "338511398116723458"),
 			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"));
@@ -676,7 +675,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testUpdateDynamicRemoveMemberships() throws Exception {
-		_faroInfoIndividualDog.updateDynamicRemoveMemberships(
+		_individualDog.updateDynamicRemoveMemberships(
 			faroInfoElasticsearchInvoker.fetch(
 				"individual-segments", "338511398116723458"),
 			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"));
@@ -717,29 +716,27 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 				dataSourceJSONObject.getString("id"), "emailAddress", "email",
 				"Text"));
 
-		JSONObject individualJSONObject =
-			_faroInfoIndividualDog.updateIndividual(
-				"402139280465582637",
+		JSONObject individualJSONObject = _individualDog.updateIndividual(
+			"402139280465582637",
+			JSONUtil.put(
+				"createDate", System.currentTimeMillis()
+			).put(
+				"emailAddress", "test1@liferay.com"
+			).put(
+				"memberships",
 				JSONUtil.put(
-					"createDate", System.currentTimeMillis()
-				).put(
-					"emailAddress", "test1@liferay.com"
-				).put(
-					"memberships",
-					JSONUtil.put(
-						DXPEntity.Type.CLASS_NAME_ORGANIZATION,
-						JSONUtil.putAll(33120, 33134))
-				).put(
-					"osbAsahDataSourceId", dataSourceJSONObject.getString("id")
-				).put(
-					"userId", 36016
-				),
-				_objectMapper.convertValue(
-					dataSourceJSONObject, DataSource.class),
-				faroInfoElasticsearchInvoker.fetch(
-					"individuals",
-					QueryBuilders.termQuery(
-						"demographics.email.value", "test1@liferay.com")));
+					DXPEntity.Type.CLASS_NAME_ORGANIZATION,
+					JSONUtil.putAll(33120, 33134))
+			).put(
+				"osbAsahDataSourceId", dataSourceJSONObject.getString("id")
+			).put(
+				"userId", 36016
+			),
+			_objectMapper.convertValue(dataSourceJSONObject, DataSource.class),
+			faroInfoElasticsearchInvoker.fetch(
+				"individuals",
+				QueryBuilders.termQuery(
+					"demographics.email.value", "test1@liferay.com")));
 
 		Assert.assertThat(
 			new String[] {"402139267512234420", "402139268847589064"},
@@ -752,7 +749,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	public void testUpdateIndividualFromDifferentDataSourceIgnoresNullValue()
 		throws Exception {
 
-		JSONObject individualJSONObject = _faroInfoIndividualDog.addIndividual(
+		JSONObject individualJSONObject = _individualDog.addIndividual(
 			"2",
 			JSONUtil.put(
 				"accountPKs", JSONUtil.put("123")
@@ -765,7 +762,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			),
 			_salesforceDataSource);
 
-		individualJSONObject = _faroInfoIndividualDog.updateIndividual(
+		individualJSONObject = _individualDog.updateIndividual(
 			individualJSONObject.getString("id"),
 			JSONUtil.put(
 				"contact",
@@ -845,7 +842,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 				"knownIndividual", true
 			));
 
-		_faroInfoIndividualDog.updateIndividual(
+		_individualDog.updateIndividual(
 			individualJSONObject.getString("id"),
 			JSONUtil.put(
 				"contact",
@@ -935,10 +932,10 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	};
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
-	private FieldMappingRepository _fieldMappingRepository;
+	private IndividualDog _individualDog;
 
 	private JSONObject _liferayDataSourceJSONObject;
 

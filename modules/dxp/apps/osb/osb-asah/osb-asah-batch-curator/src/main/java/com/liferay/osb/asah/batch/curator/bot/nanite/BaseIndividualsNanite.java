@@ -21,7 +21,7 @@ import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 
 import java.util.Date;
@@ -98,17 +98,17 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 					dataSourceIndividualPKsJSONArray);
 
 			if (individualPKsJSONArray.length() > 0) {
-				_faroInfoIndividualDog.deleteIndividual(
+				_individualDog.deleteIndividual(
 					deletionDate, individualJSONObject.getString("id"));
 			}
 
 			return;
 		}
 
-		_faroInfoIndividualDog.removeDataSourceIndividualPKs(
+		_individualDog.removeDataSourceIndividualPKs(
 			individualJSONObject, dataSourceId);
 
-		_faroInfoIndividualDog.updateIndividual(
+		_individualDog.updateIndividual(
 			null, getEmptyDataJSONObject(),
 			_dataSourceDog.getDataSource(dataSourceId), individualJSONObject);
 	}
@@ -157,11 +157,11 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 			));
 
 		if (individualJSONObject == null) {
-			_faroInfoIndividualDog.addIndividual(
+			_individualDog.addIndividual(
 				dataId, dataJSONObject, dataSource);
 		}
 		else {
-			_faroInfoIndividualDog.updateIndividual(
+			_individualDog.updateIndividual(
 				dataId, dataJSONObject, dataSource, individualJSONObject);
 		}
 	}
@@ -184,7 +184,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 	private DataSourceDog _dataSourceDog;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private SuppressionDog _suppressionDog;

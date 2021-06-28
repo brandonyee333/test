@@ -29,7 +29,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Organization;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
@@ -118,7 +118,7 @@ public class DXPEntitiesMessageProcessor {
 								userFieldsJSONObject.getString("uuid")));
 
 					if (individualJSONObject != null) {
-						_faroInfoIndividualDog.addIndividualAssociation(
+						_individualDog.addIndividualAssociation(
 							dxpEntityType, String.valueOf(dxpEntity.getId()),
 							individualJSONObject);
 					}
@@ -241,7 +241,7 @@ public class DXPEntitiesMessageProcessor {
 		if (action.equals("addAssociation")) {
 			membershipJSONArray.put(classPK);
 
-			_faroInfoIndividualDog.addIndividualAssociation(
+			_individualDog.addIndividualAssociation(
 				classPK, dataSourceId, type, individualJSONObject);
 
 			queryBuilderName = "addQueryBuilder";
@@ -249,7 +249,7 @@ public class DXPEntitiesMessageProcessor {
 		else if (action.equals("deleteAssociation")) {
 			JSONUtil.removeValue(membershipJSONArray, classPK);
 
-			_faroInfoIndividualDog.deleteIndividualAssociation(
+			_individualDog.deleteIndividualAssociation(
 				classPK, dataSourceId, type, individualJSONObject);
 
 			queryBuilderName = "removeQueryBuilder";
@@ -257,7 +257,7 @@ public class DXPEntitiesMessageProcessor {
 
 		if (!type.isUser()) {
 			List<String> associatedIds =
-				_faroInfoIndividualDog.getAssociatedIds(
+				_individualDog.getAssociatedIds(
 					dataSourceId, type, Collections.singletonList(classPK));
 
 			_asahTaskDog.scheduleAsahTask(
@@ -463,12 +463,12 @@ public class DXPEntitiesMessageProcessor {
 
 		try {
 			if (individualJSONObject == null) {
-				_faroInfoIndividualDog.addIndividual(
+				_individualDog.addIndividual(
 					objectJSONObject.optString("uuid", null), objectJSONObject,
 					dataSource);
 			}
 			else {
-				_faroInfoIndividualDog.updateIndividual(
+				_individualDog.updateIndividual(
 					objectJSONObject.optString("uuid", null), objectJSONObject,
 					dataSource, individualJSONObject);
 			}
@@ -511,7 +511,7 @@ public class DXPEntitiesMessageProcessor {
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private FieldMappingDog _fieldMappingDog;

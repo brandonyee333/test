@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -67,18 +66,15 @@ public class MembershipDog extends BaseFaroInfoDog {
 			return membership;
 		}
 
-		JSONObject individualJSONObject =
-			_faroInfoIndividualDog.addIndividualSegmentId(
-				membership.getIndividualId(),
-				membership.getIndividualSegmentId());
+		JSONObject individualJSONObject = _individualDog.addIndividualSegmentId(
+			membership.getIndividualId(), membership.getIndividualSegmentId());
 
 		if (individualJSONObject == null) {
 			return null;
 		}
 
-		long knownIndividualCount =
-			_faroInfoIndividualDog.getKnownIndividualCount(
-				membership.getIndividualSegmentId());
+		long knownIndividualCount = _individualDog.getKnownIndividualCount(
+			membership.getIndividualSegmentId());
 
 		long individualCount = 0;
 
@@ -112,7 +108,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 		Membership membership = memberships.get(0);
 
-		_faroInfoIndividualDog.addIndividualSegmentIds(
+		_individualDog.addIndividualSegmentIds(
 			ListUtil.map(memberships, Membership::getIndividualId),
 			membership.getIndividualSegmentId());
 
@@ -120,7 +116,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 			membership.getIndividualSegmentId());
 
 		long knownIndividualSegmentCount =
-			_faroInfoIndividualDog.getKnownIndividualCount(
+			_individualDog.getKnownIndividualCount(
 				membership.getIndividualSegmentId());
 
 		long individualCount = 0;
@@ -137,9 +133,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 			individualCount, knownIndividualSegmentCount,
 			membership.getIndividualSegmentId());
 
-		long knownIndividualCount =
-			_faroInfoIndividualDog.getKnownIndividualCount(
-				ListUtil.map(memberships, Membership::getIndividualId));
+		long knownIndividualCount = _individualDog.getKnownIndividualCount(
+			ListUtil.map(memberships, Membership::getIndividualId));
 
 		_membershipChangeDog.addMembershipChanges(
 			includeAnonymousUsers, individualCount - memberships.size(),
@@ -170,16 +165,15 @@ public class MembershipDog extends BaseFaroInfoDog {
 		membership = _membershipRepository.save(membership);
 
 		JSONObject individualJSONObject =
-			_faroInfoIndividualDog.removeIndividualSegmentId(
+			_individualDog.removeIndividualSegmentId(
 				membership.getIndividualId(),
 				membership.getIndividualSegmentId());
 
 		boolean includeAnonymousUsers = _segmentDog.isIncludeAnonymousUsers(
 			membership.getIndividualSegmentId());
 
-		long knownIndividualCount =
-			_faroInfoIndividualDog.getKnownIndividualCount(
-				membership.getIndividualSegmentId());
+		long knownIndividualCount = _individualDog.getKnownIndividualCount(
+			membership.getIndividualSegmentId());
 
 		long individualCount = 0;
 
@@ -327,7 +321,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 	}
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private MembershipChangeDog _membershipChangeDog;

@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -28,7 +29,6 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -116,7 +116,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				dataSourceId2, "givenName", "givenName", "Text"));
 
-		JSONObject individualJSONObject = _faroInfoIndividualDog.addIndividual(
+		JSONObject individualJSONObject = _individualDog.addIndividual(
 			FaroInfoTestUtil.buildIndividualJSONObject(dataSourceJSONObject1),
 			false);
 
@@ -126,7 +126,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				dataSourceJSONObject1, "email", "http://schema.org/email",
 				RandomTestUtil.randomString(), individualJSONObject, "email"));
 
-		individualJSONObject = _faroInfoIndividualDog.updateIndividual(
+		individualJSONObject = _individualDog.updateIndividual(
 			RandomTestUtil.randomUUID(),
 			JSONUtil.put(
 				"contact",
@@ -266,7 +266,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 					DataSource.class)),
 			JSONObject.class);
 
-		JSONObject individualJSONObject = _faroInfoIndividualDog.addIndividual(
+		JSONObject individualJSONObject = _individualDog.addIndividual(
 			FaroInfoTestUtil.buildIndividualJSONObject(dataSourceJSONObject),
 			false);
 
@@ -474,7 +474,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				dataSourceId2, "givenName", "givenName", "Text"));
 
-		JSONObject individualJSONObject = _faroInfoIndividualDog.addIndividual(
+		JSONObject individualJSONObject = _individualDog.addIndividual(
 			FaroInfoTestUtil.buildIndividualJSONObject(dataSourceJSONObject1),
 			false);
 
@@ -484,7 +484,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				dataSourceJSONObject1, "email", "http://schema.org/email",
 				RandomTestUtil.randomString(), individualJSONObject, "email"));
 
-		individualJSONObject = _faroInfoIndividualDog.updateIndividual(
+		individualJSONObject = _individualDog.updateIndividual(
 			RandomTestUtil.randomUUID(),
 			JSONUtil.put(
 				"contact",
@@ -787,7 +787,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 					"activity-groups",
 					FaroInfoTestUtil.buildActivityGroupJSONObject(
 						dataSourceId,
-						_faroInfoIndividualDog.addIndividual(
+						_individualDog.addIndividual(
 							FaroInfoTestUtil.buildIndividualJSONObject(
 								dataSourceJSONObject),
 							false))),
@@ -883,13 +883,13 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	private FaroInfoActivityDog _faroInfoActivityDog;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
-
-	@Autowired
 	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
 	private FieldMappingRepository _fieldMappingRepository;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

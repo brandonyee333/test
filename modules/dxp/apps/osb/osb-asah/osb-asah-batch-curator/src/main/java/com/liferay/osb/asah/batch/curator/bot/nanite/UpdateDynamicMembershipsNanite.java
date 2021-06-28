@@ -24,7 +24,7 @@ import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBu
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
@@ -246,7 +246,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			return;
 		}
 
-		_faroInfoIndividualDog.updateDynamicMemberships(
+		_individualDog.updateDynamicMemberships(
 			individualSegmentJSONObject, modifiedDate);
 
 		_segmentDog.updateSegmentState(segmentId, "READY");
@@ -289,7 +289,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			while (!segments.isEmpty()) {
 				for (Segment segment : segments) {
 					try {
-						_faroInfoIndividualDog.updateDynamicAddMemberships(
+						_individualDog.updateDynamicAddMemberships(
 							true,
 							_objectMapper.convertValue(
 								segment, JSONObject.class),
@@ -314,7 +314,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			while (!segments.isEmpty()) {
 				for (Segment segment : segments) {
 					try {
-						_faroInfoIndividualDog.updateDynamicRemoveMemberships(
+						_individualDog.updateDynamicRemoveMemberships(
 							_objectMapper.convertValue(
 								segment, JSONObject.class),
 							modifiedDate);
@@ -377,7 +377,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		UpdateDynamicMembershipsNanite.class);
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper

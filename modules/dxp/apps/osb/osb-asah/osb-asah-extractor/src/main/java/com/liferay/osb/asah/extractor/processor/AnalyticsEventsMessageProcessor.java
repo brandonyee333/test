@@ -22,7 +22,7 @@ import com.liferay.osb.asah.common.dog.EventStorageDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
@@ -113,11 +113,11 @@ public class AnalyticsEventsMessageProcessor {
 		String userId = analyticsEventsMessage.getUserId();
 
 		JSONObject individualJSONObject =
-			_faroInfoIndividualDog.fetchIndividualJSONObject(
+			_individualDog.fetchIndividualJSONObject(
 				dataSourceId, userId);
 
 		if (individualJSONObject == null) {
-			individualJSONObject = _faroInfoIndividualDog.addIndividual(
+			individualJSONObject = _individualDog.addIndividual(
 				_getAnalyticsDataJSONObject(analyticsEventsMessage), channelId,
 				_dataSourceDog.getDataSource(dataSourceId), null, userId);
 		}
@@ -497,7 +497,7 @@ public class AnalyticsEventsMessageProcessor {
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private IPGeocoder _ipGeocoder;
