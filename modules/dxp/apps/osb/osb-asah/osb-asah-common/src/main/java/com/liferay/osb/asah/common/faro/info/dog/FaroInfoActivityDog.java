@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -25,6 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -46,7 +50,14 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 	public void addActivity(JSONArray activityJSONArray) {
 		elasticsearchInvoker.add("activities", activityJSONArray);
 
-		List<Long> referencedAssetIds = _segmentDog.getReferencedAssetIds();
+		List<Long> referencedAssetIds = _referencedAssetIds.getIfPresent(
+			"referencedAssetIds");
+
+		if (referencedAssetIds == null) {
+			referencedAssetIds = _segmentDog.getReferencedAssetIds();
+
+			_referencedAssetIds.put("referencedAssetIds", referencedAssetIds);
+		}
 
 		JSONArray contextJSONArray = new JSONArray();
 
@@ -248,6 +259,12 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	private final Cache<String, List<Long>> _referencedAssetIds =
+		Caffeine.newBuilder(
+		).expireAfterWrite(
+			10, TimeUnit.MINUTES
+		).build();
 
 	@Autowired
 	private SegmentDog _segmentDog;
