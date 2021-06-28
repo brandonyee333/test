@@ -12,16 +12,11 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog;
+package com.liferay.osb.asah.common.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.dog.DXPEntityDog;
-import com.liferay.osb.asah.common.dog.FieldDog;
-import com.liferay.osb.asah.common.dog.MembershipChangeDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -30,6 +25,7 @@ import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.Faro
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Membership;
+import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -79,7 +75,7 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
-public class FaroInfoIndividualDog extends BaseFaroInfoDog {
+public class IndividualDog extends BaseFaroInfoDog {
 
 	public boolean addDataSourceIndividualPK(
 		String dataId, Long dataSourceId, String dataSourceType,
