@@ -196,9 +196,7 @@ public class ActivitiesNaniteTest {
 		Arrays.sort(keywords);
 
 		Assert.assertArrayEquals(
-			new String[] {
-				"felix gogo shell", "knowledge", "portal", "reference"
-			},
+			new String[] {"felix gogo shell", "knowledge", "reference"},
 			keywords);
 	}
 

@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.activity;
 
+import com.github.benmanes.caffeine.cache.Cache;
+
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
@@ -35,11 +37,13 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
+import com.liferay.osb.asah.stream.curator.bot.nanite.util.NaniteUtil;
 import com.liferay.osb.asah.stream.curator.nlp.NLPUtil;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -51,13 +55,14 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -69,6 +74,10 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuple4;
+import reactor.util.function.Tuples;
 
 /**
  * @author Michael Bowerman
@@ -106,8 +115,10 @@ public class ActivitiesNanite implements Nanite {
 				stream.collect(
 					Collectors.groupingBy(AnalyticsEvent::getProjectId)
 				).forEach(
-					this::_process
+					this::_run
 				);
+
+				_futures.removeIf(CompletableFuture::isDone);
 
 				if (_log.isInfoEnabled()) {
 					Class<?> clazz = getClass();
@@ -119,9 +130,20 @@ public class ActivitiesNanite implements Nanite {
 							System.currentTimeMillis() - start));
 				}
 			}
+
+			while (!_futures.isEmpty()) {
+				_futures.removeIf(CompletableFuture::isDone);
+			}
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
+		}
+		finally {
+			_assetKeywords.invalidateAll();
+			_assets.invalidateAll();
+			_formViewedActivies.invalidateAll();
+			_ownerIds.invalidateAll();
+			_pageViewActivityIds.invalidateAll();
 		}
 	}
 
@@ -137,50 +159,78 @@ public class ActivitiesNanite implements Nanite {
 
 		String userId = analyticsEvent.getUserId();
 
-		ActivityGroup activityGroup = _activityGroupDog.fetchActivityGroup(
-			"BROWSE", Long.valueOf(channelId), Long.valueOf(dataSourceId),
-			dayDate, userId);
+		Tuple4<Long, Long, Date, String> activityGroupTuple4 = Tuples.of(
+			Long.valueOf(channelId), Long.valueOf(dataSourceId), dayDate,
+			userId);
 
-		if (activityGroup != null) {
-			return _activityGroupDog.updatedActivityGroup(
-				activityGroup.getId(), analyticsEvent.getEventDate(),
-				eventLocalDateTime);
+		ActivityGroup activityGroup = _activityGroups.getIfPresent(
+			activityGroupTuple4);
+
+		if (activityGroup == null) {
+			activityGroup = _activityGroupDog.fetchActivityGroup(
+				"BROWSE", Long.valueOf(channelId), Long.valueOf(dataSourceId),
+				dayDate, userId);
 		}
 
-		return _activityGroupDog.addActivityGroup(
+		if (activityGroup != null) {
+			activityGroup.setEndDate(analyticsEvent.getEventDate());
+			activityGroup.setEndLocalDateTime(eventLocalDateTime);
+
+			Long activityGroupId = activityGroup.getId();
+
+			_futures.add(
+				CompletableFuture.runAsync(
+					() -> _activityGroupDog.updatedActivityGroup(
+						activityGroupId, analyticsEvent.getEventDate(),
+						eventLocalDateTime),
+					_singleExecutorService));
+
+			_activityGroups.put(activityGroupTuple4, activityGroup);
+
+			return activityGroup;
+		}
+
+		activityGroup = _activityGroupDog.addActivityGroup(
 			"BROWSE", Long.valueOf(channelId), Long.valueOf(dataSourceId),
 			dayDate, analyticsEvent.getEventDate(), eventLocalDateTime,
 			_getOwnerId(analyticsEvent), analyticsEvent.getEventDate(),
 			eventLocalDateTime, userId);
+
+		_activityGroups.put(activityGroupTuple4, activityGroup);
+
+		return activityGroup;
 	}
 
 	private void _addActivityJSONArray(JSONArray activityJSONArray) {
+		_futures.add(
+			CompletableFuture.runAsync(
+				() -> {
+					String projectId = ProjectIdThreadLocal.getProjectId();
+
+					for (int i = 0; i < activityJSONArray.length(); i++) {
+						JSONObject activityJSONObject =
+							activityJSONArray.getJSONObject(i);
+
+						if (_faroInfoActivityDog.isActivity(
+								activityJSONObject.getString("applicationId"),
+								activityJSONObject.getString("eventId"))) {
+
+							_messageBus.sendMessage(
+								Channel.ACTIVE_INDIVIDUAL_IDS,
+								JSONUtil.put(
+									"channelId",
+									activityJSONObject.getString("channelId")
+								).put(
+									"ownerId",
+									activityJSONObject.getString("ownerId")
+								).put(
+									"projectId", projectId
+								).toString());
+						}
+					}
+				}));
+
 		_faroInfoActivityDog.addActivity(activityJSONArray);
-
-		for (int i = 0; i < activityJSONArray.length(); i++) {
-			JSONObject activityJSONObject = activityJSONArray.getJSONObject(i);
-
-			if (_faroInfoActivityDog.isActivity(
-					activityJSONObject.getString("applicationId"),
-					activityJSONObject.getString("eventId"))) {
-
-				_messageBus.sendMessage(
-					Channel.ACTIVE_INDIVIDUAL_IDS,
-					JSONUtil.put(
-						"channelId", activityJSONObject.getString("channelId")
-					).put(
-						"ownerId", activityJSONObject.getString("ownerId")
-					).put(
-						"projectId", ProjectIdThreadLocal.getProjectId()
-					).toString());
-			}
-		}
-	}
-
-	private void _clearMaps() {
-		_assets.clear();
-		_formViewedActivies.clear();
-		_pageViewActivityIds.clear();
 	}
 
 	private JSONObject _getActivityJSONObject(AnalyticsEvent analyticsEvent) {
@@ -282,7 +332,7 @@ public class ActivitiesNanite implements Nanite {
 
 		if (Objects.equals(analyticsEvent.getEventId(), "formViewed")) {
 			TreeMap<Date, JSONObject> formViewedActivity =
-				_formViewedActivies.get(analyticsEvent.getUserId());
+				_formViewedActivies.getIfPresent(analyticsEvent.getUserId());
 
 			if (formViewedActivity == null) {
 				formViewedActivity = new TreeMap<>();
@@ -302,15 +352,19 @@ public class ActivitiesNanite implements Nanite {
 		AnalyticsEvent analyticsEvent, String dataSourceAssetPK,
 		JSONObject eventPropertiesJSONObject) {
 
-		ImmutablePair<String, String> assetPair = new ImmutablePair<>(
+		Tuple2<String, String> assetTuple2 = Tuples.of(
 			dataSourceAssetPK, analyticsEvent.getDataSourceId());
 
-		Asset asset = _assets.get(assetPair);
+		Asset asset = _assets.getIfPresent(assetTuple2);
 
 		if (asset == null) {
 			asset = _assetDog.fetchAsset(
 				dataSourceAssetPK,
 				Long.valueOf(analyticsEvent.getDataSourceId()));
+
+			if (asset != null) {
+				_assets.put(assetTuple2, asset);
+			}
 		}
 
 		if (asset != null) {
@@ -329,9 +383,14 @@ public class ActivitiesNanite implements Nanite {
 
 			if (Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
 				if (updated) {
-					_assets.put(assetPair, asset);
+					_assets.put(assetTuple2, asset);
 
-					return _assetDog.updateAsset(asset);
+					Asset newAsset = asset;
+
+					_futures.add(
+						CompletableFuture.runAsync(
+							() -> _assetDog.updateAsset(newAsset),
+							_singleExecutorService));
 				}
 
 				return asset;
@@ -348,9 +407,14 @@ public class ActivitiesNanite implements Nanite {
 			}
 
 			if (updated) {
-				_assets.put(assetPair, asset);
+				_assets.put(assetTuple2, asset);
 
-				return _assetDog.updateAsset(asset);
+				Asset newAsset = asset;
+
+				_futures.add(
+					CompletableFuture.runAsync(
+						() -> _assetDog.updateAsset(newAsset),
+						_singleExecutorService));
 			}
 
 			return asset;
@@ -369,7 +433,7 @@ public class ActivitiesNanite implements Nanite {
 
 		Map<String, String> context = analyticsEvent.getContext();
 
-		return _assetDog.addAsset(
+		asset = _assetDog.addAsset(
 			_getAssetKeywords(analyticsEvent.getApplicationId(), context),
 			analyticsEvent.getApplicationId(),
 			MapUtil.getString(context, "canonicalUrl"),
@@ -378,6 +442,10 @@ public class ActivitiesNanite implements Nanite {
 			MapUtil.getString(context, "description"),
 			_getTitle(analyticsEvent, eventPropertiesJSONObject),
 			MapUtil.getString(context, "url"));
+
+		_assets.put(assetTuple2, asset);
+
+		return asset;
 	}
 
 	private Set<AssetKeyword> _getAssetKeywords(
@@ -387,22 +455,30 @@ public class ActivitiesNanite implements Nanite {
 			return null;
 		}
 
-		Set<AssetKeyword> keywords = new HashSet<>(
-			_getAssetKeywords(
-				MapUtil.getString(context, "description"), "description"));
+		try {
+			CompletableFuture<Set<AssetKeyword>> descriptionCompletableFuture =
+				CompletableFuture.supplyAsync(
+					() -> _getAssetKeywords(
+						MapUtil.getString(context, "description"),
+						"description"));
 
-		keywords.addAll(
-			_getAssetKeywords(
-				MapUtil.getString(context, "keywords"), "keyword"));
-		keywords.addAll(
-			_getAssetKeywords(MapUtil.getString(context, "title"), "title"));
-		keywords.addAll(
-			_getAssetKeywords(
-				MapUtil.getString(context, "og:description"), "description"));
-		keywords.addAll(
-			_getAssetKeywords(MapUtil.getString(context, "og:title"), "title"));
+			CompletableFuture<Set<AssetKeyword>> titleCompletableFuture =
+				CompletableFuture.supplyAsync(
+					() -> _getAssetKeywords(
+						MapUtil.getString(context, "title"), "title"));
 
-		return keywords;
+			Set<AssetKeyword> keywords = new HashSet<>(
+				_getAssetKeywords(
+					MapUtil.getString(context, "keywords"), "keywords"));
+
+			keywords.addAll(descriptionCompletableFuture.get());
+			keywords.addAll(titleCompletableFuture.get());
+
+			return keywords;
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
 	}
 
 	private Set<AssetKeyword> _getAssetKeywords(String text, String type) {
@@ -410,10 +486,34 @@ public class ActivitiesNanite implements Nanite {
 			return Collections.emptySet();
 		}
 
+		Tuple2<String, String> keywordTuple2 = Tuples.of(text, type);
+
+		Set<AssetKeyword> assetKeywords = _assetKeywords.getIfPresent(
+			keywordTuple2);
+
+		if (assetKeywords != null) {
+			return assetKeywords;
+		}
+
 		Stream<String> stream = Stream.of(text.split(","));
 
 		if (type.equals("keyword")) {
-			return stream.map(
+			assetKeywords = stream.map(
+				String::toLowerCase
+			).map(
+				keyword -> new AssetKeyword(keyword, type)
+			).collect(
+				Collectors.toSet()
+			);
+		}
+		else {
+			assetKeywords = stream.filter(
+				NLPUtil::isEnglish
+			).map(
+				NLPUtil::getKeywords
+			).flatMap(
+				Collection::stream
+			).map(
 				String::toLowerCase
 			).map(
 				keyword -> new AssetKeyword(keyword, type)
@@ -422,19 +522,9 @@ public class ActivitiesNanite implements Nanite {
 			);
 		}
 
-		return stream.filter(
-			NLPUtil::isEnglish
-		).map(
-			NLPUtil::getKeywords
-		).flatMap(
-			Collection::stream
-		).map(
-			String::toLowerCase
-		).map(
-			keyword -> new AssetKeyword(keyword, type)
-		).collect(
-			Collectors.toSet()
-		);
+		_assetKeywords.put(keywordTuple2, assetKeywords);
+
+		return assetKeywords;
 	}
 
 	private String _getDataSourceAssetPK(
@@ -491,29 +581,10 @@ public class ActivitiesNanite implements Nanite {
 		}
 
 		if (Objects.equals(analyticsEvent.getEventId(), "formSubmitted")) {
-			JSONObject formViewedActivityJSONObject =
-				_faroInfoActivityDog.fetchLatestFormViewedActivity(
-					analyticsEvent.getEventDate(), analyticsEvent.getUserId());
-
-			if (formViewedActivityJSONObject != null) {
-				TreeMap<Date, JSONObject> formViewedEventProperties =
-					_formViewedActivies.get(analyticsEvent.getUserId());
-
-				if (formViewedEventProperties == null) {
-					formViewedEventProperties = new TreeMap<>();
-				}
-
-				formViewedEventProperties.put(
-					DateUtil.toUTCDate(
-						formViewedActivityJSONObject.getString("endTime")),
-					formViewedActivityJSONObject);
-
-				_formViewedActivies.put(
-					analyticsEvent.getUserId(), formViewedEventProperties);
-			}
+			JSONObject formViewedActivityJSONObject = null;
 
 			TreeMap<Date, JSONObject> formViewedEventProperties =
-				_formViewedActivies.get(analyticsEvent.getUserId());
+				_formViewedActivies.getIfPresent(analyticsEvent.getUserId());
 
 			if (formViewedEventProperties != null) {
 				Map.Entry<Date, JSONObject> formViewedEventPropertiesEntry =
@@ -523,6 +594,27 @@ public class ActivitiesNanite implements Nanite {
 				if (formViewedEventPropertiesEntry != null) {
 					formViewedActivityJSONObject =
 						formViewedEventPropertiesEntry.getValue();
+				}
+			}
+
+			if (formViewedActivityJSONObject == null) {
+				formViewedActivityJSONObject =
+					_faroInfoActivityDog.fetchLatestFormViewedActivity(
+						analyticsEvent.getEventDate(),
+						analyticsEvent.getUserId());
+
+				if (formViewedActivityJSONObject != null) {
+					if (formViewedEventProperties == null) {
+						formViewedEventProperties = new TreeMap<>();
+					}
+
+					formViewedEventProperties.put(
+						DateUtil.toUTCDate(
+							formViewedActivityJSONObject.getString("endTime")),
+						formViewedActivityJSONObject);
+
+					_formViewedActivies.put(
+						analyticsEvent.getUserId(), formViewedEventProperties);
 				}
 			}
 
@@ -564,8 +656,14 @@ public class ActivitiesNanite implements Nanite {
 	private Long _getOwnerId(AnalyticsEvent analyticsEvent) {
 		String ownerId = analyticsEvent.getIndividualId();
 
+		if ((ownerId != null) && (_ownerIds.getIfPresent(ownerId) != null)) {
+			return Long.valueOf(ownerId);
+		}
+
 		if ((ownerId != null) &&
 			_faroInfoIndividualDog.existsIndividual(ownerId)) {
+
+			_ownerIds.put(ownerId, Long.valueOf(ownerId));
 
 			return Long.valueOf(ownerId);
 		}
@@ -576,6 +674,10 @@ public class ActivitiesNanite implements Nanite {
 				analyticsEvent.getUserId());
 
 		if (individualJSONObject != null) {
+			_ownerIds.put(
+				individualJSONObject.getString("id"),
+				individualJSONObject.getLong("id"));
+
 			return individualJSONObject.getLong("id");
 		}
 
@@ -596,16 +698,20 @@ public class ActivitiesNanite implements Nanite {
 			return pageViewActivityId;
 		}
 
-		if (_pageViewActivityIds.containsKey(analyticsEvent.getUserId())) {
-			return _pageViewActivityIds.get(analyticsEvent.getUserId());
+		String pageViewActivityId = _pageViewActivityIds.getIfPresent(
+			analyticsEvent.getUserId());
+
+		if (pageViewActivityId != null) {
+			return pageViewActivityId;
 		}
 
-		String pageViewActivityId =
-			_faroInfoActivityDog.fetchLatestPageViewActivityId(
-				analyticsEvent.getUserId());
+		pageViewActivityId = _faroInfoActivityDog.fetchLatestPageViewActivityId(
+			analyticsEvent.getUserId());
 
-		_pageViewActivityIds.put(
-			analyticsEvent.getUserId(), pageViewActivityId);
+		if (pageViewActivityId != null) {
+			_pageViewActivityIds.put(
+				analyticsEvent.getUserId(), pageViewActivityId);
+		}
 
 		return pageViewActivityId;
 	}
@@ -662,13 +768,9 @@ public class ActivitiesNanite implements Nanite {
 		return MapUtil.getString(analyticsEvent.getContext(), "title");
 	}
 
-	private void _process(
-		String projectId, List<AnalyticsEvent> analyticsEvents) {
-
+	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
 		try {
 			ProjectIdThreadLocal.setProjectId(projectId);
-
-			_clearMaps();
 
 			Stream<AnalyticsEvent> analyticsEventsStream =
 				analyticsEvents.stream();
@@ -713,10 +815,16 @@ public class ActivitiesNanite implements Nanite {
 	@Autowired
 	private ActivityGroupDog _activityGroupDog;
 
+	private final Cache<Tuple4<Long, Long, Date, String>, ActivityGroup>
+		_activityGroups = NaniteUtil.createCache();
+
 	@Autowired
 	private AssetDog _assetDog;
 
-	private final Map<Pair<String, String>, Asset> _assets = new HashMap<>();
+	private final Cache<Tuple2<String, String>, Set<AssetKeyword>>
+		_assetKeywords = NaniteUtil.createCache();
+	private final Cache<Tuple2<String, String>, Asset> _assets =
+		NaniteUtil.createCache();
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
@@ -727,8 +835,9 @@ public class ActivitiesNanite implements Nanite {
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
-	private final Map<String, TreeMap<Date, JSONObject>> _formViewedActivies =
-		new HashMap<>();
+	private final Cache<String, TreeMap<Date, JSONObject>> _formViewedActivies =
+		NaniteUtil.createCache();
+	private final List<CompletableFuture<Void>> _futures = new ArrayList<>();
 
 	@Autowired
 	private MessageBus _messageBus;
@@ -736,7 +845,11 @@ public class ActivitiesNanite implements Nanite {
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_ACTIVITY)
 	private MessageSubscriber _messageSubscriber;
 
-	private final Map<String, String> _pageViewActivityIds = new HashMap<>();
+	private final Cache<String, Long> _ownerIds = NaniteUtil.createCache();
+	private final Cache<String, String> _pageViewActivityIds =
+		NaniteUtil.createCache();
+	private final ExecutorService _singleExecutorService =
+		Executors.newSingleThreadExecutor();
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
