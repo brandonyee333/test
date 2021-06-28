@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -106,6 +107,13 @@ public class EventDefinitionDog {
 			_eventDefinitionRepository.findByName(name);
 
 		return eventDefinitionOptional.orElse(null);
+	}
+
+	public List<EventDefinition> fetchEventDefinitions(
+		List<Long> eventDefinitionIds) {
+
+		return IterableUtils.toList(
+			_eventDefinitionRepository.findAllById(eventDefinitionIds));
 	}
 
 	public EventDefinition getEventDefinition(Long eventDefinitionId) {

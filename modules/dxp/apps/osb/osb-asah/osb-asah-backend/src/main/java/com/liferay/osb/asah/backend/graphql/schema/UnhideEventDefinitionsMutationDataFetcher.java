@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
+import com.liferay.osb.asah.backend.dto.EventDefinitionDTO;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.util.ListUtil;
@@ -34,17 +35,30 @@ import org.springframework.stereotype.Component;
 	fieldName = "unhideEventDefinitions", typeName = "MutationType"
 )
 public class UnhideEventDefinitionsMutationDataFetcher
-	implements DataFetcher<Boolean> {
+	implements DataFetcher<List<EventDefinitionDTO>> {
 
 	@Override
-	public Boolean get(DataFetchingEnvironment dataFetchingEnvironment) {
-		List<String> eventDefinitionIds = dataFetchingEnvironment.getArgument(
-			"eventDefinitionIds");
+	public List<EventDefinitionDTO> get(
+		DataFetchingEnvironment dataFetchingEnvironment) {
+
+		List<Long> eventDefinitionIds = _getEventDefinitionIds(
+			dataFetchingEnvironment);
 
 		_eventDefinitionDog.unhideEventDefinitions(
 			ListUtil.map(eventDefinitionIds, Long::valueOf));
 
-		return Boolean.TRUE;
+		return ListUtil.map(
+			_eventDefinitionDog.fetchEventDefinitions(eventDefinitionIds),
+			EventDefinitionDTO::new);
+	}
+
+	private List<Long> _getEventDefinitionIds(
+		DataFetchingEnvironment dataFetchingEnvironment) {
+
+		List<String> eventDefinitionIds = dataFetchingEnvironment.getArgument(
+			"eventDefinitionIds");
+
+		return ListUtil.map(eventDefinitionIds, Long::valueOf);
 	}
 
 	@Autowired

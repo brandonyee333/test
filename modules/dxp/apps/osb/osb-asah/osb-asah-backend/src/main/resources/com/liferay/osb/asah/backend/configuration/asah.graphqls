@@ -595,7 +595,7 @@ type MutationType {
 
 	hideEventDefinitions(
 		eventDefinitionIds: [String]!
-	): Boolean
+	): [EventDefinition]
 
 	preference(
 		key: String!
@@ -617,7 +617,7 @@ type MutationType {
 
 	unhideEventDefinitions(
 		eventDefinitionIds: [String]!
-	): Boolean
+	): [EventDefinition]
 
 	updateEventAttributeDefinition(
 		dataType: EventAttributeDefinitionDataType
