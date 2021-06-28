@@ -15,9 +15,9 @@ INSERT INTO Event(id, channelId, eventDate, eventDefinitionId) VALUES (1003, (SE
 INSERT INTO Event(id, channelId, eventDate, eventDefinitionId) VALUES (1004, (SELECT id from Channel WHERE name='testChannelName'), '2021-01-21 00:00:00-00', (SELECT id from EventDefinition WHERE name='unsubscribed'));
 INSERT INTO Event(id, channelId, eventDate, eventDefinitionId) VALUES (1005, (SELECT id from Channel WHERE name='testChannelName'), '2021-02-16 00:00:00-00', (SELECT id from EventDefinition WHERE name='unsubscribed'));
 
-INSERT INTO EventAttribute(attributevalue, eventattributedefinitionid, eventid) VALUES ('http://localhost:8080/web/guest/home', (SELECT id from EventAttributeDefinition WHERE name = 'canonicalUrl'), 1000);
-INSERT INTO EventAttribute(attributevalue, eventattributedefinitionid, eventid) VALUES ('http://localhost:8089/web/guest/home', (SELECT id from EventAttributeDefinition WHERE name = 'canonicalUrl'), 1001);
-INSERT INTO EventAttribute(attributevalue, eventattributedefinitionid, eventid) VALUES ('http://localhost:80/web/guest/home', (SELECT id from EventAttributeDefinition WHERE name = 'canonicalUrl'), 1002);
-INSERT INTO EventAttribute(attributevalue, eventattributedefinitionid, eventid) VALUES ('http://localhost:8090/web/guest/home', (SELECT id from EventAttributeDefinition WHERE name = 'canonicalUrl'), 1003);
-INSERT INTO EventAttribute(attributevalue, eventattributedefinitionid, eventid) VALUES ('http://localhost:8086/web/guest/home', (SELECT id from EventAttributeDefinition WHERE name = 'canonicalUrl'), 1004);
-INSERT INTO EventAttribute(attributevalue, eventattributedefinitionid, eventid) VALUES ('http://localhost:8087/web/guest/home', (SELECT id from EventAttributeDefinition WHERE name = 'canonicalUrl'), 1005);
+INSERT INTO EventAttribute(eventattributedefinitionid, eventid, value) VALUES ((SELECT id from EventAttributeDefinition WHERE name = 'canonicalUrl'), 1000, 'http://localhost:8080/web/guest/home');
+INSERT INTO EventAttribute(eventattributedefinitionid, eventid, value) VALUES ((SELECT id from EventAttributeDefinition WHERE name = 'canonicalUrl'), 1001, 'http://localhost:8089/web/guest/home');
+INSERT INTO EventAttribute(eventattributedefinitionid, eventid, value) VALUES ((SELECT id from EventAttributeDefinition WHERE name = 'canonicalUrl'), 1002, 'http://localhost:80/web/guest/home');
+INSERT INTO EventAttribute(eventattributedefinitionid, eventid, value) VALUES ((SELECT id from EventAttributeDefinition WHERE name = 'canonicalUrl'), 1003, 'http://localhost:8090/web/guest/home');
+INSERT INTO EventAttribute(eventattributedefinitionid, eventid, value) VALUES ((SELECT id from EventAttributeDefinition WHERE name = 'canonicalUrl'), 1004, 'http://localhost:8086/web/guest/home');
+INSERT INTO EventAttribute(eventattributedefinitionid, eventid, value) VALUES ((SELECT id from EventAttributeDefinition WHERE name = 'canonicalUrl'), 1005, 'http://localhost:8087/web/guest/home');

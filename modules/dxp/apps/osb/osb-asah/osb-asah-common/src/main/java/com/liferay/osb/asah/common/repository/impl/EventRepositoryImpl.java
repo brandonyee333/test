@@ -272,27 +272,23 @@ public class EventRepositoryImpl extends BaseRepository {
 	}
 
 	private Field _getField(EventAnalysisFilter eventAnalysisFilter) {
-		AttributeType attributeType = eventAnalysisFilter.getAttributeType();
-
-		String valueFieldName = attributeType.getValueFieldName();
-
 		EventAttributeDefinition.DataType dataType =
 			eventAnalysisFilter.getDataType();
 
 		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
-			return DSL.field("try_cast_boolean(" + valueFieldName + ")");
+			return DSL.field("try_cast_boolean(value)");
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-			return DSL.field("try_cast_timestamp(" + valueFieldName + ")");
+			return DSL.field("try_cast_timestamp(value)");
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
-			return DSL.field("try_cast_bigint(" + valueFieldName + ")");
+			return DSL.field("try_cast_bigint(value)");
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-			return DSL.field("try_cast_float(" + valueFieldName + ")");
+			return DSL.field("try_cast_float(value)");
 		}
 
-		return DSL.field(valueFieldName);
+		return DSL.field("value");
 	}
 
 	private String _getJoinFieldTableName(AttributeType attributeType) {

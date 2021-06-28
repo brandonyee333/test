@@ -216,8 +216,7 @@ public class EventDefinitionDog {
 
 			eventDefinition.setBlockedEventDefinition(
 				new BlockedEventDefinition(
-					lastSeenEvent.getEventDate(),
-					eventAttribute.getAttributeValue()));
+					lastSeenEvent.getEventDate(), eventAttribute.getValue()));
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(

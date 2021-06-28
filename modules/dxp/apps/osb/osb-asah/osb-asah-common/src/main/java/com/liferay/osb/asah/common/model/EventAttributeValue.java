@@ -25,12 +25,12 @@ public class EventAttributeValue {
 	public EventAttributeValue() {
 	}
 
-	public EventAttributeValue(String attributeValue, Date lastSeenDate) {
-		_attributeValue = attributeValue;
-
+	public EventAttributeValue(Date lastSeenDate, String value) {
 		if (lastSeenDate != null) {
 			_lastSeenDate = new Date(lastSeenDate.getTime());
 		}
+
+		_value = value;
 	}
 
 	@Override
@@ -45,17 +45,13 @@ public class EventAttributeValue {
 
 		EventAttributeValue recentValue = (EventAttributeValue)obj;
 
-		if (Objects.equals(_attributeValue, recentValue._attributeValue) &&
-			Objects.equals(_lastSeenDate, recentValue._lastSeenDate)) {
+		if (Objects.equals(_lastSeenDate, recentValue._lastSeenDate) &&
+			Objects.equals(_value, recentValue._value)) {
 
 			return true;
 		}
 
 		return false;
-	}
-
-	public String getAttributeValue() {
-		return _attributeValue;
 	}
 
 	public Date getLastSeenDate() {
@@ -66,13 +62,13 @@ public class EventAttributeValue {
 		return new Date(_lastSeenDate.getTime());
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(_attributeValue, _lastSeenDate);
+	public String getValue() {
+		return _value;
 	}
 
-	public void setAttributeValue(String attributeValue) {
-		_attributeValue = attributeValue;
+	@Override
+	public int hashCode() {
+		return Objects.hash(_lastSeenDate, _value);
 	}
 
 	public void setLastSeenDate(Date lastSeenDate) {
@@ -81,7 +77,11 @@ public class EventAttributeValue {
 		}
 	}
 
-	private String _attributeValue;
+	public void setValue(String value) {
+		_value = value;
+	}
+
 	private Date _lastSeenDate;
+	private String _value;
 
 }

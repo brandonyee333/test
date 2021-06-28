@@ -19,10 +19,8 @@ package com.liferay.osb.asah.common.model;
  */
 public enum AttributeType {
 
-	ACCOUNT("ownerId", "Field", "value"),
-	EVENT("eventId", "EventAttribute", "attributeValue"),
-	INDIVIDUAL("ownerId", "Field", "value"),
-	USER_SESSION("ownerId", "UserSession", "value");
+	ACCOUNT("ownerId", "Field"), EVENT("eventId", "EventAttribute"),
+	INDIVIDUAL("ownerId", "Field"), USER_SESSION("individualId", "UserSession");
 
 	public String getJoinFieldName() {
 		return _joinFieldName;
@@ -32,20 +30,12 @@ public enum AttributeType {
 		return _tableName;
 	}
 
-	public String getValueFieldName() {
-		return _valueFieldName;
-	}
-
-	private AttributeType(
-		String joinFieldName, String tableName, String valueFieldName) {
-
+	private AttributeType(String joinFieldName, String tableName) {
 		_joinFieldName = joinFieldName;
 		_tableName = tableName;
-		_valueFieldName = valueFieldName;
 	}
 
 	private final String _joinFieldName;
 	private final String _tableName;
-	private final String _valueFieldName;
 
 }

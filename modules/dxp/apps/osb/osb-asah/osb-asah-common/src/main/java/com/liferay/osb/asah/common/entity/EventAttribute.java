@@ -33,16 +33,14 @@ public class EventAttribute implements Persistable<Long> {
 	}
 
 	public EventAttribute(
-		String attributeValue, Date eventDate,
-		Long eventAttributeDefinitionId) {
-
-		_attributeValue = attributeValue;
+		Date eventDate, Long eventAttributeDefinitionId, String value) {
 
 		if (eventDate != null) {
 			_eventDate = new Date(eventDate.getTime());
 		}
 
 		_eventAttributeDefinitionId = eventAttributeDefinitionId;
+		_value = value;
 	}
 
 	@Override
@@ -57,23 +55,18 @@ public class EventAttribute implements Persistable<Long> {
 
 		EventAttribute eventAttribute = (EventAttribute)obj;
 
-		if (Objects.equals(_attributeValue, eventAttribute._attributeValue) &&
-			Objects.equals(
+		if (Objects.equals(
 				_eventAttributeDefinitionId,
 				eventAttribute._eventAttributeDefinitionId) &&
 			Objects.equals(_eventDate, eventAttribute._eventDate) &&
 			Objects.equals(_eventId, eventAttribute._eventId) &&
-			Objects.equals(_id, eventAttribute._id)) {
+			Objects.equals(_id, eventAttribute._id) &&
+			Objects.equals(_value, eventAttribute._value)) {
 
 			return true;
 		}
 
 		return false;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public String getAttributeValue() {
-		return _attributeValue;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -102,11 +95,15 @@ public class EventAttribute implements Persistable<Long> {
 		return _id;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getValue() {
+		return _value;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_attributeValue, _eventAttributeDefinitionId, _eventDate, _eventId,
-			_id);
+			_eventAttributeDefinitionId, _eventDate, _eventId, _id, _value);
 	}
 
 	@Override
@@ -116,10 +113,6 @@ public class EventAttribute implements Persistable<Long> {
 		}
 
 		return false;
-	}
-
-	public void setAttributeValue(String attributeValue) {
-		_attributeValue = attributeValue;
 	}
 
 	public void setEventAttributeDefinitionId(Long eventAttributeDefinitionId) {
@@ -144,8 +137,9 @@ public class EventAttribute implements Persistable<Long> {
 		_isNew = isNew;
 	}
 
-	@Transient
-	private String _attributeValue;
+	public void setValue(String value) {
+		_value = value;
+	}
 
 	@Transient
 	private Long _eventAttributeDefinitionId;
@@ -161,5 +155,8 @@ public class EventAttribute implements Persistable<Long> {
 
 	@Transient
 	private Boolean _isNew;
+
+	@Transient
+	private String _value;
 
 }

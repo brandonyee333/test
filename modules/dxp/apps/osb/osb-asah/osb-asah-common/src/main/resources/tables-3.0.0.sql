@@ -19,10 +19,10 @@ CREATE TABLE IF NOT EXISTS Event (
 
 CREATE TABLE IF NOT EXISTS EventAttribute (
 	id BIGSERIAL PRIMARY KEY,
-	attributeValue VARCHAR(1024),
 	eventAttributeDefinitionId BIGINT,
 	eventDate TIMESTAMPTZ,
-	eventId BIGINT REFERENCES Event
+	eventId BIGINT REFERENCES Event,
+	value VARCHAR(1024)
 );
 
 CREATE TABLE IF NOT EXISTS EventAttributeDefinition (

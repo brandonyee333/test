@@ -89,7 +89,7 @@ public class EventDogTest {
 				"viewDuration");
 
 		EventAttribute eventAttribute = new EventAttribute(
-			"987654321", null, eventAttributeDefinition.getId());
+			null, eventAttributeDefinition.getId(), "987654321");
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageUnloaded");
@@ -102,7 +102,7 @@ public class EventDogTest {
 		Assert.assertEquals(
 			eventAttributeDefinition.getId(),
 			eventAttribute.getEventAttributeDefinitionId());
-		Assert.assertEquals("987654321", eventAttribute.getAttributeValue());
+		Assert.assertEquals("987654321", eventAttribute.getValue());
 
 		Set<EventAttribute> eventAttributes = event.getEventAttributes();
 
@@ -133,10 +133,10 @@ public class EventDogTest {
 				{
 					add(
 						new EventAttribute(
-							"testValue1", null, eventAttributeDefinitionId));
+							null, eventAttributeDefinitionId, "testValue1"));
 					add(
 						new EventAttribute(
-							"testValue2", null, eventAttributeDefinitionId));
+							null, eventAttributeDefinitionId, "testValue2"));
 				}
 			},
 			date, eventDefinition.getId(), 1L, "userId");
@@ -144,8 +144,8 @@ public class EventDogTest {
 		Assert.assertEquals(
 			new ArrayList<EventAttributeValue>() {
 				{
-					add(new EventAttributeValue("testValue1", date));
-					add(new EventAttributeValue("testValue2", date));
+					add(new EventAttributeValue(date, "testValue1"));
+					add(new EventAttributeValue(date, "testValue2"));
 				}
 			},
 			_eventDog.getRecentEventAttributeValues(

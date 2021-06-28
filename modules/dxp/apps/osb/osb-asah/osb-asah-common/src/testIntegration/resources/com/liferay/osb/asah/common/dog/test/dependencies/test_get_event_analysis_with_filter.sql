@@ -44,9 +44,9 @@ INSERT INTO Event(channelId, eventDate, eventDefinitionId, id, individualId) VAL
 INSERT INTO Event(channelId, eventDate, eventDefinitionId, id, individualId) VALUES(2, '2021-06-01', 246810, 30, 8);
 INSERT INTO Event(channelId, eventDate, eventDefinitionId, id, individualId) VALUES(2, '2021-06-02', 246810, 31, 10);
 
-INSERT INTO EventAttribute(attributeValue, eventAttributeDefinitionId, eventDate, eventId) VALUES('201', 23456, '2021-05-25 10:00:00', 14);
-INSERT INTO EventAttribute(attributeValue, eventAttributeDefinitionId, eventDate, eventId) VALUES('275', 23456, '2021-05-17 12:00:00', 10);
-INSERT INTO EventAttribute(attributeValue, eventAttributeDefinitionId, eventDate, eventId) VALUES('350', 23456, '2021-05-25 10:00:00', 6);
-INSERT INTO EventAttribute(attributeValue, eventAttributeDefinitionId, eventDate, eventId) VALUES('This is a test', 12345, '2021-05-17 13:00:00', 10);
-INSERT INTO EventAttribute(attributeValue, eventAttributeDefinitionId, eventDate, eventId) VALUES('This should also match test', 12345, '2021-05-25 10:00:00', 6);
-INSERT INTO EventAttribute(attributeValue, eventAttributeDefinitionId, eventDate, eventId) VALUES('This should match test', 12345, '2021-05-25 10:00:00', 14);
+INSERT INTO EventAttribute(eventAttributeDefinitionId, eventDate, eventId, value) VALUES(12345, '2021-05-17 10:00:00', 6, 'This should also match test');
+INSERT INTO EventAttribute(eventAttributeDefinitionId, eventDate, eventId, value) VALUES(12345, '2021-05-20 13:00:00', 10, 'This is a test');
+INSERT INTO EventAttribute(eventAttributeDefinitionId, eventDate, eventId, value) VALUES(12345, '2021-05-22 10:00:00', 14, 'This should match test');
+INSERT INTO EventAttribute(eventAttributeDefinitionId, eventDate, eventId, value) VALUES(23456, '2021-05-17 10:00:00', 6, '350');
+INSERT INTO EventAttribute(eventAttributeDefinitionId, eventDate, eventId, value) VALUES(23456, '2021-05-20 12:00:00', 10, '275');
+INSERT INTO EventAttribute(eventAttributeDefinitionId, eventDate, eventId, value) VALUES(23456, '2021-05-22 10:00:00', 14, '201');

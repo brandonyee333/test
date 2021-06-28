@@ -124,7 +124,7 @@ public class EventStorageDog {
 		}
 
 		return new EventAttribute(
-			eventAttributeValue, eventDate, eventAttributeDefinition.getId());
+			eventDate, eventAttributeDefinition.getId(), eventAttributeValue);
 	}
 
 	private Set<EventAttribute> _resolveEventAttributes(

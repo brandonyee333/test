@@ -339,8 +339,7 @@ public class EventStorageDogTest {
 
 		Assert.assertNotNull(actualEventAttribute);
 		Assert.assertEquals(
-			expectedEventAttributeValue,
-			actualEventAttribute.getAttributeValue());
+			expectedEventAttributeValue, actualEventAttribute.getValue());
 	}
 
 	private Set<Long> _getEventDefinitionIds(

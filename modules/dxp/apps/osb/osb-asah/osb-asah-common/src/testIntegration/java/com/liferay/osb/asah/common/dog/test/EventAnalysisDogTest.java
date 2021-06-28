@@ -94,7 +94,7 @@ public class EventAnalysisDogTest {
 		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
 			AnalysisType.UNIQUE, 1L, eventAnalysisFilters, 246810L,
 			TimeRange.of(
-				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")));
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-18")));
 
 		Assert.assertEquals(1, eventAnalysis.getCount());
 		Assert.assertEquals(0, eventAnalysis.getPage());
@@ -107,18 +107,18 @@ public class EventAnalysisDogTest {
 	public void testGetEventAnalysisSingleFilter() {
 		EventAnalysisFilter eventAnalysisFilter = new EventAnalysisFilter(
 			"12345", AttributeType.EVENT,
-			EventAttributeDefinition.DataType.STRING, "endsWith",
-			Collections.singletonList("test"));
+			EventAttributeDefinition.DataType.STRING, "contains",
+			Collections.singletonList("should"));
 
 		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
 			AnalysisType.AVERAGE, 1L,
 			Collections.singletonList(eventAnalysisFilter), 246810L,
 			TimeRange.of(
-				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")));
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-19")));
 
 		Assert.assertEquals(1, eventAnalysis.getCount());
 		Assert.assertEquals(0, eventAnalysis.getPage());
-		Assert.assertEquals(3, eventAnalysis.getTotalEvents());
+		Assert.assertEquals(1, eventAnalysis.getTotalEvents());
 		Assert.assertEquals(1, eventAnalysis.getValue());
 	}
 

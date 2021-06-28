@@ -6,7 +6,7 @@
 		<![CDATA[
 			SELECT
 				MAX(Event.eventDate) as lastSeenDate,
-				EventAttribute.attributeValue
+				EventAttribute.value
 			FROM
 				Event
 			JOIN
@@ -16,7 +16,7 @@
 				EventAttribute.eventAttributeDefinitionId =
 					:eventAttributeDefinitionId
 			GROUP BY
-				EventAttribute.attributeValue
+				EventAttribute.value
 			ORDER BY
 				lastSeenDate DESC
 			LIMIT
