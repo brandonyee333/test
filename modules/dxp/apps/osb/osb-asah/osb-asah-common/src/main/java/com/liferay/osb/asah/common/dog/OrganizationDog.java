@@ -197,12 +197,10 @@ public class OrganizationDog {
 	private DXPOrganization _buildDXPOrganization(Organization organization) {
 		DXPOrganization dxpOrganization = new DXPOrganization();
 
+		dxpOrganization.setDataSourceId(organization.getDataSourceId());
 		dxpOrganization.setFieldsJSONObject(
 			_objectMapper.convertValue(organization, JSONObject.class));
-
 		dxpOrganization.setId(organization.getId());
-
-		dxpOrganization.setDataSourceId(organization.getDataSourceId());
 
 		return dxpOrganization;
 	}
