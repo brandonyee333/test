@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.faro.info.util;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.Collection;
@@ -28,6 +30,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -37,6 +41,26 @@ import org.json.JSONObject;
  * @author Rachael Koestartyo
  */
 public class FaroInfoIndividualUtil {
+
+	public static Map<Long, Set<String>> getAccountPKs(
+		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs) {
+
+		if (CollectionUtils.isEmpty(dataSourceAccountPKs)) {
+			return Collections.emptyMap();
+		}
+
+		Map<Long, Set<String>> accountPKs = new HashMap<>();
+
+		for (Individual.DataSourceAccountPK dataSourceAccountPK :
+				dataSourceAccountPKs) {
+
+			accountPKs.put(
+				dataSourceAccountPK.getDataSourceId(),
+				dataSourceAccountPK.getAccountPKs());
+		}
+
+		return accountPKs;
+	}
 
 	public static Map<String, JSONObject> getIndividualAccountNamesJSONObjects(
 		ElasticsearchInvoker elasticsearchInvoker,
@@ -194,6 +218,27 @@ public class FaroInfoIndividualUtil {
 		return demographicFields;
 	}
 
+	public static String getIndividualEmail(Individual individual) {
+		Set<Field> fields = individual.getFields();
+
+		Stream<Field> stream = fields.stream();
+
+		Field emailField = stream.filter(
+			field ->
+				Objects.equals(field.getName(), "email") &&
+				!Objects.isNull(field.getValue())
+		).findFirst(
+		).orElse(
+			null
+		);
+
+		if (emailField != null) {
+			return String.valueOf(emailField.getValue());
+		}
+
+		return null;
+	}
+
 	public static String getIndividualEmail(JSONObject demographicsJSONObject) {
 		if (demographicsJSONObject == null) {
 			return null;
@@ -206,6 +251,59 @@ public class FaroInfoIndividualUtil {
 		}
 
 		return null;
+	}
+
+	public static String getIndividualName(Individual individual) {
+		Set<Field> fields = individual.getFields();
+
+		Stream<Field> stream = fields.stream();
+
+		Field nameField = stream.filter(
+			field ->
+				Objects.equals(field.getName(), "name") &&
+				!Objects.isNull(field.getValue())
+		).findFirst(
+		).orElse(
+			null
+		);
+
+		if (nameField != null) {
+			return String.valueOf(nameField.getValue());
+		}
+
+		stream = fields.stream();
+
+		Field familyNameField = stream.filter(
+			field ->
+				Objects.equals(field.getName(), "familyName") &&
+				!Objects.isNull(field.getValue())
+		).findFirst(
+		).orElse(
+			null
+		);
+
+		stream = fields.stream();
+
+		Field givenNameField = stream.filter(
+			field ->
+				Objects.equals(field.getName(), "givenName") &&
+				!Objects.isNull(field.getValue())
+		).findFirst(
+		).orElse(
+			null
+		);
+
+		if ((familyNameField == null) && (givenNameField == null)) {
+			return null;
+		}
+		else if (familyNameField == null) {
+			return String.valueOf(givenNameField.getValue());
+		}
+		else if (givenNameField == null) {
+			return String.valueOf(familyNameField.getValue());
+		}
+
+		return givenNameField.getValue() + " " + familyNameField.getValue();
 	}
 
 	public static String getIndividualName(JSONObject demographicsJSONObject) {
@@ -236,6 +334,26 @@ public class FaroInfoIndividualUtil {
 		}
 
 		return givenName + " " + familyName;
+	}
+
+	public static Map<Long, Set<String>> getIndividualPKs(
+		Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs) {
+
+		if (CollectionUtils.isEmpty(dataSourceIndividualPKs)) {
+			return Collections.emptyMap();
+		}
+
+		Map<Long, Set<String>> individualPKs = new HashMap<>();
+
+		for (Individual.DataSourceIndividualPK dataSourceIndividualPK :
+				dataSourceIndividualPKs) {
+
+			individualPKs.put(
+				dataSourceIndividualPK.getDataSourceId(),
+				dataSourceIndividualPK.getIndividualPKs());
+		}
+
+		return individualPKs;
 	}
 
 	public static JSONArray getIndividualPKsJSONArray(
@@ -279,13 +397,21 @@ public class FaroInfoIndividualUtil {
 		return individualPKsJSONArrays;
 	}
 
-	public static boolean isKnownIndividual(JSONObject individualJSONObject) {
-		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
-			"demographics");
+	public static boolean isKnownIndividual(Individual individual) {
+		Set<Field> fields = individual.getFields();
 
-		if ((demographicsJSONObject != null) &&
-			demographicsJSONObject.has("email")) {
+		Stream<Field> stream = fields.stream();
 
+		Field emailField = stream.filter(
+			field ->
+				Objects.equals(field.getName(), "email") &&
+				!Objects.isNull(field.getValue())
+		).findFirst(
+		).orElse(
+			null
+		);
+
+		if (emailField != null) {
 			return true;
 		}
 
