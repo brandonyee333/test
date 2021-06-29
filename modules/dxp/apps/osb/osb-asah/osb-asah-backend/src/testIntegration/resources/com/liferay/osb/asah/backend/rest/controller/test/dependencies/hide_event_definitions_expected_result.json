@@ -1,5 +1,10 @@
 {
 	"data": {
-		"hideEventDefinitions": true
+		"hideEventDefinitions": [
+			{
+				"hidden": true,
+				"id": "1000"
+			}
+		]
 	}
 }

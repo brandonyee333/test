@@ -1,3 +1,6 @@
 mutation HideEventDefinitions($eventDefinitionIds: [String]!) {
-    hideEventDefinitions(eventDefinitionIds: $eventDefinitionIds)
+    hideEventDefinitions(eventDefinitionIds: $eventDefinitionIds) {
+        hidden
+        id
+    }
 }
