@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
 import com.liferay.osb.asah.backend.dto.ExperimentDTO;
 import com.liferay.osb.asah.backend.dto.ExperimentMetricDTO;
-import com.liferay.osb.asah.backend.dto.ExperimentVariantDTO;
+import com.liferay.osb.asah.backend.dto.ExperimentVariantsDTO;
 import com.liferay.osb.asah.backend.dto.GoalDTO;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
@@ -126,13 +126,13 @@ public class ExperimentsRestController extends BaseRestController {
 	@PutMapping("/{id}/dxp-variants")
 	public void putExperimentVariants(
 		@PathVariable Long id,
-		@RequestBody @Valid ExperimentVariantDTO experimentVariantDTO) {
+		@RequestBody @Valid ExperimentVariantsDTO experimentVariantsDTO) {
 
 		Experiment experiment = _experimentDog.getExperiment(id);
 
 		experiment.setExperimentVariants(
 			SetUtil.map(
-				experimentVariantDTO.getExperimentVariantDTOs(),
+				experimentVariantsDTO.getExperimentVariantDTOs(),
 				currentDXPVariantDTO -> _objectMapper.convertValue(
 					experiment, ExperimentVariant.class)));
 

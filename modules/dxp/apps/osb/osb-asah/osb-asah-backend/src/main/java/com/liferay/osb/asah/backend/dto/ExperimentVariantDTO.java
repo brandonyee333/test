@@ -22,16 +22,12 @@ import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
 import com.liferay.osb.asah.common.util.SetUtil;
 
-import java.util.HashSet;
 import java.util.Set;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @author Marcos Martins
@@ -80,13 +76,6 @@ public class ExperimentVariantDTO {
 		return _dxpVariantName;
 	}
 
-	@JsonProperty("dxpVariants")
-	@NotEmpty
-	@Valid
-	public Set<ExperimentVariantDTO> getExperimentVariantDTOs() {
-		return _experimentVariantDTOs;
-	}
-
 	@Max(100)
 	@Min(0)
 	@NotNull
@@ -110,12 +99,6 @@ public class ExperimentVariantDTO {
 		_dxpVariantName = dxpVariantName;
 	}
 
-	public void setExperimentVariantDTOs(
-		Set<ExperimentVariantDTO> experimentVariantDTOs) {
-
-		_experimentVariantDTOs = experimentVariantDTOs;
-	}
-
 	public void setTrafficSplit(Double trafficSplit) {
 		_trafficSplit = trafficSplit;
 	}
@@ -124,7 +107,6 @@ public class ExperimentVariantDTO {
 	private Boolean _control;
 	private String _dxpVariantId;
 	private String _dxpVariantName;
-	private Set<ExperimentVariantDTO> _experimentVariantDTOs = new HashSet<>();
 	private Double _trafficSplit;
 
 }
