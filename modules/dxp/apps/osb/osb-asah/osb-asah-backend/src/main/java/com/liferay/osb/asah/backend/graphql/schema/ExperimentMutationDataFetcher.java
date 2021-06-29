@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
+import com.liferay.osb.asah.backend.dto.ExperimentDTO;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
@@ -33,10 +34,10 @@ import org.springframework.stereotype.Component;
 @Component
 @GraphQLTypeWiring(fieldName = "experiment", typeName = "MutationType")
 public class ExperimentMutationDataFetcher
-	extends BaseExperimentDataFetcher implements DataFetcher<Experiment> {
+	extends BaseExperimentDataFetcher implements DataFetcher<ExperimentDTO> {
 
 	@Override
-	public Experiment get(DataFetchingEnvironment dataFetchingEnvironment) {
+	public ExperimentDTO get(DataFetchingEnvironment dataFetchingEnvironment) {
 		Experiment experiment = new Experiment();
 
 		experiment.setExperimentStatus(
@@ -49,8 +50,10 @@ public class ExperimentMutationDataFetcher
 		Map<String, Object> experimentSettingsMap =
 			dataFetchingEnvironment.getArgument("experimentSettings");
 
-		return _experimentDog.patchExperiment(
-			experiment, createExperimentSettings(experimentSettingsMap), true);
+		return new ExperimentDTO(
+			_experimentDog.patchExperiment(
+				experiment, createExperimentSettings(experimentSettingsMap),
+				true));
 	}
 
 	@Autowired
