@@ -29,6 +29,9 @@ import com.liferay.osb.asah.common.util.StringUtil;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GoalDTO {
 
+	public GoalDTO() {
+	}
+
 	public GoalDTO(Goal goal) {
 		_goalMetric = StringUtil.get(goal.getGoalMetric(), null);
 		_target = goal.getTarget();

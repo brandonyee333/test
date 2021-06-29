@@ -32,6 +32,9 @@ import java.util.Arrays;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExperimentVariantMetricDTO {
 
+	public ExperimentVariantMetricDTO() {
+	}
+
 	public ExperimentVariantMetricDTO(
 		ExperimentVariantMetric experimentVariantMetric) {
 

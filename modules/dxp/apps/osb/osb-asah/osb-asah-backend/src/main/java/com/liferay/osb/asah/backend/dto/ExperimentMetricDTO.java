@@ -36,6 +36,9 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExperimentMetricDTO {
 
+	public ExperimentMetricDTO() {
+	}
+
 	public ExperimentMetricDTO(ExperimentMetric experimentMetric) {
 		_completion = experimentMetric.getCompletion();
 		_confidenceLevel = experimentMetric.getConfidenceLevel();

@@ -40,6 +40,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExperimentVariantDTO {
 
+	public ExperimentVariantDTO() {
+	}
+
 	public ExperimentVariantDTO(ExperimentVariant experimentVariant) {
 		_changes = experimentVariant.getChanges();
 		_control = experimentVariant.getControl();
