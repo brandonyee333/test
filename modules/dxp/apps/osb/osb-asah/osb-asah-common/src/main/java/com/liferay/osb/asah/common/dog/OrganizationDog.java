@@ -88,7 +88,7 @@ public class OrganizationDog {
 		organization = populateOrganization(organization);
 
 		_dxpEntityDog.addDXPEntity(
-			_createDXPOrganization(organization), DXPEntity.Type.ORGANIZATION);
+			_buildDXPOrganization(organization), DXPEntity.Type.ORGANIZATION);
 
 		return organization;
 	}
@@ -100,7 +100,7 @@ public class OrganizationDog {
 
 		_organizationRepository.delete(organization);
 
-		_dxpEntityDog.delete(_createDXPOrganization(organization));
+		_dxpEntityDog.delete(_buildDXPOrganization(organization));
 
 		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
@@ -180,7 +180,7 @@ public class OrganizationDog {
 
 		organization = _organizationRepository.save(organization);
 
-		_dxpEntityDog.updateDXPEntity(_createDXPOrganization(organization));
+		_dxpEntityDog.updateDXPEntity(_buildDXPOrganization(organization));
 
 		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
@@ -194,7 +194,7 @@ public class OrganizationDog {
 		return populateOrganization(organization);
 	}
 
-	private DXPOrganization _createDXPOrganization(Organization organization) {
+	private DXPOrganization _buildDXPOrganization(Organization organization) {
 		DXPOrganization dxpOrganization = new DXPOrganization();
 
 		dxpOrganization.setFieldsJSONObject(
