@@ -61,6 +61,7 @@ import org.elasticsearch.script.Script;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -428,7 +429,8 @@ public class UserSessionNanite implements Nanite {
 
 			List<AnalyticsEvent> analyticsEvents =
 				_messageSubscriber.pullMessages(
-					50, AnalyticsEvent::toAnalyticsEvent);
+					_userSessionNanitePullMessagesSize,
+					AnalyticsEvent::toAnalyticsEvent);
 
 			if (analyticsEvents.isEmpty()) {
 				break;
@@ -543,5 +545,8 @@ public class UserSessionNanite implements Nanite {
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
+
+	@Value("${osb.asah.user.session.nanite.pull.messages.size:50}")
+	private int _userSessionNanitePullMessagesSize;
 
 }
