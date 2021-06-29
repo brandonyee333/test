@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.Individual;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
@@ -73,7 +74,7 @@ public interface IndividualRepository extends CrudRepository<Individual, Long> {
 
 	@Modifying
 	public void updateAssociatedIds(
-		@Param("fieldName") String fieldName, @Param("ids") Long[] ids,
+		@Param("fieldName") String fieldName, @Param("ids") Set<Long> ids,
 		@Param("individualId") Long individualId);
 
 }

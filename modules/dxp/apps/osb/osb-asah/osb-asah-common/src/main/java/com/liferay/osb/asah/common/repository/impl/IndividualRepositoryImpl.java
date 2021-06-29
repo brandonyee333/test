@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -419,7 +420,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 	}
 
 	public void updateAssociatedIds(
-		String fieldName, Long[] ids, Long individualId) {
+		String fieldName, Set<Long> ids, Long individualId) {
 
 		UpdateSetFirstStep<Record> update = _dslContext.update(
 			DSL.table("Individual"));

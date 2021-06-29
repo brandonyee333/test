@@ -557,7 +557,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	@Override
 	public void updateAssociatedIds(
-		String fieldName, Long[] ids, Long individualId) {
+		String fieldName, Set<Long> ids, Long individualId) {
 
 		_faroInfoElasticsearchInvoker.update(
 			getCollectionName(), String.valueOf(individualId),
