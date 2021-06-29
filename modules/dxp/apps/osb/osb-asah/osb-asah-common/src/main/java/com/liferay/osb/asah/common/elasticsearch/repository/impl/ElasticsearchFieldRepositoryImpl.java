@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -36,9 +37,17 @@ import java.util.stream.Stream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.TopHits;
+import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -72,11 +81,49 @@ public class ElasticsearchFieldRepositoryImpl
 	}
 
 	@Override
+	public void deleteByOwnerIdAndOwnerType(Long ownerId, String ownerType) {
+		_faroInfoElasticsearchInvoker.delete(
+			getCollectionName(),
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("ownerId", ownerId)
+			).filter(
+				QueryBuilders.termQuery("ownerType", "individual")
+			));
+	}
+
+	@Override
 	public boolean existsByDataSourceId(Long dataSourceId) {
 		return _faroInfoElasticsearchInvoker.exists(
 			getCollectionName(),
 			QueryBuilders.termQuery(
 				"dataSourceId", String.valueOf(dataSourceId)));
+	}
+
+	@Override
+	public boolean existsByDataSourceIdAndNameAndOwnerId(
+		Long dataSourceId, String name, Long ownerId) {
+
+		return _faroInfoElasticsearchInvoker.exists(
+			getCollectionName(),
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery(
+					"dataSourceId", String.valueOf(dataSourceId))
+			).filter(
+				QueryBuilders.termQuery("name", name)
+			).filter(
+				QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
+			));
+	}
+
+	@Override
+	public boolean existsByNameAndOwnerId(String name, Long ownerId) {
+		return _faroInfoElasticsearchInvoker.exists(
+			getCollectionName(),
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("name", name)
+			).filter(
+				QueryBuilders.termQuery("ownerId", ownerId)
+			));
 	}
 
 	@Override
@@ -109,6 +156,14 @@ public class ElasticsearchFieldRepositoryImpl
 		return toList(
 			_faroInfoElasticsearchInvoker.get(
 				getCollectionName(), boolQueryBuilder));
+	}
+
+	@Override
+	public List<Field> findByContextAndDataSourceIdAndOwnerIdAndOwnerType(
+		String context, Long dataSourceId, Long ownerId, String ownerType) {
+
+		return findByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
+			context, dataSourceId, null, ownerId, ownerType);
 	}
 
 	@Override
@@ -156,44 +211,73 @@ public class ElasticsearchFieldRepositoryImpl
 	public List<Field> findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
 		String context, Long ownerId) {
 
-		JSONObject jsonObject = new JSONObject();
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			getCollectionName(),
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.terms(
+						"names"
+					).field(
+						"name"
+					).size(
+						Integer.MAX_VALUE
+					).subAggregation(
+						AggregationBuilders.topHits(
+							"maxDateModified"
+						).sort(
+							SortBuilderUtil.fieldSort(
+								"dateModified", SortOrder.DESC)
+						).size(
+							1
+						)
+					));
 
-		if (context.equals("custom")) {
-			if (_faroInfoElasticsearchInvoker.exists(
-					"individuals", String.valueOf(ownerId))) {
+				searchSourceBuilder.query(
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termQuery("context", context)
+					).filter(
+						QueryBuilders.termQuery(
+							"ownerId", String.valueOf(ownerId))
+					));
+				searchSourceBuilder.size(0);
+			});
 
-				jsonObject = _faroInfoElasticsearchInvoker.get(
-					"individuals", String.valueOf(ownerId));
-			}
-			else if (_faroInfoElasticsearchInvoker.exists(
-						"organizations", String.valueOf(ownerId))) {
+		Aggregations aggregations = searchResponse.getAggregations();
 
-				jsonObject = _faroInfoElasticsearchInvoker.get(
-					"organizations", String.valueOf(ownerId));
-			}
+		Terms nameTerms = aggregations.get("names");
+
+		JSONArray jsonArray = new JSONArray();
+
+		for (Terms.Bucket bucket : nameTerms.getBuckets()) {
+			Aggregations maxDateModifiedAggregations = bucket.getAggregations();
+
+			TopHits topHits = maxDateModifiedAggregations.get(
+				"maxDateModified");
+
+			SearchHits searchHits = topHits.getHits();
+
+			SearchHit searchHit = searchHits.getAt(0);
+
+			jsonArray.put(searchHit.getSourceAsMap());
 		}
-		else if (context.equals("organization")) {
-			jsonObject = _faroInfoElasticsearchInvoker.get(
-				"accounts", String.valueOf(ownerId));
-		}
-		else {
-			jsonObject = _faroInfoElasticsearchInvoker.get(
-				"individuals", String.valueOf(ownerId));
-		}
 
-		JSONObject contextJSONObject = jsonObject.optJSONObject(context);
+		return toList(jsonArray);
+	}
 
-		JSONArray fieldsJSONArray = new JSONArray();
+	public Field findByDataSourceIdAndNameAndOwnerId(
+		Long dataSourceId, String name, Long ownerId) {
 
-		if (contextJSONObject != null) {
-			for (String key : contextJSONObject.keySet()) {
-				JSONArray jsonArray = contextJSONObject.getJSONArray(key);
-
-				fieldsJSONArray.put(jsonArray.getJSONObject(0));
-			}
-		}
-
-		return toList(fieldsJSONArray);
+		return toEntity(
+			_faroInfoElasticsearchInvoker.fetch(
+				getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"dataSourceId", String.valueOf(dataSourceId))
+				).filter(
+					QueryBuilders.termQuery("name", name)
+				).filter(
+					QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
+				)));
 	}
 
 	@Override

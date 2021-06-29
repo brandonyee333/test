@@ -7,6 +7,15 @@
 			DELETE FROM Field WHERE Field.dataSourceId = :dataSourceId
 		]]>
 	</entry>
+	<entry key="Field.deleteByOwnerIdAndOwnerType">
+		<![CDATA[
+			DELETE FROM
+				Field
+			WHERE
+				Field.ownerId = :ownerId AND
+				Field.ownerType = :ownerType
+		]]>
+	</entry>
 	<entry key="Field.findByContextAndOwnerIdGroupByMaxModifiedDateAndName">
 		<![CDATA[
 			SELECT

@@ -37,12 +37,24 @@ public interface FieldRepository extends CrudRepository<Field, Long> {
 	@Modifying
 	public void deleteByDataSourceId(@Param("dataSourceId") Long dataSourceId);
 
+	@Modifying
+	public void deleteByOwnerIdAndOwnerType(
+		@Param("ownerId") Long ownerId, @Param("ownerType") String ownerType);
+
 	public boolean existsByDataSourceId(Long dataSourceId);
+
+	public boolean existsByDataSourceIdAndNameAndOwnerId(
+		Long dataSourceId, String name, Long ownerId);
+
+	public boolean existsByNameAndOwnerId(String name, Long ownerId);
 
 	public List<Field>
 		findByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
 			String context, @Nullable Long dataSourceId, @Nullable String name,
 			@Nullable Long ownerId, String ownerType);
+
+	public List<Field> findByContextAndDataSourceIdAndOwnerIdAndOwnerType(
+		String context, Long dataSourceId, Long ownerId, String ownerType);
 
 	public List<Field>
 		findByContextAndDataSourceIdNotAndNameNotInAndOwnerIdAndOwnerType(
@@ -57,6 +69,9 @@ public interface FieldRepository extends CrudRepository<Field, Long> {
 
 	public List<Field> findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
 		@Param("context") String context, @Param("ownerId") Long ownerId);
+
+	public Field findByDataSourceIdAndNameAndOwnerId(
+		Long dataSourceId, String name, Long ownerId);
 
 	public List<Field> findByFieldTypeAndOwnerTypeAndValueIn(
 		String fieldType, String ownerType, List<String> values);
