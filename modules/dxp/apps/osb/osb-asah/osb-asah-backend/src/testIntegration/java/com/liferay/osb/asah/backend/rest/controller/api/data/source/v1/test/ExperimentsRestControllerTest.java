@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
 import com.liferay.osb.asah.backend.dto.ExperimentDTO;
-import com.liferay.osb.asah.backend.dto.ExperimentVariantDTO;
+import com.liferay.osb.asah.backend.dto.ExperimentVariantsDTO;
 import com.liferay.osb.asah.backend.dto.GoalDTO;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.ExperimentsRestController;
@@ -168,17 +168,17 @@ public class ExperimentsRestControllerTest {
 				}
 			};
 
-		ExperimentVariantDTO expectedExperimentVariantDTO =
-			new ExperimentVariantDTO(expectedExperimentVariants);
+		ExperimentVariantsDTO expectedExperimentVariantsDTO =
+			new ExperimentVariantsDTO(expectedExperimentVariants);
 
 		_experimentsRestController.putExperimentVariants(
-			1L, expectedExperimentVariantDTO);
+			1L, expectedExperimentVariantsDTO);
 
 		ExperimentDTO actualExperimentDTO =
 			_experimentsRestController.getExperiment(1L);
 
 		Assert.assertEquals(
-			expectedExperimentVariantDTO.getExperimentVariantDTOs(),
+			expectedExperimentVariantsDTO.getExperimentVariantDTOs(),
 			actualExperimentDTO.getExperimentVariants());
 	}
 
