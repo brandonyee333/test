@@ -14,20 +14,13 @@
 
 package com.liferay.osb.asah.common.model.filter;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.jooq.Condition;
 import org.jooq.Field;
-
-import org.json.JSONArray;
 
 /**
  * @author Leslie Wong
@@ -49,23 +42,6 @@ public class EqualsFilterOperator extends FilterOperator {
 		}
 
 		return field.eq(getValue(dataType, value));
-	}
-
-	@Override
-	public QueryBuilder getQueryBuilder(String fieldName) {
-		Object value = values.get(0);
-
-		if (value == null) {
-			return BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.existsQuery(fieldName));
-		}
-		else if (value instanceof JSONArray) {
-			return QueryBuilders.termsQuery(
-				fieldName, JSONUtil.toObjectList((JSONArray)value));
-		}
-		else {
-			return QueryBuilders.termQuery(fieldName, value);
-		}
 	}
 
 	@Override

@@ -14,15 +14,10 @@
 
 package com.liferay.osb.asah.common.model.filter;
 
-import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.RangeQueryBuilder;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -41,17 +36,6 @@ public class LessThanFilterOperator extends FilterOperator {
 	@Override
 	public Condition getCondition(Field field) {
 		return field.lt(getValue(dataType, values.get(0)));
-	}
-
-	@Override
-	public QueryBuilder getQueryBuilder(String fieldName) {
-		RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
-			fieldName);
-
-		rangeQueryBuilder.lt(values.get(0));
-		rangeQueryBuilder.timeZone(TimeZoneDogUtil.getTimeZoneId());
-
-		return rangeQueryBuilder;
 	}
 
 	@Override

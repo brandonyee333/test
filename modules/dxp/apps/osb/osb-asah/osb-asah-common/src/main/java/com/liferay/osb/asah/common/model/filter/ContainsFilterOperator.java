@@ -14,15 +14,10 @@
 
 package com.liferay.osb.asah.common.model.filter;
 
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Collections;
 import java.util.List;
-
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -41,14 +36,6 @@ public class ContainsFilterOperator extends FilterOperator {
 	@Override
 	public Condition getCondition(Field field) {
 		return field.containsIgnoreCase(getValue(dataType, values.get(0)));
-	}
-
-	@Override
-	public QueryBuilder getQueryBuilder(String fieldName) {
-		return QueryBuilders.regexpQuery(
-			fieldName,
-			FilterStringToQueryBuilderConverter.buildIgnoreCaseRegExp(
-				StringUtil.unquoteAndDecodeInnerQuotes(values.get(0))));
 	}
 
 	@Override

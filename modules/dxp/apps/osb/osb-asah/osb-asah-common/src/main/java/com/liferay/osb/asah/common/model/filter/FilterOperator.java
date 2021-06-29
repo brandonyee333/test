@@ -24,8 +24,6 @@ import java.time.ZoneId;
 
 import java.util.List;
 
-import org.elasticsearch.index.query.QueryBuilder;
-
 import org.jooq.Condition;
 import org.jooq.Field;
 
@@ -76,8 +74,6 @@ public abstract class FilterOperator {
 	}
 
 	public abstract Condition getCondition(Field field);
-
-	public abstract QueryBuilder getQueryBuilder(String fieldName);
 
 	protected FilterOperator(
 		EventAttributeDefinition.DataType dataType, int expectedArgumentCount,

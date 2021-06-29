@@ -14,14 +14,10 @@
 
 package com.liferay.osb.asah.common.model.filter;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -46,18 +42,6 @@ public class NotEqualsFilterOperator extends FilterOperator {
 		}
 
 		return field.isNotNull();
-	}
-
-	@Override
-	public QueryBuilder getQueryBuilder(String fieldName) {
-		Object value = values.get(0);
-
-		if (value != null) {
-			return BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.termQuery(fieldName, value));
-		}
-
-		return QueryBuilders.existsQuery(fieldName);
 	}
 
 	@Override

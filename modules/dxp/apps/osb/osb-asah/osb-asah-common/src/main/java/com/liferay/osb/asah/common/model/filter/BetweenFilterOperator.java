@@ -20,9 +20,6 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
@@ -45,19 +42,6 @@ public class BetweenFilterOperator extends FilterOperator {
 		return DSL.and(
 			field.ge(getValue(dataType, values.get(0))),
 			field.le(getValue(dataType, values.get(1))));
-	}
-
-	@Override
-	public QueryBuilder getQueryBuilder(String fieldName) {
-		return QueryBuilders.rangeQuery(
-			fieldName
-		).gte(
-			values.get(0)
-		).lte(
-			values.get(1)
-		).timeZone(
-			_timeZoneDog.getTimeZoneId()
-		);
 	}
 
 	protected List<EventAttributeDefinition.DataType> getSupportedDataTypes() {

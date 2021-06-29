@@ -15,15 +15,11 @@
 package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -44,13 +40,6 @@ public class SimilarToFilterOperator extends FilterOperator {
 		return field.similarTo(
 			StringUtils.replaceChars(
 				(String)getValue(dataType, values.get(0)), ".*", "_%"));
-	}
-
-	@Override
-	public QueryBuilder getQueryBuilder(String fieldName) {
-		return QueryBuilders.wildcardQuery(
-			fieldName,
-			StringUtil.unquoteAndDecodeInnerQuotes(values.get(0)) + "*");
 	}
 
 	@Override
