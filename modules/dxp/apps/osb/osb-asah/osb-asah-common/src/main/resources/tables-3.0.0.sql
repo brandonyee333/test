@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS EventAttribute (
 	id BIGSERIAL PRIMARY KEY,
 	attributeValue VARCHAR(1024),
 	eventAttributeDefinitionId BIGINT,
+	eventDate TIMESTAMPTZ,
 	eventId BIGINT REFERENCES Event
 );
 

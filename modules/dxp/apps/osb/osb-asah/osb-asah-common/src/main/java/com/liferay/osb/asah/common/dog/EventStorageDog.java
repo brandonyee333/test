@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinitio
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -85,7 +86,7 @@ public class EventStorageDog {
 	}
 
 	private EventAttribute _resolveEventAttribute(
-		String eventAttributeName, String eventAttributeValue,
+		String eventAttributeName, String eventAttributeValue, Date eventDate,
 		Long eventDefinitionId) {
 
 		EventAttributeDefinition eventAttributeDefinition =
@@ -123,7 +124,7 @@ public class EventStorageDog {
 		}
 
 		return new EventAttribute(
-			eventAttributeValue, eventAttributeDefinition.getId());
+			eventAttributeValue, eventDate, eventAttributeDefinition.getId());
 	}
 
 	private Set<EventAttribute> _resolveEventAttributes(
@@ -133,10 +134,11 @@ public class EventStorageDog {
 			{
 				addAll(
 					_resolveGlobalEventAttributes(
-						analyticsEvent.getContext(), eventDefinitionId));
+						analyticsEvent.getContext(),
+						analyticsEvent.getEventDate(), eventDefinitionId));
 				addAll(
 					_resolveLocalEventAttributes(
-						eventDefinitionId,
+						analyticsEvent.getEventDate(), eventDefinitionId,
 						analyticsEvent.getEventProperties()));
 			}
 		};
@@ -168,7 +170,8 @@ public class EventStorageDog {
 	}
 
 	private Set<EventAttribute> _resolveGlobalEventAttributes(
-		Map<String, String> eventContext, Long eventDefinitionId) {
+		Map<String, String> eventContext, Date eventDate,
+		Long eventDefinitionId) {
 
 		Set<EventAttribute> eventAttributes = new HashSet<>();
 
@@ -178,21 +181,23 @@ public class EventStorageDog {
 			eventAttributes.add(
 				_resolveEventAttribute(
 					entry.getKey(), eventContext.get(entry.getValue()),
-					eventDefinitionId));
+					eventDate, eventDefinitionId));
 		}
 
 		return eventAttributes;
 	}
 
 	private Set<EventAttribute> _resolveLocalEventAttributes(
-		Long eventDefinitionId, Map<String, String> eventProperties) {
+		Date eventDate, Long eventDefinitionId,
+		Map<String, String> eventProperties) {
 
 		Set<EventAttribute> eventAttributes = new HashSet<>();
 
 		for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
 			eventAttributes.add(
 				_resolveEventAttribute(
-					entry.getKey(), entry.getValue(), eventDefinitionId));
+					entry.getKey(), entry.getValue(), eventDate,
+					eventDefinitionId));
 		}
 
 		return eventAttributes;

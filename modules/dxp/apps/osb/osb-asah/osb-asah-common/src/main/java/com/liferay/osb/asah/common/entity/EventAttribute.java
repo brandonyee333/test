@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import java.util.Date;
 import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
@@ -32,9 +33,15 @@ public class EventAttribute implements Persistable<Long> {
 	}
 
 	public EventAttribute(
-		String attributeValue, Long eventAttributeDefinitionId) {
+		String attributeValue, Date eventDate,
+		Long eventAttributeDefinitionId) {
 
 		_attributeValue = attributeValue;
+
+		if (eventDate != null) {
+			_eventDate = new Date(eventDate.getTime());
+		}
+
 		_eventAttributeDefinitionId = eventAttributeDefinitionId;
 	}
 
@@ -50,10 +57,11 @@ public class EventAttribute implements Persistable<Long> {
 
 		EventAttribute eventAttribute = (EventAttribute)obj;
 
-		if (Objects.equals(
+		if (Objects.equals(_attributeValue, eventAttribute._attributeValue) &&
+			Objects.equals(
 				_eventAttributeDefinitionId,
 				eventAttribute._eventAttributeDefinitionId) &&
-			Objects.equals(_attributeValue, eventAttribute._attributeValue) &&
+			Objects.equals(_eventDate, eventAttribute._eventDate) &&
 			Objects.equals(_eventId, eventAttribute._eventId) &&
 			Objects.equals(_id, eventAttribute._id)) {
 
@@ -74,6 +82,15 @@ public class EventAttribute implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Date getEventDate() {
+		if (_eventDate == null) {
+			return null;
+		}
+
+		return new Date(_eventDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public Long getEventId() {
 		return _eventId;
 	}
@@ -88,7 +105,8 @@ public class EventAttribute implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_eventAttributeDefinitionId, _attributeValue, _eventId, _id);
+			_attributeValue, _eventAttributeDefinitionId, _eventDate, _eventId,
+			_id);
 	}
 
 	@Override
@@ -108,6 +126,12 @@ public class EventAttribute implements Persistable<Long> {
 		_eventAttributeDefinitionId = eventAttributeDefinitionId;
 	}
 
+	public void setEventDate(Date eventDate) {
+		if (eventDate != null) {
+			_eventDate = new Date(eventDate.getTime());
+		}
+	}
+
 	public void setEventId(Long eventId) {
 		_eventId = eventId;
 	}
@@ -125,6 +149,9 @@ public class EventAttribute implements Persistable<Long> {
 
 	@Transient
 	private Long _eventAttributeDefinitionId;
+
+	@Transient
+	private Date _eventDate;
 
 	@Transient
 	private Long _eventId;
