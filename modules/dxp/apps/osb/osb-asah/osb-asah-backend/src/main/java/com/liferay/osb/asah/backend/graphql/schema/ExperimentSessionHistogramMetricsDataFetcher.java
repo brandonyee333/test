@@ -32,7 +32,9 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-@GraphQLTypeWiring(fieldName = "sessionsHistogram", typeName = "DXPVariant")
+@GraphQLTypeWiring(
+	fieldName = "sessionsHistogram", typeName = "ExperimentVariant"
+)
 @GraphQLTypeWiring(fieldName = "sessionsHistogram", typeName = "Experiment")
 public class ExperimentSessionHistogramMetricsDataFetcher
 	implements DataFetcher<List<HistogramMetric>> {
