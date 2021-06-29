@@ -234,118 +234,127 @@ public class ActivitiesNanite implements Nanite {
 	}
 
 	private JSONObject _getActivityJSONObject(AnalyticsEvent analyticsEvent) {
-		Map<String, String> context = analyticsEvent.getContext();
+		try {
+			Map<String, String> context = analyticsEvent.getContext();
 
-		String dataSourceAssetPK = _getDataSourceAssetPK(
-			analyticsEvent, context);
+			String dataSourceAssetPK = _getDataSourceAssetPK(
+				analyticsEvent, context);
 
-		JSONObject eventPropertiesJSONObject = _getEventPropertiesJSONObject(
-			analyticsEvent);
+			JSONObject eventPropertiesJSONObject =
+				_getEventPropertiesJSONObject(analyticsEvent);
 
-		Asset asset = _getAsset(
-			analyticsEvent, dataSourceAssetPK, eventPropertiesJSONObject);
+			Asset asset = _getAsset(
+				analyticsEvent, dataSourceAssetPK, eventPropertiesJSONObject);
 
-		if (asset == null) {
-			return null;
-		}
-
-		String eventId = analyticsEvent.getEventId();
-
-		JSONObject objectJSONObject = new JSONObject();
-
-		objectJSONObject.put("dataSourceAssetPK", dataSourceAssetPK);
-
-		if (context.containsKey("canonicalUrl")) {
-			objectJSONObject.put("canonicalUrl", context.get("canonicalUrl"));
-		}
-
-		String assetId = String.valueOf(asset.getId());
-
-		objectJSONObject.put("id", assetId);
-
-		objectJSONObject.put(
-			"name", _getTitle(analyticsEvent, eventPropertiesJSONObject));
-		objectJSONObject.put("objectType", asset.getAssetType());
-		objectJSONObject.put("url", MapUtil.getString(context, "url"));
-
-		String applicationId = analyticsEvent.getApplicationId();
-
-		if (applicationId.equals("Comment")) {
-			applicationId = objectJSONObject.getString("objectType");
-
-			eventId = "comment" + StringUtils.capitalize(eventId);
-		}
-
-		String eventDateString = DateUtil.toUTCString(
-			analyticsEvent.getEventDate());
-
-		LocalDateTime eventLocalDateTime = DateUtil.toLocalDateTime(
-			analyticsEvent.getEventDate(), _timeZoneDog.getZoneId());
-
-		String dayUTCString = DateUtil.toUTCString(
-			eventLocalDateTime.with(LocalTime.MIDNIGHT));
-
-		ActivityGroup activityGroup = _addActivityGroup(analyticsEvent);
-
-		JSONObject activityJSONObject = JSONUtil.put(
-			"activityKey", applicationId + "#" + eventId + "#" + assetId
-		).put(
-			"activityType", "BROWSE"
-		).put(
-			"applicationId", applicationId
-		).put(
-			"channelId", analyticsEvent.getChannelId()
-		).put(
-			"dataSourceId", analyticsEvent.getDataSourceId()
-		).put(
-			"day", dayUTCString
-		).put(
-			"endTime", eventDateString
-		).put(
-			"endTimeLocal", eventLocalDateTime
-		).put(
-			"eventContext", new JSONObject(analyticsEvent.getContext())
-		).put(
-			"eventId", eventId
-		).put(
-			"eventProperties", eventPropertiesJSONObject
-		).put(
-			"groupId", String.valueOf(activityGroup.getId())
-		).put(
-			"object", objectJSONObject
-		).put(
-			"ownerId", String.valueOf(activityGroup.getOwnerId())
-		).put(
-			"startTime", eventDateString
-		).put(
-			"startTimeLocal", eventLocalDateTime
-		).put(
-			"userId", analyticsEvent.getUserId()
-		);
-
-		String sessionId = _getSessionId(
-			analyticsEvent, activityGroup.getOwnerId());
-
-		if (sessionId != null) {
-			activityJSONObject.put("sessionId", sessionId);
-		}
-
-		if (Objects.equals(analyticsEvent.getEventId(), "formViewed")) {
-			TreeMap<Date, JSONObject> formViewedActivity =
-				_formViewedActivies.getIfPresent(analyticsEvent.getUserId());
-
-			if (formViewedActivity == null) {
-				formViewedActivity = new TreeMap<>();
+			if (asset == null) {
+				return null;
 			}
 
-			formViewedActivity.put(
-				analyticsEvent.getEventDate(), activityJSONObject);
+			String eventId = analyticsEvent.getEventId();
 
-			_formViewedActivies.put(
-				analyticsEvent.getUserId(), formViewedActivity);
+			JSONObject objectJSONObject = new JSONObject();
+
+			objectJSONObject.put("dataSourceAssetPK", dataSourceAssetPK);
+
+			if (context.containsKey("canonicalUrl")) {
+				objectJSONObject.put(
+					"canonicalUrl", context.get("canonicalUrl"));
+			}
+
+			String assetId = String.valueOf(asset.getId());
+
+			objectJSONObject.put("id", assetId);
+
+			objectJSONObject.put(
+				"name", _getTitle(analyticsEvent, eventPropertiesJSONObject));
+			objectJSONObject.put("objectType", asset.getAssetType());
+			objectJSONObject.put("url", MapUtil.getString(context, "url"));
+
+			String applicationId = analyticsEvent.getApplicationId();
+
+			if (applicationId.equals("Comment")) {
+				applicationId = objectJSONObject.getString("objectType");
+
+				eventId = "comment" + StringUtils.capitalize(eventId);
+			}
+
+			String eventDateString = DateUtil.toUTCString(
+				analyticsEvent.getEventDate());
+
+			LocalDateTime eventLocalDateTime = DateUtil.toLocalDateTime(
+				analyticsEvent.getEventDate(), _timeZoneDog.getZoneId());
+
+			String dayUTCString = DateUtil.toUTCString(
+				eventLocalDateTime.with(LocalTime.MIDNIGHT));
+
+			ActivityGroup activityGroup = _addActivityGroup(analyticsEvent);
+
+			JSONObject activityJSONObject = JSONUtil.put(
+				"activityKey", applicationId + "#" + eventId + "#" + assetId
+			).put(
+				"activityType", "BROWSE"
+			).put(
+				"applicationId", applicationId
+			).put(
+				"channelId", analyticsEvent.getChannelId()
+			).put(
+				"dataSourceId", analyticsEvent.getDataSourceId()
+			).put(
+				"day", dayUTCString
+			).put(
+				"endTime", eventDateString
+			).put(
+				"endTimeLocal", eventLocalDateTime
+			).put(
+				"eventContext", new JSONObject(analyticsEvent.getContext())
+			).put(
+				"eventId", eventId
+			).put(
+				"eventProperties", eventPropertiesJSONObject
+			).put(
+				"groupId", String.valueOf(activityGroup.getId())
+			).put(
+				"object", objectJSONObject
+			).put(
+				"ownerId", String.valueOf(activityGroup.getOwnerId())
+			).put(
+				"startTime", eventDateString
+			).put(
+				"startTimeLocal", eventLocalDateTime
+			).put(
+				"userId", analyticsEvent.getUserId()
+			);
+
+			String sessionId = _getSessionId(
+				analyticsEvent, activityGroup.getOwnerId());
+
+			if (sessionId != null) {
+				activityJSONObject.put("sessionId", sessionId);
+			}
+
+			if (Objects.equals(analyticsEvent.getEventId(), "formViewed")) {
+				TreeMap<Date, JSONObject> formViewedActivity =
+					_formViewedActivies.getIfPresent(
+						analyticsEvent.getUserId());
+
+				if (formViewedActivity == null) {
+					formViewedActivity = new TreeMap<>();
+				}
+
+				formViewedActivity.put(
+					analyticsEvent.getEventDate(), activityJSONObject);
+
+				_formViewedActivies.put(
+					analyticsEvent.getUserId(), formViewedActivity);
+			}
+
+			return activityJSONObject;
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 
-		return activityJSONObject;
+		return null;
 	}
 
 	private Asset _getAsset(
