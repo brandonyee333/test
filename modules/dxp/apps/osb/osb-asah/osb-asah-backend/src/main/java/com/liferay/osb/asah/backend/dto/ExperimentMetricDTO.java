@@ -20,6 +20,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
+import com.liferay.osb.asah.common.graphql.GraphQLProperty;
+import com.liferay.osb.asah.common.graphql.GraphQLType;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.time.LocalDateTime;
@@ -30,6 +32,7 @@ import java.util.Set;
 /**
  * @author Marcos Martins
  */
+@GraphQLType("ExperimentMetric")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExperimentMetricDTO {
 
@@ -67,6 +70,7 @@ public class ExperimentMetricDTO {
 		return _estimatedDaysLeft;
 	}
 
+	@GraphQLProperty("variantMetrics")
 	@JsonProperty("variantMetrics")
 	public Set<ExperimentVariantMetricDTO> getExperimentVariantMetricDTOs() {
 		return _experimentVariantMetricDTOs;
@@ -76,6 +80,7 @@ public class ExperimentMetricDTO {
 		return _id;
 	}
 
+	@GraphQLProperty("processedDate")
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"

@@ -18,6 +18,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
+import com.liferay.osb.asah.common.graphql.GraphQLProperty;
+import com.liferay.osb.asah.common.graphql.GraphQLType;
 
 import java.math.BigDecimal;
 
@@ -26,6 +28,7 @@ import java.util.Arrays;
 /**
  * @author Marcos Martins
  */
+@GraphQLType("ExperimentVariantMetric")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExperimentVariantMetricDTO {
 
@@ -40,6 +43,7 @@ public class ExperimentVariantMetricDTO {
 		_probabilityToWin = experimentVariantMetric.getProbabilityToWin();
 	}
 
+	@GraphQLProperty("confidenceInterval")
 	@JsonProperty("confidenceInterval")
 	public BigDecimal[] getConfidenceIntervals() {
 		return Arrays.copyOf(_confidenceIntervals, _confidenceIntervals.length);
@@ -49,6 +53,7 @@ public class ExperimentVariantMetricDTO {
 		return _control;
 	}
 
+	@GraphQLProperty("dxpVariantId")
 	@JsonProperty("dxpVariantId")
 	public String getDXPVariantId() {
 		return _dxpVariantId;

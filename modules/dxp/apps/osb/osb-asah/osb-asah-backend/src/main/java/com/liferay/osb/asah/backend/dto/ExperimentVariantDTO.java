@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.common.entity.ExperimentVariant;
 import com.liferay.osb.asah.common.graphql.GraphQLProperty;
+import com.liferay.osb.asah.common.graphql.GraphQLType;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.HashSet;
@@ -35,6 +36,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 /**
  * @author Marcos Martins
  */
+@GraphQLType("ExperimentVariant")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExperimentVariantDTO {
 
