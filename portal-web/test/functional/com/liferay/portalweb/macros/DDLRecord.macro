@@ -872,7 +872,9 @@ definition {
 	macro viewPopulatedField {
 		var key_ddlRecordFieldData = "${ddlRecordFieldData}";
 
-		AssertElementPresent(locator1 = "DDLRecord#FIELD_3");
+		AssertTextEquals.assertPartialText(
+			locator1 = "DDLRecord#FIELD",
+			value1 = "${fieldFieldLabel} ${ddlRecordFieldData}");
 	}
 
 	macro viewSecondFieldCP {
