@@ -79,7 +79,7 @@ public abstract class BaseAssetMetricRepository
 		).where(
 			DSL.and(
 				DSL.field(
-					"assetId"
+					getAssetIdFieldName()
 				).eq(
 					assetId
 				),
