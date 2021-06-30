@@ -14,7 +14,9 @@
 
 package com.liferay.osb.asah.backend.repository.test;
 
+import com.liferay.osb.asah.backend.model.JournalMetric;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
+import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.Interval;
@@ -23,6 +25,7 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -49,10 +52,17 @@ public class JournalAssetMetricRepositoryTest
 		resourcePath = "journal_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
-	public void testGetAssetMetric() {
-		assertAssetMetric(
-			"e131fabc", 1L, SetUtil.of(JournalMetricType.VIEWS.getName()),
-			TimeRange.LAST_24_HOURS);
+	public void testGetViewsAssetMetric() {
+		JournalMetric journalMetric =
+			(JournalMetric)_assetMetricRepository.getAssetMetric(
+				"e131fabc", 1L, SetUtil.of(JournalMetricType.VIEWS.getName()),
+				TimeRange.LAST_24_HOURS);
+
+		Assert.assertNotNull(journalMetric);
+
+		Metric viewsMetric = journalMetric.getViewsMetric();
+
+		Assert.assertEquals(7D, viewsMetric.getValue(), 0);
 	}
 
 	@SQLResource(

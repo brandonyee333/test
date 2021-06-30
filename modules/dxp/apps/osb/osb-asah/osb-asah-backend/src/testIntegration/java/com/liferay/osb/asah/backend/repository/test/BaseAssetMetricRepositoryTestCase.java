@@ -15,8 +15,6 @@
 package com.liferay.osb.asah.backend.repository.test;
 
 import com.liferay.osb.asah.backend.model.HistogramMetric;
-import com.liferay.osb.asah.backend.model.JournalMetric;
-import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.Interval;
@@ -44,24 +42,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
  * @author Marcellus Tavares
  */
 public abstract class BaseAssetMetricRepositoryTestCase {
-
-	public void assertAssetMetric(
-		String assetId, Long channelId, Set<String> selectedMetrics,
-		TimeRange timeRange) {
-
-		AssetMetricRepository assetMetricRepository =
-			getAssetMetricRepository();
-
-		JournalMetric journalMetric =
-			(JournalMetric)assetMetricRepository.getAssetMetric(
-				assetId, channelId, selectedMetrics, timeRange);
-
-		Assert.assertNotNull(journalMetric);
-
-		Metric viewsMetric = journalMetric.getViewsMetric();
-
-		Assert.assertEquals(7D, viewsMetric.getValue(), 0);
-	}
 
 	public void assertHistogramMetrics(
 		Set<Double> expectedMetricValues,
