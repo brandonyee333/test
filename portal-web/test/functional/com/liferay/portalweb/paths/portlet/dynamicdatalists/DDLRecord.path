@@ -35,11 +35,6 @@
 	<td>//div[@class='lfr-ddm-container']/div[2]</td>
 	<td></td>
 </tr>
-<tr>
-	<td>FIELD_3</td>
-	<td>//div[label[contains(.,'${fieldFieldLabel}')] and input[@value='${ddlRecordFieldData}']]</td>
-	<td></td>
-</tr>
 <!--NESTED_FIELDS-->
 <tr>
 	<td>NESTED_PARENT_FIELD</td>
