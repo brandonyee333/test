@@ -71,7 +71,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				Collectors.toList()
 			));
 
-		return dslContext.select(
+		Record record = dslContext.select(
 			fields
 		).from(
 			getTableName()
@@ -98,10 +98,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					timeRange.getStartLocalDateTime(),
 					timeRange.getEndLocalDateTime()
 				))
-		).fetchOne(
-		).map(
-			record -> _toMetric(record, selectedMetrics)
-		);
+		).fetchOne();
+
+		return _toMetric(record, selectedMetrics);
 	}
 
 	@Override
@@ -198,7 +197,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			BigDecimal metricValueBigDecimal = (BigDecimal)record.get(
 				metricType.getFieldName());
 
-			metric.setValue(metricValueBigDecimal.doubleValue());
+			if (metricValueBigDecimal != null) {
+				metric.setValue(metricValueBigDecimal.doubleValue());
+			}
 
 			BiConsumer<T, Metric> metricSetterBiConsumer =
 				assetMetricSetters.get(selectedMetric);
