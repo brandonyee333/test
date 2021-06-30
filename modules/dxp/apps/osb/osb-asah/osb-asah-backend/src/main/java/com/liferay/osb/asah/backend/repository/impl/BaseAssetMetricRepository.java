@@ -18,7 +18,6 @@ import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
@@ -97,12 +96,8 @@ public abstract class BaseAssetMetricRepository
 				DSL.field(
 					"eventDate"
 				).between(
-					DateUtil.toDate(
-						timeRange.getStartLocalDateTime(),
-						_timeZoneDog.getZoneId()),
-					DateUtil.toDate(
-						timeRange.getEndLocalDateTime(),
-						_timeZoneDog.getZoneId())
+					timeRange.getStartLocalDateTime(),
+					timeRange.getEndLocalDateTime()
 				))
 		).fetch(
 		).map(
@@ -144,12 +139,8 @@ public abstract class BaseAssetMetricRepository
 				DSL.field(
 					"eventDate"
 				).between(
-					DateUtil.toDate(
-						timeRange.getStartLocalDateTime(),
-						_timeZoneDog.getZoneId()),
-					DateUtil.toDate(
-						timeRange.getEndLocalDateTime(),
-						_timeZoneDog.getZoneId())
+					timeRange.getStartLocalDateTime(),
+					timeRange.getEndLocalDateTime()
 				),
 				DSL.field(
 					"projectId"
