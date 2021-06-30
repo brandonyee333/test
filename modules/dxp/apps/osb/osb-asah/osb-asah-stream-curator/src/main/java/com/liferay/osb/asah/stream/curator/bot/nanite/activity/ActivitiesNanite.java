@@ -118,7 +118,9 @@ public class ActivitiesNanite implements Nanite {
 					this::_run
 				);
 
-				_futures.removeIf(CompletableFuture::isDone);
+				while (!_futures.isEmpty()) {
+					_futures.removeIf(CompletableFuture::isDone);
+				}
 
 				if (_log.isInfoEnabled()) {
 					Class<?> clazz = getClass();
