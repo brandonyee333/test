@@ -17,7 +17,7 @@
 </tr>
 <tr>
 	<td>FIELD</td>
-	<td>//div[@class='lfr-ddm-container']/div[contains(.,'${key_ddlRecordFieldData}')]</td>
+	<td>//div[@class='lfr-ddm-container']/div[not(contains(@class,'hide')) and contains(.,'${key_ddlRecordFieldData}')]</td>
 	<td></td>
 </tr>
 <tr>
