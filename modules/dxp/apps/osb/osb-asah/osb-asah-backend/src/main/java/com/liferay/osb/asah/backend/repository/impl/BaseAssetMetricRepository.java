@@ -71,7 +71,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				Collectors.toList()
 			));
 
-		List<AssetMetric> assetMetrics = dslContext.select(
+		return dslContext.select(
 			fields
 		).from(
 			getTableName()
@@ -98,12 +98,10 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					timeRange.getStartLocalDateTime(),
 					timeRange.getEndLocalDateTime()
 				))
-		).fetch(
+		).fetchOne(
 		).map(
 			record -> _toMetric(record, selectedMetrics)
 		);
-
-		return assetMetrics.get(0);
 	}
 
 	@Override
