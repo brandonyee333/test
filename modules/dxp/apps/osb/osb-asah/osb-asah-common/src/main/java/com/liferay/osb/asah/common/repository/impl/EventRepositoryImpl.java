@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AttributeType;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.filter.FilterOperator;
+import com.liferay.osb.asah.common.model.filter.FilterOperators;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -210,7 +211,7 @@ public class EventRepositoryImpl extends BaseRepository {
 				attributeType, attributeId, rangeEndDate, rangeStartDate);
 
 			for (EventAnalysisFilter eventAnalysisFilter : entry.getValue()) {
-				FilterOperator filterOperator = FilterOperator.of(
+				FilterOperator filterOperator = FilterOperators.of(
 					eventAnalysisFilter.getDataType(),
 					eventAnalysisFilter.getOperator(),
 					eventAnalysisFilter.getValues());

@@ -32,47 +32,6 @@ import org.jooq.Field;
  */
 public abstract class FilterOperator {
 
-	public static FilterOperator of(
-		EventAttributeDefinition.DataType dataType, String name,
-		List<String> values) {
-
-		if (name.equals("between")) {
-			return new BetweenFilterOperator(dataType, values);
-		}
-		else if (name.equals("contains")) {
-			return new ContainsFilterOperator(dataType, values);
-		}
-		else if (name.equals("endsWith")) {
-			return new EndsWithFilterOperator(dataType, values);
-		}
-		else if (name.equals("eq")) {
-			return new EqualsFilterOperator(dataType, values);
-		}
-		else if (name.equals("ge")) {
-			return new GreaterThanEqualsFilterOperator(dataType, values);
-		}
-		else if (name.equals("gt")) {
-			return new GreaterThanFilterOperator(dataType, values);
-		}
-		else if (name.equals("le")) {
-			return new LessThanEqualsFilterOperator(dataType, values);
-		}
-		else if (name.equals("lt")) {
-			return new LessThanFilterOperator(dataType, values);
-		}
-		else if (name.equals("ne")) {
-			return new NotEqualsFilterOperator(dataType, values);
-		}
-		else if (name.equals("similarTo")) {
-			return new SimilarToFilterOperator(dataType, values);
-		}
-		else if (name.equals("startsWith")) {
-			return new StartsWithFilterOperator(dataType, values);
-		}
-
-		throw new IllegalArgumentException("Invalid operator: " + name);
-	}
-
 	public abstract Condition getCondition(Field field);
 
 	protected FilterOperator(

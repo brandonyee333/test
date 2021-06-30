@@ -35,7 +35,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testBetweenFilterOperatorDate() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.DATE, "between",
 			new ArrayList<String>() {
 				{
@@ -66,7 +66,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testBetweenFilterOperatorDuration() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.DURATION, "between",
 			new ArrayList<String>() {
 				{
@@ -92,7 +92,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testBetweenFilterOperatorNumber() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.NUMBER, "between",
 			new ArrayList<String>() {
 				{
@@ -118,7 +118,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testContainsFilterOperator() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.STRING, "contains",
 			Collections.singletonList("testValue"));
 
@@ -133,7 +133,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testEndsWithFilterOperator() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.STRING, "endsWith",
 			Collections.singletonList("testValue"));
 
@@ -148,7 +148,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testEqualsFilterOperator() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.STRING, "eq",
 			Collections.singletonList("testValue"));
 
@@ -163,7 +163,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testEqualsFilterOperatorNull() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.STRING, "eq",
 			Collections.singletonList(null));
 
@@ -176,7 +176,7 @@ public class FilterOperatorTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testFilterOperatorBadArgumentCount() {
-		FilterOperator.of(
+		FilterOperators.of(
 			EventAttributeDefinition.DataType.STRING, "contains",
 			new ArrayList<String>() {
 				{
@@ -188,7 +188,7 @@ public class FilterOperatorTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testFilterOperatorUnsupportedDataType() {
-		FilterOperator.of(
+		FilterOperators.of(
 			EventAttributeDefinition.DataType.STRING, "gt",
 			new ArrayList<String>() {
 				{
@@ -201,7 +201,7 @@ public class FilterOperatorTest {
 	public void testGreaterThanEqualsFilterOperatorDate() {
 		String dateString = "2021-06-01";
 
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.DATE, "ge",
 			Collections.singletonList(dateString));
 
@@ -218,7 +218,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testGreaterThanEqualsFilterOperatorDuration() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.DURATION, "ge",
 			Collections.singletonList("123"));
 
@@ -233,7 +233,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testGreaterThanEqualsFilterOperatorNumber() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.NUMBER, "ge",
 			Collections.singletonList("123"));
 
@@ -250,7 +250,7 @@ public class FilterOperatorTest {
 	public void testGreaterThanFilterOperatorDate() {
 		String dateString = "2021-06-01";
 
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.DATE, "gt",
 			Collections.singletonList(dateString));
 
@@ -267,7 +267,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testGreaterThanFilterOperatorDuration() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.DURATION, "gt",
 			Collections.singletonList("123"));
 
@@ -282,7 +282,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testGreaterThanFilterOperatorNumber() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.NUMBER, "gt",
 			Collections.singletonList("123"));
 
@@ -299,7 +299,7 @@ public class FilterOperatorTest {
 	public void testLessThanEqualsFilterOperatorDate() {
 		String dateString = "2020-06-01";
 
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.DATE, "le",
 			Collections.singletonList(dateString));
 
@@ -316,7 +316,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testLessThanEqualsFilterOperatorDuration() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.DURATION, "le",
 			Collections.singletonList("123"));
 
@@ -331,7 +331,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testLessThanEqualsFilterOperatorNumber() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.NUMBER, "le",
 			Collections.singletonList("123"));
 
@@ -348,7 +348,7 @@ public class FilterOperatorTest {
 	public void testLessThanFilterOperatorDate() {
 		String dateString = "2021-06-01";
 
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.DATE, "lt",
 			Collections.singletonList(dateString));
 
@@ -365,7 +365,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testLessThanFilterOperatorDuration() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.DURATION, "lt",
 			Collections.singletonList("123"));
 
@@ -380,7 +380,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testLessThanFilterOperatorNumber() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.NUMBER, "lt",
 			Collections.singletonList("123"));
 
@@ -395,7 +395,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testNotEqualsFilterOperator() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.STRING, "ne",
 			Collections.singletonList("testValue"));
 
@@ -410,7 +410,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testNotEqualsFilterOperatorNull() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.STRING, "ne",
 			Collections.singletonList(null));
 
@@ -423,7 +423,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testSimilarToFilterOperator() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.STRING, "similarTo",
 			Collections.singletonList("test.*Value"));
 
@@ -438,7 +438,7 @@ public class FilterOperatorTest {
 
 	@Test
 	public void testStartsWithFilterOperator() {
-		FilterOperator filterOperator = FilterOperator.of(
+		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.STRING, "startsWith",
 			Collections.singletonList("testValue"));
 

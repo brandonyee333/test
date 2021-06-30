@@ -44,6 +44,7 @@ public class BetweenFilterOperator extends FilterOperator {
 			field.le(getValue(dataType, values.get(1))));
 	}
 
+	@Override
 	protected List<EventAttributeDefinition.DataType> getSupportedDataTypes() {
 		return new ArrayList<EventAttributeDefinition.DataType>() {
 			{
