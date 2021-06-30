@@ -53,10 +53,9 @@ public class JournalAssetMetricRepositoryTest
 	)
 	@Test
 	public void testGetViewsAssetMetric() {
-		JournalMetric journalMetric =
-			(JournalMetric)_assetMetricRepository.getAssetMetric(
-				"e131fabc", 1L, SetUtil.of(JournalMetricType.VIEWS.getName()),
-				TimeRange.LAST_24_HOURS);
+		JournalMetric journalMetric = _assetMetricRepository.getAssetMetric(
+			"e131fabc", 1L, SetUtil.of(JournalMetricType.VIEWS.getName()),
+			TimeRange.LAST_24_HOURS);
 
 		Assert.assertNotNull(journalMetric);
 
@@ -108,6 +107,6 @@ public class JournalAssetMetricRepositoryTest
 
 	@Autowired
 	@Qualifier("JournalAssetMetricRepository")
-	private AssetMetricRepository _assetMetricRepository;
+	private AssetMetricRepository<JournalMetric> _assetMetricRepository;
 
 }

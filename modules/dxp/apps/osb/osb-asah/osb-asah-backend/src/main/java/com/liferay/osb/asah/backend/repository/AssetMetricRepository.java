@@ -27,9 +27,9 @@ import java.util.Set;
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
-public interface AssetMetricRepository {
+public interface AssetMetricRepository<T extends AssetMetric> {
 
-	public AssetMetric getAssetMetric(
+	public T getAssetMetric(
 		String assetId, Long channelId, Set<String> selectedMetrics,
 		TimeRange timeRange);
 

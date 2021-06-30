@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.repository.test;
 
+import com.liferay.osb.asah.backend.model.CustomAssetMetric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
@@ -87,6 +88,6 @@ public class CustomAssetMetricRepositoryTest
 
 	@Autowired
 	@Qualifier("CustomAssetMetricRepository")
-	private AssetMetricRepository _assetMetricRepository;
+	private AssetMetricRepository<CustomAssetMetric> _assetMetricRepository;
 
 }

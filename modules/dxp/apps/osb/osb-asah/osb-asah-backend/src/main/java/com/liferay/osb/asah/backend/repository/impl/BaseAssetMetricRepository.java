@@ -50,10 +50,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
  * @author Marcos Martins
  */
 public abstract class BaseAssetMetricRepository<T extends AssetMetric>
-	implements AssetMetricRepository {
+	implements AssetMetricRepository<T> {
 
 	@Override
-	public AssetMetric getAssetMetric(
+	public T getAssetMetric(
 		String assetId, Long channelId, Set<String> selectedMetrics,
 		TimeRange timeRange) {
 
