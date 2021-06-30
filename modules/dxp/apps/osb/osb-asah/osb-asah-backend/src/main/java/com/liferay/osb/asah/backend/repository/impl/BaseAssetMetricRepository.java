@@ -58,7 +58,7 @@ public abstract class BaseAssetMetricRepository
 		String assetId, Long channelId, Set<String> selectedMetrics,
 		TimeRange timeRange) {
 
-		List<Field<? extends Object>> fields = new ArrayList<>();
+		List<Field<BigDecimal>> fields = new ArrayList<>();
 
 		fields.addAll(
 			Stream.of(
