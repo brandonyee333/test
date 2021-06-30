@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.repository.impl;
 
-import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.CustomAssetMetric;
+import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
 
@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import org.jooq.Field;
 import org.jooq.impl.DSL;
@@ -35,16 +36,48 @@ import org.springframework.stereotype.Repository;
  */
 @ConditionalOnProperty(havingValue = "true", value = "osb.asah.trino.enabled")
 @Repository("CustomAssetMetricRepository")
-public class CustomAssetMetricRepositoryImpl extends BaseAssetMetricRepository {
+public class CustomAssetMetricRepositoryImpl
+	extends BaseAssetMetricRepository<CustomAssetMetric> {
 
 	@Override
-	protected AssetMetric createAssetMetric() {
+	protected CustomAssetMetric createAssetMetric() {
 		return new CustomAssetMetric();
 	}
 
 	@Override
 	protected String getAssetIdFieldName() {
 		return "assetPrimaryKey";
+	}
+
+	@Override
+	protected Map<String, BiConsumer<CustomAssetMetric, Metric>>
+		getAssetMetricSetters() {
+
+		return new HashMap<String, BiConsumer<CustomAssetMetric, Metric>>() {
+			{
+				put(
+					CustomAssetMetricType.ABANDONMENTS.getName(),
+					CustomAssetMetric::setAbandonmentsMetric);
+				put(
+					CustomAssetMetricType.CLICKS.getName(),
+					CustomAssetMetric::setClicksMetric);
+				put(
+					CustomAssetMetricType.COMPLETION_TIME.getName(),
+					CustomAssetMetric::setCompletionTimeMetric);
+				put(
+					CustomAssetMetricType.DOWNLOADS.getName(),
+					CustomAssetMetric::setDownloadsMetric);
+				put(
+					CustomAssetMetricType.READING_TIME.getName(),
+					CustomAssetMetric::setReadingTimeMetric);
+				put(
+					CustomAssetMetricType.SUBMISSIONS.getName(),
+					CustomAssetMetric::setSubmissionsMetric);
+				put(
+					CustomAssetMetricType.VIEWS.getName(),
+					CustomAssetMetric::setViewsMetric);
+			}
+		};
 	}
 
 	@Override
@@ -83,31 +116,6 @@ public class CustomAssetMetricRepositoryImpl extends BaseAssetMetricRepository {
 		).as(
 			longField.getName()
 		);
-	}
-
-	@Override
-	protected Map<String, String> getMetricSetterMethodNames() {
-		return new HashMap<String, String>() {
-			{
-				put(
-					CustomAssetMetricType.ABANDONMENTS.getName(),
-					"setAbandonmentsMetric");
-				put(CustomAssetMetricType.CLICKS.getName(), "setClicksMetric");
-				put(
-					CustomAssetMetricType.COMPLETION_TIME.getName(),
-					"setCompletionTimeMetric");
-				put(
-					CustomAssetMetricType.DOWNLOADS.getName(),
-					"setDownloadsMetric");
-				put(
-					CustomAssetMetricType.READING_TIME.getName(),
-					"setReadingTimeMetric");
-				put(
-					CustomAssetMetricType.SUBMISSIONS.getName(),
-					"setSubmissionsMetric");
-				put(CustomAssetMetricType.VIEWS.getName(), "setViewsMetric");
-			}
-		};
 	}
 
 	@Override

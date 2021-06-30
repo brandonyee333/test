@@ -24,8 +24,6 @@ import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
-import java.lang.reflect.Method;
-
 import java.math.BigDecimal;
 
 import java.time.OffsetDateTime;
@@ -34,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -50,7 +49,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
-public abstract class BaseAssetMetricRepository
+public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	implements AssetMetricRepository {
 
 	@Override
@@ -166,15 +165,16 @@ public abstract class BaseAssetMetricRepository
 		);
 	}
 
-	protected abstract AssetMetric createAssetMetric();
+	protected abstract T createAssetMetric();
 
 	protected String getAssetIdFieldName() {
 		return "assetId";
 	}
 
-	protected abstract Field<BigDecimal> getMetricField(MetricType metricType);
+	protected abstract Map<String, BiConsumer<T, Metric>>
+		getAssetMetricSetters();
 
-	protected abstract Map<String, String> getMetricSetterMethodNames();
+	protected abstract Field<BigDecimal> getMetricField(MetricType metricType);
 
 	protected abstract MetricType getMetricType(String metricTypeName);
 
@@ -186,37 +186,27 @@ public abstract class BaseAssetMetricRepository
 	@Qualifier("trinoDSLContext")
 	protected DSLContext dslContext;
 
-	private AssetMetric _toMetric(Record record, Set<String> selectedMetrics) {
-		AssetMetric assetMetric = createAssetMetric();
+	private T _toMetric(Record record, Set<String> selectedMetrics) {
+		T assetMetric = createAssetMetric();
 
-		Map<String, String> metricSetterMethodNames =
-			getMetricSetterMethodNames();
+		Map<String, BiConsumer<T, Metric>> assetMetricSetters =
+			getAssetMetricSetters();
 
 		selectedMetrics.forEach(
 			selectedMetric -> {
-				String methodName = metricSetterMethodNames.get(selectedMetric);
+				BiConsumer<T, Metric> metricSetterBiConsumer =
+					assetMetricSetters.get(selectedMetric);
 
-				try {
-					Class<? extends AssetMetric> assetMetricClass =
-						assetMetric.getClass();
+				MetricType metricType = getMetricType(selectedMetric);
 
-					Method method = assetMetricClass.getDeclaredMethod(
-						methodName, Metric.class);
+				Metric metric = new Metric(metricType);
 
-					MetricType metricType = getMetricType(selectedMetric);
+				BigDecimal metricValueBigDecimal = (BigDecimal)record.get(
+					metricType.getFieldName());
 
-					Metric metric = new Metric(metricType);
+				metric.setValue(metricValueBigDecimal.doubleValue());
 
-					BigDecimal metricValueBigDecimal = (BigDecimal)record.get(
-						metricType.getFieldName());
-
-					metric.setValue(metricValueBigDecimal.doubleValue());
-
-					method.invoke(assetMetric, metric);
-				}
-				catch (Exception exception) {
-					throw new RuntimeException(exception);
-				}
+				metricSetterBiConsumer.accept(assetMetric, metric);
 			});
 
 		return assetMetric;

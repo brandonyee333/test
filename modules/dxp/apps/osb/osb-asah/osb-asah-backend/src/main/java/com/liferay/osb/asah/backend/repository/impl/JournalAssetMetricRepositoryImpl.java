@@ -14,15 +14,16 @@
 
 package com.liferay.osb.asah.backend.repository.impl;
 
-import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.JournalMetric;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
+import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.model.MetricType;
 
 import java.math.BigDecimal;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import org.jooq.Field;
 import org.jooq.impl.DSL;
@@ -37,11 +38,19 @@ import org.springframework.stereotype.Repository;
 @ConditionalOnProperty(havingValue = "true", value = "osb.asah.trino.enabled")
 @Repository("JournalAssetMetricRepository")
 public class JournalAssetMetricRepositoryImpl
-	extends BaseAssetMetricRepository {
+	extends BaseAssetMetricRepository<JournalMetric> {
 
 	@Override
-	protected AssetMetric createAssetMetric() {
+	protected JournalMetric createAssetMetric() {
 		return new JournalMetric();
+	}
+
+	@Override
+	protected Map<String, BiConsumer<JournalMetric, Metric>>
+		getAssetMetricSetters() {
+
+		return Collections.singletonMap(
+			JournalMetricType.VIEWS.getName(), JournalMetric::setViewsMetric);
 	}
 
 	@Override
@@ -54,12 +63,6 @@ public class JournalAssetMetricRepositoryImpl
 		).as(
 			longField.getName()
 		);
-	}
-
-	@Override
-	protected Map<String, String> getMetricSetterMethodNames() {
-		return Collections.singletonMap(
-			JournalMetricType.VIEWS.getName(), "setViewsMetric");
 	}
 
 	@Override
