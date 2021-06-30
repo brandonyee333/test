@@ -192,22 +192,21 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		Map<String, BiConsumer<T, Metric>> assetMetricSetters =
 			getAssetMetricSetters();
 
-		selectedMetrics.forEach(
-			selectedMetric -> {
-				BiConsumer<T, Metric> metricSetterBiConsumer =
-					assetMetricSetters.get(selectedMetric);
+		for (String selectedMetric : selectedMetrics) {
+			MetricType metricType = getMetricType(selectedMetric);
 
-				MetricType metricType = getMetricType(selectedMetric);
+			Metric metric = new Metric(metricType);
 
-				Metric metric = new Metric(metricType);
+			BigDecimal metricValueBigDecimal = (BigDecimal)record.get(
+				metricType.getFieldName());
 
-				BigDecimal metricValueBigDecimal = (BigDecimal)record.get(
-					metricType.getFieldName());
+			metric.setValue(metricValueBigDecimal.doubleValue());
 
-				metric.setValue(metricValueBigDecimal.doubleValue());
+			BiConsumer<T, Metric> metricSetterBiConsumer =
+				assetMetricSetters.get(selectedMetric);
 
-				metricSetterBiConsumer.accept(assetMetric, metric);
-			});
+			metricSetterBiConsumer.accept(assetMetric, metric);
+		}
 
 		return assetMetric;
 	}
