@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.repository.test;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -31,6 +32,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 
@@ -112,6 +114,13 @@ public abstract class BaseAssetMetricRepositoryTestCase {
 		).thenReturn(
 			ZoneId.of("UTC")
 		);
+
+		TimeZoneDogUtil.setTimeZoneDog(_timeZoneDog);
+	}
+
+	@After
+	public void tearDown() {
+		TimeZoneDogUtil.setTimeZoneDog(null);
 	}
 
 	protected abstract AssetMetricRepository getAssetMetricRepository();
