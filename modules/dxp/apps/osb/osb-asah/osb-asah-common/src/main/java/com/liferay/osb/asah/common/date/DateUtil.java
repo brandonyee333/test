@@ -94,6 +94,16 @@ public class DateUtil {
 		return zonedDateTime.toLocalDate();
 	}
 
+	public static LocalDateTime fromUTCLocalDateTime(
+		LocalDateTime localDateTime, ZoneId zoneId) {
+
+		ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneOffset.UTC);
+
+		zonedDateTime = zonedDateTime.withZoneSameInstant(zoneId);
+
+		return zonedDateTime.toLocalDateTime();
+	}
+
 	public static int getDeltaDays(Date date1, Date date2) {
 		long millisecondsBetween = getDeltaMilliseconds(date1, date2);
 
@@ -344,6 +354,16 @@ public class DateUtil {
 
 	public static Date toUTCDate(String dateString) {
 		return toUTCDate(LocalDateTime.parse(dateString, _dateTimeFormatter));
+	}
+
+	public static LocalDateTime toUTCLocalDateTime(
+		LocalDateTime localDateTime, ZoneId zoneId) {
+
+		ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
+
+		zonedDateTime = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
+
+		return zonedDateTime.toLocalDateTime();
 	}
 
 	public static String toUTCString(Date date) {
