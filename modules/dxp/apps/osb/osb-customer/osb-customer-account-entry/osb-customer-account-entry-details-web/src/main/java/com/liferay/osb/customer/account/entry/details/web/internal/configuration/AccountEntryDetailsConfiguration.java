@@ -32,7 +32,7 @@ public interface AccountEntryDetailsConfiguration {
 	public String dataAccessKnowledgeBaseArticle();
 
 	@Meta.AD(
-		deflt = "https://liferaysupport1528999723.zendesk.com/agent/tickets/",
+		deflt = "https://liferay-support.zendesk.com/agent/tickets/",
 		name = "zendesk-ticket-url", required = false
 	)
 	public String zendeskTicketURL();
