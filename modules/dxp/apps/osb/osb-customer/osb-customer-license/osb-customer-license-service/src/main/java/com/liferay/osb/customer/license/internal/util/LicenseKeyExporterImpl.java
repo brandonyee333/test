@@ -64,6 +64,20 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = LicenseKeyExporter.class)
 public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 
+	public String aggregateXMLs(String[] xmls) throws Exception {
+		Document document = SAXReaderUtil.createDocument();
+
+		Element rootElement = document.addElement("licenses");
+
+		for (String xml : xmls) {
+			Document curDocument = SAXReaderUtil.read(xml);
+
+			rootElement.add(curDocument.getRootElement());
+		}
+
+		return document.formattedString();
+	}
+
 	public String getFileName(LicenseKey licenseKey) {
 		StringBundler sb = new StringBundler(7);
 

@@ -27,6 +27,8 @@ import java.util.Map;
  */
 public interface LicenseKeyExporter {
 
+	public String aggregateXMLs(String[] xmls) throws Exception;
+
 	public String getFileName(LicenseKey licenseKey);
 
 	public String toEncodedLicenseFile(LicenseKey licenseKey) throws Exception;

@@ -204,6 +204,36 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	@JSONWebService
+	public String generateCombinedDXPCommerceXML(
+			String owner, Date startDate, long licenseLifetime)
+		throws Exception {
+
+		validateJSONWebServicePermissions();
+
+		Date expirationDate = new Date(startDate.getTime() + licenseLifetime);
+
+		LicenseKey dxpLicenseKey = _createLicenseKey(
+			LicenseEntryConstants.TYPE_DEVELOPER, 6, "DXP Development",
+			ProductEntryConstants.PRODUCT_ID_PORTAL,
+			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_3_10, owner, 0,
+			"Trial Activation Key", StringPool.BLANK, StringPool.BLANK,
+			StringPool.BLANK, StringPool.BLANK, startDate, expirationDate);
+
+		String dxpXML = _licenseKeyExporter.toXML(dxpLicenseKey);
+
+		LicenseKey commerceLicenseKey = _createLicenseKey(
+			LicenseEntryConstants.TYPE_ENTERPRISE, 3, "Liferay Commerce",
+			ProductEntryConstants.PRODUCT_ID_COMMERCE, 1, owner, 0,
+			"Trial Activation Key", StringPool.BLANK, StringPool.BLANK,
+			StringPool.BLANK, StringPool.BLANK, startDate, expirationDate);
+
+		String commerceXML = _licenseKeyExporter.toXML(commerceLicenseKey);
+
+		return _licenseKeyExporter.aggregateXMLs(
+			new String[] {dxpXML, commerceXML});
+	}
+
+	@JSONWebService
 	public String generateCommerceLicenseKey(
 			String owner, Date startDate, long licenseLifetime)
 		throws Exception {
