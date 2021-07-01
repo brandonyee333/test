@@ -84,6 +84,14 @@ public class LicenseKeyServiceUtil {
 			startDate, expirationDate);
 	}
 
+	public static String generateCombinedDXPCommerceXML(
+			String owner, java.util.Date startDate, long licenseLifetime)
+		throws Exception {
+
+		return getService().generateCombinedDXPCommerceXML(
+			owner, startDate, licenseLifetime);
+	}
+
 	public static String generateCommerceLicenseKey(
 			String owner, java.util.Date startDate, long licenseLifetime)
 		throws Exception {

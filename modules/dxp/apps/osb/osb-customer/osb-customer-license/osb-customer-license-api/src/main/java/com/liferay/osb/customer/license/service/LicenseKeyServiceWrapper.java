@@ -81,6 +81,15 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
+	public String generateCombinedDXPCommerceXML(
+			String owner, java.util.Date startDate, long licenseLifetime)
+		throws Exception {
+
+		return _licenseKeyService.generateCombinedDXPCommerceXML(
+			owner, startDate, licenseLifetime);
+	}
+
+	@Override
 	public String generateCommerceLicenseKey(
 			String owner, java.util.Date startDate, long licenseLifetime)
 		throws Exception {

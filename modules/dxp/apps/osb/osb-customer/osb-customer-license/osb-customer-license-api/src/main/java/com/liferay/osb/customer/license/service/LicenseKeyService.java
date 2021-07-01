@@ -28,9 +28,7 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Provides the remote service interface for LicenseKey. Methods of this
@@ -74,8 +72,8 @@ public interface LicenseKeyService extends BaseService {
 			int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
 			int sizing, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			Date startDate, Date expirationDate, boolean complimentary,
-			boolean active)
+			java.util.Date startDate, java.util.Date expirationDate,
+			boolean complimentary, boolean active)
 		throws Exception;
 
 	@JSONWebService
@@ -84,22 +82,28 @@ public interface LicenseKeyService extends BaseService {
 			String licenseEntryType, String productEntryName, String productId,
 			int productVersion, String owner, long maxUsers, String description,
 			String hostName, String ipAddresses, String macAddresses,
-			String serverId, Date startDate, Date expirationDate)
+			String serverId, java.util.Date startDate,
+			java.util.Date expirationDate)
+		throws Exception;
+
+	@JSONWebService
+	public String generateCombinedDXPCommerceXML(
+			String owner, java.util.Date startDate, long licenseLifetime)
 		throws Exception;
 
 	@JSONWebService
 	public String generateCommerceLicenseKey(
-			String owner, Date startDate, long licenseLifetime)
+			String owner, java.util.Date startDate, long licenseLifetime)
 		throws Exception;
 
 	@JSONWebService
 	public String generateWeDeployLicenseKey(
-			String owner, Date startDate, long licenseLifetime)
+			String owner, java.util.Date startDate, long licenseLifetime)
 		throws Exception;
 
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
+	public java.util.List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
 			String assetReceiptLicenseUuid, boolean complimentary,
 			boolean active)
 		throws PortalException;
@@ -119,34 +123,37 @@ public interface LicenseKeyService extends BaseService {
 	public LicenseKey getLicenseKey(String uuid) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeys(long userId, String productId)
+	public java.util.List<LicenseKey> getLicenseKeys(
+			long userId, String productId)
 		throws PortalException;
 
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeys(String productId, String serverId)
+	public java.util.List<LicenseKey> getLicenseKeys(
+			String productId, String serverId)
 		throws PortalException;
 
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeys(
+	public java.util.List<LicenseKey> getLicenseKeys(
 			String assetReceiptLicenseUuid, String productId, String serverId,
 			boolean active, int start, int end, OrderByComparator obc)
 		throws PortalException;
 
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeysByName(
+	public java.util.List<LicenseKey> getLicenseKeysByName(
 			String productEntryName, String serverId, boolean active, int start,
 			int end, OrderByComparator obc)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId)
+	public java.util.List<LicenseKey> getLicenseKeySetLicenseKeys(
+			long licenseKeySetId)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getOfferingEntryGroupLicenseKeys(
+	public java.util.List<LicenseKey> getOfferingEntryGroupLicenseKeys(
 			long[] offeringEntryIds, boolean complimentary, boolean active,
 			int start, int end, OrderByComparator obc)
 		throws PortalException;
@@ -182,16 +189,17 @@ public interface LicenseKeyService extends BaseService {
 		throws PortalException;
 
 	public LicenseKey renewLicenseKey(
-			long licenseKeyId, Date startDate, int renewTime)
+			long licenseKeyId, java.util.Date startDate, int renewTime)
 		throws Exception;
 
 	@JSONWebService
 	public LicenseKey renewLicenseKey(
-			String uuid, Date startDate, Date expirationDate)
+			String uuid, java.util.Date startDate,
+			java.util.Date expirationDate)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> search(
+	public java.util.List<LicenseKey> search(
 			Long createUserId, int createDateGTDay, int createDateGTMonth,
 			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
 			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
@@ -208,14 +216,14 @@ public interface LicenseKeyService extends BaseService {
 			int expirationDateGTDay, int expirationDateGTMonth,
 			int expirationDateGTYear, int expirationDateLTDay,
 			int expirationDateLTMonth, int expirationDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andSearch, int start,
-			int end, OrderByComparator obc)
+			java.util.LinkedHashMap<String, Object> params, boolean andSearch,
+			int start, int end, OrderByComparator obc)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> search(
-			String keywords, LinkedHashMap<String, Object> params, int start,
-			int end, OrderByComparator obc)
+	public java.util.List<LicenseKey> search(
+			String keywords, java.util.LinkedHashMap<String, Object> params,
+			int start, int end, OrderByComparator obc)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -236,12 +244,12 @@ public interface LicenseKeyService extends BaseService {
 			int expirationDateGTDay, int expirationDateGTMonth,
 			int expirationDateGTYear, int expirationDateLTDay,
 			int expirationDateLTMonth, int expirationDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andSearch)
+			java.util.LinkedHashMap<String, Object> params, boolean andSearch)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(
-			String keywords, LinkedHashMap<String, Object> params)
+			String keywords, java.util.LinkedHashMap<String, Object> params)
 		throws Exception;
 
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
