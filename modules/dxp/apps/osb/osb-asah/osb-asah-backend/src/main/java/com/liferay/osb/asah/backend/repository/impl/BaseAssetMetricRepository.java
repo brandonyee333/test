@@ -168,8 +168,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		MetricType metricType, TimeRange timeRange) {
 
 		Field<OffsetDateTime> eventDateField = DSL.field(
-			"at_timezone({0}, {1})", OffsetDateTime.class,
-			DSL.field("eventDate"), DSL.inline(_timeZoneDog.getTimeZoneId()));
+			"eventDate", OffsetDateTime.class);
 
 		if (interval != Interval.HOUR) {
 			eventDateField = DSL.trunc(eventDateField, DatePart.DAY);
@@ -220,7 +219,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				metric.setValue(bigDecimal.doubleValue());
 
 				return new HistogramMetric(
-					String.valueOf(offsetDateTime.toLocalDateTime()), metric);
+					String.valueOf(
+						DateUtil.fromUTCLocalDateTime(
+							offsetDateTime.toLocalDateTime(),
+							_timeZoneDog.getZoneId())),
+					metric);
 			}
 		);
 	}
