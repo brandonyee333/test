@@ -82,6 +82,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @author Gergely Mathe
  */
@@ -211,7 +213,11 @@ public class BaseTextExportImportContentProcessor
 			if ("portlet_file_entry".equals(pathArray[2])) {
 				map.put("groupId", new String[] {pathArray[3]});
 				map.put(
-					"title", new String[] {HttpUtil.decodeURL(pathArray[4])});
+					"title",
+					new String[] {
+						StringUtils.substringBefore(
+							HttpUtil.decodeURL(pathArray[4]), StringPool.POUND)
+					});
 			}
 			else {
 				map.put("groupId", new String[] {pathArray[2]});
@@ -220,7 +226,11 @@ public class BaseTextExportImportContentProcessor
 					map.put("folderId", new String[] {pathArray[3]});
 					map.put(
 						"title",
-						new String[] {HttpUtil.decodeURL(pathArray[4])});
+						new String[] {
+							StringUtils.substringBefore(
+								HttpUtil.decodeURL(pathArray[4]),
+								StringPool.POUND)
+						});
 				}
 			}
 
