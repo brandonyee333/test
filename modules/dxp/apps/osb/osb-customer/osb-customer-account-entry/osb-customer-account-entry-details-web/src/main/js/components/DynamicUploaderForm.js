@@ -275,7 +275,7 @@ export default class DynamicUploaderForm extends React.Component {
 
 		const dataAccessInfoText = langSub(
 			Liferay.Language.get(
-				'please-note-that-the-location-of-the-server-to-which-the-file-will-be-uploaded-is-based-on-the-location-of-the-liferay-center-providing-support-to-your-company'
+				'please-note-that-the-location-of-the-server-to-which-the-file-will-be-uploaded-is-based-on-the-location-of-the-liferay-center-providing-support-to-your-company.-for-more-detail-regarding-the-applicable-server-locations-and-location-of-liferay-support-staff-who-might-access-the-data-please-consult-this-article'
 			),
 			[
 				this.props.knowledgeBaseArticle

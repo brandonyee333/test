@@ -28,7 +28,10 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 )
 public interface AccountEntryDetailsConfiguration {
 
-	@Meta.AD(name = "data-access-knowledge-base-article", required = false)
+	@Meta.AD(
+		deflt = "https://help.liferay.com/hc/articles/4403652209933",
+		name = "data-access-knowledge-base-article", required = false
+	)
 	public String dataAccessKnowledgeBaseArticle();
 
 	@Meta.AD(
