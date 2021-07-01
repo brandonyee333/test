@@ -26,6 +26,8 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.page.Page;
 import com.liferay.osb.asah.stream.curator.model.page.PageScroll;
 
+import java.net.URLDecoder;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -253,7 +255,7 @@ public class PageNanite extends BaseNanite<Page> {
 					continue;
 				}
 
-				page.setSearchTerm(searchTerm);
+				page.setSearchTerm(URLDecoder.decode(searchTerm, "UTF-8"));
 			}
 		}
 		catch (Exception exception) {
