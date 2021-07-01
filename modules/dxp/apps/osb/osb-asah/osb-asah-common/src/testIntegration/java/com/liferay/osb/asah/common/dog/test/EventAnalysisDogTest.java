@@ -66,12 +66,10 @@ public class EventAnalysisDogTest {
 			"12345", AttributeType.EVENT,
 			EventAttributeDefinition.DataType.STRING, "contains",
 			Collections.singletonList("test"));
-
 		EventAnalysisFilter eventAnalysisFilter2 = new EventAnalysisFilter(
 			"12345", AttributeType.EVENT,
 			EventAttributeDefinition.DataType.STRING, "contains",
 			Collections.singletonList("This"));
-
 		EventAnalysisFilter eventAnalysisFilter3 = new EventAnalysisFilter(
 			"23456", AttributeType.EVENT,
 			EventAttributeDefinition.DataType.NUMBER, "between",

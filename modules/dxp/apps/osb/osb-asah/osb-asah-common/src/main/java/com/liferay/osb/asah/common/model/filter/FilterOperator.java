@@ -90,7 +90,7 @@ public abstract class FilterOperator {
 		if (expectedArgumentCount != values.size()) {
 			throw new IllegalArgumentException(
 				String.format(
-					"Expected %d value(s) for %s operation, got %d instead: %s",
+					"Expected %d values for %s operation, got %d instead: %s",
 					expectedArgumentCount, name, values.size(), values));
 		}
 
