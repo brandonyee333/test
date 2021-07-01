@@ -22,6 +22,7 @@ import com.liferay.osb.asah.upgrade.v2_12_0.PreAsahMarkerUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_0.RunLogUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_13_0.ChannelsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_13_0.DataSourcesUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_13_0.PagesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_13_0.SalesforceUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.CustomEventUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.UserSessionsUpgradeStep;
@@ -51,7 +52,7 @@ public class UpgradeProcessConfiguration {
 
 		upgradeProcess.addUpgradeSteps(
 			"2.12.0", "2.13.0", _dataSourcesUpgradeStep, _channelsUpgradeStep,
-			_salesforceUpgradeStep);
+			_pagesUpgradeStep, _salesforceUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
 			"2.13.0", "3.0.0", _customEventUpgradeStep,
@@ -76,6 +77,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private DXPEntityUpgradeStep _dxpEntityUpgradeStep;
+
+	@Autowired
+	private PagesUpgradeStep _pagesUpgradeStep;
 
 	@Autowired
 	private PreAsahMarkerUpgradeStep _preAsahMarkerUpgradeStep;
