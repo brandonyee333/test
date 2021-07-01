@@ -73,6 +73,12 @@ public abstract class BaseAssetMetricRepositoryTestCase {
 			timeZoneId
 		);
 
+		Mockito.when(
+			_timeZoneDog.getZoneId()
+		).thenReturn(
+			ZoneId.of(timeZoneId)
+		);
+
 		List<LocalDateTime> shiftedLocalDateTimes = _getLocalDateTimes(
 			assetMetricRepository.getHistogramMetrics(
 				assetId, channelId, Interval.HOUR, metricType,
