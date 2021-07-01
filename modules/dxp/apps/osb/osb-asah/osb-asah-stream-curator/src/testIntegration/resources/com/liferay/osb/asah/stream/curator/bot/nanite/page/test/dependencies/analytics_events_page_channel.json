@@ -356,5 +356,49 @@
 		},
 		"projectId": "test",
 		"userId": "4"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "Firefox",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Linux",
+			"referrer": "http://google.com",
+			"region": "Pernambuco",
+			"title": "Search",
+			"url": "http://liferay.com/search?q=liferay+portal"
+		},
+		"createDate": "2018-01-04T11:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T11:43:00.000Z",
+		"eventId": "pageViewed",
+		"projectId": "test",
+		"userId": "4"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "Firefox",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Linux",
+			"referrer": "http://google.com",
+			"region": "Pernambuco",
+			"title": "Search",
+			"url": "http://liferay.com/search?q=liferay%20dxp"
+		},
+		"createDate": "2018-01-04T11:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T11:43:00.000Z",
+		"eventId": "pageViewed",
+		"projectId": "test",
+		"userId": "4"
 	}
 ]
