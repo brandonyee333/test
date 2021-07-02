@@ -43,6 +43,7 @@ import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.script.Script;
 
 import org.json.JSONObject;
 
@@ -121,6 +122,13 @@ public class UserSessionFinalizerNanite implements Nanite {
 				).gt(
 					lastSuccessfulSessionFinalizerDate
 				)
+			).filter(
+				QueryBuilders.scriptQuery(
+					new Script(
+						Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+						"doc['completeDate'].value != " +
+							"doc['dateModified'].value",
+						Collections.emptyMap()))
 			)
 		).iterate();
 

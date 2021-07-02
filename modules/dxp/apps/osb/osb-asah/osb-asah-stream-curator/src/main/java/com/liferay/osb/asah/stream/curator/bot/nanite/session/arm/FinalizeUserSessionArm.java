@@ -101,6 +101,8 @@ public class FinalizeUserSessionArm {
 
 		partialUserSessionJSONObject.put(
 			"completeReason", _getCompleteReason(userSession));
+		partialUserSessionJSONObject.put(
+			"dateModified", DateUtil.newDateString());
 		partialUserSessionJSONObject.put("duration", _getDuration(userSession));
 		partialUserSessionJSONObject.put(
 			"exitPage", _getExitPageURL(userSession));
