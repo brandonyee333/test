@@ -68,7 +68,35 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 		@Nullable String keyword, Pageable pageable,
 		@Nullable EventDefinition.Type type) {
 
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+		List<Field<Object>> selectFields = new ArrayList<>();
+
+		selectFields.add(DSL.field("id"));
+		selectFields.add(DSL.field("blocked"));
+		selectFields.add(DSL.field("description"));
+		selectFields.add(DSL.field("displayname"));
+		selectFields.add(
+			DSL.field(
+				"eventdefinition.hidden"
+			).as(
+				"eventHidden"
+			));
+		selectFields.add(DSL.field("name"));
+		selectFields.add(DSL.field("type"));
+
+		if (BooleanUtils.isTrue(blocked)) {
+			selectFields.add(DSL.field("eventdefinitionid"));
+			selectFields.add(
+				DSL.field(
+					"blockedeventdefinition.hidden"
+				).as(
+					"blockedEventHidden"
+				));
+			selectFields.add(DSL.field("lastseendate"));
+			selectFields.add(DSL.field("lastseenurl"));
+		}
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select(
+			selectFields);
 
 		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
 			"EventDefinition");
@@ -96,10 +124,15 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 			record -> {
 				Map<String, Object> recordMap = record.intoMap();
 
+				recordMap.put("hidden", recordMap.get("eventHidden"));
+
 				EventDefinition eventDefinition = new EventDefinition(
 					recordMap);
 
 				if (BooleanUtils.isTrue(blocked)) {
+					recordMap.put(
+						"hidden", recordMap.get("blockedEventHidden"));
+
 					eventDefinition.setBlockedEventDefinition(
 						new BlockedEventDefinition(recordMap));
 				}
@@ -122,7 +155,7 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 		}
 
 		if (hidden != null) {
-			Field<Object> field = DSL.field("hidden");
+			Field<Object> field = DSL.field("EventDefinition.hidden");
 
 			conditions.add(field.eq(hidden));
 		}
