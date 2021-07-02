@@ -220,7 +220,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 				return new HistogramMetric(
 					String.valueOf(
-						DateUtil.fromUTCLocalDateTime(
+						DateUtil.fromUTCToTimeZoneIdLocalDateTime(
 							offsetDateTime.toLocalDateTime(),
 							_timeZoneDog.getZoneId())),
 					metric);

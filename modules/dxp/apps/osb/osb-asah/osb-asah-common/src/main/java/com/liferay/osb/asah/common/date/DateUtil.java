@@ -94,7 +94,7 @@ public class DateUtil {
 		return zonedDateTime.toLocalDate();
 	}
 
-	public static LocalDateTime fromUTCLocalDateTime(
+	public static LocalDateTime fromUTCToTimeZoneIdLocalDateTime(
 		LocalDateTime localDateTime, ZoneId zoneId) {
 
 		ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneOffset.UTC);
