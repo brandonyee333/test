@@ -14,14 +14,24 @@
 
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
+import com.liferay.osb.customer.account.entry.details.constants.EventConstants;
+import com.liferay.osb.customer.account.entry.details.service.EventLocalService;
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
+import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.service.TicketAttachmentService;
+import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.WebKeys;
+
+import java.util.Date;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -47,11 +57,30 @@ public class DeleteTicketAttachmentMVCActionCommand
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
 		long ticketAttachmentId = ParamUtil.getLong(
 			actionRequest, "ticketAttachmentId");
 
 		try {
-			_ticketAttachmentService.deleteTicketAttachment(ticketAttachmentId);
+			TicketAttachment ticketAttachment =
+				_ticketAttachmentService.deleteTicketAttachment(
+					ticketAttachmentId);
+
+			long classNameId = _classNameLocalService.getClassNameId(
+				ZendeskTicket.class.getName());
+			long typeClassNameId = _classNameLocalService.getClassNameId(
+				TicketAttachment.class.getName());
+
+			_eventLocalService.addEvent(
+				themeDisplay.getUserId(), new Date(),
+				ticketAttachment.getAccountEntryId(), classNameId,
+				ticketAttachment.getZendeskTicketId(),
+				EventConstants.TYPE_DELETE_ATTACHMENT, typeClassNameId,
+				ticketAttachment.getTicketAttachmentId(),
+				ticketAttachment.getFileName(), StringPool.BLANK,
+				StringPool.BLANK);
 		}
 		catch (Exception e) {
 			if (_log.isDebugEnabled()) {
@@ -69,6 +98,12 @@ public class DeleteTicketAttachmentMVCActionCommand
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DeleteTicketAttachmentMVCActionCommand.class);
+
+	@Reference
+	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private EventLocalService _eventLocalService;
 
 	@Reference
 	private TicketAttachmentService _ticketAttachmentService;
