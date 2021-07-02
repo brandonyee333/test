@@ -407,10 +407,10 @@ public class ExperimentDog {
 		ZonedDateTime startZonedDateTime = ZonedDateTime.now(zoneId);
 
 		if (startedDateLocalDateTime != null) {
-			ZonedDateTime startedDateZoneDateTime =
+			ZonedDateTime startedDateZonedDateTime =
 				startedDateLocalDateTime.atZone(ZoneOffset.UTC);
 
-			startZonedDateTime = startedDateZoneDateTime.withZoneSameInstant(
+			startZonedDateTime = startedDateZonedDateTime.withZoneSameInstant(
 				zoneId);
 		}
 
