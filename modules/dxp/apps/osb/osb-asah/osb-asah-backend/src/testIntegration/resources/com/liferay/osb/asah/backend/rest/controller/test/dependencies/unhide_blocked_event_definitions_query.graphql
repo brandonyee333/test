@@ -1,0 +1,6 @@
+mutation UnhideBlockedEventDefinitions($blockedEventDefinitionIds: [String]!) {
+    unhideBlockedEventDefinitions(blockedEventDefinitionIds: $blockedEventDefinitionIds) {
+        hidden
+        id
+    }
+}
