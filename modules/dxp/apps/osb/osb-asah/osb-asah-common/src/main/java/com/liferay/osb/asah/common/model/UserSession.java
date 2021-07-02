@@ -60,6 +60,7 @@ public class UserSession implements Serializable {
 			Objects.equals(_duration, userSession._duration) &&
 			Objects.equals(_entryPage, userSession._entryPage) &&
 			Objects.equals(_exitPage, userSession._exitPage) &&
+			Objects.equals(_finalized, userSession._finalized) &&
 			Objects.equals(_firstEventDate, userSession._firstEventDate) &&
 			Objects.equals(_id, userSession._id) &&
 			Objects.equals(_individualId, userSession._individualId) &&
@@ -170,6 +171,10 @@ public class UserSession implements Serializable {
 		return _exitPage;
 	}
 
+	public Boolean getFinalized() {
+		return _finalized;
+	}
+
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -244,8 +249,9 @@ public class UserSession implements Serializable {
 			_acquisition, _bounced, _browserName, _canonicalUrls, _channelId,
 			_city, _completed, _completeDate, _completeReason, _country,
 			_dataSourceId, _date, _dateModified, _deviceType, _duration,
-			_entryPage, _exitPage, _firstEventDate, _id, _individualId,
-			_lastEventDate, _platformName, _referrers, _region, _urls, _userId);
+			_entryPage, _exitPage, _finalized, _firstEventDate, _id,
+			_individualId, _lastEventDate, _platformName, _referrers, _region,
+			_urls, _userId);
 	}
 
 	public void setAcquisition(Acquisition acquisition) {
@@ -326,6 +332,10 @@ public class UserSession implements Serializable {
 		_exitPage = exitPage;
 	}
 
+	public void setFinalized(Boolean finalized) {
+		_finalized = finalized;
+	}
+
 	public void setFirstEventDate(Date firstEventDate) {
 		if (firstEventDate != null) {
 			_firstEventDate = new Date(firstEventDate.getTime());
@@ -400,6 +410,7 @@ public class UserSession implements Serializable {
 	private Long _duration;
 	private String _entryPage;
 	private String _exitPage;
+	private Boolean _finalized;
 	private Date _firstEventDate;
 	private String _id;
 	private String _individualId;
