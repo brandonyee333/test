@@ -199,12 +199,11 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 			Collections.singletonMap("id", organization.getId()),
 			DXPEntity.Type.ORGANIZATION);
 
-		Assert.assertEquals("marketing", dxpEntity.getName());
-
 		Assert.assertEquals(
 			organization,
 			_objectMapper.convertValue(
 				dxpEntity.getFieldsJSONObject(), Organization.class));
+		Assert.assertEquals("marketing", dxpEntity.getName());
 
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"UpdateDynamicMembershipsNanite");
