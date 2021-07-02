@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
@@ -36,6 +37,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -435,6 +439,34 @@ public class EventDefinitionDogTest {
 			});
 	}
 
+	@SQLResource(resourcePath = "test_hide_block_event_definitions.sql")
+	@Test
+	public void testHideBlockedEventDefinitions() {
+		List<Long> eventDefinitionIds = _fetchBlockedEventDefinitionIds();
+
+		List<EventDefinition> eventDefinitionList =
+			_eventDefinitionDog.fetchEventDefinitions(eventDefinitionIds);
+
+		for (EventDefinition eventDefinition : eventDefinitionList) {
+			BlockedEventDefinition blockedEventDefinition =
+				eventDefinition.getBlockedEventDefinition();
+
+			Assert.assertFalse(blockedEventDefinition.isHidden());
+		}
+
+		_eventDefinitionDog.hideBlockedEventDefinitions(eventDefinitionIds);
+
+		eventDefinitionList = _eventDefinitionDog.fetchEventDefinitions(
+			eventDefinitionIds);
+
+		for (EventDefinition eventDefinition : eventDefinitionList) {
+			BlockedEventDefinition blockedEventDefinition =
+				eventDefinition.getBlockedEventDefinition();
+
+			Assert.assertTrue(blockedEventDefinition.isHidden());
+		}
+	}
+
 	@Test
 	public void testHideEventDefinitions() {
 		EventDefinition assetClickedEventDefinition =
@@ -634,7 +666,32 @@ public class EventDefinitionDogTest {
 		}
 	}
 
+	private List<Long> _fetchBlockedEventDefinitionIds() {
+		Iterable<EventDefinition> eventDefinitions =
+			_eventDefinitionRepository.findAll();
+
+		Stream<EventDefinition> eventDefinitionStream = StreamSupport.stream(
+			eventDefinitions.spliterator(), false);
+
+		List<Long> blockedEventDefinitionIds = eventDefinitionStream.filter(
+			EventDefinition::isBlocked
+		).map(
+			EventDefinition::getId
+		).collect(
+			Collectors.toList()
+		);
+
+		Assert.assertEquals(
+			blockedEventDefinitionIds.toString(), 3,
+			blockedEventDefinitionIds.size());
+
+		return blockedEventDefinitionIds;
+	}
+
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
+
+	@Autowired
+	private EventDefinitionRepository _eventDefinitionRepository;
 
 }
