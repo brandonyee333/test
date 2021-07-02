@@ -80,7 +80,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class FinalizeUserSessionArm {
 
-	public void processSession(UserSession userSession) throws Exception {
+	public void processSession(UserSession userSession) {
+		if (userSession.getCompleted()) {
+			_clearPageSessionAttributes(userSession);
+		}
+
 		updateActivitiesAndAssets(userSession);
 
 		_storeUserSessionAnalyticsEvents(userSession);
@@ -115,7 +119,7 @@ public class FinalizeUserSessionArm {
 			));
 	}
 
-	public void processSessions(UserSession[] userSessions) throws Exception {
+	public void processSessions(UserSession[] userSessions) {
 		for (UserSession userSession : userSessions) {
 			processSession(userSession);
 		}
@@ -125,7 +129,33 @@ public class FinalizeUserSessionArm {
 		storage.flush();
 	}
 
-	public void reprocessSession(UserSession userSession) throws Exception {
+	public void updateActivitiesAndAssets(UserSession userSession) {
+		_updateActivities(userSession);
+
+		_updateAssetBuckets(userSession);
+
+		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
+			_cerebroInfoElasticsearchInvoker.
+				createElasticsearchBulkRequestBuilder();
+
+		elasticsearchBulkRequestBuilder.refreshPolicy(
+			WriteRequest.RefreshPolicy.IMMEDIATE);
+
+		_updatePageTimeOnPage(elasticsearchBulkRequestBuilder, userSession);
+
+		_updatePageEntrancesAndExits(
+			elasticsearchBulkRequestBuilder, userSession);
+
+		_updatePageBounces(elasticsearchBulkRequestBuilder, userSession);
+
+		_updatePageViews(elasticsearchBulkRequestBuilder, userSession);
+
+		if (elasticsearchBulkRequestBuilder.hasActions()) {
+			elasticsearchBulkRequestBuilder.get();
+		}
+	}
+
+	private void _clearPageSessionAttributes(UserSession userSession) {
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("sessionId", userSession.getId())
 		).filter(
@@ -151,36 +181,6 @@ public class FinalizeUserSessionArm {
 
 		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
 			boolQueryBuilder, true, script, "pages");
-
-		processSession(userSession);
-	}
-
-	public void updateActivitiesAndAssets(UserSession userSession)
-		throws Exception {
-
-		_updateActivities(userSession);
-
-		_updateAssetBuckets(userSession);
-
-		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-			_cerebroInfoElasticsearchInvoker.
-				createElasticsearchBulkRequestBuilder();
-
-		elasticsearchBulkRequestBuilder.refreshPolicy(
-			WriteRequest.RefreshPolicy.IMMEDIATE);
-
-		_updatePageTimeOnPage(elasticsearchBulkRequestBuilder, userSession);
-
-		_updatePageEntrancesAndExits(
-			elasticsearchBulkRequestBuilder, userSession);
-
-		_updatePageBounces(elasticsearchBulkRequestBuilder, userSession);
-
-		_updatePageViews(elasticsearchBulkRequestBuilder, userSession);
-
-		if (elasticsearchBulkRequestBuilder.hasActions()) {
-			elasticsearchBulkRequestBuilder.get();
-		}
 	}
 
 	private void _deleteUserSessionAnalyticsEvents(UserSession userSession) {
@@ -513,9 +513,8 @@ public class FinalizeUserSessionArm {
 	}
 
 	private void _updatePageTimeOnPage(
-			ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
-			UserSession userSession)
-		throws Exception {
+		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
+		UserSession userSession) {
 
 		if (userSession.getBounced()) {
 			return;
