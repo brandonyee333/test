@@ -133,7 +133,10 @@ public class UserSessionFinalizerNanite implements Nanite {
 			String userSessionsJSON = _cerebroInfoElasticsearchInvoker.get(
 				"user-sessions",
 				searchSourceBuilder -> {
-					searchSourceBuilder.query(_getQueryBuilder(force));
+					searchSourceBuilder.query(
+						_getQueryBuilder(
+							dateString, force,
+							lastSuccessfulSessionFinalizerDate));
 					searchSourceBuilder.size(50);
 				});
 
@@ -179,7 +182,10 @@ public class UserSessionFinalizerNanite implements Nanite {
 		return asahMarker;
 	}
 
-	private QueryBuilder _getQueryBuilder(boolean force) {
+	private QueryBuilder _getQueryBuilder(
+		String currentDateString, boolean force,
+		String lastSuccessfulSessionFinalizerDateString) {
+
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("completed", false));
 
@@ -202,7 +208,21 @@ public class UserSessionFinalizerNanite implements Nanite {
 				));
 		}
 
-		return boolQueryBuilder;
+		return BoolQueryBuilderUtil.should(
+			boolQueryBuilder
+		).should(
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("completed", true)
+			).filter(
+				QueryBuilders.rangeQuery(
+					"dateModified"
+				).gte(
+					lastSuccessfulSessionFinalizerDateString
+				).lt(
+					currentDateString
+				)
+			)
+		);
 	}
 
 	private static final Log _log = LogFactory.getLog(
