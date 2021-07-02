@@ -229,6 +229,13 @@ public class UserSessionFinalizerNanite implements Nanite {
 				).lt(
 					currentDateString
 				)
+			).filter(
+				BoolQueryBuilderUtil.should(
+					BoolQueryBuilderUtil.mustNot(
+						QueryBuilders.existsQuery("finalized"))
+				).should(
+					QueryBuilders.termQuery("finalized", false)
+				)
 			)
 		);
 	}
