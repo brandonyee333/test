@@ -67,12 +67,12 @@ public class DXPEntityBagDataFetcher
 			ListUtil.map(
 				dxpEntitiesPage.toList(),
 				dxpEntity -> {
-					if (dxpEntity instanceof DXPUser) {
-						return new DXPUserDTO((DXPUser)dxpEntity);
-					}
-					else if (dxpEntity instanceof DXPOrganization) {
+					if (dxpEntity instanceof DXPOrganization) {
 						return new DXPOrganizationDTO(
 							(DXPOrganization)dxpEntity);
+					}
+					else if (dxpEntity instanceof DXPUser) {
+						return new DXPUserDTO((DXPUser)dxpEntity);
 					}
 
 					return new DXPEntityDTO(dxpEntity);
