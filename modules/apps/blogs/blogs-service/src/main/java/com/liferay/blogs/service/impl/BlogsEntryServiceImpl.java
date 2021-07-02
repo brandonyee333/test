@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
@@ -34,10 +35,13 @@ import com.liferay.portal.kernel.security.permission.resource.PortletResourcePer
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.util.PropsValues;
@@ -48,6 +52,9 @@ import com.liferay.rss.model.SyndFeed;
 import com.liferay.rss.model.SyndLink;
 import com.liferay.rss.model.SyndModelFactory;
 import com.liferay.rss.util.RSSUtil;
+
+import java.io.File;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -113,15 +120,46 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 			String content, int displayDateMonth, int displayDateDay,
 			int displayDateYear, int displayDateHour, int displayDateMinute,
 			boolean allowPingbacks, boolean allowTrackbacks,
-			String[] trackbacks, String coverImageCaption,
-			ImageSelector coverImageImageSelector,
-			ImageSelector smallImageImageSelector,
-			ServiceContext serviceContext)
-		throws PortalException {
+			String[] trackbacks, String coverImageCaption, File coverImageFile,
+			File smallImagefile, ServiceContext serviceContext)
+		throws IOException, PortalException {
 
 		_portletResourcePermission.check(
 			getPermissionChecker(), serviceContext.getScopeGroupId(),
 			ActionKeys.ADD_ENTRY);
+
+		ImageSelector coverImageImageSelector = null;
+		ImageSelector smallImageImageSelector = null;
+
+		if ((coverImageFile != null) && coverImageFile.exists() &&
+			(coverImageFile.length() != 0)) {
+
+			FileEntry coverImageFileEntry = TempFileEntryUtil.addTempFileEntry(
+				serviceContext.getScopeGroupId(), getUserId(),
+				BlogsEntry.class.getName(), coverImageFile.getName(),
+				coverImageFile, MimeTypesUtil.getContentType(coverImageFile));
+
+			coverImageImageSelector = new ImageSelector(
+				FileUtil.getBytes(coverImageFileEntry.getContentStream()),
+				coverImageFileEntry.getTitle(),
+				coverImageFileEntry.getMimeType(),
+				"{\"height\": 10, \"width\": 10, \"x\": 0, \"y\": 0}");
+		}
+
+		if ((smallImagefile != null) && smallImagefile.exists() &&
+			(smallImagefile.length() != 0)) {
+
+			FileEntry smallImageFileEntry = TempFileEntryUtil.addTempFileEntry(
+				serviceContext.getScopeGroupId(), getUserId(),
+				BlogsEntry.class.getName(), smallImagefile.getName(),
+				smallImagefile, MimeTypesUtil.getContentType(smallImagefile));
+
+			smallImageImageSelector = new ImageSelector(
+				FileUtil.getBytes(smallImageFileEntry.getContentStream()),
+				smallImageFileEntry.getTitle(),
+				smallImageFileEntry.getMimeType(),
+				"{\"height\": 10, \"width\": 10, \"x\": 0, \"y\": 0}");
+		}
 
 		return blogsEntryLocalService.addEntry(
 			getUserId(), title, subtitle, urlTitle, description, content,
