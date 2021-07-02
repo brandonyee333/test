@@ -635,6 +635,10 @@ type MutationType {
 		eventDefinitionIds: [String]!
 	): [Boolean]
 
+	unhideBlockedEventDefinitions(
+		blockedEventDefinitionIds: [String]!
+	): [BlockedCustomEventDefinition]
+
 	unhideEventDefinitions(
 		eventDefinitionIds: [String]!
 	): [EventDefinition]
