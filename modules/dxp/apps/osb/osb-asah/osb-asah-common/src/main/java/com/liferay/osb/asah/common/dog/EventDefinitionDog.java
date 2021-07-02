@@ -164,6 +164,13 @@ public class EventDefinitionDog {
 		eventDefinitionIds.forEach(this::_unblockEventDefinition);
 	}
 
+	public void unhideBlockedEventDefinitions(
+		List<Long> blockedEventDefinitionIds) {
+
+		_eventDefinitionRepository.updateBlockedEventDefinitions(
+			blockedEventDefinitionIds, Boolean.FALSE);
+	}
+
 	public void unhideEventDefinitions(List<Long> eventDefinitionIds) {
 		_eventDefinitionRepository.updateEventDefinitions(
 			eventDefinitionIds, Boolean.FALSE);
