@@ -34,7 +34,6 @@ import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
-import com.liferay.osb.asah.stream.curator.bot.nanite.session.arm.FinalizeUserSessionArm;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -155,17 +154,6 @@ public class UserSessionNanite implements Nanite {
 		_eventStorageDog.storeAll(
 			analyticsEvents.getAnalyticsEventsList(),
 			jsonObject.getString("id"));
-
-		if (completed) {
-			try {
-				_finalizeUserSessionArm.processSession(
-					_objectMapper.readValue(
-						jsonObject.toString(), UserSession.class));
-			}
-			catch (Exception exception) {
-				_log.error(exception, exception);
-			}
-		}
 	}
 
 	private Individual _fetchIndividual(AnalyticsEvent analyticsEvent) {
@@ -489,17 +477,6 @@ public class UserSessionNanite implements Nanite {
 		_eventStorageDog.storeAll(
 			analyticsEvents.getAnalyticsEventsList(),
 			userSessionJSONObject.getString("id"));
-
-		if (userSessionJSONObject.optBoolean("completed", false)) {
-			try {
-				_finalizeUserSessionArm.reprocessSession(
-					_objectMapper.readValue(
-						userSessionJSONObject.toString(), UserSession.class));
-			}
-			catch (Exception exception) {
-				_log.error(exception, exception);
-			}
-		}
 	}
 
 	private static final Log _log = LogFactory.getLog(UserSessionNanite.class);
@@ -509,9 +486,6 @@ public class UserSessionNanite implements Nanite {
 
 	@Autowired
 	private EventStorageDog _eventStorageDog;
-
-	@Autowired
-	private FinalizeUserSessionArm _finalizeUserSessionArm;
 
 	@Autowired
 	private IndividualDog _individualDog;
