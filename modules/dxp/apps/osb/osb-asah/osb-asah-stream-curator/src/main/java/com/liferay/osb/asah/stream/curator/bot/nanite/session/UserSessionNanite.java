@@ -118,8 +118,10 @@ public class UserSessionNanite implements Nanite {
 		userSession.setCity(MapUtil.getString(context, "city"));
 		userSession.setCompleted(completed);
 
+		Date date = new Date();
+
 		if (completed) {
-			userSession.setCompleteDate(new Date());
+			userSession.setCompleteDate(date);
 		}
 
 		userSession.setCountry(MapUtil.getString(context, "country"));
@@ -140,6 +142,7 @@ public class UserSessionNanite implements Nanite {
 			analyticsEvents.getInteractionsCount());
 		userSession.setLastEventDate(
 			analyticsEvents.getLastAnalyticsEventDate());
+		userSession.setDateModified(date);
 		userSession.setPageViewsCount(analyticsEvents.getPageViewsCount());
 		userSession.setPlatformName(MapUtil.getString(context, "platformName"));
 		userSession.setReferrers(analyticsEvents.getReferrers());
@@ -453,6 +456,7 @@ public class UserSessionNanite implements Nanite {
 					put(
 						"canonicalUrls",
 						new ArrayList<>(analyticsEvents.getCanonicalUrls()));
+					put("dateModified", DateUtil.newDateString());
 					put("interactionsCount", interactionsCount);
 					put(
 						"lastEventDate",
