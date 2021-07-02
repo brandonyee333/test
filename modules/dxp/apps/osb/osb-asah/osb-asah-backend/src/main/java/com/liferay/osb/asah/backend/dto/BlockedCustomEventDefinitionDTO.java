@@ -39,6 +39,8 @@ public class BlockedCustomEventDefinitionDTO {
 		BlockedEventDefinition blockedEventDefinition =
 			eventDefinition.getBlockedEventDefinition();
 
+		_hidden = blockedEventDefinition.isHidden();
+
 		_lastSeenDate = DateUtil.toUTCString(
 			blockedEventDefinition.getLastSeenDate());
 		_lastSeenURL = blockedEventDefinition.getLastSeenURL();
@@ -70,6 +72,12 @@ public class BlockedCustomEventDefinitionDTO {
 		return _name;
 	}
 
+	@JsonProperty("hidden")
+	public boolean isHidden() {
+		return _hidden;
+	}
+
+	private boolean _hidden;
 	private String _id;
 	private String _lastSeenDate;
 	private String _lastSeenURL;

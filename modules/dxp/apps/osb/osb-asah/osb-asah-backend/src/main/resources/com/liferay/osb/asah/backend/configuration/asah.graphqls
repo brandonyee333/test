@@ -179,6 +179,7 @@ type BaseDXPEntity implements DXPEntity {
 
 type BlockedCustomEventDefinition {
 	id: String
+	hidden: Boolean
 	lastSeenDate: String
 	lastSeenURL: String
 	name: String
@@ -607,6 +608,10 @@ type MutationType {
 		publishedDXPVariantId: String
 		status: String
 	): Experiment
+
+	hideBlockedEventDefinitions(
+		blockedEventDefinitionIds: [String]!
+	): [BlockedCustomEventDefinition]
 
 	hideEventDefinitions(
 		eventDefinitionIds: [String]!
