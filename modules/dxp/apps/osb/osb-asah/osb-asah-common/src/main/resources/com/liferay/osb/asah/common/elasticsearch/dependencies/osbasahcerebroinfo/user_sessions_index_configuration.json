@@ -60,6 +60,9 @@
 				"date": {
 					"type": "date"
 				},
+				"dateModified": {
+					"type": "date"
+				},
 				"deviceType": {
 					"type": "keyword"
 				},
