@@ -17,9 +17,9 @@ import Button from './Button';
 export default class DynamicUploaderForm extends React.Component {
 	static propTypes = {
 		addTicketAttachmentURL: PropTypes.string.isRequired,
+		dataAccessArticleURL: PropTypes.string.isRequired,
 		fileRepositoryMessage: PropTypes.string.isRequired,
 		generateTokenURL: PropTypes.string.isRequired,
-		knowledgeBaseArticle: PropTypes.string.isRequired,
 		uploadURL: PropTypes.string.isRequired
 	};
 
@@ -278,7 +278,7 @@ export default class DynamicUploaderForm extends React.Component {
 				'please-note-that-the-location-of-the-server-to-which-the-file-will-be-uploaded-is-based-on-the-location-of-the-liferay-center-providing-support-to-your-company.-for-more-detail-regarding-the-applicable-server-locations-and-location-of-liferay-support-staff-who-might-access-the-data-please-consult-this-article'
 			),
 			[
-				this.props.knowledgeBaseArticle
+				this.props.dataAccessArticleURL
 			]
 		);
 

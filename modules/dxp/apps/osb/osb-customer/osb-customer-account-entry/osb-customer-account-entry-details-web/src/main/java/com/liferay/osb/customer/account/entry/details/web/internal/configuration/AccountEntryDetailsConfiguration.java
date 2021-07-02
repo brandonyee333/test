@@ -30,9 +30,9 @@ public interface AccountEntryDetailsConfiguration {
 
 	@Meta.AD(
 		deflt = "https://help.liferay.com/hc/articles/4403652209933",
-		name = "data-access-knowledge-base-article", required = false
+		name = "data-access-article-url", required = false
 	)
-	public String dataAccessKnowledgeBaseArticle();
+	public String dataAccessArticleURL();
 
 	@Meta.AD(
 		deflt = "https://liferay-support.zendesk.com/agent/tickets/",

@@ -7,9 +7,9 @@ import DynamicUploaderForm from './DynamicUploaderForm';
 export default class AddTicketAttachment extends React.Component {
 	static propTypes = {
 		addTicketAttachmentURL: PropTypes.string.isRequired,
+		dataAccessArticleURL: PropTypes.string.isRequired,
 		fileRepositoryMessage: PropTypes.string.isRequired,
 		generateTokenURL: PropTypes.string.isRequired,
-		knowledgeBaseArticle: PropTypes.string.isRequired,
 		uploadURL: PropTypes.string.isRequired,
 		zendeskTicketId: PropTypes.string.isRequired,
 		zendeskTicketURL: PropTypes.string.isRequired
@@ -18,9 +18,9 @@ export default class AddTicketAttachment extends React.Component {
 	render() {
 		const {
 			addTicketAttachmentURL,
+			dataAccessArticleURL,
 			fileRepositoryMessage,
 			generateTokenURL,
-			knowledgeBaseArticle,
 			uploadURL,
 			zendeskTicketId,
 			zendeskTicketURL
@@ -44,9 +44,9 @@ export default class AddTicketAttachment extends React.Component {
 
 				<DynamicUploaderForm
 					addTicketAttachmentURL={addTicketAttachmentURL}
+					dataAccessArticleURL={dataAccessArticleURL}
 					fileRepositoryMessage={fileRepositoryMessage}
 					generateTokenURL={generateTokenURL}
-					knowledgeBaseArticle={knowledgeBaseArticle}
 					uploadURL={uploadURL}
 				/>
 			</div>
