@@ -76,20 +76,20 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 		selectFields.add(DSL.field("displayname"));
 		selectFields.add(
 			DSL.field(
-				"eventdefinition.hidden"
+				"EventDefinition.hidden"
 			).as(
-				"eventHidden"
+				"eventDefinitionHidden"
 			));
 		selectFields.add(DSL.field("name"));
 		selectFields.add(DSL.field("type"));
 
 		if (BooleanUtils.isTrue(blocked)) {
-			selectFields.add(DSL.field("eventdefinitionid"));
+			selectFields.add(DSL.field("eventDefinitionId"));
 			selectFields.add(
 				DSL.field(
-					"blockedeventdefinition.hidden"
+					"BlockedEventDefinition.hidden"
 				).as(
-					"blockedEventHidden"
+					"blockEventDefinitionHidden"
 				));
 			selectFields.add(DSL.field("lastseendate"));
 			selectFields.add(DSL.field("lastseenurl"));
@@ -105,9 +105,9 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 			Field<Object> field = DSL.field("id");
 
 			selectJoinStep = selectJoinStep.join(
-				DSL.table("blockedeventdefinition")
+				DSL.table("BlockedEventDefinition")
 			).on(
-				field.eq(DSL.field("blockedeventdefinition.eventdefinitionid"))
+				field.eq(DSL.field("BlockedEventDefinition.eventDefinitionId"))
 			);
 		}
 
@@ -124,14 +124,14 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 			record -> {
 				Map<String, Object> recordMap = record.intoMap();
 
-				recordMap.put("hidden", recordMap.get("eventHidden"));
+				recordMap.put("hidden", recordMap.get("eventDefinitionHidden"));
 
 				EventDefinition eventDefinition = new EventDefinition(
 					recordMap);
 
 				if (BooleanUtils.isTrue(blocked)) {
 					recordMap.put(
-						"hidden", recordMap.get("blockedEventHidden"));
+						"hidden", recordMap.get("blockEventDefinitionHidden"));
 
 					eventDefinition.setBlockedEventDefinition(
 						new BlockedEventDefinition(recordMap));
