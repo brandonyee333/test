@@ -130,6 +130,7 @@ public class UserSessionNanite implements Nanite {
 		userSession.setDeviceType(MapUtil.getString(context, "deviceType"));
 		userSession.setDuration(0L);
 		userSession.setEntryPage(url);
+		userSession.setFinalized(false);
 		userSession.setFirstEventDate(firstAnalyticsEvent.getEventDate());
 
 		Individual individual = _fetchIndividual(firstAnalyticsEvent);
@@ -457,6 +458,7 @@ public class UserSessionNanite implements Nanite {
 						"canonicalUrls",
 						new ArrayList<>(analyticsEvents.getCanonicalUrls()));
 					put("dateModified", DateUtil.newDateString());
+					put("finalized", false);
 					put("interactionsCount", interactionsCount);
 					put(
 						"lastEventDate",

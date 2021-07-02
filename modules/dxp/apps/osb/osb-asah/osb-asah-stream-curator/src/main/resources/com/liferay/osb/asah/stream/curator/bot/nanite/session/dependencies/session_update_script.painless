@@ -1,5 +1,6 @@
 ctx._source.bounced = params.bounced;
 ctx._source.dateModified = params.dateModified;
+ctx._source.finalized = params.finalized;
 ctx._source.interactionsCount = params.interactionsCount;
 ctx._source.pageViewsCount = params.pageViewsCount;
 
