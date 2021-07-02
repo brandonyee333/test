@@ -575,6 +575,34 @@ public class EventDefinitionDogTest {
 				eventDefinitions.getContent(), EventDefinition::getId));
 	}
 
+	@SQLResource(resourcePath = "test_unhide_block_event_definitions.sql")
+	@Test
+	public void testUnhideBlockedEventDefinitions() {
+		List<Long> eventDefinitionIds = _fetchBlockedEventDefinitionIds();
+
+		List<EventDefinition> eventDefinitionList =
+			_eventDefinitionDog.fetchEventDefinitions(eventDefinitionIds);
+
+		for (EventDefinition eventDefinition : eventDefinitionList) {
+			BlockedEventDefinition blockedEventDefinition =
+				eventDefinition.getBlockedEventDefinition();
+
+			Assert.assertTrue(blockedEventDefinition.isHidden());
+		}
+
+		_eventDefinitionDog.unhideBlockedEventDefinitions(eventDefinitionIds);
+
+		eventDefinitionList = _eventDefinitionDog.fetchEventDefinitions(
+			eventDefinitionIds);
+
+		for (EventDefinition eventDefinition : eventDefinitionList) {
+			BlockedEventDefinition blockedEventDefinition =
+				eventDefinition.getBlockedEventDefinition();
+
+			Assert.assertFalse(blockedEventDefinition.isHidden());
+		}
+	}
+
 	@Test
 	public void testUnhideEventDefinitions() {
 		EventDefinition assetClickedEventDefinition =
