@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS BlockedEventDefinition (
 	eventDefinitionId BIGINT PRIMARY KEY,
+    hidden BOOLEAN DEFAULT false,
 	lastSeenDate TIMESTAMPTZ,
 	lastSeenURL TEXT
 );

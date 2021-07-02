@@ -58,7 +58,8 @@ public class BlockedEventDefinition {
 		BlockedEventDefinition blockedEventDefinition =
 			(BlockedEventDefinition)obj;
 
-		if (Objects.equals(
+		if (Objects.equals(_hidden, blockedEventDefinition._hidden) &&
+			Objects.equals(
 				_lastSeenDate, blockedEventDefinition._lastSeenDate) &&
 			Objects.equals(_lastSeenURL, blockedEventDefinition._lastSeenURL)) {
 
@@ -84,7 +85,16 @@ public class BlockedEventDefinition {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_lastSeenDate, _lastSeenURL);
+		return Objects.hash(_hidden, _lastSeenDate, _lastSeenURL);
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public boolean isHidden() {
+		return _hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		_hidden = hidden;
 	}
 
 	public void setLastSeenDate(Date lastSeenDate) {
@@ -96,6 +106,9 @@ public class BlockedEventDefinition {
 	public void setLastSeenURL(String lastSeenURL) {
 		_lastSeenURL = lastSeenURL;
 	}
+
+	@Transient
+	private boolean _hidden;
 
 	@Transient
 	private Date _lastSeenDate;
