@@ -12,4 +12,14 @@
 				EventDefinition.id IN (:ids)
 		]]>
 	</entry>
+	<entry key="EventDefinition.updateBlockedEventDefinitions">
+		<![CDATA[
+			UPDATE
+				BlockedEventDefinition
+			SET
+				hidden = :hidden
+			WHERE
+				BlockedEventDefinition.eventDefinitionId IN (:ids)
+		]]>
+	</entry>
 </properties>
