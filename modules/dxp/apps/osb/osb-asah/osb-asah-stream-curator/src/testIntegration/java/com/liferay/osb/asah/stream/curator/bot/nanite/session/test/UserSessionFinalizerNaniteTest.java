@@ -240,6 +240,86 @@ public class UserSessionFinalizerNaniteTest {
 	}
 
 	@ElasticsearchIndex(
+		name = "osbasahmarkers", resourcePath = "osbasahmarkers.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "page_info_old_9.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "user-sessions", resourcePath = "user_session_info_old_12.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testFinalizeCompletedSession() {
+		JSONObject userSessionJSONObject = _elasticsearchInvoker.fetch(
+			"user-sessions", "366909399944215919");
+
+		String dateModified1 = userSessionJSONObject.getString("dateModified");
+
+		userSessionJSONObject = _elasticsearchInvoker.fetch(
+			"user-sessions", "366909399944215920");
+
+		String dateModified2 = userSessionJSONObject.getString("dateModified");
+
+		_userSessionFinalizerNanite.run();
+
+		userSessionJSONObject = _elasticsearchInvoker.fetch(
+			"user-sessions", "366909399944215919");
+
+		Assert.assertNotNull(userSessionJSONObject);
+		Assert.assertNotEquals(
+			dateModified1, userSessionJSONObject.getString("dateModified"));
+		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
+		Assert.assertEquals(43994000, userSessionJSONObject.getInt("duration"));
+		Assert.assertEquals(
+			"http://192.168.108.90:8089/page1",
+			userSessionJSONObject.getString("exitPage"));
+
+		JSONArray pagesJSONArray = new JSONArray(
+			_elasticsearchInvoker.get(
+				"pages",
+				searchSourceBuilder -> {
+					searchSourceBuilder.query(
+						QueryBuilders.termQuery(
+							"sessionId", "366909399944215919"));
+					searchSourceBuilder.sort("lastEventDate", SortOrder.ASC);
+				}));
+
+		Assert.assertEquals(2, pagesJSONArray.length());
+
+		JSONObject entryPageJSONObject = pagesJSONArray.getJSONObject(0);
+
+		Assert.assertEquals(0, entryPageJSONObject.getInt("bounce"));
+		Assert.assertEquals(1, entryPageJSONObject.getInt("entrances"));
+		Assert.assertEquals(0, entryPageJSONObject.getInt("exits"));
+
+		JSONObject exitPageJSONObject = pagesJSONArray.getJSONObject(1);
+
+		Assert.assertEquals(0, exitPageJSONObject.getInt("bounce"));
+		Assert.assertEquals(0, exitPageJSONObject.getInt("entrances"));
+		Assert.assertEquals(1, exitPageJSONObject.getInt("exits"));
+		Assert.assertEquals(
+			entryPageJSONObject.getString("sessionId"),
+			exitPageJSONObject.getString("sessionId"));
+
+		userSessionJSONObject = _elasticsearchInvoker.fetch(
+			"user-sessions", "366909399944215920");
+
+		Assert.assertNotNull(userSessionJSONObject);
+		Assert.assertEquals(
+			dateModified2, userSessionJSONObject.getString("dateModified"));
+		Assert.assertEquals(0, userSessionJSONObject.getInt("duration"));
+
+		userSessionJSONObject = _elasticsearchInvoker.fetch(
+			"user-sessions", "366909399944215921");
+
+		Assert.assertNotNull(userSessionJSONObject);
+		Assert.assertFalse(userSessionJSONObject.getBoolean("completed"));
+	}
+
+	@ElasticsearchIndex(
 		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)

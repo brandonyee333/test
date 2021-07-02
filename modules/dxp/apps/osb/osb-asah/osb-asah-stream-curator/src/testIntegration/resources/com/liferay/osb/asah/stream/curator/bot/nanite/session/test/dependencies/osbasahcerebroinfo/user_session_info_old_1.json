@@ -17,6 +17,7 @@
 		"individualId": "366909392432123952",
 		"interactionsCount": 0,
 		"lastEventDate": "${now-31m}",
+		"modifiedDate": "${now-31m}",
 		"pageViewsCount": 1,
 		"platformName": "Linux",
 		"region": null,

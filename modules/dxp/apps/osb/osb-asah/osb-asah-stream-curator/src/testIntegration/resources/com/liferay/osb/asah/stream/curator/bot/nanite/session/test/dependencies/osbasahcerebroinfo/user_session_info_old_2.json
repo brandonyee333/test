@@ -9,6 +9,7 @@
 		"country": null,
 		"dataSourceId": "362055312804551713",
 		"date": "${now-1m}",
+		"dateModified": "${now-1m}",
 		"duration": 0,
 		"entryPage": "http://192.168.108.90:8089/",
 		"exitPage": null,
