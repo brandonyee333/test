@@ -80,7 +80,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FinalizeUserSessionArm {
 
-	public void processSession(UserSession userSession) {
+	public void processSession(UserSession userSession) throws Exception {
 		if (userSession.getCompleted()) {
 			_clearPageSessionAttributes(userSession);
 		}
@@ -113,13 +113,15 @@ public class FinalizeUserSessionArm {
 			JSONUtil.put(
 				"dateModified", DateUtil.newDateString()
 			).put(
+				"filter", "contains(filter, 'sessions.filter')"
+			).put(
 				"individualJSONObject",
 				_faroInfoElasticsearchInvoker.fetch(
 					"individuals", userSession.getIndividualId())
 			));
 	}
 
-	public void processSessions(UserSession[] userSessions) {
+	public void processSessions(UserSession[] userSessions) throws Exception {
 		for (UserSession userSession : userSessions) {
 			processSession(userSession);
 		}
