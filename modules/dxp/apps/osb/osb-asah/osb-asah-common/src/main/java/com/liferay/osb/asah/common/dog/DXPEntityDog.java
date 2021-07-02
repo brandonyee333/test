@@ -228,9 +228,9 @@ public class DXPEntityDog {
 	private DXPUser _mapDXPUser(
 		Map<Long, String> dataSourceNames, DXPEntity dxpEntity) {
 
-		DXPUser user = new DXPUser();
+		DXPUser dxpUser = new DXPUser();
 
-		user.setDataSourceName(
+		dxpUser.setDataSourceName(
 			dataSourceNames.computeIfAbsent(
 				dxpEntity.getDataSourceId(),
 				dataSourceId -> {
@@ -246,14 +246,14 @@ public class DXPEntityDog {
 
 		JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
 
-		user.setDataSourceId(dxpEntity.getDataSourceId());
-		user.setFieldsJSONObject(fieldsJSONObject);
-		user.setFirstName(fieldsJSONObject.optString("firstName"));
-		user.setId(dxpEntity.getId());
-		user.setLastName(fieldsJSONObject.optString("lastName"));
-		user.setScreenName(fieldsJSONObject.optString("screenName"));
+		dxpUser.setDataSourceId(dxpEntity.getDataSourceId());
+		dxpUser.setFieldsJSONObject(fieldsJSONObject);
+		dxpUser.setFirstName(fieldsJSONObject.optString("firstName"));
+		dxpUser.setId(dxpEntity.getId());
+		dxpUser.setLastName(fieldsJSONObject.optString("lastName"));
+		dxpUser.setScreenName(fieldsJSONObject.optString("screenName"));
 
-		return user;
+		return dxpUser;
 	}
 
 	private List<? extends DXPEntity> _processDXPEntities(
