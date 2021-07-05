@@ -444,10 +444,10 @@ public class EventDefinitionDogTest {
 	public void testHideBlockedEventDefinitions() {
 		List<Long> eventDefinitionIds = _fetchBlockedEventDefinitionIds();
 
-		List<EventDefinition> eventDefinitionList =
+		List<EventDefinition> eventDefinitions =
 			_eventDefinitionDog.fetchEventDefinitions(eventDefinitionIds);
 
-		for (EventDefinition eventDefinition : eventDefinitionList) {
+		for (EventDefinition eventDefinition : eventDefinitions) {
 			BlockedEventDefinition blockedEventDefinition =
 				eventDefinition.getBlockedEventDefinition();
 
@@ -456,10 +456,10 @@ public class EventDefinitionDogTest {
 
 		_eventDefinitionDog.hideBlockedEventDefinitions(eventDefinitionIds);
 
-		eventDefinitionList = _eventDefinitionDog.fetchEventDefinitions(
+		eventDefinitions = _eventDefinitionDog.fetchEventDefinitions(
 			eventDefinitionIds);
 
-		for (EventDefinition eventDefinition : eventDefinitionList) {
+		for (EventDefinition eventDefinition : eventDefinitions) {
 			BlockedEventDefinition blockedEventDefinition =
 				eventDefinition.getBlockedEventDefinition();
 
@@ -580,10 +580,10 @@ public class EventDefinitionDogTest {
 	public void testUnhideBlockedEventDefinitions() {
 		List<Long> eventDefinitionIds = _fetchBlockedEventDefinitionIds();
 
-		List<EventDefinition> eventDefinitionList =
+		List<EventDefinition> eventDefinitions =
 			_eventDefinitionDog.fetchEventDefinitions(eventDefinitionIds);
 
-		for (EventDefinition eventDefinition : eventDefinitionList) {
+		for (EventDefinition eventDefinition : eventDefinitions) {
 			BlockedEventDefinition blockedEventDefinition =
 				eventDefinition.getBlockedEventDefinition();
 
@@ -592,10 +592,10 @@ public class EventDefinitionDogTest {
 
 		_eventDefinitionDog.unhideBlockedEventDefinitions(eventDefinitionIds);
 
-		eventDefinitionList = _eventDefinitionDog.fetchEventDefinitions(
+		eventDefinitions = _eventDefinitionDog.fetchEventDefinitions(
 			eventDefinitionIds);
 
-		for (EventDefinition eventDefinition : eventDefinitionList) {
+		for (EventDefinition eventDefinition : eventDefinitions) {
 			BlockedEventDefinition blockedEventDefinition =
 				eventDefinition.getBlockedEventDefinition();
 
