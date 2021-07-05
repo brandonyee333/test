@@ -34,17 +34,16 @@ public class BlockedCustomEventDefinitionDTO {
 	}
 
 	public BlockedCustomEventDefinitionDTO(EventDefinition eventDefinition) {
-		_hidden = blockedEventDefinition.isHidden();
 		_id = String.valueOf(eventDefinition.getId());
+		_name = eventDefinition.getName();
 
 		BlockedEventDefinition blockedEventDefinition =
 			eventDefinition.getBlockedEventDefinition();
 
+		_hidden = blockedEventDefinition.isHidden();
 		_lastSeenDate = DateUtil.toUTCString(
 			blockedEventDefinition.getLastSeenDate());
 		_lastSeenURL = blockedEventDefinition.getLastSeenURL();
-
-		_name = eventDefinition.getName();
 	}
 
 	@JsonProperty("id")
