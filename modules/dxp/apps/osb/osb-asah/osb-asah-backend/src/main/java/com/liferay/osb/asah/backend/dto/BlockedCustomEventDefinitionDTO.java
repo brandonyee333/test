@@ -34,12 +34,11 @@ public class BlockedCustomEventDefinitionDTO {
 	}
 
 	public BlockedCustomEventDefinitionDTO(EventDefinition eventDefinition) {
+		_hidden = blockedEventDefinition.isHidden();
 		_id = String.valueOf(eventDefinition.getId());
 
 		BlockedEventDefinition blockedEventDefinition =
 			eventDefinition.getBlockedEventDefinition();
-
-		_hidden = blockedEventDefinition.isHidden();
 
 		_lastSeenDate = DateUtil.toUTCString(
 			blockedEventDefinition.getLastSeenDate());
