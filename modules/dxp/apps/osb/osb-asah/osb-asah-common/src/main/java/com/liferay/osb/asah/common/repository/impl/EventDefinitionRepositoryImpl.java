@@ -70,7 +70,6 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 
 		List<Field<Object>> selectFields = new ArrayList<>();
 
-		selectFields.add(DSL.field("id"));
 		selectFields.add(DSL.field("blocked"));
 		selectFields.add(DSL.field("description"));
 		selectFields.add(DSL.field("displayname"));
@@ -80,17 +79,18 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 			).as(
 				"eventDefinitionHidden"
 			));
+		selectFields.add(DSL.field("id"));
 		selectFields.add(DSL.field("name"));
 		selectFields.add(DSL.field("type"));
 
 		if (BooleanUtils.isTrue(blocked)) {
-			selectFields.add(DSL.field("eventDefinitionId"));
 			selectFields.add(
 				DSL.field(
 					"BlockedEventDefinition.hidden"
 				).as(
 					"blockEventDefinitionHidden"
 				));
+			selectFields.add(DSL.field("eventDefinitionId"));
 			selectFields.add(DSL.field("lastseendate"));
 			selectFields.add(DSL.field("lastseenurl"));
 		}
