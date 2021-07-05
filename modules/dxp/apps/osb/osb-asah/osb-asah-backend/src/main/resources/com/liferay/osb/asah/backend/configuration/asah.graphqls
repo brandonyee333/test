@@ -178,8 +178,8 @@ type BaseDXPEntity implements DXPEntity {
 }
 
 type BlockedCustomEventDefinition {
-	id: String
 	hidden: Boolean
+	id: String
 	lastSeenDate: String
 	lastSeenURL: String
 	name: String
