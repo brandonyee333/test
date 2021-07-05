@@ -442,7 +442,7 @@ public class EventDefinitionDogTest {
 	@SQLResource(resourcePath = "test_hide_block_event_definitions.sql")
 	@Test
 	public void testHideBlockedEventDefinitions() {
-		List<Long> eventDefinitionIds = _fetchBlockedEventDefinitionIds();
+		List<Long> eventDefinitionIds = _getBlockedEventDefinitionIds();
 
 		List<EventDefinition> eventDefinitions =
 			_eventDefinitionDog.fetchEventDefinitions(eventDefinitionIds);
@@ -578,7 +578,7 @@ public class EventDefinitionDogTest {
 	@SQLResource(resourcePath = "test_unhide_block_event_definitions.sql")
 	@Test
 	public void testUnhideBlockedEventDefinitions() {
-		List<Long> eventDefinitionIds = _fetchBlockedEventDefinitionIds();
+		List<Long> eventDefinitionIds = _getBlockedEventDefinitionIds();
 
 		List<EventDefinition> eventDefinitions =
 			_eventDefinitionDog.fetchEventDefinitions(eventDefinitionIds);
@@ -694,7 +694,7 @@ public class EventDefinitionDogTest {
 		}
 	}
 
-	private List<Long> _fetchBlockedEventDefinitionIds() {
+	private List<Long> _getBlockedEventDefinitionIds() {
 		Iterable<EventDefinition> eventDefinitions =
 			_eventDefinitionRepository.findAll();
 
