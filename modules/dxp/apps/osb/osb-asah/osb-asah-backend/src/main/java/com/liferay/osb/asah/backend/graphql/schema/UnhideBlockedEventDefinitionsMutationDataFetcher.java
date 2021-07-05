@@ -41,7 +41,7 @@ public class UnhideBlockedEventDefinitionsMutationDataFetcher
 	public List<BlockedCustomEventDefinitionDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		List<Long> blockedEventDefinitionIds = _getEventDefinitionIds(
+		List<Long> blockedEventDefinitionIds = _getBlockedEventDefinitionIds(
 			dataFetchingEnvironment);
 
 		_eventDefinitionDog.unhideBlockedEventDefinitions(
@@ -53,7 +53,7 @@ public class UnhideBlockedEventDefinitionsMutationDataFetcher
 			BlockedCustomEventDefinitionDTO::new);
 	}
 
-	private List<Long> _getEventDefinitionIds(
+	private List<Long> _getBlockedEventDefinitionIds(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
 		List<String> blockedEventDefinitionIds =
