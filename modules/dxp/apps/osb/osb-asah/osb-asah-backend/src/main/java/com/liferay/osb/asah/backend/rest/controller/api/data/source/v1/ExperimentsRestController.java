@@ -134,7 +134,7 @@ public class ExperimentsRestController extends BaseRestController {
 			SetUtil.map(
 				experimentVariantsDTO.getExperimentVariantDTOs(),
 				currentDXPVariantDTO -> _objectMapper.convertValue(
-					experiment, ExperimentVariant.class)));
+					currentDXPVariantDTO, ExperimentVariant.class)));
 
 		_experimentDog.updateExperiment(experiment);
 	}
