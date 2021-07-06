@@ -30,6 +30,8 @@ DepotAdminManagementToolbarDisplayContext depotAdminManagementToolbarDisplayCont
 	cssClass="closed sidenav-container sidenav-right"
 >
 	<div class="sidenav-content">
+		<liferay-ui:error exception="<%= RequiredFileEntryTypeException.class %>" message="cannot-delete-a-document-type-that-is-presently-used-by-one-or-more-documents-in-a-connected-site" />
+
 		<portlet:actionURL name="deleteGroups" var="deleteGroupsURL" />
 
 		<aui:form action="<%= depotAdminDisplayContext.getIteratorURL() %>" cssClass="container-fluid-1280" name="fm">
