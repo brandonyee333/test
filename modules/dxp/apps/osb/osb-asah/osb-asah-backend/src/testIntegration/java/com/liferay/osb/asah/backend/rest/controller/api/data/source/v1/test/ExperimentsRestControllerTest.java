@@ -87,7 +87,8 @@ public class ExperimentsRestControllerTest {
 		Assert.assertEquals(
 			expectedExperimentDTO.getName(), actualExperimentDTO.getName());
 		_assertGoalDTO(
-			expectedExperimentDTO.getGoal(), actualExperimentDTO.getGoal());
+			expectedExperimentDTO.getGoalDTO(),
+			actualExperimentDTO.getGoalDTO());
 	}
 
 	@ElasticsearchIndex(
@@ -179,7 +180,7 @@ public class ExperimentsRestControllerTest {
 
 		Assert.assertEquals(
 			expectedExperimentVariantsDTO.getExperimentVariantDTOs(),
-			actualExperimentDTO.getExperimentVariants());
+			actualExperimentDTO.getExperimentVariantDTOs());
 	}
 
 	@ElasticsearchIndex(
@@ -200,7 +201,7 @@ public class ExperimentsRestControllerTest {
 		ExperimentDTO actualExperimentDTO =
 			_experimentsRestController.getExperiment(1L);
 
-		_assertGoalDTO(expectedGoalDTO, actualExperimentDTO.getGoal());
+		_assertGoalDTO(expectedGoalDTO, actualExperimentDTO.getGoalDTO());
 	}
 
 	private void _assertGoalDTO(

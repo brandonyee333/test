@@ -191,7 +191,7 @@ public class ExperimentDTO {
 	}
 
 	@JsonProperty("metrics")
-	public Set<ExperimentMetricDTO> getExperimentMetrics() {
+	public Set<ExperimentMetricDTO> getExperimentMetricDTOs() {
 		return _experimentMetricDTOs;
 	}
 
@@ -210,7 +210,7 @@ public class ExperimentDTO {
 	@GraphQLProperty("dxpVariants")
 	@JsonProperty("dxpVariants")
 	@Valid
-	public Set<ExperimentVariantDTO> getExperimentVariants() {
+	public Set<ExperimentVariantDTO> getExperimentVariantDTOs() {
 		return _experimentVariantDTOs;
 	}
 
@@ -236,8 +236,10 @@ public class ExperimentDTO {
 		return DateUtil.toUTCString(_finishedDate);
 	}
 
+	@GraphQLProperty("goal")
+	@JsonProperty("goal")
 	@Valid
-	public GoalDTO getGoal() {
+	public GoalDTO getGoalDTO() {
 		return _goalDTO;
 	}
 
