@@ -131,14 +131,16 @@ public class CommerceChannelLocalServiceImpl
 
 		// Group
 
-		Group group = getCommerceChannelGroup(
+		Group group = fetchCommerceChannelGroup(
 			commerceChannel.getCommerceChannelId());
 
 		// Commerce channel
 
 		commerceChannel = commerceChannelPersistence.remove(commerceChannel);
 
-		groupLocalService.deleteGroup(group);
+		if (group != null) {
+			groupLocalService.deleteGroup(group);
+		}
 
 		return commerceChannel;
 	}
@@ -182,6 +184,20 @@ public class CommerceChannelLocalServiceImpl
 	}
 
 	@Override
+	public Group fetchCommerceChannelGroup(long commerceChannelId)
+		throws PortalException {
+
+		CommerceChannel commerceChannel =
+			commerceChannelLocalService.getCommerceChannel(commerceChannelId);
+
+		long classNameId = classNameLocalService.getClassNameId(
+			CommerceChannel.class.getName());
+
+		return groupLocalService.fetchGroup(
+			commerceChannel.getCompanyId(), classNameId, commerceChannelId);
+	}
+
+	@Override
 	public CommerceChannel getCommerceChannelByGroupId(long groupId)
 		throws PortalException {
 
@@ -203,14 +219,8 @@ public class CommerceChannelLocalServiceImpl
 	public Group getCommerceChannelGroup(long commerceChannelId)
 		throws PortalException {
 
-		CommerceChannel commerceChannel =
-			commerceChannelLocalService.getCommerceChannel(commerceChannelId);
-
-		long classNameId = classNameLocalService.getClassNameId(
-			CommerceChannel.class.getName());
-
-		Group group = groupLocalService.fetchGroup(
-			commerceChannel.getCompanyId(), classNameId, commerceChannelId);
+		Group group = commerceChannelLocalService.fetchCommerceChannelGroup(
+			commerceChannelId);
 
 		if (group != null) {
 			return group;
