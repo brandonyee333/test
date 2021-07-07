@@ -133,7 +133,7 @@ public class JSONUtil {
 			if (object instanceof JSONArray) {
 				JSONArray jsonArray = (JSONArray)object;
 
-				value = jsonArray.getJSONArray(GetterUtil.getInteger(key));
+				value = jsonArray.getJSONArray(Integer.parseInt(key));
 			}
 			else if (object instanceof JSONObject) {
 				JSONObject jsonObject = (JSONObject)object;
@@ -145,7 +145,7 @@ public class JSONUtil {
 			if (object instanceof JSONArray) {
 				JSONArray jsonArray = (JSONArray)object;
 
-				value = jsonArray.getJSONObject(GetterUtil.getInteger(key));
+				value = jsonArray.getJSONObject(Integer.parseInt(key));
 			}
 			else if (object instanceof JSONObject) {
 				JSONObject jsonObject = (JSONObject)object;
