@@ -20,6 +20,33 @@ CREATE TABLE IF NOT EXISTS CustomAsset (
 	views BIGINT
 );
 
+CREATE TABLE IF NOT EXISTS DocumentLibrary (
+	assetId VARCHAR,
+	assetPrimaryKey VARCHAR,
+	browserName VARCHAR,
+	canonicalUrl VARCHAR,
+	channelId BIGINT,
+	city VARCHAR,
+	comments BIGINT,
+	country VARCHAR,
+	dataSourceId BIGINT,
+	deviceType VARCHAR,
+	downloads BIGINT,
+	eventDate TIMESTAMP,
+	individualId BIGINT,
+	knownIndividual BOOLEAN,
+	platformName VARCHAR,
+	previews BIGINT,
+	projectId VARCHAR,
+	ratings BIGINT,
+	ratingsScore REAL,
+	region VARCHAR,
+	sessionId VARCHAR,
+	title VARCHAR,
+	userId VARCHAR,
+	variantId VARCHAR
+);
+
 CREATE TABLE IF NOT EXISTS Journal (
 	assetId VARCHAR,
 	assetPrimaryKey VARCHAR,
