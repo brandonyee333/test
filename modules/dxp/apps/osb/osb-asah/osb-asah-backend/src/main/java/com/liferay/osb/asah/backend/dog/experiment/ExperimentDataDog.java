@@ -131,7 +131,7 @@ public class ExperimentDataDog {
 
 		endLocalDate = endLocalDate.minusDays(1);
 
-		LocalDate startLocalDate = DateUtil.fromUTC(
+		LocalDate startLocalDate = DateUtil.toUTCLocalDate(
 			startLocalDateTime, _timeZoneDog.getZoneId());
 
 		List<ExperimentDataPoint<Double[]>> experimentDataPoints =
