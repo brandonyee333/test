@@ -23,17 +23,22 @@ definition {
 			key_text = "Sign In",
 			locator1 = "Button#ANY");
 
-		Click(
-			key_text = "I Agree",
-			locator1 = "Button#ANY");
+		if (IsElementPresent(key_text = "I Agree",locator1 = "Button#ANY")) {
+			Click(
+				key_text = "I Agree",
+				locator1 = "Button#ANY");
 
-		Type(
-			locator1 = "TextInput#ANSWER",
-			value1 = "${userPasswordReminderAnswer}");
+		}
 
-		Click(
-			key_text = "Save",
-			locator1 = "Button#ANY");
+		else if (IsElementPresent(locator1 = "TextInput#ANSWER")) {
+			Type(
+				locator1 = "TextInput#ANSWER",
+				value1 = "${userPasswordReminderAnswer}");
+
+			Click(
+				key_text = "Save",
+				locator1 = "Button#ANY");
+		}
 	}
 
 	macro viewLogin {
