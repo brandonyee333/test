@@ -76,6 +76,32 @@ CREATE TABLE IF NOT EXISTS DocumentLibrary (
 	variantId VARCHAR
 );
 
+CREATE TABLE IF NOT EXISTS Form (
+	abandonments BIGINT,
+	assetId VARCHAR,
+	assetPrimaryKey VARCHAR,
+	browserName VARCHAR,
+	canonicalUrl VARCHAR,
+	channelId BIGINT,
+	city VARCHAR,
+	country VARCHAR,
+	dataSourceId BIGINT,
+	deviceType VARCHAR,
+	eventDate TIMESTAMP,
+	individualId BIGINT,
+	knownIndividual BOOLEAN,
+	platformName VARCHAR,
+	projectId VARCHAR,
+	region VARCHAR,
+	sessionId VARCHAR,
+	submissions BIGINT,
+	submissionsTime BIGINT,
+	title VARCHAR,
+	userId VARCHAR,
+	variantId VARCHAR,
+	views BIGINT
+);
+
 CREATE TABLE IF NOT EXISTS Journal (
 	assetId VARCHAR,
 	assetPrimaryKey VARCHAR,
