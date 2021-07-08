@@ -95,7 +95,7 @@ public abstract class BaseAssetMetricRepositoryTestCase {
 			// Time zone ID to UTC
 
 			Duration duration = Duration.between(
-				shiftedLocalDateTimes.get(i), localDateTimes.get(i));
+				localDateTimes.get(i), shiftedLocalDateTimes.get(i));
 
 			Assert.assertEquals(timeZoneDifference, duration.toHours());
 		}
