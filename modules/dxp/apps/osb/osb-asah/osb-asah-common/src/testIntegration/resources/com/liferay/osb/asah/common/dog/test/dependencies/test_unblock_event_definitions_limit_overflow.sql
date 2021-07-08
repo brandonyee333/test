@@ -1,8 +1,8 @@
-INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (true, null, null, 'addedToCart', 'CUSTOM');
-INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (true, null, null, 'addedToWishList', 'CUSTOM');
-INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (true, null, null, 'checkedOut', 'CUSTOM');
-INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (true, null, null, 'orderCancelled', 'CUSTOM');
-INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (true, null, null, 'reviewAdded', 'CUSTOM');
+INSERT INTO EventDefinition(blocked, blockedLastSeenDate, blockedLastSeenURL, description, displayName, name, type) VALUES (true, '2020-12-27 03:03:00-07', 'http://test.com', null, null, 'addedToCart', 'CUSTOM');
+INSERT INTO EventDefinition(blocked, blockedLastSeenDate, blockedLastSeenURL, description, displayName, name, type) VALUES (true, '2021-01-03 18:10:00-07', 'http://test.com', null, null, 'addedToWishList', 'CUSTOM');
+INSERT INTO EventDefinition(blocked, blockedLastSeenDate, blockedLastSeenURL, description, displayName, name, type) VALUES (true, '2021-03-03 15:02:00-07', 'http://test.com', null, null, 'checkedOut', 'CUSTOM');
+INSERT INTO EventDefinition(blocked, blockedLastSeenDate, blockedLastSeenURL, description, displayName, name, type) VALUES (true, '2021-03-21 20:45:00-07', 'http://test.com', null, null, 'orderCancelled', 'CUSTOM');
+INSERT INTO EventDefinition(blocked, blockedLastSeenDate, blockedLastSeenURL, description, displayName, name, type) VALUES (true, '2021-03-11 17:11:00-07', 'http://test.com', null, null, 'reviewAdded', 'CUSTOM');
 INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (false, null, 'Subscribed', 'subscribed', 'CUSTOM');
 INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (false, null, 'Subscribed (1)', 'subscribed1', 'CUSTOM');
 INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (false, null, 'Subscribed (2)', 'subscribed2', 'CUSTOM');
@@ -99,9 +99,3 @@ INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUE
 INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (false, null, 'Subscribed (93)', 'subscribed93', 'CUSTOM');
 INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (false, null, 'Subscribed (94)', 'subscribed94', 'CUSTOM');
 INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (false, null, 'Subscribed (95)', 'subscribed95', 'CUSTOM');
-
-INSERT INTO BlockedEventDefinition(eventDefinitionId, lastSeenDate, lastSeenURL) VALUES ((SELECT id FROM EventDefinition WHERE name = 'addedToCart'), '2020-12-27 03:03:00-07', 'http://test.com');
-INSERT INTO BlockedEventDefinition(eventDefinitionId, lastSeenDate, lastSeenURL) VALUES ((SELECT id FROM EventDefinition WHERE name = 'addedToWishList'), '2021-01-03 18:10:00-07', 'http://test.com');
-INSERT INTO BlockedEventDefinition(eventDefinitionId, lastSeenDate, lastSeenURL) VALUES ((SELECT id FROM EventDefinition WHERE name = 'checkedOut'), '2021-03-03 15:02:00-07', 'http://test.com');
-INSERT INTO BlockedEventDefinition(eventDefinitionId, lastSeenDate, lastSeenURL) VALUES ((SELECT id FROM EventDefinition WHERE name = 'orderCancelled'), '2021-03-21 20:45:00-07', 'http://test.com');
-INSERT INTO BlockedEventDefinition(eventDefinitionId, lastSeenDate, lastSeenURL) VALUES ((SELECT id FROM EventDefinition WHERE name = 'reviewAdded'), '2021-03-11 17:11:00-07', 'http://test.com');

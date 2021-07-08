@@ -98,6 +98,4 @@ INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUE
 INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (false, null, 'Subscribed (97)', 'subscribed97', 'CUSTOM');
 INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (false, null, 'Subscribed (98)', 'subscribed98', 'CUSTOM');
 INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (false, null, 'Subscribed (99)', 'subscribed99', 'CUSTOM');
-INSERT INTO EventDefinition(blocked, description, displayName, name, type) VALUES (true, null, null, 'subscribed100', 'CUSTOM');
-
-INSERT INTO BlockedEventDefinition(eventDefinitionId, lastSeenDate, lastSeenUrl) VALUES ((SELECT id FROM EventDefinition WHERE name='subscribed100'), '2020-12-27 03:03:00-07', 'http://localhost:8080');
+INSERT INTO EventDefinition(blocked, blockedLastSeenDate, blockedLastSeenURL, description, displayName, name, type) VALUES (true, '2020-12-27 03:03:00-07', 'http://localhost:8080', null, null, 'subscribed100', 'CUSTOM');
