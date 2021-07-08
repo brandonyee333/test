@@ -1,12 +1,6 @@
 definition {
 
 	macro login {
-
-		var password = "test";
-		var url = "http://localhost:8080";
-		var userEmailAddress = "test@liferay.com";
-		var userPasswordReminderAnswer = "1";
-
 		Open(locator1 = "${url}");
 
 		Click(locator1 = "UserBar#USER_SIGN_IN");
@@ -27,7 +21,6 @@ definition {
 			Click(
 				key_text = "I Agree",
 				locator1 = "Button#ANY");
-
 		}
 
 		else if (IsElementPresent(locator1 = "TextInput#ANSWER")) {
