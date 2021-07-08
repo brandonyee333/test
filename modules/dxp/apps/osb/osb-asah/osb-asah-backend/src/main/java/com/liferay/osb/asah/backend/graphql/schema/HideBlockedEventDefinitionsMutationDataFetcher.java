@@ -44,8 +44,7 @@ public class HideBlockedEventDefinitionsMutationDataFetcher
 		List<Long> blockedEventDefinitionIds = _getBlockedEventDefinitionIds(
 			dataFetchingEnvironment);
 
-		_eventDefinitionDog.hideBlockedEventDefinitions(
-			blockedEventDefinitionIds);
+		_eventDefinitionDog.hideEventDefinitions(blockedEventDefinitionIds);
 
 		return ListUtil.map(
 			_eventDefinitionDog.fetchEventDefinitions(
