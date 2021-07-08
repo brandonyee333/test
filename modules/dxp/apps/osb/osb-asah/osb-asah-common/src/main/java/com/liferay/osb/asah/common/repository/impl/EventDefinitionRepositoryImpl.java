@@ -14,22 +14,17 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
-import org.jooq.Record;
 import org.jooq.Record1;
-import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
@@ -68,50 +63,14 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 		@Nullable String keyword, Pageable pageable,
 		@Nullable EventDefinition.Type type) {
 
-		List<Field<Object>> selectFields = new ArrayList<>();
-
-		selectFields.add(DSL.field("blocked"));
-		selectFields.add(DSL.field("description"));
-		selectFields.add(DSL.field("displayname"));
-		selectFields.add(
-			DSL.field(
-				"EventDefinition.hidden"
-			).as(
-				"eventDefinitionHidden"
-			));
-		selectFields.add(DSL.field("id"));
-		selectFields.add(DSL.field("name"));
-		selectFields.add(DSL.field("type"));
-
-		if (BooleanUtils.isTrue(blocked)) {
-			selectFields.add(
-				DSL.field(
-					"BlockedEventDefinition.hidden"
-				).as(
-					"blockEventDefinitionHidden"
-				));
-			selectFields.add(DSL.field("eventDefinitionId"));
-			selectFields.add(DSL.field("lastseendate"));
-			selectFields.add(DSL.field("lastseenurl"));
-		}
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select(
-			selectFields);
-
-		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
-			"EventDefinition");
-
-		if (BooleanUtils.isTrue(blocked)) {
-			Field<Object> field = DSL.field("id");
-
-			selectJoinStep = selectJoinStep.join(
-				DSL.table("BlockedEventDefinition")
-			).on(
-				field.eq(DSL.field("BlockedEventDefinition.eventDefinitionId"))
-			);
-		}
-
-		return selectJoinStep.where(
+		return _dslContext.select(
+			DSL.field("blocked"), DSL.field("description"),
+			DSL.field("displayname"), DSL.field("hidden"), DSL.field("id"),
+			DSL.field("name"), DSL.field("type"),
+			DSL.field("blockedlastseendate"), DSL.field("blockedlastseenurl")
+		).from(
+			"EventDefinition"
+		).where(
 			_getConditions(blocked, hidden, keyword, type)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
@@ -121,24 +80,7 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 			pageable.getOffset()
 		).fetch(
 		).map(
-			record -> {
-				Map<String, Object> recordMap = record.intoMap();
-
-				recordMap.put("hidden", recordMap.get("eventDefinitionHidden"));
-
-				EventDefinition eventDefinition = new EventDefinition(
-					recordMap);
-
-				if (BooleanUtils.isTrue(blocked)) {
-					recordMap.put(
-						"hidden", recordMap.get("blockEventDefinitionHidden"));
-
-					eventDefinition.setBlockedEventDefinition(
-						new BlockedEventDefinition(recordMap));
-				}
-
-				return eventDefinition;
-			}
+			record -> new EventDefinition(record.intoMap())
 		);
 	}
 
