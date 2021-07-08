@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventDefinition;
@@ -62,8 +61,9 @@ public class EventDefinitionDog {
 				_EVENT_DEFINITION_THRESHOLD)) {
 
 			eventDefinition.setBlocked(true);
-			eventDefinition.setBlockedEventDefinition(
-				new BlockedEventDefinition(eventDate, url));
+
+			eventDefinition.setBlockedLastSeenDate(eventDate);
+			eventDefinition.setBlockedLastSeenURL(url);
 
 			if (_log.isWarnEnabled()) {
 				_log.warn(
@@ -177,13 +177,17 @@ public class EventDefinitionDog {
 	}
 
 	public EventDefinition updateEventDefinition(
-		BlockedEventDefinition blockedEventDefinition, String description,
+		Date blockedLastSeenDate, String blockedLastSeenURL, String description,
 		String displayName, Long eventDefinitionId) {
 
 		EventDefinition eventDefinition = getEventDefinition(eventDefinitionId);
 
-		if (blockedEventDefinition != null) {
-			eventDefinition.setBlockedEventDefinition(blockedEventDefinition);
+		if (blockedLastSeenDate != null) {
+			eventDefinition.setBlockedLastSeenDate(blockedLastSeenDate);
+		}
+
+		if (blockedLastSeenURL != null) {
+			eventDefinition.setBlockedLastSeenURL(blockedLastSeenURL);
 		}
 
 		if (StringUtils.isNotBlank(description)) {
@@ -228,9 +232,9 @@ public class EventDefinitionDog {
 				_eventAttributeDog.getEventAttribute(
 					"canonicalUrl", lastSeenEvent.getId());
 
-			eventDefinition.setBlockedEventDefinition(
-				new BlockedEventDefinition(
-					lastSeenEvent.getEventDate(), eventAttribute.getValue()));
+			eventDefinition.setBlockedLastSeenDate(
+				lastSeenEvent.getEventDate());
+			eventDefinition.setBlockedLastSeenURL(eventAttribute.getValue());
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
@@ -270,7 +274,8 @@ public class EventDefinitionDog {
 		EventDefinition eventDefinition = getEventDefinition(eventDefinitionId);
 
 		eventDefinition.setBlocked(false);
-		eventDefinition.setBlockedEventDefinition(null);
+		eventDefinition.setBlockedLastSeenDate(null);
+		eventDefinition.setBlockedLastSeenURL(null);
 		eventDefinition.setDisplayName(
 			_getDisplayName(null, eventDefinition.getName()));
 

@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
@@ -52,15 +51,6 @@ public class EventDefinitionRepositoryTest {
 
 		Assert.assertEquals(
 			eventDefinitions.toString(), 3, eventDefinitions.size());
-
-		for (EventDefinition eventDefinition : eventDefinitions) {
-			Assert.assertTrue(eventDefinition.isHidden());
-
-			BlockedEventDefinition blockedEventDefinition =
-				eventDefinition.getBlockedEventDefinition();
-
-			Assert.assertTrue(blockedEventDefinition.isHidden());
-		}
 	}
 
 	@Autowired

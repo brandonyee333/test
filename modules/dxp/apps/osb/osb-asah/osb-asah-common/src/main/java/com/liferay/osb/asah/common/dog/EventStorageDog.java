@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
@@ -159,10 +158,8 @@ public class EventStorageDog {
 		}
 		else if (eventDefinition.isBlocked()) {
 			eventDefinition = _eventDefinitionDog.updateEventDefinition(
-				new BlockedEventDefinition(
-					analyticsEvent.getEventDate(),
-					MapUtil.getString(
-						analyticsEvent.getContext(), "canonicalUrl")),
+				analyticsEvent.getEventDate(),
+				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"),
 				null, null, eventDefinition.getId());
 		}
 

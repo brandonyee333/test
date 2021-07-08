@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
-import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
@@ -48,6 +47,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.ContextConfiguration;
+
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 /**
  * @author Leslie Wong
@@ -134,9 +136,8 @@ public class EventDefinitionDogTest {
 		Assert.assertEquals(
 			EventDefinition.Type.CUSTOM, eventDefinition.getType());
 		Assert.assertTrue(eventDefinition.isBlocked());
-		Assert.assertEquals(
-			new BlockedEventDefinition(dayDate, url),
-			eventDefinition.getBlockedEventDefinition());
+		Assert.assertEquals(dayDate, eventDefinition.getBlockedLastSeenDate());
+		Assert.assertEquals(url, eventDefinition.getBlockedLastSeenURL());
 	}
 
 	@Test
@@ -209,21 +210,16 @@ public class EventDefinitionDogTest {
 		Assert.assertNull(eventDefinition.getDescription());
 		Assert.assertNull(eventDefinition.getDisplayName());
 
-		BlockedEventDefinition blockedEventDefinition =
-			eventDefinition.getBlockedEventDefinition();
-
-		Assert.assertNotNull(blockedEventDefinition);
-
 		ZonedDateTime zonedDateTime = ZonedDateTime.of(
 			2021, 4, 19, 12, 35, 0, 0, ZoneId.of("UTC"));
 
 		Assert.assertEquals(
 			Date.from(zonedDateTime.toInstant()),
-			blockedEventDefinition.getLastSeenDate());
+			eventDefinition.getBlockedLastSeenDate());
 
 		Assert.assertEquals(
 			"http://localhost:8089/web/guest/home",
-			blockedEventDefinition.getLastSeenURL());
+			eventDefinition.getBlockedLastSeenURL());
 	}
 
 	@SQLResource(resourcePath = "test_block_event_definitions.sql")
@@ -246,22 +242,22 @@ public class EventDefinitionDogTest {
 		ZonedDateTime unsubscribedZonedDateTime = ZonedDateTime.of(
 			2021, 2, 16, 0, 0, 0, 0, ZoneId.of("UTC"));
 
-		Map<String, BlockedEventDefinition> expectedBlockedEventDefinitions =
-			new HashMap<String, BlockedEventDefinition>() {
+		Map<String, Tuple2> expectedBlockedEventInfos =
+			new HashMap<String, Tuple2>() {
 				{
 					put(
 						"addNotification",
-						new BlockedEventDefinition(
+						Tuples.of(
 							Date.from(addNotificationZonedDateTime.toInstant()),
 							"http://localhost:8089/web/guest/home"));
 					put(
 						"subscribed",
-						new BlockedEventDefinition(
+						Tuples.of(
 							Date.from(subscribedZonedDateTime.toInstant()),
 							"http://localhost:80/web/guest/home"));
 					put(
 						"unsubscribed",
-						new BlockedEventDefinition(
+						Tuples.of(
 							Date.from(unsubscribedZonedDateTime.toInstant()),
 							"http://localhost:8087/web/guest/home"));
 				}
@@ -274,9 +270,14 @@ public class EventDefinitionDogTest {
 			Assert.assertNull(eventDefinition.getDescription());
 			Assert.assertNull(eventDefinition.getDisplayName());
 
+			Tuple2 tuple2 = expectedBlockedEventInfos.get(
+				eventDefinition.getName());
+
 			Assert.assertEquals(
-				expectedBlockedEventDefinitions.get(eventDefinition.getName()),
-				eventDefinition.getBlockedEventDefinition());
+				tuple2.getT1(), eventDefinition.getBlockedLastSeenDate());
+
+			Assert.assertEquals(
+				tuple2.getT2(), eventDefinition.getBlockedLastSeenURL());
 		}
 	}
 
@@ -505,7 +506,8 @@ public class EventDefinitionDogTest {
 			eventDefinitionId);
 
 		Assert.assertFalse(eventDefinition.isBlocked());
-		Assert.assertNull(eventDefinition.getBlockedEventDefinition());
+		Assert.assertNull(eventDefinition.getBlockedLastSeenDate());
+		Assert.assertNull(eventDefinition.getBlockedLastSeenURL());
 		Assert.assertNull(eventDefinition.getDescription());
 		Assert.assertEquals("subscribed", eventDefinition.getDisplayName());
 	}
@@ -545,7 +547,8 @@ public class EventDefinitionDogTest {
 				_eventDefinitionDog.getEventDefinition(eventDefinitionId);
 
 			Assert.assertFalse(eventDefinition.isBlocked());
-			Assert.assertNull(eventDefinition.getBlockedEventDefinition());
+			Assert.assertNull(eventDefinition.getBlockedLastSeenDate());
+			Assert.assertNull(eventDefinition.getBlockedLastSeenURL());
 			Assert.assertNull(eventDefinition.getDescription());
 			Assert.assertEquals(
 				eventDefinition.getName(), eventDefinition.getDisplayName());
@@ -555,7 +558,8 @@ public class EventDefinitionDogTest {
 			_eventDefinitionDog.fetchEventDefinitionByName("reviewAdded");
 
 		Assert.assertTrue(eventDefinition.isBlocked());
-		Assert.assertNotNull(eventDefinition.getBlockedEventDefinition());
+		Assert.assertNotNull(eventDefinition.getBlockedLastSeenDate());
+		Assert.assertNotNull(eventDefinition.getBlockedLastSeenURL());
 		Assert.assertNull(eventDefinition.getDescription());
 		Assert.assertNull(eventDefinition.getDisplayName());
 	}
@@ -632,14 +636,14 @@ public class EventDefinitionDogTest {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
 
-		BlockedEventDefinition blockedEventDefinition =
-			new BlockedEventDefinition(DateUtil.newDayDate(), "testUrl");
-
-		eventDefinition1.setBlockedEventDefinition(blockedEventDefinition);
+		eventDefinition1.setBlockedLastSeenDate(DateUtil.newDayDate());
+		eventDefinition1.setBlockedLastSeenURL("testUrl");
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.updateEventDefinition(
-				blockedEventDefinition, null, null, eventDefinition1.getId());
+				eventDefinition1.getBlockedLastSeenDate(),
+				eventDefinition1.getBlockedLastSeenURL(), null, null,
+				eventDefinition1.getId());
 
 		Assert.assertEquals(eventDefinition1, eventDefinition2);
 	}
@@ -655,7 +659,7 @@ public class EventDefinitionDogTest {
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.updateEventDefinition(
-				null, newDescription, null, eventDefinition1.getId());
+				null, null, newDescription, null, eventDefinition1.getId());
 
 		Assert.assertEquals(eventDefinition1, eventDefinition2);
 	}
@@ -671,7 +675,7 @@ public class EventDefinitionDogTest {
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.updateEventDefinition(
-				null, null, newDisplayName, eventDefinition1.getId());
+				null, null, null, newDisplayName, eventDefinition1.getId());
 
 		Assert.assertEquals(eventDefinition1, eventDefinition2);
 	}
