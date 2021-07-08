@@ -234,11 +234,11 @@ function generate_wedeploy_profiles {
 
 	git add .wedeploy_profiles
 
-	git commit -m "Generate WeDeploy profiles at $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}" .wedeploy_profiles
+	git commit -m "Generate WeDeploy profiles at $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}-${GIT_LABEL}" .wedeploy_profiles
 }
 
 function generate_tag {
-	git tag $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH} HEAD
+	git tag $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}-${GIT_LABEL} HEAD
 }
 
 function get_docker_image_tag {
@@ -283,8 +283,15 @@ function sed {
 	fi
 }
 
+if [ "$#" -ne 2 ]
+then
+echo "Usage: push_to_docker [previous Git hash] [label]"
+exit 1
+fi
+
 CURRENT_DATE=$(date)
 GIT_HASH=$(git rev-parse --short=7 HEAD)
 PREVIOUS_GIT_HASH=${1}
+GIT_LABEL=${2}
 
 main
