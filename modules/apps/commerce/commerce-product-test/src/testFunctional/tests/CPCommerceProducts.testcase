@@ -88,7 +88,7 @@ definition {
 	@description = "This is a test for COMMERCE-6287. AddASpecificationAndVerifyIfIsPresent"
 	@priority = "3"
 	test AddASpecificationAndVerifyIfIsPresent {
-		property portal.acceptance = "false";
+		property portal.acceptance = "commerce-ci-run";
 		property test.name.skip.portal.instance = "CPCommerceProducts#AddASpecificationAndVerifyIfIsPresent";
 
 		// TODO Review
