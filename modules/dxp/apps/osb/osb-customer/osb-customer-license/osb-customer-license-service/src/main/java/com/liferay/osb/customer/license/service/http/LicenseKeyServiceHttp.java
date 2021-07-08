@@ -190,15 +190,15 @@ public class LicenseKeyServiceHttp {
 		}
 	}
 
-	public static String generateCommerceLicenseKey(
+	public static String generateCombinedDXPCommerceXML(
 			HttpPrincipal httpPrincipal, String owner, java.util.Date startDate,
 			long licenseLifetime)
 		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
-				LicenseKeyServiceUtil.class, "generateCommerceLicenseKey",
-				_generateCommerceLicenseKeyParameterTypes3);
+				LicenseKeyServiceUtil.class, "generateCombinedDXPCommerceXML",
+				_generateCombinedDXPCommerceXMLParameterTypes3);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, owner, startDate, licenseLifetime);
@@ -228,15 +228,15 @@ public class LicenseKeyServiceHttp {
 		}
 	}
 
-	public static String generateCombinedDXPCommerceXML(
+	public static String generateCommerceLicenseKey(
 			HttpPrincipal httpPrincipal, String owner, java.util.Date startDate,
 			long licenseLifetime)
 		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
-				LicenseKeyServiceUtil.class, "generateCombinedDXPCommerceXML",
-				_generateCombinedDXPCommerceXMLParameterTypes4);
+				LicenseKeyServiceUtil.class, "generateCommerceLicenseKey",
+				_generateCommerceLicenseKeyParameterTypes4);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, owner, startDate, licenseLifetime);
@@ -1363,12 +1363,12 @@ public class LicenseKeyServiceHttp {
 			String.class, String.class, String.class, String.class,
 			java.util.Date.class, java.util.Date.class
 		};
-	private static final Class<?>[] _generateCommerceLicenseKeyParameterTypes3 =
-		new Class[] {String.class, java.util.Date.class, long.class};
 	private static final Class<?>[]
-		_generateCombinedDXPCommerceXMLParameterTypes4 = new Class[] {
+		_generateCombinedDXPCommerceXMLParameterTypes3 = new Class[] {
 			String.class, java.util.Date.class, long.class
 		};
+	private static final Class<?>[] _generateCommerceLicenseKeyParameterTypes4 =
+		new Class[] {String.class, java.util.Date.class, long.class};
 	private static final Class<?>[] _generateWeDeployLicenseKeyParameterTypes5 =
 		new Class[] {String.class, java.util.Date.class, long.class};
 	private static final Class<?>[]

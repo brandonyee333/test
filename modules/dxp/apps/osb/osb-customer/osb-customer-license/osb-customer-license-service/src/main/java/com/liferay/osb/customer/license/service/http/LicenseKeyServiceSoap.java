@@ -146,13 +146,13 @@ public class LicenseKeyServiceSoap {
 		}
 	}
 
-	public static String generateCommerceLicenseKey(
+	public static String generateCombinedDXPCommerceXML(
 			String owner, java.util.Date startDate, long licenseLifetime)
 		throws RemoteException {
 
 		try {
 			String returnValue =
-				LicenseKeyServiceUtil.generateCommerceLicenseKey(
+				LicenseKeyServiceUtil.generateCombinedDXPCommerceXML(
 					owner, startDate, licenseLifetime);
 
 			return returnValue;
@@ -164,13 +164,13 @@ public class LicenseKeyServiceSoap {
 		}
 	}
 
-	public static String generateCombinedDXPCommerceXML(
+	public static String generateCommerceLicenseKey(
 			String owner, java.util.Date startDate, long licenseLifetime)
 		throws RemoteException {
 
 		try {
 			String returnValue =
-				LicenseKeyServiceUtil.generateCombinedDXPCommerceXML(
+				LicenseKeyServiceUtil.generateCommerceLicenseKey(
 					owner, startDate, licenseLifetime);
 
 			return returnValue;
