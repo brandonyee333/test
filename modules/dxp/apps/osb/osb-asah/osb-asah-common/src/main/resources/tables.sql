@@ -51,13 +51,6 @@ CREATE TABLE IF NOT EXISTS AssetKeyword (
 	type TEXT
 );
 
-CREATE TABLE IF NOT EXISTS BlockedEventDefinition (
-	eventDefinitionId BIGINT PRIMARY KEY,
-    hidden BOOLEAN DEFAULT false,
-	lastSeenDate TIMESTAMPTZ,
-	lastSeenURL TEXT
-);
-
 CREATE TABLE IF NOT EXISTS BlockedKeyword (
 	id BIGSERIAL PRIMARY KEY,
 	createDate TIMESTAMPTZ,
@@ -231,6 +224,8 @@ CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
 CREATE TABLE IF NOT EXISTS EventDefinition (
 	id BIGSERIAL PRIMARY KEY,
 	blocked BOOLEAN DEFAULT false,
+	blockedLastSeenDate TIMESTAMPTZ,
+	blockedLastSeenURL TEXT,
 	description TEXT,
 	displayName TEXT UNIQUE,
 	hidden BOOLEAN DEFAULT false,
