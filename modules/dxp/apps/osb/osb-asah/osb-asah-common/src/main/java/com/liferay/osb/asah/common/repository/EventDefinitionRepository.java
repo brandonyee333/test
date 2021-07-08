@@ -50,11 +50,6 @@ public interface EventDefinitionRepository
 		@Nullable EventDefinition.Type type);
 
 	@Modifying
-	public void updateBlockedEventDefinitions(
-		@Param("ids") List<Long> eventDefinitionIds,
-		@Param("hidden") Boolean hidden);
-
-	@Modifying
 	public void updateEventDefinitions(
 		@Param("ids") List<Long> eventDefinitionIds,
 		@Param("hidden") Boolean hidden);

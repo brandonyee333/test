@@ -2,16 +2,6 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
-	<entry key="EventDefinition.updateBlockedEventDefinitions">
-		<![CDATA[
-			UPDATE
-				BlockedEventDefinition
-			SET
-				hidden = :hidden
-			WHERE
-				BlockedEventDefinition.eventDefinitionId IN (:ids)
-		]]>
-	</entry>
 	<entry key="EventDefinition.updateEventDefinitions">
 		<![CDATA[
 			UPDATE
