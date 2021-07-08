@@ -18,11 +18,10 @@ import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
 import com.liferay.osb.customer.license.generator.KeyGenerator;
 import com.liferay.osb.customer.license.util.LicenseKeyExporter;
 import com.liferay.osb.customer.provisioning.trial.internal.configuration.ProvisioningTrialConfigurationValues;
-import com.liferay.osb.customer.provisioning.trial.internal.license.TrialLicenseManager;
+import com.liferay.osb.customer.provisioning.trial.internal.util.TrialLicenseUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -30,9 +29,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.Servlet;
 import javax.servlet.http.HttpServlet;
@@ -72,7 +68,9 @@ public class CommerceTrialLicenseServlet extends HttpServlet {
 					String versionLabel = pathArray[1];
 					long dayHash = GetterUtil.getLong(pathArray[2]);
 
-					String licenseXML = _getLicenseXML(versionLabel, dayHash);
+					String licenseXML = _trialLicenseUtil.getLicenseXML(
+						ProductEntryConstants.PRODUCT_ID_COMMERCE, versionLabel,
+						dayHash);
 
 					if (Validator.isNotNull(licenseXML)) {
 						ServletResponseUtil.sendFile(
@@ -93,42 +91,6 @@ public class CommerceTrialLicenseServlet extends HttpServlet {
 			ProvisioningTrialConfigurationValues.COMMERCE_TRIAL_EXPIRED_PAGE);
 	}
 
-	private String _getLicenseXML(String versionLabel, long dayHash)
-		throws Exception {
-
-		if (!_isValidVersion(versionLabel)) {
-			return null;
-		}
-
-		if (!_licenseManagerMap.containsKey(versionLabel)) {
-			int version = GetterUtil.getInteger(
-				StringUtil.extractDigits(versionLabel));
-
-			_licenseManagerMap.put(
-				versionLabel,
-				new TrialLicenseManager(
-					_keyGenerator, _licenseKeyExporter,
-					ProductEntryConstants.PRODUCT_ID_COMMERCE, version,
-					versionLabel));
-		}
-
-		TrialLicenseManager trialLicenseManager = _licenseManagerMap.get(
-			versionLabel);
-
-		return trialLicenseManager.getLicenseXML(dayHash);
-	}
-
-	private boolean _isValidVersion(String versionLabel) {
-		if (ArrayUtil.contains(
-				ProvisioningTrialConfigurationValues.COMMERCE_TRIAL_VERSIONS,
-				versionLabel)) {
-
-			return true;
-		}
-
-		return false;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommerceTrialLicenseServlet.class);
 
@@ -138,7 +100,7 @@ public class CommerceTrialLicenseServlet extends HttpServlet {
 	@Reference
 	private LicenseKeyExporter _licenseKeyExporter;
 
-	private final Map<String, TrialLicenseManager> _licenseManagerMap =
-		new ConcurrentHashMap<>();
+	@Reference
+	private TrialLicenseUtil _trialLicenseUtil;
 
 }

@@ -15,13 +15,13 @@
 package com.liferay.osb.customer.provisioning.trial.internal.servlet;
 
 import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
-import com.liferay.osb.customer.license.generator.KeyGenerator;
 import com.liferay.osb.customer.license.util.LicenseKeyExporter;
 import com.liferay.osb.customer.provisioning.trial.internal.configuration.ProvisioningTrialConfigurationValues;
 import com.liferay.osb.customer.provisioning.trial.internal.util.TrialLicenseUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -29,6 +29,9 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.Servlet;
 import javax.servlet.http.HttpServlet;
@@ -39,17 +42,17 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Amos Fong
+ * @author Kyle Bischof
  */
 @Component(
 	immediate = true,
 	property = {
-		"osgi.http.whiteboard.servlet.name=com.liferay.osb.provisioning.trial.internal.servlet.DXPTrialLicenseServlet",
-		"osgi.http.whiteboard.servlet.pattern=/dxp-trial/*"
+		"osgi.http.whiteboard.servlet.name=com.liferay.osb.provisioning.trial.internal.servlet.AggregateTrialLicenseServlet",
+		"osgi.http.whiteboard.servlet.pattern=/trial/*"
 	},
 	service = Servlet.class
 )
-public class DXPTrialLicenseServlet extends HttpServlet {
+public class AggregateTrialLicenseServlet extends HttpServlet {
 
 	@Override
 	protected void service(
@@ -64,18 +67,25 @@ public class DXPTrialLicenseServlet extends HttpServlet {
 			if (Validator.isNotNull(path)) {
 				String[] pathArray = StringUtil.split(path, CharPool.SLASH);
 
-				if (pathArray.length == 3) {
-					String versionLabel = pathArray[1];
-					long dayHash = GetterUtil.getLong(pathArray[2]);
+				if (((pathArray.length - 1) % 3) == 0) {
+					List<String> licenseXMLs = new ArrayList<>();
 
-					String licenseXML = _trialLicenseUtil.getLicenseXML(
-						ProductEntryConstants.PRODUCT_ID_PORTAL, versionLabel,
-						dayHash);
+					for (int i = 0; i < (pathArray.length - 1); i += 3) {
+						String product = pathArray[i + 1];
+						String version = pathArray[i + 2];
+						long dayHash = GetterUtil.getLong(pathArray[i + 3]);
 
-					if (Validator.isNotNull(licenseXML)) {
+						licenseXMLs.add(
+							_getLicenseXML(product, version, dayHash));
+					}
+
+					if (!licenseXMLs.isEmpty()) {
+						String licenseXML = _licenseKeyExporter.aggregateXMLs(
+							ArrayUtil.toStringArray(licenseXMLs.toArray()));
+
 						ServletResponseUtil.sendFile(
 							httpServletRequest, httpServletResponse,
-							"activation-key-dxp-trial-" + versionLabel + ".xml",
+							"activation-key-commerce-dxp-trial.xml",
 							licenseXML.getBytes(), ContentTypes.TEXT_XML);
 
 						return;
@@ -88,14 +98,32 @@ public class DXPTrialLicenseServlet extends HttpServlet {
 		}
 
 		httpServletResponse.sendRedirect(
-			ProvisioningTrialConfigurationValues.DXP_TRIAL_EXPIRED_PAGE);
+			ProvisioningTrialConfigurationValues.COMMERCE_TRIAL_EXPIRED_PAGE);
+	}
+
+	private String _getLicenseXML(String product, String version, long dayHash)
+		throws Exception {
+
+		if (product.equals("commerce") &&
+			_trialLicenseUtil.isValidVersion(
+				ProductEntryConstants.PRODUCT_ID_COMMERCE, version)) {
+
+			return _trialLicenseUtil.getLicenseXML(
+				ProductEntryConstants.PRODUCT_ID_COMMERCE, version, dayHash);
+		}
+		else if (product.equals("dxp") &&
+				 _trialLicenseUtil.isValidVersion(
+					 ProductEntryConstants.PRODUCT_ID_PORTAL, version)) {
+
+			return _trialLicenseUtil.getLicenseXML(
+				ProductEntryConstants.PRODUCT_ID_PORTAL, version, dayHash);
+		}
+
+		return null;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DXPTrialLicenseServlet.class);
-
-	@Reference
-	private KeyGenerator _keyGenerator;
+		AggregateTrialLicenseServlet.class);
 
 	@Reference
 	private LicenseKeyExporter _licenseKeyExporter;
