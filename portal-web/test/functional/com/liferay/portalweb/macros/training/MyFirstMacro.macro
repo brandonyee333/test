@@ -1,0 +1,39 @@
+definition {
+
+	macro login {
+
+		var password = "test";
+		var url = "http://localhost:8080";
+		var userEmailAddress = "test@liferay.com";
+		var userPasswordReminderAnswer = "1";
+
+		Open(locator1 = "${url}");
+
+		Click(locator1 = "UserBar#USER_SIGN_IN");
+
+		Type(
+			locator1 = "TextInput#EMAIL_ADDRESS",
+			value1 = "${userEmailAddress}");
+
+		Type(
+			locator1 = "TextInput#PASSWORD",
+			value1 = "${password}");
+
+		Click(
+			key_text = "Sign In",
+			locator1 = "Button#ANY");
+
+		Click(
+			key_text = "I Agree",
+			locator1 = "Button#ANY");
+
+		Type(
+			locator1 = "TextInput#ANSWER",
+			value1 = "${userPasswordReminderAnswer}");
+
+		Click(
+			key_text = "Save",
+			locator1 = "Button#ANY");
+	}
+
+}
