@@ -10,4 +10,4 @@ INSERT INTO Blog(assetId, channelId, country, eventDate, projectId, views) VALUE
 INSERT INTO Blog(assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'France', date_trunc('HOUR', now() - INTERVAL '29' DAY), 'test', 6);
 INSERT INTO Blog(assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'United States', date_trunc('HOUR', now() - INTERVAL '31' DAY), 'test', 7);
 INSERT INTO Blog(assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'Japan', date_trunc('HOUR', now() - INTERVAL '40' DAY), 'test', 8);
-INSERT INTO Blog(assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'France', date_trunc('HOUR', now() - INTERVAL '45' DAY), 'test', 9)
+INSERT INTO Blog(assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'France', date_trunc('HOUR', now() - INTERVAL '45' DAY), 'test', 9);
