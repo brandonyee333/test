@@ -21,6 +21,7 @@ import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -37,8 +38,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-
-import reactor.util.function.Tuples;
 
 /**
  * @author Alejo Ceballos
@@ -60,8 +59,8 @@ public class JournalAssetMetricRepositoryTest
 	public void testGetGeolocationMetricsLast30Days() {
 		assertMetrics(
 			Arrays.asList(
-				Tuples.of("France", 9D), Tuples.of("Japan", 7D),
-				Tuples.of("United States", 5D)),
+				new Tuple2("France", 9D), new Tuple2("Japan", 7D),
+				new Tuple2("United States", 5D)),
 			_assetMetricRepository.getGeolocationMetrics(
 				"e131fabc", 1L, JournalMetricType.VIEWS,
 				TimeRange.LAST_30_DAYS));

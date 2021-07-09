@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.time.Duration;
@@ -43,8 +44,6 @@ import org.junit.Before;
 import org.mockito.Mockito;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import reactor.util.function.Tuple2;
 
 /**
  * @author Marcellus Tavares
