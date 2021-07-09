@@ -85,8 +85,8 @@ public class EventDefinitionDog {
 	}
 
 	public Long countEventDefinitions(
-		Boolean blocked, @Nullable Boolean hidden, String keyword,
-		EventDefinition.Type type) {
+		@Nullable Boolean blocked, @Nullable Boolean hidden,
+		@Nullable String keyword, @Nullable EventDefinition.Type type) {
 
 		return _eventDefinitionRepository.countEventDefinitions(
 			blocked, hidden, keyword, type);
@@ -130,8 +130,9 @@ public class EventDefinitionDog {
 	}
 
 	public Page<EventDefinition> getEventDefinitionsPage(
-		Boolean blocked, @Nullable Boolean hidden, String keyword, int page,
-		int size, Sort sort, EventDefinition.Type type) {
+		@Nullable Boolean blocked, @Nullable Boolean hidden,
+		@Nullable String keyword, int page, int size, Sort sort,
+		EventDefinition.Type type) {
 
 		_validate(sort);
 
@@ -162,8 +163,9 @@ public class EventDefinitionDog {
 	}
 
 	public EventDefinition updateEventDefinition(
-		Date blockedLastSeenDate, String blockedLastSeenURL, String description,
-		String displayName, Long eventDefinitionId) {
+		@Nullable Date blockedLastSeenDate, @Nullable String blockedLastSeenURL,
+		@Nullable String description, @Nullable String displayName,
+		Long eventDefinitionId) {
 
 		EventDefinition eventDefinition = getEventDefinition(eventDefinitionId);
 
