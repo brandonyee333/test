@@ -97,7 +97,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	}
 
 	@Override
-	public List<AssetMetric> getAssetMetrics(
+	public List<T> getAssetMetrics(
 		Set<String> assetIds, Long channelId, Set<String> selectedMetrics,
 		Pageable pageable, TimeRange timeRange) {
 
