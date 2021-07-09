@@ -61,7 +61,6 @@ public class EventDefinitionDog {
 				_EVENT_DEFINITION_THRESHOLD)) {
 
 			eventDefinition.setBlocked(true);
-
 			eventDefinition.setBlockedLastSeenDate(eventDate);
 			eventDefinition.setBlockedLastSeenURL(url);
 
