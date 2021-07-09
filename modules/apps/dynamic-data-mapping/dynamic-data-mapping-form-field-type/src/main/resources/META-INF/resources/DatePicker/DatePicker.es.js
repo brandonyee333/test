@@ -222,19 +222,18 @@ const DatePicker = ({
 				showMask: true,
 			});
 
-			const currentValue = localizedValue[locale];
-
-			if (currentValue) {
-				const currentValue = localizedValue[locale];
-
-				if (currentValue) {
-					inputRef.current.value =
-						/_/.test(currentValue) &&
-						currentValue.match(DIGIT_REGEX)
-							? currentValue
-							: moment(currentValue).format(
-									dateMask.toUpperCase()
-							  );
+			if (localizedValue[locale]) {
+				if (
+					typeof localizedValue[locale] === 'string' &&
+					(localizedValue[locale].includes('/') ||
+						localizedValue[locale].includes('.'))
+				) {
+					inputRef.current.value = localizedValue[locale];
+				}
+				else {
+					inputRef.current.value = moment(
+						localizedValue[locale]
+					).format(dateMask.toUpperCase());
 				}
 			}
 			else if (initialValueMemoized) {
