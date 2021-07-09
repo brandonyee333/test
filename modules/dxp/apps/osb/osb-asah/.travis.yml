@@ -19,10 +19,10 @@ env:
 jdk: openjdk8
 jobs:
     include:
-        - stage: "Analysis"
+        - name: "Analysis"
           script:
               - ./gradlew checkSourceFormatting pmdMain pmdTest pmdTestIntegration spotbugsMain spotbugsTest spotbugsTestIntegration --configure-on-demand --continue --parallel
-        - stage: "Tests"
+        - name: "Tests"
           after_script:
               - docker-compose -f docker-compose.integration-test.yml down
           after_success:
