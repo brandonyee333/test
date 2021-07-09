@@ -77,11 +77,6 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					channelId
 				),
 				DSL.field(
-					"projectId"
-				).eq(
-					ProjectIdThreadLocal.getProjectId()
-				),
-				DSL.field(
 					"eventDate"
 				).between(
 					DateUtil.toUTCLocalDateTime(
@@ -90,6 +85,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					DateUtil.toUTCLocalDateTime(
 						timeRange.getEndLocalDateTime(),
 						_timeZoneDog.getZoneId())
+				),
+				DSL.field(
+					"projectId"
+				).eq(
+					ProjectIdThreadLocal.getProjectId()
 				))
 		).fetchOne();
 
