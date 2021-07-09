@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.repository.test;
 
-import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.JournalMetric;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
@@ -26,10 +25,6 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import java.util.List;
-import java.util.stream.Stream;
-
-import org.hamcrest.Matchers;
 import java.util.Arrays;
 
 import org.junit.Assert;
@@ -55,7 +50,7 @@ import reactor.util.function.Tuples;
 @SpringBootTest(properties = "osb.asah.trino.enabled=true")
 @SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
 public class JournalAssetMetricRepositoryTest
-	extends BaseAssetMetricRepositoryTestCase {
+	extends BaseAssetMetricRepositoryTestCase<JournalMetric> {
 
 	@SQLResource(
 		dataSource = "trinoDataSource",
@@ -95,25 +90,13 @@ public class JournalAssetMetricRepositoryTest
 	)
 	@Test
 	public void testGetViewsAssetMetrics() {
-		List<AssetMetric> assetMetrics = _assetMetricRepository.getAssetMetrics(
-			SetUtil.of("e131fabc", "e231fabc"), 1L,
-			SetUtil.of(JournalMetricType.VIEWS.getName()),
-			PageRequest.of(0, 10), TimeRange.LAST_24_HOURS);
-
-		Assert.assertEquals(assetMetrics.toString(), 2, assetMetrics.size());
-
-		Stream<AssetMetric> stream = assetMetrics.stream();
-
-		Assert.assertThat(
+		assertAssetMetrics(
 			new Double[] {7D, 6D},
-			Matchers.arrayContainingInAnyOrder(
-				stream.map(
-					AssetMetric::getDefaultMetric
-				).map(
-					Metric::getValue
-				).toArray()));
-	}
-
+			_assetMetricRepository.getAssetMetrics(
+				SetUtil.of("e131fabc", "e231fabc"), 1L,
+				SetUtil.of(JournalMetricType.VIEWS.getName()),
+				PageRequest.of(0, 10), TimeRange.LAST_24_HOURS),
+			JournalMetric::getViewsMetric);
 	}
 
 	@SQLResource(

@@ -30,8 +30,11 @@ import java.time.ZoneId;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.hamcrest.Matchers;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -46,7 +49,26 @@ import reactor.util.function.Tuple2;
 /**
  * @author Marcellus Tavares
  */
-public abstract class BaseAssetMetricRepositoryTestCase {
+public abstract class BaseAssetMetricRepositoryTestCase<T> {
+
+	public void assertAssetMetrics(
+		Double[] expectedMetricValues, List<T> metrics,
+		Function<T, Metric> mapperFunction) {
+
+		Assert.assertEquals(
+			metrics.toString(), expectedMetricValues.length, metrics.size());
+
+		Stream<T> stream = metrics.stream();
+
+		Assert.assertThat(
+			new Double[] {7D, 6D},
+			Matchers.arrayContainingInAnyOrder(
+				stream.map(
+					mapperFunction
+				).map(
+					Metric::getValue
+				).toArray()));
+	}
 
 	public void assertHistogramMetrics(
 		Set<Double> expectedMetricValues,
