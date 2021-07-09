@@ -25,6 +25,8 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +34,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -47,7 +50,7 @@ import reactor.util.function.Tuples;
 @SpringBootTest(properties = "osb.asah.trino.enabled=true")
 @SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
 public class BlogAssetMetricRepositoryTest
-	extends BaseAssetMetricRepositoryTestCase {
+	extends BaseAssetMetricRepositoryTestCase<BlogMetric> {
 
 	@SQLResource(
 		dataSource = "trinoDataSource",
@@ -78,6 +81,21 @@ public class BlogAssetMetricRepositoryTest
 		Metric viewsMetric = blogMetric.getViewsMetric();
 
 		Assert.assertEquals(7D, viewsMetric.getValue(), 0);
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "blog_asset_metric_views_histogram_last_24_hours.sql"
+	)
+	@Test
+	public void testGetViewsAssetMetrics() {
+		assertAssetMetrics(
+			new Double[] {7D, 6D},
+			_assetMetricRepository.getAssetMetrics(
+				SetUtil.of("e131fabc", "e231fabc"), 1L,
+				SetUtil.of(BlogMetricType.VIEWS.getName()),
+				PageRequest.of(0, 10), TimeRange.LAST_24_HOURS),
+			BlogMetric::getViewsMetric);
 	}
 
 	@SQLResource(
