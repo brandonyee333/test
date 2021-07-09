@@ -466,12 +466,19 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Kaleo Designer"
+			portlet = "Workflow Definition"
 		);
 
 		Workflow.uploadDefinition(
 			workflowDefinitionFile = "workflow_definition_task_timers.xml",
 			workflowDefinitionTitle = "New Workflow Definition Title");
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
 
 		KaleoDesigner.editWorkflowDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
 
