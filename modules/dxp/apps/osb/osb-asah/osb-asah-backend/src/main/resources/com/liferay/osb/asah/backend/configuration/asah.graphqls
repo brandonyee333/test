@@ -311,7 +311,6 @@ type DXPEntityBag {
 type EventAnalysis {
 	count: Int
 	page: Int
-	totalEvents: Int
 	value: Int
 }
 

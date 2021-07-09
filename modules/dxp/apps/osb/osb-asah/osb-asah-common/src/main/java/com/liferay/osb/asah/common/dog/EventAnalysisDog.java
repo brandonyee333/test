@@ -53,12 +53,6 @@ public class EventAnalysisDog {
 			timeRange.getStartLocalDateTime(),
 			ZoneId.of(_timeZoneDog.getTimeZoneId()));
 
-		long totalEvents = _eventRepository.countTotalEvents(
-			channelId, eventAnalysisFilters, eventDefinitionId, rangeEndDate,
-			rangeStartDate);
-
-		eventAnalysis.setTotalEvents(totalEvents);
-
 		if (analysisType.equals(AnalysisType.AVERAGE)) {
 			eventAnalysis.setValue(
 				_eventRepository.getAverageEventCountPerIndividual(
@@ -66,7 +60,10 @@ public class EventAnalysisDog {
 					rangeEndDate, rangeStartDate));
 		}
 		else if (analysisType.equals(AnalysisType.TOTAL)) {
-			eventAnalysis.setValue(totalEvents);
+			eventAnalysis.setValue(
+				_eventRepository.countTotalEvents(
+					channelId, eventAnalysisFilters, eventDefinitionId,
+					rangeEndDate, rangeStartDate));
 		}
 		else if (analysisType.equals(AnalysisType.UNIQUE)) {
 			eventAnalysis.setValue(

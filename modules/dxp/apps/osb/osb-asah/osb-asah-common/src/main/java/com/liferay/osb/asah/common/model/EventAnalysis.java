@@ -37,7 +37,6 @@ public class EventAnalysis implements Serializable {
 
 		if (Objects.equals(_count, eventAnalysis._count) &&
 			Objects.equals(_page, eventAnalysis._page) &&
-			Objects.equals(_totalEvents, eventAnalysis._totalEvents) &&
 			Objects.equals(_value, eventAnalysis._value)) {
 
 			return true;
@@ -54,17 +53,13 @@ public class EventAnalysis implements Serializable {
 		return _page;
 	}
 
-	public long getTotalEvents() {
-		return _totalEvents;
-	}
-
 	public long getValue() {
 		return _value;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_count, _page, _totalEvents, _value);
+		return Objects.hash(_count, _page, _value);
 	}
 
 	public void setCount(long count) {
@@ -75,17 +70,12 @@ public class EventAnalysis implements Serializable {
 		_page = page;
 	}
 
-	public void setTotalEvents(long totalEvents) {
-		_totalEvents = totalEvents;
-	}
-
 	public void setValue(long value) {
 		_value = value;
 	}
 
 	private long _count;
 	private int _page;
-	private long _totalEvents;
 	private long _value;
 
 }
