@@ -36,13 +36,12 @@ public class BlockedCustomEventDefinitionDTO {
 	}
 
 	public BlockedCustomEventDefinitionDTO(EventDefinition eventDefinition) {
-		_id = String.valueOf(eventDefinition.getId());
-		_name = eventDefinition.getName();
-
 		_blockedLastSeenDate = DateUtil.toUTCString(
 			eventDefinition.getBlockedLastSeenDate());
 		_blockedLastSeenURL = eventDefinition.getBlockedLastSeenURL();
 		_hidden = eventDefinition.isHidden();
+		_id = String.valueOf(eventDefinition.getId());
+		_name = eventDefinition.getName();
 	}
 
 	@GraphQLProperty("lastSeenDate")
