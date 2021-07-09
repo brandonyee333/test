@@ -39,10 +39,10 @@ public class BlockedCustomEventDefinitionDTO {
 		_id = String.valueOf(eventDefinition.getId());
 		_name = eventDefinition.getName();
 
-		_hidden = eventDefinition.isHidden();
 		_blockedLastSeenDate = DateUtil.toUTCString(
 			eventDefinition.getBlockedLastSeenDate());
 		_blockedLastSeenURL = eventDefinition.getBlockedLastSeenURL();
+		_hidden = eventDefinition.isHidden();
 	}
 
 	@GraphQLProperty("lastSeenDate")
