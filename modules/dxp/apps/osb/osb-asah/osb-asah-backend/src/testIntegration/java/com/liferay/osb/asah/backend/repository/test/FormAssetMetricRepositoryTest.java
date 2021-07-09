@@ -35,6 +35,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
+import reactor.util.function.Tuples;
+
 /**
  * @author Alejo Ceballos
  * @author Marcos Martins
@@ -46,6 +48,20 @@ import org.springframework.test.context.ContextConfiguration;
 @SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
 public class FormAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase {
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "form_asset_metric_views_geolocation_last_30_days.sql"
+	)
+	@Test
+	public void testGetGeolocationMetricsLast30Days() {
+		assertMetrics(
+			Arrays.asList(
+				Tuples.of("France", 9D), Tuples.of("Japan", 7D),
+				Tuples.of("United States", 5D)),
+			_assetMetricRepository.getGeolocationMetrics(
+				"e131fabc", 1L, FormMetricType.VIEWS, TimeRange.LAST_30_DAYS));
+	}
 
 	@SQLResource(
 		dataSource = "trinoDataSource",
