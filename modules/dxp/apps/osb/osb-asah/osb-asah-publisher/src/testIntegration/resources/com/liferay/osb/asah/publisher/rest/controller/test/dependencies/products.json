@@ -1,0 +1,160 @@
+{
+	"actions": null,
+	"active": true,
+	"attachments": null,
+	"catalog": null,
+	"catalogId": 41130,
+	"categories": [
+		{
+			"externalReferenceCode": "",
+			"id": 42612,
+			"name": "Brake System",
+			"siteId": 20123,
+			"vocabulary": "demo",
+			"xClassName": null
+		}
+	],
+	"configuration": null,
+	"createDate": "2020-10-16T10:40:39.325+0000",
+	"defaultSku": null,
+	"description": {
+		"en_US": "Product designed and manufactured to accommodate OEM applications. All products are tested and inspected in an ISO-9000 compliant environment"
+	},
+	"displayDate": "2019-10-16T10:40:00.000+0000",
+	"expando": {
+	},
+	"expirationDate": null,
+	"externalReferenceCode": "MIN93015",
+	"id": 42751,
+	"images": null,
+	"metaDescription": {
+		"en_US": ""
+	},
+	"metaKeyword": {
+		"en_US": ""
+	},
+	"metaTitle": {
+		"en_US": ""
+	},
+	"modifiedDate": "2020-10-16T10:40:40.464+0000",
+	"name": {
+		"en_US": "ABS Sensor"
+	},
+	"neverExpire": null,
+	"productId": 42752,
+	"productOptions": null,
+	"productSpecifications": [
+		{
+			"id": 42760,
+			"optionCategoryId": 42669,
+			"priority": 0.0,
+			"productId": 42752,
+			"specificationId": 42674,
+			"specificationKey": "quantity",
+			"value": {
+				"en_US": "1"
+			},
+			"xClassName": null
+		},
+		{
+			"id": 42761,
+			"optionCategoryId": 42672,
+			"priority": 1.0,
+			"productId": 42752,
+			"specificationId": 42675,
+			"specificationKey": "material",
+			"value": {
+				"en_US": "Steel"
+			},
+			"xClassName": null
+		},
+		{
+			"id": 42762,
+			"optionCategoryId": 42671,
+			"priority": 2.0,
+			"productId": 42752,
+			"specificationId": 42680,
+			"specificationKey": "warranty",
+			"value": {
+				"en_US": "1 Year Unlimited Mileage Warranty"
+			},
+			"xClassName": null
+		},
+		{
+			"id": 42763,
+			"optionCategoryId": 42673,
+			"priority": 3.0,
+			"productId": 42752,
+			"specificationId": 42678,
+			"specificationKey": "weight",
+			"value": {
+				"en_US": "1.00 lbs"
+			},
+			"xClassName": null
+		},
+		{
+			"id": 42764,
+			"optionCategoryId": 42673,
+			"priority": 4.0,
+			"productId": 42752,
+			"specificationId": 42677,
+			"specificationKey": "dimensions",
+			"value": {
+				"en_US": "7\" x 5.6\" x 2\""
+			},
+			"xClassName": null
+		}
+	],
+	"productStatus": 0,
+	"productType": "simple",
+	"productTypeI18n": "Simple",
+	"relatedProducts": null,
+	"shippingConfiguration": null,
+	"shortDescription": {
+		"en_US": ""
+	},
+	"skuFormatted": "MIN93015",
+	"skus": [
+		{
+			"cost": 0.0,
+			"depth": 7.0,
+			"displayDate": "2019-10-16T10:40:00.000+0000",
+			"expirationDate": null,
+			"externalReferenceCode": "min93015",
+			"gtin": "",
+			"height": 2.0,
+			"id": 42755,
+			"inventoryLevel": null,
+			"manufacturerPartNumber": "BB98318",
+			"neverExpire": null,
+			"options": {
+			},
+			"price": 50.0,
+			"productId": 42752,
+			"productName": {
+				"en_US": "ABS Sensor"
+			},
+			"promoPrice": 0.0,
+			"published": true,
+			"purchasable": true,
+			"sku": "MIN93015",
+			"unspsc": "",
+			"weight": 1.0,
+			"width": 5.0,
+			"xClassName": null
+		}
+	],
+	"subscriptionConfiguration": null,
+	"tags": [
+	],
+	"taxConfiguration": null,
+	"thumbnail": "/o/commerce-media/products/42752/abs-sensor/42784/Minium_ProductImage_24.png?download=false",
+	"urls": null,
+	"workflowStatusInfo": {
+		"code": 0,
+		"label": "approved",
+		"label_i18n": "Approved",
+		"xClassName": null
+	},
+	"xClassName": null
+}
