@@ -171,6 +171,7 @@ const DatePicker = ({
 	disabled,
 	formatInEditingLocale,
 	locale,
+	localizedValue: localizedValueInitial = {},
 	name,
 	onBlur,
 	onChange,
@@ -183,7 +184,7 @@ const DatePicker = ({
 
 	const [expanded, setExpand] = useState(false);
 
-	const [localizedValue, setLocalizedValue] = useState({});
+	const [localizedValue, setLocalizedValue] = useState(localizedValueInitial);
 
 	const initialValueMemoized = useMemo(
 		() =>
@@ -195,6 +196,8 @@ const DatePicker = ({
 			),
 		[defaultLanguageId, formatInEditingLocale, initialValue, locale]
 	);
+
+	
 
 	const [value, setValue] = useSyncValue(initialValueMemoized);
 	const [years, setYears] = useState(() => {
@@ -363,6 +366,7 @@ const Main = ({
 				localizedValue && localizedValue[locale] != undefined
 			}
 			locale={locale}
+			localizedValue={localizedValue}
 			name={name}
 			onBlur={onBlur}
 			onChange={(value) => onChange({}, value)}
