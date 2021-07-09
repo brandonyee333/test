@@ -187,7 +187,7 @@ public class ReportAccountDog {
 			accountJSONObject.optLong("individualCount", 0));
 		account.setProperties(
 			_getAccountOrganizationProperties(
-				accountJSONObject.getJSONObject("organization")));
+				accountJSONObject.optJSONObject("organization")));
 
 		return account;
 	}
