@@ -79,17 +79,17 @@ public class ReportAccountDogTest {
 	@Test
 	public void testGetAccountsResultBag() {
 		ResultBag<Account> accountResultBag =
-			_reportAccountDog.getAccountResultBag(3, 0);
+			_reportAccountDog.getAccountResultBag(6, 0);
 
-		Assert.assertEquals(5, accountResultBag.getTotal());
+		Assert.assertEquals(6, accountResultBag.getTotal());
 		Assert.assertEquals(
 			Collections.emptySet(),
 			_getAccountPropertiesValues(
 				accountResultBag.getResults(), "accountType"));
 		Assert.assertEquals(
 			SetUtil.of(
-				"Heard Island and McDonald Islands", "Swaziland",
-				"Virgin Islands"),
+				"Heard Island and McDonald Islands", "Maldives", "Swaziland",
+				"Uzbekistan", "Virgin Islands"),
 			_getAccountPropertiesValues(
 				accountResultBag.getResults(), "billingCountry"));
 	}

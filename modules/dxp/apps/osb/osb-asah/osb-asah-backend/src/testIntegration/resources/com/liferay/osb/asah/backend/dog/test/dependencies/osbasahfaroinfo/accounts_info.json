@@ -1673,5 +1673,16 @@
 				}
 			]
 		}
+	},
+	{
+		"accountPK": "a471e788-da8e-4bf6-9e96-3d5224d29d80",
+		"activeIndividualCount": 1,
+		"activitiesCount": 10,
+		"dataSourceId": "379649758131895520",
+		"dateCreated": "2021-07-09T12:18:00.000Z",
+		"dateModified": "2021-07-09T12:18:00.000Z",
+		"id": "379649793387796370",
+		"individualCount": 1,
+		"lastActivityDate": "2021-07-09T12:18:00.000Z"
 	}
 ]
