@@ -55,7 +55,6 @@ public class EventAnalysisDogTest {
 
 		Assert.assertEquals(1, eventAnalysis.getCount());
 		Assert.assertEquals(0, eventAnalysis.getPage());
-		Assert.assertEquals(20, eventAnalysis.getTotalEvents());
 		Assert.assertEquals(2, eventAnalysis.getValue());
 	}
 
@@ -96,7 +95,6 @@ public class EventAnalysisDogTest {
 
 		Assert.assertEquals(1, eventAnalysis.getCount());
 		Assert.assertEquals(0, eventAnalysis.getPage());
-		Assert.assertEquals(2, eventAnalysis.getTotalEvents());
 		Assert.assertEquals(1, eventAnalysis.getValue());
 	}
 
@@ -116,7 +114,6 @@ public class EventAnalysisDogTest {
 
 		Assert.assertEquals(1, eventAnalysis.getCount());
 		Assert.assertEquals(0, eventAnalysis.getPage());
-		Assert.assertEquals(1, eventAnalysis.getTotalEvents());
 		Assert.assertEquals(1, eventAnalysis.getValue());
 	}
 
@@ -130,7 +127,6 @@ public class EventAnalysisDogTest {
 
 		Assert.assertEquals(1, eventAnalysis.getCount());
 		Assert.assertEquals(0, eventAnalysis.getPage());
-		Assert.assertEquals(7, eventAnalysis.getTotalEvents());
 		Assert.assertEquals(7, eventAnalysis.getValue());
 	}
 
@@ -144,7 +140,6 @@ public class EventAnalysisDogTest {
 
 		Assert.assertEquals(1, eventAnalysis.getCount());
 		Assert.assertEquals(0, eventAnalysis.getPage());
-		Assert.assertEquals(20, eventAnalysis.getTotalEvents());
 		Assert.assertEquals(10, eventAnalysis.getValue());
 	}
 

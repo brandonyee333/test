@@ -2,7 +2,6 @@ query EventAnalysis($analysisType: AnalysisType!, $channelId: String!, $eventAna
 	eventAnalysis(analysisType: $analysisType, channelId: $channelId, eventAnalysisFilters: $eventAnalysisFilters, eventDefinitionId: $eventDefinitionId, rangeEnd: $rangeEnd, rangeStart: $rangeStart) {
 		count
 		page
-		totalEvents
 		value
 	}
 }
