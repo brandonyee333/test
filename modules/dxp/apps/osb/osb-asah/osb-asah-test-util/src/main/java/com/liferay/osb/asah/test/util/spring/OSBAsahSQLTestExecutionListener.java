@@ -16,6 +16,11 @@ package com.liferay.osb.asah.test.util.spring;
 
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 
+import java.io.File;
+
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -31,6 +36,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -74,7 +80,7 @@ public class OSBAsahSQLTestExecutionListener
 	}
 
 	@Override
-	public void beforeTestClass(TestContext testContext) {
+	public void beforeTestClass(TestContext testContext) throws Exception {
 		if (!_isTestExecutionListenerEnabled()) {
 			return;
 		}
@@ -97,7 +103,7 @@ public class OSBAsahSQLTestExecutionListener
 	}
 
 	@Override
-	public void beforeTestMethod(TestContext testContext) {
+	public void beforeTestMethod(TestContext testContext) throws Exception {
 		if (!_isTestExecutionListenerEnabled()) {
 			return;
 		}
@@ -126,13 +132,37 @@ public class OSBAsahSQLTestExecutionListener
 		return false;
 	}
 
-	private void _prepareTables(Class<?> clazz, SQLResource sqlResource) {
+	private void _prepareTables(Class<?> clazz, SQLResource sqlResource)
+		throws Exception {
+
 		if (!Objects.equals(sqlResource.resourcePath(), "")) {
+			ClassPathResource classPathResource = new ClassPathResource(
+				_getResourcePath(sqlResource), clazz);
+
+			DataSource dataSource = _resolveDataSource(
+				sqlResource.dataSource());
+
+			if (!classPathResource.isFile()) {
+				DatabasePopulatorUtils.execute(
+					new ResourceDatabasePopulator(classPathResource),
+					dataSource);
+
+				return;
+			}
+
+			File file = classPathResource.getFile();
+
+			String replaceSQLVariables =
+				TestExecutionListenerUtil.replaceSQLVariables(
+					new String(
+						Files.readAllBytes(file.toPath()),
+						StandardCharsets.UTF_8));
+
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
-					new ClassPathResource(
-						_getResourcePath(sqlResource), clazz)),
-				_resolveDataSource(sqlResource.dataSource()));
+					new ByteArrayResource(
+						replaceSQLVariables.getBytes(StandardCharsets.UTF_8))),
+				dataSource);
 		}
 	}
 

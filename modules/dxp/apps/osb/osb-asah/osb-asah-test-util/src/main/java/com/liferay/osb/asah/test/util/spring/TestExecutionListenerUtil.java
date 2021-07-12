@@ -19,6 +19,9 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 
@@ -33,9 +36,19 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class TestExecutionListenerUtil {
 
+	public static String replaceSQLVariables(String sql) {
+		LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("UTC"));
+
+		localDateTime = localDateTime.with(LocalTime.MIN);
+
+		return StringUtils.replaceEach(
+			_replaceTimeExpressions(sql, true), new String[] {"${now}"},
+			new String[] {localDateTime.format(_dateTimeFormatter)});
+	}
+
 	public static String replaceVariables(String json) {
 		return StringUtils.replaceEach(
-			_replaceTimeExpressions(json),
+			_replaceTimeExpressions(json, false),
 			new String[] {"${now}", "\"${random_long}\""},
 			new String[] {
 				DateUtil.newDayDateString(),
@@ -73,10 +86,12 @@ public class TestExecutionListenerUtil {
 		return LocalDateTime.now(Clock.systemUTC());
 	}
 
-	private static String _replaceTimeExpressions(String json) {
+	private static String _replaceTimeExpressions(
+		String resource, boolean sql) {
+
 		StringBuffer sb = new StringBuffer();
 
-		Matcher matcher = _timeExpressionPattern.matcher(json);
+		Matcher matcher = _timeExpressionPattern.matcher(resource);
 
 		while (matcher.find()) {
 			TemporalUnit temporalUnit = _toTemporalUnit(matcher.group(3));
@@ -104,6 +119,10 @@ public class TestExecutionListenerUtil {
 			else if (matcher.group(4) != null) {
 				matcher.appendReplacement(
 					sb, localDateTime.toLocalDate() + matcher.group(4));
+			}
+			else if (sql) {
+				matcher.appendReplacement(
+					sb, localDateTime.format(_dateTimeFormatter));
 			}
 			else {
 				matcher.appendReplacement(
@@ -140,6 +159,8 @@ public class TestExecutionListenerUtil {
 		throw new IllegalArgumentException(unit);
 	}
 
+	private static final DateTimeFormatter _dateTimeFormatter =
+		DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSS");
 	private static final Pattern _timeExpressionPattern = Pattern.compile(
 		"\\$\\{(now!?|today)([-+][0-9]+)([Mhdmy])(T\\d{2}:\\d{2})?(:\\d{2}\\." +
 			"\\d{3}Z)?}");
