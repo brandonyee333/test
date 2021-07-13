@@ -1,1 +1,1 @@
-INSERT INTO EventDefinition(blocked, blockedLastSeenDate, blockedLastSeenURL, description, displayName, name, type) VALUES (true, '2020-12-27 03:03:00-07', 'http://localhost:8080', null, null, 'subscribed', 'CUSTOM');
+INSERT INTO EventDefinition (blocked, blockedLastSeenDate, blockedLastSeenURL, description, displayName, name, type) VALUES (true, '2020-12-27 03:03:00-07', 'http://localhost:8080', null, null, 'subscribed', 'CUSTOM');

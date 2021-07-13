@@ -4,7 +4,7 @@ INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, t
 INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES ('Whether the item is new or used', 'STRING', 'Item Status', 'itemQuality', 'LOCAL');
 INSERT INTO EventAttributeDefinition(description, dataType, displayName, name, type) VALUES ('Amount of feedback given to item', 'NUMBER', 'Number of Reviews', 'numberOfReviews', 'LOCAL');
 
-INSERT INTO EventDefinition(displayName, name, type) VALUES ('Added To Cart', 'addedToCart', 'CUSTOM');
+INSERT INTO EventDefinition (displayName, name, type) VALUES ('Added To Cart', 'addedToCart', 'CUSTOM');
 
 INSERT INTO EventDefinitionEventAttributeDefinition(eventAttributeDefinitionId, eventDefinitionId, sampleValue) VALUES ((SELECT id from EventAttributeDefinition WHERE name='itemDescription'), (SELECT id from EventDefinition WHERE name='addedToCart'), 'No Description');
 INSERT INTO EventDefinitionEventAttributeDefinition(eventAttributeDefinitionId, eventDefinitionId, sampleValue) VALUES ((SELECT id from EventAttributeDefinition WHERE name='itemPrice'), (SELECT id from EventDefinition WHERE name='addedToCart'), '150.00');
