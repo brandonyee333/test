@@ -126,22 +126,21 @@ public abstract class BaseAssetMetricRepositoryTestCase<T> {
 	}
 
 	public void assertMetrics(
-		List<Tuple2<String, Double>> expectedMetricInfos,
-		List<Metric> metrics) {
+		List<Tuple2<String, Double>> expectedMetrics, List<Metric> metrics) {
 
 		Assert.assertEquals(
-			metrics.toString(), expectedMetricInfos.size(), metrics.size());
+			metrics.toString(), expectedMetrics.size(), metrics.size());
 
-		for (int i = 0; i < expectedMetricInfos.size(); i++) {
-			Tuple2<String, Double> expectedMetricInfo = expectedMetricInfos.get(
+		for (int i = 0; i < expectedMetrics.size(); i++) {
+			Tuple2<String, Double> expectedMetricTuple2 = expectedMetrics.get(
 				i);
 
 			Metric metric = metrics.get(i);
 
 			Assert.assertEquals(
-				expectedMetricInfo.getT1(), metric.getValueKey());
+				expectedMetricTuple2.getT1(), metric.getValueKey());
 			Assert.assertEquals(
-				expectedMetricInfo.getT2(), metric.getValue(), 0);
+				expectedMetricTuple2.getT2(), metric.getValue(), 0);
 		}
 	}
 
