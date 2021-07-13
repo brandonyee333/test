@@ -1,1 +1,1 @@
-INSERT INTO EventDefinition(id, blocked, blockedLastSeenDate, blockedLastSeenURL, hidden, name, type) VALUES (1000, false, timestamp '${now}', 'http://test.com', false, 'customViewEventToHide', 'CUSTOM');
+INSERT INTO EventDefinition (id, blocked, blockedLastSeenDate, blockedLastSeenURL, hidden, name, type) VALUES (1000, false, timestamp '${now}', 'http://test.com', false, 'customViewEventToHide', 'CUSTOM');
