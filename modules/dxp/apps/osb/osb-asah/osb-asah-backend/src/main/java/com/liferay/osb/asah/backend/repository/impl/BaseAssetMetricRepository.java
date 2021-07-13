@@ -210,11 +210,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			record -> {
 				Metric metric = new Metric(metricType);
 
-				metric.setValueKey(record.value1());
-
 				BigDecimal bigDecimal = record.value2();
 
 				metric.setValue(bigDecimal.doubleValue());
+
+				metric.setValueKey(record.value1());
 
 				return metric;
 			}
