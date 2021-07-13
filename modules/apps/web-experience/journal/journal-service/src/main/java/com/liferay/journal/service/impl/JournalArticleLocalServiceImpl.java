@@ -1770,23 +1770,12 @@ public class JournalArticleLocalServiceImpl
 				groupId,
 				FriendlyURLNormalizerUtil.normalizeWithEncoding(urlTitle), 0, 1,
 				orderByComparator);
-
-			if (articles.isEmpty()) {
-				articles =
-					articles = journalArticlePersistence.findByG_UT(
-						groupId, urlTitle, 0, 1, orderByComparator);
-			}
 		}
 		else {
 			articles = journalArticlePersistence.findByG_UT_ST(
 				groupId,
 				FriendlyURLNormalizerUtil.normalizeWithEncoding(urlTitle),
 				status, 0, 1, orderByComparator);
-
-			if (articles.isEmpty()) {
-				articles = journalArticlePersistence.findByG_UT_ST(
-					groupId, urlTitle, status, 0, 1, orderByComparator);
-			}
 		}
 
 		if (articles.isEmpty()) {
