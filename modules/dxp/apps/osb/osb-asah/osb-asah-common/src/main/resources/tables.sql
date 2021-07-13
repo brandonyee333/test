@@ -226,6 +226,7 @@ CREATE TABLE IF NOT EXISTS EventDefinition (
 	blocked BOOLEAN DEFAULT false,
 	blockedLastSeenDate TIMESTAMPTZ,
 	blockedLastSeenURL TEXT,
+    blockedReasonType TEXT,
 	description TEXT,
 	displayName TEXT UNIQUE,
 	hidden BOOLEAN DEFAULT false,

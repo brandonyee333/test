@@ -56,6 +56,8 @@ public class EventDefinition implements Persistable<Long> {
 				_blockedLastSeenDate, eventDefinition._blockedLastSeenDate) &&
 			Objects.equals(
 				_blockedLastSeenURL, eventDefinition._blockedLastSeenURL) &&
+			Objects.equals(
+				_blockedReasonType, eventDefinition._blockedReasonType) &&
 			Objects.equals(_description, eventDefinition._description) &&
 			Objects.equals(_displayName, eventDefinition._displayName) &&
 			Objects.equals(_hidden, eventDefinition._hidden) &&
@@ -81,6 +83,11 @@ public class EventDefinition implements Persistable<Long> {
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getBlockedLastSeenURL() {
 		return _blockedLastSeenURL;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public BlockedReasonType getBlockedReasonType() {
+		return _blockedReasonType;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -113,8 +120,9 @@ public class EventDefinition implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_blocked, _blockedLastSeenDate, _blockedLastSeenURL, _description,
-			_displayName, _type, _hidden, _id, _name);
+			_blocked, _blockedLastSeenDate, _blockedLastSeenURL,
+			_blockedReasonType, _description, _displayName, _type, _hidden, _id,
+			_name);
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -153,6 +161,10 @@ public class EventDefinition implements Persistable<Long> {
 		_blockedLastSeenURL = blockedLastSeenURL;
 	}
 
+	public void setBlockedReasonType(BlockedReasonType blockedReasonType) {
+		_blockedReasonType = blockedReasonType;
+	}
+
 	public void setDescription(String description) {
 		_description = description;
 	}
@@ -181,6 +193,12 @@ public class EventDefinition implements Persistable<Long> {
 		_type = type;
 	}
 
+	public enum BlockedReasonType {
+
+		BLOCKED_BY_USER, THRESHOLD_OVERFLOW
+
+	}
+
 	public enum Type {
 
 		ALL, CUSTOM, DEFAULT
@@ -195,6 +213,9 @@ public class EventDefinition implements Persistable<Long> {
 
 	@Transient
 	private String _blockedLastSeenURL;
+
+	@Transient
+	private BlockedReasonType _blockedReasonType;
 
 	@Transient
 	private String _description;
