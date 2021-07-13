@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.constants.EventDefinitionConstants;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventDefinition;
@@ -58,11 +59,13 @@ public class EventDefinitionDog {
 
 		if ((type == EventDefinition.Type.CUSTOM) &&
 			(countEventDefinitions(false, null, null, type) >=
-				_EVENT_DEFINITION_THRESHOLD)) {
+				EventDefinitionConstants.EVENT_DEFINITION_THRESHOLD)) {
 
 			eventDefinition.setBlocked(true);
 			eventDefinition.setBlockedLastSeenDate(eventDate);
 			eventDefinition.setBlockedLastSeenURL(url);
+			eventDefinition.setBlockedReasonType(
+				EventDefinition.BlockedReasonType.THRESHOLD_OVERFLOW);
 
 			if (_log.isWarnEnabled()) {
 				_log.warn(
@@ -89,7 +92,17 @@ public class EventDefinitionDog {
 		@Nullable String keyword, @Nullable EventDefinition.Type type) {
 
 		return _eventDefinitionRepository.countEventDefinitions(
-			blocked, hidden, keyword, type);
+			blocked, null, hidden, keyword, type);
+	}
+
+	public Long countEventDefinitions(
+		@Nullable Boolean blocked,
+		@Nullable EventDefinition.BlockedReasonType blockedReason,
+		@Nullable Boolean hidden, @Nullable String keyword,
+		@Nullable EventDefinition.Type type) {
+
+		return _eventDefinitionRepository.countEventDefinitions(
+			blocked, blockedReason, hidden, keyword, type);
 	}
 
 	public EventDefinition fetchEventDefinitionByDisplayName(
@@ -143,7 +156,7 @@ public class EventDefinitionDog {
 				blocked, hidden, keyword, pageRequest, type),
 			pageRequest,
 			() -> _eventDefinitionRepository.countEventDefinitions(
-				blocked, hidden, keyword, type));
+				blocked, null, hidden, keyword, type));
 	}
 
 	public void hideEventDefinitions(List<Long> eventDefinitionIds) {
@@ -229,6 +242,8 @@ public class EventDefinitionDog {
 					eventDefinitionId);
 		}
 
+		eventDefinition.setBlockedReasonType(
+			EventDefinition.BlockedReasonType.BLOCKED_BY_USER);
 		eventDefinition.setDescription(null);
 		eventDefinition.setDisplayName(null);
 
@@ -263,6 +278,7 @@ public class EventDefinitionDog {
 		eventDefinition.setBlocked(false);
 		eventDefinition.setBlockedLastSeenDate(null);
 		eventDefinition.setBlockedLastSeenURL(null);
+		eventDefinition.setBlockedReasonType(null);
 		eventDefinition.setDisplayName(
 			_getDisplayName(null, eventDefinition.getName()));
 
@@ -285,18 +301,16 @@ public class EventDefinitionDog {
 
 	private void _validateEventDefinitionLimit(int unblockEventDefinitionSize) {
 		long count = _eventDefinitionRepository.countEventDefinitions(
-			Boolean.FALSE, null, null, EventDefinition.Type.CUSTOM);
+			Boolean.FALSE, null, null, null, EventDefinition.Type.CUSTOM);
 
 		if ((count + unblockEventDefinitionSize) >
-				_EVENT_DEFINITION_THRESHOLD) {
+				EventDefinitionConstants.EVENT_DEFINITION_THRESHOLD) {
 
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"Processing request will exceed custom event definition limit");
 		}
 	}
-
-	private static final int _EVENT_DEFINITION_THRESHOLD = 100;
 
 	private static final Log _log = LogFactory.getLog(EventDefinitionDog.class);
 
