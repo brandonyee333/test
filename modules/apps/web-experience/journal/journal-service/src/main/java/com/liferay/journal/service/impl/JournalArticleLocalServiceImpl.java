@@ -1768,13 +1768,19 @@ public class JournalArticleLocalServiceImpl
 		String normalizedUrlTitle =
 			FriendlyURLNormalizerUtil.normalizeWithEncoding(urlTitle);
 
+		int maxLength = ModelHintsUtil.getMaxLength(
+			JournalArticle.class.getName(), "urlTitle");
+
+		String curUrlTitle = normalizedUrlTitle.substring(
+			0, Math.min(maxLength, normalizedUrlTitle.length()));
+
 		if (status == WorkflowConstants.STATUS_ANY) {
 			articles = journalArticlePersistence.findByG_UT(
-				groupId, normalizedUrlTitle, 0, 1, orderByComparator);
+				groupId, curUrlTitle, 0, 1, orderByComparator);
 		}
 		else {
 			articles = journalArticlePersistence.findByG_UT_ST(
-				groupId, normalizedUrlTitle, status, 0, 1, orderByComparator);
+				groupId, curUrlTitle, status, 0, 1, orderByComparator);
 		}
 
 		if (articles.isEmpty()) {
