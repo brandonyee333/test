@@ -162,7 +162,7 @@ public class TestExecutionListenerUtil {
 	private static final DateTimeFormatter _dateTimeFormatter =
 		DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSS");
 	private static final Pattern _timeExpressionPattern = Pattern.compile(
-		"\\$\\{(now!?|today)([-+][0-9]+)([Mhdmy])(T\\d{2}:\\d{2})?(:\\d{2}\\." +
-			"\\d{3}Z)?}");
+		"\\$\\{(now!?|today)([-+][0-9]+)([Mhdmy])(T{0,1}\\d{2}:\\d{2})?" +
+			"(:\\d{2}\\.\\d{3}Z{0,1})?}");
 
 }
