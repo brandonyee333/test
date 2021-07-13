@@ -1765,17 +1765,16 @@ public class JournalArticleLocalServiceImpl
 		OrderByComparator<JournalArticle> orderByComparator =
 			new ArticleVersionComparator();
 
+		String normalizedUrlTitle =
+			FriendlyURLNormalizerUtil.normalizeWithEncoding(urlTitle);
+
 		if (status == WorkflowConstants.STATUS_ANY) {
 			articles = journalArticlePersistence.findByG_UT(
-				groupId,
-				FriendlyURLNormalizerUtil.normalizeWithEncoding(urlTitle), 0, 1,
-				orderByComparator);
+				groupId, normalizedUrlTitle, 0, 1, orderByComparator);
 		}
 		else {
 			articles = journalArticlePersistence.findByG_UT_ST(
-				groupId,
-				FriendlyURLNormalizerUtil.normalizeWithEncoding(urlTitle),
-				status, 0, 1, orderByComparator);
+				groupId, normalizedUrlTitle, status, 0, 1, orderByComparator);
 		}
 
 		if (articles.isEmpty()) {
