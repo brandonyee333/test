@@ -239,7 +239,7 @@ function TopperContent({
 							</ClayButton>
 						</TopperListItem>
 					)}
-					{canUpdatePageStructure && (
+					{canUpdatePageStructure && isActive && (
 						<TopperListItem>
 							<ItemActions item={item} />
 						</TopperListItem>
