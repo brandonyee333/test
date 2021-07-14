@@ -95,7 +95,7 @@ const Grid = ({
 									collectionItem={collection[index]}
 									index={index}
 								>
-									{React.cloneElement(child)}
+									{child}
 								</ColumnContext>
 							)}
 						</ClayLayout.Col>
