@@ -153,7 +153,7 @@ public class EventDefinitionDog {
 
 		return PageableExecutionUtils.getPage(
 			_eventDefinitionRepository.searchEventDefinitions(
-				blocked, hidden, keyword, pageRequest, type),
+				blocked, null, hidden, keyword, pageRequest, type),
 			pageRequest,
 			() -> _eventDefinitionRepository.countEventDefinitions(
 				blocked, null, hidden, keyword, type));

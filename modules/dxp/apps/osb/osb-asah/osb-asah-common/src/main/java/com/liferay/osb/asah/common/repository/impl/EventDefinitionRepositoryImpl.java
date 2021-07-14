@@ -61,8 +61,9 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 	}
 
 	public List<EventDefinition> searchEventDefinitions(
-		@Nullable Boolean blocked, @Nullable Boolean hidden,
-		@Nullable String keyword, Pageable pageable,
+		@Nullable Boolean blocked,
+		@Nullable EventDefinition.BlockedReasonType blockedReasonType,
+		@Nullable Boolean hidden, @Nullable String keyword, Pageable pageable,
 		@Nullable EventDefinition.Type type) {
 
 		return _dslContext.select(
@@ -73,7 +74,7 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 		).from(
 			"EventDefinition"
 		).where(
-			_getConditions(blocked, null, hidden, keyword, type)
+			_getConditions(blocked, blockedReasonType, hidden, keyword, type)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(

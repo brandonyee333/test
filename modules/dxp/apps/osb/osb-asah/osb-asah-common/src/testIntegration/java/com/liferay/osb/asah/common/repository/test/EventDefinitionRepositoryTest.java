@@ -46,8 +46,8 @@ public class EventDefinitionRepositoryTest {
 	public void testSearchHiddenBlockedEventDefinitions() {
 		List<EventDefinition> eventDefinitions =
 			_eventDefinitionRepository.searchEventDefinitions(
-				true, true, "CustomEventNotification", PageRequest.of(0, 3),
-				EventDefinition.Type.CUSTOM);
+				true, null, true, "CustomEventNotification",
+				PageRequest.of(0, 3), EventDefinition.Type.CUSTOM);
 
 		Assert.assertEquals(
 			eventDefinitions.toString(), 3, eventDefinitions.size());

@@ -47,8 +47,9 @@ public interface EventDefinitionRepository
 	public Optional<EventDefinition> findByName(String name);
 
 	public List<EventDefinition> searchEventDefinitions(
-		@Nullable Boolean blocked, @Nullable Boolean hidden,
-		@Nullable String keyword, Pageable pageable,
+		@Nullable Boolean blocked,
+		@Nullable EventDefinition.BlockedReasonType blockedReasonType,
+		@Nullable Boolean hidden, @Nullable String keyword, Pageable pageable,
 		@Nullable EventDefinition.Type type);
 
 	@Modifying
