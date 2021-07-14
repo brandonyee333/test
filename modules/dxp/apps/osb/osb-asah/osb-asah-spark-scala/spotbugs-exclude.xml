@@ -3,6 +3,9 @@
 		<Bug pattern="MS_PKGPROTECT" />
 	</Match>
 	<Match>
+		<Class name="com.liferay.osb.asah.spark.scala.common.SparkJobPipeline$" />
+	</Match>
+	<Match>
 		<Class name="com.liferay.osb.asah.spark.scala.OSBAsahSparkScalaApplication" />
 	</Match>
 </FindBugsFilter>
