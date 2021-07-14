@@ -31,9 +31,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(
-	fieldName = "customEventLimitReachedNotification", typeName = "QueryType"
+	fieldName = "customEventLimitReached", typeName = "QueryType"
 )
-public class CustomEventLimitReachedNotificationDataFetcher
+public class CustomEventLimitReachedDataFetcher
 	implements DataFetcher<Boolean> {
 
 	@Override

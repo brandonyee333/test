@@ -818,7 +818,7 @@ type QueryType {
 		url: String
 	): CustomAssetMetric
 
-	customEventLimitReachedNotification: Boolean
+	customEventLimitReached: Boolean
 
 	dashboard(
 		dashboardId: String!

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.graphql.schema.test;
 
-import com.liferay.osb.asah.backend.graphql.schema.CustomEventLimitReachedNotificationDataFetcher;
+import com.liferay.osb.asah.backend.graphql.schema.CustomEventLimitReachedDataFetcher;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
@@ -124,8 +124,8 @@ public class CustomEventLimitReachedNotificationDataFetcherTest {
 	private EventDefinition _createEventDefinition(int index) {
 		EventDefinition eventDefinition = new EventDefinition();
 
-		eventDefinition.setHidden(false);
 		eventDefinition.setBlocked(false);
+		eventDefinition.setHidden(false);
 		eventDefinition.setName("customEventDefinitionReached" + index);
 		eventDefinition.setType(EventDefinition.Type.CUSTOM);
 
@@ -142,7 +142,7 @@ public class CustomEventLimitReachedNotificationDataFetcherTest {
 	}
 
 	@Autowired
-	private CustomEventLimitReachedNotificationDataFetcher
+	private CustomEventLimitReachedDataFetcher
 		_customEventLimitReachedNotificationDataFetcher;
 
 	@Autowired
