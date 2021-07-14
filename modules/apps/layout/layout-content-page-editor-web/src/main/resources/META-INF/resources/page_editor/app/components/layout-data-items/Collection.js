@@ -137,67 +137,69 @@ const DEFAULT_COLLECTION = {
 	length: 1,
 };
 
-const Collection = React.forwardRef(({children, item}, ref) => {
-	const child = React.Children.toArray(children)[0];
-	const collectionConfig = item.config;
+const Collection = React.memo(
+	React.forwardRef(({children, item}, ref) => {
+		const child = React.Children.toArray(children)[0];
+		const collectionConfig = item.config;
 
-	const dispatch = useDispatch();
+		const dispatch = useDispatch();
 
-	const languageId = useSelector((state) => state.languageId);
+		const languageId = useSelector((state) => state.languageId);
 
-	const [collection, setCollection] = useState(DEFAULT_COLLECTION);
+		const [collection, setCollection] = useState(DEFAULT_COLLECTION);
 
-	useEffect(() => {
-		if (collectionConfig.collection) {
-			CollectionService.getCollectionField({
-				collection: collectionConfig.collection,
-				languageId,
-				listItemStyle: collectionConfig.listItemStyle || null,
-				listStyle: collectionConfig.listStyle,
-				onNetworkStatus: dispatch,
-				size: collectionConfig.numberOfItems,
-				templateKey: collectionConfig.templateKey || null,
-			})
-				.then((response) => {
-					setCollection(
-						response.length > 0 && response.items?.length > 0
-							? response
-							: DEFAULT_COLLECTION
-					);
+		useEffect(() => {
+			if (collectionConfig.collection) {
+				CollectionService.getCollectionField({
+					collection: collectionConfig.collection,
+					languageId,
+					listItemStyle: collectionConfig.listItemStyle || null,
+					listStyle: collectionConfig.listStyle,
+					onNetworkStatus: dispatch,
+					size: collectionConfig.numberOfItems,
+					templateKey: collectionConfig.templateKey || null,
 				})
-				.catch((error) => {
-					if (process.env.NODE_ENV === 'development') {
-						console.error(error);
-					}
-				});
-		}
-	}, [
-		collectionConfig.collection,
-		collectionConfig.listItemStyle,
-		collectionConfig.listStyle,
-		collectionConfig.numberOfItems,
-		collectionConfig.templateKey,
-		dispatch,
-		languageId,
-	]);
+					.then((response) => {
+						setCollection(
+							response.length > 0 && response.items?.length > 0
+								? response
+								: DEFAULT_COLLECTION
+						);
+					})
+					.catch((error) => {
+						if (process.env.NODE_ENV === 'development') {
+							console.error(error);
+						}
+					});
+			}
+		}, [
+			collectionConfig.collection,
+			collectionConfig.listItemStyle,
+			collectionConfig.listStyle,
+			collectionConfig.numberOfItems,
+			collectionConfig.templateKey,
+			dispatch,
+			languageId,
+		]);
 
-	return (
-		<div className="page-editor__collection" ref={ref}>
-			{!collectionIsMapped(collectionConfig) ? (
-				<NotCollectionSelectedMessage />
-			) : collection.content ? (
-				<UnsafeHTML markup={collection.content} />
-			) : (
-				<Grid
-					child={child}
-					collection={collection.items}
-					collectionConfig={collectionConfig}
-					collectionId={item.itemId}
-					collectionLength={collection.items.length}
-				/>
-			)}
-		</div>
-	);
-});
+		return (
+			<div className="page-editor__collection" ref={ref}>
+				{!collectionIsMapped(collectionConfig) ? (
+					<NotCollectionSelectedMessage />
+				) : collection.content ? (
+					<UnsafeHTML markup={collection.content} />
+				) : (
+					<Grid
+						child={child}
+						collection={collection.items}
+						collectionConfig={collectionConfig}
+						collectionId={item.itemId}
+						collectionLength={collection.items.length}
+					/>
+				)}
+			</div>
+		);
+	})
+);
 
 export default Collection;
