@@ -46,7 +46,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class CustomEventLimitReachedNotificationDataFetcherTest {
+public class CustomEventLimitReachedDataFetcherTest {
 
 	@Before
 	public void setUp() {
