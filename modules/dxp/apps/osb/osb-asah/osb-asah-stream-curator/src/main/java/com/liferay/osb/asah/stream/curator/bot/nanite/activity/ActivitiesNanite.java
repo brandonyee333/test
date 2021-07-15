@@ -772,6 +772,9 @@ public class ActivitiesNanite implements Nanite {
 					Collector.of(JSONArray::new, JSONArray::put, JSONArray::put)
 				));
 		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
 		finally {
 			ProjectIdThreadLocal.remove();
 		}
