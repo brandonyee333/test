@@ -24,7 +24,7 @@ abstract class BaseSparkApplication extends SparkApplication {
 
     protected def createSparkConf: SparkConf
 
-    protected val sparkSession: SparkSession = {
+    val sparkSession: SparkSession = {
         val builder = SparkSession.builder()
 
         builder.config(createSparkConf)
