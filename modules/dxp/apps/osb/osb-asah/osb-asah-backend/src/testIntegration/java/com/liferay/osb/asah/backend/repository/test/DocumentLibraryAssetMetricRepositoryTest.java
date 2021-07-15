@@ -87,7 +87,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 
 	@SQLResource(
 		dataSource = "trinoDataSource",
-		resourcePath = "document_library_asset_metric_views_histogram_last_24_hours.sql"
+		resourcePath = "document_library_asset_metric_previews_histogram_last_24_hours.sql"
 	)
 	@Test
 	public void testGetPreviewsAssetMetrics() {
