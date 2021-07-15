@@ -42,8 +42,13 @@ public class CustomEventLimitReachedDataFetcher
 			_eventDefinitionDog.countEventDefinitions(
 				true, EventDefinition.BlockedReasonType.THRESHOLD_OVERFLOW,
 				null, null, EventDefinition.Type.CUSTOM);
-		Long eventDefinitionsCount = _eventDefinitionDog.countEventDefinitions(
-			false, null, null, EventDefinition.Type.CUSTOM);
+
+		Long eventDefinitionsCount = 0L;
+
+		if (blockedEventDefinitionsCount > 0) {
+			eventDefinitionsCount = _eventDefinitionDog.countEventDefinitions(
+				false, null, null, EventDefinition.Type.CUSTOM);
+		}
 
 		return (blockedEventDefinitionsCount > 0) &&
 			   (eventDefinitionsCount >=
