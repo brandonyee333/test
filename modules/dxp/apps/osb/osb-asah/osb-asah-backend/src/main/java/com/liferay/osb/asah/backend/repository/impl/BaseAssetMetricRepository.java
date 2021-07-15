@@ -30,7 +30,6 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +68,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).from(
 			getTableName()
 		).where(
-			_createWhereClause(Arrays.asList(assetId), channelId, timeRange)
+			_createWhereClause(assetId, channelId, timeRange)
 		).fetchOne();
 
 		return _toMetric(record, selectedMetrics);
@@ -77,8 +76,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<T> getAssetMetrics(
-		Set<String> assetIds, Long channelId, Set<String> selectedMetrics,
-		Pageable pageable, TimeRange timeRange) {
+		Long channelId, Set<String> selectedMetrics, Pageable pageable,
+		TimeRange timeRange) {
 
 		List<Field<? extends Object>> fields = new ArrayList<>(
 			_getMetricFields(selectedMetrics));
@@ -103,7 +102,6 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				getTableName()
 			).where(
 				DSL.and(
-					assetIdField.in(assetIds),
 					DSL.field(
 						"channelId"
 					).eq(
@@ -154,7 +152,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).from(
 			getTableName()
 		).where(
-			_createWhereClause(Arrays.asList(assetId), channelId, timeRange)
+			_createWhereClause(assetId, channelId, timeRange)
 		).groupBy(
 			browserNameField
 		).orderBy(
@@ -182,7 +180,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).from(
 			getTableName()
 		).where(
-			_createWhereClause(Arrays.asList(assetId), channelId, timeRange)
+			_createWhereClause(assetId, channelId, timeRange)
 		).groupBy(
 			deviceTypeField, platformNameField
 		).orderBy(
@@ -232,7 +230,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).from(
 			getTableName()
 		).where(
-			_createWhereClause(Arrays.asList(assetId), channelId, timeRange)
+			_createWhereClause(assetId, channelId, timeRange)
 		).groupBy(
 			countryField
 		).orderBy(
@@ -260,7 +258,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).from(
 			getTableName()
 		).where(
-			_createWhereClause(Arrays.asList(assetId), channelId, timeRange)
+			_createWhereClause(assetId, channelId, timeRange)
 		).groupBy(
 			eventDateField
 		).fetch(
@@ -306,39 +304,14 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	protected DSLContext dslContext;
 
 	private Condition _createWhereClause(
-		List<String> assetIds, Long channelId, TimeRange timeRange) {
-
-		Condition assetIdCondition = null;
-
-		if (assetIds.size() == 1) {
-			assetIdCondition = DSL.or(
-				DSL.field(
-					"assetId"
-				).eq(
-					assetIds.get(0)
-				),
-				DSL.field(
-					"assetPrimaryKey"
-				).eq(
-					assetIds.get(0)
-				));
-		}
-		else {
-			assetIdCondition = DSL.or(
-				DSL.field(
-					"assetId"
-				).in(
-					assetIds
-				),
-				DSL.field(
-					"assetPrimaryKey"
-				).in(
-					assetIds
-				));
-		}
+		String assetId, Long channelId, TimeRange timeRange) {
 
 		return DSL.and(
-			assetIdCondition,
+			DSL.field(
+				getAssetIdFieldName()
+			).eq(
+				assetId
+			),
 			DSL.field(
 				"channelId"
 			).eq(

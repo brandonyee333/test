@@ -121,8 +121,7 @@ public class JournalAssetMetricRepositoryTest
 		assertAssetMetrics(
 			new Double[] {7D, 6D},
 			_assetMetricRepository.getAssetMetrics(
-				SetUtil.of("e131fabc", "e231fabc"), 1L,
-				SetUtil.of(JournalMetricType.VIEWS.getName()),
+				1L, SetUtil.of(JournalMetricType.VIEWS.getName()),
 				PageRequest.of(0, 10), TimeRange.LAST_24_HOURS),
 			JournalMetric::getViewsMetric);
 	}
