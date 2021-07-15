@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -26,7 +27,9 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.SetUtil;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -114,8 +117,12 @@ public class Individual implements Persistable<Long> {
 		return new Date(_createDate.getTime());
 	}
 
-	@JsonIgnore
 	@JsonProperty("custom")
+	public Demographics getCustomDemographics() {
+		return new Demographics(_customFields);
+	}
+
+	@JsonIgnore
 	@MappedCollection(idColumn = "ownerid")
 	public Set<Field> getCustomFields() {
 		return _customFields;
@@ -138,13 +145,17 @@ public class Individual implements Persistable<Long> {
 		return _dataSourceIndividuals;
 	}
 
+	@JsonProperty("demographics")
+	public Demographics getDemographics() {
+		return new Demographics(_fields);
+	}
+
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getEmailAddressHashed() {
 		return _emailAddressHashed;
 	}
 
 	@JsonIgnore
-	@JsonProperty("demographics")
 	@MappedCollection(idColumn = "ownerid")
 	public Set<Field> getFields() {
 		return _fields;
@@ -274,6 +285,10 @@ public class Individual implements Persistable<Long> {
 		}
 	}
 
+	public void setCustomDemographics(Demographics demographics) {
+		_customDemographics = demographics;
+	}
+
 	public void setCustomFields(Set<Field> fields) {
 		_customFields = fields;
 	}
@@ -331,6 +346,10 @@ public class Individual implements Persistable<Long> {
 			_dataSourceIndividuals, DataSourceIndividualPK::new);
 	}
 
+	public void setDemographics(Demographics demographics) {
+		_demographics = demographics;
+	}
+
 	public void setEmailAddressHashed(String emailAddressHashed) {
 		_emailAddressHashed = emailAddressHashed;
 	}
@@ -357,6 +376,11 @@ public class Individual implements Persistable<Long> {
 		Set<IndividualChannel> individualChannels) {
 
 		_individualChannels = individualChannels;
+
+		_activitiesCounts = SetUtil.map(
+			_individualChannels, ActivitiesCount::new);
+		_lastActivityDates = SetUtil.map(
+			_individualChannels, LastActivityDate::new);
 	}
 
 	public void setIsNew(Boolean isNew) {
@@ -616,6 +640,56 @@ public class Individual implements Persistable<Long> {
 	}
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public static class Demographics {
+
+		public Demographics() {
+		}
+
+		public Demographics(Set<Field> fields) {
+			for (Field field : fields) {
+				_fieldMap.put(
+					field.getName(), Collections.singletonList(field));
+			}
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof Demographics)) {
+				return false;
+			}
+
+			Demographics demographics = (Demographics)obj;
+
+			if (Objects.equals(_fieldMap, demographics._fieldMap)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonAnyGetter
+		public Map<String, Object> getField() {
+			return _fieldMap;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_fieldMap);
+		}
+
+		public void setFieldMap(Map<String, Object> fieldMap) {
+			_fieldMap = fieldMap;
+		}
+
+		private Map<String, Object> _fieldMap = new HashMap<>();
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class LastActivityDate {
 
 		public LastActivityDate() {
@@ -700,6 +774,9 @@ public class Individual implements Persistable<Long> {
 	private Date _createDate;
 
 	@Transient
+	private Demographics _customDemographics;
+
+	@Transient
 	private Set<Field> _customFields = new HashSet<>();
 
 	@Transient
@@ -711,6 +788,9 @@ public class Individual implements Persistable<Long> {
 
 	@Transient
 	private Set<DataSourceIndividual> _dataSourceIndividuals = new HashSet<>();
+
+	@Transient
+	private Demographics _demographics;
 
 	@Transient
 	private String _emailAddressHashed;
