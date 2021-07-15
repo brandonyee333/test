@@ -38,12 +38,12 @@ public class CustomEventLimitReachedDataFetcher
 
 	@Override
 	public Boolean get(DataFetchingEnvironment dataFetchingEnvironment) {
-		Long blockedEventDefinitionsCount =
+		long blockedEventDefinitionsCount =
 			_eventDefinitionDog.countEventDefinitions(
 				true, EventDefinition.BlockedReasonType.THRESHOLD_OVERFLOW,
 				null, null, EventDefinition.Type.CUSTOM);
 
-		Long eventDefinitionsCount = 0L;
+		long eventDefinitionsCount = 0;
 
 		if (blockedEventDefinitionsCount > 0) {
 			eventDefinitionsCount = _eventDefinitionDog.countEventDefinitions(

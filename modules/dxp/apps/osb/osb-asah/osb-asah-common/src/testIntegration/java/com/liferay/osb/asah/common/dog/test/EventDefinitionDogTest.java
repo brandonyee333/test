@@ -279,15 +279,15 @@ public class EventDefinitionDogTest {
 
 	@Test
 	public void testCountEventDefinitions() {
-		Long count = _eventDefinitionDog.countEventDefinitions(
+		long count = _eventDefinitionDog.countEventDefinitions(
 			false, null, null, EventDefinition.Type.DEFAULT);
 
-		Assert.assertEquals(Long.valueOf(24), count);
+		Assert.assertEquals(24, count);
 
 		count = _eventDefinitionDog.countEventDefinitions(
 			false, null, null, EventDefinition.Type.CUSTOM);
 
-		Assert.assertEquals(Long.valueOf(0), count);
+		Assert.assertEquals(0, count);
 	}
 
 	@Test
