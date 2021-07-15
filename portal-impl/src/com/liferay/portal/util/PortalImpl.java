@@ -7586,6 +7586,14 @@ public class PortalImpl implements Portal {
 			return 0;
 		}
 
+		HttpSession session = httpServletRequest.getSession();
+
+		Long realUserIdObj = (Long)session.getAttribute(WebKeys.USER_ID);
+
+		if (!alwaysAllowDoAsUser && (realUserIdObj == null)) {
+			return 0;
+		}
+
 		long doAsUserId = GetterUtil.getLong(doAsUserIdString);
 
 		if (doAsUserId == 0) {
@@ -7622,14 +7630,6 @@ public class PortalImpl implements Portal {
 				WebKeys.USER_ID, Long.valueOf(doAsUserId));
 
 			return doAsUserId;
-		}
-
-		HttpSession session = httpServletRequest.getSession();
-
-		Long realUserIdObj = (Long)session.getAttribute(WebKeys.USER_ID);
-
-		if (realUserIdObj == null) {
-			return 0;
 		}
 
 		User doAsUser = UserLocalServiceUtil.getUserById(doAsUserId);

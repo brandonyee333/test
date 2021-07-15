@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.PortletPreferencesIds;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayPortletMode;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
@@ -292,11 +293,13 @@ public class PortletPreferencesFactoryImpl
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
+		User user = themeDisplay.getRealUser();
+
 		long userId = themeDisplay.getUserId();
 
 		String doAsUserId = themeDisplay.getDoAsUserId();
 
-		if (Validator.isNotNull(doAsUserId) &&
+		if (!user.isDefaultUser() && Validator.isNotNull(doAsUserId) &&
 			!Objects.equals(String.valueOf(userId), doAsUserId)) {
 
 			Company company = themeDisplay.getCompany();
