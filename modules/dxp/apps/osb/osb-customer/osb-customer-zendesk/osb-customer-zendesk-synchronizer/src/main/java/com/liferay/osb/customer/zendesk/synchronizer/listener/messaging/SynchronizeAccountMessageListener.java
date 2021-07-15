@@ -269,32 +269,35 @@ public class SynchronizeAccountMessageListener extends BaseMessageListener {
 			_zendeskMapperUtil.fetchZendeskOrganizationId(
 				accountEntry.getAccountEntryId());
 
-		List<ZendeskUser> zendeskUsers = getZendeskUsers(zendeskOrganizationId);
+		if (zendeskOrganizationId > 0) {
+			List<ZendeskUser> zendeskUsers = getZendeskUsers(
+				zendeskOrganizationId);
 
-		for (ZendeskUser zendeskUser : zendeskUsers) {
-			User customerUser = customerUsersMap.remove(
-				zendeskUser.getExternalId());
-			User firstLineSupportUser = firstLineSupportUsersMap.remove(
-				zendeskUser.getExternalId());
+			for (ZendeskUser zendeskUser : zendeskUsers) {
+				User customerUser = customerUsersMap.remove(
+					zendeskUser.getExternalId());
+				User firstLineSupportUser = firstLineSupportUsersMap.remove(
+					zendeskUser.getExternalId());
 
-			User user = _userIdentityProvider.fetchUserByEmailAddress(
-				zendeskUser.getEmail());
+				User user = _userIdentityProvider.fetchUserByEmailAddress(
+					zendeskUser.getEmail());
 
-			if (user == null) {
-				continue;
-			}
+				if (user == null) {
+					continue;
+				}
 
-			if ((customerUser == null) && (firstLineSupportUser == null)) {
-				_accountSynchronizer.reassignTickets(
-					account.getKey(), accountEntry, user);
+				if ((customerUser == null) && (firstLineSupportUser == null)) {
+					_accountSynchronizer.reassignTickets(
+						account.getKey(), accountEntry, user);
 
-				_asyncZendeskOrganizationMembershipWebService.
-					deleteOrganizationMemberships(
-						zendeskUser.getZendeskUserId(),
-						new long[] {zendeskOrganizationId});
-			}
-			else {
-				_userSynchronizer.sync(user, zendeskUser);
+					_asyncZendeskOrganizationMembershipWebService.
+						deleteOrganizationMemberships(
+							zendeskUser.getZendeskUserId(),
+							new long[] {zendeskOrganizationId});
+				}
+				else {
+					_userSynchronizer.sync(user, zendeskUser);
+				}
 			}
 		}
 
