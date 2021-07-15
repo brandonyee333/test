@@ -273,15 +273,6 @@ export default class DynamicUploaderForm extends React.Component {
 	render() {
 		const {namespace} = this.state;
 
-		const dataAccessInfoText = langSub(
-			Liferay.Language.get(
-				'please-note-that-the-location-of-the-server-to-which-the-file-will-be-uploaded-is-based-on-the-location-of-the-liferay-center-providing-support-to-your-company.-for-more-detail-regarding-the-applicable-server-locations-and-location-of-liferay-support-staff-who-might-access-the-data-please-consult-this-article'
-			),
-			[
-				this.props.dataAccessArticleURL
-			]
-		);
-
 		return (
 			<form ref={this.formRef} method="post" onSubmit={this.handleSubmit}>
 				<div className="row">
@@ -420,11 +411,21 @@ export default class DynamicUploaderForm extends React.Component {
 						{this.props.fileRepositoryMessage}
 					</span>
 
-					<div
-						dangerouslySetInnerHTML={{
-							__html: dataAccessInfoText
-						}}
-					/>
+					{langSub(
+						Liferay.Language.get(
+							'please-note-that-the-location-of-the-server-to-which-the-file-will-be-uploaded-is-based-on-the-location-of-the-liferay-center-providing-support-to-your-company.-for-more-detail-regarding-the-applicable-server-locations-and-location-of-liferay-support-staff-who-might-access-the-data-please-consult-this-x'
+						),
+						[
+							<a
+								aria-label={Liferay.Language.get('data-access-article')}
+								className="btn-link"
+								href={this.props.dataAccessArticleURL}
+							>
+								{Liferay.Language.get('article')}
+							</a>
+						],
+						false
+					)}
 				</Alert>
 
 				<div className="form-group">

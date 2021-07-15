@@ -89,6 +89,10 @@ String logo = downloadsAssetCategoryUtil.getPropertyValue(productAssetCategory.g
 	<portlet:param name="mvcRenderCommandName" value="/view" />
 </portlet:renderURL>
 
+<%
+String taglibArchiveURL = "<a href=\"" + backURL + "\">" + LanguageUtil.get(request, "archive") + "</a>";
+%>
+
 <div class="view-previous">
-	<liferay-ui:message arguments="<%= backURL %>" key="view-previous-releases-in-the-archive" />
+	<liferay-ui:message arguments="<%= taglibArchiveURL %>" key="view-previous-releases-in-the-x" />
 </div>

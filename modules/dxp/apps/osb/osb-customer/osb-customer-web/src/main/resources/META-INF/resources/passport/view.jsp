@@ -60,9 +60,11 @@
 			FileEntry fileEntry = DLAppLocalServiceUtil.getFileEntry(OSBCustomerConstants.GROUP_CUSTOMER_ID, folder.getFolderId(), "Liferay University Passport Agreement.pdf");
 
 			String url = DLUtil.getPreviewURL(fileEntry, fileEntry.getFileVersion(), themeDisplay, StringPool.BLANK);
+
+			String termsAndConditionsURL = "<a href=\"" + url + "\" rel=\"noopener noreferrer\" target=\"_blank\">" + LanguageUtil.get(request, "terms-and-conditions") + "</a>";
 			%>
 
-			<aui:input label='<%= LanguageUtil.format(request, "i-have-agreed-to-the-terms-and-conditions-for-liferay-university-passport-access", url) %>' name="agreement" type="checkbox">
+			<aui:input label='<%= LanguageUtil.format(request, "i-have-agreed-to-the-x-for-liferay-university-passport-access", termsAndConditionsURL) %>' name="agreement" type="checkbox">
 				<aui:validator name="required" />
 			</aui:input>
 		</aui:fieldset>

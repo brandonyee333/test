@@ -153,7 +153,25 @@ export default function SourceCodeAccess({addCollaboratorURL, collaborators}) {
 						)}
 					</div>
 
-					<PanelSubHeading />
+					<div className="panel-subtitle">
+						{langSub(
+							Liferay.Language.get(
+								"add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-x-article-for-details"
+							),
+							[
+								<a
+									aria-label={Liferay.Language.get(
+										'github-access-article'
+									)}
+									className="btn-link component-title"
+									href={ACCESS_DXP_SOURCE_CODE_ARTICLE}
+								>
+									{Liferay.Language.get('this')}
+								</a>
+							],
+							false
+						)}
+					</div>
 				</div>
 
 				<Button icon onClick={handleDisplayModal} value="add">
@@ -201,17 +219,4 @@ function CollaboratorDetail(props) {
 			)}
 		</div>
 	);
-}
-
-function PanelSubHeading() {
-	const subtitle = langSub(
-		Liferay.Language.get(
-			"add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-this-article-for-details"
-		),
-		['btn-link component-title', ACCESS_DXP_SOURCE_CODE_ARTICLE]
-	);
-
-	return <div className="panel-subtitle">
-		<div dangerouslySetInnerHTML={{__html: subtitle}} />
-	</div>;
 }

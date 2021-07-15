@@ -123,7 +123,7 @@ describe('SourceCodeAccess', () => {
 
 		getByText(
 			container,
-			"add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-this-article-for-details"
+			"add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-x-article-for-details"
 		);
 	});
 
