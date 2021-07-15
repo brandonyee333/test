@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.spark.scala.session.models
+package com.liferay.osb.asah.spark.scala.session.model
 
 import java.sql.{Date, Timestamp}
 
