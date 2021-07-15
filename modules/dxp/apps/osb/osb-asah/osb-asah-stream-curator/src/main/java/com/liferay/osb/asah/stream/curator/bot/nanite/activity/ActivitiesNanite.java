@@ -43,7 +43,6 @@ import com.liferay.osb.asah.stream.curator.nlp.NLPUtil;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -56,8 +55,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -118,10 +115,6 @@ public class ActivitiesNanite implements Nanite {
 					this::_run
 				);
 
-				while (!_futures.isEmpty()) {
-					_futures.removeIf(CompletableFuture::isDone);
-				}
-
 				if (_log.isInfoEnabled()) {
 					Class<?> clazz = getClass();
 
@@ -131,10 +124,6 @@ public class ActivitiesNanite implements Nanite {
 							clazz.getSimpleName(), analyticsEvents.size(),
 							System.currentTimeMillis() - start));
 				}
-			}
-
-			while (!_futures.isEmpty()) {
-				_futures.removeIf(CompletableFuture::isDone);
 			}
 		}
 		catch (Exception exception) {
@@ -178,14 +167,9 @@ public class ActivitiesNanite implements Nanite {
 			activityGroup.setEndDate(analyticsEvent.getEventDate());
 			activityGroup.setEndLocalDateTime(eventLocalDateTime);
 
-			Long activityGroupId = activityGroup.getId();
-
-			_futures.add(
-				CompletableFuture.runAsync(
-					() -> _activityGroupDog.updatedActivityGroup(
-						activityGroupId, analyticsEvent.getEventDate(),
-						eventLocalDateTime),
-					_singleExecutorService));
+			_activityGroupDog.updatedActivityGroup(
+				activityGroup.getId(), analyticsEvent.getEventDate(),
+				eventLocalDateTime);
 
 			_activityGroups.put(activityGroupTuple4, activityGroup);
 
@@ -204,33 +188,26 @@ public class ActivitiesNanite implements Nanite {
 	}
 
 	private void _addActivityJSONArray(JSONArray activityJSONArray) {
-		_futures.add(
-			CompletableFuture.runAsync(
-				() -> {
-					String projectId = ProjectIdThreadLocal.getProjectId();
+		String projectId = ProjectIdThreadLocal.getProjectId();
 
-					for (int i = 0; i < activityJSONArray.length(); i++) {
-						JSONObject activityJSONObject =
-							activityJSONArray.getJSONObject(i);
+		for (int i = 0; i < activityJSONArray.length(); i++) {
+			JSONObject activityJSONObject = activityJSONArray.getJSONObject(i);
 
-						if (_faroInfoActivityDog.isActivity(
-								activityJSONObject.getString("applicationId"),
-								activityJSONObject.getString("eventId"))) {
+			if (_faroInfoActivityDog.isActivity(
+					activityJSONObject.getString("applicationId"),
+					activityJSONObject.getString("eventId"))) {
 
-							_messageBus.sendMessage(
-								Channel.ACTIVE_INDIVIDUAL_IDS,
-								JSONUtil.put(
-									"channelId",
-									activityJSONObject.getString("channelId")
-								).put(
-									"ownerId",
-									activityJSONObject.getString("ownerId")
-								).put(
-									"projectId", projectId
-								).toString());
-						}
-					}
-				}));
+				_messageBus.sendMessage(
+					Channel.ACTIVE_INDIVIDUAL_IDS,
+					JSONUtil.put(
+						"channelId", activityJSONObject.getString("channelId")
+					).put(
+						"ownerId", activityJSONObject.getString("ownerId")
+					).put(
+						"projectId", projectId
+					).toString());
+			}
+		}
 
 		_faroInfoActivityDog.addActivity(activityJSONArray);
 	}
@@ -398,10 +375,7 @@ public class ActivitiesNanite implements Nanite {
 
 					Asset newAsset = asset;
 
-					_futures.add(
-						CompletableFuture.runAsync(
-							() -> _assetDog.updateAsset(newAsset),
-							_singleExecutorService));
+					_assetDog.updateAsset(newAsset);
 				}
 
 				return asset;
@@ -422,10 +396,7 @@ public class ActivitiesNanite implements Nanite {
 
 				Asset newAsset = asset;
 
-				_futures.add(
-					CompletableFuture.runAsync(
-						() -> _assetDog.updateAsset(newAsset),
-						_singleExecutorService));
+				_assetDog.updateAsset(newAsset);
 			}
 
 			return asset;
@@ -848,7 +819,6 @@ public class ActivitiesNanite implements Nanite {
 
 	private final Cache<String, TreeMap<Date, JSONObject>> _formViewedActivies =
 		NaniteUtil.createCache();
-	private final List<CompletableFuture<Void>> _futures = new ArrayList<>();
 
 	@Autowired
 	private MessageBus _messageBus;
@@ -859,8 +829,6 @@ public class ActivitiesNanite implements Nanite {
 	private final Cache<String, Long> _ownerIds = NaniteUtil.createCache();
 	private final Cache<String, String> _pageViewActivityIds =
 		NaniteUtil.createCache();
-	private final ExecutorService _singleExecutorService =
-		Executors.newSingleThreadExecutor();
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
