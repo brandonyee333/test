@@ -53,7 +53,36 @@ public class DocumentLibraryAssetMetricRepositoryTest
 
 	@SQLResource(
 		dataSource = "trinoDataSource",
-		resourcePath = "document_library_asset_metric_views_geolocation_last_30_days.sql"
+		resourcePath = "document_library_asset_metric_previews_browser_last_30_days.sql"
+	)
+	@Test
+	public void testGetBrowserMetricsLast30Days() {
+		assertMetrics(
+			Arrays.asList(
+				new Tuple2("Firefox", 14D), new Tuple2("Chrome", 9D),
+				new Tuple2("Opera Desktop", 3D)),
+			_assetMetricRepository.getBrowserMetrics(
+				"e131fabc", 1L, DocumentLibraryMetricType.PREVIEWS,
+				TimeRange.LAST_30_DAYS));
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "document_library_asset_metric_previews_device_last_30_days.sql"
+	)
+	@Test
+	public void testGetDeviceMetricsLast30Days() {
+		assertMetrics(
+			Arrays.asList(
+				new Tuple2("Desktop", 22D), new Tuple2("Mobile", 12D)),
+			_assetMetricRepository.getDeviceMetrics(
+				"e131fabc", 1L, DocumentLibraryMetricType.PREVIEWS,
+				TimeRange.LAST_30_DAYS));
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "document_library_asset_metric_previews_geolocation_last_30_days.sql"
 	)
 	@Test
 	public void testGetGeolocationMetricsLast30Days() {
