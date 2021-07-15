@@ -130,11 +130,7 @@ public class ActivitiesNanite implements Nanite {
 			_log.error(exception, exception);
 		}
 		finally {
-			_assetKeywords.invalidateAll();
-			_assets.invalidateAll();
-			_formViewedActivies.invalidateAll();
-			_ownerIds.invalidateAll();
-			_pageViewActivityIds.invalidateAll();
+			_invalidateCaches();
 		}
 	}
 
@@ -748,6 +744,15 @@ public class ActivitiesNanite implements Nanite {
 		}
 
 		return MapUtil.getString(analyticsEvent.getContext(), "title");
+	}
+
+	private void _invalidateCaches() {
+		_activityGroups.invalidateAll();
+		_assetKeywords.invalidateAll();
+		_assets.invalidateAll();
+		_formViewedActivies.invalidateAll();
+		_ownerIds.invalidateAll();
+		_pageViewActivityIds.invalidateAll();
 	}
 
 	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
