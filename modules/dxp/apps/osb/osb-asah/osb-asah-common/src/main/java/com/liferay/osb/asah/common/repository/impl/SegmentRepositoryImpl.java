@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 
 import org.apache.commons.lang.StringUtils;
@@ -181,6 +183,16 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		).map(
 			record -> new Segment(record.intoMap())
 		);
+	}
+
+	public List<Segment> searchDynamicSegments(
+		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
+		String filterString, boolean includeAnonymousUsers, Pageable pageable,
+		Set<Long> segmentIds) {
+
+		// TODO
+
+		return Collections.emptyList();
 	}
 
 	public List<Segment> searchDynamicSegments(

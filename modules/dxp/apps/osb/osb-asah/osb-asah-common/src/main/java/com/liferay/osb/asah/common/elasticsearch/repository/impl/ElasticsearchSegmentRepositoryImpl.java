@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -39,6 +40,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -146,6 +148,12 @@ public class ElasticsearchSegmentRepositoryImpl
 					Collectors.toList()
 				)),
 			true, getCollectionName());
+	}
+
+	@Override
+	public boolean existsByName(String name) {
+		return _faroInfoElasticsearchInvoker.exists(
+			getCollectionName(), QueryBuilders.termQuery("name", name));
 	}
 
 	@Override
@@ -445,6 +453,75 @@ public class ElasticsearchSegmentRepositoryImpl
 						setSearchSourceBuilderPage(
 							searchSourceBuilder, pageable);
 					})));
+	}
+
+	@Override
+	public List<Segment> searchDynamicSegments(
+		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
+		String filterString, boolean includeAnonymousUsers, Pageable pageable,
+		Set<Long> segmentIds) {
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("segmentType", "DYNAMIC"));
+
+		if (filterString != null) {
+			boolQueryBuilder = boolQueryBuilder.filter(
+				FilterStringToQueryBuilderConverter.convert(filterString));
+		}
+
+		if (CollectionUtils.isEmpty(dataSourceAccountPKs)) {
+			boolQueryBuilder.mustNot(
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.prefixQuery(
+						"filter", "((dataSourceAccountPKs/accountPKs eq '")
+				).filter(
+					QueryBuilders.prefixQuery("name", "Account: ")
+				).filter(
+					QueryBuilders.termQuery("status", "INACTIVE")
+				));
+		}
+		else {
+			List<String> filterStrings = new ArrayList<>();
+
+			for (Individual.DataSourceAccountPK dataSourceAccountPK :
+					dataSourceAccountPKs) {
+
+				Set<String> accountPKs = dataSourceAccountPK.getAccountPKs();
+
+				for (String accountPK : accountPKs) {
+					filterStrings.add(
+						"((dataSourceAccountPKs/accountPKs eq '" + accountPK +
+							"'))");
+				}
+			}
+
+			boolQueryBuilder = BoolQueryBuilderUtil.should(
+				BoolQueryBuilderUtil.filter(
+					boolQueryBuilder
+				).filter(
+					QueryBuilders.termsQuery("status", "ACTIVE")
+				)
+			).should(
+				BoolQueryBuilderUtil.filter(
+					boolQueryBuilder
+				).filter(
+					QueryBuilders.termsQuery("filter", filterStrings)
+				).filter(
+					QueryBuilders.termsQuery("status", "INACTIVE")
+				)
+			);
+		}
+
+		if (!includeAnonymousUsers) {
+			boolQueryBuilder.mustNot(
+				QueryBuilders.termQuery("includeAnonymousUsers", false));
+		}
+
+		if (CollectionUtils.isNotEmpty(segmentIds)) {
+			boolQueryBuilder.should(QueryBuilders.termsQuery("id", segmentIds));
+		}
+
+		return null;
 	}
 
 	@Override

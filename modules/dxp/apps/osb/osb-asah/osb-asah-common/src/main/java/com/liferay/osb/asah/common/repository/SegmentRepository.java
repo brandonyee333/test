@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Transformation;
 
@@ -48,6 +49,8 @@ public interface SegmentRepository extends CrudRepository<Segment, Long> {
 
 	@Modifying
 	public void deleteByChannelIdIn(@Param("channelIds") Set<Long> channelIds);
+
+	public boolean existsByName(String name);
 
 	public List<Segment> findAll(Pageable pageable);
 
@@ -93,6 +96,11 @@ public interface SegmentRepository extends CrudRepository<Segment, Long> {
 	public List<Segment> searchAccountSegments(
 		@Nullable String filterString, Pageable pageable,
 		@Nullable List<Long> segmentIds);
+
+	public List<Segment> searchDynamicSegments(
+		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
+		String filterString, boolean includeAnonymousUsers, Pageable pageable,
+		Set<Long> segmentIds);
 
 	public List<Segment> searchDynamicSegments(
 		String filterString, Pageable pageable);
