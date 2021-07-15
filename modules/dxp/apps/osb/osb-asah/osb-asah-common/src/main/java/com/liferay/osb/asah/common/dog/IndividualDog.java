@@ -24,12 +24,22 @@ import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBu
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.DataSourceIndividual;
+import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.entity.Membership;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.repository.DataSourceIndividualRepository;
+import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.IndividualChannelRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -39,35 +49,35 @@ import io.prometheus.client.Gauge;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.lucene.search.join.ScoreMode;
 
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.metrics.Sum;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 /**
@@ -77,139 +87,179 @@ import org.springframework.stereotype.Component;
 @Component
 public class IndividualDog extends BaseFaroInfoDog {
 
-	public boolean addDataSourceIndividualPK(
-		String dataId, Long dataSourceId, String dataSourceType,
-		JSONObject individualJSONObject) {
+	public boolean addDataSourceAccountPKs(
+		Set<String> accountPKs, Long dataSourceId, Individual individual) {
 
-		JSONArray dataSourceIndividualPKsJSONArray =
-			individualJSONObject.getJSONArray("dataSourceIndividualPKs");
+		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs =
+			individual.getDataSourceAccountPKs();
 
-		Map<String, JSONArray> individualPKsJSONArrays =
-			FaroInfoIndividualUtil.getIndividualPKsJSONArrays(
-				dataSourceIndividualPKsJSONArray);
+		Stream<Individual.DataSourceAccountPK> stream =
+			dataSourceAccountPKs.stream();
 
-		Set<String> dataSourceIds = individualPKsJSONArrays.keySet();
+		if (stream.noneMatch(
+				dataSourceAccountPK -> Objects.equals(
+					dataSourceId, dataSourceAccountPK.getDataSourceId()))) {
 
-		if (dataSourceIds.contains(String.valueOf(dataSourceId))) {
-			JSONArray individualPKsJSONArray = individualPKsJSONArrays.get(
-				String.valueOf(dataSourceId));
-
-			if (JSONUtil.hasValue(individualPKsJSONArray, dataId)) {
-				return false;
-			}
-
-			individualJSONObject.put(
-				"dataSourceIndividualPKs",
-				JSONUtil.replace(
-					dataSourceIndividualPKsJSONArray, "dataSourceId",
-					JSONUtil.put(
-						"dataSourceId", String.valueOf(dataSourceId)
-					).put(
-						"dataSourceType", dataSourceType
-					).put(
-						"individualPKs", individualPKsJSONArray.put(dataId)
-					)));
+			dataSourceAccountPKs.add(
+				new Individual.DataSourceAccountPK(
+					new DataSourceIndividual(
+						accountPKs, dataSourceId, individual.getId(),
+						Collections.emptySet())));
 		}
 		else {
-			dataSourceIndividualPKsJSONArray.put(
-				JSONUtil.put(
-					"dataSourceId", String.valueOf(dataSourceId)
-				).put(
-					"dataSourceType", dataSourceType
-				).put(
-					"individualPKs", JSONUtil.put(dataId)
-				));
+			stream = dataSourceAccountPKs.stream();
+
+			stream.filter(
+				dataSourceAccountPK -> Objects.equals(
+					dataSourceId, dataSourceAccountPK.getDataSourceId())
+			).forEach(
+				dataSourceAccountPK -> dataSourceAccountPK.setAccountPKs(
+					accountPKs)
+			);
 		}
+
+		individual.setDataSourceAccountPKs(dataSourceAccountPKs);
 
 		return true;
 	}
 
-	public JSONObject addIndividual(
-		JSONObject individualJSONObject, boolean updateMemberships) {
+	public boolean addDataSourceIndividualPK(
+		String dataId, Long dataSourceId, Individual individual) {
 
-		String emailAddress = StringUtils.lowerCase(
-			FaroInfoIndividualUtil.getIndividualEmail(
-				individualJSONObject.optJSONObject("demographics")));
+		Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =
+			individual.getDataSourceIndividualPKs();
 
-		if (StringUtils.isNotBlank(emailAddress)) {
-			individualJSONObject.put(
-				"emailAddressHashed", DigestUtils.sha256Hex(emailAddress));
+		Stream<Individual.DataSourceIndividualPK> stream =
+			dataSourceIndividualPKs.stream();
+
+		if (stream.noneMatch(
+				dataSourceIndividualPK -> Objects.equals(
+					dataSourceId, dataSourceIndividualPK.getDataSourceId()))) {
+
+			dataSourceIndividualPKs.add(
+				new Individual.DataSourceIndividualPK(
+					new DataSourceIndividual(
+						Collections.emptySet(), dataSourceId,
+						individual.getId(), Collections.singleton(dataId))));
+		}
+		else {
+			Map<Long, Set<String>> individualPKsMap =
+				FaroInfoIndividualUtil.getIndividualPKs(
+					individual.getDataSourceIndividualPKs());
+
+			Set<String> individualPKs = individualPKsMap.get(dataSourceId);
+
+			if (individualPKs.contains(dataId)) {
+				return false;
+			}
+
+			individualPKs.add(dataId);
+
+			stream = dataSourceIndividualPKs.stream();
+
+			stream.filter(
+				dataSourceIndividualPK -> Objects.equals(
+					dataSourceId, dataSourceIndividualPK.getDataSourceId())
+			).forEach(
+				dataSourceIndividualPK ->
+					dataSourceIndividualPK.setIndividualPKs(individualPKs)
+			);
 		}
 
-		individualJSONObject = _fieldDog.addOwnerJSONObject(
-			"individuals", individualJSONObject, "custom", "demographics");
+		individual.setDataSourceIndividualPKs(dataSourceIndividualPKs);
+
+		return true;
+	}
+
+	public Individual addIndividual(
+		Individual individual, boolean updateMemberships) {
+
+		Set<Field> fields = individual.getFields();
+
+		if (CollectionUtils.isNotEmpty(fields)) {
+			Stream<Field> stream = fields.stream();
+
+			Field emailField = stream.filter(
+				field -> Objects.equals(field.getName(), "email")
+			).findFirst(
+			).orElse(
+				null
+			);
+
+			if (emailField != null) {
+				String emailAddress = StringUtils.lowerCase(
+					String.valueOf(emailField.getValue()));
+
+				if (StringUtils.isNotBlank(emailAddress)) {
+					individual.setEmailAddressHashed(
+						DigestUtils.sha256Hex(emailAddress));
+				}
+			}
+		}
+
+		individual = _individualRepository.save(individual);
 
 		if (updateMemberships) {
 			_asahTaskDog.scheduleAsahTask(
 				"UpdateDynamicMembershipsNanite",
 				JSONUtil.put(
 					"dateModified",
-					individualJSONObject.getString("dateModified")
+					DateUtil.toUTCString(individual.getModifiedDate())
 				).put(
-					"individualJSONObject", individualJSONObject
+					"individualJSONObject",
+					_objectMapper.convertValue(individual, JSONObject.class)
 				));
 		}
 
-		return individualJSONObject;
+		return fetchIndividual(individual.getId());
 	}
 
-	public JSONObject addIndividual(
-		JSONObject analyticsDataJSONObject, Long channelId,
-		DataSource dataSource, String emailAddressHashed, String userId) {
+	public Individual addIndividual(
+		Long channelId, DataSource dataSource, String emailAddressHashed,
+		String userId) {
 
-		JSONArray channelIds = new JSONArray();
+		Set<Long> channelIds = new HashSet<>();
 
 		if (Objects.nonNull(channelId)) {
-			channelIds.put(String.valueOf(channelId));
+			channelIds.add(channelId);
 		}
 
-		String dateString = DateUtil.newDateString();
+		Date date = new Date();
 
-		return addIndividual(
-			JSONUtil.put(
-				"activitiesCounts", new JSONArray()
-			).put(
-				"analyticsData", analyticsDataJSONObject
-			).put(
-				"channelIds", channelIds
-			).put(
-				"dataSourceAccountPKs", new JSONArray()
-			).put(
-				"dataSourceIndividualPKs",
-				JSONUtil.put(
-					JSONUtil.put(
-						"dataSourceId", String.valueOf(dataSource.getId())
-					).put(
-						"dataSourceType", dataSource.getProviderType()
-					).put(
-						"individualPKs", JSONUtil.put(userId)
-					))
-			).put(
-				"dateCreated", dateString
-			).put(
-				"dateModified", dateString
-			).putOpt(
-				"emailAddressHashed", emailAddressHashed
-			).put(
-				"individualSegmentIds", new JSONArray()
-			),
-			false);
+		Individual individual = new Individual();
+
+		individual.setChannelIds(channelIds);
+		individual.setCreateDate(date);
+		individual.setDataSourceIndividuals(
+			Collections.singleton(
+				new DataSourceIndividual(
+					Collections.emptySet(), dataSource.getId(), null,
+					Collections.singleton(userId))));
+		individual.setEmailAddressHashed(emailAddressHashed);
+		individual.setModifiedDate(date);
+		individual.setSegmentIds(Collections.emptySet());
+
+		return addIndividual(individual, false);
 	}
 
-	public JSONObject addIndividual(
+	public Individual addIndividual(
 			String dataId, JSONObject dataJSONObject, DataSource dataSource)
 		throws Exception {
 
-		JSONObject contextJSONObject = _fieldDog.buildContextJSONObject(
-			"demographics", dataJSONObject, dataSource, "individual");
+		List<Field> fields = _fieldDog.buildFields(
+			"demographics", dataJSONObject, dataSource, null, "individual");
 
-		if (contextJSONObject.optJSONArray("email") == null) {
+		Stream<Field> stream = fields.stream();
+
+		if (stream.noneMatch(
+				field -> Objects.equals(field.getName(), "email"))) {
+
 			return null;
 		}
 
-		JSONArray dataSourceAccountPKsJSONArray = new JSONArray();
-		Long dataSourceId = dataSource.getId();
-		String dateString = DateUtil.newDateString();
+		DataSourceIndividual dataSourceIndividual = new DataSourceIndividual();
+
+		dataSourceIndividual.setDataSourceId(dataSource.getId());
 
 		String providerType = dataSource.getProviderType();
 
@@ -218,97 +268,105 @@ public class IndividualDog extends BaseFaroInfoDog {
 				"accountPKs");
 
 			if (dataAccountPKsJSONArray != null) {
-				dataSourceAccountPKsJSONArray.put(
-					JSONUtil.put(
-						"accountPKs", dataAccountPKsJSONArray
-					).put(
-						"dataSourceId", String.valueOf(dataSourceId)
-					));
+				dataSourceIndividual.setAccountPKs(
+					JSONUtil.toStringSet(dataAccountPKsJSONArray));
 			}
 		}
 
-		JSONArray individualPKsJSONArray = new JSONArray();
-
 		if (dataId != null) {
-			individualPKsJSONArray.put(dataId);
+			dataSourceIndividual.setIndividualPKs(
+				Collections.singleton(dataId));
 		}
 
-		JSONObject individualJSONObject = JSONUtil.put(
-			"activitiesCount", 0
-		).put(
-			"custom",
-			_fieldDog.buildContextJSONObject(
-				"custom", dataJSONObject, dataSource, "individual")
-		).put(
-			"dataSourceAccountPKs", dataSourceAccountPKsJSONArray
-		).put(
-			"dataSourceIndividualPKs",
-			JSONUtil.put(
-				JSONUtil.put(
-					"dataSourceId", String.valueOf(dataSourceId)
-				).put(
-					"dataSourceType", providerType
-				).put(
-					"individualPKs", individualPKsJSONArray
-				))
-		).put(
-			"dateCreated", dateString
-		).put(
-			"dateModified", dateString
-		).put(
-			"demographics", contextJSONObject
-		).put(
-			"firstEnrichmentDate", dateString
-		).put(
-			"individualSegmentIds", new JSONArray()
-		);
+		Date date = new Date();
 
-		_updateIndividualAssociations(dataJSONObject, individualJSONObject);
+		Individual individual = new Individual();
 
-		return addIndividual(individualJSONObject, true);
+		individual.setDataSourceIndividuals(
+			Collections.singleton(dataSourceIndividual));
+		individual.setCreateDate(date);
+		individual.setModifiedDate(date);
+		individual.setFirstEnrichmentDate(date);
+		individual.setSegmentIds(Collections.emptySet());
+
+		_updateIndividualAssociations(dataJSONObject, individual);
+
+		individual = _individualRepository.save(individual);
+
+		List<Field> customFields = _fieldDog.addFields(
+			"custom", dataJSONObject, dataSource, individual.getId(),
+			"individual");
+
+		individual.setCustomFields(new HashSet<>(customFields));
+
+		fields = _fieldDog.addFields(
+			"demographics", dataJSONObject, dataSource, individual.getId(),
+			"individual");
+
+		individual.setFields(new HashSet<>(fields));
+
+		return addIndividual(individual, true);
 	}
 
-	public JSONObject addIndividualAssociation(
-		DXPEntity.Type dxpEntityType, String id,
-		JSONObject individualJSONObject) {
+	public Individual addIndividualAssociation(
+		DXPEntity.Type dxpEntityType, Long id, Individual individual) {
 
-		JSONArray jsonArray = individualJSONObject.optJSONArray(
-			dxpEntityType.getIndividualFieldName());
+		Set<Long> associatedIds = new HashSet<>();
 
-		if (jsonArray == null) {
-			jsonArray = new JSONArray();
+		associatedIds.add(id);
+
+		if (dxpEntityType.isGroup()) {
+			associatedIds.addAll(individual.getGroupIds());
+
+			individual.setGroupIds(associatedIds);
+		}
+		else if (dxpEntityType.isOrganization()) {
+			associatedIds.addAll(individual.getOrganizationIds());
+
+			individual.setOrganizationIds(associatedIds);
+		}
+		else if (dxpEntityType.isRole()) {
+			associatedIds.addAll(individual.getRoleIds());
+
+			individual.setRoleIds(associatedIds);
+		}
+		else if (dxpEntityType.isTeam()) {
+			associatedIds.addAll(individual.getTeamIds());
+
+			individual.setTeamIds(associatedIds);
+		}
+		else if (dxpEntityType.isUserGroup()) {
+			associatedIds.addAll(individual.getUserGroupIds());
+
+			individual.setUserGroupIds(associatedIds);
 		}
 
-		jsonArray.put(id);
+		_individualRepository.updateAssociatedIds(
+			dxpEntityType.getIndividualFieldName(), associatedIds,
+			individual.getId());
 
-		JSONObject partialIndividualJSONObject = JSONUtil.put(
-			dxpEntityType.getIndividualFieldName(), jsonArray);
-
-		return elasticsearchInvoker.update(
-			"individuals", individualJSONObject.getString("id"),
-			new Script(
-				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-				_getScriptSource(partialIndividualJSONObject),
-				partialIndividualJSONObject.toMap()));
+		return individual;
 	}
 
-	public JSONObject addIndividualAssociation(
+	public Individual addIndividualAssociation(
 		long classPK, Long dataSourceId, DXPEntity.Type dxpEntityType,
-		JSONObject individualJSONObject) {
+		Individual individual) {
 
-		if (individualJSONObject == null) {
+		if (individual == null) {
 			return null;
 		}
 
-		List<String> associatedIds = getAssociatedIds(
+		Set<Long> associatedIds = getAssociatedIds(
 			dataSourceId, dxpEntityType, Collections.singletonList(classPK));
 
 		if (associatedIds.isEmpty()) {
-			return individualJSONObject;
+			return individual;
 		}
 
 		return addIndividualAssociation(
-			dxpEntityType, associatedIds.get(0), individualJSONObject);
+			dxpEntityType,
+			Long.valueOf(String.valueOf(CollectionUtils.get(associatedIds, 0))),
+			individual);
 	}
 
 	public JSONObject addIndividualSegmentId(
@@ -336,12 +394,28 @@ public class IndividualDog extends BaseFaroInfoDog {
 		List<Long> individualIds, Long individualSegmentId) {
 
 		for (Long individualId : individualIds) {
-			addIndividualSegmentId(individualId, individualSegmentId);
+			addSegmentId(individualId, individualSegmentId);
 		}
 	}
 
+	public Individual addSegmentId(Long individualId, Long segmentId) {
+		Individual individual = fetchIndividual(individualId);
+
+		if (individual == null) {
+			return null;
+		}
+
+		Set<Long> segmentIds = individual.getSegmentIds();
+
+		segmentIds.add(segmentId);
+
+		individual.setSegmentIds(segmentIds);
+
+		return updateIndividual(individualId, individual, false);
+	}
+
 	public QueryBuilder buildIndividualsQueryBuilder(
-		String channelId, String filterString, boolean includeAnonymousUsers) {
+		Long channelId, String filterString, Boolean includeAnonymousUsers) {
 
 		BoolQueryBuilder boolQueryBuilder = null;
 
@@ -368,8 +442,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 			QueryBuilders.existsQuery("demographics.email"));
 	}
 
-	public void deleteIndividual(Date deletionDate, String individualId)
-		throws Exception {
+	public void deleteIndividual(Date deletionDate, Long individualId) {
+		_fieldRepository.deleteByOwnerIdAndOwnerType(
+			individualId, "individual");
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("ownerId", individualId)
@@ -377,154 +452,163 @@ public class IndividualDog extends BaseFaroInfoDog {
 			QueryBuilders.termQuery("ownerType", "individual")
 		);
 
-		elasticsearchInvoker.delete("fields", boolQueryBuilder);
+		_faroInfoElasticsearchInvoker.delete("interests", boolQueryBuilder);
 
-		elasticsearchInvoker.delete("interests", boolQueryBuilder);
+		_faroInfoElasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
 
-		elasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
-
-		_membershipDog.deactivateMemberships(
-			deletionDate, Long.valueOf(individualId));
+		_membershipDog.deactivateMemberships(deletionDate, individualId);
 
 		_membershipChangeDog.updateMembershipChangeIndividualDeleted(
-			Boolean.TRUE, Long.valueOf(individualId));
+			Boolean.TRUE, individualId);
 
-		elasticsearchInvoker.delete("individuals", individualId);
+		_individualRepository.deleteById(individualId);
 	}
 
-	public JSONObject deleteIndividualAssociation(
+	public Individual deleteIndividualAssociation(
 		long classPK, Long dataSourceId, DXPEntity.Type dxpEntityType,
-		JSONObject individualJSONObject) {
+		Individual individual) {
 
-		if (individualJSONObject == null) {
+		if (individual == null) {
 			return null;
 		}
 
-		JSONArray jsonArray = individualJSONObject.optJSONArray(
-			dxpEntityType.getIndividualFieldName());
+		Set<Long> ids = new HashSet<>();
 
-		if ((jsonArray == null) || (jsonArray.length() == 0)) {
+		if (dxpEntityType.isGroup()) {
+			ids = individual.getGroupIds();
+		}
+		else if (dxpEntityType.isOrganization()) {
+			ids = individual.getOrganizationIds();
+		}
+		else if (dxpEntityType.isRole()) {
+			ids = individual.getRoleIds();
+		}
+		else if (dxpEntityType.isTeam()) {
+			ids = individual.getTeamIds();
+		}
+		else if (dxpEntityType.isUserGroup()) {
+			ids = individual.getUserGroupIds();
+		}
+
+		if (CollectionUtils.isEmpty(ids)) {
 			return null;
 		}
 
-		List<String> associatedIds = getAssociatedIds(
+		Set<Long> associatedIds = getAssociatedIds(
 			dataSourceId, dxpEntityType, Collections.singletonList(classPK));
 
 		if (associatedIds.isEmpty()) {
-			return null;
+			return individual;
 		}
 
-		JSONUtil.removeValue(jsonArray, associatedIds.get(0));
+		ids.removeAll(associatedIds);
 
-		JSONObject partialIndividualJSONObject = JSONUtil.put(
-			dxpEntityType.getIndividualFieldName(), jsonArray);
+		_individualRepository.updateAssociatedIds(
+			dxpEntityType.getIndividualFieldName(), ids, individual.getId());
 
-		return elasticsearchInvoker.update(
-			"individuals", individualJSONObject.getString("id"),
-			new Script(
-				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-				_getScriptSource(partialIndividualJSONObject),
-				partialIndividualJSONObject.toMap()));
+		return fetchIndividual(individual.getId());
 	}
 
-	public boolean existsIndividual(String individualId) {
-		return elasticsearchInvoker.exists("individuals", individualId);
+	public boolean existsByChannelIdAndFilterStringAndId(
+		Long channelId, String filterString, Long individualId) {
+
+		if (channelId == null) {
+			return _individualRepository.existsByFilterStringAndId(
+				filterString, individualId);
+		}
+
+		return _individualRepository.existsByChannelIdAndFilterStringAndId(
+			channelId, filterString, individualId);
 	}
 
-	public JSONObject fetchIndividualJSONObject(
-		Long dataSourceId, String userId) {
+	public boolean existsByDataSourceIndividualPK(
+		Long dataSourceId, Long individualId) {
 
-		return elasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.nestedQuery(
-				"dataSourceIndividualPKs",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.dataSourceId",
-						String.valueOf(dataSourceId))
-				).filter(
-					QueryBuilders.termsQuery(
-						"dataSourceIndividualPKs.individualPKs", userId)
-				),
-				ScoreMode.None));
+		Individual individual = fetchIndividual(individualId);
+
+		Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =
+			individual.getDataSourceIndividualPKs();
+
+		Stream<Individual.DataSourceIndividualPK> stream =
+			dataSourceIndividualPKs.stream();
+
+		return stream.anyMatch(
+			dataSourceIndividualPK -> Objects.equals(
+				dataSourceId, dataSourceIndividualPK.getDataSourceId()));
 	}
 
-	public JSONObject fetchIndividualJSONObject(String individualId) {
-		return elasticsearchInvoker.fetch("individuals", individualId);
+	public boolean existsById(Long id) {
+		return _individualRepository.existsById(id);
 	}
 
-	public JSONArray getActivitiesCountsJSONArray(
+	public Individual fetchIndividual(Long individualId) {
+		Optional<Individual> individualOptional =
+			_individualRepository.findById(individualId);
+
+		return populateIndividual(individualOptional.orElse(null));
+	}
+
+	public Individual fetchIndividual(Long dataSourceId, String userId) {
+		Optional<Individual> individualOptional =
+			_individualRepository.findByDataSourceIdAndIndividualPK(
+				dataSourceId, userId);
+
+		return populateIndividual(individualOptional.orElse(null));
+	}
+
+	public Individual
+		fetchIndividualByAssociationIdNotAndDataSourceIdAndIndividualPK(
+			Long associationId, Long dataSourceId, String fieldName,
+			String individualPK) {
+
+		Optional<Individual> individualOptional =
+			_individualRepository.
+				findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
+					associationId, dataSourceId, fieldName, individualPK);
+
+		return populateIndividual(individualOptional.orElse(null));
+	}
+
+	public Individual fetchIndividualByEmailAddress(String emailAddress) {
+		Optional<Individual> individualOptional =
+			_individualRepository.findByEmailAddress(emailAddress);
+
+		return populateIndividual(individualOptional.orElse(null));
+	}
+
+	public Individual fetchIndividualByEmailAddressHashed(
+		String emailAddressHashed) {
+
+		Optional<Individual> individualOptional =
+			_individualRepository.findByEmailAddressHashed(emailAddressHashed);
+
+		return populateIndividual(individualOptional.orElse(null));
+	}
+
+	public Individual fetchIndividualByEmailAddressOrEmailAddressHashed(
+		String emailAddress, String emailAddressHashed) {
+
+		Optional<Individual> individualOptional =
+			_individualRepository.findByEmailAddressOrEmailAddressHashed(
+				emailAddress, emailAddressHashed);
+
+		return populateIndividual(individualOptional.orElse(null));
+	}
+
+	public List<Individual.ActivitiesCount> getActivitiesCounts(
 		boolean includeAnonymousUsers, Long segmentId) {
 
-		JSONArray jsonArray = new JSONArray();
-
-		SearchResponse searchResponse = elasticsearchInvoker.search(
-			"individuals",
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.nested(
-						"activitiesCounts", "activitiesCounts"
-					).subAggregation(
-						AggregationBuilders.terms(
-							"channelId"
-						).field(
-							"activitiesCounts.channelId"
-						).size(
-							Integer.MAX_VALUE
-						).subAggregation(
-							AggregationBuilders.sum(
-								"activitiesCount"
-							).field(
-								"activitiesCounts.activitiesCount"
-							)
-						)
-					));
-				searchSourceBuilder.query(
-					_getQueryBuilder(includeAnonymousUsers, segmentId));
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		if (aggregations == null) {
-			return jsonArray;
-		}
-
-		InternalNested internalNested = aggregations.get("activitiesCounts");
-
-		Aggregations internalAggregations = internalNested.getAggregations();
-
-		Terms terms = internalAggregations.get("channelId");
-
-		for (Terms.Bucket termsBucket : terms.getBuckets()) {
-			Aggregations bucketAggregations = termsBucket.getAggregations();
-
-			Sum sum = bucketAggregations.get("activitiesCount");
-
-			int activitiesCount = 0;
-
-			if (sum != null) {
-				activitiesCount = (int)sum.getValue();
-			}
-
-			jsonArray.put(
-				JSONUtil.put(
-					"activitiesCount", activitiesCount
-				).put(
-					"channelId", termsBucket.getKeyAsString()
-				));
-		}
-
-		return jsonArray;
+		return _individualRepository.findActivitiesCounts(
+			includeAnonymousUsers, segmentId);
 	}
 
-	public List<String> getAssociatedIds(
+	public Set<Long> getAssociatedIds(
 		Long dataSourceId, DXPEntity.Type dxpEntityType, List<Long> classPKs) {
 
 		JSONArray associatedIdsJSONArray = null;
 
 		if (dxpEntityType.isOrganization()) {
-			associatedIdsJSONArray = elasticsearchInvoker.get(
+			associatedIdsJSONArray = _faroInfoElasticsearchInvoker.get(
 				dxpEntityType.getCollectionName(),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
@@ -534,75 +618,53 @@ public class IndividualDog extends BaseFaroInfoDog {
 				));
 		}
 		else {
-			associatedIdsJSONArray = new JSONArray(
-				ListUtil.map(
-					_dxpEntityDog.findByAfterAndFieldsAndType(
-						null,
-						new HashMap<String, Object>() {
-							{
-								put(
-									"dataSourceId",
-									String.valueOf(dataSourceId));
-								put(
-									"fields." + dxpEntityType.getIdFieldName(),
-									classPKs);
-							}
-						},
-						0, dxpEntityType),
-					dxpEntity -> _objectMapper.convertValue(
-						dxpEntity, JSONObject.class)));
-		}
-
-		return JSONUtil.toStringList(associatedIdsJSONArray, "id");
-	}
-
-	public JSONArray getIndividualCountsJSONArray(
-		boolean includeAnonymousUsers, Long segmentId) {
-
-		JSONArray jsonArray = new JSONArray();
-
-		SearchResponse searchResponse = elasticsearchInvoker.search(
-			"individuals",
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"channelIds"
-					).field(
-						"channelIds"
-					).size(
-						Integer.MAX_VALUE
-					));
-				searchSourceBuilder.query(
-					_getQueryBuilder(includeAnonymousUsers, segmentId));
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		Terms terms = aggregations.get("channelIds");
-
-		for (Terms.Bucket termsBucket : terms.getBuckets()) {
-			jsonArray.put(
-				JSONUtil.put(
-					"channelId", termsBucket.getKeyAsString()
-				).put(
-					"individualCount", termsBucket.getDocCount()
+			associatedIdsJSONArray = _dxpRawElasticsearchInvoker.get(
+				dxpEntityType.getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"osbAsahDataSourceId", String.valueOf(dataSourceId))
+				).filter(
+					QueryBuilders.termsQuery(
+						dxpEntityType.getIdFieldName(), classPKs)
 				));
 		}
 
-		return jsonArray;
+		return JSONUtil.toLongSet(associatedIdsJSONArray, "id");
 	}
 
-	public String getIndividualName(String individualId) {
-		JSONObject individualJSONObject = elasticsearchInvoker.fetch(
-			"individuals", individualId);
+	public Map<Long, Long> getIndividualCounts(
+		boolean includeAnonymousUsers, Long segmentId) {
 
-		if (individualJSONObject == null) {
+		return _individualRepository.findIndividualCounts(
+			includeAnonymousUsers, segmentId);
+	}
+
+	public String getIndividualName(Long individualId) {
+		Individual individual = fetchIndividual(individualId);
+
+		if (individual == null) {
 			return null;
 		}
 
-		return FaroInfoIndividualUtil.getIndividualName(
-			individualJSONObject.optJSONObject("demographics"));
+		return FaroInfoIndividualUtil.getIndividualName(individual);
+	}
+
+	public List<Individual> getIndividuals(
+		Long dataSourceId, int page, int size, Sort sort) {
+
+		List<Individual> individuals = _individualRepository.findByDataSourceId(
+			dataSourceId, PageRequest.of(page, size, sort));
+
+		return ListUtil.map(
+			individuals, individual -> populateIndividual(individual));
+	}
+
+	public List<Individual> getIndividualsBySegmentId(Long segmentId) {
+		List<Individual> individuals =
+			_individualRepository.findByAnySegmentIds(segmentId);
+
+		return ListUtil.map(
+			individuals, individual -> populateIndividual(individual));
 	}
 
 	public long getKnownIndividualCount(List<Long> individualIds) {
@@ -637,48 +699,61 @@ public class IndividualDog extends BaseFaroInfoDog {
 			collections, ArrayUtils.indexOf(collections, "user-sessions"));
 	}
 
-	public JSONObject removeDataSourceIndividualPKs(
-		JSONObject individualJSONObject, Long dataSourceId) {
-
-		JSONArray dataSourceIndividualPKsJSONArray =
-			individualJSONObject.getJSONArray("dataSourceIndividualPKs");
-
-		for (int i = 0; i < dataSourceIndividualPKsJSONArray.length(); i++) {
-			JSONObject dataSourceIndividualPKsJSONObject =
-				dataSourceIndividualPKsJSONArray.getJSONObject(i);
-
-			if (Objects.equals(
-					dataSourceIndividualPKsJSONObject.getLong("dataSourceId"),
-					dataSourceId)) {
-
-				dataSourceIndividualPKsJSONArray.remove(i);
-
-				break;
-			}
-		}
-
-		return elasticsearchInvoker.update(
-			"individuals", individualJSONObject.getString("id"),
-			JSONUtil.put(
-				"dataSourceIndividualPKs", dataSourceIndividualPKsJSONArray));
-	}
-
-	public JSONObject removeIndividualSegmentId(
-		JSONObject individualJSONObject, Long individualSegmentId) {
-
-		if (individualJSONObject == null) {
+	public Individual populateIndividual(Individual individual) {
+		if (individual == null) {
 			return null;
 		}
 
-		JSONArray individualSegmentIdsJSONArray =
-			individualJSONObject.getJSONArray("individualSegmentIds");
+		List<Field> fields = _fieldDog.getOwnerIdFields(
+			"demographics", individual.getId());
 
-		Iterator<Object> iterator = individualSegmentIdsJSONArray.iterator();
+		Stream<Field> stream = fields.stream();
+
+		Set<Field> fieldSet = stream.collect(Collectors.toSet());
+
+		individual.setDemographics(new Individual.Demographics(fieldSet));
+		individual.setFields(fieldSet);
+
+		List<Field> customFields = _fieldDog.getOwnerIdFields(
+			"custom", individual.getId());
+
+		stream = customFields.stream();
+
+		Set<Field> customFieldSet = stream.collect(Collectors.toSet());
+
+		individual.setCustomDemographics(
+			new Individual.Demographics(customFieldSet));
+		individual.setCustomFields(customFieldSet);
+
+		List<DataSourceIndividual> dataSourceIndividuals =
+			_dataSourceIndividualRepository.findByIndividualId(
+				individual.getId());
+
+		individual.setDataSourceIndividuals(
+			new HashSet<>(dataSourceIndividuals));
+
+		List<IndividualChannel> individualChannels =
+			_individualChannelRepository.findByIndividualId(individual.getId());
+
+		individual.setIndividualChannels(new HashSet<>(individualChannels));
+
+		return individual;
+	}
+
+	public Individual removeDataSourceIndividualPKs(
+		Individual individual, Long dataSourceId) {
+
+		Set<DataSourceIndividual> dataSourceIndividuals =
+			individual.getDataSourceIndividuals();
+
+		Iterator<DataSourceIndividual> iterator =
+			dataSourceIndividuals.iterator();
 
 		while (iterator.hasNext()) {
+			DataSourceIndividual dataSourceIndividual = iterator.next();
+
 			if (Objects.equals(
-					String.valueOf(individualSegmentId),
-					String.valueOf(iterator.next()))) {
+					dataSourceId, dataSourceIndividual.getDataSourceId())) {
 
 				iterator.remove();
 
@@ -686,45 +761,42 @@ public class IndividualDog extends BaseFaroInfoDog {
 			}
 		}
 
-		return elasticsearchInvoker.update(
-			"individuals", individualJSONObject.getString("id"),
-			JSONUtil.put(
-				"individualSegmentIds", individualSegmentIdsJSONArray));
+		individual.setDataSourceIndividuals(dataSourceIndividuals);
+
+		return updateIndividual(individual);
 	}
 
-	public JSONObject removeIndividualSegmentId(
-		Long individualId, Long individualSegmentId) {
+	public Individual removeSegmentId(Individual individual, Long segmentId) {
+		if (individual == null) {
+			return null;
+		}
 
-		return removeIndividualSegmentId(
-			elasticsearchInvoker.fetch(
-				"individuals", String.valueOf(individualId)),
-			individualSegmentId);
+		Set<Long> segmentIds = individual.getSegmentIds();
+
+		Iterator<Long> iterator = segmentIds.iterator();
+
+		while (iterator.hasNext()) {
+			if (Objects.equals(segmentId, iterator.next())) {
+				iterator.remove();
+
+				break;
+			}
+		}
+
+		return updateIndividual(individual.getId(), individual, false);
 	}
 
-	public void updateDynamicAddMemberships(
-			boolean checkMemberExists, JSONObject individualSegmentJSONObject,
-			Date modifiedDate)
+	public Individual removeSegmentId(Long individualId, Long segmentId) {
+		return removeSegmentId(fetchIndividual(individualId), segmentId);
+	}
+
+	public void updateDynamicMemberships(Date modifiedDate, Segment segment)
 		throws Exception {
 
-		_updateDynamicAddMemberships(
-			checkMemberExists, individualSegmentJSONObject.getLong("id"),
-			modifiedDate,
-			buildIndividualsQueryBuilder(
-				individualSegmentJSONObject.optString("channelId", null),
-				individualSegmentJSONObject.optString("filter", null),
-				individualSegmentJSONObject.optBoolean(
-					"includeAnonymousUsers")));
-	}
-
-	public void updateDynamicMemberships(
-			JSONObject individualSegmentJSONObject, Date modifiedDate)
-		throws Exception {
-
-		Long individualSegmentId = individualSegmentJSONObject.getLong("id");
+		Long individualSegmentId = segment.getId();
 		QueryBuilder queryBuilder = buildIndividualsQueryBuilder(
-			individualSegmentJSONObject.optString("channelId", null),
-			individualSegmentJSONObject.optString("filter", null),
-			individualSegmentJSONObject.optBoolean("includeAnonymousUsers"));
+			segment.getChannelId(), segment.getFilter(),
+			BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()));
 
 		_updateDynamicAddMemberships(
 			true, individualSegmentId, modifiedDate, queryBuilder);
@@ -733,27 +805,23 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	public void updateDynamicRemoveMemberships(
-			JSONObject individualSegmentJSONObject, Date modifiedDate)
-		throws Exception {
+		Date modifiedDate, Segment segment) {
 
 		updateDynamicRemoveMemberships(
-			individualSegmentJSONObject.getLong("id"), modifiedDate,
+			segment.getId(), modifiedDate,
 			buildIndividualsQueryBuilder(
-				individualSegmentJSONObject.optString("channelId", null),
-				individualSegmentJSONObject.optString("filter", null),
-				individualSegmentJSONObject.optBoolean(
-					"includeAnonymousUsers")));
+				segment.getChannelId(), segment.getFilter(),
+				BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers())));
 	}
 
 	public void updateDynamicRemoveMemberships(
-			Long individualSegmentId, Date modifiedDate,
-			QueryBuilder queryBuilder)
-		throws Exception {
+		Long individualSegmentId, Date modifiedDate,
+		QueryBuilder queryBuilder) {
 
 		for (Membership membership :
 				_membershipDog.getMemberships(individualSegmentId, "ACTIVE")) {
 
-			if (elasticsearchInvoker.exists(
+			if (_faroInfoElasticsearchInvoker.exists(
 					"individuals",
 					BoolQueryBuilderUtil.filter(
 						queryBuilder
@@ -769,9 +837,17 @@ public class IndividualDog extends BaseFaroInfoDog {
 		}
 	}
 
-	public JSONObject updateIndividual(
-		String individualId, JSONObject partialIndividualJSONObject,
+	public Individual updateIndividual(Individual individual) {
+		_individualRepository.save(individual);
+
+		return fetchIndividual(individual.getId());
+	}
+
+	public Individual updateIndividual(
+		Long individualId, Individual partialIndividual,
 		boolean updateMemberships) {
+
+		Individual existingIndividual = fetchIndividual(individualId);
 
 		String oldIndividualName = null;
 
@@ -779,30 +855,49 @@ public class IndividualDog extends BaseFaroInfoDog {
 			oldIndividualName = getIndividualName(individualId);
 		}
 
-		_setFirstEnrichmentDate(individualId, partialIndividualJSONObject);
+		_setFirstEnrichmentDate(existingIndividual);
 
-		JSONObject individualJSONObject = elasticsearchInvoker.update(
-			"individuals", individualId, partialIndividualJSONObject);
+		if (CollectionUtils.isNotEmpty(existingIndividual.getFields()) &&
+			CollectionUtils.isEmpty(partialIndividual.getFields())) {
 
-		if (updateMemberships) {
-			_individualModified(individualJSONObject, oldIndividualName);
+			partialIndividual.setFields(existingIndividual.getFields());
 		}
 
-		return individualJSONObject;
+		if (CollectionUtils.isNotEmpty(existingIndividual.getCustomFields()) &&
+			CollectionUtils.isEmpty(partialIndividual.getCustomFields())) {
+
+			partialIndividual.setCustomFields(
+				existingIndividual.getCustomFields());
+		}
+
+		if (CollectionUtils.isNotEmpty(
+				partialIndividual.getActivitiesCounts())) {
+
+			existingIndividual.setActivitiesCounts(
+				partialIndividual.getActivitiesCounts());
+		}
+
+		BeanUtils.copyProperties(partialIndividual, existingIndividual);
+
+		Individual individual = _individualRepository.save(existingIndividual);
+
+		if (updateMemberships) {
+			_individualModified(individual, oldIndividualName);
+		}
+
+		return populateIndividual(individual);
 	}
 
-	public JSONObject updateIndividual(
+	public Individual updateIndividual(
 			String dataId, JSONObject dataJSONObject, DataSource dataSource,
-			JSONObject individualJSONObject)
+			Individual individual)
 		throws Exception {
 
 		Long dataSourceId = dataSource.getId();
-		String individualId = individualJSONObject.getString("id");
+		Long individualId = individual.getId();
 
 		if ((dataId != null) && !dataId.equals(individualId)) {
-			addDataSourceIndividualPK(
-				dataId, dataSourceId, dataSource.getProviderType(),
-				individualJSONObject);
+			addDataSourceIndividualPK(dataId, dataSourceId, individual);
 		}
 
 		boolean dataAccountPKsUpdated = false;
@@ -814,86 +909,83 @@ public class IndividualDog extends BaseFaroInfoDog {
 				"accountPKs");
 
 			if (dataAccountPKsJSONArray != null) {
-				JSONArray dataSourceAccountPKsJSONArray =
-					individualJSONObject.getJSONArray("dataSourceAccountPKs");
+				Set<String> accountPKs = JSONUtil.toStringSet(
+					dataAccountPKsJSONArray);
 
-				JSONObject accountPKsJSONObject = JSONUtil.put(
-					"accountPKs", dataAccountPKsJSONArray
-				).put(
-					"dataSourceId", String.valueOf(dataSourceId)
-				);
-
-				Set<Long> dataSourceIds = JSONUtil.toLongSet(
-					dataSourceAccountPKsJSONArray, "dataSourceId");
-
-				if (dataSourceIds.contains(dataSourceId)) {
-					individualJSONObject.put(
-						"dataSourceAccountPKs",
-						JSONUtil.replace(
-							dataSourceAccountPKsJSONArray, "dataSourceId",
-							accountPKsJSONObject));
-				}
-				else {
-					dataSourceAccountPKsJSONArray.put(accountPKsJSONObject);
-				}
+				addDataSourceAccountPKs(accountPKs, dataSourceId, individual);
 
 				dataAccountPKsUpdated = true;
 			}
 		}
 
-		JSONObject previousDemographicsJSONObject = new JSONObject(
-			individualJSONObject, new String[] {"demographics"});
+		List<Field> previousFields = _fieldDog.getOwnerIdFields(
+			"demographics", individual.getId());
 
-		individualJSONObject = _fieldDog.updateContextFields(
-			"custom", dataJSONObject, dataSource, individualJSONObject,
+		_fieldDog.updateFields(
+			"custom", dataJSONObject, dataSource, individual, "individual",
+			"demographics", "email");
+		_fieldDog.updateFields(
+			"demographics", dataJSONObject, dataSource, individual,
 			"individual", "demographics", "email");
-		individualJSONObject = _fieldDog.updateContextFields(
-			"demographics", dataJSONObject, dataSource, individualJSONObject,
-			"individual", "demographics", "email");
 
-		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
-			"demographics");
+		List<Field> fields =
+			_fieldRepository.
+				findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
+					"demographics", individual.getId());
 
-		if (demographicsJSONObject == null) {
-			return null;
-		}
+		Stream<Field> stream = fields.stream();
 
-		if (demographicsJSONObject.optJSONArray("email") == null) {
+		individual.setFields(stream.collect(Collectors.toSet()));
+
+		individual.setModifiedDate(new Date());
+
+		individual = populateIndividual(_individualRepository.save(individual));
+
+		List<Field> emailFields =
+			_fieldRepository.findByContextAndNameAndOwnerIdAndOwnerType(
+				"demographics", "email", individual.getId(), "individual");
+
+		if (emailFields.isEmpty()) {
 			deleteIndividual(new Date(), individualId);
 
 			return null;
 		}
 
-		String oldIndividualName = getIndividualName(individualId);
+		String oldIndividualName = getIndividualName(individual.getId());
 
-		JSONObject partialIndividualJSONObject = new JSONObject(
-			individualJSONObject,
-			new String[] {
-				"custom", "dataSourceAccountPKs", "dataSourceIndividualPKs",
-				"dateModified", "demographics"
-			});
+		Individual partialIndividual = new Individual();
 
-		_setFirstEnrichmentDate(individualId, partialIndividualJSONObject);
+		partialIndividual.setCustomFields(individual.getCustomFields());
+		partialIndividual.setDataSourceIndividuals(
+			individual.getDataSourceIndividuals());
+		partialIndividual.setFields(individual.getFields());
+		partialIndividual.setId(individualId);
+		partialIndividual.setModifiedDate(individual.getModifiedDate());
+
+		_setFirstEnrichmentDate(partialIndividual);
 
 		JSONObject fieldsJSONObject = _fieldDog.getFieldsJSONObject(
 			"demographics", dataJSONObject, dataSource);
 
 		if ((fieldsJSONObject.names() != null) &&
-			(!JSONUtil.equals(
-				previousDemographicsJSONObject, demographicsJSONObject) ||
-			 dataAccountPKsUpdated)) {
+			((previousFields.size() != fields.size()) ||
+			 !previousFields.containsAll(fields) ||
+			 !fields.containsAll(previousFields) || dataAccountPKsUpdated)) {
 
-			partialIndividualJSONObject.put(
-				"lastEnrichmentDate", DateUtil.newDateString());
+			partialIndividual.setLastEnrichmentDate(new Date());
 		}
 
-		if (!previousDemographicsJSONObject.has("email") &&
-			demographicsJSONObject.has("email")) {
+		Stream<Field> fieldStream = fields.stream();
+		Stream<Field> previousFieldStream = previousFields.stream();
+
+		if (previousFieldStream.noneMatch(
+				field -> Objects.equals(field.getName(), "email")) &&
+			fieldStream.anyMatch(
+				field -> Objects.equals(field.getName(), "email"))) {
 
 			_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
 				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"individualId", individualJSONObject.getString("id"))
+					QueryBuilders.termQuery("individualId", individual.getId())
 				).filter(
 					BoolQueryBuilderUtil.shouldNot(
 						QueryBuilders.existsQuery("knownIndividual")
@@ -909,92 +1001,36 @@ public class IndividualDog extends BaseFaroInfoDog {
 				_collections);
 		}
 
-		_updateIndividualAssociations(
-			dataJSONObject, partialIndividualJSONObject);
+		_updateIndividualAssociations(dataJSONObject, partialIndividual);
 
-		individualJSONObject = _updateIndividual(
-			individualId, partialIndividualJSONObject);
+		individual = _updateIndividual(individualId, partialIndividual);
 
-		_individualModified(individualJSONObject, oldIndividualName);
+		_individualModified(individual, oldIndividualName);
 
-		return individualJSONObject;
-	}
-
-	private void _buildDeleteContextFieldsScriptSource(
-		String context, JSONObject individualJSONObject,
-		JSONObject partialIndividualJSONObject, StringBuilder sb) {
-
-		JSONObject contextJSONObject = individualJSONObject.optJSONObject(
-			context);
-
-		if (contextJSONObject == null) {
-			return;
-		}
-
-		JSONObject newContextJSONObject =
-			partialIndividualJSONObject.optJSONObject(context);
-
-		for (String contextFieldName : contextJSONObject.keySet()) {
-			if ((newContextJSONObject == null) ||
-				!newContextJSONObject.has(contextFieldName)) {
-
-				sb.append("ctx._source.");
-				sb.append(context);
-				sb.append(".remove('");
-				sb.append(contextFieldName);
-				sb.append("');");
-			}
-		}
-	}
-
-	private QueryBuilder _getQueryBuilder(
-		boolean includeAnonymousUsers, Long segmentId) {
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery(
-				"individualSegmentIds", String.valueOf(segmentId)));
-
-		if (!includeAnonymousUsers) {
-			boolQueryBuilder.filter(
-				QueryBuilders.existsQuery("demographics.email"));
-		}
-
-		return boolQueryBuilder;
-	}
-
-	private String _getScriptSource(JSONObject jsonObject) {
-		StringBuilder sb = new StringBuilder();
-
-		for (String key : jsonObject.keySet()) {
-			sb.append("ctx._source.");
-			sb.append(key);
-			sb.append(" = params.");
-			sb.append(key);
-			sb.append(";");
-		}
-
-		return sb.toString();
+		return individual;
 	}
 
 	private void _individualModified(
-		JSONObject individualJSONObject, String oldIndividualName) {
+		Individual individual, String oldIndividualName) {
 
-		String individualId = individualJSONObject.getString("id");
+		Long individualId = individual.getId();
 
 		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
-				"dateModified", individualJSONObject.getString("dateModified")
+				"dateModified",
+				DateUtil.toUTCString(individual.getModifiedDate())
 			).put(
-				"individualJSONObject", individualJSONObject
+				"individualJSONObject",
+				_objectMapper.convertValue(individual, JSONObject.class)
 			));
 
 		String newIndividualName = FaroInfoIndividualUtil.getIndividualName(
-			individualJSONObject.optJSONObject("demographics"));
+			individual);
 
 		if (!Objects.equals(oldIndividualName, newIndividualName)) {
 			_membershipChangeDog.updateIndividualNameForIndividual(
-				Long.valueOf(individualId), newIndividualName);
+				individualId, newIndividualName);
 		}
 	}
 
@@ -1006,26 +1042,14 @@ public class IndividualDog extends BaseFaroInfoDog {
 		_queueSizeGauge.set(size);
 	}
 
-	private void _setFirstEnrichmentDate(
-		String individualId, JSONObject individualJSONObject) {
-
-		if (StringUtils.isEmpty(
-				FaroInfoIndividualUtil.getIndividualEmail(
-					individualJSONObject.optJSONObject("demographics")))) {
+	private void _setFirstEnrichmentDate(Individual individual) {
+		if (_fieldRepository.existsByNameAndOwnerId(
+				"email", individual.getId())) {
 
 			return;
 		}
 
-		JSONObject oldIndividualJSONObject = elasticsearchInvoker.fetch(
-			"individuals", individualId);
-
-		if (StringUtils.isEmpty(
-				FaroInfoIndividualUtil.getIndividualEmail(
-					oldIndividualJSONObject.optJSONObject("demographics")))) {
-
-			individualJSONObject.put(
-				"firstEnrichmentDate", DateUtil.newDateString());
-		}
+		individual.setFirstEnrichmentDate(new Date());
 	}
 
 	private void _updateDynamicAddMemberships(
@@ -1034,7 +1058,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		throws Exception {
 
 		JSONArrayIterator.of(
-			"individuals", elasticsearchInvoker,
+			"individuals", _faroInfoElasticsearchInvoker,
 			individualObject -> {
 				try {
 					Long individualId = individualObject.getLong("id");
@@ -1063,30 +1087,20 @@ public class IndividualDog extends BaseFaroInfoDog {
 		).iterate();
 	}
 
-	private JSONObject _updateIndividual(
-		String individualId, JSONObject partialIndividualJSONObject) {
+	private Individual _updateIndividual(
+		Long individualId, Individual partialIndividual) {
 
-		JSONObject individualJSONObject = elasticsearchInvoker.update(
-			"individuals", individualId, partialIndividualJSONObject);
+		Individual individual = fetchIndividual(individualId);
 
-		StringBuilder sb = new StringBuilder();
+		BeanUtils.copyProperties(partialIndividual, individual);
 
-		_buildDeleteContextFieldsScriptSource(
-			"custom", individualJSONObject, partialIndividualJSONObject, sb);
-		_buildDeleteContextFieldsScriptSource(
-			"demographics", individualJSONObject, partialIndividualJSONObject,
-			sb);
+		_individualRepository.save(individual);
 
-		if (sb.length() == 0) {
-			return individualJSONObject;
-		}
-
-		return elasticsearchInvoker.update(
-			"individuals", individualId, new Script(sb.toString()));
+		return fetchIndividual(individualId);
 	}
 
 	private void _updateIndividualAssociations(
-		JSONObject dataJSONObject, JSONObject individualJSONObject) {
+		JSONObject dataJSONObject, Individual individual) {
 
 		JSONObject membershipsJSONObject = dataJSONObject.optJSONObject(
 			"memberships");
@@ -1102,13 +1116,25 @@ public class IndividualDog extends BaseFaroInfoDog {
 				continue;
 			}
 
-			individualJSONObject.put(
-				dxpEntityType.getIndividualFieldName(),
-				getAssociatedIds(
-					dataJSONObject.getLong("osbAsahDataSourceId"),
-					dxpEntityType,
-					JSONUtil.toLongList(
-						membershipsJSONObject.getJSONArray(type))));
+			Set<Long> associatedIds = getAssociatedIds(
+				dataJSONObject.getLong("osbAsahDataSourceId"), dxpEntityType,
+				JSONUtil.toLongList(membershipsJSONObject.getJSONArray(type)));
+
+			if (dxpEntityType.isGroup()) {
+				individual.setGroupIds(associatedIds);
+			}
+			else if (dxpEntityType.isOrganization()) {
+				individual.setOrganizationIds(associatedIds);
+			}
+			else if (dxpEntityType.isRole()) {
+				individual.setRoleIds(associatedIds);
+			}
+			else if (dxpEntityType.isTeam()) {
+				individual.setTeamIds(associatedIds);
+			}
+			else if (dxpEntityType.isUserGroup()) {
+				individual.setUserGroupIds(associatedIds);
+			}
 		}
 	}
 
@@ -1127,10 +1153,16 @@ public class IndividualDog extends BaseFaroInfoDog {
 	private String[] _collections;
 
 	@Autowired
-	private DXPEntityDog _dxpEntityDog;
+	private DataSourceIndividualRepository _dataSourceIndividualRepository;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
+	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
@@ -1140,6 +1172,15 @@ public class IndividualDog extends BaseFaroInfoDog {
 	private FieldDog _fieldDog;
 
 	@Autowired
+	private FieldRepository _fieldRepository;
+
+	@Autowired
+	private IndividualChannelRepository _individualChannelRepository;
+
+	@Autowired
+	private IndividualRepository _individualRepository;
+
+	@Autowired
 	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
@@ -1147,5 +1188,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }
