@@ -7604,7 +7604,12 @@ public class PortalImpl implements Portal {
 					Encryptor.decrypt(company.getKeyObj(), doAsUserIdString));
 			}
 			catch (Exception exception) {
-				if (_log.isWarnEnabled()) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Unable to impersonate " + doAsUserIdString +
+							" because the string cannot be decrypted");
+				}
+				else if (_log.isWarnEnabled()) {
 					_log.warn(
 						"Unable to impersonate " + doAsUserIdString +
 							" because the string cannot be decrypted");
