@@ -1,11 +1,17 @@
 <FindBugsFilter>
 	<Match>
+		<Bug pattern="EI_EXPOSE_REP" />
+	</Match>
+	<Match>
+		<Bug pattern="EI_EXPOSE_REP2" />
+	</Match>
+	<Match>
+		<Bug pattern="MS_CANNOT_BE_FINAL" />
+	</Match>
+	<Match>
 		<Bug pattern="MS_PKGPROTECT" />
 	</Match>
 	<Match>
-		<Class name="com.liferay.osb.asah.spark.scala.common.SparkJobPipeline$" />
-	</Match>
-	<Match>
-		<Class name="com.liferay.osb.asah.spark.scala.OSBAsahSparkScalaApplication" />
+		<Bug pattern="NM_CLASS_NAMING_CONVENTION" />
 	</Match>
 </FindBugsFilter>
