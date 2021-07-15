@@ -1035,6 +1035,176 @@ public class DataSource implements Persistable<Long> {
 	}
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public static class AnalyticsConfiguration {
+
+		public void addDataSourceSite(DataSourceSite dataSourceSite) {
+			if (_dataSourceSites == null) {
+				_dataSourceSites = new HashSet<>();
+			}
+
+			_dataSourceSites.add(dataSourceSite);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof AnalyticsConfiguration)) {
+				return false;
+			}
+
+			AnalyticsConfiguration analyticsConfiguration =
+				(AnalyticsConfiguration)obj;
+
+			if (Objects.equals(
+					_dataSourceSites,
+					analyticsConfiguration._dataSourceSites) &&
+				Objects.equals(
+					_enableAllSites, analyticsConfiguration._enableAllSites)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonProperty("sites")
+		public Set<DataSourceSite> getDataSourceSites() {
+			return _dataSourceSites;
+		}
+
+		@JsonProperty("enableAllSites")
+		public Boolean getEnableAllSites() {
+			return _enableAllSites;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_dataSourceSites, _enableAllSites);
+		}
+
+		public void setDataSourceSites(Set<DataSourceSite> dataSourceSites) {
+			_dataSourceSites = dataSourceSites;
+		}
+
+		public void setEnableAllSites(Boolean enableAllSites) {
+			_enableAllSites = enableAllSites;
+		}
+
+		private Set<DataSourceSite> _dataSourceSites;
+		private Boolean _enableAllSites;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public static class ContactsConfiguration {
+
+		public void addDataSourceOrganization(
+			DataSourceOrganization dataSourceOrganization) {
+
+			if (_dataSourceOrganizations == null) {
+				_dataSourceOrganizations = new HashSet<>();
+			}
+
+			_dataSourceOrganizations.add(dataSourceOrganization);
+		}
+
+		public void addDataSourceUserGroup(
+			DataSourceUserGroup dataSourceUserGroup) {
+
+			if (_dataSourceUserGroups == null) {
+				_dataSourceUserGroups = new HashSet<>();
+			}
+
+			_dataSourceUserGroups.add(dataSourceUserGroup);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof ContactsConfiguration)) {
+				return false;
+			}
+
+			ContactsConfiguration contactsConfiguration =
+				(ContactsConfiguration)obj;
+
+			if (Objects.equals(
+					_dataSourceOrganizations,
+					contactsConfiguration._dataSourceOrganizations) &&
+				Objects.equals(
+					_dataSourceUserGroups,
+					contactsConfiguration._dataSourceUserGroups) &&
+				Objects.equals(
+					_enableAllContacts,
+					contactsConfiguration._enableAllContacts) &&
+				Objects.equals(
+					_enableAllLeads, contactsConfiguration._enableAllLeads)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonProperty("organizations")
+		public Set<DataSourceOrganization> getDataSourceOrganizations() {
+			return _dataSourceOrganizations;
+		}
+
+		@JsonProperty("userGroups")
+		public Set<DataSourceUserGroup> getDataSourceUserGroups() {
+			return _dataSourceUserGroups;
+		}
+
+		public Boolean getEnableAllContacts() {
+			return _enableAllContacts;
+		}
+
+		public Boolean getEnableAllLeads() {
+			return _enableAllLeads;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(
+				_dataSourceOrganizations, _dataSourceUserGroups,
+				_enableAllContacts, _enableAllLeads);
+		}
+
+		public void setDataSourceOrganizations(
+			Set<DataSourceOrganization> dataSourceOrganizations) {
+
+			_dataSourceOrganizations = dataSourceOrganizations;
+		}
+
+		public void setDataSourceUserGroups(
+			Set<DataSourceUserGroup> dataSourceUserGroups) {
+
+			_dataSourceUserGroups = dataSourceUserGroups;
+		}
+
+		public void setEnableAllContacts(Boolean enableAllContacts) {
+			_enableAllContacts = enableAllContacts;
+		}
+
+		public void setEnableAllLeads(Boolean enableAllLeads) {
+			_enableAllLeads = enableAllLeads;
+		}
+
+		private Set<DataSourceOrganization> _dataSourceOrganizations;
+		private Set<DataSourceUserGroup> _dataSourceUserGroups;
+		private Boolean _enableAllContacts;
+		private Boolean _enableAllLeads;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class Provider {
 
 		@Override
@@ -1234,70 +1404,6 @@ public class DataSource implements Persistable<Long> {
 	}
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private static class AnalyticsConfiguration {
-
-		public void addDataSourceSite(DataSourceSite dataSourceSite) {
-			if (_dataSourceSites == null) {
-				_dataSourceSites = new HashSet<>();
-			}
-
-			_dataSourceSites.add(dataSourceSite);
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-
-			if (!(obj instanceof AnalyticsConfiguration)) {
-				return false;
-			}
-
-			AnalyticsConfiguration analyticsConfiguration =
-				(AnalyticsConfiguration)obj;
-
-			if (Objects.equals(
-					_dataSourceSites,
-					analyticsConfiguration._dataSourceSites) &&
-				Objects.equals(
-					_enableAllSites, analyticsConfiguration._enableAllSites)) {
-
-				return true;
-			}
-
-			return false;
-		}
-
-		@JsonProperty("sites")
-		public Set<DataSourceSite> getDataSourceSites() {
-			return _dataSourceSites;
-		}
-
-		@JsonProperty("enableAllSites")
-		public Boolean getEnableAllSites() {
-			return _enableAllSites;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(_dataSourceSites, _enableAllSites);
-		}
-
-		public void setDataSourceSites(Set<DataSourceSite> dataSourceSites) {
-			_dataSourceSites = dataSourceSites;
-		}
-
-		public void setEnableAllSites(Boolean enableAllSites) {
-			_enableAllSites = enableAllSites;
-		}
-
-		private Set<DataSourceSite> _dataSourceSites;
-		private Boolean _enableAllSites;
-
-	}
-
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private static class Author {
 
 		@Override
@@ -1345,112 +1451,6 @@ public class DataSource implements Persistable<Long> {
 
 		private Long _id;
 		private String _name;
-
-	}
-
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private static class ContactsConfiguration {
-
-		public void addDataSourceOrganization(
-			DataSourceOrganization dataSourceOrganization) {
-
-			if (_dataSourceOrganizations == null) {
-				_dataSourceOrganizations = new HashSet<>();
-			}
-
-			_dataSourceOrganizations.add(dataSourceOrganization);
-		}
-
-		public void addDataSourceUserGroup(
-			DataSourceUserGroup dataSourceUserGroup) {
-
-			if (_dataSourceUserGroups == null) {
-				_dataSourceUserGroups = new HashSet<>();
-			}
-
-			_dataSourceUserGroups.add(dataSourceUserGroup);
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-
-			if (!(obj instanceof ContactsConfiguration)) {
-				return false;
-			}
-
-			ContactsConfiguration contactsConfiguration =
-				(ContactsConfiguration)obj;
-
-			if (Objects.equals(
-					_dataSourceOrganizations,
-					contactsConfiguration._dataSourceOrganizations) &&
-				Objects.equals(
-					_dataSourceUserGroups,
-					contactsConfiguration._dataSourceUserGroups) &&
-				Objects.equals(
-					_enableAllContacts,
-					contactsConfiguration._enableAllContacts) &&
-				Objects.equals(
-					_enableAllLeads, contactsConfiguration._enableAllLeads)) {
-
-				return true;
-			}
-
-			return false;
-		}
-
-		@JsonProperty("organizations")
-		public Set<DataSourceOrganization> getDataSourceOrganizations() {
-			return _dataSourceOrganizations;
-		}
-
-		@JsonProperty("userGroups")
-		public Set<DataSourceUserGroup> getDataSourceUserGroups() {
-			return _dataSourceUserGroups;
-		}
-
-		public Boolean getEnableAllContacts() {
-			return _enableAllContacts;
-		}
-
-		public Boolean getEnableAllLeads() {
-			return _enableAllLeads;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(
-				_dataSourceOrganizations, _dataSourceUserGroups,
-				_enableAllContacts, _enableAllLeads);
-		}
-
-		public void setDataSourceOrganizations(
-			Set<DataSourceOrganization> dataSourceOrganizations) {
-
-			_dataSourceOrganizations = dataSourceOrganizations;
-		}
-
-		public void setDataSourceUserGroups(
-			Set<DataSourceUserGroup> dataSourceUserGroups) {
-
-			_dataSourceUserGroups = dataSourceUserGroups;
-		}
-
-		public void setEnableAllContacts(Boolean enableAllContacts) {
-			_enableAllContacts = enableAllContacts;
-		}
-
-		public void setEnableAllLeads(Boolean enableAllLeads) {
-			_enableAllLeads = enableAllLeads;
-		}
-
-		private Set<DataSourceOrganization> _dataSourceOrganizations;
-		private Set<DataSourceUserGroup> _dataSourceUserGroups;
-		private Boolean _enableAllContacts;
-		private Boolean _enableAllLeads;
 
 	}
 
