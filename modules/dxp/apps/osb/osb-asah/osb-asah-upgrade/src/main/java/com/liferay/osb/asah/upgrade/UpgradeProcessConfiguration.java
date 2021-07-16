@@ -20,6 +20,7 @@ import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_0.AsahMarkerUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_0.PreAsahMarkerUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_0.RunLogUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_12_2.ActivityGroupsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_2.IndividualActivitiesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_13_0.ChannelsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_13_0.DataSourcesUpgradeStep;
@@ -52,7 +53,8 @@ public class UpgradeProcessConfiguration {
 			_asahMarkerUpgradeStep, _runLogUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.12.0", "2.12.2", _individualActivitiesUpgradeStep);
+			"2.12.0", "2.12.2", _activityGroupsUpgradeStep,
+			_individualActivitiesUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
 			"2.12.2", "2.13.0", _dataSourcesUpgradeStep, _channelsUpgradeStep,
@@ -66,6 +68,9 @@ public class UpgradeProcessConfiguration {
 
 		return upgradeProcess;
 	}
+
+	@Autowired
+	private ActivityGroupsUpgradeStep _activityGroupsUpgradeStep;
 
 	@Autowired
 	private AsahMarkerUpgradeStep _asahMarkerUpgradeStep;
