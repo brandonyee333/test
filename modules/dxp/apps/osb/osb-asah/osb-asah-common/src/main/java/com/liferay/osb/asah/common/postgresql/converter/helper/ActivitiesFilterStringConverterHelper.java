@@ -17,19 +17,19 @@ package com.liferay.osb.asah.common.postgresql.converter.helper;
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.sql.Timestamp;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import org.elasticsearch.index.query.QueryBuilders;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -52,8 +52,7 @@ public class ActivitiesFilterStringConverterHelper
 
 	@Override
 	public Condition getLogicFunctionCondition(
-			String fieldName, String operator, String valueString)
-		throws Exception {
+		String fieldName, String operator, String valueString) {
 
 		if (fieldName.equals("accountId") &&
 			_isIdFilter(operator, valueString)) {
@@ -94,9 +93,7 @@ public class ActivitiesFilterStringConverterHelper
 		return null;
 	}
 
-	private Condition _getAccountIdCondition(String accountId, boolean negate)
-		throws Exception {
-
+	private Condition _getAccountIdCondition(String accountId, boolean negate) {
 		Segment segment = _segmentDog.fetchSegment(
 			"Account: " + accountId, "INACTIVE");
 
@@ -104,19 +101,16 @@ public class ActivitiesFilterStringConverterHelper
 			return null;
 		}
 
-		List<String> individualIds = new ArrayList<>();
+		List<Individual> individuals =
+			_individualRepository.findByAnySegmentIds(segment.getId());
 
-		JSONArrayIterator.of(
-			"individuals", _elasticsearchInvoker,
-			individualJSONObject -> {
-				individualIds.add(individualJSONObject.getString("id"));
+		Stream<Individual> stream = individuals.stream();
 
-				return null;
-			}
-		).setQueryBuilder(
-			QueryBuilders.termQuery(
-				"individualSegmentIds", String.valueOf(segment.getId()))
-		).iterate();
+		List<String> individualIds = stream.map(
+			individual -> String.valueOf(individual.getId())
+		).collect(
+			Collectors.toList()
+		);
 
 		Condition condition = null;
 
@@ -147,17 +141,15 @@ public class ActivitiesFilterStringConverterHelper
 
 		Condition condition = null;
 
-		Field<Object> dayDateField = DSL.field("dayDate");
+		Field<Object> dayDateField = DSL.field("dayDate AT TIME ZONE 'UTC'");
 		Field<Timestamp> valueField = DSL.toTimestamp(
 			valueString, "yyyy-MM-dd\\THH24:MI:SS\\Z");
 
 		if (operator.equalsIgnoreCase("ge")) {
-			condition = dayDateField.ge(
-				DSL.field("{0} AT TIME ZONE 'UTC'", valueField));
+			condition = dayDateField.ge(valueField);
 		}
 		else if (operator.equalsIgnoreCase("lt")) {
-			condition = dayDateField.lt(
-				DSL.field("{0} AT TIME ZONE 'UTC'", valueField));
+			condition = dayDateField.lt(valueField);
 		}
 
 		return condition;
@@ -177,6 +169,9 @@ public class ActivitiesFilterStringConverterHelper
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private IndividualRepository _individualRepository;
 
 	@Autowired
 	private SegmentDog _segmentDog;

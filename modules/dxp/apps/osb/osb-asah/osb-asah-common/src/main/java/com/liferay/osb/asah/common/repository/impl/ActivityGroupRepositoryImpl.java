@@ -25,6 +25,7 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -32,13 +33,7 @@ import org.springframework.data.domain.Pageable;
  */
 public class ActivityGroupRepositoryImpl extends BaseRepository {
 
-	public ActivityGroupRepositoryImpl(
-		ActivitiesFilterStringConverterHelper
-			activitiesFilterStringConverterHelper,
-		DSLContext dslContext) {
-
-		_activitiesFilterStringConverterHelper =
-			activitiesFilterStringConverterHelper;
+	public ActivityGroupRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
@@ -80,8 +75,10 @@ public class ActivityGroupRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	private final ActivitiesFilterStringConverterHelper
+	@Autowired
+	private ActivitiesFilterStringConverterHelper
 		_activitiesFilterStringConverterHelper;
+
 	private final DSLContext _dslContext;
 
 }
