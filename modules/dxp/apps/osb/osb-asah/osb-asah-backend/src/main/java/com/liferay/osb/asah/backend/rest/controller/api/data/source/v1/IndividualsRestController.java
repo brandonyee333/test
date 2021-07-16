@@ -20,12 +20,12 @@ import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsIndividualSegmentsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.ListUtil;
@@ -171,7 +171,8 @@ public class IndividualsRestController extends BaseRestController {
 			responseJSON = toCollectionGetResponse(
 				"individuals", null, fieldSortBuilders, page,
 				_individualDog.buildIndividualsQueryBuilder(
-					channelId, filterString, includeAnonymousUsers),
+					Long.valueOf(channelId), filterString,
+					includeAnonymousUsers),
 				size, newSorts.toArray(new String[0]));
 		}
 		else {
@@ -182,7 +183,8 @@ public class IndividualsRestController extends BaseRestController {
 					_membershipDog, _objectMapper, _segmentDog),
 				fieldSortBuilders, page,
 				_individualDog.buildIndividualsQueryBuilder(
-					channelId, filterString, includeAnonymousUsers),
+					Long.valueOf(channelId), filterString,
+					includeAnonymousUsers),
 				size, newSorts.toArray(new String[0]));
 		}
 
@@ -247,7 +249,7 @@ public class IndividualsRestController extends BaseRestController {
 		return toTransformationGetResponse(
 			"individuals", page,
 			_individualDog.buildIndividualsQueryBuilder(
-				channelId, filterString, includeAnonymousUsers),
+				Long.valueOf(channelId), filterString, includeAnonymousUsers),
 			size, null, null,
 			new TermsAggregationTransformationJSONArrayFunction(apply, null),
 			"individual-transformations");
