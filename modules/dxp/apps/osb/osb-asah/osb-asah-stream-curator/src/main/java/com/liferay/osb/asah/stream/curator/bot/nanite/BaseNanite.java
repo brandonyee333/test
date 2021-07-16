@@ -15,11 +15,11 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
@@ -49,8 +49,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 
 import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -322,22 +320,19 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 			return;
 		}
 
-		JSONObject individualJSONObject =
-			_individualDog.fetchIndividualJSONObject(
-				Long.valueOf(analyticsEvent.getDataSourceId()),
-				analyticsEvent.getUserId());
+		Individual individual = _individualDog.fetchIndividual(
+			Long.valueOf(analyticsEvent.getDataSourceId()),
+			analyticsEvent.getUserId());
 
-		if (individualJSONObject != null) {
-			model.setIndividualId(individualJSONObject.getString("id"));
+		if (individual != null) {
+			model.setIndividualId(String.valueOf(individual.getId()));
 			model.setKnownIndividual(
-				FaroInfoIndividualUtil.isKnownIndividual(individualJSONObject));
+				FaroInfoIndividualUtil.isKnownIndividual(individual));
 			model.setSegmentNames(
 				new HashSet<>(
 					_segmentDog.getSegmentNames(
 						Long.valueOf(analyticsEvent.getChannelId()),
-						JSONUtil.toLongSet(
-							individualJSONObject.getJSONArray(
-								"individualSegmentIds")))));
+						individual.getSegmentIds())));
 		}
 	}
 

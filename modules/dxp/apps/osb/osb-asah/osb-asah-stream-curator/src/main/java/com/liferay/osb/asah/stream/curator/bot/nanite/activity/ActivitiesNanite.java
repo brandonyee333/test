@@ -20,13 +20,14 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
@@ -639,24 +640,22 @@ public class ActivitiesNanite implements Nanite {
 		}
 
 		if ((ownerId != null) &&
-			_individualDog.existsIndividual(ownerId)) {
+			_individualDog.existsById(Long.valueOf(ownerId))) {
 
 			_ownerIds.put(ownerId, Long.valueOf(ownerId));
 
 			return Long.valueOf(ownerId);
 		}
 
-		JSONObject individualJSONObject =
-			_individualDog.fetchIndividualJSONObject(
-				Long.valueOf(analyticsEvent.getDataSourceId()),
-				analyticsEvent.getUserId());
+		Individual individual = _individualDog.fetchIndividual(
+			Long.valueOf(analyticsEvent.getDataSourceId()),
+			analyticsEvent.getUserId());
 
-		if (individualJSONObject != null) {
+		if (individual != null) {
 			_ownerIds.put(
-				individualJSONObject.getString("id"),
-				individualJSONObject.getLong("id"));
+				String.valueOf(individual.getId()), individual.getId());
 
-			return individualJSONObject.getLong("id");
+			return individual.getId();
 		}
 
 		throw new IllegalStateException(
@@ -822,11 +821,11 @@ public class ActivitiesNanite implements Nanite {
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
 
-	@Autowired
-	private IndividualDog _individualDog;
-
 	private final Cache<String, TreeMap<Date, JSONObject>> _formViewedActivies =
 		NaniteUtil.createCache();
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private MessageBus _messageBus;

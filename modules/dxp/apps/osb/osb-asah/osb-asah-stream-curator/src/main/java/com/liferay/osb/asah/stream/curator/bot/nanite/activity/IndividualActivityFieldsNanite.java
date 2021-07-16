@@ -15,12 +15,12 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.activity;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -29,6 +29,8 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -79,15 +81,11 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		}
 	}
 
-	private JSONArray _getActivitiesCountsJSONArray(
-		Map<String, Long> channelIdsCounts, JSONObject individualJSONObject) {
+	private Set<Individual.ActivitiesCount> _getActivitiesCounts(
+		Map<String, Long> channelIdsCounts, Individual individual) {
 
-		JSONArray activitiesCountsJSONArray = individualJSONObject.optJSONArray(
-			"activitiesCounts");
-
-		if (activitiesCountsJSONArray == null) {
-			activitiesCountsJSONArray = new JSONArray();
-		}
+		Set<Individual.ActivitiesCount> activitiesCounts =
+			individual.getActivitiesCounts();
 
 		for (Map.Entry<String, Long> channelIdEntry :
 				channelIdsCounts.entrySet()) {
@@ -95,32 +93,45 @@ public class IndividualActivityFieldsNanite implements Nanite {
 			String channelId = channelIdEntry.getKey();
 			long count = channelIdEntry.getValue();
 
-			JSONObject channelCountJSONObject = JSONUtil.find(
-				activitiesCountsJSONArray, "channelId", channelId);
+			Stream<Individual.ActivitiesCount> stream =
+				activitiesCounts.stream();
 
-			if (channelCountJSONObject == null) {
-				channelCountJSONObject = JSONUtil.put("channelId", channelId);
+			Individual.ActivitiesCount individualActivitiesCount =
+				stream.filter(
+					activitiesCount -> Objects.equals(
+						Long.valueOf(channelId), activitiesCount.getChannelId())
+				).findFirst(
+				).orElse(
+					null
+				);
 
-				activitiesCountsJSONArray.put(channelCountJSONObject);
+			if (individualActivitiesCount == null) {
+				individualActivitiesCount = new Individual.ActivitiesCount();
+
+				individualActivitiesCount.setChannelId(Long.valueOf(channelId));
+
+				activitiesCounts.add(individualActivitiesCount);
 			}
 
-			count += channelCountJSONObject.optLong("activitiesCount", 0);
+			if (Objects.isNull(
+					individualActivitiesCount.getActivitiesCount())) {
 
-			channelCountJSONObject.put("activitiesCount", count);
+				individualActivitiesCount.setActivitiesCount(0L);
+			}
+
+			count += individualActivitiesCount.getActivitiesCount();
+
+			individualActivitiesCount.setActivitiesCount(count);
 		}
 
-		return activitiesCountsJSONArray;
+		return activitiesCounts;
 	}
 
-	private JSONArray _getLastActivityDatesJSONArray(
-		Map<String, Long> channelIdsCounts, JSONObject individualJSONObject) {
+	private Set<Individual.LastActivityDate> _getLastActivityDates(
+		Map<String, Long> channelIdsCounts, Individual individual) {
 
-		JSONArray lastActivityDatesJSONArray =
-			individualJSONObject.optJSONArray("lastActivityDates");
-
-		if (lastActivityDatesJSONArray == null) {
-			lastActivityDatesJSONArray = new JSONArray();
-		}
+		Set<Individual.LastActivityDate> lastActivityDates =
+			individual.getLastActivityDates();
 
 		for (String channelId : channelIdsCounts.keySet()) {
 			JSONArray activitiesJSONArray = new JSONArray(
@@ -130,7 +141,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 						searchSourceBuilder.query(
 							BoolQueryBuilderUtil.filter(
 								_faroInfoActivityDog.getEventsQueryBuilder(
-									individualJSONObject.getString("id"))
+									String.valueOf(individual.getId()))
 							).filter(
 								QueryBuilders.termQuery("channelId", channelId)
 							));
@@ -147,22 +158,33 @@ public class IndividualActivityFieldsNanite implements Nanite {
 			JSONObject activityJSONObject = activitiesJSONArray.getJSONObject(
 				0);
 
-			JSONObject channelLastActivityDateJSONObject = JSONUtil.find(
-				lastActivityDatesJSONArray, "channelId", channelId);
+			Stream<Individual.LastActivityDate> stream =
+				lastActivityDates.stream();
 
-			if (channelLastActivityDateJSONObject == null) {
-				channelLastActivityDateJSONObject = JSONUtil.put(
-					"channelId", channelId);
+			Individual.LastActivityDate individualLastActivityDate =
+				stream.filter(
+					lastActivityDate -> Objects.equals(
+						Long.valueOf(channelId),
+						lastActivityDate.getChannelId())
+				).findFirst(
+				).orElse(
+					null
+				);
 
-				lastActivityDatesJSONArray.put(
-					channelLastActivityDateJSONObject);
+			if (individualLastActivityDate == null) {
+				individualLastActivityDate = new Individual.LastActivityDate();
+
+				individualLastActivityDate.setChannelId(
+					Long.valueOf(channelId));
+
+				lastActivityDates.add(individualLastActivityDate);
 			}
 
-			channelLastActivityDateJSONObject.put(
-				"lastActivityDate", activityJSONObject.getString("endTime"));
+			individualLastActivityDate.setLastActivityDate(
+				DateUtil.toUTCDate(activityJSONObject.getString("endTime")));
 		}
 
-		return lastActivityDatesJSONArray;
+		return lastActivityDates;
 	}
 
 	private void _run(String projectId, List<JSONObject> messages) {
@@ -173,44 +195,30 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 			Map<String, Map<String, Long>> ownerIdCounts = stream.collect(
 				Collectors.groupingBy(
-					jsonObject -> jsonObject.getString("ownerId"),
+					jsonObject -> String.valueOf(jsonObject.get("ownerId")),
 					Collectors.groupingBy(
-						jsonObject -> jsonObject.getString("channelId"),
+						jsonObject -> String.valueOf(
+							jsonObject.get("channelId")),
 						Collectors.counting())));
-
-			ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-				_faroInfoElasticsearchInvoker.
-					createElasticsearchBulkRequestBuilder();
 
 			for (Map.Entry<String, Map<String, Long>> ownerIdEntry :
 					ownerIdCounts.entrySet()) {
 
 				String ownerId = ownerIdEntry.getKey();
 
-				JSONObject individualJSONObject =
-					_faroInfoElasticsearchInvoker.fetch("individuals", ownerId);
+				Individual individual = _individualDog.fetchIndividual(
+					Long.valueOf(ownerId));
 
-				if (individualJSONObject == null) {
+				if (individual == null) {
 					continue;
 				}
 
-				elasticsearchBulkRequestBuilder.update(
-					"individuals",
-					JSONUtil.put(
-						"activitiesCounts",
-						_getActivitiesCountsJSONArray(
-							ownerIdEntry.getValue(), individualJSONObject)
-					).put(
-						"id", ownerId
-					).put(
-						"lastActivityDates",
-						_getLastActivityDatesJSONArray(
-							ownerIdEntry.getValue(), individualJSONObject)
-					));
-			}
+				individual.setActivitiesCounts(
+					_getActivitiesCounts(ownerIdEntry.getValue(), individual));
+				individual.setLastActivityDates(
+					_getLastActivityDates(ownerIdEntry.getValue(), individual));
 
-			if (elasticsearchBulkRequestBuilder.hasActions()) {
-				elasticsearchBulkRequestBuilder.get();
+				_individualDog.updateIndividual(individual);
 			}
 		}
 		finally {
@@ -223,6 +231,9 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@MessageSubscriber.Autowired(channel = Channel.ACTIVE_INDIVIDUAL_IDS)
 	private MessageSubscriber _messageSubscriber;

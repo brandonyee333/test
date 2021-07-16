@@ -17,14 +17,17 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.individual;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.FieldDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
@@ -43,13 +46,18 @@ import java.security.MessageDigest;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -57,7 +65,6 @@ import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,20 +126,18 @@ public class IndividualNanite implements Nanite {
 					Long channelId = JSONUtil.optLong(
 						null, messageJSONObject, "channelId");
 
-					JSONObject individualJSONObject = _updateIndividual(
-						messageJSONObject.getJSONObject("analyticsData"),
+					Individual individual = _updateIndividual(
 						channelId, messageJSONObject.getLong("dataSourceId"),
 						emailAddressHashed,
 						messageJSONObject.getString("userId"));
 
 					_updatePagesAndAssets(
 						channelId, messageJSONObject.getLong("dataSourceId"),
-						individualJSONObject,
-						messageJSONObject.getString("userId"));
+						individual, messageJSONObject.getString("userId"));
 
 					_updateUserSessions(
 						messageJSONObject.getLong("dataSourceId"),
-						individualJSONObject.getString("id"),
+						individual.getId(),
 						messageJSONObject.getString("userId"));
 				}
 
@@ -147,97 +152,114 @@ public class IndividualNanite implements Nanite {
 		}
 	}
 
-	private List<String> _fetchIndividualSegmentNames(
-		Long channelId, String individualId) {
+	private Set<Individual.ActivitiesCount> _mergeActivitiesCounts(
+		Set<Individual.ActivitiesCount> activitiesCounts1,
+		Set<Individual.ActivitiesCount> activitiesCounts2) {
 
-		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"individuals", individualId);
-
-		if (individualJSONObject == null) {
-			return Collections.emptyList();
+		if (CollectionUtils.isEmpty(activitiesCounts1)) {
+			activitiesCounts1 = Collections.emptySet();
 		}
 
-		return _segmentDog.getSegmentNames(
-			channelId,
-			JSONUtil.toLongSet(
-				individualJSONObject.getJSONArray("individualSegmentIds")));
-	}
-
-	private JSONArray _mergeActivitiesCounts(
-		JSONArray activitiesCountsJSONArray1,
-		JSONArray activitiesCountsJSONArray2) {
-
-		if (activitiesCountsJSONArray1 == null) {
-			activitiesCountsJSONArray1 = new JSONArray();
+		if (CollectionUtils.isEmpty(activitiesCounts2)) {
+			activitiesCounts2 = Collections.emptySet();
 		}
 
-		if (activitiesCountsJSONArray2 == null) {
-			activitiesCountsJSONArray2 = new JSONArray();
+		Stream<Individual.ActivitiesCount> activitiesCounts1Stream =
+			activitiesCounts1.stream();
+
+		Map<Long, Long> activitiesCounts1Map = activitiesCounts1Stream.collect(
+			Collectors.toMap(
+				activitiesCount -> activitiesCount.getChannelId(),
+				activitiesCount -> activitiesCount.getActivitiesCount()));
+
+		Set<Map.Entry<Long, Long>> activitiesCounts1EntrySet =
+			activitiesCounts1Map.entrySet();
+
+		Stream<Individual.ActivitiesCount> activitiesCounts2Stream =
+			activitiesCounts2.stream();
+
+		Map<Long, Long> activitiesCounts2Map = activitiesCounts2Stream.collect(
+			Collectors.toMap(
+				activitiesCount -> activitiesCount.getChannelId(),
+				activitiesCount -> activitiesCount.getActivitiesCount()));
+
+		Set<Map.Entry<Long, Long>> activitiesCounts2EntrySet =
+			activitiesCounts2Map.entrySet();
+
+		Map<Long, Long> mergedActivitiesCounts = Stream.concat(
+			activitiesCounts1EntrySet.stream(),
+			activitiesCounts2EntrySet.stream()
+		).collect(
+			Collectors.toMap(
+				Map.Entry::getKey, Map.Entry::getValue,
+				(activityCount1, activityCount2) ->
+					activityCount1 + activityCount2)
+		);
+
+		Set<Individual.ActivitiesCount> individualActivitiesCounts =
+			new HashSet<>();
+
+		for (Map.Entry<Long, Long> entry : mergedActivitiesCounts.entrySet()) {
+			individualActivitiesCounts.add(
+				new Individual.ActivitiesCount(
+					entry.getValue(), entry.getKey()));
 		}
 
-		for (int i = 0; i < activitiesCountsJSONArray1.length(); i++) {
-			JSONObject activitiesCountJSONObject1 =
-				activitiesCountsJSONArray1.getJSONObject(i);
-
-			JSONObject activitiesCountJSONObject2 = JSONUtil.find(
-				activitiesCountsJSONArray2, "channelId",
-				activitiesCountJSONObject1.get("channelId"));
-
-			if (activitiesCountJSONObject2 == null) {
-				continue;
-			}
-
-			long count =
-				activitiesCountJSONObject1.optLong("activitiesCount", 0) +
-					activitiesCountJSONObject2.optLong("activitiesCount", 0);
-
-			activitiesCountJSONObject1.put("activitiesCount", count);
-
-			JSONUtil.removeValue(
-				activitiesCountsJSONArray2, activitiesCountJSONObject2);
-		}
-
-		for (int i = 0; i < activitiesCountsJSONArray2.length(); i++) {
-			activitiesCountsJSONArray1.put(activitiesCountsJSONArray2.get(i));
-		}
-
-		return activitiesCountsJSONArray1;
+		return individualActivitiesCounts;
 	}
 
 	private void _mergeIndividual(
-			JSONObject analyticsDataJSONObject,
-			JSONObject anonymousIndividualJSONObject, Long dataSourceId,
-			JSONObject knownIndividualJSONObject, String userId)
-		throws Exception {
+		Individual anonymousIndividual, Long dataSourceId,
+		Individual knownIndividual, String userId) {
 
 		_individualDog.addDataSourceIndividualPK(
-			userId, dataSourceId, "LIFERAY", knownIndividualJSONObject);
+			userId, dataSourceId, knownIndividual);
 
-		String dateString = DateUtil.newDateString();
+		knownIndividual = _individualDog.fetchIndividual(
+			knownIndividual.getId());
 
-		knownIndividualJSONObject.put(
-			"activitiesCounts",
+		Set<Individual.ActivitiesCount> knownIndividualActivitiesCounts =
+			knownIndividual.getActivitiesCounts();
+
+		Set<Individual.ActivitiesCount> anonymousIndividualActivitiesCounts =
+			anonymousIndividual.getActivitiesCounts();
+
+		knownIndividual.setActivitiesCounts(
 			_mergeActivitiesCounts(
-				anonymousIndividualJSONObject.optJSONArray("activitiesCounts"),
-				knownIndividualJSONObject.optJSONArray("activitiesCounts"))
-		).put(
-			"analyticsData", analyticsDataJSONObject
-		).put(
-			"dateModified", dateString
-		).put(
-			"lastEnrichmentDate", dateString
-		);
+				anonymousIndividualActivitiesCounts,
+				knownIndividualActivitiesCounts));
+
+		Set<IndividualChannel> individualChannels = new HashSet<>();
+
+		for (Individual.ActivitiesCount activitiesCount :
+				knownIndividual.getActivitiesCounts()) {
+
+			IndividualChannel individualChannel = new IndividualChannel();
+
+			individualChannel.setActivitiesCount(
+				activitiesCount.getActivitiesCount());
+			individualChannel.setChannelId(activitiesCount.getChannelId());
+			individualChannel.setIndividualId(knownIndividual.getId());
+
+			individualChannels.add(individualChannel);
+		}
+
+		knownIndividual.setIndividualChannels(individualChannels);
+
+		Date date = new Date();
+
+		knownIndividual.setLastEnrichmentDate(date);
+		knownIndividual.setModifiedDate(date);
 
 		_individualDog.updateIndividual(
-			knownIndividualJSONObject.getString("id"),
-			knownIndividualJSONObject, false);
+			knownIndividual.getId(), knownIndividual, false);
 
 		_individualDog.deleteIndividual(
-			new Date(), anonymousIndividualJSONObject.getString("id"));
+			new Date(), anonymousIndividual.getId());
 	}
 
 	private void _updateActivitiesAndActivityGroups(
-			JSONObject individualJSONObject, String userId)
+			Individual individual, String userId)
 		throws Exception {
 
 		JSONArrayIterator.of(
@@ -245,7 +267,7 @@ public class IndividualNanite implements Nanite {
 			activityJSONObject -> {
 				try {
 					_faroInfoActivityDog.updateOwnerId(
-						activityJSONObject, individualJSONObject);
+						activityJSONObject, individual);
 				}
 				catch (Exception exception) {
 					return exception;
@@ -257,41 +279,32 @@ public class IndividualNanite implements Nanite {
 			QueryBuilders.termQuery("userId", userId)
 		).iterate();
 
-		_activityGroupDog.updateActivityGroup(
-			individualJSONObject.getLong("id"), userId);
+		_activityGroupDog.updateActivityGroup(individual.getId(), userId);
 	}
 
-	private JSONObject _updateIndividual(
-			JSONObject analyticsDataJSONObject, Long channelId,
-			Long dataSourceId, String emailAddressHashed, String userId)
+	private Individual _updateIndividual(
+			Long channelId, Long dataSourceId, String emailAddressHashed,
+			String userId)
 		throws Exception {
 
-		JSONObject individualJSONObject1 =
-			_individualDog.fetchIndividualJSONObject(
-				dataSourceId, userId);
+		Individual individual1 = _individualDog.fetchIndividual(
+			dataSourceId, userId);
 
-		if ((individualJSONObject1 != null) &&
+		if ((individual1 != null) &&
 			Objects.equals(
-				individualJSONObject1.optString("emailAddressHashed"),
-				emailAddressHashed)) {
+				individual1.getEmailAddressHashed(), emailAddressHashed)) {
 
-			return individualJSONObject1;
+			return individual1;
 		}
 
-		JSONObject individualJSONObject2 = _faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.termQuery("emailAddressHashed", emailAddressHashed));
+		Individual individual2 =
+			_individualDog.fetchIndividualByEmailAddressHashed(
+				emailAddressHashed);
 
-		if ((individualJSONObject1 != null) &&
-			(individualJSONObject2 != null)) {
-
-			_mergeIndividual(
-				analyticsDataJSONObject, individualJSONObject1, dataSourceId,
-				individualJSONObject2, userId);
+		if ((individual1 != null) && (individual2 != null)) {
+			_mergeIndividual(individual1, dataSourceId, individual2, userId);
 		}
-		else if ((individualJSONObject1 == null) &&
-				 (individualJSONObject2 == null)) {
-
+		else if ((individual1 == null) && (individual2 == null)) {
 			DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
 
 			if (Objects.isNull(channelId)) {
@@ -299,50 +312,37 @@ public class IndividualNanite implements Nanite {
 			}
 
 			return _individualDog.addIndividual(
-				analyticsDataJSONObject, channelId, dataSource,
-				emailAddressHashed, userId);
+				channelId, dataSource, emailAddressHashed, userId);
 		}
 		else {
 			DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
 
-			if (individualJSONObject1 == null) {
-				individualJSONObject1 = individualJSONObject2;
+			if (individual1 == null) {
+				individual1 = individual2;
 			}
 
 			_individualDog.addDataSourceIndividualPK(
-				userId, dataSource.getId(), dataSource.getProviderType(),
-				individualJSONObject1);
+				userId, dataSource.getId(), individual1);
 
-			individualJSONObject2 = _updateIndividual(
-				analyticsDataJSONObject, emailAddressHashed,
-				individualJSONObject1);
+			individual2 = _updateIndividual(emailAddressHashed, individual1);
 		}
 
-		_updateActivitiesAndActivityGroups(individualJSONObject2, userId);
+		_updateActivitiesAndActivityGroups(individual2, userId);
 
-		return individualJSONObject2;
+		return individual2;
 	}
 
-	private JSONObject _updateIndividual(
-		JSONObject analyticsDataJSONObject, String emailAddressHashed,
-		JSONObject individualJSONObject) {
+	private Individual _updateIndividual(
+		String emailAddressHashed, Individual individual) {
 
-		String dateString = DateUtil.newDateString();
+		individual.setEmailAddressHashed(emailAddressHashed);
+		individual.setModifiedDate(new Date());
 
-		return _individualDog.updateIndividual(
-			individualJSONObject.getString("id"),
-			individualJSONObject.put(
-				"analyticsData", analyticsDataJSONObject
-			).put(
-				"dateModified", dateString
-			).put(
-				"emailAddressHashed", emailAddressHashed
-			),
-			false);
+		return _individualDog.updateIndividual(individual);
 	}
 
 	private void _updatePagesAndAssets(
-		Long channelId, Long dataSourceId, JSONObject individualJSONObject,
+		Long channelId, Long dataSourceId, Individual individual,
 		String userId) {
 
 		StringBuilder sb = new StringBuilder();
@@ -351,21 +351,14 @@ public class IndividualNanite implements Nanite {
 
 		Map<String, Object> params = new HashMap<>();
 
-		String individualId = individualJSONObject.getString("id");
+		params.put("individualId", String.valueOf(individual.getId()));
 
-		params.put("individualId", individualId);
-
-		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
-			"demographics");
-
-		if ((demographicsJSONObject != null) &&
-			demographicsJSONObject.has("email")) {
-
+		if (_fieldDog.isKnownIndividual(individual)) {
 			sb.append("ctx._source.knownIndividual = true;");
 		}
 
-		List<String> segmentNames = _fetchIndividualSegmentNames(
-			channelId, individualId);
+		List<String> segmentNames = _segmentDog.getSegmentNames(
+			channelId, individual.getSegmentIds());
 
 		if (!segmentNames.isEmpty()) {
 			sb.append("ctx._source.segmentNames = params.segmentNames;");
@@ -394,12 +387,13 @@ public class IndividualNanite implements Nanite {
 	}
 
 	private void _updateUserSessions(
-		Long dataSourceId, String individualId, String userId) {
+		Long dataSourceId, Long individualId, String userId) {
 
 		Script script = new Script(
 			Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
 			"ctx._source.individualId = params.individualId;",
-			Collections.singletonMap("individualId", individualId));
+			Collections.singletonMap(
+				"individualId", String.valueOf(individualId)));
 
 		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
 			BoolQueryBuilderUtil.filter(
@@ -441,6 +435,9 @@ public class IndividualNanite implements Nanite {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FieldDog _fieldDog;
 
 	@Autowired
 	private IndividualDog _individualDog;

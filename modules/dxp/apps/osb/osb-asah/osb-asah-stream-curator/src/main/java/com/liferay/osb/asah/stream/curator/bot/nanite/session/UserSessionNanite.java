@@ -18,11 +18,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
-import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.Acquisition;
@@ -152,11 +153,10 @@ public class UserSessionNanite implements Nanite {
 		userSession.setEntryPage(url);
 		userSession.setFirstEventDate(firstAnalyticsEvent.getEventDate());
 
-		JSONObject individualJSONObject = _fetchIndividualJSONObject(
-			firstAnalyticsEvent);
+		Individual individual = _fetchIndividual(firstAnalyticsEvent);
 
-		if (individualJSONObject != null) {
-			userSession.setIndividualId(individualJSONObject.getString("id"));
+		if (individual != null) {
+			userSession.setIndividualId(String.valueOf(individual.getId()));
 		}
 
 		userSession.setInteractionsCount(
@@ -189,16 +189,14 @@ public class UserSessionNanite implements Nanite {
 		}
 	}
 
-	private JSONObject _fetchIndividualJSONObject(
-		AnalyticsEvent analyticsEvent) {
-
+	private Individual _fetchIndividual(AnalyticsEvent analyticsEvent) {
 		if ((analyticsEvent.getDataSourceId() == null) ||
 			(analyticsEvent.getUserId() == null)) {
 
 			return null;
 		}
 
-		return _individualDog.fetchIndividualJSONObject(
+		return _individualDog.fetchIndividual(
 			Long.valueOf(analyticsEvent.getDataSourceId()),
 			analyticsEvent.getUserId());
 	}
@@ -530,10 +528,10 @@ public class UserSessionNanite implements Nanite {
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
-	private IndividualDog _individualDog;
+	private FinalizeUserSessionArm _finalizeUserSessionArm;
 
 	@Autowired
-	private FinalizeUserSessionArm _finalizeUserSessionArm;
+	private IndividualDog _individualDog;
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_SESSION)
 	private MessageSubscriber _messageSubscriber;
