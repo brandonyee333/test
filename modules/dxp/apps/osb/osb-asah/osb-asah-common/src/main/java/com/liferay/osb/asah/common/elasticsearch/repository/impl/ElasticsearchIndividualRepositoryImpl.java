@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -112,8 +113,6 @@ public class ElasticsearchIndividualRepositoryImpl
 	public List<Individual.ActivitiesCount> findActivitiesCounts(
 		boolean includeAnonymousUsers, Long segmentId) {
 
-		JSONArray jsonArray = new JSONArray();
-
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			"individuals",
 			searchSourceBuilder -> {
@@ -141,6 +140,12 @@ public class ElasticsearchIndividualRepositoryImpl
 			});
 
 		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (aggregations == null) {
+			return Collections.emptyList();
+		}
+
+		JSONArray jsonArray = new JSONArray();
 
 		InternalNested internalNested = aggregations.get("activitiesCounts");
 
@@ -311,8 +316,6 @@ public class ElasticsearchIndividualRepositoryImpl
 	public Map<Long, Long> findIndividualCounts(
 		boolean includeAnonymousUsers, Long segmentId) {
 
-		Map<Long, Long> individualCounts = new HashMap<>();
-
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			"individuals",
 			searchSourceBuilder -> {
@@ -330,6 +333,12 @@ public class ElasticsearchIndividualRepositoryImpl
 			});
 
 		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (aggregations == null) {
+			return Collections.emptyMap();
+		}
+
+		Map<Long, Long> individualCounts = new HashMap<>();
 
 		Terms terms = aggregations.get("channelIds");
 
@@ -353,13 +362,16 @@ public class ElasticsearchIndividualRepositoryImpl
 			JSONArray activitiesCountsJSONArray = new JSONArray();
 
 			for (Individual.ActivitiesCount activityCount : activitiesCounts) {
-				activitiesCountsJSONArray.put(
-					JSONUtil.put(
-						"activitiesCount", activityCount.getActivitiesCount()
-					).put(
-						"channelId",
-						String.valueOf(activityCount.getChannelId())
-					));
+				if (!Objects.isNull(activityCount.getActivitiesCount())) {
+					activitiesCountsJSONArray.put(
+						JSONUtil.put(
+							"activitiesCount",
+							activityCount.getActivitiesCount()
+						).put(
+							"channelId",
+							String.valueOf(activityCount.getChannelId())
+						));
+				}
 			}
 
 			jsonObject.put("activitiesCounts", activitiesCountsJSONArray);
@@ -459,15 +471,17 @@ public class ElasticsearchIndividualRepositoryImpl
 			for (Individual.LastActivityDate lastActivityDate :
 					lastActivityDates) {
 
-				lastActivityDatesJSONArray.put(
-					JSONUtil.put(
-						"channelId",
-						String.valueOf(lastActivityDate.getChannelId())
-					).put(
-						"lastActivityDate",
-						DateUtil.toUTCString(
-							lastActivityDate.getLastActivityDate())
-					));
+				if (!Objects.isNull(lastActivityDate.getLastActivityDate())) {
+					lastActivityDatesJSONArray.put(
+						JSONUtil.put(
+							"channelId",
+							String.valueOf(lastActivityDate.getChannelId())
+						).put(
+							"lastActivityDate",
+							DateUtil.toUTCString(
+								lastActivityDate.getLastActivityDate())
+						));
+				}
 			}
 
 			jsonObject.put("lastActivityDates", lastActivityDatesJSONArray);
@@ -505,6 +519,9 @@ public class ElasticsearchIndividualRepositoryImpl
 
 			jsonObject.put("custom", customJSONObject);
 		}
+		else {
+			jsonObject.remove("custom");
+		}
 
 		Set<Field> fields = individual.getFields();
 
@@ -525,13 +542,12 @@ public class ElasticsearchIndividualRepositoryImpl
 
 			jsonObject.put("demographics", demographicsJSONObject);
 		}
-
-		if (CollectionUtils.isNotEmpty(customFields) ||
-			CollectionUtils.isNotEmpty(fields)) {
-
-			jsonObject = _faroInfoElasticsearchInvoker.update(
-				getCollectionName(), jsonObject);
+		else {
+			jsonObject.remove("demographics");
 		}
+
+		jsonObject = _faroInfoElasticsearchInvoker.replace(
+			getCollectionName(), jsonObject);
 
 		return (S)toEntity(jsonObject);
 	}
