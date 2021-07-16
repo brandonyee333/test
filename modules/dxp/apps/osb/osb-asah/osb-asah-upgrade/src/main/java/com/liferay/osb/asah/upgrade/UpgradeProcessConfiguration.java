@@ -53,12 +53,17 @@ public class UpgradeProcessConfiguration {
 			_asahMarkerUpgradeStep, _runLogUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.12.0", "2.12.2", _activityGroupsUpgradeStep,
-			_individualActivitiesUpgradeStep);
+			"2.12.0", "2.12.1",
+			version -> {
+			});
+
+		upgradeProcess.addUpgradeSteps(
+			"2.12.1", "2.12.2", _activityGroupsUpgradeStep,
+			_individualActivitiesUpgradeStep, _pagesUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
 			"2.12.2", "2.13.0", _dataSourcesUpgradeStep, _channelsUpgradeStep,
-			_pagesUpgradeStep, _salesforceUpgradeStep);
+			_salesforceUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
 			"2.13.0", "3.0.0", _customEventUpgradeStep,
