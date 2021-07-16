@@ -141,8 +141,15 @@ public class DataSourcesRestControllerTest {
 		Assert.assertTrue(
 			_faroInfoElasticsearchInvoker.exists(
 				"activities", activityJSONObject.getString("id")));
-		Assert.assertTrue(
-			_activityGroupRepository.existsById(activityGroup.getId()));
+
+		Long activityGroupId = activityGroup.getId();
+
+		if (activityGroupId == null) {
+			activityGroupId = 0L;
+		}
+
+		Assert.assertTrue(_activityGroupRepository.existsById(activityGroupId));
+
 		Assert.assertTrue(
 			_faroInfoElasticsearchInvoker.exists(
 				"assets", assetJSONObject.getString("id")));

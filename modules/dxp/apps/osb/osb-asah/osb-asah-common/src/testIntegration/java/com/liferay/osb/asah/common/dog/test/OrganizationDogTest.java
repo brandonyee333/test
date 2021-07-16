@@ -32,14 +32,13 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.DXPRawTestUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
-
-import org.apache.commons.lang.RandomStringUtils;
 
 import org.json.JSONObject;
 
@@ -62,8 +61,7 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 	public void setUp() {
 		_liferayDataSource = FaroInfoTestUtil.buildLiferayDataSource();
 
-		_liferayDataSource.setId(
-			Long.parseLong(RandomStringUtils.randomNumeric(4)));
+		_liferayDataSource.setId(RandomTestUtil.randomNumber());
 
 		_fieldMappingRepository.save(
 			FaroInfoTestUtil.buildFieldMapping(

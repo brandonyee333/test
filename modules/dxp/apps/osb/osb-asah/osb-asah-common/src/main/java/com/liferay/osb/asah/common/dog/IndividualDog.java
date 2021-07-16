@@ -211,7 +211,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 				));
 		}
 
-		return fetchIndividual(individual.getId());
+		return populateIndividual(individual);
 	}
 
 	public Individual addIndividual(
@@ -369,27 +369,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 			individual);
 	}
 
-	public JSONObject addIndividualSegmentId(
-		Long individualId, Long individualSegmentId) {
-
-		JSONObject individualJSONObject = elasticsearchInvoker.fetch(
-			"individuals", String.valueOf(individualId));
-
-		if (individualJSONObject == null) {
-			return null;
-		}
-
-		JSONArray individualSegmentIdsJSONArray =
-			individualJSONObject.getJSONArray("individualSegmentIds");
-
-		individualSegmentIdsJSONArray.put(String.valueOf(individualSegmentId));
-
-		return elasticsearchInvoker.update(
-			"individuals", individualJSONObject.getString("id"),
-			JSONUtil.put(
-				"individualSegmentIds", individualSegmentIdsJSONArray));
-	}
-
 	public void addIndividualSegmentIds(
 		List<Long> individualIds, Long individualSegmentId) {
 
@@ -472,6 +451,12 @@ public class IndividualDog extends BaseFaroInfoDog {
 			return null;
 		}
 
+		Long individualId = individual.getId();
+
+		if (individualId == null) {
+			return individual;
+		}
+
 		Set<Long> ids = new HashSet<>();
 
 		if (dxpEntityType.isGroup()) {
@@ -504,9 +489,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 		ids.removeAll(associatedIds);
 
 		_individualRepository.updateAssociatedIds(
-			dxpEntityType.getIndividualFieldName(), ids, individual.getId());
+			dxpEntityType.getIndividualFieldName(), ids, individualId);
 
-		return fetchIndividual(individual.getId());
+		return fetchIndividual(individualId);
 	}
 
 	public boolean existsByChannelIdAndFilterStringAndId(
@@ -771,6 +756,12 @@ public class IndividualDog extends BaseFaroInfoDog {
 			return null;
 		}
 
+		Long individualId = individual.getId();
+
+		if (individualId == null) {
+			return individual;
+		}
+
 		Set<Long> segmentIds = individual.getSegmentIds();
 
 		Iterator<Long> iterator = segmentIds.iterator();
@@ -783,7 +774,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			}
 		}
 
-		return updateIndividual(individual.getId(), individual, false);
+		return updateIndividual(individualId, individual, false);
 	}
 
 	public Individual removeSegmentId(Long individualId, Long segmentId) {
@@ -838,9 +829,15 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	public Individual updateIndividual(Individual individual) {
-		_individualRepository.save(individual);
+		individual = _individualRepository.save(individual);
 
-		return fetchIndividual(individual.getId());
+		Long individualId = individual.getId();
+
+		if (individualId == null) {
+			return individual;
+		}
+
+		return fetchIndividual(individualId);
 	}
 
 	public Individual updateIndividual(
@@ -893,10 +890,15 @@ public class IndividualDog extends BaseFaroInfoDog {
 			Individual individual)
 		throws Exception {
 
-		Long dataSourceId = dataSource.getId();
 		Long individualId = individual.getId();
 
-		if ((dataId != null) && !dataId.equals(individualId)) {
+		if (individualId == null) {
+			return individual;
+		}
+
+		Long dataSourceId = dataSource.getId();
+
+		if ((dataId != null) && !dataId.equals(String.valueOf(individualId))) {
 			addDataSourceIndividualPK(dataId, dataSourceId, individual);
 		}
 
@@ -919,7 +921,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		}
 
 		List<Field> previousFields = _fieldDog.getOwnerIdFields(
-			"demographics", individual.getId());
+			"demographics", individualId);
 
 		_fieldDog.updateFields(
 			"custom", dataJSONObject, dataSource, individual, "individual",
@@ -931,7 +933,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		List<Field> fields =
 			_fieldRepository.
 				findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
-					"demographics", individual.getId());
+					"demographics", individualId);
 
 		Stream<Field> stream = fields.stream();
 
@@ -943,7 +945,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		List<Field> emailFields =
 			_fieldRepository.findByContextAndNameAndOwnerIdAndOwnerType(
-				"demographics", "email", individual.getId(), "individual");
+				"demographics", "email", individualId, "individual");
 
 		if (emailFields.isEmpty()) {
 			deleteIndividual(new Date(), individualId);
@@ -951,7 +953,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			return null;
 		}
 
-		String oldIndividualName = getIndividualName(individual.getId());
+		String oldIndividualName = getIndividualName(individualId);
 
 		Individual partialIndividual = new Individual();
 
@@ -985,7 +987,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 			_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
 				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("individualId", individual.getId())
+					QueryBuilders.termQuery("individualId", individualId)
 				).filter(
 					BoolQueryBuilderUtil.shouldNot(
 						QueryBuilders.existsQuery("knownIndividual")
@@ -1013,8 +1015,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 	private void _individualModified(
 		Individual individual, String oldIndividualName) {
 
-		Long individualId = individual.getId();
-
 		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
@@ -1030,7 +1030,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		if (!Objects.equals(oldIndividualName, newIndividualName)) {
 			_membershipChangeDog.updateIndividualNameForIndividual(
-				individualId, newIndividualName);
+				individual.getId(), newIndividualName);
 		}
 	}
 

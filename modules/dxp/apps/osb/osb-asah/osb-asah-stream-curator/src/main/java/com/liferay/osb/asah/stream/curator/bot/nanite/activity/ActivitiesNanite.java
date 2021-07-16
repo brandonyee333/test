@@ -652,10 +652,15 @@ public class ActivitiesNanite implements Nanite {
 			analyticsEvent.getUserId());
 
 		if (individual != null) {
-			_ownerIds.put(
-				String.valueOf(individual.getId()), individual.getId());
+			Long individualId = individual.getId();
 
-			return individual.getId();
+			if (individualId == null) {
+				return null;
+			}
+
+			_ownerIds.put(String.valueOf(individualId), individualId);
+
+			return individualId;
 		}
 
 		throw new IllegalStateException(

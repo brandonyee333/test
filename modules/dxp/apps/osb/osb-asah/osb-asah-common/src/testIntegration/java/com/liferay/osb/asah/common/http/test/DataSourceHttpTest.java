@@ -264,10 +264,16 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_dataSourceDog.deleteDataSource(dataSource);
 
+		Long individualId = individual.getId();
+
+		if (individualId == null) {
+			individualId = 0L;
+		}
+
 		Assert.assertFalse(
 			"Individual was not deleted on data source deletion despite only " +
 				"containing fields from the deleted data source",
-			_individualRepository.existsById(individual.getId()));
+			_individualRepository.existsById(individualId));
 	}
 
 	@Test
@@ -448,17 +454,23 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_dataSourceDog.deleteDataSource(dataSource2);
 
+		Long individualId = individual.getId();
+
+		if (individualId == null) {
+			individualId = 0L;
+		}
+
 		Assert.assertTrue(
 			"Individual was deleted even though another data source with " +
 				"data on the individual exists",
-			_individualRepository.existsById(individual.getId()));
+			_individualRepository.existsById(individualId));
 
-		individual = _individualDog.fetchIndividual(individual.getId());
+		individual = _individualDog.fetchIndividual(individualId);
 
 		Assert.assertFalse(
 			"Data source individual PK was not deleted on data source deletion",
 			_individualDog.existsByDataSourceIndividualPK(
-				dataSourceId2, individual.getId()));
+				dataSourceId2, individualId));
 
 		Set<Field> fields = individual.getFields();
 
@@ -679,7 +691,15 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	}
 
 	private void _addActivityAndUserToLiferayDataSource(DataSource dataSource) {
+		if (dataSource == null) {
+			return;
+		}
+
 		Long dataSourceId = dataSource.getId();
+
+		if (dataSourceId == null) {
+			return;
+		}
 
 		ActivityGroup activityGroup = FaroInfoTestUtil.buildActivityGroup(
 			dataSourceId,
@@ -698,7 +718,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		DXPEntity dxpEntity = new DXPEntity();
 
-		dxpEntity.setDataSourceId(Long.valueOf(dataSourceId));
+		dxpEntity.setDataSourceId(dataSourceId);
 		dxpEntity.setFieldsJSONObject(
 			JSONUtil.put(
 				"contact",

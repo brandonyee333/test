@@ -29,12 +29,12 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -61,7 +61,7 @@ public class DeleteIndividualSegmentTasksNaniteTest extends BaseNaniteTestCase {
 			FaroInfoTestUtil.buildLiferayDataSource());
 
 		String dayDateString = DateUtil.newDayDateString();
-		Long segmentId = Long.parseLong(RandomStringUtils.randomNumeric(4));
+		Long segmentId = RandomTestUtil.randomNumber();
 
 		Segment segment = new Segment();
 

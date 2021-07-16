@@ -99,8 +99,16 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 		Assert.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
 				"activities", activityJSONObject.getString("id")));
+
+		Long activityGroupId = activityGroup.getId();
+
+		if (activityGroupId == null) {
+			activityGroupId = 0L;
+		}
+
 		Assert.assertFalse(
-			_activityGroupRepository.existsById(activityGroup.getId()));
+			_activityGroupRepository.existsById(activityGroupId));
+
 		Assert.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
 				"assets", assetJSONObject.getString("id")));

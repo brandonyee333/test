@@ -372,13 +372,19 @@ public class DataSourceDog {
 				}
 
 				for (Individual individual : individuals) {
+					Long individualId = individual.getId();
+
+					if (individualId == null) {
+						continue;
+					}
+
 					Set<Individual.DataSourceIndividualPK>
 						dataSourceIndividualPKs =
 							individual.getDataSourceIndividualPKs();
 
 					if (dataSourceIndividualPKs.size() == 1) {
 						_individualDog.deleteIndividual(
-							deletionDate, individual.getId());
+							deletionDate, individualId);
 					}
 					else {
 						_individualDog.removeDataSourceIndividualPKs(
