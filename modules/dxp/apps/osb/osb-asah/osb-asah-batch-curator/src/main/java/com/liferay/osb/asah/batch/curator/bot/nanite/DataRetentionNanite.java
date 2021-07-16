@@ -15,11 +15,11 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Preference;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -69,7 +69,7 @@ public class DataRetentionNanite extends BaseNanite {
 			"individuals", faroInfoElasticsearchInvoker,
 			individualJSONObject -> {
 				_individualDog.deleteIndividual(
-					new Date(), individualJSONObject.getString("id"));
+					new Date(), individualJSONObject.getLong("id"));
 
 				return null;
 			}

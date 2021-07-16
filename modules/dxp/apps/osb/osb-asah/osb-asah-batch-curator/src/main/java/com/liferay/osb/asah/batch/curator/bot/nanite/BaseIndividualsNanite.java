@@ -17,22 +17,22 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 import com.google.api.client.util.Objects;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
+import com.liferay.osb.asah.common.entity.DataSourceIndividual;
+import com.liferay.osb.asah.common.entity.Individual;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,37 +80,37 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 			Long dataSourceId, Date deletionDate, String emailAddress)
 		throws Exception {
 
-		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.termQuery("demographics.email.value", emailAddress));
+		Individual individual = _individualDog.fetchIndividualByEmailAddress(
+			emailAddress);
 
-		if (individualJSONObject == null) {
+		if (individual == null) {
 			return;
 		}
 
-		JSONArray dataSourceIndividualPKsJSONArray =
-			individualJSONObject.getJSONArray("dataSourceIndividualPKs");
+		Set<DataSourceIndividual> dataSourceIndividuals =
+			individual.getDataSourceIndividuals();
 
-		if (dataSourceIndividualPKsJSONArray.length() == 1) {
-			JSONArray individualPKsJSONArray =
-				FaroInfoIndividualUtil.getIndividualPKsJSONArray(
-					String.valueOf(dataSourceId),
-					dataSourceIndividualPKsJSONArray);
+		if (dataSourceIndividuals.size() == 1) {
+			Iterator<DataSourceIndividual> iterator =
+				dataSourceIndividuals.iterator();
 
-			if (individualPKsJSONArray.length() > 0) {
+			DataSourceIndividual dataSourceIndividual = iterator.next();
+
+			if (CollectionUtils.isNotEmpty(
+					dataSourceIndividual.getIndividualPKs())) {
+
 				_individualDog.deleteIndividual(
-					deletionDate, individualJSONObject.getString("id"));
+					deletionDate, individual.getId());
 			}
 
 			return;
 		}
 
-		_individualDog.removeDataSourceIndividualPKs(
-			individualJSONObject, dataSourceId);
+		_individualDog.removeDataSourceIndividualPKs(individual, dataSourceId);
 
 		_individualDog.updateIndividual(
 			null, getEmptyDataJSONObject(),
-			_dataSourceDog.getDataSource(dataSourceId), individualJSONObject);
+			_dataSourceDog.getDataSource(dataSourceId), individual);
 	}
 
 	protected JSONObject getEmptyDataJSONObject() {
@@ -146,23 +146,16 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 		emailAddress = StringUtils.lowerCase(emailAddress);
 
-		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			BoolQueryBuilderUtil.should(
-				QueryBuilders.termQuery(
-					"demographics.email.value", emailAddress)
-			).should(
-				QueryBuilders.termQuery(
-					"emailAddressHashed", DigestUtils.sha256Hex(emailAddress))
-			));
+		Individual individual =
+			_individualDog.fetchIndividualByEmailAddressOrEmailAddressHashed(
+				emailAddress, DigestUtils.sha256Hex(emailAddress));
 
-		if (individualJSONObject == null) {
-			_individualDog.addIndividual(
-				dataId, dataJSONObject, dataSource);
+		if (individual == null) {
+			_individualDog.addIndividual(dataId, dataJSONObject, dataSource);
 		}
 		else {
 			_individualDog.updateIndividual(
-				dataId, dataJSONObject, dataSource, individualJSONObject);
+				dataId, dataJSONObject, dataSource, individual);
 		}
 	}
 

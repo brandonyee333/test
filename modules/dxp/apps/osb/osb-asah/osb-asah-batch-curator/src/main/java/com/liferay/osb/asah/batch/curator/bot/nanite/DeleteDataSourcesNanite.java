@@ -36,8 +36,7 @@ public class DeleteDataSourcesNanite extends BaseNanite {
 	@Override
 	public void run(JSONObject dataSourceJSONObject) throws Exception {
 		_dataSourceDog.deleteDataSource(
-			_objectMapper.convertValue(dataSourceJSONObject, DataSource.class),
-			this::monitorProcessedCount, this::monitorQueueSize);
+			_objectMapper.convertValue(dataSourceJSONObject, DataSource.class));
 	}
 
 	@Override

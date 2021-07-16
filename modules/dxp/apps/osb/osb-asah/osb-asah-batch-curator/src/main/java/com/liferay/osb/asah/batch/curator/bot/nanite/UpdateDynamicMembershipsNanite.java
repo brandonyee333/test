@@ -17,30 +17,27 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Sort;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +68,9 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 
 		if (individualSegmentJSONObject != null) {
 			_updateDynamicMembershipsForSegment(
-				individualSegmentJSONObject, modifiedDate);
+				modifiedDate,
+				_objectMapper.convertValue(
+					individualSegmentJSONObject, Segment.class));
 
 			return;
 		}
@@ -82,21 +81,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		if (individualJSONObject != null) {
 			_updateDynamicMembershipsForIndividual(
 				contextJSONObject.optString("filter", null),
-				individualJSONObject.getString("id"), modifiedDate);
-
-			return;
-		}
-
-		String addQueryBuilderString = contextJSONObject.optString(
-			"addQueryBuilder");
-		String removeQueryBuilderString = contextJSONObject.optString(
-			"removeQueryBuilder");
-
-		if (!StringUtils.isEmpty(addQueryBuilderString) ||
-			!StringUtils.isEmpty(removeQueryBuilderString)) {
-
-			_updateDynamicMembershipsForSegments(
-				addQueryBuilderString, modifiedDate, removeQueryBuilderString);
+				individualJSONObject.getLong("id"), modifiedDate);
 
 			return;
 		}
@@ -119,92 +104,21 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 	}
 
 	private void _updateDynamicMembershipsForIndividual(
-			String filterString, String individualId, Date modifiedDate)
-		throws Exception {
+		String filterString, Long individualId, Date modifiedDate) {
 
-		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"individuals", individualId);
+		Individual individual = _individualDog.fetchIndividual(individualId);
 
-		if (individualJSONObject == null) {
+		if (individual == null) {
 			return;
 		}
 
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("segmentType", "DYNAMIC"));
+		Boolean includeAnonymousUsers = null;
 
-		if (filterString != null) {
-			boolQueryBuilder = boolQueryBuilder.filter(
-				FilterStringToQueryBuilderConverter.convert(filterString));
-		}
+		if (CollectionUtils.isEmpty(individual.getFields()) ||
+			Objects.isNull(
+				FaroInfoIndividualUtil.getIndividualEmail(individual))) {
 
-		JSONArray dataSourceAccountPKsJSONArray =
-			individualJSONObject.optJSONArray("dataSourceAccountPKs");
-
-		if (dataSourceAccountPKsJSONArray.length() == 0) {
-			boolQueryBuilder.mustNot(
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.prefixQuery(
-						"filter", "((dataSourceAccountPKs/accountPKs eq '")
-				).filter(
-					QueryBuilders.prefixQuery("name", "Account: ")
-				).filter(
-					QueryBuilders.termQuery("status", "INACTIVE")
-				));
-		}
-		else {
-			List<String> filterStrings = new ArrayList<>();
-
-			for (int i = 0; i < dataSourceAccountPKsJSONArray.length(); i++) {
-				JSONObject accountPKJSONObject =
-					dataSourceAccountPKsJSONArray.getJSONObject(i);
-
-				JSONArray accountPKsJSONArray =
-					accountPKJSONObject.getJSONArray("accountPKs");
-
-				for (int j = 0; j < accountPKsJSONArray.length(); j++) {
-					filterStrings.add(
-						"((dataSourceAccountPKs/accountPKs eq '" +
-							accountPKsJSONArray.getString(j) + "'))");
-				}
-			}
-
-			boolQueryBuilder = BoolQueryBuilderUtil.should(
-				BoolQueryBuilderUtil.filter(
-					boolQueryBuilder
-				).filter(
-					QueryBuilders.termsQuery("status", "ACTIVE")
-				)
-			).should(
-				BoolQueryBuilderUtil.filter(
-					boolQueryBuilder
-				).filter(
-					QueryBuilders.termsQuery("filter", filterStrings)
-				).filter(
-					QueryBuilders.termsQuery("status", "INACTIVE")
-				)
-			);
-		}
-
-		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
-			"demographics");
-
-		if ((demographicsJSONObject == null) ||
-			!demographicsJSONObject.has("email")) {
-
-			boolQueryBuilder.mustNot(
-				QueryBuilders.termQuery("includeAnonymousUsers", false));
-		}
-
-		JSONArray individualSegmentIdsJSONArray =
-			individualJSONObject.optJSONArray("individualSegmentIds");
-
-		if ((individualSegmentIdsJSONArray != null) &&
-			(individualSegmentIdsJSONArray.length() > 0)) {
-
-			boolQueryBuilder.should(
-				QueryBuilders.termsQuery(
-					"id",
-					JSONUtil.toStringList(individualSegmentIdsJSONArray)));
+			includeAnonymousUsers = Boolean.FALSE;
 		}
 
 		JSONObject baseMembershipJSONObject = JSONUtil.put(
@@ -217,37 +131,38 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			"status", "ACTIVE"
 		);
 
-		JSONArrayIterator.of(
-			"individual-segments", faroInfoElasticsearchInvoker,
-			individualSegmentJSONObject -> {
-				try {
-					_updateMembershipForIndividual(
-						baseMembershipJSONObject, individualJSONObject,
-						individualSegmentJSONObject, modifiedDate);
-				}
-				catch (Exception exception) {
-					return exception;
-				}
+		try {
+			int page = 0;
 
-				return null;
+			while (true) {
+				List<Segment> segments = _segmentDog.searchDynamicSegments(
+					individual.getDataSourceAccountPKs(), filterString,
+					includeAnonymousUsers, page++, individual.getSegmentIds(),
+					50, Sort.asc("id"));
+
+				for (Segment segment : segments) {
+					_updateMembershipForIndividual(
+						baseMembershipJSONObject, individual, segment,
+						modifiedDate);
+				}
 			}
-		).setQueryBuilder(
-			boolQueryBuilder
-		).iterate();
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
 	}
 
 	private void _updateDynamicMembershipsForSegment(
-			JSONObject individualSegmentJSONObject, Date modifiedDate)
+			Date modifiedDate, Segment segment)
 		throws Exception {
 
-		Long segmentId = individualSegmentJSONObject.getLong("id");
+		Long segmentId = segment.getId();
 
 		if (!_segmentDog.existsSegment(segmentId)) {
 			return;
 		}
 
-		_individualDog.updateDynamicMemberships(
-			individualSegmentJSONObject, modifiedDate);
+		_individualDog.updateDynamicMemberships(modifiedDate, segment);
 
 		_segmentDog.updateSegmentState(segmentId, "READY");
 	}
@@ -263,9 +178,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		while (!segments.isEmpty()) {
 			for (Segment segment : segments) {
 				try {
-					_updateDynamicMembershipsForSegment(
-						_objectMapper.convertValue(segment, JSONObject.class),
-						modifiedDate);
+					_updateDynamicMembershipsForSegment(modifiedDate, segment);
 				}
 				catch (Exception exception) {
 					_log.error(exception, exception);
@@ -289,11 +202,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			while (!segments.isEmpty()) {
 				for (Segment segment : segments) {
 					try {
-						_individualDog.updateDynamicAddMemberships(
-							true,
-							_objectMapper.convertValue(
-								segment, JSONObject.class),
-							modifiedDate);
+						_individualDog.updateDynamicMemberships(
+							modifiedDate, segment);
 					}
 					catch (Exception exception) {
 						_log.error(exception, exception);
@@ -315,9 +225,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 				for (Segment segment : segments) {
 					try {
 						_individualDog.updateDynamicRemoveMemberships(
-							_objectMapper.convertValue(
-								segment, JSONObject.class),
-							modifiedDate);
+							modifiedDate, segment);
 					}
 					catch (Exception exception) {
 						_log.error(exception, exception);
@@ -331,45 +239,28 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 	}
 
 	private void _updateMembershipForIndividual(
-			JSONObject baseMembershipJSONObject,
-			JSONObject individualJSONObject,
-			JSONObject individualSegmentJSONObject, Date modifiedDate)
-		throws Exception {
+		JSONObject baseMembershipJSONObject, Individual individual,
+		Segment segment, Date modifiedDate) {
 
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			FilterStringToQueryBuilderConverter.convert(
-				individualSegmentJSONObject.getString("filter"),
-				_faroInfoIndividualsFilterStringConverterHelper)
-		).filter(
-			QueryBuilders.termQuery("id", individualJSONObject.getString("id"))
-		);
+		boolean newMember =
+			_individualDog.existsByChannelIdAndFilterStringAndId(
+				segment.getChannelId(), segment.getFilter(),
+				individual.getId());
 
-		String channelId = individualSegmentJSONObject.optString("channelId");
+		Set<Long> segmentIds = individual.getSegmentIds();
 
-		if (!StringUtils.isEmpty(channelId)) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("channelIds", channelId));
-		}
-
-		boolean newMember = faroInfoElasticsearchInvoker.exists(
-			"individuals", boolQueryBuilder);
-
-		boolean oldMember = JSONUtil.hasValue(
-			individualJSONObject.getJSONArray("individualSegmentIds"),
-			individualSegmentJSONObject.getString("id"));
+		boolean oldMember = segmentIds.contains(segment.getId());
 
 		if (newMember && !oldMember) {
 			_membershipDog.addMembership(
 				_objectMapper.convertValue(
 					baseMembershipJSONObject.put(
-						"individualSegmentId",
-						individualSegmentJSONObject.getString("id")),
+						"individualSegmentId", segment.getId()),
 					Membership.class));
 		}
 		else if (!newMember && oldMember) {
 			_membershipDog.deactivateMembership(
-				modifiedDate, individualJSONObject.getLong("id"),
-				individualSegmentJSONObject.getLong("id"));
+				modifiedDate, individual.getId(), segment.getId());
 		}
 	}
 
@@ -377,11 +268,11 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		UpdateDynamicMembershipsNanite.class);
 
 	@Autowired
-	private IndividualDog _individualDog;
-
-	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private MembershipDog _membershipDog;
