@@ -16,8 +16,16 @@ package com.liferay.osb.asah.test.util.faro;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
+import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.DataSourceIndividual;
+import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
+import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.Membership;
+import com.liferay.osb.asah.common.entity.MembershipChange;
+import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -25,8 +33,11 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -40,6 +51,39 @@ import org.json.JSONObject;
  */
 public class FaroInfoTestUtil {
 
+	public static Account buildAccount(DataSource dataSource) {
+		String accountPK = RandomStringUtils.randomAlphanumeric(18);
+		Long dataSourceId = dataSource.getId();
+		Date date = new Date();
+		Long id = _timeOrderedUuidGenerator.generateIdAsLong();
+
+		Account account = new Account();
+
+		account.setAccountPK(accountPK);
+		account.setActivitiesCount(0L);
+		account.setCreateDate(date);
+		account.setDataSourceId(dataSourceId);
+		account.setId(id);
+		account.setIndividualCount(0L);
+
+		Field field = new Field();
+
+		field.setContext("organization");
+		field.setDataSourceId(dataSourceId);
+		field.setDataSourceName(dataSource.getName());
+		field.setFieldType("Text");
+		field.setModifiedDate(date);
+		field.setName("accountId");
+		field.setOwnerId(id);
+		field.setOwnerType("account");
+		field.setSourceName("id");
+		field.setValue("accountPK");
+
+		account.setFields(Collections.singleton(field));
+
+		return account;
+	}
+
 	public static FieldMapping buildAccountFieldMapping(
 		String dataSourceId, String dataSourceFieldName, String fieldName,
 		String fieldType) {
@@ -50,146 +94,82 @@ public class FaroInfoTestUtil {
 			fieldName, fieldType, "account");
 	}
 
-	public static JSONObject buildAccountIndividualSegmentJSONObject(
-		JSONObject accountJSONObject) {
+	public static Segment buildAccountSegment(Account account, Long channelId) {
+		Date date = new Date();
 
-		return buildAccountIndividualSegmentJSONObject(
-			accountJSONObject, RandomTestUtil.randomId());
+		Segment segment = new Segment();
+
+		segment.setActivitiesCount(0L);
+		segment.setChannelId(channelId);
+		segment.setCreateDate(date);
+		segment.setFilter(
+			"((dataSourceAccountPKs/accountPKs eq '" + account.getAccountPK() +
+				"'))");
+		segment.setIndividualCount(0L);
+		segment.setModifiedDate(date);
+		segment.setName("Account: " + account.getId());
+		segment.setScope("PROJECT");
+		segment.setStatus("INACTIVE");
+		segment.setType(Segment.Type.DYNAMIC);
+
+		return segment;
 	}
 
-	public static JSONObject buildAccountIndividualSegmentJSONObject(
-		JSONObject accountJSONObject, String channelId) {
+	public static ActivityGroup buildActivityGroup(
+		Long dataSourceId, Date date, Individual individual) {
 
-		String dateString = DateUtil.newDateString();
-
-		return JSONUtil.put(
-			"activitiesCount", 0
-		).put(
-			"channelId", channelId
-		).put(
-			"dateCreated", dateString
-		).put(
-			"dateModified", dateString
-		).put(
-			"filter",
-			"((dataSourceAccountPKs/accountPKs eq '" +
-				accountJSONObject.getString("accountPK") + "'))"
-		).put(
-			"individualCount", 0
-		).put(
-			"name", "Account: " + accountJSONObject.getString("id")
-		).put(
-			"scope", "PROJECT"
-		).put(
-			"segmentType", "DYNAMIC"
-		).put(
-			"status", "INACTIVE"
-		);
+		return buildActivityGroup(
+			Long.parseLong(RandomStringUtils.randomNumeric(4)), dataSourceId,
+			date, individual);
 	}
 
-	public static JSONObject buildAccountJSONObject(
-		JSONObject dataSourceJSONObject) {
+	public static ActivityGroup buildActivityGroup(
+		Long dataSourceId, Individual individual) {
 
-		String accountPK = RandomStringUtils.randomAlphanumeric(18);
-		String dataSourceId = dataSourceJSONObject.getString("id");
-		String dateString = DateUtil.newDateString();
-		String id = _timeOrderedUuidGenerator.generateId();
-
-		return JSONUtil.put(
-			"accountPK", accountPK
-		).put(
-			"activitiesCount", 0
-		).put(
-			"dataSourceId", dataSourceId
-		).put(
-			"dateCreated", dateString
-		).put(
-			"dateModified", dateString
-		).put(
-			"id", id
-		).put(
-			"individualCount", 0
-		).put(
-			"organization",
-			JSONUtil.put(
-				"accountId",
-				JSONUtil.put(
-					JSONUtil.put(
-						"context", "organization"
-					).put(
-						"dataSourceId", dataSourceId
-					).put(
-						"dataSourceName", dataSourceJSONObject.getString("name")
-					).put(
-						"dateModified", dateString
-					).put(
-						"fieldType", "Text"
-					).put(
-						"name", "accountId"
-					).put(
-						"ownerId", id
-					).put(
-						"ownerType", "account"
-					).put(
-						"sourceName", "id"
-					).put(
-						"value", accountPK
-					)))
-		);
+		return buildActivityGroup(dataSourceId, new Date(), individual);
 	}
 
-	public static JSONObject buildActivityGroupJSONObject(
-			String dataSourceId, JSONObject individualJSONObject)
-		throws Exception {
+	public static ActivityGroup buildActivityGroup(
+		Long channelId, Long dataSourceId, Date date, Individual individual) {
 
-		return buildActivityGroupJSONObject(
-			dataSourceId, DateUtil.newDateString(), individualJSONObject);
-	}
+		Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =
+			individual.getDataSourceIndividualPKs();
 
-	public static JSONObject buildActivityGroupJSONObject(
-			String dataSourceId, String dateString,
-			JSONObject individualJSONObject)
-		throws Exception {
+		Stream<Individual.DataSourceIndividualPK> stream =
+			dataSourceIndividualPKs.stream();
 
-		return buildActivityGroupJSONObject(
-			RandomTestUtil.randomId(), dataSourceId, dateString,
-			individualJSONObject);
-	}
+		Individual.DataSourceIndividualPK dataSourceIndividualPK =
+			stream.filter(
+				individualPK -> Objects.equals(
+					individualPK.getDataSourceId(), dataSourceId)
+			).findFirst(
+			).orElse(
+				null
+			);
 
-	public static JSONObject buildActivityGroupJSONObject(
-			String channelId, String dataSourceId, String dateString,
-			JSONObject individualJSONObject)
-		throws Exception {
+		Set<String> individualPKs = new HashSet<>();
 
-		JSONArray dataSourceIndividualPKsJSONArray =
-			individualJSONObject.getJSONArray("dataSourceIndividualPKs");
+		if (dataSourceIndividualPK != null) {
+			individualPKs = dataSourceIndividualPK.getIndividualPKs();
+		}
 
-		JSONArray individualPKsJSONArray =
-			FaroInfoIndividualUtil.getIndividualPKsJSONArray(
-				dataSourceId, dataSourceIndividualPKsJSONArray);
+		ActivityGroup activityGroup = new ActivityGroup();
 
-		return JSONUtil.put(
-			"activityType", "BROWSE"
-		).put(
-			"channelId", channelId
-		).put(
-			"dataSourceId", dataSourceId
-		).put(
-			"day", DateUtil.newDayDateString(dateString)
-		).put(
-			"endTime", dateString
-		).put(
-			"ownerId", individualJSONObject.getString("id")
-		).put(
-			"startTime", dateString
-		).put(
-			"userId", individualPKsJSONArray.get(0)
-		);
+		activityGroup.setActivityType("BROWSE");
+		activityGroup.setChannelId(channelId);
+		activityGroup.setDataSourceId(dataSourceId);
+		activityGroup.setDayDate(date);
+		activityGroup.setEndDate(date);
+		activityGroup.setOwnerId(individual.getId());
+		activityGroup.setStartDate(date);
+		activityGroup.setUserId(individualPKs.toArray(new String[0])[0]);
+
+		return activityGroup;
 	}
 
 	public static JSONObject buildActivityJSONObject(
 		JSONObject activityGroupJSONObject, JSONObject assetJSONObject,
-		String channelId, String eventId, String[] eventProperties) {
+		Long channelId, String eventId, String[] eventProperties) {
 
 		return buildActivityJSONObject(
 			activityGroupJSONObject, assetJSONObject, channelId, eventId,
@@ -198,7 +178,7 @@ public class FaroInfoTestUtil {
 
 	public static JSONObject buildActivityJSONObject(
 		JSONObject activityGroupJSONObject, JSONObject assetJSONObject,
-		String channelId, String eventId, String[] eventProperties,
+		Long channelId, String eventId, String[] eventProperties,
 		String pageViewActivityId) {
 
 		if ((eventProperties.length % 2) != 0) {
@@ -224,9 +204,10 @@ public class FaroInfoTestUtil {
 		).put(
 			"applicationId", applicationId
 		).put(
-			"channelId", channelId
+			"channelId", String.valueOf(channelId)
 		).put(
-			"dataSourceId", activityGroupJSONObject.getString("dataSourceId")
+			"dataSourceId",
+			String.valueOf(activityGroupJSONObject.getLong("dataSourceId"))
 		).put(
 			"day", activityGroupJSONObject.getString("day")
 		).put(
@@ -236,7 +217,7 @@ public class FaroInfoTestUtil {
 		).put(
 			"eventProperties", eventPropertiesJSONObject
 		).put(
-			"groupId", activityGroupJSONObject.getString("id")
+			"groupId", String.valueOf(activityGroupJSONObject.getLong("id"))
 		).put(
 			"object",
 			JSONUtil.put(
@@ -265,8 +246,9 @@ public class FaroInfoTestUtil {
 		String eventId, String[] eventProperties) {
 
 		return buildActivityJSONObject(
-			activityGroupJSONObject, assetJSONObject, RandomTestUtil.randomId(),
-			eventId, eventProperties);
+			activityGroupJSONObject, assetJSONObject,
+			Long.parseLong(RandomStringUtils.randomNumeric(4)), eventId,
+			eventProperties);
 	}
 
 	public static JSONObject buildActivityJSONObject(
@@ -274,28 +256,30 @@ public class FaroInfoTestUtil {
 		String eventId, String[] eventProperties, String pageViewActivityId) {
 
 		return buildActivityJSONObject(
-			activityGroupJSONObject, assetJSONObject, RandomTestUtil.randomId(),
-			eventId, eventProperties, pageViewActivityId);
+			activityGroupJSONObject, assetJSONObject,
+			Long.parseLong(RandomStringUtils.randomNumeric(4)), eventId,
+			eventProperties, pageViewActivityId);
 	}
 
 	public static JSONObject buildAssetJSONObject(
-		String assetType, String dataSourceId) {
+		String assetType, Long dataSourceId) {
 
 		return buildAssetJSONObject(
-			assetType, RandomTestUtil.randomId(), dataSourceId);
+			assetType, Long.parseLong(RandomStringUtils.randomNumeric(4)),
+			dataSourceId);
 	}
 
 	public static JSONObject buildAssetJSONObject(
-		String assetType, String channelId, String dataSourceId) {
+		String assetType, Long channelId, Long dataSourceId) {
 
 		return JSONUtil.put(
 			"assetType", assetType
 		).put(
-			"channelIds", JSONUtil.put(channelId)
+			"channelIds", JSONUtil.put(String.valueOf(channelId))
 		).put(
 			"dataSourceAssetPK", String.valueOf(RandomTestUtil.randomNumber())
 		).put(
-			"dataSourceId", dataSourceId
+			"dataSourceId", String.valueOf(dataSourceId)
 		).put(
 			"name", RandomTestUtil.randomMultipleWordString(5, 20)
 		);
@@ -369,7 +353,10 @@ public class FaroInfoTestUtil {
 		Segment segment = new Segment();
 
 		segment.setActiveIndividualCount(0L);
-		segment.setChannelId(channelId);
+
+		if (channelId != null) {
+			segment.setChannelId(channelId);
+		}
 
 		Date date = new Date();
 
@@ -471,42 +458,102 @@ public class FaroInfoTestUtil {
 		return fieldMapping;
 	}
 
-	public static JSONObject buildIndividualFieldJSONObject(
-		JSONObject dataSourceJSONObject, String fieldName, String fieldType,
-		String fieldValue, JSONObject individualJSONObject, String sourceName) {
+	public static Individual buildIndividual(DataSource dataSource) {
+		return buildIndividual(
+			Long.parseLong(RandomStringUtils.randomNumeric(4)), dataSource);
+	}
 
-		return JSONUtil.put(
-			"context", "demographics"
-		).put(
-			"dataSourceId", dataSourceJSONObject.getString("id")
-		).put(
-			"dataSourceName", dataSourceJSONObject.getString("name")
-		).put(
-			"dateModified", DateUtil.newDayDateString()
-		).put(
-			"fieldType", fieldType
-		).put(
-			"id", RandomTestUtil.randomId()
-		).put(
-			"name", fieldName
-		).put(
-			"ownerId", individualJSONObject.getString("id")
-		).put(
-			"ownerType", "individual"
-		).put(
-			"sourceName", sourceName
-		).put(
-			"value", fieldValue
-		);
+	public static Individual buildIndividual(
+		Long channelId, DataSource dataSource) {
+
+		Long dataSourceId = dataSource.getId();
+		String dataId = RandomTestUtil.randomUUID();
+		Date date = new Date();
+		Long individualId = _timeOrderedUuidGenerator.generateIdAsLong();
+		String providerType = dataSource.getProviderType();
+
+		String sourceName = "email";
+
+		if (providerType.equals("LIFERAY")) {
+			sourceName = "emailAddress";
+		}
+
+		Individual individual = new Individual();
+
+		individual.setChannelIds(Collections.singleton(channelId));
+		individual.setCreateDate(date);
+		individual.setId(individualId);
+		individual.setModifiedDate(date);
+		individual.setSegmentIds(Collections.emptySet());
+
+		DataSourceIndividual dataSourceIndividual = new DataSourceIndividual();
+
+		dataSourceIndividual.setAccountPKs(Collections.emptySet());
+		dataSourceIndividual.setDataSourceId(dataSourceId);
+		dataSourceIndividual.setIndividualId(individualId);
+		dataSourceIndividual.setIndividualPKs(Collections.singleton(dataId));
+
+		individual.setDataSourceIndividuals(
+			Collections.singleton(dataSourceIndividual));
+
+		Field field = new Field();
+
+		field.setContext("demographics");
+		field.setDataSourceId(dataSourceId);
+		field.setDataSourceName(dataSource.getName());
+		field.setFieldType("http://schema.org/email");
+		field.setModifiedDate(date);
+		field.setName("email");
+		field.setOwnerId(individualId);
+		field.setOwnerType("individual");
+		field.setSourceName(sourceName);
+		field.setValue(RandomTestUtil.randomEmailAddress());
+
+		individual.setFields(Collections.singleton(field));
+
+		return individual;
+	}
+
+	public static Field buildIndividualField(
+		DataSource dataSource, String fieldName, String fieldType,
+		String fieldValue, Individual individual, String sourceName) {
+
+		Field field = new Field();
+
+		field.setContext("demographics");
+		field.setDataSourceId(dataSource.getId());
+		field.setDataSourceName(dataSource.getName());
+		field.setFieldType(fieldType);
+		field.setId(Long.parseLong(RandomStringUtils.randomNumeric(4)));
+		field.setModifiedDate(new Date());
+		field.setName(fieldName);
+		field.setOwnerId(individual.getId());
+		field.setOwnerType("individual");
+		field.setSourceName(sourceName);
+		field.setValue(fieldValue);
+
+		return field;
 	}
 
 	public static FieldMapping buildIndividualFieldMapping(
-		FieldMapping.Author author, String dataSourceId,
+		FieldMapping.Author author, Long dataSourceId,
 		String dataSourceFieldName, String fieldName, String fieldType) {
 
 		return buildFieldMapping(
 			author, "demographics",
-			Collections.singletonMap(dataSourceId, dataSourceFieldName),
+			Collections.singletonMap(
+				String.valueOf(dataSourceId), dataSourceFieldName),
+			fieldName, fieldType, "individual");
+	}
+
+	public static FieldMapping buildIndividualFieldMapping(
+		Long dataSourceId, String dataSourceFieldName, String fieldName,
+		String fieldType) {
+
+		return buildFieldMapping(
+			_getFieldMappingAuthor(), "demographics",
+			Collections.singletonMap(
+				String.valueOf(dataSourceId), dataSourceFieldName),
 			fieldName, fieldType, "individual");
 	}
 
@@ -519,18 +566,8 @@ public class FaroInfoTestUtil {
 			fieldName, fieldType, "individual");
 	}
 
-	public static FieldMapping buildIndividualFieldMapping(
-		String dataSourceId, String dataSourceFieldName, String fieldName,
-		String fieldType) {
-
-		return buildFieldMapping(
-			_getFieldMappingAuthor(), "demographics",
-			Collections.singletonMap(dataSourceId, dataSourceFieldName),
-			fieldName, fieldType, "individual");
-	}
-
 	public static JSONArray buildIndividualInterestsJSONArray(
-		JSONObject assetJSONObject, String dayDateString, String individualId,
+		JSONObject assetJSONObject, String dayDateString, Long individualId,
 		double score, int views) {
 
 		return buildInterestsJSONArray(
@@ -538,87 +575,9 @@ public class FaroInfoTestUtil {
 			individualId, "individual", score, views);
 	}
 
-	public static JSONObject buildIndividualJSONObject(
-		JSONObject dataSourceJSONObject) {
-
-		return buildIndividualJSONObject(
-			RandomTestUtil.randomId(), dataSourceJSONObject);
-	}
-
-	public static JSONObject buildIndividualJSONObject(
-		String channelId, JSONObject dataSourceJSONObject) {
-
-		String dataSourceId = dataSourceJSONObject.getString("id");
-		String dataId = RandomTestUtil.randomUUID();
-		String dateString = DateUtil.newDateString();
-		String individualId = _timeOrderedUuidGenerator.generateId();
-		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
-			"provider");
-
-		String sourceName = "email";
-
-		String type = _getDataSourceType(dataSourceJSONObject);
-
-		if (type.equals("LIFERAY")) {
-			sourceName = "emailAddress";
-		}
-
-		return JSONUtil.put(
-			"activitiesCounts", new JSONArray()
-		).put(
-			"channelIds", JSONUtil.put(channelId)
-		).put(
-			"dataSourceAccountPKs", new JSONArray()
-		).put(
-			"dataSourceIndividualPKs",
-			JSONUtil.put(
-				JSONUtil.put(
-					"dataSourceId", dataSourceId
-				).put(
-					"dataSourceType", providerJSONObject.getString("type")
-				).put(
-					"individualPKs", JSONUtil.put(dataId)
-				))
-		).put(
-			"dateCreated", dateString
-		).put(
-			"dateModified", dateString
-		).put(
-			"demographics",
-			JSONUtil.put(
-				"email",
-				JSONUtil.put(
-					JSONUtil.put(
-						"context", "demographics"
-					).put(
-						"dataSourceId", dataSourceId
-					).put(
-						"dataSourceName", dataSourceJSONObject.getString("name")
-					).put(
-						"dateModified", dateString
-					).put(
-						"fieldType", "http://schema.org/email"
-					).put(
-						"name", "email"
-					).put(
-						"ownerId", individualId
-					).put(
-						"ownerType", "individual"
-					).put(
-						"sourceName", sourceName
-					).put(
-						"value", RandomTestUtil.randomEmailAddress()
-					)))
-		).put(
-			"id", individualId
-		).put(
-			"individualSegmentIds", new JSONArray()
-		);
-	}
-
 	public static JSONArray buildIndividualSegmentVisitedPagesJSONArray(
 		JSONObject assetJSONObject, String dayDateString,
-		String individualSegmentId, int uniqueVisitsCount) {
+		Long individualSegmentId, int uniqueVisitsCount) {
 
 		return buildVisitedPagesJSONArray(
 			assetJSONObject, dayDateString, individualSegmentId,
@@ -626,7 +585,7 @@ public class FaroInfoTestUtil {
 	}
 
 	public static JSONArray buildIndividualVisitedPagesJSONArray(
-		JSONObject assetJSONObject, String dayDateString, String individualId,
+		JSONObject assetJSONObject, String dayDateString, Long individualId,
 		int uniqueVisitsCount) {
 
 		return buildVisitedPagesJSONArray(
@@ -635,7 +594,7 @@ public class FaroInfoTestUtil {
 	}
 
 	public static JSONArray buildInterestsJSONArray(
-		String dayDateString, JSONArray keywordsJSONArray, String ownerId,
+		String dayDateString, JSONArray keywordsJSONArray, Long ownerId,
 		String ownerType, double score, int views) {
 
 		JSONArray interestsJSONArray = new JSONArray();
@@ -649,7 +608,7 @@ public class FaroInfoTestUtil {
 				).put(
 					"name", keywordJSONObject.getString("keyword")
 				).put(
-					"ownerId", ownerId
+					"ownerId", String.valueOf(ownerId)
 				).put(
 					"ownerType", ownerType
 				).put(
@@ -662,118 +621,156 @@ public class FaroInfoTestUtil {
 		return interestsJSONArray;
 	}
 
-	public static JSONObject buildLiferayDataSourceJSONObject() {
-		return buildLiferayDataSourceJSONObject(
+	public static DataSource buildLiferayDataSource() {
+		return buildLiferayDataSource(
 			RandomTestUtil.randomMultipleWordString(5, 20),
 			RandomTestUtil.randomURL());
 	}
 
-	public static JSONObject buildLiferayDataSourceJSONObject(
-		String name, String url) {
-
-		return buildLiferayDataSourceJSONObject(
-			"Token Authentication", name, url);
+	public static DataSource buildLiferayDataSource(String name, String url) {
+		return buildLiferayDataSource("Token Authentication", name, url);
 	}
 
-	public static JSONObject buildLiferayDataSourceJSONObject(
+	public static DataSource buildLiferayDataSource(
 		String authenticationType, String name, String url) {
 
-		String dateString = DateUtil.newDateString();
+		Date date = new Date();
 
-		return JSONUtil.put(
-			"about", RandomTestUtil.randomMultipleWordString(20, 50)
-		).put(
-			"author", _getAuthorJSONObject()
-		).put(
-			"credentials", _getCredentialsJSONObject(authenticationType)
-		).put(
-			"dateCreated", dateString
-		).put(
-			"dateModified", dateString
-		).put(
-			"description", RandomTestUtil.randomMultipleWordString(20, 50)
-		).put(
-			"name", name
-		).put(
-			"provider",
-			JSONUtil.put(
-				"analyticsConfiguration",
-				JSONUtil.put(
-					"enableAllSites", true
-				).put(
-					"sites", new JSONArray()
-				)
-			).put(
-				"contactsConfiguration",
-				JSONUtil.put(
-					"enableAllContacts", true
-				).put(
-					"organizations", new JSONArray()
-				).put(
-					"userGroups", new JSONArray()
-				)
-			).put(
-				"type", "LIFERAY"
-			)
-		).put(
-			"state", "CREDENTIALS_VALID"
-		).put(
-			"status", "ACTIVE"
-		).put(
-			"url", url
-		);
+		JSONObject authorJSONObject = _getAuthorJSONObject();
+		JSONObject credentialsJSONObject = _getCredentialsJSONObject(
+			authenticationType);
+
+		DataSource dataSource = new DataSource();
+
+		dataSource.setAuthorId(authorJSONObject.getLong("id"));
+		dataSource.setAuthorName(authorJSONObject.getString("name"));
+		dataSource.setCreateDate(date);
+		dataSource.setCredentialType(authenticationType);
+		dataSource.setModifiedDate(date);
+		dataSource.setName(name);
+		dataSource.setURL(url);
+		dataSource.setState("CREDENTIALS_VALID");
+		dataSource.setStatus("ACTIVE");
+
+		if (authenticationType.equals("Basic Authentication")) {
+			dataSource.setLogin(credentialsJSONObject.getString("login"));
+			dataSource.setPassword(credentialsJSONObject.getString("password"));
+		}
+		else if (authenticationType.equals("OAuth 2 Authentication")) {
+			JSONObject ownerJSONObject = credentialsJSONObject.getJSONObject(
+				"oAuthOwner");
+
+			dataSource.setOAuthClientId(
+				credentialsJSONObject.getString("oAuthClientId"));
+			dataSource.setOAuthClientSecret(
+				credentialsJSONObject.getString("oAuthClientSecret"));
+			dataSource.setOAuthOwnerEmailAddress(
+				ownerJSONObject.getString("email"));
+			dataSource.setOAuthOwnerName(ownerJSONObject.getString("name"));
+			dataSource.setOAuthRefreshToken(
+				credentialsJSONObject.getString("oAuthRefreshToken"));
+		}
+		else if (authenticationType.equals("Token Authentication")) {
+			dataSource.setPrivateKey(
+				credentialsJSONObject.getString("privateKey"));
+			dataSource.setPublicKey(
+				credentialsJSONObject.getString("publicKey"));
+		}
+
+		DataSource.Provider provider = new DataSource.Provider();
+
+		DataSource.AnalyticsConfiguration analyticsConfiguration =
+			new DataSource.AnalyticsConfiguration();
+
+		analyticsConfiguration.setEnableAllSites(Boolean.TRUE);
+		analyticsConfiguration.setDataSourceSites(Collections.emptySet());
+
+		provider.setAnalyticsConfiguration(analyticsConfiguration);
+
+		DataSource.ContactsConfiguration contactsConfiguration =
+			new DataSource.ContactsConfiguration();
+
+		contactsConfiguration.setEnableAllContacts(Boolean.TRUE);
+		contactsConfiguration.setDataSourceOrganizations(
+			Collections.emptySet());
+		contactsConfiguration.setDataSourceUserGroups(Collections.emptySet());
+
+		provider.setContactsConfiguration(contactsConfiguration);
+
+		provider.setType("LIFERAY");
+
+		dataSource.setProvider(provider);
+		dataSource.setProviderType("LIFERAY");
+
+		return dataSource;
 	}
 
-	public static JSONObject buildMembershipChangeJSONObject(
-		boolean individualDeleted, JSONObject individualJSONObject,
-		String individualSegmentId, String operationType) {
+	public static Membership buildMembership(
+		Long individualId, Long segmentId) {
 
-		JSONObject demographicsJSONObject = individualJSONObject.getJSONObject(
-			"demographics");
+		Date date = new Date();
 
-		JSONArray emailJSONArray = demographicsJSONObject.getJSONArray("email");
+		Membership membership = new Membership();
 
-		JSONObject emailJSONObject = emailJSONArray.getJSONObject(0);
+		membership.setCreateDate(date);
+		membership.setIndividualId(individualId);
+		membership.setIndividualSegmentId(segmentId);
+		membership.setModifiedDate(date);
+		membership.setStatus("ACTIVE");
 
-		return JSONUtil.put(
-			"dateChanged", DateUtil.newDayDateString()
-		).put(
-			"dateFirst", DateUtil.newDayDateString()
-		).put(
-			"individualDeleted", individualDeleted
-		).put(
-			"individualEmail", emailJSONObject.getString("value")
-		).put(
-			"individualId",
-			FaroInfoIndividualUtil.getIndividualEmail(individualJSONObject)
-		).put(
-			"individualName",
-			FaroInfoIndividualUtil.getIndividualName(individualJSONObject)
-		).put(
-			"individualsCount", RandomUtils.nextInt()
-		).put(
-			"individualSegmentId", individualSegmentId
-		).put(
-			"operation", operationType
-		);
+		return membership;
 	}
 
-	public static JSONObject buildMembershipJSONObject(
-		String individualId, String individualSegmentId) {
+	public static MembershipChange buildMembershipChange(
+		boolean individualDeleted, Individual individual,
+		Long individualSegmentId, String operationType) {
 
-		String dateString = DateUtil.newDateString();
+		Set<Field> fields = individual.getFields();
 
-		return JSONUtil.put(
-			"dateCreated", dateString
-		).put(
-			"dateModified", dateString
-		).put(
-			"individualId", individualId
-		).put(
-			"individualSegmentId", individualSegmentId
-		).put(
-			"status", "ACTIVE"
+		Stream<Field> stream = fields.stream();
+
+		Field emailField = stream.filter(
+			field -> Objects.equals("email", field.getName())
+		).findFirst(
+		).orElse(
+			null
 		);
+
+		MembershipChange membershipChange = new MembershipChange();
+
+		membershipChange.setIndividualDeleted(individualDeleted);
+		membershipChange.setIndividualEmail(
+			String.valueOf(emailField.getValue()));
+		membershipChange.setIndividualName(
+			FaroInfoIndividualUtil.getIndividualName(individual));
+		membershipChange.setIndividualSegmentId(individualSegmentId);
+		membershipChange.setIndividualsCount(RandomUtils.nextLong());
+		membershipChange.setJoinedDate(new Date());
+		membershipChange.setModifiedDate(new Date());
+		membershipChange.setOperation(operationType);
+
+		return membershipChange;
+	}
+
+	public static Organization buildOrganization(Long dataSourceId) {
+		Date date = new Date();
+		String name = RandomTestUtil.randomString();
+		long organizationPK = RandomTestUtil.randomNumber();
+
+		Organization organization = new Organization();
+
+		organization.setCreateDate(date);
+		organization.setDataSourceId(dataSourceId);
+		organization.setId(_timeOrderedUuidGenerator.generateIdAsLong());
+		organization.setName(name);
+		organization.setNameTreePath(name);
+		organization.setOrganizationPK(organizationPK);
+		organization.setParentName("");
+		organization.setParentOrganizationPK(0L);
+		organization.setTreePath("/" + organizationPK + "/");
+		organization.setType("organization");
+
+		return organization;
 	}
 
 	public static JSONObject buildOrganizationJSONObject(String dataSourceId) {
@@ -805,13 +802,13 @@ public class FaroInfoTestUtil {
 		);
 	}
 
-	public static JSONObject buildPageAssetJSONObject(String dataSourceId) {
+	public static JSONObject buildPageAssetJSONObject(Long dataSourceId) {
 		return buildPageAssetJSONObject(
 			dataSourceId, _randomKeywordsJSONArray());
 	}
 
 	public static JSONObject buildPageAssetJSONObject(
-		String dataSourceId, JSONArray keywordsJSONArray) {
+		Long dataSourceId, JSONArray keywordsJSONArray) {
 
 		return JSONUtil.put(
 			"assetType", "Page"
@@ -820,7 +817,7 @@ public class FaroInfoTestUtil {
 		).put(
 			"dataSourceAssetPK", RandomTestUtil.randomURL()
 		).put(
-			"dataSourceId", dataSourceId
+			"dataSourceId", String.valueOf(dataSourceId)
 		).put(
 			"keywords", keywordsJSONArray
 		).put(
@@ -990,7 +987,7 @@ public class FaroInfoTestUtil {
 	}
 
 	public static JSONArray buildVisitedPagesJSONArray(
-		JSONObject assetJSONObject, String dayDateString, String ownerId,
+		JSONObject assetJSONObject, String dayDateString, Long ownerId,
 		String ownerType, int uniqueVisitsCount) {
 
 		JSONArray visitedPagesJSONArray = new JSONArray();
@@ -1009,7 +1006,7 @@ public class FaroInfoTestUtil {
 				).put(
 					"interestName", keywordJSONObject.getString("keyword")
 				).put(
-					"ownerId", ownerId
+					"ownerId", String.valueOf(ownerId)
 				).put(
 					"ownerType", ownerType
 				).put(
@@ -1050,24 +1047,15 @@ public class FaroInfoTestUtil {
 				RandomTestUtil.randomEmailAddress(),
 				RandomStringUtils.randomAlphanumeric(6, 10));
 		}
-
-		if (type.equals("OAuth 2 Authentication")) {
+		else if (type.equals("OAuth 2 Authentication")) {
 			return _getOAuth2CredentialsJSONObject();
 		}
-
-		if (type.equals("Token Authentication")) {
+		else if (type.equals("Token Authentication")) {
 			return _getTokenAuthenticationCredentialsJSONObject();
 		}
 
 		throw new IllegalArgumentException(
 			"Unsupported authentication type: " + type);
-	}
-
-	private static String _getDataSourceType(JSONObject dataSourceJSONObject) {
-		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
-			"provider");
-
-		return providerJSONObject.getString("type");
 	}
 
 	private static FieldMapping.Author _getFieldMappingAuthor() {
