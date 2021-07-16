@@ -14,23 +14,31 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.batch.curator.bot.nanite.StaleDynamicIndividualSegmentsNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahTask;
+import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,23 +70,22 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	extends BaseNaniteTestCase {
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		_mock();
 
-		_dataSourceJSONObject =
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
+		_dataSource = FaroInfoTestUtil.buildLiferayDataSource();
 
-		_dataSourceJSONObject.put("id", RandomTestUtil.randomId());
+		_dataSource.setId(Long.parseLong(RandomTestUtil.randomId()));
 
 		_assetJSONObject = faroInfoElasticsearchInvoker.add(
 			"assets",
-			FaroInfoTestUtil.buildPageAssetJSONObject(
-				_dataSourceJSONObject.getString("id")));
+			FaroInfoTestUtil.buildPageAssetJSONObject(_dataSource.getId()));
 
-		_individualJSONObject = _individualDog.addIndividual(
-			FaroInfoTestUtil.buildIndividualJSONObject(
-				"1", _dataSourceJSONObject),
-			false);
+		Individual individual = FaroInfoTestUtil.buildIndividual(_dataSource);
+
+		_fieldRepository.saveAll(individual.getFields());
+
+		_individual = _individualDog.addIndividual(individual, false);
 	}
 
 	@After
@@ -271,51 +278,53 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 		}
 	}
 
-	private void _addActivity(String dayDateString) throws Exception {
-		JSONObject activityGroupJSONObject = faroInfoElasticsearchInvoker.add(
-			"activity-groups",
-			FaroInfoTestUtil.buildActivityGroupJSONObject(
-				_dataSourceJSONObject.getString("id"), dayDateString,
-				_individualJSONObject));
+	private void _addActivity(String dayDateString) {
+		ActivityGroup activityGroup = _activityGroupDog.addActivityGroup(
+			FaroInfoTestUtil.buildActivityGroup(
+				_dataSource.getId(), DateUtil.toUTCDate(dayDateString),
+				_individual));
 
 		faroInfoElasticsearchInvoker.add(
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
-				activityGroupJSONObject, _assetJSONObject, "pageViewed",
-				new String[0]));
+				_objectMapper.convertValue(activityGroup, JSONObject.class),
+				_assetJSONObject, "pageViewed", new String[0]));
 	}
 
-	private JSONArray _addMemberships(String... durations) throws Exception {
+	private JSONArray _addMemberships(String... durations) {
 		JSONArray membershipsJSONArray = new JSONArray();
 
 		for (String duration : durations) {
 			Segment segment = _segmentRepository.save(
 				FaroInfoTestUtil.buildDynamicSegment(
-					1L,
+					null,
 					"(((activities/" + duration + " eq 'Page#pageViewed#" +
 						_assetJSONObject.getString("id") + "')))"));
 
+			Individual partialIndividual = new Individual();
+
+			Set<Long> segmentIds = _individual.getSegmentIds();
+
+			segmentIds.add(segment.getId());
+
+			partialIndividual.setSegmentIds(segmentIds);
+
 			_individualDog.updateIndividual(
-				_individualJSONObject.getString("id"),
-				JSONUtil.put(
-					"individualSegmentIds",
-					JSONUtil.put(String.valueOf(segment.getId()))),
-				false);
+				_individual.getId(), partialIndividual, false);
 
 			membershipsJSONArray.put(
 				faroInfoElasticsearchInvoker.add(
 					"memberships",
-					FaroInfoTestUtil.buildMembershipJSONObject(
-						_individualJSONObject.getString("id"),
-						String.valueOf(segment.getId()))));
+					_objectMapper.convertValue(
+						FaroInfoTestUtil.buildMembership(
+							_individual.getId(), segment.getId()),
+						JSONObject.class)));
 		}
 
 		return membershipsJSONArray;
 	}
 
-	private JSONArray _addSessionMemberships(String... durations)
-		throws Exception {
-
+	private JSONArray _addSessionMemberships(String... durations) {
 		JSONArray membershipsJSONArray = new JSONArray();
 
 		for (String duration : durations) {
@@ -326,19 +335,21 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 						"United States'' and completeDate gt ''" + duration +
 							"'')'))"));
 
+			Individual partialIndividual = new Individual();
+
+			partialIndividual.setSegmentIds(
+				Collections.singleton(segment.getId()));
+
 			_individualDog.updateIndividual(
-				_individualJSONObject.getString("id"),
-				JSONUtil.put(
-					"individualSegmentIds",
-					JSONUtil.put(String.valueOf(segment.getId()))),
-				false);
+				_individual.getId(), partialIndividual, false);
 
 			membershipsJSONArray.put(
 				faroInfoElasticsearchInvoker.add(
 					"memberships",
-					FaroInfoTestUtil.buildMembershipJSONObject(
-						_individualJSONObject.getString("id"),
-						String.valueOf(segment.getId()))));
+					_objectMapper.convertValue(
+						FaroInfoTestUtil.buildMembership(
+							_individual.getId(), segment.getId()),
+						JSONObject.class)));
 		}
 
 		return membershipsJSONArray;
@@ -353,11 +364,11 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 						put("completeDate", dayDateString);
 						put(
 							"dataSourceId",
-							_dataSourceJSONObject.getString("id"));
+							String.valueOf(_dataSource.getId()));
 						put("date", dayDateString);
 						put(
 							"individualId",
-							_individualJSONObject.getString("id"));
+							String.valueOf(_individual.getId()));
 					}
 				}));
 	}
@@ -403,16 +414,25 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	private static final Pattern _individualSegmentActivityFilterPattern =
 		Pattern.compile(".*activities/([\\w]+) eq.*");
 
+	@Autowired
+	private ActivityGroupDog _activityGroupDog;
+
 	@Mock
 	private AsahTaskDog _asahTaskDog;
 
 	private JSONObject _assetJSONObject;
-	private JSONObject _dataSourceJSONObject;
+	private DataSource _dataSource;
+
+	@Autowired
+	private FieldRepository _fieldRepository;
+
+	private Individual _individual;
 
 	@Autowired
 	private IndividualDog _individualDog;
 
-	private JSONObject _individualJSONObject;
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;

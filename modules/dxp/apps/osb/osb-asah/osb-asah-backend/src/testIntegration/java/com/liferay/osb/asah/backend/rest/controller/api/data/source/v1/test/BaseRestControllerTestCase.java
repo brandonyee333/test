@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.entity.Segment;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -44,13 +44,12 @@ public abstract class BaseRestControllerTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		_individualDog.updateDynamicMemberships(
-			JSONUtil.put(
-				"filter", "(((demographics/age/value gt '50')))"
-			).put(
-				"id", "327968823603500655"
-			),
-			new Date());
+		Segment segment = new Segment();
+
+		segment.setFilter("(((demographics/age/value gt '50')))");
+		segment.setId(327968823603500655L);
+
+		_individualDog.updateDynamicMemberships(new Date(), segment);
 	}
 
 	protected ValidatableResponse getValidatableResponse(

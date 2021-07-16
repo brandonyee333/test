@@ -319,7 +319,7 @@ public abstract class BaseIndividualRepositoryTestCase
 	@Test
 	public void testUpdateAssociatedIds() {
 		individualRepository.updateAssociatedIds(
-			"organizationIds", new Long[] {234L}, _individualId);
+			"organizationIds", Collections.singleton(234L), _individualId);
 
 		Optional<Individual> individualOptional = individualRepository.findById(
 			_individualId);

@@ -18,13 +18,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.ClearChannelsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
-import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AccountDog;
+import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+
+import java.util.Date;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -48,86 +62,76 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 	@Test
 	public void test() throws Exception {
 		DataSource dataSource = _dataSourceDog.addDataSource(
-			_objectMapper.convertValue(
-				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-				DataSource.class));
+			FaroInfoTestUtil.buildLiferayDataSource());
 
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			dataSource, JSONObject.class);
+		Assert.assertNotNull(dataSource);
 
-		Assert.assertNotNull(dataSourceJSONObject);
+		Account account = _accountDog.addAccount(
+			FaroInfoTestUtil.buildAccount(dataSource));
 
-		JSONObject accountJSONObject = faroInfoElasticsearchInvoker.add(
-			"accounts",
-			FaroInfoTestUtil.buildAccountJSONObject(dataSourceJSONObject));
+		Long channelId = _dataSourceDog.getDefaultChannelId(dataSource.getId());
 
-		String channelId = String.valueOf(
-			_dataSourceDog.getDefaultChannelId(dataSource.getId()));
+		_segmentDog.addSegment(
+			FaroInfoTestUtil.buildAccountSegment(account, channelId));
 
-		faroInfoElasticsearchInvoker.add(
-			"individual-segments",
-			FaroInfoTestUtil.buildAccountIndividualSegmentJSONObject(
-				accountJSONObject, channelId));
+		Individual individual = _individualDog.addIndividual(
+			FaroInfoTestUtil.buildIndividual(channelId, dataSource), false);
 
-		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.add(
-			"individuals",
-			FaroInfoTestUtil.buildIndividualJSONObject(
-				channelId, dataSourceJSONObject));
-
-		JSONObject activityGroupJSONObject = faroInfoElasticsearchInvoker.add(
-			"activity-groups",
-			FaroInfoTestUtil.buildActivityGroupJSONObject(
-				channelId, dataSourceJSONObject.getString("id"),
-				DateUtil.newDateString(), individualJSONObject));
+		ActivityGroup activityGroup = _activityGroupDog.addActivityGroup(
+			FaroInfoTestUtil.buildActivityGroup(
+				channelId, dataSource.getId(), new Date(), individual));
 
 		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
 			"assets",
 			FaroInfoTestUtil.buildAssetJSONObject(
-				"Page", channelId, dataSourceJSONObject.getString("id")));
+				"Page", channelId, dataSource.getId()));
 
 		JSONObject activityJSONObject = faroInfoElasticsearchInvoker.add(
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
-				activityGroupJSONObject, assetJSONObject, channelId,
-				"pageViewed", new String[0]));
+				_objectMapper.convertValue(activityGroup, JSONObject.class),
+				assetJSONObject, channelId, "pageViewed", new String[0]));
 
 		_clearChannelsNanite.run(
 			JSONUtil.put("channelIds", JSONUtil.put(channelId)));
 
-		Assert.assertTrue(
-			faroInfoElasticsearchInvoker.exists(
-				"accounts", accountJSONObject.getString("id")));
+		Assert.assertTrue(_accountRepository.existsById(account.getId()));
 		Assert.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
 				"activities", activityJSONObject.getString("id")));
 		Assert.assertFalse(
-			faroInfoElasticsearchInvoker.exists(
-				"activity-groups", activityGroupJSONObject.getString("id")));
+			_activityGroupRepository.existsById(activityGroup.getId()));
 		Assert.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
 				"assets", assetJSONObject.getString("id")));
-		Assert.assertTrue(
-			faroInfoElasticsearchInvoker.exists("channels", channelId));
-		Assert.assertTrue(
-			faroInfoElasticsearchInvoker.exists(
-				"data-sources", dataSourceJSONObject.getString("id")));
+		Assert.assertTrue(_channelRepository.existsById(channelId));
+		Assert.assertTrue(_dataSourceRepository.existsById(dataSource.getId()));
 		Assert.assertFalse(
-			faroInfoElasticsearchInvoker.exists(
-				"individual-segments",
-				QueryBuilders.termQuery(
-					"name", "Account: " + accountJSONObject.getString("id"))));
+			_segmentRepository.existsByName("Account: " + account.getId()));
 		Assert.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
 				"individuals",
 				QueryBuilders.termQuery("channelIds", channelId)));
-		Assert.assertEquals(
-			1,
-			faroInfoElasticsearchInvoker.count(
-				"individuals", QueryBuilders.matchAllQuery()));
+		Assert.assertEquals(1, _individualRepository.count());
 	}
+
+	@Autowired
+	private AccountDog _accountDog;
+
+	@Autowired
+	private AccountRepository _accountRepository;
+
+	@Autowired
+	private ActivityGroupDog _activityGroupDog;
+
+	@Autowired
+	private ActivityGroupRepository _activityGroupRepository;
 
 	@MockBean
 	private ChannelHttp _channelHttp;
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private ClearChannelsNanite _clearChannelsNanite;
@@ -136,6 +140,21 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 	private DataSourceDog _dataSourceDog;
 
 	@Autowired
+	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
+	private IndividualDog _individualDog;
+
+	@Autowired
+	private IndividualRepository _individualRepository;
+
+	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
+
+	@Autowired
+	private SegmentRepository _segmentRepository;
 
 }

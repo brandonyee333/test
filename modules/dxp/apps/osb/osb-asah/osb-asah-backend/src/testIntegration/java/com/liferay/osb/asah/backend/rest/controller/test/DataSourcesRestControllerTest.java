@@ -22,11 +22,17 @@ import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteDataSourcesNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AccountDog;
+import com.liferay.osb.asah.common.dog.ActivityGroupDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -85,40 +91,37 @@ public class DataSourcesRestControllerTest {
 
 	@Test
 	public void testDeleteDataSource() throws Exception {
+		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
 		JSONObject dataSourceJSONObject = new JSONObject(
 			_dataSourcesRestController.postDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSourceDTO.class)));
+				_objectMapper.convertValue(dataSource, DataSourceDTO.class)));
 
-		JSONObject accountJSONObject = FaroInfoTestUtil.buildAccountJSONObject(
-			dataSourceJSONObject);
+		dataSource.setId(Long.valueOf(dataSourceJSONObject.getString("id")));
 
-		accountJSONObject = new JSONObject(
-			_accountDog.addAccount(
-				accountJSONObject.getString("id"), accountJSONObject,
-				_objectMapper.convertValue(
-					dataSourceJSONObject, DataSource.class)));
+		Account account = FaroInfoTestUtil.buildAccount(dataSource);
 
-		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.add(
-			"individuals",
-			FaroInfoTestUtil.buildIndividualJSONObject(dataSourceJSONObject));
+		account = _accountDog.addAccount(
+			String.valueOf(account.getId()),
+			_objectMapper.convertValue(account, JSONObject.class), dataSource);
 
-		JSONObject activityGroupJSONObject = _faroInfoElasticsearchInvoker.add(
-			"activity-groups",
-			FaroInfoTestUtil.buildActivityGroupJSONObject(
-				dataSourceJSONObject.getString("id"), individualJSONObject));
+		Individual individual = FaroInfoTestUtil.buildIndividual(dataSource);
+
+		individual = _individualDog.addIndividual(individual, false);
+
+		ActivityGroup activityGroup = _activityGroupDog.addActivityGroup(
+			FaroInfoTestUtil.buildActivityGroup(
+				dataSource.getId(), individual));
 
 		JSONObject assetJSONObject = _faroInfoElasticsearchInvoker.add(
 			"assets",
-			FaroInfoTestUtil.buildAssetJSONObject(
-				"Page", dataSourceJSONObject.getString("id")));
+			FaroInfoTestUtil.buildAssetJSONObject("Page", dataSource.getId()));
 
 		JSONObject activityJSONObject = _faroInfoElasticsearchInvoker.add(
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
-				activityGroupJSONObject, assetJSONObject, "pageViewed",
-				new String[0]));
+				_objectMapper.convertValue(activityGroup, JSONObject.class),
+				assetJSONObject, "pageViewed", new String[0]));
 
 		_dataSourcesRestController.deleteDataSource(
 			dataSourceJSONObject.getLong("id"));
@@ -134,14 +137,12 @@ public class DataSourcesRestControllerTest {
 
 		_runDeleteDataSourcesNanite(updateDataSourceJSONObject);
 
-		Assert.assertFalse(
-			_accountRepository.existsById(accountJSONObject.getLong("id")));
+		Assert.assertFalse(_accountRepository.existsById(account.getId()));
 		Assert.assertTrue(
 			_faroInfoElasticsearchInvoker.exists(
 				"activities", activityJSONObject.getString("id")));
 		Assert.assertTrue(
-			_faroInfoElasticsearchInvoker.exists(
-				"activity-groups", activityGroupJSONObject.getString("id")));
+			_activityGroupRepository.existsById(activityGroup.getId()));
 		Assert.assertTrue(
 			_faroInfoElasticsearchInvoker.exists(
 				"assets", assetJSONObject.getString("id")));
@@ -152,7 +153,7 @@ public class DataSourcesRestControllerTest {
 			_faroInfoElasticsearchInvoker.exists(
 				"individual-segments",
 				QueryBuilders.termQuery(
-					"name", "Account: " + accountJSONObject.getLong("id"))));
+					"name", "Account: " + account.getId())));
 		Assert.assertFalse(
 			_faroInfoElasticsearchInvoker.exists(
 				"individuals",
@@ -166,14 +167,12 @@ public class DataSourcesRestControllerTest {
 
 	@Test
 	public void testDuplicateDataSourceName() {
-		JSONObject dataSourceJSONObject =
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
-				"Liferay", RandomTestUtil.randomURL());
+		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource(
+			"Liferay", RandomTestUtil.randomURL());
 
 		for (int i = 0; i < 4; i++) {
 			_dataSourcesRestController.postDataSource(
-				_objectMapper.convertValue(
-					dataSourceJSONObject, DataSourceDTO.class));
+				_objectMapper.convertValue(dataSource, DataSourceDTO.class));
 		}
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
@@ -189,7 +188,8 @@ public class DataSourcesRestControllerTest {
 		Set<String> dataSourceNames = new HashSet<>();
 
 		for (int i = 0; i < dataSourcesJSONArray.length(); i++) {
-			dataSourceJSONObject = dataSourcesJSONArray.getJSONObject(i);
+			JSONObject dataSourceJSONObject =
+				dataSourcesJSONArray.getJSONObject(i);
 
 			dataSourceNames.add(dataSourceJSONObject.getString("name"));
 		}
@@ -285,7 +285,7 @@ public class DataSourcesRestControllerTest {
 	public void testGetDataSources() {
 		_dataSourcesRestController.postDataSource(
 			_objectMapper.convertValue(
-				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+				FaroInfoTestUtil.buildLiferayDataSource(),
 				DataSourceDTO.class));
 
 		JSONObject dataSourcesJSONObject = _objectMapper.convertValue(
@@ -1264,6 +1264,12 @@ public class DataSourcesRestControllerTest {
 	private AccountRepository _accountRepository;
 
 	@Autowired
+	private ActivityGroupDog _activityGroupDog;
+
+	@Autowired
+	private ActivityGroupRepository _activityGroupRepository;
+
+	@Autowired
 	private AutowireCapableBeanFactory _autowireCapableBeanFactory;
 
 	@Mock
@@ -1283,6 +1289,9 @@ public class DataSourcesRestControllerTest {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

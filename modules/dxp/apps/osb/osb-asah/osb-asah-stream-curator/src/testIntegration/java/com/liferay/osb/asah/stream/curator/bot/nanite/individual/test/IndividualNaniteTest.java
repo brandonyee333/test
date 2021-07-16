@@ -14,18 +14,29 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.individual.test;
 
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.entity.DataSourceIndividual;
+import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.individual.IndividualNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -63,16 +74,56 @@ public class IndividualNaniteTest {
 		resourcePath = "individual_segments_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_1_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@MessageBusChannel(
 		channel = Channel.IDENTITY_MESSAGE,
 		resourcePath = "identity_message_1.json"
 	)
 	@Test
 	public void testIndividualResolution() throws Exception {
+		Individual individual1 = new Individual();
+
+		individual1.setDataSourceIndividuals(
+			Collections.singleton(
+				new DataSourceIndividual(
+					Collections.emptySet(), 1L, 100L,
+					Collections.singleton("1"))));
+		individual1.setEmailAddressHashed(
+			"3bb3aa73a3e59526dcc7975c1516997e8a604083e661aa01f348ebc7b18a81dd");
+		individual1.setId(100L);
+		individual1.setSegmentIds(SetUtil.of(10L, 11L));
+
+		Field field1 = new Field();
+
+		field1.setName("email");
+		field1.setOwnerId(100L);
+		field1.setValue("john@liferay.com");
+
+		_fieldRepository.save(field1);
+
+		_individualDog.addIndividual(individual1, false);
+
+		Individual individual2 = new Individual();
+
+		individual2.setDataSourceIndividuals(
+			Collections.singleton(
+				new DataSourceIndividual(
+					Collections.emptySet(), 2L, 200L,
+					Collections.singleton("2"))));
+		individual2.setEmailAddressHashed(
+			"d35fe6a6d0d6043c61ca7b2b4694b6b5228c626321b0b103f35d346662e88227");
+		individual2.setId(200L);
+		individual2.setSegmentIds(Collections.singleton(20L));
+
+		Field field2 = new Field();
+
+		field2.setName("email");
+		field2.setOwnerId(200L);
+		field2.setValue("jane@liferay.com");
+
+		_fieldRepository.save(field2);
+
+		_individualDog.addIndividual(individual2, false);
+
 		_individualNanite.run();
 
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get("blogs");
@@ -85,10 +136,6 @@ public class IndividualNaniteTest {
 
 	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -105,30 +152,82 @@ public class IndividualNaniteTest {
 	)
 	@Test
 	public void testMergeIndividual() {
-		Assert.assertTrue(
-			_faroInfoElasticsearchInvoker.exists("individuals", "200"));
+		Individual individual1 = new Individual();
+
+		individual1.setDataSourceIndividuals(
+			Collections.singleton(
+				new DataSourceIndividual(
+					Collections.emptySet(), 1L, 100L,
+					Collections.singleton("1"))));
+		individual1.setEmailAddressHashed(
+			"3bb3aa73a3e59526dcc7975c1516997e8a604083e661aa01f348ebc7b18a81dd");
+		individual1.setId(100L);
+		individual1.setIndividualChannels(
+			Collections.singleton(new IndividualChannel(1L, 1L, 100L, null)));
+
+		Field field1 = new Field();
+
+		field1.setContext("demographics");
+		field1.setName("email");
+		field1.setOwnerId(100L);
+		field1.setValue("john@liferay.com");
+
+		_fieldRepository.save(field1);
+
+		_individualDog.addIndividual(individual1, false);
+
+		Individual individual2 = new Individual();
+
+		individual2.setDataSourceIndividuals(
+			Collections.singleton(
+				new DataSourceIndividual(
+					Collections.emptySet(), 1L, 200L,
+					Collections.singleton("2"))));
+		individual2.setId(200L);
+		individual2.setIndividualChannels(
+			SetUtil.of(
+				new IndividualChannel(1L, 1L, 200L, null),
+				new IndividualChannel(1L, 2L, 200L, null)));
+
+		_individualDog.addIndividual(individual2, false);
+
+		Assert.assertTrue(_individualDog.existsById(200L));
 
 		_individualNanite.run();
 
-		Assert.assertFalse(
-			_faroInfoElasticsearchInvoker.exists("individuals", "200"));
+		Assert.assertFalse(_individualDog.existsById(200L));
 
-		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.termQuery(
-				"demographics.email.value", "john@liferay.com"));
+		Individual individual3 = _individualDog.fetchIndividualByEmailAddress(
+			"john@liferay.com");
 
-		JSONArray activitiesCounts = individualJSONObject.getJSONArray(
-			"activitiesCounts");
+		Set<Individual.ActivitiesCount> activitiesCounts =
+			individual3.getActivitiesCounts();
 
-		JSONObject activitiesCount = JSONUtil.find(
-			activitiesCounts, "channelId", "1");
+		Stream<Individual.ActivitiesCount> stream = activitiesCounts.stream();
 
-		Assert.assertEquals(2, activitiesCount.get("activitiesCount"));
+		Individual.ActivitiesCount individualActivitiesCount = stream.filter(
+			activitiesCount -> Objects.equals(
+				1L, activitiesCount.getChannelId())
+		).findFirst(
+		).orElse(
+			null
+		);
 
-		activitiesCount = JSONUtil.find(activitiesCounts, "channelId", "2");
+		Assert.assertEquals(
+			2, (long)individualActivitiesCount.getActivitiesCount());
 
-		Assert.assertEquals(1, activitiesCount.get("activitiesCount"));
+		stream = activitiesCounts.stream();
+
+		individualActivitiesCount = stream.filter(
+			activitiesCount -> Objects.equals(
+				2L, activitiesCount.getChannelId())
+		).findFirst(
+		).orElse(
+			null
+		);
+
+		Assert.assertEquals(
+			1, (long)individualActivitiesCount.getActivitiesCount());
 
 		Assert.assertFalse(
 			_cerebroInfoElasticsearchInvoker.exists(
@@ -248,10 +347,6 @@ public class IndividualNaniteTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "session_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
@@ -261,6 +356,45 @@ public class IndividualNaniteTest {
 	)
 	@Test
 	public void testUserSessionUpdate() {
+		Individual individual1 = new Individual();
+
+		individual1.setDataSourceIndividuals(
+			Collections.singleton(
+				new DataSourceIndividual(
+					Collections.emptySet(), 1L, 100L,
+					Collections.singleton("1"))));
+		individual1.setEmailAddressHashed(
+			"3bb3aa73a3e59526dcc7975c1516997e8a604083e661aa01f348ebc7b18a81dd");
+		individual1.setId(100L);
+		individual1.setIndividualChannels(
+			Collections.singleton(new IndividualChannel(1L, 1L, 100L, null)));
+
+		Field field1 = new Field();
+
+		field1.setContext("demographics");
+		field1.setName("email");
+		field1.setOwnerId(100L);
+		field1.setValue("john@liferay.com");
+
+		_fieldRepository.save(field1);
+
+		_individualDog.addIndividual(individual1, false);
+
+		Individual individual2 = new Individual();
+
+		individual2.setDataSourceIndividuals(
+			Collections.singleton(
+				new DataSourceIndividual(
+					Collections.emptySet(), 1L, 200L,
+					Collections.singleton("2"))));
+		individual2.setId(200L);
+		individual2.setIndividualChannels(
+			SetUtil.of(
+				new IndividualChannel(1L, 1L, 200L, null),
+				new IndividualChannel(1L, 2L, 200L, null)));
+
+		_individualDog.addIndividual(individual2, false);
+
 		_individualNanite.run();
 
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
@@ -273,12 +407,10 @@ public class IndividualNaniteTest {
 		Assert.assertEquals("100", jsonObject.get("individualId"));
 		Assert.assertEquals("2", jsonObject.get("userId"));
 
-		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.termQuery(
-				"demographics.email.value", "john@liferay.com"));
+		Individual individual3 = _individualDog.fetchIndividualByEmailAddress(
+			"john@liferay.com");
 
-		Assert.assertTrue(individualJSONObject.has("lastEnrichmentDate"));
+		Assert.assertTrue(!Objects.isNull(individual3.getLastEnrichmentDate()));
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
@@ -286,6 +418,12 @@ public class IndividualNaniteTest {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FieldRepository _fieldRepository;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private IndividualNanite _individualNanite;

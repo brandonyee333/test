@@ -63,13 +63,12 @@ import org.springframework.web.client.HttpClientErrorException;
 public class ChannelsRestControllerTest {
 
 	@Test
-	public void testDuplicateChannelName() throws Exception {
+	public void testDuplicateChannelName() {
 		JSONObject dataSourceJSONObject = new JSONObject(
 			_dataSourcesRestController.postDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
-						"Liferay", RandomTestUtil.randomURL()),
-					DataSourceDTO.class)));
+				new DataSourceDTO(
+					FaroInfoTestUtil.buildLiferayDataSource(
+						"Liferay", RandomTestUtil.randomURL()))));
 
 		JSONObject channelJSONObject = FaroInfoTestUtil.buildChannelJSONObject(
 			dataSourceJSONObject.getString("id"), "combined");
@@ -110,7 +109,7 @@ public class ChannelsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetChannels() throws Exception {
+	public void testGetChannels() {
 		JSONObject channelsJSONObject = _objectMapper.convertValue(
 			_channelsRestController.getChannelDTOsPageDTO(null, 0, 20, null),
 			JSONObject.class);
@@ -122,7 +121,7 @@ public class ChannelsRestControllerTest {
 	}
 
 	@Test
-	public void testHandleFaroFailure() throws Exception {
+	public void testHandleFaroFailure() {
 		Mockito.doThrow(
 			new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR)
 		).when(
@@ -135,7 +134,7 @@ public class ChannelsRestControllerTest {
 			JSONObject dataSourceJSONObject = new JSONObject(
 				_dataSourcesRestController.postDataSource(
 					_objectMapper.convertValue(
-						FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+						FaroInfoTestUtil.buildLiferayDataSource(),
 						DataSourceDTO.class)));
 
 			new JSONArray(
@@ -291,7 +290,7 @@ public class ChannelsRestControllerTest {
 		JSONObject dataSourceJSONObject = new JSONObject(
 			_dataSourcesRestController.postDataSource(
 				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+					FaroInfoTestUtil.buildLiferayDataSource(),
 					DataSourceDTO.class)));
 
 		JSONArray channelsJSONArray = new JSONArray(
@@ -310,11 +309,11 @@ public class ChannelsRestControllerTest {
 	}
 
 	@Test
-	public void testPostMultipleChannels() throws Exception {
+	public void testPostMultipleChannels() {
 		JSONObject dataSourceJSONObject = new JSONObject(
 			_dataSourcesRestController.postDataSource(
 				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+					FaroInfoTestUtil.buildLiferayDataSource(),
 					DataSourceDTO.class)));
 
 		JSONArray channelsJSONArray = new JSONArray(

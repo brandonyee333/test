@@ -65,13 +65,13 @@ public class IndividualSegmentsRestControllerTest
 	@Test
 	public void testExpandReferencedObjects() throws Exception {
 		JSONObject assetJSONObject = _faroInfoElasticsearchInvoker.add(
-			"assets", FaroInfoTestUtil.buildAssetJSONObject("Page", "1"));
+			"assets", FaroInfoTestUtil.buildAssetJSONObject("Page", 1L));
 		FieldMapping accountFieldMapping = _fieldMappingRepository.save(
 			FaroInfoTestUtil.buildAccountFieldMapping(
 				"1", "shippingPostalCode", "shippingPostalCode", "Text"));
 		FieldMapping individualFieldMapping = _fieldMappingRepository.save(
 			FaroInfoTestUtil.buildIndividualFieldMapping(
-				"1", "email", "email", "Text"));
+				1L, "email", "email", "Text"));
 		JSONObject groupJSONObject = _dxpRawElasticsearchInvoker.add(
 			"groups",
 			JSONUtil.put("fields", JSONUtil.put("name", "groupName")));
@@ -177,7 +177,7 @@ public class IndividualSegmentsRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "fields", resourcePath = "fields.json",
+		name = "fields", resourcePath = "fields_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(

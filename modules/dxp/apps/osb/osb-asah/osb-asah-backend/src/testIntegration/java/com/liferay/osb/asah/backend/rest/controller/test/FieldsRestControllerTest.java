@@ -44,11 +44,11 @@ import org.springframework.test.context.ContextConfiguration;
 public class FieldsRestControllerTest {
 
 	@ElasticsearchIndex(
-		name = "fields", resourcePath = "fields.json",
+		name = "fields", resourcePath = "fields_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetField() throws Exception {
+	public void testGetField() {
 		JSONAssert.assertEquals(
 			_objectMapper.convertValue(
 				new FieldDTO(_fieldDog.getField(357046433509858076L)),
@@ -60,7 +60,7 @@ public class FieldsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "fields", resourcePath = "fields.json",
+		name = "fields", resourcePath = "fields_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -75,7 +75,7 @@ public class FieldsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "fields", resourcePath = "fields.json",
+		name = "fields", resourcePath = "fields_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

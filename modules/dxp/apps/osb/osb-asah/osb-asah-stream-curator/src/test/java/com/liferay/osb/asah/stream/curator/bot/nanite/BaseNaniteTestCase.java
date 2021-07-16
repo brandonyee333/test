@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.function.UnsafeFunction;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
@@ -94,12 +94,10 @@ public abstract class BaseNaniteTestCase {
 		);
 
 		if (nanite instanceof BaseNanite) {
-			IndividualDog individualDog = Mockito.mock(
-				IndividualDog.class);
+			IndividualDog individualDog = Mockito.mock(IndividualDog.class);
 
 			ReflectionTestUtils.setField(
-				nanite, "_faroInfoIndividualDog",
-				Mockito.mock(IndividualDog.class));
+				nanite, "_individualDog", Mockito.mock(IndividualDog.class));
 
 			Mockito.when(
 				elasticsearchInvoker.exists(
@@ -110,7 +108,7 @@ public abstract class BaseNaniteTestCase {
 			);
 
 			Mockito.when(
-				individualDog.fetchIndividualJSONObject(
+				individualDog.fetchIndividual(
 					ArgumentMatchers.anyLong(), ArgumentMatchers.anyString())
 			).thenReturn(
 				null

@@ -150,6 +150,10 @@ public class IndividualSegmentsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
+		name = "fields", resourcePath = "fields_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
 		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)

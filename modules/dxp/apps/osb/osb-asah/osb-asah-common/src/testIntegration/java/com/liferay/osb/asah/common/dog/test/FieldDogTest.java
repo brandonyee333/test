@@ -20,14 +20,15 @@ import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.json.JSONObject;
 
@@ -48,16 +49,14 @@ public class FieldDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
 	public void setUp() {
-		_dataSourceJSONObject = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildCSVDataSourceJSONObject(),
-					DataSource.class)),
-			JSONObject.class);
+		_dataSource = _dataSourceDog.addDataSource(
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildCSVDataSourceJSONObject(),
+				DataSource.class));
 
 		_fieldMappingDog.addFieldMapping(
 			FaroInfoTestUtil.buildIndividualFieldMapping(
-				_dataSourceJSONObject.getString("id"), "date", "date", "Date"));
+				_dataSource.getId(), "date", "date", "Date"));
 	}
 
 	@Test
@@ -133,7 +132,7 @@ public class FieldDogTest extends BaseFaroInfoDogTestCase {
 
 		JSONObject csvIndividualJSONObject =
 			FaroInfoTestUtil.buildCSVIndividualJSONObject(
-				_dataSourceJSONObject.getString("id"),
+				String.valueOf(_dataSource.getId()),
 				RandomTestUtil.randomUUID(),
 				new HashMap<String, Object>() {
 					{
@@ -141,15 +140,13 @@ public class FieldDogTest extends BaseFaroInfoDogTestCase {
 					}
 				});
 
-		JSONObject contextJSONObject = _fieldDog.buildContextJSONObject(
+		List<Field> fields = _fieldDog.addFields(
 			"demographics", csvIndividualJSONObject.getJSONObject("fields"),
-			_objectMapper.convertValue(_dataSourceJSONObject, DataSource.class),
-			"individual");
+			_dataSource, null, "individual");
 
-		String actualDateString = String.valueOf(
-			JSONUtil.getValue(
-				contextJSONObject, "JSONArray/date", "Object/0",
-				"Object/value"));
+		Field dateField = fields.get(0);
+
+		String actualDateString = String.valueOf(dateField.getValue());
 
 		Assert.assertTrue(
 			"Expected date to start with \"" + expectedDateString +
@@ -157,10 +154,10 @@ public class FieldDogTest extends BaseFaroInfoDogTestCase {
 			actualDateString.startsWith(expectedDateString));
 	}
 
+	private DataSource _dataSource;
+
 	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	private JSONObject _dataSourceJSONObject;
 
 	@Autowired
 	private FieldDog _fieldDog;

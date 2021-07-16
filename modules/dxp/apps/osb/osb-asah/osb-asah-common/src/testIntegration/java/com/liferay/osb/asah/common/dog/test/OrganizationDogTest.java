@@ -32,13 +32,14 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.DXPRawTestUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang.RandomStringUtils;
 
 import org.json.JSONObject;
 
@@ -59,23 +60,22 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
 	public void setUp() {
-		_liferayDataSourceJSONObject =
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
+		_liferayDataSource = FaroInfoTestUtil.buildLiferayDataSource();
 
-		_liferayDataSourceJSONObject.put("id", RandomTestUtil.randomId());
+		_liferayDataSource.setId(
+			Long.parseLong(RandomStringUtils.randomNumeric(4)));
 
 		_fieldMappingRepository.save(
 			FaroInfoTestUtil.buildFieldMapping(
 				null, "custom",
 				Collections.singletonMap(
-					_liferayDataSourceJSONObject.getString("id"), "address"),
+					String.valueOf(_liferayDataSource.getId()), "address"),
 				"address", "Text", "organization"));
 		_fieldMappingRepository.save(
 			FaroInfoTestUtil.buildFieldMapping(
 				null, "custom",
 				Collections.singletonMap(
-					_liferayDataSourceJSONObject.getString("id"),
-					"dateFounded"),
+					String.valueOf(_liferayDataSource.getId()), "dateFounded"),
 				"dateFounded", "Date", "organization"));
 	}
 
@@ -83,15 +83,13 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 	public void testAddOrganization() throws Exception {
 		JSONObject dxpRawOrganizationJSONObject =
 			DXPRawTestUtil.buildOrganizationJSONObject(
-				_liferayDataSourceJSONObject.getString("id")
+				String.valueOf(_liferayDataSource.getId())
 			).put(
 				"expando", JSONUtil.put("address", "1400 Montefino Ave")
 			);
 
 		Organization organization = _organizationDog.addOrganization(
-			dxpRawOrganizationJSONObject,
-			_objectMapper.convertValue(
-				_liferayDataSourceJSONObject, DataSource.class));
+			dxpRawOrganizationJSONObject, _liferayDataSource);
 
 		Assert.assertNotNull(
 			_dxpEntityDog.fetchByFieldsAndType(
@@ -113,8 +111,7 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertNotNull(organization.getCreateDate());
 		Assert.assertEquals(
-			_liferayDataSourceJSONObject.getString("id"),
-			String.valueOf(organization.getDataSourceId()));
+			_liferayDataSource.getId(), organization.getDataSourceId());
 		Assert.assertEquals(
 			dxpRawOrganizationJSONObject.getString("name"),
 			organization.getName());
@@ -138,9 +135,8 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 	public void testDeleteOrganization() throws Exception {
 		Organization organization = _organizationDog.addOrganization(
 			DXPRawTestUtil.buildOrganizationJSONObject(
-				_liferayDataSourceJSONObject.getString("id")),
-			_objectMapper.convertValue(
-				_liferayDataSourceJSONObject, DataSource.class));
+				String.valueOf(_liferayDataSource.getId())),
+			_liferayDataSource);
 
 		_organizationDog.deleteOrganization(organization);
 
@@ -161,12 +157,10 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 	public void testUpdateOrganization() throws Exception {
 		JSONObject dxpRawOrganizationJSONObject =
 			DXPRawTestUtil.buildOrganizationJSONObject(
-				_liferayDataSourceJSONObject.getString("id"));
+				String.valueOf(_liferayDataSource.getId()));
 
 		Organization organization = _organizationDog.addOrganization(
-			dxpRawOrganizationJSONObject,
-			_objectMapper.convertValue(
-				_liferayDataSourceJSONObject, DataSource.class));
+			dxpRawOrganizationJSONObject, _liferayDataSource);
 
 		organization = _organizationDog.updateOrganization(
 			dxpRawOrganizationJSONObject.put(
@@ -176,9 +170,7 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"name", "marketing"
 			),
-			_objectMapper.convertValue(
-				_liferayDataSourceJSONObject, DataSource.class),
-			organization);
+			_liferayDataSource, organization);
 
 		Assert.assertEquals("marketing", organization.getName());
 
@@ -220,7 +212,7 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 	@Autowired
 	private FieldMappingRepository _fieldMappingRepository;
 
-	private JSONObject _liferayDataSourceJSONObject;
+	private DataSource _liferayDataSource;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

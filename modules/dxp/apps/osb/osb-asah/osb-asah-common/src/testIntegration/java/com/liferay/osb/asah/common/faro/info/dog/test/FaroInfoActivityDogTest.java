@@ -14,11 +14,19 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahTask;
+import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -43,21 +51,17 @@ import org.springframework.test.context.ContextConfiguration;
 public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
-	public void testAddActivityTriggersAddsAsahTask() throws Exception {
-		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
-			"data-sources",
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
+	public void testAddActivityTriggersAddsAsahTask() {
+		DataSource dataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildLiferayDataSource());
 
-		String dataSourceId = dataSourceJSONObject.getString("id");
+		Long dataSourceId = dataSource.getId();
 
-		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.add(
-			"individuals",
-			FaroInfoTestUtil.buildIndividualJSONObject(dataSourceJSONObject));
+		Individual individual = _individualDog.addIndividual(
+			FaroInfoTestUtil.buildIndividual(dataSource), false);
 
-		JSONObject activityGroupJSONObject = faroInfoElasticsearchInvoker.add(
-			"activity-groups",
-			FaroInfoTestUtil.buildActivityGroupJSONObject(
-				dataSourceId, individualJSONObject));
+		ActivityGroup activityGroup = _activityGroupDog.addActivityGroup(
+			FaroInfoTestUtil.buildActivityGroup(dataSourceId, individual));
 
 		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
 			"assets", FaroInfoTestUtil.buildPageAssetJSONObject(dataSourceId));
@@ -74,8 +78,8 @@ public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
 
 		_faroInfoActivityDog.addActivity(
 			FaroInfoTestUtil.buildActivityJSONObject(
-				activityGroupJSONObject, assetJSONObject, "pageViewed",
-				new String[0]));
+				_objectMapper.convertValue(activityGroup, JSONObject.class),
+				assetJSONObject, "pageViewed", new String[0]));
 
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"UpdateDynamicMembershipsNanite");
@@ -84,10 +88,22 @@ public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@Autowired
+	private ActivityGroupDog _activityGroupDog;
+
+	@Autowired
 	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
+	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
+
+	@Autowired
+	private IndividualDog _individualDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;

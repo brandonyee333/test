@@ -21,12 +21,19 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.NaniteTestConfiguration;
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -64,16 +71,17 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
-			"data-sources",
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
+		DataSource dataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildLiferayDataSource());
 
-		_individualJSONObject = faroInfoElasticsearchInvoker.add(
-			"individuals",
-			FaroInfoTestUtil.buildIndividualJSONObject(
-				"1", dataSourceJSONObject));
+		Individual individual = FaroInfoTestUtil.buildIndividual(
+			1L, dataSource);
 
-		_dataSourceId = dataSourceJSONObject.getString("id");
+		_fieldRepository.saveAll(individual.getFields());
+
+		_individual = _individualDog.addIndividual(individual, false);
+
+		_dataSourceId = dataSource.getId();
 
 		_assetJSONObject1 = faroInfoElasticsearchInvoker.add(
 			"assets", FaroInfoTestUtil.buildPageAssetJSONObject(_dataSourceId));
@@ -91,22 +99,22 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 			"interests",
 			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
 				_assetJSONObject1, DateUtil.addDays(dayDateString, -2),
-				_individualJSONObject.getString("id"), 1, 10));
+				_individual.getId(), 1, 10));
 		faroInfoElasticsearchInvoker.add(
 			"interests",
 			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
 				_assetJSONObject1, DateUtil.addDays(dayDateString, -3),
-				_individualJSONObject.getString("id"), 1, 10));
+				_individual.getId(), 1, 10));
 		faroInfoElasticsearchInvoker.add(
 			"visited-pages",
 			FaroInfoTestUtil.buildIndividualVisitedPagesJSONArray(
 				_assetJSONObject1, DateUtil.addDays(dayDateString, -30),
-				_individualJSONObject.getString("id"), 1));
+				_individual.getId(), 1));
 		faroInfoElasticsearchInvoker.add(
 			"visited-pages",
 			FaroInfoTestUtil.buildIndividualVisitedPagesJSONArray(
 				_assetJSONObject1, DateUtil.addDays(dayDateString, -31),
-				_individualJSONObject.getString("id"), 1));
+				_individual.getId(), 1));
 
 		_individualInterestScoresNanite.run(dayDateString);
 
@@ -212,7 +220,7 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 		Long segment1Id = segment1.getId();
 		Long segment2Id = segment2.getId();
 
-		Long individualId = _individualJSONObject.getLong("id");
+		Long individualId = _individual.getId();
 
 		Assert.assertTrue(_membershipDog.isMember(individualId, segment1Id));
 		Assert.assertFalse(_membershipDog.isMember(individualId, segment2Id));
@@ -271,23 +279,22 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 					QueryBuilders.existsQuery("canonicalUrl"))));
 	}
 
-	private void _addActivities(String dateString) throws Exception {
-		JSONObject activityGroupJSONObject = faroInfoElasticsearchInvoker.add(
-			"activity-groups",
-			FaroInfoTestUtil.buildActivityGroupJSONObject(
-				_dataSourceId, dateString, _individualJSONObject));
+	private void _addActivities(String dateString) {
+		ActivityGroup activityGroup = _activityGroupDog.addActivityGroup(
+			FaroInfoTestUtil.buildActivityGroup(
+				_dataSourceId, DateUtil.toUTCDate(dateString), _individual));
 
 		faroInfoElasticsearchInvoker.add(
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
-				activityGroupJSONObject, _assetJSONObject1, "pageViewed",
-				new String[0]));
+				_objectMapper.convertValue(activityGroup, JSONObject.class),
+				_assetJSONObject1, "pageViewed", new String[0]));
 
 		faroInfoElasticsearchInvoker.add(
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
-				activityGroupJSONObject, _assetJSONObject2, "pageViewed",
-				new String[0]));
+				_objectMapper.convertValue(activityGroup, JSONObject.class),
+				_assetJSONObject2, "pageViewed", new String[0]));
 	}
 
 	private void _assertInterestScoreDirection(
@@ -386,16 +393,28 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 		_MAX_DAYS_BEFORE_INTEREST_SCORE_BELOW_THRESHOLD = 60;
 
 	@Autowired
+	private ActivityGroupDog _activityGroupDog;
+
+	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
 
 	private JSONObject _assetJSONObject1;
 	private JSONObject _assetJSONObject2;
-	private String _dataSourceId;
+	private Long _dataSourceId;
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
+	private FieldRepository _fieldRepository;
+
+	private Individual _individual;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private IndividualInterestScoresNanite _individualInterestScoresNanite;
-
-	private JSONObject _individualJSONObject;
 
 	@Autowired
 	private MembershipDog _membershipDog;

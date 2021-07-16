@@ -50,15 +50,15 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 			"csv-individuals",
 			JSONUtil.putAll(
 				FaroInfoTestUtil.buildCSVIndividualJSONObject(
-					getDataSourceId(), getIndividual1PK(),
+					String.valueOf(getDataSourceId()), getIndividual1PK(),
 					getIndividual1FieldsMap()),
 				FaroInfoTestUtil.buildCSVIndividualJSONObject(
-					getDataSourceId(), getIndividual2PK(),
+					String.valueOf(getDataSourceId()), getIndividual2PK(),
 					getIndividual2FieldsMap())));
 
 		_csvIndividualsNanite.run(
 			JSONUtil.put(
-				"dataSourceId", getDataSourceId()
+				"dataSourceId", String.valueOf(getDataSourceId())
 			).put(
 				"type", "reprocess"
 			));
@@ -75,21 +75,21 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 			"csv-individuals",
 			JSONUtil.putAll(
 				FaroInfoTestUtil.buildCSVIndividualJSONObject(
-					getDataSourceId(), generateIndividualPK(),
+					String.valueOf(getDataSourceId()), generateIndividualPK(),
 					new HashMap<String, Object>() {
 						{
 							put("email", "test@liferay.com");
 						}
 					}),
 				FaroInfoTestUtil.buildCSVIndividualJSONObject(
-					getDataSourceId(), generateIndividualPK(),
+					String.valueOf(getDataSourceId()), generateIndividualPK(),
 					new HashMap<String, Object>() {
 						{
 							put("email", "TEST@LIFERAY.COM");
 						}
 					}),
 				FaroInfoTestUtil.buildCSVIndividualJSONObject(
-					getDataSourceId(), generateIndividualPK(),
+					String.valueOf(getDataSourceId()), generateIndividualPK(),
 					new HashMap<String, Object>() {
 						{
 							put("email", "TeSt@LiFeRaY.CoM");
@@ -98,7 +98,7 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 
 		_csvIndividualsNanite.run(
 			JSONUtil.put(
-				"dataSourceId", getDataSourceId()
+				"dataSourceId", String.valueOf(getDataSourceId())
 			).put(
 				"type", "reprocess"
 			));

@@ -163,7 +163,7 @@
 					"dateModified": "2019-02-01T16:04:17.535Z",
 					"fieldType": "Number",
 					"name": "age",
-					"ownerId": "337984659206412898",
+					"ownerId": "337984612356412845",
 					"ownerType": "individual",
 					"sourceName": "age",
 					"value": "100"
@@ -177,7 +177,7 @@
 					"dateModified": "2019-02-01T16:04:17.535Z",
 					"fieldType": "Text",
 					"name": "email",
-					"ownerId": "337984659206412898",
+					"ownerId": "337984612356412845",
 					"ownerType": "individual",
 					"sourceName": "emailAddress",
 					"value": "dummy@liferay.com"

@@ -54,7 +54,7 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "fields", resourcePath = "fields.json",
+		name = "fields", resourcePath = "fields_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -76,6 +76,10 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 
 	@ElasticsearchIndex(
 		name = "accounts", resourcePath = "accounts.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "fields", resourcePath = "fields.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(

@@ -64,21 +64,21 @@ public class SalesforceIndividualsNaniteTest
 			"individuals",
 			JSONUtil.putAll(
 				_buildSalesforceIndividualJSONObject(
-					getDataSourceId(), getIndividual1FieldsMap(),
-					getIndividual1PK()),
+					String.valueOf(getDataSourceId()),
+					getIndividual1FieldsMap(), getIndividual1PK()),
 				_buildSalesforceIndividualJSONObject(
-					getDataSourceId(), getIndividual2FieldsMap(),
-					getIndividual2PK())));
+					String.valueOf(getDataSourceId()),
+					getIndividual2FieldsMap(), getIndividual2PK())));
 
 		_salesforceRawElasticsearchInvoker.add(
 			"audit-events",
 			JSONUtil.putAll(
 				_buildAuditEventJSONObject(
-					getDataSourceId(),
+					String.valueOf(getDataSourceId()),
 					_salesforceRawElasticsearchInvoker.get(
 						"individuals", getIndividual1PK())),
 				_buildAuditEventJSONObject(
-					getDataSourceId(),
+					String.valueOf(getDataSourceId()),
 					_salesforceRawElasticsearchInvoker.get(
 						"individuals", getIndividual2PK()))));
 
@@ -96,7 +96,7 @@ public class SalesforceIndividualsNaniteTest
 
 		_salesforceIndividualsNanite.run(
 			JSONUtil.put(
-				"dataSourceId", getDataSourceId()
+				"dataSourceId", String.valueOf(getDataSourceId())
 			).put(
 				"type", "audit-events"
 			));

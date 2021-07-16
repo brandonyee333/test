@@ -38,8 +38,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 import org.apache.commons.lang3.RandomUtils;
 
@@ -65,17 +63,13 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Before
 	public void setUp() {
 		for (int i = 0; i < 3; i++) {
-			JSONObject liferayDataSourceJSONObject = _objectMapper.convertValue(
-				_dataSourceDog.addDataSource(
-					_objectMapper.convertValue(
-						FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-						DataSource.class)),
-				JSONObject.class);
+			DataSource dataSource = _dataSourceDog.addDataSource(
+				FaroInfoTestUtil.buildLiferayDataSource());
 
-			String liferayDataSourceId = liferayDataSourceJSONObject.getString(
-				"id");
+			Long liferayDataSourceId = dataSource.getId();
 
-			_liferayDataSourceIdsJSONArray.put(liferayDataSourceId);
+			_liferayDataSourceIdsJSONArray.put(
+				String.valueOf(liferayDataSourceId));
 
 			JSONArray assetIdsJSONArray = new JSONArray();
 
@@ -89,14 +83,14 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			}
 
 			_liferayDataSourceAssetIdsJSONObject.put(
-				liferayDataSourceId, assetIdsJSONArray);
+				String.valueOf(liferayDataSourceId), assetIdsJSONArray);
 
 			JSONObject organizationJSONObject =
 				FaroInfoTestUtil.buildOrganizationJSONObject(
-					liferayDataSourceId);
+					String.valueOf(liferayDataSourceId));
 
 			_liferayDataSourceOrganizationIdsJSONObject.put(
-				liferayDataSourceId,
+				String.valueOf(liferayDataSourceId),
 				_dxpRawElasticsearchInvoker.add(
 					"organizations",
 					JSONUtil.put(
@@ -135,7 +129,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddAnd() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds(
 				"favoriteColor", "favoriteGenre"),
 			"demographics/favoriteColor/value eq 'blue' and " +
@@ -144,25 +138,24 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testAddBehavioralCriteriaWithMultipleAssetsFromDifferentDataSources() {
-		Long[] expectedReferencedAssetDataSourceIds =
-			new Long[_liferayDataSourceIdsJSONArray.length() - 1];
+		String[] expectedReferencedAssetDataSourceIds =
+			new String[_liferayDataSourceIdsJSONArray.length() - 1];
 
-		List<Long> expectedReferencedAssetIds = new ArrayList<>();
+		List<String> expectedReferencedAssetIds = new ArrayList<>();
 
 		StringBuilder filterSB = new StringBuilder();
 
 		for (int i = 0; i < (_liferayDataSourceIdsJSONArray.length() - 1);
 			 i++) {
 
-			Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(i);
+			String dataSourceId = _liferayDataSourceIdsJSONArray.getString(i);
 
 			expectedReferencedAssetDataSourceIds[i] = dataSourceId;
 
 			JSONArray assetIdsJSONArray =
-				_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-					dataSourceId.toString());
+				_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
 
-			Long assetId = assetIdsJSONArray.getLong(
+			String assetId = assetIdsJSONArray.getString(
 				RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 			expectedReferencedAssetIds.add(assetId);
@@ -178,20 +171,19 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 
 		_assertAddSetsReferencedObjectIds(
 			expectedReferencedAssetDataSourceIds,
-			expectedReferencedAssetIds.toArray(new Long[0]), new Long[0],
+			expectedReferencedAssetIds.toArray(new String[0]), new String[0],
 			filterSB.toString());
 	}
 
 	@Test
 	public void testAddBehavioralCriteriaWithMultipleAssetsFromSameDataSource() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		StringBuilder filterSB = new StringBuilder();
 
 		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				dataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
 
 		for (int i = 0; i < assetIdsJSONArray.length(); i++) {
 			filterSB.append("activities/ever eq 'page#pageViewed#");
@@ -204,189 +196,175 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 		}
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId},
-			JSONUtil.toLongList(
-				assetIdsJSONArray
-			).toArray(
-				new Long[0]
-			),
-			new Long[0], filterSB.toString());
+			new String[] {dataSourceId},
+			JSONUtil.toStringArray(assetIdsJSONArray), new String[0],
+			filterSB.toString());
 	}
 
 	@Test
 	public void testAddBehavioralCriterionEqEver() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				dataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
 
-		Long assetId = assetIdsJSONArray.getLong(
+		String assetId = assetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId}, new Long[] {assetId}, new Long[0],
+			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
 			"activities/ever eq 'page#pageViewed#" + assetId + "'");
 	}
 
 	@Test
 	public void testAddBehavioralCriterionEqLast7Days() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				dataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
 
-		Long assetId = assetIdsJSONArray.getLong(
+		String assetId = assetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId}, new Long[] {assetId}, new Long[0],
+			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
 			"activities/last7Days eq 'page#pageViewed#" + assetId + "'");
 	}
 
 	@Test
 	public void testAddBehavioralCriterionEqLast30Days() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				dataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
 
-		Long assetId = assetIdsJSONArray.getLong(
+		String assetId = assetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId}, new Long[] {assetId}, new Long[0],
+			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
 			"activities/last30Days eq 'page#pageViewed#" + assetId + "'");
 	}
 
 	@Test
 	public void testAddBehavioralCriterionEqLastYear() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				dataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
 
-		Long assetId = assetIdsJSONArray.getLong(
+		String assetId = assetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId}, new Long[] {assetId}, new Long[0],
+			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
 			"activities/lastYear eq 'page#pageViewed#" + assetId + "'");
 	}
 
 	@Test
 	public void testAddBehavioralCriterionEqToday() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				dataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
 
-		Long assetId = assetIdsJSONArray.getLong(
+		String assetId = assetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId}, new Long[] {assetId}, new Long[0],
+			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
 			"activities/today eq 'page#pageViewed#" + assetId + "'");
 	}
 
 	@Test
 	public void testAddBehavioralCriterionNeEver() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				dataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
 
-		Long assetId = assetIdsJSONArray.getLong(
+		String assetId = assetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId}, new Long[] {assetId}, new Long[0],
+			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
 			"activities/ever ne 'page#pageViewed#" + assetId + "'");
 	}
 
 	@Test
 	public void testAddBehavioralCriterionNeLast7Days() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				dataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
 
-		Long assetId = assetIdsJSONArray.getLong(
+		String assetId = assetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId}, new Long[] {assetId}, new Long[0],
+			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
 			"activities/last7Days ne 'page#pageViewed#" + assetId + "'");
 	}
 
 	@Test
 	public void testAddBehavioralCriterionNeLast30Days() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				dataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
 
-		Long assetId = assetIdsJSONArray.getLong(
+		String assetId = assetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId}, new Long[] {assetId}, new Long[0],
+			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
 			"activities/last30Days ne 'page#pageViewed#" + assetId + "'");
 	}
 
 	@Test
 	public void testAddBehavioralCriterionNeLastYear() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				dataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
 
-		Long assetId = assetIdsJSONArray.getLong(
+		String assetId = assetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId}, new Long[] {assetId}, new Long[0],
+			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
 			"activities/lastYear ne 'page#pageViewed#" + assetId + "'");
 	}
 
 	@Test
 	public void testAddBehavioralCriterionNeToday() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				dataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
 
-		Long assetId = assetIdsJSONArray.getLong(
+		String assetId = assetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId}, new Long[] {assetId}, new Long[0],
+			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
 			"activities/today ne 'page#pageViewed#" + assetId + "'");
 	}
 
 	@Test
 	public void testAddContainsFunction() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("jobTitle"),
 			"contains(demographics/jobTitle/value, 'Engineer')");
 	}
@@ -394,7 +372,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddEndsWithFunction() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("email"),
 			"endsWith(demographics/email/value, '@liferay.com')");
 	}
@@ -402,7 +380,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddEqOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("address"),
 			"demographics/address/value eq '221B Baker Street'");
 	}
@@ -410,14 +388,14 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddGeOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("age"),
 			"demographics/age/value ge 18");
 	}
 
 	@Test
 	public void testAddGroupIdEq() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONObject groupJSONObject = _dxpRawElasticsearchInvoker.add(
@@ -429,8 +407,8 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId},
-			new Long[] {groupJSONObject.getLong("id")},
+			new String[] {dataSourceId},
+			new String[] {groupJSONObject.getString("id")},
 			"groupIds eq '" + groupJSONObject.getString("id") + "'",
 			"referencedGroupIds");
 	}
@@ -438,7 +416,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddGtOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("birthDate"),
 			"demographics/birthDate/value gt '1989-11-09T00:00:00.000Z'");
 	}
@@ -446,7 +424,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddLeOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("postalCode"),
 			"demographics/postalCode/value le '09999'");
 	}
@@ -454,7 +432,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddLtOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("familyName"),
 			"demographics/familyName/value lt 'N'");
 	}
@@ -462,7 +440,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddNeOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("favoritePokemon"),
 			"demographics/favoritePokemon/value ne 'Thundurus'");
 	}
@@ -470,7 +448,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddNotStringFunction() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("telephone"),
 			"not contains(demographics/telephone/value, '909')");
 	}
@@ -478,7 +456,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddOr() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("country", "favoriteArtist"),
 			"demographics/country/value eq 'France' or " +
 				"demographics/favoriteArtist/value eq 'Laurice Deauxnim'");
@@ -487,59 +465,61 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddOrganizationContainsNameTreePath() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0], new Long[0], new Long[0],
+			new String[0], new String[0], new String[0], new String[0],
 			"(organizations.filter(filter='(contains(nameTreePath, " +
 				"''childOrg1''))'))");
 	}
 
 	@Test
 	public void testAddOrganizationCustomField() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		FieldMapping fieldMapping = _fieldMappingRepository.save(
 			FaroInfoTestUtil.buildFieldMapping(
 				new FieldMapping.Author("FARO_SYSTEM", "FARO_SYSTEM"), "custom",
-				Collections.singletonMap(dataSourceId.toString(), "department"),
+				Collections.singletonMap(dataSourceId, "department"),
 				"department", "Text", "organization"));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0], new Long[] {fieldMapping.getId()},
+			new String[0], new String[0],
+			new String[] {String.valueOf(fieldMapping.getId())},
 			"(organizations.filter(filter='(custom/department/value eq " +
 				"''engineering'')'))");
 	}
 
 	@Test
 	public void testAddOrganizationCustomStringFunctionField() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		FieldMapping fieldMapping = _fieldMappingRepository.save(
 			FaroInfoTestUtil.buildFieldMapping(
 				null, "custom",
-				Collections.singletonMap(dataSourceId.toString(), "department"),
+				Collections.singletonMap(dataSourceId, "department"),
 				"department", "Text", "organization"));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0], new Long[] {fieldMapping.getId()},
+			new String[0], new String[0],
+			new String[] {String.valueOf(fieldMapping.getId())},
 			"(organizations.filter(filter='(contains(" +
 				"custom/department/value, ''life''))'))");
 	}
 
 	@Test
 	public void testAddOrganizationIdEq() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONObject organizationJSONObject =
 			_liferayDataSourceOrganizationIdsJSONObject.getJSONObject(
-				dataSourceId.toString());
+				dataSourceId);
 
-		Long organizationId = organizationJSONObject.getLong("id");
+		String organizationId = organizationJSONObject.getString("id");
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId}, new Long[0], new Long[0],
-			new Long[] {organizationId},
+			new String[] {dataSourceId}, new String[0], new String[0],
+			new String[] {organizationId},
 			"(organizations.filter(filter='(id eq ''" + organizationId +
 				"'')'))");
 	}
@@ -547,32 +527,32 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddOrganizationModifiedDate() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0], new Long[0], new Long[0],
+			new String[0], new String[0], new String[0], new String[0],
 			"organizations.filter(filter='(dateModified gt 1580256740750)')");
 	}
 
 	@Test
 	public void testAddOrganizationParentIdNe() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONObject organizationJSONObject =
 			_liferayDataSourceOrganizationIdsJSONObject.getJSONObject(
-				dataSourceId.toString());
+				dataSourceId);
 
-		Long organizationId = organizationJSONObject.getLong("id");
+		String organizationId = organizationJSONObject.getString("id");
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId}, new Long[0], new Long[0],
-			new Long[] {organizationId},
+			new String[] {dataSourceId}, new String[0], new String[0],
+			new String[] {organizationId},
 			"(organizations.filter(filter='(parentId ne ''" + organizationId +
 				"'')'))");
 	}
 
 	@Test
 	public void testAddOrganizationWithMultipleClauses() {
-		List<Long> expectedReferencedAssetDataSourceIds = new ArrayList<>();
-		List<Long> expectedReferencedOrganizationIds = new ArrayList<>();
+		List<String> expectedReferencedAssetDataSourceIds = new ArrayList<>();
+		List<String> expectedReferencedOrganizationIds = new ArrayList<>();
 
 		StringBuilder sb = new StringBuilder();
 
@@ -582,14 +562,13 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 		for (String dataSourceId :
 				_liferayDataSourceOrganizationIdsJSONObject.keySet()) {
 
-			expectedReferencedAssetDataSourceIds.add(
-				Long.parseLong(dataSourceId));
+			expectedReferencedAssetDataSourceIds.add(dataSourceId);
 
 			JSONObject organizationJSONObject =
 				_liferayDataSourceOrganizationIdsJSONObject.getJSONObject(
 					dataSourceId);
 
-			Long organizationId = organizationJSONObject.getLong("id");
+			String organizationId = organizationJSONObject.getString("id");
 
 			expectedReferencedOrganizationIds.add(organizationId);
 
@@ -601,23 +580,23 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 		sb.append("'))");
 
 		_assertAddSetsReferencedObjectIds(
-			expectedReferencedAssetDataSourceIds.toArray(new Long[0]),
-			new Long[0], new Long[0],
-			expectedReferencedOrganizationIds.toArray(new Long[0]),
+			expectedReferencedAssetDataSourceIds.toArray(new String[0]),
+			new String[0], new String[0],
+			expectedReferencedOrganizationIds.toArray(new String[0]),
 			sb.toString());
 	}
 
 	@Test
 	public void testAddParentheses() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("worksFor"),
 			"(((demographics/worksFor/value eq 'Bluecorp')))");
 	}
 
 	@Test
 	public void testAddRoleIdEq() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONObject roleJSONObject = _dxpRawElasticsearchInvoker.add(
@@ -629,8 +608,8 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId},
-			new Long[] {roleJSONObject.getLong("id")},
+			new String[] {dataSourceId},
+			new String[] {roleJSONObject.getString("id")},
 			"roleIds eq '" + roleJSONObject.getString("id") + "'",
 			"referencedRoleIds");
 	}
@@ -638,7 +617,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddSameFieldMappingReferencedMultipleTimesOnlyAppearsOnce() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("state"),
 			"demographics/state/value eq 'Alaska' or " +
 				"demographics/state/value eq 'Hawaii'");
@@ -647,14 +626,14 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddStartsWithFunction() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("givenName"),
 			"startsWith(demographics/givenName/value, 'B')");
 	}
 
 	@Test
 	public void testAddTeamIdEq() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONObject teamJSONObject = _dxpRawElasticsearchInvoker.add(
@@ -666,15 +645,15 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId},
-			new Long[] {teamJSONObject.getLong("id")},
+			new String[] {dataSourceId},
+			new String[] {teamJSONObject.getString("id")},
 			"teamIds eq '" + teamJSONObject.getString("id") + "'",
 			"referencedTeamIds");
 	}
 
 	@Test
 	public void testAddUserGroupIdEq() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONObject userGroupJSONObject = _dxpRawElasticsearchInvoker.add(
@@ -686,15 +665,15 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId},
-			new Long[] {userGroupJSONObject.getLong("id")},
+			new String[] {dataSourceId},
+			new String[] {userGroupJSONObject.getString("id")},
 			"userGroupIds eq '" + userGroupJSONObject.getString("id") + "'",
 			"referencedUserGroupIds");
 	}
 
 	@Test
 	public void testAddUserIdEq() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONObject userJSONObject = _dxpRawElasticsearchInvoker.add(
@@ -706,8 +685,8 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			));
 
 		_assertAddSetsReferencedObjectIds(
-			new Long[] {dataSourceId},
-			new Long[] {userJSONObject.getLong("id")},
+			new String[] {dataSourceId},
+			new String[] {userJSONObject.getString("id")},
 			"userId eq '" + userJSONObject.getString("id") + "'",
 			"referencedUserIds");
 	}
@@ -715,7 +694,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testFieldNameDoesNotNeedValueSuffixToAddReferencedFieldMappingId() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0],
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("image"),
 			"demographics/image ne null");
 	}
@@ -723,7 +702,8 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testFieldNameMustBePrefixedWithDemographicsToAddReferencedFieldMappingId() {
 		_assertAddSetsReferencedObjectIds(
-			new Long[0], new Long[0], new Long[0], "street eq 'Broadway'");
+			new String[0], new String[0], new String[0],
+			"street eq 'Broadway'");
 	}
 
 	@ElasticsearchIndex(
@@ -744,38 +724,36 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testReferencedAssetDataSourceIdsAddedOnUpdate() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				dataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
 
-		Long assetId = assetIdsJSONArray.getLong(
+		String assetId = assetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertUpdateSetsReferencedObjectIds(
-			"id ne null", new Long[0], new Long[0], new Long[0],
-			new Long[] {dataSourceId}, new Long[] {assetId}, new Long[0],
+			"id ne null", new String[0], new String[0], new String[0],
+			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
 			"activities/ever eq 'page#pageViewed#" + assetId + "'");
 	}
 
 	@Test
 	public void testReferencedAssetDataSourceIdsEmptiedOnUpdate() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				dataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
 
-		Long assetId = assetIdsJSONArray.getLong(
+		String assetId = assetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertUpdateSetsReferencedObjectIds(
 			"activities/ever eq 'page#pageViewed#" + assetId + "'",
-			new Long[] {dataSourceId}, new Long[] {assetId}, new Long[0],
-			new Long[0], new Long[0], new Long[0], "");
+			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
+			new String[0], new String[0], new String[0], "");
 	}
 
 	@Test
@@ -783,39 +761,39 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 		int addDataSourceIdIndex = RandomUtils.nextInt(
 			0, _liferayDataSourceIdsJSONArray.length());
 
-		Long addDataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String addDataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			addDataSourceIdIndex);
 
 		JSONArray addAssetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				addDataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(addDataSourceId);
 
-		Long addAssetId = addAssetIdsJSONArray.getLong(
+		String addAssetId = addAssetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, addAssetIdsJSONArray.length()));
 
-		Long updateDataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String updateDataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			(addDataSourceIdIndex + 1) %
 				_liferayDataSourceIdsJSONArray.length());
 
 		JSONArray updateAssetIdsJSONArray =
 			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				updateDataSourceId.toString());
+				updateDataSourceId);
 
-		Long updateAssetId = updateAssetIdsJSONArray.getLong(
+		String updateAssetId = updateAssetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, addAssetIdsJSONArray.length()));
 
 		_assertUpdateSetsReferencedObjectIds(
 			"activities/ever eq 'page#pageViewed#" + addAssetId + "'",
-			new Long[] {addDataSourceId}, new Long[] {addAssetId}, new Long[0],
-			new Long[] {updateDataSourceId}, new Long[] {updateAssetId},
-			new Long[0],
+			new String[] {addDataSourceId}, new String[] {addAssetId},
+			new String[0], new String[] {updateDataSourceId},
+			new String[] {updateAssetId}, new String[0],
 			"activities/ever eq 'page#pageViewed#" + updateAssetId + "'");
 	}
 
 	@Test
 	public void testReferencedFieldMappingIdsAddedOnUpdate() {
 		_assertUpdateSetsReferencedObjectIds(
-			"", new Long[0], new Long[0], new Long[0], new Long[0], new Long[0],
+			"", new String[0], new String[0], new String[0], new String[0],
+			new String[0],
 			_convertFieldNamesToFieldMappingIds("additionalName"),
 			"demographics/additionalName/value eq 'Miles'");
 	}
@@ -823,64 +801,66 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testReferencedFieldMappingIdsEmptiedOnUpdate() {
 		_assertUpdateSetsReferencedObjectIds(
-			"demographics/city/value eq 'Los Angeles'", new Long[0],
-			new Long[0], _convertFieldNamesToFieldMappingIds("city"),
-			new Long[0], new Long[0], new Long[0], "");
+			"demographics/city/value eq 'Los Angeles'", new String[0],
+			new String[0], _convertFieldNamesToFieldMappingIds("city"),
+			new String[0], new String[0], new String[0], "");
 	}
 
 	@Test
 	public void testReferencedFieldMappingIdsModifiedOnUpdate() {
 		_assertUpdateSetsReferencedObjectIds(
-			"demographics/honorificPrefix/value eq 'Mrs.'", new Long[0],
-			new Long[0], _convertFieldNamesToFieldMappingIds("honorificPrefix"),
-			new Long[0], new Long[0],
+			"demographics/honorificPrefix/value eq 'Mrs.'", new String[0],
+			new String[0],
+			_convertFieldNamesToFieldMappingIds("honorificPrefix"),
+			new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("gender"),
 			"demographics/gender/value eq 'Female'");
 	}
 
 	@Test
 	public void testReferencedOrganizationIdsEmptiedOnUpdate() {
-		Long dataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		JSONObject organizationJSONObject =
 			_liferayDataSourceOrganizationIdsJSONObject.getJSONObject(
-				dataSourceId.toString());
+				dataSourceId);
 
-		Long organizationId = organizationJSONObject.getLong("id");
+		String organizationId = organizationJSONObject.getString("id");
 
 		_assertUpdateSetsReferencedObjectIds(
 			"(organizations.filter(filter='(id eq ''" + organizationId +
 				"'')'))",
-			new Long[] {dataSourceId}, new Long[0], new Long[0],
-			new Long[] {organizationId}, new Long[0], new Long[0], new Long[0],
-			new Long[0], "");
+			new String[] {dataSourceId}, new String[0], new String[0],
+			new String[] {organizationId}, new String[0], new String[0],
+			new String[0], new String[0], "");
 	}
 
 	@Test
 	public void testReferencedOrganizationIdsModifiedOnUpdate() {
-		Long addDataSourceId = _liferayDataSourceIdsJSONArray.getLong(0);
+		String addDataSourceId = _liferayDataSourceIdsJSONArray.getString(0);
 
 		JSONObject addOrganizationJSONObject =
 			_liferayDataSourceOrganizationIdsJSONObject.getJSONObject(
-				addDataSourceId.toString());
+				addDataSourceId);
 
-		Long addOrganizationId = addOrganizationJSONObject.getLong("id");
+		String addOrganizationId = addOrganizationJSONObject.getString("id");
 
-		Long updateDataSourceId = _liferayDataSourceIdsJSONArray.getLong(1);
+		String updateDataSourceId = _liferayDataSourceIdsJSONArray.getString(1);
 
 		JSONObject updateOrganizationJSONObject =
 			_liferayDataSourceOrganizationIdsJSONObject.getJSONObject(
-				updateDataSourceId.toString());
+				updateDataSourceId);
 
-		Long updateOrganizationId = updateOrganizationJSONObject.getLong("id");
+		String updateOrganizationId = updateOrganizationJSONObject.getString(
+			"id");
 
 		_assertUpdateSetsReferencedObjectIds(
 			"(organizations.filter(filter='(id eq ''" + addOrganizationId +
 				"'')'))",
-			new Long[] {addDataSourceId}, new Long[0], new Long[0],
-			new Long[] {addOrganizationId}, new Long[] {updateDataSourceId},
-			new Long[0], new Long[0], new Long[] {updateOrganizationId},
+			new String[] {addDataSourceId}, new String[0], new String[0],
+			new String[] {addOrganizationId}, new String[] {updateDataSourceId},
+			new String[0], new String[0], new String[] {updateOrganizationId},
 			"(organizations.filter(filter='(parentId eq ''" +
 				updateOrganizationId + "'')'))");
 	}
@@ -896,14 +876,13 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 		int addDataSourceIdIndex = RandomUtils.nextInt(
 			0, _liferayDataSourceIdsJSONArray.length());
 
-		Long addDataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String addDataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			addDataSourceIdIndex);
 
 		JSONArray addAssetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				addDataSourceId.toString());
+			_liferayDataSourceAssetIdsJSONObject.getJSONArray(addDataSourceId);
 
-		Long addAssetId = addAssetIdsJSONArray.getLong(
+		String addAssetId = addAssetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, addAssetIdsJSONArray.length()));
 
 		addFilterSB.append(addAssetId);
@@ -914,9 +893,9 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 
 		JSONObject organizationJSONObject =
 			_liferayDataSourceOrganizationIdsJSONObject.getJSONObject(
-				addDataSourceId.toString());
+				addDataSourceId);
 
-		Long organizationId = organizationJSONObject.getLong("id");
+		String organizationId = organizationJSONObject.getString("id");
 
 		addFilterSB.append(organizationId);
 
@@ -927,15 +906,15 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 		updateFilterSB.append("((demographics/worksFor/value ne null and ");
 		updateFilterSB.append("activities/ever eq 'page#pageViewed#");
 
-		Long updateDataSourceId = _liferayDataSourceIdsJSONArray.getLong(
+		String updateDataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			(addDataSourceIdIndex + 1) %
 				_liferayDataSourceIdsJSONArray.length());
 
 		JSONArray updateAssetIdsJSONArray =
 			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				updateDataSourceId.toString());
+				updateDataSourceId);
 
-		Long updateAssetId = updateAssetIdsJSONArray.getLong(
+		String updateAssetId = updateAssetIdsJSONArray.getString(
 			RandomUtils.nextInt(0, addAssetIdsJSONArray.length()));
 
 		updateFilterSB.append(updateAssetId);
@@ -948,94 +927,86 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 		updateFilterSB.append("additionalName/value gt 'M')))");
 
 		_assertUpdateSetsReferencedObjectIds(
-			addFilterSB.toString(), new Long[] {addDataSourceId},
-			new Long[] {addAssetId},
+			addFilterSB.toString(), new String[] {addDataSourceId},
+			new String[] {addAssetId},
 			_convertFieldNamesToFieldMappingIds(
 				"additionalName", "age", "favoritePokemon", "image"),
-			new Long[] {organizationId}, new Long[] {updateDataSourceId},
-			new Long[] {updateAssetId},
+			new String[] {organizationId}, new String[] {updateDataSourceId},
+			new String[] {updateAssetId},
 			_convertFieldNamesToFieldMappingIds(
 				"age", "gender", "telephone", "worksFor"),
-			new Long[0], updateFilterSB.toString());
-	}
-
-	private Segment _assertAddSetsReferencedObjectIds(
-		Long[] expectedReferencedAssetDataSourceIds,
-		Long[] expectedReferencedAssetIds,
-		Long[] expectedReferencedFieldMappingIds,
-		Long[] expectedReferencedOrganizationIds, String filterString) {
-
-		Segment segment = _segmentDog.addSegment(
-			FaroInfoTestUtil.buildDynamicSegment(filterString));
-
-		_assertSameContents(
-			segment.getReferencedAssetDataSourceIds(),
-			expectedReferencedAssetDataSourceIds);
-		_assertSameContents(
-			segment.getReferencedAssetIds(), expectedReferencedAssetIds);
-		_assertSameContents(
-			segment.getReferencedFieldMappingIds(),
-			expectedReferencedFieldMappingIds);
-		_assertSameContents(
-			segment.getReferencedOrganizationIds(),
-			expectedReferencedOrganizationIds);
-
-		return segment;
+			new String[0], updateFilterSB.toString());
 	}
 
 	private void _assertAddSetsReferencedObjectIds(
-		Long[] expectedReferencedAssetDataSourceIds,
-		Long[] expectedReferencedAssetIds,
-		Long[] expectedReferencedFieldMappingIds, String filterString) {
+		String[] expectedReferencedAssetDataSourceIds,
+		String[] expectedReferencedIds, String filterString, String key) {
+
+		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
+			_segmentDog.addSegment(
+				FaroInfoTestUtil.buildDynamicSegment(filterString)),
+			JSONObject.class);
+
+		_assertSameContents(
+			individualSegmentJSONObject.getJSONArray(
+				"referencedAssetDataSourceIds"),
+			expectedReferencedAssetDataSourceIds);
+		_assertSameContents(
+			individualSegmentJSONObject.getJSONArray(key),
+			expectedReferencedIds);
+	}
+
+	private void _assertAddSetsReferencedObjectIds(
+		String[] expectedReferencedAssetDataSourceIds,
+		String[] expectedReferencedAssetIds,
+		String[] expectedReferencedFieldMappingIds, String filterString) {
 
 		_assertAddSetsReferencedObjectIds(
 			expectedReferencedAssetDataSourceIds, expectedReferencedAssetIds,
-			expectedReferencedFieldMappingIds, new Long[0], filterString);
+			expectedReferencedFieldMappingIds, new String[0], filterString);
 	}
 
-	private void _assertAddSetsReferencedObjectIds(
-		Long[] expectedReferencedAssetDataSourceIds,
-		Long[] expectedReferencedIds, String filterString, String key) {
+	private JSONObject _assertAddSetsReferencedObjectIds(
+		String[] expectedReferencedAssetDataSourceIds,
+		String[] expectedReferencedAssetIds,
+		String[] expectedReferencedFieldMappingIds,
+		String[] expectedReferencedOrganizationIds, String filterString) {
 
-		Segment segment = _segmentDog.addSegment(
-			FaroInfoTestUtil.buildDynamicSegment(filterString));
+		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
+			_segmentDog.addSegment(
+				FaroInfoTestUtil.buildDynamicSegment(filterString)),
+			JSONObject.class);
 
 		_assertSameContents(
-			segment.getReferencedAssetDataSourceIds(),
+			individualSegmentJSONObject.getJSONArray(
+				"referencedAssetDataSourceIds"),
 			expectedReferencedAssetDataSourceIds);
+		_assertSameContents(
+			individualSegmentJSONObject.getJSONArray("referencedAssetIds"),
+			expectedReferencedAssetIds);
+		_assertSameContents(
+			individualSegmentJSONObject.getJSONArray(
+				"referencedFieldMappingIds"),
+			expectedReferencedFieldMappingIds);
+		_assertSameContents(
+			individualSegmentJSONObject.getJSONArray(
+				"referencedOrganizationIds"),
+			expectedReferencedOrganizationIds);
 
-		Set<Long> actualReferencedIds = null;
-
-		if (Objects.equals(key, "referencedGroupIds")) {
-			actualReferencedIds = segment.getReferencedGroupIds();
-		}
-		else if (Objects.equals(key, "referencedRoleIds")) {
-			actualReferencedIds = segment.getReferencedRoleIds();
-		}
-		else if (Objects.equals(key, "referencedTeamIds")) {
-			actualReferencedIds = segment.getReferencedTeamIds();
-		}
-		else if (Objects.equals(key, "referencedUserGroupIds")) {
-			actualReferencedIds = segment.getReferencedUserGroupIds();
-		}
-		else if (Objects.equals(key, "referencedUserIds")) {
-			actualReferencedIds = segment.getReferencedUserIds();
-		}
-
-		_assertSameContents(actualReferencedIds, expectedReferencedIds);
+		return individualSegmentJSONObject;
 	}
 
 	private void _assertSameContents(
-		Set<Long> actualValues, Long[] expectedValues) {
+		JSONArray actualValuesJSONArray, String[] expectedValues) {
 
 		Assert.assertEquals(
-			actualValues.toString(), expectedValues.length,
-			actualValues.size());
+			expectedValues.length, actualValuesJSONArray.length());
 
-		for (Long value : expectedValues) {
+		for (String value : expectedValues) {
 			Assert.assertTrue(
-				"Expected to find value " + value + " in set " + actualValues,
-				actualValues.contains(value));
+				"Expected to find value " + value + " in JSONArray " +
+					actualValuesJSONArray,
+				JSONUtil.hasValue(actualValuesJSONArray, value));
 		}
 	}
 
@@ -1049,60 +1020,70 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	private void _assertUpdateSetsReferencedObjectIds(
-		String addFilter, Long[] expectedAddReferencedAssetDataSourceIds,
-		Long[] expectedAddReferencedAssetIds,
-		Long[] expectedAddReferencedFieldMappingIds,
-		Long[] expectedAddReferencedOrganizationIds,
-		Long[] expectedUpdateReferencedAssetDataSourceIds,
-		Long[] expectedUpdateReferencedAssetIds,
-		Long[] expectedUpdateReferencedFieldMappingIds,
-		Long[] expectedUpdateReferencedOrganizationIds, String updateFilter) {
-
-		Segment segment = _assertAddSetsReferencedObjectIds(
-			expectedAddReferencedAssetDataSourceIds,
-			expectedAddReferencedAssetIds, expectedAddReferencedFieldMappingIds,
-			expectedAddReferencedOrganizationIds, addFilter);
-
-		Segment partialSegment = new Segment();
-
-		partialSegment.setFilter(updateFilter);
-
-		segment = _segmentDog.updateSegment(partialSegment, segment.getId());
-
-		_assertSameContents(
-			segment.getReferencedAssetDataSourceIds(),
-			expectedUpdateReferencedAssetDataSourceIds);
-		_assertSameContents(
-			segment.getReferencedAssetIds(), expectedUpdateReferencedAssetIds);
-		_assertSameContents(
-			segment.getReferencedFieldMappingIds(),
-			expectedUpdateReferencedFieldMappingIds);
-		_assertSameContents(
-			segment.getReferencedOrganizationIds(),
-			expectedUpdateReferencedOrganizationIds);
-	}
-
-	private void _assertUpdateSetsReferencedObjectIds(
-		String addFilter, Long[] expectedAddReferencedAssetDataSourceIds,
-		Long[] expectedAddReferencedAssetIds,
-		Long[] expectedAddReferencedFieldMappingIds,
-		Long[] expectedUpdateReferencedAssetDataSourceIds,
-		Long[] expectedUpdateReferencedAssetIds,
-		Long[] expectedUpdateReferencedFieldMappingIds, String updateFilter) {
+		String addFilter, String[] expectedAddReferencedAssetDataSourceIds,
+		String[] expectedAddReferencedAssetIds,
+		String[] expectedAddReferencedFieldMappingIds,
+		String[] expectedUpdateReferencedAssetDataSourceIds,
+		String[] expectedUpdateReferencedAssetIds,
+		String[] expectedUpdateReferencedFieldMappingIds, String updateFilter) {
 
 		_assertUpdateSetsReferencedObjectIds(
 			addFilter, expectedAddReferencedAssetDataSourceIds,
 			expectedAddReferencedAssetIds, expectedAddReferencedFieldMappingIds,
-			new Long[0], expectedUpdateReferencedAssetDataSourceIds,
+			new String[0], expectedUpdateReferencedAssetDataSourceIds,
 			expectedUpdateReferencedAssetIds,
-			expectedUpdateReferencedFieldMappingIds, new Long[0], updateFilter);
+			expectedUpdateReferencedFieldMappingIds, new String[0],
+			updateFilter);
 	}
 
-	private Long[] _convertFieldNamesToFieldMappingIds(String... fieldNames) {
-		Long[] fieldMappingIds = new Long[fieldNames.length];
+	private void _assertUpdateSetsReferencedObjectIds(
+		String addFilter, String[] expectedAddReferencedAssetDataSourceIds,
+		String[] expectedAddReferencedAssetIds,
+		String[] expectedAddReferencedFieldMappingIds,
+		String[] expectedAddReferencedOrganizationIds,
+		String[] expectedUpdateReferencedAssetDataSourceIds,
+		String[] expectedUpdateReferencedAssetIds,
+		String[] expectedUpdateReferencedFieldMappingIds,
+		String[] expectedUpdateReferencedOrganizationIds, String updateFilter) {
+
+		JSONObject individualSegmentJSONObject =
+			_assertAddSetsReferencedObjectIds(
+				expectedAddReferencedAssetDataSourceIds,
+				expectedAddReferencedAssetIds,
+				expectedAddReferencedFieldMappingIds,
+				expectedAddReferencedOrganizationIds, addFilter);
+
+		Segment segment = new Segment();
+
+		segment.setFilter(updateFilter);
+
+		individualSegmentJSONObject = _objectMapper.convertValue(
+			_segmentDog.updateSegment(
+				segment, individualSegmentJSONObject.getLong("id")),
+			JSONObject.class);
+
+		_assertSameContents(
+			individualSegmentJSONObject.getJSONArray(
+				"referencedAssetDataSourceIds"),
+			expectedUpdateReferencedAssetDataSourceIds);
+		_assertSameContents(
+			individualSegmentJSONObject.getJSONArray("referencedAssetIds"),
+			expectedUpdateReferencedAssetIds);
+		_assertSameContents(
+			individualSegmentJSONObject.getJSONArray(
+				"referencedFieldMappingIds"),
+			expectedUpdateReferencedFieldMappingIds);
+		_assertSameContents(
+			individualSegmentJSONObject.getJSONArray(
+				"referencedOrganizationIds"),
+			expectedUpdateReferencedOrganizationIds);
+	}
+
+	private String[] _convertFieldNamesToFieldMappingIds(String... fieldNames) {
+		String[] fieldMappingIds = new String[fieldNames.length];
 
 		for (int i = 0; i < fieldNames.length; i++) {
-			fieldMappingIds[i] = _fieldMappingNameIds.getLong(fieldNames[i]);
+			fieldMappingIds[i] = _fieldMappingNameIds.getString(fieldNames[i]);
 		}
 
 		return fieldMappingIds;

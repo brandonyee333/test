@@ -29,8 +29,6 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONObject;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,11 +45,9 @@ import org.springframework.test.context.ContextConfiguration;
 public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
-	public void testAddDataSourceWithDefaultChannel() throws Exception {
+	public void testAddDataSourceWithDefaultChannel() {
 		DataSource dataSource = _dataSourceDog.addDataSource(
-			_objectMapper.convertValue(
-				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-				DataSource.class));
+			FaroInfoTestUtil.buildLiferayDataSource());
 
 		Assert.assertNotNull(
 			_dataSourceDog.getDefaultChannelId(dataSource.getId()));
@@ -66,7 +62,7 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testChannelsCleared() throws Exception {
+	public void testChannelsCleared() {
 		_dataSourceDog.disconnectDataSource(405201047787757795L);
 
 		Assert.assertEquals(
@@ -89,29 +85,18 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@Test
-	public void testDisconnectDataSource() throws Exception {
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
-						"Token Authentication", "Liferay",
-						"http://localhost:8080"),
-					DataSource.class)),
-			JSONObject.class);
+	public void testDisconnectDataSource() {
+		DataSource dataSource = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource(
+				"Token Authentication", "Liferay", "http://localhost:8080"));
 
-		Assert.assertEquals(
-			"CREDENTIALS_VALID", dataSourceJSONObject.optString("state"));
-		Assert.assertEquals("ACTIVE", dataSourceJSONObject.optString("status"));
+		Assert.assertEquals("CREDENTIALS_VALID", dataSource.getState());
+		Assert.assertEquals("ACTIVE", dataSource.getStatus());
 
-		dataSourceJSONObject = _objectMapper.convertValue(
-			_dataSourceDog.disconnectDataSource(
-				dataSourceJSONObject.getLong("id")),
-			JSONObject.class);
+		dataSource = _dataSourceDog.disconnectDataSource(dataSource.getId());
 
-		Assert.assertEquals(
-			"DISCONNECTED", dataSourceJSONObject.optString("state"));
-		Assert.assertEquals(
-			"INACTIVE", dataSourceJSONObject.optString("status"));
+		Assert.assertEquals("DISCONNECTED", dataSource.getState());
+		Assert.assertEquals("INACTIVE", dataSource.getStatus());
 	}
 
 	@ElasticsearchIndex(
@@ -119,27 +104,19 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testUpgradeFromOAuthToToken() throws Exception {
-		JSONObject liferayDataSourceJSONObject =
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
-				"Token Authentication", "Liferay", "http://localhost:8080");
+	public void testUpgradeFromOAuthToToken() {
+		DataSource liferayDataSource = FaroInfoTestUtil.buildLiferayDataSource(
+			"Token Authentication", "Liferay", "http://localhost:8080");
 
-		liferayDataSourceJSONObject.put("id", "405201047787757796");
+		liferayDataSource.setId(405201047787757796L);
 
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			_dataSourceDog.patchDataSource(
-				_objectMapper.convertValue(
-					liferayDataSourceJSONObject, DataSource.class)),
-			JSONObject.class);
+		DataSource dataSource = _dataSourceDog.patchDataSource(
+			liferayDataSource);
 
-		JSONObject credentialsJSONObject = dataSourceJSONObject.getJSONObject(
-			"credentials");
-
-		Assert.assertNull(credentialsJSONObject.opt("oAuthAuthorizationURL"));
-		Assert.assertNotNull(credentialsJSONObject.getString("privateKey"));
-		Assert.assertNotNull(credentialsJSONObject.getString("publicKey"));
+		Assert.assertNotNull(dataSource.getPrivateKey());
+		Assert.assertNotNull(dataSource.getPublicKey());
 		Assert.assertEquals(
-			"Token Authentication", credentialsJSONObject.getString("type"));
+			"Token Authentication", dataSource.getCredentialType());
 	}
 
 	@MockBean

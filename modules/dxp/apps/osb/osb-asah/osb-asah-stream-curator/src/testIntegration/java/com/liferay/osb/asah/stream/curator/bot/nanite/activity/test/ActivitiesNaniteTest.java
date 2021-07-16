@@ -16,9 +16,11 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.activity.test;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.activity.ActivitiesNanite;
@@ -53,11 +55,11 @@ public class ActivitiesNaniteTest {
 
 	@Before
 	public void setUp() {
-		JSONObject dataSourceJSONObject =
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
+		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource();
 
-		_faroInfoElasticsearchInvoker.add(
-			"data-sources", dataSourceJSONObject.put("id", "1"));
+		dataSource.setId(1L);
+
+		_dataSourceRepository.save(dataSource);
 	}
 
 	@ElasticsearchIndex(
@@ -202,6 +204,9 @@ public class ActivitiesNaniteTest {
 
 	@Autowired
 	private ActivitiesNanite _activitiesNanite;
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

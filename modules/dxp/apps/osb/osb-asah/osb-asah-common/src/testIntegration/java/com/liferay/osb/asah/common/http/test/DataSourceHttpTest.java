@@ -24,15 +24,21 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
+import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -42,6 +48,9 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import org.apache.lucene.search.join.ScoreMode;
 
@@ -49,7 +58,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.hamcrest.CoreMatchers;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
@@ -78,36 +86,25 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testAddDataSource() {
-		_dataSourceDog.addDataSource(
-			_objectMapper.convertValue(
-				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-				DataSource.class));
+		_dataSourceDog.addDataSource(FaroInfoTestUtil.buildLiferayDataSource());
 	}
 
 	@Test
 	public void testAddDataSourceUpdatesExistingIndividual() throws Exception {
-		JSONObject dataSourceJSONObject1 = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
-			JSONObject.class);
-		JSONObject dataSourceJSONObject2 = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
-			JSONObject.class);
+		DataSource dataSource1 = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource());
+		DataSource dataSource2 = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource());
 
-		String dataSourceId1 = dataSourceJSONObject1.getString("id");
-		String dataSourceId2 = dataSourceJSONObject2.getString("id");
+		Long dataSourceId1 = dataSource1.getId();
+		Long dataSourceId2 = dataSource2.getId();
 
 		_fieldMappingRepository.save(
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				new HashMap<String, String>() {
 					{
-						put(dataSourceId1, "email");
-						put(dataSourceId2, "emailAddress");
+						put(String.valueOf(dataSourceId1), "email");
+						put(String.valueOf(dataSourceId2), "emailAddress");
 					}
 				},
 				"email", "http://schema.org/email"));
@@ -116,17 +113,15 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				dataSourceId2, "givenName", "givenName", "Text"));
 
-		JSONObject individualJSONObject = _individualDog.addIndividual(
-			FaroInfoTestUtil.buildIndividualJSONObject(dataSourceJSONObject1),
-			false);
+		Individual individual = _individualDog.addIndividual(
+			FaroInfoTestUtil.buildIndividual(dataSource1), false);
 
-		faroInfoElasticsearchInvoker.add(
-			"fields",
-			FaroInfoTestUtil.buildIndividualFieldJSONObject(
-				dataSourceJSONObject1, "email", "http://schema.org/email",
-				RandomTestUtil.randomString(), individualJSONObject, "email"));
+		_fieldRepository.save(
+			FaroInfoTestUtil.buildIndividualField(
+				dataSource1, "email", "http://schema.org/email",
+				RandomTestUtil.randomString(), individual, "email"));
 
-		individualJSONObject = _individualDog.updateIndividual(
+		individual = _individualDog.updateIndividual(
 			RandomTestUtil.randomUUID(),
 			JSONUtil.put(
 				"contact",
@@ -138,31 +133,32 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"modifiedDate", System.currentTimeMillis()
 			),
-			_objectMapper.convertValue(dataSourceJSONObject2, DataSource.class),
-			individualJSONObject);
+			dataSource2, individual);
 
-		JSONObject demographicsJSONObject = individualJSONObject.getJSONObject(
-			"demographics");
+		individual = _individualDog.fetchIndividual(individual.getId());
+
+		Set<Field> fields = individual.getFields();
+
+		Stream<Field> stream = fields.stream();
 
 		Assert.assertTrue(
 			"Adding data source with information on existing individual " +
 				"should update fields of existing individual",
-			demographicsJSONObject.has("givenName"));
+			stream.anyMatch(
+				field -> Objects.equals(field.getName(), "givenName")));
 
 		Assert.assertTrue(
 			"Updating individual from new data source should add an " +
 				"enrichment date",
-			individualJSONObject.has("lastEnrichmentDate"));
+			!Objects.isNull(individual.getLastEnrichmentDate()));
 	}
 
 	@Test
 	public void testAddDataSourceWithDuplicateName() {
 		for (int i = 0; i < 4; i++) {
 			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
-						"Liferay", RandomTestUtil.randomURL()),
-					DataSource.class));
+				FaroInfoTestUtil.buildLiferayDataSource(
+					"Liferay", RandomTestUtil.randomURL()));
 		}
 
 		Assert.assertEquals(
@@ -217,21 +213,23 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		dataSourceJSONObject1.put("deletionDate", DateUtil.newDayDateString());
 
 		_dataSourceDog.deleteDataSource(
-			_objectMapper.convertValue(dataSourceJSONObject1, DataSource.class),
-			null, null);
+			_objectMapper.convertValue(
+				dataSourceJSONObject1, DataSource.class));
 
 		Assert.assertFalse(
 			"Found entry in csv-individuals collection with data source ID " +
 				dataSourceId1,
 			faroInfoElasticsearchInvoker.exists(
 				"csv-individuals",
-				QueryBuilders.termQuery("dataSourceId", dataSourceId1)));
+				QueryBuilders.termQuery(
+					"dataSourceId", Long.valueOf(dataSourceId1))));
 		Assert.assertTrue(
 			"Unable to find entry in csv-individuals collection with data " +
 				"source ID " + dataSourceId2,
 			faroInfoElasticsearchInvoker.exists(
 				"csv-individuals",
-				QueryBuilders.termQuery("dataSourceId", dataSourceId2)));
+				QueryBuilders.termQuery(
+					"dataSourceId", Long.valueOf(dataSourceId2))));
 	}
 
 	@Test
@@ -239,18 +237,15 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		throws Exception {
 
 		DataSource dataSource = _dataSourceDog.addDataSource(
-			_objectMapper.convertValue(
-				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-				DataSource.class));
+			FaroInfoTestUtil.buildLiferayDataSource());
 
 		FieldMapping fieldMapping = _fieldMappingRepository.save(
 			FaroInfoTestUtil.buildIndividualFieldMapping(
-				String.valueOf(dataSource.getId()), "givenName", "givenName",
-				"Text"));
+				dataSource.getId(), "givenName", "givenName", "Text"));
 
 		dataSource.setDeletionDate(new Date());
 
-		_dataSourceDog.deleteDataSource(dataSource, null, null);
+		_dataSourceDog.deleteDataSource(dataSource);
 
 		Assert.assertFalse(
 			"Field mapping should have been deleted on data source deletion",
@@ -259,66 +254,47 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testDeleteDataSourceDeletesIndividual() throws Exception {
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
-			JSONObject.class);
+		DataSource dataSource = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource());
 
-		JSONObject individualJSONObject = _individualDog.addIndividual(
-			FaroInfoTestUtil.buildIndividualJSONObject(dataSourceJSONObject),
-			false);
+		Individual individual = _individualDog.addIndividual(
+			FaroInfoTestUtil.buildIndividual(dataSource), false);
 
-		dataSourceJSONObject.put("deletionDate", DateUtil.newDayDateString());
+		dataSource.setDeletionDate(new Date());
 
-		_dataSourceDog.deleteDataSource(
-			_objectMapper.convertValue(dataSourceJSONObject, DataSource.class),
-			null, null);
+		_dataSourceDog.deleteDataSource(dataSource);
 
 		Assert.assertFalse(
 			"Individual was not deleted on data source deletion despite only " +
 				"containing fields from the deleted data source",
-			faroInfoElasticsearchInvoker.exists(
-				"individuals", individualJSONObject.getString("id")));
+			_individualRepository.existsById(individual.getId()));
 	}
 
 	@Test
 	public void testDeleteDataSourceDeletesReferenceInFieldMapping()
 		throws Exception {
 
-		JSONObject dataSourceJSONObject1 = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
-			JSONObject.class);
+		DataSource dataSource1 = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource());
+		DataSource dataSource2 = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource());
 
-		JSONObject dataSourceJSONObject2 = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
-			JSONObject.class);
-
-		String dataSourceId1 = dataSourceJSONObject1.getString("id");
-		String dataSourceId2 = dataSourceJSONObject2.getString("id");
+		Long dataSourceId1 = dataSource1.getId();
+		Long dataSourceId2 = dataSource2.getId();
 
 		_fieldMappingRepository.save(
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				new HashMap<String, String>() {
 					{
-						put(dataSourceId1, "givenName");
-						put(dataSourceId2, "givenName");
+						put(String.valueOf(dataSourceId1), "givenName");
+						put(String.valueOf(dataSourceId2), "givenName");
 					}
 				},
 				"givenName", "Text"));
 
-		dataSourceJSONObject1.put("deletionDate", DateUtil.newDayDateString());
+		dataSource1.setDeletionDate(new Date());
 
-		_dataSourceDog.deleteDataSource(
-			_objectMapper.convertValue(dataSourceJSONObject1, DataSource.class),
-			null, null);
+		_dataSourceDog.deleteDataSource(dataSource1);
 
 		Assert.assertFalse(
 			"Field mapping reference to deleted data source was not removed",
@@ -347,27 +323,20 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	public void testDeleteDataSourceDisablesIndividualDynamicSegment1()
 		throws Exception {
 
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
-			JSONObject.class);
+		DataSource dataSource = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource());
 
 		_fieldMappingRepository.save(
 			FaroInfoTestUtil.buildIndividualFieldMapping(
-				dataSourceJSONObject.getString("id"), "givenName", "givenName",
-				"Text"));
+				dataSource.getId(), "givenName", "givenName", "Text"));
 
 		Segment segment = _segmentDog.addSegment(
 			FaroInfoTestUtil.buildDynamicSegment(
 				"(((demographics/givenName/value ne null)))"));
 
-		dataSourceJSONObject.put("deletionDate", DateUtil.newDayDateString());
+		dataSource.setDeletionDate(new Date());
 
-		_dataSourceDog.deleteDataSource(
-			_objectMapper.convertValue(dataSourceJSONObject, DataSource.class),
-			null, null);
+		_dataSourceDog.deleteDataSource(dataSource);
 
 		segment = _segmentDog.getSegment(segment.getId());
 
@@ -381,28 +350,21 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	public void testDeleteDataSourceDisablesIndividualDynamicSegment2()
 		throws Exception {
 
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
-			JSONObject.class);
+		DataSource dataSource = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource());
 
 		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
 			"assets",
-			FaroInfoTestUtil.buildPageAssetJSONObject(
-				dataSourceJSONObject.getString("id")));
+			FaroInfoTestUtil.buildPageAssetJSONObject(dataSource.getId()));
 
 		Segment segment = _segmentDog.addSegment(
 			FaroInfoTestUtil.buildDynamicSegment(
 				"activities/ever eq 'page#pageViewed#" +
 					assetJSONObject.getString("id") + "'"));
 
-		dataSourceJSONObject.put("deletionDate", DateUtil.newDayDateString());
+		dataSource.setDeletionDate(new Date());
 
-		_dataSourceDog.deleteDataSource(
-			_objectMapper.convertValue(dataSourceJSONObject, DataSource.class),
-			null, null);
+		_dataSourceDog.deleteDataSource(dataSource);
 
 		segment = _segmentDog.getSegment(segment.getId());
 
@@ -416,24 +378,17 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	public void testDeleteDataSourceDoesNotDeleteDefaultFieldMappings()
 		throws Exception {
 
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
-			JSONObject.class);
+		DataSource dataSource = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource());
 
 		FieldMapping fieldMapping = _fieldMappingRepository.save(
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				new FieldMapping.Author("FARO_SYSTEM", "FARO_SYSTEM"),
-				dataSourceJSONObject.getString("id"), "givenName", "givenName",
-				"Text"));
+				dataSource.getId(), "givenName", "givenName", "Text"));
 
-		dataSourceJSONObject.put("deletionDate", DateUtil.newDayDateString());
+		dataSource.setDeletionDate(new Date());
 
-		_dataSourceDog.deleteDataSource(
-			_objectMapper.convertValue(dataSourceJSONObject, DataSource.class),
-			null, null);
+		_dataSourceDog.deleteDataSource(dataSource);
 
 		Assert.assertTrue(
 			"Field mappings created by the default user should not be " +
@@ -443,29 +398,20 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testDeleteDataSourceUpdatesIndividualFields() throws Exception {
-		JSONObject dataSourceJSONObject1 = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
-			JSONObject.class);
+		DataSource dataSource1 = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource());
+		DataSource dataSource2 = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource());
 
-		JSONObject dataSourceJSONObject2 = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
-			JSONObject.class);
-
-		String dataSourceId1 = dataSourceJSONObject1.getString("id");
-		String dataSourceId2 = dataSourceJSONObject2.getString("id");
+		Long dataSourceId1 = dataSource1.getId();
+		Long dataSourceId2 = dataSource2.getId();
 
 		_fieldMappingRepository.save(
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				new HashMap<String, String>() {
 					{
-						put(dataSourceId1, "email");
-						put(dataSourceId2, "emailAddress");
+						put(String.valueOf(dataSourceId1), "email");
+						put(String.valueOf(dataSourceId2), "emailAddress");
 					}
 				},
 				"email", "http://schema.org/email"));
@@ -474,17 +420,15 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				dataSourceId2, "givenName", "givenName", "Text"));
 
-		JSONObject individualJSONObject = _individualDog.addIndividual(
-			FaroInfoTestUtil.buildIndividualJSONObject(dataSourceJSONObject1),
-			false);
+		Individual individual = _individualDog.addIndividual(
+			FaroInfoTestUtil.buildIndividual(dataSource1), false);
 
-		faroInfoElasticsearchInvoker.add(
-			"fields",
-			FaroInfoTestUtil.buildIndividualFieldJSONObject(
-				dataSourceJSONObject1, "email", "http://schema.org/email",
-				RandomTestUtil.randomString(), individualJSONObject, "email"));
+		_fieldRepository.save(
+			FaroInfoTestUtil.buildIndividualField(
+				dataSource1, "email", "http://schema.org/email",
+				RandomTestUtil.randomString(), individual, "email"));
 
-		individualJSONObject = _individualDog.updateIndividual(
+		individual = _individualDog.updateIndividual(
 			RandomTestUtil.randomUUID(),
 			JSONUtil.put(
 				"contact",
@@ -496,87 +440,74 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"modifiedDate", System.currentTimeMillis()
 			),
-			_objectMapper.convertValue(dataSourceJSONObject2, DataSource.class),
-			individualJSONObject);
+			dataSource2, individual);
 
-		String lastEnrichmentDate = individualJSONObject.getString(
-			"lastEnrichmentDate");
+		Date lastEnrichmentDate = individual.getLastEnrichmentDate();
 
-		dataSourceJSONObject2.put("deletionDate", DateUtil.newDayDateString());
+		dataSource2.setDeletionDate(new Date());
 
-		_dataSourceDog.deleteDataSource(
-			_objectMapper.convertValue(dataSourceJSONObject2, DataSource.class),
-			null, null);
+		_dataSourceDog.deleteDataSource(dataSource2);
 
 		Assert.assertTrue(
 			"Individual was deleted even though another data source with " +
 				"data on the individual exists",
-			faroInfoElasticsearchInvoker.exists(
-				"individuals", individualJSONObject.getString("id")));
+			_individualRepository.existsById(individual.getId()));
 
-		individualJSONObject = faroInfoElasticsearchInvoker.get(
-			"individuals", individualJSONObject.getString("id"));
+		individual = _individualDog.fetchIndividual(individual.getId());
 
 		Assert.assertFalse(
 			"Data source individual PK was not deleted on data source deletion",
-			faroInfoElasticsearchInvoker.exists(
-				"individuals",
-				QueryBuilders.nestedQuery(
-					"dataSourceIndividualPKs",
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.dataSourceId", dataSourceId2),
-					ScoreMode.None)));
+			_individualDog.existsByDataSourceIndividualPK(
+				dataSourceId2, individual.getId()));
 
-		JSONObject demographicsJSONObject = individualJSONObject.getJSONObject(
-			"demographics");
+		Set<Field> fields = individual.getFields();
+
+		Stream<Field> stream = fields.stream();
 
 		Assert.assertFalse(
 			"Individual field 'givenName' was not deleted",
-			demographicsJSONObject.has("givenName"));
+			stream.anyMatch(
+				field -> Objects.equals(field.getName(), "givenName")));
 
-		JSONArray emailJSONArray = demographicsJSONObject.getJSONArray("email");
+		stream = fields.stream();
 
-		JSONObject emailJSONObject = emailJSONArray.getJSONObject(0);
+		Field emailField = stream.filter(
+			field -> Objects.equals(field.getName(), "email")
+		).findFirst(
+		).orElse(
+			null
+		);
 
-		Assert.assertEquals(
-			dataSourceId1, String.valueOf(emailJSONObject.get("dataSourceId")));
+		Assert.assertNotNull(emailField);
+
+		Assert.assertEquals(dataSourceId1, emailField.getDataSourceId());
 
 		Assert.assertEquals(
 			"Data source deletion should not count towards individual " +
 				"enrichment",
-			lastEnrichmentDate,
-			individualJSONObject.getString("lastEnrichmentDate"));
+			lastEnrichmentDate, individual.getLastEnrichmentDate());
 	}
 
 	@Test
 	public void testDeleteLiferayDataSource() throws Exception {
-		JSONObject dataSourceJSONObject1 = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
-			JSONObject.class);
+		DataSource dataSource1 = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource());
 
-		_addActivityAndUserToLiferayDataSource(dataSourceJSONObject1);
+		_addActivityAndUserToLiferayDataSource(dataSource1);
 
-		JSONObject dataSourceJSONObject2 = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
-			JSONObject.class);
+		DataSource dataSource2 = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource());
 
-		_addActivityAndUserToLiferayDataSource(dataSourceJSONObject2);
+		_addActivityAndUserToLiferayDataSource(dataSource2);
 
-		dataSourceJSONObject1.put(
-			"deletionDate", DateUtil.addDays(DateUtil.newDayDateString(), -1));
+		dataSource1.setDeletionDate(
+			DateUtil.toUTCDate(
+				DateUtil.addDays(DateUtil.newDayDateString(), -1)));
 
-		_dataSourceDog.deleteDataSource(
-			_objectMapper.convertValue(dataSourceJSONObject1, DataSource.class),
-			null, null);
+		_dataSourceDog.deleteDataSource(dataSource1);
 
-		String dataSourceId1 = dataSourceJSONObject1.getString("id");
-		String dataSourceId2 = dataSourceJSONObject2.getString("id");
+		Long dataSourceId1 = dataSource1.getId();
+		Long dataSourceId2 = dataSource2.getId();
 
 		for (String index :
 				new String[] {"activities", "activity-groups", "assets"}) {
@@ -618,123 +549,104 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testDeleteSalesforceDataSource() throws Exception {
-		JSONObject dataSourceJSONObject1 = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				FaroInfoTestUtil.buildSalesforceDataSource()),
-			JSONObject.class);
+		DataSource dataSource1 = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
-		String dataSourceId1 = dataSourceJSONObject1.getString("id");
+		Long dataSourceId1 = dataSource1.getId();
 
 		_addDataToSalesforceDataSource(
-			dataSourceId1, dataSourceJSONObject1.getString("name"));
+			String.valueOf(dataSourceId1), dataSource1.getName());
 
-		JSONObject dataSourceJSONObject2 = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				FaroInfoTestUtil.buildSalesforceDataSource()),
-			JSONObject.class);
+		DataSource dataSource2 = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
-		String dataSourceId2 = dataSourceJSONObject2.getString("id");
+		Long dataSourceId2 = dataSource2.getId();
 
 		_addDataToSalesforceDataSource(
-			dataSourceId2, dataSourceJSONObject2.getString("name"));
+			String.valueOf(dataSourceId2), dataSource2.getName());
 
-		dataSourceJSONObject1.put("deletionDate", DateUtil.newDayDateString());
+		dataSource1.setDeletionDate(new Date());
 
-		_dataSourceDog.deleteDataSource(
-			_objectMapper.convertValue(dataSourceJSONObject1, DataSource.class),
-			null, null);
+		_dataSourceDog.deleteDataSource(dataSource1);
 
 		Assert.assertFalse(
 			"Found entry in accounts collection with data source ID " +
 				dataSourceId1,
 			faroInfoElasticsearchInvoker.exists(
 				"accounts",
-				QueryBuilders.termQuery("dataSourceId", dataSourceId1)));
+				QueryBuilders.termQuery(
+					"dataSourceId", String.valueOf(dataSourceId1))));
 		Assert.assertTrue(
 			"Unable to find entry in accounts collection with data source ID " +
 				dataSourceId2,
 			faroInfoElasticsearchInvoker.exists(
 				"accounts",
-				QueryBuilders.termQuery("dataSourceId", dataSourceId2)));
+				QueryBuilders.termQuery(
+					"dataSourceId", String.valueOf(dataSourceId2))));
 		Assert.assertFalse(
 			"Found entry in fields collection with data source ID " +
 				dataSourceId1,
 			faroInfoElasticsearchInvoker.exists(
 				"fields",
-				QueryBuilders.termQuery("dataSourceId", dataSourceId1)));
+				QueryBuilders.termQuery(
+					"dataSourceId", String.valueOf(dataSourceId1))));
 		Assert.assertTrue(
 			"Unable to find entry in fields collection with data source ID " +
 				dataSourceId2,
 			faroInfoElasticsearchInvoker.exists(
 				"fields",
-				QueryBuilders.termQuery("dataSourceId", dataSourceId2)));
+				QueryBuilders.termQuery(
+					"dataSourceId", String.valueOf(dataSourceId2))));
 		Assert.assertFalse(
 			"Found entry in individuals collection with data source ID " +
 				dataSourceId1,
 			_salesforceRawElasticsearchInvoker.exists(
 				"individuals",
-				QueryBuilders.termQuery("dataSourceId", dataSourceId1)));
+				QueryBuilders.termQuery(
+					"dataSourceId", String.valueOf(dataSourceId1))));
 		Assert.assertTrue(
 			"Unable to find entry in individuals collection with data source " +
 				"ID " + dataSourceId2,
 			_salesforceRawElasticsearchInvoker.exists(
 				"individuals",
-				QueryBuilders.termQuery("dataSourceId", dataSourceId2)));
+				QueryBuilders.termQuery(
+					"dataSourceId", String.valueOf(dataSourceId2))));
 	}
 
 	@Test
 	public void testUpdateDataSourceModifiesDataSourceName() {
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
-						"foo", RandomTestUtil.randomURL()),
-					DataSource.class)),
-			JSONObject.class);
+		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource(
+			"foo", RandomTestUtil.randomURL());
 
-		JSONObject liferayDataSourceJSONObject =
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
-				"bar", RandomTestUtil.randomURL());
+		DataSource liferayDataSource = FaroInfoTestUtil.buildLiferayDataSource(
+			"bar", RandomTestUtil.randomURL());
 
-		liferayDataSourceJSONObject.put(
-			"id", dataSourceJSONObject.getString("id"));
+		liferayDataSource.setId(dataSource.getId());
 
-		dataSourceJSONObject = _objectMapper.convertValue(
-			_dataSourceDog.updateDataSourceConfiguration(
-				_objectMapper.convertValue(
-					liferayDataSourceJSONObject, DataSource.class)),
-			JSONObject.class);
+		dataSource = _dataSourceDog.updateDataSourceConfiguration(
+			liferayDataSource);
 
-		Assert.assertEquals("bar", dataSourceJSONObject.getString("name"));
+		Assert.assertEquals("bar", dataSource.getName());
 	}
 
 	@Test(expected = Exception.class)
 	public void testUpdateDataSourceModifyingToDuplicateDataSourceName() {
 		_dataSourceDog.addDataSource(
-			_objectMapper.convertValue(
-				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
-					"bar", RandomTestUtil.randomURL()),
-				DataSource.class));
+			FaroInfoTestUtil.buildLiferayDataSource(
+				"bar", RandomTestUtil.randomURL()));
 
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
-						"foo", RandomTestUtil.randomURL()),
-					DataSource.class)),
-			JSONObject.class);
+		DataSource dataSource = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource(
+				"foo", RandomTestUtil.randomURL()));
 
 		try {
-			JSONObject liferayDataSourceJSONObject =
-				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
+			DataSource liferayDataSource =
+				FaroInfoTestUtil.buildLiferayDataSource(
 					"bar", RandomTestUtil.randomURL());
 
-			liferayDataSourceJSONObject.put(
-				"id", dataSourceJSONObject.getString("id"));
+			liferayDataSource.setId(dataSource.getId());
 
-			_dataSourceDog.updateDataSourceConfiguration(
-				_objectMapper.convertValue(
-					liferayDataSourceJSONObject, DataSource.class));
+			_dataSourceDog.updateDataSourceConfiguration(liferayDataSource);
 		}
 		catch (Exception exception) {
 			Assert.assertThat(
@@ -749,48 +661,36 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	public void testUpdateDataSourceWithoutModifyingDataSourceName() {
 		String dataSourceName = "test";
 
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
-						dataSourceName, RandomTestUtil.randomURL()),
-					DataSource.class)),
-			JSONObject.class);
+		DataSource dataSource = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource(
+				dataSourceName, RandomTestUtil.randomURL()));
 
 		String updatedURL = "https://foo.bar";
 
-		JSONObject liferayDataSourceJSONObject =
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
-				dataSourceName, updatedURL);
+		DataSource liferayDataSource = FaroInfoTestUtil.buildLiferayDataSource(
+			dataSourceName, updatedURL);
 
-		liferayDataSourceJSONObject.put(
-			"id", dataSourceJSONObject.getString("id"));
+		liferayDataSource.setId(dataSource.getId());
 
-		dataSourceJSONObject = _objectMapper.convertValue(
-			_dataSourceDog.updateDataSourceConfiguration(
-				_objectMapper.convertValue(
-					liferayDataSourceJSONObject, DataSource.class)),
-			JSONObject.class);
+		dataSource = _dataSourceDog.updateDataSourceConfiguration(
+			liferayDataSource);
 
-		Assert.assertEquals(updatedURL, dataSourceJSONObject.getString("url"));
+		Assert.assertEquals(updatedURL, dataSource.getURL());
 	}
 
-	private void _addActivityAndUserToLiferayDataSource(
-			JSONObject dataSourceJSONObject)
-		throws Exception {
+	private void _addActivityAndUserToLiferayDataSource(DataSource dataSource) {
+		Long dataSourceId = dataSource.getId();
 
-		String dataSourceId = dataSourceJSONObject.getString("id");
+		ActivityGroup activityGroup = FaroInfoTestUtil.buildActivityGroup(
+			dataSourceId,
+			_individualDog.addIndividual(
+				FaroInfoTestUtil.buildIndividual(dataSource), false));
+
+		activityGroup = _activityGroupRepository.save(activityGroup);
 
 		_faroInfoActivityDog.addActivity(
 			FaroInfoTestUtil.buildActivityJSONObject(
-				faroInfoElasticsearchInvoker.add(
-					"activity-groups",
-					FaroInfoTestUtil.buildActivityGroupJSONObject(
-						dataSourceId,
-						_individualDog.addIndividual(
-							FaroInfoTestUtil.buildIndividualJSONObject(
-								dataSourceJSONObject),
-							false))),
+				_objectMapper.convertValue(activityGroup, JSONObject.class),
 				faroInfoElasticsearchInvoker.add(
 					"assets",
 					FaroInfoTestUtil.buildPageAssetJSONObject(dataSourceId)),
@@ -870,6 +770,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		);
 	}
 
+	@Autowired
+	private ActivityGroupRepository _activityGroupRepository;
+
 	@MockBean
 	private ChannelHttp _channelHttp;
 
@@ -889,7 +792,13 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
+	private FieldRepository _fieldRepository;
+
+	@Autowired
 	private IndividualDog _individualDog;
+
+	@Autowired
+	private IndividualRepository _individualRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

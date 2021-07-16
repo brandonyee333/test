@@ -49,10 +49,15 @@ public class AccountsRestControllerTest {
 		name = "accounts", resourcePath = "accounts_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
+	@ElasticsearchIndex(
+		name = "fields", resourcePath = "fields_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@Test
-	public void testGetAccountDTO() {
+	public void testGetAccountDTO() throws Exception {
 		JSONAssert.assertEquals(
-			_elasticsearchInvoker.fetch("accounts", "342313459339515838"),
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies/expected_account.json", this),
 			_objectMapper.convertValue(
 				_accountsRestController.getAccountDTO(
 					342313459339515838L, null),
@@ -74,6 +79,10 @@ public class AccountsRestControllerTest {
 
 	@ElasticsearchIndex(
 		name = "accounts", resourcePath = "accounts_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "fields", resourcePath = "fields_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(

@@ -14,8 +14,12 @@
 
 package com.liferay.osb.asah.common.elasticsearch.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -36,6 +40,7 @@ import org.junit.runner.RunWith;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -47,15 +52,15 @@ public class ElasticsearchBulkRequestBuilderTest {
 
 	@Test
 	public void test() {
-		JSONObject liferayDataSourceJSONObject =
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
+		DataSource liferayDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildLiferayDataSource());
 
-		JSONObject individualJSONObject1 =
-			FaroInfoTestUtil.buildIndividualJSONObject(
-				liferayDataSourceJSONObject.put("id", "dataSource1"));
-		JSONObject individualJSONObject2 =
-			FaroInfoTestUtil.buildIndividualJSONObject(
-				liferayDataSourceJSONObject.put("id", "dataSource1"));
+		JSONObject individualJSONObject1 = _objectMapper.convertValue(
+			FaroInfoTestUtil.buildIndividual(liferayDataSource),
+			JSONObject.class);
+		JSONObject individualJSONObject2 = _objectMapper.convertValue(
+			FaroInfoTestUtil.buildIndividual(liferayDataSource),
+			JSONObject.class);
 
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
 			_elasticsearchInvoker.createElasticsearchBulkRequestBuilder();
@@ -114,7 +119,7 @@ public class ElasticsearchBulkRequestBuilderTest {
 			WriteRequest.RefreshPolicy.IMMEDIATE);
 
 		JSONObject assetJSONObject = FaroInfoTestUtil.buildAssetJSONObject(
-			"Page", RandomTestUtil.randomId());
+			"Page", Long.valueOf(RandomTestUtil.randomId()));
 
 		BulkResponse bulkResponse = elasticsearchBulkRequestBuilder.upsert(
 			"assets", assetJSONObject
@@ -140,7 +145,7 @@ public class ElasticsearchBulkRequestBuilderTest {
 		JSONObject assetJSONObject = _elasticsearchInvoker.add(
 			"assets",
 			FaroInfoTestUtil.buildAssetJSONObject(
-				"Page", RandomTestUtil.randomId()));
+				"Page", Long.valueOf(RandomTestUtil.randomId())));
 
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
 			_elasticsearchInvoker.createElasticsearchBulkRequestBuilder();
@@ -166,7 +171,13 @@ public class ElasticsearchBulkRequestBuilderTest {
 		Assert.assertEquals(assetName, assetJSONObject.getString("name"));
 	}
 
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

@@ -1,0 +1,196 @@
+{
+	"accountPK": "0016C00000BKWWJQA5",
+	"activitiesCount": 1,
+	"activitiesCounts": [
+		{
+			"activitiesCount": 0,
+			"channelId": "888"
+		},
+		{
+			"activitiesCount": 1,
+			"channelId": "999"
+		}
+	],
+	"dataSourceId": "337984445922213329",
+	"dateCreated": "2019-03-04T20:02:57.165Z",
+	"dateModified": "2019-03-04T20:02:57.165Z",
+	"id": "342313459339515838",
+	"individualCount": 10,
+	"individualCounts": [
+		{
+			"channelId": "888",
+			"individualCount": 10
+		},
+		{
+			"channelId": "999",
+			"individualCount": 0
+		}
+	],
+	"organization": {
+		"accountName": [
+			{
+				"context": "organization",
+				"dataSourceId": "337984445922213329",
+				"dataSourceName": "Test Data Source",
+				"dateModified": "2018-11-13T17:37:06.000Z",
+				"fieldType": "Text",
+				"id": "357046440232501436",
+				"name": "accountName",
+				"ownerId": "342313459339515838",
+				"ownerType": "account",
+				"sourceName": "Name",
+				"value": "Manning & Napier Information Services, LLC"
+			}
+		],
+		"accountType": [
+			{
+				"context": "organization",
+				"dataSourceId": "337984445922213329",
+				"dataSourceName": "Test Data Source",
+				"dateModified": "2018-11-13T17:37:06.000Z",
+				"fieldType": "Text",
+				"id": "357046440232501437",
+				"name": "accountType",
+				"ownerId": "342313459339515838",
+				"ownerType": "account",
+				"sourceName": "Type",
+				"value": "Customer"
+			}
+		],
+		"annualRevenue": [
+			{
+				"context": "organization",
+				"dataSourceId": "337984445922213329",
+				"dataSourceName": "Test Data Source",
+				"dateModified": "2018-11-13T17:37:06.000Z",
+				"fieldType": "Number",
+				"id": "357046440232501438",
+				"name": "annualRevenue",
+				"ownerId": "342313459339515838",
+				"ownerType": "account",
+				"sourceName": "AnnualRevenue",
+				"value": 329992000
+			}
+		],
+		"billingCountry": [
+			{
+				"context": "organization",
+				"dataSourceId": "337984445922213329",
+				"dataSourceName": "Test Data Source",
+				"dateModified": "2018-11-13T17:37:06.000Z",
+				"fieldType": "Text",
+				"id": "357046440232501439",
+				"name": "billingCountry",
+				"ownerId": "342313459339515838",
+				"ownerType": "account",
+				"sourceName": "BillingCountry",
+				"value": "United States"
+			}
+		],
+		"billingState": [
+			{
+				"context": "organization",
+				"dataSourceId": "337984445922213329",
+				"dataSourceName": "Test Data Source",
+				"dateModified": "2018-11-13T17:37:06.000Z",
+				"fieldType": "Text",
+				"id": "357046440232501440",
+				"name": "billingState",
+				"ownerId": "342313459339515838",
+				"ownerType": "account",
+				"sourceName": "BillingState",
+				"value": "New York"
+			}
+		],
+		"currencyIsoCode": [
+			{
+				"context": "organization",
+				"dataSourceId": "337984445922213329",
+				"dataSourceName": "Test Data Source",
+				"dateModified": "2018-11-13T17:37:06.000Z",
+				"fieldType": "Text",
+				"id": "357046440232501441",
+				"name": "currencyIsoCode",
+				"ownerId": "342313459339515838",
+				"ownerType": "account",
+				"sourceName": "CurrencyIsoCode",
+				"value": "USD"
+			}
+		],
+		"industry": [
+			{
+				"context": "organization",
+				"dataSourceId": "337984445922213329",
+				"dataSourceName": "Test Data Source",
+				"dateModified": "2018-11-13T17:37:06.000Z",
+				"fieldType": "Text",
+				"id": "357046440232501442",
+				"name": "industry",
+				"ownerId": "342313459339515838",
+				"ownerType": "account",
+				"sourceName": "Industry",
+				"value": "Professional Services (Technical/Web/IT)"
+			}
+		],
+		"numberOfEmployees": [
+			{
+				"context": "organization",
+				"dataSourceId": "337984445922213329",
+				"dataSourceName": "Test Data Source",
+				"dateModified": "2018-11-13T17:37:06.000Z",
+				"fieldType": "Number",
+				"id": "357046440232501443",
+				"name": "numberOfEmployees",
+				"ownerId": "342313459339515838",
+				"ownerType": "account",
+				"sourceName": "NumberOfEmployees",
+				"value": 20000
+			}
+		],
+		"phone": [
+			{
+				"context": "organization",
+				"dataSourceId": "337984445922213329",
+				"dataSourceName": "Test Data Source",
+				"dateModified": "2018-11-13T17:37:06.000Z",
+				"fieldType": "Text",
+				"id": "357046440232501444",
+				"name": "phone",
+				"ownerId": "342313459339515838",
+				"ownerType": "account",
+				"sourceName": "Phone",
+				"value": "(585) 752-2297"
+			}
+		],
+		"photoUrl": [
+			{
+				"context": "organization",
+				"dataSourceId": "337984445922213329",
+				"dataSourceName": "Test Data Source",
+				"dateModified": "2018-11-13T17:37:06.000Z",
+				"fieldType": "Text",
+				"id": "357046440232501445",
+				"name": "photoUrl",
+				"ownerId": "342313459339515838",
+				"ownerType": "account",
+				"sourceName": "PhotoUrl",
+				"value": "/services/images/photo/0016C00000BKWWJQA5"
+			}
+		],
+		"shippingPostalCode": [
+			{
+				"context": "organization",
+				"dataSourceId": "337984445922213329",
+				"dataSourceName": "Test Data Source",
+				"dateModified": "2018-11-13T17:37:06.000Z",
+				"fieldType": "Text",
+				"id": "357046440232501446",
+				"name": "shippingPostalCode",
+				"ownerId": "342313459339515838",
+				"ownerType": "account",
+				"sourceName": "ShippingPostalCode",
+				"value": "91789"
+			}
+		]
+	}
+}

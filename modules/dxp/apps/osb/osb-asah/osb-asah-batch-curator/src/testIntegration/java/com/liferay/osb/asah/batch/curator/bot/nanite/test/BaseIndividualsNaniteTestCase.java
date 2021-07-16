@@ -60,9 +60,7 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 		else if (type.equals("LIFERAY")) {
 			_dataSourceJSONObject = _objectMapper.convertValue(
 				_dataSourceDog.addDataSource(
-					_objectMapper.convertValue(
-						FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-						DataSource.class)),
+					FaroInfoTestUtil.buildLiferayDataSource()),
 				JSONObject.class);
 		}
 		else if (type.equals("SALESFORCE")) {
@@ -125,7 +123,7 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 
 			JSONArray individualPKsJSONArray =
 				FaroInfoIndividualUtil.getIndividualPKsJSONArray(
-					getDataSourceId(),
+					String.valueOf(getDataSourceId()),
 					individualJSONObject.getJSONArray(
 						"dataSourceIndividualPKs"));
 
@@ -135,45 +133,45 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 				individual1Exists = true;
 
 				assertDemographicsJSONObject(
-					getDataSourceId(), "email", "http://schema.org/email",
-					individualJSONObject, getEmailDataSourceFieldName(),
-					_INDIVIDUAL_1_EMAIL);
+					String.valueOf(getDataSourceId()), "email",
+					"http://schema.org/email", individualJSONObject,
+					getEmailDataSourceFieldName(), _INDIVIDUAL_1_EMAIL);
 
 				assertDemographicsJSONObject(
-					getDataSourceId(), "familyName", "Text",
+					String.valueOf(getDataSourceId()), "familyName", "Text",
 					individualJSONObject, "lastName",
 					_INDIVIDUAL_1_FAMILY_NAME);
 
 				assertDemographicsJSONObject(
-					getDataSourceId(), "givenName", "Text",
+					String.valueOf(getDataSourceId()), "givenName", "Text",
 					individualJSONObject, "firstName",
 					_INDIVIDUAL_1_GIVEN_NAME);
 
 				assertDemographicsJSONObject(
-					getDataSourceId(), "jobTitle", "Text", individualJSONObject,
-					"jobTitle", _INDIVIDUAL_1_JOB_TITLE);
+					String.valueOf(getDataSourceId()), "jobTitle", "Text",
+					individualJSONObject, "jobTitle", _INDIVIDUAL_1_JOB_TITLE);
 			}
 			else if (Objects.equals(_individual2PK, individualPK)) {
 				individual2Exists = true;
 
 				assertDemographicsJSONObject(
-					getDataSourceId(), "email", "http://schema.org/email",
-					individualJSONObject, getEmailDataSourceFieldName(),
-					_INDIVIDUAL_2_EMAIL);
+					String.valueOf(getDataSourceId()), "email",
+					"http://schema.org/email", individualJSONObject,
+					getEmailDataSourceFieldName(), _INDIVIDUAL_2_EMAIL);
 
 				assertDemographicsJSONObject(
-					getDataSourceId(), "familyName", "Text",
+					String.valueOf(getDataSourceId()), "familyName", "Text",
 					individualJSONObject, "lastName",
 					_INDIVIDUAL_2_FAMILY_NAME);
 
 				assertDemographicsJSONObject(
-					getDataSourceId(), "givenName", "Text",
+					String.valueOf(getDataSourceId()), "givenName", "Text",
 					individualJSONObject, "firstName",
 					_INDIVIDUAL_2_GIVEN_NAME);
 
 				assertDemographicsJSONObject(
-					getDataSourceId(), "jobTitle", "Text", individualJSONObject,
-					"jobTitle", _INDIVIDUAL_2_JOB_TITLE);
+					String.valueOf(getDataSourceId()), "jobTitle", "Text",
+					individualJSONObject, "jobTitle", _INDIVIDUAL_2_JOB_TITLE);
 			}
 		}
 
@@ -183,12 +181,12 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 
 	protected abstract String generateIndividualPK();
 
-	protected String getDataSourceId() {
+	protected Long getDataSourceId() {
 		if (_dataSourceJSONObject == null) {
 			return null;
 		}
 
-		return _dataSourceJSONObject.getString("id");
+		return Long.valueOf(_dataSourceJSONObject.getString("id"));
 	}
 
 	protected abstract String getEmailDataSourceFieldName();

@@ -17,17 +17,28 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteIndividualSegmentTasksNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.dog.MembershipChangeDog;
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Set;
+
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
@@ -46,43 +57,42 @@ public class DeleteIndividualSegmentTasksNaniteTest extends BaseNaniteTestCase {
 
 	@Test
 	public void testDeleteIndividualSegmentTasks() throws Exception {
-		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
-			"data-sources",
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
+		DataSource dataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildLiferayDataSource());
 
 		String dayDateString = DateUtil.newDayDateString();
-		String individualSegmentId = RandomTestUtil.randomId();
+		Long segmentId = Long.parseLong(RandomStringUtils.randomNumeric(4));
+
+		Segment segment = new Segment();
+
+		segment.setId(segmentId);
+
+		_segmentRepository.save(segment);
 
 		JSONObject assetJSONObject = FaroInfoTestUtil.buildPageAssetJSONObject(
-			dataSourceJSONObject.getString("id"));
+			dataSource.getId());
 
-		JSONObject individualJSONObject =
-			FaroInfoTestUtil.buildIndividualJSONObject(dataSourceJSONObject);
+		Individual individual = FaroInfoTestUtil.buildIndividual(dataSource);
 
-		individualJSONObject.put(
-			"individualSegmentIds", JSONUtil.put(individualSegmentId));
+		individual.setSegmentIds(Collections.singleton(segmentId));
 
-		individualJSONObject = faroInfoElasticsearchInvoker.add(
-			"individuals", individualJSONObject);
+		_individualDog.addIndividual(individual, false);
 
-		faroInfoElasticsearchInvoker.add(
-			"membership-changes",
-			FaroInfoTestUtil.buildMembershipChangeJSONObject(
-				false, individualJSONObject, individualSegmentId, "ADDED"));
+		_membershipChangeDog.addMembershipChange(
+			FaroInfoTestUtil.buildMembershipChange(
+				false, individual, segmentId, "ADDED"));
 
-		faroInfoElasticsearchInvoker.add(
-			"memberships",
-			FaroInfoTestUtil.buildMembershipJSONObject(
-				individualJSONObject.getString("id"), individualSegmentId));
+		_membershipDog.addMembership(
+			FaroInfoTestUtil.buildMembership(individual.getId(), segmentId));
 
 		faroInfoElasticsearchInvoker.add(
 			"visited-pages",
 			FaroInfoTestUtil.buildIndividualSegmentVisitedPagesJSONArray(
-				assetJSONObject, dayDateString, individualSegmentId,
+				assetJSONObject, dayDateString, segmentId,
 				RandomUtils.nextInt()));
 
 		_deleteIndividualSegmentTasksNanite.run(
-			JSONUtil.put("individualSegmentId", individualSegmentId));
+			JSONUtil.put("individualSegmentId", String.valueOf(segmentId)));
 
 		Assert.assertFalse(
 			"Entries within visited-pages related to the deleted individual " +
@@ -90,7 +100,7 @@ public class DeleteIndividualSegmentTasksNaniteTest extends BaseNaniteTestCase {
 			faroInfoElasticsearchInvoker.exists(
 				"visited-pages",
 				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("ownerId", individualSegmentId)
+					QueryBuilders.termQuery("ownerId", segmentId)
 				).filter(
 					QueryBuilders.termQuery("ownerType", "individual-segment")
 				)));
@@ -103,27 +113,40 @@ public class DeleteIndividualSegmentTasksNaniteTest extends BaseNaniteTestCase {
 					"deleted individual segment should be deleted",
 				faroInfoElasticsearchInvoker.exists(
 					collectionName,
-					QueryBuilders.termQuery(
-						"individualSegmentId", individualSegmentId)));
+					QueryBuilders.termQuery("individualSegmentId", segmentId)));
 		}
 
-		individualJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"individuals", individualJSONObject.getString("id"));
+		individual = _individualDog.fetchIndividual(individual.getId());
 
-		JSONArray individualSegmentIdsJSONArray =
-			individualJSONObject.getJSONArray("individualSegmentIds");
+		Set<Long> segmentIds = individual.getSegmentIds();
 
-		for (int i = 0; i < individualSegmentIdsJSONArray.length(); i++) {
+		Iterator<Long> iterator = segmentIds.iterator();
+
+		while (iterator.hasNext()) {
 			Assert.assertNotSame(
 				"Individual segment ID should be removed from individual on " +
 					"individual segment deletion",
-				individualSegmentId,
-				individualSegmentIdsJSONArray.getString(i));
+				segmentId, iterator.next());
 		}
 	}
 
 	@Autowired
+	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
 	private DeleteIndividualSegmentTasksNanite
 		_deleteIndividualSegmentTasksNanite;
+
+	@Autowired
+	private IndividualDog _individualDog;
+
+	@Autowired
+	private MembershipChangeDog _membershipChangeDog;
+
+	@Autowired
+	private MembershipDog _membershipDog;
+
+	@Autowired
+	private SegmentRepository _segmentRepository;
 
 }

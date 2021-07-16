@@ -50,9 +50,7 @@ public class FieldMappingDogTest {
 	@Test
 	public void testAddDuplicateWithDifferentTypeFieldMappings() {
 		DataSource dataSource = _dataSourceRepository.save(
-			_objectMapper.convertValue(
-				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-				DataSource.class));
+			FaroInfoTestUtil.buildLiferayDataSource());
 
 		String name = "What is your income?";
 
@@ -104,9 +102,7 @@ public class FieldMappingDogTest {
 	public void testAddEmailFieldMappingLiferayDataSource() {
 		_testAddEmailFieldMapping(
 			_dataSourceRepository.save(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
+				FaroInfoTestUtil.buildLiferayDataSource()),
 			"emailAddress");
 	}
 
@@ -121,9 +117,7 @@ public class FieldMappingDogTest {
 	@Test
 	public void testAddInvalidCharactersFieldMapping() {
 		DataSource dataSource = _dataSourceRepository.save(
-			_objectMapper.convertValue(
-				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-				DataSource.class));
+			FaroInfoTestUtil.buildLiferayDataSource());
 
 		String name = "test!@#$%^Invalid_Characters^&*()";
 
@@ -148,9 +142,7 @@ public class FieldMappingDogTest {
 	@Test
 	public void testAddSanitizedDuplicateFieldMappings() {
 		DataSource dataSource = _dataSourceRepository.save(
-			_objectMapper.convertValue(
-				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-				DataSource.class));
+			FaroInfoTestUtil.buildLiferayDataSource());
 
 		String name = "What is your income?";
 
@@ -267,9 +259,7 @@ public class FieldMappingDogTest {
 
 		_testAddEmailFieldMapping(
 			_dataSourceRepository.save(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSource.class)),
+				FaroInfoTestUtil.buildLiferayDataSource()),
 			"emailAddress");
 
 		_testAddEmailFieldMapping(
