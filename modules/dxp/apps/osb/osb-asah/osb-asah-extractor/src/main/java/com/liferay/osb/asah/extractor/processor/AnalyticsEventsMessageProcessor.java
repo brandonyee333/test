@@ -19,17 +19,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.EventStorageDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
@@ -59,11 +60,10 @@ import javax.annotation.PreDestroy;
 
 import org.apache.avro.Schema;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -106,33 +106,35 @@ public class AnalyticsEventsMessageProcessor {
 		}
 	}
 
-	private JSONObject _addIndividual(
+	private Individual _addIndividual(
 		AnalyticsEventsMessage analyticsEventsMessage, Long channelId,
 		Long dataSourceId) {
 
 		String userId = analyticsEventsMessage.getUserId();
 
-		JSONObject individualJSONObject =
-			_individualDog.fetchIndividualJSONObject(
-				dataSourceId, userId);
+		Individual individual = _individualDog.fetchIndividual(
+			dataSourceId, userId);
 
-		if (individualJSONObject == null) {
-			individualJSONObject = _individualDog.addIndividual(
-				_getAnalyticsDataJSONObject(analyticsEventsMessage), channelId,
-				_dataSourceDog.getDataSource(dataSourceId), null, userId);
+		if (individual == null) {
+			individual = _individualDog.addIndividual(
+				channelId, _dataSourceDog.getDataSource(dataSourceId), null,
+				userId);
 		}
 		else {
-			Set<String> channelIds = JSONUtil.toStringSet(
-				individualJSONObject.optJSONArray("channelIds"));
+			Set<Long> channelIds = individual.getChannelIds();
 
-			if (channelIds.add(String.valueOf(channelId))) {
-				individualJSONObject = _faroInfoElasticsearchInvoker.update(
-					"individuals", individualJSONObject.getString("id"),
-					JSONUtil.put("channelIds", channelIds));
+			if (CollectionUtils.isEmpty(channelIds)) {
+				channelIds = new HashSet<>();
+			}
+
+			if (channelIds.add(channelId)) {
+				individual.setChannelIds(channelIds);
+
+				individual = _individualDog.updateIndividual(individual);
 			}
 		}
 
-		return individualJSONObject;
+		return individual;
 	}
 
 	@PreDestroy
@@ -155,24 +157,6 @@ public class AnalyticsEventsMessageProcessor {
 				"#", projectId, dataSourceId, userId, event.getApplicationId(),
 				event.getEventId(), String.valueOf(eventProperties.hashCode()),
 				String.valueOf(eventDate.getTime())));
-	}
-
-	private JSONObject _getAnalyticsDataJSONObject(
-		AnalyticsEventsMessage analyticsEventsMessage) {
-
-		JSONObject analyticsDataJSONObject = JSONUtil.put(
-			"clientIP", analyticsEventsMessage.getClientIP());
-
-		Map<String, Object> context = analyticsEventsMessage.getContext();
-
-		for (String analyticsDataFieldName :
-				_ANALYTICS_DATA_ANALYTICS_CONTEXT_FIELD_NAMES) {
-
-			analyticsDataJSONObject.put(
-				analyticsDataFieldName, context.get(analyticsDataFieldName));
-		}
-
-		return analyticsDataJSONObject;
 	}
 
 	private Map<String, String> _getContext(
@@ -275,14 +259,10 @@ public class AnalyticsEventsMessageProcessor {
 	}
 
 	private Set<String> _getSegmentNames(
-		Long channelId, JSONObject individualJSONObject) {
+		Long channelId, Individual individual) {
 
 		return new HashSet<>(
-			_segmentDog.getSegmentNames(
-				channelId,
-				JSONUtil.toLongSet(
-					individualJSONObject.getJSONArray(
-						"individualSegmentIds"))));
+			_segmentDog.getSegmentNames(channelId, individual.getSegmentIds()));
 	}
 
 	private boolean _isCrawler(Map<String, String> context) {
@@ -308,12 +288,9 @@ public class AnalyticsEventsMessageProcessor {
 		return false;
 	}
 
-	private boolean _isKnownIndividual(JSONObject individualJSONObject) {
-		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
-			"demographics");
-
-		if ((demographicsJSONObject != null) &&
-			demographicsJSONObject.has("email")) {
+	private boolean _isKnownIndividual(Individual individual) {
+		if (_fieldRepository.existsByNameAndOwnerId(
+				"email", individual.getId())) {
 
 			return true;
 		}
@@ -387,13 +364,13 @@ public class AnalyticsEventsMessageProcessor {
 			}
 		}
 
-		JSONObject individualJSONObject = _addIndividual(
+		Individual individual = _addIndividual(
 			analyticsEventsMessage, Long.valueOf(channelId),
 			Long.valueOf(dataSourceId));
 
-		boolean knownIndividual = _isKnownIndividual(individualJSONObject);
+		boolean knownIndividual = _isKnownIndividual(individual);
 		Set<String> segmentNames = _getSegmentNames(
-			Long.valueOf(channelId), individualJSONObject);
+			Long.valueOf(channelId), individual);
 
 		Set<AnalyticsEvent> analyticsEvents = new TreeSet<>(
 			Comparator.comparing(AnalyticsEvent::getId));
@@ -418,8 +395,7 @@ public class AnalyticsEventsMessageProcessor {
 				_generateAnalyticsEventId(
 					dataSourceId, event, analyticsEventsMessage.getProjectId(),
 					analyticsEventsMessage.getUserId()));
-			analyticsEvent.setIndividualId(
-				individualJSONObject.getString("id"));
+			analyticsEvent.setIndividualId(String.valueOf(individual.getId()));
 			analyticsEvent.setKnownIndividual(knownIndividual);
 			analyticsEvent.setSegmentNames(segmentNames);
 			analyticsEvent.setProjectId(analyticsEventsMessage.getProjectId());
@@ -450,13 +426,6 @@ public class AnalyticsEventsMessageProcessor {
 
 		_eventStorageDog.store(analyticsEvent);
 	}
-
-	private static final String[]
-		_ANALYTICS_DATA_ANALYTICS_CONTEXT_FIELD_NAMES = {
-			"browserName", "crawler", "devicePixelRatio", "deviceType",
-			"languageId", "platformName", "screenHeight", "screenWidth",
-			"userAgent"
-		};
 
 	private static final Log _log = LogFactory.getLog(
 		AnalyticsEventsMessageProcessor.class);
@@ -495,6 +464,9 @@ public class AnalyticsEventsMessageProcessor {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FieldRepository _fieldRepository;
 
 	@Autowired
 	private IndividualDog _individualDog;

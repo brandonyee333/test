@@ -14,22 +14,20 @@
 
 package com.liferay.osb.asah.extractor.processor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.OrganizationDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Organization;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
@@ -46,15 +44,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.join.ScoreMode;
-
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -108,19 +103,16 @@ public class DXPEntitiesMessageProcessor {
 					JSONObject userFieldsJSONObject =
 						user.getFieldsJSONObject();
 
-					JSONObject individualJSONObject =
-						_faroInfoElasticsearchInvoker.fetch(
-							"individuals",
-							_getIndividualQueryBuilder(
-								String.valueOf(dxpEntity.getDataSourceId()),
-								String.valueOf(dxpEntity.getId()),
+					Individual individual =
+						_individualDog.
+							fetchIndividualByAssociationIdNotAndDataSourceIdAndIndividualPK(
+								dxpEntity.getId(), dxpEntity.getDataSourceId(),
 								dxpEntityType.getIndividualFieldName(),
-								userFieldsJSONObject.getString("uuid")));
+								userFieldsJSONObject.getString("uuid"));
 
-					if (individualJSONObject != null) {
+					if (individual != null) {
 						_individualDog.addIndividualAssociation(
-							dxpEntityType, String.valueOf(dxpEntity.getId()),
-							individualJSONObject);
+							dxpEntityType, dxpEntity.getId(), individual);
 					}
 				});
 		}
@@ -149,26 +141,6 @@ public class DXPEntitiesMessageProcessor {
 		}
 
 		return null;
-	}
-
-	private QueryBuilder _getIndividualQueryBuilder(
-		String dataSourceId, String id, String individualFieldName,
-		String uuid) {
-
-		return BoolQueryBuilderUtil.filter(
-			QueryBuilders.nestedQuery(
-				"dataSourceIndividualPKs",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.dataSourceId", dataSourceId)
-				).filter(
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.individualPKs", uuid)
-				),
-				ScoreMode.None)
-		).mustNot(
-			QueryBuilders.termsQuery(individualFieldName, id)
-		);
 	}
 
 	private String _getOwnerType(String className) {
@@ -232,9 +204,8 @@ public class DXPEntitiesMessageProcessor {
 
 		long classPK = objectJSONObject.getLong("classPK");
 
-		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.termQuery("demographics.email.value", emailAddress));
+		Individual individual = _individualDog.fetchIndividualByEmailAddress(
+			emailAddress);
 
 		String queryBuilderName = null;
 
@@ -242,23 +213,22 @@ public class DXPEntitiesMessageProcessor {
 			membershipJSONArray.put(classPK);
 
 			_individualDog.addIndividualAssociation(
-				classPK, dataSourceId, type, individualJSONObject);
+				classPK, dataSourceId, type, individual);
 
-			queryBuilderName = "addQueryBuilder";
+			queryBuilderName = "addFilter";
 		}
 		else if (action.equals("deleteAssociation")) {
 			JSONUtil.removeValue(membershipJSONArray, classPK);
 
 			_individualDog.deleteIndividualAssociation(
-				classPK, dataSourceId, type, individualJSONObject);
+				classPK, dataSourceId, type, individual);
 
-			queryBuilderName = "removeQueryBuilder";
+			queryBuilderName = "removeFilter";
 		}
 
 		if (!type.isUser()) {
-			List<String> associatedIds =
-				_individualDog.getAssociatedIds(
-					dataSourceId, type, Collections.singletonList(classPK));
+			Set<Long> associatedIds = _individualDog.getAssociatedIds(
+				dataSourceId, type, Collections.singletonList(classPK));
 
 			_asahTaskDog.scheduleAsahTask(
 				"UpdateDynamicMembershipsNanite",
@@ -455,14 +425,12 @@ public class DXPEntitiesMessageProcessor {
 			return;
 		}
 
-		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.termQuery(
-				"emailAddressHashed",
-				DigestUtils.sha256Hex(StringUtils.lowerCase(emailAddress))));
+		Individual individual =
+			_individualDog.fetchIndividualByEmailAddressHashed(
+				DigestUtils.sha256Hex(StringUtils.lowerCase(emailAddress)));
 
 		try {
-			if (individualJSONObject == null) {
+			if (individual == null) {
 				_individualDog.addIndividual(
 					objectJSONObject.optString("uuid", null), objectJSONObject,
 					dataSource);
@@ -470,7 +438,7 @@ public class DXPEntitiesMessageProcessor {
 			else {
 				_individualDog.updateIndividual(
 					objectJSONObject.optString("uuid", null), objectJSONObject,
-					dataSource, individualJSONObject);
+					dataSource, individual);
 			}
 		}
 		catch (Exception exception) {
@@ -511,16 +479,13 @@ public class DXPEntitiesMessageProcessor {
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
-	private IndividualDog _individualDog;
+	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
-	private FieldMappingDog _fieldMappingDog;
+	private IndividualDog _individualDog;
 
 	@MessageSubscriber.Autowired(channel = Channel.DXP_ENTITIES_MESSAGE)
 	private MessageSubscriber _messageSubscriber;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private OrganizationDog _organizationDog;
