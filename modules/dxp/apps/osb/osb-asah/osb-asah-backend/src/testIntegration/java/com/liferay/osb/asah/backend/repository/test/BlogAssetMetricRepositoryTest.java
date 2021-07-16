@@ -118,8 +118,9 @@ public class BlogAssetMetricRepositoryTest
 		assertAssetMetrics(
 			new Double[] {7D, 6D},
 			_assetMetricRepository.getAssetMetrics(
-				1L, SetUtil.of(BlogMetricType.VIEWS.getName()),
-				PageRequest.of(0, 10), TimeRange.LAST_24_HOURS),
+				1L, PageRequest.of(0, 10),
+				SetUtil.of(BlogMetricType.VIEWS.getName()),
+				TimeRange.LAST_24_HOURS),
 			BlogMetric::getViewsMetric);
 	}
 

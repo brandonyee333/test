@@ -123,8 +123,9 @@ public class DocumentLibraryAssetMetricRepositoryTest
 		assertAssetMetrics(
 			new Double[] {7D, 6D},
 			_assetMetricRepository.getAssetMetrics(
-				1L, SetUtil.of(DocumentLibraryMetricType.PREVIEWS.getName()),
-				PageRequest.of(0, 10), TimeRange.LAST_24_HOURS),
+				1L, PageRequest.of(0, 10),
+				SetUtil.of(DocumentLibraryMetricType.PREVIEWS.getName()),
+				TimeRange.LAST_24_HOURS),
 			DocumentLibraryMetric::getPreviewsMetric);
 	}
 
