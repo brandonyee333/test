@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
@@ -36,22 +37,17 @@ import org.springframework.stereotype.Component;
 public class MembershipChangeDog extends BaseFaroInfoDog {
 
 	public void addMembershipChange(
-		JSONObject individualJSONObject, long individualsCount,
+		Individual individual, long individualsCount,
 		long knownIndividualsCount, Membership membership, String operation) {
 
 		MembershipChange membershipChange = new MembershipChange();
 
 		membershipChange.setIndividualDeleted(Boolean.FALSE);
-
-		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
-			"demographics");
-
 		membershipChange.setIndividualEmail(
-			FaroInfoIndividualUtil.getIndividualEmail(demographicsJSONObject));
-
+			FaroInfoIndividualUtil.getIndividualEmail(individual));
 		membershipChange.setIndividualId(membership.getIndividualId());
 		membershipChange.setIndividualName(
-			FaroInfoIndividualUtil.getIndividualName(demographicsJSONObject));
+			FaroInfoIndividualUtil.getIndividualName(individual));
 		membershipChange.setIndividualsCount(individualsCount);
 		membershipChange.setIndividualSegmentId(
 			membership.getIndividualSegmentId());
@@ -60,6 +56,10 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		membershipChange.setModifiedDate(membership.getModifiedDate());
 		membershipChange.setOperation(operation);
 
+		_membershipChangeRepository.save(membershipChange);
+	}
+
+	public void addMembershipChange(MembershipChange membershipChange) {
 		_membershipChangeRepository.save(membershipChange);
 	}
 

@@ -43,6 +43,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class ActivityGroupDog {
 
+	public ActivityGroup addActivityGroup(ActivityGroup activityGroup) {
+		return _activityGroupRepository.save(activityGroup);
+	}
+
 	public ActivityGroup addActivityGroup(
 		String activityType, Long channelId, Long dataSourceId, Date dayDate,
 		Date endDate, LocalDateTime endLocalDate, Long ownerId, Date startDate,

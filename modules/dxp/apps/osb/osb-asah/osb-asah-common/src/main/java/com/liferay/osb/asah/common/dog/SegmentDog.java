@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.FieldMapping;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -48,13 +49,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -386,6 +387,19 @@ public class SegmentDog extends BaseFaroInfoDog {
 			pageRequest,
 			() -> _segmentRepository.countAccountSegments(
 				filterString, _getIndividualSegmentIds(segment.getId())));
+	}
+
+	public List<Segment> searchDynamicSegments(
+		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
+		String filterString, boolean includeAnonymousUsers, int page,
+		Set<Long> segmentIds, int size,
+		com.liferay.osb.asah.common.model.Sort sort) {
+
+		PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+		return _segmentRepository.searchDynamicSegments(
+			dataSourceAccountPKs, filterString, includeAnonymousUsers,
+			pageRequest, segmentIds);
 	}
 
 	public List<Segment> searchDynamicSegments(
@@ -838,24 +852,22 @@ public class SegmentDog extends BaseFaroInfoDog {
 		account.setActivitiesCount(segment.getActivitiesCount());
 
 		if (Objects.nonNull(segment.getActivitiesCount())) {
-			JSONArray activitiesCountsJSONArray =
-				_individualDog.getActivitiesCountsJSONArray(
+			List<Individual.ActivitiesCount> individualActivitiesCounts =
+				_individualDog.getActivitiesCounts(
 					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 					segment.getId());
 
-			if (activitiesCountsJSONArray.length() > 0) {
+			if (!individualActivitiesCounts.isEmpty()) {
 				Set<Account.AccountActivityCount> activitiesCounts =
 					new HashSet<>();
 
-				for (int i = 0; i < activitiesCountsJSONArray.length(); i++) {
-					JSONObject activitiesCountJSONObject =
-						activitiesCountsJSONArray.getJSONObject(i);
+				for (Individual.ActivitiesCount individualActivitiesCount :
+						individualActivitiesCounts) {
 
 					activitiesCounts.add(
 						new Account.AccountActivityCount(
-							activitiesCountJSONObject.optLong(
-								"activitiesCount", 0L),
-							activitiesCountJSONObject.getLong("channelId")));
+							individualActivitiesCount.getActivitiesCount(),
+							individualActivitiesCount.getChannelId()));
 				}
 
 				account.setActivitiesCounts(activitiesCounts);
@@ -865,24 +877,21 @@ public class SegmentDog extends BaseFaroInfoDog {
 		account.setIndividualCount(segment.getIndividualCount());
 
 		if (Objects.nonNull(segment.getIndividualCount())) {
-			JSONArray individualCountsJSONArray =
-				_individualDog.getIndividualCountsJSONArray(
+			Map<Long, Long> channelIndividualCounts =
+				_individualDog.getIndividualCounts(
 					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 					segment.getId());
 
-			if (individualCountsJSONArray.length() > 0) {
+			if (!channelIndividualCounts.isEmpty()) {
 				Set<Account.AccountIndividualCount> individualCounts =
 					new HashSet<>();
 
-				for (int i = 0; i < individualCountsJSONArray.length(); i++) {
-					JSONObject individualCountJSONObject =
-						individualCountsJSONArray.getJSONObject(i);
+				for (Map.Entry<Long, Long> entry :
+						channelIndividualCounts.entrySet()) {
 
 					individualCounts.add(
 						new Account.AccountIndividualCount(
-							individualCountJSONObject.getLong("channelId"),
-							individualCountJSONObject.optLong(
-								"individualCount", 0L)));
+							entry.getKey(), entry.getValue()));
 				}
 
 				account.setIndividualCounts(individualCounts);
@@ -914,21 +923,15 @@ public class SegmentDog extends BaseFaroInfoDog {
 			segment.getId());
 
 		for (Long individualId : individualIds) {
-			JSONObject individualJSONObject =
-				_individualDog.fetchIndividualJSONObject(
-					String.valueOf(individualId));
+			Individual individual = _individualDog.fetchIndividual(
+				individualId);
 
-			if (individualJSONObject == null) {
+			if (individual == null) {
 				continue;
 			}
 
-			JSONArray channelIdsJSONArray = individualJSONObject.optJSONArray(
-				"channelIds");
-
-			if ((channelIdsJSONArray != null) &&
-				!JSONUtil.hasValue(
-					channelIdsJSONArray,
-					String.valueOf(segment.getChannelId()))) {
+			if (!CollectionUtils.containsAny(
+					individual.getChannelIds(), segment.getChannelId())) {
 
 				_membershipDog.deactivateMembership(
 					new Date(), individualId, segment.getId());

@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
@@ -22,6 +24,7 @@ import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.Date;
@@ -216,12 +219,11 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 	}
 
 	public void updateOwnerId(
-			JSONObject activityJSONObject, JSONObject individualJSONObject)
-		throws Exception {
+		JSONObject activityJSONObject, Individual individual) {
 
 		elasticsearchInvoker.update(
 			"activities", activityJSONObject.getString("id"),
-			JSONUtil.put("ownerId", individualJSONObject.getString("id")));
+			JSONUtil.put("ownerId", String.valueOf(individual.getId())));
 
 		List<Long> referencedAssetIds = _segmentDog.getReferencedAssetIds();
 
@@ -241,7 +243,8 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 				"contains(filter, " +
 					activityJSONObject.getString("activityKey") + ")"
 			).put(
-				"individualJSONObject", individualJSONObject
+				"individualJSONObject",
+				_objectMapper.convertValue(individual, JSONObject.class)
 			));
 	}
 
@@ -259,6 +262,9 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	private final Cache<String, List<Long>> _referencedAssetIds =
 		Caffeine.newBuilder(

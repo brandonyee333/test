@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
@@ -25,8 +26,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.ArrayUtils;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -66,10 +65,10 @@ public class MembershipDog extends BaseFaroInfoDog {
 			return membership;
 		}
 
-		JSONObject individualJSONObject = _individualDog.addIndividualSegmentId(
+		Individual individual = _individualDog.addSegmentId(
 			membership.getIndividualId(), membership.getIndividualSegmentId());
 
-		if (individualJSONObject == null) {
+		if (individual == null) {
 			return null;
 		}
 
@@ -93,8 +92,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 			membership.getIndividualSegmentId());
 
 		_membershipChangeDog.addMembershipChange(
-			individualJSONObject, individualCount, knownIndividualCount,
-			membership, "ADDED");
+			individual, individualCount, knownIndividualCount, membership,
+			"ADDED");
 
 		return membership;
 	}
@@ -164,10 +163,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 		membership = _membershipRepository.save(membership);
 
-		JSONObject individualJSONObject =
-			_individualDog.removeIndividualSegmentId(
-				membership.getIndividualId(),
-				membership.getIndividualSegmentId());
+		Individual individual = _individualDog.removeSegmentId(
+			membership.getIndividualId(), membership.getIndividualSegmentId());
 
 		boolean includeAnonymousUsers = _segmentDog.isIncludeAnonymousUsers(
 			membership.getIndividualSegmentId());
@@ -189,15 +186,15 @@ public class MembershipDog extends BaseFaroInfoDog {
 			individualCount, knownIndividualCount,
 			membership.getIndividualSegmentId());
 
-		if (individualJSONObject == null) {
+		if (individual == null) {
 			_membershipChangeDog.addMembershipChangeForDeletedIndividual(
 				membership.getIndividualId(), individualCount,
 				knownIndividualCount, membership);
 		}
 		else {
 			_membershipChangeDog.addMembershipChange(
-				individualJSONObject, individualCount, knownIndividualCount,
-				membership, "REMOVED");
+				individual, individualCount, knownIndividualCount, membership,
+				"REMOVED");
 		}
 	}
 

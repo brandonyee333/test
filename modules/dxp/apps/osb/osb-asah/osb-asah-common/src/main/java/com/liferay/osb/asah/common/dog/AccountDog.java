@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
@@ -33,6 +34,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -64,6 +66,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AccountDog {
+
+	public Account addAccount(Account account) {
+		account = _accountRepository.save(account);
+
+		return populateAccount(account, null);
+	}
 
 	public Account addAccount(
 			String accountPK, JSONObject dataJSONObject, DataSource dataSource)
@@ -212,9 +220,7 @@ public class AccountDog {
 		List<Field> fields = _fieldDog.getOwnerIdFields(
 			"organization", account.getId());
 
-		Stream<Field> stream = fields.stream();
-
-		account.setFields(stream.collect(Collectors.toSet()));
+		account.setFields(new HashSet<>(fields));
 
 		Segment segment = _segmentDog.fetchSegment(
 			"Account: " + account.getId(), "INACTIVE");
@@ -225,47 +231,42 @@ public class AccountDog {
 			account.setActivitiesCount(segment.getActivitiesCount());
 			account.setIndividualCount(segment.getIndividualCount());
 
-			JSONArray activitiesCountsJSONArray =
-				_individualDog.getActivitiesCountsJSONArray(
+			List<Individual.ActivitiesCount> individualActivitiesCounts =
+				_individualDog.getActivitiesCounts(
 					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 					segment.getId());
 
-			if (activitiesCountsJSONArray.length() > 0) {
+			if (!individualActivitiesCounts.isEmpty()) {
 				Set<Account.AccountActivityCount> activitiesCounts =
 					new HashSet<>();
 
-				for (int i = 0; i < activitiesCountsJSONArray.length(); i++) {
-					JSONObject activitiesCountJSONObject =
-						activitiesCountsJSONArray.getJSONObject(i);
+				for (Individual.ActivitiesCount individualActivitiesCount :
+						individualActivitiesCounts) {
 
 					activitiesCounts.add(
 						new Account.AccountActivityCount(
-							activitiesCountJSONObject.optLong(
-								"activitiesCount", 0L),
-							activitiesCountJSONObject.getLong("channelId")));
+							individualActivitiesCount.getActivitiesCount(),
+							individualActivitiesCount.getChannelId()));
 				}
 
 				account.setActivitiesCounts(activitiesCounts);
 			}
 
-			JSONArray individualCountsJSONArray =
-				_individualDog.getIndividualCountsJSONArray(
+			Map<Long, Long> channelIndividualCounts =
+				_individualDog.getIndividualCounts(
 					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 					segment.getId());
 
-			if (individualCountsJSONArray.length() > 0) {
+			if (!channelIndividualCounts.isEmpty()) {
 				Set<Account.AccountIndividualCount> individualCounts =
 					new HashSet<>();
 
-				for (int i = 0; i < individualCountsJSONArray.length(); i++) {
-					JSONObject individualCountJSONObject =
-						individualCountsJSONArray.getJSONObject(i);
+				for (Map.Entry<Long, Long> entry :
+						channelIndividualCounts.entrySet()) {
 
 					individualCounts.add(
 						new Account.AccountIndividualCount(
-							individualCountJSONObject.getLong("channelId"),
-							individualCountJSONObject.optLong(
-								"individualCount", 0L)));
+							entry.getKey(), entry.getValue()));
 				}
 
 				account.setIndividualCounts(individualCounts);

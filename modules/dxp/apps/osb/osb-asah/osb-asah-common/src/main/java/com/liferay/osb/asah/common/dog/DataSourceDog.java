@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.entity.FieldMapping;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -47,7 +48,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -101,14 +101,8 @@ public class DataSourceDog {
 		return _dataSourceRepository.save(dataSource);
 	}
 
-	public void deleteDataSource(
-			DataSource dataSource,
-			Consumer<Integer> processedCountMonitorConsumer,
-			Consumer<Integer> queueMonitorConsumer)
-		throws Exception {
-
-		_clearDataSource(
-			dataSource, processedCountMonitorConsumer, queueMonitorConsumer);
+	public void deleteDataSource(DataSource dataSource) throws Exception {
+		_clearDataSource(dataSource);
 
 		Long dataSourceId = dataSource.getId();
 
@@ -131,11 +125,11 @@ public class DataSourceDog {
 
 	public void deleteDataSources() throws Exception {
 		for (DataSource dataSource : getDataSources()) {
-			deleteDataSource(dataSource, null, null);
+			deleteDataSource(dataSource);
 		}
 	}
 
-	public DataSource disconnectDataSource(Long dataSourceId) throws Exception {
+	public DataSource disconnectDataSource(Long dataSourceId) {
 		DataSource dataSource = getDataSource(dataSourceId);
 
 		if (Objects.equals(dataSource.getState(), "DISCONNECTED") &&
@@ -351,12 +345,7 @@ public class DataSourceDog {
 		}
 	}
 
-	private void _clearDataSource(
-			DataSource dataSource,
-			Consumer<Integer> processedCountMonitorConsumer,
-			Consumer<Integer> queueMonitorConsumer)
-		throws Exception {
-
+	private void _clearDataSource(DataSource dataSource) throws Exception {
 		Long dataSourceId = dataSource.getId();
 
 		_deleteData(dataSource);
@@ -370,45 +359,41 @@ public class DataSourceDog {
 
 		Date deletionDate = dataSource.getDeletionDate();
 
-		JSONArrayIterator.of(
-			"individuals", _elasticsearchInvoker,
-			individualJSONObject -> {
-				try {
-					JSONArray dataSourceIndividualPKsJSONArray =
-						individualJSONObject.getJSONArray(
-							"dataSourceIndividualPKs");
+		try {
+			int page = 0;
 
-					if (dataSourceIndividualPKsJSONArray.length() == 1) {
+			while (true) {
+				List<Individual> individuals = _individualDog.getIndividuals(
+					dataSourceId, page++, 50,
+					com.liferay.osb.asah.common.model.Sort.asc("id"));
+
+				if (individuals.isEmpty()) {
+					break;
+				}
+
+				for (Individual individual : individuals) {
+					Set<Individual.DataSourceIndividualPK>
+						dataSourceIndividualPKs =
+							individual.getDataSourceIndividualPKs();
+
+					if (dataSourceIndividualPKs.size() == 1) {
 						_individualDog.deleteIndividual(
-							deletionDate, individualJSONObject.getString("id"));
+							deletionDate, individual.getId());
 					}
 					else {
 						_individualDog.removeDataSourceIndividualPKs(
-							individualJSONObject, dataSourceId);
+							individual, dataSourceId);
 
 						_individualDog.updateIndividual(
 							null, _getEmptyDataJSONObject(dataSource),
-							dataSource, individualJSONObject);
+							dataSource, individual);
 					}
 				}
-				catch (Exception exception) {
-					return exception;
-				}
-
-				return null;
 			}
-		).setMonitoringConsumers(
-			processedCountMonitorConsumer, queueMonitorConsumer
-		).setQueryBuilder(
-			QueryBuilders.nestedQuery(
-				"dataSourceIndividualPKs",
-				QueryBuilders.termQuery(
-					"dataSourceIndividualPKs.dataSourceId",
-					String.valueOf(dataSourceId)),
-				ScoreMode.None)
-		).setStopOnExceptions(
-			false
-		).iterate();
+		}
+		catch (Exception exception) {
+			throw exception;
+		}
 	}
 
 	private void _deleteAccountReferences(Long dataSourceId) throws Exception {
