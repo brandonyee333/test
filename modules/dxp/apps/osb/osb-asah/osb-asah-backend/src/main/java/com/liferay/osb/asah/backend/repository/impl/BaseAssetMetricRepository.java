@@ -76,7 +76,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<T> getAssetMetrics(
-		Long channelId, Set<String> selectedMetrics, Pageable pageable,
+		Long channelId, Pageable pageable, Set<String> selectedMetrics,
 		TimeRange timeRange) {
 
 		List<Field<? extends Object>> fields = new ArrayList<>(
