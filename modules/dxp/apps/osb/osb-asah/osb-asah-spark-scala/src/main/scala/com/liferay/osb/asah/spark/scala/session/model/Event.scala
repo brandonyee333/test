@@ -38,4 +38,32 @@ case class Event(
 	segmentNames: Set[String] = Set[String](),
 	userId: String,
 	var iterationNumber: Int,
-	var sessionId: String)
+	var sessionId: String) {
+
+	def isInteraction(): Boolean = {
+		if (_nonInteractionEventIds.contains(eventId)) {
+			false
+		}
+		else {
+			true
+		}
+	}
+
+	def isPageViewed(): Boolean = {
+		if ((eventId == "pageViewed") && (applicationId == "Page")) {
+			true
+		}
+		else {
+			false
+		}
+	}
+
+	private val _nonInteractionEventIds = Set[String](
+		"blogViewed",
+		"documentPreviewed",
+		"formViewed",
+		"pageLoaded",
+		"pageUnloaded",
+		"pageViewed",
+		"webContentViewed")
+}

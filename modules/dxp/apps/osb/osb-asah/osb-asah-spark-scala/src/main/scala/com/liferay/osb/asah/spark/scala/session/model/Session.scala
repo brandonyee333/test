@@ -19,7 +19,7 @@ import java.sql.{Date, Timestamp}
 /**
  * @author Robson Pastor
  */
-case class Session(
+class Session(
 	browserName: String,
 	channelId: String,
 	city: String,
@@ -43,4 +43,39 @@ case class Session(
 	var lastEventDate: Timestamp,
 	var pageViewsCount: Int,
 	var referrers: Set[String] = Set[String](),
-	var urls: Set[String] = Set[String]())
+	var urls: Set[String] = Set[String]()) {
+
+	def addEvent(event: Event): Unit =  {
+		event.iterationNumber = iterationNumber
+		event.sessionId = sessionId
+
+		canonicalUrls += event.context.getOrElse("canonicalUrl", null)
+		events = event :: events
+		firstEventDate = firstEventDate.min(event.eventDate)
+
+		if (event.isInteraction()) {
+			interactionsCount += 1
+		}
+
+		lastEventDate = lastEventDate.max(event.eventDate)
+
+		if (event.isPageViewed()) {
+			pageViewsCount += 1
+		}
+
+		referrers += event.context.getOrElse("referrer",null)
+		urls += event.context.getOrElse("url",null)
+
+		bounced = _isBounced()
+	}
+
+	private def _isBounced(): Boolean = {
+		if ((interactionsCount < 1) && (pageViewsCount < 2)) {
+			true
+		}
+		else {
+			false
+		}
+	}
+
+}
