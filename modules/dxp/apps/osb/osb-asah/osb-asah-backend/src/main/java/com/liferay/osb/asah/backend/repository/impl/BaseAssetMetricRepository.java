@@ -378,6 +378,49 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		return _getIndividualsCount(metricType, whereClauseCondition);
 	}
 
+	public List<Metric> getSegmentMetrics(
+		String assetId, Long channelId, MetricType metricType,
+		TimeRange timeRange) {
+
+		Field<String[]> segmentNamesField = DSL.field(
+			"segmentNames", String[].class);
+		Field<String> segmentNameField = DSL.field("segmentName", String.class);
+
+		return dslContext.select(
+			segmentNameField, DSL.count()
+		).from(
+			dslContext.select(
+				segmentNameField
+			).from(
+				getTableName()
+			).crossJoin(
+				DSL.unnest(
+					segmentNamesField
+				).as(
+					"t", "segmentName"
+				)
+			).where(
+				_createWhereClause(assetId, channelId, timeRange)
+			)
+		).groupBy(
+			segmentNameField
+		).orderBy(
+			DSL.count(
+			).desc(),
+			segmentNameField.asc()
+		).fetch(
+		).map(
+			record -> {
+				Metric metric = new Metric(metricType);
+
+				metric.setValueKey(record.value1());
+				metric.setValue(Double.valueOf(record.value2()));
+
+				return metric;
+			}
+		);
+	}
+
 	protected abstract T createAssetMetric();
 
 	protected String getAssetIdFieldName() {

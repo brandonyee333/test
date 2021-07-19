@@ -67,4 +67,8 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 		String assetId, Long channelId, Boolean withSegmentedNames,
 		MetricType metricType, TimeRange timeRange);
 
+	public List<Metric> getSegmentMetrics(
+		String assetId, Long channelId, MetricType metricType,
+		TimeRange timeRange);
+
 }
