@@ -33,29 +33,37 @@ class SessionSparkApplicationJob(
 
 object SessionSparkApplicationJob {
 
-
-    def checkInteraction(eventId:String):Int={
-        if (nonInteractionEvents.contains(eventId)) 0 else 1
+    def isInteractionEvent(eventId: String): Boolean = {
+        if (nonInteractionEvents.contains(eventId)) {
+            false
+        }
+        else {
+            true
+        }
     }
 
-    def checkPageView(applicationId:String, eventId:String):Int={
-        if (eventId=="pageViewed" && applicationId=="Page")
-            1
-        else
-            0
+    def isPageViewedEvent(applicationId: String, eventId: String): Boolean = {
+        if ((eventId == "pageViewed") && (applicationId == "Page")) {
+            true
+        }
+        else {
+            false
+        }
     }
 
-    def createSessionFromEvent(event: Event): Session = {
+    def createSession(event: Event): Session = {
+        val eventContext: Map[String, String] = event.context
+
         val session = Session(
-            browserName = event.context.getOrElse("browserName",null),
             bounced = true,
+            browserName = eventContext.getOrElse("browserName", null),
             channelId = event.channelId,
-            city = event.context.getOrElse("city",null),
+            city = eventContext.getOrElse("city", null),
             clientIp = event.clientIp,
-            country = event.context.getOrElse("country",null),
+            country =eventContext.getOrElse("country", null),
             dataSourceId = event.dataSourceId,
             date = event.date,
-            deviceType = event.context.getOrElse("deviceType",null),
+            deviceType = eventContext.getOrElse("deviceType", null),
             events = List[Event](),
             finished = false,
             firstEventDate = event.eventDate,
@@ -63,31 +71,44 @@ object SessionSparkApplicationJob {
             iterationNumber = 0,
             lastEventDate = event.eventDate,
             pageViewsCount = 0,
-            platformName = event.context.getOrElse("platformName",null),
+            platformName = eventContext.getOrElse("platformName", null),
             projectId = event.projectId,
-            region = event.context.getOrElse("region",null),
+            region = eventContext.getOrElse("region", null),
             sessionId = UUID.randomUUID.toString,
-            userId = event.userId,
+            userId = event.userId
         )
+
         session.addEvent(event)
     }
 
 
-    def isSessionBounced(interactionsCount:Int,pageViewsCount:Int):Boolean= {
-        (interactionsCount < 1) && (pageViewsCount < 2)
+    def isSessionBounced(interactionsCount: Int, pageViewsCount: Int): Boolean = {
+        if ((interactionsCount < 1) && (pageViewsCount < 2)) {
+            true
+        }
+        else {
+            false
+        }
     }
-
 
     implicit class SessionImprovements(val session:Session) {
         def addEvent(event:Event):Session =  {
             event.iterationNumber = session.iterationNumber
             event.sessionId = session.sessionId
-            session.canonicalUrls += event.context.getOrElse("canonicalUrl",null)
+            session.canonicalUrls += event.context.getOrElse("canonicalUrl", null)
             session.events = event :: session.events
             session.firstEventDate = session.firstEventDate.min(event.eventDate)
-            session.interactionsCount += checkInteraction(event.eventId)
+
+            if (isInteractionEvent(event.eventId)) {
+                session.interactionsCount += 1
+            }
+
             session.lastEventDate = session.lastEventDate.max(event.eventDate)
-            session.pageViewsCount += checkPageView(event.applicationId,event.eventId)
+
+            if (isPageViewedEvent(event.applicationId, event.eventId)) {
+                session.pageViewsCount += 1
+            }
+
             session.referrers += event.context.getOrElse("referrer",null)
             session.urls += event.context.getOrElse("url",null)
 
@@ -100,13 +121,13 @@ object SessionSparkApplicationJob {
         }
     }
 
-    private val nonInteractionEvents = Set[String]("blogViewed",
-    "documentPreviewed",
-    "formViewed",
-    "pageLoaded",
-    "pageUnloaded",
-    "pageViewed",
-    "webContentViewed")
-
+    private val nonInteractionEvents = Set[String](
+        "blogViewed",
+        "documentPreviewed",
+        "formViewed",
+        "pageLoaded",
+        "pageUnloaded",
+        "pageViewed",
+        "webContentViewed")
 
 }
