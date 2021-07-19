@@ -16,6 +16,8 @@ package com.liferay.osb.asah.spark.scala.session.model
 
 import java.sql.{Date, Timestamp}
 
+import com.liferay.osb.asah.spark.scala.DateUtil
+
 /**
  * @author Robson Pastor
  */
@@ -51,13 +53,13 @@ class Session(
 
 		canonicalUrls += event.context.getOrElse("canonicalUrl", null)
 		events = event :: events
-		firstEventDate = firstEventDate.min(event.eventDate)
+		firstEventDate = DateUtil.min(event.eventDate, firstEventDate)
 
 		if (event.isInteraction()) {
 			interactionsCount += 1
 		}
 
-		lastEventDate = lastEventDate.max(event.eventDate)
+		lastEventDate = DateUtil.max(event.eventDate, lastEventDate)
 
 		if (event.isPageViewed()) {
 			pageViewsCount += 1
