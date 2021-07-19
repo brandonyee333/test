@@ -51,7 +51,7 @@ public class IndividualActivitiesUpgradeStepTest {
 	)
 	@Test
 	public void test() throws Exception {
-		_individualActivitiesUpgradeStep.upgrade("");
+		_individualActivitiesUpgradeStep.upgrade();
 
 		_elasticsearchInvoker.refresh();
 

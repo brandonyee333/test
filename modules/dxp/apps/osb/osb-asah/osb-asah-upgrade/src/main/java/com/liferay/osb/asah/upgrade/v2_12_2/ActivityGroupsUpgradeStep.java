@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.upgrade.v2_12_2;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -45,8 +46,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ActivityGroupsUpgradeStep implements UpgradeStep {
 
-	@Override
-	public void upgrade(String version) throws Exception {
+	public void upgrade() throws Exception {
 		LocalDate localDate = LocalDate.parse("2021-06-28");
 
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
@@ -85,6 +85,21 @@ public class ActivityGroupsUpgradeStep implements UpgradeStep {
 				DateUtil.toUTCString(localDate.atTime(LocalTime.MIDNIGHT))
 			)
 		).iterate();
+	}
+
+	@Override
+	public void upgrade(String version) throws Exception {
+		if (!ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Skipping ActivityGroupsUpgradeStep on single tenant " +
+						"environment");
+			}
+
+			return;
+		}
+
+		upgrade();
 	}
 
 	private String _getActivityGroupEndTime(

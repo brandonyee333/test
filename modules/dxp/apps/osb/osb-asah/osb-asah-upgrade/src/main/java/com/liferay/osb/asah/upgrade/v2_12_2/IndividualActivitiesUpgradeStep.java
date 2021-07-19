@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.upgrade.v2_12_2;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -44,8 +45,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class IndividualActivitiesUpgradeStep implements UpgradeStep {
 
-	@Override
-	public void upgrade(String version) throws Exception {
+	public void upgrade() throws Exception {
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
 			_elasticsearchInvoker.createElasticsearchBulkRequestBuilder();
 
@@ -63,6 +63,21 @@ public class IndividualActivitiesUpgradeStep implements UpgradeStep {
 					_getLastActivityDatesJSONArray(individualJSONObject)
 				))
 		).iterate();
+	}
+
+	@Override
+	public void upgrade(String version) throws Exception {
+		if (!ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Skipping IndividualActivitiesUpgradeStep on single " +
+						"tenant environment");
+			}
+
+			return;
+		}
+
+		upgrade();
 	}
 
 	private long _getActivitiesCount(String channelId, String individualId) {
