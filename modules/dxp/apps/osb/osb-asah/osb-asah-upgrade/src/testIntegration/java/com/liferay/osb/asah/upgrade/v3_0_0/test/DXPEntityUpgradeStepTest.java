@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.upgrade.v3_1_0.test;
+package com.liferay.osb.asah.upgrade.v3_0_0.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -21,7 +21,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
-import com.liferay.osb.asah.upgrade.v3_1_0.DXPEntityUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_0.DXPEntityUpgradeStep;
 
 import org.junit.Assert;
 import org.junit.Test;
