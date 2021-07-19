@@ -43,6 +43,7 @@ import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.Record2;
 import org.jooq.WindowOverStep;
 import org.jooq.impl.DSL;
@@ -160,6 +161,52 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).fetch(
 		).map(
 			record -> _getMetric(metricType, record)
+		);
+	}
+
+	@Override
+	public List<String> getCanonicalUrls(
+		String assetId, Long channelId, Pageable pageable,
+		TimeRange timeRange) {
+
+		List<Field<? extends Object>> fields = new ArrayList<>();
+
+		Field<String> canonicalUrlField = DSL.field(
+			"canonicalUrl", String.class);
+
+		fields.add(canonicalUrlField);
+
+		WindowOverStep<Integer> rowNumber = DSL.rowNumber();
+
+		Field<Integer> rowNumberField = rowNumber.over();
+
+		fields.add(rowNumberField.as("rowNumber"));
+
+		Long offset = pageable.getOffset();
+
+		return dslContext.select(
+			canonicalUrlField
+		).from(
+			dslContext.select(
+				fields
+			).from(
+				getTableName()
+			).where(
+				_createWhereClause(assetId, channelId, timeRange)
+			).groupBy(
+				canonicalUrlField
+			)
+		).where(
+			DSL.field(
+				"rowNumber"
+			).ge(
+				offset.intValue()
+			)
+		).limit(
+			pageable.getPageSize()
+		).fetch(
+		).map(
+			Record1::value1
 		);
 	}
 
