@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.repository.test;
 
+import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
@@ -29,6 +30,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -44,11 +46,12 @@ import org.junit.Before;
 import org.mockito.Mockito;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * @author Marcellus Tavares
  */
-public abstract class BaseAssetMetricRepositoryTestCase<T> {
+public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 
 	public void assertAssetMetrics(
 		Double[] expectedMetricValues, List<T> metrics,
@@ -85,7 +88,7 @@ public abstract class BaseAssetMetricRepositoryTestCase<T> {
 		String assetId, Long channelId, MetricType metricType,
 		int timeZoneDifference, String timeZoneId) {
 
-		AssetMetricRepository assetMetricRepository =
+		AssetMetricRepository<T> assetMetricRepository =
 			getAssetMetricRepository();
 
 		List<LocalDateTime> localDateTimes = _getLocalDateTimes(
@@ -166,7 +169,88 @@ public abstract class BaseAssetMetricRepositoryTestCase<T> {
 		TimeZoneDogUtil.setTimeZoneDog(null);
 	}
 
-	protected abstract AssetMetricRepository getAssetMetricRepository();
+	protected void assertGetCanonicalUrls(TimeRange timeRange) {
+		AssetMetricRepository<T> assetMetricRepository =
+			getAssetMetricRepository();
+
+		List<String> canonicalUrls = assetMetricRepository.getCanonicalUrls(
+			"e131fabc", 1L, PageRequest.of(0, 10), timeRange);
+
+		Stream<String> stream = canonicalUrls.stream();
+
+		Assert.assertThat(
+			new String[] {
+				"https://www.beryl.com/products/commercial/irrigation",
+				"https://www.beryl.com/delivery",
+				"https://www.beryl.com/products/commercial/irrigation/FF-2100"
+			},
+			Matchers.arrayContainingInAnyOrder(stream.toArray()));
+	}
+
+	protected void assertGetIndividualsCount(
+		MetricType metricType, TimeRange timeRange) {
+
+		AssetMetricRepository<T> assetMetricRepository =
+			getAssetMetricRepository();
+
+		Assert.assertEquals(
+			1,
+			assetMetricRepository.getIndividualsCount(
+				"e131fabc", 1L, false, metricType, timeRange),
+			0);
+
+		Assert.assertEquals(
+			2,
+			getAssetMetricRepository().getIndividualsCount(
+				"e131fabc", 1L, true, metricType, timeRange),
+			0);
+
+		Assert.assertEquals(
+			4,
+			getAssetMetricRepository().getIndividualsCount(
+				"e131fabc", 1L, null, metricType, timeRange),
+			0);
+	}
+
+	protected void assertGetSegmentedCount(
+		MetricType metricType, TimeRange timeRange) {
+
+		AssetMetricRepository<T> assetMetricRepository =
+			getAssetMetricRepository();
+
+		Assert.assertEquals(
+			1,
+			assetMetricRepository.getSegmentedCount(
+				"e131fabc", 1L, true, metricType, timeRange),
+			0);
+
+		Assert.assertEquals(
+			3,
+			assetMetricRepository.getSegmentedCount(
+				"e131fabc", 1L, false, metricType, timeRange),
+			0);
+
+		Assert.assertEquals(
+			4,
+			assetMetricRepository.getSegmentedCount(
+				"e131fabc", 1L, null, metricType, timeRange),
+			0);
+	}
+
+	protected void assertGetSegmentMetrics(
+		MetricType metricType, TimeRange timeRange) {
+
+		AssetMetricRepository<T> assetMetricRepository =
+			getAssetMetricRepository();
+
+		assertMetrics(
+			Arrays.asList(
+				new Tuple2("B", 2D), new Tuple2("A", 1D), new Tuple2("C", 1D)),
+			assetMetricRepository.getSegmentMetrics(
+				"e131fabc", 1L, metricType, timeRange));
+	}
+
+	protected abstract AssetMetricRepository<T> getAssetMetricRepository();
 
 	private List<LocalDateTime> _getLocalDateTimes(
 		List<HistogramMetric> histogramMetrics) {

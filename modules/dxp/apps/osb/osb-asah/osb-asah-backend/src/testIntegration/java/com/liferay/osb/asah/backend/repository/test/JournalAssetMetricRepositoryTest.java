@@ -68,6 +68,15 @@ public class JournalAssetMetricRepositoryTest
 
 	@SQLResource(
 		dataSource = "trinoDataSource",
+		resourcePath = "journal_asset_metric_canonical_urls_last_7_days.sql"
+	)
+	@Test
+	public void testGetCanonicalUrls7Days() {
+		super.assertGetCanonicalUrls(TimeRange.LAST_7_DAYS);
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
 		resourcePath = "journal_asset_metric_views_device_last_30_days.sql"
 	)
 	@Test
@@ -93,6 +102,35 @@ public class JournalAssetMetricRepositoryTest
 			_assetMetricRepository.getGeolocationMetrics(
 				"e131fabc", 1L, JournalMetricType.VIEWS,
 				TimeRange.LAST_30_DAYS));
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "journal_asset_metric_views_individuals_last_30_days.sql"
+	)
+	@Test
+	public void testGetIndividualsCountLast30Days() {
+		assertGetIndividualsCount(
+			JournalMetricType.VIEWS, TimeRange.LAST_30_DAYS);
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "journal_asset_metric_views_segments_last_30_days.sql"
+	)
+	@Test
+	public void testGetSegmentedCountLast30Days() {
+		assertGetSegmentedCount(
+			JournalMetricType.VIEWS, TimeRange.LAST_30_DAYS);
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "journal_asset_metric_views_segments_last_7_days.sql"
+	)
+	@Test
+	public void testGetSegmentMetrics7Days() {
+		assertGetSegmentMetrics(JournalMetricType.VIEWS, TimeRange.LAST_7_DAYS);
 	}
 
 	@SQLResource(
@@ -134,7 +172,7 @@ public class JournalAssetMetricRepositoryTest
 	@Test
 	public void testGetViewsHistogramMetricsLast7Days() {
 		assertHistogramMetrics(
-			SetUtil.of(Double.valueOf(3)),
+			SetUtil.of(3.0),
 			_assetMetricRepository.getHistogramMetrics(
 				"e131fabc", 1L, Interval.DAY, JournalMetricType.VIEWS,
 				TimeRange.LAST_7_DAYS));
@@ -164,7 +202,7 @@ public class JournalAssetMetricRepositoryTest
 	}
 
 	@Override
-	protected AssetMetricRepository getAssetMetricRepository() {
+	protected AssetMetricRepository<JournalMetric> getAssetMetricRepository() {
 		return _assetMetricRepository;
 	}
 

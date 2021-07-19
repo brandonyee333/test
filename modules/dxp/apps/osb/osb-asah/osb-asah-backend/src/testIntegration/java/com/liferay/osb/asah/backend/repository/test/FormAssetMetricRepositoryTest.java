@@ -67,6 +67,15 @@ public class FormAssetMetricRepositoryTest
 
 	@SQLResource(
 		dataSource = "trinoDataSource",
+		resourcePath = "form_asset_metric_canonical_urls_last_7_days.sql"
+	)
+	@Test
+	public void testGetCanonicalUrls7Days() {
+		super.assertGetCanonicalUrls(TimeRange.LAST_7_DAYS);
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
 		resourcePath = "form_asset_metric_views_device_last_30_days.sql"
 	)
 	@Test
@@ -90,6 +99,33 @@ public class FormAssetMetricRepositoryTest
 				new Tuple2("United States", 5D)),
 			_assetMetricRepository.getGeolocationMetrics(
 				"e131fabc", 1L, FormMetricType.VIEWS, TimeRange.LAST_30_DAYS));
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "form_asset_metric_views_individuals_last_30_days.sql"
+	)
+	@Test
+	public void testGetIndividualsCountLast30Days() {
+		assertGetIndividualsCount(FormMetricType.VIEWS, TimeRange.LAST_30_DAYS);
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "form_asset_metric_views_segments_last_30_days.sql"
+	)
+	@Test
+	public void testGetSegmentedCountLast30Days() {
+		assertGetSegmentedCount(FormMetricType.VIEWS, TimeRange.LAST_30_DAYS);
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "form_asset_metric_views_segments_last_7_days.sql"
+	)
+	@Test
+	public void testGetSegmentMetrics7Days() {
+		assertGetSegmentMetrics(FormMetricType.VIEWS, TimeRange.LAST_7_DAYS);
 	}
 
 	@SQLResource(

@@ -68,6 +68,15 @@ public class DocumentLibraryAssetMetricRepositoryTest
 
 	@SQLResource(
 		dataSource = "trinoDataSource",
+		resourcePath = "document_library_asset_metric_canonical_urls_last_7_days.sql"
+	)
+	@Test
+	public void testGetCanonicalUrls7Days() {
+		super.assertGetCanonicalUrls(TimeRange.LAST_7_DAYS);
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_previews_device_last_30_days.sql"
 	)
 	@Test
@@ -93,6 +102,16 @@ public class DocumentLibraryAssetMetricRepositoryTest
 			_assetMetricRepository.getGeolocationMetrics(
 				"e131fabc", 1L, DocumentLibraryMetricType.PREVIEWS,
 				TimeRange.LAST_30_DAYS));
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "document_library_asset_metric_views_individuals_last_30_days.sql"
+	)
+	@Test
+	public void testGetIndividualsCountLast30Days() {
+		assertGetIndividualsCount(
+			DocumentLibraryMetricType.PREVIEWS, TimeRange.LAST_30_DAYS);
 	}
 
 	@SQLResource(
@@ -183,6 +202,26 @@ public class DocumentLibraryAssetMetricRepositoryTest
 		Metric ratingsMetric = documentLibraryMetric.getRatingsMetric();
 
 		Assert.assertEquals(2.33, ratingsMetric.getValue(), 0.01);
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "document_library_asset_metric_views_segments_last_30_days.sql"
+	)
+	@Test
+	public void testGetSegmentedCountLast30Days() {
+		assertGetSegmentedCount(
+			DocumentLibraryMetricType.PREVIEWS, TimeRange.LAST_30_DAYS);
+	}
+
+	@SQLResource(
+		dataSource = "trinoDataSource",
+		resourcePath = "document_library_asset_metric_views_segments_last_7_days.sql"
+	)
+	@Test
+	public void testGetSegmentMetrics7Days() {
+		assertGetSegmentMetrics(
+			DocumentLibraryMetricType.PREVIEWS, TimeRange.LAST_7_DAYS);
 	}
 
 	@Override
