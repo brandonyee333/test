@@ -348,6 +348,36 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		return _getIndividualsCount(metricType, whereClauseCondition);
 	}
 
+	public Long getSegmentedCount(
+		String assetId, Long channelId, Boolean withSegmentedNames,
+		MetricType metricType, TimeRange timeRange) {
+
+		Condition whereClauseCondition = _createWhereClause(
+			assetId, channelId, timeRange);
+
+		if (withSegmentedNames != null) {
+			Field<String[]> segmentNamesField = DSL.field(
+				"segmentNames", String[].class);
+
+			Field<Integer> cardinalityField = DSL.cardinality(
+				segmentNamesField);
+
+			if (withSegmentedNames) {
+				whereClauseCondition = whereClauseCondition.and(
+					cardinalityField.gt(0));
+			}
+			else {
+				Condition condition = cardinalityField.eq(0);
+
+				condition = condition.or(segmentNamesField.isNull());
+
+				whereClauseCondition = whereClauseCondition.and(condition);
+			}
+		}
+
+		return _getIndividualsCount(metricType, whereClauseCondition);
+	}
+
 	protected abstract T createAssetMetric();
 
 	protected String getAssetIdFieldName() {
