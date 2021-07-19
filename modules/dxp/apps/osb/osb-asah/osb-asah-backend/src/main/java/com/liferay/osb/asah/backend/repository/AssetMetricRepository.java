@@ -59,4 +59,8 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 		String assetId, Long channelId, Interval interval,
 		MetricType metricType, TimeRange timeRange);
 
+	public Long getIndividualsCount(
+		String assetId, Long channelId, Boolean knownIndividual,
+		MetricType metricType, TimeRange timeRange);
+
 }

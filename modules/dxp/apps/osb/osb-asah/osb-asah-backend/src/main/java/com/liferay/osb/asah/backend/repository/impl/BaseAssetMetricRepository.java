@@ -329,6 +329,25 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		);
 	}
 
+	public Long getIndividualsCount(
+		String assetId, Long channelId, Boolean knownIndividual,
+		MetricType metricType, TimeRange timeRange) {
+
+		Condition whereClauseCondition = _createWhereClause(
+			assetId, channelId, timeRange);
+
+		if (knownIndividual != null) {
+			whereClauseCondition = whereClauseCondition.and(
+				DSL.field(
+					"knownIndividual"
+				).eq(
+					knownIndividual
+				));
+		}
+
+		return _getIndividualsCount(metricType, whereClauseCondition);
+	}
+
 	protected abstract T createAssetMetric();
 
 	protected String getAssetIdFieldName() {
@@ -378,6 +397,27 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			).eq(
 				ProjectIdThreadLocal.getProjectId()
 			));
+	}
+
+	private long _getIndividualsCount(
+		MetricType metricType, Condition whereClauseCondition) {
+
+		return dslContext.select(
+			DSL.countDistinct(DSL.field("individualId"))
+		).from(
+			getTableName()
+		).where(
+			whereClauseCondition.and(
+				DSL.field(
+					metricType.getFieldName()
+				).gt(
+					0
+				))
+		).fetch(
+		).get(
+			0
+		).value1(
+		).longValue();
 	}
 
 	private Metric _getMetric(
