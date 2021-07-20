@@ -150,21 +150,15 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 	public <S extends T> S save(S entity) {
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
-		JSONObject jsonObject = null;
+		JSONObject jsonObject = toJSONObject(entity);
 
-		if ((entity.getId() != null) &&
-			elasticsearchInvoker.exists(
-				getCollectionName(), String.valueOf(entity.getId()))) {
+		String id = jsonObject.optString(
+			"id", _timeOrderedUuidGenerator.generateId());
 
-			jsonObject = elasticsearchInvoker.update(
-				getCollectionName(), toJSONObject(entity));
-		}
-		else {
-			jsonObject = elasticsearchInvoker.add(
-				getCollectionName(), toJSONObject(entity));
-		}
+		jsonObject.put("id", id);
 
-		return (S)toEntity(jsonObject);
+		return (S)toEntity(
+			elasticsearchInvoker.upsert(getCollectionName(), jsonObject));
 	}
 
 	@Override
@@ -177,30 +171,19 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 
 		entities.forEach(
 			entity -> {
-				JSONObject jsonObject = null;
+				JSONObject jsonObject = toJSONObject(entity);
 
-				if ((entity.getId() != null) &&
-					elasticsearchInvoker.exists(
-						getCollectionName(), String.valueOf(entity.getId()))) {
+				String id = jsonObject.optString(
+					"id", _timeOrderedUuidGenerator.generateId());
 
-					jsonObject = elasticsearchInvoker.update(
-						getCollectionName(), toJSONObject(entity));
-				}
-				else {
-					jsonObject = toJSONObject(entity);
+				jsonObject.put("id", id);
 
-					String id = jsonObject.optString(
-						"id", _timeOrderedUuidGenerator.generateId());
-
-					jsonObject.put("id", id);
-
-					jsonArray.put(jsonObject);
-				}
+				jsonArray.put(jsonObject);
 
 				list.add((S)toEntity(jsonObject));
 			});
 
-		elasticsearchInvoker.add(getCollectionName(), jsonArray);
+		elasticsearchInvoker.upsert(getCollectionName(), jsonArray);
 
 		return list;
 	}

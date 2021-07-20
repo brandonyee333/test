@@ -721,6 +721,71 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	@Override
+	public boolean upsert(String collectionName, JSONArray jsonArray) {
+		if ((jsonArray == null) || (jsonArray.length() == 0)) {
+			return false;
+		}
+
+		BulkRequestBuilder bulkRequestBuilder = _client.prepareBulk();
+
+		bulkRequestBuilder.setRefreshPolicy(
+			WriteRequest.RefreshPolicy.IMMEDIATE);
+
+		String indexAlias = _elasticsearchAliases.check(collectionName);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			jsonObject = new JSONObject(jsonObject.toString());
+
+			UpdateRequestBuilder updateRequestBuilder = _client.prepareUpdate(
+				indexAlias, collectionName,
+				String.valueOf(jsonObject.get("id")));
+
+			updateRequestBuilder.setDoc(
+				jsonObject.toString(), XContentType.JSON);
+			updateRequestBuilder.setDocAsUpsert(true);
+			updateRequestBuilder.setRetryOnConflict(5);
+
+			bulkRequestBuilder.add(updateRequestBuilder);
+		}
+
+		ClientUtil.waitForConnection(_client);
+
+		BulkResponse bulkResponse = bulkRequestBuilder.get();
+
+		if (bulkResponse.hasFailures()) {
+			_log.error(bulkResponse.buildFailureMessage());
+
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public JSONObject upsert(String collectionName, JSONObject jsonObject) {
+		UpdateRequestBuilder updateRequestBuilder = _client.prepareUpdate(
+			_elasticsearchAliases.check(collectionName), collectionName,
+			String.valueOf(jsonObject.get("id")));
+
+		updateRequestBuilder.setDoc(jsonObject.toString(), XContentType.JSON);
+		updateRequestBuilder.setFetchSource(true);
+		updateRequestBuilder.setDocAsUpsert(true);
+		updateRequestBuilder.setRefreshPolicy(
+			WriteRequest.RefreshPolicy.IMMEDIATE);
+		updateRequestBuilder.setRetryOnConflict(5);
+
+		ClientUtil.waitForConnection(_client);
+
+		UpdateResponse updateResponse = updateRequestBuilder.get();
+
+		GetResult getResult = updateResponse.getGetResult();
+
+		return new JSONObject(getResult.getSource());
+	}
+
+	@Override
 	public JSONObject upsert(
 		String collectionName, String id, JSONObject jsonObject,
 		Script script) {

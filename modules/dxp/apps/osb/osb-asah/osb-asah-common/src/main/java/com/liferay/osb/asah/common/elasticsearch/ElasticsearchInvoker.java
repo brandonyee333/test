@@ -139,6 +139,10 @@ public interface ElasticsearchInvoker {
 		QueryBuilder queryBuilder, boolean refresh, Script script,
 		String... collectionNames);
 
+	public boolean upsert(String collectionName, JSONArray jsonArray);
+
+	public JSONObject upsert(String collectionName, JSONObject jsonObject);
+
 	public JSONObject upsert(
 		String collectionName, String id, JSONObject jsonObject, Script script);
 
