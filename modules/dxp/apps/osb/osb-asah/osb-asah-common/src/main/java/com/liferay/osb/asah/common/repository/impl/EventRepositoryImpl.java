@@ -169,19 +169,19 @@ public class EventRepositoryImpl extends BaseRepository {
 		List<Condition> conditions = new ArrayList<>();
 
 		if (channelId != null) {
-			Field<Object> field = DSL.field("channelId");
+			Field<Object> field = DSL.field("Event.channelId");
 
 			conditions.add(field.eq(channelId));
 		}
 
 		if (eventDefinitionId != null) {
-			Field<Object> field = DSL.field("eventDefinitionId");
+			Field<Object> field = DSL.field("Event.eventDefinitionId");
 
 			conditions.add(field.eq(eventDefinitionId));
 		}
 
 		if ((rangeEndDate != null) && (rangeStartDate != null)) {
-			Field<Object> field = DSL.field("eventDate");
+			Field<Object> field = DSL.field("Event.eventDate");
 
 			conditions.add(field.between(rangeStartDate, rangeEndDate));
 		}
