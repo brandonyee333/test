@@ -112,7 +112,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			return;
 		}
 
-		Boolean includeAnonymousUsers = null;
+		Boolean includeAnonymousUsers = Boolean.TRUE;
 
 		if (CollectionUtils.isEmpty(individual.getFields()) ||
 			Objects.isNull(
