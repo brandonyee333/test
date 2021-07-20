@@ -126,13 +126,13 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 
 		Assert.assertEquals(
 			2,
-			getAssetMetricRepository().getIndividualsCount(
+			assetMetricRepository.getIndividualsCount(
 				"e131fabc", 1L, true, metricType, timeRange),
 			0);
 
 		Assert.assertEquals(
 			4,
-			getAssetMetricRepository().getIndividualsCount(
+			assetMetricRepository.getIndividualsCount(
 				"e131fabc", 1L, null, metricType, timeRange),
 			0);
 	}
