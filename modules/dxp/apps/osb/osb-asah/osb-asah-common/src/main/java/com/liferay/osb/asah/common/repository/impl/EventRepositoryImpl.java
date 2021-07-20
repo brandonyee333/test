@@ -62,17 +62,10 @@ public class EventRepositoryImpl extends BaseRepository {
 		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
 			"Event");
 
-		List<Condition> conditions = _getConditions(
-			channelId, eventDefinitionId, rangeEndDate, rangeStartDate);
-
-		if (eventAnalysisFilters != null) {
-			conditions.addAll(
-				_getEventAnalysisFilterConditions(
-					eventAnalysisFilters, rangeEndDate, rangeStartDate));
-		}
-
 		return selectJoinStep.where(
-			conditions
+			_getConditions(
+				channelId, eventAnalysisFilters, eventDefinitionId,
+				rangeEndDate, rangeStartDate)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -92,17 +85,10 @@ public class EventRepositoryImpl extends BaseRepository {
 		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
 			"Event");
 
-		List<Condition> conditions = _getConditions(
-			channelId, eventDefinitionId, rangeEndDate, rangeStartDate);
-
-		if (eventAnalysisFilters != null) {
-			conditions.addAll(
-				_getEventAnalysisFilterConditions(
-					eventAnalysisFilters, rangeEndDate, rangeStartDate));
-		}
-
 		return selectJoinStep.where(
-			conditions
+			_getConditions(
+				channelId, eventAnalysisFilters, eventDefinitionId,
+				rangeEndDate, rangeStartDate)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -144,6 +130,21 @@ public class EventRepositoryImpl extends BaseRepository {
 		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
 			"Event");
 
+		return selectJoinStep.where(
+			_getConditions(
+				channelId, eventAnalysisFilters, eventDefinitionId,
+				rangeEndDate, rangeStartDate)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
+	private List<Condition> _getConditions(
+		Long channelId, List<EventAnalysisFilter> eventAnalysisFilters,
+		Long eventDefinitionId, Date rangeEndDate, Date rangeStartDate) {
+
 		List<Condition> conditions = _getConditions(
 			channelId, eventDefinitionId, rangeEndDate, rangeStartDate);
 
@@ -153,13 +154,7 @@ public class EventRepositoryImpl extends BaseRepository {
 					eventAnalysisFilters, rangeEndDate, rangeStartDate));
 		}
 
-		return selectJoinStep.where(
-			conditions
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
+		return conditions;
 	}
 
 	private List<Condition> _getConditions(
