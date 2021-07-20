@@ -82,8 +82,7 @@ public class DXPEntitiesRestController {
 					).put(
 						"modifiedDate", objectJSONObject.getLong("modifiedDate")
 					).put(
-						"userId",
-						String.valueOf(objectJSONObject.getLong("classPK"))
+						"userId", objectJSONObject.getInt("classPK")
 					);
 
 					_processGenderField(objectJSONObject);
