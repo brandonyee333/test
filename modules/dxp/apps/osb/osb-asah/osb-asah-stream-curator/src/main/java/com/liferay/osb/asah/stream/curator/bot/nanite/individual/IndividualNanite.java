@@ -229,10 +229,14 @@ public class IndividualNanite implements Nanite {
 				anonymousIndividualActivitiesCounts,
 				knownIndividualActivitiesCounts));
 
+		Set<Long> channelIds = knownIndividual.getChannelIds();
+
 		Set<IndividualChannel> individualChannels = new HashSet<>();
 
 		for (Individual.ActivitiesCount activitiesCount :
 				knownIndividual.getActivitiesCounts()) {
+
+			channelIds.add(activitiesCount.getChannelId());
 
 			IndividualChannel individualChannel = new IndividualChannel();
 
@@ -244,6 +248,7 @@ public class IndividualNanite implements Nanite {
 			individualChannels.add(individualChannel);
 		}
 
+		knownIndividual.setChannelIds(channelIds);
 		knownIndividual.setIndividualChannels(individualChannels);
 
 		Date date = new Date();
