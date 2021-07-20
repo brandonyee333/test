@@ -17,17 +17,21 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AttributeType;
+import com.liferay.osb.asah.common.model.BreakdownItem;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.filter.FilterOperator;
 import com.liferay.osb.asah.common.model.filter.FilterOperators;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -39,6 +43,7 @@ import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
 /**
@@ -139,6 +144,119 @@ public class EventRepositoryImpl extends BaseRepository {
 		).orElse(
 			0L
 		);
+	}
+
+	public Map<Object, Integer> getEventAttributeValues(
+		@Nullable BreakdownItem breakdownItem, @Nullable Long channelId,
+		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
+		long eventAttributeDefinitionId, @Nullable Long eventDefinitionId,
+		Pageable pageable, @Nullable Date rangeEndDate,
+		@Nullable Date rangeStartDate) {
+
+		Map<Object, Integer> eventAttributeValues = new LinkedHashMap<>();
+
+		Field valueField = DSL.field("EventAttribute.value");
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		SelectJoinStep<Record> selectJoinStep = _buildSelectJoinStep(
+			breakdownItem, eventAttributeDefinitionId,
+			selectSelectStep.select(
+				DSL.count(
+					valueField
+				).as(
+					"count"
+				),
+				valueField
+			).from(
+				"Event"
+			));
+
+		selectJoinStep.where(
+			_getConditions(
+				channelId, eventAnalysisFilters, eventDefinitionId,
+				rangeEndDate, rangeStartDate)
+		).groupBy(
+			valueField
+		).orderBy(
+			DSL.count(
+				valueField
+			).desc()
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).forEach(
+			record -> eventAttributeValues.put(
+				record.get(valueField), (Integer)record.get("count"))
+		);
+
+		return eventAttributeValues;
+	}
+
+	private SelectJoinStep _buildSelectJoinStep(
+		BreakdownItem breakdownItem, Long eventAttributeDefinitionId,
+		SelectJoinStep selectJoinStep) {
+
+		selectJoinStep = selectJoinStep.join(
+			"EventAttribute"
+		).on(
+			DSL.field(
+				"Event.id"
+			).eq(
+				DSL.field("EventAttribute.eventId")
+			)
+		).and(
+			DSL.field(
+				"EventAttribute.eventAttributeDefinitionId"
+			).eq(
+				eventAttributeDefinitionId
+			)
+		);
+
+		if (breakdownItem == null) {
+			return selectJoinStep;
+		}
+
+		List<Pair<String, Object>> eventAttributeDefinitionIdValuePairs =
+			breakdownItem.getEventAttributeDefinitionIdValuePairs();
+
+		for (int i = 0; i < eventAttributeDefinitionIdValuePairs.size(); i++) {
+			Pair<String, Object> eventAttributeDefinitionIdValuePair =
+				eventAttributeDefinitionIdValuePairs.get(i);
+
+			String alias = "eventattribute" + i;
+
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"EventAttribute"
+				).as(
+					alias
+				)
+			).on(
+				DSL.field(
+					"Event.id"
+				).eq(
+					DSL.field(alias + ".eventId")
+				)
+			).and(
+				DSL.and(
+					DSL.field(
+						alias + ".eventAttributeDefinitionId"
+					).eq(
+						Long.valueOf(
+							eventAttributeDefinitionIdValuePair.getKey())
+					),
+					DSL.field(
+						alias + ".value"
+					).eq(
+						eventAttributeDefinitionIdValuePair.getValue()
+					))
+			);
+		}
+
+		return selectJoinStep;
 	}
 
 	private List<Condition> _getConditions(
