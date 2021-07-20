@@ -559,7 +559,7 @@ public class Individual implements Persistable<Long> {
 		}
 
 		@Transient
-		private Set<String> _accountPKs;
+		private Set<String> _accountPKs = new HashSet<>();
 
 		@Transient
 		private Long _dataSourceId;
@@ -635,7 +635,7 @@ public class Individual implements Persistable<Long> {
 		private Long _dataSourceId;
 
 		@Transient
-		private Set<String> _individualPKs;
+		private Set<String> _individualPKs = new HashSet<>();
 
 	}
 
