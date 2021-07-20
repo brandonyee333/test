@@ -53,100 +53,6 @@ import org.springframework.data.domain.PageRequest;
  */
 public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 
-	public void assertAssetMetrics(
-		Double[] expectedMetricValues, List<T> metrics,
-		Function<T, Metric> mapperFunction) {
-
-		Assert.assertEquals(
-			metrics.toString(), expectedMetricValues.length, metrics.size());
-
-		Stream<T> stream = metrics.stream();
-
-		Assert.assertThat(
-			new Double[] {7D, 6D},
-			Matchers.arrayContainingInAnyOrder(
-				stream.map(
-					mapperFunction
-				).map(
-					Metric::getValue
-				).toArray()));
-	}
-
-	public void assertHistogramMetrics(
-		Set<Double> expectedMetricValues,
-		List<HistogramMetric> histogramMetrics) {
-
-		Assert.assertEquals(
-			histogramMetrics.toString(), expectedMetricValues.size(),
-			histogramMetrics.size());
-		Assert.assertEquals(
-			expectedMetricValues,
-			SetUtil.map(histogramMetrics, HistogramMetric::getValue));
-	}
-
-	public void assertHistogramMetricsDifferentTimezone(
-		String assetId, Long channelId, MetricType metricType,
-		int timeZoneDifference, String timeZoneId) {
-
-		AssetMetricRepository<T> assetMetricRepository =
-			getAssetMetricRepository();
-
-		List<LocalDateTime> localDateTimes = _getLocalDateTimes(
-			assetMetricRepository.getHistogramMetrics(
-				assetId, channelId, Interval.HOUR, metricType,
-				TimeRange.LAST_24_HOURS));
-
-		Mockito.when(
-			_timeZoneDog.getTimeZoneId()
-		).thenReturn(
-			timeZoneId
-		);
-
-		Mockito.when(
-			_timeZoneDog.getZoneId()
-		).thenReturn(
-			ZoneId.of(timeZoneId)
-		);
-
-		List<LocalDateTime> shiftedLocalDateTimes = _getLocalDateTimes(
-			assetMetricRepository.getHistogramMetrics(
-				assetId, channelId, Interval.HOUR, metricType,
-				TimeRange.LAST_24_HOURS));
-
-		Assert.assertEquals(
-			shiftedLocalDateTimes.toString(), localDateTimes.size(),
-			shiftedLocalDateTimes.size());
-
-		for (int i = 0; i < localDateTimes.size(); i++) {
-
-			// Time zone ID to UTC
-
-			Duration duration = Duration.between(
-				localDateTimes.get(i), shiftedLocalDateTimes.get(i));
-
-			Assert.assertEquals(timeZoneDifference, duration.toHours());
-		}
-	}
-
-	public void assertMetrics(
-		List<Tuple2<String, Double>> expectedMetrics, List<Metric> metrics) {
-
-		Assert.assertEquals(
-			metrics.toString(), expectedMetrics.size(), metrics.size());
-
-		for (int i = 0; i < expectedMetrics.size(); i++) {
-			Tuple2<String, Double> expectedMetricTuple2 = expectedMetrics.get(
-				i);
-
-			Metric metric = metrics.get(i);
-
-			Assert.assertEquals(
-				expectedMetricTuple2.getT1(), metric.getValueKey());
-			Assert.assertEquals(
-				expectedMetricTuple2.getT2(), metric.getValue(), 0);
-		}
-	}
-
 	@Before
 	public void setUp() {
 		Mockito.when(
@@ -167,6 +73,25 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 	@After
 	public void tearDown() {
 		TimeZoneDogUtil.setTimeZoneDog(null);
+	}
+
+	protected void assertAssetMetrics(
+		Double[] expectedMetricValues, List<T> metrics,
+		Function<T, Metric> mapperFunction) {
+
+		Assert.assertEquals(
+			metrics.toString(), expectedMetricValues.length, metrics.size());
+
+		Stream<T> stream = metrics.stream();
+
+		Assert.assertThat(
+			new Double[] {7D, 6D},
+			Matchers.arrayContainingInAnyOrder(
+				stream.map(
+					mapperFunction
+				).map(
+					Metric::getValue
+				).toArray()));
 	}
 
 	protected void assertGetCanonicalUrls(TimeRange timeRange) {
@@ -248,6 +173,81 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 				new Tuple2("B", 2D), new Tuple2("A", 1D), new Tuple2("C", 1D)),
 			assetMetricRepository.getSegmentMetrics(
 				"e131fabc", 1L, metricType, timeRange));
+	}
+
+	protected void assertHistogramMetrics(
+		Set<Double> expectedMetricValues,
+		List<HistogramMetric> histogramMetrics) {
+
+		Assert.assertEquals(
+			histogramMetrics.toString(), expectedMetricValues.size(),
+			histogramMetrics.size());
+		Assert.assertEquals(
+			expectedMetricValues,
+			SetUtil.map(histogramMetrics, HistogramMetric::getValue));
+	}
+
+	protected void assertHistogramMetricsDifferentTimezone(
+		String assetId, Long channelId, MetricType metricType,
+		int timeZoneDifference, String timeZoneId) {
+
+		AssetMetricRepository<T> assetMetricRepository =
+			getAssetMetricRepository();
+
+		List<LocalDateTime> localDateTimes = _getLocalDateTimes(
+			assetMetricRepository.getHistogramMetrics(
+				assetId, channelId, Interval.HOUR, metricType,
+				TimeRange.LAST_24_HOURS));
+
+		Mockito.when(
+			_timeZoneDog.getTimeZoneId()
+		).thenReturn(
+			timeZoneId
+		);
+
+		Mockito.when(
+			_timeZoneDog.getZoneId()
+		).thenReturn(
+			ZoneId.of(timeZoneId)
+		);
+
+		List<LocalDateTime> shiftedLocalDateTimes = _getLocalDateTimes(
+			assetMetricRepository.getHistogramMetrics(
+				assetId, channelId, Interval.HOUR, metricType,
+				TimeRange.LAST_24_HOURS));
+
+		Assert.assertEquals(
+			shiftedLocalDateTimes.toString(), localDateTimes.size(),
+			shiftedLocalDateTimes.size());
+
+		for (int i = 0; i < localDateTimes.size(); i++) {
+
+			// Time zone ID to UTC
+
+			Duration duration = Duration.between(
+				localDateTimes.get(i), shiftedLocalDateTimes.get(i));
+
+			Assert.assertEquals(timeZoneDifference, duration.toHours());
+		}
+	}
+
+	protected void assertMetrics(
+		List<Tuple2<String, Double>> expectedMetrics, List<Metric> metrics) {
+
+		Assert.assertEquals(
+			metrics.toString(), expectedMetrics.size(), metrics.size());
+
+		for (int i = 0; i < expectedMetrics.size(); i++) {
+			Tuple2<String, Double> expectedMetricTuple2 = expectedMetrics.get(
+				i);
+
+			Metric metric = metrics.get(i);
+
+			Assert.assertEquals(
+				expectedMetricTuple2.getT1(), metric.getValueKey());
+			Assert.assertEquals(
+				expectedMetricTuple2.getT2(), metric.getValue(), 0);
+		}
 	}
 
 	protected abstract AssetMetricRepository<T> getAssetMetricRepository();
