@@ -54,6 +54,7 @@ public class FilterOperators {
 					put("le", LessThanEqualsFilterOperator::new);
 					put("lt", LessThanFilterOperator::new);
 					put("ne", NotEqualsFilterOperator::new);
+					put("notContains", NotContainsFilerOperator::new);
 					put("similarTo", SimilarToFilterOperator::new);
 					put("startsWith", StartsWithFilterOperator::new);
 				}

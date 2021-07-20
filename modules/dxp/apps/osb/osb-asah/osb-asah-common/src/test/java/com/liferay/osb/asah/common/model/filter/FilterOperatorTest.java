@@ -394,6 +394,21 @@ public class FilterOperatorTest {
 	}
 
 	@Test
+	public void testNotContainsFilterOperator() {
+		FilterOperator filterOperator = FilterOperators.of(
+			EventAttributeDefinition.DataType.STRING, "notContains",
+			Collections.singletonList("testValue"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).notContainsIgnoreCase(
+				"testValue"
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
 	public void testNotEqualsFilterOperator() {
 		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.STRING, "ne",
