@@ -521,7 +521,18 @@ public class ElasticsearchSegmentRepositoryImpl
 			boolQueryBuilder.should(QueryBuilders.termsQuery("id", segmentIds));
 		}
 
-		return null;
+		BoolQueryBuilder finalBoolQueryBuilder = boolQueryBuilder;
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(finalBoolQueryBuilder);
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
 	}
 
 	@Override
