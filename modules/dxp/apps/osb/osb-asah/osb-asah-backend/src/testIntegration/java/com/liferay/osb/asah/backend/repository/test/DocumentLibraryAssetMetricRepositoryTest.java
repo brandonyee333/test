@@ -210,7 +210,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	)
 	@Test
 	public void testGetSegmentedCountLast30Days() {
-		assertGetSegmentedCount(
+		assertGetSegmentedIndividualsCount(
 			DocumentLibraryMetricType.PREVIEWS, TimeRange.LAST_30_DAYS);
 	}
 

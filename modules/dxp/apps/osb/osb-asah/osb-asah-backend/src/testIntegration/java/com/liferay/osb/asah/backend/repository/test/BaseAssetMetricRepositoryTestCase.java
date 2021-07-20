@@ -137,7 +137,7 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 			0);
 	}
 
-	protected void assertGetSegmentedCount(
+	protected void assertGetSegmentedIndividualsCount(
 		MetricType metricType, TimeRange timeRange) {
 
 		AssetMetricRepository<T> assetMetricRepository =
@@ -145,20 +145,14 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 
 		Assert.assertEquals(
 			1,
-			assetMetricRepository.getSegmentedCount(
-				"e131fabc", 1L, true, metricType, timeRange),
+			assetMetricRepository.getSegmentedIndividualsCount(
+				"e131fabc", 1L, metricType, timeRange),
 			0);
 
 		Assert.assertEquals(
 			3,
-			assetMetricRepository.getSegmentedCount(
-				"e131fabc", 1L, false, metricType, timeRange),
-			0);
-
-		Assert.assertEquals(
-			4,
-			assetMetricRepository.getSegmentedCount(
-				"e131fabc", 1L, null, metricType, timeRange),
+			assetMetricRepository.getNonsegmentedIndividualsCount(
+				"e131fabc", 1L, metricType, timeRange),
 			0);
 	}
 

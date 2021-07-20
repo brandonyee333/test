@@ -116,7 +116,8 @@ public class BlogAssetMetricRepositoryTest
 	)
 	@Test
 	public void testGetSegmentedCountLast30Days() {
-		assertGetSegmentedCount(BlogMetricType.VIEWS, TimeRange.LAST_30_DAYS);
+		assertGetSegmentedIndividualsCount(
+			BlogMetricType.VIEWS, TimeRange.LAST_30_DAYS);
 	}
 
 	@SQLResource(

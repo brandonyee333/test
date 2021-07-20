@@ -116,7 +116,8 @@ public class FormAssetMetricRepositoryTest
 	)
 	@Test
 	public void testGetSegmentedCountLast30Days() {
-		assertGetSegmentedCount(FormMetricType.VIEWS, TimeRange.LAST_30_DAYS);
+		assertGetSegmentedIndividualsCount(
+			FormMetricType.VIEWS, TimeRange.LAST_30_DAYS);
 	}
 
 	@SQLResource(

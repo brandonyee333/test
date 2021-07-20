@@ -348,32 +348,44 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		return _getIndividualsCount(metricType, whereClauseCondition);
 	}
 
-	public Long getSegmentedCount(
-		String assetId, Long channelId, Boolean withSegmentedNames,
-		MetricType metricType, TimeRange timeRange) {
+	public Long getNonsegmentedIndividualsCount(
+		String assetId, Long channelId, MetricType metricType,
+		TimeRange timeRange) {
 
 		Condition whereClauseCondition = _createWhereClause(
 			assetId, channelId, timeRange);
 
-		if (withSegmentedNames != null) {
-			Field<String[]> segmentNamesField = DSL.field(
-				"segmentNames", String[].class);
+		Field<String[]> segmentNamesField = DSL.field(
+			"segmentNames", String[].class);
 
-			Field<Integer> cardinalityField = DSL.cardinality(
-				segmentNamesField);
+		whereClauseCondition = whereClauseCondition.and(
+			DSL.or(
+				DSL.cardinality(
+					segmentNamesField
+				).eq(
+					0
+				),
+				segmentNamesField.isNull()));
 
-			if (withSegmentedNames) {
-				whereClauseCondition = whereClauseCondition.and(
-					cardinalityField.gt(0));
-			}
-			else {
-				Condition condition = cardinalityField.eq(0);
+		return _getIndividualsCount(metricType, whereClauseCondition);
+	}
 
-				condition = condition.or(segmentNamesField.isNull());
+	public Long getSegmentedIndividualsCount(
+		String assetId, Long channelId, MetricType metricType,
+		TimeRange timeRange) {
 
-				whereClauseCondition = whereClauseCondition.and(condition);
-			}
-		}
+		Condition whereClauseCondition = _createWhereClause(
+			assetId, channelId, timeRange);
+
+		Field<String[]> segmentNamesField = DSL.field(
+			"segmentNames", String[].class);
+
+		whereClauseCondition = whereClauseCondition.and(
+			DSL.cardinality(
+				segmentNamesField
+			).gt(
+				0
+			));
 
 		return _getIndividualsCount(metricType, whereClauseCondition);
 	}

@@ -120,7 +120,7 @@ public class JournalAssetMetricRepositoryTest
 	)
 	@Test
 	public void testGetSegmentedCountLast30Days() {
-		assertGetSegmentedCount(
+		assertGetSegmentedIndividualsCount(
 			JournalMetricType.VIEWS, TimeRange.LAST_30_DAYS);
 	}
 
