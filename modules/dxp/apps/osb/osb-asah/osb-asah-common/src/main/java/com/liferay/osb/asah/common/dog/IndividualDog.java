@@ -963,16 +963,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		String oldIndividualName = getIndividualName(individualId);
 
-		Individual partialIndividual = new Individual();
-
-		partialIndividual.setCustomFields(individual.getCustomFields());
-		partialIndividual.setDataSourceIndividuals(
-			individual.getDataSourceIndividuals());
-		partialIndividual.setFields(individual.getFields());
-		partialIndividual.setId(individualId);
-		partialIndividual.setModifiedDate(individual.getModifiedDate());
-
-		_setFirstEnrichmentDate(partialIndividual);
+		_setFirstEnrichmentDate(individual);
 
 		JSONObject fieldsJSONObject = _fieldDog.getFieldsJSONObject(
 			"demographics", dataJSONObject, dataSource);
@@ -982,7 +973,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			 !previousFields.containsAll(fields) ||
 			 !fields.containsAll(previousFields) || dataAccountPKsUpdated)) {
 
-			partialIndividual.setLastEnrichmentDate(new Date());
+			individual.setLastEnrichmentDate(new Date());
 		}
 
 		Stream<Field> fieldStream = fields.stream();
@@ -1011,9 +1002,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 				_collections);
 		}
 
-		_updateIndividualAssociations(dataJSONObject, partialIndividual);
+		_updateIndividualAssociations(dataJSONObject, individual);
 
-		individual = _updateIndividual(individualId, partialIndividual);
+		individual = populateIndividual(_individualRepository.save(individual));
 
 		_individualModified(individual, oldIndividualName);
 
@@ -1093,18 +1084,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 		).setQueryBuilder(
 			queryBuilder
 		).iterate();
-	}
-
-	private Individual _updateIndividual(
-		Long individualId, Individual partialIndividual) {
-
-		Individual individual = fetchIndividual(individualId);
-
-		BeanUtils.copyProperties(partialIndividual, individual);
-
-		_individualRepository.save(individual);
-
-		return fetchIndividual(individualId);
 	}
 
 	private void _updateIndividualAssociations(
