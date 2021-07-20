@@ -722,7 +722,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		individual.setIndividualChannels(new HashSet<>(individualChannels));
 
-		Set<Long> channelIds = new HashSet<>();
+		Set<Long> channelIds = individual.getChannelIds();
 
 		for (IndividualChannel individualChannel : individualChannels) {
 			channelIds.add(individualChannel.getChannelId());
