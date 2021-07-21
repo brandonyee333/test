@@ -244,6 +244,10 @@ public class ElasticsearchFieldRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
+		if (aggregations == null) {
+			return Collections.emptyList();
+		}
+
 		Terms nameTerms = aggregations.get("names");
 
 		JSONArray jsonArray = new JSONArray();
