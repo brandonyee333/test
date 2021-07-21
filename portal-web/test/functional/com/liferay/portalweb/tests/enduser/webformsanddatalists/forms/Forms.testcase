@@ -2639,7 +2639,6 @@ definition {
 		Form.viewButtonPageUpEnable(formPageName = "Page A");
 
 		Form.viewButtonPageDisabled(formPageName = "Page A");
-
 	}
 
 	@description = "Verify that Form Pages can be reset"

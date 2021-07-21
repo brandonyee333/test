@@ -650,6 +650,18 @@ definition {
 			locator2 = "Form#ADD_FIELD_POSITION");
 	}
 
+	macro movePageDown {
+		Click(
+			key_formPageName = "${formPageName}",
+			locator1 = "Form#PAGE_MOVE_DOWN_ENABLE");
+	}
+
+	macro movePageUp {
+		Click(
+			key_formPageName = "${formPageName}",
+			locator1 = "Form#PAGE_MOVE_UP_ENABLE");
+	}
+
 	macro pageReset {
 		Click(
 			key_formPageNumber = "${pageIndex}",
@@ -845,6 +857,24 @@ definition {
 		AssertElementPresent(locator1 = "Form#ALT_PAGINATION_SUCCESS_PAGE");
 	}
 
+	macro viewButtonPageDisabled {
+		AssertElementPresent(
+			key_formPageName = "${formPageName}",
+			locator1 = "Form#PAGE_MOVE_DISABLED");
+	}
+
+	macro viewButtonPageDownEnable {
+		AssertElementPresent(
+			key_formPageName = "${formPageName}",
+			locator1 = "Form#PAGE_MOVE_DOWN_ENABLE");
+	}
+
+	macro viewButtonPageUpEnable {
+		AssertElementPresent(
+			key_formPageName = "${formPageName}",
+			locator1 = "Form#PAGE_MOVE_UP_ENABLE");
+	}
+
 	macro viewCollapsedCollapseButton {
 		AssertElementPresent(
 			key_trueOrFalse = "false",
@@ -1014,35 +1044,4 @@ definition {
 		AssertElementNotPresent(locator1 = "FormPortlet#SUBMIT_BUTTON");
 	}
 
-	macro viewButtonPageUpEnable {
-		AssertElementPresent(
-			key_formPageName = "${formPageName}",
-			locator1 = "Form#PAGE_MOVE_UP_ENABLE");
-	}
-
-	macro viewButtonPageDownEnable {
-		AssertElementPresent(
-			key_formPageName = "${formPageName}",
-			locator1 = "Form#PAGE_MOVE_DOWN_ENABLE");
-	}
-
-	macro viewButtonPageDisabled {
-				AssertElementPresent(
-			key_formPageName = "${formPageName}",
-			locator1 = "Form#PAGE_MOVE_DISABLED");
-	}
-	
-	macro movePageUp {
-		Click(
-			key_formPageName = "${formPageName}",
-			locator1 = "Form#PAGE_MOVE_UP_ENABLE");
-	}
-
-		macro movePageDown {
-		Click(
-			key_formPageName = "${formPageName}",
-			locator1 = "Form#PAGE_MOVE_DOWN_ENABLE");
-	}
-
-	
 }
