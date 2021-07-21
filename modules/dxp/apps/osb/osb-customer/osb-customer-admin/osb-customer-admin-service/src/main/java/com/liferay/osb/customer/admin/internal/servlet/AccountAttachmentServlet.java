@@ -20,6 +20,8 @@ import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountAttachmentLocalService;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -31,24 +33,33 @@ import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.upload.UploadServletRequest;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.security.auth.TransientTokenUtil;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.io.File;
+import java.io.Serializable;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.SortedMap;
+import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 import javax.servlet.Servlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -64,16 +75,36 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class AccountAttachmentServlet extends HttpServlet {
 
+	@Activate
+	protected void activate() {
+		_portalCache =
+			(PortalCache<TokenKey, String>)_multiVMPool.getPortalCache(
+				CACHE_NAME);
+	}
+
 	protected void checkPermission(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse)
 		throws PortalException {
 
+		_expungeExpiredTokens(System.currentTimeMillis());
+
 		String token = ParamUtil.getString(httpServletRequest, "apiToken");
 
-		if (Validator.isNull(token) || !TransientTokenUtil.checkToken(token)) {
+		TokenKey key = new TokenKey(token);
+
+		String cacheToken = _portalCache.get(key);
+
+		if (Validator.isNull(token) || (cacheToken == null)) {
 			throw new PrincipalException();
 		}
+
+		_portalCache.remove(key);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_multiVMPool.removePortalCache(CACHE_NAME);
 	}
 
 	@Override
@@ -211,13 +242,40 @@ public class AccountAttachmentServlet extends HttpServlet {
 			throw new PrincipalException();
 		}
 
-		String token = TransientTokenUtil.createToken(Time.HOUR);
+		long currentTime = System.currentTimeMillis();
+
+		long expireTime = currentTime + Time.HOUR;
+
+		_expungeExpiredTokens(currentTime);
+
+		String token = PortalUUIDUtil.generate();
+
+		_portalCache.put(new TokenKey(token), token);
+
+		while (_tokens.putIfAbsent(expireTime, token) != null) {
+			expireTime++;
+		}
 
 		ServletResponseUtil.write(httpServletResponse, token);
 	}
 
+	protected static final String CACHE_NAME =
+		AccountAttachmentServlet.class.getName();
+
+	private void _expungeExpiredTokens(long currentTime) {
+		SortedMap<Long, String> headMap = _tokens.headMap(currentTime);
+
+		for (Map.Entry<Long, String> token : headMap.entrySet()) {
+			_portalCache.remove(new TokenKey(token.getValue()));
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccountAttachmentServlet.class);
+
+	private static PortalCache<TokenKey, String> _portalCache;
+	private static final ConcurrentNavigableMap<Long, String> _tokens =
+		new ConcurrentSkipListMap<>();
 
 	@Reference
 	private AccountAttachmentLocalService _accountAttachmentLocalService;
@@ -226,9 +284,38 @@ public class AccountAttachmentServlet extends HttpServlet {
 	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
+	private MultiVMPool _multiVMPool;
+
+	@Reference
 	private Portal _portal;
 
 	@Reference
 	private RoleLocalService _roleLocalService;
+
+	private static class TokenKey implements Serializable {
+
+		@Override
+		public boolean equals(Object obj) {
+			TokenKey tokenKey = (TokenKey)obj;
+
+			if (Objects.equals(tokenKey._token, _token)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return HashUtil.hash(0, _token);
+		}
+
+		private TokenKey(String token) {
+			_token = token;
+		}
+
+		private final String _token;
+
+	}
 
 }
