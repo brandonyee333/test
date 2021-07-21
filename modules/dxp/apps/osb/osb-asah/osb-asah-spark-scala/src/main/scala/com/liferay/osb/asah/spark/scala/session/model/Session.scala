@@ -14,15 +14,17 @@
 
 package com.liferay.osb.asah.spark.scala.session.model
 
-import java.sql.{Date, Timestamp}
-
 import com.liferay.osb.asah.spark.scala.DateUtil
+
+import java.sql.{Date, Timestamp}
 
 /**
  * @author Robson Pastor
  */
-class Session(
+case class Session(
+	bounced: Boolean,
 	browserName: String,
+	canonicalUrls: Set[String] = Set[String](),
 	channelId: String,
 	city: String,
 	clientIp: String,
@@ -30,48 +32,74 @@ class Session(
 	dataSourceId: String,
 	date: Date,
 	deviceType: String,
+	events: List[Event] = List[Event](),
+	finished: Boolean,
+	firstEventDate: Timestamp,
+	interactionsCount: Int,
+	iterationNumber: Int,
+	lastEventDate: Timestamp,
+	pageViewsCount: Int,
 	platformName: String,
 	projectId: String,
+	referrers: Set[String] = Set[String](),
 	region: String,
 	sessionId: String,
-	userId: String,
-	var bounced: Boolean,
-	var canonicalUrls: Set[String] = Set[String](),
-	var events: List[Event] = List[Event](),
-	var firstEventDate: Timestamp,
-	var finished: Boolean,
-	var interactionsCount: Int,
-	var iterationNumber: Int,
-	var lastEventDate: Timestamp,
-	var pageViewsCount: Int,
-	var referrers: Set[String] = Set[String](),
-	var urls: Set[String] = Set[String]()) {
+	urls: Set[String] = Set[String](),
+	userId: String)
 
-	def addEvent(event: Event): Unit =  {
-		event.iterationNumber = iterationNumber
-		event.sessionId = sessionId
+object Session {
 
-		canonicalUrls += event.context.getOrElse("canonicalUrl", null)
-		events = event :: events
-		firstEventDate = DateUtil.min(event.eventDate, firstEventDate)
+	def addEvent(event: Event, session: Session): Session =  {
 
-		if (event.isInteraction()) {
-			interactionsCount += 1
+		val eventCopy = event.copy(iterationNumber = session.iterationNumber)
+
+		val eventContext = eventCopy.context
+
+		val canonicalUrls: Set[String] =
+			session.canonicalUrls ++ eventContext.get("canonicalUrl")
+		val events: List[Event] = eventCopy :: session.events
+		val firstEventDate = DateUtil.min(
+			eventCopy.eventDate,
+			session.firstEventDate
+		)
+		val interactionsCount = if (Event.isInteraction(
+			eventCopy.eventId
+		)) {
+			1 + session.interactionsCount
 		}
-
-		lastEventDate = DateUtil.max(event.eventDate, lastEventDate)
-
-		if (event.isPageViewed()) {
-			pageViewsCount += 1
+		else {
+			session.interactionsCount
 		}
+		val lastEventDate = DateUtil.max(
+			eventCopy.eventDate,
+			session.lastEventDate
+		)
+		val pageViewsCount = if (Event.isPageViewed(
+			eventCopy.applicationId,
+			eventCopy.eventId
+		)) {
+			1 + session.pageViewsCount}
+		else{
+			session.pageViewsCount
+		}
+		val referrers: Set[String] =
+			session.referrers ++ eventContext.get("referrer")
+		val urls: Set[String] = session.urls ++ eventContext.get("url")
 
-		referrers += event.context.getOrElse("referrer",null)
-		urls += event.context.getOrElse("url",null)
+		val bounced = Session.isBounced(interactionsCount, pageViewsCount)
 
-		bounced = _isBounced()
+		session.copy(bounced = bounced,
+			canonicalUrls = canonicalUrls,
+			events = events,
+			firstEventDate = firstEventDate,
+			interactionsCount = interactionsCount,
+			lastEventDate = lastEventDate,
+			pageViewsCount = pageViewsCount,
+			referrers = referrers,
+			urls = urls)
 	}
 
-	private def _isBounced(): Boolean = {
+	def isBounced(interactionsCount:Int, pageViewsCount:Int): Boolean = {
 		if ((interactionsCount < 1) && (pageViewsCount < 2)) {
 			true
 		}
