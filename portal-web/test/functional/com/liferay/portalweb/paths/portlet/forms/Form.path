@@ -587,13 +587,18 @@
 </tr>
 <!--PAGE-->
 <tr>
-	<td>PAGE_MOVE_ACTIVATED</td>
-	<td>//input[contains(@class,'page-header-title') and @value='${key_fieldName}']/../../../../..//button[contains(@class,'page-button') and @title='${key_movePage}']</td>
+	<td>PAGE_MOVE_UP_ENABLE</td>
+	<td>//input[contains(@class,'page-header-title') and @value='${key_formPageName}']/../../../../..//button[contains(@class,'page-button') and @class='reorder-page-button btn btn-monospaced btn-sm btn-secondary'][1]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>PAGE_MOVE_DISABLED</td>
-	<td>//input[contains(@class,'page-header-title') and @value='${key_fieldName}']/../../../../..//button[@disabled and @title='${key_movePage}']</td>
+	<td>//input[contains(@class,'page-header-title') and @value='${key_formPageName}']/../../../../..//button[@disabled and @class='reorder-page-button btn btn-monospaced btn-sm btn-secondary']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGE_MOVE_DOWN_ENABLE</td>
+	<td>//input[contains(@class,'page-header-title') and @value='${key_formPageName}']/../../../../..//button[contains(@class,'page-button') and @class='reorder-page-button btn btn-monospaced btn-sm btn-secondary'][2]</td>
 	<td></td>
 </tr>
 <tr>

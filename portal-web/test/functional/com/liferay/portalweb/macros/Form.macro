@@ -1014,4 +1014,35 @@ definition {
 		AssertElementNotPresent(locator1 = "FormPortlet#SUBMIT_BUTTON");
 	}
 
+	macro viewButtonPageUpEnable {
+		AssertElementPresent(
+			key_formPageName = "${formPageName}",
+			locator1 = "Form#PAGE_MOVE_UP_ENABLE");
+	}
+
+	macro viewButtonPageDownEnable {
+		AssertElementPresent(
+			key_formPageName = "${formPageName}",
+			locator1 = "Form#PAGE_MOVE_DOWN_ENABLE");
+	}
+
+	macro viewButtonPageDisabled {
+				AssertElementPresent(
+			key_formPageName = "${formPageName}",
+			locator1 = "Form#PAGE_MOVE_DISABLED");
+	}
+	
+	macro movePageUp {
+		Click(
+			key_formPageName = "${formPageName}",
+			locator1 = "Form#PAGE_MOVE_UP_ENABLE");
+	}
+
+		macro movePageDown {
+		Click(
+			key_formPageName = "${formPageName}",
+			locator1 = "Form#PAGE_MOVE_DOWN_ENABLE");
+	}
+
+	
 }

@@ -2614,80 +2614,32 @@ definition {
 			formPageName = "Page C",
 			formTitleNumber = "3");
 
-		AssertElementPresent(
-			key_fieldName = "Page A",
-			key_movePage = "Move Page Up",
-			locator1 = "Form#PAGE_MOVE_DISABLED");
+		Form.viewButtonPageDisabled(formPageName = "Page A");
 
-		AssertElementPresent(
-			key_fieldName = "Page A",
-			key_movePage = "Move Page Down",
-			locator1 = "Form#PAGE_MOVE_ACTIVATED");
+		Form.viewButtonPageDownEnable(formPageName = "Page A");
 
-		AssertElementPresent(
-			key_fieldName = "Page B",
-			key_movePage = "Move Page Up",
-			locator1 = "Form#PAGE_MOVE_ACTIVATED");
+		Form.viewButtonPageUpEnable(formPageName = "Page B");
 
-		AssertElementPresent(
-			key_fieldName = "Page B",
-			key_movePage = "Move Page Down",
-			locator1 = "Form#PAGE_MOVE_ACTIVATED");
+		Form.viewButtonPageDownEnable(formPageName = "Page B");
 
-		AssertElementPresent(
-			key_fieldName = "Page C",
-			key_movePage = "Move Page Down",
-			locator1 = "Form#PAGE_MOVE_DISABLED");
+		Form.viewButtonPageDisabled(formPageName = "Page C");
 
-		AssertElementPresent(
-			key_fieldName = "Page C",
-			key_movePage = "Move Page Up",
-			locator1 = "Form#PAGE_MOVE_ACTIVATED");
+		Form.viewButtonPageUpEnable(formPageName = "Page C");
 
-		Click(
-			key_fieldName = "Page C",
-			key_movePage = "Move Page Up",
-			locator1 = "Form#PAGE_MOVE_ACTIVATED");
+		Form.movePageUp(formPageName = "Page C");
 
-		Click(
-			key_fieldName = "Page C",
-			key_movePage = "Move Page Up",
-			locator1 = "Form#PAGE_MOVE_ACTIVATED");
+		Form.movePageUp(formPageName = "Page C");
 
-		AssertElementPresent(
-			key_fieldName = "Page C",
-			key_pagination = "Page 1 of 3",
-			locator1 = "Form#PAGE_PAGINATION");
+		Form.viewButtonPageDownEnable(formPageName = "Page C");
 
-		AssertElementPresent(
-			key_fieldName = "Page C",
-			key_movePage = "Move Page Up",
-			locator1 = "Form#PAGE_MOVE_DISABLED");
+		Form.viewButtonPageDisabled(formPageName = "Page C");
 
-		AssertElementPresent(
-			key_fieldName = "Page C",
-			key_movePage = "Move Page Down",
-			locator1 = "Form#PAGE_MOVE_ACTIVATED");
+		Form.movePageDown(formPageName = "Page A");
 
-		Click(
-			key_fieldName = "Page A",
-			key_movePage = "Move Page Down",
-			locator1 = "Form#PAGE_MOVE_ACTIVATED");
+		Form.viewButtonPageUpEnable(formPageName = "Page A");
 
-		AssertElementPresent(
-			key_fieldName = "Page A",
-			key_pagination = "Page 3 of 3",
-			locator1 = "Form#PAGE_PAGINATION");
+		Form.viewButtonPageDisabled(formPageName = "Page A");
 
-		AssertElementPresent(
-			key_fieldName = "Page A",
-			key_movePage = "Move Page Down",
-			locator1 = "Form#PAGE_MOVE_DISABLED");
-
-		AssertElementPresent(
-			key_fieldName = "Page A",
-			key_movePage = "Move Page Up",
-			locator1 = "Form#PAGE_MOVE_ACTIVATED");
 	}
 
 	@description = "Verify that Form Pages can be reset"
