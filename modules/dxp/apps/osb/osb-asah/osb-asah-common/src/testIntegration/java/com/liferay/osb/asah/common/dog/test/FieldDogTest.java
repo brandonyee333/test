@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -32,6 +33,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,9 +56,16 @@ public class FieldDogTest extends BaseFaroInfoDogTestCase {
 				FaroInfoTestUtil.buildCSVDataSourceJSONObject(),
 				DataSource.class));
 
-		_fieldMappingDog.addFieldMapping(
+		_fieldMapping = _fieldMappingDog.addFieldMapping(
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				_dataSource.getId(), "date", "date", "Date"));
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		_fieldDog.deleteFields(_dataSource.getId());
+		_fieldMappingDog.deleteFieldMapping(_fieldMapping);
+		_dataSourceDog.deleteDataSource(_dataSource);
 	}
 
 	@Test
@@ -161,6 +170,8 @@ public class FieldDogTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private FieldDog _fieldDog;
+
+	private FieldMapping _fieldMapping;
 
 	@Autowired
 	private FieldMappingDog _fieldMappingDog;
