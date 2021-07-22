@@ -51,7 +51,7 @@ object Event {
 	}
 
 	def isPageViewed(applicationId: String, eventId: String): Boolean = {
-		if ((applicationId == "Page") && (eventId == "pageViewed")  ) {
+		if ((applicationId == "Page") && (eventId == "pageViewed")) {
 			true
 		}
 		else {

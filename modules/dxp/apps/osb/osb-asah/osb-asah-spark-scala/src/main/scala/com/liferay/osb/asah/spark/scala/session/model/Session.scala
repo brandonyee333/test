@@ -49,54 +49,36 @@ case class Session(
 
 object Session {
 
-	def addEvent(event: Event, session: Session): Session =  {
+	def addEvent(event: Event, session: Session): Session = {
+		var interactionsCount = session.interactionsCount
+
+		if (Event.isInteraction(event.eventId)) {
+			interactionsCount += 1
+		}
+
+		var pageViewsCount = session.pageViewsCount
+
+		if (Event.isPageViewed(event.applicationId, event.eventId)) {
+			pageViewsCount += 1
+		}
 
 		val eventCopy = event.copy(iterationNumber = session.iterationNumber)
 
 		val eventContext = eventCopy.context
 
-		val canonicalUrls: Set[String] =
-			session.canonicalUrls ++ eventContext.get("canonicalUrl")
-		val events: List[Event] = eventCopy :: session.events
-		val firstEventDate = DateUtil.min(
-			eventCopy.eventDate,
-			session.firstEventDate
-		)
-		val interactionsCount = if (Event.isInteraction(
-			eventCopy.eventId
-		)) {
-			1 + session.interactionsCount
-		}
-		else {
-			session.interactionsCount
-		}
-		val lastEventDate = DateUtil.max(
-			eventCopy.eventDate,
-			session.lastEventDate
-		)
-		val pageViewsCount = if (Event.isPageViewed(
-			eventCopy.applicationId,
-			eventCopy.eventId
-		)) {
-			1 + session.pageViewsCount}
-		else{
-			session.pageViewsCount
-		}
-		val referrers: Set[String] =
-			session.referrers ++ eventContext.get("referrer")
-		val urls: Set[String] = session.urls ++ eventContext.get("url")
-
-		val bounced = Session.isBounced(interactionsCount, pageViewsCount)
-
-		session.copy(bounced = bounced,
-			canonicalUrls = canonicalUrls,
-			events = events,
-			firstEventDate = firstEventDate,
+		session.copy(
+			bounced = Session.isBounced(interactionsCount, pageViewsCount),
+			canonicalUrls =
+				session.canonicalUrls ++ eventContext.get("canonicalUrl"),
+			events = event :: session.events,
+			firstEventDate =
+				DateUtil.min(event.eventDate, session.firstEventDate),
 			interactionsCount = interactionsCount,
-			lastEventDate = lastEventDate,
+			lastEventDate =
+				DateUtil.max(event.eventDate, session.lastEventDate),
 			pageViewsCount = pageViewsCount,
-			referrers = referrers,
-			urls = urls)
+			referrers = session.referrers ++ eventContext.get("referrer"),
+			urls = session.urls ++ eventContext.get("url"))
 	}
 
 	def isBounced(interactionsCount:Int, pageViewsCount:Int): Boolean = {
