@@ -65,6 +65,7 @@ public class FieldDogTest extends BaseFaroInfoDogTestCase {
 	public void tearDown() throws Exception {
 		_fieldDog.deleteFields(_dataSource.getId());
 		_fieldMappingDog.deleteFieldMapping(_fieldMapping);
+
 		_dataSourceDog.deleteDataSource(_dataSource);
 	}
 
