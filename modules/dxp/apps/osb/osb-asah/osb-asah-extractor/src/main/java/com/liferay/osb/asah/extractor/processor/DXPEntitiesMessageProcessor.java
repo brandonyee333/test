@@ -319,7 +319,7 @@ public class DXPEntitiesMessageProcessor {
 
 		if (action.equalsIgnoreCase("delete") && (dxpEntity != null)) {
 			try {
-				_segmentDog.disableDynamicSegments(type, dxpEntity.getId());
+				_segmentDog.disableDynamicSegments(dxpEntity.getId(), type);
 			}
 			catch (Exception exception) {
 				if (_log.isInfoEnabled()) {

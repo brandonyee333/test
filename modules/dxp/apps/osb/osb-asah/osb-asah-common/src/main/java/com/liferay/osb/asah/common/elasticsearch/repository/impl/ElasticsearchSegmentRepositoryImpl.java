@@ -594,7 +594,24 @@ public class ElasticsearchSegmentRepositoryImpl
 
 	@Override
 	public List<Segment> searchSegments(
-		DXPEntity.Type dxpEntityType, Long id, String state,
+		List<Long> channelIds, String filterString, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_getSegmentsQueryBuilder(channelIds, filterString));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
+	}
+
+	@Override
+	public List<Segment> searchSegments(
+		Long dxpEntityId, DXPEntity.Type dxpEntityType, String state,
 		Segment.Type type) {
 
 		try {
@@ -613,7 +630,7 @@ public class ElasticsearchSegmentRepositoryImpl
 				).filter(
 					QueryBuilders.termsQuery(
 						dxpEntityType.getIndividualSegmentFieldName(),
-						String.valueOf(id))
+						String.valueOf(dxpEntityId))
 				));
 
 			JSONObject jsonObject = new JSONObject(
@@ -629,23 +646,6 @@ public class ElasticsearchSegmentRepositoryImpl
 
 			return Collections.emptyList();
 		}
-	}
-
-	@Override
-	public List<Segment> searchSegments(
-		List<Long> channelIds, String filterString, Pageable pageable) {
-
-		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_getSegmentsQueryBuilder(channelIds, filterString));
-
-						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
-					})));
 	}
 
 	@Override

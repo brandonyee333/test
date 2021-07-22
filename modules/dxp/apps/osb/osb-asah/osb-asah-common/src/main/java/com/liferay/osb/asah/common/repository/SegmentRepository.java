@@ -110,10 +110,11 @@ public interface SegmentRepository extends CrudRepository<Segment, Long> {
 		String filterString, Pageable pageable);
 
 	public List<Segment> searchSegments(
-		DXPEntity.Type dxpEntityType, Long id, String state, Segment.Type type);
+		List<Long> channelIds, String filterString, Pageable pageable);
 
 	public List<Segment> searchSegments(
-		List<Long> channelIds, String filterString, Pageable pageable);
+		Long dxpEntityId, DXPEntity.Type dxpEntityType, String state,
+		Segment.Type type);
 
 	public List<Segment> searchSegments(
 		String filter, String state, String status, Pageable pageable);

@@ -141,14 +141,14 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public void disableDynamicSegments(
-		DXPEntity.Type dxpEntityType, Long segmentId) {
+		Long dxpEntityId, DXPEntity.Type dxpEntityType) {
 
-		if (Objects.isNull(segmentId)) {
+		if (Objects.isNull(dxpEntityId)) {
 			return;
 		}
 
 		List<Segment> segments = _segmentRepository.searchSegments(
-			dxpEntityType, segmentId, "DISABLED", Segment.Type.DYNAMIC);
+			dxpEntityId, dxpEntityType, "DISABLED", Segment.Type.DYNAMIC);
 
 		for (Segment segment : segments) {
 			segment.setState("DISABLED");

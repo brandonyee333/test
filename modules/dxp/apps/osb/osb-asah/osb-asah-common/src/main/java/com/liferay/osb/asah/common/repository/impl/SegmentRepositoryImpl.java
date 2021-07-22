@@ -248,22 +248,6 @@ public class SegmentRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Segment> searchSegments(
-		DXPEntity.Type dxpEntityType, Long segmentId, String state,
-		Segment.Type type) {
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		return selectSelectStep.from(
-			"Segment"
-		).where(
-			_getConditions(dxpEntityType, segmentId, state, type)
-		).fetch(
-		).map(
-			record -> new Segment(record.intoMap())
-		);
-	}
-
-	public List<Segment> searchSegments(
 		List<Long> channelIds, String filterString, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
@@ -279,6 +263,22 @@ public class SegmentRepositoryImpl extends BaseRepository {
 			pageable.getPageSize()
 		).offset(
 			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Segment(record.intoMap())
+		);
+	}
+
+	public List<Segment> searchSegments(
+		Long dxpEntityId, DXPEntity.Type dxpEntityType, String state,
+		Segment.Type type) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"Segment"
+		).where(
+			_getConditions(dxpEntityId, dxpEntityType, state, type)
 		).fetch(
 		).map(
 			record -> new Segment(record.intoMap())
@@ -308,34 +308,6 @@ public class SegmentRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Condition> _getConditions(
-		DXPEntity.Type dxpEntityType, Long segmentId, String state,
-		Segment.Type type) {
-
-		List<Condition> conditions = new ArrayList<>();
-
-		if (dxpEntityType != null) {
-			Field<Object> field = DSL.field(
-				dxpEntityType.getIndividualSegmentFieldName());
-
-			conditions.add(field.in(segmentId));
-		}
-
-		if (StringUtils.isNotEmpty(state)) {
-			Field<Object> field = DSL.field("state");
-
-			conditions.add(field.notEqual(state));
-		}
-
-		if (type != null) {
-			Field<Object> field = DSL.field("type");
-
-			conditions.add(field.eq(type.toString()));
-		}
-
-		return conditions;
-	}
-
-	private List<Condition> _getConditions(
 		List<Long> channelIds, String filterString) {
 
 		List<Condition> conditions = new ArrayList<>();
@@ -350,6 +322,34 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		}
 
 		conditions.add(FilterStringToConditionConverter.convert(filterString));
+
+		return conditions;
+	}
+
+	private List<Condition> _getConditions(
+		Long dxpEntityId, DXPEntity.Type dxpEntityType, String state,
+		Segment.Type type) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (dxpEntityType != null) {
+			Field<Object> field = DSL.field(
+				dxpEntityType.getIndividualSegmentFieldName());
+
+			conditions.add(field.in(dxpEntityId));
+		}
+
+		if (StringUtils.isNotEmpty(state)) {
+			Field<Object> field = DSL.field("state");
+
+			conditions.add(field.notEqual(state));
+		}
+
+		if (type != null) {
+			Field<Object> field = DSL.field("type");
+
+			conditions.add(field.eq(type.toString()));
+		}
 
 		return conditions;
 	}
