@@ -42,6 +42,25 @@ public class Event implements Persistable<Long> {
 		BeanUtils.copyProperties(source, this);
 	}
 
+	public Event(
+		String analyticsEventId, String applicationId, Long channelId,
+		Date createDate, Long dataSourceId, Set<EventAttribute> eventAttributes,
+		Date eventDate, Long eventDefinitionId, Long individualId,
+		String sessionId, String userId) {
+
+		_analyticsEventId = analyticsEventId;
+		_applicationId = applicationId;
+		_channelId = channelId;
+		_createDate = createDate;
+		_dataSourceId = dataSourceId;
+		_eventAttributes = eventAttributes;
+		_eventDate = eventDate;
+		_eventDefinitionId = eventDefinitionId;
+		_individualId = individualId;
+		_sessionId = sessionId;
+		_userId = userId;
+	}
+
 	public void addEventAttribute(EventAttribute eventAttribute) {
 		_eventAttributes.add(eventAttribute);
 	}

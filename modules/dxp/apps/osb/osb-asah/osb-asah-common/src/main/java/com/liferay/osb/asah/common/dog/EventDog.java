@@ -23,6 +23,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections4.IterableUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,9 +38,14 @@ public class EventDog {
 		String analyticsEventId, String applicationId, Long channelId,
 		Date createDate, Long dataSourceId, Set<EventAttribute> eventAttributes,
 		Date eventDate, Long eventDefinitionId, Long individualId,
-		String userId) {
+		String sessionId, String userId) {
 
-		Event event = new Event();
+		return _eventRepository.save(
+			new Event(
+				analyticsEventId, applicationId, channelId, createDate,
+				dataSourceId, eventAttributes, eventDate, eventDefinitionId,
+				individualId, sessionId, userId));
+	}
 
 		event.setAnalyticsEventId(analyticsEventId);
 		event.setApplicationId(applicationId);
