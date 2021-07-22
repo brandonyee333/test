@@ -140,6 +140,10 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 					includeAnonymousUsers, page++, individual.getSegmentIds(),
 					50, Sort.asc("id"));
 
+				if (segments.isEmpty()) {
+					break;
+				}
+
 				for (Segment segment : segments) {
 					_updateMembershipForIndividual(
 						baseMembershipJSONObject, individual, segment,
