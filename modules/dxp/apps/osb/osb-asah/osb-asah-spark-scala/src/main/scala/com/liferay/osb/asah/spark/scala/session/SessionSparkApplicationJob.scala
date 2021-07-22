@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.spark.scala.session
 
-import com.liferay.osb.asah.spark.scala.common._
+import com.liferay.osb.asah.spark.scala.common.SparkJob
 
 /**
  * @author Marcellus Tavares
