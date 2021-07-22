@@ -182,7 +182,7 @@ request.setAttribute("view.jsp-showIconLabel", true);
 			</div>
 		</c:if>
 
-		<c:if test="<%= assetPublisherDisplayContext.isShowContextLink(assetRenderer.getGroupId(), assetRendererFactory.getPortletId()) && !print && assetEntry.isVisible() %>">
+		<c:if test="<%= assetPublisherDisplayContext.isShowContextLink() && !print && assetEntry.isVisible() %>">
 			<div class="asset-more">
 				<a href="<%= assetRenderer.getURLViewInContext(liferayPortletRequest, liferayPortletResponse, HttpUtil.setParameter(viewFullContentURL.toString(), "redirect", currentURL)) %>"><liferay-ui:message key="<%= assetRenderer.getViewInContextMessage() %>" /> &raquo;</a>
 			</div>
