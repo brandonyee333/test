@@ -46,7 +46,7 @@ public class ExperimentEstimatedDaysDurationDataFetcher
 		return _experimentDog.getExperimentEstimatedDaysDuration(
 			experimentSettings.getConfidenceLevel(),
 			experimentSettings.getDXPVariantsSettings(),
-			dataFetchingEnvironment.getArgument("experimentId"));
+			Long.valueOf(dataFetchingEnvironment.getArgument("experimentId")));
 	}
 
 	@Autowired

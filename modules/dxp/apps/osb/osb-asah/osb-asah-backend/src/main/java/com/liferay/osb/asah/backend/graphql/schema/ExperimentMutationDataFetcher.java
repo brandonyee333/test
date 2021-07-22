@@ -43,7 +43,8 @@ public class ExperimentMutationDataFetcher
 		experiment.setExperimentStatus(
 			ExperimentStatus.valueOf(
 				dataFetchingEnvironment.getArgument("status")));
-		experiment.setId(dataFetchingEnvironment.getArgument("experimentId"));
+		experiment.setId(
+			Long.valueOf(dataFetchingEnvironment.getArgument("experimentId")));
 		experiment.setPublishedDXPVariantId(
 			dataFetchingEnvironment.getArgument("publishedDXPVariantId"));
 

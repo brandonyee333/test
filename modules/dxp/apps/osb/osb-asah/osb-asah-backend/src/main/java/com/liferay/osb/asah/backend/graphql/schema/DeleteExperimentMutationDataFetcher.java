@@ -34,7 +34,8 @@ public class DeleteExperimentMutationDataFetcher
 	@Override
 	public Boolean get(DataFetchingEnvironment dataFetchingEnvironment) {
 		return _experimentDog.deleteExperiment(
-			dataFetchingEnvironment.getArgument("experimentId"), true);
+			Long.valueOf(dataFetchingEnvironment.getArgument("experimentId")),
+			true);
 	}
 
 	@Autowired
