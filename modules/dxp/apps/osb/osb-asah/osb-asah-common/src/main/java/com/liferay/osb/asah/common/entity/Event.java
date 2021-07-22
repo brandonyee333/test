@@ -68,6 +68,7 @@ public class Event implements Persistable<Long> {
 			Objects.equals(_eventDefinitionId, event._eventDefinitionId) &&
 			Objects.equals(_id, event._id) &&
 			Objects.equals(_individualId, event._individualId) &&
+			Objects.equals(_sessionId, event._sessionId) &&
 			Objects.equals(_userId, event._userId)) {
 
 			return true;
@@ -138,6 +139,11 @@ public class Event implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public String getSessionId() {
+		return _sessionId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getUserId() {
 		return _userId;
 	}
@@ -147,7 +153,7 @@ public class Event implements Persistable<Long> {
 		return Objects.hash(
 			_analyticsEventId, _applicationId, _channelId, _createDate,
 			_dataSourceId, _eventAttributes, _eventDate, _eventDefinitionId,
-			_id, _individualId, _userId);
+			_id, _individualId, _sessionId, _userId);
 	}
 
 	@Override
@@ -207,6 +213,10 @@ public class Event implements Persistable<Long> {
 		_isNew = isNew;
 	}
 
+	public void setSessionId(String sessionId) {
+		_sessionId = sessionId;
+	}
+
 	public void setUserId(String userId) {
 		_userId = userId;
 	}
@@ -243,6 +253,9 @@ public class Event implements Persistable<Long> {
 
 	@Transient
 	private Boolean _isNew;
+
+	@Transient
+	private String _sessionId;
 
 	@Transient
 	private String _userId;
