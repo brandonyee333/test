@@ -178,7 +178,8 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		analyticsEvent.setIndividualId(activityJSONObject.getString("ownerId"));
 		analyticsEvent.setUserId(activityJSONObject.getString("userId"));
 
-		_eventStorageDog.store(analyticsEvent);
+		_eventStorageDog.store(
+			analyticsEvent, activityJSONObject.getString("sessionId"));
 	}
 
 	private void _writeBatch(SearchHit[] searchHits) {

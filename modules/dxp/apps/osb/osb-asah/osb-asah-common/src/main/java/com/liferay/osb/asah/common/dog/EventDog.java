@@ -47,18 +47,8 @@ public class EventDog {
 				individualId, sessionId, userId));
 	}
 
-		event.setAnalyticsEventId(analyticsEventId);
-		event.setApplicationId(applicationId);
-		event.setChannelId(channelId);
-		event.setCreateDate(createDate);
-		event.setDataSourceId(dataSourceId);
-		event.setEventAttributes(eventAttributes);
-		event.setEventDate(eventDate);
-		event.setEventDefinitionId(eventDefinitionId);
-		event.setIndividualId(individualId);
-		event.setUserId(userId);
-
-		return _eventRepository.save(event);
+	public List<Event> addEvents(List<Event> events) {
+		return IterableUtils.toList(_eventRepository.saveAll(events));
 	}
 
 	public long countEvents(Long eventDefinitionId) {

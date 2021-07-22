@@ -22,10 +22,15 @@ import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinitio
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -42,32 +47,61 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventStorageDog {
 
-	public Event store(AnalyticsEvent analyticsEvent) {
-		try {
-			EventDefinition eventDefinition = _resolveEventDefinition(
-				analyticsEvent);
+	public Event store(AnalyticsEvent analyticsEvent, String sessionId) {
+		List<Event> events = storeAll(Arrays.asList(analyticsEvent), sessionId);
 
-			if (eventDefinition.isBlocked()) {
-				return null;
+		if (events.isEmpty()) {
+			return null;
+		}
+
+		return events.get(0);
+	}
+
+	public List<Event> storeAll(
+		List<AnalyticsEvent> analyticsEvents, String sessionId) {
+
+		try {
+			List<Event> events = new ArrayList<>();
+
+			for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+				EventDefinition eventDefinition = _resolveEventDefinition(
+					analyticsEvent);
+
+				if (eventDefinition.isBlocked()) {
+					continue;
+				}
+
+				Set<EventAttribute> eventAttributes = _resolveEventAttributes(
+					analyticsEvent, eventDefinition.getId());
+
+				events.add(
+					new Event(
+						analyticsEvent.getId(),
+						analyticsEvent.getApplicationId(),
+						Long.valueOf(analyticsEvent.getChannelId()),
+						analyticsEvent.getCreateDate(),
+						Long.valueOf(analyticsEvent.getDataSourceId()),
+						eventAttributes, analyticsEvent.getEventDate(),
+						eventDefinition.getId(),
+						Optional.ofNullable(
+							analyticsEvent.getIndividualId()
+						).map(
+							Long::valueOf
+						).orElse(
+							null
+						),
+						sessionId, analyticsEvent.getUserId()));
 			}
 
-			Set<EventAttribute> eventAttributes = _resolveEventAttributes(
-				analyticsEvent, eventDefinition.getId());
-
-			return _eventDog.addEvent(
-				analyticsEvent.getId(), analyticsEvent.getApplicationId(),
-				Long.valueOf(analyticsEvent.getChannelId()),
-				analyticsEvent.getCreateDate(),
-				Long.valueOf(analyticsEvent.getDataSourceId()), eventAttributes,
-				analyticsEvent.getEventDate(), eventDefinition.getId(),
-				Long.valueOf(analyticsEvent.getIndividualId()),
-				analyticsEvent.getUserId());
+			if (!events.isEmpty()) {
+				return _eventDog.addEvents(events);
+			}
 		}
 		catch (Exception exception) {
 			_log.error("Unable to store event", exception);
-
-			return null;
 		}
+
+		return Collections.emptyList();
 	}
 
 	private Set<Long> _getEventDefinitionIds(
