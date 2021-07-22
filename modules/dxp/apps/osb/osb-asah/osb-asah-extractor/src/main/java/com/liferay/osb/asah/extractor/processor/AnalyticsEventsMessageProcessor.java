@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dog.EventStorageDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -423,8 +422,6 @@ public class AnalyticsEventsMessageProcessor {
 
 			storage.write(analyticsEvent.toJSON());
 		}
-
-		_eventStorageDog.store(analyticsEvent);
 	}
 
 	private static final Log _log = LogFactory.getLog(
@@ -458,9 +455,6 @@ public class AnalyticsEventsMessageProcessor {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	@Autowired
-	private EventStorageDog _eventStorageDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

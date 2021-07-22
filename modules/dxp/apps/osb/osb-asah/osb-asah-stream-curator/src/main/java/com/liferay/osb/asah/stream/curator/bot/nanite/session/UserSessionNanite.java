@@ -18,9 +18,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dog.EventStorageDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -97,28 +97,6 @@ public class UserSessionNanite implements Nanite {
 		}
 	}
 
-	private void _addUserSessionAnalyticsEvents(
-		AnalyticsEvents analyticsEvents, String sessionId) {
-
-		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-			_cerebroInfoElasticsearchInvoker.
-				createElasticsearchBulkRequestBuilder();
-
-		for (AnalyticsEvent analyticsEvent :
-				analyticsEvents.getAnalyticsEventsList()) {
-
-			JSONObject analyticsEventsJSONObject = _objectMapper.convertValue(
-				analyticsEvent, JSONObject.class);
-
-			analyticsEventsJSONObject.put("sessionId", sessionId);
-
-			elasticsearchBulkRequestBuilder.upsert(
-				"user-session-analytics-events", analyticsEventsJSONObject);
-		}
-
-		elasticsearchBulkRequestBuilder.get();
-	}
-
 	private void _createUserSession(
 		AnalyticsEvents analyticsEvents, boolean completed, String userId) {
 
@@ -174,8 +152,9 @@ public class UserSessionNanite implements Nanite {
 			getCollectionName(),
 			_objectMapper.convertValue(userSession, JSONObject.class));
 
-		_addUserSessionAnalyticsEvents(
-			analyticsEvents, jsonObject.getString("id"));
+		_eventStorageDog.storeAll(
+			analyticsEvents.getAnalyticsEventsList(),
+			jsonObject.getString("id"));
 
 		if (completed) {
 			try {
@@ -507,8 +486,9 @@ public class UserSessionNanite implements Nanite {
 			QueryBuilders.termQuery(
 				"id", userSessionJSONObject.getString("id")));
 
-		_addUserSessionAnalyticsEvents(
-			analyticsEvents, userSessionJSONObject.getString("id"));
+		_eventStorageDog.storeAll(
+			analyticsEvents.getAnalyticsEventsList(),
+			userSessionJSONObject.getString("id"));
 
 		if (userSessionJSONObject.optBoolean("completed", false)) {
 			try {
@@ -526,6 +506,9 @@ public class UserSessionNanite implements Nanite {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
+	@Autowired
+	private EventStorageDog _eventStorageDog;
 
 	@Autowired
 	private FinalizeUserSessionArm _finalizeUserSessionArm;
