@@ -248,7 +248,6 @@ public class IndividualNanite implements Nanite {
 			individualChannels.add(individualChannel);
 		}
 
-		knownIndividual.setChannelIds(channelIds);
 		knownIndividual.setIndividualChannels(individualChannels);
 
 		Date date = new Date();

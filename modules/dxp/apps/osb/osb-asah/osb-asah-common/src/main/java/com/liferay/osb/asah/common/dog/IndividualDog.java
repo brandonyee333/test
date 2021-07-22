@@ -388,8 +388,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		segmentIds.add(segmentId);
 
-		individual.setSegmentIds(segmentIds);
-
 		return updateIndividual(individualId, individual, false);
 	}
 
@@ -727,8 +725,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 		for (IndividualChannel individualChannel : individualChannels) {
 			channelIds.add(individualChannel.getChannelId());
 		}
-
-		individual.setChannelIds(channelIds);
 
 		return individual;
 	}
