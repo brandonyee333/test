@@ -62,9 +62,7 @@ object Session {
 			pageViewsCount += 1
 		}
 
-		val eventCopy = event.copy(iterationNumber = session.iterationNumber)
-
-		val eventContext = eventCopy.context
+		val eventContext = event.context
 
 		session.copy(
 			bounced = Session.isBounced(interactionsCount, pageViewsCount),

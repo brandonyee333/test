@@ -36,8 +36,7 @@ case class Event(
 	normalizedEventDate: Long,
 	projectId: String,
 	segmentNames: Set[String] = Set[String](),
-	userId: String,
-	iterationNumber: Int)
+	userId: String)
 
 object Event {
 
