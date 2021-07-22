@@ -286,17 +286,6 @@ public class DXPEntitiesMessageProcessor {
 	private void _processObject(
 		String action, JSONObject objectJSONObject, DXPEntity.Type type) {
 
-		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
-			new HashMap<String, Object>() {
-				{
-					put(
-						"dataSourceId",
-						objectJSONObject.getString("osbAsahDataSourceId"));
-					put("userId", objectJSONObject.getInt("userId"));
-				}
-			},
-			DXPEntity.Type.USER);
-
 		if (action.equalsIgnoreCase("addAssociation") ||
 			action.equalsIgnoreCase("deleteAssociation")) {
 
@@ -316,6 +305,17 @@ public class DXPEntitiesMessageProcessor {
 
 			return;
 		}
+
+		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
+			new HashMap<String, Object>() {
+				{
+					put(
+						"dataSourceId",
+						objectJSONObject.getString("osbAsahDataSourceId"));
+					put("userId", objectJSONObject.optInt("userId"));
+				}
+			},
+			DXPEntity.Type.USER);
 
 		if (action.equalsIgnoreCase("delete") && (dxpEntity != null)) {
 			try {
