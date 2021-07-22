@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -289,7 +290,7 @@ public class AnalyticsEvent implements Serializable {
 	private String _dataSourceId;
 	private Date _eventDate = new Date();
 	private String _eventId;
-	private Map<String, String> _eventProperties;
+	private Map<String, String> _eventProperties = new HashMap<>();
 	private String _id;
 	private String _individualId;
 	private boolean _knownIndividual;
