@@ -31,12 +31,12 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -136,7 +136,7 @@ public class EventStorageDogTest {
 		long expectedEventCount =
 			_eventDog.countEvents(eventDefinition.getId()) + 1;
 
-		_storeAnalyticsEvent(
+		Event event = _storeAnalyticsEvent(
 			"pageViewed",
 			Collections.singletonMap("canonicalUrl", "http://127.0.0.1"),
 			Collections.singletonMap("newTestEventAttribute", "testValue"));
@@ -157,6 +157,7 @@ public class EventStorageDogTest {
 		Assert.assertEquals(
 			Collections.singleton(eventDefinition.getId()),
 			_getEventDefinitionIds("newTestEventAttribute"));
+		Assert.assertNotNull(event.getSessionId());
 	}
 
 	@Test
@@ -383,12 +384,10 @@ public class EventStorageDogTest {
 		analyticsEvent.setKnownIndividual(true);
 		analyticsEvent.setProjectId("123456789");
 		analyticsEvent.setSegmentNames(Collections.emptySet());
+		analyticsEvent.setUserId(RandomTestUtil.randomUUID());
 
-		UUID uuid = UUID.randomUUID();
-
-		analyticsEvent.setUserId(uuid.toString());
-
-		return _eventStorageDog.store(analyticsEvent);
+		return _eventStorageDog.store(
+			analyticsEvent, RandomTestUtil.randomId());
 	}
 
 	@Autowired
