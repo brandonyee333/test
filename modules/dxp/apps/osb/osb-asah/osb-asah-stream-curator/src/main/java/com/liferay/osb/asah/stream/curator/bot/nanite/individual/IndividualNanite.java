@@ -230,7 +230,6 @@ public class IndividualNanite implements Nanite {
 				knownIndividualActivitiesCounts));
 
 		Set<Long> channelIds = knownIndividual.getChannelIds();
-
 		Set<IndividualChannel> individualChannels = new HashSet<>();
 
 		for (Individual.ActivitiesCount activitiesCount :
