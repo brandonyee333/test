@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.util.Assert;
 import com.liferay.osb.asah.common.util.MapUtil;
 
 import java.util.ArrayList;
@@ -59,6 +60,8 @@ public class EventStorageDog {
 
 	public List<Event> storeAll(
 		List<AnalyticsEvent> analyticsEvents, String sessionId) {
+
+		Assert.notBlank(sessionId, "Session ID is blank");
 
 		try {
 			List<Event> events = new ArrayList<>();

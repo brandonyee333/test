@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS Event (
 	eventDate TIMESTAMPTZ,
 	eventDefinitionId BIGINT,
 	individualId BIGINT,
-	sessionId TEXT,
+	sessionId TEXT NOT NULL,
 	userId TEXT
 );
 
