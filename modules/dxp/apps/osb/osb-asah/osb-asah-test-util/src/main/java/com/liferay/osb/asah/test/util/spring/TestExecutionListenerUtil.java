@@ -71,10 +71,8 @@ public class TestExecutionListenerUtil {
 		return localDate.atStartOfDay();
 	}
 
-	private static LocalDateTime _getStartLocalDateTime(
-		String reference, boolean sql) {
-
-		if (reference.equals("today") || sql) {
+	private static LocalDateTime _getStartLocalDateTime(String reference) {
+		if (reference.equals("today")) {
 			LocalDate localDate = LocalDate.now(Clock.systemUTC());
 
 			return localDate.atStartOfDay();
@@ -96,7 +94,7 @@ public class TestExecutionListenerUtil {
 			String reference = matcher.group(1);
 
 			LocalDateTime startLocalDateTime = _getStartLocalDateTime(
-				reference, sql);
+				reference);
 
 			long offset = Long.parseLong(matcher.group(2));
 
