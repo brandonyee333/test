@@ -55,27 +55,51 @@ public class OSBAsahSQLTestExecutionListener
 			return;
 		}
 
-		try (Connection connection = _postgreSQLDataSource.getConnection()) {
-			DatabaseMetaData databaseMetaData = connection.getMetaData();
+		if (_postgreSQLDataSource != null) {
+			try (Connection connection =
+					_postgreSQLDataSource.getConnection()) {
 
-			ResultSet resultSet = databaseMetaData.getTables(
-				null, connection.getSchema(), null, new String[] {"TABLE"});
+				DatabaseMetaData databaseMetaData = connection.getMetaData();
 
-			while (resultSet.next()) {
-				try (PreparedStatement preparedStatement =
-						connection.prepareStatement(
-							"TRUNCATE TABLE " +
-								resultSet.getString("TABLE_NAME") +
-									" CASCADE")) {
+				ResultSet resultSet = databaseMetaData.getTables(
+					null, connection.getSchema(), null, new String[] {"TABLE"});
 
-					preparedStatement.execute();
+				while (resultSet.next()) {
+					try (PreparedStatement preparedStatement =
+							connection.prepareStatement(
+								"TRUNCATE TABLE " +
+									resultSet.getString("TABLE_NAME") +
+										" CASCADE")) {
+
+						preparedStatement.execute();
+					}
+				}
+
+				DatabasePopulatorUtils.execute(
+					new ResourceDatabasePopulator(
+						new ClassPathResource("data.sql")),
+					_postgreSQLDataSource);
+			}
+		}
+
+		if (_trinoDataSource != null) {
+			try (Connection connection = _trinoDataSource.getConnection()) {
+				DatabaseMetaData databaseMetaData = connection.getMetaData();
+
+				ResultSet resultSet = databaseMetaData.getTables(
+					connection.getCatalog(), connection.getSchema(), null,
+					new String[] {"TABLE"});
+
+				while (resultSet.next()) {
+					try (PreparedStatement preparedStatement =
+							connection.prepareStatement(
+								"DELETE FROM " +
+									resultSet.getString("TABLE_NAME"))) {
+
+						preparedStatement.execute();
+					}
 				}
 			}
-
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					new ClassPathResource("data.sql")),
-				_postgreSQLDataSource);
 		}
 	}
 
@@ -96,7 +120,7 @@ public class OSBAsahSQLTestExecutionListener
 
 		if (sqlResources.length > 1) {
 			throw new IllegalArgumentException(
-				"Only 1 PostgreSQLTables annotation allowed");
+				"Only 1 SQLResource annotation allowed");
 		}
 
 		_prepareTables(clazz, sqlResources[0]);
@@ -125,7 +149,7 @@ public class OSBAsahSQLTestExecutionListener
 	}
 
 	private boolean _isTestExecutionListenerEnabled() {
-		if (_postgreSQLDataSource != null) {
+		if ((_postgreSQLDataSource != null) || (_trinoDataSource != null)) {
 			return true;
 		}
 
