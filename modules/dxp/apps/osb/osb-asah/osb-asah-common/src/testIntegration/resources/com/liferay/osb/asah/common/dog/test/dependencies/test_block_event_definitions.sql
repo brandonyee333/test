@@ -8,12 +8,12 @@ INSERT INTO EventDefinitionEventAttributeDefinition (eventAttributeDefinitionId,
 INSERT INTO EventDefinitionEventAttributeDefinition (eventAttributeDefinitionId, eventDefinitionId) VALUES ((SELECT id from EventAttributeDefinition WHERE name='canonicalUrl'), (SELECT id from EventDefinition WHERE name='subscribed')) ON CONFLICT DO NOTHING;
 INSERT INTO EventDefinitionEventAttributeDefinition (eventAttributeDefinitionId, eventDefinitionId) VALUES ((SELECT id from EventAttributeDefinition WHERE name='canonicalUrl'), (SELECT id from EventDefinition WHERE name='unsubscribed')) ON CONFLICT DO NOTHING;
 
-INSERT INTO Event (id, channelId, eventDate, eventDefinitionId) VALUES (1000, (SELECT id from Channel WHERE name='testChannelName'), '2021-04-01 00:00:00-00', (SELECT id from EventDefinition WHERE name='addNotification'));
-INSERT INTO Event (id, channelId, eventDate, eventDefinitionId) VALUES (1001, (SELECT id from Channel WHERE name='testChannelName'), '2021-04-19 00:00:00-00', (SELECT id from EventDefinition WHERE name='addNotification'));
-INSERT INTO Event (id, channelId, eventDate, eventDefinitionId) VALUES (1002, (SELECT id from Channel WHERE name='testChannelName'), '2021-03-29 00:00:00-00', (SELECT id from EventDefinition WHERE name='subscribed'));
-INSERT INTO Event (id, channelId, eventDate, eventDefinitionId) VALUES (1003, (SELECT id from Channel WHERE name='testChannelName'), '2021-01-20 00:00:00-00', (SELECT id from EventDefinition WHERE name='subscribed'));
-INSERT INTO Event (id, channelId, eventDate, eventDefinitionId) VALUES (1004, (SELECT id from Channel WHERE name='testChannelName'), '2021-01-21 00:00:00-00', (SELECT id from EventDefinition WHERE name='unsubscribed'));
-INSERT INTO Event (id, channelId, eventDate, eventDefinitionId) VALUES (1005, (SELECT id from Channel WHERE name='testChannelName'), '2021-02-16 00:00:00-00', (SELECT id from EventDefinition WHERE name='unsubscribed'));
+INSERT INTO Event (id, channelId, eventDate, eventDefinitionId, sessionId) VALUES (1000, (SELECT id from Channel WHERE name='testChannelName'), '2021-04-01 00:00:00-00', (SELECT id from EventDefinition WHERE name='addNotification'), 6780);
+INSERT INTO Event (id, channelId, eventDate, eventDefinitionId, sessionId) VALUES (1001, (SELECT id from Channel WHERE name='testChannelName'), '2021-04-19 00:00:00-00', (SELECT id from EventDefinition WHERE name='addNotification'), 6781);
+INSERT INTO Event (id, channelId, eventDate, eventDefinitionId, sessionId) VALUES (1002, (SELECT id from Channel WHERE name='testChannelName'), '2021-03-29 00:00:00-00', (SELECT id from EventDefinition WHERE name='subscribed'), 6782);
+INSERT INTO Event (id, channelId, eventDate, eventDefinitionId, sessionId) VALUES (1003, (SELECT id from Channel WHERE name='testChannelName'), '2021-01-20 00:00:00-00', (SELECT id from EventDefinition WHERE name='subscribed'), 6783);
+INSERT INTO Event (id, channelId, eventDate, eventDefinitionId, sessionId) VALUES (1004, (SELECT id from Channel WHERE name='testChannelName'), '2021-01-21 00:00:00-00', (SELECT id from EventDefinition WHERE name='unsubscribed'), 6784);
+INSERT INTO Event (id, channelId, eventDate, eventDefinitionId, sessionId) VALUES (1005, (SELECT id from Channel WHERE name='testChannelName'), '2021-02-16 00:00:00-00', (SELECT id from EventDefinition WHERE name='unsubscribed'), 6785);
 
 INSERT INTO EventAttribute (eventattributedefinitionid, eventid, value) VALUES ((SELECT id from EventAttributeDefinition WHERE name = 'canonicalUrl'), 1000, 'http://localhost:8080/web/guest/home');
 INSERT INTO EventAttribute (eventattributedefinitionid, eventid, value) VALUES ((SELECT id from EventAttributeDefinition WHERE name = 'canonicalUrl'), 1001, 'http://localhost:8089/web/guest/home');
