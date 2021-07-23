@@ -12,12 +12,11 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -31,6 +30,7 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -79,7 +79,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
+public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
 	public void setUp() {
@@ -998,9 +998,6 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	private static final String[] _FIELD_NAMES = {
 		"country", "email", "middleName"
 	};
-
-	@Autowired
-	private DataSourceDog _dataSourceDog;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
