@@ -605,10 +605,10 @@ public class IndividualDog extends BaseFaroInfoDog {
 				dxpEntityType.getCollectionName(),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
-						"osbAsahDataSourceId", String.valueOf(dataSourceId))
+						"dataSourceId", String.valueOf(dataSourceId))
 				).filter(
 					QueryBuilders.termsQuery(
-						dxpEntityType.getIdFieldName(), classPKs)
+						"fields." + dxpEntityType.getIdFieldName(), classPKs)
 				));
 		}
 
