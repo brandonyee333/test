@@ -51,10 +51,10 @@ public class Event implements Persistable<Long> {
 		_analyticsEventId = analyticsEventId;
 		_applicationId = applicationId;
 		_channelId = channelId;
-		_createDate = createDate;
+		_createDate = new Date(createDate.getTime());
 		_dataSourceId = dataSourceId;
 		_eventAttributes = eventAttributes;
-		_eventDate = eventDate;
+		_eventDate = new Date(eventDate.getTime());
 		_eventDefinitionId = eventDefinitionId;
 		_individualId = individualId;
 		_sessionId = sessionId;
