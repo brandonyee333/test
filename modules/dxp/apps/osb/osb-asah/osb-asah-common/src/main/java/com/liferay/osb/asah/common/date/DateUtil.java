@@ -50,10 +50,6 @@ public class DateUtil {
 
 	public static final long SECOND = 1000;
 
-	public static final long WEEK = DAY * 7;
-
-	public static final long YEAR = DAY * 365;
-
 	public static String addDays(String dateString, int days) {
 		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
@@ -84,19 +80,13 @@ public class DateUtil {
 		return toUTCString(calendar.getTime());
 	}
 
-	public static int getDeltaDays(Date date1, Date date2) {
-		long millisecondsBetween = getDeltaMilliseconds(date1, date2);
-
-		return (int)(millisecondsBetween / DAY);
-	}
-
 	public static int getDeltaDays(String dateString) {
-		return getDeltaDays(newDayDateString(dateString), newDayDateString());
+		return getDeltaDays(_newDayDateString(dateString), newDayDateString());
 	}
 
 	public static int getDeltaDays(String dateString1, String dateString2) {
 		long millisecondsBetween = getDeltaMilliseconds(
-			newDayDateString(dateString1), newDayDateString(dateString2));
+			_newDayDateString(dateString1), _newDayDateString(dateString2));
 
 		return (int)(millisecondsBetween / DAY);
 	}
@@ -180,26 +170,8 @@ public class DateUtil {
 		return calendar.getTime();
 	}
 
-	public static Date newDayDate(String dateString) {
-		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
-
-		calendar.setTime(toUTCDate(dateString));
-
-		calendar.set(Calendar.AM_PM, Calendar.AM);
-		calendar.set(Calendar.HOUR, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-
-		return calendar.getTime();
-	}
-
 	public static String newDayDateString() {
 		return toUTCString(newDayDate());
-	}
-
-	public static String newDayDateString(String dateString) {
-		return toUTCString(newDayDate(dateString));
 	}
 
 	public static LocalDateTime newDayLocalDateTime(ZoneId zoneId) {
@@ -233,12 +205,8 @@ public class DateUtil {
 		return calendar.getTime();
 	}
 
-	public static Date newEndOfDayDate(String dateString) {
-		return newEndOfDayDate(toUTCDate(dateString));
-	}
-
 	public static String newEndOfDayDateString(String dateString) {
-		return toUTCString(newEndOfDayDate(dateString));
+		return toUTCString(newEndOfDayDate(toUTCDate(dateString)));
 	}
 
 	public static Date newEndOfMonthDate(String dateString) {
@@ -267,7 +235,7 @@ public class DateUtil {
 		return toUTCString(newEpochDate());
 	}
 
-	public static Date newMonthDate() {
+	public static String newMonthDateString() {
 		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
 		calendar.setTime(new Date());
@@ -279,29 +247,13 @@ public class DateUtil {
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 
-		return calendar.getTime();
-	}
-
-	public static String newMonthDateString() {
-		return toUTCString(newMonthDate());
-	}
-
-	public static String newUTCDateString() {
-		return toUTCString(new Date());
+		return toUTCString(calendar.getTime());
 	}
 
 	public static Date toDate(LocalDateTime localDateTime, ZoneId zoneId) {
 		ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
 
 		return Date.from(zonedDateTime.toInstant());
-	}
-
-	public static LocalDate toLocalDate(long date, ZoneId zoneId) {
-		Instant instant = Instant.ofEpochMilli(date);
-
-		ZonedDateTime zonedDateTime = instant.atZone(zoneId);
-
-		return zonedDateTime.toLocalDate();
 	}
 
 	public static LocalDateTime toLocalDateTime(Date date, ZoneId zoneId) {
@@ -368,6 +320,20 @@ public class DateUtil {
 		ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneOffset.UTC);
 
 		return zonedDateTime.format(_dateTimeFormatter);
+	}
+
+	private static String _newDayDateString(String dateString) {
+		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+
+		calendar.setTime(toUTCDate(dateString));
+
+		calendar.set(Calendar.AM_PM, Calendar.AM);
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+
+		return toUTCString(calendar.getTime());
 	}
 
 	private static DateFormat _newSimpleDateFormat() {
