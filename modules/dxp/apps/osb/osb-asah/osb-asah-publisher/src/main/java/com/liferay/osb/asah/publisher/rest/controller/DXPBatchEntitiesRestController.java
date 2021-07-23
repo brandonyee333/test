@@ -133,8 +133,7 @@ public class DXPBatchEntitiesRestController {
 			}
 
 			Storage storage = _storageFactory.getStorage(
-				_getStorageConfiguration(
-					String.format("%s/%s", dataSourceId, name)));
+				_getStorageConfiguration(dataSourceId + "/" + name));
 
 			ZipInputStream zipInputStream = new ZipInputStream(
 				fileItemStream.openStream());
@@ -184,7 +183,7 @@ public class DXPBatchEntitiesRestController {
 			Date date = Date.from(zonedDateTime.toInstant());
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(String.format("Resource modified date: %s", date));
+				_log.debug("Resource modified date: " + date);
 			}
 
 			return date;
