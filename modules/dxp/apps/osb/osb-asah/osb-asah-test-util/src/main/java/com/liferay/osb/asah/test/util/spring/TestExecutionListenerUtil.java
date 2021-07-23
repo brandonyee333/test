@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
@@ -36,8 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 public class TestExecutionListenerUtil {
 
 	public static String replaceSQLVariables(String sql) {
-		LocalDateTime localDateTime = DateUtil.newDayLocalDateTime(
-			ZoneId.of("UTC"));
+		LocalDateTime localDateTime = LocalDateTime.now(Clock.systemUTC());
 
 		return StringUtils.replaceEach(
 			_replaceTimeExpressions(sql, true), new String[] {"${now}"},
@@ -49,8 +47,7 @@ public class TestExecutionListenerUtil {
 			_replaceTimeExpressions(json, false),
 			new String[] {"${now}", "\"${random_long}\""},
 			new String[] {
-				DateUtil.newDayDateString(),
-				String.valueOf(RandomUtils.nextLong())
+				DateUtil.newDateString(), String.valueOf(RandomUtils.nextLong())
 			});
 	}
 
