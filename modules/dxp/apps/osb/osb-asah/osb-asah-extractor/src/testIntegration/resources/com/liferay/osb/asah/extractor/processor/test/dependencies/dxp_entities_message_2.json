@@ -1,0 +1,124 @@
+[
+	{
+		"context": {
+			"action": "add",
+			"type": "com.liferay.portal.kernel.model.User"
+		},
+		"object": {
+			"createDate": "1627050629487",
+			"emailAddress": "scott.lang@test.com",
+			"expando": {
+			},
+			"firstName": "Scott",
+			"jobTitle": "",
+			"lastName": "Lang",
+			"modifiedDate": "1627050629487",
+			"osbAsahDataSourceId": "349978106408647035",
+			"timeZoneId": "UTC",
+			"userId": 39473,
+			"uuid": "b5ee7521-be7b-2b6d-2ed3-67fdba42e916"
+		},
+		"projectId": "test"
+	},
+	{
+		"context": {
+			"action": "update",
+			"type": "com.liferay.portal.kernel.model.User"
+		},
+		"object": {
+			"contact": {
+				"birthday": "0",
+				"classPK": 39473,
+				"contactId": 39474,
+				"createDate": "1627050629498",
+				"emailAddress": "scott.lang@test.com",
+				"firstName": "Scott",
+				"jobTitle": "",
+				"lastName": "Lang",
+				"modifiedDate": "1627050629498"
+			},
+			"createDate": 1627050629498,
+			"emailAddress": "scott.lang@test.com",
+			"modifiedDate": 1627050629498,
+			"osbAsahDataSourceId": "349978106408647035",
+			"userId": "39473"
+		},
+		"projectId": "test"
+	},
+	{
+		"context": {
+			"action": "add",
+			"type": "com.liferay.portal.kernel.model.Role"
+		},
+		"object": {
+			"name": "Test Role",
+			"osbAsahDataSourceId": "349978106408647035",
+			"roleId": 39521
+		},
+		"projectId": "test"
+	},
+	{
+		"context": {
+			"action": "update",
+			"type": "com.liferay.portal.kernel.model.User"
+		},
+		"object": {
+			"createDate": "1627050629487",
+			"emailAddress": "scott.lang@test.com",
+			"expando": {
+			},
+			"firstName": "Scott",
+			"jobTitle": "",
+			"lastName": "Lang",
+			"memberships": {
+				"com.liferay.portal.kernel.model.Role": [
+					39521
+				]
+			},
+			"modifiedDate": "1627050661514",
+			"osbAsahDataSourceId": "349978106408647035",
+			"timeZoneId": "UTC",
+			"userId": 39473,
+			"uuid": "b5ee7521-be7b-2b6d-2ed3-67fdba42e916"
+		},
+		"projectId": "test"
+	},
+	{
+		"context": {
+			"action": "update",
+			"type": "com.liferay.portal.kernel.model.User"
+		},
+		"object": {
+			"contact": {
+				"birthday": "0",
+				"classPK": 39473,
+				"contactId": 39474,
+				"createDate": "1627050629498",
+				"emailAddress": "scott.lang@test.com",
+				"firstName": "Scott",
+				"jobTitle": "",
+				"lastName": "Lang",
+				"modifiedDate": "1627050657301"
+			},
+			"createDate": 1627050629498,
+			"emailAddress": "scott.lang@test.com",
+			"modifiedDate": 1627050657301,
+			"osbAsahDataSourceId": "349978106408647035",
+			"userId": "39473"
+		},
+		"projectId": "test"
+	},
+	{
+		"context": {
+			"action": "addAssociation",
+			"type": "com.liferay.portal.kernel.model.Role"
+		},
+		"object": {
+			"classPK": 39521,
+			"emailAddress": "scott.lang@test.com",
+			"osbAsahDataSourceId": "349978106408647035",
+			"userId": 39473
+		},
+		"projectId": "test"
+	}
+]
