@@ -1172,7 +1172,4 @@ public class IndividualDog extends BaseFaroInfoDog {
 	@Autowired
 	private ObjectMapper _objectMapper;
 
-	@Autowired
-	private SegmentDog _segmentDog;
-
 }
