@@ -16,11 +16,13 @@ package com.liferay.osb.customer.admin.internal.events;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.customer.admin.constants.EntitlementConstants;
+import com.liferay.osb.customer.admin.internal.configuration.LoginPostActionConfiguration;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.legacy.web.service.LegacyWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Entitlement;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.events.LifecycleAction;
@@ -44,13 +46,16 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
  */
 @Component(
+	configurationPid = "com.liferay.osb.customer.admin.internal.events.LoginPostAction",
 	immediate = true, property = "key=login.events.post",
 	service = LifecycleAction.class
 )
@@ -63,13 +68,24 @@ public class LoginPostAction extends Action {
 		try {
 			User user = _portal.getUser(request);
 
-			synchronizeWithKoroneiki(user);
+			if (_loginPostActionConfiguration.syncKoroneiki()) {
+				synchronizeWithKoroneiki(user);
+			}
 
-			synchronizeWithWeb(user);
+			if (_loginPostActionConfiguration.syncWeb()) {
+				synchronizeWithWeb(user);
+			}
 		}
 		catch (Exception e) {
 			_log.error(e, e);
 		}
+	}
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) throws Exception {
+		_loginPostActionConfiguration = ConfigurableUtil.createConfigurable(
+			LoginPostActionConfiguration.class, properties);
 	}
 
 	protected Map<String, Long> getEntitlements(User user) throws Exception {
@@ -276,6 +292,8 @@ public class LoginPostAction extends Action {
 
 	@Reference
 	private LegacyWebService _legacyWebService;
+
+	private volatile LoginPostActionConfiguration _loginPostActionConfiguration;
 
 	@Reference
 	private OrganizationLocalService _organizationLocalService;
