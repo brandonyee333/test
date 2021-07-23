@@ -67,7 +67,7 @@ public class ContentRecommendationDataprocMessageProcessor
 		if (Objects.equals(operation, "UpdateJobRun")) {
 			JSONObject jsonObject = messageJSONObject.getJSONObject("body");
 
-			jsonObject.put("lastUpdatedDate", DateUtil.newUTCDateString());
+			jsonObject.put("lastUpdatedDate", DateUtil.newDateString());
 
 			_faroInfoElasticsearchInvoker.update(
 				"job-runs", messageJSONObject.getString("jobRunId"),
@@ -84,14 +84,14 @@ public class ContentRecommendationDataprocMessageProcessor
 		_faroInfoElasticsearchInvoker.update(
 			"job-runs",
 			jobRunJSONObject.put(
-				"lastUpdatedDate", DateUtil.newUTCDateString()
+				"lastUpdatedDate", DateUtil.newDateString()
 			).put(
 				"status", "COMPLETED"
 			));
 	}
 
 	private void _publishJobRun(JSONObject jobRunJSONObject) {
-		String dateString = DateUtil.newUTCDateString();
+		String dateString = DateUtil.newDateString();
 
 		_faroInfoElasticsearchInvoker.update(
 			"job-runs",

@@ -60,7 +60,7 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 			JSONUtil.put(
 				"estimatedDaysLeft", 0
 			).put(
-				"processedDate", DateUtil.newUTCDateString()
+				"processedDate", DateUtil.newDateString()
 			).put(
 				"variantMetrics",
 				JSONUtil.putAll(
@@ -87,7 +87,7 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 			JSONUtil.put(
 				"estimatedDaysLeft", 0
 			).put(
-				"processedDate", DateUtil.newUTCDateString()
+				"processedDate", DateUtil.newDateString()
 			).put(
 				"variantMetrics",
 				JSONUtil.putAll(
@@ -119,7 +119,7 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 			JSONUtil.put(
 				"estimatedDaysLeft", 0
 			).put(
-				"processedDate", DateUtil.newUTCDateString()
+				"processedDate", DateUtil.newDateString()
 			).put(
 				"variantMetrics",
 				JSONUtil.putAll(

@@ -81,7 +81,7 @@ public class DataprocSparkManagerMonitoringNanite extends BaseNanite {
 			return;
 		}
 
-		jobRunJSONObject.put("lastUpdatedDate", DateUtil.newUTCDateString());
+		jobRunJSONObject.put("lastUpdatedDate", DateUtil.newDateString());
 
 		DataprocJobState dataprocJobState = _dataprocSparkManager.getJobState(
 			sparkJobId);

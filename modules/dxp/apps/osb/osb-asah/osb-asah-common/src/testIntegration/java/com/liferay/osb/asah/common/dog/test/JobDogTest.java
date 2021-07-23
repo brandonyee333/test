@@ -136,7 +136,7 @@ public class JobDogTest {
 	@Test
 	public void testGetJobRunDate() {
 		LocalDateTime nowLocalDateTime = LocalDateTime.parse(
-			DateUtil.newUTCDateString(),
+			DateUtil.newDateString(),
 			DateTimeFormatter.ofPattern(DateUtil.PATTERN_ISO_8601));
 
 		LocalDateTime expectedRunLocalDateTime = nowLocalDateTime.minusDays(1);

@@ -454,11 +454,11 @@ public class DataControlNanite extends BaseNanite {
 
 		if (dataControlTaskStatus == DataControlTaskStatus.COMPLETED) {
 			dataControlTaskJSONObject.put(
-				"completeDate", DateUtil.newUTCDateString());
+				"completeDate", DateUtil.newDateString());
 		}
 		else if (dataControlTaskStatus == DataControlTaskStatus.RUNNING) {
 			dataControlTaskJSONObject.put(
-				"startDate", DateUtil.newUTCDateString());
+				"startDate", DateUtil.newDateString());
 		}
 
 		dataControlTaskJSONObject.put(

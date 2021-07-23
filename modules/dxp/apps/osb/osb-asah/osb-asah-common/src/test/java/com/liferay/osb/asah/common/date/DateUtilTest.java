@@ -227,7 +227,7 @@ public class DateUtilTest {
 	public void testNewUTCDateString() {
 		String utcString = DateUtil.toUTCString(new Date());
 
-		String utcDateString = DateUtil.newUTCDateString();
+		String utcDateString = DateUtil.newDateString();
 
 		Assert.assertTrue(
 			"New UTC date string did not start with " +
