@@ -44,7 +44,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Brian Wing Shun Chan
  */
-@Component(immediate = true, service = ObjectDefinitionDeployer.class)
+@Component(
+	immediate = true, property = "service.ranking:Integer=" + Integer.MAX_VALUE,
+	service = ObjectDefinitionDeployer.class
+)
 public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	public List<ServiceRegistration<?>> deploy(
@@ -108,9 +111,13 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					StringUtil.read(
 						ObjectDefinitionDeployerImpl.class.getClassLoader(),
 						"resource-actions/resource-actions.xml.tpl"),
-					new String[] {"[$MODEL_NAME$]", "[$RESOURCE_NAME$]"},
+					new String[] {
+						"[$MODEL_NAME$]", "[$PORTLET_NAME$]",
+						"[$RESOURCE_NAME$]"
+					},
 					new String[] {
 						objectDefinition.getClassName(),
+						objectDefinition.getPortletId(),
 						objectDefinition.getResourceName()
 					})));
 	}
