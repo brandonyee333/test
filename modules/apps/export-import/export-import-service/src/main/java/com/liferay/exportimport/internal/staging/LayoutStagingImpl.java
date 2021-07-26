@@ -369,8 +369,7 @@ public class LayoutStagingImpl implements LayoutStaging {
 	}
 
 	@Override
-	public Layout publishLayout(
-			Layout draftLayout, Layout layout, long userId)
+	public Layout publishLayout(Layout draftLayout, Layout layout, long userId)
 		throws Exception {
 
 		LayoutRevision layoutRevision = LayoutStagingUtil.getLayoutRevision(
