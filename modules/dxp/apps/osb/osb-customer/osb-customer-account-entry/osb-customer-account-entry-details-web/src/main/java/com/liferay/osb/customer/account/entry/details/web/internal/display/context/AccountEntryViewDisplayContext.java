@@ -715,8 +715,7 @@ public class AccountEntryViewDisplayContext {
 			ProductEntryLocalServiceUtil.getProductEntry(
 				accountEnvironment.getProductEntryId());
 
-		jsonObject.put(
-			"productEntryDisplayName", productEntry.getDisplayName());
+		jsonObject.put("productEntryDisplayName", productEntry.getName());
 		jsonObject.put("productEntryId", productEntry.getProductEntryId());
 
 		return jsonObject;
@@ -848,9 +847,9 @@ public class AccountEntryViewDisplayContext {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		jsonObject.put("displayName", productEntry.getDisplayName());
+		jsonObject.put("displayName", productEntry.getName());
 
-		if (productEntry.isCommerce() || productEntry.isDigitalEnterprise()) {
+		if (productEntry.isCommerce() || productEntry.isDXP()) {
 			if (enterpriseSearchEnvironments.contains(
 					productEntry.getEnvironment())) {
 

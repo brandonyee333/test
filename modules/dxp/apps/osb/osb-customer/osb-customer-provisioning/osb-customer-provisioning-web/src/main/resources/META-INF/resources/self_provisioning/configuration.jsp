@@ -37,7 +37,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 			<aui:row>
 				<aui:col width="<%= 50 %>">
 					<h2>
-						<%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %>
+						<%= ProductEntryConstants.ROOT_NAME_DXP %>
 					</h2>
 
 					<aui:select label="product-versions" multiple="<%= true %>" name="digitalEnterprise_productMinorVersions">

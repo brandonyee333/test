@@ -106,10 +106,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 				if ((curProductEntry.isCommerceSubscription() &&
 					 productEntry.isCommerceSubscription()) ||
-					(curProductEntry.isDigitalEnterprise() &&
-					 productEntry.isDigitalEnterprise()) ||
-					(curProductEntry.isDigitalEnterprise() &&
-					 productEntry.isDXPCloud()) ||
+					(curProductEntry.isDXP() && productEntry.isDXP()) ||
+					(curProductEntry.isDXP() && productEntry.isDXPCloud()) ||
 					(curProductEntry.isPortal() && productEntry.isPortal())) {
 
 					hasActiveProduct = true;

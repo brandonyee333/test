@@ -129,10 +129,8 @@ public class ProductEntryLocalServiceImpl
 		for (ProductEntry curProductEntry : productEntries) {
 			if ((curProductEntry.isCommerceSubscription() &&
 				 productEntry.isCommerceSubscription()) ||
-				(curProductEntry.isDigitalEnterprise() &&
-				 productEntry.isDigitalEnterprise()) ||
-				(curProductEntry.isDigitalEnterprise() &&
-				 productEntry.isDXPCloud()) ||
+				(curProductEntry.isDXP() && productEntry.isDXP()) ||
+				(curProductEntry.isDXP() && productEntry.isDXPCloud()) ||
 				(curProductEntry.isPortal() && productEntry.isPortal())) {
 
 				return curProductEntry;

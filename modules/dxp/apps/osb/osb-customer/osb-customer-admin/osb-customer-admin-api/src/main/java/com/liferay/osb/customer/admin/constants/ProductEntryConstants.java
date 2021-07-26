@@ -17,7 +17,6 @@ package com.liferay.osb.customer.admin.constants;
 import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -213,8 +212,7 @@ public class ProductEntryConstants {
 
 	public static final String ROOT_DXP_CLOUD = "DXP Cloud";
 
-	public static final String ROOT_NAME_DIGITAL_ENTERPRISE =
-		"Digital Enterprise";
+	public static final String ROOT_NAME_DXP = "DXP";
 
 	public static final String ROOT_NAME_PORTAL = "Portal";
 
@@ -256,11 +254,6 @@ public class ProductEntryConstants {
 		}
 
 		return majorListType;
-	}
-
-	public static String getDisplayName(String productEntryName) {
-		return StringUtil.replace(
-			productEntryName, ROOT_NAME_DIGITAL_ENTERPRISE, "Liferay DXP");
 	}
 
 	public static String getEnvironmentLabel(int environment) {

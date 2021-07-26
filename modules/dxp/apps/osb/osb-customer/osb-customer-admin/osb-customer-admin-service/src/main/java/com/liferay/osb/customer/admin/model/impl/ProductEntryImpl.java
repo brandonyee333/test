@@ -75,10 +75,6 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 			ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS);
 	}
 
-	public String getDisplayName() {
-		return ProductEntryConstants.getDisplayName(getName());
-	}
-
 	public String getEnvironmentLabel() {
 		return ProductEntryConstants.getEnvironmentLabel(getEnvironment());
 	}
@@ -179,14 +175,10 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		return false;
 	}
 
-	public boolean isDigitalEnterprise() {
+	public boolean isDXP() {
 		String name = getName();
 
-		if (name.contains(ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE)) {
-			return true;
-		}
-
-		if (name.startsWith("DXP")) {
+		if (name.startsWith(ProductEntryConstants.ROOT_NAME_DXP)) {
 			return true;
 		}
 

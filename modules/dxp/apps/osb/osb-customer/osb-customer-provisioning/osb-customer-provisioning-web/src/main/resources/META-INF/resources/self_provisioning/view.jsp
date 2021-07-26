@@ -194,8 +194,8 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 										productEntryRootName = ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION;
 									}
 
-									if (productEntry.isDigitalEnterprise() || productEntry.isDXPCloud()) {
-										productEntryRootName = ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE;
+									if (productEntry.isDXP() || productEntry.isDXPCloud()) {
+										productEntryRootName = ProductEntryConstants.ROOT_NAME_DXP;
 									}
 
 									if (productEntry.isPortal()) {
@@ -272,7 +272,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 							%>
 
 						}
-						else if (productEntryRootName == '<%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %>') {
+						else if (productEntryRootName == '<%= ProductEntryConstants.ROOT_NAME_DXP %>') {
 
 							<%
 							for (long productMinorVersion : digitalEnterpriseProductMinorVersions) {
