@@ -5,7 +5,7 @@ dependencies {
 	compileInclude group: "io.jsonwebtoken", name: "jjwt", version: "0.4"
 	compileInclude group: "joda-time", name: "joda-time", version: "2.10.6"
 	compileInclude group: "org.apache.httpcomponents", name: "httpclient", version: "4.5.13"
-	compileInclude group: "org.apache.httpcomponents", name: "httpcore", version: "4.4.13"
+	compileInclude group: "org.apache.httpcomponents", name: "httpcore", version: "4.4.14"
 	compileInclude group: "org.joda", name: "joda-convert", version: "1.9.2"
 
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"

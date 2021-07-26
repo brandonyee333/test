@@ -5,7 +5,7 @@ dependencies {
 	compileInclude group: "commons-lang", name: "commons-lang", version: "2.6"
 	compileInclude group: "joda-time", name: "joda-time", version: "2.2"
 	compileInclude group: "org.apache.httpcomponents", name: "httpclient", version: "4.5.13"
-	compileInclude group: "org.apache.httpcomponents", name: "httpcore", version: "4.4.13"
+	compileInclude group: "org.apache.httpcomponents", name: "httpcore", version: "4.4.14"
 	compileInclude group: "org.apache.httpcomponents", name: "httpmime", version: "4.5.13"
 	compileInclude group: "org.apache.santuario", name: "xmlsec", version: "1.5.7"
 	compileInclude group: "org.apache.velocity", name: "velocity", version: "1.7"
