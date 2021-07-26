@@ -79,7 +79,6 @@ public class DXPEntitiesMessageProcessorTest {
 			"scott.lang@test.com");
 
 		Assert.assertNotNull(individual);
-
 		Assert.assertEquals(
 			SetUtil.of(dxpEntity.getId()), individual.getRoleIds());
 	}
