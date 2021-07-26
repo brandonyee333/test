@@ -135,9 +135,7 @@ exports[`AddTicketAttachment renders correctly 1`] = `
         <span>
           Your file will be uploaded to a file server in the United States.
         </span>
-        <div>
-          please-note-that-the-location-of-the-server-to-which-the-file-will-be-uploaded-is-based-on-the-location-of-the-liferay-center-providing-support-to-your-company
-        </div>
+        please-note-that-the-location-of-the-server-to-which-the-file-will-be-uploaded-is-based-on-the-location-of-the-liferay-center-providing-support-to-your-company.-for-more-detail-regarding-the-applicable-server-locations-and-location-of-liferay-support-staff-who-might-access-the-data-please-consult-this-x
       </div>
       <div
         class="form-group"

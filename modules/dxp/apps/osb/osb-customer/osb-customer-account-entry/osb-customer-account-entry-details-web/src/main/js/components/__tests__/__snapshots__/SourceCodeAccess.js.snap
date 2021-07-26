@@ -14,9 +14,7 @@ exports[`SourceCodeAccess renders correctly 1`] = `
       <div
         class="panel-subtitle"
       >
-        <div>
-          add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-this-article-for-details
-        </div>
+        add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-x-article-for-details
       </div>
     </div>
     <button
@@ -159,9 +157,7 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
       <div
         class="panel-subtitle"
       >
-        <div>
-          add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-this-article-for-details
-        </div>
+        add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-x-article-for-details
       </div>
     </div>
     <button
@@ -367,9 +363,7 @@ exports[`SourceCodeAccess renders no results message when there are no collabora
       <div
         class="panel-subtitle"
       >
-        <div>
-          add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-this-article-for-details
-        </div>
+        add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-x-article-for-details
       </div>
     </div>
     <button
@@ -409,9 +403,7 @@ exports[`SourceCodeAccess renders the header for collaborators list 1`] = `
       <div
         class="panel-subtitle"
       >
-        <div>
-          add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-this-article-for-details
-        </div>
+        add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-x-article-for-details
       </div>
     </div>
     <button
