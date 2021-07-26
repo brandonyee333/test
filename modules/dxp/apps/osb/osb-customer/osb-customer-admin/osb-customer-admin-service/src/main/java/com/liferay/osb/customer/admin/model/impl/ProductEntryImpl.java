@@ -178,7 +178,9 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 	public boolean isDXP() {
 		String name = getName();
 
-		if (name.startsWith(ProductEntryConstants.ROOT_NAME_DXP)) {
+		if (name.startsWith(ProductEntryConstants.ROOT_NAME_DXP) &&
+			!name.contains(ProductEntryConstants.ROOT_DXP_CLOUD)) {
+
 			return true;
 		}
 
