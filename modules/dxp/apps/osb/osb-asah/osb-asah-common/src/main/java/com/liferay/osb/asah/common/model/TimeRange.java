@@ -47,6 +47,11 @@ public class TimeRange {
 		}
 
 		@Override
+		public LocalDateTime getEndLocalDateTime() {
+			return LocalDateTime.now(TimeZoneDogUtil.getZoneId());
+		}
+
+		@Override
 		public LocalDateTime getStartLocalDateTime() {
 			LocalDateTime localDateTime = getEndLocalDateTime();
 
