@@ -103,7 +103,11 @@ public class Event {
 	}
 
 	public Timestamp getCreateDate() {
-		return _createDate;
+		if (_createDate == null) {
+			return null;
+		}
+
+		return new Timestamp(_createDate.getTime());
 	}
 
 	public String getDataSourceId() {
@@ -111,11 +115,19 @@ public class Event {
 	}
 
 	public Date getDate() {
-		return _date;
+		if (_date == null) {
+			return null;
+		}
+
+		return new Date(_date.getTime());
 	}
 
 	public Timestamp getEventDate() {
-		return _eventDate;
+		if (_eventDate == null) {
+			return null;
+		}
+
+		return new Timestamp(_eventDate.getTime());
 	}
 
 	public String getEventId() {
@@ -180,7 +192,9 @@ public class Event {
 	}
 
 	public void setCreateDate(Timestamp createDate) {
-		_createDate = createDate;
+		if (createDate != null) {
+			_createDate = new Timestamp(createDate.getTime());
+		}
 	}
 
 	public void setDataSourceId(String dataSourceId) {
@@ -188,11 +202,15 @@ public class Event {
 	}
 
 	public void setDate(Date date) {
-		_date = date;
+		if (date != null) {
+			_date = new Date(date.getTime());
+		}
 	}
 
 	public void setEventDate(Timestamp eventDate) {
-		_eventDate = eventDate;
+		if (eventDate != null) {
+			_eventDate = new Timestamp(_eventDate.getTime());
+		}
 	}
 
 	public void setEventId(String eventId) {

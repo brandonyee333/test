@@ -138,7 +138,11 @@ public class Session {
 	}
 
 	public Date getDate() {
-		return _date;
+		if (_date == null) {
+			return null;
+		}
+
+		return new Date(_date.getTime());
 	}
 
 	public String getDeviceType() {
@@ -154,7 +158,11 @@ public class Session {
 	}
 
 	public Timestamp getFirstEventDate() {
-		return _firstEventDate;
+		if (_firstEventDate == null) {
+			return null;
+		}
+
+		return new Timestamp(_firstEventDate.getTime());
 	}
 
 	public int getInteractionNumber() {
@@ -166,7 +174,11 @@ public class Session {
 	}
 
 	public Timestamp getLastEventDate() {
-		return _lastEventDate;
+		if (_lastEventDate == null) {
+			return null;
+		}
+
+		return new Timestamp(_lastEventDate.getTime());
 	}
 
 	public int getPageViewsCount() {
@@ -248,7 +260,9 @@ public class Session {
 	}
 
 	public void setDate(Date date) {
-		_date = date;
+		if (date != null) {
+			_date = new Date(date.getTime());
+		}
 	}
 
 	public void setDeviceType(String deviceType) {
@@ -264,7 +278,9 @@ public class Session {
 	}
 
 	public void setFirstEventDate(Timestamp firstEventDate) {
-		_firstEventDate = firstEventDate;
+		if (firstEventDate != null) {
+			_firstEventDate = new Timestamp(firstEventDate.getTime());
+		}
 	}
 
 	public void setInteractionNumber(int interactionNumber) {
@@ -276,7 +292,9 @@ public class Session {
 	}
 
 	public void setLastEventDate(Timestamp lastEventDate) {
-		_lastEventDate = lastEventDate;
+		if (lastEventDate != null) {
+			_lastEventDate = new Timestamp(lastEventDate.getTime());
+		}
 	}
 
 	public void setPageViewsCount(int pageViewsCount) {
