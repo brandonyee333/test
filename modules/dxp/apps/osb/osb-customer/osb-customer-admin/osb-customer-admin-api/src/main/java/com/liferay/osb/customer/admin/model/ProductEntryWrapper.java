@@ -185,11 +185,6 @@ public class ProductEntryWrapper
 		return _productEntry.getCreateDate();
 	}
 
-	@Override
-	public String getDisplayName() {
-		return _productEntry.getDisplayName();
-	}
-
 	/**
 	 * Returns the environment of this product entry.
 	 *
@@ -383,8 +378,8 @@ public class ProductEntryWrapper
 	}
 
 	@Override
-	public boolean isDigitalEnterprise() {
-		return _productEntry.isDigitalEnterprise();
+	public boolean isDXP() {
+		return _productEntry.isDXP();
 	}
 
 	@Override

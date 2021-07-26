@@ -83,8 +83,6 @@ public interface ProductEntry extends PersistedModel, ProductEntryModel {
 	public java.util.List<com.liferay.portal.kernel.model.ListType>
 		getAllVersionsListTypes();
 
-	public String getDisplayName();
-
 	public String getEnvironmentLabel();
 
 	public java.util.List<com.liferay.portal.kernel.model.ListType>
@@ -106,7 +104,7 @@ public interface ProductEntry extends PersistedModel, ProductEntryModel {
 
 	public boolean isDeviceDetection();
 
-	public boolean isDigitalEnterprise();
+	public boolean isDXP();
 
 	public boolean isDXPCloud();
 
