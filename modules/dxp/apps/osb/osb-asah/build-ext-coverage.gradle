@@ -27,7 +27,8 @@ task jacocoTestCoverageVerification(type: JacocoCoverageVerification)
 
 Set<Project> javaSubprojects = subprojects.findAll {
 	FileUtil.exists(it, "src/main/java") &&
-	it.name != "osb-asah-test-util"
+	it.name != "osb-asah-test-util" &&
+	it.name != "osb-asah-spark-java"
 }
 
 allprojects {

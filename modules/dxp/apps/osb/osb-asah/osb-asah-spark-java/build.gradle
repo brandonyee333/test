@@ -1,5 +1,12 @@
+apply plugin: "com.liferay.source.formatter"
+apply plugin: "java"
+
 dependencies {
 	compile group: "org.apache.spark", name: "spark-core_2.12", version: "3.1.0"
 	compile group: "org.apache.spark", name: "spark-sql_2.12", version: "3.1.0"
 	compile group: "org.scala-lang", name: "scala-library", version: "2.12"
+}
+
+repositories {
+	mavenCentral()
 }
