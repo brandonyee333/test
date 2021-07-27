@@ -18,6 +18,7 @@ import com.liferay.dynamic.data.mapping.configuration.DDMWebConfiguration;
 import com.liferay.dynamic.data.mapping.constants.DDMActionKeys;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.item.provider.InfoItemFormProvider;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
@@ -58,8 +59,11 @@ public class InformationTemplatesTemplateDisplayContext
 
 	@Override
 	public String getTemplateType(long classNameId) {
-		return ResourceActionsUtil.getModelResource(
-			themeDisplay.getLocale(), PortalUtil.getClassName(classNameId));
+		return LanguageUtil.format(
+			themeDisplay.getLocale(), "x-template",
+			ResourceActionsUtil.getModelResource(
+				themeDisplay.getLocale(), PortalUtil.getClassName(classNameId)),
+			false);
 	}
 
 	@Override
