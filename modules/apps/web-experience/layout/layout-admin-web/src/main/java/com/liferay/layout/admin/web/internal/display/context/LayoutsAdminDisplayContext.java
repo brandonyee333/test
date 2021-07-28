@@ -15,6 +15,7 @@
 package com.liferay.layout.admin.web.internal.display.context;
 
 import com.liferay.layout.admin.web.internal.constants.LayoutAdminPortletKeys;
+import com.liferay.layout.admin.web.internal.util.RestrictedLayoutListUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -235,6 +236,19 @@ public class LayoutsAdminDisplayContext extends BaseLayoutDisplayContext {
 		return portletURL;
 	}
 
+	public List<LayoutDescription> getRestrictedLayoutDescriptions() {
+		if (_restrictedLayoutDescriptions != null) {
+			return _restrictedLayoutDescriptions;
+		}
+
+		_restrictedLayoutDescriptions =
+			RestrictedLayoutListUtil.getLayoutDescriptions(
+				getGroupId(), isPrivateLayout(), getRootNodeName(),
+				themeDisplay.getLocale());
+
+		return _restrictedLayoutDescriptions;
+	}
+
 	@Override
 	public Group getSelGroup() {
 		return _groupDisplayContextHelper.getSelGroup();
@@ -334,6 +348,7 @@ public class LayoutsAdminDisplayContext extends BaseLayoutDisplayContext {
 	private Organization _organization;
 	private String _pagesName;
 	private String _redirect;
+	private List<LayoutDescription> _restrictedLayoutDescriptions;
 	private User _selUser;
 	private UserGroup _userGroup;
 
