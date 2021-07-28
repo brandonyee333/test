@@ -96,7 +96,7 @@ public class DXPEntitiesMessageProcessor {
 			List<DXPUser> dxpUsers =
 				_dxpEntityDog.findDXPUsersByMembershipClassNameAndMembershipId(
 					dxpEntityType.getClassName(),
-					fieldsJSONObject.getString(dxpEntityType.getIdFieldName()));
+					fieldsJSONObject.getLong(dxpEntityType.getIdFieldName()));
 
 			dxpUsers.forEach(
 				user -> {

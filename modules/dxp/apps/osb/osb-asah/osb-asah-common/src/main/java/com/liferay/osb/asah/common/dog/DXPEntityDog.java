@@ -93,13 +93,13 @@ public class DXPEntityDog {
 	}
 
 	public List<DXPUser> findDXPUsersByMembershipClassNameAndMembershipId(
-		String membershipClassName, String membershipId) {
+		String membershipClassName, Long membershipId) {
 
 		return ListUtil.map(
 			_processDXPEntities(
 				this::_mapDXPUser,
 				_dxpEntityRepository.findByMembershipClassNameAndMembershipId(
-					membershipClassName, Long.valueOf(membershipId))),
+					membershipClassName, membershipId)),
 			dxpEntity -> (DXPUser)dxpEntity);
 	}
 
