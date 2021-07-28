@@ -89,7 +89,8 @@ allprojects {
 }
 
 configure(javaSubprojects) {
-	apply plugin: "com.liferay.spring.boot.defaults"
+	apply plugin: "com.liferay.test.integration.base"
+	apply plugin: "eclipse"
 
 	configurations {
 		testIntegrationCompile.extendsFrom testCompile
