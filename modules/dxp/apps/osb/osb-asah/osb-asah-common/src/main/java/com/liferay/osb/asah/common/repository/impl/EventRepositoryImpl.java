@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.AttributeType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
+import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.filter.FilterOperator;
 import com.liferay.osb.asah.common.model.filter.FilterOperators;
@@ -33,6 +34,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -151,21 +154,25 @@ public class EventRepositoryImpl extends BaseRepository {
 
 	public Map<Object, Number> getEventAttributeValues(
 		AnalysisType analysisType, @Nullable BreakdownItem breakdownItem,
-		@Nullable Long channelId,
+		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
-		long eventAttributeDefinitionId, @Nullable Long eventDefinitionId,
-		Pageable pageable, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate, @Nullable String sortType) {
+		@Nullable Long eventDefinitionId, Pageable pageable,
+		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate,
+		@Nullable String sortType) {
 
 		Map<Object, Number> eventAttributeValues = new LinkedHashMap<>();
 
 		Field<Number> selectField = _getSelectField(analysisType);
-		Field valueField = DSL.field("EventAttribute.value");
+
+		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
+
+		Field valueField = DSL.field(
+			attributeType.getQualifiedAttributeValueFieldName(null));
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		SelectJoinStep<Record> selectJoinStep = _buildSelectJoinStep(
-			breakdownItem, eventAttributeDefinitionId,
+			breakdownItem, eventAnalysisBreakdown,
 			selectSelectStep.select(
 				selectField, valueField
 			).from(
@@ -195,22 +202,25 @@ public class EventRepositoryImpl extends BaseRepository {
 	}
 
 	private SelectJoinStep _buildSelectJoinStep(
-		BreakdownItem breakdownItem, Long eventAttributeDefinitionId,
+		BreakdownItem breakdownItem,
+		EventAnalysisBreakdown eventAnalysisBreakdown,
 		SelectJoinStep selectJoinStep) {
 
+		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
+
 		selectJoinStep = selectJoinStep.join(
-			"EventAttribute"
+			attributeType.getTableName()
 		).on(
 			DSL.field(
-				"Event.id"
+				_getJoinFieldTableName(attributeType)
 			).eq(
-				DSL.field("EventAttribute.eventId")
-			)
-		).and(
-			DSL.field(
-				"EventAttribute.eventAttributeDefinitionId"
-			).eq(
-				eventAttributeDefinitionId
+				DSL.field(attributeType.getQualifiedJoinFieldName(null))
+			).and(
+				DSL.field(
+					attributeType.getQualifiedAttributeIdFieldName(null)
+				).eq(
+					Long.valueOf(eventAnalysisBreakdown.getAttributeId())
+				)
 			)
 		);
 
@@ -225,30 +235,34 @@ public class EventRepositoryImpl extends BaseRepository {
 			EventAnalysisFilter eventAnalysisFilter = eventAnalysisFilters.get(
 				i);
 
-			String alias = "eventattribute" + i;
+			attributeType = eventAnalysisFilter.getAttributeType();
+
+			String alias =
+				StringUtils.lowerCase(attributeType.getTableName()) + i;
+
 			List<String> values = eventAnalysisFilter.getValues();
 
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
-					"EventAttribute"
+					attributeType.getTableName()
 				).as(
 					alias
 				)
 			).on(
 				DSL.field(
-					"Event.id"
+					_getJoinFieldTableName(attributeType)
 				).eq(
-					DSL.field(alias + ".eventId")
+					DSL.field(attributeType.getQualifiedJoinFieldName(alias))
 				)
 			).and(
 				DSL.and(
 					DSL.field(
-						alias + ".eventAttributeDefinitionId"
+						attributeType.getQualifiedAttributeIdFieldName(alias)
 					).eq(
 						Long.valueOf(eventAnalysisFilter.getAttributeId())
 					),
 					DSL.field(
-						alias + ".value"
+						attributeType.getQualifiedAttributeValueFieldName(alias)
 					).eq(
 						values.get(0)
 					))

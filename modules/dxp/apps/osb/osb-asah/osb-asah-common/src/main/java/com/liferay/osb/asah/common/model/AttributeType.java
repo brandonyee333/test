@@ -19,22 +19,75 @@ package com.liferay.osb.asah.common.model;
  */
 public enum AttributeType {
 
-	ACCOUNT("ownerId", "Field"), EVENT("eventId", "EventAttribute"),
-	INDIVIDUAL("ownerId", "Field"), USER_SESSION("individualId", "UserSession");
+	ACCOUNT(null, null, "ownerId", "Field"),
+	EVENT("eventAttributeDefinitionId", "value", "eventId", "EventAttribute"),
+	INDIVIDUAL(null, null, "ownerId", "Field"),
+	USER_SESSION(null, null, "individualId", "UserSession");
+
+	public String getAttributeIdFieldName() {
+		return _attributeIdFieldName;
+	}
+
+	public String getAttributeValueFieldName(String tableName) {
+		return _attributeValueFieldName;
+	}
 
 	public String getJoinFieldName() {
 		return _joinFieldName;
+	}
+
+	public String getQualifiedAttributeIdFieldName(String tableName) {
+		if (tableName == null) {
+			tableName = _tableName;
+		}
+
+		return tableName.concat(
+			"."
+		).concat(
+			_attributeIdFieldName
+		);
+	}
+
+	public String getQualifiedAttributeValueFieldName(String tableName) {
+		if (tableName == null) {
+			tableName = _tableName;
+		}
+
+		return tableName.concat(
+			"."
+		).concat(
+			_attributeValueFieldName
+		);
+	}
+
+	public String getQualifiedJoinFieldName(String tableName) {
+		if (tableName == null) {
+			tableName = _tableName;
+		}
+
+		return tableName.concat(
+			"."
+		).concat(
+			_joinFieldName
+		);
 	}
 
 	public String getTableName() {
 		return _tableName;
 	}
 
-	private AttributeType(String joinFieldName, String tableName) {
+	private AttributeType(
+		String attributeIdFieldName, String attributeValueFieldName,
+		String joinFieldName, String tableName) {
+
+		_attributeIdFieldName = attributeIdFieldName;
+		_attributeValueFieldName = attributeValueFieldName;
 		_joinFieldName = joinFieldName;
 		_tableName = tableName;
 	}
 
+	private final String _attributeIdFieldName;
+	private final String _attributeValueFieldName;
 	private final String _joinFieldName;
 	private final String _tableName;
 

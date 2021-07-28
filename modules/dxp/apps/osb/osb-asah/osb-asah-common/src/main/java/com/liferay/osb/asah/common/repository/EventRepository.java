@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
+import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
 
@@ -73,10 +74,10 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 
 	public Map<Object, Number> getEventAttributeValues(
 		AnalysisType analysisType, @Nullable BreakdownItem breakdownItem,
-		@Nullable Long channelId,
+		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
-		long eventAttributeDefinitionId, @Nullable Long eventDefinitionId,
-		Pageable pageable, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate, @Nullable String sortType);
+		@Nullable Long eventDefinitionId, Pageable pageable,
+		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate,
+		@Nullable String sortType);
 
 }
