@@ -16,6 +16,8 @@ package com.liferay.osb.asah.spark.session.model;
 
 import com.liferay.osb.asah.spark.common.DateUtil;
 
+import java.io.Serializable;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -25,13 +27,47 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Robson Pastor
  */
-public class Session {
+public class Session implements Serializable {
+
+	public Session() {
+	}
+
+	public Session(Event event) {
+		Map<String, String> eventContext = event.getContext();
+
+		_browserName = eventContext.get("browserName");
+
+		_channelId = event.getChannelId();
+		_city = eventContext.get("city");
+		_clientIp = event.getClientIp();
+		_country = eventContext.get("country");
+		_dataSourceId = event.getDataSourceId();
+		_date = event.getDate();
+		_deviceType = eventContext.get("deviceType");
+		_finished = false;
+		_firstEventDate = event.getEventDate();
+		_iterationNumber = 0;
+		_lastEventDate = event.getEventDate();
+		_platformName = eventContext.get("platformName");
+		_projectId = event.getProjectId();
+		_region = eventContext.get("region");
+
+		UUID id = UUID.randomUUID();
+
+		_sessionId = id.toString();
+
+		_userId = event.getUserId();
+		addEvent(event);
+	}
 
 	public void addEvent(Event event) {
+		event.setIterationNumber(_iterationNumber);
+
 		Map<String, String> eventContext = event.getContext();
 
 		String canonicalUrl = eventContext.get("canonicalUrl");
@@ -91,6 +127,7 @@ public class Session {
 			Objects.equals(_events, session._events) &&
 			Objects.equals(_finished, session._finished) &&
 			Objects.equals(_firstEventDate, session._firstEventDate) &&
+			Objects.equals(_iterationNumber, session._iterationNumber) &&
 			Objects.equals(_interactionsCount, session._interactionsCount) &&
 			Objects.equals(_interactionNumber, session._interactionNumber) &&
 			Objects.equals(_lastEventDate, session._lastEventDate) &&
@@ -343,6 +380,7 @@ public class Session {
 	private Timestamp _firstEventDate;
 	private int _interactionNumber;
 	private int _interactionsCount;
+	private int _iterationNumber;
 	private Timestamp _lastEventDate;
 	private int _pageViewsCount;
 	private String _platformName;
