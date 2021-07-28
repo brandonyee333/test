@@ -69,7 +69,7 @@ if (selLayout != null) {
 	<c:when test='<%= Objects.equals(id, "copy") %>'>
 
 		<%
-		request.setAttribute(WebKeys.LAYOUT_DESCRIPTIONS, layoutsAdminDisplayContext.getLayoutDescriptions());
+		request.setAttribute(WebKeys.LAYOUT_DESCRIPTIONS, layoutsAdminDisplayContext.getRestrictedLayoutDescriptions());
 		%>
 
 		<div class="layout-type">
