@@ -24,19 +24,19 @@ public class EventTest {
 
 	@Test
 	public void testIsInteraction() {
-		Assert.assertTrue(Event.isInteraction("pageDepthReached"));
 		Assert.assertFalse(Event.isInteraction("webContentViewed"));
+		Assert.assertTrue(Event.isInteraction("pageDepthReached"));
 	}
 
 	@Test
 	public void testIsPageViewed() {
-		Assert.assertTrue(Event.isPageViewed("Page", "pageViewed"));
-		Assert.assertFalse(Event.isPageViewed("WebContent", "pageViewed"));
 		Assert.assertFalse(Event.isPageViewed("Page", "pageDepthReached"));
 		Assert.assertFalse(
 			Event.isPageViewed("WebContent", "pageDepthReached"));
+		Assert.assertFalse(Event.isPageViewed("WebContent", "pageViewed"));
 		Assert.assertFalse(
 			Event.isPageViewed("WebContent", "webContentViewed"));
+		Assert.assertTrue(Event.isPageViewed("Page", "pageViewed"));
 	}
 
 }
