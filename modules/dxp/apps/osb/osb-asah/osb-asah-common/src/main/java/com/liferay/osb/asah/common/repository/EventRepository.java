@@ -77,6 +77,6 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		long eventAttributeDefinitionId, @Nullable Long eventDefinitionId,
 		Pageable pageable, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate);
+		@Nullable Date rangeStartDate, @Nullable String sortType);
 
 }

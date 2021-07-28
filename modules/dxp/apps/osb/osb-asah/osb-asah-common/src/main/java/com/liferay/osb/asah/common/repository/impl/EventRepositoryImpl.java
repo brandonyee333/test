@@ -39,6 +39,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.OrderField;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectHavingConditionStep;
@@ -156,7 +157,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		long eventAttributeDefinitionId, @Nullable Long eventDefinitionId,
 		Pageable pageable, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate) {
+		@Nullable Date rangeStartDate, @Nullable String sortType) {
 
 		Map<Object, Number> eventAttributeValues = new LinkedHashMap<>();
 
@@ -180,7 +181,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		).groupBy(
 			valueField
 		).orderBy(
-			selectField.desc()
+			_getOrderField(selectField, sortType)
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -411,6 +412,14 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		return "individualId";
+	}
+
+	private OrderField<?> _getOrderField(Field field, String sortType) {
+		if ((sortType == null) || sortType.equalsIgnoreCase("DESC")) {
+			return field.desc();
+		}
+
+		return field.asc();
 	}
 
 	private Field _getSelectField(AnalysisType analysisType) {

@@ -73,6 +73,10 @@ public class EventAnalysisBreakdown implements Serializable {
 		return _attributeType;
 	}
 
+	public String getSortType() {
+		return _sortType;
+	}
+
 	public void setAttributeId(String attributeId) {
 		_attributeId = attributeId;
 	}
@@ -81,7 +85,12 @@ public class EventAnalysisBreakdown implements Serializable {
 		_attributeType = attributeType;
 	}
 
+	public void setSortType(String sortType) {
+		_sortType = sortType;
+	}
+
 	private String _attributeId;
 	private AttributeType _attributeType;
+	private String _sortType;
 
 }

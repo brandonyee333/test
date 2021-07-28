@@ -190,7 +190,8 @@ public class EventAnalysisDog {
 			_eventRepository.getEventAttributeValues(
 				analysisType, null, channelId, eventAnalysisFilters,
 				Long.valueOf(eventAnalysisBreakdown.getAttributeId()),
-				eventDefinitionId, pageable, rangeEndDate, rangeStartDate),
+				eventDefinitionId, pageable, rangeEndDate, rangeStartDate,
+				eventAnalysisBreakdown.getSortType()),
 			eventDefinition.getDisplayName(), lastBreakdown, null);
 
 		_setChildrenBreakdownItems(
@@ -230,7 +231,8 @@ public class EventAnalysisDog {
 					analysisType, parentBreakdownItem, channelId,
 					eventAnalysisFilters,
 					Long.valueOf(eventAnalysisBreakdown.getAttributeId()),
-					eventDefinitionId, pageable, rangeEndDate, rangeStartDate),
+					eventDefinitionId, pageable, rangeEndDate, rangeStartDate,
+					eventAnalysisBreakdown.getSortType()),
 				eventDefinitionName, lastBreakdown, parentBreakdownItem);
 
 			parentBreakdownItem.setBreakdownItems(breakdownItems);
