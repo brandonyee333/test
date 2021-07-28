@@ -290,6 +290,21 @@ public class TimeRange {
 		return _key;
 	}
 
+	public TimeRange getPreviousTimeRange() {
+		LocalDateTime endLocalDateTime = getEndLocalDateTime();
+		LocalDateTime startLocalDateTime = getStartLocalDateTime();
+
+		int deltaDays = getDeltaDays();
+
+		if (equals(LAST_24_HOURS)) {
+			deltaDays = 1;
+		}
+
+		return of(
+			endLocalDateTime.minusDays(deltaDays),
+			startLocalDateTime.minusDays(deltaDays));
+	}
+
 	public int getRangeKey() {
 		return _rangeKey;
 	}
