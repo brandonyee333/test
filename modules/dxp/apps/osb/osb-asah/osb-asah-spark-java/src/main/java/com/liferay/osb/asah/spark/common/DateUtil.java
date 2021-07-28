@@ -20,6 +20,8 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import java.util.TimeZone;
+
 /**
  * @author Robson Pastor
  */
@@ -66,8 +68,16 @@ public class DateUtil {
 	}
 
 	private static final SimpleDateFormat _simpleDateFormat =
-		new SimpleDateFormat("yyyy-MM-dd");
+		new SimpleDateFormat("yyyy-MM-dd") {
+			{
+				setTimeZone(TimeZone.getTimeZone("GMT"));
+			}
+		};
 	private static final SimpleDateFormat _simpleTimestampFormat =
-		new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") {
+			{
+				setTimeZone(TimeZone.getTimeZone("GMT"));
+			}
+		};
 
 }
