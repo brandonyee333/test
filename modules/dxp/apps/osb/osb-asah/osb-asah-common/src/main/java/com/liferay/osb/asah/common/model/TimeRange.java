@@ -14,17 +14,20 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -208,6 +211,11 @@ public class TimeRange {
 		return _deltaDays;
 	}
 
+	public Date getEndDate() {
+		return DateUtil.toDate(
+			getEndLocalDateTime(), ZoneId.of(TimeZoneDogUtil.getTimeZoneId()));
+	}
+
 	public LocalDate getEndLocalDate() {
 		LocalDateTime localDateTime = LocalDateTime.now(getClock());
 
@@ -284,6 +292,12 @@ public class TimeRange {
 
 	public int getRangeKey() {
 		return _rangeKey;
+	}
+
+	public Date getStartDate() {
+		return DateUtil.toDate(
+			getStartLocalDateTime(),
+			ZoneId.of(TimeZoneDogUtil.getTimeZoneId()));
 	}
 
 	public LocalDate getStartLocalDate() {
