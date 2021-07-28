@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.EventAnalysis;
+import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventRepository;
@@ -38,8 +39,9 @@ public class EventAnalysisDog {
 
 	public EventAnalysis getEventAnalysis(
 		AnalysisType analysisType, Long channelId,
+		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
-		TimeRange timeRange) {
+		int page, int size, TimeRange timeRange) {
 
 		EventAnalysis eventAnalysis = new EventAnalysis();
 

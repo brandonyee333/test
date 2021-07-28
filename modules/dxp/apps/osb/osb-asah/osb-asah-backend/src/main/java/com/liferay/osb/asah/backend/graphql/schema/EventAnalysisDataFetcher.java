@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.dog.EventAnalysisDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.EventAnalysis;
+import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -42,6 +43,10 @@ public class EventAnalysisDataFetcher extends BaseDataFetcher<EventAnalysis> {
 		DataFetchingEnvironment environment,
 		SearchQueryContext searchQueryContext) {
 
+		List<EventAnalysisBreakdown> eventAnalysisBreakdowns = ListUtil.map(
+			environment.getArgument("eventAnalysisBreakdowns"),
+			eventAnalysisBreakdown -> new EventAnalysisBreakdown(
+				(Map<String, Object>)eventAnalysisBreakdown));
 		List<EventAnalysisFilter> eventAnalysisFilters = ListUtil.map(
 			environment.getArgument("eventAnalysisFilters"),
 			eventAnalysisFilter -> new EventAnalysisFilter(
@@ -50,8 +55,9 @@ public class EventAnalysisDataFetcher extends BaseDataFetcher<EventAnalysis> {
 		return _eventAnalysisDog.getEventAnalysis(
 			AnalysisType.valueOf(environment.getArgument("analysisType")),
 			Long.valueOf(environment.getArgument("channelId")),
-			eventAnalysisFilters,
+			eventAnalysisBreakdowns, eventAnalysisFilters,
 			Long.valueOf(environment.getArgument("eventDefinitionId")),
+			environment.getArgument("page"), environment.getArgument("size"),
 			searchQueryContext.getTimeRange());
 	}
 

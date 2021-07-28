@@ -19,10 +19,13 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.data.relational.core.mapping.Table;
+
 /**
  * @author Matthew Kong
  */
-public class EventAnalysis implements Serializable {
+@Table
+public class BreakdownItem implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -30,16 +33,17 @@ public class EventAnalysis implements Serializable {
 			return true;
 		}
 
-		if (!(obj instanceof EventAnalysis)) {
+		if (!(obj instanceof BreakdownItem)) {
 			return false;
 		}
 
-		EventAnalysis eventAnalysis = (EventAnalysis)obj;
+		BreakdownItem breakdownItem = (BreakdownItem)obj;
 
-		if (Objects.equals(_breakdownItems, eventAnalysis._breakdownItems) &&
-			Objects.equals(_count, eventAnalysis._count) &&
-			Objects.equals(_page, eventAnalysis._page) &&
-			Objects.equals(_value, eventAnalysis._value)) {
+		if (Objects.equals(_breakdownItems, breakdownItem._breakdownItems) &&
+			Objects.equals(_leafNode, breakdownItem._leafNode) &&
+			Objects.equals(_name, breakdownItem._name) &&
+			Objects.equals(_previousValue, breakdownItem._previousValue) &&
+			Objects.equals(_value, breakdownItem._value)) {
 
 			return true;
 		}
@@ -51,33 +55,36 @@ public class EventAnalysis implements Serializable {
 		return _breakdownItems;
 	}
 
-	public long getCount() {
-		return _count;
+	public String getName() {
+		return _name;
 	}
 
-	public int getPage() {
-		return _page;
+	public long getPreviousValue() {
+		return _previousValue;
 	}
 
 	public long getValue() {
 		return _value;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(_count, _page, _value);
+	public boolean isLeafNode() {
+		return _leafNode;
 	}
 
 	public void setBreakdownItems(List<BreakdownItem> breakdownItems) {
 		_breakdownItems = breakdownItems;
 	}
 
-	public void setCount(long count) {
-		_count = count;
+	public void setLeafNode(boolean leafNode) {
+		_leafNode = leafNode;
 	}
 
-	public void setPage(int page) {
-		_page = page;
+	public void setName(String name) {
+		_name = name;
+	}
+
+	public void setPreviousValue(long previousValue) {
+		_previousValue = previousValue;
 	}
 
 	public void setValue(long value) {
@@ -85,8 +92,9 @@ public class EventAnalysis implements Serializable {
 	}
 
 	private List<BreakdownItem> _breakdownItems;
-	private long _count;
-	private int _page;
+	private boolean _leafNode;
+	private String _name;
+	private long _previousValue;
 	private long _value;
 
 }
