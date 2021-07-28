@@ -28,8 +28,8 @@ String copyLayoutIdPrefix = ParamUtil.getString(request, "copyLayoutIdPrefix");
 	for (LayoutDescription layoutDescription : layoutDescriptions) {
 	%>
 
-		<c:if test="<%= layoutDescription.getPlid() > 0 %>">
-			<aui:option disabled="<%= (selLayout != null) && (selLayout.getPlid() == layoutDescription.getPlid()) %>" label="<%= layoutDescription.getDisplayName() %>" value="<%= layoutDescription.getPlid() %>" />
+		<c:if test="<%= layoutDescription.getPlid() >= 0 %>">
+			<aui:option disabled="<%= (layoutDescription.getPlid() == 0) || ((selLayout != null) && (selLayout.getPlid() == layoutDescription.getPlid())) %>" label="<%= layoutDescription.getDisplayName() %>" value="<%= layoutDescription.getPlid() %>" />
 		</c:if>
 
 	<%
