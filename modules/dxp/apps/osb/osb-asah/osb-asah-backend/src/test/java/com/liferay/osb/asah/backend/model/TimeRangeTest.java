@@ -174,6 +174,160 @@ public class TimeRangeTest {
 	}
 
 	@Test
+	public void testGetPreviousTimeRange1() {
+		TimeRange timeRange = TimeRange.LAST_24_HOURS;
+
+		TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
+
+		Duration duration = Duration.between(
+			previousTimeRange.getStartLocalDateTime(),
+			previousTimeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(23, Math.abs(duration.toHours()));
+
+		duration = Duration.between(
+			timeRange.getStartLocalDateTime(),
+			previousTimeRange.getStartLocalDateTime());
+
+		Assert.assertEquals(24, Math.abs(duration.toHours()));
+	}
+
+	@Test
+	public void testGetPreviousTimeRange2() {
+		TimeRange timeRange = TimeRange.LAST_7_DAYS;
+
+		TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
+
+		Duration duration = Duration.between(
+			previousTimeRange.getStartLocalDateTime(),
+			previousTimeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(6, Math.abs(duration.toDays()));
+
+		duration = Duration.between(
+			timeRange.getStartLocalDateTime(),
+			previousTimeRange.getStartLocalDateTime());
+
+		Assert.assertEquals(7, Math.abs(duration.toDays()));
+	}
+
+	@Test
+	public void testGetPreviousTimeRange3() {
+		TimeRange timeRange = TimeRange.LAST_28_DAYS;
+
+		TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
+
+		Duration duration = Duration.between(
+			previousTimeRange.getStartLocalDateTime(),
+			previousTimeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(27, Math.abs(duration.toDays()));
+
+		duration = Duration.between(
+			timeRange.getStartLocalDateTime(),
+			previousTimeRange.getStartLocalDateTime());
+
+		Assert.assertEquals(28, Math.abs(duration.toDays()));
+	}
+
+	@Test
+	public void testGetPreviousTimeRange4() {
+		TimeRange timeRange = TimeRange.LAST_30_DAYS;
+
+		TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
+
+		Duration duration = Duration.between(
+			previousTimeRange.getStartLocalDateTime(),
+			previousTimeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(29, Math.abs(duration.toDays()));
+
+		duration = Duration.between(
+			timeRange.getStartLocalDateTime(),
+			previousTimeRange.getStartLocalDateTime());
+
+		Assert.assertEquals(30, Math.abs(duration.toDays()));
+	}
+
+	@Test
+	public void testGetPreviousTimeRange5() {
+		TimeRange timeRange = TimeRange.LAST_90_DAYS;
+
+		TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
+
+		Duration duration = Duration.between(
+			previousTimeRange.getStartLocalDateTime(),
+			previousTimeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(89, Math.abs(duration.toDays()));
+
+		duration = Duration.between(
+			timeRange.getStartLocalDateTime(),
+			previousTimeRange.getStartLocalDateTime());
+
+		Assert.assertEquals(90, Math.abs(duration.toDays()));
+	}
+
+	@Test
+	public void testGetPreviousTimeRange6() {
+		TimeRange timeRange = TimeRange.LAST_180_DAYS;
+
+		TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
+
+		Duration duration = Duration.between(
+			previousTimeRange.getStartLocalDateTime(),
+			previousTimeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(179, Math.abs(duration.toDays()));
+
+		duration = Duration.between(
+			timeRange.getStartLocalDateTime(),
+			previousTimeRange.getStartLocalDateTime());
+
+		Assert.assertEquals(180, Math.abs(duration.toDays()));
+	}
+
+	@Test
+	public void testGetPreviousTimeRange7() {
+		TimeRange timeRange = TimeRange.YESTERDAY;
+
+		TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
+
+		Duration duration = Duration.between(
+			previousTimeRange.getStartLocalDateTime(),
+			previousTimeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(23, Math.abs(duration.toHours()));
+
+		duration = Duration.between(
+			timeRange.getStartLocalDateTime(),
+			previousTimeRange.getStartLocalDateTime());
+
+		Assert.assertEquals(24, Math.abs(duration.toHours()));
+	}
+
+	@Test
+	public void testGetPreviousTimeRange8() {
+		TimeRange timeRange = TimeRange.of(
+			LocalDateTime.of(2020, 10, 24, 0, 0),
+			LocalDateTime.of(2020, 4, 20, 0, 0));
+
+		TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
+
+		Duration duration = Duration.between(
+			previousTimeRange.getStartLocalDateTime(),
+			previousTimeRange.getEndLocalDateTime());
+
+		Assert.assertEquals(187, Math.abs(duration.toDays()));
+
+		duration = Duration.between(
+			timeRange.getStartLocalDateTime(),
+			previousTimeRange.getStartLocalDateTime());
+
+		Assert.assertEquals(188, Math.abs(duration.toDays()));
+	}
+
+	@Test
 	public void testGetRangeKey1() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
