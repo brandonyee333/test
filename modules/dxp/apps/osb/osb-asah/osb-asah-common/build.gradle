@@ -1,5 +1,3 @@
-apply plugin: "com.liferay.source.formatter"
-apply plugin: "com.liferay.source.formatter.defaults"
 apply plugin: "com.liferay.spring.boot.defaults"
 apply plugin: "io.spring.dependency-management"
 

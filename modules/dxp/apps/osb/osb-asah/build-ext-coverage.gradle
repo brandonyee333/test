@@ -26,9 +26,7 @@ task jacocoRootReport(type: JacocoReport)
 task jacocoTestCoverageVerification(type: JacocoCoverageVerification)
 
 Set<Project> javaSubprojects = subprojects.findAll {
-	FileUtil.exists(it, "src/main/java") &&
-	it.name != "osb-asah-test-util" &&
-	it.name != "osb-asah-spark-java"
+	FileUtil.exists(it, "src/main/java")
 }
 
 allprojects {
