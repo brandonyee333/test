@@ -19,6 +19,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -40,6 +42,9 @@ public class BreakdownItem implements Serializable {
 		BreakdownItem breakdownItem = (BreakdownItem)obj;
 
 		if (Objects.equals(_breakdownItems, breakdownItem._breakdownItems) &&
+			Objects.equals(
+				_eventAttributeDefinitionIdValuePairs,
+				breakdownItem._eventAttributeDefinitionIdValuePairs) &&
 			Objects.equals(_leafNode, breakdownItem._leafNode) &&
 			Objects.equals(_name, breakdownItem._name) &&
 			Objects.equals(_previousValue, breakdownItem._previousValue) &&
@@ -53,6 +58,12 @@ public class BreakdownItem implements Serializable {
 
 	public List<BreakdownItem> getBreakdownItems() {
 		return _breakdownItems;
+	}
+
+	public List<Pair<String, Object>>
+		getEventAttributeDefinitionIdValuePairs() {
+
+		return _eventAttributeDefinitionIdValuePairs;
 	}
 
 	public String getName() {
@@ -75,6 +86,13 @@ public class BreakdownItem implements Serializable {
 		_breakdownItems = breakdownItems;
 	}
 
+	public void setEventAttributeDefinitionIdValuePairs(
+		List<Pair<String, Object>> eventAttributeDefinitionIdValuePairs) {
+
+		_eventAttributeDefinitionIdValuePairs =
+			eventAttributeDefinitionIdValuePairs;
+	}
+
 	public void setLeafNode(boolean leafNode) {
 		_leafNode = leafNode;
 	}
@@ -92,6 +110,7 @@ public class BreakdownItem implements Serializable {
 	}
 
 	private List<BreakdownItem> _breakdownItems;
+	private List<Pair<String, Object>> _eventAttributeDefinitionIdValuePairs;
 	private boolean _leafNode;
 	private String _name;
 	private long _previousValue;
