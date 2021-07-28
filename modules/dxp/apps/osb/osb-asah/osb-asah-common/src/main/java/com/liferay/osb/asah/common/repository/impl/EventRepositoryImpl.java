@@ -420,10 +420,10 @@ public class EventRepositoryImpl extends BaseRepository {
 
 	private String _getJoinFieldTableName(AttributeType attributeType) {
 		if (attributeType.equals(AttributeType.EVENT)) {
-			return "id";
+			return "Event.id";
 		}
 
-		return "individualId";
+		return "Event.individualId";
 	}
 
 	private OrderField<?> _getOrderField(Field field, String sortType) {
