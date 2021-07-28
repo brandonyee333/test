@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.spark.session.model;
 
+import java.io.Serializable;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -26,7 +28,7 @@ import java.util.Set;
 /**
  * @author Robson Pastor
  */
-public class Event {
+public class Event implements Serializable {
 
 	public static boolean isInteraction(String eventId) {
 		if (_noninteractionEventIds.contains(eventId)) {
@@ -70,6 +72,7 @@ public class Event {
 			Objects.equals(_eventId, event._eventId) &&
 			Objects.equals(_eventProperties, event._eventProperties) &&
 			Objects.equals(_id, event._id) &&
+			Objects.equals(_iterationNumber, event._iterationNumber) &&
 			Objects.equals(_knownIndividual, event._knownIndividual) &&
 			Objects.equals(_normalizedEventDate, event._normalizedEventDate) &&
 			Objects.equals(_projectId, event._projectId) &&
@@ -142,6 +145,10 @@ public class Event {
 		return _id;
 	}
 
+	public int getIterationNumber() {
+		return _iterationNumber;
+	}
+
 	public Boolean getKnownIndividual() {
 		return _knownIndividual;
 	}
@@ -167,8 +174,8 @@ public class Event {
 		return Objects.hash(
 			_analyticsKey, _applicationId, _channelId, _clientIp, _context,
 			_createDate, _dataSourceId, _date, _eventDate, _eventId,
-			_eventProperties, _id, _knownIndividual, _normalizedEventDate,
-			_projectId, _segmentNames, _userId);
+			_eventProperties, _id, _iterationNumber, _knownIndividual,
+			_normalizedEventDate, _projectId, _segmentNames, _userId);
 	}
 
 	public void setAnalyticsKey(String analyticsKey) {
@@ -209,7 +216,7 @@ public class Event {
 
 	public void setEventDate(Timestamp eventDate) {
 		if (eventDate != null) {
-			_eventDate = new Timestamp(_eventDate.getTime());
+			_eventDate = new Timestamp(eventDate.getTime());
 		}
 	}
 
@@ -223,6 +230,10 @@ public class Event {
 
 	public void setId(String id) {
 		_id = id;
+	}
+
+	public void setIterationNumber(int iterationNumber) {
+		_iterationNumber = iterationNumber;
 	}
 
 	public void setKnownIndividual(Boolean knownIndividual) {
@@ -270,6 +281,7 @@ public class Event {
 	private String _eventId;
 	private Map<String, String> _eventProperties = new HashMap<>();
 	private String _id;
+	private int _iterationNumber;
 	private Boolean _knownIndividual;
 	private Long _normalizedEventDate;
 	private String _projectId;
