@@ -25,6 +25,13 @@ enum AttributeType {
 	USER_SESSION
 }
 
+enum BreakdownType {
+	ACCOUNT
+	EVENT
+	INDIVIDUAL
+	SESSION
+}
+
 enum DataControlTaskStatus {
 	COMPLETED
 	ERROR
@@ -107,6 +114,11 @@ input DXPVariantSettings {
 	control: Boolean!
 	dxpVariantId: String!
 	trafficSplit: Float!
+}
+
+input EventAnalysisBreakdown {
+	attributeId: String!
+	attributeType: AttributeType!
 }
 
 input EventAnalysisFilter {
@@ -203,6 +215,14 @@ type BlogMetric implements AssetMetric {
 	readingTimeMetric: Metric
 	urls: [String]
 	viewsMetric: Metric
+}
+
+type BreakdownItem {
+	breakdownItems: [BreakdownItem]
+	leafNode: Boolean
+	name: String
+	previousValue: Int
+	value: Int
 }
 
 type CohortHeatMapMetric {
@@ -309,6 +329,7 @@ type DXPEntityBag {
 }
 
 type EventAnalysis {
+	breakdownItems: [BreakdownItem]
 	count: Int
 	page: Int
 	value: Int
@@ -882,11 +903,14 @@ type QueryType {
 	eventAnalysis(
 		analysisType: AnalysisType!,
 		channelId: String!,
+		eventAnalysisBreakdowns: [EventAnalysisBreakdown],
 		eventAnalysisFilters: [EventAnalysisFilter],
 		eventDefinitionId: String!,
+		page: Int!,
 		rangeEnd: String,
 		rangeKey: Int,
-		rangeStart: String
+		rangeStart: String,
+		size: Int!
 	): EventAnalysis
 
 	eventAttributeDefinition(
