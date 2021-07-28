@@ -40,14 +40,12 @@ public class SessionTest {
 		firstEvent.setAnalyticsKey("www.liferay.com");
 		firstEvent.setApplicationId("WebContent");
 		firstEvent.setChannelId("1");
-		firstEvent.setClientIp("66.249.64.150");
 		firstEvent.setContext(_context);
 		firstEvent.setCreateDate(_firstEventDate);
 		firstEvent.setDataSourceId("1");
 		firstEvent.setDate(_date);
 		firstEvent.setEventDate(_firstEventDate);
 		firstEvent.setEventId("pageDepthReached");
-		firstEvent.setEventProperties(_eventProperties);
 		firstEvent.setId("310746565640329834");
 		firstEvent.setKnownIndividual(false);
 		firstEvent.setNormalizedEventDate(_firstEventDate.getTime());
@@ -60,14 +58,12 @@ public class SessionTest {
 		secondEvent.setAnalyticsKey("www.liferay.com");
 		secondEvent.setApplicationId("WebContent");
 		secondEvent.setChannelId("1");
-		secondEvent.setClientIp("66.249.64.150");
 		secondEvent.setContext(_context);
 		secondEvent.setCreateDate(_secondEventDate);
 		secondEvent.setDataSourceId("1");
 		secondEvent.setDate(_date);
 		secondEvent.setEventDate(_secondEventDate);
 		secondEvent.setEventId("webContentViewed");
-		secondEvent.setEventProperties(_eventProperties);
 		secondEvent.setId("310746565640329834");
 		secondEvent.setKnownIndividual(false);
 		secondEvent.setNormalizedEventDate(_secondEventDate.getTime());
@@ -104,14 +100,12 @@ public class SessionTest {
 		event.setAnalyticsKey("www.liferay.com");
 		event.setApplicationId("WebContent");
 		event.setChannelId("1");
-		event.setClientIp("66.249.64.150");
 		event.setContext(_context);
 		event.setCreateDate(_firstEventDate);
 		event.setDataSourceId("1");
 		event.setDate(_date);
 		event.setEventDate(_firstEventDate);
 		event.setEventId("documentPreviewed");
-		event.setEventProperties(_eventProperties);
 		event.setId("310746565640329834");
 		event.setKnownIndividual(false);
 		event.setNormalizedEventDate(_firstEventDate.getTime());
@@ -159,14 +153,6 @@ public class SessionTest {
 		}
 	};
 	private final Date _date = DateUtil.toDate("2021-06-22");
-	private final Map<String, String> _eventProperties =
-		new HashMap<String, String>() {
-			{
-				put("articleId", "223156009");
-				put("numberOfWords", "9");
-				put("title", "Footer Contact Us");
-			}
-		};
 	private final Timestamp _firstEventDate = DateUtil.toTimestamp(
 		"2021-06-22T09:00:30.001Z");
 	private final Timestamp _secondEventDate = DateUtil.toTimestamp(

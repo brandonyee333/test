@@ -16,7 +16,6 @@ package com.liferay.osb.asah.spark.session.common;
 
 import com.liferay.osb.asah.spark.common.DateUtil;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import org.junit.Assert;
@@ -29,44 +28,28 @@ public class DateUtilTest {
 
 	@Test
 	public void testMax() {
-		Timestamp before = DateUtil.toTimestamp("2018-09-15T09:00:01.000Z");
-		Timestamp after = DateUtil.toTimestamp("2018-09-15T10:00:01.000Z");
-		Timestamp expected = DateUtil.toTimestamp("2018-09-15T10:00:01.000Z");
+		Timestamp beforeTimestamp = DateUtil.toTimestamp(
+			"2018-09-15T09:00:01.000Z");
+		Timestamp afterTimestamp = DateUtil.toTimestamp(
+			"2018-09-15T10:00:01.000Z");
 
-		Timestamp max1 = DateUtil.max(before, after);
-		Timestamp max2 = DateUtil.max(after, before);
-
-		Assert.assertEquals(expected, max1);
-		Assert.assertEquals(expected, max2);
+		Assert.assertEquals(
+			afterTimestamp, DateUtil.max(beforeTimestamp, afterTimestamp));
+		Assert.assertEquals(
+			afterTimestamp, DateUtil.max(afterTimestamp, beforeTimestamp));
 	}
 
 	@Test
 	public void testMin() {
-		Timestamp before = DateUtil.toTimestamp("2018-09-15T09:00:01.000Z");
-		Timestamp after = DateUtil.toTimestamp("2018-09-15T10:00:01.000Z");
-		Timestamp expected = DateUtil.toTimestamp("2018-09-15T09:00:01.000Z");
+		Timestamp beforeTimestamp = DateUtil.toTimestamp(
+			"2018-09-15T09:00:01.000Z");
+		Timestamp afterTimestamp = DateUtil.toTimestamp(
+			"2018-09-15T10:00:01.000Z");
 
-		Timestamp min1 = DateUtil.min(before, after);
-		Timestamp min2 = DateUtil.min(after, before);
-
-		Assert.assertEquals("It should return min", expected, min1);
-		Assert.assertEquals("It should return min", expected, min2);
-	}
-
-	@Test
-	public void testToDate() {
-		Date date = DateUtil.toDate("2018-09-15");
-		Date expectedDate = new Date(1536969600000L);
-
-		Assert.assertEquals("It should return date 2018-09-15", expectedDate, date);
-	}
-
-	@Test
-	public void testToTimestamp() {
-		Timestamp timestamp = DateUtil.toTimestamp("2018-09-15T10:00:01.000Z");
-		Timestamp expectedTimestamp = new Timestamp(1537005601000L);
-
-		Assert.assertEquals("It should return timestamp 2018-09-15T10:00:01.000Z",expectedTimestamp, timestamp);
+		Assert.assertEquals(
+			beforeTimestamp, DateUtil.min(beforeTimestamp, afterTimestamp));
+		Assert.assertEquals(
+			beforeTimestamp, DateUtil.min(afterTimestamp, beforeTimestamp));
 	}
 
 }
