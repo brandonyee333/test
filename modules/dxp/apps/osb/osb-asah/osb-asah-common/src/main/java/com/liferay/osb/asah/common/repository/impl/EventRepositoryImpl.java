@@ -43,6 +43,7 @@ import org.jooq.SelectHavingConditionStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -147,7 +148,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public Map<Object, Integer> getEventAttributeValues(
+	public Map<Object, Number> getEventAttributeValues(
 		AnalysisType analysisType, @Nullable BreakdownItem breakdownItem,
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
@@ -155,9 +156,9 @@ public class EventRepositoryImpl extends BaseRepository {
 		Pageable pageable, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate) {
 
-		Map<Object, Integer> eventAttributeValues = new LinkedHashMap<>();
+		Map<Object, Number> eventAttributeValues = new LinkedHashMap<>();
 
-		Field<Integer> selectField = _getSelectField(analysisType);
+		Field<Number> selectField = _getSelectField(analysisType);
 		Field valueField = DSL.field("EventAttribute.value");
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
@@ -186,7 +187,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		).forEach(
 			record -> eventAttributeValues.put(
 				record.get(valueField),
-				(Integer)record.get(selectField.getName()))
+				(Number)record.get(selectField.getName()))
 		);
 
 		return eventAttributeValues;
@@ -410,10 +411,12 @@ public class EventRepositoryImpl extends BaseRepository {
 		return "individualId";
 	}
 
-	private Field<Integer> _getSelectField(AnalysisType analysisType) {
+	private Field _getSelectField(AnalysisType analysisType) {
 		if (analysisType.equals(AnalysisType.AVERAGE)) {
 			return DSL.count(
 				DSL.field("EventAttribute.value")
+			).cast(
+				SQLDataType.DECIMAL
 			).div(
 				_getUniqueIndividualsField()
 			).as(

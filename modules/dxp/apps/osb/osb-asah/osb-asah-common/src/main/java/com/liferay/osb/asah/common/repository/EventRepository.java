@@ -69,7 +69,7 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate);
 
-	public Map<Object, Integer> getEventAttributeValues(
+	public Map<Object, Number> getEventAttributeValues(
 		AnalysisType analysisType, @Nullable BreakdownItem breakdownItem,
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,

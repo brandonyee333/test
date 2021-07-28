@@ -74,7 +74,7 @@ public class BreakdownItem implements Serializable {
 		return _previousValue;
 	}
 
-	public long getValue() {
+	public Number getValue() {
 		return _value;
 	}
 
@@ -105,7 +105,7 @@ public class BreakdownItem implements Serializable {
 		_previousValue = previousValue;
 	}
 
-	public void setValue(long value) {
+	public void setValue(Number value) {
 		_value = value;
 	}
 
@@ -114,6 +114,6 @@ public class BreakdownItem implements Serializable {
 	private boolean _leafNode;
 	private String _name;
 	private long _previousValue;
-	private long _value;
+	private Number _value;
 
 }

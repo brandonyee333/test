@@ -95,12 +95,12 @@ public class EventAnalysisDog {
 
 	private List<BreakdownItem> _createBreakdownItems(
 		EventAnalysisBreakdown eventAnalysisBreakdown,
-		Map<Object, Integer> eventAttributeValues, String eventDefinitionName,
+		Map<Object, Number> eventAttributeValues, String eventDefinitionName,
 		boolean lastBreakdown, BreakdownItem parentBreakdownItem) {
 
 		List<BreakdownItem> breakdownItems = new ArrayList<>();
 
-		for (Map.Entry<Object, Integer> entry :
+		for (Map.Entry<Object, Number> entry :
 				eventAttributeValues.entrySet()) {
 
 			BreakdownItem breakdownItem = new BreakdownItem();
@@ -137,7 +137,7 @@ public class EventAnalysisDog {
 		return breakdownItems;
 	}
 
-	private List<BreakdownItem> _createComparisonBreakdownItems(long value) {
+	private List<BreakdownItem> _createComparisonBreakdownItems(Number value) {
 		BreakdownItem allIndividualsBreakdownItem = new BreakdownItem();
 
 		allIndividualsBreakdownItem.setName("All Individuals");
@@ -147,7 +147,7 @@ public class EventAnalysisDog {
 	}
 
 	private List<BreakdownItem> _createLeafNodeBreakdownItems(
-		String eventDefinitionName, long value) {
+		String eventDefinitionName, Number value) {
 
 		BreakdownItem eventDefinitionBreakdownItem = new BreakdownItem();
 

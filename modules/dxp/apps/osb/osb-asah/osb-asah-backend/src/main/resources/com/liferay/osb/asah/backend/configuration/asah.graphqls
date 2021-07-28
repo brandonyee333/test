@@ -221,8 +221,8 @@ type BreakdownItem {
 	breakdownItems: [BreakdownItem]
 	leafNode: Boolean
 	name: String
-	previousValue: Int
-	value: Int
+	previousValue: Float
+	value: Float
 }
 
 type CohortHeatMapMetric {
