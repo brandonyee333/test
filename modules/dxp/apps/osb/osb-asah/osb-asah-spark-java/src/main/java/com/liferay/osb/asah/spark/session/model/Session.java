@@ -51,7 +51,6 @@ public class Session implements Serializable {
 		_deviceType = eventContext.get("deviceType");
 		_finished = false;
 		_firstEventDate = event.getEventDate();
-		_iterationNumber = 0;
 		_lastEventDate = event.getEventDate();
 		_platformName = eventContext.get("platformName");
 		_projectId = event.getProjectId();
@@ -62,6 +61,7 @@ public class Session implements Serializable {
 		_sessionId = id.toString();
 
 		_userId = event.getUserId();
+
 		addEvent(event);
 	}
 
