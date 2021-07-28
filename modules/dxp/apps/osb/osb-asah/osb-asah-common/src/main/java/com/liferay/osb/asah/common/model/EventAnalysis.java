@@ -39,6 +39,7 @@ public class EventAnalysis implements Serializable {
 		if (Objects.equals(_breakdownItems, eventAnalysis._breakdownItems) &&
 			Objects.equals(_count, eventAnalysis._count) &&
 			Objects.equals(_page, eventAnalysis._page) &&
+			Objects.equals(_previousValue, eventAnalysis._previousValue) &&
 			Objects.equals(_value, eventAnalysis._value)) {
 
 			return true;
@@ -57,6 +58,10 @@ public class EventAnalysis implements Serializable {
 
 	public int getPage() {
 		return _page;
+	}
+
+	public Number getPreviousValue() {
+		return _previousValue;
 	}
 
 	public Number getValue() {
@@ -80,6 +85,10 @@ public class EventAnalysis implements Serializable {
 		_page = page;
 	}
 
+	public void setPreviousValue(Number previousValue) {
+		_previousValue = previousValue;
+	}
+
 	public void setValue(Number value) {
 		_value = value;
 	}
@@ -87,6 +96,7 @@ public class EventAnalysis implements Serializable {
 	private List<BreakdownItem> _breakdownItems;
 	private long _count;
 	private int _page;
+	private Number _previousValue;
 	private Number _value;
 
 }

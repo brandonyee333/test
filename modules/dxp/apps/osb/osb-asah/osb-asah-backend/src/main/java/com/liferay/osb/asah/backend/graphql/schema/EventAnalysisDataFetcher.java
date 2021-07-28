@@ -55,6 +55,7 @@ public class EventAnalysisDataFetcher extends BaseDataFetcher<EventAnalysis> {
 		return _eventAnalysisDog.getEventAnalysis(
 			AnalysisType.valueOf(environment.getArgument("analysisType")),
 			Long.valueOf(environment.getArgument("channelId")),
+			environment.getArgument("compareToPrevious"),
 			eventAnalysisBreakdowns, eventAnalysisFilters,
 			Long.valueOf(environment.getArgument("eventDefinitionId")),
 			environment.getArgument("page"), environment.getArgument("size"),

@@ -334,6 +334,7 @@ type EventAnalysis {
 	breakdownItems: [BreakdownItem]
 	count: Int
 	page: Int
+	previousValue: Float
 	value: Float
 }
 
@@ -905,6 +906,7 @@ type QueryType {
 	eventAnalysis(
 		analysisType: AnalysisType!,
 		channelId: String!,
+		compareToPrevious: Boolean!,
 		eventAnalysisBreakdowns: [EventAnalysisBreakdown],
 		eventAnalysisFilters: [EventAnalysisFilter],
 		eventDefinitionId: String!,

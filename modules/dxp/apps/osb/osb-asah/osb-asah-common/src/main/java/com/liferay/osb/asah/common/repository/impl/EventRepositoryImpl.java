@@ -34,8 +34,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -220,14 +218,15 @@ public class EventRepositoryImpl extends BaseRepository {
 			return selectJoinStep;
 		}
 
-		List<Pair<String, Object>> eventAttributeDefinitionIdValuePairs =
-			breakdownItem.getEventAttributeDefinitionIdValuePairs();
+		List<EventAnalysisFilter> eventAnalysisFilters =
+			breakdownItem.getEventAnalysisFilters();
 
-		for (int i = 0; i < eventAttributeDefinitionIdValuePairs.size(); i++) {
-			Pair<String, Object> eventAttributeDefinitionIdValuePair =
-				eventAttributeDefinitionIdValuePairs.get(i);
+		for (int i = 0; i < eventAnalysisFilters.size(); i++) {
+			EventAnalysisFilter eventAnalysisFilter = eventAnalysisFilters.get(
+				i);
 
 			String alias = "eventattribute" + i;
+			List<String> values = eventAnalysisFilter.getValues();
 
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
@@ -246,13 +245,12 @@ public class EventRepositoryImpl extends BaseRepository {
 					DSL.field(
 						alias + ".eventAttributeDefinitionId"
 					).eq(
-						Long.valueOf(
-							eventAttributeDefinitionIdValuePair.getKey())
+						Long.valueOf(eventAnalysisFilter.getAttributeId())
 					),
 					DSL.field(
 						alias + ".value"
 					).eq(
-						eventAttributeDefinitionIdValuePair.getValue()
+						values.get(0)
 					))
 			);
 		}

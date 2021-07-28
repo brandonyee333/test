@@ -19,8 +19,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -43,8 +41,7 @@ public class BreakdownItem implements Serializable {
 
 		if (Objects.equals(_breakdownItems, breakdownItem._breakdownItems) &&
 			Objects.equals(
-				_eventAttributeDefinitionIdValuePairs,
-				breakdownItem._eventAttributeDefinitionIdValuePairs) &&
+				_eventAnalysisFilters, breakdownItem._eventAnalysisFilters) &&
 			Objects.equals(_leafNode, breakdownItem._leafNode) &&
 			Objects.equals(_name, breakdownItem._name) &&
 			Objects.equals(_previousValue, breakdownItem._previousValue) &&
@@ -60,17 +57,15 @@ public class BreakdownItem implements Serializable {
 		return _breakdownItems;
 	}
 
-	public List<Pair<String, Object>>
-		getEventAttributeDefinitionIdValuePairs() {
-
-		return _eventAttributeDefinitionIdValuePairs;
+	public List<EventAnalysisFilter> getEventAnalysisFilters() {
+		return _eventAnalysisFilters;
 	}
 
 	public String getName() {
 		return _name;
 	}
 
-	public long getPreviousValue() {
+	public Number getPreviousValue() {
 		return _previousValue;
 	}
 
@@ -86,11 +81,10 @@ public class BreakdownItem implements Serializable {
 		_breakdownItems = breakdownItems;
 	}
 
-	public void setEventAttributeDefinitionIdValuePairs(
-		List<Pair<String, Object>> eventAttributeDefinitionIdValuePairs) {
+	public void setEventAnalysisFilters(
+		List<EventAnalysisFilter> eventAnalysisFilters) {
 
-		_eventAttributeDefinitionIdValuePairs =
-			eventAttributeDefinitionIdValuePairs;
+		_eventAnalysisFilters = eventAnalysisFilters;
 	}
 
 	public void setLeafNode(boolean leafNode) {
@@ -101,7 +95,7 @@ public class BreakdownItem implements Serializable {
 		_name = name;
 	}
 
-	public void setPreviousValue(long previousValue) {
+	public void setPreviousValue(Number previousValue) {
 		_previousValue = previousValue;
 	}
 
@@ -110,10 +104,10 @@ public class BreakdownItem implements Serializable {
 	}
 
 	private List<BreakdownItem> _breakdownItems;
-	private List<Pair<String, Object>> _eventAttributeDefinitionIdValuePairs;
+	private List<EventAnalysisFilter> _eventAnalysisFilters;
 	private boolean _leafNode;
 	private String _name;
-	private long _previousValue;
+	private Number _previousValue;
 	private Number _value;
 
 }

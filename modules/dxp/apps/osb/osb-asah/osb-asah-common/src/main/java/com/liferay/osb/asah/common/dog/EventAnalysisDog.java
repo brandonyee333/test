@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
@@ -25,15 +24,10 @@ import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventRepository;
 
-import java.time.ZoneId;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -47,7 +41,7 @@ import org.springframework.stereotype.Component;
 public class EventAnalysisDog {
 
 	public EventAnalysis getEventAnalysis(
-		AnalysisType analysisType, Long channelId,
+		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
 		int page, int size, TimeRange timeRange) {
@@ -57,46 +51,69 @@ public class EventAnalysisDog {
 		eventAnalysis.setCount(1);
 		eventAnalysis.setPage(0);
 
-		Date rangeEndDate = DateUtil.toDate(
-			timeRange.getEndLocalDateTime(),
-			ZoneId.of(_timeZoneDog.getTimeZoneId()));
-		Date rangeStartDate = DateUtil.toDate(
-			timeRange.getStartLocalDateTime(),
-			ZoneId.of(_timeZoneDog.getTimeZoneId()));
-
 		if (analysisType.equals(AnalysisType.AVERAGE)) {
 			eventAnalysis.setValue(
 				_eventRepository.getAverageEventCountPerIndividual(
 					channelId, eventAnalysisFilters, eventDefinitionId,
-					rangeEndDate, rangeStartDate));
+					timeRange.getEndDate(), timeRange.getStartDate()));
 		}
 		else if (analysisType.equals(AnalysisType.TOTAL)) {
 			eventAnalysis.setValue(
 				_eventRepository.countTotalEvents(
 					channelId, eventAnalysisFilters, eventDefinitionId,
-					rangeEndDate, rangeStartDate));
+					timeRange.getEndDate(), timeRange.getStartDate()));
 		}
 		else if (analysisType.equals(AnalysisType.UNIQUE)) {
 			eventAnalysis.setValue(
 				_eventRepository.countUniqueIndividuals(
 					channelId, eventAnalysisFilters, eventDefinitionId,
-					rangeEndDate, rangeStartDate));
+					timeRange.getEndDate(), timeRange.getStartDate()));
+		}
+
+		if (compareToPrevious) {
+			TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
+
+			if (analysisType.equals(AnalysisType.AVERAGE)) {
+				eventAnalysis.setPreviousValue(
+					_eventRepository.getAverageEventCountPerIndividual(
+						channelId, eventAnalysisFilters, eventDefinitionId,
+						previousTimeRange.getEndDate(),
+						previousTimeRange.getStartDate()));
+			}
+			else if (analysisType.equals(AnalysisType.TOTAL)) {
+				eventAnalysis.setPreviousValue(
+					_eventRepository.countTotalEvents(
+						channelId, eventAnalysisFilters, eventDefinitionId,
+						previousTimeRange.getEndDate(),
+						previousTimeRange.getStartDate()));
+			}
+			else if (analysisType.equals(AnalysisType.UNIQUE)) {
+				eventAnalysis.setPreviousValue(
+					_eventRepository.countUniqueIndividuals(
+						channelId, eventAnalysisFilters, eventDefinitionId,
+						previousTimeRange.getEndDate(),
+						previousTimeRange.getStartDate()));
+			}
 		}
 
 		eventAnalysis.setBreakdownItems(
 			_getBreakdownItems(
-				analysisType, channelId, eventAnalysis.getValue(),
-				eventDefinitionId, eventAnalysisBreakdowns,
-				eventAnalysisFilters, PageRequest.of(page, size), rangeEndDate,
-				rangeStartDate));
+				analysisType, channelId, compareToPrevious,
+				eventAnalysis.getValue(), eventDefinitionId,
+				eventAnalysisBreakdowns, eventAnalysisFilters,
+				PageRequest.of(page, size), eventAnalysis.getPreviousValue(),
+				timeRange));
 
 		return eventAnalysis;
 	}
 
 	private List<BreakdownItem> _createBreakdownItems(
+		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
 		EventAnalysisBreakdown eventAnalysisBreakdown,
-		Map<Object, Number> eventAttributeValues, String eventDefinitionName,
-		boolean lastBreakdown, BreakdownItem parentBreakdownItem) {
+		List<EventAnalysisFilter> eventAnalysisFilters,
+		Map<Object, Number> eventAttributeValues, Long eventDefinitionId,
+		String eventDefinitionName, boolean lastBreakdown,
+		BreakdownItem parentBreakdownItem, TimeRange timeRange) {
 
 		List<BreakdownItem> breakdownItems = new ArrayList<>();
 
@@ -105,31 +122,67 @@ public class EventAnalysisDog {
 
 			BreakdownItem breakdownItem = new BreakdownItem();
 
-			if (lastBreakdown) {
-				breakdownItem.setBreakdownItems(
-					_createLeafNodeBreakdownItems(
-						eventDefinitionName, entry.getValue()));
-			}
-
-			List<Pair<String, Object>> eventAttributeDefinitionIdValuePairs =
+			List<EventAnalysisFilter> breakdownEventAnalysisFilters =
 				new ArrayList<>();
 
 			if (parentBreakdownItem != null) {
-				eventAttributeDefinitionIdValuePairs.addAll(
-					parentBreakdownItem.
-						getEventAttributeDefinitionIdValuePairs());
+				breakdownEventAnalysisFilters.addAll(
+					parentBreakdownItem.getEventAnalysisFilters());
 			}
 
-			eventAttributeDefinitionIdValuePairs.add(
-				Pair.of(
-					eventAnalysisBreakdown.getAttributeId(), entry.getKey()));
+			breakdownEventAnalysisFilters.add(
+				new EventAnalysisFilter(
+					eventAnalysisBreakdown.getAttributeId(),
+					eventAnalysisBreakdown.getAttributeType(),
+					eventAnalysisBreakdown.getDataType(), "eq",
+					Collections.singletonList(String.valueOf(entry.getKey()))));
 
-			breakdownItem.setEventAttributeDefinitionIdValuePairs(
-				eventAttributeDefinitionIdValuePairs);
+			breakdownItem.setEventAnalysisFilters(
+				breakdownEventAnalysisFilters);
 
 			breakdownItem.setLeafNode(false);
 			breakdownItem.setName(String.valueOf(entry.getKey()));
+
+			if (compareToPrevious) {
+				TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
+
+				List<EventAnalysisFilter> previousEventAnalysisFilters =
+					new ArrayList<>(eventAnalysisFilters);
+
+				previousEventAnalysisFilters.addAll(
+					breakdownItem.getEventAnalysisFilters());
+
+				if (analysisType.equals(AnalysisType.AVERAGE)) {
+					breakdownItem.setPreviousValue(
+						_eventRepository.getAverageEventCountPerIndividual(
+							channelId, previousEventAnalysisFilters,
+							eventDefinitionId, previousTimeRange.getEndDate(),
+							previousTimeRange.getStartDate()));
+				}
+				else if (analysisType.equals(AnalysisType.TOTAL)) {
+					breakdownItem.setPreviousValue(
+						_eventRepository.countTotalEvents(
+							channelId, previousEventAnalysisFilters,
+							eventDefinitionId, previousTimeRange.getEndDate(),
+							previousTimeRange.getStartDate()));
+				}
+				else if (analysisType.equals(AnalysisType.UNIQUE)) {
+					breakdownItem.setPreviousValue(
+						_eventRepository.countUniqueIndividuals(
+							channelId, previousEventAnalysisFilters,
+							eventDefinitionId, previousTimeRange.getEndDate(),
+							previousTimeRange.getStartDate()));
+				}
+			}
+
 			breakdownItem.setValue(entry.getValue());
+
+			if (lastBreakdown) {
+				breakdownItem.setBreakdownItems(
+					_createLeafNodeBreakdownItems(
+						eventDefinitionName, breakdownItem.getPreviousValue(),
+						breakdownItem.getValue()));
+			}
 
 			breakdownItems.add(breakdownItem);
 		}
@@ -137,43 +190,47 @@ public class EventAnalysisDog {
 		return breakdownItems;
 	}
 
-	private List<BreakdownItem> _createComparisonBreakdownItems(Number value) {
+	private List<BreakdownItem> _createComparisonBreakdownItems(
+		Number previousValue, Number value) {
+
 		BreakdownItem allIndividualsBreakdownItem = new BreakdownItem();
 
 		allIndividualsBreakdownItem.setName("All Individuals");
+		allIndividualsBreakdownItem.setPreviousValue(previousValue);
 		allIndividualsBreakdownItem.setValue(value);
 
 		return Collections.singletonList(allIndividualsBreakdownItem);
 	}
 
 	private List<BreakdownItem> _createLeafNodeBreakdownItems(
-		String eventDefinitionName, Number value) {
+		String eventDefinitionName, Number previousValue, Number value) {
 
 		BreakdownItem eventDefinitionBreakdownItem = new BreakdownItem();
 
 		eventDefinitionBreakdownItem.setBreakdownItems(
-			_createComparisonBreakdownItems(value));
+			_createComparisonBreakdownItems(previousValue, value));
 		eventDefinitionBreakdownItem.setLeafNode(true);
 		eventDefinitionBreakdownItem.setName(eventDefinitionName);
-
+		eventDefinitionBreakdownItem.setPreviousValue(previousValue);
 		eventDefinitionBreakdownItem.setValue(value);
 
 		return Collections.singletonList(eventDefinitionBreakdownItem);
 	}
 
 	private List<BreakdownItem> _getBreakdownItems(
-		AnalysisType analysisType, Long channelId, Number eventAnalysisValue,
-		Long eventDefinitionId,
+		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
+		Number eventAnalysisValue, Long eventDefinitionId,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Pageable pageable,
-		Date rangeEndDate, Date rangeStartDate) {
+		Number previousEventAnalysisValue, TimeRange timeRange) {
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.getEventDefinition(eventDefinitionId);
 
 		if (eventAnalysisBreakdowns.isEmpty()) {
 			return _createLeafNodeBreakdownItems(
-				eventDefinition.getDisplayName(), eventAnalysisValue);
+				eventDefinition.getDisplayName(), previousEventAnalysisValue,
+				eventAnalysisValue);
 		}
 
 		EventAnalysisBreakdown eventAnalysisBreakdown =
@@ -186,30 +243,31 @@ public class EventAnalysisDog {
 		}
 
 		List<BreakdownItem> breakdownItems = _createBreakdownItems(
-			eventAnalysisBreakdown,
+			analysisType, channelId, compareToPrevious, eventAnalysisBreakdown,
+			eventAnalysisFilters,
 			_eventRepository.getEventAttributeValues(
 				analysisType, null, channelId, eventAnalysisFilters,
 				Long.valueOf(eventAnalysisBreakdown.getAttributeId()),
-				eventDefinitionId, pageable, rangeEndDate, rangeStartDate,
-				eventAnalysisBreakdown.getSortType()),
-			eventDefinition.getDisplayName(), lastBreakdown, null);
+				eventDefinitionId, pageable, timeRange.getEndDate(),
+				timeRange.getStartDate(), eventAnalysisBreakdown.getSortType()),
+			eventDefinitionId, eventDefinition.getDisplayName(), lastBreakdown,
+			null, timeRange);
 
 		_setChildrenBreakdownItems(
-			analysisType, breakdownItems, channelId, 1, eventDefinitionId,
-			eventAnalysisBreakdowns, eventAnalysisFilters,
-			eventDefinition.getDisplayName(), PageRequest.of(0, 5),
-			rangeEndDate, rangeStartDate);
+			analysisType, breakdownItems, channelId, compareToPrevious, 1,
+			eventDefinitionId, eventAnalysisBreakdowns, eventAnalysisFilters,
+			eventDefinition.getDisplayName(), PageRequest.of(0, 5), timeRange);
 
 		return breakdownItems;
 	}
 
 	private void _setChildrenBreakdownItems(
 		AnalysisType analysisType, List<BreakdownItem> parentBreakdownItems,
-		Long channelId, int count, Long eventDefinitionId,
+		Long channelId, boolean compareToPrevious, int count,
+		Long eventDefinitionId,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters,
-		String eventDefinitionName, Pageable pageable, Date rangeEndDate,
-		Date rangeStartDate) {
+		String eventDefinitionName, Pageable pageable, TimeRange timeRange) {
 
 		if (count >= eventAnalysisBreakdowns.size()) {
 			return;
@@ -226,22 +284,24 @@ public class EventAnalysisDog {
 
 		for (BreakdownItem parentBreakdownItem : parentBreakdownItems) {
 			List<BreakdownItem> breakdownItems = _createBreakdownItems(
-				eventAnalysisBreakdown,
+				analysisType, channelId, compareToPrevious,
+				eventAnalysisBreakdown, eventAnalysisFilters,
 				_eventRepository.getEventAttributeValues(
 					analysisType, parentBreakdownItem, channelId,
 					eventAnalysisFilters,
 					Long.valueOf(eventAnalysisBreakdown.getAttributeId()),
-					eventDefinitionId, pageable, rangeEndDate, rangeStartDate,
+					eventDefinitionId, pageable, timeRange.getEndDate(),
+					timeRange.getStartDate(),
 					eventAnalysisBreakdown.getSortType()),
-				eventDefinitionName, lastBreakdown, parentBreakdownItem);
+				eventDefinitionId, eventDefinitionName, lastBreakdown,
+				parentBreakdownItem, timeRange);
 
 			parentBreakdownItem.setBreakdownItems(breakdownItems);
 
 			_setChildrenBreakdownItems(
-				analysisType, breakdownItems, channelId, count + 1,
-				eventDefinitionId, eventAnalysisBreakdowns,
-				eventAnalysisFilters, eventDefinitionName, pageable,
-				rangeEndDate, rangeStartDate);
+				analysisType, breakdownItems, channelId, compareToPrevious,
+				count + 1, eventDefinitionId, eventAnalysisBreakdowns,
+				eventAnalysisFilters, eventDefinitionName, pageable, timeRange);
 		}
 	}
 
