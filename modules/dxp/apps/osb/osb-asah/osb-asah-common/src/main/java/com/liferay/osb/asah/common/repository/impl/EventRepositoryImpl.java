@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.AttributeType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
@@ -147,7 +148,8 @@ public class EventRepositoryImpl extends BaseRepository {
 	}
 
 	public Map<Object, Integer> getEventAttributeValues(
-		@Nullable BreakdownItem breakdownItem, @Nullable Long channelId,
+		AnalysisType analysisType, @Nullable BreakdownItem breakdownItem,
+		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		long eventAttributeDefinitionId, @Nullable Long eventDefinitionId,
 		Pageable pageable, @Nullable Date rangeEndDate,
@@ -155,6 +157,7 @@ public class EventRepositoryImpl extends BaseRepository {
 
 		Map<Object, Integer> eventAttributeValues = new LinkedHashMap<>();
 
+		Field<Integer> selectField = _getSelectField(analysisType);
 		Field valueField = DSL.field("EventAttribute.value");
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
@@ -162,12 +165,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		SelectJoinStep<Record> selectJoinStep = _buildSelectJoinStep(
 			breakdownItem, eventAttributeDefinitionId,
 			selectSelectStep.select(
-				DSL.count(
-					valueField
-				).as(
-					"count"
-				),
-				valueField
+				selectField, valueField
 			).from(
 				"Event"
 			));
@@ -179,9 +177,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		).groupBy(
 			valueField
 		).orderBy(
-			DSL.count(
-				valueField
-			).desc()
+			selectField.desc()
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -189,7 +185,8 @@ public class EventRepositoryImpl extends BaseRepository {
 		).fetch(
 		).forEach(
 			record -> eventAttributeValues.put(
-				record.get(valueField), (Integer)record.get("count"))
+				record.get(valueField),
+				(Integer)record.get(selectField.getName()))
 		);
 
 		return eventAttributeValues;
@@ -411,6 +408,27 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		return "individualId";
+	}
+
+	private Field<Integer> _getSelectField(AnalysisType analysisType) {
+		if (analysisType.equals(AnalysisType.AVERAGE)) {
+			return DSL.count(
+				DSL.field("EventAttribute.value")
+			).div(
+				_getUniqueIndividualsField()
+			).as(
+				"average"
+			);
+		}
+		else if (analysisType.equals(AnalysisType.TOTAL)) {
+			return DSL.count(
+				DSL.field("EventAttribute.value")
+			).as(
+				"count"
+			);
+		}
+
+		return _getUniqueIndividualsField();
 	}
 
 	private Field<Integer> _getUniqueIndividualsField() {

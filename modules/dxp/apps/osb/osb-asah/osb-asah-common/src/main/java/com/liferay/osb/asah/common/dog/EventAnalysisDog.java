@@ -188,7 +188,7 @@ public class EventAnalysisDog {
 		List<BreakdownItem> breakdownItems = _createBreakdownItems(
 			eventAnalysisBreakdown,
 			_eventRepository.getEventAttributeValues(
-				null, channelId, eventAnalysisFilters,
+				analysisType, null, channelId, eventAnalysisFilters,
 				Long.valueOf(eventAnalysisBreakdown.getAttributeId()),
 				eventDefinitionId, pageable, rangeEndDate, rangeStartDate),
 			eventDefinition.getDisplayName(), lastBreakdown, null);
@@ -227,7 +227,8 @@ public class EventAnalysisDog {
 			List<BreakdownItem> breakdownItems = _createBreakdownItems(
 				eventAnalysisBreakdown,
 				_eventRepository.getEventAttributeValues(
-					parentBreakdownItem, channelId, eventAnalysisFilters,
+					analysisType, parentBreakdownItem, channelId,
+					eventAnalysisFilters,
 					Long.valueOf(eventAnalysisBreakdown.getAttributeId()),
 					eventDefinitionId, pageable, rangeEndDate, rangeStartDate),
 				eventDefinitionName, lastBreakdown, parentBreakdownItem);
