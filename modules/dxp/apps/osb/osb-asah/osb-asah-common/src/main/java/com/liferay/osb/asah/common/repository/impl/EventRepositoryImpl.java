@@ -23,6 +23,8 @@ import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.filter.FilterOperator;
 import com.liferay.osb.asah.common.model.filter.FilterOperators;
 
+import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -121,20 +123,20 @@ public class EventRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public long getAverageEventCountPerIndividual(
+	public BigDecimal getAverageEventCountPerIndividual(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate) {
 
-		Field<Integer> totalEventCount = DSL.count();
+		Field totalEventCount = DSL.count();
 
-		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.select(
-				totalEventCount.div(
-					DSL.nullif(_getUniqueIndividualsField(), 0)));
+		totalEventCount = totalEventCount.cast(SQLDataType.DECIMAL);
 
-		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
+		SelectSelectStep<Record1<Number>> selectSelectStep = _dslContext.select(
+			totalEventCount.div(DSL.nullif(_getUniqueIndividualsField(), 0)));
+
+		SelectJoinStep<Record1<Number>> selectJoinStep = selectSelectStep.from(
 			"Event");
 
 		return selectJoinStep.where(
@@ -142,9 +144,9 @@ public class EventRepositoryImpl extends BaseRepository {
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				rangeEndDate, rangeStartDate)
 		).fetchOptional(
-			0, Long.class
+			0, BigDecimal.class
 		).orElse(
-			0L
+			BigDecimal.ZERO
 		);
 	}
 

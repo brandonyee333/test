@@ -59,7 +59,7 @@ public class EventAnalysis implements Serializable {
 		return _page;
 	}
 
-	public long getValue() {
+	public Number getValue() {
 		return _value;
 	}
 
@@ -80,13 +80,13 @@ public class EventAnalysis implements Serializable {
 		_page = page;
 	}
 
-	public void setValue(long value) {
+	public void setValue(Number value) {
 		_value = value;
 	}
 
 	private List<BreakdownItem> _breakdownItems;
 	private long _count;
 	private int _page;
-	private long _value;
+	private Number _value;
 
 }

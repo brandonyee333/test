@@ -20,6 +20,8 @@ import com.liferay.osb.asah.common.model.BreakdownItem;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
 
+import java.math.BigDecimal;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +65,7 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 
 	public Optional<Event> findLastSeenEvent(@Nullable Long eventDefinitionId);
 
-	public long getAverageEventCountPerIndividual(
+	public BigDecimal getAverageEventCountPerIndividual(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,

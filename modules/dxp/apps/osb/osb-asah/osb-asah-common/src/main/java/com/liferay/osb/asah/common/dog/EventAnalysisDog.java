@@ -162,7 +162,7 @@ public class EventAnalysisDog {
 	}
 
 	private List<BreakdownItem> _getBreakdownItems(
-		AnalysisType analysisType, Long channelId, long eventAnalysisValue,
+		AnalysisType analysisType, Long channelId, Number eventAnalysisValue,
 		Long eventDefinitionId,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Pageable pageable,

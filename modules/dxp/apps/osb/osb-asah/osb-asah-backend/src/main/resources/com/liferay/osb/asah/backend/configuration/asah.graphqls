@@ -332,7 +332,7 @@ type EventAnalysis {
 	breakdownItems: [BreakdownItem]
 	count: Int
 	page: Int
-	value: Int
+	value: Float
 }
 
 type EventAttributeDefinition {
