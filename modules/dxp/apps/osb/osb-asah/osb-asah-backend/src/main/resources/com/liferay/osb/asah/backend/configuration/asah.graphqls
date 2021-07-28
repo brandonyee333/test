@@ -119,6 +119,7 @@ input DXPVariantSettings {
 input EventAnalysisBreakdown {
 	attributeId: String!
 	attributeType: AttributeType!
+	dataType: EventAttributeDefinitionDataType!
 	sortType: SortType
 }
 

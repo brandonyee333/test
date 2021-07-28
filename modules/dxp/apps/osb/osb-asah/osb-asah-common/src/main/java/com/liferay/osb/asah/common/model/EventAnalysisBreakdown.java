@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.io.Serializable;
@@ -73,6 +74,10 @@ public class EventAnalysisBreakdown implements Serializable {
 		return _attributeType;
 	}
 
+	public EventAttributeDefinition.DataType getDataType() {
+		return _dataType;
+	}
+
 	public String getSortType() {
 		return _sortType;
 	}
@@ -85,12 +90,17 @@ public class EventAnalysisBreakdown implements Serializable {
 		_attributeType = attributeType;
 	}
 
+	public void setDataType(EventAttributeDefinition.DataType dataType) {
+		_dataType = dataType;
+	}
+
 	public void setSortType(String sortType) {
 		_sortType = sortType;
 	}
 
 	private String _attributeId;
 	private AttributeType _attributeType;
+	private EventAttributeDefinition.DataType _dataType;
 	private String _sortType;
 
 }
