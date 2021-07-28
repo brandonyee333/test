@@ -201,6 +201,49 @@ public class EventRepositoryImpl extends BaseRepository {
 		return eventAttributeValues;
 	}
 
+	public long getEventAttributeValuesCount(
+		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
+		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
+		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
+		@Nullable Date rangeStartDate) {
+
+		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.select(
+				DSL.countDistinct(
+					DSL.field(
+						attributeType.getQualifiedAttributeValueFieldName(
+							null))));
+
+		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
+			"Event");
+
+		return selectJoinStep.join(
+			attributeType.getTableName()
+		).on(
+			DSL.field(
+				_getJoinFieldTableName(attributeType)
+			).eq(
+				DSL.field(attributeType.getJoinFieldName())
+			)
+		).and(
+			DSL.field(
+				attributeType.getQualifiedAttributeIdFieldName(null)
+			).eq(
+				Long.valueOf(eventAnalysisBreakdown.getAttributeId())
+			)
+		).where(
+			_getConditions(
+				channelId, eventAnalysisFilters, eventDefinitionId,
+				rangeEndDate, rangeStartDate)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
 	private SelectJoinStep _buildSelectJoinStep(
 		BreakdownItem breakdownItem,
 		EventAnalysisBreakdown eventAnalysisBreakdown,

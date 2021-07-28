@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 /**
  * @author Matthew Kong
@@ -48,8 +49,11 @@ public class EventAnalysisDog {
 
 		EventAnalysis eventAnalysis = new EventAnalysis();
 
-		eventAnalysis.setCount(1);
-		eventAnalysis.setPage(0);
+		eventAnalysis.setCount(
+			_getTotalPageCount(
+				channelId, eventAnalysisBreakdowns, eventAnalysisFilters,
+				eventDefinitionId, timeRange));
+		eventAnalysis.setPage(page);
 
 		if (analysisType.equals(AnalysisType.AVERAGE)) {
 			eventAnalysis.setValue(
@@ -259,6 +263,21 @@ public class EventAnalysisDog {
 			eventDefinition.getDisplayName(), PageRequest.of(0, 5), timeRange);
 
 		return breakdownItems;
+	}
+
+	private long _getTotalPageCount(
+		Long channelId, List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
+		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
+		TimeRange timeRange) {
+
+		if (CollectionUtils.isEmpty(eventAnalysisBreakdowns)) {
+			return 1;
+		}
+
+		return _eventRepository.getEventAttributeValuesCount(
+			channelId, eventAnalysisBreakdowns.get(0), eventAnalysisFilters,
+			eventDefinitionId, timeRange.getEndDate(),
+			timeRange.getStartDate());
 	}
 
 	private void _setChildrenBreakdownItems(

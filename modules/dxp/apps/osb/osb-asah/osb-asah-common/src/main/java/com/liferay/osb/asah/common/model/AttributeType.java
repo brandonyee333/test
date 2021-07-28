@@ -28,7 +28,7 @@ public enum AttributeType {
 		return _attributeIdFieldName;
 	}
 
-	public String getAttributeValueFieldName(String tableName) {
+	public String getAttributeValueFieldName() {
 		return _attributeValueFieldName;
 	}
 
