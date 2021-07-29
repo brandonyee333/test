@@ -37,10 +37,13 @@ public class EventAnalysisBreakdown implements Serializable {
 	}
 
 	public EventAnalysisBreakdown(
-		String attributeId, AttributeType attributeType) {
+		String attributeId, AttributeType attributeType,
+		EventAttributeDefinition.DataType dataType, String sortType) {
 
 		_attributeId = attributeId;
 		_attributeType = attributeType;
+		_dataType = dataType;
+		_sortType = sortType;
 	}
 
 	@Override
