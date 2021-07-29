@@ -127,9 +127,9 @@ public class Session implements Serializable {
 			Objects.equals(_events, session._events) &&
 			Objects.equals(_finished, session._finished) &&
 			Objects.equals(_firstEventDate, session._firstEventDate) &&
-			Objects.equals(_iterationNumber, session._iterationNumber) &&
 			Objects.equals(_interactionsCount, session._interactionsCount) &&
 			Objects.equals(_interactionNumber, session._interactionNumber) &&
+			Objects.equals(_iterationNumber, session._iterationNumber) &&
 			Objects.equals(_lastEventDate, session._lastEventDate) &&
 			Objects.equals(_pageViewsCount, session._pageViewsCount) &&
 			Objects.equals(_platformName, session._platformName) &&
@@ -210,6 +210,10 @@ public class Session implements Serializable {
 		return _interactionsCount;
 	}
 
+	public int getIterationNumber() {
+		return _iterationNumber;
+	}
+
 	public Timestamp getLastEventDate() {
 		if (_lastEventDate == null) {
 			return null;
@@ -255,9 +259,9 @@ public class Session implements Serializable {
 		return Objects.hash(
 			_browserName, _canonicalUrls, _channelId, _city, _clientIp,
 			_country, _dataSourceId, _date, _deviceType, _events, _finished,
-			_firstEventDate, _interactionsCount, _interactionNumber,
-			_lastEventDate, _pageViewsCount, _platformName, _projectId,
-			_referrers, _region, _sessionId, _urls, _userId);
+			_firstEventDate, _interactionNumber, _interactionsCount,
+			_iterationNumber, _lastEventDate, _pageViewsCount, _platformName,
+			_projectId, _referrers, _region, _sessionId, _urls, _userId);
 	}
 
 	public boolean isBounced() {
@@ -326,6 +330,10 @@ public class Session implements Serializable {
 
 	public void setInteractionsCount(int interactionsCount) {
 		_interactionsCount = interactionsCount;
+	}
+
+	public void setIterationNumber(int iterationNumber) {
+		_iterationNumber = iterationNumber;
 	}
 
 	public void setLastEventDate(Timestamp lastEventDate) {
