@@ -1,0 +1,77 @@
+{
+	"breakdownItems": [
+		{
+			"breakdownItems": [
+				{
+					"breakdownItems": [
+						{
+							"breakdownItems": null,
+							"leafNode": false,
+							"name": "All Individuals",
+							"previousValue": 0,
+							"value": 1.5
+						}
+					],
+					"leafNode": true,
+					"name": "Test Display Name 1",
+					"previousValue": 0,
+					"value": 1.5
+				}
+			],
+			"leafNode": false,
+			"name": "https://www.beryl.com/blogs",
+			"previousValue": 0,
+			"value": 1.5
+		},
+		{
+			"breakdownItems": [
+				{
+					"breakdownItems": [
+						{
+							"breakdownItems": null,
+							"leafNode": false,
+							"name": "All Individuals",
+							"previousValue": 0,
+							"value": 1.3333333333333333
+						}
+					],
+					"leafNode": true,
+					"name": "Test Display Name 1",
+					"previousValue": 0,
+					"value": 1.3333333333333333
+				}
+			],
+			"leafNode": false,
+			"name": "https://www.beryl.com/products",
+			"previousValue": 0,
+			"value": 1.3333333333333333
+		},
+		{
+			"breakdownItems": [
+				{
+					"breakdownItems": [
+						{
+							"breakdownItems": null,
+							"leafNode": false,
+							"name": "All Individuals",
+							"previousValue": 1,
+							"value": 1
+						}
+					],
+					"leafNode": true,
+					"name": "Test Display Name 1",
+					"previousValue": 1,
+					"value": 1
+				}
+			],
+			"leafNode": false,
+			"name": "https://www.beryl.com/design",
+			"previousValue": 1,
+			"value": 1
+		}
+	],
+	"count": 3,
+	"page": 0,
+	"previousValue": 1,
+	"value": 2
+}

@@ -14,14 +14,18 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.dog.EventAnalysisDog;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.AttributeType;
 import com.liferay.osb.asah.common.model.EventAnalysis;
+import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
@@ -33,9 +37,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -63,6 +71,142 @@ public class EventAnalysisDogTest {
 
 		Assert.assertEquals(
 			0, value.compareTo((BigDecimal)eventAnalysis.getValue()));
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
+	@Test
+	public void testGetEventAnalysisBreakdownAverage() throws Exception {
+		EventAnalysisBreakdown eventAnalysisBreakdown =
+			new EventAnalysisBreakdown(
+				"12345", AttributeType.EVENT,
+				EventAttributeDefinition.DataType.STRING, "DESC");
+
+		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
+			AnalysisType.AVERAGE, 1L, true,
+			Collections.singletonList(eventAnalysisBreakdown),
+			Collections.emptyList(), 246810L, 0, 10,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")));
+
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies/expected_event_analysis_breakdown_average.json",
+				this),
+			_objectMapper.convertValue(eventAnalysis, JSONObject.class), false);
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
+	@Test
+	public void testGetEventAnalysisBreakdownTotal() throws Exception {
+		EventAnalysisBreakdown eventAnalysisBreakdown1 =
+			new EventAnalysisBreakdown(
+				"12345", AttributeType.EVENT,
+				EventAttributeDefinition.DataType.STRING, "DESC");
+		EventAnalysisBreakdown eventAnalysisBreakdown2 =
+			new EventAnalysisBreakdown(
+				"23456", AttributeType.EVENT,
+				EventAttributeDefinition.DataType.STRING, "DESC");
+		EventAnalysisBreakdown eventAnalysisBreakdown3 =
+			new EventAnalysisBreakdown(
+				"34567", AttributeType.EVENT,
+				EventAttributeDefinition.DataType.STRING, "DESC");
+
+		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
+			AnalysisType.TOTAL, 1L, true,
+			new ArrayList<EventAnalysisBreakdown>() {
+				{
+					add(eventAnalysisBreakdown1);
+					add(eventAnalysisBreakdown2);
+					add(eventAnalysisBreakdown3);
+				}
+			},
+			Collections.emptyList(), 246810L, 0, 10,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")));
+
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies/expected_event_analysis_breakdown_total.json",
+				this),
+			_objectMapper.convertValue(eventAnalysis, JSONObject.class), false);
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
+	@Test
+	public void testGetEventAnalysisBreakdownUnique() throws Exception {
+		EventAnalysisBreakdown eventAnalysisBreakdown1 =
+			new EventAnalysisBreakdown(
+				"34567", AttributeType.EVENT,
+				EventAttributeDefinition.DataType.STRING, "DESC");
+		EventAnalysisBreakdown eventAnalysisBreakdown2 =
+			new EventAnalysisBreakdown(
+				"23456", AttributeType.EVENT,
+				EventAttributeDefinition.DataType.STRING, "DESC");
+		EventAnalysisBreakdown eventAnalysisBreakdown3 =
+			new EventAnalysisBreakdown(
+				"12345", AttributeType.EVENT,
+				EventAttributeDefinition.DataType.STRING, "DESC");
+
+		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
+			AnalysisType.UNIQUE, 1L, true,
+			new ArrayList<EventAnalysisBreakdown>() {
+				{
+					add(eventAnalysisBreakdown1);
+					add(eventAnalysisBreakdown2);
+					add(eventAnalysisBreakdown3);
+				}
+			},
+			Collections.emptyList(), 246810L, 0, 10,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")));
+
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies/expected_event_analysis_breakdown_unique.json",
+				this),
+			_objectMapper.convertValue(eventAnalysis, JSONObject.class), false);
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
+	@Test
+	public void testGetEventAnalysisBreakdownWithFilter() throws Exception {
+		EventAnalysisBreakdown eventAnalysisBreakdown1 =
+			new EventAnalysisBreakdown(
+				"12345", AttributeType.EVENT,
+				EventAttributeDefinition.DataType.STRING, "ASC");
+		EventAnalysisBreakdown eventAnalysisBreakdown2 =
+			new EventAnalysisBreakdown(
+				"23456", AttributeType.EVENT,
+				EventAttributeDefinition.DataType.STRING, "ASC");
+		EventAnalysisBreakdown eventAnalysisBreakdown3 =
+			new EventAnalysisBreakdown(
+				"34567", AttributeType.EVENT,
+				EventAttributeDefinition.DataType.STRING, "ASC");
+
+		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
+			AnalysisType.TOTAL, 1L, true,
+			new ArrayList<EventAnalysisBreakdown>() {
+				{
+					add(eventAnalysisBreakdown1);
+					add(eventAnalysisBreakdown2);
+					add(eventAnalysisBreakdown3);
+				}
+			},
+			Collections.singletonList(
+				new EventAnalysisFilter(
+					"12345", AttributeType.EVENT,
+					EventAttributeDefinition.DataType.STRING, "eq",
+					Collections.singletonList("https://www.beryl.com/design"))),
+			246810L, 0, 10,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")));
+
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies" +
+					"/expected_event_analysis_breakdown_with_filter.json",
+				this),
+			_objectMapper.convertValue(eventAnalysis, JSONObject.class), false);
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis_with_filter.sql")
@@ -159,5 +303,8 @@ public class EventAnalysisDogTest {
 
 	@Autowired
 	private EventAnalysisDog _eventAnalysisDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }
