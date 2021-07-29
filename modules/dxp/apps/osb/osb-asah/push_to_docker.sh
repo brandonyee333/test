@@ -60,7 +60,15 @@ function build_docker_image {
 		echo "ENV GOOGLE_APPLICATION_CREDENTIALS=/root/gcp_credentials.json" >> ${file_name}/Dockerfile
 
 		echo "" >> ${file_name}/Dockerfile
-		echo "ENV OSB_FARO_FRONTEND_URL=https://analytics.liferay.com" >> ${file_name}/Dockerfile
+
+		if [ ${ASAH_ENVIRONMENT_NAME} == "prod" ]
+		then
+			echo "ENV OSB_FARO_FRONTEND_URL=https://analytics.liferay.com" >> ${file_name}/Dockerfile
+		elif [ ${ASAH_ENVIRONMENT_NAME} == "uat" ]
+		then
+			echo "ENV OSB_FARO_FRONTEND_URL=https://analytics-uat.liferay.com" >> ${file_name}/Dockerfile
+		fi
+
 		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
 	elif [ ${file_name} == osb-asah-elasticsearch-data-node ] ||
 		   [ ${file_name} == osb-asah-elasticsearch-master-node ]
@@ -81,7 +89,15 @@ function build_docker_image {
 		echo "RUN unzip client.zip" >> ${file_name}/Dockerfile
 
 		echo "" >> ${file_name}/Dockerfile
-		echo "ENV OSB_FARO_FRONTEND_URL=https://analytics.liferay.com" >> ${file_name}/Dockerfile
+
+		if [ ${ASAH_ENVIRONMENT_NAME} == "prod" ]
+		then
+			echo "ENV OSB_FARO_FRONTEND_URL=https://analytics.liferay.com" >> ${file_name}/Dockerfile
+		elif [ ${ASAH_ENVIRONMENT_NAME} == "uat" ]
+		then
+			echo "ENV OSB_FARO_FRONTEND_URL=https://analytics-uat.liferay.com" >> ${file_name}/Dockerfile
+		fi
+
 		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
 	fi
 
@@ -283,15 +299,20 @@ function sed {
 	fi
 }
 
-if [ "$#" -ne 2 ]
+if [ "$#" -ne 3 ]
 then
-echo "Usage: push_to_docker [previous Git hash] [label]"
-exit 1
+	echo "Usage: push_to_docker [previous Git hash] [label] [environment]"
+	exit 1
+elif [ ${3} != "prod" ] && [ ${3} != "uat" ]
+then
+	echo "Environment should be prod or uat"
+	exit 1
 fi
 
 CURRENT_DATE=$(date)
 GIT_HASH=$(git rev-parse --short=7 HEAD)
 PREVIOUS_GIT_HASH=${1}
 GIT_LABEL=${2}
+ASAH_ENVIRONMENT_NAME=${3}
 
 main
