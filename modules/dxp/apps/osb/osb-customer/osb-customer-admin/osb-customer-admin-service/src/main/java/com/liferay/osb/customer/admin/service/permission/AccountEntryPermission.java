@@ -132,7 +132,9 @@ public class AccountEntryPermission {
 			for (ContactRole contactRole : contactRoles) {
 				String name = contactRole.getName();
 
-				if (name.equals(ContactRoleConstants.NAME_SUPPORT_DEVELOPER) ||
+				if (name.equals(ContactRoleConstants.NAME_PARTNER_MANAGER) ||
+					name.equals(ContactRoleConstants.NAME_PARTNER_MEMBER) ||
+					name.equals(ContactRoleConstants.NAME_SUPPORT_DEVELOPER) ||
 					name.equals(ContactRoleConstants.NAME_SUPPORT_WATCHER)) {
 
 					return true;

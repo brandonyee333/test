@@ -429,10 +429,8 @@ public class AccountReaderImpl implements AccountReader {
 	private boolean _isSyncProduct(Product product) {
 		String name = product.getName();
 
-		if (name.equals(ProductConstants.NAME_GOLD) ||
-			name.equals(ProductConstants.NAME_LIMITED) ||
-			name.equals(ProductConstants.NAME_PLATINUM) ||
-			name.equals(ProductConstants.NAME_SILVER)) {
+		if (ArrayUtil.contains(ProductConstants.NAMES_PARTNERSHIP, name) ||
+			ArrayUtil.contains(ProductConstants.NAMES_SUBSCRIPTION, name)) {
 
 			return true;
 		}
