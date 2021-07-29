@@ -25,13 +25,6 @@ enum AttributeType {
 	USER_SESSION
 }
 
-enum BreakdownType {
-	ACCOUNT
-	EVENT
-	INDIVIDUAL
-	SESSION
-}
-
 enum DataControlTaskStatus {
 	COMPLETED
 	ERROR
