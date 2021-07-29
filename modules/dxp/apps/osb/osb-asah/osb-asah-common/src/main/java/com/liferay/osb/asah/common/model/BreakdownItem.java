@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 import java.util.List;
@@ -57,6 +59,7 @@ public class BreakdownItem implements Serializable {
 		return _breakdownItems;
 	}
 
+	@JsonIgnore
 	public List<EventAnalysisFilter> getEventAnalysisFilters() {
 		return _eventAnalysisFilters;
 	}
