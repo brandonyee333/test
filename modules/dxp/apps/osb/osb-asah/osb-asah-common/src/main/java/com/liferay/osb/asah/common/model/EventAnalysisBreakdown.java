@@ -17,8 +17,6 @@ package com.liferay.osb.asah.common.model;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
-import java.io.Serializable;
-
 import java.util.Map;
 import java.util.Objects;
 
@@ -30,7 +28,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Matthew Kong
  */
 @Table
-public class EventAnalysisBreakdown implements Serializable {
+public class EventAnalysisBreakdown {
 
 	public EventAnalysisBreakdown(Map<String, Object> source) {
 		BeanUtils.copyProperties(new CaseInsensitiveMap(source), this);
@@ -61,7 +59,9 @@ public class EventAnalysisBreakdown implements Serializable {
 
 		if (Objects.equals(_attributeId, eventAnalysisBreakdown._attributeId) &&
 			Objects.equals(
-				_attributeType, eventAnalysisBreakdown._attributeType)) {
+				_attributeType, eventAnalysisBreakdown._attributeType) &&
+			Objects.equals(_dataType, eventAnalysisBreakdown._dataType) &&
+			Objects.equals(_sortType, eventAnalysisBreakdown._sortType)) {
 
 			return true;
 		}
@@ -83,6 +83,11 @@ public class EventAnalysisBreakdown implements Serializable {
 
 	public String getSortType() {
 		return _sortType;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(_attributeId, _attributeType, _dataType, _sortType);
 	}
 
 	public void setAttributeId(String attributeId) {

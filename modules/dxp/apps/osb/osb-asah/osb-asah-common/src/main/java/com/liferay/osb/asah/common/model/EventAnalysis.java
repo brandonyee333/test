@@ -14,15 +14,13 @@
 
 package com.liferay.osb.asah.common.model;
 
-import java.io.Serializable;
-
 import java.util.List;
 import java.util.Objects;
 
 /**
  * @author Matthew Kong
  */
-public class EventAnalysis implements Serializable {
+public class EventAnalysis {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -70,7 +68,8 @@ public class EventAnalysis implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_count, _page, _value);
+		return Objects.hash(
+			_breakdownItems, _count, _page, _previousValue, _value);
 	}
 
 	public void setBreakdownItems(List<BreakdownItem> breakdownItems) {

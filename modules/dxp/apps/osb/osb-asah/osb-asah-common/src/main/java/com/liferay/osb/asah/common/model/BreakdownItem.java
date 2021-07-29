@@ -16,8 +16,6 @@ package com.liferay.osb.asah.common.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.io.Serializable;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -27,7 +25,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Matthew Kong
  */
 @Table
-public class BreakdownItem implements Serializable {
+public class BreakdownItem {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -74,6 +72,13 @@ public class BreakdownItem implements Serializable {
 
 	public Number getValue() {
 		return _value;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(
+			_breakdownItems, _eventAnalysisFilters, _leafNode, _name,
+			_previousValue, _value);
 	}
 
 	public boolean isLeafNode() {
