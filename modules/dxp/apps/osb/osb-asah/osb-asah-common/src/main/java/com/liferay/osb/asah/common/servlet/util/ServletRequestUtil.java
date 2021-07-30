@@ -75,7 +75,7 @@ public class ServletRequestUtil {
 		sb.append("://");
 		sb.append(serverName);
 
-		if ((serverPort != 80) && (serverPort != 443)) {
+		if ((serverPort > 0) && (serverPort != 80) && (serverPort != 443)) {
 			sb.append(":");
 			sb.append(serverPort);
 		}
