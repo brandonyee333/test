@@ -1,5 +1,15 @@
-query EventAnalysis($analysisType: AnalysisType!, $channelId: String!, $eventAnalysisFilters: [EventAnalysisFilter], $eventDefinitionId: String!, $rangeEnd: String, $rangeStart: String) {
-	eventAnalysis(analysisType: $analysisType, channelId: $channelId, eventAnalysisFilters: $eventAnalysisFilters, eventDefinitionId: $eventDefinitionId, rangeEnd: $rangeEnd, rangeStart: $rangeStart) {
+query EventAnalysis($analysisType: AnalysisType!, $channelId: String!,  $compareToPrevious: Boolean!, $eventAnalysisFilters: [EventAnalysisFilter], $eventDefinitionId: String!, $page: Int!, $rangeEnd: String, $rangeStart: String, $size: Int!) {
+	eventAnalysis(analysisType: $analysisType, channelId: $channelId, compareToPrevious: $compareToPrevious, eventAnalysisFilters: $eventAnalysisFilters, eventDefinitionId: $eventDefinitionId, page: $page, rangeEnd: $rangeEnd, rangeStart: $rangeStart, size: $size) {
+		breakdownItems {
+			breakdownItems {
+				leafNode
+				name
+				value
+			},
+			leafNode
+			name
+			value
+		}
 		count
 		page
 		value

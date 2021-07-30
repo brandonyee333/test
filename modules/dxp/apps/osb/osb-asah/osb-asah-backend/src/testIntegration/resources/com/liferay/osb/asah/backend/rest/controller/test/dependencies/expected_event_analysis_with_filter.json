@@ -1,6 +1,20 @@
 {
 	"data": {
 		"eventAnalysis": {
+			"breakdownItems": [
+				{
+					"breakdownItems": [
+						{
+							"leafNode": false,
+							"name": "All Individuals",
+							"value": 1
+						}
+					],
+					"leafNode": true,
+					"name": "Test Display Name 1",
+					"value": 1
+				}
+			],
 			"count": 1,
 			"page": 0,
 			"value": 1

@@ -3,6 +3,7 @@
 	"variables": {
 		"analysisType": "TOTAL",
 		"channelId": "1",
+		"compareToPrevious": false,
 		"eventAnalysisFilters": [
 			{
 				"attributeId": "12345",
@@ -24,7 +25,9 @@
 			}
 		],
 		"eventDefinitionId": "246810",
+		"page": 0,
 		"rangeEnd": "2021-06-02",
-		"rangeStart": "2021-05-19"
+		"rangeStart": "2021-05-19",
+		"size": 5
 	}
 }
