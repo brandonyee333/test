@@ -41,67 +41,74 @@ public class SessionFlatMapGroupsWithStateFunction
 
 	@Override
 	public Iterator<Session> call(
-		Tuple2<String, Date> key, Iterator<Event> events,
+		Tuple2<String, Date> keyTuple, Iterator<Event> events,
 		GroupState<Session> groupState) {
 
 		ArrayList<Session> sessions = new ArrayList<>();
 
+		// Session has expired
+
 		if (groupState.hasTimedOut()) {
 			Session expiredSession = groupState.get();
 
+			expiredSession.setFinished(true);
 			expiredSession.setInteractionNumber(
 				expiredSession.getIterationNumber() + 1);
-			expiredSession.setFinished(true);
 
 			sessions.add(expiredSession);
+
+			return sessions.iterator();
 		}
-		else {
-			if (groupState.exists()) {
-				Session expiredSession = groupState.get();
 
-				expiredSession.setInteractionNumber(
-					expiredSession.getIterationNumber() + 1);
+		// Session is active
 
-				sessions.add(expiredSession);
+		if (groupState.exists()) {
+			Session activeSession = groupState.get();
+
+			activeSession.setInteractionNumber(
+				activeSession.getIterationNumber() + 1);
+
+			sessions.add(activeSession);
+		}
+
+		// Add events to the active session and finalize the last active
+		// session if expired
+
+		while (events.hasNext()) {
+			Event event = events.next();
+
+			if (sessions.isEmpty()) {
+				sessions.add(new Session(event));
 			}
+			else {
+				Session activeSession = sessions.get(sessions.size() - 1);
 
-			while (events.hasNext()) {
-				Event event = events.next();
+				Timestamp eventDate = event.getEventDate();
+				Timestamp lastEventDate = activeSession.getLastEventDate();
 
-				if (sessions.isEmpty()) {
+				if (eventDate.getTime() >
+						(lastEventDate.getTime() + _sessionDuration)) {
+
+					activeSession.setFinished(true);
+
 					sessions.add(new Session(event));
 				}
 				else {
-					Session session = sessions.get(sessions.size() - 1);
-
-					Timestamp eventDate = event.getEventDate();
-					Timestamp lastEventDate = session.getLastEventDate();
-
-					if (eventDate.getTime() >
-							(lastEventDate.getTime() + _sessionDuration)) {
-
-						session.setFinished(true);
-						sessions.add(new Session(event));
-					}
-					else {
-						session.addEvent(event);
-					}
-				}
-			}
-
-			if (!sessions.isEmpty()) {
-				Session lastSession = sessions.get(sessions.size() - 1);
-
-				if (!lastSession.getFinished()) {
-					Timestamp lastEventDate = lastSession.getLastEventDate();
-
-					groupState.setTimeoutTimestamp(
-						lastEventDate.getTime() + _sessionDuration);
-
-					groupState.update(lastSession);
+					activeSession.addEvent(event);
 				}
 			}
 		}
+
+		// Update the active session timeout
+
+		Session activeSession = sessions.get(sessions.size() - 1);
+
+		Timestamp lastEventDate = activeSession.getLastEventDate();
+
+		groupState.setTimeoutTimestamp(
+			lastEventDate.getTime() + _sessionDuration);
+
+		groupState.update(activeSession);
 
 		return sessions.iterator();
 	}
