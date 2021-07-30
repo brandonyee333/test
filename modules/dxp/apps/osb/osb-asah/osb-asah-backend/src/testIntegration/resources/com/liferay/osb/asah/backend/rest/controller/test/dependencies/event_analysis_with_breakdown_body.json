@@ -1,0 +1,25 @@
+{
+	"operationName": "EventAnalysis",
+	"variables": {
+		"analysisType": "TOTAL",
+		"channelId": "1",
+		"compareToPrevious": true,
+		"eventAnalysisBreakdowns": [
+			{
+				"attributeId": "12345",
+				"attributeType": "EVENT",
+				"dataType": "STRING"
+			},
+			{
+				"attributeId": "23456",
+				"attributeType": "EVENT",
+				"dataType": "STRING"
+			}
+		],
+		"eventDefinitionId": "246810",
+		"page": 0,
+		"rangeEnd": "2021-06-02",
+		"rangeStart": "2021-05-19",
+		"size": 5
+	}
+}
