@@ -1,0 +1,12 @@
+{
+	"operationName": "EventsByUserSession",
+	"variables": {
+		"channelId": "1",
+		"entityId": "1",
+		"entityType": "Individual",
+		"keywords": "value",
+		"page": 0,
+		"rangeKey": 0,
+		"size": 50
+	}
+}

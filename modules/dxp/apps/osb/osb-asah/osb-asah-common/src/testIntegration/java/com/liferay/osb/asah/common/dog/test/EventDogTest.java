@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
+import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -151,6 +153,64 @@ public class EventDogTest {
 			},
 			_eventDog.getRecentEventAttributeValues(
 				eventAttributeDefinition.getId(), 2));
+	}
+
+	@Test
+	public void testSearchEvents() {
+		Date date = DateUtil.newDayDate();
+
+		EventAttributeDefinition eventAttributeDefinition =
+			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
+				"viewDuration");
+
+		Channel channel = _channelDog.addChannel("Test Channel");
+
+		Long eventAttributeDefinitionId = eventAttributeDefinition.getId();
+
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("pageUnloaded");
+
+		_eventDog.addEvent(
+			"analyticsEventId1", "Page", channel.getId(), date, 1L,
+			new HashSet<EventAttribute>() {
+				{
+					add(
+						new EventAttribute(
+							null, eventAttributeDefinitionId, "testValue1"));
+					add(
+						new EventAttribute(
+							null, eventAttributeDefinitionId, "testValue2"));
+				}
+			},
+			date, eventDefinition.getId(), 1L, "sessionId", "userId");
+
+		_eventDog.addEvent(
+			"analyticsEventId2", "Page", channel.getId(), date, 1L,
+			new HashSet<EventAttribute>() {
+				{
+					add(
+						new EventAttribute(
+							null, eventAttributeDefinitionId, "testValue1"));
+					add(
+						new EventAttribute(
+							null, eventAttributeDefinitionId, "testValue2"));
+				}
+			},
+			date, eventDefinition.getId(), 1L, "sessionId", "userId");
+
+		List<Event> events = _eventDog.searchEvents(
+			channel.getId(), 1L, null, 0, 50, TimeRange.LAST_24_HOURS);
+
+		Assert.assertEquals(events.toString(), 2, events.size());
+
+		events.forEach(
+			event -> {
+				Set<EventAttribute> eventAttributes =
+					event.getEventAttributes();
+
+				Assert.assertEquals(
+					eventAttributes.toString(), 2, eventAttributes.size());
+			});
 	}
 
 	@Autowired

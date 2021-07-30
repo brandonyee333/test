@@ -1,0 +1,24 @@
+query EventsByUserSession($channelId: String!, $entityId: String!, $entityType: String!, $keywords: String, $page: Int!, $rangeKey: Int!, $size: Int!) {
+	userSessions(channelId: $channelId, entityId: $entityId, entityType: $entityType, keywords: $keywords, page: $page, rangeKey: $rangeKey, size: $size) {
+	... on UserSession {
+			browserName
+			completeDate
+			contentLanguageId
+			date
+			deviceType
+			events {
+				canonicalUrl
+				name
+				pageDescription
+				pageKeywords
+				pageTitle
+				referrer
+				url
+				__typename
+			},
+			languageId
+			timezoneOffset
+			__typename
+		}
+	}
+}

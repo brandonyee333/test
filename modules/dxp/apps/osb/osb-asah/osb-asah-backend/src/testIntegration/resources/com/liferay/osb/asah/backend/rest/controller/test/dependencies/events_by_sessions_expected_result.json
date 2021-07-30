@@ -1,0 +1,36 @@
+{
+	"data": {
+		"userSessions": [
+			{
+				"__typename": "UserSession",
+				"browserName": "Chrome",
+				"contentLanguageId": "contentLanguageId",
+				"deviceType": "Chrome",
+				"events": [
+					{
+						"__typename": "Event",
+						"canonicalUrl": "canonicalUrlValue",
+						"name": "pageUnloaded",
+						"pageDescription": "pageDescriptionValue",
+						"pageKeywords": "pageKeywordsValue",
+						"pageTitle": "pageTitleValue",
+						"referrer": "referrerValue",
+						"url": "urlValue"
+					},
+					{
+						"__typename": "Event",
+						"canonicalUrl": "canonicalUrlValue",
+						"name": "assetClicked",
+						"pageDescription": "pageDescriptionValue",
+						"pageKeywords": "pageKeywordsValue",
+						"pageTitle": "pageTitleValue",
+						"referrer": "referrerValue",
+						"url": "urlValue"
+					}
+				],
+				"languageId": "pt-BR",
+				"timezoneOffset": "-3"
+			}
+		]
+	}
+}

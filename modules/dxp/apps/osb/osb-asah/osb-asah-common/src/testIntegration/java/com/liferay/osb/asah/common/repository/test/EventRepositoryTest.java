@@ -15,12 +15,17 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.AttributeType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
+import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
@@ -34,8 +39,11 @@ import java.time.LocalDateTime;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,12 +52,16 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
+ * @author Alejo Ceballos
+ * @author Marcos Martins
  * @author Matthew Kong
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@DirtiesContext
 @Import(JDBCTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class EventRepositoryTest {
@@ -191,6 +203,44 @@ public class EventRepositoryTest {
 		Assert.assertArrayEquals(new Integer[] {4, 2, 1}, values.toArray());
 	}
 
+	@SQLResource(resourcePath = "test_events.sql")
+	@Test
+	public void testSearchEventsLast24Hours() {
+		List<Event> events = _eventRepository.searchEvents(
+			1L, 1L, null, PageRequest.of(0, 50, Sort.desc("eventDate")),
+			TimeRange.LAST_24_HOURS);
+
+		Assert.assertEquals(events.toString(), 4, events.size());
+
+		Stream<Event> stream = events.stream();
+
+		Assert.assertArrayEquals(
+			new String[] {
+				"blogClicked", "formViewed", "assetClicked", "fieldBlurred"
+			},
+			stream.map(
+				event -> {
+					Optional<EventDefinition> eventDefinitionOptional =
+						_eventDefinitionRepository.findById(
+							event.getEventDefinitionId());
+
+					EventDefinition eventDefinition =
+						eventDefinitionOptional.get();
+
+					return eventDefinition.getName();
+				}
+			).toArray());
+	}
+
+	@SQLResource(resourcePath = "test_events.sql")
+	@Test
+	public void testSearchEventsWithKeywordsLast24Hours() {
+		List<Event> events = _eventRepository.searchEvents(
+			1L, 1L, "form", PageRequest.of(0, 50), TimeRange.LAST_24_HOURS);
+
+		Assert.assertEquals(events.toString(), 1, events.size());
+	}
+
 	private void _assertBigDecimalEquals(
 		BigDecimal[] expectedValues, BigDecimal[] actualValues, int scale) {
 
@@ -202,6 +252,9 @@ public class EventRepositoryTest {
 			Assert.assertEquals(0, actualValue.compareTo(expectedValues[i]));
 		}
 	}
+
+	@Autowired
+	private EventDefinitionRepository _eventDefinitionRepository;
 
 	@Autowired
 	private EventRepository _eventRepository;
