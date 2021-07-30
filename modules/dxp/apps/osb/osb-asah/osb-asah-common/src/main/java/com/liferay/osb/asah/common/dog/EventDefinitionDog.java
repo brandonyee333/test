@@ -25,8 +25,12 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -140,6 +144,20 @@ public class EventDefinitionDog {
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"There is no event definition with ID " + eventDefinitionId));
+	}
+
+	public Map<Long, EventDefinition> getEventDefinitions(
+		Set<Long> eventDefinitionIds) {
+
+		List<EventDefinition> eventDefinitions =
+			_eventDefinitionRepository.findByIdIn(eventDefinitionIds);
+
+		Stream<EventDefinition> eventDefinitionStream =
+			eventDefinitions.stream();
+
+		return eventDefinitionStream.collect(
+			Collectors.toMap(
+				EventDefinition::getId, eventDefinition -> eventDefinition));
 	}
 
 	public Page<EventDefinition> getEventDefinitionsPage(

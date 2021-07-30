@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.EventDefinition;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,8 @@ public interface EventDefinitionRepository
 
 	public Optional<EventDefinition> findByDisplayNameIgnoreCase(
 		String displayName);
+
+	public List<EventDefinition> findByIdIn(Collection<Long> ids);
 
 	public Optional<EventDefinition> findByName(String name);
 
