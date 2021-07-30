@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.EventAttribute;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -30,5 +32,7 @@ public interface EventAttributeRepository
 
 	public Optional<EventAttribute> findByEventAttributeDefinitionIdAndEventId(
 		Long eventAttributeDefinitionId, Long eventId);
+
+	public List<EventAttribute> findByEventIdIn(Collection<Long> eventIds);
 
 }
