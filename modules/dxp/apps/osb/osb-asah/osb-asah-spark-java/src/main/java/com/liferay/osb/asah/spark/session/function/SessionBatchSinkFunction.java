@@ -17,7 +17,9 @@ package com.liferay.osb.asah.spark.session.function;
 import com.liferay.osb.asah.spark.session.model.Session;
 
 import org.apache.spark.api.java.function.VoidFunction2;
+import org.apache.spark.sql.DataFrameWriter;
 import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
 import org.apache.spark.sql.functions;
 
 /**
@@ -39,35 +41,15 @@ public class SessionBatchSinkFunction
 	public void call(Dataset<Session> dataset, Long batchNumber) {
 		dataset.persist();
 
-		saveRealtimeEvents(dataset);
-		saveFinishedSessionsEvents(dataset);
+		saveFinishedSessionEvents(dataset);
 		saveFinishedSessions(dataset);
+		saveRealtimeSessionEvents(dataset);
+
 		dataset.unpersist();
 	}
 
-	public void saveFinishedSessions(Dataset<Session> dataset) {
-		dataset.filter(
-			"finished == true"
-		).drop(
-			"finished", "events", "iterationNumber"
-		).select(
-			functions.col("*")
-		).write(
-		).format(
-			_TABLE_FORMAT_DELTA
-		).mode(
-			"append"
-		).option(
-			"mergeSchema", _MERGE_SCHEMA
-		).partitionBy(
-			"projectId", "date"
-		).save(
-			_sessionsPath
-		);
-	}
-
-	public void saveFinishedSessionsEvents(Dataset<Session> dataset) {
-		dataset.filter(
+	public void saveFinishedSessionEvents(Dataset<Session> dataset) {
+		Dataset<Row> finishedSessionEventsDataset = dataset.filter(
 			"finished == true"
 		).select(
 			functions.explode(
@@ -79,9 +61,13 @@ public class SessionBatchSinkFunction
 			functions.col("e.*")
 		).drop(
 			"iterationNumber"
-		).write(
-		).format(
-			_TABLE_FORMAT_DELTA
+		);
+
+		DataFrameWriter<Row> dataFrameWriter =
+			finishedSessionEventsDataset.write();
+
+		dataFrameWriter.format(
+			"delta"
 		).mode(
 			"append"
 		).option(
@@ -93,8 +79,32 @@ public class SessionBatchSinkFunction
 		);
 	}
 
-	public void saveRealtimeEvents(Dataset<Session> dataset) {
-		dataset.select(
+	public void saveFinishedSessions(Dataset<Session> dataset) {
+		Dataset<Row> finishedSessionsDataset = dataset.filter(
+			"finished == true"
+		).drop(
+			"finished", "events", "iterationNumber"
+		).select(
+			functions.col("*")
+		);
+
+		DataFrameWriter<Row> dataFrameWriter = finishedSessionsDataset.write();
+
+		dataFrameWriter.format(
+			"delta"
+		).mode(
+			"append"
+		).option(
+			"mergeSchema", _MERGE_SCHEMA
+		).partitionBy(
+			"projectId", "date"
+		).save(
+			_sessionsPath
+		);
+	}
+
+	public void saveRealtimeSessionEvents(Dataset<Session> dataset) {
+		Dataset<Row> unfinishedSessionEventsDataset = dataset.select(
 			functions.explode(
 				functions.col("events")
 			).alias(
@@ -111,9 +121,13 @@ public class SessionBatchSinkFunction
 			"iterationNumber == sessionIterationNumber"
 		).drop(
 			"iterationNumber", "sessionIterationNumber"
-		).write(
-		).format(
-			_TABLE_FORMAT_DELTA
+		);
+
+		DataFrameWriter<Row> dataFrameWriter =
+			unfinishedSessionEventsDataset.write();
+
+		dataFrameWriter.format(
+			"delta"
 		).mode(
 			"append"
 		).option(
@@ -126,8 +140,6 @@ public class SessionBatchSinkFunction
 	}
 
 	private static final boolean _MERGE_SCHEMA = true;
-
-	private static final String _TABLE_FORMAT_DELTA = "delta";
 
 	private final String _realtimeEventsPath;
 	private final String _sessionEventsPath;
