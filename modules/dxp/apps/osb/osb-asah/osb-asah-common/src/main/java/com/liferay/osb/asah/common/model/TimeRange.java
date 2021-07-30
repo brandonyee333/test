@@ -294,15 +294,9 @@ public class TimeRange {
 		LocalDateTime endLocalDateTime = getEndLocalDateTime();
 		LocalDateTime startLocalDateTime = getStartLocalDateTime();
 
-		int deltaDays = getDeltaDays();
-
-		if (equals(LAST_24_HOURS)) {
-			deltaDays = 1;
-		}
-
 		return of(
-			endLocalDateTime.minusDays(deltaDays),
-			startLocalDateTime.minusDays(deltaDays));
+			endLocalDateTime.minusDays(getDeltaDays()),
+			startLocalDateTime.minusDays(getDeltaDays()));
 	}
 
 	public int getRangeKey() {
