@@ -92,7 +92,7 @@ public class EventAnalysisDogTest {
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_event_analysis_breakdown_average.json",
 				this),
-			_objectMapper.convertValue(eventAnalysis, JSONObject.class), false);
+			_objectMapper.convertValue(eventAnalysis, JSONObject.class), true);
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
@@ -128,7 +128,7 @@ public class EventAnalysisDogTest {
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_event_analysis_breakdown_total.json",
 				this),
-			_objectMapper.convertValue(eventAnalysis, JSONObject.class), false);
+			_objectMapper.convertValue(eventAnalysis, JSONObject.class), true);
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
@@ -164,7 +164,7 @@ public class EventAnalysisDogTest {
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_event_analysis_breakdown_unique.json",
 				this),
-			_objectMapper.convertValue(eventAnalysis, JSONObject.class), false);
+			_objectMapper.convertValue(eventAnalysis, JSONObject.class), true);
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
@@ -206,7 +206,7 @@ public class EventAnalysisDogTest {
 				"dependencies" +
 					"/expected_event_analysis_breakdown_with_filter.json",
 				this),
-			_objectMapper.convertValue(eventAnalysis, JSONObject.class), false);
+			_objectMapper.convertValue(eventAnalysis, JSONObject.class), true);
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis_with_filter.sql")
