@@ -354,7 +354,7 @@ definition {
 	macro addTagPGViaWCD {
 		Panel.expandPanel(panelHeading = "Metadata");
 
-		Type(
+		Type.clickAtType(
 			locator1 = "AssetCategorization#TAGS_FIELD",
 			value1 = "${tagName}");
 
