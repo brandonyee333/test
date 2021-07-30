@@ -323,6 +323,17 @@ type DXPEntityBag {
 	total: Int
 }
 
+type Event {
+	canonicalUrl: String,
+	createDate: String,
+	name: String,
+	pageDescription: String,
+	pageKeywords: String,
+	pageTitle: String,
+	referrer: String,
+	url: String
+}
+
 type EventAnalysis {
 	breakdownItems: [BreakdownItem]
 	count: Int
@@ -735,6 +746,17 @@ type Preference {
 	value: String
 }
 
+type UserSession {
+	browserName: String,
+	completeDate: String,
+	contentLanguageId: String,
+	date: String,
+	deviceType: String,
+	events: [Event],
+	languageId: String
+	timezoneOffset: String,
+}
+
 type QueryType {
 	accountInterests(
 		accountId: String!,
@@ -923,6 +945,18 @@ type QueryType {
 		sort: Sort!,
 		type: EventAttributeDefinitionType!
 	): EventAttributeDefinitionBag
+
+	userSessions(
+		channelId: String!
+		entityId: String!
+		entityType: String!
+		keywords: String
+		page: Int!
+		rangeEnd: String
+		rangeKey: Int
+		rangeStart: String
+		size: Int!
+	): [UserSession]
 
 	eventDefinition(
 		displayName: String,
