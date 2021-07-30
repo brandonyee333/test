@@ -215,9 +215,6 @@ public class IndividualNanite implements Nanite {
 		_individualDog.addDataSourceIndividualPK(
 			userId, dataSourceId, knownIndividual);
 
-		knownIndividual = _individualDog.fetchIndividual(
-			knownIndividual.getId());
-
 		Set<Individual.ActivitiesCount> knownIndividualActivitiesCounts =
 			knownIndividual.getActivitiesCounts();
 
