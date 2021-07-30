@@ -186,7 +186,8 @@ public class EventRepositoryImpl extends BaseRepository {
 		).groupBy(
 			valueField
 		).orderBy(
-			_getOrderField(selectField, sortType)
+			_getOrderField(selectField, sortType),
+			_getOrderField(valueField, "ASC")
 		).limit(
 			pageable.getPageSize()
 		).offset(
