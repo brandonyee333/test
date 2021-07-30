@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
@@ -21,6 +23,7 @@ import com.liferay.osb.asah.common.model.AttributeType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
+import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.filter.FilterOperator;
 import com.liferay.osb.asah.common.model.filter.FilterOperators;
 
@@ -35,7 +38,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -46,9 +49,11 @@ import org.jooq.Record1;
 import org.jooq.SelectHavingConditionStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
+import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
@@ -241,6 +246,95 @@ public class EventRepositoryImpl extends BaseRepository {
 			0, Long.class
 		).orElse(
 			0L
+		);
+	}
+
+	public List<Event> searchEvents(
+		Long channelId, Long individualId, String keywords, Pageable pageable,
+		TimeRange timeRange) {
+
+		Table<Record> eventTable = DSL.table(
+			"Event"
+		).as(
+			"e"
+		);
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			eventTable.asterisk());
+
+		Condition condition = DSL.and(
+			DSL.field(
+				"e.channelId"
+			).eq(
+				channelId
+			),
+			DSL.field(
+				"e.eventDate"
+			).between(
+				DateUtil.toUTCLocalDateTime(
+					timeRange.getStartLocalDateTime(),
+					_timeZoneDog.getZoneId()),
+				DateUtil.toUTCLocalDateTime(
+					timeRange.getEndLocalDateTime(), _timeZoneDog.getZoneId())
+			),
+			DSL.field(
+				"e.individualId"
+			).eq(
+				individualId
+			));
+
+		if (!StringUtils.isEmpty(keywords)) {
+			condition = condition.and(
+				DSL.or(
+					DSL.field(
+						"ea.value"
+					).containsIgnoreCase(
+						keywords
+					),
+					DSL.field(
+						"ed.name"
+					).containsIgnoreCase(
+						keywords
+					)));
+		}
+
+		return selectSelectStep.from(
+			eventTable
+		).innerJoin(
+			DSL.table(
+				"EventAttribute"
+			).as(
+				"ea"
+			)
+		).on(
+			DSL.field(
+				"e.id"
+			).eq(
+				DSL.field("ea.eventId")
+			)
+		).innerJoin(
+			DSL.table(
+				"EventDefinition"
+			).as(
+				"ed"
+			)
+		).on(
+			DSL.field(
+				"e.eventDefinitionId"
+			).eq(
+				DSL.field("ed.id")
+			)
+		).where(
+			condition
+		).orderBy(
+			getSortFields(pageable.getSort(), eventTable)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Event(record.intoMap())
 		);
 	}
 
@@ -530,5 +624,8 @@ public class EventRepositoryImpl extends BaseRepository {
 	}
 
 	private final DSLContext _dslContext;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }
