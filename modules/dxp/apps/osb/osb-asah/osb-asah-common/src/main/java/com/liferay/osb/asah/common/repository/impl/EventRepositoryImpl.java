@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.model.filter.FilterOperator;
 import com.liferay.osb.asah.common.model.filter.FilterOperators;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -167,11 +168,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		Map<Object, Number> eventAttributeValues = new LinkedHashMap<>();
 
 		Field<Number> selectField = _getSelectField(analysisType);
-
-		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
-
-		Field valueField = DSL.field(
-			attributeType.getQualifiedAttributeValueFieldName(null));
+		Field valueField = _getValueField(eventAnalysisBreakdown);
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
@@ -188,7 +185,7 @@ public class EventRepositoryImpl extends BaseRepository {
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				rangeEndDate, rangeStartDate)
 		).groupBy(
-			valueField
+			DSL.field(valueField.getName())
 		).orderBy(
 			_getOrderField(selectField, eventAnalysisBreakdown.getSortType()),
 			_getOrderField(valueField, "ASC")
@@ -609,6 +606,55 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		return condition;
+	}
+
+	private Field _getValueField(
+		EventAnalysisBreakdown eventAnalysisBreakdown) {
+
+		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
+
+		EventAttributeDefinition.DataType dataType =
+			eventAnalysisBreakdown.getDataType();
+
+		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
+			String name =
+				"try_cast_bigint(" +
+					attributeType.getQualifiedAttributeValueFieldName(null) +
+						")";
+
+			return DSL.floor(
+				DSL.field(
+					name, BigInteger.class
+				).div(
+					eventAnalysisBreakdown.getBinSize()
+				)
+			).multiply(
+				eventAnalysisBreakdown.getBinSize()
+			).as(
+				"duration_floor"
+			);
+		}
+		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
+			String name =
+				"try_cast_float(" +
+					attributeType.getQualifiedAttributeValueFieldName(null) +
+						")";
+
+			return DSL.floor(
+				DSL.field(
+					name, BigDecimal.class
+				).div(
+					eventAnalysisBreakdown.getBinSize()
+				)
+			).multiply(
+				eventAnalysisBreakdown.getBinSize()
+			).as(
+				"number_floor"
+			);
+		}
+
+		return DSL.field(
+			attributeType.getQualifiedAttributeValueFieldName(null));
 	}
 
 	private final DSLContext _dslContext;
