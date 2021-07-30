@@ -40,7 +40,6 @@ public class SessionBatchSinkFunction
 		dataset.persist();
 
 		saveRealtimeEvents(dataset);
-		saveRealtimeEvents(dataset);
 		saveFinishedSessionsEvents(dataset);
 		saveFinishedSessions(dataset);
 		dataset.unpersist();
