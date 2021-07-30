@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
@@ -103,8 +102,8 @@ public class EventAnalysisDog {
 		eventAnalysis.setBreakdownItems(
 			_getBreakdownItems(
 				analysisType, channelId, compareToPrevious,
-				eventAnalysis.getValue(), eventDefinitionId,
-				eventAnalysisBreakdowns, eventAnalysisFilters,
+				eventAnalysis.getValue(), eventAnalysisBreakdowns,
+				eventAnalysisFilters, eventDefinitionId,
 				PageRequest.of(page, size), eventAnalysis.getPreviousValue(),
 				timeRange));
 
@@ -223,10 +222,11 @@ public class EventAnalysisDog {
 
 	private List<BreakdownItem> _getBreakdownItems(
 		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
-		Number eventAnalysisValue, Long eventDefinitionId,
+		Number eventAnalysisValue,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
-		List<EventAnalysisFilter> eventAnalysisFilters, Pageable pageable,
-		Number previousEventAnalysisValue, TimeRange timeRange) {
+		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
+		Pageable pageable, Number previousEventAnalysisValue,
+		TimeRange timeRange) {
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.getEventDefinition(eventDefinitionId);
@@ -258,9 +258,10 @@ public class EventAnalysisDog {
 			null, timeRange);
 
 		_setChildrenBreakdownItems(
-			analysisType, breakdownItems, channelId, compareToPrevious, 1,
-			eventDefinitionId, eventAnalysisBreakdowns, eventAnalysisFilters,
-			eventDefinition.getDisplayName(), PageRequest.of(0, 5), timeRange);
+			analysisType, channelId, compareToPrevious, 1,
+			eventAnalysisBreakdowns, eventAnalysisFilters, eventDefinitionId,
+			eventDefinition.getDisplayName(), PageRequest.of(0, 5),
+			breakdownItems, timeRange);
 
 		return breakdownItems;
 	}
@@ -281,12 +282,11 @@ public class EventAnalysisDog {
 	}
 
 	private void _setChildrenBreakdownItems(
-		AnalysisType analysisType, List<BreakdownItem> parentBreakdownItems,
-		Long channelId, boolean compareToPrevious, int count,
-		Long eventDefinitionId,
-		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
-		List<EventAnalysisFilter> eventAnalysisFilters,
-		String eventDefinitionName, Pageable pageable, TimeRange timeRange) {
+		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
+		int count, List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
+		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
+		String eventDefinitionName, Pageable pageable,
+		List<BreakdownItem> parentBreakdownItems, TimeRange timeRange) {
 
 		if (count >= eventAnalysisBreakdowns.size()) {
 			return;
@@ -317,9 +317,10 @@ public class EventAnalysisDog {
 			parentBreakdownItem.setBreakdownItems(breakdownItems);
 
 			_setChildrenBreakdownItems(
-				analysisType, breakdownItems, channelId, compareToPrevious,
-				count + 1, eventDefinitionId, eventAnalysisBreakdowns,
-				eventAnalysisFilters, eventDefinitionName, pageable, timeRange);
+				analysisType, channelId, compareToPrevious, count + 1,
+				eventAnalysisBreakdowns, eventAnalysisFilters,
+				eventDefinitionId, eventDefinitionName, pageable,
+				breakdownItems, timeRange);
 		}
 	}
 
@@ -328,8 +329,5 @@ public class EventAnalysisDog {
 
 	@Autowired
 	private EventRepository _eventRepository;
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
 
 }
