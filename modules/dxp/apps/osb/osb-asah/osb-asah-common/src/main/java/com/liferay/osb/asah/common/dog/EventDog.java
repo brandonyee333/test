@@ -16,16 +16,28 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttribute;
+import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
+import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.model.Tuple2;
+import com.liferay.osb.asah.common.model.UserSession;
+import com.liferay.osb.asah.common.repository.EventAttributeRepository;
 import com.liferay.osb.asah.common.repository.EventRepository;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -66,7 +78,92 @@ public class EventDog {
 			eventAttributeDefinitionId, size);
 	}
 
+	public List<Event> searchEvents(
+		Long channelId, Long individualId, String keywords, int page, int size,
+		TimeRange timeRange) {
+
+		List<Event> events = _eventRepository.searchEvents(
+			channelId, individualId, keywords,
+			PageRequest.of(page, size, Sort.desc("eventDate")), timeRange);
+
+		Stream<Event> eventStream = events.stream();
+
+		List<EventAttribute> eventAttributes =
+			_eventAttributeRepository.findByEventIdIn(
+				eventStream.map(
+					Event::getId
+				).collect(
+					Collectors.toList()
+				));
+
+		Stream<EventAttribute> eventAttributeStream = eventAttributes.stream();
+
+		Map<Long, List<EventAttribute>> eventAttributeMap =
+			eventAttributeStream.collect(
+				Collectors.groupingBy(EventAttribute::getEventId));
+
+		events.forEach(
+			event -> event.setEventAttributes(
+				new HashSet<>(
+					eventAttributeMap.getOrDefault(
+						event.getId(), new ArrayList<>()))));
+
+		return events;
+	}
+
+	public Map<UserSession, List<Tuple2<Event, EventDefinition>>>
+		searchEventsGroupByUserSessionId(
+			Long channelId, Long individualId, String keywords, int page,
+			int size, TimeRange timeRange) {
+
+		Set<Long> eventDefinitionIds = new HashSet<>();
+
+		Set<String> userSessionIds = new HashSet<>();
+
+		List<Event> events = searchEvents(
+			channelId, individualId, keywords, page, size, timeRange);
+
+		events.forEach(
+			event -> {
+				eventDefinitionIds.add(event.getEventDefinitionId());
+
+				userSessionIds.add(event.getSessionId());
+			});
+
+		List<UserSession> userSessions = _userSessionDog.findByIds(
+			userSessionIds);
+
+		Stream<UserSession> userSessionStream = userSessions.stream();
+
+		Map<String, UserSession> userSessionMap = userSessionStream.collect(
+			Collectors.toMap(UserSession::getId, userSession -> userSession));
+
+		Map<Long, EventDefinition> eventDefinitions =
+			_eventDefinitionDog.getEventDefinitions(eventDefinitionIds);
+
+		Stream<Event> eventStream = events.stream();
+
+		return eventStream.map(
+			event -> new Tuple2<Event, EventDefinition>(
+				event, eventDefinitions.get(event.getEventDefinitionId()))
+		).collect(
+			Collectors.groupingBy(
+				tuple -> userSessionMap.get(
+					tuple.getT1(
+					).getSessionId()))
+		);
+	}
+
+	@Autowired
+	private EventAttributeRepository _eventAttributeRepository;
+
+	@Autowired
+	private EventDefinitionDog _eventDefinitionDog;
+
 	@Autowired
 	private EventRepository _eventRepository;
+
+	@Autowired
+	private UserSessionDog _userSessionDog;
 
 }
