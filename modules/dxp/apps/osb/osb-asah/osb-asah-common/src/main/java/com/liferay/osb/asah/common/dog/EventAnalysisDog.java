@@ -101,11 +101,11 @@ public class EventAnalysisDog {
 
 		eventAnalysis.setBreakdownItems(
 			_getBreakdownItems(
-				analysisType, channelId, compareToPrevious,
+				analysisType, channelId, compareToPrevious, 0,
 				eventAnalysis.getValue(), eventAnalysisBreakdowns,
 				eventAnalysisFilters, eventDefinitionId,
-				PageRequest.of(page, size), eventAnalysis.getPreviousValue(),
-				timeRange));
+				PageRequest.of(page, size), null,
+				eventAnalysis.getPreviousValue(), timeRange));
 
 		return eventAnalysis;
 	}
@@ -222,11 +222,11 @@ public class EventAnalysisDog {
 
 	private List<BreakdownItem> _getBreakdownItems(
 		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
-		Number eventAnalysisValue,
+		int count, Number eventAnalysisValue,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
-		Pageable pageable, Number previousEventAnalysisValue,
-		TimeRange timeRange) {
+		Pageable pageable, BreakdownItem parentBreakdownItem,
+		Number previousEventAnalysisValue, TimeRange timeRange) {
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.getEventDefinition(eventDefinitionId);
@@ -238,11 +238,11 @@ public class EventAnalysisDog {
 		}
 
 		EventAnalysisBreakdown eventAnalysisBreakdown =
-			eventAnalysisBreakdowns.get(0);
+			eventAnalysisBreakdowns.get(count);
 
 		boolean lastBreakdown = false;
 
-		if (eventAnalysisBreakdowns.size() == 1) {
+		if (count == (eventAnalysisBreakdowns.size() - 1)) {
 			lastBreakdown = true;
 		}
 
@@ -250,18 +250,24 @@ public class EventAnalysisDog {
 			analysisType, channelId, compareToPrevious, eventAnalysisBreakdown,
 			eventAnalysisFilters,
 			_eventRepository.getEventAttributeValues(
-				analysisType, null, channelId, eventAnalysisBreakdown,
-				eventAnalysisFilters, eventDefinitionId, pageable,
-				timeRange.getEndDate(), timeRange.getStartDate(),
+				analysisType, parentBreakdownItem, channelId,
+				eventAnalysisBreakdown, eventAnalysisFilters, eventDefinitionId,
+				pageable, timeRange.getEndDate(), timeRange.getStartDate(),
 				eventAnalysisBreakdown.getSortType()),
 			eventDefinitionId, eventDefinition.getDisplayName(), lastBreakdown,
-			null, timeRange);
+			parentBreakdownItem, timeRange);
 
-		_setChildrenBreakdownItems(
-			analysisType, channelId, compareToPrevious, 1,
-			eventAnalysisBreakdowns, eventAnalysisFilters, eventDefinitionId,
-			eventDefinition.getDisplayName(), PageRequest.of(0, 5),
-			breakdownItems, timeRange);
+		if (!lastBreakdown) {
+			for (BreakdownItem breakdownItem : breakdownItems) {
+				breakdownItem.setBreakdownItems(
+					_getBreakdownItems(
+						analysisType, channelId, compareToPrevious, count + 1,
+						eventAnalysisValue, eventAnalysisBreakdowns,
+						eventAnalysisFilters, eventDefinitionId,
+						PageRequest.of(0, 5), breakdownItem,
+						previousEventAnalysisValue, timeRange));
+			}
+		}
 
 		return breakdownItems;
 	}
@@ -279,49 +285,6 @@ public class EventAnalysisDog {
 			channelId, eventAnalysisBreakdowns.get(0), eventAnalysisFilters,
 			eventDefinitionId, timeRange.getEndDate(),
 			timeRange.getStartDate());
-	}
-
-	private void _setChildrenBreakdownItems(
-		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
-		int count, List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
-		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
-		String eventDefinitionName, Pageable pageable,
-		List<BreakdownItem> parentBreakdownItems, TimeRange timeRange) {
-
-		if (count >= eventAnalysisBreakdowns.size()) {
-			return;
-		}
-
-		boolean lastBreakdown = false;
-
-		if (count == (eventAnalysisBreakdowns.size() - 1)) {
-			lastBreakdown = true;
-		}
-
-		EventAnalysisBreakdown eventAnalysisBreakdown =
-			eventAnalysisBreakdowns.get(count);
-
-		for (BreakdownItem parentBreakdownItem : parentBreakdownItems) {
-			List<BreakdownItem> breakdownItems = _createBreakdownItems(
-				analysisType, channelId, compareToPrevious,
-				eventAnalysisBreakdown, eventAnalysisFilters,
-				_eventRepository.getEventAttributeValues(
-					analysisType, parentBreakdownItem, channelId,
-					eventAnalysisBreakdown, eventAnalysisFilters,
-					eventDefinitionId, pageable, timeRange.getEndDate(),
-					timeRange.getStartDate(),
-					eventAnalysisBreakdown.getSortType()),
-				eventDefinitionId, eventDefinitionName, lastBreakdown,
-				parentBreakdownItem, timeRange);
-
-			parentBreakdownItem.setBreakdownItems(breakdownItems);
-
-			_setChildrenBreakdownItems(
-				analysisType, channelId, compareToPrevious, count + 1,
-				eventAnalysisBreakdowns, eventAnalysisFilters,
-				eventDefinitionId, eventDefinitionName, pageable,
-				breakdownItems, timeRange);
-		}
 	}
 
 	@Autowired
