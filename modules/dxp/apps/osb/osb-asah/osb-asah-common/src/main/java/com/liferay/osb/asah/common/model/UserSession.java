@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.Event;
 
 import java.io.Serializable;
 
@@ -152,10 +151,6 @@ public class UserSession implements Serializable {
 
 	public String getEntryPage() {
 		return _entryPage;
-	}
-
-	public Set<Event> getEvents() {
-		return _events;
 	}
 
 	public String getExitPage() {
@@ -308,10 +303,6 @@ public class UserSession implements Serializable {
 		_entryPage = entryPage;
 	}
 
-	public void setEvents(Set<Event> events) {
-		_events = events;
-	}
-
 	public void setExitPage(String exitPage) {
 		_exitPage = exitPage;
 	}
@@ -388,7 +379,6 @@ public class UserSession implements Serializable {
 	private String _deviceType;
 	private Long _duration;
 	private String _entryPage;
-	private Set<Event> _events;
 	private String _exitPage;
 	private Date _firstEventDate;
 	private String _id;

@@ -70,7 +70,11 @@ public class UserSessionDTO {
 		timezone = "UTC"
 	)
 	public Date getCompleteDate() {
-		return _completeDate;
+		if (_completeDate == null) {
+			return null;
+		}
+
+		return new Date(_completeDate.getTime());
 	}
 
 	public String getContentLanguageId() {
@@ -82,7 +86,11 @@ public class UserSessionDTO {
 		timezone = "UTC"
 	)
 	public Date getDate() {
-		return _date;
+		if (_date == null) {
+			return null;
+		}
+
+		return new Date(_date.getTime());
 	}
 
 	public String getDeviceType() {
