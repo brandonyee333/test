@@ -28,9 +28,12 @@ import java.text.SimpleDateFormat;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -141,6 +144,21 @@ public class EventAttributeDefinitionDog {
 				HttpStatus.BAD_REQUEST,
 				"There is no event attribute definition with ID " +
 					eventAttributeDefinitionId));
+	}
+
+	public Map<String, Long> getEventAttributeDefinitionIdsByType(
+		EventAttributeDefinition.Type type) {
+
+		List<EventAttributeDefinition> eventAttributeDefinitions =
+			_eventAttributeDefinitionRepository.findByType(type);
+
+		Stream<EventAttributeDefinition> eventAttributeDefinitionStream =
+			eventAttributeDefinitions.stream();
+
+		return eventAttributeDefinitionStream.collect(
+			Collectors.toMap(
+				EventAttributeDefinition::getName,
+				EventAttributeDefinition::getId));
 	}
 
 	public List<EventAttributeDefinition>

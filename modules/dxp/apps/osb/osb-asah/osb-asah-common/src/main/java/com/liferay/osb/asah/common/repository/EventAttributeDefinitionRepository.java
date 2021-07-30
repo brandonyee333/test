@@ -46,6 +46,9 @@ public interface EventAttributeDefinitionRepository
 
 	public EventAttributeDefinition findByName(String name);
 
+	public List<EventAttributeDefinition> findByType(
+		EventAttributeDefinition.Type type);
+
 	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
 		@Nullable Long eventDefinitionId, @Nullable String keyword,
 		Pageable pageable, @Nullable EventAttributeDefinition.Type type);
