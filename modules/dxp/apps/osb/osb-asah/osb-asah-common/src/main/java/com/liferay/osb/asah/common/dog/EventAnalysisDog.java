@@ -53,50 +53,16 @@ public class EventAnalysisDog {
 				channelId, eventAnalysisBreakdowns, eventAnalysisFilters,
 				eventDefinitionId, timeRange));
 		eventAnalysis.setPage(page);
-
-		if (analysisType.equals(AnalysisType.AVERAGE)) {
-			eventAnalysis.setValue(
-				_eventRepository.getAverageEventCountPerIndividual(
-					channelId, eventAnalysisFilters, eventDefinitionId,
-					timeRange.getEndDate(), timeRange.getStartDate()));
-		}
-		else if (analysisType.equals(AnalysisType.TOTAL)) {
-			eventAnalysis.setValue(
-				_eventRepository.countTotalEvents(
-					channelId, eventAnalysisFilters, eventDefinitionId,
-					timeRange.getEndDate(), timeRange.getStartDate()));
-		}
-		else if (analysisType.equals(AnalysisType.UNIQUE)) {
-			eventAnalysis.setValue(
-				_eventRepository.countUniqueIndividuals(
-					channelId, eventAnalysisFilters, eventDefinitionId,
-					timeRange.getEndDate(), timeRange.getStartDate()));
-		}
+		eventAnalysis.setValue(
+			_getAnalysisCount(
+				analysisType, channelId, eventAnalysisFilters,
+				eventDefinitionId, timeRange));
 
 		if (compareToPrevious) {
-			TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
-
-			if (analysisType.equals(AnalysisType.AVERAGE)) {
-				eventAnalysis.setPreviousValue(
-					_eventRepository.getAverageEventCountPerIndividual(
-						channelId, eventAnalysisFilters, eventDefinitionId,
-						previousTimeRange.getEndDate(),
-						previousTimeRange.getStartDate()));
-			}
-			else if (analysisType.equals(AnalysisType.TOTAL)) {
-				eventAnalysis.setPreviousValue(
-					_eventRepository.countTotalEvents(
-						channelId, eventAnalysisFilters, eventDefinitionId,
-						previousTimeRange.getEndDate(),
-						previousTimeRange.getStartDate()));
-			}
-			else if (analysisType.equals(AnalysisType.UNIQUE)) {
-				eventAnalysis.setPreviousValue(
-					_eventRepository.countUniqueIndividuals(
-						channelId, eventAnalysisFilters, eventDefinitionId,
-						previousTimeRange.getEndDate(),
-						previousTimeRange.getStartDate()));
-			}
+			eventAnalysis.setPreviousValue(
+				_getAnalysisCount(
+					analysisType, channelId, eventAnalysisFilters,
+					eventDefinitionId, timeRange.getPreviousTimeRange()));
 		}
 
 		eventAnalysis.setBreakdownItems(
@@ -147,35 +113,16 @@ public class EventAnalysisDog {
 			breakdownItem.setName(String.valueOf(entry.getKey()));
 
 			if (compareToPrevious) {
-				TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
-
 				List<EventAnalysisFilter> previousEventAnalysisFilters =
 					new ArrayList<>(eventAnalysisFilters);
 
 				previousEventAnalysisFilters.addAll(
 					breakdownItem.getEventAnalysisFilters());
 
-				if (analysisType.equals(AnalysisType.AVERAGE)) {
-					breakdownItem.setPreviousValue(
-						_eventRepository.getAverageEventCountPerIndividual(
-							channelId, previousEventAnalysisFilters,
-							eventDefinitionId, previousTimeRange.getEndDate(),
-							previousTimeRange.getStartDate()));
-				}
-				else if (analysisType.equals(AnalysisType.TOTAL)) {
-					breakdownItem.setPreviousValue(
-						_eventRepository.countTotalEvents(
-							channelId, previousEventAnalysisFilters,
-							eventDefinitionId, previousTimeRange.getEndDate(),
-							previousTimeRange.getStartDate()));
-				}
-				else if (analysisType.equals(AnalysisType.UNIQUE)) {
-					breakdownItem.setPreviousValue(
-						_eventRepository.countUniqueIndividuals(
-							channelId, previousEventAnalysisFilters,
-							eventDefinitionId, previousTimeRange.getEndDate(),
-							previousTimeRange.getStartDate()));
-				}
+				breakdownItem.setPreviousValue(
+					_getAnalysisCount(
+						analysisType, channelId, previousEventAnalysisFilters,
+						eventDefinitionId, timeRange.getPreviousTimeRange()));
 			}
 
 			breakdownItem.setValue(entry.getValue());
@@ -218,6 +165,30 @@ public class EventAnalysisDog {
 		eventDefinitionBreakdownItem.setValue(value);
 
 		return Collections.singletonList(eventDefinitionBreakdownItem);
+	}
+
+	private Number _getAnalysisCount(
+		AnalysisType analysisType, Long channelId,
+		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
+		TimeRange timeRange) {
+
+		if (analysisType.equals(AnalysisType.AVERAGE)) {
+			return _eventRepository.getAverageEventCountPerIndividual(
+				channelId, eventAnalysisFilters, eventDefinitionId,
+				timeRange.getEndDate(), timeRange.getStartDate());
+		}
+		else if (analysisType.equals(AnalysisType.TOTAL)) {
+			return _eventRepository.countTotalEvents(
+				channelId, eventAnalysisFilters, eventDefinitionId,
+				timeRange.getEndDate(), timeRange.getStartDate());
+		}
+		else if (analysisType.equals(AnalysisType.UNIQUE)) {
+			return _eventRepository.countUniqueIndividuals(
+				channelId, eventAnalysisFilters, eventDefinitionId,
+				timeRange.getEndDate(), timeRange.getStartDate());
+		}
+
+		return null;
 	}
 
 	private List<BreakdownItem> _getBreakdownItems(
