@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.Event;
 
 import java.io.Serializable;
 
@@ -117,6 +118,10 @@ public class UserSession implements Serializable {
 		return _completeReason;
 	}
 
+	public String getContentLanguageId() {
+		return _contentLanguageId;
+	}
+
 	public String getCountry() {
 		return _country;
 	}
@@ -149,6 +154,10 @@ public class UserSession implements Serializable {
 		return _entryPage;
 	}
 
+	public Set<Event> getEvents() {
+		return _events;
+	}
+
 	public String getExitPage() {
 		return _exitPage;
 	}
@@ -177,6 +186,10 @@ public class UserSession implements Serializable {
 		return _interactionsCount;
 	}
 
+	public String getLanguageId() {
+		return _languageId;
+	}
+
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -203,6 +216,10 @@ public class UserSession implements Serializable {
 
 	public String getRegion() {
 		return _region;
+	}
+
+	public String getTimezoneOffset() {
+		return _timezoneOffset;
 	}
 
 	public Set<String> getUrls() {
@@ -261,6 +278,10 @@ public class UserSession implements Serializable {
 		_completeReason = completeReason;
 	}
 
+	public void setContentLanguageId(String contentLanguageId) {
+		_contentLanguageId = contentLanguageId;
+	}
+
 	public void setCountry(String country) {
 		_country = country;
 	}
@@ -287,6 +308,10 @@ public class UserSession implements Serializable {
 		_entryPage = entryPage;
 	}
 
+	public void setEvents(Set<Event> events) {
+		_events = events;
+	}
+
 	public void setExitPage(String exitPage) {
 		_exitPage = exitPage;
 	}
@@ -307,6 +332,10 @@ public class UserSession implements Serializable {
 
 	public void setInteractionsCount(Long interactionsCount) {
 		_interactionsCount = interactionsCount;
+	}
+
+	public void setLanguageId(String languageId) {
+		_languageId = languageId;
 	}
 
 	public void setLastEventDate(Date lastEventDate) {
@@ -331,6 +360,10 @@ public class UserSession implements Serializable {
 		_region = region;
 	}
 
+	public void setTimezoneOffset(String timezoneOffset) {
+		_timezoneOffset = timezoneOffset;
+	}
+
 	public void setUrls(Set<String> urls) {
 		_urls = urls;
 	}
@@ -348,22 +381,26 @@ public class UserSession implements Serializable {
 	private Boolean _completed;
 	private Date _completeDate;
 	private String _completeReason;
+	private String _contentLanguageId;
 	private String _country;
 	private String _dataSourceId;
 	private Date _date;
 	private String _deviceType;
 	private Long _duration;
 	private String _entryPage;
+	private Set<Event> _events;
 	private String _exitPage;
 	private Date _firstEventDate;
 	private String _id;
 	private String _individualId;
 	private Long _interactionsCount;
+	private String _languageId;
 	private Date _lastEventDate;
 	private Long _pageViewsCount;
 	private String _platformName;
 	private Set<String> _referrers;
 	private String _region;
+	private String _timezoneOffset;
 	private Set<String> _urls;
 	private String _userId;
 
