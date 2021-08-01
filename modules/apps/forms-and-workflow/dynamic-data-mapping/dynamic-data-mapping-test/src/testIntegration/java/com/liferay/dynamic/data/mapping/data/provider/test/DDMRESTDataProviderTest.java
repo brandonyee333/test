@@ -22,11 +22,11 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
 import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
 import com.liferay.portal.kernel.util.KeyValuePair;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -106,14 +106,10 @@ public class DDMRESTDataProviderTest {
 	}
 
 	protected List<KeyValuePair> createExpectedKeyValuePairs() {
-		List<KeyValuePair> expectedKeyValuePairs = new ArrayList<>();
-
-		expectedKeyValuePairs.add(new KeyValuePair("3", "France"));
-		expectedKeyValuePairs.add(new KeyValuePair("15", "Spain"));
-		expectedKeyValuePairs.add(new KeyValuePair("19", "United States"));
-		expectedKeyValuePairs.add(new KeyValuePair("48", "Brazil"));
-
-		return expectedKeyValuePairs;
+		return ListUtil.fromArray(
+			new KeyValuePair("3", "France"), new KeyValuePair("15", "Spain"),
+			new KeyValuePair("19", "United States"),
+			new KeyValuePair("48", "Brazil"));
 	}
 
 	private DDMDataProvider _ddmDataProvider;

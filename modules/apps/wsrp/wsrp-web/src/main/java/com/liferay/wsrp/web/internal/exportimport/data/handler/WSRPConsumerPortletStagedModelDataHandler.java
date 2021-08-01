@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.wsrp.model.WSRPConsumer;
@@ -29,7 +30,6 @@ import com.liferay.wsrp.model.WSRPConsumerPortlet;
 import com.liferay.wsrp.service.WSRPConsumerLocalServiceUtil;
 import com.liferay.wsrp.service.WSRPConsumerPortletLocalServiceUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -72,13 +72,9 @@ public class WSRPConsumerPortletStagedModelDataHandler
 	public List<WSRPConsumerPortlet> fetchStagedModelsByUuidAndCompanyId(
 		String uuid, long companyId) {
 
-		List<WSRPConsumerPortlet> wsrpConsumerPortlets = new ArrayList<>();
-
-		wsrpConsumerPortlets.add(
+		return ListUtil.fromArray(
 			WSRPConsumerPortletLocalServiceUtil.
 				fetchWSRPConsumerPortletByUuidAndCompanyId(uuid, companyId));
-
-		return wsrpConsumerPortlets;
 	}
 
 	@Override

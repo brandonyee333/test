@@ -24,11 +24,11 @@ import com.ecyrd.jspwiki.providers.WikiAttachmentProvider;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.wiki.service.WikiPageLocalServiceUtil;
 
 import java.io.InputStream;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -90,11 +90,7 @@ public class LiferayAttachmentProvider implements WikiAttachmentProvider {
 
 	@Override
 	public List<Attachment> getVersionHistory(Attachment attachment) {
-		List<Attachment> history = new ArrayList<>();
-
-		history.add(attachment);
-
-		return history;
+		return ListUtil.fromArray(attachment);
 	}
 
 	@Override

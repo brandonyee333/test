@@ -25,6 +25,7 @@ import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONObjectUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.util.ArrayList;
@@ -74,12 +75,9 @@ public class DDMFormValuesJSONSerializerTest extends BaseDDMTestCase {
 	}
 
 	protected List<DDMFormFieldValue> createBooleanNestedDDMFormFieldValues() {
-		List<DDMFormFieldValue> ddmFormFieldValues = new ArrayList<>();
-
-		ddmFormFieldValues.add(createHTMLDDMFormFieldValue(0, "nabr"));
-		ddmFormFieldValues.add(createHTMLDDMFormFieldValue(1, "uwyg"));
-
-		return ddmFormFieldValues;
+		return ListUtil.fromArray(
+			createHTMLDDMFormFieldValue(0, "nabr"),
+			createHTMLDDMFormFieldValue(1, "uwyg"));
 	}
 
 	protected Value createBooleanValue() {
@@ -149,13 +147,10 @@ public class DDMFormValuesJSONSerializerTest extends BaseDDMTestCase {
 	}
 
 	protected List<DDMFormFieldValue> createImageDDMFormFieldValues() {
-		List<DDMFormFieldValue> imageDDMFormFieldValues = new ArrayList<>();
-
-		imageDDMFormFieldValues.add(createImageDDMFormFieldValue(0, "uaht"));
-		imageDDMFormFieldValues.add(createImageDDMFormFieldValue(1, "pppj"));
-		imageDDMFormFieldValues.add(createImageDDMFormFieldValue(2, "nmab"));
-
-		return imageDDMFormFieldValues;
+		return ListUtil.fromArray(
+			createImageDDMFormFieldValue(0, "uaht"),
+			createImageDDMFormFieldValue(1, "pppj"),
+			createImageDDMFormFieldValue(2, "nmab"));
 	}
 
 	protected Value createImageValue(int index) {
@@ -182,26 +177,16 @@ public class DDMFormValuesJSONSerializerTest extends BaseDDMTestCase {
 	}
 
 	protected List<DDMFormFieldValue> createSeparatorDDMFormFieldValues() {
-		List<DDMFormFieldValue> separatorDDMFormFieldValues = new ArrayList<>();
-
-		separatorDDMFormFieldValues.add(
-			createSeparatorDDMFormFieldValue(0, "uayx"));
-
-		separatorDDMFormFieldValues.add(
+		return ListUtil.fromArray(
+			createSeparatorDDMFormFieldValue(0, "uayx"),
 			createSeparatorDDMFormFieldValue(1, "lahy"));
-
-		return separatorDDMFormFieldValues;
 	}
 
 	protected List<DDMFormFieldValue> createSeparatorNestedDDMFormFieldValues(
 		int index, String instanceId) {
 
-		List<DDMFormFieldValue> ddmFormFieldValues = new ArrayList<>();
-
-		ddmFormFieldValues.add(
+		return ListUtil.fromArray(
 			createTextBoxDDMFormFieldValue(index, instanceId));
-
-		return ddmFormFieldValues;
 	}
 
 	protected DDMFormFieldValue createTextBoxDDMFormFieldValue(

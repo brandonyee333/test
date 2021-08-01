@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.service.LayoutPrototypeLocalService;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -46,7 +47,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -90,13 +90,9 @@ public class LayoutSetPrototypeStagedModelDataHandler
 	public List<LayoutSetPrototype> fetchStagedModelsByUuidAndCompanyId(
 		String uuid, long companyId) {
 
-		List<LayoutSetPrototype> layoutSetPrototypes = new ArrayList<>();
-
-		layoutSetPrototypes.add(
+		return ListUtil.fromArray(
 			_layoutSetPrototypeLocalService.
 				fetchLayoutSetPrototypeByUuidAndCompanyId(uuid, companyId));
-
-		return layoutSetPrototypes;
 	}
 
 	@Override

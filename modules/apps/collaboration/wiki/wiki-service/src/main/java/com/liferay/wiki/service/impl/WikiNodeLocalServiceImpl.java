@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -51,7 +52,6 @@ import com.liferay.wiki.service.base.WikiNodeLocalServiceBaseImpl;
 
 import java.io.InputStream;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -521,11 +521,7 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 		WikiNode node = wikiNodeLocalService.addDefaultNode(
 			defaultUserId, serviceContext);
 
-		List<WikiNode> nodes = new ArrayList<>(1);
-
-		nodes.add(node);
-
-		return nodes;
+		return ListUtil.fromArray(node);
 	}
 
 	protected void moveDependentsToTrash(long nodeId, long trashEntryId)

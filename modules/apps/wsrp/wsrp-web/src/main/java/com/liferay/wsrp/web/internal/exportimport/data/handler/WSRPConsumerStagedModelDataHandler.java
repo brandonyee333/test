@@ -21,11 +21,11 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.wsrp.model.WSRPConsumer;
 import com.liferay.wsrp.service.WSRPConsumerLocalServiceUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,13 +63,9 @@ public class WSRPConsumerStagedModelDataHandler
 	public List<WSRPConsumer> fetchStagedModelsByUuidAndCompanyId(
 		String uuid, long companyId) {
 
-		List<WSRPConsumer> wsrpConsumers = new ArrayList<>();
-
-		wsrpConsumers.add(
+		return ListUtil.fromArray(
 			WSRPConsumerLocalServiceUtil.fetchWSRPConsumerByUuidAndCompanyId(
 				uuid, companyId));
-
-		return wsrpConsumers;
 	}
 
 	@Override
