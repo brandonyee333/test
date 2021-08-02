@@ -78,11 +78,19 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 			}
 
 			_push(new OSBAsahCacheMessage(_name, null));
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Redis cache cleared");
+			}
 		}
 		else {
 			_redisTemplate.delete(_getRedisKey(key));
 
 			_push(new OSBAsahCacheMessage(_name, key));
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(String.format("Redis cache key %s cleared", key));
+			}
 		}
 	}
 
