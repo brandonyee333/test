@@ -305,7 +305,8 @@ then
 	exit 1
 elif [ ${3} != "prod" ] && [ ${3} != "uat" ]
 then
-	echo "Environment should be prod or uat"
+	echo "Environment must be \"prod\" or \"uat\"."
+
 	exit 1
 fi
 
