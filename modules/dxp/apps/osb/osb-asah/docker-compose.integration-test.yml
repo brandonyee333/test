@@ -31,9 +31,14 @@ services:
         ports:
             - "8095:8095"
         restart: always
+    test_redis:
+        build: ./osb-asah-redis
+        container_name: test_redis
+        ports:
+            - "6379:6379"
     test_trino:
         build: ./osb-asah-trino
-        container_name: trino
+        container_name: test_trino
         depends_on:
             - test_postgresql
         ports:
