@@ -72,11 +72,3 @@ dependencies {
 jar {
 	enabled = true
 }
-
-testIntegration {
-	doFirst {
-		environment "LCP_ENGINE_ELASTICSEARCH_SERVER_IP", "127.0.0.1"
-		environment "OSB_ASAH_PUBSUB_EMULATOR_URL", "http://127.0.0.1:8095"
-		environment "TRINO_SERVER_IP", "127.0.0.1:9090"
-	}
-}

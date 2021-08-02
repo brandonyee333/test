@@ -2,6 +2,15 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 subprojects {
 	tasks.withType(Test) {
+		doFirst {
+			environment "LCP_ENGINE_ELASTICSEARCH_SERVER_IP", "127.0.0.1"
+			environment "LCP_PROJECT_ID", "test"
+			environment "OSB_ASAH_PUBSUB_EMULATOR_URL", "http://127.0.0.1:8095"
+			environment "OSB_ASAH_REDIS_URL", "http://127.0.0.1:6379"
+			environment "OSB_ASAH_SALESFORCE_EXTRACTOR_URL", "http://localhost:8080"
+			environment "TRINO_SERVER_IP", "127.0.0.1:9090"
+		}
+
 		maxHeapSize = "4096m"
 	}
 }
