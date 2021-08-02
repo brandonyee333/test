@@ -22,7 +22,6 @@ import com.liferay.osb.asah.common.storage.StorageFactory;
 import com.liferay.osb.asah.publisher.rest.controller.DXPBatchEntitiesRestController;
 import com.liferay.osb.asah.publisher.spring.OSBAsahPublisherSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisEnabledTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.io.File;
@@ -70,10 +69,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(
-	classes = {
-		OSBAsahPublisherSpringBootApplication.class,
-		OSBAsahRedisEnabledTestConfiguration.class
-	},
+	classes = OSBAsahPublisherSpringBootApplication.class,
 	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 public class DXPBatchEntitiesRestControllerTest {
