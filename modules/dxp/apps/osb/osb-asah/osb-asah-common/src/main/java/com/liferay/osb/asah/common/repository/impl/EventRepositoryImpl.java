@@ -253,23 +253,19 @@ public class EventRepositoryImpl extends BaseRepository {
 		Long channelId, Long individualId, String keywords, Pageable pageable,
 		TimeRange timeRange) {
 
-		Table<Record> eventTable = DSL.table(
-			"Event"
-		).as(
-			"e"
-		);
+		Table<Record> eventTable = DSL.table("Event");
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			eventTable.asterisk());
 
 		Condition condition = DSL.and(
 			DSL.field(
-				"e.channelId"
+				"Event.channelId"
 			).eq(
 				channelId
 			),
 			DSL.field(
-				"e.eventDate"
+				"Event.eventDate"
 			).between(
 				DateUtil.toUTCLocalDateTime(
 					timeRange.getStartLocalDateTime(),
@@ -278,7 +274,7 @@ public class EventRepositoryImpl extends BaseRepository {
 					timeRange.getEndLocalDateTime(), _timeZoneDog.getZoneId())
 			),
 			DSL.field(
-				"e.individualId"
+				"Event.individualId"
 			).eq(
 				individualId
 			));
@@ -287,12 +283,12 @@ public class EventRepositoryImpl extends BaseRepository {
 			condition = condition.and(
 				DSL.or(
 					DSL.field(
-						"ea.value"
+						"EventAttribute.value"
 					).containsIgnoreCase(
 						keywords
 					),
 					DSL.field(
-						"ed.name"
+						"EventDefinition.name"
 					).containsIgnoreCase(
 						keywords
 					)));
@@ -301,28 +297,20 @@ public class EventRepositoryImpl extends BaseRepository {
 		return selectSelectStep.from(
 			eventTable
 		).innerJoin(
-			DSL.table(
-				"EventAttribute"
-			).as(
-				"ea"
-			)
+			DSL.table("EventAttribute")
 		).on(
 			DSL.field(
-				"e.id"
+				"Event.id"
 			).eq(
-				DSL.field("ea.eventId")
+				DSL.field("EventAttribute.eventId")
 			)
 		).innerJoin(
-			DSL.table(
-				"EventDefinition"
-			).as(
-				"ed"
-			)
+			DSL.table("EventDefinition")
 		).on(
 			DSL.field(
-				"e.eventDefinitionId"
+				"Event.eventDefinitionId"
 			).eq(
-				DSL.field("ed.id")
+				DSL.field("EventDefinition.id")
 			)
 		).where(
 			condition

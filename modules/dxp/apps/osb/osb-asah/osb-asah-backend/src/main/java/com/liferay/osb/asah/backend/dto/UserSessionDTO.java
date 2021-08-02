@@ -45,13 +45,13 @@ public class UserSessionDTO {
 		Map<String, Long> eventAttributeDefinitionIds,
 		List<Tuple2<Event, EventDefinition>> tuples, UserSession userSession) {
 
-		_date = userSession.getDate();
-		_completeDate = userSession.getCompleteDate();
-		_deviceType = userSession.getDeviceType();
 		_browserName = userSession.getBrowserName();
-		_timezoneOffset = userSession.getTimezoneOffset();
+		_completeDate = userSession.getCompleteDate();
 		_contentLanguageId = userSession.getContentLanguageId();
+		_date = userSession.getDate();
+		_deviceType = userSession.getDeviceType();
 		_languageId = userSession.getLanguageId();
+		_timezoneOffset = userSession.getTimezoneOffset();
 
 		tuples.forEach(
 			tuple -> _eventDTOs.add(
