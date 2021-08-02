@@ -47,16 +47,16 @@ public class OSBAsahCacheMessageListener implements MessageListener {
 			throw new IllegalStateException("OSBAsahCacheMessage is null");
 		}
 
+		_osbAsahCacheManager.clearCaffeineCache(
+			osbAsahCacheMessage.getName(), osbAsahCacheMessage.getKey());
+
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				String.format(
-					"Clear Caffeine cache, the name is %s and the key is %s",
+					"Caffeine cache with name %s and key %s cleared",
 					osbAsahCacheMessage.getName(),
 					osbAsahCacheMessage.getKey()));
 		}
-
-		_osbAsahCacheManager.clearCaffeineCache(
-			osbAsahCacheMessage.getName(), osbAsahCacheMessage.getKey());
 	}
 
 	private static final Log _log = LogFactory.getLog(

@@ -41,10 +41,11 @@ public class OSBAsahCacheManager implements CacheManager {
 	public com.github.benmanes.caffeine.cache.Cache<Object, Object>
 		caffeineCache() {
 
-		return Caffeine.newBuilder(
-		).expireAfterAccess(
-			5, TimeUnit.SECONDS
-		).build();
+		Caffeine<Object, Object> caffeineBuilder = Caffeine.newBuilder();
+
+		caffeineBuilder.expireAfterAccess(5, TimeUnit.SECONDS);
+
+		return caffeineBuilder.build();
 	}
 
 	public void clearCaffeineCache(String name, Object key) {
@@ -67,10 +68,7 @@ public class OSBAsahCacheManager implements CacheManager {
 			cache = new OSBAsahCache(caffeineCache(), name, _redisTemplate);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(
-					String.format(
-						"Create a cache instance, the cache name is: %s",
-						name));
+				_log.debug("Created OSBAsahCache instance " + name);
 			}
 
 			Cache oldCache = _caches.putIfAbsent(name, cache);

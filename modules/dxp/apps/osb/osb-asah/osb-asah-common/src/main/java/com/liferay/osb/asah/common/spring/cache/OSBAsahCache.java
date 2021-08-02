@@ -60,20 +60,18 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 
 	public void clearCaffeineCache(Object key) {
 		if (key == null) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Clear all Caffeine cache");
-			}
-
 			_caffeineCache.invalidateAll();
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Caffeine cache cleared");
+			}
 		}
 		else {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					String.format(
-						"Clear Caffeine cache, the key is : %s", key));
-			}
-
 			_caffeineCache.invalidate(key);
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(String.format("Caffeine cache key %s cleared", key));
+			}
 		}
 	}
 
@@ -99,8 +97,7 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 			key.toString(),
 			newKey -> {
 				if (_log.isTraceEnabled()) {
-					_log.trace(
-						String.format("Create lock for key :%s", newKey));
+					_log.trace("Created lock for cache key " + newKey);
 				}
 
 				return new ReentrantLock();
@@ -192,9 +189,7 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 
 		if (value != null) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(
-					String.format(
-						"Get cache from caffeine, the cache key is : %s", key));
+				_log.debug("Got value from Caffeine with cache key " + key);
 			}
 
 			return value;
@@ -209,11 +204,7 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 
 		if (value != null) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(
-					String.format(
-						"Get cache from Redis and put in Caffeine, the cache " +
-							"key is : %s",
-						key));
+				_log.debug("Got value from Redis with cache key " + key);
 			}
 
 			_caffeineCache.put(key, toStoreValue(value));
