@@ -16,12 +16,14 @@ package com.liferay.osb.asah.backend.ext.seo.model;
 
 import com.univocity.parsers.annotations.Parsed;
 
+import java.io.Serializable;
+
 import java.util.Objects;
 
 /**
  * @author David Arques
  */
-public class SearchKeyword {
+public class SearchKeyword implements Serializable {
 
 	public SearchKeyword() {
 	}

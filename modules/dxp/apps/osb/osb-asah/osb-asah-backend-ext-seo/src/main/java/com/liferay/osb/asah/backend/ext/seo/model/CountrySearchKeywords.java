@@ -16,13 +16,15 @@ package com.liferay.osb.asah.backend.ext.seo.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
+
 import java.util.List;
 import java.util.Objects;
 
 /**
  * @author David Arques
  */
-public class CountrySearchKeywords {
+public class CountrySearchKeywords implements Serializable {
 
 	public CountrySearchKeywords() {
 	}
