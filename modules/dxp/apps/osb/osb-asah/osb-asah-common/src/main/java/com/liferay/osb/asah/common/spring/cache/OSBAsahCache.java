@@ -47,13 +47,7 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 
 	@Override
 	public void clear() {
-		Set<Object> keys = _redisTemplate.keys(_name.concat(":*"));
-
-		if (keys != null) {
-			_redisTemplate.delete(keys);
-		}
-
-		_push(new OSBAsahCacheMessage(_name, null));
+		clearRedisCache(null);
 
 		clearCaffeineCache(null);
 	}
@@ -75,11 +69,26 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 		}
 	}
 
+	public void clearRedisCache(Object key) {
+		if (key == null) {
+			Set<Object> keys = _redisTemplate.keys(_name.concat(":*"));
+
+			if (keys != null) {
+				_redisTemplate.delete(keys);
+			}
+
+			_push(new OSBAsahCacheMessage(_name, null));
+		}
+		else {
+			_redisTemplate.delete(_getRedisKey(key));
+
+			_push(new OSBAsahCacheMessage(_name, key));
+		}
+	}
+
 	@Override
 	public void evict(Object key) {
-		_redisTemplate.delete(_getRedisKey(key));
-
-		_push(new OSBAsahCacheMessage(_name, key));
+		clearRedisCache(key);
 
 		clearCaffeineCache(key);
 	}
