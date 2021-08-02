@@ -39,9 +39,13 @@ public class SessionSparkApplication extends BaseSparkApplication {
 		_configuration = configuration;
 	}
 
+	public Configuration getConfiguration() {
+		return _configuration;
+	}
+
 	@Override
 	public void start() {
-		SparkJobPipeline.run(Arrays.asList(new SessionSparkJob()));
+		SparkJobPipeline.run(Arrays.asList(new SessionSparkJob(this)));
 	}
 
 	@Override
