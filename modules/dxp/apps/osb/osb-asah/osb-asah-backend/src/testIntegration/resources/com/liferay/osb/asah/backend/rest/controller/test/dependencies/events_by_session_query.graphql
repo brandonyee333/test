@@ -4,7 +4,7 @@ query EventsByUserSession($channelId: String!, $entityId: String!, $entityType: 
 			browserName
 			completeDate
 			contentLanguageId
-			date
+			createDate
 			deviceType
 			events {
 				canonicalUrl

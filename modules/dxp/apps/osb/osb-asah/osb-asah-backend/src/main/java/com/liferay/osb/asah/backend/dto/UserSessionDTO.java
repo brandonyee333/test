@@ -48,7 +48,7 @@ public class UserSessionDTO {
 		_browserName = userSession.getBrowserName();
 		_completeDate = userSession.getCompleteDate();
 		_contentLanguageId = userSession.getContentLanguageId();
-		_date = userSession.getDate();
+		_createDate = userSession.getDate();
 		_deviceType = userSession.getDeviceType();
 		_languageId = userSession.getLanguageId();
 		_timezoneOffset = userSession.getTimezoneOffset();
@@ -85,12 +85,12 @@ public class UserSessionDTO {
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
-	public Date getDate() {
-		if (_date == null) {
+	public Date getCreateDate() {
+		if (_createDate == null) {
 			return null;
 		}
 
-		return new Date(_date.getTime());
+		return new Date(_createDate.getTime());
 	}
 
 	public String getDeviceType() {
@@ -114,7 +114,7 @@ public class UserSessionDTO {
 	private final String _browserName;
 	private final Date _completeDate;
 	private final String _contentLanguageId;
-	private final Date _date;
+	private final Date _createDate;
 	private final String _deviceType;
 	private final List<EventDTO> _eventDTOs = new ArrayList<>();
 	private final String _languageId;

@@ -750,7 +750,7 @@ type UserSession {
 	browserName: String,
 	completeDate: String,
 	contentLanguageId: String,
-	date: String,
+	createDate: String,
 	deviceType: String,
 	events: [Event],
 	languageId: String
