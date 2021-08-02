@@ -188,16 +188,16 @@ public class AccountEntrySearchDisplayContext {
 		product = _productWebService.fetchProductByName(
 			ProductConstants.NAME_PLATINUM);
 
+		if (product != null) {
+			products.add(product);
+		}
+
 		for (String name : ProductConstants.NAMES_PARTNERSHIP) {
 			product = _productWebService.fetchProductByName(name);
 
 			if (product != null) {
 				products.add(product);
 			}
-		}
-
-		if (product != null) {
-			products.add(product);
 		}
 
 		if (products.isEmpty()) {
