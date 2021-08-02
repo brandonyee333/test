@@ -3,9 +3,6 @@
 		<Bug pattern="CRLF_INJECTION_LOGS" />
 	</Match>
 	<Match>
-		<Class name="com.liferay.osb.asah.publisher.rest.controller.DXPBatchEntitiesRestController" />
-	</Match>
-	<Match>
 		<Class name="com.liferay.osb.asah.publisher.rest.controller.test.DXPBatchEntitiesRestControllerTest" />
 	</Match>
 </FindBugsFilter>
