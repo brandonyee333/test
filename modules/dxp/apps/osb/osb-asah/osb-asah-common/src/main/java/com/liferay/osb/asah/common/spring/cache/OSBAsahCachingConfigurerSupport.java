@@ -45,7 +45,6 @@ import redis.clients.jedis.JedisPool;
 @Configuration
 @EnableCaching
 @MonolithExclude
-@Profile("!test")
 public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 
 	@Bean

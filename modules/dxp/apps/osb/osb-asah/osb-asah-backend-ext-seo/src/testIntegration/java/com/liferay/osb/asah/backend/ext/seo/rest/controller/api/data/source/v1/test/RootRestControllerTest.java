@@ -32,39 +32,28 @@ import java.util.List;
 import org.json.JSONArray;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.HttpClientErrorException;
 
 /**
  * @author David Arques
  */
+@ContextConfiguration(classes = OSBAsahBackendExtSEOSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendExtSEOSpringBootApplication.class)
+@TestPropertySource(properties = "osb.asah.seo.semrush.api.key=4d5e9886")
 public class RootRestControllerTest {
-
-	@Before
-	public void setUp() {
-		Mockito.when(
-			_environment.getProperty("SEMRUSH_API_KEY")
-		).thenReturn(
-			RandomTestUtil.randomString()
-		);
-	}
 
 	@Test
 	public void testGetTrafficSources() {
@@ -484,14 +473,10 @@ public class RootRestControllerTest {
 		_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
 	}
 
-	@Mock
-	private Environment _environment;
-
 	@MockBean
 	private Http _http;
 
 	@Autowired
-	@InjectMocks
 	private RootRestController _rootRestController;
 
 }

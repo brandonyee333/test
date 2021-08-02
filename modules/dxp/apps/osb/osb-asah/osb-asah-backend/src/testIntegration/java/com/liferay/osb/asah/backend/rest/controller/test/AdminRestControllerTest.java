@@ -41,23 +41,14 @@ import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Vishal Reddy
  */
-@ActiveProfiles({"AdminRestControllerTest", "test"})
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@EnableCaching
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class AdminRestControllerTest {
 
@@ -168,18 +159,6 @@ public class AdminRestControllerTest {
 				RandomTestUtil.randomString(), RandomTestUtil.randomString()));
 
 		_adminRestController.run(jsonArray.toString());
-	}
-
-	@Profile("AdminRestControllerTest")
-	@TestConfiguration
-	public static class AdminRestControllerTestConfiguration {
-
-		@Bean
-		@Primary
-		public CacheManager cacheManager() {
-			return new ConcurrentMapCacheManager("test#test", "test2#test");
-		}
-
 	}
 
 	@Autowired

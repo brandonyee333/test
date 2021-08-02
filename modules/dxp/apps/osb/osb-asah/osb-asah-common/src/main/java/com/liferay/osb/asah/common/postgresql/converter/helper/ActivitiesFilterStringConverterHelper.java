@@ -36,6 +36,7 @@ import org.jooq.Field;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 /**
@@ -171,6 +172,7 @@ public class ActivitiesFilterStringConverterHelper
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
+	@Lazy
 	private IndividualRepository _individualRepository;
 
 	@Autowired

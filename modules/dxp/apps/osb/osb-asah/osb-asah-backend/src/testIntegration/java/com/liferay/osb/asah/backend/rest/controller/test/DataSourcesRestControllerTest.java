@@ -40,9 +40,7 @@ import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.faro.backend.http.DataSourceHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
-import com.liferay.petra.string.StringPool;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -68,7 +66,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -1227,18 +1224,6 @@ public class DataSourcesRestControllerTest {
 
 	private void _mock() {
 		Mockito.when(
-			_cacheManager.getCache(ArgumentMatchers.anyString())
-		).thenReturn(
-			_cache
-		);
-
-		Mockito.when(
-			_cacheManager.getCacheNames()
-		).thenReturn(
-			Collections.singleton(StringPool.BLANK)
-		);
-
-		Mockito.when(
 			_salesforceExtractorConfigurationDog.getState(
 				ArgumentMatchers.any(DataSource.class))
 		).thenReturn(
@@ -1281,9 +1266,6 @@ public class DataSourcesRestControllerTest {
 
 	@Mock
 	private Cache _cache;
-
-	@MockBean
-	private CacheManager _cacheManager;
 
 	@MockBean
 	private ChannelHttp _channelHttp;
