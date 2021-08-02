@@ -24,8 +24,6 @@ import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
-import java.text.Normalizer;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -58,9 +56,6 @@ public class FileRepositoryWebServiceImpl implements FileRepositoryWebService {
 
 		sb.append(fileRepositoryURL);
 		sb.append(StringPool.FORWARD_SLASH);
-
-		filePath = Normalizer.normalize(filePath, Normalizer.Form.NFC);
-
 		sb.append(_http.encodePath(filePath));
 
 		String key = sendRequest(sb.toString(), true);
