@@ -223,8 +223,7 @@ public class EventAnalysisDog {
 			_eventRepository.getEventAttributeValues(
 				analysisType, parentBreakdownItem, channelId,
 				eventAnalysisBreakdown, eventAnalysisFilters, eventDefinitionId,
-				pageable, timeRange.getEndDate(), timeRange.getStartDate(),
-				eventAnalysisBreakdown.getSortType()),
+				pageable, timeRange.getEndDate(), timeRange.getStartDate()),
 			eventDefinitionId, eventDefinition.getDisplayName(), lastBreakdown,
 			parentBreakdownItem, timeRange);
 

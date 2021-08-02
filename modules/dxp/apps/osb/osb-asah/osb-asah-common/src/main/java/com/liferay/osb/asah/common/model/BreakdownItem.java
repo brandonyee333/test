@@ -19,12 +19,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Matthew Kong
  */
-@Table
 public class BreakdownItem {
 
 	@Override

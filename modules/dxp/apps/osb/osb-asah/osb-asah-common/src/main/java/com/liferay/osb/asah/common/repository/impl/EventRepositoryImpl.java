@@ -157,8 +157,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, Pageable pageable,
-		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate,
-		@Nullable String sortType) {
+		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate) {
 
 		Map<Object, Number> eventAttributeValues = new LinkedHashMap<>();
 
@@ -186,7 +185,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		).groupBy(
 			valueField
 		).orderBy(
-			_getOrderField(selectField, sortType),
+			_getOrderField(selectField, eventAnalysisBreakdown.getSortType()),
 			_getOrderField(valueField, "ASC")
 		).limit(
 			pageable.getPageSize()

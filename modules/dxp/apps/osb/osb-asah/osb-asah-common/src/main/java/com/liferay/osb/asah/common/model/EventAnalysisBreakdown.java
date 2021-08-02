@@ -22,12 +22,9 @@ import java.util.Objects;
 
 import org.apache.commons.collections.map.CaseInsensitiveMap;
 
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Matthew Kong
  */
-@Table
 public class EventAnalysisBreakdown {
 
 	public EventAnalysisBreakdown(Map<String, Object> source) {

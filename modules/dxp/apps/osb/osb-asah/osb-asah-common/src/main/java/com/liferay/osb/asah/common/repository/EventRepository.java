@@ -77,8 +77,7 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, Pageable pageable,
-		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate,
-		@Nullable String sortType);
+		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate);
 
 	public long getEventAttributeValuesCount(
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
