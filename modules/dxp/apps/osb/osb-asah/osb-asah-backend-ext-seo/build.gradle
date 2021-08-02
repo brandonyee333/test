@@ -8,7 +8,7 @@ bootJar {
 dependencies {
 	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-common")
 
-	testCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
+	testIntegrationCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
 }
 
 jar {
