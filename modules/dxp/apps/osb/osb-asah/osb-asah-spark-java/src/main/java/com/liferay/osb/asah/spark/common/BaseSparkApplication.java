@@ -30,6 +30,10 @@ public abstract class BaseSparkApplication implements SparkApplication {
 		sparkSession = builder.getOrCreate();
 	}
 
+	public SparkSession getSparkSession() {
+		return sparkSession;
+	}
+
 	protected abstract SparkConf createSparkConf();
 
 	protected SparkSession sparkSession;
