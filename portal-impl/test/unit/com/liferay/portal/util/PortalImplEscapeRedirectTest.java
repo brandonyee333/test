@@ -82,6 +82,7 @@ public class PortalImplEscapeRedirectTest extends PowerMockito {
 			Assert.assertEquals(
 				"test@google.com",
 				_portalImpl.escapeRedirect("test@google.com"));
+			Assert.assertNull(_portalImpl.escapeRedirect("///liferay.com"));
 
 			// Relative Path with protocol
 
