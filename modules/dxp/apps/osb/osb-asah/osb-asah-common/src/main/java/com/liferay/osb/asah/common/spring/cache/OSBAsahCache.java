@@ -55,7 +55,7 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 
 		_push(new OSBAsahCacheMessage(_name, null));
 
-		_caffeineCache.invalidateAll();
+		clearCaffeineCache(null);
 	}
 
 	public void clearCaffeineCache(Object key) {
@@ -81,7 +81,7 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 
 		_push(new OSBAsahCacheMessage(_name, key));
 
-		_caffeineCache.invalidate(key);
+		clearCaffeineCache(key);
 	}
 
 	@Override
