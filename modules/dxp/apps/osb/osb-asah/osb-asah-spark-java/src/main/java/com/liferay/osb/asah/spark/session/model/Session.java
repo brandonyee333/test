@@ -150,7 +150,9 @@ public class Session implements Serializable {
 		return _browserName;
 	}
 
-	public Set<String> getCanonicalUrls() {
+	public List<String> getCanonicalUrls() {
+		_removeDuplicatedItems(_canonicalUrls);
+
 		return _canonicalUrls;
 	}
 
@@ -234,7 +236,9 @@ public class Session implements Serializable {
 		return _projectId;
 	}
 
-	public Set<String> getReferrers() {
+	public List<String> getReferrers() {
+		_removeDuplicatedItems(_referrers);
+
 		return _referrers;
 	}
 
@@ -246,7 +250,9 @@ public class Session implements Serializable {
 		return _sessionId;
 	}
 
-	public Set<String> getUrls() {
+	public List<String> getUrls() {
+		_removeDuplicatedItems(_urls);
+
 		return _urls;
 	}
 
@@ -276,7 +282,7 @@ public class Session implements Serializable {
 		_browserName = browserName;
 	}
 
-	public void setCanonicalUrls(Set<String> canonicalUrls) {
+	public void setCanonicalUrls(List<String> canonicalUrls) {
 		_canonicalUrls = canonicalUrls;
 	}
 
@@ -354,7 +360,7 @@ public class Session implements Serializable {
 		_projectId = projectId;
 	}
 
-	public void setReferrers(Set<String> referrers) {
+	public void setReferrers(List<String> referrers) {
 		_referrers = referrers;
 	}
 
@@ -366,7 +372,7 @@ public class Session implements Serializable {
 		_sessionId = sessionId;
 	}
 
-	public void setUrls(Set<String> urls) {
+	public void setUrls(List<String> urls) {
 		_urls = urls;
 	}
 
@@ -374,8 +380,15 @@ public class Session implements Serializable {
 		_userId = userId;
 	}
 
+	private void _removeDuplicatedItems(List<String> list) {
+		Set<String> set = new HashSet<>(list);
+
+		list.clear();
+		list.addAll(set);
+	}
+
 	private String _browserName;
-	private Set<String> _canonicalUrls = new HashSet<>();
+	private List<String> _canonicalUrls = new ArrayList<>();
 	private String _channelId;
 	private String _city;
 	private String _clientIp;
@@ -393,10 +406,10 @@ public class Session implements Serializable {
 	private int _pageViewsCount;
 	private String _platformName;
 	private String _projectId;
-	private Set<String> _referrers = new HashSet<>();
+	private List<String> _referrers = new ArrayList<>();
 	private String _region;
 	private String _sessionId;
-	private Set<String> _urls = new HashSet<>();
+	private List<String> _urls = new ArrayList<>();
 	private String _userId;
 
 }

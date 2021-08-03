@@ -19,8 +19,10 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -161,7 +163,7 @@ public class Event implements Serializable {
 		return _projectId;
 	}
 
-	public Set<String> getSegmentNames() {
+	public List<String> getSegmentNames() {
 		return _segmentNames;
 	}
 
@@ -248,7 +250,7 @@ public class Event implements Serializable {
 		_projectId = projectId;
 	}
 
-	public void setSegmentNames(Set<String> segmentNames) {
+	public void setSegmentNames(List<String> segmentNames) {
 		_segmentNames = segmentNames;
 	}
 
@@ -285,7 +287,7 @@ public class Event implements Serializable {
 	private Boolean _knownIndividual;
 	private Long _normalizedEventDate;
 	private String _projectId;
-	private Set<String> _segmentNames = new HashSet<>();
+	private List<String> _segmentNames = new ArrayList<>();
 	private String _userId;
 
 }
