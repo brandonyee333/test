@@ -16,17 +16,22 @@ package com.liferay.osb.asah.common.spring.cache;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 
+import java.time.Duration;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
@@ -36,61 +41,75 @@ public class OSBAsahCacheManager implements CacheManager {
 
 	public OSBAsahCacheManager(RedisTemplate<Object, Object> redisTemplate) {
 		_redisTemplate = redisTemplate;
-	}
 
-	public com.github.benmanes.caffeine.cache.Cache<Object, Object>
-		caffeineCache() {
-
-		Caffeine<Object, Object> caffeineBuilder = Caffeine.newBuilder();
-
-		caffeineBuilder.expireAfterAccess(5, TimeUnit.SECONDS);
-
-		return caffeineBuilder.build();
-	}
-
-	public void clearCaffeineCache(String name, Object key) {
-		Cache cache = _caches.get(name);
-
-		if (cache == null) {
-			return;
-		}
-
-		OSBAsahCache osbAsahCache = (OSBAsahCache)cache;
-
-		osbAsahCache.clearCaffeineCache(key);
+		_caffeineCacheManager = _createCaffeineCacheManager();
+		_redisCacheManager = _createRedisCacheManager(
+			redisTemplate.getRequiredConnectionFactory());
 	}
 
 	@Override
 	public Cache getCache(String name) {
-		Cache cache = _caches.get(name);
-
-		if (cache == null) {
-			cache = new OSBAsahCache(caffeineCache(), name, _redisTemplate);
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Created OSBAsahCache instance " + name);
-			}
-
-			Cache oldCache = _caches.putIfAbsent(name, cache);
-
-			if (oldCache != null) {
-				cache = oldCache;
-			}
-		}
-
-		return cache;
+		return _osbAsahCaches.computeIfAbsent(name, this::_createOSBAsahCache);
 	}
 
 	@Override
 	public Collection<String> getCacheNames() {
-		return Collections.unmodifiableSet(_caches.keySet());
+		return Collections.unmodifiableSet(_osbAsahCaches.keySet());
+	}
+
+	protected void clearCaffeineCache(String name, Object key) {
+		OSBAsahCache osbAsahCache = _osbAsahCaches.get(name);
+
+		if (osbAsahCache == null) {
+			return;
+		}
+
+		osbAsahCache.clearCaffeineCache(key);
+	}
+
+	private CaffeineCacheManager _createCaffeineCacheManager() {
+		CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
+
+		Caffeine<Object, Object> caffeineBuilder = Caffeine.newBuilder();
+
+		caffeineBuilder.expireAfterAccess(Duration.ofSeconds(5));
+		caffeineBuilder.maximumSize(10000);
+
+		caffeineCacheManager.setCaffeine(caffeineBuilder);
+
+		return caffeineCacheManager;
+	}
+
+	private OSBAsahCache _createOSBAsahCache(String name) {
+		if (_log.isDebugEnabled()) {
+			_log.debug("Created OSBAsahCache instance " + name);
+		}
+
+		return new OSBAsahCache(
+			_caffeineCacheManager.getCache(name), name,
+			_redisCacheManager.getCache(name), _redisTemplate);
+	}
+
+	private RedisCacheManager _createRedisCacheManager(
+		RedisConnectionFactory redisConnectionFactory) {
+
+		RedisCacheManager.RedisCacheManagerBuilder redisCacheManagerBuilder =
+			RedisCacheManager.builder();
+
+		redisCacheManagerBuilder.cacheWriter(
+			RedisCacheWriter.nonLockingRedisCacheWriter(
+				redisConnectionFactory));
+
+		return redisCacheManagerBuilder.build();
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		OSBAsahCacheManager.class);
 
-	private final ConcurrentMap<String, Cache> _caches =
+	private final CaffeineCacheManager _caffeineCacheManager;
+	private final ConcurrentMap<String, OSBAsahCache> _osbAsahCaches =
 		new ConcurrentHashMap<>();
+	private final RedisCacheManager _redisCacheManager;
 	private final RedisTemplate<Object, Object> _redisTemplate;
 
 }
