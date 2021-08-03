@@ -427,6 +427,14 @@ type ExperimentVariant {
 	uniqueVisitors: Int
 }
 
+type ExperimentVariantMetric {
+	confidenceInterval: [Float]
+	dxpVariantId: String
+	improvement: Float
+	median: Float
+	probabilityToWin: Float
+}
+
 type FormFieldMetric {
 	fieldAbandonmentsMetric: Metric
 	fieldEmptyMetric: Metric
@@ -746,17 +754,6 @@ type Preference {
 	value: String
 }
 
-type UserSession {
-	browserName: String,
-	completeDate: String,
-	contentLanguageId: String,
-	createDate: String,
-	deviceType: String,
-	events: [Event],
-	languageId: String
-	timezoneOffset: String,
-}
-
 type QueryType {
 	accountInterests(
 		accountId: String!,
@@ -945,18 +942,6 @@ type QueryType {
 		sort: Sort!,
 		type: EventAttributeDefinitionType!
 	): EventAttributeDefinitionBag
-
-	userSessions(
-		channelId: String!
-		entityId: String!
-		entityType: String!
-		keywords: String
-		page: Int!
-		rangeEnd: String
-		rangeKey: Int
-		rangeStart: String
-		size: Int!
-	): [UserSession]
 
 	eventDefinition(
 		displayName: String,
@@ -1222,6 +1207,18 @@ type QueryType {
 		sort: Sort!,
 		start: Int!
 	): DXPEntityBag
+	
+	userSessions(
+		channelId: String!
+		entityId: String!
+		entityType: String!
+		keywords: String
+		page: Int!
+		rangeEnd: String
+		rangeKey: Int
+		rangeStart: String
+		size: Int!
+	): [UserSession]
 
 	users(
 		channelId: String,
@@ -1277,10 +1274,13 @@ type User implements DXPEntity {
 	screenName: String
 }
 
-type ExperimentVariantMetric {
-	confidenceInterval: [Float]
-	dxpVariantId: String
-	improvement: Float
-	median: Float
-	probabilityToWin: Float
+type UserSession {
+	browserName: String,
+	completeDate: String,
+	contentLanguageId: String,
+	createDate: String,
+	deviceType: String,
+	events: [Event],
+	languageId: String
+	timezoneOffset: String,
 }

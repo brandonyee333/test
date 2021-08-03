@@ -82,8 +82,8 @@ public class EventsByUserSessionGraphQLRestControllerTest
 				_eventAttributeDefinitionDog.
 					fetchEventAttributeDefinitionByName("url"));
 
-		_createEvent("assetClicked", eventAttributeDefinitions);
-		_createEvent("pageUnloaded", eventAttributeDefinitions);
+		_createEvent(eventAttributeDefinitions, "assetClicked");
+		_createEvent(eventAttributeDefinitions, "pageUnloaded");
 
 		_cerebroInfoElasticsearchInvoker.add(
 			"user-sessions",
@@ -109,8 +109,8 @@ public class EventsByUserSessionGraphQLRestControllerTest
 	}
 
 	private void _createEvent(
-		String eventDefinitionName,
-		List<EventAttributeDefinition> eventAttributeDefinitions) {
+		List<EventAttributeDefinition> eventAttributeDefinitions,
+		String eventDefinitionName) {
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName(eventDefinitionName);
