@@ -26,6 +26,8 @@ import java.sql.Date;
 
 import java.time.Duration;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoder;
 import org.apache.spark.sql.Encoders;
@@ -49,8 +51,18 @@ public class SessionSparkJob implements SparkJob {
 	public SessionSparkJob(SessionSparkApplication baseSparkApplication) {
 		Configuration configuration = baseSparkApplication.getConfiguration();
 
+		if (_log.isInfoEnabled()) {
+			_log.info("Calling the constructor");
+		}
+
 		_eventsPath = configuration.get(
 			"google.storage.path.events", "google.storage.path.events");
+
+		_backoffMaxAttempts = Long.parseLong(
+			configuration.get("backoff.max.attempts", "20"));
+
+		_backoffMaxWaitingTime = Long.parseLong(
+			configuration.get("backoff.max.waiting.time", "600000"));
 
 		_sessionBatchSinkFunction = new SessionBatchSinkFunction(
 			configuration.get(
@@ -72,16 +84,26 @@ public class SessionSparkJob implements SparkJob {
 
 	@Override
 	public void run() {
+		if (_log.isInfoEnabled()) {
+			_log.info("Starting to run");
+		}
+
 		try {
 			_run();
 		}
 		catch (Exception exception) {
+			_log.error(exception, exception);
+			_wait();
 			run();
 		}
 	}
 
 	private KeyValueGroupedDataset<Tuple2<String, Date>, Event>
 		_createKeyValueGroupedDataset() {
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Creating grouped dataset");
+		}
 
 		DataStreamReader dataStreamReader = _sparkSession.readStream();
 
@@ -127,10 +149,33 @@ public class SessionSparkJob implements SparkJob {
 				_sessionBatchSinkFunction
 			);
 
+		if (_log.isInfoEnabled()) {
+			_log.info("Starting the streaming");
+		}
+
 		StreamingQuery streamingQuery = dataStreamWriter.start();
 
 		streamingQuery.processAllAvailable();
 	}
+
+	private void _wait() {
+		_backoffAttemptNumber += 1;
+		_backoffWaitingTime = Math.min(
+			_BACKOFF_MULTIPLIER * _backoffWaitingTime, _backoffMaxWaitingTime);
+
+		if (_backoffAttemptNumber > _backoffMaxAttempts) {
+			throw new RuntimeException("Backoff max attempts exceeded");
+		}
+
+		try {
+			Thread.sleep(_backoffWaitingTime);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
+		}
+	}
+
+	private static final long _BACKOFF_MULTIPLIER = 2;
 
 	private static final Encoder<Event> _EVENT_ENCODER = Encoders.bean(
 		Event.class);
@@ -146,6 +191,12 @@ public class SessionSparkJob implements SparkJob {
 
 	private static final String _TABLE_FORMAT_DELTA = "delta";
 
+	private static final Log _log = LogFactory.getLog(SessionSparkJob.class);
+
+	private long _backoffAttemptNumber;
+	private final long _backoffMaxAttempts;
+	private final long _backoffMaxWaitingTime;
+	private long _backoffWaitingTime = 10000;
 	private final String _eventsPath;
 	private final SessionBatchSinkFunction _sessionBatchSinkFunction;
 	private final Duration _sessionDuration;
