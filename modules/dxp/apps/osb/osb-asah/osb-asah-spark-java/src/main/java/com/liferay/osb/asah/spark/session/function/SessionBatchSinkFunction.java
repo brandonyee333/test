@@ -36,8 +36,8 @@ public class SessionBatchSinkFunction
 
 		Objects.requireNonNull(
 			realtimeEventsPath, "realtimeEventsPath is null");
-		Objects.requireNonNull(realtimeEventsPath, "sessionEventsPath is null");
-		Objects.requireNonNull(realtimeEventsPath, "sessionsPath is null");
+		Objects.requireNonNull(sessionEventsPath, "sessionEventsPath is null");
+		Objects.requireNonNull(sessionsPath, "sessionsPath is null");
 
 		_realtimeEventsPath = realtimeEventsPath;
 		_sessionEventsPath = sessionEventsPath;
