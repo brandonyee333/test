@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.spark.session;
 
-import com.liferay.osb.asah.spark.common.BaseSparkApplication;
 import com.liferay.osb.asah.spark.common.Configuration;
 import com.liferay.osb.asah.spark.common.SparkJob;
 import com.liferay.osb.asah.spark.session.function.EventGroupByKeyFunction;
@@ -27,10 +26,14 @@ import java.sql.Date;
 
 import java.time.Duration;
 
+import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoder;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.KeyValueGroupedDataset;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.functions;
+import org.apache.spark.sql.streaming.DataStreamReader;
 import org.apache.spark.sql.streaming.DataStreamWriter;
 import org.apache.spark.sql.streaming.GroupStateTimeout;
 import org.apache.spark.sql.streaming.OutputMode;
@@ -48,19 +51,15 @@ public class SessionSparkJob implements SparkJob {
 
 		_eventsPath = configuration.get(
 			"google.storage.path.events", "google.storage.path.events");
-		String realtimeEventsPath = configuration.get(
-			"google.storage.path.session.events.realtime",
-			"google.storage.path.session.events.realtime");
-		String sessionsPath = configuration.get(
-			"google.storage.path.sessions", "google.storage.path.sessions");
-		String sessionEventsPath = configuration.get(
-			"google.storage.path.session.events",
-			"google.storage.path.session.events");
 
-		String duration = configuration.get(
-			"session.duration", "session.duration");
+		_sessionBatchSinkFunction = new SessionBatchSinkFunction(
+			configuration.get(
+				"google.storage.path.session.events.realtime", null),
+			configuration.get("google.storage.path.session.events", null),
+			configuration.get("google.storage.path.sessions", null));
 
-		int durationMinutes = Integer.parseInt(duration);
+		int durationMinutes = Integer.parseInt(
+			configuration.get("session.duration", "30"));
 
 		_sessionDuration = Duration.ofMinutes(durationMinutes);
 
@@ -68,10 +67,7 @@ public class SessionSparkJob implements SparkJob {
 			new SessionFlatMapGroupsWithStateFunction(
 				_sessionDuration.toMillis());
 
-		_sparkApplication = baseSparkApplication;
-
-		_sessionBatchSinkFunction = new SessionBatchSinkFunction(
-			realtimeEventsPath, sessionEventsPath, sessionsPath);
+		_sparkSession = baseSparkApplication.getSparkSession();
 	}
 
 	@Override
@@ -80,7 +76,6 @@ public class SessionSparkJob implements SparkJob {
 			_run();
 		}
 		catch (Exception exception) {
-			exception.printStackTrace();
 			run();
 		}
 	}
@@ -88,9 +83,9 @@ public class SessionSparkJob implements SparkJob {
 	private KeyValueGroupedDataset<Tuple2<String, Date>, Event>
 		_createKeyValueGroupedDataset() {
 
-		return _sparkApplication.getSparkSession(
-		).readStream(
-		).format(
+		DataStreamReader dataStreamReader = _sparkSession.readStream();
+
+		Dataset<Row> eventsDataset = dataStreamReader.format(
 			_TABLE_FORMAT_DELTA
 		).option(
 			"ignoreChanges", true
@@ -98,7 +93,9 @@ public class SessionSparkJob implements SparkJob {
 			"ignoreDeletes", true
 		).load(
 			_eventsPath
-		).withColumn(
+		);
+
+		return eventsDataset.withColumn(
 			"date", functions.to_date(functions.col("eventDate"))
 		).withColumn(
 			"iterationNumber", functions.lit(0)
@@ -116,12 +113,12 @@ public class SessionSparkJob implements SparkJob {
 		);
 	}
 
-	private StreamingQuery _createStreamingQuery() throws Exception {
-		KeyValueGroupedDataset<Tuple2<String, Date>, Event> dataset =
-			_createKeyValueGroupedDataset();
+	private void _run() throws Exception {
+		KeyValueGroupedDataset<Tuple2<String, Date>, Event>
+			keyValueGroupedDataset = _createKeyValueGroupedDataset();
 
 		DataStreamWriter<Session> dataStreamWriter =
-			dataset.flatMapGroupsWithState(
+			keyValueGroupedDataset.flatMapGroupsWithState(
 				_sessionFlatMapGroupsWithState, OutputMode.Append(),
 				_SESSION_ENCODER, _SESSION_ENCODER,
 				GroupStateTimeout.EventTimeTimeout()
@@ -130,11 +127,7 @@ public class SessionSparkJob implements SparkJob {
 				_sessionBatchSinkFunction
 			);
 
-		return dataStreamWriter.start();
-	}
-
-	private void _run() throws Exception {
-		StreamingQuery streamingQuery = _createStreamingQuery();
+		StreamingQuery streamingQuery = dataStreamWriter.start();
 
 		streamingQuery.processAllAvailable();
 	}
@@ -158,6 +151,6 @@ public class SessionSparkJob implements SparkJob {
 	private final Duration _sessionDuration;
 	private final SessionFlatMapGroupsWithStateFunction
 		_sessionFlatMapGroupsWithState;
-	private final BaseSparkApplication _sparkApplication;
+	private final SparkSession _sparkSession;
 
 }

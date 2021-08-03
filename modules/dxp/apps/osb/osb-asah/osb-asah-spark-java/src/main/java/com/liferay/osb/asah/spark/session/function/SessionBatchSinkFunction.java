@@ -16,6 +16,8 @@ package com.liferay.osb.asah.spark.session.function;
 
 import com.liferay.osb.asah.spark.session.model.Session;
 
+import java.util.Objects;
+
 import org.apache.spark.api.java.function.VoidFunction2;
 import org.apache.spark.sql.DataFrameWriter;
 import org.apache.spark.sql.Dataset;
@@ -31,6 +33,11 @@ public class SessionBatchSinkFunction
 	public SessionBatchSinkFunction(
 		String realtimeEventsPath, String sessionEventsPath,
 		String sessionsPath) {
+
+		Objects.requireNonNull(
+			realtimeEventsPath, "realtimeEventsPath is null");
+		Objects.requireNonNull(realtimeEventsPath, "sessionEventsPath is null");
+		Objects.requireNonNull(realtimeEventsPath, "sessionsPath is null");
 
 		_realtimeEventsPath = realtimeEventsPath;
 		_sessionEventsPath = sessionEventsPath;
