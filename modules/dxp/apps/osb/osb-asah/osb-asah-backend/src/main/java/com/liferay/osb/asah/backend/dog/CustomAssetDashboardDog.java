@@ -101,7 +101,7 @@ public class CustomAssetDashboardDog {
 				new JSONObject(new JSONTokener(inputStream)));
 		}
 		catch (IOException ioException) {
-			_log.error(ioException);
+			_log.error(ioException, ioException);
 
 			throw new IllegalStateException(
 				"Unable to read custom asset dashboard definition schema",

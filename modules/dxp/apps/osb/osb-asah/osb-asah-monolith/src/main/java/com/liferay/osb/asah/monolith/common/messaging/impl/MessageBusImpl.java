@@ -115,7 +115,7 @@ public class MessageBusImpl implements MessageBus {
 			_executorService.awaitTermination(3, TimeUnit.SECONDS);
 		}
 		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException);
+			_log.error(interruptedException, interruptedException);
 		}
 		finally {
 			_executorService.shutdownNow();

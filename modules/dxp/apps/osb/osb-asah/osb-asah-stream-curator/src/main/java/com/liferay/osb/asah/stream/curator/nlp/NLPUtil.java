@@ -246,7 +246,7 @@ public class NLPUtil {
 			}
 		}
 		catch (LangDetectException langDetectException) {
-			_log.error(langDetectException);
+			_log.error(langDetectException, langDetectException);
 		}
 
 		return false;

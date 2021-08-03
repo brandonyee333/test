@@ -51,7 +51,7 @@ public class ScriptUtil {
 			return IOUtils.toString(inputStream, Charset.defaultCharset());
 		}
 		catch (IOException ioException) {
-			_log.error(ioException);
+			_log.error(ioException, ioException);
 
 			throw new IllegalStateException(
 				"Unable to read resource " + resourceName);
