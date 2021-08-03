@@ -281,10 +281,10 @@ public class HistogramDog {
 		List<HistogramMetric> histogramMetrics =
 			histogramMetricBag.getMetrics();
 
-		Stream<HistogramMetric> histogramMetricStream =
+		Stream<HistogramMetric> histogramMetricsStream =
 			histogramMetrics.stream();
 
-		return histogramMetricStream.collect(
+		return histogramMetricsStream.collect(
 			Collectors.toMap(HistogramMetric::getKey, Function.identity()));
 	}
 

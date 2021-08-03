@@ -972,12 +972,12 @@ public class IndividualDog extends BaseFaroInfoDog {
 			individual.setLastEnrichmentDate(new Date());
 		}
 
-		Stream<Field> fieldStream = fields.stream();
-		Stream<Field> previousFieldStream = previousFields.stream();
+		Stream<Field> fieldsStream = fields.stream();
+		Stream<Field> previousFieldsStream = previousFields.stream();
 
-		if (previousFieldStream.noneMatch(
+		if (previousFieldsStream.noneMatch(
 				field -> Objects.equals(field.getName(), "email")) &&
-			fieldStream.anyMatch(
+			fieldsStream.anyMatch(
 				field -> Objects.equals(field.getName(), "email"))) {
 
 			_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(

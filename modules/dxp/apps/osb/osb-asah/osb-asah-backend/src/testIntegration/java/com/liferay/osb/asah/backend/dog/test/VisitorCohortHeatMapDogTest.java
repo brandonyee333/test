@@ -223,10 +223,10 @@ public class VisitorCohortHeatMapDogTest {
 	private double[] _getActualRetentions(
 		List<CohortHeatMapMetric> cohortHeatMapMetrics) {
 
-		Stream<CohortHeatMapMetric> cohortHeatMapMetricStream =
+		Stream<CohortHeatMapMetric> cohortHeatMapMetricsStream =
 			cohortHeatMapMetrics.stream();
 
-		return cohortHeatMapMetricStream.mapToDouble(
+		return cohortHeatMapMetricsStream.mapToDouble(
 			CohortHeatMapMetric::getRetention
 		).toArray();
 	}

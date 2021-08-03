@@ -605,7 +605,7 @@ public class FinalizeUserSessionArm {
 			if (pageEventDateMap.containsKey(pageEventDatePair)) {
 				List<Long> values = entry.getValue();
 
-				Stream<Long> valueStream = values.stream();
+				Stream<Long> valuesStream = values.stream();
 
 				elasticsearchBulkRequestBuilder.update(
 					"pages",
@@ -613,7 +613,7 @@ public class FinalizeUserSessionArm {
 						"id", pageEventDateMap.get(pageEventDatePair)
 					).put(
 						"timeOnPage",
-						valueStream.mapToLong(
+						valuesStream.mapToLong(
 							value -> value
 						).sum()
 					));

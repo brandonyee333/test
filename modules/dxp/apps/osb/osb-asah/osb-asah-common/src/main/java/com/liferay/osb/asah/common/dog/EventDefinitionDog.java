@@ -152,10 +152,10 @@ public class EventDefinitionDog {
 		List<EventDefinition> eventDefinitions =
 			_eventDefinitionRepository.findByIdIn(eventDefinitionIds);
 
-		Stream<EventDefinition> eventDefinitionStream =
+		Stream<EventDefinition> eventDefinitionsStream =
 			eventDefinitions.stream();
 
-		return eventDefinitionStream.collect(
+		return eventDefinitionsStream.collect(
 			Collectors.toMap(
 				EventDefinition::getId, eventDefinition -> eventDefinition));
 	}

@@ -86,20 +86,20 @@ public class EventDog {
 			channelId, individualId, keywords,
 			PageRequest.of(page, size, Sort.desc("eventDate")), timeRange);
 
-		Stream<Event> eventStream = events.stream();
+		Stream<Event> eventsStream = events.stream();
 
 		List<EventAttribute> eventAttributes =
 			_eventAttributeRepository.findByEventIdIn(
-				eventStream.map(
+				eventsStream.map(
 					Event::getId
 				).collect(
 					Collectors.toList()
 				));
 
-		Stream<EventAttribute> eventAttributeStream = eventAttributes.stream();
+		Stream<EventAttribute> eventAttributesStream = eventAttributes.stream();
 
 		Map<Long, List<EventAttribute>> eventAttributeMap =
-			eventAttributeStream.collect(
+			eventAttributesStream.collect(
 				Collectors.groupingBy(EventAttribute::getEventId));
 
 		events.forEach(
@@ -133,17 +133,17 @@ public class EventDog {
 		List<UserSession> userSessions = _userSessionDog.findByIds(
 			userSessionIds);
 
-		Stream<UserSession> userSessionStream = userSessions.stream();
+		Stream<UserSession> userSessionsStream = userSessions.stream();
 
-		Map<String, UserSession> userSessionMap = userSessionStream.collect(
+		Map<String, UserSession> userSessionMap = userSessionsStream.collect(
 			Collectors.toMap(UserSession::getId, userSession -> userSession));
 
 		Map<Long, EventDefinition> eventDefinitions =
 			_eventDefinitionDog.getEventDefinitions(eventDefinitionIds);
 
-		Stream<Event> eventStream = events.stream();
+		Stream<Event> eventsStream = events.stream();
 
-		return eventStream.map(
+		return eventsStream.map(
 			event -> new Tuple2<Event, EventDefinition>(
 				event, eventDefinitions.get(event.getEventDefinitionId()))
 		).collect(

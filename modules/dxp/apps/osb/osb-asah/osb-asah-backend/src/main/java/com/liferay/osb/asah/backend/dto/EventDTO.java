@@ -46,9 +46,9 @@ public class EventDTO {
 
 		Set<EventAttribute> eventAttributes = event.getEventAttributes();
 
-		Stream<EventAttribute> eventAttributeStream = eventAttributes.stream();
+		Stream<EventAttribute> eventAttributesStream = eventAttributes.stream();
 
-		Map<Long, String> eventAttributeValues = eventAttributeStream.collect(
+		Map<Long, String> eventAttributeValues = eventAttributesStream.collect(
 			Collectors.toMap(
 				EventAttribute::getEventAttributeDefinitionId,
 				EventAttribute::getValue));

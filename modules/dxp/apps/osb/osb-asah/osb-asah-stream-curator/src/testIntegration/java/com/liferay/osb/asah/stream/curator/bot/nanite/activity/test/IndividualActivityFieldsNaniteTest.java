@@ -149,11 +149,11 @@ public class IndividualActivityFieldsNaniteTest {
 		Set<Individual.ActivitiesCount> activitiesCounts =
 			individual.getActivitiesCounts();
 
-		Stream<Individual.ActivitiesCount> activitiesCountStream =
+		Stream<Individual.ActivitiesCount> activitiesCountsStream =
 			activitiesCounts.stream();
 
 		Individual.ActivitiesCount individualActivitiesCount =
-			activitiesCountStream.filter(
+			activitiesCountsStream.filter(
 				activitiesCount -> Objects.equals(
 					channelId, activitiesCount.getChannelId())
 			).findFirst(
@@ -168,11 +168,11 @@ public class IndividualActivityFieldsNaniteTest {
 		Set<Individual.LastActivityDate> lastActivityDates =
 			individual.getLastActivityDates();
 
-		Stream<Individual.LastActivityDate> lastActivityDateStream =
+		Stream<Individual.LastActivityDate> lastActivityDatesStream =
 			lastActivityDates.stream();
 
 		Individual.LastActivityDate individualLastActivityDate =
-			lastActivityDateStream.filter(
+			lastActivityDatesStream.filter(
 				lastActivityDate -> Objects.equals(
 					channelId, lastActivityDate.getChannelId())
 			).findFirst(
@@ -298,11 +298,11 @@ public class IndividualActivityFieldsNaniteTest {
 		Set<Individual.ActivitiesCount> activitiesCounts =
 			individual.getActivitiesCounts();
 
-		Stream<Individual.ActivitiesCount> activitiesCountStream =
+		Stream<Individual.ActivitiesCount> activitiesCountsStream =
 			activitiesCounts.stream();
 
 		Individual.ActivitiesCount individualActivitiesCount =
-			activitiesCountStream.filter(
+			activitiesCountsStream.filter(
 				curActivitiesCount -> Objects.equals(
 					channelId, curActivitiesCount.getChannelId())
 			).findFirst(
@@ -318,11 +318,11 @@ public class IndividualActivityFieldsNaniteTest {
 		Set<Individual.LastActivityDate> lastActivityDates =
 			individual.getLastActivityDates();
 
-		Stream<Individual.LastActivityDate> lastActivityDateStream =
+		Stream<Individual.LastActivityDate> lastActivityDatesStream =
 			lastActivityDates.stream();
 
 		Individual.LastActivityDate individualLastActivityDate =
-			lastActivityDateStream.filter(
+			lastActivityDatesStream.filter(
 				lastActivityDate -> Objects.equals(
 					channelId, lastActivityDate.getChannelId())
 			).findFirst(
