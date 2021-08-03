@@ -18,6 +18,8 @@ import com.liferay.osb.asah.spark.session.model.Session;
 
 import java.util.Objects;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.spark.api.java.function.VoidFunction2;
 import org.apache.spark.sql.DataFrameWriter;
 import org.apache.spark.sql.Dataset;
@@ -46,6 +48,10 @@ public class SessionBatchSinkFunction
 
 	@Override
 	public void call(Dataset<Session> dataset, Long batchNumber) {
+		if (_log.isInfoEnabled()) {
+			_log.info("Persisting dataset");
+		}
+
 		dataset.persist();
 
 		saveFinishedSessionEvents(dataset);
@@ -56,6 +62,10 @@ public class SessionBatchSinkFunction
 	}
 
 	public void saveFinishedSessionEvents(Dataset<Session> dataset) {
+		if (_log.isInfoEnabled()) {
+			_log.info("Saving finished session events");
+		}
+
 		Dataset<Row> finishedSessionEventsDataset = dataset.filter(
 			"finished == true"
 		).select(
@@ -87,6 +97,10 @@ public class SessionBatchSinkFunction
 	}
 
 	public void saveFinishedSessions(Dataset<Session> dataset) {
+		if (_log.isInfoEnabled()) {
+			_log.info("Saving finished sessions");
+		}
+
 		Dataset<Row> finishedSessionsDataset = dataset.filter(
 			"finished == true"
 		).drop(
@@ -111,6 +125,10 @@ public class SessionBatchSinkFunction
 	}
 
 	public void saveRealtimeSessionEvents(Dataset<Session> dataset) {
+		if (_log.isInfoEnabled()) {
+			_log.info("Saving realtime events");
+		}
+
 		Dataset<Row> unfinishedSessionEventsDataset = dataset.select(
 			functions.explode(
 				functions.col("events")
@@ -147,6 +165,9 @@ public class SessionBatchSinkFunction
 	}
 
 	private static final boolean _MERGE_SCHEMA = true;
+
+	private static final Log _log = LogFactory.getLog(
+		SessionBatchSinkFunction.class);
 
 	private final String _realtimeEventsPath;
 	private final String _sessionEventsPath;

@@ -23,6 +23,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.spark.api.java.function.FlatMapGroupsWithStateFunction;
 import org.apache.spark.sql.streaming.GroupState;
 
@@ -49,6 +51,10 @@ public class SessionFlatMapGroupsWithStateFunction
 		// Session has expired
 
 		if (groupState.hasTimedOut()) {
+			if (_log.isInfoEnabled()) {
+				_log.info("Group state has timed out");
+			}
+
 			Session expiredSession = groupState.get();
 
 			expiredSession.setFinished(true);
@@ -63,6 +69,10 @@ public class SessionFlatMapGroupsWithStateFunction
 		// Session is active
 
 		if (groupState.exists()) {
+			if (_log.isInfoEnabled()) {
+				_log.info("Group state has an open session");
+			}
+
 			Session activeSession = groupState.get();
 
 			activeSession.setInteractionNumber(
@@ -110,8 +120,15 @@ public class SessionFlatMapGroupsWithStateFunction
 
 		groupState.update(activeSession);
 
+		if (_log.isInfoEnabled()) {
+			_log.info("Return sessions");
+		}
+
 		return sessions.iterator();
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		SessionFlatMapGroupsWithStateFunction.class);
 
 	private final long _sessionDuration;
 
