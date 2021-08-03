@@ -19,11 +19,10 @@ import com.liferay.osb.asah.spark.common.DateUtil;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -88,7 +87,7 @@ public class SessionTest {
 		Assert.assertFalse(session.getFinished());
 		Assert.assertFalse(session.isBounced());
 
-		Set<String> canonicalUrls = session.getCanonicalUrls();
+		List<String> canonicalUrls = session.getCanonicalUrls();
 
 		Assert.assertEquals(canonicalUrls.toString(), 1, canonicalUrls.size());
 	}
@@ -132,7 +131,7 @@ public class SessionTest {
 		Assert.assertTrue(session.isBounced());
 		Assert.assertFalse(session.getFinished());
 
-		Set<String> canonicalUrls = session.getCanonicalUrls();
+		List<String> canonicalUrls = session.getCanonicalUrls();
 
 		Assert.assertEquals(canonicalUrls.toString(), 1, canonicalUrls.size());
 	}
@@ -157,7 +156,7 @@ public class SessionTest {
 		"2021-06-22T09:00:30.001Z");
 	private final Timestamp _secondEventDate = DateUtil.toTimestamp(
 		"2021-06-22T09:01:30.001Z");
-	private final Set<String> _segmentNames = new HashSet<String>() {
+	private final List<String> _segmentNames = new ArrayList() {
 		{
 			add("A");
 			add("B");
