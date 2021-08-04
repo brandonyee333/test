@@ -1,0 +1,33 @@
+[
+	{
+		"abandonments": 0,
+		"assetId": "1",
+		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
+		"browserName": "Chrome",
+		"canonicalUrls": [
+			"http://liferay.com/home"
+		],
+		"channelId": "1",
+		"city": "Recife",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"eventDate": "2018-09-13T12:00:00.000Z",
+		"id": "1",
+		"platformName": "macOS",
+		"primaryKey": "7167e4a6c211929a3025ce80c2024e5a44c389b0b75820aae289c632c04ded9a",
+		"region": "Pernambuco",
+		"submissionDates": [
+		],
+		"submissions": 0,
+		"submissionsTime": 0,
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com/web/forms/shared/-/form/1"
+		],
+		"userId": "1",
+		"viewDates": [
+		],
+		"views": 0
+	}
+]

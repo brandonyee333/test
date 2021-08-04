@@ -1,0 +1,108 @@
+[
+	{
+		"applicationId": "Form",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/web/forms/form/1",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "macOS",
+			"region": "Pernambuco",
+			"title": "Title 1",
+			"url": "http://liferay.com/web/forms/shared/-/form/1"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-09-13T12:48:59.000Z",
+		"eventId": "formViewed",
+		"eventProperties": {
+			"formId": "1",
+			"page": "0"
+		},
+		"id": "1",
+		"projectId": "test",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Form",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/web/forms/form/1",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "macOS",
+			"region": "Pernambuco",
+			"title": "Title 1",
+			"url": "http://liferay.com/web/forms/shared/-/form/1"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-09-13T12:49:00.000Z",
+		"eventId": "fieldFocused",
+		"eventProperties": {
+			"fieldName": "Field2",
+			"formId": "1",
+			"page": "0"
+		},
+		"id": "1",
+		"projectId": "test",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Form",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/web/forms/form/1",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "macOS",
+			"region": "Pernambuco",
+			"title": "Title 1",
+			"url": "http://liferay.com/web/forms/shared/-/form/1"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-09-13T12:49:01.000Z",
+		"eventId": "fieldBlurred",
+		"eventProperties": {
+			"fieldName": "Field2",
+			"focusDuration": "1000",
+			"formId": "1",
+			"page": "0"
+		},
+		"id": "2",
+		"projectId": "test",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Form",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"canonicalUrl": "http://liferay.com/web/forms/form/1",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "macOS",
+			"region": "Pernambuco",
+			"title": "Title 1",
+			"url": "http://liferay.com/web/forms/shared/-/form/1"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-09-13T12:50:00.000Z",
+		"eventId": "formSubmitted",
+		"eventProperties": {
+			"formId": "1"
+		},
+		"id": "3",
+		"projectId": "test",
+		"userId": "1"
+	}
+]

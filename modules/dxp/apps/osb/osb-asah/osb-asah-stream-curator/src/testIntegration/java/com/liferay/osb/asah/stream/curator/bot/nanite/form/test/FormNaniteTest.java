@@ -25,6 +25,9 @@ import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import org.json.JSONObject;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,12 +50,48 @@ public class FormNaniteTest extends BaseNaniteTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "forms", resourcePath = "form_info.json",
+		name = "forms", resourcePath = "form_info_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_FORM,
-		resourcePath = "analytics_events_form_channel.json"
+		resourcePath = "analytics_events_form_channel_2.json"
+	)
+	@Test
+	public void testFormAbandonmentsCount1() throws Exception {
+		_formNanite.run();
+
+		JSONObject jsonObject = _cerebroInfoElasticsearchInvoker.get(
+			"forms", "1");
+
+		Assert.assertEquals(0, jsonObject.getInt("abandonments"));
+	}
+
+	@ElasticsearchIndex(
+		name = "forms", resourcePath = "form_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_FORM,
+		resourcePath = "analytics_events_form_channel_2.json"
+	)
+	@Test
+	public void testFormAbandonmentsCount2() throws Exception {
+		_formNanite.run();
+
+		JSONObject jsonObject = _cerebroInfoElasticsearchInvoker.get(
+			"forms", "1");
+
+		Assert.assertEquals(1, jsonObject.getInt("abandonments"));
+	}
+
+	@ElasticsearchIndex(
+		name = "forms", resourcePath = "form_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_FORM,
+		resourcePath = "analytics_events_form_channel_1.json"
 	)
 	@Test
 	public void testFormMetrics() throws Exception {
