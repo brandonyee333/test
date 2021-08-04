@@ -65,16 +65,17 @@ public class SessionSparkJob implements SparkJob {
 		_sessionDuration = Duration.ofMinutes(
 			Integer.parseInt(configuration.get("session.duration", "30")));
 
+		_sparkSession = baseSparkApplication.getSparkSession();
+
 		_sessionFlatMapGroupsWithState =
 			new SessionFlatMapGroupsWithStateFunction(
 				_sessionDuration.toMillis());
-		_sparkSession = baseSparkApplication.getSparkSession();
 	}
 
 	@Override
 	public void run() {
 		if (_log.isInfoEnabled()) {
-			_log.info("SessionSparkJob started");
+			_log.info("Session spark job started");
 		}
 
 		try {
@@ -141,7 +142,7 @@ public class SessionSparkJob implements SparkJob {
 			);
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Starting the streaming");
+			_log.info("Starting streaming query");
 		}
 
 		StreamingQuery streamingQuery = dataStreamWriter.start();

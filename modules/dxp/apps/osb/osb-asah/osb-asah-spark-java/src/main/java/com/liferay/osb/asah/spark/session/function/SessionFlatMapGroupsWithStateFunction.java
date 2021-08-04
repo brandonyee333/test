@@ -126,8 +126,8 @@ public class SessionFlatMapGroupsWithStateFunction
 
 			_log.debug(
 				String.format(
-					"Extended session ID %s timeout timestamp to %d. Total " +
-						"events size: %d",
+					"Extended session ID %s timeout timestamp to %d for %d" +
+						"events",
 					activeSession.getSessionId(),
 					lastEventDate.getTime() + _sessionDuration,
 					activeSessionEvents.size()));
