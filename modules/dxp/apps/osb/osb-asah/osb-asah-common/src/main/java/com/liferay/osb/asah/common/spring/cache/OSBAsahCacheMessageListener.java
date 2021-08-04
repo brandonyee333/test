@@ -44,7 +44,7 @@ public class OSBAsahCacheMessageListener implements MessageListener {
 			(OSBAsahCacheMessage)redisSerializer.deserialize(message.getBody());
 
 		if (osbAsahCacheMessage == null) {
-			throw new IllegalStateException("OSBAsahCacheMessage is null");
+			throw new IllegalStateException("OSB Asah cache message is null");
 		}
 
 		_osbAsahCacheManager.clearCaffeineCache(
