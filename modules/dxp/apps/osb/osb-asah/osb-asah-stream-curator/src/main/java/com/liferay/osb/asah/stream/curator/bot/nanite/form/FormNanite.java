@@ -356,9 +356,9 @@ public class FormNanite extends BaseNanite<Form> {
 				formPage.getAbandonments() + form.getAbandonments() -
 					abandonments);
 		}
-		else if (abandonments > form.getAbandonments()) {
-			form.setAbandonments(abandonments);
-		}
+
+		form.setAbandonments(
+			Math.max(0, form.getViews() - form.getSubmissions()));
 	}
 
 	private void _equalizerForms(Form form) {
