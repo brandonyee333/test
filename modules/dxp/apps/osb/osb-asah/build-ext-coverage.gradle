@@ -87,12 +87,22 @@ allprojects {
 }
 
 configure(javaSubprojects) {
+	apply plugin: "com.liferay.source.formatter"
 	apply plugin: "com.liferay.test.integration.base"
 	apply plugin: "eclipse"
+	apply plugin: "java"
 
 	configurations {
 		testIntegrationCompile.extendsFrom testCompile
 		testIntegrationRuntime.extendsFrom testRuntime
+	}
+
+	repositories {
+		mavenLocal()
+
+		maven {
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+		}
 	}
 
 	test {
