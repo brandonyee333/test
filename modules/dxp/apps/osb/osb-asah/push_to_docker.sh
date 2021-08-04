@@ -171,7 +171,7 @@ function date {
 	else
 		if [ "$(uname)" == "Darwin" ]
 		then
-			echo $(/bin/date -jf "%a %b %e %H:%M:%S %Z %Y" "${1}" "${2}")
+			echo $(/bin/date -juf "%a %b %e %T %Z %Y" "${1}" "${2}")
 		elif [ -e /bin/date ]
 		then
 			echo $(/bin/date -d "${1}" "${2}")
@@ -310,7 +310,7 @@ then
 	exit 1
 fi
 
-CURRENT_DATE=$(date)
+CURRENT_DATE=$(TZ=EDT date)
 GIT_HASH=$(git rev-parse --short=7 HEAD)
 PREVIOUS_GIT_HASH=${1}
 GIT_LABEL=${2}
