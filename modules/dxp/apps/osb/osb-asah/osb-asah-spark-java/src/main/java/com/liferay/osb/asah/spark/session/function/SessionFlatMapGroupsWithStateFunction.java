@@ -23,6 +23,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.spark.api.java.function.FlatMapGroupsWithStateFunction;
@@ -51,8 +52,8 @@ public class SessionFlatMapGroupsWithStateFunction
 		// Session has expired
 
 		if (groupState.hasTimedOut()) {
-			if (_log.isInfoEnabled()) {
-				_log.info("Group state has timed out");
+			if (_log.isDebugEnabled()) {
+				_log.debug("Group state has timed out");
 			}
 
 			Session expiredSession = groupState.get();
@@ -69,8 +70,8 @@ public class SessionFlatMapGroupsWithStateFunction
 		// Session is active
 
 		if (groupState.exists()) {
-			if (_log.isInfoEnabled()) {
-				_log.info("Group state has an open session");
+			if (_log.isDebugEnabled()) {
+				_log.debug("Group state has an open session");
 			}
 
 			Session activeSession = groupState.get();
@@ -120,8 +121,16 @@ public class SessionFlatMapGroupsWithStateFunction
 
 		groupState.update(activeSession);
 
-		if (_log.isInfoEnabled()) {
-			_log.info("Return sessions");
+		if (_log.isDebugEnabled()) {
+			List<Event> activeSessionEvents = activeSession.getEvents();
+
+			_log.debug(
+				String.format(
+					"Extended session ID %s timeout timestamp to %d. Total " +
+						"events size: %d",
+					activeSession.getSessionId(),
+					lastEventDate.getTime() + _sessionDuration,
+					activeSessionEvents.size()));
 		}
 
 		return sessions.iterator();

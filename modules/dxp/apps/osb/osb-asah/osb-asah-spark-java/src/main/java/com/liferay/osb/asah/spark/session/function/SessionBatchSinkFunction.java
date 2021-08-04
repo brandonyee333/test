@@ -48,10 +48,6 @@ public class SessionBatchSinkFunction
 
 	@Override
 	public void call(Dataset<Session> dataset, Long batchNumber) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Persisting dataset");
-		}
-
 		dataset.persist();
 
 		saveFinishedSessionEvents(dataset);

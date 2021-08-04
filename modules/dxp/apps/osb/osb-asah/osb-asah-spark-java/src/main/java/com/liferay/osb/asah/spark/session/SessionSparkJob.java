@@ -51,10 +51,6 @@ public class SessionSparkJob implements SparkJob {
 	public SessionSparkJob(SessionSparkApplication baseSparkApplication) {
 		Configuration configuration = baseSparkApplication.getConfiguration();
 
-		if (_log.isInfoEnabled()) {
-			_log.info("Calling the constructor");
-		}
-
 		_eventsPath = configuration.get(
 			"google.storage.path.events", "google.storage.path.events");
 
@@ -85,7 +81,7 @@ public class SessionSparkJob implements SparkJob {
 	@Override
 	public void run() {
 		if (_log.isInfoEnabled()) {
-			_log.info("Starting to run");
+			_log.info("SessionSparkJob started");
 		}
 
 		try {
@@ -93,7 +89,9 @@ public class SessionSparkJob implements SparkJob {
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
+
 			_wait();
+
 			run();
 		}
 	}
@@ -160,12 +158,13 @@ public class SessionSparkJob implements SparkJob {
 
 	private void _wait() {
 		_backoffAttemptNumber += 1;
-		_backoffWaitingTime = Math.min(
-			_BACKOFF_MULTIPLIER * _backoffWaitingTime, _backoffMaxWaitingTime);
 
 		if (_backoffAttemptNumber > _backoffMaxAttempts) {
 			throw new RuntimeException("Backoff max attempts exceeded");
 		}
+
+		_backoffWaitingTime = Math.min(
+			2 * _backoffWaitingTime, _backoffMaxWaitingTime);
 
 		try {
 			Thread.sleep(_backoffWaitingTime);
@@ -174,8 +173,6 @@ public class SessionSparkJob implements SparkJob {
 			_log.error(interruptedException, interruptedException);
 		}
 	}
-
-	private static final long _BACKOFF_MULTIPLIER = 2;
 
 	private static final Encoder<Event> _EVENT_ENCODER = Encoders.bean(
 		Event.class);
