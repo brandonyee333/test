@@ -51,30 +51,23 @@ public class SessionSparkJob implements SparkJob {
 	public SessionSparkJob(SessionSparkApplication baseSparkApplication) {
 		Configuration configuration = baseSparkApplication.getConfiguration();
 
-		_eventsPath = configuration.get(
-			"google.storage.path.events", "google.storage.path.events");
-
 		_backoffMaxAttempts = Long.parseLong(
 			configuration.get("backoff.max.attempts", "20"));
-
 		_backoffMaxWaitingTime = Long.parseLong(
 			configuration.get("backoff.max.waiting.time", "600000"));
-
+		_eventsPath = configuration.get(
+			"google.storage.path.events", "google.storage.path.events");
 		_sessionBatchSinkFunction = new SessionBatchSinkFunction(
 			configuration.get(
 				"google.storage.path.session.events.realtime", null),
 			configuration.get("google.storage.path.session.events", null),
 			configuration.get("google.storage.path.sessions", null));
-
-		int durationMinutes = Integer.parseInt(
-			configuration.get("session.duration", "30"));
-
-		_sessionDuration = Duration.ofMinutes(durationMinutes);
+		_sessionDuration = Duration.ofMinutes(
+			Integer.parseInt(configuration.get("session.duration", "30")));
 
 		_sessionFlatMapGroupsWithState =
 			new SessionFlatMapGroupsWithStateFunction(
 				_sessionDuration.toMillis());
-
 		_sparkSession = baseSparkApplication.getSparkSession();
 	}
 
