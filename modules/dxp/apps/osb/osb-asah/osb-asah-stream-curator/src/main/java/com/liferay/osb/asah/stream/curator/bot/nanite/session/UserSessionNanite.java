@@ -127,6 +127,7 @@ public class UserSessionNanite implements Nanite {
 		userSession.setCountry(MapUtil.getString(context, "country"));
 		userSession.setDataSourceId(firstAnalyticsEvent.getDataSourceId());
 		userSession.setDate(firstAnalyticsEvent.getNormalizedEventDate());
+		userSession.setDateModified(date);
 		userSession.setDeviceType(MapUtil.getString(context, "deviceType"));
 		userSession.setDuration(0L);
 		userSession.setEntryPage(url);
@@ -143,7 +144,6 @@ public class UserSessionNanite implements Nanite {
 			analyticsEvents.getInteractionsCount());
 		userSession.setLastEventDate(
 			analyticsEvents.getLastAnalyticsEventDate());
-		userSession.setDateModified(date);
 		userSession.setPageViewsCount(analyticsEvents.getPageViewsCount());
 		userSession.setPlatformName(MapUtil.getString(context, "platformName"));
 		userSession.setReferrers(analyticsEvents.getReferrers());
