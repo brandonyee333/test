@@ -56,7 +56,7 @@ public class EventsByUserSessionDataFetcher
 			_eventAttributeDefinitionDog.getEventAttributeDefinitionIdsByType(
 				EventAttributeDefinition.Type.GLOBAL);
 
-		Map<UserSession, List<Tuple2<Event, EventDefinition>>> tuples =
+		Map<UserSession, List<Tuple2<Event, EventDefinition>>> tuple2s =
 			_eventDog.searchEventsGroupByUserSessionId(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 				Long.valueOf(dataFetchingEnvironment.getArgument("entityId")),
@@ -66,7 +66,7 @@ public class EventsByUserSessionDataFetcher
 				searchQueryContext.getTimeRange());
 
 		Set<Map.Entry<UserSession, List<Tuple2<Event, EventDefinition>>>>
-			entrySet = tuples.entrySet();
+			entrySet = tuple2s.entrySet();
 
 		Stream<Map.Entry<UserSession, List<Tuple2<Event, EventDefinition>>>>
 			stream = entrySet.stream();
