@@ -3043,6 +3043,52 @@ definition {
 			fieldName = "TextField");
 	}
 
+	@description = "This is a use case for LPS-126817."
+	@priority = "5"
+	test ViewSelectFromListOptionValueWithCharacter {
+		property test.name.skip.portal.instance = "Forms#ViewSelectFromListOptionValueWithCharacter";
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Forms");
+
+		LexiconEntry.gotoAdd();
+
+		Form.editName();
+
+		Form.editDescription();
+
+		Form.gotoAddField(fieldType = "Select from List");
+
+		Form.editFieldLabel(fieldValue = "Select");
+
+		FormFields.editOptionsRow(
+			optionName = "<test 1",
+			optionValue = "<test 1");
+
+		FormFields.editOptionsRow(
+			optionName = "<test 2",
+			optionValue = "<test 2",
+			rowNumber = "2");
+
+		FormFields.enableAdvancedOptions();
+
+		FormFields.enableSwitcher(fieldName = "multiple");
+
+		FormFields.save();
+
+		Form.save();
+
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Edit",
+			rowEntry = "Created Form Name");
+
+		FormsAdminNavigator.gotoEditField(fieldName = "Select");
+	}
+
 	@description = "This is a use case for LPS-59604."
 	@priority = "3"
 	test ViewTextFieldWithConditionalVisibility {
