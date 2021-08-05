@@ -86,6 +86,7 @@ public class Asset implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonProperty("canonicalUrl")
 	public String getCanonicalURL() {
 		return _canonicalURL;
 	}
