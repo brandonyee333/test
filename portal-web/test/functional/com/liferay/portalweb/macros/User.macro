@@ -2901,6 +2901,19 @@ definition {
 		}
 	}
 
+	macro viewEntryList {
+		var key_userFirstLastName = "${userFirstLastName}";
+		var key_userScreenName = "${userScreenName}";
+
+		AssertTextEquals(
+			locator1 = "UsersAndOrganizations#USER_LIST_FISTLAST_NAME",
+			value1 = "${userFirstLastName}");
+
+		AssertTextEquals(
+			locator1 = "UsersAndOrganizations#USER_LIST_SCREEN_NAME",
+			value1 = "${userScreenName}");
+	}
+
 	macro viewIsPrimary {
 		if (isSet(primaryValue)) {
 			var key_primaryValue = "${primaryValue}";
