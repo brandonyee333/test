@@ -20,8 +20,11 @@ import com.liferay.osb.asah.common.util.BeanUtils;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 import org.apache.commons.collections.map.CaseInsensitiveMap;
+
+import org.jooq.Field;
 
 /**
  * @author Leslie Wong
@@ -30,6 +33,20 @@ public class EventAnalysisFilter {
 
 	public EventAnalysisFilter(Map<String, Object> source) {
 		BeanUtils.copyProperties(new CaseInsensitiveMap(source), this);
+	}
+
+	public EventAnalysisFilter(
+		String attributeId, AttributeType attributeType,
+		EventAttributeDefinition.DataType dataType,
+		Function<Field, Field> fieldFunction, String operator,
+		List<String> values) {
+
+		_attributeId = attributeId;
+		_attributeType = attributeType;
+		_dataType = dataType;
+		_fieldFunction = fieldFunction;
+		_operator = operator;
+		_values = values;
 	}
 
 	public EventAnalysisFilter(
@@ -64,6 +81,8 @@ public class EventAnalysisFilter {
 			Objects.equals(
 				_attributeType, eventAnalysisFilter._attributeType) &&
 			Objects.equals(_dataType, eventAnalysisFilter._dataType) &&
+			Objects.equals(
+				_fieldFunction, eventAnalysisFilter._fieldFunction) &&
 			Objects.equals(_operator, eventAnalysisFilter._operator) &&
 			Objects.equals(_values, eventAnalysisFilter._values)) {
 
@@ -85,6 +104,10 @@ public class EventAnalysisFilter {
 		return _dataType;
 	}
 
+	public Function<Field, Field> getFieldFunction() {
+		return _fieldFunction;
+	}
+
 	public String getOperator() {
 		return _operator;
 	}
@@ -96,7 +119,8 @@ public class EventAnalysisFilter {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_attributeId, _attributeType, _dataType, _operator, _values);
+			_attributeId, _attributeType, _dataType, _fieldFunction, _operator,
+			_values);
 	}
 
 	public void setAttributeId(String attributeId) {
@@ -111,6 +135,10 @@ public class EventAnalysisFilter {
 		_dataType = dataType;
 	}
 
+	public void setFieldFunction(Function<Field, Field> fieldFunction) {
+		_fieldFunction = fieldFunction;
+	}
+
 	public void setOperator(String operator) {
 		_operator = operator;
 	}
@@ -122,6 +150,7 @@ public class EventAnalysisFilter {
 	private String _attributeId;
 	private AttributeType _attributeType;
 	private EventAttributeDefinition.DataType _dataType;
+	private Function<Field, Field> _fieldFunction;
 	private String _operator;
 	private List<String> _values;
 
