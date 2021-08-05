@@ -36,6 +36,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -362,7 +363,10 @@ public class EventRepositoryImpl extends BaseRepository {
 			String alias =
 				StringUtils.lowerCase(attributeType.getTableName()) + i;
 
-			List<String> values = eventAnalysisFilter.getValues();
+			FilterOperator filterOperator = FilterOperators.of(
+				eventAnalysisFilter.getDataType(),
+				eventAnalysisFilter.getOperator(),
+				eventAnalysisFilter.getValues());
 
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
@@ -383,11 +387,13 @@ public class EventRepositoryImpl extends BaseRepository {
 					).eq(
 						Long.valueOf(eventAnalysisFilter.getAttributeId())
 					),
-					DSL.field(
-						attributeType.getQualifiedAttributeValueFieldName(alias)
-					).eq(
-						values.get(0)
-					))
+					filterOperator.getCondition(
+						_getField(
+							eventAnalysisFilter,
+							DSL.field(
+								attributeType.
+									getQualifiedAttributeValueFieldName(
+										alias)))))
 			);
 		}
 
@@ -466,7 +472,7 @@ public class EventRepositoryImpl extends BaseRepository {
 
 				condition = condition.and(
 					filterOperator.getCondition(
-						_getField(eventAnalysisFilter)));
+						_getField(eventAnalysisFilter, DSL.field("value"))));
 			}
 
 			conditions = conditions.or(condition);
@@ -520,24 +526,33 @@ public class EventRepositoryImpl extends BaseRepository {
 		return conditions;
 	}
 
-	private Field _getField(EventAnalysisFilter eventAnalysisFilter) {
+	private Field _getField(
+		EventAnalysisFilter eventAnalysisFilter, Field field) {
+
 		EventAttributeDefinition.DataType dataType =
 			eventAnalysisFilter.getDataType();
 
 		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
-			return DSL.field("try_cast_boolean(value)");
+			field = DSL.function("try_cast_boolean", Object.class, field);
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-			return DSL.field("try_cast_timestamp(value)");
+			field = DSL.function("try_cast_timestamp", Object.class, field);
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
-			return DSL.field("try_cast_bigint(value)");
+			field = DSL.function("try_cast_bigint", Object.class, field);
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-			return DSL.field("try_cast_float(value)");
+			field = DSL.function("try_cast_float", Object.class, field);
 		}
 
-		return DSL.field("value");
+		Function<Field, Field> fieldFunction =
+			eventAnalysisFilter.getFieldFunction();
+
+		if (fieldFunction == null) {
+			return field;
+		}
+
+		return fieldFunction.apply(field);
 	}
 
 	private String _getJoinFieldTableName(AttributeType attributeType) {
@@ -617,14 +632,11 @@ public class EventRepositoryImpl extends BaseRepository {
 			eventAnalysisBreakdown.getDataType();
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
-			String name =
-				"try_cast_bigint(" +
-					attributeType.getQualifiedAttributeValueFieldName(null) +
-						")";
-
 			return DSL.floor(
-				DSL.field(
-					name, BigInteger.class
+				DSL.function(
+					"try_cast_bigint", BigInteger.class,
+					DSL.field(
+						attributeType.getQualifiedAttributeValueFieldName(null))
 				).div(
 					eventAnalysisBreakdown.getBinSize()
 				)
@@ -635,14 +647,11 @@ public class EventRepositoryImpl extends BaseRepository {
 			);
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-			String name =
-				"try_cast_float(" +
-					attributeType.getQualifiedAttributeValueFieldName(null) +
-						")";
-
 			return DSL.floor(
-				DSL.field(
-					name, BigDecimal.class
+				DSL.function(
+					"try_cast_float", BigDecimal.class,
+					DSL.field(
+						attributeType.getQualifiedAttributeValueFieldName(null))
 				).div(
 					eventAnalysisBreakdown.getBinSize()
 				)

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
@@ -22,11 +23,16 @@ import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventRepository;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+
+import org.jooq.Field;
+import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -100,17 +106,16 @@ public class EventAnalysisDog {
 			}
 
 			breakdownEventAnalysisFilters.add(
-				new EventAnalysisFilter(
-					eventAnalysisBreakdown.getAttributeId(),
-					eventAnalysisBreakdown.getAttributeType(),
-					eventAnalysisBreakdown.getDataType(), "eq",
-					Collections.singletonList(String.valueOf(entry.getKey()))));
+				_getEventAnalysisFilter(
+					eventAnalysisBreakdown, String.valueOf(entry.getKey())));
 
 			breakdownItem.setEventAnalysisFilters(
 				breakdownEventAnalysisFilters);
 
 			breakdownItem.setLeafNode(false);
-			breakdownItem.setName(String.valueOf(entry.getKey()));
+			breakdownItem.setName(
+				_getBreakdownItemName(
+					eventAnalysisBreakdown, String.valueOf(entry.getKey())));
 
 			if (compareToPrevious) {
 				List<EventAnalysisFilter> previousEventAnalysisFilters =
@@ -191,6 +196,32 @@ public class EventAnalysisDog {
 		return null;
 	}
 
+	private String _getBreakdownItemName(
+		EventAnalysisBreakdown eventAnalysisBreakdown, String key) {
+
+		if (StringUtil.isNull(key)) {
+			return "undefined";
+		}
+
+		EventAttributeDefinition.DataType dataType =
+			eventAnalysisBreakdown.getDataType();
+
+		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
+			long binFloor = Long.parseLong(key);
+			Number binSize = eventAnalysisBreakdown.getBinSize();
+
+			return binFloor + "-" + (binFloor + binSize.longValue());
+		}
+		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
+			float binFloor = Float.parseFloat(key);
+			Number binSize = eventAnalysisBreakdown.getBinSize();
+
+			return binFloor + "-" + (binFloor + binSize.floatValue());
+		}
+
+		return key;
+	}
+
 	private List<BreakdownItem> _getBreakdownItems(
 		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
 		int count, Number eventAnalysisValue,
@@ -240,6 +271,44 @@ public class EventAnalysisDog {
 		}
 
 		return breakdownItems;
+	}
+
+	private EventAnalysisFilter _getEventAnalysisFilter(
+		EventAnalysisBreakdown eventAnalysisBreakdown, String value) {
+
+		if (StringUtil.isNull(value)) {
+			return new EventAnalysisFilter(
+				eventAnalysisBreakdown.getAttributeId(),
+				eventAnalysisBreakdown.getAttributeType(),
+				eventAnalysisBreakdown.getDataType(), "eq",
+				Collections.singletonList(null));
+		}
+
+		EventAttributeDefinition.DataType dataType =
+			eventAnalysisBreakdown.getDataType();
+
+		Function<Field, Field> fieldFunction = null;
+
+		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
+			fieldFunction = field -> field.div(
+				eventAnalysisBreakdown.getBinSize()
+			).multiply(
+				eventAnalysisBreakdown.getBinSize()
+			);
+		}
+		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
+			fieldFunction = field -> DSL.floor(
+				field.div(eventAnalysisBreakdown.getBinSize())
+			).multiply(
+				eventAnalysisBreakdown.getBinSize()
+			);
+		}
+
+		return new EventAnalysisFilter(
+			eventAnalysisBreakdown.getAttributeId(),
+			eventAnalysisBreakdown.getAttributeType(),
+			eventAnalysisBreakdown.getDataType(), fieldFunction, "eq",
+			Collections.singletonList(value));
 	}
 
 	private long _getTotalPageCount(
