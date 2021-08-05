@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.upgrade.v2_13_0;
+package com.liferay.osb.asah.upgrade.v2_12_2;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
