@@ -216,19 +216,19 @@ public class UserSessionFinalizerNanite implements Nanite {
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("completed", true)
 			).filter(
-				QueryBuilders.rangeQuery(
-					"dateModified"
-				).gte(
-					lastSuccessfulSessionFinalizerDateString
-				).lt(
-					currentDateString
-				)
-			).filter(
 				BoolQueryBuilderUtil.should(
 					BoolQueryBuilderUtil.mustNot(
 						QueryBuilders.existsQuery("finalized"))
 				).should(
 					QueryBuilders.termQuery("finalized", false)
+				)
+			).filter(
+				QueryBuilders.rangeQuery(
+					"modifiedDate"
+				).gte(
+					lastSuccessfulSessionFinalizerDateString
+				).lt(
+					currentDateString
 				)
 			)
 		);

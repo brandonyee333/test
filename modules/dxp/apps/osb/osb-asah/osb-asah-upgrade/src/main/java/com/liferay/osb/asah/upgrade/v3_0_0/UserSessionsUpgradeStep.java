@@ -86,11 +86,11 @@ public class UserSessionsUpgradeStep implements UpgradeStep {
 				JSONUtil.put(
 					"contentLanguageId", JSONUtil.put("type", "keyword")
 				).put(
-					"dateModified", JSONUtil.put("type", "date")
-				).put(
 					"finalized", JSONUtil.put("type", "boolean")
 				).put(
 					"languageId", JSONUtil.put("type", "keyword")
+				).put(
+					"modifiedDate", JSONUtil.put("type", "date")
 				).put(
 					"timezoneOffset", JSONUtil.put("type", "keyword")
 				)

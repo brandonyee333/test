@@ -1,7 +1,7 @@
 ctx._source.bounced = params.bounced;
-ctx._source.dateModified = params.dateModified;
 ctx._source.finalized = params.finalized;
 ctx._source.interactionsCount = params.interactionsCount;
+ctx._source.modifiedDate = params.modifiedDate;
 ctx._source.pageViewsCount = params.pageViewsCount;
 
 def oldLastEventDate = ZonedDateTime.parse(ctx._source.lastEventDate);

@@ -60,9 +60,6 @@
 				"date": {
 					"type": "date"
 				},
-				"dateModified": {
-					"type": "date"
-				},
 				"deviceType": {
 					"type": "keyword"
 				},
@@ -94,6 +91,9 @@
 					"type": "keyword"
 				},
 				"lastEventDate": {
+					"type": "date"
+				},
+				"modifiedDate": {
 					"type": "date"
 				},
 				"pageViewsCount": {

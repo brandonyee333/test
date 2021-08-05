@@ -56,7 +56,6 @@ public class UserSession implements Serializable {
 			Objects.equals(_country, userSession._country) &&
 			Objects.equals(_dataSourceId, userSession._dataSourceId) &&
 			Objects.equals(_date, userSession._date) &&
-			Objects.equals(_dateModified, userSession._dateModified) &&
 			Objects.equals(_duration, userSession._duration) &&
 			Objects.equals(_entryPage, userSession._entryPage) &&
 			Objects.equals(_exitPage, userSession._exitPage) &&
@@ -65,6 +64,7 @@ public class UserSession implements Serializable {
 			Objects.equals(_id, userSession._id) &&
 			Objects.equals(_individualId, userSession._individualId) &&
 			Objects.equals(_lastEventDate, userSession._lastEventDate) &&
+			Objects.equals(_modifiedDate, userSession._modifiedDate) &&
 			Objects.equals(_platformName, userSession._platformName) &&
 			Objects.equals(_region, userSession._region) &&
 			Objects.equals(_userId, userSession._userId)) {
@@ -143,18 +143,6 @@ public class UserSession implements Serializable {
 		return new Date(_date.getTime());
 	}
 
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
-	public Date getDateModified() {
-		if (_dateModified == null) {
-			return null;
-		}
-
-		return new Date(_dateModified.getTime());
-	}
-
 	public String getDeviceType() {
 		return _deviceType;
 	}
@@ -215,6 +203,18 @@ public class UserSession implements Serializable {
 		return new Date(_lastEventDate.getTime());
 	}
 
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
+			return null;
+		}
+
+		return new Date(_modifiedDate.getTime());
+	}
+
 	public Long getPageViewsCount() {
 		return _pageViewsCount;
 	}
@@ -248,10 +248,9 @@ public class UserSession implements Serializable {
 		return Objects.hash(
 			_acquisition, _bounced, _browserName, _canonicalUrls, _channelId,
 			_city, _completed, _completeDate, _completeReason, _country,
-			_dataSourceId, _date, _dateModified, _deviceType, _duration,
-			_entryPage, _exitPage, _finalized, _firstEventDate, _id,
-			_individualId, _lastEventDate, _platformName, _referrers, _region,
-			_urls, _userId);
+			_dataSourceId, _date, _deviceType, _duration, _entryPage, _exitPage,
+			_finalized, _firstEventDate, _id, _individualId, _lastEventDate,
+			_modifiedDate, _platformName, _referrers, _region, _urls, _userId);
 	}
 
 	public void setAcquisition(Acquisition acquisition) {
@@ -310,12 +309,6 @@ public class UserSession implements Serializable {
 		}
 	}
 
-	public void setDateModified(Date dateModified) {
-		if (dateModified != null) {
-			_dateModified = new Date(dateModified.getTime());
-		}
-	}
-
 	public void setDeviceType(String deviceType) {
 		_deviceType = deviceType;
 	}
@@ -364,6 +357,12 @@ public class UserSession implements Serializable {
 		}
 	}
 
+	public void setModifiedDate(Date modifiedDate) {
+		if (modifiedDate != null) {
+			_modifiedDate = new Date(modifiedDate.getTime());
+		}
+	}
+
 	public void setPageViewsCount(Long pageViewsCount) {
 		_pageViewsCount = pageViewsCount;
 	}
@@ -405,7 +404,6 @@ public class UserSession implements Serializable {
 	private String _country;
 	private String _dataSourceId;
 	private Date _date;
-	private Date _dateModified;
 	private String _deviceType;
 	private Long _duration;
 	private String _entryPage;
@@ -417,6 +415,7 @@ public class UserSession implements Serializable {
 	private Long _interactionsCount;
 	private String _languageId;
 	private Date _lastEventDate;
+	private Date _modifiedDate;
 	private Long _pageViewsCount;
 	private String _platformName;
 	private Set<String> _referrers;
