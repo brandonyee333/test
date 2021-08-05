@@ -33,12 +33,14 @@ public class EventAnalysisBreakdown {
 
 	public EventAnalysisBreakdown(
 		String attributeId, AttributeType attributeType, Number binSize,
-		EventAttributeDefinition.DataType dataType, String sortType) {
+		EventAttributeDefinition.DataType dataType, DateGrouping dateGrouping,
+		String sortType) {
 
 		_attributeId = attributeId;
 		_attributeType = attributeType;
 		_binSize = binSize;
 		_dataType = dataType;
+		_dateGrouping = dateGrouping;
 		_sortType = sortType;
 	}
 
@@ -60,6 +62,8 @@ public class EventAnalysisBreakdown {
 				_attributeType, eventAnalysisBreakdown._attributeType) &&
 			Objects.equals(_binSize, eventAnalysisBreakdown._binSize) &&
 			Objects.equals(_dataType, eventAnalysisBreakdown._dataType) &&
+			Objects.equals(
+				_dateGrouping, eventAnalysisBreakdown._dateGrouping) &&
 			Objects.equals(_sortType, eventAnalysisBreakdown._sortType)) {
 
 			return true;
@@ -82,6 +86,10 @@ public class EventAnalysisBreakdown {
 
 	public EventAttributeDefinition.DataType getDataType() {
 		return _dataType;
+	}
+
+	public DateGrouping getDateGrouping() {
+		return _dateGrouping;
 	}
 
 	public String getSortType() {
@@ -109,6 +117,10 @@ public class EventAnalysisBreakdown {
 		_dataType = dataType;
 	}
 
+	public void setDateGrouping(DateGrouping dateGrouping) {
+		_dateGrouping = dateGrouping;
+	}
+
 	public void setSortType(String sortType) {
 		_sortType = sortType;
 	}
@@ -117,6 +129,7 @@ public class EventAnalysisBreakdown {
 	private AttributeType _attributeType;
 	private Number _binSize;
 	private EventAttributeDefinition.DataType _dataType;
+	private DateGrouping _dateGrouping;
 	private String _sortType;
 
 }

@@ -40,6 +40,12 @@ enum DataControlTaskType {
 	UNSUPPRESS
 }
 
+enum DateGrouping {
+	DAY
+	MONTH
+	YEAR
+}
+
 enum EventAttributeDefinitionDataType {
 	BOOLEAN
 	DATE
@@ -114,6 +120,7 @@ input EventAnalysisBreakdown {
 	attributeType: AttributeType!
 	binSize: Float
 	dataType: EventAttributeDefinitionDataType!
+	dateGrouping: DateGrouping
 	sortType: SortType
 }
 
