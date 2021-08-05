@@ -74,6 +74,17 @@
 	<td></td>
 	<td></td>
 </tr>
+<!--USER_CARDS-->
+<tr>
+	<td>USER_CARDS_FISTLAST_NAME</td>
+	<td>//div[@class='card-body']//a[contains(.,'${key_userFirstLastName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>USER_CARDS_SCREEN_NAME</td>
+	<td>//div[@class='card-body']//a//following-sibling::div[contains(.,'${key_userScreenName}')]</td>
+	<td></td>
+</tr>
 <!--USER_LIST-->
 <tr>
 	<td>USER_LIST_FISTLAST_NAME</td>
