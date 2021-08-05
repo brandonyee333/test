@@ -1,0 +1,100 @@
+{
+	"breakdownItems": [
+		{
+			"breakdownItems": [
+				{
+					"breakdownItems": [
+						{
+							"breakdownItems": null,
+							"leafNode": false,
+							"name": "All Individuals",
+							"previousValue": 3,
+							"value": 5
+						}
+					],
+					"leafNode": true,
+					"name": "Test Display Name 1",
+					"previousValue": 3,
+					"value": 5
+				}
+			],
+			"leafNode": false,
+			"name": "400-500",
+			"previousValue": 3,
+			"value": 5
+		},
+		{
+			"breakdownItems": [
+				{
+					"breakdownItems": [
+						{
+							"breakdownItems": null,
+							"leafNode": false,
+							"name": "All Individuals",
+							"previousValue": 0,
+							"value": 1
+						}
+					],
+					"leafNode": true,
+					"name": "Test Display Name 1",
+					"previousValue": 0,
+					"value": 1
+				}
+			],
+			"leafNode": false,
+			"name": "200-300",
+			"previousValue": 0,
+			"value": 1
+		},
+		{
+			"breakdownItems": [
+				{
+					"breakdownItems": [
+						{
+							"breakdownItems": null,
+							"leafNode": false,
+							"name": "All Individuals",
+							"previousValue": 0,
+							"value": 1
+						}
+					],
+					"leafNode": true,
+					"name": "Test Display Name 1",
+					"previousValue": 0,
+					"value": 1
+				}
+			],
+			"leafNode": false,
+			"name": "300-400",
+			"previousValue": 0,
+			"value": 1
+		},
+		{
+			"breakdownItems": [
+				{
+					"breakdownItems": [
+						{
+							"breakdownItems": null,
+							"leafNode": false,
+							"name": "All Individuals",
+							"previousValue": 0,
+							"value": 1
+						}
+					],
+					"leafNode": true,
+					"name": "Test Display Name 1",
+					"previousValue": 0,
+					"value": 1
+				}
+			],
+			"leafNode": false,
+			"name": "500-600",
+			"previousValue": 0,
+			"value": 1
+		}
+	],
+	"count": 5,
+	"page": 0,
+	"previousValue": 4,
+	"value": 10
+}

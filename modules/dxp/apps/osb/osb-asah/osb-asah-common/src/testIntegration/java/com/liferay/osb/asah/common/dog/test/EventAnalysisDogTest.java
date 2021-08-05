@@ -78,7 +78,7 @@ public class EventAnalysisDogTest {
 	public void testGetEventAnalysisBreakdownAverage() throws Exception {
 		EventAnalysisBreakdown eventAnalysisBreakdown =
 			new EventAnalysisBreakdown(
-				"12345", AttributeType.EVENT,
+				"12345", AttributeType.EVENT, 0,
 				EventAttributeDefinition.DataType.STRING, "DESC");
 
 		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
@@ -97,18 +97,90 @@ public class EventAnalysisDogTest {
 
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
+	public void testGetEventAnalysisBreakdownDuration() throws Exception {
+		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
+			AnalysisType.UNIQUE, 1L, true,
+			Collections.singletonList(
+				new EventAnalysisBreakdown(
+					"34567", AttributeType.EVENT, 100,
+					EventAttributeDefinition.DataType.DURATION, "DESC")),
+			Collections.emptyList(), 246810L, 0, 10,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")));
+
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies/expected_event_analysis_breakdown_duration.json",
+				this),
+			_objectMapper.convertValue(eventAnalysis, JSONObject.class), true);
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
+	@Test
+	public void testGetEventAnalysisBreakdownNullValues() throws Exception {
+		EventAnalysisBreakdown eventAnalysisBreakdown1 =
+			new EventAnalysisBreakdown(
+				"45678", AttributeType.EVENT, 1,
+				EventAttributeDefinition.DataType.DURATION, "DESC");
+		EventAnalysisBreakdown eventAnalysisBreakdown2 =
+			new EventAnalysisBreakdown(
+				"12345", AttributeType.EVENT, 0,
+				EventAttributeDefinition.DataType.STRING, "DESC");
+
+		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
+			AnalysisType.TOTAL, 1L, true,
+			new ArrayList<EventAnalysisBreakdown>() {
+				{
+					add(eventAnalysisBreakdown1);
+					add(eventAnalysisBreakdown2);
+				}
+			},
+			Collections.emptyList(), 246810L, 0, 10,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")));
+
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies" +
+					"/expected_event_analysis_breakdown_null_values.json",
+				this),
+			_objectMapper.convertValue(eventAnalysis, JSONObject.class), true);
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
+	@Test
+	public void testGetEventAnalysisBreakdownNumber() throws Exception {
+		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
+			AnalysisType.TOTAL, 1L, true,
+			Collections.singletonList(
+				new EventAnalysisBreakdown(
+					"45678", AttributeType.EVENT, 0.5,
+					EventAttributeDefinition.DataType.NUMBER, "DESC")),
+			Collections.emptyList(), 246810L, 0, 10,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")));
+
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies/expected_event_analysis_breakdown_number.json",
+				this),
+			_objectMapper.convertValue(eventAnalysis, JSONObject.class), true);
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
+	@Test
 	public void testGetEventAnalysisBreakdownTotal() throws Exception {
 		EventAnalysisBreakdown eventAnalysisBreakdown1 =
 			new EventAnalysisBreakdown(
-				"12345", AttributeType.EVENT,
+				"12345", AttributeType.EVENT, 0,
 				EventAttributeDefinition.DataType.STRING, "DESC");
 		EventAnalysisBreakdown eventAnalysisBreakdown2 =
 			new EventAnalysisBreakdown(
-				"23456", AttributeType.EVENT,
+				"23456", AttributeType.EVENT, 0,
 				EventAttributeDefinition.DataType.STRING, "DESC");
 		EventAnalysisBreakdown eventAnalysisBreakdown3 =
 			new EventAnalysisBreakdown(
-				"34567", AttributeType.EVENT,
+				"34567", AttributeType.EVENT, 0,
 				EventAttributeDefinition.DataType.STRING, "DESC");
 
 		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
@@ -136,15 +208,15 @@ public class EventAnalysisDogTest {
 	public void testGetEventAnalysisBreakdownUnique() throws Exception {
 		EventAnalysisBreakdown eventAnalysisBreakdown1 =
 			new EventAnalysisBreakdown(
-				"34567", AttributeType.EVENT,
+				"34567", AttributeType.EVENT, 0,
 				EventAttributeDefinition.DataType.STRING, "DESC");
 		EventAnalysisBreakdown eventAnalysisBreakdown2 =
 			new EventAnalysisBreakdown(
-				"23456", AttributeType.EVENT,
+				"23456", AttributeType.EVENT, 0,
 				EventAttributeDefinition.DataType.STRING, "DESC");
 		EventAnalysisBreakdown eventAnalysisBreakdown3 =
 			new EventAnalysisBreakdown(
-				"12345", AttributeType.EVENT,
+				"12345", AttributeType.EVENT, 0,
 				EventAttributeDefinition.DataType.STRING, "DESC");
 
 		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
@@ -172,15 +244,15 @@ public class EventAnalysisDogTest {
 	public void testGetEventAnalysisBreakdownWithFilter() throws Exception {
 		EventAnalysisBreakdown eventAnalysisBreakdown1 =
 			new EventAnalysisBreakdown(
-				"12345", AttributeType.EVENT,
+				"12345", AttributeType.EVENT, 0,
 				EventAttributeDefinition.DataType.STRING, "ASC");
 		EventAnalysisBreakdown eventAnalysisBreakdown2 =
 			new EventAnalysisBreakdown(
-				"23456", AttributeType.EVENT,
+				"23456", AttributeType.EVENT, 0,
 				EventAttributeDefinition.DataType.STRING, "ASC");
 		EventAnalysisBreakdown eventAnalysisBreakdown3 =
 			new EventAnalysisBreakdown(
-				"34567", AttributeType.EVENT,
+				"34567", AttributeType.EVENT, 0,
 				EventAttributeDefinition.DataType.STRING, "ASC");
 
 		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(

@@ -33,6 +33,7 @@ import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 
 import java.time.LocalDateTime;
@@ -71,7 +72,7 @@ public class EventRepositoryTest {
 			_eventRepository.getEventAttributeValues(
 				AnalysisType.AVERAGE, null, 1L,
 				new EventAnalysisBreakdown(
-					"12345", AttributeType.EVENT,
+					"12345", AttributeType.EVENT, 0,
 					EventAttributeDefinition.DataType.STRING, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -104,11 +105,88 @@ public class EventRepositoryTest {
 			_eventRepository.getEventAttributeValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
-					"12345", AttributeType.EVENT,
+					"12345", AttributeType.EVENT, 0,
 					EventAttributeDefinition.DataType.STRING, "DESC"),
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0))));
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
+	public void testGetEventAttributeValuesDuration() {
+		Map<Object, Number> eventAttributeValues =
+			_eventRepository.getEventAttributeValues(
+				AnalysisType.TOTAL, null, 1L,
+				new EventAnalysisBreakdown(
+					"34567", AttributeType.EVENT, 100,
+					EventAttributeDefinition.DataType.DURATION, "DESC"),
+				null, 246810L, PageRequest.of(0, 10),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+
+		Set<Object> keys = eventAttributeValues.keySet();
+
+		Assert.assertArrayEquals(
+			new BigInteger[] {
+				BigInteger.valueOf(400), BigInteger.valueOf(200),
+				BigInteger.valueOf(300), BigInteger.valueOf(500)
+			},
+			keys.toArray());
+
+		Collection<Number> values = eventAttributeValues.values();
+
+		Assert.assertArrayEquals(new Integer[] {8, 1, 1, 1}, values.toArray());
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
+	public void testGetEventAttributeValuesNullValues() {
+		Map<Object, Number> eventAttributeValues =
+			_eventRepository.getEventAttributeValues(
+				AnalysisType.TOTAL, null, 1L,
+				new EventAnalysisBreakdown(
+					"45678", AttributeType.EVENT, 1,
+					EventAttributeDefinition.DataType.DURATION, "DESC"),
+				null, 246810L, PageRequest.of(0, 10),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+
+		Set<Object> keys = eventAttributeValues.keySet();
+
+		Assert.assertArrayEquals(
+			new BigInteger[] {null, BigInteger.valueOf(2)}, keys.toArray());
+
+		Collection<Number> values = eventAttributeValues.values();
+
+		Assert.assertArrayEquals(new Integer[] {10, 1}, values.toArray());
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
+	public void testGetEventAttributeValuesNumber() {
+		Map<Object, Number> eventAttributeValues =
+			_eventRepository.getEventAttributeValues(
+				AnalysisType.TOTAL, null, 1L,
+				new EventAnalysisBreakdown(
+					"45678", AttributeType.EVENT, 2.5,
+					EventAttributeDefinition.DataType.NUMBER, "DESC"),
+				null, 246810L, PageRequest.of(0, 10),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+
+		Set<Object> keys = eventAttributeValues.keySet();
+
+		_assertBigDecimalEquals(
+			new BigDecimal[] {
+				BigDecimal.ZERO, BigDecimal.valueOf(2.5),
+				BigDecimal.valueOf(7.5), BigDecimal.valueOf(5)
+			},
+			keys.toArray(new BigDecimal[0]), 2);
+
+		Collection<Number> values = eventAttributeValues.values();
+
+		Assert.assertArrayEquals(new Integer[] {6, 2, 2, 1}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -118,7 +196,7 @@ public class EventRepositoryTest {
 			_eventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
-					"12345", AttributeType.EVENT,
+					"12345", AttributeType.EVENT, 0,
 					EventAttributeDefinition.DataType.STRING, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -145,7 +223,7 @@ public class EventRepositoryTest {
 			_eventRepository.getEventAttributeValues(
 				AnalysisType.UNIQUE, null, 1L,
 				new EventAnalysisBreakdown(
-					"12345", AttributeType.EVENT,
+					"12345", AttributeType.EVENT, 0,
 					EventAttributeDefinition.DataType.STRING, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -181,7 +259,7 @@ public class EventRepositoryTest {
 			_eventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, breakdownItem, 1L,
 				new EventAnalysisBreakdown(
-					"12345", AttributeType.EVENT,
+					"12345", AttributeType.EVENT, 0,
 					EventAttributeDefinition.DataType.STRING, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
