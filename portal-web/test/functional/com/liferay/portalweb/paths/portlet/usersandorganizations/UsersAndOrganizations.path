@@ -74,6 +74,17 @@
 	<td></td>
 	<td></td>
 </tr>
+<!--USER_LIST-->
+<tr>
+	<td>USER_LIST_FISTLAST_NAME</td>
+	<td>//li[contains(@class,'list-group-item')]//div[contains(@class,'autofit-col')]/h5/a[text()='${key_userFirstLastName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>USER_LIST_SCREEN_NAME</td>
+	<td>//div[contains(@class,'autofit-col')]/h5//following-sibling::h6[contains(.,'${key_userScreenName}')]</td>
+	<td></td>
+</tr>
 <!--USER_TABLE-->
 <tr>
 	<td>USER_TABLE_NAME</td>
