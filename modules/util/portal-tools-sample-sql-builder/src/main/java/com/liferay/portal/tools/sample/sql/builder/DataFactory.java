@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.sample.sql.builder;
 
+import com.liferay.account.constants.AccountRoleConstants;
 import com.liferay.account.model.AccountEntry;
 import com.liferay.account.model.AccountEntryModel;
 import com.liferay.account.model.AccountEntryUserRelModel;
@@ -125,6 +126,8 @@ import com.liferay.dynamic.data.mapping.model.DDMField;
 import com.liferay.dynamic.data.mapping.model.DDMFieldAttribute;
 import com.liferay.dynamic.data.mapping.model.DDMFieldAttributeModel;
 import com.liferay.dynamic.data.mapping.model.DDMFieldModel;
+import com.liferay.dynamic.data.mapping.model.DDMFormField;
+import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.DDMStorageLinkModel;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureLayoutModel;
@@ -135,6 +138,7 @@ import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.model.DDMTemplateLinkModel;
 import com.liferay.dynamic.data.mapping.model.DDMTemplateModel;
 import com.liferay.dynamic.data.mapping.model.DDMTemplateVersionModel;
+import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.model.impl.DDMFieldAttributeImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMFieldAttributeModelImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMFieldModelImpl;
@@ -180,6 +184,7 @@ import com.liferay.layout.page.template.model.LayoutPageTemplateStructureModel;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructureRelModel;
 import com.liferay.layout.page.template.model.impl.LayoutPageTemplateStructureModelImpl;
 import com.liferay.layout.page.template.model.impl.LayoutPageTemplateStructureRelModelImpl;
+import com.liferay.layout.seo.model.LayoutSEOEntry;
 import com.liferay.layout.util.constants.LayoutClassedModelUsageConstants;
 import com.liferay.message.boards.constants.MBCategoryConstants;
 import com.liferay.message.boards.constants.MBMessageConstants;
@@ -200,6 +205,7 @@ import com.liferay.message.boards.model.impl.MBMailingListModelImpl;
 import com.liferay.message.boards.model.impl.MBMessageModelImpl;
 import com.liferay.message.boards.model.impl.MBThreadFlagModelImpl;
 import com.liferay.message.boards.model.impl.MBThreadModelImpl;
+import com.liferay.message.boards.moderation.internal.constants.MBModerationConstants;
 import com.liferay.message.boards.social.MBActivityKeys;
 import com.liferay.petra.io.unsync.UnsyncBufferedReader;
 import com.liferay.petra.reflect.ReflectionUtil;
@@ -235,12 +241,16 @@ import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetModel;
 import com.liferay.portal.kernel.model.LayoutTypePortletConstants;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
+import com.liferay.portal.kernel.model.PortalPreferencesModel;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.PortletModel;
 import com.liferay.portal.kernel.model.PortletPreferenceValue;
 import com.liferay.portal.kernel.model.PortletPreferenceValueModel;
 import com.liferay.portal.kernel.model.PortletPreferencesModel;
 import com.liferay.portal.kernel.model.ReleaseConstants;
 import com.liferay.portal.kernel.model.ReleaseModel;
+import com.liferay.portal.kernel.model.ResourceAction;
+import com.liferay.portal.kernel.model.ResourceActionModel;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.ResourcePermissionModel;
@@ -275,6 +285,9 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.version.Version;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
 import com.liferay.portal.model.impl.AccountModelImpl;
 import com.liferay.portal.model.impl.AddressModelImpl;
 import com.liferay.portal.model.impl.ClassNameModelImpl;
@@ -285,10 +298,13 @@ import com.liferay.portal.model.impl.GroupModelImpl;
 import com.liferay.portal.model.impl.LayoutFriendlyURLModelImpl;
 import com.liferay.portal.model.impl.LayoutModelImpl;
 import com.liferay.portal.model.impl.LayoutSetModelImpl;
+import com.liferay.portal.model.impl.PortalPreferencesModelImpl;
+import com.liferay.portal.model.impl.PortletModelImpl;
 import com.liferay.portal.model.impl.PortletPreferenceValueImpl;
 import com.liferay.portal.model.impl.PortletPreferenceValueModelImpl;
 import com.liferay.portal.model.impl.PortletPreferencesModelImpl;
 import com.liferay.portal.model.impl.ReleaseModelImpl;
+import com.liferay.portal.model.impl.ResourceActionModelImpl;
 import com.liferay.portal.model.impl.ResourcePermissionModelImpl;
 import com.liferay.portal.model.impl.RoleModelImpl;
 import com.liferay.portal.model.impl.UserModelImpl;
@@ -307,6 +323,19 @@ import com.liferay.portal.search.web.internal.user.facet.constants.UserFacetPort
 import com.liferay.portal.service.impl.LayoutLocalServiceImpl;
 import com.liferay.portal.upgrade.PortalUpgradeProcess;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.workflow.constants.WorkflowDefinitionConstants;
+import com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess;
+import com.liferay.portal.workflow.kaleo.model.KaleoDefinitionModel;
+import com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersionModel;
+import com.liferay.portal.workflow.kaleo.model.KaleoNodeModel;
+import com.liferay.portal.workflow.kaleo.model.KaleoTask;
+import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignmentModel;
+import com.liferay.portal.workflow.kaleo.model.KaleoTaskModel;
+import com.liferay.portal.workflow.kaleo.model.impl.KaleoDefinitionModelImpl;
+import com.liferay.portal.workflow.kaleo.model.impl.KaleoDefinitionVersionModelImpl;
+import com.liferay.portal.workflow.kaleo.model.impl.KaleoNodeModelImpl;
+import com.liferay.portal.workflow.kaleo.model.impl.KaleoTaskAssignmentModelImpl;
+import com.liferay.portal.workflow.kaleo.model.impl.KaleoTaskModelImpl;
 import com.liferay.portlet.PortletPreferencesFactoryImpl;
 import com.liferay.portlet.PortletPreferencesImpl;
 import com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl;
@@ -346,6 +375,8 @@ import com.liferay.wiki.model.impl.WikiPageModelImpl;
 import com.liferay.wiki.model.impl.WikiPageResourceModelImpl;
 import com.liferay.wiki.social.WikiActivityKeys;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -355,6 +386,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import java.math.BigDecimal;
+
+import java.net.URL;
+
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 
 import java.sql.Types;
 
@@ -368,6 +407,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -384,27 +424,42 @@ public class DataFactory {
 		_simpleDateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss", TimeZone.getDefault());
 
-		_counter = new SimpleCounter(
+		int totalInstanceCount =
+			BenchmarksPropsValues.MAX_VIRTUAL_INSTANCE_COUNT + 1;
+
+		int groupCount =
 			BenchmarksPropsValues.MAX_GROUP_COUNT +
-				BenchmarksPropsValues.MAX_COMMERCE_GROUP_COUNT + 1);
+				BenchmarksPropsValues.MAX_COMMERCE_GROUP_COUNT;
+
+		int totalGroupCount = groupCount * totalInstanceCount;
+
+		_counter = new SimpleCounter(totalGroupCount + 1);
+
+		_groupCounter = new SimpleCounter(1);
+
 		_timeCounter = new SimpleCounter();
 		_futureDateCounter = new SimpleCounter();
 		_layoutPlidCounter = new SimpleCounter();
 		_layoutSetIdCounter = new SimpleCounter();
 		_portletPreferenceValueIdCounter = new SimpleCounter();
+		_resourceActionIdCounter = new SimpleCounter();
 		_resourcePermissionIdCounter = new SimpleCounter();
 		_socialActivityIdCounter = new SimpleCounter();
 		_userScreenNameCounter = new SimpleCounter();
 
 		List<String> models = ModelHintsUtil.getModels();
 
+		models.add(KaleoProcess.class.getName());
 		models.add(Layout.class.getName());
+		models.add(LayoutSEOEntry.class.getName());
 		models.add(NavItem.class.getName());
 		models.add(PortletDisplayTemplate.class.getName());
 		models.add(UserPersonalSite.class.getName());
 
 		models.add(_getMBDiscussionCombinedClassName(BlogsEntry.class));
 		models.add(_getMBDiscussionCombinedClassName(WikiPage.class));
+
+		_readFiletoList("ClassNameModels.txt", models);
 
 		for (String model : models) {
 			ClassNameModel classNameModel = new ClassNameModelImpl();
@@ -419,9 +474,6 @@ public class DataFactory {
 			getClassNameId(BlogsEntry.class),
 			getClassNameId(JournalArticle.class), getClassNameId(WikiPage.class)
 		};
-
-		_accountId = _counter.get();
-		_companyId = _counter.get();
 
 		_dlDDMStructureContent = _readFile("ddm_structure_basic_document.json");
 		_dlDDMStructureLayoutContent = _readFile(
@@ -440,6 +492,16 @@ public class DataFactory {
 		initJournalArticleContent();
 
 		initUserNames();
+
+		initResourceActionModels();
+
+		initPortletResourcePermissionModels();
+
+		initDDMTemplateModels();
+
+		initDDMStructureModels();
+
+		initKaleoDefinitionContents();
 	}
 
 	public RoleModel getAdministratorRoleModel() {
@@ -465,8 +527,9 @@ public class DataFactory {
 
 		if (_assetCategoryCounters == null) {
 			_assetCategoryCounters =
-				(Map<Long, SimpleCounter>[])
-					new HashMap<?, ?>[BenchmarksPropsValues.MAX_GROUP_COUNT];
+				(Map<Long, SimpleCounter>[])new HashMap<?, ?>
+					[(BenchmarksPropsValues.MAX_VIRTUAL_INSTANCE_COUNT + 1) *
+						BenchmarksPropsValues.MAX_GROUP_COUNT];
 		}
 
 		SimpleCounter counter = getSimpleCounter(
@@ -507,9 +570,9 @@ public class DataFactory {
 		}
 
 		if (_assetTagCounters == null) {
-			_assetTagCounters =
-				(Map<Long, SimpleCounter>[])
-					new HashMap<?, ?>[BenchmarksPropsValues.MAX_GROUP_COUNT];
+			_assetTagCounters = (Map<Long, SimpleCounter>[])new HashMap<?, ?>
+				[(BenchmarksPropsValues.MAX_VIRTUAL_INSTANCE_COUNT + 1) *
+					BenchmarksPropsValues.MAX_GROUP_COUNT];
 		}
 
 		SimpleCounter counter = getSimpleCounter(
@@ -538,7 +601,11 @@ public class DataFactory {
 	}
 
 	public long getClassNameId(Class<?> clazz) {
-		ClassNameModel classNameModel = _classNameModels.get(clazz.getName());
+		return getClassNameId(clazz.getName());
+	}
+
+	public long getClassNameId(String className) {
+		ClassNameModel classNameModel = _classNameModels.get(className);
 
 		return classNameModel.getClassNameId();
 	}
@@ -744,6 +811,112 @@ public class DataFactory {
 		return getClassNameId(WikiPage.class);
 	}
 
+	public void initDDMStructureModels() throws Exception {
+		List<String> ddmStructureDataList = new ArrayList<>();
+
+		_readFiletoList("DDMStructure.txt", ddmStructureDataList);
+
+		for (String ddmStructureData : ddmStructureDataList) {
+			String[] ddmStructureItems = ddmStructureData.split(
+				StringPool.COMMA);
+
+			String rootModulePath = "";
+
+			Class<?> clazz = getClass();
+
+			String classLoaderStr = String.valueOf(clazz.getClassLoader());
+
+			String userDir = System.getProperty("user.dir");
+
+			if (classLoaderStr.contains("AppClassLoader")) {
+				rootModulePath = userDir.substring(0, userDir.indexOf("util"));
+			}
+			else {
+				rootModulePath =
+					userDir.substring(0, userDir.indexOf("benchmarks")) +
+						"modules";
+			}
+
+			StringBundler sb = new StringBundler();
+
+			_getScriptAbsolutePath(
+				new File(rootModulePath), ddmStructureItems[0], sb);
+
+			_ddmStructureClassNameMap.put(sb.toString(), ddmStructureItems[1]);
+		}
+
+		for (Map.Entry<String, String> entry :
+				_ddmStructureClassNameMap.entrySet()) {
+
+			InputStream inputStream = new FileInputStream(
+				new File(entry.getKey()));
+
+			List<Element> structureElements = _getDDMStructures(
+				inputStream, new Locale("en", "US"));
+
+			for (Element structureElement : structureElements) {
+				_ddmStructureModelList.add(
+					new SampleSQLBuilderDDMStructureModel(
+						entry.getValue(), structureElement));
+			}
+		}
+
+		List<String> definitionList = new ArrayList<>();
+
+		_readFiletoList("DDMStructure-definition.txt", definitionList);
+
+		for (String line : definitionList) {
+			String[] items = line.split("@&&@");
+
+			_ddmStructureDefinitionMap.put(items[0] + items[2], items[1]);
+		}
+
+		definitionList.clear();
+
+		_readFiletoList("DDMStructureLayout-definition.txt", definitionList);
+
+		for (String line : definitionList) {
+			String[] items = line.split("@&&@");
+
+			_ddmStructureLayoutDefinitionMap.put(items[0] + items[2], items[1]);
+		}
+	}
+
+	public void initDDMTemplateModels() throws Exception {
+		List<String> templateKeys = new ArrayList<>();
+
+		_readFiletoList("DDMTemplate-templateKey.txt", templateKeys);
+
+		List<String> templates = new ArrayList<>();
+
+		_readFiletoList("DDMTemplate-className.txt", templates);
+
+		_processListtoMap(
+			templates, _ddmTemplateClassNameMap, "className", ",");
+
+		templates.clear();
+
+		_readFiletoList("DDMTemplate-name.txt", templates);
+
+		_processListtoMap(templates, _ddmTemplateNameMap, "name", "@&&@");
+
+		templates.clear();
+
+		_readFiletoList("DDMTemplate-ScriptName.txt", templates);
+
+		_processListtoMap(templates, _ddmTemplateScriptNameMap);
+
+		_processDDMTemplateScript();
+
+		for (String templateKey : templateKeys) {
+			_ddmTemplateModelList.add(
+				new SampleSQLBuilderDDMTemplateModel(
+					_ddmTemplateClassNameMap.get(templateKey), templateKey,
+					_ddmTemplateNameMap.get(templateKey),
+					_ddmTemplateScriptMap.get(templateKey)));
+		}
+	}
+
 	public void initJournalArticleContent() {
 		int maxJournalArticleSize =
 			BenchmarksPropsValues.MAX_JOURNAL_ARTICLE_SIZE;
@@ -759,6 +932,138 @@ public class DataFactory {
 		}
 
 		_journalArticleContent = new String(chars);
+	}
+
+	public void initKaleoDefinitionContents() throws Exception {
+		String rootModulePath = "";
+
+		Class<?> clazz = getClass();
+
+		String classLoaderStr = String.valueOf(clazz.getClassLoader());
+
+		String userDir = System.getProperty("user.dir");
+
+		if (classLoaderStr.contains("AppClassLoader")) {
+			rootModulePath = userDir.substring(0, userDir.indexOf("util"));
+		}
+		else {
+			rootModulePath =
+				userDir.substring(0, userDir.indexOf("benchmarks")) + "modules";
+		}
+
+		StringBundler sb1 = new StringBundler();
+
+		_getScriptAbsolutePath(
+			new File(rootModulePath),
+			"com/liferay/message/boards/moderation/internal/instance" +
+				"/lifecycle/dependencies" +
+					"/message-boards-moderation-workflow-definition.xml",
+			sb1);
+
+		_mbKaleoDefinitionContent = StringUtil.read(
+			new FileInputStream(new File(sb1.toString())));
+
+		StringBundler sb2 = new StringBundler();
+
+		_getScriptAbsolutePath(
+			new File(rootModulePath),
+			"META-INF/definitions/single-approver-workflow-definition.xml",
+			sb2);
+
+		_singleApproverKaleoDefinitionContent = StringUtil.read(
+			new FileInputStream(new File(sb2.toString())));
+	}
+
+	public void initPortletResourcePermissionModels() throws IOException {
+		List<String> resourcePermissionTemplates = new ArrayList<>();
+
+		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
+			new InputStreamReader(
+				getResourceInputStream("ResourcePermissionTemplate.txt")));
+
+		String line = null;
+
+		while ((line = unsyncBufferedReader.readLine()) != null) {
+			resourcePermissionTemplates.add(line);
+		}
+
+		List<Map<String, String>> resourcePermissionRowValues =
+			new ArrayList<>();
+
+		for (String resourcePermissionTemplate : resourcePermissionTemplates) {
+			String[] values = resourcePermissionTemplate.split(",");
+
+			Map<String, String> rawValues = new LinkedHashMap<>();
+
+			for (String value : values) {
+				String[] pairs = value.split(":");
+
+				rawValues.put(pairs[0], pairs[1]);
+			}
+
+			resourcePermissionRowValues.add(rawValues);
+		}
+
+		for (Map<String, String> resourcePermissionRowValue :
+				resourcePermissionRowValues) {
+
+			_portletResourcePermissionModelList.add(
+				new SampleSQLBuilderResourcePermissionModel(
+					resourcePermissionRowValue.get("mvccVersion"),
+					resourcePermissionRowValue.get("ctCollectionId"),
+					resourcePermissionRowValue.get("resourcePermissionId"),
+					resourcePermissionRowValue.get("companyId"),
+					resourcePermissionRowValue.get("name"),
+					resourcePermissionRowValue.get("scope"),
+					resourcePermissionRowValue.get("primKey"),
+					resourcePermissionRowValue.get("primKeyId"),
+					resourcePermissionRowValue.get("roleId"),
+					resourcePermissionRowValue.get("ownerId"),
+					resourcePermissionRowValue.get("actionIds"),
+					resourcePermissionRowValue.get("viewActionId")));
+		}
+	}
+
+	public void initResourceActionModels() throws IOException {
+		List<String> resourceActionTemplates = new ArrayList<>();
+
+		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
+			new InputStreamReader(
+				getResourceInputStream("ResourceActionTemplate.txt")));
+
+		String line = null;
+
+		while ((line = unsyncBufferedReader.readLine()) != null) {
+			resourceActionTemplates.add(line);
+		}
+
+		List<Map<String, String>> resourceActionRowValues = new ArrayList<>();
+
+		for (String resourceActionTemplate : resourceActionTemplates) {
+			String[] values = resourceActionTemplate.split(",");
+
+			Map<String, String> rawValues = new LinkedHashMap<>();
+
+			for (String value : values) {
+				String[] pairs = value.split(":");
+
+				rawValues.put(pairs[0], pairs[1]);
+			}
+
+			resourceActionRowValues.add(rawValues);
+		}
+
+		for (Map<String, String> resourceActionRowValue :
+				resourceActionRowValues) {
+
+			_resourceActionModelList.add(
+				new SampleSQLBuilderResourceActionModel(
+					resourceActionRowValue.get("mvccVersion"),
+					resourceActionRowValue.get("resourceActionId"),
+					resourceActionRowValue.get("name"),
+					resourceActionRowValue.get("actionId"),
+					resourceActionRowValue.get("bitwiseValue")));
+		}
 	}
 
 	public void initUserNames() throws IOException {
@@ -857,7 +1162,13 @@ public class DataFactory {
 
 		// Other fields
 
-		accountModel.setName("Liferay");
+		if (_webId.equals("liferay.com")) {
+			accountModel.setName("Liferay");
+		}
+		else {
+			accountModel.setName(_webId);
+		}
+
 		accountModel.setLegalName("Liferay, Inc.");
 
 		return accountModel;
@@ -2170,21 +2481,44 @@ public class DataFactory {
 						"commerce_theme_portlet_settings.json"))));
 	}
 
-	public CompanyModel newCompanyModel() {
+	public CompanyModel newCompanyModel(int... index) {
 		CompanyModel companyModel = new CompanyModelImpl();
 
 		// PK fields
 
-		companyModel.setCompanyId(_companyId);
+		companyModel.setCompanyId(_counter.get());
 
 		// Other fields
 
-		companyModel.setAccountId(_accountId);
-		companyModel.setWebId("liferay.com");
+		companyModel.setAccountId(_counter.get());
+
+		if (index.length == 0) {
+			companyModel.setWebId("liferay.com");
+		}
+		else {
+			companyModel.setWebId(
+				StringBundler.concat("liferay", index[0], ".com"));
+		}
+
 		companyModel.setMx("liferay.com");
 		companyModel.setActive(true);
 
 		return companyModel;
+	}
+
+	public List<CompanyModel> newCompanyModels() {
+		List<CompanyModel> companyModels = new ArrayList<>(
+			BenchmarksPropsValues.MAX_VIRTUAL_INSTANCE_COUNT + 1);
+
+		companyModels.add(newCompanyModel());
+
+		for (int i = 1; i <= BenchmarksPropsValues.MAX_VIRTUAL_INSTANCE_COUNT;
+			 i++) {
+
+			companyModels.add(newCompanyModel(i));
+		}
+
+		return companyModels;
 	}
 
 	public ContactModel newContactModel(UserModel userModel) {
@@ -2292,6 +2626,23 @@ public class DataFactory {
 		return layoutModels;
 	}
 
+	public List<LayoutModel> newContentPageLayoutModels(
+		long groupId, String name) {
+
+		List<LayoutModel> layoutModels = new ArrayList<>();
+
+		LayoutModel publicLayoutModel = _newContentPageLayoutModel(
+			groupId, name, 0, 0);
+
+		layoutModels.add(publicLayoutModel);
+		layoutModels.add(
+			_newContentPageLayoutModel(
+				groupId, name + "1", getClassNameId(Layout.class),
+				publicLayoutModel.getPlid()));
+
+		return layoutModels;
+	}
+
 	public List<CounterModel> newCounterModels() {
 		List<CounterModel> counterModels = new ArrayList<>();
 
@@ -2309,6 +2660,10 @@ public class DataFactory {
 			_newCounterModel(
 				PortletPreferenceValue.class.getName(),
 				_portletPreferenceValueIdCounter.get()));
+		counterModels.add(
+			_newCounterModel(
+				ResourceAction.class.getName(),
+				_resourceActionIdCounter.get()));
 		counterModels.add(
 			_newCounterModel(
 				ResourcePermission.class.getName(),
@@ -3361,6 +3716,23 @@ public class DataFactory {
 		return ddmStorageLinkModel;
 	}
 
+	public DDMStructureLayoutModel newDDMStructureLayoutModel(
+		DDMStructureModel ddmStructureModel,
+		DDMStructureVersionModel ddmStructureVersionModel) {
+
+		String ddmStructureKey = ddmStructureModel.getStructureKey();
+
+		String className = getClassName(ddmStructureModel.getClassNameId());
+
+		String definition = _ddmStructureLayoutDefinitionMap.get(
+			ddmStructureKey + className);
+
+		return newDDMStructureLayoutModel(
+			ddmStructureModel.getGroupId(), ddmStructureModel.getUserId(),
+			ddmStructureVersionModel.getStructureVersionId(), definition,
+			ddmStructureModel.getClassNameId(), ddmStructureKey);
+	}
+
 	public DDMStructureLinkModel newDDMStructureLinkModel(
 		DDLRecordSetModel ddlRecordSetModel) {
 
@@ -3377,6 +3749,34 @@ public class DataFactory {
 			getClassNameId(DLFileEntryMetadata.class),
 			dLFileEntryMetadataModel.getFileEntryMetadataId(),
 			dLFileEntryMetadataModel.getDDMStructureId());
+	}
+
+	public List<DDMStructureModel> newDDMStructureModels() {
+		List<DDMStructureModel> ddmStructureModels = new ArrayList<>();
+
+		for (SampleSQLBuilderDDMStructureModel ddmStructureModel :
+				_ddmStructureModelList) {
+
+			Element structureElement = ddmStructureModel.getStructureElement();
+
+			String structureKey = StringUtil.toUpperCase(
+				structureElement.elementText("name"));
+
+			String definition = _ddmStructureDefinitionMap.get(
+				structureKey + ddmStructureModel.getClassName());
+
+			definition = definition.replaceAll(StringPool.QUOTE, "\\\\\"");
+
+			definition = definition.replaceAll(StringPool.APOSTROPHE, "\\\\\'");
+
+			ddmStructureModels.add(
+				newDDMStructureModel(
+					_globalGroupId, _defaultUserId,
+					getClassNameId(ddmStructureModel.getClassName()),
+					structureKey, definition, _counter.get()));
+		}
+
+		return ddmStructureModels;
 	}
 
 	public DDMStructureVersionModel newDDMStructureVersionModel(
@@ -3455,6 +3855,75 @@ public class DataFactory {
 		ddmTemplateLinkModel.setTemplateId(templateId);
 
 		return ddmTemplateLinkModel;
+	}
+
+	public List<DDMTemplateModel> newDDMTemplateModels() {
+		List<DDMTemplateModel> ddmTemplateModels = new ArrayList<>();
+
+		String type = null;
+
+		for (SampleSQLBuilderDDMTemplateModel ddmTemplateModel :
+				_ddmTemplateModelList) {
+
+			String templateKey = ddmTemplateModel.getTemplateKey();
+
+			if (templateKey.contains("NAVIGATION-MACRO-FTL")) {
+				type = "macro";
+			}
+			else {
+				type = DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY;
+			}
+
+			ddmTemplateModels.add(
+				newDDMTemplateModel(
+					_globalGroupId, _defaultUserId, "",
+					ddmTemplateModel.getName(), ddmTemplateModel.getScript(),
+					getClassNameId(ddmTemplateModel.getClassName()), 0,
+					getClassNameId(PortletDisplayTemplate.class),
+					_counter.get(), templateKey, type));
+		}
+
+		return ddmTemplateModels;
+	}
+
+	public DDMTemplateVersionModel newDDMTemplateVersionModel(
+		DDMTemplateModel ddmTemplateModel) {
+
+		DDMTemplateVersionModelImpl ddmTemplateVersionModelImpl =
+			new DDMTemplateVersionModelImpl();
+
+		// PK fields
+
+		ddmTemplateVersionModelImpl.setTemplateVersionId(_counter.get());
+
+		// Group instance
+
+		ddmTemplateVersionModelImpl.setGroupId(_globalGroupId);
+
+		// Audit fields
+
+		ddmTemplateVersionModelImpl.setCompanyId(_companyId);
+		ddmTemplateVersionModelImpl.setUserId(_defaultUserId);
+		ddmTemplateVersionModelImpl.setCreateDate(nextFutureDate());
+
+		// Other fields
+
+		ddmTemplateVersionModelImpl.setClassNameId(
+			ddmTemplateModel.getClassNameId());
+
+		ddmTemplateVersionModelImpl.setClassPK(ddmTemplateModel.getClassPK());
+		ddmTemplateVersionModelImpl.setTemplateId(
+			ddmTemplateModel.getTemplateId());
+
+		ddmTemplateVersionModelImpl.setVersion(ddmTemplateModel.getVersion());
+		ddmTemplateVersionModelImpl.setName(ddmTemplateModel.getName());
+		ddmTemplateVersionModelImpl.setLanguage(ddmTemplateModel.getLanguage());
+		ddmTemplateVersionModelImpl.setScript(ddmTemplateModel.getScript());
+
+		ddmTemplateVersionModelImpl.setStatusByUserId(_defaultUserId);
+		ddmTemplateVersionModelImpl.setStatusDate(nextFutureDate());
+
+		return ddmTemplateVersionModelImpl;
 	}
 
 	public AssetVocabularyModel newDefaultAssetVocabularyModel() {
@@ -3871,6 +4340,53 @@ public class DataFactory {
 		return fragmentEntryLinkModel;
 	}
 
+	public List<FragmentEntryLinkModel> newFragmentEntryLinkModels(
+			List<LayoutModel> layoutModels)
+		throws Exception {
+
+		List<FragmentEntryLinkModel> fragmentEntryLinkModels =
+			new ArrayList<>();
+
+		String headingRenderNamespace = StringUtil.randomId();
+		String imageRenderNamespace = StringUtil.randomId();
+		String paragraphRenderNamespace = StringUtil.randomId();
+
+		for (LayoutModel layoutModel : layoutModels) {
+			fragmentEntryLinkModels.add(
+				newFragmentEntryLinkModel(
+					layoutModel, _HEADING_RENDER_KEY,
+					_readFile(
+						_getFragmentComponentInputStream("heading", "css")),
+					_readFile(
+						_getFragmentComponentInputStream("heading", "html")),
+					_readFile("heading_configuration.json"),
+					_readFile("heading_editValue.json"), 0,
+					headingRenderNamespace));
+
+			fragmentEntryLinkModels.add(
+				newFragmentEntryLinkModel(
+					layoutModel, _PARAGRAPH_RENDER_KEY,
+					_readFile(
+						_getFragmentComponentInputStream("paragraph", "css")),
+					_readFile(
+						_getFragmentComponentInputStream("paragraph", "html")),
+					_readFile("paragraph_configuration.json"),
+					_replaceReleaseInfo(_readFile("paragraph_editValue.json")),
+					0, paragraphRenderNamespace));
+
+			fragmentEntryLinkModels.add(
+				newFragmentEntryLinkModel(
+					layoutModel, _IMAGE_RENDER_KEY, "",
+					_readFile(
+						_getFragmentComponentInputStream("image", "html")),
+					_readFile("image_configuration.json"),
+					_readFile("image_editValue.json"), 0,
+					imageRenderNamespace));
+		}
+
+		return fragmentEntryLinkModels;
+	}
+
 	public FragmentEntryModel newFragmentEntryModel(
 			long groupId, FragmentCollectionModel fragmentCollectionModel)
 		throws Exception {
@@ -4080,9 +4596,12 @@ public class DataFactory {
 			BenchmarksPropsValues.MAX_GROUP_COUNT);
 
 		for (int i = 1; i <= BenchmarksPropsValues.MAX_GROUP_COUNT; i++) {
+			long groupId = _groupCounter.get();
+
 			groupModels.add(
 				newGroupModel(
-					i, getClassNameId(Group.class), i, "Site " + i, true));
+					groupId, getClassNameId(Group.class), groupId, "Site " + i,
+					true));
 		}
 
 		return groupModels;
@@ -4309,6 +4828,189 @@ public class DataFactory {
 		return journalContentSearchModel;
 	}
 
+	public List<KaleoDefinitionModel> newKaleoDefinitionModels()
+		throws Exception {
+
+		List<KaleoDefinitionModel> kaleoDefinitionModels = new ArrayList<>();
+
+		String content = _mbKaleoDefinitionContent;
+
+		content = content.replaceAll(StringPool.QUOTE, "\\\\\"");
+
+		content = content.replaceAll(StringPool.APOSTROPHE, "\\\\\'");
+
+		StringBundler sb1 = new StringBundler();
+
+		_processScript(content, sb1);
+
+		kaleoDefinitionModels.add(
+			newKaleoDefinitionModel(
+				MBModerationConstants.WORKFLOW_DEFINITION_NAME, sb1.toString(),
+				MBMessage.class.getName()));
+
+		content = _singleApproverKaleoDefinitionContent;
+
+		content = content.replaceAll(StringPool.QUOTE, "\\\\\"");
+
+		content = content.replaceAll(StringPool.APOSTROPHE, "\\\\\'");
+
+		StringBundler sb2 = new StringBundler();
+
+		_processScript(content, sb2);
+
+		kaleoDefinitionModels.add(
+			newKaleoDefinitionModel(
+				"Single Approver", sb2.toString(),
+				WorkflowDefinitionConstants.SCOPE_ALL));
+
+		return kaleoDefinitionModels;
+	}
+
+	public KaleoDefinitionVersionModel newKaleoDefinitionVersionModel(
+			KaleoDefinitionModel kaleoDefinitionModel,
+			KaleoNodeModel kaleoNodeModel)
+		throws Exception {
+
+		KaleoDefinitionVersionModel kaleoDefinitionVersionModel =
+			new KaleoDefinitionVersionModelImpl();
+
+		// PK fields
+
+		kaleoDefinitionVersionModel.setKaleoDefinitionVersionId(
+			kaleoNodeModel.getKaleoDefinitionVersionId());
+
+		// Audit fields
+
+		kaleoDefinitionVersionModel.setCompanyId(_companyId);
+		kaleoDefinitionVersionModel.setUserId(_defaultUserId);
+		kaleoDefinitionVersionModel.setUserName(_SAMPLE_USER_NAME);
+		kaleoDefinitionVersionModel.setStatusDate(new Date());
+		kaleoDefinitionVersionModel.setCreateDate(new Date());
+		kaleoDefinitionVersionModel.setModifiedDate(new Date());
+
+		// Other fields
+
+		kaleoDefinitionVersionModel.setKaleoDefinitionId(
+			kaleoDefinitionModel.getKaleoDefinitionId());
+
+		kaleoDefinitionVersionModel.setName(kaleoDefinitionModel.getName());
+
+		kaleoDefinitionVersionModel.setTitle(kaleoDefinitionModel.getTitle());
+
+		kaleoDefinitionVersionModel.setContent(
+			kaleoDefinitionModel.getContent());
+		kaleoDefinitionVersionModel.setVersion("1.0");
+		kaleoDefinitionVersionModel.setStartKaleoNodeId(
+			kaleoNodeModel.getKaleoNodeId());
+
+		kaleoDefinitionVersionModel.setStatus(0);
+
+		return kaleoDefinitionVersionModel;
+	}
+
+	public List<KaleoNodeModel> newKaleoNodeModels(
+			KaleoDefinitionModel kaleoDefinitionModel,
+			KaleoDefinitionVersionModel kaleoDefinitionVersionModel)
+		throws Exception {
+
+		List<KaleoNodeModel> kaleoNodeModels = new ArrayList<>();
+
+		String content = _singleApproverKaleoDefinitionContent;
+
+		String name = kaleoDefinitionModel.getName();
+
+		if (name.equals(MBModerationConstants.WORKFLOW_DEFINITION_NAME)) {
+			content = _mbKaleoDefinitionContent;
+		}
+
+		kaleoNodeModels.add(
+			newKaleoNodeModel(
+				kaleoDefinitionModel.getKaleoDefinitionId(),
+				kaleoDefinitionVersionModel.getKaleoDefinitionVersionId(),
+				"review", _getMetaData(content, "task", "review"), "TASK",
+				false, false));
+
+		kaleoNodeModels.add(
+			newKaleoNodeModel(
+				kaleoDefinitionModel.getKaleoDefinitionId(),
+				kaleoDefinitionVersionModel.getKaleoDefinitionVersionId(),
+				"update", _getMetaData(content, "task", "update"), "TASK",
+				false, false));
+
+		return kaleoNodeModels;
+	}
+
+	public List<KaleoTaskAssignmentModel> newKaleoTaskAssignmentModels(
+			KaleoTaskModel kaleoTaskModel,
+			KaleoDefinitionModel kaleoDefinitionModel)
+		throws Exception {
+
+		List<KaleoTaskAssignmentModel> kaleoTaskAssignmentModels =
+			new ArrayList<>();
+
+		String content = _singleApproverKaleoDefinitionContent;
+
+		String name = kaleoDefinitionModel.getName();
+
+		if (name.equals(MBModerationConstants.WORKFLOW_DEFINITION_NAME)) {
+			content = _mbKaleoDefinitionContent;
+		}
+
+		List<String> assignments = _getAssignmentsData(
+			content, "task", kaleoTaskModel.getName());
+
+		for (String assignment : assignments) {
+			String assigneeClassName = User.class.getName();
+
+			long assigneeClassPK = 0;
+
+			Set<String> roleNames = _kaleoTaskAssignmentRoleModels.keySet();
+
+			if (roleNames.contains(assignment)) {
+				assigneeClassName = Role.class.getName();
+
+				RoleModel roleModel = _kaleoTaskAssignmentRoleModels.get(
+					assignment);
+
+				assigneeClassPK = roleModel.getRoleId();
+			}
+
+			kaleoTaskAssignmentModels.add(
+				newKaleoTaskAssignmentModel(
+					kaleoTaskModel, assigneeClassName, assigneeClassPK));
+		}
+
+		return kaleoTaskAssignmentModels;
+	}
+
+	public KaleoTaskModel newKaleoTaskModel(KaleoNodeModel kaleoNodeModel) {
+		KaleoTaskModel kaleoTaskModel = new KaleoTaskModelImpl();
+
+		// PK fields
+
+		kaleoTaskModel.setKaleoTaskId(_counter.get());
+
+		// Audit fields
+
+		kaleoTaskModel.setCompanyId(_companyId);
+		kaleoTaskModel.setUserId(_defaultUserId);
+		kaleoTaskModel.setUserName(_SAMPLE_USER_NAME);
+		kaleoTaskModel.setCreateDate(new Date());
+		kaleoTaskModel.setModifiedDate(new Date());
+
+		// Other fields
+
+		kaleoTaskModel.setKaleoDefinitionId(
+			kaleoNodeModel.getKaleoDefinitionId());
+
+		kaleoTaskModel.setKaleoDefinitionVersionId(
+			kaleoNodeModel.getKaleoDefinitionVersionId());
+
+		kaleoTaskModel.setName(kaleoNodeModel.getName());
+
+		return kaleoTaskModel;
+	}
+
 	public LayoutClassedModelUsageModel newLayoutClassedModelUsageModel(
 		long groupId, long plid, String containerKey,
 		JournalArticleResourceModel journalArticleResourceModel) {
@@ -4479,6 +5181,61 @@ public class DataFactory {
 				_layoutPageTemplateStructureRelData, "${fragmentEntryLinkId}",
 				String.valueOf(
 					fragmentEntryLinkModel.getFragmentEntryLinkId())));
+
+		return layoutPageTemplateStructureRelModel;
+	}
+
+	public LayoutPageTemplateStructureRelModel
+		newLayoutPageTemplateStructureRelModel(
+			LayoutModel layoutModel,
+			LayoutPageTemplateStructureModel layoutPageTemplateStructureModel,
+			List<FragmentEntryLinkModel> fragmentEntryLinkModels,
+			String templateFileName) {
+
+		List<FragmentEntryLinkModel> targetFragmentEntryLinkModels =
+			new ArrayList<>();
+
+		for (FragmentEntryLinkModel model : fragmentEntryLinkModels) {
+			if (model.getPlid() == layoutModel.getPlid()) {
+				targetFragmentEntryLinkModels.add(model);
+			}
+		}
+
+		LayoutPageTemplateStructureRelModel
+			layoutPageTemplateStructureRelModel =
+				new LayoutPageTemplateStructureRelModelImpl();
+
+		// UUID
+
+		layoutPageTemplateStructureRelModel.setUuid(SequentialUUID.generate());
+
+		// PK fields
+
+		layoutPageTemplateStructureRelModel.setLayoutPageTemplateStructureRelId(
+			_counter.get());
+
+		// Group instance
+
+		layoutPageTemplateStructureRelModel.setGroupId(
+			layoutPageTemplateStructureModel.getGroupId());
+
+		// Audit fields
+
+		layoutPageTemplateStructureRelModel.setCompanyId(_companyId);
+		layoutPageTemplateStructureRelModel.setUserId(_sampleUserId);
+		layoutPageTemplateStructureRelModel.setUserName(_SAMPLE_USER_NAME);
+		layoutPageTemplateStructureRelModel.setCreateDate(new Date());
+		layoutPageTemplateStructureRelModel.setModifiedDate(new Date());
+
+		// Other fields
+
+		layoutPageTemplateStructureRelModel.setLayoutPageTemplateStructureId(
+			layoutPageTemplateStructureModel.
+				getLayoutPageTemplateStructureId());
+		layoutPageTemplateStructureRelModel.setSegmentsExperienceId(0L);
+
+		layoutPageTemplateStructureRelModel.setData(
+			_generateJsonData(targetFragmentEntryLinkModels, templateFileName));
 
 		return layoutPageTemplateStructureRelModel;
 	}
@@ -4738,6 +5495,39 @@ public class DataFactory {
 		return new ObjectValuePair<>(key, value);
 	}
 
+	public List<PortalPreferencesModel> newPortalPreferencesModels() {
+		if (_webId.equals("liferay.com")) {
+			return ListUtil.fromArray(
+				newPortalPreferencesModel(_companyId),
+				newPortalPreferencesModel(0));
+		}
+
+		return ListUtil.fromArray(newPortalPreferencesModel(_companyId));
+	}
+
+	public List<PortletModel> newPortletModels(CompanyModel companyModel)
+		throws IOException {
+
+		List<String> portletNames = new ArrayList<>();
+
+		List<PortletModel> portletModels = new ArrayList<>();
+
+		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
+			new InputStreamReader(getResourceInputStream("PortletNames.txt")));
+
+		String line = null;
+
+		while ((line = unsyncBufferedReader.readLine()) != null) {
+			portletNames.add(line);
+		}
+
+		for (String portletName : portletNames) {
+			portletModels.add(newPortletModel(companyModel, portletName));
+		}
+
+		return portletModels;
+	}
+
 	public PortletPreferencesModel newPortletPreferencesModel(
 		long ownerId, int ownerType, long plid, String portletId) {
 
@@ -4891,6 +5681,33 @@ public class DataFactory {
 		}
 
 		return releases;
+	}
+
+	public List<ResourceActionModel> newResourceActionModels() {
+		List<ResourceActionModel> resourceActionModels = new ArrayList<>();
+
+		for (SampleSQLBuilderResourceActionModel resourceActionModel :
+				_resourceActionModelList) {
+
+			resourceActionModels.add(
+				newResourceActionModel(resourceActionModel));
+		}
+
+		return resourceActionModels;
+	}
+
+	public List<ResourcePermissionModel> newResourcePermissionModels() {
+		List<ResourcePermissionModel> resourcePermissionModels =
+			new ArrayList<>();
+
+		for (SampleSQLBuilderResourcePermissionModel resourcePermissionModel :
+				_portletResourcePermissionModelList) {
+
+			resourcePermissionModels.add(
+				newResourcePermissionModel(resourcePermissionModel));
+		}
+
+		return resourcePermissionModels;
 	}
 
 	public List<ResourcePermissionModel> newResourcePermissionModels(
@@ -5191,6 +6008,9 @@ public class DataFactory {
 
 		roleModels.add(_administratorRoleModel);
 
+		_kaleoTaskAssignmentRoleModels.put(
+			"Administrator", _administratorRoleModel);
+
 		// Guest
 
 		_guestRoleModel = newRoleModel(
@@ -5200,17 +6020,24 @@ public class DataFactory {
 
 		// Organization Administrator
 
-		roleModels.add(
-			newRoleModel(
-				RoleConstants.ORGANIZATION_ADMINISTRATOR,
-				RoleConstants.TYPE_ORGANIZATION));
+		RoleModel organizationAdministratorRoleModel = newRoleModel(
+			RoleConstants.ORGANIZATION_ADMINISTRATOR,
+			RoleConstants.TYPE_ORGANIZATION);
+
+		roleModels.add(organizationAdministratorRoleModel);
+
+		_kaleoTaskAssignmentRoleModels.put(
+			"Organization Administrator", organizationAdministratorRoleModel);
 
 		// Organization Owner
 
-		roleModels.add(
-			newRoleModel(
-				RoleConstants.ORGANIZATION_OWNER,
-				RoleConstants.TYPE_ORGANIZATION));
+		RoleModel organizationOwnerRoleModel = newRoleModel(
+			RoleConstants.ORGANIZATION_OWNER, RoleConstants.TYPE_ORGANIZATION);
+
+		roleModels.add(organizationOwnerRoleModel);
+
+		_kaleoTaskAssignmentRoleModels.put(
+			"Organization Owner", organizationOwnerRoleModel);
 
 		// Organization User
 
@@ -5235,9 +6062,13 @@ public class DataFactory {
 
 		// Site Administrator
 
-		roleModels.add(
-			newRoleModel(
-				RoleConstants.SITE_ADMINISTRATOR, RoleConstants.TYPE_SITE));
+		RoleModel siteAdministratorRoleModel = newRoleModel(
+			RoleConstants.SITE_ADMINISTRATOR, RoleConstants.TYPE_SITE);
+
+		roleModels.add(siteAdministratorRoleModel);
+
+		_kaleoTaskAssignmentRoleModels.put(
+			"Site Administrator", siteAdministratorRoleModel);
 
 		// Site Member
 
@@ -5248,8 +6079,12 @@ public class DataFactory {
 
 		// Site Owner
 
-		roleModels.add(
-			newRoleModel(RoleConstants.SITE_OWNER, RoleConstants.TYPE_SITE));
+		RoleModel siteOwnerRoleModel = newRoleModel(
+			RoleConstants.SITE_OWNER, RoleConstants.TYPE_SITE);
+
+		roleModels.add(siteOwnerRoleModel);
+
+		_kaleoTaskAssignmentRoleModels.put("Site Owner", siteOwnerRoleModel);
 
 		// User
 
@@ -5257,6 +6092,74 @@ public class DataFactory {
 			RoleConstants.USER, RoleConstants.TYPE_REGULAR);
 
 		roleModels.add(_userRoleModel);
+
+		// Account Manager
+
+		_accountManagerRoleModel = newRoleModel(
+			AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_MANAGER,
+			RoleConstants.TYPE_ORGANIZATION);
+
+		// Asset Library Administrator
+
+		RoleModel assetLibraryAdministratorRoleModel = newRoleModel(
+			"Asset Library Administrator", RoleConstants.TYPE_DEPOT);
+
+		roleModels.add(assetLibraryAdministratorRoleModel);
+
+		_kaleoTaskAssignmentRoleModels.put(
+			"Asset Library Administrator", assetLibraryAdministratorRoleModel);
+
+		// Asset Library Content Reviewer
+
+		RoleModel assetLibraryContentReviewerRoleModel = newRoleModel(
+			"Asset Library Content Reviewer", RoleConstants.TYPE_DEPOT);
+
+		roleModels.add(assetLibraryContentReviewerRoleModel);
+
+		_kaleoTaskAssignmentRoleModels.put(
+			"Asset Library Content Reviewer",
+			assetLibraryContentReviewerRoleModel);
+
+		// Asset Library Owner
+
+		RoleModel assetLibraryOwnerRoleModel = newRoleModel(
+			"Asset Library Owner", RoleConstants.TYPE_DEPOT);
+
+		roleModels.add(assetLibraryOwnerRoleModel);
+
+		_kaleoTaskAssignmentRoleModels.put(
+			"Asset Library Owner", assetLibraryOwnerRoleModel);
+
+		// Portal Content Reviewer
+
+		RoleModel portalContentReviewerRoleModel = newRoleModel(
+			"Portal Content Reviewer", RoleConstants.TYPE_REGULAR);
+
+		roleModels.add(portalContentReviewerRoleModel);
+
+		_kaleoTaskAssignmentRoleModels.put(
+			"Portal Content Reviewer", portalContentReviewerRoleModel);
+
+		// Organization Content Reviewer
+
+		RoleModel organizationContentReviewerRoleModel = newRoleModel(
+			"Organization Content Reviewer", RoleConstants.TYPE_ORGANIZATION);
+
+		roleModels.add(organizationContentReviewerRoleModel);
+
+		_kaleoTaskAssignmentRoleModels.put(
+			"Organization Content Reviewer",
+			organizationContentReviewerRoleModel);
+
+		// Site Content Reviewer
+
+		RoleModel siteContentReviewerRoleModel = newRoleModel(
+			"Site Content Reviewer", RoleConstants.TYPE_SITE);
+
+		roleModels.add(siteContentReviewerRoleModel);
+
+		_kaleoTaskAssignmentRoleModels.put(
+			"Site Content Reviewer", siteContentReviewerRoleModel);
 
 		return roleModels;
 	}
@@ -5404,6 +6307,24 @@ public class DataFactory {
 			mbMessageModel.getGroupId(), classNameId, classPK, type, extraData);
 	}
 
+	public KaleoNodeModel newStartKaleoNodeModel(
+			KaleoDefinitionModel kaleoDefinitionModel)
+		throws Exception {
+
+		String content = _singleApproverKaleoDefinitionContent;
+
+		String name = kaleoDefinitionModel.getName();
+
+		if (name.equals(MBModerationConstants.WORKFLOW_DEFINITION_NAME)) {
+			content = _mbKaleoDefinitionContent;
+		}
+
+		return newKaleoNodeModel(
+			kaleoDefinitionModel.getKaleoDefinitionId(), _counter.get(),
+			"created", _getMetaData(content, "state", "created"), "STATE", true,
+			false);
+	}
+
 	public SubscriptionModel newSubscriptionModel(
 		BlogsEntryModel blogsEntryModel) {
 
@@ -5422,10 +6343,18 @@ public class DataFactory {
 	}
 
 	public List<UserModel> newUserModels() {
-		List<UserModel> userModels = new ArrayList<>(
-			BenchmarksPropsValues.MAX_USER_COUNT);
+		int userCount = 0;
 
-		for (int i = 0; i < BenchmarksPropsValues.MAX_USER_COUNT; i++) {
+		if (_webId.equals("liferay.com")) {
+			userCount = BenchmarksPropsValues.MAX_USER_COUNT;
+		}
+		else {
+			userCount = BenchmarksPropsValues.MAX_VIRTUAL_INSTANCE_USER_COUNT;
+		}
+
+		List<UserModel> userModels = new ArrayList<>(userCount);
+
+		for (int i = 0; i < userCount; i++) {
 			String[] userName = nextUserName(i);
 
 			userModels.add(
@@ -5438,9 +6367,11 @@ public class DataFactory {
 	}
 
 	public GroupModel newUserPersonalSiteGroupModel() {
-		return newGroupModel(
+		_userPersonalSiteGroupModel = newGroupModel(
 			_counter.get(), getClassNameId(UserPersonalSite.class),
 			_defaultUserId, GroupConstants.USER_PERSONAL_SITE, false);
+
+		return _userPersonalSiteGroupModel;
 	}
 
 	public VirtualHostModel newVirtualHostModel() {
@@ -5456,7 +6387,13 @@ public class DataFactory {
 
 		// Other fields
 
-		virtualHostModel.setHostname(BenchmarksPropsValues.VIRTUAL_HOST_NAME);
+		if (_webId.equals("liferay.com")) {
+			virtualHostModel.setHostname(
+				BenchmarksPropsValues.VIRTUAL_HOST_NAME);
+		}
+		else {
+			virtualHostModel.setHostname(_webId);
+		}
 
 		return virtualHostModel;
 	}
@@ -5514,6 +6451,18 @@ public class DataFactory {
 		userName[1] = _lastNames.get((int)(index % _lastNames.size()));
 
 		return userName;
+	}
+
+	public void setAccountId(long accountId) {
+		_accountId = accountId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+	}
+
+	public void setWebId(String webId) {
+		_webId = webId;
 	}
 
 	public String toInsertSQL(BaseModel<?> baseModel) {
@@ -6108,6 +7057,8 @@ public class DataFactory {
 
 		// Other fields
 
+		ddmStructureModel.setParentStructureId(
+			DDMStructureConstants.DEFAULT_PARENT_STRUCTURE_ID);
 		ddmStructureModel.setClassNameId(classNameId);
 		ddmStructureModel.setStructureKey(structureKey);
 		ddmStructureModel.setVersion(DDMStructureConstants.VERSION_DEFAULT);
@@ -6123,6 +7074,13 @@ public class DataFactory {
 
 		ddmStructureModel.setDefinition(definition);
 		ddmStructureModel.setStorageType(StorageType.DEFAULT.toString());
+
+		if (structureKey.equals("DL_VIDEO_EXTERNAL_SHORTCUT") ||
+			structureKey.equals("GOOGLE_DOCS")) {
+
+			ddmStructureModel.setType(1);
+		}
+
 		ddmStructureModel.setLastPublishDate(nextFutureDate());
 
 		return ddmStructureModel;
@@ -6143,6 +7101,17 @@ public class DataFactory {
 		long groupId, long userId, String mode, String name, String script,
 		long classNameId, long classPK, long resourceClassNameId,
 		long templateId, String templateKey) {
+
+		return newDDMTemplateModel(
+			groupId, userId, mode, name, script, classNameId, classPK,
+			resourceClassNameId, templateId, templateKey,
+			TemplateConstants.LANG_TYPE_FTL);
+	}
+
+	protected DDMTemplateModel newDDMTemplateModel(
+		long groupId, long userId, String mode, String name, String script,
+		long classNameId, long classPK, long resourceClassNameId,
+		long templateId, String templateKey, String type) {
 
 		DDMTemplateModel ddmTemplateModel = new DDMTemplateModelImpl();
 
@@ -6184,11 +7153,16 @@ public class DataFactory {
 
 		ddmTemplateModel.setName(sb.toString());
 
-		ddmTemplateModel.setType(DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY);
+		ddmTemplateModel.setType(type);
 		ddmTemplateModel.setMode(mode);
 		ddmTemplateModel.setLanguage(TemplateConstants.LANG_TYPE_FTL);
 		ddmTemplateModel.setScript(script);
-		ddmTemplateModel.setCacheable(true);
+		ddmTemplateModel.setCacheable(false);
+
+		if (templateKey.equals("BASIC-WEB-CONTENT")) {
+			ddmTemplateModel.setCacheable(true);
+		}
+
 		ddmTemplateModel.setSmallImage(false);
 		ddmTemplateModel.setLastPublishDate(nextFutureDate());
 
@@ -6200,6 +7174,52 @@ public class DataFactory {
 
 		return newDlFileEntryModel(
 			dlFolderModel, "TestFile" + index, "txt", ContentTypes.TEXT_PLAIN);
+	}
+
+	protected FragmentEntryLinkModel newFragmentEntryLinkModel(
+		LayoutModel layoutModel, String renderKey, String css, String html,
+		String configuration, String editValue, int position,
+		String nameSpace) {
+
+		FragmentEntryLinkModel fragmentEntryLinkModel =
+			new FragmentEntryLinkModelImpl();
+
+		// UUID
+
+		fragmentEntryLinkModel.setUuid(SequentialUUID.generate());
+
+		// PK fields
+
+		fragmentEntryLinkModel.setFragmentEntryLinkId(_counter.get());
+
+		// Group instance
+
+		fragmentEntryLinkModel.setGroupId(layoutModel.getGroupId());
+
+		// Audit fields
+
+		fragmentEntryLinkModel.setCompanyId(_companyId);
+		fragmentEntryLinkModel.setUserId(_sampleUserId);
+		fragmentEntryLinkModel.setUserName(_SAMPLE_USER_NAME);
+		fragmentEntryLinkModel.setCreateDate(new Date());
+		fragmentEntryLinkModel.setModifiedDate(new Date());
+
+		// Other fields
+
+		fragmentEntryLinkModel.setFragmentEntryId(0);
+		fragmentEntryLinkModel.setClassNameId(getClassNameId(Layout.class));
+		fragmentEntryLinkModel.setClassPK(layoutModel.getPlid());
+		fragmentEntryLinkModel.setPlid(layoutModel.getPlid());
+		fragmentEntryLinkModel.setRendererKey(renderKey);
+		fragmentEntryLinkModel.setConfiguration(configuration);
+		fragmentEntryLinkModel.setCss(css);
+		fragmentEntryLinkModel.setHtml(html);
+		fragmentEntryLinkModel.setConfiguration(configuration);
+		fragmentEntryLinkModel.setEditableValues(editValue);
+		fragmentEntryLinkModel.setNamespace(nameSpace);
+		fragmentEntryLinkModel.setPosition(position);
+
+		return fragmentEntryLinkModel;
 	}
 
 	protected GroupModel newGroupModel(
@@ -6257,6 +7277,119 @@ public class DataFactory {
 		groupModel.setActive(true);
 
 		return groupModel;
+	}
+
+	protected KaleoDefinitionModel newKaleoDefinitionModel(
+		String name, String content, String scope) {
+
+		KaleoDefinitionModel kaleoDefinitionModel =
+			new KaleoDefinitionModelImpl();
+
+		//  PK fields
+
+		kaleoDefinitionModel.setKaleoDefinitionId(_counter.get());
+
+		// Audit fields
+
+		kaleoDefinitionModel.setCompanyId(_companyId);
+		kaleoDefinitionModel.setUserId(_defaultUserId);
+		kaleoDefinitionModel.setUserName(_SAMPLE_USER_NAME);
+		kaleoDefinitionModel.setCreateDate(new Date());
+		kaleoDefinitionModel.setModifiedDate(new Date());
+
+		// Other fields
+
+		kaleoDefinitionModel.setName(name);
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append("<?xml version=\"1.0\"  encoding=\"UTF-8\"?>");
+		sb.append("<root available-locales=\"en_US\" ");
+		sb.append("default-locale=\"en_US\">");
+		sb.append("<title language-id=\"en_US\">");
+		sb.append(name);
+		sb.append("</title></root>");
+
+		kaleoDefinitionModel.setTitle(sb.toString());
+
+		kaleoDefinitionModel.setContent(content);
+		kaleoDefinitionModel.setScope(scope);
+		kaleoDefinitionModel.setVersion(1);
+		kaleoDefinitionModel.setActive(true);
+
+		return kaleoDefinitionModel;
+	}
+
+	protected KaleoNodeModel newKaleoNodeModel(
+			long kaleoDefinitionId, long kaleoDefinitionVersionId, String name,
+			String metadata, String type, boolean initial, boolean terminal)
+		throws Exception {
+
+		KaleoNodeModel kaleoNodeModel = new KaleoNodeModelImpl();
+
+		// PK fields
+
+		kaleoNodeModel.setKaleoNodeId(_counter.get());
+
+		// Audit fields
+
+		kaleoNodeModel.setCompanyId(_companyId);
+		kaleoNodeModel.setUserId(_defaultUserId);
+		kaleoNodeModel.setUserName(_SAMPLE_USER_NAME);
+		kaleoNodeModel.setCreateDate(new Date());
+		kaleoNodeModel.setModifiedDate(new Date());
+
+		// Other fields
+
+		kaleoNodeModel.setKaleoDefinitionId(kaleoDefinitionId);
+		kaleoNodeModel.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
+		kaleoNodeModel.setName(name);
+
+		kaleoNodeModel.setMetadata(metadata);
+		kaleoNodeModel.setType(type);
+		kaleoNodeModel.setInitial(initial);
+		kaleoNodeModel.setTerminal(terminal);
+
+		return kaleoNodeModel;
+	}
+
+	protected KaleoTaskAssignmentModel newKaleoTaskAssignmentModel(
+		KaleoTaskModel kaleoTaskModel, String assigneeClassName,
+		long assigneeClassPK) {
+
+		KaleoTaskAssignmentModel kaleoTaskAssignmentModel =
+			new KaleoTaskAssignmentModelImpl();
+
+		// PK fields
+
+		kaleoTaskAssignmentModel.setKaleoTaskAssignmentId(_counter.get());
+
+		// Audit fields
+
+		kaleoTaskAssignmentModel.setCompanyId(_companyId);
+		kaleoTaskAssignmentModel.setUserId(_defaultUserId);
+		kaleoTaskAssignmentModel.setUserName(_SAMPLE_USER_NAME);
+		kaleoTaskAssignmentModel.setCreateDate(new Date());
+		kaleoTaskAssignmentModel.setModifiedDate(new Date());
+
+		// Other fields
+
+		kaleoTaskAssignmentModel.setKaleoClassName(KaleoTask.class.getName());
+
+		kaleoTaskAssignmentModel.setKaleoClassPK(
+			kaleoTaskModel.getKaleoTaskId());
+
+		kaleoTaskAssignmentModel.setKaleoDefinitionId(
+			kaleoTaskModel.getKaleoDefinitionId());
+
+		kaleoTaskAssignmentModel.setKaleoDefinitionVersionId(
+			kaleoTaskModel.getKaleoDefinitionVersionId());
+
+		kaleoTaskAssignmentModel.setAssigneeClassName(assigneeClassName);
+
+		kaleoTaskAssignmentModel.setAssigneeClassPK(assigneeClassPK);
+
+		return kaleoTaskAssignmentModel;
 	}
 
 	protected LayoutModel newLayoutModel(
@@ -6490,6 +7623,48 @@ public class DataFactory {
 		return mbThreadModel;
 	}
 
+	protected PortalPreferencesModel newPortalPreferencesModel(long ownerId) {
+		PortalPreferencesModel portalPreferencesModel =
+			new PortalPreferencesModelImpl();
+
+		// PK fields
+
+		portalPreferencesModel.setPortalPreferencesId(_counter.get());
+
+		// Audit fields
+
+		portalPreferencesModel.setCompanyId(_companyId);
+
+		// Other fields
+
+		portalPreferencesModel.setOwnerId(ownerId);
+		portalPreferencesModel.setOwnerType(
+			PortletKeys.PREFS_OWNER_TYPE_COMPANY);
+
+		return portalPreferencesModel;
+	}
+
+	protected PortletModel newPortletModel(
+		CompanyModel companyModel, String portletName) {
+
+		PortletModel portletModel = new PortletModelImpl();
+
+		// PK fields
+
+		portletModel.setId(_counter.get());
+
+		// Audit fields
+
+		portletModel.setCompanyId(companyModel.getCompanyId());
+
+		// Other fields
+
+		portletModel.setPortletId(portletName);
+		portletModel.setActive(true);
+
+		return portletModel;
+	}
+
 	protected ReleaseModelImpl newReleaseModel(
 			long releaseId, String servletContextName, String schemaVersion,
 			int buildNumber, boolean verified, String testString)
@@ -6516,6 +7691,86 @@ public class DataFactory {
 		releaseModelImpl.setTestString(testString);
 
 		return releaseModelImpl;
+	}
+
+	protected ResourceActionModel newResourceActionModel(
+		SampleSQLBuilderResourceActionModel
+			sampleSQLBuilderResourceActionModel) {
+
+		ResourceActionModel resourceActionModel = new ResourceActionModelImpl();
+
+		// PK fields
+
+		resourceActionModel.setResourceActionId(_resourceActionIdCounter.get());
+
+		// Other fields
+
+		resourceActionModel.setName(
+			sampleSQLBuilderResourceActionModel.getName());
+		resourceActionModel.setActionId(
+			sampleSQLBuilderResourceActionModel.getActionId());
+		resourceActionModel.setBitwiseValue(
+			Long.valueOf(
+				sampleSQLBuilderResourceActionModel.getBitwiseValue()));
+
+		return resourceActionModel;
+	}
+
+	protected ResourcePermissionModel newResourcePermissionModel(
+		SampleSQLBuilderResourcePermissionModel
+			sampleSQLBuilderResourcePermissionModel) {
+
+		ResourcePermissionModel resourcePermissionModel =
+			new ResourcePermissionModelImpl();
+
+		// PK fields
+
+		resourcePermissionModel.setResourcePermissionId(
+			_resourcePermissionIdCounter.get());
+
+		// Audit fields
+
+		resourcePermissionModel.setCompanyId(_companyId);
+
+		// Other fields
+
+		resourcePermissionModel.setName(
+			sampleSQLBuilderResourcePermissionModel.getName());
+		resourcePermissionModel.setScope(
+			Integer.valueOf(
+				sampleSQLBuilderResourcePermissionModel.getScope()));
+
+		String primKey = sampleSQLBuilderResourcePermissionModel.getPrimKey();
+
+		if (primKey.contains("companyId")) {
+			resourcePermissionModel.setPrimKey(String.valueOf(_companyId));
+			resourcePermissionModel.setPrimKeyId(_companyId);
+		}
+		else if (primKey.contains("userPersonalSiteGroupId")) {
+			resourcePermissionModel.setPrimKey(
+				String.valueOf(_userPersonalSiteGroupModel.getGroupId()));
+			resourcePermissionModel.setPrimKeyId(
+				_userPersonalSiteGroupModel.getGroupId());
+		}
+		else {
+			resourcePermissionModel.setPrimKey(primKey);
+			resourcePermissionModel.setPrimKeyId(
+				Long.valueOf(
+					sampleSQLBuilderResourcePermissionModel.getPrimKeyId()));
+		}
+
+		resourcePermissionModel.setRoleId(
+			_getRoleId(sampleSQLBuilderResourcePermissionModel.getRoleId()));
+		resourcePermissionModel.setOwnerId(
+			Long.valueOf(sampleSQLBuilderResourcePermissionModel.getOwnerId()));
+		resourcePermissionModel.setActionIds(
+			Long.valueOf(
+				sampleSQLBuilderResourcePermissionModel.getActionIds()));
+		resourcePermissionModel.setViewActionId(
+			Boolean.valueOf(
+				sampleSQLBuilderResourcePermissionModel.getViewActionId()));
+
+		return resourcePermissionModel;
 	}
 
 	protected ResourcePermissionModel newResourcePermissionModel(
@@ -6945,10 +8200,190 @@ public class DataFactory {
 		}
 	}
 
+	private String _generateJsonData(
+		List<FragmentEntryLinkModel> fragmentEntryLinkModels,
+		String templateFileName) {
+
+		String data = null;
+
+		try {
+			data = _readFile(templateFileName);
+
+			for (FragmentEntryLinkModel fragmentEntryLinkModel :
+					fragmentEntryLinkModels) {
+
+				String rendererKey = fragmentEntryLinkModel.getRendererKey();
+
+				if (rendererKey.equals(_HEADING_RENDER_KEY)) {
+					data = StringUtil.replace(
+						data, "${headingFragmentEntryLinkId}",
+						String.valueOf(
+							fragmentEntryLinkModel.getFragmentEntryLinkId()));
+				}
+				else if (rendererKey.equals(_PARAGRAPH_RENDER_KEY)) {
+					data = StringUtil.replace(
+						data, "${paragraphFragmentEntryLinkId}",
+						String.valueOf(
+							fragmentEntryLinkModel.getFragmentEntryLinkId()));
+				}
+				else {
+					data = StringUtil.replace(
+						data, "${imageFragmentEntryLinkId}",
+						String.valueOf(
+							fragmentEntryLinkModel.getFragmentEntryLinkId()));
+				}
+			}
+		}
+		catch (Exception exception) {
+			exception.printStackTrace();
+		}
+
+		return data;
+	}
+
+	private List<String> _getAssignmentsData(
+			String content, String parentElementName, String elementName)
+		throws Exception {
+
+		List<String> assignmentsDatas = new ArrayList<>();
+
+		Document document = UnsecureSAXReaderUtil.read(content);
+
+		Element rootElement = document.getRootElement();
+
+		List<Element> elements = rootElement.elements(parentElementName);
+
+		for (Element element : elements) {
+			String name = element.elementTextTrim("name");
+
+			if (name.equals(elementName)) {
+				List<Element> assignmentsElements = element.elements(
+					"assignments");
+
+				for (Element assignmentElement : assignmentsElements) {
+					if (elementName.equals("review")) {
+						List<Element> rolesElements =
+							assignmentElement.elements("roles");
+
+						for (Element rolesElement : rolesElements) {
+							List<Element> roleElements = rolesElement.elements(
+								"role");
+
+							for (Element roleElement : roleElements) {
+								assignmentsDatas.add(
+									roleElement.elementTextTrim("name"));
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return assignmentsDatas;
+	}
+
+	private List<Element> _getDDMStructures(
+			InputStream inputStream, Locale locale)
+		throws Exception {
+
+		String xml = StringUtil.read(inputStream);
+
+		xml = StringUtil.replace(xml, "[$LOCALE_DEFAULT$]", locale.toString());
+
+		Document document = UnsecureSAXReaderUtil.read(xml);
+
+		Element rootElement = document.getRootElement();
+
+		return rootElement.elements("structure");
+	}
+
+	private InputStream _getFragmentComponentInputStream(
+			String fragmentName, String suffix)
+		throws Exception {
+
+		Class<?> clazz = getClass();
+
+		ClassLoader classLoader = clazz.getClassLoader();
+
+		URL url = classLoader.getResource(
+			StringBundler.concat(
+				"com/liferay/fragment/collection/contributor/basic/component",
+				"/dependencies/", fragmentName, "/index.", suffix));
+
+		return url.openStream();
+	}
+
 	private String _getMBDiscussionCombinedClassName(Class<?> clazz) {
 		return StringBundler.concat(
 			MBDiscussion.class.getName(), StringPool.UNDERLINE,
 			clazz.getName());
+	}
+
+	private String _getMetaData(
+			String content, String parentElementName, String elementName)
+		throws Exception {
+
+		String metaData = "";
+
+		Document document = UnsecureSAXReaderUtil.read(content);
+
+		Element rootElement = document.getRootElement();
+
+		List<Element> elements = rootElement.elements(parentElementName);
+
+		for (Element element : elements) {
+			String name = element.elementTextTrim("name");
+
+			if (name.equals(elementName)) {
+				metaData = element.elementTextTrim("metadata");
+
+				break;
+			}
+		}
+
+		return metaData;
+	}
+
+	private List<DDMFormField> _getPopulateDDMFormFields(
+		List<DDMFormField> ddmFormFields, Locale defaultLocale) {
+
+		for (DDMFormField ddmFormField : ddmFormFields) {
+			DDMFormFieldOptions ddmFormFieldOptions =
+				ddmFormField.getDDMFormFieldOptions();
+
+			Map<String, LocalizedValue> options =
+				ddmFormFieldOptions.getOptions();
+
+			for (Map.Entry<String, LocalizedValue> entry : options.entrySet()) {
+				options.put(
+					entry.getKey(),
+					_getPopulateLocalizedValue(
+						defaultLocale, entry.getValue()));
+			}
+
+			ddmFormField.setDDMFormFieldOptions(ddmFormFieldOptions);
+			ddmFormField.setLabel(
+				_getPopulateLocalizedValue(
+					defaultLocale, ddmFormField.getLabel()));
+			ddmFormField.setNestedDDMFormFields(
+				_getPopulateDDMFormFields(
+					ddmFormField.getNestedDDMFormFields(), defaultLocale));
+			ddmFormField.setTip(
+				_getPopulateLocalizedValue(
+					defaultLocale, ddmFormField.getTip()));
+		}
+
+		return ddmFormFields;
+	}
+
+	private LocalizedValue _getPopulateLocalizedValue(
+		Locale defaultLocale, LocalizedValue localizedValue) {
+
+		String defaultValue = localizedValue.getString(defaultLocale);
+
+		localizedValue.addString(defaultLocale, defaultValue);
+
+		return localizedValue;
 	}
 
 	private String _getResourcePermissionModelName(String... classNames) {
@@ -6970,6 +8405,154 @@ public class DataFactory {
 		return sb.toString();
 	}
 
+	private long _getRoleId(String roleIdTemplate) {
+		long roleId = 0;
+
+		if (roleIdTemplate.contains("Administrator")) {
+			roleId = _administratorRoleModel.getRoleId();
+		}
+
+		if (roleIdTemplate.contains("Account Manager")) {
+			roleId = _accountManagerRoleModel.getRoleId();
+		}
+
+		if (roleIdTemplate.contains("Guest")) {
+			roleId = _guestRoleModel.getRoleId();
+		}
+
+		if (roleIdTemplate.contains("Owner")) {
+			roleId = _ownerRoleModel.getRoleId();
+		}
+
+		if (roleIdTemplate.contains("Power User")) {
+			roleId = _powerUserRoleModel.getRoleId();
+		}
+
+		if (roleIdTemplate.contains("Site Member")) {
+			roleId = _siteMemberRoleModel.getRoleId();
+		}
+
+		if (roleIdTemplate.contains("User") &&
+			!roleIdTemplate.contains("Power User")) {
+
+			roleId = _userRoleModel.getRoleId();
+		}
+
+		return roleId;
+	}
+
+	private void _getScriptAbsolutePath(
+		File baseDir, String ftlName, StringBundler sb) {
+
+		if (!baseDir.exists() || !baseDir.isDirectory()) {
+			return;
+		}
+
+		try {
+			Files.walkFileTree(
+				baseDir.toPath(),
+				new SimpleFileVisitor<Path>() {
+
+					@Override
+					public FileVisitResult preVisitDirectory(
+							Path path, BasicFileAttributes basicFileAttributes)
+						throws IOException {
+
+						String fileName = String.valueOf(path.getFileName());
+
+						if (_isSkip(fileName) || fileName.contains("test")) {
+							return FileVisitResult.SKIP_SUBTREE;
+						}
+
+						return FileVisitResult.CONTINUE;
+					}
+
+					@Override
+					public FileVisitResult visitFile(
+							Path path, BasicFileAttributes basicFileAttributes)
+						throws IOException {
+
+						if (path.endsWith(ftlName)) {
+							sb.append(path);
+						}
+
+						return FileVisitResult.CONTINUE;
+					}
+
+				});
+		}
+		catch (IOException ioException) {
+		}
+	}
+
+	private boolean _isSkip(String fileName) {
+		if (fileName.startsWith(".") ||
+			_skipModuleFileNames.contains(fileName)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private LayoutModel _newContentPageLayoutModel(
+		long groupId, String name, long classNameId, long classPK) {
+
+		SimpleCounter simpleCounter = _layoutIdCounters.computeIfAbsent(
+			LayoutLocalServiceImpl.getCounterName(groupId, false),
+			counterName -> new SimpleCounter());
+
+		LayoutModel layoutModel = new LayoutModelImpl();
+
+		// UUID
+
+		layoutModel.setUuid(SequentialUUID.generate());
+
+		// PK fields
+
+		layoutModel.setPlid(_layoutPlidCounter.get());
+
+		// Group instance
+
+		layoutModel.setGroupId(groupId);
+
+		// Audit fields
+
+		layoutModel.setCompanyId(_companyId);
+		layoutModel.setUserId(_sampleUserId);
+		layoutModel.setUserName(_SAMPLE_USER_NAME);
+		layoutModel.setCreateDate(new Date());
+		layoutModel.setModifiedDate(new Date());
+
+		// Other fields
+
+		layoutModel.setLayoutId(simpleCounter.get());
+		layoutModel.setName(
+			"<?xml version=\"1.0\"?><root><name>" + name + "</name></root>");
+		layoutModel.setType(LayoutConstants.TYPE_CONTENT);
+		layoutModel.setFriendlyURL(StringPool.FORWARD_SLASH + name);
+		layoutModel.setClassNameId(classNameId);
+		layoutModel.setClassPK(classPK);
+
+		if (classNameId != 0) {
+			layoutModel.setHidden(true);
+			layoutModel.setSystem(true);
+		}
+
+		UnicodeProperties typeSettingsUnicodeProperties = new UnicodeProperties(
+			true);
+
+		typeSettingsUnicodeProperties.setProperty("published", "true");
+
+		layoutModel.setTypeSettings(
+			StringUtil.replace(
+				typeSettingsUnicodeProperties.toString(), '\n', "\\n"));
+
+		layoutModel.setLastPublishDate(new Date());
+
+		return layoutModel;
+	}
+
 	private CounterModel _newCounterModel(String name, long currentId) {
 		CounterModel counterModel = new CounterModelImpl();
 
@@ -6979,12 +8562,119 @@ public class DataFactory {
 		return counterModel;
 	}
 
-	private String _readFile(String resourceName) throws Exception {
+	private void _processDDMTemplateScript() throws Exception {
+		String rootModulePath = "";
+
+		Class<?> clazz = getClass();
+
+		String classLoaderStr = String.valueOf(clazz.getClassLoader());
+
+		String userDir = System.getProperty("user.dir");
+
+		if (classLoaderStr.contains("AppClassLoader")) {
+			rootModulePath = userDir.substring(0, userDir.indexOf("util"));
+		}
+		else {
+			rootModulePath =
+				userDir.substring(0, userDir.indexOf("benchmarks")) + "modules";
+		}
+
+		for (Map.Entry<String, String> entry :
+				_ddmTemplateScriptNameMap.entrySet()) {
+
+			StringBundler sb1 = new StringBundler();
+
+			_getScriptAbsolutePath(
+				new File(rootModulePath), entry.getValue(), sb1);
+
+			InputStream inputStream = new FileInputStream(
+				new File(sb1.toString()));
+
+			String value = StringUtil.read(inputStream);
+
+			value = value.replaceAll(StringPool.QUOTE, "\\\\\"");
+
+			value = value.replaceAll(StringPool.APOSTROPHE, "\\\\\'");
+
+			StringBundler sb2 = new StringBundler();
+
+			_processScript(value, sb2);
+
+			_ddmTemplateScriptMap.put(entry.getKey(), sb2.toString());
+		}
+	}
+
+	private void _processListtoMap(
+		List<String> lines, Map<String, String> map) {
+
+		for (String line : lines) {
+			String[] items = line.split(",");
+
+			map.put(items[0], items[1]);
+		}
+	}
+
+	private void _processListtoMap(
+		List<String> lines, Map<String, String> map, String columnName,
+		String separator) {
+
+		for (String line : lines) {
+			String[] items = line.split(separator);
+
+			map.put(
+				items[0].substring(12),
+				items[1].substring(columnName.length() + 1));
+		}
+	}
+
+	private void _processScript(String script, StringBundler sb) {
+		char[] scriptArray = script.toCharArray();
+
+		for (char item : scriptArray) {
+			if (item == CharPool.NEW_LINE) {
+				sb.append("\\n");
+			}
+			else {
+				sb.append(item);
+			}
+		}
+	}
+
+	private String _readFile(InputStream inputStream) throws Exception {
 		List<String> lines = new ArrayList<>();
 
-		StringUtil.readLines(getResourceInputStream(resourceName), lines);
+		StringUtil.readLines(inputStream, lines);
 
 		return StringUtil.merge(lines, StringPool.SPACE);
+	}
+
+	private String _readFile(String resourceName) throws Exception {
+		return _readFile(getResourceInputStream(resourceName));
+	}
+
+	private void _readFiletoList(String fileName, List<String> lines)
+		throws Exception {
+
+		try (UnsyncBufferedReader unsyncBufferedReader =
+				new UnsyncBufferedReader(
+					new InputStreamReader(getResourceInputStream(fileName)))) {
+
+			String line = null;
+
+			while ((line = unsyncBufferedReader.readLine()) != null) {
+				lines.add(line);
+			}
+		}
+	}
+
+	private String _replaceReleaseInfo(String resource) throws Exception {
+		StringBundler sb = new StringBundler(3);
+
+		sb.append("Welcome to");
+		sb.append(ReleaseInfo.getReleaseInfo());
+		sb.append(StringPool.PERIOD);
+
+		return StringUtil.replace(resource, "${paragraphValue}", sb.toString());
 	}
 
 	private static final long _CURRENT_TIME = System.currentTimeMillis();
@@ -6998,7 +8688,14 @@ public class DataFactory {
 	private static final long _FUTURE_TIME =
 		System.currentTimeMillis() + Time.YEAR;
 
+	private static final String _HEADING_RENDER_KEY = "BASIC_COMPONENT-heading";
+
+	private static final String _IMAGE_RENDER_KEY = "BASIC_COMPONENT-image";
+
 	private static final String _JOURNAL_STRUCTURE_KEY = "BASIC-WEB-CONTENT";
+
+	private static final String _PARAGRAPH_RENDER_KEY =
+		"BASIC_COMPONENT-paragraph";
 
 	private static final String _SAMPLE_USER_NAME = "Sample";
 
@@ -7006,14 +8703,20 @@ public class DataFactory {
 
 	private static final PortletPreferencesFactory _portletPreferencesFactory =
 		new PortletPreferencesFactoryImpl();
+	private static final List<String> _skipModuleFileNames = Arrays.asList(
+		"aspectj", "build", "classes", "core", "etl", "node_modules",
+		"node_modules_cache", "post-upgrade-fix", "sdk", "suites",
+		"third-party", "test");
 
-	private final long _accountId;
+	private long _accountId;
+	private RoleModel _accountManagerRoleModel;
 	private RoleModel _administratorRoleModel;
 	private Map<Long, SimpleCounter>[] _assetCategoryCounters;
 	private final Map<Long, List<AssetCategoryModel>>[]
 		_assetCategoryModelsMaps =
-			(Map<Long, List<AssetCategoryModel>>[])
-				new HashMap<?, ?>[BenchmarksPropsValues.MAX_GROUP_COUNT];
+			(Map<Long, List<AssetCategoryModel>>[])new HashMap<?, ?>
+				[(BenchmarksPropsValues.MAX_VIRTUAL_INSTANCE_COUNT + 1) *
+					BenchmarksPropsValues.MAX_GROUP_COUNT];
 	private final long[] _assetClassNameIds;
 	private final Map<Long, Integer> _assetClassNameIdsIndexes =
 		new HashMap<>();
@@ -7021,13 +8724,30 @@ public class DataFactory {
 		new HashMap<>();
 	private Map<Long, SimpleCounter>[] _assetTagCounters;
 	private final Map<Long, List<AssetTagModel>>[] _assetTagModelsMaps =
-		(Map<Long, List<AssetTagModel>>[])
-			new HashMap<?, ?>[BenchmarksPropsValues.MAX_GROUP_COUNT];
+		(Map<Long, List<AssetTagModel>>[])new HashMap<?, ?>
+			[(BenchmarksPropsValues.MAX_VIRTUAL_INSTANCE_COUNT + 1) *
+				BenchmarksPropsValues.MAX_GROUP_COUNT];
 	private final Map<String, ClassNameModel> _classNameModels =
 		new HashMap<>();
-	private final long _companyId;
+	private long _companyId;
 	private final SimpleCounter _counter;
 	private final Map<Long, CPInstanceModel> _cpInstanceModels =
+		new HashMap<>();
+	private final Map<String, String> _ddmStructureClassNameMap =
+		new HashMap<>();
+	private final Map<String, String> _ddmStructureDefinitionMap =
+		new HashMap<>();
+	private final Map<String, String> _ddmStructureLayoutDefinitionMap =
+		new HashMap<>();
+	private final List<SampleSQLBuilderDDMStructureModel>
+		_ddmStructureModelList = new ArrayList<>();
+	private final Map<String, String> _ddmTemplateClassNameMap =
+		new HashMap<>();
+	private final List<SampleSQLBuilderDDMTemplateModel> _ddmTemplateModelList =
+		new ArrayList<>();
+	private final Map<String, String> _ddmTemplateNameMap = new HashMap<>();
+	private final Map<String, String> _ddmTemplateScriptMap = new HashMap<>();
+	private final Map<String, String> _ddmTemplateScriptNameMap =
 		new HashMap<>();
 	private final PortletPreferencesImpl
 		_defaultAssetPublisherPortletPreferencesImpl;
@@ -7042,6 +8762,7 @@ public class DataFactory {
 	private List<String> _firstNames;
 	private final SimpleCounter _futureDateCounter;
 	private long _globalGroupId;
+	private final SimpleCounter _groupCounter;
 	private long _guestGroupId;
 	private RoleModel _guestRoleModel;
 	private String _journalArticleContent;
@@ -7049,22 +8770,33 @@ public class DataFactory {
 		new HashMap<>();
 	private final String _journalDDMStructureContent;
 	private final String _journalDDMStructureLayoutContent;
+	private final Map<String, RoleModel> _kaleoTaskAssignmentRoleModels =
+		new HashMap<>();
 	private List<String> _lastNames;
 	private final Map<String, SimpleCounter> _layoutIdCounters =
 		new HashMap<>();
 	private final String _layoutPageTemplateStructureRelData;
 	private final SimpleCounter _layoutPlidCounter;
 	private final SimpleCounter _layoutSetIdCounter;
+	private String _mbKaleoDefinitionContent;
 	private RoleModel _ownerRoleModel;
 	private final SimpleCounter _portletPreferenceValueIdCounter;
+	private final List<SampleSQLBuilderResourcePermissionModel>
+		_portletResourcePermissionModelList = new ArrayList<>();
 	private RoleModel _powerUserRoleModel;
+	private final SimpleCounter _resourceActionIdCounter;
+	private final List<SampleSQLBuilderResourceActionModel>
+		_resourceActionModelList = new ArrayList<>();
 	private final SimpleCounter _resourcePermissionIdCounter;
 	private long _sampleUserId;
 	private final Format _simpleDateFormat;
+	private String _singleApproverKaleoDefinitionContent;
 	private RoleModel _siteMemberRoleModel;
 	private final SimpleCounter _socialActivityIdCounter;
 	private final SimpleCounter _timeCounter;
+	private GroupModel _userPersonalSiteGroupModel;
 	private RoleModel _userRoleModel;
 	private final SimpleCounter _userScreenNameCounter;
+	private String _webId;
 
 }

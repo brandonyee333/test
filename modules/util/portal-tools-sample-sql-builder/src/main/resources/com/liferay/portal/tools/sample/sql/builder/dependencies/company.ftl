@@ -1,9 +1,78 @@
-<#assign companyModel = dataFactory.newCompanyModel() />
+<#list dataFactory.newResourceActionModels() as resourceActionModel>
+	${dataFactory.toInsertSQL(resourceActionModel)}
+</#list>
 
-${dataFactory.toInsertSQL(companyModel)}
+<#list dataFactory.newCompanyModels() as companyModel>
+	${dataFactory.setCompanyId(companyModel.companyId)}
 
-${dataFactory.toInsertSQL(dataFactory.newAccountModel())}
+	${dataFactory.setAccountId(companyModel.accountId)}
 
-${dataFactory.toInsertSQL(dataFactory.newVirtualHostModel())}
+	${dataFactory.setWebId(companyModel.webId)}
 
-${csvFileWriter.write("company", companyModel.companyId + "\n")}
+	<#assign virtualHostModel = dataFactory.newVirtualHostModel() />
+
+	${dataFactory.toInsertSQL(companyModel)}
+
+	${dataFactory.toInsertSQL(dataFactory.newAccountModel())}
+
+	${dataFactory.toInsertSQL(virtualHostModel)}
+
+	<#list dataFactory.newPortalPreferencesModels() as portalPreferencesModel>
+		${dataFactory.toInsertSQL(portalPreferencesModel)}
+	</#list>
+
+	${csvFileWriter.write("company", companyModel.companyId + "\n")}
+
+	<#list dataFactory.newPortletModels(companyModel) as portletModel>
+		${dataFactory.toInsertSQL(portletModel)}
+	</#list>
+
+	<#include "roles.ftl">
+
+	<#include "groups.ftl">
+
+	<#list dataFactory.newResourcePermissionModels() as resourcePermissionModel>
+		${dataFactory.toInsertSQL(resourcePermissionModel)}
+	</#list>
+
+	<#list dataFactory.newDDMStructureModels() as ddmStructureModel>
+		${dataFactory.toInsertSQL(ddmStructureModel)}
+
+		<#assign ddmStructureVersionModel = dataFactory.newDDMStructureVersionModel(ddmStructureModel) />
+
+		${dataFactory.toInsertSQL(ddmStructureVersionModel)}
+
+		${dataFactory.toInsertSQL(dataFactory.newDDMStructureLayoutModel(ddmStructureModel, ddmStructureVersionModel))}
+	</#list>
+
+	<#list dataFactory.newDDMTemplateModels() as ddmTemplateModel>
+		${dataFactory.toInsertSQL(ddmTemplateModel)}
+
+		${dataFactory.toInsertSQL(dataFactory.newDDMTemplateVersionModel(ddmTemplateModel))}
+	</#list>
+
+	<#list dataFactory.newKaleoDefinitionModels() as kaleoDefinitionModel>
+		${dataFactory.toInsertSQL(kaleoDefinitionModel)}
+
+		<#assign
+			startKaleoNodeModel = dataFactory.newStartKaleoNodeModel(kaleoDefinitionModel)
+			kaleoDefinitionVersionModel = dataFactory.newKaleoDefinitionVersionModel(kaleoDefinitionModel, startKaleoNodeModel)
+		/>
+
+		${dataFactory.toInsertSQL(startKaleoNodeModel)}
+
+		${dataFactory.toInsertSQL(kaleoDefinitionVersionModel)}
+
+		<#list dataFactory.newKaleoNodeModels(kaleoDefinitionModel, kaleoDefinitionVersionModel) as kaleoNodeModel>
+			${dataFactory.toInsertSQL(kaleoNodeModel)}
+
+			<#assign kaleoTaskModel = dataFactory.newKaleoTaskModel(kaleoNodeModel) />
+
+			${dataFactory.toInsertSQL(kaleoTaskModel)}
+
+			<#list dataFactory.newKaleoTaskAssignmentModels(kaleoTaskModel, kaleoDefinitionModel) as kaleoTaskAssignmentModel>
+				${dataFactory.toInsertSQL(kaleoTaskAssignmentModel)}
+			</#list>
+		</#list>
+	</#list>
+</#list>
