@@ -73,7 +73,7 @@ public class Session implements Serializable {
 		String canonicalUrl = eventContext.get("canonicalUrl");
 
 		if (canonicalUrl != null) {
-			_canonicalUrls.add(canonicalUrl);
+			_addUnique(_canonicalUrls, canonicalUrl);
 		}
 
 		_events.add(event);
@@ -93,13 +93,13 @@ public class Session implements Serializable {
 		String referrer = eventContext.get("referrer");
 
 		if (referrer != null) {
-			_referrers.add(referrer);
+			_addUnique(_referrers, referrer);
 		}
 
 		String url = eventContext.get("url");
 
 		if (url != null) {
-			_urls.add(url);
+			_addUnique(_urls, url);
 		}
 	}
 
@@ -151,8 +151,6 @@ public class Session implements Serializable {
 	}
 
 	public List<String> getCanonicalUrls() {
-		_removeDuplicatedItems(_canonicalUrls);
-
 		return _canonicalUrls;
 	}
 
@@ -237,8 +235,6 @@ public class Session implements Serializable {
 	}
 
 	public List<String> getReferrers() {
-		_removeDuplicatedItems(_referrers);
-
 		return _referrers;
 	}
 
@@ -251,8 +247,6 @@ public class Session implements Serializable {
 	}
 
 	public List<String> getUrls() {
-		_removeDuplicatedItems(_urls);
-
 		return _urls;
 	}
 
@@ -380,10 +374,13 @@ public class Session implements Serializable {
 		_userId = userId;
 	}
 
-	private void _removeDuplicatedItems(List<String> list) {
+	private void _addUnique(List<String> list, String element) {
 		Set<String> set = new HashSet<>(list);
 
+		set.add(element);
+
 		list.clear();
+
 		list.addAll(set);
 	}
 
