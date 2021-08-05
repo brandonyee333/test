@@ -22,11 +22,9 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -375,13 +373,9 @@ public class Session implements Serializable {
 	}
 
 	private void _addUnique(List<String> list, String element) {
-		Set<String> set = new HashSet<>(list);
-
-		set.add(element);
-
-		list.clear();
-
-		list.addAll(set);
+		if (!list.contains(element)) {
+			list.add(element);
+		}
 	}
 
 	private String _browserName;
