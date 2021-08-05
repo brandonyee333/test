@@ -20,6 +20,8 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -47,35 +49,35 @@ public class DDMFormInstanceFactoryTest {
 			DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
 				"boolean", Boolean.toString(expectedBooleanValue)));
 
-		double expectedDoubleValue = 2.5d;
+		double expectedDoubleValue = 2.5D;
 
 		primitiveTypesDDMFormFieldValue.addNestedDDMFormFieldValue(
 			DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
-				"double", Double.toString(expectedDoubleValue)));
+				"double", String.valueOf(expectedDoubleValue)));
 
-		float expectedFloatValue = 3.5f;
+		float expectedFloatValue = 3.5F;
 
 		primitiveTypesDDMFormFieldValue.addNestedDDMFormFieldValue(
 			DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
-				"float", Float.toString(expectedFloatValue)));
+				"float", String.valueOf(expectedFloatValue)));
 
 		int expectedIntegerValue = 2015;
 
 		primitiveTypesDDMFormFieldValue.addNestedDDMFormFieldValue(
 			DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
-				"integer", Integer.toString(expectedIntegerValue)));
+				"integer", String.valueOf(expectedIntegerValue)));
 
 		long expectedLongValue = 1000L;
 
 		primitiveTypesDDMFormFieldValue.addNestedDDMFormFieldValue(
 			DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
-				"long", Long.toString(expectedLongValue)));
+				"long", String.valueOf(expectedLongValue)));
 
 		short expectedShortValue = 5;
 
 		primitiveTypesDDMFormFieldValue.addNestedDDMFormFieldValue(
 			DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
-				"short", Short.toString(expectedShortValue)));
+				"short", String.valueOf(expectedShortValue)));
 
 		String expectedStringValue = "Frank Sinatra";
 
@@ -209,7 +211,9 @@ public class DDMFormInstanceFactoryTest {
 				dynamicFormWithRepeatablePrimitiveArrayTypesFieldSet.
 					primitiveArrayTypes();
 
-		Assert.assertEquals(2, dynamicFormWithPrimitiveArrayTypes.length);
+		Assert.assertEquals(
+			Arrays.toString(dynamicFormWithPrimitiveArrayTypes), 2,
+			dynamicFormWithPrimitiveArrayTypes.length);
 
 		Assert.assertArrayEquals(
 			new Boolean[] {true, false},
@@ -240,35 +244,35 @@ public class DDMFormInstanceFactoryTest {
 			DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
 				"boolean", Boolean.toString(expectedBooleanValue)));
 
-		double expectedDoubleValue = 2.5d;
+		double expectedDoubleValue = 2.5D;
 
 		ddmFormValues.addDDMFormFieldValue(
 			DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
-				"double", Double.toString(expectedDoubleValue)));
+				"double", String.valueOf(expectedDoubleValue)));
 
-		float expectedFloatValue = 3.5f;
+		float expectedFloatValue = 3.5F;
 
 		ddmFormValues.addDDMFormFieldValue(
 			DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
-				"float", Float.toString(expectedFloatValue)));
+				"float", String.valueOf(expectedFloatValue)));
 
 		int expectedIntegerValue = 2015;
 
 		ddmFormValues.addDDMFormFieldValue(
 			DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
-				"integer", Integer.toString(expectedIntegerValue)));
+				"integer", String.valueOf(expectedIntegerValue)));
 
 		long expectedLongValue = 1000L;
 
 		ddmFormValues.addDDMFormFieldValue(
 			DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
-				"long", Long.toString(expectedLongValue)));
+				"long", String.valueOf(expectedLongValue)));
 
 		short expectedShortValue = 5;
 
 		ddmFormValues.addDDMFormFieldValue(
 			DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
-				"short", Short.toString(expectedShortValue)));
+				"short", String.valueOf(expectedShortValue)));
 
 		String expectedStringValue = "Frank Sinatra";
 
@@ -310,18 +314,18 @@ public class DDMFormInstanceFactoryTest {
 			{"Parameter 1", "Value 1"}, {"Parameter 2", "Value 2"}
 		};
 
-		for (int i = 0; i < expectedParameters.length; i++) {
+		for (String[] expectedParameter : expectedParameters) {
 			DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
 
 			ddmFormFieldValue.setName("parameters");
 
 			ddmFormFieldValue.addNestedDDMFormFieldValue(
 				DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
-					"name", expectedParameters[i][0]));
+					"name", expectedParameter[0]));
 
 			ddmFormFieldValue.addNestedDDMFormFieldValue(
 				DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
-					"value", expectedParameters[i][1]));
+					"value", expectedParameter[1]));
 
 			ddmFormValues.addDDMFormFieldValue(ddmFormFieldValue);
 		}

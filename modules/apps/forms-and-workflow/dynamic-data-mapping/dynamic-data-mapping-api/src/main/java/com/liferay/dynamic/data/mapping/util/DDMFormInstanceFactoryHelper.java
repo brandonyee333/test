@@ -33,7 +33,7 @@ import java.util.Map;
 
 /**
  * @author     Marcellus Tavares
- * @deprecated As of 3.5.0, with no direct replacement
+ * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
  */
 @Deprecated
 public class DDMFormInstanceFactoryHelper {
