@@ -121,7 +121,7 @@ public class UserSessionNaniteTest {
 			userSessionJSONObject.getString("entryPage"));
 		Assert.assertNotNull(
 			"Modified date was not added to user session",
-			userSessionJSONObject.optString("dateModified"));
+			userSessionJSONObject.optString("modifiedDate"));
 	}
 
 	@ElasticsearchIndex(
@@ -173,7 +173,7 @@ public class UserSessionNaniteTest {
 		JSONObject userSessionJSONObject = userSessionsJSONArray.getJSONObject(
 			0);
 
-		String dateModified = userSessionJSONObject.getString("dateModified");
+		String modifiedDate = userSessionJSONObject.getString("modifiedDate");
 
 		_userSessionNanite.run();
 
@@ -185,7 +185,7 @@ public class UserSessionNaniteTest {
 
 		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
 		Assert.assertNotEquals(
-			dateModified, userSessionJSONObject.getString("dateModified"));
+			modifiedDate, userSessionJSONObject.getString("modifiedDate"));
 	}
 
 	@ElasticsearchIndex(
@@ -204,7 +204,7 @@ public class UserSessionNaniteTest {
 		JSONObject userSessionJSONObject = userSessionsJSONArray.getJSONObject(
 			0);
 
-		String dateModified = userSessionJSONObject.getString("dateModified");
+		String modifiedDate = userSessionJSONObject.getString("modifiedDate");
 
 		_userSessionNanite.run();
 
@@ -217,7 +217,7 @@ public class UserSessionNaniteTest {
 		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
 		Assert.assertFalse(userSessionJSONObject.getBoolean("completed"));
 		Assert.assertNotEquals(
-			dateModified, userSessionJSONObject.getString("dateModified"));
+			modifiedDate, userSessionJSONObject.getString("modifiedDate"));
 	}
 
 	@ElasticsearchIndex(
@@ -236,7 +236,7 @@ public class UserSessionNaniteTest {
 		JSONObject userSessionJSONObject = userSessionsJSONArray.getJSONObject(
 			0);
 
-		String dateModified = userSessionJSONObject.getString("dateModified");
+		String modifiedDate = userSessionJSONObject.getString("modifiedDate");
 
 		_userSessionNanite.run();
 
@@ -248,7 +248,7 @@ public class UserSessionNaniteTest {
 
 		Assert.assertTrue(userSessionJSONObject.getBoolean("bounced"));
 		Assert.assertNotEquals(
-			dateModified, userSessionJSONObject.getString("dateModified"));
+			modifiedDate, userSessionJSONObject.getString("modifiedDate"));
 		Assert.assertEquals(
 			"0cbc8e60-99cd-11e9-9129-a75b6df1b957",
 			userSessionJSONObject.getString("userId"));

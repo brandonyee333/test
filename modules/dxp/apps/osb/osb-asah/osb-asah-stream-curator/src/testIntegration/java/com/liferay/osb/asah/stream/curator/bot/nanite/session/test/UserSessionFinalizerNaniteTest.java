@@ -256,12 +256,12 @@ public class UserSessionFinalizerNaniteTest {
 		JSONObject userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", "366909399944215919");
 
-		String dateModified1 = userSessionJSONObject.getString("dateModified");
+		String modifiedDate1 = userSessionJSONObject.getString("modifiedDate");
 
 		userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", "366909399944215920");
 
-		String dateModified2 = userSessionJSONObject.getString("dateModified");
+		String modifiedDate2 = userSessionJSONObject.getString("modifiedDate");
 
 		_userSessionFinalizerNanite.run();
 
@@ -269,13 +269,13 @@ public class UserSessionFinalizerNaniteTest {
 			"user-sessions", "366909399944215919");
 
 		Assert.assertNotNull(userSessionJSONObject);
-		Assert.assertNotEquals(
-			dateModified1, userSessionJSONObject.getString("dateModified"));
 		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
 		Assert.assertEquals(43994000, userSessionJSONObject.getInt("duration"));
 		Assert.assertEquals(
 			"http://192.168.108.90:8089/page1",
 			userSessionJSONObject.getString("exitPage"));
+		Assert.assertNotEquals(
+			modifiedDate1, userSessionJSONObject.getString("modifiedDate"));
 
 		JSONArray pagesJSONArray = new JSONArray(
 			_elasticsearchInvoker.get(
@@ -308,9 +308,9 @@ public class UserSessionFinalizerNaniteTest {
 			"user-sessions", "366909399944215920");
 
 		Assert.assertNotNull(userSessionJSONObject);
-		Assert.assertEquals(
-			dateModified2, userSessionJSONObject.getString("dateModified"));
 		Assert.assertEquals(0, userSessionJSONObject.getInt("duration"));
+		Assert.assertEquals(
+			modifiedDate2, userSessionJSONObject.getString("modifiedDate"));
 
 		userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", "366909399944215921");
