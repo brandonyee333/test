@@ -14,19 +14,15 @@
 
 package com.liferay.osb.asah.upgrade.v3_0_0;
 
-import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 
@@ -110,54 +106,7 @@ public class UserSessionsUpgradeStep implements UpgradeStep {
 			BoolQueryBuilderUtil.mustNot(
 				QueryBuilders.existsQuery("contentLanguageId"))
 		).iterate();
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("completed", true)
-		).mustNot(
-			QueryBuilders.existsQuery("dateModified")
-		).mustNot(
-			QueryBuilders.termQuery("finalized", true)
-		);
-
-		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
-			"SessionNanite", WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
-
-		if (asahMarker != null) {
-			JSONObject asahMarkerContextJSONObject =
-				asahMarker.getContextJSONObject();
-
-			boolQueryBuilder.filter(
-				QueryBuilders.rangeQuery(
-					"completeDate"
-				).lt(
-					asahMarkerContextJSONObject.optString(
-						"lastSuccessfulSessionFinalizerDate", "now-30m")
-				));
-		}
-
-		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-			_cerebroInfoElasticsearchInvoker.
-				createElasticsearchBulkRequestBuilder();
-
-		JSONArrayIterator.of(
-			"user-sessions", _cerebroInfoElasticsearchInvoker,
-			userSessionJSONObject -> elasticsearchBulkRequestBuilder.update(
-				"user-sessions",
-				JSONUtil.put(
-					"dateModified",
-					userSessionJSONObject.getString("completeDate")
-				).put(
-					"finalized", true
-				).put(
-					"id", userSessionJSONObject.getString("id")
-				))
-		).setQueryBuilder(
-			boolQueryBuilder
-		).iterate();
 	}
-
-	@Autowired
-	private AsahMarkerDog _asahMarkerDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
