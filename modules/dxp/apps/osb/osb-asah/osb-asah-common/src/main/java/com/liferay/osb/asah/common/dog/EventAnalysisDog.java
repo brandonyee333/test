@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
+import com.liferay.osb.asah.common.model.DateGrouping;
 import com.liferay.osb.asah.common.model.EventAnalysis;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
 
@@ -289,7 +291,26 @@ public class EventAnalysisDog {
 
 		Function<Field, Field> fieldFunction = null;
 
-		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
+		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
+			DateGrouping dateGrouping =
+				eventAnalysisBreakdown.getDateGrouping();
+
+			if (dateGrouping.equals(DateGrouping.DAY)) {
+				fieldFunction = field -> DSL.concat(
+					DSL.extract(field, DatePart.YEAR), DSL.val("-"),
+					DSL.extract(field, DatePart.MONTH), DSL.val("-"),
+					DSL.extract(field, DatePart.DAY));
+			}
+			else if (dateGrouping.equals(DateGrouping.MONTH)) {
+				fieldFunction = field -> DSL.concat(
+					DSL.extract(field, DatePart.YEAR), DSL.val("-"),
+					DSL.extract(field, DatePart.MONTH));
+			}
+			else if (dateGrouping.equals(DateGrouping.YEAR)) {
+				fieldFunction = field -> DSL.extract(field, DatePart.YEAR);
+			}
+		}
+		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
 			fieldFunction = field -> field.div(
 				eventAnalysisBreakdown.getBinSize()
 			).multiply(

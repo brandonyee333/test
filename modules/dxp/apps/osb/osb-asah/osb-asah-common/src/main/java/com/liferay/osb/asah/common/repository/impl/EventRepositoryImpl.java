@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.AttributeType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
+import com.liferay.osb.asah.common.model.DateGrouping;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -44,6 +45,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.OrderField;
 import org.jooq.Record;
@@ -631,7 +633,41 @@ public class EventRepositoryImpl extends BaseRepository {
 		EventAttributeDefinition.DataType dataType =
 			eventAnalysisBreakdown.getDataType();
 
-		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
+		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
+			DateGrouping dateGrouping =
+				eventAnalysisBreakdown.getDateGrouping();
+
+			Field field = DSL.function(
+				"try_cast_timestamp", Object.class,
+				DSL.field(
+					attributeType.getQualifiedAttributeValueFieldName(null)));
+
+			if (dateGrouping.equals(DateGrouping.DAY)) {
+				return DSL.concat(
+					DSL.extract(field, DatePart.YEAR), DSL.val("-"),
+					DSL.extract(field, DatePart.MONTH), DSL.val("-"),
+					DSL.extract(field, DatePart.DAY)
+				).as(
+					"day"
+				);
+			}
+			else if (dateGrouping.equals(DateGrouping.MONTH)) {
+				return DSL.concat(
+					DSL.extract(field, DatePart.YEAR), DSL.val("-"),
+					DSL.extract(field, DatePart.MONTH)
+				).as(
+					"month"
+				);
+			}
+			else if (dateGrouping.equals(DateGrouping.YEAR)) {
+				return DSL.extract(
+					field, DatePart.YEAR
+				).as(
+					"year"
+				);
+			}
+		}
+		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
 			return DSL.floor(
 				DSL.function(
 					"try_cast_bigint", BigInteger.class,
