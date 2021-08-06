@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.AttributeType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
+import com.liferay.osb.asah.common.model.DateGrouping;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.Sort;
@@ -73,7 +74,7 @@ public class EventRepositoryTest {
 				AnalysisType.AVERAGE, null, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, "DESC"),
+					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
@@ -106,10 +107,39 @@ public class EventRepositoryTest {
 				1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, "DESC"),
+					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0))));
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
+	public void testGetEventAttributeValuesDayGrouping() {
+		Map<Object, Number> eventAttributeValues =
+			_eventRepository.getEventAttributeValues(
+				AnalysisType.TOTAL, null, 1L,
+				new EventAnalysisBreakdown(
+					"56789", AttributeType.EVENT, 0,
+					EventAttributeDefinition.DataType.DATE, DateGrouping.DAY,
+					"DESC"),
+				null, 246810L, PageRequest.of(0, 10),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+
+		Set<Object> keys = eventAttributeValues.keySet();
+
+		Assert.assertArrayEquals(
+			new String[] {
+				"2021-5-13", "2021-5-10", "2019-5-10", "2020-5-13", "2021-1-13",
+				"2021-5-1", null
+			},
+			keys.toArray());
+
+		Collection<Number> values = eventAttributeValues.values();
+
+		Assert.assertArrayEquals(
+			new Integer[] {4, 2, 1, 1, 1, 1, 1}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -120,7 +150,7 @@ public class EventRepositoryTest {
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"34567", AttributeType.EVENT, 100,
-					EventAttributeDefinition.DataType.DURATION, "DESC"),
+					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
@@ -141,13 +171,39 @@ public class EventRepositoryTest {
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
+	public void testGetEventAttributeValuesMonthGrouping() {
+		Map<Object, Number> eventAttributeValues =
+			_eventRepository.getEventAttributeValues(
+				AnalysisType.TOTAL, null, 1L,
+				new EventAnalysisBreakdown(
+					"56789", AttributeType.EVENT, 0,
+					EventAttributeDefinition.DataType.DATE, DateGrouping.MONTH,
+					"DESC"),
+				null, 246810L, PageRequest.of(0, 10),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+
+		Set<Object> keys = eventAttributeValues.keySet();
+
+		Assert.assertArrayEquals(
+			new String[] {"2021-5", "2019-5", "2020-5", "2021-1", null},
+			keys.toArray());
+
+		Collection<Number> values = eventAttributeValues.values();
+
+		Assert.assertArrayEquals(
+			new Integer[] {7, 1, 1, 1, 1}, values.toArray());
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
 	public void testGetEventAttributeValuesNullValues() {
 		Map<Object, Number> eventAttributeValues =
 			_eventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"45678", AttributeType.EVENT, 1,
-					EventAttributeDefinition.DataType.DURATION, "DESC"),
+					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
@@ -170,7 +226,7 @@ public class EventRepositoryTest {
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"45678", AttributeType.EVENT, 2.5,
-					EventAttributeDefinition.DataType.NUMBER, "DESC"),
+					EventAttributeDefinition.DataType.NUMBER, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
@@ -197,7 +253,7 @@ public class EventRepositoryTest {
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, "DESC"),
+					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
@@ -224,7 +280,7 @@ public class EventRepositoryTest {
 				AnalysisType.UNIQUE, null, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, "DESC"),
+					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
@@ -260,7 +316,7 @@ public class EventRepositoryTest {
 				AnalysisType.TOTAL, breakdownItem, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, "DESC"),
+					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
@@ -277,6 +333,30 @@ public class EventRepositoryTest {
 		Collection<Number> values = eventAttributeValues.values();
 
 		Assert.assertArrayEquals(new Integer[] {4, 2, 1}, values.toArray());
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
+	public void testGetEventAttributeValuesYearGrouping() {
+		Map<Object, Number> eventAttributeValues =
+			_eventRepository.getEventAttributeValues(
+				AnalysisType.TOTAL, null, 1L,
+				new EventAnalysisBreakdown(
+					"56789", AttributeType.EVENT, 0,
+					EventAttributeDefinition.DataType.DATE, DateGrouping.YEAR,
+					"DESC"),
+				null, 246810L, PageRequest.of(0, 10),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+
+		Set<Object> keys = eventAttributeValues.keySet();
+
+		Assert.assertArrayEquals(
+			new Integer[] {2021, 2019, 2020, null}, keys.toArray());
+
+		Collection<Number> values = eventAttributeValues.values();
+
+		Assert.assertArrayEquals(new Integer[] {8, 1, 1, 1}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_events.sql")
