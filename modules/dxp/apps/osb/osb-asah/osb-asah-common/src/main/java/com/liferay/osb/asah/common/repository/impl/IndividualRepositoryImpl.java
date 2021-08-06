@@ -426,7 +426,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			DSL.table("Individual"));
 
 		update.set(
-			DSL.field(fieldName), DSL.array(ids)
+			DSL.field(fieldName), DSL.array(ids.toArray(new Long[0]))
 		).where(
 			DSL.field(
 				"id"
