@@ -415,12 +415,14 @@ public class AnalyticsEventsMessageProcessor {
 
 		Storage storage = _getOrCreateStorage();
 
+		String analyticsEventJSON = analyticsEvent.toJSON();
+
+		storage.write(analyticsEventJSON);
+
 		for (Channel channel :
 				_analyticsEventsChannels.getChannels(analyticsEvent)) {
 
-			_messageBus.sendMessage(channel, analyticsEvent.toJSON());
-
-			storage.write(analyticsEvent.toJSON());
+			_messageBus.sendMessage(channel, analyticsEventJSON);
 		}
 	}
 
