@@ -77,17 +77,23 @@ public class EventAnalysisDataFetcher extends BaseDataFetcher<EventAnalysis> {
 			EventAttributeDefinition.DataType dataType =
 				eventAnalysisBreakdown.getDataType();
 
-			if (!dataType.equals(EventAttributeDefinition.DataType.DURATION) &&
-				!dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-
-				continue;
+			if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
+				if (eventAnalysisBreakdown.getDateGrouping() == null) {
+					throw new OSBAsahException(
+						HttpStatus.BAD_REQUEST, "Date grouping cannot be null");
+				}
 			}
+			else if (dataType.equals(
+						EventAttributeDefinition.DataType.DURATION) ||
+					 dataType.equals(
+						 EventAttributeDefinition.DataType.NUMBER)) {
 
-			Number binSize = eventAnalysisBreakdown.getBinSize();
+				Number binSize = eventAnalysisBreakdown.getBinSize();
 
-			if ((binSize == null) || (binSize.doubleValue() <= 0)) {
-				throw new OSBAsahException(
-					HttpStatus.BAD_REQUEST, "Invalid bin size: " + binSize);
+				if ((binSize == null) || (binSize.doubleValue() <= 0)) {
+					throw new OSBAsahException(
+						HttpStatus.BAD_REQUEST, "Invalid bin size: " + binSize);
+				}
 			}
 		}
 	}
