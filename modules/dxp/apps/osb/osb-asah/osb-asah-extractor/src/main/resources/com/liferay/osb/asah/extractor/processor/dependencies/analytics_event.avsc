@@ -1,93 +1,95 @@
 {
-    "fields": [
-        {
-            "logicalType": "date",
-            "name": "createDate",
-            "type": "string"
-        },
-        {
-            "logicalType": "date",
-            "name": "eventDate",
-            "type": "string"
-        },
-        {
-            "name": "applicationId",
-            "type": "string"
-        },
-        {
-            "name": "channelId",
-            "type": "string"
-        },
-        {
-            "name": "clientIP",
-            "type": "string"
-        },
-        {
-            "name": "context",
-            "type": {
-              "type": "map",
-              "values" : "string"
-            }
-        },
-        {
-            "name": "dataSourceId",
-            "type": "string"
-        },
-        {
-            "name": "eventId",
-            "type": "string"
-        },
-        {
-            "default": null,
-            "name": "eventProperties",
-            "type": [
-                "null",
-                {
-                  "type": "map",
-                  "values" : "string"
-                }
-            ]
-        },
-        {
-            "logicalType": "uuid",
-            "name": "id",
-            "type": "string"
-        },
-        {
-            "logicalType": "date",
-            "name": "normalizedEventDate",
-            "type": "long"
-        },
-        {
-            "name": "userId",
-            "type": "string"
-        },
-        {
-            "name": "individualId",
-            "type": "string"
-        },
-        {
-            "name": "knownIndividual",
-            "type": "boolean"
-        },
-        {
-            "name": "projectId",
-            "type": "string"
-        },
-        {
+	"fields": [
+		{
+			"name": "applicationId",
+			"type": "string"
+		},
+		{
+			"name": "channelId",
+			"type": "string"
+		},
+		{
+			"name": "clientIP",
+			"type": "string"
+		},
+		{
+			"name": "context",
+			"type": {
+				"type": "map",
+				"values": "string"
+			}
+		},
+		{
+			"logicalType": "date",
+			"name": "createDate",
+			"type": "string"
+		},
+		{
+			"name": "dataSourceId",
+			"type": "string"
+		},
+		{
+			"logicalType": "date",
+			"name": "eventDate",
+			"type": "string"
+		},
+		{
+			"name": "eventId",
+			"type": "string"
+		},
+		{
+			"default": null,
+			"name": "eventProperties",
+			"type": [
+				"null",
+				{
+					"type": "map",
+					"values": "string"
+				}
+			]
+		},
+		{
+			"logicalType": "uuid",
+			"name": "id",
+			"type": "string"
+		},
+		{
+			"name": "individualId",
+			"type": "string"
+		},
+		{
+			"name": "knownIndividual",
+			"type": "boolean"
+		},
+		{
+			"name": "projectId",
+			"type": "string"
+		},
+		{
 			"name": "projectTimeZoneId",
 			"type": "string"
+		},
+		{
+			"logicalType": "date",
+			"name": "normalizedEventDate",
+			"type": "long"
+		},
+		{
+			"default": [
+				""
+			],
+			"name": "segmentNames",
+			"type": {
+				"items": "string",
+				"type": "array"
+			}
+		},
+		{
+			"name": "userId",
+			"type": "string"
 		}
-        {
-            "default": [""],
-            "name": "segmentNames",
-            "type": {
-                "type": "array",
-                "items": "string"
-            }
-        }
-    ],
-    "name": "AnalyticsEvent",
-    "namespace": "com.liferay.osb.asah",
-    "type": "record"
+	],
+	"name": "AnalyticsEvent",
+	"namespace": "com.liferay.osb.asah",
+	"type": "record"
 }
