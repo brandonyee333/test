@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
+import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
@@ -35,6 +36,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -45,6 +47,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @DirtiesContext
+@Import(JDBCTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(properties = "osb.asah.trino.enabled=true")
 @SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
