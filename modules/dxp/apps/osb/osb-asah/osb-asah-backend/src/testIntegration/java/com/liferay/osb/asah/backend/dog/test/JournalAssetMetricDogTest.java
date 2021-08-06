@@ -32,6 +32,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -39,6 +40,7 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Marcos Martins
  */
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
+@DirtiesContext
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(properties = "osb.asah.trino.enabled=true")
 @SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
