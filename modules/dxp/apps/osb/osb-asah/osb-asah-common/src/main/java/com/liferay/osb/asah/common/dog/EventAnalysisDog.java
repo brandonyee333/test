@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -53,6 +55,8 @@ public class EventAnalysisDog {
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
 		int page, int size, TimeRange timeRange) {
+
+		_validateEventAnalysisBreakdowns(eventAnalysisBreakdowns);
 
 		EventAnalysis eventAnalysis = new EventAnalysis();
 
@@ -364,6 +368,36 @@ public class EventAnalysisDog {
 			channelId, eventAnalysisBreakdowns.get(0), eventAnalysisFilters,
 			eventDefinitionId, timeRange.getEndDate(),
 			timeRange.getStartDate());
+	}
+
+	private void _validateEventAnalysisBreakdowns(
+		List<EventAnalysisBreakdown> eventAnalysisBreakdowns) {
+
+		for (EventAnalysisBreakdown eventAnalysisBreakdown :
+				eventAnalysisBreakdowns) {
+
+			EventAttributeDefinition.DataType dataType =
+				eventAnalysisBreakdown.getDataType();
+
+			if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
+				if (eventAnalysisBreakdown.getDateGrouping() == null) {
+					throw new OSBAsahException(
+						HttpStatus.BAD_REQUEST, "Date grouping cannot be null");
+				}
+			}
+			else if (dataType.equals(
+						EventAttributeDefinition.DataType.DURATION) ||
+					 dataType.equals(
+						 EventAttributeDefinition.DataType.NUMBER)) {
+
+				Number binSize = eventAnalysisBreakdown.getBinSize();
+
+				if ((binSize == null) || (binSize.doubleValue() <= 0)) {
+					throw new OSBAsahException(
+						HttpStatus.BAD_REQUEST, "Invalid bin size: " + binSize);
+				}
+			}
+		}
 	}
 
 	@Autowired
