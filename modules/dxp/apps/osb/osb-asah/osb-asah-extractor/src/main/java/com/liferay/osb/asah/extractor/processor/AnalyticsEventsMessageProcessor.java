@@ -17,6 +17,7 @@ package com.liferay.osb.asah.extractor.processor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -368,6 +369,7 @@ public class AnalyticsEventsMessageProcessor {
 			Long.valueOf(dataSourceId));
 
 		boolean knownIndividual = _isKnownIndividual(individual);
+		String projectTimezone = _timeZoneDog.getTimeZoneId();
 		Set<String> segmentNames = _getSegmentNames(
 			Long.valueOf(channelId), individual);
 
@@ -396,8 +398,9 @@ public class AnalyticsEventsMessageProcessor {
 					analyticsEventsMessage.getUserId()));
 			analyticsEvent.setIndividualId(String.valueOf(individual.getId()));
 			analyticsEvent.setKnownIndividual(knownIndividual);
-			analyticsEvent.setSegmentNames(segmentNames);
 			analyticsEvent.setProjectId(analyticsEventsMessage.getProjectId());
+			analyticsEvent.setProjectTimeZone(projectTimezone);
+			analyticsEvent.setSegmentNames(segmentNames);
 			analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
 
 			analyticsEvents.add(analyticsEvent);
@@ -483,5 +486,8 @@ public class AnalyticsEventsMessageProcessor {
 	private StorageFactory _storageFactory;
 
 	private final Map<String, Storage> _storages = new HashMap<>();
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }
