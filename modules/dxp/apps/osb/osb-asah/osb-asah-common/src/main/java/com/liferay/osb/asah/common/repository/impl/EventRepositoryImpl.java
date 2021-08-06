@@ -633,7 +633,13 @@ public class EventRepositoryImpl extends BaseRepository {
 		EventAttributeDefinition.DataType dataType =
 			eventAnalysisBreakdown.getDataType();
 
-		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
+		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
+			return DSL.function(
+				"try_cast_boolean", Boolean.class,
+				DSL.field(
+					attributeType.getQualifiedAttributeValueFieldName(null)));
+		}
+		else if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
 			DateGrouping dateGrouping =
 				eventAnalysisBreakdown.getDateGrouping();
 
