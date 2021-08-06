@@ -98,6 +98,37 @@ public class EventAnalysisDogTest {
 
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
+	public void testGetEventAnalysisBreakdownBoolean() throws Exception {
+		EventAnalysisBreakdown eventAnalysisBreakdown1 =
+			new EventAnalysisBreakdown(
+				"67890", AttributeType.EVENT, 0,
+				EventAttributeDefinition.DataType.BOOLEAN, null, "DESC");
+		EventAnalysisBreakdown eventAnalysisBreakdown2 =
+			new EventAnalysisBreakdown(
+				"12345", AttributeType.EVENT, 0,
+				EventAttributeDefinition.DataType.STRING, null, "DESC");
+
+		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
+			AnalysisType.TOTAL, 1L, true,
+			new ArrayList<EventAnalysisBreakdown>() {
+				{
+					add(eventAnalysisBreakdown1);
+					add(eventAnalysisBreakdown2);
+				}
+			},
+			Collections.emptyList(), 246810L, 0, 10,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")));
+
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies/expected_event_analysis_breakdown_boolean.json",
+				this),
+			_objectMapper.convertValue(eventAnalysis, JSONObject.class), true);
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
+	@Test
 	public void testGetEventAnalysisBreakdownDayGrouping() throws Exception {
 		EventAnalysisBreakdown eventAnalysisBreakdown1 =
 			new EventAnalysisBreakdown(

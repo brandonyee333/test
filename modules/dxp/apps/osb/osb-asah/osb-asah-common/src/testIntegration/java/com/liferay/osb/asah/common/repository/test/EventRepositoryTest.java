@@ -100,6 +100,29 @@ public class EventRepositoryTest {
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
+	public void testGetEventAttributeValuesBoolean() {
+		Map<Object, Number> eventAttributeValues =
+			_eventRepository.getEventAttributeValues(
+				AnalysisType.TOTAL, null, 1L,
+				new EventAnalysisBreakdown(
+					"67890", AttributeType.EVENT, 1,
+					EventAttributeDefinition.DataType.BOOLEAN, null, "DESC"),
+				null, 246810L, PageRequest.of(0, 10),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+
+		Set<Object> keys = eventAttributeValues.keySet();
+
+		Assert.assertArrayEquals(
+			new Boolean[] {true, false, null}, keys.toArray());
+
+		Collection<Number> values = eventAttributeValues.values();
+
+		Assert.assertArrayEquals(new Integer[] {6, 4, 1}, values.toArray());
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
 	public void testGetEventAttributeValuesCount() {
 		Assert.assertEquals(
 			3,
