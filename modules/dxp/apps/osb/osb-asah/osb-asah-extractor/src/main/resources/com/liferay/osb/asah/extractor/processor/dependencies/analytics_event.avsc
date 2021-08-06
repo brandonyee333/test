@@ -11,14 +11,6 @@
             "type": "string"
         },
         {
-            "default": null,
-            "name": "analyticsKey",
-            "type": [
-                "null",
-                "string"
-            ]
-        },
-        {
             "name": "applicationId",
             "type": "string"
         },
