@@ -399,7 +399,7 @@ public class AnalyticsEventsMessageProcessor {
 			analyticsEvent.setIndividualId(String.valueOf(individual.getId()));
 			analyticsEvent.setKnownIndividual(knownIndividual);
 			analyticsEvent.setProjectId(analyticsEventsMessage.getProjectId());
-			analyticsEvent.setProjectTimeZone(projectTimezone);
+			analyticsEvent.setProjectTimezone(projectTimezone);
 			analyticsEvent.setSegmentNames(segmentNames);
 			analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
 

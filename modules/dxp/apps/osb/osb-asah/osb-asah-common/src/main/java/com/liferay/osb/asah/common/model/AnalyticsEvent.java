@@ -90,7 +90,7 @@ public class AnalyticsEvent implements Serializable {
 			Objects.equals(_eventProperties, analyticsEvent._eventProperties) &&
 			Objects.equals(_id, analyticsEvent._id) &&
 			Objects.equals(_projectId, analyticsEvent._projectId) &&
-			Objects.equals(_projectTimeZone, analyticsEvent._projectTimeZone) &&
+			Objects.equals(_projectTimezone, analyticsEvent._projectTimezone) &&
 			Objects.equals(_userId, analyticsEvent._userId)) {
 
 			return true;
@@ -175,8 +175,8 @@ public class AnalyticsEvent implements Serializable {
 		return _projectId;
 	}
 
-	public String getProjectTimeZone() {
-		return _projectTimeZone;
+	public String getProjectTimezone() {
+		return _projectTimezone;
 	}
 
 	public Set<String> getSegmentNames() {
@@ -192,7 +192,7 @@ public class AnalyticsEvent implements Serializable {
 		return Objects.hash(
 			_applicationId, _channelId, _clientIP, _id, _context, _createDate,
 			_dataSourceId, _eventDate, _eventId, _eventProperties, _projectId,
-				_projectTimeZone, _userId);
+				_projectTimezone, _userId);
 	}
 
 	public boolean isKnownIndividual() {
@@ -257,8 +257,8 @@ public class AnalyticsEvent implements Serializable {
 		_projectId = projectId;
 	}
 
-	public void setProjectTimeZone(String projectTimeZone) {
-		_projectTimeZone = projectTimeZone;
+	public void setProjectTimezone(String projectTimezone) {
+		_projectTimezone = projectTimezone;
 	}
 
 	public void setSegmentNames(Set<String> segmentNames) {
@@ -304,7 +304,7 @@ public class AnalyticsEvent implements Serializable {
 	private String _individualId;
 	private boolean _knownIndividual;
 	private String _projectId;
-	private String _projectTimeZone;
+	private String _projectTimezone;
 	private Set<String> _segmentNames = new HashSet<>();
 	private String _userId;
 
