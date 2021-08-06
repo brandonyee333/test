@@ -366,7 +366,7 @@ public class EventRepositoryImpl extends BaseRepository {
 				StringUtils.lowerCase(attributeType.getTableName()) + i;
 
 			FilterOperator filterOperator = FilterOperators.of(
-				eventAnalysisFilter.getDataType(),
+				eventAnalysisFilter.getReturnDataType(),
 				eventAnalysisFilter.getOperator(),
 				eventAnalysisFilter.getValues());
 
@@ -468,7 +468,7 @@ public class EventRepositoryImpl extends BaseRepository {
 
 			for (EventAnalysisFilter eventAnalysisFilter : entry.getValue()) {
 				FilterOperator filterOperator = FilterOperators.of(
-					eventAnalysisFilter.getDataType(),
+					eventAnalysisFilter.getReturnDataType(),
 					eventAnalysisFilter.getOperator(),
 					eventAnalysisFilter.getValues());
 

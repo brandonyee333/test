@@ -289,11 +289,11 @@ public class EventAnalysisDog {
 		EventAttributeDefinition.DataType dataType =
 			eventAnalysisBreakdown.getDataType();
 
-		Function<Field, Field> fieldFunction = null;
-
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
 			DateGrouping dateGrouping =
 				eventAnalysisBreakdown.getDateGrouping();
+
+			Function<Field, Field> fieldFunction = null;
 
 			if (dateGrouping.equals(DateGrouping.DAY)) {
 				fieldFunction = field -> DSL.concat(
@@ -309,26 +309,45 @@ public class EventAnalysisDog {
 			else if (dateGrouping.equals(DateGrouping.YEAR)) {
 				fieldFunction = field -> DSL.extract(field, DatePart.YEAR);
 			}
+
+			return new EventAnalysisFilter(
+				eventAnalysisBreakdown.getAttributeId(),
+				eventAnalysisBreakdown.getAttributeType(),
+				eventAnalysisBreakdown.getDataType(), fieldFunction, "eq",
+				EventAttributeDefinition.DataType.STRING,
+				Collections.singletonList(value));
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
-			fieldFunction = field -> field.div(
-				eventAnalysisBreakdown.getBinSize()
-			).multiply(
-				eventAnalysisBreakdown.getBinSize()
-			);
+			return new EventAnalysisFilter(
+				eventAnalysisBreakdown.getAttributeId(),
+				eventAnalysisBreakdown.getAttributeType(),
+				eventAnalysisBreakdown.getDataType(),
+				field -> field.div(
+					eventAnalysisBreakdown.getBinSize()
+				).multiply(
+					eventAnalysisBreakdown.getBinSize()
+				),
+				"eq", eventAnalysisBreakdown.getDataType(),
+				Collections.singletonList(value));
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-			fieldFunction = field -> DSL.floor(
-				field.div(eventAnalysisBreakdown.getBinSize())
-			).multiply(
-				eventAnalysisBreakdown.getBinSize()
-			);
+			return new EventAnalysisFilter(
+				eventAnalysisBreakdown.getAttributeId(),
+				eventAnalysisBreakdown.getAttributeType(),
+				eventAnalysisBreakdown.getDataType(),
+				field -> DSL.floor(
+					field.div(eventAnalysisBreakdown.getBinSize())
+				).multiply(
+					eventAnalysisBreakdown.getBinSize()
+				),
+				"eq", eventAnalysisBreakdown.getDataType(),
+				Collections.singletonList(value));
 		}
 
 		return new EventAnalysisFilter(
 			eventAnalysisBreakdown.getAttributeId(),
 			eventAnalysisBreakdown.getAttributeType(),
-			eventAnalysisBreakdown.getDataType(), fieldFunction, "eq",
+			eventAnalysisBreakdown.getDataType(), "eq",
 			Collections.singletonList(value));
 	}
 

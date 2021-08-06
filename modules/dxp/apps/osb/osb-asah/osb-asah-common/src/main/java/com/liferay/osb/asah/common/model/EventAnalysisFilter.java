@@ -39,13 +39,14 @@ public class EventAnalysisFilter {
 		String attributeId, AttributeType attributeType,
 		EventAttributeDefinition.DataType dataType,
 		Function<Field, Field> fieldFunction, String operator,
-		List<String> values) {
+		EventAttributeDefinition.DataType returnDataType, List<String> values) {
 
 		_attributeId = attributeId;
 		_attributeType = attributeType;
 		_dataType = dataType;
 		_fieldFunction = fieldFunction;
 		_operator = operator;
+		_returnDataType = returnDataType;
 		_values = values;
 	}
 
@@ -84,6 +85,8 @@ public class EventAnalysisFilter {
 			Objects.equals(
 				_fieldFunction, eventAnalysisFilter._fieldFunction) &&
 			Objects.equals(_operator, eventAnalysisFilter._operator) &&
+			Objects.equals(
+				_returnDataType, eventAnalysisFilter._returnDataType) &&
 			Objects.equals(_values, eventAnalysisFilter._values)) {
 
 			return true;
@@ -112,6 +115,14 @@ public class EventAnalysisFilter {
 		return _operator;
 	}
 
+	public EventAttributeDefinition.DataType getReturnDataType() {
+		if (_returnDataType == null) {
+			return _dataType;
+		}
+
+		return _returnDataType;
+	}
+
 	public List<String> getValues() {
 		return _values;
 	}
@@ -120,7 +131,7 @@ public class EventAnalysisFilter {
 	public int hashCode() {
 		return Objects.hash(
 			_attributeId, _attributeType, _dataType, _fieldFunction, _operator,
-			_values);
+			_returnDataType, _values);
 	}
 
 	public void setAttributeId(String attributeId) {
@@ -143,6 +154,12 @@ public class EventAnalysisFilter {
 		_operator = operator;
 	}
 
+	public void setReturnDataType(
+		EventAttributeDefinition.DataType returnDataType) {
+
+		_returnDataType = returnDataType;
+	}
+
 	public void setValues(List<String> values) {
 		_values = values;
 	}
@@ -152,6 +169,7 @@ public class EventAnalysisFilter {
 	private EventAttributeDefinition.DataType _dataType;
 	private Function<Field, Field> _fieldFunction;
 	private String _operator;
+	private EventAttributeDefinition.DataType _returnDataType;
 	private List<String> _values;
 
 }
