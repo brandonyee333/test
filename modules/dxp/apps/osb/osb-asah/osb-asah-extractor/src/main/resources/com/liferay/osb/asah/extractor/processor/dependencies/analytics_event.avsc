@@ -79,6 +79,10 @@
             "type": "string"
         },
         {
+			"name": "projectTimeZoneId",
+			"type": "string"
+		}
+        {
             "default": [""],
             "name": "segmentNames",
             "type": {
