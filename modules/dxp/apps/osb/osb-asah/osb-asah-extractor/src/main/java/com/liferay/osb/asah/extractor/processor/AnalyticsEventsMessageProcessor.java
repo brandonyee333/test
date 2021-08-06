@@ -369,7 +369,8 @@ public class AnalyticsEventsMessageProcessor {
 			Long.valueOf(dataSourceId));
 
 		boolean knownIndividual = _isKnownIndividual(individual);
-		String projectTimezone = _timeZoneDog.getTimeZoneId();
+
+		String projectTimeZoneId = _timeZoneDog.getTimeZoneId();
 		Set<String> segmentNames = _getSegmentNames(
 			Long.valueOf(channelId), individual);
 
@@ -399,7 +400,7 @@ public class AnalyticsEventsMessageProcessor {
 			analyticsEvent.setIndividualId(String.valueOf(individual.getId()));
 			analyticsEvent.setKnownIndividual(knownIndividual);
 			analyticsEvent.setProjectId(analyticsEventsMessage.getProjectId());
-			analyticsEvent.setProjectTimezone(projectTimezone);
+			analyticsEvent.setProjectTimeZoneId(projectTimeZoneId);
 			analyticsEvent.setSegmentNames(segmentNames);
 			analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
 

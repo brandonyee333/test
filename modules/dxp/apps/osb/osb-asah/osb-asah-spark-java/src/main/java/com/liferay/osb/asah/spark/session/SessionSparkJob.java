@@ -110,11 +110,11 @@ public class SessionSparkJob implements SparkJob {
 		);
 
 		return eventsDataset.withColumn(
-			"date", functions.to_date(functions.from_utc_timestamp(
-				functions.col("eventDate"),
-				functions.col("projectTimezone")
-				)
-			)
+			"date",
+			functions.to_date(
+				functions.from_utc_timestamp(
+					functions.col("eventDate"),
+					functions.col("projectTimeZoneId")))
 		).withColumn(
 			"iterationNumber", functions.lit(0)
 		).withColumn(
