@@ -38,6 +38,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.Version;
+
 /**
  * @author Víctor Galán
  */
@@ -540,7 +544,7 @@ public class LayoutStructure {
 				"main", _mainItemId
 			)
 		).put(
-			"version", 1
+			"version", _getBundleVersion()
 		);
 	}
 
@@ -750,6 +754,14 @@ public class LayoutStructure {
 		}
 
 		return duplicatedLayoutStructureItems;
+	}
+
+	private String _getBundleVersion() {
+		Bundle bundle = FrameworkUtil.getBundle(LayoutStructure.class);
+
+		Version version = bundle.getVersion();
+
+		return version.toString();
 	}
 
 	private Set<String> _getChildrenItemIds(String itemId) {
