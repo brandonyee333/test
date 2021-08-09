@@ -44,7 +44,9 @@ public class FilterOperators {
 			new HashMap<String, FilterOperatorSupplier>() {
 				{
 					put("between", BetweenFilterOperator::new);
+					put("bin", BinFilterOperator::new);
 					put("contains", ContainsFilterOperator::new);
+					put("dateGrouping", DateGroupingFilterOperator::new);
 					put("endsWith", EndsWithFilterOperator::new);
 					put("eq", EqualsFilterOperator::new);
 					put("ge", GreaterThanEqualsFilterOperator::new);
