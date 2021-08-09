@@ -41,6 +41,9 @@ import com.liferay.style.book.service.StyleBookEntryLocalService;
 import java.util.Map;
 import java.util.Optional;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.Version;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -89,8 +92,17 @@ public class PageDefinitionDTOConverter
 					mainLayoutStructureItem, _layoutStructureItemMapperTracker,
 					saveInlineContent, saveMappingConfiguration);
 				settings = _toSettings(layout);
+				version = _getBundleVersion(LayoutStructureItem.class);
 			}
 		};
+	}
+
+	private String _getBundleVersion(Class<?> clazz) {
+		Bundle bundle = FrameworkUtil.getBundle(clazz);
+
+		Version version = bundle.getVersion();
+
+		return version.toString();
 	}
 
 	private Settings _toSettings(Layout layout) {
