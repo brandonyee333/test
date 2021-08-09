@@ -391,6 +391,11 @@ type EventDefinitionBag {
 	total: Int
 }
 
+type EventMetric {
+	totalEventsMetric: Metric
+	totalSessionsMetric: Metric
+}
+
 type Experiment {
 	channelId: String
 	createDate: String
@@ -969,6 +974,17 @@ type QueryType {
 		size: Int!,
 		sort: Sort!
 	): EventDefinitionBag
+	
+	eventMetric(
+		channelId: String,
+		entityId: String!,
+		entityType: String!,
+		interval: String,
+		keyword: String,
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String
+	): EventMetric
 
 	experiment(
 		experimentId: String!
