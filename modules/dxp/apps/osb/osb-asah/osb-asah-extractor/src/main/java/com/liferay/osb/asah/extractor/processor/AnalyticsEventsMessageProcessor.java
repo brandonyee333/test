@@ -364,6 +364,9 @@ public class AnalyticsEventsMessageProcessor {
 			}
 		}
 
+		Set<AnalyticsEvent> analyticsEvents = new TreeSet<>(
+			Comparator.comparing(AnalyticsEvent::getId));
+
 		Individual individual = _addIndividual(
 			analyticsEventsMessage, Long.valueOf(channelId),
 			Long.valueOf(dataSourceId));
@@ -373,9 +376,6 @@ public class AnalyticsEventsMessageProcessor {
 		String projectTimeZoneId = _timeZoneDog.getTimeZoneId();
 		Set<String> segmentNames = _getSegmentNames(
 			Long.valueOf(channelId), individual);
-
-		Set<AnalyticsEvent> analyticsEvents = new TreeSet<>(
-			Comparator.comparing(AnalyticsEvent::getId));
 
 		for (AnalyticsEventsMessage.Event event :
 				analyticsEventsMessage.getEvents()) {
