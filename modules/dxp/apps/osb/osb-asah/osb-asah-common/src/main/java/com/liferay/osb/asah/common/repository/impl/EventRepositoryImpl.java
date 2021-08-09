@@ -302,6 +302,62 @@ public class EventRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	public Map<String, Integer> getEventSessionsCountGroupByEventDate(
+		Long channelId, Long individualId, Interval interval, String keywords,
+		TimeRange timeRange) {
+
+		Field<OffsetDateTime> eventDateField = DSL.field(
+			"eventDate", OffsetDateTime.class);
+
+		if (interval != Interval.HOUR) {
+			eventDateField = _dateTrunc(DatePart.DAY, eventDateField);
+		}
+		else {
+			eventDateField = _dateTrunc(DatePart.HOUR, eventDateField);
+		}
+
+		eventDateField = eventDateField.as("eventDate");
+
+		Field<OffsetDateTime> event1EventDateField = DSL.field(
+			"event1.\"eventDate\"", OffsetDateTime.class);
+
+		SelectSelectStep<Record2<OffsetDateTime, Object>> selectSelectStep =
+			_dslContext.selectDistinct(eventDateField, DSL.field("sessionId"));
+
+		return _toMap(
+			_dslContext.select(
+				event1EventDateField, DSL.count()
+			).from(
+				DSL.table(
+					selectSelectStep.from(
+						"Event"
+					).innerJoin(
+						DSL.table(
+							"EventDefinition"
+						).as(
+							"EventDefinition1"
+						)
+					).on(
+						DSL.field(
+							"Event.eventDefinitionId"
+						).eq(
+							DSL.field("\"EventDefinition1\".id")
+						)
+					).where(
+						_createCondition(
+							channelId, individualId, keywords, timeRange)
+					)
+				).as(
+					"event1"
+				)
+			).groupBy(
+				event1EventDateField
+			).fetch(
+			).map(
+				record -> record
+			));
+	}
+
 	public List<Event> searchEvents(
 		Long channelId, Long individualId, String keywords, Pageable pageable,
 		TimeRange timeRange) {

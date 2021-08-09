@@ -91,6 +91,10 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 		Long channelId, Long individualId, Interval interval, String keywords,
 		TimeRange timeRange);
 
+	public Map<String, Integer> getEventSessionsCountGroupByEventDate(
+		Long channelId, Long individualId, Interval interval, String keywords,
+		TimeRange timeRange);
+
 	public List<Event> searchEvents(
 		Long channelId, Long individualId, String keywords, Pageable pageable,
 		TimeRange timeRange);
