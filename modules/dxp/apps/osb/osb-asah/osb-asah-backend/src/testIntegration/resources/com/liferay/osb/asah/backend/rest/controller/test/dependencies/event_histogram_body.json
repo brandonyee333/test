@@ -1,0 +1,11 @@
+{
+	"operationName": "EventMetrics",
+	"variables": {
+		"channelId": "1",
+		"entityId": "1",
+		"entityType": "Individual",
+		"interval": "D",
+		"rangeEnd": "2021-07-03",
+		"rangeStart": "2021-06-30"
+	}
+}

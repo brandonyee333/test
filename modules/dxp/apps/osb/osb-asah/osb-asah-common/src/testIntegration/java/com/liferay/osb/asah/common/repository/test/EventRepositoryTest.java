@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.model.BreakdownItem;
 import com.liferay.osb.asah.common.model.DateGrouping;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
@@ -41,11 +42,14 @@ import java.time.LocalDateTime;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+
+import org.hamcrest.Matchers;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -382,6 +386,80 @@ public class EventRepositoryTest {
 		Assert.assertArrayEquals(new Integer[] {8, 1, 1, 1}, values.toArray());
 	}
 
+	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@Test
+	public void testGetEventsCountGroupByEventDateLast7Days() {
+		Map<String, Integer> eventsCountGroupByEventDate =
+			_eventRepository.getEventsCountGroupByEventDate(
+				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS);
+
+		Assert.assertEquals(
+			eventsCountGroupByEventDate.toString(), 2,
+			eventsCountGroupByEventDate.size());
+
+		Collection<Integer> values = eventsCountGroupByEventDate.values();
+
+		Assert.assertThat(
+			new Integer[] {1, 2},
+			Matchers.arrayContainingInAnyOrder(values.toArray(new Integer[0])));
+	}
+
+	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@Test
+	public void testGetEventsCountGroupByEventDateLast24Hours() {
+		Map<String, Integer> eventsCountGroupByEventDate =
+			_eventRepository.getEventsCountGroupByEventDate(
+				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS);
+
+		Assert.assertEquals(
+			eventsCountGroupByEventDate.toString(), 1,
+			eventsCountGroupByEventDate.size());
+
+		Collection<Integer> values = eventsCountGroupByEventDate.values();
+
+		Iterator<Integer> iterator = values.iterator();
+
+		Assert.assertEquals(Integer.valueOf(4), iterator.next());
+	}
+
+	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@Test
+	public void testGetEventSessionsCountGroupByEventDateLast7Days() {
+		Map<String, Integer> eventSessionsCountGroupByEventDate =
+			_eventRepository.getEventSessionsCountGroupByEventDate(
+				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS);
+
+		Assert.assertEquals(
+			eventSessionsCountGroupByEventDate.toString(), 2,
+			eventSessionsCountGroupByEventDate.size());
+
+		Collection<Integer> values =
+			eventSessionsCountGroupByEventDate.values();
+
+		Assert.assertThat(
+			new Integer[] {1, 2},
+			Matchers.arrayContainingInAnyOrder(values.toArray(new Integer[0])));
+	}
+
+	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@Test
+	public void testGetEventSessionsCountGroupByEventDateLast24Days() {
+		Map<String, Integer> eventSessionsCountGroupByEventDate =
+			_eventRepository.getEventSessionsCountGroupByEventDate(
+				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS);
+
+		Assert.assertEquals(
+			eventSessionsCountGroupByEventDate.toString(), 1,
+			eventSessionsCountGroupByEventDate.size());
+
+		Collection<Integer> values =
+			eventSessionsCountGroupByEventDate.values();
+
+		Iterator<Integer> iterator = values.iterator();
+
+		Assert.assertEquals(Integer.valueOf(2), iterator.next());
+	}
+
 	@SQLResource(resourcePath = "test_events.sql")
 	@Test
 	public void testSearchEventsLast24Hours() {
@@ -389,14 +467,12 @@ public class EventRepositoryTest {
 			1L, 1L, null, PageRequest.of(0, 50, Sort.desc("eventDate")),
 			TimeRange.LAST_24_HOURS);
 
-		Assert.assertEquals(events.toString(), 4, events.size());
+		Assert.assertEquals(events.toString(), 3, events.size());
 
 		Stream<Event> stream = events.stream();
 
 		Assert.assertArrayEquals(
-			new String[] {
-				"blogClicked", "formViewed", "assetClicked", "fieldBlurred"
-			},
+			new String[] {"blogClicked", "formViewed", "assetClicked"},
 			stream.map(
 				event -> {
 					Optional<EventDefinition> eventDefinitionOptional =

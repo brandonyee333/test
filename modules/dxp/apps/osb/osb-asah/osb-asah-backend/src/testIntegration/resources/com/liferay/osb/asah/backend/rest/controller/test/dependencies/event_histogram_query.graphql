@@ -1,0 +1,25 @@
+query EventMetrics($channelId: String!, $entityId: String!, $entityType: String!, $interval: String!, $keyword: String, $rangeEnd: String, $rangeKey: Int, $rangeStart: String!) {
+	eventMetric(channelId: $channelId, entityId: $entityId, entityType: $entityType, interval: $interval, keyword: $keyword, rangeEnd: $rangeEnd, rangeKey: $rangeKey, rangeStart: $rangeStart) {
+		totalEventsMetric {
+			...trendFragment
+			__typename
+		}
+		totalSessionsMetric {
+			...trendFragment
+			__typename
+		}
+		__typename
+	}
+}
+
+fragment trendFragment on Metric {
+	histogram {
+		metrics {
+			key
+			value
+			valueKey
+		}
+		total
+	}
+	__typename
+}

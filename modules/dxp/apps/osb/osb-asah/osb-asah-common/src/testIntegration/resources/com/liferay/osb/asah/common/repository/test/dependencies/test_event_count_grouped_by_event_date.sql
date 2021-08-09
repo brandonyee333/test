@@ -1,0 +1,12 @@
+INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-1h}', (SELECT id FROM EventDefinition WHERE name = 'assetClicked'), 1, '1');
+INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-1h}', (SELECT id FROM EventDefinition WHERE name = 'blogClicked'), 1, '1');
+INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-1h}', (SELECT id FROM EventDefinition WHERE name = 'fieldBlurred'), 1, '1');
+INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-1h}', (SELECT id FROM EventDefinition WHERE name = 'assetClicked'), 1, '2');
+INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-1h}', (SELECT id FROM EventDefinition WHERE name = 'blogClicked'), 1, '2');
+INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-1h}', (SELECT id FROM EventDefinition WHERE name = 'fieldBlurred'), 1, '3');
+INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-2d}', (SELECT id FROM EventDefinition WHERE name = 'assetClicked'), 1, '1');
+INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-2d}', (SELECT id FROM EventDefinition WHERE name = 'blogClicked'), 1, '2');
+INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-2d}', (SELECT id FROM EventDefinition WHERE name = 'fieldBlurred'), 1, '1');
+INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-5d}', (SELECT id FROM EventDefinition WHERE name = 'formViewed'), 1, '1');
+INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-5d}', (SELECT id FROM EventDefinition WHERE name = 'pageUnloaded'), 1, '3');
+INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-7d}', (SELECT id FROM EventDefinition WHERE name = 'shared'), 1, '4');
