@@ -168,7 +168,7 @@ public class EventDogTest {
 		Long eventAttributeDefinitionId = eventAttributeDefinition.getId();
 
 		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinitionByName("pageUnloaded");
+			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
 
 		_eventDog.addEvent(
 			"analyticsEventId1", "Page", channel.getId(), date, 1L,

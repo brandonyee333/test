@@ -83,7 +83,7 @@ public class EventsByUserSessionGraphQLRestControllerTest
 					fetchEventAttributeDefinitionByName("url"));
 
 		_createEvent(eventAttributeDefinitions, "assetClicked");
-		_createEvent(eventAttributeDefinitions, "pageUnloaded");
+		_createEvent(eventAttributeDefinitions, "assetDownloaded");
 
 		_cerebroInfoElasticsearchInvoker.add(
 			"user-sessions",

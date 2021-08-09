@@ -75,7 +75,7 @@ public class EventsByUserSessionDataFetcherTest {
 			"assetClicked", canonicalUrlEventAttributeDefinition.getId(),
 			viewDurationEventAttributeDefinition.getId());
 		_createEvent(
-			"pageUnloaded", canonicalUrlEventAttributeDefinition.getId(),
+			"assetDownloaded", canonicalUrlEventAttributeDefinition.getId(),
 			viewDurationEventAttributeDefinition.getId());
 
 		_cerebroInfoElasticsearchInvoker.add(

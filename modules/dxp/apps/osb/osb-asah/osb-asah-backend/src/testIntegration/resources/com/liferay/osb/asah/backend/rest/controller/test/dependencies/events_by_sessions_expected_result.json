@@ -10,7 +10,7 @@
 					{
 						"__typename": "Event",
 						"canonicalUrl": "canonicalUrlValue",
-						"name": "pageUnloaded",
+						"name": "assetDownloaded",
 						"pageDescription": "pageDescriptionValue",
 						"pageKeywords": "pageKeywordsValue",
 						"pageTitle": "pageTitleValue",
