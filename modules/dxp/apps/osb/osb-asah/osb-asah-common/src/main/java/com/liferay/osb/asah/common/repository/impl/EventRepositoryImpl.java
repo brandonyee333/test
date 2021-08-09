@@ -308,65 +308,25 @@ public class EventRepositoryImpl extends BaseRepository {
 
 		Table<Record> eventTable = DSL.table("Event");
 
-		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select(
 			eventTable.asterisk());
-
-		Condition condition = DSL.and(
-			DSL.field(
-				"Event.channelId"
-			).eq(
-				channelId
-			),
-			DSL.field(
-				"Event.eventDate"
-			).between(
-				DateUtil.toUTCLocalDateTime(
-					timeRange.getStartLocalDateTime(),
-					_timeZoneDog.getZoneId()),
-				DateUtil.toUTCLocalDateTime(
-					timeRange.getEndLocalDateTime(), _timeZoneDog.getZoneId())
-			),
-			DSL.field(
-				"Event.individualId"
-			).eq(
-				individualId
-			));
-
-		if (!StringUtils.isEmpty(keywords)) {
-			condition = condition.and(
-				DSL.or(
-					DSL.field(
-						"EventAttribute.value"
-					).containsIgnoreCase(
-						keywords
-					),
-					DSL.field(
-						"EventDefinition.name"
-					).containsIgnoreCase(
-						keywords
-					)));
-		}
 
 		return selectSelectStep.from(
 			eventTable
 		).innerJoin(
-			DSL.table("EventAttribute")
-		).on(
-			DSL.field(
-				"Event.id"
-			).eq(
-				DSL.field("EventAttribute.eventId")
+			DSL.table(
+				"EventDefinition"
+			).as(
+				"EventDefinition1"
 			)
-		).innerJoin(
-			DSL.table("EventDefinition")
 		).on(
 			DSL.field(
 				"Event.eventDefinitionId"
 			).eq(
-				DSL.field("EventDefinition.id")
+				DSL.field("\"EventDefinition1\".id")
 			)
 		).where(
-			condition
+			_createCondition(channelId, individualId, keywords, timeRange)
 		).orderBy(
 			getSortFields(pageable.getSort(), eventTable)
 		).limit(
