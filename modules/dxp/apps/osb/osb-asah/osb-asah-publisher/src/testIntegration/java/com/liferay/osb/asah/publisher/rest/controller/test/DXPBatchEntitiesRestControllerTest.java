@@ -257,10 +257,7 @@ public class DXPBatchEntitiesRestControllerTest {
 		ClassPathResource classPathResource = new ClassPathResource(
 			"dependencies/products.json", getClass());
 
-		ZipInputStream zipInputStream = new ZipInputStream(
-			classPathResource.getInputStream());
-
-		return zipInputStream;
+		return new ZipInputStream(classPathResource.getInputStream());
 	}
 
 	private String _getModifiedSince() {
