@@ -296,8 +296,17 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		Field<OffsetDateTime> eventDateField = DSL.field(
 			"eventDate", OffsetDateTime.class);
 
-		if (interval != Interval.HOUR) {
+		if (interval == Interval.DAY) {
 			eventDateField = DSL.trunc(eventDateField, DatePart.DAY);
+		}
+		else if (interval == Interval.HOUR) {
+			eventDateField = DSL.trunc(eventDateField, DatePart.HOUR);
+		}
+		else if (interval == Interval.MONTH) {
+			eventDateField = DSL.trunc(eventDateField, DatePart.MONTH);
+		}
+		else {
+			eventDateField = DSL.trunc(eventDateField, DatePart.WEEK);
 		}
 
 		return dslContext.select(
