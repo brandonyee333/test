@@ -14,11 +14,13 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
+import com.liferay.osb.asah.backend.dog.EventHistogramDog;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.IndividualHistogramDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
 import com.liferay.osb.asah.backend.dog.VisitorHistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.EventMetricType;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
@@ -54,9 +56,14 @@ public class HistogramDataFetcher extends BaseDataFetcher<HistogramMetricBag> {
 		GraphQLFieldDefinition graphQLFieldDefinition =
 			parentExecutionTypeInfo.getFieldDefinition();
 
-		MetricType metricType = _metricTypeDog.getMetricType(
-			searchQueryContext.getAssetType(),
+		MetricType metricType = EventMetricType.of(
 			graphQLFieldDefinition.getName());
+
+		if (metricType == null) {
+			metricType = _metricTypeDog.getMetricType(
+				searchQueryContext.getAssetType(),
+				graphQLFieldDefinition.getName());
+		}
 
 		if ((metricType == IndividualMetricType.ANONYMOUS_INDIVIDUALS) ||
 			(metricType == IndividualMetricType.KNOWN_INDIVIDUALS) ||
@@ -64,6 +71,16 @@ public class HistogramDataFetcher extends BaseDataFetcher<HistogramMetricBag> {
 
 			return _individualHistogramDog.getHistogramMetricBag(
 				metricType, searchQueryContext);
+		}
+
+		if (metricType == EventMetricType.TOTAL_EVENTS) {
+			return _eventHistogramDog.getEventsCountHistogram(
+				searchQueryContext);
+		}
+
+		if (metricType == EventMetricType.TOTAL_SESSIONS) {
+			return _eventHistogramDog.getSessionsCountHistogram(
+				searchQueryContext);
 		}
 
 		if (metricType == PageMetricType.VISITORS) {
@@ -76,6 +93,9 @@ public class HistogramDataFetcher extends BaseDataFetcher<HistogramMetricBag> {
 			searchQueryContext.isIncludePrevious(), metricType,
 			searchQueryContext);
 	}
+
+	@Autowired
+	private EventHistogramDog _eventHistogramDog;
 
 	@Autowired
 	private HistogramDog _histogramDog;
