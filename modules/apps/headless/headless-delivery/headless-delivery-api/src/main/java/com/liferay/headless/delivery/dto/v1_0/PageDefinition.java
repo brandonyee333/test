@@ -113,6 +113,34 @@ public class PageDefinition implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Settings settings;
 
+	@Schema(description = "The bundle's version.")
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	@JsonIgnore
+	public void setVersion(
+		UnsafeSupplier<String, Exception> versionUnsafeSupplier) {
+
+		try {
+			version = versionUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField(description = "The bundle's version.")
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String version;
+
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -158,6 +186,20 @@ public class PageDefinition implements Serializable {
 			sb.append("\"settings\": ");
 
 			sb.append(String.valueOf(settings));
+		}
+
+		if (version != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"version\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(version));
+
+			sb.append("\"");
 		}
 
 		sb.append("}");

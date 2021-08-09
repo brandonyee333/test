@@ -76,6 +76,27 @@ public class PageDefinition implements Cloneable, Serializable {
 
 	protected Settings settings;
 
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public void setVersion(
+		UnsafeSupplier<String, Exception> versionUnsafeSupplier) {
+
+		try {
+			version = versionUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected String version;
+
 	@Override
 	public PageDefinition clone() throws CloneNotSupportedException {
 		return (PageDefinition)super.clone();
