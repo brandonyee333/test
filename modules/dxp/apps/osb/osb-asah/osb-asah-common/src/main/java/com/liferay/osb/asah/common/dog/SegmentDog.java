@@ -203,6 +203,13 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return _segmentRepository.existsById(segmentId);
 	}
 
+	public Segment fetchSegment(Long segmentId) {
+		Optional<Segment> segmentOptional = _segmentRepository.findById(
+			segmentId);
+
+		return segmentOptional.orElse(null);
+	}
+
 	public Segment fetchSegment(String name, String status) {
 		Optional<Segment> segmentOptional =
 			_segmentRepository.findByNameAndStatus(name, status);

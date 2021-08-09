@@ -448,23 +448,25 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			QueryBuilders.termQuery(
 				"individualSegmentIds", individualSegmentId));
 
-		Segment segment = segmentDog.getSegment(
+		Segment segment = segmentDog.fetchSegment(
 			Long.valueOf(individualSegmentId));
 
-		Long channelId = segment.getChannelId();
+		if (segment != null) {
+			Long channelId = segment.getChannelId();
 
-		if (Objects.nonNull(channelId)) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery(
-					"channelIds", String.valueOf(channelId)));
+			if (Objects.nonNull(channelId)) {
+				boolQueryBuilder.filter(
+					QueryBuilders.termQuery(
+						"channelIds", String.valueOf(channelId)));
+			}
+
+			if (includeAnonymousUsers == null) {
+				includeAnonymousUsers = BooleanUtils.toBoolean(
+					segment.getIncludeAnonymousUsers());
+			}
 		}
 
-		if (includeAnonymousUsers == null) {
-			includeAnonymousUsers = BooleanUtils.toBoolean(
-				segment.getIncludeAnonymousUsers());
-		}
-
-		if (!includeAnonymousUsers) {
+		if ((includeAnonymousUsers != null) && !includeAnonymousUsers) {
 			boolQueryBuilder.filter(
 				QueryBuilders.existsQuery("demographics.email"));
 		}
