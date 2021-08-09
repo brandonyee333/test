@@ -394,7 +394,7 @@ public class EventAnalysisDog {
 
 				if ((binSize == null) || (binSize.doubleValue() <= 0)) {
 					throw new OSBAsahException(
-						HttpStatus.BAD_REQUEST, "Invalid bin size: " + binSize);
+						HttpStatus.BAD_REQUEST, "Invalid bin size " + binSize);
 				}
 			}
 		}

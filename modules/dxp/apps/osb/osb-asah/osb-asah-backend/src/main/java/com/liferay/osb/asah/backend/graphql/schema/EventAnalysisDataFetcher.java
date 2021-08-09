@@ -47,7 +47,6 @@ public class EventAnalysisDataFetcher extends BaseDataFetcher<EventAnalysis> {
 			environment.getArgument("eventAnalysisBreakdowns"),
 			eventAnalysisBreakdown -> new EventAnalysisBreakdown(
 				(Map<String, Object>)eventAnalysisBreakdown));
-
 		List<EventAnalysisFilter> eventAnalysisFilters = ListUtil.map(
 			environment.getArgument("eventAnalysisFilters"),
 			eventAnalysisFilter -> new EventAnalysisFilter(
