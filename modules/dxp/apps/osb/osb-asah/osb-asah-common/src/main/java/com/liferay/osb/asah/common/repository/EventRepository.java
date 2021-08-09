@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.model.BreakdownItem;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.math.BigDecimal;
@@ -85,6 +86,10 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate);
+
+	public Map<String, Integer> getEventsCountGroupByEventDate(
+		Long channelId, Long individualId, Interval interval, String keywords,
+		TimeRange timeRange);
 
 	public List<Event> searchEvents(
 		Long channelId, Long individualId, String keywords, Pageable pageable,

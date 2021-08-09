@@ -24,12 +24,16 @@ import com.liferay.osb.asah.common.model.BreakdownItem;
 import com.liferay.osb.asah.common.model.DateGrouping;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.filter.FilterOperator;
 import com.liferay.osb.asah.common.model.filter.FilterOperators;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,6 +53,7 @@ import org.jooq.Field;
 import org.jooq.OrderField;
 import org.jooq.Record;
 import org.jooq.Record1;
+import org.jooq.Record2;
 import org.jooq.SelectHavingConditionStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
@@ -248,6 +253,55 @@ public class EventRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public Map<String, Integer> getEventsCountGroupByEventDate(
+		Long channelId, Long individualId, Interval interval, String keywords,
+		TimeRange timeRange) {
+
+		Field<OffsetDateTime> eventDateField = DSL.field(
+			"Event.eventDate", OffsetDateTime.class);
+
+		if (interval == Interval.DAY) {
+			eventDateField = _dateTrunc(DatePart.DAY, eventDateField);
+		}
+		else if (interval == Interval.HOUR) {
+			eventDateField = _dateTrunc(DatePart.HOUR, eventDateField);
+		}
+		else if (interval == Interval.MONTH) {
+			eventDateField = _dateTrunc(DatePart.MONTH, eventDateField);
+		}
+		else {
+			eventDateField = _dateTrunc(DatePart.WEEK, eventDateField);
+		}
+
+		eventDateField = eventDateField.as("eventDate");
+
+		return _toMap(
+			_dslContext.select(
+				eventDateField, DSL.count()
+			).from(
+				"Event"
+			).innerJoin(
+				DSL.table(
+					"EventDefinition"
+				).as(
+					"EventDefinition1"
+				)
+			).on(
+				DSL.field(
+					"\"EventDefinition1\".id"
+				).eq(
+					DSL.field("Event.eventDefinitionId")
+				)
+			).where(
+				_createCondition(channelId, individualId, keywords, timeRange)
+			).groupBy(
+				eventDateField
+			).fetch(
+			).map(
+				record -> record
+			));
+	}
+
 	public List<Event> searchEvents(
 		Long channelId, Long individualId, String keywords, Pageable pageable,
 		TimeRange timeRange) {
@@ -399,6 +453,103 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		return selectJoinStep;
+	}
+
+	private Condition _createCondition(
+		Long channelId, Long individualId, String keyword,
+		TimeRange timeRange) {
+
+		Condition condition = DSL.and(
+			DSL.field(
+				"Event.channelId"
+			).eq(
+				channelId
+			),
+			DSL.field(
+				"Event.eventDate"
+			).between(
+				DateUtil.toUTCLocalDateTime(
+					timeRange.getStartLocalDateTime(),
+					_timeZoneDog.getZoneId()),
+				DateUtil.toUTCLocalDateTime(
+					timeRange.getEndLocalDateTime(), _timeZoneDog.getZoneId())
+			),
+			DSL.field(
+				"\"EventDefinition1\".hidden", Boolean.class
+			).isFalse());
+
+		if (individualId != null) {
+			condition = DSL.and(
+				condition,
+				DSL.field(
+					"Event.individualId"
+				).eq(
+					individualId
+				));
+		}
+
+		if (!StringUtils.isEmpty(keyword)) {
+			condition = condition.and(
+				DSL.or(
+					DSL.exists(
+						DSL.select(
+							DSL.field("id")
+						).from(
+							DSL.table(
+								"EventDefinition"
+							).as(
+								"EventDefinition2"
+							).where(
+								DSL.and(
+									DSL.field(
+										"\"EventDefinition2\".id"
+									).eq(
+										DSL.field("Event.eventDefinitionId")
+									)),
+								DSL.field(
+									"\"EventDefinition2\".name"
+								).containsIgnoreCase(
+									keyword
+								)
+							)
+						)),
+					DSL.exists(
+						DSL.select(
+							DSL.field("id")
+						).from(
+							DSL.table(
+								"EventAttribute"
+							).where(
+								DSL.and(
+									DSL.field(
+										"EventAttribute.eventId"
+									).eq(
+										DSL.field("Event.id")
+									)),
+								DSL.field(
+									"EventAttribute.value"
+								).containsIgnoreCase(
+									keyword
+								)
+							)
+						))));
+		}
+
+		return condition;
+	}
+
+	private <OffsetDateTime> Field<OffsetDateTime> _dateTrunc(
+		DatePart datePart, Field<OffsetDateTime> field) {
+
+		if (datePart == DatePart.WEEK) {
+			return DSL.field(
+				"date_trunc({0}, {1} + INTERVAL '1 DAY') - INTERVAL '1 DAY'",
+				field.getDataType(), datePart.toSQL(), field);
+		}
+
+		return DSL.field(
+			"date_trunc({0}, {1})", field.getDataType(), datePart.toSQL(),
+			field);
 	}
 
 	private List<Condition> _getConditions(
@@ -698,6 +849,24 @@ public class EventRepositoryImpl extends BaseRepository {
 
 		return DSL.field(
 			attributeType.getQualifiedAttributeValueFieldName(null));
+	}
+
+	private Map<String, Integer> _toMap(
+		List<Record2<OffsetDateTime, Integer>> record2s) {
+
+		Stream<Record2<OffsetDateTime, Integer>> stream = record2s.stream();
+
+		return stream.collect(
+			Collectors.toMap(
+				record2 -> {
+					OffsetDateTime offsetDateTime = record2.value1();
+
+					LocalDateTime localDateTime =
+						offsetDateTime.toLocalDateTime();
+
+					return localDateTime.toString();
+				},
+				Record2::value2));
 	}
 
 	private final DSLContext _dslContext;
