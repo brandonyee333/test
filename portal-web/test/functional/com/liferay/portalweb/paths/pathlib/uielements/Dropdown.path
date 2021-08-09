@@ -16,6 +16,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>FILTER_ORDER</td>
+	<td>//*[@data-qa-id='filterorder-by']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>FRIENDLY_URL_LOCALE</td>
 	<td>//button[contains(@id,'friendlyURLMenu')]//span[contains(@class,'btn-section')]</td>
 	<td></td>
