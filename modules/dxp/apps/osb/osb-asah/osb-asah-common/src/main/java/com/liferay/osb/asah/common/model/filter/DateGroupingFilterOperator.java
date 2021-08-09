@@ -33,7 +33,7 @@ public class DateGroupingFilterOperator extends FilterOperator {
 	public DateGroupingFilterOperator(
 		EventAttributeDefinition.DataType dataType, List<String> values) {
 
-		super(dataType, 2, "eq", values);
+		super(dataType, 2, "dateGrouping", values);
 	}
 
 	@Override

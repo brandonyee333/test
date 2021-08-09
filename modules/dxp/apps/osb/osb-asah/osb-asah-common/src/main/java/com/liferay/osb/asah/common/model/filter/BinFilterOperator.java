@@ -31,7 +31,7 @@ public class BinFilterOperator extends FilterOperator {
 	public BinFilterOperator(
 		EventAttributeDefinition.DataType dataType, List<String> values) {
 
-		super(dataType, 2, "eq", values);
+		super(dataType, 2, "bin", values);
 	}
 
 	@Override
