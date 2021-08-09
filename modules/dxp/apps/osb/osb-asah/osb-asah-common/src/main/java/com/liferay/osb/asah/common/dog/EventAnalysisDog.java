@@ -28,14 +28,10 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-
-import org.jooq.DatePart;
-import org.jooq.Field;
-import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -297,55 +293,22 @@ public class EventAnalysisDog {
 			DateGrouping dateGrouping =
 				eventAnalysisBreakdown.getDateGrouping();
 
-			Function<Field, Field> fieldFunction = null;
-
-			if (dateGrouping.equals(DateGrouping.DAY)) {
-				fieldFunction = field -> DSL.concat(
-					DSL.extract(field, DatePart.YEAR), DSL.val("-"),
-					DSL.extract(field, DatePart.MONTH), DSL.val("-"),
-					DSL.extract(field, DatePart.DAY));
-			}
-			else if (dateGrouping.equals(DateGrouping.MONTH)) {
-				fieldFunction = field -> DSL.concat(
-					DSL.extract(field, DatePart.YEAR), DSL.val("-"),
-					DSL.extract(field, DatePart.MONTH));
-			}
-			else if (dateGrouping.equals(DateGrouping.YEAR)) {
-				fieldFunction = field -> DSL.extract(field, DatePart.YEAR);
-			}
+			return new EventAnalysisFilter(
+				eventAnalysisBreakdown.getAttributeId(),
+				eventAnalysisBreakdown.getAttributeType(),
+				eventAnalysisBreakdown.getDataType(), "dateGrouping",
+				Arrays.asList(dateGrouping.toString(), value));
+		}
+		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION) ||
+				 dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
 
 			return new EventAnalysisFilter(
 				eventAnalysisBreakdown.getAttributeId(),
 				eventAnalysisBreakdown.getAttributeType(),
-				eventAnalysisBreakdown.getDataType(), fieldFunction, "eq",
-				EventAttributeDefinition.DataType.STRING,
-				Collections.singletonList(value));
-		}
-		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
-			return new EventAnalysisFilter(
-				eventAnalysisBreakdown.getAttributeId(),
-				eventAnalysisBreakdown.getAttributeType(),
-				eventAnalysisBreakdown.getDataType(),
-				field -> field.div(
-					eventAnalysisBreakdown.getBinSize()
-				).multiply(
-					eventAnalysisBreakdown.getBinSize()
-				),
-				"eq", eventAnalysisBreakdown.getDataType(),
-				Collections.singletonList(value));
-		}
-		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-			return new EventAnalysisFilter(
-				eventAnalysisBreakdown.getAttributeId(),
-				eventAnalysisBreakdown.getAttributeType(),
-				eventAnalysisBreakdown.getDataType(),
-				field -> DSL.floor(
-					field.div(eventAnalysisBreakdown.getBinSize())
-				).multiply(
-					eventAnalysisBreakdown.getBinSize()
-				),
-				"eq", eventAnalysisBreakdown.getDataType(),
-				Collections.singletonList(value));
+				eventAnalysisBreakdown.getDataType(), "bin",
+				Arrays.asList(
+					String.valueOf(eventAnalysisBreakdown.getBinSize()),
+					value));
 		}
 
 		return new EventAnalysisFilter(

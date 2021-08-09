@@ -37,7 +37,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -366,7 +365,7 @@ public class EventRepositoryImpl extends BaseRepository {
 				StringUtils.lowerCase(attributeType.getTableName()) + i;
 
 			FilterOperator filterOperator = FilterOperators.of(
-				eventAnalysisFilter.getReturnDataType(),
+				eventAnalysisFilter.getDataType(),
 				eventAnalysisFilter.getOperator(),
 				eventAnalysisFilter.getValues());
 
@@ -468,7 +467,7 @@ public class EventRepositoryImpl extends BaseRepository {
 
 			for (EventAnalysisFilter eventAnalysisFilter : entry.getValue()) {
 				FilterOperator filterOperator = FilterOperators.of(
-					eventAnalysisFilter.getReturnDataType(),
+					eventAnalysisFilter.getDataType(),
 					eventAnalysisFilter.getOperator(),
 					eventAnalysisFilter.getValues());
 
@@ -535,26 +534,19 @@ public class EventRepositoryImpl extends BaseRepository {
 			eventAnalysisFilter.getDataType();
 
 		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
-			field = DSL.function("try_cast_boolean", Object.class, field);
+			return DSL.function("try_cast_boolean", Object.class, field);
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-			field = DSL.function("try_cast_timestamp", Object.class, field);
+			return DSL.function("try_cast_timestamp", Object.class, field);
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
-			field = DSL.function("try_cast_bigint", Object.class, field);
+			return DSL.function("try_cast_bigint", Object.class, field);
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-			field = DSL.function("try_cast_float", Object.class, field);
+			return DSL.function("try_cast_float", Object.class, field);
 		}
 
-		Function<Field, Field> fieldFunction =
-			eventAnalysisFilter.getFieldFunction();
-
-		if (fieldFunction == null) {
-			return field;
-		}
-
-		return fieldFunction.apply(field);
+		return field;
 	}
 
 	private String _getJoinFieldTableName(AttributeType attributeType) {
