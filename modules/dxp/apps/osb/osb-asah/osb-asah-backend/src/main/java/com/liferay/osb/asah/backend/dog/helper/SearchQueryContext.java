@@ -58,6 +58,14 @@ public class SearchQueryContext {
 		return _dataSourceId;
 	}
 
+	public String getEntityId() {
+		return _entityId;
+	}
+
+	public String getEntityType() {
+		return _entityType;
+	}
+
 	public String getExperienceId() {
 		return _experienceId;
 	}
@@ -154,6 +162,14 @@ public class SearchQueryContext {
 		_technology = Technology.deviceType(deviceType);
 	}
 
+	public void setEntityId(String entityId) {
+		_entityId = entityId;
+	}
+
+	public void setEntityType(String entityType) {
+		_entityType = entityType;
+	}
+
 	public void setExperienceId(String experienceId) {
 		_experienceId = experienceId;
 	}
@@ -216,6 +232,8 @@ public class SearchQueryContext {
 	private String _canonicalUrl;
 	private String _channelId;
 	private String _dataSourceId;
+	private String _entityId;
+	private String _entityType;
 	private String _experienceId;
 	private Long _experimentId;
 	private Geolocation _geolocation = Geolocation.any();

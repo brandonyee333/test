@@ -122,6 +122,10 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 			}
 		}
 
+		searchQueryContext.setEntityId(
+			dataFetchingEnvironment.getArgument("entityId"));
+		searchQueryContext.setEntityType(
+			dataFetchingEnvironment.getArgument("entityType"));
 		searchQueryContext.setInterval(
 			dataFetchingEnvironment.getArgument("interval"));
 		searchQueryContext.setKeywords(
