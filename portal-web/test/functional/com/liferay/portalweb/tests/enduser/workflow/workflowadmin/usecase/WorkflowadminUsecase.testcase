@@ -1194,6 +1194,48 @@ definition {
 		Notifications.viewBadgeCount(notificationCount = "0");
 	}
 
+	@description = "This is a use case for LPS-98825."
+	@priority = "5"
+	test ViewMyWorkflowTasksOrderResults {
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Web Content");
+
+		Workflow.configureWorkflowViaFolderInfo(workflowDefinition = "Single Approver (Version 1)");
+
+		for (var webContentNumber : list "1,2,3") {
+			JSONWebcontent.addWebContent(
+				content = "WC Content",
+				groupName = "Guest",
+				title = "Web Content Title ${webContentNumber}");
+		}
+
+		Page.gotoMyAccount(portletName = "My Workflow Tasks");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Click(locator1 = "Dropdown#FILTER_ORDER");
+
+		MenuItem.click(menuItem = "Last Activity Date");
+
+		for (var rowNumber : list "1,2,3") {
+			AssertElementPresent(
+				key_rowNumber = "${rowNumber} + 1",
+				locator1 = "MyWorkflowTasks#ASSET_TITLE_TABLE_ROW",
+				value1 = "Web Content Title ${rowNumber}");
+		}
+
+		Click(locator1 = "Icon#CARET_DESCENDING");
+
+		for (var rowNumber : list "3,2,1") {
+			AssertElementPresent(
+				key_rowNumber = "5 - ${rowNumber}",
+				locator1 = "MyWorkflowTasks#ASSET_TITLE_TABLE_ROW",
+				value1 = "Web Content Title ${rowNumber}");
+		}
+	}
+
 	@priority = "3"
 	test ViewTaskCount {
 		Navigator.openURL();
