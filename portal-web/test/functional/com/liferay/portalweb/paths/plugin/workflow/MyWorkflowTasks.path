@@ -21,6 +21,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ASSET_TITLE_TABLE_ROW</td>
+	<td>//tr[${key_rowNumber}]//td[1]</td>
+	<td></td>
+</tr>
+<tr>
 	<td></td>
 	<td></td>
 	<td></td>
