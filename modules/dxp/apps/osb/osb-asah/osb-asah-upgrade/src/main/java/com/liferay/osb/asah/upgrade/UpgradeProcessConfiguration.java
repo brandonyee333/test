@@ -24,11 +24,11 @@ import com.liferay.osb.asah.upgrade.v2_12_2.ActivityGroupsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_2.AssetsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_2.IndividualActivitiesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_12_2.PagesUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_13_0.ChannelsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_13_0.DataSourcesUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_13_0.SalesforceUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_0.ChannelsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.CustomEventUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.DXPEntityUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_0.DataSourcesUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_0.SalesforceUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.UserSessionsUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,12 +63,9 @@ public class UpgradeProcessConfiguration {
 			_individualActivitiesUpgradeStep, _pagesUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.12.2", "2.13.0", _dataSourcesUpgradeStep, _channelsUpgradeStep,
-			_salesforceUpgradeStep);
-
-		upgradeProcess.addUpgradeSteps(
-			"2.13.0", "3.0.0", _customEventUpgradeStep, _dxpEntityUpgradeStep,
-			_userSessionsUpgradeStep);
+			"2.12.2", "3.0.0", _channelsUpgradeStep, _customEventUpgradeStep,
+			_dataSourcesUpgradeStep, _dxpEntityUpgradeStep,
+			_salesforceUpgradeStep, _userSessionsUpgradeStep);
 
 		return upgradeProcess;
 	}

@@ -12,18 +12,16 @@
  *
  */
 
-package com.liferay.osb.asah.upgrade.v2_13_0.test;
+package com.liferay.osb.asah.upgrade.v3_0_0.test;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
-import com.liferay.osb.asah.upgrade.v2_13_0.DataSourcesUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_0.SalesforceUpgradeStep;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -33,49 +31,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
- * @author Marcos Martins
+ * @author Marcellus Tavares
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
-public class DataSourcesUpgradeStepTest {
+public class SalesforceUpgradeStepTest {
 
 	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+		name = "Account", resourcePath = "old_account.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_SALESFORCE_RAW
 	)
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+		name = "individuals", resourcePath = "old_individuals.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_SALESFORCE_RAW
 	)
 	@Test
 	public void testUpgrade() throws Exception {
-		Assert.assertTrue(
-			_elasticsearchIndexManager.exists("test_osbasahfaroinfo_channels"));
-
-		Assert.assertTrue(
-			_elasticsearchIndexManager.exists(
-				"test_osbasahfaroinfo_data-sources"));
-
-		_dataSourcesUpgradeStep.upgrade("");
+		_salesforceUpgradeStep.upgrade("");
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
-				"dependencies/expected_channels.json", this),
-			_elasticsearchInvoker.get("channels"), false);
-
+				"dependencies/osbasahsalesforceraw/new_account.json", this),
+			_elasticsearchInvoker.get("Account"), false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
-				"dependencies/expected_data_sources.json", this),
-			_elasticsearchInvoker.get("data-sources"), false);
+				"dependencies/osbasahsalesforceraw/new_individuals.json", this),
+			_elasticsearchInvoker.get("individuals"), false);
 	}
 
-	@Autowired
-	private DataSourcesUpgradeStep _dataSourcesUpgradeStep;
-
-	@Autowired
-	private ElasticsearchIndexManager _elasticsearchIndexManager;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private SalesforceUpgradeStep _salesforceUpgradeStep;
 
 }
