@@ -19,8 +19,7 @@ import com.liferay.osb.asah.spark.common.DateUtil;
 import java.io.Serializable;
 
 import java.net.URI;
-
-import java.nio.charset.StandardCharsets;
+import java.net.URISyntaxException;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -33,13 +32,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.web.util.UriUtils;
+import org.apache.http.Consts;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URIBuilder;
 
 /**
  * @author Robson Pastor
@@ -403,19 +401,6 @@ public class Session implements Serializable {
 		}
 	}
 
-	private String _decode(String value) {
-		if (Objects.isNull(value)) {
-			return null;
-		}
-
-		try {
-			return UriUtils.decode(value, StandardCharsets.UTF_8.name());
-		}
-		catch (Exception exception) {
-			return null;
-		}
-	}
-
 	private String _getAcquisitionChannel(String medium) {
 		if (Objects.equals(medium, "affiliate")) {
 			return "affiliates";
@@ -473,37 +458,46 @@ public class Session implements Serializable {
 
 		String url = eventContext.get("url");
 
-		UriComponentsBuilder urlUriComponentsBuilder =
-			UriComponentsBuilder.fromUriString(url);
+		try {
+			URIBuilder uriBuilder = new URIBuilder(url);
 
-		UriComponents urlUriComponents = urlUriComponentsBuilder.build();
+			uriBuilder.setCharset(Consts.UTF_8);
 
-		MultiValueMap<String, String> queryParams =
-			urlUriComponents.getQueryParams();
+			Map<String, String> queryParams = uriBuilder.getQueryParams(
+			).stream(
+			).filter(
+				param -> _queryParameters.contains(param.getName())
+			).collect(
+				Collectors.toMap(
+					NameValuePair::getName, NameValuePair::getValue)
+			);
 
-		String referrerHost = _toURI(eventContext.get("referrer"));
+			String referrerHost = _toURI(eventContext.get("referrer"));
 
-		String medium = _getAcquisitionMedium(
-			_decode(queryParams.getFirst("utm_medium")), referrerHost);
+			String medium = _getAcquisitionMedium(
+				queryParams.get("utm_medium"), referrerHost);
 
-		return new HashMap() {
-			{
-				put("campaign", _decode(queryParams.getFirst("utm_campaign")));
-				put("channel", _getAcquisitionChannel(medium));
-				put("content", _decode(queryParams.getFirst("utm_content")));
-				put("medium", medium);
-				put("referrerHost", referrerHost);
-				put("source", _decode(queryParams.getFirst("utm_source")));
-				put("term", _decode(queryParams.getFirst("utm_term")));
-				put("url", url);
-			}
-		};
+			return new HashMap() {
+				{
+					put("campaign", queryParams.get("utm_campaign"));
+					put("channel", _getAcquisitionChannel(medium));
+					put("content", queryParams.get("utm_content"));
+					put("medium", medium);
+					put("referrerHost", referrerHost);
+					put("source", queryParams.get("utm_source"));
+					put("term", queryParams.get("utm_term"));
+					put("url", url);
+				}
+			};
+		}
+		catch (URISyntaxException uriSyntaxException) {
+			return new HashMap();
+		}
 	}
 
 	private String _toURI(String referrer) {
 		try {
-			URI uri = new URI(
-				UriUtils.encodePath(referrer, StandardCharsets.UTF_8));
+			URI uri = new URI(referrer);
 
 			return uri.getHost();
 		}
@@ -532,6 +526,15 @@ public class Session implements Serializable {
 			add("cpc");
 			add("paidsearch");
 			add("ppc");
+		}
+	};
+	private static final Set<String> _queryParameters = new HashSet() {
+		{
+			add("utm_campaign");
+			add("utm_content");
+			add("utm_medium");
+			add("utm_source");
+			add("utm_term");
 		}
 	};
 	private static final Set<String> _socialMedia = new HashSet() {
