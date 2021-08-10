@@ -161,16 +161,16 @@ public class SessionTest {
 			put("deviceType", "Desktop");
 			put("languageId", "en-US");
 			put("platformName", "Unknown");
-			put(
-				"referrer",
-				"https://www.liferay.com/pt/home");
+			put("referrer", "https://www.liferay.com/pt/home");
 			put("region", "California");
 			put(
 				"title",
 				"Liferay DXP | A Plataforma que Unifica a Experiência");
 			put(
 				"url",
-				"https://www.liferay.com/pt/home?utm_source=linkedin&utm_medium=social&utm_campaign=7010g000000nK1uAAE&utm_content=linkedin-page-button");
+				"https://www.liferay.com/pt/home?utm_source=linkedin&" +
+					"utm_medium=social&utm_campaign=7010g000000nK1uAAE&" +
+						"utm_content=linkedin-page-button");
 		}
 	};
 	private final Date _date = DateUtil.toDate("2021-06-22");

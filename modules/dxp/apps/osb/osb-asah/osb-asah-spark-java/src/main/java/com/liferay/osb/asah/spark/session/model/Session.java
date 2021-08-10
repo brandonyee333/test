@@ -33,6 +33,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Consts;
@@ -453,6 +454,18 @@ public class Session implements Serializable {
 		return null;
 	}
 
+	private Map<String, String> _getQueryParams(
+		List<NameValuePair> queryParams) {
+
+		Stream<NameValuePair> stream = queryParams.stream();
+
+		return stream.filter(
+			param -> _queryParameters.contains(param.getName())
+		).collect(
+			Collectors.toMap(NameValuePair::getName, NameValuePair::getValue)
+		);
+	}
+
 	private Map<String, String> _toAcquisition(
 		Map<String, String> eventContext) {
 
@@ -463,14 +476,8 @@ public class Session implements Serializable {
 
 			uriBuilder.setCharset(Consts.UTF_8);
 
-			Map<String, String> queryParams = uriBuilder.getQueryParams(
-			).stream(
-			).filter(
-				param -> _queryParameters.contains(param.getName())
-			).collect(
-				Collectors.toMap(
-					NameValuePair::getName, NameValuePair::getValue)
-			);
+			Map<String, String> queryParams = _getQueryParams(
+				uriBuilder.getQueryParams());
 
 			String referrerHost = _toURI(eventContext.get("referrer"));
 
