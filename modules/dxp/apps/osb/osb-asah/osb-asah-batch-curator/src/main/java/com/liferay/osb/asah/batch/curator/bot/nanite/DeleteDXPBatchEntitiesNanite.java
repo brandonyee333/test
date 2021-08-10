@@ -17,6 +17,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
@@ -26,6 +27,7 @@ import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -155,13 +157,20 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 	private Iterable<Blob> _listBucket(
 		Storage.BlobListOption... blobListOptions) {
 
-		Page<Blob> blobs = _storage.list(
-			StringUtils.replace(
-				_dxpBatchEntitiesBucketTemplate, "{region}",
-				System.getenv("LCP_PROJECT_CLUSTER")),
-			blobListOptions);
+		try {
+			Page<Blob> blobs = _storage.list(
+				StringUtils.replace(
+					_dxpBatchEntitiesBucketTemplate, "{region}",
+					System.getenv("LCP_PROJECT_CLUSTER")),
+				blobListOptions);
 
-		return blobs.iterateAll();
+			return blobs.iterateAll();
+		}
+		catch (StorageException storageException) {
+			_log.error(storageException, storageException);
+		}
+
+		return IterableUtils.emptyIterable();
 	}
 
 	private void _scanDirectory(String directoryPrefix) {
