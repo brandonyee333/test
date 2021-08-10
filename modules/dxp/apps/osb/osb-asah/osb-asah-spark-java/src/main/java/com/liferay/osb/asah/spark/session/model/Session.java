@@ -18,14 +18,28 @@ import com.liferay.osb.asah.spark.common.DateUtil;
 
 import java.io.Serializable;
 
+import java.net.URI;
+
+import java.nio.charset.StandardCharsets;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.util.UriUtils;
 
 /**
  * @author Robson Pastor
@@ -37,6 +51,8 @@ public class Session implements Serializable {
 
 	public Session(Event event) {
 		Map<String, String> eventContext = event.getContext();
+
+		_acquisition = _toAcquisition(eventContext);
 
 		_browserName = eventContext.get("browserName");
 
@@ -113,7 +129,8 @@ public class Session implements Serializable {
 
 		Session session = (Session)obj;
 
-		if (Objects.equals(_browserName, session._browserName) &&
+		if (Objects.equals(_acquisition, session._acquisition) &&
+			Objects.equals(_browserName, session._browserName) &&
 			Objects.equals(_canonicalUrls, session._canonicalUrls) &&
 			Objects.equals(_channelId, session._channelId) &&
 			Objects.equals(_city, session._city) &&
@@ -142,6 +159,10 @@ public class Session implements Serializable {
 		}
 
 		return false;
+	}
+
+	public Map<String, String> getAcquisition() {
+		return _acquisition;
 	}
 
 	public String getBrowserName() {
@@ -255,9 +276,9 @@ public class Session implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_browserName, _canonicalUrls, _channelId, _city, _clientIp,
-			_country, _dataSourceId, _date, _deviceType, _events, _finished,
-			_firstEventDate, _interactionNumber, _interactionsCount,
+			_acquisition, _browserName, _canonicalUrls, _channelId, _city,
+			_clientIp, _country, _dataSourceId, _date, _deviceType, _events,
+			_finished, _firstEventDate, _interactionNumber, _interactionsCount,
 			_iterationNumber, _lastEventDate, _pageViewsCount, _platformName,
 			_projectId, _referrers, _region, _sessionId, _urls, _userId);
 	}
@@ -268,6 +289,10 @@ public class Session implements Serializable {
 		}
 
 		return false;
+	}
+
+	public void setAcquisition(Map<String, String> acquisition) {
+		_acquisition = acquisition;
 	}
 
 	public void setBrowserName(String browserName) {
@@ -378,6 +403,149 @@ public class Session implements Serializable {
 		}
 	}
 
+	private String _decode(String value) {
+		if (Objects.isNull(value)) {
+			return null;
+		}
+
+		try {
+			return UriUtils.decode(value, StandardCharsets.UTF_8.name());
+		}
+		catch (Exception exception) {
+			return null;
+		}
+	}
+
+	private String _getAcquisitionChannel(String medium) {
+		if (Objects.equals(medium, "affiliate")) {
+			return "affiliates";
+		}
+
+		if (Objects.isNull(medium)) {
+			return "direct";
+		}
+
+		if (_displayMedia.contains(medium)) {
+			return "display";
+		}
+
+		if (Objects.equals(medium, "email")) {
+			return "email";
+		}
+
+		if (Objects.equals(medium, "organic")) {
+			return "organic";
+		}
+
+		if (_otherAdvertisingMedia.contains(medium)) {
+			return "other advertising";
+		}
+
+		if (_paidSearchMedia.contains(medium)) {
+			return "paid search";
+		}
+
+		if (Objects.equals(medium, "referral")) {
+			return "referral";
+		}
+
+		if (_socialMedia.contains(medium)) {
+			return "social";
+		}
+
+		return "other";
+	}
+
+	private String _getAcquisitionMedium(String medium, String referrerHost) {
+		if (!StringUtils.isEmpty(medium)) {
+			return medium;
+		}
+
+		if (!StringUtils.isEmpty(referrerHost)) {
+			return "referral";
+		}
+
+		return null;
+	}
+
+	private Map<String, String> _toAcquisition(
+		Map<String, String> eventContext) {
+
+		String url = eventContext.get("url");
+
+		UriComponentsBuilder urlUriComponentsBuilder =
+			UriComponentsBuilder.fromUriString(url);
+
+		UriComponents urlUriComponents = urlUriComponentsBuilder.build();
+
+		MultiValueMap<String, String> queryParams =
+			urlUriComponents.getQueryParams();
+
+		String referrerHost = _toURI(eventContext.get("referrer"));
+
+		String medium = _getAcquisitionMedium(
+			_decode(queryParams.getFirst("utm_medium")), referrerHost);
+
+		return new HashMap() {
+			{
+				put("campaign", _decode(queryParams.getFirst("utm_campaign")));
+				put("channel", _getAcquisitionChannel(medium));
+				put("content", _decode(queryParams.getFirst("utm_content")));
+				put("medium", medium);
+				put("referrerHost", referrerHost);
+				put("source", _decode(queryParams.getFirst("utm_source")));
+				put("term", _decode(queryParams.getFirst("utm_term")));
+				put("url", url);
+			}
+		};
+	}
+
+	private String _toURI(String referrer) {
+		try {
+			URI uri = new URI(
+				UriUtils.encodePath(referrer, StandardCharsets.UTF_8));
+
+			return uri.getHost();
+		}
+		catch (Exception exception) {
+			return null;
+		}
+	}
+
+	private static final Set<String> _displayMedia = new HashSet() {
+		{
+			add("banner");
+			add("cpm");
+			add("display");
+		}
+	};
+	private static final Set<String> _otherAdvertisingMedia = new HashSet() {
+		{
+			add("content-text");
+			add("cpa");
+			add("cpp");
+			add("cpv");
+		}
+	};
+	private static final Set<String> _paidSearchMedia = new HashSet() {
+		{
+			add("cpc");
+			add("paidsearch");
+			add("ppc");
+		}
+	};
+	private static final Set<String> _socialMedia = new HashSet() {
+		{
+			add("sm");
+			add("social");
+			add("social media");
+			add("social network");
+			add("social-media");
+			add("social-network");
+		}
+	};
+
+	private Map<String, String> _acquisition = new HashMap<>();
 	private String _browserName;
 	private List<String> _canonicalUrls = new ArrayList<>();
 	private String _channelId;
