@@ -1,5 +1,5 @@
 Bundle-Name: Liferay Layout Set Prototype Web
 Bundle-SymbolicName: com.liferay.layout.set.prototype.web
-Bundle-Version: 1.0.39
+Bundle-Version: 1.0.40
 Liferay-Releng-Module-Group-Title: Site Management
 -dsannotations-options: inherit
