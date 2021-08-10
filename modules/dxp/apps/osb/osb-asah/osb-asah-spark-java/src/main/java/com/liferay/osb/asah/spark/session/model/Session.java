@@ -451,7 +451,7 @@ public class Session implements Serializable {
 			return "referral";
 		}
 
-		return null;
+		return "";
 	}
 
 	private Map<String, String> _getQueryParams(
@@ -509,7 +509,7 @@ public class Session implements Serializable {
 			return uri.getHost();
 		}
 		catch (Exception exception) {
-			return null;
+			return "";
 		}
 	}
 
