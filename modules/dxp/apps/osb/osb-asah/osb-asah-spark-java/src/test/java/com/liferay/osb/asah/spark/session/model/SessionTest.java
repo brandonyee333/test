@@ -116,6 +116,22 @@ public class SessionTest {
 
 		Assert.assertEquals(session.getUserId(), event.getUserId());
 
+		Map<String, String> acquisition = session.getAcquisition();
+
+		Assert.assertEquals(
+			acquisition.toString(), "7010g000000nK1uAAE",
+			acquisition.get("campaign"));
+		Assert.assertEquals(
+			acquisition.toString(), "social", acquisition.get("channel"));
+		Assert.assertEquals(
+			acquisition.toString(), "linkedin-page-button",
+			acquisition.get("content"));
+		Assert.assertEquals(
+			acquisition.toString(), "social", acquisition.get("medium"));
+		Assert.assertEquals(
+			acquisition.toString(), "www.liferay.com",
+			acquisition.get("referrerHost"));
+
 		List<Event> events = session.getEvents();
 
 		Assert.assertEquals(events.toString(), 1, events.size());
@@ -145,10 +161,16 @@ public class SessionTest {
 			put("deviceType", "Desktop");
 			put("languageId", "en-US");
 			put("platformName", "Unknown");
-			put("referrer", "https://www.facebook.com");
+			put(
+				"referrer",
+				"https://www.liferay.com/pt/home");
 			put("region", "California");
-			put("title", "Liferay: 数字化体验软件可根据您的需求量身定制");
-			put("url", "https://www.liferay.com/zh/home");
+			put(
+				"title",
+				"Liferay DXP | A Plataforma que Unifica a Experiência");
+			put(
+				"url",
+				"https://www.liferay.com/pt/home?utm_source=linkedin&utm_medium=social&utm_campaign=7010g000000nK1uAAE&utm_content=linkedin-page-button");
 		}
 	};
 	private final Date _date = DateUtil.toDate("2021-06-22");
