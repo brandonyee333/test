@@ -51,7 +51,8 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 
 	@Override
 	protected Object determineCurrentLookupKey() {
-		return ProjectIdThreadLocal.getProjectId();
+		return StringUtils.replace(
+			ProjectIdThreadLocal.getProjectId(), "-", "_");
 	}
 
 	@Override
