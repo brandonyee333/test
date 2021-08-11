@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -32,6 +34,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -170,6 +173,99 @@ public class AccountDog {
 				"There is no account with ID " + accountId));
 
 		return populateAccount(account, channelId);
+	}
+
+	public Account getAccount(String accountPK) {
+		Optional<Account> accountOptional = _accountRepository.findByAccountPK(
+			accountPK);
+
+		Account account = accountOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no account with primary key " + accountPK));
+
+		return populateAccount(account, null);
+	}
+
+	public String getAccountName(String accountPK) {
+		Account account = getAccount(accountPK);
+
+		Set<Field> fields = account.getFields();
+
+		Stream<Field> stream = fields.stream();
+
+		Field nameField = stream.filter(
+			field -> Objects.equals(field.getName(), "accountName")
+		).findFirst(
+		).orElse(
+			null
+		);
+
+		if (nameField == null) {
+			return null;
+		}
+
+		return String.valueOf(nameField.getValue());
+	}
+
+	public Map<Long, JSONObject> getAccountNamesJSONObjects(
+		List<Individual> individuals) {
+
+		Map<Long, JSONObject> accountNamesJSONObjects = new HashMap<>();
+
+		for (Individual individual : individuals) {
+			Set<Individual.DataSourceAccountPK> dataSourceAccountPKs =
+				individual.getDataSourceAccountPKs();
+
+			JSONArray accountNamesJSONArray = new JSONArray();
+
+			for (Individual.DataSourceAccountPK dataSourceAccountPK :
+					dataSourceAccountPKs) {
+
+				Set<String> accountPKs = dataSourceAccountPK.getAccountPKs();
+
+				for (String accountPK : accountPKs) {
+					accountNamesJSONArray.put(getAccountName(accountPK));
+				}
+			}
+
+			accountNamesJSONObjects.put(
+				individual.getId(),
+				JSONUtil.put("account-names", accountNamesJSONArray));
+		}
+
+		return accountNamesJSONObjects;
+	}
+
+	public Map<Long, JSONObject> getAccountsJSONObjects(
+		List<Individual> individuals) {
+
+		Map<Long, JSONObject> accountsJSONObjects = new HashMap<>();
+
+		for (Individual individual : individuals) {
+			Set<Individual.DataSourceAccountPK> dataSourceAccountPKs =
+				individual.getDataSourceAccountPKs();
+
+			JSONArray accountsJSONArray = new JSONArray();
+
+			for (Individual.DataSourceAccountPK dataSourceAccountPK :
+					dataSourceAccountPKs) {
+
+				Set<String> accountPKs = dataSourceAccountPK.getAccountPKs();
+
+				for (String accountPK : accountPKs) {
+					accountsJSONArray.put(
+						_objectMapper.convertValue(
+							getAccount(accountPK), JSONObject.class));
+				}
+			}
+
+			accountsJSONObjects.put(
+				individual.getId(),
+				JSONUtil.put("accounts", accountsJSONArray));
+		}
+
+		return accountsJSONObjects;
 	}
 
 	public Page<Distribution> getDistributionsPage(
@@ -476,6 +572,9 @@ public class AccountDog {
 
 	@Autowired
 	private IndividualDog _individualDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;

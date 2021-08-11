@@ -615,6 +615,19 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return JSONUtil.toLongSet(associatedIdsJSONArray, "id");
 	}
 
+	public Individual getIndividual(Long channelId, Long individualId)
+		throws Exception {
+
+		Individual individual = fetchIndividual(individualId);
+
+		if (individual == null) {
+			throw new Exception(
+				"Unable to find individual with ID " + individualId);
+		}
+
+		return populateIndividual(channelId, individual);
+	}
+
 	public Map<Long, Long> getIndividualCounts(
 		boolean includeAnonymousUsers, Long segmentId) {
 
@@ -725,6 +738,44 @@ public class IndividualDog extends BaseFaroInfoDog {
 		for (IndividualChannel individualChannel : individualChannels) {
 			channelIds.add(individualChannel.getChannelId());
 		}
+
+		return individual;
+	}
+
+	public Individual populateIndividual(
+		Long channelId, Individual individual) {
+
+		Set<Individual.ActivitiesCount> activitiesCounts =
+			individual.getActivitiesCounts();
+
+		Stream<Individual.ActivitiesCount> activitiesCountsStream =
+			activitiesCounts.stream();
+
+		Set<Individual.ActivitiesCount> channelActivitiesCounts =
+			activitiesCountsStream.filter(
+				activityCount -> Objects.equals(
+					activityCount.getChannelId(), channelId)
+			).collect(
+				Collectors.toSet()
+			);
+
+		individual.setActivitiesCounts(channelActivitiesCounts);
+
+		Set<Individual.LastActivityDate> lastActivityDates =
+			individual.getLastActivityDates();
+
+		Stream<Individual.LastActivityDate> lastActivityDatesStream =
+			lastActivityDates.stream();
+
+		Set<Individual.LastActivityDate> channelLastActivityDates =
+			lastActivityDatesStream.filter(
+				lastActivityDate -> Objects.equals(
+					lastActivityDate.getChannelId(), channelId)
+			).collect(
+				Collectors.toSet()
+			);
+
+		individual.setLastActivityDates(channelLastActivityDates);
 
 		return individual;
 	}

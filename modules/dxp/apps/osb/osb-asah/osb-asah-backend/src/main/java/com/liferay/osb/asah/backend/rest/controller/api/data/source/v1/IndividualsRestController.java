@@ -16,9 +16,11 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.dto.IndividualDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsIndividualSegmentsEmbeddedJSONObjectCreator;
+import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
@@ -26,17 +28,22 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.FieldSortBuilder;
@@ -63,34 +70,75 @@ import org.springframework.web.bind.annotation.RestController;
 public class IndividualsRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
-	public String getIndividual(
-			@PathVariable String id,
-			@RequestParam(required = false) String channelId,
+	public IndividualDTO getIndividualDTO(
+			@PathVariable Long id,
+			@RequestParam(required = false) Long channelId,
 			@RequestParam(required = false) String expand)
 		throws Exception {
 
-		String responseJSON = null;
+		Individual individual = _individualDog.getIndividual(channelId, id);
+
+		IndividualDTO individualDTO = new IndividualDTO(individual);
 
 		if (StringUtils.isEmpty(expand)) {
-			responseJSON = toItemGetResponse("individuals", id);
-		}
-		else {
-			responseJSON = toItemGetResponse(
-				"individuals",
-				new IndividualsEmbeddedJSONObjectCreator(
-					_dataSourceDog, faroInfoElasticsearchInvoker, expand,
-					_membershipDog, _objectMapper, _segmentDog),
-				id);
+			return individualDTO;
 		}
 
-		if (channelId == null) {
-			return responseJSON;
+		Map<String, Object> expandMap = new HashMap<>();
+
+		String[] expandParts = expand.split(",");
+
+		for (String expandPart : expandParts) {
+			if (expandPart.equals("account-names")) {
+				Map<Long, JSONObject> accountNamesJSONObjects =
+					_accountDog.getAccountNamesJSONObjects(
+						Collections.singletonList(individual));
+
+				JSONObject jsonObject = accountNamesJSONObjects.get(
+					individual.getId());
+
+				expandMap.put(expandPart, jsonObject.get(expandPart));
+			}
+			else if (expandPart.equals("accounts")) {
+				Map<Long, JSONObject> accountsJSONObjects =
+					_accountDog.getAccountsJSONObjects(
+						Collections.singletonList(individual));
+
+				JSONObject jsonObject = accountsJSONObjects.get(
+					individual.getId());
+
+				expandMap.put(expandPart, jsonObject.get(expandPart));
+			}
+			else if (expandPart.equals("data-sources")) {
+				Map<Long, JSONObject> dataSourcesJSONObjects =
+					_dataSourceDog.getDataSourcesJSONObjects(
+						Collections.singletonList(individual));
+
+				JSONObject jsonObject = dataSourcesJSONObjects.get(
+					individual.getId());
+
+				expandMap.put(expandPart, jsonObject.get(expandPart));
+			}
+			else if (expandPart.equals("individual-segments")) {
+				Map<Long, JSONObject> segmentsJSONObjects =
+					_segmentDog.getSegmentsJSONObjects(
+						Collections.singletonList(individual));
+
+				JSONObject jsonObject = segmentsJSONObjects.get(
+					individual.getId());
+
+				expandMap.put(expandPart, jsonObject.get(expandPart));
+			}
+			else if (_log.isWarnEnabled()) {
+				_log.warn("Invalid expand: " + expandPart);
+			}
 		}
 
-		JSONObject individualJSONObject = _doFilterByChannelId(
-			channelId, new JSONObject(responseJSON));
+		if (!expandMap.isEmpty()) {
+			individualDTO.setEmbedded(expandMap);
+		}
 
-		return individualJSONObject.toString();
+		return individualDTO;
 	}
 
 	@GetMapping(params = "!apply")
@@ -315,6 +363,12 @@ public class IndividualsRestController extends BaseRestController {
 
 		return responseJSONObject;
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		IndividualsRestController.class);
+
+	@Autowired
+	private AccountDog _accountDog;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;

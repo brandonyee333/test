@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -21,6 +23,7 @@ import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
+import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.http.NanitesHttp;
@@ -41,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -217,6 +221,37 @@ public class DataSourceDog {
 		}
 
 		return _dataSourceRepository.findAll(_getPageable(size, sort));
+	}
+
+	public Map<Long, JSONObject> getDataSourcesJSONObjects(
+			List<Individual> individuals)
+		throws Exception {
+
+		Map<Long, JSONObject> dataSourcesJSONObjects = new HashMap<>();
+
+		for (Individual individual : individuals) {
+			Set<DataSourceIndividual> dataSourceIndividuals =
+				individual.getDataSourceIndividuals();
+
+			List<Long> dataSourceIds = new ArrayList<>();
+
+			for (DataSourceIndividual dataSourceIndividual :
+					dataSourceIndividuals) {
+
+				dataSourceIds.add(dataSourceIndividual.getDataSourceId());
+			}
+
+			dataSourcesJSONObjects.put(
+				individual.getId(),
+				JSONUtil.put(
+					"data-sources",
+					JSONUtil.toJSONArray(
+						getDataSources(dataSourceIds),
+						dataSource -> _objectMapper.convertValue(
+							dataSource, JSONObject.class))));
+		}
+
+		return dataSourcesJSONObjects;
 	}
 
 	public Page<DataSource> getDataSourcesPage(
@@ -767,6 +802,9 @@ public class DataSourceDog {
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private RunLogDog _runLogDog;

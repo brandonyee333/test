@@ -283,6 +283,29 @@ public class SegmentDog extends BaseFaroInfoDog {
 			filter, state, status, PageRequest.of(page, size));
 	}
 
+	public Map<Long, JSONObject> getSegmentsJSONObjects(
+			List<Individual> individuals)
+		throws Exception {
+
+		Map<Long, JSONObject> segmentsJSONObjects = new HashMap<>();
+
+		for (Individual individual : individuals) {
+			List<Long> segmentIds = _membershipDog.getIndividualSegmentIds(
+				individual.getId());
+
+			segmentsJSONObjects.put(
+				individual.getId(),
+				JSONUtil.put(
+					"individual-segments",
+					JSONUtil.toJSONArray(
+						getSegments(segmentIds),
+						segment -> _objectMapper.convertValue(
+							segment, JSONObject.class))));
+		}
+
+		return segmentsJSONObjects;
+	}
+
 	public Page<Segment> getSegmentsPage(int page, int size) {
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.findAll(PageRequest.of(page, size)),
