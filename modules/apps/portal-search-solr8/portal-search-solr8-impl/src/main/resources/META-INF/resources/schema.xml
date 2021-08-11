@@ -503,6 +503,8 @@
 		<field indexed="true" name="content" stored="true" termPositions="true" termVectors="true" type="text" />
 		<field indexed="true" name="createDate" stored="true" type="string" />
 		<field indexed="true" name="dataRepositoryId" stored="true" type="string" />
+		<field indexed="true" name="destinationURL" stored="true" type="text" />
+		<field indexed="true" name="destinationURLParts" stored="true" type="text" />
 		<field indexed="true" name="ddmContent" stored="true" termPositions="true" termVectors="true" type="text" />
 		<field docValues="true" indexed="true" name="ddmStructureKey" stored="true" type="string" />
 		<field indexed="true" name="ddmTemplateKey" stored="true" type="string" />
@@ -527,6 +529,7 @@
 		<field indexed="true" multiValued="true" name="groupRoleId" stored="true" type="string" />
 		<field indexed="true" name="hidden" stored="true" type="string" />
 		<field indexed="true" name="id" stored="true" type="string" />
+		<field indexed="true" name="ignored" stored="true" type="boolean" />
 		<field indexed="true" name="keywordSearch" omitNorms="true" omitTermFreqAndPositions="true" stored="true" type="textAuto" />
 		<field docValues="true" indexed="true" name="languageId" stored="true" type="string" />
 		<field indexed="true" name="lastName" stored="true" type="text_lowercase" />
@@ -549,6 +552,7 @@
 		<field indexed="true" name="recordSetId" stored="true" type="string" />
 		<field docValues="true" indexed="true" name="removedByUser" stored="true" type="string" />
 		<field docValues="true" indexed="true" name="removedDate" stored="true" type="string" />
+		<field indexed="true" name="requestCount" stored="true" type="long" />
 		<field indexed="true" name="rightOrganizationId" stored="true" type="tlong" />
 		<field docValues="true" indexed="true" multiValued="true" name="roleId" stored="true" type="string" />
 		<field indexed="true" multiValued="true" name="roleIds" stored="true" type="string" />
@@ -557,6 +561,8 @@
 		<field docValues="true" indexed="true" multiValued="true" name="scopeGroupId" stored="true" type="string" />
 		<field docValues="true" indexed="true" name="screenName" stored="true" type="string" />
 		<field indexed="true" name="size" stored="true" type="string" />
+		<field indexed="true" name="sourceURL" stored="true" type="text" />
+		<field indexed="true" name="sourceURLParts" stored="true" type="text" />
 		<field indexed="true" name="spellCheckWeight" stored="true" type="string" />
 		<field indexed="true" multiValued="true" name="spellCheckWord" stored="true" type="textSpell" />
 		<field docValues="true" indexed="true" name="startTime" stored="true" type="long" />
@@ -568,6 +574,7 @@
 		<field indexed="true" multiValued="true" name="treePath" stored="true" type="string" />
 		<field docValues="true" indexed="true" name="type" stored="true" type="string" />
 		<field indexed="true" name="uid" stored="true" type="string" />
+		<field indexed="true" name="urlParts" stored="true" type="text" />
 		<field docValues="true" indexed="true" name="userGroupId" stored="true" type="string" />
 		<field indexed="true" multiValued="true" name="userGroupIds" stored="true" type="string" />
 		<field docValues="true" indexed="true" name="userId" stored="true" type="string" />
