@@ -52,7 +52,6 @@ public class Session implements Serializable {
 		Map<String, String> eventContext = event.getContext();
 
 		_acquisition = _toAcquisition(eventContext);
-
 		_browserName = eventContext.get("browserName");
 
 		_channelId = event.getChannelId();

@@ -114,8 +114,6 @@ public class SessionTest {
 
 		Session session = new Session(event);
 
-		Assert.assertEquals(session.getUserId(), event.getUserId());
-
 		Map<String, String> acquisition = session.getAcquisition();
 
 		Assert.assertEquals(
@@ -132,6 +130,10 @@ public class SessionTest {
 			acquisition.toString(), "www.liferay.com",
 			acquisition.get("referrerHost"));
 
+		List<String> canonicalUrls = session.getCanonicalUrls();
+
+		Assert.assertEquals(canonicalUrls.toString(), 1, canonicalUrls.size());
+
 		List<Event> events = session.getEvents();
 
 		Assert.assertEquals(events.toString(), 1, events.size());
@@ -144,12 +146,9 @@ public class SessionTest {
 			session.getLastEventDate());
 		Assert.assertEquals(
 			event.getProjectId(), event.getProjectId(), session.getProjectId());
-		Assert.assertTrue(session.isBounced());
 		Assert.assertFalse(session.getFinished());
-
-		List<String> canonicalUrls = session.getCanonicalUrls();
-
-		Assert.assertEquals(canonicalUrls.toString(), 1, canonicalUrls.size());
+		Assert.assertEquals(session.getUserId(), event.getUserId());
+		Assert.assertTrue(session.isBounced());
 	}
 
 	private final Map<String, String> _context = new HashMap<String, String>() {
