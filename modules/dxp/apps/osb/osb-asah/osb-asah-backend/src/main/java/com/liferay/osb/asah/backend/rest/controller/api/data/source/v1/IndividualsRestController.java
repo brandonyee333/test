@@ -18,18 +18,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.dto.IndividualDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
-import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsIndividualSegmentsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,9 +40,6 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
@@ -241,46 +236,6 @@ public class IndividualsRestController extends BaseRestController {
 		return _toPageDTO(new IndividualDTO(individualDTOs), individualsPage);
 	}
 
-	@GetMapping("/{id}/individual-segments")
-	public String getIndividualSegments(
-			@PathVariable String id,
-			@RequestParam(required = false) String expand,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
-
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString);
-
-		List<Long> individualSegmentIds =
-			_membershipDog.getActiveIndividualSegmentIds(Long.valueOf(id));
-
-		QueryBuilder individualSegmentIdsQueryBuilder =
-			QueryBuilders.termsQuery(
-				"id", ListUtil.map(individualSegmentIds, String::valueOf));
-
-		if (queryBuilder == null) {
-			queryBuilder = individualSegmentIdsQueryBuilder;
-		}
-		else {
-			queryBuilder = BoolQueryBuilderUtil.filter(
-				individualSegmentIdsQueryBuilder
-			).filter(
-				queryBuilder
-			);
-		}
-
-		return toCollectionGetResponse(
-			"individual-segments",
-			new IndividualsIndividualSegmentsEmbeddedJSONObjectCreator(
-				faroInfoElasticsearchInvoker, expand, id, _membershipDog,
-				_objectMapper, _segmentDog),
-			page, queryBuilder, size, sorts);
-	}
-
 	@GetMapping(params = "apply")
 	public String getIndividualTransformations(
 			@RequestParam String apply,
@@ -302,6 +257,65 @@ public class IndividualsRestController extends BaseRestController {
 			"individual-transformations");
 	}
 
+	@GetMapping("/{id}/individual-segments")
+	public PageDTO<SegmentDTO> getSegmentDTOsPageDTOs(
+		@PathVariable Long id, @RequestParam(required = false) String expand,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
+
+		Page<Segment> segmentsPage = _segmentDog.searchSegmentsPage(
+			filterString, id, page, Math.max(1, size), sorts);
+
+		if (StringUtils.isEmpty(expand)) {
+			return _toSegmentDTOsPageDTO(segmentsPage);
+		}
+
+		List<Segment> segments = segmentsPage.getContent();
+
+		Set<SegmentDTO> segmentDTOs = new HashSet<>();
+
+		Stream<Segment> stream = segments.stream();
+
+		stream.forEachOrdered(
+			segment -> segmentDTOs.add(new SegmentDTO(segment)));
+
+		Map<Long, JSONObject> membershipsJSONObjects = new HashMap<>();
+
+		String[] expandParts = expand.split(",");
+
+		for (String expandPart : expandParts) {
+			if (expandPart.equals("active-membership")) {
+				membershipsJSONObjects =
+					_membershipDog.getMembershipsJSONObjects(
+						id, segmentsPage.getContent());
+			}
+			else if (_log.isWarnEnabled()) {
+				_log.warn("Invalid expand: " + expandPart);
+			}
+		}
+
+		for (SegmentDTO segmentDTO : segmentDTOs) {
+			Map<String, Object> expandMap = new HashMap<>();
+
+			JSONObject membershipJSONObject = membershipsJSONObjects.get(
+				Long.valueOf(segmentDTO.getId()));
+
+			if (membershipJSONObject != null) {
+				expandMap.put(
+					"active-membership",
+					membershipJSONObject.getJSONArray("active-membership"));
+			}
+
+			if (!expandMap.isEmpty()) {
+				segmentDTO.setEmbedded(expandMap);
+			}
+		}
+
+		return _toSegmentDTOsPageDTO(new SegmentDTO(segmentDTOs), segmentsPage);
+	}
+
 	private PageDTO<IndividualDTO> _toIndividualDTOPageDTO(
 		Page<Individual> individualsPage) {
 
@@ -319,6 +333,24 @@ public class IndividualsRestController extends BaseRestController {
 			"_embedded", individualDTO, individualsPage.getNumber(),
 			individualsPage.getSize(), individualsPage.getTotalElements(),
 			individualsPage.getTotalPages());
+	}
+
+	private PageDTO<SegmentDTO> _toSegmentDTOsPageDTO(
+		Page<Segment> segmentsPage) {
+
+		return new PageDTO<>(
+			"_embedded", new SegmentDTO(segmentsPage.getContent()),
+			segmentsPage.getNumber(), segmentsPage.getSize(),
+			segmentsPage.getTotalElements(), segmentsPage.getTotalPages());
+	}
+
+	private PageDTO<SegmentDTO> _toSegmentDTOsPageDTO(
+		SegmentDTO segmentDTO, Page<Segment> segmentsPage) {
+
+		return new PageDTO<>(
+			"_embedded", segmentDTO, segmentsPage.getNumber(),
+			segmentsPage.getSize(), segmentsPage.getTotalElements(),
+			segmentsPage.getTotalPages());
 	}
 
 	private static final Log _log = LogFactory.getLog(

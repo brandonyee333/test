@@ -14,18 +14,29 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -256,6 +267,67 @@ public class MembershipDog extends BaseFaroInfoDog {
 			individualSegmentId, status);
 	}
 
+	public Map<Long, JSONObject> getMembershipsJSONObjects(
+		Long individualId, List<Segment> segments) {
+
+		List<Membership> memberships = getActiveMemberships(
+			individualId, ListUtil.map(segments, Segment::getId));
+
+		Map<Long, JSONArray> membershipsToSegmentIdMap = new HashMap<>();
+
+		for (Membership membership : memberships) {
+			JSONArray jsonArray = new JSONArray();
+
+			if (membershipsToSegmentIdMap.containsKey(
+					membership.getIndividualId())) {
+
+				jsonArray = membershipsToSegmentIdMap.get(
+					membership.getIndividualId());
+			}
+
+			jsonArray.put(
+				_objectMapper.convertValue(membership, JSONObject.class));
+
+			membershipsToSegmentIdMap.put(
+				membership.getIndividualSegmentId(), jsonArray);
+		}
+
+		Map<Long, JSONObject> membershipsJSONObjects = new HashMap<>();
+
+		for (Segment segment : segments) {
+			Long segmentId = segment.getId();
+
+			if (!membershipsToSegmentIdMap.containsKey(segmentId)) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to get active membership for individual " +
+							individualId + "and individual segment " +
+								segmentId);
+				}
+
+				continue;
+			}
+
+			JSONArray membershipsJSONArray = membershipsToSegmentIdMap.get(
+				segmentId);
+
+			for (int i = 0; i < membershipsJSONArray.length(); i++) {
+				JSONObject membershipJSONObject =
+					membershipsJSONArray.getJSONObject(i);
+
+				membershipJSONObject.remove("dateModified");
+				membershipJSONObject.remove("dateRemoved");
+				membershipJSONObject.remove("id");
+			}
+
+			membershipsJSONObjects.put(
+				segmentId,
+				JSONUtil.put("active-membership", membershipsJSONArray));
+		}
+
+		return membershipsJSONObjects;
+	}
+
 	public Page<Membership> getMembershipsPage(
 		List<Long> individualIds, Long individualSegmentId, String status,
 		int page, int size, String[] sorts) {
@@ -317,6 +389,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 		return Sort.by(orders);
 	}
 
+	private static final Log _log = LogFactory.getLog(MembershipDog.class);
+
 	@Autowired
 	private IndividualDog _individualDog;
 
@@ -325,6 +399,9 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private MembershipRepository _membershipRepository;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;

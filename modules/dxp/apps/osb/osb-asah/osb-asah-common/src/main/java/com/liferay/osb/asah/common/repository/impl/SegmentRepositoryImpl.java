@@ -102,6 +102,13 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public long countSegments(String filterString, List<Long> segmentIds) {
+
+		// TODO
+
+		return 0;
+	}
+
 	public List<Transformation> getSegmentTransformations(
 		String apply, @Nullable String filterString, Pageable pageable,
 		@Nullable List<Long> segmentIds) {
@@ -283,6 +290,14 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		).map(
 			record -> new Segment(record.intoMap())
 		);
+	}
+
+	public List<Segment> searchSegments(
+		String filterString, List<Long> segmentIds, Pageable pageable) {
+
+		// TODO
+
+		return null;
 	}
 
 	public List<Segment> searchSegments(

@@ -134,6 +134,13 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	@Override
+	public long countSegments(String filterString, List<Long> segmentIds) {
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(),
+			_getSegmentsQueryBuilder(filterString, segmentIds));
+	}
+
+	@Override
 	public void deleteByChannelIdIn(Set<Long> channelIds) {
 		_faroInfoElasticsearchInvoker.deleteByQuery(
 			QueryBuilders.termsQuery(
@@ -657,6 +664,22 @@ public class ElasticsearchSegmentRepositoryImpl
 
 			return Collections.emptyList();
 		}
+	}
+
+	public List<Segment> searchSegments(
+		String filterString, List<Long> segmentIds, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_getSegmentsQueryBuilder(filterString, segmentIds));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
 	}
 
 	@Override
