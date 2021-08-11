@@ -35,6 +35,7 @@ import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.repository.DataSourceIndividualRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
@@ -60,6 +61,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -693,6 +695,26 @@ public class IndividualDog extends BaseFaroInfoDog {
 				QueryBuilders.termQuery(
 					"individualSegmentIds", String.valueOf(individualSegmentId))
 			));
+	}
+
+	public Page<Transformation> getTransformationsPage(
+		String apply, @Nullable Long channelId, @Nullable String filterString,
+		Boolean includeAnonymousUsers, @Nullable Long segmentId, int page,
+		int size) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size,
+			SortUtil.getSort(
+				Sort.by(Sort.Order.desc("totalElements")),
+				new String[] {"totalElements", "desc", "terms", "asc"}));
+
+		List<Transformation> transformations =
+			_individualRepository.getIndividualTransformations(
+				apply, channelId, filterString, includeAnonymousUsers,
+				segmentId, pageRequest);
+
+		return PageableExecutionUtils.getPage(
+			transformations, pageRequest, transformations::size);
 	}
 
 	@PostConstruct

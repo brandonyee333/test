@@ -28,7 +28,10 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
+import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -47,6 +50,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.action.search.SearchResponse;
@@ -366,6 +371,73 @@ public class ElasticsearchIndividualRepositoryImpl
 		}
 
 		return individualCounts;
+	}
+
+	@Override
+	public List<Transformation> getIndividualTransformations(
+		String apply, @Nullable Long channelId, @Nullable String filterString,
+		Boolean includeAnonymousUsers, @Nullable Long segmentId,
+		Pageable pageable) {
+
+		TransformationGetResponse transformationGetResponse =
+			new TransformationGetResponse();
+
+		transformationGetResponse.setCollectionName(getCollectionName());
+		transformationGetResponse.setElasticsearchInvoker(
+			_faroInfoElasticsearchInvoker);
+		transformationGetResponse.setPage(pageable.getPageNumber());
+
+		QueryBuilder queryBuilder = _getQueryBuilder(
+			channelId, filterString, includeAnonymousUsers, segmentId);
+
+		if (queryBuilder != null) {
+			transformationGetResponse.setQueryBuilder(queryBuilder);
+		}
+
+		transformationGetResponse.setSize(pageable.getPageSize());
+		transformationGetResponse.setSorts(
+			new HashMap<String, String>() {
+				{
+					put("terms", "_key");
+					put("totalElements", "_count");
+				}
+			},
+			_getSorts(pageable.getSort()));
+		transformationGetResponse.setTransformationJSONArrayFunction(
+			new TermsAggregationTransformationJSONArrayFunction(apply, null));
+		transformationGetResponse.setTransformationName(
+			"individual-transformations");
+
+		JSONObject jsonObject = null;
+
+		try {
+			jsonObject = new JSONObject(transformationGetResponse.respond());
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			return Collections.emptyList();
+		}
+
+		JSONObject embeddedJSONObject = jsonObject.getJSONObject("_embedded");
+
+		JSONArray individualTransformationsJSONArray =
+			embeddedJSONObject.getJSONArray("individual-transformations");
+
+		Stream<Object> stream = JSONUtil.toObjectStream(
+			individualTransformationsJSONArray);
+
+		return stream.map(
+			object -> {
+				JSONObject curJSONObject = (JSONObject)object;
+
+				return new Transformation(
+					JSONUtil.toMap(curJSONObject.getJSONObject("terms")),
+					curJSONObject.getInt("totalElements"));
+			}
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	@Override
@@ -800,6 +872,9 @@ public class ElasticsearchIndividualRepositoryImpl
 
 		return sorts.toArray(new String[0]);
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		ElasticsearchIndividualRepositoryImpl.class);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

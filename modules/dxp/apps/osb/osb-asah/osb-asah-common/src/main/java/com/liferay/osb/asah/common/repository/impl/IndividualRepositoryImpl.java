@@ -15,26 +15,34 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.math.BigDecimal;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.jooq.AggregateFunction;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectOnConditionStep;
 import org.jooq.SelectSelectStep;
+import org.jooq.Table;
 import org.jooq.UpdateSetFirstStep;
 import org.jooq.impl.DSL;
 
@@ -413,6 +421,133 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		return individualCounts;
 	}
 
+	public List<Transformation> getIndividualTransformations(
+		String apply, @Nullable Long channelId, @Nullable String filterString,
+		Boolean includeAnonymousUsers, @Nullable Long segmentId,
+		Pageable pageable) {
+
+		Matcher matcher = MatcherUtil.getMatcher(apply);
+
+		if (!matcher.matches()) {
+			throw new IllegalArgumentException(
+				"Apply string " + apply + " does not match pattern " +
+					MatcherUtil.getGroupByPattern());
+		}
+
+		String containsField = matcher.group("containsField");
+
+		String groupByField = matcher.group("groupByField");
+
+		String fieldName = groupByField.replace("demographics/", "");
+
+		fieldName = fieldName.replace("/value", "");
+
+		AggregateFunction<Object> aggregateFunction = DSL.max(
+			DSL.field("modifiedDate"));
+		Field<Object> modifiedDateField = DSL.field("modifiedDate");
+		Field<Object> nameField = DSL.field("name");
+		Field<Object> ownerIdField = DSL.field("ownerId");
+		Field<Object> valueField = DSL.field("value");
+
+		Condition fieldCondition = ConditionUtil.toCondition(
+			filterString, _individualsFilterStringConverterHelper);
+
+		fieldCondition = fieldCondition.and(
+			_getIncludeCondition(containsField));
+
+		SelectSelectStep<Record> modifiedDateSelectSelectStep =
+			_dslContext.select();
+
+		Table<Record> maxModifiedDateTable =
+			modifiedDateSelectSelectStep.select(
+				aggregateFunction.as("modifiedDate"), nameField.as("name"),
+				ownerIdField.as("ownerId")
+			).from(
+				"Field"
+			).where(
+				fieldCondition.and(nameField.eq(fieldName))
+			).groupBy(
+				ownerIdField, nameField
+			).asTable(
+				"maxModifiedDateTable"
+			);
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.channelids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(new Long[] {channelId}), Long[].class)
+				));
+		}
+
+		if (!includeAnonymousUsers) {
+			conditions.add(
+				DSL.field(
+					"individual.emailaddresshashed"
+				).isNotNull());
+		}
+
+		if (segmentId != null) {
+			conditions.add(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.segmentids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(segmentId), Long[].class)
+				));
+		}
+
+		if (conditions.isEmpty()) {
+			conditions.add(DSL.noCondition());
+		}
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.select(
+			valueField.as("terms"),
+			DSL.count(
+				ownerIdField
+			).as(
+				"totalelements"
+			)
+		).from(
+			"Field"
+		).join(
+			maxModifiedDateTable
+		).on(
+			DSL.and(
+				modifiedDateField.eq(maxModifiedDateTable.field("modifiedDate"))
+			).and(
+				nameField.eq(maxModifiedDateTable.field("name"))
+			).and(
+				ownerIdField.eq(maxModifiedDateTable.field("ownerId"))
+			)
+		).where(
+			conditions
+		).groupBy(
+			valueField
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Transformation(
+				new Transformation.Term(
+					Collections.singletonMap(
+						groupByField, record.get("terms"))),
+				(Integer)record.get("totalelements"))
+		);
+	}
+
 	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,
 		Boolean includeAnonymousUsers, @Nullable Long segmentId,
@@ -577,6 +712,18 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				individualId
 			)
 		).execute();
+	}
+
+	private Condition _getIncludeCondition(String contains) {
+		if (contains == null) {
+			return DSL.noCondition();
+		}
+
+		return DSL.field(
+			"value"
+		).containsIgnoreCase(
+			contains
+		);
 	}
 
 	private final DSLContext _dslContext;

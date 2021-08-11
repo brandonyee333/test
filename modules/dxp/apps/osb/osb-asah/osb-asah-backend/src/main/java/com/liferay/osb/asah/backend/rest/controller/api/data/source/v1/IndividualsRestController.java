@@ -14,11 +14,10 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.backend.dto.IndividualDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
+import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
@@ -27,7 +26,7 @@ import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.model.Transformation;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -236,27 +235,6 @@ public class IndividualsRestController extends BaseRestController {
 		return _toPageDTO(new IndividualDTO(individualDTOs), individualsPage);
 	}
 
-	@GetMapping(params = "apply")
-	public String getIndividualTransformations(
-			@RequestParam String apply,
-			@RequestParam(required = false) String channelId,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "false", required = false) boolean
-				includeAnonymousUsers,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size)
-		throws Exception {
-
-		return toTransformationGetResponse(
-			"individuals", page,
-			_individualDog.buildIndividualsQueryBuilder(
-				Long.valueOf(channelId), filterString, includeAnonymousUsers),
-			size, null, null,
-			new TermsAggregationTransformationJSONArrayFunction(apply, null),
-			"individual-transformations");
-	}
-
 	@GetMapping("/{id}/individual-segments")
 	public PageDTO<SegmentDTO> getSegmentDTOsPageDTOs(
 		@PathVariable Long id, @RequestParam(required = false) String expand,
@@ -316,6 +294,22 @@ public class IndividualsRestController extends BaseRestController {
 		return _toSegmentDTOsPageDTO(new SegmentDTO(segmentDTOs), segmentsPage);
 	}
 
+	@GetMapping(params = "apply")
+	public PageDTO<TransformationDTO> getTransformationDTOsPageDTO(
+		@RequestParam String apply,
+		@RequestParam(required = false) Long channelId,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "false", required = false) boolean
+			includeAnonymousUsers,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size) {
+
+		return _toTransformationDTOsPageDTO(
+			_individualDog.getTransformationsPage(
+				apply, channelId, filterString, includeAnonymousUsers, null,
+				page, size));
+	}
+
 	private PageDTO<IndividualDTO> _toIndividualDTOPageDTO(
 		Page<Individual> individualsPage) {
 
@@ -353,6 +347,33 @@ public class IndividualsRestController extends BaseRestController {
 			segmentsPage.getTotalPages());
 	}
 
+	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+		Page<Transformation> transformationsPage) {
+
+		return _toTransformationDTOsPageDTO(
+			"individual-transformations", transformationsPage);
+	}
+
+	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+		String transformationKey, Page<Transformation> transformationsPage) {
+
+		return _toTransformationDTOsPageDTO(
+			new TransformationDTO(
+				transformationKey, transformationsPage.getContent()),
+			transformationsPage);
+	}
+
+	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+		TransformationDTO transformationDTO,
+		Page<Transformation> transformationsPage) {
+
+		return new PageDTO<>(
+			"_embedded", transformationDTO, transformationsPage.getNumber(),
+			transformationsPage.getSize(),
+			transformationsPage.getTotalElements(),
+			transformationsPage.getTotalPages());
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		IndividualsRestController.class);
 
@@ -367,9 +388,6 @@ public class IndividualsRestController extends BaseRestController {
 
 	@Autowired
 	private MembershipDog _membershipDog;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;
