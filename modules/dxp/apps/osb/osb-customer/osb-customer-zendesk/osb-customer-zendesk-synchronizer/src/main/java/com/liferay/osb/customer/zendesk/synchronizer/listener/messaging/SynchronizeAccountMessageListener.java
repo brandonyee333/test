@@ -296,7 +296,7 @@ public class SynchronizeAccountMessageListener extends BaseMessageListener {
 							new long[] {zendeskOrganizationId});
 				}
 				else {
-					_userSynchronizer.sync(user, zendeskUser);
+					_userSynchronizer.sync(user, zendeskUser, false);
 				}
 			}
 		}

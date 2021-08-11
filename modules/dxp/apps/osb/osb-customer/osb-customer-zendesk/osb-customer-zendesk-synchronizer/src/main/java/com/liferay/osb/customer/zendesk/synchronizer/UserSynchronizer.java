@@ -115,12 +115,14 @@ public class UserSynchronizer {
 			else {
 				zendeskUser.setRole("end-user");
 
-				sync(user, zendeskUser);
+				sync(user, zendeskUser, true);
 			}
 		}
 	}
 
-	public void sync(User user, ZendeskUser zendeskUser) throws Exception {
+	public void sync(User user, ZendeskUser zendeskUser, boolean forceSync)
+		throws Exception {
+
 		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
 			return;
 		}
@@ -143,7 +145,8 @@ public class UserSynchronizer {
 
 		Set<String> tags = getTags(user);
 
-		if (!StringUtil.equalsIgnoreCase(
+		if (forceSync ||
+			!StringUtil.equalsIgnoreCase(
 				emailAddress, zendeskUser.getEmail()) ||
 			!StringUtil.equalsIgnoreCase(fullName, zendeskUser.getName()) ||
 			!StringUtil.equalsIgnoreCase(
