@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.dog;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -76,8 +77,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -417,6 +420,13 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		return boolQueryBuilder.filter(
 			QueryBuilders.existsQuery("demographics.email"));
+	}
+
+	public long countIndividuals(
+		Long channelId, String filterString, Boolean includeAnonymousUsers) {
+
+		return _individualRepository.countIndividuals(
+			channelId, filterString, includeAnonymousUsers, null);
 	}
 
 	public void deleteIndividual(Date deletionDate, Long individualId) {
@@ -834,6 +844,30 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	public Individual removeSegmentId(Long individualId, Long segmentId) {
 		return removeSegmentId(fetchIndividual(individualId), segmentId);
+	}
+
+	public List<Individual> searchIndividuals(
+		Long channelId, String filterString, Boolean includeAnonymousUsers,
+		int page, int size, String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size, SortUtil.getSort(sorts));
+
+		return _individualRepository.searchIndividuals(
+			channelId, filterString, includeAnonymousUsers, null, pageRequest);
+	}
+
+	public Page<Individual> searchIndividualsPage(
+		Long channelId, String filterString, Boolean includeAnonymousUsers,
+		int page, int size, String[] sorts) {
+
+		List<Individual> individuals = searchIndividuals(
+			channelId, filterString, includeAnonymousUsers, page, size, sorts);
+
+		return PageableExecutionUtils.getPage(
+			individuals, PageRequest.of(page, size, SortUtil.getSort(sorts)),
+			() -> countIndividuals(
+				channelId, filterString, includeAnonymousUsers));
 	}
 
 	public void updateDynamicMemberships(Date modifiedDate, Segment segment)

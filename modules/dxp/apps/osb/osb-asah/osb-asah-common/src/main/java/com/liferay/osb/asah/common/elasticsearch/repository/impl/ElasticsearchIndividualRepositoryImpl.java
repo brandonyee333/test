@@ -17,13 +17,16 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -31,6 +34,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -41,6 +45,8 @@ import java.util.stream.Stream;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.action.search.SearchResponse;
@@ -53,14 +59,15 @@ import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.Sum;
-
-import org.jooq.tools.StringUtils;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
@@ -71,6 +78,16 @@ import org.springframework.stereotype.Repository;
 public class ElasticsearchIndividualRepositoryImpl
 	extends BaseElasticsearchRepository<Individual, Long>
 	implements IndividualRepository {
+
+	public long countIndividuals(
+		@Nullable Long channelId, @Nullable String filterString,
+		Boolean includeAnonymousUsers, @Nullable Long segmentId) {
+
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(),
+			_getQueryBuilder(
+				channelId, filterString, includeAnonymousUsers, segmentId));
+	}
 
 	@Override
 	public boolean existsByChannelIdAndFilterStringAndId(
@@ -554,6 +571,109 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	@Override
 	public List<Individual> searchIndividuals(
+		@Nullable Long channelId, @Nullable String filterString,
+		Boolean includeAnonymousUsers, @Nullable Long segmentId,
+		Pageable pageable) {
+
+		List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
+		List<String> newSorts = new ArrayList<>();
+
+		String[] sorts = _getSorts(pageable.getSort());
+
+		if ((channelId != null) && (sorts != null)) {
+			List<Pair<String, SortOrder>> sortOrderPairs =
+				SortBuilderUtil.getSortOrderPairs(sorts);
+
+			for (Pair<String, SortOrder> sortOrderPair : sortOrderPairs) {
+				if (StringUtils.equalsIgnoreCase(
+						sortOrderPair.getKey(), "activitiesCount")) {
+
+					fieldSortBuilders.add(
+						SortBuilderUtil.buildSort(
+							"activitiesCounts.activitiesCount",
+							"activitiesCounts",
+							QueryBuilders.termQuery(
+								"activitiesCounts.channelId", channelId),
+							sortOrderPair.getValue()));
+				}
+				else if (StringUtils.equalsIgnoreCase(
+							sortOrderPair.getKey(), "lastActivityDate")) {
+
+					fieldSortBuilders.add(
+						SortBuilderUtil.buildSort(
+							"lastActivityDates.lastActivityDate",
+							"lastActivityDates",
+							QueryBuilders.termQuery(
+								"lastActivityDates.channelId", channelId),
+							sortOrderPair.getValue()));
+				}
+				else {
+					SortOrder sortOrder = sortOrderPair.getValue();
+
+					newSorts.add(sortOrderPair.getKey());
+					newSorts.add(sortOrder.toString());
+				}
+			}
+		}
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_getQueryBuilder(
+								channelId, filterString, includeAnonymousUsers,
+								segmentId));
+
+						searchSourceBuilder.from(
+							pageable.getPageNumber() * pageable.getPageSize());
+						searchSourceBuilder.size(pageable.getPageSize());
+
+						for (FieldSortBuilder fieldSortBuilder :
+								fieldSortBuilders) {
+
+							searchSourceBuilder.sort(fieldSortBuilder);
+						}
+
+						if (!newSorts.isEmpty()) {
+							List<Pair<String, SortOrder>> sortOrderPairs =
+								SortBuilderUtil.getSortOrderPairs(
+									newSorts.toArray(new String[0]));
+
+							for (Pair<String, SortOrder> sortOrderPair :
+									sortOrderPairs) {
+
+								searchSourceBuilder.sort(
+									SortBuilderUtil.fieldSort(
+										sortOrderPair.getKey(),
+										sortOrderPair.getValue()));
+							}
+						}
+						else {
+							Stream.of(
+								pageable.getSort()
+							).flatMap(
+								Sort::stream
+							).forEach(
+								sort -> {
+									SortOrder sortOrder = SortOrder.ASC;
+
+									if (sort.isDescending()) {
+										sortOrder = SortOrder.DESC;
+									}
+
+									searchSourceBuilder.sort(
+										SortBuilderUtil.fieldSort(
+											sort.getProperty(), sortOrder));
+								}
+							);
+						}
+					})));
+	}
+
+	@Override
+	public List<Individual> searchIndividuals(
 		String filterString, Pageable pageable) {
 
 		return toList(
@@ -608,6 +728,46 @@ public class ElasticsearchIndividualRepositoryImpl
 		return boolQueryBuilder;
 	}
 
+	private QueryBuilder _getQueryBuilder(
+		Long channelId, String filterString, Boolean includeAnonymousUsers,
+		Long segmentId) {
+
+		BoolQueryBuilder boolQueryBuilder = null;
+
+		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
+			filterString, _faroInfoIndividualsFilterStringConverterHelper);
+
+		if (queryBuilder == null) {
+			boolQueryBuilder = new BoolQueryBuilder();
+		}
+		else {
+			boolQueryBuilder = BoolQueryBuilderUtil.filter(queryBuilder);
+		}
+
+		if (segmentId != null) {
+			Segment segment = _segmentDog.fetchSegment(segmentId);
+
+			if (segment != null) {
+				boolQueryBuilder = boolQueryBuilder.filter(
+					QueryBuilders.termQuery("individualSegmentIds", segmentId));
+
+				channelId = segment.getChannelId();
+			}
+		}
+
+		if (channelId != null) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("channelIds", channelId));
+		}
+
+		if (includeAnonymousUsers) {
+			return boolQueryBuilder;
+		}
+
+		return boolQueryBuilder.filter(
+			QueryBuilders.existsQuery("demographics.email"));
+	}
+
 	private String _getScriptSource(String fieldName) {
 		StringBuilder sb = new StringBuilder();
 
@@ -620,11 +780,35 @@ public class ElasticsearchIndividualRepositoryImpl
 		return sb.toString();
 	}
 
+	private String[] _getSorts(Sort sort) {
+		if (sort == null) {
+			return null;
+		}
+
+		List<String> sorts = new LinkedList<>();
+
+		for (Sort.Order order : sort) {
+			sorts.add(order.getProperty());
+
+			if (order.isAscending()) {
+				sorts.add("asc");
+			}
+			else {
+				sorts.add("desc");
+			}
+		}
+
+		return sorts.toArray(new String[0]);
+	}
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

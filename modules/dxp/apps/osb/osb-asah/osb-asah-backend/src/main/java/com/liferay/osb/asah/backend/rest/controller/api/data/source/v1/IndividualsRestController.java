@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.dto.IndividualDTO;
+import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
-import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsIndividualSegmentsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
@@ -26,33 +26,30 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.ListUtil;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortOrder;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -142,8 +139,8 @@ public class IndividualsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "!apply")
-	public String getIndividuals(
-			@RequestParam(required = false) String channelId,
+	public PageDTO<IndividualDTO> getIndividualDTOsPageDTOs(
+			@RequestParam(required = false) Long channelId,
 			@RequestParam(required = false) String expand,
 			@RequestParam(name = "filter", required = false) String
 				filterString,
@@ -154,92 +151,94 @@ public class IndividualsRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		if (channelId == null) {
-			if (StringUtils.isEmpty(expand)) {
-				return toCollectionGetResponse(
-					"individuals", null, page,
-					_individualDog.buildIndividualsQueryBuilder(
-						null, filterString, includeAnonymousUsers),
-					size, sorts);
-			}
-
-			return toCollectionGetResponse(
-				"individuals",
-				new IndividualsEmbeddedJSONObjectCreator(
-					_dataSourceDog, faroInfoElasticsearchInvoker, expand,
-					_membershipDog, _objectMapper, _segmentDog),
-				page,
-				_individualDog.buildIndividualsQueryBuilder(
-					null, filterString, includeAnonymousUsers),
-				size, sorts);
-		}
-
-		List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
-		List<String> newSorts = new ArrayList<>();
-
-		if (sorts != null) {
-			List<Pair<String, SortOrder>> sortOrderPairs =
-				SortBuilderUtil.getSortOrderPairs(sorts);
-
-			for (Pair<String, SortOrder> sortOrderPair : sortOrderPairs) {
-				if (StringUtils.equalsIgnoreCase(
-						sortOrderPair.getKey(), "activitiesCount")) {
-
-					fieldSortBuilders.add(
-						SortBuilderUtil.buildSort(
-							"activitiesCounts.activitiesCount",
-							"activitiesCounts",
-							QueryBuilders.termQuery(
-								"activitiesCounts.channelId", channelId),
-							sortOrderPair.getValue()));
-				}
-				else if (StringUtils.equalsIgnoreCase(
-							sortOrderPair.getKey(), "lastActivityDate")) {
-
-					fieldSortBuilders.add(
-						SortBuilderUtil.buildSort(
-							"lastActivityDates.lastActivityDate",
-							"lastActivityDates",
-							QueryBuilders.termQuery(
-								"lastActivityDates.channelId", channelId),
-							sortOrderPair.getValue()));
-				}
-				else {
-					SortOrder sortOrder = sortOrderPair.getValue();
-
-					newSorts.add(sortOrderPair.getKey());
-					newSorts.add(sortOrder.toString());
-				}
-			}
-		}
-
-		String responseJSON = null;
+		Page<Individual> individualsPage = _individualDog.searchIndividualsPage(
+			channelId, filterString, includeAnonymousUsers, page,
+			Math.max(1, size), sorts);
 
 		if (StringUtils.isEmpty(expand)) {
-			responseJSON = toCollectionGetResponse(
-				"individuals", null, fieldSortBuilders, page,
-				_individualDog.buildIndividualsQueryBuilder(
-					Long.valueOf(channelId), filterString,
-					includeAnonymousUsers),
-				size, newSorts.toArray(new String[0]));
-		}
-		else {
-			responseJSON = toCollectionGetResponse(
-				"individuals",
-				new IndividualsEmbeddedJSONObjectCreator(
-					_dataSourceDog, faroInfoElasticsearchInvoker, expand,
-					_membershipDog, _objectMapper, _segmentDog),
-				fieldSortBuilders, page,
-				_individualDog.buildIndividualsQueryBuilder(
-					Long.valueOf(channelId), filterString,
-					includeAnonymousUsers),
-				size, newSorts.toArray(new String[0]));
+			return _toIndividualDTOPageDTO(individualsPage);
 		}
 
-		JSONObject responseJSONObject = _filterByChannelId(
-			channelId, new JSONObject(responseJSON));
+		List<Individual> individuals = individualsPage.getContent();
 
-		return responseJSONObject.toString();
+		Set<IndividualDTO> individualDTOs = new HashSet<>();
+
+		Stream<Individual> stream = individuals.stream();
+
+		stream.forEachOrdered(
+			individual -> individualDTOs.add(new IndividualDTO(individual)));
+
+		Map<Long, JSONObject> accountNamesJSONObjects = new HashMap<>();
+		Map<Long, JSONObject> accountsJSONObjects = new HashMap<>();
+		Map<Long, JSONObject> dataSourcesJSONObjects = new HashMap<>();
+		Map<Long, JSONObject> segmentsJSONObjects = new HashMap<>();
+
+		String[] expandParts = expand.split(",");
+
+		for (String expandPart : expandParts) {
+			if (expandPart.equals("account-names")) {
+				accountNamesJSONObjects =
+					_accountDog.getAccountNamesJSONObjects(individuals);
+			}
+			else if (expandPart.equals("accounts")) {
+				accountsJSONObjects = _accountDog.getAccountsJSONObjects(
+					individuals);
+			}
+			else if (expandPart.equals("data-sources")) {
+				dataSourcesJSONObjects =
+					_dataSourceDog.getDataSourcesJSONObjects(individuals);
+			}
+			else if (expandPart.equals("individual-segments")) {
+				segmentsJSONObjects = _segmentDog.getSegmentsJSONObjects(
+					individuals);
+			}
+			else if (_log.isWarnEnabled()) {
+				_log.warn("Invalid expand: " + expandPart);
+			}
+		}
+
+		for (IndividualDTO individualDTO : individualDTOs) {
+			Map<String, Object> expandMap = new HashMap<>();
+
+			JSONObject accountNameJSONObject = accountNamesJSONObjects.get(
+				Long.valueOf(individualDTO.getId()));
+
+			if (accountNameJSONObject != null) {
+				expandMap.put(
+					"account-names",
+					accountNameJSONObject.get("account-names"));
+			}
+
+			JSONObject accountJSONObject = accountsJSONObjects.get(
+				Long.valueOf(individualDTO.getId()));
+
+			if (accountJSONObject != null) {
+				expandMap.put("accounts", accountJSONObject.get("accounts"));
+			}
+
+			JSONObject dataSourceJSONObject = dataSourcesJSONObjects.get(
+				Long.valueOf(individualDTO.getId()));
+
+			if (dataSourceJSONObject != null) {
+				expandMap.put(
+					"data-sources", dataSourceJSONObject.get("data-sources"));
+			}
+
+			JSONObject segmentJSONObject = segmentsJSONObjects.get(
+				Long.valueOf(individualDTO.getId()));
+
+			if (segmentJSONObject != null) {
+				expandMap.put(
+					"individual-segments",
+					segmentJSONObject.get("individual-segments"));
+			}
+
+			if (!expandMap.isEmpty()) {
+				individualDTO.setEmbedded(expandMap);
+			}
+		}
+
+		return _toPageDTO(new IndividualDTO(individualDTOs), individualsPage);
 	}
 
 	@GetMapping("/{id}/individual-segments")
@@ -303,65 +302,23 @@ public class IndividualsRestController extends BaseRestController {
 			"individual-transformations");
 	}
 
-	private JSONObject _doFilterByChannelId(
-		String channelId, JSONObject individualJSONObject) {
+	private PageDTO<IndividualDTO> _toIndividualDTOPageDTO(
+		Page<Individual> individualsPage) {
 
-		JSONArray activitiesCountsJSONArray = individualJSONObject.optJSONArray(
-			"activitiesCounts");
-
-		if (activitiesCountsJSONArray != null) {
-			Map<String, JSONObject> activitiesCounts = JSONUtil.toJSONObjectMap(
-				individualJSONObject.getJSONArray("activitiesCounts"),
-				"channelId");
-
-			JSONObject activitiesCountJSONObject =
-				activitiesCounts.getOrDefault(
-					channelId, JSONUtil.put("activitiesCount", 0));
-
-			individualJSONObject.put(
-				"activitiesCount",
-				activitiesCountJSONObject.getInt("activitiesCount"));
-
-			individualJSONObject.remove("activitiesCounts");
-		}
-
-		JSONArray lastActivityDatesJSONArray =
-			individualJSONObject.optJSONArray("lastActivityDates");
-
-		if (lastActivityDatesJSONArray != null) {
-			Map<String, JSONObject> individualCounts = JSONUtil.toJSONObjectMap(
-				individualJSONObject.getJSONArray("lastActivityDates"),
-				"channelId");
-
-			JSONObject individualCountJSONObject =
-				individualCounts.getOrDefault(
-					channelId, JSONUtil.put("lastActivityDate", ""));
-
-			individualJSONObject.put(
-				"lastActivityDate",
-				individualCountJSONObject.getString("lastActivityDate"));
-
-			individualJSONObject.remove("lastActivityDates");
-		}
-
-		return individualJSONObject;
+		return new PageDTO<>(
+			"_embedded", new IndividualDTO(individualsPage.getContent()),
+			individualsPage.getNumber(), individualsPage.getSize(),
+			individualsPage.getTotalElements(),
+			individualsPage.getTotalPages());
 	}
 
-	private JSONObject _filterByChannelId(
-		String channelId, JSONObject responseJSONObject) {
+	private PageDTO<IndividualDTO> _toPageDTO(
+		IndividualDTO individualDTO, Page<Individual> individualsPage) {
 
-		JSONObject embeddedJSONObject = responseJSONObject.getJSONObject(
-			"_embedded");
-
-		JSONArray individualsJSONArray = embeddedJSONObject.getJSONArray(
-			"individuals");
-
-		for (int i = 0; i < individualsJSONArray.length(); i++) {
-			_doFilterByChannelId(
-				channelId, individualsJSONArray.getJSONObject(i));
-		}
-
-		return responseJSONObject;
+		return new PageDTO<>(
+			"_embedded", individualDTO, individualsPage.getNumber(),
+			individualsPage.getSize(), individualsPage.getTotalElements(),
+			individualsPage.getTotalPages());
 	}
 
 	private static final Log _log = LogFactory.getLog(

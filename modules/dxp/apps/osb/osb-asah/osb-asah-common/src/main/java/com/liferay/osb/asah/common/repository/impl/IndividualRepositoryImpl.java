@@ -32,6 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectOnConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.UpdateSetFirstStep;
@@ -48,6 +49,56 @@ public class IndividualRepositoryImpl extends BaseRepository {
 
 	public IndividualRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	public long countIndividuals(
+		@Nullable Long channelId, @Nullable String filterString,
+		Boolean includeAnonymousUsers, @Nullable Long segmentId) {
+
+		Condition condition = ConditionUtil.toCondition(
+			filterString, _individualsFilterStringConverterHelper);
+
+		if (channelId != null) {
+			condition = condition.and(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.channelids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(new Long[] {channelId}), Long[].class)
+				));
+		}
+
+		if (!includeAnonymousUsers) {
+			condition = condition.and(
+				DSL.field(
+					"individual.emailAddressHashed"
+				).isNotNull());
+		}
+
+		if (segmentId != null) {
+			condition = condition.and(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.segmentids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(segmentId), Long[].class)
+				));
+		}
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return selectSelectStep.from(
+			"Individual"
+		).where(
+			condition
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
 	}
 
 	public boolean existsByChannelIdAndFilterStringAndId(
@@ -360,6 +411,98 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 
 		return individualCounts;
+	}
+
+	public List<Individual> searchIndividuals(
+		@Nullable Long channelId, @Nullable String filterString,
+		Boolean includeAnonymousUsers, @Nullable Long segmentId,
+		Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"Individual"
+			).asterisk());
+
+		SelectOnConditionStep<Record> selectOnConditionStep =
+			selectSelectStep.from(
+				"Individual"
+			).join(
+				"Field"
+			).on(
+				DSL.field(
+					"individual.id"
+				).eq(
+					DSL.field("field.ownerid")
+				)
+			).join(
+				"DataSourceIndividual"
+			).on(
+				DSL.field(
+					"individual.id"
+				).eq(
+					DSL.field("datasourceindividual.individualid")
+				)
+			);
+
+		if (StringUtils.isNotEmpty(filterString) &&
+			filterString.contains("organizations.filter")) {
+
+			selectOnConditionStep = selectOnConditionStep.join(
+				"Organization"
+			).on(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.organizationids")),
+						Long[].class)
+				).contains(
+					DSL.cast(
+						DSL.array(DSL.field("organization.id")), Long[].class)
+				)
+			);
+		}
+
+		Condition condition = ConditionUtil.toCondition(
+			filterString, _individualsFilterStringConverterHelper);
+
+		if (channelId != null) {
+			condition = condition.and(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.channelids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(new Long[] {channelId}), Long[].class)
+				));
+		}
+
+		if (!includeAnonymousUsers) {
+			condition = condition.and(
+				DSL.field(
+					"individual.emailaddresshashed"
+				).isNotNull());
+		}
+
+		if (segmentId != null) {
+			condition = condition.and(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.segmentids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(segmentId), Long[].class)
+				));
+		}
+
+		return selectOnConditionStep.where(
+			condition
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Individual(record.intoMap())
+		);
 	}
 
 	public List<Individual> searchIndividuals(

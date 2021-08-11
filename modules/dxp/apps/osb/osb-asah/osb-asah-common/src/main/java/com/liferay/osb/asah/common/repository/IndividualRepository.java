@@ -34,6 +34,10 @@ import org.springframework.lang.Nullable;
 @Primary
 public interface IndividualRepository extends CrudRepository<Individual, Long> {
 
+	public long countIndividuals(
+		@Nullable Long channelId, @Nullable String filterString,
+		Boolean includeAnonymousUsers, @Nullable Long segmentId);
+
 	public boolean existsByChannelIdAndFilterStringAndId(
 		@Nullable Long channelId, @Nullable String filterString,
 		@Nullable Long individualId);
@@ -68,6 +72,11 @@ public interface IndividualRepository extends CrudRepository<Individual, Long> {
 
 	public Map<Long, Long> findIndividualCounts(
 		boolean includeAnonymousUsers, Long segmentId);
+
+	public List<Individual> searchIndividuals(
+		@Nullable Long channelId, @Nullable String filterString,
+		Boolean includeAnonymousUsers, @Nullable Long segmentId,
+		Pageable pageable);
 
 	public List<Individual> searchIndividuals(
 		String filterString, Pageable pageable);

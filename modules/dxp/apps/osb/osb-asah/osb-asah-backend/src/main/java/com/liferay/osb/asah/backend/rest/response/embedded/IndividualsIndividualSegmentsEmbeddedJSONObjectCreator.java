@@ -133,7 +133,7 @@ public class IndividualsIndividualSegmentsEmbeddedJSONObjectCreator
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		IndividualsEmbeddedJSONObjectCreator.class);
+		IndividualsIndividualSegmentsEmbeddedJSONObjectCreator.class);
 
 	private final ElasticsearchInvoker _elasticsearchInvoker;
 	private final String _expand;
