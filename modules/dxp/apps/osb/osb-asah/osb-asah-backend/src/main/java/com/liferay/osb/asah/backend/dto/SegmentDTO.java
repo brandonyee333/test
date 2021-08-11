@@ -32,8 +32,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.json.JSONObject;
-
 /**
  * @author Inácio Nery
  */
@@ -94,6 +92,10 @@ public class SegmentDTO {
 		_type = StringUtil.get(segment.getType(), null);
 	}
 
+	public SegmentDTO(Set<SegmentDTO> segmentDTOs) {
+		_segmentDTOs = segmentDTOs;
+	}
+
 	@JsonProperty("activeIndividualCount")
 	public Long getActiveIndividualCount() {
 		return _activeIndividualCount;
@@ -134,7 +136,7 @@ public class SegmentDTO {
 	}
 
 	@JsonProperty("_embedded")
-	public Map<String, JSONObject> getEmbedded() {
+	public Map<String, Object> getEmbedded() {
 		return _embedded;
 	}
 
@@ -297,7 +299,7 @@ public class SegmentDTO {
 		}
 	}
 
-	public void setEmbedded(Map<String, JSONObject> embedded) {
+	public void setEmbedded(Map<String, Object> embedded) {
 		_embedded = embedded;
 	}
 
@@ -470,7 +472,7 @@ public class SegmentDTO {
 	private AuthorDTO _authorDTO;
 	private String _channelId;
 	private Date _createDate;
-	private Map<String, JSONObject> _embedded;
+	private Map<String, Object> _embedded;
 	private String _filter;
 	private String _filterMetadata;
 	private String _id;
