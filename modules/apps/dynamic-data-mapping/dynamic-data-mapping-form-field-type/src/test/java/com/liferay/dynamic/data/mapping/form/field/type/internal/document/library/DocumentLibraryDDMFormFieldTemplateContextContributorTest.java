@@ -211,6 +211,38 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributorTest
 	}
 
 	@Test
+	public void testGetParametersForUserWithoutPermission() throws Exception {
+		when(
+			ModelResourcePermissionUtil.contains(
+				Matchers.any(), Matchers.any(PermissionChecker.class),
+				Matchers.eq(_GROUP_ID), Matchers.eq(_FORMS_FOLDER_ID),
+				Matchers.eq(ActionKeys.ADD_FOLDER))
+		).thenReturn(
+			false
+		);
+
+		ThemeDisplay themeDisplay = _mockThemeDisplay();
+
+		when(
+			themeDisplay.isSignedIn()
+		).thenReturn(
+			Boolean.TRUE
+		);
+
+		DocumentLibraryDDMFormFieldTemplateContextContributor spy = _createSpy(
+			themeDisplay);
+
+		Map<String, Object> parameters = spy.getParameters(
+			new DDMFormField("field", "document_library"),
+			_createDDMFormFieldRenderingContext());
+
+		Assert.assertFalse(parameters.containsKey("folderId"));
+		Assert.assertFalse(parameters.containsKey("itemSelectorURL"));
+		Assert.assertTrue(
+			(boolean)parameters.get("showUploadPermissionMessage"));
+	}
+
+	@Test
 	public void testGetParametersShouldContainFileEntryURL() {
 		DocumentLibraryDDMFormFieldTemplateContextContributor spy = _createSpy(
 			_mockThemeDisplay());
