@@ -77,6 +77,9 @@ public class ProductPurchaseViewDisplay {
 				_state = "future";
 			}
 		}
+		else if (_totalPurchasedCount == 0) {
+			_state = StringPool.BLANK;
+		}
 		else {
 			_state = "cancelled";
 		}
@@ -151,6 +154,25 @@ public class ProductPurchaseViewDisplay {
 		}
 
 		return StringPool.DASH;
+	}
+
+	public String getStateStyle() {
+		if (Validator.isNotNull(_state)) {
+			if (_state.equals("active")) {
+				return "label-active";
+			}
+			else if (_state.equals("cancelled")) {
+				return "label-cancelled";
+			}
+			else if (_state.equals("expired")) {
+				return "label-expired";
+			}
+			else if (_state.equals("future")) {
+				return "label-future";
+			}
+		}
+
+		return StringPool.BLANK;
 	}
 
 	private void _initProductConsumptions(
@@ -243,6 +265,8 @@ public class ProductPurchaseViewDisplay {
 				_purchasedCount += productPurchase.getQuantity();
 			}
 
+			_totalPurchasedCount += productPurchase.getQuantity();
+
 			if (!StringUtil.equalsIgnoreCase(_status, "approved")) {
 				_status = productPurchase.getStatusAsString();
 			}
@@ -268,5 +292,6 @@ public class ProductPurchaseViewDisplay {
 	private final String _state;
 	private String _status;
 	private final ThemeDisplay _themeDisplay;
+	private int _totalPurchasedCount;
 
 }
