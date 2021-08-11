@@ -30,12 +30,14 @@ import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskUserIdentityConstants;
+import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
 import com.liferay.osb.customer.zendesk.model.ZendeskUserRelated;
 import com.liferay.osb.customer.zendesk.util.PhoneUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskLocaleUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserIdentityWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserRelatedWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
@@ -43,6 +45,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactAccountView;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
@@ -110,7 +113,7 @@ public class UserSynchronizer {
 					zendeskUser.getZendeskUserId());
 
 			if (zendeskUserRelated.getAssignedTickets() > 0) {
-				sendEmail(zendeskUser.getName(), zendeskUser.getEmail());
+				sendEmail(zendeskUser);
 			}
 			else {
 				zendeskUser.setRole("end-user");
@@ -423,17 +426,30 @@ public class UserSynchronizer {
 		return false;
 	}
 
-	protected void sendEmail(String fullName, String emailAddress)
-		throws AddressException {
+	protected void sendEmail(ZendeskUser zendeskUser)
+		throws AddressException, PortalException {
 
-		StringBundler sb = new StringBundler(6);
+		Set<String> criteria = new HashSet<>();
+
+		criteria.add("assignee:" + zendeskUser.getZendeskUserId());
+		criteria.add("status<closed");
+
+		List<ZendeskTicket> zendeskTickets =
+			_zendeskTicketWebService.getZendeskTickets(criteria);
+
+		StringBundler sb = new StringBundler(6 + (zendeskTickets.size() * 2));
 
 		sb.append("Please downgrade ");
-		sb.append(fullName);
+		sb.append(zendeskUser.getName());
 		sb.append(StringPool.SPACE);
-		sb.append(emailAddress);
-		sb.append(" on Zendesk. They have non-closed tickets assigned to ");
-		sb.append("them.");
+		sb.append(zendeskUser.getEmail());
+		sb.append(" on Zendesk. They have the following non-closed tickets ");
+		sb.append("assigned to them. <br /><br />");
+
+		for (ZendeskTicket zendeskTicket : zendeskTickets) {
+			sb.append(zendeskTicket.getZendeskTicketId());
+			sb.append("<br />");
+		}
 
 		InternetAddress from = new InternetAddress("noreply@liferay.com");
 		InternetAddress to = new InternetAddress("zendesk-admin@liferay.com");
@@ -492,6 +508,9 @@ public class UserSynchronizer {
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;
+
+	@Reference
+	private ZendeskTicketWebService _zendeskTicketWebService;
 
 	@Reference
 	private ZendeskUserIdentityWebService _zendeskUserIdentityWebService;
