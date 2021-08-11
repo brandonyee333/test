@@ -1034,6 +1034,10 @@ public class AssetPublisherDisplayContext {
 		return _showContextLink;
 	}
 
+	/**
+	 * @deprecated As of Judson (7.1.x)
+	 */
+	@Deprecated
 	public Boolean isShowContextLink(long groupId, String portletId)
 		throws PortalException {
 
