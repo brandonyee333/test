@@ -35,7 +35,8 @@ public class ProductConstants {
 
 	public static final String NAME_PREFIX_PORTAL = "Portal";
 
-	public static final String NAME_RESELLER_PARTNERSHIP = "Reseller Partnership";
+	public static final String NAME_RESELLER_PARTNERSHIP =
+		"Reseller Partnership";
 
 	public static final String NAME_SERVICE_PARTNERSHIP = "Service Partnership";
 
