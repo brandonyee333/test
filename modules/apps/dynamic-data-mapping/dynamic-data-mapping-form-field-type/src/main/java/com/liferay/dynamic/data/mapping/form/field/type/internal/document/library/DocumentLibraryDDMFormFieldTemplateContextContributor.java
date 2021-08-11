@@ -50,6 +50,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -94,10 +95,6 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributor
 
 		Map<String, Object> parameters = new HashMap<>();
 
-		parameters.put(
-			"allowGuestUsers",
-			GetterUtil.getBoolean(ddmFormField.getProperty("allowGuestUsers")));
-
 		HttpServletRequest httpServletRequest =
 			ddmFormFieldRenderingContext.getHttpServletRequest();
 
@@ -126,9 +123,6 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributor
 
 		parameters.put("folderId", folderId);
 
-		parameters.put(
-			"groupId", ddmFormFieldRenderingContext.getProperty("groupId"));
-
 		ThemeDisplay themeDisplay = getThemeDisplay(httpServletRequest);
 
 		if ((themeDisplay == null) || themeDisplay.isSignedIn()) {
@@ -150,24 +144,33 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributor
 			parameters.put("guestUploadURL", guestUploadURL);
 		}
 
-		parameters.put(
+		return HashMapBuilder.<String, Object>put(
+			"allowGuestUsers",
+			GetterUtil.getBoolean(ddmFormField.getProperty("allowGuestUsers"))
+		).put(
+			"groupId", ddmFormFieldRenderingContext.getProperty("groupId")
+		).put(
 			"maximumRepetitions",
 			GetterUtil.getInteger(
-				ddmFormField.getProperty("maximumRepetitions")));
-		parameters.put(
+				ddmFormField.getProperty("maximumRepetitions"))
+		).put(
 			"maximumSubmissionLimitReached",
 			GetterUtil.getBoolean(
-				ddmFormField.getProperty("maximumSubmissionLimitReached")));
+				ddmFormField.getProperty("maximumSubmissionLimitReached"))
+		).put(
+			"value",
+			() -> {
+				String value = ddmFormFieldRenderingContext.getValue();
 
-		String value = ddmFormFieldRenderingContext.getValue();
+				if (Validator.isNull(value)) {
+					return "{}";
+				}
 
-		if (Validator.isNull(value)) {
-			value = "{}";
-		}
-
-		parameters.put("value", value);
-
-		return parameters;
+				return value;
+			}
+		).putAll(
+			parameters
+		).build();
 	}
 
 	protected ResourceBundle getResourceBundle(Locale locale) {
