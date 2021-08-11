@@ -1,0 +1,668 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.backend.dto;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.DataSourceIndividual;
+import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.IndividualChannel;
+import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.common.util.StringUtil;
+
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+import org.springframework.data.annotation.Transient;
+import org.springframework.util.CollectionUtils;
+
+/**
+ * @author Rachael Koestartyo
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonRootName("individuals")
+public class IndividualDTO {
+
+	public IndividualDTO() {
+	}
+
+	public IndividualDTO(Individual individual) {
+		List<ActivitiesCountDTO> activitiesCountDTOs = ListUtil.map(
+			individual.getActivitiesCounts(), ActivitiesCountDTO::new);
+
+		if (!activitiesCountDTOs.isEmpty()) {
+			_activitiesCountDTOs = activitiesCountDTOs;
+		}
+
+		_channelIds = SetUtil.map(individual.getChannelIds(), String::valueOf);
+		_createDate = individual.getCreateDate();
+
+		Set<DataSourceAccountPKDTO> dataSourceAccountPKDTOs = SetUtil.map(
+			individual.getDataSourceIndividuals(), DataSourceAccountPKDTO::new);
+
+		if (!dataSourceAccountPKDTOs.isEmpty()) {
+			_dataSourceAccountPKDTOs = dataSourceAccountPKDTOs;
+		}
+
+		Set<DataSourceIndividualPKDTO> dataSourceIndividualPKDTOs = SetUtil.map(
+			individual.getDataSourceIndividuals(),
+			DataSourceIndividualPKDTO::new);
+
+		if (!dataSourceIndividualPKDTOs.isEmpty()) {
+			_dataSourceIndividualPKDTOs = dataSourceIndividualPKDTOs;
+		}
+
+		_emailAddressHashed = individual.getEmailAddressHashed();
+		_firstEnrichmentDate = individual.getFirstEnrichmentDate();
+		_groupIds = SetUtil.map(individual.getGroupIds(), String::valueOf);
+		_id = StringUtil.get(individual.getId(), null);
+		_individualCustomFieldDTO = new IndividualFieldDTO(
+			individual.getCustomFields());
+		_individualFieldDTO = new IndividualFieldDTO(individual.getFields());
+
+		Set<LastActivityDateDTO> lastActivityDateDTOs = SetUtil.map(
+			individual.getIndividualChannels(), LastActivityDateDTO::new);
+
+		if (!lastActivityDateDTOs.isEmpty()) {
+			_lastActivityDateDTOs = lastActivityDateDTOs;
+		}
+
+		_lastEnrichmentDate = individual.getLastEnrichmentDate();
+		_modifiedDate = individual.getModifiedDate();
+		_organizationIds = SetUtil.map(
+			individual.getOrganizationIds(), String::valueOf);
+		_roleIds = SetUtil.map(individual.getRoleIds(), String::valueOf);
+		_segmentIds = SetUtil.map(individual.getSegmentIds(), String::valueOf);
+		_teamIds = SetUtil.map(individual.getTeamIds(), String::valueOf);
+		_userGroupIds = SetUtil.map(
+			individual.getUserGroupIds(), String::valueOf);
+	}
+
+	public IndividualDTO(List<Individual> individuals) {
+		_individualDTOs = SetUtil.map(individuals, IndividualDTO::new);
+	}
+
+	public IndividualDTO(Set<IndividualDTO> individualDTOs) {
+		_individualDTOs = individualDTOs;
+	}
+
+	@JsonProperty("activitiesCounts")
+	public List<ActivitiesCountDTO> getActivitiesCountDTOs() {
+		return _activitiesCountDTOs;
+	}
+
+	@JsonProperty("channelIds")
+	public Set<String> getChannelIds() {
+		return _channelIds;
+	}
+
+	@JsonAlias("createDate")
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("dateCreated")
+	public Date getCreateDate() {
+		if (_createDate == null) {
+			return null;
+		}
+
+		return new Date(_createDate.getTime());
+	}
+
+	@JsonProperty("dataSourceAccountPKs")
+	public Set<DataSourceAccountPKDTO> getDataSourceAccountPKDTOs() {
+		return _dataSourceAccountPKDTOs;
+	}
+
+	@JsonProperty("dataSourceIndividualPKs")
+	public Set<DataSourceIndividualPKDTO> getDataSourceIndividualPKDTOs() {
+		return _dataSourceIndividualPKDTOs;
+	}
+
+	@JsonProperty("emailAddressHashed")
+	public String getEmailAddressHashed() {
+		return _emailAddressHashed;
+	}
+
+	@JsonProperty("_embedded")
+	public Map<String, Object> getEmbedded() {
+		return _embedded;
+	}
+
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("firstEnrichmentDate")
+	public Date getFirstEnrichmentDate() {
+		if (_firstEnrichmentDate == null) {
+			return null;
+		}
+
+		return new Date(_firstEnrichmentDate.getTime());
+	}
+
+	@JsonProperty("groupIds")
+	public Set<String> getGroupIds() {
+		return _groupIds;
+	}
+
+	@JsonProperty("id")
+	public String getId() {
+		return _id;
+	}
+
+	@JsonProperty("custom")
+	public IndividualFieldDTO getIndividualCustomFieldDTO() {
+		return _individualCustomFieldDTO;
+	}
+
+	@JsonProperty("individuals")
+	public Set<IndividualDTO> getIndividualDTOs() {
+		return _individualDTOs;
+	}
+
+	@JsonProperty("demographics")
+	public IndividualFieldDTO getIndividualFieldDTO() {
+		return _individualFieldDTO;
+	}
+
+	@JsonProperty("lastActivityDates")
+	public Set<LastActivityDateDTO> getLastActivityDateDTOs() {
+		return _lastActivityDateDTOs;
+	}
+
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("lastEnrichmentDate")
+	public Date getLastEnrichmentDate() {
+		if (_lastEnrichmentDate == null) {
+			return null;
+		}
+
+		return new Date(_lastEnrichmentDate.getTime());
+	}
+
+	@JsonAlias("modifiedDate")
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("dateModified")
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
+			return null;
+		}
+
+		return new Date(_modifiedDate.getTime());
+	}
+
+	@JsonProperty("organizationIds")
+	public Set<String> getOrganizationIds() {
+		return _organizationIds;
+	}
+
+	@JsonProperty("roleIds")
+	public Set<String> getRoleIds() {
+		return _roleIds;
+	}
+
+	@JsonProperty("individualSegmentIds")
+	public Set<String> getSegmentIds() {
+		return _segmentIds;
+	}
+
+	@JsonProperty("teamIds")
+	public Set<String> getTeamIds() {
+		return _teamIds;
+	}
+
+	@JsonProperty("userGroupIds")
+	public Set<String> getUserGroupIds() {
+		return _userGroupIds;
+	}
+
+	public void setEmbedded(Map<String, Object> embedded) {
+		_embedded = embedded;
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public static class ActivitiesCountDTO {
+
+		public ActivitiesCountDTO(Individual.ActivitiesCount activitiesCount) {
+			_activitiesCount = activitiesCount.getActivitiesCount();
+
+			_channelId = String.valueOf(activitiesCount.getChannelId());
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof ActivitiesCountDTO)) {
+				return false;
+			}
+
+			ActivitiesCountDTO activitiesCountDTO = (ActivitiesCountDTO)obj;
+
+			if (Objects.equals(
+					_activitiesCount, activitiesCountDTO._activitiesCount) &&
+				Objects.equals(_channelId, activitiesCountDTO._channelId)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonProperty("activitiesCount")
+		public Long getActivitiesCount() {
+			return _activitiesCount;
+		}
+
+		@JsonProperty("channelId")
+		public String getChannelId() {
+			return _channelId;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_activitiesCount, _channelId);
+		}
+
+		public void setActivitiesCount(Long activitiesCount) {
+			_activitiesCount = activitiesCount;
+		}
+
+		public void setChannelId(String channelId) {
+			_channelId = channelId;
+		}
+
+		private Long _activitiesCount;
+		private String _channelId;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public static class DataSourceAccountPKDTO {
+
+		public DataSourceAccountPKDTO() {
+		}
+
+		public DataSourceAccountPKDTO(
+			DataSourceIndividual dataSourceIndividual) {
+
+			if (!CollectionUtils.isEmpty(
+					dataSourceIndividual.getAccountPKs())) {
+
+				_accountPKs = dataSourceIndividual.getAccountPKs();
+				_dataSourceId = String.valueOf(
+					dataSourceIndividual.getDataSourceId());
+			}
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof DataSourceAccountPKDTO)) {
+				return false;
+			}
+
+			DataSourceAccountPKDTO dataSourceAccountPKDTO =
+				(DataSourceAccountPKDTO)obj;
+
+			if (Objects.equals(
+					_accountPKs, dataSourceAccountPKDTO._accountPKs) &&
+				Objects.equals(
+					_dataSourceId, dataSourceAccountPKDTO._dataSourceId)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonProperty("accountPKs")
+		public Set<String> getAccountPKs() {
+			return _accountPKs;
+		}
+
+		@JsonProperty("dataSourceId")
+		public String getDataSourceId() {
+			return _dataSourceId;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_accountPKs, _dataSourceId);
+		}
+
+		public void setAccountPKs(Set<String> accountPKs) {
+			_accountPKs = accountPKs;
+		}
+
+		public void setDataSourceId(String dataSourceId) {
+			_dataSourceId = dataSourceId;
+		}
+
+		@Transient
+		private Set<String> _accountPKs = new HashSet<>();
+
+		@Transient
+		private String _dataSourceId;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public static class DataSourceIndividualPKDTO {
+
+		public DataSourceIndividualPKDTO() {
+		}
+
+		public DataSourceIndividualPKDTO(
+			DataSourceIndividual dataSourceIndividual) {
+
+			if (!CollectionUtils.isEmpty(
+					dataSourceIndividual.getIndividualPKs())) {
+
+				_dataSourceId = String.valueOf(
+					dataSourceIndividual.getDataSourceId());
+				_individualPKs = dataSourceIndividual.getIndividualPKs();
+			}
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof DataSourceIndividualPKDTO)) {
+				return false;
+			}
+
+			DataSourceIndividualPKDTO dataSourceIndividualPKDTO =
+				(DataSourceIndividualPKDTO)obj;
+
+			if (Objects.equals(
+					_dataSourceId, dataSourceIndividualPKDTO._dataSourceId) &&
+				Objects.equals(
+					_individualPKs, dataSourceIndividualPKDTO._individualPKs)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonProperty("dataSourceId")
+		public String getDataSourceId() {
+			return _dataSourceId;
+		}
+
+		@JsonProperty("individualPKs")
+		public Set<String> getIndividualPKs() {
+			return _individualPKs;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_dataSourceId, _individualPKs);
+		}
+
+		public void setDataSourceId(String dataSourceId) {
+			_dataSourceId = dataSourceId;
+		}
+
+		public void setIndividualPKs(Set<String> individualPKs) {
+			_individualPKs = individualPKs;
+		}
+
+		@Transient
+		private String _dataSourceId;
+
+		@Transient
+		private Set<String> _individualPKs = new HashSet<>();
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public static class IndividualCountDTO {
+
+		public IndividualCountDTO(
+			Account.AccountIndividualCount accountIndividualCount) {
+
+			_channelId = String.valueOf(accountIndividualCount.getChannelId());
+			_individualCount = accountIndividualCount.getIndividualCount();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof IndividualCountDTO)) {
+				return false;
+			}
+
+			IndividualCountDTO individualCountDTO = (IndividualCountDTO)obj;
+
+			if (Objects.equals(_channelId, individualCountDTO._channelId) &&
+				Objects.equals(
+					_individualCount, individualCountDTO._individualCount)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonProperty("channelId")
+		public String getChannelId() {
+			return _channelId;
+		}
+
+		@JsonProperty("individualCount")
+		public Long getIndividualCount() {
+			return _individualCount;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_channelId, _individualCount);
+		}
+
+		public void setChannelId(String channelId) {
+			_channelId = channelId;
+		}
+
+		public void setIndividualCount(Long individualCount) {
+			_individualCount = individualCount;
+		}
+
+		private String _channelId;
+		private Long _individualCount;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public static class IndividualFieldDTO {
+
+		public IndividualFieldDTO(Set<Field> fields) {
+			for (Field field : fields) {
+				_fieldMap.put(
+					field.getName(),
+					Collections.singletonList(new FieldDTO(field)));
+			}
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof IndividualFieldDTO)) {
+				return false;
+			}
+
+			IndividualFieldDTO individualFieldDTO = (IndividualFieldDTO)obj;
+
+			if (Objects.equals(_fieldMap, individualFieldDTO._fieldMap)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonAnyGetter
+		public Map<String, Object> getField() {
+			return _fieldMap;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_fieldMap);
+		}
+
+		public void setFieldMap(Map<String, Object> fieldMap) {
+			_fieldMap = fieldMap;
+		}
+
+		private Map<String, Object> _fieldMap = new HashMap<>();
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public static class LastActivityDateDTO {
+
+		public LastActivityDateDTO() {
+		}
+
+		public LastActivityDateDTO(IndividualChannel individualChannel) {
+			_channelId = String.valueOf(individualChannel.getChannelId());
+			_lastActivityDate = individualChannel.getLastActivityDate();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof LastActivityDateDTO)) {
+				return false;
+			}
+
+			LastActivityDateDTO lastActivityDateDTO = (LastActivityDateDTO)obj;
+
+			if (Objects.equals(_channelId, lastActivityDateDTO._channelId) &&
+				Objects.equals(
+					_lastActivityDate, lastActivityDateDTO._lastActivityDate)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonProperty("channelId")
+		public String getChannelId() {
+			return _channelId;
+		}
+
+		@JsonFormat(
+			pattern = DateUtil.PATTERN_ISO_8601,
+			shape = JsonFormat.Shape.STRING, timezone = "UTC"
+		)
+		@JsonProperty("lastActivityDate")
+		public Date getLastActivityDate() {
+			if (_lastActivityDate == null) {
+				return null;
+			}
+
+			return new Date(_lastActivityDate.getTime());
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_channelId, _lastActivityDate);
+		}
+
+		public void setChannelId(String channelId) {
+			_channelId = channelId;
+		}
+
+		public void setLastActivityDate(Date lastActivityDate) {
+			if (lastActivityDate != null) {
+				_lastActivityDate = new Date(lastActivityDate.getTime());
+			}
+		}
+
+		@Transient
+		private String _channelId;
+
+		@Transient
+		private Date _lastActivityDate;
+
+	}
+
+	private List<ActivitiesCountDTO> _activitiesCountDTOs;
+	private Set<String> _channelIds;
+	private Date _createDate;
+	private Set<DataSourceAccountPKDTO> _dataSourceAccountPKDTOs;
+	private Set<DataSourceIndividualPKDTO> _dataSourceIndividualPKDTOs;
+	private String _emailAddressHashed;
+	private Map<String, Object> _embedded;
+	private Date _firstEnrichmentDate;
+	private Set<String> _groupIds;
+	private String _id;
+	private IndividualFieldDTO _individualCustomFieldDTO;
+	private Set<IndividualDTO> _individualDTOs;
+	private IndividualFieldDTO _individualFieldDTO;
+	private Set<LastActivityDateDTO> _lastActivityDateDTOs;
+	private Date _lastEnrichmentDate;
+	private Date _modifiedDate;
+	private Set<String> _organizationIds;
+	private Set<String> _roleIds;
+	private Set<String> _segmentIds;
+	private Set<String> _teamIds;
+	private Set<String> _userGroupIds;
+
+}
