@@ -17,9 +17,7 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.UserSessionDTO;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
-import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
-import com.liferay.osb.asah.common.dog.UserSessionDog;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
@@ -83,12 +81,6 @@ public class EventsByUserSessionDataFetcher
 	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
 
 	@Autowired
-	private EventDefinitionDog _eventDefinitionDog;
-
-	@Autowired
 	private EventDog _eventDog;
-
-	@Autowired
-	private UserSessionDog _userSessionDog;
 
 }
