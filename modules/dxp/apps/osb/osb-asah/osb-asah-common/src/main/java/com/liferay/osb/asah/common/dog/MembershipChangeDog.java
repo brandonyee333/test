@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.MembershipChange;
@@ -22,12 +23,17 @@ import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -155,6 +161,47 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 			individualSegmentId);
 	}
 
+	public Map<Long, JSONObject> getAccountNamesJSONObjects(
+		List<MembershipChange> membershipChanges) {
+
+		Map<Long, JSONObject> accountNamesJSONObjects = new HashMap<>();
+
+		List<Individual> individuals = new ArrayList<>();
+
+		for (MembershipChange membershipChange : membershipChanges) {
+			individuals.add(
+				_individualDog.fetchIndividual(
+					membershipChange.getIndividualId()));
+		}
+
+		Map<Long, JSONObject> individualAccountNamesJSONObjects =
+			_accountDog.getAccountNamesJSONObjects(individuals);
+
+		for (MembershipChange membershipChange : membershipChanges) {
+			accountNamesJSONObjects.put(
+				membershipChange.getId(),
+				individualAccountNamesJSONObjects.get(
+					membershipChange.getIndividualId()));
+		}
+
+		return accountNamesJSONObjects;
+	}
+
+	public Page<MembershipChange> searchMembershipChangesPages(
+		String filterString, Long segmentId, int page, int size,
+		String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size, SortUtil.getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_membershipChangeRepository.searchMembershipChanges(
+				filterString, segmentId, pageRequest),
+			pageRequest,
+			() -> _membershipChangeRepository.countMembershipChanges(
+				filterString, segmentId));
+	}
+
 	public void updateIndividualNameForIndividual(
 		Long individualId, String individualName) {
 
@@ -168,6 +215,12 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		_membershipChangeRepository.updateIndividualDeletedByIndividualId(
 			individualDeleted, individualId);
 	}
+
+	@Autowired
+	private AccountDog _accountDog;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private MembershipChangeRepository _membershipChangeRepository;

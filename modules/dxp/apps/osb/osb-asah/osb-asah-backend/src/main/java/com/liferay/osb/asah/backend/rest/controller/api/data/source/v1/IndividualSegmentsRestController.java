@@ -17,16 +17,17 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.dto.IndividualDTO;
+import com.liferay.osb.asah.backend.dto.MembershipChangeDTO;
 import com.liferay.osb.asah.backend.dto.MembershipDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
-import com.liferay.osb.asah.backend.rest.response.embedded.MembershipChangesEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -35,10 +36,10 @@ import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.Faro
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
+import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.rest.response.function.MembershipChangesHistogramTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.annotation.SuppressErrorLogging;
@@ -47,7 +48,10 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -111,27 +115,67 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "!apply", value = "/{id}/membership-changes")
-	public String getMembershipChanges(
-			@PathVariable String id,
-			@RequestParam(required = false) String expand,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
+	public PageDTO<MembershipChangeDTO> getMembershipChangeDTOsPageDTOs(
+		@PathVariable Long id, @RequestParam(required = false) String expand,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		EmbeddedJSONObjectCreator embeddedJSONObjectCreator = null;
+		Page<MembershipChange> membershipChangesPages =
+			_membershipChangeDog.searchMembershipChangesPages(
+				filterString, id, page, size, sorts);
 
-		if (StringUtils.isNotEmpty(expand)) {
-			embeddedJSONObjectCreator =
-				new MembershipChangesEmbeddedJSONObjectCreator(
-					faroInfoElasticsearchInvoker, expand);
+		if (StringUtils.isEmpty(expand)) {
+			return _toMembershipChangeDTOsPageDTO(membershipChangesPages);
 		}
 
-		return toCollectionGetResponse(
-			"membership-changes", embeddedJSONObjectCreator, page,
-			_getMembershipChangesQueryBuilder(filterString, id), size, sorts);
+		List<MembershipChange> membershipChanges =
+			membershipChangesPages.getContent();
+
+		Set<MembershipChangeDTO> membershipChangeDTOs = new HashSet<>();
+
+		Stream<MembershipChange> stream = membershipChanges.stream();
+
+		stream.forEachOrdered(
+			membershipChange -> membershipChangeDTOs.add(
+				new MembershipChangeDTO(membershipChange)));
+
+		Map<Long, JSONObject> accountNamesJSONObjects = new HashMap<>();
+
+		String[] expandParts = expand.split(",");
+
+		for (String expandPart : expandParts) {
+			if (expandPart.equals("account-names")) {
+				accountNamesJSONObjects =
+					_membershipChangeDog.getAccountNamesJSONObjects(
+						membershipChanges);
+			}
+			else if (_log.isWarnEnabled()) {
+				_log.warn("Invalid expand: " + expandPart);
+			}
+		}
+
+		for (MembershipChangeDTO membershipChangeDTO : membershipChangeDTOs) {
+			Map<String, Object> expandMap = new HashMap<>();
+
+			JSONObject accountNamesJSONObject = accountNamesJSONObjects.get(
+				Long.valueOf(membershipChangeDTO.getId()));
+
+			if (accountNamesJSONObject != null) {
+				expandMap.put(
+					"account-names",
+					accountNamesJSONObject.getJSONArray("account-names"));
+			}
+
+			if (!expandMap.isEmpty()) {
+				membershipChangeDTO.setEmbedded(expandMap);
+			}
+		}
+
+		return _toMembershipChangeDTOsPageDTO(
+			new MembershipChangeDTO(membershipChangeDTOs),
+			membershipChangesPages);
 	}
 
 	@Cacheable
@@ -521,6 +565,28 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			individualsPage.getTotalPages());
 	}
 
+	private PageDTO<MembershipChangeDTO> _toMembershipChangeDTOsPageDTO(
+		MembershipChangeDTO membershipChangeDTO,
+		Page<MembershipChange> membershipChangesPage) {
+
+		return new PageDTO<>(
+			"_embedded", membershipChangeDTO, membershipChangesPage.getNumber(),
+			membershipChangesPage.getSize(),
+			membershipChangesPage.getTotalElements(),
+			membershipChangesPage.getTotalPages());
+	}
+
+	private PageDTO<MembershipChangeDTO> _toMembershipChangeDTOsPageDTO(
+		Page<MembershipChange> membershipChangesPage) {
+
+		return new PageDTO<>(
+			"_embedded",
+			new MembershipChangeDTO(membershipChangesPage.getContent()),
+			membershipChangesPage.getNumber(), membershipChangesPage.getSize(),
+			membershipChangesPage.getTotalElements(),
+			membershipChangesPage.getTotalPages());
+	}
+
 	private PageDTO<MembershipDTO> _toMembershipDTOsPageDTO(
 		Page<Membership> membershipsPage) {
 
@@ -568,6 +634,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@Autowired
 	private IndividualDog _individualDog;
+
+	@Autowired
+	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

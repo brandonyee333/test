@@ -16,9 +16,11 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.MembershipChange;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -30,11 +32,16 @@ import org.springframework.data.repository.query.Param;
 public interface MembershipChangeRepository
 	extends CrudRepository<MembershipChange, Long> {
 
+	public long countMembershipChanges(String filterString, Long segmentId);
+
 	@Modifying
 	public void deleteByIndividualSegmentId(
 		@Param("individualSegmentId") Long individualSegmentId);
 
 	public Optional<MembershipChange> findByIndividualId(Long individualId);
+
+	public List<MembershipChange> searchMembershipChanges(
+		String filterString, Long segmentId, Pageable pageable);
 
 	@Modifying
 	public void updateIndividualDeletedByIndividualId(

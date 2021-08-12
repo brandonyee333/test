@@ -14,19 +14,32 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
+import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.MembershipChange;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -38,9 +51,15 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 	implements MembershipChangeRepository {
 
 	@Override
+	public long countMembershipChanges(String filterString, Long segmentId) {
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(), _getQueryBuilder(filterString, segmentId));
+	}
+
+	@Override
 	public void deleteByIndividualSegmentId(Long individualSegmentId) {
 		_faroInfoElasticsearchInvoker.delete(
-			"membership-changes",
+			getCollectionName(),
 			QueryBuilders.termQuery(
 				"individualSegmentId", String.valueOf(individualSegmentId)));
 	}
@@ -57,6 +76,22 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 		).map(
 			this::toEntity
 		);
+	}
+
+	public List<MembershipChange> searchMembershipChanges(
+		String filterString, Long segmentId, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_getQueryBuilder(filterString, segmentId));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
 	}
 
 	@Override
@@ -96,7 +131,29 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 		return _faroInfoElasticsearchInvoker;
 	}
 
+	private QueryBuilder _getQueryBuilder(String filterString, Long segmentId) {
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("individualSegmentId", segmentId));
+
+		Segment segment = _segmentDog.getSegment(segmentId);
+
+		if (!BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers())) {
+			boolQueryBuilder.filter(
+				QueryBuilders.existsQuery("individualEmail"));
+		}
+
+		if (StringUtils.isEmpty(filterString)) {
+			return boolQueryBuilder;
+		}
+
+		return boolQueryBuilder.filter(
+			FilterStringToQueryBuilderConverter.convert(filterString));
+	}
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }
