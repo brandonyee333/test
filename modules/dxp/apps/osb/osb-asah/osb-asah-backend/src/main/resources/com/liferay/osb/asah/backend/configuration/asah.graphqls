@@ -46,6 +46,11 @@ enum DateGrouping {
 	YEAR
 }
 
+enum EntityType {
+	ACCOUNT
+	INDIVIDUAL
+}
+
 enum EventAttributeDefinitionDataType {
 	BOOLEAN
 	DATE
@@ -1219,7 +1224,7 @@ type QueryType {
 	userSessions(
 		channelId: String!
 		entityId: String!
-		entityType: String!
+		entityType: EntityType!
 		keywords: String
 		page: Int!
 		rangeEnd: String
