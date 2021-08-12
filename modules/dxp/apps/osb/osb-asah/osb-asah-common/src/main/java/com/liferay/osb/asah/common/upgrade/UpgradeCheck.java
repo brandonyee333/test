@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -41,7 +40,6 @@ import org.springframework.stereotype.Component;
  * @author André Miranda
  */
 @Component
-@MonolithExclude
 @Profile({"dev", "prod"})
 public class UpgradeCheck {
 

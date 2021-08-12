@@ -15,14 +15,12 @@
 package com.liferay.osb.asah.extractor.rest.controller;
 
 import com.liferay.osb.asah.common.rest.controller.BaseContextRestController;
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Vishal Reddy
  */
-@MonolithExclude
 @RestController
 public class ContextRestController extends BaseContextRestController {
 }

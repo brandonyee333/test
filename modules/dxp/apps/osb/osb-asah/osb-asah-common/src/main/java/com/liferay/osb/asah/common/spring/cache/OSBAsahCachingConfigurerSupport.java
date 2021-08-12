@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.spring.cache;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -44,7 +43,6 @@ import redis.clients.jedis.JedisPool;
  */
 @Configuration
 @EnableCaching
-@MonolithExclude
 public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 
 	@Bean

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.publisher.rest.controller;
 
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Shinn Lok
  */
-@MonolithExclude
 @RequestMapping("/")
 @RestController
 public class RootRestController {

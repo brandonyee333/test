@@ -35,7 +35,6 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageListener;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -57,7 +56,6 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-@MonolithExclude
 public class PubSubMessageBusImpl implements MessageBus {
 
 	public PubsubMessage createPubsubMessage(String message) {

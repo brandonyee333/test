@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.batch.curator.spring.scheduling;
 
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.spring.scheduling.BaseSchedulingConfigurer;
 
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +22,6 @@ import org.springframework.context.annotation.Configuration;
  * @author Vishal Reddy
  */
 @Configuration
-@MonolithExclude
 public class OSBAsahBatchCuratorSchedulingConfigurer
 	extends BaseSchedulingConfigurer {
 

@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.messaging.impl;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.util.URLUtil;
 
 import io.grpc.ManagedChannel;
@@ -36,7 +35,6 @@ import org.springframework.context.annotation.Configuration;
  * @author Marcellus Tavares
  */
 @Configuration
-@MonolithExclude
 public class PubSubConfiguration {
 
 	@Bean(name = "managedChannelSupplier")

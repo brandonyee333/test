@@ -149,14 +149,7 @@ public class ServiceConstants {
 	private static String _getURL(
 		String serviceName, String port, boolean external) {
 
-		String url = null;
-
-		if (_MONOLITH_ENABLED) {
-			url = _doGetURL("MONOLITH", "8080", true);
-		}
-		else {
-			url = _doGetURL(serviceName, port, external);
-		}
+		String url = _doGetURL(serviceName, port, external);
 
 		String osbAsahURLKey = "OSB_ASAH_" + serviceName + "_URL";
 
@@ -174,17 +167,10 @@ public class ServiceConstants {
 	}
 
 	private static String _setInternalURL(String serviceName, String port) {
-		String internalServiceURL = null;
+		serviceName = serviceName.replace("_", "");
+		serviceName = serviceName.toLowerCase();
 
-		if (_MONOLITH_ENABLED) {
-			internalServiceURL = "http://localhost:8080";
-		}
-		else {
-			serviceName = serviceName.replace("_", "");
-			serviceName = serviceName.toLowerCase();
-
-			internalServiceURL = "http://osbasah" + serviceName + ":" + port;
-		}
+		String internalServiceURL = "http://osbasah" + serviceName + ":" + port;
 
 		_internalServiceURLs.add(internalServiceURL);
 
@@ -199,9 +185,6 @@ public class ServiceConstants {
 
 	@SuppressWarnings("PMD.AvoidUsingHardCodedIP")
 	private static final String _LOCALHOST_IP = "127.0.0.1";
-
-	private static final boolean _MONOLITH_ENABLED = Boolean.parseBoolean(
-		System.getenv("OSB_ASAH_MONOLITH_ENABLED"));
 
 	private static final Log _log = LogFactory.getLog(ServiceConstants.class);
 
@@ -222,12 +205,6 @@ public class ServiceConstants {
 
 		if (_log.isInfoEnabled()) {
 			_log.info("OSB_ASAH_LCP_DOMAIN_SUFFIX: " + _DOMAIN_SUFFIX);
-
-			if (_MONOLITH_ENABLED) {
-				_log.info(
-					"OSB_ASAH_MONOLITH_URL: " +
-						_doGetURL("MONOLITH", "8080", true));
-			}
 		}
 
 		POSTGRESQL_SERVER_IP = _getPostgreSQLClusterURL();

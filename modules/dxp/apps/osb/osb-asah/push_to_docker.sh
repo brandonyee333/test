@@ -80,25 +80,6 @@ function build_docker_image {
 		echo "" >> ${file_name}/Dockerfile
 		echo "COPY --chown=elasticsearch:root ./build/server.zip /certs/" >> ${file_name}/Dockerfile
 		echo "RUN mkdir /usr/share/elasticsearch/config/certificates && unzip /certs/server.zip -d /usr/share/elasticsearch/config/certificates" >> ${file_name}/Dockerfile
-	elif [ ${file_name} == osb-asah-monolith ]
-	then
-		cp ~/.asah/client.zip ${file_name}/build/client.zip
-
-		echo "" >> ${file_name}/Dockerfile
-		echo "COPY ./build/client.zip client.zip" >> ${file_name}/Dockerfile
-		echo "RUN unzip client.zip" >> ${file_name}/Dockerfile
-
-		echo "" >> ${file_name}/Dockerfile
-
-		if [ ${ASAH_ENVIRONMENT_NAME} == "prod" ]
-		then
-			echo "ENV OSB_FARO_FRONTEND_URL=https://analytics.liferay.com" >> ${file_name}/Dockerfile
-		elif [ ${ASAH_ENVIRONMENT_NAME} == "uat" ]
-		then
-			echo "ENV OSB_FARO_FRONTEND_URL=https://analytics-uat.liferay.com" >> ${file_name}/Dockerfile
-		fi
-
-		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
 	fi
 
 	docker build \

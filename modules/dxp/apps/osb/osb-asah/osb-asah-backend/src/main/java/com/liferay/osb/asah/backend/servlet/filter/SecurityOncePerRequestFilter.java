@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.servlet.filter.BaseSecurityOncePerRequestFilter;
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +33,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConditionalOnProperty("osb.asah.security.enabled")
-@MonolithExclude
 public class SecurityOncePerRequestFilter
 	extends BaseSecurityOncePerRequestFilter {
 

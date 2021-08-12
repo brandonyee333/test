@@ -16,10 +16,6 @@ scrape_configs:
       metrics_path: /prometheus
       static_configs:
           - targets: ['osbasahextractor:8080']
-    - job_name: 'osbasahmonolith'
-      metrics_path: /prometheus
-      static_configs:
-          - targets: ['osbasahmonolith:8080']
     - job_name: 'osbasahpublisher'
       metrics_path: /prometheus
       static_configs:

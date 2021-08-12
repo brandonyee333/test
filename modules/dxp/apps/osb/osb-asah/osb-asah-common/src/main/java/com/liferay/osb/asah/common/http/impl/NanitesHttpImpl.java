@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.http.impl;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.http.NanitesHttp;
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.spring.http.Http;
 
 import java.util.List;
@@ -31,7 +30,6 @@ import org.springframework.stereotype.Component;
  * @author Shinn Lok
  */
 @Component
-@MonolithExclude
 public class NanitesHttpImpl implements NanitesHttp {
 
 	@Override

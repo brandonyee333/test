@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.upgrade;
 
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -28,7 +26,6 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-@MonolithExclude
 @Profile("!test")
 public class Upgrade implements CommandLineRunner {
 

@@ -31,8 +31,6 @@ import com.google.cloud.pubsub.v1.stub.SubscriberStub;
 import com.google.cloud.pubsub.v1.stub.SubscriberStubSettings;
 import com.google.pubsub.v1.ProjectTopicName;
 
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
-
 import io.grpc.ManagedChannel;
 
 import java.util.function.Function;
@@ -46,7 +44,6 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-@MonolithExclude
 public class PubSubClientFactory {
 
 	public Publisher createPublisher(

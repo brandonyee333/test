@@ -17,5 +17,3 @@ rootDir.eachDir {
 
 	projectDescriptor.projectDir = subprojectDir
 }
-
-project("${projectPathPrefix}:osb-asah-monolith").name = "monolith"

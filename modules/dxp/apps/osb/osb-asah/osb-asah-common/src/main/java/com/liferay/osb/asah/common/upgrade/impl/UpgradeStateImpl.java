@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.upgrade.impl;
 
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.upgrade.UpgradeState;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 
@@ -32,7 +31,6 @@ import redis.clients.jedis.JedisPubSub;
  * @author André Miranda
  */
 @Component
-@MonolithExclude
 @Profile({"dev", "prod"})
 public class UpgradeStateImpl implements UpgradeState {
 

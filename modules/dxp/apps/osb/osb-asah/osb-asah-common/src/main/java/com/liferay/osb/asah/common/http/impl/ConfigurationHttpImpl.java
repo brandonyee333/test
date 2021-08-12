@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.spring.http.Http;
 
 import org.json.JSONObject;
@@ -33,7 +32,6 @@ import org.springframework.stereotype.Component;
  * @author Shinn Lok
  */
 @Component
-@MonolithExclude
 public class ConfigurationHttpImpl implements ConfigurationHttp {
 
 	@Override

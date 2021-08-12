@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.http.impl;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.http.ExperimentHttp;
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.spring.http.Http;
 
 import org.json.JSONObject;
@@ -29,7 +28,6 @@ import org.springframework.stereotype.Component;
  * @author André Miranda
  */
 @Component
-@MonolithExclude
 public class ExperimentHttpImpl implements ExperimentHttp {
 
 	@Override

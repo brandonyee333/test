@@ -92,6 +92,6 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 		ProjectIdThreadLocalOncePerRequestFilter.class);
 
 	private static final Pattern _urlPattern = Pattern.compile(
-		"^https://osbasah(?:backend|monolith|publisher)-(\\w+)\\.lfr\\.cloud");
+		"^https://osbasah(?:backend|publisher)-(\\w+)\\.lfr\\.cloud");
 
 }

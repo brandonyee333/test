@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.publisher.cache.impl;
 
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.publisher.cache.AnalyticsEventsMessageCache;
 
@@ -28,7 +27,6 @@ import redis.clients.jedis.JedisPool;
  * @author Shinn Lok
  */
 @Component
-@MonolithExclude
 public class AnalyticsEventsMessageCacheImpl
 	implements AnalyticsEventsMessageCache {
 

@@ -82,7 +82,7 @@ This repository should be imported by IntelliJ as a Gradle project. Once this is
 
 To start a single service, for example `osb-asah-backend`, open its `*SpringBootApplication` class, right-click it and choose `Run 'Backend'`.
 
-### Microservice Approach
+### Microservice
 
 This is the default approach that starts a separate container for each service. This lets you modify and restart services individually without rebuilding everything.
 
@@ -91,18 +91,6 @@ This is also used for all paid customers to ensure there are sufficient resource
 The downside to this approach is that it requires significantly more resources. At least 16 GB of memory is recommended.
 
 To start up all services via docker, run `docker-compose up`.
-
-### Monolith Approach
-
-Alternatively, the Monolith can also be used for development. It is used for trial purposes, as it simplifies the development setup.
-
-The main difference is that all services are bundled as a single Spring Boot application, and some components have a different implementation (see `com.liferay.osb.asah.monolith.common`).
-
-You can start in IntelliJ by running `OSBAsahMonolithSpringBootApplication`. If you make any changes, you must rerun the application and try it out.
-
-The monolith can be started via docker: `docker-compose -f docker-compose.monolith.yml up`
-
-Note that `docker-compose` YAML includes an Elasticsearch instance, which will conflict with any existing Elasticsearch instance.
 
 ### Environment Variables
 
@@ -116,13 +104,5 @@ However, if you choose to run services with IntelliJ or `gradle bootRun`, you wi
 - `OSB_ASAH_REDIS_URL`: Used to point to another Redis instance (default: `http://osbasahredis:6379`).
 - `OSB_FARO_FRONTEND_URL`: Used to point to a Faro instance, please set it your local instance (default: `https://analytics.liferay.com`).
 - `SPRING_PROFILES_ACTIVE`: Used set the active profile, 'default' profile is not allowed, use of the possible values: `dev`, `prod`, `test`.
-
-For example, when running `osb-asah-monolith` from IntelliJ, these variables and values have to be used:
-
-- `LCP_PROJECT_ID=osbasah`
-- `OSB_ASAH_BACKEND_URL=http://172.17.0.1:8081` - Use your IP, this url is passed to Faro/DXP, if they are running in containers `localhost` is not accessible.
-- `OSB_ASAH_PUBLISHER_URL=http://172.17.0.1:8081` - Same as above.
-- `OSB_FARO_FRONTEND_URL=http://localhost:8080`
-- `SPRING_PROFILES_ACTIVE=dev` - Alternatively, the profile can be set in Run/Debug Configurations dialog, in "Active profiles".
 
 The following is a nonexhaustive list, see `ServiceConstants.java` for more details.

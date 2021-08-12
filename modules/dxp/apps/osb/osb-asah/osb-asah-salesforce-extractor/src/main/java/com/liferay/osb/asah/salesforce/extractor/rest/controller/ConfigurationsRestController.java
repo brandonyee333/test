@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 
 import org.json.JSONObject;
 
@@ -34,7 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Rachael Koestartyo
  */
-@MonolithExclude
 @RequestMapping("/configurations")
 @RestController
 public class ConfigurationsRestController {
