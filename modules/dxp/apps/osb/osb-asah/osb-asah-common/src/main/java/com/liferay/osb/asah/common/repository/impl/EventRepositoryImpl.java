@@ -281,14 +281,10 @@ public class EventRepositoryImpl extends BaseRepository {
 			).from(
 				"Event"
 			).innerJoin(
-				DSL.table(
-					"EventDefinition"
-				).as(
-					"EventDefinition1"
-				)
+				DSL.table("EventDefinition")
 			).on(
 				DSL.field(
-					"\"EventDefinition1\".id"
+					"EventDefinition.id"
 				).eq(
 					DSL.field("Event.eventDefinitionId")
 				)
@@ -332,16 +328,12 @@ public class EventRepositoryImpl extends BaseRepository {
 					selectSelectStep.from(
 						"Event"
 					).innerJoin(
-						DSL.table(
-							"EventDefinition"
-						).as(
-							"EventDefinition1"
-						)
+						DSL.table("EventDefinition")
 					).on(
 						DSL.field(
 							"Event.eventDefinitionId"
 						).eq(
-							DSL.field("\"EventDefinition1\".id")
+							DSL.field("EventDefinition.id")
 						)
 					).where(
 						_createCondition(
@@ -370,16 +362,12 @@ public class EventRepositoryImpl extends BaseRepository {
 		return selectSelectStep.from(
 			eventTable
 		).innerJoin(
-			DSL.table(
-				"EventDefinition"
-			).as(
-				"EventDefinition1"
-			)
+			DSL.table("EventDefinition")
 		).on(
 			DSL.field(
 				"Event.eventDefinitionId"
 			).eq(
-				DSL.field("\"EventDefinition1\".id")
+				DSL.field("EventDefinition.id")
 			)
 		).where(
 			_createCondition(channelId, individualId, keywords, timeRange)
@@ -491,7 +479,7 @@ public class EventRepositoryImpl extends BaseRepository {
 					timeRange.getEndLocalDateTime(), _timeZoneDog.getZoneId())
 			),
 			DSL.field(
-				"\"EventDefinition1\".hidden", Boolean.class
+				"EventDefinition.hidden", Boolean.class
 			).isFalse());
 
 		if (individualId != null) {
@@ -507,28 +495,11 @@ public class EventRepositoryImpl extends BaseRepository {
 		if (!StringUtils.isEmpty(keyword)) {
 			condition = condition.and(
 				DSL.or(
-					DSL.exists(
-						DSL.select(
-							DSL.field("id")
-						).from(
-							DSL.table(
-								"EventDefinition"
-							).as(
-								"EventDefinition2"
-							).where(
-								DSL.and(
-									DSL.field(
-										"\"EventDefinition2\".id"
-									).eq(
-										DSL.field("Event.eventDefinitionId")
-									)),
-								DSL.field(
-									"\"EventDefinition2\".name"
-								).containsIgnoreCase(
-									keyword
-								)
-							)
-						)),
+					DSL.field(
+						"EventDefinition.name"
+					).containsIgnoreCase(
+						keyword
+					),
 					DSL.exists(
 						DSL.select(
 							DSL.field("id")
