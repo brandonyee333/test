@@ -116,7 +116,7 @@ public class AnalyticsEventsMessage implements Serializable {
 		_clientIP = clientIP;
 	}
 
-	public void setContext(Map<String, String> context) {
+	public void setContext(Map<String, @Size(max = 2048) String> context) {
 		_context = context;
 	}
 
