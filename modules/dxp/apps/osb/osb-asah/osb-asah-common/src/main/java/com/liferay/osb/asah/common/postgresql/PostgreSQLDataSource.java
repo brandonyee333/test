@@ -81,7 +81,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 		throws IllegalArgumentException {
 
 		if (dataSource == null) {
-			dataSource = "public";
+			dataSource = "global";
 		}
 
 		if (dataSource instanceof DataSource) {
