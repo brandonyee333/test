@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS EventAttribute (
 	eventAttributeDefinitionId BIGINT,
 	eventDate TIMESTAMPTZ,
 	eventId BIGINT REFERENCES Event,
-	value VARCHAR(1024)
+	value TEXT
 );
 
 CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
