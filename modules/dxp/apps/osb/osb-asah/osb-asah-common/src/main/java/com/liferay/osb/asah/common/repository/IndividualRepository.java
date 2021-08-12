@@ -44,6 +44,11 @@ public interface IndividualRepository extends CrudRepository<Individual, Long> {
 		@Nullable Long channelId, @Nullable String filterString,
 		@Nullable Long individualId);
 
+	public boolean
+		existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
+			@Nullable Long channelId, @Nullable String filterString,
+			Boolean includeAnonymousUsers, @Nullable Long individualId);
+
 	public boolean existsByFilterStringAndId(
 		@Nullable String filterString, @Nullable Long individualId);
 

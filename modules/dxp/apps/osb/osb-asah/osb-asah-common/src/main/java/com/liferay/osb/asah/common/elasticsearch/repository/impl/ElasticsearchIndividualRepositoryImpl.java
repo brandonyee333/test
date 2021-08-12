@@ -126,6 +126,26 @@ public class ElasticsearchIndividualRepositoryImpl
 			getCollectionName(), boolQueryBuilder);
 	}
 
+	public boolean
+		existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
+			@Nullable Long channelId, @Nullable String filterString,
+			Boolean includeAnonymousUsers, @Nullable Long individualId) {
+
+		QueryBuilder queryBuilder = _getQueryBuilder(
+			channelId, filterString, includeAnonymousUsers, null);
+
+		if (individualId != null) {
+			queryBuilder = BoolQueryBuilderUtil.filter(
+				queryBuilder
+			).filter(
+				QueryBuilders.termQuery("id", String.valueOf(individualId))
+			);
+		}
+
+		return _faroInfoElasticsearchInvoker.exists(
+			getCollectionName(), queryBuilder);
+	}
+
 	@Override
 	public boolean existsByFilterStringAndId(
 		@Nullable String filterString, @Nullable Long individualId) {

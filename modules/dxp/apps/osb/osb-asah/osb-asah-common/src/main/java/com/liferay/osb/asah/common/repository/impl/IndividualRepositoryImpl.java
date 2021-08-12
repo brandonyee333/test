@@ -169,6 +169,66 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	public boolean
+		existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
+			@Nullable Long channelId, @Nullable String filterString,
+			Boolean includeAnonymousUsers, @Nullable Long individualId) {
+
+		Condition condition = ConditionUtil.toCondition(
+			filterString, _individualsFilterStringConverterHelper);
+
+		if (channelId != null) {
+			condition = condition.and(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.channelids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(new Long[] {channelId}), Long[].class)
+				));
+		}
+
+		if (!includeAnonymousUsers) {
+			condition = condition.and(
+				DSL.field(
+					"individual.emailAddressHashed"
+				).isNotNull());
+		}
+
+		if (individualId != null) {
+			condition = condition.and(
+				DSL.field(
+					"individual.id"
+				).eq(
+					individualId
+				));
+		}
+
+		return _dslContext.fetchExists(
+			DSL.selectOne(
+			).from(
+				"Individual"
+			).join(
+				"DataSourceIndividual"
+			).on(
+				DSL.field(
+					"individual.id"
+				).eq(
+					DSL.field("datasourceindividual.individualid")
+				)
+			).join(
+				"Field"
+			).on(
+				DSL.field(
+					"individual.id"
+				).eq(
+					DSL.field("field.ownerid")
+				)
+			).where(
+				condition
+			));
+	}
+
 	public boolean existsByFilterStringAndId(
 		@Nullable String filterString, @Nullable Long individualId) {
 

@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -33,11 +32,9 @@ import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.repository.DataSourceIndividualRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualChannelRepository;
@@ -46,9 +43,6 @@ import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-
-import io.prometheus.client.Counter;
-import io.prometheus.client.Gauge;
 
 import java.util.Collections;
 import java.util.Date;
@@ -62,7 +56,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -72,7 +65,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 
@@ -84,6 +76,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -395,34 +388,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 		segmentIds.add(segmentId);
 
 		return updateIndividual(individualId, individual, false);
-	}
-
-	public QueryBuilder buildIndividualsQueryBuilder(
-		Long channelId, String filterString, Boolean includeAnonymousUsers) {
-
-		BoolQueryBuilder boolQueryBuilder = null;
-
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString, _faroInfoIndividualsFilterStringConverterHelper);
-
-		if (queryBuilder == null) {
-			boolQueryBuilder = new BoolQueryBuilder();
-		}
-		else {
-			boolQueryBuilder = BoolQueryBuilderUtil.filter(queryBuilder);
-		}
-
-		if (channelId != null) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("channelIds", channelId));
-		}
-
-		if (includeAnonymousUsers) {
-			return boolQueryBuilder;
-		}
-
-		return boolQueryBuilder.filter(
-			QueryBuilders.existsQuery("demographics.email"));
 	}
 
 	public long countIndividuals(
@@ -929,45 +894,39 @@ public class IndividualDog extends BaseFaroInfoDog {
 				null, filterString, includeAnonymousUsers, segmentId));
 	}
 
-	public void updateDynamicMemberships(Date modifiedDate, Segment segment)
-		throws Exception {
-
+	public void updateDynamicMemberships(Date modifiedDate, Segment segment) {
 		Long individualSegmentId = segment.getId();
-		QueryBuilder queryBuilder = buildIndividualsQueryBuilder(
-			segment.getChannelId(), segment.getFilter(),
-			BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()));
 
 		_updateDynamicAddMemberships(
-			true, individualSegmentId, modifiedDate, queryBuilder);
+			segment.getChannelId(), true, segment.getFilter(),
+			BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
+			individualSegmentId, modifiedDate);
 		updateDynamicRemoveMemberships(
-			individualSegmentId, modifiedDate, queryBuilder);
+			segment.getChannelId(), segment.getFilter(),
+			BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
+			individualSegmentId, modifiedDate);
 	}
 
 	public void updateDynamicRemoveMemberships(
 		Date modifiedDate, Segment segment) {
 
 		updateDynamicRemoveMemberships(
-			segment.getId(), modifiedDate,
-			buildIndividualsQueryBuilder(
-				segment.getChannelId(), segment.getFilter(),
-				BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers())));
+			segment.getChannelId(), segment.getFilter(),
+			BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
+			segment.getId(), modifiedDate);
 	}
 
 	public void updateDynamicRemoveMemberships(
-		Long individualSegmentId, Date modifiedDate,
-		QueryBuilder queryBuilder) {
+		Long channelId, String filterString, Boolean includeAnonymousUsers,
+		Long individualSegmentId, Date modifiedDate) {
 
 		for (Membership membership :
 				_membershipDog.getMemberships(individualSegmentId, "ACTIVE")) {
 
-			if (_faroInfoElasticsearchInvoker.exists(
-					"individuals",
-					BoolQueryBuilderUtil.filter(
-						queryBuilder
-					).filter(
-						QueryBuilders.termQuery(
-							"id", String.valueOf(membership.getIndividualId()))
-					))) {
+			if (_individualRepository.
+					existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
+						channelId, filterString, includeAnonymousUsers,
+						membership.getIndividualId())) {
 
 				continue;
 			}
@@ -1173,14 +1132,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 		}
 	}
 
-	private void _monitorProcessedCount(int count) {
-		_processedCounter.inc(count);
-	}
-
-	private void _monitorQueueSize(long size) {
-		_queueSizeGauge.set(size);
-	}
-
 	private void _setFirstEnrichmentDate(Individual individual) {
 		if (_fieldRepository.existsByNameAndOwnerId(
 				"email", individual.getId())) {
@@ -1192,38 +1143,35 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	private void _updateDynamicAddMemberships(
-			boolean checkMemberExists, Long individualSegmentId,
-			Date modifiedDate, QueryBuilder queryBuilder)
-		throws Exception {
+		Long channelId, boolean checkMemberExists, String filterString,
+		Boolean includeAnonymousUsers, Long individualSegmentId,
+		Date modifiedDate) {
 
-		JSONArrayIterator.of(
-			"individuals", _faroInfoElasticsearchInvoker,
-			individualObject -> {
-				try {
-					Long individualId = individualObject.getLong("id");
+		int page = 0;
 
-					if (checkMemberExists &&
-						_membershipDog.isMember(
-							individualId, individualSegmentId)) {
+		List<Individual> individuals = searchIndividuals(
+			channelId, filterString, includeAnonymousUsers, page, 500, null);
 
-						return null;
-					}
+		while (!individuals.isEmpty()) {
+			for (Individual individual : individuals) {
+				Long individualId = individual.getId();
 
-					_membershipDog.addMembership(
-						modifiedDate, individualId, individualSegmentId,
-						modifiedDate, "ACTIVE");
-				}
-				catch (Exception exception) {
-					return exception;
+				if (checkMemberExists &&
+					_membershipDog.isMember(
+						individualId, individualSegmentId)) {
+
+					continue;
 				}
 
-				return null;
+				_membershipDog.addMembership(
+					modifiedDate, individualId, individualSegmentId,
+					modifiedDate, "ACTIVE");
 			}
-		).setMonitoringConsumers(
-			this::_monitorProcessedCount, this::_monitorQueueSize
-		).setQueryBuilder(
-			queryBuilder
-		).iterate();
+
+			individuals = searchIndividuals(
+				channelId, filterString, includeAnonymousUsers, ++page, 500,
+				null);
+		}
 	}
 
 	private void _updateIndividualAssociations(
@@ -1264,12 +1212,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 			}
 		}
 	}
-
-	private static final Counter _processedCounter = PrometheusUtil.counter(
-		"membership_processed_count", "The number of memberships processed");
-	private static final Gauge _queueSizeGauge = PrometheusUtil.gauge(
-		"membership_queue_size",
-		"The number of memberships queued to be processed");
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
