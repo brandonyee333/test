@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.dto.IndividualDTO;
 import com.liferay.osb.asah.backend.dto.MembershipDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
@@ -25,12 +26,14 @@ import com.liferay.osb.asah.backend.rest.response.embedded.MembershipChangesEmbe
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -93,8 +96,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@GetMapping(params = "!apply", value = "/{id}/individuals")
 	@SuppressErrorLogging(ResourceNotFoundException.class)
-	public String getIndividuals(
-			@PathVariable String id,
+	public PageDTO<IndividualDTO> getIndividualDTOsPageDTOs(
+			@PathVariable Long id,
 			@RequestParam(name = "filter", required = false) String
 				filterString,
 			@RequestParam(required = false) Boolean includeAnonymousUsers,
@@ -103,11 +106,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		return toCollectionGetResponse(
-			"individuals", null, page,
-			_getIndividualsQueryBuilder(
-				includeAnonymousUsers, id, filterString),
-			size, sorts);
+		return _toIndividualDTOPageDTO(
+			_individualDog.searchIndividualsPage(
+				filterString, includeAnonymousUsers, id, page, size, sorts));
 	}
 
 	@GetMapping(params = "apply", value = "/{id}/individuals")
@@ -555,6 +556,16 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		return false;
 	}
 
+	private PageDTO<IndividualDTO> _toIndividualDTOPageDTO(
+		Page<Individual> individualsPage) {
+
+		return new PageDTO<>(
+			"_embedded", new IndividualDTO(individualsPage.getContent()),
+			individualsPage.getNumber(), individualsPage.getSize(),
+			individualsPage.getTotalElements(),
+			individualsPage.getTotalPages());
+	}
+
 	private PageDTO<MembershipDTO> _toMembershipDTOsPageDTO(
 		Page<Membership> membershipsPage) {
 
@@ -599,6 +610,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@Autowired
 	private FieldMappingDog _fieldMappingDog;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

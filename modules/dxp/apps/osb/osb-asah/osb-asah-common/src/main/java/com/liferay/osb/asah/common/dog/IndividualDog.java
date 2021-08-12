@@ -913,6 +913,22 @@ public class IndividualDog extends BaseFaroInfoDog {
 				channelId, filterString, includeAnonymousUsers));
 	}
 
+	public Page<Individual> searchIndividualsPage(
+		String filterString, Boolean includeAnonymousUsers, Long segmentId,
+		int page, int size, String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size, SortUtil.getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_individualRepository.searchIndividuals(
+				null, filterString, includeAnonymousUsers, segmentId,
+				pageRequest),
+			pageRequest,
+			() -> _individualRepository.countIndividuals(
+				null, filterString, includeAnonymousUsers, segmentId));
+	}
+
 	public void updateDynamicMemberships(Date modifiedDate, Segment segment)
 		throws Exception {
 
