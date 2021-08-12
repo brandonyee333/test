@@ -1,7 +1,7 @@
 {
 	"clientIP": "localhost",
 	"context": {
-		"instanceId": 1234,
+		"instanceId": "1234",
 		"languageId": "en_US",
 		"url": "http://www.liferay.com"
 	},
