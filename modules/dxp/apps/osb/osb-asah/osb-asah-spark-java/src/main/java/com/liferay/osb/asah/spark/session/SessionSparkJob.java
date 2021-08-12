@@ -79,7 +79,9 @@ public class SessionSparkJob implements SparkJob {
 		}
 
 		try {
-			_run();
+			StreamingQuery streamingQuery = startStreamingQuery();
+
+			streamingQuery.awaitTermination();
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -88,6 +90,27 @@ public class SessionSparkJob implements SparkJob {
 
 			run();
 		}
+	}
+
+	protected StreamingQuery startStreamingQuery() throws Exception {
+		KeyValueGroupedDataset<Tuple2<String, Date>, Event>
+			keyValueGroupedDataset = _createKeyValueGroupedDataset();
+
+		DataStreamWriter<Session> dataStreamWriter =
+			keyValueGroupedDataset.flatMapGroupsWithState(
+				_sessionFlatMapGroupsWithState, OutputMode.Append(),
+				_SESSION_ENCODER, _SESSION_ENCODER,
+				GroupStateTimeout.EventTimeTimeout()
+			).writeStream(
+			).foreachBatch(
+				_sessionBatchSinkFunction
+			);
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Starting streaming query");
+		}
+
+		return dataStreamWriter.start();
 	}
 
 	private KeyValueGroupedDataset<Tuple2<String, Date>, Event>
@@ -129,29 +152,6 @@ public class SessionSparkJob implements SparkJob {
 		).groupByKey(
 			_EVENT_GROUP_BY_KEY_FUNCTION, _KEY_ENCODER
 		);
-	}
-
-	private void _run() throws Exception {
-		KeyValueGroupedDataset<Tuple2<String, Date>, Event>
-			keyValueGroupedDataset = _createKeyValueGroupedDataset();
-
-		DataStreamWriter<Session> dataStreamWriter =
-			keyValueGroupedDataset.flatMapGroupsWithState(
-				_sessionFlatMapGroupsWithState, OutputMode.Append(),
-				_SESSION_ENCODER, _SESSION_ENCODER,
-				GroupStateTimeout.EventTimeTimeout()
-			).writeStream(
-			).foreachBatch(
-				_sessionBatchSinkFunction
-			);
-
-		if (_log.isInfoEnabled()) {
-			_log.info("Starting streaming query");
-		}
-
-		StreamingQuery streamingQuery = dataStreamWriter.start();
-
-		streamingQuery.processAllAvailable();
 	}
 
 	private void _wait() {
