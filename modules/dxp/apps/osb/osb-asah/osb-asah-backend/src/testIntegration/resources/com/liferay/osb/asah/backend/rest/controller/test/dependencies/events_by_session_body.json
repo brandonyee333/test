@@ -3,7 +3,7 @@
 	"variables": {
 		"channelId": "1",
 		"entityId": "1",
-		"entityType": "Individual",
+		"entityType": "INDIVIDUAL",
 		"keywords": "value",
 		"page": 0,
 		"rangeKey": 0,

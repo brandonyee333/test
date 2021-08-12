@@ -1,4 +1,4 @@
-query EventsByUserSession($channelId: String!, $entityId: String!, $entityType: String!, $keywords: String, $page: Int!, $rangeKey: Int!, $size: Int!) {
+query EventsByUserSession($channelId: String!, $entityId: String!, $entityType: EntityType!, $keywords: String, $page: Int!, $rangeKey: Int!, $size: Int!) {
 	userSessions(channelId: $channelId, entityId: $entityId, entityType: $entityType, keywords: $keywords, page: $page, rangeKey: $rangeKey, size: $size) {
 	... on UserSession {
 			browserName
