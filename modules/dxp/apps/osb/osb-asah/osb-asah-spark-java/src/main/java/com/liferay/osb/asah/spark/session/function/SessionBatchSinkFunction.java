@@ -69,9 +69,10 @@ public class SessionBatchSinkFunction
 				functions.col("events")
 			).alias(
 				"e"
-			)
+			),
+			functions.col("sessionId")
 		).select(
-			functions.col("e.*")
+			functions.col("e.*"), functions.col("sessionId")
 		).drop(
 			"iterationNumber"
 		);
@@ -80,7 +81,7 @@ public class SessionBatchSinkFunction
 			finishedSessionEventsDataset.write();
 
 		dataFrameWriter.format(
-			"delta"
+			"parquet"
 		).mode(
 			"append"
 		).option(
@@ -108,7 +109,7 @@ public class SessionBatchSinkFunction
 		DataFrameWriter<Row> dataFrameWriter = finishedSessionsDataset.write();
 
 		dataFrameWriter.format(
-			"delta"
+			"parquet"
 		).mode(
 			"append"
 		).option(
@@ -135,9 +136,11 @@ public class SessionBatchSinkFunction
 				"iterationNumber"
 			).alias(
 				"sessionIterationNumber"
-			)
+			),
+			functions.col("sessionId")
 		).select(
-			functions.col("e.*"), functions.col("sessionIterationNumber")
+			functions.col("e.*"), functions.col("sessionIterationNumber"),
+			functions.col("sessionId")
 		).filter(
 			"iterationNumber == sessionIterationNumber"
 		).drop(
@@ -148,7 +151,7 @@ public class SessionBatchSinkFunction
 			unfinishedSessionEventsDataset.write();
 
 		dataFrameWriter.format(
-			"delta"
+			"parquet"
 		).mode(
 			"append"
 		).option(
