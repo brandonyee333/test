@@ -40,7 +40,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.rest.response.function.MembershipChangesHistogramTransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.annotation.SuppressErrorLogging;
 import com.liferay.osb.asah.common.util.ListUtil;
@@ -109,25 +108,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		return _toIndividualDTOPageDTO(
 			_individualDog.searchIndividualsPage(
 				filterString, includeAnonymousUsers, id, page, size, sorts));
-	}
-
-	@GetMapping(params = "apply", value = "/{id}/individuals")
-	public String getIndividualTransformations(
-			@PathVariable String id, @RequestParam String apply,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(required = false) Boolean includeAnonymousUsers,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size)
-		throws Exception {
-
-		return toTransformationGetResponse(
-			"individuals", page,
-			_getIndividualsQueryBuilder(
-				includeAnonymousUsers, id, filterString),
-			size, null, null,
-			new TermsAggregationTransformationJSONArrayFunction(apply, null),
-			"individual-transformations");
 	}
 
 	@GetMapping(params = "!apply", value = "/{id}/membership-changes")
@@ -267,6 +247,21 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		return toSegmentDTOPageDTO(
 			segmentDog.searchSegmentsPage(
 				dataSourceId, filterString, page, Math.max(1, size), sorts));
+	}
+
+	@GetMapping(params = "apply", value = "/{id}/individuals")
+	public PageDTO<TransformationDTO> getTransformationDTOsPageDTO(
+		@PathVariable Long id, @RequestParam String apply,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(required = false) Boolean includeAnonymousUsers,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size) {
+
+		return _toTransformationDTOsPageDTO(
+			"individual-transformations",
+			_individualDog.getTransformationsPage(
+				apply, null, filterString, includeAnonymousUsers, id, page,
+				size));
 	}
 
 	@GetMapping(params = "apply")
@@ -439,46 +434,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		}
 
 		referencedObjectsJSONObject.put(collectionName, jsonArray);
-	}
-
-	private QueryBuilder _getIndividualsQueryBuilder(
-		Boolean includeAnonymousUsers, String individualSegmentId,
-		String filterString) {
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery(
-				"individualSegmentIds", individualSegmentId));
-
-		Segment segment = segmentDog.fetchSegment(
-			Long.valueOf(individualSegmentId));
-
-		if (segment != null) {
-			Long channelId = segment.getChannelId();
-
-			if (Objects.nonNull(channelId)) {
-				boolQueryBuilder.filter(
-					QueryBuilders.termQuery(
-						"channelIds", String.valueOf(channelId)));
-			}
-
-			if (includeAnonymousUsers == null) {
-				includeAnonymousUsers = BooleanUtils.toBoolean(
-					segment.getIncludeAnonymousUsers());
-			}
-		}
-
-		if ((includeAnonymousUsers != null) && !includeAnonymousUsers) {
-			boolQueryBuilder.filter(
-				QueryBuilders.existsQuery("demographics.email"));
-		}
-
-		if (StringUtils.isEmpty(filterString)) {
-			return boolQueryBuilder;
-		}
-
-		return boolQueryBuilder.filter(
-			FilterStringToQueryBuilderConverter.convert(
-				filterString, _faroInfoIndividualsFilterStringConverterHelper));
 	}
 
 	private QueryBuilder _getMembershipChangesQueryBuilder(
