@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
 
 import java.util.List;
@@ -73,6 +74,10 @@ public interface IndividualRepository extends CrudRepository<Individual, Long> {
 
 	public Map<Long, Long> findIndividualCounts(
 		boolean includeAnonymousUsers, Long segmentId);
+
+	public List<Distribution> getIndividualDistributions(
+		String fieldName, String fieldType, @Nullable String filterString,
+		Pageable pageable);
 
 	public List<Transformation> getIndividualTransformations(
 		String apply, @Nullable Long channelId, @Nullable String filterString,

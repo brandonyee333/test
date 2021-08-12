@@ -14,19 +14,16 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.backend.dto.DistributionDTO;
+import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
-import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.rest.response.function.NumbersDistributionTransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
-
-import java.util.HashMap;
+import com.liferay.osb.asah.common.model.Distribution;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,7 +43,7 @@ public class IndividualsRestController
 				IndividualsRestController {
 
 	@GetMapping("/distribution")
-	public String getIndividualsDistribution(
+	public PageDTO<DistributionDTO> getDistributionDTOsPageDTO(
 			@RequestParam Long fieldMappingId,
 			@RequestParam(name = "filter", required = false) String
 				filterString,
@@ -71,50 +68,35 @@ public class IndividualsRestController
 					fieldMapping.getFieldName() + " to distribute individuals");
 		}
 
-		String fieldName =
-			"demographics." + fieldMapping.getFieldName() + ".value";
+		return _toDistributionDTOsPageDTO(
+			_individualDog.getDistributionsPage(
+				fieldMapping.getFieldName(), fieldMapping.getFieldType(),
+				filterString, numberOfBins, size, sorts));
+	}
 
-		String fieldType = fieldMapping.getFieldType();
+	private PageDTO<DistributionDTO> _toDistributionDTOsPageDTO(
+		DistributionDTO distributionDTO, Page<Distribution> distributionsPage) {
 
-		TransformationJSONArrayFunction transformationJSONArrayFunction = null;
+		return new PageDTO<>(
+			"_embedded", distributionDTO, distributionsPage.getNumber(),
+			distributionsPage.getSize(), distributionsPage.getTotalElements(),
+			distributionsPage.getTotalPages());
+	}
 
-		if (fieldType.equals("Number")) {
-			transformationJSONArrayFunction =
-				new NumbersDistributionTransformationJSONArrayFunction();
+	private PageDTO<DistributionDTO> _toDistributionDTOsPageDTO(
+		Page<Distribution> distributionsPage) {
 
-			size = numberOfBins;
-		}
-		else {
-			transformationJSONArrayFunction =
-				new TermsAggregationTransformationJSONArrayFunction(
-					null, fieldName,
-					bucket -> JSONUtil.put(
-						"count", bucket.getDocCount()
-					).put(
-						"values", JSONUtil.put(bucket.getKeyAsString())
-					));
-		}
-
-		return toTransformationGetResponse(
-			null, "individuals", faroInfoElasticsearchInvoker, 0,
-			FilterStringToQueryBuilderConverter.convert(
-				filterString, _faroInfoIndividualsFilterStringConverterHelper),
-			size,
-			new HashMap<String, String>() {
-				{
-					put("count", "_count");
-					put("name", "_key");
-				}
-			},
-			sorts, fieldName, transformationJSONArrayFunction,
-			"individuals-distribution-transformations");
+		return _toDistributionDTOsPageDTO(
+			new DistributionDTO(
+				distributionsPage.getContent(),
+				"individuals-distribution-transformations"),
+			distributionsPage);
 	}
 
 	@Autowired
-	private FaroInfoIndividualsFilterStringConverterHelper
-		_faroInfoIndividualsFilterStringConverterHelper;
+	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
-	private FieldMappingDog _fieldMappingDog;
+	private IndividualDog _individualDog;
 
 }

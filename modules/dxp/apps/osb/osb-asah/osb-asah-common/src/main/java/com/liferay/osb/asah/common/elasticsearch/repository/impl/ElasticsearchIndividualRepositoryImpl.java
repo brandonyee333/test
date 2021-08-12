@@ -28,9 +28,12 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
+import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.rest.response.function.NumbersDistributionTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -371,6 +374,86 @@ public class ElasticsearchIndividualRepositoryImpl
 		}
 
 		return individualCounts;
+	}
+
+	public List<Distribution> getIndividualDistributions(
+		String fieldName, String fieldType, @Nullable String filterString,
+		Pageable pageable) {
+
+		fieldName = "demographics." + fieldName + ".value";
+
+		TransformationJSONArrayFunction transformationJSONArrayFunction = null;
+
+		if (fieldType.equals("Number")) {
+			transformationJSONArrayFunction =
+				new NumbersDistributionTransformationJSONArrayFunction();
+		}
+		else {
+			transformationJSONArrayFunction =
+				new TermsAggregationTransformationJSONArrayFunction(
+					null, fieldName,
+					bucket -> JSONUtil.put(
+						"count", bucket.getDocCount()
+					).put(
+						"values", JSONUtil.put(bucket.getKeyAsString())
+					));
+		}
+
+		TransformationGetResponse transformationGetResponse =
+			new TransformationGetResponse();
+
+		transformationGetResponse.setCollectionName(getCollectionName());
+		transformationGetResponse.setElasticsearchInvoker(
+			_faroInfoElasticsearchInvoker);
+		transformationGetResponse.setPage(pageable.getPageNumber());
+
+		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
+			filterString, _faroInfoIndividualsFilterStringConverterHelper);
+
+		if (queryBuilder != null) {
+			transformationGetResponse.setQueryBuilder(queryBuilder);
+		}
+
+		transformationGetResponse.setSize(pageable.getPageSize());
+		transformationGetResponse.setSorts(
+			new HashMap<String, String>() {
+				{
+					put("count", "_count");
+					put("name", "_key");
+				}
+			},
+			_getSorts(pageable.getSort()));
+		transformationGetResponse.setSupportedFieldName(fieldName);
+		transformationGetResponse.setTransformationJSONArrayFunction(
+			transformationJSONArrayFunction);
+		transformationGetResponse.setTransformationName(
+			"individuals-distribution-transformations");
+
+		JSONObject jsonObject = null;
+
+		try {
+			jsonObject = new JSONObject(transformationGetResponse.respond());
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			return Collections.emptyList();
+		}
+
+		JSONObject embeddedJSONObject = jsonObject.getJSONObject("_embedded");
+
+		JSONArray individualsDistributionTransformationsJSONArray =
+			embeddedJSONObject.getJSONArray(
+				"individuals-distribution-transformations");
+
+		Stream<Object> stream = JSONUtil.toObjectStream(
+			individualsDistributionTransformationsJSONArray);
+
+		return stream.map(
+			object -> objectMapper.convertValue(object, Distribution.class)
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	@Override

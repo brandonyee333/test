@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
@@ -24,8 +25,10 @@ import com.liferay.osb.asah.common.util.MatcherUtil;
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,14 +43,19 @@ import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
+import org.jooq.SelectConditionStep;
+import org.jooq.SelectJoinStep;
 import org.jooq.SelectOnConditionStep;
+import org.jooq.SelectOrderByStep;
 import org.jooq.SelectSelectStep;
+import org.jooq.SortField;
 import org.jooq.Table;
 import org.jooq.UpdateSetFirstStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 
 /**
@@ -421,6 +429,88 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		return individualCounts;
 	}
 
+	public List<Distribution> getIndividualDistributions(
+		String fieldName, String fieldType, @Nullable String filterString,
+		Pageable pageable) {
+
+		if (fieldType.equals("Number")) {
+			return _getIndividualNumbersDistributions(
+				fieldName, filterString, pageable);
+		}
+
+		Condition condition = ConditionUtil.toCondition(
+			filterString, _individualsFilterStringConverterHelper);
+
+		AggregateFunction<Object> aggregateFunction = DSL.max(
+			DSL.field("modifiedDate"));
+		Field<Object> modifiedDateField = DSL.field("modifiedDate");
+		Field<Object> nameField = DSL.field("name");
+		Field<Object> ownerIdField = DSL.field("ownerId");
+		Field<Object> valueField = DSL.field("value");
+
+		SelectSelectStep<Record> modifiedDateSelectSelectStep =
+			_dslContext.select();
+
+		Table<Record> maxModifiedDateTable =
+			modifiedDateSelectSelectStep.select(
+				aggregateFunction.as("modifiedDate"), nameField.as("name"),
+				ownerIdField.as("ownerId")
+			).from(
+				"Field"
+			).where(
+				condition
+			).groupBy(
+				ownerIdField, nameField
+			).asTable(
+				"maxModifiedDateTable"
+			);
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.select(
+			DSL.count(
+				ownerIdField
+			).as(
+				"count"
+			),
+			valueField.as("values")
+		).from(
+			"Field"
+		).join(
+			maxModifiedDateTable
+		).on(
+			DSL.and(
+				modifiedDateField.eq(
+					maxModifiedDateTable.field("modifiedDate")),
+				DSL.field(
+					"field.name"
+				).eq(
+					maxModifiedDateTable.field("name")
+				),
+				ownerIdField.eq(maxModifiedDateTable.field("ownerId")))
+		).where(
+			DSL.field(
+				"field.name"
+			).eq(
+				fieldName
+			)
+		).groupBy(
+			valueField
+		).orderBy(
+			getSortFields(
+				_getSortFieldNameConversionMap(), pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Distribution(
+				(Integer)record.get("count"),
+				Collections.singletonList(record.get("values")))
+		);
+	}
+
 	public List<Transformation> getIndividualTransformations(
 		String apply, @Nullable Long channelId, @Nullable String filterString,
 		Boolean includeAnonymousUsers, @Nullable Long segmentId,
@@ -724,6 +814,234 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		).containsIgnoreCase(
 			contains
 		);
+	}
+
+	private List<Distribution> _getIndividualNumbersDistributions(
+		String fieldName, String filterString, Pageable pageable) {
+
+		AggregateFunction<Object> maxModifiedDateField = DSL.max(
+			DSL.field("modifiedDate"));
+		Field<Object> nameField = DSL.field("name");
+		Field<Object> ownerIdField = DSL.field("ownerId");
+		Field<Integer> valueField = DSL.field(
+			"value"
+		).cast(
+			Integer.class
+		);
+
+		Condition condition = ConditionUtil.toCondition(
+			filterString, _individualsFilterStringConverterHelper);
+
+		SelectSelectStep<Record> maxModifiedDateSelectSelectStep =
+			_dslContext.select();
+
+		Table<Record> maxModifiedDateTable =
+			maxModifiedDateSelectSelectStep.select(
+				maxModifiedDateField.as("modifiedDate"),
+				ownerIdField.as("ownerId")
+			).from(
+				"Field"
+			).where(
+				condition
+			).groupBy(
+				ownerIdField
+			).asTable(
+				"maxModifiedDateTable"
+			);
+
+		SelectSelectStep<Record> fieldsSelectSelectStep = _dslContext.select();
+
+		Table<Record> fieldTable = fieldsSelectSelectStep.from(
+			"Field"
+		).join(
+			maxModifiedDateTable
+		).on(
+			DSL.and(
+				DSL.field(
+					"modifiedDate"
+				).eq(
+					maxModifiedDateTable.field("modifiedDate")
+				),
+				ownerIdField.eq(maxModifiedDateTable.field("ownerId")))
+		).where(
+			nameField.eq(fieldName)
+		).asTable(
+			"fieldTable"
+		);
+
+		Field<Integer> maxValueField = DSL.max(valueField);
+		Field<Integer> minValueField = DSL.min(valueField);
+
+		final Integer[] values = new Integer[2];
+
+		SelectSelectStep<Record> maxAndMinValuesSelectSelectStep =
+			_dslContext.select();
+
+		maxAndMinValuesSelectSelectStep.select(
+			maxValueField.as("max"), minValueField.as("min")
+		).from(
+			fieldTable
+		).fetch(
+		).map(
+			record -> {
+				values[0] = (Integer)record.get("max");
+				values[1] = (Integer)record.get("min");
+
+				return null;
+			}
+		);
+
+		int maxValue = values[0];
+		int minValue = values[1];
+
+		int size = pageable.getPageSize();
+
+		if ((maxValue == minValue) || (size == 1)) {
+			SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+			return selectSelectStep.select(
+				DSL.val(
+					minValue
+				).as(
+					"min"
+				),
+				DSL.val(
+					maxValue
+				).as(
+					"max"
+				),
+				DSL.count(
+					DSL.asterisk()
+				).as(
+					"count"
+				)
+			).from(
+				fieldTable
+			).where(
+				valueField.eq(minValue)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			).fetch(
+			).map(
+				record -> new Distribution(
+					(Integer)record.get("count"),
+					new LinkedList<Object>() {
+						{
+							add(record.get("min"));
+							add(record.get("max"));
+						}
+					})
+			);
+		}
+
+		double diff = maxValue - minValue;
+
+		double binSize = diff / size;
+
+		if ((binSize != Math.ceil(binSize)) && (diff > 1)) {
+			binSize = Math.ceil(binSize);
+		}
+
+		List<SelectConditionStep<Record>> selectConditionSteps =
+			new ArrayList<>();
+
+		for (int i = 0; i < size; i++) {
+			Double from = minValue + (i * binSize);
+			Double to = minValue + ((i + 1) * binSize);
+
+			SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+			SelectJoinStep<Record> selectJoinStep = selectSelectStep.select(
+				DSL.val(
+					from.intValue()
+				).as(
+					"min"
+				),
+				DSL.val(
+					to.intValue()
+				).as(
+					"max"
+				),
+				DSL.count(
+					DSL.asterisk()
+				).as(
+					"count"
+				)
+			).from(
+				fieldTable
+			);
+
+			if ((to == maxValue) && (i == (size - 1))) {
+				selectConditionSteps.add(
+					selectJoinStep.where(
+						DSL.and(
+							valueField.ge(from.intValue()),
+							valueField.le(to.intValue()))));
+			}
+			else {
+				selectConditionSteps.add(
+					selectJoinStep.where(
+						DSL.and(
+							valueField.ge(from.intValue()),
+							valueField.lt(to.intValue()))));
+			}
+		}
+
+		SelectOrderByStep<Record> selectOrderByStep = selectConditionSteps.get(
+			0);
+
+		if (selectConditionSteps.size() > 1) {
+			for (int i = 1; i < selectConditionSteps.size(); i++) {
+				selectOrderByStep.union(selectConditionSteps.get(i));
+			}
+		}
+
+		Sort sort = pageable.getSort();
+
+		Collection<SortField<?>> sortFields = new ArrayList<>();
+
+		for (Sort.Order order : sort.toList()) {
+			Field<?> field = DSL.field(order.getProperty());
+
+			if (StringUtils.equals(order.getProperty(), "values")) {
+				field = DSL.field(
+					"min"
+				).cast(
+					Integer.class
+				);
+			}
+
+			if (order.getDirection() == Sort.Direction.ASC) {
+				sortFields.add(field.asc());
+			}
+			else {
+				sortFields.add(field.desc());
+			}
+		}
+
+		return selectOrderByStep.orderBy(
+			sortFields
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Distribution(
+				(Integer)record.get("count"),
+				new LinkedList<Object>() {
+					{
+						add(record.get("min"));
+						add(record.get("max"));
+					}
+				})
+		);
+	}
+
+	private Map<String, String> _getSortFieldNameConversionMap() {
+		return Collections.singletonMap("name", "values");
 	}
 
 	private final DSLContext _dslContext;

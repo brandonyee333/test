@@ -35,6 +35,7 @@ import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.repository.DataSourceIndividualRepository;
@@ -625,6 +626,26 @@ public class IndividualDog extends BaseFaroInfoDog {
 		}
 
 		return JSONUtil.toLongSet(associatedIdsJSONArray, "id");
+	}
+
+	public Page<Distribution> getDistributionsPage(
+		String fieldName, String fieldType, @Nullable String filterString,
+		int numberOfBins, int size, String[] sorts) {
+
+		if (fieldType.equals("Number")) {
+			size = numberOfBins;
+		}
+
+		PageRequest pageRequest = PageRequest.of(
+			0, size,
+			SortUtil.getSort(Sort.by(Sort.Order.desc("count")), sorts));
+
+		List<Distribution> distributions =
+			_individualRepository.getIndividualDistributions(
+				fieldName, fieldType, filterString, pageRequest);
+
+		return PageableExecutionUtils.getPage(
+			distributions, pageRequest, distributions::size);
 	}
 
 	public Individual getIndividual(Long channelId, Long individualId)
