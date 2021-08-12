@@ -79,7 +79,8 @@ public class DDLRecordSearchTest {
 
 		DDLRecordSet recordSet = addRecordSet();
 
-		_recordTestHelper = new DDLRecordTestHelper(_group, recordSet);
+		_recordTestHelper = new DDLRecordTestHelper(
+			_user.getUserId(), _group, recordSet);
 		_searchContext = getSearchContext(_group, _user, recordSet);
 	}
 
@@ -292,10 +293,11 @@ public class DDLRecordSearchTest {
 
 	protected DDLRecordSet addRecordSet() throws Exception {
 		DDLRecordSetTestHelper recordSetTestHelper = new DDLRecordSetTestHelper(
-			_group);
+			_user.getUserId(), _group);
 
 		DDMStructureTestHelper ddmStructureTestHelper =
 			new DDMStructureTestHelper(
+				_user.getUserId(),
 				PortalUtil.getClassNameId(DDLRecordSet.class), _group);
 
 		DDMStructure ddmStructure = ddmStructureTestHelper.addStructure(
