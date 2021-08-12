@@ -14,14 +14,10 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.util;
 
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-
 import com.liferay.osb.asah.common.date.DateUtil;
 
 import java.util.Date;
 import java.util.NavigableSet;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -29,15 +25,6 @@ import org.apache.commons.codec.digest.DigestUtils;
  * @author Marcellus Tavares
  */
 public class NaniteUtil {
-
-	public static <T, R> Cache<T, R> createCache() {
-		return Caffeine.newBuilder(
-		).expireAfterAccess(
-			10, TimeUnit.MINUTES
-		).maximumSize(
-			10000
-		).build();
-	}
 
 	public static String digest(Object... objects) {
 		StringBuilder sb = new StringBuilder();
