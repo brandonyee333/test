@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.context.annotation.Primary;
@@ -29,5 +30,8 @@ public interface DataSourceIndividualRepository
 	extends CrudRepository<DataSourceIndividual, Long> {
 
 	public List<DataSourceIndividual> findByIndividualId(Long individualId);
+
+	public List<DataSourceIndividual> findByIndividualIdIn(
+		Collection<Long> individualIds);
 
 }

@@ -124,23 +124,23 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		Condition condition = ConditionUtil.toCondition(
 			filterString, _individualsFilterStringConverterHelper);
 
-		if (individualId != null) {
-			condition.and(
-				DSL.field(
-					"individual.id"
-				).eq(
-					individualId
-				));
-		}
-
 		if (channelId != null) {
-			condition.and(
+			condition = condition.and(
 				DSL.field(
 					DSL.cast(
 						DSL.array(DSL.field("individual.channelids")),
 						Long[].class)
 				).contains(
 					DSL.cast(DSL.array(new Long[] {channelId}), Long[].class)
+				));
+		}
+
+		if (individualId != null) {
+			condition = condition.and(
+				DSL.field(
+					"individual.id"
+				).eq(
+					individualId
 				));
 		}
 
@@ -249,7 +249,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 
 		if (!includeAnonymousUsers) {
-			condition.and(
+			condition = condition.and(
 				DSL.field(
 					"individual.emailAddressHashed"
 				).isNotNull());
@@ -334,6 +334,47 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		).limit(
 			1
 		).fetchOptional(
+			record -> new Individual(record.intoMap())
+		);
+	}
+
+	public List<Individual> findByChannelIdAndSegmentId(
+		@Nullable Long channelId, @Nullable Long segmentId) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.channelids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(new Long[] {channelId}), Long[].class)
+				));
+		}
+
+		if (segmentId != null) {
+			conditions.add(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.segmentids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(segmentId), Long[].class)
+				));
+		}
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.select(
+			DSL.asterisk()
+		).from(
+			"Individual"
+		).where(
+			conditions
+		).fetch(
+		).map(
 			record -> new Individual(record.intoMap())
 		);
 	}
@@ -443,7 +484,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 
 		if (!includeAnonymousUsers) {
-			condition.and(
+			condition = condition.and(
 				DSL.field(
 					"individual.emailaddresshashed"
 				).isNotNull());

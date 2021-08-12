@@ -63,6 +63,9 @@ public interface IndividualRepository extends CrudRepository<Individual, Long> {
 			Long associatedId, Long dataSourceId, String fieldName,
 			String individualPK);
 
+	public List<Individual> findByChannelIdAndSegmentId(
+		@Nullable Long channelId, @Nullable Long segmentId);
+
 	public List<Individual> findByDataSourceId(
 		Long dataSourceId, Pageable pageable);
 

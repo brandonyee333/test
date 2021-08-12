@@ -14,13 +14,17 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.DataSourceIndividual;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.helper.AccountsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.DataSourceIndividualRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -35,15 +39,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
-import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 
 import org.jooq.AggregateFunction;
 import org.jooq.Condition;
@@ -60,6 +55,7 @@ import org.jooq.SortField;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
@@ -69,12 +65,7 @@ import org.springframework.lang.Nullable;
  */
 public class AccountRepositoryImpl extends BaseRepository {
 
-	public AccountRepositoryImpl(
-		AccountsFilterStringConverterHelper accountsFilterStringConverterHelper,
-		DSLContext dslContext) {
-
-		_accountsFilterStringConverterHelper =
-			accountsFilterStringConverterHelper;
+	public AccountRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
@@ -742,54 +733,24 @@ public class AccountRepositoryImpl extends BaseRepository {
 	}
 
 	private Condition _getCondition(Long channelId, Long individualSegmentId) {
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			"individuals",
-			searchSourceBuilder -> {
-				NestedAggregationBuilder nestedAggregationBuilder =
-					AggregationBuilders.nested(
-						"accounts", "dataSourceAccountPKs");
+		List<Individual> individuals =
+			_individualRepository.findByChannelIdAndSegmentId(
+				channelId, individualSegmentId);
 
-				nestedAggregationBuilder.subAggregation(
-					AggregationBuilders.terms(
-						"accountPKs"
-					).field(
-						"dataSourceAccountPKs.accountPKs"
-					).size(
-						Integer.MAX_VALUE
-					));
-
-				searchSourceBuilder.aggregation(nestedAggregationBuilder);
-
-				BoolQueryBuilder individualsBoolQueryBuilder =
-					QueryBuilders.boolQuery();
-
-				if (channelId != null) {
-					BoolQueryBuilderUtil.filterTerm(
-						individualsBoolQueryBuilder, "channelIds",
-						String.valueOf(channelId));
-				}
-
-				if (individualSegmentId != null) {
-					BoolQueryBuilderUtil.filterTerm(
-						individualsBoolQueryBuilder, "individualSegmentIds",
-						String.valueOf(individualSegmentId));
-				}
-
-				searchSourceBuilder.query(individualsBoolQueryBuilder);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		InternalNested internalNested = aggregations.get("accounts");
-
-		Aggregations nestedAggregations = internalNested.getAggregations();
-
-		Terms terms = nestedAggregations.get("accountPKs");
+		List<DataSourceIndividual> dataSourceIndividuals =
+			_dataSourceIndividualRepository.findByIndividualIdIn(
+				ListUtil.map(individuals, Individual::getId));
 
 		Set<String> accountPKs = new HashSet<>();
 
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			accountPKs.add(bucket.getKeyAsString());
+		for (DataSourceIndividual dataSourceIndividual :
+				dataSourceIndividuals) {
+
+			accountPKs.addAll(dataSourceIndividual.getAccountPKs());
+		}
+
+		if (accountPKs.isEmpty()) {
+			return DSL.noCondition();
 		}
 
 		Field<Object> accountPKField = DSL.field("accountPK");
@@ -813,11 +774,19 @@ public class AccountRepositoryImpl extends BaseRepository {
 		return Collections.singletonMap("name", "values");
 	}
 
-	private final AccountsFilterStringConverterHelper
+	@Autowired
+	private AccountsFilterStringConverterHelper
 		_accountsFilterStringConverterHelper;
+
+	@Autowired
+	private DataSourceIndividualRepository _dataSourceIndividualRepository;
+
 	private final DSLContext _dslContext;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private IndividualRepository _individualRepository;
 
 }

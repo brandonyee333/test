@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.repository.DataSourceIndividualRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,6 +152,19 @@ public class ElasticsearchDataSourceIndividualRepositoryImpl
 		}
 
 		return new ArrayList<>(dataSourceIndividualsMap.values());
+	}
+
+	@Override
+	public List<DataSourceIndividual> findByIndividualIdIn(
+		Collection<Long> individualIds) {
+
+		List<DataSourceIndividual> dataSourceIndividuals = new ArrayList<>();
+
+		for (Long individualId : individualIds) {
+			dataSourceIndividuals.addAll(findByIndividualId(individualId));
+		}
+
+		return dataSourceIndividuals;
 	}
 
 	@Override

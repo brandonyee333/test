@@ -270,6 +270,30 @@ public class ElasticsearchIndividualRepositoryImpl
 					))));
 	}
 
+	@Override
+	public List<Individual> findByChannelIdAndSegmentId(
+		@Nullable Long channelId, @Nullable Long segmentId) {
+
+		BoolQueryBuilder individualsBoolQueryBuilder =
+			QueryBuilders.boolQuery();
+
+		if (channelId != null) {
+			BoolQueryBuilderUtil.filterTerm(
+				individualsBoolQueryBuilder, "channelIds",
+				String.valueOf(channelId));
+		}
+
+		if (segmentId != null) {
+			BoolQueryBuilderUtil.filterTerm(
+				individualsBoolQueryBuilder, "individualSegmentIds",
+				String.valueOf(segmentId));
+		}
+
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				"individuals", individualsBoolQueryBuilder));
+	}
+
 	public List<Individual> findByDataSourceId(
 		Long dataSourceId, Pageable pageable) {
 
