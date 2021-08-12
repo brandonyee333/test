@@ -19,20 +19,23 @@ import com.liferay.osb.asah.common.model.ExperimentStatus;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
 
 /**
  * @author Marcos Martins
  */
 @Primary
-public interface ExperimentRepository extends CrudRepository<Experiment, Long> {
+public interface ExperimentRepository
+	extends OSBAsahRepository<Experiment, Long> {
 
+	@Cacheable
 	public List<Experiment> findByExperimentStatus(
 		ExperimentStatus experimentStatus);
 
+	@Cacheable
 	public List<Experiment> searchExperimentsByChannelIdAndKeywords(
 		Long channelId, @Nullable String keywords, Pageable pageable);
 

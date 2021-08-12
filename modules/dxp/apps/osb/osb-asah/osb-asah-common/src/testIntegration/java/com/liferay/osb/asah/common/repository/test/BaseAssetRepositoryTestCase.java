@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 
@@ -34,7 +35,6 @@ import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Rachael Koestartyo
@@ -165,7 +165,7 @@ public abstract class BaseAssetRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<Asset, Long> getCrudRepository() {
+	protected OSBAsahRepository<Asset, Long> getOSBAsahRepository() {
 		return _assetRepository;
 	}
 

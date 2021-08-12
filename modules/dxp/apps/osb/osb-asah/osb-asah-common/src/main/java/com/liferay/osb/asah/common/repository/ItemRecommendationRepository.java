@@ -18,21 +18,27 @@ import com.liferay.osb.asah.common.entity.ItemRecommendation;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jdbc.repository.query.Modifying;
 
 /**
  * @author Marcellus Tavares
  */
 @Primary
 public interface ItemRecommendationRepository
-	extends CrudRepository<ItemRecommendation, String> {
+	extends OSBAsahRepository<ItemRecommendation, String> {
 
+	@Cacheable
 	public long countByJobId(Long jobId);
 
+	@CacheEvict(allEntries = true)
+	@Modifying
 	public void deleteByJobId(Long jobId);
 
+	@Cacheable
 	public List<ItemRecommendation> findByJobId(Long jobId, Pageable pageable);
 
 }

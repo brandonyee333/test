@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.common.repository.JobRepository;
 import com.liferay.osb.asah.common.repository.JobRunRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.time.LocalDateTime;
@@ -34,7 +35,6 @@ import java.util.Date;
 import org.junit.Before;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Marcellus Tavares
@@ -61,7 +61,7 @@ public abstract class BaseJobRunRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<JobRun, Long> getCrudRepository() {
+	protected OSBAsahRepository<JobRun, Long> getOSBAsahRepository() {
 		return _jobRunRepository;
 	}
 

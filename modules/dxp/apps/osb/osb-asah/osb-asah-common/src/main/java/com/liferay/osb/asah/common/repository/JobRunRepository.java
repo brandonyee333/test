@@ -22,38 +22,50 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jdbc.repository.query.Modifying;
 
 /**
  * @author Marcellus Tavares
  */
 @Primary
-public interface JobRunRepository extends CrudRepository<JobRun, Long> {
+public interface JobRunRepository extends OSBAsahRepository<JobRun, Long> {
 
+	@Cacheable
 	public long countByJobId(Long jobId);
 
+	@CacheEvict(allEntries = true)
+	@Modifying
 	public void deleteByJobId(Long id);
 
+	@Cacheable
 	public boolean existsByJobIdAndJobRunStatus(
 		Long jobId, JobRunStatus jobRunStatus);
 
+	@Cacheable
 	public List<JobRun> findByJobId(Long jobId, Pageable pageable);
 
+	@Cacheable
 	public List<JobRun> findByJobIdAndCreateLocalDateTimeBetween(
 		Long jobId, LocalDateTime endCreateLocalDateTime,
 		LocalDateTime startCreateLocalDateTime);
 
+	@Cacheable
 	public List<JobRun> findByJobRunStatusAndJobTypeAndStep(
 		JobRunStatus jobRunStatus, String jobType, String step);
 
+	@Cacheable
 	public Optional<JobRun> findFirstByJobIdAndJobRunStatusOrderByIdDesc(
 		Long jobId, JobRunStatus jobRunStatus);
 
+	@Cacheable
 	public Optional<JobRun> findFirstByJobIdAndTriggerOrderByIdDesc(
 		Long jobId, String trigger);
 
+	@Cacheable
 	public Optional<JobRun> findFirstByJobIdOrderByIdDesc(Long jobId);
 
 }

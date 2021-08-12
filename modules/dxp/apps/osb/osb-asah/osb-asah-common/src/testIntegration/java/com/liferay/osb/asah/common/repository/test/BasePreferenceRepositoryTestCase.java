@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.Preference;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 
 import org.junit.Assert;
@@ -22,7 +23,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Inácio Nery
@@ -42,7 +42,7 @@ public abstract class BasePreferenceRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<Preference, Long> getCrudRepository() {
+	protected OSBAsahRepository<Preference, Long> getOSBAsahRepository() {
 		return _preferenceRepository;
 	}
 

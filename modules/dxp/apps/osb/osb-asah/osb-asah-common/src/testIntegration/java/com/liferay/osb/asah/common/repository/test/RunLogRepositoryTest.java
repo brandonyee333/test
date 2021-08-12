@@ -24,9 +24,11 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +36,6 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -43,7 +44,7 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @Import(JDBCTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class RunLogRepositoryTest extends BaseRepositoryTestCase<RunLog, Long> {
+public class RunLogRepositoryTest {
 
 	@Before
 	public void setUp() {
@@ -56,9 +57,79 @@ public class RunLogRepositoryTest extends BaseRepositoryTestCase<RunLog, Long> {
 		runLog.setDateLogged(new Date());
 		runLog.setNaniteClassName("IndividualNanite");
 
-		setUpRepository(runLog);
+		_runLog = _runLogRepository.save(runLog);
+	}
 
-		_runLog = entityModels.get(0);
+	@After
+	public void tearDown() {
+		_runLogRepository.deleteAll();
+	}
+
+	@Test
+	public void testCount() {
+		Assert.assertEquals(1, _runLogRepository.count());
+	}
+
+	@Test
+	public void testDelete() {
+		_runLogRepository.delete(_runLog);
+
+		Assert.assertEquals(0, _runLogRepository.count());
+	}
+
+	@Test
+	public void testDeleteAll1() {
+		_runLogRepository.deleteAll();
+
+		Assert.assertEquals(0, _runLogRepository.count());
+	}
+
+	@Test
+	public void testDeleteAll2() {
+		_runLogRepository.deleteAll(Collections.singletonList(_runLog));
+
+		Assert.assertEquals(0, _runLogRepository.count());
+	}
+
+	@Test
+	public void testDeleteById() {
+		Long id = _runLog.getId();
+
+		Assert.assertNotNull(id);
+
+		_runLogRepository.deleteById(id);
+
+		Assert.assertEquals(0, _runLogRepository.count());
+	}
+
+	@Test
+	public void testExistsById() {
+		Assert.assertTrue(_runLogRepository.existsById(_runLog.getId()));
+	}
+
+	@Test
+	public void testFindAll() {
+		Assert.assertEquals(
+			Collections.singletonList(_runLog), _runLogRepository.findAll());
+	}
+
+	@Test
+	public void testFindAllById() {
+		Assert.assertEquals(
+			Collections.singletonList(_runLog),
+			_runLogRepository.findAllById(
+				Collections.singletonList(_runLog.getId())));
+	}
+
+	@Test
+	public void testFindById() {
+		Long id = _runLog.getId();
+
+		Assert.assertNotNull(id);
+
+		Optional<RunLog> modelOptional = _runLogRepository.findById(id);
+
+		Assert.assertTrue(modelOptional.isPresent());
 	}
 
 	@Test
@@ -93,9 +164,16 @@ public class RunLogRepositoryTest extends BaseRepositoryTestCase<RunLog, Long> {
 		Assert.assertEquals(_runLog, runLogOptional.get());
 	}
 
-	@Override
-	protected CrudRepository<RunLog, Long> getCrudRepository() {
-		return _runLogRepository;
+	@Test
+	public void testSave() {
+		Assert.assertEquals(_runLog, _runLogRepository.save(_runLog));
+	}
+
+	@Test
+	public void testSaveAll() {
+		Assert.assertEquals(
+			Collections.singletonList(_runLog),
+			_runLogRepository.saveAll(Collections.singletonList(_runLog)));
 	}
 
 	private DataSource _addDataSource() {

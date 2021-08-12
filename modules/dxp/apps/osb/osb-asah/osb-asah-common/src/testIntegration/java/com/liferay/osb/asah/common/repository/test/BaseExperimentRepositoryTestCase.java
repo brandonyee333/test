@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.model.ExperimentType;
 import com.liferay.osb.asah.common.model.Goal;
 import com.liferay.osb.asah.common.model.GoalMetric;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 
 import java.math.BigDecimal;
 
@@ -38,7 +39,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Marcos Martins
@@ -160,7 +160,7 @@ public abstract class BaseExperimentRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<Experiment, Long> getCrudRepository() {
+	protected OSBAsahRepository<Experiment, Long> getOSBAsahRepository() {
 		return _experimentRepository;
 	}
 

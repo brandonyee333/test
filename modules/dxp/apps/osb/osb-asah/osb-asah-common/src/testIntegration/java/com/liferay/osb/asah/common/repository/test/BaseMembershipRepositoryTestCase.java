@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
@@ -33,7 +34,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Inácio Nery
@@ -355,7 +355,7 @@ public abstract class BaseMembershipRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<Membership, Long> getCrudRepository() {
+	protected OSBAsahRepository<Membership, Long> getOSBAsahRepository() {
 		return _membershipRepository;
 	}
 

@@ -22,9 +22,9 @@ import io.lettuce.core.dynamic.annotation.Param;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
 
 /**
@@ -32,18 +32,23 @@ import org.springframework.lang.Nullable;
  */
 @Primary
 public interface FieldMappingRepository
-	extends CrudRepository<FieldMapping, Long> {
+	extends OSBAsahRepository<FieldMapping, Long> {
 
+	@Cacheable
 	public long countByFieldNameAndOwnerType(
 		String fieldName, String ownerType);
 
+	@Cacheable
 	public long countFieldMappings(@Nullable String filterString);
 
+	@Cacheable
 	public long countIndividualFieldMappings(@Nullable String name);
 
+	@Cacheable
 	public boolean existsByContextAndFieldNameAndOwnerType(
 		String context, String fieldName, String ownerType);
 
+	@Cacheable
 	public List<FieldMapping>
 		findByContextAndDataSourceIdAndFieldNameAndOwnerType(
 			@Param("context") String context,
@@ -51,34 +56,42 @@ public interface FieldMappingRepository
 			@Param("fieldName") String fieldName,
 			@Param("ownerType") String ownerType);
 
+	@Cacheable
 	public List<FieldMapping> findByContextAndDataSourceIdAndOwnerType(
 		@Param("context") String context,
 		@Param("dataSourceId") Long dataSourceId,
 		@Param("ownerType") String ownerType);
 
+	@Cacheable
 	public Optional<FieldMapping>
 		findByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType(
 			String context, String displayName, String displayType,
 			String fieldType, String ownerType);
 
+	@Cacheable
 	public Optional<FieldMapping> findByContextAndDisplayNameAndOwnerType(
 		String context, String displayName, String ownerType);
 
+	@Cacheable
 	public Optional<FieldMapping> findByContextAndFieldNameAndOwnerType(
 		String context, String fieldName, String ownerType);
 
+	@Cacheable
 	public List<FieldMapping>
 		findByDataSourceFieldNameAndDataSourceIdAndOwnerType(
 			@Param("dataSourceFieldName") String dataSourceFieldName,
 			@Param("dataSourceId") Long dataSourceId,
 			@Param("ownerType") String ownerType);
 
+	@Cacheable
 	public List<Transformation> getFieldMappingTransformations(
 		String apply, @Nullable String filterString, Pageable pageable);
 
+	@Cacheable
 	public List<FieldMapping> searchFieldMappings(
 		@Nullable String filterString, Pageable pageable);
 
+	@Cacheable
 	public List<FieldMapping> searchIndividualFieldMappings(
 		@Nullable String name, Pageable pageable);
 

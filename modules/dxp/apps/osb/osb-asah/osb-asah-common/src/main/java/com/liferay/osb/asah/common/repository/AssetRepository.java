@@ -20,37 +20,45 @@ import com.liferay.osb.asah.common.model.Transformation;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
 
 /**
  * @author Marcellus Tavares
  */
 @Primary
-public interface AssetRepository extends CrudRepository<Asset, Long> {
+public interface AssetRepository extends OSBAsahRepository<Asset, Long> {
 
+	@Cacheable
 	public long countByAssetType(String assetType);
 
+	@Cacheable
 	public long countByAssetTypeAndFilterStringAndKeyword(
 		String assetType, @Nullable String filterString,
 		@Nullable String keyword);
 
+	@Cacheable
 	public long countByFilterString(@Nullable String filterString);
 
+	@Cacheable
 	public List<Asset> findByAssetType(String assetType, Pageable pageable);
 
+	@Cacheable
 	public List<Asset> findByAssetTypeAndFilterStringAndKeyword(
 		String assetType, @Nullable String filterString,
 		@Nullable String keyword, Pageable pageable);
 
+	@Cacheable
 	public Optional<Asset> findByDataSourceAssetPKAndDataSourceId(
 		String dataSourceAssetPK, Long dataSourceId);
 
+	@Cacheable
 	public List<Asset> findByFilterString(
 		@Nullable String filterString, Pageable pageable);
 
+	@Cacheable
 	public List<Transformation> getAssetTransformations(
 		String apply, @Nullable String filterString, Pageable pageable);
 

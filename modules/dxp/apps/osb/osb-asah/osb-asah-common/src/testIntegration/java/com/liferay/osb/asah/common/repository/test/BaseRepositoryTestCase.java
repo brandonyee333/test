@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Arrays;
@@ -27,7 +28,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import org.springframework.data.domain.Persistable;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Inácio Nery
@@ -36,43 +36,43 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 
 	@After
 	public void tearDown() {
-		CrudRepository<T, ID> crudRepository = getCrudRepository();
+		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
 
-		crudRepository.deleteAll();
+		osbAsahRepository.deleteAll();
 	}
 
 	@Test
 	public void testCount() {
-		CrudRepository<T, ID> crudRepository = getCrudRepository();
+		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
 
-		Assert.assertEquals(entityModels.size(), crudRepository.count());
+		Assert.assertEquals(entityModels.size(), osbAsahRepository.count());
 	}
 
 	@Test
 	public void testDelete() {
-		CrudRepository<T, ID> crudRepository = getCrudRepository();
+		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
 
-		crudRepository.delete(entityModels.get(0));
+		osbAsahRepository.delete(entityModels.get(0));
 
-		Assert.assertEquals(entityModels.size() - 1, crudRepository.count());
+		Assert.assertEquals(entityModels.size() - 1, osbAsahRepository.count());
 	}
 
 	@Test
 	public void testDeleteAll1() {
-		CrudRepository<T, ID> crudRepository = getCrudRepository();
+		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
 
-		crudRepository.deleteAll();
+		osbAsahRepository.deleteAll();
 
-		Assert.assertEquals(0, crudRepository.count());
+		Assert.assertEquals(0, osbAsahRepository.count());
 	}
 
 	@Test
 	public void testDeleteAll2() {
-		CrudRepository<T, ?> crudRepository = getCrudRepository();
+		OSBAsahRepository<T, ?> osbAsahRepository = getOSBAsahRepository();
 
-		crudRepository.deleteAll(entityModels);
+		osbAsahRepository.deleteAll(entityModels);
 
-		Assert.assertEquals(0, crudRepository.count());
+		Assert.assertEquals(0, osbAsahRepository.count());
 	}
 
 	@Test
@@ -83,36 +83,37 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 
 		Assert.assertNotNull(id);
 
-		CrudRepository<T, ID> crudRepository = getCrudRepository();
+		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
 
-		crudRepository.deleteById(id);
+		osbAsahRepository.deleteById(id);
 
-		Assert.assertEquals(entityModels.size() - 1, crudRepository.count());
+		Assert.assertEquals(entityModels.size() - 1, osbAsahRepository.count());
 	}
 
 	@Test
 	public void testExistsById() {
 		T model = entityModels.get(0);
 
-		CrudRepository<T, ID> crudRepository = getCrudRepository();
+		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
 
-		Assert.assertTrue(crudRepository.existsById(model.getId()));
+		Assert.assertTrue(osbAsahRepository.existsById(model.getId()));
 	}
 
 	@Test
 	public void testFindAll() {
-		CrudRepository<T, ID> crudRepository = getCrudRepository();
+		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
 
-		Assert.assertEquals(entityModels, crudRepository.findAll());
+		Assert.assertEquals(entityModels, osbAsahRepository.findAll());
 	}
 
 	@Test
 	public void testFindAllById() {
-		CrudRepository<T, ID> crudRepository = getCrudRepository();
+		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
 
 		Assert.assertEquals(
 			entityModels,
-			crudRepository.findAllById(ListUtil.map(entityModels, T::getId)));
+			osbAsahRepository.findAllById(
+				ListUtil.map(entityModels, T::getId)));
 	}
 
 	@Test
@@ -123,35 +124,36 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 
 		Assert.assertNotNull(id);
 
-		CrudRepository<T, ID> crudRepository = getCrudRepository();
+		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
 
-		Optional<T> modelOptional = crudRepository.findById(id);
+		Optional<T> modelOptional = osbAsahRepository.findById(id);
 
 		Assert.assertTrue(modelOptional.isPresent());
 	}
 
 	@Test
 	public void testSave() {
-		CrudRepository<T, ID> crudRepository = getCrudRepository();
+		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
 
 		Assert.assertEquals(
-			entityModels.get(0), crudRepository.save(entityModels.get(0)));
+			entityModels.get(0), osbAsahRepository.save(entityModels.get(0)));
 	}
 
 	@Test
 	public void testSaveAll() {
-		CrudRepository<T, ID> crudRepository = getCrudRepository();
+		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
 
-		Assert.assertEquals(entityModels, crudRepository.saveAll(entityModels));
+		Assert.assertEquals(
+			entityModels, osbAsahRepository.saveAll(entityModels));
 	}
 
-	protected abstract CrudRepository<T, ID> getCrudRepository();
+	protected abstract OSBAsahRepository<T, ID> getOSBAsahRepository();
 
 	protected void setUpRepository(T... entityModels) {
-		CrudRepository<T, ID> crudRepository = getCrudRepository();
+		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
 
 		this.entityModels = IterableUtils.toList(
-			crudRepository.saveAll(Arrays.asList(entityModels)));
+			osbAsahRepository.saveAll(Arrays.asList(entityModels)));
 	}
 
 	protected List<T> entityModels;

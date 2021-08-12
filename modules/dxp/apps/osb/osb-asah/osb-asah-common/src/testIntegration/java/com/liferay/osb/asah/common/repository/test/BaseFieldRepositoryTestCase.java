@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 
 import java.util.Collections;
 import java.util.Date;
@@ -30,7 +31,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Rachael Koestartyo
@@ -215,7 +215,7 @@ public abstract class BaseFieldRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<Field, Long> getCrudRepository() {
+	protected OSBAsahRepository<Field, Long> getOSBAsahRepository() {
 		return _fieldRepository;
 	}
 

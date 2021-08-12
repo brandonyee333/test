@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -29,7 +30,6 @@ import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Marcellus Tavares
@@ -79,7 +79,7 @@ public abstract class BaseDataControlTaskRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<DataControlTask, Long> getCrudRepository() {
+	protected OSBAsahRepository<DataControlTask, Long> getOSBAsahRepository() {
 		return _dataControlTaskRepository;
 	}
 

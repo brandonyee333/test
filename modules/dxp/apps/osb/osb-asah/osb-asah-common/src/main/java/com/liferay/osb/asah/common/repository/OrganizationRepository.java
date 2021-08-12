@@ -19,9 +19,9 @@ import com.liferay.osb.asah.common.model.Transformation;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
 
 /**
@@ -29,14 +29,17 @@ import org.springframework.lang.Nullable;
  */
 @Primary
 public interface OrganizationRepository
-	extends CrudRepository<Organization, Long> {
+	extends OSBAsahRepository<Organization, Long> {
 
+	@Cacheable
 	public Organization findByDataSourceIdAndOrganizationPK(
 		Long dataSourceId, Long organizationPK);
 
+	@Cacheable
 	public List<Transformation> getOrganizationTransformations(
 		String apply, @Nullable String filterString, Pageable pageable);
 
+	@Cacheable
 	public List<Organization> searchOrganizations(
 		String filterString, Pageable pageable);
 

@@ -22,42 +22,50 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
 
 /**
  * @author Rachael Koestartyo
  */
 @Primary
-public interface AccountRepository extends CrudRepository<Account, Long> {
+public interface AccountRepository extends OSBAsahRepository<Account, Long> {
 
+	@Cacheable
 	public long countAccounts(
 		@Nullable Set<String> accountPKs, @Nullable String filterString);
 
+	@Cacheable
 	public List<Account> findAllByDataSourceId(Long dataSourceId);
 
+	@Cacheable
 	public Optional<Account> findByAccountPK(String accountPK);
 
+	@Cacheable
 	public Optional<Account> findByAccountPKAndDataSourceId(
 		String accountPK, Long dataSourceId);
 
+	@Cacheable
 	public List<Distribution> getAccountDistributions(
 		@Nullable Long channelId, String fieldName, String fieldType,
 		@Nullable String filterString, @Nullable Long individualSegmentId,
 		Pageable pageable);
 
+	@Cacheable
 	public List<Transformation> getAccountTransformations(
 		String apply, @Nullable Long channelId, @Nullable String filterString,
 		Pageable pageable);
 
+	@Cacheable
 	public List<Account> searchAccounts(
 		@Nullable Set<String> accountPKs, @Nullable Long channelId,
 		@Nullable String filterString, Pageable pageable,
 		@Nullable Sort segmentSort);
 
+	@Cacheable
 	public List<Account> searchAccounts(String filterString, Pageable pageable);
 
 }

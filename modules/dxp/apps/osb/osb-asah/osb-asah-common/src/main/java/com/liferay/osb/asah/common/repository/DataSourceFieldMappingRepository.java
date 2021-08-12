@@ -18,18 +18,20 @@ import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Rachael Koestartyo
  */
 @Primary
 public interface DataSourceFieldMappingRepository
-	extends CrudRepository<DataSourceFieldMapping, Long> {
+	extends OSBAsahRepository<DataSourceFieldMapping, Long> {
 
+	@Cacheable
 	public List<DataSourceFieldMapping> findByDataSourceId(Long dataSourceId);
 
+	@Cacheable
 	public List<DataSourceFieldMapping> findByFieldMappingId(
 		Long fieldMappingId);
 

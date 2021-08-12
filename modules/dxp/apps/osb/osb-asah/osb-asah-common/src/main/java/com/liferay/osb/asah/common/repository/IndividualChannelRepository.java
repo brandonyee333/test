@@ -18,16 +18,17 @@ import com.liferay.osb.asah.common.entity.IndividualChannel;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Rachael Koestartyo
  */
 @Primary
 public interface IndividualChannelRepository
-	extends CrudRepository<IndividualChannel, Long> {
+	extends OSBAsahRepository<IndividualChannel, Long> {
 
+	@Cacheable
 	public List<IndividualChannel> findByIndividualId(Long individualId);
 
 }

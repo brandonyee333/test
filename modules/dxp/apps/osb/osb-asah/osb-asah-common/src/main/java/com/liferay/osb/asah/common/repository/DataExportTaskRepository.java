@@ -18,18 +18,20 @@ import com.liferay.osb.asah.common.entity.DataExportTask;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Inácio Nery
  */
 @Primary
 public interface DataExportTaskRepository
-	extends CrudRepository<DataExportTask, Long> {
+	extends OSBAsahRepository<DataExportTask, Long> {
 
+	@Cacheable
 	public List<DataExportTask> findByStatus(DataExportTask.Status status);
 
+	@Cacheable
 	public DataExportTask findFirstByTypeOrderByIdDesc(
 		DataExportTask.Type type);
 

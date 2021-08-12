@@ -19,29 +19,39 @@ import com.liferay.osb.asah.common.entity.Suppression;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jdbc.repository.query.Modifying;
 
 /**
  * @author Marcellus Tavares
  */
 @Primary
 public interface SuppressionRepository
-	extends CrudRepository<Suppression, Long> {
+	extends OSBAsahRepository<Suppression, Long> {
 
+	@Cacheable
 	public long countByEmailAddressContainingIgnoreCase(String emailAddress);
 
+	@CacheEvict(allEntries = true)
+	@Modifying
 	public void deleteByEmailAddress(String emailAddress);
 
+	@Cacheable
 	public boolean existsByEmailAddress(String emailAddress);
 
+	@Cacheable
 	public boolean existsByEmailAddressHashed(String emailAddressHashed);
 
+	@Cacheable
 	public List<Suppression> findAll(Pageable pageable);
 
+	@Cacheable
 	public Optional<Suppression> findByEmailAddress(String emailAddress);
 
+	@Cacheable
 	public List<Suppression> findByEmailAddressContainingIgnoreCase(
 		String emailAddress, Pageable pageable);
 

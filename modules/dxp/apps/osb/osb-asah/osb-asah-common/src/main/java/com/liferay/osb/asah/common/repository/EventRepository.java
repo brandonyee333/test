@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -40,14 +40,17 @@ import org.springframework.stereotype.Repository;
  * @author Leslie Wong
  */
 @Repository
-public interface EventRepository extends CrudRepository<Event, Long> {
+public interface EventRepository extends OSBAsahRepository<Event, Long> {
 
+	@Cacheable
 	public Long countByChannelIdAndEventDateBetweenAndEventDefinitionId(
 		Long channelId, Date rangeStartDate, Date rangeEndDate,
 		long eventDefinitionId);
 
+	@Cacheable
 	public long countByEventDefinitionId(long eventDefinitionId);
 
+	@Cacheable
 	public Integer countEvents(
 		Long channelId, Long individualId, String keywords,
 		TimeRange timeRange);
@@ -56,32 +59,39 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 		Long channelId, Long individualId, String keywords,
 		TimeRange timeRange);
 
+	@Cacheable
 	public long countTotalEvents(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate);
 
+	@Cacheable
 	public long countUniqueIndividuals(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate);
 
+	@Cacheable
 	public List<EventAttributeValue> findDistinctAttributeValues(
 		@Param("eventAttributeDefinitionId") Long eventAttributeDefinitionId,
 		@Param("size") int size);
 
+	@Cacheable
 	public Optional<Event> findFirstByOrderByIdDesc();
 
+	@Cacheable
 	public Optional<Event> findLastSeenEvent(@Nullable Long eventDefinitionId);
 
+	@Cacheable
 	public BigDecimal getAverageEventCountPerIndividual(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate);
 
+	@Cacheable
 	public Map<Object, Number> getEventAttributeValues(
 		AnalysisType analysisType, @Nullable BreakdownItem breakdownItem,
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
@@ -89,20 +99,24 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 		@Nullable Long eventDefinitionId, Pageable pageable,
 		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate);
 
+	@Cacheable
 	public long getEventAttributeValuesCount(
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate);
 
+	@Cacheable
 	public Map<String, Integer> getEventsCountGroupByEventDate(
 		Long channelId, Long individualId, Interval interval, String keywords,
 		TimeRange timeRange);
 
+	@Cacheable
 	public Map<String, Integer> getEventSessionsCountGroupByEventDate(
 		Long channelId, Long individualId, Interval interval, String keywords,
 		TimeRange timeRange);
 
+	@Cacheable
 	public List<Event> searchEvents(
 		Long channelId, Long individualId, String keywords, Pageable pageable,
 		TimeRange timeRange);

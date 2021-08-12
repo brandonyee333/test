@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -32,7 +33,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Inácio Nery
@@ -195,7 +195,7 @@ public abstract class BaseActivityGroupRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<ActivityGroup, Long> getCrudRepository() {
+	protected OSBAsahRepository<ActivityGroup, Long> getOSBAsahRepository() {
 		return _activityGroupRepository;
 	}
 

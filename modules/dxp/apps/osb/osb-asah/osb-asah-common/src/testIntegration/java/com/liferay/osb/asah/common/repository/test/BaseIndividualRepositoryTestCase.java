@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 
@@ -47,7 +48,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.CrudRepository;
 
 import org.yaml.snakeyaml.util.ArrayUtils;
 
@@ -420,7 +420,7 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<Individual, Long> getCrudRepository() {
+	protected OSBAsahRepository<Individual, Long> getOSBAsahRepository() {
 		return individualRepository;
 	}
 

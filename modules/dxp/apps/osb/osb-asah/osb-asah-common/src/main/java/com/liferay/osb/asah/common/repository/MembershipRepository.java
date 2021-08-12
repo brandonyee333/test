@@ -18,65 +18,82 @@ import com.liferay.osb.asah.common.entity.Membership;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 /**
  * @author Inácio Nery
  */
 @Primary
-public interface MembershipRepository extends CrudRepository<Membership, Long> {
+public interface MembershipRepository
+	extends OSBAsahRepository<Membership, Long> {
 
+	@Cacheable
 	public long countByIndividualIdInAndIndividualSegmentIdAndStatus(
 		List<Long> individualIds, Long individualSegmentId, String status);
 
+	@Cacheable
 	public long countByIndividualSegmentIdAndStatus(
 		Long individualSegmentId, String status);
 
+	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteByIndividualSegmentId(
 		@Param("individualSegmentId") Long individualSegmentId);
 
+	@Cacheable
 	public boolean existsByIndividualIdAndIndividualSegmentIdAndStatus(
 		Long individualId, Long individualSegmentId, String status);
 
+	@Cacheable
 	public Membership findByIndividualIdAndIndividualSegmentIdAndStatus(
 		Long individualId, Long individualSegmentId, String status);
 
+	@Cacheable
 	public List<Membership> findByIndividualIdAndIndividualSegmentIdInAndStatus(
 		Long individualId, List<Long> individualSegmentIds, String status);
 
+	@Cacheable
 	public List<Membership> findByIndividualIdAndStatus(
 		Long individualId, String status);
 
+	@Cacheable
 	public List<Membership> findByIndividualIdInAndIndividualSegmentIdAndStatus(
 		List<Long> individualIds, Long individualSegmentId, String status,
 		Pageable pageable);
 
+	@Cacheable
 	public List<Membership> findByIndividualSegmentIdAndStatus(
 		Long individualSegmentId, String status);
 
+	@Cacheable
 	public List<Membership> findByIndividualSegmentIdAndStatus(
 		Long individualSegmentId, String status, Pageable pageable);
 
+	@Cacheable
 	public List<Long> findIndividualIdByIndividualSegmentIdAndStatus(
 		@Param("individualSegmentId") Long individualSegmentId,
 		@Param("status") String status);
 
+	@Cacheable
 	public List<Long> findIndividualIdByIndividualSegmentIdIn(
 		List<Long> individualSegmentIds, int max, int min, boolean ascending);
 
+	@Cacheable
 	public List<Long> findIndividualSegmentIdByIndividualIdAndStatus(
 		@Param("individualId") Long individualId,
 		@Param("status") String status);
 
+	@Cacheable
 	public List<Long> findIndividualSegmentIdByIndividualIdInAndStatus(
 		@Param("individualIds") List<Long> individualIds,
 		@Param("status") String status);
 
+	@Cacheable
 	public List<Long> findTop20IndividualSegmentIdByIndividualId(
 		@Param("individualId") Long individualId);
 

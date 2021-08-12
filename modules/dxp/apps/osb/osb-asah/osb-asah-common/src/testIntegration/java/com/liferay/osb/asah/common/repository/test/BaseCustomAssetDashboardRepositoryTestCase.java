@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author André Miranda
@@ -146,7 +146,9 @@ public abstract class BaseCustomAssetDashboardRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<CustomAssetDashboard, String> getCrudRepository() {
+	protected OSBAsahRepository<CustomAssetDashboard, String>
+		getOSBAsahRepository() {
+
 		return _customAssetDashboardRepository;
 	}
 

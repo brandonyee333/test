@@ -20,10 +20,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 /**
@@ -31,21 +32,26 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface ActivityGroupRepository
-	extends CrudRepository<ActivityGroup, Long> {
+	extends OSBAsahRepository<ActivityGroup, Long> {
 
+	@Cacheable
 	public long countActivityGroups(String filterString);
 
+	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteByChannelIdIn(@Param("channelIds") Set<Long> channelIds);
 
+	@Cacheable
 	public ActivityGroup
 		findByActivityTypeAndChannelIdAndDataSourceIdAndDayDateAndUserId(
 			String activityType, Long channelId, Long dataSourceId,
 			Date dayDate, String userId);
 
+	@Cacheable
 	public List<ActivityGroup> searchActivityGroups(
 		String filterString, Pageable pageable);
 
+	@CacheEvict(allEntries = true)
 	@Modifying
 	public boolean updateOwnerId(
 		@Param("ownerId") Long ownerId, @Param("userId") String userId);

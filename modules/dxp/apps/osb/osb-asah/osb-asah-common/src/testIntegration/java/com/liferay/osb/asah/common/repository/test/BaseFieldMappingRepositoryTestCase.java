@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 
 import java.util.Optional;
 
@@ -24,7 +25,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Marcos Martins
@@ -65,7 +65,7 @@ public abstract class BaseFieldMappingRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<FieldMapping, Long> getCrudRepository() {
+	protected OSBAsahRepository<FieldMapping, Long> getOSBAsahRepository() {
 		return _fieldMappingRepository;
 	}
 

@@ -18,20 +18,22 @@ import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Marcellus Tavares
  */
 @Primary
 public interface SalesforceAuditEventRepository
-	extends CrudRepository<SalesforceAuditEvent, Long> {
+	extends OSBAsahRepository<SalesforceAuditEvent, Long> {
 
+	@Cacheable
 	public long countByDataSourceIdAndEntityTypeNameIn(
 		Long dataSourceId, List<String> entityTypeNames);
 
+	@Cacheable
 	public List<SalesforceAuditEvent> findByDataSourceIdAndEntityTypeName(
 		Long dataSourceId, String entityTypeName, Pageable pageable);
 

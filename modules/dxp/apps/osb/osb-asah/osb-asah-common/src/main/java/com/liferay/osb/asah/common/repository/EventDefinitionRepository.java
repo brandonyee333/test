@@ -20,9 +20,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -32,29 +33,36 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface EventDefinitionRepository
-	extends CrudRepository<EventDefinition, Long> {
+	extends OSBAsahRepository<EventDefinition, Long> {
 
+	@Cacheable
 	public long countEventDefinitions(
 		@Nullable Boolean blocked,
 		@Nullable EventDefinition.BlockedReasonType blockedReasonType,
 		@Nullable Boolean hidden, @Nullable String keyword,
 		@Nullable EventDefinition.Type type);
 
+	@Cacheable
 	public List<EventDefinition> findAll(Pageable pageable);
 
+	@Cacheable
 	public Optional<EventDefinition> findByDisplayNameIgnoreCase(
 		String displayName);
 
+	@Cacheable
 	public List<EventDefinition> findByIdIn(Collection<Long> ids);
 
+	@Cacheable
 	public Optional<EventDefinition> findByName(String name);
 
+	@Cacheable
 	public List<EventDefinition> searchEventDefinitions(
 		@Nullable Boolean blocked,
 		@Nullable EventDefinition.BlockedReasonType blockedReasonType,
 		@Nullable Boolean hidden, @Nullable String keyword, Pageable pageable,
 		@Nullable EventDefinition.Type type);
 
+	@CacheEvict(allEntries = true)
 	@Modifying
 	public void updateEventDefinitions(
 		@Param("ids") List<Long> eventDefinitionIds,

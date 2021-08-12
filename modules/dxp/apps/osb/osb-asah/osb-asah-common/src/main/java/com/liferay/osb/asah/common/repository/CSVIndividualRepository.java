@@ -18,30 +18,36 @@ import com.liferay.osb.asah.common.entity.CSVIndividual;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Marcellus Tavares
  */
 @Primary
 public interface CSVIndividualRepository
-	extends CrudRepository<CSVIndividual, Long> {
+	extends OSBAsahRepository<CSVIndividual, Long> {
 
+	@Cacheable
 	public long countByDataSourceId(Long dataSourceId);
 
+	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteByDataSourceId(Long dataSourceId);
 
+	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteByDataSourceIdAndDataSourceIndividualPKIn(
 		Long dataSourceId, List<String> dataSourceIndividualPKs);
 
+	@Cacheable
 	public List<CSVIndividual> findByDataSourceId(
 		Long dataSourceId, Pageable pageable);
 
+	@Cacheable
 	public List<CSVIndividual> findByDataSourceIdAndFieldKeyEquals(
 		Long dataSourceId, String fieldKey, String fieldValue);
 

@@ -19,10 +19,11 @@ import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 /**
@@ -30,18 +31,23 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface BlockedKeywordRepository
-	extends CrudRepository<BlockedKeyword, Long> {
+	extends OSBAsahRepository<BlockedKeyword, Long> {
 
+	@Cacheable
 	public long countByKeywordContainingIgnoreCase(String keyword);
 
+	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteByIdIn(@Param("ids") Set<Long> ids);
 
+	@Cacheable
 	public List<BlockedKeyword> findAll(Pageable pageable);
 
+	@Cacheable
 	public List<BlockedKeyword> findByKeywordContainingIgnoreCase(
 		String keyword, Pageable pageable);
 
+	@Cacheable
 	public List<BlockedKeyword> findByKeywordIn(Set<String> keywords);
 
 }

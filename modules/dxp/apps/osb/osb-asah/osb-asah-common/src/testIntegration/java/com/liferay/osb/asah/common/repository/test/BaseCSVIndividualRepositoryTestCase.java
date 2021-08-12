@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 
 import java.util.Arrays;
 
@@ -29,7 +30,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Marcellus Tavares
@@ -86,7 +86,7 @@ public abstract class BaseCSVIndividualRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<CSVIndividual, Long> getCrudRepository() {
+	protected OSBAsahRepository<CSVIndividual, Long> getOSBAsahRepository() {
 		return _csvIndividualRepository;
 	}
 

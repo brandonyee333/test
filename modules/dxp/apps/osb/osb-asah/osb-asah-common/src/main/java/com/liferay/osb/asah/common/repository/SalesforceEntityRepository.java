@@ -21,10 +21,11 @@ import java.util.Optional;
 
 import org.json.JSONObject;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 /**
@@ -32,32 +33,40 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface SalesforceEntityRepository
-	extends CrudRepository<SalesforceEntity, String> {
+	extends OSBAsahRepository<SalesforceEntity, String> {
 
+	@Cacheable
 	public long countByDataSourceIdAndType(
 		Long dataSourceId, SalesforceEntity.Type type);
 
+	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteByDataSourceId(@Param("dataSourceId") Long dataSourceId);
 
+	@Cacheable
 	public boolean existsByDataSourceIdAndIdAndType(
 		Long dataSourceId, String id, SalesforceEntity.Type type);
 
+	@Cacheable
 	public List<SalesforceEntity> findByDataSourceIdAndFieldKeyEqualsAndType(
 		Long dataSourceId, String fieldKey, String fieldValue,
 		SalesforceEntity.Type type);
 
+	@Cacheable
 	public List<String>
 		findByDataSourceIdAndFieldKeyEqualsAndTypeGroupByFieldKey(
 			Long dataSourceId, String fieldKey, String fieldValue,
 			SalesforceEntity.Type type, String groupByFieldKey);
 
+	@Cacheable
 	public Optional<SalesforceEntity> findByDataSourceIdAndIdAndType(
 		Long dataSourceId, String id, SalesforceEntity.Type type);
 
+	@Cacheable
 	public List<SalesforceEntity> findByDataSourceIdAndType(
 		Long dataSourceId, SalesforceEntity.Type type, Pageable pageable);
 
+	@CacheEvict(allEntries = true)
 	@Modifying
 	public void updateSalesforceEntityFields(
 		@Param("dataSourceId") Long dataSourceId,

@@ -18,45 +18,58 @@ import com.liferay.osb.asah.common.entity.DataSource;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 /**
  * @author Inácio Nery
  */
 @Primary
-public interface DataSourceRepository extends CrudRepository<DataSource, Long> {
+public interface DataSourceRepository
+	extends OSBAsahRepository<DataSource, Long> {
 
+	@Cacheable
 	public long countDataSources(String filterString);
 
+	@Cacheable
 	public boolean existsByFaroBackendSecuritySignature(
 		String faroBackendSecuritySignature);
 
+	@Cacheable
 	public boolean existsByIdNotAndName(Long id, String name);
 
+	@Cacheable
 	public boolean existsByName(String name);
 
+	@Cacheable
 	public boolean existsByProviderType(
 		@Param("providerType") String providerType);
 
+	@Cacheable
 	public List<DataSource> findAll(Pageable pageable);
 
+	@Cacheable
 	public List<DataSource> findByCredentialType(
 		String credentialType, Pageable pageable);
 
+	@Cacheable
 	public List<DataSource> findByCredentialTypeAndProviderType(
 		String credentialType, String providerType, Pageable pageable);
 
+	@Cacheable
 	public List<DataSource> findByProviderType(String providerType);
 
+	@Cacheable
 	public List<DataSource> findByProviderType(
 		String providerType, Pageable pageable);
 
+	@Cacheable
 	public List<DataSource> findByProviderTypeAndStatus(
 		String providerType, String status);
 
+	@Cacheable
 	public List<DataSource> searchDataSources(
 		String filterString, Pageable pageable);
 

@@ -44,6 +44,7 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
@@ -79,7 +80,6 @@ import org.json.JSONTokener;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -267,7 +267,7 @@ public class AdminRestController extends BaseRestController {
 	}
 
 	private <T, ID> void _addEntities(
-			CrudRepository<T, ID> crudRepository, String json,
+			OSBAsahRepository<T, ID> osbAsahRepository, String json,
 			Class<T> modelClass)
 		throws Exception {
 
@@ -279,7 +279,7 @@ public class AdminRestController extends BaseRestController {
 
 			BeanUtils.setProperty(t, "isNew", true);
 
-			crudRepository.save(t);
+			osbAsahRepository.save(t);
 		}
 	}
 

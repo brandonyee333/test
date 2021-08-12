@@ -19,10 +19,11 @@ import com.liferay.osb.asah.common.entity.MembershipChange;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 /**
@@ -30,24 +31,30 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface MembershipChangeRepository
-	extends CrudRepository<MembershipChange, Long> {
+	extends OSBAsahRepository<MembershipChange, Long> {
 
+	@Cacheable
 	public long countMembershipChanges(String filterString, Long segmentId);
 
+	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteByIndividualSegmentId(
 		@Param("individualSegmentId") Long individualSegmentId);
 
+	@Cacheable
 	public Optional<MembershipChange> findByIndividualId(Long individualId);
 
+	@Cacheable
 	public List<MembershipChange> searchMembershipChanges(
 		String filterString, Long segmentId, Pageable pageable);
 
+	@CacheEvict(allEntries = true)
 	@Modifying
 	public void updateIndividualDeletedByIndividualId(
 		@Param("individualDeleted") Boolean individualDeleted,
 		@Param("individualId") Long individualId);
 
+	@CacheEvict(allEntries = true)
 	@Modifying
 	public void updateIndividualNameByIndividualId(
 		@Param("individualId") Long individualId,

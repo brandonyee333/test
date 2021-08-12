@@ -18,8 +18,8 @@ import com.liferay.osb.asah.common.entity.InterestTopic;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 /**
@@ -27,20 +27,23 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface InterestTopicRepository
-	extends CrudRepository<InterestTopic, Long> {
+	extends OSBAsahRepository<InterestTopic, Long> {
 
+	@Cacheable
 	public List<Integer>
 		findTopicsByTermInAndTermTypeAndTermWeightGreaterThanEqual(
 			@Param("terms") List<String> terms,
 			@Param("termType") String termType,
 			@Param("termWeight") Double termWeight);
 
+	@Cacheable
 	public List<InterestTopic>
 		findTopInterestTopicsByTermRankLessThanEqualAndTermTypeAndTopicIn(
 			@Param("termRankEnd") Integer termRankEnd,
 			@Param("termType") String termType,
 			@Param("topics") List<Integer> topics);
 
+	@Cacheable
 	public List<String>
 		findTopTermsByTermRankBetweenAndTermsNotInAndTermTypeAndTopicIn(
 			@Param("termRankEnd") Integer termRankEnd,

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.Arrays;
@@ -30,7 +31,6 @@ import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Inácio Nery
@@ -147,7 +147,7 @@ public abstract class BaseChannelRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<Channel, Long> getCrudRepository() {
+	protected OSBAsahRepository<Channel, Long> getOSBAsahRepository() {
 		return _channelRepository;
 	}
 

@@ -19,21 +19,24 @@ import com.liferay.osb.asah.common.entity.Job;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Marcellus Tavares
  */
 @Primary
-public interface JobRepository extends CrudRepository<Job, Long> {
+public interface JobRepository extends OSBAsahRepository<Job, Long> {
 
+	@Cacheable
 	public long countByNameContainingIgnoreCase(String name);
 
+	@Cacheable
 	public List<Job> findByNameContainingIgnoreCase(
 		String name, Pageable pageable);
 
+	@Cacheable
 	public Optional<Job> findFirstByName(String name);
 
 }

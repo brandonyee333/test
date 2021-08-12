@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceOrganization;
 import com.liferay.osb.asah.common.entity.DataSourceSite;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.ArrayList;
@@ -31,7 +32,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Inácio Nery
@@ -380,7 +380,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<DataSource, Long> getCrudRepository() {
+	protected OSBAsahRepository<DataSource, Long> getOSBAsahRepository() {
 		return _dataSourceRepository;
 	}
 

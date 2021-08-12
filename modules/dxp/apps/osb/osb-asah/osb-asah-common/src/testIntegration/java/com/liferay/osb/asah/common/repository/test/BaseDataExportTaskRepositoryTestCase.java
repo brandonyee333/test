@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.DataExportTask;
 import com.liferay.osb.asah.common.repository.DataExportTaskRepository;
+import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Inácio Nery
@@ -76,7 +76,7 @@ public abstract class BaseDataExportTaskRepositoryTestCase
 	}
 
 	@Override
-	protected CrudRepository<DataExportTask, Long> getCrudRepository() {
+	protected OSBAsahRepository<DataExportTask, Long> getOSBAsahRepository() {
 		return _dataExportTaskRepository;
 	}
 

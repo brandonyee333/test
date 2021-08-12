@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -28,11 +28,13 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface EventAttributeRepository
-	extends CrudRepository<EventAttribute, Long> {
+	extends OSBAsahRepository<EventAttribute, Long> {
 
+	@Cacheable
 	public Optional<EventAttribute> findByEventAttributeDefinitionIdAndEventId(
 		Long eventAttributeDefinitionId, Long eventId);
 
+	@Cacheable
 	public List<EventAttribute> findByEventIdIn(Collection<Long> eventIds);
 
 }
