@@ -68,10 +68,10 @@ public class ElasticsearchAccountRepositoryTest
 	)
 	@Override
 	@Test
-	public void testGetDistributionAccounts() throws Exception {
+	public void testGetAccountDistributions() throws Exception {
 		setUpDataSources();
 
-		super.testGetDistributionAccounts();
+		super.testGetAccountDistributions();
 	}
 
 	@ElasticsearchIndex(

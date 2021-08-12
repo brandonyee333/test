@@ -15,8 +15,11 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.test.context.ContextConfiguration;
@@ -28,4 +31,19 @@ import org.springframework.test.context.ContextConfiguration;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class ElasticsearchIndividualRepositoryTest
 	extends BaseIndividualRepositoryTestCase {
+
+	@ElasticsearchIndex(
+		name = "field-mappings", resourcePath = "field_mappings.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Override
+	@Test
+	public void testGetIndividualDistributions() throws Exception {
+		super.testGetIndividualDistributions();
+	}
+
 }

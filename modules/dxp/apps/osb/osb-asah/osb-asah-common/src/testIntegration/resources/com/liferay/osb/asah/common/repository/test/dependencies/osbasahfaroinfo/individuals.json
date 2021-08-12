@@ -133,7 +133,7 @@
 					"ownerId": "337984659206412898",
 					"ownerType": "individual",
 					"sourceName": "jobTitle",
-					"value": "Employee"
+					"value": "employee"
 				}
 			]
 		},
@@ -317,7 +317,7 @@
 					"ownerId": "337984659206412898",
 					"ownerType": "individual",
 					"sourceName": "jobTitle",
-					"value": "Employee"
+					"value": "employee"
 				}
 			]
 		},
@@ -523,7 +523,7 @@
 					"ownerId": "337984659206412343",
 					"ownerType": "individual",
 					"sourceName": "jobTitle",
-					"value": "Employee"
+					"value": "employee"
 				}
 			]
 		},

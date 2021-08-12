@@ -56,7 +56,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.hamcrest.Matchers;
@@ -374,102 +373,6 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 			new Long[] {402139267512234420L, 402139268847589064L},
 			Matchers.arrayContainingInAnyOrder(
 				organizationIds.toArray(new Long[0])));
-	}
-
-	@Test
-	public void testBuildIndividualsQueryBuilder() {
-		QueryBuilder queryBuilder = _individualDog.buildIndividualsQueryBuilder(
-			null, "(((demographics/age/value gt '50')))", false);
-
-		JSONAssert.assertEquals(
-			JSONUtil.put(
-				"bool",
-				JSONUtil.put(
-					"adjust_pure_negative", true
-				).put(
-					"boost", 1.0
-				).put(
-					"filter",
-					JSONUtil.putAll(
-						JSONUtil.put(
-							"exists",
-							JSONUtil.put(
-								"boost", 1.0
-							).put(
-								"field", "demographics.email"
-							)),
-						JSONUtil.put(
-							"range",
-							JSONUtil.put(
-								"demographics.age.value",
-								JSONUtil.put(
-									"boost", 1.0
-								).put(
-									"from", "50"
-								).put(
-									"include_lower", false
-								).put(
-									"include_upper", true
-								))))
-				)),
-			new JSONObject(queryBuilder.toString()), false);
-
-		queryBuilder = _individualDog.buildIndividualsQueryBuilder(
-			null, "(((demographics/age/value gt '50')))", true);
-
-		JSONAssert.assertEquals(
-			JSONUtil.put(
-				"bool",
-				JSONUtil.put(
-					"filter",
-					JSONUtil.put(
-						JSONUtil.put(
-							"range",
-							JSONUtil.put(
-								"demographics.age.value",
-								JSONUtil.put(
-									"boost", 1.0
-								).put(
-									"from", "50"
-								).put(
-									"include_lower", false
-								).put(
-									"include_upper", true
-								)))))),
-			new JSONObject(queryBuilder.toString()), false);
-
-		queryBuilder = _individualDog.buildIndividualsQueryBuilder(
-			1234L, "(((demographics/age/value gt '50')))", true);
-
-		JSONAssert.assertEquals(
-			JSONUtil.put(
-				"bool",
-				JSONUtil.put(
-					"filter",
-					JSONUtil.putAll(
-						JSONUtil.put(
-							"range",
-							JSONUtil.put(
-								"demographics.age.value",
-								JSONUtil.put(
-									"boost", 1.0
-								).put(
-									"from", "50"
-								).put(
-									"include_lower", false
-								).put(
-									"include_upper", true
-								))),
-						JSONUtil.put(
-							"term",
-							JSONUtil.put(
-								"channelIds",
-								JSONUtil.put(
-									"boost", 1.0
-								).put(
-									"value", 1234
-								)))))),
-			new JSONObject(queryBuilder.toString()), false);
 	}
 
 	@ElasticsearchIndex(

@@ -120,9 +120,9 @@ public class IndividualSegmentsRestControllerTest
 		SegmentDTO segmentDTO = _individualSegmentsRestController.getSegmentDTO(
 			segment.getId(), "referenced-objects");
 
-		Map<String, JSONObject> embedded = segmentDTO.getEmbedded();
+		Map<String, Object> embedded = segmentDTO.getEmbedded();
 
-		JSONObject referencedObjectsJSONObject = embedded.get(
+		JSONObject referencedObjectsJSONObject = (JSONObject)embedded.get(
 			"referenced-objects");
 
 		Assert.assertThat(

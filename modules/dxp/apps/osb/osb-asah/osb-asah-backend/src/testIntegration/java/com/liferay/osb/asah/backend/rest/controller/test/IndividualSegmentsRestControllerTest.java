@@ -16,6 +16,8 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.dto.MembershipChangeDTO;
+import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.IndividualSegmentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
@@ -30,6 +32,8 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+
+import java.util.Map;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -146,6 +150,66 @@ public class IndividualSegmentsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
+		name = "accounts", resourcePath = "accounts_3.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "fields", resourcePath = "fields_3.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individual-segments",
+		resourcePath = "individual_segments_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "membership-changes", resourcePath = "membership_changes_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testExpandAccountNames() throws Exception {
+		PageDTO<MembershipChangeDTO> membershipChangeDTOsPageDTOs =
+			_individualSegmentsRestController.getMembershipChangeDTOsPageDTOs(
+				346306743994746064L, "account-names", null, 0, 10, null);
+
+		JSONObject membershipChangesJSONObject = _objectMapper.convertValue(
+			membershipChangeDTOsPageDTOs, JSONObject.class);
+
+		JSONObject embeddedJSONObject =
+			membershipChangesJSONObject.getJSONObject("_embedded");
+
+		JSONArray membershipChangesJSONArray = embeddedJSONObject.getJSONArray(
+			"membership-changes");
+
+		Map<String, JSONObject> jsonObjectMap = JSONUtil.toJSONObjectMap(
+			membershipChangesJSONArray, "id");
+
+		JSONObject membershipChangeJSONObject = jsonObjectMap.get(
+			"346497473206675793");
+
+		embeddedJSONObject = membershipChangeJSONObject.getJSONObject(
+			"_embedded");
+
+		JSONArray accountNamesJSONArray = embeddedJSONObject.getJSONArray(
+			"account-names");
+
+		Assert.assertEquals(4, accountNamesJSONArray.length());
+		Assert.assertTrue(
+			JSONUtil.hasValue(accountNamesJSONArray, "Liferay, Inc."));
+		Assert.assertTrue(
+			JSONUtil.hasValue(accountNamesJSONArray, "Nozomi Project"));
+		Assert.assertTrue(
+			JSONUtil.hasValue(accountNamesJSONArray, "The Space Program"));
+		Assert.assertTrue(
+			JSONUtil.hasValue(
+				accountNamesJSONArray, "The World's Foremost Chess Club"));
+	}
+
+	@ElasticsearchIndex(
 		name = "accounts", resourcePath = "accounts_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -194,9 +258,10 @@ public class IndividualSegmentsRestControllerTest {
 
 		// Include anonymous users
 
-		JSONObject individualsJSONObject = new JSONObject(
-			_individualSegmentsRestController.getIndividuals(
-				"327968823603500666", null, true, 0, 20, null));
+		JSONObject individualsJSONObject = _objectMapper.convertValue(
+			_individualSegmentsRestController.getIndividualDTOsPageDTOs(
+				327968823603500666L, null, true, 0, 20, null),
+			JSONObject.class);
 
 		JSONObject embeddedJSONObject = individualsJSONObject.getJSONObject(
 			"_embedded");
@@ -208,9 +273,10 @@ public class IndividualSegmentsRestControllerTest {
 
 		// Does not include anonymous users
 
-		individualsJSONObject = new JSONObject(
-			_individualSegmentsRestController.getIndividuals(
-				"327968823603500666", null, false, 0, 20, null));
+		individualsJSONObject = _objectMapper.convertValue(
+			_individualSegmentsRestController.getIndividualDTOsPageDTOs(
+				327968823603500666L, null, false, 0, 20, null),
+			JSONObject.class);
 
 		embeddedJSONObject = individualsJSONObject.getJSONObject("_embedded");
 
@@ -248,9 +314,10 @@ public class IndividualSegmentsRestControllerTest {
 
 		// Include anonymous users
 
-		JSONObject membershipChangesJSONObject = new JSONObject(
-			_individualSegmentsRestController.getMembershipChanges(
-				"327968823603500666", null, null, 0, 20, null));
+		JSONObject membershipChangesJSONObject = _objectMapper.convertValue(
+			_individualSegmentsRestController.getMembershipChangeDTOsPageDTOs(
+				327968823603500666L, null, null, 0, 20, null),
+			JSONObject.class);
 
 		JSONObject embeddedJSONObject =
 			membershipChangesJSONObject.getJSONObject("_embedded");

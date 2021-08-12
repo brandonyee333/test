@@ -1,0 +1,54 @@
+[
+	{
+		"context": "organization",
+		"dataSourceId": "346306699042460013",
+		"dataSourceName": "Test Data Source 1",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldType": "Text",
+		"id": "357046440232501098",
+		"name": "accountName",
+		"ownerId": "346306769708391202",
+		"ownerType": "account",
+		"sourceName": "Name",
+		"value": "Liferay, Inc."
+	},
+	{
+		"context": "organization",
+		"dataSourceId": "346306699042460013",
+		"dataSourceName": "Test Data Source 1",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldType": "Text",
+		"id": "357046440232501088",
+		"name": "accountName",
+		"ownerId": "346306745597466890",
+		"ownerType": "account",
+		"sourceName": "Name",
+		"value": "The Space Program"
+	},
+	{
+		"context": "organization",
+		"dataSourceId": "346306699042460013",
+		"dataSourceName": "Test Data Source 1",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldType": "Text",
+		"id": "357046440232501078",
+		"name": "accountName",
+		"ownerId": "346306741766310654",
+		"ownerType": "account",
+		"sourceName": "Name",
+		"value": "The World's Foremost Chess Club"
+	},
+	{
+		"context": "organization",
+		"dataSourceId": "346308771486495553",
+		"dataSourceName": "Test Data Source 2",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldType": "Text",
+		"id": "357046440232501068",
+		"name": "accountName",
+		"ownerId": "346308947223203070",
+		"ownerType": "account",
+		"sourceName": "Name",
+		"value": "Nozomi Project"
+	}
+]

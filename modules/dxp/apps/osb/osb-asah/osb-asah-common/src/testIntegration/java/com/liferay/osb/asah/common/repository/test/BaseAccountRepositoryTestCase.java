@@ -24,7 +24,9 @@ import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -32,8 +34,6 @@ import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -159,14 +159,13 @@ public abstract class BaseAccountRepositoryTestCase
 
 		segmentRepository.deleteAll();
 
+		_fieldMappingRepository.deleteAll();
+
 		_channelRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
-		fieldRepository.deleteAll();
 
-		elasticsearchInvoker.delete(
-			"field-mappings", QueryBuilders.matchAllQuery());
-		elasticsearchInvoker.delete(
-			"individuals", QueryBuilders.matchAllQuery());
+		fieldRepository.deleteAll();
+		individualRepository.deleteAll();
 	}
 
 	@Test
@@ -178,7 +177,7 @@ public abstract class BaseAccountRepositoryTestCase
 	}
 
 	@Test
-	public void testGetDistributionAccounts() throws Exception {
+	public void testGetAccountDistributions() throws Exception {
 		List<Distribution> distributions =
 			accountRepository.getAccountDistributions(
 				1L, "numberOfEmployees", "Number", null, 366637689379787789L,
@@ -324,6 +323,55 @@ public abstract class BaseAccountRepositoryTestCase
 		dataSource.setIsNew(true);
 
 		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(331238757269547423L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(351238757269547424L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(351238757269547425L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(366588399828298918L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(366588441118531472L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(366588489711802687L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(366573382114568984L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
 	}
 
 	@Autowired
@@ -333,7 +381,13 @@ public abstract class BaseAccountRepositoryTestCase
 	protected ElasticsearchInvoker elasticsearchInvoker;
 
 	@Autowired
+	protected FieldMappingRepository fieldMappingRepository;
+
+	@Autowired
 	protected FieldRepository fieldRepository;
+
+	@Autowired
+	protected IndividualRepository individualRepository;
 
 	@Autowired
 	protected SegmentRepository segmentRepository;
@@ -353,5 +407,8 @@ public abstract class BaseAccountRepositoryTestCase
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
 
 }

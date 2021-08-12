@@ -17,8 +17,12 @@ package com.liferay.osb.asah.common.repository.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.entity.FieldMapping;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -26,6 +30,7 @@ import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -49,7 +54,7 @@ public class AccountRepositoryTest extends BaseAccountRepositoryTestCase {
 
 	@Override
 	@Test
-	public void testGetDistributionAccounts() throws Exception {
+	public void testGetAccountDistributions() throws Exception {
 		setUpDataSources();
 
 		JSONArray jsonArray = new JSONArray(
@@ -59,7 +64,14 @@ public class AccountRepositoryTest extends BaseAccountRepositoryTestCase {
 						"/field_mappings.json",
 					AccountRepositoryTest.class)));
 
-		elasticsearchInvoker.add("field-mappings", jsonArray);
+		for (int i = 0; i < jsonArray.length(); i++) {
+			FieldMapping fieldMapping = _objectMapper.convertValue(
+				jsonArray.getJSONObject(i), FieldMapping.class);
+
+			fieldMapping.setIsNew(true);
+
+			fieldMappingRepository.save(fieldMapping);
+		}
 
 		jsonArray = new JSONArray(
 			TestExecutionListenerUtil.replaceVariables(
@@ -120,9 +132,51 @@ public class AccountRepositoryTest extends BaseAccountRepositoryTestCase {
 						"/individuals.json",
 					AccountRepositoryTest.class)));
 
-		elasticsearchInvoker.add("individuals", jsonArray);
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-		super.testGetDistributionAccounts();
+			Individual individual = _objectMapper.convertValue(
+				jsonObject, Individual.class);
+
+			Long individualId = individual.getId();
+
+			individual.setIsNew(true);
+
+			Set<DataSourceIndividual> dataSourceIndividuals = new HashSet<>();
+
+			JSONArray dataSourceAccountPKsJSONArray = jsonObject.optJSONArray(
+				"dataSourceAccountPKs");
+
+			for (int j = 0; j < dataSourceAccountPKsJSONArray.length(); j++) {
+				JSONObject dataSourceAccountPKJSONObject =
+					dataSourceAccountPKsJSONArray.optJSONObject(j);
+
+				if (dataSourceAccountPKJSONObject == null) {
+					continue;
+				}
+
+				DataSourceIndividual dataSourceIndividual =
+					new DataSourceIndividual();
+
+				dataSourceIndividual.setAccountPKs(
+					JSONUtil.toStringSet(
+						dataSourceAccountPKJSONObject.getJSONArray(
+							"accountPKs")));
+				dataSourceIndividual.setDataSourceId(
+					Long.valueOf(
+						dataSourceAccountPKJSONObject.getString(
+							"dataSourceId")));
+				dataSourceIndividual.setIndividualId(individualId);
+
+				dataSourceIndividuals.add(dataSourceIndividual);
+			}
+
+			individual.setDataSourceIndividuals(dataSourceIndividuals);
+
+			individualRepository.save(individual);
+		}
+
+		super.testGetAccountDistributions();
 	}
 
 	@Autowired

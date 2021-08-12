@@ -21,12 +21,14 @@ import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 
 import java.util.Collections;
 import java.util.Date;
@@ -44,7 +46,10 @@ import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
+
+import org.yaml.snakeyaml.util.ArrayUtils;
 
 /**
  * @author Rachael Koestartyo
@@ -196,11 +201,21 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		segmentRepository.deleteAll();
 
+		_fieldMappingRepository.deleteAll();
+
 		_channelRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
-		_fieldMappingRepository.deleteAll();
+
 		fieldRepository.deleteAll();
 		individualRepository.deleteAll();
+	}
+
+	@Test
+	public void testCountIndividuals() {
+		Assert.assertEquals(
+			1,
+			individualRepository.countIndividuals(
+				11L, null, false, _segmentId));
 	}
 
 	@Test
@@ -209,6 +224,15 @@ public abstract class BaseIndividualRepositoryTestCase
 			individualRepository.existsByChannelIdAndFilterStringAndId(
 				11L, "(demographics/field3/value eq 'field three')",
 				_individualId));
+	}
+
+	@Test
+	public void testExistsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId() {
+		Assert.assertTrue(
+			individualRepository.
+				existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
+					11L, "(demographics/field3/value eq 'field three')", false,
+					_individualId));
 	}
 
 	@Test
@@ -317,6 +341,71 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
+	public void testGetIndividualDistributions() throws Exception {
+		List<Distribution> distributions =
+			individualRepository.getIndividualDistributions(
+				"age", "Number", null,
+				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("values"))));
+
+		_assertEquals(
+			distributions.get(0), 1,
+			ArrayUtils.toUnmodifiableList(new Integer[] {20, 28}));
+		_assertEquals(
+			distributions.get(1), 0,
+			ArrayUtils.toUnmodifiableList(new Integer[] {28, 36}));
+		_assertEquals(
+			distributions.get(2), 1,
+			ArrayUtils.toUnmodifiableList(new Integer[] {36, 44}));
+		_assertEquals(
+			distributions.get(3), 0,
+			ArrayUtils.toUnmodifiableList(new Integer[] {44, 52}));
+		_assertEquals(
+			distributions.get(4), 0,
+			ArrayUtils.toUnmodifiableList(new Integer[] {52, 60}));
+		_assertEquals(
+			distributions.get(5), 1,
+			ArrayUtils.toUnmodifiableList(new Integer[] {60, 68}));
+		_assertEquals(
+			distributions.get(6), 0,
+			ArrayUtils.toUnmodifiableList(new Integer[] {68, 76}));
+		_assertEquals(
+			distributions.get(7), 0,
+			ArrayUtils.toUnmodifiableList(new Integer[] {76, 84}));
+		_assertEquals(
+			distributions.get(8), 0,
+			ArrayUtils.toUnmodifiableList(new Integer[] {84, 92}));
+		_assertEquals(
+			distributions.get(9), 1,
+			ArrayUtils.toUnmodifiableList(new Integer[] {92, 100}));
+
+		distributions = individualRepository.getIndividualDistributions(
+			"jobTitle", "Text", null,
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("name"))));
+
+		_assertEquals(
+			distributions.get(0), 3,
+			ArrayUtils.toUnmodifiableList(new String[] {"employee"}));
+	}
+
+	@Test
+	public void testSearchIndividuals1() {
+		List<Individual> individuals = individualRepository.searchIndividuals(
+			"(demographics/email/value eq 'test@liferay.com')",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("activitiesCount"))));
+
+		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+	}
+
+	@Test
+	public void testSearchIndividuals2() {
+		List<Individual> individuals = individualRepository.searchIndividuals(
+			11L, null, false, null,
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+	}
+
+	@Test
 	public void testUpdateAssociatedIds() {
 		individualRepository.updateAssociatedIds(
 			"organizationIds", Collections.singleton(234L), _individualId);
@@ -335,6 +424,67 @@ public abstract class BaseIndividualRepositoryTestCase
 		return individualRepository;
 	}
 
+	protected void setUpDataSources() {
+		Channel channel = new Channel();
+
+		channel.setId(1L);
+		channel.setIsNew(true);
+
+		_channelRepository.save(channel);
+
+		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(331238757269547423L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(351238757269547424L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(351238757269547425L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(366588399828298918L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(366588441118531472L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(366588489711802687L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+
+		dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(366573382114568984L);
+		dataSource.setIsNew(true);
+
+		_dataSourceRepository.save(dataSource);
+	}
+
+	@Autowired
+	protected FieldMappingRepository fieldMappingRepository;
+
 	@Autowired
 	protected FieldRepository fieldRepository;
 
@@ -343,6 +493,14 @@ public abstract class BaseIndividualRepositoryTestCase
 
 	@Autowired
 	protected SegmentRepository segmentRepository;
+
+	private void _assertEquals(
+		Distribution distribution, int expectedCount,
+		List<Object> expectedValues) {
+
+		Assert.assertEquals(expectedCount, (int)distribution.getCount());
+		Assert.assertEquals(expectedValues, distribution.getValues());
+	}
 
 	@Autowired
 	private ChannelRepository _channelRepository;
