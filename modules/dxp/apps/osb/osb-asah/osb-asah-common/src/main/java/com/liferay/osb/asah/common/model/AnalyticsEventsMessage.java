@@ -64,7 +64,7 @@ public class AnalyticsEventsMessage implements Serializable {
 	}
 
 	@NotEmpty
-	public Map<String, Object> getContext() {
+	public Map<String, String> getContext() {
 		return _context;
 	}
 
@@ -116,7 +116,7 @@ public class AnalyticsEventsMessage implements Serializable {
 		_clientIP = clientIP;
 	}
 
-	public void setContext(Map<String, Object> context) {
+	public void setContext(Map<String, String> context) {
 		_context = context;
 	}
 
@@ -236,7 +236,7 @@ public class AnalyticsEventsMessage implements Serializable {
 
 	private String _channelId;
 	private String _clientIP;
-	private Map<String, Object> _context = Collections.emptyMap();
+	private Map<String, String> _context = Collections.emptyMap();
 	private Date _createDate = new Date();
 	private String _dataSourceId;
 	private List<Event> _events = Collections.emptyList();

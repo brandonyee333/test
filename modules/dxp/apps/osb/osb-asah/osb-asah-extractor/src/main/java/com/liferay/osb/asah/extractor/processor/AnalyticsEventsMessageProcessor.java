@@ -164,13 +164,13 @@ public class AnalyticsEventsMessageProcessor {
 
 		Map<String, String> context = new HashMap<>();
 
-		Map<String, Object> analyticsEventsMessageContext =
+		Map<String, String> analyticsEventsMessageContext =
 			analyticsEventsMessage.getContext();
 
-		for (Map.Entry<String, Object> entry :
+		for (Map.Entry<String, String> entry :
 				analyticsEventsMessageContext.entrySet()) {
 
-			context.put(entry.getKey(), StringUtil.get(entry.getValue()));
+			context.put(entry.getKey(), entry.getValue());
 		}
 
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
