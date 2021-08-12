@@ -22,6 +22,9 @@ import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.net.URLDecoder;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.springframework.stereotype.Component;
@@ -41,10 +44,17 @@ public class PagesUpgradeStep implements UpgradeStep {
 		JSONArrayIterator.of(
 			"pages", _cerebroInfoElasticsearchInvoker,
 			pageJSONObject -> {
-				pageJSONObject.put(
-					"searchTerm",
-					URLDecoder.decode(
-						pageJSONObject.getString("searchTerm"), "UTF-8"));
+				String searchTerm = pageJSONObject.getString("searchTerm");
+
+				try {
+					searchTerm = URLDecoder.decode(searchTerm, "UTF-8");
+				}
+				catch (Exception exception) {
+					_log.error(
+						"Unable to decode search term" + searchTerm, exception);
+				}
+
+				pageJSONObject.put("searchTerm", searchTerm);
 
 				return elasticsearchBulkRequestBuilder.replace(
 					"pages", pageJSONObject);
@@ -53,6 +63,8 @@ public class PagesUpgradeStep implements UpgradeStep {
 			QueryBuilders.existsQuery("searchTerm")
 		).iterate();
 	}
+
+	private static final Log _log = LogFactory.getLog(PagesUpgradeStep.class);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
