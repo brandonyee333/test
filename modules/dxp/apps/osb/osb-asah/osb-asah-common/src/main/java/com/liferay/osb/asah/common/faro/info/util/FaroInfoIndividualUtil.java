@@ -14,25 +14,17 @@
 
 package com.liferay.osb.asah.common.faro.info.util;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.json.JSONUtil;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.collections.CollectionUtils;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,137 +33,6 @@ import org.json.JSONObject;
  * @author Rachael Koestartyo
  */
 public class FaroInfoIndividualUtil {
-
-	public static Map<Long, Set<String>> getAccountPKs(
-		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs) {
-
-		if (CollectionUtils.isEmpty(dataSourceAccountPKs)) {
-			return Collections.emptyMap();
-		}
-
-		Map<Long, Set<String>> accountPKs = new HashMap<>();
-
-		for (Individual.DataSourceAccountPK dataSourceAccountPK :
-				dataSourceAccountPKs) {
-
-			accountPKs.put(
-				dataSourceAccountPK.getDataSourceId(),
-				dataSourceAccountPK.getAccountPKs());
-		}
-
-		return accountPKs;
-	}
-
-	public static Map<String, JSONObject> getIndividualAccountNamesJSONObjects(
-		ElasticsearchInvoker elasticsearchInvoker,
-		JSONArray individualsJSONArray) {
-
-		Map<String, JSONObject> individualAccountNamesJSONObjects =
-			new HashMap<>();
-
-		Map<String, JSONObject> individualAccountsJSONObjects =
-			getIndividualAccountsJSONObjects(
-				elasticsearchInvoker, individualsJSONArray);
-
-		for (int i = 0; i < individualsJSONArray.length(); i++) {
-			Set<String> accountNames = new HashSet<>();
-
-			JSONObject individualJSONObject =
-				individualsJSONArray.getJSONObject(i);
-
-			JSONObject individualAccountsJSONObject =
-				individualAccountsJSONObjects.get(
-					individualJSONObject.getString("id"));
-
-			JSONArray accountsJSONArray =
-				individualAccountsJSONObject.getJSONArray("accounts");
-
-			for (int j = 0; j < accountsJSONArray.length(); j++) {
-				JSONObject accountJSONObject = accountsJSONArray.getJSONObject(
-					j);
-
-				Object accountName = _getFieldValue(
-					accountJSONObject.getJSONObject("organization"),
-					"accountName");
-
-				if (accountName == null) {
-					continue;
-				}
-
-				accountNames.add((String)accountName);
-			}
-
-			individualAccountNamesJSONObjects.put(
-				individualJSONObject.getString("id"),
-				JSONUtil.put("account-names", new JSONArray(accountNames)));
-		}
-
-		return individualAccountNamesJSONObjects;
-	}
-
-	public static Map<String, JSONObject> getIndividualAccountsJSONObjects(
-		ElasticsearchInvoker elasticsearchInvoker,
-		JSONArray individualsJSONArray) {
-
-		Map<String, JSONObject> individualAccountsJSONObjects = new HashMap<>();
-
-		Map<String, Set<String>> individualAccountPKs =
-			_getIndividualAccountPKs(individualsJSONArray);
-
-		if (individualAccountPKs.isEmpty()) {
-			return individualAccountsJSONObjects;
-		}
-
-		Map<String, JSONObject> accountJSONObjects = new HashMap<>();
-
-		Collection<Set<String>> values = individualAccountPKs.values();
-
-		Stream<Set<String>> stream = values.stream();
-
-		JSONArray accountJSONArray = elasticsearchInvoker.get(
-			"accounts",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery(
-					"organization.accountId.value",
-					stream.flatMap(
-						Set::stream
-					).collect(
-						Collectors.toSet()
-					))));
-
-		for (int i = 0; i < accountJSONArray.length(); i++) {
-			JSONObject accountJSONObject = accountJSONArray.getJSONObject(i);
-
-			Object accountId = _getFieldValue(
-				accountJSONObject.getJSONObject("organization"), "accountId");
-
-			if (accountId == null) {
-				continue;
-			}
-
-			accountJSONObjects.put((String)accountId, accountJSONObject);
-		}
-
-		for (Map.Entry<String, Set<String>> entry :
-				individualAccountPKs.entrySet()) {
-
-			JSONArray jsonArray = new JSONArray();
-
-			for (String accountPK : entry.getValue()) {
-				JSONObject accountJSONObject = accountJSONObjects.get(
-					accountPK);
-
-				if (accountJSONObject != null) {
-					jsonArray.put(accountJSONObject);
-				}
-			}
-
-			individualAccountsJSONObjects.put(
-				entry.getKey(), JSONUtil.put("accounts", jsonArray));
-		}
-
-		return individualAccountsJSONObjects;
-	}
 
 	public static Map<String, String> getIndividualCustomFields(
 		JSONObject customJSONObject) {
@@ -375,28 +236,6 @@ public class FaroInfoIndividualUtil {
 		return new JSONArray();
 	}
 
-	public static Map<String, JSONArray> getIndividualPKsJSONArrays(
-		JSONArray dataSourceIndividualPKsJSONArray) {
-
-		if (dataSourceIndividualPKsJSONArray == null) {
-			return Collections.emptyMap();
-		}
-
-		Map<String, JSONArray> individualPKsJSONArrays = new HashMap<>();
-
-		for (int i = 0; i < dataSourceIndividualPKsJSONArray.length(); i++) {
-			JSONObject dataSourceIndividualPKsJSONObject =
-				dataSourceIndividualPKsJSONArray.getJSONObject(i);
-
-			individualPKsJSONArrays.put(
-				dataSourceIndividualPKsJSONObject.getString("dataSourceId"),
-				dataSourceIndividualPKsJSONObject.getJSONArray(
-					"individualPKs"));
-		}
-
-		return individualPKsJSONArrays;
-	}
-
 	public static boolean isKnownIndividual(Individual individual) {
 		Set<Field> fields = individual.getFields();
 
@@ -434,37 +273,6 @@ public class FaroInfoIndividualUtil {
 		}
 
 		return fieldJSONObject.opt("value");
-	}
-
-	private static Map<String, Set<String>> _getIndividualAccountPKs(
-		JSONArray individualsJSONArray) {
-
-		Map<String, Set<String>> individualsAccountPKs = new HashMap<>();
-
-		for (int i = 0; i < individualsJSONArray.length(); i++) {
-			Set<String> accountPKs = new HashSet<>();
-
-			JSONObject individualJSONObject =
-				individualsJSONArray.getJSONObject(i);
-
-			JSONArray dataSourceAccountPKsJSONArray =
-				individualJSONObject.getJSONArray("dataSourceAccountPKs");
-
-			for (int j = 0; j < dataSourceAccountPKsJSONArray.length(); j++) {
-				JSONObject dataSourceAccountPKsJSONObject =
-					dataSourceAccountPKsJSONArray.getJSONObject(j);
-
-				accountPKs.addAll(
-					JSONUtil.toStringSet(
-						dataSourceAccountPKsJSONObject.optJSONArray(
-							"accountPKs")));
-			}
-
-			individualsAccountPKs.put(
-				individualJSONObject.getString("id"), accountPKs);
-		}
-
-		return individualsAccountPKs;
 	}
 
 }
