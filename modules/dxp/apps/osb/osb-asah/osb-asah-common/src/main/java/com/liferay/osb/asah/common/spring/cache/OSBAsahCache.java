@@ -112,14 +112,19 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 			_caffeineCache.clear();
 
 			if (_log.isDebugEnabled()) {
-				_log.debug("Caffeine cache cleared");
+				_log.debug(
+					String.format(
+						"Caffeine cache with name %s cleared", _name));
 			}
 		}
 		else {
 			_caffeineCache.evict(key);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(String.format("Caffeine cache key %s cleared", key));
+				_log.debug(
+					String.format(
+						"Caffeine cache with name %s and key %s cleared", _name,
+						key));
 			}
 		}
 	}
@@ -130,7 +135,10 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 
 		if (valueWrapper != null) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Got value from Caffeine with cache key " + key);
+				_log.debug(
+					String.format(
+						"Got value %s from Caffeine with name %s and key %s",
+						valueWrapper.get(), _name, key));
 			}
 
 			return valueWrapper.get();
@@ -140,7 +148,10 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 
 		if (valueWrapper != null) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Got value from Redis with cache key " + key);
+				_log.debug(
+					String.format(
+						"Got value %s from Redis with name %s and key %s",
+						valueWrapper.get(), _name, key));
 			}
 
 			_caffeineCache.put(key, valueWrapper.get());
@@ -158,7 +169,8 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 			_sendRedisMessage(new OSBAsahCacheMessage(_name, null));
 
 			if (_log.isDebugEnabled()) {
-				_log.debug("Redis cache cleared");
+				_log.debug(
+					String.format("Redis cache with name %s cleared", _name));
 			}
 		}
 		else {
@@ -167,12 +179,22 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 			_sendRedisMessage(new OSBAsahCacheMessage(_name, key));
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(String.format("Redis cache key %s cleared", key));
+				_log.debug(
+					String.format(
+						"Redis cache with name %s and key %s cleared", _name,
+						key));
 			}
 		}
 	}
 
 	private void _put(Object key, Object value) {
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				String.format(
+					"Put cache with name %s, key %s and value %s", _name, key,
+					value));
+		}
+
 		_redisCache.put(key, value);
 
 		_sendRedisMessage(new OSBAsahCacheMessage(_name, key));
