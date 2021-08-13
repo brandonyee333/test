@@ -80,8 +80,8 @@ public class DDLRecordSearchTest {
 		DDLRecordSet recordSet = addRecordSet();
 
 		_recordTestHelper = new DDLRecordTestHelper(
-			_user.getUserId(), _group, recordSet);
-		_searchContext = getSearchContext(_group, _user, recordSet);
+			_group, recordSet, _user.getUserId());
+		_searchContext = getSearchContext(_group, recordSet, _user);
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class DDLRecordSearchTest {
 
 		DDLRecordSet recordSet = recordSetTestHelper.addRecordSet(ddmStructure);
 
-		SearchContext searchContext = getSearchContext(group, user, recordSet);
+		SearchContext searchContext = getSearchContext(group, recordSet, user);
 
 		DDLRecordTestHelper recordTestHelper = new DDLRecordTestHelper(
 			group, recordSet);
@@ -257,7 +257,7 @@ public class DDLRecordSearchTest {
 	}
 
 	protected static SearchContext getSearchContext(
-			Group group, User user, DDLRecordSet recordSet)
+			Group group, DDLRecordSet recordSet, User user)
 		throws Exception {
 
 		SearchContext searchContext = SearchContextTestUtil.getSearchContext(
@@ -293,12 +293,12 @@ public class DDLRecordSearchTest {
 
 	protected DDLRecordSet addRecordSet() throws Exception {
 		DDLRecordSetTestHelper recordSetTestHelper = new DDLRecordSetTestHelper(
-			_user.getUserId(), _group);
+			_group, _user.getUserId());
 
 		DDMStructureTestHelper ddmStructureTestHelper =
 			new DDMStructureTestHelper(
-				_user.getUserId(),
-				PortalUtil.getClassNameId(DDLRecordSet.class), _group);
+				PortalUtil.getClassNameId(DDLRecordSet.class), _group,
+				_user.getUserId());
 
 		DDMStructure ddmStructure = ddmStructureTestHelper.addStructure(
 			createDDMForm(), StorageType.JSON.toString());
