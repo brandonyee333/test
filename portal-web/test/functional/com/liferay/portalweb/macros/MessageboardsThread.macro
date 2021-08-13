@@ -395,6 +395,33 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
+	macro editReplyViaAP {
+		MouseOver(locator1 = "AP#BODY");
+
+		Click.waitForMenuToggleJSClick(
+			key_assetTitle = "${assetTitle}",
+			locator1 = "AP#ASSET_ABSTRACT_VERTICAL_ELLIPSIS");
+
+		AssertClick.assertPartialTextClickAt(
+			key_menuItem = "Edit",
+			locator1 = "MenuItem#ANY_MENU_ITEM",
+			value1 = "Edit");
+
+		IFrame.selectDialogFrame();
+
+		Click(locator1 = "TextInput#SUBJECT");
+
+		Type(
+			locator1 = "TextInput#SUBJECT",
+			value1 = "${threadSubject}");
+
+		Type.typeCKEditorWaitForCKEditor(
+			locator1 = "CKEditor#BODY_FIELD",
+			value1 = "${threadBody}");
+
+		Click(locator1 = "Button#PUBLISH");
+	}
+
 	macro editViaMyPosts {
 		AssertClick(
 			locator1 = "MessageBoards#NAVIGATION_MY_POSTS",
