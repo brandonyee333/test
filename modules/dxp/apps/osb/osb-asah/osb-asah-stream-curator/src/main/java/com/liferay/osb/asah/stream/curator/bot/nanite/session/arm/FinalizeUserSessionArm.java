@@ -18,15 +18,9 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchDump;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
-import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.storage.Storage;
-import com.liferay.osb.asah.common.storage.StorageConfiguration;
-import com.liferay.osb.asah.common.storage.StorageFactory;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.Instant;
@@ -46,10 +40,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.PreDestroy;
-
-import org.apache.avro.Schema;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -71,7 +61,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -80,14 +69,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class FinalizeUserSessionArm {
 
-	public void processSession(UserSession userSession) throws Exception {
+	public void processSession(UserSession userSession) {
 		if (userSession.getCompleted()) {
 			_clearPageSessionAttributes(userSession);
 		}
 
 		updateActivitiesAndAssets(userSession);
-
-		_storeUserSessionAnalyticsEvents(userSession);
 
 		_deleteUserSessionAnalyticsEvents(userSession);
 
@@ -124,14 +111,10 @@ public class FinalizeUserSessionArm {
 			));
 	}
 
-	public void processSessions(UserSession[] userSessions) throws Exception {
+	public void processSessions(UserSession[] userSessions) {
 		for (UserSession userSession : userSessions) {
 			processSession(userSession);
 		}
-
-		Storage storage = _getOrCreateStorage();
-
-		storage.flush();
 	}
 
 	public void updateActivitiesAndAssets(UserSession userSession) {
@@ -192,13 +175,6 @@ public class FinalizeUserSessionArm {
 		_cerebroInfoElasticsearchInvoker.deleteByQuery(
 			QueryBuilders.termQuery("sessionId", userSession.getId()), false,
 			"user-session-analytics-events");
-	}
-
-	@PreDestroy
-	private void _destroy() {
-		for (Storage storage : _storages.values()) {
-			storage.close();
-		}
 	}
 
 	private String _getCompleteReason(UserSession userSession) {
@@ -270,39 +246,6 @@ public class FinalizeUserSessionArm {
 		}
 
 		return exitPageJSONObject.getString("url");
-	}
-
-	private Storage _getOrCreateStorage() throws Exception {
-		Storage storage = _storages.get(ProjectIdThreadLocal.getProjectId());
-
-		if (storage != null) {
-			return storage;
-		}
-
-		StorageConfiguration.Builder builder = StorageConfiguration.builder(
-			StringUtils.replace(
-				_userSessionEventsStoragePathTemplate, "{projectId}",
-				ProjectIdThreadLocal.getProjectId()));
-
-		builder.fileFormat(StorageConfiguration.FileFormat.SNAPPY_PARQUET);
-
-		Schema.Parser parser = new Schema.Parser();
-
-		builder.fileSchema(
-			parser.parse(
-				ResourceUtil.readResourceToString(
-					"dependencies/user_session_event.avsc", getClass())));
-
-		builder.googleBucket(
-			StringUtils.replace(
-				_userSessionEventsBucketTemplate, "{region}",
-				System.getenv("LCP_PROJECT_CLUSTER")));
-
-		storage = _storageFactory.getStorage(builder.build());
-
-		_storages.put(ProjectIdThreadLocal.getProjectId(), storage);
-
-		return storage;
 	}
 
 	private Map<Pair<String, Date>, String> _getPageEventDateMap(
@@ -382,21 +325,6 @@ public class FinalizeUserSessionArm {
 		).collect(
 			Collectors.toList()
 		);
-	}
-
-	private void _storeUserSessionAnalyticsEvents(UserSession userSession)
-		throws Exception {
-
-		ElasticsearchDump.Builder builder = new ElasticsearchDump.Builder();
-
-		builder.from(
-			"user-session-analytics-events", _cerebroInfoElasticsearchInvoker,
-			QueryBuilders.termQuery("sessionId", userSession.getId()));
-		builder.to(_getOrCreateStorage());
-
-		ElasticsearchDump elasticsearchDump = builder.build();
-
-		elasticsearchDump.dump();
 	}
 
 	private void _updateActivities(UserSession userSession) {
@@ -752,20 +680,5 @@ public class FinalizeUserSessionArm {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private StorageFactory _storageFactory;
-
-	private final Map<String, Storage> _storages = new HashMap<>();
-
-	@Value(
-		"${osb.asah.user.session.events.google.bucket:analytics-cloud-session-events-{region}}"
-	)
-	private String _userSessionEventsBucketTemplate;
-
-	@Value(
-		"${osb.asah.user.session.events.storage.path:/storage/{projectId}/user_session_events.snappy.parquet}"
-	)
-	private String _userSessionEventsStoragePathTemplate;
 
 }
