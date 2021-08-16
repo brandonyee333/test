@@ -920,7 +920,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 	private List<Distribution> _getIndividualNumbersDistributions(
 		String fieldName, String filterString, Pageable pageable) {
 
-		AggregateFunction<Object> maxModifiedDateField = DSL.max(
+		AggregateFunction<Object> aggregateFunction = DSL.max(
 			DSL.field("modifiedDate"));
 		Field<Object> nameField = DSL.field("name");
 		Field<Object> ownerIdField = DSL.field("ownerId");
@@ -938,7 +938,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 
 		Table<Record> maxModifiedDateTable =
 			maxModifiedDateSelectSelectStep.select(
-				maxModifiedDateField.as("modifiedDate"),
+				aggregateFunction.as("modifiedDate"),
 				ownerIdField.as("ownerId")
 			).from(
 				"Field"
