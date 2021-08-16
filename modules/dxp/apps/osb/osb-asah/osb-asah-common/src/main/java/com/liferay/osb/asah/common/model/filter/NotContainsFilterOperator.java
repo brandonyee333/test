@@ -25,9 +25,9 @@ import org.jooq.Field;
 /**
  * @author Leslie Wong
  */
-public class NotContainsFilerOperator extends FilterOperator {
+public class NotContainsFilterOperator extends FilterOperator {
 
-	public NotContainsFilerOperator(
+	public NotContainsFilterOperator(
 		EventAttributeDefinition.DataType dataType, List<String> values) {
 
 		super(dataType, "notContains", values);
