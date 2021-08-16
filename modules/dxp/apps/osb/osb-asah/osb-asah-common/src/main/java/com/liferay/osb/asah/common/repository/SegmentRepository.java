@@ -36,9 +36,6 @@ import org.springframework.lang.Nullable;
 @Primary
 public interface SegmentRepository extends CrudRepository<Segment, Long> {
 
-	public long countAccountSegments(
-		@Nullable String filterString, @Nullable List<Long> segmentIds);
-
 	public long countByIdAfter(Long id);
 
 	public long countPreviewDisabledSegments(
@@ -47,7 +44,8 @@ public interface SegmentRepository extends CrudRepository<Segment, Long> {
 
 	public long countSegments(List<Long> channelIds, String filterString);
 
-	public long countSegments(String filterString, List<Long> segmentIds);
+	public long countSegments(
+		@Nullable String filterString, @Nullable List<Long> segmentIds);
 
 	@Modifying
 	public void deleteByChannelIdIn(@Param("channelIds") Set<Long> channelIds);
@@ -95,10 +93,6 @@ public interface SegmentRepository extends CrudRepository<Segment, Long> {
 		String apply, @Nullable String filterString, Pageable pageable,
 		@Nullable List<Long> segmentIds);
 
-	public List<Segment> searchAccountSegments(
-		@Nullable String filterString, Pageable pageable,
-		@Nullable List<Long> segmentIds);
-
 	public List<Segment> searchDynamicSegments(
 		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
 		String filterString, boolean includeAnonymousUsers, Pageable pageable,
@@ -119,7 +113,8 @@ public interface SegmentRepository extends CrudRepository<Segment, Long> {
 		Segment.Type type);
 
 	public List<Segment> searchSegments(
-		String filterString, List<Long> segmentIds, Pageable pageable);
+		@Nullable String filterString, @Nullable List<Long> segmentIds,
+		Pageable pageable);
 
 	public List<Segment> searchSegments(
 		String filter, String state, String status, Pageable pageable);

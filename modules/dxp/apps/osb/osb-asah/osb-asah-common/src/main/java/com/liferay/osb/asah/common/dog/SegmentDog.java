@@ -411,11 +411,11 @@ public class SegmentDog extends BaseFaroInfoDog {
 			page, size, SortUtil.getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
-			_segmentRepository.searchAccountSegments(
-				filterString, pageRequest,
-				_getIndividualSegmentIds(segment.getId())),
+			_segmentRepository.searchSegments(
+				filterString, _getIndividualSegmentIds(segment.getId()),
+				pageRequest),
 			pageRequest,
-			() -> _segmentRepository.countAccountSegments(
+			() -> _segmentRepository.countSegments(
 				filterString, _getIndividualSegmentIds(segment.getId())));
 	}
 
