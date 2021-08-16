@@ -73,15 +73,6 @@ public class ElasticsearchSegmentRepositoryImpl
 	implements SegmentRepository {
 
 	@Override
-	public long countAccountSegments(
-		@Nullable String filterString, @Nullable List<Long> segmentIds) {
-
-		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(),
-			_getSegmentsQueryBuilder(filterString, segmentIds));
-	}
-
-	@Override
 	public long countByIdAfter(Long id) {
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
@@ -445,24 +436,6 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	@Override
-	public List<Segment> searchAccountSegments(
-		@Nullable String filterString, Pageable pageable,
-		@Nullable List<Long> segmentIds) {
-
-		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_getSegmentsQueryBuilder(filterString, segmentIds));
-
-						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
-					})));
-	}
-
-	@Override
 	public List<Segment> searchDynamicSegments(
 		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
 		String filterString, boolean includeAnonymousUsers, Pageable pageable,
@@ -506,7 +479,7 @@ public class ElasticsearchSegmentRepositoryImpl
 				BoolQueryBuilderUtil.filter(
 					boolQueryBuilder
 				).filter(
-					QueryBuilders.termsQuery("status", "ACTIVE")
+					QueryBuilders.termQuery("status", "ACTIVE")
 				)
 			).should(
 				BoolQueryBuilderUtil.filter(
@@ -514,7 +487,7 @@ public class ElasticsearchSegmentRepositoryImpl
 				).filter(
 					QueryBuilders.termsQuery("filter", filterStrings)
 				).filter(
-					QueryBuilders.termsQuery("status", "INACTIVE")
+					QueryBuilders.termQuery("status", "INACTIVE")
 				)
 			);
 		}
@@ -666,8 +639,10 @@ public class ElasticsearchSegmentRepositoryImpl
 		}
 	}
 
+	@Override
 	public List<Segment> searchSegments(
-		String filterString, List<Long> segmentIds, Pageable pageable) {
+		@Nullable String filterString, @Nullable List<Long> segmentIds,
+		Pageable pageable) {
 
 		return toList(
 			new JSONArray(

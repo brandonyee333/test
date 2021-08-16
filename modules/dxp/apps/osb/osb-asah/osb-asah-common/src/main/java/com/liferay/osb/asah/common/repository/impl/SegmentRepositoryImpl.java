@@ -24,11 +24,13 @@ import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import org.jooq.Condition;
@@ -49,23 +51,6 @@ public class SegmentRepositoryImpl extends BaseRepository {
 
 	public SegmentRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
-	}
-
-	public long countAccountSegments(
-		@Nullable String filterString, @Nullable List<Long> segmentIds) {
-
-		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.selectCount();
-
-		return selectSelectStep.from(
-			"Segment"
-		).where(
-			_getConditions(filterString, segmentIds)
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
 	}
 
 	public long countPreviewDisabledSegments(
@@ -102,11 +87,21 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public long countSegments(String filterString, List<Long> segmentIds) {
+	public long countSegments(
+		@Nullable String filterString, @Nullable List<Long> segmentIds) {
 
-		// TODO
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
 
-		return 0;
+		return selectSelectStep.from(
+			"Segment"
+		).where(
+			_getConditions(filterString, segmentIds)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
 	}
 
 	public List<Transformation> getSegmentTransformations(
@@ -169,16 +164,105 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public List<Segment> searchAccountSegments(
-		@Nullable String filterString, Pageable pageable,
-		@Nullable List<Long> segmentIds) {
+	public List<Segment> searchDynamicSegments(
+		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
+		String filterString, boolean includeAnonymousUsers, Pageable pageable,
+		Set<Long> segmentIds) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(
+			DSL.field(
+				"type"
+			).eq(
+				Segment.Type.DYNAMIC.toString()
+			));
+
+		if (StringUtils.isNotEmpty(filterString)) {
+			conditions.add(
+				FilterStringToConditionConverter.convert(filterString));
+		}
+
+		if (CollectionUtils.isEmpty(dataSourceAccountPKs)) {
+			conditions.add(
+				DSL.not(
+					DSL.and(
+						DSL.field(
+							"filter"
+						).startsWith(
+							"((dataSourceAccountPKs/accountPKs eq '"
+						),
+						DSL.field(
+							"name"
+						).startsWith(
+							"Account: "
+						),
+						DSL.field(
+							"status"
+						).eq(
+							"INACTIVE"
+						))));
+		}
+		else {
+			Set<String> filterStrings = new HashSet<>();
+
+			for (Individual.DataSourceAccountPK dataSourceAccountPK :
+					dataSourceAccountPKs) {
+
+				Set<String> accountPKs = dataSourceAccountPK.getAccountPKs();
+
+				for (String accountPK : accountPKs) {
+					filterStrings.add(
+						"((dataSourceAccountPKs/accountPKs eq '" + accountPK +
+							"'))");
+				}
+			}
+
+			conditions.add(
+				DSL.or(
+					DSL.field(
+						"status"
+					).eq(
+						"ACTIVE"
+					),
+					DSL.and(
+						DSL.field(
+							"status"
+						).eq(
+							"INACTIVE"
+						),
+						DSL.field(
+							"filter"
+						).in(
+							filterStrings
+						))));
+		}
+
+		if (!includeAnonymousUsers) {
+			conditions.add(
+				DSL.not(
+					DSL.field(
+						"includeAnonymousUsers"
+					).eq(
+						false
+					)));
+		}
+
+		if (CollectionUtils.isNotEmpty(segmentIds)) {
+			conditions.add(
+				DSL.field(
+					"id"
+				).in(
+					segmentIds
+				));
+		}
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
 			"Segment"
 		).where(
-			_getConditions(filterString, segmentIds)
+			conditions
 		).orderBy(
 			getSortFields(
 				_getSortFieldNameConversionMap(), pageable.getSort(), null)
@@ -190,16 +274,6 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		).map(
 			record -> new Segment(record.intoMap())
 		);
-	}
-
-	public List<Segment> searchDynamicSegments(
-		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
-		String filterString, boolean includeAnonymousUsers, Pageable pageable,
-		Set<Long> segmentIds) {
-
-		// TODO
-
-		return Collections.emptyList();
 	}
 
 	public List<Segment> searchDynamicSegments(
@@ -293,11 +367,26 @@ public class SegmentRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Segment> searchSegments(
-		String filterString, List<Long> segmentIds, Pageable pageable) {
+		@Nullable String filterString, @Nullable List<Long> segmentIds,
+		Pageable pageable) {
 
-		// TODO
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return null;
+		return selectSelectStep.from(
+			"Segment"
+		).where(
+			_getConditions(filterString, segmentIds)
+		).orderBy(
+			getSortFields(
+				_getSortFieldNameConversionMap(), pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Segment(record.intoMap())
+		);
 	}
 
 	public List<Segment> searchSegments(
@@ -374,7 +463,7 @@ public class SegmentRepositoryImpl extends BaseRepository {
 
 		List<Condition> conditions = new ArrayList<>();
 
-		if ((segmentIds != null) && !segmentIds.isEmpty()) {
+		if (CollectionUtils.isNotEmpty(segmentIds)) {
 			conditions.add(
 				DSL.field(
 					"id"
@@ -383,7 +472,14 @@ public class SegmentRepositoryImpl extends BaseRepository {
 				));
 		}
 
-		conditions.add(FilterStringToConditionConverter.convert(filterString));
+		if (StringUtils.isNotEmpty(filterString)) {
+			conditions.add(
+				FilterStringToConditionConverter.convert(filterString));
+		}
+
+		if (conditions.isEmpty()) {
+			conditions.add(DSL.noCondition());
+		}
 
 		return conditions;
 	}
