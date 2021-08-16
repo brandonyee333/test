@@ -529,8 +529,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 
 		Table<Record> maxModifiedDateTable =
 			maxModifiedDateSelectSelectStep.select(
-				aggregateFunction.as("modifiedDate"),
-				ownerIdField.as("ownerId")
+				aggregateFunction.as("modifiedDate"), ownerIdField.as("ownerId")
 			).from(
 				"Field"
 			).where(
