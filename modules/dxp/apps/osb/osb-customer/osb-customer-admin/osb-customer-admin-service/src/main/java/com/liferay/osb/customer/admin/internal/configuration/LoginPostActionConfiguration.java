@@ -31,9 +31,6 @@ public interface LoginPostActionConfiguration {
 	@Meta.AD(deflt = "true", name = "sync-koroneiki", required = false)
 	public boolean syncKoroneiki();
 
-	@Meta.AD(deflt = "true", name = "sync-web", required = false)
-	public boolean syncWeb();
-
 	@Meta.AD(deflt = "true", name = "sync-web-user", required = false)
 	public boolean syncWebUser();
 
