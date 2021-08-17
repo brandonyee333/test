@@ -72,9 +72,7 @@ public class LoginPostAction extends Action {
 				synchronizeWithKoroneiki(user);
 			}
 
-			if (_loginPostActionConfiguration.syncWeb()) {
-				synchronizeWithWeb(user);
-			}
+			synchronizeWithWeb(user);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -162,25 +160,28 @@ public class LoginPostAction extends Action {
 
 		User remoteUser = _legacyWebService.getUser(user.getUuid());
 
-		com.liferay.portal.kernel.model.Contact contact = user.getContact();
+		if (_loginPostActionConfiguration.syncWebUser()) {
+			com.liferay.portal.kernel.model.Contact contact = user.getContact();
 
-		Calendar calendar = Calendar.getInstance();
+			Calendar calendar = Calendar.getInstance();
 
-		calendar.setTime(contact.getBirthday());
+			calendar.setTime(contact.getBirthday());
 
-		_userLocalService.updateUser(
-			user.getUserId(), null, null, null, false, null, null,
-			remoteUser.getScreenName(), remoteUser.getEmailAddress(),
-			user.getFacebookId(), user.getOpenId(), true, null,
-			remoteUser.getLanguageId(), remoteUser.getTimeZoneId(),
-			user.getGreeting(), user.getComments(), remoteUser.getFirstName(),
-			remoteUser.getMiddleName(), remoteUser.getLastName(),
-			contact.getPrefixId(), contact.getSuffixId(), contact.isMale(),
-			calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
-			calendar.get(Calendar.YEAR), contact.getSmsSn(),
-			contact.getFacebookSn(), contact.getJabberSn(),
-			contact.getSkypeSn(), contact.getTwitterSn(),
-			remoteUser.getJobTitle(), null, null, null, null, null, null);
+			_userLocalService.updateUser(
+				user.getUserId(), null, null, null, false, null, null,
+				remoteUser.getScreenName(), remoteUser.getEmailAddress(),
+				user.getFacebookId(), user.getOpenId(), true, null,
+				remoteUser.getLanguageId(), remoteUser.getTimeZoneId(),
+				user.getGreeting(), user.getComments(),
+				remoteUser.getFirstName(), remoteUser.getMiddleName(),
+				remoteUser.getLastName(), contact.getPrefixId(),
+				contact.getSuffixId(), contact.isMale(),
+				calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
+				calendar.get(Calendar.YEAR), contact.getSmsSn(),
+				contact.getFacebookSn(), contact.getJabberSn(),
+				contact.getSkypeSn(), contact.getTwitterSn(),
+				remoteUser.getJobTitle(), null, null, null, null, null, null);
+		}
 
 		// Expandos
 
