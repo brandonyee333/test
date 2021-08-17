@@ -32,6 +32,8 @@ import java.util.Set;
 import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
@@ -93,6 +95,14 @@ public class OSBAsahElasticsearchTestExecutionListener
 				new MessageBusTestHelper(_messageBus);
 
 			messageBusTestHelper.clearMessageBusChannel(messageBusChannel);
+		}
+
+		for (String cacheName : _cacheManager.getCacheNames()) {
+			Cache cache = _cacheManager.getCache(cacheName);
+
+			if (cache != null) {
+				cache.invalidate();
+			}
 		}
 	}
 
@@ -177,6 +187,9 @@ public class OSBAsahElasticsearchTestExecutionListener
 							clazz))));
 		}
 	}
+
+	@Autowired
+	private CacheManager _cacheManager;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;

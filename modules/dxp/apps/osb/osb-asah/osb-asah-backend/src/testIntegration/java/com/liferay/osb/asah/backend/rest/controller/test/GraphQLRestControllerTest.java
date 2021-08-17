@@ -36,7 +36,6 @@ import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -44,7 +43,6 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Shinn Lok
  */
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@EnableCaching
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class GraphQLRestControllerTest {
 

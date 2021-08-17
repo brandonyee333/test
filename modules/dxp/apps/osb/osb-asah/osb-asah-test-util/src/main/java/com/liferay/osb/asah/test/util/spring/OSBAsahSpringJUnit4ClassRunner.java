@@ -23,8 +23,6 @@ import java.net.Socket;
 
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
 import org.springframework.boot.autoconfigure.jooq.JooqAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.ApplicationContext;
@@ -53,8 +51,6 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 			String.join(
 				",", JooqAutoConfiguration.class.getName(),
 				ManagementWebSecurityAutoConfiguration.class.getName(),
-				RedisAutoConfiguration.class.getName(),
-				RedisRepositoriesAutoConfiguration.class.getName(),
 				SecurityAutoConfiguration.class.getName()));
 		System.setProperty(
 			"spring.main.allow-bean-definition-overriding", "true");

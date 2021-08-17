@@ -35,6 +35,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
@@ -99,6 +101,14 @@ public class OSBAsahSQLTestExecutionListener
 						preparedStatement.execute();
 					}
 				}
+			}
+		}
+
+		for (String cacheName : _cacheManager.getCacheNames()) {
+			Cache cache = _cacheManager.getCache(cacheName);
+
+			if (cache != null) {
+				cache.invalidate();
 			}
 		}
 	}
@@ -197,6 +207,9 @@ public class OSBAsahSQLTestExecutionListener
 
 		return _postgreSQLDataSource;
 	}
+
+	@Autowired
+	private CacheManager _cacheManager;
 
 	@Autowired(required = false)
 	@Qualifier("postgreSQLDataSource")
