@@ -154,6 +154,16 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 	}
 
 	private void _upgradeActivity(JSONObject activityJSONObject) {
+		String sessionId = activityJSONObject.optString("sessionId", null);
+
+		if (sessionId == null) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Skipping Activity: " + activityJSONObject);
+			}
+
+			return;
+		}
+
 		AnalyticsEvent analyticsEvent = new AnalyticsEvent();
 
 		analyticsEvent.setApplicationId(
@@ -178,8 +188,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		analyticsEvent.setIndividualId(activityJSONObject.getString("ownerId"));
 		analyticsEvent.setUserId(activityJSONObject.getString("userId"));
 
-		_eventStorageDog.store(
-			analyticsEvent, activityJSONObject.getString("sessionId"));
+		_eventStorageDog.store(analyticsEvent, sessionId);
 	}
 
 	private void _writeBatch(SearchHit[] searchHits) {
