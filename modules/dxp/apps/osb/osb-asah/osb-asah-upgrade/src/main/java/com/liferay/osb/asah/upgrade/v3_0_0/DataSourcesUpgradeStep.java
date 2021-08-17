@@ -41,11 +41,13 @@ public class DataSourcesUpgradeStep implements UpgradeStep {
 		while (iterator.hasNext()) {
 			JSONObject jsonObject = (JSONObject)iterator.next();
 
-			if (!jsonObject.has("channelId")) {
+			String channelId = jsonObject.optString("channelId", null);
+
+			if (channelId == null) {
 				continue;
 			}
 
-			_upgradeChannel(jsonObject.getString("channelId"));
+			_upgradeChannel(channelId);
 
 			jsonObject.remove("channelId");
 
@@ -54,8 +56,12 @@ public class DataSourcesUpgradeStep implements UpgradeStep {
 	}
 
 	private void _upgradeChannel(String channelId) {
-		JSONObject jsonObject = _faroInfoElasticsearchInvoker.get(
+		JSONObject jsonObject = _faroInfoElasticsearchInvoker.fetch(
 			"channels", channelId);
+
+		if (jsonObject == null) {
+			return;
+		}
 
 		jsonObject.put("defaultChannel", true);
 
