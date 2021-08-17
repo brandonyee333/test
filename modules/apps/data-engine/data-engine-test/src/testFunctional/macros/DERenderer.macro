@@ -44,6 +44,18 @@ definition {
 			optionIndex = "${optionIndex}");
 	}
 
+	macro assertDataInNumericField {
+		if (!(isSet(index))) {
+			var index = "1";
+		}
+
+		AssertTextEquals.assertValue(
+			index = "${index}",
+			key_fieldLabel = "${fieldLabel}",
+			locator1 = "DataEngineRenderer#TEXT_INPUT_INDEXED",
+			value1 = "${value}");
+	}
+
 	macro assertDataInSelectFromListField {
 		if (!(isSet(index))) {
 			var index = "1";
@@ -144,6 +156,18 @@ definition {
 			key_optionValue = "${optionValue}",
 			locator1 = "DataEngineRenderer#MULTIPLE_SELECTION_OPTION_INDEXED",
 			optionIndex = "${optionIndex}");
+	}
+
+	macro inputDataInNumericField {
+		if (!(isSet(index))) {
+			var index = "1";
+		}
+
+		Type(
+			index = "${index}",
+			key_fieldLabel = "${fieldLabel}",
+			locator1 = "DataEngineRenderer#TEXT_INPUT_INDEXED",
+			value1 = "${value}");
 	}
 
 	macro inputDataInSelectFromListField {
