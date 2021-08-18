@@ -861,8 +861,11 @@ public class IndividualDog extends BaseFaroInfoDog {
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
-		return _individualRepository.searchIndividuals(
+		List<Individual> individuals = _individualRepository.searchIndividuals(
 			channelId, filterString, includeAnonymousUsers, null, pageRequest);
+
+		return ListUtil.map(
+			individuals, individual -> populateIndividual(individual));
 	}
 
 	public Page<Individual> searchIndividualsPage(
@@ -885,10 +888,12 @@ public class IndividualDog extends BaseFaroInfoDog {
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
+		List<Individual> individuals = _individualRepository.searchIndividuals(
+			null, filterString, includeAnonymousUsers, segmentId, pageRequest);
+
 		return PageableExecutionUtils.getPage(
-			_individualRepository.searchIndividuals(
-				null, filterString, includeAnonymousUsers, segmentId,
-				pageRequest),
+			ListUtil.map(
+				individuals, individual -> populateIndividual(individual)),
 			pageRequest,
 			() -> _individualRepository.countIndividuals(
 				null, filterString, includeAnonymousUsers, segmentId));
