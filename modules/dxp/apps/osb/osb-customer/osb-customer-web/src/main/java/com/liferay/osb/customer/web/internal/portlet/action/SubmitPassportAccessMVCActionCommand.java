@@ -319,9 +319,7 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 		return false;
 	}
 
-	private static final String[] _NO_ACCESS_COUNTRIES = {
-		"China", "India", "Japan"
-	};
+	private static final String[] _NO_ACCESS_COUNTRIES = {"India", "Japan"};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SubmitPassportAccessMVCActionCommand.class);
