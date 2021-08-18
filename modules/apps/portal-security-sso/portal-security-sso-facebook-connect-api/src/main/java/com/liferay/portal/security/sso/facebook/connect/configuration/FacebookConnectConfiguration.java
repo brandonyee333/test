@@ -33,7 +33,7 @@ public interface FacebookConnectConfiguration {
 	public boolean enabled();
 
 	@Meta.AD(
-		deflt = "false", name = "require-verified-account", required = false
+		deflt = "false", name = "verified-account-required", required = false
 	)
 	public boolean verifiedAccountRequired();
 
