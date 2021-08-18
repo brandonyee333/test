@@ -89,19 +89,19 @@ public class ObjectDefinitionSampleGenerator {
 				"SampleObjectDefinition",
 				LocalizedMapUtil.getLocalizedMap("Sample Object Definitions"),
 				Arrays.asList(
-					_createObjectField("Able", "able", "Long"),
-					_createObjectField("Baker", "baker", "Boolean"),
-					_createObjectField("Charlie", "charlie", "Date"),
-					_createObjectField("Dog", "dog", "String"),
-					_createObjectField(
-						true, true, null, "Easy", "easy", "String"),
-					_createObjectField(
-						true, false, "en_US", "Fox", "fox", "String"),
-					_createObjectField(
-						false, false, null, "George", "george", "String"),
-					_createObjectField("How", "how", "Double"),
-					_createObjectField("Item", "item", "Integer"),
-					_createObjectField("Jig", "jig", "BigDecimal")));
+					ObjectFieldUtil.createObjectField("Able", "able", false, "Long"),
+					ObjectFieldUtil.createObjectField("Baker", "baker", false, "Boolean"),
+					ObjectFieldUtil.createObjectField("Charlie", "charlie", false, "Date"),
+					ObjectFieldUtil.createObjectField("Dog", "dog", false, "String"),
+					ObjectFieldUtil.createObjectField(null,
+						true, true, null, "Easy", "easy", false, "String"),
+					ObjectFieldUtil.createObjectField(null,
+						true, false, "en_US", "Fox", "fox", false, "String"),
+					ObjectFieldUtil.createObjectField(null,
+						false, false, null, "George", "george", false, "String"),
+					ObjectFieldUtil.createObjectField("How", "how", false, "Double"),
+					ObjectFieldUtil.createObjectField("Item", "item", false, "Integer"),
+					ObjectFieldUtil.createObjectField("Jig", "jig", false, "BigDecimal")));
 
 		objectDefinition =
 			_objectDefinitionLocalService.publishCustomObjectDefinition(
@@ -136,22 +136,6 @@ public class ObjectDefinitionSampleGenerator {
 				).build(),
 				new ServiceContext());
 		}
-	}
-
-	private ObjectField _createObjectField(
-		boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
-		String label, String name, String type) {
-
-		return ObjectFieldUtil.createObjectField(
-			null, indexed, indexedAsKeyword, indexedLanguageId, label, name,
-			false, type);
-	}
-
-	private ObjectField _createObjectField(
-		String label, String name, String type) {
-
-		return ObjectFieldUtil.createObjectField(
-			true, false, label, name, false, type);
 	}
 
 	@Reference

@@ -57,7 +57,7 @@ public class ObjectFieldLocalServiceTest {
 
 		try {
 			_testAddSystemObjectField(
-				_createObjectField(true, false, "", "", "able", "Blob"));
+				ObjectFieldUtil.createObjectField(null, true, false, "", "", "able", false, "Blob"));
 
 			Assert.fail();
 		}
@@ -72,7 +72,7 @@ public class ObjectFieldLocalServiceTest {
 
 		try {
 			_testAddSystemObjectField(
-				_createObjectField(true, false, "en_US", "", "able", "Long"));
+				ObjectFieldUtil.createObjectField(null, true, false, "en_US", "", "able", false, "Long"));
 
 			Assert.fail();
 		}
@@ -85,7 +85,7 @@ public class ObjectFieldLocalServiceTest {
 
 		try {
 			_testAddSystemObjectField(
-				_createObjectField(true, true, "en_US", "", "able", "String"));
+				ObjectFieldUtil.createObjectField(null, true, true, "en_US", "", "able", false, "String"));
 
 			Assert.fail();
 		}
@@ -99,7 +99,7 @@ public class ObjectFieldLocalServiceTest {
 		// Label is null
 
 		try {
-			_testAddSystemObjectField(_createObjectField("", "able", "String"));
+			_testAddSystemObjectField(ObjectFieldUtil.createObjectField("", "able", false, "String"));
 
 			Assert.fail();
 		}
@@ -112,7 +112,7 @@ public class ObjectFieldLocalServiceTest {
 		// Name is null
 
 		try {
-			_testAddSystemObjectField(_createObjectField("Able", "", "String"));
+			_testAddSystemObjectField(ObjectFieldUtil.createObjectField("Able", "", false, "String"));
 
 			Assert.fail();
 		}
@@ -123,10 +123,10 @@ public class ObjectFieldLocalServiceTest {
 
 		// Name must only contain letters and digits
 
-		_testAddSystemObjectField(_createObjectField(" able ", "String"));
+		_testAddSystemObjectField(ObjectFieldUtil.createObjectField("Able", " able ", false, "String"));
 
 		try {
-			_testAddSystemObjectField(_createObjectField("abl e", "String"));
+			_testAddSystemObjectField(ObjectFieldUtil.createObjectField("Able","abl e", false, "String"));
 
 			Assert.fail();
 		}
@@ -137,7 +137,7 @@ public class ObjectFieldLocalServiceTest {
 		}
 
 		try {
-			_testAddSystemObjectField(_createObjectField("abl-e", "String"));
+			_testAddSystemObjectField(ObjectFieldUtil.createObjectField("Able","abl-e", false, "String"));
 
 			Assert.fail();
 		}
@@ -150,7 +150,7 @@ public class ObjectFieldLocalServiceTest {
 		// The first character of a name must be an upper case letter
 
 		try {
-			_testAddSystemObjectField(_createObjectField("Able", "String"));
+			_testAddSystemObjectField(ObjectFieldUtil.createObjectField("Able", "Able", false, "String"));
 
 			Assert.fail();
 		}
@@ -163,13 +163,13 @@ public class ObjectFieldLocalServiceTest {
 		// Names must be less than 41 characters
 
 		_testAddSystemObjectField(
-			_createObjectField(
-				"a123456789a123456789a123456789a1234567891", "String"));
+			ObjectFieldUtil.createObjectField("Able",
+				"a123456789a123456789a123456789a1234567891", false, "String"));
 
 		try {
 			_testAddSystemObjectField(
-				_createObjectField(
-					"a123456789a123456789a123456789a12345678912", "String"));
+				ObjectFieldUtil.createObjectField("Able",
+					"a123456789a123456789a123456789a12345678912", false, "String"));
 
 			Assert.fail();
 		}
@@ -190,7 +190,7 @@ public class ObjectFieldLocalServiceTest {
 		for (String reservedName : reservedNames) {
 			try {
 				_testAddSystemObjectField(
-					_createObjectField(reservedName, "String"));
+					ObjectFieldUtil.createObjectField("Able", reservedName, false, "String"));
 
 				Assert.fail();
 			}
@@ -204,7 +204,7 @@ public class ObjectFieldLocalServiceTest {
 		// Reserved name is the primary key
 
 		try {
-			_testAddSystemObjectField(_createObjectField("testId", "String"));
+			_testAddSystemObjectField(ObjectFieldUtil.createObjectField("Able", "testId", false, "String"));
 
 			Assert.fail();
 		}
@@ -218,8 +218,8 @@ public class ObjectFieldLocalServiceTest {
 
 		try {
 			_testAddSystemObjectField(
-				_createObjectField("Able", "able", "String"),
-				_createObjectField("Able", "able", "String"));
+				ObjectFieldUtil.createObjectField("Able", "able", false, "String"),
+				ObjectFieldUtil.createObjectField("Able", "able", false, "String"));
 
 			Assert.fail();
 		}
@@ -237,12 +237,12 @@ public class ObjectFieldLocalServiceTest {
 		};
 
 		for (String type : types) {
-			_testAddSystemObjectField(_createObjectField("Able", "able", type));
+			_testAddSystemObjectField(ObjectFieldUtil.createObjectField("Able", "able", false, type));
 		}
 
 		try {
 			_testAddSystemObjectField(
-				_createObjectField("Able", "able", "STRING"));
+				ObjectFieldUtil.createObjectField("Able", "able", false, "STRING"));
 
 			Assert.fail();
 		}
@@ -250,25 +250,6 @@ public class ObjectFieldLocalServiceTest {
 			Assert.assertEquals(
 				"Invalid type STRING", objectFieldTypeException.getMessage());
 		}
-	}
-
-	private ObjectField _createObjectField(
-		boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
-		String label, String name, String type) {
-
-		return ObjectFieldUtil.createObjectField(
-			null, indexed, indexedAsKeyword, indexedLanguageId, label, name,
-			false, type);
-	}
-
-	private ObjectField _createObjectField(String name, String type) {
-		return _createObjectField(name, name, type);
-	}
-
-	private ObjectField _createObjectField(
-		String label, String name, String type) {
-
-		return ObjectFieldUtil.createObjectField(label, name, false, type);
 	}
 
 	private void _testAddSystemObjectField(ObjectField... objectFields)
