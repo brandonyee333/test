@@ -18,8 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
@@ -27,10 +27,10 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.activity.IndividualActivityFieldsNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -227,15 +227,18 @@ public class IndividualActivityFieldsNaniteTest {
 			FaroInfoTestUtil.buildActivityGroup(
 				dataSourceId, DateUtil.toUTCDate(dateString), individual));
 
-		JSONObject assetJSONObject = _faroInfoElasticsearchInvoker.add(
-			"assets",
-			FaroInfoTestUtil.buildAssetJSONObject(applicationId, dataSourceId));
+		Asset asset = _assetRepository.save(
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildAssetJSONObject(
+					applicationId, dataSourceId),
+				Asset.class));
 
 		for (int i = 0; i < activitiesCount; i++) {
 			_faroInfoActivityDog.addActivity(
 				FaroInfoTestUtil.buildActivityJSONObject(
 					_objectMapper.convertValue(activityGroup, JSONObject.class),
-					assetJSONObject, channelId, eventId, new String[0]));
+					_objectMapper.convertValue(asset, JSONObject.class),
+					channelId, eventId, new String[0]));
 
 			if (_faroInfoActivityDog.isActivity(applicationId, eventId)) {
 				_messageBus.sendMessage(
@@ -340,6 +343,9 @@ public class IndividualActivityFieldsNaniteTest {
 	@Autowired
 	private ActivityGroupRepository _activityGroupRepository;
 
+	@Autowired
+	private AssetRepository _assetRepository;
+
 	private DataSource _dataSource;
 
 	@Autowired
@@ -347,9 +353,6 @@ public class IndividualActivityFieldsNaniteTest {
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private FieldRepository _fieldRepository;

@@ -34,7 +34,6 @@ import org.mockito.Mockito;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.util.ReflectionUtils;
 
 /**
  * @author Inácio Nery
@@ -78,13 +77,6 @@ public abstract class BaseNaniteTestCase {
 		ReflectionTestUtils.setField(
 			nanite, "_cerebroInfoElasticsearchInvoker", elasticsearchInvoker);
 
-		if (ReflectionUtils.findField(clazz, "_faroInfoElasticsearchInvoker") !=
-				null) {
-
-			ReflectionTestUtils.setField(
-				nanite, "_faroInfoElasticsearchInvoker", elasticsearchInvoker);
-		}
-
 		Mockito.when(
 			elasticsearchInvoker.get(
 				ArgumentMatchers.eq("individuals"),
@@ -97,12 +89,10 @@ public abstract class BaseNaniteTestCase {
 			IndividualDog individualDog = Mockito.mock(IndividualDog.class);
 
 			ReflectionTestUtils.setField(
-				nanite, "_individualDog", Mockito.mock(IndividualDog.class));
+				nanite, "_individualDog", individualDog);
 
 			Mockito.when(
-				elasticsearchInvoker.exists(
-					ArgumentMatchers.eq("individuals"),
-					ArgumentMatchers.isNull(String.class))
+				individualDog.existsById(ArgumentMatchers.anyLong())
 			).thenReturn(
 				true
 			);

@@ -38,7 +38,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -273,7 +272,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Assert.assertFalse(
 			"Individual was not deleted on data source deletion despite only " +
 				"containing fields from the deleted data source",
-			_individualRepository.existsById(individualId));
+			_individualDog.existsById(individualId));
 	}
 
 	@Test
@@ -463,7 +462,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Assert.assertTrue(
 			"Individual was deleted even though another data source with " +
 				"data on the individual exists",
-			_individualRepository.existsById(individualId));
+			_individualDog.existsById(individualId));
 
 		individual = _individualDog.fetchIndividual(individualId);
 
@@ -816,9 +815,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private IndividualDog _individualDog;
-
-	@Autowired
-	private IndividualRepository _individualRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

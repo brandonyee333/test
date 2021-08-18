@@ -111,6 +111,32 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return activityJSONObject;
 	}
 
+	public JSONObject fetchLatestActivityJSONObject(
+		Long channelId, Long individualId) {
+
+		JSONArray activitiesJSONArray = new JSONArray(
+			elasticsearchInvoker.get(
+				"activities",
+				searchSourceBuilder -> {
+					searchSourceBuilder.query(
+						BoolQueryBuilderUtil.filter(
+							getEventsQueryBuilder(String.valueOf(individualId))
+						).filter(
+							QueryBuilders.termQuery(
+								"channelId", String.valueOf(channelId))
+						));
+					searchSourceBuilder.size(1);
+					searchSourceBuilder.sort(
+						SortBuilderUtil.fieldSort("endTime", SortOrder.DESC));
+				}));
+
+		if (activitiesJSONArray.length() == 0) {
+			return null;
+		}
+
+		return activitiesJSONArray.getJSONObject(0);
+	}
+
 	public JSONObject fetchLatestFormViewedActivity(
 		Date eventDate, String userId) {
 

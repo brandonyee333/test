@@ -115,14 +115,10 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		for (Membership membership : memberships) {
 			Long individualId = membership.getIndividualId();
 
-			JSONObject individualJSONObject = elasticsearchInvoker.get(
-				"individuals", String.valueOf(individualId));
-
-			JSONObject demographicsJSONObject =
-				individualJSONObject.optJSONObject("demographics");
+			Individual individual = _individualDog.getIndividual(individualId);
 
 			String individualEmail = FaroInfoIndividualUtil.getIndividualEmail(
-				demographicsJSONObject);
+				individual);
 
 			if (individualEmail != null) {
 				knownIndividualsCount++;
@@ -140,8 +136,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 			membershipChange.setIndividualEmail(individualEmail);
 			membershipChange.setIndividualId(individualId);
 			membershipChange.setIndividualName(
-				FaroInfoIndividualUtil.getIndividualName(
-					demographicsJSONObject));
+				FaroInfoIndividualUtil.getIndividualName(individual));
 			membershipChange.setIndividualsCount(individualsCount);
 			membershipChange.setIndividualSegmentId(
 				membership.getIndividualSegmentId());

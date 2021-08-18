@@ -54,8 +54,6 @@ import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -673,12 +671,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	private List<Long> _getIndividualSegmentIds(Long segmentId) {
-		List<Long> individualIds = JSONUtil.toLongList(
-			elasticsearchInvoker.get(
-				"individuals",
-				QueryBuilders.termQuery(
-					"individualSegmentIds", String.valueOf(segmentId))),
-			"id");
+		List<Long> individualIds = _individualDog.getIdsBySegmentId(segmentId);
 
 		if (individualIds.isEmpty()) {
 			return Collections.emptyList();

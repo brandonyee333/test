@@ -16,15 +16,11 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.activity;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
 import java.util.List;
@@ -34,10 +30,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortOrder;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,29 +126,13 @@ public class IndividualActivityFieldsNanite implements Nanite {
 			individual.getLastActivityDates();
 
 		for (String channelId : channelIdsCounts.keySet()) {
-			JSONArray activitiesJSONArray = new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					"activities",
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								_faroInfoActivityDog.getEventsQueryBuilder(
-									String.valueOf(individual.getId()))
-							).filter(
-								QueryBuilders.termQuery("channelId", channelId)
-							));
-						searchSourceBuilder.size(1);
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort(
-								"endTime", SortOrder.DESC));
-					}));
+			JSONObject activityJSONObject =
+				_faroInfoActivityDog.fetchLatestActivityJSONObject(
+					Long.valueOf(channelId), individual.getId());
 
-			if (activitiesJSONArray.length() == 0) {
+			if (activityJSONObject == null) {
 				continue;
 			}
-
-			JSONObject activityJSONObject = activitiesJSONArray.getJSONObject(
-				0);
 
 			Stream<Individual.LastActivityDate> stream =
 				lastActivityDates.stream();
@@ -228,9 +204,6 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private IndividualDog _individualDog;

@@ -24,10 +24,14 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.RawDataExport
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.http.EmailHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
@@ -55,7 +59,6 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,40 +127,33 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private QueryBuilder _buildIndividualQueryBuilder(
-		String dataSourceType, JSONObject individualJSONObject,
+		String dataSourceType, Individual individual,
 		String individualPKFieldName) {
 
 		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 
-		JSONArray dataSourceIndividualPKsJSONArray =
-			individualJSONObject.getJSONArray("dataSourceIndividualPKs");
+		for (Individual.DataSourceIndividualPK dataSourceIndividualPK :
+				individual.getDataSourceIndividualPKs()) {
 
-		for (int i = 0; i < dataSourceIndividualPKsJSONArray.length(); i++) {
-			JSONObject dataSourceIndividualPKJSONObject =
-				dataSourceIndividualPKsJSONArray.getJSONObject(i);
+			DataSource dataSource = _dataSourceDog.getDataSource(
+				dataSourceIndividualPK.getDataSourceId());
 
 			if (!StringUtils.equals(
-					dataSourceIndividualPKJSONObject.getString(
-						"dataSourceType"),
-					dataSourceType)) {
+					dataSource.getProviderType(), dataSourceType)) {
 
 				continue;
 			}
 
-			String dataSourceId = dataSourceIndividualPKJSONObject.getString(
-				"dataSourceId");
+			for (String individualPK :
+					dataSourceIndividualPK.getIndividualPKs()) {
 
-			JSONArray individualPKsJSONArray =
-				dataSourceIndividualPKJSONObject.getJSONArray("individualPKs");
-
-			for (int j = 0; j < individualPKsJSONArray.length(); j++) {
 				boolQueryBuilder.should(
 					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termsQuery("dataSourceId", dataSourceId)
+						QueryBuilders.termsQuery(
+							"dataSourceId", String.valueOf(dataSource.getId()))
 					).filter(
 						QueryBuilders.termsQuery(
-							individualPKFieldName,
-							individualPKsJSONArray.getString(j))
+							individualPKFieldName, individualPK)
 					));
 			}
 		}
@@ -176,16 +172,15 @@ public class DataControlNanite extends BaseNanite {
 		_salesforceRawElasticsearchInvoker.delete(
 			"individuals", QueryBuilders.termQuery("email", emailAddress));
 
-		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.termQuery("demographics.email.value", emailAddress));
+		Individual individual = _individualDog.fetchIndividualByEmailAddress(
+			emailAddress);
 
-		if (individualJSONObject == null) {
+		if (individual == null) {
 			return;
 		}
 
 		Map<Long, List<String>> dataSourceIdIndividualsPKs =
-			_getDataSourceIdIndividualsPKs("CSV", individualJSONObject);
+			_getDataSourceIdIndividualsPKs("CSV", individual);
 
 		if (!dataSourceIdIndividualsPKs.isEmpty()) {
 			for (Map.Entry<Long, List<String>> entry :
@@ -196,10 +191,9 @@ public class DataControlNanite extends BaseNanite {
 			}
 		}
 
-		individualJSONObject.put("demographics", new JSONArray());
+		individual.setDemographics(new Individual.Demographics());
 
-		faroInfoElasticsearchInvoker.update(
-			"individuals", individualJSONObject);
+		_individualDog.updateIndividual(individual);
 	}
 
 	private void _deleteSuppression(String emailAddress) {
@@ -251,18 +245,17 @@ public class DataControlNanite extends BaseNanite {
 				QueryBuilders.termQuery("email", emailAddress),
 				zipOutputStream));
 
-		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.termQuery("demographics.email.value", emailAddress));
+		Individual individual = _individualDog.fetchIndividualByEmailAddress(
+			emailAddress);
 
-		if (individualJSONObject == null) {
+		if (individual == null) {
 			_exportDataControlTask(dataControlTaskJSONObject, zipFileBuilder);
 
 			return;
 		}
 
 		QueryBuilder csvIndividualQueryBuilder = _buildIndividualQueryBuilder(
-			"CSV", individualJSONObject, "dataSourceIndividualPK");
+			"CSV", individual, "dataSourceIndividualPK");
 
 		if (csvIndividualQueryBuilder != null) {
 			zipFileBuilder.addToZip(
@@ -270,12 +263,12 @@ public class DataControlNanite extends BaseNanite {
 				zipOutputStream -> _writeToZip(
 					"csv-individuals", faroInfoElasticsearchInvoker,
 					_buildIndividualQueryBuilder(
-						"CSV", individualJSONObject, "dataSourceIndividualPK"),
+						"CSV", individual, "dataSourceIndividualPK"),
 					zipOutputStream));
 		}
 
 		QueryBuilder individualIdQueryBuilder = QueryBuilders.termQuery(
-			"individualId", individualJSONObject.getString("id"));
+			"individualId", String.valueOf(individual.getId()));
 
 		zipFileBuilder.addToZip(
 			"blogs.json",
@@ -337,38 +330,27 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private Map<Long, List<String>> _getDataSourceIdIndividualsPKs(
-		String dataSourceType, JSONObject individualJSONObject) {
+		String dataSourceType, Individual individual) {
 
 		Map<Long, List<String>> dataSourceIdIndividualPKs = new HashMap<>();
 
-		JSONArray dataSourceIndividualPKsJSONArray =
-			individualJSONObject.getJSONArray("dataSourceIndividualPKs");
+		for (Individual.DataSourceIndividualPK dataSourceIndividualPK :
+				individual.getDataSourceIndividualPKs()) {
 
-		for (int i = 0; i < dataSourceIndividualPKsJSONArray.length(); i++) {
-			JSONObject dataSourceIndividualPKJSONObject =
-				dataSourceIndividualPKsJSONArray.getJSONObject(i);
+			DataSource dataSource = _dataSourceDog.getDataSource(
+				dataSourceIndividualPK.getDataSourceId());
 
 			if (!StringUtils.equals(
-					dataSourceIndividualPKJSONObject.getString(
-						"dataSourceType"),
-					dataSourceType)) {
+					dataSource.getProviderType(), dataSourceType)) {
 
 				continue;
 			}
 
-			Long dataSourceId = Long.valueOf(
-				dataSourceIndividualPKJSONObject.getString("dataSourceId"));
-
 			List<String> individualPKs =
 				dataSourceIdIndividualPKs.computeIfAbsent(
-					dataSourceId, id -> new ArrayList<>());
+					dataSource.getId(), id -> new ArrayList<>());
 
-			JSONArray individualPKsJSONArray =
-				dataSourceIndividualPKJSONObject.getJSONArray("individualPKs");
-
-			for (int j = 0; j < individualPKsJSONArray.length(); j++) {
-				individualPKs.add(individualPKsJSONArray.getString(j));
-			}
+			individualPKs.addAll(dataSourceIndividualPK.getIndividualPKs());
 		}
 
 		return dataSourceIdIndividualPKs;
@@ -501,6 +483,9 @@ public class DataControlNanite extends BaseNanite {
 	private CSVIndividualDog _csvIndividualDog;
 
 	@Autowired
+	private DataSourceDog _dataSourceDog;
+
+	@Autowired
 	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
@@ -508,6 +493,9 @@ public class DataControlNanite extends BaseNanite {
 
 	@Value("${osb.asah.batch.curator.data.export.path:/export}")
 	private String _exportPathName;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	private final JsonFactory _jsonFactory = new JsonFactory() {
 		{

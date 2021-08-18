@@ -39,9 +39,9 @@ import com.liferay.osb.asah.common.repository.DataSourceIndividualRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualChannelRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
@@ -76,6 +76,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -407,9 +408,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 			QueryBuilders.termQuery("ownerType", "individual")
 		);
 
-		_faroInfoElasticsearchInvoker.delete("interests", boolQueryBuilder);
-
-		_faroInfoElasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
+		elasticsearchInvoker.delete("interests", boolQueryBuilder);
+		elasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
 
 		_membershipDog.deactivateMemberships(deletionDate, individualId);
 
@@ -569,7 +569,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		JSONArray associatedIdsJSONArray = null;
 
 		if (dxpEntityType.isOrganization()) {
-			associatedIdsJSONArray = _faroInfoElasticsearchInvoker.get(
+			associatedIdsJSONArray = elasticsearchInvoker.get(
 				dxpEntityType.getCollectionName(),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
@@ -1248,9 +1248,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper

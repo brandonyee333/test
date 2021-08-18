@@ -441,30 +441,30 @@ public class DataSourceDog {
 		JSONArrayIterator.of(
 			"individuals", _elasticsearchInvoker,
 			individualJSONObject -> {
-				JSONObject modifiedJSONObject = new JSONObject();
+				Individual individual = _objectMapper.convertValue(
+					individualJSONObject, Individual.class);
 
-				JSONArray dataSourceAccountPKsJSONArray =
-					individualJSONObject.getJSONArray("dataSourceAccountPKs");
+				Set<Individual.DataSourceAccountPK> dataSourceAccountPKs =
+					individual.getDataSourceAccountPKs();
 
-				Iterator<Object> iterator =
-					dataSourceAccountPKsJSONArray.iterator();
+				Iterator<Individual.DataSourceAccountPK> iterator =
+					dataSourceAccountPKs.iterator();
 
 				while (iterator.hasNext()) {
-					JSONObject jsonObject = (JSONObject)iterator.next();
+					Individual.DataSourceAccountPK dataSourceAccountPK =
+						(Individual.DataSourceAccountPK)iterator.next();
 
 					if (Objects.equals(
-							jsonObject.getLong("dataSourceId"), dataSourceId)) {
+							dataSourceAccountPK.getDataSourceId(),
+							dataSourceId)) {
 
 						iterator.remove();
 					}
 				}
 
-				modifiedJSONObject.put(
-					"dataSourceAccountPKs", dataSourceAccountPKsJSONArray);
+				individual.setDataSourceAccountPKs(dataSourceAccountPKs);
 
-				_elasticsearchInvoker.update(
-					"individuals", individualJSONObject.getString("id"),
-					modifiedJSONObject);
+				_individualDog.updateIndividual(individual);
 
 				return null;
 			}
@@ -596,16 +596,18 @@ public class DataSourceDog {
 				while (iterator.hasNext()) {
 					String id = (String)iterator.next();
 
-					if (ids.contains(id)) {
+					if (ids.contains(Long.parseLong(id))) {
 						iterator.remove();
 					}
 				}
 
 				modifiedJSONObject.put(fieldName, idsJSONArray);
 
-				_elasticsearchInvoker.update(
-					"individuals", individualJSONObject.getString("id"),
-					modifiedJSONObject);
+				_individualDog.updateIndividual(
+					individualJSONObject.getLong("id"),
+					_objectMapper.convertValue(
+						modifiedJSONObject, Individual.class),
+					false);
 
 				return null;
 			}

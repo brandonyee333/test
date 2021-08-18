@@ -15,13 +15,14 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,9 +43,7 @@ import org.elasticsearch.search.aggregations.bucket.filter.Filter;
 import org.elasticsearch.search.aggregations.bucket.nested.Nested;
 import org.elasticsearch.search.aggregations.metrics.Sum;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.SortOrder;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,23 +133,20 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 
 		long activitiesCount = _getActivitiesCount(
 			channelId, includeAnonymousUsers, segmentId);
-		String lastActivityDateString = _getLastActivityDateString(
+		Date lastActivityDate = _getLastActivityDate(
 			channelId, includeAnonymousUsers, segmentId);
 
 		if ((activitiesCount == segment.getActivitiesCount()) &&
 			Objects.nonNull(segment.getLastActivityDate()) &&
-			Objects.equals(
-				lastActivityDateString,
-				DateUtil.toUTCString(segment.getLastActivityDate()))) {
+			Objects.equals(lastActivityDate, segment.getLastActivityDate())) {
 
 			return;
 		}
 
 		segment.setActivitiesCount(activitiesCount);
 
-		if (Objects.nonNull(lastActivityDateString)) {
-			segment.setLastActivityDate(
-				DateUtil.toUTCDate(lastActivityDateString));
+		if (Objects.nonNull(lastActivityDate)) {
+			segment.setLastActivityDate(lastActivityDate);
 		}
 
 		_segmentDog.replaceSegment(segment);
@@ -234,50 +230,28 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 		return (long)sum.getValue();
 	}
 
-	private String _getLastActivityDateString(
+	private Date _getLastActivityDate(
 		Long channelId, boolean includeAnonymousUsers, Long segmentId) {
 
-		JSONArray individualsJSONArray = new JSONArray(
-			faroInfoElasticsearchInvoker.get(
-				"individuals",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						_getQueryBuilder(
-							channelId, includeAnonymousUsers, segmentId));
-					searchSourceBuilder.size(1);
+		List<Individual> searchIndividuals = _individualDog.searchIndividuals(
+			channelId, includeAnonymousUsers, segmentId, 0, 1,
+			new String[] {"lastActivityDate", "desc"});
 
-					QueryBuilder queryBuilder = null;
-
-					if (channelId != null) {
-						queryBuilder = QueryBuilders.termQuery(
-							"lastActivityDates.channelId",
-							String.valueOf(channelId));
-					}
-
-					searchSourceBuilder.sort(
-						SortBuilderUtil.buildSort(
-							"lastActivityDates.lastActivityDate",
-							"lastActivityDates", queryBuilder, SortOrder.DESC));
-				}));
-
-		if (individualsJSONArray.length() == 0) {
+		if (searchIndividuals.isEmpty()) {
 			return null;
 		}
 
-		JSONObject individualJSONObject = individualsJSONArray.getJSONObject(0);
+		Individual individual = searchIndividuals.get(0);
 
-		JSONArray lastActivityDatesJSONArray =
-			individualJSONObject.optJSONArray("lastActivityDates");
+		for (Individual.LastActivityDate lastActivityDate :
+				individual.getLastActivityDates()) {
 
-		JSONObject channelLastActivityDateJSONObject = JSONUtil.find(
-			lastActivityDatesJSONArray, "channelId", String.valueOf(channelId));
-
-		if (channelLastActivityDateJSONObject == null) {
-			return null;
+			if (Objects.equals(lastActivityDate.getChannelId(), channelId)) {
+				return lastActivityDate.getLastActivityDate();
+			}
 		}
 
-		return channelLastActivityDateJSONObject.optString(
-			"lastActivityDate", null);
+		return null;
 	}
 
 	private QueryBuilder _getQueryBuilder(
@@ -305,6 +279,10 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 		IndividualSegmentActivityFieldsNanite.class);
 
 	private final Map<String, Boolean> _analyticsConfigured = new HashMap<>();
+
+	@Autowired
+	private IndividualDog _individualDog;
+
 	private final ReentrantLock _reentrantLock = new ReentrantLock();
 
 	@Autowired

@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
@@ -398,30 +399,14 @@ public class ChannelDog extends BaseFaroInfoDog {
 		JSONArrayIterator.of(
 			"individuals", elasticsearchInvoker,
 			individualJSONObject -> {
-				JSONObject modifiedJSONObject = new JSONObject();
+				Individual individual = _objectMapper.convertValue(
+					individualJSONObject, Individual.class);
 
-				_updateChannelIds(
-					channelIds, individualJSONObject, modifiedJSONObject,
-					"activitiesCounts", "lastActivityDates");
+				_updateActivitiesCounts(channelIds, individual);
+				_updateChannelIds(channelIds, individual);
+				_updateLastActivityDates(channelIds, individual);
 
-				JSONArray channelIdsJSONArray =
-					individualJSONObject.getJSONArray("channelIds");
-
-				Iterator<Object> iterator = channelIdsJSONArray.iterator();
-
-				while (iterator.hasNext()) {
-					String channelId = (String)iterator.next();
-
-					if (channelIds.contains(Long.valueOf(channelId))) {
-						iterator.remove();
-					}
-				}
-
-				modifiedJSONObject.put("channelIds", channelIdsJSONArray);
-
-				elasticsearchInvoker.update(
-					"individuals", individualJSONObject.getString("id"),
-					modifiedJSONObject);
+				_individualDog.updateIndividual(individual);
 
 				return null;
 			}
@@ -543,6 +528,47 @@ public class ChannelDog extends BaseFaroInfoDog {
 		return channels;
 	}
 
+	private void _updateActivitiesCounts(
+		List<Long> channelIds, Individual individual) {
+
+		Set<Individual.ActivitiesCount> activitiesCounts =
+			individual.getActivitiesCounts();
+
+		if (activitiesCounts != null) {
+			Iterator<Individual.ActivitiesCount> iterator =
+				activitiesCounts.iterator();
+
+			while (iterator.hasNext()) {
+				Individual.ActivitiesCount activitiesCount =
+					(Individual.ActivitiesCount)iterator.next();
+
+				if (channelIds.contains(activitiesCount.getChannelId())) {
+					iterator.remove();
+				}
+			}
+
+			individual.setActivitiesCounts(activitiesCounts);
+		}
+	}
+
+	private void _updateChannelIds(
+		List<Long> channelIds, Individual individual) {
+
+		Set<Long> oldChannelIds = individual.getChannelIds();
+
+		Iterator<Long> iterator = oldChannelIds.iterator();
+
+		while (iterator.hasNext()) {
+			Long channelId = (Long)iterator.next();
+
+			if (channelIds.contains(channelId)) {
+				iterator.remove();
+			}
+		}
+
+		individual.setChannelIds(oldChannelIds);
+	}
+
 	private void _updateChannelIds(
 		List<Long> channelIds, JSONObject jsonObject,
 		JSONObject modifiedJSONObject, String... propertyNames) {
@@ -570,6 +596,29 @@ public class ChannelDog extends BaseFaroInfoDog {
 		}
 	}
 
+	private void _updateLastActivityDates(
+		List<Long> channelIds, Individual individual) {
+
+		Set<Individual.LastActivityDate> lastActivityDates =
+			individual.getLastActivityDates();
+
+		if (lastActivityDates != null) {
+			Iterator<Individual.LastActivityDate> iterator =
+				lastActivityDates.iterator();
+
+			while (iterator.hasNext()) {
+				Individual.LastActivityDate lastActivityDate =
+					(Individual.LastActivityDate)iterator.next();
+
+				if (channelIds.contains(lastActivityDate.getChannelId())) {
+					iterator.remove();
+				}
+			}
+
+			individual.setLastActivityDates(lastActivityDates);
+		}
+	}
+
 	private static final String _CHANNEL_TYPE_MULTIPLE = "multiple";
 
 	private static final Log _log = LogFactory.getLog(ChannelDog.class);
@@ -591,6 +640,9 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

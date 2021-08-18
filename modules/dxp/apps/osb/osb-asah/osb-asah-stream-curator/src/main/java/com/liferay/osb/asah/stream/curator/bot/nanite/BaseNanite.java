@@ -310,8 +310,9 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	private void _setModelIndividualProperties(
 		AnalyticsEvent analyticsEvent, T model) {
 
-		if (_faroInfoElasticsearchInvoker.exists(
-				"individuals", analyticsEvent.getIndividualId())) {
+		if ((analyticsEvent.getIndividualId() != null) &&
+			_individualDog.existsById(
+				Long.valueOf(analyticsEvent.getIndividualId()))) {
 
 			model.setIndividualId(analyticsEvent.getIndividualId());
 			model.setKnownIndividual(analyticsEvent.isKnownIndividual());
@@ -320,19 +321,21 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 			return;
 		}
 
-		Individual individual = _individualDog.fetchIndividual(
-			Long.valueOf(analyticsEvent.getDataSourceId()),
-			analyticsEvent.getUserId());
+		if (analyticsEvent.getDataSourceId() != null) {
+			Individual individual = _individualDog.fetchIndividual(
+				Long.valueOf(analyticsEvent.getDataSourceId()),
+				analyticsEvent.getUserId());
 
-		if (individual != null) {
-			model.setIndividualId(String.valueOf(individual.getId()));
-			model.setKnownIndividual(
-				FaroInfoIndividualUtil.isKnownIndividual(individual));
-			model.setSegmentNames(
-				new HashSet<>(
-					_segmentDog.getSegmentNames(
-						Long.valueOf(analyticsEvent.getChannelId()),
-						individual.getSegmentIds())));
+			if (individual != null) {
+				model.setIndividualId(String.valueOf(individual.getId()));
+				model.setKnownIndividual(
+					FaroInfoIndividualUtil.isKnownIndividual(individual));
+				model.setSegmentNames(
+					new HashSet<>(
+						_segmentDog.getSegmentNames(
+							Long.valueOf(analyticsEvent.getChannelId()),
+							individual.getSegmentIds())));
+			}
 		}
 	}
 
