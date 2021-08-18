@@ -245,6 +245,22 @@ definition {
 		PortletEntry.publish();
 	}
 
+	macro addWithCustomAbstractViaAP {
+		AssetPublisherPortlet.addAsset(assetType = "Blogs Entry");
+
+		BlogsEntry.addEntryContent(
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}");
+
+		Panel.expandPanel(panelHeading = "Configuration");
+
+		BlogsEntry.addCustomAbstract(entryAbstractDescription = "${entryAbstractDescription}");
+
+		AssertClick(
+			locator1 = "Button#PUBLISH",
+			value1 = "Publish");
+	}
+
 	macro addWithDefaultAbstract {
 		BlogsNavigator.gotoAddEntry();
 
