@@ -18,27 +18,22 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventStorageDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Event;
+import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONObject;
 
@@ -53,26 +48,22 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
-		for (SearchHit[] searchHits = _readBatch(); searchHits.length > 0;
-			 searchHits = _readBatch()) {
+		Optional<Event> lastEventOptional =
+			_eventRepository.findFirstByOrderByIdDesc();
 
-			_writeBatch(searchHits);
-		}
-
-		_clearScroll();
-	}
-
-	private void _clearScroll() {
-		if (_scrollId == null) {
-			return;
-		}
-
-		try {
-			_faroInfoElasticsearchInvoker.clearScroll(_scrollId);
-		}
-		catch (Exception exception) {
-			_log.error("Unable to clear scroll ID " + _scrollId, exception);
-		}
+		JSONArrayIterator.of(
+			"activities", _faroInfoElasticsearchInvoker, this::_upgradeActivity
+		).setQueryBuilder(
+			QueryBuilders.rangeQuery(
+				"id"
+			).gt(
+				lastEventOptional.map(
+					Event::getAnalyticsEventId
+				).orElse(
+					"0"
+				)
+			)
+		).iterate();
 	}
 
 	private Map<String, String> _getEventContext(
@@ -103,46 +94,6 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		return eventContext;
 	}
 
-	private SearchHit[] _readBatch() {
-		SearchResponse searchResponse = null;
-
-		if (_scrollId == null) {
-			Optional<Event> lastEventOptional =
-				_eventRepository.findFirstByOrderByIdDesc();
-
-			String startId = lastEventOptional.map(
-				Event::getAnalyticsEventId
-			).orElse(
-				"0"
-			);
-
-			searchResponse = _faroInfoElasticsearchInvoker.searchScroll(
-				"activities",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						QueryBuilders.rangeQuery(
-							"id"
-						).gt(
-							startId
-						));
-					searchSourceBuilder.trackTotalHits(false);
-					searchSourceBuilder.size(500);
-					searchSourceBuilder.sort("id", SortOrder.ASC);
-				},
-				120);
-		}
-		else {
-			searchResponse = _faroInfoElasticsearchInvoker.searchScroll(
-				_scrollId, 120);
-		}
-
-		_scrollId = searchResponse.getScrollId();
-
-		SearchHits searchHits = searchResponse.getHits();
-
-		return searchHits.getHits();
-	}
-
 	private Map<String, String> _toSafeMap(Map<String, Object> jsonObjectMap) {
 		Map<String, String> map = new HashMap<>();
 
@@ -153,7 +104,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		return map;
 	}
 
-	private void _upgradeActivity(JSONObject activityJSONObject) {
+	private Event _upgradeActivity(JSONObject activityJSONObject) {
 		String sessionId = activityJSONObject.optString("sessionId", null);
 
 		if (sessionId == null) {
@@ -161,7 +112,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 				_log.debug("Skipping activity: " + activityJSONObject);
 			}
 
-			return;
+			return null;
 		}
 
 		AnalyticsEvent analyticsEvent = new AnalyticsEvent();
@@ -188,17 +139,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		analyticsEvent.setIndividualId(activityJSONObject.getString("ownerId"));
 		analyticsEvent.setUserId(activityJSONObject.getString("userId"));
 
-		_eventStorageDog.store(analyticsEvent, sessionId);
-	}
-
-	private void _writeBatch(SearchHit[] searchHits) {
-		Stream<SearchHit> stream = Arrays.stream(searchHits);
-
-		stream.map(
-			SearchHit::getSourceAsString
-		).forEach(
-			sourceString -> _upgradeActivity(new JSONObject(sourceString))
-		);
+		return _eventStorageDog.store(analyticsEvent, sessionId);
 	}
 
 	private static final Log _log = LogFactory.getLog(
@@ -212,7 +153,5 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	private String _scrollId;
 
 }
