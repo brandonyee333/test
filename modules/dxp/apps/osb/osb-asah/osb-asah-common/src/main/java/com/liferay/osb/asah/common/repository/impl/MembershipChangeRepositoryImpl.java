@@ -14,13 +14,14 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -91,9 +92,14 @@ public class MembershipChangeRepositoryImpl {
 					segmentId
 				));
 
-			Segment segment = _segmentDog.getSegment(segmentId);
+			Optional<Segment> segmentOptional = _segmentRepository.findById(
+				segmentId);
 
-			if (!BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers())) {
+			Segment segment = segmentOptional.orElse(null);
+
+			if ((segment != null) &&
+				!BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers())) {
+
 				conditions.add(
 					DSL.field(
 						"individualEmail"
@@ -116,6 +122,6 @@ public class MembershipChangeRepositoryImpl {
 	private final DSLContext _dslContext;
 
 	@Autowired
-	private SegmentDog _segmentDog;
+	private SegmentRepository _segmentRepository;
 
 }
