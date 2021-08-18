@@ -91,6 +91,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
 import org.springframework.hateoas.EntityModel;
@@ -241,7 +242,9 @@ public class ReportRestController extends BaseRestController {
 		long elapsedCompletedTime = DateUtil.getDeltaMilliseconds(
 			dataExportTask.getCompletedDate(), new Date());
 
-		if (elapsedCompletedTime > (30 * DateUtil.MINUTE)) {
+		if (elapsedCompletedTime >
+				(_dataExportTaskExpirationMinutes * DateUtil.MINUTE)) {
+
 			return _addDataExportTask(type);
 		}
 
@@ -1348,6 +1351,9 @@ public class ReportRestController extends BaseRestController {
 
 	@Autowired
 	private DataExportTaskDog _dataExportTaskDog;
+
+	@Value("${osb.asah.data.export.task.expiration.minutes:30}")
+	private int _dataExportTaskExpirationMinutes;
 
 	@Autowired
 	private FormPageDog _formPageDog;
