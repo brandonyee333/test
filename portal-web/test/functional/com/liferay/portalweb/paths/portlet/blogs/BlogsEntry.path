@@ -71,6 +71,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>CONTENT_ABSTRACT_AP</td>
+	<td>//div[contains(@class,'asset-content')]//div[contains(.,'${key_entryAbstractDescription}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CONTENT_FIELD_HELPER</td>
 	<td>//div[contains(@class,'required') and contains(.,'This field is required.')]</td>
 	<td></td>
