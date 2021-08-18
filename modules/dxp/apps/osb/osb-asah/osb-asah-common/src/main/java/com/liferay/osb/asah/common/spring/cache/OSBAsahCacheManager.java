@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.common.spring.cache;
 
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.util.Pool;
+
 import com.github.benmanes.caffeine.cache.Caffeine;
 
 import java.time.Duration;
@@ -86,7 +89,7 @@ public class OSBAsahCacheManager implements CacheManager {
 		}
 
 		return new OSBAsahCache(
-			_caffeineCacheManager.getCache(name), name,
+			_caffeineCacheManager.getCache(name), _kryoPool, name,
 			_redisCacheManager.getCache(name), _redisTemplate);
 	}
 
@@ -107,6 +110,20 @@ public class OSBAsahCacheManager implements CacheManager {
 		OSBAsahCacheManager.class);
 
 	private final CaffeineCacheManager _caffeineCacheManager;
+
+	private final Pool<Kryo> _kryoPool = new Pool<Kryo>(true, false, 8) {
+
+		@Override
+		protected Kryo create() {
+			Kryo kryo = new Kryo();
+
+			kryo.setRegistrationRequired(false);
+
+			return kryo;
+		}
+
+	};
+
 	private final ConcurrentMap<String, OSBAsahCache> _osbAsahCaches =
 		new ConcurrentHashMap<>();
 	private final RedisCacheManager _redisCacheManager;

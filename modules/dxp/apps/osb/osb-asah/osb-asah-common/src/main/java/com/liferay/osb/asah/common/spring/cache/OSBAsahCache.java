@@ -14,6 +14,12 @@
 
 package com.liferay.osb.asah.common.spring.cache;
 
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.KryoException;
+import com.esotericsoftware.kryo.io.ByteBufferInput;
+import com.esotericsoftware.kryo.io.ByteBufferOutput;
+import com.esotericsoftware.kryo.util.Pool;
+
 import java.util.concurrent.Callable;
 
 import org.apache.commons.logging.Log;
@@ -29,12 +35,13 @@ import org.springframework.data.redis.core.RedisTemplate;
 public class OSBAsahCache extends AbstractValueAdaptingCache {
 
 	public OSBAsahCache(
-		Cache caffeineCache, String name, Cache redisCache,
+		Cache caffeineCache, Pool<Kryo> kryoPool, String name, Cache redisCache,
 		RedisTemplate<Object, Object> redisTemplate) {
 
 		super(false);
 
 		_caffeineCache = caffeineCache;
+		_kryoPool = kryoPool;
 		_name = name;
 		_redisCache = redisCache;
 		_redisTemplate = redisTemplate;
@@ -134,29 +141,33 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 		ValueWrapper valueWrapper = _caffeineCache.get(key);
 
 		if (valueWrapper != null) {
+			Object object = _deserialize(valueWrapper.get());
+
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					String.format(
 						"Got value %s from Caffeine with name %s and key %s",
-						valueWrapper.get(), _name, key));
+						object, _name, key));
 			}
 
-			return valueWrapper.get();
+			return object;
 		}
 
 		valueWrapper = _redisCache.get(key);
 
 		if (valueWrapper != null) {
+			Object object = _deserialize(valueWrapper.get());
+
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					String.format(
 						"Got value %s from Redis with name %s and key %s",
-						valueWrapper.get(), _name, key));
+						object, _name, key));
 			}
 
 			_caffeineCache.put(key, valueWrapper.get());
 
-			return valueWrapper.get();
+			return object;
 		}
 
 		return null;
@@ -187,6 +198,30 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 		}
 	}
 
+	private Object _deserialize(Object object) {
+		if (object == null) {
+			return null;
+		}
+
+		byte[] bytes = (byte[])object;
+
+		if (bytes.length == 0) {
+			return null;
+		}
+
+		Kryo kryo = _kryoPool.obtain();
+
+		try (ByteBufferInput byteBufferInput = new ByteBufferInput(bytes)) {
+			return kryo.readClassAndObject(byteBufferInput);
+		}
+		catch (Exception exception) {
+			throw new KryoException("Cannot deserialize", exception);
+		}
+		finally {
+			_kryoPool.free(kryo);
+		}
+	}
+
 	private void _put(Object key, Object value) {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
@@ -195,11 +230,13 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 					value));
 		}
 
-		_redisCache.put(key, value);
+		byte[] bytes = _serialize(value);
+
+		_redisCache.put(key, bytes);
 
 		_sendRedisMessage(new OSBAsahCacheMessage(_name, key));
 
-		_caffeineCache.put(key, value);
+		_caffeineCache.put(key, bytes);
 	}
 
 	private void _sendRedisMessage(OSBAsahCacheMessage osbAsahCacheMessage) {
@@ -207,9 +244,28 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 			"cache:redis:caffeine:topic", osbAsahCacheMessage);
 	}
 
+	private byte[] _serialize(Object object) {
+		Kryo kryo = _kryoPool.obtain();
+
+		try (ByteBufferOutput byteBufferOutput = new ByteBufferOutput(
+				1024, -1)) {
+
+			kryo.writeClassAndObject(byteBufferOutput, object);
+
+			return byteBufferOutput.toBytes();
+		}
+		catch (Exception exception) {
+			throw new KryoException("Cannot serialize", exception);
+		}
+		finally {
+			_kryoPool.free(kryo);
+		}
+	}
+
 	private static final Log _log = LogFactory.getLog(OSBAsahCache.class);
 
 	private final Cache _caffeineCache;
+	private final Pool<Kryo> _kryoPool;
 	private final String _name;
 	private final Cache _redisCache;
 	private final RedisTemplate<Object, Object> _redisTemplate;

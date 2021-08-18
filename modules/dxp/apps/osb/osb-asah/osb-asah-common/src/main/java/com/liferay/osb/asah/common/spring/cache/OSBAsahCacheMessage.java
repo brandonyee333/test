@@ -21,6 +21,9 @@ import java.io.Serializable;
  */
 public class OSBAsahCacheMessage implements Serializable {
 
+	public OSBAsahCacheMessage() {
+	}
+
 	public OSBAsahCacheMessage(String name, Object key) {
 		_name = name;
 		_key = key;
