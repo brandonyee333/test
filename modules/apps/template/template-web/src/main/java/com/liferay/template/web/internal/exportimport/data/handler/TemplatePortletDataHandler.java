@@ -501,9 +501,11 @@ public class TemplatePortletDataHandler extends BasePortletDataHandler {
 				_portal.getClassNameId(DDMTemplate.class.getName()));
 		}
 
-		for (StagedModelType stagedModelType : _getStagedModelTypes()) {
+		for (StagedModelType portletDisplayTemplatesStagedModelType :
+				_getPortletDisplayTemplatesStagedModelTypes()) {
+
 			long modelAdditionCount = manifestSummary.getModelAdditionCount(
-				stagedModelType);
+				portletDisplayTemplatesStagedModelType);
 
 			if (modelAdditionCount > -1) {
 				continue;
@@ -517,22 +519,26 @@ public class TemplatePortletDataHandler extends BasePortletDataHandler {
 						_ddmTemplateStagedModelRepository.getStagedModel(
 							changesetEntry.getClassPK());
 
-					if (ddmTemplate.getClassNameId() ==
-							stagedModelType.getReferrerClassNameId()) {
+					if ((ddmTemplate.getResourceClassNameId() ==
+							_portal.getClassNameId(
+								PortletDisplayTemplate.class.getName())) &&
+						(ddmTemplate.getClassNameId() ==
+							portletDisplayTemplatesStagedModelType.
+								getReferrerClassNameId())) {
 
 						modelAdditionCount++;
 					}
 				}
 
 				manifestSummary.addModelAdditionCount(
-					stagedModelType, modelAdditionCount);
+					portletDisplayTemplatesStagedModelType, modelAdditionCount);
 			}
 
 			long modelDeletionCount = _exportImportHelper.getModelDeletionCount(
-				portletDataContext, stagedModelType);
+				portletDataContext, portletDisplayTemplatesStagedModelType);
 
 			manifestSummary.addModelDeletionCount(
-				stagedModelType, modelDeletionCount);
+				portletDisplayTemplatesStagedModelType, modelDeletionCount);
 		}
 	}
 
