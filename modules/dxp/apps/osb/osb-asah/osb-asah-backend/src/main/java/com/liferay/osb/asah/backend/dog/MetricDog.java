@@ -39,7 +39,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.elasticsearch.search.aggregations.AggregationBuilder;
@@ -453,7 +453,7 @@ public class MetricDog {
 
 			assetIdSetterBiConsumer.accept(assetMetric, keys[0]);
 
-			assetMetric.setAssetTitle(StringEscapeUtils.unescapeHtml(keys[1]));
+			assetMetric.setAssetTitle(StringEscapeUtils.unescapeHtml4(keys[1]));
 			assetMetric.setDataSourceId(keys[2]);
 
 			_setModelMetrics(
