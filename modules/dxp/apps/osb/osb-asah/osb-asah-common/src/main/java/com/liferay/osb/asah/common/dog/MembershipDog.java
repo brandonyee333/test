@@ -35,7 +35,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -273,23 +272,12 @@ public class MembershipDog extends BaseFaroInfoDog {
 		List<Membership> memberships = getActiveMemberships(
 			individualId, ListUtil.map(segments, Segment::getId));
 
-		Map<Long, JSONArray> membershipsToSegmentIdMap = new HashMap<>();
+		Map<Long, JSONObject> individualSegmentJSONObjects = new HashMap<>();
 
 		for (Membership membership : memberships) {
-			JSONArray jsonArray = new JSONArray();
-
-			if (membershipsToSegmentIdMap.containsKey(
-					membership.getIndividualId())) {
-
-				jsonArray = membershipsToSegmentIdMap.get(
-					membership.getIndividualId());
-			}
-
-			jsonArray.put(
+			individualSegmentJSONObjects.put(
+				membership.getIndividualSegmentId(),
 				_objectMapper.convertValue(membership, JSONObject.class));
-
-			membershipsToSegmentIdMap.put(
-				membership.getIndividualSegmentId(), jsonArray);
 		}
 
 		Map<Long, JSONObject> membershipsJSONObjects = new HashMap<>();
@@ -297,7 +285,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 		for (Segment segment : segments) {
 			Long segmentId = segment.getId();
 
-			if (!membershipsToSegmentIdMap.containsKey(segmentId)) {
+			if (!individualSegmentJSONObjects.containsKey(segmentId)) {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
 						"Unable to get active membership for individual " +
@@ -308,21 +296,16 @@ public class MembershipDog extends BaseFaroInfoDog {
 				continue;
 			}
 
-			JSONArray membershipsJSONArray = membershipsToSegmentIdMap.get(
+			JSONObject membershipJSONObject = individualSegmentJSONObjects.get(
 				segmentId);
 
-			for (int i = 0; i < membershipsJSONArray.length(); i++) {
-				JSONObject membershipJSONObject =
-					membershipsJSONArray.getJSONObject(i);
-
-				membershipJSONObject.remove("dateModified");
-				membershipJSONObject.remove("dateRemoved");
-				membershipJSONObject.remove("id");
-			}
+			membershipJSONObject.remove("dateModified");
+			membershipJSONObject.remove("dateRemoved");
+			membershipJSONObject.remove("id");
 
 			membershipsJSONObjects.put(
 				segmentId,
-				JSONUtil.put("active-membership", membershipsJSONArray));
+				JSONUtil.put("active-membership", membershipJSONObject));
 		}
 
 		return membershipsJSONObjects;

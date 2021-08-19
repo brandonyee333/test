@@ -283,7 +283,7 @@ public class IndividualsRestController extends BaseRestController {
 			if (membershipJSONObject != null) {
 				expandMap.put(
 					"active-membership",
-					membershipJSONObject.getJSONArray("active-membership"));
+					membershipJSONObject.getJSONObject("active-membership"));
 			}
 
 			if (!expandMap.isEmpty()) {
