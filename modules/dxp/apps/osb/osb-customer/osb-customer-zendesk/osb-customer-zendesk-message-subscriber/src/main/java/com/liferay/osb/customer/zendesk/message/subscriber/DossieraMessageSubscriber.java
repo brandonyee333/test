@@ -36,7 +36,11 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kyle Bischof
  */
 @Component(
-	immediate = true, property = "topic.pattern=dossiera.provisioning.create",
+	immediate = true,
+	property = {
+		"topic.pattern=dossiera.provisioning.create",
+		"topic.pattern=dossiera.provisioning.update"
+	},
 	service = DossieraMessageSubscriber.class
 )
 public class DossieraMessageSubscriber
