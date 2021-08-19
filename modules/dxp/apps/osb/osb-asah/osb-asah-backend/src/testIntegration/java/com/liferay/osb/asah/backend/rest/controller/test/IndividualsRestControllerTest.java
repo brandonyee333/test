@@ -85,11 +85,8 @@ public class IndividualsRestControllerTest {
 
 		embeddedJSONObject = segmentJSONObject.getJSONObject("_embedded");
 
-		JSONArray activeMembershipsJSONArray = embeddedJSONObject.getJSONArray(
-			"active-membership");
-
 		JSONObject activeMembershipJSONObject =
-			activeMembershipsJSONArray.getJSONObject(0);
+			embeddedJSONObject.getJSONObject("active-membership");
 
 		Assert.assertEquals(
 			"123", activeMembershipJSONObject.getString("individualId"));
