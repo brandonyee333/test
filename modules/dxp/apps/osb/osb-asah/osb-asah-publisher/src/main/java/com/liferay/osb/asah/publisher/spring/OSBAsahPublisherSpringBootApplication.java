@@ -45,6 +45,7 @@ import org.springframework.context.annotation.FilterType;
 		"com.liferay.osb.asah.common.security",
 		"com.liferay.osb.asah.common.spring.cache",
 		"com.liferay.osb.asah.common.spring.http",
+		"com.liferay.osb.asah.common.storage",
 		"com.liferay.osb.asah.common.upgrade",
 		"com.liferay.osb.asah.common.wedeploy", "com.liferay.osb.asah.publisher"
 	},
