@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.publisher.spring;
 
-import com.liferay.osb.asah.common.upgrade.UpgradeCheck;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
@@ -24,7 +22,6 @@ import org.springframework.boot.autoconfigure.jooq.JooqAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 
 /**
  * @author Vishal Reddy
@@ -46,13 +43,7 @@ import org.springframework.context.annotation.FilterType;
 		"com.liferay.osb.asah.common.spring.cache",
 		"com.liferay.osb.asah.common.spring.http",
 		"com.liferay.osb.asah.common.storage",
-		"com.liferay.osb.asah.common.upgrade",
 		"com.liferay.osb.asah.common.wedeploy", "com.liferay.osb.asah.publisher"
-	},
-	excludeFilters = {
-		@ComponentScan.Filter(
-			classes = UpgradeCheck.class, type = FilterType.ASSIGNABLE_TYPE
-		)
 	}
 )
 @SpringBootApplication(
