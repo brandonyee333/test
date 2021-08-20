@@ -19,12 +19,9 @@ import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverter
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
-
 /**
  * @author Rachael Koestartyo
  */
-@Component
 public class DataSourceFilterStringConverterHelper
 	extends DefaultFilterStringConverterHelper {
 

@@ -20,12 +20,9 @@ import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
 
-import org.springframework.stereotype.Component;
-
 /**
  * @author Rachael Koestartyo
  */
-@Component
 public class AccountsFilterStringConverterHelper
 	extends DefaultFilterStringConverterHelper {
 

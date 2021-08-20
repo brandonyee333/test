@@ -330,9 +330,8 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 	private DataSourceFieldMappingRepository _dataSourceFieldMappingRepository;
 
 	private final DSLContext _dslContext;
-
-	@Autowired
-	private FieldMappingFilterStringConverterHelper
-		_fieldMappingFilterStringConverterHelper;
+	private final FieldMappingFilterStringConverterHelper
+		_fieldMappingFilterStringConverterHelper =
+			new FieldMappingFilterStringConverterHelper();
 
 }

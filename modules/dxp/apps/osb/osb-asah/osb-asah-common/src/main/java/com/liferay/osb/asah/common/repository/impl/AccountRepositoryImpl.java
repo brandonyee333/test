@@ -773,9 +773,9 @@ public class AccountRepositoryImpl extends BaseRepository {
 		return Collections.singletonMap("name", "values");
 	}
 
-	@Autowired
-	private AccountsFilterStringConverterHelper
-		_accountsFilterStringConverterHelper;
+	private final AccountsFilterStringConverterHelper
+		_accountsFilterStringConverterHelper =
+			new AccountsFilterStringConverterHelper();
 
 	@Autowired
 	private DataSourceIndividualRepository _dataSourceIndividualRepository;

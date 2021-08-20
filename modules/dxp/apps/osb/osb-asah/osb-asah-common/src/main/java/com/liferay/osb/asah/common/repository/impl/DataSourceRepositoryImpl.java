@@ -43,13 +43,7 @@ import org.springframework.data.domain.Pageable;
  */
 public class DataSourceRepositoryImpl extends BaseRepository {
 
-	public DataSourceRepositoryImpl(
-		DataSourceFilterStringConverterHelper
-			dataSourceFilterStringConverterHelper,
-		DSLContext dslContext) {
-
-		_dataSourceFilterStringConverterHelper =
-			dataSourceFilterStringConverterHelper;
+	public DataSourceRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
@@ -181,7 +175,8 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 	}
 
 	private final DataSourceFilterStringConverterHelper
-		_dataSourceFilterStringConverterHelper;
+		_dataSourceFilterStringConverterHelper =
+			new DataSourceFilterStringConverterHelper();
 	private final DSLContext _dslContext;
 
 }
