@@ -59,7 +59,7 @@ public class SessionFlatMapGroupsWithStateFunction
 			Session expiredSession = groupState.get();
 
 			expiredSession.setFinished(true);
-			expiredSession.setInteractionNumber(
+			expiredSession.setIterationNumber(
 				expiredSession.getIterationNumber() + 1);
 
 			sessions.add(expiredSession);
@@ -76,7 +76,7 @@ public class SessionFlatMapGroupsWithStateFunction
 
 			Session activeSession = groupState.get();
 
-			activeSession.setInteractionNumber(
+			activeSession.setIterationNumber(
 				activeSession.getIterationNumber() + 1);
 
 			sessions.add(activeSession);
