@@ -153,7 +153,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 		JSONObject jsonObject = toJSONObject(entity);
 
 		String id = jsonObject.optString(
-			"id", _timeOrderedUuidGenerator.generateId());
+			"id", timeOrderedUuidGenerator.generateId());
 
 		jsonObject.put("id", id);
 
@@ -174,7 +174,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 				JSONObject jsonObject = toJSONObject(entity);
 
 				String id = jsonObject.optString(
-					"id", _timeOrderedUuidGenerator.generateId());
+					"id", timeOrderedUuidGenerator.generateId());
 
 				jsonObject.put("id", id);
 
@@ -280,7 +280,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 	@Autowired
 	protected ObjectMapper objectMapper;
 
-	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+	protected final TimeOrderedUuidGenerator timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
 
 }

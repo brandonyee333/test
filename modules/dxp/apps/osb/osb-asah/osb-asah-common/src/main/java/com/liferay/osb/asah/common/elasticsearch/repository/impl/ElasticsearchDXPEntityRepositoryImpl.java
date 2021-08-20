@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
@@ -35,7 +36,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -183,26 +183,21 @@ public class ElasticsearchDXPEntityRepositoryImpl
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <S extends DXPEntity> S save(S entity) {
-		JSONObject jsonObject;
+	public <S extends DXPEntity> S save(S dxpEntity) {
+		DXPEntity.Type type = dxpEntity.getType();
 
-		DXPEntity.Type type = entity.getType();
+		JSONObject jsonObject = objectMapper.convertValue(
+			dxpEntity, JSONObject.class);
 
-		if (!Objects.isNull(entity.getId()) &&
-			_dxpRawElasticsearchInvoker.exists(
-				type.getCollectionName(), String.valueOf(entity.getId()))) {
+		String id = jsonObject.optString(
+			"id", _timeOrderedUuidGenerator.generateId());
 
-			jsonObject = _dxpRawElasticsearchInvoker.update(
-				type.getCollectionName(),
-				objectMapper.convertValue(entity, JSONObject.class));
-		}
-		else {
-			jsonObject = _dxpRawElasticsearchInvoker.add(
-				type.getCollectionName(),
-				objectMapper.convertValue(entity, JSONObject.class));
-		}
+		jsonObject.put("id", id);
 
-		return (S)objectMapper.convertValue(jsonObject, entity.getClass());
+		return (S)objectMapper.convertValue(
+			_dxpRawElasticsearchInvoker.upsert(
+				type.getCollectionName(), jsonObject),
+			dxpEntity.getClass());
 	}
 
 	@Override
@@ -421,5 +416,8 @@ public class ElasticsearchDXPEntityRepositoryImpl
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 }

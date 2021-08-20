@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -142,40 +143,45 @@ public class ElasticsearchOrganizationRepositoryImpl
 	public <S extends Organization> S save(S organization) {
 		JSONObject jsonObject = toJSONObject(organization);
 
-		Set<Field> customFields = organization.getCustomFields();
+		_populateJSONObject(jsonObject, organization);
 
-		if (CollectionUtils.isNotEmpty(customFields)) {
-			JSONObject customJSONObject = new JSONObject();
+		String id = jsonObject.optString(
+			"id", timeOrderedUuidGenerator.generateId());
 
-			for (Field customField : customFields) {
-				JSONObject customFieldJSONObject = objectMapper.convertValue(
-					customField, JSONObject.class);
+		jsonObject.put("id", id);
 
-				customFieldJSONObject.remove("id");
+		return (S)toEntity(
+			_faroInfoElasticsearchInvoker.upsert(
+				getCollectionName(), jsonObject));
+	}
 
-				customFieldJSONObject.put(
-					"ownerId", jsonObject.getString("id"));
+	@Override
+	public <S extends Organization> Iterable<S> saveAll(
+		Iterable<S> organizations) {
 
-				customJSONObject.put(
-					customField.getName(), JSONUtil.put(customFieldJSONObject));
-			}
+		List<S> list = new ArrayList<>();
 
-			jsonObject.put("custom", customJSONObject);
-		}
+		JSONArray jsonArray = new JSONArray();
 
-		if ((organization.getId() != null) &&
-			_faroInfoElasticsearchInvoker.exists(
-				getCollectionName(), String.valueOf(organization.getId()))) {
+		organizations.forEach(
+			organization -> {
+				JSONObject jsonObject = toJSONObject(organization);
 
-			jsonObject = _faroInfoElasticsearchInvoker.update(
-				getCollectionName(), jsonObject);
-		}
-		else {
-			jsonObject = _faroInfoElasticsearchInvoker.add(
-				getCollectionName(), jsonObject);
-		}
+				_populateJSONObject(jsonObject, organization);
 
-		return (S)toEntity(jsonObject);
+				String id = jsonObject.optString(
+					"id", timeOrderedUuidGenerator.generateId());
+
+				jsonObject.put("id", id);
+
+				jsonArray.put(jsonObject);
+
+				list.add((S)toEntity(jsonObject));
+			});
+
+		_faroInfoElasticsearchInvoker.upsert(getCollectionName(), jsonArray);
+
+		return list;
 	}
 
 	@Override
@@ -226,6 +232,31 @@ public class ElasticsearchOrganizationRepositoryImpl
 		}
 
 		return sorts.toArray(new String[0]);
+	}
+
+	private void _populateJSONObject(
+		JSONObject jsonObject, Organization organization) {
+
+		Set<Field> customFields = organization.getCustomFields();
+
+		if (CollectionUtils.isNotEmpty(customFields)) {
+			JSONObject customJSONObject = new JSONObject();
+
+			for (Field customField : customFields) {
+				JSONObject customFieldJSONObject = objectMapper.convertValue(
+					customField, JSONObject.class);
+
+				customFieldJSONObject.remove("id");
+
+				customFieldJSONObject.put(
+					"ownerId", jsonObject.getString("id"));
+
+				customJSONObject.put(
+					customField.getName(), JSONUtil.put(customFieldJSONObject));
+			}
+
+			jsonObject.put("custom", customJSONObject);
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(

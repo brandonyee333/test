@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.SalesforceEntityRepository;
@@ -269,24 +270,16 @@ public class ElasticsearchSalesforceEntityRepositoryImpl
 
 	@Override
 	public <S extends SalesforceEntity> S save(S salesforceEntity) {
-		JSONObject jsonObject = null;
+		JSONObject jsonObject = _toJSONObject(salesforceEntity);
 
-		if ((salesforceEntity.getId() != null) &&
-			_salesforceRawElasticsearchInvoker.exists(
-				_getCollectionName(salesforceEntity.getType()),
-				String.valueOf(salesforceEntity.getId()))) {
+		String id = jsonObject.optString(
+			"id", _timeOrderedUuidGenerator.generateId());
 
-			jsonObject = _salesforceRawElasticsearchInvoker.update(
-				_getCollectionName(salesforceEntity.getType()),
-				_toJSONObject(salesforceEntity));
-		}
-		else {
-			jsonObject = _salesforceRawElasticsearchInvoker.add(
-				_getCollectionName(salesforceEntity.getType()),
-				_toJSONObject(salesforceEntity));
-		}
+		jsonObject.put("id", id);
 
-		return (S)_toEntity(jsonObject);
+		return (S)_toEntity(
+			_salesforceRawElasticsearchInvoker.upsert(
+				_getCollectionName(salesforceEntity.getType()), jsonObject));
 	}
 
 	@Override
@@ -350,5 +343,8 @@ public class ElasticsearchSalesforceEntityRepositoryImpl
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 }

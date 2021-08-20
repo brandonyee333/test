@@ -296,74 +296,43 @@ public class ElasticsearchAccountRepositoryImpl
 	public <S extends Account> S save(S account) {
 		JSONObject jsonObject = toJSONObject(account);
 
-		Set<Account.AccountActivityCount> activitiesCounts =
-			account.getActivitiesCounts();
+		_populateJSONObject(account, jsonObject);
 
-		if (CollectionUtils.isNotEmpty(activitiesCounts)) {
-			JSONArray activitiesCountsJSONArray = new JSONArray();
+		String id = jsonObject.optString(
+			"id", timeOrderedUuidGenerator.generateId());
 
-			for (Account.AccountActivityCount activityCount :
-					activitiesCounts) {
+		jsonObject.put("id", id);
 
-				activitiesCountsJSONArray.put(
-					JSONUtil.put(
-						"activitiesCount", activityCount.getActivitiesCount()
-					).put(
-						"channelId", activityCount.getChannelId()
-					));
-			}
+		return (S)toEntity(
+			_faroInfoElasticsearchInvoker.upsert(
+				getCollectionName(), jsonObject));
+	}
 
-			jsonObject.put("activitiesCounts", activitiesCountsJSONArray);
-		}
+	@Override
+	public <S extends Account> Iterable<S> saveAll(Iterable<S> accounts) {
+		List<S> list = new ArrayList<>();
 
-		Set<Account.AccountIndividualCount> individualCounts =
-			account.getIndividualCounts();
+		JSONArray jsonArray = new JSONArray();
 
-		if (CollectionUtils.isNotEmpty(individualCounts)) {
-			JSONArray individualsCountsJSONArray = new JSONArray();
+		accounts.forEach(
+			account -> {
+				JSONObject jsonObject = toJSONObject(account);
 
-			for (Account.AccountIndividualCount individualCount :
-					individualCounts) {
+				_populateJSONObject(account, jsonObject);
 
-				individualsCountsJSONArray.put(
-					JSONUtil.put(
-						"channelId", individualCount.getChannelId()
-					).put(
-						"individualCount", individualCount.getIndividualCount()
-					));
-			}
+				String id = jsonObject.optString(
+					"id", timeOrderedUuidGenerator.generateId());
 
-			jsonObject.put("individualCounts", individualsCountsJSONArray);
-		}
+				jsonObject.put("id", id);
 
-		Set<Field> fields = account.getFields();
+				jsonArray.put(jsonObject);
 
-		if (CollectionUtils.isNotEmpty(fields)) {
-			JSONObject organizationJSONObject = new JSONObject();
+				list.add((S)toEntity(jsonObject));
+			});
 
-			for (Field field : fields) {
-				organizationJSONObject.put(
-					field.getName(),
-					JSONUtil.put(
-						objectMapper.convertValue(field, JSONObject.class)));
-			}
+		_faroInfoElasticsearchInvoker.upsert(getCollectionName(), jsonArray);
 
-			jsonObject.put("organization", organizationJSONObject);
-		}
-
-		if ((account.getId() != null) &&
-			_faroInfoElasticsearchInvoker.exists(
-				getCollectionName(), String.valueOf(account.getId()))) {
-
-			jsonObject = _faroInfoElasticsearchInvoker.update(
-				getCollectionName(), jsonObject);
-		}
-		else {
-			jsonObject = _faroInfoElasticsearchInvoker.add(
-				getCollectionName(), jsonObject);
-		}
-
-		return (S)toEntity(jsonObject);
+		return list;
 	}
 
 	@Override
@@ -684,6 +653,63 @@ public class ElasticsearchAccountRepositoryImpl
 		}
 
 		return sorts.toArray(new String[0]);
+	}
+
+	private void _populateJSONObject(Account account, JSONObject jsonObject) {
+		Set<Account.AccountActivityCount> activitiesCounts =
+			account.getActivitiesCounts();
+
+		if (CollectionUtils.isNotEmpty(activitiesCounts)) {
+			JSONArray activitiesCountsJSONArray = new JSONArray();
+
+			for (Account.AccountActivityCount activityCount :
+					activitiesCounts) {
+
+				activitiesCountsJSONArray.put(
+					JSONUtil.put(
+						"activitiesCount", activityCount.getActivitiesCount()
+					).put(
+						"channelId", activityCount.getChannelId()
+					));
+			}
+
+			jsonObject.put("activitiesCounts", activitiesCountsJSONArray);
+		}
+
+		Set<Account.AccountIndividualCount> individualCounts =
+			account.getIndividualCounts();
+
+		if (CollectionUtils.isNotEmpty(individualCounts)) {
+			JSONArray individualsCountsJSONArray = new JSONArray();
+
+			for (Account.AccountIndividualCount individualCount :
+					individualCounts) {
+
+				individualsCountsJSONArray.put(
+					JSONUtil.put(
+						"channelId", individualCount.getChannelId()
+					).put(
+						"individualCount", individualCount.getIndividualCount()
+					));
+			}
+
+			jsonObject.put("individualCounts", individualsCountsJSONArray);
+		}
+
+		Set<Field> fields = account.getFields();
+
+		if (CollectionUtils.isNotEmpty(fields)) {
+			JSONObject organizationJSONObject = new JSONObject();
+
+			for (Field field : fields) {
+				organizationJSONObject.put(
+					field.getName(),
+					JSONUtil.put(
+						objectMapper.convertValue(field, JSONObject.class)));
+			}
+
+			jsonObject.put("organization", organizationJSONObject);
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(

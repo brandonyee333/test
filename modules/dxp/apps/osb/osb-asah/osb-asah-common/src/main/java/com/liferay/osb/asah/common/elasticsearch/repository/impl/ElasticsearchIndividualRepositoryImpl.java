@@ -736,17 +736,13 @@ public class ElasticsearchIndividualRepositoryImpl
 			jsonObject.put("lastActivityDates", lastActivityDatesJSONArray);
 		}
 
-		if ((individual.getId() != null) &&
-			_faroInfoElasticsearchInvoker.exists(
-				getCollectionName(), String.valueOf(individual.getId()))) {
+		String id = jsonObject.optString(
+			"id", _timeOrderedUuidGenerator.generateId());
 
-			jsonObject = _faroInfoElasticsearchInvoker.update(
-				getCollectionName(), jsonObject);
-		}
-		else {
-			jsonObject = _faroInfoElasticsearchInvoker.add(
-				getCollectionName(), jsonObject);
-		}
+		jsonObject.put("id", id);
+
+		jsonObject = _faroInfoElasticsearchInvoker.upsert(
+			getCollectionName(), jsonObject);
 
 		Set<Field> customFields = individual.getCustomFields();
 
@@ -795,10 +791,20 @@ public class ElasticsearchIndividualRepositoryImpl
 			jsonObject.remove("demographics");
 		}
 
-		jsonObject = _faroInfoElasticsearchInvoker.replace(
-			getCollectionName(), jsonObject);
+		return (S)toEntity(
+			_faroInfoElasticsearchInvoker.replace(
+				getCollectionName(), jsonObject));
+	}
 
-		return (S)toEntity(jsonObject);
+	@Override
+	public <S extends Individual> Iterable<S> saveAll(Iterable<S> entities) {
+		Stream<S> stream = StreamSupport.stream(entities.spliterator(), false);
+
+		return stream.map(
+			this::save
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	@Override

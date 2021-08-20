@@ -37,6 +37,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -339,6 +340,20 @@ public class ElasticsearchFieldMappingRepositoryImpl
 		}
 
 		return (S)toEntity(fieldMappingJSONObject);
+	}
+
+	@Override
+	public <S extends FieldMapping> Iterable<S> saveAll(
+		Iterable<S> fieldMappings) {
+
+		Stream<S> stream = StreamSupport.stream(
+			fieldMappings.spliterator(), false);
+
+		return stream.map(
+			this::save
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	@Override
