@@ -613,6 +613,21 @@ public class IndividualDog extends BaseFaroInfoDog {
 			distributions, pageRequest, distributions::size);
 	}
 
+	public List<Long> getIdsBySegmentId(Long segmentId) {
+		return _individualRepository.findIdsByAnySegmentIds(segmentId);
+	}
+
+	public Individual getIndividual(Long id) {
+		Optional<Individual> individualOptional =
+			_individualRepository.findById(id);
+
+		return populateIndividual(
+			individualOptional.orElseThrow(
+				() -> new OSBAsahException(
+					HttpStatus.BAD_REQUEST,
+					"There is no individual with ID " + id)));
+	}
+
 	public Individual getIndividual(Long channelId, Long individualId)
 		throws Exception {
 
@@ -661,26 +676,12 @@ public class IndividualDog extends BaseFaroInfoDog {
 			individuals, individual -> populateIndividual(individual));
 	}
 
-	public long getKnownIndividualCount(List<Long> individualIds) {
-		return elasticsearchInvoker.count(
-			"individuals",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.existsQuery("demographics.email")
-			).filter(
-				QueryBuilders.termsQuery(
-					"id", SetUtil.map(individualIds, String::valueOf))
-			));
+	public long getKnownIndividualCount(List<Long> ids) {
+		return _individualRepository.countKnownIndividuals(ids);
 	}
 
-	public long getKnownIndividualCount(Long individualSegmentId) {
-		return elasticsearchInvoker.count(
-			"individuals",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.existsQuery("demographics.email")
-			).filter(
-				QueryBuilders.termQuery(
-					"individualSegmentIds", String.valueOf(individualSegmentId))
-			));
+	public long getKnownIndividualCount(Long segmentId) {
+		return _individualRepository.countKnownIndividuals(segmentId);
 	}
 
 	public Page<Transformation> getTransformationsPage(
@@ -852,6 +853,19 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	public Individual removeSegmentId(Long individualId, Long segmentId) {
 		return removeSegmentId(fetchIndividual(individualId), segmentId);
+	}
+
+	public List<Individual> searchIndividuals(
+		Long channelId, Boolean includeAnonymousUsers, Long segmentId, int page,
+		int size, String[] sorts) {
+
+		channelId = _getChannelId(null, segmentId);
+
+		return ListUtil.map(
+			_individualRepository.searchIndividuals(
+				channelId, null, includeAnonymousUsers, segmentId,
+				PageRequest.of(page, size, SortUtil.getSort(sorts))),
+			this::populateIndividual);
 	}
 
 	public List<Individual> searchIndividuals(

@@ -42,6 +42,12 @@ public interface IndividualRepository
 		@Nullable Long channelId, @Nullable String filterString,
 		Boolean includeAnonymousUsers, @Nullable Long segmentId);
 
+	@Cacheable
+	public long countKnownIndividuals(List<Long> ids);
+
+	@Cacheable
+	public long countKnownIndividuals(Long segmentId);
+
 	public boolean existsByChannelIdAndFilterStringAndId(
 		@Nullable Long channelId, @Nullable String filterString,
 		@Nullable Long individualId);
@@ -89,6 +95,10 @@ public interface IndividualRepository
 
 	public Optional<Individual> findByEmailAddressOrEmailAddressHashed(
 		@Nullable String emailAddress, @Nullable String emailAddressHashed);
+
+	@Cacheable
+	public List<Long> findIdsByAnySegmentIds(
+		@Param("segmentId") Long segmentId);
 
 	@Cacheable
 	public Map<Long, Long> findIndividualCounts(

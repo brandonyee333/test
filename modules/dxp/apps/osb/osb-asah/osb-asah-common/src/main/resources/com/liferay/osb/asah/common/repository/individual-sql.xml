@@ -26,4 +26,14 @@
 				Field.value = :emailAddress
 		]]>
 	</entry>
+	<entry key="Individual.findIdsByAnySegmentIds">
+		<![CDATA[
+			SELECT
+				Individual.id
+			FROM
+				Individual
+			WHERE
+				:segmentId = ANY(Individual.segmentIds)
+		]]>
+	</entry>
 </properties>

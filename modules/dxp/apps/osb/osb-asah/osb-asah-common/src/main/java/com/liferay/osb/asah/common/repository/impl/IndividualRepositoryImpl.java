@@ -117,6 +117,77 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public long countKnownIndividuals(List<Long> ids) {
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return selectSelectStep.from(
+			"Individual"
+		).innerJoin(
+			"Field"
+		).on(
+			DSL.field(
+				"individual.id"
+			).eq(
+				DSL.field("field.ownerid")
+			),
+			DSL.field(
+				"field.name"
+			).eq(
+				"email"
+			),
+			DSL.field(
+				"field.value"
+			).isNotNull()
+		).where(
+			DSL.field(
+				"individual.id"
+			).in(
+				ids
+			)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
+	public long countKnownIndividuals(Long segmentId) {
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return selectSelectStep.from(
+			"Individual"
+		).innerJoin(
+			"Field"
+		).on(
+			DSL.field(
+				"individual.id"
+			).eq(
+				DSL.field("field.ownerid")
+			),
+			DSL.field(
+				"field.name"
+			).eq(
+				"email"
+			),
+			DSL.field(
+				"field.value"
+			).isNotNull()
+		).where(
+			DSL.field(
+				DSL.cast(
+					DSL.array(DSL.field("individual.segmentids")), Long[].class)
+			).contains(
+				DSL.cast(DSL.array(segmentId), Long[].class)
+			)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
 	public boolean existsByChannelIdAndFilterStringAndId(
 		@Nullable Long channelId, @Nullable String filterString,
 		@Nullable Long individualId) {

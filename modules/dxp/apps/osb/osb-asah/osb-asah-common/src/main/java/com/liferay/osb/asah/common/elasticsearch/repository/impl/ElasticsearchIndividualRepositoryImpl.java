@@ -98,6 +98,28 @@ public class ElasticsearchIndividualRepositoryImpl
 				channelId, filterString, includeAnonymousUsers, segmentId));
 	}
 
+	public long countKnownIndividuals(List<Long> ids) {
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(),
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.existsQuery("demographics.email")
+			).filter(
+				QueryBuilders.termsQuery(
+					"id", SetUtil.map(ids, String::valueOf))
+			));
+	}
+
+	public long countKnownIndividuals(Long segmentId) {
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(),
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.existsQuery("demographics.email")
+			).filter(
+				QueryBuilders.termQuery(
+					"individualSegmentIds", String.valueOf(segmentId))
+			));
+	}
+
 	@Override
 	public boolean existsByChannelIdAndFilterStringAndId(
 		@Nullable Long channelId, @Nullable String filterString,
@@ -380,6 +402,16 @@ public class ElasticsearchIndividualRepositoryImpl
 							"emailAddressHashed",
 							DigestUtils.sha256Hex(emailAddress))
 					))));
+	}
+
+	@Override
+	public List<Long> findIdsByAnySegmentIds(Long segmentId) {
+		return JSONUtil.toLongList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				QueryBuilders.termQuery(
+					"individualSegmentIds", String.valueOf(segmentId))),
+			"id");
 	}
 
 	@Override
