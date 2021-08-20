@@ -48,7 +48,6 @@ public interface AccountRepository extends OSBAsahRepository<Account, Long> {
 	public Optional<Account> findByAccountPKAndDataSourceId(
 		String accountPK, Long dataSourceId);
 
-	@Cacheable
 	public List<Distribution> getAccountDistributions(
 		@Nullable Long channelId, String fieldName, String fieldType,
 		@Nullable String filterString, @Nullable Long individualSegmentId,

@@ -87,11 +87,9 @@ public interface FieldMappingRepository
 	public List<Transformation> getFieldMappingTransformations(
 		String apply, @Nullable String filterString, Pageable pageable);
 
-	@Cacheable
 	public List<FieldMapping> searchFieldMappings(
 		@Nullable String filterString, Pageable pageable);
 
-	@Cacheable
 	public List<FieldMapping> searchIndividualFieldMappings(
 		@Nullable String name, Pageable pageable);
 

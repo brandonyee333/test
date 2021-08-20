@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.entity.IndividualChannel;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 
 /**
@@ -28,7 +27,6 @@ import org.springframework.context.annotation.Primary;
 public interface IndividualChannelRepository
 	extends OSBAsahRepository<IndividualChannel, Long> {
 
-	@Cacheable
 	public List<IndividualChannel> findByIndividualId(Long individualId);
 
 }

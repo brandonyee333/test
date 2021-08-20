@@ -34,7 +34,6 @@ import org.springframework.data.repository.query.Param;
 public interface ActivityGroupRepository
 	extends OSBAsahRepository<ActivityGroup, Long> {
 
-	@Cacheable
 	public long countActivityGroups(String filterString);
 
 	@CacheEvict(allEntries = true)
@@ -47,7 +46,6 @@ public interface ActivityGroupRepository
 			String activityType, Long channelId, Long dataSourceId,
 			Date dayDate, String userId);
 
-	@Cacheable
 	public List<ActivityGroup> searchActivityGroups(
 		String filterString, Pageable pageable);
 

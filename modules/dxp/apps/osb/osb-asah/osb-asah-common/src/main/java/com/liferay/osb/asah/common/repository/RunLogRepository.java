@@ -18,10 +18,9 @@ import com.liferay.osb.asah.common.entity.RunLog;
 
 import java.util.Optional;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
 
@@ -29,13 +28,11 @@ import org.springframework.lang.Nullable;
  * @author Marcellus Tavares
  */
 @Primary
-public interface RunLogRepository extends OSBAsahRepository<RunLog, Long> {
+public interface RunLogRepository extends CrudRepository<RunLog, Long> {
 
-	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteByDataSourceId(@Param("dataSourceId") Long dataSourceId);
 
-	@Cacheable
 	public Optional<RunLog>
 		findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
 			@Nullable Long dataSourceId, String naniteClassName,

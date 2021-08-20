@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 
 /**
@@ -29,7 +28,6 @@ import org.springframework.context.annotation.Primary;
 public interface DataSourceIndividualRepository
 	extends OSBAsahRepository<DataSourceIndividual, Long> {
 
-	@Cacheable
 	public List<DataSourceIndividual> findByIndividualId(Long individualId);
 
 	public List<DataSourceIndividual> findByIndividualIdIn(

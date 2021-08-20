@@ -35,11 +35,9 @@ public interface OrganizationRepository
 	public Organization findByDataSourceIdAndOrganizationPK(
 		Long dataSourceId, Long organizationPK);
 
-	@Cacheable
 	public List<Transformation> getOrganizationTransformations(
 		String apply, @Nullable String filterString, Pageable pageable);
 
-	@Cacheable
 	public List<Organization> searchOrganizations(
 		String filterString, Pageable pageable);
 

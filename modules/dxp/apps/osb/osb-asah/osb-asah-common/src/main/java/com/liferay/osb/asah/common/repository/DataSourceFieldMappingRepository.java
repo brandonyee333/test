@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 
 /**
@@ -28,10 +27,8 @@ import org.springframework.context.annotation.Primary;
 public interface DataSourceFieldMappingRepository
 	extends OSBAsahRepository<DataSourceFieldMapping, Long> {
 
-	@Cacheable
 	public List<DataSourceFieldMapping> findByDataSourceId(Long dataSourceId);
 
-	@Cacheable
 	public List<DataSourceFieldMapping> findByFieldMappingId(
 		Long fieldMappingId);
 

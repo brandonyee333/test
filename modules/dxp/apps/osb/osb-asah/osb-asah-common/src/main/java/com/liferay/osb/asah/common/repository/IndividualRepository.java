@@ -38,23 +38,19 @@ import org.springframework.lang.Nullable;
 public interface IndividualRepository
 	extends OSBAsahRepository<Individual, Long> {
 
-	@Cacheable
 	public long countIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,
 		Boolean includeAnonymousUsers, @Nullable Long segmentId);
 
-	@Cacheable
 	public boolean existsByChannelIdAndFilterStringAndId(
 		@Nullable Long channelId, @Nullable String filterString,
 		@Nullable Long individualId);
 
-	@Cacheable
 	public boolean
 		existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
 			@Nullable Long channelId, @Nullable String filterString,
 			Boolean includeAnonymousUsers, @Nullable Long individualId);
 
-	@Cacheable
 	public boolean existsByFilterStringAndId(
 		@Nullable String filterString, @Nullable Long individualId);
 
@@ -91,7 +87,6 @@ public interface IndividualRepository
 	public Optional<Individual> findByEmailAddressHashed(
 		String emailAddressHashed);
 
-	@Cacheable
 	public Optional<Individual> findByEmailAddressOrEmailAddressHashed(
 		@Nullable String emailAddress, @Nullable String emailAddressHashed);
 
@@ -99,24 +94,20 @@ public interface IndividualRepository
 	public Map<Long, Long> findIndividualCounts(
 		boolean includeAnonymousUsers, Long segmentId);
 
-	@Cacheable
 	public List<Distribution> getIndividualDistributions(
 		String fieldName, String fieldType, @Nullable String filterString,
 		Pageable pageable);
 
-	@Cacheable
 	public List<Transformation> getIndividualTransformations(
 		String apply, @Nullable Long channelId, @Nullable String filterString,
 		Boolean includeAnonymousUsers, @Nullable Long segmentId,
 		Pageable pageable);
 
-	@Cacheable
 	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,
 		Boolean includeAnonymousUsers, @Nullable Long segmentId,
 		Pageable pageable);
 
-	@Cacheable
 	public List<Individual> searchIndividuals(
 		String filterString, Pageable pageable);
 

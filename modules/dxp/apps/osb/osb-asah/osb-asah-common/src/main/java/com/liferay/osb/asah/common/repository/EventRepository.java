@@ -50,7 +50,6 @@ public interface EventRepository extends OSBAsahRepository<Event, Long> {
 	@Cacheable
 	public long countByEventDefinitionId(long eventDefinitionId);
 
-	@Cacheable
 	public Integer countEvents(
 		Long channelId, Long individualId, String keywords,
 		TimeRange timeRange);
@@ -106,17 +105,14 @@ public interface EventRepository extends OSBAsahRepository<Event, Long> {
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate);
 
-	@Cacheable
 	public Map<String, Integer> getEventsCountGroupByEventDate(
 		Long channelId, Long individualId, Interval interval, String keywords,
 		TimeRange timeRange);
 
-	@Cacheable
 	public Map<String, Integer> getEventSessionsCountGroupByEventDate(
 		Long channelId, Long individualId, Interval interval, String keywords,
 		TimeRange timeRange);
 
-	@Cacheable
 	public List<Event> searchEvents(
 		Long channelId, Long individualId, String keywords, Pageable pageable,
 		TimeRange timeRange);
