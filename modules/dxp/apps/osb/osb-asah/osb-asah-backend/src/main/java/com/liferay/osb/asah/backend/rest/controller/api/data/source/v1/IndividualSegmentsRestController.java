@@ -32,7 +32,6 @@ import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
@@ -624,10 +623,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	@Autowired
-	private FaroInfoIndividualsFilterStringConverterHelper
-		_faroInfoIndividualsFilterStringConverterHelper;
 
 	@Autowired
 	private FieldMappingDog _fieldMappingDog;

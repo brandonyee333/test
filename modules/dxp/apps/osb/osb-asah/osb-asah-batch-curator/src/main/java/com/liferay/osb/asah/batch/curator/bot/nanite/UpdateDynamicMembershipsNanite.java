@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -270,10 +269,6 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 
 	private static final Log _log = LogFactory.getLog(
 		UpdateDynamicMembershipsNanite.class);
-
-	@Autowired
-	private FaroInfoIndividualsFilterStringConverterHelper
-		_faroInfoIndividualsFilterStringConverterHelper;
 
 	@Autowired
 	private IndividualDog _individualDog;

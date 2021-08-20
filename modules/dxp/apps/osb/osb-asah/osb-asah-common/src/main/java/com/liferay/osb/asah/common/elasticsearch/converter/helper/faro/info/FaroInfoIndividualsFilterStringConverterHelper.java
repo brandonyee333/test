@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
@@ -978,9 +976,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 	@Autowired
 	private MembershipDog _membershipDog;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;

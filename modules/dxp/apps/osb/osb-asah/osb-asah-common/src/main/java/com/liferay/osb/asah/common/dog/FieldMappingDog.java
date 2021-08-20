@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.dog.util.SortUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.entity.FieldMapping;
@@ -24,7 +23,6 @@ import com.liferay.osb.asah.common.repository.DataSourceFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -431,9 +429,6 @@ public class FieldMappingDog {
 
 	@Autowired
 	private DataSourceFieldMappingRepository _dataSourceFieldMappingRepository;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private FieldMappingRepository _fieldMappingRepository;

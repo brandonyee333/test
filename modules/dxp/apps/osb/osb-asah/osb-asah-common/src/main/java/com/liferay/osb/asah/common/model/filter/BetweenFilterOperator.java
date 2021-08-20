@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.model.filter;
 
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 
 import java.util.ArrayList;
@@ -23,8 +22,6 @@ import java.util.List;
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Leslie Wong
@@ -54,8 +51,5 @@ public class BetweenFilterOperator extends FilterOperator {
 			}
 		};
 	}
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
 
 }

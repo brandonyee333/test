@@ -1013,10 +1013,6 @@ public class IndividualsFilterStringConverterHelper
 	@Autowired
 	private AccountRepository _accountRepository;
 
-	@Autowired
-	private AccountsFilterStringConverterHelper
-		_accountsFilterStringConverterHelper;
-
 	private final Set<String> _allowedOperators = new HashSet<String>() {
 		{
 			add("eq");

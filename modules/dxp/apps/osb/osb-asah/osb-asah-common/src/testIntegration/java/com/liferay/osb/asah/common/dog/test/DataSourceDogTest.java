@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -124,8 +122,5 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 }

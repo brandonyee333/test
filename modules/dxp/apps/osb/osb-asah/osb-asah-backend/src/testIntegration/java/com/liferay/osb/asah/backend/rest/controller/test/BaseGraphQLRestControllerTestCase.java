@@ -16,9 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.backend.graphql.GraphQLRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.json.JSONObject;
@@ -82,9 +80,6 @@ public abstract class BaseGraphQLRestControllerTestCase {
 				"dependencies/" + expectedResultPath, this),
 			responseJSONObject, false);
 	}
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	protected ElasticsearchInvoker elasticsearchInvoker;
 
 	private void _expectContentTypeJSON(ResultActions resultActions)
 		throws Exception {
