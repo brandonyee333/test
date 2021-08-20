@@ -14,7 +14,7 @@
 			"title": "Title 1",
 			"url": "http://liferay.com/web/forms/shared/-/form/1"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2018-09-13T12:49:00.000Z",
 		"eventId": "fieldFocused",
 		"eventProperties": {
@@ -41,7 +41,7 @@
 			"title": "Title 1",
 			"url": "http://liferay.com/web/forms/shared/-/form/1"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2018-09-13T12:49:01.000Z",
 		"eventId": "fieldBlurred",
 		"eventProperties": {
@@ -69,7 +69,7 @@
 			"title": "Title 1",
 			"url": "http://liferay.com/web/forms/shared/-/form/1"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2018-09-13T12:50:00.000Z",
 		"eventId": "formSubmitted",
 		"eventProperties": {
@@ -94,7 +94,7 @@
 			"title": "Title 1",
 			"url": "http://liferay.com/web/forms/shared/-/form/1"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2018-09-13T12:50:01.000Z",
 		"eventId": "formViewed",
 		"eventProperties": {
@@ -120,7 +120,7 @@
 			"title": "Title 1",
 			"url": "http://liferay.com/web/forms/shared/-/form/1"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2018-09-13T12:50:01.000Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -147,7 +147,7 @@
 			"title": "Title 1",
 			"url": "http://liferay.com/web/forms/shared/-/form/1"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2018-09-13T12:50:02.000Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -174,7 +174,7 @@
 			"title": "Title 1",
 			"url": "http://liferay.com/web/forms/shared/-/form/1"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2018-09-13T13:05:00.000Z",
 		"eventId": "fieldFocused",
 		"eventProperties": {
@@ -201,7 +201,7 @@
 			"title": "Title 1",
 			"url": "http://liferay.com/web/forms/shared/-/form/1"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2018-09-13T14:10:00.000Z",
 		"eventId": "fieldFocused",
 		"eventProperties": {

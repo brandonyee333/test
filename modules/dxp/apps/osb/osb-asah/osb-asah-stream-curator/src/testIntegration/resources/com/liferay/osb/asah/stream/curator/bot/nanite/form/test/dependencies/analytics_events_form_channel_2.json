@@ -14,7 +14,7 @@
 			"title": "Title 1",
 			"url": "http://liferay.com/web/forms/shared/-/form/1"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2018-09-13T12:48:59.000Z",
 		"eventId": "formViewed",
 		"eventProperties": {
@@ -40,7 +40,7 @@
 			"title": "Title 1",
 			"url": "http://liferay.com/web/forms/shared/-/form/1"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2018-09-13T12:49:00.000Z",
 		"eventId": "fieldFocused",
 		"eventProperties": {
@@ -67,7 +67,7 @@
 			"title": "Title 1",
 			"url": "http://liferay.com/web/forms/shared/-/form/1"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2018-09-13T12:49:01.000Z",
 		"eventId": "fieldBlurred",
 		"eventProperties": {
@@ -95,7 +95,7 @@
 			"title": "Title 1",
 			"url": "http://liferay.com/web/forms/shared/-/form/1"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2018-09-13T12:50:00.000Z",
 		"eventId": "formSubmitted",
 		"eventProperties": {

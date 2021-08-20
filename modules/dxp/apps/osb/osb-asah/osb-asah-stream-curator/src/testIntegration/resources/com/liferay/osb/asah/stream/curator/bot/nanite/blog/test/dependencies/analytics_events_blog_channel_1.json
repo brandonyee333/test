@@ -5,7 +5,7 @@
 		"context": {
 			"crawler": "False"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2019-04-23T16:00:00.000Z",
 		"eventId": "VOTE",
 		"eventProperties": {
@@ -23,7 +23,7 @@
 		"context": {
 			"crawler": "False"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2019-04-23T16:00:00.000Z",
 		"eventId": "VOTE",
 		"eventProperties": {
@@ -42,7 +42,7 @@
 		"context": {
 			"crawler": "False"
 		},
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"eventDate": "2019-04-23T16:00:00.000Z",
 		"eventId": "VOTE",
 		"eventProperties": {

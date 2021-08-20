@@ -10,7 +10,7 @@
 		"channelId": "1",
 		"city": "Recife",
 		"country": "Brazil",
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"deviceType": "Desktop",
 		"eventDate": "${now-2d}",
 		"formPages": [
@@ -83,7 +83,7 @@
 		"channelId": "2",
 		"city": "Recife",
 		"country": "Brazil",
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"deviceType": "Desktop",
 		"eventDate": "${now-2d}",
 		"formPages": [
@@ -137,7 +137,7 @@
 		"channelId": "1",
 		"city": "Recife",
 		"country": "Brazil",
-		"dataSourceId": "liferay.com",
+		"dataSourceId": "370975939087274525",
 		"deviceType": "Desktop",
 		"eventDate": "${now-2d}",
 		"formPages": [
