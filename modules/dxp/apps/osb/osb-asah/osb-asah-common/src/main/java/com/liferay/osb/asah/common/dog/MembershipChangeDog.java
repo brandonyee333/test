@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.MembershipChange;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
@@ -189,12 +190,15 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
+		Segment segment = _segmentDog.getSegment(segmentId);
+
 		return PageableExecutionUtils.getPage(
 			_membershipChangeRepository.searchMembershipChanges(
-				filterString, segmentId, pageRequest),
+				filterString, segment.getIncludeAnonymousUsers(), segmentId,
+				pageRequest),
 			pageRequest,
 			() -> _membershipChangeRepository.countMembershipChanges(
-				filterString, segmentId));
+				filterString, segment.getIncludeAnonymousUsers(), segmentId));
 	}
 
 	public void updateIndividualNameForIndividual(
@@ -219,5 +223,8 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private MembershipChangeRepository _membershipChangeRepository;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

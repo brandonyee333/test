@@ -15,15 +15,11 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.MembershipChange;
-import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
-import com.liferay.osb.asah.common.repository.SegmentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
@@ -33,7 +29,6 @@ import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -45,14 +40,16 @@ public class MembershipChangeRepositoryImpl {
 		_dslContext = dslContext;
 	}
 
-	public long countMembershipChanges(String filterString, Long segmentId) {
+	public long countMembershipChanges(
+		String filterString, Boolean includeAnonymousUsers, Long segmentId) {
+
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
 			"MembershipChange"
 		).where(
-			_getConditions(filterString, segmentId)
+			_getConditions(filterString, includeAnonymousUsers, segmentId)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -61,14 +58,15 @@ public class MembershipChangeRepositoryImpl {
 	}
 
 	public List<MembershipChange> searchMembershipChanges(
-		String filterString, Long segmentId, Pageable pageable) {
+		String filterString, Boolean includeAnonymousUsers, Long segmentId,
+		Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
 			"MembershipChange"
 		).where(
-			_getConditions(filterString, segmentId)
+			_getConditions(filterString, includeAnonymousUsers, segmentId)
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -80,7 +78,7 @@ public class MembershipChangeRepositoryImpl {
 	}
 
 	private List<Condition> _getConditions(
-		String filterString, Long segmentId) {
+		String filterString, Boolean includeAnonymousUsers, Long segmentId) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -92,14 +90,7 @@ public class MembershipChangeRepositoryImpl {
 					segmentId
 				));
 
-			Optional<Segment> segmentOptional = _segmentRepository.findById(
-				segmentId);
-
-			Segment segment = segmentOptional.orElse(null);
-
-			if ((segment != null) &&
-				!BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers())) {
-
+			if (!includeAnonymousUsers) {
 				conditions.add(
 					DSL.field(
 						"individualEmail"
@@ -120,8 +111,5 @@ public class MembershipChangeRepositoryImpl {
 	}
 
 	private final DSLContext _dslContext;
-
-	@Autowired
-	private SegmentRepository _segmentRepository;
 
 }

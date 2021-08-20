@@ -69,12 +69,23 @@ public class IndividualRepositoryImpl extends BaseRepository {
 
 	public long countIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,
-		Boolean includeAnonymousUsers, @Nullable Long segmentId) {
+		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
+		@Nullable Long segmentId) {
 
 		Condition condition = ConditionUtil.toCondition(
 			filterString, _individualsFilterStringConverterHelper);
 
-		if (channelId != null) {
+		if (segmentChannelId != null) {
+			condition = condition.and(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.channelids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(segmentChannelId), Long[].class)
+				));
+		}
+		else if (channelId != null) {
 			condition = condition.and(
 				DSL.field(
 					DSL.cast(
@@ -685,8 +696,8 @@ public class IndividualRepositoryImpl extends BaseRepository {
 
 	public List<Transformation> getIndividualTransformations(
 		String apply, @Nullable Long channelId, @Nullable String filterString,
-		Boolean includeAnonymousUsers, @Nullable Long segmentId,
-		Pageable pageable) {
+		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
+		@Nullable Long segmentId, Pageable pageable) {
 
 		Matcher matcher = MatcherUtil.getMatcher(apply);
 
@@ -736,7 +747,17 @@ public class IndividualRepositoryImpl extends BaseRepository {
 
 		List<Condition> conditions = new ArrayList<>();
 
-		if (channelId != null) {
+		if (segmentChannelId != null) {
+			conditions.add(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.channelids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(segmentChannelId), Long[].class)
+				));
+		}
+		else if (channelId != null) {
 			conditions.add(
 				DSL.field(
 					DSL.cast(
@@ -812,8 +833,8 @@ public class IndividualRepositoryImpl extends BaseRepository {
 
 	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,
-		Boolean includeAnonymousUsers, @Nullable Long segmentId,
-		Pageable pageable) {
+		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
+		@Nullable Long segmentId, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			DSL.table(
@@ -861,7 +882,17 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		Condition condition = ConditionUtil.toCondition(
 			filterString, _individualsFilterStringConverterHelper);
 
-		if (channelId != null) {
+		if (segmentChannelId != null) {
+			condition = condition.and(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.channelids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(segmentChannelId), Long[].class)
+				));
+		}
+		else if (channelId != null) {
 			condition = condition.and(
 				DSL.field(
 					DSL.cast(

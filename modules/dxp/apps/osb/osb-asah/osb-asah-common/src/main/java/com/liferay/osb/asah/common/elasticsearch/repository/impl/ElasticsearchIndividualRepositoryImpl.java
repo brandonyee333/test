@@ -17,16 +17,15 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
-import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -35,6 +34,7 @@ import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.NumbersDistributionTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -48,6 +48,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -90,12 +91,14 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	public long countIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,
-		Boolean includeAnonymousUsers, @Nullable Long segmentId) {
+		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
+		@Nullable Long segmentId) {
 
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(),
 			_getQueryBuilder(
-				channelId, filterString, includeAnonymousUsers, segmentId));
+				channelId, filterString, includeAnonymousUsers,
+				segmentChannelId, segmentId));
 	}
 
 	public long countKnownIndividuals(List<Long> ids) {
@@ -155,7 +158,7 @@ public class ElasticsearchIndividualRepositoryImpl
 			Boolean includeAnonymousUsers, @Nullable Long individualId) {
 
 		QueryBuilder queryBuilder = _getQueryBuilder(
-			channelId, filterString, includeAnonymousUsers, null);
+			channelId, filterString, includeAnonymousUsers, null, null);
 
 		if (individualId != null) {
 			queryBuilder = BoolQueryBuilderUtil.filter(
@@ -182,7 +185,7 @@ public class ElasticsearchIndividualRepositoryImpl
 		boolean includeAnonymousUsers, Long segmentId) {
 
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			"individuals",
+			getCollectionName(),
 			searchSourceBuilder -> {
 				searchSourceBuilder.aggregation(
 					AggregationBuilders.nested(
@@ -314,7 +317,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 		return toList(
 			_faroInfoElasticsearchInvoker.get(
-				"individuals", individualsBoolQueryBuilder));
+				getCollectionName(), individualsBoolQueryBuilder));
 	}
 
 	public List<Individual> findByDataSourceId(
@@ -419,7 +422,7 @@ public class ElasticsearchIndividualRepositoryImpl
 		boolean includeAnonymousUsers, Long segmentId) {
 
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			"individuals",
+			getCollectionName(),
 			searchSourceBuilder -> {
 				searchSourceBuilder.aggregation(
 					AggregationBuilders.terms(
@@ -536,8 +539,8 @@ public class ElasticsearchIndividualRepositoryImpl
 	@Override
 	public List<Transformation> getIndividualTransformations(
 		String apply, @Nullable Long channelId, @Nullable String filterString,
-		Boolean includeAnonymousUsers, @Nullable Long segmentId,
-		Pageable pageable) {
+		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
+		@Nullable Long segmentId, Pageable pageable) {
 
 		TransformationGetResponse transformationGetResponse =
 			new TransformationGetResponse();
@@ -548,7 +551,8 @@ public class ElasticsearchIndividualRepositoryImpl
 		transformationGetResponse.setPage(pageable.getPageNumber());
 
 		QueryBuilder queryBuilder = _getQueryBuilder(
-			channelId, filterString, includeAnonymousUsers, segmentId);
+			channelId, filterString, includeAnonymousUsers, segmentChannelId,
+			segmentId);
 
 		if (queryBuilder != null) {
 			transformationGetResponse.setQueryBuilder(queryBuilder);
@@ -810,8 +814,8 @@ public class ElasticsearchIndividualRepositoryImpl
 	@Override
 	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,
-		Boolean includeAnonymousUsers, @Nullable Long segmentId,
-		Pageable pageable) {
+		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
+		@Nullable Long segmentId, Pageable pageable) {
 
 		List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
 		List<String> newSorts = new ArrayList<>();
@@ -862,7 +866,7 @@ public class ElasticsearchIndividualRepositoryImpl
 						searchSourceBuilder.query(
 							_getQueryBuilder(
 								channelId, filterString, includeAnonymousUsers,
-								segmentId));
+								segmentChannelId, segmentId));
 
 						searchSourceBuilder.from(
 							pageable.getPageNumber() * pageable.getPageSize());
@@ -968,7 +972,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	private QueryBuilder _getQueryBuilder(
 		Long channelId, String filterString, Boolean includeAnonymousUsers,
-		Long segmentId) {
+		Long segmentChannelId, Long segmentId) {
 
 		BoolQueryBuilder boolQueryBuilder = null;
 
@@ -982,20 +986,18 @@ public class ElasticsearchIndividualRepositoryImpl
 			boolQueryBuilder = BoolQueryBuilderUtil.filter(queryBuilder);
 		}
 
-		if (segmentId != null) {
-			Segment segment = _segmentDog.fetchSegment(segmentId);
-
-			if (segment != null) {
-				boolQueryBuilder = boolQueryBuilder.filter(
-					QueryBuilders.termQuery("individualSegmentIds", segmentId));
-
-				channelId = segment.getChannelId();
-			}
+		if (segmentChannelId != null) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("channelIds", segmentChannelId));
 		}
-
-		if (channelId != null) {
+		else if (channelId != null) {
 			boolQueryBuilder.filter(
 				QueryBuilders.termQuery("channelIds", channelId));
+		}
+
+		if (segmentId != null) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("individualSegmentIds", segmentId));
 		}
 
 		if (BooleanUtils.toBoolean(includeAnonymousUsers)) {
@@ -1049,7 +1051,7 @@ public class ElasticsearchIndividualRepositoryImpl
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
 
-	@Autowired
-	private SegmentDog _segmentDog;
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 }

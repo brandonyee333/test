@@ -34,7 +34,8 @@ public interface MembershipChangeRepository
 	extends OSBAsahRepository<MembershipChange, Long> {
 
 	@Cacheable
-	public long countMembershipChanges(String filterString, Long segmentId);
+	public long countMembershipChanges(
+		String filterString, Boolean includeAnonymousUsers, Long segmentId);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
@@ -46,7 +47,8 @@ public interface MembershipChangeRepository
 
 	@Cacheable
 	public List<MembershipChange> searchMembershipChanges(
-		String filterString, Long segmentId, Pageable pageable);
+		String filterString, Boolean includeAnonymousUsers, Long segmentId,
+		Pageable pageable);
 
 	@CacheEvict(allEntries = true)
 	@Modifying

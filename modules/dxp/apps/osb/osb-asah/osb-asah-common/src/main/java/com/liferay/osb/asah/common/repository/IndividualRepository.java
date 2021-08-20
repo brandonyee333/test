@@ -40,7 +40,8 @@ public interface IndividualRepository
 
 	public long countIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,
-		Boolean includeAnonymousUsers, @Nullable Long segmentId);
+		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
+		@Nullable Long segmentId);
 
 	@Cacheable
 	public long countKnownIndividuals(List<Long> ids);
@@ -110,13 +111,13 @@ public interface IndividualRepository
 
 	public List<Transformation> getIndividualTransformations(
 		String apply, @Nullable Long channelId, @Nullable String filterString,
-		Boolean includeAnonymousUsers, @Nullable Long segmentId,
-		Pageable pageable);
+		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
+		@Nullable Long segmentId, Pageable pageable);
 
 	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,
-		Boolean includeAnonymousUsers, @Nullable Long segmentId,
-		Pageable pageable);
+		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
+		@Nullable Long segmentId, Pageable pageable);
 
 	public List<Individual> searchIndividuals(
 		String filterString, Pageable pageable);

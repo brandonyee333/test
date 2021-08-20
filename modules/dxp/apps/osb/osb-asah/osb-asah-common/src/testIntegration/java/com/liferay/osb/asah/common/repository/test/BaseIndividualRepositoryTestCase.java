@@ -215,7 +215,7 @@ public abstract class BaseIndividualRepositoryTestCase
 		Assert.assertEquals(
 			1,
 			individualRepository.countIndividuals(
-				11L, null, false, _segmentId));
+				11L, null, false, 11L, _segmentId));
 	}
 
 	@Test
@@ -399,7 +399,7 @@ public abstract class BaseIndividualRepositoryTestCase
 	@Test
 	public void testSearchIndividuals2() {
 		List<Individual> individuals = individualRepository.searchIndividuals(
-			11L, null, false, null,
+			11L, null, false, null, null,
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(individuals.toString(), 1, individuals.size());
