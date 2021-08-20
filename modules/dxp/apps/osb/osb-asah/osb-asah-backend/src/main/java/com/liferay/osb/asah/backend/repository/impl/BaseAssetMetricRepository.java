@@ -93,7 +93,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		fields.add(rowNumberField.as("rowNumber"));
 
-		Long offset = Long.valueOf(pageable.getOffset());
+		Long offset = pageable.getOffset();
 
 		return dslContext.select(
 		).from(

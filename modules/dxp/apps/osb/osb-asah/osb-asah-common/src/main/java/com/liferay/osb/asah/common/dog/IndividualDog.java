@@ -664,16 +664,14 @@ public class IndividualDog extends BaseFaroInfoDog {
 		List<Individual> individuals = _individualRepository.findByDataSourceId(
 			dataSourceId, PageRequest.of(page, size, sort));
 
-		return ListUtil.map(
-			individuals, individual -> populateIndividual(individual));
+		return ListUtil.map(individuals, this::populateIndividual);
 	}
 
 	public List<Individual> getIndividualsBySegmentId(Long segmentId) {
 		List<Individual> individuals =
 			_individualRepository.findByAnySegmentIds(segmentId);
 
-		return ListUtil.map(
-			individuals, individual -> populateIndividual(individual));
+		return ListUtil.map(individuals, this::populateIndividual);
 	}
 
 	public long getKnownIndividualCount(List<Long> ids) {
@@ -878,8 +876,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			channelId, filterString, includeAnonymousUsers, null, null,
 			pageRequest);
 
-		return ListUtil.map(
-			individuals, individual -> populateIndividual(individual));
+		return ListUtil.map(individuals, this::populateIndividual);
 	}
 
 	public Page<Individual> searchIndividualsPage(
@@ -909,9 +906,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			segmentId, pageRequest);
 
 		return PageableExecutionUtils.getPage(
-			ListUtil.map(
-				individuals, individual -> populateIndividual(individual)),
-			pageRequest,
+			ListUtil.map(individuals, this::populateIndividual), pageRequest,
 			() -> _individualRepository.countIndividuals(
 				null, filterString, includeAnonymousUsers, segmentChannelId,
 				segmentId));

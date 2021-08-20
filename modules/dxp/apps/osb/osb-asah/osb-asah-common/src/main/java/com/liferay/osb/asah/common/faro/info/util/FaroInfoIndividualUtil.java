@@ -157,10 +157,12 @@ public class FaroInfoIndividualUtil {
 		if ((familyNameField == null) && (givenNameField == null)) {
 			return null;
 		}
-		else if (familyNameField == null) {
+
+		if (familyNameField == null) {
 			return String.valueOf(givenNameField.getValue());
 		}
-		else if (givenNameField == null) {
+
+		if (givenNameField == null) {
 			return String.valueOf(familyNameField.getValue());
 		}
 

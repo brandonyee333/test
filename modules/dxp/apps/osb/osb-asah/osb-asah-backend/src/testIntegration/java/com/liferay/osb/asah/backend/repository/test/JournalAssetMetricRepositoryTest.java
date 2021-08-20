@@ -188,7 +188,7 @@ public class JournalAssetMetricRepositoryTest
 	@Test
 	public void testGetViewsHistogramMetricsLast24Hours() {
 		assertHistogramMetrics(
-			SetUtil.of(Double.valueOf(1), Double.valueOf(2), Double.valueOf(4)),
+			SetUtil.of((double)1, (double)2, (double)4),
 			_assetMetricRepository.getHistogramMetrics(
 				"e131fabc", 1L, Interval.HOUR, JournalMetricType.VIEWS,
 				TimeRange.LAST_24_HOURS));

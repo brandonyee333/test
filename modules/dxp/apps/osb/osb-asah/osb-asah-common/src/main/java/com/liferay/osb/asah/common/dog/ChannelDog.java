@@ -539,8 +539,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 				activitiesCounts.iterator();
 
 			while (iterator.hasNext()) {
-				Individual.ActivitiesCount activitiesCount =
-					(Individual.ActivitiesCount)iterator.next();
+				Individual.ActivitiesCount activitiesCount = iterator.next();
 
 				if (channelIds.contains(activitiesCount.getChannelId())) {
 					iterator.remove();
@@ -559,7 +558,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 		Iterator<Long> iterator = oldChannelIds.iterator();
 
 		while (iterator.hasNext()) {
-			Long channelId = (Long)iterator.next();
+			Long channelId = iterator.next();
 
 			if (channelIds.contains(channelId)) {
 				iterator.remove();
@@ -607,8 +606,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 				lastActivityDates.iterator();
 
 			while (iterator.hasNext()) {
-				Individual.LastActivityDate lastActivityDate =
-					(Individual.LastActivityDate)iterator.next();
+				Individual.LastActivityDate lastActivityDate = iterator.next();
 
 				if (channelIds.contains(lastActivityDate.getChannelId())) {
 					iterator.remove();

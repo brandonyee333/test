@@ -152,7 +152,7 @@ public class EventDog {
 		Stream<Event> eventsStream = events.stream();
 
 		return eventsStream.map(
-			event -> new Tuple2<Event, EventDefinition>(
+			event -> new Tuple2<>(
 				event, eventDefinitions.get(event.getEventDefinitionId()))
 		).collect(
 			Collectors.groupingBy(

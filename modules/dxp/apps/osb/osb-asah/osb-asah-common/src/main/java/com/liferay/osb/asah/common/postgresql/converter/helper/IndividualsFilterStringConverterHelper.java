@@ -145,35 +145,36 @@ public class IndividualsFilterStringConverterHelper
 				(String)StringUtil.toObject(valueString), fieldName,
 				operator.equalsIgnoreCase("ne"));
 		}
-		else if (fieldName.equals("accountId") &&
-				 _isEqualityOperator(operator)) {
 
+		if (fieldName.equals("accountId") && _isEqualityOperator(operator)) {
 			return _getAccountIdCondition(
 				(String)StringUtil.toObject(valueString), null,
 				operator.equalsIgnoreCase("ne"));
 		}
-		else if (fieldName.equals("dataSourceAccountPKs/accountPKs") &&
-				 _isEqualityOperator(operator)) {
+
+		if (fieldName.equals("dataSourceAccountPKs/accountPKs") &&
+			_isEqualityOperator(operator)) {
 
 			return _getAccountIdCondition(
 				null, (String)StringUtil.toObject(valueString),
 				operator.equalsIgnoreCase("ne"));
 		}
-		else if (fieldName.equals("dataSourceId") &&
-				 _isEqualityOperator(operator)) {
 
+		if (fieldName.equals("dataSourceId") && _isEqualityOperator(operator)) {
 			return _getDataSourceIdCondition(
 				(String)StringUtil.toObject(valueString),
 				operator.equalsIgnoreCase("ne"));
 		}
-		else if (fieldName.equals("dataSourceIndividualPKs/individualPKs") &&
-				 _isEqualityOperator(operator)) {
+
+		if (fieldName.equals("dataSourceIndividualPKs/individualPKs") &&
+			_isEqualityOperator(operator)) {
 
 			return _getIndividualPKCondition(
 				(String)StringUtil.toObject(valueString),
 				operator.equalsIgnoreCase("ne"));
 		}
-		else if (fieldName.equals("userId") && _isEqualityOperator(operator)) {
+
+		if (fieldName.equals("userId") && _isEqualityOperator(operator)) {
 			return _getUserIdCondition(
 				operator.equalsIgnoreCase("ne"),
 				(String)StringUtil.toObject(valueString));
@@ -546,7 +547,8 @@ public class IndividualsFilterStringConverterHelper
 			if (type.equals("accounts")) {
 				return _getAccountsFilterFunctionCondition(filterString);
 			}
-			else if (type.equals("activities")) {
+
+			if (type.equals("activities")) {
 				return _getActivitiesFilterFunctionCondition(filterString);
 			}
 		}
@@ -621,7 +623,8 @@ public class IndividualsFilterStringConverterHelper
 			return _getAccountsFilterByCountFunctionCondition(
 				checkEqualityOnly, filterString, minDocCount, negate, value);
 		}
-		else if (type.equals("activities")) {
+
+		if (type.equals("activities")) {
 			return _getActivitiesFilterByCountFunctionCondition(
 				checkEqualityOnly, filterString, minDocCount, negate, value);
 		}
@@ -647,13 +650,16 @@ public class IndividualsFilterStringConverterHelper
 		if (type.equals("accounts")) {
 			return _getAccountsFilterFunctionCondition(filterString);
 		}
-		else if (type.equals("activities")) {
+
+		if (type.equals("activities")) {
 			return _getActivitiesFilterFunctionCondition(filterString);
 		}
-		else if (type.equals("interests")) {
+
+		if (type.equals("interests")) {
 			return _getInterestsFilterFunctionCondition(filterString);
 		}
-		else if (type.equals("organizations")) {
+
+		if (type.equals("organizations")) {
 			return _getOrganizationsFilterFunctionCondition(filterString);
 		}
 
@@ -835,7 +841,8 @@ public class IndividualsFilterStringConverterHelper
 		if (interested && (value <= 0)) {
 			return DSL.noCondition();
 		}
-		else if (!interested && (value < 0)) {
+
+		if (!interested && (value < 0)) {
 			return DSL.not(DSL.noCondition());
 		}
 

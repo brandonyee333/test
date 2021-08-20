@@ -171,7 +171,7 @@ public class BlogAssetMetricRepositoryTest
 	@Test
 	public void testGetViewsHistogramMetricsLast7Days() {
 		assertHistogramMetrics(
-			SetUtil.of(Double.valueOf(3)),
+			SetUtil.of((double)3),
 			_assetMetricRepository.getHistogramMetrics(
 				"e131fabc", 1L, Interval.DAY, BlogMetricType.VIEWS,
 				TimeRange.LAST_7_DAYS));
@@ -184,7 +184,7 @@ public class BlogAssetMetricRepositoryTest
 	@Test
 	public void testGetViewsHistogramMetricsLast24Hours() {
 		assertHistogramMetrics(
-			SetUtil.of(Double.valueOf(1), Double.valueOf(2), Double.valueOf(4)),
+			SetUtil.of((double)1, (double)2, (double)4),
 			_assetMetricRepository.getHistogramMetrics(
 				"e131fabc", 1L, Interval.HOUR, BlogMetricType.VIEWS,
 				TimeRange.LAST_24_HOURS));

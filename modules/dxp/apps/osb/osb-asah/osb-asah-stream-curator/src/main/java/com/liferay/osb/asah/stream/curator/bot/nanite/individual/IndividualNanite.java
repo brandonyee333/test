@@ -169,8 +169,8 @@ public class IndividualNanite implements Nanite {
 
 		Map<Long, Long> activitiesCounts1Map = activitiesCounts1Stream.collect(
 			Collectors.toMap(
-				activitiesCount -> activitiesCount.getChannelId(),
-				activitiesCount -> activitiesCount.getActivitiesCount()));
+				Individual.ActivitiesCount::getChannelId,
+				Individual.ActivitiesCount::getActivitiesCount));
 
 		Set<Map.Entry<Long, Long>> activitiesCounts1EntrySet =
 			activitiesCounts1Map.entrySet();
@@ -180,8 +180,8 @@ public class IndividualNanite implements Nanite {
 
 		Map<Long, Long> activitiesCounts2Map = activitiesCounts2Stream.collect(
 			Collectors.toMap(
-				activitiesCount -> activitiesCount.getChannelId(),
-				activitiesCount -> activitiesCount.getActivitiesCount()));
+				Individual.ActivitiesCount::getChannelId,
+				Individual.ActivitiesCount::getActivitiesCount));
 
 		Set<Map.Entry<Long, Long>> activitiesCounts2EntrySet =
 			activitiesCounts2Map.entrySet();

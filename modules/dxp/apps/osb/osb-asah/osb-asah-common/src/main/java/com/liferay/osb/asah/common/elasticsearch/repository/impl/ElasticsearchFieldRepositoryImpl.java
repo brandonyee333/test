@@ -174,7 +174,7 @@ public class ElasticsearchFieldRepositoryImpl
 
 		return toList(
 			_faroInfoElasticsearchInvoker.get(
-				"fields",
+				getCollectionName(),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("context", context)
 				).filter(

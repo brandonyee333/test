@@ -73,7 +73,7 @@ public class DataSourcesRestController extends BaseRestController {
 
 		DataSource dataSource = _dataSourceDog.getDataSource(id);
 
-		dataSource.setDeletionDate(new Date());
+		dataSource.setDeletionDate(DateUtil.newDate());
 		dataSource.setState("IN_PROGRESS_DELETING");
 
 		_asahTaskDog.scheduleAsahTask(
@@ -137,7 +137,7 @@ public class DataSourcesRestController extends BaseRestController {
 
 		if (Objects.equals(providerType, "SALESFORCE")) {
 			return String.valueOf(
-				_getSalesforceDataSourceProgressJSONObject(id));
+				_getSalesforceDataSourceProgressJSONObject(dataSource));
 		}
 
 		throw new UnsupportedOperationException(
@@ -209,7 +209,7 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	private void _beforeAdd(DataSourceDTO dataSourceDTO) {
-		Date now = new Date();
+		Date now = DateUtil.newDate();
 
 		dataSourceDTO.setCreateDate(now);
 
@@ -219,7 +219,7 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	private void _beforeUpdate(DataSourceDTO dataSourceDTO) {
-		dataSourceDTO.setModifiedDate(new Date());
+		dataSourceDTO.setModifiedDate(DateUtil.newDate());
 	}
 
 	private String _exchange(
@@ -574,9 +574,7 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	private JSONObject _getSalesforceDataSourceProgressJSONObject(
-		Long dataSourceId) {
-
-		DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
+		DataSource dataSource) {
 
 		JSONObject progressJSONObject = new JSONObject();
 
@@ -584,7 +582,7 @@ public class DataSourcesRestController extends BaseRestController {
 			progressJSONObject.put(
 				"accounts",
 				_getSalesforceDataSourceAccountsProgressJSONObject(
-					dataSourceId));
+					dataSource.getId()));
 		}
 
 		if (dataSource.getEnableAllContacts() ||
@@ -593,7 +591,7 @@ public class DataSourcesRestController extends BaseRestController {
 			progressJSONObject.put(
 				"individuals",
 				_getSalesforceDataSourceIndividualsProgressJSONObject(
-					dataSourceId));
+					dataSource.getId()));
 		}
 
 		return progressJSONObject;

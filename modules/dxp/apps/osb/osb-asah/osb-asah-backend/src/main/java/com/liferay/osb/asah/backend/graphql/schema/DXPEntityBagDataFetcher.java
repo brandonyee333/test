@@ -71,7 +71,8 @@ public class DXPEntityBagDataFetcher
 						return new DXPOrganizationDTO(
 							(DXPOrganization)dxpEntity);
 					}
-					else if (dxpEntity instanceof DXPUser) {
+
+					if (dxpEntity instanceof DXPUser) {
 						return new DXPUserDTO((DXPUser)dxpEntity);
 					}
 

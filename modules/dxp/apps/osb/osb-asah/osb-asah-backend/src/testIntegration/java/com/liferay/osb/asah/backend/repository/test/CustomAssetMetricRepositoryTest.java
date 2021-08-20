@@ -54,7 +54,7 @@ public class CustomAssetMetricRepositoryTest
 	@Test
 	public void testGetReadingTimeHistogramMetricsLast7days() {
 		assertHistogramMetrics(
-			SetUtil.of(Double.valueOf(750)),
+			SetUtil.of((double)750),
 			_assetMetricRepository.getHistogramMetrics(
 				"e131fabc", 1L, Interval.DAY,
 				CustomAssetMetricType.READING_TIME, TimeRange.LAST_7_DAYS));
@@ -67,7 +67,7 @@ public class CustomAssetMetricRepositoryTest
 	@Test
 	public void testGetViewsHistogramMetricsLast24Hours() {
 		assertHistogramMetrics(
-			SetUtil.of(Double.valueOf(1), Double.valueOf(2), Double.valueOf(4)),
+			SetUtil.of((double)1, (double)2, (double)4),
 			_assetMetricRepository.getHistogramMetrics(
 				"e131fabc", 1L, Interval.HOUR, CustomAssetMetricType.VIEWS,
 				TimeRange.LAST_24_HOURS));

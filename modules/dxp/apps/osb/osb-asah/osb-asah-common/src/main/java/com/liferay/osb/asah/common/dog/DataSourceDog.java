@@ -452,7 +452,7 @@ public class DataSourceDog {
 
 				while (iterator.hasNext()) {
 					Individual.DataSourceAccountPK dataSourceAccountPK =
-						(Individual.DataSourceAccountPK)iterator.next();
+						iterator.next();
 
 					if (Objects.equals(
 							dataSourceAccountPK.getDataSourceId(),

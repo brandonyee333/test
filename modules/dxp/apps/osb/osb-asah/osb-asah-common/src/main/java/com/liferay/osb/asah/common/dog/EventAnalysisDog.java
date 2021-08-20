@@ -184,12 +184,14 @@ public class EventAnalysisDog {
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				timeRange.getEndDate(), timeRange.getStartDate());
 		}
-		else if (analysisType.equals(AnalysisType.TOTAL)) {
+
+		if (analysisType.equals(AnalysisType.TOTAL)) {
 			return _eventRepository.countTotalEvents(
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				timeRange.getEndDate(), timeRange.getStartDate());
 		}
-		else if (analysisType.equals(AnalysisType.UNIQUE)) {
+
+		if (analysisType.equals(AnalysisType.UNIQUE)) {
 			return _eventRepository.countUniqueIndividuals(
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				timeRange.getEndDate(), timeRange.getStartDate());
@@ -214,7 +216,8 @@ public class EventAnalysisDog {
 
 			return binFloor + "-" + (binFloor + binSize.longValue());
 		}
-		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
+
+		if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
 			float binFloor = Float.parseFloat(key);
 			Number binSize = eventAnalysisBreakdown.getBinSize();
 
@@ -299,8 +302,9 @@ public class EventAnalysisDog {
 				eventAnalysisBreakdown.getDataType(), "dateGrouping",
 				Arrays.asList(dateGrouping.toString(), value));
 		}
-		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION) ||
-				 dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
+
+		if (dataType.equals(EventAttributeDefinition.DataType.DURATION) ||
+			dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
 
 			return new EventAnalysisFilter(
 				eventAnalysisBreakdown.getAttributeId(),

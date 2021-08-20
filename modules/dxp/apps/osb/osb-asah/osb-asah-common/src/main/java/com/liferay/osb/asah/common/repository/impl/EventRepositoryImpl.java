@@ -721,13 +721,16 @@ public class EventRepositoryImpl extends BaseRepository {
 		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
 			return DSL.function("try_cast_boolean", Object.class, field);
 		}
-		else if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
+
+		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
 			return DSL.function("try_cast_timestamp", Object.class, field);
 		}
-		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
+
+		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
 			return DSL.function("try_cast_bigint", Object.class, field);
 		}
-		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
+
+		if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
 			return DSL.function("try_cast_float", Object.class, field);
 		}
 
@@ -762,7 +765,8 @@ public class EventRepositoryImpl extends BaseRepository {
 				"average"
 			);
 		}
-		else if (analysisType.equals(AnalysisType.TOTAL)) {
+
+		if (analysisType.equals(AnalysisType.TOTAL)) {
 			return DSL.count(
 				DSL.field("EventAttribute.value")
 			).as(

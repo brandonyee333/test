@@ -63,17 +63,20 @@ public abstract class FilterOperator {
 		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
 			return Boolean.valueOf(value);
 		}
-		else if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
+
+		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
 			LocalDate localDate = LocalDate.parse(value);
 
 			return DateUtil.toDate(
 				localDate.atStartOfDay(),
 				ZoneId.of(TimeZoneDogUtil.getTimeZoneId()));
 		}
-		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
+
+		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
 			return Long.valueOf(value);
 		}
-		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
+
+		if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
 			return Float.valueOf(value);
 		}
 
