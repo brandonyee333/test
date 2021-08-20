@@ -177,7 +177,7 @@ public class SessionTest {
 		"2021-06-22T09:00:30.001Z");
 	private final Timestamp _secondEventDate = DateUtil.toTimestamp(
 		"2021-06-22T09:01:30.001Z");
-	private final List<String> _segmentNames = new ArrayList() {
+	private final List<String> _segmentNames = new ArrayList<String>() {
 		{
 			add("A");
 			add("B");

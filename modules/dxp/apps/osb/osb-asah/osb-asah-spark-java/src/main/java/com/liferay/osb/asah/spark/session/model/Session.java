@@ -483,7 +483,7 @@ public class Session implements Serializable {
 			String medium = _getAcquisitionMedium(
 				queryParams.get("utm_medium"), referrerHost);
 
-			return new HashMap() {
+			return new HashMap<String,String>() {
 				{
 					put("campaign", queryParams.get("utm_campaign"));
 					put("channel", _getAcquisitionChannel(medium));
@@ -497,7 +497,7 @@ public class Session implements Serializable {
 			};
 		}
 		catch (URISyntaxException uriSyntaxException) {
-			return new HashMap();
+			return new HashMap<>();
 		}
 	}
 
@@ -512,14 +512,14 @@ public class Session implements Serializable {
 		}
 	}
 
-	private static final Set<String> _displayMedia = new HashSet() {
+	private static final Set<String> _displayMedia = new HashSet<String>() {
 		{
 			add("banner");
 			add("cpm");
 			add("display");
 		}
 	};
-	private static final Set<String> _otherAdvertisingMedia = new HashSet() {
+	private static final Set<String> _otherAdvertisingMedia = new HashSet<String>() {
 		{
 			add("content-text");
 			add("cpa");
@@ -527,14 +527,14 @@ public class Session implements Serializable {
 			add("cpv");
 		}
 	};
-	private static final Set<String> _paidSearchMedia = new HashSet() {
+	private static final Set<String> _paidSearchMedia = new HashSet<String>() {
 		{
 			add("cpc");
 			add("paidsearch");
 			add("ppc");
 		}
 	};
-	private static final Set<String> _queryParameters = new HashSet() {
+	private static final Set<String> _queryParameters = new HashSet<String>() {
 		{
 			add("utm_campaign");
 			add("utm_content");
@@ -543,7 +543,7 @@ public class Session implements Serializable {
 			add("utm_term");
 		}
 	};
-	private static final Set<String> _socialMedia = new HashSet() {
+	private static final Set<String> _socialMedia = new HashSet<String>() {
 		{
 			add("sm");
 			add("social");
