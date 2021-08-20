@@ -76,6 +76,7 @@ import org.springframework.stereotype.Component;
 public class IndividualsFilterStringConverterHelper
 	extends DefaultFilterStringConverterHelper {
 
+	@Override
 	public Condition getCustomFunctionCondition(
 			List<String> arguments, String customFunctionName, boolean negated)
 		throws Exception {

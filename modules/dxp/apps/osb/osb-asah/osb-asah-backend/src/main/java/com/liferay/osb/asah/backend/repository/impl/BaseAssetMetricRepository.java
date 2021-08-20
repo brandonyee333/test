@@ -338,6 +338,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		);
 	}
 
+	@Override
 	public Long getIndividualsCount(
 		String assetId, Long channelId, Boolean knownIndividual,
 		MetricType metricType, TimeRange timeRange) {
@@ -357,6 +358,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		return _getIndividualsCount(metricType, whereClauseCondition);
 	}
 
+	@Override
 	public Long getNonsegmentedIndividualsCount(
 		String assetId, Long channelId, MetricType metricType,
 		TimeRange timeRange) {
@@ -379,6 +381,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		return _getIndividualsCount(metricType, whereClauseCondition);
 	}
 
+	@Override
 	public Long getSegmentedIndividualsCount(
 		String assetId, Long channelId, MetricType metricType,
 		TimeRange timeRange) {
@@ -399,6 +402,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		return _getIndividualsCount(metricType, whereClauseCondition);
 	}
 
+	@Override
 	public List<Metric> getSegmentMetrics(
 		String assetId, Long channelId, MetricType metricType,
 		TimeRange timeRange) {

@@ -268,6 +268,7 @@ public class ElasticsearchFieldRepositoryImpl
 		return toList(jsonArray);
 	}
 
+	@Override
 	public Field findByDataSourceIdAndNameAndOwnerId(
 		Long dataSourceId, String name, Long ownerId) {
 

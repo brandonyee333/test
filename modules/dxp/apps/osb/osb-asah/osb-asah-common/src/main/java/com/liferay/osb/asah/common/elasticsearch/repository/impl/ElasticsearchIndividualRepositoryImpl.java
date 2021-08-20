@@ -89,6 +89,7 @@ public class ElasticsearchIndividualRepositoryImpl
 	extends BaseElasticsearchRepository<Individual, Long>
 	implements IndividualRepository {
 
+	@Override
 	public long countIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
@@ -101,6 +102,7 @@ public class ElasticsearchIndividualRepositoryImpl
 				segmentChannelId, segmentId));
 	}
 
+	@Override
 	public long countKnownIndividuals(List<Long> ids) {
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(),
@@ -112,6 +114,7 @@ public class ElasticsearchIndividualRepositoryImpl
 			));
 	}
 
+	@Override
 	public long countKnownIndividuals(Long segmentId) {
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(),
@@ -152,6 +155,7 @@ public class ElasticsearchIndividualRepositoryImpl
 			getCollectionName(), boolQueryBuilder);
 	}
 
+	@Override
 	public boolean
 		existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
 			@Nullable Long channelId, @Nullable String filterString,
@@ -320,6 +324,7 @@ public class ElasticsearchIndividualRepositoryImpl
 				getCollectionName(), individualsBoolQueryBuilder));
 	}
 
+	@Override
 	public List<Individual> findByDataSourceId(
 		Long dataSourceId, Pageable pageable) {
 
@@ -456,6 +461,7 @@ public class ElasticsearchIndividualRepositoryImpl
 		return individualCounts;
 	}
 
+	@Override
 	public List<Distribution> getIndividualDistributions(
 		String fieldName, String fieldType, @Nullable String filterString,
 		Pageable pageable) {
