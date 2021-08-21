@@ -21,10 +21,12 @@ import java.net.URL;
 
 import java.util.Arrays;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.CacheResolver;
 import org.springframework.cache.interceptor.KeyGenerator;
+import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -48,7 +50,11 @@ public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 	@Bean
 	@Override
 	public CacheResolver cacheResolver() {
-		return new OSBAsahCacheResolver(osbAsahCacheManager());
+		if (_cacheEnabled) {
+			return new OSBAsahCacheResolver(osbAsahCacheManager());
+		}
+
+		return new OSBAsahCacheResolver(new NoOpCacheManager());
 	}
 
 	@Bean
@@ -127,5 +133,8 @@ public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 			}
 		};
 	}
+
+	@Value("${osb.asah.cache.enabled:true}")
+	private boolean _cacheEnabled;
 
 }
