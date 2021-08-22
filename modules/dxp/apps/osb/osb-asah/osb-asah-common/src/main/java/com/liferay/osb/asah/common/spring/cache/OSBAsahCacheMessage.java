@@ -24,9 +24,14 @@ public class OSBAsahCacheMessage implements Serializable {
 	public OSBAsahCacheMessage() {
 	}
 
-	public OSBAsahCacheMessage(String name, Object key) {
-		_name = name;
+	public OSBAsahCacheMessage(String hostAddress, Object key, String name) {
+		_hostAddress = hostAddress;
 		_key = key;
+		_name = name;
+	}
+
+	public String getHostAddress() {
+		return _hostAddress;
 	}
 
 	public Object getKey() {
@@ -37,6 +42,10 @@ public class OSBAsahCacheMessage implements Serializable {
 		return _name;
 	}
 
+	public void setHostAddress(String hostAddress) {
+		_hostAddress = hostAddress;
+	}
+
 	public void setKey(Object key) {
 		_key = key;
 	}
@@ -45,6 +54,7 @@ public class OSBAsahCacheMessage implements Serializable {
 		_name = name;
 	}
 
+	private String _hostAddress;
 	private Object _key;
 	private String _name;
 

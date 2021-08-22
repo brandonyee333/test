@@ -14,6 +14,11 @@
 
 package com.liferay.osb.asah.common.spring.cache;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import java.util.Objects;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -44,24 +49,48 @@ public class OSBAsahCacheMessageListener implements MessageListener {
 			(OSBAsahCacheMessage)redisSerializer.deserialize(message.getBody());
 
 		if (osbAsahCacheMessage == null) {
-			throw new IllegalStateException("OSB Asah cache message is null");
+			if (_log.isDebugEnabled()) {
+				_log.debug("OSB Asah cache message is null");
+			}
+
+			return;
+		}
+
+		if (Objects.equals(
+				osbAsahCacheMessage.getHostAddress(), _getHostAddress())) {
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Skipping your own OSB Asah cache message");
+			}
+
+			return;
 		}
 
 		_osbAsahCacheManager.clearCaffeineCache(
 			osbAsahCacheMessage.getName(), osbAsahCacheMessage.getKey());
+	}
 
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				String.format(
-					"Caffeine cache with name %s and key %s cleared",
-					osbAsahCacheMessage.getName(),
-					osbAsahCacheMessage.getKey()));
+	private String _getHostAddress() {
+		if (_hostAddress != null) {
+			return _hostAddress;
 		}
+
+		try {
+			InetAddress inetAddress = InetAddress.getLocalHost();
+
+			_hostAddress = inetAddress.getHostAddress();
+		}
+		catch (UnknownHostException unknownHostException) {
+			_log.error(unknownHostException, unknownHostException);
+		}
+
+		return null;
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		OSBAsahCacheMessageListener.class);
 
+	private String _hostAddress;
 	private final OSBAsahCacheManager _osbAsahCacheManager;
 	private final RedisTemplate<Object, Object> _redisTemplate;
 

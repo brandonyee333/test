@@ -20,6 +20,9 @@ import com.esotericsoftware.kryo.io.ByteBufferInput;
 import com.esotericsoftware.kryo.io.ByteBufferOutput;
 import com.esotericsoftware.kryo.util.Pool;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import java.util.concurrent.Callable;
 
 import org.apache.commons.logging.Log;
@@ -177,7 +180,8 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 		if (key == null) {
 			_redisCache.clear();
 
-			_sendRedisMessage(new OSBAsahCacheMessage(_name, null));
+			_sendRedisMessage(
+				new OSBAsahCacheMessage(_getHostAddress(), null, _name));
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
@@ -187,7 +191,8 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 		else {
 			_redisCache.evict(key);
 
-			_sendRedisMessage(new OSBAsahCacheMessage(_name, key));
+			_sendRedisMessage(
+				new OSBAsahCacheMessage(_getHostAddress(), key, _name));
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
@@ -222,6 +227,23 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 		}
 	}
 
+	private String _getHostAddress() {
+		if (_hostAddress != null) {
+			return _hostAddress;
+		}
+
+		try {
+			InetAddress inetAddress = InetAddress.getLocalHost();
+
+			_hostAddress = inetAddress.getHostAddress();
+		}
+		catch (UnknownHostException unknownHostException) {
+			_log.error(unknownHostException, unknownHostException);
+		}
+
+		return null;
+	}
+
 	private void _put(Object key, Object value) {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
@@ -234,7 +256,8 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 
 		_redisCache.put(key, bytes);
 
-		_sendRedisMessage(new OSBAsahCacheMessage(_name, key));
+		_sendRedisMessage(
+			new OSBAsahCacheMessage(_getHostAddress(), key, _name));
 
 		_caffeineCache.put(key, bytes);
 	}
@@ -265,6 +288,7 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 	private static final Log _log = LogFactory.getLog(OSBAsahCache.class);
 
 	private final Cache _caffeineCache;
+	private String _hostAddress;
 	private final Pool<Kryo> _kryoPool;
 	private final String _name;
 	private final Cache _redisCache;
