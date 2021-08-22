@@ -50,6 +50,16 @@ public class DateUtil {
 
 	public static final long SECOND = 1000;
 
+	public static Date addDays(Date date, int days) {
+		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+
+		calendar.setTime(date);
+
+		calendar.add(Calendar.DATE, days);
+
+		return calendar.getTime();
+	}
+
 	public static String addDays(String dateString, int days) {
 		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
@@ -150,6 +160,14 @@ public class DateUtil {
 		LocalDateTime newLocalDateTime = localDateTime.minusMinutes(minutes);
 
 		return newLocalDateTime.toString();
+	}
+
+	public static Date newDate() {
+		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+
+		calendar.setTime(new Date());
+
+		return calendar.getTime();
 	}
 
 	public static String newDateString() {
