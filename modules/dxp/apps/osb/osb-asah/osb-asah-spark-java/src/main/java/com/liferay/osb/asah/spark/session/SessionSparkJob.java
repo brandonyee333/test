@@ -55,6 +55,8 @@ public class SessionSparkJob implements SparkJob {
 			configuration.get("backoff.max.attempts", "20"));
 		_backoffMaxWaitingTime = Long.parseLong(
 			configuration.get("backoff.max.waiting.time", "600000"));
+		_checkpointPath = configuration.get(
+			"google.storage.path.checkpoint", "google.storage.path.checkpoint");
 		_eventsPath = configuration.get(
 			"google.storage.path.events", "google.storage.path.events");
 		_sessionBatchSinkFunction = new SessionBatchSinkFunction(
@@ -102,6 +104,8 @@ public class SessionSparkJob implements SparkJob {
 				_SESSION_ENCODER, _SESSION_ENCODER,
 				GroupStateTimeout.EventTimeTimeout()
 			).writeStream(
+			).option(
+				"checkpointLocation", _checkpointPath
 			).foreachBatch(
 				_sessionBatchSinkFunction
 			);
@@ -192,6 +196,7 @@ public class SessionSparkJob implements SparkJob {
 	private final long _backoffMaxAttempts;
 	private final long _backoffMaxWaitingTime;
 	private long _backoffWaitingTime = 10000;
+	private final String _checkpointPath;
 	private final String _eventsPath;
 	private final SessionBatchSinkFunction _sessionBatchSinkFunction;
 	private final Duration _sessionDuration;
