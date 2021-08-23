@@ -483,7 +483,7 @@ public class Session implements Serializable {
 			String medium = _getAcquisitionMedium(
 				queryParams.get("utm_medium"), referrerHost);
 
-			return new HashMap<String,String>() {
+			return new HashMap<String, String>() {
 				{
 					put("campaign", queryParams.get("utm_campaign"));
 					put("channel", _getAcquisitionChannel(medium));
@@ -519,14 +519,15 @@ public class Session implements Serializable {
 			add("display");
 		}
 	};
-	private static final Set<String> _otherAdvertisingMedia = new HashSet<String>() {
-		{
-			add("content-text");
-			add("cpa");
-			add("cpp");
-			add("cpv");
-		}
-	};
+	private static final Set<String> _otherAdvertisingMedia =
+		new HashSet<String>() {
+			{
+				add("content-text");
+				add("cpa");
+				add("cpp");
+				add("cpv");
+			}
+		};
 	private static final Set<String> _paidSearchMedia = new HashSet<String>() {
 		{
 			add("cpc");
