@@ -70,6 +70,24 @@ import org.springframework.test.context.ContextConfiguration;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class EventRepositoryTest {
 
+	@SQLResource(resourcePath = "test_events.sql")
+	@Test
+	public void testCountEventsLast24Hours() {
+		Assert.assertEquals(
+			Integer.valueOf(3),
+			_eventRepository.countEvents(
+				1L, 1L, null, TimeRange.LAST_24_HOURS));
+	}
+
+	@SQLResource(resourcePath = "test_events.sql")
+	@Test
+	public void testCountEventsWithKeywordsLast24Hours() {
+		Assert.assertEquals(
+			Integer.valueOf(1),
+			_eventRepository.countEvents(
+				1L, 1L, "form", TimeRange.LAST_24_HOURS));
+	}
+
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
 	public void testGetEventAttributeValuesAverage() {
