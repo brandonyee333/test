@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.graphql.schema.test;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.EventDTO;
+import com.liferay.osb.asah.backend.dto.EventsByUserSessionDTO;
 import com.liferay.osb.asah.backend.dto.UserSessionDTO;
 import com.liferay.osb.asah.backend.graphql.schema.EventsByUserSessionDataFetcher;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
@@ -95,7 +96,7 @@ public class EventsByUserSessionDataFetcherTest {
 
 	@Test
 	public void testGet() {
-		List<UserSessionDTO> userSessionDTOs =
+		EventsByUserSessionDTO eventsByUserSessionDTO =
 			_eventsByUserSessionDataFetcher.get(
 				_getDataFetchingEnvironment(),
 				new SearchQueryContext() {
@@ -103,6 +104,12 @@ public class EventsByUserSessionDataFetcherTest {
 						setTimeRange(TimeRange.LAST_24_HOURS);
 					}
 				});
+
+		Assert.assertEquals(
+			Integer.valueOf(2), eventsByUserSessionDTO.getTotalEvents());
+
+		List<UserSessionDTO> userSessionDTOs =
+			eventsByUserSessionDTO.getUserSessionDTOs();
 
 		Assert.assertEquals(
 			userSessionDTOs.toString(), 1, userSessionDTOs.size());
