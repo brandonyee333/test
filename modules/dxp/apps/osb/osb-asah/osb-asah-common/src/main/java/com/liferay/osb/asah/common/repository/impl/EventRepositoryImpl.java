@@ -46,6 +46,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.jooq.AggregateFunction;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.DatePart;
@@ -72,6 +73,34 @@ public class EventRepositoryImpl extends BaseRepository {
 
 	public EventRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	public Integer countEvents(
+		Long channelId, Long individualId, String keywords,
+		TimeRange timeRange) {
+
+		Table<Record> eventTable = DSL.table("Event");
+
+		AggregateFunction<Integer> count = DSL.count();
+
+		SelectSelectStep<Record1<Integer>> selectCount = _dslContext.select(
+			count);
+
+		return selectCount.from(
+			eventTable
+		).innerJoin(
+			DSL.table("EventDefinition")
+		).on(
+			DSL.field(
+				"Event.eventDefinitionId"
+			).eq(
+				DSL.field("EventDefinition.id")
+			)
+		).where(
+			_createCondition(channelId, individualId, keywords, timeRange)
+		).fetchOne(
+			count
+		);
 	}
 
 	public long countTotalEvents(

@@ -48,6 +48,10 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 
 	public long countByEventDefinitionId(long eventDefinitionId);
 
+	public Integer countEvents(
+		Long channelId, Long individualId, String keywords,
+		TimeRange timeRange);
+
 	public long countTotalEvents(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,

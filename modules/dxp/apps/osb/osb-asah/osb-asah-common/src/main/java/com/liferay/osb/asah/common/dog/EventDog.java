@@ -71,6 +71,14 @@ public class EventDog {
 		return _eventRepository.count();
 	}
 
+	public Integer countEvents(
+		Long channelId, Long individualId, String keywords,
+		TimeRange timeRange) {
+
+		return _eventRepository.countEvents(
+			channelId, individualId, keywords, timeRange);
+	}
+
 	public List<EventAttributeValue> getRecentEventAttributeValues(
 		Long eventAttributeDefinitionId, int size) {
 
