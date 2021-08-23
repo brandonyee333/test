@@ -1,4 +1,0 @@
-Bundle-Name: Liferay OSB Community Product Navigation
-Bundle-SymbolicName: com.liferay.osb.community.product.navigation
-Bundle-Version: 1.0.0
-Export-Package: com.liferay.osb.community.product.navigation.application.list.constants
