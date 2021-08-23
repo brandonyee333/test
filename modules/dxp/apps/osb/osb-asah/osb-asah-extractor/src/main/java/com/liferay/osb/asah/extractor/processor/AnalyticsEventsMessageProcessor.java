@@ -301,10 +301,7 @@ public class AnalyticsEventsMessageProcessor {
 	private boolean _isValidURL(Map<String, String> context) {
 		String url = context.get("url");
 
-		if ((url == null) || url.startsWith("file://") ||
-			url.startsWith("http://127.0.0.1") ||
-			url.startsWith("http://localhost")) {
-
+		if ((url == null) || url.startsWith("file://")) {
 			return false;
 		}
 
