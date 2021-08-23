@@ -978,7 +978,7 @@ type QueryType {
 	eventMetric(
 		channelId: String,
 		entityId: String!,
-		entityType: String!,
+		entityType: EntityType!,
 		interval: String,
 		keyword: String,
 		rangeEnd: String,

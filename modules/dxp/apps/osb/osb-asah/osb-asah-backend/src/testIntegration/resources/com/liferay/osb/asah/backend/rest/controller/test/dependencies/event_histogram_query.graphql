@@ -1,4 +1,4 @@
-query EventMetrics($channelId: String!, $entityId: String!, $entityType: String!, $interval: String!, $keyword: String, $rangeEnd: String, $rangeKey: Int, $rangeStart: String!) {
+query EventMetrics($channelId: String!, $entityId: String!, $entityType: EntityType!, $interval: String!, $keyword: String, $rangeEnd: String, $rangeKey: Int, $rangeStart: String!) {
 	eventMetric(channelId: $channelId, entityId: $entityId, entityType: $entityType, interval: $interval, keyword: $keyword, rangeEnd: $rangeEnd, rangeKey: $rangeKey, rangeStart: $rangeStart) {
 		totalEventsMetric {
 			...trendFragment
