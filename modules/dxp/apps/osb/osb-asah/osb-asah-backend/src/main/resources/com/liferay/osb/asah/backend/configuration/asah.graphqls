@@ -396,6 +396,11 @@ type EventMetric {
 	totalSessionsMetric: Metric
 }
 
+type EventsByUserSession {
+	userSessions: [UserSession],
+	totalEvents: Int
+}
+
 type Experiment {
 	channelId: String
 	createDate: String
@@ -1237,7 +1242,7 @@ type QueryType {
 		start: Int!
 	): DXPEntityBag
 	
-	userSessions(
+	eventsByUserSessions(
 		channelId: String!
 		entityId: String!
 		entityType: EntityType!
@@ -1247,7 +1252,7 @@ type QueryType {
 		rangeKey: Int
 		rangeStart: String
 		size: Int!
-	): [UserSession]
+	): EventsByUserSession
 
 	users(
 		channelId: String,

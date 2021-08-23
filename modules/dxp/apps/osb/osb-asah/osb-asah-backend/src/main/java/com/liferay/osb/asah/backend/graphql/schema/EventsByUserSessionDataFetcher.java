@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.dto.EventsByUserSessionDTO;
 import com.liferay.osb.asah.backend.dto.UserSessionDTO;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
@@ -41,12 +42,12 @@ import org.springframework.stereotype.Component;
  * @author Marcos Martins
  */
 @Component
-@GraphQLTypeWiring(fieldName = "userSessions", typeName = "QueryType")
+@GraphQLTypeWiring(fieldName = "eventsByUserSessions", typeName = "QueryType")
 public class EventsByUserSessionDataFetcher
-	extends BaseDataFetcher<List<UserSessionDTO>> {
+	extends BaseDataFetcher<EventsByUserSessionDTO> {
 
 	@Override
-	public List<UserSessionDTO> get(
+	public EventsByUserSessionDTO get(
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
@@ -69,12 +70,19 @@ public class EventsByUserSessionDataFetcher
 		Stream<Map.Entry<UserSession, List<Tuple2<Event, EventDefinition>>>>
 			stream = entrySet.stream();
 
-		return stream.map(
-			entry -> new UserSessionDTO(
-				eventAttributeDefinitionIds, entry.getValue(), entry.getKey())
-		).collect(
-			Collectors.toList()
-		);
+		return new EventsByUserSessionDTO(
+			stream.map(
+				entry -> new UserSessionDTO(
+					eventAttributeDefinitionIds, entry.getValue(),
+					entry.getKey())
+			).collect(
+				Collectors.toList()
+			),
+			_eventDog.countEvents(
+				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
+				Long.valueOf(dataFetchingEnvironment.getArgument("entityId")),
+				dataFetchingEnvironment.getArgument("keywords"),
+				searchQueryContext.getTimeRange()));
 	}
 
 	@Autowired
