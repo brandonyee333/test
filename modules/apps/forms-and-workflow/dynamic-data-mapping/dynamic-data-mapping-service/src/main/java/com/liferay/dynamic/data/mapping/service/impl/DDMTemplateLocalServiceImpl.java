@@ -417,6 +417,11 @@ public class DDMTemplateLocalServiceImpl
 
 		ddmTemplatePersistence.remove(template);
 
+		// Template versions
+
+		ddmTemplateVersionPersistence.removeByTemplateId(
+			template.getTemplateId());
+
 		// Resources
 
 		String resourceName =
