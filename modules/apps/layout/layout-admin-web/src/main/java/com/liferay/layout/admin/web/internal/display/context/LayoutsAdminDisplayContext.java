@@ -409,6 +409,8 @@ public class LayoutsAdminDisplayContext {
 			"groupId", String.valueOf(themeDisplay.getScopeGroupId()));
 		editLayoutSetURL.setParameter(
 			"privateLayout", String.valueOf(privatePages));
+		editLayoutSetURL.setParameter(
+			"selPlid", String.valueOf(LayoutConstants.DEFAULT_PLID));
 
 		return editLayoutSetURL.toString();
 	}
