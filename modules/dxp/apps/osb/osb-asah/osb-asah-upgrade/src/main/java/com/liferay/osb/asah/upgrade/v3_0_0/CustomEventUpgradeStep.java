@@ -158,7 +158,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 
 		if (sessionId == null) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Skipping Activity: " + activityJSONObject);
+				_log.debug("Skipping activity: " + activityJSONObject);
 			}
 
 			return;
