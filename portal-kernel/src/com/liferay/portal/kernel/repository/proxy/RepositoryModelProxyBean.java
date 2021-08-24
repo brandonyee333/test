@@ -122,7 +122,7 @@ public abstract class RepositoryModelProxyBean {
 	protected List<FileEntry> toFileEntryProxyBeans(
 		List<FileEntry> fileEntries) {
 
-		if ((fileEntries == null) || fileEntries.isEmpty()) {
+		if (ListUtil.isEmpty(fileEntries)) {
 			return fileEntries;
 		}
 
@@ -143,7 +143,7 @@ public abstract class RepositoryModelProxyBean {
 	protected List<FileVersion> toFileVersionProxyBeans(
 		List<FileVersion> fileVersions) {
 
-		if ((fileVersions == null) || fileVersions.isEmpty()) {
+		if (ListUtil.isEmpty(fileVersions)) {
 			return fileVersions;
 		}
 
@@ -162,7 +162,7 @@ public abstract class RepositoryModelProxyBean {
 	}
 
 	protected List<Folder> toFolderProxyBeans(List<Folder> folders) {
-		if ((folders == null) || folders.isEmpty()) {
+		if (ListUtil.isEmpty(folders)) {
 			return folders;
 		}
 
@@ -182,7 +182,7 @@ public abstract class RepositoryModelProxyBean {
 	protected List<RepositoryEntry> toObjectProxyBeans(
 		List<RepositoryEntry> repositoryEntries) {
 
-		if ((repositoryEntries == null) || repositoryEntries.isEmpty()) {
+		if (ListUtil.isEmpty(repositoryEntries)) {
 			return repositoryEntries;
 		}
 
