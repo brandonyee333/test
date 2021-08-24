@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MethodParameter;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -535,9 +536,7 @@ public class JSONWebServiceActionsManagerImpl
 		List<JSONWebServiceActionConfig> jsonWebServiceActionConfigs =
 			_pathIndexedJSONWebServiceActionConfigs.get(path);
 
-		if ((jsonWebServiceActionConfigs == null) ||
-			jsonWebServiceActionConfigs.isEmpty()) {
-
+		if (ListUtil.isEmpty(jsonWebServiceActionConfigs)) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					StringBundler.concat(
