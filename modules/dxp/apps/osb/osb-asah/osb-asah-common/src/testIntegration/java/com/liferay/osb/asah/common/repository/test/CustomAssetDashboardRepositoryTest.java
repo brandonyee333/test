@@ -15,16 +15,19 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.junit.runner.RunWith;
 
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author André Miranda
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@Import(JDBCTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class CustomAssetDashboardRepositoryTest
 	extends BaseCustomAssetDashboardRepositoryTestCase {
