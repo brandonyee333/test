@@ -94,6 +94,11 @@ public class GraphQLRestController {
 				operationName, graphQLRequest.getQuery(),
 				graphQLRequest.getVariables());
 		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw exception;
+		}
 		finally {
 			if (operationName == null) {
 				operationName = "unknown";

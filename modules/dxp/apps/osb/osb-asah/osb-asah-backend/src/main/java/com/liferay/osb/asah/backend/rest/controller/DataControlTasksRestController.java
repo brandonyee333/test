@@ -26,6 +26,9 @@ import java.io.FileInputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -126,6 +129,9 @@ public class DataControlTasksRestController extends BaseRestController {
 							length = fileInputStream.read(buffer);
 						}
 					}
+					catch (Exception exception) {
+						_log.error(exception, exception);
+					}
 				});
 		}
 
@@ -169,6 +175,9 @@ public class DataControlTasksRestController extends BaseRestController {
 		return dataControlTaskJSONObject.getString("emailAddress") + "-" +
 			file.getName();
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		DataControlTasksRestController.class);
 
 	private static final Map<String, String> _fieldNames =
 		new LinkedHashMap<String, String>() {

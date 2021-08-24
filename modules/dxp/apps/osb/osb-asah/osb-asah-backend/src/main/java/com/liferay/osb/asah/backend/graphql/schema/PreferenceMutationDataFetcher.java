@@ -26,6 +26,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +60,9 @@ public class PreferenceMutationDataFetcher implements DataFetcher<Preference> {
 		}
 	}
 
+	private static final Log _log = LogFactory.getLog(
+		PreferenceMutationDataFetcher.class);
+
 	private static final Map<String, Function<String, Boolean>>
 		_validatorFunctions = new HashMap<String, Function<String, Boolean>>() {
 			{
@@ -80,6 +86,8 @@ public class PreferenceMutationDataFetcher implements DataFetcher<Preference> {
 							new JSONArray(value);
 						}
 						catch (Exception exception) {
+							_log.error(exception, exception);
+
 							return false;
 						}
 

@@ -54,6 +54,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -112,6 +114,8 @@ public class ExperimentDog {
 			_experimentRepository.delete(experiment);
 		}
 		catch (Exception exception) {
+			_log.error(exception, exception);
+
 			return false;
 		}
 
@@ -551,6 +555,8 @@ public class ExperimentDog {
 			experiment.setPublishedDXPVariantId(publishedDXPVariantId);
 		}
 	}
+
+	private static final Log _log = LogFactory.getLog(ExperimentDog.class);
 
 	@Autowired
 	private DataDog _dataDog;

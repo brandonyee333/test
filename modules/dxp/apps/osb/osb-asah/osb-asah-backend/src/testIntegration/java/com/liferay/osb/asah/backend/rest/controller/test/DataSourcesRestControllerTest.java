@@ -50,6 +50,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -245,6 +247,9 @@ public class DataSourcesRestControllerTest {
 					}
 				});
 		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
 		finally {
 			WeDeployServiceThreadLocal.remove();
 		}
@@ -283,6 +288,9 @@ public class DataSourcesRestControllerTest {
 						setStatus("FAILED");
 					}
 				});
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 		finally {
 			WeDeployServiceThreadLocal.remove();
@@ -372,6 +380,9 @@ public class DataSourcesRestControllerTest {
 					}
 				});
 		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
 		finally {
 			WeDeployServiceThreadLocal.remove();
 		}
@@ -410,6 +421,9 @@ public class DataSourcesRestControllerTest {
 						setStatus("FAILED");
 					}
 				});
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 		finally {
 			WeDeployServiceThreadLocal.remove();
@@ -451,6 +465,9 @@ public class DataSourcesRestControllerTest {
 					}
 				});
 		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
 		finally {
 			WeDeployServiceThreadLocal.remove();
 		}
@@ -471,6 +488,9 @@ public class DataSourcesRestControllerTest {
 				WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 			_runLogRepository.delete(runLog);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 		finally {
 			WeDeployServiceThreadLocal.remove();
@@ -497,6 +517,9 @@ public class DataSourcesRestControllerTest {
 						setStatus("STARTED");
 					}
 				});
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 		finally {
 			WeDeployServiceThreadLocal.remove();
@@ -540,6 +563,9 @@ public class DataSourcesRestControllerTest {
 					}
 				});
 		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
 		finally {
 			WeDeployServiceThreadLocal.remove();
 		}
@@ -579,6 +605,9 @@ public class DataSourcesRestControllerTest {
 						setStatus("STARTED");
 					}
 				});
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 		finally {
 			WeDeployServiceThreadLocal.remove();
@@ -625,6 +654,9 @@ public class DataSourcesRestControllerTest {
 						setStatus("STARTED");
 					}
 				});
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 		finally {
 			WeDeployServiceThreadLocal.remove();
@@ -1310,6 +1342,9 @@ public class DataSourcesRestControllerTest {
 
 		deleteDataSourcesNanite.run(dataSourceJSONObject);
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		DataSourcesRestControllerTest.class);
 
 	@Autowired
 	private AccountDog _accountDog;

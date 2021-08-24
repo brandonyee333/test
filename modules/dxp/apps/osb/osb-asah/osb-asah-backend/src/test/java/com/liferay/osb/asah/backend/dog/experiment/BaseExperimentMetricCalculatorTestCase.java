@@ -219,6 +219,9 @@ public abstract class BaseExperimentMetricCalculatorTestCase {
 
 			return values.toArray(new Double[0]);
 		}
+		catch (Exception exception) {
+			throw new IOException(exception);
+		}
 	}
 
 }

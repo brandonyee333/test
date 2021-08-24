@@ -310,6 +310,12 @@ public class AdminRestController extends BaseRestController {
 						weDeployDataService, zipOutputStream);
 				}
 			}
+			catch (Exception exception) {
+				_log.error(exception, exception);
+			}
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 
 		return new File(fileName);
