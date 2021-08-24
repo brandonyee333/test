@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -38,6 +39,7 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -961,6 +963,38 @@ public class ElasticsearchIndividualRepositoryImpl
 		return _faroInfoElasticsearchInvoker;
 	}
 
+	@Override
+	protected Individual toEntity(JSONObject jsonObject) {
+		Individual individual = _objectMapper.convertValue(
+			jsonObject, Individual.class);
+
+		if ((jsonObject == null) || !jsonObject.has("demographics")) {
+			return individual;
+		}
+
+		JSONObject demographicsJSONObject = jsonObject.getJSONObject(
+			"demographics");
+
+		Map<String, Object> map = demographicsJSONObject.toMap();
+
+		Collection<Object> values = map.values();
+
+		Stream<Object> stream = values.stream();
+
+		individual.setFields(
+			stream.map(
+				value -> {
+					List<Object> list = (List<Object>)value;
+
+					return _objectMapper.convertValue(list.get(0), Field.class);
+				}
+			).collect(
+				Collectors.toSet()
+			));
+
+		return individual;
+	}
+
 	private QueryBuilder _getQueryBuilder(
 		boolean includeAnonymousUsers, Long segmentId) {
 
@@ -1056,6 +1090,9 @@ public class ElasticsearchIndividualRepositoryImpl
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
