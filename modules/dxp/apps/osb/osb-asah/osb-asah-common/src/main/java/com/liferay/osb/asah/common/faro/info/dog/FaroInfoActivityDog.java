@@ -56,7 +56,7 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		List<Long> referencedAssetIds = _referencedAssetIds.getIfPresent(
 			"referencedAssetIds");
 
-		if (referencedAssetIds == null) {
+		if ((referencedAssetIds == null) || referencedAssetIds.isEmpty()) {
 			referencedAssetIds = _segmentDog.getReferencedAssetIds();
 
 			_referencedAssetIds.put("referencedAssetIds", referencedAssetIds);
