@@ -251,7 +251,6 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
-import java.net.URI;
 import java.net.UnknownHostException;
 
 import java.sql.Connection;
@@ -925,13 +924,7 @@ public class PortalImpl implements Portal {
 			return url;
 		}
 
-		URI uri = HttpUtil.getURI(url);
-
-		if (uri == null) {
-			return null;
-		}
-
-		String path = uri.getPath();
+		String path = HttpUtil.getPath(url);
 
 		if (Validator.isNotNull(path) && url.startsWith(path)) {
 
@@ -940,7 +933,7 @@ public class PortalImpl implements Portal {
 			return url;
 		}
 
-		String protocol = uri.getScheme();
+		String protocol = HttpUtil.getProtocol(url);
 
 		if (protocol == null) {
 
@@ -949,7 +942,7 @@ public class PortalImpl implements Portal {
 			return null;
 		}
 
-		String domain = uri.getHost();
+		String domain = HttpUtil.getDomain(url);
 
 		if (Validator.isNull(domain)) {
 
