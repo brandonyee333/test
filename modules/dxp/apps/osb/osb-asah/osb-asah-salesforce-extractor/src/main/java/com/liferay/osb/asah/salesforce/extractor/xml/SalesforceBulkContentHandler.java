@@ -156,7 +156,7 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 						field, new String(entry.getValue())));
 			}
 
-			jsonObject.put("osbAsahDataSourceId", _osbAsahDataSourceId);
+			jsonObject.put("dataSourceId", _osbAsahDataSourceId);
 
 			SalesforceAuditEvent salesforceAuditEvent =
 				new SalesforceAuditEvent();

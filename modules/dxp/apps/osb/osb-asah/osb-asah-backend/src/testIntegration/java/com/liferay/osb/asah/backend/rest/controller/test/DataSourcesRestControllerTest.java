@@ -821,8 +821,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"audit-events",
 			JSONUtil.put(
-				"osbAsahDataSourceId",
-				String.valueOf(salesforceDataSource.getId())
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"typeName", "Contact"
 			));
@@ -830,8 +829,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"audit-events",
 			JSONUtil.put(
-				"osbAsahDataSourceId",
-				String.valueOf(salesforceDataSource.getId())
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"typeName", "Lead"
 			));

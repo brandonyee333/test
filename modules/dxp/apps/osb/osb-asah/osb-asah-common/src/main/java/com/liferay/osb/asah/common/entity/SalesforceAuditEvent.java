@@ -99,7 +99,6 @@ public class SalesforceAuditEvent implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonProperty("osbAsahDataSourceId")
 	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getDataSourceId() {
 		return _dataSourceId;

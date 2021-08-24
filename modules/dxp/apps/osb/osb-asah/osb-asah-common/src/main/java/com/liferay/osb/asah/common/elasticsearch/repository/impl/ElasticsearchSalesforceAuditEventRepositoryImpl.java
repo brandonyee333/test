@@ -45,7 +45,7 @@ public class ElasticsearchSalesforceAuditEventRepositoryImpl
 			getCollectionName(),
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery(
-					"osbAsahDataSourceId", String.valueOf(dataSourceId))
+					"dataSourceId", String.valueOf(dataSourceId))
 			).filter(
 				QueryBuilders.termsQuery("typeName", entityTypeNames)
 			));
@@ -63,7 +63,7 @@ public class ElasticsearchSalesforceAuditEventRepositoryImpl
 						searchSourceBuilder.query(
 							BoolQueryBuilderUtil.filter(
 								QueryBuilders.termQuery(
-									"osbAsahDataSourceId",
+									"dataSourceId",
 									String.valueOf(dataSourceId))
 							).filter(
 								QueryBuilders.termQuery(

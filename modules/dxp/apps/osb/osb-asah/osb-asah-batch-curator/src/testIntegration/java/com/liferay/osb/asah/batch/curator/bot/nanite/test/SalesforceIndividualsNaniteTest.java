@@ -133,11 +133,11 @@ public class SalesforceIndividualsNaniteTest
 		return JSONUtil.put(
 			"additionalInfo", individualJSONObject
 		).put(
+			"dataSourceId", dataSourceId
+		).put(
 			"dateCreated", DateUtil.newDateString()
 		).put(
 			"eventType", "UPDATE"
-		).put(
-			"osbAsahDataSourceId", dataSourceId
 		).put(
 			"recordId", individualJSONObject.getString("id")
 		).put(
@@ -150,10 +150,10 @@ public class SalesforceIndividualsNaniteTest
 
 		JSONObject individualFieldsJSONObject = new JSONObject(fieldsMap);
 
+		individualFieldsJSONObject.put("dataSourceId", dataSourceId);
 		individualFieldsJSONObject.put("id", id);
 		individualFieldsJSONObject.put(
 			"modifiedDate", DateUtil.newDateString());
-		individualFieldsJSONObject.put("osbAsahDataSourceId", dataSourceId);
 
 		return JSONUtil.put(
 			"dataSourceId", dataSourceId

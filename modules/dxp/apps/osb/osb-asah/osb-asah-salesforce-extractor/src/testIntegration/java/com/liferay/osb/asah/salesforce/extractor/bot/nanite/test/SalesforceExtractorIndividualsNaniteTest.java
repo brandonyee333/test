@@ -275,7 +275,7 @@ public class SalesforceExtractorIndividualsNaniteTest {
 		Assert.assertNotNull(
 			individualFieldsJSONObject.optString("modifiedDate"));
 		Assert.assertNotNull(
-			individualFieldsJSONObject.optString("osbAsahDataSourceId"));
+			individualFieldsJSONObject.optString("dataSourceId"));
 	}
 
 	private SalesforceEntity _contactSalesforceEntity;
