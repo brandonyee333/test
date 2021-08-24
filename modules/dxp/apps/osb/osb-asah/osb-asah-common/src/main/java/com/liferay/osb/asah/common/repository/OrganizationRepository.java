@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.model.Transformation;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
@@ -33,6 +34,9 @@ public interface OrganizationRepository extends Repository<Organization, Long> {
 	@Cacheable
 	public Organization findByDataSourceIdAndOrganizationPK(
 		Long dataSourceId, Long organizationPK);
+
+	public List<Organization> findByDataSourceIdAndOrganizationPKIn(
+		Long dataSourceId, Collection<Long> organizationPKs);
 
 	public List<Transformation> getOrganizationTransformations(
 		String apply, @Nullable String filterString, Pageable pageable);

@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransf
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -72,6 +73,23 @@ public class ElasticsearchOrganizationRepositoryImpl
 				).filter(
 					QueryBuilders.termQuery("organizationPK", organizationPK)
 				)));
+	}
+
+	public List<Organization> findByDataSourceIdAndOrganizationPKIn(
+		Long dataSourceId, Collection<Long> organizationPKs) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> searchSourceBuilder.query(
+						BoolQueryBuilderUtil.filter(
+							QueryBuilders.termQuery(
+								"dataSourceId", dataSourceId)
+						).filter(
+							QueryBuilders.termsQuery(
+								"organizationPK", organizationPKs)
+						)))));
 	}
 
 	@Override
