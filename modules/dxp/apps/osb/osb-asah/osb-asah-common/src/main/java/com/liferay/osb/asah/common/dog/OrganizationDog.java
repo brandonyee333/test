@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -110,6 +111,13 @@ public class OrganizationDog {
 				"removeFilter",
 				"(referencedOrganizationIds eq " + organization.getId() + ")"
 			));
+	}
+
+	public List<Organization> findByDataSourceIdAndOrganizationPKIn(
+		Long dataSourceId, Collection<Long> organizationPKs) {
+
+		return _organizationRepository.findByDataSourceIdAndOrganizationPKIn(
+			dataSourceId, organizationPKs);
 	}
 
 	public Page<Transformation> getTransformationsPage(

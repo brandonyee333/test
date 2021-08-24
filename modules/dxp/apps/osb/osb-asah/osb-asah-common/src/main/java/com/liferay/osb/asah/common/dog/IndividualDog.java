@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.entity.Membership;
+import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
@@ -45,6 +46,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -565,31 +567,39 @@ public class IndividualDog extends BaseFaroInfoDog {
 	public Set<Long> getAssociatedIds(
 		Long dataSourceId, DXPEntity.Type dxpEntityType, List<Long> classPKs) {
 
-		JSONArray associatedIdsJSONArray = null;
-
 		if (dxpEntityType.isOrganization()) {
-			associatedIdsJSONArray = elasticsearchInvoker.get(
-				dxpEntityType.getCollectionName(),
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"dataSourceId", String.valueOf(dataSourceId))
-				).filter(
-					QueryBuilders.termsQuery("organizationPK", classPKs)
-				));
-		}
-		else {
-			associatedIdsJSONArray = _dxpRawElasticsearchInvoker.get(
-				dxpEntityType.getCollectionName(),
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"dataSourceId", String.valueOf(dataSourceId))
-				).filter(
-					QueryBuilders.termsQuery(
-						"fields." + dxpEntityType.getIdFieldName(), classPKs)
-				));
+			List<Organization> organizations =
+				_organizationDog.findByDataSourceIdAndOrganizationPKIn(
+					dataSourceId, classPKs);
+
+			Stream<Organization> stream = organizations.stream();
+
+			return stream.map(
+				Organization::getId
+			).collect(
+				Collectors.toSet()
+			);
 		}
 
-		return JSONUtil.toLongSet(associatedIdsJSONArray, "id");
+		List<? extends DXPEntity> dxpEntities =
+			_dxpEntityDog.findByAfterAndFieldsAndType(
+				null,
+				new HashMap<String, Object>() {
+					{
+						put(
+							"fields." + dxpEntityType.getIdFieldName(),
+							classPKs);
+					}
+				},
+				0, dxpEntityType);
+
+		Stream<? extends DXPEntity> stream = dxpEntities.stream();
+
+		return stream.map(
+			DXPEntity::getId
+		).collect(
+			Collectors.toSet()
+		);
 	}
 
 	public Page<Distribution> getDistributionsPage(
@@ -1260,6 +1270,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 	@Autowired
 	private DataSourceIndividualRepository _dataSourceIndividualRepository;
 
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
@@ -1286,6 +1299,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private OrganizationDog _organizationDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;
