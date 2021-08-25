@@ -7,7 +7,10 @@
 				{
 					"__typename": "UserSession",
 					"browserName": "Chrome",
+					"completeDate": null,
 					"contentLanguageId": "contentLanguageId",
+					"createDate": null,
+					"devicePixelRatio": "1",
 					"deviceType": "Chrome",
 					"events": [
 						{
@@ -32,7 +35,10 @@
 						}
 					],
 					"languageId": "pt-BR",
-					"timezoneOffset": "-3"
+					"screenHeight": "970",
+					"screenWidth": "1920",
+					"timezoneOffset": "-3",
+					"userAgent": "UserAgent"
 				}
 			]
 		}

@@ -92,13 +92,21 @@ public class EventsByUserSessionGraphQLRestControllerTest
 			).put(
 				"contentLanguageId", "contentLanguageId"
 			).put(
+				"devicePixelRatio", "1"
+			).put(
 				"deviceType", "Chrome"
 			).put(
 				"id", "sessionId"
 			).put(
 				"languageId", "pt-BR"
 			).put(
+				"screenHeight", "970"
+			).put(
+				"screenWidth", "1920"
+			).put(
 				"timezoneOffset", "-3"
+			).put(
+				"userAgent", "UserAgent"
 			));
 	}
 

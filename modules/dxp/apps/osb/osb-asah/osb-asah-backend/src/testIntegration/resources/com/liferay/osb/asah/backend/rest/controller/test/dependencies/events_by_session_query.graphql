@@ -6,6 +6,7 @@ query EventsByUserSession($channelId: String!, $entityId: String!, $entityType: 
 					completeDate
 					contentLanguageId
 					createDate
+					devicePixelRatio
 					deviceType
 					events {
 						canonicalUrl
@@ -16,9 +17,12 @@ query EventsByUserSession($channelId: String!, $entityId: String!, $entityType: 
 						referrer
 						url
 						__typename
-					},
+					}
 					languageId
+					screenHeight
+					screenWidth
 					timezoneOffset
+					userAgent
 					__typename
 				}
 		}
