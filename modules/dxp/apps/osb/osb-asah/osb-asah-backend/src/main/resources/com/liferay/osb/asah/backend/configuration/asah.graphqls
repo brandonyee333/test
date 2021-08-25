@@ -985,7 +985,7 @@ type QueryType {
 		entityId: String!,
 		entityType: EntityType!,
 		interval: String,
-		keyword: String,
+		keywords: String,
 		rangeEnd: String,
 		rangeKey: Int,
 		rangeStart: String
