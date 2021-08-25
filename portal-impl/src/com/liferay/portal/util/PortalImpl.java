@@ -5605,9 +5605,9 @@ public class PortalImpl implements Portal {
 			String remoteUser = httpServletRequest.getRemoteUser();
 
 			if ((remoteUser == null) && !PropsValues.PORTAL_JAAS_ENABLE) {
-				HttpSession session = httpServletRequest.getSession();
+				HttpSession httpSession = httpServletRequest.getSession();
 
-				remoteUser = (String)session.getAttribute("j_remoteuser");
+				remoteUser = (String)httpSession.getAttribute("j_remoteuser");
 			}
 
 			if (remoteUser == null) {
@@ -5742,9 +5742,9 @@ public class PortalImpl implements Portal {
 			}
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		userIdObj = (Long)session.getAttribute(WebKeys.USER_ID);
+		userIdObj = (Long)httpSession.getAttribute(WebKeys.USER_ID);
 
 		if (userIdObj != null) {
 			httpServletRequest.setAttribute(WebKeys.USER_ID, userIdObj);
@@ -5868,8 +5868,8 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
-	public String getUserPassword(HttpSession session) {
-		return (String)session.getAttribute(WebKeys.USER_PASSWORD);
+	public String getUserPassword(HttpSession httpSession) {
+		return (String)httpSession.getAttribute(WebKeys.USER_PASSWORD);
 	}
 
 	@Override
@@ -6052,9 +6052,9 @@ public class PortalImpl implements Portal {
 			long userId = getUserId(httpServletRequest);
 
 			if (userId > 0) {
-				HttpSession session = httpServletRequest.getSession();
+				HttpSession httpSession = httpServletRequest.getSession();
 
-				session.invalidate();
+				httpSession.invalidate();
 			}
 
 			throw noSuchUserException;
@@ -6378,13 +6378,13 @@ public class PortalImpl implements Portal {
 			return httpServletRequest.isSecure();
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		if (session == null) {
+		if (httpSession == null) {
 			return httpServletRequest.isSecure();
 		}
 
-		Boolean httpsInitial = (Boolean)session.getAttribute(
+		Boolean httpsInitial = (Boolean)httpSession.getAttribute(
 			WebKeys.HTTPS_INITIAL);
 
 		if ((httpsInitial == null) || httpsInitial) {
@@ -6712,17 +6712,17 @@ public class PortalImpl implements Portal {
 		}
 
 		if (Validator.isNotNull(redirect)) {
-			HttpSession session = PortalSessionThreadLocal.getHttpSession();
+			HttpSession httpSession = PortalSessionThreadLocal.getHttpSession();
 
-			if (session == null) {
-				session = httpServletRequest.getSession();
+			if (httpSession == null) {
+				httpSession = httpServletRequest.getSession();
 			}
 
 			httpServletResponse.setStatus(status);
 
-			SessionErrors.add(session, exception.getClass(), exception);
+			SessionErrors.add(httpSession, exception.getClass(), exception);
 
-			ServletContext servletContext = session.getServletContext();
+			ServletContext servletContext = httpSession.getServletContext();
 
 			RequestDispatcher requestDispatcher =
 				servletContext.getRequestDispatcher(redirect);
@@ -7586,9 +7586,9 @@ public class PortalImpl implements Portal {
 			return 0;
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		Long realUserIdObj = (Long)session.getAttribute(WebKeys.USER_ID);
+		Long realUserIdObj = (Long)httpSession.getAttribute(WebKeys.USER_ID);
 
 		if (!alwaysAllowDoAsUser && (realUserIdObj == null)) {
 			return 0;
@@ -8071,9 +8071,9 @@ public class PortalImpl implements Portal {
 		HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse, Locale locale) {
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		session.setAttribute(WebKeys.LOCALE, locale);
+		httpSession.setAttribute(WebKeys.LOCALE, locale);
 
 		LanguageUtil.updateCookie(
 			httpServletRequest, httpServletResponse, locale);
