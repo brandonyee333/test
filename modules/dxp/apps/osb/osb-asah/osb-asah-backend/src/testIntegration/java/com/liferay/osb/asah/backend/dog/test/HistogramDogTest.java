@@ -49,7 +49,9 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Lino Alves
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
+@SpringBootTest(
+	classes = {HistogramDog.class, OSBAsahBackendSpringBootApplication.class}
+)
 public class HistogramDogTest {
 
 	@ElasticsearchIndex(
