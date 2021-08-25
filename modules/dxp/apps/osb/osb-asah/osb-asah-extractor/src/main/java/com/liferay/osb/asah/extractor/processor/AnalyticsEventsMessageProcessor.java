@@ -31,10 +31,6 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.repository.FieldRepository;
-import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.storage.Storage;
-import com.liferay.osb.asah.common.storage.StorageConfiguration;
-import com.liferay.osb.asah.common.storage.StorageFactory;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
@@ -56,9 +52,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.annotation.PreDestroy;
-
-import org.apache.avro.Schema;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -66,7 +59,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -365,13 +357,13 @@ public class AnalyticsEventsMessageProcessor {
 		}
 
 		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-			_sendAndStoreAnalyticsEvent(analyticsEvent);
+			_sendAnalyticsEvent(analyticsEvent);
 		}
 
 		_analyticsEventsCounter.inc(analyticsEvents.size());
 	}
 
-	private void _sendAndStoreAnalyticsEvent(AnalyticsEvent analyticsEvent) {
+	private void _sendAnalyticsEvent(AnalyticsEvent analyticsEvent) {
 		String analyticsEventJSON = analyticsEvent.toJSON();
 
 		for (Channel channel :
