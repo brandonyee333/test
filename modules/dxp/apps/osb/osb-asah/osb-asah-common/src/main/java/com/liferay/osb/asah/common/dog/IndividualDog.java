@@ -1128,17 +1128,15 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	private Long _getSegmentChannelId(Long segmentId) {
-		if (segmentId != null) {
-			Segment segment = _segmentDog.fetchSegment(segmentId);
-
-			if (segment != null) {
-				return segment.getChannelId();
-			}
-
-			segmentId = null;
-		}
-
-		return null;
+		return Optional.ofNullable(
+			segmentId
+		).map(
+			_segmentDog::fetchSegment
+		).map(
+			Segment::getChannelId
+		).orElse(
+			null
+		);
 	}
 
 	private void _individualModified(

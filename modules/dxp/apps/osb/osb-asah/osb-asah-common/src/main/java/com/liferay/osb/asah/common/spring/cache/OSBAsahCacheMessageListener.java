@@ -60,7 +60,7 @@ public class OSBAsahCacheMessageListener implements MessageListener {
 				osbAsahCacheMessage.getHostAddress(), _getHostAddress())) {
 
 			if (_log.isDebugEnabled()) {
-				_log.debug("Skipping your own OSB Asah cache message");
+				_log.debug("Ignoring OSB Asah cache message from same host");
 			}
 
 			return;

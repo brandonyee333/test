@@ -211,6 +211,10 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 		byte[] bytes = (byte[])object;
 
 		if (bytes.length == 0) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Attempt to deserialize a zero byte object");
+			}
+
 			return null;
 		}
 
@@ -220,7 +224,7 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 			return kryo.readClassAndObject(byteBufferInput);
 		}
 		catch (Exception exception) {
-			throw new KryoException("Cannot deserialize", exception);
+			throw new KryoException("Cannot deserialize object", exception);
 		}
 		finally {
 			_kryoPool.free(kryo);
@@ -278,7 +282,7 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 			return byteBufferOutput.toBytes();
 		}
 		catch (Exception exception) {
-			throw new KryoException("Cannot serialize", exception);
+			throw new KryoException("Cannot serialize object", exception);
 		}
 		finally {
 			_kryoPool.free(kryo);
