@@ -40,6 +40,10 @@ public class Configuration {
 		}
 	}
 
+	public String get(String propertyKey) {
+		return _properties.getProperty(propertyKey);
+	}
+
 	public String get(String propertyKey, String defaultPropertyValue) {
 		return _properties.getProperty(propertyKey, defaultPropertyValue);
 	}
