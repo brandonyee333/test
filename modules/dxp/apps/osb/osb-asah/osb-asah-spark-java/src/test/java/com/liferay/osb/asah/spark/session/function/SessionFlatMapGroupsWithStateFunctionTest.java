@@ -45,8 +45,9 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 
 	@Test
 	public void testCall() {
-		SessionFlatMapGroupsWithStateFunction function =
-			new SessionFlatMapGroupsWithStateFunction(_SESSION_DURATION);
+		SessionFlatMapGroupsWithStateFunction
+			sessionFlatMapGroupsWithStateFunction =
+				new SessionFlatMapGroupsWithStateFunction(_SESSION_DURATION);
 
 		Event event0 = new Event();
 
@@ -67,8 +68,9 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 
 		ArrayList<Event> emptyEventList = new ArrayList<>();
 
-		Iterator<Session> sessionIterator = function.call(
-			null, emptyEventList.iterator(), groupStateExpired);
+		Iterator<Session> sessionIterator =
+			sessionFlatMapGroupsWithStateFunction.call(
+				null, emptyEventList.iterator(), groupStateExpired);
 
 		Session sessionExpired = sessionIterator.next();
 
@@ -93,15 +95,15 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 			none, _SESSION_DURATION, _SESSION_DURATION,
 			GroupStateTimeout.EventTimeTimeout(), false, true);
 
-		Iterator<Session> iterationOutput1 = function.call(
-			null, iterationInput1.iterator(), groupState);
+		Iterator<Session> iterationOutput1 =
+			sessionFlatMapGroupsWithStateFunction.call(
+				null, iterationInput1.iterator(), groupState);
 
 		Session session1 = iterationOutput1.next();
 
 		Assert.assertFalse(session1.toString(), session1.getFinished());
 
 		Assert.assertTrue(groupState.toString(), groupState.exists());
-
 		Assert.assertEquals(groupState.toString(), groupState.get(), session1);
 
 		Event event2 = new Event();
@@ -123,12 +125,13 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 			}
 		};
 
-		Iterator<Session> iterationOutput2 = function.call(
-			null, iterationInput2.iterator(), groupState);
-
-		Session session2 = iterationOutput2.next();
+		Iterator<Session> iterationOutput2 =
+			sessionFlatMapGroupsWithStateFunction.call(
+				null, iterationInput2.iterator(), groupState);
 
 		Assert.assertTrue(groupState.toString(), groupState.exists());
+
+		Session session2 = iterationOutput2.next();
 
 		Assert.assertEquals(groupState.toString(), groupState.get(), session2);
 
@@ -144,17 +147,20 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 			}
 		};
 
-		Iterator<Session> iterationOutput3 = function.call(
-			null, iterationInput3.iterator(), groupState);
+		Iterator<Session> iterationOutput3 =
+			sessionFlatMapGroupsWithStateFunction.call(
+				null, iterationInput3.iterator(), groupState);
 
 		Session session3 = iterationOutput3.next();
 
+		Assert.assertTrue(session3.toString(), session3.getFinished());
+
 		Session sessionState = groupState.get();
+
+		Assert.assertFalse(sessionState.toString(), sessionState.getFinished());
 
 		List<Event> events = session3.getEvents();
 
-		Assert.assertTrue(session3.toString(), session3.getFinished());
-		Assert.assertFalse(sessionState.toString(), sessionState.getFinished());
 		Assert.assertEquals(events.toString(), 3, events.size());
 	}
 

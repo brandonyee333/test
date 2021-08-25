@@ -57,13 +57,14 @@ public class SessionFlatMapGroupsWithStateFunction
 			}
 
 			Session expiredSession = groupState.get();
-			groupState.remove();
 
 			expiredSession.setFinished(true);
 			expiredSession.setIterationNumber(
 				expiredSession.getIterationNumber() + 1);
 
 			sessions.add(expiredSession);
+
+			groupState.remove();
 
 			return sessions.iterator();
 		}
