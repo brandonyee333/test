@@ -49,9 +49,13 @@ public class UserSessionDTO {
 		_completeDate = userSession.getCompleteDate();
 		_contentLanguageId = userSession.getContentLanguageId();
 		_createDate = userSession.getDate();
+		_devicePixelRatio = userSession.getDevicePixelRatio();
 		_deviceType = userSession.getDeviceType();
 		_languageId = userSession.getLanguageId();
+		_screenHeight = userSession.getScreenHeight();
+		_screenWidth = userSession.getScreenWidth();
 		_timezoneOffset = userSession.getTimezoneOffset();
+		_userAgent = userSession.getUserAgent();
 
 		tuple2s.forEach(
 			tuple -> _eventDTOs.add(
@@ -93,6 +97,10 @@ public class UserSessionDTO {
 		return new Date(_createDate.getTime());
 	}
 
+	public String getDevicePixelRatio() {
+		return _devicePixelRatio;
+	}
+
 	public String getDeviceType() {
 		return _deviceType;
 	}
@@ -107,17 +115,33 @@ public class UserSessionDTO {
 		return _languageId;
 	}
 
+	public String getScreenHeight() {
+		return _screenHeight;
+	}
+
+	public String getScreenWidth() {
+		return _screenWidth;
+	}
+
 	public String getTimezoneOffset() {
 		return _timezoneOffset;
+	}
+
+	public String getUserAgent() {
+		return _userAgent;
 	}
 
 	private final String _browserName;
 	private final Date _completeDate;
 	private final String _contentLanguageId;
 	private final Date _createDate;
+	private final String _devicePixelRatio;
 	private final String _deviceType;
 	private final List<EventDTO> _eventDTOs = new ArrayList<>();
 	private final String _languageId;
+	private final String _screenHeight;
+	private final String _screenWidth;
 	private final String _timezoneOffset;
+	private final String _userAgent;
 
 }
