@@ -36,8 +36,7 @@ import org.springframework.stereotype.Component;
 public class AnalyticsEventsChannels {
 
 	public AnalyticsEventsChannels() {
-		_channels.put(
-			Channel.ANALYTICS_EVENTS, _analyticsEventsPredicate());
+		_channels.put(Channel.ANALYTICS_EVENTS, _analyticsEventsPredicate());
 		_channels.put(
 			Channel.ANALYTICS_EVENTS_ACTIVITY,
 			_analyticsEventsActivityPredicate());
@@ -274,11 +273,11 @@ public class AnalyticsEventsChannels {
 		};
 	}
 
-	private Predicate<AnalyticsEvent> _analyticsEventsSessionPredicate() {
+	private Predicate<AnalyticsEvent> _analyticsEventsPredicate() {
 		return analyticsEvent -> true;
 	}
 
-	private Predicate<AnalyticsEvent> _analyticsEventsPredicate() {
+	private Predicate<AnalyticsEvent> _analyticsEventsSessionPredicate() {
 		return analyticsEvent -> true;
 	}
 
