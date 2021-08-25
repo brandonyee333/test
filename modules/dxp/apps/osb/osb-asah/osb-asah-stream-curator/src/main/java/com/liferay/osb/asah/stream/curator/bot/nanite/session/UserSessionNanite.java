@@ -124,6 +124,8 @@ public class UserSessionNanite implements Nanite {
 			userSession.setCompleteDate(date);
 		}
 
+		userSession.setContentLanguageId(
+			MapUtil.getString(context, "contentLanguageId"));
 		userSession.setCountry(MapUtil.getString(context, "country"));
 		userSession.setDataSourceId(firstAnalyticsEvent.getDataSourceId());
 		userSession.setDate(firstAnalyticsEvent.getNormalizedEventDate());
@@ -143,6 +145,7 @@ public class UserSessionNanite implements Nanite {
 
 		userSession.setInteractionsCount(
 			analyticsEvents.getInteractionsCount());
+		userSession.setLanguageId(MapUtil.getString(context, "languageId"));
 		userSession.setLastEventDate(
 			analyticsEvents.getLastAnalyticsEventDate());
 		userSession.setModifiedDate(date);
@@ -152,6 +155,8 @@ public class UserSessionNanite implements Nanite {
 		userSession.setRegion(MapUtil.getString(context, "region"));
 		userSession.setScreenHeight(MapUtil.getString(context, "screenHeight"));
 		userSession.setScreenWidth(MapUtil.getString(context, "screenWidth"));
+		userSession.setTimezoneOffset(
+			MapUtil.getString(context, "timezoneOffset"));
 		userSession.setUserAgent(MapUtil.getString(context, "userAgent"));
 		userSession.setUrls(analyticsEvents.getUrls());
 		userSession.setUserId(userId);
