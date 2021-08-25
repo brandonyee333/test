@@ -128,6 +128,8 @@ public class UserSessionNanite implements Nanite {
 		userSession.setDataSourceId(firstAnalyticsEvent.getDataSourceId());
 		userSession.setDate(firstAnalyticsEvent.getNormalizedEventDate());
 		userSession.setDeviceType(MapUtil.getString(context, "deviceType"));
+		userSession.setDevicePixelRatio(
+			MapUtil.getString(context, "devicePixelRatio"));
 		userSession.setDuration(0L);
 		userSession.setEntryPage(url);
 		userSession.setFinalized(false);
@@ -148,6 +150,9 @@ public class UserSessionNanite implements Nanite {
 		userSession.setPlatformName(MapUtil.getString(context, "platformName"));
 		userSession.setReferrers(analyticsEvents.getReferrers());
 		userSession.setRegion(MapUtil.getString(context, "region"));
+		userSession.setScreenHeight(MapUtil.getString(context, "screenHeight"));
+		userSession.setScreenWidth(MapUtil.getString(context, "screenWidth"));
+		userSession.setUserAgent(MapUtil.getString(context, "userAgent"));
 		userSession.setUrls(analyticsEvents.getUrls());
 		userSession.setUserId(userId);
 
