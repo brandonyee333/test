@@ -60,6 +60,9 @@
 				"date": {
 					"type": "date"
 				},
+				"devicePixelRatio": {
+					"type": "keyword"
+				},
 				"deviceType": {
 					"type": "keyword"
 				},
@@ -108,10 +111,19 @@
 				"region": {
 					"type": "keyword"
 				},
+				"screenHeight": {
+					"type": "keyword"
+				},
+				"screenWidth": {
+					"type": "keyword"
+				},
 				"timezoneOffset": {
 					"type": "keyword"
 				},
 				"urls": {
+					"type": "keyword"
+				},
+				"userAgent": {
 					"type": "keyword"
 				},
 				"userId": {
