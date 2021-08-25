@@ -239,9 +239,11 @@ public class EventRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.select(
 				DSL.countDistinct(
-					DSL.field(
-						attributeType.getQualifiedAttributeValueFieldName(
-							null))));
+					DSL.lower(
+						DSL.field(
+							attributeType.getQualifiedAttributeValueFieldName(
+								null),
+							String.class))));
 
 		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
 			"Event");
@@ -878,8 +880,10 @@ public class EventRepositoryImpl extends BaseRepository {
 			);
 		}
 
-		return DSL.field(
-			attributeType.getQualifiedAttributeValueFieldName(null));
+		return DSL.lower(
+			DSL.field(
+				attributeType.getQualifiedAttributeValueFieldName(null),
+				String.class));
 	}
 
 	private Map<String, Integer> _toMap(
