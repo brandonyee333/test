@@ -34,7 +34,6 @@ import org.apache.spark.sql.streaming.GroupStateTimeout;
 import org.junit.Assert;
 import org.junit.Test;
 
-import scala.None$;
 import scala.Option;
 import scala.Some;
 
@@ -59,7 +58,7 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 
 		Option<Session> some = new Some<>(expiredSession);
 
-		Option none = None$.MODULE$;
+		Option none = Option.empty();
 
 		GroupState<Session> groupStateExpired =
 			GroupStateImpl.createForStreaming(
