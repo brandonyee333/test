@@ -67,10 +67,20 @@ public class UserSessionsUpgradeStep implements UpgradeStep {
 			"contentLanguageId",
 			eventContextJSONObject.optString("contentLanguageId", ""));
 		userSessionJSONObject.put(
+			"devicePixelRatio",
+			eventContextJSONObject.optString("devicePixelRatio", ""));
+		userSessionJSONObject.put(
 			"languageId", eventContextJSONObject.optString("languageId", ""));
+		userSessionJSONObject.put(
+			"screenHeight",
+			eventContextJSONObject.optString("screenHeight", ""));
+		userSessionJSONObject.put(
+			"screenWidth", eventContextJSONObject.optString("screenWidth", ""));
 		userSessionJSONObject.put(
 			"timezoneOffset",
 			eventContextJSONObject.optString("timezoneOffset", ""));
+		userSessionJSONObject.put(
+			"userAgent", eventContextJSONObject.optString("userAgent", ""));
 
 		_cerebroInfoElasticsearchInvoker.update(
 			"user-sessions", userSessionJSONObject);
@@ -86,13 +96,21 @@ public class UserSessionsUpgradeStep implements UpgradeStep {
 				JSONUtil.put(
 					"contentLanguageId", JSONUtil.put("type", "keyword")
 				).put(
+					"devicePixelRatio", JSONUtil.put("type", "keyword")
+				).put(
 					"finalized", JSONUtil.put("type", "boolean")
 				).put(
 					"languageId", JSONUtil.put("type", "keyword")
 				).put(
 					"modifiedDate", JSONUtil.put("type", "date")
 				).put(
+					"screenHeight", JSONUtil.put("type", "keyword")
+				).put(
+					"screenWidth", JSONUtil.put("type", "keyword")
+				).put(
 					"timezoneOffset", JSONUtil.put("type", "keyword")
+				).put(
+					"userAgent", JSONUtil.put("type", "keyword")
 				)
 			).toString(),
 			"user-sessions", WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
