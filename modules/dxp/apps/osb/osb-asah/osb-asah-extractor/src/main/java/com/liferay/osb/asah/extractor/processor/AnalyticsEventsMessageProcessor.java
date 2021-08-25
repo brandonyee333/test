@@ -137,13 +137,6 @@ public class AnalyticsEventsMessageProcessor {
 		return individual;
 	}
 
-	@PreDestroy
-	private void _destroy() {
-		for (Storage storage : _storages.values()) {
-			storage.close();
-		}
-	}
-
 	private String _generateAnalyticsEventId(
 		String dataSourceId, AnalyticsEventsMessage.Event event,
 		String projectId, String userId) {
@@ -210,39 +203,6 @@ public class AnalyticsEventsMessageProcessor {
 		}
 
 		return context;
-	}
-
-	private Storage _getOrCreateStorage() throws Exception {
-		Storage storage = _storages.get(ProjectIdThreadLocal.getProjectId());
-
-		if (storage != null) {
-			return storage;
-		}
-
-		StorageConfiguration.Builder builder = StorageConfiguration.builder(
-			StringUtils.replace(
-				_analyticsEventsStoragePathTemplate, "{projectId}",
-				ProjectIdThreadLocal.getProjectId()));
-
-		builder.fileFormat(StorageConfiguration.FileFormat.SNAPPY_PARQUET);
-
-		Schema.Parser parser = new Schema.Parser();
-
-		builder.fileSchema(
-			parser.parse(
-				ResourceUtil.readResourceToString(
-					"dependencies/analytics_event.avsc", getClass())));
-
-		builder.googleBucket(
-			StringUtils.replace(
-				_analyticsEventsBucketTemplate, "{region}",
-				System.getenv("LCP_PROJECT_CLUSTER")));
-
-		storage = _storageFactory.getStorage(builder.build());
-
-		_storages.put(ProjectIdThreadLocal.getProjectId(), storage);
-
-		return storage;
 	}
 
 	private Map<String, String> _getSafeEventProperties(
@@ -411,14 +371,8 @@ public class AnalyticsEventsMessageProcessor {
 		_analyticsEventsCounter.inc(analyticsEvents.size());
 	}
 
-	private void _sendAndStoreAnalyticsEvent(AnalyticsEvent analyticsEvent)
-		throws Exception {
-
-		Storage storage = _getOrCreateStorage();
-
+	private void _sendAndStoreAnalyticsEvent(AnalyticsEvent analyticsEvent) {
 		String analyticsEventJSON = analyticsEvent.toJSON();
-
-		storage.write(analyticsEventJSON);
 
 		for (Channel channel :
 				_analyticsEventsChannels.getChannels(analyticsEvent)) {
@@ -440,18 +394,8 @@ public class AnalyticsEventsMessageProcessor {
 		}
 	};
 
-	@Value(
-		"${osb.asah.analytics.events.google.bucket:analytics-cloud-analytics-events-{region}}"
-	)
-	private String _analyticsEventsBucketTemplate;
-
 	@Autowired
 	private AnalyticsEventsChannels _analyticsEventsChannels;
-
-	@Value(
-		"${osb.asah.analytics.events.storage.path:/storage/{projectId}/analytics_events.snappy.parquet}"
-	)
-	private String _analyticsEventsStoragePathTemplate;
 
 	@Autowired
 	private BrowscapEngine _browscapEngine;
@@ -479,11 +423,6 @@ public class AnalyticsEventsMessageProcessor {
 
 	@Autowired
 	private SegmentDog _segmentDog;
-
-	@Autowired
-	private StorageFactory _storageFactory;
-
-	private final Map<String, Storage> _storages = new HashMap<>();
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
