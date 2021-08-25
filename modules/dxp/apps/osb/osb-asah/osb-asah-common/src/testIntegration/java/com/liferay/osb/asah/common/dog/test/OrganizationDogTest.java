@@ -152,6 +152,23 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@Test
+	public void testFindByDataSourceIdAndOrganizationPKIn() throws Exception {
+		JSONObject dxpRawOrganizationJSONObject =
+			DXPRawTestUtil.buildOrganizationJSONObject(
+				String.valueOf(_liferayDataSource.getId()));
+
+		Organization organization = _organizationDog.addOrganization(
+			dxpRawOrganizationJSONObject, _liferayDataSource);
+
+		List<Organization> organizations =
+			_organizationDog.findByDataSourceIdAndOrganizationPKIn(
+				organization.getDataSourceId(),
+				Collections.singletonList(organization.getOrganizationPK()));
+
+		Assert.assertFalse(organizations.isEmpty());
+	}
+
+	@Test
 	public void testUpdateOrganization() throws Exception {
 		JSONObject dxpRawOrganizationJSONObject =
 			DXPRawTestUtil.buildOrganizationJSONObject(
