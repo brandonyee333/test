@@ -1309,12 +1309,18 @@ type User implements DXPEntity {
 }
 
 type UserSession {
-	browserName: String,
-	completeDate: String,
-	contentLanguageId: String,
-	createDate: String,
-	deviceType: String,
-	events: [Event],
+	browserName: String
+	completeDate: String
+	contentLanguageId: String
+	createDate: String
+	description: String
+	devicePixelRatio: String
+	deviceType: String
+	events: [Event]
+	keywords: String
 	languageId: String
-	timezoneOffset: String,
+	screenHeight: String
+	screenWidth: String
+	timezoneOffset: String
+	userAgent: String
 }
