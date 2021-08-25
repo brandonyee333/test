@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.model.Acquisition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEvents;
 import com.liferay.osb.asah.common.model.UserSession;
+import com.liferay.osb.asah.common.util.Assert;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -165,7 +166,7 @@ public class UserSessionNanite implements Nanite {
 			getCollectionName(),
 			_objectMapper.convertValue(userSession, JSONObject.class));
 
-		_eventStorageDog.storeAll(
+		_storeEvents(
 			analyticsEvents.getAnalyticsEventsList(),
 			jsonObject.getString("id"));
 	}
@@ -446,6 +447,23 @@ public class UserSessionNanite implements Nanite {
 		}
 	}
 
+	private void _storeEvents(
+		List<AnalyticsEvent> analyticsEvents, String sessionId) {
+
+		Assert.notBlank(sessionId, "Session ID is blank");
+
+		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+			try {
+				_eventStorageDog.store(analyticsEvent, sessionId);
+			}
+			catch (Exception exception) {
+				_log.error(
+					"Unable to store event " + analyticsEvent.toJSON(),
+					exception);
+			}
+		}
+	}
+
 	private void _updateUserSession(
 		AnalyticsEvents analyticsEvents, JSONObject userSessionJSONObject) {
 
@@ -490,7 +508,7 @@ public class UserSessionNanite implements Nanite {
 			QueryBuilders.termQuery(
 				"id", userSessionJSONObject.getString("id")));
 
-		_eventStorageDog.storeAll(
+		_storeEvents(
 			analyticsEvents.getAnalyticsEventsList(),
 			userSessionJSONObject.getString("id"));
 	}

@@ -139,7 +139,15 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		analyticsEvent.setIndividualId(activityJSONObject.getString("ownerId"));
 		analyticsEvent.setUserId(activityJSONObject.getString("userId"));
 
-		return _eventStorageDog.store(analyticsEvent, sessionId);
+		try {
+			return _eventStorageDog.store(analyticsEvent, sessionId);
+		}
+		catch (Exception exception) {
+			_log.error(
+				"Unable to store event " + analyticsEvent.toJSON(), exception);
+
+			return null;
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(

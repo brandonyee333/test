@@ -23,24 +23,18 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.Assert;
 import com.liferay.osb.asah.common.util.MapUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Leslie Wong
@@ -48,63 +42,34 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventStorageDog {
 
+	@Transactional
 	public Event store(AnalyticsEvent analyticsEvent, String sessionId) {
-		List<Event> events = storeAll(Arrays.asList(analyticsEvent), sessionId);
+		Assert.notBlank(sessionId, "Session ID is blank");
 
-		if (events.isEmpty()) {
+		EventDefinition eventDefinition = _resolveEventDefinition(
+			analyticsEvent);
+
+		if (eventDefinition.isBlocked()) {
 			return null;
 		}
 
-		return events.get(0);
-	}
+		Set<EventAttribute> eventAttributes = _resolveEventAttributes(
+			analyticsEvent, eventDefinition.getId());
 
-	public List<Event> storeAll(
-		List<AnalyticsEvent> analyticsEvents, String sessionId) {
-
-		Assert.notBlank(sessionId, "Session ID is blank");
-
-		try {
-			List<Event> events = new ArrayList<>();
-
-			for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-				EventDefinition eventDefinition = _resolveEventDefinition(
-					analyticsEvent);
-
-				if (eventDefinition.isBlocked()) {
-					continue;
-				}
-
-				Set<EventAttribute> eventAttributes = _resolveEventAttributes(
-					analyticsEvent, eventDefinition.getId());
-
-				events.add(
-					new Event(
-						analyticsEvent.getId(),
-						analyticsEvent.getApplicationId(),
-						Long.valueOf(analyticsEvent.getChannelId()),
-						analyticsEvent.getCreateDate(),
-						Long.valueOf(analyticsEvent.getDataSourceId()),
-						eventAttributes, analyticsEvent.getEventDate(),
-						eventDefinition.getId(),
-						Optional.ofNullable(
-							analyticsEvent.getIndividualId()
-						).map(
-							Long::valueOf
-						).orElse(
-							null
-						),
-						sessionId, analyticsEvent.getUserId()));
-			}
-
-			if (!events.isEmpty()) {
-				return _eventDog.addEvents(events);
-			}
-		}
-		catch (Exception exception) {
-			_log.error("Unable to store event", exception);
-		}
-
-		return Collections.emptyList();
+		return _eventDog.addEvent(
+			analyticsEvent.getId(), analyticsEvent.getApplicationId(),
+			Long.valueOf(analyticsEvent.getChannelId()),
+			analyticsEvent.getCreateDate(),
+			Long.valueOf(analyticsEvent.getDataSourceId()), eventAttributes,
+			analyticsEvent.getEventDate(), eventDefinition.getId(),
+			Optional.ofNullable(
+				analyticsEvent.getIndividualId()
+			).map(
+				Long::valueOf
+			).orElse(
+				null
+			),
+			sessionId, analyticsEvent.getUserId());
 	}
 
 	private Set<Long> _getEventDefinitionIds(
@@ -236,8 +201,6 @@ public class EventStorageDog {
 
 		return eventAttributes;
 	}
-
-	private static final Log _log = LogFactory.getLog(EventStorageDog.class);
 
 	private static final Map<String, String>
 		_globalEventAttributeDefinitionNames = new HashMap<String, String>() {
