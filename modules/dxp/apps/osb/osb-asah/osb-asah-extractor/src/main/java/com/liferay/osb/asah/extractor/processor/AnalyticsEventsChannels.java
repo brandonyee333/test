@@ -37,6 +37,8 @@ public class AnalyticsEventsChannels {
 
 	public AnalyticsEventsChannels() {
 		_channels.put(
+			Channel.ANALYTICS_EVENTS, _analyticsEventsPredicate());
+		_channels.put(
 			Channel.ANALYTICS_EVENTS_ACTIVITY,
 			_analyticsEventsActivityPredicate());
 		_channels.put(
@@ -273,6 +275,10 @@ public class AnalyticsEventsChannels {
 	}
 
 	private Predicate<AnalyticsEvent> _analyticsEventsSessionPredicate() {
+		return analyticsEvent -> true;
+	}
+
+	private Predicate<AnalyticsEvent> _analyticsEventsPredicate() {
 		return analyticsEvent -> true;
 	}
 
