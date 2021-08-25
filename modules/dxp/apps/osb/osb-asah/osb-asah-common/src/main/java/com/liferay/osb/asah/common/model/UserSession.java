@@ -55,6 +55,7 @@ public class UserSession implements Serializable {
 			Objects.equals(_completeReason, userSession._completeReason) &&
 			Objects.equals(_country, userSession._country) &&
 			Objects.equals(_dataSourceId, userSession._dataSourceId) &&
+			Objects.equals(_devicePixelRatio, userSession._devicePixelRatio) &&
 			Objects.equals(_date, userSession._date) &&
 			Objects.equals(_duration, userSession._duration) &&
 			Objects.equals(_entryPage, userSession._entryPage) &&
@@ -67,6 +68,9 @@ public class UserSession implements Serializable {
 			Objects.equals(_modifiedDate, userSession._modifiedDate) &&
 			Objects.equals(_platformName, userSession._platformName) &&
 			Objects.equals(_region, userSession._region) &&
+			Objects.equals(_screenHeight, userSession._screenHeight) &&
+			Objects.equals(_screenWidth, userSession._screenWidth) &&
+			Objects.equals(_userAgent, userSession._userAgent) &&
 			Objects.equals(_userId, userSession._userId)) {
 
 			return true;
@@ -141,6 +145,10 @@ public class UserSession implements Serializable {
 		}
 
 		return new Date(_date.getTime());
+	}
+
+	public String getDevicePixelRatio() {
+		return _devicePixelRatio;
 	}
 
 	public String getDeviceType() {
@@ -231,12 +239,24 @@ public class UserSession implements Serializable {
 		return _region;
 	}
 
+	public String getScreenHeight() {
+		return _screenHeight;
+	}
+
+	public String getScreenWidth() {
+		return _screenWidth;
+	}
+
 	public String getTimezoneOffset() {
 		return _timezoneOffset;
 	}
 
 	public Set<String> getUrls() {
 		return _urls;
+	}
+
+	public String getUserAgent() {
+		return _userAgent;
 	}
 
 	public String getUserId() {
@@ -248,9 +268,11 @@ public class UserSession implements Serializable {
 		return Objects.hash(
 			_acquisition, _bounced, _browserName, _canonicalUrls, _channelId,
 			_city, _completed, _completeDate, _completeReason, _country,
-			_dataSourceId, _date, _deviceType, _duration, _entryPage, _exitPage,
-			_finalized, _firstEventDate, _id, _individualId, _lastEventDate,
-			_modifiedDate, _platformName, _referrers, _region, _urls, _userId);
+			_dataSourceId, _date, _devicePixelRatio, _deviceType, _duration,
+			_entryPage, _exitPage, _finalized, _firstEventDate, _id,
+			_individualId, _lastEventDate, _modifiedDate, _platformName,
+			_referrers, _region, _screenHeight, _screenWidth, _userAgent,
+			_userId);
 	}
 
 	public void setAcquisition(Acquisition acquisition) {
@@ -307,6 +329,10 @@ public class UserSession implements Serializable {
 		if (date != null) {
 			_date = new Date(date.getTime());
 		}
+	}
+
+	public void setDevicePixelRatio(String devicePixelRatio) {
+		_devicePixelRatio = devicePixelRatio;
 	}
 
 	public void setDeviceType(String deviceType) {
@@ -379,12 +405,24 @@ public class UserSession implements Serializable {
 		_region = region;
 	}
 
+	public void setScreenHeight(String screenHeight) {
+		_screenHeight = screenHeight;
+	}
+
+	public void setScreenWidth(String screenWidth) {
+		_screenWidth = screenWidth;
+	}
+
 	public void setTimezoneOffset(String timezoneOffset) {
 		_timezoneOffset = timezoneOffset;
 	}
 
 	public void setUrls(Set<String> urls) {
 		_urls = urls;
+	}
+
+	public void setUserAgent(String userAgent) {
+		_userAgent = userAgent;
 	}
 
 	public void setUserId(String userId) {
@@ -404,6 +442,7 @@ public class UserSession implements Serializable {
 	private String _country;
 	private String _dataSourceId;
 	private Date _date;
+	private String _devicePixelRatio;
 	private String _deviceType;
 	private Long _duration;
 	private String _entryPage;
@@ -420,8 +459,11 @@ public class UserSession implements Serializable {
 	private String _platformName;
 	private Set<String> _referrers;
 	private String _region;
+	private String _screenHeight;
+	private String _screenWidth;
 	private String _timezoneOffset;
 	private Set<String> _urls;
+	private String _userAgent;
 	private String _userId;
 
 }
