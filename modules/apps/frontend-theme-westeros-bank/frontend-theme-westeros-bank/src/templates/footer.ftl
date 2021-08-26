@@ -1,5 +1,4 @@
 <footer id="footer" role="contentinfo">
-
 	<nav id="footer-recursive">
 		<div class="container-fluid-1280">
 			<div class="nav navbar-right small text-uppercase" role="menubar">
