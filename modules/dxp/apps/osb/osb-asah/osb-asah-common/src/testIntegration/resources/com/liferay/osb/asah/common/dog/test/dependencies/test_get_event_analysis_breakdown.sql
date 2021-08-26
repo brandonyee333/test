@@ -53,8 +53,8 @@ INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, valu
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (45678, '2021-05-13 10:00:00', 1, '1.68');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (56789, '2021-05-13 10:00:00', 1, '2021-05-13 10:00:00');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (67890, '2021-05-13 10:00:00', 1, 'true');
-INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (12345, '2021-05-17 10:00:00', 6, 'https://www.beryl.com/design');
-INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (23456, '2021-05-17 10:00:00', 6, 'Beryl Design');
+INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (12345, '2021-05-17 10:00:00', 6, 'https://www.Beryl.com/design');
+INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (23456, '2021-05-17 10:00:00', 6, 'beryl Design');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (34567, '2021-05-17 10:00:00', 6, '404');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (45678, '2021-05-13 10:00:00', 6, '1.99');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (56789, '2021-05-13 10:00:00', 6, '2020-05-13 11:00:00');
@@ -66,7 +66,7 @@ INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, valu
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (56789, '2021-05-13 10:00:00', 7, 'error');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (67890, '2021-05-13 10:00:00', 7, '1');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (12345, '2021-05-17 10:00:00', 8, 'https://www.beryl.com/design');
-INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (23456, '2021-05-17 10:00:00', 8, 'Beryl Design');
+INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (23456, '2021-05-17 10:00:00', 8, 'Beryl deSiGn');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (34567, '2021-05-17 10:00:00', 8, '400');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (45678, '2021-05-13 10:00:00', 8, '4.00');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (56789, '2021-05-13 10:00:00', 8, '2021-05-01 01:00:00');
@@ -84,7 +84,7 @@ INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, valu
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (56789, '2021-05-13 10:00:00', 10, '2019-05-10 01:00:00');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (67890, '2021-05-13 10:00:00', 10, 'error');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (12345, '2021-05-20 13:00:00', 11, 'https://www.beryl.com/products');
-INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (23456, '2021-05-20 12:00:00', 11, 'Beryl Products');
+INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (23456, '2021-05-20 12:00:00', 11, 'BERYL PRODUCTS');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (34567, '2021-05-20 12:00:00', 11, '400');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (45678, '2021-05-13 10:00:00', 11, '1.024');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (56789, '2021-05-13 10:00:00', 11, '2021-05-10 02:00:00');
@@ -107,13 +107,13 @@ INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, valu
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (45678, '2021-05-13 10:00:00', 14, '5.10');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (56789, '2021-05-13 10:00:00', 14, '2021-05-13 03:30:00');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (67890, '2021-05-13 10:00:00', 14, 'true');
-INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (12345, '2021-05-22 10:00:00', 15, 'https://www.beryl.com/blogs');
+INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (12345, '2021-05-22 10:00:00', 15, 'https://www.beryl.com/Blogs');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (23456, '2021-05-22 10:00:00', 15, 'Beryl Blogs');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (34567, '2021-05-20 12:00:00', 15, '500');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (45678, '2021-05-13 10:00:00', 15, '8.88');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (56789, '2021-05-13 10:00:00', 15, '2021-05-13 05:45:12');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (67890, '2021-05-13 10:00:00', 15, 'true');
-INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (12345, '2021-05-22 10:00:00', 16, 'https://www.beryl.com/blogs');
+INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (12345, '2021-05-22 10:00:00', 16, 'HTTPS://www.beryl.com/blogs');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (23456, '2021-05-22 10:00:00', 16, 'Beryl Blogs');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (34567, '2021-05-20 12:00:00', 16, '300');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, value) VALUES (45678, '2021-05-13 10:00:00', 16, '2.89');
