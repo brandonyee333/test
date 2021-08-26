@@ -52,7 +52,7 @@ public class IngestionSparkJob implements SparkJob {
 	@Override
 	public void run() {
 		if (_log.isInfoEnabled()) {
-			_log.info("Ingestion spark job started");
+			_log.info("Ingestion Spark job started");
 		}
 
 		try {
@@ -87,7 +87,7 @@ public class IngestionSparkJob implements SparkJob {
 			StorageLevel.MEMORY_AND_DISK(), true);
 
 		dStream.map(
-			new SparkPubsubMessageToStringFunction(),
+			new SparkPubsubMessageToStringFunction1(),
 			ClassTag.apply(String.class)
 		).saveAsTextFiles(
 			_configuration.get("google.storage.path.ingestion.output"), ""
@@ -102,7 +102,7 @@ public class IngestionSparkJob implements SparkJob {
 	private final Configuration _configuration;
 	private final SparkSession _sparkSession;
 
-	private static class SparkPubsubMessageToStringFunction
+	private static class SparkPubsubMessageToStringFunction1
 		implements Function1<SparkPubsubMessage, String>, Serializable {
 
 		@Override
