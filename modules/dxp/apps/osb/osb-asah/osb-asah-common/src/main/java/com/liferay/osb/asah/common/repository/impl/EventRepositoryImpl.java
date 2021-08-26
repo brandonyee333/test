@@ -193,7 +193,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		Map<Object, Number> eventAttributeValues = new LinkedHashMap<>();
 
 		Field<Number> selectField = _getSelectField(analysisType);
-		Field valueField = _getValueField(eventAnalysisBreakdown);
+		Field valueField = _getValueField(true, eventAnalysisBreakdown);
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
@@ -236,14 +236,15 @@ public class EventRepositoryImpl extends BaseRepository {
 
 		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
 
+		Field valueField = _getValueField(false, eventAnalysisBreakdown);
+
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.select(
 				DSL.countDistinct(
-					DSL.lower(
-						DSL.field(
-							attributeType.getQualifiedAttributeValueFieldName(
-								null),
-							String.class))));
+					valueField
+				).plus(
+					DSL.count(DSL.when(valueField.isNull(), 1))
+				));
 
 		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
 			"Event");
@@ -802,7 +803,9 @@ public class EventRepositoryImpl extends BaseRepository {
 	}
 
 	private Field _getValueField(
-		EventAnalysisBreakdown eventAnalysisBreakdown) {
+		boolean alias, EventAnalysisBreakdown eventAnalysisBreakdown) {
+
+		Field field = null;
 
 		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
 
@@ -810,7 +813,7 @@ public class EventRepositoryImpl extends BaseRepository {
 			eventAnalysisBreakdown.getDataType();
 
 		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
-			return DSL.function(
+			field = DSL.function(
 				"try_cast_boolean", Boolean.class,
 				DSL.field(
 					attributeType.getQualifiedAttributeValueFieldName(null)));
@@ -819,38 +822,28 @@ public class EventRepositoryImpl extends BaseRepository {
 			DateGrouping dateGrouping =
 				eventAnalysisBreakdown.getDateGrouping();
 
-			Field field = DSL.function(
+			field = DSL.function(
 				"try_cast_timestamp", Object.class,
 				DSL.field(
 					attributeType.getQualifiedAttributeValueFieldName(null)));
 
 			if (dateGrouping.equals(DateGrouping.DAY)) {
-				return DSL.concat(
+				field = DSL.concat(
 					DSL.extract(field, DatePart.YEAR), DSL.val("-"),
 					DSL.extract(field, DatePart.MONTH), DSL.val("-"),
-					DSL.extract(field, DatePart.DAY)
-				).as(
-					"day"
-				);
+					DSL.extract(field, DatePart.DAY));
 			}
 			else if (dateGrouping.equals(DateGrouping.MONTH)) {
-				return DSL.concat(
+				field = DSL.concat(
 					DSL.extract(field, DatePart.YEAR), DSL.val("-"),
-					DSL.extract(field, DatePart.MONTH)
-				).as(
-					"month"
-				);
+					DSL.extract(field, DatePart.MONTH));
 			}
 			else if (dateGrouping.equals(DateGrouping.YEAR)) {
-				return DSL.extract(
-					field, DatePart.YEAR
-				).as(
-					"year"
-				);
+				field = DSL.extract(field, DatePart.YEAR);
 			}
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
-			return DSL.floor(
+			field = DSL.floor(
 				DSL.function(
 					"try_cast_bigint", BigInteger.class,
 					DSL.field(
@@ -860,12 +853,10 @@ public class EventRepositoryImpl extends BaseRepository {
 				)
 			).multiply(
 				eventAnalysisBreakdown.getBinSize()
-			).as(
-				"duration_floor"
 			);
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-			return DSL.floor(
+			field = DSL.floor(
 				DSL.function(
 					"try_cast_float", BigDecimal.class,
 					DSL.field(
@@ -875,15 +866,20 @@ public class EventRepositoryImpl extends BaseRepository {
 				)
 			).multiply(
 				eventAnalysisBreakdown.getBinSize()
-			).as(
-				"number_floor"
 			);
 		}
+		else {
+			field = DSL.lower(
+				DSL.field(
+					attributeType.getQualifiedAttributeValueFieldName(null),
+					String.class));
+		}
 
-		return DSL.lower(
-			DSL.field(
-				attributeType.getQualifiedAttributeValueFieldName(null),
-				String.class));
+		if (alias) {
+			return field.as("temp");
+		}
+
+		return field;
 	}
 
 	private Map<String, Integer> _toMap(
