@@ -17,6 +17,7 @@ package com.liferay.osb.asah.spark.common;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -25,8 +26,8 @@ import java.util.Properties;
  */
 public class Configuration {
 
-	public Configuration(Map<String, String> arguments, String path) {
-		_arguments = arguments;
+	public Configuration(String[] args, String path) {
+		_args = _toMap(args);
 
 		Class<?> clazz = getClass();
 
@@ -48,7 +49,7 @@ public class Configuration {
 	}
 
 	public String get(String propertyKey, String defaultPropertyValue) {
-		String argumentValue = _arguments.get(propertyKey);
+		String argumentValue = _args.get(propertyKey);
 
 		if (argumentValue != null) {
 			return argumentValue;
@@ -57,7 +58,22 @@ public class Configuration {
 		return _properties.getProperty(propertyKey, defaultPropertyValue);
 	}
 
-	private final Map<String, String> _arguments;
+	private Map<String, String> _toMap(String[] args) {
+		if ((args.length % 2) != 0) {
+			throw new IllegalArgumentException(
+				"Arguments length is not an even number");
+		}
+
+		Map<String, String> map = new HashMap<>();
+
+		for (int i = 0; i < (args.length - 1); i += 2) {
+			map.put(args[i], args[i + 1]);
+		}
+
+		return map;
+	}
+
+	private final Map<String, String> _args;
 	private final Properties _properties = new Properties();
 
 }

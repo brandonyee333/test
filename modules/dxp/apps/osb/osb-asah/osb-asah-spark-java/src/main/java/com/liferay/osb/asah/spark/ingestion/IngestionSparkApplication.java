@@ -30,7 +30,7 @@ public class IngestionSparkApplication extends BaseSparkApplication {
 	public static void main(String[] args) {
 		IngestionSparkApplication ingestionSparkApplication =
 			new IngestionSparkApplication(
-				new Configuration("ingestion.properties"));
+				new Configuration(args, "ingestion.properties"));
 
 		ingestionSparkApplication.start();
 	}

@@ -30,7 +30,7 @@ public class SessionSparkApplication extends BaseSparkApplication {
 	public static void main(String[] args) {
 		SessionSparkApplication sessionSparkApplication =
 			new SessionSparkApplication(
-				new Configuration("session.properties"));
+				new Configuration(args, "session.properties"));
 
 		sessionSparkApplication.start();
 	}
