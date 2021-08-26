@@ -28,7 +28,7 @@
 						}
 					],
 					"leafNode": false,
-					"name": "This is a test",
+					"name": "this is a test",
 					"previousValue": 0,
 					"value": 1
 				},
@@ -58,7 +58,7 @@
 						}
 					],
 					"leafNode": false,
-					"name": "This should match test",
+					"name": "this should match test",
 					"previousValue": 0,
 					"value": 1
 				}
