@@ -17,6 +17,7 @@ package com.liferay.osb.asah.spark.common;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -24,7 +25,9 @@ import java.util.Properties;
  */
 public class Configuration {
 
-	public Configuration(String path) {
+	public Configuration(Map<String, String> arguments, String path) {
+		_arguments = arguments;
+
 		Class<?> clazz = getClass();
 
 		ClassLoader classLoader = clazz.getClassLoader();
@@ -45,9 +48,16 @@ public class Configuration {
 	}
 
 	public String get(String propertyKey, String defaultPropertyValue) {
+		String argumentValue = _arguments.get(propertyKey);
+
+		if (argumentValue != null) {
+			return argumentValue;
+		}
+
 		return _properties.getProperty(propertyKey, defaultPropertyValue);
 	}
 
+	private final Map<String, String> _arguments;
 	private final Properties _properties = new Properties();
 
 }
