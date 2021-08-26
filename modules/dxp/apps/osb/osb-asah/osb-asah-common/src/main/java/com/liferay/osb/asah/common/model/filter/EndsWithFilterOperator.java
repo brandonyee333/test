@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,8 +35,7 @@ public class EndsWithFilterOperator extends FilterOperator {
 
 	@Override
 	public Condition getCondition(Field field) {
-		return field.similarTo(
-			"%" + StringUtil.unquoteAndDecodeInnerQuotes(values.get(0)));
+		return field.endsWithIgnoreCase(getValue(dataType, values.get(0)));
 	}
 
 	@Override

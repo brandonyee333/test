@@ -35,7 +35,7 @@ public class StartsWithFilterOperator extends FilterOperator {
 
 	@Override
 	public Condition getCondition(Field field) {
-		return field.similarTo(getValue(dataType, values.get(0)) + "%");
+		return field.startsWithIgnoreCase(getValue(dataType, values.get(0)));
 	}
 
 	@Override

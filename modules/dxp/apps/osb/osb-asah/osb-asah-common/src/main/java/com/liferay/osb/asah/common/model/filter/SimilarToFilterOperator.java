@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.impl.DSL;
 
 /**
  * @author Leslie Wong
@@ -37,9 +38,13 @@ public class SimilarToFilterOperator extends FilterOperator {
 
 	@Override
 	public Condition getCondition(Field field) {
-		return field.similarTo(
-			StringUtils.replaceChars(
-				(String)getValue(dataType, values.get(0)), ".*", "_%"));
+		String value = (String)getValue(dataType, values.get(0));
+
+		return DSL.lower(
+			field
+		).similarTo(
+			StringUtils.replaceChars(value.toLowerCase(), ".*", "_%")
+		);
 	}
 
 	@Override
