@@ -517,7 +517,7 @@ public class Session implements Serializable {
 		}
 	}
 
-	private static final Set<String> _displayMedia = new HashSet<>() {
+	private static final Set<String> _displayMedia = new HashSet<String>() {
 		{
 			add("banner");
 			add("cpm");
