@@ -140,8 +140,8 @@ public class FilterOperatorTest {
 		Assert.assertEquals(
 			DSL.field(
 				"testField"
-			).similarTo(
-				"%testValue"
+			).endsWithIgnoreCase(
+				"testValue"
 			),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
@@ -149,14 +149,14 @@ public class FilterOperatorTest {
 	@Test
 	public void testEqualsFilterOperator() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.STRING, "eq",
-			Collections.singletonList("testValue"));
+			EventAttributeDefinition.DataType.DURATION, "eq",
+			Collections.singletonList("123"));
 
 		Assert.assertEquals(
 			DSL.field(
 				"testField"
 			).eq(
-				"testValue"
+				123
 			),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
@@ -171,6 +171,21 @@ public class FilterOperatorTest {
 			DSL.field(
 				"testField"
 			).isNull(),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
+	public void testEqualsFilterOperatorString() {
+		FilterOperator filterOperator = FilterOperators.of(
+			EventAttributeDefinition.DataType.STRING, "eq",
+			Collections.singletonList("testValue"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).equalIgnoreCase(
+				"testValue"
+			),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
 
@@ -411,14 +426,14 @@ public class FilterOperatorTest {
 	@Test
 	public void testNotEqualsFilterOperator() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.STRING, "ne",
-			Collections.singletonList("testValue"));
+			EventAttributeDefinition.DataType.DURATION, "ne",
+			Collections.singletonList("123"));
 
 		Assert.assertEquals(
 			DSL.field(
 				"testField"
 			).ne(
-				"testValue"
+				123
 			),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
@@ -437,16 +452,31 @@ public class FilterOperatorTest {
 	}
 
 	@Test
+	public void testNotEqualsFilterOperatorString() {
+		FilterOperator filterOperator = FilterOperators.of(
+			EventAttributeDefinition.DataType.STRING, "ne",
+			Collections.singletonList("testValue"));
+
+		Assert.assertEquals(
+			DSL.field(
+				"testField"
+			).notEqualIgnoreCase(
+				"testValue"
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
 	public void testSimilarToFilterOperator() {
 		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.STRING, "similarTo",
 			Collections.singletonList("test.*Value"));
 
 		Assert.assertEquals(
-			DSL.field(
-				"testField"
+			DSL.lower(
+				DSL.field("testField", String.class)
 			).similarTo(
-				"test_%Value"
+				"test_%value"
 			),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
@@ -460,8 +490,8 @@ public class FilterOperatorTest {
 		Assert.assertEquals(
 			DSL.field(
 				"testField"
-			).similarTo(
-				"testValue%"
+			).startsWithIgnoreCase(
+				"testValue"
 			),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
