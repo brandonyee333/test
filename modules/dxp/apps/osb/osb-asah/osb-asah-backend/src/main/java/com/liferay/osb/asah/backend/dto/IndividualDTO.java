@@ -54,6 +54,8 @@ public class IndividualDTO {
 	}
 
 	public IndividualDTO(Individual individual) {
+		_activitiesCount = individual.getActivitiesCount();
+
 		List<ActivitiesCountDTO> activitiesCountDTOs = ListUtil.map(
 			individual.getActivitiesCounts(), ActivitiesCountDTO::new);
 
@@ -86,6 +88,7 @@ public class IndividualDTO {
 		_individualCustomFieldDTO = new IndividualFieldDTO(
 			individual.getCustomFields());
 		_individualFieldDTO = new IndividualFieldDTO(individual.getFields());
+		_lastActivityDate = individual.getLastActivityDate();
 
 		Set<LastActivityDateDTO> lastActivityDateDTOs = SetUtil.map(
 			individual.getIndividualChannels(), LastActivityDateDTO::new);
@@ -111,6 +114,11 @@ public class IndividualDTO {
 
 	public IndividualDTO(Set<IndividualDTO> individualDTOs) {
 		_individualDTOs = individualDTOs;
+	}
+
+	@JsonProperty("activitiesCount")
+	public Long getActivitiesCount() {
+		return _activitiesCount;
 	}
 
 	@JsonProperty("activitiesCounts")
@@ -193,6 +201,11 @@ public class IndividualDTO {
 	@JsonProperty("demographics")
 	public IndividualFieldDTO getIndividualFieldDTO() {
 		return _individualFieldDTO;
+	}
+
+	@JsonProperty("lastActivityDate")
+	public Date getLastActivityDate() {
+		return _lastActivityDate;
 	}
 
 	@JsonProperty("lastActivityDates")
@@ -643,6 +656,7 @@ public class IndividualDTO {
 
 	}
 
+	private Long _activitiesCount;
 	private List<ActivitiesCountDTO> _activitiesCountDTOs;
 	private Set<String> _channelIds;
 	private Date _createDate;
@@ -656,6 +670,7 @@ public class IndividualDTO {
 	private IndividualFieldDTO _individualCustomFieldDTO;
 	private Set<IndividualDTO> _individualDTOs;
 	private IndividualFieldDTO _individualFieldDTO;
+	private Date _lastActivityDate;
 	private Set<LastActivityDateDTO> _lastActivityDateDTOs;
 	private Date _lastEnrichmentDate;
 	private Date _modifiedDate;

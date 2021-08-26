@@ -92,6 +92,11 @@ public class Individual implements Persistable<Long> {
 		return false;
 	}
 
+	@JsonIgnore
+	public Long getActivitiesCount() {
+		return _activitiesCount;
+	}
+
 	@JsonProperty("activitiesCounts")
 	public Set<ActivitiesCount> getActivitiesCounts() {
 		return _activitiesCounts;
@@ -194,6 +199,11 @@ public class Individual implements Persistable<Long> {
 		return _individualChannels;
 	}
 
+	@JsonIgnore
+	public Date getLastActivityDate() {
+		return _lastActivityDate;
+	}
+
 	@JsonProperty("lastActivityDates")
 	public Set<LastActivityDate> getLastActivityDates() {
 		return _lastActivityDates;
@@ -269,6 +279,10 @@ public class Individual implements Persistable<Long> {
 		}
 
 		return false;
+	}
+
+	public void setActivitiesCount(long activitiesCount) {
+		_activitiesCount = activitiesCount;
 	}
 
 	public void setActivitiesCounts(Set<ActivitiesCount> activitiesCounts) {
@@ -385,6 +399,12 @@ public class Individual implements Persistable<Long> {
 
 	public void setIsNew(Boolean isNew) {
 		_isNew = isNew;
+	}
+
+	public void setLastActivityDate(Date lastActivityDate) {
+		if (lastActivityDate != null) {
+			_lastActivityDate = new Date(lastActivityDate.getTime());
+		}
 	}
 
 	public void setLastActivityDates(Set<LastActivityDate> lastActivityDates) {
@@ -765,6 +785,9 @@ public class Individual implements Persistable<Long> {
 	}
 
 	@Transient
+	private Long _activitiesCount;
+
+	@Transient
 	private Set<ActivitiesCount> _activitiesCounts = new HashSet<>();
 
 	@Transient
@@ -812,6 +835,9 @@ public class Individual implements Persistable<Long> {
 
 	@Transient
 	private Boolean _isNew;
+
+	@Transient
+	private Date _lastActivityDate;
 
 	@Transient
 	private Set<LastActivityDate> _lastActivityDates = new HashSet<>();

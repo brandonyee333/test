@@ -761,21 +761,29 @@ public class IndividualDog extends BaseFaroInfoDog {
 	public Individual populateIndividual(
 		Long channelId, Individual individual) {
 
+		individual = populateIndividual(individual);
+
 		Set<Individual.ActivitiesCount> activitiesCounts =
 			individual.getActivitiesCounts();
 
 		Stream<Individual.ActivitiesCount> activitiesCountsStream =
 			activitiesCounts.stream();
 
-		Set<Individual.ActivitiesCount> channelActivitiesCounts =
+		Optional<Individual.ActivitiesCount> activitiesCountOptional =
 			activitiesCountsStream.filter(
 				activityCount -> Objects.equals(
 					activityCount.getChannelId(), channelId)
-			).collect(
-				Collectors.toSet()
-			);
+			).findFirst();
 
-		individual.setActivitiesCounts(channelActivitiesCounts);
+		if (activitiesCountOptional.isPresent()) {
+			Individual.ActivitiesCount individualActivitiesCount =
+				activitiesCountOptional.get();
+
+			individual.setActivitiesCount(
+				individualActivitiesCount.getActivitiesCount());
+			individual.setActivitiesCounts(
+				Collections.singleton(individualActivitiesCount));
+		}
 
 		Set<Individual.LastActivityDate> lastActivityDates =
 			individual.getLastActivityDates();
@@ -783,15 +791,21 @@ public class IndividualDog extends BaseFaroInfoDog {
 		Stream<Individual.LastActivityDate> lastActivityDatesStream =
 			lastActivityDates.stream();
 
-		Set<Individual.LastActivityDate> channelLastActivityDates =
+		Optional<Individual.LastActivityDate> lastActivityDateOptional =
 			lastActivityDatesStream.filter(
 				lastActivityDate -> Objects.equals(
 					lastActivityDate.getChannelId(), channelId)
-			).collect(
-				Collectors.toSet()
-			);
+			).findFirst();
 
-		individual.setLastActivityDates(channelLastActivityDates);
+		if (lastActivityDateOptional.isPresent()) {
+			Individual.LastActivityDate individualLastActivityDate =
+				lastActivityDateOptional.get();
+
+			individual.setLastActivityDate(
+				individualLastActivityDate.getLastActivityDate());
+			individual.setLastActivityDates(
+				Collections.singleton(individualLastActivityDate));
+		}
 
 		return individual;
 	}
@@ -861,7 +875,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 				channelId, null, includeAnonymousUsers,
 				_getSegmentChannelId(segmentId), segmentId,
 				PageRequest.of(page, size, SortUtil.getSort(sorts))),
-			this::populateIndividual);
+			individual -> populateIndividual(channelId, individual));
 	}
 
 	public List<Individual> searchIndividuals(
@@ -875,7 +889,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 			channelId, filterString, includeAnonymousUsers, null, null,
 			pageRequest);
 
-		return ListUtil.map(individuals, this::populateIndividual);
+		return ListUtil.map(
+			individuals,
+			individual -> populateIndividual(channelId, individual));
 	}
 
 	public Page<Individual> searchIndividualsPage(
