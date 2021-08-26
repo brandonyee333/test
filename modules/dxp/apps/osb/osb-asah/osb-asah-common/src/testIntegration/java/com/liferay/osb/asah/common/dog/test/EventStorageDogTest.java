@@ -34,6 +34,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +46,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -56,6 +61,41 @@ import org.springframework.test.context.ContextConfiguration;
 @Import(JDBCTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class EventStorageDogTest {
+
+	@Test
+	public void testEventStorageTransactional() {
+		Mockito.doThrow(
+			new RuntimeException()
+		).when(
+			_eventDog
+		).addEvent(
+			ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),
+			ArgumentMatchers.anyLong(), ArgumentMatchers.any(Date.class),
+			ArgumentMatchers.anyLong(), ArgumentMatchers.anySet(),
+			ArgumentMatchers.any(Date.class), ArgumentMatchers.anyLong(),
+			ArgumentMatchers.anyLong(), ArgumentMatchers.anyString(),
+			ArgumentMatchers.anyString()
+		);
+
+		try {
+			_storeAnalyticsEvent(
+				"newEventDefinition",
+				Collections.singletonMap("canonicalUrl", "http://127.0.0.1"),
+				Collections.singletonMap(
+					"newEventAttributeDefinition", "testValue"));
+
+			Assert.fail("Storing analytics event did not fail");
+		}
+		catch (Exception exception) {
+			Assert.assertNull(
+				_eventAttributeDefinitionDog.
+					fetchEventAttributeDefinitionByName(
+						"newEventAttributeDefinition"));
+			Assert.assertNull(
+				_eventDefinitionDog.fetchEventDefinitionByName(
+					"newEventDefinition"));
+		}
+	}
 
 	@SQLResource(resourcePath = "test_store_blocked_event.sql")
 	@Test
@@ -380,6 +420,7 @@ public class EventStorageDogTest {
 		analyticsEvent.setDataSourceId("1");
 		analyticsEvent.setEventId(eventId);
 		analyticsEvent.setEventProperties(eventProperties);
+		analyticsEvent.setId("1");
 		analyticsEvent.setIndividualId("1");
 		analyticsEvent.setKnownIndividual(true);
 		analyticsEvent.setProjectId("123456789");
@@ -399,7 +440,7 @@ public class EventStorageDogTest {
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
 
-	@Autowired
+	@SpyBean
 	private EventDog _eventDog;
 
 	@Autowired
