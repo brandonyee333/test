@@ -56,14 +56,11 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 
 		Session expiredSession = new Session(event0);
 
-		Option<Session> some = new Some<>(expiredSession);
-
-		Option none = Option.empty();
-
 		GroupState<Session> groupStateExpired =
 			GroupStateImpl.createForStreaming(
-				some, _SESSION_DURATION, _SESSION_DURATION,
-				GroupStateTimeout.EventTimeTimeout(), true, true);
+				new Some<>(expiredSession), _SESSION_DURATION,
+				_SESSION_DURATION, GroupStateTimeout.EventTimeTimeout(), true,
+				true);
 
 		ArrayList<Event> emptyEventList = new ArrayList<>();
 
@@ -91,7 +88,7 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 		};
 
 		GroupState<Session> groupState = GroupStateImpl.createForStreaming(
-			none, _SESSION_DURATION, _SESSION_DURATION,
+			Option.empty(), _SESSION_DURATION, _SESSION_DURATION,
 			GroupStateTimeout.EventTimeTimeout(), false, true);
 
 		Iterator<Session> iterationOutput1 =
