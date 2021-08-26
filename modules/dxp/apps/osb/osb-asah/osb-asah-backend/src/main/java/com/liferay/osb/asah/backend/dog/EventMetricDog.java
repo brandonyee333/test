@@ -1,0 +1,65 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.backend.dog;
+
+import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.EventMetric;
+import com.liferay.osb.asah.backend.model.EventMetricType;
+import com.liferay.osb.asah.backend.model.Metric;
+import com.liferay.osb.asah.common.repository.EventRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ * @author Marcos Martins
+ */
+@Component
+public class EventMetricDog {
+
+	public EventMetric getEventMetric(SearchQueryContext searchQueryContext) {
+		EventMetric eventMetric = new EventMetric();
+
+		Metric totalEventsMetric = new Metric(EventMetricType.TOTAL_EVENTS);
+
+		totalEventsMetric.setValue(
+			Double.valueOf(
+				_eventRepository.countEvents(
+					Long.valueOf(searchQueryContext.getChannelId()),
+					Long.valueOf(searchQueryContext.getEntityId()),
+					searchQueryContext.getKeywords(),
+					searchQueryContext.getTimeRange())));
+
+		eventMetric.setTotalEventsMetric(totalEventsMetric);
+
+		Metric totalSessionsMetric = new Metric(EventMetricType.TOTAL_SESSIONS);
+
+		totalSessionsMetric.setValue(
+			Double.valueOf(
+				_eventRepository.countEventSessions(
+					Long.valueOf(searchQueryContext.getChannelId()),
+					Long.valueOf(searchQueryContext.getEntityId()),
+					searchQueryContext.getKeywords(),
+					searchQueryContext.getTimeRange())));
+
+		eventMetric.setTotalSessionsMetric(totalSessionsMetric);
+
+		return eventMetric;
+	}
+
+	@Autowired
+	private EventRepository _eventRepository;
+
+}
