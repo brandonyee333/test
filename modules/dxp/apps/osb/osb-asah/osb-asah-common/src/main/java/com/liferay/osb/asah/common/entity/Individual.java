@@ -201,7 +201,11 @@ public class Individual implements Persistable<Long> {
 
 	@JsonIgnore
 	public Date getLastActivityDate() {
-		return _lastActivityDate;
+		if (_lastActivityDate == null) {
+			return null;
+		}
+
+		return new Date(_lastActivityDate.getTime());
 	}
 
 	@JsonProperty("lastActivityDates")

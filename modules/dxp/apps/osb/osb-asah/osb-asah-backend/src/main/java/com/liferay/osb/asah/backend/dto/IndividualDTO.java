@@ -203,9 +203,17 @@ public class IndividualDTO {
 		return _individualFieldDTO;
 	}
 
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
 	@JsonProperty("lastActivityDate")
 	public Date getLastActivityDate() {
-		return _lastActivityDate;
+		if (_lastActivityDate == null) {
+			return null;
+		}
+
+		return new Date(_lastActivityDate.getTime());
 	}
 
 	@JsonProperty("lastActivityDates")
