@@ -52,6 +52,10 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 		Long channelId, Long individualId, String keywords,
 		TimeRange timeRange);
 
+	public Integer countEventSessions(
+		Long channelId, Long individualId, String keywords,
+		TimeRange timeRange);
+
 	public long countTotalEvents(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,

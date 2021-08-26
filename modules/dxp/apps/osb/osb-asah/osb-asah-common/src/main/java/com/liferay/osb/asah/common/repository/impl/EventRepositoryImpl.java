@@ -79,28 +79,17 @@ public class EventRepositoryImpl extends BaseRepository {
 		Long channelId, Long individualId, String keywords,
 		TimeRange timeRange) {
 
-		Table<Record> eventTable = DSL.table("Event");
+		return _getEventCount(
+			channelId, DSL.count(), individualId, keywords, timeRange);
+	}
 
-		AggregateFunction<Integer> count = DSL.count();
+	public Integer countEventSessions(
+		Long channelId, Long individualId, String keywords,
+		TimeRange timeRange) {
 
-		SelectSelectStep<Record1<Integer>> selectCount = _dslContext.select(
-			count);
-
-		return selectCount.from(
-			eventTable
-		).innerJoin(
-			DSL.table("EventDefinition")
-		).on(
-			DSL.field(
-				"Event.eventDefinitionId"
-			).eq(
-				DSL.field("EventDefinition.id")
-			)
-		).where(
-			_createCondition(channelId, individualId, keywords, timeRange)
-		).fetchOne(
-			count
-		);
+		return _getEventCount(
+			channelId, DSL.countDistinct(DSL.field("sessionId")), individualId,
+			keywords, timeRange);
 	}
 
 	public long countTotalEvents(
@@ -692,6 +681,32 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		return conditions;
+	}
+
+	private Integer _getEventCount(
+		Long channelId, AggregateFunction<Integer> countAggregateFunction,
+		Long individualId, String keywords, TimeRange timeRange) {
+
+		Table<Record> eventTable = DSL.table("Event");
+
+		SelectSelectStep<Record1<Integer>> selectCount = _dslContext.select(
+			countAggregateFunction);
+
+		return selectCount.from(
+			eventTable
+		).innerJoin(
+			DSL.table("EventDefinition")
+		).on(
+			DSL.field(
+				"Event.eventDefinitionId"
+			).eq(
+				DSL.field("EventDefinition.id")
+			)
+		).where(
+			_createCondition(channelId, individualId, keywords, timeRange)
+		).fetchOne(
+			countAggregateFunction
+		);
 	}
 
 	private Field _getField(
