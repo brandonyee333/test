@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.frontend.icons.admin.web.internal.configuration;
+package com.liferay.frontend.icons.admin.web.internal.portal.settings.configuration.admin.category;
 
 import aQute.bnd.annotation.metatype.Meta;
 
@@ -26,7 +26,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 	scope = ExtendedObjectClassDefinition.Scope.COMPANY
 )
 @Meta.OCD(
-	id = "com.liferay.frontend.icons.admin.web.internal.configuration.IconsAdminConfiguration",
+	id = "com.liferay.frontend.icons.admin.web.internal.portal.settings.configuration.admin.category.IconsAdminConfiguration",
 	localization = "content/Language", name = "icons-admin-configuration-name"
 )
 public interface IconsAdminConfiguration {

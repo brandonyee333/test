@@ -50,34 +50,34 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 @Component(immediate = true, service = {})
 public class IconContributorExtender
 	implements ServiceTrackerCustomizer
-		<ServletContext, ServiceRegistration<IconResourcesContributor>> {
+		<ServletContext, ServiceRegistration<IconResourcePack>> {
 
 	@Override
-	public ServiceRegistration<IconResourcesContributor> addingService(
+	public ServiceRegistration<IconResourcePack> addingService(
 		ServiceReference<ServletContext> serviceReference) {
 
-		IconResourcesContributor iconResourcesContributor =
-			_getIconResourcesContributor(serviceReference.getBundle());
+		IconResourcePack iconResourcePack =
+			_getIconResourcePack(serviceReference.getBundle());
 
-		if (iconResourcesContributor == null) {
+		if (iconResourcePack == null) {
 			return null;
 		}
 
 		return _bundleContext.registerService(
-			IconResourcesContributor.class, iconResourcesContributor,
+			IconResourcePack.class, iconResourcePack,
 			MapUtil.singletonDictionary("service.ranking", 0));
 	}
 
 	@Override
 	public void modifiedService(
 		ServiceReference<ServletContext> serviceReference,
-		ServiceRegistration<IconResourcesContributor> serviceRegistration) {
+		ServiceRegistration<IconResourcePack> serviceRegistration) {
 	}
 
 	@Override
 	public void removedService(
 		ServiceReference<ServletContext> serviceReference,
-		ServiceRegistration<IconResourcesContributor> serviceRegistration) {
+		ServiceRegistration<IconResourcePack> serviceRegistration) {
 
 		serviceRegistration.unregister();
 
@@ -112,7 +112,7 @@ public class IconContributorExtender
 		}
 	}
 
-	private IconResourcesContributor _getIconResourcesContributor(
+	private IconResourcePack _getIconResourcePack(
 		Bundle bundle) {
 
 		Dictionary<String, String> headers = bundle.getHeaders(
@@ -128,6 +128,12 @@ public class IconContributorExtender
 			return null;
 		}
 
+		String liferayIconsNamespace = headers.get("Liferay-Icons-Namespace");
+
+		if (Validator.isBlank(liferayIconsNamespace)) {
+			return null;
+		}
+
 		liferayIconsPath = "META-INF/resources/" + liferayIconsPath;
 
 		Enumeration<URL> entriesEnumeration = bundle.findEntries(
@@ -137,10 +143,10 @@ public class IconContributorExtender
 			return null;
 		}
 
-		IconResourcesContributorImpl iconResourcesContributorImpl =
-			new IconResourcesContributorImpl();
-
 		int stripPathPrefixLength = liferayIconsPath.length() + 2;
+
+		IconResourcePackImpl iconResourcePackImpl =
+			new IconResourcePackImpl(liferayIconsNamespace);
 
 		while (entriesEnumeration.hasMoreElements()) {
 			URL url = entriesEnumeration.nextElement();
@@ -151,16 +157,8 @@ public class IconContributorExtender
 
 			name = FileUtil.stripExtension(name);
 
-			String liferayIconsNamespace = headers.get(
-				"Liferay-Icons-Namespace");
-
-			if (!Validator.isBlank(liferayIconsNamespace)) {
-				name = liferayIconsNamespace + "_" + name;
-			}
-
 			try {
-				iconResourcesContributorImpl.addIconResource(
-					new IconResourceImpl(name, _getFileContents(url)));
+				iconResourcePackImpl.addIconResource(name, _getFileContents(url));
 			}
 			catch (IOException ioException) {
 				_log.error(
@@ -171,7 +169,7 @@ public class IconContributorExtender
 			}
 		}
 
-		return iconResourcesContributorImpl;
+		return iconResourcePackImpl;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -179,7 +177,7 @@ public class IconContributorExtender
 
 	private BundleContext _bundleContext;
 	private ServiceTracker
-		<ServletContext, ServiceRegistration<IconResourcesContributor>>
+		<ServletContext, ServiceRegistration<IconResourcePack>>
 			_serviceTracker;
 
 }

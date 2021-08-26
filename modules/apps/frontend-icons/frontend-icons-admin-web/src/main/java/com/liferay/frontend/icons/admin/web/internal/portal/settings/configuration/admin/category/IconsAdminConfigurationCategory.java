@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.frontend.icons.admin.web.internal.configuration;
+package com.liferay.frontend.icons.admin.web.internal.portal.settings.configuration.admin.category;
 
 import com.liferay.configuration.admin.category.ConfigurationCategory;
 
@@ -23,6 +23,11 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(service = ConfigurationCategory.class)
 public class IconsAdminConfigurationCategory implements ConfigurationCategory {
+
+	@Override
+	public String getBundleSymbolicName() {
+		return "com.liferay.frontend.icons.admin.web";
+	}
 
 	@Override
 	public String getCategoryIcon() {

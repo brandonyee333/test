@@ -14,9 +14,13 @@
 
 package com.liferay.frontend.icons.admin.web.internal.portal.settings.configuration.admin.display;
 
+import com.liferay.frontend.icons.admin.web.internal.contributor.extender.IconResourcePack;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.configuration.admin.display.ConfigurationScreen;
-import com.liferay.frontend.icons.admin.web.internal.configuration.IconsAdminConfiguration;
 import com.liferay.frontend.icons.admin.web.internal.contributor.extender.IconResource;
+import com.liferay.frontend.icons.admin.web.internal.portal.settings.configuration.admin.category.IconsAdminConfiguration;
 import com.liferay.frontend.icons.admin.web.internal.helper.IconResourceHelper;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
@@ -29,6 +33,7 @@ import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -67,7 +72,7 @@ public class IconsAdminConfigurationScreen implements ConfigurationScreen {
 
 	@Override
 	public String getScope() {
-		return ExtendedObjectClassDefinition.Scope.GROUP.getValue();
+		return ExtendedObjectClassDefinition.Scope.COMPANY.getValue();
 	}
 
 	@Override
@@ -91,23 +96,25 @@ public class IconsAdminConfigurationScreen implements ConfigurationScreen {
 		httpServletRequest.setAttribute(
 			IconsAdminConfiguration.class.getName(), iconsAdminConfiguration);
 
-		Map<String, List<IconResource>> iconResourceMaps =
+		Map<String, IconResourcePack> iconResourcePacks =
 			_iconResourceHelper.getIconResourceMaps();
 
-		Set<Map.Entry<String, List<IconResource>>> entries =
-			iconResourceMaps.entrySet();
+		JSONObject json = JSONFactoryUtil.createJSONObject();
 
-		List<String> ids = new ArrayList<>();
+		for (Map.Entry<String, IconResourcePack> entry: iconResourcePacks.entrySet()) {
+			String name = entry.getKey();
+			IconResourcePack iconResourcePack = entry.getValue();
 
-		for (Map.Entry<String, List<IconResource>> entry : entries) {
-			List<IconResource> iconResources = entry.getValue();
+			List<String> iconNames = new ArrayList<>();
 
-			IconResource iconResource = iconResources.get(0);
+			for (IconResource iconResource : iconResourcePack.getIconResources()) {
+				iconNames.add(iconResource.getId());
+			}
 
-			ids.add(iconResource.getId());
+			json.put(name, iconNames);
 		}
 
-		httpServletRequest.setAttribute("iconIds", ids);
+		httpServletRequest.setAttribute("icons", json.toJSONString());
 
 		try {
 			RequestDispatcher requestDispatcher =

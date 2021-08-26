@@ -15,7 +15,7 @@
 package com.liferay.frontend.icons.admin.web.internal.helper;
 
 import com.liferay.frontend.icons.admin.web.internal.contributor.extender.IconResource;
-import com.liferay.frontend.icons.admin.web.internal.contributor.extender.IconResourcesContributor;
+import com.liferay.frontend.icons.admin.web.internal.contributor.extender.IconResourcePack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,35 +37,52 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 @Component(immediate = true, service = IconResourceHelper.class)
 public class IconResourceHelper {
 
-	public String getGlobalSpriteContent() {
+	public String generateXmlSvg(String content) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(
 			"<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE svg PUBLIC " +
-				"\"-//W3C//DTD SVG 1.1//EN\" " +
-					"\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">");
+			"\"-//W3C//DTD SVG 1.1//EN\" " +
+			"\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">");
 
 		sb.append(
 			"<svg xmlns=\"http://www.w3.org/2000/svg\" " +
-				"xmlns:xlink=\"http://www.w3.org/1999/xlink\">");
+			"xmlns:xlink=\"http://www.w3.org/1999/xlink\">");
 
-		Set<Map.Entry<String, List<IconResource>>> entries =
-			_iconResourcesMap.entrySet();
-
-		for (Map.Entry<String, List<IconResource>> entry : entries) {
-			List<IconResource> iconResources = entry.getValue();
-
-			IconResource iconResource = iconResources.get(0);
-
-			sb.append(iconResource.getSVGContent());
-		}
+		sb.append(content);
 
 		sb.append("</svg>");
 
 		return new String(sb);
 	}
 
-	public Map<String, List<IconResource>> getIconResourceMaps() {
+	public String getIconPackSpriteContent(String iconPackName) {
+		StringBuilder sb = new StringBuilder();
+
+		for (IconResource iconResource: _iconResourcesMap.get(iconPackName).getIconResources()) {
+			sb.append(iconResource.getSVGContent());
+		}
+
+		return generateXmlSvg(new String(sb));
+	}
+
+	public String getGlobalSpriteContent() {
+		StringBuilder sb = new StringBuilder();
+
+		for (Map.Entry<String, IconResourcePack> entry: _iconResourcesMap.entrySet()) {
+			IconResourcePack iconResourcePack = entry.getValue();
+
+			for (IconResource iconResource :
+				iconResourcePack.getIconResources()) {
+
+				sb.append(iconResource.getSVGContent());
+			}
+		}
+
+		return generateXmlSvg(new String(sb));
+	}
+
+	public Map<String, IconResourcePack> getIconResourceMaps() {
 		return _iconResourcesMap;
 	}
 
@@ -73,83 +90,49 @@ public class IconResourceHelper {
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC
 	)
-	protected void addIconResourcesContributor(
-		IconResourcesContributor iconResourcesContributor) {
+	protected void addIconResourcePack(
+		IconResourcePack iconResourcePack) {
 
 		Lock lock = _readWriteLock.writeLock();
 
 		lock.lock();
 
 		try {
-			for (IconResource iconResource :
-					iconResourcesContributor.getIconResources()) {
-
-				_addIconResource(iconResource);
-			}
+			_addIconResourcePack(iconResourcePack);
 		}
 		finally {
 			lock.unlock();
 		}
 	}
 
-	protected void removeIconResourcesContributor(
-		IconResourcesContributor iconResourcesContributor) {
+	protected void removeIconResourcePack(
+		IconResourcePack iconResourcePack) {
 
 		Lock lock = _readWriteLock.writeLock();
+			
+		lock.lock();
 
 		try {
-			lock.lock();
-
-			for (IconResource iconResource :
-					iconResourcesContributor.getIconResources()) {
-
-				_removeIconResource(iconResource);
-			}
+			_removeIconResourcePack(iconResourcePack);
 		}
 		finally {
 			lock.unlock();
 		}
 	}
 
-	private void _addIconResource(IconResource iconResource) {
-		String id = iconResource.getId();
+	private void _addIconResourcePack(IconResourcePack iconResourcePack) {
+		String name = iconResourcePack.getName();
 
-		List<IconResource> iconResources = _iconResourcesMap.get(id);
-
-		if (iconResources == null) {
-			iconResources = new ArrayList<>();
-
-			_iconResourcesMap.put(id, iconResources);
-		}
-
-		int i;
-
-		for (i = 0; i < iconResources.size(); i++) {
-			IconResource existingIconResource = iconResources.get(i);
-
-			if (existingIconResource.getPriority() >
-					iconResource.getPriority()) {
-
-				break;
-			}
-		}
-
-		iconResources.add(i, iconResource);
+		_iconResourcesMap.putIfAbsent(name, iconResourcePack);
 	}
 
-	private void _removeIconResource(IconResource iconResource) {
-		List<IconResource> iconResources = _iconResourcesMap.get(
-			iconResource.getId());
+	private void _removeIconResourcePack(IconResourcePack iconResourcePack) {
+		String name = iconResourcePack.getName();
 
-		if (iconResources == null) {
-			return;
-		}
-
-		iconResources.remove(iconResource);
+		_iconResourcesMap.remove(name);
 	}
 
-	private final Map<String, List<IconResource>> _iconResourcesMap =
-		new HashMap<>();
+	private final Map<String, IconResourcePack> _iconResourcesMap = new HashMap<>();
 	private final ReadWriteLock _readWriteLock = new ReentrantReadWriteLock();
 
 }

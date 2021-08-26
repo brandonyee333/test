@@ -30,27 +30,19 @@ const IconSearch = ({
 	placeholder = 'Search Icons...',
 	portletNamespace,
 }) => {
+	icons = JSON.parse(icons);
+
+	const iconPackNames = Object.keys(icons);
+
 	const [searchQuery, setSearchQuery] = useState('');
 
 	const filteredIcons = useMemo(() => {
-		const query = searchQuery.toLowerCase();
-
-		return icons.filter((name) => name.toLowerCase().includes(query));
+		return iconPackNames.map((packName) => {
+			icons[packName].filter((icon) =>
+				icon.toLowerCase().includes(searchQuery.toLocaleLowerCase())
+			);
+		});
 	}, [searchQuery, icons]);
-
-	const list = searchQuery ? filteredIcons : icons;
-
-	const iconMap = list.reduce((acc, name) => {
-		const category = name.split('_')[0];
-
-		if (!acc[category]) {
-			acc[category] = [];
-		}
-
-		acc[category].push(name);
-
-		return acc;
-	}, {});
 
 	return (
 		<>
@@ -71,24 +63,24 @@ const IconSearch = ({
 
 			<ClayForm.Group>
 				<ClayPanel.Group>
-					{Object.keys(iconMap).map((category) => (
+					{iconPackNames.map((iconPackName) => (
 						<ClayPanel
 							collapsable
-							displayTitle={category}
+							displayTitle={iconPackName}
 							displayType="secondary"
-							key={category}
+							key={iconPackName}
 							showCollapseIcon={true}
 						>
 							<ClayPanel.Body className="list-group-card">
 								<ul className="list-group">
-									{iconMap[category].sort().map((icon) => (
+									{icons[iconPackName].sort().map((icon) => (
 										<li
 											className="list-group-card-item w-25"
 											key={icon}
 										>
 											<ClayButton displayType={null}>
 												<ClayIcon
-													spritemap="/o/icons-admin/global-spritemap.svg"
+													spritemap="/o/icons/clay.svg"
 													symbol={icon}
 												/>
 
@@ -103,13 +95,23 @@ const IconSearch = ({
 						</ClayPanel>
 					))}
 
-					{!list.length && (
-						<span>{`No results found for ${searchQuery}`}</span>
-					)}
+					{!iconPackNames.find(
+						(packName) => icons[packName].length
+					) && <span>{`No results found for ${searchQuery}`}</span>}
 				</ClayPanel.Group>
 			</ClayForm.Group>
 
 			<h4>Add Custom Icon</h4>
+
+			<ClayForm.Group>
+				<label htmlFor={portletNamespace + 'iconPack'}>Pack Name</label>
+
+				<ClayInput
+					name={portletNamespace + 'iconPack'}
+					placeholder="Name"
+					type="text"
+				/>
+			</ClayForm.Group>
 
 			<ClayForm.Group>
 				<label htmlFor={portletNamespace + 'name'}>Icon Name</label>

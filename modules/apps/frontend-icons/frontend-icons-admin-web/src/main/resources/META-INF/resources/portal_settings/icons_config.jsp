@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-List<String> iconIds = (List<String>)request.getAttribute("iconIds");
+String iconsMapJson = (String)request.getAttribute("icons");
 
 String redirect = ParamUtil.getString(request, "redirect");
 
@@ -51,7 +51,7 @@ if (Validator.isNull(redirect)) {
 				module="js/IconSearch"
 				props='<%=
 					HashMapBuilder.<String, Object>put(
-						"icons", iconIds
+						"icons", iconsMapJson
 					).build()
 				%>'
 			/>

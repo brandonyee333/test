@@ -14,13 +14,36 @@
 
 package com.liferay.frontend.icons.admin.web.internal.contributor.extender;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Bryce Osterhaus
  */
-public interface IconResourcesContributor {
+public class IconResourcePackImpl implements IconResourcePack {
 
-	public Collection<IconResource> getIconResources();
+	public IconResourcePackImpl(String name) {
+		_name = name;
+	}
+
+	public void addIconResource(String iconName, String iconContents) {
+		IconResource iconResource = new IconResourceImpl(iconName, iconContents);
+		
+		_iconResources.add(iconResource);
+	}
+
+	@Override
+	public Collection<IconResource> getIconResources() {
+		return _iconResources;
+	}
+
+	@Override
+	public String getName() {
+		return _name;
+	}
+
+	private final List<IconResource> _iconResources = new ArrayList<>();
+	private final String _name;
 
 }

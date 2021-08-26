@@ -15,9 +15,11 @@
 package com.liferay.frontend.icons.admin.web.internal.portlet.action;
 
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
+import com.liferay.frontend.icons.admin.web.internal.contributor.extender.IconResource;
 import com.liferay.frontend.icons.admin.web.internal.contributor.extender.IconResourceImpl;
-import com.liferay.frontend.icons.admin.web.internal.contributor.extender.IconResourcesContributor;
-import com.liferay.frontend.icons.admin.web.internal.contributor.extender.IconResourcesContributorImpl;
+import com.liferay.frontend.icons.admin.web.internal.contributor.extender.IconResourcePack;
+import com.liferay.frontend.icons.admin.web.internal.contributor.extender.IconResourcePackImpl;
+import com.liferay.frontend.icons.admin.web.internal.helper.IconResourceHelper;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -32,6 +34,8 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -56,19 +60,28 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class SaveCustomIconMVCActionCommand extends BaseMVCActionCommand {
 
-	public void addCustomIcon(String id, String svgContent) {
-		String name = "custom_" + id;
+	public void addCustomIcon(String iconPackName, String id, String svgContent) {
 
-		_customIconResourcesContributorImpl.addIconResource(
-			new IconResourceImpl(name, svgContent));
+		Map<String, IconResourcePack> iconResourcePackMaps = _iconResourceHelper.getIconResourceMaps();
 
-		if (_serviceRegistration != null) {
-			_serviceRegistration.unregister();
+		IconResourcePack iconResourcePack;
+		boolean packExists = false;
+
+		if (iconResourcePackMaps.containsKey(iconPackName)) {
+			iconResourcePack = iconResourcePackMaps.get(iconPackName);
+
+			packExists = true;
+		} else {
+			iconResourcePack = new IconResourcePackImpl(iconPackName);
 		}
 
-		_serviceRegistration = _bundleContext.registerService(
-			IconResourcesContributor.class, _customIconResourcesContributorImpl,
-			new Hashtable<>());
+		iconResourcePack.addIconResource(id, svgContent);
+
+		if (!packExists) {
+			_bundleContext.registerService(
+				IconResourcePack.class, iconResourcePack,
+				new Hashtable<>());
+		}
 	}
 
 	@Activate
@@ -103,21 +116,19 @@ public class SaveCustomIconMVCActionCommand extends BaseMVCActionCommand {
 		String svgContent = FileUtil.read(
 			uploadPortletRequest.getFile("svgFile"));
 
-		System.out.println(svgContent);
-
 		String name = ParamUtil.getString(actionRequest, "name");
 
-		addCustomIcon(name, svgContent);
+		String iconPack = ParamUtil.getString(actionRequest, "iconPack");
+
+		addCustomIcon(iconPack, name, svgContent);
 	}
 
 	private BundleContext _bundleContext;
-	private final IconResourcesContributorImpl
-		_customIconResourcesContributorImpl =
-			new IconResourcesContributorImpl();
 
 	@Reference
 	private Portal _portal;
 
-	private ServiceRegistration<IconResourcesContributor> _serviceRegistration;
+	@Reference
+	private IconResourceHelper _iconResourceHelper;
 
 }
