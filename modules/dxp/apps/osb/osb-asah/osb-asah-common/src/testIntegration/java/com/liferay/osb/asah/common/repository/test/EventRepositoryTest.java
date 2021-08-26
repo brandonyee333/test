@@ -145,7 +145,68 @@ public class EventRepositoryTest {
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
-	public void testGetEventAttributeValuesCount() {
+	public void testGetEventAttributeValuesCountBoolean() {
+		Assert.assertEquals(
+			3,
+			_eventRepository.getEventAttributeValuesCount(
+				1L,
+				new EventAnalysisBreakdown(
+					"67890", AttributeType.EVENT, null,
+					EventAttributeDefinition.DataType.BOOLEAN, null, "DESC"),
+				null, 246810L,
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0))));
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
+	public void testGetEventAttributeValuesCountDate() {
+		Assert.assertEquals(
+			5,
+			_eventRepository.getEventAttributeValuesCount(
+				1L,
+				new EventAnalysisBreakdown(
+					"56789", AttributeType.EVENT, null,
+					EventAttributeDefinition.DataType.DATE, DateGrouping.MONTH,
+					"DESC"),
+				null, 246810L,
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0))));
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
+	public void testGetEventAttributeValuesCountDuration() {
+		Assert.assertEquals(
+			4,
+			_eventRepository.getEventAttributeValuesCount(
+				1L,
+				new EventAnalysisBreakdown(
+					"34567", AttributeType.EVENT, 100,
+					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
+				null, 246810L,
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0))));
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
+	public void testGetEventAttributeValuesCountNumber() {
+		Assert.assertEquals(
+			9,
+			_eventRepository.getEventAttributeValuesCount(
+				1L,
+				new EventAnalysisBreakdown(
+					"45678", AttributeType.EVENT, 0.5,
+					EventAttributeDefinition.DataType.NUMBER, null, "DESC"),
+				null, 246810L,
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0))));
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
+	public void testGetEventAttributeValuesCountString() {
 		Assert.assertEquals(
 			3,
 			_eventRepository.getEventAttributeValuesCount(
