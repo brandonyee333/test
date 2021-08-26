@@ -25,6 +25,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -468,6 +469,10 @@ public class Session implements Serializable {
 	private Map<String, String> _toAcquisition(
 		Map<String, String> eventContext) {
 
+		if (eventContext.isEmpty()) {
+			return Collections.emptyMap();
+		}
+
 		String url = eventContext.get("url");
 
 		try {
@@ -497,7 +502,7 @@ public class Session implements Serializable {
 			};
 		}
 		catch (URISyntaxException uriSyntaxException) {
-			return new HashMap<>();
+			return Collections.emptyMap();
 		}
 	}
 

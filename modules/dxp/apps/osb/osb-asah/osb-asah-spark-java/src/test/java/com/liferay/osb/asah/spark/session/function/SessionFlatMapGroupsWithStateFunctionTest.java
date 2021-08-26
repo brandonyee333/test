@@ -18,14 +18,10 @@ import com.liferay.osb.asah.spark.common.DateUtil;
 import com.liferay.osb.asah.spark.session.model.Event;
 import com.liferay.osb.asah.spark.session.model.Session;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.spark.sql.execution.streaming.GroupStateImpl;
 import org.apache.spark.sql.streaming.GroupState;
@@ -43,156 +39,99 @@ import scala.Some;
 public class SessionFlatMapGroupsWithStateFunctionTest {
 
 	@Test
-	public void testCall() {
+	public void testCallWithActiveGroupState() {
 		SessionFlatMapGroupsWithStateFunction
 			sessionFlatMapGroupsWithStateFunction =
 				new SessionFlatMapGroupsWithStateFunction(_SESSION_DURATION);
 
-		Event event0 = new Event();
-
-		event0.setContext(_context);
-		event0.setDate(_DATE);
-		event0.setEventDate(_EVENT_DATE1);
-
-		Session expiredSession = new Session(event0);
-
-		GroupState<Session> groupStateExpired =
-			GroupStateImpl.createForStreaming(
-				new Some<>(expiredSession), _SESSION_DURATION,
-				_SESSION_DURATION, GroupStateTimeout.EventTimeTimeout(), true,
-				true);
-
-		ArrayList<Event> emptyEventList = new ArrayList<>();
-
-		Iterator<Session> sessionIterator =
-			sessionFlatMapGroupsWithStateFunction.call(
-				null, emptyEventList.iterator(), groupStateExpired);
-
-		Session sessionExpired = sessionIterator.next();
-
-		Assert.assertFalse(
-			groupStateExpired.toString(), groupStateExpired.exists());
-		Assert.assertTrue(
-			sessionExpired.toString(), sessionExpired.getFinished());
-
-		Event event1 = new Event();
-
-		event1.setContext(_context);
-		event1.setDate(_DATE);
-		event1.setEventDate(_EVENT_DATE1);
-
-		ArrayList<Event> iterationInput1 = new ArrayList<Event>() {
-			{
-				add(event1);
-			}
-		};
+		List<Event> events = Arrays.asList(
+			_createEvent("2021-06-22T09:00:00.001Z"));
 
 		GroupState<Session> groupState = GroupStateImpl.createForStreaming(
 			Option.empty(), _SESSION_DURATION, _SESSION_DURATION,
-			GroupStateTimeout.EventTimeTimeout(), false, true);
+			GroupStateTimeout.EventTimeTimeout(), Boolean.FALSE, Boolean.TRUE);
 
-		Iterator<Session> iterationOutput1 =
+		Iterator<Session> sessionIterator =
 			sessionFlatMapGroupsWithStateFunction.call(
-				null, iterationInput1.iterator(), groupState);
+				null, events.iterator(), groupState);
 
-		Session session1 = iterationOutput1.next();
+		Session session = sessionIterator.next();
 
-		Assert.assertFalse(session1.toString(), session1.getFinished());
-
-		Assert.assertTrue(groupState.toString(), groupState.exists());
-		Assert.assertEquals(groupState.toString(), groupState.get(), session1);
-
-		Event event2 = new Event();
-
-		event2.setContext(_context);
-		event2.setDate(_DATE);
-		event2.setEventDate(_EVENT_DATE2);
-
-		Event event3 = new Event();
-
-		event3.setContext(_context);
-		event3.setDate(_DATE);
-		event3.setEventDate(_EVENT_DATE3);
-
-		ArrayList<Event> iterationInput2 = new ArrayList<Event>() {
-			{
-				add(event2);
-				add(event3);
-			}
-		};
-
-		Iterator<Session> iterationOutput2 =
-			sessionFlatMapGroupsWithStateFunction.call(
-				null, iterationInput2.iterator(), groupState);
-
-		Assert.assertTrue(groupState.toString(), groupState.exists());
-
-		Session session2 = iterationOutput2.next();
-
-		Assert.assertEquals(groupState.toString(), groupState.get(), session2);
-
-		Event event4 = new Event();
-
-		event4.setContext(_context);
-		event4.setDate(_DATE);
-		event4.setEventDate(_EVENT_DATE4);
-
-		ArrayList<Event> iterationInput3 = new ArrayList<Event>() {
-			{
-				add(event4);
-			}
-		};
-
-		Iterator<Session> iterationOutput3 =
-			sessionFlatMapGroupsWithStateFunction.call(
-				null, iterationInput3.iterator(), groupState);
-
-		Session session3 = iterationOutput3.next();
-
-		Assert.assertTrue(session3.toString(), session3.getFinished());
-
-		Session sessionState = groupState.get();
-
-		Assert.assertFalse(sessionState.toString(), sessionState.getFinished());
-
-		List<Event> events = session3.getEvents();
-
-		Assert.assertEquals(events.toString(), 3, events.size());
+		Assert.assertFalse(session.getFinished());
 	}
 
-	private static final Date _DATE = DateUtil.toDate("2021-06-22");
+	@Test
+	public void testCallWithActiveGroupStateUpdate() {
+		SessionFlatMapGroupsWithStateFunction
+			sessionFlatMapGroupsWithStateFunction =
+				new SessionFlatMapGroupsWithStateFunction(_SESSION_DURATION);
 
-	private static final Timestamp _EVENT_DATE1 = DateUtil.toTimestamp(
-		"2021-06-22T09:00:00.001Z");
+		List<Event> firstIterationEvents = Arrays.asList(
+			_createEvent("2021-06-22T09:30:00.001Z"),
+			_createEvent("2021-06-22T09:31:00.001Z"));
 
-	private static final Timestamp _EVENT_DATE2 = DateUtil.toTimestamp(
-		"2021-06-22T09:30:00.001Z");
+		GroupState<Session> groupState = GroupStateImpl.createForStreaming(
+			Option.empty(), _SESSION_DURATION, _SESSION_DURATION,
+			GroupStateTimeout.EventTimeTimeout(), Boolean.FALSE, Boolean.TRUE);
 
-	private static final Timestamp _EVENT_DATE3 = DateUtil.toTimestamp(
-		"2021-06-22T09:31:00.001Z");
+		Iterator<Session> sessionIterator =
+			sessionFlatMapGroupsWithStateFunction.call(
+				null, firstIterationEvents.iterator(), groupState);
 
-	private static final Timestamp _EVENT_DATE4 = DateUtil.toTimestamp(
-		"2021-06-22T10:01:30.001Z");
+		Session session = sessionIterator.next();
 
-	private static final long _SESSION_DURATION = 30 * 1000 * 60;
+		Assert.assertFalse(session.getFinished());
 
-	private static final Map<String, String> _context =
-		new HashMap<String, String>() {
-			{
-				put("browserName", "Unknown Crawler");
-				put("canonicalUrl", "https://www.liferay.com/home");
-				put("city", "Mountain View");
-				put("country", "United States");
-				put("referrer", "https://www.liferay.com/pt/home");
-				put(
-					"title",
-					"Liferay DXP | A Plataforma que Unifica a Experiência");
-				put(
-					"url",
-					"https://www.liferay.com/pt/home?utm_source=linkedin&" +
-						"utm_medium=social&utm_campaign=7010g000000nK1uAAE&" +
-							"utm_content=linkedin-page-button");
-			}
-		};
+		List<Event> secondIterationEvents = Arrays.asList(
+			_createEvent("2021-06-22T10:01:30.001Z"));
+
+		sessionIterator = sessionFlatMapGroupsWithStateFunction.call(
+			null, secondIterationEvents.iterator(), groupState);
+
+		Session expiredSession = sessionIterator.next();
+
+		Assert.assertTrue(session.getFinished());
+		Assert.assertEquals(firstIterationEvents, expiredSession.getEvents());
+
+		Session activeSession = sessionIterator.next();
+
+		Assert.assertFalse(activeSession.getFinished());
+		Assert.assertEquals(secondIterationEvents, activeSession.getEvents());
+	}
+
+	@Test
+	public void testCallWithTimedOutGroupState() {
+		SessionFlatMapGroupsWithStateFunction
+			sessionFlatMapGroupsWithStateFunction =
+				new SessionFlatMapGroupsWithStateFunction(_SESSION_DURATION);
+
+		Event event = _createEvent("2021-06-22T09:00:00.001Z");
+
+		GroupState<Session> timedOutGroupState =
+			GroupStateImpl.createForStreaming(
+				new Some<>(new Session(event)), _SESSION_DURATION,
+				_SESSION_DURATION, GroupStateTimeout.EventTimeTimeout(),
+				Boolean.TRUE, Boolean.TRUE);
+
+		ArrayList<Event> events = new ArrayList<>();
+
+		Iterator<Session> sessionIterator =
+			sessionFlatMapGroupsWithStateFunction.call(
+				null, events.iterator(), timedOutGroupState);
+
+		Session session = sessionIterator.next();
+
+		Assert.assertTrue(session.getFinished());
+	}
+
+	private Event _createEvent(String eventDate) {
+		Event event = new Event();
+
+		event.setEventDate(DateUtil.toTimestamp(eventDate));
+
+		return event;
+	}
+
+	private static final long _SESSION_DURATION = 30 * 60 * 1000;
 
 }
