@@ -51,7 +51,6 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.security.util.InMemoryResource;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.TransactionManager;
 
 /**
@@ -60,7 +59,7 @@ import org.springframework.transaction.TransactionManager;
 @Configuration
 @EnableJdbcRepositories(
 	basePackages = "com.liferay.osb.asah.common.repository",
-	includeFilters = @ComponentScan.Filter(Repository.class),
+	excludeFilters = @ComponentScan.Filter(Primary.class),
 	namedQueriesLocation = "classpath*:com/liferay/osb/asah/common/repository/*-sql.xml"
 )
 public class JDBCConfiguration extends AbstractJdbcConfiguration {

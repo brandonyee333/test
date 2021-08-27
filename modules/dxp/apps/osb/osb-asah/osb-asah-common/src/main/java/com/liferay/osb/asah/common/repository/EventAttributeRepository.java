@@ -21,12 +21,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author Marcellus Tavares
  */
-@Repository
 public interface EventAttributeRepository
 	extends Repository<EventAttribute, Long> {
 

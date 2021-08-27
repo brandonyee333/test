@@ -23,12 +23,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author Leslie Wong
  */
-@Repository
 public interface EventAttributeDefinitionRepository
 	extends Repository<EventAttributeDefinition, Long> {
 

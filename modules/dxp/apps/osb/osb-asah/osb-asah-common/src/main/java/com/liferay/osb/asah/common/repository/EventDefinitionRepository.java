@@ -26,12 +26,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author Leslie Wong
  */
-@Repository
 public interface EventDefinitionRepository
 	extends Repository<EventDefinition, Long> {
 
