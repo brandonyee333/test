@@ -282,7 +282,7 @@ public class EventDefinitionDogTest {
 		long count = _eventDefinitionDog.countEventDefinitions(
 			false, null, null, EventDefinition.Type.DEFAULT);
 
-		Assert.assertEquals(24, count);
+		Assert.assertEquals(26, count);
 
 		count = _eventDefinitionDog.countEventDefinitions(
 			false, null, null, EventDefinition.Type.CUSTOM);
@@ -342,6 +342,32 @@ public class EventDefinitionDogTest {
 			_eventDefinitionDog.fetchEventDefinitionByName("testEvent");
 
 		Assert.assertEquals(eventDefinition1, eventDefinition2);
+	}
+
+	@Test
+	public void testGetDisplayedEventDefinitions() {
+		_assertEventDefinitions(
+			_eventDefinitionDog.getEventDefinitionsPage(
+				false, false, null, 0, 20, Sort.asc("name"),
+				EventDefinition.Type.DEFAULT),
+			new ArrayList<String>() {
+				{
+					add("assetClicked");
+					add("assetDownloaded");
+					add("assetSubmitted");
+					add("assetViewed");
+					add("blogClicked");
+					add("blogViewed");
+					add("ctaClicked");
+					add("documentDownloaded");
+					add("documentPreviewed");
+					add("formSubmitted");
+					add("formViewed");
+					add("pageViewed");
+					add("webContentClicked");
+					add("webContentViewed");
+				}
+			});
 	}
 
 	@Test
@@ -431,6 +457,8 @@ public class EventDefinitionDogTest {
 					add("pageUnloaded");
 					add("posted");
 					add("shared");
+					add("tabBlurred");
+					add("tabFocused");
 					add("vote");
 				}
 			});
