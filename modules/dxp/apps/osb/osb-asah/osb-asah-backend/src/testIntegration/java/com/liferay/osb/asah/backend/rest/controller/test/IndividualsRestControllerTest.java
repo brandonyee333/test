@@ -21,6 +21,7 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.IndividualsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -28,6 +29,8 @@ import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import org.hamcrest.CoreMatchers;
 
@@ -207,6 +210,39 @@ public class IndividualsRestControllerTest {
 			"individual-segments");
 
 		Assert.assertEquals(2, individualSegmentsJSONArray.length());
+	}
+
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetIndividualDTOsPageDTOs() throws Exception {
+		PageDTO<IndividualDTO> individualDTOsPageDTOs =
+			_individualsRestController.getIndividualDTOsPageDTOs(
+				100L, null, null, false, 0, 1, null);
+
+		Map<String, IndividualDTO> contents =
+			individualDTOsPageDTOs.getContent();
+
+		IndividualDTO individualDTO = contents.get("_embedded");
+
+		Set<IndividualDTO> individualDTOs = individualDTO.getIndividualDTOs();
+
+		Assert.assertEquals(
+			individualDTOs.toString(), 1, individualDTOs.size());
+
+		Stream<IndividualDTO> stream = individualDTOs.stream();
+
+		individualDTO = stream.findFirst(
+		).orElse(
+			null
+		);
+
+		Assert.assertEquals(1, (long)individualDTO.getActivitiesCount());
+		Assert.assertEquals(
+			DateUtil.toUTCDate("2019-03-11T17:10:00.666Z"),
+			individualDTO.getLastActivityDate());
 	}
 
 	@ElasticsearchIndex(

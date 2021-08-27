@@ -21,6 +21,13 @@
 	},
 	{
 		"activitiesCounts": [
+			{
+				"activitiesCount": 1,
+				"channelId": "100"
+			}
+		],
+		"channelIds": [
+			"100"
 		],
 		"dataSourceAccountPKs": [
 			{
@@ -300,6 +307,12 @@
 		"individualSegmentIds": [
 			"346307392143338002",
 			"346308250473619552"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "100",
+				"lastActivityDate": "2019-03-11T17:10:00.666Z"
+			}
 		]
 	}
 ]
