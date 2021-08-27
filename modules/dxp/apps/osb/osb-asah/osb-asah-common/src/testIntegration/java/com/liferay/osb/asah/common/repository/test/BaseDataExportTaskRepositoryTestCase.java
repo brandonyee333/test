@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.DataExportTask;
 import com.liferay.osb.asah.common.repository.DataExportTaskRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 
 import java.util.Date;
 import java.util.List;
@@ -76,7 +76,7 @@ public abstract class BaseDataExportTaskRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<DataExportTask, Long> getOSBAsahRepository() {
+	protected Repository<DataExportTask, Long> getRepository() {
 		return _dataExportTaskRepository;
 	}
 

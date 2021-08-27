@@ -52,7 +52,7 @@ public class SessionSparkApplication extends BaseSparkApplication {
 	protected SparkConf createSparkConf() {
 		SparkConf sparkConf = new SparkConf();
 
-		sparkConf.setAppName("SessionSparkApplication");
+		sparkConf.setAppName("Session Spark Application");
 
 		return sparkConf;
 	}

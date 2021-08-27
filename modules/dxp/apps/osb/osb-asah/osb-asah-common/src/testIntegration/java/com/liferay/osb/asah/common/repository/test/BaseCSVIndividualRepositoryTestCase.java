@@ -21,7 +21,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 
 import java.util.Arrays;
 
@@ -86,7 +86,7 @@ public abstract class BaseCSVIndividualRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<CSVIndividual, Long> getOSBAsahRepository() {
+	protected Repository<CSVIndividual, Long> getRepository() {
 		return _csvIndividualRepository;
 	}
 

@@ -33,7 +33,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface EventDefinitionRepository
-	extends OSBAsahRepository<EventDefinition, Long> {
+	extends Repository<EventDefinition, Long> {
 
 	@Cacheable
 	public long countEventDefinitions(

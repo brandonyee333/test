@@ -32,7 +32,7 @@ import org.springframework.data.jdbc.repository.query.Modifying;
  * @author Marcellus Tavares
  */
 @Primary
-public interface JobRunRepository extends OSBAsahRepository<JobRun, Long> {
+public interface JobRunRepository extends Repository<JobRun, Long> {
 
 	@Cacheable
 	public long countByJobId(Long jobId);

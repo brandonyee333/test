@@ -17,7 +17,7 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
@@ -126,7 +126,7 @@ public abstract class BaseSegmentRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<Segment, Long> getOSBAsahRepository() {
+	protected Repository<Segment, Long> getRepository() {
 		return _segmentRepository;
 	}
 

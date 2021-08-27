@@ -23,8 +23,7 @@ import org.springframework.context.annotation.Primary;
  * @author Inácio Nery
  */
 @Primary
-public interface PreferenceRepository
-	extends OSBAsahRepository<Preference, Long> {
+public interface PreferenceRepository extends Repository<Preference, Long> {
 
 	@Cacheable
 	public Preference findByKey(String key);

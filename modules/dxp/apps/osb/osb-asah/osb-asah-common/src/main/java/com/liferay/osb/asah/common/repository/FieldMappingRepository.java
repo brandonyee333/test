@@ -31,8 +31,7 @@ import org.springframework.lang.Nullable;
  * @author Rachael Koestartyo
  */
 @Primary
-public interface FieldMappingRepository
-	extends OSBAsahRepository<FieldMapping, Long> {
+public interface FieldMappingRepository extends Repository<FieldMapping, Long> {
 
 	@Cacheable
 	public long countByFieldNameAndOwnerType(

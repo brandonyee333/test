@@ -32,7 +32,7 @@ import org.springframework.lang.Nullable;
  * @author Rachael Koestartyo
  */
 @Primary
-public interface AccountRepository extends OSBAsahRepository<Account, Long> {
+public interface AccountRepository extends Repository<Account, Long> {
 
 	@Cacheable
 	public long countAccounts(

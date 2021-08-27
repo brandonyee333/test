@@ -31,7 +31,7 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface MembershipChangeRepository
-	extends OSBAsahRepository<MembershipChange, Long> {
+	extends Repository<MembershipChange, Long> {
 
 	@Cacheable
 	public long countMembershipChanges(

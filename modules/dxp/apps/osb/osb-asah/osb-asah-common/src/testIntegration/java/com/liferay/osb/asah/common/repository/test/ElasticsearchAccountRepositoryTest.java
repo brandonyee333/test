@@ -82,7 +82,7 @@ public class ElasticsearchAccountRepositoryTest
 	@Test
 	public void testSearchAccounts() {
 		AccountRepository accountRepository =
-			(AccountRepository)getOSBAsahRepository();
+			(AccountRepository)getRepository();
 
 		PageRequest pageRequest = PageRequest.of(
 			0, 20, Sort.by(Sort.Order.asc("organization/field1/value")));

@@ -28,7 +28,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface EventAttributeRepository
-	extends OSBAsahRepository<EventAttribute, Long> {
+	extends Repository<EventAttribute, Long> {
 
 	@Cacheable
 	public Optional<EventAttribute> findByEventAttributeDefinitionIdAndEventId(

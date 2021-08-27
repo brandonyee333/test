@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ import org.springframework.data.domain.Sort;
  * @author Marcellus Tavares
  */
 public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
-	implements OSBAsahRepository<T, ID> {
+	implements Repository<T, ID> {
 
 	@Override
 	public long count() {

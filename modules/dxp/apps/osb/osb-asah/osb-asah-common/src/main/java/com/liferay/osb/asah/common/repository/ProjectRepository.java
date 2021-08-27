@@ -22,5 +22,5 @@ import org.springframework.context.annotation.Primary;
  * @author André Miranda
  */
 @Primary
-public interface ProjectRepository extends OSBAsahRepository<Project, String> {
+public interface ProjectRepository extends Repository<Project, String> {
 }

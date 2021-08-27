@@ -29,8 +29,7 @@ import org.springframework.data.jdbc.repository.query.Modifying;
  * @author Marcellus Tavares
  */
 @Primary
-public interface SuppressionRepository
-	extends OSBAsahRepository<Suppression, Long> {
+public interface SuppressionRepository extends Repository<Suppression, Long> {
 
 	@Cacheable
 	public long countByEmailAddressContainingIgnoreCase(String emailAddress);

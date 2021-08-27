@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Primary;
  */
 @Primary
 public interface DataSourceFieldMappingRepository
-	extends OSBAsahRepository<DataSourceFieldMapping, Long> {
+	extends Repository<DataSourceFieldMapping, Long> {
 
 	public List<DataSourceFieldMapping> findByDataSourceId(Long dataSourceId);
 

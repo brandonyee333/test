@@ -27,7 +27,7 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface InterestTopicRepository
-	extends OSBAsahRepository<InterestTopic, Long> {
+	extends Repository<InterestTopic, Long> {
 
 	@Cacheable
 	public List<Integer>

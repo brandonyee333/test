@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 
 import java.util.Optional;
 
@@ -65,7 +65,7 @@ public abstract class BaseFieldMappingRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<FieldMapping, Long> getOSBAsahRepository() {
+	protected Repository<FieldMapping, Long> getRepository() {
 		return _fieldMappingRepository;
 	}
 

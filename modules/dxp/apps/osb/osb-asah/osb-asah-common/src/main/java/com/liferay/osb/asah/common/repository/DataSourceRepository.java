@@ -27,8 +27,7 @@ import org.springframework.data.repository.query.Param;
  * @author Inácio Nery
  */
 @Primary
-public interface DataSourceRepository
-	extends OSBAsahRepository<DataSource, Long> {
+public interface DataSourceRepository extends Repository<DataSource, Long> {
 
 	@Cacheable
 	public long countDataSources(String filterString);

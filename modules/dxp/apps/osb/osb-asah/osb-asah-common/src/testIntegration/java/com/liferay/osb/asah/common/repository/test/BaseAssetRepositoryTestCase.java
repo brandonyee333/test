@@ -22,7 +22,7 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 
@@ -165,7 +165,7 @@ public abstract class BaseAssetRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<Asset, Long> getOSBAsahRepository() {
+	protected Repository<Asset, Long> getRepository() {
 		return _assetRepository;
 	}
 

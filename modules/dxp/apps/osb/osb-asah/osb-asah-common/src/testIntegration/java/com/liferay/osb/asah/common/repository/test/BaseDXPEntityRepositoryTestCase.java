@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -244,7 +244,7 @@ public abstract class BaseDXPEntityRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<DXPEntity, Long> getOSBAsahRepository() {
+	protected Repository<DXPEntity, Long> getRepository() {
 		return _dxpEntityRepository;
 	}
 

@@ -29,7 +29,7 @@ import org.springframework.lang.Nullable;
  * @author Marcellus Tavares
  */
 @Primary
-public interface AssetRepository extends OSBAsahRepository<Asset, Long> {
+public interface AssetRepository extends Repository<Asset, Long> {
 
 	@Cacheable
 	public long countByAssetType(String assetType);

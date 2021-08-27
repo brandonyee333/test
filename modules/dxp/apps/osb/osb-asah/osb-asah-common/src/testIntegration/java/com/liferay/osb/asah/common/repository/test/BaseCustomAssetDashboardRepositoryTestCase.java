@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 
 import java.util.Date;
 import java.util.List;
@@ -146,9 +146,7 @@ public abstract class BaseCustomAssetDashboardRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<CustomAssetDashboard, String>
-		getOSBAsahRepository() {
-
+	protected Repository<CustomAssetDashboard, String> getRepository() {
 		return _customAssetDashboardRepository;
 	}
 

@@ -22,6 +22,5 @@ import org.springframework.context.annotation.Primary;
  * @author Marcellus Tavares
  */
 @Primary
-public interface AsahMarkerRepository
-	extends OSBAsahRepository<AsahMarker, String> {
+public interface AsahMarkerRepository extends Repository<AsahMarker, String> {
 }

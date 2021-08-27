@@ -18,7 +18,7 @@ import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.FieldRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 
 import java.util.Collections;
 import java.util.Date;
@@ -215,7 +215,7 @@ public abstract class BaseFieldRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<Field, Long> getOSBAsahRepository() {
+	protected Repository<Field, Long> getRepository() {
 		return _fieldRepository;
 	}
 

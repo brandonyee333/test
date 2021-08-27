@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Arrays;
@@ -36,43 +36,43 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 
 	@After
 	public void tearDown() {
-		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
+		Repository<T, ID> repository = getRepository();
 
-		osbAsahRepository.deleteAll();
+		repository.deleteAll();
 	}
 
 	@Test
 	public void testCount() {
-		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
+		Repository<T, ID> repository = getRepository();
 
-		Assert.assertEquals(entityModels.size(), osbAsahRepository.count());
+		Assert.assertEquals(entityModels.size(), repository.count());
 	}
 
 	@Test
 	public void testDelete() {
-		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
+		Repository<T, ID> repository = getRepository();
 
-		osbAsahRepository.delete(entityModels.get(0));
+		repository.delete(entityModels.get(0));
 
-		Assert.assertEquals(entityModels.size() - 1, osbAsahRepository.count());
+		Assert.assertEquals(entityModels.size() - 1, repository.count());
 	}
 
 	@Test
 	public void testDeleteAll1() {
-		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
+		Repository<T, ID> repository = getRepository();
 
-		osbAsahRepository.deleteAll();
+		repository.deleteAll();
 
-		Assert.assertEquals(0, osbAsahRepository.count());
+		Assert.assertEquals(0, repository.count());
 	}
 
 	@Test
 	public void testDeleteAll2() {
-		OSBAsahRepository<T, ?> osbAsahRepository = getOSBAsahRepository();
+		Repository<T, ?> repository = getRepository();
 
-		osbAsahRepository.deleteAll(entityModels);
+		repository.deleteAll(entityModels);
 
-		Assert.assertEquals(0, osbAsahRepository.count());
+		Assert.assertEquals(0, repository.count());
 	}
 
 	@Test
@@ -83,37 +83,36 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 
 		Assert.assertNotNull(id);
 
-		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
+		Repository<T, ID> repository = getRepository();
 
-		osbAsahRepository.deleteById(id);
+		repository.deleteById(id);
 
-		Assert.assertEquals(entityModels.size() - 1, osbAsahRepository.count());
+		Assert.assertEquals(entityModels.size() - 1, repository.count());
 	}
 
 	@Test
 	public void testExistsById() {
 		T model = entityModels.get(0);
 
-		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
+		Repository<T, ID> repository = getRepository();
 
-		Assert.assertTrue(osbAsahRepository.existsById(model.getId()));
+		Assert.assertTrue(repository.existsById(model.getId()));
 	}
 
 	@Test
 	public void testFindAll() {
-		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
+		Repository<T, ID> repository = getRepository();
 
-		Assert.assertEquals(entityModels, osbAsahRepository.findAll());
+		Assert.assertEquals(entityModels, repository.findAll());
 	}
 
 	@Test
 	public void testFindAllById() {
-		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
+		Repository<T, ID> repository = getRepository();
 
 		Assert.assertEquals(
 			entityModels,
-			osbAsahRepository.findAllById(
-				ListUtil.map(entityModels, T::getId)));
+			repository.findAllById(ListUtil.map(entityModels, T::getId)));
 	}
 
 	@Test
@@ -124,36 +123,35 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 
 		Assert.assertNotNull(id);
 
-		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
+		Repository<T, ID> repository = getRepository();
 
-		Optional<T> modelOptional = osbAsahRepository.findById(id);
+		Optional<T> modelOptional = repository.findById(id);
 
 		Assert.assertTrue(modelOptional.isPresent());
 	}
 
 	@Test
 	public void testSave() {
-		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
+		Repository<T, ID> repository = getRepository();
 
 		Assert.assertEquals(
-			entityModels.get(0), osbAsahRepository.save(entityModels.get(0)));
+			entityModels.get(0), repository.save(entityModels.get(0)));
 	}
 
 	@Test
 	public void testSaveAll() {
-		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
+		Repository<T, ID> repository = getRepository();
 
-		Assert.assertEquals(
-			entityModels, osbAsahRepository.saveAll(entityModels));
+		Assert.assertEquals(entityModels, repository.saveAll(entityModels));
 	}
 
-	protected abstract OSBAsahRepository<T, ID> getOSBAsahRepository();
+	protected abstract Repository<T, ID> getRepository();
 
 	protected void setUpRepository(T... entityModels) {
-		OSBAsahRepository<T, ID> osbAsahRepository = getOSBAsahRepository();
+		Repository<T, ID> repository = getRepository();
 
 		this.entityModels = IterableUtils.toList(
-			osbAsahRepository.saveAll(Arrays.asList(entityModels)));
+			repository.saveAll(Arrays.asList(entityModels)));
 	}
 
 	protected List<T> entityModels;

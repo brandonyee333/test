@@ -29,8 +29,7 @@ import org.springframework.data.repository.query.Param;
  * @author Inácio Nery
  */
 @Primary
-public interface MembershipRepository
-	extends OSBAsahRepository<Membership, Long> {
+public interface MembershipRepository extends Repository<Membership, Long> {
 
 	@Cacheable
 	public long countByIndividualIdInAndIndividualSegmentIdAndStatus(

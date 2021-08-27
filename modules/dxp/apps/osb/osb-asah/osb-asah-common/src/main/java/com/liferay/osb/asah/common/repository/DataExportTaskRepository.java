@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Primary;
  */
 @Primary
 public interface DataExportTaskRepository
-	extends OSBAsahRepository<DataExportTask, Long> {
+	extends Repository<DataExportTask, Long> {
 
 	@Cacheable
 	public List<DataExportTask> findByStatus(DataExportTask.Status status);

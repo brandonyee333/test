@@ -27,7 +27,7 @@ import org.springframework.data.domain.Pageable;
  */
 @Primary
 public interface SalesforceAuditEventRepository
-	extends OSBAsahRepository<SalesforceAuditEvent, Long> {
+	extends Repository<SalesforceAuditEvent, Long> {
 
 	@Cacheable
 	public long countByDataSourceIdAndEntityTypeNameIn(

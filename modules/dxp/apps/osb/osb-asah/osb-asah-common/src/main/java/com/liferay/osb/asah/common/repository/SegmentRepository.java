@@ -35,7 +35,7 @@ import org.springframework.lang.Nullable;
  * @author Inácio Nery
  */
 @Primary
-public interface SegmentRepository extends OSBAsahRepository<Segment, Long> {
+public interface SegmentRepository extends Repository<Segment, Long> {
 
 	@Cacheable
 	public long countByIdAfter(Long id);

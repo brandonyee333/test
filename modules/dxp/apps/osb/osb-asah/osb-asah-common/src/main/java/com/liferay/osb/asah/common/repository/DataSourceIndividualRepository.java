@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Primary;
  */
 @Primary
 public interface DataSourceIndividualRepository
-	extends OSBAsahRepository<DataSourceIndividual, Long> {
+	extends Repository<DataSourceIndividual, Long> {
 
 	public List<DataSourceIndividual> findByIndividualId(Long individualId);
 

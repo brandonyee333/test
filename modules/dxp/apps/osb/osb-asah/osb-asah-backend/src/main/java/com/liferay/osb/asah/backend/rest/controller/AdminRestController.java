@@ -44,8 +44,8 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -267,8 +267,7 @@ public class AdminRestController extends BaseRestController {
 	}
 
 	private <T, ID> void _addEntities(
-			OSBAsahRepository<T, ID> osbAsahRepository, String json,
-			Class<T> modelClass)
+			Repository<T, ID> repository, String json, Class<T> modelClass)
 		throws Exception {
 
 		JSONArray jsonArray = new JSONArray(json);
@@ -279,7 +278,7 @@ public class AdminRestController extends BaseRestController {
 
 			BeanUtils.setProperty(t, "isNew", true);
 
-			osbAsahRepository.save(t);
+			repository.save(t);
 		}
 	}
 

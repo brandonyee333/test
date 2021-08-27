@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.Preference;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -42,7 +42,7 @@ public abstract class BasePreferenceRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<Preference, Long> getOSBAsahRepository() {
+	protected Repository<Preference, Long> getRepository() {
 		return _preferenceRepository;
 	}
 

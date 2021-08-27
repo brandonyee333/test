@@ -24,7 +24,7 @@ import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.common.repository.JobRepository;
 import com.liferay.osb.asah.common.repository.JobRunRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.time.LocalDateTime;
@@ -61,7 +61,7 @@ public abstract class BaseJobRunRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<JobRun, Long> getOSBAsahRepository() {
+	protected Repository<JobRun, Long> getRepository() {
 		return _jobRunRepository;
 	}
 

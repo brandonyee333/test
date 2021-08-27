@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Primary;
  * @author André Miranda
  */
 @Primary
-public interface AsahTaskRepository extends OSBAsahRepository<AsahTask, Long> {
+public interface AsahTaskRepository extends Repository<AsahTask, Long> {
 
 	@Cacheable
 	public List<AsahTask> findByClassName(String className);

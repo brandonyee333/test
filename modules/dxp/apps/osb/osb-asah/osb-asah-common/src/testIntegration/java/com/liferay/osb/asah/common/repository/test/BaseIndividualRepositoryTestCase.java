@@ -27,7 +27,7 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 
@@ -420,7 +420,7 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<Individual, Long> getOSBAsahRepository() {
+	protected Repository<Individual, Long> getRepository() {
 		return individualRepository;
 	}
 

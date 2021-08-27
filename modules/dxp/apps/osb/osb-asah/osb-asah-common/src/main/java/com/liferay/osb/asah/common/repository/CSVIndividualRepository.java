@@ -29,7 +29,7 @@ import org.springframework.data.jdbc.repository.query.Modifying;
  */
 @Primary
 public interface CSVIndividualRepository
-	extends OSBAsahRepository<CSVIndividual, Long> {
+	extends Repository<CSVIndividual, Long> {
 
 	@Cacheable
 	public long countByDataSourceId(Long dataSourceId);

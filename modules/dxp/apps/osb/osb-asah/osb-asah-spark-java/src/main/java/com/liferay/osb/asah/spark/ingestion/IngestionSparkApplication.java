@@ -52,7 +52,7 @@ public class IngestionSparkApplication extends BaseSparkApplication {
 	protected SparkConf createSparkConf() {
 		SparkConf sparkConf = new SparkConf();
 
-		sparkConf.setAppName("IngestionSparkApplication");
+		sparkConf.setAppName("Ingestion Spark Application");
 
 		return sparkConf;
 	}

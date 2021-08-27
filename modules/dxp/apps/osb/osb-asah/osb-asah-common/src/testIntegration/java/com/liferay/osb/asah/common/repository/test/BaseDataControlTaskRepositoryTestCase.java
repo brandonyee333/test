@@ -18,7 +18,7 @@ import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -79,7 +79,7 @@ public abstract class BaseDataControlTaskRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<DataControlTask, Long> getOSBAsahRepository() {
+	protected Repository<DataControlTask, Long> getRepository() {
 		return _dataControlTaskRepository;
 	}
 

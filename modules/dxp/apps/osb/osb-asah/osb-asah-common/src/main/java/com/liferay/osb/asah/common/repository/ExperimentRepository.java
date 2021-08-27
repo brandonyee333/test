@@ -28,8 +28,7 @@ import org.springframework.lang.Nullable;
  * @author Marcos Martins
  */
 @Primary
-public interface ExperimentRepository
-	extends OSBAsahRepository<Experiment, Long> {
+public interface ExperimentRepository extends Repository<Experiment, Long> {
 
 	@Cacheable
 	public List<Experiment> findByExperimentStatus(

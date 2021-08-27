@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Primary;
  */
 @Primary
 public interface IndividualChannelRepository
-	extends OSBAsahRepository<IndividualChannel, Long> {
+	extends Repository<IndividualChannel, Long> {
 
 	public List<IndividualChannel> findByIndividualId(Long individualId);
 

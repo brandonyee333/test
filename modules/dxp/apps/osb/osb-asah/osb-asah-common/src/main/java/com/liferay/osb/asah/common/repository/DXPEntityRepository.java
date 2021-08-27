@@ -30,8 +30,7 @@ import org.springframework.lang.Nullable;
  * @author Marcos Martins
  */
 @Primary
-public interface DXPEntityRepository
-	extends OSBAsahRepository<DXPEntity, Long> {
+public interface DXPEntityRepository extends Repository<DXPEntity, Long> {
 
 	@Cacheable
 	public long countByDataSourceIdsAndKeywordsAndType(

@@ -35,8 +35,7 @@ import org.springframework.lang.Nullable;
  * @author Rachael Koestartyo
  */
 @Primary
-public interface IndividualRepository
-	extends OSBAsahRepository<Individual, Long> {
+public interface IndividualRepository extends Repository<Individual, Long> {
 
 	public long countIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,

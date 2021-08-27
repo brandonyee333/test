@@ -33,7 +33,7 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface SalesforceEntityRepository
-	extends OSBAsahRepository<SalesforceEntity, String> {
+	extends Repository<SalesforceEntity, String> {
 
 	@Cacheable
 	public long countByDataSourceIdAndType(

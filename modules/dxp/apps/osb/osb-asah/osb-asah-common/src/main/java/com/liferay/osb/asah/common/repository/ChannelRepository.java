@@ -30,7 +30,7 @@ import org.springframework.data.repository.query.Param;
  * @author Inácio Nery
  */
 @Primary
-public interface ChannelRepository extends OSBAsahRepository<Channel, Long> {
+public interface ChannelRepository extends Repository<Channel, Long> {
 
 	@Cacheable
 	public long countByNameContainingIgnoreCase(String name);

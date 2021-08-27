@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -195,7 +195,7 @@ public abstract class BaseActivityGroupRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<ActivityGroup, Long> getOSBAsahRepository() {
+	protected Repository<ActivityGroup, Long> getRepository() {
 		return _activityGroupRepository;
 	}
 

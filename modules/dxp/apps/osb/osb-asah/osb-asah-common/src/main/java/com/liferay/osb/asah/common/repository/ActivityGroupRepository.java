@@ -32,7 +32,7 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface ActivityGroupRepository
-	extends OSBAsahRepository<ActivityGroup, Long> {
+	extends Repository<ActivityGroup, Long> {
 
 	public long countActivityGroups(String filterString);
 

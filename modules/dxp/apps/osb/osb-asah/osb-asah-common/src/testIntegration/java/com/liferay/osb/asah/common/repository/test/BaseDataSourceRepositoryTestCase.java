@@ -18,7 +18,7 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceOrganization;
 import com.liferay.osb.asah.common.entity.DataSourceSite;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.ArrayList;
@@ -380,7 +380,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<DataSource, Long> getOSBAsahRepository() {
+	protected Repository<DataSource, Long> getRepository() {
 		return _dataSourceRepository;
 	}
 

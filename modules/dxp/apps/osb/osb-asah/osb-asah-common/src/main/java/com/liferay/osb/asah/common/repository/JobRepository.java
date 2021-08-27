@@ -27,7 +27,7 @@ import org.springframework.data.domain.Pageable;
  * @author Marcellus Tavares
  */
 @Primary
-public interface JobRepository extends OSBAsahRepository<Job, Long> {
+public interface JobRepository extends Repository<Job, Long> {
 
 	@Cacheable
 	public long countByNameContainingIgnoreCase(String name);

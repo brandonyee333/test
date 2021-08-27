@@ -28,7 +28,7 @@ import org.springframework.data.domain.Pageable;
  */
 @Primary
 public interface DataControlTaskRepository
-	extends OSBAsahRepository<DataControlTask, Long> {
+	extends Repository<DataControlTask, Long> {
 
 	@Cacheable
 	public long countDataControlTasks(

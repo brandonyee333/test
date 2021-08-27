@@ -27,7 +27,7 @@ import org.springframework.data.domain.Pageable;
  */
 @Primary
 public interface CustomAssetDashboardRepository
-	extends OSBAsahRepository<CustomAssetDashboard, String> {
+	extends Repository<CustomAssetDashboard, String> {
 
 	@Cacheable
 	public long countCustomAssetDashboards(Long channelId, String keywords);

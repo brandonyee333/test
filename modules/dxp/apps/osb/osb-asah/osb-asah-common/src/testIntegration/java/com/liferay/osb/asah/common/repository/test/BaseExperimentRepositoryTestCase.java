@@ -23,7 +23,7 @@ import com.liferay.osb.asah.common.model.ExperimentType;
 import com.liferay.osb.asah.common.model.Goal;
 import com.liferay.osb.asah.common.model.GoalMetric;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 
 import java.math.BigDecimal;
 
@@ -160,7 +160,7 @@ public abstract class BaseExperimentRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<Experiment, Long> getOSBAsahRepository() {
+	protected Repository<Experiment, Long> getRepository() {
 		return _experimentRepository;
 	}
 

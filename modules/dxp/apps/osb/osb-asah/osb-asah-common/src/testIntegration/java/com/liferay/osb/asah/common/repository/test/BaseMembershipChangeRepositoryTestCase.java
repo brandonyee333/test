@@ -19,7 +19,7 @@ import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
-import com.liferay.osb.asah.common.repository.OSBAsahRepository;
+import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
@@ -125,7 +125,7 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 	}
 
 	@Override
-	protected OSBAsahRepository<MembershipChange, Long> getOSBAsahRepository() {
+	protected Repository<MembershipChange, Long> getRepository() {
 		return _membershipChangeRepository;
 	}
 

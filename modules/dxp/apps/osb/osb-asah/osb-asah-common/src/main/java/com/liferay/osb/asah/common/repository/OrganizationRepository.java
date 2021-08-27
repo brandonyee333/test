@@ -28,8 +28,7 @@ import org.springframework.lang.Nullable;
  * @author Rachael Koestartyo
  */
 @Primary
-public interface OrganizationRepository
-	extends OSBAsahRepository<Organization, Long> {
+public interface OrganizationRepository extends Repository<Organization, Long> {
 
 	@Cacheable
 	public Organization findByDataSourceIdAndOrganizationPK(

@@ -26,7 +26,7 @@ import org.springframework.data.repository.NoRepositoryBean;
  * @author Inácio Nery
  */
 @NoRepositoryBean
-public interface OSBAsahRepository<T, ID> extends CrudRepository<T, ID> {
+public interface Repository<T, ID> extends CrudRepository<T, ID> {
 
 	@Cacheable
 	@Override

@@ -29,7 +29,7 @@ import org.springframework.data.jdbc.repository.query.Modifying;
  */
 @Primary
 public interface ItemRecommendationRepository
-	extends OSBAsahRepository<ItemRecommendation, String> {
+	extends Repository<ItemRecommendation, String> {
 
 	@Cacheable
 	public long countByJobId(Long jobId);

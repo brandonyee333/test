@@ -31,7 +31,7 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface BlockedKeywordRepository
-	extends OSBAsahRepository<BlockedKeyword, Long> {
+	extends Repository<BlockedKeyword, Long> {
 
 	@Cacheable
 	public long countByKeywordContainingIgnoreCase(String keyword);
