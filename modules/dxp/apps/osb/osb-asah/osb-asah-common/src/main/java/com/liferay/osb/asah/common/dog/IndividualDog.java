@@ -761,7 +761,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 	public Individual populateIndividual(
 		Long channelId, Individual individual) {
 
-		individual = populateIndividual(individual);
+		final Individual populatedIndividual = populateIndividual(individual);
 
 		Set<Individual.ActivitiesCount> activitiesCounts =
 			individual.getActivitiesCounts();
@@ -775,15 +775,13 @@ public class IndividualDog extends BaseFaroInfoDog {
 					activityCount.getChannelId(), channelId)
 			).findFirst();
 
-		if (activitiesCountOptional.isPresent()) {
-			Individual.ActivitiesCount individualActivitiesCount =
-				activitiesCountOptional.get();
-
-			individual.setActivitiesCount(
-				individualActivitiesCount.getActivitiesCount());
-			individual.setActivitiesCounts(
-				Collections.singleton(individualActivitiesCount));
-		}
+		activitiesCountOptional.ifPresent(
+			individualActivitiesCount -> {
+				populatedIndividual.setActivitiesCount(
+					individualActivitiesCount.getActivitiesCount());
+				populatedIndividual.setActivitiesCounts(
+					Collections.singleton(individualActivitiesCount));
+			});
 
 		Set<Individual.LastActivityDate> lastActivityDates =
 			individual.getLastActivityDates();
@@ -797,17 +795,15 @@ public class IndividualDog extends BaseFaroInfoDog {
 					lastActivityDate.getChannelId(), channelId)
 			).findFirst();
 
-		if (lastActivityDateOptional.isPresent()) {
-			Individual.LastActivityDate individualLastActivityDate =
-				lastActivityDateOptional.get();
+		lastActivityDateOptional.ifPresent(
+			individualLastActivityDate -> {
+				populatedIndividual.setLastActivityDate(
+					individualLastActivityDate.getLastActivityDate());
+				populatedIndividual.setLastActivityDates(
+					Collections.singleton(individualLastActivityDate));
+			});
 
-			individual.setLastActivityDate(
-				individualLastActivityDate.getLastActivityDate());
-			individual.setLastActivityDates(
-				Collections.singleton(individualLastActivityDate));
-		}
-
-		return individual;
+		return populatedIndividual;
 	}
 
 	public Individual removeDataSourceIndividualPKs(
