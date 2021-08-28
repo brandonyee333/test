@@ -761,7 +761,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 	public Individual populateIndividual(
 		Long channelId, Individual individual) {
 
-		final Individual populatedIndividual = populateIndividual(individual);
+		Individual populatedIndividual = populateIndividual(individual);
 
 		Set<Individual.ActivitiesCount> activitiesCounts =
 			individual.getActivitiesCounts();
