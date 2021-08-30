@@ -44,7 +44,7 @@ public class NaniteUtil {
 	}
 
 	public static Integer getReadPercentile(String depthString) {
-		Integer depth = Integer.valueOf(depthString);
+		int depth = Integer.parseInt(depthString);
 
 		if (depth <= 25) {
 			return 25;

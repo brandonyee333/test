@@ -39,8 +39,7 @@ public class JSONFileEncoder implements FileEncoder {
 
 	@Override
 	public void encode(String data) throws Exception {
-		String newLineAppendedData =
-			data + System.getProperty("line.separator");
+		String newLineAppendedData = data + System.lineSeparator();
 
 		_bufferedOutputStream.write(
 			newLineAppendedData.getBytes(StandardCharsets.UTF_8));

@@ -429,8 +429,8 @@ public class AccountDog {
 		@Nullable Long channelId, @Nullable String filterString, int page,
 		@Nullable Long segmentId, int size, @Nullable String[] sorts) {
 
-		String[] fieldSorts = new String[0];
-		String[] segmentSorts = new String[0];
+		String[] fieldSorts = {};
+		String[] segmentSorts = {};
 
 		if (ArrayUtils.isNotEmpty(sorts)) {
 			for (int i = 0; i < (sorts.length - 1); i = i + 2) {

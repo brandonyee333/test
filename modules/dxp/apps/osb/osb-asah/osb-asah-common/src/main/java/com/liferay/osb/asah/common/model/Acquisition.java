@@ -74,11 +74,7 @@ public class Acquisition implements Serializable {
 			return true;
 		}
 
-		if (obj == null) {
-			return false;
-		}
-
-		if (!(obj instanceof Acquisition)) {
+		if ((obj == null) || !(obj instanceof Acquisition)) {
 			return false;
 		}
 

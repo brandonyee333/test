@@ -35,24 +35,22 @@ public class EventMetricDog {
 		Metric totalEventsMetric = new Metric(EventMetricType.TOTAL_EVENTS);
 
 		totalEventsMetric.setValue(
-			Double.valueOf(
-				_eventRepository.countEvents(
-					Long.valueOf(searchQueryContext.getChannelId()),
-					Long.valueOf(searchQueryContext.getEntityId()),
-					searchQueryContext.getKeywords(),
-					searchQueryContext.getTimeRange())));
+			(double)_eventRepository.countEvents(
+				Long.valueOf(searchQueryContext.getChannelId()),
+				Long.valueOf(searchQueryContext.getEntityId()),
+				searchQueryContext.getKeywords(),
+				searchQueryContext.getTimeRange()));
 
 		eventMetric.setTotalEventsMetric(totalEventsMetric);
 
 		Metric totalSessionsMetric = new Metric(EventMetricType.TOTAL_SESSIONS);
 
 		totalSessionsMetric.setValue(
-			Double.valueOf(
-				_eventRepository.countEventSessions(
-					Long.valueOf(searchQueryContext.getChannelId()),
-					Long.valueOf(searchQueryContext.getEntityId()),
-					searchQueryContext.getKeywords(),
-					searchQueryContext.getTimeRange())));
+			(double)_eventRepository.countEventSessions(
+				Long.valueOf(searchQueryContext.getChannelId()),
+				Long.valueOf(searchQueryContext.getEntityId()),
+				searchQueryContext.getKeywords(),
+				searchQueryContext.getTimeRange()));
 
 		eventMetric.setTotalSessionsMetric(totalSessionsMetric);
 

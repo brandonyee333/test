@@ -247,8 +247,7 @@ public class IndividualsFilterStringConverterHelper
 							String[].class)
 					).contains(
 						DSL.cast(
-							DSL.array(new String[] {account.getAccountPK()}),
-							String[].class)
+							DSL.array(account.getAccountPK()), String[].class)
 					),
 					DSL.field(
 						"datasourceindividual.datasourceid"
@@ -263,9 +262,7 @@ public class IndividualsFilterStringConverterHelper
 					DSL.array(DSL.field("datasourceindividual.accountpks")),
 					String[].class)
 			).contains(
-				DSL.cast(
-					DSL.array(new String[] {account.getAccountPK()}),
-					String[].class)
+				DSL.cast(DSL.array(account.getAccountPK()), String[].class)
 			),
 			DSL.field(
 				"datasourceindividual.datasourceid"
@@ -345,8 +342,7 @@ public class IndividualsFilterStringConverterHelper
 								String[].class)
 						).contains(
 							DSL.cast(
-								DSL.array(
-									new String[] {account.getAccountPK()}),
+								DSL.array(account.getAccountPK()),
 								String[].class)
 						)));
 			}
@@ -754,8 +750,7 @@ public class IndividualsFilterStringConverterHelper
 							DSL.field("datasourceindividual.individualpks")),
 						String[].class)
 				).contains(
-					DSL.cast(
-						DSL.array(new String[] {individualPK}), String[].class)
+					DSL.cast(DSL.array(individualPK), String[].class)
 				));
 		}
 
@@ -764,14 +759,14 @@ public class IndividualsFilterStringConverterHelper
 				DSL.array(DSL.field("datasourceindividual.individualpks")),
 				String[].class)
 		).contains(
-			DSL.cast(DSL.array(new String[] {individualPK}), String[].class)
+			DSL.cast(DSL.array(individualPK), String[].class)
 		);
 	}
 
 	private Condition _getInterestCriteriaConditionWhenNoInterests(
 		boolean score, double value) {
 
-		if ((score && (value <= 0)) || (!score && (value > 0))) {
+		if (score == (value <= 0)) {
 			return DSL.noCondition();
 		}
 
@@ -907,9 +902,7 @@ public class IndividualsFilterStringConverterHelper
 							DSL.array(DSL.field("individual.organizationids")),
 							Long[].class)
 					).contains(
-						DSL.cast(
-							DSL.array(new Long[] {organization.getId()}),
-							Long[].class)
+						DSL.cast(DSL.array(organization.getId()), Long[].class)
 					));
 			}
 		}
@@ -980,8 +973,7 @@ public class IndividualsFilterStringConverterHelper
 					String[].class)
 			).contains(
 				DSL.cast(
-					DSL.array(new String[] {userJSONObject.getString("uuid")}),
-					String[].class)
+					DSL.array(userJSONObject.getString("uuid")), String[].class)
 			));
 
 		if (negate) {

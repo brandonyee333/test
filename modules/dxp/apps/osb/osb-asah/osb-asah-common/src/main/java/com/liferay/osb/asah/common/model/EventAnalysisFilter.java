@@ -50,11 +50,7 @@ public class EventAnalysisFilter {
 			return true;
 		}
 
-		if (obj == null) {
-			return false;
-		}
-
-		if (!(obj instanceof EventAnalysisFilter)) {
+		if ((obj == null) || !(obj instanceof EventAnalysisFilter)) {
 			return false;
 		}
 

@@ -75,11 +75,7 @@ public class UpgradeCheck {
 
 	@PostConstruct
 	public void init() throws Exception {
-		if (_upgradeState.isComplete()) {
-			return;
-		}
-
-		if (checkVersion()) {
+		if (_upgradeState.isComplete() || checkVersion()) {
 			return;
 		}
 

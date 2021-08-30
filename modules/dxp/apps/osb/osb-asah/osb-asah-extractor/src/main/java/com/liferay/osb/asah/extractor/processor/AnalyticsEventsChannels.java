@@ -96,16 +96,13 @@ public class AnalyticsEventsChannels {
 
 	private Predicate<AnalyticsEvent> _analyticsEventsBlogPredicate() {
 		return analyticsEvent -> {
-			if (Objects.equals(analyticsEvent.getApplicationId(), "Blog")) {
-				return true;
-			}
-
-			if (Objects.equals(analyticsEvent.getApplicationId(), "Comment") &&
-				Objects.equals(analyticsEvent.getEventId(), "posted") &&
-				Objects.equals(
-					MapUtil.getString(
-						analyticsEvent.getEventProperties(), "className"),
-					"com.liferay.blogs.model.BlogsEntry")) {
+			if (Objects.equals(analyticsEvent.getApplicationId(), "Blog") ||
+				(Objects.equals(analyticsEvent.getApplicationId(), "Comment") &&
+				 Objects.equals(analyticsEvent.getEventId(), "posted") &&
+				 Objects.equals(
+					 MapUtil.getString(
+						 analyticsEvent.getEventProperties(), "className"),
+					 "com.liferay.blogs.model.BlogsEntry"))) {
 
 				return true;
 			}

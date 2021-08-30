@@ -72,11 +72,9 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 
 			String blobName = blob.getName();
 
-			if (Objects.equals(blobName, directoryPrefix)) {
-				continue;
-			}
+			if (Objects.equals(blobName, directoryPrefix) ||
+				blobName.contains(latestUploadFolderName)) {
 
-			if (blobName.contains(latestUploadFolderName)) {
 				continue;
 			}
 

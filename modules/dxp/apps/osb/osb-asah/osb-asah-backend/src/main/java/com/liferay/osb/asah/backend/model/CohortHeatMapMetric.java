@@ -37,11 +37,7 @@ public class CohortHeatMapMetric extends HeatMapMetric {
 			return true;
 		}
 
-		if (!super.equals(obj)) {
-			return false;
-		}
-
-		if (!(obj instanceof CohortHeatMapMetric)) {
+		if (!super.equals(obj) || !(obj instanceof CohortHeatMapMetric)) {
 			return false;
 		}
 

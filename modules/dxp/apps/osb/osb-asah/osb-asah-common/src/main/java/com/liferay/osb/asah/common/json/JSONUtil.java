@@ -211,11 +211,9 @@ public class JSONUtil {
 	public static Long optLong(
 		Long defaultValue, JSONObject jsonObject, String key) {
 
-		if (!jsonObject.has(key)) {
-			return defaultValue;
-		}
+		if (!jsonObject.has(key) ||
+			StringUtils.isBlank(jsonObject.optString(key))) {
 
-		if (StringUtils.isBlank(jsonObject.optString(key))) {
 			return defaultValue;
 		}
 

@@ -439,7 +439,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				Metric metric = new Metric(metricType);
 
 				metric.setValueKey(record.value1());
-				metric.setValue(Double.valueOf(record.value2()));
+				metric.setValue((double)record.value2());
 
 				return metric;
 			}

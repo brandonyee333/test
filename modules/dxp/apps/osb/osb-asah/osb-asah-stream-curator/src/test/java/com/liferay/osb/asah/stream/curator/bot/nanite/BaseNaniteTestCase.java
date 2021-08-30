@@ -47,9 +47,7 @@ public abstract class BaseNaniteTestCase {
 
 		fileName = fileName.replaceAll("(.)(\\p{Upper})", "$1_$2");
 
-		fileName = fileName.toLowerCase() + "_";
-
-		return fileName;
+		return fileName.toLowerCase() + "_";
 	}
 
 	protected void prepare(

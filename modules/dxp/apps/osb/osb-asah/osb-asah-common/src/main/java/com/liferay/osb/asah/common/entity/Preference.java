@@ -44,11 +44,7 @@ public class Preference implements Persistable<Long> {
 			return true;
 		}
 
-		if (obj == null) {
-			return false;
-		}
-
-		if (!(obj instanceof Preference)) {
+		if ((obj == null) || !(obj instanceof Preference)) {
 			return false;
 		}
 

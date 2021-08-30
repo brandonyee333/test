@@ -29,15 +29,7 @@ public class DXPUser extends DXPEntity {
 			return true;
 		}
 
-		if (obj == null) {
-			return false;
-		}
-
-		if (!super.equals(obj)) {
-			return false;
-		}
-
-		if (!(obj instanceof DXPUser)) {
+		if ((obj == null) || !super.equals(obj) || !(obj instanceof DXPUser)) {
 			return false;
 		}
 

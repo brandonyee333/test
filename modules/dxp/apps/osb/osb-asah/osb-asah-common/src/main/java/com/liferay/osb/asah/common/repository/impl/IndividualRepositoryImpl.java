@@ -92,7 +92,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 						DSL.array(DSL.field("individual.channelids")),
 						Long[].class)
 				).contains(
-					DSL.cast(DSL.array(new Long[] {channelId}), Long[].class)
+					DSL.cast(DSL.array(channelId), Long[].class)
 				));
 		}
 
@@ -213,7 +213,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 						DSL.array(DSL.field("individual.channelids")),
 						Long[].class)
 				).contains(
-					DSL.cast(DSL.array(new Long[] {channelId}), Long[].class)
+					DSL.cast(DSL.array(channelId), Long[].class)
 				));
 		}
 
@@ -266,7 +266,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 						DSL.array(DSL.field("individual.channelids")),
 						Long[].class)
 				).contains(
-					DSL.cast(DSL.array(new Long[] {channelId}), Long[].class)
+					DSL.cast(DSL.array(channelId), Long[].class)
 				));
 		}
 
@@ -405,13 +405,12 @@ public class IndividualRepositoryImpl extends BaseRepository {
 							DSL.field("datasourceindividual.individualpks")),
 						String[].class)
 				).contains(
-					DSL.cast(
-						DSL.array(new Object[] {individualPK}), String[].class)
+					DSL.cast(DSL.array(individualPK), String[].class)
 				),
 				DSL.field(
 					DSL.cast(DSL.array(DSL.field(fieldName)), Long[].class)
 				).notContains(
-					DSL.cast(DSL.array(new Long[] {associatedId}), Long[].class)
+					DSL.cast(DSL.array(associatedId), Long[].class)
 				))
 		).limit(
 			1
@@ -432,7 +431,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 						DSL.array(DSL.field("individual.channelids")),
 						Long[].class)
 				).contains(
-					DSL.cast(DSL.array(new Long[] {channelId}), Long[].class)
+					DSL.cast(DSL.array(channelId), Long[].class)
 				));
 		}
 
@@ -526,8 +525,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 					DSL.cast(
 						DSL.array(DSL.field("individualPKs")), String[].class)
 				).contains(
-					DSL.cast(
-						DSL.array(new Object[] {individualPK}), String[].class)
+					DSL.cast(DSL.array(individualPK), String[].class)
 				))
 		).limit(
 			1
@@ -764,7 +762,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 						DSL.array(DSL.field("individual.channelids")),
 						Long[].class)
 				).contains(
-					DSL.cast(DSL.array(new Long[] {channelId}), Long[].class)
+					DSL.cast(DSL.array(channelId), Long[].class)
 				));
 		}
 
@@ -899,7 +897,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 						DSL.array(DSL.field("individual.channelids")),
 						Long[].class)
 				).contains(
-					DSL.cast(DSL.array(new Long[] {channelId}), Long[].class)
+					DSL.cast(DSL.array(channelId), Long[].class)
 				));
 		}
 

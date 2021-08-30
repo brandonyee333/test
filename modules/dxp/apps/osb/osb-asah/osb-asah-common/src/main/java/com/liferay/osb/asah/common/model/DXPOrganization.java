@@ -29,15 +29,9 @@ public class DXPOrganization extends DXPEntity {
 			return true;
 		}
 
-		if (obj == null) {
-			return false;
-		}
+		if ((obj == null) || !super.equals(obj) ||
+			!(obj instanceof DXPOrganization)) {
 
-		if (!super.equals(obj)) {
-			return false;
-		}
-
-		if (!(obj instanceof DXPOrganization)) {
 			return false;
 		}
 

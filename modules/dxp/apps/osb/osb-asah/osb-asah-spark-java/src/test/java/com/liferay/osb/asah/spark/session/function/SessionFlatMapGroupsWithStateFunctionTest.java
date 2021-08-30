@@ -49,7 +49,7 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 
 		GroupState<Session> groupState = GroupStateImpl.createForStreaming(
 			Option.empty(), _SESSION_DURATION, _SESSION_DURATION,
-			GroupStateTimeout.EventTimeTimeout(), Boolean.FALSE, Boolean.TRUE);
+			GroupStateTimeout.EventTimeTimeout(), false, true);
 
 		Iterator<Session> sessionIterator =
 			sessionFlatMapGroupsWithStateFunction.call(
@@ -72,7 +72,7 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 
 		GroupState<Session> groupState = GroupStateImpl.createForStreaming(
 			Option.empty(), _SESSION_DURATION, _SESSION_DURATION,
-			GroupStateTimeout.EventTimeTimeout(), Boolean.FALSE, Boolean.TRUE);
+			GroupStateTimeout.EventTimeTimeout(), false, true);
 
 		Iterator<Session> sessionIterator =
 			sessionFlatMapGroupsWithStateFunction.call(
@@ -110,8 +110,8 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 		GroupState<Session> timedOutGroupState =
 			GroupStateImpl.createForStreaming(
 				new Some<>(new Session(event)), _SESSION_DURATION,
-				_SESSION_DURATION, GroupStateTimeout.EventTimeTimeout(),
-				Boolean.TRUE, Boolean.TRUE);
+				_SESSION_DURATION, GroupStateTimeout.EventTimeTimeout(), true,
+				true);
 
 		ArrayList<Event> events = new ArrayList<>();
 

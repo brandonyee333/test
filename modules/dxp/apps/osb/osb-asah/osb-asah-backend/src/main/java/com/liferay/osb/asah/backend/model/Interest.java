@@ -32,11 +32,7 @@ public class Interest {
 			return true;
 		}
 
-		if (obj == null) {
-			return false;
-		}
-
-		if (!(obj instanceof Interest)) {
+		if ((obj == null) || !(obj instanceof Interest)) {
 			return false;
 		}
 

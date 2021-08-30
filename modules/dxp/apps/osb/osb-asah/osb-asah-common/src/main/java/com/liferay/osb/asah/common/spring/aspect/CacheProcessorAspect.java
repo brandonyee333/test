@@ -185,11 +185,7 @@ public class CacheProcessorAspect {
 		value = "@annotation(com.liferay.osb.asah.common.spring.annotation.CachePut)"
 	)
 	public void processCachePut(JoinPoint joinPoint, Object returnObject) {
-		if (_cacheManager == null) {
-			return;
-		}
-
-		if (!(returnObject instanceof JSONObject)) {
+		if ((_cacheManager == null) || !(returnObject instanceof JSONObject)) {
 			return;
 		}
 

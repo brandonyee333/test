@@ -69,11 +69,7 @@ public class AnalyticsEvent implements Serializable {
 			return true;
 		}
 
-		if (obj == null) {
-			return false;
-		}
-
-		if (!(obj instanceof AnalyticsEvent)) {
+		if ((obj == null) || !(obj instanceof AnalyticsEvent)) {
 			return false;
 		}
 

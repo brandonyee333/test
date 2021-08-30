@@ -38,11 +38,7 @@ public class HistogramMetric extends Metric {
 			return true;
 		}
 
-		if (!super.equals(obj)) {
-			return false;
-		}
-
-		if (!(obj instanceof HistogramMetric)) {
+		if (!super.equals(obj) || !(obj instanceof HistogramMetric)) {
 			return false;
 		}
 

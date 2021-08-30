@@ -42,11 +42,7 @@ public class Suppression implements Persistable<Long> {
 			return true;
 		}
 
-		if (obj == null) {
-			return false;
-		}
-
-		if (!(obj instanceof Suppression)) {
+		if ((obj == null) || !(obj instanceof Suppression)) {
 			return false;
 		}
 

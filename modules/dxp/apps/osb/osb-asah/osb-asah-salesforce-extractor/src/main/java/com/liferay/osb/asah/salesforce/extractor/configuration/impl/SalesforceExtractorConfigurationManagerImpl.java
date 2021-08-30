@@ -181,11 +181,9 @@ public class SalesforceExtractorConfigurationManagerImpl
 			return "DUMMY_CREDENTIALS";
 		}
 
-		if (!credentialType.equals("OAuth 2 Authentication")) {
-			return "CREDENTIALS_INVALID";
-		}
+		if (!credentialType.equals("OAuth 2 Authentication") ||
+			!_validate(dataSource)) {
 
-		if (!_validate(dataSource)) {
 			return "CREDENTIALS_INVALID";
 		}
 

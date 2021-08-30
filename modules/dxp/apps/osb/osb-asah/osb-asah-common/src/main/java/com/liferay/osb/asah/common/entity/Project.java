@@ -43,11 +43,7 @@ public class Project implements Persistable<String> {
 			return true;
 		}
 
-		if (obj == null) {
-			return false;
-		}
-
-		if (!(obj instanceof Project)) {
+		if ((obj == null) || !(obj instanceof Project)) {
 			return false;
 		}
 

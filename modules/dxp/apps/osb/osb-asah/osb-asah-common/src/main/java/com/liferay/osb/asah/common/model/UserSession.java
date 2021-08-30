@@ -35,11 +35,7 @@ public class UserSession implements Serializable {
 			return true;
 		}
 
-		if (obj == null) {
-			return false;
-		}
-
-		if (!(obj instanceof UserSession)) {
+		if ((obj == null) || !(obj instanceof UserSession)) {
 			return false;
 		}
 

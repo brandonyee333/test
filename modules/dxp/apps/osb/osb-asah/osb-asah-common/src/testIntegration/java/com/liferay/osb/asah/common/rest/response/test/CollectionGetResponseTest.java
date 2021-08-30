@@ -207,7 +207,7 @@ public class CollectionGetResponseTest {
 	private List<String> _getValues(JSONArray jsonArray, String path) {
 		List<String> values = new ArrayList<>();
 
-		String[] parts = new String[0];
+		String[] parts = {};
 
 		if (path.contains("/")) {
 			int index = path.lastIndexOf("/");

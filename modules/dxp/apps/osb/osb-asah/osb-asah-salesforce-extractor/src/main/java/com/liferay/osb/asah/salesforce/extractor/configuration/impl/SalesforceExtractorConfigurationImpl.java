@@ -218,6 +218,6 @@ public class SalesforceExtractorConfigurationImpl
 	private String _salesforceServiceEndpoint;
 	private String _salesforceURL;
 	private String _salesforceUserName;
-	private String[] _tableNames = new String[0];
+	private String[] _tableNames = {};
 
 }

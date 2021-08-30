@@ -341,11 +341,7 @@ public class RecommendationRestController extends BaseRestController {
 				return true;
 			}
 
-			if (!super.equals(obj)) {
-				return false;
-			}
-
-			if (!(obj instanceof Model)) {
+			if (!super.equals(obj) || !(obj instanceof Model)) {
 				return false;
 			}
 

@@ -79,8 +79,8 @@ public class EventHistogramDog {
 
 			if (histogramMetricValues.containsKey(histogramMetric.getKey())) {
 				histogramMetric.setValue(
-					Double.valueOf(
-						histogramMetricValues.get(histogramMetric.getKey())));
+					(double)histogramMetricValues.get(
+						histogramMetric.getKey()));
 			}
 		}
 

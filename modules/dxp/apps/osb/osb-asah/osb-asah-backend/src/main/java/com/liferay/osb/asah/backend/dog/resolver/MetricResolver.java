@@ -58,12 +58,8 @@ public class MetricResolver {
 		MetricResolver metricResolver = (MetricResolver)obj;
 
 		if (!Objects.equals(
-				_aggregationBuilders, metricResolver._aggregationBuilders)) {
-
-			return false;
-		}
-
-		if (!Objects.equals(
+				_aggregationBuilders, metricResolver._aggregationBuilders) ||
+			!Objects.equals(
 				_pipelineAggregationBuilders,
 				metricResolver._pipelineAggregationBuilders)) {
 

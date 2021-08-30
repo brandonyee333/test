@@ -39,11 +39,7 @@ public class HeatMapMetric extends Metric {
 			return true;
 		}
 
-		if (!super.equals(obj)) {
-			return false;
-		}
-
-		if (!(obj instanceof HeatMapMetric)) {
+		if (!super.equals(obj) || !(obj instanceof HeatMapMetric)) {
 			return false;
 		}
 
