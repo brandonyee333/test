@@ -81,6 +81,12 @@ public class EventAnalysisBreakdown {
 	}
 
 	public Number getBinSize() {
+		if ((_binSize != null) &&
+			(_dataType == EventAttributeDefinition.DataType.DURATION)) {
+
+			return _binSize.intValue();
+		}
+
 		return _binSize;
 	}
 
