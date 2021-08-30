@@ -25,6 +25,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponents;
@@ -219,6 +221,8 @@ public class Acquisition implements Serializable {
 			return UriUtils.decode(value, StandardCharsets.UTF_8.name());
 		}
 		catch (Exception exception) {
+			_log.error(exception, exception);
+
 			return null;
 		}
 	}
@@ -226,6 +230,8 @@ public class Acquisition implements Serializable {
 	protected MultiValueMap<String, String> queryParams;
 	protected String referrerHost;
 	protected String url;
+
+	private static final Log _log = LogFactory.getLog(Acquisition.class);
 
 	private String _campaign;
 	private String _content;

@@ -398,6 +398,8 @@ public class SalesforceExtractorConfigurationManagerImpl
 			salesforcePartnerClient.describeGlobal(1);
 		}
 		catch (Exception exception) {
+			_log.error(exception, exception);
+
 			return false;
 		}
 

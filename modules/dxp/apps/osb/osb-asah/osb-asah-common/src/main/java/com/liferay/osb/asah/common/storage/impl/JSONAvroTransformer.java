@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.storage.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.multitenancy.impl.MultiTenantProjectDogImpl;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.nio.ByteBuffer;
@@ -29,6 +30,8 @@ import java.util.function.Function;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecordBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONObject;
 
@@ -199,12 +202,16 @@ public class JSONAvroTransformer {
 				return _toType(field, fieldSchemaType, fieldValue);
 			}
 			catch (IllegalStateException illegalStateException) {
+				_log.error(illegalStateException, illegalStateException);
 			}
 		}
 
 		throw new IllegalStateException(
 			"Value was incorrectly set for field " + field.name());
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		MultiTenantProjectDogImpl.class);
 
 	@Autowired
 	private ObjectMapper _objectMapper;

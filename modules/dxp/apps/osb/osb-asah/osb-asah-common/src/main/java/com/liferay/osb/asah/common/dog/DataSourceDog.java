@@ -394,46 +394,39 @@ public class DataSourceDog {
 
 		Date deletionDate = dataSource.getDeletionDate();
 
-		try {
-			int page = 0;
+		int page = 0;
 
-			while (true) {
-				List<Individual> individuals = _individualDog.getIndividuals(
-					dataSourceId, page++, 50,
-					com.liferay.osb.asah.common.model.Sort.asc("id"));
+		while (true) {
+			List<Individual> individuals = _individualDog.getIndividuals(
+				dataSourceId, page++, 50,
+				com.liferay.osb.asah.common.model.Sort.asc("id"));
 
-				if (individuals.isEmpty()) {
-					break;
+			if (individuals.isEmpty()) {
+				break;
+			}
+
+			for (Individual individual : individuals) {
+				Long individualId = individual.getId();
+
+				if (individualId == null) {
+					continue;
 				}
 
-				for (Individual individual : individuals) {
-					Long individualId = individual.getId();
+				Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =
+					individual.getDataSourceIndividualPKs();
 
-					if (individualId == null) {
-						continue;
-					}
+				if (dataSourceIndividualPKs.size() == 1) {
+					_individualDog.deleteIndividual(deletionDate, individualId);
+				}
+				else {
+					_individualDog.removeDataSourceIndividualPKs(
+						individual, dataSourceId);
 
-					Set<Individual.DataSourceIndividualPK>
-						dataSourceIndividualPKs =
-							individual.getDataSourceIndividualPKs();
-
-					if (dataSourceIndividualPKs.size() == 1) {
-						_individualDog.deleteIndividual(
-							deletionDate, individualId);
-					}
-					else {
-						_individualDog.removeDataSourceIndividualPKs(
-							individual, dataSourceId);
-
-						_individualDog.updateIndividual(
-							null, _getEmptyDataJSONObject(dataSource),
-							dataSource, individual);
-					}
+					_individualDog.updateIndividual(
+						null, _getEmptyDataJSONObject(dataSource), dataSource,
+						individual);
 				}
 			}
-		}
-		catch (Exception exception) {
-			throw exception;
 		}
 	}
 

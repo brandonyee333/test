@@ -37,6 +37,8 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -267,6 +269,10 @@ public class EventAttributeDefinitionDog {
 			return true;
 		}
 		catch (ParseException parseException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(parseException, parseException);
+			}
+
 			return false;
 		}
 	}
@@ -284,6 +290,9 @@ public class EventAttributeDefinitionDog {
 	}
 
 	private static final String[] _BOOLEANS = {"false", "true"};
+
+	private static final Log _log = LogFactory.getLog(
+		EventAttributeDefinitionDog.class);
 
 	@Autowired
 	private EventAttributeDefinitionRepository

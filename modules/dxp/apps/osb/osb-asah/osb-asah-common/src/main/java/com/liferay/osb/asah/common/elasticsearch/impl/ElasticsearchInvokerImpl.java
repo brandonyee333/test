@@ -339,6 +339,11 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 			return getResponse.isExists();
 		}
 		catch (IndexNotFoundException indexNotFoundException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Index does not exist for collection " + collectionName);
+			}
+
 			return false;
 		}
 	}
@@ -406,6 +411,11 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 			return new JSONObject(getResponse.getSourceAsString());
 		}
 		catch (IndexNotFoundException indexNotFoundException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Index does not exist for collection " + collectionName);
+			}
+
 			return null;
 		}
 	}

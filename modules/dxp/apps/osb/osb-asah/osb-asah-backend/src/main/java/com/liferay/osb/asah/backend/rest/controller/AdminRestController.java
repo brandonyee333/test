@@ -296,25 +296,15 @@ public class AdminRestController extends BaseRestController {
 	}
 
 	private File _createSnapshot(String fileName) throws Exception {
-		try (FileOutputStream fileOutputStream = new FileOutputStream(
-				fileName)) {
+		try (FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+			ZipOutputStream zipOutputStream = new ZipOutputStream(
+				fileOutputStream)) {
 
-			try (ZipOutputStream zipOutputStream = new ZipOutputStream(
-					fileOutputStream)) {
+			for (WeDeployDataService weDeployDataService :
+					WeDeployDataService.values()) {
 
-				for (WeDeployDataService weDeployDataService :
-						WeDeployDataService.values()) {
-
-					_saveWeDeployDataService(
-						weDeployDataService, zipOutputStream);
-				}
+				_saveWeDeployDataService(weDeployDataService, zipOutputStream);
 			}
-			catch (Exception exception) {
-				_log.error(exception, exception);
-			}
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
 		}
 
 		return new File(fileName);

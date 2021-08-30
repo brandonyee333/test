@@ -49,29 +49,26 @@ public class ZipFileBuilder {
 
 	public void build() throws Exception {
 		try (FileOutputStream fileOutputStream = new FileOutputStream(
-				_file.getAbsolutePath())) {
+				_file.getAbsolutePath());
+			ZipOutputStream zipOutputStream = new ZipOutputStream(
+				fileOutputStream)) {
 
-			try (ZipOutputStream zipOutputStream = new ZipOutputStream(
-					fileOutputStream)) {
+			for (Map.Entry<String, UnsafeConsumer<ZipOutputStream, Exception>>
+					entry : _unsafeConsumers.entrySet()) {
 
-				for (Map.Entry
-						<String, UnsafeConsumer<ZipOutputStream, Exception>>
-							entry : _unsafeConsumers.entrySet()) {
+				zipOutputStream.putNextEntry(new ZipEntry(entry.getKey()));
 
-					zipOutputStream.putNextEntry(new ZipEntry(entry.getKey()));
+				UnsafeConsumer<ZipOutputStream, Exception> unsafeConsumer =
+					entry.getValue();
 
-					UnsafeConsumer<ZipOutputStream, Exception> unsafeConsumer =
-						entry.getValue();
-
-					try {
-						unsafeConsumer.accept(zipOutputStream);
-					}
-					catch (Exception exception) {
-						_log.error(exception, exception);
-					}
-
-					zipOutputStream.closeEntry();
+				try {
+					unsafeConsumer.accept(zipOutputStream);
 				}
+				catch (Exception exception) {
+					_log.error(exception, exception);
+				}
+
+				zipOutputStream.closeEntry();
 			}
 		}
 	}

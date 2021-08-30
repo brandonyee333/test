@@ -33,8 +33,8 @@ import java.util.zip.GZIPInputStream;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -53,8 +53,8 @@ public class IPGeocoder {
 			return new IPInfo(location);
 		}
 
-		if (_logger.isDebugEnabled()) {
-			_logger.debug("Unable to get IP info for " + ipAddress);
+		if (_log.isDebugEnabled()) {
+			_log.debug("Unable to get IP info for " + ipAddress);
 		}
 
 		try {
@@ -67,8 +67,8 @@ public class IPGeocoder {
 			}
 		}
 		catch (UnknownHostException unknownHostException) {
-			if (_logger.isDebugEnabled()) {
-				_logger.debug(
+			if (_log.isDebugEnabled()) {
+				_log.debug(
 					unknownHostException.getMessage(), unknownHostException);
 			}
 		}
@@ -90,7 +90,7 @@ public class IPGeocoder {
 				ipGeocoderFile, LookupService.GEOIP_MEMORY_CACHE);
 		}
 		catch (IOException ioException) {
-			_logger.error("Unable to load MaxMind Geo IP data", ioException);
+			_log.error("Unable to load MaxMind Geo IP data", ioException);
 
 			throw new IllegalStateException(ioException);
 		}
@@ -157,8 +157,7 @@ public class IPGeocoder {
 		}
 	}
 
-	private static final Logger _logger = LoggerFactory.getLogger(
-		IPGeocoder.class);
+	private static final Log _log = LogFactory.getLog(IPGeocoder.class);
 
 	private volatile LookupService _lookupService;
 

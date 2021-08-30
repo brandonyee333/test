@@ -81,6 +81,8 @@ public abstract class BaseOAuth2Client {
 				String.class);
 		}
 		catch (RestClientException restClientException) {
+			_log.error(restClientException, restClientException);
+
 			if (restClientException instanceof HttpClientErrorException) {
 				HttpClientErrorException httpClientErrorException =
 					(HttpClientErrorException)restClientException;

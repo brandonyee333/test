@@ -39,6 +39,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -223,6 +225,8 @@ public class SalesforcePartnerClientInvoker
 			return salesforcePartnerClient;
 		}
 		catch (ConnectionException connectionException) {
+			_log.error(connectionException, connectionException);
+
 			_salesforceOAuth2Client.refreshOAuthToken(
 				(SalesforceExtractorConfigurationImpl)
 					salesforceExtractorConfiguration);
@@ -236,6 +240,9 @@ public class SalesforcePartnerClientInvoker
 	private static final int _GET_DESCRIBE_SOBJECT_RESULTS_MAX = 100;
 
 	private static final int _RETRY_COUNT = 3;
+
+	private static final Log _log = LogFactory.getLog(
+		SalesforcePartnerClientInvoker.class);
 
 	@Autowired
 	private SalesforceOAuth2Client _salesforceOAuth2Client;

@@ -400,6 +400,8 @@ public class DataControlNanite extends BaseNanite {
 			}
 		}
 		catch (Exception exception) {
+			_log.error(exception, exception);
+
 			_updateDataControlTaskStatus(
 				dataControlTaskJSONObject, DataControlTaskStatus.ERROR);
 		}

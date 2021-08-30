@@ -37,6 +37,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.Consts;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
@@ -513,9 +515,13 @@ public class Session implements Serializable {
 			return uri.getHost();
 		}
 		catch (Exception exception) {
+			_log.error(exception, exception);
+
 			return "";
 		}
 	}
+
+	private static final Log _log = LogFactory.getLog(Session.class);
 
 	private static final Set<String> _displayMedia = new HashSet<String>() {
 		{

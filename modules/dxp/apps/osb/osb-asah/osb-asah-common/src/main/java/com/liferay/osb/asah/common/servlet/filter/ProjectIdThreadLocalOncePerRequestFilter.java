@@ -80,6 +80,8 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 			filterChain.doFilter(httpServletRequest, httpServletResponse);
 		}
 		catch (InvalidProjectIdException invalidProjectIdException) {
+			_log.error(invalidProjectIdException, invalidProjectIdException);
+
 			httpServletResponse.sendError(
 				HttpServletResponse.SC_BAD_REQUEST, "INVALID_PROJECT_ID");
 		}

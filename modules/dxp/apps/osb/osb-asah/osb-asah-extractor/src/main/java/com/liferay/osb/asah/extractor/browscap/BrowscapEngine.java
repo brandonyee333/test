@@ -25,8 +25,8 @@ import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.stereotype.Component;
 
@@ -53,14 +53,13 @@ public class BrowscapEngine {
 					BrowsCapField.PLATFORM));
 		}
 		catch (IOException | ParseException exception) {
-			_logger.error("Unable to load Browscap parser data", exception);
+			_log.error("Unable to load Browscap parser data", exception);
 
 			throw new IllegalStateException(exception);
 		}
 	}
 
-	private static final Logger _logger = LoggerFactory.getLogger(
-		BrowscapEngine.class);
+	private static final Log _log = LogFactory.getLog(BrowscapEngine.class);
 
 	private UserAgentParser _parser;
 

@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.jooq.JooqAutoConfiguration;
@@ -75,6 +78,8 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 			return true;
 		}
 		catch (IOException ioException) {
+			_log.error(ioException, ioException);
+
 			return false;
 		}
 	}
@@ -96,5 +101,8 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 			autowireCapableBeanFactory.createBean(
 				OSBAsahSQLTestExecutionListener.class));
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		OSBAsahSpringJUnit4ClassRunner.class);
 
 }
