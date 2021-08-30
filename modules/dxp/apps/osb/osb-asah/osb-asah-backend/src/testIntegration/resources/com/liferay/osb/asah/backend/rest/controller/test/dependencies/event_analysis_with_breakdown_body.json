@@ -6,12 +6,13 @@
 		"compareToPrevious": true,
 		"eventAnalysisBreakdowns": [
 			{
-				"attributeId": "12345",
+				"attributeId": "23456",
 				"attributeType": "EVENT",
-				"dataType": "STRING"
+				"binSize": 100,
+				"dataType": "DURATION"
 			},
 			{
-				"attributeId": "23456",
+				"attributeId": "12345",
 				"attributeType": "EVENT",
 				"dataType": "STRING"
 			}

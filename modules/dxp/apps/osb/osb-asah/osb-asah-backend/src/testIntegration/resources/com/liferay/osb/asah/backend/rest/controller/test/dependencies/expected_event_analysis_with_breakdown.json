@@ -22,18 +22,10 @@
 								}
 							],
 							"leafNode": false,
-							"name": "275",
+							"name": "this is a test",
 							"previousValue": 0,
 							"value": 1
-						}
-					],
-					"leafNode": false,
-					"name": "this is a test",
-					"previousValue": 0,
-					"value": 1
-				},
-				{
-					"breakdownItems": [
+						},
 						{
 							"breakdownItems": [
 								{
@@ -52,18 +44,18 @@
 								}
 							],
 							"leafNode": false,
-							"name": "201",
+							"name": "this should match test",
 							"previousValue": 0,
 							"value": 1
 						}
 					],
 					"leafNode": false,
-					"name": "this should match test",
+					"name": "200-300",
 					"previousValue": 0,
-					"value": 1
+					"value": 2
 				}
 			],
-			"count": 2,
+			"count": 1,
 			"page": 0,
 			"previousValue": 7,
 			"value": 15
