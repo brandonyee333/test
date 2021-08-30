@@ -196,7 +196,7 @@ definition {
 	@priority = "5"
 	test DataSourceListIsSearchable {
 		task ("Create data sources") {
-			var dataSourceList = "";	
+			var dataSourceList = "";
 
 			ACUtils.launchAC();
 
@@ -221,7 +221,7 @@ definition {
 			}
 		}
 
-		task("Assert that a data source is searchable and found") {
+		task ("Assert that a data source is searchable and found") {
 			for (var dataSourceName : list "${dataSourceList}") {
 				ACUtils.searchBar(searchItem = "${dataSourceName}");
 
@@ -229,14 +229,13 @@ definition {
 			}
 		}
 
-		task("Assert that a data source that doesn't exist is not found") {
+		task ("Assert that a data source that doesn't exist is not found") {
 			ACUtils.searchBar(searchItem = "Analytics Cloud");
 
 			AssertTextPresent(
 				locator1 = "//body",
 				value1 = "There are no Data Sources found.");
 		}
-
 	}
 
 	@description = "Automation ID: LRAC-8825 | Test Summary: Validate Invalid Token"
