@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -44,6 +45,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 /**
  * @author Marcellus Tavares
@@ -163,6 +165,10 @@ public class AssetDog {
 	}
 
 	public List<Asset> getAssets(Set<Long> assetIds) {
+		if (CollectionUtils.isEmpty(assetIds)) {
+			return Collections.emptyList();
+		}
+
 		return IterableUtils.toList(_assetRepository.findAllById(assetIds));
 	}
 
