@@ -268,14 +268,14 @@ public class SalesforceExtractorIndividualsNaniteTest {
 
 		Assert.assertEquals(
 			"2", individualFieldsJSONObject.getString("contactId"));
+		Assert.assertNotNull(
+			individualFieldsJSONObject.optString("dataSourceId"));
 		Assert.assertEquals(
 			"true", individualFieldsJSONObject.getString("doNotCall"));
 		Assert.assertEquals(
 			"3", individualFieldsJSONObject.getString("leadId"));
 		Assert.assertNotNull(
 			individualFieldsJSONObject.optString("modifiedDate"));
-		Assert.assertNotNull(
-			individualFieldsJSONObject.optString("dataSourceId"));
 	}
 
 	private SalesforceEntity _contactSalesforceEntity;
