@@ -104,7 +104,9 @@ public class EventAnalysisBreakdown {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_attributeId, _attributeType, _dataType, _sortType);
+		return Objects.hash(
+			_attributeId, _attributeType, _binSize, _dataType, _dateGrouping,
+			_sortType);
 	}
 
 	public void setAttributeId(String attributeId) {
