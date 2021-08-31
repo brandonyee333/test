@@ -32,6 +32,8 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLFieldDefinition;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -55,7 +57,8 @@ public class DXPEntityBagDataFetcher
 
 		Page<? extends DXPEntity> dxpEntitiesPage =
 			_dxpEntityDog.getDXPEntitiesPage(
-				dataFetchingEnvironment.getArgument("channelId"),
+				NumberUtils.createLong(
+					dataFetchingEnvironment.getArgument("channelId")),
 				dataFetchingEnvironment.getArgument("keywords"),
 				dataFetchingEnvironment.getArgument("size"),
 				Sort.of(dataFetchingEnvironment.getArgument("sort")),
