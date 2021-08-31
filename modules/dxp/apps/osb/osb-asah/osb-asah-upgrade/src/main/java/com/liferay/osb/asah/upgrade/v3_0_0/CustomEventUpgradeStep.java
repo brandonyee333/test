@@ -42,6 +42,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -57,6 +58,8 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 
 		JSONArrayIterator.of(
 			"activities", _faroInfoElasticsearchInvoker, null
+		).setBatchSize(
+			_customEventUpgradeBatchSize
 		).setProcessJSONArrayUnsafeFunction(
 			this::_upgradeActivities
 		).setQueryBuilder(
@@ -180,6 +183,9 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 
 	private static final Log _log = LogFactory.getLog(
 		CustomEventUpgradeStep.class);
+
+	@Value("${osb.asah.custom.event.upgrade.batch.size:500}")
+	private int _customEventUpgradeBatchSize;
 
 	@Autowired
 	private EventRepository _eventRepository;
