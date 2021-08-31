@@ -99,6 +99,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 			TimeUnit.SECONDS.toMillis(20));
 		hikariDataSource.setMaximumPoolSize(_hikariMaximumPoolSize);
 		hikariDataSource.setMaxLifetime(TimeUnit.SECONDS.toMillis(120));
+		hikariDataSource.setMinimumIdle(5);
 		hikariDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
 		hikariDataSource.setUsername(CredentialConstants.POSTGRESQL_USER);
 
