@@ -16,6 +16,7 @@ package com.liferay.osb.asah.upgrade.v3_0_0;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventStorageDog;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
@@ -54,14 +55,18 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		JSONArrayIterator.of(
 			"activities", _faroInfoElasticsearchInvoker, this::_upgradeActivity
 		).setQueryBuilder(
-			QueryBuilders.rangeQuery(
-				"id"
-			).gt(
-				lastEventOptional.map(
-					Event::getAnalyticsEventId
-				).orElse(
-					"0"
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.rangeQuery(
+					"id"
+				).gt(
+					lastEventOptional.map(
+						Event::getAnalyticsEventId
+					).orElse(
+						"0"
+					)
 				)
+			).filter(
+				QueryBuilders.existsQuery("sessionId")
 			)
 		).iterate();
 	}
