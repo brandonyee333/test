@@ -96,7 +96,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 		hikariDataSource.setIdleTimeout(TimeUnit.SECONDS.toMillis(60));
 		hikariDataSource.setJdbcUrl(_buildJdbcUrl(dataSource));
 		hikariDataSource.setLeakDetectionThreshold(
-			TimeUnit.SECONDS.toMillis(20));
+			TimeUnit.SECONDS.toMillis(40));
 		hikariDataSource.setMaximumPoolSize(_hikariMaximumPoolSize);
 		hikariDataSource.setMaxLifetime(TimeUnit.SECONDS.toMillis(120));
 		hikariDataSource.setMinimumIdle(5);
