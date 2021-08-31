@@ -26,7 +26,9 @@ import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,6 +38,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +56,9 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 			_eventRepository.findFirstByOrderByIdDesc();
 
 		JSONArrayIterator.of(
-			"activities", _faroInfoElasticsearchInvoker, this::_upgradeActivity
+			"activities", _faroInfoElasticsearchInvoker, null
+		).setProcessJSONArrayUnsafeFunction(
+			this::_upgradeActivities
 		).setQueryBuilder(
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
@@ -109,47 +114,65 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		return map;
 	}
 
-	private Event _upgradeActivity(JSONObject activityJSONObject) {
-		String sessionId = activityJSONObject.optString("sessionId", null);
+	private List<Event> _upgradeActivities(JSONArray activitiesJSONArray) {
+		Map<String, List<AnalyticsEvent>> analyticsEventsMap = new HashMap<>();
 
-		if (sessionId == null) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Skipping activity: " + activityJSONObject);
-			}
+		for (int i = 0; i < activitiesJSONArray.length(); i++) {
+			JSONObject activityJSONObject = activitiesJSONArray.getJSONObject(
+				i);
 
-			return null;
+			AnalyticsEvent analyticsEvent = new AnalyticsEvent();
+
+			analyticsEvent.setApplicationId(
+				activityJSONObject.getString("applicationId"));
+			analyticsEvent.setChannelId(
+				activityJSONObject.getString("channelId"));
+			analyticsEvent.setContext(_getEventContext(activityJSONObject));
+			analyticsEvent.setCreateDate(
+				DateUtil.toUTCDate(activityJSONObject.getString("endTime")));
+			analyticsEvent.setDataSourceId(
+				activityJSONObject.getString("dataSourceId"));
+			analyticsEvent.setEventDate(
+				DateUtil.toUTCDate(activityJSONObject.getString("endTime")));
+
+			JSONObject eventPropertiesJSONObject =
+				activityJSONObject.getJSONObject("eventProperties");
+
+			analyticsEvent.setEventProperties(
+				_toSafeMap(eventPropertiesJSONObject.toMap()));
+
+			analyticsEvent.setId(activityJSONObject.getString("id"));
+			analyticsEvent.setEventId(activityJSONObject.getString("eventId"));
+			analyticsEvent.setIndividualId(
+				activityJSONObject.getString("ownerId"));
+			analyticsEvent.setUserId(activityJSONObject.getString("userId"));
+
+			analyticsEventsMap.compute(
+				activityJSONObject.getString("sessionId"),
+				(sessionId, analyticsEvents) -> {
+					if (analyticsEvents == null) {
+						analyticsEvents = new ArrayList<>();
+					}
+
+					analyticsEvents.add(analyticsEvent);
+
+					return analyticsEvents;
+				});
 		}
-
-		AnalyticsEvent analyticsEvent = new AnalyticsEvent();
-
-		analyticsEvent.setApplicationId(
-			activityJSONObject.getString("applicationId"));
-		analyticsEvent.setChannelId(activityJSONObject.getString("channelId"));
-		analyticsEvent.setContext(_getEventContext(activityJSONObject));
-		analyticsEvent.setCreateDate(
-			DateUtil.toUTCDate(activityJSONObject.getString("endTime")));
-		analyticsEvent.setDataSourceId(
-			activityJSONObject.getString("dataSourceId"));
-		analyticsEvent.setEventDate(
-			DateUtil.toUTCDate(activityJSONObject.getString("endTime")));
-
-		JSONObject eventPropertiesJSONObject = activityJSONObject.getJSONObject(
-			"eventProperties");
-
-		analyticsEvent.setEventProperties(
-			_toSafeMap(eventPropertiesJSONObject.toMap()));
-
-		analyticsEvent.setId(activityJSONObject.getString("id"));
-		analyticsEvent.setEventId(activityJSONObject.getString("eventId"));
-		analyticsEvent.setIndividualId(activityJSONObject.getString("ownerId"));
-		analyticsEvent.setUserId(activityJSONObject.getString("userId"));
 
 		try {
-			return _eventStorageDog.store(analyticsEvent, sessionId);
+			return _eventStorageDog.store(analyticsEventsMap);
 		}
 		catch (Exception exception) {
-			_log.error(
-				"Unable to store event " + analyticsEvent.toJSON(), exception);
+			StringBuilder sb = new StringBuilder("Unable to store events ");
+
+			analyticsEventsMap.forEach(
+				(sessionId, analyticsEvents) -> analyticsEvents.forEach(
+					analyticsEvent -> {
+						sb.append(analyticsEvent.toJSON());
+						sb.append(" ");
+					}));
+			_log.error(sb.toString(), exception);
 
 			return null;
 		}

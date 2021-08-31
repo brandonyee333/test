@@ -23,9 +23,11 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.Assert;
 import com.liferay.osb.asah.common.util.MapUtil;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -70,6 +72,51 @@ public class EventStorageDog {
 				null
 			),
 			sessionId, analyticsEvent.getUserId());
+	}
+
+	@Transactional
+	public List<Event> store(
+		Map<String, List<AnalyticsEvent>> analyticsEventsMap) {
+
+		List<Event> events = new ArrayList<>();
+
+		analyticsEventsMap.forEach(
+			(sessionId, analyticsEvents) -> {
+				Assert.notBlank(sessionId, "Session ID is blank");
+
+				for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+					EventDefinition eventDefinition = _resolveEventDefinition(
+						analyticsEvent);
+
+					if (eventDefinition.isBlocked()) {
+						continue;
+					}
+
+					Set<EventAttribute> eventAttributes =
+						_resolveEventAttributes(
+							analyticsEvent, eventDefinition.getId());
+
+					events.add(
+						new Event(
+							analyticsEvent.getId(),
+							analyticsEvent.getApplicationId(),
+							Long.valueOf(analyticsEvent.getChannelId()),
+							analyticsEvent.getCreateDate(),
+							Long.valueOf(analyticsEvent.getDataSourceId()),
+							eventAttributes, analyticsEvent.getEventDate(),
+							eventDefinition.getId(),
+							Optional.ofNullable(
+								analyticsEvent.getIndividualId()
+							).map(
+								Long::valueOf
+							).orElse(
+								null
+							),
+							sessionId, analyticsEvent.getUserId()));
+				}
+			});
+
+		return _eventDog.addEvents(events);
 	}
 
 	private Set<Long> _getEventDefinitionIds(
