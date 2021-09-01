@@ -12,12 +12,10 @@
 from joblib import Parallel, \
 	delayed
 
-from liferay.commerce.forecast.constants import CommerceMLForecastPeriod, \
-	ModelSelectionCriterion
+from liferay.commerce.forecast.common import BaseCommerceForecast
+from liferay.commerce.forecast.constants import CommerceMLForecastPeriod
 
 from math import sqrt
-
-from multiprocessing import cpu_count
 
 from pmdarima.arima import ADFTest, \
 	KPSSTest, \
@@ -34,87 +32,93 @@ import logging
 import pandas as pd
 import warnings
 
-class CommerceSARIMAX(object):
+class DateTimeIndexGenerator(object):
 
-	_COLUMNS = [
-		'assetCategoryId', 'commerceAccountId', 'sku', 'scope', 'period',
-		'target', 'forecast', 'timestamp', 'forecastLowerBound',
-		'forecastUpperBound', 'modelAttributes', 'error'
-	]
+	def __init__(self, period):
+		if period == CommerceMLForecastPeriod.MONTH:
+			self._freq = '1MS'
+		elif period == CommerceMLForecastPeriod.WEEK:
+			self._freq = '7D'
+		else:
+			raise ValueError("Unsupported period")
+
+	def get_index(self, values):
+		min_v = min(values)
+
+		max_v = max(values)
+
+		return pd.date_range(start=min_v, end=max_v, freq=self._freq)
+
+	def get_prediction_index(self, start, count):
+
+		return pd.date_range(
+			start=start, periods=count + 1, freq=self._freq, closed='right'
+		)
+
+	def reindex(self, data_frame, target_column):
+		new_index_values = self.get_index(data_frame.index.values)
+
+		new_index = pd.Index(new_index_values)
+
+		data_frame = data_frame.reindex(new_index)
+
+		data_frame[target_column] = data_frame[target_column].fillna(0)
+
+		data_frame.sort_index(inplace=True)
+
+		return data_frame
+
+class SARIMAXCommerceForecast(BaseCommerceForecast):
 
 	def __init__(
 		self,
 		period,
 		scope,
 		target,
+		cross_validation_steps=None,
+		dynamic=True,
+		horizon_steps=None,
+		max_order=None,
+		model_selection_criterion=None,
+		order_d_params=None,
+		order_p_params=None,
+		order_q_params=None,
+		parallel_count=None,
+		seasonal_d_params=None,
+		seasonal_m_params=None,
+		seasonal_p_params=None,
+		seasonal_q_params=None,
 		target_column='actual',
 		time_column='timestamp',
-		p_params=None,
-		d_params=None,
-		q_params=None,
-		seasonal_p_params=None,
-		seasonal_d_params=None,
-		seasonal_q_params=None,
-		t_params=None,
-		m_params=None,
-		max_order=None,
-		ahead=None,
-		dynamic=True,
-		test_sample_count=None,
-		parallel_count=None,
-		model_selection_criterion=None
+		trend_params=None
 	):
-		self._log = logging.getLogger(self.__class__.__name__)
-
-		self._period = period
-
-		self._scope = scope
-
-		self._target = target
-
-		self._target_column = target_column
-
-		self._time_column = time_column
-
-		self._indexer = DateTimeIndexGenerator(period)
-
-		self._p_params = p_params
-
-		self._d_params = d_params
-
-		self._q_params = q_params
-
-		self._seasonal_p_params = seasonal_p_params
-
-		self._seasonal_d_params = seasonal_d_params
-
-		self._seasonal_q_params = seasonal_q_params
-
-		self._t_params = t_params
-
-		self._m_params = m_params if m_params is not None else [
-			1, period.period_value
-		]
-
-		self._max_order = max_order
-
-		self._ahead = ahead
+		super(SARIMAXCommerceForecast, self).__init__(
+			period=period,
+			scope=scope,
+			target=target,
+			cross_validation_steps=cross_validation_steps,
+			horizon_steps=horizon_steps,
+			model_selection_criterion=model_selection_criterion,
+			parallel_count=parallel_count,
+			target_column=target_column,
+			time_column=time_column
+		)
 
 		self._dynamic = dynamic
-
-		self._test_sample_count = test_sample_count
-
-		# Avoid clogging the CPU between multiprocess and blas/linpack. This
-		# should be picked up from the OS environment and not from properties.
-
-		self._parallel_count = parallel_count if parallel_count is not None else cpu_count(
-		) // 2
-
-		model_selection_criterion = model_selection_criterion
-
-		self._model_selection_criterion = ModelSelectionCriterion.from_description(
-			model_selection_criterion
-		)
+		self._indexer = DateTimeIndexGenerator(period)
+		self._max_order = max_order
+		self._model = None
+		self._model_attributes = None
+		self._order_d_params = order_d_params
+		self._order_p_params = order_p_params
+		self._order_q_params = order_q_params
+		self._seasonal_d_params = seasonal_d_params
+		self._seasonal_m_params = seasonal_m_params if seasonal_m_params else [
+			1, period.period_value
+		]
+		self._seasonal_p_params = seasonal_p_params
+		self._seasonal_q_params = seasonal_q_params
+		self._trend_params = trend_params
 
 		if self._log.isEnabledFor(logging.INFO):
 			self._log.info(
@@ -123,23 +127,36 @@ class CommerceSARIMAX(object):
 				)
 			)
 
-			self._log.info("'p' parameter range: {}".format(self._p_params))
-			self._log.info("'d' parameter range: {}".format(self._d_params))
-			self._log.info("'q' parameter range: {}".format(self._q_params))
+			self._log.info(
+				"'p' parameter range: {}".format(self._order_p_params)
+			)
+
+			self._log.info(
+				"'d' parameter range: {}".format(self._order_d_params)
+			)
+
+			self._log.info(
+				"'q' parameter range: {}".format(self._order_q_params)
+			)
 
 			self._log.info(
 				"'P' parameter range: {}".format(self._seasonal_p_params)
 			)
+
 			self._log.info(
 				"'D' parameter range: {}".format(self._seasonal_d_params)
 			)
+
 			self._log.info(
 				"'Q' parameter range: {}".format(self._seasonal_q_params)
 			)
 
-			self._log.info("Trend: {}".format(self._t_params))
+			self._log.info("Trend: {}".format(self._trend_params))
+
 			self._log.info(
-				"Seasonality period paraemter range: {}".format(self._m_params)
+				"Seasonality period parameter range: {}".format(
+					self._seasonal_m_params
+				)
 			)
 
 			self._log.info("Max order: {}".format(self._max_order))
@@ -147,10 +164,6 @@ class CommerceSARIMAX(object):
 			self._log.info(
 				"In task parallelism: {}".format(self._parallel_count)
 			)
-
-			self._model = None
-
-			self._model_attributes = None
 
 	def _fit_model(self, series, order, seasonal_order, trend):
 		sarimax = SARIMAX(
@@ -176,43 +189,55 @@ class CommerceSARIMAX(object):
 
 		return y_hat, sarimax_model.aic
 
-	def _generate_parameter_configs(self, series_values, series_length):
+	def _generate_parameter_configs(self, series, series_length):
 		# Evaluate 'd' parameters
 
-		if self._d_params is None:
+		if self._order_d_params is None:
 			try:
-				diff = ndiffs(series_values, test='adf')
+				diff = ndiffs(series, test='adf')
 			except:
 				diff = 0
 
-			self._d_params = [diff]
+			self._order_d_params = [diff]
 
-			self._log.info("Using 'd': {}".format(str(self._d_params)))
+			self._log.info(
+				"Using 'd': {}".format(str(self._order_d_params))
+			)
 
 		# Evaluate 'D' parameters
 
 		if self._seasonal_d_params is None:
 			try:
 				seasonal_diffs = nsdiffs(
-					series_values, m=self._period.period_value
+					series, m=self._period.period_value
 				)
 			except:
 				seasonal_diffs = 0
 
 			self._seasonal_d_params = [seasonal_diffs]
 
-			self._log.info("Using 'D': {}".format(str(self._seasonal_d_params)))
+			self._log.info(
+				"Using 'D': {}".format(str(self._seasonal_d_params))
+			)
 
-		o_set = itertools.product(
-			self._p_params, self._d_params, self._q_params
+		order_set = itertools.product(
+			self._order_p_params,
+			self._order_d_params,
+			self._order_q_params
 		)
 
-		s_set = itertools.product(
-			self._seasonal_p_params, self._seasonal_d_params,
-			self._seasonal_q_params, self._m_params
+		seasonal_set = itertools.product(
+			self._seasonal_p_params,
+			self._seasonal_d_params,
+			self._seasonal_q_params,
+			self._seasonal_m_params
 		)
 
-		configuration_products = itertools.product(o_set, s_set, self._t_params)
+		configuration_products = itertools.product(
+			order_set,
+			seasonal_set,
+			self._trend_params
+		)
 
 		configuration_products = filter(
 			lambda cfg: self._validate_configuration(cfg, series_length),
@@ -226,67 +251,65 @@ class CommerceSARIMAX(object):
 
 		return configuration_list
 
-	def _return_empty_pandas_data_frame(self, target_pks):
-		return_data = [None for _ in range(len(self._COLUMNS))]
-
-		return_data_frame = pd.DataFrame(
-			data=[return_data], columns=self._COLUMNS
-		)
-
-		return_data_frame[self._scope.columns] = target_pks
-
-		return return_data_frame
-
-	def _score_model(self, data, n_test, configuration):
+	def _score_model(self, series, n_test, configuration):
 		rmse = None
 
 		aic = None
 
-		id_, cfg = configuration
+		id_, parameters = configuration
 
 		if self._log.isEnabledFor(logging.INFO):
 			if (id_ % 10) == 0:
-				self._log.info("Testing {}: {}".format(id_, cfg))
+				self._log.info("Testing {}: {}".format(id_, parameters))
 
 		try:
 			with warnings.catch_warnings():
 				warnings.filterwarnings("ignore")
 
-				rmse, aic = self._walk_forward_validation(data, n_test, cfg)
+				rmse, aic = self._walk_forward_validation(
+					series,
+					n_test,
+					parameters
+				)
 		except Exception as e:
-			self._log.warning("Configuration {} error: {}".format(cfg, e))
+			self._log.warning(
+				"Configuration {} error: {}".format(parameters, e)
+			)
 
 		if rmse is not None:
 			self._log.debug(
-				"Model [{}] RMSE: {}, AIC: {}".format(str(cfg), rmse, aic)
+				"Model [{}] RMSE: {}, AIC: {}".format(
+					str(parameters), rmse, aic
+				)
 			)
 
 		return id_, rmse, aic
 
-	def _score_models(self, timeseries, configurations):
-		scores = None
-
+	def _score_models(self, time_series, configurations):
 		if self._parallel_count > 1:
 			# execute configs in parallel
 
 			executor = Parallel(
-				n_jobs=self._parallel_count, backend='multiprocessing'
+				n_jobs=self._parallel_count,
+				backend='multiprocessing'
 			)
 
 			tasks = (
 				delayed(self._score_model)(
-					timeseries[self._target_column], self._test_sample_count,
-					cfg
-				) for cfg in configurations.items()
+					time_series[self._target_column],
+					self._cross_validation_steps,
+					configuration
+				) for configuration in configurations.items()
 			)
 
 			scores = executor(tasks)
 		else:
 			scores = [
 				self._score_model(
-					timeseries[self._target_column], self._test_sample_count,
-					cfg
-				) for cfg in configurations.items()
+					time_series[self._target_column],
+					self._cross_validation_steps,
+					configuration
+				) for configuration in configurations.items()
 			]
 
 		return scores
@@ -321,21 +344,21 @@ class CommerceSARIMAX(object):
 
 		return True
 
-	def _walk_forward_validation(self, data, n_test, cfg):
+	def _walk_forward_validation(self, series, n_test, configuration):
 		aic = None
 
 		predictions = list()
 
-		train, test = data[:-n_test], data[-n_test:]
+		train, test = series[:-n_test], series[-n_test:]
 
-		history = [x for x in train]
+		series = [x for x in train]
 
 		# step over each time-step in the test set
 
 		for i in range(len(test)):
 			# fit model and make forecast for history
 
-			y_hat, aic = self._fit_predict(history, cfg)
+			y_hat, aic = self._fit_predict(series, configuration)
 
 			# store forecast in list of predictions
 
@@ -343,7 +366,7 @@ class CommerceSARIMAX(object):
 
 			# add actual observation to history for the next loop
 
-			history.append(test.iloc[i])
+			series.append(test.iloc[i])
 
 		# estimate prediction rmse
 
@@ -351,28 +374,28 @@ class CommerceSARIMAX(object):
 
 		return rmse, aic
 
-	def fit(self, timeseries):
-		if not timeseries.index.is_monotonic_increasing:
+	def fit(self, time_series):
+		if not time_series.index.is_monotonic_increasing:
 			raise ValueError("Time series should be monotonically increasing")
 
-		timeseries_values = timeseries[self._target_column].values
+		time_series_values = time_series[self._target_column].values
 
-		target_pks = timeseries[self._scope.columns].iloc[0].tolist()
+		target_pks = time_series[self._scope.columns].iloc[0].tolist()
 
-		timeseries_length = len(timeseries_values)
+		time_series_length = len(time_series_values)
 
 		# Check stationary
 
 		try:
 			adf_test = ADFTest()
 
-			_, adf_should_diff = adf_test.should_diff(timeseries_values)
+			_, adf_should_diff = adf_test.should_diff(time_series_values)
 
 			adf_stationary = not adf_should_diff
 
 			kpss_test = KPSSTest()
 
-			_, kpss_should_diff = kpss_test.should_diff(timeseries_values)
+			_, kpss_should_diff = kpss_test.should_diff(time_series_values)
 
 			kpss_stationary = not kpss_should_diff
 
@@ -395,12 +418,12 @@ class CommerceSARIMAX(object):
 			self._log.warning("Failed to test stationarity")
 
 		configurations = self._generate_parameter_configs(
-			timeseries_values, timeseries_length
+			time_series_values, time_series_length
 		)
 
 		self._log.info("Testing {} configurations".format(len(configurations)))
 
-		scores = self._score_models(timeseries, configurations)
+		scores = self._score_models(time_series, configurations)
 
 		# Filter completed scores
 
@@ -413,7 +436,7 @@ class CommerceSARIMAX(object):
 
 		# sort configs by model selection criterion
 
-		scores.sort(key=lambda tup: tup[self._model_selection_criterion.value])
+		scores.sort(key=lambda s: s[self._model_selection_criterion.value])
 
 		# Forecast and confidence_intervals
 
@@ -432,33 +455,31 @@ class CommerceSARIMAX(object):
 		self._model_attributes = model_attributes
 
 		self._log.info(
-			"Best model: {}, configuration: {}, {}, {}. "
+			"Best model: {}, configuration: {}, {}, {}."
 			"AIC: {}, RMSE: {}".format(
 				best_model_id, order, seasonal_order, trend, aic, rmse
 			)
 		)
 
 		self._model = self._fit_model(
-			timeseries[self._target_column], order, seasonal_order, trend
+			time_series[self._target_column], order, seasonal_order, trend
 		)
 
 		return self
 
-	def fit_predict(self, timeseries):
+	def fit_predict(self, time_series):
 		# Reindex series and fill missing values
 
-		timeseries.set_index(timeseries[self._time_column], inplace=True)
+		original_series_length = len(time_series)
 
-		timeseries = self._indexer.reindex(timeseries, self._target_column)
+		time_series.set_index(time_series[self._time_column], inplace=True)
 
-		target_pks = timeseries[self._scope.columns].iloc[0].tolist()
+		time_series = self._indexer.reindex(time_series, self._target_column)
 
-		timeseries_length = len(timeseries)
+		target_pks = time_series[self._scope.columns].iloc[0].tolist()
 
 		if self._log.isEnabledFor(logging.INFO):
-			original_series_length = len(timeseries)
-
-			series_coverage = original_series_length / timeseries_length
+			series_coverage = original_series_length / len(time_series)
 
 			self._log.info(
 				"TargetPKs: {}, data length: {}  Coverage: {}".format(
@@ -466,12 +487,12 @@ class CommerceSARIMAX(object):
 				)
 			)
 
-		self.fit(timeseries)
+		self.fit(time_series)
 
-		return self.predict(timeseries)
+		return self.predict(time_series)
 
-	def predict(self, timeseries):
-		target_pks = timeseries[self._scope.columns].iloc[0].tolist()
+	def predict(self, time_series):
+		target_pks = time_series[self._scope.columns].iloc[0].tolist()
 
 		if self._model is None:
 			self._log.warning("No model was trained, check data")
@@ -480,24 +501,24 @@ class CommerceSARIMAX(object):
 
 		start = self._model.nobs
 
-		end = self._model.nobs + self._ahead - 1
+		end = self._model.nobs + self._horizon_steps - 1
 
-		prediction_date_start = timeseries.index.values[-1]
+		prediction_date_start = time_series.index.values[-1]
 
-		prediction_date_count = self._ahead
+		prediction_date_count = self._horizon_steps
 
 		if self._log.isEnabledFor(logging.INFO):
 			self._log.info("Target PKs {} ".format(target_pks))
 			self._log.info("Start Date {} ".format(prediction_date_start))
 			self._log.info(
-				"TS {} ".format(timeseries[self._target_column].values[-2:])
+				"TS {} ".format(time_series[self._target_column].values[-2:])
 			)
-			self._log.info("IDX {} ".format(timeseries.index.values[-2:]))
+			self._log.info("IDX {} ".format(time_series.index.values[-2:]))
 
 		if type(self._dynamic) is int:
 			start -= self._dynamic
 
-			prediction_date_start = timeseries.index.values[-self._dynamic]
+			prediction_date_start = time_series.index.values[-self._dynamic]
 
 			prediction_date_count += self._dynamic
 
@@ -508,7 +529,9 @@ class CommerceSARIMAX(object):
 		)
 
 		forecast = self._model.get_prediction(
-			start=start, end=end, dynamic=self._dynamic
+			start=start,
+			end=end,
+			dynamic=self._dynamic
 		)
 
 		conf_int = forecast.conf_int()
@@ -532,16 +555,16 @@ class CommerceSARIMAX(object):
 		if type(self._dynamic) is int:
 			for idx in range(start, self._model.nobs):
 				# TODO: Fix with actual dynamic data
-				forecast_lower_bound[idx - start] = timeseries[
+				forecast_lower_bound[idx - start] = time_series[
 					self._target_column].iloc[idx]
 
-				forecast_predicted_mean.values[idx - start] = timeseries[
+				forecast_predicted_mean.values[idx - start] = time_series[
 					self._target_column].iloc[idx]
 
-				forecast_upper_bound[idx - start] = timeseries[
+				forecast_upper_bound[idx - start] = time_series[
 					self._target_column].iloc[idx]
 
-		result = pd.DataFrame([], columns=self._COLUMNS)
+		result = pd.DataFrame([], columns=self.COLUMNS)
 
 		for idx in range(prediction_date_count):
 			row = [None, None, None]
@@ -553,46 +576,10 @@ class CommerceSARIMAX(object):
 			row += [json.dumps(self._model_attributes)]
 			row += [None]
 
-			pd_row = pd.DataFrame([row], columns=self._COLUMNS)
+			pd_row = pd.DataFrame([row], columns=self.COLUMNS)
 
 			pd_row[self._scope.columns] = target_pks
 
 			result = pd.concat([result, pd_row])
 
 		return result
-
-class DateTimeIndexGenerator(object):
-
-	def __init__(self, period):
-		if period == CommerceMLForecastPeriod.MONTH:
-			self._freq = '1MS'
-		elif period == CommerceMLForecastPeriod.WEEK:
-			self._freq = '7D'
-		else:
-			raise ValueError("Unsupported period")
-
-	def get_index(self, values):
-		min_v = min(values)
-
-		max_v = max(values)
-
-		return pd.date_range(start=min_v, end=max_v, freq=self._freq)
-
-	def get_prediction_index(self, start, count):
-
-		return pd.date_range(
-			start=start, periods=count + 1, freq=self._freq, closed='right'
-		)
-
-	def reindex(self, dataframe, target_column):
-		new_index_values = self.get_index(dataframe.index.values)
-
-		new_index = pd.Index(new_index_values)
-
-		dataframe = dataframe.reindex(new_index)
-
-		dataframe[target_column] = dataframe[target_column].fillna(0)
-
-		dataframe.sort_index(inplace=True)
-
-		return dataframe
