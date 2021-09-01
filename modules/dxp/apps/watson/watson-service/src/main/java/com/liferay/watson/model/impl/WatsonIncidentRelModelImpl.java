@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.watson.model.WatsonIncidentRel;
 import com.liferay.watson.model.WatsonIncidentRelModel;
 
@@ -35,6 +36,7 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 
+import java.sql.Blob;
 import java.sql.Types;
 
 import java.util.Collections;
@@ -826,7 +828,7 @@ public class WatsonIncidentRelModelImpl
 			attributeGetterFunctions = getAttributeGetterFunctions();
 
 		StringBundler sb = new StringBundler(
-			(4 * attributeGetterFunctions.size()) + 2);
+			(5 * attributeGetterFunctions.size()) + 2);
 
 		sb.append("{");
 
@@ -837,9 +839,27 @@ public class WatsonIncidentRelModelImpl
 			Function<WatsonIncidentRel, Object> attributeGetterFunction =
 				entry.getValue();
 
+			sb.append("\"");
 			sb.append(attributeName);
-			sb.append("=");
-			sb.append(attributeGetterFunction.apply((WatsonIncidentRel)this));
+			sb.append("\": ");
+
+			Object value = attributeGetterFunction.apply(
+				(WatsonIncidentRel)this);
+
+			if (value == null) {
+				sb.append("null");
+			}
+			else if (value instanceof Blob || value instanceof Date ||
+					 value instanceof Map || value instanceof String) {
+
+				sb.append(
+					"\"" + StringUtil.replace(value.toString(), "\"", "'") +
+						"\"");
+			}
+			else {
+				sb.append(value);
+			}
+
 			sb.append(", ");
 		}
 
