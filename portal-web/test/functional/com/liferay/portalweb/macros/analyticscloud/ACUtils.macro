@@ -498,9 +498,16 @@ definition {
 	}
 
 	macro searchBar {
-		Type(
-			locator1 = "ACSettings#SEARCH_BAR",
-			value1 = "${searchItem}");
+		if (!(isSet(index))) {
+			Type(
+				locator1 = "ACSettings#SEARCH_BAR",
+				value1 = "${searchItem}");
+		}
+		else {
+			Type(
+				locator1 = "ACSettings#SEARCH_BAR_2",
+				value1 = "${searchItem}");
+		}
 
 		KeyPress(
 			locator1 = "ACSettings#SEARCH_BAR",
