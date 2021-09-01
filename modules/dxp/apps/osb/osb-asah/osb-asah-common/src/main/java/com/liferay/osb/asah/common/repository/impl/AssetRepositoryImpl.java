@@ -66,6 +66,19 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public long countByAssetTypeAndKeywordNotNull(String assetType) {
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return selectSelectStep.from(
+			_getAssetTableKeywordNotNull(assetType)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
 	public long countByFilterString(@Nullable String filterString) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -221,6 +234,35 @@ public class AssetRepositoryImpl extends BaseRepository {
 
 		return selectJoinStep.where(
 			_getConditions(assetType, filterString, keyword)
+		).asTable();
+	}
+
+	private Table<Record> _getAssetTableKeywordNotNull(String assetType) {
+		SelectSelectStep<Record> selectDistinct = _dslContext.selectDistinct(
+			DSL.table(
+				"Asset"
+			).asterisk());
+
+		return selectDistinct.from(
+			"Asset"
+		).join(
+			DSL.table(
+				"assetkeyword"
+			).as(
+				"keywords"
+			)
+		).on(
+			DSL.field(
+				"id"
+			).eq(
+				DSL.field("keywords.assetid")
+			)
+		).where(
+			_getConditions(assetType, null, null)
+		).and(
+			DSL.field(
+				"keywords.keyword"
+			).isNotNull()
 		).asTable();
 	}
 

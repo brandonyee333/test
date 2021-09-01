@@ -81,6 +81,17 @@ public class ElasticsearchAssetRepositoryImpl
 	}
 
 	@Override
+	public long countByAssetTypeAndKeywordNotNull(String assetType) {
+		return _faroInfoElasticsearchInvoker.count(
+			"assets",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("assetType", "Page")
+			).filter(
+				QueryBuilders.existsQuery("keywords.keyword")
+			));
+	}
+
+	@Override
 	public long countByFilterString(@Nullable String filterString) {
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(), _buildQueryBuilder(filterString));

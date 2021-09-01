@@ -39,6 +39,8 @@ public interface AssetRepository extends Repository<Asset, Long> {
 		String assetType, @Nullable String filterString,
 		@Nullable String keyword);
 
+	public long countByAssetTypeAndKeywordNotNull(String assetType);
+
 	@Cacheable
 	public long countByFilterString(@Nullable String filterString);
 
