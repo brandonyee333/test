@@ -23,11 +23,9 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.Assert;
 import com.liferay.osb.asah.common.util.MapUtil;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -44,18 +42,55 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class EventStorageDog {
 
+	public Set<EventAttribute> getEventAttributes(
+		AnalyticsEvent analyticsEvent, Long eventDefinitionId) {
+
+		return new HashSet<EventAttribute>() {
+			{
+				addAll(
+					_resolveGlobalEventAttributes(
+						analyticsEvent.getContext(),
+						analyticsEvent.getEventDate(), eventDefinitionId));
+				addAll(
+					_resolveLocalEventAttributes(
+						analyticsEvent.getEventDate(), eventDefinitionId,
+						analyticsEvent.getEventProperties()));
+			}
+		};
+	}
+
+	public EventDefinition getEventDefinition(AnalyticsEvent analyticsEvent) {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName(
+				analyticsEvent.getEventId());
+
+		if (eventDefinition == null) {
+			eventDefinition = _eventDefinitionDog.addEventDefinition(
+				null, null, analyticsEvent.getEventDate(),
+				analyticsEvent.getEventId(), EventDefinition.Type.CUSTOM,
+				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"));
+		}
+		else if (eventDefinition.isBlocked()) {
+			eventDefinition = _eventDefinitionDog.updateEventDefinition(
+				analyticsEvent.getEventDate(),
+				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"),
+				null, null, eventDefinition.getId());
+		}
+
+		return eventDefinition;
+	}
+
 	@Transactional
 	public Event store(AnalyticsEvent analyticsEvent, String sessionId) {
 		Assert.notBlank(sessionId, "Session ID is blank");
 
-		EventDefinition eventDefinition = _resolveEventDefinition(
-			analyticsEvent);
+		EventDefinition eventDefinition = getEventDefinition(analyticsEvent);
 
 		if (eventDefinition.isBlocked()) {
 			return null;
 		}
 
-		Set<EventAttribute> eventAttributes = _resolveEventAttributes(
+		Set<EventAttribute> eventAttributes = getEventAttributes(
 			analyticsEvent, eventDefinition.getId());
 
 		return _eventDog.addEvent(
@@ -128,46 +163,6 @@ public class EventStorageDog {
 
 		return new EventAttribute(
 			eventDate, eventAttributeDefinition.getId(), eventAttributeValue);
-	}
-
-	private Set<EventAttribute> _resolveEventAttributes(
-		AnalyticsEvent analyticsEvent, Long eventDefinitionId) {
-
-		return new HashSet<EventAttribute>() {
-			{
-				addAll(
-					_resolveGlobalEventAttributes(
-						analyticsEvent.getContext(),
-						analyticsEvent.getEventDate(), eventDefinitionId));
-				addAll(
-					_resolveLocalEventAttributes(
-						analyticsEvent.getEventDate(), eventDefinitionId,
-						analyticsEvent.getEventProperties()));
-			}
-		};
-	}
-
-	private EventDefinition _resolveEventDefinition(
-		AnalyticsEvent analyticsEvent) {
-
-		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinitionByName(
-				analyticsEvent.getEventId());
-
-		if (eventDefinition == null) {
-			eventDefinition = _eventDefinitionDog.addEventDefinition(
-				null, null, analyticsEvent.getEventDate(),
-				analyticsEvent.getEventId(), EventDefinition.Type.CUSTOM,
-				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"));
-		}
-		else if (eventDefinition.isBlocked()) {
-			eventDefinition = _eventDefinitionDog.updateEventDefinition(
-				analyticsEvent.getEventDate(),
-				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"),
-				null, null, eventDefinition.getId());
-		}
-
-		return eventDefinition;
 	}
 
 	private Set<EventAttribute> _resolveGlobalEventAttributes(
