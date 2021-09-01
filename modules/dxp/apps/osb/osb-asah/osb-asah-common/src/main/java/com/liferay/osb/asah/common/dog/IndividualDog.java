@@ -44,6 +44,7 @@ import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -880,7 +881,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			_individualRepository.searchIndividuals(
 				channelId, null, includeAnonymousUsers,
 				_getSegmentChannelId(segmentId), segmentId,
-				PageRequest.of(page, size, SortUtil.getSort(sorts))),
+				PageRequest.of(page, size, _getSort(sorts))),
 			individual -> populateIndividual(channelId, individual));
 	}
 
@@ -891,7 +892,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return ListUtil.map(
 			_individualRepository.searchIndividuals(
 				channelId, filterString, includeAnonymousUsers, null, null,
-				PageRequest.of(page, size, SortUtil.getSort(sorts))),
+				PageRequest.of(page, size, _getSort(sorts))),
 			individual -> populateIndividual(channelId, individual));
 	}
 
@@ -903,7 +904,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			searchIndividuals(
 				channelId, filterString, includeAnonymousUsers, page, size,
 				sorts),
-			PageRequest.of(page, size, SortUtil.getSort(sorts)),
+			PageRequest.of(page, size, _getSort(sorts)),
 			() -> countIndividuals(
 				channelId, filterString, includeAnonymousUsers));
 	}
@@ -1154,6 +1155,38 @@ public class IndividualDog extends BaseFaroInfoDog {
 		).orElse(
 			null
 		);
+	}
+
+	private Sort _getSort(String[] sorts) {
+		if (ArrayUtils.isEmpty(sorts)) {
+			return Sort.by(Sort.Order.asc("id"));
+		}
+
+		List<Sort.Order> orders = new ArrayList<>();
+
+		for (int i = 0; i < sorts.length; i++) {
+			String sort = sorts[i];
+
+			String order = null;
+
+			String[] properties = sort.split(",");
+
+			if (properties.length == 1) {
+				order = sorts[++i];
+			}
+			else {
+				order = properties[1];
+			}
+
+			if (Objects.equals(order, "asc")) {
+				orders.add(Sort.Order.asc(properties[0]));
+			}
+			else {
+				orders.add(Sort.Order.desc(properties[0]));
+			}
+		}
+
+		return Sort.by(orders);
 	}
 
 	private void _individualModified(
