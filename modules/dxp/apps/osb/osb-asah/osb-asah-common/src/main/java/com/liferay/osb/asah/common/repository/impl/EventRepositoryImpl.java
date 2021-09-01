@@ -279,7 +279,10 @@ public class EventRepositoryImpl extends BaseRepository {
 		TimeRange timeRange) {
 
 		Field<OffsetDateTime> eventDateField = DSL.field(
-			"Event.eventDate", OffsetDateTime.class);
+			String.format(
+				"Event.eventDate AT TIME ZONE '%s'",
+				_timeZoneDog.getTimeZoneId()),
+			OffsetDateTime.class);
 
 		if (interval == Interval.DAY) {
 			eventDateField = _dateTrunc(DatePart.DAY, eventDateField);
@@ -324,7 +327,9 @@ public class EventRepositoryImpl extends BaseRepository {
 		TimeRange timeRange) {
 
 		Field<OffsetDateTime> eventDateField = DSL.field(
-			"eventDate", OffsetDateTime.class);
+			String.format(
+				"eventDate AT TIME ZONE '%s'", _timeZoneDog.getTimeZoneId()),
+			OffsetDateTime.class);
 
 		if (interval != Interval.HOUR) {
 			eventDateField = _dateTrunc(DatePart.DAY, eventDateField);
