@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
@@ -32,6 +33,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -112,7 +116,11 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 			SearchHit[] hits = searchHits.getHits();
 
 			if (hits.length == 0) {
-				return;
+				while (!_completableFutures.isEmpty()) {
+					_completableFutures.removeIf(CompletableFuture::isDone);
+				}
+
+				break;
 			}
 
 			Stream<SearchHit> stream = Arrays.stream(hits);
@@ -127,7 +135,10 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 					Collectors.toList()
 				));
 
-			_upgradeActivities(jsonArray);
+			_completableFutures.add(
+				CompletableFuture.runAsync(
+					() -> _upgradeActivities(jsonArray, projectId),
+					_executorService));
 
 			JSONObject jsonObject = jsonArray.getJSONObject(
 				jsonArray.length() - 1);
@@ -193,6 +204,9 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 
 	@PostConstruct
 	private void _init() {
+		_executorService = Executors.newFixedThreadPool(
+			_customEventUpgradeThreadPool);
+
 		_namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 			_dataSource);
 	}
@@ -264,10 +278,13 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 	}
 
 	@Transactional
-	private void _upgradeActivities(JSONArray activitiesJSONArray) {
+	private void _upgradeActivities(
+		JSONArray activitiesJSONArray, String projectId) {
 
 		List<Map<String, Object>> eventAttributes = new ArrayList<>();
 		List<Map<String, Object>> events = new ArrayList<>();
+
+		ProjectIdThreadLocal.setProjectId(projectId);
 
 		for (int i = 0; i < activitiesJSONArray.length(); i++) {
 			JSONObject activityJSONObject = activitiesJSONArray.getJSONObject(
@@ -345,8 +362,14 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 	private static final Log _log = LogFactory.getLog(
 		CustomEventUpgradeStep.class);
 
+	private final List<CompletableFuture<Void>> _completableFutures =
+		new ArrayList<>();
+
 	@Value("${osb.asah.custom.event.upgrade.batch.size:10000}")
 	private int _customEventUpgradeBatchSize;
+
+	@Value("${osb.asah.custom.event.upgrade.thread.pool:10}")
+	private int _customEventUpgradeThreadPool;
 
 	@Autowired
 	private DataSource _dataSource;
@@ -355,6 +378,8 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 
 	@Autowired
 	private EventStorageDog _eventStorageDog;
+
+	private ExecutorService _executorService;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
