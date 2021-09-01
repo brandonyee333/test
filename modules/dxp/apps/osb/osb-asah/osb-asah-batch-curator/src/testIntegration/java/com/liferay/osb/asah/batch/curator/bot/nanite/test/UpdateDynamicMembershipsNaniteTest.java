@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
@@ -40,6 +41,7 @@ import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
@@ -110,8 +112,12 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		Long dataSourceId = dataSource.getId();
 
-		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
-			"assets", FaroInfoTestUtil.buildPageAssetJSONObject(dataSourceId));
+		JSONObject assetJSONObject = _objectMapper.convertValue(
+			_assetRepository.save(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildPageAssetJSONObject(dataSourceId),
+					Asset.class)),
+			JSONObject.class);
 
 		ActivityGroup activityGroup1 = _activityGroupDog.addActivityGroup(
 			FaroInfoTestUtil.buildActivityGroup(dataSourceId, individual1));
@@ -194,8 +200,12 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		Long dataSourceId = dataSource.getId();
 
-		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
-			"assets", FaroInfoTestUtil.buildPageAssetJSONObject(dataSourceId));
+		JSONObject assetJSONObject = _objectMapper.convertValue(
+			_assetRepository.save(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildPageAssetJSONObject(dataSourceId),
+					Asset.class)),
+			JSONObject.class);
 
 		String dayDateString = DateUtil.newDayDateString();
 
@@ -258,16 +268,19 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 		DataSource dataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildLiferayDataSource());
 
-		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
-			"assets",
-			FaroInfoTestUtil.buildPageAssetJSONObject(
-				dataSource.getId(),
-				JSONUtil.put(
-					JSONUtil.put(
-						"keyword", "test"
-					).put(
-						"type", "keyword"
-					))));
+		JSONObject assetJSONObject = _objectMapper.convertValue(
+			_assetRepository.save(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildPageAssetJSONObject(
+						dataSource.getId(),
+						JSONUtil.put(
+							JSONUtil.put(
+								"keyword", "test"
+							).put(
+								"type", "keyword"
+							))),
+					Asset.class)),
+			JSONObject.class);
 
 		String dayDateString = DateUtil.newDayDateString();
 
@@ -338,16 +351,19 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		individual = _individualDog.addIndividual(individual, false);
 
-		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
-			"assets",
-			FaroInfoTestUtil.buildPageAssetJSONObject(
-				dataSource.getId(),
-				JSONUtil.put(
-					JSONUtil.put(
-						"keyword", "test"
-					).put(
-						"type", "keyword"
-					))));
+		JSONObject assetJSONObject = _objectMapper.convertValue(
+			_assetRepository.save(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildPageAssetJSONObject(
+						dataSource.getId(),
+						JSONUtil.put(
+							JSONUtil.put(
+								"keyword", "test"
+							).put(
+								"type", "keyword"
+							))),
+					Asset.class)),
+			JSONObject.class);
 
 		String dayDateString = DateUtil.newDayDateString();
 
@@ -658,6 +674,9 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
+
+	@Autowired
+	private AssetRepository _assetRepository;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
