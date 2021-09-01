@@ -2,7 +2,10 @@ commerce:
     ml:
         locale: en_US
 forecast:
-    ahead: 1
+    algorithm: 'sarima'
+    cross:
+        validation:
+            steps: 4
     data:
         history:
             length: 8
@@ -10,6 +13,8 @@ forecast:
             length: 30
     force:
         parallelism:
+    horizon:
+        steps: 1
     model:
         max:
             order: 10
@@ -50,9 +55,30 @@ forecast:
             - "c"
             - "t"
             - "ct"
-    test:
-        sample:
-            count: 4
+    prophet:
+        changepoint_range: 0.8
+        checkpoint_prior_scale:
+            - 0.001
+            - 0.01
+            - 0.1
+            - 0.5
+        daily_seasonality: 'auto'
+        growth: 'linear'
+        holidays_prior_scale:
+            - 10.0
+        interval_width: 0.8
+        mcmc_samples: 0
+        n_changepoints: 25
+        seasonality_mode:
+            - 'additive'
+            - 'multiplicative'
+        seasonality_prior_scale:
+            - 0.01
+            - 0.1
+            - 1.0
+            - 10.0
+        weekly_seasonality: 'auto'
+        yearly_seasonality: 'auto'
 frequent:
     pattern:
         recommendation:
