@@ -98,9 +98,17 @@ public class AssetRepositoryImpl extends BaseRepository {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return selectSelectStep.from(
-			_getAssetTable(assetType, filterString, keyword)
-		).orderBy(
+		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
+			_getAssetTable(assetType, filterString, keyword));
+
+		if (pageable == null) {
+			return selectJoinStep.fetch(
+			).map(
+				this::_toAsset
+			);
+		}
+
+		return selectJoinStep.orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()

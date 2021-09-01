@@ -128,8 +128,10 @@ public class ElasticsearchAssetRepositoryImpl
 							_buildQueryBuilder(
 								assetType, filterString, keyword));
 
-						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+						if (pageable != null) {
+							setSearchSourceBuilderPage(
+								searchSourceBuilder, pageable);
+						}
 					})));
 	}
 
