@@ -31,6 +31,8 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 
 /**
  * @author Marcellus Tavares
@@ -53,8 +55,19 @@ public class CustomEventUpgradeStepTest {
 
 		_customEventUpgradeStep.upgrade("");
 
+		for (String cacheName : _cacheManager.getCacheNames()) {
+			Cache cache = _cacheManager.getCache(cacheName);
+
+			if (cache != null) {
+				cache.invalidate();
+			}
+		}
+
 		Assert.assertEquals(expectedEventsCount, _eventRepository.count());
 	}
+
+	@Autowired
+	private CacheManager _cacheManager;
 
 	@Autowired
 	private CustomEventUpgradeStep _customEventUpgradeStep;
