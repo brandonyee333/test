@@ -2,6 +2,9 @@
 	{
 		"activitiesCounts": [
 		],
+		"channelIds": [
+			"100"
+		],
 		"dataSourceAccountPKs": [
 		],
 		"dataSourceIndividualPKs": [
@@ -29,6 +32,20 @@
 					"sourceName": "email",
 					"value": "test1@liferay.com"
 				}
+			],
+			"givenName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "338486009405470846",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2019-02-11T17:05:06.814Z",
+					"fieldType": "Text",
+					"name": "givenName",
+					"ownerId": "338486037253283140",
+					"ownerType": "individual",
+					"sourceName": "firstName",
+					"value": "beta"
+				}
 			]
 		},
 		"id": "338486037253283140",
@@ -38,6 +55,9 @@
 	},
 	{
 		"activitiesCounts": [
+		],
+		"channelIds": [
+			"100"
 		],
 		"dataSourceAccountPKs": [
 		],
@@ -66,6 +86,20 @@
 					"sourceName": "email",
 					"value": "test2@liferay.com"
 				}
+			],
+			"givenName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "338486009405470846",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2019-02-11T17:05:06.814Z",
+					"fieldType": "Text",
+					"name": "givenName",
+					"ownerId": "338486041327913341",
+					"ownerType": "individual",
+					"sourceName": "firstName",
+					"value": "theta"
+				}
 			]
 		},
 		"id": "338486041327913341",
@@ -75,6 +109,9 @@
 	},
 	{
 		"activitiesCounts": [
+		],
+		"channelIds": [
+			"100"
 		],
 		"dataSourceAccountPKs": [
 		],
@@ -103,6 +140,20 @@
 					"sourceName": "email",
 					"value": "test3@liferay.com"
 				}
+			],
+			"givenName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "338486009405470846",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2019-02-11T17:05:06.814Z",
+					"fieldType": "Text",
+					"name": "givenName",
+					"ownerId": "338486039084349956",
+					"ownerType": "individual",
+					"sourceName": "firstName",
+					"value": "gamma"
+				}
 			]
 		},
 		"id": "338486039084349956",
@@ -111,6 +162,9 @@
 	},
 	{
 		"activitiesCounts": [
+		],
+		"channelIds": [
+			"100"
 		],
 		"dataSourceAccountPKs": [
 		],
@@ -139,6 +193,20 @@
 					"sourceName": "email",
 					"value": "test4@liferay.com"
 				}
+			],
+			"givenName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "338486009405470846",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2019-02-11T17:05:06.814Z",
+					"fieldType": "Text",
+					"name": "givenName",
+					"ownerId": "338486044983457832",
+					"ownerType": "individual",
+					"sourceName": "firstName",
+					"value": "omega"
+				}
 			]
 		},
 		"id": "338486044983457832",
@@ -148,6 +216,9 @@
 	},
 	{
 		"activitiesCounts": [
+		],
+		"channelIds": [
+			"100"
 		],
 		"dataSourceAccountPKs": [
 		],
@@ -175,6 +246,20 @@
 					"ownerType": "individual",
 					"sourceName": "email",
 					"value": "test5@liferay.com"
+				}
+			],
+			"givenName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "338486009405470846",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2019-02-11T17:05:06.814Z",
+					"fieldType": "Text",
+					"name": "givenName",
+					"ownerId": "338486040159673751",
+					"ownerType": "individual",
+					"sourceName": "firstName",
+					"value": "alpha"
 				}
 			]
 		},

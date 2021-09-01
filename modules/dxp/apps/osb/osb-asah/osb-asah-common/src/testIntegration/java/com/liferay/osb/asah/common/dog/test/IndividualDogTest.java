@@ -48,8 +48,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -72,6 +74,8 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+
+import org.yaml.snakeyaml.util.ArrayUtils;
 
 /**
  * @author Rachael Koestartyo
@@ -470,8 +474,37 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		Assert.assertEquals(segmentIds.toString(), 0, segmentIds.size());
 	}
 
+	@ElasticsearchIndex(
+		name = "fields", resourcePath = "fields.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@Test
-	public void testUpdateDynamicAddMemberships() throws Exception {
+	public void testSearchIndividuals() {
+		List<Individual> individuals = _individualDog.searchIndividuals(
+			100L, null, false, 0, 10,
+			new String[] {"demographics/givenName/value,asc"});
+
+		Assert.assertEquals(
+			ArrayUtils.toUnmodifiableList(
+				new String[] {"alpha", "beta", "gamma", "omega", "theta"}),
+			_getGivenNames(individuals));
+
+		individuals = _individualDog.searchIndividuals(
+			100L, null, false, 0, 10,
+			new String[] {"demographics/givenName/value,desc"});
+
+		Assert.assertEquals(
+			ArrayUtils.toUnmodifiableList(
+				new String[] {"theta", "omega", "gamma", "beta", "alpha"}),
+			_getGivenNames(individuals));
+	}
+
+	@Test
+	public void testUpdateDynamicAddMemberships() {
 		Individual individual = new Individual();
 
 		individual.setId(123L);
@@ -500,7 +533,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@Test
-	public void testUpdateDynamicMemberships() throws Exception {
+	public void testUpdateDynamicMemberships() {
 		Segment segment1 = new Segment();
 
 		segment1.setFilter("");
@@ -896,6 +929,28 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		);
 
 		Assert.assertEquals(expectedMiddleName, middleNameField.getValue());
+	}
+
+	private List<String> _getGivenNames(List<Individual> individuals) {
+		List<String> givenNames = new LinkedList<>();
+
+		Stream<Individual> stream1 = individuals.stream();
+
+		stream1.forEachOrdered(
+			individual -> {
+				Set<Field> fields = individual.getFields();
+
+				Stream<Field> stream2 = fields.stream();
+
+				Optional<Field> fieldOptional = stream2.filter(
+					field -> Objects.equals(field.getName(), "givenName")
+				).findFirst();
+
+				fieldOptional.ifPresent(
+					field -> givenNames.add(String.valueOf(field.getValue())));
+			});
+
+		return givenNames;
 	}
 
 	private static final String[] _FIELD_NAMES = {
