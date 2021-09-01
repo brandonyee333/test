@@ -89,6 +89,24 @@ public abstract class BaseAssetRepositoryTestCase
 	}
 
 	@Test
+	public void testCountByAssetTypeAndKeywordNotNull() {
+		Asset asset = new Asset();
+
+		asset.setAssetType("Page");
+		asset.setCanonicalURL("https://www.no-keywords.com");
+		asset.setChannelIds(SetUtil.of(1L));
+		asset.setDataSourceAssetPK("https://www.no-keywords.com");
+		asset.setDataSourceId(1L);
+		asset.setTitle("no keywords");
+		asset.setURL("https://www.no-keywords.com");
+
+		_assetRepository.save(asset);
+
+		Assert.assertEquals(
+			3, _assetRepository.countByAssetTypeAndKeywordNotNull("Page"));
+	}
+
+	@Test
 	public void testFindByAssetType() {
 		List<Asset> assets =
 			_assetRepository.findByAssetTypeAndFilterStringAndKeyword(
@@ -150,6 +168,26 @@ public abstract class BaseAssetRepositoryTestCase
 		Assert.assertEquals(
 			Arrays.asList("seize compelling action-items"),
 			_getPageAssetTitles(assets));
+	}
+
+	@Test
+	public void testFindByAssetTypeAndKeywordNotNull() {
+		Asset asset = new Asset();
+
+		asset.setAssetType("Page");
+		asset.setCanonicalURL("https://www.no-keywords.com");
+		asset.setChannelIds(SetUtil.of(1L));
+		asset.setDataSourceAssetPK("https://www.no-keywords.com");
+		asset.setDataSourceId(1L);
+		asset.setTitle("no keywords");
+		asset.setURL("https://www.no-keywords.com");
+
+		_assetRepository.save(asset);
+
+		List<Asset> assets = _assetRepository.findByAssetTypeAndKeywordNotNull(
+			"Page", null);
+
+		Assert.assertEquals(assets.toString(), 3, assets.size());
 	}
 
 	@Test
