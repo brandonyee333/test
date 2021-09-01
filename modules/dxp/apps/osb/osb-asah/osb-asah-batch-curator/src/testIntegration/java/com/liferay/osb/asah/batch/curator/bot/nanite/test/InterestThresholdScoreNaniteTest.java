@@ -26,9 +26,11 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -98,9 +100,10 @@ public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 
 	@Test
 	public void testThresholdIsMinimumWhen0Activities() throws Exception {
-		faroInfoElasticsearchInvoker.add(
-			"assets",
-			FaroInfoTestUtil.buildPageAssetJSONObject(_dataSource.getId()));
+		_assetRepository.save(
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildPageAssetJSONObject(_dataSource.getId()),
+				Asset.class));
 
 		_interestThresholdScoreNanite.run(null);
 
@@ -144,7 +147,7 @@ public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 					DateUtil.addDays(DateUtil.newDayDateString(), -days)),
 				_individual));
 
-		JSONObject pageAssetJSONObject = null;
+		Asset pageAsset = null;
 
 		if (keywords.length > 0) {
 			JSONArray keywordsJSONArray = new JSONArray();
@@ -158,16 +161,22 @@ public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 					));
 			}
 
-			pageAssetJSONObject = faroInfoElasticsearchInvoker.add(
-				"assets",
-				FaroInfoTestUtil.buildPageAssetJSONObject(
-					_dataSource.getId(), keywordsJSONArray));
+			pageAsset = _assetRepository.save(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildPageAssetJSONObject(
+						_dataSource.getId(), keywordsJSONArray),
+					Asset.class));
 		}
 		else {
-			pageAssetJSONObject = faroInfoElasticsearchInvoker.add(
-				"assets",
-				FaroInfoTestUtil.buildPageAssetJSONObject(_dataSource.getId()));
+			pageAsset = _assetRepository.save(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildPageAssetJSONObject(
+						_dataSource.getId()),
+					Asset.class));
 		}
+
+		JSONObject pageAssetJSONObject = _objectMapper.convertValue(
+			pageAsset, JSONObject.class);
 
 		for (int i = 0; i < count; i++) {
 			String pageViewActivityId = RandomTestUtil.randomUUID();
@@ -210,6 +219,9 @@ public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
+
+	@Autowired
+	private AssetRepository _assetRepository;
 
 	private DataSource _dataSource;
 
