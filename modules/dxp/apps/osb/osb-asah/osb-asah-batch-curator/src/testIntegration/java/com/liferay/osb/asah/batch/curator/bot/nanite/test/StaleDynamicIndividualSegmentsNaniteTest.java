@@ -27,9 +27,11 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahTask;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -77,9 +79,13 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 		_dataSource.setId(Long.parseLong(RandomTestUtil.randomId()));
 
-		_assetJSONObject = faroInfoElasticsearchInvoker.add(
-			"assets",
-			FaroInfoTestUtil.buildPageAssetJSONObject(_dataSource.getId()));
+		_assetJSONObject = _objectMapper.convertValue(
+			_assetRepository.save(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildPageAssetJSONObject(
+						_dataSource.getId()),
+					Asset.class)),
+			JSONObject.class);
 
 		Individual individual = FaroInfoTestUtil.buildIndividual(_dataSource);
 
@@ -421,6 +427,10 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	private AsahTaskDog _asahTaskDog;
 
 	private JSONObject _assetJSONObject;
+
+	@Autowired
+	private AssetRepository _assetRepository;
+
 	private DataSource _dataSource;
 
 	@Autowired
