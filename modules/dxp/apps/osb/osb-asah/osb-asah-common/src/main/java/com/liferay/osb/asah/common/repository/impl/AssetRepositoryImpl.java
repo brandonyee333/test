@@ -120,6 +120,33 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public List<Asset> findByAssetTypeAndKeywordNotNull(
+		String assetType, Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
+			_getAssetTableKeywordNotNull(assetType));
+
+		if (pageable == null) {
+			return selectJoinStep.fetch(
+			).map(
+				this::_toAsset
+			);
+		}
+
+		return selectJoinStep.orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			this::_toAsset
+		);
+	}
+
 	public List<Asset> findByFilterString(
 		@Nullable String filterString, Pageable pageable) {
 

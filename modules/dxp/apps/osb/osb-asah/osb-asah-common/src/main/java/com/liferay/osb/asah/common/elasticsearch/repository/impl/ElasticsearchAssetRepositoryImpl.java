@@ -136,6 +136,29 @@ public class ElasticsearchAssetRepositoryImpl
 	}
 
 	@Override
+	public List<Asset> findByAssetTypeAndKeywordNotNull(
+		String assetType, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					"assets",
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.filter(
+								QueryBuilders.termQuery("assetType", "Page")
+							).filter(
+								QueryBuilders.existsQuery("keywords.keyword")
+							));
+
+						if (pageable != null) {
+							setSearchSourceBuilderPage(
+								searchSourceBuilder, pageable);
+						}
+					})));
+	}
+
+	@Override
 	public Optional<Asset> findByDataSourceAssetPKAndDataSourceId(
 		String dataSourceAssetPK, Long dataSourceId) {
 
