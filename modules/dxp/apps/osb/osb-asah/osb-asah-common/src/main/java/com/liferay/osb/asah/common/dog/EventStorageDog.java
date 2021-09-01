@@ -74,51 +74,6 @@ public class EventStorageDog {
 			sessionId, analyticsEvent.getUserId());
 	}
 
-	@Transactional
-	public List<Event> store(
-		Map<String, List<AnalyticsEvent>> analyticsEventsMap) {
-
-		List<Event> events = new ArrayList<>();
-
-		analyticsEventsMap.forEach(
-			(sessionId, analyticsEvents) -> {
-				Assert.notBlank(sessionId, "Session ID is blank");
-
-				for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-					EventDefinition eventDefinition = _resolveEventDefinition(
-						analyticsEvent);
-
-					if (eventDefinition.isBlocked()) {
-						continue;
-					}
-
-					Set<EventAttribute> eventAttributes =
-						_resolveEventAttributes(
-							analyticsEvent, eventDefinition.getId());
-
-					events.add(
-						new Event(
-							analyticsEvent.getId(),
-							analyticsEvent.getApplicationId(),
-							Long.valueOf(analyticsEvent.getChannelId()),
-							analyticsEvent.getCreateDate(),
-							Long.valueOf(analyticsEvent.getDataSourceId()),
-							eventAttributes, analyticsEvent.getEventDate(),
-							eventDefinition.getId(),
-							Optional.ofNullable(
-								analyticsEvent.getIndividualId()
-							).map(
-								Long::valueOf
-							).orElse(
-								null
-							),
-							sessionId, analyticsEvent.getUserId()));
-				}
-			});
-
-		return _eventDog.addEvents(events);
-	}
-
 	private Set<Long> _getEventDefinitionIds(
 		Set<EventDefinitionEventAttributeDefinition>
 			eventDefinitionEventAttributeDefinitions) {
