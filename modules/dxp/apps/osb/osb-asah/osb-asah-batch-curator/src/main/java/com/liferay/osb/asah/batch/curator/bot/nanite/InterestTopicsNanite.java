@@ -24,14 +24,16 @@ import cc.mallet.types.IDSorter;
 import cc.mallet.types.Instance;
 import cc.mallet.types.InstanceList;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.dog.BlockedKeywordDog;
 import com.liferay.osb.asah.common.dog.InterestTopicDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.entity.InterestTopic;
+import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -48,9 +50,6 @@ import java.util.stream.Stream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 
@@ -58,6 +57,7 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -148,10 +148,11 @@ public class InterestTopicsNanite extends BaseNanite {
 			new SerialPipes(_createPreprocessPipes()));
 
 		Iterator<Instance> instanceIterator = new InstanceIterator(
+			_assetRepository,
 			SetUtil.map(
 				_blockedKeywordDog.getBlockedKeywords(),
 				BlockedKeyword::getKeyword),
-			_faroInfoElasticsearchInvoker);
+			_objectMapper);
 
 		instanceList.addThruPipe(instanceIterator);
 
@@ -168,10 +169,10 @@ public class InterestTopicsNanite extends BaseNanite {
 	private static final String _SEPARATOR = "_SEPARATOR_";
 
 	@Autowired
-	private BlockedKeywordDog _blockedKeywordDog;
+	private AssetRepository _assetRepository;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+	@Autowired
+	private BlockedKeywordDog _blockedKeywordDog;
 
 	@Autowired
 	private InterestTopicDog _interestTopicDog;
@@ -194,17 +195,21 @@ public class InterestTopicsNanite extends BaseNanite {
 	@Value("${lda.topics.count:10}")
 	private int _ldaTopicsCount;
 
+	@Autowired
+	private ObjectMapper _objectMapper;
+
 	private static class InstanceIterator implements Iterator<Instance> {
 
 		public InstanceIterator(
-			Set<String> blockedKeywords,
-			ElasticsearchInvoker elasticsearchInvoker) {
+			AssetRepository assetRepository, Set<String> blockedKeywords,
+			ObjectMapper objectMapper) {
 
+			_assetRepository = assetRepository;
 			_blockedKeywords = blockedKeywords;
-			_elasticsearchInvoker = elasticsearchInvoker;
+			_objectMapper = objectMapper;
 
-			_totalCount = elasticsearchInvoker.count(
-				"assets", _createQueryBuilder());
+			_totalCount = assetRepository.countByAssetTypeAndKeywordNotNull(
+				"Page");
 		}
 
 		@Override
@@ -232,38 +237,25 @@ public class InterestTopicsNanite extends BaseNanite {
 				"", asset.get("id"), null);
 		}
 
-		private void _cacheAssetsBatch(SearchHits searchHits) {
-			List<Map<String, Object>> assets = _toAssets(searchHits);
+		private void _fetchAssetsBatch() {
+			List<Asset> assets =
+				_assetRepository.findByAssetTypeAndKeywordNotNull(
+					"Page", PageRequest.of(_currentPage, 50, Sort.asc("id")));
+
+			Stream<Asset> stream = assets.stream();
+
+			List<Map<String, Object>> assetsMap = stream.map(
+				asset -> (Map<String, Object>)_objectMapper.convertValue(
+					asset, Map.class)
+			).collect(
+				Collectors.toList()
+			);
 
 			_assetsQueue.clear();
 
-			_assetsQueue.addAll(assets);
+			_assetsQueue.addAll(assetsMap);
 
-			Map<String, Object> lastAsset = assets.get(assets.size() - 1);
-
-			_lastAssetId = (String)lastAsset.get("id");
-		}
-
-		private QueryBuilder _createQueryBuilder() {
-			return BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("assetType", "Page")
-			).filter(
-				QueryBuilders.existsQuery("keywords")
-			);
-		}
-
-		private void _fetchAssetsBatch() {
-			SearchResponse searchResponse = _elasticsearchInvoker.search(
-				"assets",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(_createQueryBuilder());
-					searchSourceBuilder.searchAfter(
-						new Object[] {_lastAssetId});
-					searchSourceBuilder.size(50);
-					searchSourceBuilder.sort("id");
-				});
-
-			_cacheAssetsBatch(searchResponse.getHits());
+			_currentPage++;
 		}
 
 		private List<Map<String, Object>> _toAssets(SearchHits searchHits) {
@@ -288,12 +280,13 @@ public class InterestTopicsNanite extends BaseNanite {
 			);
 		}
 
+		private final AssetRepository _assetRepository;
 		private final Queue<Map<String, Object>> _assetsQueue =
 			new LinkedList<>();
 		private final Set<String> _blockedKeywords;
 		private long _currentCount;
-		private final ElasticsearchInvoker _elasticsearchInvoker;
-		private String _lastAssetId = "0";
+		private int _currentPage;
+		private final ObjectMapper _objectMapper;
 		private final long _totalCount;
 
 	}
