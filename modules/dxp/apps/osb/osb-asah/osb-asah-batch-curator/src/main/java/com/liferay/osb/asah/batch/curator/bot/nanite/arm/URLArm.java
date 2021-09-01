@@ -14,17 +14,15 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.arm;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
-
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,16 +39,19 @@ public class URLArm {
 	}
 
 	public List<String> getURLs(String keyword) {
-		JSONArray assetsJSONArray = _elasticsearchInvoker.get(
-			"assets",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("assetType", "Page")
-			).filter(
-				QueryBuilders.termQuery("keywords.keyword", keyword)
-			));
+		List<Asset> assets = _assetDog.getAssets("Page", keyword);
 
-		return JSONUtil.toStringList(assetsJSONArray, "dataSourceAssetPK");
+		Stream<Asset> stream = assets.stream();
+
+		return stream.map(
+			Asset::getDataSourceAssetPK
+		).collect(
+			Collectors.toList()
+		);
 	}
+
+	@Autowired
+	private AssetDog _assetDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;

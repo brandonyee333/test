@@ -40,6 +40,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -303,6 +304,12 @@ public class ElasticsearchAssetRepositoryImpl
 					)
 				).should(
 					QueryBuilders.wildcardQuery("url", "*" + keywords + "*")
+				).should(
+					QueryBuilders.nestedQuery(
+						"keywords",
+						QueryBuilders.wildcardQuery(
+							"keywords.keyword", "*" + keywords + "*"),
+						ScoreMode.None)
 				));
 		}
 
