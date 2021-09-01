@@ -19,8 +19,11 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.arm.URLArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.model.KeywordInfo;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
+import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoInterestDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
@@ -30,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -37,7 +41,6 @@ import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -241,42 +244,34 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	private Map<String, List<KeywordInfo>> _getKeywordInfosMap() {
 		Map<String, List<KeywordInfo>> keywordInfosMap = new HashMap<>();
 
-		JSONArray assetsJSONArray = faroInfoElasticsearchInvoker.get(
-			"assets",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("assetType", "Page")
-			).filter(
-				QueryBuilders.existsQuery("keywords.keyword")
-			));
+		List<Asset> assets = _assetDog.getAssets("Page");
 
-		for (int i = 0; i < assetsJSONArray.length(); i++) {
-			JSONObject assetJSONObject = assetsJSONArray.getJSONObject(i);
+		assets.forEach(
+			asset -> {
+				String dataSourceAssetPK = asset.getDataSourceAssetPK();
 
-			String dataSourceAssetPK = assetJSONObject.getString(
-				"dataSourceAssetPK");
+				String canonicalUrl = Optional.ofNullable(
+					asset.getCanonicalURL()
+				).orElse(
+					dataSourceAssetPK
+				);
 
-			String canonicalUrl = assetJSONObject.optString(
-				"canonicalUrl", dataSourceAssetPK);
+				String title = asset.getTitle();
 
-			String name = assetJSONObject.getString("name");
+				Set<AssetKeyword> assetKeywords = asset.getAssetKeywords();
 
-			JSONArray keywordsJSONArray = assetJSONObject.getJSONArray(
-				"keywords");
+				assetKeywords.forEach(
+					assetKeyword -> {
+						List<KeywordInfo> keywordInfos =
+							keywordInfosMap.computeIfAbsent(
+								assetKeyword.getKeyword(),
+								key -> new ArrayList<>());
 
-			for (int j = 0; j < keywordsJSONArray.length(); j++) {
-				JSONObject keywordJSONObject = keywordsJSONArray.getJSONObject(
-					j);
-
-				String keyword = keywordJSONObject.getString("keyword");
-
-				List<KeywordInfo> keywordInfos =
-					keywordInfosMap.computeIfAbsent(
-						keyword, key -> new ArrayList<>());
-
-				keywordInfos.add(
-					new KeywordInfo(canonicalUrl, dataSourceAssetPK, name));
-			}
-		}
+						keywordInfos.add(
+							new KeywordInfo(
+								canonicalUrl, dataSourceAssetPK, title));
+					});
+			});
 
 		return keywordInfosMap;
 	}
@@ -400,6 +395,9 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
+	private AssetDog _assetDog;
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
