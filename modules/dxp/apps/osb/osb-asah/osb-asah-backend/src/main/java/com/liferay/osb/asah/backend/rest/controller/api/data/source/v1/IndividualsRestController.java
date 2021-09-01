@@ -30,7 +30,7 @@ import com.liferay.osb.asah.common.model.Transformation;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -155,7 +155,7 @@ public class IndividualsRestController extends BaseRestController {
 
 		List<Individual> individuals = individualsPage.getContent();
 
-		Set<IndividualDTO> individualDTOs = new HashSet<>();
+		Set<IndividualDTO> individualDTOs = new LinkedHashSet<>();
 
 		Stream<Individual> stream = individuals.stream();
 
@@ -252,7 +252,7 @@ public class IndividualsRestController extends BaseRestController {
 
 		List<Segment> segments = segmentsPage.getContent();
 
-		Set<SegmentDTO> segmentDTOs = new HashSet<>();
+		Set<SegmentDTO> segmentDTOs = new LinkedHashSet<>();
 
 		Stream<Segment> stream = segments.stream();
 
