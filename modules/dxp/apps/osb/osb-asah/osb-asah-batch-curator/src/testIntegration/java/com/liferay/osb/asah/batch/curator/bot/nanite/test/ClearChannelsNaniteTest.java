@@ -25,12 +25,14 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
@@ -39,6 +41,7 @@ import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -81,16 +84,18 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 			FaroInfoTestUtil.buildActivityGroup(
 				channelId, dataSource.getId(), new Date(), individual));
 
-		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
-			"assets",
-			FaroInfoTestUtil.buildAssetJSONObject(
-				"Page", channelId, dataSource.getId()));
+		Asset asset = _assetRepository.save(
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildAssetJSONObject(
+					"Page", channelId, dataSource.getId()),
+				Asset.class));
 
 		JSONObject activityJSONObject = faroInfoElasticsearchInvoker.add(
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
 				_objectMapper.convertValue(activityGroup, JSONObject.class),
-				assetJSONObject, channelId, "pageViewed", new String[0]));
+				_objectMapper.convertValue(asset, JSONObject.class), channelId,
+				"pageViewed", new String[0]));
 
 		_clearChannelsNanite.run(
 			JSONUtil.put("channelIds", JSONUtil.put(channelId)));
@@ -109,9 +114,11 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 		Assert.assertFalse(
 			_activityGroupRepository.existsById(activityGroupId));
 
-		Assert.assertFalse(
-			faroInfoElasticsearchInvoker.exists(
-				"assets", assetJSONObject.getString("id")));
+		Optional<Asset> assetOptional = _assetRepository.findById(
+			asset.getId());
+
+		Assert.assertFalse(assetOptional.isPresent());
+
 		Assert.assertTrue(_channelRepository.existsById(channelId));
 		Assert.assertTrue(_dataSourceRepository.existsById(dataSource.getId()));
 		Assert.assertFalse(
@@ -134,6 +141,9 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 
 	@Autowired
 	private ActivityGroupRepository _activityGroupRepository;
+
+	@Autowired
+	private AssetRepository _assetRepository;
 
 	@MockBean
 	private ChannelHttp _channelHttp;
