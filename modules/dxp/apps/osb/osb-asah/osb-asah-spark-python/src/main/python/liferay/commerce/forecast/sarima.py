@@ -12,7 +12,8 @@
 from joblib import Parallel, \
 	delayed
 
-from liferay.commerce.forecast.constants import CommerceMLForecastPeriod
+from liferay.commerce.forecast.constants import CommerceMLForecastPeriod, \
+	ModelSelectionCriterion
 
 from math import sqrt
 
@@ -27,7 +28,6 @@ from sklearn.metrics import mean_squared_error
 
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 
-import enum
 import itertools
 import json
 import logging
@@ -596,22 +596,3 @@ class DateTimeIndexGenerator(object):
 		dataframe.sort_index(inplace=True)
 
 		return dataframe
-
-class ModelSelectionCriterion(enum.Enum):
-
-	AIC = 2
-
-	ERROR = 1
-
-	@classmethod
-	def from_description(cls, description):
-		if description == 'aic':
-			return ModelSelectionCriterion.AIC
-		elif description == 'error':
-			return ModelSelectionCriterion.ERROR
-
-		raise ValueError(
-			"{} is not a valid {} description".format(
-				description, cls.__name__
-			)
-		)

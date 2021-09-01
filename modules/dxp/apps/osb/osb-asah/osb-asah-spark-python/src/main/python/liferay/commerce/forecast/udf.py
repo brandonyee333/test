@@ -13,7 +13,8 @@ from liferay.commerce.configuration import CommerceConfiguration
 from liferay.commerce.forecast.constants import CommerceMLForecastPeriod, \
 	CommerceMLForecastScope, \
 	CommerceMLForecastTarget
-from liferay.commerce.forecast.sarima import CommerceSARIMAX
+from liferay.commerce.forecast.prophet import ProphetCommerceForecast
+from liferay.commerce.forecast.sarima import SARIMAXCommerceForecast
 
 from pyspark.sql import types as T
 
@@ -90,36 +91,95 @@ class ForecastUDFHelper(object):
 		return schema
 
 	def get_instance(self):
-		return CommerceSARIMAX(
+		algorithm = self._configuration.get('forecast.algorithm')
+
+		if algorithm == 'prophet':
+			return self.get_prophet_instance()
+		else:
+			return self.get_sarima_instance()
+
+	def get_prophet_instance(self):
+		return ProphetCommerceForecast(
 			period=self._period,
 			scope=self._scope,
 			target=self._target,
-			p_params=self._configuration.get_list('forecast.model.order.p'),
-			d_params=self._configuration.get_list('forecast.model.order.d'),
-			q_params=self._configuration.get_list('forecast.model.order.q'),
+			changepoint_prior_scale=self._configuration.get_list(
+				'forecast.prophet.checkpoint_prior_scale'
+			),
+			changepoint_range=self._configuration.get(
+				'forecast.prophet.changepoint_range'
+			),
+			cross_validation_steps=self._configuration.get(
+				'forecast.cross.validation.steps'
+			),
+			daily_seasonality=self._configuration.get(
+				'forecast.prophet.daily_seasonality'
+			),
+			growth=self._configuration.get('forecast.prophet.growth'),
+			holidays_prior_scale=self._configuration.get_list(
+				'forecast.prophet.holidays_prior_scale'
+			),
+			horizon_steps=self._configuration.get('forecast.horizon.steps'),
+			interval_width=self._configuration.get(
+				'forecast.prophet.interval_width'
+			),
+			mcmc_samples=self._configuration.get(
+				'forecast.prophet.mcmc_samples'
+			),
+			model_selection_criterion=self._configuration.get(
+				'forecast.model.selection.criterion'
+			),
+			n_changepoints=self._configuration.get(
+				'forecast.prophet.n_changepoints'
+			),
+			parallel_count=self._configuration.get(
+				'forecast.force.parallelism', self._get_parallel_count()
+			),
+			seasonality_mode=self._configuration.get_list(
+				'forecast.prophet.seasonality_mode'
+			),
+			seasonality_prior_scale=self._configuration.get_list(
+				'forecast.prophet.seasonality_prior_scale'
+			),
+			weekly_seasonality=self._configuration.get(
+				'forecast.prophet.weekly_seasonality'
+			),
+			yearly_seasonality=self._configuration.get(
+				'forecast.prophet.yearly_seasonality'
+			)
+		)
+
+	def get_sarima_instance(self):
+		return SARIMAXCommerceForecast(
+			period=self._period,
+			scope=self._scope,
+			target=self._target,
+			cross_validation_steps=self._configuration.get(
+				'forecast.cross.validation.steps'
+			),
+			dynamic=self._configuration.get(
+				'forecast.model.prediction.dynamic.flag'
+			),
+			horizon_steps=self._configuration.get('forecast.horizon.steps'),
+			max_order=self._configuration.get('forecast.model.max.order'),
+			model_selection_criterion=self._configuration.get(
+				'forecast.model.selection.criterion'
+			),
+			order_d_params=self._configuration.get_list('forecast.model.order.d'),
+			order_p_params=self._configuration.get_list('forecast.model.order.p'),
+			order_q_params=self._configuration.get_list('forecast.model.order.q'),
+			parallel_count=self._configuration.get(
+				'forecast.force.parallelism', self._get_parallel_count()
+			),
+			seasonal_d_params=self._configuration.get_list(
+				'forecast.model.seasonal.d'
+			),
+			seasonal_m_params=self._configuration.get_list('forecast.model.period'),
 			seasonal_p_params=self._configuration.get_list(
 				'forecast.model.seasonal.p'
 			),
 			seasonal_q_params=self._configuration.get_list(
 				'forecast.model.seasonal.q'
 			),
-			seasonal_d_params=self._configuration.get_list(
-				'forecast.model.seasonal.d'
-			),
-			t_params=self._configuration.get_list('forecast.model.trend'),
-			m_params=self._configuration.get_list('forecast.model.period'),
-			max_order=self._configuration.get('forecast.model.max.order'),
-			ahead=self._configuration.get('forecast.ahead'),
-			dynamic=self._configuration.get(
-				'forecast.model.prediction.dynamic.flag'
-			),
-			test_sample_count=self._configuration.get(
-				'forecast.test.sample.count'
-			),
-			parallel_count=self._configuration.get(
-				'forecast.force.parallelism', self._get_parallel_count()
-			),
-			model_selection_criterion=self._configuration.get(
-				'forecast.model.selection.criterion'
-			)
+			trend_params=self._configuration.get_list('forecast.model.trend')
 		)

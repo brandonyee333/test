@@ -286,6 +286,8 @@ class MergeHistorySparkJob(BaseSparkJob):
 
 		forecast_data_frame = order_forecast_data_frame.filter(
 			'row_number <= {}'.format(forecast_data_history_length)
+		).drop(
+			'row_number'
 		)
 
 		forecast_prediction_data_frame = self.spark_session.table(

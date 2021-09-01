@@ -77,10 +77,6 @@ class CommerceMLForecastTarget(Enum):
 	def column(self):
 		return self.value[1]
 
-	@property
-	def label(self):
-		return self.value[0]
-
 	@classmethod
 	def from_description(cls, label):
 		for item in cls:
@@ -89,4 +85,27 @@ class CommerceMLForecastTarget(Enum):
 
 		raise ValueError(
 			'{} is not a valid {} label'.format(label, cls.__name__)
+		)
+
+	@property
+	def label(self):
+		return self.value[0]
+
+class ModelSelectionCriterion(Enum):
+
+	AIC = 2
+
+	ERROR = 1
+
+	@classmethod
+	def from_description(cls, description):
+		if description == 'aic':
+			return ModelSelectionCriterion.AIC
+		elif description == 'error':
+			return ModelSelectionCriterion.ERROR
+
+		raise ValueError(
+			"{} is not a valid {} description".format(
+				description, cls.__name__
+			)
 		)
