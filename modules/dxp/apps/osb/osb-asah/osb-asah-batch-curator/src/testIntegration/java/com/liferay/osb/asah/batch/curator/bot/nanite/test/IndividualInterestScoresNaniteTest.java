@@ -28,10 +28,12 @@ import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -83,10 +85,19 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
 		_dataSourceId = dataSource.getId();
 
-		_assetJSONObject1 = faroInfoElasticsearchInvoker.add(
-			"assets", FaroInfoTestUtil.buildPageAssetJSONObject(_dataSourceId));
-		_assetJSONObject2 = faroInfoElasticsearchInvoker.add(
-			"assets", FaroInfoTestUtil.buildPageAssetJSONObject(_dataSourceId));
+		_assetJSONObject1 = _objectMapper.convertValue(
+			_assetRepository.save(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildPageAssetJSONObject(_dataSourceId),
+					Asset.class)),
+			JSONObject.class);
+
+		_assetJSONObject2 = _objectMapper.convertValue(
+			_assetRepository.save(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildPageAssetJSONObject(_dataSourceId),
+					Asset.class)),
+			JSONObject.class);
 
 		_addActivities(DateUtil.addDays(DateUtil.newDayDateString(), -1));
 	}
@@ -400,6 +411,10 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
 	private JSONObject _assetJSONObject1;
 	private JSONObject _assetJSONObject2;
+
+	@Autowired
+	private AssetRepository _assetRepository;
+
 	private Long _dataSourceId;
 
 	@Autowired
