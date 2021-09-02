@@ -117,7 +117,7 @@ public class ElasticsearchAssetRepositoryImpl
 	@Override
 	public List<Asset> findByAssetTypeAndFilterStringAndKeyword(
 		@Nullable String assetType, @Nullable String filterString,
-		@Nullable String keyword, Pageable pageable) {
+		@Nullable String keyword, @Nullable Pageable pageable) {
 
 		return toList(
 			new JSONArray(

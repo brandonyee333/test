@@ -50,7 +50,7 @@ public interface AssetRepository extends Repository<Asset, Long> {
 	@Cacheable
 	public List<Asset> findByAssetTypeAndFilterStringAndKeyword(
 		String assetType, @Nullable String filterString,
-		@Nullable String keyword, Pageable pageable);
+		@Nullable String keyword, @Nullable Pageable pageable);
 
 	public List<Asset> findByAssetTypeAndKeywordNotNull(
 		String assetType, Pageable pageable);

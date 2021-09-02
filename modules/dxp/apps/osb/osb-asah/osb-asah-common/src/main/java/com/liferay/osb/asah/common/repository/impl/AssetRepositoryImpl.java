@@ -94,7 +94,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 
 	public List<Asset> findByAssetTypeAndFilterStringAndKeyword(
 		String assetType, @Nullable String filterString,
-		@Nullable String keyword, Pageable pageable) {
+		@Nullable String keyword, @Nullable Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
