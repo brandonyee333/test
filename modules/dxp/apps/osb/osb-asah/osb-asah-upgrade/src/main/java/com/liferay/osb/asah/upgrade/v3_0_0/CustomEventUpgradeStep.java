@@ -107,9 +107,13 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		while (true) {
 			searchSourceBuilder.searchAfter(new Object[] {id});
 
+			long startTime = System.currentTimeMillis();
+
 			SearchResponse searchResponse =
 				_faroInfoElasticsearchInvoker.search(
 					"activities", searchSourceBuilder);
+
+			long endTime = System.currentTimeMillis();
 
 			SearchHits searchHits = searchResponse.getHits();
 
@@ -121,6 +125,12 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 				}
 
 				break;
+			}
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"It took " + (endTime - startTime) + "ms to retrieve " +
+						hits.length + " activities.");
 			}
 
 			Stream<SearchHit> stream = Arrays.stream(hits);
@@ -284,6 +294,8 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		List<Map<String, Object>> eventAttributes = new ArrayList<>();
 		List<Map<String, Object>> events = new ArrayList<>();
 
+		long startTime = System.currentTimeMillis();
+
 		ProjectIdThreadLocal.setProjectId(projectId);
 
 		for (int i = 0; i < activitiesJSONArray.length(); i++) {
@@ -339,7 +351,15 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 				event -> sb.append(event.get("analyticsEventId") + ", "));
 
 			_log.error(sb.toString(), exception);
-		}		
+		}
+		finally {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"It took " + (System.currentTimeMillis() - startTime) +
+						"ms to insert " + events.size() + " events and " +
+							eventAttributes.size() + " event attributes.");
+			}
+		}
 	}
 
 	private static final String _SQL_INSERT_EVENT =
