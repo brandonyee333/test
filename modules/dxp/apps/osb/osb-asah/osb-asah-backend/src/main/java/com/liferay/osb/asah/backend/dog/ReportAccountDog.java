@@ -20,14 +20,17 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -40,6 +43,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -66,24 +73,30 @@ public class ReportAccountDog {
 		return _mapAccount(searchHitArray[0]);
 	}
 
+	public Page<Account> getAccountPage(Long accountId, int size, Sort sort) {
+		List<com.liferay.osb.asah.common.entity.Account> accounts =
+			_accountRepository.findByIdAfter(
+				accountId, PageRequest.of(0, size, sort));
+
+		Stream<com.liferay.osb.asah.common.entity.Account> stream =
+			accounts.stream();
+
+		List<Account> reportAccounts = new LinkedList<>();
+
+		stream.forEachOrdered(
+			account -> reportAccounts.add(_mapAccount(account)));
+
+		return PageableExecutionUtils.getPage(
+			reportAccounts, PageRequest.of(0, size, sort),
+			() -> _accountRepository.countByIdAfter(accountId));
+	}
+
 	public ResultBag<Account> getAccountResultBag(int size, int start) {
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"accounts", _faroInfoElasticsearchInvoker,
 			_buildSearchSourceBuilder(
 				_getAccountOrganizationFetchSourceExcludes(), null, size,
 				start));
-
-		return DogUtil.createResultBag(this::_mapAccount, searchHits);
-	}
-
-	public ResultBag<Account> getAccountResultBag(
-		Object[] searchAfter, int size, SortBuilder<?> sortBuilder) {
-
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"accounts", _faroInfoElasticsearchInvoker,
-			DogUtil.buildSearchSourceBuilder(
-				_getAccountOrganizationFetchSourceExcludes(), null, searchAfter,
-				size, sortBuilder));
 
 		return DogUtil.createResultBag(this::_mapAccount, searchHits);
 	}
@@ -170,6 +183,25 @@ public class ReportAccountDog {
 		return propertyJSONObject.get("value");
 	}
 
+	private Account _mapAccount(
+		com.liferay.osb.asah.common.entity.Account account) {
+
+		Account newAccount = new Account();
+
+		newAccount.setActiveIndividualsCount(
+			account.getActiveIndividualsCount());
+		newAccount.setDateCreated(account.getCreateDate());
+		newAccount.setDateModified(account.getModifiedDate());
+		newAccount.setId(String.valueOf(account.getId()));
+		newAccount.setIndividualsCount(account.getIndividualCount());
+		newAccount.setProperties(
+			_getAccountOrganizationProperties(
+				_objectMapper.convertValue(
+					account.getOrganization(), JSONObject.class)));
+
+		return newAccount;
+	}
+
 	private Account _mapAccount(SearchHit searchHit) {
 		Account account = new Account();
 
@@ -191,6 +223,9 @@ public class ReportAccountDog {
 
 		return account;
 	}
+
+	@Autowired
+	private AccountRepository _accountRepository;
 
 	@Autowired
 	private DataDog _dataDog;
