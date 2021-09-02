@@ -204,7 +204,7 @@ public class InterestTopicsNanite extends BaseNanite {
 			_blockedKeywords = blockedKeywords;
 			_objectMapper = objectMapper;
 
-			_totalCount = assetDog.countByAssetTypeAndKeywordNotNull("Page");
+			_totalCount = assetDog.getAssetsCount("Page");
 		}
 
 		@Override
@@ -233,7 +233,7 @@ public class InterestTopicsNanite extends BaseNanite {
 		}
 
 		private void _fetchAssetsBatch() {
-			List<Asset> assets = _assetDog.findByAssetTypeAndKeywordNotNull(
+			List<Asset> assets = _assetDog.getAssets(
 				"Page", _currentPage, 50, Sort.asc("id"));
 
 			Stream<Asset> stream = assets.stream();

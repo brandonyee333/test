@@ -73,10 +73,6 @@ public class AssetDog {
 		return _assetRepository.save(asset);
 	}
 
-	public long countByAssetTypeAndKeywordNotNull(String assetType) {
-		return _assetRepository.countByAssetTypeAndKeywordNotNull(assetType);
-	}
-
 	public void deleteAsset(Asset asset, String deletionDayDateString) {
 		Long assetId = asset.getId();
 
@@ -133,13 +129,6 @@ public class AssetDog {
 		return assetOptional.orElse(null);
 	}
 
-	public List<Asset> findByAssetTypeAndKeywordNotNull(
-		String assetType, int page, int size, Sort sort) {
-
-		return _assetRepository.findByAssetTypeAndKeywordNotNull(
-			assetType, PageRequest.of(page, size, sort));
-	}
-
 	public Asset getAsset(Long assetId) {
 		Optional<Asset> assetOptional = _assetRepository.findById(assetId);
 
@@ -181,6 +170,17 @@ public class AssetDog {
 		}
 
 		return IterableUtils.toList(_assetRepository.findAllById(assetIds));
+	}
+
+	public List<Asset> getAssets(
+		String assetType, int page, int size, Sort sort) {
+
+		return _assetRepository.findByAssetTypeAndKeywordNotNull(
+			assetType, PageRequest.of(page, size, sort));
+	}
+
+	public long getAssetsCount(String assetType) {
+		return _assetRepository.countByAssetTypeAndKeywordNotNull(assetType);
 	}
 
 	public List<String> getKeywords(String assetType) {
