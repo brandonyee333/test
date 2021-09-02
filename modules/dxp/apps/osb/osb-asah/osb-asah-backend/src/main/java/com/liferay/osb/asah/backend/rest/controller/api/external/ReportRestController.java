@@ -118,7 +118,7 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/accounts/{accountId}")
 	public EntityModel<Account> getAccountEntityModel(
-		@PathVariable String accountId) {
+		@PathVariable Long accountId) {
 
 		return _toAccountEntityModel(_reportAccountDog.getAccount(accountId));
 	}
@@ -1049,7 +1049,7 @@ public class ReportRestController extends BaseRestController {
 				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
 				).getAccountEntityModel(
-					account.getId()
+					Long.valueOf(account.getId())
 				)
 			).withSelfRel());
 	}

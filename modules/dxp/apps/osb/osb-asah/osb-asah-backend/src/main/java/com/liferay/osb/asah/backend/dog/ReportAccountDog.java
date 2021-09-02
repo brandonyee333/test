@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.model.Account;
 import com.liferay.osb.asah.backend.model.FieldMapping;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
@@ -56,21 +57,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReportAccountDog {
 
-	public Account getAccount(String id) {
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"accounts", _faroInfoElasticsearchInvoker,
-			_buildSearchSourceBuilder(
-				_getAccountOrganizationFetchSourceExcludes(),
-				QueryBuilders.termQuery("id", id), 1, 0));
-
-		if (!HitsUtil.hasHits(searchHits)) {
-			throw new OSBAsahException(
-				HttpStatus.BAD_REQUEST, "There is no account with ID " + id);
-		}
-
-		SearchHit[] searchHitArray = searchHits.getHits();
-
-		return _mapAccount(searchHitArray[0]);
+	public Account getAccount(Long id) {
+		return _mapAccount(_accountDog.getAccount(id, null));
 	}
 
 	public Page<Account> getAccountPage(Long accountId, int size, Sort sort) {
@@ -223,6 +211,9 @@ public class ReportAccountDog {
 
 		return account;
 	}
+
+	@Autowired
+	private AccountDog _accountDog;
 
 	@Autowired
 	private AccountRepository _accountRepository;
