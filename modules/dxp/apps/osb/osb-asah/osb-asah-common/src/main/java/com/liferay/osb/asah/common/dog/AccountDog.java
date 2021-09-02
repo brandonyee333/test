@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
@@ -424,9 +425,10 @@ public class AccountDog {
 	public List<Account> searchAccounts(
 		String filterString, int page, int size) {
 
-		PageRequest pageRequest = PageRequest.of(page, size);
-
-		return _accountRepository.searchAccounts(filterString, pageRequest);
+		return ListUtil.map(
+			_accountRepository.searchAccounts(
+				filterString, PageRequest.of(page, size)),
+			account -> populateAccount(account, null));
 	}
 
 	public Page<Account> searchAccountsPage(
