@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -86,10 +85,6 @@ public class ReportAccountDogTest {
 			_reportAccountDog.getAccountResultBag(6, 0);
 
 		Assert.assertEquals(6, accountResultBag.getTotal());
-		Assert.assertEquals(
-			Collections.emptySet(),
-			_getAccountPropertiesValues(
-				accountResultBag.getResults(), "accountType"));
 		Assert.assertEquals(
 			SetUtil.of(
 				"Heard Island and McDonald Islands", "Maldives", "Swaziland",
