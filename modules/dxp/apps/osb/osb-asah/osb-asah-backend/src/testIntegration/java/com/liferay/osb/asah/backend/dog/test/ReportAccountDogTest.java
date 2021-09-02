@@ -55,7 +55,7 @@ public class ReportAccountDogTest {
 	)
 	@Test
 	public void testGetAccount() {
-		Account account = _reportAccountDog.getAccount("379649798552539340");
+		Account account = _reportAccountDog.getAccount(379649798552539340L);
 
 		Assert.assertEquals(12, account.getActiveIndividualsCount());
 		Assert.assertEquals(
@@ -70,6 +70,10 @@ public class ReportAccountDogTest {
 
 	@ElasticsearchIndex(
 		name = "field-mappings", resourcePath = "field_mappings_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "fields", resourcePath = "fields_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
