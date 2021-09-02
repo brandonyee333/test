@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -25,7 +26,9 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -154,6 +157,11 @@ public class Account implements Persistable<Long> {
 		}
 
 		return new Date(_modifiedDate.getTime());
+	}
+
+	@JsonProperty("organization")
+	public Organization getOrganization() {
+		return new Organization(_fields);
 	}
 
 	@Override
@@ -358,6 +366,56 @@ public class Account implements Persistable<Long> {
 
 		@Transient
 		private Long _individualCount;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public static class Organization {
+
+		public Organization() {
+		}
+
+		public Organization(Set<Field> fields) {
+			for (Field field : fields) {
+				_fieldMap.put(
+					field.getName(), Collections.singletonList(field));
+			}
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof Organization)) {
+				return false;
+			}
+
+			Organization organization = (Organization)obj;
+
+			if (Objects.equals(_fieldMap, organization._fieldMap)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonAnyGetter
+		public Map<String, Object> getField() {
+			return _fieldMap;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_fieldMap);
+		}
+
+		public void setFieldMap(Map<String, Object> fieldMap) {
+			_fieldMap = fieldMap;
+		}
+
+		private Map<String, Object> _fieldMap = new HashMap<>();
 
 	}
 
