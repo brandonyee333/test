@@ -50,9 +50,6 @@ import java.util.stream.Stream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -253,16 +250,6 @@ public class InterestTopicsNanite extends BaseNanite {
 			_assetsQueue.addAll(assetsMap);
 
 			_currentPage++;
-		}
-
-		private List<Map<String, Object>> _toAssets(SearchHits searchHits) {
-			List<Map<String, Object>> assets = new ArrayList<>();
-
-			for (SearchHit searchHit : searchHits) {
-				assets.add(searchHit.getSourceAsMap());
-			}
-
-			return assets;
 		}
 
 		private String _toKeywordsString(List<Map<String, String>> keywords) {
