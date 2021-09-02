@@ -26,13 +26,13 @@ import cc.mallet.types.InstanceList;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.BlockedKeywordDog;
 import com.liferay.osb.asah.common.dog.InterestTopicDog;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.entity.InterestTopic;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.ArrayList;
@@ -57,7 +57,6 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -148,7 +147,7 @@ public class InterestTopicsNanite extends BaseNanite {
 			new SerialPipes(_createPreprocessPipes()));
 
 		Iterator<Instance> instanceIterator = new InstanceIterator(
-			_assetRepository,
+			_assetDog,
 			SetUtil.map(
 				_blockedKeywordDog.getBlockedKeywords(),
 				BlockedKeyword::getKeyword),
@@ -169,7 +168,7 @@ public class InterestTopicsNanite extends BaseNanite {
 	private static final String _SEPARATOR = "_SEPARATOR_";
 
 	@Autowired
-	private AssetRepository _assetRepository;
+	private AssetDog _assetDog;
 
 	@Autowired
 	private BlockedKeywordDog _blockedKeywordDog;
@@ -201,15 +200,14 @@ public class InterestTopicsNanite extends BaseNanite {
 	private static class InstanceIterator implements Iterator<Instance> {
 
 		public InstanceIterator(
-			AssetRepository assetRepository, Set<String> blockedKeywords,
+			AssetDog assetDog, Set<String> blockedKeywords,
 			ObjectMapper objectMapper) {
 
-			_assetRepository = assetRepository;
+			_assetDog = assetDog;
 			_blockedKeywords = blockedKeywords;
 			_objectMapper = objectMapper;
 
-			_totalCount = assetRepository.countByAssetTypeAndKeywordNotNull(
-				"Page");
+			_totalCount = assetDog.countByAssetTypeAndKeywordNotNull("Page");
 		}
 
 		@Override
@@ -238,9 +236,8 @@ public class InterestTopicsNanite extends BaseNanite {
 		}
 
 		private void _fetchAssetsBatch() {
-			List<Asset> assets =
-				_assetRepository.findByAssetTypeAndKeywordNotNull(
-					"Page", PageRequest.of(_currentPage, 50, Sort.asc("id")));
+			List<Asset> assets = _assetDog.findByAssetTypeAndKeywordNotNull(
+				"Page", _currentPage, 50, Sort.asc("id"));
 
 			Stream<Asset> stream = assets.stream();
 
@@ -280,7 +277,7 @@ public class InterestTopicsNanite extends BaseNanite {
 			);
 		}
 
-		private final AssetRepository _assetRepository;
+		private final AssetDog _assetDog;
 		private final Queue<Map<String, Object>> _assetsQueue =
 			new LinkedList<>();
 		private final Set<String> _blockedKeywords;

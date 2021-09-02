@@ -73,6 +73,10 @@ public class AssetDog {
 		return _assetRepository.save(asset);
 	}
 
+	public long countByAssetTypeAndKeywordNotNull(String assetType) {
+		return _assetRepository.countByAssetTypeAndKeywordNotNull(assetType);
+	}
+
 	public void deleteAsset(Asset asset, String deletionDayDateString) {
 		Long assetId = asset.getId();
 
@@ -127,6 +131,13 @@ public class AssetDog {
 				dataSourceAssetPK, dataSourceId);
 
 		return assetOptional.orElse(null);
+	}
+
+	public List<Asset> findByAssetTypeAndKeywordNotNull(
+		String assetType, int page, int size, Sort sort) {
+
+		return _assetRepository.findByAssetTypeAndKeywordNotNull(
+			assetType, PageRequest.of(page, size, sort));
 	}
 
 	public Asset getAsset(Long assetId) {
