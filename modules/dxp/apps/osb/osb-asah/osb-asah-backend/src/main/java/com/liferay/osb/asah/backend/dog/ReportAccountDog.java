@@ -14,16 +14,12 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.model.Account;
-import com.liferay.osb.asah.backend.model.FieldMapping;
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AccountDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.repository.AccountRepository;
-import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,13 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.SortBuilder;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -48,7 +37,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -80,53 +68,21 @@ public class ReportAccountDog {
 	}
 
 	public ResultBag<Account> getAccountResultBag(int size, int start) {
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"accounts", _faroInfoElasticsearchInvoker,
-			_buildSearchSourceBuilder(
-				_getAccountOrganizationFetchSourceExcludes(), null, size,
-				start));
+		List<com.liferay.osb.asah.common.entity.Account> accounts =
+			_accountDog.getAccounts(size, start);
 
-		return DogUtil.createResultBag(this::_mapAccount, searchHits);
-	}
+		List<Account> models = new ArrayList<>();
 
-	private SearchSourceBuilder _buildSearchSourceBuilder(
-		String[] fetchSourceExcludes, QueryBuilder queryBuilder, int size,
-		int start) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.fetchSource(null, fetchSourceExcludes);
-		searchSourceBuilder.from(start);
-
-		if (queryBuilder != null) {
-			searchSourceBuilder.query(queryBuilder);
+		for (com.liferay.osb.asah.common.entity.Account account : accounts) {
+			models.add(_mapAccount(account));
 		}
 
-		searchSourceBuilder.size(size);
+		ResultBag<Account> resultBag = new ResultBag<>();
 
-		return searchSourceBuilder;
-	}
+		resultBag.setResults(models);
+		resultBag.setTotal(accounts.size());
 
-	private String[] _getAccountOrganizationFetchSourceExcludes() {
-		ResultBag<FieldMapping> fieldMappingResultBag =
-			_fieldMappingDog.getFieldMappingResultBag(
-				"organization", "account", 20, 0);
-
-		if (fieldMappingResultBag.getTotal() == 0) {
-			return null;
-		}
-
-		List<String> fetchSourceExcludes = new ArrayList<>();
-
-		for (FieldMapping fieldMapping : fieldMappingResultBag.getResults()) {
-			if (fieldMapping.isRestricted()) {
-				fetchSourceExcludes.add(
-					"organization." + fieldMapping.getFieldName());
-			}
-		}
-
-		return fetchSourceExcludes.toArray(new String[0]);
+		return resultBag;
 	}
 
 	private Map<String, Object> _getAccountOrganizationProperties(
@@ -190,28 +146,6 @@ public class ReportAccountDog {
 		return newAccount;
 	}
 
-	private Account _mapAccount(SearchHit searchHit) {
-		Account account = new Account();
-
-		JSONObject accountJSONObject = new JSONObject(
-			searchHit.getSourceAsMap());
-
-		account.setActiveIndividualsCount(
-			accountJSONObject.optLong("activeIndividualCount", 0));
-		account.setDateCreated(
-			DateUtil.toUTCDate(accountJSONObject.getString("dateCreated")));
-		account.setDateModified(
-			DateUtil.toUTCDate(accountJSONObject.getString("dateModified")));
-		account.setId(accountJSONObject.getString("id"));
-		account.setIndividualsCount(
-			accountJSONObject.optLong("individualCount", 0));
-		account.setProperties(
-			_getAccountOrganizationProperties(
-				accountJSONObject.optJSONObject("organization")));
-
-		return account;
-	}
-
 	@Autowired
 	private AccountDog _accountDog;
 
@@ -219,12 +153,6 @@ public class ReportAccountDog {
 	private AccountRepository _accountRepository;
 
 	@Autowired
-	private DataDog _dataDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private FieldMappingDog _fieldMappingDog;
+	private ObjectMapper _objectMapper;
 
 }

@@ -237,6 +237,10 @@ public class AccountDog {
 		return accountNamesJSONObjects;
 	}
 
+	public List<Account> getAccounts(int size, int start) {
+		return searchAccounts(null, start / size, size);
+	}
+
 	public Map<Long, JSONObject> getAccountsJSONObjects(
 		List<Individual> individuals) {
 
