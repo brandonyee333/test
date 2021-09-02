@@ -133,6 +133,8 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 						hits.length + " activities.");
 			}
 
+			_setBatchSize(endTime - startTime, searchSourceBuilder);
+
 			Stream<SearchHit> stream = Arrays.stream(hits);
 
 			JSONArray jsonArray = new JSONArray(
@@ -154,6 +156,43 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 				jsonArray.length() - 1);
 
 			id = jsonObject.getString("id");
+		}
+	}
+
+	private void _batchUpdate(
+		List<Map<String, Object>> eventAttributes,
+		List<Map<String, Object>> events, long startTime) {
+
+		try {
+			_namedParameterJdbcTemplate.batchUpdate(
+				_SQL_INSERT_EVENT,
+				SqlParameterSourceUtils.createBatch(
+					events.toArray(new HashMap[0])));
+
+			_namedParameterJdbcTemplate.batchUpdate(
+				_SQL_INSERT_EVENT_ATTRIBUTES,
+				SqlParameterSourceUtils.createBatch(
+					eventAttributes.toArray(new HashMap[0])));
+		}
+		catch (Exception exception) {
+			StringBuilder sb = new StringBuilder("Unable to store events ");
+
+			events.forEach(
+				event -> sb.append(event.get("analyticsEventId") + ", "));
+
+			_log.error(sb.toString(), exception);
+		}
+		finally {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"It took " + (System.currentTimeMillis() - startTime) +
+						"ms to insert " + events.size() + " events and " +
+							eventAttributes.size() + " event attributes.");
+			}
+
+			startTime = System.currentTimeMillis();
+			eventAttributes.clear();
+			events.clear();
 		}
 	}
 
@@ -277,6 +316,27 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		}
 	}
 
+	private void _setBatchSize(
+		long newTime, SearchSourceBuilder searchSourceBuilder) {
+
+		double newStatistics = newTime / (double)_customEventUpgradeBatchSize;
+
+		if ((_customEventUpgradeBatchSize < 10000) &&
+			(_currentStatistics > (newStatistics * 1.05))) {
+
+			_customEventUpgradeBatchSize += 100;
+
+			_updateBatchSize(newStatistics, searchSourceBuilder);
+		}
+		else if ((_customEventUpgradeBatchSize > 100) &&
+				 (_currentStatistics < (newStatistics * 0.95))) {
+
+			_customEventUpgradeBatchSize -= 100;
+
+			_updateBatchSize(newStatistics, searchSourceBuilder);
+		}
+	}
+
 	private Map<String, String> _toSafeMap(Map<String, Object> jsonObjectMap) {
 		Map<String, String> map = new HashMap<>();
 
@@ -285,6 +345,18 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		}
 
 		return map;
+	}
+
+	private void _updateBatchSize(
+		double newStatistics, SearchSourceBuilder searchSourceBuilder) {
+
+		_currentStatistics = newStatistics;
+
+		searchSourceBuilder.size(_customEventUpgradeBatchSize);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("New batch size : " + _customEventUpgradeBatchSize);
+		}
 	}
 
 	@Transactional
@@ -331,34 +403,14 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 			_populateMaps(
 				analyticsEvent, eventAttributes, events,
 				activityJSONObject.getString("sessionId"));
-		}
 
-		try {
-			_namedParameterJdbcTemplate.batchUpdate(
-				_SQL_INSERT_EVENT,
-				SqlParameterSourceUtils.createBatch(
-					events.toArray(new HashMap[0])));
-
-			_namedParameterJdbcTemplate.batchUpdate(
-				_SQL_INSERT_EVENT_ATTRIBUTES,
-				SqlParameterSourceUtils.createBatch(
-					eventAttributes.toArray(new HashMap[0])));
-		}
-		catch (Exception exception) {
-			StringBuilder sb = new StringBuilder("Unable to store events ");
-
-			events.forEach(
-				event -> sb.append(event.get("analyticsEventId") + ", "));
-
-			_log.error(sb.toString(), exception);
-		}
-		finally {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"It took " + (System.currentTimeMillis() - startTime) +
-						"ms to insert " + events.size() + " events and " +
-							eventAttributes.size() + " event attributes.");
+			if (events.size() == 1000) {
+				_batchUpdate(eventAttributes, events, startTime);
 			}
+		}
+
+		if (!events.isEmpty()) {
+			_batchUpdate(eventAttributes, events, startTime);
 		}
 	}
 
@@ -384,6 +436,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 
 	private final List<CompletableFuture<Void>> _completableFutures =
 		new ArrayList<>();
+	private double _currentStatistics = 120;
 
 	@Value("${osb.asah.custom.event.upgrade.batch.size:10000}")
 	private int _customEventUpgradeBatchSize;
