@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Account;
@@ -61,7 +62,9 @@ import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
 import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
@@ -86,6 +89,26 @@ public class ElasticsearchAccountRepositoryImpl
 
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(), _getQueryBuilder(accountPKs, filterString));
+	}
+
+	@Override
+	public long countByIdAfter(Long accountId) {
+		SearchSourceBuilder searchSourceBuilder =
+			SearchSourceBuilder.searchSource();
+
+		searchSourceBuilder.query(
+			QueryBuilders.rangeQuery(
+				"id"
+			).gt(
+				accountId
+			));
+		searchSourceBuilder.size(0);
+		searchSourceBuilder.sort(SortBuilders.fieldSort("id"));
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			getCollectionName(), searchSourceBuilder);
+
+		return HitsUtil.getTotalHitsCount(searchResponse.getHits());
 	}
 
 	@Override
@@ -123,6 +146,26 @@ public class ElasticsearchAccountRepositoryImpl
 		).map(
 			this::toEntity
 		);
+	}
+
+	@Override
+	public List<Account> findByIdAfter(Long accountId, Pageable pageable) {
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							QueryBuilders.rangeQuery(
+								"id"
+							).gt(
+								accountId
+							));
+						searchSourceBuilder.sort(SortBuilders.fieldSort("id"));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
 	}
 
 	@Override

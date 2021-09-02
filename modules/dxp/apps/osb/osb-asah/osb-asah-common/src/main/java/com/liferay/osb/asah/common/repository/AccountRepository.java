@@ -39,6 +39,9 @@ public interface AccountRepository extends Repository<Account, Long> {
 		@Nullable Set<String> accountPKs, @Nullable String filterString);
 
 	@Cacheable
+	public long countByIdAfter(Long accountId);
+
+	@Cacheable
 	public List<Account> findAllByDataSourceId(Long dataSourceId);
 
 	@Cacheable
@@ -47,6 +50,9 @@ public interface AccountRepository extends Repository<Account, Long> {
 	@Cacheable
 	public Optional<Account> findByAccountPKAndDataSourceId(
 		String accountPK, Long dataSourceId);
+
+	@Cacheable
+	public List<Account> findByIdAfter(Long accountId, Pageable pageable);
 
 	public List<Distribution> getAccountDistributions(
 		@Nullable Long channelId, String fieldName, String fieldType,
