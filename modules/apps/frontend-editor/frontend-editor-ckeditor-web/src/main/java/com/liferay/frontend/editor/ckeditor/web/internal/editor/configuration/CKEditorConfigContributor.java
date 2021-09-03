@@ -210,9 +210,12 @@ public class CKEditorConfigContributor extends BaseCKEditorConfigContributor {
 
 		JSONArray jsonArray = JSONUtil.putAll(
 			toJSONArray("['Undo', 'Redo']"),
-			toJSONArray("['Styles', 'Bold', 'Italic', 'Underline']"),
+			toJSONArray("['Styles']"),
+			toJSONArray("['Bold', 'Italic', 'Underline', 'Strike']"),
+			toJSONArray("['RemoveFormat']"),
 			toJSONArray("['NumberedList', 'BulletedList']"),
-			toJSONArray("['Link', Unlink]"),
+			toJSONArray("['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']"),
+			toJSONArray("['Link', Unlink, 'Anchor']"),
 			toJSONArray("['Table', 'ImageSelector', 'VideoSelector']"));
 
 		if (AudioProcessorUtil.isEnabled() || XugglerUtil.isEnabled()) {
@@ -232,7 +235,7 @@ public class CKEditorConfigContributor extends BaseCKEditorConfigContributor {
 		JSONArray jsonArray = JSONUtil.putAll(
 			toJSONArray("['Undo', 'Redo']"), toJSONArray("['Styles']"),
 			toJSONArray("['FontColor', 'BGColor']"),
-			toJSONArray("['Bold', 'Italic', 'Underline', 'Strikethrough']"),
+			toJSONArray("['Bold', 'Italic', 'Underline', 'Strike']"),
 			toJSONArray("['RemoveFormat']"),
 			toJSONArray("['NumberedList', 'BulletedList']"),
 			toJSONArray("['IncreaseIndent', 'DecreaseIndent']"),

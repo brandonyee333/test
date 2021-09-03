@@ -58,12 +58,12 @@ public class OracleSQLTransformerLogic extends BaseSQLTransformerLogic {
 
 	@Override
 	protected String replaceCastClobText(Matcher matcher) {
-		return matcher.replaceAll("DBMS_LOB.SUBSTR($1, 4000, 1)");
+		return matcher.replaceAll("DBMS_LOB.SUBSTR($1, 3900, 1)");
 	}
 
 	@Override
 	protected String replaceCastText(Matcher matcher) {
-		return matcher.replaceAll("CAST($1 AS VARCHAR(4000))");
+		return matcher.replaceAll("CAST($1 AS VARCHAR(3900))");
 	}
 
 	@Override

@@ -420,7 +420,7 @@ message.
 		>
 			<fileset
 				dir="lib/development"
-				includes="hsql.jar,mariadb.jar,mysql.jar,postgresql.jar"
+				includes="hsql.jar,mariadb.jar,mysql.jar,ojdbc8.jar,postgresql.jar"
 			/>
 		</copy>
 

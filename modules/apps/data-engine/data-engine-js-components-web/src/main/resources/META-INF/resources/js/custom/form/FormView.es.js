@@ -65,7 +65,7 @@ const useFormSubmit = ({apiRef, containerRef}) => {
 					if (validForm) {
 						const liferayForm =
 							event.target.id &&
-							Liferay.Form.get(event.target.id);
+							Liferay.Form?.get(event.target.id);
 
 						const validLiferayForm = !Object.keys(
 							liferayForm?.formValidator?.errors ?? {}

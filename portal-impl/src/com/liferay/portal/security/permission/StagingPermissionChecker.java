@@ -110,7 +110,7 @@ public class StagingPermissionChecker implements PermissionChecker {
 
 		Group liveGroup = StagingUtil.getLiveGroup(group);
 
-		if ((liveGroup != group) && (primKey == group.getGroupId())) {
+		if (liveGroup != null && (liveGroup != group) && (primKey == group.getGroupId())) {
 			primKey = liveGroup.getGroupId();
 		}
 

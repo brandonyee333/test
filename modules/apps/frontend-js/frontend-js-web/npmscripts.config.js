@@ -29,6 +29,7 @@ module.exports = {
 			},
 			ignore: [
 				'**/global.bundle.js',
+				'**/arena/arena.js',
 				'**/liferay/dom_task_runner.js',
 				'**/liferay/events.js',
 				'**/liferay/lazy_load.js',
