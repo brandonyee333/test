@@ -40,6 +40,7 @@ import org.apache.spark.sql.streaming.DataStreamWriter;
 import org.apache.spark.sql.streaming.GroupStateTimeout;
 import org.apache.spark.sql.streaming.OutputMode;
 import org.apache.spark.sql.streaming.StreamingQuery;
+import org.apache.spark.sql.streaming.Trigger;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.Metadata;
 import org.apache.spark.sql.types.StructField;
@@ -104,6 +105,8 @@ public class SessionSparkJob implements SparkJob {
 			).writeStream(
 			).option(
 				"checkpointLocation", _checkpointPath
+			).trigger(
+				Trigger.Continuous("60 seconds")
 			).foreachBatch(
 				_sessionBatchSinkFunction
 			);
