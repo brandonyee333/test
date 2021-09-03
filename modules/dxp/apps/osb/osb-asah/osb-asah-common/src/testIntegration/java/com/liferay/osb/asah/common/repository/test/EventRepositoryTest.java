@@ -15,6 +15,8 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
@@ -39,9 +41,12 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -485,6 +490,51 @@ public class EventRepositoryTest {
 
 	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
 	@Test
+	public void testGetEventsCountGroupByEventDateLast7DaysWithTimeZone() {
+		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
+
+		ZonedDateTime zonedDateTime = ZonedDateTime.now(
+			_timeZoneDog.getZoneId());
+
+		Map<String, Integer> eventsCountGroupByEventDate =
+			_eventRepository.getEventsCountGroupByEventDate(
+				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS);
+
+		Assert.assertEquals(
+			eventsCountGroupByEventDate.toString(), 2,
+			eventsCountGroupByEventDate.size());
+
+		Map<String, Integer> expectedCountGroupByEventDate =
+			new HashMap<String, Integer>() {
+				{
+					put(
+						_getLocalDateString(
+							ChronoUnit.DAYS, -2, null, zonedDateTime),
+						2);
+					put(
+						_getLocalDateString(
+							ChronoUnit.DAYS, -5, null, zonedDateTime),
+						1);
+				}
+			};
+
+		for (Map.Entry<String, Integer> entry :
+				expectedCountGroupByEventDate.entrySet()) {
+
+			if (eventsCountGroupByEventDate.containsKey(entry.getKey())) {
+				Assert.assertEquals(
+					entry.getValue(),
+					eventsCountGroupByEventDate.get(entry.getKey()));
+
+				eventsCountGroupByEventDate.remove(entry.getKey());
+			}
+		}
+
+		Assert.assertTrue(eventsCountGroupByEventDate.isEmpty());
+	}
+
+	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@Test
 	public void testGetEventsCountGroupByEventDateLast24Hours() {
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_eventRepository.getEventsCountGroupByEventDate(
@@ -499,6 +549,31 @@ public class EventRepositoryTest {
 		Iterator<Integer> iterator = values.iterator();
 
 		Assert.assertEquals(Integer.valueOf(4), iterator.next());
+	}
+
+	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@Test
+	public void testGetEventsCountGroupByEventDateLast24HoursWithTimeZone() {
+		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
+
+		ZonedDateTime zonedDateTime = ZonedDateTime.now(
+			_timeZoneDog.getZoneId());
+
+		Map<String, Integer> eventsCountGroupByEventDate =
+			_eventRepository.getEventsCountGroupByEventDate(
+				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS);
+
+		Assert.assertEquals(
+			eventsCountGroupByEventDate.toString(), 1,
+			eventsCountGroupByEventDate.size());
+
+		Map<String, Integer> expectedEventsCountGroupByEventDate =
+			Collections.singletonMap(
+				_getLocalDateString(ChronoUnit.HOURS, null, -1, zonedDateTime),
+				4);
+
+		Assert.assertEquals(
+			expectedEventsCountGroupByEventDate, eventsCountGroupByEventDate);
 	}
 
 	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
@@ -522,7 +597,42 @@ public class EventRepositoryTest {
 
 	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
 	@Test
-	public void testGetEventSessionsCountGroupByEventDateLast24Days() {
+	public void testGetEventSessionsCountGroupByEventDateLast7DaysWithTimeZone() {
+		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
+
+		ZonedDateTime zonedDateTime = ZonedDateTime.now(
+			_timeZoneDog.getZoneId());
+
+		Map<String, Integer> eventSessionsCountGroupByEventDate =
+			_eventRepository.getEventSessionsCountGroupByEventDate(
+				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS);
+
+		Assert.assertEquals(
+			eventSessionsCountGroupByEventDate.toString(), 2,
+			eventSessionsCountGroupByEventDate.size());
+
+		Map<String, Integer> expectedEventSessionsCountGroupByEventDate =
+			new HashMap<String, Integer>() {
+				{
+					put(
+						_getLocalDateString(
+							ChronoUnit.DAYS, -2, null, zonedDateTime),
+						2);
+					put(
+						_getLocalDateString(
+							ChronoUnit.DAYS, -5, null, zonedDateTime),
+						1);
+				}
+			};
+
+		Assert.assertEquals(
+			expectedEventSessionsCountGroupByEventDate,
+			eventSessionsCountGroupByEventDate);
+	}
+
+	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@Test
+	public void testGetEventSessionsCountGroupByEventDateLast24Hours() {
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_eventRepository.getEventSessionsCountGroupByEventDate(
 				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS);
@@ -537,6 +647,32 @@ public class EventRepositoryTest {
 		Iterator<Integer> iterator = values.iterator();
 
 		Assert.assertEquals(Integer.valueOf(2), iterator.next());
+	}
+
+	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@Test
+	public void testGetEventSessionsCountGroupByEventDateLast24HoursWithTimeZone() {
+		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
+
+		ZonedDateTime zonedDateTime = ZonedDateTime.now(
+			_timeZoneDog.getZoneId());
+
+		Map<String, Integer> eventSessionsCountGroupByEventDate =
+			_eventRepository.getEventSessionsCountGroupByEventDate(
+				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS);
+
+		Assert.assertEquals(
+			eventSessionsCountGroupByEventDate.toString(), 1,
+			eventSessionsCountGroupByEventDate.size());
+
+		Map<String, Integer> expectedEventSessionsCountGroupByEventDate =
+			Collections.singletonMap(
+				_getLocalDateString(ChronoUnit.HOURS, null, -1, zonedDateTime),
+				2);
+
+		Assert.assertEquals(
+			expectedEventSessionsCountGroupByEventDate,
+			eventSessionsCountGroupByEventDate);
 	}
 
 	@SQLResource(resourcePath = "test_events.sql")
@@ -587,10 +723,37 @@ public class EventRepositoryTest {
 		}
 	}
 
+	private String _getLocalDateString(
+		ChronoUnit chronoUnit, Integer deltaDays, Integer deltaHours,
+		ZonedDateTime zonedDateTime) {
+
+		if (deltaDays != null) {
+			zonedDateTime = zonedDateTime.plusDays(deltaDays);
+		}
+
+		if (deltaHours != null) {
+			zonedDateTime = zonedDateTime.plusHours(deltaHours);
+		}
+
+		if (chronoUnit != null) {
+			zonedDateTime = zonedDateTime.truncatedTo(chronoUnit);
+		}
+
+		LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
+
+		return localDateTime.toString();
+	}
+
 	@Autowired
 	private EventDefinitionRepository _eventDefinitionRepository;
 
 	@Autowired
 	private EventRepository _eventRepository;
+
+	@Autowired
+	private PreferenceDog _preferenceDog;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

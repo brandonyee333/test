@@ -299,10 +299,11 @@ public class EventRepositoryImpl extends BaseRepository {
 
 		eventDateField = eventDateField.as("eventDate");
 
+		SelectSelectStep<Record2<OffsetDateTime, Integer>> selectSelectStep =
+			_dslContext.select(eventDateField, DSL.count());
+
 		return _toMap(
-			_dslContext.select(
-				eventDateField, DSL.count()
-			).from(
+			selectSelectStep.from(
 				"Event"
 			).innerJoin(
 				DSL.table("EventDefinition")
