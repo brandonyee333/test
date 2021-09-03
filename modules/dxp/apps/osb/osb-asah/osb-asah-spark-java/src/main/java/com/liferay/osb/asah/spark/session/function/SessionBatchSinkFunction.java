@@ -84,8 +84,6 @@ public class SessionBatchSinkFunction
 			"parquet"
 		).mode(
 			"append"
-		).option(
-			"mergeSchema", _MERGE_SCHEMA
 		).partitionBy(
 			"projectId", "date"
 		).save(
@@ -112,8 +110,6 @@ public class SessionBatchSinkFunction
 			"parquet"
 		).mode(
 			"append"
-		).option(
-			"mergeSchema", _MERGE_SCHEMA
 		).partitionBy(
 			"projectId", "date"
 		).save(
@@ -154,16 +150,12 @@ public class SessionBatchSinkFunction
 			"parquet"
 		).mode(
 			"append"
-		).option(
-			"mergeSchema", _MERGE_SCHEMA
 		).partitionBy(
 			"projectId", "date"
 		).save(
 			_realtimeEventsPath
 		);
 	}
-
-	private static final boolean _MERGE_SCHEMA = true;
 
 	private static final Log _log = LogFactory.getLog(
 		SessionBatchSinkFunction.class);
