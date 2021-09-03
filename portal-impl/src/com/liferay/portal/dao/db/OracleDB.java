@@ -55,8 +55,8 @@ public class OracleDB extends BaseDB {
 		template = replaceTemplate(template);
 		template = reword(template);
 		template = StringUtil.replace(
-			template, new String[] {"\\\\", "\\'", "\\\""},
-			new String[] {"\\", "''", "\""});
+				template, new String[] {"\\\\", "\\'", "\\\""},
+				new String[] {"\\", "''", "\""});
 
 		return StringUtil.replace(template, "\\n", "'||CHR(10)||'");
 	}
@@ -65,17 +65,12 @@ public class OracleDB extends BaseDB {
 	public List<Index> getIndexes(Connection connection) throws SQLException {
 		List<Index> indexes = new ArrayList<>();
 
-		StringBundler sb = new StringBundler(3);
-
-		sb.append("select index_name, table_name, uniqueness from ");
-		sb.append("user_indexes where index_name like 'LIFERAY_%' or ");
-		sb.append("index_name like 'IX_%'");
-
-		String sql = sb.toString();
-
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
-				sql);
-			ResultSet resultSet = preparedStatement.executeQuery()) {
+				StringBundler.concat(
+						"select index_name, table_name, uniqueness from ",
+						"user_indexes where index_name like 'LIFERAY_%' or ",
+						"index_name like 'IX_%'"));
+			 ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
 				String indexName = resultSet.getString("index_name");
@@ -97,21 +92,14 @@ public class OracleDB extends BaseDB {
 
 	@Override
 	public String getPopulateSQL(String databaseName, String sqlContent) {
-		StringBundler sb = new StringBundler(5);
-
-		sb.append("connect &1/&2;\n");
-		sb.append("set define off;\n");
-		sb.append("\n");
-		sb.append(sqlContent);
-		sb.append("quit");
-
-		return sb.toString();
+		return StringBundler.concat(
+				"connect &1/&2;\n", "set define off;\n\n", sqlContent, "quit");
 	}
 
 	@Override
 	public String getRecreateSQL(String databaseName) {
 		return "drop user &1 cascade;\ncreate user &1 identified by &2;\n" +
-			"grant connect,resource to &1;\nquit";
+				"grant connect,resource to &1;\nquit";
 	}
 
 	@Override
@@ -127,7 +115,7 @@ public class OracleDB extends BaseDB {
 
 		while (matcher.find()) {
 			matcher.appendReplacement(
-				sb, "VARCHAR2(" + matcher.group(1) + "%20CHAR)");
+					sb, "VARCHAR2(" + matcher.group(1) + "%20CHAR)");
 		}
 
 		matcher.appendTail(sb);
@@ -150,7 +138,7 @@ public class OracleDB extends BaseDB {
 	}
 
 	protected boolean isNullable(String tableName, String columnName)
-		throws SQLException {
+			throws SQLException {
 
 		try (Connection connection = DataAccess.getConnection()) {
 			DBInspector dbInspector = new DBInspector(connection);
@@ -188,7 +176,7 @@ public class OracleDB extends BaseDB {
 	@Override
 	protected String reword(String data) throws IOException, SQLException {
 		try (UnsyncBufferedReader unsyncBufferedReader =
-				new UnsyncBufferedReader(new UnsyncStringReader(data))) {
+					 new UnsyncBufferedReader(new UnsyncStringReader(data))) {
 
 			StringBundler sb = new StringBundler();
 
@@ -199,9 +187,9 @@ public class OracleDB extends BaseDB {
 					String[] template = buildColumnNameTokens(line);
 
 					line = StringUtil.replace(
-						"alter table @table@ rename column @old-column@ to " +
-							"@new-column@;",
-						REWORD_TEMPLATE, template);
+							"alter table @table@ rename column @old-column@ to " +
+									"@new-column@;",
+							REWORD_TEMPLATE, template);
 				}
 				else if (line.startsWith(ALTER_COLUMN_TYPE)) {
 					String[] template = buildColumnTypeTokens(line);
@@ -210,19 +198,19 @@ public class OracleDB extends BaseDB {
 
 					if (!Validator.isBlank(nullable)) {
 						boolean currentNullable = isNullable(
-							template[0], template[1]);
+								template[0], template[1]);
 
 						if ((nullable.equals("null") && currentNullable) ||
-							(nullable.equals("not null") && !currentNullable)) {
+								(nullable.equals("not null") && !currentNullable)) {
 
 							nullable = StringPool.BLANK;
 						}
 					}
 
 					line = StringUtil.replace(
-						"alter table @table@ modify @old-column@ @type@ " +
-							nullable + ";",
-						REWORD_TEMPLATE, template);
+							"alter table @table@ modify @old-column@ @type@ " +
+									nullable + ";",
+							REWORD_TEMPLATE, template);
 
 					line = StringUtil.replace(line, " ;", ";");
 				}
@@ -230,14 +218,14 @@ public class OracleDB extends BaseDB {
 					String[] template = buildTableNameTokens(line);
 
 					line = StringUtil.replace(
-						"alter table @old-table@ rename to @new-table@;",
-						RENAME_TABLE_TEMPLATE, template);
+							"alter table @old-table@ rename to @new-table@;",
+							RENAME_TABLE_TEMPLATE, template);
 				}
 				else if (line.contains(DROP_INDEX)) {
 					String[] tokens = StringUtil.split(line, ' ');
 
 					line = StringUtil.replace(
-						"drop index @index@;", "@index@", tokens[2]);
+							"drop index @index@;", "@index@", tokens[2]);
 				}
 
 				sb.append(line);
@@ -249,23 +237,23 @@ public class OracleDB extends BaseDB {
 	}
 
 	private static final String[] _ORACLE = {
-		"--", "1", "0",
-		"to_date('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS')", "sysdate",
-		" blob", " blob", " number(1, 0)", " timestamp", " number(30,20)",
-		" number(30,0)", " number(30,0)", " varchar2(4000 char)", " clob",
-		" varchar2", "", "commit"
+			"--", "1", "0",
+			"to_date('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS')", "sysdate",
+			" blob", " blob", " number(1, 0)", " timestamp", " number(30,20)",
+			" number(30,0)", " number(30,0)", " varchar2(4000 char)", " clob",
+			" varchar2", "", "commit"
 	};
 
 	private static final int[] _SQL_TYPES = {
-		Types.BLOB, Types.BLOB, Types.NUMERIC, Types.TIMESTAMP, Types.NUMERIC,
-		Types.NUMERIC, Types.NUMERIC, Types.VARCHAR, Types.CLOB, Types.VARCHAR
+			Types.BLOB, Types.BLOB, Types.NUMERIC, Types.TIMESTAMP, Types.NUMERIC,
+			Types.NUMERIC, Types.NUMERIC, Types.VARCHAR, Types.CLOB, Types.VARCHAR
 	};
 
 	private static final boolean _SUPPORTS_INLINE_DISTINCT = false;
 
 	private static final Pattern _varchar2CharPattern = Pattern.compile(
-		"VARCHAR2\\((\\d+) CHAR\\)", Pattern.CASE_INSENSITIVE);
+			"VARCHAR2\\((\\d+) CHAR\\)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern _varcharPattern = Pattern.compile(
-		"VARCHAR\\((\\d+)\\)", Pattern.CASE_INSENSITIVE);
+			"VARCHAR\\((\\d+)\\)", Pattern.CASE_INSENSITIVE);
 
 }
