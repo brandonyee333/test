@@ -40,6 +40,10 @@ import org.apache.spark.sql.streaming.DataStreamWriter;
 import org.apache.spark.sql.streaming.GroupStateTimeout;
 import org.apache.spark.sql.streaming.OutputMode;
 import org.apache.spark.sql.streaming.StreamingQuery;
+import org.apache.spark.sql.types.DataTypes;
+import org.apache.spark.sql.types.Metadata;
+import org.apache.spark.sql.types.StructField;
+import org.apache.spark.sql.types.StructType;
 
 import scala.Tuple2;
 
@@ -127,11 +131,13 @@ public class SessionSparkJob implements SparkJob {
 		DataStreamReader dataStreamReader = _sparkSession.readStream();
 
 		Dataset<Row> eventsDataset = dataStreamReader.format(
-			_TABLE_FORMAT_DELTA
+			_TABLE_FORMAT_JSON
 		).option(
 			"ignoreChanges", true
 		).option(
 			"ignoreDeletes", true
+		).schema(
+			_EVENT_SCHEMA
 		).load(
 			_eventsPath
 		);
@@ -182,13 +188,65 @@ public class SessionSparkJob implements SparkJob {
 	private static final EventGroupByKeyFunction _EVENT_GROUP_BY_KEY_FUNCTION =
 		new EventGroupByKeyFunction();
 
+	private static final StructType _EVENT_SCHEMA = new StructType(
+		new StructField[] {
+			new StructField(
+				"applicationId", DataTypes.StringType, true, Metadata.empty()),
+			new StructField(
+				"channelId", DataTypes.StringType, true, Metadata.empty()),
+			new StructField(
+				"clientIP", DataTypes.StringType, true, Metadata.empty()),
+			new StructField(
+				"context",
+				DataTypes.createMapType(
+					DataTypes.StringType, DataTypes.StringType),
+				true, Metadata.empty()),
+			new StructField(
+				"createDate", DataTypes.TimestampType, true, Metadata.empty()),
+			new StructField(
+				"dataSourceId", DataTypes.StringType, true, Metadata.empty()),
+			new StructField(
+				"eventDate", DataTypes.TimestampType, true, Metadata.empty()),
+			new StructField(
+				"eventId", DataTypes.StringType, true, Metadata.empty()),
+			new StructField(
+				"eventProperties",
+				DataTypes.createMapType(
+					DataTypes.StringType, DataTypes.StringType),
+				true, Metadata.empty()),
+			new StructField(
+				"knownIndividual", DataTypes.BooleanType, true,
+				Metadata.empty()),
+			new StructField("id", DataTypes.StringType, true, Metadata.empty()),
+			new StructField(
+				"individualId", DataTypes.StringType, true, Metadata.empty()),
+			new StructField(
+				"normalizedEventDate", DataTypes.LongType, true,
+				Metadata.empty()),
+			new StructField(
+				"projectId", DataTypes.StringType, true, Metadata.empty()),
+			new StructField(
+				"projectTimeZoneId", DataTypes.StringType, false,
+				Metadata.empty()),
+			new StructField(
+				"segmentNames",
+				DataTypes.createArrayType(DataTypes.StringType, false), true,
+				Metadata.empty()),
+			new StructField(
+				"sessionId", DataTypes.StringType, true, Metadata.empty()),
+			new StructField(
+				"userId", DataTypes.StringType, true, Metadata.empty()),
+			new StructField(
+				"variantId", DataTypes.StringType, true, Metadata.empty())
+		});
+
 	private static final Encoder<Tuple2<String, Date>> _KEY_ENCODER =
 		Encoders.tuple(Encoders.STRING(), Encoders.DATE());
 
 	private static final Encoder<Session> _SESSION_ENCODER = Encoders.bean(
 		Session.class);
 
-	private static final String _TABLE_FORMAT_DELTA = "delta";
+	private static final String _TABLE_FORMAT_JSON = "json";
 
 	private static final Log _log = LogFactory.getLog(SessionSparkJob.class);
 
