@@ -62,8 +62,7 @@ public class Event implements Serializable {
 
 		Event event = (Event)obj;
 
-		if (Objects.equals(_analyticsKey, event._analyticsKey) &&
-			Objects.equals(_applicationId, event._applicationId) &&
+		if (Objects.equals(_applicationId, event._applicationId) &&
 			Objects.equals(_channelId, event._channelId) &&
 			Objects.equals(_clientIp, event._clientIp) &&
 			Objects.equals(_context, event._context) &&
@@ -74,6 +73,7 @@ public class Event implements Serializable {
 			Objects.equals(_eventId, event._eventId) &&
 			Objects.equals(_eventProperties, event._eventProperties) &&
 			Objects.equals(_id, event._id) &&
+			Objects.equals(_individualId, event._individualId) &&
 			Objects.equals(_iterationNumber, event._iterationNumber) &&
 			Objects.equals(_knownIndividual, event._knownIndividual) &&
 			Objects.equals(_normalizedEventDate, event._normalizedEventDate) &&
@@ -85,10 +85,6 @@ public class Event implements Serializable {
 		}
 
 		return false;
-	}
-
-	public String getAnalyticsKey() {
-		return _analyticsKey;
 	}
 
 	public String getApplicationId() {
@@ -147,6 +143,10 @@ public class Event implements Serializable {
 		return _id;
 	}
 
+	public String getIndividualId() {
+		return _individualId;
+	}
+
 	public int getIterationNumber() {
 		return _iterationNumber;
 	}
@@ -174,14 +174,10 @@ public class Event implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_analyticsKey, _applicationId, _channelId, _clientIp, _context,
-			_createDate, _dataSourceId, _date, _eventDate, _eventId,
-			_eventProperties, _id, _iterationNumber, _knownIndividual,
+			_applicationId, _channelId, _clientIp, _context, _createDate,
+			_dataSourceId, _date, _eventDate, _eventId, _eventProperties, _id,
+			_individualId, _iterationNumber, _knownIndividual,
 			_normalizedEventDate, _projectId, _segmentNames, _userId);
-	}
-
-	public void setAnalyticsKey(String analyticsKey) {
-		_analyticsKey = analyticsKey;
 	}
 
 	public void setApplicationId(String applicationId) {
@@ -234,6 +230,10 @@ public class Event implements Serializable {
 		_id = id;
 	}
 
+	public void setIndividualId(String individualId) {
+		_individualId = individualId;
+	}
+
 	public void setIterationNumber(int iterationNumber) {
 		_iterationNumber = iterationNumber;
 	}
@@ -271,7 +271,6 @@ public class Event implements Serializable {
 			}
 		};
 
-	private String _analyticsKey;
 	private String _applicationId;
 	private String _channelId;
 	private String _clientIp;
@@ -283,6 +282,7 @@ public class Event implements Serializable {
 	private String _eventId;
 	private Map<String, String> _eventProperties = new HashMap<>();
 	private String _id;
+	private String _individualId;
 	private int _iterationNumber;
 	private Boolean _knownIndividual;
 	private Long _normalizedEventDate;
