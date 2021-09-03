@@ -27,8 +27,8 @@ import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBu
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
@@ -56,7 +56,6 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 
 import org.json.JSONObject;
@@ -326,44 +325,11 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		boolean checkEqualityOnly, int minDocCount, boolean negate,
 		QueryBuilder queryBuilder, int value) {
 
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			"activities",
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"ownerIds"
-					).field(
-						"ownerId"
-					).minDocCount(
-						minDocCount
-					).order(
-						BucketOrder.compound(
-							BucketOrder.count(checkEqualityOnly),
-							BucketOrder.key(true))
-					).size(
-						Integer.MAX_VALUE
-					));
-
-				searchSourceBuilder.query(queryBuilder);
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		Terms terms = aggregations.get("ownerIds");
-
-		List<String> individualIds = new ArrayList<>();
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			if (checkEqualityOnly && (bucket.getDocCount() > value)) {
-				break;
-			}
-
-			individualIds.add(bucket.getKeyAsString());
-		}
-
 		QueryBuilder activitiesFilterByCountFunctionQueryBuilder =
-			QueryBuilders.termsQuery("id", individualIds);
+			QueryBuilders.termsQuery(
+				"id",
+				_faroInfoActivityDog.getOwnerIds(
+					checkEqualityOnly, minDocCount, queryBuilder, value));
 
 		if (negate) {
 			return BoolQueryBuilderUtil.mustNot(
@@ -384,23 +350,10 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			queryBuilder = QueryBuilders.matchAllQuery();
 		}
 
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		List<String> ownerIds = _faroInfoActivityDog.getOwnerIds(queryBuilder);
 
-		JSONArrayIterator.of(
-			"activities", _faroInfoElasticsearchInvoker,
-			activityJSONObject -> {
-				boolQueryBuilder.should(
-					QueryBuilders.termQuery(
-						"id", activityJSONObject.getString("ownerId")));
-
-				return null;
-			}
-		).setQueryBuilder(
-			queryBuilder
-		).iterate();
-
-		if (boolQueryBuilder.hasClauses()) {
-			return boolQueryBuilder;
+		if (!ownerIds.isEmpty()) {
+			return QueryBuilders.termsQuery("id", ownerIds);
 		}
 
 		return BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery());
@@ -691,9 +644,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			throw new Exception("Invalid time frame: " + timeFrame);
 		}
 
-		return JSONUtil.toStringList(
-			_faroInfoElasticsearchInvoker.get("activities", boolQueryBuilder),
-			"ownerId");
+		return _faroInfoActivityDog.getOwnerIds(boolQueryBuilder);
 	}
 
 	private QueryBuilder _getIndividualPKQueryBuilder(
@@ -958,6 +909,9 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 	@Autowired
 	private FaroInfoActivitiesFilterStringConverterHelper
 		_faroInfoActivitiesFilterStringConverterHelper;
+
+	@Autowired
+	private FaroInfoActivityDog _faroInfoActivityDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

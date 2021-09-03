@@ -21,14 +21,13 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoInterestDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,15 +35,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregation;
-import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.composite.TermsValuesSourceBuilder;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -73,30 +64,31 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 			faroInfoElasticsearchInvoker.
 				createElasticsearchBulkRequestBuilder();
 
-		long totalViews = _urlArm.getTotalPageViews(dayDateString);
+		long totalViews = _faroInfoActivityDog.getTotalPageViews(dayDateString);
 
 		Map<String, List<KeywordInfo>> keywordInfosMap = _getKeywordInfosMap();
 
 		Map<String, Long> totalKeywordsPageViewsMap = _getKeywordsPageViewsMap(
-			keywordInfosMap, _getURLsPageViewsMap(dayDateString, null, null));
+			keywordInfosMap,
+			_faroInfoActivityDog.getURLPageViewsMap(dayDateString, null, null));
 
-		Set<String> individualsIds = _getIndividualsIds(dayDateString);
+		Set<String> ownerIds = _faroInfoActivityDog.getOwnerIds(dayDateString);
 
-		for (String individualId : individualsIds) {
+		for (String ownerId : ownerIds) {
 			if (isInterrupted()) {
 				return;
 			}
 
 			_process(
-				dayDateString, elasticsearchBulkRequestBuilder, individualId,
-				keywordInfosMap, totalKeywordsPageViewsMap, totalViews);
+				dayDateString, elasticsearchBulkRequestBuilder, keywordInfosMap,
+				ownerId, totalKeywordsPageViewsMap, totalViews);
 		}
 
 		JSONArrayIterator.of(
 			"interests", faroInfoElasticsearchInvoker,
 			interestJSONObject -> {
 				try {
-					if (individualsIds.contains(
+					if (ownerIds.contains(
 							interestJSONObject.getString("ownerId"))) {
 
 						return elasticsearchBulkRequestBuilder;
@@ -246,82 +238,6 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 			false, "visited-pages");
 	}
 
-	private long _getIndividualPageViews(
-		String dayDateString, String individualId) {
-
-		return faroInfoElasticsearchInvoker.count(
-			"activities",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("applicationId", "Page")
-			).filter(
-				QueryBuilders.termQuery("day", dayDateString)
-			).filter(
-				QueryBuilders.termQuery("eventId", "pageViewed")
-			).filter(
-				QueryBuilders.termQuery("ownerId", individualId)
-			));
-	}
-
-	private Set<String> _getIndividualsIds(String dayDateString) {
-		Set<String> individualIds = new HashSet<>();
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		TermsValuesSourceBuilder termsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("ownerIds");
-
-		termsValuesSourceBuilder.field("ownerId");
-
-		CompositeAggregationBuilder compositeAggregationBuilder =
-			AggregationBuilders.composite(
-				"composite", Collections.singletonList(termsValuesSourceBuilder)
-			).size(
-				10000
-			);
-
-		searchSourceBuilder.aggregation(compositeAggregationBuilder);
-
-		searchSourceBuilder.query(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("applicationId", "Page")
-			).filter(
-				QueryBuilders.termQuery("day", dayDateString)
-			).filter(
-				QueryBuilders.termQuery("eventId", "pageViewed")
-			));
-
-		searchSourceBuilder.size(0);
-
-		while (true) {
-			SearchResponse searchResponse = faroInfoElasticsearchInvoker.search(
-				"activities", searchSourceBuilder);
-
-			Aggregations aggregations = searchResponse.getAggregations();
-
-			CompositeAggregation compositeAggregation = aggregations.get(
-				"composite");
-
-			List<? extends CompositeAggregation.Bucket> buckets =
-				compositeAggregation.getBuckets();
-
-			if (buckets.isEmpty()) {
-				break;
-			}
-
-			for (CompositeAggregation.Bucket bucket : buckets) {
-				Map<String, Object> keys = bucket.getKey();
-
-				individualIds.add((String)keys.get("ownerIds"));
-			}
-
-			compositeAggregationBuilder.aggregateAfter(
-				compositeAggregation.afterKey());
-		}
-
-		return individualIds;
-	}
-
 	private Map<String, List<KeywordInfo>> _getKeywordInfosMap() {
 		Map<String, List<KeywordInfo>> keywordInfosMap = new HashMap<>();
 
@@ -367,7 +283,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 	private Map<String, Long> _getKeywordsPageViewsMap(
 		Map<String, List<KeywordInfo>> keywordInfosMap,
-		Map<String, Long> urlsPageViewsMap) {
+		Map<String, Long> urlPageViewsMap) {
 
 		Map<String, Long> keywordsPageViewsMap = new HashMap<>();
 
@@ -379,7 +295,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 			for (KeywordInfo keywordInfo : entry.getValue()) {
 				keywordsPageViewsMap.merge(
 					keyword,
-					urlsPageViewsMap.getOrDefault(
+					urlPageViewsMap.getOrDefault(
 						keywordInfo.getDataSourceAssetPK(), 0L),
 					Long::sum);
 			}
@@ -389,116 +305,37 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	}
 
 	private Set<Map.Entry<String, Long>> _getURLsPageViewsEntrySet(
-		String dayDateString, String individualId,
-		Map<String, List<KeywordInfo>> keywordInfosMap) {
+		String dayDateString, Map<String, List<KeywordInfo>> keywordInfosMap,
+		String ownerId) {
 
 		Map<String, Long> keywordsPageViewsMap = _getKeywordsPageViewsMap(
 			keywordInfosMap,
-			_getURLsPageViewsMap(dayDateString, individualId, null));
+			_faroInfoActivityDog.getURLPageViewsMap(
+				dayDateString, ownerId, null));
 
 		return keywordsPageViewsMap.entrySet();
-	}
-
-	private Map<String, Long> _getURLsPageViewsMap(
-		String endDayDateString, String individualId,
-		String startDayDateString) {
-
-		Map<String, Long> urlsPageViewsMap = new HashMap<>();
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		TermsValuesSourceBuilder termsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("urls");
-
-		termsValuesSourceBuilder.field("object.dataSourceAssetPK");
-
-		CompositeAggregationBuilder compositeAggregationBuilder =
-			AggregationBuilders.composite(
-				"composite",
-				Collections.singletonList(termsValuesSourceBuilder));
-
-		compositeAggregationBuilder.size(10000);
-
-		searchSourceBuilder.aggregation(compositeAggregationBuilder);
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("applicationId", "Page")
-		).filter(
-			QueryBuilders.termQuery("eventId", "pageViewed")
-		);
-
-		if (startDayDateString != null) {
-			boolQueryBuilder.filter(
-				QueryBuilders.rangeQuery(
-					"day"
-				).gte(
-					startDayDateString
-				).lte(
-					endDayDateString
-				));
-		}
-		else {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("day", endDayDateString));
-		}
-
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "ownerId", individualId);
-
-		searchSourceBuilder.query(boolQueryBuilder);
-
-		searchSourceBuilder.size(0);
-
-		while (true) {
-			SearchResponse searchResponse = faroInfoElasticsearchInvoker.search(
-				"activities", searchSourceBuilder);
-
-			Aggregations aggregations = searchResponse.getAggregations();
-
-			CompositeAggregation compositeAggregation = aggregations.get(
-				"composite");
-
-			List<? extends CompositeAggregation.Bucket> buckets =
-				compositeAggregation.getBuckets();
-
-			if (buckets.isEmpty()) {
-				break;
-			}
-
-			for (CompositeAggregation.Bucket bucket : buckets) {
-				Map<String, Object> keys = bucket.getKey();
-
-				urlsPageViewsMap.put(
-					(String)keys.get("urls"), bucket.getDocCount());
-			}
-
-			compositeAggregationBuilder.aggregateAfter(
-				compositeAggregation.afterKey());
-		}
-
-		return urlsPageViewsMap;
 	}
 
 	private void _process(
 			String dayDateString,
 			ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
-			String individualId, Map<String, List<KeywordInfo>> keywordInfosMap,
+			Map<String, List<KeywordInfo>> keywordInfosMap, String ownerId,
 			Map<String, Long> totalKeywordsPageViewsMap, long totalViews)
 		throws Exception {
 
-		long individualPageViews = _getIndividualPageViews(
-			dayDateString, individualId);
+		long individualPageViews = _faroInfoActivityDog.getIndividualPageViews(
+			dayDateString, ownerId);
 
-		Map<String, Long> urlsPageViewsMap = _getURLsPageViewsMap(
-			dayDateString, individualId, DateUtil.addDays(dayDateString, -30));
+		Map<String, Long> urlPageViewsMap =
+			_faroInfoActivityDog.getURLPageViewsMap(
+				dayDateString, ownerId, DateUtil.addDays(dayDateString, -30));
 
 		Map<String, Long> keywordsPageViewsMap = _getKeywordsPageViewsMap(
-			keywordInfosMap, urlsPageViewsMap);
+			keywordInfosMap, urlPageViewsMap);
 
 		for (Map.Entry<String, Long> entry :
 				_getURLsPageViewsEntrySet(
-					dayDateString, individualId, keywordInfosMap)) {
+					dayDateString, keywordInfosMap, ownerId)) {
 
 			String keyword = entry.getKey();
 			long pageViews = entry.getValue();
@@ -513,7 +350,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 				).filter(
 					QueryBuilders.termQuery("name", keyword)
 				).filter(
-					QueryBuilders.termQuery("ownerId", individualId)
+					QueryBuilders.termQuery("ownerId", ownerId)
 				).filter(
 					QueryBuilders.termQuery("ownerType", "individual")
 				));
@@ -539,7 +376,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 				).put(
 					"name", keyword
 				).put(
-					"ownerId", individualId
+					"ownerId", ownerId
 				).put(
 					"ownerType", "individual"
 				).put(
@@ -549,8 +386,8 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 				));
 
 			_addVisitedPages(
-				elasticsearchBulkRequestBuilder, dayDateString, individualId,
-				keyword, keywordInfosMap.get(keyword), urlsPageViewsMap);
+				elasticsearchBulkRequestBuilder, dayDateString, ownerId,
+				keyword, keywordInfosMap.get(keyword), urlPageViewsMap);
 		}
 
 		if (elasticsearchBulkRequestBuilder.hasActions()) {
@@ -563,6 +400,9 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
+	private FaroInfoActivityDog _faroInfoActivityDog;
 
 	@Autowired
 	private FaroInfoInterestDog _faroInfoInterestDog;

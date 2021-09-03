@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -118,7 +119,7 @@ public class FinalizeUserSessionArm {
 	}
 
 	public void updateActivitiesAndAssets(UserSession userSession) {
-		_updateActivities(userSession);
+		_faroInfoActivityDog.updateSessionId(userSession);
 
 		_updateAssetBuckets(userSession);
 
@@ -325,34 +326,6 @@ public class FinalizeUserSessionArm {
 		).collect(
 			Collectors.toList()
 		);
-	}
-
-	private void _updateActivities(UserSession userSession) {
-		Script script = new Script(
-			Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-			"ctx._source.sessionId = params.sessionId",
-			Collections.singletonMap("sessionId", userSession.getId()));
-
-		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
-			BoolQueryBuilderUtil.filter(
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"dataSourceId", userSession.getDataSourceId())
-				).filter(
-					QueryBuilders.rangeQuery(
-						"endTime"
-					).gte(
-						DateUtil.toUTCString(userSession.getFirstEventDate())
-					).lte(
-						DateUtil.toUTCString(userSession.getLastEventDate())
-					)
-				).filter(
-					QueryBuilders.termQuery("userId", userSession.getUserId())
-				)
-			).mustNot(
-				QueryBuilders.existsQuery("sessionId")
-			),
-			true, script, "activities");
 	}
 
 	private void _updateAssetBuckets(UserSession userSession) {
@@ -677,6 +650,9 @@ public class FinalizeUserSessionArm {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FaroInfoActivityDog _faroInfoActivityDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

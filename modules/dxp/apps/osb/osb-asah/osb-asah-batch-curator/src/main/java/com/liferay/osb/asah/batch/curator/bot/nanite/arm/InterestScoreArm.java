@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.arm;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -54,7 +55,8 @@ public class InterestScoreArm {
 			totalKeywordViews += _urlArm.getTotalKeywordViews(
 				previousDayDateString, keyword);
 
-			totalViews += _urlArm.getTotalPageViews(previousDayDateString);
+			totalViews += _faroInfoActivityDog.getTotalPageViews(
+				previousDayDateString);
 		}
 
 		double score = 0.0;
@@ -101,6 +103,9 @@ public class InterestScoreArm {
 	private static final double _WEIGHT_INDIVIDUAL_VIEWS = 1.0;
 
 	private static final double _WEIGHT_TOTAL_VIEWS = 2.0;
+
+	@Autowired
+	private FaroInfoActivityDog _faroInfoActivityDog;
 
 	@Autowired
 	private URLArm _urlArm;

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.arm.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.URLArm;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -47,7 +48,7 @@ public class URLArmTest {
 	public void testGetTotalKeywordViews() {
 		Assert.assertEquals(
 			4,
-			_urlArm.getTotalKeywordViews(
+			_faroInfoActivityDog.getTotalKeywordViews(
 				DateUtil.newDayDateString(),
 				new ArrayList<String>() {
 					{
@@ -63,7 +64,9 @@ public class URLArmTest {
 	@Test
 	public void testGetTotalViews() {
 		Assert.assertEquals(
-			5, _urlArm.getTotalPageViews(DateUtil.newDayDateString()));
+			5,
+			_faroInfoActivityDog.getTotalPageViews(
+				DateUtil.newDayDateString()));
 	}
 
 	@ElasticsearchIndex(
@@ -76,6 +79,9 @@ public class URLArmTest {
 			_urlArm.getURLs("hello"),
 			Matchers.containsInAnyOrder("url1", "url2", "url3"));
 	}
+
+	@Autowired
+	private FaroInfoActivityDog _faroInfoActivityDog;
 
 	@Autowired
 	private URLArm _urlArm;

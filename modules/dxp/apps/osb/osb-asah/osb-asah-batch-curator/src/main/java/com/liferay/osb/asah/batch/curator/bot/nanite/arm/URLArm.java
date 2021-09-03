@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.arm;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -25,6 +26,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,34 +35,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class URLArm {
 
-	public long getTotalKeywordViews(String dayDateString, List<String> urls) {
-		return _elasticsearchInvoker.count(
-			"activities",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("applicationId", "Page")
-			).filter(
-				QueryBuilders.termQuery("day", dayDateString)
-			).filter(
-				QueryBuilders.termQuery("eventId", "pageViewed")
-			).filter(
-				QueryBuilders.termsQuery("object.dataSourceAssetPK", urls)
-			));
-	}
-
 	public long getTotalKeywordViews(String dayDateString, String keyword) {
-		return getTotalKeywordViews(dayDateString, getURLs(keyword));
-	}
-
-	public long getTotalPageViews(String dayDateString) {
-		return _elasticsearchInvoker.count(
-			"activities",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("applicationId", "Page")
-			).filter(
-				QueryBuilders.termQuery("day", dayDateString)
-			).filter(
-				QueryBuilders.termQuery("eventId", "pageViewed")
-			));
+		return _faroInfoActivityDog.getTotalKeywordViews(
+			dayDateString, getURLs(keyword));
 	}
 
 	public List<String> getURLs(String keyword) {
@@ -77,5 +54,8 @@ public class URLArm {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private FaroInfoActivityDog _faroInfoActivityDog;
 
 }

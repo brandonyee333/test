@@ -23,21 +23,40 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.UserSession;
+import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.SetUtil;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.script.Script;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregation;
+import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.composite.TermsValuesSourceBuilder;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -46,6 +65,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FaroInfoActivityDog extends BaseFaroInfoDog {
 
+	@CacheEvict(allEntries = true)
 	public void addActivity(JSONArray activityJSONArray) {
 		elasticsearchInvoker.add("activities", activityJSONArray);
 
@@ -81,6 +101,7 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			"UpdateDynamicMembershipsNanite", contextJSONArray);
 	}
 
+	@CacheEvict(allEntries = true)
 	public JSONObject addActivity(JSONObject activityJSONObject) {
 		activityJSONObject = elasticsearchInvoker.add(
 			"activities", activityJSONObject);
@@ -111,6 +132,15 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return activityJSONObject;
 	}
 
+	@CacheEvict(allEntries = true)
+	public void deleteActivies(Set<Long> channelIds) {
+		elasticsearchInvoker.delete(
+			"activities",
+			QueryBuilders.termsQuery(
+				"channelId", SetUtil.map(channelIds, String::valueOf)));
+	}
+
+	@Cacheable
 	public JSONObject fetchLatestActivityJSONObject(
 		Long channelId, Long individualId) {
 
@@ -137,6 +167,20 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return activitiesJSONArray.getJSONObject(0);
 	}
 
+	@Cacheable
+	public JSONObject fetchLatestActivityJSONObject(String sessionId) {
+		return elasticsearchInvoker.fetch(
+			"activities",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.existsQuery("eventContext")
+			).filter(
+				QueryBuilders.termQuery("sessionId", sessionId)
+			),
+			SortBuilderUtil.fieldSort("id", SortOrder.DESC), null,
+			"eventContext");
+	}
+
+	@Cacheable
 	public JSONObject fetchLatestFormViewedActivity(
 		Date eventDate, String userId) {
 
@@ -169,6 +213,7 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return formViewedActivityJSONArray.getJSONObject(0);
 	}
 
+	@Cacheable
 	public String fetchLatestPageViewActivityId(String userId) {
 		JSONArray mostRecentPageViewActivitiesJSONArray = new JSONArray(
 			elasticsearchInvoker.get(
@@ -219,6 +264,284 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return boolQueryBuilder.filter(eventsBoolQueryBuilder);
 	}
 
+	@Cacheable
+	public String getFirstDayDateString() {
+		JSONArray activitiesJSONArray = new JSONArray(
+			elasticsearchInvoker.get(
+				"activities",
+				searchSourceBuilder -> {
+					searchSourceBuilder.size(1);
+					searchSourceBuilder.sort(SortBuilderUtil.fieldSort("day"));
+				}));
+
+		if (activitiesJSONArray.length() == 0) {
+			return null;
+		}
+
+		JSONObject activityJSONObject = activitiesJSONArray.getJSONObject(0);
+
+		return activityJSONObject.getString("day");
+	}
+
+	@Cacheable
+	public long getIndividualPageViews(String dayDateString, String ownerId) {
+		return elasticsearchInvoker.count(
+			"activities",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("applicationId", "Page")
+			).filter(
+				QueryBuilders.termQuery("day", dayDateString)
+			).filter(
+				QueryBuilders.termQuery("eventId", "pageViewed")
+			).filter(
+				QueryBuilders.termQuery("ownerId", ownerId)
+			));
+	}
+
+	@Cacheable
+	public List<String> getOwnerIds(
+		boolean checkEqualityOnly, int minDocCount, QueryBuilder queryBuilder,
+		int value) {
+
+		SearchResponse searchResponse = elasticsearchInvoker.search(
+			"activities",
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.terms(
+						"ownerIds"
+					).field(
+						"ownerId"
+					).minDocCount(
+						minDocCount
+					).order(
+						BucketOrder.compound(
+							BucketOrder.count(checkEqualityOnly),
+							BucketOrder.key(true))
+					).size(
+						Integer.MAX_VALUE
+					));
+
+				searchSourceBuilder.query(queryBuilder);
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		Terms terms = aggregations.get("ownerIds");
+
+		List<String> ownerIds = new ArrayList<>();
+
+		for (Terms.Bucket bucket : terms.getBuckets()) {
+			if (checkEqualityOnly && (bucket.getDocCount() > value)) {
+				break;
+			}
+
+			ownerIds.add(bucket.getKeyAsString());
+		}
+
+		return ownerIds;
+	}
+
+	@Cacheable
+	public List<String> getOwnerIds(QueryBuilder queryBuilder) {
+		SearchResponse searchResponse = elasticsearchInvoker.search(
+			"activities",
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.terms(
+						"ownerIds"
+					).field(
+						"ownerId"
+					).size(
+						Integer.MAX_VALUE
+					));
+
+				searchSourceBuilder.query(queryBuilder);
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		Terms terms = aggregations.get("ownerIds");
+
+		List<String> ownerIds = new ArrayList<>();
+
+		for (Terms.Bucket bucket : terms.getBuckets()) {
+			ownerIds.add(bucket.getKeyAsString());
+		}
+
+		return ownerIds;
+	}
+
+	@Cacheable
+	public Set<String> getOwnerIds(String dayDateString) {
+		Set<String> ownerIds = new HashSet<>();
+
+		SearchSourceBuilder searchSourceBuilder =
+			SearchSourceBuilder.searchSource();
+
+		TermsValuesSourceBuilder termsValuesSourceBuilder =
+			new TermsValuesSourceBuilder("ownerIds");
+
+		termsValuesSourceBuilder.field("ownerId");
+
+		CompositeAggregationBuilder compositeAggregationBuilder =
+			AggregationBuilders.composite(
+				"composite", Collections.singletonList(termsValuesSourceBuilder)
+			).size(
+				10000
+			);
+
+		searchSourceBuilder.aggregation(compositeAggregationBuilder);
+
+		searchSourceBuilder.query(
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("applicationId", "Page")
+			).filter(
+				QueryBuilders.termQuery("day", dayDateString)
+			).filter(
+				QueryBuilders.termQuery("eventId", "pageViewed")
+			));
+
+		searchSourceBuilder.size(0);
+
+		while (true) {
+			SearchResponse searchResponse = elasticsearchInvoker.search(
+				"activities", searchSourceBuilder);
+
+			Aggregations aggregations = searchResponse.getAggregations();
+
+			CompositeAggregation compositeAggregation = aggregations.get(
+				"composite");
+
+			List<? extends CompositeAggregation.Bucket> buckets =
+				compositeAggregation.getBuckets();
+
+			if (buckets.isEmpty()) {
+				break;
+			}
+
+			for (CompositeAggregation.Bucket bucket : buckets) {
+				Map<String, Object> keys = bucket.getKey();
+
+				ownerIds.add((String)keys.get("ownerIds"));
+			}
+
+			compositeAggregationBuilder.aggregateAfter(
+				compositeAggregation.afterKey());
+		}
+
+		return ownerIds;
+	}
+
+	@Cacheable
+	public long getTotalKeywordViews(String dayDateString, List<String> urls) {
+		return elasticsearchInvoker.count(
+			"activities",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("applicationId", "Page")
+			).filter(
+				QueryBuilders.termQuery("day", dayDateString)
+			).filter(
+				QueryBuilders.termQuery("eventId", "pageViewed")
+			).filter(
+				QueryBuilders.termsQuery("object.dataSourceAssetPK", urls)
+			));
+	}
+
+	@Cacheable
+	public long getTotalPageViews(String dayDateString) {
+		return elasticsearchInvoker.count(
+			"activities",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("applicationId", "Page")
+			).filter(
+				QueryBuilders.termQuery("day", dayDateString)
+			).filter(
+				QueryBuilders.termQuery("eventId", "pageViewed")
+			));
+	}
+
+	@Cacheable
+	public Map<String, Long> getURLPageViewsMap(
+		String endDayDateString, String ownerId, String startDayDateString) {
+
+		Map<String, Long> urlsPageViewsMap = new HashMap<>();
+
+		SearchSourceBuilder searchSourceBuilder =
+			SearchSourceBuilder.searchSource();
+
+		TermsValuesSourceBuilder termsValuesSourceBuilder =
+			new TermsValuesSourceBuilder("urls");
+
+		termsValuesSourceBuilder.field("object.dataSourceAssetPK");
+
+		CompositeAggregationBuilder compositeAggregationBuilder =
+			AggregationBuilders.composite(
+				"composite",
+				Collections.singletonList(termsValuesSourceBuilder));
+
+		compositeAggregationBuilder.size(10000);
+
+		searchSourceBuilder.aggregation(compositeAggregationBuilder);
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("applicationId", "Page")
+		).filter(
+			QueryBuilders.termQuery("eventId", "pageViewed")
+		);
+
+		if (startDayDateString != null) {
+			boolQueryBuilder.filter(
+				QueryBuilders.rangeQuery(
+					"day"
+				).gte(
+					startDayDateString
+				).lte(
+					endDayDateString
+				));
+		}
+		else {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("day", endDayDateString));
+		}
+
+		BoolQueryBuilderUtil.filterTerm(boolQueryBuilder, "ownerId", ownerId);
+
+		searchSourceBuilder.query(boolQueryBuilder);
+
+		searchSourceBuilder.size(0);
+
+		while (true) {
+			SearchResponse searchResponse = elasticsearchInvoker.search(
+				"activities", searchSourceBuilder);
+
+			Aggregations aggregations = searchResponse.getAggregations();
+
+			CompositeAggregation compositeAggregation = aggregations.get(
+				"composite");
+
+			List<? extends CompositeAggregation.Bucket> buckets =
+				compositeAggregation.getBuckets();
+
+			if (buckets.isEmpty()) {
+				break;
+			}
+
+			for (CompositeAggregation.Bucket bucket : buckets) {
+				Map<String, Object> keys = bucket.getKey();
+
+				urlsPageViewsMap.put(
+					(String)keys.get("urls"), bucket.getDocCount());
+			}
+
+			compositeAggregationBuilder.aggregateAfter(
+				compositeAggregation.afterKey());
+		}
+
+		return urlsPageViewsMap;
+	}
+
 	public boolean isActivity(String applicationId, String eventId) {
 		String[] applicationEventIds = _eventIds.get(applicationId);
 
@@ -233,34 +556,74 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return false;
 	}
 
-	public void updateOwnerId(
-		JSONObject activityJSONObject, Individual individual) {
+	@CacheEvict(allEntries = true)
+	public void updateOwnerId(Individual individual, String userId) {
+		elasticsearchInvoker.updateByQueryWithRetry(
+			QueryBuilders.termQuery("userId", userId), true,
+			new Script(
+				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+				"ctx._source.ownerId = params.ownerId",
+				Collections.singletonMap(
+					"ownerId", String.valueOf(individual.getId()))),
+			"activities");
 
-		elasticsearchInvoker.update(
-			"activities", activityJSONObject.getString("id"),
-			JSONUtil.put("ownerId", String.valueOf(individual.getId())));
-
-		List<Long> referencedAssetIds = _segmentDog.getReferencedAssetIds();
-
-		JSONObject objectJSONObject = activityJSONObject.getJSONObject(
-			"object");
-
-		if (!referencedAssetIds.contains(objectJSONObject.getLong("id"))) {
-			return;
-		}
-
-		_asahTaskDog.scheduleAsahTask(
-			"UpdateDynamicMembershipsNanite",
-			JSONUtil.put(
-				"dateModified", DateUtil.newDateString()
-			).put(
-				"filter",
-				"contains(filter, " +
-					activityJSONObject.getString("activityKey") + ")"
-			).put(
-				"individualJSONObject",
-				_objectMapper.convertValue(individual, JSONObject.class)
+		JSONArray activitiesJSONArray = elasticsearchInvoker.get(
+			"activities",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termsQuery(
+					"object.id",
+					ListUtil.map(
+						_segmentDog.getReferencedAssetIds(), String::valueOf))
+			).filter(
+				QueryBuilders.termQuery("userId", userId)
 			));
+
+		for (int i = 0; i < activitiesJSONArray.length(); i++) {
+			JSONObject activityJSONObject = activitiesJSONArray.getJSONObject(
+				i);
+
+			_asahTaskDog.scheduleAsahTask(
+				"UpdateDynamicMembershipsNanite",
+				JSONUtil.put(
+					"dateModified", DateUtil.newDateString()
+				).put(
+					"filter",
+					"contains(filter, " +
+						activityJSONObject.getString("activityKey") + ")"
+				).put(
+					"individualJSONObject",
+					_objectMapper.convertValue(individual, JSONObject.class)
+				));
+		}
+	}
+
+	@CacheEvict(allEntries = true)
+	public void updateSessionId(UserSession userSession) {
+		Script script = new Script(
+			Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+			"ctx._source.sessionId = params.sessionId",
+			Collections.singletonMap("sessionId", userSession.getId()));
+
+		elasticsearchInvoker.updateByQueryWithRetry(
+			BoolQueryBuilderUtil.filter(
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"dataSourceId", userSession.getDataSourceId())
+				).filter(
+					QueryBuilders.rangeQuery(
+						"endTime"
+					).gte(
+						DateUtil.toUTCString(userSession.getFirstEventDate())
+					).lte(
+						DateUtil.toUTCString(userSession.getLastEventDate())
+					)
+				).filter(
+					QueryBuilders.termQuery("userId", userSession.getUserId())
+				)
+			).mustNot(
+				QueryBuilders.existsQuery("sessionId")
+			),
+			true, script, "activities");
 	}
 
 	private static final Map<String, String[]> _eventIds =

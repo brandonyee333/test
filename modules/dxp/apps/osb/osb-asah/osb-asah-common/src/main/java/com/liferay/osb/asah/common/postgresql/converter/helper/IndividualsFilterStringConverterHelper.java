@@ -31,10 +31,11 @@ import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.Faro
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Organization;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -57,7 +58,6 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 
 import org.jooq.Condition;
@@ -362,50 +362,17 @@ public class IndividualsFilterStringConverterHelper
 		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
 			filterString, _faroInfoActivitiesFilterStringConverterHelper);
 
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			"activities",
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"ownerIds"
-					).field(
-						"ownerId"
-					).minDocCount(
-						minDocCount
-					).order(
-						BucketOrder.compound(
-							BucketOrder.count(checkEqualityOnly),
-							BucketOrder.key(true))
-					).size(
-						Integer.MAX_VALUE
-					));
+		List<String> ownerIds = _faroInfoActivityDog.getOwnerIds(
+			checkEqualityOnly, minDocCount, queryBuilder, value);
 
-				searchSourceBuilder.query(queryBuilder);
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		Terms terms = aggregations.get("ownerIds");
-
-		List<Long> individualIds = new ArrayList<>();
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			if (checkEqualityOnly && (bucket.getDocCount() > value)) {
-				break;
-			}
-
-			individualIds.add(Long.valueOf(bucket.getKeyAsString()));
-		}
-
-		if (individualIds.isEmpty()) {
+		if (ownerIds.isEmpty()) {
 			return DSL.noCondition();
 		}
 
 		Condition condition = DSL.field(
 			"individual.id"
 		).in(
-			individualIds
+			ListUtil.map(ownerIds, Long::valueOf)
 		);
 
 		if (negate) {
@@ -425,29 +392,17 @@ public class IndividualsFilterStringConverterHelper
 			queryBuilder = QueryBuilders.matchAllQuery();
 		}
 
-		Condition condition = DSL.noCondition();
+		List<String> ownerIds = _faroInfoActivityDog.getOwnerIds(queryBuilder);
 
-		JSONArrayIterator.of(
-			"activities", _faroInfoElasticsearchInvoker,
-			activityJSONObject -> {
-				condition.or(
-					DSL.field(
-						"individual.id"
-					).eq(
-						activityJSONObject.getLong("ownerId")
-					));
-
-				return null;
-			}
-		).setQueryBuilder(
-			queryBuilder
-		).iterate();
-
-		if (condition != DSL.noCondition()) {
-			return condition;
+		if (ownerIds.isEmpty()) {
+			return DSL.noCondition();
 		}
 
-		return DSL.not(DSL.noCondition());
+		return DSL.field(
+			"individual.id"
+		).in(
+			ListUtil.map(ownerIds, Long::valueOf)
+		);
 	}
 
 	private Condition _getBehavioralCriteriaCondition(
@@ -734,9 +689,8 @@ public class IndividualsFilterStringConverterHelper
 			throw new Exception("Invalid time frame: " + timeFrame);
 		}
 
-		return JSONUtil.toLongList(
-			_faroInfoElasticsearchInvoker.get("activities", boolQueryBuilder),
-			"ownerId");
+		return ListUtil.map(
+			_faroInfoActivityDog.getOwnerIds(boolQueryBuilder), Long::valueOf);
 	}
 
 	private Condition _getIndividualPKCondition(
@@ -1028,6 +982,9 @@ public class IndividualsFilterStringConverterHelper
 	@Autowired
 	private FaroInfoActivitiesFilterStringConverterHelper
 		_faroInfoActivitiesFilterStringConverterHelper;
+
+	@Autowired
+	private FaroInfoActivityDog _faroInfoActivityDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

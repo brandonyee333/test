@@ -17,14 +17,13 @@ package com.liferay.osb.asah.upgrade.v3_0_0;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONObject;
 
@@ -45,23 +44,16 @@ public class UserSessionsUpgradeStep implements UpgradeStep {
 	}
 
 	private Void _upgradeUserSession(JSONObject userSessionJSONObject) {
-		JSONObject lastActivityJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"activities",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.existsQuery("eventContext")
-			).filter(
-				QueryBuilders.termQuery(
-					"sessionId", userSessionJSONObject.getString("id"))
-			),
-			SortBuilderUtil.fieldSort("id", SortOrder.DESC), null,
-			"eventContext");
+		JSONObject latestActivityJSONObject =
+			_faroInfoActivityDog.fetchLatestActivityJSONObject(
+				userSessionJSONObject.getString("id"));
 
-		if (lastActivityJSONObject == null) {
+		if (latestActivityJSONObject == null) {
 			return null;
 		}
 
 		JSONObject eventContextJSONObject =
-			lastActivityJSONObject.getJSONObject("eventContext");
+			latestActivityJSONObject.getJSONObject("eventContext");
 
 		userSessionJSONObject.put(
 			"contentLanguageId",
@@ -132,7 +124,7 @@ public class UserSessionsUpgradeStep implements UpgradeStep {
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+	@Autowired
+	private FaroInfoActivityDog _faroInfoActivityDog;
 
 }
