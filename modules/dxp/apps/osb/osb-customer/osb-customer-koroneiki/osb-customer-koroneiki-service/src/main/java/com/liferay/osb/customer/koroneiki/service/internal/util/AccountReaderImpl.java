@@ -135,7 +135,7 @@ public class AccountReaderImpl implements AccountReader {
 
 		sb.append("accountKey eq '");
 		sb.append(accountKey);
-		sb.append("' and state eq 'active'");
+		sb.append("'");
 
 		return _productPurchaseWebService.search(sb.toString(), 1, 1000);
 	}
