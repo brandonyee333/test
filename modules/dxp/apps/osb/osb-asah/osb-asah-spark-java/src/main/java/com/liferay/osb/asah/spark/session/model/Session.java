@@ -66,6 +66,7 @@ public class Session implements Serializable {
 		_deviceType = eventContext.get("deviceType");
 		_finished = false;
 		_firstEventDate = event.getEventDate();
+		_individualId = event.getIndividualId();
 		_lastEventDate = event.getEventDate();
 		_platformName = eventContext.get("platformName");
 		_projectId = event.getProjectId();
@@ -144,6 +145,7 @@ public class Session implements Serializable {
 			Objects.equals(_finished, session._finished) &&
 			Objects.equals(_firstEventDate, session._firstEventDate) &&
 			Objects.equals(_interactionsCount, session._interactionsCount) &&
+			Objects.equals(_individualId, session._individualId) &&
 			Objects.equals(_interactionNumber, session._interactionNumber) &&
 			Objects.equals(_iterationNumber, session._iterationNumber) &&
 			Objects.equals(_lastEventDate, session._lastEventDate) &&
@@ -222,6 +224,10 @@ public class Session implements Serializable {
 		return new Timestamp(_firstEventDate.getTime());
 	}
 
+	public String getIndividualId() {
+		return _individualId;
+	}
+
 	public int getInteractionNumber() {
 		return _interactionNumber;
 	}
@@ -279,9 +285,10 @@ public class Session implements Serializable {
 		return Objects.hash(
 			_acquisition, _browserName, _canonicalUrls, _channelId, _city,
 			_clientIp, _country, _dataSourceId, _date, _deviceType, _events,
-			_finished, _firstEventDate, _interactionNumber, _interactionsCount,
-			_iterationNumber, _lastEventDate, _pageViewsCount, _platformName,
-			_projectId, _referrers, _region, _sessionId, _urls, _userId);
+			_finished, _firstEventDate, _individualId, _interactionNumber,
+			_interactionsCount, _iterationNumber, _lastEventDate,
+			_pageViewsCount, _platformName, _projectId, _referrers, _region,
+			_sessionId, _urls, _userId);
 	}
 
 	public boolean isBounced() {
@@ -346,6 +353,10 @@ public class Session implements Serializable {
 		if (firstEventDate != null) {
 			_firstEventDate = new Timestamp(firstEventDate.getTime());
 		}
+	}
+
+	public void setIndividualId(String individualId) {
+		_individualId = individualId;
 	}
 
 	public void setInteractionNumber(int interactionNumber) {
@@ -579,6 +590,7 @@ public class Session implements Serializable {
 	private List<Event> _events = new ArrayList<>();
 	private Boolean _finished;
 	private Timestamp _firstEventDate;
+	private String _individualId;
 	private int _interactionNumber;
 	private int _interactionsCount;
 	private int _iterationNumber;
