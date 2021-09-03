@@ -55,10 +55,6 @@ public class SessionSparkJob implements SparkJob {
 	public SessionSparkJob(SessionSparkApplication baseSparkApplication) {
 		Configuration configuration = baseSparkApplication.getConfiguration();
 
-		_backoffMaxAttempts = Long.parseLong(
-			configuration.get("backoff.max.attempts", "20"));
-		_backoffMaxWaitingTime = Long.parseLong(
-			configuration.get("backoff.max.waiting.time", "600000"));
 		_checkpointPath = configuration.get(
 			"google.storage.path.checkpoint", "google.storage.path.checkpoint");
 		_eventsPath = configuration.get(
@@ -92,9 +88,7 @@ public class SessionSparkJob implements SparkJob {
 		catch (Exception exception) {
 			_log.error(exception, exception);
 
-			_wait();
-
-			run();
+			throw new RuntimeException(exception);
 		}
 	}
 
@@ -162,24 +156,6 @@ public class SessionSparkJob implements SparkJob {
 		).groupByKey(
 			_EVENT_GROUP_BY_KEY_FUNCTION, _KEY_ENCODER
 		);
-	}
-
-	private void _wait() {
-		_backoffAttemptNumber += 1;
-
-		if (_backoffAttemptNumber > _backoffMaxAttempts) {
-			throw new RuntimeException("Backoff max attempts exceeded");
-		}
-
-		_backoffWaitingTime = Math.min(
-			2 * _backoffWaitingTime, _backoffMaxWaitingTime);
-
-		try {
-			Thread.sleep(_backoffWaitingTime);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
-		}
 	}
 
 	private static final Encoder<Event> _EVENT_ENCODER = Encoders.bean(
@@ -250,10 +226,6 @@ public class SessionSparkJob implements SparkJob {
 
 	private static final Log _log = LogFactory.getLog(SessionSparkJob.class);
 
-	private long _backoffAttemptNumber;
-	private final long _backoffMaxAttempts;
-	private final long _backoffMaxWaitingTime;
-	private long _backoffWaitingTime = 10000;
 	private final String _checkpointPath;
 	private final String _eventsPath;
 	private final SessionBatchSinkFunction _sessionBatchSinkFunction;
