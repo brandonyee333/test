@@ -137,6 +137,7 @@ function compile_repository {
 
 function date {
 	export LC_ALL=en_US.UTF-8
+	export TZ=America/Los_Angeles
 
 	if [ -z ${1+x} ] || [ -z ${2+x} ]
 	then
@@ -291,7 +292,7 @@ then
 	exit 1
 fi
 
-CURRENT_DATE=$(TZ=EDT date)
+CURRENT_DATE=$(date)
 GIT_HASH=$(git rev-parse --short=7 HEAD)
 PREVIOUS_GIT_HASH=${1}
 GIT_LABEL=${2}
