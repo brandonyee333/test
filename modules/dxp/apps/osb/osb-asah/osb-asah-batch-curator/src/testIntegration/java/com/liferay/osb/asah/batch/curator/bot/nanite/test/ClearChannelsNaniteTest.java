@@ -115,7 +115,11 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 			_activityGroupRepository.existsById(activityGroupId));
 
 		Optional<Asset> assetOptional = _assetRepository.findById(
-			asset.getId());
+			Optional.ofNullable(
+				asset.getId()
+			).orElse(
+				0L
+			));
 
 		Assert.assertFalse(assetOptional.isPresent());
 
