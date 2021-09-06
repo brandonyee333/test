@@ -134,7 +134,9 @@ public class AsahTaskRunnable implements Runnable {
 					System.currentTimeMillis() - start);
 			}
 			catch (Exception exception) {
-				_log.error(exception, exception);
+				_log.error(
+					"Unable to run nanite with class name " + naniteClassName,
+					exception);
 
 				nanite.logFailed(
 					String.valueOf(_asahTaskId), _contextJSONObject,
