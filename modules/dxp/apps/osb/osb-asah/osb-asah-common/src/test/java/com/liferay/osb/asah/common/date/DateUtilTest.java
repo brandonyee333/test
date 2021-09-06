@@ -158,6 +158,13 @@ public class DateUtilTest {
 	}
 
 	@Test
+	public void testNewBeginningOfDayDate() {
+		Assert.assertEquals(
+			"2019-05-31T00:00:00.000Z",
+			DateUtil.newBeginningOfDayDateString("2019-05-31T14:23:31.309Z"));
+	}
+
+	@Test
 	public void testNewDayDateString() {
 		String day = DateUtil.newDayDateString();
 
