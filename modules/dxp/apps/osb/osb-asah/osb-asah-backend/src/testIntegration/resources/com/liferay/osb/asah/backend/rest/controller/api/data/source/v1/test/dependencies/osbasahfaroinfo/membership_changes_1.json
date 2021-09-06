@@ -1,0 +1,131 @@
+[
+	{
+		"dateChanged": "${now-32dT00:00:00.000Z}",
+		"dateFirst": "${now-32dT00:00:00.000Z}",
+		"id": "1",
+		"individualDeleted": false,
+		"individualSegmentId": "327968823603500655",
+		"individualsCount": 1,
+		"knownIndividualsCount": 0,
+		"operation": "ADDED"
+	},
+	{
+		"dateChanged": "${now-31dT00:00:00.000Z}",
+		"dateFirst": "${now-31dT00:00:00.000Z}",
+		"id": "2",
+		"individualDeleted": false,
+		"individualSegmentId": "327968823603500655",
+		"individualsCount": 2,
+		"knownIndividualsCount": 0,
+		"operation": "ADDED"
+	},
+	{
+		"dateChanged": "${now-30dT00:00:00.000Z}",
+		"dateFirst": "${now-30dT00:00:00.000Z}",
+		"id": "3",
+		"individualDeleted": false,
+		"individualSegmentId": "327968823603500655",
+		"individualsCount": 3,
+		"knownIndividualsCount": 0,
+		"operation": "ADDED"
+	},
+	{
+		"dateChanged": "${now-28dT00:00:00.000Z}",
+		"dateFirst": "${now-28dT00:00:00.000Z}",
+		"id": "4",
+		"individualDeleted": false,
+		"individualSegmentId": "327968823603500655",
+		"individualsCount": 4,
+		"knownIndividualsCount": 0,
+		"operation": "ADDED"
+	},
+	{
+		"dateChanged": "${now-20dT00:00:00.000Z}",
+		"dateFirst": "${now-20dT00:00:00.000Z}",
+		"id": "5",
+		"individualDeleted": false,
+		"individualSegmentId": "327968823603500655",
+		"individualsCount": 5,
+		"knownIndividualsCount": 0,
+		"operation": "ADDED"
+	},
+	{
+		"dateChanged": "${now-15dT00:00:00.000Z}",
+		"dateFirst": "${now-15dT00:00:00.000Z}",
+		"id": "6",
+		"individualDeleted": false,
+		"individualSegmentId": "327968823603500655",
+		"individualsCount": 6,
+		"knownIndividualsCount": 0,
+		"operation": "ADDED"
+	},
+	{
+		"dateChanged": "${now-10dT00:00:00.000Z}",
+		"dateFirst": "${now-10dT00:00:00.000Z}",
+		"id": "7",
+		"individualDeleted": false,
+		"individualSegmentId": "327968823603500655",
+		"individualsCount": 7,
+		"knownIndividualsCount": 0,
+		"operation": "ADDED"
+	},
+	{
+		"dateChanged": "${now-8dT00:00:00.000Z}",
+		"dateFirst": "${now-8dT00:00:00.000Z}",
+		"id": "8",
+		"individualDeleted": false,
+		"individualSegmentId": "327968823603500655",
+		"individualsCount": 8,
+		"knownIndividualsCount": 0,
+		"operation": "ADDED"
+	},
+	{
+		"dateChanged": "${now-1dT00:00:00.000Z}",
+		"dateFirst": "${now-1dT00:00:00.000Z}",
+		"id": "9",
+		"individualDeleted": false,
+		"individualEmail": "individual.fakeid@liferay.com",
+		"individualId": "1234",
+		"individualName": "Individual Name Fake ID",
+		"individualSegmentId": "327968823603500655",
+		"individualsCount": 9,
+		"knownIndividualsCount": 1,
+		"operation": "ADDED"
+	},
+	{
+		"dateChanged": "${now-1dT12:00:00.000Z}",
+		"dateFirst": "${now-1dT00:12:00.000Z}",
+		"id": "10",
+		"individualDeleted": false,
+		"individualEmail": "individual.337984612356412845@liferay.com",
+		"individualId": "337984612356412845",
+		"individualName": "Individual Name 337984612356412845",
+		"individualSegmentId": "327968823603500655",
+		"individualsCount": 10,
+		"knownIndividualsCount": 2,
+		"operation": "ADDED"
+	},
+	{
+		"dateChanged": "${now-1dT23:00:00.000Z}",
+		"dateFirst": "${now-1dT23:00:00.000Z}",
+		"id": "11",
+		"individualDeleted": false,
+		"individualSegmentId": "327968823603500655",
+		"individualsCount": 11,
+		"knownIndividualsCount": 2,
+		"operation": "ADDED"
+	},
+	{
+		"dateChanged": "${now-0dT12:00:00.000Z}",
+		"dateFirst": "${now-0dT12:00:00.000Z}",
+		"id": "12",
+		"individualDeleted": false,
+		"individualEmail": "individual.337984659206412898@liferay.com",
+		"individualId": "337984659206412898",
+		"individualName": "Individual Name 337984659206412898",
+		"individualSegmentId": "327968823603500655",
+		"individualsCount": 12,
+		"knownIndividualsCount": 3,
+		"operation": "ADDED"
+	}
+]

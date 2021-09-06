@@ -1,0 +1,22 @@
+[
+	{
+		"dataSources": [
+			{
+				"groupIds": [
+					"1"
+				],
+				"id": "1"
+			},
+			{
+				"groupIds": [
+					"2"
+				],
+				"id": "2"
+			}
+		],
+		"dateCreated": "${now}",
+		"defaultChannel": true,
+		"id": "1",
+		"name": "channel 1"
+	}
+]

@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.IndividualSegmentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
@@ -34,9 +35,15 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import io.restassured.http.Method;
 import io.restassured.response.ValidatableResponse;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.hamcrest.Matchers;
 
@@ -246,6 +253,10 @@ public class IndividualSegmentsRestControllerTest
 		resourcePath = "individual_segments_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
+	@ElasticsearchIndex(
+		name = "membership-changes", resourcePath = "membership_changes_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@Test
 	public void testGetSegmentDTO() throws Exception {
 		SegmentDTO segmentDTO = _individualSegmentsRestController.getSegmentDTO(
@@ -292,6 +303,138 @@ public class IndividualSegmentsRestControllerTest
 		Set<String> referencedUserIds = segmentDTO.getReferencedUserIds();
 
 		Assert.assertTrue(referencedUserIds.isEmpty());
+
+		long anonymousIndividualCount = Optional.ofNullable(
+			segmentDTO.getAnonymousIndividualCount()
+		).orElse(
+			-1L
+		);
+
+		Assert.assertEquals(8L, anonymousIndividualCount);
+
+		long individualCount = Optional.ofNullable(
+			segmentDTO.getIndividualCount()
+		).orElse(
+			-1L
+		);
+
+		Assert.assertEquals(10L, individualCount);
+
+		long knownIndividualCount = Optional.ofNullable(
+			segmentDTO.getKnownIndividualCount()
+		).orElse(
+			-1L
+		);
+
+		Assert.assertEquals(2L, knownIndividualCount);
+	}
+
+	@ElasticsearchIndex(
+		name = "individual-segments",
+		resourcePath = "individual_segments_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "membership-changes", resourcePath = "membership_changes_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetSegmentDTOCreatedToday() throws Exception {
+		SegmentDTO segmentDTO = _individualSegmentsRestController.getSegmentDTO(
+			1L, null);
+
+		long anonymousIndividualCount = Optional.ofNullable(
+			segmentDTO.getAnonymousIndividualCount()
+		).orElse(
+			-1L
+		);
+
+		Assert.assertEquals(0L, anonymousIndividualCount);
+
+		long individualCount = Optional.ofNullable(
+			segmentDTO.getIndividualCount()
+		).orElse(
+			-1L
+		);
+
+		Assert.assertEquals(0L, individualCount);
+
+		long knownIndividualCount = Optional.ofNullable(
+			segmentDTO.getKnownIndividualCount()
+		).orElse(
+			-1L
+		);
+
+		Assert.assertEquals(0L, knownIndividualCount);
+	}
+
+	@ElasticsearchIndex(
+		name = "channels", resourcePath = "channels_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individual-segments",
+		resourcePath = "individual_segments_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "membership-changes", resourcePath = "membership_changes_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetSegmentDTOsPageDTOs() throws Exception {
+		PageDTO<SegmentDTO> pageDTO =
+			_individualSegmentsRestController.getSegmentDTOsPageDTOs(
+				1L, null, 0, 50, new String[0]);
+
+		Map<String, SegmentDTO> content = pageDTO.getContent();
+
+		SegmentDTO embedded = content.get("_embedded");
+
+		Set<SegmentDTO> segmentDTOs = embedded.getSegmentDTOs();
+
+		Assert.assertEquals(segmentDTOs.toString(), 2, segmentDTOs.size());
+
+		Stream<SegmentDTO> stream = segmentDTOs.stream();
+
+		List<String> ids = stream.map(
+			SegmentDTO::getId
+		).collect(
+			Collectors.toList()
+		);
+
+		Assert.assertTrue(ids.containsAll(Arrays.asList("1", "2")));
+
+		for (SegmentDTO segmentDTO : segmentDTOs) {
+			long anonymousIndividualCount = Optional.ofNullable(
+				segmentDTO.getAnonymousIndividualCount()
+			).orElse(
+				-1L
+			);
+
+			long individualCount = Optional.ofNullable(
+				segmentDTO.getIndividualCount()
+			).orElse(
+				-1L
+			);
+
+			long knownIndividualCount = Optional.ofNullable(
+				segmentDTO.getKnownIndividualCount()
+			).orElse(
+				-1L
+			);
+
+			if (Objects.equals(segmentDTO.getId(), "1")) {
+				Assert.assertEquals(0L, anonymousIndividualCount);
+				Assert.assertEquals(0L, individualCount);
+				Assert.assertEquals(0L, knownIndividualCount);
+			}
+			else if (Objects.equals(segmentDTO.getId(), "2")) {
+				Assert.assertEquals(0L, anonymousIndividualCount);
+				Assert.assertEquals(5L, individualCount);
+				Assert.assertEquals(5L, knownIndividualCount);
+			}
+		}
 	}
 
 	private String[] _getIds(
