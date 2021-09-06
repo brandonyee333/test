@@ -21,3 +21,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS IX_ACTIVITYGROUP_ATCIDSIDDUI ON ActivityGroup 
 CREATE UNIQUE INDEX IF NOT EXISTS IX_EVENTATTRIBUTE_EADIEDEI ON EventAttribute (eventAttributeDefinitionId, eventDate, eventId);
 
 CREATE UNIQUE INDEX IF NOT EXISTS IX_MEMBERSHIP_IIDISIDS ON Membership (individualId, individualSegmentId, status);
+
+CREATE INDEX IF NOT EXISTS IX_MEMBERSHIPCHANGE_INDIVIDUALSEGMENTID ON MembershipChange (individualSegmentId);
+
+CREATE INDEX IF NOT EXISTS IX_MEMBERSHIPCHANGE_ISIICMD ON MembershipChange (individualsegmentid, individualscount, modifieddate);
+

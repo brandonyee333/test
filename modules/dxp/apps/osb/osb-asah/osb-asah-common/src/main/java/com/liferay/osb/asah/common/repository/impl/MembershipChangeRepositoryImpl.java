@@ -18,15 +18,19 @@ import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
+import org.jooq.SelectWhereStep;
+import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Pageable;
@@ -54,6 +58,56 @@ public class MembershipChangeRepositoryImpl {
 			0, Long.class
 		).orElse(
 			0L
+		);
+	}
+
+	public List<MembershipChange>
+		searchLastByDateChangedPeriodAndIndividualSegmentId(
+			Date dateChangedEnd, Date dateChangedStart,
+			boolean includeAnonymousUsers, List<Long> individualSegmentIds) {
+
+		Field<Object> individualSegmentIdField = DSL.field(
+			"individualsegmentid");
+		Field<Object> modifiedDateField = DSL.field("modifieddate");
+
+		Condition condition = individualSegmentIdField.in(individualSegmentIds);
+
+		condition = condition.and(
+			modifiedDateField.between(dateChangedStart, dateChangedEnd));
+
+		if (!includeAnonymousUsers) {
+			condition = condition.and(
+				DSL.field(
+					"individualemail"
+				).isNotNull());
+		}
+
+		Table<Record> membershipChangeTable = DSL.table("membershipchange");
+
+		SelectWhereStep<Record> selectWhereStep = _dslContext.selectFrom(
+			membershipChangeTable);
+
+		Field<Object> individualsCountField = DSL.field("individualscount");
+
+		return selectWhereStep.where(
+			DSL.row(
+				individualSegmentIdField, individualsCountField,
+				modifiedDateField
+			).in(
+				DSL.select(
+					individualSegmentIdField, DSL.max(individualsCountField),
+					DSL.max(modifiedDateField)
+				).from(
+					membershipChangeTable
+				).where(
+					condition
+				).groupBy(
+					individualSegmentIdField
+				)
+			)
+		).fetch(
+		).map(
+			record -> new MembershipChange(record.intoMap())
 		);
 	}
 
