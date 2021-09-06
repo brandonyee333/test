@@ -52,6 +52,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -258,7 +259,19 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			@RequestParam(required = false) String expand)
 		throws Exception {
 
-		SegmentDTO segmentDTO = new SegmentDTO(segmentDog.getSegment(id));
+		Segment segment = _resetIndividualsCount(segmentDog.getSegment(id));
+
+		if (!Objects.isNull(segment.getId())) {
+			List<MembershipChange> membershipsChanges =
+				_membershipChangeDog.getLastFrom30DaysByIndividualSegmentsId(
+					Collections.singletonList(segment.getId()));
+
+			if (!membershipsChanges.isEmpty()) {
+				_updateSegmentCounts(membershipsChanges.get(0), segment);
+			}
+		}
+
+		SegmentDTO segmentDTO = new SegmentDTO(segment);
 
 		if (StringUtils.isNotEmpty(expand)) {
 			String[] expandParts = expand.split(",");
@@ -268,7 +281,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 					segmentDTO.setEmbedded(
 						Collections.singletonMap(
 							"referenced-objects",
-							_getReferencedObjectsJSONObject(id)));
+							_getReferencedObjectsJSONObject(segment)));
 				}
 				else if (_log.isWarnEnabled()) {
 					_log.warn("Invalid expand: " + expandPart);
@@ -287,9 +300,27 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		return toSegmentDTOPageDTO(
-			segmentDog.searchSegmentsPage(
-				dataSourceId, filterString, page, Math.max(1, size), sorts));
+		Page<Segment> segmentsPage = segmentDog.searchSegmentsPage(
+			dataSourceId, filterString, page, Math.max(1, size), sorts);
+
+		if (segmentsPage.getTotalElements() > 0) {
+			Stream<Segment> stream = segmentsPage.stream();
+
+			Map<Long, Segment> segmentsMap = stream.collect(
+				Collectors.toMap(Segment::getId, this::_resetIndividualsCount));
+
+			List<MembershipChange> membershipsChanges =
+				_membershipChangeDog.getLastFrom30DaysByIndividualSegmentsId(
+					new ArrayList<>(segmentsMap.keySet()));
+
+			for (MembershipChange membershipChange : membershipsChanges) {
+				_updateSegmentCounts(
+					membershipChange,
+					segmentsMap.get(membershipChange.getIndividualSegmentId()));
+			}
+		}
+
+		return toSegmentDTOPageDTO(segmentsPage);
 	}
 
 	@GetMapping(params = "apply", value = "/{id}/individuals")
@@ -502,12 +533,10 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			FilterStringToQueryBuilderConverter.convert(filterString));
 	}
 
-	private JSONObject _getReferencedObjectsJSONObject(Long segmentId)
+	private JSONObject _getReferencedObjectsJSONObject(Segment segment)
 		throws Exception {
 
 		JSONObject jsonObject = new JSONObject();
-
-		Segment segment = segmentDog.getSegment(segmentId);
 
 		jsonObject.put(
 			"assets",
@@ -552,6 +581,14 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		}
 
 		return false;
+	}
+
+	private Segment _resetIndividualsCount(Segment segment) {
+		segment.setAnonymousIndividualCount(0L);
+		segment.setIndividualCount(0L);
+		segment.setKnownIndividualCount(0L);
+
+		return segment;
 	}
 
 	private PageDTO<IndividualDTO> _toIndividualDTOPageDTO(
@@ -613,6 +650,30 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			"_embedded", transformationDTO, transformations.getNumber(),
 			transformations.getSize(), transformations.getTotalElements(),
 			transformations.getTotalPages());
+	}
+
+	private void _updateSegmentCounts(
+		MembershipChange membershipChange, Segment segment) {
+
+		if (!Objects.isNull(membershipChange)) {
+			segment.setIndividualCount(
+				Optional.ofNullable(
+					membershipChange.getIndividualsCount()
+				).orElse(
+					0L
+				));
+
+			segment.setKnownIndividualCount(
+				Optional.ofNullable(
+					membershipChange.getKnownIndividualsCount()
+				).orElse(
+					0L
+				));
+
+			segment.setAnonymousIndividualCount(
+				segment.getIndividualCount() -
+					segment.getKnownIndividualCount());
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
