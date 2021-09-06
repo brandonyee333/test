@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
@@ -22,6 +23,7 @@ import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +34,8 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
+import org.elasticsearch.search.collapse.CollapseBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,7 +57,9 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(),
-			_getQueryBuilder(filterString, includeAnonymousUsers, segmentId));
+			_getQueryBuilder(
+				filterString, includeAnonymousUsers,
+				Collections.singletonList(segmentId)));
 	}
 
 	@Override
@@ -78,6 +84,40 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 		);
 	}
 
+	public List<MembershipChange>
+		searchLastByDateChangedPeriodAndIndividualSegmentId(
+			Date dateChangedEnd, Date dateChangedStart,
+			boolean includeAnonymousUsers, List<Long> individualSegmentIds) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						BoolQueryBuilder boolQueryBuilder =
+							(BoolQueryBuilder)_getQueryBuilder(
+								null, includeAnonymousUsers,
+								individualSegmentIds);
+
+						searchSourceBuilder.query(
+							boolQueryBuilder.filter(
+								QueryBuilders.rangeQuery(
+									"dateChanged"
+								).gte(
+									DateUtil.toUTCString(dateChangedStart)
+								).lte(
+									DateUtil.toUTCString(dateChangedEnd)
+								))
+						).collapse(
+							new CollapseBuilder("individualSegmentId")
+						).sort(
+							"dateChanged", SortOrder.DESC
+						).sort(
+							"individualsCount", SortOrder.DESC
+						);
+					})));
+	}
+
 	@Override
 	public List<MembershipChange> searchMembershipChanges(
 		String filterString, Boolean includeAnonymousUsers, Long segmentId,
@@ -91,7 +131,7 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 						searchSourceBuilder.query(
 							_getQueryBuilder(
 								filterString, includeAnonymousUsers,
-								segmentId));
+								Collections.singletonList(segmentId)));
 
 						setSearchSourceBuilderPage(
 							searchSourceBuilder, pageable);
@@ -136,10 +176,11 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 	}
 
 	private QueryBuilder _getQueryBuilder(
-		String filterString, Boolean includeAnonymousUsers, Long segmentId) {
+		String filterString, Boolean includeAnonymousUsers,
+		List<Long> segmentIds) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("individualSegmentId", segmentId));
+			QueryBuilders.termsQuery("individualSegmentId", segmentIds));
 
 		if (!BooleanUtils.toBoolean(includeAnonymousUsers)) {
 			boolQueryBuilder.filter(

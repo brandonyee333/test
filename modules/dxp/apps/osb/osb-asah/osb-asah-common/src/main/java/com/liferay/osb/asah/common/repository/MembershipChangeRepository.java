@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.MembershipChange;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,11 @@ public interface MembershipChangeRepository
 
 	@Cacheable
 	public Optional<MembershipChange> findByIndividualId(Long individualId);
+
+	public List<MembershipChange>
+		searchLastByDateChangedPeriodAndIndividualSegmentId(
+			Date dateChangedEnd, Date dateChangedStart,
+			boolean includeAnonymousUsers, List<Long> individualSegmentIds);
 
 	@Cacheable
 	public List<MembershipChange> searchMembershipChanges(
