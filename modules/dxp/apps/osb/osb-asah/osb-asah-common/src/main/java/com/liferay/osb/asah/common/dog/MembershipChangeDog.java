@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
@@ -24,10 +25,13 @@ import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 import org.json.JSONObject;
 
@@ -181,6 +185,18 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		}
 
 		return accountNamesJSONObjects;
+	}
+
+	public List<MembershipChange> getLastFrom30DaysByIndividualSegmentsId(
+		List<Long> individualSegmentIds) {
+
+		Date date = DateUtil.newDayDate();
+
+		return _membershipChangeRepository.
+			searchLastByDateChangedPeriodAndIndividualSegmentId(
+				DateUtil.newEndOfDayDate(DateUtils.addDays(date, -1)),
+				DateUtil.newBeginningOfDayDate(DateUtils.addDays(date, -31)),
+				false, individualSegmentIds);
 	}
 
 	public Page<MembershipChange> searchMembershipChangesPages(
