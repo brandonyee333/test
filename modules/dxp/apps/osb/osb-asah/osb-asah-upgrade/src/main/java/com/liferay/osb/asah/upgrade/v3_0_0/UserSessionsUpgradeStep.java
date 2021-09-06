@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.upgrade.v3_0_0;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
@@ -25,6 +26,7 @@ import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,39 +45,54 @@ public class UserSessionsUpgradeStep implements UpgradeStep {
 		_upgradeUserSessionsJSONObjects();
 	}
 
-	private Void _upgradeUserSession(JSONObject userSessionJSONObject) {
-		JSONObject latestActivityJSONObject =
-			_faroInfoActivityDog.fetchLatestActivityJSONObject(
-				userSessionJSONObject.getString("id"));
+	private Void _upgradeUserSession(JSONArray userSessionJSONArray) {
+		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
+			_cerebroInfoElasticsearchInvoker.
+				createElasticsearchBulkRequestBuilder();
 
-		if (latestActivityJSONObject == null) {
-			return null;
+		for (int i = 0; i < userSessionJSONArray.length(); i++) {
+			JSONObject userSessionJSONObject =
+				userSessionJSONArray.getJSONObject(i);
+
+			JSONObject latestActivityJSONObject =
+				_faroInfoActivityDog.fetchLatestActivityJSONObject(
+					userSessionJSONObject.getString("id"));
+
+			if (latestActivityJSONObject == null) {
+				return null;
+			}
+
+			JSONObject eventContextJSONObject =
+				latestActivityJSONObject.getJSONObject("eventContext");
+
+			userSessionJSONObject.put(
+				"contentLanguageId",
+				eventContextJSONObject.optString("contentLanguageId", ""));
+			userSessionJSONObject.put(
+				"devicePixelRatio",
+				eventContextJSONObject.optString("devicePixelRatio", ""));
+			userSessionJSONObject.put(
+				"languageId",
+				eventContextJSONObject.optString("languageId", ""));
+			userSessionJSONObject.put(
+				"screenHeight",
+				eventContextJSONObject.optString("screenHeight", ""));
+			userSessionJSONObject.put(
+				"screenWidth",
+				eventContextJSONObject.optString("screenWidth", ""));
+			userSessionJSONObject.put(
+				"timezoneOffset",
+				eventContextJSONObject.optString("timezoneOffset", ""));
+			userSessionJSONObject.put(
+				"userAgent", eventContextJSONObject.optString("userAgent", ""));
+
+			elasticsearchBulkRequestBuilder.update(
+				"user-sessions", userSessionJSONObject);
 		}
 
-		JSONObject eventContextJSONObject =
-			latestActivityJSONObject.getJSONObject("eventContext");
-
-		userSessionJSONObject.put(
-			"contentLanguageId",
-			eventContextJSONObject.optString("contentLanguageId", ""));
-		userSessionJSONObject.put(
-			"devicePixelRatio",
-			eventContextJSONObject.optString("devicePixelRatio", ""));
-		userSessionJSONObject.put(
-			"languageId", eventContextJSONObject.optString("languageId", ""));
-		userSessionJSONObject.put(
-			"screenHeight",
-			eventContextJSONObject.optString("screenHeight", ""));
-		userSessionJSONObject.put(
-			"screenWidth", eventContextJSONObject.optString("screenWidth", ""));
-		userSessionJSONObject.put(
-			"timezoneOffset",
-			eventContextJSONObject.optString("timezoneOffset", ""));
-		userSessionJSONObject.put(
-			"userAgent", eventContextJSONObject.optString("userAgent", ""));
-
-		_cerebroInfoElasticsearchInvoker.update(
-			"user-sessions", userSessionJSONObject);
+		if (elasticsearchBulkRequestBuilder.hasActions()) {
+			elasticsearchBulkRequestBuilder.get();
+		}
 
 		return null;
 	}
@@ -110,7 +127,8 @@ public class UserSessionsUpgradeStep implements UpgradeStep {
 
 	private void _upgradeUserSessionsJSONObjects() throws Exception {
 		JSONArrayIterator.of(
-			"user-sessions", _cerebroInfoElasticsearchInvoker,
+			"user-sessions", _cerebroInfoElasticsearchInvoker, null
+		).setProcessJSONArrayUnsafeFunction(
 			this::_upgradeUserSession
 		).setQueryBuilder(
 			BoolQueryBuilderUtil.mustNot(
