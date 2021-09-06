@@ -17,13 +17,6 @@ package com.liferay.osb.asah.upgrade;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.upgrade.v0_0_0.ProjectsIndexUpgradeStep;
 import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_12_0.AsahMarkerUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_12_0.PreAsahMarkerUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_12_0.RunLogUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_12_2.ActivityGroupsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_12_2.AssetsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_12_2.IndividualActivitiesUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_12_2.PagesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.ChannelsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.CustomEventUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.DXPEntityUpgradeStep;
@@ -50,18 +43,6 @@ public class UpgradeProcessConfiguration {
 			_snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.11.0", "2.12.0", _preAsahMarkerUpgradeStep,
-			_asahMarkerUpgradeStep, _runLogUpgradeStep);
-
-		upgradeProcess.addUpgradeSteps(
-			"2.12.0", "2.12.1",
-			version -> {
-			});
-
-		upgradeProcess.addUpgradeSteps(
-			"2.12.1", "2.12.2", _activityGroupsUpgradeStep, _assetsUpgradeStep,
-			_individualActivitiesUpgradeStep, _pagesUpgradeStep);
-
 		upgradeProcess.addUpgradeSteps(
 			"2.12.2", "3.0.0", _channelsUpgradeStep, _customEventUpgradeStep,
 			_dataSourcesUpgradeStep, _dxpEntityUpgradeStep,
@@ -69,12 +50,6 @@ public class UpgradeProcessConfiguration {
 
 		return upgradeProcess;
 	}
-
-	@Autowired
-	private ActivityGroupsUpgradeStep _activityGroupsUpgradeStep;
-
-	@Autowired
-	private AsahMarkerUpgradeStep _asahMarkerUpgradeStep;
 
 	@Autowired
 	private AssetsUpgradeStep _assetsUpgradeStep;
@@ -92,19 +67,7 @@ public class UpgradeProcessConfiguration {
 	private DXPEntityUpgradeStep _dxpEntityUpgradeStep;
 
 	@Autowired
-	private IndividualActivitiesUpgradeStep _individualActivitiesUpgradeStep;
-
-	@Autowired
-	private PagesUpgradeStep _pagesUpgradeStep;
-
-	@Autowired
-	private PreAsahMarkerUpgradeStep _preAsahMarkerUpgradeStep;
-
-	@Autowired
 	private ProjectsIndexUpgradeStep _projectsIndexUpgradeStep;
-
-	@Autowired
-	private RunLogUpgradeStep _runLogUpgradeStep;
 
 	@Autowired
 	private SalesforceUpgradeStep _salesforceUpgradeStep;
