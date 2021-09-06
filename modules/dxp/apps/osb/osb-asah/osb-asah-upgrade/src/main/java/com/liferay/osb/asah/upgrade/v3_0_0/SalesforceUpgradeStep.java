@@ -96,16 +96,23 @@ public class SalesforceUpgradeStep implements UpgradeStep {
 			String collectionName, SalesforceEntity.Type salesforceEntityType)
 		throws Exception {
 
-		JSONArrayIterator.of(
-			collectionName, _salesforceRawElasticsearchInvoker,
-			salesforceEntityJSONObject ->
-				_salesforceRawElasticsearchInvoker.replace(
-					collectionName,
-					_upgradeSalesforceEntityJSONObjects(
-						salesforceEntityJSONObject, salesforceEntityType))
-		).setQueryBuilder(
-			BoolQueryBuilderUtil.mustNot(QueryBuilders.existsQuery("fields"))
-		).iterate();
+		long count = _salesforceRawElasticsearchInvoker.count(
+			collectionName,
+			BoolQueryBuilderUtil.mustNot(QueryBuilders.existsQuery("fields")));
+
+		if (count > 0) {
+			JSONArrayIterator.of(
+				collectionName, _salesforceRawElasticsearchInvoker,
+				salesforceEntityJSONObject ->
+					_salesforceRawElasticsearchInvoker.replace(
+						collectionName,
+						_upgradeSalesforceEntityJSONObjects(
+							salesforceEntityJSONObject, salesforceEntityType))
+			).setQueryBuilder(
+				BoolQueryBuilderUtil.mustNot(
+					QueryBuilders.existsQuery("fields"))
+			).iterate();
+		}
 	}
 
 	@Autowired
