@@ -2,33 +2,41 @@
 	{
 		"assetType": "Page",
 		"dataSourceAssetPK": "url1",
-		"keywords": {
-			"keyword": "hello",
-			"type": "keyword"
-		}
+		"keywords": [
+			{
+				"keyword": "hello",
+				"type": "keyword"
+			}
+		]
 	},
 	{
 		"assetType": "Page",
 		"dataSourceAssetPK": "url2",
-		"keywords": {
-			"keyword": "hello",
-			"type": "keyword"
-		}
+		"keywords": [
+			{
+				"keyword": "hello",
+				"type": "keyword"
+			}
+		]
 	},
 	{
 		"assetType": "Page",
 		"dataSourceAssetPK": "url3",
-		"keywords": {
-			"keyword": "hello",
-			"type": "keyword"
-		}
+		"keywords": [
+			{
+				"keyword": "hello",
+				"type": "keyword"
+			}
+		]
 	},
 	{
 		"assetType": "Page",
 		"dataSourceAssetPK": "url4",
-		"keywords": {
-			"keyword": "bye",
-			"type": "keyword"
-		}
+		"keywords": [
+			{
+				"keyword": "bye",
+				"type": "keyword"
+			}
+		]
 	}
 ]
