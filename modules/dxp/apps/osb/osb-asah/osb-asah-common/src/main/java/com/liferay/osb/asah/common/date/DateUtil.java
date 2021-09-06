@@ -162,6 +162,23 @@ public class DateUtil {
 		return newLocalDateTime.toString();
 	}
 
+	public static Date newBeginningOfDayDate(Date date) {
+		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+
+		calendar.setTime(date);
+
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+
+		return calendar.getTime();
+	}
+
+	public static String newBeginningOfDayDateString(String dateString) {
+		return toUTCString(newBeginningOfDayDate(toUTCDate(dateString)));
+	}
+
 	public static Date newDate() {
 		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
