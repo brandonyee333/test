@@ -36,7 +36,6 @@ public class SessionTest {
 	public void testAddEvent() {
 		Event firstEvent = new Event();
 
-		firstEvent.setAnalyticsKey("www.liferay.com");
 		firstEvent.setApplicationId("WebContent");
 		firstEvent.setChannelId("1");
 		firstEvent.setContext(_context);
@@ -54,7 +53,6 @@ public class SessionTest {
 
 		Event secondEvent = new Event();
 
-		secondEvent.setAnalyticsKey("www.liferay.com");
 		secondEvent.setApplicationId("WebContent");
 		secondEvent.setChannelId("1");
 		secondEvent.setContext(_context);
@@ -96,7 +94,6 @@ public class SessionTest {
 	public void testSession() {
 		Event event = new Event();
 
-		event.setAnalyticsKey("www.liferay.com");
 		event.setApplicationId("WebContent");
 		event.setChannelId("1");
 		event.setContext(_context);
