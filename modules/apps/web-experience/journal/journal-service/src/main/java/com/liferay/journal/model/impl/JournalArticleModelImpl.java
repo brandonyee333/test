@@ -2841,7 +2841,11 @@ public class JournalArticleModelImpl
 			journalArticleCacheModel.statusDate = Long.MIN_VALUE;
 		}
 
+		setDefaultLanguageId(null);
+
 		journalArticleCacheModel._defaultLanguageId = getDefaultLanguageId();
+
+		setDocument(null);
 
 		journalArticleCacheModel._document = getDocument();
 

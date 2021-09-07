@@ -1769,6 +1769,8 @@ public class DDMStructureModelImpl
 			ddmStructureCacheModel.lastPublishDate = Long.MIN_VALUE;
 		}
 
+		setDDMForm(null);
+
 		ddmStructureCacheModel._ddmForm = getDDMForm();
 
 		return ddmStructureCacheModel;
