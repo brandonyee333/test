@@ -26,6 +26,8 @@ import java.sql.Date;
 
 import java.time.Duration;
 
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.spark.sql.Dataset;
@@ -67,6 +69,8 @@ public class SessionSparkJob implements SparkJob {
 			configuration.get("google.storage.path.sessions", null));
 		_sessionDuration = Duration.ofMinutes(
 			Integer.parseInt(configuration.get("session.duration", "30")));
+		_sessionJobTriggerIntervalMinutes = Integer.parseInt(
+			configuration.get("session.job.trigger.interval.minutes", "1"));
 
 		_sparkSession = baseSparkApplication.getSparkSession();
 
@@ -106,7 +110,8 @@ public class SessionSparkJob implements SparkJob {
 			).option(
 				"checkpointLocation", _checkpointPath
 			).trigger(
-				Trigger.Continuous("60 seconds")
+				Trigger.Continuous(
+					_sessionJobTriggerIntervalMinutes, TimeUnit.MINUTES)
 			).foreachBatch(
 				_sessionBatchSinkFunction
 			);
@@ -235,6 +240,7 @@ public class SessionSparkJob implements SparkJob {
 	private final Duration _sessionDuration;
 	private final SessionFlatMapGroupsWithStateFunction
 		_sessionFlatMapGroupsWithState;
+	private final int _sessionJobTriggerIntervalMinutes;
 	private final SparkSession _sparkSession;
 
 }
