@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.InterestScoreArm;
-import com.liferay.osb.asah.batch.curator.bot.nanite.arm.URLArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.model.KeywordInfo;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
@@ -410,8 +409,5 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 	private boolean _interrupted;
 	private boolean _running;
-
-	@Autowired
-	private URLArm _urlArm;
 
 }

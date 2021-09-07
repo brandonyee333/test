@@ -15,10 +15,8 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.arm;
 
 import com.liferay.osb.asah.common.dog.AssetDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,9 +50,6 @@ public class URLArm {
 
 	@Autowired
 	private AssetDog _assetDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
