@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoInterestDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -243,34 +244,43 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	private Map<String, List<KeywordInfo>> _getKeywordInfosMap() {
 		Map<String, List<KeywordInfo>> keywordInfosMap = new HashMap<>();
 
-		List<Asset> assets = _assetDog.getAssets("Page");
+		int page = 0;
 
-		assets.forEach(
-			asset -> {
-				String dataSourceAssetPK = asset.getDataSourceAssetPK();
+		while (true) {
+			List<Asset> assets = _assetDog.getAssets(
+				"Page", page++, 500, Sort.asc("id"));
 
-				String canonicalUrl = Optional.ofNullable(
-					asset.getCanonicalURL()
-				).orElse(
-					dataSourceAssetPK
-				);
+			if (assets.isEmpty()) {
+				break;
+			}
 
-				String title = asset.getTitle();
+			assets.forEach(
+				asset -> {
+					String dataSourceAssetPK = asset.getDataSourceAssetPK();
 
-				Set<AssetKeyword> assetKeywords = asset.getAssetKeywords();
+					String canonicalUrl = Optional.ofNullable(
+						asset.getCanonicalURL()
+					).orElse(
+						dataSourceAssetPK
+					);
 
-				assetKeywords.forEach(
-					assetKeyword -> {
-						List<KeywordInfo> keywordInfos =
-							keywordInfosMap.computeIfAbsent(
-								assetKeyword.getKeyword(),
-								key -> new ArrayList<>());
+					String title = asset.getTitle();
 
-						keywordInfos.add(
-							new KeywordInfo(
-								canonicalUrl, dataSourceAssetPK, title));
-					});
-			});
+					Set<AssetKeyword> assetKeywords = asset.getAssetKeywords();
+
+					assetKeywords.forEach(
+						assetKeyword -> {
+							List<KeywordInfo> keywordInfos =
+								keywordInfosMap.computeIfAbsent(
+									assetKeyword.getKeyword(),
+									key -> new ArrayList<>());
+
+							keywordInfos.add(
+								new KeywordInfo(
+									canonicalUrl, dataSourceAssetPK, title));
+						});
+				});
+		}
 
 		return keywordInfosMap;
 	}

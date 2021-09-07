@@ -172,11 +172,6 @@ public class AssetDog {
 		return IterableUtils.toList(_assetRepository.findAllById(assetIds));
 	}
 
-	public List<Asset> getAssets(String assetType) {
-		return _assetRepository.findByAssetTypeAndKeywordNotNull(
-			assetType, null);
-	}
-
 	public List<Asset> getAssets(
 		String assetType, int page, int size, Sort sort) {
 
