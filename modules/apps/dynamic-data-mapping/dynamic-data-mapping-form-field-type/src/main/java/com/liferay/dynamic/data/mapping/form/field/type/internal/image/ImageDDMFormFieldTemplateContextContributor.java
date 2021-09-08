@@ -77,6 +77,10 @@ public class ImageDDMFormFieldTemplateContextContributor
 				ddmFormField, ddmFormFieldRenderingContext.getLocale(),
 				"predefinedValue")
 		).put(
+			"requiredDescription",
+			GetterUtil.getBoolean(
+				ddmFormField.getProperty("requiredDescription"), true)
+		).put(
 			"value",
 			getValue(
 				DDMFormFieldTypeUtil.getPropertyValue(
