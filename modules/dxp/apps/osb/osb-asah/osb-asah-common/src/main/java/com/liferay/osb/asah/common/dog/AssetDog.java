@@ -181,7 +181,7 @@ public class AssetDog {
 
 	public List<Asset> getAssets(String assetType, String keyword) {
 		return _assetRepository.findByAssetTypeAndFilterStringAndKeyword(
-			"Page", null, keyword, null);
+			assetType, null, keyword, null);
 	}
 
 	public long getAssetsCount(String assetType) {
