@@ -17,7 +17,6 @@ import {useIsMounted} from 'frontend-js-react-web';
 import PropTypes from 'prop-types';
 import React, {useCallback, useEffect, useState} from 'react';
 
-import setFragmentEditables from '../../actions/setFragmentEditables';
 import selectCanConfigureWidgets from '../../selectors/selectCanConfigureWidgets';
 import selectSegmentsExperienceId from '../../selectors/selectSegmentsExperienceId';
 import {useDispatch, useSelector, useSelectorCallback} from '../../store/index';
@@ -32,6 +31,8 @@ import {
 import {useGlobalContext} from '../GlobalContext';
 import UnsafeHTML from '../UnsafeHTML';
 import {useIsProcessorEnabled} from './EditableProcessorContext';
+import FragmentContentInteractionsFilter from './FragmentContentInteractionsFilter';
+import FragmentContentProcessor from './FragmentContentProcessor';
 import getAllEditables from './getAllEditables';
 import resolveEditableValue from './resolveEditableValue';
 
@@ -52,6 +53,8 @@ const FragmentContent = ({
 
 	const canConfigureWidgets = useSelector(selectCanConfigureWidgets);
 
+	const [editables, setEditables] = useState([]);
+
 	/**
 	 * Updates editables array for the rendered fragment.
 	 * @param {HTMLElement} [nextFragmentElement] Fragment element
@@ -60,23 +63,24 @@ const FragmentContent = ({
 	 */
 	const onRender = useCallback(
 		(fragmentElement) => {
-			let updatedEditableValues = [];
+			let nextEditables = [];
 
 			if (isMounted()) {
-				updatedEditableValues = getAllEditables(fragmentElement);
+				nextEditables = getAllEditables(fragmentElement).map(
+					(editable) => ({
+						...editable,
+						fragmentEntryLinkId,
+						itemId: `${fragmentEntryLinkId}-${editable.editableId}`,
+						parentId: item.itemId,
+					})
+				);
 			}
 
-			dispatch(
-				setFragmentEditables(
-					fragmentEntryLinkId,
-					toControlsId(item.itemId),
-					updatedEditableValues
-				)
-			);
+			setEditables(nextEditables);
 
-			return updatedEditableValues;
+			return nextEditables;
 		},
-		[dispatch, fragmentEntryLinkId, isMounted, item, toControlsId]
+		[isMounted, fragmentEntryLinkId, item]
 	);
 
 	const fragmentEntryLink = useSelectorCallback(
