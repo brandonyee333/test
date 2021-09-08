@@ -50,15 +50,12 @@ public class AssetRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countByAssetTypeAndFilterStringAndKeyword(
-		String assetType, @Nullable String filterString,
-		@Nullable String keyword) {
-
+	public long countByAssetTypeAndAssetKeywordNotNull(String assetType) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
-			_getAssetTable(assetType, filterString, keyword)
+			_getAssetTableKeywordNotNull(assetType)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -66,12 +63,15 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public long countByAssetTypeAndKeywordNotNull(String assetType) {
+	public long countByAssetTypeAndFilterStringAndKeywords(
+		String assetType, @Nullable String filterString,
+		@Nullable String keywords) {
+
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
-			_getAssetTableKeywordNotNull(assetType)
+			_getAssetTable(assetType, filterString, keywords)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -92,14 +92,13 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public List<Asset> findByAssetTypeAndFilterStringAndKeyword(
-		String assetType, @Nullable String filterString,
-		@Nullable String keyword, @Nullable Pageable pageable) {
+	public List<Asset> findByAssetTypeAndAssetKeywordNotNull(
+		String assetType, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
-			_getAssetTable(assetType, filterString, keyword));
+			_getAssetTableKeywordNotNull(assetType));
 
 		if (pageable == null) {
 			return selectJoinStep.fetch(
@@ -120,13 +119,14 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public List<Asset> findByAssetTypeAndKeywordNotNull(
-		String assetType, Pageable pageable) {
+	public List<Asset> findByAssetTypeAndFilterStringAndKeywords(
+		String assetType, @Nullable String filterString,
+		@Nullable String keywords, @Nullable Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
-			_getAssetTableKeywordNotNull(assetType));
+			_getAssetTable(assetType, filterString, keywords));
 
 		if (pageable == null) {
 			return selectJoinStep.fetch(

@@ -157,10 +157,10 @@ public class AssetDog {
 		PageRequest pageRequest = PageRequest.of(page, size, sort);
 
 		return PageableExecutionUtils.getPage(
-			_assetRepository.findByAssetTypeAndFilterStringAndKeyword(
+			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
 				assetType, filterString, keyword, pageRequest),
 			pageRequest,
-			() -> _assetRepository.countByAssetTypeAndFilterStringAndKeyword(
+			() -> _assetRepository.countByAssetTypeAndFilterStringAndKeywords(
 				assetType, filterString, keyword));
 	}
 
@@ -175,18 +175,19 @@ public class AssetDog {
 	public List<Asset> getAssets(
 		String assetType, int page, int size, Sort sort) {
 
-		return _assetRepository.findByAssetTypeAndKeywordNotNull(
+		return _assetRepository.findByAssetTypeAndAssetKeywordNotNull(
 			assetType, PageRequest.of(page, size, sort));
 	}
 
 	public List<Asset> getAssets(String assetType, String assetKeyword) {
-		return _assetRepository.findByAssetTypeAndFilterStringAndKeyword(
+		return _assetRepository.findByAssetTypeAndFilterStringAndKeywords(
 			assetType, String.format("keywords/keyword eq '%s'", assetKeyword),
 			null, null);
 	}
 
 	public long getAssetsCount(String assetType) {
-		return _assetRepository.countByAssetTypeAndKeywordNotNull(assetType);
+		return _assetRepository.countByAssetTypeAndAssetKeywordNotNull(
+			assetType);
 	}
 
 	public List<String> getKeywords(String assetType) {

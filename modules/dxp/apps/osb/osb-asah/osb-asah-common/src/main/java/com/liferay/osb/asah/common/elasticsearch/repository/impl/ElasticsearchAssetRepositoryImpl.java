@@ -40,7 +40,6 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -72,24 +71,24 @@ public class ElasticsearchAssetRepositoryImpl
 	}
 
 	@Override
-	public long countByAssetTypeAndFilterStringAndKeyword(
+	public long countByAssetTypeAndAssetKeywordNotNull(String assetType) {
+		return _faroInfoElasticsearchInvoker.count(
+			"assets",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("assetType", assetType)
+			).filter(
+				QueryBuilders.existsQuery("keywords.keyword")
+			));
+	}
+
+	@Override
+	public long countByAssetTypeAndFilterStringAndKeywords(
 		@Nullable String assetType, @Nullable String filterString,
 		@Nullable String keyword) {
 
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(),
 			_buildQueryBuilder(assetType, filterString, keyword));
-	}
-
-	@Override
-	public long countByAssetTypeAndKeywordNotNull(String assetType) {
-		return _faroInfoElasticsearchInvoker.count(
-			"assets",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("assetType", "Page")
-			).filter(
-				QueryBuilders.existsQuery("keywords.keyword")
-			));
 	}
 
 	@Override
@@ -116,28 +115,7 @@ public class ElasticsearchAssetRepositoryImpl
 	}
 
 	@Override
-	public List<Asset> findByAssetTypeAndFilterStringAndKeyword(
-		@Nullable String assetType, @Nullable String filterString,
-		@Nullable String keyword, @Nullable Pageable pageable) {
-
-		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_buildQueryBuilder(
-								assetType, filterString, keyword));
-
-						if (pageable != null) {
-							setSearchSourceBuilderPage(
-								searchSourceBuilder, pageable);
-						}
-					})));
-	}
-
-	@Override
-	public List<Asset> findByAssetTypeAndKeywordNotNull(
+	public List<Asset> findByAssetTypeAndAssetKeywordNotNull(
 		String assetType, Pageable pageable) {
 
 		return toList(
@@ -147,10 +125,31 @@ public class ElasticsearchAssetRepositoryImpl
 					searchSourceBuilder -> {
 						searchSourceBuilder.query(
 							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termQuery("assetType", "Page")
+								QueryBuilders.termQuery("assetType", assetType)
 							).filter(
 								QueryBuilders.existsQuery("keywords.keyword")
 							));
+
+						if (pageable != null) {
+							setSearchSourceBuilderPage(
+								searchSourceBuilder, pageable);
+						}
+					})));
+	}
+
+	@Override
+	public List<Asset> findByAssetTypeAndFilterStringAndKeywords(
+		@Nullable String assetType, @Nullable String filterString,
+		@Nullable String keywords, @Nullable Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_buildQueryBuilder(
+								assetType, filterString, keywords));
 
 						if (pageable != null) {
 							setSearchSourceBuilderPage(

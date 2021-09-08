@@ -34,12 +34,12 @@ public interface AssetRepository extends Repository<Asset, Long> {
 	@Cacheable
 	public long countByAssetType(String assetType);
 
+	public long countByAssetTypeAndAssetKeywordNotNull(String assetType);
+
 	@Cacheable
-	public long countByAssetTypeAndFilterStringAndKeyword(
+	public long countByAssetTypeAndFilterStringAndKeywords(
 		String assetType, @Nullable String filterString,
 		@Nullable String keyword);
-
-	public long countByAssetTypeAndKeywordNotNull(String assetType);
 
 	@Cacheable
 	public long countByFilterString(@Nullable String filterString);
@@ -47,13 +47,13 @@ public interface AssetRepository extends Repository<Asset, Long> {
 	@Cacheable
 	public List<Asset> findByAssetType(String assetType, Pageable pageable);
 
+	public List<Asset> findByAssetTypeAndAssetKeywordNotNull(
+		String assetType, Pageable pageable);
+
 	@Cacheable
-	public List<Asset> findByAssetTypeAndFilterStringAndKeyword(
+	public List<Asset> findByAssetTypeAndFilterStringAndKeywords(
 		String assetType, @Nullable String filterString,
 		@Nullable String keyword, @Nullable Pageable pageable);
-
-	public List<Asset> findByAssetTypeAndKeywordNotNull(
-		String assetType, Pageable pageable);
 
 	@Cacheable
 	public Optional<Asset> findByDataSourceAssetPKAndDataSourceId(

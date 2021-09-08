@@ -103,13 +103,13 @@ public abstract class BaseAssetRepositoryTestCase
 		_assetRepository.save(asset);
 
 		Assert.assertEquals(
-			3, _assetRepository.countByAssetTypeAndKeywordNotNull("Page"));
+			3, _assetRepository.countByAssetTypeAndAssetKeywordNotNull("Page"));
 	}
 
 	@Test
 	public void testFindByAssetType() {
 		List<Asset> assets =
-			_assetRepository.findByAssetTypeAndFilterStringAndKeyword(
+			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
 				"Page", null, null, PageRequest.of(0, 20, Sort.desc("id")));
 
 		Assert.assertEquals(assets.toString(), 3, assets.size());
@@ -123,7 +123,7 @@ public abstract class BaseAssetRepositoryTestCase
 	@Test
 	public void testFindByAssetTypeAndFilterString1() {
 		List<Asset> assets =
-			_assetRepository.findByAssetTypeAndFilterStringAndKeyword(
+			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
 				"Page", "similarTo(title, 'seize.*')", null,
 				PageRequest.of(0, 20, Sort.desc("id")));
 
@@ -136,7 +136,7 @@ public abstract class BaseAssetRepositoryTestCase
 	@Test
 	public void testFindByAssetTypeAndFilterString2() {
 		List<Asset> assets =
-			_assetRepository.findByAssetTypeAndFilterStringAndKeyword(
+			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
 				"Page", "title eq 'engineer intuitive models'", null,
 				PageRequest.of(0, 20, Sort.desc("id")));
 
@@ -149,7 +149,7 @@ public abstract class BaseAssetRepositoryTestCase
 	@Test
 	public void testFindByAssetTypeAndFilterString3() {
 		List<Asset> assets =
-			_assetRepository.findByAssetTypeAndFilterStringAndKeyword(
+			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
 				"Page", "url eq 'https://www.terrance-lueilwitz.biz'", null,
 				PageRequest.of(0, 20, Sort.desc("id")));
 
@@ -161,7 +161,7 @@ public abstract class BaseAssetRepositoryTestCase
 	@Test
 	public void testFindByAssetTypeAndKeyword2() {
 		List<Asset> assets =
-			_assetRepository.findByAssetTypeAndFilterStringAndKeyword(
+			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
 				"Page", null, "seize", PageRequest.of(0, 20, Sort.desc("id")));
 
 		Assert.assertEquals(assets.toString(), 1, assets.size());
@@ -184,8 +184,9 @@ public abstract class BaseAssetRepositoryTestCase
 
 		_assetRepository.save(asset);
 
-		List<Asset> assets = _assetRepository.findByAssetTypeAndKeywordNotNull(
-			"Page", null);
+		List<Asset> assets =
+			_assetRepository.findByAssetTypeAndAssetKeywordNotNull(
+				"Page", null);
 
 		Assert.assertEquals(assets.toString(), 3, assets.size());
 	}
