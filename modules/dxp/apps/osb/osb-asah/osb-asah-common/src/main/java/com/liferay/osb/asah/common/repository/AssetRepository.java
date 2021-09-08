@@ -64,6 +64,9 @@ public interface AssetRepository extends Repository<Asset, Long> {
 		@Nullable String filterString, Pageable pageable);
 
 	@Cacheable
+	public List<String> findKeywordByAssetType(String assetType);
+
+	@Cacheable
 	public List<Transformation> getAssetTransformations(
 		String apply, @Nullable String filterString, Pageable pageable);
 

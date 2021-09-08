@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransf
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -41,10 +42,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -193,6 +200,50 @@ public class ElasticsearchAssetRepositoryImpl
 						setSearchSourceBuilderPage(
 							searchSourceBuilder, pageable);
 					})));
+	}
+
+	@Override
+	public List<String> findKeywordByAssetType(String assetType) {
+		List<String> keywords = new ArrayList<>();
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			getCollectionName(),
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.terms(
+						"keywords"
+					).field(
+						"keywords.keyword.keyword"
+					).order(
+						BucketOrder.key(true)
+					).size(
+						Integer.MAX_VALUE
+					));
+				searchSourceBuilder.query(
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termQuery("assetType", assetType)));
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (aggregations == null) {
+			return keywords;
+		}
+
+		List<Aggregation> aggregationList = aggregations.asList();
+
+		if (aggregationList.isEmpty()) {
+			return keywords;
+		}
+
+		Terms terms = aggregations.get("keywords");
+
+		for (Terms.Bucket bucket : terms.getBuckets()) {
+			keywords.add(bucket.getKeyAsString());
+		}
+
+		return keywords;
 	}
 
 	@Override
