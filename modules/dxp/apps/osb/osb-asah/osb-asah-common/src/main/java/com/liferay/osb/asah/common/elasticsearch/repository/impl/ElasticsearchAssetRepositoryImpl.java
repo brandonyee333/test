@@ -304,12 +304,6 @@ public class ElasticsearchAssetRepositoryImpl
 					)
 				).should(
 					QueryBuilders.wildcardQuery("url", "*" + keywords + "*")
-				).should(
-					QueryBuilders.nestedQuery(
-						"keywords",
-						QueryBuilders.wildcardQuery(
-							"keywords.keyword", "*" + keywords + "*"),
-						ScoreMode.None)
 				));
 		}
 
