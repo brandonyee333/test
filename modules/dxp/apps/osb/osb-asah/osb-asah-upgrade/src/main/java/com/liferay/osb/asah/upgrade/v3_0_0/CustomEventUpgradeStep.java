@@ -246,6 +246,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 			}
 
 			startTime = System.currentTimeMillis();
+
 			eventAttributes.clear();
 			events.clear();
 		}
