@@ -70,14 +70,6 @@ public class ElasticsearchAssetRepositoryImpl
 	implements AssetRepository {
 
 	@Override
-	public long countByAssetType(String assetType) {
-		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(),
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("assetType", assetType)));
-	}
-
-	@Override
 	public long countByAssetTypeAndAssetKeywordNotNull(String assetType) {
 		return _faroInfoElasticsearchInvoker.count(
 			"assets",
@@ -102,23 +94,6 @@ public class ElasticsearchAssetRepositoryImpl
 	public long countByFilterString(@Nullable String filterString) {
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(), _buildQueryBuilder(filterString));
-	}
-
-	@Override
-	public List<Asset> findByAssetType(String assetType, Pageable pageable) {
-		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termQuery(
-									"assetType", assetType)));
-
-						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
-					})));
 	}
 
 	@Override

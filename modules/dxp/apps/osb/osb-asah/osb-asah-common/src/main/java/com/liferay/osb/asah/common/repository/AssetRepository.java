@@ -31,9 +31,6 @@ import org.springframework.lang.Nullable;
 @Primary
 public interface AssetRepository extends Repository<Asset, Long> {
 
-	@Cacheable
-	public long countByAssetType(String assetType);
-
 	public long countByAssetTypeAndAssetKeywordNotNull(String assetType);
 
 	@Cacheable
@@ -43,9 +40,6 @@ public interface AssetRepository extends Repository<Asset, Long> {
 
 	@Cacheable
 	public long countByFilterString(@Nullable String filterString);
-
-	@Cacheable
-	public List<Asset> findByAssetType(String assetType, Pageable pageable);
 
 	public List<Asset> findByAssetTypeAndAssetKeywordNotNull(
 		String assetType, Pageable pageable);
