@@ -27,8 +27,8 @@ import {
 } from './EditableProcessorContext';
 
 export default function FragmentContentProcessor({
+	editables,
 	fragmentEntryLinkId,
-	itemId,
 }) {
 	const dispatch = useDispatch();
 	const editableProcessorClickPosition = useEditableProcessorClickPosition();
@@ -38,13 +38,9 @@ export default function FragmentContentProcessor({
 	const setEditableProcessorUniqueId = useSetEditableProcessorUniqueId();
 	const toControlsId = useToControlsId();
 
-	const editable = useSelectorCallback(
-		(state) =>
-			Object.values(state.editables?.[toControlsId(itemId)] || {}).find(
-				(editable) =>
-					editableProcessorUniqueId === toControlsId(editable.itemId)
-			),
-		[editableProcessorUniqueId, itemId, toControlsId]
+	const editable = editables.find(
+		(editable) =>
+			editableProcessorUniqueId === toControlsId(editable.itemId)
 	);
 
 	const editableCollectionItemId = toControlsId(

@@ -50,6 +50,7 @@ const isTranslated = (defaultLanguageId, languageId, editableValue) =>
 
 function FragmentContentInteractionsFilter({
 	children,
+	editables,
 	fragmentEntryLinkId,
 	itemId,
 }) {
@@ -66,11 +67,6 @@ function FragmentContentInteractionsFilter({
 	const selectItem = useSelectItem();
 	const setEditableProcessorUniqueId = useSetEditableProcessorUniqueId();
 	const toControlsId = useToControlsId();
-
-	const editables = useSelectorCallback(
-		(state) => Object.values(state.editables?.[toControlsId(itemId)] || {}),
-		[itemId, toControlsId]
-	);
 
 	const editableValues = useSelectorCallback(
 		(state) =>

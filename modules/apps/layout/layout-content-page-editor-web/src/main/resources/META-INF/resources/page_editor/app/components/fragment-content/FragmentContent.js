@@ -235,34 +235,47 @@ const FragmentContent = ({
 	}
 
 	return (
-		<UnsafeHTML
-			className={classNames(
-				className,
-				`mb-${marginBottom || 0}`,
-				`ml-${marginLeft || 0}`,
-				`mr-${marginRight || 0}`,
-				`mt-${marginTop || 0}`,
-				`pb-${paddingBottom || 0}`,
-				`pl-${paddingLeft || 0}`,
-				`pr-${paddingRight || 0}`,
-				`pt-${paddingTop || 0}`,
-				'page-editor__fragment-content',
-				{
-					'page-editor__fragment-content--portlet-topper-hidden': !canConfigureWidgets,
-					[textAlign
-						? textAlign.startsWith('text-')
-							? textAlign
-							: `text-${textAlign}`
-						: '']: textAlign,
-				}
-			)}
-			contentRef={elementRef}
-			getPortals={getPortals}
-			globalContext={globalContext}
-			markup={content}
-			onRender={withinTopper ? onRender : () => {}}
-			style={style}
-		/>
+		<>
+			<FragmentContentInteractionsFilter
+				editables={editables}
+				fragmentEntryLinkId={fragmentEntryLinkId}
+				itemId={item.itemId}
+			>
+				<UnsafeHTML
+					className={classNames(
+						className,
+						`mb-${marginBottom || 0}`,
+						`ml-${marginLeft || 0}`,
+						`mr-${marginRight || 0}`,
+						`mt-${marginTop || 0}`,
+						`pb-${paddingBottom || 0}`,
+						`pl-${paddingLeft || 0}`,
+						`pr-${paddingRight || 0}`,
+						`pt-${paddingTop || 0}`,
+						'page-editor__fragment-content',
+						{
+							'page-editor__fragment-content--portlet-topper-hidden': !canConfigureWidgets,
+							[textAlign
+								? textAlign.startsWith('text-')
+									? textAlign
+									: `text-${textAlign}`
+								: '']: textAlign,
+						}
+					)}
+					contentRef={elementRef}
+					getPortals={getPortals}
+					globalContext={globalContext}
+					markup={content}
+					onRender={withinTopper ? onRender : () => {}}
+					style={style}
+				/>
+			</FragmentContentInteractionsFilter>
+
+			<FragmentContentProcessor
+				editables={editables}
+				fragmentEntryLinkId={fragmentEntryLinkId}
+			/>
+		</>
 	);
 };
 

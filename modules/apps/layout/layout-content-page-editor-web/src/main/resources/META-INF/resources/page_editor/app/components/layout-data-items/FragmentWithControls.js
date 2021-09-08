@@ -19,8 +19,6 @@ import {getLayoutDataItemPropTypes} from '../../../prop-types/index';
 import Layout from '../Layout';
 import Topper from '../Topper';
 import FragmentContent from '../fragment-content/FragmentContent';
-import FragmentContentInteractionsFilter from '../fragment-content/FragmentContentInteractionsFilter';
-import FragmentContentProcessor from '../fragment-content/FragmentContentProcessor';
 
 const FragmentWithControls = React.forwardRef(({item}, ref) => {
 	const [setRef, itemElement] = useSetRef(ref);
@@ -48,23 +46,13 @@ const FragmentWithControls = React.forwardRef(({item}, ref) => {
 
 	return (
 		<Topper item={item} itemElement={itemElement}>
-			<FragmentContentInteractionsFilter
+			<FragmentContent
+				elementRef={setRef}
 				fragmentEntryLinkId={item.config.fragmentEntryLinkId}
-				itemId={item.itemId}
-			>
-				<FragmentContent
-					elementRef={setRef}
-					fragmentEntryLinkId={item.config.fragmentEntryLinkId}
-					getPortals={getPortals}
-					item={item}
-					withinTopper
-				/>
-
-				<FragmentContentProcessor
-					fragmentEntryLinkId={item.config.fragmentEntryLinkId}
-					itemId={item.itemId}
-				/>
-			</FragmentContentInteractionsFilter>
+				getPortals={getPortals}
+				item={item}
+				withinTopper
+			/>
 		</Topper>
 	);
 });
