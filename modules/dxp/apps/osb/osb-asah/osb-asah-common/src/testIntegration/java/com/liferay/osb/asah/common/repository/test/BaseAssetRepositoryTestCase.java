@@ -81,7 +81,9 @@ public abstract class BaseAssetRepositoryTestCase
 		asset3.setDataSourceAssetPK("https://www.iva-tillman.com");
 		asset3.setDataSourceId(dataSource.getId());
 		asset3.setAssetKeywords(
-			SetUtil.of(new AssetKeyword("compelling action-items", "title")));
+			SetUtil.of(
+				new AssetKeyword("compelling action-items", "title"),
+				new AssetKeyword("models", "title")));
 		asset3.setTitle("seize compelling action-items");
 		asset3.setURL("https://www.iva-tillman.com");
 
@@ -201,6 +203,19 @@ public abstract class BaseAssetRepositoryTestCase
 		Assert.assertEquals(
 			Arrays.asList("engineer intuitive models"),
 			_getPageAssetTitles(assets));
+	}
+
+	@Test
+	public void testFindKeywordByAssetType() {
+		List<String> keywords = _assetRepository.findKeywordByAssetType("Page");
+
+		Assert.assertEquals(keywords.toString(), 5, keywords.size());
+
+		Assert.assertEquals(
+			Arrays.asList(
+				"compelling action-items", "engineer", "holistic ROI",
+				"intuitive", "models"),
+			keywords);
 	}
 
 	@Override
