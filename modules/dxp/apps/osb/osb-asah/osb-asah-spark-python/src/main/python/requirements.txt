@@ -1,6 +1,6 @@
+pmdarima==1.5.2
+prophet==1.0.1
 pyspark==2.4.7
+pystan==2.19.1.1
 scipy==1.5.3
 statsmodels==0.12.1
-pmdarima==1.5.2
-pystan==2.19.1.1
-prophet==1.0.1
