@@ -29,6 +29,11 @@
 				"keywords": {
 					"properties": {
 						"keyword": {
+							"fields": {
+								"keyword": {
+									"type": "keyword"
+								}
+							},
 							"normalizer": "case_insensitive_sort",
 							"type": "keyword"
 						},

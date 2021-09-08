@@ -17,6 +17,7 @@ package com.liferay.osb.asah.upgrade;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.upgrade.v0_0_0.ProjectsIndexUpgradeStep;
 import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_0.AssetsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.ChannelsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.CustomEventUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.DXPEntityUpgradeStep;
@@ -43,12 +44,16 @@ public class UpgradeProcessConfiguration {
 			_snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.12.2", "3.0.0", _channelsUpgradeStep, _customEventUpgradeStep,
-			_dataSourcesUpgradeStep, _dxpEntityUpgradeStep,
-			_salesforceUpgradeStep, _userSessionsUpgradeStep);
+			"2.12.2", "3.0.0", _assetsUpgradeStep, _channelsUpgradeStep,
+			_customEventUpgradeStep, _dataSourcesUpgradeStep,
+			_dxpEntityUpgradeStep, _salesforceUpgradeStep,
+			_userSessionsUpgradeStep);
 
 		return upgradeProcess;
 	}
+
+	@Autowired
+	private AssetsUpgradeStep _assetsUpgradeStep;
 
 	@Autowired
 	private ChannelsUpgradeStep _channelsUpgradeStep;
