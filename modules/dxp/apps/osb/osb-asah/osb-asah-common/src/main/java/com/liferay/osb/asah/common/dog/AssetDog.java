@@ -27,12 +27,10 @@ import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.commons.collections4.IterableUtils;
 
@@ -191,27 +189,7 @@ public class AssetDog {
 	}
 
 	public List<String> getKeywords(String assetType) {
-		Set<String> keywords = new TreeSet<>();
-
-		int size = 50;
-
-		long total = _assetRepository.countByAssetType(assetType);
-
-		int pages = (int)total / 50;
-
-		for (int page = 0; page <= pages; page++) {
-			List<Asset> assets = _assetRepository.findByAssetType(
-				assetType, PageRequest.of(page, size));
-
-			for (Asset asset : assets) {
-				Set<AssetKeyword> assetKeywords = asset.getAssetKeywords();
-
-				assetKeywords.forEach(
-					assetKeyword -> keywords.add(assetKeyword.getKeyword()));
-			}
-		}
-
-		return new ArrayList<>(keywords);
+		return _assetRepository.findKeywordByAssetType(assetType);
 	}
 
 	public Page<Transformation> getTransformationsPage(
