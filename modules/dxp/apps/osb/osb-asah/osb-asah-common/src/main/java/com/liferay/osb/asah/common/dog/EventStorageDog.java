@@ -42,7 +42,36 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class EventStorageDog {
 
-	public Set<EventAttribute> getEventAttributes(
+	@Transactional
+	public Event store(AnalyticsEvent analyticsEvent, String sessionId) {
+		Assert.notBlank(sessionId, "Session ID is blank");
+
+		EventDefinition eventDefinition = storeEventDefinition(analyticsEvent);
+
+		if (eventDefinition.isBlocked()) {
+			return null;
+		}
+
+		Set<EventAttribute> eventAttributes = storeEventAttributes(
+			analyticsEvent, eventDefinition.getId());
+
+		return _eventDog.addEvent(
+			analyticsEvent.getId(), analyticsEvent.getApplicationId(),
+			Long.valueOf(analyticsEvent.getChannelId()),
+			analyticsEvent.getCreateDate(),
+			Long.valueOf(analyticsEvent.getDataSourceId()), eventAttributes,
+			analyticsEvent.getEventDate(), eventDefinition.getId(),
+			Optional.ofNullable(
+				analyticsEvent.getIndividualId()
+			).map(
+				Long::valueOf
+			).orElse(
+				null
+			),
+			sessionId, analyticsEvent.getUserId());
+	}
+
+	public Set<EventAttribute> storeEventAttributes(
 		AnalyticsEvent analyticsEvent, Long eventDefinitionId) {
 
 		return new HashSet<EventAttribute>() {
@@ -59,7 +88,7 @@ public class EventStorageDog {
 		};
 	}
 
-	public EventDefinition getEventDefinition(AnalyticsEvent analyticsEvent) {
+	public EventDefinition storeEventDefinition(AnalyticsEvent analyticsEvent) {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName(
 				analyticsEvent.getEventId());
@@ -78,35 +107,6 @@ public class EventStorageDog {
 		}
 
 		return eventDefinition;
-	}
-
-	@Transactional
-	public Event store(AnalyticsEvent analyticsEvent, String sessionId) {
-		Assert.notBlank(sessionId, "Session ID is blank");
-
-		EventDefinition eventDefinition = getEventDefinition(analyticsEvent);
-
-		if (eventDefinition.isBlocked()) {
-			return null;
-		}
-
-		Set<EventAttribute> eventAttributes = getEventAttributes(
-			analyticsEvent, eventDefinition.getId());
-
-		return _eventDog.addEvent(
-			analyticsEvent.getId(), analyticsEvent.getApplicationId(),
-			Long.valueOf(analyticsEvent.getChannelId()),
-			analyticsEvent.getCreateDate(),
-			Long.valueOf(analyticsEvent.getDataSourceId()), eventAttributes,
-			analyticsEvent.getEventDate(), eventDefinition.getId(),
-			Optional.ofNullable(
-				analyticsEvent.getIndividualId()
-			).map(
-				Long::valueOf
-			).orElse(
-				null
-			),
-			sessionId, analyticsEvent.getUserId());
 	}
 
 	private Set<Long> _getEventDefinitionIds(

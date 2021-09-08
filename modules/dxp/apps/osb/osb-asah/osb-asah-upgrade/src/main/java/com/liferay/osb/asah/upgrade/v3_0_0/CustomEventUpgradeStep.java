@@ -71,7 +71,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomEventUpgradeStep implements UpgradeStep {
 
 	@Override
-	public void upgrade(String version) throws Exception {
+	public void upgrade(String version) {
 		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
 		searchSourceBuilder.fetchSource(
@@ -86,8 +86,6 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		searchSourceBuilder.size(_customEventUpgradeBatchSize);
 		searchSourceBuilder.sort("id");
 		searchSourceBuilder.trackTotalHits(false);
-
-		String projectId = ProjectIdThreadLocal.getProjectId();
 
 		Optional<Event> eventOptional = _getEventOptional();
 
@@ -147,15 +145,72 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 					Collectors.toList()
 				));
 
+			String projectId = ProjectIdThreadLocal.getProjectId();
+
 			_completableFutures.add(
 				CompletableFuture.runAsync(
-					() -> _upgradeActivities(jsonArray, projectId),
+					() -> upgradeActivities(jsonArray, projectId),
 					_executorService));
 
 			JSONObject jsonObject = jsonArray.getJSONObject(
 				jsonArray.length() - 1);
 
 			id = jsonObject.getString("id");
+		}
+	}
+
+	@Transactional
+	protected void upgradeActivities(
+		JSONArray activitiesJSONArray, String projectId) {
+
+		List<Map<String, Object>> eventAttributes = new ArrayList<>();
+		List<Map<String, Object>> events = new ArrayList<>();
+
+		long startTime = System.currentTimeMillis();
+
+		ProjectIdThreadLocal.setProjectId(projectId);
+
+		for (int i = 0; i < activitiesJSONArray.length(); i++) {
+			JSONObject activityJSONObject = activitiesJSONArray.getJSONObject(
+				i);
+
+			AnalyticsEvent analyticsEvent = new AnalyticsEvent();
+
+			analyticsEvent.setApplicationId(
+				activityJSONObject.getString("applicationId"));
+			analyticsEvent.setChannelId(
+				activityJSONObject.getString("channelId"));
+			analyticsEvent.setContext(_getEventContext(activityJSONObject));
+			analyticsEvent.setCreateDate(
+				DateUtil.toUTCDate(activityJSONObject.getString("endTime")));
+			analyticsEvent.setDataSourceId(
+				activityJSONObject.getString("dataSourceId"));
+			analyticsEvent.setEventDate(
+				DateUtil.toUTCDate(activityJSONObject.getString("endTime")));
+
+			JSONObject eventPropertiesJSONObject =
+				activityJSONObject.getJSONObject("eventProperties");
+
+			analyticsEvent.setEventProperties(
+				_toSafeMap(eventPropertiesJSONObject.toMap()));
+
+			analyticsEvent.setId(activityJSONObject.getString("id"));
+			analyticsEvent.setEventId(activityJSONObject.getString("eventId"));
+			analyticsEvent.setIndividualId(
+				activityJSONObject.getString("ownerId"));
+			analyticsEvent.setUserId(activityJSONObject.getString("userId"));
+
+			_populateMaps(
+				analyticsEvent, eventAttributes, events,
+				activityJSONObject.getString("sessionId"));
+
+			if (events.size() == 1000) {
+				_batchUpdate(eventAttributes, events, startTime);
+			}
+		}
+
+		if (!events.isEmpty()) {
+			_batchUpdate(eventAttributes, events, startTime);
 		}
 	}
 
@@ -265,7 +320,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		List<Map<String, Object>> eventAttributes,
 		List<Map<String, Object>> events, String sessionId) {
 
-		EventDefinition eventDefinition = _eventStorageDog.getEventDefinition(
+		EventDefinition eventDefinition = _eventStorageDog.storeEventDefinition(
 			analyticsEvent);
 
 		if (!eventDefinition.isBlocked()) {
@@ -298,7 +353,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 			events.add(eventsMap);
 
 			for (EventAttribute eventAttribute :
-					_eventStorageDog.getEventAttributes(
+					_eventStorageDog.storeEventAttributes(
 						analyticsEvent, eventDefinition.getId())) {
 
 				Map<String, Object> eventAttributesMap = new HashMap<>();
@@ -356,61 +411,6 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("New batch size : " + _customEventUpgradeBatchSize);
-		}
-	}
-
-	@Transactional
-	private void _upgradeActivities(
-		JSONArray activitiesJSONArray, String projectId) {
-
-		List<Map<String, Object>> eventAttributes = new ArrayList<>();
-		List<Map<String, Object>> events = new ArrayList<>();
-
-		long startTime = System.currentTimeMillis();
-
-		ProjectIdThreadLocal.setProjectId(projectId);
-
-		for (int i = 0; i < activitiesJSONArray.length(); i++) {
-			JSONObject activityJSONObject = activitiesJSONArray.getJSONObject(
-				i);
-
-			AnalyticsEvent analyticsEvent = new AnalyticsEvent();
-
-			analyticsEvent.setApplicationId(
-				activityJSONObject.getString("applicationId"));
-			analyticsEvent.setChannelId(
-				activityJSONObject.getString("channelId"));
-			analyticsEvent.setContext(_getEventContext(activityJSONObject));
-			analyticsEvent.setCreateDate(
-				DateUtil.toUTCDate(activityJSONObject.getString("endTime")));
-			analyticsEvent.setDataSourceId(
-				activityJSONObject.getString("dataSourceId"));
-			analyticsEvent.setEventDate(
-				DateUtil.toUTCDate(activityJSONObject.getString("endTime")));
-
-			JSONObject eventPropertiesJSONObject =
-				activityJSONObject.getJSONObject("eventProperties");
-
-			analyticsEvent.setEventProperties(
-				_toSafeMap(eventPropertiesJSONObject.toMap()));
-
-			analyticsEvent.setId(activityJSONObject.getString("id"));
-			analyticsEvent.setEventId(activityJSONObject.getString("eventId"));
-			analyticsEvent.setIndividualId(
-				activityJSONObject.getString("ownerId"));
-			analyticsEvent.setUserId(activityJSONObject.getString("userId"));
-
-			_populateMaps(
-				analyticsEvent, eventAttributes, events,
-				activityJSONObject.getString("sessionId"));
-
-			if (events.size() == 1000) {
-				_batchUpdate(eventAttributes, events, startTime);
-			}
-		}
-
-		if (!events.isEmpty()) {
-			_batchUpdate(eventAttributes, events, startTime);
 		}
 	}
 
