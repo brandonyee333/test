@@ -19,7 +19,6 @@
 
 	<symbol id="7-2-logo" viewBox="0 0 32 32">
 		<rect fill="#FFF" height="32" rx="16" width="32" />
-
 		<rect fill="#0b63ce" height="32" rx="16" width="32" />
 
 		<g fill="#FFF">

@@ -38,7 +38,6 @@
 			<form action="/documentation/search" class="nav-search-form" method="get" name="searchFm">
 				<input name="p_p_id" type="hidden" value="1_WAR_osbknowledgebaseportlet" />
 				<input name="p_p_state" type="hidden" value="normal" />
-
 				<input class="lfr-search-input" name="_1_WAR_osbknowledgebaseportlet_keywords" size="30" title="<@liferay.language key="search" />" type="search" value="" />
 			</form>
 		</div>

@@ -2,7 +2,6 @@
 
 <configuration>
 	<property resource="sync.properties" />
-
 	<property name="sync.logs.directory" value="${sync.configuration.directory}/logs" />
 
 	<appender class="ch.qos.logback.core.ConsoleAppender" name="CONSOLE">
@@ -70,13 +69,9 @@
 	</logger>
 
 	<logger level="ERROR" name="com.liferay.nativity" />
-
 	<logger level="ERROR" name="com.liferay.sync.engine.lan.session.SNISSLConnectionSocketFactory" />
-
 	<logger level="ERROR" name="io.netty" />
-
 	<logger level="ERROR" name="org.apache" />
-
 	<logger level="INFO" name="com.j256.ormlite" />
 
 	<root level="TRACE">
