@@ -400,6 +400,10 @@ public class IndividualDog extends BaseFaroInfoDog {
 			channelId, filterString, includeAnonymousUsers, null, null);
 	}
 
+	public long countIndividuals(String query, Long segmentId) {
+		return _individualRepository.countByQueryAndSegmentId(query, segmentId);
+	}
+
 	public void deleteIndividual(Date deletionDate, Long individualId) {
 		_fieldRepository.deleteByOwnerIdAndOwnerType(
 			individualId, "individual");
@@ -675,6 +679,19 @@ public class IndividualDog extends BaseFaroInfoDog {
 			dataSourceId, PageRequest.of(page, size, sort));
 
 		return ListUtil.map(individuals, this::populateIndividual);
+	}
+
+	public List<Individual> getIndividuals(
+		String query, Long segmentId, int page, int size) {
+
+		PageRequest pageRequest = PageRequest.of(page, size);
+
+		List<Individual> individuals =
+			_individualRepository.findByQueryAndSegmentId(
+				query, segmentId, pageRequest);
+
+		return ListUtil.map(
+			individuals, individual -> populateIndividual(individual));
 	}
 
 	public List<Individual> getIndividualsBySegmentId(Long segmentId) {

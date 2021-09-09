@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.dog.configuration.DogConfiguration;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
-import com.liferay.osb.asah.backend.model.FieldMapping;
 import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -27,7 +26,6 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
@@ -40,7 +38,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -49,7 +46,6 @@ import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
@@ -107,32 +103,23 @@ public class ReportIndividualDog {
 	public ResultBag<Individual> getIndividualResultBag(
 		String query, Long segmentId, int size, int start) {
 
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		List<com.liferay.osb.asah.common.entity.Individual> individuals =
+			_individualDog.getIndividuals(query, segmentId, start / size, size);
 
-		if (Objects.nonNull(segmentId)) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery(
-					"individualSegmentIds", String.valueOf(segmentId)));
+		ResultBag<Individual> resultBag = new ResultBag<>();
+
+		List<Individual> models = new ArrayList<>();
+
+		for (com.liferay.osb.asah.common.entity.Individual individual :
+				individuals) {
+
+			models.add(_mapIndividual(individual));
 		}
 
-		if (StringUtils.isNotEmpty(query)) {
-			String[] individualDemographicsSearchableFieldNames =
-				_getIndividualDemographicsSearchableFieldNames();
+		resultBag.setResults(models);
+		resultBag.setTotal(_individualDog.countIndividuals(query, segmentId));
 
-			if (individualDemographicsSearchableFieldNames != null) {
-				boolQueryBuilder.filter(
-					QueryBuilders.multiMatchQuery(
-						query, individualDemographicsSearchableFieldNames));
-			}
-		}
-
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"individuals", _faroInfoElasticsearchInvoker,
-			_buildSearchSourceBuilder(
-				_getIndividualDemographicsFetchSourceExcludes(),
-				boolQueryBuilder, size, start));
-
-		return DogUtil.createResultBag(this::_mapIndividual, searchHits);
+		return resultBag;
 	}
 
 	public ResultBag<Individual> getIndividualResultBag(
@@ -244,71 +231,6 @@ public class ReportIndividualDog {
 		return searchSourceBuilder;
 	}
 
-	private SearchSourceBuilder _buildSearchSourceBuilder(
-		String[] fetchSourceExcludes, QueryBuilder queryBuilder, int size,
-		int start) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.fetchSource(null, fetchSourceExcludes);
-		searchSourceBuilder.from(start);
-
-		if (queryBuilder != null) {
-			searchSourceBuilder.query(queryBuilder);
-		}
-
-		searchSourceBuilder.size(size);
-
-		return searchSourceBuilder;
-	}
-
-	private String[] _getIndividualDemographicsFetchSourceExcludes() {
-		ResultBag<FieldMapping> fieldMappingResultBag =
-			_fieldMappingDog.getFieldMappingResultBag(
-				"demographics", "individual", 20, 0);
-
-		if (fieldMappingResultBag.getTotal() == 0) {
-			return null;
-		}
-
-		List<String> fetchSourceExcludes = new ArrayList<>();
-
-		for (FieldMapping fieldMapping : fieldMappingResultBag.getResults()) {
-			if (fieldMapping.isRestricted()) {
-				fetchSourceExcludes.add(
-					"demographics." + fieldMapping.getFieldName());
-			}
-		}
-
-		return fetchSourceExcludes.toArray(new String[0]);
-	}
-
-	private String[] _getIndividualDemographicsSearchableFieldNames() {
-		ResultBag<FieldMapping> fieldMappingResultBag =
-			_fieldMappingDog.getFieldMappingResultBag(
-				"demographics", "individual", 20, 0);
-
-		if (fieldMappingResultBag.getTotal() == 0) {
-			return null;
-		}
-
-		List<String> searchableFieldNames = new ArrayList<>();
-
-		for (FieldMapping fieldMapping : fieldMappingResultBag.getResults()) {
-			if (!fieldMapping.isRestricted() &&
-				Objects.equals("Text", fieldMapping.getFieldType())) {
-
-				searchableFieldNames.add(
-					String.format(
-						"demographics.%s.value.searchable",
-						fieldMapping.getFieldName()));
-			}
-		}
-
-		return searchableFieldNames.toArray(new String[0]);
-	}
-
 	private List<String> _getIndividualIds(Terms terms) {
 		return ListUtil.map(
 			terms.getBuckets(), MultiBucketsAggregation.Bucket::getKeyAsString);
@@ -397,26 +319,6 @@ public class ReportIndividualDog {
 			ListUtil.map(individual.getSegmentIds(), String::valueOf));
 
 		return newIndividual;
-	}
-
-	private Individual _mapIndividual(SearchHit searchHit) {
-		Individual individual = new Individual();
-
-		JSONObject individualJSONObject = new JSONObject(
-			searchHit.getSourceAsMap());
-
-		individual.setCustom(
-			FaroInfoIndividualUtil.getIndividualCustomFields(
-				individualJSONObject.optJSONObject("custom")));
-		individual.setDemographics(
-			FaroInfoIndividualUtil.getIndividualDemographicFields(
-				individualJSONObject.optJSONObject("demographics")));
-		individual.setId(individualJSONObject.getString("id"));
-		individual.setIndividualSegmentIds(
-			JSONUtil.toStringList(
-				individualJSONObject.getJSONArray("individualSegmentIds")));
-
-		return individual;
 	}
 
 	@Autowired
