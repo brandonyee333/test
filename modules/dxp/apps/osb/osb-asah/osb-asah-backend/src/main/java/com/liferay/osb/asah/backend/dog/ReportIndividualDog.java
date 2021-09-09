@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.dog.configuration.DogConfiguration;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
@@ -28,13 +30,19 @@ import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -49,12 +57,16 @@ import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -87,16 +99,24 @@ public class ReportIndividualDog {
 		return _mapIndividual(searchHitArray[0]);
 	}
 
-	public ResultBag<Individual> getIndividualResultBag(
-		Object[] searchAfter, int size, SortBuilder<?> sortBuilder) {
+	public Page<Individual> getIndividualPage(
+		Long individualId, int size, Sort sort) {
 
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"individuals", _faroInfoElasticsearchInvoker,
-			DogUtil.buildSearchSourceBuilder(
-				_getIndividualDemographicsFetchSourceExcludes(), null,
-				searchAfter, size, sortBuilder));
+		List<com.liferay.osb.asah.common.entity.Individual> individuals =
+			_individualRepository.findByIdAfter(
+				individualId, PageRequest.of(0, size, sort));
 
-		return DogUtil.createResultBag(this::_mapIndividual, searchHits);
+		Stream<com.liferay.osb.asah.common.entity.Individual> stream =
+			individuals.stream();
+
+		List<Individual> reportIndividuals = new LinkedList<>();
+
+		stream.forEachOrdered(
+			individual -> reportIndividuals.add(_mapIndividual(individual)));
+
+		return PageableExecutionUtils.getPage(
+			reportIndividuals, PageRequest.of(0, size, sort),
+			() -> _individualRepository.countByIdAfter(individualId));
 	}
 
 	public ResultBag<Individual> getIndividualResultBag(
@@ -309,6 +329,29 @@ public class ReportIndividualDog {
 			terms.getBuckets(), MultiBucketsAggregation.Bucket::getKeyAsString);
 	}
 
+	private Map<String, String> _getIndividualProperties(
+		JSONObject demographicsJSONObject) {
+
+		if (demographicsJSONObject == null) {
+			return Collections.emptyMap();
+		}
+
+		Map<String, String> properties = new HashMap<>();
+
+		for (String propertyName : demographicsJSONObject.keySet()) {
+			String propertyValue = _getPropertyValue(
+				demographicsJSONObject, propertyName);
+
+			if (propertyValue == null) {
+				continue;
+			}
+
+			properties.put(propertyName, propertyValue);
+		}
+
+		return properties;
+	}
+
 	private QueryBuilder _getKeywordsQueryBuilder(
 		String keywords, String... fieldNames) {
 
@@ -330,6 +373,45 @@ public class ReportIndividualDog {
 		}
 
 		return boolQueryBuilder;
+	}
+
+	private String _getPropertyValue(
+		JSONObject organizationJSONObject, String fieldName) {
+
+		JSONArray propertyJSONArray = organizationJSONObject.optJSONArray(
+			fieldName);
+
+		if (propertyJSONArray == null) {
+			return null;
+		}
+
+		JSONObject propertyJSONObject = propertyJSONArray.optJSONObject(0);
+
+		if (propertyJSONObject == null) {
+			return null;
+		}
+
+		return String.valueOf(propertyJSONObject.get("value"));
+	}
+
+	private Individual _mapIndividual(
+		com.liferay.osb.asah.common.entity.Individual individual) {
+
+		Individual newIndividual = new Individual();
+
+		newIndividual.setCustom(
+			_getIndividualProperties(
+				_objectMapper.convertValue(
+					individual.getCustomDemographics(), JSONObject.class)));
+		newIndividual.setDemographics(
+			_getIndividualProperties(
+				_objectMapper.convertValue(
+					individual.getDemographics(), JSONObject.class)));
+		newIndividual.setId(String.valueOf(individual.getId()));
+		newIndividual.setIndividualSegmentIds(
+			ListUtil.map(individual.getSegmentIds(), String::valueOf));
+
+		return newIndividual;
 	}
 
 	private Individual _mapIndividual(SearchHit searchHit) {
@@ -362,6 +444,12 @@ public class ReportIndividualDog {
 
 	@Autowired
 	private FieldMappingDog _fieldMappingDog;
+
+	@Autowired
+	private IndividualRepository _individualRepository;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;

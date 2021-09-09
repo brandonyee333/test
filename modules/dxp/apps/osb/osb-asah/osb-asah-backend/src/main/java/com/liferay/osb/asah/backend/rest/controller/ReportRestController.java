@@ -18,13 +18,12 @@ import com.liferay.osb.asah.backend.dog.ReportAccountDog;
 import com.liferay.osb.asah.backend.dog.ReportIndividualDog;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.ReportAccountDTO;
+import com.liferay.osb.asah.backend.dto.ReportIndividualDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.model.Account;
 import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -46,21 +45,21 @@ import org.springframework.web.bind.annotation.RestController;
 )
 public class ReportRestController extends BaseRestController {
 
-	@GetMapping("/individuals")
-	public ResultBag<Individual> getIndividualResultBag(
-		@RequestParam(defaultValue = "") String after) {
-
-		return _reportIndividualDog.getIndividualResultBag(
-			_createSearchAfter(after), _PAGE_SIZE,
-			SortBuilderUtil.fieldSort("id"));
-	}
-
 	@GetMapping("/accounts")
 	public PageDTO<ReportAccountDTO> getReportAccountDTOPageDTO(
 		@RequestParam(defaultValue = "") String after) {
 
 		return _toReportAccountDTOPageDTO(
 			_reportAccountDog.getAccountPage(
+				_getId(after), _PAGE_SIZE, Sort.by(Sort.Order.asc("id"))));
+	}
+
+	@GetMapping("/individuals")
+	public PageDTO<ReportIndividualDTO> getReportIndividualDTOPageDTO(
+		@RequestParam(defaultValue = "") String after) {
+
+		return _toReportIndividualDTOPageDTO(
+			_reportIndividualDog.getIndividualPage(
 				_getId(after), _PAGE_SIZE, Sort.by(Sort.Order.asc("id"))));
 	}
 
@@ -71,14 +70,6 @@ public class ReportRestController extends BaseRestController {
 		return _toSegmentDTOPageDTO(
 			_segmentDog.getSegmentPage(
 				_getId(after), _PAGE_SIZE, Sort.by(Sort.Order.asc("id"))));
-	}
-
-	private String[] _createSearchAfter(String after) {
-		if (StringUtils.isBlank(after)) {
-			return null;
-		}
-
-		return new String[] {after};
 	}
 
 	private Long _getId(String id) {
@@ -95,6 +86,14 @@ public class ReportRestController extends BaseRestController {
 		return new PageDTO<>(
 			ListUtil.map(accountPage.toList(), ReportAccountDTO::new),
 			accountPage.getTotalElements());
+	}
+
+	private PageDTO<ReportIndividualDTO> _toReportIndividualDTOPageDTO(
+		Page<Individual> individualPage) {
+
+		return new PageDTO<>(
+			ListUtil.map(individualPage.toList(), ReportIndividualDTO::new),
+			individualPage.getTotalElements());
 	}
 
 	private PageDTO<SegmentDTO> _toSegmentDTOPageDTO(
