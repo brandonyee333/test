@@ -470,9 +470,10 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Override
 	public ObjectDefinition updateCustomObjectDefinition(
-			Long objectDefinitionId, Map<Locale, String> labelMap, String name,
-			String panelAppOrder, String panelCategoryKey,
-			Map<Locale, String> pluralLabelMap, String scope)
+			Long objectDefinitionId, boolean active,
+			Map<Locale, String> labelMap, String name, String panelAppOrder,
+			String panelCategoryKey, Map<Locale, String> pluralLabelMap,
+			String scope)
 		throws PortalException {
 
 		ObjectDefinition objectDefinition =
@@ -483,7 +484,7 @@ public class ObjectDefinitionLocalServiceImpl
 		}
 
 		return _updateObjectDefinition(
-			objectDefinition, null, labelMap, name, panelAppOrder,
+			objectDefinition, active, null, labelMap, name, panelAppOrder,
 			panelCategoryKey, null, null, pluralLabelMap, scope);
 	}
 
@@ -559,6 +560,7 @@ public class ObjectDefinitionLocalServiceImpl
 		objectDefinition.setCompanyId(user.getCompanyId());
 		objectDefinition.setUserId(user.getUserId());
 		objectDefinition.setUserName(user.getFullName());
+		objectDefinition.setActive(true);
 		objectDefinition.setDBTableName(dbTableName);
 		objectDefinition.setLabelMap(labelMap, LocaleUtil.getSiteDefault());
 		objectDefinition.setName(name);
@@ -708,24 +710,33 @@ public class ObjectDefinitionLocalServiceImpl
 	}
 
 	private ObjectDefinition _updateObjectDefinition(
-			ObjectDefinition objectDefinition, String dbTableName,
-			Map<Locale, String> labelMap, String name, String panelAppOrder,
-			String panelCategoryKey, String pkObjectFieldDBColumnName,
-			String pkObjectFieldName, Map<Locale, String> pluralLabelMap,
-			String scope)
+			ObjectDefinition objectDefinition, boolean active,
+			String dbTableName, Map<Locale, String> labelMap, String name,
+			String panelAppOrder, String panelCategoryKey,
+			String pkObjectFieldDBColumnName, String pkObjectFieldName,
+			Map<Locale, String> pluralLabelMap, String scope)
 		throws PortalException {
+
+		boolean originalActive = objectDefinition.isActive();
 
 		_validateLabel(labelMap, LocaleUtil.getSiteDefault());
 		_validatePluralLabel(pluralLabelMap, LocaleUtil.getSiteDefault());
 
+		objectDefinition.setActive(active);
 		objectDefinition.setPanelAppOrder(panelAppOrder);
 		objectDefinition.setPanelCategoryKey(panelCategoryKey);
 		objectDefinition.setLabelMap(labelMap, LocaleUtil.getSiteDefault());
 		objectDefinition.setPluralLabelMap(pluralLabelMap);
 
 		if (objectDefinition.isApproved()) {
-			objectDefinitionLocalService.deployObjectDefinition(
-				objectDefinition);
+			if (!active && originalActive) {
+				objectDefinitionLocalService.undeployObjectDefinition(
+					objectDefinition);
+			}
+			else if (active) {
+				objectDefinitionLocalService.deployObjectDefinition(
+					objectDefinition);
+			}
 
 			return objectDefinitionPersistence.update(objectDefinition);
 		}
