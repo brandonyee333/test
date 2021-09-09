@@ -21,16 +21,11 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,19 +35,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.StringUtils;
-
-import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -146,26 +135,31 @@ public class ReportIndividualDog {
 			return new ResultBag<>();
 		}
 
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"individuals", _faroInfoElasticsearchInvoker,
-			_buildSearchSourceBuilder(individualIds, keywords, size, start));
+		List<com.liferay.osb.asah.common.entity.Individual> individuals =
+			_individualDog.searchIndividuals(
+				ListUtil.map(individualIds, Long::valueOf), keywords, size,
+				start);
 
-		return DogUtil.createResultBag(
-			searchHit -> {
-				JSONObject individualJSONObject = new JSONObject(
-					searchHit.getSourceAsMap());
+		ResultBag<Individual> resultBag = new ResultBag<>();
 
-				JSONObject demographicsJSONObject =
-					individualJSONObject.getJSONObject("demographics");
+		List<Individual> models = new ArrayList<>();
 
-				return new Individual(
-					FaroInfoIndividualUtil.getIndividualEmail(
-						demographicsJSONObject),
-					individualJSONObject.getString("id"),
-					FaroInfoIndividualUtil.getIndividualName(
-						demographicsJSONObject));
-			},
-			searchHits);
+		for (com.liferay.osb.asah.common.entity.Individual individual :
+				individuals) {
+
+			models.add(
+				new Individual(
+					FaroInfoIndividualUtil.getIndividualEmail(individual),
+					String.valueOf(individual.getId()),
+					FaroInfoIndividualUtil.getIndividualName(individual)));
+		}
+
+		resultBag.setResults(models);
+		resultBag.setTotal(
+			_individualDog.countIndividuals(
+				ListUtil.map(individualIds, Long::valueOf), keywords));
+
+		return resultBag;
 	}
 
 	private SearchSourceBuilder _buildSearchSourceBuilder(
@@ -199,38 +193,6 @@ public class ReportIndividualDog {
 		return searchSourceBuilder;
 	}
 
-	private SearchSourceBuilder _buildSearchSourceBuilder(
-		List<String> individualIds, String keywords, int size, int start) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.from(start);
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.existsQuery("demographics.email")
-		).filter(
-			QueryBuilders.termsQuery("id", individualIds)
-		);
-
-		if (!StringUtils.isBlank(keywords)) {
-			boolQueryBuilder.filter(
-				_getKeywordsQueryBuilder(
-					keywords, "demographics.email.value",
-					"demographics.familyName.value",
-					"demographics.givenName.value"));
-		}
-
-		searchSourceBuilder.query(boolQueryBuilder);
-
-		searchSourceBuilder.size(size);
-		searchSourceBuilder.sort(
-			SortBuilderUtil.fieldSort(
-				"demographics.givenName.value", SortOrder.ASC, "keyword"));
-
-		return searchSourceBuilder;
-	}
-
 	private List<String> _getIndividualIds(Terms terms) {
 		return ListUtil.map(
 			terms.getBuckets(), MultiBucketsAggregation.Bucket::getKeyAsString);
@@ -257,29 +219,6 @@ public class ReportIndividualDog {
 		}
 
 		return properties;
-	}
-
-	private QueryBuilder _getKeywordsQueryBuilder(
-		String keywords, String... fieldNames) {
-
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		for (String fieldName : fieldNames) {
-			boolQueryBuilder.should(
-				QueryBuilders.queryStringQuery(
-					String.format(
-						"%s:*%s*", fieldName,
-						QueryUtil.escapeKeywords(keywords)))
-			).should(
-				QueryBuilders.matchQuery(
-					fieldName, keywords
-				).fuzziness(
-					Fuzziness.AUTO
-				)
-			);
-		}
-
-		return boolQueryBuilder;
 	}
 
 	private String _getPropertyValue(
@@ -325,12 +264,6 @@ public class ReportIndividualDog {
 	private DataDog _dataDog;
 
 	private final DogConfigurationBag _dogConfigurationBag;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
 	private IndividualDog _individualDog;

@@ -56,6 +56,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
@@ -391,6 +392,11 @@ public class IndividualDog extends BaseFaroInfoDog {
 		segmentIds.add(segmentId);
 
 		return updateIndividual(individualId, individual, false);
+	}
+
+	public long countIndividuals(List<Long> individualIds, String keywords) {
+		return _individualRepository.countByIdsInAndKeywords(
+			individualIds, keywords);
 	}
 
 	public long countIndividuals(
@@ -891,6 +897,17 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	public List<Individual> searchIndividuals(
+		List<Long> individualIds, String keywords, int size, int start) {
+
+		List<Individual> individuals =
+			_individualRepository.findByIdsInAndKeywords(
+				individualIds, _escapeKeywords(keywords),
+				PageRequest.of(start, size));
+
+		return ListUtil.map(individuals, this::populateIndividual);
+	}
+
+	public List<Individual> searchIndividuals(
 		Long channelId, Boolean includeAnonymousUsers, Long segmentId, int page,
 		int size, String[] sorts) {
 
@@ -1162,6 +1179,28 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return individual;
 	}
 
+	private String _escapeKeywords(String keywords) {
+		if (StringUtils.isEmpty(keywords)) {
+			return keywords;
+		}
+
+		IntStream intStream = keywords.codePoints();
+
+		return intStream.mapToObj(
+			c -> (char)c
+		).map(
+			c -> {
+				if (_CHARACTERS_TO_BE_ESCAPED_IN_QUERY_STRING.indexOf(c) >= 0) {
+					return "\\" + c;
+				}
+
+				return String.valueOf(c);
+			}
+		).collect(
+			Collectors.joining()
+		);
+	}
+
 	private Long _getSegmentChannelId(Long segmentId) {
 		return Optional.ofNullable(
 			segmentId
@@ -1308,6 +1347,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 			}
 		}
 	}
+
+	private static final String _CHARACTERS_TO_BE_ESCAPED_IN_QUERY_STRING =
+		"+-=&&||><!(){}[]^\"~*?:\\/";
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
