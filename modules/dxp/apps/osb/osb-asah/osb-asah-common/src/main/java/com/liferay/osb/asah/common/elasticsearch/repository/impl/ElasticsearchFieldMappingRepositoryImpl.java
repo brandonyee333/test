@@ -200,6 +200,21 @@ public class ElasticsearchFieldMappingRepositoryImpl
 		return Optional.ofNullable(toEntity(fieldMappingJSONObject));
 	}
 
+	public List<FieldMapping> findByContextAndFieldTypeAndOwnerType(
+		String context, String fieldType, String ownerType) {
+
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("context", context)
+				).filter(
+					QueryBuilders.termQuery("fieldType", fieldType)
+				).filter(
+					QueryBuilders.termQuery("ownerType", ownerType)
+				)));
+	}
+
 	@Override
 	public List<FieldMapping>
 		findByDataSourceFieldNameAndDataSourceIdAndOwnerType(
