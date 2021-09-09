@@ -203,9 +203,9 @@ public class ElasticsearchAssetRepositoryImpl
 			return dataSourceAssetPKs;
 		}
 
-		List<Aggregation> aggregationList = aggregations.asList();
+		List<Aggregation> aggregationsList = aggregations.asList();
 
-		if (aggregationList.isEmpty()) {
+		if (aggregationsList.isEmpty()) {
 			return dataSourceAssetPKs;
 		}
 
@@ -247,9 +247,9 @@ public class ElasticsearchAssetRepositoryImpl
 			return keywords;
 		}
 
-		List<Aggregation> aggregationList = aggregations.asList();
+		List<Aggregation> aggregationsList = aggregations.asList();
 
-		if (aggregationList.isEmpty()) {
+		if (aggregationsList.isEmpty()) {
 			return keywords;
 		}
 

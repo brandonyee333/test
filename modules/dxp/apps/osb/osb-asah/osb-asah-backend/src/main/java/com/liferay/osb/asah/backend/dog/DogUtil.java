@@ -263,9 +263,9 @@ public class DogUtil {
 			return true;
 		}
 
-		List<Aggregation> aggregationList = aggregations.asList();
+		List<Aggregation> aggregationsList = aggregations.asList();
 
-		if (aggregationList.isEmpty()) {
+		if (aggregationsList.isEmpty()) {
 			return true;
 		}
 
