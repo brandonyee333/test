@@ -21,9 +21,9 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.FieldMapping;
 import com.liferay.osb.asah.backend.model.Individual;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
@@ -31,7 +31,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
-import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -67,7 +66,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -82,21 +80,8 @@ public class ReportIndividualDog {
 		_dogConfigurationBag = new DogConfigurationBag(dogConfigurations);
 	}
 
-	public Individual getIndividual(String id) {
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"individuals", _faroInfoElasticsearchInvoker,
-			_buildSearchSourceBuilder(
-				_getIndividualDemographicsFetchSourceExcludes(),
-				QueryBuilders.termQuery("id", id), 1, 0));
-
-		if (!HitsUtil.hasHits(searchHits)) {
-			throw new OSBAsahException(
-				HttpStatus.BAD_REQUEST, "There is no individual with ID " + id);
-		}
-
-		SearchHit[] searchHitArray = searchHits.getHits();
-
-		return _mapIndividual(searchHitArray[0]);
+	public Individual getIndividual(Long id) {
+		return _mapIndividual(_individualDog.getIndividual(id));
 	}
 
 	public Page<Individual> getIndividualPage(
@@ -444,6 +429,9 @@ public class ReportIndividualDog {
 
 	@Autowired
 	private FieldMappingDog _fieldMappingDog;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private IndividualRepository _individualRepository;
