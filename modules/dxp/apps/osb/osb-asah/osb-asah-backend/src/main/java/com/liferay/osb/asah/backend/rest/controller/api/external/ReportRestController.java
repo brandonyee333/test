@@ -20,11 +20,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liferay.osb.asah.backend.dog.ActivityDog;
 import com.liferay.osb.asah.backend.dog.GeolocationDog;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
-import com.liferay.osb.asah.backend.dog.IndividualDog;
 import com.liferay.osb.asah.backend.dog.InterestDog;
 import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
 import com.liferay.osb.asah.backend.dog.ReportAccountDog;
+import com.liferay.osb.asah.backend.dog.ReportIndividualDog;
 import com.liferay.osb.asah.backend.dog.SegmentMetricDog;
 import com.liferay.osb.asah.backend.dog.TechnologyDog;
 import com.liferay.osb.asah.backend.dog.UserDog;
@@ -476,7 +476,7 @@ public class ReportRestController extends BaseRestController {
 		@PathVariable String individualId) {
 
 		return _toIndividualEntityModel(
-			_individualDog.getIndividual(individualId));
+			_reportIndividualDog.getIndividual(individualId));
 	}
 
 	@GetMapping("/individuals/{individualId}/interests")
@@ -503,7 +503,7 @@ public class ReportRestController extends BaseRestController {
 		@RequestParam(defaultValue = "") String query) {
 
 		ResultBag<Individual> individualResultBag =
-			_individualDog.getIndividualResultBag(
+			_reportIndividualDog.getIndividualResultBag(
 				query, null, _PAGE_SIZE, page * _PAGE_SIZE);
 
 		return _toResultBagEntityModel(
@@ -517,7 +517,8 @@ public class ReportRestController extends BaseRestController {
 		getIndividualSegmentResultBagEntityModel(
 			@PathVariable String individualId) {
 
-		Individual individual = _individualDog.getIndividual(individualId);
+		Individual individual = _reportIndividualDog.getIndividual(
+			individualId);
 
 		List<Segment> segments = _segmentDog.getSegments(
 			ListUtil.map(individual.getIndividualSegmentIds(), Long::valueOf));
@@ -750,7 +751,7 @@ public class ReportRestController extends BaseRestController {
 			@RequestParam(defaultValue = "") String query) {
 
 		ResultBag<Individual> individualResultBag =
-			_individualDog.getIndividualResultBag(
+			_reportIndividualDog.getIndividualResultBag(
 				query, segmentId, _PAGE_SIZE, page * _PAGE_SIZE);
 
 		return _toResultBagEntityModel(
@@ -1365,9 +1366,6 @@ public class ReportRestController extends BaseRestController {
 	private HistogramDog _histogramDog;
 
 	@Autowired
-	private IndividualDog _individualDog;
-
-	@Autowired
 	private InterestDog _interestDog;
 
 	@Autowired
@@ -1378,6 +1376,9 @@ public class ReportRestController extends BaseRestController {
 
 	@Autowired
 	private ReportAccountDog _reportAccountDog;
+
+	@Autowired
+	private ReportIndividualDog _reportIndividualDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

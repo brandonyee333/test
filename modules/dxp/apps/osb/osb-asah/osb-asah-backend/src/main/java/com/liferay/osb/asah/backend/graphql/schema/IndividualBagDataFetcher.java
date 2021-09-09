@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.IndividualDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
+import com.liferay.osb.asah.backend.dog.ReportIndividualDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
@@ -61,14 +61,14 @@ public class IndividualBagDataFetcher
 		int size = dataFetchingEnvironment.getArgument("size");
 		int start = dataFetchingEnvironment.getArgument("start");
 
-		return _individualDog.getIndividualResultBag(
+		return _reportIndividualDog.getIndividualResultBag(
 			keywords, metricType, searchQueryContext, size, start);
 	}
 
 	@Autowired
-	private IndividualDog _individualDog;
+	private MetricTypeDog _metricTypeDog;
 
 	@Autowired
-	private MetricTypeDog _metricTypeDog;
+	private ReportIndividualDog _reportIndividualDog;
 
 }

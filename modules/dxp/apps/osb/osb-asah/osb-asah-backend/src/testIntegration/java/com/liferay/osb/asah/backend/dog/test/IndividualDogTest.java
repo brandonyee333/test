@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
-import com.liferay.osb.asah.backend.dog.IndividualDog;
+import com.liferay.osb.asah.backend.dog.ReportIndividualDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.BlogMetricType;
@@ -59,7 +59,7 @@ public class IndividualDogTest {
 	@Test
 	public void testGetIndividualResultBag1() {
 		ResultBag<Individual> individualResultBag =
-			_individualDog.getIndividualResultBag("", null, 10, 0);
+			_reportIndividualDog.getIndividualResultBag("", null, 10, 0);
 
 		Assert.assertEquals(5, individualResultBag.getTotal());
 		Assert.assertEquals(
@@ -87,7 +87,7 @@ public class IndividualDogTest {
 	@Test
 	public void testGetIndividualResultBag2() {
 		ResultBag<Individual> individualResultBag =
-			_individualDog.getIndividualResultBag("mander", null, 10, 0);
+			_reportIndividualDog.getIndividualResultBag("mander", null, 10, 0);
 
 		Assert.assertEquals(1, individualResultBag.getTotal());
 		Assert.assertEquals(
@@ -112,7 +112,7 @@ public class IndividualDogTest {
 		searchQueryContext.setTimeRange(TimeRange.LAST_30_DAYS);
 
 		ResultBag<Individual> individualResultBag =
-			_individualDog.getIndividualResultBag(
+			_reportIndividualDog.getIndividualResultBag(
 				null, BlogMetricType.VIEWS, searchQueryContext, 2, 1);
 
 		Assert.assertEquals(
@@ -147,7 +147,7 @@ public class IndividualDogTest {
 		searchQueryContext.setTimeRange(TimeRange.LAST_30_DAYS);
 
 		ResultBag<Individual> individualResultBag =
-			_individualDog.getIndividualResultBag(
+			_reportIndividualDog.getIndividualResultBag(
 				"john", BlogMetricType.VIEWS, searchQueryContext, 10, 0);
 
 		Assert.assertEquals(
@@ -177,7 +177,7 @@ public class IndividualDogTest {
 		searchQueryContext.setTimeRange(TimeRange.LAST_30_DAYS);
 
 		ResultBag<Individual> individualResultBag =
-			_individualDog.getIndividualResultBag(
+			_reportIndividualDog.getIndividualResultBag(
 				null, BlogMetricType.VIEWS, searchQueryContext, 2, 0);
 
 		Assert.assertEquals(
@@ -224,6 +224,6 @@ public class IndividualDogTest {
 	}
 
 	@Autowired
-	private IndividualDog _individualDog;
+	private ReportIndividualDog _reportIndividualDog;
 
 }
