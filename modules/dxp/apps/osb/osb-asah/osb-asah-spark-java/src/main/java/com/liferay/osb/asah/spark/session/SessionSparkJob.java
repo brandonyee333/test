@@ -110,7 +110,7 @@ public class SessionSparkJob implements SparkJob {
 			).option(
 				"checkpointLocation", _checkpointPath
 			).trigger(
-				Trigger.Continuous(
+				Trigger.ProcessingTime(
 					_sessionJobTriggerIntervalMinutes, TimeUnit.MINUTES)
 			).foreachBatch(
 				_sessionBatchSinkFunction
