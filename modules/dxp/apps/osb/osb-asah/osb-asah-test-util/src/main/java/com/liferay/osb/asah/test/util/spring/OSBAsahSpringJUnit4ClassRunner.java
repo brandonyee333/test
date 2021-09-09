@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import java.util.TimeZone;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -58,6 +60,8 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 		System.setProperty(
 			"spring.main.allow-bean-definition-overriding", "true");
 		System.setProperty("spring.profiles.active", "test");
+
+		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 
 		_registerOSBAsahTestExecutionListener();
 	}
