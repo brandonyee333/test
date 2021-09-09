@@ -14,10 +14,12 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.MatcherUtil;
@@ -65,6 +67,82 @@ public class IndividualRepositoryImpl extends BaseRepository {
 
 	public IndividualRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	public long countByQueryAndSegmentId(
+		@Nullable String query, @Nullable Long segmentId) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (segmentId != null) {
+			conditions.add(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.segmentids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(segmentId), Long[].class)
+				));
+		}
+
+		if (StringUtils.isEmpty(query)) {
+			if (conditions.isEmpty()) {
+				conditions.add(DSL.noCondition());
+			}
+
+			return _dslContext.select(
+				DSL.countDistinct(DSL.field("individual.id"))
+			).from(
+				"Individual"
+			).where(
+				conditions
+			).fetchOptional(
+				0, Long.class
+			).orElse(
+				0L
+			);
+		}
+
+		List<FieldMapping> fieldMappings =
+			_fieldMappingRepository.findByContextAndFieldTypeAndOwnerType(
+				"demographics", "Text", "individual");
+
+		Condition condition = DSL.noCondition();
+
+		for (FieldMapping fieldMapping : fieldMappings) {
+			condition = condition.or(
+				DSL.and(
+					DSL.field(
+						"field.value"
+					).likeIgnoreCase(
+						"%" + query + "%"
+					),
+					DSL.field(
+						"field.name"
+					).eq(
+						fieldMapping.getFieldName()
+					)));
+		}
+
+		return _dslContext.select(
+			DSL.countDistinct(DSL.field("individual.id"))
+		).from(
+			"Individual"
+		).join(
+			"Field"
+		).on(
+			DSL.field(
+				"individual.id"
+			).eq(
+				DSL.field("field.ownerid")
+			)
+		).where(
+			conditions
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
 	}
 
 	public long countIndividuals(
@@ -551,6 +629,91 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		}
 
 		return individualOptional;
+	}
+
+	public List<Individual> findByQueryAndSegmentId(
+		@Nullable String query, @Nullable Long segmentId, Pageable pageable) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (segmentId != null) {
+			conditions.add(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.segmentids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(segmentId), Long[].class)
+				));
+		}
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"Individual"
+			).asterisk());
+
+		if (StringUtils.isEmpty(query)) {
+			if (conditions.isEmpty()) {
+				conditions.add(DSL.noCondition());
+			}
+
+			return selectSelectStep.from(
+				"Individual"
+			).where(
+				conditions
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			).fetch(
+			).map(
+				record -> new Individual(record.intoMap())
+			);
+		}
+
+		List<FieldMapping> fieldMappings =
+			_fieldMappingRepository.findByContextAndFieldTypeAndOwnerType(
+				"demographics", "Text", "individual");
+
+		Condition condition = DSL.noCondition();
+
+		for (FieldMapping fieldMapping : fieldMappings) {
+			condition = condition.or(
+				DSL.and(
+					DSL.field(
+						"field.value"
+					).likeIgnoreCase(
+						"%" + query + "%"
+					),
+					DSL.field(
+						"field.name"
+					).eq(
+						fieldMapping.getFieldName()
+					)));
+		}
+
+		conditions.add(condition);
+
+		return selectSelectStep.from(
+			"Individual"
+		).join(
+			"Field"
+		).on(
+			DSL.field(
+				"individual.id"
+			).eq(
+				DSL.field("field.ownerid")
+			)
+		).where(
+			conditions
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Individual(record.intoMap())
+		);
 	}
 
 	public Map<Long, Long> findIndividualCounts(
@@ -1245,6 +1408,9 @@ public class IndividualRepositoryImpl extends BaseRepository {
 	}
 
 	private final DSLContext _dslContext;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private IndividualRepository _individualRepository;

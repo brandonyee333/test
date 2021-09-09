@@ -40,6 +40,10 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 	@Cacheable
 	public long countByIdAfter(Long individualId);
 
+	@Cacheable
+	public long countByQueryAndSegmentId(
+		@Nullable String query, @Nullable Long segmentId);
+
 	public long countIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
@@ -101,6 +105,10 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 
 	@Cacheable
 	public List<Individual> findByIdAfter(Long individualId, Pageable pageable);
+
+	@Cacheable
+	public List<Individual> findByQueryAndSegmentId(
+		@Nullable String query, @Nullable Long segmentId, Pageable pageable);
 
 	@Cacheable
 	public List<Long> findIdsByAnySegmentIds(

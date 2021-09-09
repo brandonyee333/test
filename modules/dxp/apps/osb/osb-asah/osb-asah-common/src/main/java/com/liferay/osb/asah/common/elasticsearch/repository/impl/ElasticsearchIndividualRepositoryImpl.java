@@ -114,6 +114,32 @@ public class ElasticsearchIndividualRepositoryImpl
 		return HitsUtil.getTotalHitsCount(searchResponse.getHits());
 	}
 
+	public long countByQueryAndSegmentId(
+		@Nullable String query, @Nullable Long segmentId) {
+
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+		if (Objects.nonNull(segmentId)) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery(
+					"individualSegmentIds", String.valueOf(segmentId)));
+		}
+
+		if (StringUtils.isNotEmpty(query)) {
+			String[] individualDemographicsSearchableFieldNames =
+				_getIndividualDemographicsSearchableFieldNames();
+
+			if (individualDemographicsSearchableFieldNames != null) {
+				boolQueryBuilder.filter(
+					QueryBuilders.multiMatchQuery(
+						query, individualDemographicsSearchableFieldNames));
+			}
+		}
+
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(), boolQueryBuilder);
+	}
+
 	@Override
 	public long countIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,
@@ -456,6 +482,41 @@ public class ElasticsearchIndividualRepositoryImpl
 
 						setSearchSourceBuilderPage(
 							searchSourceBuilder, pageable);
+					})));
+	}
+
+	@Override
+	public List<Individual> findByQueryAndSegmentId(
+		@Nullable String query, @Nullable Long segmentId, Pageable pageable) {
+
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+		if (Objects.nonNull(segmentId)) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery(
+					"individualSegmentIds", String.valueOf(segmentId)));
+		}
+
+		if (StringUtils.isNotEmpty(query)) {
+			String[] individualDemographicsSearchableFieldNames =
+				_getIndividualDemographicsSearchableFieldNames();
+
+			if (individualDemographicsSearchableFieldNames != null) {
+				boolQueryBuilder.filter(
+					QueryBuilders.multiMatchQuery(
+						query, individualDemographicsSearchableFieldNames));
+			}
+		}
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.from(
+							pageable.getPageNumber() * pageable.getPageSize());
+						searchSourceBuilder.query(boolQueryBuilder);
+						searchSourceBuilder.size(pageable.getPageSize());
 					})));
 	}
 
@@ -1038,6 +1099,56 @@ public class ElasticsearchIndividualRepositoryImpl
 			));
 
 		return individual;
+	}
+
+	private QueryBuilder _buildQueryBuilder(String context, String ownerType) {
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+		if (!StringUtils.isBlank(context)) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("context", context));
+		}
+
+		if (!StringUtils.isBlank(context)) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("ownerType", ownerType));
+		}
+
+		return boolQueryBuilder;
+	}
+
+	private String[] _getIndividualDemographicsSearchableFieldNames() {
+		JSONArray fieldMappingsJSONArray = new JSONArray(
+			_faroInfoElasticsearchInvoker.get(
+				"field-mappings",
+				searchSourceBuilder -> {
+					searchSourceBuilder.from(0);
+					searchSourceBuilder.query(
+						_buildQueryBuilder("demographics", "individual"));
+					searchSourceBuilder.size(20);
+				}));
+
+		if (fieldMappingsJSONArray.length() == 0) {
+			return null;
+		}
+
+		List<String> searchableFieldNames = new ArrayList<>();
+
+		for (int i = 0; i < fieldMappingsJSONArray.length(); i++) {
+			JSONObject fieldMappingJSONObject =
+				fieldMappingsJSONArray.getJSONObject(i);
+
+			if (Objects.equals(
+					fieldMappingJSONObject.getString("fieldType"), "Text")) {
+
+				searchableFieldNames.add(
+					String.format(
+						"demographics.%s.value.searchable",
+						fieldMappingJSONObject.getString("fieldName")));
+			}
+		}
+
+		return searchableFieldNames.toArray(new String[0]);
 	}
 
 	private QueryBuilder _getQueryBuilder(
