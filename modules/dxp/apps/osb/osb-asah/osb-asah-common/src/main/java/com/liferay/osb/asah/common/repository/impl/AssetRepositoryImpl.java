@@ -55,7 +55,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
-			_getAssetTableKeywordNotNull(assetType)
+			_getAssetTableKeywordNotNull(null, assetType)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -93,26 +93,19 @@ public class AssetRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Asset> findByAssetTypeAndAssetKeywordNotNull(
-		String assetType, Pageable pageable) {
+		Long assetId, String assetType, int size) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
-			_getAssetTableKeywordNotNull(assetType));
-
-		if (pageable == null) {
-			return selectJoinStep.fetch(
-			).map(
-				this::_toAsset
-			);
-		}
+			_getAssetTableKeywordNotNull(assetId, assetType));
 
 		return selectJoinStep.orderBy(
-			getSortFields(pageable.getSort(), null)
+			DSL.field(
+				"id"
+			).asc()
 		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
+			size
 		).fetch(
 		).map(
 			this::_toAsset
@@ -268,11 +261,13 @@ public class AssetRepositoryImpl extends BaseRepository {
 		}
 
 		return selectJoinStep.where(
-			_getConditions(assetType, filterString, keyword)
+			_getConditions(null, assetType, filterString, keyword)
 		).asTable();
 	}
 
-	private Table<Record> _getAssetTableKeywordNotNull(String assetType) {
+	private Table<Record> _getAssetTableKeywordNotNull(
+		Long assetId, String assetType) {
+
 		SelectSelectStep<Record> selectDistinct = _dslContext.selectDistinct(
 			DSL.table(
 				"Asset"
@@ -293,7 +288,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 				DSL.field("keywords.assetid")
 			)
 		).where(
-			_getConditions(assetType, null, null)
+			_getConditions(assetId, assetType, null, null)
 		).and(
 			DSL.field(
 				"keywords.keyword"
@@ -302,9 +297,18 @@ public class AssetRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Condition> _getConditions(
-		String assetType, String filterString, String keyword) {
+		Long assetId, String assetType, String filterString, String keyword) {
 
 		List<Condition> conditions = new ArrayList<>();
+
+		if (assetId != null) {
+			conditions.add(
+				DSL.field(
+					"id"
+				).gt(
+					assetId
+				));
+		}
 
 		if (StringUtils.isNotBlank(assetType)) {
 			conditions.add(

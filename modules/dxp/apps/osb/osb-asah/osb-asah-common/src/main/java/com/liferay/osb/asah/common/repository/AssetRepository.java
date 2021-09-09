@@ -41,8 +41,9 @@ public interface AssetRepository extends Repository<Asset, Long> {
 	@Cacheable
 	public long countByFilterString(@Nullable String filterString);
 
+	@Cacheable
 	public List<Asset> findByAssetTypeAndAssetKeywordNotNull(
-		String assetType, Pageable pageable);
+		Long assetId, String assetType, int size);
 
 	@Cacheable
 	public List<Asset> findByAssetTypeAndFilterStringAndKeywords(

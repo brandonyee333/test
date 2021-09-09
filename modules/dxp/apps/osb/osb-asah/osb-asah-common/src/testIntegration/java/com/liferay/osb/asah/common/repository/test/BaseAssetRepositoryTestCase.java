@@ -188,7 +188,7 @@ public abstract class BaseAssetRepositoryTestCase
 
 		List<Asset> assets =
 			_assetRepository.findByAssetTypeAndAssetKeywordNotNull(
-				"Page", null);
+				0L, "Page", 50);
 
 		Assert.assertEquals(assets.toString(), 3, assets.size());
 	}

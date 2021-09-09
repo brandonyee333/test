@@ -162,19 +162,17 @@ public class AssetDog {
 				assetType, filterString, keyword));
 	}
 
+	public List<Asset> getAssets(Long assetId, String assetType, int size) {
+		return _assetRepository.findByAssetTypeAndAssetKeywordNotNull(
+			assetId, assetType, size);
+	}
+
 	public List<Asset> getAssets(Set<Long> assetIds) {
 		if (CollectionUtils.isEmpty(assetIds)) {
 			return Collections.emptyList();
 		}
 
 		return IterableUtils.toList(_assetRepository.findAllById(assetIds));
-	}
-
-	public List<Asset> getAssets(
-		String assetType, int page, int size, Sort sort) {
-
-		return _assetRepository.findByAssetTypeAndAssetKeywordNotNull(
-			assetType, PageRequest.of(page, size, sort));
 	}
 
 	public List<Asset> getAssets(String assetType, String assetKeyword) {

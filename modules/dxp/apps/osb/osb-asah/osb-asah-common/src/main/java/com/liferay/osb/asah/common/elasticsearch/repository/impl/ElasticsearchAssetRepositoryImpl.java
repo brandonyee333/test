@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverter
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -98,12 +99,12 @@ public class ElasticsearchAssetRepositoryImpl
 
 	@Override
 	public List<Asset> findByAssetTypeAndAssetKeywordNotNull(
-		String assetType, Pageable pageable) {
+		Long assetId, String assetType, int size) {
 
 		return toList(
 			new JSONArray(
 				_faroInfoElasticsearchInvoker.get(
-					"assets",
+					getCollectionName(),
 					searchSourceBuilder -> {
 						searchSourceBuilder.query(
 							BoolQueryBuilderUtil.filter(
@@ -112,10 +113,14 @@ public class ElasticsearchAssetRepositoryImpl
 								QueryBuilders.existsQuery("keywords.keyword")
 							));
 
-						if (pageable != null) {
-							setSearchSourceBuilderPage(
-								searchSourceBuilder, pageable);
+						if (assetId != null) {
+							searchSourceBuilder.searchAfter(
+								new Object[] {assetId});
 						}
+
+						searchSourceBuilder.size(size);
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort("id"));
 					})));
 	}
 
