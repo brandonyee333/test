@@ -285,7 +285,7 @@ public class Individual implements Persistable<Long> {
 		return false;
 	}
 
-	public void setActivitiesCount(long activitiesCount) {
+	public void setActivitiesCount(Long activitiesCount) {
 		_activitiesCount = activitiesCount;
 	}
 
