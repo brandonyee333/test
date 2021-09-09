@@ -62,11 +62,11 @@ import org.springframework.stereotype.Component;
  * @author André Miranda
  * @author Marcellus Tavares
  */
-@Component("com.liferay.osb.asah.backend.dog.IndividualDog")
-public class IndividualDog {
+@Component
+public class ReportIndividualDog {
 
 	@Autowired
-	public IndividualDog(List<DogConfiguration> dogConfigurations) {
+	public ReportIndividualDog(List<DogConfiguration> dogConfigurations) {
 		_dogConfigurationBag = new DogConfigurationBag(dogConfigurations);
 	}
 
