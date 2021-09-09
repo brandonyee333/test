@@ -24,22 +24,19 @@ import cc.mallet.types.IDSorter;
 import cc.mallet.types.Instance;
 import cc.mallet.types.InstanceList;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.BlockedKeywordDog;
 import com.liferay.osb.asah.common.dog.InterestTopicDog;
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.entity.InterestTopic;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
@@ -55,6 +52,9 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 /**
  * @author Victor Oliveira
@@ -147,8 +147,7 @@ public class InterestTopicsNanite extends BaseNanite {
 			_assetDog,
 			SetUtil.map(
 				_blockedKeywordDog.getBlockedKeywords(),
-				BlockedKeyword::getKeyword),
-			_objectMapper);
+				BlockedKeyword::getKeyword));
 
 		instanceList.addThruPipe(instanceIterator);
 
@@ -191,29 +190,22 @@ public class InterestTopicsNanite extends BaseNanite {
 	@Value("${lda.topics.count:10}")
 	private int _ldaTopicsCount;
 
-	@Autowired
-	private ObjectMapper _objectMapper;
-
 	private static class InstanceIterator implements Iterator<Instance> {
 
 		public InstanceIterator(
-			AssetDog assetDog, Set<String> blockedKeywords,
-			ObjectMapper objectMapper) {
+			AssetDog assetDog, Set<String> blockedKeywords) {
 
 			_assetDog = assetDog;
 			_blockedKeywords = blockedKeywords;
-			_objectMapper = objectMapper;
-
-			_totalCount = assetDog.getAssetsCount("Page");
 		}
 
 		@Override
 		public boolean hasNext() {
-			if (_currentCount < _totalCount) {
-				return true;
+			if (_assetsQueue.isEmpty()) {
+				_fetchAssetsBatch();
 			}
 
-			return false;
+			return !_assetsQueue.isEmpty();
 		}
 
 		@Override
@@ -222,56 +214,62 @@ public class InterestTopicsNanite extends BaseNanite {
 				_fetchAssetsBatch();
 			}
 
-			_currentCount++;
+			Tuple2<Long, String> tuple2 = _assetsQueue.poll();
 
-			Map<String, Object> asset = _assetsQueue.poll();
+			if (tuple2 == null) {
+				return null;
+			}
 
-			return new Instance(
-				_toKeywordsString(
-					(List<Map<String, String>>)asset.get("keywords")),
-				"", asset.get("id"), null);
+			return new Instance(tuple2.getT2(), "", tuple2.getT1(), null);
 		}
 
 		private void _fetchAssetsBatch() {
-			List<Asset> assets = _assetDog.getAssets(
-				"Page", _currentPage, 50, Sort.asc("id"));
-
-			Stream<Asset> stream = assets.stream();
-
-			List<Map<String, Object>> assetsMap = stream.map(
-				asset -> (Map<String, Object>)_objectMapper.convertValue(
-					asset, Map.class)
-			).collect(
-				Collectors.toList()
-			);
-
 			_assetsQueue.clear();
 
-			_assetsQueue.addAll(assetsMap);
+			List<Asset> assets = _assetDog.getAssets(
+				_currentAssetId, "Page", 500);
 
-			_currentPage++;
-		}
+			if (assets.isEmpty()) {
+				return;
+			}
 
-		private String _toKeywordsString(List<Map<String, String>> keywords) {
-			Stream<Map<String, String>> stream = keywords.stream();
+			for (Asset asset : assets) {
+				Long assetId = asset.getId();
 
-			return stream.filter(
-				map -> !_blockedKeywords.contains(map.get("keyword"))
-			).map(
-				map -> map.get("keyword") + _SEPARATOR + map.get("type")
-			).collect(
-				Collectors.joining(",")
-			);
+				if (assetId == null) {
+					throw new IllegalArgumentException(
+						"Asset ID cannot be null");
+				}
+
+				Set<AssetKeyword> assetKeywords = asset.getAssetKeywords();
+
+				Stream<AssetKeyword> stream = assetKeywords.stream();
+
+				_assetsQueue.add(
+					Tuples.of(
+						assetId,
+						stream.filter(
+							assetKeyword -> !_blockedKeywords.contains(
+								assetKeyword.getKeyword())
+						).map(
+							assetKeyword ->
+								assetKeyword.getKeyword() + _SEPARATOR +
+									assetKeyword.getType()
+						).collect(
+							Collectors.joining(",")
+						)));
+			}
+
+			Asset asset = assets.get(assets.size() - 1);
+
+			_currentAssetId = asset.getId();
 		}
 
 		private final AssetDog _assetDog;
-		private final Queue<Map<String, Object>> _assetsQueue =
+		private final Queue<Tuple2<Long, String>> _assetsQueue =
 			new LinkedList<>();
 		private final Set<String> _blockedKeywords;
-		private long _currentCount;
-		private int _currentPage;
-		private final ObjectMapper _objectMapper;
-		private final long _totalCount;
+		private Long _currentAssetId;
 
 	}
 

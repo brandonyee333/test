@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoInterestDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -244,11 +243,11 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	private Map<String, List<KeywordInfo>> _getKeywordInfosMap() {
 		Map<String, List<KeywordInfo>> keywordInfosMap = new HashMap<>();
 
-		int page = 0;
+		Long currentAssetId = null;
 
 		while (true) {
 			List<Asset> assets = _assetDog.getAssets(
-				"Page", page++, 500, Sort.asc("id"));
+				currentAssetId, "Page", 500);
 
 			if (assets.isEmpty()) {
 				break;
@@ -280,6 +279,10 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 									canonicalUrl, dataSourceAssetPK, title));
 						});
 				});
+
+			Asset asset = assets.get(assets.size() - 1);
+
+			currentAssetId = asset.getId();
 		}
 
 		return keywordInfosMap;
