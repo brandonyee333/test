@@ -178,6 +178,53 @@ public class ElasticsearchAssetRepositoryImpl
 	}
 
 	@Override
+	public List<String> findDataSourceAssetPKByKeyword(String keyword) {
+		List<String> dataSourceAssetPKs = new ArrayList<>();
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			getCollectionName(),
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.terms(
+						"dataSourceAssetPKs"
+					).field(
+						"dataSourceAssetPK"
+					).order(
+						BucketOrder.key(true)
+					).size(
+						Integer.MAX_VALUE
+					));
+				searchSourceBuilder.query(
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termQuery("assetType", "Page")
+					).filter(
+						QueryBuilders.termQuery("keywords.keyword", keyword)
+					));
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (aggregations == null) {
+			return dataSourceAssetPKs;
+		}
+
+		List<Aggregation> aggregationList = aggregations.asList();
+
+		if (aggregationList.isEmpty()) {
+			return dataSourceAssetPKs;
+		}
+
+		Terms terms = aggregations.get("dataSourceAssetPKs");
+
+		for (Terms.Bucket bucket : terms.getBuckets()) {
+			dataSourceAssetPKs.add(bucket.getKeyAsString());
+		}
+
+		return dataSourceAssetPKs;
+	}
+
+	@Override
 	public List<String> findKeywordByAssetType(String assetType) {
 		List<String> keywords = new ArrayList<>();
 

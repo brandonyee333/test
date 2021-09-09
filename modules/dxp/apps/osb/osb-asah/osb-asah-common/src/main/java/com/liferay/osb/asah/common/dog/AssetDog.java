@@ -188,6 +188,10 @@ public class AssetDog {
 			assetType);
 	}
 
+	public List<String> getDataSourceAssetPKs(String keyword) {
+		return _assetRepository.findDataSourceAssetPKByKeyword(keyword);
+	}
+
 	public List<String> getKeywords(String assetType) {
 		return _assetRepository.findKeywordByAssetType(assetType);
 	}

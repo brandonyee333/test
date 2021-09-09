@@ -2,6 +2,23 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
+	<entry key="Asset.findDataSourceAssetPKByKeyword">
+		<![CDATA[
+			SELECT
+				Asset.dataSourceAssetPK
+			FROM
+				Asset
+			JOIN
+				AssetKeyword ON Asset.id = AssetKeyword.assetId
+			WHERE
+				Asset.assetType = "Page" AND
+				AssetKeyword.keyword = :keyword
+			GROUP BY
+				Asset.dataSourceAssetPK
+			ORDER BY
+				Asset.dataSourceAssetPK
+		]]>
+	</entry>
 	<entry key="Asset.findKeywordByAssetType">
 		<![CDATA[
 			SELECT

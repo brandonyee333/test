@@ -58,6 +58,9 @@ public interface AssetRepository extends Repository<Asset, Long> {
 		@Nullable String filterString, Pageable pageable);
 
 	@Cacheable
+	public List<String> findDataSourceAssetPKByKeyword(String keyword);
+
+	@Cacheable
 	public List<String> findKeywordByAssetType(String assetType);
 
 	@Cacheable
