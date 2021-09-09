@@ -45,7 +45,7 @@ public class Configuration {
 	}
 
 	public String get(String propertyKey) {
-		return _properties.getProperty(propertyKey);
+		return get(propertyKey, null);
 	}
 
 	public String get(String propertyKey, String defaultPropertyValue) {
