@@ -456,7 +456,7 @@ public class ReportRestController extends BaseRestController {
 	@GetMapping("/individuals/{individualId}/activities")
 	public ResultBagEntityModel<Activity>
 		getIndividualActivityResultBagEntityModel(
-			@PathVariable String individualId,
+			@PathVariable Long individualId,
 			@RequestParam(defaultValue = "0") Integer page) {
 
 		ResultBag<Activity> activityResultBag =
@@ -473,7 +473,7 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/individuals/{individualId}")
 	public EntityModel<Individual> getIndividualEntityModel(
-		@PathVariable String individualId) {
+		@PathVariable Long individualId) {
 
 		return _toIndividualEntityModel(
 			_reportIndividualDog.getIndividual(individualId));
@@ -482,7 +482,7 @@ public class ReportRestController extends BaseRestController {
 	@GetMapping("/individuals/{individualId}/interests")
 	public ResultBagEntityModel<Interest>
 		getIndividualInterestResultBagEntityModel(
-			@PathVariable String individualId,
+			@PathVariable Long individualId,
 			@RequestParam(defaultValue = "0") Integer page) {
 
 		ResultBag<Interest> interestResultBag =
@@ -515,7 +515,7 @@ public class ReportRestController extends BaseRestController {
 	@GetMapping("/individuals/{individualId}/segments")
 	public ResultBagEntityModel<Segment>
 		getIndividualSegmentResultBagEntityModel(
-			@PathVariable String individualId) {
+			@PathVariable Long individualId) {
 
 		Individual individual = _reportIndividualDog.getIndividual(
 			individualId);
@@ -948,7 +948,7 @@ public class ReportRestController extends BaseRestController {
 
 	private ResultBagEntityModel<Activity>
 		_getIndividualActivityResultBagEntityModel(
-			String individualId, Integer page) {
+			Long individualId, Integer page) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
@@ -959,7 +959,7 @@ public class ReportRestController extends BaseRestController {
 
 	private ResultBagEntityModel<Interest>
 		_getIndividualInterestResultBagEntityModel(
-			String individualId, Integer page) {
+			Long individualId, Integer page) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
@@ -1127,7 +1127,7 @@ public class ReportRestController extends BaseRestController {
 			).withSelfRel());
 	}
 
-	private <T> EntityModel<T> _toChildEntityModel(String parentId, T t) {
+	private <T> EntityModel<T> _toChildEntityModel(Long parentId, T t) {
 		return new EntityModel<>(
 			t,
 			WebMvcLinkBuilder.linkTo(
@@ -1214,18 +1214,18 @@ public class ReportRestController extends BaseRestController {
 				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
 				).getIndividualEntityModel(
-					individual.getId()
+					Long.valueOf(individual.getId())
 				)
 			).withSelfRel(),
 			WebMvcLinkBuilder.linkTo(
 				_getIndividualActivityResultBagEntityModel(
-					individual.getId(), null)
+					Long.valueOf(individual.getId()), null)
 			).withRel(
 				"activities"
 			),
 			WebMvcLinkBuilder.linkTo(
 				_getIndividualInterestResultBagEntityModel(
-					individual.getId(), null)
+					Long.valueOf(individual.getId()), null)
 			).withRel(
 				"interests"
 			),
@@ -1233,7 +1233,7 @@ public class ReportRestController extends BaseRestController {
 				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
 				).getIndividualSegmentResultBagEntityModel(
-					individual.getId()
+					Long.valueOf(individual.getId())
 				)
 			).withRel(
 				"segments"

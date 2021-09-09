@@ -37,14 +37,14 @@ import org.springframework.stereotype.Component;
 public class InterestDog {
 
 	public ResultBag<Interest> getInterestResultBag(
-		String ownerId, String ownerType, int size, int start) {
+		Long ownerId, String ownerType, int size, int start) {
 
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"interests", _faroInfoElasticsearchInvoker,
 			DogUtil.buildSearchSourceBuilder(
 				Collections.emptyList(),
 				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("ownerId", ownerId)
+					QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
 				).filter(
 					QueryBuilders.termQuery("ownerType", ownerType)
 				),

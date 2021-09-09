@@ -50,13 +50,14 @@ import org.springframework.stereotype.Component;
 public class ActivityDog {
 
 	public ResultBag<Activity> getActivityResultBag(
-		String ownerId, int size, int start) {
+		Long ownerId, int size, int start) {
 
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"activities", _faroInfoElasticsearchInvoker,
 			DogUtil.buildSearchSourceBuilder(
 				Collections.emptyList(),
-				QueryBuilders.termQuery("ownerId", ownerId), size, start));
+				QueryBuilders.termQuery("ownerId", String.valueOf(ownerId)),
+				size, start));
 
 		return DogUtil.createResultBag(
 			Activity.class, _objectMapper, searchHits);
