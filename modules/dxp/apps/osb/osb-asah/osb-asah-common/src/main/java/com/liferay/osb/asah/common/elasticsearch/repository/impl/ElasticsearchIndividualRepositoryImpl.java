@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
@@ -71,7 +72,9 @@ import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.Sum;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
@@ -90,6 +93,26 @@ import org.springframework.stereotype.Repository;
 public class ElasticsearchIndividualRepositoryImpl
 	extends BaseElasticsearchRepository<Individual, Long>
 	implements IndividualRepository {
+
+	@Override
+	public long countByIdAfter(Long individualId) {
+		SearchSourceBuilder searchSourceBuilder =
+			SearchSourceBuilder.searchSource();
+
+		searchSourceBuilder.query(
+			QueryBuilders.rangeQuery(
+				"id"
+			).gt(
+				individualId
+			));
+		searchSourceBuilder.size(0);
+		searchSourceBuilder.sort(SortBuilders.fieldSort("id"));
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			getCollectionName(), searchSourceBuilder);
+
+		return HitsUtil.getTotalHitsCount(searchResponse.getHits());
+	}
 
 	@Override
 	public long countIndividuals(
@@ -412,6 +435,28 @@ public class ElasticsearchIndividualRepositoryImpl
 							"emailAddressHashed",
 							DigestUtils.sha256Hex(emailAddress))
 					))));
+	}
+
+	@Override
+	public List<Individual> findByIdAfter(
+		Long individualId, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							QueryBuilders.rangeQuery(
+								"id"
+							).gt(
+								individualId
+							));
+						searchSourceBuilder.sort(SortBuilders.fieldSort("id"));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
 	}
 
 	@Override

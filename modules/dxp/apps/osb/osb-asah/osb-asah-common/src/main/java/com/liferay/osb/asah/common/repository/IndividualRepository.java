@@ -37,6 +37,9 @@ import org.springframework.lang.Nullable;
 @Primary
 public interface IndividualRepository extends Repository<Individual, Long> {
 
+	@Cacheable
+	public long countByIdAfter(Long individualId);
+
 	public long countIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
@@ -95,6 +98,9 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 
 	public Optional<Individual> findByEmailAddressOrEmailAddressHashed(
 		@Nullable String emailAddress, @Nullable String emailAddressHashed);
+
+	@Cacheable
+	public List<Individual> findByIdAfter(Long individualId, Pageable pageable);
 
 	@Cacheable
 	public List<Long> findIdsByAnySegmentIds(
