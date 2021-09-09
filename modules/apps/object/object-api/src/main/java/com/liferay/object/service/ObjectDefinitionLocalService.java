@@ -337,9 +337,10 @@ public interface ObjectDefinitionLocalService
 	public void undeployObjectDefinition(ObjectDefinition objectDefinition);
 
 	public ObjectDefinition updateCustomObjectDefinition(
-			Long objectDefinitionId, Map<Locale, String> labelMap, String name,
-			String panelAppOrder, String panelCategoryKey,
-			Map<Locale, String> pluralLabelMap, String scope)
+			Long objectDefinitionId, boolean active,
+			Map<Locale, String> labelMap, String name, String panelAppOrder,
+			String panelCategoryKey, Map<Locale, String> pluralLabelMap,
+			String scope)
 		throws PortalException;
 
 	/**
