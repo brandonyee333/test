@@ -37,6 +37,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.AggregateFunction;
@@ -67,6 +68,30 @@ public class IndividualRepositoryImpl extends BaseRepository {
 
 	public IndividualRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	public long countByIdsInAndKeywords(
+		List<Long> individualIds, @Nullable String keywords) {
+
+		return _dslContext.select(
+			DSL.countDistinct(DSL.field("individual.id"))
+		).from(
+			"Individual"
+		).join(
+			"Field"
+		).on(
+			DSL.field(
+				"individual.id"
+			).eq(
+				DSL.field("field.ownerid")
+			)
+		).where(
+			_getConditions(individualIds, keywords)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
 	}
 
 	public long countByQueryAndSegmentId(
@@ -631,6 +656,37 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		return individualOptional;
 	}
 
+	public List<Individual> findByIdsInAndKeywords(
+		List<Long> individualIds, @Nullable String keywords,
+		Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"Individual"
+			).asterisk());
+
+		return selectSelectStep.from(
+			"Individual"
+		).join(
+			"Field"
+		).on(
+			DSL.field(
+				"individual.id"
+			).eq(
+				DSL.field("field.ownerid")
+			)
+		).where(
+			_getConditions(individualIds, keywords)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getPageNumber()
+		).fetch(
+		).map(
+			record -> new Individual(record.intoMap())
+		);
+	}
+
 	public List<Individual> findByQueryAndSegmentId(
 		@Nullable String query, @Nullable Long segmentId, Pageable pageable) {
 
@@ -1166,6 +1222,57 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				individualId
 			)
 		).execute();
+	}
+
+	private List<Condition> _getConditions(
+		List<Long> individualIds, String keywords) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (CollectionUtils.isNotEmpty(individualIds)) {
+			conditions.add(
+				DSL.field(
+					"individual.emailaddresshashed"
+				).isNotNull());
+			conditions.add(
+				DSL.field(
+					"individual.id"
+				).in(
+					individualIds
+				));
+		}
+
+		if (StringUtils.isNotEmpty(keywords)) {
+			conditions.add(
+				DSL.and(
+					DSL.field(
+						"field.value"
+					).containsIgnoreCase(
+						keywords
+					),
+					DSL.or(
+						DSL.field(
+							"field.name"
+						).eq(
+							"email"
+						),
+						DSL.field(
+							"field.name"
+						).eq(
+							"familyName"
+						),
+						DSL.field(
+							"field.value"
+						).eq(
+							"givenName"
+						))));
+		}
+
+		if (conditions.isEmpty()) {
+			conditions.add(DSL.noCondition());
+		}
+
+		return conditions;
 	}
 
 	private Condition _getIncludeCondition(String contains) {

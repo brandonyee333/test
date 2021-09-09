@@ -41,6 +41,10 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 	public long countByIdAfter(Long individualId);
 
 	@Cacheable
+	public long countByIdsInAndKeywords(
+		List<Long> individualIds, @Nullable String keywords);
+
+	@Cacheable
 	public long countByQueryAndSegmentId(
 		@Nullable String query, @Nullable Long segmentId);
 
@@ -105,6 +109,10 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 
 	@Cacheable
 	public List<Individual> findByIdAfter(Long individualId, Pageable pageable);
+
+	@Cacheable
+	public List<Individual> findByIdsInAndKeywords(
+		List<Long> individualIds, @Nullable String keywords, Pageable pageable);
 
 	@Cacheable
 	public List<Individual> findByQueryAndSegmentId(

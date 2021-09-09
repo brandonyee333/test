@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
+import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
@@ -63,10 +64,13 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
@@ -112,6 +116,14 @@ public class ElasticsearchIndividualRepositoryImpl
 			getCollectionName(), searchSourceBuilder);
 
 		return HitsUtil.getTotalHitsCount(searchResponse.getHits());
+	}
+
+	@Override
+	public long countByIdsInAndKeywords(
+		List<Long> individualIds, @Nullable String keywords) {
+
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(), _buildQueryBuilder(individualIds, keywords));
 	}
 
 	public long countByQueryAndSegmentId(
@@ -483,6 +495,28 @@ public class ElasticsearchIndividualRepositoryImpl
 						setSearchSourceBuilderPage(
 							searchSourceBuilder, pageable);
 					})));
+	}
+
+	@Override
+	public List<Individual> findByIdsInAndKeywords(
+		List<Long> individualIds, @Nullable String keywords,
+		Pageable pageable) {
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			getCollectionName(),
+			_buildSearchSourceBuilder(individualIds, keywords, pageable));
+
+		SearchHits searchHits = searchResponse.getHits();
+
+		List<Individual> individuals = new LinkedList<>();
+
+		for (SearchHit searchHit : searchHits) {
+			individuals.add(
+				_objectMapper.convertValue(
+					searchHit.getSourceAsMap(), Individual.class));
+		}
+
+		return individuals;
 	}
 
 	@Override
@@ -1101,6 +1135,26 @@ public class ElasticsearchIndividualRepositoryImpl
 		return individual;
 	}
 
+	private QueryBuilder _buildQueryBuilder(
+		List<Long> individualIds, String keywords) {
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.existsQuery("demographics.email")
+		).filter(
+			QueryBuilders.termsQuery("id", individualIds)
+		);
+
+		if (!StringUtils.isBlank(keywords)) {
+			boolQueryBuilder.filter(
+				_getKeywordsQueryBuilder(
+					keywords, "demographics.email.value",
+					"demographics.familyName.value",
+					"demographics.givenName.value"));
+		}
+
+		return boolQueryBuilder;
+	}
+
 	private QueryBuilder _buildQueryBuilder(String context, String ownerType) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -1115,6 +1169,22 @@ public class ElasticsearchIndividualRepositoryImpl
 		}
 
 		return boolQueryBuilder;
+	}
+
+	private SearchSourceBuilder _buildSearchSourceBuilder(
+		List<Long> individualIds, String keywords, Pageable pageable) {
+
+		SearchSourceBuilder searchSourceBuilder =
+			SearchSourceBuilder.searchSource();
+
+		searchSourceBuilder.from(pageable.getPageNumber());
+		searchSourceBuilder.query(_buildQueryBuilder(individualIds, keywords));
+		searchSourceBuilder.size(pageable.getPageSize());
+		searchSourceBuilder.sort(
+			SortBuilderUtil.fieldSort(
+				"demographics.givenName.value", SortOrder.ASC, "keyword"));
+
+		return searchSourceBuilder;
 	}
 
 	private String[] _getIndividualDemographicsSearchableFieldNames() {
@@ -1149,6 +1219,29 @@ public class ElasticsearchIndividualRepositoryImpl
 		}
 
 		return searchableFieldNames.toArray(new String[0]);
+	}
+
+	private QueryBuilder _getKeywordsQueryBuilder(
+		String keywords, String... fieldNames) {
+
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+		for (String fieldName : fieldNames) {
+			boolQueryBuilder.should(
+				QueryBuilders.queryStringQuery(
+					String.format(
+						"%s:*%s*", fieldName,
+						QueryUtil.escapeKeywords(keywords)))
+			).should(
+				QueryBuilders.matchQuery(
+					fieldName, keywords
+				).fuzziness(
+					Fuzziness.AUTO
+				)
+			);
+		}
+
+		return boolQueryBuilder;
 	}
 
 	private QueryBuilder _getQueryBuilder(
