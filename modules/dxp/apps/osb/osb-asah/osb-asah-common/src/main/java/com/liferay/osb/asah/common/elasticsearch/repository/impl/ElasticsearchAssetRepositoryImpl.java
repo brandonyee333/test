@@ -71,17 +71,6 @@ public class ElasticsearchAssetRepositoryImpl
 	implements AssetRepository {
 
 	@Override
-	public long countByAssetTypeAndAssetKeywordNotNull(String assetType) {
-		return _faroInfoElasticsearchInvoker.count(
-			"assets",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("assetType", assetType)
-			).filter(
-				QueryBuilders.existsQuery("keywords.keyword")
-			));
-	}
-
-	@Override
 	public long countByAssetTypeAndFilterStringAndKeywords(
 		@Nullable String assetType, @Nullable String filterString,
 		@Nullable String keyword) {

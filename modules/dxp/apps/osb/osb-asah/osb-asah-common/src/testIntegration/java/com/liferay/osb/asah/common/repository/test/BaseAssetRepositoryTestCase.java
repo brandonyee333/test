@@ -91,24 +91,6 @@ public abstract class BaseAssetRepositoryTestCase
 	}
 
 	@Test
-	public void testCountByAssetTypeAndKeywordNotNull() {
-		Asset asset = new Asset();
-
-		asset.setAssetType("Page");
-		asset.setCanonicalURL("https://www.no-keywords.com");
-		asset.setChannelIds(SetUtil.of(1L));
-		asset.setDataSourceAssetPK("https://www.no-keywords.com");
-		asset.setDataSourceId(1L);
-		asset.setTitle("no keywords");
-		asset.setURL("https://www.no-keywords.com");
-
-		_assetRepository.save(asset);
-
-		Assert.assertEquals(
-			3, _assetRepository.countByAssetTypeAndAssetKeywordNotNull("Page"));
-	}
-
-	@Test
 	public void testFindByAssetType() {
 		List<Asset> assets =
 			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(

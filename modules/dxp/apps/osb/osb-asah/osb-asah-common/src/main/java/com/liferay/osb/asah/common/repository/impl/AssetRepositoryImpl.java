@@ -50,19 +50,6 @@ public class AssetRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countByAssetTypeAndAssetKeywordNotNull(String assetType) {
-		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.selectCount();
-
-		return selectSelectStep.from(
-			_getAssetTableKeywordNotNull(null, assetType)
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
-	}
-
 	public long countByAssetTypeAndFilterStringAndKeywords(
 		String assetType, @Nullable String filterString,
 		@Nullable String keywords) {

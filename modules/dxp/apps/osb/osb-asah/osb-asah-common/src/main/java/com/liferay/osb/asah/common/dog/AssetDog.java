@@ -181,11 +181,6 @@ public class AssetDog {
 			null, null);
 	}
 
-	public long getAssetsCount(String assetType) {
-		return _assetRepository.countByAssetTypeAndAssetKeywordNotNull(
-			assetType);
-	}
-
 	public List<String> getDataSourceAssetPKs(String keyword) {
 		return _assetRepository.findDataSourceAssetPKByKeyword(keyword);
 	}
