@@ -32,11 +32,11 @@ public class AsahRetryRejectedExecutionHandler
 		Runnable runnable, ThreadPoolExecutor threadPoolExecutor) {
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Queue is full. Retrying in 5 seconds.");
+			_log.info("Queue is full. Retrying in 60 seconds.");
 		}
 
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(60000);
 		}
 		catch (InterruptedException interruptedException) {
 			_log.error(interruptedException, interruptedException);
