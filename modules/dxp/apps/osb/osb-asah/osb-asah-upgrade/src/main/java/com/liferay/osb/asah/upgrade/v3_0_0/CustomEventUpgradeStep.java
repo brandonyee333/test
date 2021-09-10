@@ -102,60 +102,76 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 				0L
 			));
 
-		while (true) {
-			searchSourceBuilder.searchAfter(new Object[] {id});
+		try {
+			while (true) {
+				searchSourceBuilder.searchAfter(new Object[] {id});
 
-			long startTime = System.currentTimeMillis();
+				long startTime = System.currentTimeMillis();
 
-			SearchResponse searchResponse =
-				_faroInfoElasticsearchInvoker.search(
-					"activities", searchSourceBuilder);
+				SearchResponse searchResponse =
+					_faroInfoElasticsearchInvoker.search(
+						"activities", searchSourceBuilder);
 
-			long endTime = System.currentTimeMillis();
+				long endTime = System.currentTimeMillis();
 
-			SearchHits searchHits = searchResponse.getHits();
+				SearchHits searchHits = searchResponse.getHits();
 
-			SearchHit[] hits = searchHits.getHits();
+				SearchHit[] hits = searchHits.getHits();
 
-			if (hits.length == 0) {
-				while (!_completableFutures.isEmpty()) {
-					_completableFutures.removeIf(CompletableFuture::isDone);
+				if (hits.length == 0) {
+					while (!_completableFutures.isEmpty()) {
+						try {
+							Thread.sleep(1000);
+						}
+						catch (InterruptedException interruptedException) {
+							_log.error(
+								interruptedException, interruptedException);
+						}
+
+						_completableFutures.removeIf(CompletableFuture::isDone);
+					}
+
+					break;
 				}
 
-				break;
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"It took " + (endTime - startTime) + "ms to retrieve " +
+							hits.length + " activities.");
+				}
+
+				_setBatchSize(endTime - startTime, searchSourceBuilder);
+
+				Stream<SearchHit> stream = Arrays.stream(hits);
+
+				JSONArray jsonArray = new JSONArray(
+					stream.parallel(
+					).map(
+						SearchHit::getSourceAsString
+					).map(
+						JSONObject::new
+					).collect(
+						Collectors.toList()
+					));
+
+				String projectId = ProjectIdThreadLocal.getProjectId();
+
+				_completableFutures.add(
+					CompletableFuture.runAsync(
+						() -> upgradeActivities(jsonArray, projectId),
+						_executorService));
+
+				JSONObject jsonObject = jsonArray.getJSONObject(
+					jsonArray.length() - 1);
+
+				id = jsonObject.getString("id");
 			}
+		}
+		finally {
+			JdbcTemplate jdbcTemplate =
+				_namedParameterJdbcTemplate.getJdbcTemplate();
 
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"It took " + (endTime - startTime) + "ms to retrieve " +
-						hits.length + " activities.");
-			}
-
-			_setBatchSize(endTime - startTime, searchSourceBuilder);
-
-			Stream<SearchHit> stream = Arrays.stream(hits);
-
-			JSONArray jsonArray = new JSONArray(
-				stream.parallel(
-				).map(
-					SearchHit::getSourceAsString
-				).map(
-					JSONObject::new
-				).collect(
-					Collectors.toList()
-				));
-
-			String projectId = ProjectIdThreadLocal.getProjectId();
-
-			_completableFutures.add(
-				CompletableFuture.runAsync(
-					() -> upgradeActivities(jsonArray, projectId),
-					_executorService));
-
-			JSONObject jsonObject = jsonArray.getJSONObject(
-				jsonArray.length() - 1);
-
-			id = jsonObject.getString("id");
+			jdbcTemplate.execute(_SQL_UPDATE_EVENT_SEQUENCE);
 		}
 	}
 
@@ -431,6 +447,9 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 
 	private static final String _SQL_SELECT_EVENT =
 		"SELECT analyticsEventId, id FROM event ORDER BY id DESC LIMIT 1";
+
+	private static final String _SQL_UPDATE_EVENT_SEQUENCE =
+		"SELECT SETVAL('event_id_seq', COALESCE(MAX(id), 1)) FROM event";
 
 	private static final Log _log = LogFactory.getLog(
 		CustomEventUpgradeStep.class);
