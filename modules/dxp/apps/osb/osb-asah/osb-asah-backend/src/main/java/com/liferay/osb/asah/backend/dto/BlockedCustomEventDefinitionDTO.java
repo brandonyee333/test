@@ -36,8 +36,11 @@ public class BlockedCustomEventDefinitionDTO {
 	}
 
 	public BlockedCustomEventDefinitionDTO(EventDefinition eventDefinition) {
-		_blockedLastSeenDate = DateUtil.toUTCString(
-			eventDefinition.getBlockedLastSeenDate());
+		if (eventDefinition.getBlockedLastSeenDate() != null) {
+			_blockedLastSeenDate = DateUtil.toUTCString(
+				eventDefinition.getBlockedLastSeenDate());
+		}
+
 		_blockedLastSeenURL = eventDefinition.getBlockedLastSeenURL();
 		_hidden = eventDefinition.isHidden();
 		_id = String.valueOf(eventDefinition.getId());
