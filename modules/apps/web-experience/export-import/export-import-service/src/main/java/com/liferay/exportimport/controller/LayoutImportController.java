@@ -1322,10 +1322,16 @@ public class LayoutImportController implements ImportController {
 					portletDataContext.getGroupId());
 
 				if (!ExportImportThreadLocal.isStagingInProcess() &&
-					group.isStagingGroup() &&
-					!group.isStagedPortlet(portletDataContext.getPortletId())) {
+					group.isStagingGroup()) {
 
-					scopeGroup = group.getLiveGroup();
+					if (group.isStagedPortlet(
+							portletDataContext.getPortletId())) {
+
+						scopeGroup = group;
+					}
+					else {
+						scopeGroup = group.getLiveGroup();
+					}
 				}
 			}
 
