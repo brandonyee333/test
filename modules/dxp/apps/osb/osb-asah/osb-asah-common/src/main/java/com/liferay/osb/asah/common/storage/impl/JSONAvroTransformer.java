@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.storage.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.multitenancy.impl.MultiTenantProjectDogImpl;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.nio.ByteBuffer;
@@ -211,7 +210,7 @@ public class JSONAvroTransformer {
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		MultiTenantProjectDogImpl.class);
+		JSONAvroTransformer.class);
 
 	@Autowired
 	private ObjectMapper _objectMapper;
