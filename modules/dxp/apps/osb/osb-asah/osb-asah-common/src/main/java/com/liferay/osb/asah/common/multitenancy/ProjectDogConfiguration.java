@@ -14,11 +14,9 @@
 
 package com.liferay.osb.asah.common.multitenancy;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
 import com.liferay.osb.asah.common.elasticsearch.repository.impl.ElasticsearchProjectRepositoryImpl;
 import com.liferay.osb.asah.common.multitenancy.impl.MultiTenantProjectDogImpl;
-import com.liferay.osb.asah.common.multitenancy.impl.SingleTenantProjectDogImpl;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
 
 import org.apache.commons.logging.Log;
@@ -36,10 +34,6 @@ public class ProjectDogConfiguration {
 
 	@Bean
 	public ProjectDog projectDog(ProjectRepository projectRepository) {
-		if (!ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
-			return new SingleTenantProjectDogImpl();
-		}
-
 		if (projectRepository instanceof ElasticsearchProjectRepositoryImpl) {
 			return new MultiTenantProjectDogImpl(
 				this::_createSnapshots, projectRepository);

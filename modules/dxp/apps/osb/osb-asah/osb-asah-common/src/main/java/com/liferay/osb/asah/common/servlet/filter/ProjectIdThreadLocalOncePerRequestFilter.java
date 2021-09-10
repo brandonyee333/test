@@ -15,14 +15,12 @@
 package com.liferay.osb.asah.common.servlet.filter;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.multitenancy.exception.InvalidProjectIdException;
 import com.liferay.osb.asah.common.servlet.util.ServletRequestUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.io.IOException;
 
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,16 +60,6 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 			}
 
 			projectId = matcher.group(1);
-		}
-
-		if (!Objects.equals(projectId, ServiceConstants.LCP_PROJECT_ID) &&
-			!ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED &&
-			_log.isWarnEnabled()) {
-
-			_log.warn(
-				String.format(
-					"Mismatched project ids: %s, %s", projectId,
-					ServiceConstants.LCP_PROJECT_ID));
 		}
 
 		try {

@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.util;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.multitenancy.exception.InvalidProjectIdException;
 
@@ -60,13 +59,9 @@ public class ProjectIdThreadLocal {
 		String projectId = _projectId.get();
 
 		if (projectId == null) {
-			if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
-				_log.error("Project ID is not set");
+			_log.error("Project ID is not set");
 
-				return "global";
-			}
-
-			projectId = ServiceConstants.LCP_PROJECT_ID;
+			return "global";
 		}
 
 		if (_log.isDebugEnabled()) {

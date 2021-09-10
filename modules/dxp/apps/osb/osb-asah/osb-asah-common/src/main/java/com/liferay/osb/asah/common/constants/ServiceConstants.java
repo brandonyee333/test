@@ -34,9 +34,6 @@ public class ServiceConstants {
 	@Deprecated
 	public static final String LCP_PROJECT_ID = System.getenv("LCP_PROJECT_ID");
 
-	public static final boolean OSB_ASAH_MULTITENANCY_ENABLED =
-		Boolean.parseBoolean(System.getenv("OSB_ASAH_MULTITENANCY_ENABLED"));
-
 	public static final String POSTGRESQL_SERVER_IP;
 
 	public static final String TRINO_SERVER_IP;
