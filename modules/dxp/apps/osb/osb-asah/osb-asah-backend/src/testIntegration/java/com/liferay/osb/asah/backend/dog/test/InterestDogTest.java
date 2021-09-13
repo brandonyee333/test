@@ -46,7 +46,7 @@ public class InterestDogTest {
 	public void testGetInterestResultBag() {
 		ResultBag<Interest> interestResultBag =
 			_interestDog.getInterestResultBag(
-				"374790572703144534", "individual", 20, 0);
+				374790572703144534L, "individual", 20, 0);
 
 		Assert.assertEquals(1, interestResultBag.getTotal());
 

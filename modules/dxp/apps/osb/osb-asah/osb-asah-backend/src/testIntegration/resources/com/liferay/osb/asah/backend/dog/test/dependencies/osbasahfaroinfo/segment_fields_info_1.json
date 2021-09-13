@@ -1,0 +1,90 @@
+[
+	{
+		"context": "demographics",
+		"fieldType": "Text",
+		"name": "email",
+		"ownerId": "1",
+		"ownerType": "individual",
+		"value": "john@acme.com"
+	},
+	{
+		"context": "demographics",
+		"fieldType": "Text",
+		"name": "familyName",
+		"ownerId": "1",
+		"ownerType": "individual",
+		"value": "Doe"
+	},
+	{
+		"context": "demographics",
+		"fieldType": "Text",
+		"name": "givenName",
+		"ownerId": "1",
+		"ownerType": "individual",
+		"value": "John"
+	},
+	{
+		"context": "demographics",
+		"fieldType": "Text",
+		"name": "email",
+		"ownerId": "2",
+		"ownerType": "individual",
+		"value": "test1@liferay.com"
+	},
+	{
+		"context": "demographics",
+		"fieldType": "Text",
+		"name": "familyName",
+		"ownerId": "2",
+		"ownerType": "individual",
+		"value": "Test1"
+	},
+	{
+		"context": "demographics",
+		"fieldType": "Text",
+		"name": "givenName",
+		"ownerId": "2",
+		"ownerType": "individual",
+		"value": "Test1"
+	},
+	{
+		"context": "demographics",
+		"fieldType": "Text",
+		"name": "email",
+		"ownerId": "3",
+		"ownerType": "individual",
+		"value": "jane@acme.com"
+	},
+	{
+		"context": "demographics",
+		"fieldType": "Text",
+		"name": "name",
+		"ownerId": "3",
+		"ownerType": "individual",
+		"value": "Jane Doe"
+	},
+	{
+		"context": "demographics",
+		"fieldType": "Text",
+		"name": "email",
+		"ownerId": "4",
+		"ownerType": "individual",
+		"value": "test2@liferay.com"
+	},
+	{
+		"context": "demographics",
+		"fieldType": "Text",
+		"name": "familyName",
+		"ownerId": "4",
+		"ownerType": "individual",
+		"value": "Test2"
+	},
+	{
+		"context": "demographics",
+		"fieldType": "Text",
+		"name": "givenName",
+		"ownerId": "4",
+		"ownerType": "individual",
+		"value": "Test2"
+	}
+]

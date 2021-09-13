@@ -1,0 +1,26 @@
+[
+	{
+		"context": "demographics",
+		"fieldType": "Text",
+		"name": "email",
+		"ownerId": "1",
+		"ownerType": "individual",
+		"value": "john@acme.com"
+	},
+	{
+		"context": "demographics",
+		"fieldType": "Text",
+		"name": "familyName",
+		"ownerId": "1",
+		"ownerType": "individual",
+		"value": "Doe"
+	},
+	{
+		"context": "demographics",
+		"fieldType": "Text",
+		"name": "givenName",
+		"ownerId": "1",
+		"ownerType": "individual",
+		"value": "John"
+	}
+]

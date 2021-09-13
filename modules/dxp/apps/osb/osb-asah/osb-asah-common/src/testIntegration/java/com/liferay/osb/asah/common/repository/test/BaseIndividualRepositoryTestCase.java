@@ -211,11 +211,29 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
+	public void testCountByIdAfter() {
+		Assert.assertEquals(1, individualRepository.countByIdAfter(0L));
+		Assert.assertEquals(
+			0, individualRepository.countByIdAfter(_individualId));
+	}
+
+	@Test
+	public void testCountByIdsInAndKeywords() {
+		Assert.assertEquals(
+			1,
+			individualRepository.countByIdsInAndKeywords(
+				Collections.singletonList(_individualId), "liferay"));
+	}
+
+	@Test
 	public void testCountIndividuals() {
 		Assert.assertEquals(
 			1,
 			individualRepository.countIndividuals(
 				11L, null, false, 11L, _segmentId));
+		Assert.assertEquals(
+			1,
+			individualRepository.countByQueryAndSegmentId("eld", _segmentId));
 	}
 
 	@Test
@@ -330,6 +348,45 @@ public abstract class BaseIndividualRepositoryTestCase
 				null, DigestUtils.sha256Hex("test@liferay.com"));
 
 		Assert.assertTrue(individualOptional.isPresent());
+	}
+
+	@Test
+	public void testFindByIdAfter() {
+		List<Individual> individuals = individualRepository.findByIdAfter(
+			_individualId - 1L, PageRequest.of(0, 1));
+
+		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+
+		Individual individual = individuals.get(0);
+
+		Assert.assertEquals(_individualId, individual.getId());
+	}
+
+	@Test
+	public void testFindByIdsInAndKeywords() {
+		List<Individual> individuals =
+			individualRepository.findByIdsInAndKeywords(
+				Collections.singletonList(_individualId), "liferay",
+				PageRequest.of(0, 1));
+
+		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+
+		Individual individual = individuals.get(0);
+
+		Assert.assertEquals(_individualId, individual.getId());
+	}
+
+	@Test
+	public void testFindByQueryAndSegmentId() {
+		List<Individual> individuals =
+			individualRepository.findByQueryAndSegmentId(
+				"eld", _segmentId, PageRequest.of(0, 1));
+
+		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+
+		Individual individual = individuals.get(0);
+
+		Assert.assertEquals(_individualId, individual.getId());
 	}
 
 	@Test

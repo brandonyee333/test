@@ -52,7 +52,7 @@ public class ActivityDogTest {
 	@Test
 	public void testGetActivityResultBag() {
 		ResultBag<Activity> activityResultBag =
-			_activityDog.getActivityResultBag("337984659206412898", 20, 0);
+			_activityDog.getActivityResultBag(337984659206412898L, 20, 0);
 
 		Assert.assertEquals(2, activityResultBag.getTotal());
 		Assert.assertEquals(

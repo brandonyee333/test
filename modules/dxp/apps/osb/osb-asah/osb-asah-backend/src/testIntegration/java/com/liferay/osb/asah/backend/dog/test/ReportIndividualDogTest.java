@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -46,10 +45,14 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class IndividualDogTest {
+public class ReportIndividualDogTest {
 
 	@ElasticsearchIndex(
 		name = "field-mappings", resourcePath = "field_mappings_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "fields", resourcePath = "individuals_fields_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -67,10 +70,6 @@ public class IndividualDogTest {
 			_getIndividualsCustomFieldValues(
 				individualResultBag.getResults(), "client_id"));
 		Assert.assertEquals(
-			Collections.emptySet(),
-			_getIndividualsDemographicsFieldValues(
-				individualResultBag.getResults(), "email"));
-		Assert.assertEquals(
 			SetUtil.of("Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Mew"),
 			_getIndividualsDemographicsFieldValues(
 				individualResultBag.getResults(), "favoritePokemon"));
@@ -78,6 +77,10 @@ public class IndividualDogTest {
 
 	@ElasticsearchIndex(
 		name = "field-mappings", resourcePath = "field_mappings_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "fields", resourcePath = "individuals_fields_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -99,6 +102,10 @@ public class IndividualDogTest {
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "segment_individuals_blogs_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "fields", resourcePath = "segment_fields_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "segment_individuals_info_1.json",
@@ -136,6 +143,10 @@ public class IndividualDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
+		name = "fields", resourcePath = "segment_fields_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "segment_individuals_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -164,6 +175,10 @@ public class IndividualDogTest {
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "segment_individuals_blogs_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "fields", resourcePath = "segment_fields_info_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "segment_individuals_info_2.json",
