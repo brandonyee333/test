@@ -502,13 +502,13 @@ public class ElasticsearchIndividualRepositoryImpl
 		List<Long> individualIds, @Nullable String keywords,
 		Pageable pageable) {
 
+		List<Individual> individuals = new LinkedList<>();
+
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			getCollectionName(),
 			_buildSearchSourceBuilder(individualIds, keywords, pageable));
 
 		SearchHits searchHits = searchResponse.getHits();
-
-		List<Individual> individuals = new LinkedList<>();
 
 		for (SearchHit searchHit : searchHits) {
 			individuals.add(
