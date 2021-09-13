@@ -44,7 +44,7 @@ public class UpgradeProcessConfiguration {
 			_snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.12.2", "3.0.0", _assetsUpgradeStep, _channelsUpgradeStep,
+			"2.12.3", "3.0.0", _assetsUpgradeStep, _channelsUpgradeStep,
 			_customEventUpgradeStep, _dataSourcesUpgradeStep,
 			_dxpEntityUpgradeStep, _salesforceUpgradeStep,
 			_userSessionsUpgradeStep);
