@@ -53,11 +53,16 @@ function build_docker_image {
 		echo "COPY ./build/client.zip client.zip" >> ${file_name}/Dockerfile
 		echo "RUN unzip client.zip" >> ${file_name}/Dockerfile
 
-		cp ~/.asah/gcp_credentials.json ${file_name}/build/gcp_credentials.json
+		cp ~/.asah/europe-west2/gcp_credentials.json ${file_name}/build/europe_west2_gcp_credentials.json
+		cp ~/.asah/europe-west3/gcp_credentials.json ${file_name}/build/europe_west3_gcp_credentials.json
+		cp ~/.asah/southamerica-east1/gcp_credentials.json ${file_name}/build/southamerica_east1_gcp_credentials.json
+		cp ~/.asah/us-west1/gcp_credentials.json ${file_name}/build/us_west1_gcp_credentials.json
 
 		echo "" >> ${file_name}/Dockerfile
-		echo "COPY ./build/gcp_credentials.json gcp_credentials.json" >> ${file_name}/Dockerfile
-		echo "ENV GOOGLE_APPLICATION_CREDENTIALS=/root/gcp_credentials.json" >> ${file_name}/Dockerfile
+		echo "COPY ./build/europe_west2_gcp_credentials.json europe_west2_gcp_credentials.json" >> ${file_name}/Dockerfile
+		echo "COPY ./build/europe_west3_gcp_credentials.json europe_west3_gcp_credentials.json" >> ${file_name}/Dockerfile
+		echo "COPY ./build/southamerica_east1_gcp_credentials.json southamerica_east1_gcp_credentials.json" >> ${file_name}/Dockerfile
+		echo "COPY ./build/us_west1_gcp_credentials.json us_west1_gcp_credentials.json" >> ${file_name}/Dockerfile
 
 		echo "" >> ${file_name}/Dockerfile
 
@@ -232,11 +237,11 @@ function generate_wedeploy_profiles {
 
 	git add .wedeploy_profiles
 
-	git commit -m "Generate WeDeploy profiles at $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}-${GIT_LABEL}" .wedeploy_profiles
+	git commit -m "Generate WeDeploy profiles at $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}" .wedeploy_profiles
 }
 
 function generate_tag {
-	git tag $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}-${GIT_LABEL} HEAD
+	git tag $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH} HEAD
 }
 
 function get_docker_image_tag {
@@ -281,11 +286,11 @@ function sed {
 	fi
 }
 
-if [ "$#" -ne 3 ]
+if [ "$#" -ne 2 ]
 then
-	echo "Usage: push_to_docker [previous Git hash] [label] [environment]"
+	echo "Usage: push_to_docker [previous Git hash] [environment]"
 	exit 1
-elif [ ${3} != "prod" ] && [ ${3} != "uat" ]
+elif [ ${2} != "prod" ] && [ ${2} != "uat" ]
 then
 	echo "Environment must be \"prod\" or \"uat\"."
 
@@ -295,7 +300,6 @@ fi
 CURRENT_DATE=$(date)
 GIT_HASH=$(git rev-parse --short=7 HEAD)
 PREVIOUS_GIT_HASH=${1}
-GIT_LABEL=${2}
-ASAH_ENVIRONMENT_NAME=${3}
+ASAH_ENVIRONMENT_NAME=${2}
 
 main
