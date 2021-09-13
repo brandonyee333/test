@@ -66,7 +66,7 @@ public class ReportIndividualDog {
 	}
 
 	public Individual getIndividual(Long id) {
-		return _mapIndividual(_individualDog.getIndividual(id));
+		return _toIndividual(_individualDog.getIndividual(id));
 	}
 
 	public Page<Individual> getIndividualPage(
@@ -82,7 +82,7 @@ public class ReportIndividualDog {
 		List<Individual> reportIndividuals = new LinkedList<>();
 
 		stream.forEachOrdered(
-			individual -> reportIndividuals.add(_mapIndividual(individual)));
+			individual -> reportIndividuals.add(_toIndividual(individual)));
 
 		return PageableExecutionUtils.getPage(
 			reportIndividuals, PageRequest.of(0, size, sort),
@@ -92,20 +92,19 @@ public class ReportIndividualDog {
 	public ResultBag<Individual> getIndividualResultBag(
 		String query, Long segmentId, int size, int start) {
 
-		List<com.liferay.osb.asah.common.entity.Individual> individuals =
-			_individualDog.getIndividuals(query, segmentId, start / size, size);
-
 		ResultBag<Individual> resultBag = new ResultBag<>();
 
-		List<Individual> models = new ArrayList<>();
+		List<Individual> individuals = new ArrayList<>();
 
 		for (com.liferay.osb.asah.common.entity.Individual individual :
-				individuals) {
+				_individualDog.getIndividuals(
+					query, segmentId, start / size, size)) {
 
-			models.add(_mapIndividual(individual));
+			individuals.add(_toIndividual(individual));
 		}
 
-		resultBag.setResults(models);
+		resultBag.setResults(individuals);
+
 		resultBag.setTotal(_individualDog.countIndividuals(query, segmentId));
 
 		return resultBag;
@@ -135,26 +134,24 @@ public class ReportIndividualDog {
 			return new ResultBag<>();
 		}
 
-		List<com.liferay.osb.asah.common.entity.Individual> individuals =
-			_individualDog.searchIndividuals(
-				ListUtil.map(individualIds, Long::valueOf), keywords, size,
-				start);
-
 		ResultBag<Individual> resultBag = new ResultBag<>();
 
-		List<Individual> models = new ArrayList<>();
+		List<Individual> individuals = new ArrayList<>();
 
 		for (com.liferay.osb.asah.common.entity.Individual individual :
-				individuals) {
+				_individualDog.searchIndividuals(
+					ListUtil.map(individualIds, Long::valueOf), keywords, size,
+					start)) {
 
-			models.add(
+			individuals.add(
 				new Individual(
 					FaroInfoIndividualUtil.getIndividualEmail(individual),
 					String.valueOf(individual.getId()),
 					FaroInfoIndividualUtil.getIndividualName(individual)));
 		}
 
-		resultBag.setResults(models);
+		resultBag.setResults(individuals);
+
 		resultBag.setTotal(
 			_individualDog.countIndividuals(
 				ListUtil.map(individualIds, Long::valueOf), keywords));
@@ -240,7 +237,7 @@ public class ReportIndividualDog {
 		return String.valueOf(propertyJSONObject.get("value"));
 	}
 
-	private Individual _mapIndividual(
+	private Individual _toIndividual(
 		com.liferay.osb.asah.common.entity.Individual individual) {
 
 		Individual newIndividual = new Individual();

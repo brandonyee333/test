@@ -219,6 +219,7 @@ public class DogUtil {
 		}
 
 		resultBag.setResults(models);
+
 		resultBag.setTotal(HitsUtil.getTotalHitsCount(searchHits));
 
 		return resultBag;

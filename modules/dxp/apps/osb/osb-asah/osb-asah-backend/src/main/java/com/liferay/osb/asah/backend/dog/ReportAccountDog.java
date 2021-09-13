@@ -46,7 +46,7 @@ import org.springframework.stereotype.Component;
 public class ReportAccountDog {
 
 	public Account getAccount(Long id) {
-		return _mapAccount(_accountDog.getAccount(id, null));
+		return _toAccount(_accountDog.getAccount(id, null));
 	}
 
 	public Page<Account> getAccountPage(Long accountId, int size, Sort sort) {
@@ -60,7 +60,7 @@ public class ReportAccountDog {
 		List<Account> reportAccounts = new LinkedList<>();
 
 		stream.forEachOrdered(
-			account -> reportAccounts.add(_mapAccount(account)));
+			account -> reportAccounts.add(_toAccount(account)));
 
 		return PageableExecutionUtils.getPage(
 			reportAccounts, PageRequest.of(0, size, sort),
@@ -68,18 +68,18 @@ public class ReportAccountDog {
 	}
 
 	public ResultBag<Account> getAccountResultBag(int size, int start) {
-		List<com.liferay.osb.asah.common.entity.Account> accounts =
-			_accountDog.getAccounts(size, start);
-
-		List<Account> models = new ArrayList<>();
-
-		for (com.liferay.osb.asah.common.entity.Account account : accounts) {
-			models.add(_mapAccount(account));
-		}
-
 		ResultBag<Account> resultBag = new ResultBag<>();
 
-		resultBag.setResults(models);
+		List<Account> accounts = new ArrayList<>();
+
+		for (com.liferay.osb.asah.common.entity.Account account :
+				_accountDog.getAccounts(size, start)) {
+
+			accounts.add(_toAccount(account));
+		}
+
+		resultBag.setResults(accounts);
+
 		resultBag.setTotal(accounts.size());
 
 		return resultBag;
@@ -127,7 +127,7 @@ public class ReportAccountDog {
 		return propertyJSONObject.get("value");
 	}
 
-	private Account _mapAccount(
+	private Account _toAccount(
 		com.liferay.osb.asah.common.entity.Account account) {
 
 		Account newAccount = new Account();
