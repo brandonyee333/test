@@ -124,6 +124,13 @@ class VectorMergeUDFFunction(BaseUDFFunction):
 		for vector in vectors:
 			vector_size = int(vector.size)
 
+			if isinstance(vector, DenseVector):
+				vector = Vectors.sparse(
+					vector_size,
+					range(vector_size),
+					vector.values
+				)
+
 			for index in vector.indices:
 				index = int(index)
 
