@@ -20,6 +20,7 @@ import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.elasticsearch.action.search.SearchResponse;
@@ -118,88 +120,16 @@ public class SiteInterestCompositionDog {
 
 		Map<String, Set<String>> keywords = new HashMap<>();
 
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		TermsValuesSourceBuilder assetIdTermsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("assetIds");
-
-		assetIdTermsValuesSourceBuilder.field("id");
-
-		TermsValuesSourceBuilder keywordTermsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("keywords/keyword");
-
-		keywordTermsValuesSourceBuilder.field("keywords.keyword");
-
-		CompositeAggregationBuilder compositeAggregationBuilder =
-			AggregationBuilders.composite(
-				"composite",
-				new ArrayList<CompositeValuesSourceBuilder<?>>() {
-					{
-						add(assetIdTermsValuesSourceBuilder);
-						add(keywordTermsValuesSourceBuilder);
-					}
-				}
-			).size(
-				10000
-			);
-
-		searchSourceBuilder.aggregation(compositeAggregationBuilder);
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("assetType", "Page")
-		).filter(
-			QueryBuilders.existsQuery("keywords.keyword")
-		);
-
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "channelIds", channelId);
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "dataSourceId", dataSourceId);
-
-		searchSourceBuilder.query(boolQueryBuilder);
-
-		searchSourceBuilder.size(0);
-
-		Map<String, Set<String>> assets = new HashMap<>();
-
-		while (true) {
-			SearchResponse searchResponse =
-				_faroInfoElasticsearchInvoker.search(
-					"assets", searchSourceBuilder);
-
-			Aggregations aggregations = searchResponse.getAggregations();
-
-			if (DogUtil.isEmpty(aggregations)) {
-				return keywords;
-			}
-
-			CompositeAggregation compositeAggregation = aggregations.get(
-				"composite");
-
-			List<? extends CompositeAggregation.Bucket> buckets =
-				compositeAggregation.getBuckets();
-
-			if (buckets.isEmpty()) {
-				break;
-			}
-
-			for (CompositeAggregation.Bucket bucket : buckets) {
-				Map<String, Object> keys = bucket.getKey();
-
-				String keyword = (String)keys.get("keywords/keyword");
-
-				Set<String> assetIds = assets.getOrDefault(
-					keyword, new HashSet<>());
-
-				assetIds.add((String)keys.get("assetIds"));
-
-				assets.put(keyword, assetIds);
-			}
-
-			compositeAggregationBuilder.aggregateAfter(
-				compositeAggregation.afterKey());
-		}
+		Map<String, Set<String>> assets =
+			_assetRepository.getByAssetTypeAndChannelIdAndDatasourceId(
+				"Page", Long.valueOf(channelId),
+				Optional.ofNullable(
+					dataSourceId
+				).map(
+					Long::valueOf
+				).orElse(
+					null
+				));
 
 		Map<String, Set<String>> users = _getUsers(
 			channelId, dataSourceId, timeRange, timeZoneId);
@@ -347,6 +277,9 @@ public class SiteInterestCompositionDog {
 
 		return users;
 	}
+
+	@Autowired
+	private AssetRepository _assetRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
