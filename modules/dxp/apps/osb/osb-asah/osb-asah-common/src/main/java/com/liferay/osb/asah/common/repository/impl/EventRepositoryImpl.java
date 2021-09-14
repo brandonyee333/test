@@ -729,7 +729,10 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-			return DSL.function("try_cast_timestamp", Object.class, field);
+			Field<?> timestampField = DSL.function(
+				"try_cast_timestamp", Object.class, field);
+
+			return _dateTrunc(DatePart.DAY, timestampField);
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
