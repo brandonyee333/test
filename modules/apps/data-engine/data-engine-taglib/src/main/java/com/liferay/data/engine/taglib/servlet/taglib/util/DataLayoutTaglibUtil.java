@@ -728,8 +728,16 @@ public class DataLayoutTaglibUtil {
 				return _createDDMFormFieldValue(
 					availableLocales, (DDMFormFieldOptions)propertyValue);
 			}
-			else if (Objects.equals(
-						ddmFormFieldTypeSetting.getType(), "validation")) {
+
+			if (Objects.equals(
+					ddmFormFieldTypeSetting.getName(), "requiredDescription") &&
+				(propertyValue == null)) {
+
+				return new UnlocalizedValue(Boolean.TRUE.toString());
+			}
+
+			if (Objects.equals(
+					ddmFormFieldTypeSetting.getType(), "validation")) {
 
 				return _createDDMFormFieldValue(
 					(DDMFormFieldValidation)propertyValue);
