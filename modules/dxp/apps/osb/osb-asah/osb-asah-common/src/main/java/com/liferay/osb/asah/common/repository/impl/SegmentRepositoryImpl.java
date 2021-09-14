@@ -240,12 +240,23 @@ public class SegmentRepositoryImpl extends BaseRepository {
 
 		if (!includeAnonymousUsers) {
 			conditions.add(
-				DSL.not(
+				DSL.or(
+					DSL.field(
+						"includeAnonymousUsers"
+					).isNull(),
 					DSL.field(
 						"includeAnonymousUsers"
 					).eq(
 						false
 					)));
+		}
+		else {
+			conditions.add(
+				DSL.field(
+					"includeAnonymousUsers"
+				).eq(
+					true
+				));
 		}
 
 		if (CollectionUtils.isNotEmpty(segmentIds)) {

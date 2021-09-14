@@ -494,7 +494,11 @@ public class ElasticsearchSegmentRepositoryImpl
 
 		if (!includeAnonymousUsers) {
 			boolQueryBuilder.mustNot(
-				QueryBuilders.termQuery("includeAnonymousUsers", false));
+				QueryBuilders.termQuery("includeAnonymousUsers", true));
+		}
+		else {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("includeAnonymousUsers", true));
 		}
 
 		if (CollectionUtils.isNotEmpty(segmentIds)) {
