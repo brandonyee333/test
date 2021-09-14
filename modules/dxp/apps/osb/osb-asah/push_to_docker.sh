@@ -143,22 +143,22 @@ function date {
 	then
 		if [ "$(uname)" == "Darwin" ]
 		then
-			echo $(/bin/date)
+			/bin/date
 		elif [ -e /bin/date ]
 		then
-			echo $(/bin/date --iso-8601=seconds)
+			/bin/date --iso-8601=seconds
 		else
-			echo $(/usr/bin/date --iso-8601=seconds)
+			/usr/bin/date --iso-8601=seconds
 		fi
 	else
 		if [ "$(uname)" == "Darwin" ]
 		then
-			echo $(/bin/date -jf "%a %b %e %H:%M:%S %Z %Y" "${1}" "${2}")
+			/bin/date -jf "%a %b %e %H:%M:%S %Z %Y" "${1}" "${2}"
 		elif [ -e /bin/date ]
 		then
-			echo $(/bin/date -d "${1}" "${2}")
+			/bin/date -d "${1}" "${2}"
 		else
-			echo $(/usr/bin/date -d "${1}" "${2}")
+			/usr/bin/date -d "${1}" "${2}"
 		fi
 	fi
 }
