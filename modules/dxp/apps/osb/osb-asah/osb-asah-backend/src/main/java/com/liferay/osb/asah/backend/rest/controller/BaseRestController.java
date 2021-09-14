@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.rest.response.DeleteResponse;
 import com.liferay.osb.asah.common.rest.response.ItemGetResponse;
@@ -36,6 +37,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -47,6 +49,20 @@ import org.springframework.http.ResponseEntity;
  * @author Brian Wing Shun Chan
  */
 public abstract class BaseRestController {
+
+	protected JSONObject getPageJSONObject(
+		int page, int size, long totalElements) {
+
+		return JSONUtil.put(
+			"number", page
+		).put(
+			"size", size
+		).put(
+			"totalElements", totalElements
+		).put(
+			"totalPages", ((totalElements - 1) / Math.max(size, 1)) + 1
+		);
+	}
 
 	protected String toCollectionGetResponse(
 			String collectionName,
