@@ -26,10 +26,12 @@ import io.prometheus.client.SimpleTimer;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -103,6 +105,8 @@ public class AnalyticsEventsRestController {
 
 			int eventsSize = events.size();
 
+			List<FieldError> fieldErrors = errors.getFieldErrors();
+
 			if (errors.hasErrors()) {
 				if (StringUtils.isEmpty(
 						analyticsEventsMessage.getDataSourceId())) {
@@ -114,9 +118,19 @@ public class AnalyticsEventsRestController {
 						errors.getAllErrors(), HttpStatus.BAD_REQUEST);
 				}
 
-				for (int index :
-						_getInvalidEventIndices(errors.getFieldErrors())) {
+				Stream<FieldError> stream = fieldErrors.stream();
 
+				Optional<FieldError> fieldErrorOptional = stream.filter(
+					fieldError -> StringUtils.startsWith(
+						fieldError.getField(), "context")
+				).findAny();
+
+				if (fieldErrorOptional.isPresent()) {
+					return new ResponseEntity<>(
+						errors.getFieldError(), HttpStatus.BAD_REQUEST);
+				}
+
+				for (int index : _getInvalidEventIndices(fieldErrors)) {
 					events.remove(index);
 				}
 
@@ -143,8 +157,7 @@ public class AnalyticsEventsRestController {
 			}
 
 			if (eventsSize != events.size()) {
-				return new ResponseEntity<>(
-					errors.getFieldErrors(), HttpStatus.OK);
+				return new ResponseEntity<>(fieldErrors, HttpStatus.OK);
 			}
 
 			return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
