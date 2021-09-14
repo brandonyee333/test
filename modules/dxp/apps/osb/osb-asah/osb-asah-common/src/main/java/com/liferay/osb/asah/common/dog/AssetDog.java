@@ -189,6 +189,17 @@ public class AssetDog {
 		return _assetRepository.findKeywordByAssetType(assetType);
 	}
 
+	public List<String> getKeywords(
+		String keywords, int page, int size, Sort sort) {
+
+		return _assetRepository.getAssetKeywords(
+			keywords, PageRequest.of(page, size, sort));
+	}
+
+	public long getKeywordsCount(String keywords) {
+		return _assetRepository.countAssetKeywords(keywords);
+	}
+
 	public Page<Transformation> getTransformationsPage(
 		String apply, @Nullable String filterString, int page, int size) {
 
