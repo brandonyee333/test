@@ -100,14 +100,12 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	@GetMapping(params = "!apply", value = "/{id}/individuals")
 	@SuppressErrorLogging(ResourceNotFoundException.class)
 	public PageDTO<IndividualDTO> getIndividualDTOsPageDTOs(
-			@PathVariable Long id,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(required = false) Boolean includeAnonymousUsers,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
+		@PathVariable Long id,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(required = false) Boolean includeAnonymousUsers,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return _toIndividualDTOPageDTO(
 			_individualDog.searchIndividualsPage(
@@ -655,25 +653,26 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	private void _updateSegmentCounts(
 		MembershipChange membershipChange, Segment segment) {
 
-		if (!Objects.isNull(membershipChange)) {
-			segment.setIndividualCount(
-				Optional.ofNullable(
-					membershipChange.getIndividualsCount()
-				).orElse(
-					0L
-				));
-
-			segment.setKnownIndividualCount(
-				Optional.ofNullable(
-					membershipChange.getKnownIndividualsCount()
-				).orElse(
-					0L
-				));
-
-			segment.setAnonymousIndividualCount(
-				segment.getIndividualCount() -
-					segment.getKnownIndividualCount());
+		if (membershipChange == null) {
+			return;
 		}
+
+		segment.setIndividualCount(
+			Optional.ofNullable(
+				membershipChange.getIndividualsCount()
+			).orElse(
+				0L
+			));
+
+		segment.setKnownIndividualCount(
+			Optional.ofNullable(
+				membershipChange.getKnownIndividualsCount()
+			).orElse(
+				0L
+			));
+
+		segment.setAnonymousIndividualCount(
+			segment.getIndividualCount() - segment.getKnownIndividualCount());
 	}
 
 	private static final Log _log = LogFactory.getLog(
