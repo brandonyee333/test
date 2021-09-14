@@ -161,6 +161,21 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public List<String> getAssetKeywords(String keyword, Pageable pageable) {
+		return _getAssetKeywordSelectStep(
+			keyword
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> record.value1()
+		);
+	}
+
 	public List<Transformation> getAssetTransformations(
 		String apply, @Nullable String filterString, Pageable pageable) {
 

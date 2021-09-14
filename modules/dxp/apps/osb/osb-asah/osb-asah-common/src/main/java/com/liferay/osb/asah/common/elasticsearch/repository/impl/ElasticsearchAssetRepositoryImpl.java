@@ -52,8 +52,11 @@ import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.Cardinality;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -295,6 +298,55 @@ public class ElasticsearchAssetRepositoryImpl
 	}
 
 	@Override
+	public List<String> getAssetKeywords(String keywords, Pageable pageable) {
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			getCollectionName(),
+			searchSourceBuilder -> {
+				if (StringUtils.isNotBlank(keywords)) {
+					searchSourceBuilder.query(
+						BoolQueryBuilderUtil.filter(
+							QueryBuilders.wildcardQuery(
+								"keywords.keyword", "*" + keywords + "*")));
+				}
+
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.terms(
+						"keywords/keyword"
+					).field(
+						"keywords.keyword"
+					).size(
+						Integer.MAX_VALUE
+					).subAggregation(
+						PipelineAggregatorBuilders.bucketSort(
+							"groupBySort",
+							_getFieldSortBuilders(pageable.getSort())
+						).from(
+							Math.max(
+								0,
+								pageable.getPageNumber() *
+									pageable.getPageSize())
+						).size(
+							pageable.getPageSize()
+						)
+					));
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		Terms terms = aggregations.get("keywords/keyword");
+
+		List<? extends Terms.Bucket> buckets = terms.getBuckets();
+
+		Stream<? extends Terms.Bucket> stream = buckets.stream();
+
+		return stream.map(
+			bucket -> bucket.getKeyAsString()
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	@Override
 	public List<Transformation> getAssetTransformations(
 		String apply, @Nullable String filterString, Pageable pageable) {
 
@@ -412,6 +464,18 @@ public class ElasticsearchAssetRepositoryImpl
 		}
 
 		return boolQueryBuilder;
+	}
+
+	private List<FieldSortBuilder> _getFieldSortBuilders(Sort sort) {
+		Stream<Sort.Order> stream = sort.stream();
+
+		return stream.map(
+			order -> SortBuilderUtil.fieldSort(
+				order.getProperty(),
+				order.isAscending() ? SortOrder.ASC : SortOrder.DESC)
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	private String[] _getSorts(Sort sort) {
