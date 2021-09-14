@@ -27,7 +27,14 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.hamcrest.Matchers;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -45,6 +52,8 @@ public abstract class BaseAssetRepositoryTestCase
 	@Before
 	public void setUp() {
 		DataSource dataSource = _addDataSource();
+
+		_dataSourceId = dataSource.getId();
 
 		Asset asset1 = new Asset();
 
@@ -88,6 +97,13 @@ public abstract class BaseAssetRepositoryTestCase
 		asset3.setURL("https://www.iva-tillman.com");
 
 		setUpRepository(asset1, asset2, asset3);
+	}
+
+	@Test
+	public void testCountAssetKeywords() {
+		Assert.assertEquals(5, _assetRepository.countAssetKeywords(null));
+
+		Assert.assertEquals(1, _assetRepository.countAssetKeywords("ROI"));
 	}
 
 	@Test
@@ -176,6 +192,22 @@ public abstract class BaseAssetRepositoryTestCase
 	}
 
 	@Test
+	public void testFindByChannelIds() {
+		List<Asset> assets = _assetRepository.findByChannelIds(
+			Arrays.asList(1L, 2L));
+
+		Assert.assertEquals(assets.toString(), 3, assets.size());
+
+		assets = _assetRepository.findByChannelIds(Arrays.asList(2L));
+
+		Assert.assertEquals(assets.toString(), 0, assets.size());
+
+		assets = _assetRepository.findByChannelIds(Arrays.asList(1L));
+
+		Assert.assertEquals(assets.toString(), 3, assets.size());
+	}
+
+	@Test
 	public void testFindByFilterString() {
 		List<Asset> assets = _assetRepository.findByFilterString(
 			"keywords/keyword eq 'engineer' and keywords/type eq 'title'",
@@ -191,13 +223,49 @@ public abstract class BaseAssetRepositoryTestCase
 	public void testFindKeywordByAssetType() {
 		List<String> keywords = _assetRepository.findKeywordByAssetType("Page");
 
+		Stream<String> stream = keywords.stream();
+
+		keywords = stream.map(
+			String::toLowerCase
+		).collect(
+			Collectors.toList()
+		);
+
 		Assert.assertEquals(keywords.toString(), 5, keywords.size());
 
 		Assert.assertEquals(
 			Arrays.asList(
-				"compelling action-items", "engineer", "holistic ROI",
+				"compelling action-items", "engineer", "holistic roi",
 				"intuitive", "models"),
 			keywords);
+	}
+
+	public void testGetByAssetTypeAndChannelIdAndDatasourceId() {
+		Map<String, Set<String>> assets =
+			_assetRepository.getByAssetTypeAndChannelIdAndDatasourceId(
+				"Page", 1L, _dataSourceId);
+
+		Assert.assertEquals(assets.toString(), assets.size(), 5);
+
+		Set<String> keySet = assets.keySet();
+
+		Stream<String> keyStream = keySet.stream();
+
+		Assert.assertThat(
+			new String[] {
+				"holistic roi", "engineer", "intuitive", "models",
+				"compelling action-items"
+			},
+			Matchers.arrayContainingInAnyOrder(
+				keyStream.map(
+					String::toLowerCase
+				).toArray(
+					String[]::new
+				)));
+
+		Collection<Set<String>> values = assets.values();
+
+		values.forEach(value -> Assert.assertFalse(value.isEmpty()));
 	}
 
 	@Override
@@ -238,6 +306,8 @@ public abstract class BaseAssetRepositoryTestCase
 
 	@Autowired
 	private ChannelRepository _channelRepository;
+
+	private long _dataSourceId;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
