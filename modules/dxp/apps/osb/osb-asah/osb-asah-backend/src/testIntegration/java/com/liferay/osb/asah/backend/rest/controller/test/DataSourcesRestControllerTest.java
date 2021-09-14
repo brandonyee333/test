@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.RunLog;
@@ -36,6 +37,7 @@ import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
@@ -117,15 +119,18 @@ public class DataSourcesRestControllerTest {
 			FaroInfoTestUtil.buildActivityGroup(
 				dataSource.getId(), individual));
 
-		JSONObject assetJSONObject = _faroInfoElasticsearchInvoker.add(
-			"assets",
-			FaroInfoTestUtil.buildAssetJSONObject("Page", dataSource.getId()));
+		Asset asset = _assetRepository.save(
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildAssetJSONObject(
+					"Page", dataSource.getId()),
+				Asset.class));
 
 		JSONObject activityJSONObject = _faroInfoElasticsearchInvoker.add(
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
 				_objectMapper.convertValue(activityGroup, JSONObject.class),
-				assetJSONObject, "pageViewed", new String[0]));
+				_objectMapper.convertValue(asset, JSONObject.class),
+				"pageViewed", new String[0]));
 
 		_dataSourcesRestController.deleteDataSource(
 			dataSourceJSONObject.getLong("id"));
@@ -154,9 +159,7 @@ public class DataSourcesRestControllerTest {
 
 		Assert.assertTrue(_activityGroupRepository.existsById(activityGroupId));
 
-		Assert.assertTrue(
-			_faroInfoElasticsearchInvoker.exists(
-				"assets", assetJSONObject.getString("id")));
+		Assert.assertTrue(_assetRepository.existsById(asset.getId()));
 		Assert.assertFalse(
 			_faroInfoElasticsearchInvoker.exists(
 				"data-sources", dataSourceJSONObject.getString("id")));
@@ -1355,6 +1358,9 @@ public class DataSourcesRestControllerTest {
 
 	@Autowired
 	private ActivityGroupRepository _activityGroupRepository;
+
+	@Autowired
+	private AssetRepository _assetRepository;
 
 	@Autowired
 	private AutowireCapableBeanFactory _autowireCapableBeanFactory;

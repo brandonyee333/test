@@ -21,9 +21,11 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.IndividualSegmentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -71,8 +73,11 @@ public class IndividualSegmentsRestControllerTest
 
 	@Test
 	public void testExpandReferencedObjects() throws Exception {
-		JSONObject assetJSONObject = _faroInfoElasticsearchInvoker.add(
-			"assets", FaroInfoTestUtil.buildAssetJSONObject("Page", 1L));
+		Asset asset = _assetRepository.save(
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildAssetJSONObject("Page", 1L),
+				Asset.class));
+
 		FieldMapping accountFieldMapping = _fieldMappingRepository.save(
 			FaroInfoTestUtil.buildAccountFieldMapping(
 				"1", "shippingPostalCode", "shippingPostalCode", "Text"));
@@ -97,9 +102,7 @@ public class IndividualSegmentsRestControllerTest
 
 		Segment segment = new Segment();
 
-		segment.setReferencedAssetIds(
-			Collections.singleton(
-				Long.valueOf(assetJSONObject.getString("id"))));
+		segment.setReferencedAssetIds(Collections.singleton(asset.getId()));
 		segment.setReferencedFieldMappingIds(
 			SetUtil.of(
 				accountFieldMapping.getId(), individualFieldMapping.getId()));
@@ -133,7 +136,7 @@ public class IndividualSegmentsRestControllerTest
 			"referenced-objects");
 
 		Assert.assertThat(
-			new String[] {assetJSONObject.getString("id")},
+			new String[] {String.valueOf(asset.getId())},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("assets", referencedObjectsJSONObject)));
 		Assert.assertThat(
@@ -443,6 +446,9 @@ public class IndividualSegmentsRestControllerTest
 		return JSONUtil.toStringArray(
 			referencedObjectsJSONObject.getJSONArray(key), "id");
 	}
+
+	@Autowired
+	private AssetRepository _assetRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;

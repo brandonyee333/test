@@ -16,10 +16,12 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.activity.test;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -31,10 +33,12 @@ import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
@@ -44,6 +48,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * @author Vishal Reddy
@@ -110,22 +115,24 @@ public class ActivitiesNaniteTest {
 
 		_activitiesNanite.run();
 
-		JSONArray assetsJSONArray = _faroInfoElasticsearchInvoker.get("assets");
+		Assert.assertEquals(28, _assetRepository.count());
 
-		Assert.assertEquals(28, assetsJSONArray.length());
-
-		JSONObject assetJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"assets",
-			QueryBuilders.termQuery(
-				"name",
+		List<Asset> assets =
+			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
+				"Page", null,
 				"8 Best Practices for Your Omnichannel Strategy | Digital " +
-					"Strategy | Liferay Blogs"));
+					"Strategy | Liferay Blogs",
+				PageRequest.of(0, 5));
+
+		Assert.assertFalse(assets.isEmpty());
+
+		Asset asset = assets.get(0);
 
 		Assert.assertEquals(
 			"https://www.liferay.com/blog?regionCategoryName=en-us&" +
 				"blogCategoryName=digital-strategy&" +
 					"title=8-best-practices-for-your-omnichannel-strategy",
-			assetJSONObject.getString("dataSourceAssetPK"));
+			asset.getDataSourceAssetPK());
 
 		Assert.assertTrue(
 			_faroInfoElasticsearchInvoker.exists(
@@ -184,16 +191,27 @@ public class ActivitiesNaniteTest {
 
 		_activitiesNanite.run();
 
-		JSONObject assetJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"assets",
-			QueryBuilders.termQuery(
-				"name",
-				"Felix Gogo Shell - reference - Knowledge | \"Liferay"));
+		List<Asset> assets =
+			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
+				"Page", null,
+				"Felix Gogo Shell - reference - Knowledge | \"Liferay",
+				PageRequest.of(0, 5));
 
-		Assert.assertTrue(assetJSONObject.has("keywords"));
+		Assert.assertFalse(assets.isEmpty());
 
-		String[] keywords = JSONUtil.toStringArray(
-			assetJSONObject.getJSONArray("keywords"), "keyword");
+		Asset asset = assets.get(0);
+
+		Set<AssetKeyword> assetKeywords = asset.getAssetKeywords();
+
+		Assert.assertFalse(assetKeywords.isEmpty());
+
+		Stream<AssetKeyword> stream = assetKeywords.stream();
+
+		String[] keywords = stream.map(
+			AssetKeyword::getKeyword
+		).toArray(
+			String[]::new
+		);
 
 		Arrays.sort(keywords);
 
@@ -204,6 +222,9 @@ public class ActivitiesNaniteTest {
 
 	@Autowired
 	private ActivitiesNanite _activitiesNanite;
+
+	@Autowired
+	private AssetRepository _assetRepository;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
