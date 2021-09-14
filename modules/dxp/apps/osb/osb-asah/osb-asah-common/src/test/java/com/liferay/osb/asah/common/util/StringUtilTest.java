@@ -65,12 +65,12 @@ public class StringUtilTest {
 			"'Hello World'", StringUtil.toObject("'''Hello World'''"));
 		Assert.assertEquals(0.5, StringUtil.toObject("0.5"));
 		Assert.assertEquals(5L, StringUtil.toObject("5"));
-		Assert.assertFalse(StringUtil.toObject("FALSE"));
+		Assert.assertFalse((boolean)StringUtil.toObject("FALSE"));
 		Assert.assertNull(StringUtil.toObject("NULL"));
-		Assert.assertTrue(StringUtil.toObject("TRUE"));
-		Assert.assertFalse(StringUtil.toObject("false"));
+		Assert.assertTrue((boolean)StringUtil.toObject("TRUE"));
+		Assert.assertFalse((boolean)StringUtil.toObject("false"));
 		Assert.assertNull(StringUtil.toObject("null"));
-		Assert.assertTrue(StringUtil.toObject("true"));
+		Assert.assertTrue((boolean)StringUtil.toObject("true"));
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(JSONUtil.put("foo", "bar")),
