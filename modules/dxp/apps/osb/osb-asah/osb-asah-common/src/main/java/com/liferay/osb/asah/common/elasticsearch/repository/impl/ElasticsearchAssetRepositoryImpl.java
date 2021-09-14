@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -174,6 +175,15 @@ public class ElasticsearchAssetRepositoryImpl
 								searchSourceBuilder, pageable);
 						}
 					})));
+	}
+
+	@Override
+	public List<Asset> findByChannelIds(List<Long> channelIds) {
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				QueryBuilders.termsQuery(
+					"channelIds", ListUtil.map(channelIds, String::valueOf))));
 	}
 
 	@Override

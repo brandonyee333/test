@@ -54,6 +54,9 @@ public interface AssetRepository extends Repository<Asset, Long> {
 		@Nullable String keyword, @Nullable Pageable pageable);
 
 	@Cacheable
+	public List<Asset> findByChannelIds(List<Long> channelIds);
+
+	@Cacheable
 	public Optional<Asset> findByDataSourceAssetPKAndDataSourceId(
 		String dataSourceAssetPK, Long dataSourceId);
 

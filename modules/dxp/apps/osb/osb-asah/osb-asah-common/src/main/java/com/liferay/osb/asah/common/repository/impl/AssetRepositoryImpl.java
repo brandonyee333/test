@@ -145,6 +145,24 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public List<Asset> findByChannelIds(List<Long> channelIds) {
+		SelectSelectStep<Record> selectDistinct = _dslContext.selectDistinct(
+			DSL.table(
+				"Asset"
+			).asterisk());
+
+		return selectDistinct.from(
+			"Asset"
+		).where(
+			DSL.condition(
+				String.format(
+					"channelIds && '{%s}'", StringUtils.join(channelIds, ",")))
+		).fetch(
+		).map(
+			this::_toAsset
+		);
+	}
+
 	public List<Asset> findByFilterString(
 		@Nullable String filterString, Pageable pageable) {
 
