@@ -102,7 +102,7 @@ public class BaseIndexerGetSiteGroupIdTest extends PowerMockito {
 			true
 		);
 
-		Assert.assertEquals(true, _indexer.isStagingGroup(groupId));
+		Assert.assertTrue(_indexer.isStagingGroup(groupId));
 	}
 
 	@Test
@@ -118,7 +118,7 @@ public class BaseIndexerGetSiteGroupIdTest extends PowerMockito {
 			true
 		);
 
-		Assert.assertEquals(true, _indexer.isStagingGroup(groupId));
+		Assert.assertTrue(_indexer.isStagingGroup(groupId));
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public class BaseIndexerGetSiteGroupIdTest extends PowerMockito {
 
 		setUpNonexistentGroup(groupId);
 
-		Assert.assertEquals(false, _indexer.isStagingGroup(groupId));
+		Assert.assertFalse(_indexer.isStagingGroup(groupId));
 	}
 
 	protected Group setUpGroup(long groupId) throws Exception {

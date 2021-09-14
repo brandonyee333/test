@@ -63,7 +63,7 @@ public class ParameterMapUtilTest {
 
 		@Test
 		public void valuesInTheParameterMapAreReadFirst() throws Exception {
-			Assert.assertEquals(false, _testBean.testBoolean1());
+			Assert.assertFalse(_testBean.testBoolean1());
 			Assert.assertEquals(PARAMETER_MAP_STRING, _testBean.testString1());
 			Assert.assertArrayEquals(
 				PARAMETER_MAP_STRING_ARRAY, _testBean.testStringArray1());
@@ -73,7 +73,7 @@ public class ParameterMapUtilTest {
 		public void valuesNotInTheParameterMapAreReadFromBean()
 			throws Exception {
 
-			Assert.assertEquals(true, _testBean.testBoolean2());
+			Assert.assertTrue(_testBean.testBoolean2());
 			Assert.assertEquals(TEST_BEAN_STRING, _testBean.testString2());
 			Assert.assertArrayEquals(
 				TEST_BEAN_STRING_ARRAY, _testBean.testStringArray2());
@@ -104,7 +104,7 @@ public class ParameterMapUtilTest {
 
 		@Test
 		public void valuesInTheParameterMapAreReadFirst() throws Exception {
-			Assert.assertEquals(false, _testBean.testBoolean1());
+			Assert.assertFalse(_testBean.testBoolean1());
 			Assert.assertEquals(PARAMETER_MAP_STRING, _testBean.testString1());
 			Assert.assertArrayEquals(
 				PARAMETER_MAP_STRING_ARRAY, _testBean.testStringArray1());
@@ -114,7 +114,7 @@ public class ParameterMapUtilTest {
 		public void valuesNotInTheParameterMapAreReadFromBean()
 			throws Exception {
 
-			Assert.assertEquals(true, _testBean.testBoolean2());
+			Assert.assertTrue(_testBean.testBoolean2());
 			Assert.assertEquals(TEST_BEAN_STRING, _testBean.testString2());
 			Assert.assertArrayEquals(
 				TEST_BEAN_STRING_ARRAY, _testBean.testStringArray2());

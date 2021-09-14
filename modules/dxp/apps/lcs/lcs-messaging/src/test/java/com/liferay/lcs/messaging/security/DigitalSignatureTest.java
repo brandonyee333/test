@@ -52,7 +52,7 @@ public class DigitalSignatureTest {
 		boolean verify = digitalSignatureImpl.verifyMessage(
 			302, sendPortalPropertiesCommandMessage);
 
-		Assert.assertEquals(true, verify);
+		Assert.assertTrue(verify);
 	}
 
 }

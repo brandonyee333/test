@@ -79,8 +79,7 @@ public class FilterMappingTest extends PowerMockito {
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest(HttpMethods.GET, uri);
 
-		Assert.assertEquals(
-			true,
+		Assert.assertTrue(
 			filterMapping.isMatch(
 				mockHttpServletRequest, Dispatcher.REQUEST, uri));
 	}
