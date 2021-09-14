@@ -259,14 +259,12 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		Segment segment = _resetIndividualsCount(segmentDog.getSegment(id));
 
-		if (!Objects.isNull(segment.getId())) {
-			List<MembershipChange> membershipsChanges =
-				_membershipChangeDog.getLastFrom30DaysByIndividualSegmentsId(
-					Collections.singletonList(segment.getId()));
+		List<MembershipChange> membershipsChanges =
+			_membershipChangeDog.getLastFrom30DaysByIndividualSegmentsId(
+				Collections.singletonList(segment.getId()));
 
-			if (!membershipsChanges.isEmpty()) {
-				_updateSegmentCounts(membershipsChanges.get(0), segment);
-			}
+		if (!membershipsChanges.isEmpty()) {
+			_updateSegmentCounts(membershipsChanges.get(0), segment);
 		}
 
 		SegmentDTO segmentDTO = new SegmentDTO(segment);
