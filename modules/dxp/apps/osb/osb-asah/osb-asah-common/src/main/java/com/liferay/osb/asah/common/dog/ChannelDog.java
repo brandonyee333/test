@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -122,8 +123,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 		_deleteAccountReferences(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
-		_deleteAssets(
-			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
+		_deleteAssets(channelIds);
 		_deleteData(
 			channelIds, _cerebroInfoElasticsearchInvoker, "blog-clicks",
 			"blog-social-shares", "blog-traffic-sources", "blogs",
@@ -336,18 +336,11 @@ public class ChannelDog extends BaseFaroInfoDog {
 		).iterate();
 	}
 
-	private void _deleteAssets(
-			List<Long> channelIds,
-			Consumer<Integer> processedCountMonitorConsumer,
-			Consumer<Integer> queueMonitorConsumer)
-		throws Exception {
+	private void _deleteAssets(List<Long> channelIds) throws Exception {
+		List<Asset> assets = _assetRepository.findByChannelIds(channelIds);
 
-		JSONArrayIterator.of(
-			"assets", elasticsearchInvoker,
-			assetJSONObject -> {
-				Asset asset = _objectMapper.convertValue(
-					assetJSONObject, Asset.class);
-
+		assets.forEach(
+			asset -> {
 				Set<Long> assetChannelIds = asset.getChannelIds();
 
 				assetChannelIds.removeAll(channelIds);
@@ -361,15 +354,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 				else {
 					_assetDog.updateAsset(asset);
 				}
-
-				return null;
-			}
-		).setMonitoringConsumers(
-			processedCountMonitorConsumer, queueMonitorConsumer
-		).setQueryBuilder(
-			QueryBuilders.termsQuery(
-				"channelIds", ListUtil.map(channelIds, String::valueOf))
-		).iterate();
+			});
 	}
 
 	private void _deleteData(
@@ -627,6 +612,9 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private AssetDog _assetDog;
+
+	@Autowired
+	private AssetRepository _assetRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
