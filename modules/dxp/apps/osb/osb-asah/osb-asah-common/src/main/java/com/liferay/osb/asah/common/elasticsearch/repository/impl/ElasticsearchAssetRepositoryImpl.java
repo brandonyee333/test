@@ -53,6 +53,7 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.Cardinality;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -69,6 +70,37 @@ import org.springframework.stereotype.Repository;
 public class ElasticsearchAssetRepositoryImpl
 	extends BaseElasticsearchRepository<Asset, Long>
 	implements AssetRepository {
+
+	@Override
+	public long countAssetKeywords(String keywords) {
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			getCollectionName(),
+			searchSourceBuilder -> {
+				if (StringUtils.isNotBlank(keywords)) {
+					searchSourceBuilder.query(
+						QueryBuilders.regexpQuery(
+							"keywords.keyword",
+							FilterStringToQueryBuilderConverter.
+								buildIgnoreCaseRegExp(
+									StringUtil.unquote(keywords))));
+				}
+
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.cardinality(
+						"keywordsCount"
+					).field(
+						"keywords.keyword"
+					));
+
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		Cardinality cardinality = aggregations.get("keywordsCount");
+
+		return cardinality.getValue();
+	}
 
 	@Override
 	public long countByAssetTypeAndFilterStringAndKeywords(

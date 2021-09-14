@@ -31,8 +31,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
+import org.jooq.SelectConditionStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.Table;
@@ -48,6 +50,19 @@ public class AssetRepositoryImpl extends BaseRepository {
 
 	public AssetRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	public long countAssetKeywords(String keyword) {
+		SelectSelectStep<Record1<Integer>> selectCount =
+			_dslContext.selectCount();
+
+		return selectCount.from(
+			_getAssetKeywordSelectStep(keyword)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
 	}
 
 	public long countByAssetTypeAndFilterStringAndKeywords(
@@ -218,6 +233,38 @@ public class AssetRepositoryImpl extends BaseRepository {
 		).fetch(
 		).map(
 			record -> new AssetKeyword(record.intoMap())
+		);
+	}
+
+	private SelectConditionStep<Record1<String>> _getAssetKeywordSelectStep(
+		String keyword) {
+
+		Condition condition = null;
+
+		Field<String> field = DSL.field("AssetKeyword.keyword", String.class);
+
+		if (StringUtils.isEmpty(keyword)) {
+			condition = field.isNotNull();
+		}
+		else {
+			condition = field.likeIgnoreCase("%" + keyword + "%");
+		}
+
+		SelectSelectStep<Record1<String>> selectDistinct =
+			_dslContext.selectDistinct(field);
+
+		return selectDistinct.from(
+			DSL.table("Asset")
+		).innerJoin(
+			DSL.table("AssetKeyword")
+		).on(
+			DSL.field(
+				"Asset.id"
+			).eq(
+				DSL.field("AssetKeyword.assetId")
+			)
+		).where(
+			condition
 		);
 	}
 
