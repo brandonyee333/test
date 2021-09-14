@@ -64,7 +64,7 @@ public class AnalyticsEventsMessage implements Serializable {
 	}
 
 	@NotEmpty
-	public Map<String, String> getContext() {
+	public Map<String, @Size(max = 2048) String> getContext() {
 		return _context;
 	}
 
@@ -116,7 +116,7 @@ public class AnalyticsEventsMessage implements Serializable {
 		_clientIP = clientIP;
 	}
 
-	public void setContext(Map<String, @Size(max = 2048) String> context) {
+	public void setContext(Map<String, String> context) {
 		_context = context;
 	}
 
