@@ -17,11 +17,14 @@ package com.liferay.osb.asah.publisher.rest.controller.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.publisher.spring.OSBAsahPublisherSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
+
+import org.apache.commons.lang3.RandomStringUtils;
 
 import org.assertj.core.api.Assertions;
 
@@ -158,6 +161,42 @@ public class AnalyticsEventsRestControllerTest {
 			_messageBus, Mockito.never()
 		).sendMessage(
 			ArgumentMatchers.any(), ArgumentMatchers.any()
+		);
+	}
+
+	@Test
+	public void testPushAnalyticsEventsMessageIfInvalidContext()
+		throws Exception {
+
+		ResponseEntity<String> responseEntity = _exchange(
+			JSONUtil.put(
+				"context",
+				JSONUtil.put("description", RandomStringUtils.random(2049))
+			).put(
+				"dataSourceId", "370975939087274525"
+			).put(
+				"events",
+				JSONUtil.put(
+					JSONUtil.put(
+						"applicationId", "Layout"
+					).put(
+						"eventDate", "2017-11-07T09:34:45.345Z"
+					).put(
+						"eventId", "view"
+					).put(
+						"properties",
+						JSONUtil.put("referrer", "http://www.google.com")
+					))
+			).put(
+				"protocolVersion", "1.0"
+			).put(
+				"userId", "id-i4xbdldy1af"
+			).toString());
+
+		Assertions.assertThat(
+			responseEntity.getStatusCode()
+		).isEqualTo(
+			HttpStatus.valueOf(400)
 		);
 	}
 
