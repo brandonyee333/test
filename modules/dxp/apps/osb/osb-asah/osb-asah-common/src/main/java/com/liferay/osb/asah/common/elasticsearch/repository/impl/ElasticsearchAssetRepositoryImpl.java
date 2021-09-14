@@ -32,10 +32,12 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -53,8 +55,13 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
+import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregation;
+import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.composite.CompositeValuesSourceBuilder;
+import org.elasticsearch.search.aggregations.bucket.composite.TermsValuesSourceBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.Cardinality;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
@@ -278,13 +285,7 @@ public class ElasticsearchAssetRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		if (aggregations == null) {
-			return keywords;
-		}
-
-		List<Aggregation> aggregationsList = aggregations.asList();
-
-		if (aggregationsList.isEmpty()) {
+		if (_isEmpty(aggregations)) {
 			return keywords;
 		}
 
@@ -412,6 +413,97 @@ public class ElasticsearchAssetRepositoryImpl
 	}
 
 	@Override
+	public Map<String, Set<String>> getByAssetTypeAndChannelIdAndDatasourceId(
+		String assetType, Long channelId, @Nullable Long dataSourceId) {
+
+		Map<String, Set<String>> assets = new HashMap<>();
+
+		SearchSourceBuilder searchSourceBuilder =
+			SearchSourceBuilder.searchSource();
+
+		TermsValuesSourceBuilder assetIdTermsValuesSourceBuilder =
+			new TermsValuesSourceBuilder("assetIds");
+
+		assetIdTermsValuesSourceBuilder.field("id");
+
+		TermsValuesSourceBuilder keywordTermsValuesSourceBuilder =
+			new TermsValuesSourceBuilder("keywords/keyword");
+
+		keywordTermsValuesSourceBuilder.field("keywords.keyword");
+
+		CompositeAggregationBuilder compositeAggregationBuilder =
+			AggregationBuilders.composite(
+				"composite",
+				new ArrayList<CompositeValuesSourceBuilder<?>>() {
+					{
+						add(assetIdTermsValuesSourceBuilder);
+						add(keywordTermsValuesSourceBuilder);
+					}
+				}
+			).size(
+				10000
+			);
+
+		searchSourceBuilder.aggregation(compositeAggregationBuilder);
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("assetType", "Page")
+		).filter(
+			QueryBuilders.existsQuery("keywords.keyword")
+		);
+
+		BoolQueryBuilderUtil.filterTerm(
+			boolQueryBuilder, "channelIds", String.valueOf(channelId));
+
+		if (dataSourceId != null) {
+			BoolQueryBuilderUtil.filterTerm(
+				boolQueryBuilder, "dataSourceId", String.valueOf(dataSourceId));
+		}
+
+		searchSourceBuilder.query(boolQueryBuilder);
+
+		searchSourceBuilder.size(0);
+
+		while (true) {
+			SearchResponse searchResponse =
+				_faroInfoElasticsearchInvoker.search(
+					"assets", searchSourceBuilder);
+
+			Aggregations aggregations = searchResponse.getAggregations();
+
+			if (_isEmpty(aggregations)) {
+				return assets;
+			}
+
+			CompositeAggregation compositeAggregation = aggregations.get(
+				"composite");
+
+			List<? extends CompositeAggregation.Bucket> buckets =
+				compositeAggregation.getBuckets();
+
+			if (buckets.isEmpty()) {
+				return assets;
+			}
+
+			for (CompositeAggregation.Bucket bucket : buckets) {
+				Map<String, Object> keys = bucket.getKey();
+
+				String keyword = (String)keys.get("keywords/keyword");
+
+				Set<String> assetIds = assets.getOrDefault(
+					keyword, new HashSet<>());
+
+				assetIds.add((String)keys.get("assetIds"));
+
+				assets.put(keyword, assetIds);
+			}
+
+			compositeAggregationBuilder.aggregateAfter(
+				compositeAggregation.afterKey());
+		}
+	}
+
+	@Override
 	protected String getCollectionName() {
 		return "assets";
 	}
@@ -497,6 +589,20 @@ public class ElasticsearchAssetRepositoryImpl
 		}
 
 		return sorts.toArray(new String[0]);
+	}
+
+	private boolean _isEmpty(Aggregations aggregations) {
+		if (aggregations == null) {
+			return true;
+		}
+
+		List<Aggregation> aggregationList = aggregations.asList();
+
+		if (aggregationList.isEmpty()) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private static final Log _log = LogFactory.getLog(

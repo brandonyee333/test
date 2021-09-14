@@ -18,7 +18,9 @@ import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.model.Transformation;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
@@ -71,5 +73,9 @@ public interface AssetRepository extends Repository<Asset, Long> {
 	@Cacheable
 	public List<Transformation> getAssetTransformations(
 		String apply, @Nullable String filterString, Pageable pageable);
+
+	@Cacheable
+	public Map<String, Set<String>> getByAssetTypeAndChannelIdAndDatasourceId(
+		String assetType, Long channelId, @Nullable Long dataSourceId);
 
 }

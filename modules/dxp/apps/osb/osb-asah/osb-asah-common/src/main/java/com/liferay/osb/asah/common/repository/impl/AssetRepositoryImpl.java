@@ -23,8 +23,11 @@ import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 
 import org.apache.commons.lang3.StringUtils;
@@ -224,6 +227,62 @@ public class AssetRepositoryImpl extends BaseRepository {
 						groupByField, record.get("terms"))),
 				(Integer)record.get("totalelements"))
 		);
+	}
+
+	public Map<String, Set<String>> getByAssetTypeAndChannelIdAndDatasourceId(
+		String assetType, Long channelId, @Nullable Long dataSourceId) {
+
+		Map<String, Set<String>> assets = new HashMap<>();
+
+		Condition condition = DSL.and(
+			DSL.condition(
+				String.format("%s = any (Asset.channelIds)", channelId)),
+			DSL.field(
+				"Asset.assetType"
+			).eq(
+				assetType
+			),
+			DSL.field(
+				"AssetKeyword.keyword"
+			).isNotNull());
+
+		if (dataSourceId != null) {
+			condition = condition.and(
+				DSL.field(
+					"Asset.dataSourceId"
+				).eq(
+					dataSourceId
+				));
+		}
+
+		_dslContext.select(
+			DSL.field("AssetKeyword.assetId", Long.class),
+			DSL.field("AssetKeyword.keyword", String.class)
+		).from(
+			DSL.table("Asset")
+		).innerJoin(
+			DSL.table("AssetKeyword")
+		).on(
+			DSL.field(
+				"Asset.id"
+			).eq(
+				DSL.field("AssetKeyword.assetId")
+			)
+		).where(
+			condition
+		).fetch(
+		).forEach(
+			record -> {
+				Set<String> assetIds = assets.getOrDefault(
+					record.value2(), new HashSet<>());
+
+				assetIds.add(String.valueOf(record.value1()));
+
+				assets.put(record.value2(), assetIds);
+			}
+		);
+
+		return assets;
 	}
 
 	private boolean _containsAssetKeywordFilter(String filterString) {
