@@ -52,7 +52,6 @@ public class AnalyticsEventsMessageTest {
 			Collections.singletonMap(
 				RandomStringUtils.random(8), RandomStringUtils.random(2049)));
 		analyticsEventsMessage.setDataSourceId("1");
-
 		analyticsEventsMessage.setEvents(
 			Arrays.asList(
 				new AnalyticsEventsMessage.Event() {
@@ -66,7 +65,6 @@ public class AnalyticsEventsMessageTest {
 								RandomStringUtils.random(8)));
 					}
 				}));
-
 		analyticsEventsMessage.setUserId("1");
 
 		Set<ConstraintViolation<AnalyticsEventsMessage>> violations =
