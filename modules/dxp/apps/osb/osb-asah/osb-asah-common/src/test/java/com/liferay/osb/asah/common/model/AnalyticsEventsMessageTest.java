@@ -37,9 +37,10 @@ public class AnalyticsEventsMessageTest {
 
 	@Before
 	public void setUp() {
-		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		ValidatorFactory validatorFactory =
+			Validation.buildDefaultValidatorFactory();
 
-		_validator = factory.getValidator();
+		_validator = validatorFactory.getValidator();
 	}
 
 	@Test
