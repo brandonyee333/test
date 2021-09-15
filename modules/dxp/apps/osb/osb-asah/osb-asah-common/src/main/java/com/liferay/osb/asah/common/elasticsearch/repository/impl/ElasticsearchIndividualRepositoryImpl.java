@@ -327,6 +327,33 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
+	public List<Individual> findAnonymousByCreateDateAndLastActivityDate(
+		String dateString, Pageable pageable) {
+
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.rangeQuery(
+						"dateCreated"
+					).lt(
+						dateString
+					)
+				).mustNot(
+					QueryBuilders.nestedQuery(
+						"lastActivityDates",
+						QueryBuilders.rangeQuery(
+							"lastActivityDates.lastActivityDate"
+						).gt(
+							dateString
+						),
+						ScoreMode.None)
+				).mustNot(
+					QueryBuilders.existsQuery("demographics.email")
+				)));
+	}
+
+	@Override
 	public List<Individual> findByAnySegmentIds(Long segmentId) {
 		return toList(
 			_faroInfoElasticsearchInvoker.get(

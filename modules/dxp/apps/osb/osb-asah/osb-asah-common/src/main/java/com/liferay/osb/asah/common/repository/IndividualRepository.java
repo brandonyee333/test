@@ -75,6 +75,9 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 	public List<Individual.ActivitiesCount> findActivitiesCounts(
 		boolean includeAnonymousUsers, Long segmentId);
 
+	public List<Individual> findAnonymousByCreateDateAndLastActivityDate(
+		String dateString, Pageable pageable);
+
 	@Cacheable
 	public List<Individual> findByAnySegmentIds(
 		@Param("segmentId") Long segmentId);

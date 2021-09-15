@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.model.Distribution;
@@ -29,6 +30,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -475,6 +477,52 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				return new Individual.ActivitiesCount(
 					activitiesCount.longValue(), channelId);
 			}
+		);
+	}
+
+	public List<Individual> findAnonymousByCreateDateAndLastActivityDate(
+		String dateString, Pageable pageable) {
+
+		Date date = DateUtil.toUTCDate(dateString);
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"Individual"
+			).asterisk());
+
+		return selectSelectStep.from(
+			"Individual"
+		).join(
+			"IndividualChannel"
+		).on(
+			DSL.field(
+				"individual.id"
+			).eq(
+				DSL.field("individualchannel.individualid")
+			)
+		).where(
+			DSL.and(
+				DSL.field(
+					"individual.createdate"
+				).lt(
+					date
+				),
+				DSL.field(
+					"individual.emailaddresshashed"
+				).isNull(),
+				DSL.not(
+					DSL.field(
+						"individualchannel.lastactivitydate"
+					).gt(
+						date
+					)))
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Individual(record.intoMap())
 		);
 	}
 
