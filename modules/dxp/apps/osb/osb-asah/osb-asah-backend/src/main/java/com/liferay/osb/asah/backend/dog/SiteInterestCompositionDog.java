@@ -17,10 +17,10 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.Composition;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
+import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -120,8 +120,8 @@ public class SiteInterestCompositionDog {
 
 		Map<String, Set<String>> keywords = new HashMap<>();
 
-		Map<String, Set<String>> assets =
-			_assetRepository.getByAssetTypeAndChannelIdAndDatasourceId(
+		Map<String, Set<String>> assetIds =
+			_assetDog.getAssetIdsGroupedByKeywords(
 				"Page", Long.valueOf(channelId),
 				Optional.ofNullable(
 					dataSourceId
@@ -134,7 +134,7 @@ public class SiteInterestCompositionDog {
 		Map<String, Set<String>> users = _getUsers(
 			channelId, dataSourceId, timeRange, timeZoneId);
 
-		for (Map.Entry<String, Set<String>> entry : assets.entrySet()) {
+		for (Map.Entry<String, Set<String>> entry : assetIds.entrySet()) {
 			Set<String> userIds = new HashSet<>();
 
 			for (String assetId : entry.getValue()) {
@@ -279,7 +279,7 @@ public class SiteInterestCompositionDog {
 	}
 
 	@Autowired
-	private AssetRepository _assetRepository;
+	private AssetDog _assetDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

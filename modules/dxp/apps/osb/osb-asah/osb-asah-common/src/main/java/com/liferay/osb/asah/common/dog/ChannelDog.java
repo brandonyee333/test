@@ -28,7 +28,6 @@ import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -340,8 +339,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 		int page = 0;
 
 		while (true) {
-			List<Asset> assets = _assetRepository.findByChannelIds(
-				channelIds, PageRequest.of(page++, 50));
+			List<Asset> assets = _assetDog.getAssets(channelIds, page++, 50);
 
 			if (assets.isEmpty()) {
 				break;
@@ -621,9 +619,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private AssetDog _assetDog;
-
-	@Autowired
-	private AssetRepository _assetRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;

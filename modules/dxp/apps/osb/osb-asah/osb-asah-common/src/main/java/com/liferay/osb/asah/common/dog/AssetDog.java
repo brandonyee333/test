@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -136,6 +137,13 @@ public class AssetDog {
 				"There is no asset with ID " + assetId));
 	}
 
+	public Map<String, Set<String>> getAssetIdsGroupedByKeywords(
+		String assetType, Long channelId, Long dataSourceId) {
+
+		return _assetRepository.getByAssetTypeAndChannelIdAndDatasourceId(
+			assetType, channelId, dataSourceId);
+	}
+
 	public Page<Asset> getAssetPage(
 		@Nullable String filterString, int page, int size, String[] sorts) {
 
@@ -160,6 +168,11 @@ public class AssetDog {
 			pageRequest,
 			() -> _assetRepository.countByAssetTypeAndFilterStringAndKeywords(
 				assetType, filterString, keyword));
+	}
+
+	public List<Asset> getAssets(List<Long> channelIds, int page, int size) {
+		return _assetRepository.findByChannelIds(
+			channelIds, PageRequest.of(page, size));
 	}
 
 	public List<Asset> getAssets(Long assetId, String assetType, int size) {
