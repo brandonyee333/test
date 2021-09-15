@@ -151,6 +151,17 @@ public abstract class BaseSegmentRepositoryTestCase
 		_individualRepository.save(individual);
 	}
 
+	@Override
+	public void tearDown() {
+		super.tearDown();
+
+		_channelRepository.deleteAll();
+		_dataSourceRepository.deleteAll();
+
+		_accountRepository.deleteAll();
+		_individualRepository.deleteAll();
+	}
+
 	@Test
 	public void testCountByIdAfter() {
 		Assert.assertEquals(3, _segmentRepository.countByIdAfter(0L));

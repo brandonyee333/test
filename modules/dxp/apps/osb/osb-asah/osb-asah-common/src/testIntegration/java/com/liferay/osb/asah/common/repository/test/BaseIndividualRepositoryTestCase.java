@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
@@ -31,6 +32,7 @@ import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -81,39 +83,39 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		_dataSourceRepository.save(dataSource1);
 
-		Individual individual = new Individual();
+		Individual individual1 = new Individual();
 
-		individual.setChannelIds(Collections.singleton(channel1.getId()));
-		individual.setCreateDate(new Date());
+		individual1.setChannelIds(Collections.singleton(channel1.getId()));
+		individual1.setCreateDate(new Date());
 
 		String emailAddress = "test@liferay.com";
 
-		individual.setEmailAddressHashed(DigestUtils.sha256Hex(emailAddress));
+		individual1.setEmailAddressHashed(DigestUtils.sha256Hex(emailAddress));
 
-		individual.setModifiedDate(new Date());
+		individual1.setModifiedDate(new Date());
 
-		setUpRepository(individual);
+		setUpRepository(individual1);
 
-		individual = entityModels.get(0);
+		individual1 = entityModels.get(0);
 
-		_individualId = individual.getId();
+		_individual1Id = individual1.getId();
 
 		IndividualChannel individualChannel = new IndividualChannel(
-			3L, channel1.getId(), _individualId, new Date());
+			3L, channel1.getId(), _individual1Id, new Date());
 
-		individual.setActivitiesCounts(
+		individual1.setActivitiesCounts(
 			Collections.singleton(
 				new Individual.ActivitiesCount(individualChannel)));
 
-		individual.setDataSourceIndividuals(
+		individual1.setDataSourceIndividuals(
 			Collections.singleton(
 				new DataSourceIndividual(
-					Collections.emptySet(), dataSource1.getId(), _individualId,
+					Collections.emptySet(), dataSource1.getId(), _individual1Id,
 					Collections.singleton("23432-cd-3242-asf23"))));
-		individual.setIndividualChannels(
+		individual1.setIndividualChannels(
 			Collections.singleton(individualChannel));
 
-		individual = individualRepository.save(individual);
+		individual1 = individualRepository.save(individual1);
 
 		Field field1 = new Field();
 
@@ -123,7 +125,7 @@ public abstract class BaseIndividualRepositoryTestCase
 		field1.setFieldType("Text");
 		field1.setModifiedDate(new Date());
 		field1.setName("email");
-		field1.setOwnerId(_individualId);
+		field1.setOwnerId(_individual1Id);
 		field1.setOwnerType("individual");
 		field1.setSourceName("emailAddress");
 		field1.setValue(emailAddress);
@@ -138,7 +140,7 @@ public abstract class BaseIndividualRepositoryTestCase
 		field2.setFieldType("Text");
 		field2.setModifiedDate(new Date(System.currentTimeMillis()));
 		field2.setName("field1");
-		field2.setOwnerId(_individualId);
+		field2.setOwnerId(_individual1Id);
 		field2.setOwnerType("individual");
 		field2.setSourceName("Field 1");
 		field2.setValue("field two");
@@ -153,7 +155,7 @@ public abstract class BaseIndividualRepositoryTestCase
 		field3.setFieldType("Text");
 		field3.setModifiedDate(new Date());
 		field3.setName("field3");
-		field3.setOwnerId(_individualId);
+		field3.setOwnerId(_individual1Id);
 		field3.setOwnerType("individual");
 		field3.setSourceName("Field 3");
 		field3.setValue("field three");
@@ -166,7 +168,7 @@ public abstract class BaseIndividualRepositoryTestCase
 		fields.add(field2);
 		fields.add(field3);
 
-		individual.setFields(fields);
+		individual1.setFields(fields);
 
 		Segment segment = new Segment();
 
@@ -188,11 +190,29 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		_segmentId = segment.getId();
 
-		individual.setSegmentIds(Collections.singleton(_segmentId));
+		individual1.setSegmentIds(Collections.singleton(_segmentId));
 
-		individualRepository.save(individual);
+		individualRepository.save(individual1);
 
-		entityModels = Collections.singletonList(individual);
+		Individual individual2 = new Individual();
+
+		individual2.setCreateDate(DateUtil.addDays(new Date(), -1));
+
+		individual2 = individualRepository.save(individual2);
+
+		_individual2Id = individual2.getId();
+
+		individualChannel = new IndividualChannel(
+			5L, channel1.getId(), _individual2Id, new Date());
+
+		individual2.setLastActivityDate(new Date());
+
+		individual2.setIndividualChannels(
+			Collections.singleton(individualChannel));
+
+		individual2 = individualRepository.save(individual2);
+
+		entityModels = Arrays.asList(individual1, individual2);
 	}
 
 	@Override
@@ -212,9 +232,9 @@ public abstract class BaseIndividualRepositoryTestCase
 
 	@Test
 	public void testCountByIdAfter() {
-		Assert.assertEquals(1, individualRepository.countByIdAfter(0L));
+		Assert.assertEquals(2, individualRepository.countByIdAfter(0L));
 		Assert.assertEquals(
-			0, individualRepository.countByIdAfter(_individualId));
+			1, individualRepository.countByIdAfter(_individual1Id));
 	}
 
 	@Test
@@ -222,7 +242,7 @@ public abstract class BaseIndividualRepositoryTestCase
 		Assert.assertEquals(
 			1,
 			individualRepository.countByIdsInAndKeywords(
-				Collections.singletonList(_individualId), "liferay"));
+				Collections.singletonList(_individual1Id), "liferay"));
 	}
 
 	@Test
@@ -241,7 +261,7 @@ public abstract class BaseIndividualRepositoryTestCase
 		Assert.assertTrue(
 			individualRepository.existsByChannelIdAndFilterStringAndId(
 				11L, "(demographics/field3/value eq 'field three')",
-				_individualId));
+				_individual1Id));
 	}
 
 	@Test
@@ -250,14 +270,15 @@ public abstract class BaseIndividualRepositoryTestCase
 			individualRepository.
 				existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
 					11L, "(demographics/field3/value eq 'field three')", false,
-					_individualId));
+					_individual1Id));
 	}
 
 	@Test
 	public void testExistsByFilterStringAndId() {
 		Assert.assertTrue(
 			individualRepository.existsByFilterStringAndId(
-				"(demographics/field3/value eq 'field three')", _individualId));
+				"(demographics/field3/value eq 'field three')",
+				_individual1Id));
 	}
 
 	@Test
@@ -271,6 +292,19 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
+	public void testFindAnonymousByCreateDateAndLastActivityDate() {
+		List<Individual> individuals =
+			individualRepository.findAnonymousByCreateDateAndLastActivityDate(
+				DateUtil.newDateString(), PageRequest.of(0, 10));
+
+		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+
+		Individual individual = individuals.get(0);
+
+		Assert.assertEquals(_individual2Id, individual.getId());
+	}
+
+	@Test
 	public void testFindByAnySegmentIds() {
 		List<Individual> individuals = individualRepository.findByAnySegmentIds(
 			_segmentId);
@@ -279,7 +313,7 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		Individual individual = individuals.get(0);
 
-		Assert.assertEquals(_individualId, individual.getId());
+		Assert.assertEquals(_individual1Id, individual.getId());
 	}
 
 	@Test
@@ -301,7 +335,7 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		Individual individual = individuals.get(0);
 
-		Assert.assertEquals(_individualId, individual.getId());
+		Assert.assertEquals(_individual1Id, individual.getId());
 	}
 
 	@Test
@@ -353,27 +387,27 @@ public abstract class BaseIndividualRepositoryTestCase
 	@Test
 	public void testFindByIdAfter() {
 		List<Individual> individuals = individualRepository.findByIdAfter(
-			_individualId - 1L, PageRequest.of(0, 1));
+			_individual1Id - 1L, PageRequest.of(0, 1));
 
 		Assert.assertEquals(individuals.toString(), 1, individuals.size());
 
 		Individual individual = individuals.get(0);
 
-		Assert.assertEquals(_individualId, individual.getId());
+		Assert.assertEquals(_individual1Id, individual.getId());
 	}
 
 	@Test
 	public void testFindByIdsInAndKeywords() {
 		List<Individual> individuals =
 			individualRepository.findByIdsInAndKeywords(
-				Collections.singletonList(_individualId), "liferay",
+				Collections.singletonList(_individual1Id), "liferay",
 				PageRequest.of(0, 1));
 
 		Assert.assertEquals(individuals.toString(), 1, individuals.size());
 
 		Individual individual = individuals.get(0);
 
-		Assert.assertEquals(_individualId, individual.getId());
+		Assert.assertEquals(_individual1Id, individual.getId());
 	}
 
 	@Test
@@ -386,7 +420,7 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		Individual individual = individuals.get(0);
 
-		Assert.assertEquals(_individualId, individual.getId());
+		Assert.assertEquals(_individual1Id, individual.getId());
 	}
 
 	@Test
@@ -395,6 +429,13 @@ public abstract class BaseIndividualRepositoryTestCase
 			individualRepository.findIndividualCounts(false, _segmentId);
 
 		Assert.assertEquals((Long)1L, individualCounts.get(11L));
+	}
+
+	@Test
+	public void testFindKnownIndividualIds() {
+		Assert.assertEquals(
+			Arrays.asList(_individual1Id),
+			individualRepository.findKnownIndividualIds(null, _segmentId));
 	}
 
 	@Test
@@ -465,10 +506,10 @@ public abstract class BaseIndividualRepositoryTestCase
 	@Test
 	public void testUpdateAssociatedIds() {
 		individualRepository.updateAssociatedIds(
-			"organizationIds", Collections.singleton(234L), _individualId);
+			"organizationIds", Collections.singleton(234L), _individual1Id);
 
 		Optional<Individual> individualOptional = individualRepository.findById(
-			_individualId);
+			_individual1Id);
 
 		Individual individual = individualOptional.get();
 
@@ -568,7 +609,8 @@ public abstract class BaseIndividualRepositoryTestCase
 	@Autowired
 	private FieldMappingRepository _fieldMappingRepository;
 
-	private Long _individualId;
+	private Long _individual1Id;
+	private Long _individual2Id;
 	private Long _segmentId;
 
 }
