@@ -19,7 +19,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "400-500",
+			"name": "400 to 500",
 			"previousValue": 3,
 			"value": 5
 		},
@@ -42,7 +42,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "200-300",
+			"name": "200 to 300",
 			"previousValue": 0,
 			"value": 1
 		},
@@ -65,7 +65,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "300-400",
+			"name": "300 to 400",
 			"previousValue": 0,
 			"value": 1
 		},
@@ -88,7 +88,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "500-600",
+			"name": "500 to 600",
 			"previousValue": 0,
 			"value": 1
 		}

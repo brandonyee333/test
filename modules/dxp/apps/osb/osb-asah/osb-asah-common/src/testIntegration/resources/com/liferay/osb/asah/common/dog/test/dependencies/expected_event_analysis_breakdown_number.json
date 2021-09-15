@@ -19,7 +19,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "1.0-1.5",
+			"name": "1.0 to 1.5",
 			"previousValue": 2,
 			"value": 3
 		},
@@ -42,7 +42,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "0.0-0.5",
+			"name": "0.0 to 0.5",
 			"previousValue": 0,
 			"value": 1
 		},
@@ -65,7 +65,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "1.5-2.0",
+			"name": "1.5 to 2.0",
 			"previousValue": 1,
 			"value": 1
 		},
@@ -88,7 +88,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "2.0-2.5",
+			"name": "2.0 to 2.5",
 			"previousValue": 0,
 			"value": 1
 		},
@@ -111,7 +111,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "2.5-3.0",
+			"name": "2.5 to 3.0",
 			"previousValue": 0,
 			"value": 1
 		},
@@ -134,7 +134,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "4.0-4.5",
+			"name": "4.0 to 4.5",
 			"previousValue": 1,
 			"value": 1
 		},
@@ -157,7 +157,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "5.0-5.5",
+			"name": "5.0 to 5.5",
 			"previousValue": 0,
 			"value": 1
 		},
@@ -180,7 +180,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "8.5-9.0",
+			"name": "8.5 to 9.0",
 			"previousValue": 0,
 			"value": 1
 		},
@@ -203,7 +203,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "9.5-10.0",
+			"name": "9.5 to 10.0",
 			"previousValue": 0,
 			"value": 1
 		}
