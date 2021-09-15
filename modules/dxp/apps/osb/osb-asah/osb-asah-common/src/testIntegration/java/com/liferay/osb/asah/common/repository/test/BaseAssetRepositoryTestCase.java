@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -53,7 +54,13 @@ public abstract class BaseAssetRepositoryTestCase
 	public void setUp() {
 		DataSource dataSource = _addDataSource();
 
-		_dataSourceId = dataSource.getId();
+		_dataSourceId = Optional.ofNullable(
+			dataSource
+		).map(
+			DataSource::getId
+		).orElse(
+			0L
+		);
 
 		Asset asset1 = new Asset();
 
