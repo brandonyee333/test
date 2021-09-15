@@ -214,14 +214,14 @@ public class EventAnalysisDog {
 			long binFloor = Long.parseLong(key);
 			Number binSize = eventAnalysisBreakdown.getBinSize();
 
-			return binFloor + "-" + (binFloor + binSize.longValue());
+			return binFloor + " to " + (binFloor + binSize.longValue());
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
 			float binFloor = Float.parseFloat(key);
 			Number binSize = eventAnalysisBreakdown.getBinSize();
 
-			return binFloor + "-" + (binFloor + binSize.floatValue());
+			return binFloor + " to " + (binFloor + binSize.floatValue());
 		}
 
 		return key;
