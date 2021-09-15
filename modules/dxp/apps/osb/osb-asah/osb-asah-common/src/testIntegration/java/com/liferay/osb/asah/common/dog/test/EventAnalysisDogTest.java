@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.dog.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.EventAnalysisDog;
+import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.AttributeType;
@@ -35,6 +36,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -339,6 +341,82 @@ public class EventAnalysisDogTest {
 
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
+	public void testGetEventAnalysisBreakdownWithDateFilterAfter() {
+		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
+			AnalysisType.TOTAL, 1L, true, Collections.emptyList(),
+			Collections.singletonList(
+				new EventAnalysisFilter(
+					"56789", AttributeType.EVENT,
+					EventAttributeDefinition.DataType.DATE, "gt",
+					Collections.singletonList("2021-03-14"))),
+			246810L, 0, 10,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-10")));
+
+		Assert.assertEquals(1, eventAnalysis.getCount());
+		Assert.assertEquals(0, eventAnalysis.getPage());
+		Assert.assertEquals(9L, eventAnalysis.getValue());
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
+	@Test
+	public void testGetEventAnalysisBreakdownWithDateFilterBefore() {
+		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
+			AnalysisType.TOTAL, 1L, true, Collections.emptyList(),
+			Collections.singletonList(
+				new EventAnalysisFilter(
+					"56789", AttributeType.EVENT,
+					EventAttributeDefinition.DataType.DATE, "lt",
+					Collections.singletonList("2021-03-14"))),
+			246810L, 0, 10,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-10")));
+
+		Assert.assertEquals(1, eventAnalysis.getCount());
+		Assert.assertEquals(0, eventAnalysis.getPage());
+		Assert.assertEquals(5L, eventAnalysis.getValue());
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
+	@Test
+	public void testGetEventAnalysisBreakdownWithDateFilterBetween() {
+		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
+			AnalysisType.TOTAL, 1L, true, Collections.emptyList(),
+			Collections.singletonList(
+				new EventAnalysisFilter(
+					"56789", AttributeType.EVENT,
+					EventAttributeDefinition.DataType.DATE, "between",
+					Arrays.asList("2020-01-01", "2021-05-10"))),
+			246810L, 0, 10,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-10")));
+
+		Assert.assertEquals(1, eventAnalysis.getCount());
+		Assert.assertEquals(0, eventAnalysis.getPage());
+		Assert.assertEquals(7L, eventAnalysis.getValue());
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
+	@Test
+	public void testGetEventAnalysisBreakdownWithDateFilterIs() {
+		EventAnalysis eventAnalysis = _eventAnalysisDog.getEventAnalysis(
+			AnalysisType.TOTAL, 1L, true, Collections.emptyList(),
+			Collections.singletonList(
+				new EventAnalysisFilter(
+					"56789", AttributeType.EVENT,
+					EventAttributeDefinition.DataType.DATE, "eq",
+					Collections.singletonList("2021-05-13"))),
+			246810L, 0, 10,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-10")));
+
+		Assert.assertEquals(1, eventAnalysis.getCount());
+		Assert.assertEquals(0, eventAnalysis.getPage());
+		Assert.assertEquals(6L, eventAnalysis.getValue());
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
+	@Test
 	public void testGetEventAnalysisBreakdownWithFilter() throws Exception {
 		EventAnalysisBreakdown eventAnalysisBreakdown1 =
 			new EventAnalysisBreakdown(
@@ -509,5 +587,8 @@ public class EventAnalysisDogTest {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private PreferenceDog _preferenceDog;
 
 }
