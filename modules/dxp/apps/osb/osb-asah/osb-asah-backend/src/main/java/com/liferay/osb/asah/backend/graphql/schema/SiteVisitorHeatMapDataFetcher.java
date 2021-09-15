@@ -41,8 +41,7 @@ public class SiteVisitorHeatMapDataFetcher
 
 		return siteVisitorHeatMapDog.getHeatMapMetrics(
 			searchQueryContext.getAssetId(), searchQueryContext.getChannelId(),
-			searchQueryContext.getTimeRange(),
-			searchQueryContext.getTimeZoneId());
+			searchQueryContext.getTimeRange());
 	}
 
 	@Autowired

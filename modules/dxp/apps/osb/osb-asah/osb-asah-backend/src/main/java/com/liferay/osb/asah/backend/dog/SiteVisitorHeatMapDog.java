@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.HeatMapMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -53,13 +54,10 @@ import org.springframework.stereotype.Component;
 public class SiteVisitorHeatMapDog {
 
 	public List<HeatMapMetric> getHeatMapMetrics(
-		String assetId, String channelId, TimeRange timeRange,
-		String timeZoneId) {
+		String assetId, String channelId, TimeRange timeRange) {
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			"pages",
-			_buildSearchSourceBuilder(
-				assetId, channelId, timeRange, timeZoneId));
+			"pages", _buildSearchSourceBuilder(assetId, channelId, timeRange));
 
 		if (DogUtil.isEmpty(aggregations)) {
 			return Collections.emptyList();
@@ -82,22 +80,18 @@ public class SiteVisitorHeatMapDog {
 	}
 
 	private SearchSourceBuilder _buildSearchSourceBuilder(
-		String assetId, String channelId, TimeRange timeRange,
-		String timeZoneId) {
-
-		AggregationBuilder aggregationBuilder = _getTermsAggregationBuilder(
-			timeZoneId);
+		String assetId, String channelId, TimeRange timeRange) {
 
 		SearchQueryContext searchQueryContext = new SearchQueryContext();
 
 		searchQueryContext.setDataSourceId(assetId);
 		searchQueryContext.setChannelId(channelId);
 		searchQueryContext.setTimeRange(timeRange);
-		searchQueryContext.setTimeZoneId(timeZoneId);
+		searchQueryContext.setTimeZoneId(_timeZoneDog.getTimeZoneId());
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
-			aggregationBuilder, Optional.empty(), Collections.emptySet(), null,
-			null, searchQueryContext);
+			_getTermsAggregationBuilder(), Optional.empty(),
+			Collections.emptySet(), null, null, searchQueryContext);
 	}
 
 	private List<HeatMapMetric> _createHeatMapMetrics(
@@ -148,14 +142,15 @@ public class SiteVisitorHeatMapDog {
 		return new ArrayList<>(heatMapMetrics.values());
 	}
 
-	private AggregationBuilder _getTermsAggregationBuilder(String timeZoneId) {
+	private AggregationBuilder _getTermsAggregationBuilder() {
 		TermsAggregationBuilder termsAggregationBuilder =
 			AggregationBuilders.terms("visitor_by_time");
 
 		termsAggregationBuilder.script(
 			ScriptUtil.createScript(
 				getClass(), "visitor_heat_map_aggregation_script.painless",
-				Collections.singletonMap("timeZoneId", timeZoneId)));
+				Collections.singletonMap(
+					"timeZoneId", _timeZoneDog.getTimeZoneId())));
 		termsAggregationBuilder.size(24 * 7);
 		termsAggregationBuilder.subAggregation(
 			AggregationBuilders.cardinality(
@@ -174,5 +169,8 @@ public class SiteVisitorHeatMapDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }
