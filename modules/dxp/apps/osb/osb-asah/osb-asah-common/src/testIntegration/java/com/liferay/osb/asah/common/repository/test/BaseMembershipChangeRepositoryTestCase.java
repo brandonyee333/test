@@ -53,9 +53,7 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 		_newDayDate = DateUtil.newDayDate();
 
 		_segments = Arrays.asList(_addSegment(), _addSegment(), _addSegment());
-
 		_tomorrow = DateUtils.addDays(_newDayDate, 1);
-
 		_yesterday = DateUtils.addDays(_newDayDate, -1);
 
 		List<MembershipChange> membershipsChanges = new LinkedList<>();
@@ -262,10 +260,8 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 		membershipChange.setIndividualId(individualId);
 		membershipChange.setIndividualName(
 			String.format("Individual Name %d", individualId));
-
 		membershipChange.setIndividualsCount(knownIndividualsCount);
 		membershipChange.setIndividualSegmentId(segment.getId());
-
 		membershipChange.setJoinedDate(modifiedDate);
 		membershipChange.setKnownIndividualsCount(knownIndividualsCount);
 		membershipChange.setModifiedDate(modifiedDate);
