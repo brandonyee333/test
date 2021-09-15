@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.model.CohortHeatMapMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.backend.model.VisitorCohortMetric;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
@@ -153,8 +154,7 @@ public class VisitorCohortHeatMapDog {
 		Interval interval = searchQueryContext.getInterval();
 
 		DateHistogramAggregationBuilder dateHistogramAggregationBuilder =
-			_getDateHistogramAggregationBuilder(
-				interval, searchQueryContext.getTimeZoneId());
+			_getDateHistogramAggregationBuilder(interval);
 
 		dateHistogramAggregationBuilder.subAggregation(
 			_createIndividualIdsAggregationBuilder(metricType));
@@ -359,7 +359,7 @@ public class VisitorCohortHeatMapDog {
 	}
 
 	private DateHistogramAggregationBuilder _getDateHistogramAggregationBuilder(
-		Interval interval, String timeZoneId) {
+		Interval interval) {
 
 		DateHistogramAggregationBuilder dateHistogramAggregationBuilder =
 			AggregationBuilders.dateHistogram("ranges");
@@ -381,7 +381,7 @@ public class VisitorCohortHeatMapDog {
 		}
 
 		dateHistogramAggregationBuilder.format("8u-MM-dd");
-		dateHistogramAggregationBuilder.timeZone(ZoneId.of(timeZoneId));
+		dateHistogramAggregationBuilder.timeZone(_timeZoneDog.getZoneId());
 
 		return dateHistogramAggregationBuilder;
 	}
@@ -396,5 +396,8 @@ public class VisitorCohortHeatMapDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }
