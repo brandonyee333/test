@@ -52,7 +52,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -655,22 +654,12 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			return;
 		}
 
-		segment.setIndividualCount(
-			Optional.ofNullable(
-				membershipChange.getIndividualsCount()
-			).orElse(
-				0L
-			));
-
-		segment.setKnownIndividualCount(
-			Optional.ofNullable(
-				membershipChange.getKnownIndividualsCount()
-			).orElse(
-				0L
-			));
-
 		segment.setAnonymousIndividualCount(
-			segment.getIndividualCount() - segment.getKnownIndividualCount());
+			membershipChange.getIndividualsCount() -
+				membershipChange.getKnownIndividualsCount());
+		segment.setIndividualCount(membershipChange.getIndividualsCount());
+		segment.setKnownIndividualCount(
+			membershipChange.getKnownIndividualsCount());
 	}
 
 	private static final Log _log = LogFactory.getLog(
