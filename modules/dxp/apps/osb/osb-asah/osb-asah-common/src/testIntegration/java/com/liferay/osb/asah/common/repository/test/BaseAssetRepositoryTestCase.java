@@ -201,15 +201,17 @@ public abstract class BaseAssetRepositoryTestCase
 	@Test
 	public void testFindByChannelIds() {
 		List<Asset> assets = _assetRepository.findByChannelIds(
-			Arrays.asList(1L, 2L));
+			Arrays.asList(1L, 2L), PageRequest.of(0, 10));
 
 		Assert.assertEquals(assets.toString(), 3, assets.size());
 
-		assets = _assetRepository.findByChannelIds(Arrays.asList(2L));
+		assets = _assetRepository.findByChannelIds(
+			Arrays.asList(2L), PageRequest.of(0, 10));
 
 		Assert.assertEquals(assets.toString(), 0, assets.size());
 
-		assets = _assetRepository.findByChannelIds(Arrays.asList(1L));
+		assets = _assetRepository.findByChannelIds(
+			Arrays.asList(1L), PageRequest.of(0, 10));
 
 		Assert.assertEquals(assets.toString(), 3, assets.size());
 	}

@@ -337,24 +337,33 @@ public class ChannelDog extends BaseFaroInfoDog {
 	}
 
 	private void _deleteAssets(List<Long> channelIds) throws Exception {
-		List<Asset> assets = _assetRepository.findByChannelIds(channelIds);
+		int page = 0;
 
-		assets.forEach(
-			asset -> {
-				Set<Long> assetChannelIds = asset.getChannelIds();
+		while (true) {
+			List<Asset> assets = _assetRepository.findByChannelIds(
+				channelIds, PageRequest.of(page++, 50));
 
-				assetChannelIds.removeAll(channelIds);
+			if (assets.isEmpty()) {
+				break;
+			}
 
-				if (assetChannelIds.isEmpty()) {
-					_assetDog.deleteAsset(
-						asset,
-						DateUtil.newDayLocalDateTimeString(
-							_timeZoneDog.getZoneId()));
-				}
-				else {
-					_assetDog.updateAsset(asset);
-				}
-			});
+			assets.forEach(
+				asset -> {
+					Set<Long> assetChannelIds = asset.getChannelIds();
+
+					assetChannelIds.removeAll(channelIds);
+
+					if (assetChannelIds.isEmpty()) {
+						_assetDog.deleteAsset(
+							asset,
+							DateUtil.newDayLocalDateTimeString(
+								_timeZoneDog.getZoneId()));
+					}
+					else {
+						_assetDog.updateAsset(asset);
+					}
+				});
+		}
 	}
 
 	private void _deleteData(

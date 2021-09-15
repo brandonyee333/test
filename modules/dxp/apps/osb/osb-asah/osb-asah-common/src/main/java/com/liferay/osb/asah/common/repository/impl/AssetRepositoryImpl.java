@@ -145,7 +145,9 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public List<Asset> findByChannelIds(List<Long> channelIds) {
+	public List<Asset> findByChannelIds(
+		List<Long> channelIds, Pageable pageable) {
+
 		SelectSelectStep<Record> selectDistinct = _dslContext.selectDistinct(
 			DSL.table(
 				"Asset"
@@ -157,6 +159,12 @@ public class AssetRepositoryImpl extends BaseRepository {
 			DSL.condition(
 				String.format(
 					"channelIds && '{%s}'", StringUtils.join(channelIds, ",")))
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
 		).fetch(
 		).map(
 			this::_toAsset

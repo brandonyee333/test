@@ -178,12 +178,22 @@ public class ElasticsearchAssetRepositoryImpl
 	}
 
 	@Override
-	public List<Asset> findByChannelIds(List<Long> channelIds) {
+	public List<Asset> findByChannelIds(
+		List<Long> channelIds, Pageable pageable) {
+
 		return toList(
-			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
-				QueryBuilders.termsQuery(
-					"channelIds", ListUtil.map(channelIds, String::valueOf))));
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							QueryBuilders.termsQuery(
+								"channelIds",
+								ListUtil.map(channelIds, String::valueOf)));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
 	}
 
 	@Override
