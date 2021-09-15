@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dog.SiteVisitorHeatMapDog;
 import com.liferay.osb.asah.backend.model.HeatMapMetric;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -60,8 +61,7 @@ public class SiteVisitorHeatMapDogTest {
 
 		List<HeatMapMetric> heatMapMetrics =
 			_siteVisitorHeatMapDog.getHeatMapMetrics(
-				null, "1", TimeRange.of(localDate, localDate.minusDays(49)),
-				"UTC");
+				null, "1", TimeRange.of(localDate, localDate.minusDays(49)));
 
 		Assert.assertEquals(
 			heatMapMetrics.toString(), 168, heatMapMetrics.size());
@@ -94,7 +94,7 @@ public class SiteVisitorHeatMapDogTest {
 	public void testVisitorHeatMapMetricsLast24Hours() {
 		List<HeatMapMetric> heatMapMetrics =
 			_siteVisitorHeatMapDog.getHeatMapMetrics(
-				null, "1", TimeRange.LAST_24_HOURS, "UTC");
+				null, "1", TimeRange.LAST_24_HOURS);
 
 		double[] expectedValues = new double[heatMapMetrics.size()];
 
@@ -110,7 +110,7 @@ public class SiteVisitorHeatMapDogTest {
 	public void testVisitorHeatMapMetricsLast28Days() {
 		List<HeatMapMetric> heatMapMetrics =
 			_siteVisitorHeatMapDog.getHeatMapMetrics(
-				null, "1", TimeRange.LAST_28_DAYS, "UTC");
+				null, "1", TimeRange.LAST_28_DAYS);
 
 		Map<Pair<Integer, Integer>, Double> expectedValuesMap =
 			new HashMap<Pair<Integer, Integer>, Double>() {
@@ -138,7 +138,7 @@ public class SiteVisitorHeatMapDogTest {
 	public void testVisitorHeatMapMetricsLast30Days() {
 		List<HeatMapMetric> heatMapMetrics =
 			_siteVisitorHeatMapDog.getHeatMapMetrics(
-				null, "1", TimeRange.LAST_30_DAYS, "UTC");
+				null, "1", TimeRange.LAST_30_DAYS);
 
 		double[] actualValues = _getActualValues(heatMapMetrics);
 
@@ -167,7 +167,7 @@ public class SiteVisitorHeatMapDogTest {
 	public void testVisitorHeatMapMetricsLast90Days() {
 		List<HeatMapMetric> heatMapMetrics =
 			_siteVisitorHeatMapDog.getHeatMapMetrics(
-				null, "1", TimeRange.LAST_90_DAYS, "UTC");
+				null, "1", TimeRange.LAST_90_DAYS);
 
 		Assert.assertEquals(
 			heatMapMetrics.toString(), 168, heatMapMetrics.size());
@@ -202,7 +202,7 @@ public class SiteVisitorHeatMapDogTest {
 	public void testVisitorHeatMapMetricsLast180Days() {
 		List<HeatMapMetric> heatMapMetrics =
 			_siteVisitorHeatMapDog.getHeatMapMetrics(
-				null, "1", TimeRange.LAST_180_DAYS, "UTC");
+				null, "1", TimeRange.LAST_180_DAYS);
 
 		Assert.assertEquals(
 			heatMapMetrics.toString(), 168, heatMapMetrics.size());
@@ -240,7 +240,7 @@ public class SiteVisitorHeatMapDogTest {
 	public void testVisitorHeatMapMetricsLastYear() {
 		List<HeatMapMetric> heatMapMetrics =
 			_siteVisitorHeatMapDog.getHeatMapMetrics(
-				null, "1", TimeRange.LAST_YEAR, "UTC");
+				null, "1", TimeRange.LAST_YEAR);
 
 		Assert.assertEquals(
 			heatMapMetrics.toString(), 168, heatMapMetrics.size());
@@ -278,9 +278,11 @@ public class SiteVisitorHeatMapDogTest {
 	@Ignore
 	@Test
 	public void testVisitorHeatMapMetricsWithTimeZone() {
+		_preferenceDog.savePreference("time-zone-id", "-07:00");
+
 		List<HeatMapMetric> heatMapMetrics =
 			_siteVisitorHeatMapDog.getHeatMapMetrics(
-				null, "1", TimeRange.LAST_90_DAYS, "-07:00");
+				null, "1", TimeRange.LAST_90_DAYS);
 
 		Map<Pair<Integer, Integer>, Double> expectedValuesMap =
 			new HashMap<Pair<Integer, Integer>, Double>() {
@@ -302,8 +304,10 @@ public class SiteVisitorHeatMapDogTest {
 		Assert.assertArrayEquals(
 			expectedValues, _getActualValues(heatMapMetrics), 0);
 
+		_preferenceDog.savePreference("time-zone-id", "-03:00");
+
 		heatMapMetrics = _siteVisitorHeatMapDog.getHeatMapMetrics(
-			null, "1", TimeRange.LAST_90_DAYS, "-03:00");
+			null, "1", TimeRange.LAST_90_DAYS);
 
 		expectedValuesMap = new HashMap<Pair<Integer, Integer>, Double>() {
 			{
@@ -333,7 +337,7 @@ public class SiteVisitorHeatMapDogTest {
 	public void testVisitorHeatMapMetricsYesterday() {
 		List<HeatMapMetric> heatMapMetrics =
 			_siteVisitorHeatMapDog.getHeatMapMetrics(
-				null, "1", TimeRange.YESTERDAY, "UTC");
+				null, "1", TimeRange.YESTERDAY);
 
 		Map<Pair<Integer, Integer>, Double> expectedValuesMap =
 			new HashMap<Pair<Integer, Integer>, Double>() {
@@ -392,6 +396,9 @@ public class SiteVisitorHeatMapDogTest {
 
 		return expectedValues;
 	}
+
+	@Autowired
+	private PreferenceDog _preferenceDog;
 
 	@Autowired
 	private SiteVisitorHeatMapDog _siteVisitorHeatMapDog;
