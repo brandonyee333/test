@@ -62,13 +62,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.ResourceNotFoundException;
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -204,46 +200,10 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		if (!segmentDog.isIncludeAnonymousUsers(id)) {
-			List<Long> individualIds = new ArrayList<>();
-
-			BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-				QueryBuilders.existsQuery("demographics.email")
-			).filter(
-				QueryBuilders.termsQuery(
-					"individualSegmentIds", String.valueOf(id))
-			);
-
-			if (StringUtils.isNotEmpty(filterString)) {
-				boolQueryBuilder.filter(
-					FilterStringToQueryBuilderConverter.convert(filterString));
-			}
-
-			SearchResponse searchResponse = faroInfoElasticsearchInvoker.search(
-				"individuals",
-				searchSourceBuilder -> {
-					searchSourceBuilder.aggregation(
-						AggregationBuilders.terms(
-							"ids"
-						).field(
-							"id"
-						).size(
-							Integer.MAX_VALUE
-						));
-					searchSourceBuilder.query(boolQueryBuilder);
-					searchSourceBuilder.size(0);
-				});
-
-			Aggregations aggregations = searchResponse.getAggregations();
-
-			Terms terms = aggregations.get("ids");
-
-			for (Terms.Bucket bucket : terms.getBuckets()) {
-				individualIds.add(Long.valueOf(bucket.getKeyAsString()));
-			}
-
 			return _toMembershipDTOsPageDTO(
 				membershipDog.getMembershipsPage(
-					individualIds, id, "ACTIVE", page, size, sorts));
+					_individualDog.getKnownIndividualIds(filterString, id), id,
+					"ACTIVE", page, size, sorts));
 		}
 
 		return _toMembershipDTOsPageDTO(

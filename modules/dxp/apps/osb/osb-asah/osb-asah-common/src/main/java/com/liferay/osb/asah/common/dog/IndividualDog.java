@@ -719,6 +719,13 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return _individualRepository.countKnownIndividuals(segmentId);
 	}
 
+	public List<Long> getKnownIndividualIds(
+		String filterString, Long segmentId) {
+
+		return _individualRepository.findKnownIndividualIds(
+			filterString, segmentId);
+	}
+
 	public Page<Transformation> getTransformationsPage(
 		String apply, @Nullable Long channelId, @Nullable String filterString,
 		Boolean includeAnonymousUsers, @Nullable Long segmentId, int page,
