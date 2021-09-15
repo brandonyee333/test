@@ -394,6 +394,10 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return updateIndividual(individualId, individual, false);
 	}
 
+	public long countIndividuals(List<Long> individualIds) {
+		return countIndividuals(individualIds, null);
+	}
+
 	public long countIndividuals(List<Long> individualIds, String keywords) {
 		return _individualRepository.countByIdsInAndKeywords(
 			individualIds, keywords);

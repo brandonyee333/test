@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.dog.configuration.DogConfiguration;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.MetricType;
@@ -169,13 +170,8 @@ public class UserDog {
 			return 0;
 		}
 
-		return _faroInfoElasticsearchInvoker.count(
-			"individuals",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery("id", individualIds)
-			).filter(
-				QueryBuilders.existsQuery("demographics.email")
-			));
+		return _individualDog.countIndividuals(
+			ListUtil.map(individualIds, Long::valueOf));
 	}
 
 	private AggregationBuilder _createCardinalityAggregationBuilder(
@@ -225,6 +221,9 @@ public class UserDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
