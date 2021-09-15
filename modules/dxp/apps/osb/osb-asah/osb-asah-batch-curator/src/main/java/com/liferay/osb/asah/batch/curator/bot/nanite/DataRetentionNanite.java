@@ -17,17 +17,16 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Preference;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -65,34 +64,20 @@ public class DataRetentionNanite extends BaseNanite {
 			),
 			true, _COLLECTION_NAMES);
 
-		JSONArrayIterator.of(
-			"individuals", faroInfoElasticsearchInvoker,
-			individualJSONObject -> {
-				_individualDog.deleteIndividual(
-					new Date(), individualJSONObject.getLong("id"));
+		int page = 0;
 
-				return null;
+		while (true) {
+			List<Individual> individuals = _individualDog.searchIndividuals(
+				dateString, page++, 50);
+
+			if (individuals.isEmpty()) {
+				break;
 			}
-		).setQueryBuilder(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.rangeQuery(
-					"dateCreated"
-				).lt(
-					dateString
-				)
-			).mustNot(
-				QueryBuilders.nestedQuery(
-					"lastActivityDates",
-					QueryBuilders.rangeQuery(
-						"lastActivityDates.lastActivityDate"
-					).gt(
-						dateString
-					),
-					ScoreMode.None)
-			).mustNot(
-				QueryBuilders.existsQuery("demographics.email")
-			)
-		).iterate();
+
+			for (Individual individual : individuals) {
+				_individualDog.deleteIndividual(new Date(), individual.getId());
+			}
+		}
 	}
 
 	@Override

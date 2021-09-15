@@ -941,6 +941,15 @@ public class IndividualDog extends BaseFaroInfoDog {
 			individual -> populateIndividual(channelId, individual));
 	}
 
+	public List<Individual> searchIndividuals(
+		String dateString, int page, int size) {
+
+		return ListUtil.map(
+			_individualRepository.findAnonymousByCreateDateAndLastActivityDate(
+				dateString, PageRequest.of(page, size)),
+			this::populateIndividual);
+	}
+
 	public Page<Individual> searchIndividualsPage(
 		Long channelId, String filterString, Boolean includeAnonymousUsers,
 		int page, int size, String[] sorts) {
