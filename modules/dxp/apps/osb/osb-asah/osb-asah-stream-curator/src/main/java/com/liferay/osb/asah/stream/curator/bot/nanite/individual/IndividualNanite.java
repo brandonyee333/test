@@ -191,8 +191,17 @@ public class IndividualNanite implements Nanite {
 		).collect(
 			Collectors.toMap(
 				Map.Entry::getKey, Map.Entry::getValue,
-				(activityCount1, activityCount2) ->
-					activityCount1 + activityCount2)
+				(activityCount1, activityCount2) -> {
+					if (activityCount1 == null) {
+						activityCount1 = 0L;
+					}
+
+					if (activityCount2 == null) {
+						activityCount2 = 0L;
+					}
+
+					return activityCount1 + activityCount2;
+				})
 		);
 
 		Set<Individual.ActivitiesCount> individualActivitiesCounts =
