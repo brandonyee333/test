@@ -126,6 +126,9 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 	public Map<Long, Long> findIndividualCounts(
 		boolean includeAnonymousUsers, Long segmentId);
 
+	public List<Long> findKnownIndividualIds(
+		@Nullable String filterString, Long segmentId);
+
 	public List<Distribution> getIndividualDistributions(
 		String fieldName, String fieldType, @Nullable String filterString,
 		Pageable pageable);

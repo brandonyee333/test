@@ -829,6 +829,86 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		return individualCounts;
 	}
 
+	public List<Long> findKnownIndividualIds(
+		@Nullable String filterString, Long segmentId) {
+
+		List<Long> individualIds = new ArrayList<>();
+
+		Condition condition = ConditionUtil.toCondition(
+			filterString, _individualsFilterStringConverterHelper);
+
+		AggregateFunction<Object> aggregateFunction = DSL.max(
+			DSL.field("modifiedDate"));
+		Field<Object> modifiedDateField = DSL.field("field.modifiedDate");
+		Field<Object> nameField = DSL.field("field.name");
+		Field<Object> ownerIdField = DSL.field("field.ownerId");
+
+		SelectSelectStep<Record> modifiedDateSelectSelectStep =
+			_dslContext.select();
+
+		Table<Record> maxModifiedDateTable =
+			modifiedDateSelectSelectStep.select(
+				aggregateFunction.as("modifiedDate"), nameField.as("name"),
+				ownerIdField.as("ownerId")
+			).from(
+				"Field"
+			).where(
+				condition
+			).groupBy(
+				ownerIdField, nameField
+			).asTable(
+				"maxModifiedDateTable"
+			);
+
+		SelectSelectStep<Record1<Object>> selectSelectStep =
+			_dslContext.selectDistinct(DSL.field("individual.id"));
+
+		selectSelectStep.from(
+			"Individual"
+		).join(
+			"Field"
+		).on(
+			DSL.field(
+				"individual.id"
+			).eq(
+				DSL.field("field.ownerid")
+			)
+		).join(
+			maxModifiedDateTable
+		).on(
+			DSL.and(
+				modifiedDateField.eq(
+					maxModifiedDateTable.field("modifiedDate")),
+				DSL.field(
+					"field.name"
+				).eq(
+					maxModifiedDateTable.field("name")
+				),
+				ownerIdField.eq(maxModifiedDateTable.field("ownerId")))
+		).where(
+			DSL.and(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.segmentids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(segmentId), Long[].class)
+				),
+				DSL.field(
+					"individual.emailaddresshashed"
+				).isNotNull())
+		).fetch(
+		).map(
+			record -> {
+				individualIds.add((Long)record.get("individual.id"));
+
+				return null;
+			}
+		);
+
+		return individualIds;
+	}
+
 	public List<Distribution> getIndividualDistributions(
 		String fieldName, String fieldType, @Nullable String filterString,
 		Pageable pageable) {

@@ -604,6 +604,50 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
+	public List<Long> findKnownIndividualIds(
+		@Nullable String filterString, Long segmentId) {
+
+		List<Long> individualIds = new ArrayList<>();
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.existsQuery("demographics.email")
+		).filter(
+			QueryBuilders.termsQuery(
+				"individualSegmentIds", String.valueOf(segmentId))
+		);
+
+		if (StringUtils.isNotEmpty(filterString)) {
+			boolQueryBuilder.filter(
+				FilterStringToQueryBuilderConverter.convert(filterString));
+		}
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			"individuals",
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.terms(
+						"ids"
+					).field(
+						"id"
+					).size(
+						Integer.MAX_VALUE
+					));
+				searchSourceBuilder.query(boolQueryBuilder);
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		Terms terms = aggregations.get("ids");
+
+		for (Terms.Bucket bucket : terms.getBuckets()) {
+			individualIds.add(Long.valueOf(bucket.getKeyAsString()));
+		}
+
+		return individualIds;
+	}
+
+	@Override
 	public List<Distribution> getIndividualDistributions(
 		String fieldName, String fieldType, @Nullable String filterString,
 		Pageable pageable) {
