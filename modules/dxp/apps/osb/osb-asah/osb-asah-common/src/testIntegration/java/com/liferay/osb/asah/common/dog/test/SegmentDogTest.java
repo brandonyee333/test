@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.FieldMapping;
@@ -26,6 +27,7 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -76,12 +78,13 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			JSONArray assetIdsJSONArray = new JSONArray();
 
 			for (int j = 0; j < 3; j++) {
-				JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
-					"assets",
-					FaroInfoTestUtil.buildPageAssetJSONObject(
-						liferayDataSourceId));
+				Asset asset = _assetRepository.save(
+					_objectMapper.convertValue(
+						FaroInfoTestUtil.buildPageAssetJSONObject(
+							liferayDataSourceId),
+						Asset.class));
 
-				assetIdsJSONArray.put(assetJSONObject.getString("id"));
+				assetIdsJSONArray.put(String.valueOf(asset.getId()));
 			}
 
 			_liferayDataSourceAssetIdsJSONObject.put(
@@ -1133,6 +1136,9 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 		"honorificPrefix", "image", "jobTitle", "postalCode", "state", "street",
 		"telephone", "worksFor"
 	};
+
+	@Autowired
+	private AssetRepository _assetRepository;
 
 	@MockBean
 	private ChannelHttp _channelHttp;

@@ -22,10 +22,12 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahTask;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -63,23 +65,23 @@ public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
 		ActivityGroup activityGroup = _activityGroupDog.addActivityGroup(
 			FaroInfoTestUtil.buildActivityGroup(dataSourceId, individual));
 
-		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
-			"assets", FaroInfoTestUtil.buildPageAssetJSONObject(dataSourceId));
-
-		String assetId = assetJSONObject.getString("id");
+		Asset asset = _assetRepository.save(
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildPageAssetJSONObject(dataSourceId),
+				Asset.class));
 
 		Segment segment = FaroInfoTestUtil.buildDynamicSegment(
-			"(((activities/ever eq 'Page#pageViewed#" + assetId + "')))");
+			"(((activities/ever eq 'Page#pageViewed#" + asset.getId() + "')))");
 
-		segment.setReferencedAssetIds(
-			Collections.singleton(Long.valueOf(assetId)));
+		segment.setReferencedAssetIds(Collections.singleton(asset.getId()));
 
 		_segmentDog.addSegment(segment);
 
 		_faroInfoActivityDog.addActivity(
 			FaroInfoTestUtil.buildActivityJSONObject(
 				_objectMapper.convertValue(activityGroup, JSONObject.class),
-				assetJSONObject, "pageViewed", new String[0]));
+				_objectMapper.convertValue(asset, JSONObject.class),
+				"pageViewed", new String[0]));
 
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"UpdateDynamicMembershipsNanite");
@@ -92,6 +94,9 @@ public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
+	private AssetRepository _assetRepository;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;

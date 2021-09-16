@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
@@ -36,6 +37,7 @@ import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
@@ -47,6 +49,7 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -69,6 +72,7 @@ import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -358,14 +362,14 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		DataSource dataSource = _dataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSource());
 
-		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
-			"assets",
-			FaroInfoTestUtil.buildPageAssetJSONObject(dataSource.getId()));
+		Asset asset = _assetRepository.save(
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildPageAssetJSONObject(dataSource.getId()),
+				Asset.class));
 
 		Segment segment = _segmentDog.addSegment(
 			FaroInfoTestUtil.buildDynamicSegment(
-				"activities/ever eq 'page#pageViewed#" +
-					assetJSONObject.getString("id") + "'"));
+				"activities/ever eq 'page#pageViewed#" + asset.getId() + "'"));
 
 		dataSource.setDeletionDate(new Date());
 
@@ -520,9 +524,17 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Long dataSourceId1 = dataSource1.getId();
 		Long dataSourceId2 = dataSource2.getId();
 
-		for (String index :
-				new String[] {"activities", "activity-groups", "assets"}) {
+		List<Asset> assets = _assetRepository.findByFilterString(
+			"dataSourceId eq '" + dataSourceId1 + "'", PageRequest.of(0, 10));
 
+		Assert.assertFalse(assets.isEmpty());
+
+		assets = _assetRepository.findByFilterString(
+			"dataSourceId eq '" + dataSourceId2 + "'", PageRequest.of(0, 10));
+
+		Assert.assertFalse(assets.isEmpty());
+
+		for (String index : new String[] {"activities", "activity-groups"}) {
 			Assert.assertTrue(
 				"Unable to find entry in " + index + " collection with data " +
 					"source ID " + dataSourceId1,
@@ -710,9 +722,13 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		_faroInfoActivityDog.addActivity(
 			FaroInfoTestUtil.buildActivityJSONObject(
 				_objectMapper.convertValue(activityGroup, JSONObject.class),
-				faroInfoElasticsearchInvoker.add(
-					"assets",
-					FaroInfoTestUtil.buildPageAssetJSONObject(dataSourceId)),
+				_objectMapper.convertValue(
+					_assetRepository.save(
+						_objectMapper.convertValue(
+							FaroInfoTestUtil.buildPageAssetJSONObject(
+								dataSourceId),
+							Asset.class)),
+					JSONObject.class),
 				"pageViewed", new String[0]));
 
 		DXPEntity dxpEntity = new DXPEntity();
@@ -791,6 +807,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private ActivityGroupRepository _activityGroupRepository;
+
+	@Autowired
+	private AssetRepository _assetRepository;
 
 	@MockBean
 	private ChannelHttp _channelHttp;

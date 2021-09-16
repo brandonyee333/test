@@ -16,10 +16,11 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -31,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -94,27 +96,17 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 	public void testDeleteChannels() throws Exception {
 		_channelDog.deleteChannels(Arrays.asList(1L, 3L), null, null);
 
-		JSONArray assetsJSONArray = faroInfoElasticsearchInvoker.get("assets");
-
-		Assert.assertEquals(2, assetsJSONArray.length());
-
-		JSONObject assetJSONObject1 = JSONUtil.find(
-			assetsJSONArray, "id", "386700631786606770");
+		Assert.assertEquals(2, _assetRepository.count());
 
 		Assert.assertThat(
 			new String[] {"2"},
 			Matchers.arrayContainingInAnyOrder(
-				JSONUtil.toStringArray(
-					assetJSONObject1.getJSONArray("channelIds"))));
-
-		JSONObject assetJSONObject2 = JSONUtil.find(
-			assetsJSONArray, "id", "386700631786606772");
+				_getChannelAssetChannelIds(386700631786606770L)));
 
 		Assert.assertThat(
 			new String[] {"2", "4"},
 			Matchers.arrayContainingInAnyOrder(
-				JSONUtil.toStringArray(
-					assetJSONObject2.getJSONArray("channelIds"))));
+				_getChannelAssetChannelIds(386700631786606772L)));
 
 		JSONArray blogsJSONArray = _cerebroInfoElasticsearchInvoker.get(
 			"blogs");
@@ -304,6 +296,25 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 
 		return null;
 	}
+
+	private String[] _getChannelAssetChannelIds(Long assetId) {
+		Optional<Asset> assetOptional = _assetRepository.findById(assetId);
+
+		Asset asset = assetOptional.get();
+
+		Set<Long> channelIds = asset.getChannelIds();
+
+		Stream<Long> stream = channelIds.stream();
+
+		return stream.map(
+			String::valueOf
+		).toArray(
+			String[]::new
+		);
+	}
+
+	@Autowired
+	private AssetRepository _assetRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
