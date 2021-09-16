@@ -15,9 +15,9 @@
 package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
@@ -38,9 +38,9 @@ import org.springframework.test.context.ContextConfiguration;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class AssetDogTest {
 
-	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets_duplicate_keywords.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets_duplicate_keywords.json"
 	)
 	@Test
 	public void testGetKeywordsOmitsDuplicateKeywords() {
@@ -52,9 +52,9 @@ public class AssetDogTest {
 			keywords);
 	}
 
-	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets_form_keywords.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets_form_keywords.json"
 	)
 	@Test
 	public void testGetKeywordsOmitsFormKeywords() {

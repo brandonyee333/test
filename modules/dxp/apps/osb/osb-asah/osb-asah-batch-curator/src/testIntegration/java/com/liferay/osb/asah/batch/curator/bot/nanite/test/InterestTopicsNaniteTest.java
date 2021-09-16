@@ -18,8 +18,10 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.InterestTopicsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.dog.InterestTopicDog;
 import com.liferay.osb.asah.common.entity.InterestTopic;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;
@@ -43,9 +45,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
 
-	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
 	)
 	@Test
 	public void test() throws Exception {
@@ -66,9 +68,9 @@ public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
 		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
 	)
 	@Test
 	public void testBlockedKeywords() throws Exception {

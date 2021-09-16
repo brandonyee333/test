@@ -20,9 +20,9 @@ import com.liferay.osb.asah.backend.dto.AssetDTO;
 import com.liferay.osb.asah.backend.rest.controller.AssetsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.json.JSONObject;
@@ -42,9 +42,9 @@ import org.springframework.test.context.ContextConfiguration;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class AssetsRestControllerTest {
 
-	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
 	)
 	@Test
 	public void testGetAssetDTO() {
@@ -58,9 +58,9 @@ public class AssetsRestControllerTest {
 			false);
 	}
 
-	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
 	)
 	@Test
 	public void testGetAssetDTOsPageDTO() throws Exception {
@@ -73,9 +73,9 @@ public class AssetsRestControllerTest {
 			false);
 	}
 
-	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
 	)
 	@Test
 	public void testGetAssetTransformations() throws Exception {

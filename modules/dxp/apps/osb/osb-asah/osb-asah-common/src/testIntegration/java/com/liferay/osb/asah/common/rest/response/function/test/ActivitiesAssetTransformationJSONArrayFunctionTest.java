@@ -16,12 +16,14 @@ package com.liferay.osb.asah.common.rest.response.function.test;
 
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.ActivitiesAssetTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Collections;
@@ -48,9 +50,9 @@ import org.springframework.test.context.ContextConfiguration;
 	name = "activities", resourcePath = "activities.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
-@ElasticsearchIndex(
-	name = "assets", resourcePath = "assets.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+@RepositoryResource(
+	repositoryClass = AssetRepository.class,
+	resourcePath = "osbasahfaroinfo/assets.json"
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class ActivitiesAssetTransformationJSONArrayFunctionTest {

@@ -17,9 +17,11 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 import com.liferay.osb.asah.backend.rest.controller.VisitedPagesRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.json.JSONObject;
@@ -58,12 +60,12 @@ public class VisitedPagesRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
 	)
 	@Test
 	public void testGetVisitedPages() throws Exception {

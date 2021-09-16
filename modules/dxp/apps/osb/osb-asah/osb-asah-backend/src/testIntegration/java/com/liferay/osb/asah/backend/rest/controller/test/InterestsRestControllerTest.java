@@ -17,10 +17,12 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 import com.liferay.osb.asah.backend.rest.controller.InterestsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
@@ -47,9 +49,9 @@ import org.springframework.test.context.ContextConfiguration;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class InterestsRestControllerTest {
 
-	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
 	)
 	@Test
 	public void testGetInterestKeywords() throws Exception {

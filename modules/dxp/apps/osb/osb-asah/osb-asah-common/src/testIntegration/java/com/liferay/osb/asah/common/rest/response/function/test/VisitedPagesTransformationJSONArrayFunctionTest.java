@@ -19,12 +19,14 @@ import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.VisitedPagesTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Collections;
@@ -56,12 +58,12 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
 	)
 	@Test
 	public void testApply() throws Exception {
@@ -104,12 +106,12 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
 	)
 	@Test
 	public void testApplyNoOSBAsahMarker() throws Exception {
@@ -145,9 +147,9 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
 	)
 	@Test
 	public void testApplyNoVisitedPages() throws Exception {
@@ -169,10 +171,6 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -183,6 +181,10 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
 	)
 	@Test
 	public void testApplyWithOwner() throws Exception {
@@ -224,12 +226,12 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
 	)
 	@Test
 	public void testApplyWithPagination() throws Exception {
@@ -263,12 +265,12 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
 	)
 	@Test
 	public void testApplyWithSort() throws Exception {

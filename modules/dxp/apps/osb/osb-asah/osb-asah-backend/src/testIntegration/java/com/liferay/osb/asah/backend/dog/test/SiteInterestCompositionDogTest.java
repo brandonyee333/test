@@ -17,8 +17,10 @@ package com.liferay.osb.asah.backend.dog.test;
 import com.liferay.osb.asah.backend.dog.SiteInterestCompositionDog;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
@@ -38,9 +40,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 	name = "activities", resourcePath = "activities_info_2.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
-@ElasticsearchIndex(
-	name = "assets", resourcePath = "assets_info.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+@RepositoryResource(
+	repositoryClass = AssetRepository.class,
+	resourcePath = "osbasahfaroinfo/assets_info.json"
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)

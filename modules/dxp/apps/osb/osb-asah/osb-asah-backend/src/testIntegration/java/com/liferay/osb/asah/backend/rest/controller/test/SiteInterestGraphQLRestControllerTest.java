@@ -14,8 +14,10 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 /**
  * @author Geyson Silva
@@ -24,9 +26,9 @@ import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 	name = "activities", resourcePath = "activities_info.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
-@ElasticsearchIndex(
-	name = "assets", resourcePath = "assets_info.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+@RepositoryResource(
+	repositoryClass = AssetRepository.class,
+	resourcePath = "osbasahfaroinfo/assets_info.json"
 )
 public class SiteInterestGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {

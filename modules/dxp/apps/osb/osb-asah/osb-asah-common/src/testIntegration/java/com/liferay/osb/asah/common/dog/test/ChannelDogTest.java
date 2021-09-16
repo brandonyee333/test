@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -72,10 +73,6 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets_delete_channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "blogs_delete_channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
@@ -91,6 +88,10 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_delete_channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets_delete_channels.json"
 	)
 	@Test
 	public void testDeleteChannels() throws Exception {
