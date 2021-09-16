@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.FieldMapping;
@@ -583,6 +584,25 @@ public class SegmentDog extends BaseFaroInfoDog {
 		}
 	}
 
+	private Exception _addAssetReferenceId(
+		Long assetId, String key,
+		Map<String, Set<String>> referencedObjectSets) {
+
+		Set<String> referencedIds = referencedObjectSets.get(key);
+
+		referencedIds.add(String.valueOf(assetId));
+
+		Set<String> referencedAssetDataSourceIds = referencedObjectSets.get(
+			"referencedAssetDataSourceIds");
+
+		Asset asset = _assetDog.getAsset(assetId);
+
+		referencedAssetDataSourceIds.add(
+			String.valueOf(asset.getDataSourceId()));
+
+		return null;
+	}
+
 	private Exception _addReferencedFieldMappingId(
 		String fullFieldName, String ownerType,
 		Set<String> referencedFieldMappingIds) {
@@ -652,7 +672,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return null;
 	}
 
-	private String _getAssetId(String[] terms) {
+	private Long _getAssetId(String[] terms) {
 		if (terms.length != 3) {
 			throw new IllegalArgumentException(
 				"Invalid terms length: " + terms.length);
@@ -671,7 +691,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		String activityKey = StringUtil.unquote(terms[2]);
 
-		return activityKey.substring(activityKey.lastIndexOf("#") + 1);
+		return Long.valueOf(
+			activityKey.substring(activityKey.lastIndexOf("#") + 1));
 	}
 
 	private List<Long> _getIndividualSegmentIds(Long segmentId) {
@@ -752,12 +773,11 @@ public class SegmentDog extends BaseFaroInfoDog {
 		}
 
 		try {
-			String assetId = _getAssetId(terms);
+			Long assetId = _getAssetId(terms);
 
 			if (assetId != null) {
-				return _addReferencedId(
-					"assets", assetId, "referencedAssetIds",
-					referencedObjectSets);
+				return _addAssetReferenceId(
+					assetId, "referencedAssetIds", referencedObjectSets);
 			}
 
 			DXPEntity.Type dxpEntityType = DXPEntity.Type.ofIndividualFieldName(
@@ -1032,6 +1052,9 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
+	private AssetDog _assetDog;
 
 	@Autowired
 	private ChannelDog _channelDog;
