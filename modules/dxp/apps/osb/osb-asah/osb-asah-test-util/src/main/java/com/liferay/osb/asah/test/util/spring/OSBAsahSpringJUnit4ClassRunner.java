@@ -103,6 +103,8 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 			autowireCapableBeanFactory.createBean(
 				OSBAsahElasticsearchTestExecutionListener.class),
 			autowireCapableBeanFactory.createBean(
+				OSBAsahRepositoryTestExecutionListener.class),
+			autowireCapableBeanFactory.createBean(
 				OSBAsahSQLTestExecutionListener.class));
 	}
 
