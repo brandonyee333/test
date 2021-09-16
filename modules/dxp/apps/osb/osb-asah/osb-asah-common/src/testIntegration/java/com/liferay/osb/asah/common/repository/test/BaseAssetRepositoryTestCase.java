@@ -117,6 +117,17 @@ public abstract class BaseAssetRepositoryTestCase
 	}
 
 	@Test
+	public void testCountByAssetTypeAndCanonicalUrlIn() {
+		Assert.assertEquals(
+			2,
+			_assetRepository.countByAssetTypeAndCanonicalURLIn(
+				"Page",
+				Arrays.asList(
+					"https://www.terrance-lueilwitz.biz",
+					"https://www.iva-tillman.com")));
+	}
+
+	@Test
 	public void testFindByAssetType() {
 		List<Asset> assets =
 			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
@@ -129,6 +140,18 @@ public abstract class BaseAssetRepositoryTestCase
 				"seize compelling action-items", "engineer intuitive models",
 				"empower holistic ROI"),
 			_getPageAssetTitles(assets));
+	}
+
+	@Test
+	public void testFindByAssetTypeAndCanonicalUrlIn() {
+		List<Asset> assets = _assetRepository.findByAssetTypeAndCanonicalURLIn(
+			"Page",
+			Arrays.asList(
+				"https://www.terrance-lueilwitz.biz",
+				"https://www.iva-tillman.com"),
+			PageRequest.of(0, 10));
+
+		Assert.assertEquals(assets.toString(), 2, assets.size());
 	}
 
 	@Test
