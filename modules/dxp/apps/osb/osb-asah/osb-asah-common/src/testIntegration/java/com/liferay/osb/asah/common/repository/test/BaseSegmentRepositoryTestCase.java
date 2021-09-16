@@ -155,10 +155,9 @@ public abstract class BaseSegmentRepositoryTestCase
 	public void tearDown() {
 		super.tearDown();
 
+		_accountRepository.deleteAll();
 		_channelRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
-
-		_accountRepository.deleteAll();
 		_individualRepository.deleteAll();
 	}
 
