@@ -14,20 +14,25 @@
 
 package com.liferay.osb.asah.common.rest.response.function;
 
+import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
@@ -38,13 +43,16 @@ import org.elasticsearch.search.aggregations.metrics.InternalCardinality;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * @author Matthew Kong
  */
 public class ActivitiesAssetTransformationJSONArrayFunction
 	implements TransformationJSONArrayFunction {
+
+	public ActivitiesAssetTransformationJSONArrayFunction(AssetDog assetDog) {
+		_assetDog = assetDog;
+	}
 
 	@Override
 	public JSONArray apply(
@@ -98,31 +106,32 @@ public class ActivitiesAssetTransformationJSONArrayFunction
 
 		Terms terms = aggregations.get("assets");
 
-		List<String> assetIds = new ArrayList<>();
+		Set<Long> assetIds = new HashSet();
 
 		for (Terms.Bucket bucket : terms.getBuckets()) {
-			assetIds.add(bucket.getKeyAsString());
+			assetIds.add(Long.valueOf(bucket.getKeyAsString()));
 		}
 
-		Map<String, JSONObject> assetJSONObjects = JSONUtil.toJSONObjectMap(
-			elasticsearchInvoker.get(
-				"assets", QueryBuilders.termsQuery("id", assetIds)),
-			"id");
+		List<Asset> assets = _assetDog.getAssets(assetIds);
+
+		Stream<Asset> stream = assets.stream();
+
+		Map<String, Asset> assetsMap = stream.collect(
+			Collectors.toMap(
+				asset -> String.valueOf(asset.getId()), Function.identity()));
 
 		for (Terms.Bucket bucket : terms.getBuckets()) {
-			JSONObject assetJSONObject = assetJSONObjects.get(
-				bucket.getKeyAsString());
+			Asset asset = assetsMap.get(bucket.getKeyAsString());
 
 			jsonArray.put(
 				JSONUtil.put(
 					"count", bucket.getDocCount()
 				).put(
-					"dataSourceAssetPK",
-					assetJSONObject.getString("dataSourceAssetPK")
+					"dataSourceAssetPK", asset.getDataSourceAssetPK()
 				).put(
-					"id", assetJSONObject.getString("id")
+					"id", String.valueOf(asset.getId())
 				).put(
-					"name", assetJSONObject.getString("name")
+					"name", asset.getTitle()
 				));
 		}
 
@@ -152,6 +161,7 @@ public class ActivitiesAssetTransformationJSONArrayFunction
 		return BucketOrder.count(false);
 	}
 
+	private final AssetDog _assetDog;
 	private long _totalElements;
 
 }
