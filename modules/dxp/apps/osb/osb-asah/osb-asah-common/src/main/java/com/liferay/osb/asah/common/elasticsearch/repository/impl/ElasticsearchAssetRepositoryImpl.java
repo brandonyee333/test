@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -111,6 +112,19 @@ public class ElasticsearchAssetRepositoryImpl
 		Cardinality cardinality = aggregations.get("keywordsCount");
 
 		return cardinality.getValue();
+	}
+
+	@Override
+	public long countByAssetTypeAndCanonicalURLIn(
+		String assetType, Collection<String> canonicalUrls) {
+
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(),
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("assetType", assetType)
+			).filter(
+				QueryBuilders.termsQuery("canonicalUrl", canonicalUrls)
+			));
 	}
 
 	@Override

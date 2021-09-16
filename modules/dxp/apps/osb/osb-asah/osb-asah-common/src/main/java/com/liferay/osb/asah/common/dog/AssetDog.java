@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -214,6 +215,13 @@ public class AssetDog {
 				String.format("keywords/keyword eq '%s'", assetKeyword),
 				_defaultFilterStringConverterHelper),
 			null, null);
+	}
+
+	public long getAssetsCount(
+		String assetType, Collection<String> cannonicalUrls) {
+
+		return _assetRepository.countByAssetTypeAndCanonicalURLIn(
+			assetType, cannonicalUrls);
 	}
 
 	public List<String> getDataSourceAssetPKs(String keyword) {
