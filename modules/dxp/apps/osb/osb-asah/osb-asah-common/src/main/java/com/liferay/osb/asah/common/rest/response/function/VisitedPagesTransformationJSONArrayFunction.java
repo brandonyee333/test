@@ -15,12 +15,14 @@
 package com.liferay.osb.asah.common.rest.response.function;
 
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
@@ -28,6 +30,7 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -37,6 +40,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.apache.commons.lang3.StringUtils;
@@ -55,11 +60,12 @@ import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilde
 import org.elasticsearch.search.aggregations.metrics.InternalCardinality;
 import org.elasticsearch.search.aggregations.metrics.InternalSum;
 import org.elasticsearch.search.aggregations.pipeline.BucketSortPipelineAggregationBuilder;
-import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import org.springframework.data.domain.Sort;
 
 /**
  * @author Leslie Wong
@@ -68,10 +74,12 @@ public class VisitedPagesTransformationJSONArrayFunction
 	implements TransformationJSONArrayFunction {
 
 	public VisitedPagesTransformationJSONArrayFunction(
-		AsahMarkerDog asahMarkerDog, MembershipDog membershipDog, Long ownerId,
-		String ownerType, SegmentDog segmentDog, boolean visitedPages) {
+		AsahMarkerDog asahMarkerDog, AssetDog assetDog,
+		MembershipDog membershipDog, Long ownerId, String ownerType,
+		SegmentDog segmentDog, boolean visitedPages) {
 
 		_asahMarkerDog = asahMarkerDog;
+		_assetDog = assetDog;
 		_membershipDog = membershipDog;
 		_ownerId = ownerId;
 		_ownerType = ownerType;
@@ -162,7 +170,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 
 		JSONArray visitedPagesJSONArray = new JSONArray();
 
-		QueryBuilder assetQueryBuilder = _getAssetQueryBuilder(
+		Collection<String> canonicalUrls = _getCanonicalUrls(
 			collectionName, elasticsearchInvoker, queryBuilder,
 			uniqueVisitsCounts);
 
@@ -172,84 +180,48 @@ public class VisitedPagesTransformationJSONArrayFunction
 
 			_totalElements = internalCardinality.getValue();
 
-			Map<String, JSONObject> assetJSONObjects = new CaseInsensitiveMap(
-				JSONUtil.toJSONObjectMap(
-					elasticsearchInvoker.get("assets", assetQueryBuilder),
-					"canonicalUrl"));
+			Map<String, Asset> assetJSONObjects = new CaseInsensitiveMap(
+				_assetDog.getAssets("Page", canonicalUrls));
 
 			for (Map.Entry<Pair<String, String>, Double> entry :
 					uniqueVisitsCounts.entrySet()) {
 
 				Pair<String, String> titleUrlPair = entry.getKey();
 
-				JSONObject assetJSONObject = assetJSONObjects.get(
-					titleUrlPair.getValue());
+				Asset asset = assetJSONObjects.get(titleUrlPair.getValue());
 
 				visitedPagesJSONArray.put(
 					JSONUtil.put(
-						"canonicalUrl",
-						assetJSONObject.getString("canonicalUrl")
+						"canonicalUrl", asset.getCanonicalURL()
 					).put(
-						"dataSourceId",
-						assetJSONObject.getString("dataSourceId")
+						"dataSourceId", String.valueOf(asset.getDataSourceId())
 					).put(
-						"title", assetJSONObject.getString("name")
+						"title", asset.getTitle()
 					).put(
 						"uniqueVisitsCount", entry.getValue()
 					).put(
-						"url", assetJSONObject.getString("url")
+						"url", asset.getURL()
 					));
 			}
 
 			return visitedPagesJSONArray;
 		}
 
-		Set<String> canonicalUrls = new HashSet<>();
+		Set<String> canonicalUrlsSet = new HashSet<>();
 
-		List<SortBuilder> sortBuilders = new ArrayList<>();
+		List<Asset> assets = _assetDog.getAssets(
+			"Page", canonicalUrls, page, size, _getSort(sortOrderPairs));
 
-		for (Pair<String, SortOrder> sortOrderPair : sortOrderPairs) {
-			String sortField = sortOrderPair.getKey();
-
-			if (sortField.equals("uniqueVisitsCount")) {
-				continue;
-			}
-
-			sortBuilders.add(
-				SortBuilderUtil.fieldSort(sortField, sortOrderPair.getValue()));
-		}
-
-		JSONArray assetsJSONArray = new JSONArray(
-			elasticsearchInvoker.get(
-				"assets",
-				searchSourceBuilder -> {
-					if (!sortByVisitCount) {
-						searchSourceBuilder.from(page * size);
-						searchSourceBuilder.size(size);
-					}
-
-					for (SortBuilder sortBuilder : sortBuilders) {
-						searchSourceBuilder.sort(sortBuilder);
-					}
-
-					searchSourceBuilder.query(assetQueryBuilder);
-				}));
-
-		for (int i = 0; i < assetsJSONArray.length(); i++) {
-			JSONObject assetJSONObject = assetsJSONArray.getJSONObject(i);
-
-			String canonicalUrl = assetJSONObject.getString("canonicalUrl");
-
-			if (canonicalUrls.contains(canonicalUrl)) {
+		for (Asset asset : assets) {
+			if (canonicalUrlsSet.contains(asset.getCanonicalURL())) {
 				continue;
 			}
 
 			double uniqueVisitsCount = 0;
 
-			String assetTitle = assetJSONObject.getString("name");
-
 			Pair<String, String> titleUrlPair = Pair.of(
-				assetTitle.toLowerCase(), canonicalUrl.toLowerCase());
+				StringUtils.lowerCase(asset.getTitle()),
+				StringUtils.lowerCase(asset.getCanonicalURL()));
 
 			if (uniqueVisitsCounts.containsKey(titleUrlPair)) {
 				uniqueVisitsCount = uniqueVisitsCounts.get(titleUrlPair);
@@ -257,20 +229,19 @@ public class VisitedPagesTransformationJSONArrayFunction
 
 			visitedPagesJSONArray.put(
 				JSONUtil.put(
-					"dataSourceId", assetJSONObject.getString("dataSourceId")
+					"dataSourceId", String.valueOf(asset.getDataSourceId())
 				).put(
-					"title", assetJSONObject.getString("name")
+					"title", asset.getTitle()
 				).put(
 					"uniqueVisitsCount", uniqueVisitsCount
 				).put(
-					"url", assetJSONObject.getString("url")
+					"url", asset.getURL()
 				));
 
-			canonicalUrls.add(canonicalUrl);
+			canonicalUrlsSet.add(asset.getCanonicalURL());
 		}
 
-		_totalElements = elasticsearchInvoker.count(
-			"assets", assetQueryBuilder);
+		_totalElements = _assetDog.getAssetsCount("Page", canonicalUrls);
 
 		return visitedPagesJSONArray;
 	}
@@ -364,13 +335,10 @@ public class VisitedPagesTransformationJSONArrayFunction
 		return searchResponse.getAggregations();
 	}
 
-	private QueryBuilder _getAssetQueryBuilder(
+	private Collection<String> _getCanonicalUrls(
 		String collectionName, ElasticsearchInvoker elasticsearchInvoker,
 		QueryBuilder queryBuilder,
 		Map<Pair<String, String>, Double> uniqueVisitsCounts) {
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("assetType", "Page"));
 
 		List<String> urls = new ArrayList<>();
 
@@ -379,19 +347,31 @@ public class VisitedPagesTransformationJSONArrayFunction
 		}
 
 		if (_visitedPages) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termsQuery("canonicalUrl", urls));
-		}
-		else {
-			boolQueryBuilder.filter(
-				QueryBuilders.termsQuery(
-					"canonicalUrl",
-					_getUrls(
-						collectionName, elasticsearchInvoker, queryBuilder,
-						urls)));
+			return urls;
 		}
 
-		return boolQueryBuilder;
+		return _getUrls(
+			collectionName, elasticsearchInvoker, queryBuilder, urls);
+	}
+
+	private Sort _getSort(List<Pair<String, SortOrder>> sortOrderPairs) {
+		Stream<Pair<String, SortOrder>> stream = sortOrderPairs.stream();
+
+		return Sort.by(
+			stream.filter(
+				sortOrderPair -> !StringUtils.equals(
+					sortOrderPair.getKey(), "uniqueVisitsCount")
+			).map(
+				sortOrderPair -> {
+					if (sortOrderPair.getValue() == SortOrder.ASC) {
+						return Sort.Order.asc(sortOrderPair.getKey());
+					}
+
+					return Sort.Order.desc(sortOrderPair.getKey());
+				}
+			).collect(
+				Collectors.toList()
+			));
 	}
 
 	private Map<Pair<String, String>, Double> _getUniqueVisitsCount(
@@ -474,6 +454,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 		"\\[(?<title>[^]]+)] \\[(?<url>[^]]+)]");
 
 	private final AsahMarkerDog _asahMarkerDog;
+	private final AssetDog _assetDog;
 	private final MembershipDog _membershipDog;
 	private final Long _ownerId;
 	private final String _ownerType;
