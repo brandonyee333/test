@@ -90,7 +90,7 @@
 			{
 				name: '<@liferay.language key="portal" /> 6.2',
 				svgId: '#6-2-logo',
-				url: addLocaleParamToURI('${current_locale}', 'categories/360000867972')
+				url: addLocaleParamToURI('${current_locale}', 'articles/360017502912')
 			}
 		];
 
