@@ -171,6 +171,29 @@ public class ElasticsearchAssetRepositoryImpl
 	}
 
 	@Override
+	public List<Asset> findByAssetTypeAndCanonicalURLIn(
+		String assetType, Collection<String> canonicalUrls,
+		@Nullable Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.filter(
+								QueryBuilders.termQuery("assetType", assetType)
+							).filter(
+								QueryBuilders.termsQuery(
+									"canonicalUrl", canonicalUrls)
+							));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
+	}
+
+	@Override
 	public List<Asset> findByAssetTypeAndFilterStringAndKeywords(
 		@Nullable String assetType, FilterHelper filterHelper,
 		@Nullable String keywords, @Nullable Pageable pageable) {

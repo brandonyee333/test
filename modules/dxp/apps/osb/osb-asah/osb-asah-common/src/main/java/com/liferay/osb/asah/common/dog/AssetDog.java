@@ -23,19 +23,22 @@ import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.Faro
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
 
@@ -44,6 +47,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
@@ -205,6 +209,45 @@ public class AssetDog {
 		}
 
 		return IterableUtils.toList(_assetRepository.findAllById(assetIds));
+	}
+
+	public Map<String, Asset> getAssets(
+		String assetType, Collection<String> cannonicalUrls) {
+
+		List<Asset> assets = new ArrayList<>();
+
+		int page = 0;
+
+		while (true) {
+			List<Asset> currentAssets =
+				_assetRepository.findByAssetTypeAndCanonicalURLIn(
+					assetType, cannonicalUrls,
+					PageRequest.of(
+						page++, 50,
+						new com.liferay.osb.asah.common.model.Sort(
+							"id", "asc")));
+
+			if (currentAssets.isEmpty()) {
+				break;
+			}
+
+			assets.addAll(currentAssets);
+		}
+
+		Stream<Asset> stream = assets.stream();
+
+		return stream.collect(
+			Collectors.toMap(
+				Asset::getCanonicalURL, Function.identity(),
+				(existing, replacement) -> replacement));
+	}
+
+	public List<Asset> getAssets(
+		String assetType, Collection<String> cannonicalUrls, int page, int size,
+		Sort sort) {
+
+		return _assetRepository.findByAssetTypeAndCanonicalURLIn(
+			assetType, cannonicalUrls, PageRequest.of(page, size, sort));
 	}
 
 	public List<Asset> getAssets(String assetType, String assetKeyword) {

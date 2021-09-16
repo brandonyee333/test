@@ -54,6 +54,11 @@ public interface AssetRepository extends Repository<Asset, Long> {
 		Long assetId, String assetType, int size);
 
 	@Cacheable
+	public List<Asset> findByAssetTypeAndCanonicalURLIn(
+		String assetType, Collection<String> cannonicalUrls,
+		@Nullable Pageable pageable);
+
+	@Cacheable
 	public List<Asset> findByAssetTypeAndFilterStringAndKeywords(
 		String assetType, FilterHelper filterHelper, @Nullable String keyword,
 		@Nullable Pageable pageable);
