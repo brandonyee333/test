@@ -19,7 +19,7 @@ import com.liferay.osb.asah.backend.dog.ReportIndividualDog;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.ReportAccountDTO;
 import com.liferay.osb.asah.backend.dto.ReportIndividualDTO;
-import com.liferay.osb.asah.backend.dto.SegmentDTO;
+import com.liferay.osb.asah.backend.dto.ReportSegmentDTO;
 import com.liferay.osb.asah.backend.model.Account;
 import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -64,10 +64,10 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/segments")
-	public PageDTO<SegmentDTO> getSegmentDTOPageDTO(
+	public PageDTO<ReportSegmentDTO> getReportSegmentDTOPageDTO(
 		@RequestParam(defaultValue = "") String after) {
 
-		return _toSegmentDTOPageDTO(
+		return _toReportSegmentDTOPageDTO(
 			_segmentDog.getSegmentPage(
 				_getId(after), _PAGE_SIZE, Sort.by(Sort.Order.asc("id"))));
 	}
@@ -96,11 +96,11 @@ public class ReportRestController extends BaseRestController {
 			individualPage.getTotalElements());
 	}
 
-	private PageDTO<SegmentDTO> _toSegmentDTOPageDTO(
+	private PageDTO<ReportSegmentDTO> _toReportSegmentDTOPageDTO(
 		Page<Segment> segmentPage) {
 
 		return new PageDTO<>(
-			ListUtil.map(segmentPage.toList(), SegmentDTO::new),
+			ListUtil.map(segmentPage.toList(), ReportSegmentDTO::new),
 			segmentPage.getTotalElements());
 	}
 

@@ -31,7 +31,7 @@ import com.liferay.osb.asah.backend.dog.UserDog;
 import com.liferay.osb.asah.backend.dog.form.FormPageDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.DataExportTaskDTO;
-import com.liferay.osb.asah.backend.dto.SegmentDTO;
+import com.liferay.osb.asah.backend.dto.ReportSegmentDTO;
 import com.liferay.osb.asah.backend.model.Account;
 import com.liferay.osb.asah.backend.model.Activity;
 import com.liferay.osb.asah.backend.model.AssetMetric;
@@ -723,8 +723,9 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/segments")
-	public ResultBagEntityModel<SegmentDTO> getSegmentDTOResultBagEntityModel(
-		@RequestParam(defaultValue = "0") Integer page) {
+	public ResultBagEntityModel<ReportSegmentDTO>
+		getSegmentDTOResultBagEntityModel(
+			@RequestParam(defaultValue = "0") Integer page) {
 
 		Page<Segment> segmentsPage = _segmentDog.getSegmentsPage(
 			page, _PAGE_SIZE);
@@ -737,7 +738,7 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/segments/{segmentId}")
-	public EntityModel<SegmentDTO> getSegmentEntityModel(
+	public EntityModel<ReportSegmentDTO> getSegmentEntityModel(
 		@PathVariable Long segmentId) {
 
 		return _toSegmentEntityModel(_segmentDog.getSegment(segmentId));
@@ -1033,8 +1034,8 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
-	private ResultBagEntityModel<SegmentDTO> _getSegmentResultBagEntityModel(
-		Integer page) {
+	private ResultBagEntityModel<ReportSegmentDTO>
+		_getSegmentResultBagEntityModel(Integer page) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
@@ -1321,9 +1322,11 @@ public class ReportRestController extends BaseRestController {
 			resultEntityModelMapperFunction);
 	}
 
-	private EntityModel<SegmentDTO> _toSegmentEntityModel(Segment segment) {
+	private EntityModel<ReportSegmentDTO> _toSegmentEntityModel(
+		Segment segment) {
+
 		return new EntityModel<>(
-			new SegmentDTO(segment),
+			new ReportSegmentDTO(segment),
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
