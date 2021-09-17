@@ -1124,9 +1124,13 @@ public class ElasticsearchIndividualRepositoryImpl
 										sortOrder = SortOrder.DESC;
 									}
 
+									String property = sort.getProperty();
+
+									property = property.replace('/', '.');
+
 									searchSourceBuilder.sort(
 										SortBuilderUtil.fieldSort(
-											sort.getProperty(), sortOrder));
+											property, sortOrder));
 								}
 							);
 						}
