@@ -15,12 +15,10 @@
 package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 
 import java.util.List;
 
@@ -67,9 +65,7 @@ public abstract class FilterOperator {
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
 			LocalDate localDate = LocalDate.parse(value);
 
-			return DateUtil.toDate(
-				localDate.atStartOfDay(),
-				ZoneId.of(TimeZoneDogUtil.getTimeZoneId()));
+			return DateUtil.toUTCDate(localDate.atStartOfDay());
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
