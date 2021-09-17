@@ -105,14 +105,14 @@ public interface EventRepository extends Repository<Event, Long> {
 
 	public Map<String, Integer> getEventsCountGroupByEventDate(
 		Long channelId, Long individualId, Interval interval, String keywords,
-		TimeRange timeRange);
+		TimeRange timeRange, String timeZoneId);
 
 	public Map<String, Integer> getEventSessionsCountGroupByEventDate(
 		Long channelId, Long individualId, Interval interval, String keywords,
-		TimeRange timeRange);
+		TimeRange timeRange, String timeZoneId);
 
 	public List<Event> searchEvents(
 		Long channelId, Long individualId, String keywords, Pageable pageable,
-		TimeRange timeRange);
+		TimeRange timeRange, String timeZoneId);
 
 }

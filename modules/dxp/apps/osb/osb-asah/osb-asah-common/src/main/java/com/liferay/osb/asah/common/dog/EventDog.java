@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventDefinition;
@@ -92,7 +93,8 @@ public class EventDog {
 
 		List<Event> events = _eventRepository.searchEvents(
 			channelId, individualId, keywords,
-			PageRequest.of(page, size, Sort.desc("eventDate")), timeRange);
+			PageRequest.of(page, size, Sort.desc("eventDate")), timeRange,
+			_timeZoneDog.getTimeZoneId());
 
 		Stream<Event> eventsStream = events.stream();
 
@@ -170,6 +172,9 @@ public class EventDog {
 
 	@Autowired
 	private EventRepository _eventRepository;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 	@Autowired
 	private UserSessionDog _userSessionDog;

@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
@@ -34,6 +33,7 @@ import java.math.BigInteger;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,7 +62,6 @@ import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
@@ -76,20 +75,21 @@ public class EventRepositoryImpl extends BaseRepository {
 	}
 
 	public Integer countEvents(
-		Long channelId, Long individualId, String keywords,
-		TimeRange timeRange) {
+		Long channelId, Long individualId, String keywords, TimeRange timeRange,
+		String timeZoneId) {
 
 		return _getEventCount(
-			channelId, DSL.count(), individualId, keywords, timeRange);
+			channelId, DSL.count(), individualId, keywords, timeRange,
+			timeZoneId);
 	}
 
 	public Integer countEventSessions(
-		Long channelId, Long individualId, String keywords,
-		TimeRange timeRange) {
+		Long channelId, Long individualId, String keywords, TimeRange timeRange,
+		String timeZoneId) {
 
 		return _getEventCount(
 			channelId, DSL.countDistinct(DSL.field("sessionId")), individualId,
-			keywords, timeRange);
+			keywords, timeRange, timeZoneId);
 	}
 
 	public long countTotalEvents(
@@ -276,12 +276,10 @@ public class EventRepositoryImpl extends BaseRepository {
 
 	public Map<String, Integer> getEventsCountGroupByEventDate(
 		Long channelId, Long individualId, Interval interval, String keywords,
-		TimeRange timeRange) {
+		TimeRange timeRange, String timeZoneId) {
 
 		Field<OffsetDateTime> eventDateField = DSL.field(
-			String.format(
-				"Event.eventDate AT TIME ZONE '%s'",
-				_timeZoneDog.getTimeZoneId()),
+			String.format("Event.eventDate AT TIME ZONE '%s'", timeZoneId),
 			OffsetDateTime.class);
 
 		if (interval == Interval.DAY) {
@@ -314,7 +312,8 @@ public class EventRepositoryImpl extends BaseRepository {
 					DSL.field("Event.eventDefinitionId")
 				)
 			).where(
-				_createCondition(channelId, individualId, keywords, timeRange)
+				_createCondition(
+					channelId, individualId, keywords, timeRange, timeZoneId)
 			).groupBy(
 				eventDateField
 			).fetch(
@@ -325,11 +324,10 @@ public class EventRepositoryImpl extends BaseRepository {
 
 	public Map<String, Integer> getEventSessionsCountGroupByEventDate(
 		Long channelId, Long individualId, Interval interval, String keywords,
-		TimeRange timeRange) {
+		TimeRange timeRange, String timeZoneId) {
 
 		Field<OffsetDateTime> eventDateField = DSL.field(
-			String.format(
-				"eventDate AT TIME ZONE '%s'", _timeZoneDog.getTimeZoneId()),
+			String.format("eventDate AT TIME ZONE '%s'", timeZoneId),
 			OffsetDateTime.class);
 
 		if (interval != Interval.HOUR) {
@@ -364,7 +362,8 @@ public class EventRepositoryImpl extends BaseRepository {
 						)
 					).where(
 						_createCondition(
-							channelId, individualId, keywords, timeRange)
+							channelId, individualId, keywords, timeRange,
+							timeZoneId)
 					)
 				).as(
 					"event1"
@@ -379,7 +378,7 @@ public class EventRepositoryImpl extends BaseRepository {
 
 	public List<Event> searchEvents(
 		Long channelId, Long individualId, String keywords, Pageable pageable,
-		TimeRange timeRange) {
+		TimeRange timeRange, String timeZoneId) {
 
 		Table<Record> eventTable = DSL.table("Event");
 
@@ -397,7 +396,8 @@ public class EventRepositoryImpl extends BaseRepository {
 				DSL.field("EventDefinition.id")
 			)
 		).where(
-			_createCondition(channelId, individualId, keywords, timeRange)
+			_createCondition(
+				channelId, individualId, keywords, timeRange, timeZoneId)
 		).orderBy(
 			getSortFields(pageable.getSort(), eventTable)
 		).limit(
@@ -487,8 +487,8 @@ public class EventRepositoryImpl extends BaseRepository {
 	}
 
 	private Condition _createCondition(
-		Long channelId, Long individualId, String keyword,
-		TimeRange timeRange) {
+		Long channelId, Long individualId, String keyword, TimeRange timeRange,
+		String timeZoneId) {
 
 		Condition condition = DSL.and(
 			DSL.field(
@@ -500,10 +500,9 @@ public class EventRepositoryImpl extends BaseRepository {
 				"Event.eventDate"
 			).between(
 				DateUtil.toUTCLocalDateTime(
-					timeRange.getStartLocalDateTime(),
-					_timeZoneDog.getZoneId()),
+					timeRange.getStartLocalDateTime(), ZoneId.of(timeZoneId)),
 				DateUtil.toUTCLocalDateTime(
-					timeRange.getEndLocalDateTime(), _timeZoneDog.getZoneId())
+					timeRange.getEndLocalDateTime(), ZoneId.of(timeZoneId))
 			),
 			DSL.field(
 				"EventDefinition.hidden", Boolean.class
@@ -694,7 +693,8 @@ public class EventRepositoryImpl extends BaseRepository {
 
 	private Integer _getEventCount(
 		Long channelId, AggregateFunction<Integer> countAggregateFunction,
-		Long individualId, String keywords, TimeRange timeRange) {
+		Long individualId, String keywords, TimeRange timeRange,
+		String timeZoneId) {
 
 		Table<Record> eventTable = DSL.table("Event");
 
@@ -712,7 +712,8 @@ public class EventRepositoryImpl extends BaseRepository {
 				DSL.field("EventDefinition.id")
 			)
 		).where(
-			_createCondition(channelId, individualId, keywords, timeRange)
+			_createCondition(
+				channelId, individualId, keywords, timeRange, timeZoneId)
 		).fetchOne(
 			countAggregateFunction
 		);
@@ -914,8 +915,5 @@ public class EventRepositoryImpl extends BaseRepository {
 	}
 
 	private final DSLContext _dslContext;
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
 
 }

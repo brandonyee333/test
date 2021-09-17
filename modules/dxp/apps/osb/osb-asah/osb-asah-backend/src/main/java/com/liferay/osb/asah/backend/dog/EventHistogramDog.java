@@ -47,7 +47,8 @@ public class EventHistogramDog {
 				Long.valueOf(searchQueryContext.getEntityId()),
 				searchQueryContext.getInterval(),
 				searchQueryContext.getKeywords(),
-				searchQueryContext.getTimeRange()));
+				searchQueryContext.getTimeRange(),
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	public HistogramMetricBag getSessionsCountHistogram(
@@ -60,7 +61,8 @@ public class EventHistogramDog {
 				Long.valueOf(searchQueryContext.getEntityId()),
 				searchQueryContext.getInterval(),
 				searchQueryContext.getKeywords(),
-				searchQueryContext.getTimeRange()));
+				searchQueryContext.getTimeRange(),
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	private HistogramMetricBag _createHistogramBag(
