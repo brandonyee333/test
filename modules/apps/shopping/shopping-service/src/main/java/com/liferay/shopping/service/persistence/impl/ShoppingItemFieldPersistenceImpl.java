@@ -25,7 +25,10 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -618,6 +621,8 @@ public class ShoppingItemFieldPersistenceImpl
 		shoppingItemField.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the shopping item fields in the entity cache if it is enabled.
 	 *
@@ -625,6 +630,14 @@ public class ShoppingItemFieldPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<ShoppingItemField> shoppingItemFields) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (shoppingItemFields.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (ShoppingItemField shoppingItemField : shoppingItemFields) {
 			if (entityCache.getResult(
 					ShoppingItemFieldModelImpl.ENTITY_CACHE_ENABLED,
@@ -1303,6 +1316,9 @@ public class ShoppingItemFieldPersistenceImpl
 	 * Initializes the shopping item field persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			ShoppingItemFieldModelImpl.ENTITY_CACHE_ENABLED,
 			ShoppingItemFieldModelImpl.FINDER_CACHE_ENABLED,

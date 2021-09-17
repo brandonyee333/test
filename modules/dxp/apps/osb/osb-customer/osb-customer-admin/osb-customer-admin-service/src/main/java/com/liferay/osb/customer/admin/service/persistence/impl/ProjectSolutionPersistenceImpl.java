@@ -29,7 +29,10 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -94,6 +97,8 @@ public class ProjectSolutionPersistenceImpl
 		projectSolution.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the project solutions in the entity cache if it is enabled.
 	 *
@@ -101,6 +106,14 @@ public class ProjectSolutionPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<ProjectSolution> projectSolutions) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (projectSolutions.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (ProjectSolution projectSolution : projectSolutions) {
 			if (entityCache.getResult(
 					ProjectSolutionModelImpl.ENTITY_CACHE_ENABLED,
@@ -722,6 +735,9 @@ public class ProjectSolutionPersistenceImpl
 	 * Initializes the project solution persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			ProjectSolutionModelImpl.ENTITY_CACHE_ENABLED,
 			ProjectSolutionModelImpl.FINDER_CACHE_ENABLED,

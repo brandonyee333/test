@@ -26,7 +26,10 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -100,6 +103,8 @@ public class WatsonDocumentAuditPersistenceImpl
 		watsonDocumentAudit.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the watson document audits in the entity cache if it is enabled.
 	 *
@@ -107,6 +112,14 @@ public class WatsonDocumentAuditPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<WatsonDocumentAudit> watsonDocumentAudits) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (watsonDocumentAudits.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (WatsonDocumentAudit watsonDocumentAudit : watsonDocumentAudits) {
 			if (entityCache.getResult(
 					WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
@@ -781,6 +794,9 @@ public class WatsonDocumentAuditPersistenceImpl
 	 * Initializes the watson document audit persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonDocumentAuditModelImpl.FINDER_CACHE_ENABLED,

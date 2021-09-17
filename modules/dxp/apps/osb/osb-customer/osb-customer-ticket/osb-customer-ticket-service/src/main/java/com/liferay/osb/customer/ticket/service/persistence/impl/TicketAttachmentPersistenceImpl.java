@@ -32,7 +32,10 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -1991,6 +1994,8 @@ public class TicketAttachmentPersistenceImpl
 		ticketAttachment.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the ticket attachments in the entity cache if it is enabled.
 	 *
@@ -1998,6 +2003,14 @@ public class TicketAttachmentPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<TicketAttachment> ticketAttachments) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (ticketAttachments.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (TicketAttachment ticketAttachment : ticketAttachments) {
 			if (entityCache.getResult(
 					TicketAttachmentModelImpl.ENTITY_CACHE_ENABLED,
@@ -2751,6 +2764,9 @@ public class TicketAttachmentPersistenceImpl
 	 * Initializes the ticket attachment persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			TicketAttachmentModelImpl.ENTITY_CACHE_ENABLED,
 			TicketAttachmentModelImpl.FINDER_CACHE_ENABLED,

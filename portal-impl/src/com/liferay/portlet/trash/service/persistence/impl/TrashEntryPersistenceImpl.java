@@ -27,7 +27,10 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portlet.trash.model.impl.TrashEntryImpl;
@@ -2447,6 +2450,8 @@ public class TrashEntryPersistenceImpl
 		trashEntry.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the trash entries in the entity cache if it is enabled.
 	 *
@@ -2454,6 +2459,13 @@ public class TrashEntryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<TrashEntry> trashEntries) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (trashEntries.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (TrashEntry trashEntry : trashEntries) {
 			if (EntityCacheUtil.getResult(
 					TrashEntryModelImpl.ENTITY_CACHE_ENABLED,
@@ -3229,6 +3241,9 @@ public class TrashEntryPersistenceImpl
 	 * Initializes the trash entry persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			TrashEntryModelImpl.ENTITY_CACHE_ENABLED,
 			TrashEntryModelImpl.FINDER_CACHE_ENABLED, TrashEntryImpl.class,

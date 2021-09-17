@@ -37,8 +37,11 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -393,6 +396,8 @@ public class TestrayRequirementPersistenceImpl
 		testrayRequirement.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the testray requirements in the entity cache if it is enabled.
 	 *
@@ -400,6 +405,14 @@ public class TestrayRequirementPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<TestrayRequirement> testrayRequirements) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (testrayRequirements.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (TestrayRequirement testrayRequirement : testrayRequirements) {
 			if (entityCache.getResult(
 					TestrayRequirementModelImpl.ENTITY_CACHE_ENABLED,
@@ -1463,6 +1476,9 @@ public class TestrayRequirementPersistenceImpl
 	 * Initializes the testray requirement persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		testrayRequirementToTestrayCaseTableMapper =
 			TableMapperFactory.getTableMapper(
 				"OSB_TestrayRequirements_TestrayCases", "companyId",

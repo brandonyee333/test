@@ -30,7 +30,10 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -2516,6 +2519,8 @@ public class DLFileRankPersistenceImpl
 		dlFileRank.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the document library file ranks in the entity cache if it is enabled.
 	 *
@@ -2523,6 +2528,13 @@ public class DLFileRankPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<DLFileRank> dlFileRanks) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (dlFileRanks.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (DLFileRank dlFileRank : dlFileRanks) {
 			if (EntityCacheUtil.getResult(
 					DLFileRankModelImpl.ENTITY_CACHE_ENABLED,
@@ -3341,6 +3353,9 @@ public class DLFileRankPersistenceImpl
 	 * Initializes the document library file rank persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			DLFileRankModelImpl.ENTITY_CACHE_ENABLED,
 			DLFileRankModelImpl.FINDER_CACHE_ENABLED, DLFileRankImpl.class,

@@ -28,7 +28,10 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -93,6 +96,8 @@ public class LoopStatsEntryPersistenceImpl
 		loopStatsEntry.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the loop stats entries in the entity cache if it is enabled.
 	 *
@@ -100,6 +105,14 @@ public class LoopStatsEntryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<LoopStatsEntry> loopStatsEntries) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (loopStatsEntries.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (LoopStatsEntry loopStatsEntry : loopStatsEntries) {
 			if (entityCache.getResult(
 					LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
@@ -713,6 +726,9 @@ public class LoopStatsEntryPersistenceImpl
 	 * Initializes the loop stats entry persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			LoopStatsEntryModelImpl.FINDER_CACHE_ENABLED,

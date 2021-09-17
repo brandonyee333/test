@@ -31,7 +31,10 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -1588,6 +1591,8 @@ public class ProductEntryPersistenceImpl
 		productEntry.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the product entries in the entity cache if it is enabled.
 	 *
@@ -1595,6 +1600,13 @@ public class ProductEntryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<ProductEntry> productEntries) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (productEntries.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (ProductEntry productEntry : productEntries) {
 			if (entityCache.getResult(
 					ProductEntryModelImpl.ENTITY_CACHE_ENABLED,
@@ -2378,6 +2390,9 @@ public class ProductEntryPersistenceImpl
 	 * Initializes the product entry persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			ProductEntryModelImpl.ENTITY_CACHE_ENABLED,
 			ProductEntryModelImpl.FINDER_CACHE_ENABLED, ProductEntryImpl.class,

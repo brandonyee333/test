@@ -32,7 +32,10 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -369,6 +372,8 @@ public class TestrayProductVersionPersistenceImpl
 		testrayProductVersion.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the testray product versions in the entity cache if it is enabled.
 	 *
@@ -377,6 +382,14 @@ public class TestrayProductVersionPersistenceImpl
 	@Override
 	public void cacheResult(
 		List<TestrayProductVersion> testrayProductVersions) {
+
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (testrayProductVersions.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
 
 		for (TestrayProductVersion testrayProductVersion :
 				testrayProductVersions) {
@@ -1117,6 +1130,9 @@ public class TestrayProductVersionPersistenceImpl
 	 * Initializes the testray product version persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
 			TestrayProductVersionModelImpl.FINDER_CACHE_ENABLED,

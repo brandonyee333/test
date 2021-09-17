@@ -27,7 +27,10 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -377,6 +380,8 @@ public class FeedPersistenceImpl
 		feed.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the feeds in the entity cache if it is enabled.
 	 *
@@ -384,6 +389,13 @@ public class FeedPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<Feed> feeds) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (feeds.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (Feed feed : feeds) {
 			if (entityCache.getResult(
 					FeedModelImpl.ENTITY_CACHE_ENABLED, FeedImpl.class,
@@ -1068,6 +1080,9 @@ public class FeedPersistenceImpl
 	 * Initializes the feed persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FeedModelImpl.ENTITY_CACHE_ENABLED,
 			FeedModelImpl.FINDER_CACHE_ENABLED, FeedImpl.class,

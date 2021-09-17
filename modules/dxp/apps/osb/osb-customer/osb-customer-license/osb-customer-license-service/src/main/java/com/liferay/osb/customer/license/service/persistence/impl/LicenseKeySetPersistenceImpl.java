@@ -31,7 +31,10 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -1866,6 +1869,8 @@ public class LicenseKeySetPersistenceImpl
 		licenseKeySet.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the license key sets in the entity cache if it is enabled.
 	 *
@@ -1873,6 +1878,13 @@ public class LicenseKeySetPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<LicenseKeySet> licenseKeySets) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (licenseKeySets.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (LicenseKeySet licenseKeySet : licenseKeySets) {
 			if (entityCache.getResult(
 					LicenseKeySetModelImpl.ENTITY_CACHE_ENABLED,
@@ -2631,6 +2643,9 @@ public class LicenseKeySetPersistenceImpl
 	 * Initializes the license key set persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			LicenseKeySetModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeySetModelImpl.FINDER_CACHE_ENABLED,

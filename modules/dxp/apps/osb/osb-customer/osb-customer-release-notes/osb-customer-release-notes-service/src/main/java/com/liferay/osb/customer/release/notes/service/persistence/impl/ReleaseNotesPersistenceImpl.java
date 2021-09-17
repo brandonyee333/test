@@ -31,7 +31,10 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -1693,6 +1696,8 @@ public class ReleaseNotesPersistenceImpl
 		releaseNotes.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the release noteses in the entity cache if it is enabled.
 	 *
@@ -1700,6 +1705,13 @@ public class ReleaseNotesPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<ReleaseNotes> releaseNoteses) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (releaseNoteses.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (ReleaseNotes releaseNotes : releaseNoteses) {
 			if (entityCache.getResult(
 					ReleaseNotesModelImpl.ENTITY_CACHE_ENABLED,
@@ -2464,6 +2476,9 @@ public class ReleaseNotesPersistenceImpl
 	 * Initializes the release notes persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			ReleaseNotesModelImpl.ENTITY_CACHE_ENABLED,
 			ReleaseNotesModelImpl.FINDER_CACHE_ENABLED, ReleaseNotesImpl.class,

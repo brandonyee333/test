@@ -26,7 +26,10 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -100,6 +103,8 @@ public class WatsonVehicleAuditPersistenceImpl
 		watsonVehicleAudit.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the watson vehicle audits in the entity cache if it is enabled.
 	 *
@@ -107,6 +112,14 @@ public class WatsonVehicleAuditPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<WatsonVehicleAudit> watsonVehicleAudits) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (watsonVehicleAudits.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (WatsonVehicleAudit watsonVehicleAudit : watsonVehicleAudits) {
 			if (entityCache.getResult(
 					WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
@@ -780,6 +793,9 @@ public class WatsonVehicleAuditPersistenceImpl
 	 * Initializes the watson vehicle audit persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonVehicleAuditModelImpl.FINDER_CACHE_ENABLED,

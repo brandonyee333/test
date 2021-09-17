@@ -26,7 +26,10 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -121,6 +124,8 @@ public class WatsonListTypeRelPersistenceImpl
 		watsonListTypeRel.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the watson list type rels in the entity cache if it is enabled.
 	 *
@@ -128,6 +133,14 @@ public class WatsonListTypeRelPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<WatsonListTypeRel> watsonListTypeRels) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (watsonListTypeRels.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (WatsonListTypeRel watsonListTypeRel : watsonListTypeRels) {
 			if (entityCache.getResult(
 					WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
@@ -800,6 +813,9 @@ public class WatsonListTypeRelPersistenceImpl
 	 * Initializes the watson list type rel persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonListTypeRelModelImpl.FINDER_CACHE_ENABLED,

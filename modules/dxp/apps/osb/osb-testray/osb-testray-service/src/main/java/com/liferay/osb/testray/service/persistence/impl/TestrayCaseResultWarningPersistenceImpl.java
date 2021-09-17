@@ -32,7 +32,10 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -623,6 +626,8 @@ public class TestrayCaseResultWarningPersistenceImpl
 		testrayCaseResultWarning.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the testray case result warnings in the entity cache if it is enabled.
 	 *
@@ -631,6 +636,14 @@ public class TestrayCaseResultWarningPersistenceImpl
 	@Override
 	public void cacheResult(
 		List<TestrayCaseResultWarning> testrayCaseResultWarnings) {
+
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (testrayCaseResultWarnings.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
 
 		for (TestrayCaseResultWarning testrayCaseResultWarning :
 				testrayCaseResultWarnings) {
@@ -1366,6 +1379,9 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 * Initializes the testray case result warning persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
 			TestrayCaseResultWarningModelImpl.FINDER_CACHE_ENABLED,

@@ -30,7 +30,10 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -2412,6 +2415,8 @@ public class AssetSharingEntryPersistenceImpl
 		assetSharingEntry.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the asset sharing entries in the entity cache if it is enabled.
 	 *
@@ -2419,6 +2424,14 @@ public class AssetSharingEntryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<AssetSharingEntry> assetSharingEntries) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (assetSharingEntries.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (AssetSharingEntry assetSharingEntry : assetSharingEntries) {
 			if (entityCache.getResult(
 					AssetSharingEntryModelImpl.ENTITY_CACHE_ENABLED,
@@ -3125,6 +3138,9 @@ public class AssetSharingEntryPersistenceImpl
 	 * Initializes the asset sharing entry persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			AssetSharingEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AssetSharingEntryModelImpl.FINDER_CACHE_ENABLED,

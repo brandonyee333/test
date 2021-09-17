@@ -29,7 +29,10 @@ import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -2221,6 +2224,8 @@ public class ShoppingCategoryPersistenceImpl
 		shoppingCategory.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the shopping categories in the entity cache if it is enabled.
 	 *
@@ -2228,6 +2233,14 @@ public class ShoppingCategoryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<ShoppingCategory> shoppingCategories) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (shoppingCategories.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (ShoppingCategory shoppingCategory : shoppingCategories) {
 			if (entityCache.getResult(
 					ShoppingCategoryModelImpl.ENTITY_CACHE_ENABLED,
@@ -3003,6 +3016,9 @@ public class ShoppingCategoryPersistenceImpl
 	 * Initializes the shopping category persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			ShoppingCategoryModelImpl.ENTITY_CACHE_ENABLED,
 			ShoppingCategoryModelImpl.FINDER_CACHE_ENABLED,

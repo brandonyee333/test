@@ -36,8 +36,11 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -105,6 +108,8 @@ public class TestrayTaskPersistenceImpl
 		testrayTask.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the testray tasks in the entity cache if it is enabled.
 	 *
@@ -112,6 +117,13 @@ public class TestrayTaskPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<TestrayTask> testrayTasks) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (testrayTasks.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (TestrayTask testrayTask : testrayTasks) {
 			if (entityCache.getResult(
 					TestrayTaskModelImpl.ENTITY_CACHE_ENABLED,
@@ -1103,6 +1115,9 @@ public class TestrayTaskPersistenceImpl
 	 * Initializes the testray task persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		testrayTaskToTestrayCaseTypeTableMapper =
 			TableMapperFactory.getTableMapper(
 				"OSB_TestrayTasks_TestrayCaseTypes", "companyId",

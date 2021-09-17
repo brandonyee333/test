@@ -32,7 +32,10 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -336,6 +339,8 @@ public class LoopJobTitlePersistenceImpl
 		loopJobTitle.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the loop job titles in the entity cache if it is enabled.
 	 *
@@ -343,6 +348,13 @@ public class LoopJobTitlePersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<LoopJobTitle> loopJobTitles) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (loopJobTitles.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (LoopJobTitle loopJobTitle : loopJobTitles) {
 			if (entityCache.getResult(
 					LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
@@ -1040,6 +1052,9 @@ public class LoopJobTitlePersistenceImpl
 	 * Initializes the loop job title persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
 			LoopJobTitleModelImpl.FINDER_CACHE_ENABLED, LoopJobTitleImpl.class,

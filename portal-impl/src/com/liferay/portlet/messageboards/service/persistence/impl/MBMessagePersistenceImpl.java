@@ -41,6 +41,8 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -19596,6 +19598,8 @@ public class MBMessagePersistenceImpl
 		mbMessage.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the message-boards messages in the entity cache if it is enabled.
 	 *
@@ -19603,6 +19607,13 @@ public class MBMessagePersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<MBMessage> mbMessages) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (mbMessages.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (MBMessage mbMessage : mbMessages) {
 			if (EntityCacheUtil.getResult(
 					MBMessageModelImpl.ENTITY_CACHE_ENABLED,
@@ -21159,6 +21170,9 @@ public class MBMessagePersistenceImpl
 	 * Initializes the message-boards message persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			MBMessageModelImpl.ENTITY_CACHE_ENABLED,
 			MBMessageModelImpl.FINDER_CACHE_ENABLED, MBMessageImpl.class,

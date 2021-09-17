@@ -26,7 +26,10 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -120,6 +123,8 @@ public class WatsonHistoryPersistenceImpl
 		watsonHistory.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the watson histories in the entity cache if it is enabled.
 	 *
@@ -127,6 +132,13 @@ public class WatsonHistoryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<WatsonHistory> watsonHistories) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (watsonHistories.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (WatsonHistory watsonHistory : watsonHistories) {
 			if (entityCache.getResult(
 					WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
@@ -790,6 +802,9 @@ public class WatsonHistoryPersistenceImpl
 	 * Initializes the watson history persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonHistoryModelImpl.FINDER_CACHE_ENABLED,
