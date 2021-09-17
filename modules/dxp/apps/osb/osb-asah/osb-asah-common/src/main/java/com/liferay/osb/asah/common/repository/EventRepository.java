@@ -49,26 +49,26 @@ public interface EventRepository extends Repository<Event, Long> {
 	public long countByEventDefinitionId(long eventDefinitionId);
 
 	public Integer countEvents(
-		Long channelId, Long individualId, String keywords,
-		TimeRange timeRange);
+		Long channelId, Long individualId, String keywords, TimeRange timeRange,
+		String timeZoneId);
 
 	public Integer countEventSessions(
-		Long channelId, Long individualId, String keywords,
-		TimeRange timeRange);
+		Long channelId, Long individualId, String keywords, TimeRange timeRange,
+		String timeZoneId);
 
 	@Cacheable
 	public long countTotalEvents(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate);
+		@Nullable Date rangeStartDate, String timeZoneId);
 
 	@Cacheable
 	public long countUniqueIndividuals(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate);
+		@Nullable Date rangeStartDate, String timeZoneId);
 
 	@Cacheable
 	public List<EventAttributeValue> findDistinctAttributeValues(
@@ -86,7 +86,7 @@ public interface EventRepository extends Repository<Event, Long> {
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate);
+		@Nullable Date rangeStartDate, String timeZoneId);
 
 	@Cacheable
 	public Map<Object, Number> getEventAttributeValues(
@@ -94,14 +94,15 @@ public interface EventRepository extends Repository<Event, Long> {
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, Pageable pageable,
-		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate);
+		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate,
+		String timeZoneId);
 
 	@Cacheable
 	public long getEventAttributeValuesCount(
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate);
+		@Nullable Date rangeStartDate, String timeZoneId);
 
 	public Map<String, Integer> getEventsCountGroupByEventDate(
 		Long channelId, Long individualId, Interval interval, String keywords,

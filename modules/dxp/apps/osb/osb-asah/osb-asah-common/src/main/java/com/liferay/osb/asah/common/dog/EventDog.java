@@ -77,7 +77,8 @@ public class EventDog {
 		TimeRange timeRange) {
 
 		return _eventRepository.countEvents(
-			channelId, individualId, keywords, timeRange);
+			channelId, individualId, keywords, timeRange,
+			_timeZoneDog.getTimeZoneId());
 	}
 
 	public List<EventAttributeValue> getRecentEventAttributeValues(

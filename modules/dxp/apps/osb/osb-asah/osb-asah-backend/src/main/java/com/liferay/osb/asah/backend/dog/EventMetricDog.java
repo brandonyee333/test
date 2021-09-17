@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.EventMetric;
 import com.liferay.osb.asah.backend.model.EventMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.repository.EventRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,8 @@ public class EventMetricDog {
 				Long.valueOf(searchQueryContext.getChannelId()),
 				Long.valueOf(searchQueryContext.getEntityId()),
 				searchQueryContext.getKeywords(),
-				searchQueryContext.getTimeRange()));
+				searchQueryContext.getTimeRange(),
+				_timeZoneDog.getTimeZoneId()));
 
 		eventMetric.setTotalEventsMetric(totalEventsMetric);
 
@@ -50,7 +52,8 @@ public class EventMetricDog {
 				Long.valueOf(searchQueryContext.getChannelId()),
 				Long.valueOf(searchQueryContext.getEntityId()),
 				searchQueryContext.getKeywords(),
-				searchQueryContext.getTimeRange()));
+				searchQueryContext.getTimeRange(),
+				_timeZoneDog.getTimeZoneId()));
 
 		eventMetric.setTotalSessionsMetric(totalSessionsMetric);
 
@@ -59,5 +62,8 @@ public class EventMetricDog {
 
 	@Autowired
 	private EventRepository _eventRepository;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

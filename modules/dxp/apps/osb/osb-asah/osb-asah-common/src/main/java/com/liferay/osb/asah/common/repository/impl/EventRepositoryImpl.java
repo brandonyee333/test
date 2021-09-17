@@ -96,7 +96,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate) {
+		@Nullable Date rangeStartDate, String timeZoneId) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -107,7 +107,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		return selectJoinStep.where(
 			_getConditions(
 				channelId, eventAnalysisFilters, eventDefinitionId,
-				rangeEndDate, rangeStartDate)
+				rangeEndDate, rangeStartDate, timeZoneId)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -119,7 +119,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate) {
+		@Nullable Date rangeStartDate, String timeZoneId) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.select(_getUniqueIndividualsField());
@@ -130,7 +130,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		return selectJoinStep.where(
 			_getConditions(
 				channelId, eventAnalysisFilters, eventDefinitionId,
-				rangeEndDate, rangeStartDate)
+				rangeEndDate, rangeStartDate, timeZoneId)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -160,7 +160,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate) {
+		@Nullable Date rangeStartDate, String timeZoneId) {
 
 		Field totalEventCount = DSL.count();
 
@@ -175,7 +175,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		return selectJoinStep.where(
 			_getConditions(
 				channelId, eventAnalysisFilters, eventDefinitionId,
-				rangeEndDate, rangeStartDate)
+				rangeEndDate, rangeStartDate, timeZoneId)
 		).fetchOptional(
 			0, BigDecimal.class
 		).orElse(
@@ -188,7 +188,8 @@ public class EventRepositoryImpl extends BaseRepository {
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, Pageable pageable,
-		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate) {
+		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate,
+		String timeZoneId) {
 
 		Map<Object, Number> eventAttributeValues = new LinkedHashMap<>();
 
@@ -203,12 +204,13 @@ public class EventRepositoryImpl extends BaseRepository {
 				selectField, valueField
 			).from(
 				"Event"
-			));
+			),
+			timeZoneId);
 
 		selectJoinStep.where(
 			_getConditions(
 				channelId, eventAnalysisFilters, eventDefinitionId,
-				rangeEndDate, rangeStartDate)
+				rangeEndDate, rangeStartDate, timeZoneId)
 		).groupBy(
 			DSL.field(valueField.getName())
 		).orderBy(
@@ -232,7 +234,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate) {
+		@Nullable Date rangeStartDate, String timeZoneId) {
 
 		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
 
@@ -266,7 +268,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		).where(
 			_getConditions(
 				channelId, eventAnalysisFilters, eventDefinitionId,
-				rangeEndDate, rangeStartDate)
+				rangeEndDate, rangeStartDate, timeZoneId)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -413,7 +415,7 @@ public class EventRepositoryImpl extends BaseRepository {
 	private SelectJoinStep _buildSelectJoinStep(
 		BreakdownItem breakdownItem,
 		EventAnalysisBreakdown eventAnalysisBreakdown,
-		SelectJoinStep selectJoinStep) {
+		SelectJoinStep selectJoinStep, String timeZoneId) {
 
 		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
 
@@ -478,8 +480,8 @@ public class EventRepositoryImpl extends BaseRepository {
 							eventAnalysisFilter,
 							DSL.field(
 								attributeType.
-									getQualifiedAttributeValueFieldName(
-										alias)))))
+									getQualifiedAttributeValueFieldName(alias)),
+							timeZoneId)))
 			);
 		}
 
@@ -567,7 +569,8 @@ public class EventRepositoryImpl extends BaseRepository {
 
 	private List<Condition> _getConditions(
 		Long channelId, List<EventAnalysisFilter> eventAnalysisFilters,
-		Long eventDefinitionId, Date rangeEndDate, Date rangeStartDate) {
+		Long eventDefinitionId, Date rangeEndDate, Date rangeStartDate,
+		String timeZoneId) {
 
 		List<Condition> conditions = _getConditions(
 			channelId, eventDefinitionId, rangeEndDate, rangeStartDate);
@@ -575,7 +578,8 @@ public class EventRepositoryImpl extends BaseRepository {
 		if (eventAnalysisFilters != null) {
 			conditions.addAll(
 				_getEventAnalysisFilterConditions(
-					eventAnalysisFilters, rangeEndDate, rangeStartDate));
+					eventAnalysisFilters, rangeEndDate, rangeStartDate,
+					timeZoneId));
 		}
 
 		return conditions;
@@ -611,7 +615,7 @@ public class EventRepositoryImpl extends BaseRepository {
 	private Condition _getEventAnalysisFilterCondition(
 		AttributeType attributeType,
 		List<EventAnalysisFilter> eventAnalysisFilters, Date rangeEndDate,
-		Date rangeStartDate) {
+		Date rangeStartDate, String timeZoneId) {
 
 		Condition conditions = DSL.noCondition();
 
@@ -637,7 +641,9 @@ public class EventRepositoryImpl extends BaseRepository {
 
 				condition = condition.and(
 					filterOperator.getCondition(
-						_getField(eventAnalysisFilter, DSL.field("value"))));
+						_getField(
+							eventAnalysisFilter, DSL.field("value"),
+							timeZoneId)));
 			}
 
 			conditions = conditions.or(condition);
@@ -669,7 +675,7 @@ public class EventRepositoryImpl extends BaseRepository {
 
 	private List<Condition> _getEventAnalysisFilterConditions(
 		List<EventAnalysisFilter> eventAnalysisFilters, Date rangeEndDate,
-		Date rangeStartDate) {
+		Date rangeStartDate, String timeZoneId) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -685,7 +691,7 @@ public class EventRepositoryImpl extends BaseRepository {
 			conditions.add(
 				_getEventAnalysisFilterCondition(
 					entry.getKey(), entry.getValue(), rangeEndDate,
-					rangeStartDate));
+					rangeStartDate, timeZoneId));
 		}
 
 		return conditions;
@@ -720,7 +726,8 @@ public class EventRepositoryImpl extends BaseRepository {
 	}
 
 	private Field _getField(
-		EventAnalysisFilter eventAnalysisFilter, Field field) {
+		EventAnalysisFilter eventAnalysisFilter, Field field,
+		String timeZoneId) {
 
 		EventAttributeDefinition.DataType dataType =
 			eventAnalysisFilter.getDataType();
@@ -730,10 +737,18 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-			Field<?> timestampField = DSL.function(
-				"try_cast_timestamp", Object.class, field);
+			StringBuilder sb = new StringBuilder();
 
-			return _dateTrunc(DatePart.DAY, timestampField);
+			sb.append(DSL.function("try_cast_timestamp", Object.class, field));
+			sb.append(" AT TIME ZONE 'UTC'");
+
+			if (!timeZoneId.equals("UTC")) {
+				sb.append(" AT TIME ZONE '");
+				sb.append(timeZoneId);
+				sb.append("'");
+			}
+
+			return _dateTrunc(DatePart.DAY, DSL.field(sb.toString()));
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
@@ -182,19 +183,22 @@ public class EventAnalysisDog {
 		if (analysisType.equals(AnalysisType.AVERAGE)) {
 			return _eventRepository.getAverageEventCountPerIndividual(
 				channelId, eventAnalysisFilters, eventDefinitionId,
-				timeRange.getEndDate(), timeRange.getStartDate());
+				timeRange.getEndDate(), timeRange.getStartDate(),
+				_timeZoneDog.getTimeZoneId());
 		}
 
 		if (analysisType.equals(AnalysisType.TOTAL)) {
 			return _eventRepository.countTotalEvents(
 				channelId, eventAnalysisFilters, eventDefinitionId,
-				timeRange.getEndDate(), timeRange.getStartDate());
+				timeRange.getEndDate(), timeRange.getStartDate(),
+				_timeZoneDog.getTimeZoneId());
 		}
 
 		if (analysisType.equals(AnalysisType.UNIQUE)) {
 			return _eventRepository.countUniqueIndividuals(
 				channelId, eventAnalysisFilters, eventDefinitionId,
-				timeRange.getEndDate(), timeRange.getStartDate());
+				timeRange.getEndDate(), timeRange.getStartDate(),
+				_timeZoneDog.getTimeZoneId());
 		}
 
 		return null;
@@ -259,7 +263,8 @@ public class EventAnalysisDog {
 			_eventRepository.getEventAttributeValues(
 				analysisType, parentBreakdownItem, channelId,
 				eventAnalysisBreakdown, eventAnalysisFilters, eventDefinitionId,
-				pageable, timeRange.getEndDate(), timeRange.getStartDate()),
+				pageable, timeRange.getEndDate(), timeRange.getStartDate(),
+				_timeZoneDog.getTimeZoneId()),
 			eventDefinitionId, eventDefinition.getDisplayName(), lastBreakdown,
 			parentBreakdownItem, timeRange);
 
@@ -333,8 +338,8 @@ public class EventAnalysisDog {
 
 		return _eventRepository.getEventAttributeValuesCount(
 			channelId, eventAnalysisBreakdowns.get(0), eventAnalysisFilters,
-			eventDefinitionId, timeRange.getEndDate(),
-			timeRange.getStartDate());
+			eventDefinitionId, timeRange.getEndDate(), timeRange.getStartDate(),
+			_timeZoneDog.getTimeZoneId());
 	}
 
 	private void _validateEventAnalysisBreakdowns(
@@ -372,5 +377,8 @@ public class EventAnalysisDog {
 
 	@Autowired
 	private EventRepository _eventRepository;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }
