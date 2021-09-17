@@ -501,6 +501,15 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 			ArrayUtils.toUnmodifiableList(
 				new String[] {"theta", "omega", "gamma", "beta", "alpha"}),
 			_getGivenNames(individuals));
+
+		individuals = _individualDog.searchIndividuals(
+			null, null, false, 0, 10,
+			new String[] {"demographics/givenName/value,desc"});
+
+		Assert.assertEquals(
+			ArrayUtils.toUnmodifiableList(
+				new String[] {"theta", "omega", "gamma", "beta", "alpha"}),
+			_getGivenNames(individuals));
 	}
 
 	@Test
