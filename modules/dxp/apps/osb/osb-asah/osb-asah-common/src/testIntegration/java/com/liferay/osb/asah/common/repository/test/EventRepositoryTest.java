@@ -475,7 +475,8 @@ public class EventRepositoryTest {
 	public void testGetEventsCountGroupByEventDateLast7Days() {
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_eventRepository.getEventsCountGroupByEventDate(
-				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS);
+				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS,
+				_timeZoneDog.getTimeZoneId());
 
 		Assert.assertEquals(
 			eventsCountGroupByEventDate.toString(), 2,
@@ -498,7 +499,8 @@ public class EventRepositoryTest {
 
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_eventRepository.getEventsCountGroupByEventDate(
-				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS);
+				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS,
+				_timeZoneDog.getTimeZoneId());
 
 		Assert.assertEquals(
 			eventsCountGroupByEventDate.toString(), 2,
@@ -538,7 +540,8 @@ public class EventRepositoryTest {
 	public void testGetEventsCountGroupByEventDateLast24Hours() {
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_eventRepository.getEventsCountGroupByEventDate(
-				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS);
+				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS,
+				_timeZoneDog.getTimeZoneId());
 
 		Assert.assertEquals(
 			eventsCountGroupByEventDate.toString(), 1,
@@ -561,7 +564,8 @@ public class EventRepositoryTest {
 
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_eventRepository.getEventsCountGroupByEventDate(
-				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS);
+				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS,
+				_timeZoneDog.getTimeZoneId());
 
 		Assert.assertEquals(
 			eventsCountGroupByEventDate.toString(), 1,
@@ -581,7 +585,8 @@ public class EventRepositoryTest {
 	public void testGetEventSessionsCountGroupByEventDateLast7Days() {
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_eventRepository.getEventSessionsCountGroupByEventDate(
-				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS);
+				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS,
+				_timeZoneDog.getTimeZoneId());
 
 		Assert.assertEquals(
 			eventSessionsCountGroupByEventDate.toString(), 2,
@@ -605,7 +610,8 @@ public class EventRepositoryTest {
 
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_eventRepository.getEventSessionsCountGroupByEventDate(
-				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS);
+				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS,
+				_timeZoneDog.getTimeZoneId());
 
 		Assert.assertEquals(
 			eventSessionsCountGroupByEventDate.toString(), 2,
@@ -635,7 +641,8 @@ public class EventRepositoryTest {
 	public void testGetEventSessionsCountGroupByEventDateLast24Hours() {
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_eventRepository.getEventSessionsCountGroupByEventDate(
-				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS);
+				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS,
+				_timeZoneDog.getTimeZoneId());
 
 		Assert.assertEquals(
 			eventSessionsCountGroupByEventDate.toString(), 1,
@@ -659,7 +666,8 @@ public class EventRepositoryTest {
 
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_eventRepository.getEventSessionsCountGroupByEventDate(
-				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS);
+				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS,
+				_timeZoneDog.getTimeZoneId());
 
 		Assert.assertEquals(
 			eventSessionsCountGroupByEventDate.toString(), 1,
@@ -680,7 +688,7 @@ public class EventRepositoryTest {
 	public void testSearchEventsLast24Hours() {
 		List<Event> events = _eventRepository.searchEvents(
 			1L, 1L, null, PageRequest.of(0, 50, Sort.desc("eventDate")),
-			TimeRange.LAST_24_HOURS);
+			TimeRange.LAST_24_HOURS, _timeZoneDog.getTimeZoneId());
 
 		Assert.assertEquals(events.toString(), 3, events.size());
 
@@ -706,7 +714,8 @@ public class EventRepositoryTest {
 	@Test
 	public void testSearchEventsWithKeywordsLast24Hours() {
 		List<Event> events = _eventRepository.searchEvents(
-			1L, 1L, "form", PageRequest.of(0, 50), TimeRange.LAST_24_HOURS);
+			1L, 1L, "form", PageRequest.of(0, 50), TimeRange.LAST_24_HOURS,
+			_timeZoneDog.getTimeZoneId());
 
 		Assert.assertEquals(events.toString(), 1, events.size());
 	}
