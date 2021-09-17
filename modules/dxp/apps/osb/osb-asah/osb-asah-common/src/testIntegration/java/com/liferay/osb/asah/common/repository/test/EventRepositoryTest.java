@@ -81,7 +81,8 @@ public class EventRepositoryTest {
 		Assert.assertEquals(
 			Integer.valueOf(3),
 			_eventRepository.countEvents(
-				1L, 1L, null, TimeRange.LAST_24_HOURS));
+				1L, 1L, null, TimeRange.LAST_24_HOURS,
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_events.sql")
@@ -90,7 +91,8 @@ public class EventRepositoryTest {
 		Assert.assertEquals(
 			Integer.valueOf(1),
 			_eventRepository.countEvents(
-				1L, 1L, "form", TimeRange.LAST_24_HOURS));
+				1L, 1L, "form", TimeRange.LAST_24_HOURS,
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -104,7 +106,8 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -136,7 +139,8 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.BOOLEAN, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -160,7 +164,8 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.BOOLEAN, null, "DESC"),
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0))));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -176,7 +181,8 @@ public class EventRepositoryTest {
 					"DESC"),
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0))));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -191,7 +197,8 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0))));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -206,7 +213,8 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.NUMBER, null, "DESC"),
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0))));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -221,7 +229,8 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0))));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -236,7 +245,8 @@ public class EventRepositoryTest {
 					"DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -264,7 +274,8 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -292,7 +303,8 @@ public class EventRepositoryTest {
 					"DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -317,7 +329,8 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -340,7 +353,8 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.NUMBER, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -367,7 +381,8 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -394,7 +409,8 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -430,7 +446,8 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -458,7 +475,8 @@ public class EventRepositoryTest {
 					"DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)));
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
