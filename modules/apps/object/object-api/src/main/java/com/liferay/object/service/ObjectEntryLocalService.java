@@ -86,6 +86,11 @@ public interface ObjectEntryLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public ObjectEntry addObjectEntry(ObjectEntry objectEntry);
 
+	public void addOrUpdateExtensionTableEntry(
+			long primaryKey, long objectDefinitionId,
+			Map<String, Serializable> values)
+		throws PortalException;
+
 	public ObjectEntry addOrUpdateObjectEntry(
 			String externalReferenceCode, long userId, long groupId,
 			long objectDefinitionId, Map<String, Serializable> values,

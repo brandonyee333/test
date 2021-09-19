@@ -71,6 +71,17 @@ public class ObjectRelationshipLocalServiceUtil {
 		return getService().addObjectRelationship(objectRelationship);
 	}
 
+	public static void addObjectRelationshipMap(
+			long userId, long objectRelationshipId, long primaryKey1,
+			long primaryKey2,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
+
+		getService().addObjectRelationshipMap(
+			userId, objectRelationshipId, primaryKey1, primaryKey2,
+			serviceContext);
+	}
+
 	public static void addObjectRelationshipMappingTableValues(
 			long objectRelationshipId, long primaryKey1, long primaryKey2)
 		throws PortalException {

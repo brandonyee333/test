@@ -69,6 +69,15 @@ public class ObjectEntryLocalServiceUtil {
 		return getService().addObjectEntry(objectEntry);
 	}
 
+	public static void addOrUpdateExtensionTableEntry(
+			long primaryKey, long objectDefinitionId,
+			Map<String, Serializable> values)
+		throws PortalException {
+
+		getService().addOrUpdateExtensionTableEntry(
+			primaryKey, objectDefinitionId, values);
+	}
+
 	public static ObjectEntry addOrUpdateObjectEntry(
 			String externalReferenceCode, long userId, long groupId,
 			long objectDefinitionId, Map<String, Serializable> values,

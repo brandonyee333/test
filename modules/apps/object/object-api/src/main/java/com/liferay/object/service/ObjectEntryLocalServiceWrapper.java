@@ -62,6 +62,16 @@ public class ObjectEntryLocalServiceWrapper
 	}
 
 	@Override
+	public void addOrUpdateExtensionTableEntry(
+			long primaryKey, long objectDefinitionId,
+			java.util.Map<String, java.io.Serializable> values)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_objectEntryLocalService.addOrUpdateExtensionTableEntry(
+			primaryKey, objectDefinitionId, values);
+	}
+
+	@Override
 	public com.liferay.object.model.ObjectEntry addOrUpdateObjectEntry(
 			String externalReferenceCode, long userId, long groupId,
 			long objectDefinitionId,
