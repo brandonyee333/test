@@ -14,7 +14,7 @@
 
 package com.liferay.search.experiences.rest.client.serdes.v1_0;
 
-import com.liferay.search.experiences.rest.client.dto.v1_0.SXPBlueprint;
+import com.liferay.search.experiences.rest.client.dto.v1_0.Aggregration;
 import com.liferay.search.experiences.rest.client.json.BaseJSONParser;
 
 import java.util.Iterator;
@@ -30,24 +30,24 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class SXPBlueprintSerDes {
+public class AggregrationSerDes {
 
-	public static SXPBlueprint toDTO(String json) {
-		SXPBlueprintJSONParser sxpBlueprintJSONParser =
-			new SXPBlueprintJSONParser();
+	public static Aggregration toDTO(String json) {
+		AggregrationJSONParser aggregrationJSONParser =
+			new AggregrationJSONParser();
 
-		return sxpBlueprintJSONParser.parseToDTO(json);
+		return aggregrationJSONParser.parseToDTO(json);
 	}
 
-	public static SXPBlueprint[] toDTOs(String json) {
-		SXPBlueprintJSONParser sxpBlueprintJSONParser =
-			new SXPBlueprintJSONParser();
+	public static Aggregration[] toDTOs(String json) {
+		AggregrationJSONParser aggregrationJSONParser =
+			new AggregrationJSONParser();
 
-		return sxpBlueprintJSONParser.parseToDTOs(json);
+		return aggregrationJSONParser.parseToDTOs(json);
 	}
 
-	public static String toJSON(SXPBlueprint sxpBlueprint) {
-		if (sxpBlueprint == null) {
+	public static String toJSON(Aggregration aggregration) {
+		if (aggregration == null) {
 			return "null";
 		}
 
@@ -55,52 +55,28 @@ public class SXPBlueprintSerDes {
 
 		sb.append("{");
 
-		if (sxpBlueprint.getConfiguration() != null) {
+		if (aggregration.getDistanceType() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"configuration\": ");
-
-			sb.append(String.valueOf(sxpBlueprint.getConfiguration()));
-		}
-
-		if (sxpBlueprint.getDescription() != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"description\": ");
+			sb.append("\"distanceType\": ");
 
 			sb.append("\"");
 
-			sb.append(_escape(sxpBlueprint.getDescription()));
+			sb.append(aggregration.getDistanceType());
 
 			sb.append("\"");
 		}
 
-		if (sxpBlueprint.getId() != null) {
+		if (aggregration.getEnabled() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"id\": ");
+			sb.append("\"enabled\": ");
 
-			sb.append(sxpBlueprint.getId());
-		}
-
-		if (sxpBlueprint.getTitle() != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"title\": ");
-
-			sb.append("\"");
-
-			sb.append(_escape(sxpBlueprint.getTitle()));
-
-			sb.append("\"");
+			sb.append(aggregration.getEnabled());
 		}
 
 		sb.append("}");
@@ -109,92 +85,65 @@ public class SXPBlueprintSerDes {
 	}
 
 	public static Map<String, Object> toMap(String json) {
-		SXPBlueprintJSONParser sxpBlueprintJSONParser =
-			new SXPBlueprintJSONParser();
+		AggregrationJSONParser aggregrationJSONParser =
+			new AggregrationJSONParser();
 
-		return sxpBlueprintJSONParser.parseToMap(json);
+		return aggregrationJSONParser.parseToMap(json);
 	}
 
-	public static Map<String, String> toMap(SXPBlueprint sxpBlueprint) {
-		if (sxpBlueprint == null) {
+	public static Map<String, String> toMap(Aggregration aggregration) {
+		if (aggregration == null) {
 			return null;
 		}
 
 		Map<String, String> map = new TreeMap<>();
 
-		if (sxpBlueprint.getConfiguration() == null) {
-			map.put("configuration", null);
+		if (aggregration.getDistanceType() == null) {
+			map.put("distanceType", null);
 		}
 		else {
 			map.put(
-				"configuration",
-				String.valueOf(sxpBlueprint.getConfiguration()));
+				"distanceType", String.valueOf(aggregration.getDistanceType()));
 		}
 
-		if (sxpBlueprint.getDescription() == null) {
-			map.put("description", null);
+		if (aggregration.getEnabled() == null) {
+			map.put("enabled", null);
 		}
 		else {
-			map.put(
-				"description", String.valueOf(sxpBlueprint.getDescription()));
-		}
-
-		if (sxpBlueprint.getId() == null) {
-			map.put("id", null);
-		}
-		else {
-			map.put("id", String.valueOf(sxpBlueprint.getId()));
-		}
-
-		if (sxpBlueprint.getTitle() == null) {
-			map.put("title", null);
-		}
-		else {
-			map.put("title", String.valueOf(sxpBlueprint.getTitle()));
+			map.put("enabled", String.valueOf(aggregration.getEnabled()));
 		}
 
 		return map;
 	}
 
-	public static class SXPBlueprintJSONParser
-		extends BaseJSONParser<SXPBlueprint> {
+	public static class AggregrationJSONParser
+		extends BaseJSONParser<Aggregration> {
 
 		@Override
-		protected SXPBlueprint createDTO() {
-			return new SXPBlueprint();
+		protected Aggregration createDTO() {
+			return new Aggregration();
 		}
 
 		@Override
-		protected SXPBlueprint[] createDTOArray(int size) {
-			return new SXPBlueprint[size];
+		protected Aggregration[] createDTOArray(int size) {
+			return new Aggregration[size];
 		}
 
 		@Override
 		protected void setField(
-			SXPBlueprint sxpBlueprint, String jsonParserFieldName,
+			Aggregration aggregration, String jsonParserFieldName,
 			Object jsonParserFieldValue) {
 
-			if (Objects.equals(jsonParserFieldName, "configuration")) {
+			if (Objects.equals(jsonParserFieldName, "distanceType")) {
 				if (jsonParserFieldValue != null) {
-					sxpBlueprint.setConfiguration(
-						ConfigurationSerDes.toDTO(
+					aggregration.setDistanceType(
+						Aggregration.DistanceType.create(
 							(String)jsonParserFieldValue));
 				}
 			}
-			else if (Objects.equals(jsonParserFieldName, "description")) {
+			else if (Objects.equals(jsonParserFieldName, "enabled")) {
 				if (jsonParserFieldValue != null) {
-					sxpBlueprint.setDescription((String)jsonParserFieldValue);
-				}
-			}
-			else if (Objects.equals(jsonParserFieldName, "id")) {
-				if (jsonParserFieldValue != null) {
-					sxpBlueprint.setId(
-						Long.valueOf((String)jsonParserFieldValue));
-				}
-			}
-			else if (Objects.equals(jsonParserFieldName, "title")) {
-				if (jsonParserFieldValue != null) {
-					sxpBlueprint.setTitle((String)jsonParserFieldValue);
+					aggregration.setEnabled((Boolean)jsonParserFieldValue);
 				}
 			}
 		}

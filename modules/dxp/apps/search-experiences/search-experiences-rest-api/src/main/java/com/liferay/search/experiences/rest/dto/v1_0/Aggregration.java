@@ -14,9 +14,11 @@
 
 package com.liferay.search.experiences.rest.dto.v1_0;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.string.StringBundler;
@@ -44,31 +46,40 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @generated
  */
 @Generated("")
-@GraphQLName("SXPBlueprint")
+@GraphQLName("Aggregration")
 @JsonFilter("Liferay.Vulcan")
-@XmlRootElement(name = "SXPBlueprint")
-public class SXPBlueprint implements Serializable {
+@XmlRootElement(name = "Aggregration")
+public class Aggregration implements Serializable {
 
-	public static SXPBlueprint toDTO(String json) {
-		return ObjectMapperUtil.readValue(SXPBlueprint.class, json);
+	public static Aggregration toDTO(String json) {
+		return ObjectMapperUtil.readValue(Aggregration.class, json);
 	}
 
 	@Schema
 	@Valid
-	public Configuration getConfiguration() {
-		return configuration;
-	}
-
-	public void setConfiguration(Configuration configuration) {
-		this.configuration = configuration;
+	public DistanceType getDistanceType() {
+		return distanceType;
 	}
 
 	@JsonIgnore
-	public void setConfiguration(
-		UnsafeSupplier<Configuration, Exception> configurationUnsafeSupplier) {
+	public String getDistanceTypeAsString() {
+		if (distanceType == null) {
+			return null;
+		}
+
+		return distanceType.toString();
+	}
+
+	public void setDistanceType(DistanceType distanceType) {
+		this.distanceType = distanceType;
+	}
+
+	@JsonIgnore
+	public void setDistanceType(
+		UnsafeSupplier<DistanceType, Exception> distanceTypeUnsafeSupplier) {
 
 		try {
-			configuration = configurationUnsafeSupplier.get();
+			distanceType = distanceTypeUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -80,23 +91,23 @@ public class SXPBlueprint implements Serializable {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Configuration configuration;
+	protected DistanceType distanceType;
 
 	@Schema
-	public String getDescription() {
-		return description;
+	public Boolean getEnabled() {
+		return enabled;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	@JsonIgnore
-	public void setDescription(
-		UnsafeSupplier<String, Exception> descriptionUnsafeSupplier) {
+	public void setEnabled(
+		UnsafeSupplier<Boolean, Exception> enabledUnsafeSupplier) {
 
 		try {
-			description = descriptionUnsafeSupplier.get();
+			enabled = enabledUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -108,61 +119,7 @@ public class SXPBlueprint implements Serializable {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String description;
-
-	@Schema
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@JsonIgnore
-	public void setId(UnsafeSupplier<Long, Exception> idUnsafeSupplier) {
-		try {
-			id = idUnsafeSupplier.get();
-		}
-		catch (RuntimeException re) {
-			throw re;
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Long id;
-
-	@Schema
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	@JsonIgnore
-	public void setTitle(
-		UnsafeSupplier<String, Exception> titleUnsafeSupplier) {
-
-		try {
-			title = titleUnsafeSupplier.get();
-		}
-		catch (RuntimeException re) {
-			throw re;
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String title;
+	protected Boolean enabled;
 
 	@Override
 	public boolean equals(Object object) {
@@ -170,13 +127,13 @@ public class SXPBlueprint implements Serializable {
 			return true;
 		}
 
-		if (!(object instanceof SXPBlueprint)) {
+		if (!(object instanceof Aggregration)) {
 			return false;
 		}
 
-		SXPBlueprint sxpBlueprint = (SXPBlueprint)object;
+		Aggregration aggregration = (Aggregration)object;
 
-		return Objects.equals(toString(), sxpBlueprint.toString());
+		return Objects.equals(toString(), aggregration.toString());
 	}
 
 	@Override
@@ -191,52 +148,28 @@ public class SXPBlueprint implements Serializable {
 
 		sb.append("{");
 
-		if (configuration != null) {
+		if (distanceType != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"configuration\": ");
-
-			sb.append(String.valueOf(configuration));
-		}
-
-		if (description != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"description\": ");
+			sb.append("\"distanceType\": ");
 
 			sb.append("\"");
 
-			sb.append(_escape(description));
+			sb.append(distanceType);
 
 			sb.append("\"");
 		}
 
-		if (id != null) {
+		if (enabled != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"id\": ");
+			sb.append("\"enabled\": ");
 
-			sb.append(id);
-		}
-
-		if (title != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"title\": ");
-
-			sb.append("\"");
-
-			sb.append(_escape(title));
-
-			sb.append("\"");
+			sb.append(enabled);
 		}
 
 		sb.append("}");
@@ -246,10 +179,48 @@ public class SXPBlueprint implements Serializable {
 
 	@Schema(
 		accessMode = Schema.AccessMode.READ_ONLY,
-		defaultValue = "com.liferay.search.experiences.rest.dto.v1_0.SXPBlueprint",
+		defaultValue = "com.liferay.search.experiences.rest.dto.v1_0.Aggregration",
 		name = "x-class-name"
 	)
 	public String xClassName;
+
+	@GraphQLName("DistanceType")
+	public static enum DistanceType {
+
+		ARC("arc"), PLANE("plane");
+
+		@JsonCreator
+		public static DistanceType create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
+			for (DistanceType distanceType : values()) {
+				if (Objects.equals(distanceType.getValue(), value)) {
+					return distanceType;
+				}
+			}
+
+			throw new IllegalArgumentException("Invalid enum value: " + value);
+		}
+
+		@JsonValue
+		public String getValue() {
+			return _value;
+		}
+
+		@Override
+		public String toString() {
+			return _value;
+		}
+
+		private DistanceType(String value) {
+			_value = value;
+		}
+
+		private final String _value;
+
+	}
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

@@ -29,8 +29,13 @@ import com.liferay.dynamic.data.mapping.model.UnlocalizedValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.constants.FieldConstants;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemList;
+import com.liferay.item.selector.ItemSelector;
+import com.liferay.item.selector.ItemSelectorReturnType;
+import com.liferay.item.selector.criteria.info.item.criterion.InfoItemItemSelectorCriterion;
 import com.liferay.list.type.model.ListTypeEntry;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.object.exception.NoSuchObjectLayoutException;
@@ -43,19 +48,26 @@ import com.liferay.object.model.ObjectLayoutColumn;
 import com.liferay.object.model.ObjectLayoutRow;
 import com.liferay.object.model.ObjectLayoutTab;
 import com.liferay.object.model.ObjectRelationship;
+import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectLayoutLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.object.web.internal.constants.ObjectWebKeys;
 import com.liferay.object.web.internal.display.context.util.ObjectRequestHelper;
+import com.liferay.object.web.internal.item.selector.ObjectEntryItemSelectorReturnType;
+import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
+import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -83,14 +95,18 @@ public class ObjectEntryDisplayContext {
 
 	public ObjectEntryDisplayContext(
 		DDMFormRenderer ddmFormRenderer, HttpServletRequest httpServletRequest,
+		ItemSelector itemSelector,
 		ListTypeEntryLocalService listTypeEntryLocalService,
+		ObjectDefinitionLocalService objectDefinitionLocalService,
 		ObjectEntryService objectEntryService,
 		ObjectFieldLocalService objectFieldLocalService,
 		ObjectLayoutLocalService objectLayoutLocalService,
 		ObjectRelationshipLocalService objectRelationshipLocalService) {
 
 		_ddmFormRenderer = ddmFormRenderer;
+		_itemSelector = itemSelector;
 		_listTypeEntryLocalService = listTypeEntryLocalService;
+		_objectDefinitionLocalService = objectDefinitionLocalService;
 		_objectEntryService = objectEntryService;
 		_objectFieldLocalService = objectFieldLocalService;
 		_objectLayoutLocalService = objectLayoutLocalService;
@@ -106,6 +122,8 @@ public class ObjectEntryDisplayContext {
 			return Collections.emptyList();
 		}
 
+		ObjectEntry objectEntry = getObjectEntry();
+
 		NavigationItemList navigationItemList = new NavigationItemList();
 
 		ObjectLayoutTab currentObjectLayoutTab = getObjectLayoutTab();
@@ -115,19 +133,38 @@ public class ObjectEntryDisplayContext {
 		for (ObjectLayoutTab objectLayoutTab :
 				objectLayout.getObjectLayoutTabs()) {
 
-			navigationItemList.add(
-				navigationItem -> {
-					navigationItem.setActive(
-						objectLayoutTab.getObjectLayoutTabId() ==
-							currentObjectLayoutTab.getObjectLayoutTabId());
-					navigationItem.setHref(
-						liferayPortletResponse.createRenderURL(),
-						"objectLayoutTabId",
-						objectLayoutTab.getObjectLayoutTabId());
-					navigationItem.setLabel(
-						objectLayoutTab.getName(
-							_objectRequestHelper.getLocale()));
-				});
+			NavigationItem navigationItem = new NavigationItem();
+
+			navigationItem.setActive(
+				objectLayoutTab.getObjectLayoutTabId() ==
+					currentObjectLayoutTab.getObjectLayoutTabId());
+
+			navigationItem.setHref(
+				PortletURLBuilder.create(
+					liferayPortletResponse.createRenderURL()
+				).setMVCRenderCommandName(
+					"/object_entries/edit_object_entry"
+				).setParameter(
+					"objectEntryId", objectEntry.getObjectEntryId()
+				).setParameter(
+					"objectLayoutTabId", objectLayoutTab.getObjectLayoutTabId()
+				).buildString());
+
+			if (objectLayoutTab.getObjectRelationshipId() > 0) {
+				ObjectRelationship objectRelationship =
+					_objectRelationshipLocalService.fetchObjectRelationship(
+						objectLayoutTab.getObjectRelationshipId());
+
+				navigationItem.setLabel(
+					objectRelationship.getLabel(
+						_objectRequestHelper.getLocale()));
+			}
+			else {
+				navigationItem.setLabel(
+					objectLayoutTab.getName(_objectRequestHelper.getLocale()));
+			}
+
+			navigationItemList.add(navigationItem);
 		}
 
 		return navigationItemList;
@@ -196,6 +233,65 @@ public class ObjectEntryDisplayContext {
 		).findFirst();
 
 		return optional.get();
+	}
+
+	public CreationMenu getRelatedModelCreationMenu() throws PortalException {
+		LiferayPortletResponse liferayPortletResponse =
+			_objectRequestHelper.getLiferayPortletResponse();
+
+		return CreationMenuBuilder.addDropdownItem(
+			dropdownItem -> {
+				String cpDefinitionName = StringPool.BLANK;
+
+				dropdownItem.setHref(
+					liferayPortletResponse.getNamespace() +
+						"selectRelatedModel");
+				dropdownItem.setLabel(
+					LanguageUtil.format(
+						_objectRequestHelper.getRequest(), "add",
+						cpDefinitionName));
+				dropdownItem.setTarget("event");
+			}
+		).build();
+	}
+
+	public String getRelatedObjectEntryItemSelectorUrl()
+		throws PortalException {
+
+		RequestBackedPortletURLFactory requestBackedPortletURLFactory =
+			RequestBackedPortletURLFactoryUtil.create(
+				_objectRequestHelper.getRequest());
+
+		InfoItemItemSelectorCriterion infoItemItemSelectorCriterion =
+			new InfoItemItemSelectorCriterion();
+
+		infoItemItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
+			Collections.<ItemSelectorReturnType>singletonList(
+				new ObjectEntryItemSelectorReturnType()));
+
+		ObjectLayoutTab objectLayoutTab = getObjectLayoutTab();
+
+		ObjectRelationship objectRelationship =
+			_objectRelationshipLocalService.getObjectRelationship(
+				objectLayoutTab.getObjectRelationshipId());
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.getObjectDefinition(
+				objectRelationship.getObjectDefinitionId2());
+
+		infoItemItemSelectorCriterion.setItemType(
+			objectDefinition.getClassName());
+
+		LiferayPortletResponse liferayPortletResponse =
+			_objectRequestHelper.getLiferayPortletResponse();
+
+		return PortletURLBuilder.create(
+			_itemSelector.getItemSelectorURL(
+				requestBackedPortletURLFactory,
+				liferayPortletResponse.getNamespace() +
+					"selectRelatedModalEntry",
+				infoItemItemSelectorCriterion)
+		).buildString();
 	}
 
 	public String renderDDMForm(PageContext pageContext)
@@ -555,7 +651,9 @@ public class ObjectEntryDisplayContext {
 		ObjectEntryDisplayContext.class);
 
 	private final DDMFormRenderer _ddmFormRenderer;
+	private final ItemSelector _itemSelector;
 	private final ListTypeEntryLocalService _listTypeEntryLocalService;
+	private final ObjectDefinitionLocalService _objectDefinitionLocalService;
 	private ObjectEntry _objectEntry;
 	private final ObjectEntryService _objectEntryService;
 	private final ObjectFieldLocalService _objectFieldLocalService;
