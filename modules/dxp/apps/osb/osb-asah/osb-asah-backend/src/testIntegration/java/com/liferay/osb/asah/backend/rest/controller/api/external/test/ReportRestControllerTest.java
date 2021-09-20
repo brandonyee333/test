@@ -62,6 +62,8 @@ public class ReportRestControllerTest {
 		ReportAccountDTO reportAccountDTO =
 			reportAccountDTOEntityModel.getContent();
 
+		Assert.assertNotNull(reportAccountDTO);
+
 		Assert.assertEquals(
 			Long.valueOf(12), reportAccountDTO.getActiveIndividualsCount());
 		Assert.assertEquals(
@@ -96,6 +98,8 @@ public class ReportRestControllerTest {
 
 		ResultBag<EntityModel<ReportAccountDTO>> resultBag =
 			reportAccountDTOResultBagEntityModel.getContent();
+
+		Assert.assertNotNull(resultBag);
 
 		Assert.assertEquals(6, resultBag.getTotal());
 		Assert.assertEquals(
