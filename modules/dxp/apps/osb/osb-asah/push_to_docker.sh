@@ -112,9 +112,12 @@ if [ ! "$(git rev-list -n 1 $PREVIOUS_GIT_HASH)" ]
 		exit
 	fi
 
-	if [ ! -f ~/.asah/gcp_credentials.json ]
+	if [ ! -f ~/.asah/europe-west2/gcp_credentials.json ] ||
+	   [ ! -f ~/.asah/europe-west3/gcp_credentials.json ] ||
+	   [ ! -f ~/.asah/southamerica-east1/gcp_credentials.json ] ||
+	   [ ! -f ~/.asah/us-west1/gcp_credentials.json ]
 	then
-		echo "${HOME}/.asah/gcp_credentials.json does not exist.";
+		echo "Verify gcp_credentials.json files.";
 
 		exit
 	fi
