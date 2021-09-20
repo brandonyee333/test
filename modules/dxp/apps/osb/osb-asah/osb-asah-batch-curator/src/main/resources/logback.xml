@@ -2,5 +2,4 @@
 
 <configuration>
 	<include resource="logback-common.xml" />
-	<logger level="debug" name="com.liferay.osb.asah.batch.curator.bot.nanite.ContentRecommendationDataSolutionNanite" />
 </configuration>
