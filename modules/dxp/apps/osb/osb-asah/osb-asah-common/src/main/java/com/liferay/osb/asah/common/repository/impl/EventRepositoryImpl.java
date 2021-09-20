@@ -194,7 +194,8 @@ public class EventRepositoryImpl extends BaseRepository {
 		Map<Object, Number> eventAttributeValues = new LinkedHashMap<>();
 
 		Field<Number> selectField = _getSelectField(analysisType);
-		Field valueField = _getValueField(true, eventAnalysisBreakdown);
+		Field valueField = _getValueField(
+			true, eventAnalysisBreakdown, timeZoneId);
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
@@ -238,7 +239,8 @@ public class EventRepositoryImpl extends BaseRepository {
 
 		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
 
-		Field valueField = _getValueField(false, eventAnalysisBreakdown);
+		Field valueField = _getValueField(
+			false, eventAnalysisBreakdown, timeZoneId);
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.select(
@@ -612,6 +614,23 @@ public class EventRepositoryImpl extends BaseRepository {
 		return conditions;
 	}
 
+	private Field<OffsetDateTime> _getDateValueField(
+		Field field, String timeZoneId) {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(DSL.function("try_cast_timestamp", Object.class, field));
+		sb.append(" AT TIME ZONE 'UTC'");
+
+		if (!timeZoneId.equals("UTC")) {
+			sb.append(" AT TIME ZONE '");
+			sb.append(timeZoneId);
+			sb.append("'");
+		}
+
+		return DSL.field(sb.toString(), OffsetDateTime.class);
+	}
+
 	private Condition _getEventAnalysisFilterCondition(
 		AttributeType attributeType,
 		List<EventAnalysisFilter> eventAnalysisFilters, Date rangeEndDate,
@@ -737,18 +756,8 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-			StringBuilder sb = new StringBuilder();
-
-			sb.append(DSL.function("try_cast_timestamp", Object.class, field));
-			sb.append(" AT TIME ZONE 'UTC'");
-
-			if (!timeZoneId.equals("UTC")) {
-				sb.append(" AT TIME ZONE '");
-				sb.append(timeZoneId);
-				sb.append("'");
-			}
-
-			return _dateTrunc(DatePart.DAY, DSL.field(sb.toString()));
+			return _dateTrunc(
+				DatePart.DAY, _getDateValueField(field, timeZoneId));
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
@@ -832,7 +841,8 @@ public class EventRepositoryImpl extends BaseRepository {
 	}
 
 	private Field _getValueField(
-		boolean alias, EventAnalysisBreakdown eventAnalysisBreakdown) {
+		boolean alias, EventAnalysisBreakdown eventAnalysisBreakdown,
+		String timeZoneId) {
 
 		Field field = null;
 
@@ -851,24 +861,27 @@ public class EventRepositoryImpl extends BaseRepository {
 			DateGrouping dateGrouping =
 				eventAnalysisBreakdown.getDateGrouping();
 
-			field = DSL.function(
-				"try_cast_timestamp", Object.class,
+			Field<OffsetDateTime> offsetDateTimeField = _getDateValueField(
 				DSL.field(
-					attributeType.getQualifiedAttributeValueFieldName(null)));
+					attributeType.getQualifiedAttributeValueFieldName(null)),
+				timeZoneId);
 
 			if (dateGrouping.equals(DateGrouping.DAY)) {
 				field = DSL.concat(
-					DSL.extract(field, DatePart.YEAR), DSL.val("-"),
-					DSL.extract(field, DatePart.MONTH), DSL.val("-"),
-					DSL.extract(field, DatePart.DAY));
+					DSL.extract(offsetDateTimeField, DatePart.YEAR),
+					DSL.val("-"),
+					DSL.extract(offsetDateTimeField, DatePart.MONTH),
+					DSL.val("-"),
+					DSL.extract(offsetDateTimeField, DatePart.DAY));
 			}
 			else if (dateGrouping.equals(DateGrouping.MONTH)) {
 				field = DSL.concat(
-					DSL.extract(field, DatePart.YEAR), DSL.val("-"),
-					DSL.extract(field, DatePart.MONTH));
+					DSL.extract(offsetDateTimeField, DatePart.YEAR),
+					DSL.val("-"),
+					DSL.extract(offsetDateTimeField, DatePart.MONTH));
 			}
 			else if (dateGrouping.equals(DateGrouping.YEAR)) {
-				field = DSL.extract(field, DatePart.YEAR);
+				field = DSL.extract(offsetDateTimeField, DatePart.YEAR);
 			}
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
