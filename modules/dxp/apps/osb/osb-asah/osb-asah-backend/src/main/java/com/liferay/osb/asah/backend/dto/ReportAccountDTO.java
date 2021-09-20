@@ -20,11 +20,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import com.liferay.osb.asah.backend.model.Account;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,12 +46,12 @@ public class ReportAccountDTO {
 
 	public ReportAccountDTO(Account account) {
 		_activeIndividualsCount = account.getActiveIndividualsCount();
-		_createDate = account.getDateCreated();
-		_id = account.getId();
-		_individualsCount = account.getIndividualsCount();
-		_modifiedDate = account.getDateModified();
+		_createDate = account.getCreateDate();
+		_id = StringUtil.get(account.getId(), null);
+		_individualCount = account.getIndividualCount();
+		_modifiedDate = account.getModifiedDate();
 		_reportAccountPropertiesDTO = new ReportAccountPropertiesDTO(
-			account.getProperties());
+			_getAccountOrganizationProperties(account.getOrganization()));
 	}
 
 	public ReportAccountDTO(List<Account> accounts) {
@@ -78,8 +82,8 @@ public class ReportAccountDTO {
 	}
 
 	@JsonProperty("individualsCount")
-	public Long getIndividualsCount() {
-		return _individualsCount;
+	public Long getIndividualCount() {
+		return _individualCount;
 	}
 
 	@JsonFormat(
@@ -149,10 +153,54 @@ public class ReportAccountDTO {
 
 	}
 
+	private Map<String, Object> _getAccountOrganizationProperties(
+		Account.Organization organization) {
+
+		if (organization == null) {
+			return Collections.emptyMap();
+		}
+
+		Map<String, Object> properties = new HashMap<>();
+
+		Map<String, Object> fields = organization.getField();
+
+		for (Map.Entry<String, Object> entry : fields.entrySet()) {
+			Object propertyValue = _getPropertyValue(entry.getValue());
+
+			if (propertyValue == null) {
+				continue;
+			}
+
+			properties.put(entry.getKey(), propertyValue);
+		}
+
+		return properties;
+	}
+
+	private Object _getPropertyValue(Object fieldValue) {
+		if (fieldValue == null) {
+			return null;
+		}
+
+		if (!(fieldValue instanceof List)) {
+			return null;
+		}
+
+		List<Field> fields = (List<Field>)fieldValue;
+
+		if (fields.isEmpty()) {
+			return null;
+		}
+
+		Field field = fields.get(0);
+
+		return String.valueOf(field.getValue());
+	}
+
 	private Long _activeIndividualsCount;
 	private Date _createDate;
 	private String _id;
-	private Long _individualsCount;
+	private Long _individualCount;
 	private Date _modifiedDate;
 	private Set<ReportAccountDTO> _reportAccountDTOs;
 	private ReportAccountPropertiesDTO _reportAccountPropertiesDTO;

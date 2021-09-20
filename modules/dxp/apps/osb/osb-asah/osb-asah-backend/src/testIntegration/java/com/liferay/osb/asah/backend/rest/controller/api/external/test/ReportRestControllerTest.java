@@ -12,10 +12,10 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog.test;
+package com.liferay.osb.asah.backend.rest.controller.api.external.test;
 
-import com.liferay.osb.asah.backend.dog.ReportAccountDog;
-import com.liferay.osb.asah.backend.model.Account;
+import com.liferay.osb.asah.backend.dto.ReportAccountDTO;
+import com.liferay.osb.asah.backend.rest.controller.api.external.ReportRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
@@ -35,14 +35,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Marcellus Tavares
  */
+@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class ReportAccountDogTest {
+public class ReportRestControllerTest {
 
 	@ElasticsearchIndex(
 		name = "field-mappings", resourcePath = "field_mappings_info.json",
@@ -53,18 +54,25 @@ public class ReportAccountDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetAccount() {
-		Account account = _reportAccountDog.getAccount(379649798552539340L);
+	public void testGetReportAccountDTOEntityModel() {
+		EntityModel<ReportAccountDTO> reportAccountDTOEntityModel =
+			_reportRestController.getReportAccountDTOEntityModel(
+				379649798552539340L);
 
-		Assert.assertEquals(12, account.getActiveIndividualsCount());
+		ReportAccountDTO reportAccountDTO =
+			reportAccountDTOEntityModel.getContent();
+
+		Assert.assertEquals(
+			Long.valueOf(12), reportAccountDTO.getActiveIndividualsCount());
 		Assert.assertEquals(
 			"2019-10-16T21:25:31.053Z",
-			DateUtil.toUTCString(account.getDateCreated()));
+			DateUtil.toUTCString(reportAccountDTO.getCreateDate()));
 		Assert.assertEquals(
 			"2019-10-16T21:26:31.053Z",
-			DateUtil.toUTCString(account.getDateModified()));
-		Assert.assertEquals("379649798552539340", account.getId());
-		Assert.assertEquals(13, account.getIndividualsCount());
+			DateUtil.toUTCString(reportAccountDTO.getModifiedDate()));
+		Assert.assertEquals("379649798552539340", reportAccountDTO.getId());
+		Assert.assertEquals(
+			Long.valueOf(13), reportAccountDTO.getIndividualCount());
 	}
 
 	@ElasticsearchIndex(
@@ -80,26 +88,37 @@ public class ReportAccountDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetAccountsResultBag() {
-		ResultBag<Account> accountResultBag =
-			_reportAccountDog.getAccountResultBag(6, 0);
+	public void testGetReportAccountDTOResultBagEntityModel() {
+		EntityModel<ResultBag<EntityModel<ReportAccountDTO>>>
+			reportAccountDTOResultBagEntityModel =
+				_reportRestController.getReportAccountDTOResultBagEntityModel(
+					0);
 
-		Assert.assertEquals(6, accountResultBag.getTotal());
+		ResultBag<EntityModel<ReportAccountDTO>> resultBag =
+			reportAccountDTOResultBagEntityModel.getContent();
+
+		Assert.assertEquals(6, resultBag.getTotal());
 		Assert.assertEquals(
 			SetUtil.of(
 				"Heard Island and McDonald Islands", "Maldives", "Swaziland",
 				"Uzbekistan", "Virgin Islands"),
 			_getAccountPropertiesValues(
-				accountResultBag.getResults(), "billingCountry"));
+				resultBag.getResults(), "billingCountry"));
 	}
 
 	private Set<String> _getAccountPropertiesValues(
-		List<Account> accounts, String fieldName) {
+		List<EntityModel<ReportAccountDTO>> reportAccountEntityModel,
+		String fieldName) {
 
-		Stream<Account> stream = accounts.stream();
+		Stream<EntityModel<ReportAccountDTO>> stream =
+			reportAccountEntityModel.stream();
 
 		return stream.map(
-			Account::getProperties
+			EntityModel::getContent
+		).map(
+			ReportAccountDTO::getReportAccountPropertiesDTO
+		).map(
+			ReportAccountDTO.ReportAccountPropertiesDTO::getProperties
 		).map(
 			properties -> properties.get(fieldName)
 		).filter(
@@ -112,6 +131,6 @@ public class ReportAccountDogTest {
 	}
 
 	@Autowired
-	private ReportAccountDog _reportAccountDog;
+	private ReportRestController _reportRestController;
 
 }

@@ -238,6 +238,14 @@ public class AccountDog {
 		return accountNamesJSONObjects;
 	}
 
+	public Page<Account> getAccountPage(Long accountId, int size, Sort sort) {
+		return PageableExecutionUtils.getPage(
+			_accountRepository.findByIdAfter(
+				accountId, PageRequest.of(0, size, sort)),
+			PageRequest.of(0, size, sort),
+			() -> _accountRepository.countByIdAfter(accountId));
+	}
+
 	public List<Account> getAccounts(int size, int start) {
 		return searchAccounts(null, start / size, size);
 	}
