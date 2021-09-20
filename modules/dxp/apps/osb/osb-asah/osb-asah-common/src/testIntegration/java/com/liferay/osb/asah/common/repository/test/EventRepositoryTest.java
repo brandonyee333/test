@@ -44,6 +44,7 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -97,6 +98,120 @@ public class EventRepositoryTest {
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
+	public void testCountTotalEvents() {
+		Assert.assertEquals(
+			8L,
+			_eventRepository.countTotalEvents(
+				1L,
+				Collections.singletonList(
+					new EventAnalysisFilter(
+						"56789", AttributeType.EVENT,
+						EventAttributeDefinition.DataType.DATE, "between",
+						Arrays.asList("2021-05-10", "2021-06-01"))),
+				246810L,
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
+				_timeZoneDog.getTimeZoneId()));
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
+	public void testCountTotalEventsWithTimeZone() {
+		Assert.assertEquals(
+			6L,
+			_eventRepository.countTotalEvents(
+				1L,
+				Collections.singletonList(
+					new EventAnalysisFilter(
+						"56789", AttributeType.EVENT,
+						EventAttributeDefinition.DataType.DATE, "between",
+						Arrays.asList("2021-05-10", "2021-06-01"))),
+				246810L,
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
+				"America/Los_Angeles"));
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
+	public void testCountUniqueIndividuals() {
+		Assert.assertEquals(
+			6L,
+			_eventRepository.countUniqueIndividuals(
+				1L,
+				Collections.singletonList(
+					new EventAnalysisFilter(
+						"56789", AttributeType.EVENT,
+						EventAttributeDefinition.DataType.DATE, "between",
+						Arrays.asList("2021-05-10", "2021-06-01"))),
+				246810L,
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
+				_timeZoneDog.getTimeZoneId()));
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
+	public void testCountUniqueIndividualsWithTimeZone() {
+		Assert.assertEquals(
+			5L,
+			_eventRepository.countUniqueIndividuals(
+				1L,
+				Collections.singletonList(
+					new EventAnalysisFilter(
+						"56789", AttributeType.EVENT,
+						EventAttributeDefinition.DataType.DATE, "between",
+						Arrays.asList("2021-05-10", "2021-06-01"))),
+				246810L,
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
+				"America/Los_Angeles"));
+	}
+
+	@SQLResource(
+		resourcePath = "test_get_average_event_count_per_individual.sql"
+	)
+	@Test
+	public void testGetAverageEventCountPerIndividual() {
+		Assert.assertThat(
+			BigDecimal.valueOf(2),
+			Matchers.comparesEqualTo(
+				_eventRepository.getAverageEventCountPerIndividual(
+					1L,
+					Collections.singletonList(
+						new EventAnalysisFilter(
+							"56789", AttributeType.EVENT,
+							EventAttributeDefinition.DataType.DATE, "between",
+							Arrays.asList("2021-05-10", "2021-05-13"))),
+					246810L,
+					DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+					DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
+					_timeZoneDog.getTimeZoneId())));
+	}
+
+	@SQLResource(
+		resourcePath = "test_get_average_event_count_per_individual.sql"
+	)
+	@Test
+	public void testGetAverageEventCountPerIndividualWithTimeZone() {
+		Assert.assertThat(
+			BigDecimal.valueOf(1.5),
+			Matchers.comparesEqualTo(
+				_eventRepository.getAverageEventCountPerIndividual(
+					1L,
+					Collections.singletonList(
+						new EventAnalysisFilter(
+							"56789", AttributeType.EVENT,
+							EventAttributeDefinition.DataType.DATE, "between",
+							Arrays.asList("2021-05-10", "2021-05-13"))),
+					246810L,
+					DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+					DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
+					"America/Los_Angeles")));
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
 	public void testGetEventAttributeValuesAverage() {
 		Map<Object, Number> eventAttributeValues =
 			_eventRepository.getEventAttributeValues(
@@ -113,8 +228,8 @@ public class EventRepositoryTest {
 
 		Assert.assertArrayEquals(
 			new String[] {
-				"https://www.beryl.com/blogs", "https://www.beryl.com/products",
-				"https://www.beryl.com/design"
+				"https://www.beryl.com/blogs", "https://www.beryl.com/design",
+				"https://www.beryl.com/products"
 			},
 			keys.toArray());
 
@@ -122,7 +237,7 @@ public class EventRepositoryTest {
 
 		_assertBigDecimalEquals(
 			new BigDecimal[] {
-				BigDecimal.valueOf(1.50), BigDecimal.valueOf(1.33),
+				BigDecimal.valueOf(1.50), BigDecimal.valueOf(1.00),
 				BigDecimal.valueOf(1.00)
 			},
 			numbers.toArray(new BigDecimal[0]), 2);
@@ -183,6 +298,28 @@ public class EventRepositoryTest {
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId()));
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
+	public void testGetEventAttributeValuesCountDateWithTimeZone() {
+		Assert.assertEquals(
+			1,
+			_eventRepository.getEventAttributeValuesCount(
+				1L,
+				new EventAnalysisBreakdown(
+					"56789", AttributeType.EVENT, null,
+					EventAttributeDefinition.DataType.DATE, DateGrouping.DAY,
+					"DESC"),
+				Collections.singletonList(
+					new EventAnalysisFilter(
+						"56789", AttributeType.EVENT,
+						EventAttributeDefinition.DataType.DATE, "between",
+						Arrays.asList("2021-05-10", "2021-06-01"))),
+				246810L,
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
+				"America/Los_Angeles"));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -261,6 +398,35 @@ public class EventRepositoryTest {
 
 		Assert.assertArrayEquals(
 			new Integer[] {4, 2, 1, 1, 1, 1, 1}, values.toArray());
+	}
+
+	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@Test
+	public void testGetEventAttributeValuesDayGroupingWithTimeZone() {
+		Map<Object, Number> eventAttributeValues =
+			_eventRepository.getEventAttributeValues(
+				AnalysisType.TOTAL, null, 1L,
+				new EventAnalysisBreakdown(
+					"56789", AttributeType.EVENT, 0,
+					EventAttributeDefinition.DataType.DATE, DateGrouping.DAY,
+					"DESC"),
+				Collections.singletonList(
+					new EventAnalysisFilter(
+						"56789", AttributeType.EVENT,
+						EventAttributeDefinition.DataType.DATE, "between",
+						Arrays.asList("2021-05-10", "2021-06-01"))),
+				246810L, PageRequest.of(0, 10),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
+				"America/Los_Angeles");
+
+		Set<Object> keys = eventAttributeValues.keySet();
+
+		Assert.assertArrayEquals(new String[] {"2021-5-13"}, keys.toArray());
+
+		Collection<Number> values = eventAttributeValues.values();
+
+		Assert.assertArrayEquals(new Integer[] {6}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -423,7 +589,7 @@ public class EventRepositoryTest {
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(new Integer[] {4, 3, 2}, values.toArray());
+		Assert.assertArrayEquals(new Integer[] {4, 4, 2}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")

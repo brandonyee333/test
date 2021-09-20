@@ -22,7 +22,7 @@ INSERT INTO Event (channelId, eventDate, eventDefinitionId, id, individualId, se
 INSERT INTO Event (channelId, eventDate, eventDefinitionId, id, individualId, sessionId) VALUES (1, '2021-05-18', 246810, 8, 7, 6787);
 INSERT INTO Event (channelId, eventDate, eventDefinitionId, id, individualId, sessionId) VALUES (1, '2021-05-19', 246810, 9, 8, 6788);
 INSERT INTO Event (channelId, eventDate, eventDefinitionId, id, individualId, sessionId) VALUES (1, '2021-05-20', 246810, 10, 11, 6789);
-INSERT INTO Event (channelId, eventDate, eventDefinitionId, id, individualId, sessionId) VALUES (1, '2021-05-21', 246810, 11, 8, 6790);
+INSERT INTO Event (channelId, eventDate, eventDefinitionId, id, individualId, sessionId) VALUES (1, '2021-05-21', 246810, 11, 5, 6790);
 INSERT INTO Event (channelId, eventDate, eventDefinitionId, id, individualId, sessionId) VALUES (1, '2021-05-21', 246810, 12, 8, 6791);
 INSERT INTO Event (channelId, eventDate, eventDefinitionId, id, individualId, sessionId) VALUES (1, '2021-05-22', 246810, 13, 9, 6792);
 INSERT INTO Event (channelId, eventDate, eventDefinitionId, id, individualId, sessionId) VALUES (1, '2021-05-22', 246810, 14, 11, 6793);
