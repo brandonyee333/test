@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.session.arm;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -35,6 +38,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -107,8 +111,16 @@ public class FinalizeUserSessionArm {
 				"filter", "contains(filter, 'sessions.filter')"
 			).put(
 				"individualJSONObject",
-				_faroInfoElasticsearchInvoker.fetch(
-					"individuals", userSession.getIndividualId())
+				Optional.ofNullable(
+					userSession.getIndividualId()
+				).map(
+					individualId -> _objectMapper.convertValue(
+						_individualDog.fetchIndividual(
+							Long.valueOf(userSession.getIndividualId())),
+						JSONObject.class)
+				).orElse(
+					null
+				)
 			));
 	}
 
@@ -656,5 +668,11 @@ public class FinalizeUserSessionArm {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private IndividualDog _individualDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }
