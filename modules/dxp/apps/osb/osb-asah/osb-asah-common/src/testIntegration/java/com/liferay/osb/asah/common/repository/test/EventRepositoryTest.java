@@ -82,8 +82,7 @@ public class EventRepositoryTest {
 		Assert.assertEquals(
 			Integer.valueOf(3),
 			_eventRepository.countEvents(
-				1L, 1L, null, TimeRange.LAST_24_HOURS,
-				_timeZoneDog.getTimeZoneId()));
+				1L, 1L, null, TimeRange.LAST_24_HOURS, "UTC"));
 	}
 
 	@SQLResource(resourcePath = "test_events.sql")
@@ -92,8 +91,7 @@ public class EventRepositoryTest {
 		Assert.assertEquals(
 			Integer.valueOf(1),
 			_eventRepository.countEvents(
-				1L, 1L, "form", TimeRange.LAST_24_HOURS,
-				_timeZoneDog.getTimeZoneId()));
+				1L, 1L, "form", TimeRange.LAST_24_HOURS, "UTC"));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -111,7 +109,7 @@ public class EventRepositoryTest {
 				246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
-				_timeZoneDog.getTimeZoneId()));
+				"UTC"));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -147,7 +145,7 @@ public class EventRepositoryTest {
 				246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
-				_timeZoneDog.getTimeZoneId()));
+				"UTC"));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -186,7 +184,7 @@ public class EventRepositoryTest {
 					246810L,
 					DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 					DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
-					_timeZoneDog.getTimeZoneId())));
+					"UTC")));
 	}
 
 	@SQLResource(
@@ -221,8 +219,7 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId());
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -254,8 +251,7 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.BOOLEAN, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId());
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -280,7 +276,7 @@ public class EventRepositoryTest {
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId()));
+				"UTC"));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -297,7 +293,7 @@ public class EventRepositoryTest {
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId()));
+				"UTC"));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -335,7 +331,7 @@ public class EventRepositoryTest {
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId()));
+				"UTC"));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -351,7 +347,7 @@ public class EventRepositoryTest {
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId()));
+				"UTC"));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -367,7 +363,7 @@ public class EventRepositoryTest {
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId()));
+				"UTC"));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -382,8 +378,7 @@ public class EventRepositoryTest {
 					"DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId());
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -440,8 +435,7 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId());
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -469,8 +463,7 @@ public class EventRepositoryTest {
 					"DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId());
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -495,8 +488,7 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId());
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -519,8 +511,7 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.NUMBER, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId());
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -547,8 +538,7 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId());
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -575,8 +565,7 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId());
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -612,8 +601,7 @@ public class EventRepositoryTest {
 					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId());
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -641,8 +629,7 @@ public class EventRepositoryTest {
 					"DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId());
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -659,8 +646,7 @@ public class EventRepositoryTest {
 	public void testGetEventsCountGroupByEventDateLast7Days() {
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_eventRepository.getEventsCountGroupByEventDate(
-				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS,
-				_timeZoneDog.getTimeZoneId());
+				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS, "UTC");
 
 		Assert.assertEquals(
 			eventsCountGroupByEventDate.toString(), 2,
@@ -724,8 +710,7 @@ public class EventRepositoryTest {
 	public void testGetEventsCountGroupByEventDateLast24Hours() {
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_eventRepository.getEventsCountGroupByEventDate(
-				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS,
-				_timeZoneDog.getTimeZoneId());
+				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS, "UTC");
 
 		Assert.assertEquals(
 			eventsCountGroupByEventDate.toString(), 1,
@@ -769,8 +754,7 @@ public class EventRepositoryTest {
 	public void testGetEventSessionsCountGroupByEventDateLast7Days() {
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_eventRepository.getEventSessionsCountGroupByEventDate(
-				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS,
-				_timeZoneDog.getTimeZoneId());
+				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS, "UTC");
 
 		Assert.assertEquals(
 			eventSessionsCountGroupByEventDate.toString(), 2,
@@ -825,8 +809,7 @@ public class EventRepositoryTest {
 	public void testGetEventSessionsCountGroupByEventDateLast24Hours() {
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_eventRepository.getEventSessionsCountGroupByEventDate(
-				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS,
-				_timeZoneDog.getTimeZoneId());
+				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS, "UTC");
 
 		Assert.assertEquals(
 			eventSessionsCountGroupByEventDate.toString(), 1,
@@ -872,7 +855,7 @@ public class EventRepositoryTest {
 	public void testSearchEventsLast24Hours() {
 		List<Event> events = _eventRepository.searchEvents(
 			1L, 1L, null, PageRequest.of(0, 50, Sort.desc("eventDate")),
-			TimeRange.LAST_24_HOURS, _timeZoneDog.getTimeZoneId());
+			TimeRange.LAST_24_HOURS, "UTC");
 
 		Assert.assertEquals(events.toString(), 3, events.size());
 
@@ -899,7 +882,7 @@ public class EventRepositoryTest {
 	public void testSearchEventsWithKeywordsLast24Hours() {
 		List<Event> events = _eventRepository.searchEvents(
 			1L, 1L, "form", PageRequest.of(0, 50), TimeRange.LAST_24_HOURS,
-			_timeZoneDog.getTimeZoneId());
+			"UTC");
 
 		Assert.assertEquals(events.toString(), 1, events.size());
 	}
