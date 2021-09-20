@@ -14,7 +14,12 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.session.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.arm.FinalizeUserSessionArm;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -25,7 +30,7 @@ import java.time.ZoneOffset;
 import java.util.Date;
 
 import org.junit.Assert;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,10 +40,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 /**
  * @author André Miranda
  */
-@Ignore
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
 public class FinalizeUserSessionArmTest {
+
+	@Before
+	public void setUp() {
+		_cerebroInfoElasticsearchInvoker.save(
+			"user-sessions", JSONUtil.put("id", "1"));
+	}
 
 	@Test
 	public void testCompleteReasonInactivity() throws Exception {
@@ -61,11 +71,21 @@ public class FinalizeUserSessionArmTest {
 
 		_finalizeUserSessionArm.processSession(userSession);
 
+		userSession = _objectMapper.convertValue(
+			_cerebroInfoElasticsearchInvoker.get("user-sessions", "1"),
+			UserSession.class);
+
 		Assert.assertTrue(userSession.getCompleted());
 		Assert.assertEquals("inactivity", userSession.getCompleteReason());
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
 	@Autowired
 	private FinalizeUserSessionArm _finalizeUserSessionArm;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }
