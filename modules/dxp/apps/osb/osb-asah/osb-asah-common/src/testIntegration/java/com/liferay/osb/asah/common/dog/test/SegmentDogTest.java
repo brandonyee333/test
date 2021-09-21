@@ -36,9 +36,11 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomUtils;
 
 import org.json.JSONArray;
@@ -936,6 +938,41 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			_convertFieldNamesToFieldMappingIds(
 				"age", "gender", "telephone", "worksFor"),
 			new String[0], updateFilterSB.toString());
+	}
+
+	@Test
+	public void testUpdateName() {
+		Segment segment = new Segment();
+
+		segment.setFilter("(demographics/favoriteColor/value eq 'blue')");
+		segment.setIncludeAnonymousUsers(Boolean.FALSE);
+		segment.setModifiedDate(new Date());
+		segment.setName("Segment 1");
+		segment.setType(Segment.Type.DYNAMIC);
+
+		segment = _segmentDog.addSegment(segment);
+
+		Segment partialSegment = new Segment();
+
+		partialSegment.setFilter(
+			"(demographics/favoriteColor/value eq 'blue')");
+		partialSegment.setIncludeAnonymousUsers(Boolean.FALSE);
+		partialSegment.setModifiedDate(new Date());
+		partialSegment.setName("Segment 2");
+
+		partialSegment = _segmentDog.updateSegment(
+			partialSegment, segment.getId());
+
+		Assert.assertTrue(
+			CollectionUtils.isNotEmpty(
+				partialSegment.getReferencedFieldMappingIds()));
+		Assert.assertEquals(
+			segment.getReferencedFieldMappingIds(),
+			partialSegment.getReferencedFieldMappingIds());
+
+		segment = _segmentDog.getSegment(segment.getId());
+
+		Assert.assertEquals("Segment 2", segment.getName());
 	}
 
 	private void _assertAddSetsReferencedObjectIds(
