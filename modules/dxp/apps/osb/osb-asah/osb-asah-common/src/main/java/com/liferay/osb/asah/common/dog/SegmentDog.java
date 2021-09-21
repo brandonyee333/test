@@ -990,7 +990,10 @@ public class SegmentDog extends BaseFaroInfoDog {
 				existingSegment.getIncludeAnonymousUsers(),
 				partialSegment.getIncludeAnonymousUsers())) {
 
-			BeanUtils.copyProperties(partialSegment, existingSegment);
+			existingSegment.setModifiedDate(partialSegment.getModifiedDate());
+			existingSegment.setName(partialSegment.getName());
+			existingSegment.setState(partialSegment.getState());
+			existingSegment.setStatus(partialSegment.getStatus());
 
 			existingSegment = _segmentRepository.save(existingSegment);
 		}
