@@ -300,7 +300,7 @@ public class EventRepositoryTest {
 	@Test
 	public void testGetEventAttributeValuesCountDateWithTimeZone() {
 		Assert.assertEquals(
-			1,
+			2,
 			_eventRepository.getEventAttributeValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
@@ -417,11 +417,12 @@ public class EventRepositoryTest {
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
-		Assert.assertArrayEquals(new String[] {"2021-5-13"}, keys.toArray());
+		Assert.assertArrayEquals(
+			new String[] {"2021-5-12", "2021-5-13"}, keys.toArray());
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(new Integer[] {6}, values.toArray());
+		Assert.assertArrayEquals(new Integer[] {5, 1}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
