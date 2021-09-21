@@ -17,10 +17,12 @@ package com.liferay.osb.asah.common.model.filter;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.impl.DSL;
 
 /**
  * @author Leslie Wong
@@ -35,7 +37,13 @@ public class LessThanEqualsFilterOperator extends FilterOperator {
 
 	@Override
 	public Condition getCondition(Field field) {
-		return field.le(getValue(dataType, values.get(0)));
+		String value = values.get(0);
+
+		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
+			return field.le(DSL.date((Date)getValue(dataType, value)));
+		}
+
+		return field.le(getValue(dataType, value));
 	}
 
 	@Override

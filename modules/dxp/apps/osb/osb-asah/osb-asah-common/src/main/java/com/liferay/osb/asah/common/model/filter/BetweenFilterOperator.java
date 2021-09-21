@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.model.filter;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.jooq.Condition;
@@ -36,6 +37,12 @@ public class BetweenFilterOperator extends FilterOperator {
 
 	@Override
 	public Condition getCondition(Field field) {
+		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
+			return DSL.and(
+				field.ge(DSL.date((Date)getValue(dataType, values.get(0)))),
+				field.le(DSL.date((Date)getValue(dataType, values.get(1)))));
+		}
+
 		return DSL.and(
 			field.ge(getValue(dataType, values.get(0))),
 			field.le(getValue(dataType, values.get(1))));

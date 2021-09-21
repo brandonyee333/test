@@ -17,10 +17,12 @@ package com.liferay.osb.asah.common.model.filter;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.impl.DSL;
 
 /**
  * @author Leslie Wong
@@ -41,6 +43,10 @@ public class NotEqualsFilterOperator extends FilterOperator {
 			if (dataType.equals(EventAttributeDefinition.DataType.STRING)) {
 				return field.notEqualIgnoreCase(
 					(String)getValue(dataType, value));
+			}
+
+			if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
+				return field.ne(DSL.date((Date)getValue(dataType, value)));
 			}
 
 			return field.ne(getValue(dataType, value));
