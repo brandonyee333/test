@@ -87,6 +87,13 @@ public class ElasticsearchAssetRepositoryImpl
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			getCollectionName(),
 			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.cardinality(
+						"keywordsCount"
+					).field(
+						"keywords.keyword"
+					));
+
 				if (StringUtils.isNotBlank(keywords)) {
 					searchSourceBuilder.query(
 						QueryBuilders.regexpQuery(
@@ -95,13 +102,6 @@ public class ElasticsearchAssetRepositoryImpl
 								buildIgnoreCaseRegExp(
 									StringUtil.unquote(keywords))));
 				}
-
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.cardinality(
-						"keywordsCount"
-					).field(
-						"keywords.keyword"
-					));
 
 				searchSourceBuilder.size(0);
 			});
