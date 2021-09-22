@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -69,6 +70,92 @@ public class IndividualRepositoryImpl extends BaseRepository {
 
 	public IndividualRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	public long
+		countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
+			Long channelId, @Nullable Date endLastActivityDate,
+			@Nullable Date endPreviousActivityDate, List<Long> segmentIds,
+			@Nullable Date startLastActivityDate,
+			@Nullable Date startPreviousActivityDate) {
+
+		SelectConditionStep<Record1<Integer>> query = _dslContext.select(
+			DSL.count()
+		).from(
+			"individual"
+		).innerJoin(
+			"individualchannel"
+		).on(
+			DSL.field(
+				"individualchannel.individualid"
+			).eq(
+				DSL.field("individual.id")
+			)
+		).where(
+			DSL.field(
+				DSL.cast(
+					DSL.array(DSL.field("individual.channelids")), Long[].class)
+			).contains(
+				DSL.cast(DSL.array(channelId), Long[].class)
+			)
+		).and(
+			DSL.field(
+				DSL.cast(
+					DSL.array(DSL.field("individual.segmentids")), Long[].class)
+			).contains(
+				DSL.cast(DSL.array(segmentIds.toArray()), Long[].class)
+			)
+		).and(
+			DSL.field(
+				"individualchannel.channelId"
+			).eq(
+				channelId
+			)
+		);
+
+		Condition lastActivityDateCondition = null;
+
+		if (!Objects.isNull(endLastActivityDate) &&
+			!Objects.isNull(startLastActivityDate)) {
+
+			lastActivityDateCondition = DSL.field(
+				"individualchannel.lastactivitydate"
+			).between(
+				startLastActivityDate, endLastActivityDate
+			);
+		}
+
+		Condition previousActivityDateCondition = null;
+
+		if (!Objects.isNull(endPreviousActivityDate) &&
+			!Objects.isNull(startPreviousActivityDate)) {
+
+			previousActivityDateCondition = DSL.field(
+				"individualchannel.previousactivitydate"
+			).between(
+				startPreviousActivityDate, endPreviousActivityDate
+			);
+		}
+
+		if (!Objects.isNull(lastActivityDateCondition) &&
+			!Objects.isNull(previousActivityDateCondition)) {
+
+			query.and(
+				DSL.or(
+					lastActivityDateCondition, previousActivityDateCondition));
+		}
+		else if (!Objects.isNull(lastActivityDateCondition)) {
+			query.and(lastActivityDateCondition);
+		}
+		else if (!Objects.isNull(previousActivityDateCondition)) {
+			query.and(previousActivityDateCondition);
+		}
+
+		return query.fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
 	}
 
 	public long countByFieldNamesAndQueryAndSegmentId(
@@ -1651,7 +1738,33 @@ public class IndividualRepositoryImpl extends BaseRepository {
 					record.intoMap());
 
 				individual.addChannelId(individualChannel.getChannelId());
-				individual.addIndividualChannel(individualChannel);
+
+				Set<Individual.ActivitiesCount> activitiesCounts =
+					individual.getActivitiesCounts();
+
+				activitiesCounts.add(
+					new Individual.ActivitiesCount(individualChannel));
+
+				Set<IndividualChannel> individualChannels =
+					individual.getIndividualChannels();
+
+				individualChannels.add(individualChannel);
+
+				Set<Individual.LastActivityDate> lastActivityDates =
+					individual.getLastActivityDates();
+
+				lastActivityDates.add(
+					new Individual.LastActivityDate(individualChannel));
+
+				if (individualChannel.getPreviousActivityDate() != null) {
+					Set<Individual.LastActivityDate> previousActivityDates =
+						individual.getPreviousActivityDates();
+
+					previousActivityDates.add(
+						new Individual.LastActivityDate(
+							individualChannel.getChannelId(),
+							individualChannel.getPreviousActivityDate()));
+				}
 			}
 		);
 	}
