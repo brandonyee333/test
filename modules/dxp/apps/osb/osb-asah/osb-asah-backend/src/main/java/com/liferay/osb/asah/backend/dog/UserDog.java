@@ -108,6 +108,28 @@ public class UserDog {
 		return _countIndividuals(aggregations);
 	}
 
+	public Long getSegmentedAnonymousUsersCount(
+		MetricType metricType, SearchQueryContext searchQueryContext) {
+
+		DogConfiguration dogConfiguration =
+			_dogConfigurationBag.getDogConfiguration(
+				searchQueryContext.getAssetType());
+
+		Aggregations aggregations = _dataDog.queryAggregations(
+			dogConfiguration.getCollectionName(),
+			_buildSearchSourceBuilder(
+				metricType,
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("knownIndividual", false)
+				).filter(
+					QueryBuilders.existsQuery("segmentNames")
+				),
+				searchQueryContext,
+				_createIndividualIdsTermsAggregationBuilder()));
+
+		return _countIndividuals(aggregations);
+	}
+
 	public Long getSegmentedKnownUsersCount(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 

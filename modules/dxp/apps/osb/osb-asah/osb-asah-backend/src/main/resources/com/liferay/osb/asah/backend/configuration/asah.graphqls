@@ -614,6 +614,7 @@ type Metric {
 	previousValue: Float
 	previousValueKey: String
 	segment : MetricBag
+	segmentedAnonymousUsersCount: Int
 	segmentedKnownUsersCount: Int
 	trend: Trend
 	value: Float

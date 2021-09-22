@@ -858,6 +858,9 @@ public class ReportRestController extends BaseRestController {
 		audienceReport._nonsegmentedKnownUsersCount =
 			_userDog.getNonsegmentedKnownUsersCount(
 				metricType, searchQueryContext);
+		audienceReport._segmentedAnonymousUsersCount =
+			_userDog.getSegmentedAnonymousUsersCount(
+				metricType, searchQueryContext);
 		audienceReport._segmentedKnownUsersCount =
 			_userDog.getSegmentedKnownUsersCount(
 				metricType, searchQueryContext);
@@ -1472,6 +1475,10 @@ public class ReportRestController extends BaseRestController {
 			return _nonsegmentedKnownUsersCount;
 		}
 
+		public Long getSegmentedAnonymousUsersCount() {
+			return _segmentedAnonymousUsersCount;
+		}
+
 		public Long getSegmentedKnownUsersCount() {
 			return _segmentedKnownUsersCount;
 		}
@@ -1484,6 +1491,7 @@ public class ReportRestController extends BaseRestController {
 		private Long _anonymousUsersCount;
 		private Long _knownUsersCount;
 		private Long _nonsegmentedKnownUsersCount;
+		private Long _segmentedAnonymousUsersCount;
 		private Long _segmentedKnownUsersCount;
 		private ResultBag<MetricReport> _segmentMetricReportResultBag;
 

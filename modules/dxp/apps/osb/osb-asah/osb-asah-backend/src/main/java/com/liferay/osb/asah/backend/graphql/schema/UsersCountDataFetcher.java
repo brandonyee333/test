@@ -39,6 +39,9 @@ import org.springframework.stereotype.Component;
 @GraphQLTypeWiring(
 	fieldName = "nonsegmentedKnownUsersCount", typeName = "Metric"
 )
+@GraphQLTypeWiring(
+	fieldName = "segmentedAnonymousUsersCount", typeName = "Metric"
+)
 @GraphQLTypeWiring(fieldName = "segmentedKnownUsersCount", typeName = "Metric")
 public class UsersCountDataFetcher extends BaseDataFetcher<Long> {
 
@@ -81,6 +84,14 @@ public class UsersCountDataFetcher extends BaseDataFetcher<Long> {
 				"nonsegmentedKnownUsersCount")) {
 
 			return _userDog.getNonsegmentedKnownUsersCount(
+				metricType, searchQueryContext);
+		}
+
+		if (Objects.equals(
+				graphQLFieldDefinition.getName(),
+				"segmentedAnonymousUsersCount")) {
+
+			return _userDog.getSegmentedAnonymousUsersCount(
 				metricType, searchQueryContext);
 		}
 
