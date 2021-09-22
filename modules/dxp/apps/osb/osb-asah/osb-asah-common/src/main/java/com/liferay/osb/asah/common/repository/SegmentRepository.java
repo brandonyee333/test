@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,15 +44,14 @@ public interface SegmentRepository extends Repository<Segment, Long> {
 	@Cacheable
 	public long countPreviewDisabledSegments(
 		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
-		String filterString);
+		FilterHelper filterHelper);
 
 	@Cacheable
-	public long countSegments(List<Long> channelIds, String filterString);
-
-	@Cacheable
-	@CacheEvict(allEntries = true)
 	public long countSegments(
-		@Nullable String filterString, @Nullable List<Long> segmentIds);
+		FilterHelper filterHelper, @Nullable List<Long> segmentIds);
+
+	@Cacheable
+	public long countSegments(List<Long> channelIds, FilterHelper filterHelper);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
@@ -110,37 +110,37 @@ public interface SegmentRepository extends Repository<Segment, Long> {
 
 	@Cacheable
 	public List<Transformation> getSegmentTransformations(
-		String apply, @Nullable String filterString, Pageable pageable,
+		String apply, FilterHelper filterHelper, Pageable pageable,
 		@Nullable List<Long> segmentIds);
 
 	@Cacheable
 	public List<Segment> searchDynamicSegments(
-		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
-		String filterString, boolean includeAnonymousUsers, Pageable pageable,
-		Set<Long> segmentIds);
+		FilterHelper filterHelper, Pageable pageable);
 
 	@Cacheable
 	public List<Segment> searchDynamicSegments(
-		String filterString, Pageable pageable);
+		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
+		FilterHelper filterHelper, boolean includeAnonymousUsers,
+		Pageable pageable, Set<Long> segmentIds);
 
 	@Cacheable
 	public List<Segment> searchPreviewDisabledSegments(
 		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
-		String filterString, Pageable pageable);
+		FilterHelper filterHelper, Pageable pageable);
 
 	@Cacheable
 	public List<Segment> searchSegments(
-		List<Long> channelIds, String filterString, Pageable pageable);
+		FilterHelper filterHelper, @Nullable List<Long> segmentIds,
+		Pageable pageable);
+
+	@Cacheable
+	public List<Segment> searchSegments(
+		List<Long> channelIds, FilterHelper filterHelper, Pageable pageable);
 
 	@Cacheable
 	public List<Segment> searchSegments(
 		Long dxpEntityId, DXPEntity.Type dxpEntityType, String state,
 		Segment.Type type);
-
-	@Cacheable
-	public List<Segment> searchSegments(
-		@Nullable String filterString, @Nullable List<Long> segmentIds,
-		Pageable pageable);
 
 	@Cacheable
 	public List<Segment> searchSegments(

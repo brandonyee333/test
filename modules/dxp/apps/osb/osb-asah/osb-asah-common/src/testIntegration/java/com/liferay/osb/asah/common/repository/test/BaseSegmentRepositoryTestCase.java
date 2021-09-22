@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.Arrays;
@@ -219,7 +220,7 @@ public abstract class BaseSegmentRepositoryTestCase
 					new DataSourceIndividual(
 						Collections.singleton("testAccount"), 100L,
 						_individualId, Collections.emptySet()))),
-			null, false, PageRequest.of(0, 10),
+			FilterHelper.EMPTY, false, PageRequest.of(0, 10),
 			Collections.singleton(_segment3Id));
 
 		Assert.assertEquals(segments.toString(), 1, segments.size());
@@ -234,7 +235,7 @@ public abstract class BaseSegmentRepositoryTestCase
 					new DataSourceIndividual(
 						Collections.singleton("testAccount"), 100L,
 						_individualId, Collections.emptySet()))),
-			null, true, PageRequest.of(0, 10),
+			FilterHelper.EMPTY, true, PageRequest.of(0, 10),
 			Collections.singleton(_segment3Id));
 
 		Assert.assertEquals(segments.toString(), 0, segments.size());

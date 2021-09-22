@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
@@ -331,7 +332,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		List<Transformation> transformations =
 			_segmentRepository.getSegmentTransformations(
-				apply, filterString, pageRequest,
+				apply, new FilterHelper(filterString), pageRequest,
 				_getIndividualSegmentIds(segment.getId()));
 
 		return PageableExecutionUtils.getPage(
@@ -349,7 +350,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		List<Transformation> transformations =
 			_segmentRepository.getSegmentTransformations(
-				apply, filterString, pageRequest, null);
+				apply, new FilterHelper(filterString), pageRequest, null);
 
 		return PageableExecutionUtils.getPage(
 			transformations, pageRequest, transformations::size);
@@ -410,11 +411,12 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchSegments(
-				filterString, _getIndividualSegmentIds(segment.getId()),
-				pageRequest),
+				new FilterHelper(filterString),
+				_getIndividualSegmentIds(segment.getId()), pageRequest),
 			pageRequest,
 			() -> _segmentRepository.countSegments(
-				filterString, _getIndividualSegmentIds(segment.getId())));
+				new FilterHelper(filterString),
+				_getIndividualSegmentIds(segment.getId())));
 	}
 
 	public List<Segment> searchDynamicSegments(
@@ -426,8 +428,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 		PageRequest pageRequest = PageRequest.of(page, size, sort);
 
 		return _segmentRepository.searchDynamicSegments(
-			dataSourceAccountPKs, filterString, includeAnonymousUsers,
-			pageRequest, segmentIds);
+			dataSourceAccountPKs, new FilterHelper(filterString),
+			includeAnonymousUsers, pageRequest, segmentIds);
 	}
 
 	public List<Segment> searchDynamicSegments(
@@ -437,26 +439,26 @@ public class SegmentDog extends BaseFaroInfoDog {
 			page, size, SortUtil.getSort(sorts));
 
 		return _segmentRepository.searchDynamicSegments(
-			filterString, pageRequest);
+			new FilterHelper(filterString), pageRequest);
 	}
 
 	public Page<Segment> searchPreviewDisabledSegmentsPage(
 		Long dataSourceId, String filterString, int page, int size,
 		String[] sorts) {
 
-		List<Long> dataSourceFieldMappingIds =
-			_fieldMappingDog.getDataSourceFieldMappingIds(dataSourceId, true);
+		List<Long> fieldMappingIds = _fieldMappingDog.getFieldMappingIds(
+			dataSourceId);
 
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchPreviewDisabledSegments(
-				dataSourceFieldMappingIds, dataSourceId, filterString,
+				fieldMappingIds, dataSourceId, new FilterHelper(filterString),
 				pageRequest),
 			pageRequest,
 			() -> _segmentRepository.countPreviewDisabledSegments(
-				dataSourceFieldMappingIds, dataSourceId, filterString));
+				fieldMappingIds, dataSourceId, new FilterHelper(filterString)));
 	}
 
 	public Page<Segment> searchSegmentsPage(
@@ -471,9 +473,10 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchSegments(
-				channelIds, filterString, pageRequest),
+				channelIds, new FilterHelper(filterString), pageRequest),
 			pageRequest,
-			() -> _segmentRepository.countSegments(channelIds, filterString));
+			() -> _segmentRepository.countSegments(
+				channelIds, new FilterHelper(filterString)));
 	}
 
 	public Page<Segment> searchSegmentsPage(
@@ -488,9 +491,10 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchSegments(
-				filterString, segmentIds, pageRequest),
+				new FilterHelper(filterString), segmentIds, pageRequest),
 			pageRequest,
-			() -> _segmentRepository.countSegments(filterString, segmentIds));
+			() -> _segmentRepository.countSegments(
+				new FilterHelper(filterString), segmentIds));
 	}
 
 	@CacheEvict("getReferencedAssetIds")

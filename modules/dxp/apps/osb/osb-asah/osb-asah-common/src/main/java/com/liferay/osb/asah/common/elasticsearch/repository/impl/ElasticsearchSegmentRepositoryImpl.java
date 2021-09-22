@@ -17,13 +17,13 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
@@ -95,7 +95,7 @@ public class ElasticsearchSegmentRepositoryImpl
 	@Override
 	public long countPreviewDisabledSegments(
 		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
-		String filterString) {
+		FilterHelper filterHelper) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.should(
 			QueryBuilders.termQuery(
@@ -105,11 +105,11 @@ public class ElasticsearchSegmentRepositoryImpl
 				"referencedFieldMappingIds", dataSourceFieldMappingIds)
 		);
 
-		if (!StringUtils.isEmpty(filterString)) {
+		if (!StringUtils.isEmpty(filterHelper.getFilterString())) {
 			boolQueryBuilder = BoolQueryBuilderUtil.filter(
 				boolQueryBuilder
 			).filter(
-				FilterStringToQueryBuilderConverter.convert(filterString)
+				filterHelper.getQueryBuilder()
 			);
 		}
 
@@ -118,17 +118,21 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	@Override
-	public long countSegments(List<Long> channelIds, String filterString) {
+	public long countSegments(
+		FilterHelper filterHelper, List<Long> segmentIds) {
+
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(),
-			_getSegmentsQueryBuilder(channelIds, filterString));
+			_getSegmentsQueryBuilder(filterHelper, segmentIds));
 	}
 
 	@Override
-	public long countSegments(String filterString, List<Long> segmentIds) {
+	public long countSegments(
+		List<Long> channelIds, FilterHelper filterHelper) {
+
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(),
-			_getSegmentsQueryBuilder(filterString, segmentIds));
+			_getSegmentsQueryBuilder(channelIds, filterHelper));
 	}
 
 	@Override
@@ -370,7 +374,7 @@ public class ElasticsearchSegmentRepositoryImpl
 
 	@Override
 	public List<Transformation> getSegmentTransformations(
-		String apply, String filterString, Pageable pageable,
+		String apply, FilterHelper filterHelper, Pageable pageable,
 		List<Long> segmentIds) {
 
 		TransformationGetResponse transformationGetResponse =
@@ -382,7 +386,7 @@ public class ElasticsearchSegmentRepositoryImpl
 		transformationGetResponse.setPage(pageable.getPageNumber());
 
 		QueryBuilder queryBuilder = _getSegmentsQueryBuilder(
-			filterString, segmentIds);
+			filterHelper, segmentIds);
 
 		if (queryBuilder != null) {
 			transformationGetResponse.setQueryBuilder(queryBuilder);
@@ -437,16 +441,45 @@ public class ElasticsearchSegmentRepositoryImpl
 
 	@Override
 	public List<Segment> searchDynamicSegments(
+		FilterHelper filterHelper, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						QueryBuilder queryBuilder =
+							QueryBuilders.matchAllQuery();
+
+						if (filterHelper.getFilterString() != null) {
+							queryBuilder = filterHelper.getQueryBuilder();
+						}
+
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.filter(
+								queryBuilder
+							).filter(
+								QueryBuilders.termQuery(
+									"segmentType", "DYNAMIC")
+							));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
+	}
+
+	@Override
+	public List<Segment> searchDynamicSegments(
 		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
-		String filterString, boolean includeAnonymousUsers, Pageable pageable,
-		Set<Long> segmentIds) {
+		FilterHelper filterHelper, boolean includeAnonymousUsers,
+		Pageable pageable, Set<Long> segmentIds) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("segmentType", "DYNAMIC"));
 
-		if (filterString != null) {
+		if (filterHelper.getFilterString() != null) {
 			boolQueryBuilder = boolQueryBuilder.filter(
-				FilterStringToQueryBuilderConverter.convert(filterString));
+				filterHelper.getQueryBuilder());
 		}
 
 		if (CollectionUtils.isEmpty(dataSourceAccountPKs)) {
@@ -520,40 +553,9 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	@Override
-	public List<Segment> searchDynamicSegments(
-		String filterString, Pageable pageable) {
-
-		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						QueryBuilder queryBuilder =
-							QueryBuilders.matchAllQuery();
-
-						if (filterString != null) {
-							queryBuilder =
-								FilterStringToQueryBuilderConverter.convert(
-									filterString);
-						}
-
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								queryBuilder
-							).filter(
-								QueryBuilders.termQuery(
-									"segmentType", "DYNAMIC")
-							));
-
-						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
-					})));
-	}
-
-	@Override
 	public List<Segment> searchPreviewDisabledSegments(
 		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
-		String filterString, Pageable pageable) {
+		FilterHelper filterHelper, Pageable pageable) {
 
 		return toList(
 			new JSONArray(
@@ -571,12 +573,13 @@ public class ElasticsearchSegmentRepositoryImpl
 									dataSourceFieldMappingIds)
 							);
 
-						if (!StringUtils.isEmpty(filterString)) {
+						if (!StringUtils.isEmpty(
+								filterHelper.getFilterString())) {
+
 							boolQueryBuilder = BoolQueryBuilderUtil.filter(
 								boolQueryBuilder
 							).filter(
-								FilterStringToQueryBuilderConverter.convert(
-									filterString)
+								filterHelper.getQueryBuilder()
 							);
 						}
 
@@ -589,7 +592,8 @@ public class ElasticsearchSegmentRepositoryImpl
 
 	@Override
 	public List<Segment> searchSegments(
-		List<Long> channelIds, String filterString, Pageable pageable) {
+		FilterHelper filterHelper, @Nullable List<Long> segmentIds,
+		Pageable pageable) {
 
 		return toList(
 			new JSONArray(
@@ -597,7 +601,24 @@ public class ElasticsearchSegmentRepositoryImpl
 					getCollectionName(),
 					searchSourceBuilder -> {
 						searchSourceBuilder.query(
-							_getSegmentsQueryBuilder(channelIds, filterString));
+							_getSegmentsQueryBuilder(filterHelper, segmentIds));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
+	}
+
+	@Override
+	public List<Segment> searchSegments(
+		List<Long> channelIds, FilterHelper filterHelper, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_getSegmentsQueryBuilder(channelIds, filterHelper));
 
 						setSearchSourceBuilderPage(
 							searchSourceBuilder, pageable);
@@ -641,24 +662,6 @@ public class ElasticsearchSegmentRepositoryImpl
 
 			return Collections.emptyList();
 		}
-	}
-
-	@Override
-	public List<Segment> searchSegments(
-		@Nullable String filterString, @Nullable List<Long> segmentIds,
-		Pageable pageable) {
-
-		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_getSegmentsQueryBuilder(filterString, segmentIds));
-
-						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
-					})));
 	}
 
 	@Override
@@ -707,10 +710,26 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	private QueryBuilder _getSegmentsQueryBuilder(
-		List<Long> channelIds, String filterString) {
+		FilterHelper filterHelper, List<Long> segmentIds) {
 
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString);
+		QueryBuilder queryBuilder = QueryBuilders.termsQuery(
+			"id", ListUtil.map(segmentIds, String::valueOf));
+
+		if (StringUtils.isEmpty(filterHelper.getFilterString())) {
+			return queryBuilder;
+		}
+
+		return BoolQueryBuilderUtil.filter(
+			queryBuilder
+		).filter(
+			filterHelper.getQueryBuilder()
+		);
+	}
+
+	private QueryBuilder _getSegmentsQueryBuilder(
+		List<Long> channelIds, FilterHelper filterHelper) {
+
+		QueryBuilder queryBuilder = filterHelper.getQueryBuilder();
 
 		if (channelIds.isEmpty()) {
 			return queryBuilder;
@@ -724,23 +743,6 @@ public class ElasticsearchSegmentRepositoryImpl
 		}
 
 		return boolQueryBuilder.filter(queryBuilder);
-	}
-
-	private QueryBuilder _getSegmentsQueryBuilder(
-		String filterString, List<Long> segmentIds) {
-
-		QueryBuilder queryBuilder = QueryBuilders.termsQuery(
-			"id", ListUtil.map(segmentIds, String::valueOf));
-
-		if (StringUtils.isEmpty(filterString)) {
-			return queryBuilder;
-		}
-
-		return BoolQueryBuilderUtil.filter(
-			queryBuilder
-		).filter(
-			FilterStringToQueryBuilderConverter.convert(filterString)
-		);
 	}
 
 	private String[] _getSorts(Sort sort) {
