@@ -1,0 +1,225 @@
+[
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"100"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now}",
+		"dateModified": "${now}",
+		"demographics": {
+			"email": [
+			],
+			"givenName": [
+			]
+		},
+		"id": "1",
+		"individualSegmentIds": [
+			"123"
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"100"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now}",
+		"dateModified": "${now}",
+		"demographics": {
+			"demographics": {
+				"email": [
+				],
+				"givenName": [
+				]
+			}
+		},
+		"id": "2",
+		"individualSegmentIds": [
+			"123"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "100",
+				"lastActivityDate": "${now}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"100"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now-1d}",
+		"dateModified": "${now}",
+		"demographics": {
+			"email": [
+			],
+			"givenName": [
+			]
+		},
+		"id": "3",
+		"individualSegmentIds": [
+			"123"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "100",
+				"lastActivityDate": "${now-1d}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"100"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now-1d}",
+		"dateModified": "${now}",
+		"demographics": {
+			"email": [
+			],
+			"givenName": [
+			]
+		},
+		"id": "4",
+		"individualSegmentIds": [
+			"123"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "100",
+				"lastActivityDate": "${now}"
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "100",
+				"lastActivityDate": "${now-1d}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"100"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now-31d}",
+		"dateModified": "${now}",
+		"demographics": {
+			"email": [
+			],
+			"givenName": [
+			]
+		},
+		"id": "5",
+		"individualSegmentIds": [
+			"123"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "100",
+				"lastActivityDate": "${now}"
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "100",
+				"lastActivityDate": "${now-31d}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"100"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now-1d}",
+		"dateModified": "${now}",
+		"demographics": {
+			"email": [
+			],
+			"givenName": [
+			]
+		},
+		"id": "6",
+		"individualSegmentIds": [
+			"1234"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "100",
+				"lastActivityDate": "${now}"
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "100",
+				"lastActivityDate": "${now-1d}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"101"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now-1d}",
+		"dateModified": "${now}",
+		"demographics": {
+			"email": [
+			],
+			"givenName": [
+			]
+		},
+		"id": "7",
+		"individualSegmentIds": [
+			"123"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "101",
+				"lastActivityDate": "${now}"
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "101",
+				"lastActivityDate": "${now-1d}"
+			}
+		]
+	}
+]

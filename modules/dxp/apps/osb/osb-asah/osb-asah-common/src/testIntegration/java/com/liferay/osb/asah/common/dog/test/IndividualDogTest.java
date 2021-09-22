@@ -386,6 +386,23 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testCountActiveIndividualsFromLast30DaysBySegment() {
+		Segment segment = new Segment();
+
+		segment.setChannelId(100L);
+		segment.setId(123L);
+
+		Assert.assertEquals(
+			3,
+			_individualDog.countActiveIndividualsFromLast30DaysBySegment(
+				segment));
+	}
+
+	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_associations.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
