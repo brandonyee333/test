@@ -41,6 +41,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -63,6 +64,7 @@ import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
@@ -81,7 +83,6 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
@@ -94,6 +95,94 @@ import org.springframework.stereotype.Repository;
 public class ElasticsearchIndividualRepositoryImpl
 	extends BaseElasticsearchRepository<Individual, Long>
 	implements IndividualRepository {
+
+	@Override
+	public long
+		countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
+			Long channelId, @Nullable Date endLastActivityDate,
+			@Nullable Date endPreviousActivityDate, List<Long> segmentIds,
+			@Nullable Date startLastActivityDate,
+			@Nullable Date startPreviousActivityDate) {
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termsQuery(
+				"channelIds", Collections.singletonList(channelId))
+		).filter(
+			QueryBuilders.termsQuery("individualSegmentIds", segmentIds)
+		);
+
+		BoolQueryBuilder lastActivityDatesBoolQueryBuilder = null;
+
+		if (!Objects.isNull(endLastActivityDate) &&
+			!Objects.isNull(startLastActivityDate)) {
+
+			lastActivityDatesBoolQueryBuilder = BoolQueryBuilderUtil.filter(
+				QueryBuilders.nestedQuery(
+					"lastActivityDates",
+					QueryBuilders.termQuery(
+						"lastActivityDates.channelId", channelId),
+					ScoreMode.None)
+			).filter(
+				QueryBuilders.nestedQuery(
+					"lastActivityDates",
+					QueryBuilders.rangeQuery(
+						"lastActivityDates.lastActivityDate"
+					).gte(
+						DateUtil.toUTCString(startLastActivityDate)
+					).lte(
+						DateUtil.toUTCString(endLastActivityDate)
+					),
+					ScoreMode.None)
+			);
+		}
+
+		BoolQueryBuilder previousActivityDatesBoolQueryBuilder = null;
+
+		if (!Objects.isNull(endPreviousActivityDate) &&
+			!Objects.isNull(startPreviousActivityDate)) {
+
+			NestedQueryBuilder nestedQueryBuilder = QueryBuilders.nestedQuery(
+				"previousActivityDates",
+				QueryBuilders.rangeQuery(
+					"previousActivityDates.lastActivityDate"
+				).gte(
+					DateUtil.toUTCString(startPreviousActivityDate)
+				).lte(
+					DateUtil.toUTCString(endPreviousActivityDate)
+				),
+				ScoreMode.None);
+
+			previousActivityDatesBoolQueryBuilder = BoolQueryBuilderUtil.filter(
+				QueryBuilders.nestedQuery(
+					"previousActivityDates",
+					QueryBuilders.termQuery(
+						"previousActivityDates.channelId", channelId),
+					ScoreMode.None)
+			).filter(
+				nestedQueryBuilder
+			);
+		}
+
+		if (!Objects.isNull(lastActivityDatesBoolQueryBuilder) &&
+			!Objects.isNull(previousActivityDatesBoolQueryBuilder)) {
+
+			boolQueryBuilder.filter(
+				BoolQueryBuilderUtil.should(
+					lastActivityDatesBoolQueryBuilder
+				).should(
+					previousActivityDatesBoolQueryBuilder
+				));
+		}
+		else if (!Objects.isNull(lastActivityDatesBoolQueryBuilder)) {
+			boolQueryBuilder.filter(lastActivityDatesBoolQueryBuilder);
+		}
+		else if (!Objects.isNull(previousActivityDatesBoolQueryBuilder)) {
+			boolQueryBuilder.filter(previousActivityDatesBoolQueryBuilder);
+		}
+
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(), boolQueryBuilder);
+	}
 
 	public long countByFieldNamesAndQueryAndSegmentId(
 		List<String> fieldNames, @Nullable String query,
@@ -372,7 +461,7 @@ public class ElasticsearchIndividualRepositoryImpl
 				return new Individual.ActivitiesCount(
 					new IndividualChannel(
 						jsonObject.getLong("activitiesCount"),
-						jsonObject.getLong("channelId"), null, null));
+						jsonObject.getLong("channelId"), null, null, null));
 			}
 		).collect(
 			Collectors.toList()
@@ -976,6 +1065,8 @@ public class ElasticsearchIndividualRepositoryImpl
 			return individual;
 		}
 
+		Map<Long, Long> activitiesCountsMap = new HashMap<>();
+
 		if (jsonObject.has("activitiesCounts")) {
 			JSONArray activitiesCountsJSONArray = jsonObject.getJSONArray(
 				"activitiesCounts");
@@ -984,14 +1075,111 @@ public class ElasticsearchIndividualRepositoryImpl
 				JSONObject activitiesCountJSONObject =
 					activitiesCountsJSONArray.getJSONObject(i);
 
-				individual.addIndividualChannel(
-					new IndividualChannel(
-						JSONUtil.optLong(
-							null, activitiesCountJSONObject, "activitiesCount"),
-						activitiesCountJSONObject.getLong("channelId"),
-						individual.getId(), null));
+				activitiesCountsMap.put(
+					activitiesCountJSONObject.getLong("channelId"),
+					JSONUtil.optLong(
+						null, activitiesCountJSONObject, "activitiesCount"));
 			}
 		}
+
+		Map<Long, Date> lastActivityDatesMap = new HashMap<>();
+
+		if (jsonObject.has("lastActivityDates")) {
+			JSONArray lastActivityDatesJSONArray = jsonObject.getJSONArray(
+				"lastActivityDates");
+
+			for (int i = 0; i < lastActivityDatesJSONArray.length(); i++) {
+				JSONObject lastActivityDatesJSONObject =
+					lastActivityDatesJSONArray.getJSONObject(i);
+
+				lastActivityDatesMap.put(
+					lastActivityDatesJSONObject.getLong("channelId"),
+					DateUtil.toUTCDate(
+						lastActivityDatesJSONObject.getString(
+							"lastActivityDate")));
+			}
+		}
+
+		Map<Long, Date> previousActivityDatesMap = new HashMap<>();
+
+		if (jsonObject.has("previousActivityDates")) {
+			JSONArray previousActivityDatesJSONArray = jsonObject.getJSONArray(
+				"previousActivityDates");
+
+			for (int i = 0; i < previousActivityDatesJSONArray.length(); i++) {
+				JSONObject lastActivityDatesJSONObject =
+					previousActivityDatesJSONArray.getJSONObject(i);
+
+				previousActivityDatesMap.put(
+					lastActivityDatesJSONObject.getLong("channelId"),
+					DateUtil.toUTCDate(
+						lastActivityDatesJSONObject.getString(
+							"lastActivityDate")));
+			}
+		}
+
+		Map<Long, IndividualChannel> individualChannelsMap = new HashMap<>();
+
+		if (!activitiesCountsMap.isEmpty() || !lastActivityDatesMap.isEmpty() ||
+			!previousActivityDatesMap.isEmpty()) {
+
+			for (Map.Entry<Long, Long> entry : activitiesCountsMap.entrySet()) {
+				IndividualChannel individualChannel = new IndividualChannel(
+					entry.getValue(), entry.getKey(), individual.getId(),
+					lastActivityDatesMap.get(entry.getKey()),
+					previousActivityDatesMap.get(entry.getKey()));
+
+				lastActivityDatesMap.remove(entry.getKey());
+				previousActivityDatesMap.remove(entry.getKey());
+
+				individualChannelsMap.put(entry.getKey(), individualChannel);
+			}
+
+			for (Map.Entry<Long, Date> entry :
+					lastActivityDatesMap.entrySet()) {
+
+				if (individualChannelsMap.containsKey(entry.getKey())) {
+					IndividualChannel individualChannel =
+						individualChannelsMap.get(entry.getKey());
+
+					individualChannel.setLastActivityDate(entry.getValue());
+					individualChannel.setPreviousActivityDate(
+						previousActivityDatesMap.get(entry.getKey()));
+				}
+				else {
+					individualChannelsMap.put(
+						entry.getKey(),
+						new IndividualChannel(
+							0L, entry.getKey(), individual.getId(),
+							entry.getValue(),
+							previousActivityDatesMap.get(entry.getKey())));
+				}
+
+				previousActivityDatesMap.remove(entry.getKey());
+			}
+
+			for (Map.Entry<Long, Date> entry :
+					previousActivityDatesMap.entrySet()) {
+
+				if (individualChannelsMap.containsKey(entry.getKey())) {
+					IndividualChannel individualChannel =
+						individualChannelsMap.get(entry.getKey());
+
+					individualChannel.setPreviousActivityDate(
+						previousActivityDatesMap.get(entry.getKey()));
+				}
+				else {
+					individualChannelsMap.put(
+						entry.getKey(),
+						new IndividualChannel(
+							0L, entry.getKey(), individual.getId(), null,
+							entry.getValue()));
+				}
+			}
+		}
+
+		individual.setIndividualChannels(
+			new HashSet<>(individualChannelsMap.values()));
 
 		if (jsonObject.has("dataSourceAccountPKs")) {
 			JSONArray dataSourceAccountPKsJSONArray = jsonObject.getJSONArray(
@@ -1088,49 +1276,6 @@ public class ElasticsearchIndividualRepositoryImpl
 				).collect(
 					Collectors.toSet()
 				));
-		}
-
-		if (jsonObject.has("lastActivityDates")) {
-			JSONArray lastActivityDatesJSONArray = jsonObject.getJSONArray(
-				"lastActivityDates");
-
-			Set<IndividualChannel> individualChannels =
-				individual.getIndividualChannels();
-
-			Stream<IndividualChannel> stream = individualChannels.stream();
-
-			Map<Long, IndividualChannel> individualChannelsMap = stream.collect(
-				Collectors.toMap(
-					IndividualChannel::getChannelId, Function.identity()));
-
-			for (int i = 0; i < lastActivityDatesJSONArray.length(); i++) {
-				JSONObject lastActivityDateJSONObject =
-					lastActivityDatesJSONArray.getJSONObject(i);
-
-				IndividualChannel individualChannel = individualChannelsMap.get(
-					lastActivityDateJSONObject.getLong("channelId"));
-
-				if (individualChannel != null) {
-					individualChannel.setLastActivityDate(
-						DateUtil.toUTCDate(
-							lastActivityDateJSONObject.getString(
-								"lastActivityDate")));
-				}
-				else {
-					individualChannelsMap.put(
-						lastActivityDateJSONObject.getLong("channelId"),
-						new IndividualChannel(
-							null,
-							lastActivityDateJSONObject.getLong("channelId"),
-							individual.getId(),
-							DateUtil.toUTCDate(
-								lastActivityDateJSONObject.getString(
-									"lastActivityDate"))));
-				}
-			}
-
-			individual.setIndividualChannels(
-				new HashSet<>(individualChannelsMap.values()));
 		}
 
 		return individual;

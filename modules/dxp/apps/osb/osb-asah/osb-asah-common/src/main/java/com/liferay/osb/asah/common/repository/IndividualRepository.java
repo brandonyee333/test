@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,6 +37,13 @@ import org.springframework.lang.Nullable;
  */
 @Primary
 public interface IndividualRepository extends Repository<Individual, Long> {
+
+	public long
+		countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
+			Long channelId, @Nullable Date endLastActivityDate,
+			@Nullable Date endPreviousActivityDate, List<Long> segmentIds,
+			@Nullable Date startLastActivityDate,
+			@Nullable Date startPreviousActivityDate);
 
 	@Cacheable
 	public long countByFieldNamesAndQueryAndSegmentId(
