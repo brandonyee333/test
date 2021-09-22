@@ -25,13 +25,13 @@ export default class FilterSelect extends Component {
 	displayCurrentValue = () => {
 		const {autopopulate, options} = this.props;
 
-		let currentValue = '';
-
 		if (autopopulate && options.length === 1) {
-			currentValue = options[0].version;
+			const [option] = options;
+
+			return option.version;
 		}
 
-		return currentValue;
+		return '';
 	};
 
 	handleChange = event => {
