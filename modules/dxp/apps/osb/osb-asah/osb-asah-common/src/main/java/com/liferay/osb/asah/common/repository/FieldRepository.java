@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 
@@ -34,7 +35,12 @@ import org.springframework.lang.Nullable;
 public interface FieldRepository extends Repository<Field, Long> {
 
 	@Cacheable
-	public long countFields(@Nullable String filterString);
+	public long countFields(FilterHelper filterHelper);
+
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void deleteByContextAndOwnerId(
+		@Param("context") String context, @Param("ownerId") Long ownerId);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
@@ -93,10 +99,10 @@ public interface FieldRepository extends Repository<Field, Long> {
 
 	@Cacheable
 	public List<Transformation> getFieldTransformations(
-		String apply, @Nullable String filterString, Pageable pageable);
+		String apply, FilterHelper filterHelper, Pageable pageable);
 
 	@Cacheable
 	public List<Field> searchFields(
-		@Nullable String filterString, Pageable pageable);
+		FilterHelper filterHelper, Pageable pageable);
 
 }

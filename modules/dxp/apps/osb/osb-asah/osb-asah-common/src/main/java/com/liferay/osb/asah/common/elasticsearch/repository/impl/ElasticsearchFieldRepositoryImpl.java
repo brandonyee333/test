@@ -17,11 +17,11 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
@@ -66,10 +66,20 @@ public class ElasticsearchFieldRepositoryImpl
 	implements FieldRepository {
 
 	@Override
-	public long countFields(@Nullable String filterString) {
+	public long countFields(FilterHelper filterHelper) {
 		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(), filterHelper.getQueryBuilder());
+	}
+
+	@Override
+	public void deleteByContextAndOwnerId(String context, Long ownerId) {
+		_faroInfoElasticsearchInvoker.delete(
 			getCollectionName(),
-			FilterStringToQueryBuilderConverter.convert(filterString));
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("context", context)
+			).filter(
+				QueryBuilders.termQuery("ownerId", ownerId)
+			));
 	}
 
 	@Override
@@ -303,7 +313,7 @@ public class ElasticsearchFieldRepositoryImpl
 
 	@Override
 	public List<Transformation> getFieldTransformations(
-		String apply, @Nullable String filterString, Pageable pageable) {
+		String apply, FilterHelper filterHelper, Pageable pageable) {
 
 		TransformationGetResponse transformationGetResponse =
 			new TransformationGetResponse();
@@ -313,8 +323,7 @@ public class ElasticsearchFieldRepositoryImpl
 			_faroInfoElasticsearchInvoker);
 		transformationGetResponse.setPage(pageable.getPageNumber());
 
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString);
+		QueryBuilder queryBuilder = filterHelper.getQueryBuilder();
 
 		if (queryBuilder != null) {
 			transformationGetResponse.setQueryBuilder(queryBuilder);
@@ -368,7 +377,7 @@ public class ElasticsearchFieldRepositoryImpl
 
 	@Override
 	public List<Field> searchFields(
-		@Nullable String filterString, Pageable pageable) {
+		FilterHelper filterHelper, Pageable pageable) {
 
 		try {
 			CollectionGetResponse collectionGetResponse =
@@ -379,8 +388,7 @@ public class ElasticsearchFieldRepositoryImpl
 				_faroInfoElasticsearchInvoker);
 			collectionGetResponse.setPage(pageable.getPageNumber());
 
-			QueryBuilder queryBuilder =
-				FilterStringToQueryBuilderConverter.convert(filterString);
+			QueryBuilder queryBuilder = filterHelper.getQueryBuilder();
 
 			if (queryBuilder != null) {
 				collectionGetResponse.setQueryBuilder(queryBuilder);

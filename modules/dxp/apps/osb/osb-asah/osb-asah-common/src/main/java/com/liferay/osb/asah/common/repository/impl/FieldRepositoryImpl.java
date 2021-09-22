@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.util.Collections;
@@ -31,7 +31,6 @@ import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Rachael Koestartyo
@@ -42,14 +41,14 @@ public class FieldRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countFields(@Nullable String filterString) {
+	public long countFields(FilterHelper filterHelper) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
 			"Field"
 		).where(
-			ConditionUtil.toCondition(filterString)
+			filterHelper.getCondition()
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -58,7 +57,7 @@ public class FieldRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Transformation> getFieldTransformations(
-		String apply, @Nullable String filterString, Pageable pageable) {
+		String apply, FilterHelper filterHelper, Pageable pageable) {
 
 		Matcher matcher = MatcherUtil.getMatcher(apply);
 
@@ -71,7 +70,7 @@ public class FieldRepositoryImpl extends BaseRepository {
 		String containsField = matcher.group("containsField");
 		String groupByField = matcher.group("groupByField");
 
-		Condition condition = ConditionUtil.toCondition(filterString);
+		Condition condition = filterHelper.getCondition();
 
 		condition = condition.and(
 			_getIncludeCondition(containsField, groupByField));
@@ -102,7 +101,6 @@ public class FieldRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new Transformation(
 				new Transformation.Term(
 					Collections.singletonMap(
@@ -112,14 +110,14 @@ public class FieldRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Field> searchFields(
-		@Nullable String filterString, Pageable pageable) {
+		FilterHelper filterHelper, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
 			"Field"
 		).where(
-			ConditionUtil.toCondition(filterString)
+			filterHelper.getCondition()
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
@@ -127,7 +125,6 @@ public class FieldRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new Field(record.intoMap())
 		);
 	}

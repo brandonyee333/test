@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.Repository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Collections;
 import java.util.Date;
@@ -89,7 +90,8 @@ public abstract class BaseFieldRepositoryTestCase
 	@Test
 	public void testCountFields() {
 		Assert.assertEquals(
-			1, _fieldRepository.countFields("name eq 'field3'"));
+			1,
+			_fieldRepository.countFields(new FilterHelper("name eq 'field3'")));
 	}
 
 	@Test
@@ -185,7 +187,7 @@ public abstract class BaseFieldRepositoryTestCase
 	public void testGetFieldTransformations() {
 		List<Transformation> transformations =
 			_fieldRepository.getFieldTransformations(
-				"groupby((name))", null,
+				"groupby((name))", FilterHelper.EMPTY,
 				PageRequest.of(
 					0, 10,
 					SortUtil.getSort(
@@ -207,7 +209,7 @@ public abstract class BaseFieldRepositoryTestCase
 	@Test
 	public void testSearchFields() {
 		List<Field> fields = _fieldRepository.searchFields(
-			"name eq 'field1'", PageRequest.of(0, 1));
+			new FilterHelper("name eq 'field1'"), PageRequest.of(0, 1));
 
 		Assert.assertEquals(fields.toString(), 1, fields.size());
 

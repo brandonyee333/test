@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -108,7 +109,7 @@ public class FieldDog {
 
 		for (FieldMapping fieldMapping : fieldMappings) {
 			Map<String, String> dataSourceFieldNames =
-				_fieldMappingDog.getDataSourceFieldNames(fieldMapping);
+				fieldMapping.getDataSourceFieldNames();
 
 			String dataSourceFieldName = dataSourceFieldNames.getOrDefault(
 				String.valueOf(dataSourceId), null);
@@ -158,6 +159,10 @@ public class FieldDog {
 
 	public void deleteFields(Long dataSourceId) {
 		_fieldRepository.deleteByDataSourceId(dataSourceId);
+	}
+
+	public void deleteFields(String context, Long ownerId) {
+		_fieldRepository.deleteByContextAndOwnerId(context, ownerId);
 	}
 
 	public Field getField(Long fieldId) {
@@ -248,7 +253,7 @@ public class FieldDog {
 
 		List<Transformation> transformations =
 			_fieldRepository.getFieldTransformations(
-				apply, filterString, pageRequest);
+				apply, new FilterHelper(filterString), pageRequest);
 
 		return PageableExecutionUtils.getPage(
 			transformations, pageRequest, transformations::size);
@@ -267,8 +272,10 @@ public class FieldDog {
 			page, size, SortUtil.getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
-			_fieldRepository.searchFields(filterString, pageRequest),
-			pageRequest, () -> _fieldRepository.countFields(filterString));
+			_fieldRepository.searchFields(
+				new FilterHelper(filterString), pageRequest),
+			pageRequest,
+			() -> _fieldRepository.countFields(new FilterHelper(filterString)));
 	}
 
 	public Field updateField(Field field) {
