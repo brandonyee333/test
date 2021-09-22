@@ -62,11 +62,13 @@ export default class FixpackFilters extends Component {
 	};
 
 	handleProductVersionOnChange = (target) => {
+		const fixpacks = this.getFixpacksByProduct(target);
+
 		this.setState({
 			fixpackURL: '',
-			fromFixPackVersion: '',
+			fromFixPackVersion: this.getAutopopulatedOptionVersion(fixpacks),
 			productVersion: target,
-			toFixPackVersion: ''
+			toFixPackVersion: this.getAutopopulatedOptionVersion(fixpacks)
 		});
 	};
 
@@ -77,24 +79,38 @@ export default class FixpackFilters extends Component {
 	};
 
 	lookupFixPacksByProduct = (isToFixPackFilter = false) => {
-		const {filtersJSON} = this.props;
 		const {fromFixPackVersion, productVersion} = this.state;
-
-		const currentProduct = filtersJSON.find(
-			(item) => item.version === productVersion
-		);
-
-		let fixpacks = currentProduct ? currentProduct.fixPacks : [];
+		const fixpacks = this.getFixpacksByProduct(productVersion);
 
 		if (isToFixPackFilter) {
 			const index = fixpacks.findIndex(
 				(item) => item.version === fromFixPackVersion
 			);
 
-			fixpacks = fixpacks.slice(index);
+			return fixpacks.slice(index);
 		}
 
 		return fixpacks;
+	};
+
+	getAutopopulatedOptionVersion = (options) => {
+		if (options.length === 1) {
+			const [option] = options;
+
+			return option.version;
+		}
+
+		return '';
+	};
+
+	getFixpacksByProduct = (productVersion) => {
+		const {filtersJSON} = this.props;
+
+		const currentProduct = filtersJSON.find(
+			(item) => item.version === productVersion
+		);
+
+		return currentProduct ? currentProduct.fixPacks : [];
 	};
 
 	render() {
@@ -162,7 +178,6 @@ export default class FixpackFilters extends Component {
 
 						<div className="search-filter-container">
 							<FilterSelect
-								autopopulate
 								disabled={!productVersion}
 								id={`${namespace}fromFixPackVersion`}
 								label={Liferay.Language.get('from')}

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 export default class FilterSelect extends Component {
 	static defaultProps = {
-		autopopulate: false,
 		cssClass: '',
 		disabled: false,
 		label: '',
@@ -11,7 +10,6 @@ export default class FilterSelect extends Component {
 	};
 
 	static propTypes = {
-		autopopulate: PropTypes.bool,
 		cssClass: PropTypes.string,
 		disabled: PropTypes.bool,
 		id: PropTypes.string.isRequired,
@@ -20,18 +18,6 @@ export default class FilterSelect extends Component {
 		options: PropTypes.array.isRequired,
 		placeholder: PropTypes.string.isRequired,
 		selected: PropTypes.string
-	};
-
-	displayCurrentValue = () => {
-		const {autopopulate, options} = this.props;
-
-		if (autopopulate && options.length === 1) {
-			const [option] = options;
-
-			return option.version;
-		}
-
-		return '';
 	};
 
 	handleChange = (event) => {
@@ -65,7 +51,7 @@ export default class FilterSelect extends Component {
 					id={id}
 					name={id}
 					onChange={this.handleChange}
-					value={selected || this.displayCurrentValue()}
+					value={selected}
 				>
 					<option value="">{placeholder}</option>
 

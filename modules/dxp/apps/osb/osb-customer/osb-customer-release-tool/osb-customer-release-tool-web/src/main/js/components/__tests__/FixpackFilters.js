@@ -49,7 +49,12 @@ const setup = () => {
 	];
 
 	const utils = render(
-		<FixpackFilters actionURL="/" filtersJSON={JSONArray} productName="test" tabName="tab" />
+		<FixpackFilters
+			actionURL="/"
+			filtersJSON={JSONArray}
+			productName="test"
+			tabName="tab"
+		/>
 	);
 
 	const fromFixPackDropdown = utils.container.querySelectorAll('select')[1];
@@ -164,7 +169,11 @@ describe('FixpackFilters', () => {
 	});
 
 	it('shows toFixPackDropdown options of equal or greater value than the selected fromFixPackDropdown option', () => {
-		const {fromFixPackDropdown, productDropdown, toFixPackDropdown} = setup();
+		const {
+			fromFixPackDropdown,
+			productDropdown,
+			toFixPackDropdown
+		} = setup();
 
 		fireEvent.change(productDropdown, {
 			target: {value: '7.0'}
@@ -187,14 +196,19 @@ describe('FixpackFilters', () => {
 		expect(toFixPackDropdown.value).toBe('');
 	});
 
-	it('auto populates the FixPack field if there is only one fix pack for the product selected', () => {
-		const {fromFixPackDropdown, productDropdown} = setup();
+	it('autopopulates the FixPack field if there is only one fix pack for the product selected', () => {
+		const {
+			fromFixPackDropdown,
+			productDropdown,
+			toFixPackDropdown
+		} = setup();
 
 		fireEvent.change(productDropdown, {
 			target: {value: '7.1'}
 		});
 
 		expect(fromFixPackDropdown.value).toBe('1.0');
+		expect(toFixPackDropdown.value).toBe('1.0');
 	});
 
 	it('clears out fromFixPackDropdown when a product is updated', () => {
@@ -219,9 +233,14 @@ describe('FixpackFilters', () => {
 
 		fireEvent.change(productDropdown, {target: {value: '7.1'}});
 
-		// Fix Pack value auto populates since sample data for DXP 7.1 contains one fix pack
+		// Fix Pack values autopopulate since sample data for DXP 7.1 contains one fix pack
 
 		expect(fromFixPackDropdown.value).toBe('1.0');
+		expect(toFixPackDropdown.value).toBe('1.0');
+
+		fireEvent.change(productDropdown, {target: {value: '7.0'}});
+
+		expect(fromFixPackDropdown.value).toBe('');
 		expect(toFixPackDropdown.disabled).toBeTruthy();
 	});
 
