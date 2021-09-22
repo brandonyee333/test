@@ -41,7 +41,7 @@ import org.springframework.lang.Nullable;
 public interface EventRepository extends Repository<Event, Long> {
 
 	@Cacheable
-	public Long countByChannelIdAndEventDateBetweenAndEventDefinitionId(
+	public long countByChannelIdAndEventDateBetweenAndEventDefinitionId(
 		Long channelId, Date rangeStartDate, Date rangeEndDate,
 		long eventDefinitionId);
 

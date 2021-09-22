@@ -41,13 +41,16 @@ public class ChannelHttpImpl implements ChannelHttp {
 
 	@Override
 	public void addChannel(Channel channel) {
-		_http.exchangeResponseEntity(
-			ServiceConstants.URL_FRONTEND,
-			String.format(
-				"/o/faro/asah/%s/channel", ProjectIdThreadLocal.getProjectId()),
-			HttpMethod.POST,
-			_objectMapper.convertValue(channel, JSONObject.class),
-			_getHttpHeaders());
+		if (ServiceConstants.URL_FRONTEND != null) {
+			_http.exchangeResponseEntity(
+				ServiceConstants.URL_FRONTEND,
+				String.format(
+					"/o/faro/asah/%s/channel",
+					ProjectIdThreadLocal.getProjectId()),
+				HttpMethod.POST,
+				_objectMapper.convertValue(channel, JSONObject.class),
+				_getHttpHeaders());
+		}
 	}
 
 	private HttpHeaders _getHttpHeaders() {

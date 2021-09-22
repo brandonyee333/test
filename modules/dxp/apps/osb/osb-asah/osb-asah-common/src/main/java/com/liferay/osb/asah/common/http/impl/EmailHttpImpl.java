@@ -37,10 +37,12 @@ public class EmailHttpImpl implements EmailHttp {
 
 	@Override
 	public void sendEmail(JSONObject jsonObject) {
-		_http.exchangeResponseEntity(
-			ServiceConstants.URL_FRONTEND, "/o/email", HttpMethod.POST,
-			jsonObject.toString(),
-			_getHttpHeaders(ServiceConstants.URL_FRONTEND));
+		if (ServiceConstants.URL_FRONTEND != null) {
+			_http.exchangeResponseEntity(
+				ServiceConstants.URL_FRONTEND, "/o/email", HttpMethod.POST,
+				jsonObject.toString(),
+				_getHttpHeaders(ServiceConstants.URL_FRONTEND));
+		}
 	}
 
 	private HttpHeaders _getHttpHeaders(String url) {

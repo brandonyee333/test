@@ -41,6 +41,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
+import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
@@ -344,6 +345,8 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 
 	@Cacheable
 	public List<String> getOwnerIds(QueryBuilder queryBuilder) {
+		List<String> ownerIds = new ArrayList<>();
+
 		SearchResponse searchResponse = elasticsearchInvoker.search(
 			"activities",
 			searchSourceBuilder -> {
@@ -362,9 +365,17 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		Terms terms = aggregations.get("ownerIds");
+		if (aggregations == null) {
+			return ownerIds;
+		}
 
-		List<String> ownerIds = new ArrayList<>();
+		List<Aggregation> aggregationList = aggregations.asList();
+
+		if (aggregationList.isEmpty()) {
+			return ownerIds;
+		}
+
+		Terms terms = aggregations.get("ownerIds");
 
 		for (Terms.Bucket bucket : terms.getBuckets()) {
 			ownerIds.add(bucket.getKeyAsString());
