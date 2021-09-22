@@ -18,8 +18,7 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceOrganization;
 import com.liferay.osb.asah.common.entity.DataSourceSite;
 import com.liferay.osb.asah.common.entity.DataSourceUserGroup;
-import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
-import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,15 +46,14 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countDataSources(String filterString) {
+	public long countDataSources(FilterHelper filterHelper) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
 			"DataSource"
 		).where(
-			FilterStringToConditionConverter.convert(
-				filterString, _dataSourceFilterStringConverterHelper)
+			filterHelper.getCondition()
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -64,7 +62,7 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 	}
 
 	public List<DataSource> searchDataSources(
-		String filterString, Pageable pageable) {
+		FilterHelper filterHelper, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
@@ -72,8 +70,7 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 			selectSelectStep.from(
 				"DataSource"
 			).where(
-				FilterStringToConditionConverter.convert(
-					filterString, _dataSourceFilterStringConverterHelper)
+				filterHelper.getCondition()
 			).orderBy(
 				getSortFields(pageable.getSort(), null)
 			).limit(
@@ -81,7 +78,6 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 			).offset(
 				pageable.getOffset()
 			).fetch(
-			).map(
 				record -> new DataSource(record.intoMap())
 			));
 	}
@@ -174,9 +170,6 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	private final DataSourceFilterStringConverterHelper
-		_dataSourceFilterStringConverterHelper =
-			new DataSourceFilterStringConverterHelper();
 	private final DSLContext _dslContext;
 
 }

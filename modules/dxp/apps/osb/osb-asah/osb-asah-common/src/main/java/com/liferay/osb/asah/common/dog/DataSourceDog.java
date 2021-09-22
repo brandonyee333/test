@@ -16,22 +16,23 @@ package com.liferay.osb.asah.common.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.AccountRepository;
-import com.liferay.osb.asah.common.repository.DataSourceFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.security.Encryptor;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -260,9 +261,16 @@ public class DataSourceDog {
 		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
-			_dataSourceRepository.searchDataSources(filterString, pageRequest),
+			_dataSourceRepository.searchDataSources(
+				new FilterHelper(
+					_defaultFilterStringConverterHelper, filterString,
+					_dataSourceFilterStringConverterHelper),
+				pageRequest),
 			pageRequest,
-			() -> _dataSourceRepository.countDataSources(filterString));
+			() -> _dataSourceRepository.countDataSources(
+				new FilterHelper(
+					_defaultFilterStringConverterHelper, filterString,
+					_dataSourceFilterStringConverterHelper)));
 	}
 
 	public Long getDefaultChannelId(Long dataSourceId) {
@@ -525,21 +533,11 @@ public class DataSourceDog {
 	private void _deleteFieldMappings(Long dataSourceId) {
 		List<Long> disabledFieldMappingIds = new ArrayList<>();
 
-		List<DataSourceFieldMapping> dataSourceFieldMappings =
-			_dataSourceFieldMappingRepository.findByDataSourceId(dataSourceId);
+		for (FieldMapping fieldMapping :
+				_fieldMappingDog.getFieldMappings(dataSourceId)) {
 
-		for (DataSourceFieldMapping dataSourceFieldMapping :
-				dataSourceFieldMappings) {
-
-			if (!Objects.equals(
-					dataSourceId, dataSourceFieldMapping.getDataSourceId())) {
-
-				continue;
-			}
-
-			FieldMapping fieldMapping =
-				_fieldMappingDog.removeDataSourceFieldName(
-					dataSourceId, dataSourceFieldMapping.getFieldMappingId());
+			fieldMapping = _fieldMappingDog.removeDataSourceFieldName(
+				dataSourceId, fieldMapping.getId());
 
 			Map<String, String> dataSourceFieldNames =
 				fieldMapping.getDataSourceFieldNames();
@@ -547,8 +545,7 @@ public class DataSourceDog {
 			if (dataSourceFieldNames.isEmpty() &&
 				_fieldMappingDog.deleteFieldMapping(fieldMapping)) {
 
-				disabledFieldMappingIds.add(
-					dataSourceFieldMapping.getFieldMappingId());
+				disabledFieldMappingIds.add(fieldMapping.getId());
 			}
 		}
 
@@ -579,8 +576,6 @@ public class DataSourceDog {
 		JSONArrayIterator.of(
 			"individuals", _elasticsearchInvoker,
 			individualJSONObject -> {
-				JSONObject modifiedJSONObject = new JSONObject();
-
 				JSONArray idsJSONArray = individualJSONObject.getJSONArray(
 					fieldName);
 
@@ -594,12 +589,12 @@ public class DataSourceDog {
 					}
 				}
 
-				modifiedJSONObject.put(fieldName, idsJSONArray);
+				individualJSONObject.put(fieldName, idsJSONArray);
 
 				_individualDog.updateIndividual(
 					individualJSONObject.getLong("id"),
 					_objectMapper.convertValue(
-						modifiedJSONObject, Individual.class),
+						individualJSONObject, Individual.class),
 					false);
 
 				return null;
@@ -771,11 +766,16 @@ public class DataSourceDog {
 	@Autowired
 	private CSVIndividualDog _csvIndividualDog;
 
-	@Autowired
-	private DataSourceFieldMappingRepository _dataSourceFieldMappingRepository;
+	private final DataSourceFilterStringConverterHelper
+		_dataSourceFilterStringConverterHelper =
+			new DataSourceFilterStringConverterHelper();
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
+
+	private final DefaultFilterStringConverterHelper
+		_defaultFilterStringConverterHelper =
+			new DefaultFilterStringConverterHelper();
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;

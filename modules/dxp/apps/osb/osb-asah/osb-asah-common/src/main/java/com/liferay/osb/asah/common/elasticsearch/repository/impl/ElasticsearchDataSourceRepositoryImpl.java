@@ -16,9 +16,9 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -50,10 +50,9 @@ public class ElasticsearchDataSourceRepositoryImpl
 	implements DataSourceRepository {
 
 	@Override
-	public long countDataSources(String filterString) {
+	public long countDataSources(FilterHelper filterHelper) {
 		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(),
-			FilterStringToQueryBuilderConverter.convert(filterString));
+			getCollectionName(), filterHelper.getQueryBuilder());
 	}
 
 	@Override
@@ -177,7 +176,7 @@ public class ElasticsearchDataSourceRepositoryImpl
 
 	@Override
 	public List<DataSource> searchDataSources(
-		String filterString, Pageable pageable) {
+		FilterHelper filterHelper, Pageable pageable) {
 
 		try {
 			CollectionGetResponse collectionGetResponse =
@@ -188,8 +187,7 @@ public class ElasticsearchDataSourceRepositoryImpl
 				_faroInfoElasticsearchInvoker);
 			collectionGetResponse.setPage(pageable.getPageNumber());
 
-			QueryBuilder queryBuilder =
-				FilterStringToQueryBuilderConverter.convert(filterString);
+			QueryBuilder queryBuilder = filterHelper.getQueryBuilder();
 
 			if (queryBuilder != null) {
 				collectionGetResponse.setQueryBuilder(queryBuilder);
