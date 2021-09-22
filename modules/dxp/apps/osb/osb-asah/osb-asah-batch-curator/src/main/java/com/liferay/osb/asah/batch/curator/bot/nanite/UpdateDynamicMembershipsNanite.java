@@ -111,13 +111,13 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			return;
 		}
 
-		Boolean includeAnonymousUsers = Boolean.TRUE;
+		Boolean includeAnonymousUsers = null;
 
 		if (CollectionUtils.isEmpty(individual.getFields()) ||
 			Objects.isNull(
 				FaroInfoIndividualUtil.getIndividualEmail(individual))) {
 
-			includeAnonymousUsers = Boolean.FALSE;
+			includeAnonymousUsers = Boolean.TRUE;
 		}
 
 		JSONObject baseMembershipJSONObject = JSONUtil.put(
