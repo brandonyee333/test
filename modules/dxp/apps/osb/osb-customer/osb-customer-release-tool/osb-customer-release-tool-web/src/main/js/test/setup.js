@@ -17,7 +17,7 @@ window.ReleaseToolConstants = {
 		svgId: '#dxp',
 		url: '/dxp-release-notes'
 	},
-	namespace: 'namespace',
+	namespace: 'namespace'
 };
 
 window.scroll = () => console.log('scroll');

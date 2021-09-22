@@ -39,9 +39,10 @@ export default class ModuleChanges extends Component {
 		filters: artifactVersionFiltersType.isRequired,
 		fromFixPackVersion: PropTypes.string.isRequired,
 		fromProductVersion: PropTypes.string,
-		jsonObject: PropTypes.oneOfType(
-			[errorType, artifactVersionJSONObjectType]
-		).isRequired,
+		jsonObject: PropTypes.oneOfType([
+			errorType,
+			artifactVersionJSONObjectType
+		]).isRequired,
 		toFixPackVersion: PropTypes.string.isRequired,
 		toProductVersion: PropTypes.string
 	};
@@ -58,7 +59,7 @@ export default class ModuleChanges extends Component {
 	debounceEvent(...args) {
 		this.debounced = debounce(...args);
 
-		return event => {
+		return (event) => {
 			event.persist();
 
 			return this.debounced(event);
@@ -69,7 +70,7 @@ export default class ModuleChanges extends Component {
 		this.debounced.cancel();
 	}
 
-	handleCheckboxChange = event => {
+	handleCheckboxChange = (event) => {
 		const {selectedFilters} = this.state;
 
 		const {value} = event.currentTarget;
@@ -78,19 +79,16 @@ export default class ModuleChanges extends Component {
 
 		if (!owners.includes(value)) {
 			owners.push(value);
-		}
-		else {
+		} else {
 			owners.splice(selectedFilters.owners.indexOf(value), 1);
 		}
 
-		this.setState(
-			{
-				selectedFilters: {
-					...selectedFilters,
-					owners
-				}
+		this.setState({
+			selectedFilters: {
+				...selectedFilters,
+				owners
 			}
-		);
+		});
 
 		this.queryArtifactVersionResults(
 			owners,
@@ -100,15 +98,13 @@ export default class ModuleChanges extends Component {
 	};
 
 	handleClearFilter = () => {
-		this.setState(
-			{
-				selectedFilters: {
-					changesOnly: false,
-					keywords: '',
-					owners: []
-				}
+		this.setState({
+			selectedFilters: {
+				changesOnly: false,
+				keywords: '',
+				owners: []
 			}
-		);
+		});
 
 		this.queryArtifactVersionResults();
 
@@ -116,18 +112,16 @@ export default class ModuleChanges extends Component {
 		this.moduleChangesToggleRef.current.checked = false;
 	};
 
-	handleFilterTextInputKeyUp = event => {
+	handleFilterTextInputKeyUp = (event) => {
 		const {selectedFilters} = this.state;
 
 		if (event.keyCode === 13) {
-			this.setState(
-				{
-					selectedFilters: {
-						...selectedFilters,
-						keywords: event.target.value
-					}
+			this.setState({
+				selectedFilters: {
+					...selectedFilters,
+					keywords: event.target.value
 				}
-			);
+			});
 
 			this.queryArtifactVersionResults(
 				selectedFilters.owners,
@@ -137,19 +131,17 @@ export default class ModuleChanges extends Component {
 		}
 	};
 
-	handleToggleChange = event => {
+	handleToggleChange = (event) => {
 		const {selectedFilters} = this.state;
 
 		const {checked} = event.currentTarget;
 
-		this.setState(
-			{
-				selectedFilters: {
-					...selectedFilters,
-					changesOnly: checked
-				}
+		this.setState({
+			selectedFilters: {
+				...selectedFilters,
+				changesOnly: checked
 			}
-		);
+		});
 
 		this.queryArtifactVersionResults(
 			selectedFilters.owners,
@@ -158,7 +150,11 @@ export default class ModuleChanges extends Component {
 		);
 	};
 
-	queryArtifactVersionResults = (owners = [], keywords = '', changesOnly = false) => {
+	queryArtifactVersionResults = (
+		owners = [],
+		keywords = '',
+		changesOnly = false
+	) => {
 		const {endpoint} = this.props;
 
 		const {namespace} = window.ReleaseToolConstants;
@@ -170,22 +166,16 @@ export default class ModuleChanges extends Component {
 			.get(
 				`${endpoint}&${namespace}owners=${encodedOwnersParam}&${namespace}keywords=${encodedKeywordsParam}&${namespace}changesOnly=${changesOnly}`
 			)
-			.then(
-				({data}) => {
-					this.setState(
-						{
-							jsonObject: data
-						}
-					);
+			.then(({data}) => {
+				this.setState({
+					jsonObject: data
+				});
+			})
+			.catch((err) => {
+				if (process.env.NODE_ENV === 'development') {
+					console.log(err);
 				}
-			)
-			.catch(
-				(err) => {
-					if (process.env.NODE_ENV === 'development') {
-						console.log(err);
-					}
-				}
-			);
+			});
 	};
 
 	render() {
@@ -225,7 +215,11 @@ export default class ModuleChanges extends Component {
 							<div className="filter-header">
 								<h3>{Liferay.Language.get('refine-by')}</h3>
 
-								{!!(changesOnly || keywords || owners.length) && (
+								{!!(
+									changesOnly ||
+									keywords ||
+									owners.length
+								) && (
 									<Button
 										display="link"
 										onClick={this.handleClearFilter}
@@ -251,17 +245,19 @@ export default class ModuleChanges extends Component {
 							<div className="filter-subsection module-groups semi-bold">
 								{Liferay.Language.get('group')}
 
-								{filters.map(
-									checkbox => (
-										<FilterCheckbox
-											key={checkbox.value}
-											checked={!!owners.includes(checkbox.value)}
-											handleOnChange={this.handleCheckboxChange}
-											label={checkbox.label}
-											value={checkbox.value}
-										/>
-									)
-								)}
+								{filters.map((checkbox) => (
+									<FilterCheckbox
+										key={checkbox.value}
+										checked={
+											!!owners.includes(checkbox.value)
+										}
+										handleOnChange={
+											this.handleCheckboxChange
+										}
+										label={checkbox.label}
+										value={checkbox.value}
+									/>
+								))}
 							</div>
 
 							<div className="filter-subsection module-changes-toggle semi-bold">
@@ -277,7 +273,10 @@ export default class ModuleChanges extends Component {
 											type="checkbox"
 										/>
 
-										<span aria-hidden="true" className="toggle-switch-bar">
+										<span
+											aria-hidden="true"
+											className="toggle-switch-bar"
+										>
 											<span className="toggle-switch-handle" />
 										</span>
 									</label>
@@ -289,7 +288,10 @@ export default class ModuleChanges extends Component {
 					)}
 
 					{!!cta && (
-						<div className="sidebar-cta" dangerouslySetInnerHTML={{__html: cta}}></div>
+						<div
+							className="sidebar-cta"
+							dangerouslySetInnerHTML={{__html: cta}}
+						></div>
 					)}
 
 					<AdditionalInfo />

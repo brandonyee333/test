@@ -14,7 +14,7 @@ export function getAllSearchParams() {
 	if (query) {
 		const parametersArray = query.split('&');
 
-		searchParams = parametersArray.map(param => param.split('='));
+		searchParams = parametersArray.map((param) => param.split('='));
 	}
 
 	return new Map(searchParams);
@@ -61,7 +61,7 @@ export function setSearchParam(key, value) {
 export function updateSearchQuery(map) {
 	const searchParams = Array.from(map);
 
-	const parametersArray = searchParams.map(param => param.join('='));
+	const parametersArray = searchParams.map((param) => param.join('='));
 
 	const query = parametersArray.join('&');
 

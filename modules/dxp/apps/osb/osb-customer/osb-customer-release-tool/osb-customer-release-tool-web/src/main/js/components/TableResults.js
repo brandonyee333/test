@@ -13,29 +13,23 @@ TableResults.defaultProps = {
 };
 
 TableResults.propTypes = {
-	jsonObject: PropTypes.oneOfType(
-		[
-			errorType,
-			fixPackJSONObjectType,
-			jiraIssueJSONObjectType
-		]
-	).isRequired,
+	jsonObject: PropTypes.oneOfType([
+		errorType,
+		fixPackJSONObjectType,
+		jiraIssueJSONObjectType
+	]).isRequired,
 	orderBy: PropTypes.oneOf(['asc', 'desc']),
-	tab: PropTypes.shape(
-		{
-			tabDescription: PropTypes.string,
-			tabName: PropTypes.string
-		}
-	).isRequired,
-	table: PropTypes.shape(
-		{
-			tableBody: PropTypes.func,
-			tableHeader: PropTypes.func
-		}
-	).isRequired
+	tab: PropTypes.shape({
+		tabDescription: PropTypes.string,
+		tabName: PropTypes.string
+	}).isRequired,
+	table: PropTypes.shape({
+		tableBody: PropTypes.func,
+		tableHeader: PropTypes.func
+	}).isRequired
 };
 
-const displayTabName = name => {
+const displayTabName = (name) => {
 	// Liferay.Language.get() only accepts string parameter.
 
 	let tabName = Liferay.Language.get('module-version-changes');
@@ -54,7 +48,11 @@ export default function TableResults(props) {
 
 	return (
 		<Fragment>
-			<h2 id={displayTabName(tab.tabName).replace(/ /g, '-').toLowerCase()}>
+			<h2
+				id={displayTabName(tab.tabName)
+					.replace(/ /g, '-')
+					.toLowerCase()}
+			>
 				{displayTabName(tab.tabName)}
 			</h2>
 

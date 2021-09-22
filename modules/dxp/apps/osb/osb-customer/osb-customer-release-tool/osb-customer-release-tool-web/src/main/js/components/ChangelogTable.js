@@ -18,44 +18,40 @@ class Ticket extends Component {
 	};
 
 	handleCloseModal = () => {
-		this.setState(
-			{
-				id: '',
-				showModal: false,
-				showTransition: false
-			}
-		);
+		this.setState({
+			id: '',
+			showModal: false,
+			showTransition: false
+		});
 	};
 
-	handleShowModal = newId => {
+	handleShowModal = (newId) => {
 		const {id} = this.state;
 
-		this.setState(
-			{
-				id: newId,
-				showModal: true,
-				showTransition: id === ''
-			}
-		);
+		this.setState({
+			id: newId,
+			showModal: true,
+			showTransition: id === ''
+		});
 	};
 
 	render() {
 		const {tickets} = this.props;
 		const {id, showModal, showTransition} = this.state;
 
-		return tickets.map(
-			ticket => (
-				<TicketDetail
-					key={`${ticket.key}${ticket.release}`}
-					handleCloseModal={this.handleCloseModal}
-					handleShowModal={this.handleShowModal}
-					id={`${ticket.key}${ticket.release}`}
-					showModal={id === `${ticket.key}${ticket.release}` ? showModal : false}
-					showTransition={showTransition}
-					ticket={ticket}
-				/>
-			)
-		);
+		return tickets.map((ticket) => (
+			<TicketDetail
+				key={`${ticket.key}${ticket.release}`}
+				handleCloseModal={this.handleCloseModal}
+				handleShowModal={this.handleShowModal}
+				id={`${ticket.key}${ticket.release}`}
+				showModal={
+					id === `${ticket.key}${ticket.release}` ? showModal : false
+				}
+				showTransition={showTransition}
+				ticket={ticket}
+			/>
+		));
 	}
 }
 
@@ -63,7 +59,8 @@ class TicketDetail extends Component {
 	static propTypes = {
 		handleCloseModal: PropTypes.func.isRequired,
 		handleShowModal: PropTypes.func.isRequired,
-		id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+		id: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+			.isRequired,
 		showModal: PropTypes.bool.isRequired,
 		showTransition: PropTypes.bool.isRequired,
 		ticket: PropTypes.object.isRequired
@@ -87,7 +84,11 @@ class TicketDetail extends Component {
 		return (
 			<tr className="journal-article-row" id={id}>
 				<td className="lfr-summary-column table-cell-content">
-					<Button display="link" onClick={this.handleShowModal} type="button">
+					<Button
+						display="link"
+						onClick={this.handleShowModal}
+						type="button"
+					>
 						{ticket.summary}
 					</Button>
 
@@ -103,15 +104,23 @@ class TicketDetail extends Component {
 							show={showModal}
 						>
 							<div className="ticket-detail">
-								<div className="small-title">{ticket.summary}</div>
+								<div className="small-title">
+									{ticket.summary}
+								</div>
 
 								<h3>{Liferay.Language.get('description')}</h3>
 
-								<div dangerouslySetInnerHTML={{__html: ticket.description}} />
+								<div
+									dangerouslySetInnerHTML={{
+										__html: ticket.description
+									}}
+								/>
 
 								<h3>{Liferay.Language.get('components')}</h3>
 
-								{ticket.components.toString().replace(/,/g, ', ')}
+								{ticket.components
+									.toString()
+									.replace(/,/g, ', ')}
 
 								<h3>{Liferay.Language.get('release')}</h3>
 
@@ -127,9 +136,7 @@ class TicketDetail extends Component {
 				<td className="lfr-component-column">
 					{ticket.components.toString().replace(/,/g, ', ')}
 				</td>
-				<td className="lfr-release-column">
-					{ticket.release}
-				</td>
+				<td className="lfr-release-column">{ticket.release}</td>
 				<td className="lfr-key-column">
 					<a href={ticket.url}>{ticket.key}</a>
 				</td>
@@ -138,7 +145,7 @@ class TicketDetail extends Component {
 	}
 }
 
-export const tableBody = results => <Ticket tickets={results} />;
+export const tableBody = (results) => <Ticket tickets={results} />;
 
 export const tableHeader = (orderBy, handleSort) => (
 	<Fragment>

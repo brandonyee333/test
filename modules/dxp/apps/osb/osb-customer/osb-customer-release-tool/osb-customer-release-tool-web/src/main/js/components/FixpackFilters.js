@@ -34,7 +34,7 @@ export default class FixpackFilters extends Component {
 		toFixPackVersion: PropTypes.string
 	};
 
-	determineVersion = version => {
+	determineVersion = (version) => {
 		return version === '0.0' ? '' : version;
 	};
 
@@ -45,38 +45,32 @@ export default class FixpackFilters extends Component {
 		toFixPackVersion: this.props.toFixPackVersion
 	};
 
-	getNameFromVersion = version => {
+	getNameFromVersion = (version) => {
 		const fixpacks = this.lookupFixPacksByProduct();
 
-		const fixpack = fixpacks.find(
-			item => item.version === version
-		);
+		const fixpack = fixpacks.find((item) => item.version === version);
 
 		return fixpack ? fixpack.name : '';
 	};
 
-	handleFromFixpackOnChange = target => {
-		this.setState(
-			{
-				fixpackURL: '',
-				fromFixPackVersion: target,
-				toFixPackVersion: ''
-			}
-		);
+	handleFromFixpackOnChange = (target) => {
+		this.setState({
+			fixpackURL: '',
+			fromFixPackVersion: target,
+			toFixPackVersion: ''
+		});
 	};
 
-	handleProductVersionOnChange = target => {
-		this.setState(
-			{
-				fixpackURL: '',
-				fromFixPackVersion: '',
-				productVersion: target,
-				toFixPackVersion: ''
-			}
-		);
+	handleProductVersionOnChange = (target) => {
+		this.setState({
+			fixpackURL: '',
+			fromFixPackVersion: '',
+			productVersion: target,
+			toFixPackVersion: ''
+		});
 	};
 
-	handleSubmit = target => {
+	handleSubmit = (target) => {
 		if (target !== '') {
 			this.fixpackFiltersFormRef.current.submit();
 		}
@@ -87,14 +81,14 @@ export default class FixpackFilters extends Component {
 		const {fromFixPackVersion, productVersion} = this.state;
 
 		const currentProduct = filtersJSON.find(
-			item => item.version === productVersion
+			(item) => item.version === productVersion
 		);
 
 		let fixpacks = currentProduct ? currentProduct.fixPacks : [];
 
 		if (isToFixPackFilter) {
 			const index = fixpacks.findIndex(
-				item => item.version === fromFixPackVersion
+				(item) => item.version === fromFixPackVersion
 			);
 
 			fixpacks = fixpacks.slice(index);
@@ -116,8 +110,9 @@ export default class FixpackFilters extends Component {
 
 		const fixpackDownloadLinkDescription = (
 			<Fragment>
-				{`${Liferay.Language.get('get')} ${this.getNameFromVersion(toFixPackVersion)
-				}`}{' '}
+				{`${Liferay.Language.get('get')} ${this.getNameFromVersion(
+					toFixPackVersion
+				)}`}{' '}
 				<svg className="lexicon-icon lexicon-icon-arrow-right">
 					<use xlinkHref="#arrow-right" />
 				</svg>
@@ -125,21 +120,33 @@ export default class FixpackFilters extends Component {
 		);
 
 		const productLabel =
-		productName === DXP
-			? Liferay.Language.get('product')
-			: Liferay.Language.get('dxp-version');
+			productName === DXP
+				? Liferay.Language.get('product')
+				: Liferay.Language.get('dxp-version');
 
 		const productPlaceholder =
-		productName === DXP
-			? Liferay.Language.get('select-product')
-			: Liferay.Language.get('select-dxp-version');
+			productName === DXP
+				? Liferay.Language.get('select-product')
+				: Liferay.Language.get('select-dxp-version');
 
 		return (
 			<Fragment>
-				<form ref={this.fixpackFiltersFormRef} action={actionURL} method="get">
+				<form
+					ref={this.fixpackFiltersFormRef}
+					action={actionURL}
+					method="get"
+				>
 					<input name="p_p_id" type="hidden" value={PORTLET_ID} />
-					<input name={`${namespace}product`} type="hidden" value={DXP} />
-					<input name={`${namespace}tabs1`} type="hidden" value={tabName} />
+					<input
+						name={`${namespace}product`}
+						type="hidden"
+						value={DXP}
+					/>
+					<input
+						name={`${namespace}tabs1`}
+						type="hidden"
+						value={tabName}
+					/>
 
 					<div className="search-filters">
 						<div className="search-filter-container">
@@ -161,19 +168,27 @@ export default class FixpackFilters extends Component {
 								label={Liferay.Language.get('from')}
 								onChange={this.handleFromFixpackOnChange}
 								options={this.lookupFixPacksByProduct()}
-								placeholder={Liferay.Language.get('select-release')}
+								placeholder={Liferay.Language.get(
+									'select-release'
+								)}
 								selected={fromFixPackVersion}
 							/>
 						</div>
 
 						<div className="search-filter-container">
 							<FilterSelect
-								disabled={!fromFixPackVersion || !productVersion}
+								disabled={
+									!fromFixPackVersion || !productVersion
+								}
 								id={`${namespace}toFixPackVersion`}
 								label={Liferay.Language.get('to')}
 								onChange={this.handleSubmit}
-								options={this.lookupFixPacksByProduct(!!fromFixPackVersion)}
-								placeholder={Liferay.Language.get('select-release')}
+								options={this.lookupFixPacksByProduct(
+									!!fromFixPackVersion
+								)}
+								placeholder={Liferay.Language.get(
+									'select-release'
+								)}
 								selected={toFixPackVersion}
 							/>
 						</div>
@@ -181,11 +196,7 @@ export default class FixpackFilters extends Component {
 				</form>
 
 				{fixpackURL && (
-					<Button
-						display="link"
-						href={fixpackURL}
-						size="lg"
-					>
+					<Button display="link" href={fixpackURL} size="lg">
 						{fixpackDownloadLinkDescription}
 					</Button>
 				)}

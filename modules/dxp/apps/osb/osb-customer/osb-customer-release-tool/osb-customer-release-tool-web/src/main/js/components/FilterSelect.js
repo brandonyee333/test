@@ -34,7 +34,7 @@ export default class FilterSelect extends Component {
 		return '';
 	};
 
-	handleChange = event => {
+	handleChange = (event) => {
 		const {onChange} = this.props;
 
 		onChange(event.currentTarget.value);
@@ -59,11 +59,18 @@ export default class FilterSelect extends Component {
 					</label>
 				)}
 
-				<select className={`form-control ${cssClass}`} disabled={disabled} id={id} name={id} onChange={this.handleChange} value={selected || this.displayCurrentValue()}>
+				<select
+					className={`form-control ${cssClass}`}
+					disabled={disabled}
+					id={id}
+					name={id}
+					onChange={this.handleChange}
+					value={selected || this.displayCurrentValue()}
+				>
 					<option value="">{placeholder}</option>
 
-					{!!options.length && options.map(
-						option => {
+					{!!options.length &&
+						options.map((option) => {
 							return (
 								<option
 									key={option.version}
@@ -73,8 +80,7 @@ export default class FilterSelect extends Component {
 									{option.name}
 								</option>
 							);
-						}
-					)}
+						})}
 				</select>
 			</div>
 		);

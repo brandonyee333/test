@@ -5,7 +5,7 @@ import throttle from 'lodash.throttle';
 const BANNER_HEIGHT = 56;
 
 const StickyHeader = () => {
-	const { currentProduct, namespace} = window.ReleaseToolConstants;
+	const {currentProduct, namespace} = window.ReleaseToolConstants;
 
 	const mainContent = document.getElementById(`${namespace}mainContent`);
 	const stickyHeader = document.getElementById(`${namespace}stickyHeader`);

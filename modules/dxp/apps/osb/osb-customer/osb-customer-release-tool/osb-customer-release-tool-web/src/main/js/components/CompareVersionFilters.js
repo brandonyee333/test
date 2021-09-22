@@ -30,13 +30,15 @@ export default class CompareVersionFilters extends Component {
 		toProductVersion: PropTypes.string
 	};
 
-	determineVersion = version => {
+	determineVersion = (version) => {
 		return version === '0.0' ? '' : version;
 	};
 
 	state = {
 		fromFixPackVersion: this.props.fromFixPackVersion,
-		fromProductVersion: this.determineVersion(this.props.fromProductVersion),
+		fromProductVersion: this.determineVersion(
+			this.props.fromProductVersion
+		),
 		toFixPackVersion: this.props.toFixPackVersion,
 		toProductVersion: this.determineVersion(this.props.toProductVersion)
 	};
@@ -51,14 +53,16 @@ export default class CompareVersionFilters extends Component {
 		}
 	}
 
-	determineCompareToVersionSelectOptions = options => {
+	determineCompareToVersionSelectOptions = (options) => {
 		const {fromFixPackVersion, fromProductVersion} = this.state;
 
 		let compareToVersionSelectOptions = [];
 
 		if (fromFixPackVersion && fromProductVersion) {
 			const index = options.findIndex(
-				option => option.version === `${fromProductVersion}-${fromFixPackVersion}`
+				(option) =>
+					option.version ===
+					`${fromProductVersion}-${fromFixPackVersion}`
 			);
 
 			compareToVersionSelectOptions = options.slice(index + 1);
@@ -70,50 +74,40 @@ export default class CompareVersionFilters extends Component {
 	determineSelectOptions = () => {
 		const {filtersJSON} = this.props;
 
-		return filtersJSON.flatMap(
-			filter => {
-				const name = filter.name;
-				const version = filter.version;
+		return filtersJSON.flatMap((filter) => {
+			const name = filter.name;
+			const version = filter.version;
 
-				return filter.fixPacks.map(
-					fixpack => {
-						return (
-							{
-								name: `${name} ${fixpack.name}`,
-								version: `${version}-${fixpack.version}`
-							}
-						);
-					}
-				);
-			}
-		);
+			return filter.fixPacks.map((fixpack) => {
+				return {
+					name: `${name} ${fixpack.name}`,
+					version: `${version}-${fixpack.version}`
+				};
+			});
+		});
 	};
 
-	handleCompareToVersionOnChange = event => {
+	handleCompareToVersionOnChange = (event) => {
 		const selectedValues = this.processSelection(event);
 
-		this.setState(
-			{
-				toFixPackVersion: selectedValues[1],
-				toProductVersion: selectedValues[0]
-			}
-		);
+		this.setState({
+			toFixPackVersion: selectedValues[1],
+			toProductVersion: selectedValues[0]
+		});
 	};
 
-	handleStartingVersionOnChange = event => {
+	handleStartingVersionOnChange = (event) => {
 		const selectedValues = this.processSelection(event);
 
-		this.setState(
-			{
-				fromFixPackVersion: selectedValues[1],
-				fromProductVersion: selectedValues[0],
-				toFixPackVersion: '',
-				toProductVersion: ''
-			}
-		);
+		this.setState({
+			fromFixPackVersion: selectedValues[1],
+			fromProductVersion: selectedValues[0],
+			toFixPackVersion: '',
+			toProductVersion: ''
+		});
 	};
 
-	processSelection = selection => {
+	processSelection = (selection) => {
 		let selectedValues = ['', ''];
 
 		if (selection) {
@@ -123,7 +117,7 @@ export default class CompareVersionFilters extends Component {
 		return selectedValues;
 	};
 
-	validateVersionChange = prevState => {
+	validateVersionChange = (prevState) => {
 		const {
 			fromFixPackVersion,
 			fromProductVersion,
@@ -203,13 +197,37 @@ export default class CompareVersionFilters extends Component {
 			<div className="sidebar-filters">
 				<h3>{Liferay.Language.get('compare')}</h3>
 
-				<form ref={this.compareVersionFiltersFormRef} action={actionURL} method="get">
+				<form
+					ref={this.compareVersionFiltersFormRef}
+					action={actionURL}
+					method="get"
+				>
 					<input name="p_p_id" type="hidden" value={PORTLET_ID} />
-					<input name={`${namespace}product`} type="hidden" value="dxp" />
-					<input name={`${namespace}fromFixPackVersion`} type="hidden" value={fromFixPackVersion} />
-					<input name={`${namespace}fromProductVersion`} type="hidden" value={fromProductVersion} />
-					<input name={`${namespace}toFixPackVersion`} type="hidden" value={toFixPackVersion} />
-					<input name={`${namespace}toProductVersion`} type="hidden" value={toProductVersion} />
+					<input
+						name={`${namespace}product`}
+						type="hidden"
+						value="dxp"
+					/>
+					<input
+						name={`${namespace}fromFixPackVersion`}
+						type="hidden"
+						value={fromFixPackVersion}
+					/>
+					<input
+						name={`${namespace}fromProductVersion`}
+						type="hidden"
+						value={fromProductVersion}
+					/>
+					<input
+						name={`${namespace}toFixPackVersion`}
+						type="hidden"
+						value={toFixPackVersion}
+					/>
+					<input
+						name={`${namespace}toProductVersion`}
+						type="hidden"
+						value={toProductVersion}
+					/>
 
 					<FilterSelect
 						cssClass="input-small"
@@ -227,12 +245,14 @@ export default class CompareVersionFilters extends Component {
 						id="compareToVersion"
 						label={Liferay.Language.get('check-against')}
 						onChange={this.handleCompareToVersionOnChange}
-						options={this.determineCompareToVersionSelectOptions(options)}
+						options={this.determineCompareToVersionSelectOptions(
+							options
+						)}
 						placeholder={Liferay.Language.get('select-version')}
 						selected={`${toProductVersion}-${toFixPackVersion}`}
 					/>
 				</form>
 			</div>
-		)
+		);
 	}
 }

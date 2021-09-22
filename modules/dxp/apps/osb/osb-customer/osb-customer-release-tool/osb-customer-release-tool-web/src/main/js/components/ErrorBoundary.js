@@ -13,13 +13,11 @@ export default class ErrorBoundary extends React.Component {
 	};
 
 	componentDidCatch(error, info) {
-		this.setState(
-			{
-				error,
-				hasError: true,
-				info
-			}
-		);
+		this.setState({
+			error,
+			hasError: true,
+			info
+		});
 
 		if (process.env.NODE_ENV === 'development') {
 			console.log(`Error: ${error}`);

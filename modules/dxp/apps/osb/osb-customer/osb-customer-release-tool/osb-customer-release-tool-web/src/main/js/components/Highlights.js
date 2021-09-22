@@ -6,7 +6,10 @@ import 'core-js/features/array/includes';
 import {errorType} from '../types/generic';
 import {fixPackFieldsType, fixPackJSONObjectType} from '../types/highlights';
 
-import {getSearchParamValue, setSearchParam} from '../helpers/url-search-params';
+import {
+	getSearchParamValue,
+	setSearchParam
+} from '../helpers/url-search-params';
 
 import * as highlightsTable from './HightlightsTable';
 
@@ -19,9 +22,8 @@ export default class Highlights extends Component {
 	static propTypes = {
 		description: PropTypes.string.isRequired,
 		filters: fixPackFieldsType.isRequired,
-		jsonObject: PropTypes.oneOfType(
-			[errorType, fixPackJSONObjectType]
-		).isRequired
+		jsonObject: PropTypes.oneOfType([errorType, fixPackJSONObjectType])
+			.isRequired
 	};
 
 	getFilterByFromSearchParam = () => {
@@ -34,7 +36,7 @@ export default class Highlights extends Component {
 		filterBy: this.getFilterByFromSearchParam()
 	};
 
-	handleCheckboxChange = event => {
+	handleCheckboxChange = (event) => {
 		const {filterBy} = this.state;
 
 		const {value} = event.currentTarget;
@@ -43,28 +45,23 @@ export default class Highlights extends Component {
 
 		if (!filterBy.includes(value)) {
 			checkedFilters.push(value);
-		}
-		else {
+		} else {
 			checkedFilters.splice(filterBy.indexOf(value), 1);
 		}
 
 		setSearchParam('refineBy', checkedFilters.toString());
 
-		this.setState(
-			{
-				filterBy: checkedFilters
-			}
-		);
+		this.setState({
+			filterBy: checkedFilters
+		});
 	};
 
 	handleClearFilter = () => {
 		setSearchParam('refineBy', '');
 
-		this.setState(
-			{
-				filterBy: []
-			}
-		);
+		this.setState({
+			filterBy: []
+		});
 	};
 
 	filterResults = () => {
@@ -72,10 +69,8 @@ export default class Highlights extends Component {
 		const {filterBy} = this.state;
 
 		if (jsonObject.results && filterBy.length) {
-			const newResults = jsonObject.results.filter(
-				result => filterBy.some(
-					filter => result.fieldsUsed.includes(filter)
-				)
+			const newResults = jsonObject.results.filter((result) =>
+				filterBy.some((filter) => result.fieldsUsed.includes(filter))
 			);
 
 			return {
@@ -97,9 +92,7 @@ export default class Highlights extends Component {
 					{!!filters && (
 						<div className="sidebar-filters">
 							<div className="filter-header">
-								<h3>
-									{Liferay.Language.get('refine-by')}
-								</h3>
+								<h3>{Liferay.Language.get('refine-by')}</h3>
 
 								{!!filterBy.length && (
 									<Button
@@ -112,17 +105,17 @@ export default class Highlights extends Component {
 								)}
 							</div>
 
-							{filters.map(
-								checkbox => (
-									<FilterCheckbox
-										key={checkbox.value}
-										checked={!!filterBy.includes(checkbox.value)}
-										handleOnChange={this.handleCheckboxChange}
-										label={checkbox.label}
-										value={checkbox.value}
-									/>
-								)
-							)}
+							{filters.map((checkbox) => (
+								<FilterCheckbox
+									key={checkbox.value}
+									checked={
+										!!filterBy.includes(checkbox.value)
+									}
+									handleOnChange={this.handleCheckboxChange}
+									label={checkbox.label}
+									value={checkbox.value}
+								/>
+							))}
 						</div>
 					)}
 
@@ -131,7 +124,9 @@ export default class Highlights extends Component {
 
 				<div className="col-md-9">
 					<TableResults
-						filterByClassName={filterBy.toString().replace(/,/g, ' ')}
+						filterByClassName={filterBy
+							.toString()
+							.replace(/,/g, ' ')}
 						jsonObject={this.filterResults()}
 						tab={{
 							tabDescription: description,
