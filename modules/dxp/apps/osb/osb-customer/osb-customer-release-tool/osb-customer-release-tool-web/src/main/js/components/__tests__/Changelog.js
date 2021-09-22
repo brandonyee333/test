@@ -29,7 +29,7 @@ const setup = () => {
 	};
 
 	const changelogJSONObjSize51 = {
-		results: times(51, i => {
+		results: times(51, (i) => {
 			return {
 				components: [`component ${i}`],
 				description: `description ${i}`,
@@ -42,7 +42,7 @@ const setup = () => {
 		total: 51
 	};
 
-	const filters = times(10, i => {
+	const filters = times(10, (i) => {
 		return {
 			name: `component ${i}`,
 			value: `${i}`
@@ -112,11 +112,15 @@ describe('Changelog', () => {
 
 		fireEvent.click(container.querySelector('button[value="2"]'));
 
-		expect(container.querySelector('.pagination-current span').innerHTML).toBe('2');
+		expect(
+			container.querySelector('.pagination-current span').innerHTML
+		).toBe('2');
 
 		fireEvent.click(sortButton);
 
-		expect(container.querySelector('.pagination-current span').innerHTML).toBe('1');
+		expect(
+			container.querySelector('.pagination-current span').innerHTML
+		).toBe('1');
 	});
 
 	it('renders no results correctly', () => {

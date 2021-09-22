@@ -8,5 +8,5 @@ describe('StickyHeader', () => {
 		const {container} = render(<StickyHeader />);
 
 		expect(container).toBeTruthy();
-    });
+	});
 });

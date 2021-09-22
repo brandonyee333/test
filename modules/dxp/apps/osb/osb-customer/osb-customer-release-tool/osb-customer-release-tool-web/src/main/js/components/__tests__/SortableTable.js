@@ -13,7 +13,8 @@ const setup = () => {
 				description: 'description',
 				key: 'LPS-90100',
 				release: 'GA',
-				summary: 'IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio',
+				summary:
+					'IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio',
 				url: '/'
 			},
 			{

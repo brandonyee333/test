@@ -63,7 +63,9 @@ const setup = () => {
 	const compareToVersionDropdown = utils.container.querySelectorAll(
 		'select'
 	)[1];
-	const startingVersionDropdown = utils.container.querySelectorAll('select')[0];
+	const startingVersionDropdown = utils.container.querySelectorAll(
+		'select'
+	)[0];
 
 	return {
 		compareToVersionDropdown,
@@ -111,7 +113,9 @@ describe('CompareVersionFilters', () => {
 			/>
 		);
 
-		const compareToVersionDropdown = container.querySelectorAll('select')[1];
+		const compareToVersionDropdown = container.querySelectorAll(
+			'select'
+		)[1];
 		const startingVersionDropdown = container.querySelectorAll('select')[0];
 
 		expect(compareToVersionDropdown.selectedOptions[0].innerHTML).toBe(
@@ -142,7 +146,9 @@ describe('CompareVersionFilters', () => {
 		expect(compareToVersionDropdown.options[0].innerHTML).toBe(
 			'select-version'
 		);
-		expect(compareToVersionDropdown.options[1].innerHTML).toBe('DXP 7.1 GA');
+		expect(compareToVersionDropdown.options[1].innerHTML).toBe(
+			'DXP 7.1 GA'
+		);
 
 		expect(container).toMatchSnapshot();
 	});

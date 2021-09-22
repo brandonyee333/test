@@ -17,7 +17,9 @@ describe('Button', () => {
 	});
 
 	it('renders as primary style correctly', () => {
-		const {container} = render(<Button display="primary">Primary Button</Button>);
+		const {container} = render(
+			<Button display="primary">Primary Button</Button>
+		);
 
 		expect(container).toMatchSnapshot();
 	});
@@ -41,13 +43,17 @@ describe('Button', () => {
 	});
 
 	it('renders as a certain type correctly', () => {
-		const {container} = render(<Button type="submit">Submit Button</Button>);
+		const {container} = render(
+			<Button type="submit">Submit Button</Button>
+		);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders with a value correctly', () => {
-		const {container} = render(<Button value="1">Value of 1 Button</Button>);
+		const {container} = render(
+			<Button value="1">Value of 1 Button</Button>
+		);
 
 		expect(container).toMatchSnapshot();
 	});
