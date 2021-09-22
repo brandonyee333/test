@@ -284,7 +284,9 @@ public class FilterStringParser {
 		for (int i = start; i < s.length(); i++) {
 			char c = s.charAt(i);
 
-			if (Character.isWhitespace(c) || (c == '(')) {
+			if ((Character.isWhitespace(c) && (s.charAt(i - 1) != ',')) ||
+				(c == '(')) {
+
 				return i;
 			}
 
