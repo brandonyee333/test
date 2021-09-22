@@ -78,6 +78,30 @@ public class StringUtilTest {
 		JSONAssert.assertEquals(
 			JSONUtil.put("foo", "bar"),
 			(JSONObject)StringUtil.toObject("{\"foo\": \"bar\"}"), true);
+		JSONAssert.assertEquals(
+			JSONUtil.putAll(1234, 5678),
+			(JSONArray)StringUtil.toObject("[1234,5678]"), true);
+		JSONAssert.assertEquals(
+			JSONUtil.putAll(1234, 5678),
+			(JSONArray)StringUtil.toObject("[1234, 5678]"), true);
+
+		try {
+			StringUtil.toObject("[1234,");
+		}
+		catch (IllegalArgumentException illegalArgumentException) {
+			Assert.assertEquals(
+				"Unknown object [1234, used in filter",
+				illegalArgumentException.getMessage());
+		}
+
+		try {
+			StringUtil.toObject("{1234");
+		}
+		catch (IllegalArgumentException illegalArgumentException) {
+			Assert.assertEquals(
+				"Unknown object {1234 used in filter",
+				illegalArgumentException.getMessage());
+		}
 	}
 
 	@Test
