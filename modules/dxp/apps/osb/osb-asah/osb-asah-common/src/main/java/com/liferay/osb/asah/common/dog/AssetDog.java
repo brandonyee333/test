@@ -223,9 +223,7 @@ public class AssetDog {
 				_assetRepository.findByAssetTypeAndCanonicalURLIn(
 					assetType, cannonicalUrls,
 					PageRequest.of(
-						page++, 50,
-						new com.liferay.osb.asah.common.model.Sort(
-							"id", "asc")));
+						page++, 50, Sort.by(Sort.Direction.DESC, "id")));
 
 			if (currentAssets.isEmpty()) {
 				break;
