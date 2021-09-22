@@ -65,7 +65,6 @@ public class ExperimentRepositoryImpl extends BaseRepository {
 			).offset(
 				pageable.getOffset()
 			).fetch(
-			).map(
 				record -> new Experiment(record.intoMap())
 			));
 	}

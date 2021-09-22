@@ -77,7 +77,6 @@ public class DataControlTaskRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new DataControlTask(record.intoMap())
 		);
 	}

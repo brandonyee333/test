@@ -71,7 +71,6 @@ public class CustomAssetDashboardRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new CustomAssetDashboard(record.intoMap())
 		);
 	}

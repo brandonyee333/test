@@ -57,7 +57,6 @@ public class RunLogRepositoryImpl extends BaseRepository {
 		).limit(
 			1
 		).fetchOptional(
-		).map(
 			record -> new RunLog(record.intoMap())
 		);
 	}

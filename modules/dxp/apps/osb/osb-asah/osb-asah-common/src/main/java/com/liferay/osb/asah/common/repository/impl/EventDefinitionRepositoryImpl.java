@@ -82,7 +82,6 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new EventDefinition(record.intoMap())
 		);
 	}

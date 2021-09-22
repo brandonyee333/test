@@ -321,7 +321,6 @@ public class EventRepositoryImpl extends BaseRepository {
 			).groupBy(
 				eventDateField
 			).fetch(
-			).map(
 				record -> record
 			));
 	}
@@ -375,7 +374,6 @@ public class EventRepositoryImpl extends BaseRepository {
 			).groupBy(
 				event1EventDateField
 			).fetch(
-			).map(
 				record -> record
 			));
 	}
@@ -409,7 +407,6 @@ public class EventRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new Event(record.intoMap())
 		);
 	}

@@ -47,7 +47,6 @@ public class SalesforceEntityRepositoryImpl extends BaseRepository {
 		).where(
 			_getConditions(dataSourceId, fieldKey, fieldValue, type)
 		).fetch(
-		).map(
 			record -> new SalesforceEntity(record.intoMap())
 		);
 	}
@@ -70,7 +69,6 @@ public class SalesforceEntityRepositoryImpl extends BaseRepository {
 		).groupBy(
 			groupByField
 		).fetch(
-		).map(
 			record -> record.get(groupByFieldKey, String.class)
 		);
 	}

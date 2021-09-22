@@ -48,7 +48,6 @@ public class CSVIndividualRepositoryImpl extends BaseRepository {
 				),
 				DSL.condition("fields ->> ? = ?", fieldKey, fieldValue))
 		).fetch(
-		).map(
 			record -> new CSVIndividual(record.intoMap())
 		);
 	}

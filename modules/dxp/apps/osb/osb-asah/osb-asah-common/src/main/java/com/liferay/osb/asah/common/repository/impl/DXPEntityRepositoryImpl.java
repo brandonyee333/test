@@ -173,9 +173,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		selectConditionStep.orderBy(DSL.field("id"));
 
 		return selectConditionStep.fetch(
-		).map(
-			record -> new DXPEntity(record.intoMap())
-		);
+			record -> new DXPEntity(record.intoMap()));
 	}
 
 	public Optional<DXPEntity> findById(Long id) {
@@ -203,7 +201,6 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 				String.valueOf(membershipId)
 			)
 		).fetch(
-		).map(
 			record -> new DXPEntity(record.intoMap())
 		);
 	}
@@ -225,7 +222,6 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new DXPEntity(record.intoMap())
 		);
 	}
