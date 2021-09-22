@@ -23,12 +23,16 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 import org.json.JSONObject;
 
@@ -163,19 +167,78 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		return lastActivityDates;
 	}
 
+	private Set<Individual.LastActivityDate> _getPreviousActivityDates(
+		Individual individual, Map<Long, Date> oldLastActivityDatesMap) {
+
+		Set<Individual.LastActivityDate> oldPreviousActivityDates =
+			individual.getPreviousActivityDates();
+
+		Stream<Individual.LastActivityDate> oldPreviousActivityDatesStream =
+			oldPreviousActivityDates.stream();
+
+		Map<Long, Individual.LastActivityDate> oldPreviousActivityDatesMap =
+			oldPreviousActivityDatesStream.collect(
+				Collectors.toMap(
+					Individual.LastActivityDate::getChannelId,
+					Individual.LastActivityDate::new));
+
+		Set<Individual.LastActivityDate> previousActivityDates = new HashSet<>(
+			oldPreviousActivityDatesMap.values());
+
+		Set<Individual.LastActivityDate> newLastActivityDates =
+			individual.getLastActivityDates();
+
+		Stream<Individual.LastActivityDate> newLastActivityDatesStream =
+			newLastActivityDates.stream();
+
+		Map<Long, Date> newLastActivityDatesMap =
+			newLastActivityDatesStream.collect(
+				Collectors.toMap(
+					Individual.LastActivityDate::getChannelId,
+					Individual.LastActivityDate::getLastActivityDate));
+
+		for (Map.Entry<Long, Date> entrySet :
+				oldLastActivityDatesMap.entrySet()) {
+
+			if ((entrySet.getValue() == null) ||
+				DateUtils.isSameDay(entrySet.getValue(), DateUtil.newDate()) ||
+				DateUtils.isSameInstant(
+					entrySet.getValue(),
+					newLastActivityDatesMap.get(entrySet.getKey()))) {
+
+				continue;
+			}
+
+			Individual.LastActivityDate previousActivityDate =
+				oldPreviousActivityDatesMap.get(entrySet.getKey());
+
+			if (previousActivityDate == null) {
+				previousActivityDates.add(
+					new Individual.LastActivityDate(
+						entrySet.getKey(), entrySet.getValue()));
+			}
+			else {
+				previousActivityDate.setLastActivityDate(entrySet.getValue());
+			}
+		}
+
+		return previousActivityDates;
+	}
+
 	private void _run(String projectId, List<JSONObject> messages) {
 		try {
 			ProjectIdThreadLocal.setProjectId(projectId);
 
-			Stream<JSONObject> stream = messages.stream();
+			Stream<JSONObject> messagesStream = messages.stream();
 
-			Map<String, Map<String, Long>> ownerIdCounts = stream.collect(
-				Collectors.groupingBy(
-					jsonObject -> String.valueOf(jsonObject.get("ownerId")),
+			Map<String, Map<String, Long>> ownerIdCounts =
+				messagesStream.collect(
 					Collectors.groupingBy(
-						jsonObject -> String.valueOf(
-							jsonObject.get("channelId")),
-						Collectors.counting())));
+						jsonObject -> String.valueOf(jsonObject.get("ownerId")),
+						Collectors.groupingBy(
+							jsonObject -> String.valueOf(
+								jsonObject.get("channelId")),
+							Collectors.counting())));
 
 			for (Map.Entry<String, Map<String, Long>> ownerIdEntry :
 					ownerIdCounts.entrySet()) {
@@ -191,8 +254,25 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 				individual.setActivitiesCounts(
 					_getActivitiesCounts(ownerIdEntry.getValue(), individual));
+
+				Set<Individual.LastActivityDate> lastActivityDatesBeforeChange =
+					individual.getLastActivityDates();
+
+				Stream<Individual.LastActivityDate>
+					lastActivityDatesBeforeChangeStream =
+						lastActivityDatesBeforeChange.stream();
+
+				Map<Long, Date> lastActivityDatesMapBeforeChange =
+					lastActivityDatesBeforeChangeStream.collect(
+						Collectors.toMap(
+							Individual.LastActivityDate::getChannelId,
+							Individual.LastActivityDate::getLastActivityDate));
+
 				individual.setLastActivityDates(
 					_getLastActivityDates(ownerIdEntry.getValue(), individual));
+				individual.setPreviousActivityDates(
+					_getPreviousActivityDates(
+						individual, lastActivityDatesMapBeforeChange));
 
 				_individualDog.updateIndividual(individual);
 			}
