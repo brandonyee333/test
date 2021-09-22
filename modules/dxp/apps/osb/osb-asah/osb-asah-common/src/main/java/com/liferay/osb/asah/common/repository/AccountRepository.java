@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +37,7 @@ public interface AccountRepository extends Repository<Account, Long> {
 
 	@Cacheable
 	public long countAccounts(
-		@Nullable Set<String> accountPKs, @Nullable String filterString);
+		@Nullable Set<String> accountPKs, FilterHelper filterHelper);
 
 	@Cacheable
 	public long countByIdAfter(Long accountId);
@@ -54,23 +55,24 @@ public interface AccountRepository extends Repository<Account, Long> {
 	@Cacheable
 	public List<Account> findByIdAfter(Long accountId, Pageable pageable);
 
+	@Cacheable
 	public List<Distribution> getAccountDistributions(
-		@Nullable Long channelId, String fieldName, String fieldType,
-		@Nullable String filterString, @Nullable Long individualSegmentId,
-		Pageable pageable);
+		List<String> accountPKs, String fieldName, String fieldType,
+		FilterHelper filterHelper, Pageable pageable);
 
 	@Cacheable
 	public List<Transformation> getAccountTransformations(
-		String apply, @Nullable Long channelId, @Nullable String filterString,
+		String apply, @Nullable Long channelId, FilterHelper filterHelper,
 		Pageable pageable);
 
 	@Cacheable
 	public List<Account> searchAccounts(
-		@Nullable Set<String> accountPKs, @Nullable Long channelId,
-		@Nullable String filterString, Pageable pageable,
-		@Nullable Sort segmentSort);
+		FilterHelper filterHelper, Pageable pageable);
 
 	@Cacheable
-	public List<Account> searchAccounts(String filterString, Pageable pageable);
+	public List<Account> searchAccounts(
+		@Nullable Set<String> accountPKs, @Nullable Long channelId,
+		FilterHelper filterHelper, Pageable pageable,
+		@Nullable Sort segmentSort);
 
 }

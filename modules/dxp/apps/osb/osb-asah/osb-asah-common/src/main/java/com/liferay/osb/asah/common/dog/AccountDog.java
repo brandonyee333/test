@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -27,8 +28,10 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.postgresql.converter.helper.AccountsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -296,8 +299,12 @@ public class AccountDog {
 
 		List<Distribution> distributions =
 			_accountRepository.getAccountDistributions(
-				channelId, fieldName, fieldType, filterString,
-				individualSegmentId, pageRequest);
+				_individualDog.getAccountPKs(channelId, individualSegmentId),
+				fieldName, fieldType,
+				new FilterHelper(
+					_defaultFilterStringConverterHelper, filterString,
+					_accountsFilterStringConverterHelper),
+				pageRequest);
 
 		return PageableExecutionUtils.getPage(
 			distributions, pageRequest, distributions::size);
@@ -315,7 +322,11 @@ public class AccountDog {
 
 		List<Transformation> transformations =
 			_accountRepository.getAccountTransformations(
-				apply, channelId, filterString, pageRequest);
+				apply, channelId,
+				new FilterHelper(
+					_defaultFilterStringConverterHelper, filterString,
+					_accountsFilterStringConverterHelper),
+				pageRequest);
 
 		return PageableExecutionUtils.getPage(
 			transformations, pageRequest, transformations::size);
@@ -435,7 +446,10 @@ public class AccountDog {
 
 		return ListUtil.map(
 			_accountRepository.searchAccounts(
-				filterString, PageRequest.of(page, size)),
+				new FilterHelper(
+					_defaultFilterStringConverterHelper, filterString,
+					_accountsFilterStringConverterHelper),
+				PageRequest.of(page, size)),
 			account -> populateAccount(account, null));
 	}
 
@@ -474,14 +488,20 @@ public class AccountDog {
 
 		List<Account> accounts = _populateAccounts(
 			_accountRepository.searchAccounts(
-				_getAccountPKs(segmentId), channelId, filterString, pageRequest,
-				segmentSort),
+				_getAccountPKs(segmentId), channelId,
+				new FilterHelper(
+					_defaultFilterStringConverterHelper, filterString,
+					_accountsFilterStringConverterHelper),
+				pageRequest, segmentSort),
 			channelId);
 
 		return PageableExecutionUtils.getPage(
 			accounts, pageRequest,
 			() -> _accountRepository.countAccounts(
-				_getAccountPKs(segmentId), filterString));
+				_getAccountPKs(segmentId),
+				new FilterHelper(
+					_defaultFilterStringConverterHelper, filterString,
+					_accountsFilterStringConverterHelper)));
 	}
 
 	public Account updateAccount(Account account) {
@@ -572,8 +592,16 @@ public class AccountDog {
 	@Autowired
 	private AccountRepository _accountRepository;
 
+	private final AccountsFilterStringConverterHelper
+		_accountsFilterStringConverterHelper =
+			new AccountsFilterStringConverterHelper();
+
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	private final DefaultFilterStringConverterHelper
+		_defaultFilterStringConverterHelper =
+			new DefaultFilterStringConverterHelper();
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;

@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.postgresql.converter.helper.AccountsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -88,8 +91,12 @@ public class ElasticsearchAccountRepositoryTest
 			0, 20, Sort.by(Sort.Order.asc("organization/field1/value")));
 
 		List<Account> accounts = accountRepository.searchAccounts(
-			null, null, "organization/field1/value eq 'field two'", pageRequest,
-			Sort.by(Sort.Order.asc("individualCount")));
+			null, null,
+			new FilterHelper(
+				_defaultFilterStringConverterHelper,
+				"organization/field1/value eq 'field two'",
+				_accountsFilterStringConverterHelper),
+			pageRequest, Sort.by(Sort.Order.asc("individualCount")));
 
 		Assert.assertEquals(accounts.toString(), 1, accounts.size());
 
@@ -97,5 +104,12 @@ public class ElasticsearchAccountRepositoryTest
 
 		Assert.assertEquals(accountOptional.orElse(null), accounts.get(0));
 	}
+
+	private final AccountsFilterStringConverterHelper
+		_accountsFilterStringConverterHelper =
+			new AccountsFilterStringConverterHelper();
+	private final DefaultFilterStringConverterHelper
+		_defaultFilterStringConverterHelper =
+			new DefaultFilterStringConverterHelper();
 
 }

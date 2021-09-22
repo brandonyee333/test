@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -21,6 +22,7 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.postgresql.converter.helper.AccountsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -29,6 +31,7 @@ import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 
@@ -173,14 +176,20 @@ public abstract class BaseAccountRepositoryTestCase
 		Assert.assertEquals(
 			1,
 			accountRepository.countAccounts(
-				null, "organization/field1/value eq 'field two'"));
+				null,
+				new FilterHelper(
+					_defaultFilterStringConverterHelper,
+					"organization/field1/value eq 'field two'",
+					_accountsFilterStringConverterHelper)));
 	}
 
 	@Test
 	public void testGetAccountDistributions() throws Exception {
 		List<Distribution> distributions =
 			accountRepository.getAccountDistributions(
-				1L, "numberOfEmployees", "Number", null, 366637689379787789L,
+				individualRepository.findAccountPKsByChannelIdAndSegmentId(
+					1L, 366637689379787789L),
+				"numberOfEmployees", "Number", FilterHelper.EMPTY,
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("count"))));
 
 		_assertEquals(
@@ -188,8 +197,13 @@ public abstract class BaseAccountRepositoryTestCase
 			ArrayUtils.toUnmodifiableList(new Integer[] {20000, 20000}));
 
 		distributions = accountRepository.getAccountDistributions(
-			1L, "numberOfEmployees", "Number",
-			"organization/billingState/value eq 'New York'", null,
+			individualRepository.findAccountPKsByChannelIdAndSegmentId(
+				1L, null),
+			"numberOfEmployees", "Number",
+			new FilterHelper(
+				_defaultFilterStringConverterHelper,
+				"organization/billingState/value eq 'New York'",
+				_accountsFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("count"))));
 
 		_assertEquals(
@@ -197,7 +211,9 @@ public abstract class BaseAccountRepositoryTestCase
 			ArrayUtils.toUnmodifiableList(new Integer[] {20000, 20000}));
 
 		distributions = accountRepository.getAccountDistributions(
-			1L, "shippingPostalCode", "Text", null, null,
+			individualRepository.findAccountPKsByChannelIdAndSegmentId(
+				1L, null),
+			"shippingPostalCode", "Text", FilterHelper.EMPTY,
 			PageRequest.of(0, 100, Sort.by(Sort.Order.desc("name"))));
 
 		_assertEquals(
@@ -208,7 +224,9 @@ public abstract class BaseAccountRepositoryTestCase
 			ArrayUtils.toUnmodifiableList(new String[] {"91765"}));
 
 		distributions = accountRepository.getAccountDistributions(
-			1L, "shippingPostalCode", "Text", null, null,
+			individualRepository.findAccountPKsByChannelIdAndSegmentId(
+				1L, null),
+			"shippingPostalCode", "Text", FilterHelper.EMPTY,
 			PageRequest.of(0, 100, Sort.by(Sort.Order.asc("count"))));
 
 		_assertEquals(
@@ -219,7 +237,9 @@ public abstract class BaseAccountRepositoryTestCase
 			ArrayUtils.toUnmodifiableList(new String[] {"91789"}));
 
 		distributions = accountRepository.getAccountDistributions(
-			1L, "shippingPostalCode", "Text", null, null,
+			individualRepository.findAccountPKsByChannelIdAndSegmentId(
+				1L, null),
+			"shippingPostalCode", "Text", FilterHelper.EMPTY,
 			PageRequest.of(0, 1, Sort.by(Sort.Order.asc("count"))));
 
 		Assert.assertEquals(distributions.toString(), 1, distributions.size());
@@ -229,7 +249,9 @@ public abstract class BaseAccountRepositoryTestCase
 			ArrayUtils.toUnmodifiableList(new String[] {"91765"}));
 
 		distributions = accountRepository.getAccountDistributions(
-			1L, "numberOfEmployees", "Number", null, null,
+			individualRepository.findAccountPKsByChannelIdAndSegmentId(
+				1L, null),
+			"numberOfEmployees", "Number", FilterHelper.EMPTY,
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("values"))));
 
 		Assert.assertEquals(distributions.toString(), 10, distributions.size());
@@ -272,8 +294,12 @@ public abstract class BaseAccountRepositoryTestCase
 			0, 20, Sort.by(Sort.Order.asc("organization/field1/value")));
 
 		List<Account> accounts = accountRepository.searchAccounts(
-			null, null, "organization/field1/value eq 'field two'", pageRequest,
-			Sort.by(Sort.Order.asc("individualCount")));
+			null, null,
+			new FilterHelper(
+				_defaultFilterStringConverterHelper,
+				"organization/field1/value eq 'field two'",
+				_accountsFilterStringConverterHelper),
+			pageRequest, Sort.by(Sort.Order.asc("individualCount")));
 
 		Assert.assertEquals(accounts.toString(), 1, accounts.size());
 
@@ -401,12 +427,19 @@ public abstract class BaseAccountRepositoryTestCase
 	}
 
 	private Long _accountId;
+	private final AccountsFilterStringConverterHelper
+		_accountsFilterStringConverterHelper =
+			new AccountsFilterStringConverterHelper();
 
 	@Autowired
 	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
+
+	private final DefaultFilterStringConverterHelper
+		_defaultFilterStringConverterHelper =
+			new DefaultFilterStringConverterHelper();
 
 	@Autowired
 	private FieldMappingRepository _fieldMappingRepository;

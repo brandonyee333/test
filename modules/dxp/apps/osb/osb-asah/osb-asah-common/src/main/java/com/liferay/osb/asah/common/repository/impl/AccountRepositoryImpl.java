@@ -15,15 +15,9 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Account;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
-import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.postgresql.converter.helper.AccountsFilterStringConverterHelper;
-import com.liferay.osb.asah.common.repository.DataSourceIndividualRepository;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
-import com.liferay.osb.asah.common.repository.util.ConditionUtil;
-import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.util.ArrayList;
@@ -53,7 +47,6 @@ import org.jooq.SortField;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
@@ -68,15 +61,13 @@ public class AccountRepositoryImpl extends BaseRepository {
 	}
 
 	public long countAccounts(
-		@Nullable Set<String> accountPKs, @Nullable String filterString) {
+		@Nullable Set<String> accountPKs, FilterHelper filterHelper) {
 
 		Table<Record> fieldTable = _buildFieldTable(
-			ConditionUtil.toCondition(
-				filterString, _accountsFilterStringConverterHelper),
-			null);
+			filterHelper.getCondition(), null);
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.selectCount();
+			_dslContext.select(DSL.countDistinct(DSL.field("Account.id")));
 
 		Condition condition = DSL.noCondition();
 
@@ -109,13 +100,12 @@ public class AccountRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Distribution> getAccountDistributions(
-		@Nullable Long channelId, String fieldName, String fieldType,
-		@Nullable String filterString, @Nullable Long individualSegmentId,
-		Pageable pageable) {
+		List<String> accountPKs, String fieldName, String fieldType,
+		FilterHelper filterHelper, Pageable pageable) {
 
 		Set<Long> accountIds = new HashSet<>();
 
-		if ((channelId != null) || (individualSegmentId != null)) {
+		if (!accountPKs.isEmpty()) {
 			SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 			selectSelectStep.select(
@@ -123,9 +113,12 @@ public class AccountRepositoryImpl extends BaseRepository {
 			).from(
 				"Account"
 			).where(
-				_getCondition(channelId, individualSegmentId)
+				DSL.field(
+					"accountPK"
+				).in(
+					accountPKs
+				)
 			).fetch(
-			).map(
 				record -> accountIds.add((Long)record.get("id"))
 			);
 
@@ -136,11 +129,10 @@ public class AccountRepositoryImpl extends BaseRepository {
 
 		if (fieldType.equals("Number")) {
 			return _getAccountNumbersDistributions(
-				accountIds, fieldName, filterString, pageable);
+				accountIds, fieldName, filterHelper, pageable);
 		}
 
-		Condition condition = ConditionUtil.toCondition(
-			filterString, _accountsFilterStringConverterHelper);
+		Condition condition = filterHelper.getCondition();
 
 		if (!accountIds.isEmpty()) {
 			condition = condition.and(
@@ -178,7 +170,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.select(
-			DSL.count(
+			DSL.countDistinct(
 				ownerIdField
 			).as(
 				"count"
@@ -214,7 +206,6 @@ public class AccountRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new Distribution(
 				(Integer)record.get("count"),
 				Collections.singletonList(record.get("values")))
@@ -222,7 +213,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Transformation> getAccountTransformations(
-		String apply, @Nullable Long channelId, @Nullable String filterString,
+		String apply, @Nullable Long channelId, FilterHelper filterHelper,
 		Pageable pageable) {
 
 		Matcher matcher = MatcherUtil.getMatcher(apply);
@@ -248,8 +239,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 		Field<Object> ownerIdField = DSL.field("ownerId");
 		Field<Object> valueField = DSL.field("value");
 
-		Condition condition = ConditionUtil.toCondition(
-			filterString, _accountsFilterStringConverterHelper);
+		Condition condition = filterHelper.getCondition();
 
 		condition = condition.and(_getIncludeCondition(containsField));
 
@@ -300,7 +290,6 @@ public class AccountRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new Transformation(
 				new Transformation.Term(
 					Collections.singletonMap(
@@ -310,8 +299,47 @@ public class AccountRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Account> searchAccounts(
+		FilterHelper filterHelper, Pageable pageable) {
+
+		Table<Record> fieldTable = _buildFieldTable(
+			filterHelper.getCondition(),
+			DSL.field(
+				"id"
+			).asc());
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"Account"
+			).asterisk());
+
+		SelectOnConditionStep<Record> selectOnConditionStep =
+			selectSelectStep.from(
+				"Account"
+			).join(
+				fieldTable
+			).on(
+				DSL.field(
+					"account.id"
+				).eq(
+					fieldTable.field("ownerId")
+				)
+			);
+
+		if (pageable.isPaged()) {
+			selectOnConditionStep.limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			);
+		}
+
+		return selectOnConditionStep.fetch(
+			record -> new Account(record.intoMap()));
+	}
+
+	public List<Account> searchAccounts(
 		@Nullable Set<String> accountPKs, @Nullable Long channelId,
-		@Nullable String filterString, Pageable pageable,
+		FilterHelper filterHelper, Pageable pageable,
 		@Nullable Sort segmentSort) {
 
 		SortField sortField = null;
@@ -336,11 +364,12 @@ public class AccountRepositoryImpl extends BaseRepository {
 		}
 
 		Table<Record> fieldTable = _buildFieldTable(
-			ConditionUtil.toCondition(
-				filterString, _accountsFilterStringConverterHelper),
-			sortField);
+			filterHelper.getCondition(), sortField);
 
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select(
+			DSL.table(
+				"Account"
+			).asterisk());
 
 		SelectOnConditionStep<Record> selectOnConditionStep =
 			selectSelectStep.from(
@@ -389,51 +418,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 		}
 
 		return selectOnConditionStep.fetch(
-		).map(
-			record -> new Account(record.intoMap())
-		);
-	}
-
-	public List<Account> searchAccounts(
-		String filterString, Pageable pageable) {
-
-		Table<Record> fieldTable = _buildFieldTable(
-			ConditionUtil.toCondition(
-				filterString, _accountsFilterStringConverterHelper),
-			DSL.field(
-				"id"
-			).asc());
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
-			DSL.table(
-				"Account"
-			).asterisk());
-
-		SelectOnConditionStep<Record> selectOnConditionStep =
-			selectSelectStep.from(
-				"Account"
-			).join(
-				fieldTable
-			).on(
-				DSL.field(
-					"account.id"
-				).eq(
-					fieldTable.field("ownerId")
-				)
-			);
-
-		if (pageable.isPaged()) {
-			selectOnConditionStep.limit(
-				pageable.getPageSize()
-			).offset(
-				pageable.getOffset()
-			);
-		}
-
-		return selectOnConditionStep.fetch(
-		).map(
-			record -> new Account(record.intoMap())
-		);
+			record -> new Account(record.intoMap()));
 	}
 
 	private Table<Record> _buildFieldTable(
@@ -502,7 +487,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Distribution> _getAccountNumbersDistributions(
-		Set<Long> accountIds, String fieldName, String filterString,
+		Set<Long> accountIds, String fieldName, FilterHelper filterHelper,
 		Pageable pageable) {
 
 		AggregateFunction<Object> aggregateFunction = DSL.max(
@@ -515,8 +500,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 			Integer.class
 		);
 
-		Condition condition = ConditionUtil.toCondition(
-			filterString, _accountsFilterStringConverterHelper);
+		Condition condition = filterHelper.getCondition();
 
 		if (!accountIds.isEmpty()) {
 			condition = condition.and(ownerIdField.in(accountIds));
@@ -571,7 +555,6 @@ public class AccountRepositoryImpl extends BaseRepository {
 		).from(
 			fieldTable
 		).fetch(
-		).map(
 			record -> {
 				values[0] = (Integer)record.get("max");
 				values[1] = (Integer)record.get("min");
@@ -613,7 +596,6 @@ public class AccountRepositoryImpl extends BaseRepository {
 			).offset(
 				pageable.getOffset()
 			).fetch(
-			).map(
 				record -> new Distribution(
 					(Integer)record.get("count"),
 					new LinkedList<Object>() {
@@ -717,7 +699,6 @@ public class AccountRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new Distribution(
 				(Integer)record.get("count"),
 				new LinkedList<Object>() {
@@ -727,32 +708,6 @@ public class AccountRepositoryImpl extends BaseRepository {
 					}
 				})
 		);
-	}
-
-	private Condition _getCondition(Long channelId, Long individualSegmentId) {
-		List<Individual> individuals =
-			_individualRepository.findByChannelIdAndSegmentId(
-				channelId, individualSegmentId);
-
-		List<DataSourceIndividual> dataSourceIndividuals =
-			_dataSourceIndividualRepository.findByIndividualIdIn(
-				ListUtil.map(individuals, Individual::getId));
-
-		Set<String> accountPKs = new HashSet<>();
-
-		for (DataSourceIndividual dataSourceIndividual :
-				dataSourceIndividuals) {
-
-			accountPKs.addAll(dataSourceIndividual.getAccountPKs());
-		}
-
-		if (accountPKs.isEmpty()) {
-			return DSL.noCondition();
-		}
-
-		Field<Object> accountPKField = DSL.field("accountPK");
-
-		return accountPKField.in(accountPKs);
 	}
 
 	private Condition _getIncludeCondition(String contains) {
@@ -771,16 +726,6 @@ public class AccountRepositoryImpl extends BaseRepository {
 		return Collections.singletonMap("name", "values");
 	}
 
-	private final AccountsFilterStringConverterHelper
-		_accountsFilterStringConverterHelper =
-			new AccountsFilterStringConverterHelper();
-
-	@Autowired
-	private DataSourceIndividualRepository _dataSourceIndividualRepository;
-
 	private final DSLContext _dslContext;
-
-	@Autowired
-	private IndividualRepository _individualRepository;
 
 }

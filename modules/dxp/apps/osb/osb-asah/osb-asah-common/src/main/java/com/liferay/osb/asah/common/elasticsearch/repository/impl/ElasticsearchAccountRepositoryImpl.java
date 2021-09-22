@@ -18,13 +18,13 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
@@ -36,7 +36,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -57,11 +56,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
-import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -85,10 +79,10 @@ public class ElasticsearchAccountRepositoryImpl
 
 	@Override
 	public long countAccounts(
-		@Nullable Set<String> accountPKs, @Nullable String filterString) {
+		@Nullable Set<String> accountPKs, FilterHelper filterHelper) {
 
 		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(), _getQueryBuilder(accountPKs, filterString));
+			getCollectionName(), _getQueryBuilder(accountPKs, filterHelper));
 	}
 
 	@Override
@@ -170,9 +164,8 @@ public class ElasticsearchAccountRepositoryImpl
 
 	@Override
 	public List<Distribution> getAccountDistributions(
-		@Nullable Long channelId, String fieldName, String fieldType,
-		@Nullable String filterString, @Nullable Long individualSegmentId,
-		Pageable pageable) {
+		List<String> accountPKs, String fieldName, String fieldType,
+		FilterHelper filterHelper, Pageable pageable) {
 
 		fieldName = "organization." + fieldName + ".value";
 
@@ -202,7 +195,7 @@ public class ElasticsearchAccountRepositoryImpl
 		transformationGetResponse.setPage(pageable.getPageNumber());
 
 		QueryBuilder queryBuilder = _getAccountsQueryBuilder(
-			channelId, filterString, individualSegmentId);
+			accountPKs, filterHelper);
 
 		if (queryBuilder != null) {
 			transformationGetResponse.setQueryBuilder(queryBuilder);
@@ -252,7 +245,7 @@ public class ElasticsearchAccountRepositoryImpl
 
 	@Override
 	public List<Transformation> getAccountTransformations(
-		String apply, @Nullable Long channelId, @Nullable String filterString,
+		String apply, @Nullable Long channelId, FilterHelper filterHelper,
 		Pageable pageable) {
 
 		TransformationGetResponse transformationGetResponse =
@@ -263,8 +256,7 @@ public class ElasticsearchAccountRepositoryImpl
 			_faroInfoElasticsearchInvoker);
 		transformationGetResponse.setPage(pageable.getPageNumber());
 
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString);
+		QueryBuilder queryBuilder = filterHelper.getQueryBuilder();
 
 		if ((queryBuilder != null) && (channelId != null)) {
 			queryBuilder = BoolQueryBuilderUtil.filter(
@@ -336,52 +328,26 @@ public class ElasticsearchAccountRepositoryImpl
 	}
 
 	@Override
-	public <S extends Account> S save(S account) {
-		JSONObject jsonObject = toJSONObject(account);
+	public List<Account> searchAccounts(
+		FilterHelper filterHelper, Pageable pageable) {
 
-		_populateJSONObject(account, jsonObject);
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							filterHelper.getQueryBuilder());
 
-		String id = jsonObject.optString(
-			"id", timeOrderedUuidGenerator.generateId());
-
-		jsonObject.put("id", id);
-
-		return (S)toEntity(
-			_faroInfoElasticsearchInvoker.upsert(
-				getCollectionName(), jsonObject));
-	}
-
-	@Override
-	public <S extends Account> Iterable<S> saveAll(Iterable<S> accounts) {
-		List<S> list = new ArrayList<>();
-
-		JSONArray jsonArray = new JSONArray();
-
-		accounts.forEach(
-			account -> {
-				JSONObject jsonObject = toJSONObject(account);
-
-				_populateJSONObject(account, jsonObject);
-
-				String id = jsonObject.optString(
-					"id", timeOrderedUuidGenerator.generateId());
-
-				jsonObject.put("id", id);
-
-				jsonArray.put(jsonObject);
-
-				list.add((S)toEntity(jsonObject));
-			});
-
-		_faroInfoElasticsearchInvoker.upsert(getCollectionName(), jsonArray);
-
-		return list;
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
 	}
 
 	@Override
 	public List<Account> searchAccounts(
 		@Nullable Set<String> accountPKs, @Nullable Long channelId,
-		@Nullable String filterString, Pageable pageable,
+		FilterHelper filterHelper, Pageable pageable,
 		@Nullable Sort segmentSort) {
 
 		try {
@@ -393,7 +359,7 @@ public class ElasticsearchAccountRepositoryImpl
 				_faroInfoElasticsearchInvoker);
 
 			QueryBuilder queryBuilder = _getQueryBuilder(
-				accountPKs, filterString);
+				accountPKs, filterHelper);
 
 			if (queryBuilder != null) {
 				collectionGetResponse.setQueryBuilder(queryBuilder);
@@ -503,24 +469,6 @@ public class ElasticsearchAccountRepositoryImpl
 	}
 
 	@Override
-	public List<Account> searchAccounts(
-		String filterString, Pageable pageable) {
-
-		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							FilterStringToQueryBuilderConverter.convert(
-								filterString));
-
-						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
-					})));
-	}
-
-	@Override
 	protected String getCollectionName() {
 		return "accounts";
 	}
@@ -528,6 +476,68 @@ public class ElasticsearchAccountRepositoryImpl
 	@Override
 	protected ElasticsearchInvoker getElasticsearchInvoker() {
 		return _faroInfoElasticsearchInvoker;
+	}
+
+	@Override
+	protected JSONObject toJSONObject(Account account) {
+		JSONObject jsonObject = super.toJSONObject(account);
+
+		Set<Account.AccountActivityCount> activitiesCounts =
+			account.getActivitiesCounts();
+
+		if (CollectionUtils.isNotEmpty(activitiesCounts)) {
+			JSONArray activitiesCountsJSONArray = new JSONArray();
+
+			for (Account.AccountActivityCount activityCount :
+					activitiesCounts) {
+
+				activitiesCountsJSONArray.put(
+					JSONUtil.put(
+						"activitiesCount", activityCount.getActivitiesCount()
+					).put(
+						"channelId", activityCount.getChannelId()
+					));
+			}
+
+			jsonObject.put("activitiesCounts", activitiesCountsJSONArray);
+		}
+
+		Set<Account.AccountIndividualCount> individualCounts =
+			account.getIndividualCounts();
+
+		if (CollectionUtils.isNotEmpty(individualCounts)) {
+			JSONArray individualsCountsJSONArray = new JSONArray();
+
+			for (Account.AccountIndividualCount individualCount :
+					individualCounts) {
+
+				individualsCountsJSONArray.put(
+					JSONUtil.put(
+						"channelId", individualCount.getChannelId()
+					).put(
+						"individualCount", individualCount.getIndividualCount()
+					));
+			}
+
+			jsonObject.put("individualCounts", individualsCountsJSONArray);
+		}
+
+		Set<Field> fields = account.getFields();
+
+		if (CollectionUtils.isNotEmpty(fields)) {
+			JSONObject organizationJSONObject = new JSONObject();
+
+			for (Field field : fields) {
+				organizationJSONObject.put(
+					field.getName(),
+					JSONUtil.put(
+						objectMapper.convertValue(field, JSONObject.class)));
+			}
+
+			jsonObject.put("organization", organizationJSONObject);
+		}
+
+		return jsonObject;
 	}
 
 	private JSONObject _filterByChannelId(
@@ -587,67 +597,16 @@ public class ElasticsearchAccountRepositoryImpl
 	}
 
 	private QueryBuilder _getAccountsQueryBuilder(
-		Long channelId, String filterString, Long individualSegmentId) {
+		List<String> accountPKs, FilterHelper filterHelper) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
-		if (StringUtils.isNotEmpty(filterString)) {
-			boolQueryBuilder.filter(
-				FilterStringToQueryBuilderConverter.convert(filterString));
+		if (StringUtils.isNotEmpty(filterHelper.getFilterString())) {
+			boolQueryBuilder.filter(filterHelper.getQueryBuilder());
 		}
 
-		if ((channelId == null) && (individualSegmentId == null)) {
+		if (accountPKs.isEmpty()) {
 			return boolQueryBuilder;
-		}
-
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			"individuals",
-			searchSourceBuilder -> {
-				NestedAggregationBuilder aggregationBuilder =
-					AggregationBuilders.nested(
-						"accounts", "dataSourceAccountPKs");
-
-				aggregationBuilder.subAggregation(
-					AggregationBuilders.terms(
-						"accountPKs"
-					).field(
-						"dataSourceAccountPKs.accountPKs"
-					).size(
-						Integer.MAX_VALUE
-					));
-
-				searchSourceBuilder.aggregation(aggregationBuilder);
-
-				BoolQueryBuilder individualsBoolQueryBuilder =
-					QueryBuilders.boolQuery();
-
-				if (channelId != null) {
-					BoolQueryBuilderUtil.filterTerm(
-						individualsBoolQueryBuilder, "channelIds",
-						String.valueOf(channelId));
-				}
-
-				if (individualSegmentId != null) {
-					BoolQueryBuilderUtil.filterTerm(
-						individualsBoolQueryBuilder, "individualSegmentIds",
-						String.valueOf(individualSegmentId));
-				}
-
-				searchSourceBuilder.query(individualsBoolQueryBuilder);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		InternalNested internalNested = aggregations.get("accounts");
-
-		Aggregations nestedAggregations = internalNested.getAggregations();
-
-		Terms terms = nestedAggregations.get("accountPKs");
-
-		Set<String> accountPKs = new HashSet<>();
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			accountPKs.add(bucket.getKeyAsString());
 		}
 
 		boolQueryBuilder.filter(
@@ -657,23 +616,23 @@ public class ElasticsearchAccountRepositoryImpl
 	}
 
 	private QueryBuilder _getQueryBuilder(
-		Set<String> accountPKs, String filterString) {
+		Set<String> accountPKs, FilterHelper filterHelper) {
 
 		if ((accountPKs == null) || accountPKs.isEmpty()) {
-			return FilterStringToQueryBuilderConverter.convert(filterString);
+			return filterHelper.getQueryBuilder();
 		}
 
 		QueryBuilder queryBuilder = QueryBuilders.termsQuery(
 			"accountPK", accountPKs);
 
-		if (StringUtils.isEmpty(filterString)) {
+		if (StringUtils.isEmpty(filterHelper.getFilterString())) {
 			return queryBuilder;
 		}
 
 		return BoolQueryBuilderUtil.filter(
 			queryBuilder
 		).filter(
-			FilterStringToQueryBuilderConverter.convert(filterString)
+			filterHelper.getQueryBuilder()
 		);
 	}
 
@@ -696,63 +655,6 @@ public class ElasticsearchAccountRepositoryImpl
 		}
 
 		return sorts.toArray(new String[0]);
-	}
-
-	private void _populateJSONObject(Account account, JSONObject jsonObject) {
-		Set<Account.AccountActivityCount> activitiesCounts =
-			account.getActivitiesCounts();
-
-		if (CollectionUtils.isNotEmpty(activitiesCounts)) {
-			JSONArray activitiesCountsJSONArray = new JSONArray();
-
-			for (Account.AccountActivityCount activityCount :
-					activitiesCounts) {
-
-				activitiesCountsJSONArray.put(
-					JSONUtil.put(
-						"activitiesCount", activityCount.getActivitiesCount()
-					).put(
-						"channelId", activityCount.getChannelId()
-					));
-			}
-
-			jsonObject.put("activitiesCounts", activitiesCountsJSONArray);
-		}
-
-		Set<Account.AccountIndividualCount> individualCounts =
-			account.getIndividualCounts();
-
-		if (CollectionUtils.isNotEmpty(individualCounts)) {
-			JSONArray individualsCountsJSONArray = new JSONArray();
-
-			for (Account.AccountIndividualCount individualCount :
-					individualCounts) {
-
-				individualsCountsJSONArray.put(
-					JSONUtil.put(
-						"channelId", individualCount.getChannelId()
-					).put(
-						"individualCount", individualCount.getIndividualCount()
-					));
-			}
-
-			jsonObject.put("individualCounts", individualsCountsJSONArray);
-		}
-
-		Set<Field> fields = account.getFields();
-
-		if (CollectionUtils.isNotEmpty(fields)) {
-			JSONObject organizationJSONObject = new JSONObject();
-
-			for (Field field : fields) {
-				organizationJSONObject.put(
-					field.getName(),
-					JSONUtil.put(
-						objectMapper.convertValue(field, JSONObject.class)));
-			}
-
-			jsonObject.put("organization", organizationJSONObject);
-		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
