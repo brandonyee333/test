@@ -145,33 +145,6 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 			return true;
 		}
 
-		if (isCustomer(user.getUserId())) {
-			List<Account> accounts = _accountWebService.search(
-				StringPool.BLANK,
-				"customerContactEmailAddresses/any(s:s eq '" +
-					user.getEmailAddress() + "')",
-				1, 1000, StringPool.BLANK);
-
-			for (Account account : accounts) {
-				PostalAddress[] postalAddresses = account.getPostalAddresses();
-
-				if (ArrayUtil.isEmpty(postalAddresses)) {
-					return true;
-				}
-
-				for (PostalAddress postalAddress : postalAddresses) {
-					if (!ArrayUtil.contains(
-							_NO_ACCESS_COUNTRIES,
-							postalAddress.getAddressCountry())) {
-
-						return true;
-					}
-				}
-			}
-
-			return false;
-		}
-
 		String domain = endUserEmailAddress.substring(
 			endUserEmailAddress.indexOf(StringPool.AT) + 1);
 
@@ -191,39 +164,47 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
 
 		for (Account account : accounts) {
-			Entitlement[] entitlements = account.getEntitlements();
+			PostalAddress[] postalAddresses = account.getPostalAddresses();
 
-			if (entitlements != null) {
-				for (Entitlement entitlement : entitlements) {
-					String entitlementName = entitlement.getName();
+			boolean hasCustomerAccessCountry = false;
+			boolean hasPartnerAccessCountry = false;
 
-					if (entitlementName.equals(
-							EntitlementConstants.NAME_PARTNER)) {
+			if (!ArrayUtil.isEmpty(postalAddresses)) {
+				for (PostalAddress postalAddress : postalAddresses) {
+					if (!ArrayUtil.contains(
+							_CUSTOMER_NO_ACCESS_COUNTRIES,
+							postalAddress.getAddressCountry())) {
 
-						return true;
+						hasCustomerAccessCountry = true;
+					}
+
+					if (!ArrayUtil.contains(
+							_PARTNER_NO_ACCESS_COUNTRIES,
+							postalAddress.getAddressCountry())) {
+
+						hasPartnerAccessCountry = true;
 					}
 				}
 			}
 
-			PostalAddress[] postalAddresses = account.getPostalAddresses();
+			if (hasPartnerAccessCountry) {
+				Entitlement[] entitlements = account.getEntitlements();
 
-			if (!ArrayUtil.isEmpty(postalAddresses)) {
-				boolean hasAccessCountry = false;
+				if (entitlements != null) {
+					for (Entitlement entitlement : entitlements) {
+						String entitlementName = entitlement.getName();
 
-				for (PostalAddress postalAddress : postalAddresses) {
-					if (!ArrayUtil.contains(
-							_NO_ACCESS_COUNTRIES,
-							postalAddress.getAddressCountry())) {
+						if (entitlementName.equals(
+								EntitlementConstants.NAME_PARTNER)) {
 
-						hasAccessCountry = true;
-
-						break;
+							return true;
+						}
 					}
 				}
+			}
 
-				if (!hasAccessCountry) {
-					continue;
-				}
+			if (!hasCustomerAccessCountry) {
+				continue;
 			}
 
 			Date now = new Date();
@@ -277,18 +258,6 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 		return false;
 	}
 
-	protected boolean isCustomer(long userId) throws PortalException {
-		if (_organizationLocalService.hasUserOrganization(
-				userId, OSBCustomerConstants.ORGANIZATION_CUSTOMER_DXP_ID) ||
-			_organizationLocalService.hasUserOrganization(
-				userId, OSBCustomerConstants.ORGANIZATION_CUSTOMER_PORTAL_ID)) {
-
-			return true;
-		}
-
-		return false;
-	}
-
 	protected boolean isLiferayEmployee(long userId) throws PortalException {
 		if (_organizationLocalService.hasUserOrganization(
 				userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
@@ -319,7 +288,11 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 		return false;
 	}
 
-	private static final String[] _NO_ACCESS_COUNTRIES = {"India", "Japan"};
+	private static final String[] _CUSTOMER_NO_ACCESS_COUNTRIES = {
+		"India", "Japan"
+	};
+
+	private static final String[] _PARTNER_NO_ACCESS_COUNTRIES = {"India"};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SubmitPassportAccessMVCActionCommand.class);
