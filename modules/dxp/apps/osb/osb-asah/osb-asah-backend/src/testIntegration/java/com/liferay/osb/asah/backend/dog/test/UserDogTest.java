@@ -95,6 +95,24 @@ public class UserDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
+	public void testGetSegmentedAnonymousUsersCount() {
+		long segmentedAnonymousUsersCount =
+			_userDog.getSegmentedAnonymousUsersCount(
+				JournalMetricType.VIEWS, _searchQueryContext);
+
+		Assert.assertEquals(1, segmentedAnonymousUsersCount);
+	}
+
+	@ElasticsearchIndex(
+		name = "individuals",
+		resourcePath = "user_journal_individuals_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "journals", resourcePath = "user_journal_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
 	public void testGetSegmentedKnownUsersCount() {
 		long segmentedKnownUsersCount = _userDog.getSegmentedKnownUsersCount(
 			JournalMetricType.VIEWS, _searchQueryContext);
