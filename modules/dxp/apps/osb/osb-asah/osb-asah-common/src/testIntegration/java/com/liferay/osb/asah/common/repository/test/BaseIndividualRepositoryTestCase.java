@@ -44,6 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -90,13 +92,16 @@ public abstract class BaseIndividualRepositoryTestCase
 		Individual individual1 = new Individual();
 
 		individual1.setChannelIds(Collections.singleton(channel1.getId()));
-		individual1.setCreateDate(new Date());
+
+		Date date = new Date();
+
+		individual1.setCreateDate(date);
 
 		String emailAddress = "test@liferay.com";
 
 		individual1.setEmailAddressHashed(DigestUtils.sha256Hex(emailAddress));
 
-		individual1.setModifiedDate(new Date());
+		individual1.setModifiedDate(date);
 
 		setUpRepository(individual1);
 
@@ -105,7 +110,7 @@ public abstract class BaseIndividualRepositoryTestCase
 		_individual1Id = individual1.getId();
 
 		IndividualChannel individualChannel = new IndividualChannel(
-			3L, channel1.getId(), _individual1Id, new Date());
+			3L, channel1.getId(), _individual1Id, date, null);
 
 		individual1.setActivitiesCounts(
 			Collections.singleton(
@@ -115,7 +120,7 @@ public abstract class BaseIndividualRepositoryTestCase
 			Collections.singleton(
 				new DataSourceIndividual(
 					SetUtil.of("1234", "5678"), dataSource1.getId(),
-					_individualId,
+					_individual1Id,
 					Collections.singleton("23432-cd-3242-asf23"))));
 		individual1.setIndividualChannels(
 			Collections.singleton(individualChannel));
@@ -128,7 +133,7 @@ public abstract class BaseIndividualRepositoryTestCase
 		field1.setDataSourceId(dataSource1.getId());
 		field1.setDataSourceName("Source 1");
 		field1.setFieldType("Text");
-		field1.setModifiedDate(new Date());
+		field1.setModifiedDate(date);
 		field1.setName("email");
 		field1.setOwnerId(_individual1Id);
 		field1.setOwnerType("individual");
@@ -158,7 +163,7 @@ public abstract class BaseIndividualRepositoryTestCase
 		field3.setDataSourceId(dataSource1.getId());
 		field3.setDataSourceName("Source 1");
 		field3.setFieldType("Text");
-		field3.setModifiedDate(new Date());
+		field3.setModifiedDate(date);
 		field3.setName("field3");
 		field3.setOwnerId(_individual1Id);
 		field3.setOwnerType("individual");
@@ -181,11 +186,11 @@ public abstract class BaseIndividualRepositoryTestCase
 		segment.setActivitiesCount(3L);
 		segment.setAnonymousIndividualCount(0L);
 		segment.setChannelId(channel1.getId());
-		segment.setCreateDate(new Date());
+		segment.setCreateDate(date);
 		segment.setFilter("(demographics/field3/value eq 'field three')");
 		segment.setIndividualCount(1L);
-		segment.setLastActivityDate(new Date());
-		segment.setModifiedDate(new Date());
+		segment.setLastActivityDate(date);
+		segment.setModifiedDate(date);
 		segment.setName("Test Segment");
 		segment.setState("READY");
 		segment.setStatus("ACTIVE");
@@ -201,23 +206,39 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		Individual individual2 = new Individual();
 
-		individual2.setCreateDate(DateUtil.addDays(new Date(), -1));
+		individual2.setCreateDate(DateUtil.addDays(date, -1));
 
 		individual2 = individualRepository.save(individual2);
 
 		_individual2Id = individual2.getId();
 
 		individualChannel = new IndividualChannel(
-			5L, channel1.getId(), _individual2Id, new Date());
+			5L, channel1.getId(), _individual2Id, date, null);
 
-		individual2.setLastActivityDate(new Date());
+		individual2.setLastActivityDate(date);
 
 		individual2.setIndividualChannels(
 			Collections.singleton(individualChannel));
 
 		individual2 = individualRepository.save(individual2);
 
-		entityModels = Arrays.asList(individual1, individual2);
+		Individual individual3 = _addIndividualWithActivityDates(
+			channel1, null, DateUtil.addDays(date, -1));
+
+		_individual3Id = individual3.getId();
+
+		Individual individual4 = _addIndividualWithActivityDates(
+			channel1, null, null);
+
+		_individual4Id = individual4.getId();
+
+		Individual individual5 = _addIndividualWithActivityDates(
+			channel1, DateUtil.addDays(date, -31), DateUtil.addDays(date, -31));
+
+		_individual5Id = individual5.getId();
+
+		entityModels = Arrays.asList(
+			individual1, individual2, individual3, individual4, individual5);
 	}
 
 	@Override
@@ -236,10 +257,70 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
-	public void testCountByIdAfter() {
-		Assert.assertEquals(2, individualRepository.countByIdAfter(0L));
+	public void testCountByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn() {
+		Date date = DateUtil.newDayDate();
+
+		Date endOfDayDate = DateUtil.newEndOfDayDate(date);
+
+		Date endOfDayYesterday = DateUtil.addDays(endOfDayDate, -1);
+
+		Date beforeYesterday = DateUtil.addDays(endOfDayYesterday, -1);
+
+		Date aMonthAgo = DateUtil.addDays(endOfDayDate, -30);
+
 		Assert.assertEquals(
-			1, individualRepository.countByIdAfter(_individual1Id));
+			0,
+			individualRepository.
+				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
+					11L, beforeYesterday, beforeYesterday,
+					Collections.singletonList(_segmentId), aMonthAgo,
+					aMonthAgo));
+
+		Date yesterday = DateUtil.addDays(date, -1);
+
+		Assert.assertEquals(
+			1,
+			individualRepository.
+				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
+					11L, endOfDayDate, null,
+					Collections.singletonList(_segmentId), yesterday, null));
+
+		Assert.assertEquals(
+			1,
+			individualRepository.
+				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
+					11L, endOfDayDate, endOfDayDate,
+					Collections.singletonList(_segmentId), yesterday, date));
+
+		Assert.assertEquals(
+			1,
+			individualRepository.
+				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
+					11L, null, endOfDayDate,
+					Collections.singletonList(_segmentId), null, yesterday));
+
+		Assert.assertEquals(
+			1,
+			individualRepository.
+				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
+					11L, endOfDayYesterday, endOfDayDate,
+					Collections.singletonList(_segmentId), yesterday,
+					yesterday));
+
+		Assert.assertEquals(
+			2,
+			individualRepository.
+				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
+					11L, endOfDayDate, endOfDayDate,
+					Collections.singletonList(_segmentId), yesterday,
+					yesterday));
+	}
+
+	@Test
+	public void testCountByIdAfter() {
+		Assert.assertEquals(5, individualRepository.countByIdAfter(0L));
+		Assert.assertEquals(
+			4, individualRepository.countByIdAfter(_individual1Id));
 	}
 
 	@Test
@@ -297,7 +378,7 @@ public abstract class BaseIndividualRepositoryTestCase
 						_faroInfoIndividualsFilterStringConverterHelper,
 						"(demographics/field3/value eq 'field three')",
 						_individualsFilterStringConverterHelper),
-					false, _individualId));
+					false, _individual1Id));
 	}
 
 	@Test
@@ -308,7 +389,7 @@ public abstract class BaseIndividualRepositoryTestCase
 					_faroInfoIndividualsFilterStringConverterHelper,
 					"(demographics/field3/value eq 'field three')",
 					_individualsFilterStringConverterHelper),
-				_individualId));
+				_individual1Id));
 	}
 
 	@Test
@@ -444,11 +525,25 @@ public abstract class BaseIndividualRepositoryTestCase
 		List<Individual> individuals = individualRepository.findBySegmentIds(
 			_segmentId);
 
-		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+		Assert.assertEquals(individuals.toString(), 4, individuals.size());
 
-		Individual individual = individuals.get(0);
+		Stream<Individual> stream = individuals.stream();
 
-		Assert.assertEquals(_individual1Id, individual.getId());
+		Set<Long> actualIds = stream.map(
+			Individual::getId
+		).collect(
+			Collectors.toSet()
+		);
+
+		Set<Long> expectedIds = new HashSet<>(
+			Arrays.asList(
+				_individual1Id, _individual3Id, _individual4Id,
+				_individual5Id));
+
+		Assert.assertEquals(
+			actualIds.toString(), expectedIds.size(), actualIds.size());
+		Assert.assertTrue(
+			actualIds.toString(), expectedIds.containsAll(actualIds));
 	}
 
 	@Test
@@ -631,6 +726,24 @@ public abstract class BaseIndividualRepositoryTestCase
 	@Autowired
 	protected SegmentRepository segmentRepository;
 
+	private Individual _addIndividualWithActivityDates(
+		Channel channel1, Date lastActivityDate, Date previousActivityDate) {
+
+		Individual individual = new Individual();
+
+		individual.setChannelIds(Collections.singleton(channel1.getId()));
+
+		individual.setIndividualChannels(
+			Collections.singleton(
+				new IndividualChannel(
+					0L, channel1.getId(), null, lastActivityDate,
+					previousActivityDate)));
+
+		individual.setSegmentIds(Collections.singleton(_segmentId));
+
+		return individualRepository.save(individual);
+	}
+
 	private void _assertEquals(
 		Distribution distribution, int expectedCount,
 		List<Object> expectedValues) {
@@ -654,7 +767,9 @@ public abstract class BaseIndividualRepositoryTestCase
 
 	private Long _individual1Id;
 	private Long _individual2Id;
-	private Long _individualId;
+	private Long _individual3Id;
+	private Long _individual4Id;
+	private Long _individual5Id;
 
 	@Autowired
 	private IndividualsFilterStringConverterHelper
