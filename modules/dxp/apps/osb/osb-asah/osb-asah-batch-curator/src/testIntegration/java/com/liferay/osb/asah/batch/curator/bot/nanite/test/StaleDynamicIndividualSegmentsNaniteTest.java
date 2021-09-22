@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
@@ -30,17 +31,21 @@ import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -102,43 +107,33 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 	@Test
 	public void testMembershipsAreDeactivatedIfNoActivities() throws Exception {
-		JSONArray membershipsJSONArray = _addMemberships(
+		List<Long> membershipIds = _addMemberships(
 			"last30Days", "last7Days", "lastYear", "today");
 
 		_staleDynamicIndividualSegmentsNanite.run(null);
 
-		for (int i = 0; i < membershipsJSONArray.length(); i++) {
-			JSONObject membershipJSONObject =
-				membershipsJSONArray.getJSONObject(i);
+		for (Long membershipId : membershipIds) {
+			Optional<Membership> membershipOptional =
+				_membershipRepository.findById(membershipId);
 
-			membershipJSONObject = faroInfoElasticsearchInvoker.fetch(
-				"memberships", membershipJSONObject.getString("id"));
+			Membership membership = membershipOptional.get();
 
 			String individualSegmentActivityFilterDuration =
-				_getIndividualSegmentActivityFilterDuration(
-					membershipJSONObject);
+				_getIndividualSegmentActivityFilterDuration(membership);
 
 			Assert.assertEquals(
 				"Membership should be deactivated if no activities were " +
 					"found for an individual within " +
 						individualSegmentActivityFilterDuration,
-				"INACTIVE", membershipJSONObject.getString("status"));
+				"INACTIVE", membership.getStatus());
+
+			List<Long> individualIds = _individualDog.getIdsBySegmentId(
+				membership.getIndividualSegmentId());
 
 			Assert.assertFalse(
 				"Individual segment ID should be removed from individual " +
 					"when membership is deactivated",
-				faroInfoElasticsearchInvoker.exists(
-					"individuals",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery(
-							"id",
-							membershipJSONObject.getString("individualId"))
-					).filter(
-						QueryBuilders.termQuery(
-							"individualSegmentIds",
-							membershipJSONObject.getString(
-								"individualSegmentId"))
-					)));
+				individualIds.contains(membership.getIndividualId()));
 		}
 	}
 
@@ -146,24 +141,19 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	public void testMembershipsOfAllTimeDynamicIndividualSegmentsRemainActive()
 		throws Exception {
 
-		JSONArray membershipsJSONArray = _addMemberships("ever");
+		List<Long> membershipIds = _addMemberships("ever");
 
 		_staleDynamicIndividualSegmentsNanite.run(null);
 
-		for (int i = 0; i < membershipsJSONArray.length(); i++) {
-			JSONObject membershipJSONObject =
-				membershipsJSONArray.getJSONObject(i);
+		for (Long membershipId : membershipIds) {
+			Optional<Membership> membershipOptional =
+				_membershipRepository.findById(membershipId);
+
+			Membership membership = membershipOptional.get();
 
 			Assert.assertTrue(
 				"Membership should remain active if activities were found",
-				faroInfoElasticsearchInvoker.exists(
-					"memberships",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery(
-							"id", membershipJSONObject.getString("id"))
-					).filter(
-						QueryBuilders.termQuery("status", "ACTIVE")
-					)));
+				Objects.equals(membership.getStatus(), "ACTIVE"));
 		}
 	}
 
@@ -173,24 +163,20 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 		_addActivity(DateUtil.addDays(DateUtil.newDayDateString(), -3));
 
-		JSONArray membershipsJSONArray = _addMemberships("last7Days", "today");
+		List<Long> membershipIds = _addMemberships("last7Days", "today");
 
 		_staleDynamicIndividualSegmentsNanite.run(null);
 
-		for (int i = 0; i < membershipsJSONArray.length(); i++) {
-			JSONObject membershipJSONObject =
-				membershipsJSONArray.getJSONObject(i);
+		for (Long membershipId : membershipIds) {
+			Optional<Membership> membershipOptional =
+				_membershipRepository.findById(membershipId);
 
-			membershipJSONObject = faroInfoElasticsearchInvoker.get(
-				"memberships", membershipJSONObject.getString("id"));
+			Membership membership = membershipOptional.get();
 
 			String individualSegmentActivityFilterDuration =
-				_getIndividualSegmentActivityFilterDuration(
-					membershipJSONObject);
+				_getIndividualSegmentActivityFilterDuration(membership);
 
-			String status = membershipJSONObject.getString("status");
-
-			if (status.equals("ACTIVE")) {
+			if (Objects.equals(membership.getStatus(), "ACTIVE")) {
 				Assert.assertEquals(
 					"Membership should remain active if activities were " +
 						"found within the last 7 days",
@@ -209,30 +195,24 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	public void testMembershipsRemainActive() throws Exception {
 		_addActivity(DateUtil.newDayDateString());
 
-		JSONArray membershipsJSONArray = _addMemberships(
+		List<Long> membershipIds = _addMemberships(
 			"last30Days", "last7Days", "lastYear", "today");
 
 		_staleDynamicIndividualSegmentsNanite.run(null);
 
-		for (int i = 0; i < membershipsJSONArray.length(); i++) {
-			JSONObject membershipJSONObject =
-				membershipsJSONArray.getJSONObject(i);
+		for (Long membershipId : membershipIds) {
+			Optional<Membership> membershipOptional =
+				_membershipRepository.findById(membershipId);
+
+			Membership membership = membershipOptional.get();
 
 			String individualSegmentActivityFilterDuration =
-				_getIndividualSegmentActivityFilterDuration(
-					membershipJSONObject);
+				_getIndividualSegmentActivityFilterDuration(membership);
 
 			Assert.assertTrue(
 				"Membership should remain active if activities were found " +
 					"within " + individualSegmentActivityFilterDuration,
-				faroInfoElasticsearchInvoker.exists(
-					"memberships",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery(
-							"id", membershipJSONObject.getString("id"))
-					).filter(
-						QueryBuilders.termQuery("status", "ACTIVE")
-					)));
+				Objects.equals(membership.getStatus(), "ACTIVE"));
 		}
 	}
 
@@ -297,8 +277,8 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 				_assetJSONObject, "pageViewed", new String[0]));
 	}
 
-	private JSONArray _addMemberships(String... durations) {
-		JSONArray membershipsJSONArray = new JSONArray();
+	private List<Long> _addMemberships(String... durations) {
+		List<Long> membershipIds = new ArrayList<>();
 
 		for (String duration : durations) {
 			Segment segment = _segmentRepository.save(
@@ -307,27 +287,16 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 					"(((activities/" + duration + " eq 'Page#pageViewed#" +
 						_assetJSONObject.getString("id") + "')))"));
 
-			Individual partialIndividual = new Individual();
+			_individualDog.addSegmentId(_individual.getId(), segment.getId());
 
-			Set<Long> segmentIds = _individual.getSegmentIds();
+			Membership membership = _membershipDog.addMembership(
+				FaroInfoTestUtil.buildMembership(
+					_individual.getId(), segment.getId()));
 
-			segmentIds.add(segment.getId());
-
-			partialIndividual.setSegmentIds(segmentIds);
-
-			_individualDog.updateIndividual(
-				_individual.getId(), partialIndividual, false);
-
-			membershipsJSONArray.put(
-				faroInfoElasticsearchInvoker.add(
-					"memberships",
-					_objectMapper.convertValue(
-						FaroInfoTestUtil.buildMembership(
-							_individual.getId(), segment.getId()),
-						JSONObject.class)));
+			membershipIds.add(membership.getId());
 		}
 
-		return membershipsJSONArray;
+		return membershipIds;
 	}
 
 	private JSONArray _addSessionMemberships(String... durations) {
@@ -341,21 +310,14 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 						"United States'' and completeDate gt ''" + duration +
 							"'')'))"));
 
-			Individual partialIndividual = new Individual();
-
-			partialIndividual.setSegmentIds(
-				Collections.singleton(segment.getId()));
-
-			_individualDog.updateIndividual(
-				_individual.getId(), partialIndividual, false);
+			_individualDog.addSegmentId(_individual.getId(), segment.getId());
 
 			membershipsJSONArray.put(
-				faroInfoElasticsearchInvoker.add(
-					"memberships",
-					_objectMapper.convertValue(
+				_objectMapper.convertValue(
+					_membershipDog.addMembership(
 						FaroInfoTestUtil.buildMembership(
-							_individual.getId(), segment.getId()),
-						JSONObject.class)));
+							_individual.getId(), segment.getId())),
+					JSONObject.class));
 		}
 
 		return membershipsJSONArray;
@@ -380,11 +342,10 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	}
 
 	private String _getIndividualSegmentActivityFilterDuration(
-		JSONObject membershipJSONObject) {
+		Membership membership) {
 
 		Segment segment = _segmentDog.getSegment(
-			Long.valueOf(
-				membershipJSONObject.getString("individualSegmentId")));
+			membership.getIndividualSegmentId());
 
 		Matcher matcher = _individualSegmentActivityFilterPattern.matcher(
 			segment.getFilter());
@@ -440,6 +401,12 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 	@Autowired
 	private IndividualDog _individualDog;
+
+	@Autowired
+	private MembershipDog _membershipDog;
+
+	@Autowired
+	private MembershipRepository _membershipRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
