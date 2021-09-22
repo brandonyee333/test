@@ -238,7 +238,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			DSL.countDistinct(DSL.field("individual.id"))
 		).from(
 			"Individual"
-		).join(
+		).leftOuterJoin(
 			"Field"
 		).on(
 			DSL.field(
