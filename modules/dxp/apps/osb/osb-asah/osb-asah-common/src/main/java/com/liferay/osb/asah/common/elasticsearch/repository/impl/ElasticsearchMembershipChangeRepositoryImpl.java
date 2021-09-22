@@ -17,9 +17,9 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
@@ -53,12 +53,13 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 
 	@Override
 	public long countMembershipChanges(
-		String filterString, Boolean includeAnonymousUsers, Long segmentId) {
+		FilterHelper filterHelper, Boolean includeAnonymousUsers,
+		Long segmentId) {
 
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(),
 			_getQueryBuilder(
-				filterString, includeAnonymousUsers,
+				filterHelper, includeAnonymousUsers,
 				Collections.singletonList(segmentId)));
 	}
 
@@ -96,7 +97,7 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 					searchSourceBuilder -> {
 						BoolQueryBuilder boolQueryBuilder =
 							(BoolQueryBuilder)_getQueryBuilder(
-								null, includeAnonymousUsers,
+								FilterHelper.EMPTY, includeAnonymousUsers,
 								individualSegmentIds);
 
 						searchSourceBuilder.query(
@@ -120,8 +121,8 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 
 	@Override
 	public List<MembershipChange> searchMembershipChanges(
-		String filterString, Boolean includeAnonymousUsers, Long segmentId,
-		Pageable pageable) {
+		FilterHelper filterHelper, Boolean includeAnonymousUsers,
+		Long segmentId, Pageable pageable) {
 
 		return toList(
 			new JSONArray(
@@ -130,7 +131,7 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 					searchSourceBuilder -> {
 						searchSourceBuilder.query(
 							_getQueryBuilder(
-								filterString, includeAnonymousUsers,
+								filterHelper, includeAnonymousUsers,
 								Collections.singletonList(segmentId)));
 
 						setSearchSourceBuilderPage(
@@ -176,7 +177,7 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 	}
 
 	private QueryBuilder _getQueryBuilder(
-		String filterString, Boolean includeAnonymousUsers,
+		FilterHelper filterHelper, Boolean includeAnonymousUsers,
 		List<Long> segmentIds) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
@@ -187,12 +188,11 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 				QueryBuilders.existsQuery("individualEmail"));
 		}
 
-		if (StringUtils.isEmpty(filterString)) {
+		if (StringUtils.isEmpty(filterHelper.getFilterString())) {
 			return boolQueryBuilder;
 		}
 
-		return boolQueryBuilder.filter(
-			FilterStringToQueryBuilderConverter.convert(filterString));
+		return filterHelper.getQueryBuilder();
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)

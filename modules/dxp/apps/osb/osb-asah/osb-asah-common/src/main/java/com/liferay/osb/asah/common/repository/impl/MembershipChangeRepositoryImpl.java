@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.MembershipChange;
-import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +45,8 @@ public class MembershipChangeRepositoryImpl {
 	}
 
 	public long countMembershipChanges(
-		String filterString, Boolean includeAnonymousUsers, Long segmentId) {
+		FilterHelper filterHelper, Boolean includeAnonymousUsers,
+		Long segmentId) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -53,7 +54,7 @@ public class MembershipChangeRepositoryImpl {
 		return selectSelectStep.from(
 			"MembershipChange"
 		).where(
-			_getConditions(filterString, includeAnonymousUsers, segmentId)
+			_getConditions(filterHelper, includeAnonymousUsers, segmentId)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -106,33 +107,32 @@ public class MembershipChangeRepositoryImpl {
 				)
 			)
 		).fetch(
-		).map(
 			record -> new MembershipChange(record.intoMap())
 		);
 	}
 
 	public List<MembershipChange> searchMembershipChanges(
-		String filterString, Boolean includeAnonymousUsers, Long segmentId,
-		Pageable pageable) {
+		FilterHelper filterHelper, Boolean includeAnonymousUsers,
+		Long segmentId, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
 			"MembershipChange"
 		).where(
-			_getConditions(filterString, includeAnonymousUsers, segmentId)
+			_getConditions(filterHelper, includeAnonymousUsers, segmentId)
 		).limit(
 			pageable.getPageSize()
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new MembershipChange(record.intoMap())
 		);
 	}
 
 	private List<Condition> _getConditions(
-		String filterString, Boolean includeAnonymousUsers, Long segmentId) {
+		FilterHelper filterHelper, Boolean includeAnonymousUsers,
+		Long segmentId) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -152,9 +152,8 @@ public class MembershipChangeRepositoryImpl {
 			}
 		}
 
-		if (!StringUtils.isEmpty(filterString)) {
-			conditions.add(
-				FilterStringToConditionConverter.convert(filterString));
+		if (!StringUtils.isEmpty(filterHelper.getFilterString())) {
+			conditions.add(filterHelper.getCondition());
 		}
 
 		if (conditions.isEmpty()) {

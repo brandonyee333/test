@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.MembershipChange;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -36,7 +37,8 @@ public interface MembershipChangeRepository
 
 	@Cacheable
 	public long countMembershipChanges(
-		String filterString, Boolean includeAnonymousUsers, Long segmentId);
+		FilterHelper filterHelper, Boolean includeAnonymousUsers,
+		Long segmentId);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
@@ -46,6 +48,7 @@ public interface MembershipChangeRepository
 	@Cacheable
 	public Optional<MembershipChange> findByIndividualId(Long individualId);
 
+	@Cacheable
 	public List<MembershipChange>
 		searchLastByDateChangedPeriodAndIndividualSegmentId(
 			Date dateChangedEnd, Date dateChangedStart,
@@ -53,8 +56,8 @@ public interface MembershipChangeRepository
 
 	@Cacheable
 	public List<MembershipChange> searchMembershipChanges(
-		String filterString, Boolean includeAnonymousUsers, Long segmentId,
-		Pageable pageable);
+		FilterHelper filterHelper, Boolean includeAnonymousUsers,
+		Long segmentId, Pageable pageable);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
