@@ -15,8 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.ActivityGroup;
-import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
-import com.liferay.osb.asah.common.postgresql.converter.helper.ActivitiesFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 
@@ -25,7 +24,6 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -37,15 +35,14 @@ public class ActivityGroupRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countActivityGroups(String filterString) {
+	public long countActivityGroups(FilterHelper filterHelper) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
 			"ActivityGroup"
 		).where(
-			FilterStringToConditionConverter.convert(
-				filterString, _activitiesFilterStringConverterHelper)
+			filterHelper.getCondition()
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -54,15 +51,14 @@ public class ActivityGroupRepositoryImpl extends BaseRepository {
 	}
 
 	public List<ActivityGroup> searchActivityGroups(
-		String filterString, Pageable pageable) {
+		FilterHelper filterHelper, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
 			"ActivityGroup"
 		).where(
-			FilterStringToConditionConverter.convert(
-				filterString, _activitiesFilterStringConverterHelper)
+			filterHelper.getCondition()
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
@@ -70,14 +66,9 @@ public class ActivityGroupRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new ActivityGroup(record.intoMap())
 		);
 	}
-
-	@Autowired
-	private ActivitiesFilterStringConverterHelper
-		_activitiesFilterStringConverterHelper;
 
 	private final DSLContext _dslContext;
 

@@ -14,9 +14,12 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
+import com.liferay.osb.asah.common.postgresql.converter.helper.ActivitiesFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.Repository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -63,39 +66,74 @@ public abstract class BaseActivityGroupRepositoryTestCase
 	@Test
 	public void testCountActivityGroups() {
 		Assert.assertEquals(
-			1, _activityGroupRepository.countActivityGroups(null));
+			1,
+			_activityGroupRepository.countActivityGroups(FilterHelper.EMPTY));
 		Assert.assertEquals(
-			1, _activityGroupRepository.countActivityGroups("channelId eq 12"));
+			1,
+			_activityGroupRepository.countActivityGroups(
+				new FilterHelper(
+					_faroInfoActivitiesFilterStringConverterHelper,
+					"channelId eq 12",
+					_activitiesFilterStringConverterHelper)));
 		Assert.assertEquals(
-			0, _activityGroupRepository.countActivityGroups("channelId eq 34"));
+			0,
+			_activityGroupRepository.countActivityGroups(
+				new FilterHelper(
+					_faroInfoActivitiesFilterStringConverterHelper,
+					"channelId eq 34",
+					_activitiesFilterStringConverterHelper)));
 
 		Date dayDate = _activityGroup.getDayDate();
 
 		Assert.assertEquals(
 			0,
 			_activityGroupRepository.countActivityGroups(
-				"day lt '" + _getDate(dayDate, false, false) + "'"));
+				new FilterHelper(
+					_faroInfoActivitiesFilterStringConverterHelper,
+					"day lt '" + _getDate(dayDate, false, false) + "'",
+					_activitiesFilterStringConverterHelper)));
 		Assert.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
-				"day lt '" + _getDate(dayDate, true, false) + "' and day ge '" +
-					_getDate(dayDate, false, true) + "'"));
+				new FilterHelper(
+					_faroInfoActivitiesFilterStringConverterHelper,
+					"day lt '" + _getDate(dayDate, true, false) +
+						"' and day ge '" + _getDate(dayDate, false, true) + "'",
+					_activitiesFilterStringConverterHelper)));
 		Assert.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
-				"day ge '" + _getDate(dayDate, false, false) + "'"));
+				new FilterHelper(
+					_faroInfoActivitiesFilterStringConverterHelper,
+					"day ge '" + _getDate(dayDate, false, false) + "'",
+					_activitiesFilterStringConverterHelper)));
 
 		Assert.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
-				"day gt 'last24Hours'"));
+				new FilterHelper(
+					_faroInfoActivitiesFilterStringConverterHelper,
+					"day gt 'last24Hours'",
+					_activitiesFilterStringConverterHelper)));
 		Assert.assertEquals(
 			1,
-			_activityGroupRepository.countActivityGroups("day gt 'yesterday'"));
+			_activityGroupRepository.countActivityGroups(
+				new FilterHelper(
+					_faroInfoActivitiesFilterStringConverterHelper,
+					"day gt 'yesterday'",
+					_activitiesFilterStringConverterHelper)));
 		Assert.assertEquals(
-			1, _activityGroupRepository.countActivityGroups("ownerId eq 56"));
+			1,
+			_activityGroupRepository.countActivityGroups(
+				new FilterHelper(
+					_faroInfoActivitiesFilterStringConverterHelper,
+					"ownerId eq 56", _activitiesFilterStringConverterHelper)));
 		Assert.assertEquals(
-			0, _activityGroupRepository.countActivityGroups("ownerId eq 78"));
+			0,
+			_activityGroupRepository.countActivityGroups(
+				new FilterHelper(
+					_faroInfoActivitiesFilterStringConverterHelper,
+					"ownerId eq 78", _activitiesFilterStringConverterHelper)));
 	}
 
 	@Test
@@ -122,14 +160,17 @@ public abstract class BaseActivityGroupRepositoryTestCase
 	public void testSearchActivityGroups() {
 		List<ActivityGroup> activityGroups =
 			_activityGroupRepository.searchActivityGroups(
-				null, PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+				FilterHelper.EMPTY,
+				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
 			activityGroups.toString(), 1, activityGroups.size());
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
-			"channelId eq 12",
+			new FilterHelper(
+				_faroInfoActivitiesFilterStringConverterHelper,
+				"channelId eq 12", _activitiesFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
@@ -137,7 +178,9 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
-			"channelId eq 34",
+			new FilterHelper(
+				_faroInfoActivitiesFilterStringConverterHelper,
+				"channelId eq 34", _activitiesFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
@@ -146,15 +189,21 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Date dayDate = _activityGroup.getDayDate();
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
-			"day lt '" + _getDate(dayDate, false, false) + "'",
+			new FilterHelper(
+				_faroInfoActivitiesFilterStringConverterHelper,
+				"day lt '" + _getDate(dayDate, false, false) + "'",
+				_activitiesFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
 			activityGroups.toString(), 0, activityGroups.size());
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
-			"day lt '" + _getDate(dayDate, true, false) + "' and day ge '" +
-				_getDate(dayDate, false, true) + "'",
+			new FilterHelper(
+				_faroInfoActivitiesFilterStringConverterHelper,
+				"day lt '" + _getDate(dayDate, true, false) + "' and day ge '" +
+					_getDate(dayDate, false, true) + "'",
+				_activitiesFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
@@ -162,7 +211,10 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
-			"day ge '" + _getDate(dayDate, false, true) + "'",
+			new FilterHelper(
+				_faroInfoActivitiesFilterStringConverterHelper,
+				"day ge '" + _getDate(dayDate, false, true) + "'",
+				_activitiesFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
@@ -170,7 +222,9 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
-			"ownerId eq 56",
+			new FilterHelper(
+				_faroInfoActivitiesFilterStringConverterHelper, "ownerId eq 56",
+				_activitiesFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
@@ -178,7 +232,9 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
-			"ownerId eq 78",
+			new FilterHelper(
+				_faroInfoActivitiesFilterStringConverterHelper, "ownerId eq 78",
+				_activitiesFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
@@ -191,7 +247,11 @@ public abstract class BaseActivityGroupRepositoryTestCase
 			_activityGroupRepository.updateOwnerId(
 				90L, "347780e0-7a66-11e8-a0fc-8356dd2944fd"));
 		Assert.assertEquals(
-			1, _activityGroupRepository.countActivityGroups("ownerId eq 90"));
+			1,
+			_activityGroupRepository.countActivityGroups(
+				new FilterHelper(
+					_faroInfoActivitiesFilterStringConverterHelper,
+					"ownerId eq 90", _activitiesFilterStringConverterHelper)));
 	}
 
 	@Override
@@ -222,9 +282,17 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		return String.valueOf(localDateTime.toInstant(ZoneOffset.UTC));
 	}
 
+	@Autowired
+	private ActivitiesFilterStringConverterHelper
+		_activitiesFilterStringConverterHelper;
+
 	private ActivityGroup _activityGroup;
 
 	@Autowired
 	private ActivityGroupRepository _activityGroupRepository;
+
+	@Autowired
+	private FaroInfoActivitiesFilterStringConverterHelper
+		_faroInfoActivitiesFilterStringConverterHelper;
 
 }

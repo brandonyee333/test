@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
+import com.liferay.osb.asah.common.postgresql.converter.helper.ActivitiesFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.time.LocalDateTime;
@@ -98,9 +101,15 @@ public class ActivityGroupDog {
 
 		return PageableExecutionUtils.getPage(
 			_activityGroupRepository.searchActivityGroups(
-				filterString, pageRequest),
+				new FilterHelper(
+					_faroInfoActivitiesFilterStringConverterHelper,
+					filterString, _activitiesFilterStringConverterHelper),
+				pageRequest),
 			pageRequest,
-			() -> _activityGroupRepository.countActivityGroups(filterString));
+			() -> _activityGroupRepository.countActivityGroups(
+				new FilterHelper(
+					_faroInfoActivitiesFilterStringConverterHelper,
+					filterString, _activitiesFilterStringConverterHelper)));
 	}
 
 	public boolean updateActivityGroup(Long ownerId, String userId) {
@@ -144,6 +153,14 @@ public class ActivityGroupDog {
 	}
 
 	@Autowired
+	private ActivitiesFilterStringConverterHelper
+		_activitiesFilterStringConverterHelper;
+
+	@Autowired
 	private ActivityGroupRepository _activityGroupRepository;
+
+	@Autowired
+	private FaroInfoActivitiesFilterStringConverterHelper
+		_faroInfoActivitiesFilterStringConverterHelper;
 
 }

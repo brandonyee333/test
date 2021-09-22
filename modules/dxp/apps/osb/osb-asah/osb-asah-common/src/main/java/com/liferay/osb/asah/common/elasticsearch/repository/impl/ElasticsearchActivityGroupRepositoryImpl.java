@@ -17,10 +17,10 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -57,11 +57,9 @@ public class ElasticsearchActivityGroupRepositoryImpl
 	implements ActivityGroupRepository {
 
 	@Override
-	public long countActivityGroups(String filterString) {
+	public long countActivityGroups(FilterHelper filterHelper) {
 		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(),
-			FilterStringToQueryBuilderConverter.convert(
-				filterString, _faroInfoActivitiesFilterStringConverterHelper));
+			getCollectionName(), filterHelper.getQueryBuilder());
 	}
 
 	@Override
@@ -113,7 +111,7 @@ public class ElasticsearchActivityGroupRepositoryImpl
 
 	@Override
 	public List<ActivityGroup> searchActivityGroups(
-		String filterString, Pageable pageable) {
+		FilterHelper filterHelper, Pageable pageable) {
 
 		try {
 			CollectionGetResponse collectionGetResponse =
@@ -124,10 +122,7 @@ public class ElasticsearchActivityGroupRepositoryImpl
 				_faroInfoElasticsearchInvoker);
 			collectionGetResponse.setPage(pageable.getPageNumber());
 
-			QueryBuilder queryBuilder =
-				FilterStringToQueryBuilderConverter.convert(
-					filterString,
-					_faroInfoActivitiesFilterStringConverterHelper);
+			QueryBuilder queryBuilder = filterHelper.getQueryBuilder();
 
 			if (queryBuilder != null) {
 				collectionGetResponse.setQueryBuilder(queryBuilder);

@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.ActivityGroup;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,8 @@ import org.springframework.data.repository.query.Param;
 public interface ActivityGroupRepository
 	extends Repository<ActivityGroup, Long> {
 
-	public long countActivityGroups(String filterString);
+	@Cacheable
+	public long countActivityGroups(FilterHelper filterHelper);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
@@ -46,8 +48,9 @@ public interface ActivityGroupRepository
 			String activityType, Long channelId, Long dataSourceId,
 			Date dayDate, String userId);
 
+	@Cacheable
 	public List<ActivityGroup> searchActivityGroups(
-		String filterString, Pageable pageable);
+		FilterHelper filterHelper, Pageable pageable);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
