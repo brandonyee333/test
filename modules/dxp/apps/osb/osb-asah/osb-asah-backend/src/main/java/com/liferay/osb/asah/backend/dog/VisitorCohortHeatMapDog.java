@@ -32,7 +32,6 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.temporal.WeekFields;
 
 import java.util.ArrayList;
@@ -97,7 +96,7 @@ public class VisitorCohortHeatMapDog {
 
 		Map<String, VisitorCohortMetric> visitorCohortMetrics =
 			_metricHelper.createVisitorCohortMetrics(
-				Clock.system(ZoneId.of(searchQueryContext.getTimeZoneId())),
+				Clock.system(_timeZoneDog.getZoneId()),
 				searchQueryContext.getInterval(), metricType);
 
 		Histogram histogram = aggregations.get("ranges");
@@ -172,8 +171,7 @@ public class VisitorCohortHeatMapDog {
 			dateHistogramAggregationBuilder::subAggregation);
 
 		LocalDateTime localDateTime = LocalDateTime.of(
-			LocalDate.now(
-				Clock.system(ZoneId.of(searchQueryContext.getTimeZoneId()))),
+			LocalDate.now(Clock.system(_timeZoneDog.getZoneId())),
 			LocalTime.MIDNIGHT);
 
 		LocalDateTime startLocalDateTime = null;
@@ -208,7 +206,7 @@ public class VisitorCohortHeatMapDog {
 				).gte(
 					String.valueOf(startLocalDateTime.toLocalDate())
 				).timeZone(
-					searchQueryContext.getTimeZoneId()
+					_timeZoneDog.getTimeZoneId()
 				)),
 			searchQueryContext);
 	}
