@@ -16,8 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.postgresql.converter.helper.OrganizationsFilterStringConverterHelper;
-import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.util.Collections;
@@ -33,9 +32,7 @@ import org.jooq.SelectSelectStep;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Rachael Koestartyo
@@ -47,7 +44,7 @@ public class OrganizationRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Transformation> getOrganizationTransformations(
-		String apply, @Nullable String filterString, Pageable pageable) {
+		String apply, FilterHelper filterHelper, Pageable pageable) {
 
 		Matcher matcher = MatcherUtil.getMatcher(apply);
 
@@ -72,8 +69,7 @@ public class OrganizationRepositoryImpl extends BaseRepository {
 		Field<Object> ownerIdField = DSL.field("ownerId");
 		Field<Object> valueField = DSL.field("value");
 
-		Condition condition = ConditionUtil.toCondition(
-			filterString, _organizationsFilterStringConverterHelper);
+		Condition condition = filterHelper.getCondition();
 
 		condition = condition.and(_getIncludeCondition(containsField));
 
@@ -124,7 +120,6 @@ public class OrganizationRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new Transformation(
 				new Transformation.Term(
 					Collections.singletonMap(
@@ -134,21 +129,19 @@ public class OrganizationRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Organization> searchOrganizations(
-		String filterString, Pageable pageable) {
+		FilterHelper filterHelper, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
 			"Organization"
 		).where(
-			ConditionUtil.toCondition(
-				filterString, _organizationsFilterStringConverterHelper)
+			filterHelper.getCondition()
 		).limit(
 			pageable.getPageSize()
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new Organization(record.intoMap())
 		);
 	}
@@ -166,9 +159,5 @@ public class OrganizationRepositoryImpl extends BaseRepository {
 	}
 
 	private final DSLContext _dslContext;
-
-	@Autowired
-	private OrganizationsFilterStringConverterHelper
-		_organizationsFilterStringConverterHelper;
 
 }

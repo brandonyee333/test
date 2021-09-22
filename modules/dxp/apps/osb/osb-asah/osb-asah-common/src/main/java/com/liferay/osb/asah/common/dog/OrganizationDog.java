@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
+import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoOrganizationsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
@@ -25,8 +26,10 @@ import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPOrganization;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.postgresql.converter.helper.OrganizationsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Collection;
 import java.util.Date;
@@ -131,7 +134,11 @@ public class OrganizationDog {
 
 		List<Transformation> transformations =
 			_organizationRepository.getOrganizationTransformations(
-				apply, filterString, pageRequest);
+				apply,
+				new FilterHelper(
+					_faroInfoOrganizationsFilterStringConverterHelper,
+					filterString, _organizationsFilterStringConverterHelper),
+				pageRequest);
 
 		return PageableExecutionUtils.getPage(
 			transformations, pageRequest, transformations::size);
@@ -156,7 +163,10 @@ public class OrganizationDog {
 		PageRequest pageRequest = PageRequest.of(page, size);
 
 		return _organizationRepository.searchOrganizations(
-			filterString, pageRequest);
+			new FilterHelper(
+				_faroInfoOrganizationsFilterStringConverterHelper, filterString,
+				_organizationsFilterStringConverterHelper),
+			pageRequest);
 	}
 
 	public Organization updateOrganization(
@@ -220,6 +230,10 @@ public class OrganizationDog {
 	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
+	private FaroInfoOrganizationsFilterStringConverterHelper
+		_faroInfoOrganizationsFilterStringConverterHelper;
+
+	@Autowired
 	private FieldDog _fieldDog;
 
 	@Autowired
@@ -230,5 +244,9 @@ public class OrganizationDog {
 
 	@Autowired
 	private OrganizationRepository _organizationRepository;
+
+	@Autowired
+	private OrganizationsFilterStringConverterHelper
+		_organizationsFilterStringConverterHelper;
 
 }

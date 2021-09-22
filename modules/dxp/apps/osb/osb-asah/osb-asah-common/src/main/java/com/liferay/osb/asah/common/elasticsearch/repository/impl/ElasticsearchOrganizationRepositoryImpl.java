@@ -16,18 +16,16 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoOrganizationsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,10 +45,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -94,7 +90,7 @@ public class ElasticsearchOrganizationRepositoryImpl
 
 	@Override
 	public List<Transformation> getOrganizationTransformations(
-		String apply, @Nullable String filterString, Pageable pageable) {
+		String apply, FilterHelper filterHelper, Pageable pageable) {
 
 		TransformationGetResponse transformationGetResponse =
 			new TransformationGetResponse();
@@ -104,8 +100,7 @@ public class ElasticsearchOrganizationRepositoryImpl
 			_faroInfoElasticsearchInvoker);
 		transformationGetResponse.setPage(pageable.getPageNumber());
 
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString);
+		QueryBuilder queryBuilder = filterHelper.getQueryBuilder();
 
 		if (queryBuilder != null) {
 			transformationGetResponse.setQueryBuilder(queryBuilder);
@@ -158,53 +153,8 @@ public class ElasticsearchOrganizationRepositoryImpl
 	}
 
 	@Override
-	public <S extends Organization> S save(S organization) {
-		JSONObject jsonObject = toJSONObject(organization);
-
-		_populateJSONObject(jsonObject, organization);
-
-		String id = jsonObject.optString(
-			"id", timeOrderedUuidGenerator.generateId());
-
-		jsonObject.put("id", id);
-
-		return (S)toEntity(
-			_faroInfoElasticsearchInvoker.upsert(
-				getCollectionName(), jsonObject));
-	}
-
-	@Override
-	public <S extends Organization> Iterable<S> saveAll(
-		Iterable<S> organizations) {
-
-		List<S> list = new ArrayList<>();
-
-		JSONArray jsonArray = new JSONArray();
-
-		organizations.forEach(
-			organization -> {
-				JSONObject jsonObject = toJSONObject(organization);
-
-				_populateJSONObject(jsonObject, organization);
-
-				String id = jsonObject.optString(
-					"id", timeOrderedUuidGenerator.generateId());
-
-				jsonObject.put("id", id);
-
-				jsonArray.put(jsonObject);
-
-				list.add((S)toEntity(jsonObject));
-			});
-
-		_faroInfoElasticsearchInvoker.upsert(getCollectionName(), jsonArray);
-
-		return list;
-	}
-
-	@Override
 	public List<Organization> searchOrganizations(
-		String filterString, Pageable pageable) {
+		FilterHelper filterHelper, Pageable pageable) {
 
 		return toList(
 			new JSONArray(
@@ -212,9 +162,7 @@ public class ElasticsearchOrganizationRepositoryImpl
 					getCollectionName(),
 					searchSourceBuilder -> {
 						searchSourceBuilder.query(
-							FilterStringToQueryBuilderConverter.convert(
-								filterString,
-								_faroInfoOrganizationsFilterStringConverterHelper));
+							filterHelper.getQueryBuilder());
 
 						setSearchSourceBuilderPage(
 							searchSourceBuilder, pageable);
@@ -229,6 +177,34 @@ public class ElasticsearchOrganizationRepositoryImpl
 	@Override
 	protected ElasticsearchInvoker getElasticsearchInvoker() {
 		return _faroInfoElasticsearchInvoker;
+	}
+
+	@Override
+	protected JSONObject toJSONObject(Organization organization) {
+		JSONObject jsonObject = super.toJSONObject(organization);
+
+		Set<Field> customFields = organization.getCustomFields();
+
+		if (CollectionUtils.isNotEmpty(customFields)) {
+			JSONObject customJSONObject = new JSONObject();
+
+			for (Field customField : customFields) {
+				JSONObject customFieldJSONObject = objectMapper.convertValue(
+					customField, JSONObject.class);
+
+				customFieldJSONObject.remove("id");
+
+				customFieldJSONObject.put(
+					"ownerId", jsonObject.getString("id"));
+
+				customJSONObject.put(
+					customField.getName(), JSONUtil.put(customFieldJSONObject));
+			}
+
+			jsonObject.put("custom", customJSONObject);
+		}
+
+		return jsonObject;
 	}
 
 	private String[] _getSorts(Sort sort) {
@@ -252,39 +228,10 @@ public class ElasticsearchOrganizationRepositoryImpl
 		return sorts.toArray(new String[0]);
 	}
 
-	private void _populateJSONObject(
-		JSONObject jsonObject, Organization organization) {
-
-		Set<Field> customFields = organization.getCustomFields();
-
-		if (CollectionUtils.isNotEmpty(customFields)) {
-			JSONObject customJSONObject = new JSONObject();
-
-			for (Field customField : customFields) {
-				JSONObject customFieldJSONObject = objectMapper.convertValue(
-					customField, JSONObject.class);
-
-				customFieldJSONObject.remove("id");
-
-				customFieldJSONObject.put(
-					"ownerId", jsonObject.getString("id"));
-
-				customJSONObject.put(
-					customField.getName(), JSONUtil.put(customFieldJSONObject));
-			}
-
-			jsonObject.put("custom", customJSONObject);
-		}
-	}
-
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchOrganizationRepositoryImpl.class);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoOrganizationsFilterStringConverterHelper
-		_faroInfoOrganizationsFilterStringConverterHelper;
 
 }
