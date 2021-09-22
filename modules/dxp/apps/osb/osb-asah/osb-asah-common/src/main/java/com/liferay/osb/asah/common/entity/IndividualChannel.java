@@ -40,7 +40,7 @@ public class IndividualChannel {
 
 	public IndividualChannel(
 		Long activitiesCount, Long channelId, Long individualId,
-		Date lastActivityDate) {
+		Date lastActivityDate, Date previousActivityDate) {
 
 		_activitiesCount = activitiesCount;
 		_channelId = channelId;
@@ -48,6 +48,10 @@ public class IndividualChannel {
 
 		if (lastActivityDate != null) {
 			_lastActivityDate = new Date(lastActivityDate.getTime());
+		}
+
+		if (previousActivityDate != null) {
+			_previousActivityDate = new Date(previousActivityDate.getTime());
 		}
 	}
 
@@ -72,7 +76,10 @@ public class IndividualChannel {
 			Objects.equals(_channelId, individualChannel._channelId) &&
 			Objects.equals(_individualId, individualChannel._individualId) &&
 			Objects.equals(
-				_lastActivityDate, individualChannel._lastActivityDate)) {
+				_lastActivityDate, individualChannel._lastActivityDate) &&
+			Objects.equals(
+				_previousActivityDate,
+				individualChannel._previousActivityDate)) {
 
 			return true;
 		}
@@ -110,6 +117,19 @@ public class IndividualChannel {
 		return new Date(_lastActivityDate.getTime());
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	public Date getPreviousActivityDate() {
+		if (_previousActivityDate == null) {
+			return null;
+		}
+
+		return new Date(_previousActivityDate.getTime());
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(
@@ -134,6 +154,12 @@ public class IndividualChannel {
 		}
 	}
 
+	public void setPreviousActivityDate(Date previousActivityDate) {
+		if (previousActivityDate != null) {
+			_previousActivityDate = new Date(previousActivityDate.getTime());
+		}
+	}
+
 	@Transient
 	private Long _activitiesCount;
 
@@ -145,5 +171,8 @@ public class IndividualChannel {
 
 	@Transient
 	private Date _lastActivityDate;
+
+	@Transient
+	private Date _previousActivityDate;
 
 }

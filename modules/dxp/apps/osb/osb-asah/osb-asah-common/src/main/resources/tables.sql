@@ -353,6 +353,7 @@ CREATE TABLE IF NOT EXISTS IndividualChannel (
 	channelId BIGINT,
 	individualId BIGINT,
 	lastActivityDate TIMESTAMPTZ,
+	previousActivityDate TIMESTAMPTZ,
 	PRIMARY KEY (channelId, individualId)
 );
 

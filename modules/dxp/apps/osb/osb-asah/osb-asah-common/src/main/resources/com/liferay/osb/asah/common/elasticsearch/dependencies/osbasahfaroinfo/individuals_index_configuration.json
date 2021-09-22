@@ -195,6 +195,17 @@
 				"organizationIds": {
 					"type": "keyword"
 				},
+				"previousActivityDates": {
+					"properties": {
+						"channelId": {
+							"type": "keyword"
+						},
+						"lastActivityDate": {
+							"type": "date"
+						}
+					},
+					"type": "nested"
+				},
 				"roleIds": {
 					"type": "keyword"
 				},

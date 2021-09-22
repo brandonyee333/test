@@ -94,30 +94,6 @@ public class Individual implements Persistable<Long> {
 		_dataSourceIndividuals.add(dataSourceIndividual);
 	}
 
-	public void addIndividualChannel(IndividualChannel individualChannel) {
-		if (individualChannel == null) {
-			return;
-		}
-
-		if (_activitiesCounts == null) {
-			_activitiesCounts = new HashSet<>();
-		}
-
-		_activitiesCounts.add(new ActivitiesCount(individualChannel));
-
-		if (_individualChannels == null) {
-			_individualChannels = new HashSet<>();
-		}
-
-		_individualChannels.add(individualChannel);
-
-		if (_lastActivityDates == null) {
-			_lastActivityDates = new HashSet<>();
-		}
-
-		_lastActivityDates.add(new LastActivityDate(individualChannel));
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -307,6 +283,11 @@ public class Individual implements Persistable<Long> {
 		return _organizationIds;
 	}
 
+	@JsonProperty("previousActivityDates")
+	public Set<LastActivityDate> getPreviousActivityDates() {
+		return _previousActivityDates;
+	}
+
 	@AccessType(AccessType.Type.PROPERTY)
 	public Set<Long> getRoleIds() {
 		return _roleIds;
@@ -464,6 +445,27 @@ public class Individual implements Persistable<Long> {
 			_individualChannels, ActivitiesCount::new);
 		_lastActivityDates = SetUtil.map(
 			_individualChannels, LastActivityDate::new);
+
+		_previousActivityDates = SetUtil.map(
+			_individualChannels,
+			individualChannel -> {
+				if (Objects.isNull(
+						individualChannel.getPreviousActivityDate())) {
+
+					return null;
+				}
+
+				LastActivityDate previousActivityDate = new LastActivityDate();
+
+				previousActivityDate.setChannelId(
+					individualChannel.getChannelId());
+				previousActivityDate.setLastActivityDate(
+					individualChannel.getPreviousActivityDate());
+
+				return previousActivityDate;
+			});
+
+		_previousActivityDates.remove(null);
 	}
 
 	public void setIsNew(Boolean isNew) {
@@ -494,6 +496,12 @@ public class Individual implements Persistable<Long> {
 
 	public void setOrganizationIds(Set<Long> organizationIds) {
 		_organizationIds = organizationIds;
+	}
+
+	public void setPreviousActivityDates(
+		Set<LastActivityDate> previousActivityDates) {
+
+		_previousActivityDates = previousActivityDates;
 	}
 
 	public void setRoleIds(Set<Long> roleIds) {
@@ -790,6 +798,17 @@ public class Individual implements Persistable<Long> {
 			_lastActivityDate = individualChannel.getLastActivityDate();
 		}
 
+		public LastActivityDate(LastActivityDate lastActivityDate) {
+			_lastActivityDate = lastActivityDate.getLastActivityDate();
+
+			_channelId = lastActivityDate.getChannelId();
+		}
+
+		public LastActivityDate(Long channelId, Date lastActivityDate) {
+			_channelId = channelId;
+			_lastActivityDate = new Date(lastActivityDate.getTime());
+		}
+
 		@Override
 		public boolean equals(Object obj) {
 			if (this == obj) {
@@ -920,6 +939,9 @@ public class Individual implements Persistable<Long> {
 
 	@Transient
 	private Set<Long> _organizationIds = new HashSet<>();
+
+	@Transient
+	private Set<LastActivityDate> _previousActivityDates = new HashSet<>();
 
 	@Transient
 	private Set<Long> _roleIds = new HashSet<>();
