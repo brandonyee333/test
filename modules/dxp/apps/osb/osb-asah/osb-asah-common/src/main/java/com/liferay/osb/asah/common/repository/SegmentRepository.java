@@ -120,7 +120,7 @@ public interface SegmentRepository extends Repository<Segment, Long> {
 	@Cacheable
 	public List<Segment> searchDynamicSegments(
 		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
-		FilterHelper filterHelper, boolean includeAnonymousUsers,
+		FilterHelper filterHelper, @Nullable Boolean includeAnonymousUsers,
 		Pageable pageable, Set<Long> segmentIds);
 
 	@Cacheable

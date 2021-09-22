@@ -193,7 +193,7 @@ public class SegmentRepositoryImpl extends BaseRepository {
 
 	public List<Segment> searchDynamicSegments(
 		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
-		FilterHelper filterHelper, boolean includeAnonymousUsers,
+		FilterHelper filterHelper, @Nullable Boolean includeAnonymousUsers,
 		Pageable pageable, Set<Long> segmentIds) {
 
 		List<Condition> conditions = new ArrayList<>();
@@ -264,25 +264,27 @@ public class SegmentRepositoryImpl extends BaseRepository {
 						))));
 		}
 
-		if (!includeAnonymousUsers) {
-			conditions.add(
-				DSL.or(
-					DSL.field(
-						"includeAnonymousUsers"
-					).isNull(),
+		if (includeAnonymousUsers != null) {
+			if (!includeAnonymousUsers) {
+				conditions.add(
+					DSL.or(
+						DSL.field(
+							"includeAnonymousUsers"
+						).isNull(),
+						DSL.field(
+							"includeAnonymousUsers"
+						).eq(
+							false
+						)));
+			}
+			else {
+				conditions.add(
 					DSL.field(
 						"includeAnonymousUsers"
 					).eq(
-						false
-					)));
-		}
-		else {
-			conditions.add(
-				DSL.field(
-					"includeAnonymousUsers"
-				).eq(
-					true
-				));
+						true
+					));
+			}
 		}
 
 		if (CollectionUtils.isNotEmpty(segmentIds)) {

@@ -421,7 +421,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 	public List<Segment> searchDynamicSegments(
 		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
-		String filterString, boolean includeAnonymousUsers, int page,
+		String filterString, Boolean includeAnonymousUsers, int page,
 		Set<Long> segmentIds, int size,
 		com.liferay.osb.asah.common.model.Sort sort) {
 

@@ -471,7 +471,7 @@ public class ElasticsearchSegmentRepositoryImpl
 	@Override
 	public List<Segment> searchDynamicSegments(
 		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
-		FilterHelper filterHelper, boolean includeAnonymousUsers,
+		FilterHelper filterHelper, @Nullable Boolean includeAnonymousUsers,
 		Pageable pageable, Set<Long> segmentIds) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
@@ -525,13 +525,15 @@ public class ElasticsearchSegmentRepositoryImpl
 			);
 		}
 
-		if (!includeAnonymousUsers) {
-			boolQueryBuilder.mustNot(
-				QueryBuilders.termQuery("includeAnonymousUsers", true));
-		}
-		else {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("includeAnonymousUsers", true));
+		if (includeAnonymousUsers != null) {
+			if (!includeAnonymousUsers) {
+				boolQueryBuilder.mustNot(
+					QueryBuilders.termQuery("includeAnonymousUsers", true));
+			}
+			else {
+				boolQueryBuilder.filter(
+					QueryBuilders.termQuery("includeAnonymousUsers", true));
+			}
 		}
 
 		if (CollectionUtils.isNotEmpty(segmentIds)) {
