@@ -2,52 +2,20 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
-	<entry key="FieldMapping.findByContextAndDataSourceIdAndFieldNameAndOwnerType">
+	<entry key="FieldMapping.findFieldNameByContextAndFieldTypeAndOwnerType">
 		<![CDATA[
 			SELECT
-				DISTINCT ON (FieldMapping.id) FieldMapping.id distinctId,
-				FieldMapping.*
+				FieldMapping.fieldName
 			FROM
 				FieldMapping
-			INNER JOIN
-				DataSourceFieldMapping ON
-					FieldMapping.id = DataSourceFieldMapping.fieldMappingId
 			WHERE
-				DataSourceFieldMapping.dataSourceId = :dataSourceId AND
 				FieldMapping.context = :context AND
-				FieldMapping.fieldName = :fieldName AND
+				FieldMapping.fieldType = :fieldType AND
 				FieldMapping.ownerType = :ownerType
-		]]>
-	</entry>
-	<entry key="FieldMapping.findByContextAndDataSourceIdAndOwnerType">
-		<![CDATA[
-			SELECT
-				DISTINCT ON (FieldMapping.id) FieldMapping.id distinctId,
-				FieldMapping.*
-			FROM
-				FieldMapping
-			INNER JOIN
-				DataSourceFieldMapping ON
-					FieldMapping.id = DataSourceFieldMapping.fieldMappingId
-			WHERE
-				DataSourceFieldMapping.dataSourceId = :dataSourceId AND
-				FieldMapping.context = :context AND
-				FieldMapping.ownerType = :ownerType
-		]]>
-	</entry>
-	<entry key="FieldMapping.findByDataSourceFieldNameAndDataSourceIdAndOwnerType">
-		<![CDATA[
-			SELECT
-				FieldMapping.*
-			FROM
-				FieldMapping
-			INNER JOIN
-				DataSourceFieldMapping ON
-					FieldMapping.id = DataSourceFieldMapping.fieldMappingId
-			WHERE
-				DataSourceFieldMapping.dataSourceId = :dataSourceId AND
-				DataSourceFieldMapping.fieldName = :dataSourceFieldName AND
-				FieldMapping.ownerType = :ownerType
+			GROUP BY
+				FieldMapping.fieldName
+			ORDER BY
+				FieldMapping.fieldName
 		]]>
 	</entry>
 </properties>

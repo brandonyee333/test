@@ -17,22 +17,21 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.postgresql.converter.helper.FieldMappingFilterStringConverterHelper;
-import com.liferay.osb.asah.common.repository.DataSourceFieldMappingRepository;
-import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectJoinStep;
@@ -40,7 +39,6 @@ import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
@@ -53,14 +51,14 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countFieldMappings(@Nullable String filterString) {
+	public long countFieldMappings(FilterHelper filterHelper) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
 			"FieldMapping"
 		).where(
-			ConditionUtil.toCondition(filterString)
+			filterHelper.getCondition()
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -113,8 +111,167 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public List<FieldMapping>
+		findByContextAndDataSourceIdAndFieldNameAndOwnerType(
+			String context, Long dataSourceId, String fieldName,
+			String ownerType) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"FieldMapping"
+			).asterisk());
+
+		return _populateFieldMappings(
+			selectSelectStep.from(
+				"FieldMapping"
+			).join(
+				"DataSourceFieldMapping"
+			).on(
+				DSL.field(
+					"fieldmapping.id"
+				).eq(
+					DSL.field("datasourcefieldmapping.fieldmappingid")
+				)
+			).where(
+				DSL.and(
+					DSL.field(
+						"datasourcefieldmapping.datasourceid"
+					).eq(
+						dataSourceId
+					),
+					DSL.field(
+						"fieldmapping.context"
+					).eq(
+						context
+					),
+					DSL.field(
+						"fieldmapping.fieldName"
+					).eq(
+						fieldName
+					),
+					DSL.field(
+						"fieldmapping.ownertype"
+					).eq(
+						ownerType
+					))
+			).fetch(
+				record -> new FieldMapping(record.intoMap())
+			));
+	}
+
+	public List<FieldMapping> findByContextAndDataSourceIdAndOwnerType(
+		String context, Long dataSourceId, String ownerType) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"FieldMapping"
+			).asterisk());
+
+		return _populateFieldMappings(
+			selectSelectStep.from(
+				"FieldMapping"
+			).join(
+				"DataSourceFieldMapping"
+			).on(
+				DSL.field(
+					"fieldmapping.id"
+				).eq(
+					DSL.field("datasourcefieldmapping.fieldmappingid")
+				)
+			).where(
+				DSL.and(
+					DSL.field(
+						"datasourcefieldmapping.datasourceid"
+					).eq(
+						dataSourceId
+					),
+					DSL.field(
+						"fieldmapping.context"
+					).eq(
+						context
+					),
+					DSL.field(
+						"fieldmapping.ownertype"
+					).eq(
+						ownerType
+					))
+			).fetch(
+				record -> new FieldMapping(record.intoMap())
+			));
+	}
+
+	public List<FieldMapping>
+		findByDataSourceFieldNameAndDataSourceIdAndOwnerType(
+			String dataSourceFieldName, Long dataSourceId, String ownerType) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"FieldMapping"
+			).asterisk());
+
+		return _populateFieldMappings(
+			selectSelectStep.from(
+				"FieldMapping"
+			).join(
+				"DataSourceFieldMapping"
+			).on(
+				DSL.field(
+					"fieldmapping.id"
+				).eq(
+					DSL.field("datasourcefieldmapping.fieldmappingid")
+				)
+			).where(
+				DSL.and(
+					DSL.field(
+						"datasourcefieldmapping.datasourceid"
+					).eq(
+						dataSourceId
+					),
+					DSL.field(
+						"datasourcefieldmapping.fieldname"
+					).eq(
+						dataSourceFieldName
+					),
+					DSL.field(
+						"fieldmapping.ownertype"
+					).eq(
+						ownerType
+					))
+			).fetch(
+				record -> new FieldMapping(record.intoMap())
+			));
+	}
+
+	public List<FieldMapping> findByDataSourceId(Long dataSourceId) {
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"FieldMapping"
+			).asterisk());
+
+		return _populateFieldMappings(
+			selectSelectStep.from(
+				"FieldMapping"
+			).join(
+				"DataSourceFieldMapping"
+			).on(
+				DSL.field(
+					"fieldmapping.id"
+				).eq(
+					DSL.field("datasourcefieldmapping.fieldmappingid")
+				)
+			).where(
+				DSL.field(
+					"datasourcefieldmapping.datasourceid"
+				).eq(
+					dataSourceId
+				)
+			).fetch(
+				record -> new FieldMapping(record.intoMap())
+			));
+	}
+
 	public List<Transformation> getFieldMappingTransformations(
-		String apply, @Nullable String filterString, Pageable pageable) {
+		String apply, FilterHelper filterHelper, Pageable pageable) {
 
 		Matcher matcher = MatcherUtil.getMatcher(apply);
 
@@ -127,7 +284,7 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 		String containsField = matcher.group("containsField");
 		String groupByField = matcher.group("groupByField");
 
-		Condition condition = ConditionUtil.toCondition(filterString);
+		Condition condition = filterHelper.getCondition();
 
 		condition = condition.and(
 			_getIncludeCondition(containsField, groupByField));
@@ -156,7 +313,6 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new Transformation(
 				new Transformation.Term(
 					Collections.singletonMap(
@@ -166,12 +322,17 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 	}
 
 	public List<FieldMapping> searchFieldMappings(
-		@Nullable String filterString, Pageable pageable) {
+		FilterHelper filterHelper, Pageable pageable) {
 
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"FieldMapping"
+			).asterisk());
 
 		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
 			"FieldMapping");
+
+		String filterString = filterHelper.getFilterString();
 
 		if (!StringUtils.isEmpty(filterString) &&
 			filterString.contains("dataSourceFieldNames")) {
@@ -198,28 +359,18 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 			);
 		}
 
-		return selectJoinStep.where(
-			ConditionUtil.toCondition(
-				filterString, _fieldMappingFilterStringConverterHelper)
-		).orderBy(
-			getSortFields(pageable.getSort(), null)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-		).map(
-			record -> {
-				FieldMapping fieldMapping = new FieldMapping(record.intoMap());
-
-				fieldMapping.setDataSourceFieldMappings(
-					_getDataSourceFieldMappings(fieldMapping.getId()));
-				fieldMapping.setDataSourceFieldNames(
-					_getDataSourceFieldNames(fieldMapping.getId()));
-
-				return fieldMapping;
-			}
-		);
+		return _populateFieldMappings(
+			selectJoinStep.where(
+				filterHelper.getCondition()
+			).orderBy(
+				getSortFields(pageable.getSort(), null)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			).fetch(
+				record -> new FieldMapping(record.intoMap())
+			));
 	}
 
 	public List<FieldMapping> searchIndividualFieldMappings(
@@ -243,73 +394,39 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return selectSelectStep.from(
-			"FieldMapping"
-		).innerJoin(
-			DSL.select(
-				DSL.field("dataSourceId"), DSL.field("fieldMappingId"),
-				DSL.field(
-					"fieldName"
-				).as(
-					"datasourcefieldmapping.fieldname"
+		return _populateFieldMappings(
+			selectSelectStep.from(
+				"FieldMapping"
+			).innerJoin(
+				DSL.select(
+					DSL.field("dataSourceId"), DSL.field("fieldMappingId"),
+					DSL.field(
+						"fieldName"
+					).as(
+						"datasourcefieldmapping.fieldname"
+					)
+				).from(
+					"DataSourceFieldMapping"
+				).asTable(
+					"datasourcefieldmapping"
 				)
-			).from(
-				"DataSourceFieldMapping"
-			).asTable(
-				"datasourcefieldmapping"
-			)
-		).on(
-			DSL.field(
-				"id"
-			).eq(
-				DSL.field("datasourcefieldmapping.fieldmappingid")
-			)
-		).where(
-			condition
-		).orderBy(
-			getSortFields(pageable.getSort(), null)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-		).map(
-			record -> {
-				FieldMapping fieldMapping = new FieldMapping(record.intoMap());
-
-				fieldMapping.setDataSourceFieldMappings(
-					_getDataSourceFieldMappings(fieldMapping.getId()));
-				fieldMapping.setDataSourceFieldNames(
-					_getDataSourceFieldNames(fieldMapping.getId()));
-
-				return fieldMapping;
-			}
-		);
-	}
-
-	private Set<DataSourceFieldMapping> _getDataSourceFieldMappings(
-		Long fieldMappingId) {
-
-		List<DataSourceFieldMapping> dataSourceFieldMappings =
-			_dataSourceFieldMappingRepository.findByFieldMappingId(
-				fieldMappingId);
-
-		return new HashSet<>(dataSourceFieldMappings);
-	}
-
-	private Map<String, String> _getDataSourceFieldNames(Long fieldMappingId) {
-		List<DataSourceFieldMapping> dataSourceFieldMappings =
-			_dataSourceFieldMappingRepository.findByFieldMappingId(
-				fieldMappingId);
-
-		Stream<DataSourceFieldMapping> stream =
-			dataSourceFieldMappings.stream();
-
-		return stream.collect(
-			Collectors.toMap(
-				dataSourceFieldMapping -> String.valueOf(
-					dataSourceFieldMapping.getDataSourceId()),
-				DataSourceFieldMapping::getFieldName));
+			).on(
+				DSL.field(
+					"id"
+				).eq(
+					DSL.field("datasourcefieldmapping.fieldmappingid")
+				)
+			).where(
+				condition
+			).orderBy(
+				getSortFields(pageable.getSort(), null)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			).fetch(
+				record -> new FieldMapping(record.intoMap())
+			));
 	}
 
 	private Condition _getIncludeCondition(
@@ -326,12 +443,51 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	@Autowired
-	private DataSourceFieldMappingRepository _dataSourceFieldMappingRepository;
+	private void _populateDataSourceFieldMappings(
+		Map<Long, FieldMapping> individualsById) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		Field<Object> field = DSL.field("dataSourceId");
+
+		selectSelectStep.from(
+			"DataSourceFieldMapping"
+		).where(
+			field.in(individualsById.keySet())
+		).fetch(
+		).forEach(
+			record -> {
+				FieldMapping fieldMapping = individualsById.get(
+					record.get("datasourceid"));
+
+				DataSourceFieldMapping dataSourceFieldMapping =
+					new DataSourceFieldMapping(record.intoMap());
+
+				fieldMapping.addDataSourceFieldMapping(dataSourceFieldMapping);
+				fieldMapping.addDataSourceFieldName(
+					String.valueOf(dataSourceFieldMapping.getDataSourceId()),
+					dataSourceFieldMapping.getFieldName());
+			}
+		);
+	}
+
+	private List<FieldMapping> _populateFieldMappings(
+		List<FieldMapping> fieldMappings) {
+
+		if (fieldMappings.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		Stream<FieldMapping> stream = fieldMappings.stream();
+
+		Map<Long, FieldMapping> fieldMappingsById = stream.collect(
+			Collectors.toMap(FieldMapping::getId, Function.identity()));
+
+		_populateDataSourceFieldMappings(fieldMappingsById);
+
+		return new ArrayList<>(fieldMappingsById.values());
+	}
 
 	private final DSLContext _dslContext;
-	private final FieldMappingFilterStringConverterHelper
-		_fieldMappingFilterStringConverterHelper =
-			new FieldMappingFilterStringConverterHelper();
 
 }

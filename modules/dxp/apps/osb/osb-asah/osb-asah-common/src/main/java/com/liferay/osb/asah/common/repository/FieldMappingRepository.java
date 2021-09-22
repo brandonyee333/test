@@ -16,8 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.model.Transformation;
-
-import io.lettuce.core.dynamic.annotation.Param;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +24,7 @@ import java.util.Optional;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
 
 /**
@@ -38,7 +38,7 @@ public interface FieldMappingRepository extends Repository<FieldMapping, Long> {
 		String fieldName, String ownerType);
 
 	@Cacheable
-	public long countFieldMappings(@Nullable String filterString);
+	public long countFieldMappings(FilterHelper filterHelper);
 
 	@Cacheable
 	public long countIndividualFieldMappings(@Nullable String name);
@@ -50,16 +50,12 @@ public interface FieldMappingRepository extends Repository<FieldMapping, Long> {
 	@Cacheable
 	public List<FieldMapping>
 		findByContextAndDataSourceIdAndFieldNameAndOwnerType(
-			@Param("context") String context,
-			@Param("dataSourceId") Long dataSourceId,
-			@Param("fieldName") String fieldName,
-			@Param("ownerType") String ownerType);
+			String context, Long dataSourceId, String fieldName,
+			String ownerType);
 
 	@Cacheable
 	public List<FieldMapping> findByContextAndDataSourceIdAndOwnerType(
-		@Param("context") String context,
-		@Param("dataSourceId") Long dataSourceId,
-		@Param("ownerType") String ownerType);
+		String context, Long dataSourceId, String ownerType);
 
 	@Cacheable
 	public Optional<FieldMapping>
@@ -76,23 +72,27 @@ public interface FieldMappingRepository extends Repository<FieldMapping, Long> {
 		String context, String fieldName, String ownerType);
 
 	@Cacheable
-	public List<FieldMapping> findByContextAndFieldTypeAndOwnerType(
-		String context, String fieldType, String ownerType);
-
-	@Cacheable
 	public List<FieldMapping>
 		findByDataSourceFieldNameAndDataSourceIdAndOwnerType(
-			@Param("dataSourceFieldName") String dataSourceFieldName,
-			@Param("dataSourceId") Long dataSourceId,
-			@Param("ownerType") String ownerType);
+			String dataSourceFieldName, Long dataSourceId, String ownerType);
+
+	@Cacheable
+	public List<FieldMapping> findByDataSourceId(Long dataSourceId);
+
+	@Cacheable
+	public List<String> findFieldNameByContextAndFieldTypeAndOwnerType(
+		@Param("context") String context, @Param("fieldType") String fieldType,
+		@Param("ownerType") String ownerType);
 
 	@Cacheable
 	public List<Transformation> getFieldMappingTransformations(
-		String apply, @Nullable String filterString, Pageable pageable);
+		String apply, FilterHelper filterHelper, Pageable pageable);
 
+	@Cacheable
 	public List<FieldMapping> searchFieldMappings(
-		@Nullable String filterString, Pageable pageable);
+		FilterHelper filterHelper, Pageable pageable);
 
+	@Cacheable
 	public List<FieldMapping> searchIndividualFieldMappings(
 		@Nullable String name, Pageable pageable);
 

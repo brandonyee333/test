@@ -66,6 +66,10 @@ public class FieldMapping implements Persistable<Long> {
 			new DataSourceFieldMapping(dataSourceId, getId(), fieldName));
 	}
 
+	public void addDataSourceFieldName(String dataSourceId, String fieldName) {
+		_dataSourceFieldNames.put(dataSourceId, fieldName);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

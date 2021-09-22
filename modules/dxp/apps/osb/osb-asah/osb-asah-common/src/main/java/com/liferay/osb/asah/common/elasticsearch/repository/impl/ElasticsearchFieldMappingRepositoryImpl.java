@@ -17,18 +17,19 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -37,17 +38,20 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -79,10 +83,9 @@ public class ElasticsearchFieldMappingRepositoryImpl
 	}
 
 	@Override
-	public long countFieldMappings(@Nullable String filterString) {
+	public long countFieldMappings(FilterHelper filterHelper) {
 		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(),
-			FilterStringToQueryBuilderConverter.convert(filterString));
+			getCollectionName(), filterHelper.getQueryBuilder());
 	}
 
 	@Override
@@ -200,21 +203,6 @@ public class ElasticsearchFieldMappingRepositoryImpl
 		return Optional.ofNullable(toEntity(fieldMappingJSONObject));
 	}
 
-	public List<FieldMapping> findByContextAndFieldTypeAndOwnerType(
-		String context, String fieldType, String ownerType) {
-
-		return toList(
-			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("context", context)
-				).filter(
-					QueryBuilders.termQuery("fieldType", fieldType)
-				).filter(
-					QueryBuilders.termQuery("ownerType", ownerType)
-				)));
-	}
-
 	@Override
 	public List<FieldMapping>
 		findByDataSourceFieldNameAndDataSourceIdAndOwnerType(
@@ -233,8 +221,58 @@ public class ElasticsearchFieldMappingRepositoryImpl
 	}
 
 	@Override
+	public List<FieldMapping> findByDataSourceId(Long dataSourceId) {
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				QueryBuilders.existsQuery(
+					"dataSourceFieldNames." + dataSourceId)));
+	}
+
+	public List<String> findFieldNameByContextAndFieldTypeAndOwnerType(
+		String context, String fieldType, String ownerType) {
+
+		List<String> fieldNames = new ArrayList<>();
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			getCollectionName(),
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.terms(
+						"fieldNames"
+					).field(
+						"fieldName"
+					).size(
+						Integer.MAX_VALUE
+					));
+				searchSourceBuilder.query(
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termQuery("context", context)
+					).filter(
+						QueryBuilders.termQuery("fieldType", fieldType)
+					).filter(
+						QueryBuilders.termQuery("ownerType", ownerType)
+					));
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		Terms terms = aggregations.get("fieldNames");
+
+		for (Terms.Bucket bucket : terms.getBuckets()) {
+			fieldNames.add(
+				String.format(
+					"demographics.%s.value.searchable",
+					bucket.getKeyAsString()));
+		}
+
+		return fieldNames;
+	}
+
+	@Override
 	public List<Transformation> getFieldMappingTransformations(
-		String apply, @Nullable String filterString, Pageable pageable) {
+		String apply, FilterHelper filterHelper, Pageable pageable) {
 
 		TransformationGetResponse transformationGetResponse =
 			new TransformationGetResponse();
@@ -244,8 +282,7 @@ public class ElasticsearchFieldMappingRepositoryImpl
 			_faroInfoElasticsearchInvoker);
 		transformationGetResponse.setPage(pageable.getPageNumber());
 
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString);
+		QueryBuilder queryBuilder = filterHelper.getQueryBuilder();
 
 		if (queryBuilder != null) {
 			transformationGetResponse.setQueryBuilder(queryBuilder);
@@ -298,82 +335,8 @@ public class ElasticsearchFieldMappingRepositoryImpl
 	}
 
 	@Override
-	public <S extends FieldMapping> S save(S fieldMapping) {
-		JSONObject fieldMappingJSONObject = objectMapper.convertValue(
-			fieldMapping, JSONObject.class);
-
-		Set<DataSourceFieldMapping> dataSourceFieldMappings =
-			fieldMapping.getDataSourceFieldMappings();
-
-		JSONObject dataSourceFieldNamesJSONObject =
-			fieldMappingJSONObject.optJSONObject("dataSourceFieldNames");
-
-		if (CollectionUtils.isNotEmpty(dataSourceFieldMappings)) {
-			if (dataSourceFieldNamesJSONObject == null) {
-				dataSourceFieldNamesJSONObject = new JSONObject();
-			}
-
-			for (DataSourceFieldMapping dataSourceFieldMapping :
-					dataSourceFieldMappings) {
-
-				dataSourceFieldNamesJSONObject.put(
-					String.valueOf(dataSourceFieldMapping.getDataSourceId()),
-					dataSourceFieldMapping.getFieldName());
-			}
-
-			fieldMappingJSONObject.put(
-				"dataSourceFieldNames", dataSourceFieldNamesJSONObject);
-		}
-
-		if ((fieldMapping.getId() != null) &&
-			_faroInfoElasticsearchInvoker.exists(
-				getCollectionName(), String.valueOf(fieldMapping.getId()))) {
-
-			JSONObject existingFieldMappingJSONObject =
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(), String.valueOf(fieldMapping.getId()));
-
-			existingFieldMappingJSONObject.put(
-				"dataSourceFieldNames",
-				fieldMappingJSONObject.getJSONObject("dataSourceFieldNames"));
-
-			fieldMapping = (S)objectMapper.convertValue(
-				fieldMappingJSONObject, FieldMapping.class);
-			FieldMapping existingFieldMapping = objectMapper.convertValue(
-				existingFieldMappingJSONObject, FieldMapping.class);
-
-			BeanUtils.copyProperties(fieldMapping, existingFieldMapping);
-
-			fieldMappingJSONObject = _faroInfoElasticsearchInvoker.replace(
-				getCollectionName(),
-				objectMapper.convertValue(
-					existingFieldMapping, JSONObject.class));
-		}
-		else {
-			fieldMappingJSONObject = _faroInfoElasticsearchInvoker.add(
-				getCollectionName(), fieldMappingJSONObject);
-		}
-
-		return (S)toEntity(fieldMappingJSONObject);
-	}
-
-	@Override
-	public <S extends FieldMapping> Iterable<S> saveAll(
-		Iterable<S> fieldMappings) {
-
-		Stream<S> stream = StreamSupport.stream(
-			fieldMappings.spliterator(), false);
-
-		return stream.map(
-			this::save
-		).collect(
-			Collectors.toList()
-		);
-	}
-
-	@Override
 	public List<FieldMapping> searchFieldMappings(
-		String filterString, Pageable pageable) {
+		FilterHelper filterHelper, Pageable pageable) {
 
 		try {
 			CollectionGetResponse collectionGetResponse =
@@ -384,8 +347,7 @@ public class ElasticsearchFieldMappingRepositoryImpl
 				_faroInfoElasticsearchInvoker);
 			collectionGetResponse.setPage(pageable.getPageNumber());
 
-			QueryBuilder queryBuilder =
-				FilterStringToQueryBuilderConverter.convert(filterString);
+			QueryBuilder queryBuilder = filterHelper.getQueryBuilder();
 
 			if (queryBuilder != null) {
 				collectionGetResponse.setQueryBuilder(queryBuilder);
@@ -448,6 +410,60 @@ public class ElasticsearchFieldMappingRepositoryImpl
 	@Override
 	protected ElasticsearchInvoker getElasticsearchInvoker() {
 		return _faroInfoElasticsearchInvoker;
+	}
+
+	@Override
+	protected JSONObject toJSONObject(FieldMapping fieldMapping) {
+		JSONObject jsonObject = super.toJSONObject(fieldMapping);
+
+		Set<DataSourceFieldMapping> dataSourceFieldMappings =
+			fieldMapping.getDataSourceFieldMappings();
+
+		JSONObject dataSourceFieldNamesJSONObject = jsonObject.optJSONObject(
+			"dataSourceFieldNames");
+
+		if (CollectionUtils.isNotEmpty(dataSourceFieldMappings)) {
+			if (dataSourceFieldNamesJSONObject == null) {
+				dataSourceFieldNamesJSONObject = new JSONObject();
+			}
+
+			for (DataSourceFieldMapping dataSourceFieldMapping :
+					dataSourceFieldMappings) {
+
+				dataSourceFieldNamesJSONObject.put(
+					String.valueOf(dataSourceFieldMapping.getDataSourceId()),
+					dataSourceFieldMapping.getFieldName());
+			}
+
+			jsonObject.put(
+				"dataSourceFieldNames", dataSourceFieldNamesJSONObject);
+		}
+
+		if ((fieldMapping.getId() != null) &&
+			_faroInfoElasticsearchInvoker.exists(
+				getCollectionName(), String.valueOf(fieldMapping.getId()))) {
+
+			JSONObject existingFieldMappingJSONObject =
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(), String.valueOf(fieldMapping.getId()));
+
+			existingFieldMappingJSONObject.put(
+				"dataSourceFieldNames",
+				jsonObject.getJSONObject("dataSourceFieldNames"));
+
+			fieldMapping = objectMapper.convertValue(
+				jsonObject, FieldMapping.class);
+
+			FieldMapping existingFieldMapping = objectMapper.convertValue(
+				existingFieldMappingJSONObject, FieldMapping.class);
+
+			BeanUtils.copyProperties(fieldMapping, existingFieldMapping);
+
+			jsonObject = objectMapper.convertValue(
+				existingFieldMapping, JSONObject.class);
+		}
+
+		return jsonObject;
 	}
 
 	private QueryBuilder _getQueryBuilder(String name) {

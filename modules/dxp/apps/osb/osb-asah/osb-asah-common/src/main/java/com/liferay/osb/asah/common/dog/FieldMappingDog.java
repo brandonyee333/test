@@ -14,18 +14,19 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.DataSourceFieldMappingRepository;
+import com.liferay.osb.asah.common.postgresql.converter.helper.FieldMappingFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -172,11 +173,7 @@ public class FieldMappingDog {
 		Optional<FieldMapping> fieldMappingOptional =
 			_fieldMappingRepository.findById(fieldMappingId);
 
-		FieldMapping fieldMapping = fieldMappingOptional.orElse(null);
-
-		_setDataSourceFieldNames(fieldMapping);
-
-		return fieldMapping;
+		return fieldMappingOptional.orElse(null);
 	}
 
 	public FieldMapping fetchFieldMapping(
@@ -186,42 +183,44 @@ public class FieldMappingDog {
 			_fieldMappingRepository.findByContextAndFieldNameAndOwnerType(
 				context, fieldName, ownerType);
 
-		FieldMapping fieldMapping = fieldMappingOptional.orElse(null);
-
-		_setDataSourceFieldNames(fieldMapping);
-
-		return fieldMapping;
+		return fieldMappingOptional.orElse(null);
 	}
 
-	public List<Long> getDataSourceFieldMappingIds(
-		Long dataSourceId, boolean previewDelete) {
+	public FieldMapping getFieldMapping(Long fieldMappingId) {
+		Optional<FieldMapping> fieldOptional = _fieldMappingRepository.findById(
+			fieldMappingId);
 
+		return fieldOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no field with ID " + fieldMappingId));
+	}
+
+	public List<Long> getFieldMappingIds(Long dataSourceId) {
 		List<Long> dataSourceFieldMappingIds = new ArrayList<>();
-
-		List<DataSourceFieldMapping> dataSourceFieldMappings =
-			_dataSourceFieldMappingRepository.findByDataSourceId(dataSourceId);
 
 		Map<Long, List<DataSourceFieldMapping>> dataSourceFieldMappingsMap =
 			new HashMap<>();
 
-		for (DataSourceFieldMapping dataSourceFieldMapping :
-				dataSourceFieldMappings) {
+		for (FieldMapping fieldMapping : getFieldMappings(dataSourceId)) {
+			for (DataSourceFieldMapping dataSourceFieldMapping :
+					fieldMapping.getDataSourceFieldMappings()) {
 
-			List<DataSourceFieldMapping> curDataSourceFieldMappings =
-				new ArrayList<>();
+				List<DataSourceFieldMapping> curDataSourceFieldMappings =
+					new ArrayList<>();
 
-			if (dataSourceFieldMappingsMap.containsKey(
-					dataSourceFieldMapping.getFieldMappingId())) {
+				if (dataSourceFieldMappingsMap.containsKey(
+						fieldMapping.getId())) {
 
-				curDataSourceFieldMappings = dataSourceFieldMappingsMap.get(
-					dataSourceFieldMapping.getFieldMappingId());
+					curDataSourceFieldMappings = dataSourceFieldMappingsMap.get(
+						fieldMapping.getId());
+				}
+
+				curDataSourceFieldMappings.add(dataSourceFieldMapping);
+
+				dataSourceFieldMappingsMap.put(
+					fieldMapping.getId(), curDataSourceFieldMappings);
 			}
-
-			curDataSourceFieldMappings.add(dataSourceFieldMapping);
-
-			dataSourceFieldMappingsMap.put(
-				dataSourceFieldMapping.getFieldMappingId(),
-				curDataSourceFieldMappings);
 		}
 
 		for (Map.Entry<Long, List<DataSourceFieldMapping>> entry :
@@ -230,7 +229,7 @@ public class FieldMappingDog {
 			List<DataSourceFieldMapping> curDataSourceFieldMappings =
 				entry.getValue();
 
-			if (previewDelete && (curDataSourceFieldMappings.size() > 1)) {
+			if (curDataSourceFieldMappings.size() > 1) {
 				continue;
 			}
 
@@ -240,42 +239,8 @@ public class FieldMappingDog {
 		return dataSourceFieldMappingIds;
 	}
 
-	public Map<String, String> getDataSourceFieldNames(
-		FieldMapping fieldMapping) {
-
-		if (fieldMapping == null) {
-			return Collections.emptyMap();
-		}
-
-		Map<String, String> dataSourceFieldNames = new HashMap<>();
-
-		List<DataSourceFieldMapping> dataSourceFieldMappings =
-			_dataSourceFieldMappingRepository.findByFieldMappingId(
-				fieldMapping.getId());
-
-		for (DataSourceFieldMapping dataSourceFieldMapping :
-				dataSourceFieldMappings) {
-
-			dataSourceFieldNames.put(
-				String.valueOf(dataSourceFieldMapping.getDataSourceId()),
-				dataSourceFieldMapping.getFieldName());
-		}
-
-		return dataSourceFieldNames;
-	}
-
-	public FieldMapping getFieldMapping(Long fieldMappingId) {
-		Optional<FieldMapping> fieldOptional = _fieldMappingRepository.findById(
-			fieldMappingId);
-
-		FieldMapping fieldMapping = fieldOptional.orElseThrow(
-			() -> new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				"There is no field with ID " + fieldMappingId));
-
-		_setDataSourceFieldNames(fieldMapping);
-
-		return fieldMapping;
+	public List<FieldMapping> getFieldMappings(Long dataSourceId) {
+		return _fieldMappingRepository.findByDataSourceId(dataSourceId);
 	}
 
 	public List<FieldMapping> getFieldMappings(Set<Long> fieldMappingIds) {
@@ -294,7 +259,11 @@ public class FieldMappingDog {
 
 		List<Transformation> transformations =
 			_fieldMappingRepository.getFieldMappingTransformations(
-				apply, filterString, pageRequest);
+				apply,
+				new FilterHelper(
+					_defaultFilterStringConverterHelper, filterString,
+					_fieldMappingFilterStringConverterHelper),
+				pageRequest);
 
 		return PageableExecutionUtils.getPage(
 			transformations, pageRequest, transformations::size);
@@ -313,7 +282,7 @@ public class FieldMappingDog {
 
 			fieldMapping.setDataSourceFieldNames(dataSourceFieldNames);
 
-			_fieldMappingRepository.save(fieldMapping);
+			return _fieldMappingRepository.save(fieldMapping);
 		}
 
 		return fetchFieldMapping(fieldMappingId);
@@ -329,9 +298,15 @@ public class FieldMappingDog {
 
 		return PageableExecutionUtils.getPage(
 			_fieldMappingRepository.searchFieldMappings(
-				filterString, pageRequest),
+				new FilterHelper(
+					_defaultFilterStringConverterHelper, filterString,
+					_fieldMappingFilterStringConverterHelper),
+				pageRequest),
 			pageRequest,
-			() -> _fieldMappingRepository.countFieldMappings(filterString));
+			() -> _fieldMappingRepository.countFieldMappings(
+				new FilterHelper(
+					_defaultFilterStringConverterHelper, filterString,
+					_fieldMappingFilterStringConverterHelper)));
 	}
 
 	public Page<FieldMapping> searchIndividualFieldMappingsPage(
@@ -413,22 +388,17 @@ public class FieldMappingDog {
 			context, fieldName, ownerType);
 	}
 
-	private void _setDataSourceFieldNames(FieldMapping fieldMapping) {
-		if (fieldMapping == null) {
-			return;
-		}
-
-		fieldMapping.setDataSourceFieldNames(
-			getDataSourceFieldNames(fieldMapping));
-	}
-
 	private static final Log _log = LogFactory.getLog(FieldMappingDog.class);
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
 
-	@Autowired
-	private DataSourceFieldMappingRepository _dataSourceFieldMappingRepository;
+	private final DefaultFilterStringConverterHelper
+		_defaultFilterStringConverterHelper =
+			new DefaultFilterStringConverterHelper();
+	private final FieldMappingFilterStringConverterHelper
+		_fieldMappingFilterStringConverterHelper =
+			new FieldMappingFilterStringConverterHelper();
 
 	@Autowired
 	private FieldMappingRepository _fieldMappingRepository;
