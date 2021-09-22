@@ -25,6 +25,7 @@ import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -136,8 +137,11 @@ public class UserSessionNaniteTest {
 	public void testExpiredSession() {
 		_userSessionNanite.run();
 
-		JSONArray userSessionsJSONArray = _elasticsearchInvoker.get(
-			"user-sessions");
+		JSONArray userSessionsJSONArray = new JSONArray(
+			_elasticsearchInvoker.get(
+				"user-sessions",
+				searhcSourceBuilder -> searhcSourceBuilder.sort(
+					"id", SortOrder.ASC)));
 
 		Assert.assertEquals(2, userSessionsJSONArray.length());
 
