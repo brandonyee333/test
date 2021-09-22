@@ -69,7 +69,10 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		Map<Long, EventAttributeDefinition> eventAttributeDefinitionsById =
 			new LinkedHashMap<>();
 
-		SelectSelectStep<?> selectSelectStep = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"EventAttributeDefinition"
+			).asterisk());
 
 		Field<Object> idField = DSL.field("id");
 
@@ -147,7 +150,10 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		Long eventDefinitionId, String keyword,
 		EventAttributeDefinition.Type type) {
 
-		SelectSelectStep<?> selectSelectStep = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"EventAttributeDefinition"
+			).asterisk());
 
 		Field<Object> field = DSL.field("id");
 
