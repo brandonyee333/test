@@ -1326,10 +1326,7 @@ public class ElasticsearchIndividualRepositoryImpl
 		List<Long> individualIds, String keywords) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.existsQuery("demographics.email")
-		).filter(
-			QueryBuilders.termsQuery("id", individualIds)
-		);
+			QueryBuilders.termsQuery("id", individualIds));
 
 		if (!StringUtils.isBlank(keywords)) {
 			boolQueryBuilder.filter(
@@ -1349,7 +1346,12 @@ public class ElasticsearchIndividualRepositoryImpl
 			SearchSourceBuilder.searchSource();
 
 		searchSourceBuilder.from(pageable.getPageNumber());
-		searchSourceBuilder.query(_buildQueryBuilder(individualIds, keywords));
+		searchSourceBuilder.query(
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.existsQuery("demographics.email")
+			).filter(
+				_buildQueryBuilder(individualIds, keywords)
+			));
 		searchSourceBuilder.size(pageable.getPageSize());
 		searchSourceBuilder.sort(
 			SortBuilderUtil.fieldSort(
