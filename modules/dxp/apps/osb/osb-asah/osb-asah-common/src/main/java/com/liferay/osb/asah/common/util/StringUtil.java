@@ -76,11 +76,11 @@ public class StringUtil {
 			return true;
 		}
 
-		if (string.startsWith("[")) {
+		if (string.startsWith("[") && string.endsWith("]")) {
 			return new JSONArray(string);
 		}
 
-		if (string.startsWith("{")) {
+		if (string.startsWith("{") && string.endsWith("}")) {
 			return new JSONObject(string);
 		}
 
