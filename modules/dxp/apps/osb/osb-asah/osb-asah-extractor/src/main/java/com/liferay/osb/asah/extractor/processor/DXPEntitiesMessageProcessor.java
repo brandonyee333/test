@@ -234,8 +234,8 @@ public class DXPEntitiesMessageProcessor {
 				"UpdateDynamicMembershipsNanite",
 				JSONUtil.put(
 					queryBuilderName,
-					type.getIndividualSegmentFieldName() + " eq " +
-						associatedIds
+					type.getIndividualSegmentFieldName() + " eq [" +
+						StringUtils.join(associatedIds, ",") + "]"
 				).put(
 					"dateModified", DateUtil.newDateString()
 				));
