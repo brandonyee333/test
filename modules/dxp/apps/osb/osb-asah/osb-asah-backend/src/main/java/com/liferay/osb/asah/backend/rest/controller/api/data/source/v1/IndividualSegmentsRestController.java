@@ -226,6 +226,10 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			_updateSegmentCounts(membershipsChanges.get(0), segment);
 		}
 
+		segment.setActiveIndividualCount(
+			_individualDog.countActiveIndividualsFromLast30DaysBySegment(
+				segment));
+
 		SegmentDTO segmentDTO = new SegmentDTO(segment);
 
 		if (StringUtils.isNotEmpty(expand)) {
