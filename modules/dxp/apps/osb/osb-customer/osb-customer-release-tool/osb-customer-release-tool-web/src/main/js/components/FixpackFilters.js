@@ -45,6 +45,31 @@ export default class FixpackFilters extends Component {
 		toFixPackVersion: this.props.toFixPackVersion
 	};
 
+	componentDidUpdate(_, prevState) {
+		const {
+			fromFixPackVersion,
+			productVersion,
+			toFixPackVersion
+		} = this.state;
+
+		const {
+			fromFixPackVersion: prevFromFixPackVersion,
+			productVersion: prevProductVersion,
+			toFixPackVersion: prevToFixPackVersion
+		} = prevState;
+
+		if (
+			fromFixPackVersion &&
+			productVersion &&
+			toFixPackVersion &&
+			(fromFixPackVersion !== prevFromFixPackVersion ||
+				productVersion !== prevProductVersion ||
+				toFixPackVersion !== prevToFixPackVersion)
+		) {
+			this.fixpackFiltersFormRef.current.submit();
+		}
+	}
+
 	getNameFromVersion = (version) => {
 		const fixpacks = this.lookupFixPacksByProduct();
 
@@ -72,10 +97,11 @@ export default class FixpackFilters extends Component {
 		});
 	};
 
-	handleSubmit = (target) => {
-		if (target !== '') {
-			this.fixpackFiltersFormRef.current.submit();
-		}
+	handleToFixpackOnChange = (target) => {
+		this.setState({
+			fixpackURL: '',
+			toFixPackVersion: target
+		});
 	};
 
 	lookupFixPacksByProduct = (isToFixPackFilter = false) => {
@@ -197,7 +223,7 @@ export default class FixpackFilters extends Component {
 								}
 								id={`${namespace}toFixPackVersion`}
 								label={Liferay.Language.get('to')}
-								onChange={this.handleSubmit}
+								onChange={this.handleToFixpackOnChange}
 								options={this.lookupFixPacksByProduct(
 									!!fromFixPackVersion
 								)}
