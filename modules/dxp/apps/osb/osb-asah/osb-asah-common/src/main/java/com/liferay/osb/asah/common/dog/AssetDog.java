@@ -14,16 +14,19 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoAssetFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -151,9 +154,16 @@ public class AssetDog {
 			page, size, SortUtil.getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
-			_assetRepository.findByFilterString(filterString, pageRequest),
+			_assetRepository.findByFilterString(
+				new FilterHelper(
+					_faroInfoAssetFilterStringConverterHelper, filterString,
+					_defaultFilterStringConverterHelper),
+				pageRequest),
 			pageRequest,
-			() -> _assetRepository.countByFilterString(filterString));
+			() -> _assetRepository.countByFilterString(
+				new FilterHelper(
+					_faroInfoAssetFilterStringConverterHelper, filterString,
+					_defaultFilterStringConverterHelper)));
 	}
 
 	public Page<Asset> getAssetPage(
@@ -164,10 +174,18 @@ public class AssetDog {
 
 		return PageableExecutionUtils.getPage(
 			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
-				assetType, filterString, keyword, pageRequest),
+				assetType,
+				new FilterHelper(
+					_faroInfoAssetFilterStringConverterHelper, filterString,
+					_defaultFilterStringConverterHelper),
+				keyword, pageRequest),
 			pageRequest,
 			() -> _assetRepository.countByAssetTypeAndFilterStringAndKeywords(
-				assetType, filterString, keyword));
+				assetType,
+				new FilterHelper(
+					_faroInfoAssetFilterStringConverterHelper, filterString,
+					_defaultFilterStringConverterHelper),
+				keyword));
 	}
 
 	public List<Asset> getAssets(List<Long> channelIds, int page, int size) {
@@ -190,7 +208,11 @@ public class AssetDog {
 
 	public List<Asset> getAssets(String assetType, String assetKeyword) {
 		return _assetRepository.findByAssetTypeAndFilterStringAndKeywords(
-			assetType, String.format("keywords/keyword eq '%s'", assetKeyword),
+			assetType,
+			new FilterHelper(
+				_faroInfoAssetFilterStringConverterHelper,
+				String.format("keywords/keyword eq '%s'", assetKeyword),
+				_defaultFilterStringConverterHelper),
 			null, null);
 	}
 
@@ -224,7 +246,11 @@ public class AssetDog {
 
 		List<Transformation> transformations =
 			_assetRepository.getAssetTransformations(
-				apply, filterString, pageRequest);
+				apply,
+				new FilterHelper(
+					_faroInfoAssetFilterStringConverterHelper, filterString,
+					_defaultFilterStringConverterHelper),
+				pageRequest);
 
 		return PageableExecutionUtils.getPage(
 			transformations, pageRequest, transformations::size);
@@ -245,8 +271,16 @@ public class AssetDog {
 	@Autowired
 	private AssetRepository _assetRepository;
 
+	private final DefaultFilterStringConverterHelper
+		_defaultFilterStringConverterHelper =
+			new DefaultFilterStringConverterHelper();
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	private final FaroInfoAssetFilterStringConverterHelper
+		_faroInfoAssetFilterStringConverterHelper =
+			new FaroInfoAssetFilterStringConverterHelper();
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

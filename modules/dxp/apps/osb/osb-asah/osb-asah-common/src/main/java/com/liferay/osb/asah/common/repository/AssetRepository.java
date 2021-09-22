@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 import java.util.Map;
@@ -38,11 +39,10 @@ public interface AssetRepository extends Repository<Asset, Long> {
 
 	@Cacheable
 	public long countByAssetTypeAndFilterStringAndKeywords(
-		String assetType, @Nullable String filterString,
-		@Nullable String keyword);
+		String assetType, FilterHelper filterHelper, @Nullable String keyword);
 
 	@Cacheable
-	public long countByFilterString(@Nullable String filterString);
+	public long countByFilterString(FilterHelper filterHelper);
 
 	@Cacheable
 	public List<Asset> findByAssetTypeAndAssetKeywordNotNull(
@@ -50,8 +50,8 @@ public interface AssetRepository extends Repository<Asset, Long> {
 
 	@Cacheable
 	public List<Asset> findByAssetTypeAndFilterStringAndKeywords(
-		String assetType, @Nullable String filterString,
-		@Nullable String keyword, @Nullable Pageable pageable);
+		String assetType, FilterHelper filterHelper, @Nullable String keyword,
+		@Nullable Pageable pageable);
 
 	@Cacheable
 	public List<Asset> findByChannelIds(
@@ -63,7 +63,7 @@ public interface AssetRepository extends Repository<Asset, Long> {
 
 	@Cacheable
 	public List<Asset> findByFilterString(
-		@Nullable String filterString, Pageable pageable);
+		FilterHelper filterHelper, Pageable pageable);
 
 	@Cacheable
 	public List<String> findDataSourceAssetPKByKeyword(String keyword);
@@ -76,7 +76,7 @@ public interface AssetRepository extends Repository<Asset, Long> {
 
 	@Cacheable
 	public List<Transformation> getAssetTransformations(
-		String apply, @Nullable String filterString, Pageable pageable);
+		String apply, FilterHelper filterHelper, Pageable pageable);
 
 	@Cacheable
 	public Map<String, Set<String>> getByAssetTypeAndChannelIdAndDatasourceId(

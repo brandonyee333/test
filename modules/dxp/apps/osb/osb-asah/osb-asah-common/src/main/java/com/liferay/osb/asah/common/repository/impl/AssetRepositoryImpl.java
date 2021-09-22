@@ -17,8 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
-import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.util.ArrayList;
@@ -69,14 +68,14 @@ public class AssetRepositoryImpl extends BaseRepository {
 	}
 
 	public long countByAssetTypeAndFilterStringAndKeywords(
-		String assetType, @Nullable String filterString,
+		String assetType, FilterHelper filterHelper,
 		@Nullable String keywords) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
-			_getAssetTable(assetType, filterString, keywords)
+			_getAssetTable(assetType, filterHelper, keywords)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -84,12 +83,12 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public long countByFilterString(@Nullable String filterString) {
+	public long countByFilterString(FilterHelper filterHelper) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
-			_getAssetTable(null, filterString, null)
+			_getAssetTable(null, filterHelper, null)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -112,25 +111,21 @@ public class AssetRepositoryImpl extends BaseRepository {
 		).limit(
 			size
 		).fetch(
-		).map(
 			this::_toAsset
 		);
 	}
 
 	public List<Asset> findByAssetTypeAndFilterStringAndKeywords(
-		String assetType, @Nullable String filterString,
-		@Nullable String keywords, @Nullable Pageable pageable) {
+		String assetType, FilterHelper filterHelper, @Nullable String keywords,
+		@Nullable Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
-			_getAssetTable(assetType, filterString, keywords));
+			_getAssetTable(assetType, filterHelper, keywords));
 
 		if (pageable == null) {
-			return selectJoinStep.fetch(
-			).map(
-				this::_toAsset
-			);
+			return selectJoinStep.fetch(this::_toAsset);
 		}
 
 		return selectJoinStep.orderBy(
@@ -140,7 +135,6 @@ public class AssetRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			this::_toAsset
 		);
 	}
@@ -148,12 +142,12 @@ public class AssetRepositoryImpl extends BaseRepository {
 	public List<Asset> findByChannelIds(
 		List<Long> channelIds, Pageable pageable) {
 
-		SelectSelectStep<Record> selectDistinct = _dslContext.selectDistinct(
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			DSL.table(
 				"Asset"
 			).asterisk());
 
-		return selectDistinct.from(
+		return selectSelectStep.from(
 			"Asset"
 		).where(
 			DSL.condition(
@@ -172,12 +166,12 @@ public class AssetRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Asset> findByFilterString(
-		@Nullable String filterString, Pageable pageable) {
+		FilterHelper filterHelper, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
-			_getAssetTable(null, filterString, null)
+			_getAssetTable(null, filterHelper, null)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
@@ -185,7 +179,6 @@ public class AssetRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			this::_toAsset
 		);
 	}
@@ -206,7 +199,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Transformation> getAssetTransformations(
-		String apply, @Nullable String filterString, Pageable pageable) {
+		String apply, FilterHelper filterHelper, Pageable pageable) {
 
 		Matcher matcher = MatcherUtil.getMatcher(apply);
 
@@ -219,7 +212,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 		String containsField = matcher.group("containsField");
 		String groupByField = matcher.group("groupByField");
 
-		Condition condition = ConditionUtil.toCondition(filterString);
+		Condition condition = filterHelper.getCondition();
 
 		condition = condition.and(
 			_getIncludeCondition(containsField, groupByField));
@@ -246,7 +239,6 @@ public class AssetRepositoryImpl extends BaseRepository {
 		).limit(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new Transformation(
 				new Transformation.Term(
 					Collections.singletonMap(
@@ -311,8 +303,8 @@ public class AssetRepositoryImpl extends BaseRepository {
 		return assets;
 	}
 
-	private boolean _containsAssetKeywordFilter(String filterString) {
-		if (StringUtils.contains(filterString, "keywords/")) {
+	private boolean _containsAssetKeywordFilter(FilterHelper filterHelper) {
+		if (StringUtils.contains(filterHelper.getFilterString(), "keywords/")) {
 			return true;
 		}
 
@@ -331,7 +323,6 @@ public class AssetRepositoryImpl extends BaseRepository {
 				assetId
 			)
 		).fetch(
-		).map(
 			record -> new AssetKeyword(record.intoMap())
 		);
 	}
@@ -350,10 +341,10 @@ public class AssetRepositoryImpl extends BaseRepository {
 			condition = field.likeIgnoreCase("%" + keyword + "%");
 		}
 
-		SelectSelectStep<Record1<String>> selectDistinct =
+		SelectSelectStep<Record1<String>> selectSelectStep =
 			_dslContext.selectDistinct(field);
 
-		return selectDistinct.from(
+		return selectSelectStep.from(
 			DSL.table("Asset")
 		).innerJoin(
 			DSL.table("AssetKeyword")
@@ -369,7 +360,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 	}
 
 	private Table<Record> _getAssetTable(
-		String assetType, String filterString, String keyword) {
+		String assetType, FilterHelper filterHelper, String keyword) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			DSL.table(
@@ -378,7 +369,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 
 		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from("Asset");
 
-		if (_containsAssetKeywordFilter(filterString)) {
+		if (_containsAssetKeywordFilter(filterHelper)) {
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
 					"assetkeyword"
@@ -395,19 +386,19 @@ public class AssetRepositoryImpl extends BaseRepository {
 		}
 
 		return selectJoinStep.where(
-			_getConditions(null, assetType, filterString, keyword)
+			_getConditions(null, assetType, filterHelper, keyword)
 		).asTable();
 	}
 
 	private Table<Record> _getAssetTableKeywordNotNull(
 		Long assetId, String assetType) {
 
-		SelectSelectStep<Record> selectDistinct = _dslContext.selectDistinct(
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			DSL.table(
 				"Asset"
 			).asterisk());
 
-		return selectDistinct.from(
+		return selectSelectStep.from(
 			"Asset"
 		).join(
 			DSL.table(
@@ -422,7 +413,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 				DSL.field("keywords.assetid")
 			)
 		).where(
-			_getConditions(assetId, assetType, null, null)
+			_getConditions(assetId, assetType, FilterHelper.EMPTY, null)
 		).and(
 			DSL.field(
 				"keywords.keyword"
@@ -431,7 +422,8 @@ public class AssetRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Condition> _getConditions(
-		Long assetId, String assetType, String filterString, String keyword) {
+		Long assetId, String assetType, FilterHelper filterHelper,
+		String keyword) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -478,9 +470,8 @@ public class AssetRepositoryImpl extends BaseRepository {
 					)));
 		}
 
-		if (StringUtils.isNotBlank(filterString)) {
-			conditions.add(
-				FilterStringToConditionConverter.convert(filterString));
+		if (StringUtils.isNotBlank(filterHelper.getFilterString())) {
+			conditions.add(filterHelper.getCondition());
 		}
 
 		return conditions;

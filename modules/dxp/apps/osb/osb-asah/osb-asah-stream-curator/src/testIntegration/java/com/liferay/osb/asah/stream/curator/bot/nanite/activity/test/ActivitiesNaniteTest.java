@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.activity.ActivitiesNanite;
@@ -119,7 +120,7 @@ public class ActivitiesNaniteTest {
 
 		List<Asset> assets =
 			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
-				"Page", null,
+				"Page", FilterHelper.EMPTY,
 				"8 Best Practices for Your Omnichannel Strategy | Digital " +
 					"Strategy | Liferay Blogs",
 				PageRequest.of(0, 5));
@@ -193,7 +194,7 @@ public class ActivitiesNaniteTest {
 
 		List<Asset> assets =
 			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
-				"Page", null,
+				"Page", FilterHelper.EMPTY,
 				"Felix Gogo Shell - reference - Knowledge | \"Liferay",
 				PageRequest.of(0, 5));
 

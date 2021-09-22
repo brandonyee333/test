@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
+import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoAssetFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -23,6 +25,7 @@ import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.Repository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 
@@ -117,7 +120,8 @@ public abstract class BaseAssetRepositoryTestCase
 	public void testFindByAssetType() {
 		List<Asset> assets =
 			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
-				"Page", null, null, PageRequest.of(0, 20, Sort.desc("id")));
+				"Page", FilterHelper.EMPTY, null,
+				PageRequest.of(0, 20, Sort.desc("id")));
 
 		Assert.assertEquals(assets.toString(), 3, assets.size());
 		Assert.assertEquals(
@@ -131,8 +135,12 @@ public abstract class BaseAssetRepositoryTestCase
 	public void testFindByAssetTypeAndFilterString1() {
 		List<Asset> assets =
 			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
-				"Page", "similarTo(title, 'seize.*')", null,
-				PageRequest.of(0, 20, Sort.desc("id")));
+				"Page",
+				new FilterHelper(
+					_faroInfoAssetFilterStringConverterHelper,
+					"similarTo(title, 'seize.*')",
+					_defaultFilterStringConverterHelper),
+				null, PageRequest.of(0, 20, Sort.desc("id")));
 
 		Assert.assertEquals(assets.toString(), 1, assets.size());
 		Assert.assertEquals(
@@ -144,8 +152,12 @@ public abstract class BaseAssetRepositoryTestCase
 	public void testFindByAssetTypeAndFilterString2() {
 		List<Asset> assets =
 			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
-				"Page", "title eq 'engineer intuitive models'", null,
-				PageRequest.of(0, 20, Sort.desc("id")));
+				"Page",
+				new FilterHelper(
+					_faroInfoAssetFilterStringConverterHelper,
+					"title eq 'engineer intuitive models'",
+					_defaultFilterStringConverterHelper),
+				null, PageRequest.of(0, 20, Sort.desc("id")));
 
 		Assert.assertEquals(assets.toString(), 1, assets.size());
 		Assert.assertEquals(
@@ -157,8 +169,12 @@ public abstract class BaseAssetRepositoryTestCase
 	public void testFindByAssetTypeAndFilterString3() {
 		List<Asset> assets =
 			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
-				"Page", "url eq 'https://www.terrance-lueilwitz.biz'", null,
-				PageRequest.of(0, 20, Sort.desc("id")));
+				"Page",
+				new FilterHelper(
+					_faroInfoAssetFilterStringConverterHelper,
+					"url eq 'https://www.terrance-lueilwitz.biz'",
+					_defaultFilterStringConverterHelper),
+				null, PageRequest.of(0, 20, Sort.desc("id")));
 
 		Assert.assertEquals(assets.toString(), 1, assets.size());
 		Assert.assertEquals(
@@ -169,7 +185,8 @@ public abstract class BaseAssetRepositoryTestCase
 	public void testFindByAssetTypeAndKeyword2() {
 		List<Asset> assets =
 			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
-				"Page", null, "seize", PageRequest.of(0, 20, Sort.desc("id")));
+				"Page", FilterHelper.EMPTY, "seize",
+				PageRequest.of(0, 20, Sort.desc("id")));
 
 		Assert.assertEquals(assets.toString(), 1, assets.size());
 		Assert.assertEquals(
@@ -219,7 +236,10 @@ public abstract class BaseAssetRepositoryTestCase
 	@Test
 	public void testFindByFilterString() {
 		List<Asset> assets = _assetRepository.findByFilterString(
-			"keywords/keyword eq 'engineer' and keywords/type eq 'title'",
+			new FilterHelper(
+				_faroInfoAssetFilterStringConverterHelper,
+				"keywords/keyword eq 'engineer' and keywords/type eq 'title'",
+				_defaultFilterStringConverterHelper),
 			PageRequest.of(0, 20, Sort.desc("id")));
 
 		Assert.assertEquals(assets.toString(), 1, assets.size());
@@ -320,5 +340,12 @@ public abstract class BaseAssetRepositoryTestCase
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
+
+	private final DefaultFilterStringConverterHelper
+		_defaultFilterStringConverterHelper =
+			new DefaultFilterStringConverterHelper();
+	private final FaroInfoAssetFilterStringConverterHelper
+		_faroInfoAssetFilterStringConverterHelper =
+			new FaroInfoAssetFilterStringConverterHelper();
 
 }

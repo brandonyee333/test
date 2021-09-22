@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
-import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
@@ -24,6 +23,7 @@ import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.ListUtil;
@@ -115,18 +115,18 @@ public class ElasticsearchAssetRepositoryImpl
 
 	@Override
 	public long countByAssetTypeAndFilterStringAndKeywords(
-		@Nullable String assetType, @Nullable String filterString,
+		@Nullable String assetType, FilterHelper filterHelper,
 		@Nullable String keyword) {
 
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(),
-			_buildQueryBuilder(assetType, filterString, keyword));
+			_buildQueryBuilder(assetType, filterHelper, keyword));
 	}
 
 	@Override
-	public long countByFilterString(@Nullable String filterString) {
+	public long countByFilterString(FilterHelper filterHelper) {
 		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(), _buildQueryBuilder(filterString));
+			getCollectionName(), _buildQueryBuilder(filterHelper));
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class ElasticsearchAssetRepositoryImpl
 
 	@Override
 	public List<Asset> findByAssetTypeAndFilterStringAndKeywords(
-		@Nullable String assetType, @Nullable String filterString,
+		@Nullable String assetType, FilterHelper filterHelper,
 		@Nullable String keywords, @Nullable Pageable pageable) {
 
 		return toList(
@@ -168,7 +168,7 @@ public class ElasticsearchAssetRepositoryImpl
 					searchSourceBuilder -> {
 						searchSourceBuilder.query(
 							_buildQueryBuilder(
-								assetType, filterString, keywords));
+								assetType, filterHelper, keywords));
 
 						if (pageable != null) {
 							setSearchSourceBuilderPage(
@@ -218,7 +218,7 @@ public class ElasticsearchAssetRepositoryImpl
 
 	@Override
 	public List<Asset> findByFilterString(
-		@Nullable String filterString, Pageable pageable) {
+		FilterHelper filterHelper, Pageable pageable) {
 
 		return toList(
 			new JSONArray(
@@ -226,7 +226,7 @@ public class ElasticsearchAssetRepositoryImpl
 					getCollectionName(),
 					searchSourceBuilder -> {
 						searchSourceBuilder.query(
-							_buildQueryBuilder(filterString));
+							_buildQueryBuilder(filterHelper));
 
 						setSearchSourceBuilderPage(
 							searchSourceBuilder, pageable);
@@ -369,7 +369,7 @@ public class ElasticsearchAssetRepositoryImpl
 
 	@Override
 	public List<Transformation> getAssetTransformations(
-		String apply, @Nullable String filterString, Pageable pageable) {
+		String apply, FilterHelper filterHelper, Pageable pageable) {
 
 		TransformationGetResponse transformationGetResponse =
 			new TransformationGetResponse();
@@ -379,8 +379,7 @@ public class ElasticsearchAssetRepositoryImpl
 			_faroInfoElasticsearchInvoker);
 		transformationGetResponse.setPage(pageable.getPageNumber());
 
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString, _assetFilterStringConverterHelper);
+		QueryBuilder queryBuilder = filterHelper.getQueryBuilder();
 
 		if (queryBuilder != null) {
 			transformationGetResponse.setQueryBuilder(queryBuilder);
@@ -533,17 +532,16 @@ public class ElasticsearchAssetRepositoryImpl
 		return _faroInfoElasticsearchInvoker;
 	}
 
-	private QueryBuilder _buildQueryBuilder(String filterString) {
-		if (StringUtils.isEmpty(filterString)) {
+	private QueryBuilder _buildQueryBuilder(FilterHelper filterHelper) {
+		if (StringUtils.isEmpty(filterHelper.getFilterString())) {
 			return QueryBuilders.matchAllQuery();
 		}
 
-		return FilterStringToQueryBuilderConverter.convert(
-			filterString, _assetFilterStringConverterHelper);
+		return filterHelper.getQueryBuilder();
 	}
 
 	private QueryBuilder _buildQueryBuilder(
-		String assetType, String filterString, String keywords) {
+		String assetType, FilterHelper filterHelper, String keywords) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("assetType", assetType));
@@ -569,10 +567,8 @@ public class ElasticsearchAssetRepositoryImpl
 				));
 		}
 
-		if (StringUtils.isNotEmpty(filterString)) {
-			boolQueryBuilder.filter(
-				FilterStringToQueryBuilderConverter.convert(
-					filterString, _assetFilterStringConverterHelper));
+		if (StringUtils.isNotEmpty(filterHelper.getFilterString())) {
+			boolQueryBuilder.filter(filterHelper.getQueryBuilder());
 		}
 
 		return boolQueryBuilder;
@@ -628,50 +624,7 @@ public class ElasticsearchAssetRepositoryImpl
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchAssetRepositoryImpl.class);
 
-	private final AssetFilterStringConverterHelper
-		_assetFilterStringConverterHelper =
-			new AssetFilterStringConverterHelper();
-
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	private static class AssetFilterStringConverterHelper
-		extends DefaultFilterStringConverterHelper {
-
-		@Override
-		public QueryBuilder getCustomFunctionQueryBuilder(
-			List<String> arguments, String customFunctionName,
-			boolean negated) {
-
-			if (!customFunctionName.equalsIgnoreCase("similarTo")) {
-				return null;
-			}
-
-			Map<String, String> fieldNames = getFieldNameConversionMap();
-
-			String fieldName = toFieldName(
-				fieldNames.getOrDefault(arguments.get(0), arguments.get(0)));
-
-			QueryBuilder queryBuilder = QueryBuilders.regexpQuery(
-				fieldName,
-				StringUtil.unquoteAndDecodeInnerQuotes(arguments.get(1)));
-
-			if (negated) {
-				return BoolQueryBuilderUtil.mustNot(queryBuilder);
-			}
-
-			return queryBuilder;
-		}
-
-		@Override
-		public Map<String, String> getFieldNameConversionMap() {
-			return new HashMap<String, String>() {
-				{
-					put("title", "name");
-				}
-			};
-		}
-
-	}
 
 }
