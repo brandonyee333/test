@@ -158,7 +158,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 		jsonObject.put("id", id);
 
 		return (S)toEntity(
-			elasticsearchInvoker.upsert(getCollectionName(), jsonObject));
+			elasticsearchInvoker.add(getCollectionName(), jsonObject));
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 				list.add((S)toEntity(jsonObject));
 			});
 
-		elasticsearchInvoker.upsert(getCollectionName(), jsonArray);
+		elasticsearchInvoker.add(getCollectionName(), jsonArray);
 
 		return list;
 	}
