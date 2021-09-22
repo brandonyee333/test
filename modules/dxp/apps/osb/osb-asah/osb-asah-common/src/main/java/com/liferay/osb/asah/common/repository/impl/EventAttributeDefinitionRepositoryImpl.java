@@ -27,6 +27,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
@@ -47,7 +49,7 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		@Nullable Long eventDefinitionId, @Nullable String keyword,
 		@Nullable EventAttributeDefinition.Type type) {
 
-		SelectSelectStep<?> selectSelectStep = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.select(
 			DSL.countDistinct(DSL.field("name"))
@@ -171,8 +173,8 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 
 		Field<Object> field = DSL.field("name");
 
-		SelectSelectStep<?> selectSelectStep = _dslContext.selectDistinct(
-			DSL.field("name"));
+		SelectSelectStep<Record1<Object>> selectSelectStep =
+			_dslContext.selectDistinct(DSL.field("name"));
 
 		Table<?> table = _getEventAttributeDefinitionsTable(
 			eventDefinitionId, keyword, type);

@@ -80,7 +80,7 @@ public class ElasticsearchRunLogRepositoryImpl
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
 		JSONObject jsonObject = elasticsearchInvoker.fetch(
-			"run-logs", boolQueryBuilder,
+			getCollectionName(), boolQueryBuilder,
 			SortBuilderUtil.fieldSort("dateLogged", SortOrder.DESC), null,
 			null);
 
