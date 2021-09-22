@@ -115,7 +115,10 @@ public class IndividualActivityFieldsNaniteTest {
 	@Test
 	public void testMixtureOfVariousActivities() {
 		Long channelId = RandomTestUtil.randomNumber();
-		String dateString = DateUtil.addDays(DateUtil.newDateString(), -1);
+
+		String dateString = DateUtil.newDateString();
+
+		String yesterdayString = DateUtil.addDays(dateString, -1);
 
 		Individual individual = FaroInfoTestUtil.buildIndividual(
 			channelId, _dataSource);
@@ -125,21 +128,21 @@ public class IndividualActivityFieldsNaniteTest {
 		individual = _individualDog.addIndividual(individual, false);
 
 		_addActivities(
-			1, "Form", channelId, dateString, "fieldBlurred", individual);
+			1, "Form", channelId, yesterdayString, "fieldBlurred", individual);
 		_addActivities(
-			2, "Form", channelId, DateUtil.addDays(dateString, -8),
+			2, "Form", channelId, DateUtil.addDays(yesterdayString, -8),
 			"formSubmitted", individual);
 		_addActivities(
-			4, "Page", channelId, DateUtil.addDays(dateString, -16),
+			4, "Page", channelId, DateUtil.addDays(yesterdayString, -16),
 			"pageLoaded", individual);
 		_addActivities(
-			8, "Page", channelId, DateUtil.addDays(dateString, -24),
+			8, "Page", channelId, DateUtil.addDays(yesterdayString, -24),
 			"pageViewed", individual);
 		_addActivities(
-			16, "Blog", channelId, DateUtil.addDays(dateString, -32),
+			16, "Blog", channelId, DateUtil.addDays(yesterdayString, -32),
 			"blogViewed", individual);
 		_addActivities(
-			32, "Document", channelId, DateUtil.addDays(dateString, -40),
+			32, "Document", channelId, DateUtil.addDays(yesterdayString, -40),
 			"documentPreviewed", individual);
 
 		_individualActivityFieldsNanite.run();
@@ -165,26 +168,52 @@ public class IndividualActivityFieldsNaniteTest {
 		Assert.assertEquals(
 			42L, (long)individualActivitiesCount.getActivitiesCount());
 
-		Set<Individual.LastActivityDate> lastActivityDates =
-			individual.getLastActivityDates();
+		_assertLastActivitiesDates(
+			channelId, 1, DateUtil.addDays(yesterdayString, -8),
+			individual.getLastActivityDates());
+		_assertLastActivitiesDates(
+			channelId, 0, null, individual.getPreviousActivityDates());
 
-		Stream<Individual.LastActivityDate> lastActivityDatesStream =
-			lastActivityDates.stream();
+		_addActivities(
+			1, "Page", channelId, yesterdayString, "pageViewed", individual);
 
-		Individual.LastActivityDate individualLastActivityDate =
-			lastActivityDatesStream.filter(
-				lastActivityDate -> Objects.equals(
-					channelId, lastActivityDate.getChannelId())
-			).findFirst(
-			).orElse(
-				null
-			);
+		_individualActivityFieldsNanite.run();
 
-		Assert.assertNotNull(individualLastActivityDate);
-		Assert.assertEquals(
-			DateUtil.addDays(dateString, -8),
-			DateUtil.toUTCString(
-				individualLastActivityDate.getLastActivityDate()));
+		individual = _individualDog.fetchIndividual(individual.getId());
+
+		_assertLastActivitiesDates(
+			channelId, 1, yesterdayString, individual.getLastActivityDates());
+		_assertLastActivitiesDates(
+			channelId, 1, DateUtil.addDays(yesterdayString, -8),
+			individual.getPreviousActivityDates());
+
+		_addActivities(
+			1, "Page", channelId, dateString, "pageViewed", individual);
+
+		_individualActivityFieldsNanite.run();
+
+		individual = _individualDog.fetchIndividual(individual.getId());
+
+		_assertLastActivitiesDates(
+			channelId, 1, dateString, individual.getLastActivityDates());
+		_assertLastActivitiesDates(
+			channelId, 1, yesterdayString,
+			individual.getPreviousActivityDates());
+
+		_addActivities(
+			1, "Page", channelId, DateUtil.addDays(dateString, 1), "pageViewed",
+			individual);
+
+		_individualActivityFieldsNanite.run();
+
+		individual = _individualDog.fetchIndividual(individual.getId());
+
+		_assertLastActivitiesDates(
+			channelId, 1, DateUtil.addDays(dateString, 1),
+			individual.getLastActivityDates());
+		_assertLastActivitiesDates(
+			channelId, 1, yesterdayString,
+			individual.getPreviousActivityDates());
 	}
 
 	@Test
@@ -272,6 +301,36 @@ public class IndividualActivityFieldsNaniteTest {
 		_individualActivityFieldsNanite.run();
 
 		return _individualDog.fetchIndividual(individual.getId());
+	}
+
+	private void _assertLastActivitiesDates(
+		Long channelId, long expectedLastActivityDateCount,
+		String expectedLastActivityDateString,
+		Set<Individual.LastActivityDate> lastActivityDates) {
+
+		Assert.assertEquals(
+			lastActivityDates.toString(), expectedLastActivityDateCount,
+			lastActivityDates.size());
+
+		if (lastActivityDates.isEmpty()) {
+			return;
+		}
+
+		Stream<Individual.LastActivityDate> stream = lastActivityDates.stream();
+
+		Individual.LastActivityDate individualLastActivityDate = stream.filter(
+			lastActivityDate -> Objects.equals(
+				channelId, lastActivityDate.getChannelId())
+		).findFirst(
+		).orElse(
+			null
+		);
+
+		Assert.assertNotNull(individualLastActivityDate);
+		Assert.assertEquals(
+			expectedLastActivityDateString,
+			DateUtil.toUTCString(
+				individualLastActivityDate.getLastActivityDate()));
 	}
 
 	private void _testSingleTypeOfActivityExcluded(

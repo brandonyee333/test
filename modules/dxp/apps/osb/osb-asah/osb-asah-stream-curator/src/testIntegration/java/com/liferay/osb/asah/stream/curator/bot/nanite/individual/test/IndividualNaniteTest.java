@@ -163,7 +163,8 @@ public class IndividualNaniteTest {
 			"3bb3aa73a3e59526dcc7975c1516997e8a604083e661aa01f348ebc7b18a81dd");
 		individual1.setId(100L);
 		individual1.setIndividualChannels(
-			Collections.singleton(new IndividualChannel(1L, 1L, 100L, null)));
+			Collections.singleton(
+				new IndividualChannel(1L, 1L, 100L, null, null)));
 
 		Field field1 = new Field();
 
@@ -186,8 +187,8 @@ public class IndividualNaniteTest {
 		individual2.setId(200L);
 		individual2.setIndividualChannels(
 			SetUtil.of(
-				new IndividualChannel(1L, 1L, 200L, null),
-				new IndividualChannel(1L, 2L, 200L, null)));
+				new IndividualChannel(1L, 1L, 200L, null, null),
+				new IndividualChannel(1L, 2L, 200L, null, null)));
 
 		_individualDog.addIndividual(individual2, false);
 
@@ -402,7 +403,8 @@ public class IndividualNaniteTest {
 			"3bb3aa73a3e59526dcc7975c1516997e8a604083e661aa01f348ebc7b18a81dd");
 		individual1.setId(100L);
 		individual1.setIndividualChannels(
-			Collections.singleton(new IndividualChannel(1L, 1L, 100L, null)));
+			Collections.singleton(
+				new IndividualChannel(1L, 1L, 100L, null, null)));
 
 		Field field1 = new Field();
 
@@ -425,8 +427,8 @@ public class IndividualNaniteTest {
 		individual2.setId(200L);
 		individual2.setIndividualChannels(
 			SetUtil.of(
-				new IndividualChannel(1L, 1L, 200L, null),
-				new IndividualChannel(1L, 2L, 200L, null)));
+				new IndividualChannel(1L, 1L, 200L, null, null),
+				new IndividualChannel(1L, 2L, 200L, null, null)));
 
 		_individualDog.addIndividual(individual2, false);
 
