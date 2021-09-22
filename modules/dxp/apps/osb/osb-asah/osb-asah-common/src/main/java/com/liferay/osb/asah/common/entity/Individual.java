@@ -57,6 +57,66 @@ public class Individual implements Persistable<Long> {
 		BeanUtils.copyProperties(source, this);
 	}
 
+	public void addChannelId(Long channelId) {
+		if (_channelIds == null) {
+			_channelIds = new HashSet<>();
+		}
+
+		_channelIds.add(channelId);
+	}
+
+	public void addDataSourceIndividual(
+		DataSourceIndividual dataSourceIndividual) {
+
+		if (dataSourceIndividual == null) {
+			return;
+		}
+
+		if (_dataSourceAccountPKs == null) {
+			_dataSourceAccountPKs = new HashSet<>();
+		}
+
+		_dataSourceAccountPKs.add(
+			new DataSourceAccountPK(dataSourceIndividual));
+
+		if (_dataSourceIndividualPKs == null) {
+			_dataSourceIndividualPKs = new HashSet<>();
+		}
+
+		_dataSourceIndividualPKs.add(
+			new DataSourceIndividualPK(dataSourceIndividual));
+
+		if (_dataSourceIndividuals == null) {
+			_dataSourceIndividuals = new HashSet<>();
+		}
+
+		_dataSourceIndividuals.add(dataSourceIndividual);
+	}
+
+	public void addIndividualChannel(IndividualChannel individualChannel) {
+		if (individualChannel == null) {
+			return;
+		}
+
+		if (_activitiesCounts == null) {
+			_activitiesCounts = new HashSet<>();
+		}
+
+		_activitiesCounts.add(new ActivitiesCount(individualChannel));
+
+		if (_individualChannels == null) {
+			_individualChannels = new HashSet<>();
+		}
+
+		_individualChannels.add(individualChannel);
+
+		if (_lastActivityDates == null) {
+			_lastActivityDates = new HashSet<>();
+		}
+
+		_lastActivityDates.add(new LastActivityDate(individualChannel));
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -309,6 +369,8 @@ public class Individual implements Persistable<Long> {
 
 	public void setCustomFields(Set<Field> fields) {
 		_customFields = fields;
+
+		_customDemographics = new Demographics(fields);
 	}
 
 	public void setDataSourceAccountPKs(
@@ -374,6 +436,8 @@ public class Individual implements Persistable<Long> {
 
 	public void setFields(Set<Field> fields) {
 		_fields = fields;
+
+		_demographics = new Demographics(fields);
 	}
 
 	public void setFirstEnrichmentDate(Date firstEnrichmentDate) {

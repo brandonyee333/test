@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
@@ -23,6 +24,7 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
@@ -30,6 +32,8 @@ import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 
 import java.util.Arrays;
@@ -110,7 +114,8 @@ public abstract class BaseIndividualRepositoryTestCase
 		individual1.setDataSourceIndividuals(
 			Collections.singleton(
 				new DataSourceIndividual(
-					Collections.emptySet(), dataSource1.getId(), _individual1Id,
+					SetUtil.of("1234", "5678"), dataSource1.getId(),
+					_individualId,
 					Collections.singleton("23432-cd-3242-asf23"))));
 		individual1.setIndividualChannels(
 			Collections.singleton(individualChannel));
@@ -246,21 +251,39 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
+	public void testCountByQueryAndSegmentId() {
+		List<String> fieldNames =
+			_fieldMappingRepository.
+				findFieldNameByContextAndFieldTypeAndOwnerType(
+					"demographics", "Text", "individual");
+
+		Assert.assertEquals(
+			1,
+			individualRepository.countByFieldNamesAndQueryAndSegmentId(
+				fieldNames, "eld", _segmentId));
+	}
+
+	@Test
 	public void testCountIndividuals() {
 		Assert.assertEquals(
 			1,
 			individualRepository.countIndividuals(
-				11L, null, false, 11L, _segmentId));
-		Assert.assertEquals(
-			1,
-			individualRepository.countByQueryAndSegmentId("eld", _segmentId));
+				11L,
+				new FilterHelper(
+					_faroInfoIndividualsFilterStringConverterHelper, null,
+					_individualsFilterStringConverterHelper),
+				false, 11L, _segmentId));
 	}
 
 	@Test
 	public void testExistsByChannelIdAndFilterStringAndId() {
 		Assert.assertTrue(
 			individualRepository.existsByChannelIdAndFilterStringAndId(
-				11L, "(demographics/field3/value eq 'field three')",
+				11L,
+				new FilterHelper(
+					_faroInfoIndividualsFilterStringConverterHelper,
+					"(demographics/field3/value eq 'field three')",
+					_individualsFilterStringConverterHelper),
 				_individual1Id));
 	}
 
@@ -269,16 +292,32 @@ public abstract class BaseIndividualRepositoryTestCase
 		Assert.assertTrue(
 			individualRepository.
 				existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
-					11L, "(demographics/field3/value eq 'field three')", false,
-					_individual1Id));
+					11L,
+					new FilterHelper(
+						_faroInfoIndividualsFilterStringConverterHelper,
+						"(demographics/field3/value eq 'field three')",
+						_individualsFilterStringConverterHelper),
+					false, _individualId));
 	}
 
 	@Test
 	public void testExistsByFilterStringAndId() {
 		Assert.assertTrue(
 			individualRepository.existsByFilterStringAndId(
-				"(demographics/field3/value eq 'field three')",
-				_individual1Id));
+				new FilterHelper(
+					_faroInfoIndividualsFilterStringConverterHelper,
+					"(demographics/field3/value eq 'field three')",
+					_individualsFilterStringConverterHelper),
+				_individualId));
+	}
+
+	@Test
+	public void testFindAccountPKsByAnyChannelIdsAnySegmentIds() {
+		List<String> accountPKs =
+			individualRepository.findAccountPKsByChannelIdAndSegmentId(
+				11L, _segmentId);
+
+		Assert.assertEquals(Arrays.asList("1234", "5678"), accountPKs);
 	}
 
 	@Test
@@ -305,25 +344,13 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
-	public void testFindByAnySegmentIds() {
-		List<Individual> individuals = individualRepository.findByAnySegmentIds(
-			_segmentId);
-
-		Assert.assertEquals(individuals.toString(), 1, individuals.size());
-
-		Individual individual = individuals.get(0);
-
-		Assert.assertEquals(_individual1Id, individual.getId());
-	}
-
-	@Test
 	public void testFindByAssociatedIdNotAndDataSourceIdAndIndividualPK() {
-		Optional<Individual> individualOptional =
+		Individual individual =
 			individualRepository.
 				findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
 					1234L, 1L, "organizationIds", "23432-cd-3242-asf23");
 
-		Assert.assertTrue(individualOptional.isPresent());
+		Assert.assertNotNull(individual);
 	}
 
 	@Test
@@ -340,48 +367,32 @@ public abstract class BaseIndividualRepositoryTestCase
 
 	@Test
 	public void testFindByDataSourceIdAndIndividualPK() {
-		Optional<Individual> individualOptional =
+		Individual individual =
 			individualRepository.findByDataSourceIdAndIndividualPK(
 				1L, "23432-cd-3242-asf23");
 
-		Assert.assertTrue(individualOptional.isPresent());
+		Assert.assertNotNull(individual);
 
-		individualOptional =
-			individualRepository.findByDataSourceIdAndIndividualPK(1L, "23432");
+		individual = individualRepository.findByDataSourceIdAndIndividualPK(
+			1L, "23432");
 
-		Assert.assertFalse(individualOptional.isPresent());
+		Assert.assertNull(individual);
 	}
 
 	@Test
 	public void testFindByEmailAddress() {
-		Optional<Individual> individualOptional =
-			individualRepository.findByEmailAddress("test@liferay.com");
+		Individual individual = individualRepository.findByEmailAddress(
+			"test@liferay.com");
 
-		Assert.assertTrue(individualOptional.isPresent());
+		Assert.assertNotNull(individual);
 	}
 
 	@Test
 	public void testFindByEmailAddressHashed() {
-		Optional<Individual> individualOptional =
-			individualRepository.findByEmailAddressHashed(
-				DigestUtils.sha256Hex("test@liferay.com"));
+		Individual individual = individualRepository.findByEmailAddressHashed(
+			DigestUtils.sha256Hex("test@liferay.com"));
 
-		Assert.assertTrue(individualOptional.isPresent());
-	}
-
-	@Test
-	public void testFindByEmailAddressOrEmailAddressHashed() {
-		Optional<Individual> individualOptional =
-			individualRepository.findByEmailAddressOrEmailAddressHashed(
-				"test@liferay.com", null);
-
-		Assert.assertTrue(individualOptional.isPresent());
-
-		individualOptional =
-			individualRepository.findByEmailAddressOrEmailAddressHashed(
-				null, DigestUtils.sha256Hex("test@liferay.com"));
-
-		Assert.assertTrue(individualOptional.isPresent());
+		Assert.assertNotNull(individual);
 	}
 
 	@Test
@@ -412,9 +423,26 @@ public abstract class BaseIndividualRepositoryTestCase
 
 	@Test
 	public void testFindByQueryAndSegmentId() {
+		List<String> fieldNames =
+			_fieldMappingRepository.
+				findFieldNameByContextAndFieldTypeAndOwnerType(
+					"demographics", "Text", "individual");
+
 		List<Individual> individuals =
-			individualRepository.findByQueryAndSegmentId(
-				"eld", _segmentId, PageRequest.of(0, 1));
+			individualRepository.findByFieldNamesAndQueryAndSegmentId(
+				fieldNames, "eld", _segmentId, PageRequest.of(0, 1));
+
+		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+
+		Individual individual = individuals.get(0);
+
+		Assert.assertEquals(_individual1Id, individual.getId());
+	}
+
+	@Test
+	public void testFindBySegmentIds() {
+		List<Individual> individuals = individualRepository.findBySegmentIds(
+			_segmentId);
 
 		Assert.assertEquals(individuals.toString(), 1, individuals.size());
 
@@ -435,14 +463,18 @@ public abstract class BaseIndividualRepositoryTestCase
 	public void testFindKnownIndividualIds() {
 		Assert.assertEquals(
 			Arrays.asList(_individual1Id),
-			individualRepository.findKnownIndividualIds(null, _segmentId));
+			individualRepository.findKnownIndividualIds(
+				FilterHelper.EMPTY, _segmentId));
 	}
 
 	@Test
 	public void testGetIndividualDistributions() throws Exception {
 		List<Distribution> distributions =
 			individualRepository.getIndividualDistributions(
-				"age", "Number", null,
+				"age", "Number",
+				new FilterHelper(
+					_faroInfoIndividualsFilterStringConverterHelper, null,
+					_individualsFilterStringConverterHelper),
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("values"))));
 
 		_assertEquals(
@@ -477,7 +509,7 @@ public abstract class BaseIndividualRepositoryTestCase
 			ArrayUtils.toUnmodifiableList(new Integer[] {92, 100}));
 
 		distributions = individualRepository.getIndividualDistributions(
-			"jobTitle", "Text", null,
+			"jobTitle", "Text", FilterHelper.EMPTY,
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("name"))));
 
 		_assertEquals(
@@ -488,7 +520,10 @@ public abstract class BaseIndividualRepositoryTestCase
 	@Test
 	public void testSearchIndividuals1() {
 		List<Individual> individuals = individualRepository.searchIndividuals(
-			"(demographics/email/value eq 'test@liferay.com')",
+			new FilterHelper(
+				_faroInfoIndividualsFilterStringConverterHelper,
+				"(demographics/email/value eq 'test@liferay.com')",
+				_individualsFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("activitiesCount"))));
 
 		Assert.assertEquals(individuals.toString(), 1, individuals.size());
@@ -497,7 +532,11 @@ public abstract class BaseIndividualRepositoryTestCase
 	@Test
 	public void testSearchIndividuals2() {
 		List<Individual> individuals = individualRepository.searchIndividuals(
-			11L, null, false, null, null,
+			11L,
+			new FilterHelper(
+				_faroInfoIndividualsFilterStringConverterHelper, null,
+				_individualsFilterStringConverterHelper),
+			false, null, null,
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(individuals.toString(), 1, individuals.size());
@@ -607,10 +646,20 @@ public abstract class BaseIndividualRepositoryTestCase
 	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
+	private FaroInfoIndividualsFilterStringConverterHelper
+		_faroInfoIndividualsFilterStringConverterHelper;
+
+	@Autowired
 	private FieldMappingRepository _fieldMappingRepository;
 
 	private Long _individual1Id;
 	private Long _individual2Id;
+	private Long _individualId;
+
+	@Autowired
+	private IndividualsFilterStringConverterHelper
+		_individualsFilterStringConverterHelper;
+
 	private Long _segmentId;
 
 }

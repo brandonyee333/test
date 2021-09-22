@@ -17,10 +17,10 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.cache.annotation.CacheEvict;
@@ -38,6 +38,11 @@ import org.springframework.lang.Nullable;
 public interface IndividualRepository extends Repository<Individual, Long> {
 
 	@Cacheable
+	public long countByFieldNamesAndQueryAndSegmentId(
+		List<String> fieldNames, @Nullable String query,
+		@Nullable Long segmentId);
+
+	@Cacheable
 	public long countByIdAfter(Long individualId);
 
 	@Cacheable
@@ -45,70 +50,68 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 		List<Long> individualIds, @Nullable String keywords);
 
 	@Cacheable
-	public long countByQueryAndSegmentId(
-		@Nullable String query, @Nullable Long segmentId);
-
 	public long countIndividuals(
-		@Nullable Long channelId, @Nullable String filterString,
+		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId);
 
 	@Cacheable
-	public long countKnownIndividuals(List<Long> ids);
+	public long countKnownIndividualsByAnySegmentIds(
+		@Param("segmentId") Long segmentId);
 
 	@Cacheable
-	public long countKnownIndividuals(Long segmentId);
+	public long countKnownIndividualsByIdIn(@Param("ids") List<Long> ids);
 
+	@Cacheable
 	public boolean existsByChannelIdAndFilterStringAndId(
-		@Nullable Long channelId, @Nullable String filterString,
+		@Nullable Long channelId, FilterHelper filterHelper,
 		@Nullable Long individualId);
 
+	@Cacheable
 	public boolean
 		existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
-			@Nullable Long channelId, @Nullable String filterString,
+			@Nullable Long channelId, FilterHelper filterHelper,
 			Boolean includeAnonymousUsers, @Nullable Long individualId);
 
+	@Cacheable
 	public boolean existsByFilterStringAndId(
-		@Nullable String filterString, @Nullable Long individualId);
+		FilterHelper filterHelper, @Nullable Long individualId);
+
+	@Cacheable
+	public List<String> findAccountPKsByChannelIdAndSegmentId(
+		@Nullable Long channelId, @Nullable Long segmentId);
 
 	@Cacheable
 	public List<Individual.ActivitiesCount> findActivitiesCounts(
 		boolean includeAnonymousUsers, Long segmentId);
 
+	@Cacheable
 	public List<Individual> findAnonymousByCreateDateAndLastActivityDate(
 		String dateString, Pageable pageable);
 
 	@Cacheable
-	public List<Individual> findByAnySegmentIds(
-		@Param("segmentId") Long segmentId);
-
-	@Cacheable
-	public Optional<Individual>
-		findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
-			Long associatedId, Long dataSourceId, String fieldName,
-			String individualPK);
-
-	@Cacheable
-	public List<Individual> findByChannelIdAndSegmentId(
-		@Nullable Long channelId, @Nullable Long segmentId);
+	public Individual findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
+		Long associatedId, Long dataSourceId, String fieldName,
+		String individualPK);
 
 	@Cacheable
 	public List<Individual> findByDataSourceId(
 		Long dataSourceId, Pageable pageable);
 
 	@Cacheable
-	public Optional<Individual> findByDataSourceIdAndIndividualPK(
+	public Individual findByDataSourceIdAndIndividualPK(
 		Long dataSourceId, String individualPK);
 
 	@Cacheable
-	public Optional<Individual> findByEmailAddress(String emailAddress);
+	public Individual findByEmailAddress(String emailAddress);
 
 	@Cacheable
-	public Optional<Individual> findByEmailAddressHashed(
-		String emailAddressHashed);
+	public Individual findByEmailAddressHashed(String emailAddressHashed);
 
-	public Optional<Individual> findByEmailAddressOrEmailAddressHashed(
-		@Nullable String emailAddress, @Nullable String emailAddressHashed);
+	@Cacheable
+	public List<Individual> findByFieldNamesAndQueryAndSegmentId(
+		List<String> fieldNames, @Nullable String query,
+		@Nullable Long segmentId, Pageable pageable);
 
 	@Cacheable
 	public List<Individual> findByIdAfter(Long individualId, Pageable pageable);
@@ -118,8 +121,7 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 		List<Long> individualIds, @Nullable String keywords, Pageable pageable);
 
 	@Cacheable
-	public List<Individual> findByQueryAndSegmentId(
-		@Nullable String query, @Nullable Long segmentId, Pageable pageable);
+	public List<Individual> findBySegmentIds(Long segmentId);
 
 	@Cacheable
 	public List<Long> findIdsByAnySegmentIds(
@@ -129,30 +131,34 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 	public Map<Long, Long> findIndividualCounts(
 		boolean includeAnonymousUsers, Long segmentId);
 
+	@Cacheable
 	public List<Long> findKnownIndividualIds(
-		@Nullable String filterString, Long segmentId);
+		FilterHelper filterHelper, Long segmentId);
 
+	@Cacheable
 	public List<Distribution> getIndividualDistributions(
-		String fieldName, String fieldType, @Nullable String filterString,
+		String fieldName, String fieldType, FilterHelper filterHelper,
 		Pageable pageable);
 
+	@Cacheable
 	public List<Transformation> getIndividualTransformations(
-		String apply, @Nullable Long channelId, @Nullable String filterString,
+		String apply, @Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId, Pageable pageable);
 
+	@Cacheable
 	public List<Individual> searchIndividuals(
-		@Nullable Long channelId, @Nullable String filterString,
+		FilterHelper filterHelper, Pageable pageable);
+
+	@Cacheable
+	public List<Individual> searchIndividuals(
+		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId, Pageable pageable);
-
-	public List<Individual> searchIndividuals(
-		String filterString, Pageable pageable);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
 	public void updateAssociatedIds(
-		@Param("fieldName") String fieldName, @Param("ids") Set<Long> ids,
-		@Param("individualId") Long individualId);
+		String fieldName, Set<Long> ids, Long individualId);
 
 }

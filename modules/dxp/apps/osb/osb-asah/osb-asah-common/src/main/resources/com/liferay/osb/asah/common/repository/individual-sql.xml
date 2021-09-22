@@ -2,28 +2,31 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
-	<entry key="Individual.findByAnySegmentIds">
+	<entry key="Individual.countKnownIndividualsByAnySegmentIds">
 		<![CDATA[
 			SELECT
-				Individual.*
+				COUNT(Individual)
 			FROM
 				Individual
 			WHERE
 				:segmentId = ANY(Individual.segmentIds)
+			ORDER BY
+				Individual.id
 		]]>
 	</entry>
-	<entry key="Individual.findByEmailAddress">
+	<entry key="Individual.countKnownIndividualsByIdIn">
 		<![CDATA[
 			SELECT
-				Individual.*
+				COUNT(Individual)
 			FROM
 				Individual
-			INNER JOIN
+			JOIN
 				Field ON
-					Individual.id = Field.ownerId
+					Individual.id = Field.ownerid
 			WHERE
-				Field.name = 'email' AND
-				Field.value = :emailAddress
+				:segmentId = ANY(Individual.segmentIds) AND
+				Field.name = "email" AND
+				Field.value IS NOT NULL
 		]]>
 	</entry>
 	<entry key="Individual.findIdsByAnySegmentIds">
@@ -34,6 +37,8 @@
 				Individual
 			WHERE
 				:segmentId = ANY(Individual.segmentIds)
+			ORDER BY
+				Individual.id
 		]]>
 	</entry>
 </properties>

@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -42,6 +43,7 @@ import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -1292,7 +1294,10 @@ public class IndividualsFilterStringConverterHelperTest {
 		String filterString, Long... expectedIndividualIds) {
 
 		List<Individual> individuals = _individualRepository.searchIndividuals(
-			filterString, PageRequest.of(0, 100));
+			new FilterHelper(
+				_faroInfoIndividualsFilterStringConverterHelper, filterString,
+				_individualsFilterStringConverterHelper),
+			PageRequest.of(0, 100));
 
 		Stream<Individual> stream = individuals.stream();
 
@@ -1565,6 +1570,10 @@ public class IndividualsFilterStringConverterHelperTest {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FaroInfoIndividualsFilterStringConverterHelper
+		_faroInfoIndividualsFilterStringConverterHelper;
 
 	@Autowired
 	private FieldMappingRepository _fieldMappingRepository;

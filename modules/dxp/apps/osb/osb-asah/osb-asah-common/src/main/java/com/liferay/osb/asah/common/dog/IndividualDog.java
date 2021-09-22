@@ -21,12 +21,12 @@ import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -35,10 +35,11 @@ import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.DataSourceIndividualRepository;
+import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
-import com.liferay.osb.asah.common.repository.IndividualChannelRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ListUtil;
@@ -214,7 +215,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 				));
 		}
 
-		return populateIndividual(individual);
+		return _populateIndividual(individual);
 	}
 
 	public Individual addIndividual(
@@ -391,7 +392,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		segmentIds.add(segmentId);
 
-		return updateIndividual(individualId, individual, false);
+		return _populateIndividual(_individualRepository.save(individual));
 	}
 
 	public long countIndividuals(List<Long> individualIds) {
@@ -407,11 +408,21 @@ public class IndividualDog extends BaseFaroInfoDog {
 		Long channelId, String filterString, Boolean includeAnonymousUsers) {
 
 		return _individualRepository.countIndividuals(
-			channelId, filterString, includeAnonymousUsers, null, null);
+			channelId,
+			new FilterHelper(
+				_faroInfoIndividualsFilterStringConverterHelper, filterString,
+				_individualsFilterStringConverterHelper),
+			includeAnonymousUsers, null, null);
 	}
 
 	public long countIndividuals(String query, Long segmentId) {
-		return _individualRepository.countByQueryAndSegmentId(query, segmentId);
+		List<String> fieldNames =
+			_fieldMappingRepository.
+				findFieldNameByContextAndFieldTypeAndOwnerType(
+					"demographics", "Text", "individual");
+
+		return _individualRepository.countByFieldNamesAndQueryAndSegmentId(
+			fieldNames, query, segmentId);
 	}
 
 	public void deleteIndividual(Date deletionDate, Long individualId) {
@@ -491,11 +502,18 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		if (channelId == null) {
 			return _individualRepository.existsByFilterStringAndId(
-				filterString, individualId);
+				new FilterHelper(
+					_faroInfoIndividualsFilterStringConverterHelper,
+					filterString, _individualsFilterStringConverterHelper),
+				individualId);
 		}
 
 		return _individualRepository.existsByChannelIdAndFilterStringAndId(
-			channelId, filterString, individualId);
+			channelId,
+			new FilterHelper(
+				_faroInfoIndividualsFilterStringConverterHelper, filterString,
+				_individualsFilterStringConverterHelper),
+			individualId);
 	}
 
 	public boolean existsByDataSourceIndividualPK(
@@ -522,15 +540,15 @@ public class IndividualDog extends BaseFaroInfoDog {
 		Optional<Individual> individualOptional =
 			_individualRepository.findById(individualId);
 
-		return populateIndividual(individualOptional.orElse(null));
+		return _populateIndividual(individualOptional.orElse(null));
 	}
 
 	public Individual fetchIndividual(Long dataSourceId, String userId) {
-		Optional<Individual> individualOptional =
+		Individual individual =
 			_individualRepository.findByDataSourceIdAndIndividualPK(
 				dataSourceId, userId);
 
-		return populateIndividual(individualOptional.orElse(null));
+		return _populateIndividual(individual);
 	}
 
 	public Individual
@@ -538,38 +556,54 @@ public class IndividualDog extends BaseFaroInfoDog {
 			Long associationId, Long dataSourceId, String fieldName,
 			String individualPK) {
 
-		Optional<Individual> individualOptional =
+		Individual individual =
 			_individualRepository.
 				findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
 					associationId, dataSourceId, fieldName, individualPK);
 
-		return populateIndividual(individualOptional.orElse(null));
+		return _populateIndividual(individual);
 	}
 
 	public Individual fetchIndividualByEmailAddress(String emailAddress) {
-		Optional<Individual> individualOptional =
-			_individualRepository.findByEmailAddress(emailAddress);
+		Individual individual = _individualRepository.findByEmailAddress(
+			emailAddress);
 
-		return populateIndividual(individualOptional.orElse(null));
+		return _populateIndividual(individual);
 	}
 
 	public Individual fetchIndividualByEmailAddressHashed(
 		String emailAddressHashed) {
 
-		Optional<Individual> individualOptional =
-			_individualRepository.findByEmailAddressHashed(emailAddressHashed);
+		Individual individual = _individualRepository.findByEmailAddressHashed(
+			emailAddressHashed);
 
-		return populateIndividual(individualOptional.orElse(null));
+		return _populateIndividual(individual);
 	}
 
 	public Individual fetchIndividualByEmailAddressOrEmailAddressHashed(
 		String emailAddress, String emailAddressHashed) {
 
-		Optional<Individual> individualOptional =
-			_individualRepository.findByEmailAddressOrEmailAddressHashed(
-				emailAddress, emailAddressHashed);
+		if (StringUtils.isBlank(emailAddress)) {
+			return _individualRepository.findByEmailAddressHashed(
+				emailAddressHashed);
+		}
 
-		return populateIndividual(individualOptional.orElse(null));
+		Individual individual = _individualRepository.findByEmailAddress(
+			emailAddress);
+
+		if (individual == null) {
+			return _individualRepository.findByEmailAddressHashed(
+				emailAddressHashed);
+		}
+
+		return individual;
+	}
+
+	public List<String> getAccountPKs(
+		Long channelId, Long individualSegmentId) {
+
+		return _individualRepository.findAccountPKsByChannelIdAndSegmentId(
+			channelId, individualSegmentId);
 	}
 
 	public List<Individual.ActivitiesCount> getActivitiesCounts(
@@ -631,7 +665,11 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		List<Distribution> distributions =
 			_individualRepository.getIndividualDistributions(
-				fieldName, fieldType, filterString, pageRequest);
+				fieldName, fieldType,
+				new FilterHelper(
+					_faroInfoIndividualsFilterStringConverterHelper,
+					filterString, _individualsFilterStringConverterHelper),
+				pageRequest);
 
 		return PageableExecutionUtils.getPage(
 			distributions, pageRequest, distributions::size);
@@ -645,24 +683,15 @@ public class IndividualDog extends BaseFaroInfoDog {
 		Optional<Individual> individualOptional =
 			_individualRepository.findById(id);
 
-		return populateIndividual(
+		return _populateIndividual(
 			individualOptional.orElseThrow(
 				() -> new OSBAsahException(
 					HttpStatus.BAD_REQUEST,
 					"There is no individual with ID " + id)));
 	}
 
-	public Individual getIndividual(Long channelId, Long individualId)
-		throws Exception {
-
-		Individual individual = fetchIndividual(individualId);
-
-		if (individual == null) {
-			throw new Exception(
-				"Unable to find individual with ID " + individualId);
-		}
-
-		return populateIndividual(channelId, individual);
+	public Individual getIndividual(Long channelId, Long individualId) {
+		return _populateIndividual(channelId, getIndividual(individualId));
 	}
 
 	public Map<Long, Long> getIndividualCounts(
@@ -688,7 +717,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		List<Individual> individuals = _individualRepository.findByDataSourceId(
 			dataSourceId, PageRequest.of(page, size, sort));
 
-		return ListUtil.map(individuals, this::populateIndividual);
+		return ListUtil.map(individuals, this::_populateIndividual);
 	}
 
 	public List<Individual> getIndividuals(
@@ -696,34 +725,43 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		PageRequest pageRequest = PageRequest.of(page, size);
 
+		List<String> fieldNames =
+			_fieldMappingRepository.
+				findFieldNameByContextAndFieldTypeAndOwnerType(
+					"demographics", "Text", "individual");
+
 		List<Individual> individuals =
-			_individualRepository.findByQueryAndSegmentId(
-				query, segmentId, pageRequest);
+			_individualRepository.findByFieldNamesAndQueryAndSegmentId(
+				fieldNames, query, segmentId, pageRequest);
 
 		return ListUtil.map(
-			individuals, individual -> populateIndividual(individual));
+			individuals, individual -> _populateIndividual(individual));
 	}
 
 	public List<Individual> getIndividualsBySegmentId(Long segmentId) {
-		List<Individual> individuals =
-			_individualRepository.findByAnySegmentIds(segmentId);
+		List<Individual> individuals = _individualRepository.findBySegmentIds(
+			segmentId);
 
-		return ListUtil.map(individuals, this::populateIndividual);
+		return ListUtil.map(individuals, this::_populateIndividual);
 	}
 
 	public long getKnownIndividualCount(List<Long> ids) {
-		return _individualRepository.countKnownIndividuals(ids);
+		return _individualRepository.countKnownIndividualsByIdIn(ids);
 	}
 
 	public long getKnownIndividualCount(Long segmentId) {
-		return _individualRepository.countKnownIndividuals(segmentId);
+		return _individualRepository.countKnownIndividualsByAnySegmentIds(
+			segmentId);
 	}
 
 	public List<Long> getKnownIndividualIds(
 		String filterString, Long segmentId) {
 
 		return _individualRepository.findKnownIndividualIds(
-			filterString, segmentId);
+			new FilterHelper(
+				_faroInfoIndividualsFilterStringConverterHelper, filterString,
+				_individualsFilterStringConverterHelper),
+			segmentId);
 	}
 
 	public Page<Transformation> getTransformationsPage(
@@ -739,8 +777,12 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		List<Transformation> transformations =
 			_individualRepository.getIndividualTransformations(
-				apply, channelId, filterString, includeAnonymousUsers,
-				_getSegmentChannelId(segmentId), segmentId, pageRequest);
+				apply, channelId,
+				new FilterHelper(
+					_faroInfoIndividualsFilterStringConverterHelper,
+					filterString, _individualsFilterStringConverterHelper),
+				includeAnonymousUsers, _getSegmentChannelId(segmentId),
+				segmentId, pageRequest);
 
 		return PageableExecutionUtils.getPage(
 			transformations, pageRequest, transformations::size);
@@ -754,101 +796,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		_collections = ArrayUtils.remove(
 			collections, ArrayUtils.indexOf(collections, "user-sessions"));
-	}
-
-	public Individual populateIndividual(Individual individual) {
-		if (individual == null) {
-			return null;
-		}
-
-		List<Field> fields = _fieldDog.getOwnerIdFields(
-			"demographics", individual.getId());
-
-		Stream<Field> stream = fields.stream();
-
-		Set<Field> fieldSet = stream.collect(Collectors.toSet());
-
-		individual.setDemographics(new Individual.Demographics(fieldSet));
-		individual.setFields(fieldSet);
-
-		List<Field> customFields = _fieldDog.getOwnerIdFields(
-			"custom", individual.getId());
-
-		stream = customFields.stream();
-
-		Set<Field> customFieldSet = stream.collect(Collectors.toSet());
-
-		individual.setCustomDemographics(
-			new Individual.Demographics(customFieldSet));
-		individual.setCustomFields(customFieldSet);
-
-		List<DataSourceIndividual> dataSourceIndividuals =
-			_dataSourceIndividualRepository.findByIndividualId(
-				individual.getId());
-
-		individual.setDataSourceIndividuals(
-			new HashSet<>(dataSourceIndividuals));
-
-		List<IndividualChannel> individualChannels =
-			_individualChannelRepository.findByIndividualId(individual.getId());
-
-		individual.setIndividualChannels(new HashSet<>(individualChannels));
-
-		Set<Long> channelIds = individual.getChannelIds();
-
-		for (IndividualChannel individualChannel : individualChannels) {
-			channelIds.add(individualChannel.getChannelId());
-		}
-
-		return individual;
-	}
-
-	public Individual populateIndividual(
-		Long channelId, Individual individual) {
-
-		Individual populatedIndividual = populateIndividual(individual);
-
-		Set<Individual.ActivitiesCount> activitiesCounts =
-			individual.getActivitiesCounts();
-
-		Stream<Individual.ActivitiesCount> activitiesCountsStream =
-			activitiesCounts.stream();
-
-		Optional<Individual.ActivitiesCount> activitiesCountOptional =
-			activitiesCountsStream.filter(
-				activityCount -> Objects.equals(
-					activityCount.getChannelId(), channelId)
-			).findFirst();
-
-		activitiesCountOptional.ifPresent(
-			individualActivitiesCount -> {
-				populatedIndividual.setActivitiesCount(
-					individualActivitiesCount.getActivitiesCount());
-				populatedIndividual.setActivitiesCounts(
-					Collections.singleton(individualActivitiesCount));
-			});
-
-		Set<Individual.LastActivityDate> lastActivityDates =
-			individual.getLastActivityDates();
-
-		Stream<Individual.LastActivityDate> lastActivityDatesStream =
-			lastActivityDates.stream();
-
-		Optional<Individual.LastActivityDate> lastActivityDateOptional =
-			lastActivityDatesStream.filter(
-				lastActivityDate -> Objects.equals(
-					lastActivityDate.getChannelId(), channelId)
-			).findFirst();
-
-		lastActivityDateOptional.ifPresent(
-			individualLastActivityDate -> {
-				populatedIndividual.setLastActivityDate(
-					individualLastActivityDate.getLastActivityDate());
-				populatedIndividual.setLastActivityDates(
-					Collections.singleton(individualLastActivityDate));
-			});
-
-		return populatedIndividual;
 	}
 
 	public Individual removeDataSourceIndividualPKs(
@@ -877,6 +824,14 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return updateIndividual(individual);
 	}
 
+	public Individual removeDemographics(Individual individual) {
+		_fieldDog.deleteFields("demographics", individual.getId());
+
+		individual.setFields(Collections.emptySet());
+
+		return updateIndividual(individual);
+	}
+
 	public Individual removeSegmentId(Individual individual, Long segmentId) {
 		if (individual == null) {
 			return null;
@@ -900,7 +855,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			}
 		}
 
-		return updateIndividual(individualId, individual, false);
+		return _populateIndividual(_individualRepository.save(individual));
 	}
 
 	public Individual removeSegmentId(Long individualId, Long segmentId) {
@@ -915,7 +870,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 				individualIds, _escapeKeywords(keywords),
 				PageRequest.of(start, size));
 
-		return ListUtil.map(individuals, this::populateIndividual);
+		return ListUtil.map(individuals, this::_populateIndividual);
 	}
 
 	public List<Individual> searchIndividuals(
@@ -924,10 +879,14 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		return ListUtil.map(
 			_individualRepository.searchIndividuals(
-				channelId, null, includeAnonymousUsers,
-				_getSegmentChannelId(segmentId), segmentId,
-				PageRequest.of(page, size, _getSort(sorts))),
-			individual -> populateIndividual(channelId, individual));
+				channelId,
+				new FilterHelper(
+					_faroInfoIndividualsFilterStringConverterHelper, null,
+					_individualsFilterStringConverterHelper),
+				includeAnonymousUsers, _getSegmentChannelId(segmentId),
+				segmentId, PageRequest.of(page, size, _getSort(sorts))),
+			individual -> _populateIndividual(
+				channelId, _populateIndividual(individual)));
 	}
 
 	public List<Individual> searchIndividuals(
@@ -936,9 +895,14 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		return ListUtil.map(
 			_individualRepository.searchIndividuals(
-				channelId, filterString, includeAnonymousUsers, null, null,
+				channelId,
+				new FilterHelper(
+					_faroInfoIndividualsFilterStringConverterHelper,
+					filterString, _individualsFilterStringConverterHelper),
+				includeAnonymousUsers, null, null,
 				PageRequest.of(page, size, _getSort(sorts))),
-			individual -> populateIndividual(channelId, individual));
+			individual -> _populateIndividual(
+				channelId, _populateIndividual(individual)));
 	}
 
 	public List<Individual> searchIndividuals(
@@ -947,7 +911,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return ListUtil.map(
 			_individualRepository.findAnonymousByCreateDateAndLastActivityDate(
 				dateString, PageRequest.of(page, size)),
-			this::populateIndividual);
+			this::_populateIndividual);
 	}
 
 	public Page<Individual> searchIndividualsPage(
@@ -973,14 +937,20 @@ public class IndividualDog extends BaseFaroInfoDog {
 		Long segmentChannelId = _getSegmentChannelId(segmentId);
 
 		List<Individual> individuals = _individualRepository.searchIndividuals(
-			null, filterString, includeAnonymousUsers, segmentChannelId,
-			segmentId, pageRequest);
+			null,
+			new FilterHelper(
+				_faroInfoIndividualsFilterStringConverterHelper, filterString,
+				_individualsFilterStringConverterHelper),
+			includeAnonymousUsers, segmentChannelId, segmentId, pageRequest);
 
 		return PageableExecutionUtils.getPage(
-			ListUtil.map(individuals, this::populateIndividual), pageRequest,
+			ListUtil.map(individuals, this::_populateIndividual), pageRequest,
 			() -> _individualRepository.countIndividuals(
-				null, filterString, includeAnonymousUsers, segmentChannelId,
-				segmentId));
+				null,
+				new FilterHelper(
+					_faroInfoIndividualsFilterStringConverterHelper,
+					filterString, _individualsFilterStringConverterHelper),
+				includeAnonymousUsers, segmentChannelId, segmentId));
 	}
 
 	public void updateDynamicMemberships(Date modifiedDate, Segment segment) {
@@ -1014,8 +984,12 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 			if (_individualRepository.
 					existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
-						channelId, filterString, includeAnonymousUsers,
-						membership.getIndividualId())) {
+						channelId,
+						new FilterHelper(
+							_faroInfoIndividualsFilterStringConverterHelper,
+							filterString,
+							_individualsFilterStringConverterHelper),
+						includeAnonymousUsers, membership.getIndividualId())) {
 
 				continue;
 			}
@@ -1025,15 +999,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	public Individual updateIndividual(Individual individual) {
-		individual = _individualRepository.save(individual);
-
-		Long individualId = individual.getId();
-
-		if (individualId == null) {
-			return individual;
-		}
-
-		return fetchIndividual(individualId);
+		return _populateIndividual(_individualRepository.save(individual));
 	}
 
 	public Individual updateIndividual(
@@ -1078,7 +1044,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			_individualModified(individual, oldIndividualName);
 		}
 
-		return populateIndividual(individual);
+		return _populateIndividual(individual);
 	}
 
 	public Individual updateIndividual(
@@ -1137,7 +1103,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		individual.setModifiedDate(new Date());
 
-		individual = populateIndividual(_individualRepository.save(individual));
+		individual = _populateIndividual(
+			_individualRepository.save(individual));
 
 		List<Field> emailFields =
 			_fieldRepository.findByContextAndNameAndOwnerIdAndOwnerType(
@@ -1192,7 +1159,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		_updateIndividualAssociations(dataJSONObject, individual);
 
-		individual = populateIndividual(_individualRepository.save(individual));
+		individual = _populateIndividual(
+			_individualRepository.save(individual));
 
 		_individualModified(individual, oldIndividualName);
 
@@ -1285,6 +1253,72 @@ public class IndividualDog extends BaseFaroInfoDog {
 			_membershipChangeDog.updateIndividualNameForIndividual(
 				individual.getId(), newIndividualName);
 		}
+	}
+
+	private Individual _populateIndividual(Individual individual) {
+		if (individual == null) {
+			return null;
+		}
+
+		individual.setCustomFields(
+			new HashSet<>(
+				_fieldDog.getOwnerIdFields("custom", individual.getId())));
+		individual.setFields(
+			new HashSet<>(
+				_fieldDog.getOwnerIdFields(
+					"demographics", individual.getId())));
+
+		return individual;
+	}
+
+	private Individual _populateIndividual(
+		Long channelId, Individual individual) {
+
+		if (individual == null) {
+			return null;
+		}
+
+		Set<Individual.ActivitiesCount> activitiesCounts =
+			individual.getActivitiesCounts();
+
+		Stream<Individual.ActivitiesCount> activitiesCountsStream =
+			activitiesCounts.stream();
+
+		Optional<Individual.ActivitiesCount> activitiesCountOptional =
+			activitiesCountsStream.filter(
+				activityCount -> Objects.equals(
+					activityCount.getChannelId(), channelId)
+			).findFirst();
+
+		activitiesCountOptional.ifPresent(
+			individualActivitiesCount -> {
+				individual.setActivitiesCount(
+					individualActivitiesCount.getActivitiesCount());
+				individual.setActivitiesCounts(
+					Collections.singleton(individualActivitiesCount));
+			});
+
+		Set<Individual.LastActivityDate> lastActivityDates =
+			individual.getLastActivityDates();
+
+		Stream<Individual.LastActivityDate> lastActivityDatesStream =
+			lastActivityDates.stream();
+
+		Optional<Individual.LastActivityDate> lastActivityDateOptional =
+			lastActivityDatesStream.filter(
+				lastActivityDate -> Objects.equals(
+					lastActivityDate.getChannelId(), channelId)
+			).findFirst();
+
+		lastActivityDateOptional.ifPresent(
+			individualLastActivityDate -> {
+				individual.setLastActivityDate(
+					individualLastActivityDate.getLastActivityDate());
+				individual.setLastActivityDates(
+					Collections.singleton(individualLastActivityDate));
+			});
+
+		return individual;
 	}
 
 	private void _setFirstEnrichmentDate(Individual individual) {
@@ -1380,9 +1414,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 	private String[] _collections;
 
 	@Autowired
-	private DataSourceIndividualRepository _dataSourceIndividualRepository;
-
-	@Autowired
 	private DXPEntityDog _dxpEntityDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
@@ -1392,16 +1423,24 @@ public class IndividualDog extends BaseFaroInfoDog {
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Autowired
+	private FaroInfoIndividualsFilterStringConverterHelper
+		_faroInfoIndividualsFilterStringConverterHelper;
+
+	@Autowired
 	private FieldDog _fieldDog;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private FieldRepository _fieldRepository;
 
 	@Autowired
-	private IndividualChannelRepository _individualChannelRepository;
+	private IndividualRepository _individualRepository;
 
 	@Autowired
-	private IndividualRepository _individualRepository;
+	private IndividualsFilterStringConverterHelper
+		_individualsFilterStringConverterHelper;
 
 	@Autowired
 	private MembershipChangeDog _membershipChangeDog;

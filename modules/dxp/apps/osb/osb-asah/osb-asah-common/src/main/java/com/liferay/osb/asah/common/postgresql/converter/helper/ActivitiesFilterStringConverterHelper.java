@@ -102,8 +102,8 @@ public class ActivitiesFilterStringConverterHelper
 			return null;
 		}
 
-		List<Individual> individuals =
-			_individualRepository.findByAnySegmentIds(segment.getId());
+		List<Individual> individuals = _individualRepository.findBySegmentIds(
+			segment.getId());
 
 		Stream<Individual> stream = individuals.stream();
 

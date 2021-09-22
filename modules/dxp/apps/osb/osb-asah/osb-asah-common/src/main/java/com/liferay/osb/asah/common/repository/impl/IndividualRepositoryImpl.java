@@ -15,14 +15,12 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.FieldMapping;
+import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
-import com.liferay.osb.asah.common.repository.FieldMappingRepository;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
-import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.math.BigDecimal;
@@ -35,9 +33,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.regex.Matcher;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -58,7 +58,6 @@ import org.jooq.Table;
 import org.jooq.UpdateSetFirstStep;
 import org.jooq.impl.DSL;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
@@ -72,32 +71,9 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countByIdsInAndKeywords(
-		List<Long> individualIds, @Nullable String keywords) {
-
-		return _dslContext.select(
-			DSL.countDistinct(DSL.field("individual.id"))
-		).from(
-			"Individual"
-		).join(
-			"Field"
-		).on(
-			DSL.field(
-				"individual.id"
-			).eq(
-				DSL.field("field.ownerid")
-			)
-		).where(
-			_getConditions(individualIds, keywords)
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
-	}
-
-	public long countByQueryAndSegmentId(
-		@Nullable String query, @Nullable Long segmentId) {
+	public long countByFieldNamesAndQueryAndSegmentId(
+		List<String> fieldNames, @Nullable String query,
+		@Nullable Long segmentId) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -130,13 +106,9 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			);
 		}
 
-		List<FieldMapping> fieldMappings =
-			_fieldMappingRepository.findByContextAndFieldTypeAndOwnerType(
-				"demographics", "Text", "individual");
-
 		Condition condition = DSL.noCondition();
 
-		for (FieldMapping fieldMapping : fieldMappings) {
+		for (String fieldName : fieldNames) {
 			condition = condition.or(
 				DSL.and(
 					DSL.field(
@@ -147,7 +119,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 					DSL.field(
 						"field.name"
 					).eq(
-						fieldMapping.getFieldName()
+						fieldName
 					)));
 		}
 
@@ -172,13 +144,36 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public long countByIdsInAndKeywords(
+		List<Long> individualIds, @Nullable String keywords) {
+
+		return _dslContext.select(
+			DSL.countDistinct(DSL.field("individual.id"))
+		).from(
+			"Individual"
+		).join(
+			"Field"
+		).on(
+			DSL.field(
+				"individual.id"
+			).eq(
+				DSL.field("field.ownerid")
+			)
+		).where(
+			_getConditions(individualIds, keywords)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
 	public long countIndividuals(
-		@Nullable Long channelId, @Nullable String filterString,
+		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId) {
 
-		Condition condition = ConditionUtil.toCondition(
-			filterString, _individualsFilterStringConverterHelper);
+		Condition condition = filterHelper.getCondition();
 
 		if (segmentChannelId != null) {
 			condition = condition.and(
@@ -233,83 +228,11 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public long countKnownIndividuals(List<Long> ids) {
-		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.selectCount();
-
-		return selectSelectStep.from(
-			"Individual"
-		).innerJoin(
-			"Field"
-		).on(
-			DSL.field(
-				"individual.id"
-			).eq(
-				DSL.field("field.ownerid")
-			),
-			DSL.field(
-				"field.name"
-			).eq(
-				"email"
-			),
-			DSL.field(
-				"field.value"
-			).isNotNull()
-		).where(
-			DSL.field(
-				"individual.id"
-			).in(
-				ids
-			)
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
-	}
-
-	public long countKnownIndividuals(Long segmentId) {
-		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.selectCount();
-
-		return selectSelectStep.from(
-			"Individual"
-		).innerJoin(
-			"Field"
-		).on(
-			DSL.field(
-				"individual.id"
-			).eq(
-				DSL.field("field.ownerid")
-			),
-			DSL.field(
-				"field.name"
-			).eq(
-				"email"
-			),
-			DSL.field(
-				"field.value"
-			).isNotNull()
-		).where(
-			DSL.field(
-				DSL.cast(
-					DSL.array(DSL.field("individual.segmentids")), Long[].class)
-			).contains(
-				DSL.cast(DSL.array(segmentId), Long[].class)
-			)
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
-	}
-
 	public boolean existsByChannelIdAndFilterStringAndId(
-		@Nullable Long channelId, @Nullable String filterString,
+		@Nullable Long channelId, FilterHelper filterHelper,
 		@Nullable Long individualId) {
 
-		Condition condition = ConditionUtil.toCondition(
-			filterString, _individualsFilterStringConverterHelper);
+		Condition condition = filterHelper.getCondition();
 
 		if (channelId != null) {
 			condition = condition.and(
@@ -358,11 +281,10 @@ public class IndividualRepositoryImpl extends BaseRepository {
 
 	public boolean
 		existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
-			@Nullable Long channelId, @Nullable String filterString,
+			@Nullable Long channelId, FilterHelper filterHelper,
 			Boolean includeAnonymousUsers, @Nullable Long individualId) {
 
-		Condition condition = ConditionUtil.toCondition(
-			filterString, _individualsFilterStringConverterHelper);
+		Condition condition = filterHelper.getCondition();
 
 		if (channelId != null) {
 			condition = condition.and(
@@ -417,10 +339,72 @@ public class IndividualRepositoryImpl extends BaseRepository {
 	}
 
 	public boolean existsByFilterStringAndId(
-		@Nullable String filterString, @Nullable Long individualId) {
+		FilterHelper filterHelper, @Nullable Long individualId) {
 
 		return existsByChannelIdAndFilterStringAndId(
-			null, filterString, individualId);
+			null, filterHelper, individualId);
+	}
+
+	public List<String> findAccountPKsByChannelIdAndSegmentId(
+		@Nullable Long channelId, @Nullable Long segmentId) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.channelids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(channelId), Long[].class)
+				));
+		}
+
+		if (segmentId != null) {
+			conditions.add(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.segmentids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(segmentId), Long[].class)
+				));
+		}
+
+		Field<Object> accountPKField = DSL.field("accountPK");
+
+		SelectSelectStep<Record1<Object>> selectSelectStep =
+			_dslContext.selectDistinct(accountPKField);
+
+		return selectSelectStep.from(
+			_dslContext.select(
+				DSL.function(
+					"unnest", String.class,
+					DSL.field("DataSourceIndividual.accountPKs")
+				).as(
+					accountPKField
+				)
+			).from(
+				"Individual"
+			).join(
+				"DataSourceIndividual"
+			).on(
+				DSL.field(
+					"individual.id"
+				).eq(
+					DSL.field("datasourceindividual.individualid")
+				)
+			).where(
+				conditions
+			)
+		).groupBy(
+			accountPKField
+		).orderBy(
+			accountPKField
+		).fetch(
+			record -> (String)record.get(accountPKField)
+		);
 	}
 
 	public List<Individual.ActivitiesCount> findActivitiesCounts(
@@ -459,7 +443,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			"Individual"
 		).on(
 			DSL.field(
-				"individualchannel.individualId"
+				"individualchannel.individualid"
 			).eq(
 				DSL.field("individual.id")
 			)
@@ -468,7 +452,6 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		).groupBy(
 			DSL.field("channelId")
 		).fetch(
-		).map(
 			record -> {
 				BigDecimal activitiesCount = (BigDecimal)record.get(
 					"activitiesCount");
@@ -490,48 +473,50 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				"Individual"
 			).asterisk());
 
-		return selectSelectStep.from(
-			"Individual"
-		).join(
-			"IndividualChannel"
-		).on(
-			DSL.field(
-				"individual.id"
-			).eq(
-				DSL.field("individualchannel.individualid")
-			)
-		).where(
-			DSL.and(
+		return _populateIndividuals(
+			selectSelectStep.from(
+				"Individual"
+			).join(
+				"IndividualChannel"
+			).on(
 				DSL.field(
-					"individual.createdate"
-				).lt(
-					date
-				),
-				DSL.field(
-					"individual.emailaddresshashed"
-				).isNull(),
-				DSL.not(
+					"individual.id"
+				).eq(
+					DSL.field("individualchannel.individualid")
+				)
+			).where(
+				DSL.and(
 					DSL.field(
-						"individualchannel.lastactivitydate"
-					).gt(
+						"individual.createdate"
+					).lt(
 						date
-					)))
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-		).map(
-			record -> new Individual(record.intoMap())
-		);
+					),
+					DSL.field(
+						"individual.emailaddresshashed"
+					).isNull(),
+					DSL.not(
+						DSL.field(
+							"individualchannel.lastactivitydate"
+						).gt(
+							date
+						)))
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			).fetch(
+				record -> new Individual(record.intoMap())
+			));
 	}
 
-	public Optional<Individual>
-		findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
-			Long associatedId, Long dataSourceId, String fieldName,
-			String individualPK) {
+	public Individual findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
+		Long associatedId, Long dataSourceId, String fieldName,
+		String individualPK) {
 
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"Individual"
+			).asterisk());
 
 		return selectSelectStep.from(
 			"Individual"
@@ -565,103 +550,60 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				))
 		).limit(
 			1
-		).fetchOptional(
-			record -> new Individual(record.intoMap())
-		);
-	}
-
-	public List<Individual> findByChannelIdAndSegmentId(
-		@Nullable Long channelId, @Nullable Long segmentId) {
-
-		List<Condition> conditions = new ArrayList<>();
-
-		if (channelId != null) {
-			conditions.add(
-				DSL.field(
-					DSL.cast(
-						DSL.array(DSL.field("individual.channelids")),
-						Long[].class)
-				).contains(
-					DSL.cast(DSL.array(channelId), Long[].class)
-				));
-		}
-
-		if (segmentId != null) {
-			conditions.add(
-				DSL.field(
-					DSL.cast(
-						DSL.array(DSL.field("individual.segmentids")),
-						Long[].class)
-				).contains(
-					DSL.cast(DSL.array(segmentId), Long[].class)
-				));
-		}
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		return selectSelectStep.select(
-			DSL.asterisk()
-		).from(
-			"Individual"
-		).where(
-			conditions
-		).fetch(
-		).map(
-			record -> new Individual(record.intoMap())
+		).fetchOne(
+			record -> _populateIndividual(new Individual(record.intoMap()))
 		);
 	}
 
 	public List<Individual> findByDataSourceId(
 		Long dataSourceId, Pageable pageable) {
 
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		return selectSelectStep.select(
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			DSL.table(
 				"Individual"
-			).asterisk()
-		).from(
-			"Individual"
-		).join(
-			"DataSourceIndividual"
-		).on(
-			DSL.field(
-				"individual.id"
-			).eq(
-				DSL.field("datasourceindividual.individualId")
-			)
-		).where(
-			DSL.field(
-				"datasourceindividual.datasourceid"
-			).eq(
-				dataSourceId
-			)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-		).map(
-			record -> new Individual(record.intoMap())
-		);
+			).asterisk());
+
+		return _populateIndividuals(
+			selectSelectStep.from(
+				"Individual"
+			).join(
+				"DataSourceIndividual"
+			).on(
+				DSL.field(
+					"individual.id"
+				).eq(
+					DSL.field("datasourceindividual.individualid")
+				)
+			).where(
+				DSL.field(
+					"datasourceindividual.datasourceid"
+				).eq(
+					dataSourceId
+				)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			).fetch(
+				record -> new Individual(record.intoMap())
+			));
 	}
 
-	public Optional<Individual> findByDataSourceIdAndIndividualPK(
+	public Individual findByDataSourceIdAndIndividualPK(
 		Long dataSourceId, String individualPK) {
 
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		return selectSelectStep.select(
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			DSL.table(
 				"Individual"
-			).asterisk()
-		).from(
+			).asterisk());
+
+		return selectSelectStep.from(
 			"DataSourceIndividual"
 		).join(
 			"Individual"
 		).on(
 			DSL.field(
-				"datasourceindividual.individualId"
+				"datasourceindividual.individualid"
 			).eq(
 				DSL.field("individual.id")
 			)
@@ -680,34 +622,12 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				))
 		).limit(
 			1
-		).fetchOptional(
-			record -> new Individual(record.intoMap())
+		).fetchOne(
+			record -> _populateIndividual(new Individual(record.intoMap()))
 		);
 	}
 
-	public Optional<Individual> findByEmailAddressOrEmailAddressHashed(
-		@Nullable String emailAddress, @Nullable String emailAddressHashed) {
-
-		if (StringUtils.isBlank(emailAddress)) {
-			return _individualRepository.findByEmailAddressHashed(
-				emailAddressHashed);
-		}
-
-		Optional<Individual> individualOptional =
-			_individualRepository.findByEmailAddress(emailAddress);
-
-		if (!individualOptional.isPresent()) {
-			return _individualRepository.findByEmailAddressHashed(
-				emailAddressHashed);
-		}
-
-		return individualOptional;
-	}
-
-	public List<Individual> findByIdsInAndKeywords(
-		List<Long> individualIds, @Nullable String keywords,
-		Pageable pageable) {
-
+	public Individual findByEmailAddress(String emailAddress) {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			DSL.table(
 				"Individual"
@@ -721,22 +641,28 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			DSL.field(
 				"individual.id"
 			).eq(
-				DSL.field("field.ownerid")
+				DSL.field("field.ownerId")
 			)
 		).where(
-			_getConditions(individualIds, keywords)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getPageNumber()
-		).fetch(
-		).map(
-			record -> new Individual(record.intoMap())
+			DSL.and(
+				DSL.field(
+					"field.name"
+				).eq(
+					"email"
+				),
+				DSL.field(
+					"field.value"
+				).eq(
+					emailAddress
+				))
+		).fetchOne(
+			record -> _populateIndividual(new Individual(record.intoMap()))
 		);
 	}
 
-	public List<Individual> findByQueryAndSegmentId(
-		@Nullable String query, @Nullable Long segmentId, Pageable pageable) {
+	public List<Individual> findByFieldNamesAndQueryAndSegmentId(
+		List<String> fieldNames, @Nullable String query,
+		@Nullable Long segmentId, Pageable pageable) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -761,27 +687,23 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				conditions.add(DSL.noCondition());
 			}
 
-			return selectSelectStep.from(
-				"Individual"
-			).where(
-				conditions
-			).limit(
-				pageable.getPageSize()
-			).offset(
-				pageable.getOffset()
-			).fetch(
-			).map(
-				record -> new Individual(record.intoMap())
-			);
+			return _populateIndividuals(
+				selectSelectStep.from(
+					"Individual"
+				).where(
+					conditions
+				).limit(
+					pageable.getPageSize()
+				).offset(
+					pageable.getOffset()
+				).fetch(
+					record -> new Individual(record.intoMap())
+				));
 		}
-
-		List<FieldMapping> fieldMappings =
-			_fieldMappingRepository.findByContextAndFieldTypeAndOwnerType(
-				"demographics", "Text", "individual");
 
 		Condition condition = DSL.noCondition();
 
-		for (FieldMapping fieldMapping : fieldMappings) {
+		for (String fieldName : fieldNames) {
 			condition = condition.or(
 				DSL.and(
 					DSL.field(
@@ -792,32 +714,86 @@ public class IndividualRepositoryImpl extends BaseRepository {
 					DSL.field(
 						"field.name"
 					).eq(
-						fieldMapping.getFieldName()
+						fieldName
 					)));
 		}
 
 		conditions.add(condition);
 
-		return selectSelectStep.from(
-			"Individual"
-		).join(
-			"Field"
-		).on(
-			DSL.field(
-				"individual.id"
-			).eq(
-				DSL.field("field.ownerid")
-			)
-		).where(
-			conditions
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-		).map(
-			record -> new Individual(record.intoMap())
-		);
+		return _populateIndividuals(
+			selectSelectStep.from(
+				"Individual"
+			).join(
+				"Field"
+			).on(
+				DSL.field(
+					"individual.id"
+				).eq(
+					DSL.field("field.ownerid")
+				)
+			).where(
+				conditions
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			).fetch(
+				record -> new Individual(record.intoMap())
+			));
+	}
+
+	public List<Individual> findByIdsInAndKeywords(
+		List<Long> individualIds, @Nullable String keywords,
+		Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"Individual"
+			).asterisk());
+
+		return _populateIndividuals(
+			selectSelectStep.from(
+				"Individual"
+			).join(
+				"Field"
+			).on(
+				DSL.field(
+					"individual.id"
+				).eq(
+					DSL.field("field.ownerid")
+				)
+			).where(
+				_getConditions(individualIds, keywords)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getPageNumber()
+			).fetch(
+				record -> new Individual(record.intoMap())
+			));
+	}
+
+	public List<Individual> findBySegmentIds(Long segmentId) {
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return _populateIndividuals(
+			selectSelectStep.select(
+				DSL.table(
+					"Individual"
+				).asterisk()
+			).from(
+				"Individual"
+			).where(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.segmentids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(segmentId), Long[].class)
+				)
+			).fetch(
+				record -> new Individual(record.intoMap())
+			));
 	}
 
 	public Map<Long, Long> findIndividualCounts(
@@ -844,7 +820,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		selectSelectStep.select(
 			DSL.field("channelid"),
 			DSL.countDistinct(
-				DSL.field("individualId")
+				DSL.field("individualid")
 			).as(
 				"individualcounts"
 			)
@@ -854,7 +830,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			"Individual"
 		).on(
 			DSL.field(
-				"individualchannel.individualId"
+				"individualchannel.individualid"
 			).eq(
 				DSL.field("individual.id")
 			)
@@ -863,7 +839,6 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		).groupBy(
 			DSL.field("individualchannel.channelId")
 		).fetch(
-		).map(
 			record -> {
 				Integer count = (Integer)record.get("individualcounts");
 
@@ -878,12 +853,9 @@ public class IndividualRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Long> findKnownIndividualIds(
-		@Nullable String filterString, Long segmentId) {
+		FilterHelper filterHelper, Long segmentId) {
 
-		List<Long> individualIds = new ArrayList<>();
-
-		Condition condition = ConditionUtil.toCondition(
-			filterString, _individualsFilterStringConverterHelper);
+		Condition condition = filterHelper.getCondition();
 
 		AggregateFunction<Object> aggregateFunction = DSL.max(
 			DSL.field("modifiedDate"));
@@ -911,7 +883,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record1<Object>> selectSelectStep =
 			_dslContext.selectDistinct(DSL.field("individual.id"));
 
-		selectSelectStep.from(
+		return selectSelectStep.from(
 			"Individual"
 		).join(
 			"Field"
@@ -946,28 +918,18 @@ public class IndividualRepositoryImpl extends BaseRepository {
 					"individual.emailaddresshashed"
 				).isNotNull())
 		).fetch(
-		).map(
-			record -> {
-				individualIds.add((Long)record.get("individual.id"));
-
-				return null;
-			}
+			record -> (Long)record.get("individual.id")
 		);
-
-		return individualIds;
 	}
 
 	public List<Distribution> getIndividualDistributions(
-		String fieldName, String fieldType, @Nullable String filterString,
+		String fieldName, String fieldType, FilterHelper filterHelper,
 		Pageable pageable) {
 
 		if (fieldType.equals("Number")) {
 			return _getIndividualNumbersDistributions(
-				fieldName, filterString, pageable);
+				fieldName, filterHelper.getCondition(), pageable);
 		}
-
-		Condition condition = ConditionUtil.toCondition(
-			filterString, _individualsFilterStringConverterHelper);
 
 		AggregateFunction<Object> aggregateFunction = DSL.max(
 			DSL.field("modifiedDate"));
@@ -986,7 +948,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			).from(
 				"Field"
 			).where(
-				condition
+				filterHelper.getCondition()
 			).groupBy(
 				ownerIdField, nameField
 			).asTable(
@@ -1032,7 +994,6 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new Distribution(
 				(Integer)record.get("count"),
 				Collections.singletonList(record.get("values")))
@@ -1040,7 +1001,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Transformation> getIndividualTransformations(
-		String apply, @Nullable Long channelId, @Nullable String filterString,
+		String apply, @Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId, Pageable pageable) {
 
@@ -1067,11 +1028,9 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		Field<Object> ownerIdField = DSL.field("ownerId");
 		Field<Object> valueField = DSL.field("value");
 
-		Condition fieldCondition = ConditionUtil.toCondition(
-			filterString, _individualsFilterStringConverterHelper);
+		Condition condition = filterHelper.getCondition();
 
-		fieldCondition = fieldCondition.and(
-			_getIncludeCondition(containsField));
+		condition = condition.and(_getIncludeCondition(containsField));
 
 		SelectSelectStep<Record> modifiedDateSelectSelectStep =
 			_dslContext.select();
@@ -1083,7 +1042,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			).from(
 				"Field"
 			).where(
-				fieldCondition.and(nameField.eq(fieldName))
+				condition.and(nameField.eq(fieldName))
 			).groupBy(
 				ownerIdField, nameField
 			).asTable(
@@ -1167,7 +1126,6 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new Transformation(
 				new Transformation.Term(
 					Collections.singletonMap(
@@ -1177,7 +1135,65 @@ public class IndividualRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Individual> searchIndividuals(
-		@Nullable Long channelId, @Nullable String filterString,
+		FilterHelper filterHelper, Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
+			DSL.table(
+				"Individual"
+			).asterisk());
+
+		SelectOnConditionStep<Record> selectOnConditionStep =
+			selectSelectStep.from(
+				"Individual"
+			).join(
+				"Field"
+			).on(
+				DSL.field(
+					"individual.id"
+				).eq(
+					DSL.field("field.ownerid")
+				)
+			).join(
+				"DataSourceIndividual"
+			).on(
+				DSL.field(
+					"individual.id"
+				).eq(
+					DSL.field("datasourceindividual.individualid")
+				)
+			);
+
+		String filterString = filterHelper.getFilterString();
+
+		if (filterString.contains("organizations.filter")) {
+			selectOnConditionStep = selectOnConditionStep.join(
+				"Organization"
+			).on(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.organizationids")),
+						Long[].class)
+				).contains(
+					DSL.cast(
+						DSL.array(DSL.field("organization.id")), Long[].class)
+				)
+			);
+		}
+
+		return _populateIndividuals(
+			selectOnConditionStep.where(
+				filterHelper.getCondition()
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			).fetch(
+				record -> new Individual(record.intoMap())
+			));
+	}
+
+	public List<Individual> searchIndividuals(
+		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId, Pageable pageable) {
 
@@ -1207,6 +1223,8 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				)
 			);
 
+		String filterString = filterHelper.getFilterString();
+
 		if (StringUtils.isNotEmpty(filterString) &&
 			filterString.contains("organizations.filter")) {
 
@@ -1224,8 +1242,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			);
 		}
 
-		Condition condition = ConditionUtil.toCondition(
-			filterString, _individualsFilterStringConverterHelper);
+		Condition condition = filterHelper.getCondition();
 
 		if (segmentChannelId != null) {
 			condition = condition.and(
@@ -1266,73 +1283,16 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				));
 		}
 
-		return selectOnConditionStep.where(
-			condition
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-		).map(
-			record -> new Individual(record.intoMap())
-		);
-	}
-
-	public List<Individual> searchIndividuals(
-		String filterString, Pageable pageable) {
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
-			DSL.table(
-				"Individual"
-			).asterisk());
-
-		SelectOnConditionStep<Record> selectOnConditionStep =
-			selectSelectStep.from(
-				"Individual"
-			).join(
-				"Field"
-			).on(
-				DSL.field(
-					"individual.id"
-				).eq(
-					DSL.field("field.ownerid")
-				)
-			).join(
-				"DataSourceIndividual"
-			).on(
-				DSL.field(
-					"individual.id"
-				).eq(
-					DSL.field("datasourceindividual.individualid")
-				)
-			);
-
-		if (filterString.contains("organizations.filter")) {
-			selectOnConditionStep = selectOnConditionStep.join(
-				"Organization"
-			).on(
-				DSL.field(
-					DSL.cast(
-						DSL.array(DSL.field("individual.organizationids")),
-						Long[].class)
-				).contains(
-					DSL.cast(
-						DSL.array(DSL.field("organization.id")), Long[].class)
-				)
-			);
-		}
-
-		return selectOnConditionStep.where(
-			ConditionUtil.toCondition(
-				filterString, _individualsFilterStringConverterHelper)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-		).map(
-			record -> new Individual(record.intoMap())
-		);
+		return _populateIndividuals(
+			selectOnConditionStep.where(
+				condition
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			).fetch(
+				record -> new Individual(record.intoMap())
+			));
 	}
 
 	public void updateAssociatedIds(
@@ -1416,7 +1376,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Distribution> _getIndividualNumbersDistributions(
-		String fieldName, String filterString, Pageable pageable) {
+		String fieldName, Condition condition, Pageable pageable) {
 
 		AggregateFunction<Object> aggregateFunction = DSL.max(
 			DSL.field("modifiedDate"));
@@ -1427,9 +1387,6 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		).cast(
 			Integer.class
 		);
-
-		Condition condition = ConditionUtil.toCondition(
-			filterString, _individualsFilterStringConverterHelper);
 
 		SelectSelectStep<Record> maxModifiedDateSelectSelectStep =
 			_dslContext.select();
@@ -1480,7 +1437,6 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		).from(
 			fieldTable
 		).fetch(
-		).map(
 			record -> {
 				values[0] = (Integer)record.get("max");
 				values[1] = (Integer)record.get("min");
@@ -1522,7 +1478,6 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			).offset(
 				pageable.getOffset()
 			).fetch(
-			).map(
 				record -> new Distribution(
 					(Integer)record.get("count"),
 					new LinkedList<Object>() {
@@ -1626,7 +1581,6 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-		).map(
 			record -> new Distribution(
 				(Integer)record.get("count"),
 				new LinkedList<Object>() {
@@ -1642,16 +1596,84 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		return Collections.singletonMap("name", "values");
 	}
 
+	private void _populateDataSourceIndividuals(
+		Map<Long, Individual> individualsById) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		Field<Object> field = DSL.field("individualid");
+
+		selectSelectStep.from(
+			"DataSourceIndividual"
+		).where(
+			field.in(individualsById.keySet())
+		).fetch(
+		).forEach(
+			record -> {
+				Individual individual = individualsById.get(
+					record.get("individualid"));
+
+				individual.addDataSourceIndividual(
+					new DataSourceIndividual(record.intoMap()));
+			}
+		);
+	}
+
+	private Individual _populateIndividual(Individual individual) {
+		if (individual == null) {
+			return null;
+		}
+
+		List<Individual> individuals = _populateIndividuals(
+			Collections.singletonList(individual));
+
+		return individuals.get(0);
+	}
+
+	private void _populateIndividualChannels(
+		Map<Long, Individual> individualsById) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		Field<Object> field = DSL.field("individualid");
+
+		selectSelectStep.from(
+			"IndividualChannel"
+		).where(
+			field.in(individualsById.keySet())
+		).fetch(
+		).forEach(
+			record -> {
+				Individual individual = individualsById.get(
+					record.get("individualid"));
+
+				IndividualChannel individualChannel = new IndividualChannel(
+					record.intoMap());
+
+				individual.addChannelId(individualChannel.getChannelId());
+				individual.addIndividualChannel(individualChannel);
+			}
+		);
+	}
+
+	private List<Individual> _populateIndividuals(
+		List<Individual> individuals) {
+
+		if (individuals.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		Stream<Individual> stream = individuals.stream();
+
+		Map<Long, Individual> individualsById = stream.collect(
+			Collectors.toMap(Individual::getId, Function.identity()));
+
+		_populateDataSourceIndividuals(individualsById);
+		_populateIndividualChannels(individualsById);
+
+		return new ArrayList<>(individualsById.values());
+	}
+
 	private final DSLContext _dslContext;
-
-	@Autowired
-	private FieldMappingRepository _fieldMappingRepository;
-
-	@Autowired
-	private IndividualRepository _individualRepository;
-
-	@Autowired
-	private IndividualsFilterStringConverterHelper
-		_individualsFilterStringConverterHelper;
 
 }

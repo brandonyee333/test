@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
+import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
@@ -244,23 +245,30 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 	}
 
 	private QueryBuilder _getAccountsFilterByCountFunctionQueryBuilder(
-			boolean checkEqualityOnly, int minDocCount, boolean negate,
-			QueryBuilder queryBuilder, int value)
+			boolean checkEqualityOnly, String filterString, int minDocCount,
+			boolean negate, int value)
 		throws Exception {
 
 		List<String> individualSegmentNames = new LinkedList<>();
 
-		JSONArrayIterator.of(
-			"accounts", _faroInfoElasticsearchInvoker,
-			accountJSONObject -> {
-				individualSegmentNames.add(
-					"Account: " + accountJSONObject.getString("id"));
+		int page = 0;
 
-				return null;
+		while (true) {
+			List<Account> accounts = _accountDog.searchAccounts(
+				filterString, page++, 500);
+
+			if (accounts.isEmpty()) {
+				break;
 			}
-		).setQueryBuilder(
-			queryBuilder
-		).iterate();
+
+			for (Account account : accounts) {
+				individualSegmentNames.add("Account: " + account.getId());
+			}
+		}
+
+		if (individualSegmentNames.isEmpty()) {
+			return QueryBuilders.matchAllQuery();
+		}
 
 		List<Long> individualIds = _membershipDog.getIndividualIds(
 			_segmentDog.getSegmentIds(individualSegmentNames, "INACTIVE"),
@@ -322,14 +330,21 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 	}
 
 	private QueryBuilder _getActivitiesFilterByCountFunctionQueryBuilder(
-		boolean checkEqualityOnly, int minDocCount, boolean negate,
-		QueryBuilder queryBuilder, int value) {
+		boolean checkEqualityOnly, String filterString, int minDocCount,
+		boolean negate, int value) {
+
+		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
+			filterString, _faroInfoActivitiesFilterStringConverterHelper);
+
+		List<String> ownerIds = _faroInfoActivityDog.getOwnerIds(
+			checkEqualityOnly, minDocCount, queryBuilder, value);
+
+		if (ownerIds.isEmpty()) {
+			return QueryBuilders.matchAllQuery();
+		}
 
 		QueryBuilder activitiesFilterByCountFunctionQueryBuilder =
-			QueryBuilders.termsQuery(
-				"id",
-				_faroInfoActivityDog.getOwnerIds(
-					checkEqualityOnly, minDocCount, queryBuilder, value));
+			QueryBuilders.termsQuery("id", ownerIds);
 
 		if (negate) {
 			return BoolQueryBuilderUtil.mustNot(
@@ -356,7 +371,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			return QueryBuilders.termsQuery("id", ownerIds);
 		}
 
-		return BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery());
+		return QueryBuilders.matchAllQuery();
 	}
 
 	private QueryBuilder _getBehavioralCriteriaQueryBuilder(
@@ -528,12 +543,12 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 		if (type.equals("accounts")) {
 			return _getAccountsFilterByCountFunctionQueryBuilder(
-				checkEqualityOnly, minDocCount, negate, queryBuilder, value);
+				checkEqualityOnly, filterString, minDocCount, negate, value);
 		}
 
 		if (type.equals("activities")) {
 			return _getActivitiesFilterByCountFunctionQueryBuilder(
-				checkEqualityOnly, minDocCount, negate, queryBuilder, value);
+				checkEqualityOnly, filterString, minDocCount, negate, value);
 		}
 
 		return queryBuilder;
@@ -882,6 +897,9 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 	private static final Pattern _pattern = Pattern.compile(
 		".*(score eq '(false|true)').*");
+
+	@Autowired
+	private AccountDog _accountDog;
 
 	@Autowired
 	private AccountRepository _accountRepository;

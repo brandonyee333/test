@@ -281,7 +281,7 @@ public class IndividualsFilterStringConverterHelper
 
 		while (true) {
 			List<Account> accounts = _accountDog.searchAccounts(
-				filterString, page++, 50);
+				filterString, page++, 500);
 
 			if (accounts.isEmpty()) {
 				break;
@@ -290,6 +290,10 @@ public class IndividualsFilterStringConverterHelper
 			for (Account account : accounts) {
 				individualSegmentNames.add("Account: " + account.getId());
 			}
+		}
+
+		if (individualSegmentNames.isEmpty()) {
+			return DSL.noCondition();
 		}
 
 		List<Long> individualIds = _membershipDog.getIndividualIds(
@@ -320,7 +324,7 @@ public class IndividualsFilterStringConverterHelper
 
 		while (true) {
 			List<Account> accounts = _accountDog.searchAccounts(
-				filterString, page++, 50);
+				filterString, page++, 500);
 
 			if (accounts.isEmpty()) {
 				break;
@@ -843,7 +847,7 @@ public class IndividualsFilterStringConverterHelper
 
 		while (true) {
 			List<Organization> organizations =
-				_organizationDog.searchOrganizations(filterString, page++, 50);
+				_organizationDog.searchOrganizations(filterString, page++, 500);
 
 			if (organizations.isEmpty()) {
 				break;

@@ -191,9 +191,7 @@ public class DataControlNanite extends BaseNanite {
 			}
 		}
 
-		individual.setDemographics(new Individual.Demographics());
-
-		_individualDog.updateIndividual(individual);
+		_individualDog.removeDemographics(individual);
 	}
 
 	private void _deleteSuppression(String emailAddress) {
