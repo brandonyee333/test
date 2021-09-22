@@ -102,6 +102,7 @@ public class IndividualSegmentsRestControllerTest
 
 		Segment segment = new Segment();
 
+		segment.setChannelId(1L);
 		segment.setReferencedAssetIds(Collections.singleton(asset.getId()));
 		segment.setReferencedFieldMappingIds(
 			SetUtil.of(
@@ -252,6 +253,10 @@ public class IndividualSegmentsRestControllerTest
 	}
 
 	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
 		name = "individual-segments",
 		resourcePath = "individual_segments_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -264,6 +269,38 @@ public class IndividualSegmentsRestControllerTest
 	public void testGetSegmentDTO() throws Exception {
 		SegmentDTO segmentDTO = _individualSegmentsRestController.getSegmentDTO(
 			327968823603500655L, "referenced-objects");
+
+		long activeIndividualCount = Optional.ofNullable(
+			segmentDTO.getActiveIndividualCount()
+		).orElse(
+			-1L
+		);
+
+		Assert.assertEquals(10L, activeIndividualCount);
+
+		long anonymousIndividualCount = Optional.ofNullable(
+			segmentDTO.getAnonymousIndividualCount()
+		).orElse(
+			-1L
+		);
+
+		Assert.assertEquals(8L, anonymousIndividualCount);
+
+		long individualCount = Optional.ofNullable(
+			segmentDTO.getIndividualCount()
+		).orElse(
+			-1L
+		);
+
+		Assert.assertEquals(10L, individualCount);
+
+		long knownIndividualCount = Optional.ofNullable(
+			segmentDTO.getKnownIndividualCount()
+		).orElse(
+			-1L
+		);
+
+		Assert.assertEquals(2L, knownIndividualCount);
 
 		Assert.assertEquals("d-age-gt-50", segmentDTO.getName());
 
@@ -306,30 +343,6 @@ public class IndividualSegmentsRestControllerTest
 		Set<String> referencedUserIds = segmentDTO.getReferencedUserIds();
 
 		Assert.assertTrue(referencedUserIds.isEmpty());
-
-		long anonymousIndividualCount = Optional.ofNullable(
-			segmentDTO.getAnonymousIndividualCount()
-		).orElse(
-			-1L
-		);
-
-		Assert.assertEquals(8L, anonymousIndividualCount);
-
-		long individualCount = Optional.ofNullable(
-			segmentDTO.getIndividualCount()
-		).orElse(
-			-1L
-		);
-
-		Assert.assertEquals(10L, individualCount);
-
-		long knownIndividualCount = Optional.ofNullable(
-			segmentDTO.getKnownIndividualCount()
-		).orElse(
-			-1L
-		);
-
-		Assert.assertEquals(2L, knownIndividualCount);
 	}
 
 	@ElasticsearchIndex(

@@ -1,0 +1,554 @@
+[
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"12345"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now-32dT00:00:00.000Z}",
+		"dateModified": "${now-32dT00:00:00.000Z}",
+		"demographics": {
+			"additionalName": [
+			],
+			"age": [
+			],
+			"birthDate": [
+			],
+			"email": [
+			],
+			"familyName": [
+			],
+			"gender": [
+			],
+			"givenName": [
+			],
+			"jobTitle": [
+			]
+		},
+		"id": "1",
+		"individualSegmentIds": [
+			"327968823603500655"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-32dT00:00:00.000Z}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"12345"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now-32dT00:00:00.000Z}",
+		"dateModified": "${now-31dT00:00:00.000Z}",
+		"demographics": {
+			"additionalName": [
+			],
+			"age": [
+			],
+			"birthDate": [
+			],
+			"email": [
+			],
+			"familyName": [
+			],
+			"gender": [
+			],
+			"givenName": [
+			],
+			"jobTitle": [
+			]
+		},
+		"id": "2",
+		"individualSegmentIds": [
+			"327968823603500655"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-31dT00:00:00.000Z}"
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-32dT00:00:00.000Z}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"12345"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now-30dT00:00:00.000Z}",
+		"dateModified": "${now-30dT00:00:00.000Z}",
+		"demographics": {
+			"additionalName": [
+			],
+			"age": [
+			],
+			"birthDate": [
+			],
+			"email": [
+			],
+			"familyName": [
+			],
+			"gender": [
+			],
+			"givenName": [
+			],
+			"jobTitle": [
+			]
+		},
+		"id": "3",
+		"individualSegmentIds": [
+			"327968823603500655"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-30dT00:00:00.000Z}"
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-30dT00:00:00.000Z}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"12345"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now-32dT00:00:00.000Z}",
+		"dateModified": "${now-28dT00:00:00.000Z}",
+		"demographics": {
+			"additionalName": [
+			],
+			"age": [
+			],
+			"birthDate": [
+			],
+			"email": [
+			],
+			"familyName": [
+			],
+			"gender": [
+			],
+			"givenName": [
+			],
+			"jobTitle": [
+			]
+		},
+		"id": "4",
+		"individualSegmentIds": [
+			"327968823603500655"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-28dT00:00:00.000Z}"
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-32dT00:00:00.000Z}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"12345"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now-20dT00:00:00.000Z}",
+		"dateModified": "${now-20dT00:00:00.000Z}",
+		"demographics": {
+			"additionalName": [
+			],
+			"age": [
+			],
+			"birthDate": [
+			],
+			"email": [
+			],
+			"familyName": [
+			],
+			"gender": [
+			],
+			"givenName": [
+			],
+			"jobTitle": [
+			]
+		},
+		"id": "5",
+		"individualSegmentIds": [
+			"327968823603500655"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-20dT00:00:00.000Z}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"12345"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now-15dT00:00:00.000Z}",
+		"dateModified": "${now}",
+		"demographics": {
+			"additionalName": [
+			],
+			"age": [
+			],
+			"birthDate": [
+			],
+			"email": [
+			],
+			"familyName": [
+			],
+			"gender": [
+			],
+			"givenName": [
+			],
+			"jobTitle": [
+			]
+		},
+		"id": "6",
+		"individualSegmentIds": [
+			"327968823603500655"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now}"
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-15dT00:00:00.000Z}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"12345"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now-10dT00:00:00.000Z}",
+		"dateModified": "${now}",
+		"demographics": {
+			"additionalName": [
+			],
+			"age": [
+			],
+			"birthDate": [
+			],
+			"email": [
+			],
+			"familyName": [
+			],
+			"gender": [
+			],
+			"givenName": [
+			],
+			"jobTitle": [
+			]
+		},
+		"id": "7",
+		"individualSegmentIds": [
+			"327968823603500655"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now}"
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-10dT00:00:00.000Z}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"12345"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now-8dT00:00:00.000Z}",
+		"dateModified": "${now}",
+		"demographics": {
+			"additionalName": [
+			],
+			"age": [
+			],
+			"birthDate": [
+			],
+			"email": [
+			],
+			"familyName": [
+			],
+			"gender": [
+			],
+			"givenName": [
+			],
+			"jobTitle": [
+			]
+		},
+		"id": "8",
+		"individualSegmentIds": [
+			"327968823603500655"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now}"
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-8dT00:00:00.000Z}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"12345"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now-1dT23:00:00.000Z}",
+		"dateModified": "${now}",
+		"demographics": {
+			"additionalName": [
+			],
+			"age": [
+			],
+			"birthDate": [
+			],
+			"email": [
+			],
+			"familyName": [
+			],
+			"gender": [
+			],
+			"givenName": [
+			],
+			"jobTitle": [
+			]
+		},
+		"id": "11",
+		"individualSegmentIds": [
+			"327968823603500655"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now}"
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-1dT23:00:00.000Z}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"12345"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now}",
+		"dateModified": "${now}",
+		"demographics": {
+			"additionalName": [
+			],
+			"age": [
+			],
+			"birthDate": [
+			],
+			"email": [
+			],
+			"familyName": [
+			],
+			"gender": [
+			],
+			"givenName": [
+			],
+			"jobTitle": [
+			]
+		},
+		"id": "1234",
+		"individualSegmentIds": [
+			"327968823603500655"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-1dT00:00:00.000Z}"
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-1dT00:00:00.000Z}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"12345"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now}",
+		"dateModified": "${now}",
+		"demographics": {
+			"additionalName": [
+			],
+			"age": [
+			],
+			"birthDate": [
+			],
+			"email": [
+			],
+			"familyName": [
+			],
+			"gender": [
+			],
+			"givenName": [
+			],
+			"jobTitle": [
+			]
+		},
+		"id": "337984659206412898",
+		"individualSegmentIds": [
+			"327968823603500655"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-0dT12:00:00.000Z}"
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-0dT12:00:00.000Z}"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"12345"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now}",
+		"dateModified": "${now}",
+		"demographics": {
+			"additionalName": [
+			],
+			"age": [
+			],
+			"birthDate": [
+			],
+			"email": [
+			],
+			"familyName": [
+			],
+			"gender": [
+			],
+			"givenName": [
+			],
+			"jobTitle": [
+			]
+		},
+		"id": "337984612356412845",
+		"individualSegmentIds": [
+			"327968823603500655"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-1dT12:00:00.000Z}"
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "12345",
+				"lastActivityDate": "${now-1dT12:00:00.000Z}"
+			}
+		]
+	}
+]
