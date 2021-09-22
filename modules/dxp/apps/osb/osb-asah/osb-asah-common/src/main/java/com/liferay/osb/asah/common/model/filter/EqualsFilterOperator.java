@@ -43,12 +43,12 @@ public class EqualsFilterOperator extends FilterOperator {
 			return field.isNull();
 		}
 
-		if (dataType.equals(EventAttributeDefinition.DataType.STRING)) {
-			return field.equalIgnoreCase((String)getValue(dataType, value));
-		}
-
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
 			return field.eq(DSL.date((Date)getValue(dataType, value)));
+		}
+
+		if (dataType.equals(EventAttributeDefinition.DataType.STRING)) {
+			return field.equalIgnoreCase((String)getValue(dataType, value));
 		}
 
 		return field.eq(getValue(dataType, value));

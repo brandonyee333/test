@@ -40,13 +40,13 @@ public class NotEqualsFilterOperator extends FilterOperator {
 		String value = values.get(0);
 
 		if (value != null) {
+			if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
+				return field.ne(DSL.date((Date)getValue(dataType, value)));
+			}
+
 			if (dataType.equals(EventAttributeDefinition.DataType.STRING)) {
 				return field.notEqualIgnoreCase(
 					(String)getValue(dataType, value));
-			}
-
-			if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-				return field.ne(DSL.date((Date)getValue(dataType, value)));
 			}
 
 			return field.ne(getValue(dataType, value));
