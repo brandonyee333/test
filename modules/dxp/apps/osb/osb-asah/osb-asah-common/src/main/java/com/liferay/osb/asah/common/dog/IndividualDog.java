@@ -395,6 +395,18 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return _populateIndividual(_individualRepository.save(individual));
 	}
 
+	public long countActiveIndividualsFromLast30DaysBySegment(Segment segment) {
+		Date date = DateUtil.newDayDate();
+
+		Date monthAgo = DateUtil.addDays(date, -31);
+		Date yesterday = DateUtil.newEndOfDayDate(DateUtil.addDays(date, -1));
+
+		return _individualRepository.
+			countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
+				segment.getChannelId(), yesterday, yesterday,
+				Collections.singletonList(segment.getId()), monthAgo, monthAgo);
+	}
+
 	public long countIndividuals(List<Long> individualIds) {
 		return countIndividuals(individualIds, null);
 	}
