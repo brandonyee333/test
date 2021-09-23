@@ -225,7 +225,19 @@ public class EventAnalysisDog {
 			int binFloor = Math.round(Float.parseFloat(key));
 			Number binSize = eventAnalysisBreakdown.getBinSize();
 
-			return binFloor + " - " + (binFloor + binSize.intValue() - 1);
+			int binCeil = binFloor + binSize.intValue() - 1;
+
+			if (binFloor < 0) {
+				String name = "(" + binFloor + ") - ";
+
+				if (binCeil < 0) {
+					return name + "(" + binCeil + ")";
+				}
+
+				return name + binCeil;
+			}
+
+			return binFloor + " - " + binCeil;
 		}
 
 		return key;
