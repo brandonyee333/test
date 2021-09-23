@@ -20,17 +20,24 @@ import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.CohortHeatMapMetric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import org.junit.Assert;
@@ -195,6 +202,9 @@ public class VisitorCohortHeatMapDogTest {
 	)
 	@Test
 	public void testVisitorCohortHeatMetricsKnownVisitorsByDay() {
+		LocalDateTime localDateTime = DateUtil.newDayLocalDateTime(
+			ZoneId.of("UTC"));
+
 		List<CohortHeatMapMetric> cohortHeatMapMetrics =
 			_getCohortHeatMapMetrics(
 				Interval.DAY, SiteMetricType.KNOWN_VISITORS);
@@ -216,6 +226,9 @@ public class VisitorCohortHeatMapDogTest {
 				},
 				cohortHeatMapMetrics.size(), 8),
 			_getActualRetentions(cohortHeatMapMetrics), 0);
+		Assert.assertArrayEquals(
+			_getExpectedRowKeys(localDateTime),
+			_getActualRowKeys(cohortHeatMapMetrics));
 		Assert.assertEquals(
 			cohortHeatMapMetrics.toString(), 43, cohortHeatMapMetrics.size());
 	}
@@ -229,6 +242,22 @@ public class VisitorCohortHeatMapDogTest {
 		return cohortHeatMapMetricsStream.mapToDouble(
 			CohortHeatMapMetric::getRetention
 		).toArray();
+	}
+
+	private String[] _getActualRowKeys(
+		List<CohortHeatMapMetric> cohortHeatMapMetrics) {
+
+		Stream<CohortHeatMapMetric> cohortHeatMapMetricsStream =
+			cohortHeatMapMetrics.stream();
+
+		return cohortHeatMapMetricsStream.map(
+			CohortHeatMapMetric::getRowKey
+		).distinct(
+		).filter(
+			StringUtils::isNotBlank
+		).toArray(
+			String[]::new
+		);
 	}
 
 	private List<CohortHeatMapMetric> _getCohortHeatMapMetrics(
@@ -275,6 +304,24 @@ public class VisitorCohortHeatMapDogTest {
 
 		return expectedRetentions;
 	}
+
+	private String[] _getExpectedRowKeys(LocalDateTime localDateTime) {
+		String[] expectedRowKeys = new String[7];
+
+		for (int i = 0; i < 7; i++) {
+			LocalDateTime rowLocalDateTime = localDateTime.minusDays(7 - i);
+
+			expectedRowKeys[i] = rowLocalDateTime.format(_dateTimeFormatter);
+		}
+
+		return expectedRowKeys;
+	}
+
+	private static final DateTimeFormatter _dateTimeFormatter =
+		DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+	@Autowired
+	private PreferenceDog _preferenceDog;
 
 	@Autowired
 	private VisitorCohortHeatMapDog _visitorCohortHeatMapDog;
