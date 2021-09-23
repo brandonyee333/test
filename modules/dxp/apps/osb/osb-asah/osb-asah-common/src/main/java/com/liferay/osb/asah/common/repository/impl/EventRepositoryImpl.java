@@ -765,7 +765,8 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-			return DSL.function("try_cast_float", Object.class, field);
+			return DSL.round(
+				DSL.function("try_cast_float", BigDecimal.class, field));
 		}
 
 		return field;
@@ -904,10 +905,12 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
 			field = DSL.floor(
-				DSL.function(
-					"try_cast_float", BigDecimal.class,
-					DSL.field(
-						attributeType.getQualifiedAttributeValueFieldName(null))
+				DSL.round(
+					DSL.function(
+						"try_cast_float", BigDecimal.class,
+						DSL.field(
+							attributeType.getQualifiedAttributeValueFieldName(
+								null)))
 				).div(
 					eventAnalysisBreakdown.getBinSize()
 				)
