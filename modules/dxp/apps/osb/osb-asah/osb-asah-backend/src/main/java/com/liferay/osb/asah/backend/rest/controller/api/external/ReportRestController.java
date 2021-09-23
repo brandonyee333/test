@@ -23,7 +23,6 @@ import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.InterestDog;
 import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
-import com.liferay.osb.asah.backend.dog.ReportIndividualDog;
 import com.liferay.osb.asah.backend.dog.SegmentMetricDog;
 import com.liferay.osb.asah.backend.dog.TechnologyDog;
 import com.liferay.osb.asah.backend.dog.UserDog;
@@ -31,6 +30,7 @@ import com.liferay.osb.asah.backend.dog.form.FormPageDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.DataExportTaskDTO;
 import com.liferay.osb.asah.backend.dto.ReportAccountDTO;
+import com.liferay.osb.asah.backend.dto.ReportIndividualDTO;
 import com.liferay.osb.asah.backend.dto.ReportSegmentDTO;
 import com.liferay.osb.asah.backend.model.Activity;
 import com.liferay.osb.asah.backend.model.AssetMetric;
@@ -45,7 +45,6 @@ import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.FormPageMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
-import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.backend.model.Interest;
 import com.liferay.osb.asah.backend.model.JournalMetric;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
@@ -56,9 +55,11 @@ import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.DataExportTask;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.PageMetricType;
@@ -451,14 +452,6 @@ public class ReportRestController extends BaseRestController {
 			activity -> _toChildEntityModel(individualId, activity));
 	}
 
-	@GetMapping("/individuals/{individualId}")
-	public EntityModel<Individual> getIndividualEntityModel(
-		@PathVariable Long individualId) {
-
-		return _toIndividualEntityModel(
-			_reportIndividualDog.getIndividual(individualId));
-	}
-
 	@GetMapping("/individuals/{individualId}/interests")
 	public ResultBagEntityModel<Interest>
 		getIndividualInterestResultBagEntityModel(
@@ -477,31 +470,15 @@ public class ReportRestController extends BaseRestController {
 			interest -> _toChildEntityModel(individualId, interest));
 	}
 
-	@GetMapping("/individuals")
-	public ResultBagEntityModel<Individual> getIndividualResultBagEntityModel(
-		@RequestParam(defaultValue = "0") Integer page,
-		@RequestParam(defaultValue = "") String query) {
-
-		ResultBag<Individual> individualResultBag =
-			_reportIndividualDog.getIndividualResultBag(
-				query, null, _PAGE_SIZE, page * _PAGE_SIZE);
-
-		return _toResultBagEntityModel(
-			_getIndividualResultBagEntityModel(page + 1, query), page,
-			_getIndividualResultBagEntityModel(page - 1, query),
-			individualResultBag, this::_toIndividualEntityModel);
-	}
-
 	@GetMapping("/individuals/{individualId}/segments")
 	public ResultBagEntityModel<Segment>
 		getIndividualSegmentResultBagEntityModel(
 			@PathVariable Long individualId) {
 
-		Individual individual = _reportIndividualDog.getIndividual(
-			individualId);
+		Individual individual = _individualDog.getIndividual(individualId);
 
 		List<Segment> segments = _segmentDog.getSegments(
-			ListUtil.map(individual.getIndividualSegmentIds(), Long::valueOf));
+			individual.getSegmentIds());
 
 		return _toResultBagEntityModel(
 			null, 0, null, new ResultBag<>(segments, segments.size()),
@@ -607,7 +584,8 @@ public class ReportRestController extends BaseRestController {
 							"forms"
 						),
 						WebMvcLinkBuilder.linkTo(
-							_getIndividualResultBagEntityModel(null, null)
+							_getReportIndividualDTOResultBagEntityModel(
+								null, null)
 						).withRel(
 							"individuals"
 						),
@@ -724,6 +702,37 @@ public class ReportRestController extends BaseRestController {
 			this::_toAccountEntityModel);
 	}
 
+	@GetMapping("/individuals/{individualId}")
+	public EntityModel<ReportIndividualDTO> getReportIndividualDTOEntityModel(
+		@PathVariable Long individualId) {
+
+		return _toReportIndividualDTOEntityModel(
+			new ReportIndividualDTO(
+				_individualDog.getIndividual(individualId)));
+	}
+
+	@GetMapping("/individuals")
+	public ResultBagEntityModel<ReportIndividualDTO>
+		getReportIndividualDTOResultBagEntityModel(
+			@RequestParam(defaultValue = "0") Integer page,
+			@RequestParam(defaultValue = "") String query) {
+
+		Page<Individual> individualPage = _individualDog.getIndividualPage(
+			query, null, page, _PAGE_SIZE);
+
+		ResultBag<ReportIndividualDTO> reportIndividualDTOResultBag =
+			new ResultBag<>(
+				ListUtil.map(
+					individualPage.getContent(), ReportIndividualDTO::new),
+				individualPage.getTotalElements());
+
+		return _toResultBagEntityModel(
+			_getReportIndividualDTOResultBagEntityModel(page + 1, query), page,
+			_getReportIndividualDTOResultBagEntityModel(page - 1, query),
+			reportIndividualDTOResultBag,
+			this::_toReportIndividualDTOEntityModel);
+	}
+
 	@GetMapping("/segments/{segmentId}")
 	public EntityModel<ReportSegmentDTO> getReportSegmentDTOEntityModel(
 		@PathVariable Long segmentId) {
@@ -748,23 +757,29 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/segments/{segmentId}/individuals")
-	public ResultBagEntityModel<Individual>
-		getSegmentIndividualResultBagEntityModel(
+	public ResultBagEntityModel<ReportIndividualDTO>
+		getSegmentReportIndividualDTOResultBagEntityModel(
 			@PathVariable Long segmentId,
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String query) {
 
-		ResultBag<Individual> individualResultBag =
-			_reportIndividualDog.getIndividualResultBag(
-				query, segmentId, _PAGE_SIZE, page * _PAGE_SIZE);
+		Page<Individual> individualPage = _individualDog.getIndividualPage(
+			query, segmentId, page, _PAGE_SIZE);
+
+		ResultBag<ReportIndividualDTO> reportIndividualDTOResultBag =
+			new ResultBag<>(
+				ListUtil.map(
+					individualPage.getContent(), ReportIndividualDTO::new),
+				individualPage.getTotalElements());
 
 		return _toResultBagEntityModel(
-			_getSegmentIndividualResultBagEntityModel(
+			_getSegmentReportIndividualDTOResultBagEntityModel(
 				segmentId, page + 1, query),
 			page,
-			_getSegmentIndividualResultBagEntityModel(
+			_getSegmentReportIndividualDTOResultBagEntityModel(
 				segmentId, page - 1, query),
-			individualResultBag, this::_toIndividualEntityModel);
+			reportIndividualDTOResultBag,
+			this::_toReportIndividualDTOEntityModel);
 	}
 
 	private ResponseEntity<DataExportTaskDTO> _addDataExportTask(String type) {
@@ -975,16 +990,6 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
-	private ResultBagEntityModel<Individual> _getIndividualResultBagEntityModel(
-		Integer page, String query) {
-
-		return WebMvcLinkBuilder.methodOn(
-			ReportRestController.class
-		).getIndividualResultBagEntityModel(
-			page, query
-		);
-	}
-
 	private ResultBagEntityModel<AssetReport>
 		_getJournalAssetReportResultBagEntityModel(
 			Integer page, String keywords, Integer rangeKey, String sortMetric,
@@ -1047,13 +1052,24 @@ public class ReportRestController extends BaseRestController {
 		return resultBag;
 	}
 
-	private ResultBagEntityModel<Individual>
-		_getSegmentIndividualResultBagEntityModel(
+	private ResultBagEntityModel<ReportIndividualDTO>
+		_getReportIndividualDTOResultBagEntityModel(
+			Integer page, String query) {
+
+		return WebMvcLinkBuilder.methodOn(
+			ReportRestController.class
+		).getReportIndividualDTOResultBagEntityModel(
+			page, query
+		);
+	}
+
+	private ResultBagEntityModel<ReportIndividualDTO>
+		_getSegmentReportIndividualDTOResultBagEntityModel(
 			Long segmentId, Integer page, String query) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
-		).getSegmentIndividualResultBagEntityModel(
+		).getSegmentReportIndividualDTOResultBagEntityModel(
 			segmentId, page, query
 		);
 	}
@@ -1160,7 +1176,7 @@ public class ReportRestController extends BaseRestController {
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getIndividualEntityModel(
+				).getReportIndividualDTOEntityModel(
 					parentId
 				)
 			).withRel(
@@ -1232,41 +1248,6 @@ public class ReportRestController extends BaseRestController {
 			));
 	}
 
-	private EntityModel<Individual> _toIndividualEntityModel(
-		Individual individual) {
-
-		return new EntityModel<>(
-			individual,
-			WebMvcLinkBuilder.linkTo(
-				WebMvcLinkBuilder.methodOn(
-					ReportRestController.class
-				).getIndividualEntityModel(
-					Long.valueOf(individual.getId())
-				)
-			).withSelfRel(),
-			WebMvcLinkBuilder.linkTo(
-				_getIndividualActivityResultBagEntityModel(
-					Long.valueOf(individual.getId()), null)
-			).withRel(
-				"activities"
-			),
-			WebMvcLinkBuilder.linkTo(
-				_getIndividualInterestResultBagEntityModel(
-					Long.valueOf(individual.getId()), null)
-			).withRel(
-				"interests"
-			),
-			WebMvcLinkBuilder.linkTo(
-				WebMvcLinkBuilder.methodOn(
-					ReportRestController.class
-				).getIndividualSegmentResultBagEntityModel(
-					Long.valueOf(individual.getId())
-				)
-			).withRel(
-				"segments"
-			));
-	}
-
 	private EntityModel<AssetReport> _toJournalAssetReportEntityModel(
 		AssetReport assetReport, int rangeKey) {
 
@@ -1304,6 +1285,41 @@ public class ReportRestController extends BaseRestController {
 			).withSelfRel());
 	}
 
+	private EntityModel<ReportIndividualDTO> _toReportIndividualDTOEntityModel(
+		ReportIndividualDTO reportIndividualDTO) {
+
+		return new EntityModel<>(
+			reportIndividualDTO,
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
+					ReportRestController.class
+				).getReportIndividualDTOEntityModel(
+					Long.valueOf(reportIndividualDTO.getId())
+				)
+			).withSelfRel(),
+			WebMvcLinkBuilder.linkTo(
+				_getIndividualActivityResultBagEntityModel(
+					Long.valueOf(reportIndividualDTO.getId()), null)
+			).withRel(
+				"activities"
+			),
+			WebMvcLinkBuilder.linkTo(
+				_getIndividualInterestResultBagEntityModel(
+					Long.valueOf(reportIndividualDTO.getId()), null)
+			).withRel(
+				"interests"
+			),
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
+					ReportRestController.class
+				).getIndividualSegmentResultBagEntityModel(
+					Long.valueOf(reportIndividualDTO.getId())
+				)
+			).withRel(
+				"segments"
+			));
+	}
+
 	private EntityModel<ReportSegmentDTO> _toReportSegmentDTOEntityModel(
 		Segment segment) {
 
@@ -1319,7 +1335,7 @@ public class ReportRestController extends BaseRestController {
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getSegmentIndividualResultBagEntityModel(
+				).getSegmentReportIndividualDTOResultBagEntityModel(
 					segment.getId(), 0, null
 				)
 			).withRel(
@@ -1398,6 +1414,9 @@ public class ReportRestController extends BaseRestController {
 	private HistogramDog _histogramDog;
 
 	@Autowired
+	private IndividualDog _individualDog;
+
+	@Autowired
 	private InterestDog _interestDog;
 
 	@Autowired
@@ -1405,9 +1424,6 @@ public class ReportRestController extends BaseRestController {
 
 	@Autowired
 	private MetricTypeDog _metricTypeDog;
-
-	@Autowired
-	private ReportIndividualDog _reportIndividualDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

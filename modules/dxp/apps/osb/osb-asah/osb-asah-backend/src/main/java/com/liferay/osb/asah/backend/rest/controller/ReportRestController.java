@@ -14,15 +14,15 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.dog.ReportIndividualDog;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.ReportAccountDTO;
 import com.liferay.osb.asah.backend.dto.ReportIndividualDTO;
 import com.liferay.osb.asah.backend.dto.ReportSegmentDTO;
-import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.common.dog.AccountDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
@@ -59,7 +59,7 @@ public class ReportRestController extends BaseRestController {
 		@RequestParam(defaultValue = "") String after) {
 
 		return _toReportIndividualDTOPageDTO(
-			_reportIndividualDog.getIndividualPage(
+			_individualDog.getIndividualPage(
 				_getId(after), _PAGE_SIZE, Sort.by(Sort.Order.asc("id"))));
 	}
 
@@ -110,7 +110,7 @@ public class ReportRestController extends BaseRestController {
 	private AccountDog _accountDog;
 
 	@Autowired
-	private ReportIndividualDog _reportIndividualDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;
