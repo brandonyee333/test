@@ -30,10 +30,8 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -47,10 +45,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -67,47 +61,6 @@ public class ReportIndividualDog {
 
 	public Individual getIndividual(Long id) {
 		return _toIndividual(_individualDog.getIndividual(id));
-	}
-
-	public Page<Individual> getIndividualPage(
-		Long individualId, int size, Sort sort) {
-
-		List<com.liferay.osb.asah.common.entity.Individual> individuals =
-			_individualRepository.findByIdAfter(
-				individualId, PageRequest.of(0, size, sort));
-
-		Stream<com.liferay.osb.asah.common.entity.Individual> stream =
-			individuals.stream();
-
-		List<Individual> reportIndividuals = new LinkedList<>();
-
-		stream.forEachOrdered(
-			individual -> reportIndividuals.add(_toIndividual(individual)));
-
-		return PageableExecutionUtils.getPage(
-			reportIndividuals, PageRequest.of(0, size, sort),
-			() -> _individualRepository.countByIdAfter(individualId));
-	}
-
-	public ResultBag<Individual> getIndividualResultBag(
-		String query, Long segmentId, int size, int start) {
-
-		ResultBag<Individual> resultBag = new ResultBag<>();
-
-		List<Individual> individuals = new ArrayList<>();
-
-		for (com.liferay.osb.asah.common.entity.Individual individual :
-				_individualDog.getIndividuals(
-					query, segmentId, start / size, size)) {
-
-			individuals.add(_toIndividual(individual));
-		}
-
-		resultBag.setResults(individuals);
-
-		resultBag.setTotal(_individualDog.countIndividuals(query, segmentId));
-
-		return resultBag;
 	}
 
 	public ResultBag<Individual> getIndividualResultBag(

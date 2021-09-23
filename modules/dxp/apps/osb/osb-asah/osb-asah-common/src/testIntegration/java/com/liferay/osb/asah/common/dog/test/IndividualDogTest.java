@@ -38,6 +38,7 @@ import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -46,10 +47,12 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -73,6 +76,7 @@ import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.ContextConfiguration;
 
 import org.yaml.snakeyaml.util.ArrayUtils;
@@ -404,6 +408,58 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 			new Long[] {402139267512234420L},
 			Matchers.arrayContainingInAnyOrder(
 				organizationIds.toArray(new Long[0])));
+	}
+
+	@ElasticsearchIndex(
+		name = "field-mappings", resourcePath = "field_mappings_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "fields", resourcePath = "individuals_fields_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetIndividualPage1() {
+		Page<Individual> individualPage = _individualDog.getIndividualPage(
+			"", null, 0, 10);
+
+		Assert.assertEquals(5, individualPage.getTotalElements());
+		Assert.assertEquals(
+			SetUtil.of("123", "124", "125", "126", "127"),
+			_getIndividualsCustomFieldValues(
+				individualPage.getContent(), "client_id"));
+		Assert.assertEquals(
+			SetUtil.of("Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Mew"),
+			_getIndividualsDemographicsFieldValues(
+				individualPage.getContent(), "favoritePokemon"));
+	}
+
+	@ElasticsearchIndex(
+		name = "field-mappings", resourcePath = "field_mappings_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "fields", resourcePath = "individuals_fields_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetIndividualPage2() {
+		Page<Individual> individualPage = _individualDog.getIndividualPage(
+			"mander", null, 10, 0);
+
+		Assert.assertEquals(1, individualPage.getTotalElements());
+		Assert.assertEquals(
+			SetUtil.of("Charmander"),
+			_getIndividualsDemographicsFieldValues(
+				individualPage.getContent(), "favoritePokemon"));
 	}
 
 	@Test
@@ -960,6 +1016,86 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 			});
 
 		return givenNames;
+	}
+
+	private Map<String, String> _getIndividualProperties(
+		Individual.Demographics demographics) {
+
+		if (demographics == null) {
+			return Collections.emptyMap();
+		}
+
+		Map<String, String> properties = new HashMap<>();
+
+		Map<String, Object> fields = demographics.getField();
+
+		for (Map.Entry<String, Object> entry : fields.entrySet()) {
+			String propertyValue = _getPropertyValue(entry.getValue());
+
+			if (propertyValue == null) {
+				continue;
+			}
+
+			properties.put(entry.getKey(), propertyValue);
+		}
+
+		return properties;
+	}
+
+	private Set<String> _getIndividualsCustomFieldValues(
+		List<Individual> individuals, String fieldName) {
+
+		Stream<Individual> stream = individuals.stream();
+
+		return stream.map(
+			Individual::getCustomDemographics
+		).map(
+			this::_getIndividualProperties
+		).map(
+			customFieldsMap -> customFieldsMap.get(fieldName)
+		).filter(
+			fieldValue -> !Objects.isNull(fieldValue)
+		).collect(
+			Collectors.toSet()
+		);
+	}
+
+	private Set<String> _getIndividualsDemographicsFieldValues(
+		List<Individual> individuals, String fieldName) {
+
+		Stream<Individual> stream = individuals.stream();
+
+		return stream.map(
+			Individual::getDemographics
+		).map(
+			this::_getIndividualProperties
+		).map(
+			demographicsMap -> demographicsMap.get(fieldName)
+		).filter(
+			fieldValue -> !Objects.isNull(fieldValue)
+		).collect(
+			Collectors.toSet()
+		);
+	}
+
+	private String _getPropertyValue(Object fieldValue) {
+		if (fieldValue == null) {
+			return null;
+		}
+
+		if (!(fieldValue instanceof List)) {
+			return null;
+		}
+
+		List<Field> fields = (List<Field>)fieldValue;
+
+		if (fields.isEmpty()) {
+			return null;
+		}
+
+		Field field = fields.get(0);
+
+		return String.valueOf(field.getValue());
 	}
 
 	private static final String[] _FIELD_NAMES = {

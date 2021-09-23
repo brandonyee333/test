@@ -711,6 +711,28 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return FaroInfoIndividualUtil.getIndividualName(individual);
 	}
 
+	public Page<Individual> getIndividualPage(
+		Long individualId, int size, Sort sort) {
+
+		List<Individual> individuals = ListUtil.map(
+			_individualRepository.findByIdAfter(
+				individualId, PageRequest.of(0, size, sort)),
+			this::_populateIndividual);
+
+		return PageableExecutionUtils.getPage(
+			individuals, PageRequest.of(0, size, sort),
+			() -> _individualRepository.countByIdAfter(individualId));
+	}
+
+	public Page<Individual> getIndividualPage(
+		String query, Long segmentId, int page, int size) {
+
+		return PageableExecutionUtils.getPage(
+			getIndividuals(query, segmentId, page, size),
+			PageRequest.of(page, size),
+			() -> countIndividuals(query, segmentId));
+	}
+
 	public List<Individual> getIndividuals(
 		Long dataSourceId, int page, int size, Sort sort) {
 
