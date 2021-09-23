@@ -233,6 +233,48 @@ public class VisitorCohortHeatMapDogTest {
 			cohortHeatMapMetrics.toString(), 43, cohortHeatMapMetrics.size());
 	}
 
+	@ElasticsearchIndex(
+		name = "pages",
+		resourcePath = "visitor_cohort_heat_map_by_day_page_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testVisitorCohortHeatMetricsKnownVisitorsByDayWithTimeZone() {
+		String timeZoneId = "America/Los_Angeles";
+
+		_preferenceDog.savePreference("time-zone-id", timeZoneId);
+
+		LocalDateTime localDateTime = DateUtil.newDayLocalDateTime(
+			ZoneId.of(timeZoneId));
+
+		List<CohortHeatMapMetric> cohortHeatMapMetrics =
+			_getCohortHeatMapMetrics(
+				Interval.DAY, SiteMetricType.KNOWN_VISITORS);
+
+		Assert.assertArrayEquals(
+			_getExpectedRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(0, 5), 100.0);
+						put(Pair.of(0, 6), 100.0);
+						put(Pair.of(0, 7), 100.0);
+						put(Pair.of(1, 0), 50.0);
+						put(Pair.of(1, 5), 66.66666666666666);
+						put(Pair.of(1, 6), 50.0);
+						put(Pair.of(2, 0), 20.0);
+						put(Pair.of(2, 5), 33.33333333333333);
+					}
+				},
+				cohortHeatMapMetrics.size(), 8),
+			_getActualRetentions(cohortHeatMapMetrics), 0);
+		Assert.assertArrayEquals(
+			_getExpectedRowKeys(localDateTime),
+			_getActualRowKeys(cohortHeatMapMetrics));
+		Assert.assertEquals(
+			cohortHeatMapMetrics.toString(), 43, cohortHeatMapMetrics.size());
+	}
+
 	private double[] _getActualRetentions(
 		List<CohortHeatMapMetric> cohortHeatMapMetrics) {
 
