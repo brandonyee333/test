@@ -29,11 +29,12 @@ import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.data.annotation.AccessType;
@@ -734,10 +735,7 @@ public class Individual implements Persistable<Long> {
 		}
 
 		public Demographics(Set<Field> fields) {
-			for (Field field : fields) {
-				_fieldMap.put(
-					field.getName(), Collections.singletonList(field));
-			}
+			_fields = fields;
 		}
 
 		@Override
@@ -752,7 +750,7 @@ public class Individual implements Persistable<Long> {
 
 			Demographics demographics = (Demographics)obj;
 
-			if (Objects.equals(_fieldMap, demographics._fieldMap)) {
+			if (Objects.equals(_fields, demographics._fields)) {
 				return true;
 			}
 
@@ -760,20 +758,24 @@ public class Individual implements Persistable<Long> {
 		}
 
 		@JsonAnyGetter
-		public Map<String, Object> getField() {
-			return _fieldMap;
+		public Map<String, List<Field>> getField() {
+			Stream<Field> stream = _fields.stream();
+
+			return stream.collect(
+				Collectors.toMap(Field::getName, Collections::singletonList));
+		}
+
+		@JsonIgnore
+		public Set<Field> getFields() {
+			return _fields;
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(_fieldMap);
+			return Objects.hash(_fields);
 		}
 
-		public void setFieldMap(Map<String, Object> fieldMap) {
-			_fieldMap = fieldMap;
-		}
-
-		private Map<String, Object> _fieldMap = new HashMap<>();
+		private Set<Field> _fields;
 
 	}
 

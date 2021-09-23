@@ -21,14 +21,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.entity.Account;
-import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -112,7 +111,7 @@ public class ReportAccountDTO {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class ReportAccountPropertiesDTO {
 
-		public ReportAccountPropertiesDTO(Map<String, Object> propertiesMap) {
+		public ReportAccountPropertiesDTO(Map<String, String> propertiesMap) {
 			_propertiesMap = propertiesMap;
 		}
 
@@ -140,7 +139,7 @@ public class ReportAccountDTO {
 		}
 
 		@JsonAnyGetter
-		public Map<String, Object> getProperties() {
+		public Map<String, String> getProperties() {
 			return _propertiesMap;
 		}
 
@@ -149,52 +148,18 @@ public class ReportAccountDTO {
 			return Objects.hash(_propertiesMap);
 		}
 
-		private final Map<String, Object> _propertiesMap;
+		private final Map<String, String> _propertiesMap;
 
 	}
 
-	private Map<String, Object> _getAccountOrganizationProperties(
+	private Map<String, String> _getAccountOrganizationProperties(
 		Account.Organization organization) {
 
 		if (organization == null) {
 			return Collections.emptyMap();
 		}
 
-		Map<String, Object> properties = new HashMap<>();
-
-		Map<String, Object> fields = organization.getField();
-
-		for (Map.Entry<String, Object> entry : fields.entrySet()) {
-			Object propertyValue = _getPropertyValue(entry.getValue());
-
-			if (propertyValue == null) {
-				continue;
-			}
-
-			properties.put(entry.getKey(), propertyValue);
-		}
-
-		return properties;
-	}
-
-	private Object _getPropertyValue(Object fieldValue) {
-		if (fieldValue == null) {
-			return null;
-		}
-
-		if (!(fieldValue instanceof List)) {
-			return null;
-		}
-
-		List<Field> fields = (List<Field>)fieldValue;
-
-		if (fields.isEmpty()) {
-			return null;
-		}
-
-		Field field = fields.get(0);
-
-		return String.valueOf(field.getValue());
+		return FieldDog.toMap(organization.getFields());
 	}
 
 	private Long _activeIndividualsCount;

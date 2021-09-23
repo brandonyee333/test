@@ -81,6 +81,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class FieldDog {
 
+	public static Map<String, String> toMap(Set<Field> fields) {
+		Map<String, String> map = new HashMap<>();
+
+		for (Field field : fields) {
+			Object value = field.getValue();
+
+			if (value == null) {
+				continue;
+			}
+
+			map.put(field.getName(), String.valueOf(value));
+		}
+
+		return map;
+	}
+
 	public List<Field> addFields(
 			String context, JSONObject dataJSONObject, DataSource dataSource,
 			Long ownerId, String ownerType)

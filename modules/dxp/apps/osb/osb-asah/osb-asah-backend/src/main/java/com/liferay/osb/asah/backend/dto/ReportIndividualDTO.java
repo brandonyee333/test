@@ -14,22 +14,26 @@
 
 package com.liferay.osb.asah.backend.dto;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import com.liferay.osb.asah.backend.model.Individual;
-import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.common.dog.FieldDog;
+import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.graphql.GraphQLProperty;
+import com.liferay.osb.asah.common.graphql.GraphQLType;
+import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * @author Rachael Koestartyo
  */
+@GraphQLType("individual")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonRootName("individuals")
 public class ReportIndividualDTO {
@@ -38,81 +42,70 @@ public class ReportIndividualDTO {
 	}
 
 	public ReportIndividualDTO(Individual individual) {
-		_id = individual.getId();
-		_individualCustomFieldDTO = new IndividualFieldDTO(
-			individual.getCustom());
-		_individualFieldDTO = new IndividualFieldDTO(
-			individual.getDemographics());
+		_custom = _getIndividualProperties(individual.getCustomDemographics());
+		_demographics = _getIndividualProperties(individual.getDemographics());
+		_id = StringUtil.get(individual.getId());
+		_individualSegmentIds = ListUtil.map(
+			individual.getSegmentIds(), String::valueOf);
 	}
 
-	public ReportIndividualDTO(List<Individual> individuals) {
-		_reportIndividualDTOs = SetUtil.map(
-			individuals, ReportIndividualDTO::new);
+	public Map<String, String> getCustom() {
+		return _custom;
 	}
 
-	@JsonProperty("id")
+	public Map<String, String> getDemographics() {
+		return _demographics;
+	}
+
+	@GraphQLProperty("email")
+	@JsonIgnore
+	public String getEmailAddress() {
+		return _demographics.get("email");
+	}
+
 	public String getId() {
 		return _id;
 	}
 
-	@JsonProperty("custom")
-	public IndividualFieldDTO getIndividualCustomFieldDTO() {
-		return _individualCustomFieldDTO;
+	@JsonIgnore
+	public List<String> getIndividualSegmentIds() {
+		return _individualSegmentIds;
 	}
 
-	@JsonProperty("demographics")
-	public IndividualFieldDTO getIndividualFieldDTO() {
-		return _individualFieldDTO;
+	@JsonIgnore
+	public String getName() {
+		return _demographics.get("name");
 	}
 
-	@JsonProperty("individuals")
-	public Set<ReportIndividualDTO> getReportIndividualDTOs() {
-		return _reportIndividualDTOs;
+	public void setCustom(Map<String, String> custom) {
+		_custom = custom;
 	}
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public static class IndividualFieldDTO {
-
-		public IndividualFieldDTO(Map<String, String> fields) {
-			_fieldMap = fields;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-
-			if (!(obj instanceof IndividualFieldDTO)) {
-				return false;
-			}
-
-			IndividualFieldDTO individualFieldDTO = (IndividualFieldDTO)obj;
-
-			if (Objects.equals(_fieldMap, individualFieldDTO._fieldMap)) {
-				return true;
-			}
-
-			return false;
-		}
-
-		@JsonAnyGetter
-		public Map<String, String> getField() {
-			return _fieldMap;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(_fieldMap);
-		}
-
-		private final Map<String, String> _fieldMap;
-
+	public void setDemographics(Map<String, String> demographics) {
+		_demographics = demographics;
 	}
 
+	public void setId(String id) {
+		_id = id;
+	}
+
+	public void setIndividualSegmentIds(List<String> individualSegmentIds) {
+		_individualSegmentIds = individualSegmentIds;
+	}
+
+	private Map<String, String> _getIndividualProperties(
+		Individual.Demographics demographics) {
+
+		if (demographics == null) {
+			return Collections.emptyMap();
+		}
+
+		return FieldDog.toMap(demographics.getFields());
+	}
+
+	private Map<String, String> _custom = new HashMap<>();
+	private Map<String, String> _demographics = new HashMap<>();
 	private String _id;
-	private IndividualFieldDTO _individualCustomFieldDTO;
-	private IndividualFieldDTO _individualFieldDTO;
-	private Set<ReportIndividualDTO> _reportIndividualDTOs;
+	private List<String> _individualSegmentIds;
 
 }

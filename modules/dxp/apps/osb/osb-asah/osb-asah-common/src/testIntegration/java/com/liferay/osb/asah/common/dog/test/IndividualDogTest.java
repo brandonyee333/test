@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.dog.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -47,12 +48,10 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -1018,39 +1017,15 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		return givenNames;
 	}
 
-	private Map<String, String> _getIndividualProperties(
-		Individual.Demographics demographics) {
-
-		if (demographics == null) {
-			return Collections.emptyMap();
-		}
-
-		Map<String, String> properties = new HashMap<>();
-
-		Map<String, Object> fields = demographics.getField();
-
-		for (Map.Entry<String, Object> entry : fields.entrySet()) {
-			String propertyValue = _getPropertyValue(entry.getValue());
-
-			if (propertyValue == null) {
-				continue;
-			}
-
-			properties.put(entry.getKey(), propertyValue);
-		}
-
-		return properties;
-	}
-
 	private Set<String> _getIndividualsCustomFieldValues(
 		List<Individual> individuals, String fieldName) {
 
 		Stream<Individual> stream = individuals.stream();
 
 		return stream.map(
-			Individual::getCustomDemographics
+			Individual::getCustomFields
 		).map(
-			this::_getIndividualProperties
+			FieldDog::toMap
 		).map(
 			customFieldsMap -> customFieldsMap.get(fieldName)
 		).filter(
@@ -1066,9 +1041,9 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		Stream<Individual> stream = individuals.stream();
 
 		return stream.map(
-			Individual::getDemographics
+			Individual::getFields
 		).map(
-			this::_getIndividualProperties
+			FieldDog::toMap
 		).map(
 			demographicsMap -> demographicsMap.get(fieldName)
 		).filter(
@@ -1076,26 +1051,6 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		).collect(
 			Collectors.toSet()
 		);
-	}
-
-	private String _getPropertyValue(Object fieldValue) {
-		if (fieldValue == null) {
-			return null;
-		}
-
-		if (!(fieldValue instanceof List)) {
-			return null;
-		}
-
-		List<Field> fields = (List<Field>)fieldValue;
-
-		if (fields.isEmpty()) {
-			return null;
-		}
-
-		Field field = fields.get(0);
-
-		return String.valueOf(field.getValue());
 	}
 
 	private static final String[] _FIELD_NAMES = {
