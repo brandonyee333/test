@@ -215,10 +215,10 @@ public class EventAnalysisDog {
 			eventAnalysisBreakdown.getDataType();
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
-			long binFloor = Long.parseLong(key);
+			long binFloor = Math.abs(Long.parseLong(key));
 			Number binSize = eventAnalysisBreakdown.getBinSize();
 
-			return binFloor + " - " + (binFloor + binSize.longValue());
+			return binFloor + " - " + (binFloor + binSize.longValue() - 1000);
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
