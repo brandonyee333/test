@@ -222,10 +222,10 @@ public class EventAnalysisDog {
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-			float binFloor = Float.parseFloat(key);
+			int binFloor = Math.round(Float.parseFloat(key));
 			Number binSize = eventAnalysisBreakdown.getBinSize();
 
-			return binFloor + " - " + (binFloor + binSize.floatValue());
+			return binFloor + " - " + (binFloor + binSize.intValue() - 1);
 		}
 
 		return key;
