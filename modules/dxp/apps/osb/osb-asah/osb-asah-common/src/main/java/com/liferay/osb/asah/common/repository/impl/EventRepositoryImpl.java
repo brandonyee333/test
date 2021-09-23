@@ -759,7 +759,9 @@ public class EventRepositoryImpl extends BaseRepository {
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
 			return DSL.round(
-				DSL.function("try_cast_bigint", BigInteger.class, field), -3);
+				DSL.abs(
+					DSL.function("try_cast_bigint", BigInteger.class, field)),
+				-3);
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
@@ -885,11 +887,13 @@ public class EventRepositoryImpl extends BaseRepository {
 		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
 			field = DSL.floor(
 				DSL.round(
-					DSL.function(
-						"try_cast_bigint", BigInteger.class,
-						DSL.field(
-							attributeType.getQualifiedAttributeValueFieldName(
-								null))),
+					DSL.abs(
+						DSL.function(
+							"try_cast_bigint", BigInteger.class,
+							DSL.field(
+								attributeType.
+									getQualifiedAttributeValueFieldName(
+										null)))),
 					-3
 				).div(
 					eventAnalysisBreakdown.getBinSize()
