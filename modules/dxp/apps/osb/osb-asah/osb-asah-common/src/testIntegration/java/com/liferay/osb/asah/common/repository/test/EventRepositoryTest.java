@@ -322,11 +322,11 @@ public class EventRepositoryTest {
 	@Test
 	public void testGetEventAttributeValuesCountDuration() {
 		Assert.assertEquals(
-			4,
+			6,
 			_eventRepository.getEventAttributeValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
-					"34567", AttributeType.EVENT, 100,
+					"78901", AttributeType.EVENT, 2000,
 					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -338,11 +338,11 @@ public class EventRepositoryTest {
 	@Test
 	public void testGetEventAttributeValuesCountNumber() {
 		Assert.assertEquals(
-			9,
+			8,
 			_eventRepository.getEventAttributeValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
-					"45678", AttributeType.EVENT, 0.5,
+					"45678", AttributeType.EVENT, 1,
 					EventAttributeDefinition.DataType.NUMBER, null, "DESC"),
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -432,7 +432,7 @@ public class EventRepositoryTest {
 			_eventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
-					"34567", AttributeType.EVENT, 100,
+					"78901", AttributeType.EVENT, 2000,
 					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -442,14 +442,16 @@ public class EventRepositoryTest {
 
 		Assert.assertArrayEquals(
 			new BigInteger[] {
-				BigInteger.valueOf(400), BigInteger.valueOf(200),
-				BigInteger.valueOf(300), BigInteger.valueOf(500)
+				BigInteger.valueOf(0), BigInteger.valueOf(2000),
+				BigInteger.valueOf(4000), BigInteger.valueOf(8000),
+				BigInteger.valueOf(10000), null
 			},
 			keys.toArray());
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(new Integer[] {8, 1, 1, 1}, values.toArray());
+		Assert.assertArrayEquals(
+			new Integer[] {3, 3, 2, 1, 1, 1}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -485,7 +487,7 @@ public class EventRepositoryTest {
 			_eventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
-					"45678", AttributeType.EVENT, 1,
+					"78901", AttributeType.EVENT, 10000,
 					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -494,11 +496,14 @@ public class EventRepositoryTest {
 		Set<Object> keys = eventAttributeValues.keySet();
 
 		Assert.assertArrayEquals(
-			new BigInteger[] {null, BigInteger.valueOf(2)}, keys.toArray());
+			new BigInteger[] {
+				BigInteger.valueOf(0), BigInteger.valueOf(10000), null
+			},
+			keys.toArray());
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(new Integer[] {10, 1}, values.toArray());
+		Assert.assertArrayEquals(new Integer[] {9, 1, 1}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -508,7 +513,7 @@ public class EventRepositoryTest {
 			_eventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
-					"45678", AttributeType.EVENT, 2.5,
+					"45678", AttributeType.EVENT, 3,
 					EventAttributeDefinition.DataType.NUMBER, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -518,14 +523,13 @@ public class EventRepositoryTest {
 
 		_assertBigDecimalEquals(
 			new BigDecimal[] {
-				BigDecimal.ZERO, BigDecimal.valueOf(2.5),
-				BigDecimal.valueOf(7.5), BigDecimal.valueOf(5)
+				BigDecimal.ZERO, BigDecimal.valueOf(3), BigDecimal.valueOf(9)
 			},
-			keys.toArray(new BigDecimal[0]), 2);
+			keys.toArray(new BigDecimal[0]), 0);
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(new Integer[] {6, 2, 2, 1}, values.toArray());
+		Assert.assertArrayEquals(new Integer[] {6, 3, 2}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")

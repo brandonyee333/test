@@ -9,18 +9,41 @@
 							"leafNode": false,
 							"name": "All Individuals",
 							"previousValue": 2,
-							"value": 3
+							"value": 4
 						}
 					],
 					"leafNode": true,
 					"name": "Test Display Name 1",
 					"previousValue": 2,
+					"value": 4
+				}
+			],
+			"leafNode": false,
+			"name": "0 - 1",
+			"previousValue": 2,
+			"value": 4
+		},
+		{
+			"breakdownItems": [
+				{
+					"breakdownItems": [
+						{
+							"breakdownItems": null,
+							"leafNode": false,
+							"name": "All Individuals",
+							"previousValue": 1,
+							"value": 3
+						}
+					],
+					"leafNode": true,
+					"name": "Test Display Name 1",
+					"previousValue": 1,
 					"value": 3
 				}
 			],
 			"leafNode": false,
-			"name": "1.0 to 1.5",
-			"previousValue": 2,
+			"name": "2 - 3",
+			"previousValue": 1,
 			"value": 3
 		},
 		{
@@ -42,7 +65,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "0.0 to 0.5",
+			"name": "(-4) - (-3)",
 			"previousValue": 0,
 			"value": 1
 		},
@@ -65,7 +88,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "1.5 to 2.0",
+			"name": "4 - 5",
 			"previousValue": 1,
 			"value": 1
 		},
@@ -88,7 +111,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "2.0 to 2.5",
+			"name": "8 - 9",
 			"previousValue": 0,
 			"value": 1
 		},
@@ -111,104 +134,12 @@
 				}
 			],
 			"leafNode": false,
-			"name": "2.5 to 3.0",
-			"previousValue": 0,
-			"value": 1
-		},
-		{
-			"breakdownItems": [
-				{
-					"breakdownItems": [
-						{
-							"breakdownItems": null,
-							"leafNode": false,
-							"name": "All Individuals",
-							"previousValue": 1,
-							"value": 1
-						}
-					],
-					"leafNode": true,
-					"name": "Test Display Name 1",
-					"previousValue": 1,
-					"value": 1
-				}
-			],
-			"leafNode": false,
-			"name": "4.0 to 4.5",
-			"previousValue": 1,
-			"value": 1
-		},
-		{
-			"breakdownItems": [
-				{
-					"breakdownItems": [
-						{
-							"breakdownItems": null,
-							"leafNode": false,
-							"name": "All Individuals",
-							"previousValue": 0,
-							"value": 1
-						}
-					],
-					"leafNode": true,
-					"name": "Test Display Name 1",
-					"previousValue": 0,
-					"value": 1
-				}
-			],
-			"leafNode": false,
-			"name": "5.0 to 5.5",
-			"previousValue": 0,
-			"value": 1
-		},
-		{
-			"breakdownItems": [
-				{
-					"breakdownItems": [
-						{
-							"breakdownItems": null,
-							"leafNode": false,
-							"name": "All Individuals",
-							"previousValue": 0,
-							"value": 1
-						}
-					],
-					"leafNode": true,
-					"name": "Test Display Name 1",
-					"previousValue": 0,
-					"value": 1
-				}
-			],
-			"leafNode": false,
-			"name": "8.5 to 9.0",
-			"previousValue": 0,
-			"value": 1
-		},
-		{
-			"breakdownItems": [
-				{
-					"breakdownItems": [
-						{
-							"breakdownItems": null,
-							"leafNode": false,
-							"name": "All Individuals",
-							"previousValue": 0,
-							"value": 1
-						}
-					],
-					"leafNode": true,
-					"name": "Test Display Name 1",
-					"previousValue": 0,
-					"value": 1
-				}
-			],
-			"leafNode": false,
-			"name": "9.5 to 10.0",
+			"name": "10 - 11",
 			"previousValue": 0,
 			"value": 1
 		}
 	],
-	"count": 9,
+	"count": 6,
 	"page": 0,
 	"previousValue": 4,
 	"value": 20

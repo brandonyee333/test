@@ -169,7 +169,7 @@ public class EventAnalysisDogTest {
 			AnalysisType.UNIQUE, 1L, true,
 			Collections.singletonList(
 				new EventAnalysisBreakdown(
-					"34567", AttributeType.EVENT, 100,
+					"34567", AttributeType.EVENT, 2000,
 					EventAttributeDefinition.DataType.DURATION, null, "DESC")),
 			Collections.emptyList(), 246810L, 0, 10,
 			TimeRange.of(
@@ -220,7 +220,7 @@ public class EventAnalysisDogTest {
 	public void testGetEventAnalysisBreakdownNullValues() throws Exception {
 		EventAnalysisBreakdown eventAnalysisBreakdown1 =
 			new EventAnalysisBreakdown(
-				"45678", AttributeType.EVENT, 1,
+				"78901", AttributeType.EVENT, 2000,
 				EventAttributeDefinition.DataType.DURATION, null, "DESC");
 		EventAnalysisBreakdown eventAnalysisBreakdown2 =
 			new EventAnalysisBreakdown(
@@ -254,7 +254,7 @@ public class EventAnalysisDogTest {
 			AnalysisType.TOTAL, 1L, true,
 			Collections.singletonList(
 				new EventAnalysisBreakdown(
-					"45678", AttributeType.EVENT, 0.5,
+					"45678", AttributeType.EVENT, 2,
 					EventAttributeDefinition.DataType.NUMBER, null, "DESC")),
 			Collections.emptyList(), 246810L, 0, 10,
 			TimeRange.of(

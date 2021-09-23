@@ -9,19 +9,19 @@
 							"leafNode": false,
 							"name": "All Individuals",
 							"previousValue": 3,
-							"value": 5
+							"value": 6
 						}
 					],
 					"leafNode": true,
 					"name": "Test Display Name 1",
 					"previousValue": 3,
-					"value": 5
+					"value": 6
 				}
 			],
 			"leafNode": false,
-			"name": "400 to 500",
+			"name": "4000 - 5000",
 			"previousValue": 3,
-			"value": 5
+			"value": 6
 		},
 		{
 			"breakdownItems": [
@@ -32,68 +32,22 @@
 							"leafNode": false,
 							"name": "All Individuals",
 							"previousValue": 0,
-							"value": 1
+							"value": 2
 						}
 					],
 					"leafNode": true,
 					"name": "Test Display Name 1",
 					"previousValue": 0,
-					"value": 1
+					"value": 2
 				}
 			],
 			"leafNode": false,
-			"name": "200 to 300",
+			"name": "2000 - 3000",
 			"previousValue": 0,
-			"value": 1
-		},
-		{
-			"breakdownItems": [
-				{
-					"breakdownItems": [
-						{
-							"breakdownItems": null,
-							"leafNode": false,
-							"name": "All Individuals",
-							"previousValue": 0,
-							"value": 1
-						}
-					],
-					"leafNode": true,
-					"name": "Test Display Name 1",
-					"previousValue": 0,
-					"value": 1
-				}
-			],
-			"leafNode": false,
-			"name": "300 to 400",
-			"previousValue": 0,
-			"value": 1
-		},
-		{
-			"breakdownItems": [
-				{
-					"breakdownItems": [
-						{
-							"breakdownItems": null,
-							"leafNode": false,
-							"name": "All Individuals",
-							"previousValue": 0,
-							"value": 1
-						}
-					],
-					"leafNode": true,
-					"name": "Test Display Name 1",
-					"previousValue": 0,
-					"value": 1
-				}
-			],
-			"leafNode": false,
-			"name": "500 to 600",
-			"previousValue": 0,
-			"value": 1
+			"value": 2
 		}
 	],
-	"count": 4,
+	"count": 2,
 	"page": 0,
 	"previousValue": 4,
 	"value": 10
