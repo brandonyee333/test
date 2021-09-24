@@ -8,7 +8,7 @@
 			{
 				"attributeId": "23456",
 				"attributeType": "EVENT",
-				"binSize": 100,
+				"binSize": 2000,
 				"dataType": "DURATION"
 			},
 			{

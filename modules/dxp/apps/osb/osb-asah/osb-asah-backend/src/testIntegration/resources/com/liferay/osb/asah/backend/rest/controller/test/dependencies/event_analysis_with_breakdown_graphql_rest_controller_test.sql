@@ -47,6 +47,6 @@ INSERT INTO Event (channelId, eventDate, eventDefinitionId, id, individualId, se
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, id, value) VALUES (12345, '2021-05-17', 6, 1004, 'This should also match test');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, id, value) VALUES (12345, '2021-05-20', 10, 1003, 'This is a test');
 INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, id, value) VALUES (12345, '2021-05-22', 14, 1005, 'This should match test');
-INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, id, value) VALUES (23456, '2021-05-17', 6, 1002, '350');
-INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, id, value) VALUES (23456, '2021-05-20', 10, 1001, '275');
-INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, id, value) VALUES (23456, '2021-05-22', 14, 1000, '201');
+INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, id, value) VALUES (23456, '2021-05-17', 6, 1002, '3500');
+INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, id, value) VALUES (23456, '2021-05-20', 10, 1001, '2750');
+INSERT INTO EventAttribute (eventAttributeDefinitionId, eventDate, eventId, id, value) VALUES (23456, '2021-05-22', 14, 1000, '2010');
