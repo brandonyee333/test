@@ -452,7 +452,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testGetIndividualPage2() {
 		Page<Individual> individualPage = _individualDog.getIndividualPage(
-			"mander", null, 10, 0);
+			"mander", null, 0, 10);
 
 		Assert.assertEquals(1, individualPage.getTotalElements());
 		Assert.assertEquals(
