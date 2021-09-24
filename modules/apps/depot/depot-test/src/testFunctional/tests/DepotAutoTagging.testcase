@@ -167,9 +167,7 @@ definition {
 			depotName = "Test Depot Name",
 			portlet = "Settings");
 
-		AssertElementNotPresent(
-			key_panel = "Asset Auto Tagging",
-			locator1 = "Panel#PANEL");
+		Depot.viewNoPanel(panelName = "Asset Auto Tagging");
 
 		AutoTagging.enableAutoTagging(enableAutoTaggingFor = "Instance Settings");
 
@@ -197,9 +195,7 @@ definition {
 			depotName = "Test Depot Name",
 			portlet = "Settings");
 
-		AssertElementNotPresent(
-			key_panel = "Asset Auto Tagging",
-			locator1 = "Panel#PANEL");
+		Depot.viewNoPanel(panelName = "Asset Auto Tagging");
 
 		AutoTagging.enableAutoTagging(enableAutoTaggingFor = "System Settings");
 
