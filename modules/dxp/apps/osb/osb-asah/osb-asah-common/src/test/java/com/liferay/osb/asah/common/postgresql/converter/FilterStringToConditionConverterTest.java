@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.postgresql.converter;
 
+import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
+
 import org.jooq.Condition;
 import org.jooq.impl.DSL;
 
@@ -253,6 +255,34 @@ public class FilterStringToConditionConverterTest {
 	public void testIncompleteExpressionThrowsException() {
 		_assertThrowsException(
 			"column1 eq ", "Expression terminated unexpectedly: column1 eq ");
+	}
+
+	@Test
+	public void testIndividualsEqAndNull() {
+		Condition expectedCondition = DSL.and(
+			DSL.field(
+				"channelIds"
+			).cast(
+				Long.class
+			).eq(
+				506297979389450553L
+			),
+			DSL.field(
+				"field.name"
+			).eq(
+				"email"
+			),
+			DSL.field(
+				"field.value"
+			).isNotNull());
+
+		Condition actualCondition = FilterStringToConditionConverter.convert(
+			"(channelIds eq '506297979389450553' and " +
+				"(demographics/email/value ne null))",
+			new IndividualsFilterStringConverterHelper());
+
+		Assert.assertEquals(
+			expectedCondition.toString(), actualCondition.toString());
 	}
 
 	@Test

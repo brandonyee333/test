@@ -15,7 +15,9 @@
 package com.liferay.osb.asah.common.elasticsearch.converter;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -225,6 +227,23 @@ public class FilterStringToQueryBuilderConverterTest {
 	public void testIncompleteExpressionThrowsException() {
 		_assertThrowsException(
 			"column1 eq ", "Expression terminated unexpectedly: column1 eq ");
+	}
+
+	@Test
+	public void testIndividualsEqAndNull() {
+		BoolQueryBuilder expectedQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("channelIds", "506297979389450553")
+		).filter(
+			QueryBuilders.existsQuery("demographics.email.value")
+		);
+		QueryBuilder actualQueryBuilder =
+			FilterStringToQueryBuilderConverter.convert(
+				"(channelIds eq '506297979389450553' and " +
+					"(demographics/email/value ne null))",
+				new FaroInfoIndividualsFilterStringConverterHelper());
+
+		Assert.assertEquals(
+			expectedQueryBuilder.toString(), actualQueryBuilder.toString());
 	}
 
 	@Test
