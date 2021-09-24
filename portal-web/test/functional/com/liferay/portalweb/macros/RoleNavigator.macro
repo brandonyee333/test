@@ -32,4 +32,46 @@ definition {
 		Click(locator1 = "RolesPermissionsNavigation#${permissionName}");
 	}
 
+	macro gotoViewNotHaveRolePermissions {
+		var key_roleName = "${roleName}";
+
+		if (contains("Organization,Site", "${roleType}")) {
+			Navigator.gotoNavItem(navItem = "${roleType} Roles");
+		}
+		else {
+			Navigator.gotoNavItem(navItem = "Regular Roles");
+		}
+
+		Type.sendKeys(
+			locator1 = "NavBar#BASIC_SEARCH_FIELD",
+			value1 = "${roleName}");
+
+		Click(locator1 = "Button#SUBMIT");
+
+		if (isSet(roleUser)) {
+			var key_roleUser = "${roleUser}";
+
+			AssertTextEquals(
+				locator1 = "Roles#ROLE_TABLE_USER_TITLE",
+				value1 = "${roleUser}");
+
+			Click(locator1 = "Roles#ROLE_TABLE_ACTIONS");
+		}
+		else {
+			AssertTextEquals(
+				locator1 = "Roles#ROLE_TABLE_TITLE",
+				value1 = "${roleName}");
+
+			Click(locator1 = "Roles#ROLE_TABLE_ACTIONS");
+		}
+
+		MenuItem.click(menuItem = "Define Permissions");
+
+		if ((IsElementPresent.isElementPresentAfterWait(locator1 = "Message#INFO")) && (IsVisible(locator1 = "Message#INFO"))) {
+			AssertTextEquals(
+				locator1 = "Message#INFO",
+				value1 = "This role does not have any permissions.");
+		}
+	}
+
 }
