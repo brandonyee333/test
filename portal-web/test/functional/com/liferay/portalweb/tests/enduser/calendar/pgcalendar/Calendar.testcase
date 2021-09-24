@@ -3730,6 +3730,65 @@ definition {
 			startDateTime = "03:00 AM");
 	}
 
+	@description = "LPS-60800, Verify that can save individual calendar permissions."
+	@priority = "3"
+	test ViewEntryPermissionsNotDefinedByRolePermissions {
+		CalendarNavigator.gotoAddEvent();
+
+		PortletEntry.inputTitle(title = "Calendar Event Title");
+
+		CalendarEvent.publish();
+
+		Navigator.gotoPage(pageName = "Calendar Page");
+
+		CalendarNavigator.gotoEditEvent(eventTitle = "Calendar Event Title");
+
+		Click(locator1 = "Button#PERMISSIONS");
+
+		SelectFrameTop();
+
+		IFrame.selectModalFrame();
+
+		Check(
+			key_roleName = "Site Member",
+			locator1 = "Permissions#CONTENT_PERMISSIONS_DELETE_CHECKBOX");
+
+		Check(
+			key_roleName = "Site Member",
+			locator1 = "Permissions#CONTENT_PERMISSIONS_UPDATE_CHECKBOX");
+
+		Button.clickSave();
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Roles");
+
+		RoleNavigator.gotoViewNotHaveRolePermissions(
+			roleName = "Site Member",
+			roleType = "Site");
+
+		Navigator.gotoPage(pageName = "Calendar Page");
+
+		CalendarNavigator.gotoEditEvent(eventTitle = "Calendar Event Title");
+
+		Click(locator1 = "Button#PERMISSIONS");
+
+		SelectFrameTop();
+
+		IFrame.selectModalFrame();
+
+		AssertChecked(
+			key_roleName = "Site Member",
+			locator1 = "Permissions#CONTENT_PERMISSIONS_DELETE_CHECKBOX");
+
+		AssertChecked(
+			key_roleName = "Site Member",
+			locator1 = "Permissions#CONTENT_PERMISSIONS_UPDATE_CHECKBOX");
+	}
+
 	@priority = "4"
 	test ViewEventCalendarChange {
 		ProductMenu.gotoPortlet(
