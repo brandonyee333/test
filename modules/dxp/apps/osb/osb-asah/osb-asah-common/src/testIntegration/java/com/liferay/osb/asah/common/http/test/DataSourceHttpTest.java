@@ -40,6 +40,7 @@ import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -525,12 +526,14 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Long dataSourceId2 = dataSource2.getId();
 
 		List<Asset> assets = _assetRepository.findByFilterString(
-			"dataSourceId eq '" + dataSourceId1 + "'", PageRequest.of(0, 10));
+			new FilterHelper("dataSourceId eq '" + dataSourceId1 + "'"),
+			PageRequest.of(0, 10));
 
 		Assert.assertFalse(assets.isEmpty());
 
 		assets = _assetRepository.findByFilterString(
-			"dataSourceId eq '" + dataSourceId2 + "'", PageRequest.of(0, 10));
+			new FilterHelper("dataSourceId eq '" + dataSourceId2 + "'"),
+			PageRequest.of(0, 10));
 
 		Assert.assertFalse(assets.isEmpty());
 
