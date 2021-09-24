@@ -16,6 +16,7 @@ package com.liferay.osb.asah.test.util.spring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
@@ -32,7 +33,6 @@ import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 
@@ -111,10 +111,10 @@ public class OSBAsahRepositoryTestExecutionListener
 	private void _clearRepository(
 		ApplicationContext applicationContext, Class<?> repositoryClass) {
 
-		CrudRepository crudRepository =
-			(CrudRepository)applicationContext.getBean(repositoryClass);
+		Repository repository = (Repository)applicationContext.getBean(
+			repositoryClass);
 
-		crudRepository.deleteAll();
+		repository.deleteAll();
 	}
 
 	private Class<?> _getEntityClass(Class<?> repositoryClass) {
@@ -132,9 +132,8 @@ public class OSBAsahRepositoryTestExecutionListener
 			RepositoryResource repositoryResource)
 		throws Exception {
 
-		CrudRepository crudRepository =
-			(CrudRepository)applicationContext.getBean(
-				repositoryResource.repositoryClass());
+		Repository repository = (Repository)applicationContext.getBean(
+			repositoryResource.repositoryClass());
 
 		JSONArray jsonArray = new JSONArray(
 			ResourceUtil.readResourceToString(
@@ -147,7 +146,7 @@ public class OSBAsahRepositoryTestExecutionListener
 		Class<?> entityClass = _getEntityClass(
 			repositoryResource.repositoryClass());
 
-		crudRepository.saveAll(
+		repository.saveAll(
 			stream.map(
 				object -> _objectMapper.convertValue(object, entityClass)
 			).collect(
