@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverter
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
-import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.LinkedList;
@@ -205,13 +204,6 @@ public class FilterStringToConditionConverter {
 
 		fieldName = _toFieldName(fieldName);
 
-		if ((filterStringConverterHelper instanceof
-				IndividualsFilterStringConverterHelper) &&
-			fieldName.startsWith("demographics")) {
-
-			return null;
-		}
-
 		Object value = StringUtil.toObject(valueString);
 
 		if (value instanceof String) {
@@ -274,13 +266,6 @@ public class FilterStringToConditionConverter {
 		}
 
 		String fieldName = _toFieldName(arguments.get(0));
-
-		if ((filterStringConverterHelper instanceof
-				IndividualsFilterStringConverterHelper) &&
-			fieldName.startsWith("demographics")) {
-
-			return null;
-		}
 
 		String fieldValue = arguments.get(1);
 
