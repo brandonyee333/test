@@ -82,7 +82,7 @@ public class FilterStringToConditionConverter {
 		Field field = null;
 
 		if (inferredCondition != null) {
-			fieldName = "value";
+			fieldName = "field.value";
 		}
 
 		if (value instanceof Long) {
