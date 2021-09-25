@@ -163,46 +163,56 @@ public class IndividualNanite implements Nanite {
 			activitiesCounts2 = Collections.emptySet();
 		}
 
-		Stream<Individual.ActivitiesCount> activitiesCounts1Stream =
-			activitiesCounts1.stream();
+		Map<Long, Long> mergedActivitiesCounts = new HashMap<>();
 
-		Map<Long, Long> activitiesCounts1Map = activitiesCounts1Stream.collect(
-			Collectors.toMap(
-				Individual.ActivitiesCount::getChannelId,
-				Individual.ActivitiesCount::getActivitiesCount));
+		Map<Long, Long> activitiesCounts1Map = _toMap(activitiesCounts1);
 
 		Set<Map.Entry<Long, Long>> activitiesCounts1EntrySet =
 			activitiesCounts1Map.entrySet();
 
-		Stream<Individual.ActivitiesCount> activitiesCounts2Stream =
-			activitiesCounts2.stream();
-
-		Map<Long, Long> activitiesCounts2Map = activitiesCounts2Stream.collect(
-			Collectors.toMap(
-				Individual.ActivitiesCount::getChannelId,
-				Individual.ActivitiesCount::getActivitiesCount));
+		Map<Long, Long> activitiesCounts2Map = _toMap(activitiesCounts2);
 
 		Set<Map.Entry<Long, Long>> activitiesCounts2EntrySet =
 			activitiesCounts2Map.entrySet();
 
-		Map<Long, Long> mergedActivitiesCounts = Stream.concat(
-			activitiesCounts1EntrySet.stream(),
-			activitiesCounts2EntrySet.stream()
-		).collect(
-			Collectors.toMap(
-				Map.Entry::getKey, Map.Entry::getValue,
-				(activityCount1, activityCount2) -> {
-					if (activityCount1 == null) {
-						activityCount1 = 0L;
-					}
+		List<Map.Entry<Long, Long>> mergedActivitiesCountEntrySet =
+			Stream.concat(
+				activitiesCounts1EntrySet.stream(),
+				activitiesCounts2EntrySet.stream()
+			).collect(
+				Collectors.toList()
+			);
 
-					if (activityCount2 == null) {
-						activityCount2 = 0L;
-					}
+		for (Map.Entry<Long, Long> mergedActivitiesCountEntry :
+				mergedActivitiesCountEntrySet) {
 
-					return activityCount1 + activityCount2;
-				})
-		);
+			if (mergedActivitiesCounts.containsKey(
+					mergedActivitiesCountEntry.getKey())) {
+
+				Long activitiesCount1 = mergedActivitiesCounts.get(
+					mergedActivitiesCountEntry.getKey());
+
+				if (activitiesCount1 == null) {
+					activitiesCount1 = 0L;
+				}
+
+				Long activitiesCount2 = mergedActivitiesCountEntry.getValue();
+
+				if (activitiesCount2 == null) {
+					activitiesCount2 = 0L;
+				}
+
+				mergedActivitiesCounts.put(
+					mergedActivitiesCountEntry.getKey(),
+					activitiesCount1 + activitiesCount2);
+
+				continue;
+			}
+
+			mergedActivitiesCounts.put(
+				mergedActivitiesCountEntry.getKey(),
+				mergedActivitiesCountEntry.getValue());
+		}
 
 		Set<Individual.ActivitiesCount> individualActivitiesCounts =
 			new HashSet<>();
@@ -264,6 +274,20 @@ public class IndividualNanite implements Nanite {
 
 		_individualDog.deleteIndividual(
 			new Date(), anonymousIndividual.getId());
+	}
+
+	private Map<Long, Long> _toMap(
+		Set<Individual.ActivitiesCount> activitiesCounts) {
+
+		Map<Long, Long> activitiesCountsMap = new HashMap<>();
+
+		for (Individual.ActivitiesCount activitiesCount : activitiesCounts) {
+			activitiesCountsMap.put(
+				activitiesCount.getChannelId(),
+				activitiesCount.getActivitiesCount());
+		}
+
+		return activitiesCountsMap;
 	}
 
 	private void _updateActivitiesAndActivityGroups(
