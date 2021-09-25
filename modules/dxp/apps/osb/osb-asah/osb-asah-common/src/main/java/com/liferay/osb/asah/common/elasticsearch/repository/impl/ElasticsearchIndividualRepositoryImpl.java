@@ -982,7 +982,8 @@ public class ElasticsearchIndividualRepositoryImpl
 
 				individual.addIndividualChannel(
 					new IndividualChannel(
-						activitiesCountJSONObject.getLong("activitiesCount"),
+						JSONUtil.optLong(
+							null, activitiesCountJSONObject, "activitiesCount"),
 						activitiesCountJSONObject.getLong("channelId"),
 						individual.getId(), null));
 			}
