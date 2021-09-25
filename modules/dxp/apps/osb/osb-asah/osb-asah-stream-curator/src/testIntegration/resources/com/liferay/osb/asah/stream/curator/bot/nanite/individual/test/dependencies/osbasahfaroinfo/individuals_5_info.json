@@ -1,0 +1,48 @@
+[
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 1,
+				"channelId": "1"
+			},
+			{
+				"activitiesCount": 1,
+				"channelId": "2"
+			}
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "1",
+				"individualPKs": [
+					"1"
+				]
+			}
+		],
+		"emailAddressHashed": "3bb3aa73a3e59526dcc7975c1516997e8a604083e661aa01f348ebc7b18a81dd",
+		"id": "100",
+		"individualSegmentIds": [
+		]
+	},
+	{
+		"activitiesCounts": [
+			{
+				"channelId": "1"
+			},
+			{
+				"activitiesCount": 1,
+				"channelId": "2"
+			}
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "1",
+				"individualPKs": [
+					"2"
+				]
+			}
+		],
+		"id": "200",
+		"individualSegmentIds": [
+		]
+	}
+]

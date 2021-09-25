@@ -151,7 +151,7 @@ public class IndividualNaniteTest {
 		resourcePath = "identity_message_2.json"
 	)
 	@Test
-	public void testMergeIndividual() {
+	public void testMergeIndividual1() {
 		Individual individual1 = new Individual();
 
 		individual1.setDataSourceIndividuals(
@@ -237,6 +237,41 @@ public class IndividualNaniteTest {
 				).should(
 					QueryBuilders.termQuery("knownIndividual", false)
 				)));
+	}
+
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "fields", resourcePath = "fields_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_5_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "pages_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "user-sessions", resourcePath = "session_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.IDENTITY_MESSAGE,
+		resourcePath = "identity_message_2.json"
+	)
+	@Test
+	public void testMergeIndividual2() {
+		Assert.assertTrue(_individualDog.existsById(100L));
+		Assert.assertTrue(_individualDog.existsById(200L));
+
+		_individualNanite.run();
+
+		Assert.assertTrue(_individualDog.existsById(100L));
+		Assert.assertFalse(_individualDog.existsById(200L));
 	}
 
 	@ElasticsearchIndex(

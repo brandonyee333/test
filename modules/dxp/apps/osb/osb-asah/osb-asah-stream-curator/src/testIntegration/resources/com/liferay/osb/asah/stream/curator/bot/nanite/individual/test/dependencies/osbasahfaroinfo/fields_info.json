@@ -1,0 +1,13 @@
+[
+	{
+		"context": "demographics",
+		"dataSourceId": "1",
+		"dataSourceName": "Liferay",
+		"fieldType": "Text",
+		"name": "email",
+		"ownerId": "100",
+		"ownerType": "individual",
+		"sourceName": "emailAddress",
+		"value": "john@liferay.com"
+	}
+]
