@@ -35,6 +35,8 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.math.BigInteger;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -473,17 +475,21 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			throw new IllegalArgumentException("Unknown operator: " + operator);
 		}
 
-		int value = Integer.parseInt(argumentValues[2]);
+		BigInteger value = new BigInteger(argumentValues[2]);
+
+		if (value.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) == 1) {
+			throw new IllegalArgumentException("Invalid value: " + value);
+		}
 
 		boolean checkEqualityOnly = _isEqualityOperator(operator);
 
 		int minDocCount;
 
 		if (operator.equals("gt") || operator.equals("le")) {
-			minDocCount = value + 1;
+			minDocCount = value.intValue() + 1;
 		}
 		else {
-			minDocCount = value;
+			minDocCount = value.intValue();
 		}
 
 		if (minDocCount <= 0) {
@@ -547,13 +553,14 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 		if (type.equals("accounts")) {
 			return _getAccountsFilterByCountFunctionQueryBuilder(
-				checkEqualityOnly, filterString, minDocCount, negate, value);
+				checkEqualityOnly, filterString, minDocCount, negate,
+				value.intValue());
 		}
 
 		if (type.equals("activities")) {
 			return _getActivitiesFilterByCountFunctionQueryBuilder(
 				checkEqualityOnly, filterString, minDocCount, negate, operator,
-				value);
+				value.intValue());
 		}
 
 		return queryBuilder;
