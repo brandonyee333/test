@@ -361,7 +361,7 @@ public class IndividualsFilterStringConverterHelper
 
 	private Condition _getActivitiesFilterByCountFunctionCondition(
 		boolean checkEqualityOnly, String filterString, int minDocCount,
-		boolean negate, int value) {
+		boolean negate, String operator, int value) {
 
 		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
 			filterString, _faroInfoActivitiesFilterStringConverterHelper);
@@ -370,7 +370,11 @@ public class IndividualsFilterStringConverterHelper
 			checkEqualityOnly, minDocCount, queryBuilder, value);
 
 		if (ownerIds.isEmpty()) {
-			return DSL.noCondition();
+			if (operator.equals("le") || operator.equals("lt")) {
+				return DSL.noCondition();
+			}
+
+			return DSL.falseCondition();
 		}
 
 		Condition condition = DSL.field(
@@ -582,7 +586,8 @@ public class IndividualsFilterStringConverterHelper
 
 		if (type.equals("activities")) {
 			return _getActivitiesFilterByCountFunctionCondition(
-				checkEqualityOnly, filterString, minDocCount, negate, value);
+				checkEqualityOnly, filterString, minDocCount, negate, operator,
+				value);
 		}
 
 		return DSL.noCondition();

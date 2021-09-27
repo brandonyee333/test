@@ -331,7 +331,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 	private QueryBuilder _getActivitiesFilterByCountFunctionQueryBuilder(
 		boolean checkEqualityOnly, String filterString, int minDocCount,
-		boolean negate, int value) {
+		boolean negate, String operator, int value) {
 
 		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
 			filterString, _faroInfoActivitiesFilterStringConverterHelper);
@@ -340,7 +340,11 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			checkEqualityOnly, minDocCount, queryBuilder, value);
 
 		if (ownerIds.isEmpty()) {
-			return QueryBuilders.matchAllQuery();
+			if (operator.equals("le") || operator.equals("lt")) {
+				return QueryBuilders.matchAllQuery();
+			}
+
+			return BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery());
 		}
 
 		QueryBuilder activitiesFilterByCountFunctionQueryBuilder =
@@ -548,7 +552,8 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 		if (type.equals("activities")) {
 			return _getActivitiesFilterByCountFunctionQueryBuilder(
-				checkEqualityOnly, filterString, minDocCount, negate, value);
+				checkEqualityOnly, filterString, minDocCount, negate, operator,
+				value);
 		}
 
 		return queryBuilder;
