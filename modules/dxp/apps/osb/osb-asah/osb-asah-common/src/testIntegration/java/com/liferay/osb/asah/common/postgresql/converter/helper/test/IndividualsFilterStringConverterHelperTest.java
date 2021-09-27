@@ -32,6 +32,7 @@ import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.parser.FilterStringParserException;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.AccountRepository;
@@ -729,6 +730,20 @@ public class IndividualsFilterStringConverterHelperTest {
 				"''Page#pageViewed#348853654381438580''', operator='ge', " +
 					"value=1)",
 			346468603851271125L, 346468605699756892L);
+	}
+
+	@Test(expected = FilterStringParserException.class)
+	public void testActivitiesFilterByCountGePositiveThrowException() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("(activities.filterByCount(filter='(activityKey eq ");
+		sb.append("''Form#formViewed#511687236573013375'' and day gt ");
+		sb.append("''last24Hours'')',operator='ge',");
+		sb.append("value=10000000000000000))");
+
+		testFilterString(sb.toString());
+
+		Assert.fail();
 	}
 
 	@Test
