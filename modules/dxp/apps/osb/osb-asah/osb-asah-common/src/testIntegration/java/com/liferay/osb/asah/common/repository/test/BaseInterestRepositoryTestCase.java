@@ -1,0 +1,169 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.common.repository.test;
+
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.Interest;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.InterestRepository;
+import com.liferay.osb.asah.common.repository.Repository;
+import com.liferay.osb.asah.common.util.ListUtil;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+
+/**
+ * @author Robson Pastor
+ */
+public abstract class BaseInterestRepositoryTestCase
+	extends BaseRepositoryTestCase<Interest, Long> {
+
+	@Before
+	public void setUp() {
+		Interest interest1 = new Interest();
+
+		interest1.setName("clicks-and-mortar e-tailers");
+		interest1.setOwnerId(374790569167317525L);
+		interest1.setOwnerType("individual");
+		interest1.setRecordedDate(
+			DateUtil.toUTCDate("2021-09-12T00:00:00.000Z"));
+		interest1.setScore(1.7676619176489945);
+		interest1.setViews(1L);
+
+		Interest interest2 = new Interest();
+
+		interest2.setName("javascript");
+		interest2.setOwnerId(374790575409131096L);
+		interest2.setOwnerType("individual");
+		interest2.setRecordedDate(
+			DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
+		interest2.setScore(2.614959778036198);
+		interest2.setViews(2L);
+
+		Interest interest3 = new Interest();
+
+		interest3.setName("compelling metrics");
+		interest3.setOwnerId(374790572703144534L);
+		interest3.setOwnerType("individual");
+		interest3.setRecordedDate(
+			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
+		interest3.setScore(0.7702225204735745);
+		interest3.setViews(3L);
+
+		Interest interest4 = new Interest();
+
+		interest4.setName("sales");
+		interest4.setOwnerId(374790572703144534L);
+		interest4.setOwnerType("individual");
+		interest4.setRecordedDate(
+			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
+		interest4.setScore(1.4546849849874945);
+		interest4.setViews(4L);
+
+		setUpRepository(interest1, interest2, interest3, interest4);
+	}
+
+	@Test
+	public void testCountByOwnerIdAndOwnerType() {
+		long count = _interestRepository.countByOwnerIdAndOwnerType(
+			374790572703144534L, "individual");
+
+		Assert.assertEquals(2, count);
+	}
+
+	@Test
+	public void testDeleteByOwnerIdAndOwnerType() {
+		_interestRepository.deleteByOwnerIdAndOwnerType(
+			Long.valueOf(374790572703144534L), "individual");
+
+		long count = _interestRepository.countByOwnerIdAndOwnerType(
+			374790572703144534L, "individual");
+
+		Assert.assertEquals(0, count);
+	}
+
+	@Test
+	public void testDeleteByOwnerTypeAndRecordedDateLessThanEqual() {
+		_interestRepository.deleteByOwnerTypeAndRecordedDateLessThanEqual(
+			"individual", DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
+
+		long count = _interestRepository.count();
+
+		Assert.assertEquals(2, count);
+	}
+
+	@Test
+	public void testFindByOwnerIdAndOwnerType() {
+		List<Interest> interests =
+			_interestRepository.findByOwnerIdAndOwnerType(
+				374790572703144534L, "individual", PageRequest.of(0, 10));
+
+		Assert.assertEquals(interests.toString(), 2, interests.size());
+		Assert.assertEquals(
+			Arrays.asList("compelling metrics", "sales"),
+			_getInterestNames(interests));
+	}
+
+	@Test
+	public void testGetByNameAndOwnerIdAndOwnerTypeAndRecordedDate() {
+		Interest interest =
+			_interestRepository.getByNameAndOwnerIdAndOwnerTypeAndRecordedDate(
+				"javascript", 374790575409131096L, "individual",
+				DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
+
+		Assert.assertEquals(
+			Double.valueOf(2.614959778036198), interest.getScore());
+	}
+
+	@Test
+	public void testGetByOwnerTypeAndRecordedDate() {
+		List<Interest> interests =
+			_interestRepository.findByOwnerTypeAndRecordedDate(
+				null, "individual",
+				DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"), 10);
+
+		Assert.assertEquals(interests.toString(), 2, interests.size());
+		Assert.assertEquals(
+			Arrays.asList("compelling metrics", "sales"),
+			_getInterestNames(interests));
+	}
+
+	@Override
+	protected Repository<Interest, Long> getRepository() {
+		return _interestRepository;
+	}
+
+	private List<String> _getInterestNames(List<Interest> interests) {
+		return ListUtil.map(interests, Interest::getName);
+	}
+
+	@Autowired
+	private ChannelRepository _channelRepository;
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
+	private InterestRepository _interestRepository;
+
+}
