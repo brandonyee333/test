@@ -357,6 +357,16 @@ CREATE TABLE IF NOT EXISTS IndividualChannel (
 	PRIMARY KEY (channelId, individualId)
 );
 
+CREATE TABLE IF NOT EXISTS Interest (
+	id BIGSERIAL PRIMARY KEY,
+	name TEXT,
+	ownerId BIGINT,
+	ownerType TEXT,
+	recordedDate TIMESTAMPTZ,
+	score DOUBLE PRECISION,
+	views BIGINT
+);
+
 CREATE TABLE IF NOT EXISTS InterestTopic (
 	id BIGSERIAL PRIMARY KEY,
 	term TEXT,
