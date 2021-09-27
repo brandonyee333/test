@@ -43,12 +43,12 @@ public class ProjectsRestController extends BaseRestController {
 	}
 
 	@GetMapping
-	public List<Project> getProjects() throws Exception {
+	public List<Project> getProjects() {
 		return _projectDog.getProjects();
 	}
 
 	@PostMapping
-	public void postProject(@RequestBody Project project) throws Exception {
+	public void postProject(@RequestBody Project project) {
 		_projectDog.addProject(project);
 	}
 

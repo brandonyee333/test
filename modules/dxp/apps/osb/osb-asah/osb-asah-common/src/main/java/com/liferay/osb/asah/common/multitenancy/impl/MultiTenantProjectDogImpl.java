@@ -75,7 +75,7 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 	}
 
 	@Override
-	public List<Project> getProjects() throws Exception {
+	public List<Project> getProjects() {
 		try {
 			ProjectIdThreadLocal.setGlobalContext(true);
 

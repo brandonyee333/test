@@ -23,10 +23,10 @@ import java.util.List;
  */
 public interface ProjectDog {
 
-	public void addProject(Project project) throws Exception;
+	public void addProject(Project project);
 
 	public void deleteProject(String projectId);
 
-	public List<Project> getProjects() throws Exception;
+	public List<Project> getProjects();
 
 }
