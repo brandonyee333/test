@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,9 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
+@ConditionalOnProperty(
+	matchIfMissing = true, value = "osb.asah.upgrade.enabled"
+)
 @Profile("!test")
 public class Upgrade implements CommandLineRunner {
 
