@@ -12,19 +12,40 @@
  *
  */
 
-package com.liferay.osb.asah.backend.model;
+package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
+
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Marcellus Tavares
  */
-public class Interest {
+@Table
+public class Interest implements Persistable<Long> {
+
+	public Interest() {
+	}
+
+	public Interest(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -38,11 +59,13 @@ public class Interest {
 
 		Interest interest = (Interest)obj;
 
-		if (Objects.equals(_dateRecorded, interest._dateRecorded) &&
-			Objects.equals(_id, interest._id) &&
+		if (Objects.equals(_id, interest._id) &&
 			Objects.equals(_name, interest._name) &&
 			Objects.equals(_ownerId, interest._ownerId) &&
-			Objects.equals(_score, interest._score)) {
+			Objects.equals(_ownerType, interest._ownerType) &&
+			Objects.equals(_recordedDate, interest._recordedDate) &&
+			Objects.equals(_score, interest._score) &&
+			Objects.equals(_views, interest._views)) {
 
 			return true;
 		}
@@ -50,65 +73,127 @@ public class Interest {
 		return false;
 	}
 
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
-	public Date getDateRecorded() {
-		if (_dateRecorded == null) {
-			return null;
-		}
-
-		return new Date(_dateRecorded.getTime());
-	}
-
-	public String getId() {
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
+	@JsonSerialize(using = ToStringSerializer.class)
+	@Override
+	public Long getId() {
 		return _id;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getName() {
 		return _name;
 	}
 
-	public String getOwnerId() {
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(using = ToStringSerializer.class)
+	public Long getOwnerId() {
 		return _ownerId;
 	}
 
-	public double getScore() {
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getOwnerType() {
+		return _ownerType;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonAlias("recordedDate")
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("dateRecorded")
+	public Date getRecordedDate() {
+		if (_recordedDate == null) {
+			return null;
+		}
+
+		return new Date(_recordedDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Double getScore() {
 		return _score;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getViews() {
+		return _views;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_dateRecorded, _id, _name, _ownerId, _score);
+		return Objects.hash(
+			_id, _name, _ownerId, _ownerType, _recordedDate, _score, _views);
 	}
 
-	public void setDateRecorded(Date dateRecorded) {
-		if (dateRecorded != null) {
-			_dateRecorded = new Date(dateRecorded.getTime());
+	@JsonIgnore
+	@Override
+	public boolean isNew() {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
+			return true;
 		}
+
+		return false;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		_id = id;
+	}
+
+	public void setIsNew(boolean isNew) {
+		_isNew = isNew;
 	}
 
 	public void setName(String name) {
 		_name = name;
 	}
 
-	public void setOwnerId(String ownerId) {
+	public void setOwnerId(Long ownerId) {
 		_ownerId = ownerId;
 	}
 
-	public void setScore(double score) {
+	public void setOwnerType(String ownerType) {
+		_ownerType = ownerType;
+	}
+
+	public void setRecordedDate(Date recordedDate) {
+		if (recordedDate != null) {
+			_recordedDate = new Date(recordedDate.getTime());
+		}
+	}
+
+	public void setScore(Double score) {
 		_score = score;
 	}
 
-	private Date _dateRecorded;
-	private String _id;
+	public void setViews(Long views) {
+		_views = views;
+	}
+
+	@Transient
+	private Long _id;
+
+	@Transient
+	private Boolean _isNew;
+
+	@Transient
 	private String _name;
-	private String _ownerId;
-	private double _score;
+
+	@Transient
+	private Long _ownerId;
+
+	@Transient
+	private String _ownerType;
+
+	@Transient
+	private Date _recordedDate;
+
+	@Transient
+	private Double _score;
+
+	@Transient
+	private Long _views;
 
 }
