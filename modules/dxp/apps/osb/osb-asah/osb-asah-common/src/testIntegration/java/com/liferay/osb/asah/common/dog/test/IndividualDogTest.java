@@ -37,11 +37,13 @@ import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -538,7 +540,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testSearchIndividuals() {
+	public void testSearchIndividuals1() {
 		List<Individual> individuals = _individualDog.searchIndividuals(
 			100L, null, false, 0, 10,
 			new String[] {"demographics/givenName/value,asc"});
@@ -565,6 +567,54 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 			ArrayUtils.toUnmodifiableList(
 				new String[] {"theta", "omega", "gamma", "beta", "alpha"}),
 			_getGivenNames(individuals));
+	}
+
+	@ElasticsearchIndex(
+		name = "activities", resourcePath = "activities.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals.json"
+	)
+	@Test
+	public void testSearchIndividuals2() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("(channelIds eq '100' and (activities.filterByCount(");
+		sb.append("filter='(activityKey eq ");
+		sb.append("''Form#formViewed#511687236573013375'' and day gt ");
+		sb.append("''last24Hours'')',operator='%s',value=%s)))");
+
+		List<Individual> individuals = _individualDog.searchIndividuals(
+			100L, String.format(sb.toString(), "eq", 1), true, 0, 10, null);
+
+		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+
+		individuals = _individualDog.searchIndividuals(
+			100L, String.format(sb.toString(), "ge", 1), true, 0, 10, null);
+
+		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+
+		individuals = _individualDog.searchIndividuals(
+			100L, String.format(sb.toString(), "ge", 2), true, 0, 10, null);
+
+		Assert.assertEquals(individuals.toString(), 0, individuals.size());
+
+		individuals = _individualDog.searchIndividuals(
+			100L, String.format(sb.toString(), "gt", 0), true, 0, 10, null);
+
+		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+
+		individuals = _individualDog.searchIndividuals(
+			100L, String.format(sb.toString(), "le", 2), true, 0, 10, null);
+
+		Assert.assertEquals(individuals.toString(), 5, individuals.size());
+
+		individuals = _individualDog.searchIndividuals(
+			100L, String.format(sb.toString(), "lt", 1), true, 0, 10, null);
+
+		Assert.assertEquals(individuals.toString(), 4, individuals.size());
 	}
 
 	@Test
