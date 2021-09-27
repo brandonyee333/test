@@ -89,8 +89,8 @@ public class SearchCTTest {
 
 		UserGroup addedUserGroup = null;
 
-		try (SafeCloseable safeCloseable =
-				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
+		try (SafeClosable safeClosable =
+				CTCollectionThreadLocal.setCTCollectionId(
 					_ctCollection.getCtCollectionId())) {
 
 			addedUserGroup = UserGroupTestUtil.addUserGroup(
