@@ -53,9 +53,9 @@
 
 		var productConfigs = [
 			{
-				name: '<@liferay.language key="dxp" /> 7.3',
+				name: '<@liferay.language key="dxp" /> 7.4',
 				svgId: '#dxp-logo',
-				url: addLocaleParamToURI('${current_locale}', 'categories/360004183251')
+				url: addLocaleParamToURI('${current_locale}', 'categories/4410212015373')
 			},
 			{
 				name: '<@liferay.language key="dxp-cloud" />',
@@ -73,6 +73,11 @@
 				url: addLocaleParamToURI('${current_locale}', 'categories/360000872551')
 			},
 			{
+				name: '<@liferay.language key="dxp" /> 7.3',
+				svgId: '#7-3-logo',
+				url: addLocaleParamToURI('${current_locale}', 'categories/360004183251')
+			},
+			{
 				name: '<@liferay.language key="dxp" /> 7.2',
 				svgId: '#7-2-logo',
 				url: addLocaleParamToURI('${current_locale}', 'categories/360001749912')
@@ -86,11 +91,6 @@
 				name: '<@liferay.language key="dxp" /> 7.0',
 				svgId: '#7-0-logo',
 				url: addLocaleParamToURI('${current_locale}', 'categories/360000867932')
-			},
-			{
-				name: '<@liferay.language key="portal" /> 6.2',
-				svgId: '#6-2-logo',
-				url: addLocaleParamToURI('${current_locale}', 'articles/360017502912')
 			}
 		];
 
