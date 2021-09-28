@@ -230,7 +230,9 @@ page import="com.liferay.portlet.usersadmin.search.GroupSearchTerms" %><%@
 page import="com.liferay.taglib.search.ResultRow" %><%@
 page import="com.liferay.taglib.servlet.PipingServletResponse" %><%@
 page import="com.liferay.taglib.util.PortalIncludeUtil" %><%@
-page import="com.liferay.trash.model.TrashEntry" %>
+page import="com.liferay.trash.TrashHelper" %><%@
+page import="com.liferay.trash.model.TrashEntry" %><%@
+page import="com.liferay.trash.util.TrashWebKeys" %>
 
 <%@ page import="java.io.IOException" %>
 
@@ -256,6 +258,8 @@ page import="javax.portlet.WindowState" %>
 
 <%
 DLTrashHelper dlTrashHelper = (DLTrashHelper)request.getAttribute(DLWebKeys.DOCUMENT_LIBRARY_TRASH_HELPER);
+
+TrashHelper trashHelper = (TrashHelper)request.getAttribute(TrashWebKeys.TRASH_HELPER);
 
 DLWebComponentProvider dlWebComponentProvider = DLWebComponentProvider.getDLWebComponentProvider();
 
