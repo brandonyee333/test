@@ -282,8 +282,8 @@ public class ElasticsearchIndividualRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		if (aggregations == null) {
-			return Collections.emptyList();
+		if (isEmpty(aggregations)) {
+			return accountPKs;
 		}
 
 		InternalNested internalNested = aggregations.get(
@@ -332,7 +332,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		if (aggregations == null) {
+		if (isEmpty(aggregations)) {
 			return Collections.emptyList();
 		}
 
@@ -609,7 +609,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		if (aggregations == null) {
+		if (isEmpty(aggregations)) {
 			return Collections.emptyMap();
 		}
 
@@ -659,6 +659,10 @@ public class ElasticsearchIndividualRepositoryImpl
 			});
 
 		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (isEmpty(aggregations)) {
+			return ids;
+		}
 
 		Terms terms = aggregations.get("ids");
 

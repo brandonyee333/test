@@ -298,6 +298,10 @@ public class ElasticsearchSegmentRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
+		if (isEmpty(aggregations)) {
+			return ids;
+		}
+
 		Terms terms = aggregations.get("ids");
 
 		for (Terms.Bucket bucket : terms.getBuckets()) {
@@ -359,7 +363,7 @@ public class ElasticsearchSegmentRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		if (aggregations == null) {
+		if (isEmpty(aggregations)) {
 			return referencedAssetIds;
 		}
 

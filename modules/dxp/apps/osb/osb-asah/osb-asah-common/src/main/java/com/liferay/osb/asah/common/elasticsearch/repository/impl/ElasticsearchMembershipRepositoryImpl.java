@@ -325,6 +325,10 @@ public class ElasticsearchMembershipRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
+		if (isEmpty(aggregations)) {
+			return individualIds;
+		}
+
 		Terms terms = aggregations.get("individualIds");
 
 		for (Terms.Bucket bucket : terms.getBuckets()) {
@@ -363,6 +367,10 @@ public class ElasticsearchMembershipRepositoryImpl
 			});
 
 		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (isEmpty(aggregations)) {
+			return Collections.emptyList();
+		}
 
 		Terms terms = aggregations.get("individualIds");
 
@@ -433,6 +441,10 @@ public class ElasticsearchMembershipRepositoryImpl
 			});
 
 		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (isEmpty(aggregations)) {
+			return individualSegmentIds;
+		}
 
 		Terms terms = aggregations.get("individualSegmentIds");
 

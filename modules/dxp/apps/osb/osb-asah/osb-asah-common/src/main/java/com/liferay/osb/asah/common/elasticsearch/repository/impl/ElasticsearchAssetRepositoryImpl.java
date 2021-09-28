@@ -52,7 +52,6 @@ import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
@@ -108,6 +107,10 @@ public class ElasticsearchAssetRepositoryImpl
 			});
 
 		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (isEmpty(aggregations)) {
+			return 0;
+		}
 
 		Cardinality cardinality = aggregations.get("keywordsCount");
 
@@ -298,13 +301,7 @@ public class ElasticsearchAssetRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		if (aggregations == null) {
-			return dataSourceAssetPKs;
-		}
-
-		List<Aggregation> aggregationsList = aggregations.asList();
-
-		if (aggregationsList.isEmpty()) {
+		if (isEmpty(aggregations)) {
 			return dataSourceAssetPKs;
 		}
 
@@ -342,7 +339,7 @@ public class ElasticsearchAssetRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		if (_isEmpty(aggregations)) {
+		if (isEmpty(aggregations)) {
 			return keywords;
 		}
 
@@ -390,6 +387,10 @@ public class ElasticsearchAssetRepositoryImpl
 			});
 
 		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (isEmpty(aggregations)) {
+			return Collections.emptyList();
+		}
 
 		Terms terms = aggregations.get("keywords/keyword");
 
@@ -527,7 +528,7 @@ public class ElasticsearchAssetRepositoryImpl
 
 			Aggregations aggregations = searchResponse.getAggregations();
 
-			if (_isEmpty(aggregations)) {
+			if (isEmpty(aggregations)) {
 				return assets;
 			}
 
@@ -642,20 +643,6 @@ public class ElasticsearchAssetRepositoryImpl
 		}
 
 		return sorts.toArray(new String[0]);
-	}
-
-	private boolean _isEmpty(Aggregations aggregations) {
-		if (aggregations == null) {
-			return true;
-		}
-
-		List<Aggregation> aggregationList = aggregations.asList();
-
-		if (aggregationList.isEmpty()) {
-			return true;
-		}
-
-		return false;
 	}
 
 	private static final Log _log = LogFactory.getLog(

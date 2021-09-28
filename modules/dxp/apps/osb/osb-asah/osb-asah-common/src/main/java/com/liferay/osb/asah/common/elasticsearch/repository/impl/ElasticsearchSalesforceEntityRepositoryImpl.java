@@ -14,14 +14,10 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.SalesforceEntity;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.SalesforceEntityRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -56,6 +52,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class ElasticsearchSalesforceEntityRepositoryImpl
+	extends BaseElasticsearchRepository<SalesforceEntity, String>
 	implements SalesforceEntityRepository {
 
 	@Override
@@ -201,6 +198,10 @@ public class ElasticsearchSalesforceEntityRepositoryImpl
 
 			Aggregations aggregations = searchResponse.getAggregations();
 
+			if (isEmpty(aggregations)) {
+				return Collections.emptyList();
+			}
+
 			CompositeAggregation compositeAggregation = aggregations.get(
 				"composite");
 
@@ -240,7 +241,7 @@ public class ElasticsearchSalesforceEntityRepositoryImpl
 		return Optional.ofNullable(
 			jsonObject
 		).map(
-			this::_toEntity
+			this::toEntity
 		);
 	}
 
@@ -270,14 +271,14 @@ public class ElasticsearchSalesforceEntityRepositoryImpl
 
 	@Override
 	public <S extends SalesforceEntity> S save(S salesforceEntity) {
-		JSONObject jsonObject = _toJSONObject(salesforceEntity);
+		JSONObject jsonObject = toJSONObject(salesforceEntity);
 
 		String id = jsonObject.optString(
-			"id", _timeOrderedUuidGenerator.generateId());
+			"id", timeOrderedUuidGenerator.generateId());
 
 		jsonObject.put("id", id);
 
-		return (S)_toEntity(
+		return (S)toEntity(
 			_salesforceRawElasticsearchInvoker.upsert(
 				_getCollectionName(salesforceEntity.getType()), jsonObject));
 	}
@@ -316,35 +317,21 @@ public class ElasticsearchSalesforceEntityRepositoryImpl
 		save(salesforceEntity);
 	}
 
-	protected List<SalesforceEntity> toList(JSONArray jsonArray) {
-		Stream<Object> stream = JSONUtil.toObjectStream(jsonArray);
+	@Override
+	protected String getCollectionName() {
+		throw new UnsupportedOperationException();
+	}
 
-		return stream.map(
-			object -> _toEntity((JSONObject)object)
-		).collect(
-			Collectors.toList()
-		);
+	@Override
+	protected ElasticsearchInvoker getElasticsearchInvoker() {
+		return _salesforceRawElasticsearchInvoker;
 	}
 
 	private String _getCollectionName(SalesforceEntity.Type type) {
 		return type.getValue();
 	}
 
-	private SalesforceEntity _toEntity(JSONObject jsonObject) {
-		return _objectMapper.convertValue(jsonObject, SalesforceEntity.class);
-	}
-
-	private JSONObject _toJSONObject(SalesforceEntity salesforceEntity) {
-		return _objectMapper.convertValue(salesforceEntity, JSONObject.class);
-	}
-
-	@Autowired
-	private ObjectMapper _objectMapper;
-
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
-
-	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
-		new TimeOrderedUuidGenerator();
 
 }

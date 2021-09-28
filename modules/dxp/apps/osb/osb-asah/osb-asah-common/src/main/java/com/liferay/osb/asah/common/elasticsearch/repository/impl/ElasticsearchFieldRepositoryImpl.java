@@ -254,7 +254,7 @@ public class ElasticsearchFieldRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		if (aggregations == null) {
+		if (isEmpty(aggregations)) {
 			return Collections.emptyList();
 		}
 

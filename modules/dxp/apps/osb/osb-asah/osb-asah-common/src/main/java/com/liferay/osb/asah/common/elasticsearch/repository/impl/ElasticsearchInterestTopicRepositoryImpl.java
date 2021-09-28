@@ -105,6 +105,10 @@ public class ElasticsearchInterestTopicRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
+		if (isEmpty(aggregations)) {
+			return Collections.emptyList();
+		}
+
 		Terms topicsTerms = aggregations.get("topics");
 
 		List<Integer> topics = new ArrayList<>();
@@ -152,6 +156,10 @@ public class ElasticsearchInterestTopicRepositoryImpl
 		}
 
 		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (isEmpty(aggregations)) {
+			return Collections.emptyList();
+		}
 
 		Terms terms = aggregations.get("topics");
 
@@ -204,6 +212,10 @@ public class ElasticsearchInterestTopicRepositoryImpl
 		}
 
 		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (isEmpty(aggregations)) {
+			return Collections.emptyList();
+		}
 
 		Terms topicTerms = aggregations.get("topics");
 

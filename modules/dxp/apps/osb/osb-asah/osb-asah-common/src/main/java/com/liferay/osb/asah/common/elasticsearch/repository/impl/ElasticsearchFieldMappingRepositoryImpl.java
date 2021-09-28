@@ -258,6 +258,10 @@ public class ElasticsearchFieldMappingRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
+		if (isEmpty(aggregations)) {
+			return fieldNames;
+		}
+
 		Terms terms = aggregations.get("fieldNames");
 
 		for (Terms.Bucket bucket : terms.getBuckets()) {

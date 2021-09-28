@@ -33,6 +33,8 @@ import java.util.stream.StreamSupport;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
@@ -205,6 +207,20 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 	protected abstract String getCollectionName();
 
 	protected abstract ElasticsearchInvoker getElasticsearchInvoker();
+
+	protected boolean isEmpty(Aggregations aggregations) {
+		if (aggregations == null) {
+			return true;
+		}
+
+		List<Aggregation> aggregationList = aggregations.asList();
+
+		if (aggregationList.isEmpty()) {
+			return true;
+		}
+
+		return false;
+	}
 
 	protected List<T> search(SearchSourceBuilder searchSourceBuilder) {
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
