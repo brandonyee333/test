@@ -12,22 +12,17 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog;
+package com.liferay.osb.asah.common.dog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.liferay.osb.asah.backend.model.Interest;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.model.ResultBag;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.common.repository.InterestRepository;
 
-import java.util.Collections;
-
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHits;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -36,31 +31,48 @@ import org.springframework.stereotype.Component;
 @Component
 public class InterestDog {
 
+	public Interest addInterest(Interest interest) {
+		return _interestRepository.save(interest);
+	}
+
+	public void deleteInterest(Long ownerId, String ownerType) {
+		_interestRepository.deleteByOwnerIdAndOwnerType(ownerId, ownerType);
+	}
+
+	public void deleteInterest(String ownerType, Date recordedDate) {
+		_interestRepository.deleteByOwnerTypeAndRecordedDateLessThanEqual(
+			ownerType, recordedDate);
+	}
+
+	public Interest fetchInterest(
+		String name, Long ownerId, String ownerType, Date recordedDate) {
+
+		return _interestRepository.
+			getByNameAndOwnerIdAndOwnerTypeAndRecordedDate(
+				name, ownerId, ownerType, recordedDate);
+	}
+
 	public ResultBag<Interest> getInterestResultBag(
 		Long ownerId, String ownerType, int size, int start) {
 
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"interests", _faroInfoElasticsearchInvoker,
-			DogUtil.buildSearchSourceBuilder(
-				Collections.emptyList(),
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
-				).filter(
-					QueryBuilders.termQuery("ownerType", ownerType)
-				),
-				size, start));
+		List<Interest> interests =
+			_interestRepository.findByOwnerIdAndOwnerType(
+				ownerId, ownerType, PageRequest.of(start / size, size));
 
-		return DogUtil.createResultBag(
-			Interest.class, _objectMapper, searchHits);
+		long count = _interestRepository.countByOwnerIdAndOwnerType(
+			ownerId, ownerType);
+
+		return new ResultBag<>(interests, count);
+	}
+
+	public List<Interest> getInterests(
+		Long interestId, String ownerType, Date recordedDate, int size) {
+
+		return _interestRepository.findByOwnerTypeAndRecordedDate(
+			interestId, ownerType, recordedDate, size);
 	}
 
 	@Autowired
-	private DataDog _dataDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
+	private InterestRepository _interestRepository;
 
 }

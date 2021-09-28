@@ -12,12 +12,12 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
-import com.liferay.osb.asah.backend.dog.InterestDog;
-import com.liferay.osb.asah.backend.model.Interest;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.dog.InterestDog;
+import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -35,7 +35,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Marcellus Tavares
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
+@SpringBootTest(classes = OSBAsahSpringBootApplication.class)
 public class InterestDogTest {
 
 	@ElasticsearchIndex(
