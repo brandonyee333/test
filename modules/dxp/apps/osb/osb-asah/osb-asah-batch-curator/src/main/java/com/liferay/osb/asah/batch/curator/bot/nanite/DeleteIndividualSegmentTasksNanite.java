@@ -17,6 +17,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -42,7 +43,7 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		String individualSegmentId = contextJSONObject.getString(
+		Long individualSegmentId = contextJSONObject.getLong(
 			"individualSegmentId");
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
@@ -51,21 +52,20 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 			QueryBuilders.termQuery("ownerType", "individual-segment")
 		);
 
-		faroInfoElasticsearchInvoker.delete("interests", boolQueryBuilder);
+		_interestDog.deleteInterest(individualSegmentId, "individual-segment");
 
 		faroInfoElasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
 
-		membershipChangeDog.deleteMembershipChanges(
-			Long.valueOf(individualSegmentId));
+		membershipChangeDog.deleteMembershipChanges(individualSegmentId);
 
-		membershipDog.deleteMembership(Long.valueOf(individualSegmentId));
+		membershipDog.deleteMembership(individualSegmentId);
 
 		JSONArrayIterator.of(
 			"individuals", faroInfoElasticsearchInvoker,
 			jsonObject -> {
 				_individualDog.removeSegmentId(
 					_objectMapper.convertValue(jsonObject, Individual.class),
-					Long.valueOf(individualSegmentId));
+					individualSegmentId);
 
 				return null;
 			}
@@ -90,6 +90,9 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 
 	@Autowired
 	private IndividualDog _individualDog;
+
+	@Autowired
+	private InterestDog _interestDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
