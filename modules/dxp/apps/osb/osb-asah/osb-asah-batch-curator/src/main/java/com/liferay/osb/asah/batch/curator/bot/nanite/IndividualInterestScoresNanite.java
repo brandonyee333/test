@@ -19,16 +19,18 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.model.KeywordInfo;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
+import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoInterestDog;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +64,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	public void run(String dayDateString) throws Exception {
 		_deleteInterestScores(dayDateString);
 
+		Date dayDate = DateUtil.toUTCDate(dayDateString);
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
 			faroInfoElasticsearchInvoker.
 				createElasticsearchBulkRequestBuilder();
@@ -74,9 +77,9 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 			keywordInfosMap,
 			_faroInfoActivityDog.getURLPageViewsMap(dayDateString, null, null));
 
-		Set<String> ownerIds = _faroInfoActivityDog.getOwnerIds(dayDateString);
+		Set<Long> ownerIds = _faroInfoActivityDog.getOwnerIds(dayDateString);
 
-		for (String ownerId : ownerIds) {
+		for (Long ownerId : ownerIds) {
 			if (isInterrupted()) {
 				return;
 			}
@@ -86,48 +89,34 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 				ownerId, totalKeywordsPageViewsMap, totalViews);
 		}
 
-		JSONArrayIterator.of(
-			"interests", faroInfoElasticsearchInvoker,
-			interestJSONObject -> {
-				try {
-					if (ownerIds.contains(
-							interestJSONObject.getString("ownerId"))) {
+		Long interestId = null;
 
-						return elasticsearchBulkRequestBuilder;
-					}
+		while (true) {
+			List<Interest> interests = _interestDog.getInterests(
+				interestId, "individual", DateUtil.addDays(dayDate, -1), 10000);
 
-					double score =
-						InterestScoreArm.DECAY *
-							interestJSONObject.getDouble("score");
-
-					if (score >= MINIMUM_INTEREST_SCORE_THRESHOLD) {
-						interestJSONObject.remove("id");
-
-						elasticsearchBulkRequestBuilder.add(
-							"interests",
-							interestJSONObject.put(
-								"dateRecorded", dayDateString
-							).put(
-								"score", score
-							));
-					}
-				}
-				catch (Exception exception) {
-					return exception;
-				}
-
-				return elasticsearchBulkRequestBuilder;
+			if (interests.isEmpty()) {
+				break;
 			}
-		).setBatchSize(
-			10000
-		).setQueryBuilder(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery(
-					"dateRecorded", DateUtil.addDays(dayDateString, -1))
-			).filter(
-				QueryBuilders.termQuery("ownerType", "individual")
-			)
-		).iterate();
+
+			for (Interest interest : interests) {
+				interestId = interest.getId();
+
+				if (ownerIds.contains(interest.getOwnerId())) {
+					continue;
+				}
+
+				double score = InterestScoreArm.DECAY * interest.getScore();
+
+				if (score >= MINIMUM_INTEREST_SCORE_THRESHOLD) {
+					interest.setId(null);
+					interest.setRecordedDate(dayDate);
+					interest.setScore(score);
+
+					_interestDog.addInterest(interest);
+				}
+			}
+		}
 
 		faroInfoElasticsearchInvoker.refresh();
 
@@ -182,7 +171,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 	private void _addVisitedPages(
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
-		String dayDateString, String individualId, String keyword,
+		String dayDateString, Long individualId, String keyword,
 		List<KeywordInfo> keywordInfos, Map<String, Long> urlsPageViewsMap) {
 
 		for (KeywordInfo keywordInfo : keywordInfos) {
@@ -216,17 +205,11 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	}
 
 	private void _deleteInterestScores(String dayDateString) throws Exception {
-		faroInfoElasticsearchInvoker.deleteByQuery(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.rangeQuery(
-					"dateRecorded"
-				).lte(
-					DateUtil.addDays(dayDateString, -2)
-				)
-			).filter(
-				QueryBuilders.termQuery("ownerType", "individual")
-			),
-			false, "interests");
+		Date dayDate = DateUtil.toUTCDate(dayDateString);
+
+		_interestDog.deleteInterest(
+			"individual", DateUtil.addDays(dayDate, -2));
+
 		faroInfoElasticsearchInvoker.deleteByQuery(
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
@@ -313,7 +296,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 	private Set<Map.Entry<String, Long>> _getURLsPageViewsEntrySet(
 		String dayDateString, Map<String, List<KeywordInfo>> keywordInfosMap,
-		String ownerId) {
+		Long ownerId) {
 
 		Map<String, Long> keywordsPageViewsMap = _getKeywordsPageViewsMap(
 			keywordInfosMap,
@@ -326,9 +309,11 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	private void _process(
 			String dayDateString,
 			ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
-			Map<String, List<KeywordInfo>> keywordInfosMap, String ownerId,
+			Map<String, List<KeywordInfo>> keywordInfosMap, Long ownerId,
 			Map<String, Long> totalKeywordsPageViewsMap, long totalViews)
 		throws Exception {
+
+		Date dayDate = DateUtil.toUTCDate(dayDateString);
 
 		long individualPageViews = _faroInfoActivityDog.getIndividualPageViews(
 			dayDateString, ownerId);
@@ -349,23 +334,11 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 			double score = 0;
 
-			JSONObject interestJSONObject = faroInfoElasticsearchInvoker.fetch(
-				"interests",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"dateRecorded", DateUtil.addDays(dayDateString, -1))
-				).filter(
-					QueryBuilders.termQuery("name", keyword)
-				).filter(
-					QueryBuilders.termQuery("ownerId", ownerId)
-				).filter(
-					QueryBuilders.termQuery("ownerType", "individual")
-				));
+			Interest interest = _interestDog.fetchInterest(
+				keyword, ownerId, "individual", DateUtil.addDays(dayDate, -1));
 
-			if (interestJSONObject != null) {
-				score =
-					InterestScoreArm.DECAY *
-						interestJSONObject.getDouble("score");
+			if (interest != null) {
+				score = InterestScoreArm.DECAY * interest.getScore();
 			}
 
 			score = _interestScoreArm.computeScore(
@@ -376,21 +349,16 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 				continue;
 			}
 
-			elasticsearchBulkRequestBuilder.add(
-				"interests",
-				JSONUtil.put(
-					"dateRecorded", dayDateString
-				).put(
-					"name", keyword
-				).put(
-					"ownerId", ownerId
-				).put(
-					"ownerType", "individual"
-				).put(
-					"score", score
-				).put(
-					"views", keywordsPageViewsMap.get(keyword)
-				));
+			interest = new Interest();
+
+			interest.setName(keyword);
+			interest.setOwnerId(ownerId);
+			interest.setOwnerType("individual");
+			interest.setRecordedDate(dayDate);
+			interest.setScore(score);
+			interest.setViews(keywordsPageViewsMap.get(keyword));
+
+			_interestDog.addInterest(interest);
 
 			_addVisitedPages(
 				elasticsearchBulkRequestBuilder, dayDateString, ownerId,
@@ -416,6 +384,9 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 	@Autowired
 	private FaroInfoInterestDog _faroInfoInterestDog;
+
+	@Autowired
+	private InterestDog _interestDog;
 
 	@Autowired
 	private InterestScoreArm _interestScoreArm;
