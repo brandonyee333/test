@@ -661,7 +661,7 @@ public class ElasticsearchIndividualRepositoryImpl
 		Aggregations aggregations = searchResponse.getAggregations();
 
 		if (isEmpty(aggregations)) {
-			return ids;
+			return individualIds;
 		}
 
 		Terms terms = aggregations.get("ids");
