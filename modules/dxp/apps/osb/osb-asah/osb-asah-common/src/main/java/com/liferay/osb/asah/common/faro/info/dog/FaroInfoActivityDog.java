@@ -285,7 +285,7 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 	}
 
 	@Cacheable
-	public long getIndividualPageViews(String dayDateString, String ownerId) {
+	public long getIndividualPageViews(String dayDateString, Long ownerId) {
 		return elasticsearchInvoker.count(
 			"activities",
 			BoolQueryBuilderUtil.filter(
@@ -385,8 +385,8 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 	}
 
 	@Cacheable
-	public Set<String> getOwnerIds(String dayDateString) {
-		Set<String> ownerIds = new HashSet<>();
+	public Set<Long> getOwnerIds(String dayDateString) {
+		Set<Long> ownerIds = new HashSet<>();
 
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
@@ -435,7 +435,7 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			for (CompositeAggregation.Bucket bucket : buckets) {
 				Map<String, Object> keys = bucket.getKey();
 
-				ownerIds.add((String)keys.get("ownerIds"));
+				ownerIds.add(Long.valueOf((String)keys.get("ownerIds")));
 			}
 
 			compositeAggregationBuilder.aggregateAfter(
@@ -475,7 +475,7 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 
 	@Cacheable
 	public Map<String, Long> getURLPageViewsMap(
-		String endDayDateString, String ownerId, String startDayDateString) {
+		String endDayDateString, Long ownerId, String startDayDateString) {
 
 		Map<String, Long> urlsPageViewsMap = new HashMap<>();
 
@@ -517,7 +517,8 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 				QueryBuilders.termQuery("day", endDayDateString));
 		}
 
-		BoolQueryBuilderUtil.filterTerm(boolQueryBuilder, "ownerId", ownerId);
+		BoolQueryBuilderUtil.filterTerm(
+			boolQueryBuilder, "ownerId", String.valueOf(ownerId));
 
 		searchSourceBuilder.query(boolQueryBuilder);
 
