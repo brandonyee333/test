@@ -378,7 +378,7 @@ AUI.add(
 					}
 
 					if (!Lang.isValue(config.title)) {
-						config.title = '&nbsp;';
+						config.title = '';
 					}
 
 					modal.titleNode.html(Lang.String.escapeHTML(config.title));
