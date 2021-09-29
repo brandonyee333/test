@@ -41,7 +41,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -22314,7 +22313,7 @@ public class BlogsEntryPersistenceImpl
 	 */
 	public void afterPropertiesSet() {
 		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
-			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+			PropsUtil.get("value.object.finder.cache.list.threshold"));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			BlogsEntryModelImpl.ENTITY_CACHE_ENABLED,

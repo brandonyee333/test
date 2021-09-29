@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -2391,7 +2390,7 @@ public class ProductEntryPersistenceImpl
 	 */
 	public void afterPropertiesSet() {
 		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
-			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+			PropsUtil.get("value.object.finder.cache.list.threshold"));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			ProductEntryModelImpl.ENTITY_CACHE_ENABLED,
