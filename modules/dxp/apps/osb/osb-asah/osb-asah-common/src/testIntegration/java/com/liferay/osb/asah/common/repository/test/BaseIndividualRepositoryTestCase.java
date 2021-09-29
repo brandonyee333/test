@@ -283,19 +283,22 @@ public abstract class BaseIndividualRepositoryTestCase
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 					11L, endOfDayDate, null,
-					Collections.singletonList(_segmentId), yesterdayDate, null));
+					Collections.singletonList(_segmentId), yesterdayDate,
+					null));
 		Assert.assertEquals(
 			1,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 					11L, endOfDayDate, endOfDayDate,
-					Collections.singletonList(_segmentId), yesterdayDate, date));
+					Collections.singletonList(_segmentId), yesterdayDate,
+					date));
 		Assert.assertEquals(
 			1,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 					11L, null, endOfDayDate,
-					Collections.singletonList(_segmentId), null, yesterdayDate));
+					Collections.singletonList(_segmentId), null,
+					yesterdayDate));
 		Assert.assertEquals(
 			1,
 			individualRepository.
@@ -537,9 +540,11 @@ public abstract class BaseIndividualRepositoryTestCase
 				_individual5Id));
 
 		Assert.assertEquals(
-			actualIndividualIds.toString(), expectedIndividualIds.size(), actualIndividualIds.size());
+			actualIndividualIds.toString(), expectedIndividualIds.size(),
+			actualIndividualIds.size());
 		Assert.assertTrue(
-			actualIndividualIds.toString(), expectedIndividualIds.containsAll(actualIndividualIds));
+			actualIndividualIds.toString(),
+			expectedIndividualIds.containsAll(actualIndividualIds));
 	}
 
 	@Test
