@@ -35,17 +35,34 @@ import org.springframework.test.context.ContextConfiguration;
 public class OSBAsahCachingConfigurerSupportTest {
 
 	@Test
-	public void testKeyGenerator() {
-		Class<?> clazz = getClass();
+	public void testKeyGenerator() throws Exception {
+		Class<?> clazz = Math.class;
 
-		Method[] methods = clazz.getMethods();
+		Method method1 = clazz.getMethod(
+			"multiplyExact", Long.class, Integer.class);
+		Method method2 = clazz.getMethod(
+			"multiplyExact", Integer.class, Long.class);
+
+		Assert.assertNotEquals(method1.toString(), method2.toString());
 
 		Assert.assertNotEquals(
-			_keyGenerator.generate(this, methods[0], 4.753E-321D),
-			_keyGenerator.generate(this, methods[0], 4.9E-324D, 4.9E-324D));
+			_keyGenerator.generate(this, method1, 1, 2),
+			_keyGenerator.generate(this, method2, 1, 2));
 	}
 
 	@Autowired
 	private KeyGenerator _keyGenerator;
+
+	private class Math {
+
+		public Double multiplyExact(Integer number1, Long number2) {
+			return (double)(number1 * number2);
+		}
+
+		public Double multiplyExact(Long number1, Integer number2) {
+			return (double)(number1 * number2);
+		}
+
+	}
 
 }
