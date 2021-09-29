@@ -212,8 +212,6 @@ public class AdminRestController extends BaseRestController {
 		}
 		else if (collectionName.equals("data-sources")) {
 			_addEntities(_dataSourceRepository, json, DataSource.class);
-
-			_nanitesHttp.refreshAnalytics();
 		}
 		else if (collectionName.equals("experiments")) {
 			_addEntities(_experimentRepository, json, Experiment.class);

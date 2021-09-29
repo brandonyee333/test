@@ -27,8 +27,6 @@ public interface NanitesHttp {
 
 	public void executeAsahTasks(List<Long> asahTaskIds);
 
-	public void refreshAnalytics();
-
 	public void removeSchedule();
 
 	public void rescheduleNanites();

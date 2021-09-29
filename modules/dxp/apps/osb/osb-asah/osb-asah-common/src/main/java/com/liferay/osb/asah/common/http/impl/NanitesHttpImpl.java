@@ -47,13 +47,6 @@ public class NanitesHttpImpl implements NanitesHttp {
 	}
 
 	@Override
-	public void refreshAnalytics() {
-		_http.exchangeIfUp(
-			ServiceConstants.URL_BATCH_CURATOR, "/nanites/analytics",
-			HttpMethod.POST, null);
-	}
-
-	@Override
 	public void removeSchedule() {
 		_http.exchangeIfUp(
 			ServiceConstants.URL_BATCH_CURATOR, "/nanites/remove-schedule",

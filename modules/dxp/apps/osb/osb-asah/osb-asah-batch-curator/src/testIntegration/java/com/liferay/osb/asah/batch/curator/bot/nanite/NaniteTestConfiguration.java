@@ -67,16 +67,7 @@ public class NaniteTestConfiguration {
 							asahTask.getClassName());
 				}
 
-				if (nanite instanceof IndividualSegmentActivityFieldsNanite) {
-					IndividualSegmentActivityFieldsNanite
-						individualSegmentActivityFieldsNanite =
-							(IndividualSegmentActivityFieldsNanite)nanite;
-
-					individualSegmentActivityFieldsNanite.run();
-				}
-				else {
-					nanite.run(asahTask.getContextJSONObject());
-				}
+				nanite.run(asahTask.getContextJSONObject());
 
 				return null;
 			}

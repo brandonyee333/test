@@ -26,7 +26,6 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
@@ -58,7 +57,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -120,12 +118,6 @@ public class DataSourceDog {
 		_deleteFieldMappings(dataSourceId);
 
 		_dataSourceRepository.deleteById(dataSourceId);
-
-		if (Objects.equals(dataSource.getProviderType(), "LIFERAY") ||
-			(dataSource.getEnableAllSites() != null)) {
-
-			_nanitesHttp.refreshAnalytics();
-		}
 	}
 
 	public void deleteDataSources() throws Exception {
@@ -336,8 +328,6 @@ public class DataSourceDog {
 
 		DataSource dataSource = getDataSource(dataSourceId);
 
-		Boolean oldSitesSelected = dataSource.getSitesSelected();
-
 		if (contactsSelected != null) {
 			dataSource.setContactsSelected(contactsSelected);
 		}
@@ -346,18 +336,7 @@ public class DataSourceDog {
 			dataSource.setSitesSelected(sitesSelected);
 		}
 
-		dataSource = _dataSourceRepository.save(dataSource);
-
-		if (BooleanUtils.isTrue(dataSource.getSitesSelected()) &&
-			BooleanUtils.isNotTrue(oldSitesSelected)) {
-
-			_nanitesHttp.refreshAnalytics();
-
-			_asahTaskDog.scheduleAsahTask(
-				"IndividualSegmentActivityFieldsNanite", (JSONObject)null);
-		}
-
-		return dataSource;
+		return _dataSourceRepository.save(dataSource);
 	}
 
 	private void _addDefaultChannel(DataSource dataSource) {
@@ -758,9 +737,6 @@ public class DataSourceDog {
 	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
-	private AsahTaskDog _asahTaskDog;
-
-	@Autowired
 	private ChannelDog _channelDog;
 
 	@Autowired
@@ -794,9 +770,6 @@ public class DataSourceDog {
 
 	@Autowired
 	private IndividualDog _individualDog;
-
-	@Autowired
-	private NanitesHttp _nanitesHttp;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

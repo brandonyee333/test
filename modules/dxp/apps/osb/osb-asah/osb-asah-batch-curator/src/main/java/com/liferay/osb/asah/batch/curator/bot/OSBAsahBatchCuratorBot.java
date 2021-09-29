@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.batch.curator.bot;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFieldsNanite;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskManager;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
 import com.liferay.osb.asah.common.date.DateUtil;
@@ -184,9 +183,6 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	private void _init() {
-		_individualSegmentActivityFieldsNanite.setAnalyticsConfigured(
-			_dataSourceDog.isAnalyticsConfigured());
-
 		_elasticsearchInvoker.updateByQueryWithRetry(
 			QueryBuilders.termQuery("status", "STARTED"), true,
 			new Script(
@@ -291,10 +287,6 @@ public class OSBAsahBatchCuratorBot {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private IndividualSegmentActivityFieldsNanite
-		_individualSegmentActivityFieldsNanite;
 
 	@Autowired
 	private ProjectDog _projectDog;
