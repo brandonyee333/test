@@ -21,7 +21,7 @@ dependencies {
 	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jdk8", version: "2.9.8"
 	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-json-org", version: "2.9.8"
 	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jsr310", version: "2.9.8"
-	compile group: "com.github.ben-manes.caffeine", name: "caffeine", version: "2.9.1"
+	compile group: "com.github.ben-manes.caffeine", name: "caffeine", version: "2.9.2"
 	compile group: "com.github.loki4j", name: "loki-logback-appender-jdk8", version: "1.2.0"
 	compile group: "com.google.cloud", name: "google-cloud-pubsub", version: "1.103.1"
 	compile group: "com.google.cloud", name: "google-cloud-storage", version: "1.107.0"

@@ -1,4 +1,4 @@
-FROM i386/redis:5.0.3
+FROM i386/redis:5.0.13
 
 COPY docker-resources/ /
 
