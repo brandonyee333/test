@@ -284,21 +284,18 @@ public abstract class BaseIndividualRepositoryTestCase
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 					11L, endOfDayDate, null,
 					Collections.singletonList(_segmentId), yesterdayDate, null));
-
 		Assert.assertEquals(
 			1,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 					11L, endOfDayDate, endOfDayDate,
 					Collections.singletonList(_segmentId), yesterdayDate, date));
-
 		Assert.assertEquals(
 			1,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 					11L, null, endOfDayDate,
 					Collections.singletonList(_segmentId), null, yesterdayDate));
-
 		Assert.assertEquals(
 			1,
 			individualRepository.
@@ -306,7 +303,6 @@ public abstract class BaseIndividualRepositoryTestCase
 					11L, endOfDayYesterdayDate, endOfDayDate,
 					Collections.singletonList(_segmentId), yesterdayDate,
 					yesterdayDate));
-
 		Assert.assertEquals(
 			2,
 			individualRepository.
@@ -732,13 +728,11 @@ public abstract class BaseIndividualRepositoryTestCase
 		Individual individual = new Individual();
 
 		individual.setChannelIds(Collections.singleton(channel1.getId()));
-
 		individual.setIndividualChannels(
 			Collections.singleton(
 				new IndividualChannel(
 					0L, channel1.getId(), null, lastActivityDate,
 					previousActivityDate)));
-
 		individual.setSegmentIds(Collections.singleton(_segmentId));
 
 		return individualRepository.save(individual);
