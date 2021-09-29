@@ -12,28 +12,28 @@
  *
  */
 
-package com.liferay.osb.asah.batch.curator.bot.nanite;
+package com.liferay.osb.asah.stream.curator.bot.nanite.individual;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,107 +42,27 @@ import org.springframework.stereotype.Component;
  * @author Michael Bowerman
  */
 @Component
-public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
+public class IndividualSegmentActivityFieldsNanite implements Nanite {
 
-	public void run() throws Exception {
-		int page = 0;
-
-		List<Segment> segments = _segmentDog.getSegments(page, 500);
-
-		while (!segments.isEmpty()) {
-			for (Segment segment : segments) {
-				try {
-					process(segment);
-				}
-				catch (Exception exception) {
-					_log.error(exception, exception);
-				}
-			}
-
-			segments = _segmentDog.getSegments(++page, 500);
-		}
+	@Override
+	public String getCollectionName() {
+		return "individual-segments";
 	}
 
 	@Override
-	public void run(JSONObject contextJSONObject) throws Exception {
-		boolean locked = _reentrantLock.tryLock();
+	public long getInterval() {
+		return DateUtil.MINUTE;
+	}
 
-		if (!locked) {
-			return;
-		}
-
+	@Override
+	public void run() {
 		try {
-			while (_analyticsConfigured.getOrDefault(
-						ProjectIdThreadLocal.getProjectId(), false)) {
-
-				run();
-
-				Thread.sleep(DateUtil.MINUTE);
-			}
-
-			_cleanUp();
+			ProjectIdThreadLocal.forProjects(
+				_projectDog.getProjects(), this::_process);
 		}
-		finally {
-			_reentrantLock.unlock();
+		catch (Exception exception) {
+			_log.error("Unable to process nanite", exception);
 		}
-	}
-
-	public void setAnalyticsConfigured(boolean analyticsConfigured) {
-		_analyticsConfigured.put(
-			ProjectIdThreadLocal.getProjectId(), analyticsConfigured);
-	}
-
-	@Override
-	protected Log getLog() {
-		return _log;
-	}
-
-	protected void process(Segment segment) {
-		Long channelId = segment.getChannelId();
-		String name = segment.getName();
-		Long segmentId = segment.getId();
-
-		if ((channelId == null) && !name.startsWith("Account: ")) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Skipping segment due missing channel ID " + segmentId);
-			}
-
-			return;
-		}
-
-		if (segment.getActivitiesCount() == null) {
-			segment.setActivitiesCount(0L);
-
-			_segmentDog.updateSegment(segment, segmentId);
-		}
-
-		boolean includeAnonymousUsers = BooleanUtils.toBoolean(
-			segment.getIncludeAnonymousUsers());
-
-		long activitiesCount = _getActivitiesCount(
-			channelId, includeAnonymousUsers, segmentId);
-		Date lastActivityDate = _getLastActivityDate(
-			channelId, includeAnonymousUsers, segmentId);
-
-		if ((activitiesCount == segment.getActivitiesCount()) &&
-			Objects.nonNull(segment.getLastActivityDate()) &&
-			Objects.equals(lastActivityDate, segment.getLastActivityDate())) {
-
-			return;
-		}
-
-		segment.setActivitiesCount(activitiesCount);
-
-		if (Objects.nonNull(lastActivityDate)) {
-			segment.setLastActivityDate(lastActivityDate);
-		}
-
-		_segmentDog.replaceSegment(segment);
-	}
-
-	private void _cleanUp() {
-		_segmentDog.updateSegments(0L);
 	}
 
 	private long _getActivitiesCount(
@@ -195,15 +115,104 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 		return null;
 	}
 
+	private boolean _isAnalyticsConfigured() {
+		return _analyticsConfigured.getOrDefault(
+			ProjectIdThreadLocal.getProjectId(), false);
+	}
+
+	private void _process() {
+		if (!_dataSourceDog.isAnalyticsConfigured()) {
+			if (_isAnalyticsConfigured()) {
+				_segmentDog.updateSegments(0L);
+			}
+
+			_setAnalyticsConfigured(false);
+
+			return;
+		}
+
+		_setAnalyticsConfigured(true);
+
+		int page = 0;
+
+		List<Segment> segments = _segmentDog.getSegments(page, 500);
+
+		while (!segments.isEmpty()) {
+			for (Segment segment : segments) {
+				try {
+					_process(segment);
+				}
+				catch (Exception exception) {
+					_log.error(exception, exception);
+				}
+			}
+
+			segments = _segmentDog.getSegments(++page, 500);
+		}
+	}
+
+	private void _process(Segment segment) {
+		Long channelId = segment.getChannelId();
+		String name = segment.getName();
+		Long segmentId = segment.getId();
+
+		if ((channelId == null) && !name.startsWith("Account: ")) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Skipping segment due missing channel ID " + segmentId);
+			}
+
+			return;
+		}
+
+		if (segment.getActivitiesCount() == null) {
+			segment.setActivitiesCount(0L);
+
+			_segmentDog.updateSegment(segment, segmentId);
+		}
+
+		boolean includeAnonymousUsers = BooleanUtils.toBoolean(
+			segment.getIncludeAnonymousUsers());
+
+		long activitiesCount = _getActivitiesCount(
+			channelId, includeAnonymousUsers, segmentId);
+		Date lastActivityDate = _getLastActivityDate(
+			channelId, includeAnonymousUsers, segmentId);
+
+		if ((activitiesCount == segment.getActivitiesCount()) &&
+			Objects.nonNull(segment.getLastActivityDate()) &&
+			Objects.equals(lastActivityDate, segment.getLastActivityDate())) {
+
+			return;
+		}
+
+		segment.setActivitiesCount(activitiesCount);
+
+		if (Objects.nonNull(lastActivityDate)) {
+			segment.setLastActivityDate(lastActivityDate);
+		}
+
+		_segmentDog.replaceSegment(segment);
+	}
+
+	private void _setAnalyticsConfigured(boolean analyticsConfigured) {
+		_analyticsConfigured.put(
+			ProjectIdThreadLocal.getProjectId(), analyticsConfigured);
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		IndividualSegmentActivityFieldsNanite.class);
 
 	private final Map<String, Boolean> _analyticsConfigured = new HashMap<>();
 
 	@Autowired
+	private DataSourceDog _dataSourceDog;
+
+	@Autowired
 	private IndividualDog _individualDog;
 
-	private final ReentrantLock _reentrantLock = new ReentrantLock();
+	@Autowired
+	private ProjectDog _projectDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;
