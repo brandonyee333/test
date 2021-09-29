@@ -139,9 +139,7 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 			return false;
 		}
 
-		if (isLiferayEmployee(user.getUserId()) ||
-			isPartner(user.getUserId())) {
-
+		if (isLiferayEmployee(user.getUserId())) {
 			return true;
 		}
 
@@ -261,16 +259,6 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 	protected boolean isLiferayEmployee(long userId) throws PortalException {
 		if (_organizationLocalService.hasUserOrganization(
 				userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
-
-			return true;
-		}
-
-		return false;
-	}
-
-	protected boolean isPartner(long userId) throws PortalException {
-		if (_organizationLocalService.hasUserOrganization(
-				userId, OSBCustomerConstants.ORGANIZATION_PARTNER_ID)) {
 
 			return true;
 		}
