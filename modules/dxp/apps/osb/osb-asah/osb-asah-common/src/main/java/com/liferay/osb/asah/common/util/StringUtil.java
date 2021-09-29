@@ -59,6 +59,21 @@ public class StringUtil {
 		return false;
 	}
 
+	public static String toHexString(Object object) {
+		if (object instanceof Integer) {
+			Integer integerObj = (Integer)object;
+
+			return Integer.toHexString(integerObj.intValue());
+		}
+		else if (object instanceof Long) {
+			Long longObj = (Long)object;
+
+			return Long.toHexString(longObj.longValue());
+		}
+
+		return String.valueOf(object);
+	}
+
 	public static Object toObject(String string) {
 		if (string.startsWith("'") && string.endsWith("'")) {
 			return unquoteAndDecodeInnerQuotes(string);

@@ -15,11 +15,10 @@
 package com.liferay.osb.asah.common.spring.cache;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -93,7 +92,7 @@ public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 			sb.append("#");
 			sb.append(method.getName());
 			sb.append("#");
-			sb.append(Arrays.deepHashCode(params));
+			sb.append(_toHashCode(params));
 
 			return sb.toString();
 		};
@@ -132,6 +131,23 @@ public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 				setKeySerializer(StringRedisSerializer.UTF_8);
 			}
 		};
+	}
+
+	private String _toHashCode(Object... params) {
+		int hashCode = 0;
+		int weight = 1;
+
+		for (int i = params.length - 1; i >= 0; i--) {
+			String s = StringUtil.toHexString(params[i]);
+
+			hashCode = (s.hashCode() * weight) + hashCode;
+
+			for (int j = s.length(); j > 0; j--) {
+				weight *= 31;
+			}
+		}
+
+		return StringUtil.toHexString(hashCode);
 	}
 
 	@Value("${osb.asah.cache.enabled:true}")
