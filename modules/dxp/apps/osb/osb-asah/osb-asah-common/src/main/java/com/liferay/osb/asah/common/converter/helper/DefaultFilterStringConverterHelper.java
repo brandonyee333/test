@@ -184,7 +184,7 @@ public class DefaultFilterStringConverterHelper
 		QueryBuilder queryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.rangeQuery(
 				fieldName
-			).gt(
+			).gte(
 				localDateTime.toString()
 			).timeZone(
 				TimeZoneDogUtil.getTimeZoneId()
