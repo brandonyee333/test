@@ -525,21 +525,21 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		Stream<Individual> stream = individuals.stream();
 
-		Set<Long> actualIds = stream.map(
+		Set<Long> actualIndividualIds = stream.map(
 			Individual::getId
 		).collect(
 			Collectors.toSet()
 		);
 
-		Set<Long> expectedIds = new HashSet<>(
+		Set<Long> expectedIndividualIds = new HashSet<>(
 			Arrays.asList(
 				_individual1Id, _individual3Id, _individual4Id,
 				_individual5Id));
 
 		Assert.assertEquals(
-			actualIds.toString(), expectedIds.size(), actualIds.size());
+			actualIndividualIds.toString(), expectedIndividualIds.size(), actualIndividualIds.size());
 		Assert.assertTrue(
-			actualIds.toString(), expectedIds.containsAll(actualIds));
+			actualIndividualIds.toString(), expectedIndividualIds.containsAll(actualIndividualIds));
 	}
 
 	@Test
