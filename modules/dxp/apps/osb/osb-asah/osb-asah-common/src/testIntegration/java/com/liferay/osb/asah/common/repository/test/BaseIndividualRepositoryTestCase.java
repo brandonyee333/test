@@ -262,58 +262,58 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		Date endOfDayDate = DateUtil.newEndOfDayDate(date);
 
-		Date endOfDayYesterday = DateUtil.addDays(endOfDayDate, -1);
+		Date endOfDayYesterdayDate = DateUtil.addDays(endOfDayDate, -1);
 
-		Date beforeYesterday = DateUtil.addDays(endOfDayYesterday, -1);
+		Date beforeYesterdayDate = DateUtil.addDays(endOfDayYesterdayDate, -1);
 
-		Date aMonthAgo = DateUtil.addDays(endOfDayDate, -30);
+		Date monthAgoDate = DateUtil.addDays(endOfDayDate, -30);
 
 		Assert.assertEquals(
 			0,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
-					11L, beforeYesterday, beforeYesterday,
-					Collections.singletonList(_segmentId), aMonthAgo,
-					aMonthAgo));
+					11L, beforeYesterdayDate, beforeYesterdayDate,
+					Collections.singletonList(_segmentId), monthAgoDate,
+					monthAgoDate));
 
-		Date yesterday = DateUtil.addDays(date, -1);
+		Date yesterdayDate = DateUtil.addDays(date, -1);
 
 		Assert.assertEquals(
 			1,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 					11L, endOfDayDate, null,
-					Collections.singletonList(_segmentId), yesterday, null));
+					Collections.singletonList(_segmentId), yesterdayDate, null));
 
 		Assert.assertEquals(
 			1,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 					11L, endOfDayDate, endOfDayDate,
-					Collections.singletonList(_segmentId), yesterday, date));
+					Collections.singletonList(_segmentId), yesterdayDate, date));
 
 		Assert.assertEquals(
 			1,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 					11L, null, endOfDayDate,
-					Collections.singletonList(_segmentId), null, yesterday));
+					Collections.singletonList(_segmentId), null, yesterdayDate));
 
 		Assert.assertEquals(
 			1,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
-					11L, endOfDayYesterday, endOfDayDate,
-					Collections.singletonList(_segmentId), yesterday,
-					yesterday));
+					11L, endOfDayYesterdayDate, endOfDayDate,
+					Collections.singletonList(_segmentId), yesterdayDate,
+					yesterdayDate));
 
 		Assert.assertEquals(
 			2,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 					11L, endOfDayDate, endOfDayDate,
-					Collections.singletonList(_segmentId), yesterday,
-					yesterday));
+					Collections.singletonList(_segmentId), yesterdayDate,
+					yesterdayDate));
 	}
 
 	@Test
