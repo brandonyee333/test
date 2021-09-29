@@ -12,15 +12,17 @@
  *
  */
 
-package com.liferay.osb.asah.batch.curator.bot.nanite.test;
+package com.liferay.osb.asah.stream.curator.bot.nanite.individual.test;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFieldsNanite;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.bot.nanite.individual.IndividualSegmentActivityFieldsNanite;
+import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.junit.Assert;
@@ -34,17 +36,21 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Michael Bowerman
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-public class IndividualSegmentActivityFieldsNaniteTest
-	extends BaseNaniteTestCase {
+@SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
+public class IndividualSegmentActivityFieldsNaniteTest {
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_3.json",
+		name = "individuals", resourcePath = "individuals_6_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual_segments.json",
+		name = "individual-segments",
+		resourcePath = "individual_segments_2_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@Test
 	public void test() throws Exception {

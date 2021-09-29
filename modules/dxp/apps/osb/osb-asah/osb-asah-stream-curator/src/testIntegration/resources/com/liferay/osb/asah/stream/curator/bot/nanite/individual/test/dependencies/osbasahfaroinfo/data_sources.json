@@ -3,6 +3,11 @@
 		"id": "1",
 		"name": "test1-datasource",
 		"provider": {
+			"analyticsConfiguration": {
+				"enableAllSites": true,
+				"sites": [
+				]
+			},
 			"type": "LIFERAY"
 		},
 		"state": "READY",

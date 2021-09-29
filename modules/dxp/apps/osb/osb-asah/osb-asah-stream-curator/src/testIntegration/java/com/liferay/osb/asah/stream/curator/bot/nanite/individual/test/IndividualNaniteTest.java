@@ -71,7 +71,7 @@ public class IndividualNaniteTest {
 	)
 	@ElasticsearchIndex(
 		name = "individual-segments",
-		resourcePath = "individual_segments_info.json",
+		resourcePath = "individual_segments_1_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@MessageBusChannel(
