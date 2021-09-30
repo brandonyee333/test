@@ -39,6 +39,14 @@ public interface FieldRepository extends Repository<Field, Long> {
 
 	@CacheEvict(allEntries = true)
 	@Modifying
+	public void deleteByContextAndDataSourceIdAndNameAndOwnerIdInAndOwnerType(
+		@Param("context") String context,
+		@Param("dataSourceId") Long dataSourceId, @Param("name") String name,
+		@Param("ownerIds") List<Long> ownerIds,
+		@Param("ownerType") String ownerType);
+
+	@CacheEvict(allEntries = true)
+	@Modifying
 	public void deleteByContextAndOwnerId(
 		@Param("context") String context, @Param("ownerId") Long ownerId);
 
@@ -51,12 +59,11 @@ public interface FieldRepository extends Repository<Field, Long> {
 	public void deleteByOwnerIdAndOwnerType(
 		@Param("ownerId") Long ownerId, @Param("ownerType") String ownerType);
 
-	@Cacheable
-	public boolean existsByDataSourceId(Long dataSourceId);
-
-	@Cacheable
-	public boolean existsByDataSourceIdAndNameAndOwnerId(
-		Long dataSourceId, String name, Long ownerId);
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void deleteByOwnerIdInAndOwnerType(
+		@Param("ownerIds") List<Long> ownerIds,
+		@Param("ownerType") String ownerType);
 
 	@Cacheable
 	public boolean existsByNameAndOwnerId(String name, Long ownerId);
@@ -72,14 +79,17 @@ public interface FieldRepository extends Repository<Field, Long> {
 		String context, Long dataSourceId, Long ownerId, String ownerType);
 
 	@Cacheable
-	public List<Field>
-		findByContextAndDataSourceIdNotAndNameNotInAndOwnerIdAndOwnerType(
-			String context, Long dataSourceId, List<String> names, Long ownerId,
-			String ownerType);
+	public List<Field> findByContextAndDataSourceIdAndOwnerIdInAndOwnerType(
+		String context, Long dataSourceId, List<Long> ownerIds,
+		String ownerType);
 
 	@Cacheable
 	public List<Field> findByContextAndNameAndOwnerIdAndOwnerType(
 		String context, String name, Long ownerId, String ownerType);
+
+	@Cacheable
+	public List<Field> findByContextAndNameAndOwnerIdInAndOwnerType(
+		String context, String name, List<Long> ownerIds, String ownerType);
 
 	@Cacheable
 	public List<Field> findByContextAndOwnerIdAndOwnerType(
@@ -90,8 +100,9 @@ public interface FieldRepository extends Repository<Field, Long> {
 		@Param("context") String context, @Param("ownerId") Long ownerId);
 
 	@Cacheable
-	public Field findByDataSourceIdAndNameAndOwnerId(
-		Long dataSourceId, String name, Long ownerId);
+	public List<Field> findByContextAndOwnerIdInGroupByMaxModifiedDateAndName(
+		@Param("context") String context,
+		@Param("ownerIds") List<Long> ownerIds);
 
 	@Cacheable
 	public List<Field> findByFieldTypeAndOwnerTypeAndValueIn(

@@ -51,32 +51,32 @@ public class DataRetentionNanite extends BaseNanite {
 		Preference preference = _preferenceDog.getPreference(
 			"data-retention-period");
 
-		String dateString = DateUtil.toUTCString(
-			new Date(
-				System.currentTimeMillis() -
-					Long.parseLong(preference.getValue())));
+		Date date = new Date(
+			System.currentTimeMillis() - Long.parseLong(preference.getValue()));
 
 		_cerebroInfoElasticsearchInvoker.deleteByQuery(
 			QueryBuilders.rangeQuery(
 				"lastEventDate"
 			).lt(
-				dateString
+				DateUtil.toUTCString(date)
 			),
 			true, _COLLECTION_NAMES);
 
-		int page = 0;
+		Long currentIndividualId = null;
 
 		while (true) {
 			List<Individual> individuals = _individualDog.searchIndividuals(
-				dateString, page++, 50);
+				date, currentIndividualId, 10000);
 
 			if (individuals.isEmpty()) {
 				break;
 			}
 
-			for (Individual individual : individuals) {
-				_individualDog.deleteIndividual(new Date(), individual.getId());
-			}
+			_individualDog.deleteIndividuals(new Date(), individuals);
+
+			Individual individual = individuals.get(individuals.size() - 1);
+
+			currentIndividualId = individual.getId();
 		}
 	}
 

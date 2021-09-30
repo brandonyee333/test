@@ -17,6 +17,16 @@
 				MembershipChange.individualId = :individualId
 		]]>
 	</entry>
+	<entry key="MembershipChange.updateIndividualDeletedByIndividualIdIn">
+		<![CDATA[
+			UPDATE
+				MembershipChange
+			SET
+				individualDeleted = :individualDeleted
+			WHERE
+				MembershipChange.individualId IN (:individualIds)
+		]]>
+	</entry>
 	<entry key="MembershipChange.updateIndividualNameByIndividualId">
 		<![CDATA[
 			UPDATE

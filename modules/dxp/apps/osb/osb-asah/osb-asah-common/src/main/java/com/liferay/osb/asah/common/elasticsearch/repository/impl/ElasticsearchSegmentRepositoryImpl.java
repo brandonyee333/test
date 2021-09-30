@@ -207,13 +207,13 @@ public class ElasticsearchSegmentRepositoryImpl
 	public List<Segment> findByReferencedAssetDataSourceIdsAndStateNotAndType(
 		Long referencedAssetDataSourceIds, String state, Segment.Type type) {
 
-		return findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdsInAndStateNotAndType(
+		return findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType(
 			referencedAssetDataSourceIds, null, state, type);
 	}
 
 	@Override
 	public List<Segment>
-		findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdsInAndStateNotAndType(
+		findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType(
 			Long referencedAssetDataSourceIds,
 			List<Long> referencedFieldMappingIds, String state,
 			Segment.Type type) {
@@ -255,10 +255,10 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	@Override
-	public List<Segment> findByReferencedFieldMappingIdsInAndStateNotAndType(
+	public List<Segment> findByReferencedFieldMappingIdInAndStateNotAndType(
 		List<Long> referencedFieldMappingIds, String state, Segment.Type type) {
 
-		return findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdsInAndStateNotAndType(
+		return findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType(
 			null, referencedFieldMappingIds, state, type);
 	}
 
@@ -266,7 +266,7 @@ public class ElasticsearchSegmentRepositoryImpl
 	public List<Segment> findByStateNotAndType(
 		String state, Segment.Type type) {
 
-		return findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdsInAndStateNotAndType(
+		return findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType(
 			null, null, state, type);
 	}
 

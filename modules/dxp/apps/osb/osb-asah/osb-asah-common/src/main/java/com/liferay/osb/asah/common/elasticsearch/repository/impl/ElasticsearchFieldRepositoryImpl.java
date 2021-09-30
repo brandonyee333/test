@@ -25,8 +25,10 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -72,13 +74,35 @@ public class ElasticsearchFieldRepositoryImpl
 	}
 
 	@Override
+	public void deleteByContextAndDataSourceIdAndNameAndOwnerIdInAndOwnerType(
+		String context, Long dataSourceId, String name, List<Long> ownerIds,
+		String ownerType) {
+
+		_faroInfoElasticsearchInvoker.delete(
+			getCollectionName(),
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("context", context)
+			).filter(
+				QueryBuilders.termQuery(
+					"dataSourceId", String.valueOf(dataSourceId))
+			).filter(
+				QueryBuilders.termQuery("name", name)
+			).filter(
+				QueryBuilders.termsQuery(
+					"ownerId", ListUtil.map(ownerIds, String::valueOf))
+			).filter(
+				QueryBuilders.termQuery("ownerType", ownerType)
+			));
+	}
+
+	@Override
 	public void deleteByContextAndOwnerId(String context, Long ownerId) {
 		_faroInfoElasticsearchInvoker.delete(
 			getCollectionName(),
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("context", context)
 			).filter(
-				QueryBuilders.termQuery("ownerId", ownerId)
+				QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
 			));
 	}
 
@@ -95,33 +119,23 @@ public class ElasticsearchFieldRepositoryImpl
 		_faroInfoElasticsearchInvoker.delete(
 			getCollectionName(),
 			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("ownerId", ownerId)
+				QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
 			).filter(
-				QueryBuilders.termQuery("ownerType", "individual")
+				QueryBuilders.termQuery("ownerType", ownerType)
 			));
 	}
 
 	@Override
-	public boolean existsByDataSourceId(Long dataSourceId) {
-		return _faroInfoElasticsearchInvoker.exists(
-			getCollectionName(),
-			QueryBuilders.termQuery(
-				"dataSourceId", String.valueOf(dataSourceId)));
-	}
+	public void deleteByOwnerIdInAndOwnerType(
+		List<Long> ownerIds, String ownerType) {
 
-	@Override
-	public boolean existsByDataSourceIdAndNameAndOwnerId(
-		Long dataSourceId, String name, Long ownerId) {
-
-		return _faroInfoElasticsearchInvoker.exists(
+		_faroInfoElasticsearchInvoker.delete(
 			getCollectionName(),
 			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId))
+				QueryBuilders.termsQuery(
+					"ownerId", ListUtil.map(ownerIds, String::valueOf))
 			).filter(
-				QueryBuilders.termQuery("name", name)
-			).filter(
-				QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
+				QueryBuilders.termQuery("ownerType", ownerType)
 			));
 	}
 
@@ -132,7 +146,7 @@ public class ElasticsearchFieldRepositoryImpl
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("name", name)
 			).filter(
-				QueryBuilders.termQuery("ownerId", ownerId)
+				QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
 			));
 	}
 
@@ -177,10 +191,9 @@ public class ElasticsearchFieldRepositoryImpl
 	}
 
 	@Override
-	public List<Field>
-		findByContextAndDataSourceIdNotAndNameNotInAndOwnerIdAndOwnerType(
-			String context, Long dataSourceId, List<String> names, Long ownerId,
-			String ownerType) {
+	public List<Field> findByContextAndDataSourceIdAndOwnerIdInAndOwnerType(
+		String context, Long dataSourceId, List<Long> ownerIds,
+		String ownerType) {
 
 		return toList(
 			_faroInfoElasticsearchInvoker.get(
@@ -188,14 +201,11 @@ public class ElasticsearchFieldRepositoryImpl
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("context", context)
 				).filter(
-					BoolQueryBuilderUtil.mustNot(
-						QueryBuilders.termQuery(
-							"dataSourceId", String.valueOf(dataSourceId)))
+					QueryBuilders.termQuery(
+						"dataSourceId", String.valueOf(dataSourceId))
 				).filter(
-					BoolQueryBuilderUtil.mustNot(
-						QueryBuilders.termsQuery("name", names))
-				).filter(
-					QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
+					QueryBuilders.termsQuery(
+						"ownerId", ListUtil.map(ownerIds, String::valueOf))
 				).filter(
 					QueryBuilders.termQuery("ownerType", ownerType)
 				)));
@@ -210,6 +220,25 @@ public class ElasticsearchFieldRepositoryImpl
 	}
 
 	@Override
+	public List<Field> findByContextAndNameAndOwnerIdInAndOwnerType(
+		String context, String name, List<Long> ownerIds, String ownerType) {
+
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("context", context)
+				).filter(
+					QueryBuilders.termQuery("name", name)
+				).filter(
+					QueryBuilders.termsQuery(
+						"ownerId", ListUtil.map(ownerIds, String::valueOf))
+				).filter(
+					QueryBuilders.termQuery("ownerType", ownerType)
+				)));
+	}
+
+	@Override
 	public List<Field> findByContextAndOwnerIdAndOwnerType(
 		String context, Long ownerId, String ownerType) {
 
@@ -220,6 +249,14 @@ public class ElasticsearchFieldRepositoryImpl
 	@Override
 	public List<Field> findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
 		String context, Long ownerId) {
+
+		return findByContextAndOwnerIdInGroupByMaxModifiedDateAndName(
+			context, Arrays.asList(ownerId));
+	}
+
+	@Override
+	public List<Field> findByContextAndOwnerIdInGroupByMaxModifiedDateAndName(
+		String context, List<Long> ownerIds) {
 
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			getCollectionName(),
@@ -246,8 +283,8 @@ public class ElasticsearchFieldRepositoryImpl
 					BoolQueryBuilderUtil.filter(
 						QueryBuilders.termQuery("context", context)
 					).filter(
-						QueryBuilders.termQuery(
-							"ownerId", String.valueOf(ownerId))
+						QueryBuilders.termsQuery(
+							"ownerId", ListUtil.map(ownerIds, String::valueOf))
 					));
 				searchSourceBuilder.size(0);
 			});
@@ -276,23 +313,6 @@ public class ElasticsearchFieldRepositoryImpl
 		}
 
 		return toList(jsonArray);
-	}
-
-	@Override
-	public Field findByDataSourceIdAndNameAndOwnerId(
-		Long dataSourceId, String name, Long ownerId) {
-
-		return toEntity(
-			_faroInfoElasticsearchInvoker.fetch(
-				getCollectionName(),
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"dataSourceId", String.valueOf(dataSourceId))
-				).filter(
-					QueryBuilders.termQuery("name", name)
-				).filter(
-					QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
-				)));
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -41,6 +42,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * @author Marcellus Tavares
@@ -81,6 +83,16 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 		setUpRepository(membershipsChanges.toArray(new MembershipChange[0]));
 
 		_membershipChange = entityModels.get(2);
+	}
+
+	@Test
+	public void testCountMembershipChanges() {
+		Segment segment = _segments.get(0);
+
+		Assert.assertEquals(
+			5,
+			_membershipChangeRepository.countMembershipChanges(
+				FilterHelper.EMPTY, false, segment.getId()));
 	}
 
 	@Test
@@ -181,9 +193,43 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 	}
 
 	@Test
+	public void testSearchMembershipChanges() {
+		Segment segment = _segments.get(0);
+
+		List<MembershipChange> membershipChanges =
+			_membershipChangeRepository.searchMembershipChanges(
+				FilterHelper.EMPTY, false, segment.getId(),
+				PageRequest.of(0, 1));
+
+		Assert.assertEquals(
+			membershipChanges.toString(), 1, membershipChanges.size());
+		Assert.assertEquals(entityModels.get(0), membershipChanges.get(0));
+	}
+
+	@Test
 	public void testUpdateIndividualDeletedByIndividualId() {
 		_membershipChangeRepository.updateIndividualDeletedByIndividualId(
 			Boolean.TRUE, _membershipChange.getIndividualId());
+
+		Long membershipChangeId = _membershipChange.getId();
+
+		Assert.assertNotNull(membershipChangeId);
+
+		Optional<MembershipChange> membershipChangeOptional =
+			_membershipChangeRepository.findById(membershipChangeId);
+
+		Assert.assertTrue(membershipChangeOptional.isPresent());
+
+		MembershipChange actualMembershipChange =
+			membershipChangeOptional.get();
+
+		Assert.assertTrue(actualMembershipChange.getIndividualDeleted());
+	}
+
+	@Test
+	public void testUpdateIndividualDeletedByIndividualIdIn() {
+		_membershipChangeRepository.updateIndividualDeletedByIndividualIdIn(
+			Boolean.TRUE, Arrays.asList(_membershipChange.getIndividualId()));
 
 		Long membershipChangeId = _membershipChange.getId();
 

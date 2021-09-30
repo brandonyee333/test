@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
@@ -50,21 +52,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MembershipDog extends BaseFaroInfoDog {
-
-	public Membership addMembership(
-		Date createDate, Long individualId, Long individualSegmentId,
-		Date modifiedDate, String status) {
-
-		Membership membership = new Membership();
-
-		membership.setCreateDate(createDate);
-		membership.setIndividualId(individualId);
-		membership.setIndividualSegmentId(individualSegmentId);
-		membership.setModifiedDate(createDate);
-		membership.setStatus(status);
-
-		return addMembership(membership);
-	}
 
 	public Membership addMembership(Membership membership) {
 		membership = _membershipRepository.save(membership);
@@ -106,6 +93,48 @@ public class MembershipDog extends BaseFaroInfoDog {
 			"ADDED");
 
 		return membership;
+	}
+
+	public void addMemberships(
+		Date createDate, List<Individual> individuals,
+		Long individualSegmentId) {
+
+		List<Membership> memberships = new ArrayList<>();
+
+		for (Individual individual : individuals) {
+			Membership membership = new Membership();
+
+			membership.setCreateDate(createDate);
+			membership.setIndividualId(individual.getId());
+			membership.setIndividualSegmentId(individualSegmentId);
+			membership.setModifiedDate(createDate);
+			membership.setStatus("ACTIVE");
+
+			memberships.add(membership);
+		}
+
+		_membershipRepository.saveAll(memberships);
+
+		_individualDog.addSegmentId(individuals, individualSegmentId);
+
+		long knownIndividualCount = _individualDog.getKnownIndividualCount(
+			individualSegmentId);
+
+		long individualCount = 0;
+
+		if (_segmentDog.isIncludeAnonymousUsers(individualSegmentId)) {
+			individualCount = _getIndividualCount(individualSegmentId);
+		}
+		else {
+			individualCount = knownIndividualCount;
+		}
+
+		_segmentDog.updateSegment(
+			individualCount, knownIndividualCount, individualSegmentId);
+
+		_membershipChangeDog.addMembershipChanges(
+			createDate, individuals, individualCount, individualSegmentId,
+			knownIndividualCount, "ADDED");
 	}
 
 	public List<Membership> addMemberships(List<Membership> memberships) {
@@ -205,6 +234,68 @@ public class MembershipDog extends BaseFaroInfoDog {
 			_membershipChangeDog.addMembershipChange(
 				individual, individualCount, knownIndividualCount, membership,
 				"REMOVED");
+		}
+	}
+
+	public void deactivateMemberships(
+		Date deletionDate, List<Individual> individuals) {
+
+		List<Membership> memberships =
+			_membershipRepository.findByIndividualIdInAndStatus(
+				ListUtil.map(individuals, Individual::getId), "ACTIVE");
+
+		for (Membership membership : memberships) {
+			membership.setModifiedDate(deletionDate);
+			membership.setRemovedDate(deletionDate);
+			membership.setStatus("INACTIVE");
+		}
+
+		_membershipRepository.saveAll(memberships);
+
+		Stream<Membership> membershipsStream = memberships.stream();
+
+		Map<Long, List<Membership>> membershipsMap = membershipsStream.collect(
+			Collectors.groupingBy(Membership::getIndividualSegmentId));
+
+		for (Map.Entry<Long, List<Membership>> entry :
+				membershipsMap.entrySet()) {
+
+			List<Long> individualIdsByMembership = ListUtil.map(
+				entry.getValue(), Membership::getIndividualId);
+
+			Stream<Individual> individualsStream = individuals.stream();
+
+			List<Individual> individualsByMembership = individualsStream.filter(
+				individual -> individualIdsByMembership.contains(
+					individual.getId())
+			).collect(
+				Collectors.toList()
+			);
+
+			_individualDog.removeSegmentId(
+				individualsByMembership, entry.getKey());
+
+			boolean includeAnonymousUsers = _segmentDog.isIncludeAnonymousUsers(
+				entry.getKey());
+
+			long knownIndividualCount = _individualDog.getKnownIndividualCount(
+				entry.getKey());
+
+			long individualCount = 0;
+
+			if (includeAnonymousUsers) {
+				individualCount = _getIndividualCount(entry.getKey());
+			}
+			else {
+				individualCount = knownIndividualCount;
+			}
+
+			_segmentDog.updateSegment(
+				individualCount, knownIndividualCount, entry.getKey());
+
+			_membershipChangeDog.addMembershipChanges(
+				deletionDate, individualsByMembership, individualCount,
+				entry.getKey(), knownIndividualCount, "REMOVED");
 		}
 	}
 
@@ -340,6 +431,14 @@ public class MembershipDog extends BaseFaroInfoDog {
 			pageRequest,
 			() -> _membershipRepository.countByIndividualSegmentIdAndStatus(
 				individualSegmentId, status));
+	}
+
+	public List<Long> isMember(
+		List<Long> individualIds, Long individualSegmentId) {
+
+		return _membershipRepository.
+			findIndividualIdByIndividualInAndIndividualSegmentIdAndStatus(
+				individualIds, individualSegmentId, "ACTIVE");
 	}
 
 	public boolean isMember(Long individualId, Long individualSegmentId) {

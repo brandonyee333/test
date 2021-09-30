@@ -2,6 +2,18 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
+	<entry key="Field.deleteByContextAndDataSourceIdAndNameAndOwnerIdInAndOwnerType">
+		<![CDATA[
+			DELETE FROM
+				Field
+			WHERE
+				Field.context = :context AND
+				Field.dataSourceId = :dataSourceId AND
+				Field.name = :name AND
+				Field.ownerId IN (:ownerIds) AND
+				Field.ownerType = :ownerType
+		]]>
+	</entry>
 	<entry key="Field.deleteByContextAndOwnerId">
 		<![CDATA[
 			DELETE FROM
@@ -25,6 +37,15 @@
 				Field.ownerType = :ownerType
 		]]>
 	</entry>
+	<entry key="Field.deleteByOwnerIdInAndOwnerType">
+		<![CDATA[
+			DELETE FROM
+				Field
+			WHERE
+				Field.ownerId IN (:ownerIds) AND
+				Field.ownerType = :ownerType
+		]]>
+	</entry>
 	<entry key="Field.findByContextAndOwnerIdGroupByMaxModifiedDateAndName">
 		<![CDATA[
 			SELECT
@@ -41,6 +62,32 @@
 					WHERE
 						Field.context = :context AND
 						Field.ownerId = :ownerId
+					GROUP BY
+						Field.ownerId, Field.name
+				)
+				MaxModifiedDateField ON
+					Field.modifiedDate =
+						MaxModifiedDateField.maxModifiedDate AND
+					Field.name = MaxModifiedDateField.name AND
+					Field.ownerId = MaxModifiedDateField.ownerId
+		]]>
+	</entry>
+	<entry key="Field.findByContextAndOwnerIdInGroupByMaxModifiedDateAndName">
+		<![CDATA[
+			SELECT
+				Field.*
+			FROM
+				Field
+			JOIN
+				(
+					SELECT
+						MAX(Field.modifiedDate) AS maxModifiedDate, Field.name,
+						Field.ownerId
+					FROM
+						Field
+					WHERE
+						Field.context = :context AND
+						Field.ownerId IN (:ownerIds)
 					GROUP BY
 						Field.ownerId, Field.name
 				)

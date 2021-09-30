@@ -26,21 +26,31 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.util.ListUtil;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 /**
  * @author Michael Bowerman
@@ -81,6 +91,15 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			_updateDynamicMembershipsForIndividual(
 				contextJSONObject.optString("filter", null),
 				individualJSONObject.getLong("id"), modifiedDate);
+
+			return;
+		}
+
+		JSONArray individualsJSONArray = contextJSONObject.optJSONArray(
+			"individualsJSONArray");
+
+		if (individualsJSONArray != null) {
+			_updateDynamicMembershipsForIndividuals(individualsJSONArray);
 
 			return;
 		}
@@ -156,6 +175,109 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
+		}
+	}
+
+	private void _updateDynamicMembershipsForIndividuals(
+		JSONArray individualsJSONArray) {
+
+		Set<Long> individualIds = JSONUtil.toLongSet(individualsJSONArray);
+
+		Iterable<Individual> individuals = _individualDog.fetchIndividuals(
+			individualIds);
+
+		Stream<Individual> stream = StreamSupport.stream(
+			individuals.spliterator(), false);
+
+		Map
+			<Tuple2<Set<Individual.DataSourceAccountPK>, Set<Long>>,
+			 List<Individual>> tuple2 = stream.collect(
+				Collectors.groupingBy(
+					individual -> Tuples.of(
+						individual.getDataSourceAccountPKs(),
+						individual.getSegmentIds())));
+
+		for (Map.Entry
+				<Tuple2<Set<Individual.DataSourceAccountPK>, Set<Long>>,
+				 List<Individual>> entry : tuple2.entrySet()) {
+
+			Tuple2<Set<Individual.DataSourceAccountPK>, Set<Long>> key =
+				entry.getKey();
+
+			try {
+				int page = 0;
+
+				while (true) {
+					List<Segment> segments = _segmentDog.searchDynamicSegments(
+						key.getT1(), null, false, page++, key.getT2(), 10000,
+						Sort.asc("id"));
+
+					if (segments.isEmpty()) {
+						break;
+					}
+
+					List<Membership> newMemberships = new ArrayList<>();
+					List<Individual> deactivateIndividuals = new ArrayList<>();
+
+					Date deletionDate = new Date();
+
+					for (Segment segment : segments) {
+						List<Individual> individualMembers =
+							_individualDog.searchIndividuals(
+								segment.getChannelId(), segment.getFilter(),
+								ListUtil.map(
+									entry.getValue(), Individual::getId));
+
+						for (Individual individual : entry.getValue()) {
+							Set<Long> segmentIds = individual.getSegmentIds();
+
+							boolean oldMember = segmentIds.contains(
+								segment.getId());
+
+							boolean newMember = individualMembers.contains(
+								individual);
+
+							if (individualMembers.contains(individual) &&
+								!oldMember) {
+
+								Membership membership = new Membership();
+
+								membership.setCreateDate(
+									individual.getModifiedDate());
+								membership.setIndividualId(individual.getId());
+								membership.setIndividualSegmentId(
+									segment.getId());
+								membership.setModifiedDate(
+									individual.getModifiedDate());
+								membership.setStatus("ACTIVE");
+
+								newMemberships.add(membership);
+							}
+							else if (!newMember && oldMember) {
+								deactivateIndividuals.add(individual);
+
+								deletionDate = individual.getModifiedDate();
+							}
+						}
+					}
+
+					if (!newMemberships.isEmpty()) {
+						_membershipDog.addMemberships(newMemberships);
+					}
+
+					if (!deactivateIndividuals.isEmpty()) {
+						_membershipDog.deactivateMemberships(
+							deletionDate, deactivateIndividuals);
+					}
+
+					if (segments.size() < 10000) {
+						break;
+					}
+				}
+			}
+			catch (Exception exception) {
+				_log.error(exception, exception);
+			}
 		}
 	}
 

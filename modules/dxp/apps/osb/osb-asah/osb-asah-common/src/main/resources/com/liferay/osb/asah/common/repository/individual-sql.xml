@@ -5,28 +5,38 @@
 	<entry key="Individual.countKnownIndividualsByAnySegmentIds">
 		<![CDATA[
 			SELECT
-				COUNT(Individual)
-			FROM
-				Individual
-			WHERE
-				:segmentId = ANY(Individual.segmentIds)
-			ORDER BY
-				Individual.id
-		]]>
-	</entry>
-	<entry key="Individual.countKnownIndividualsByIdIn">
-		<![CDATA[
-			SELECT
-				COUNT(Individual)
+				COUNT(Individual.id)
 			FROM
 				Individual
 			JOIN
 				Field ON
 					Individual.id = Field.ownerid
 			WHERE
-				:segmentId = ANY(Individual.segmentIds) AND
-				Field.name = "email" AND
-				Field.value IS NOT NULL
+				Field.name = 'email' AND
+				Field.value IS NOT NULL AND
+				:segmentId = ANY(Individual.segmentIds)
+		]]>
+	</entry>
+	<entry key="Individual.countKnownIndividualsByIdIn">
+		<![CDATA[
+			SELECT
+				COUNT(Individual.id)
+			FROM
+				Individual
+			JOIN
+				Field ON
+					Individual.id = Field.ownerid
+			WHERE
+				Field.name = 'email' AND
+				Field.value IS NOT NULL AND
+				Individual.id IN (:ids)
+			GROUP BY
+				Individual.id
+		]]>
+	</entry>
+	<entry key="Individual.deleteByIdIn">
+		<![CDATA[
+			DELETE FROM Individual WHERE Individual.id IN (:ids)
 		]]>
 	</entry>
 	<entry key="Individual.findIdsByAnySegmentIds">

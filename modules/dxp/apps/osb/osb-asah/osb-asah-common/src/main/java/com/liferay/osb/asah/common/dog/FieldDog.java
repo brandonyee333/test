@@ -34,6 +34,7 @@ import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.math.BigDecimal;
@@ -190,6 +191,12 @@ public class FieldDog {
 				"There is no field with ID " + fieldId));
 	}
 
+	public List<Field> getFields(String context, List<Long> ownerIds) {
+		return _fieldRepository.
+			findByContextAndOwnerIdInGroupByMaxModifiedDateAndName(
+				context, ownerIds);
+	}
+
 	public JSONObject getFieldsJSONObject(
 			String context, JSONObject dataJSONObject, DataSource dataSource)
 		throws Exception {
@@ -294,29 +301,103 @@ public class FieldDog {
 			pageRequest, () -> _fieldRepository.countFields(filterHelper));
 	}
 
-	public Field updateField(Field field) {
-		if (!Objects.isNull(field.getId())) {
-			return updateField(field.getId(), field);
-		}
-
-		if (_fieldRepository.existsByDataSourceIdAndNameAndOwnerId(
-				field.getDataSourceId(), field.getName(), field.getOwnerId())) {
-
-			Field existingField =
-				_fieldRepository.findByDataSourceIdAndNameAndOwnerId(
-					field.getDataSourceId(), field.getName(),
-					field.getOwnerId());
-
-			field.setId(existingField.getId());
-		}
-
-		return _fieldRepository.save(field);
-	}
-
 	public Field updateField(Long fieldId, Field field) {
 		field.setId(fieldId);
 
 		return _fieldRepository.save(field);
+	}
+
+	public void updateFields(
+			String context, JSONObject dataJSONObject, DataSource dataSource,
+			List<Long> ownerIds, String ownerType, String uniqueIdContext,
+			String uniqueIdFieldName)
+		throws Exception {
+
+		Long dataSourceId = dataSource.getId();
+
+		Map<String, List<Field>> multiValueFieldsMap = new HashMap<>();
+
+		List<Field> existingFields =
+			_fieldRepository.
+				findByContextAndDataSourceIdAndOwnerIdInAndOwnerType(
+					context, dataSourceId, ownerIds, ownerType);
+
+		Map<String, List<Field>> existingFieldsMap = new HashMap<>();
+
+		for (Field existingField : existingFields) {
+			List<Field> fields = new ArrayList<>();
+
+			if (existingFieldsMap.containsKey(existingField.getName())) {
+				fields = existingFieldsMap.get(existingField.getName());
+			}
+
+			fields.add(existingField);
+
+			existingFieldsMap.put(existingField.getName(), fields);
+		}
+
+		List<Field> updatedFields = new ArrayList<>();
+
+		List<Field> newFields = _buildFields(
+			context, dataJSONObject, dataSource, ownerIds, ownerType);
+
+		Iterator<Field> iterator = newFields.iterator();
+
+		while (iterator.hasNext()) {
+			Field newField = iterator.next();
+
+			String fieldName = newField.getName();
+
+			List<Field> oldFields = existingFieldsMap.getOrDefault(
+				fieldName, new ArrayList<>());
+
+			if (_isMultiValueField(
+					context, dataSourceId, fieldName, ownerType)) {
+
+				List<Field> multiValueFields =
+					multiValueFieldsMap.computeIfAbsent(
+						fieldName, key -> new ArrayList<>());
+
+				multiValueFields.add(newField);
+			}
+			else if (oldFields.isEmpty()) {
+				if (!Objects.isNull(newField.getValue())) {
+					updatedFields.add(newField);
+				}
+			}
+			else {
+				Field oldField = oldFields.get(0);
+
+				if (_isUpdateField(
+						context, dataSourceId, newField, oldField, ownerType)) {
+
+					BeanUtils.copyProperties(newField, oldField);
+
+					updatedFields.add(oldField);
+				}
+				else {
+					iterator.remove();
+				}
+			}
+		}
+
+		_fieldRepository.saveAll(updatedFields);
+
+		for (Map.Entry<String, List<Field>> entry :
+				multiValueFieldsMap.entrySet()) {
+
+			_fieldRepository.
+				deleteByContextAndDataSourceIdAndNameAndOwnerIdInAndOwnerType(
+					context, dataSourceId, entry.getKey(),
+					ListUtil.map(entry.getValue(), Field::getOwnerId),
+					ownerType);
+
+			_fieldRepository.saveAll(entry.getValue());
+		}
+
+		_replaceOrDeleteOldFields(
+			context, multiValueFieldsMap.keySet(), newFields, existingFields,
+			ownerIds, ownerType, uniqueIdContext, uniqueIdFieldName);
 	}
 
 	public void updateFields(
@@ -403,11 +484,6 @@ public class FieldDog {
 			ownerId, ownerType, uniqueIdContext, uniqueIdFieldName);
 	}
 
-	public void updateFields(
-		String context, Persistable<Long> owner, String ownerType,
-		String uniqueIdContext, String uniqueIdFieldName) {
-	}
-
 	private Field _buildField(
 		String context, Long dataSourceId, String dataSourceName,
 		String fieldType, String modifiedDateString, String name, Long ownerId,
@@ -430,6 +506,71 @@ public class FieldDog {
 		}
 
 		return field;
+	}
+
+	private List<Field> _buildFields(
+			String context, JSONObject dataJSONObject, DataSource dataSource,
+			List<Long> ownerIds, String ownerType)
+		throws Exception {
+
+		List<Field> fields = new ArrayList<>();
+
+		JSONObject fieldsJSONObject = getFieldsJSONObject(
+			context, dataJSONObject, dataSource);
+
+		Long dataSourceId = dataSource.getId();
+
+		List<FieldMapping> fieldMappings = _getFieldMappings(
+			context, dataSourceId, ownerType);
+
+		for (FieldMapping fieldMapping : fieldMappings) {
+			Map<String, String> dataSourceFieldNames =
+				fieldMapping.getDataSourceFieldNames();
+
+			String dataSourceFieldName = dataSourceFieldNames.getOrDefault(
+				String.valueOf(dataSourceId), null);
+
+			Object value = fieldsJSONObject.opt(dataSourceFieldName);
+
+			if (value == null) {
+				continue;
+			}
+
+			String fieldName = fieldMapping.getFieldName();
+			String fieldType = fieldMapping.getFieldType();
+
+			value = _deserializeValue(
+				fieldMapping.getDisplayType(), fieldName, fieldType,
+				value.toString());
+
+			String modifiedDateString = _getModifiedDateString(
+				dataJSONObject, dataSource, ownerType);
+
+			if (value instanceof List) {
+				for (Object currentValue : (List<?>)value) {
+					for (Long ownerId : ownerIds) {
+						Field field = _buildField(
+							context, dataSourceId, dataSource.getName(),
+							fieldType, modifiedDateString, fieldName, ownerId,
+							ownerType, dataSourceFieldName, currentValue);
+
+						fields.add(field);
+					}
+				}
+			}
+			else {
+				for (Long ownerId : ownerIds) {
+					Field field = _buildField(
+						context, dataSourceId, dataSource.getName(), fieldType,
+						modifiedDateString, fieldName, ownerId, ownerType,
+						dataSourceFieldName, value);
+
+					fields.add(field);
+				}
+			}
+		}
+
+		return fields;
 	}
 
 	private Object _deserializeValue(
@@ -586,6 +727,54 @@ public class FieldDog {
 				context, dataSourceId, fieldName, ownerType);
 	}
 
+	private Map<String, List<Field>> _getFieldNames(
+		Set<String> multiValueFieldNames, List<Field> newFields,
+		List<Field> oldFields) {
+
+		Map<String, List<Field>> oldFieldNames = new HashMap<>();
+
+		Map<String, List<Field>> newFieldNamesMap = new HashMap<>();
+
+		for (Field field : newFields) {
+			List<Field> fields = new ArrayList<>();
+
+			if (newFieldNamesMap.containsKey(field.getName())) {
+				fields = newFieldNamesMap.get(field.getName());
+			}
+
+			fields.add(field);
+
+			newFieldNamesMap.put(field.getName(), fields);
+		}
+
+		for (Field oldField : oldFields) {
+			String oldFieldName = oldField.getName();
+
+			if (multiValueFieldNames.contains(oldFieldName)) {
+				continue;
+			}
+
+			List<Field> fields = new ArrayList<>();
+
+			if (newFieldNamesMap.containsKey(oldFieldName)) {
+				fields = newFieldNamesMap.get(oldFieldName);
+			}
+
+			List<Field> curNewFieldNames = newFieldNamesMap.getOrDefault(
+				oldFieldName, new ArrayList<>());
+
+			if (curNewFieldNames.isEmpty() ||
+				(curNewFieldNames.size() < fields.size())) {
+
+				fields.add(oldField);
+
+				oldFieldNames.put(oldFieldName, fields);
+			}
+		}
+
+		return oldFieldNames;
+	}
+
 	private List<Field> _getFields(
 		String context, Long dataSourceId, String name, Long ownerId,
 		String ownerType) {
@@ -645,6 +834,130 @@ public class FieldDog {
 
 		throw new Exception(
 			"Invalid data source provider type: " + providerType);
+	}
+
+	private List<Field> _getNewFields(
+			String context, String fieldName, List<Long> ownerIds,
+			String ownerType, String uniqueIdContext, String uniqueIdFieldName)
+		throws Exception {
+
+		if (uniqueIdFieldName == null) {
+			return Collections.emptyList();
+		}
+
+		FieldMapping uniqueIdFieldMapping = _fieldMappingDog.fetchFieldMapping(
+			uniqueIdContext, uniqueIdFieldName, ownerType);
+
+		if (uniqueIdFieldMapping == null) {
+			return Collections.emptyList();
+		}
+
+		FieldMapping fieldMapping = _fieldMappingDog.fetchFieldMapping(
+			context, fieldName, ownerType);
+
+		if (fieldMapping == null) {
+			return Collections.emptyList();
+		}
+
+		List<Field> uniqueIdFields =
+			_fieldRepository.findByContextAndNameAndOwnerIdInAndOwnerType(
+				uniqueIdContext, uniqueIdFieldName, ownerIds, ownerType);
+
+		if (uniqueIdFields.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		List<Field> newFields = new ArrayList<>();
+
+		Map<String, String> dataSourceFieldNames =
+			fieldMapping.getDataSourceFieldNames();
+
+		for (Map.Entry<String, String> entry :
+				dataSourceFieldNames.entrySet()) {
+
+			String dataSourceId = entry.getKey();
+
+			Map<String, String> uniqueIdDataSourceFieldNames =
+				uniqueIdFieldMapping.getDataSourceFieldNames();
+
+			if (!uniqueIdDataSourceFieldNames.containsKey(dataSourceId)) {
+				continue;
+			}
+
+			DataSource dataSource = _dataSourceDog.fetchDataSource(
+				Long.valueOf(dataSourceId));
+
+			if (dataSource == null) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("Unable to get data source " + dataSourceId);
+				}
+
+				continue;
+			}
+
+			Field uniqueIdField = uniqueIdFields.get(0);
+
+			JSONObject dataJSONObject = _fetchDataJSONObject(
+				dataSource, ownerType, String.valueOf(uniqueIdField.getValue()),
+				uniqueIdDataSourceFieldNames.get(dataSourceId));
+
+			if (dataJSONObject == null) {
+				continue;
+			}
+
+			JSONObject fieldsJSONObject = getFieldsJSONObject(
+				context, dataJSONObject, dataSource);
+
+			String dataSourceFieldName = dataSourceFieldNames.get(dataSourceId);
+
+			Object value = fieldsJSONObject.opt(dataSourceFieldName);
+
+			if (value == null) {
+				continue;
+			}
+
+			String fieldType = fieldMapping.getFieldType();
+
+			value = _deserializeValue(
+				fieldMapping.getDisplayType(), fieldName, fieldType,
+				value.toString());
+
+			String modifiedDateString = _getModifiedDateString(
+				dataJSONObject, dataSource, ownerType);
+
+			if (value instanceof List) {
+				for (Object currentValue : (List<?>)value) {
+					for (Long ownerId : ownerIds) {
+						Field field = _buildField(
+							context, dataSource.getId(), dataSource.getName(),
+							fieldType, modifiedDateString,
+							fieldMapping.getFieldName(), ownerId, ownerType,
+							dataSourceFieldName, currentValue);
+
+						newFields.add(field);
+					}
+				}
+			}
+			else {
+				for (Long ownerId : ownerIds) {
+					Field field = _buildField(
+						context, dataSource.getId(), dataSource.getName(),
+						fieldType, modifiedDateString,
+						fieldMapping.getFieldName(), ownerId, ownerType,
+						dataSourceFieldName, value);
+
+					if (newFields.isEmpty() ||
+						_isUpdateField(
+							context, dataSource.getId(), field,
+							newFields.get(0), ownerType)) {
+
+						newFields.add(0, field);
+					}
+				}
+			}
+		}
+
+		return newFields;
 	}
 
 	private List<Field> _getNewFields(
@@ -801,10 +1114,7 @@ public class FieldDog {
 		String context, Long dataSourceId, Field newField, Field oldField,
 		String ownerType) {
 
-		String newDataSourceId = String.valueOf(dataSourceId);
-		String oldDataSourceId = String.valueOf(oldField.getDataSourceId());
-
-		if (oldDataSourceId.equals(newDataSourceId)) {
+		if (Objects.equals(dataSourceId, oldField.getDataSourceId())) {
 			return true;
 		}
 
@@ -821,28 +1131,27 @@ public class FieldDog {
 			JSONObject configurationJSONObject =
 				fieldMappingStrategy.getConfigurationJSONObject();
 
-			String configurationDataSourceId =
-				configurationJSONObject.getString("dataSourceId");
+			Long configurationDataSourceId = configurationJSONObject.getLong(
+				"dataSourceId");
 
-			if (!configurationDataSourceId.equals(newDataSourceId) &&
-				configurationDataSourceId.equals(oldDataSourceId)) {
+			if (!configurationDataSourceId.equals(dataSourceId) &&
+				configurationDataSourceId.equals(oldField.getDataSourceId())) {
 
 				return false;
 			}
 
-			if (configurationDataSourceId.equals(newDataSourceId) &&
-				!configurationDataSourceId.equals(oldDataSourceId)) {
+			if (configurationDataSourceId.equals(dataSourceId) &&
+				!configurationDataSourceId.equals(oldField.getDataSourceId())) {
 
 				return true;
 			}
 		}
 
-		String newModifiedDateString = DateUtil.toUTCString(
-			newField.getModifiedDate());
-		String oldModifiedDateString = DateUtil.toUTCString(
-			oldField.getModifiedDate());
+		Date newModifiedDate = newField.getModifiedDate();
 
-		if (newModifiedDateString.compareTo(oldModifiedDateString) > 0) {
+		Date oldModifiedDate = oldField.getModifiedDate();
+
+		if (newModifiedDate.compareTo(oldModifiedDate) > 0) {
 			return true;
 		}
 
@@ -905,6 +1214,41 @@ public class FieldDog {
 
 	private void _replaceOrDeleteOldFields(
 			String context, Set<String> multiValueFieldNames,
+			List<Field> newFields, List<Field> oldFields, List<Long> ownerIds,
+			String ownerType, String uniqueIdContext, String uniqueIdFieldName)
+		throws Exception {
+
+		if (oldFields.isEmpty()) {
+			return;
+		}
+
+		Map<String, List<Field>> oldFieldNames = _getFieldNames(
+			multiValueFieldNames, newFields, oldFields);
+
+		for (Map.Entry<String, List<Field>> entry : oldFieldNames.entrySet()) {
+			List<Field> curNewFields = _getNewFields(
+				context, entry.getKey(), ownerIds, ownerType, uniqueIdContext,
+				uniqueIdFieldName);
+			List<Field> curOldFields = entry.getValue();
+
+			if (curNewFields.isEmpty()) {
+				_fieldRepository.deleteAll(curOldFields);
+			}
+			else if (curOldFields.isEmpty()) {
+				_fieldRepository.saveAll(curNewFields);
+			}
+			else {
+				Field curOldField = curOldFields.get(0);
+
+				BeanUtils.copyProperties(curNewFields.get(0), curOldField);
+
+				_fieldRepository.save(curOldField);
+			}
+		}
+	}
+
+	private void _replaceOrDeleteOldFields(
+			String context, Set<String> multiValueFieldNames,
 			List<Field> newFields, List<Field> oldFields, Long ownerId,
 			String ownerType, String uniqueIdContext, String uniqueIdFieldName)
 		throws Exception {
@@ -913,46 +1257,8 @@ public class FieldDog {
 			return;
 		}
 
-		Map<String, List<Field>> newFieldNamesMap = new HashMap<>();
-
-		for (Field field : newFields) {
-			List<Field> fields = new ArrayList<>();
-
-			if (newFieldNamesMap.containsKey(field.getName())) {
-				fields = newFieldNamesMap.get(field.getName());
-			}
-
-			fields.add(field);
-
-			newFieldNamesMap.put(field.getName(), fields);
-		}
-
-		Map<String, List<Field>> oldFieldNames = new HashMap<>();
-
-		for (Field oldField : oldFields) {
-			String oldFieldName = oldField.getName();
-
-			if (multiValueFieldNames.contains(oldFieldName)) {
-				continue;
-			}
-
-			List<Field> fields = new ArrayList<>();
-
-			if (newFieldNamesMap.containsKey(oldFieldName)) {
-				fields = newFieldNamesMap.get(oldFieldName);
-			}
-
-			List<Field> curNewFieldNames = newFieldNamesMap.getOrDefault(
-				oldFieldName, new ArrayList<>());
-
-			if (curNewFieldNames.isEmpty() ||
-				(curNewFieldNames.size() < fields.size())) {
-
-				fields.add(oldField);
-
-				oldFieldNames.put(oldFieldName, fields);
-			}
-		}
+		Map<String, List<Field>> oldFieldNames = _getFieldNames(
+			multiValueFieldNames, newFields, oldFields);
 
 		for (Map.Entry<String, List<Field>> entry : oldFieldNames.entrySet()) {
 			List<Field> curNewFields = _getNewFields(
@@ -967,12 +1273,11 @@ public class FieldDog {
 				_fieldRepository.saveAll(curNewFields);
 			}
 			else {
-				Field curNewField = curNewFields.get(0);
 				Field curOldField = curOldFields.get(0);
 
-				BeanUtils.copyProperties(curNewField, curOldField);
+				BeanUtils.copyProperties(curNewFields.get(0), curOldField);
 
-				updateField(curOldField.getId(), curOldField);
+				_fieldRepository.save(curOldField);
 			}
 		}
 	}

@@ -157,6 +157,35 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		_membershipChangeRepository.saveAll(membershipChanges);
 	}
 
+	public void addMembershipChanges(
+		Date createDate, List<Individual> individuals, long individualsCount,
+		Long individualSegmentId, long knownIndividualsCount,
+		String operation) {
+
+		List<MembershipChange> membershipChanges = new ArrayList<>();
+
+		for (Individual individual : individuals) {
+			MembershipChange membershipChange = new MembershipChange();
+
+			membershipChange.setIndividualDeleted(Boolean.FALSE);
+			membershipChange.setIndividualEmail(
+				FaroInfoIndividualUtil.getIndividualEmail(individual));
+			membershipChange.setIndividualId(individual.getId());
+			membershipChange.setIndividualName(
+				FaroInfoIndividualUtil.getIndividualName(individual));
+			membershipChange.setIndividualsCount(individualsCount);
+			membershipChange.setIndividualSegmentId(individualSegmentId);
+			membershipChange.setJoinedDate(createDate);
+			membershipChange.setKnownIndividualsCount(knownIndividualsCount);
+			membershipChange.setModifiedDate(createDate);
+			membershipChange.setOperation(operation);
+
+			membershipChanges.add(membershipChange);
+		}
+
+		_membershipChangeRepository.saveAll(membershipChanges);
+	}
+
 	public void deleteMembershipChanges(Long individualSegmentId) {
 		_membershipChangeRepository.deleteByIndividualSegmentId(
 			individualSegmentId);
@@ -225,6 +254,13 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 
 		_membershipChangeRepository.updateIndividualNameByIndividualId(
 			individualId, individualName);
+	}
+
+	public void updateMembershipChangeIndividualDeleted(
+		Boolean individualDeleted, List<Long> individualIds) {
+
+		_membershipChangeRepository.updateIndividualDeletedByIndividualIdIn(
+			individualDeleted, individualIds);
 	}
 
 	public void updateMembershipChangeIndividualDeleted(

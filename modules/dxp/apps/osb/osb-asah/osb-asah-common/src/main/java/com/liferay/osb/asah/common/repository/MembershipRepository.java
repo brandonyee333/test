@@ -66,12 +66,23 @@ public interface MembershipRepository extends Repository<Membership, Long> {
 		Pageable pageable);
 
 	@Cacheable
+	public List<Membership> findByIndividualIdInAndStatus(
+		List<Long> individualIds, String status);
+
+	@Cacheable
 	public List<Membership> findByIndividualSegmentIdAndStatus(
 		Long individualSegmentId, String status);
 
 	@Cacheable
 	public List<Membership> findByIndividualSegmentIdAndStatus(
 		Long individualSegmentId, String status, Pageable pageable);
+
+	@Cacheable
+	public List<Long>
+		findIndividualIdByIndividualInAndIndividualSegmentIdAndStatus(
+			@Param("individualIds") List<Long> individualIds,
+			@Param("individualSegmentId") Long individualSegmentId,
+			@Param("status") String status);
 
 	@Cacheable
 	public List<Long> findIndividualIdByIndividualSegmentIdAndStatus(

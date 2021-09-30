@@ -228,6 +228,22 @@ public class ElasticsearchMembershipRepositoryImpl
 	}
 
 	@Override
+	public List<Membership> findByIndividualIdInAndStatus(
+		List<Long> individualIds, String status) {
+
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termsQuery(
+						"individualId",
+						ListUtil.map(individualIds, String::valueOf))
+				).filter(
+					QueryBuilders.termQuery("status", status)
+				)));
+	}
+
+	@Override
 	public List<Membership> findByIndividualSegmentIdAndStatus(
 		Long individualSegmentId, String status) {
 
@@ -293,6 +309,36 @@ public class ElasticsearchMembershipRepositoryImpl
 
 			return Collections.emptyList();
 		}
+	}
+
+	@Override
+	public List<Long>
+		findIndividualIdByIndividualInAndIndividualSegmentIdAndStatus(
+			List<Long> individualIds, Long individualSegmentId, String status) {
+
+		return JSONUtil.toLongList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.fetchSource("individualId", null);
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.filter(
+								QueryBuilders.termsQuery(
+									"individualId",
+									ListUtil.map(
+										individualIds, String::valueOf))
+							).filter(
+								QueryBuilders.termQuery(
+									"individualSegmentId",
+									String.valueOf(individualSegmentId))
+							).filter(
+								QueryBuilders.termQuery("status", status)
+							));
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort("individualId"));
+					})),
+			"individualId");
 	}
 
 	@Override

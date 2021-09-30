@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
@@ -144,7 +145,25 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 		Boolean individualDeleted, Long individualId) {
 
 		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
-			QueryBuilders.termQuery("individualId", individualId), true,
+			QueryBuilders.termQuery(
+				"individualId", String.valueOf(individualId)),
+			true,
+			new Script(
+				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+				"ctx._source.individualDeleted = params.individualDeleted",
+				Collections.singletonMap(
+					"individualDeleted", individualDeleted)),
+			getCollectionName());
+	}
+
+	@Override
+	public void updateIndividualDeletedByIndividualIdIn(
+		Boolean individualDeleted, List<Long> individualIds) {
+
+		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
+			QueryBuilders.termsQuery(
+				"individualId", ListUtil.map(individualIds, String::valueOf)),
+			true,
 			new Script(
 				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
 				"ctx._source.individualDeleted = params.individualDeleted",
@@ -158,7 +177,9 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 		Long individualId, String individualName) {
 
 		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
-			QueryBuilders.termQuery("individualId", individualId), true,
+			QueryBuilders.termQuery(
+				"individualId", String.valueOf(individualId)),
+			true,
 			new Script(
 				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
 				"ctx._source.individualName = params.individualName",

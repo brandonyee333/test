@@ -7,6 +7,23 @@
 			DELETE FROM Membership WHERE Membership.individualSegmentId = :individualSegmentId
 		]]>
 	</entry>
+	<entry key="Membership.findIndividualIdByIndividualInAndIndividualSegmentIdAndStatus">
+		<![CDATA[
+			SELECT
+				Membership.individualId
+			FROM
+				Membership
+			WHERE
+				Membership.individualId IN (:individualIds) AND
+				Membership.individualSegmentId = :individualSegmentId AND
+				Membership.status = :status
+			GROUP BY
+				Membership.individualId
+			ORDER BY
+				COUNT(Membership.individualId) DESC,
+				Membership.individualId ASC
+		]]>
+	</entry>
 	<entry key="Membership.findIndividualIdByIndividualSegmentIdAndStatus">
 		<![CDATA[
 			SELECT
@@ -35,6 +52,7 @@
 			GROUP BY
 				Membership.individualSegmentId
 			ORDER BY
+				COUNT(Membership.individualSegmentId) DESC,
 				Membership.individualSegmentId ASC
 		]]>
 	</entry>

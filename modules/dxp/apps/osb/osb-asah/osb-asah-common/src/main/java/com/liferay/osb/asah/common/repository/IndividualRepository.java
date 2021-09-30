@@ -70,6 +70,10 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 	@Cacheable
 	public long countKnownIndividualsByIdIn(@Param("ids") List<Long> ids);
 
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void deleteByIdIn(@Param("ids") List<Long> ids);
+
 	@Cacheable
 	public boolean existsByChannelIdAndFilterStringAndId(
 		@Nullable Long channelId, FilterHelper filterHelper, @Nullable Long id);
@@ -93,8 +97,8 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 		boolean includeAnonymousUsers, Long segmentId);
 
 	@Cacheable
-	public List<Individual> findAnonymousByCreateDateAndLastActivityDate(
-		String dateString, Pageable pageable);
+	public List<Individual> findAnonymousByCreateDateAndLastActivityDateAndId(
+		Date date, @Nullable Long id, int size);
 
 	@Cacheable
 	public Individual findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
@@ -102,8 +106,8 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 		String individualPK);
 
 	@Cacheable
-	public List<Individual> findByDataSourceId(
-		Long dataSourceId, Pageable pageable);
+	public List<Individual> findByChannelIdAndFilterStringAndIdIn(
+		@Nullable Long channelId, FilterHelper filterHelper, List<Long> ids);
 
 	@Cacheable
 	public Individual findByDataSourceIdAndIndividualPK(
@@ -160,8 +164,17 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 	@Cacheable
 	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, FilterHelper filterHelper,
+		Boolean includeAnonymousUsers, @Nullable Long id, int size);
+
+	@Cacheable
+	public List<Individual> searchIndividuals(
+		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId, Pageable pageable);
+
+	@Cacheable
+	public List<Individual> searchIndividuals(
+		Long dataSourceId, @Nullable Long id, int size);
 
 	@CacheEvict(allEntries = true)
 	@Modifying

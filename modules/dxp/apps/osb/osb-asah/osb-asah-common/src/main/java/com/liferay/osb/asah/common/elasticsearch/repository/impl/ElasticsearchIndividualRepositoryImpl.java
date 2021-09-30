@@ -35,6 +35,7 @@ import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.NumbersDistributionTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -272,6 +273,23 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
+	public void deleteByIdIn(List<Long> ids) {
+		_faroInfoElasticsearchInvoker.deleteByQuery(
+			QueryBuilders.termsQuery(
+				"id",
+				Stream.of(
+					ids
+				).flatMap(
+					List::stream
+				).map(
+					String::valueOf
+				).collect(
+					Collectors.toList()
+				)),
+			true, getCollectionName());
+	}
+
+	@Override
 	public boolean existsByChannelIdAndFilterStringAndId(
 		@Nullable Long channelId, FilterHelper filterHelper,
 		@Nullable Long id) {
@@ -468,30 +486,44 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
-	public List<Individual> findAnonymousByCreateDateAndLastActivityDate(
-		String dateString, Pageable pageable) {
+	public List<Individual> findAnonymousByCreateDateAndLastActivityDateAndId(
+		Date date, @Nullable Long id, int size) {
+
+		String dateString = DateUtil.toUTCString(date);
 
 		return toList(
-			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.rangeQuery(
-						"dateCreated"
-					).lt(
-						dateString
-					)
-				).mustNot(
-					QueryBuilders.nestedQuery(
-						"lastActivityDates",
-						QueryBuilders.rangeQuery(
-							"lastActivityDates.lastActivityDate"
-						).gt(
-							dateString
-						),
-						ScoreMode.None)
-				).mustNot(
-					QueryBuilders.existsQuery("demographics.email")
-				)));
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.filter(
+								QueryBuilders.rangeQuery(
+									"dateCreated"
+								).lt(
+									dateString
+								)
+							).mustNot(
+								QueryBuilders.nestedQuery(
+									"lastActivityDates",
+									QueryBuilders.rangeQuery(
+										"lastActivityDates.lastActivityDate"
+									).gt(
+										dateString
+									),
+									ScoreMode.None)
+							).mustNot(
+								QueryBuilders.existsQuery("demographics.email")
+							));
+
+						if (id != null) {
+							searchSourceBuilder.searchAfter(new Object[] {id});
+						}
+
+						searchSourceBuilder.size(size);
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort("id"));
+					})));
 	}
 
 	@Override
@@ -521,25 +553,30 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
-	public List<Individual> findByDataSourceId(
-		Long dataSourceId, Pageable pageable) {
+	public List<Individual> findByChannelIdAndFilterStringAndIdIn(
+		Long channelId, FilterHelper filterHelper, List<Long> ids) {
+
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+		if (channelId != null) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery(
+					"channelIds", String.valueOf(channelId)));
+		}
+
+		if (filterHelper.getQueryBuilder() != null) {
+			boolQueryBuilder.filter(filterHelper.getQueryBuilder());
+		}
+
+		if (ids != null) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termsQuery(
+					"id", ListUtil.map(ids, String::valueOf)));
+		}
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							QueryBuilders.nestedQuery(
-								"dataSourceIndividualPKs",
-								QueryBuilders.termQuery(
-									"dataSourceIndividualPKs.dataSourceId",
-									String.valueOf(dataSourceId)),
-								ScoreMode.None));
-
-						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(), boolQueryBuilder));
 	}
 
 	@Override
@@ -665,10 +702,16 @@ public class ElasticsearchIndividualRepositoryImpl
 	@Override
 	public List<Long> findIdsByAnySegmentIds(Long segmentId) {
 		return JSONUtil.toLongList(
-			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
-				QueryBuilders.termQuery(
-					"individualSegmentIds", String.valueOf(segmentId))),
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.fetchSource("id", null);
+						searchSourceBuilder.query(
+							QueryBuilders.termQuery(
+								"individualSegmentIds",
+								String.valueOf(segmentId)));
+					})),
 			"id");
 	}
 
@@ -925,6 +968,31 @@ public class ElasticsearchIndividualRepositoryImpl
 	@Override
 	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, FilterHelper filterHelper,
+		Boolean includeAnonymousUsers, Long id, int size) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_getBoolQueryBuilder(
+								channelId, filterHelper.getQueryBuilder(),
+								includeAnonymousUsers, null, null));
+
+						if (id != null) {
+							searchSourceBuilder.searchAfter(new Object[] {id});
+						}
+
+						searchSourceBuilder.size(size);
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort("id"));
+					})));
+	}
+
+	@Override
+	public List<Individual> searchIndividuals(
+		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId, Pageable pageable) {
 
@@ -1031,6 +1099,31 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
+	public List<Individual> searchIndividuals(
+		Long dataSourceId, Long id, int size) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							QueryBuilders.nestedQuery(
+								"dataSourceIndividualPKs",
+								QueryBuilders.termQuery(
+									"dataSourceIndividualPKs.dataSourceId",
+									String.valueOf(dataSourceId)),
+								ScoreMode.None));
+
+						if (id != null) {
+							searchSourceBuilder.searchAfter(new Object[] {id});
+						}
+
+						searchSourceBuilder.size(size);
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort("id"));
+					})));
+	}
 
 	@Override
 	public void updateAssociatedIds(String fieldName, Set<Long> ids, Long id) {

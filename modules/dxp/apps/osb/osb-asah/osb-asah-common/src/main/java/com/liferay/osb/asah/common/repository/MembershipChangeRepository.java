@@ -67,6 +67,12 @@ public interface MembershipChangeRepository
 
 	@CacheEvict(allEntries = true)
 	@Modifying
+	public void updateIndividualDeletedByIndividualIdIn(
+		@Param("individualDeleted") Boolean individualDeleted,
+		@Param("individualIds") List<Long> individualIds);
+
+	@CacheEvict(allEntries = true)
+	@Modifying
 	public void updateIndividualNameByIndividualId(
 		@Param("individualId") Long individualId,
 		@Param("individualName") String individualName);

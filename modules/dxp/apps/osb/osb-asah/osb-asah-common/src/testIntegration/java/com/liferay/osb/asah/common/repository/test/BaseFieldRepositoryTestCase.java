@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -95,15 +96,47 @@ public abstract class BaseFieldRepositoryTestCase
 	}
 
 	@Test
-	public void testDeleteByDataSourceId() {
-		_fieldRepository.deleteByDataSourceId(1L);
+	public void testDeleteByContextAndDataSourceIdAndNameAndOwnerIdInAndOwnerType() {
+		_fieldRepository.
+			deleteByContextAndDataSourceIdAndNameAndOwnerIdInAndOwnerType(
+				"organization", 1L, "field1", Arrays.asList(10L), "account");
 
-		Assert.assertFalse(_fieldRepository.existsByDataSourceId(1L));
+		Assert.assertEquals(1, _fieldRepository.count());
 	}
 
 	@Test
-	public void testExistsByDataSourceId() {
-		Assert.assertTrue(_fieldRepository.existsByDataSourceId(1L));
+	public void testDeleteByContextAndOwnerId() {
+		_fieldRepository.deleteByContextAndOwnerId("organization", 10L);
+
+		Assert.assertEquals(0, _fieldRepository.count());
+	}
+
+	@Test
+	public void testDeleteByDataSourceId() {
+		_fieldRepository.deleteByDataSourceId(1L);
+
+		Assert.assertEquals(0, _fieldRepository.count());
+	}
+
+	@Test
+	public void testDeleteByOwnerIdAndOwnerType() {
+		_fieldRepository.deleteByOwnerIdAndOwnerType(10L, "account");
+
+		Assert.assertEquals(0, _fieldRepository.count());
+	}
+
+	@Test
+	public void testDeleteByOwnerIdInAndOwnerType() {
+		_fieldRepository.deleteByOwnerIdInAndOwnerType(
+			Arrays.asList(10L), "account");
+
+		Assert.assertEquals(0, _fieldRepository.count());
+	}
+
+	@Test
+	public void testExistsByNameAndOwnerId() {
+		Assert.assertTrue(
+			_fieldRepository.existsByNameAndOwnerId("field1", 10L));
 	}
 
 	@Test
@@ -120,12 +153,24 @@ public abstract class BaseFieldRepositoryTestCase
 	}
 
 	@Test
-	public void testFindByContextAndDataSourceIdNotAndNameNotInAndOwnerIdAndOwnerType() {
+	public void testFindByContextAndDataSourceIdAndOwnerIdAndOwnerType() {
+		List<Field> fields =
+			_fieldRepository.findByContextAndDataSourceIdAndOwnerIdAndOwnerType(
+				"organization", 1L, 10L, "account");
+
+		Assert.assertEquals(fields.toString(), 3, fields.size());
+
+		_assertFieldEquals(_field1, fields.get(0));
+		_assertFieldEquals(_field2, fields.get(1));
+		_assertFieldEquals(_field3, fields.get(2));
+	}
+
+	@Test
+	public void testFindByContextAndDataSourceIdAndOwnerIdInAndOwnerType() {
 		List<Field> fields =
 			_fieldRepository.
-				findByContextAndDataSourceIdNotAndNameNotInAndOwnerIdAndOwnerType(
-					"organization", 2L, Collections.singletonList("field4"),
-					10L, "account");
+				findByContextAndDataSourceIdAndOwnerIdInAndOwnerType(
+					"organization", 1L, Arrays.asList(10L), "account");
 
 		Assert.assertEquals(fields.toString(), 3, fields.size());
 
@@ -139,6 +184,18 @@ public abstract class BaseFieldRepositoryTestCase
 		List<Field> fields =
 			_fieldRepository.findByContextAndNameAndOwnerIdAndOwnerType(
 				"organization", "field1", 10L, "account");
+
+		Assert.assertEquals(fields.toString(), 2, fields.size());
+
+		_assertFieldEquals(_field1, fields.get(0));
+		_assertFieldEquals(_field2, fields.get(1));
+	}
+
+	@Test
+	public void testFindByContextAndNameAndOwnerIdInAndOwnerType() {
+		List<Field> fields =
+			_fieldRepository.findByContextAndNameAndOwnerIdInAndOwnerType(
+				"organization", "field1", Arrays.asList(10L), "account");
 
 		Assert.assertEquals(fields.toString(), 2, fields.size());
 
@@ -165,6 +222,19 @@ public abstract class BaseFieldRepositoryTestCase
 			_fieldRepository.
 				findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
 					"organization", 10L);
+
+		Assert.assertEquals(fields.toString(), 2, fields.size());
+
+		_assertFieldEquals(_field2, fields.get(0));
+		_assertFieldEquals(_field3, fields.get(1));
+	}
+
+	@Test
+	public void testFindByContextAndOwnerIdInGroupByMaxModifiedDateAndName() {
+		List<Field> fields =
+			_fieldRepository.
+				findByContextAndOwnerIdInGroupByMaxModifiedDateAndName(
+					"organization", Arrays.asList(10L));
 
 		Assert.assertEquals(fields.toString(), 2, fields.size());
 

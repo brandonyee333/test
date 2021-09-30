@@ -378,38 +378,69 @@ public class DataSourceDog {
 
 		Date deletionDate = dataSource.getDeletionDate();
 
-		int page = 0;
+		Long currentIndividualId = null;
 
 		while (true) {
-			List<Individual> individuals = _individualDog.getIndividuals(
-				dataSourceId, page++, 50,
-				com.liferay.osb.asah.common.model.Sort.asc("id"));
+			List<Individual> individuals = _individualDog.searchIndividuals(
+				dataSourceId, currentIndividualId, 10000);
 
 			if (individuals.isEmpty()) {
 				break;
 			}
 
-			for (Individual individual : individuals) {
-				Long individualId = individual.getId();
+			Individual lastIndividual = individuals.get(individuals.size() - 1);
 
-				if (individualId == null) {
-					continue;
+			currentIndividualId = lastIndividual.getId();
+
+			Stream<Individual> stream = individuals.stream();
+
+			List<Individual> singleDataSourceIndividuals = stream.filter(
+				individual -> {
+					Set<Individual.DataSourceIndividualPK>
+						dataSourceIndividualPKs =
+							individual.getDataSourceIndividualPKs();
+
+					return dataSourceIndividualPKs.size() == 1;
+				}
+			).collect(
+				Collectors.toList()
+			);
+
+			if (!singleDataSourceIndividuals.isEmpty()) {
+				_individualDog.deleteIndividuals(
+					deletionDate, singleDataSourceIndividuals);
+
+				individuals.removeAll(singleDataSourceIndividuals);
+			}
+
+			if (!individuals.isEmpty()) {
+				for (Individual individual : individuals) {
+					Set<DataSourceIndividual> dataSourceIndividuals =
+						individual.getDataSourceIndividuals();
+
+					Iterator<DataSourceIndividual> iterator =
+						dataSourceIndividuals.iterator();
+
+					while (iterator.hasNext()) {
+						DataSourceIndividual dataSourceIndividual =
+							iterator.next();
+
+						if (Objects.equals(
+								dataSourceId,
+								dataSourceIndividual.getDataSourceId())) {
+
+							iterator.remove();
+
+							break;
+						}
+					}
+
+					individual.setDataSourceIndividuals(dataSourceIndividuals);
 				}
 
-				Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =
-					individual.getDataSourceIndividualPKs();
-
-				if (dataSourceIndividualPKs.size() == 1) {
-					_individualDog.deleteIndividual(deletionDate, individualId);
-				}
-				else {
-					_individualDog.removeDataSourceIndividualPKs(
-						individual, dataSourceId);
-
-					_individualDog.updateIndividual(
-						null, _getEmptyDataJSONObject(dataSource), dataSource,
-						individual);
-				}
+				_individualDog.updateIndividual(
+					_getEmptyDataJSONObject(dataSource), dataSource,
+					individuals);
 			}
 		}
 	}

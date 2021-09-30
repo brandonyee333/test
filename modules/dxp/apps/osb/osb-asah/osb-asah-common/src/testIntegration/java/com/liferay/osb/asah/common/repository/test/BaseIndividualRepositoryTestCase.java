@@ -316,6 +316,19 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
+	public void testCountByFieldNamesAndQueryAndSegmentId() {
+		List<String> fieldNames =
+			_fieldMappingRepository.
+				findFieldNameByContextAndFieldTypeAndOwnerType(
+					"demographics", "Text", "individual");
+
+		Assert.assertEquals(
+			1,
+			individualRepository.countByFieldNamesAndQueryAndSegmentId(
+				fieldNames, "eld", _segmentId));
+	}
+
+	@Test
 	public void testCountByIdAfter() {
 		Assert.assertEquals(5, individualRepository.countByIdAfter(0L));
 		Assert.assertEquals(
@@ -331,28 +344,35 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
-	public void testCountByQueryAndSegmentId() {
-		List<String> fieldNames =
-			_fieldMappingRepository.
-				findFieldNameByContextAndFieldTypeAndOwnerType(
-					"demographics", "Text", "individual");
-
-		Assert.assertEquals(
-			1,
-			individualRepository.countByFieldNamesAndQueryAndSegmentId(
-				fieldNames, "eld", _segmentId));
-	}
-
-	@Test
 	public void testCountIndividuals() {
 		Assert.assertEquals(
 			1,
 			individualRepository.countIndividuals(
-				11L,
-				new FilterHelper(
-					_faroInfoIndividualsFilterStringConverterHelper, null,
-					_individualsFilterStringConverterHelper),
-				false, 11L, _segmentId));
+				11L, FilterHelper.EMPTY, false, 11L, _segmentId));
+	}
+
+	@Test
+	public void testCountKnownIndividualsByAnySegmentIds() {
+		Assert.assertEquals(
+			1,
+			individualRepository.countKnownIndividualsByAnySegmentIds(
+				_segmentId));
+	}
+
+	@Test
+	public void testCountKnownIndividualsByIdIn() {
+		Assert.assertEquals(
+			1,
+			individualRepository.countKnownIndividualsByIdIn(
+				Arrays.asList(_individual1Id, _individual2Id)));
+	}
+
+	@Test
+	public void testDeleteByIdIn() {
+		individualRepository.deleteByIdIn(
+			Arrays.asList(_individual1Id, _individual2Id));
+
+		Assert.assertEquals(3, individualRepository.count());
 	}
 
 	@Test
@@ -392,7 +412,7 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
-	public void testFindAccountPKsByAnyChannelIdsAnySegmentIds() {
+	public void testFindAccountPKsByChannelIdAndSegmentId() {
 		List<String> accountPKs =
 			individualRepository.findAccountPKsByChannelIdAndSegmentId(
 				11L, _segmentId);
@@ -411,10 +431,11 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
-	public void testFindAnonymousByCreateDateAndLastActivityDate() {
+	public void testFindAnonymousByCreateDateAndLastActivityDateAndId() {
 		List<Individual> individuals =
-			individualRepository.findAnonymousByCreateDateAndLastActivityDate(
-				DateUtil.newDateString(), PageRequest.of(0, 10));
+			individualRepository.
+				findAnonymousByCreateDateAndLastActivityDateAndId(
+					DateUtil.newDate(), null, 10);
 
 		Assert.assertEquals(individuals.toString(), 1, individuals.size());
 
@@ -431,18 +452,6 @@ public abstract class BaseIndividualRepositoryTestCase
 					1234L, 1L, "organizationIds", "23432-cd-3242-asf23");
 
 		Assert.assertNotNull(individual);
-	}
-
-	@Test
-	public void testFindByDataSourceId() {
-		List<Individual> individuals = individualRepository.findByDataSourceId(
-			1L, PageRequest.of(0, 1));
-
-		Assert.assertEquals(individuals.toString(), 1, individuals.size());
-
-		Individual individual = individuals.get(0);
-
-		Assert.assertEquals(_individual1Id, individual.getId());
 	}
 
 	@Test
@@ -608,6 +617,18 @@ public abstract class BaseIndividualRepositoryTestCase
 		_assertEquals(
 			distributions.get(0), 3,
 			ArrayUtils.toUnmodifiableList(new String[] {"employee"}));
+	}
+
+	@Test
+	public void testSearchIndividuals() {
+		List<Individual> individuals = individualRepository.searchIndividuals(
+			1L, null, 10);
+
+		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+
+		Individual individual = individuals.get(0);
+
+		Assert.assertEquals(_individual1Id, individual.getId());
 	}
 
 	@Test
