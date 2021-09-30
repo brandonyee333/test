@@ -605,17 +605,17 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		sb.append("''last24Hours'')',operator='%s',value=%s)))");
 
 		List<Individual> individuals = _individualDog.searchIndividuals(
-			100L, String.format(sb.toString(), "eq", 1), true, 0, 10, null);
-
-		Assert.assertEquals(individuals.toString(), 1, individuals.size());
-
-		individuals = _individualDog.searchIndividuals(
-			100L, String.format(sb.toString(), "ge", 1), true, 0, 10, null);
+			100L, String.format(sb.toString(), "eq", 2), true, 0, 10, null);
 
 		Assert.assertEquals(individuals.toString(), 1, individuals.size());
 
 		individuals = _individualDog.searchIndividuals(
 			100L, String.format(sb.toString(), "ge", 2), true, 0, 10, null);
+
+		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+
+		individuals = _individualDog.searchIndividuals(
+			100L, String.format(sb.toString(), "ge", 3), true, 0, 10, null);
 
 		Assert.assertEquals(individuals.toString(), 0, individuals.size());
 
@@ -625,12 +625,12 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		Assert.assertEquals(individuals.toString(), 1, individuals.size());
 
 		individuals = _individualDog.searchIndividuals(
-			100L, String.format(sb.toString(), "le", 2), true, 0, 10, null);
+			100L, String.format(sb.toString(), "le", 3), true, 0, 10, null);
 
 		Assert.assertEquals(individuals.toString(), 5, individuals.size());
 
 		individuals = _individualDog.searchIndividuals(
-			100L, String.format(sb.toString(), "lt", 1), true, 0, 10, null);
+			100L, String.format(sb.toString(), "lt", 2), true, 0, 10, null);
 
 		Assert.assertEquals(individuals.toString(), 4, individuals.size());
 	}

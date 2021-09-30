@@ -22,5 +22,29 @@
 		"ownerId": "338486037253283140",
 		"startTime": "2019-04-12T22:05:34.623Z",
 		"userId": "11436710-5d69-11e9-8763-333e6c21a6f2"
+	},
+	{
+		"activityKey": "Form#formViewed#511687236573013375",
+		"activityType": "BROWSE",
+		"applicationId": "Form",
+		"dataSourceId": "346306699042460013",
+		"day": "${today-1d}",
+		"endTime": "2019-04-12T22:05:34.623Z",
+		"eventId": "formSubmitted",
+		"eventProperties": {
+			"pageViewActivityId": "c48ac2a5-4016-46aa-9abb-5b5eada3a565"
+		},
+		"groupId": "349395378906863333",
+		"id": "349395508504086370",
+		"object": {
+			"dataSourceAssetPK": "42964",
+			"id": "349387565141319618",
+			"name": "Welcome - Liferay DXP",
+			"objectType": "Form",
+			"url": "http://localhost:8091/web/guest/home?p_p_id=com_liferay_dynamic_data_mapping_form_web_portlet_DDMFormPortlet_INSTANCE_JsPfukM4Bgad&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view"
+		},
+		"ownerId": "338486037253283140",
+		"startTime": "2019-04-12T22:05:34.623Z",
+		"userId": "11436710-5d69-11e9-8763-333e6c21a6f2"
 	}
 ]
