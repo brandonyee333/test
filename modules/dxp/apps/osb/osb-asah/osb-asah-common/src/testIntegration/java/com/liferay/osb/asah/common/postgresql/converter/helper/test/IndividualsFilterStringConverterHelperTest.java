@@ -945,7 +945,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			"activities.filterByCount(filter='activityKey eq " +
 				"''Page#pageViewed#357731107452100994'' and day gt " +
 					"''last24Hours''', operator='eq', value=1)",
-			346468699875814972L);
+			346468699875814972L, 346468603851271125L);
 	}
 
 	@Test
@@ -983,7 +983,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			"activities.filterByCount(filter='activityKey eq " +
 				"''Page#pageViewed#357731107452100994'' and day gt " +
 					"''yesterday''', operator='eq', value=1)",
-			346468699875814972L);
+			346468699875814972L, 346468603851271125L);
 	}
 
 	@Ignore

@@ -895,7 +895,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"activities.filterByCount(filter='activityKey eq " +
 				"''Page#pageViewed#357731107452100994'' and day gt " +
 					"''last24Hours''', operator='eq', value=1)",
-			"346468699875814972");
+			"346468699875814972", "346468603851271125");
 	}
 
 	@Test
@@ -937,7 +937,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"activities.filterByCount(filter='activityKey eq " +
 				"''Page#pageViewed#357731107452100994'' and day gt " +
 					"''yesterday''', operator='eq', value=1)",
-			"346468699875814972");
+			"346468699875814972", "346468603851271125");
 	}
 
 	@Test
