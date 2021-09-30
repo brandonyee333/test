@@ -121,7 +121,9 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 				}
 			}
 
-			_interestDog.addInterests(newInterests);
+			if (!interests.isEmpty()) {
+				_interestDog.addInterests(interests);
+			}
 		}
 
 		faroInfoElasticsearchInvoker.refresh();
@@ -373,7 +375,9 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 				keyword, keywordInfosMap.get(keyword), urlPageViewsMap);
 		}
 
-		_interestDog.addInterests(interests);
+		if (!interests.isEmpty()) {
+			_interestDog.addInterests(interests);
+		}
 
 		if (elasticsearchBulkRequestBuilder.hasActions()) {
 			elasticsearchBulkRequestBuilder.get();
