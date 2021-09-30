@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.Interest;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 
 import java.util.Date;
@@ -24,7 +23,9 @@ import java.util.List;
 import org.apache.commons.collections4.IterableUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -55,17 +56,15 @@ public class InterestDog {
 				name, ownerId, ownerType, recordedDate);
 	}
 
-	public ResultBag<Interest> getInterestResultBag(
+	public Page<Interest> getInterestPage(
 		Long ownerId, String ownerType, int size, int start) {
 
-		List<Interest> interests =
+		return PageableExecutionUtils.getPage(
 			_interestRepository.findByOwnerIdAndOwnerType(
-				ownerId, ownerType, PageRequest.of(start / size, size));
-
-		long count = _interestRepository.countByOwnerIdAndOwnerType(
-			ownerId, ownerType);
-
-		return new ResultBag<>(interests, count);
+				ownerId, ownerType, PageRequest.of(start / size, size)),
+			PageRequest.of(start / size, size),
+			() -> _interestRepository.countByOwnerIdAndOwnerType(
+				ownerId, ownerType));
 	}
 
 	public List<Interest> getInterests(

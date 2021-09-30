@@ -458,15 +458,15 @@ public class ReportRestController extends BaseRestController {
 			@PathVariable Long individualId,
 			@RequestParam(defaultValue = "0") Integer page) {
 
-		ResultBag<Interest> interestResultBag =
-			_interestDog.getInterestResultBag(
-				individualId, "individual", _PAGE_SIZE, page * _PAGE_SIZE);
+		Page<Interest> interestPage = _interestDog.getInterestPage(
+			individualId, "individual", _PAGE_SIZE, page * _PAGE_SIZE);
 
 		return _toResultBagEntityModel(
 			_getIndividualInterestResultBagEntityModel(individualId, page + 1),
 			page,
 			_getIndividualInterestResultBagEntityModel(individualId, page - 1),
-			interestResultBag,
+			new ResultBag<>(
+				interestPage.getContent(), interestPage.getTotalElements()),
 			interest -> _toChildEntityModel(individualId, interest));
 	}
 

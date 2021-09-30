@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.entity.Interest;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -30,6 +29,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Marcellus Tavares
@@ -43,14 +43,13 @@ public class InterestDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetInterestResultBag() {
-		ResultBag<Interest> interestResultBag =
-			_interestDog.getInterestResultBag(
-				374790572703144534L, "individual", 20, 0);
+	public void testGetInterestPage() {
+		Page<Interest> interestPage = _interestDog.getInterestPage(
+			374790572703144534L, "individual", 20, 0);
 
-		Assert.assertEquals(1, interestResultBag.getTotal());
+		Assert.assertEquals(1, interestPage.getTotalElements());
 
-		List<Interest> interests = interestResultBag.getResults();
+		List<Interest> interests = interestPage.getContent();
 
 		Interest interest = interests.get(0);
 
