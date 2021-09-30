@@ -85,10 +85,10 @@ public abstract class BaseInterestRepositoryTestCase
 
 	@Test
 	public void testCountByOwnerIdAndOwnerType() {
-		long count = _interestRepository.countByOwnerIdAndOwnerType(
-			374790572703144534L, "individual");
-
-		Assert.assertEquals(2, count);
+		Assert.assertEquals(
+			2,
+			_interestRepository.countByOwnerIdAndOwnerType(
+				374790572703144534L, "individual"));
 	}
 
 	@Test
@@ -96,10 +96,10 @@ public abstract class BaseInterestRepositoryTestCase
 		_interestRepository.deleteByOwnerIdAndOwnerType(
 			Long.valueOf(374790572703144534L), "individual");
 
-		long count = _interestRepository.countByOwnerIdAndOwnerType(
-			374790572703144534L, "individual");
-
-		Assert.assertEquals(0, count);
+		Assert.assertEquals(
+			0,
+			_interestRepository.countByOwnerIdAndOwnerType(
+				374790572703144534L, "individual"));
 	}
 
 	@Test
@@ -107,9 +107,7 @@ public abstract class BaseInterestRepositoryTestCase
 		_interestRepository.deleteByOwnerTypeAndRecordedDateLessThanEqual(
 			"individual", DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
 
-		long count = _interestRepository.count();
-
-		Assert.assertEquals(2, count);
+		Assert.assertEquals(2, _interestRepository.count());
 	}
 
 	@Test
