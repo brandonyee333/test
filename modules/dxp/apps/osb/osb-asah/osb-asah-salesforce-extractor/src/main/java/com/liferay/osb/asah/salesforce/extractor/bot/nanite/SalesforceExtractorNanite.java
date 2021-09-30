@@ -475,8 +475,7 @@ public class SalesforceExtractorNanite implements Nanite {
 								jsonObject -> new SalesforceEntity(
 									jsonObject.getString("id"),
 									Long.valueOf(
-										jsonObject.getString(
-											"osbAsahDataSourceId")),
+										jsonObject.getString("dataSourceId")),
 									jsonObject,
 									SalesforceEntity.Type.of(
 										describeSObjectResult.getName()))));
@@ -784,7 +783,7 @@ public class SalesforceExtractorNanite implements Nanite {
 										jsonObject.getString("id"),
 										Long.valueOf(
 											jsonObject.getString(
-												"osbAsahDataSourceId")),
+												"dataSourceId")),
 										jsonObject,
 										SalesforceEntity.Type.of(
 											describeSObjectResult.getName()))));
