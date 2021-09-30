@@ -41,7 +41,7 @@ public class InterestRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		List<Condition> conditions = _getConditions(
-			interestId, null, ownerType, recordedDate);
+			interestId, ownerType, recordedDate);
 
 		return selectSelectStep.from(
 			"Interest"
@@ -53,12 +53,12 @@ public class InterestRepositoryImpl extends BaseRepository {
 			size
 		).fetch(
 		).map(
-			this::_toInterest
+			record -> new Interest(record.intoMap())
 		);
 	}
 
 	private List<Condition> _getConditions(
-		Long interestId, Long ownerId, String ownerType, Date recordedDate) {
+		Long interestId, String ownerType, Date recordedDate) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -68,15 +68,6 @@ public class InterestRepositoryImpl extends BaseRepository {
 					"id"
 				).gt(
 					interestId
-				));
-		}
-
-		if (ownerId != null) {
-			conditions.add(
-				DSL.field(
-					"ownerId"
-				).eq(
-					ownerId
 				));
 		}
 
@@ -99,10 +90,6 @@ public class InterestRepositoryImpl extends BaseRepository {
 		}
 
 		return conditions;
-	}
-
-	private Interest _toInterest(Record interestRecord) {
-		return new Interest(interestRecord.intoMap());
 	}
 
 	private final DSLContext _dslContext;
