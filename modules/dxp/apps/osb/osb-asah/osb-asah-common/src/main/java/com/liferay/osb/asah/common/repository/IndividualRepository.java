@@ -51,11 +51,11 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 		@Nullable Long segmentId);
 
 	@Cacheable
-	public long countByIdAfter(Long individualId);
+	public long countByIdAfter(Long id);
 
 	@Cacheable
-	public long countByIdsInAndKeywords(
-		List<Long> individualIds, @Nullable String keywords);
+	public long countByIdInAndKeywords(
+		List<Long> ids, @Nullable String keywords);
 
 	@Cacheable
 	public long countIndividuals(
@@ -72,18 +72,17 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 
 	@Cacheable
 	public boolean existsByChannelIdAndFilterStringAndId(
-		@Nullable Long channelId, FilterHelper filterHelper,
-		@Nullable Long individualId);
+		@Nullable Long channelId, FilterHelper filterHelper, @Nullable Long id);
 
 	@Cacheable
 	public boolean
 		existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
 			@Nullable Long channelId, FilterHelper filterHelper,
-			Boolean includeAnonymousUsers, @Nullable Long individualId);
+			Boolean includeAnonymousUsers, @Nullable Long id);
 
 	@Cacheable
 	public boolean existsByFilterStringAndId(
-		FilterHelper filterHelper, @Nullable Long individualId);
+		FilterHelper filterHelper, @Nullable Long id);
 
 	@Cacheable
 	public List<String> findAccountPKsByChannelIdAndSegmentId(
@@ -122,11 +121,11 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 		@Nullable Long segmentId, Pageable pageable);
 
 	@Cacheable
-	public List<Individual> findByIdAfter(Long individualId, Pageable pageable);
+	public List<Individual> findByIdAfter(Long id, Pageable pageable);
 
 	@Cacheable
-	public List<Individual> findByIdsInAndKeywords(
-		List<Long> individualIds, @Nullable String keywords, Pageable pageable);
+	public List<Individual> findByIdInAndKeywords(
+		List<Long> ids, @Nullable String keywords, Pageable pageable);
 
 	@Cacheable
 	public List<Individual> findBySegmentIds(Long segmentId);
@@ -166,7 +165,6 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 
 	@CacheEvict(allEntries = true)
 	@Modifying
-	public void updateAssociatedIds(
-		String fieldName, Set<Long> ids, Long individualId);
+	public void updateAssociatedIds(String fieldName, Set<Long> ids, Long id);
 
 }

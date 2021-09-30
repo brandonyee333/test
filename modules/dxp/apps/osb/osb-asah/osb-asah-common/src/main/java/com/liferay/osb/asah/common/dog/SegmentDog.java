@@ -169,7 +169,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		if ((dataSourceId != null) && !fieldMappingIds.isEmpty()) {
 			segments =
 				_segmentRepository.
-					findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdsInAndStateNotAndType(
+					findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType(
 						dataSourceId, fieldMappingIds, "DISABLED",
 						Segment.Type.DYNAMIC);
 		}
@@ -182,7 +182,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		else if (!fieldMappingIds.isEmpty()) {
 			segments =
 				_segmentRepository.
-					findByReferencedFieldMappingIdsInAndStateNotAndType(
+					findByReferencedFieldMappingIdInAndStateNotAndType(
 						fieldMappingIds, "DISABLED", Segment.Type.DYNAMIC);
 		}
 		else {

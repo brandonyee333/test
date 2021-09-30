@@ -207,7 +207,7 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
-	public long countByIdAfter(Long individualId) {
+	public long countByIdAfter(Long id) {
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
 
@@ -215,7 +215,7 @@ public class ElasticsearchIndividualRepositoryImpl
 			QueryBuilders.rangeQuery(
 				"id"
 			).gt(
-				individualId
+				id
 			));
 		searchSourceBuilder.size(0);
 		searchSourceBuilder.sort(SortBuilders.fieldSort("id"));
@@ -227,11 +227,11 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
-	public long countByIdsInAndKeywords(
-		List<Long> individualIds, @Nullable String keywords) {
+	public long countByIdInAndKeywords(
+		List<Long> ids, @Nullable String keywords) {
 
 		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(), _buildQueryBuilder(individualIds, keywords));
+			getCollectionName(), _buildQueryBuilder(ids, keywords));
 	}
 
 	@Override
@@ -274,7 +274,7 @@ public class ElasticsearchIndividualRepositoryImpl
 	@Override
 	public boolean existsByChannelIdAndFilterStringAndId(
 		@Nullable Long channelId, FilterHelper filterHelper,
-		@Nullable Long individualId) {
+		@Nullable Long id) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -288,9 +288,9 @@ public class ElasticsearchIndividualRepositoryImpl
 			boolQueryBuilder.filter(filterHelper.getQueryBuilder());
 		}
 
-		if (individualId != null) {
+		if (id != null) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("id", String.valueOf(individualId)));
+				QueryBuilders.termQuery("id", String.valueOf(id)));
 		}
 
 		return _faroInfoElasticsearchInvoker.exists(
@@ -301,17 +301,17 @@ public class ElasticsearchIndividualRepositoryImpl
 	public boolean
 		existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
 			@Nullable Long channelId, FilterHelper filterHelper,
-			Boolean includeAnonymousUsers, @Nullable Long individualId) {
+			Boolean includeAnonymousUsers, @Nullable Long id) {
 
 		BoolQueryBuilder boolQueryBuilder = _getBoolQueryBuilder(
 			channelId, filterHelper.getQueryBuilder(), includeAnonymousUsers,
 			null, null);
 
-		if (individualId != null) {
+		if (id != null) {
 			boolQueryBuilder = BoolQueryBuilderUtil.filter(
 				boolQueryBuilder
 			).filter(
-				QueryBuilders.termQuery("id", String.valueOf(individualId))
+				QueryBuilders.termQuery("id", String.valueOf(id))
 			);
 		}
 
@@ -321,10 +321,9 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	@Override
 	public boolean existsByFilterStringAndId(
-		FilterHelper filterHelper, @Nullable Long individualId) {
+		FilterHelper filterHelper, @Nullable Long id) {
 
-		return existsByChannelIdAndFilterStringAndId(
-			null, filterHelper, individualId);
+		return existsByChannelIdAndFilterStringAndId(null, filterHelper, id);
 	}
 
 	@Override
@@ -614,9 +613,7 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
-	public List<Individual> findByIdAfter(
-		Long individualId, Pageable pageable) {
-
+	public List<Individual> findByIdAfter(Long id, Pageable pageable) {
 		return toList(
 			new JSONArray(
 				_faroInfoElasticsearchInvoker.get(
@@ -626,7 +623,7 @@ public class ElasticsearchIndividualRepositoryImpl
 							QueryBuilders.rangeQuery(
 								"id"
 							).gt(
-								individualId
+								id
 							));
 						searchSourceBuilder.sort(SortBuilders.fieldSort("id"));
 
@@ -636,15 +633,14 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
-	public List<Individual> findByIdsInAndKeywords(
-		List<Long> individualIds, @Nullable String keywords,
-		Pageable pageable) {
+	public List<Individual> findByIdInAndKeywords(
+		List<Long> ids, @Nullable String keywords, Pageable pageable) {
 
 		List<Individual> individuals = new LinkedList<>();
 
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			getCollectionName(),
-			_buildSearchSourceBuilder(individualIds, keywords, pageable));
+			_buildSearchSourceBuilder(ids, keywords, pageable));
 
 		SearchHits searchHits = searchResponse.getHits();
 
@@ -719,7 +715,7 @@ public class ElasticsearchIndividualRepositoryImpl
 	public List<Long> findKnownIndividualIds(
 		FilterHelper filterHelper, Long segmentId) {
 
-		List<Long> individualIds = new ArrayList<>();
+		List<Long> ids = new ArrayList<>();
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.existsQuery("demographics.email")
@@ -750,16 +746,16 @@ public class ElasticsearchIndividualRepositoryImpl
 		Aggregations aggregations = searchResponse.getAggregations();
 
 		if (isEmpty(aggregations)) {
-			return individualIds;
+			return ids;
 		}
 
 		Terms terms = aggregations.get("ids");
 
 		for (Terms.Bucket bucket : terms.getBuckets()) {
-			individualIds.add(Long.valueOf(bucket.getKeyAsString()));
+			ids.add(Long.valueOf(bucket.getKeyAsString()));
 		}
 
-		return individualIds;
+		return ids;
 	}
 
 	@Override
@@ -1035,11 +1031,11 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
-	public void updateAssociatedIds(
-		String fieldName, Set<Long> ids, Long individualId) {
 
+	@Override
+	public void updateAssociatedIds(String fieldName, Set<Long> ids, Long id) {
 		_faroInfoElasticsearchInvoker.update(
-			getCollectionName(), String.valueOf(individualId),
+			getCollectionName(), String.valueOf(id),
 			new Script(
 				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
 				_getScriptSource(fieldName),
@@ -1472,11 +1468,9 @@ public class ElasticsearchIndividualRepositoryImpl
 		return jsonObject;
 	}
 
-	private QueryBuilder _buildQueryBuilder(
-		List<Long> individualIds, String keywords) {
-
+	private QueryBuilder _buildQueryBuilder(List<Long> ids, String keywords) {
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termsQuery("id", individualIds));
+			QueryBuilders.termsQuery("id", ids));
 
 		if (!StringUtils.isBlank(keywords)) {
 			boolQueryBuilder.filter(
@@ -1490,7 +1484,7 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	private SearchSourceBuilder _buildSearchSourceBuilder(
-		List<Long> individualIds, String keywords, Pageable pageable) {
+		List<Long> ids, String keywords, Pageable pageable) {
 
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
@@ -1500,7 +1494,7 @@ public class ElasticsearchIndividualRepositoryImpl
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.existsQuery("demographics.email")
 			).filter(
-				_buildQueryBuilder(individualIds, keywords)
+				_buildQueryBuilder(ids, keywords)
 			));
 		searchSourceBuilder.size(pageable.getPageSize());
 		searchSourceBuilder.sort(

@@ -29,7 +29,7 @@
 				Segment.id
 		]]>
 	</entry>
-	<entry key="Segment.findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdsInAndStateNotAndType">
+	<entry key="Segment.findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType">
 		<![CDATA[
 			SELECT
 				Segment.*
@@ -60,7 +60,7 @@
 				Segment.id
 		]]>
 	</entry>
-	<entry key="Segment.findByReferencedFieldMappingIdsInAndStateNotAndType">
+	<entry key="Segment.findByReferencedFieldMappingIdInAndStateNotAndType">
 		<![CDATA[
 			SELECT
 				Segment.*

@@ -231,8 +231,8 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public long countByIdsInAndKeywords(
-		List<Long> individualIds, @Nullable String keywords) {
+	public long countByIdInAndKeywords(
+		List<Long> ids, @Nullable String keywords) {
 
 		return _dslContext.select(
 			DSL.countDistinct(DSL.field("individual.id"))
@@ -247,7 +247,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				DSL.field("field.ownerid")
 			)
 		).where(
-			_getConditions(individualIds, keywords)
+			_getConditions(ids, keywords)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -317,7 +317,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 
 	public boolean existsByChannelIdAndFilterStringAndId(
 		@Nullable Long channelId, FilterHelper filterHelper,
-		@Nullable Long individualId) {
+		@Nullable Long id) {
 
 		Condition condition = filterHelper.getCondition();
 
@@ -332,12 +332,12 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				));
 		}
 
-		if (individualId != null) {
+		if (id != null) {
 			condition = condition.and(
 				DSL.field(
 					"individual.id"
 				).eq(
-					individualId
+					id
 				));
 		}
 
@@ -369,7 +369,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 	public boolean
 		existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
 			@Nullable Long channelId, FilterHelper filterHelper,
-			Boolean includeAnonymousUsers, @Nullable Long individualId) {
+			Boolean includeAnonymousUsers, @Nullable Long id) {
 
 		Condition condition = filterHelper.getCondition();
 
@@ -391,12 +391,12 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				).isNotNull());
 		}
 
-		if (individualId != null) {
+		if (id != null) {
 			condition = condition.and(
 				DSL.field(
 					"individual.id"
 				).eq(
-					individualId
+					id
 				));
 		}
 
@@ -426,10 +426,9 @@ public class IndividualRepositoryImpl extends BaseRepository {
 	}
 
 	public boolean existsByFilterStringAndId(
-		FilterHelper filterHelper, @Nullable Long individualId) {
+		FilterHelper filterHelper, @Nullable Long id) {
 
-		return existsByChannelIdAndFilterStringAndId(
-			null, filterHelper, individualId);
+		return existsByChannelIdAndFilterStringAndId(null, filterHelper, id);
 	}
 
 	public List<String> findAccountPKsByChannelIdAndSegmentId(
@@ -829,9 +828,8 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
-	public List<Individual> findByIdsInAndKeywords(
-		List<Long> individualIds, @Nullable String keywords,
-		Pageable pageable) {
+	public List<Individual> findByIdInAndKeywords(
+		List<Long> ids, @Nullable String keywords, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			DSL.table(
@@ -850,7 +848,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 					DSL.field("field.ownerid")
 				)
 			).where(
-				_getConditions(individualIds, keywords)
+				_getConditions(ids, keywords)
 			).limit(
 				pageable.getPageSize()
 			).offset(
@@ -1382,9 +1380,8 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
-	public void updateAssociatedIds(
-		String fieldName, Set<Long> ids, Long individualId) {
 
+	public void updateAssociatedIds(String fieldName, Set<Long> ids, Long id) {
 		UpdateSetFirstStep<Record> update = _dslContext.update(
 			DSL.table("Individual"));
 
@@ -1394,17 +1391,15 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			DSL.field(
 				"id"
 			).eq(
-				individualId
+				id
 			)
 		).execute();
 	}
 
-	private List<Condition> _getConditions(
-		List<Long> individualIds, String keywords) {
-
+	private List<Condition> _getConditions(List<Long> ids, String keywords) {
 		List<Condition> conditions = new ArrayList<>();
 
-		if (CollectionUtils.isNotEmpty(individualIds)) {
+		if (CollectionUtils.isNotEmpty(ids)) {
 			conditions.add(
 				DSL.field(
 					"individual.emailaddresshashed"
@@ -1413,7 +1408,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				DSL.field(
 					"individual.id"
 				).in(
-					individualIds
+					ids
 				));
 		}
 

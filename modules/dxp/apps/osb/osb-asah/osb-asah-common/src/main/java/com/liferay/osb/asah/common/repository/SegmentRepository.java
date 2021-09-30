@@ -76,7 +76,7 @@ public interface SegmentRepository extends Repository<Segment, Long> {
 
 	@Cacheable
 	public List<Segment>
-		findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdsInAndStateNotAndType(
+		findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType(
 			@Param("referencedAssetDataSourceId") Long
 				referencedAssetDataSourceId,
 			@Param("referencedFieldMappingIds") List<Long>
@@ -84,7 +84,7 @@ public interface SegmentRepository extends Repository<Segment, Long> {
 			@Param("state") String state, @Param("type") Segment.Type type);
 
 	@Cacheable
-	public List<Segment> findByReferencedFieldMappingIdsInAndStateNotAndType(
+	public List<Segment> findByReferencedFieldMappingIdInAndStateNotAndType(
 		@Param("referencedFieldMappingIds") List<Long>
 			referencedFieldMappingIds,
 		@Param("state") String state, @Param("type") Segment.Type type);

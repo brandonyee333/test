@@ -323,10 +323,10 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
-	public void testCountByIdsInAndKeywords() {
+	public void testCountByIdInAndKeywords() {
 		Assert.assertEquals(
 			1,
-			individualRepository.countByIdsInAndKeywords(
+			individualRepository.countByIdInAndKeywords(
 				Collections.singletonList(_individual1Id), "liferay"));
 	}
 
@@ -488,9 +488,9 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
-	public void testFindByIdsInAndKeywords() {
+	public void testFindByIdInAndKeywords() {
 		List<Individual> individuals =
-			individualRepository.findByIdsInAndKeywords(
+			individualRepository.findByIdInAndKeywords(
 				Collections.singletonList(_individual1Id), "liferay",
 				PageRequest.of(0, 1));
 

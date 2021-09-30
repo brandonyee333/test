@@ -414,7 +414,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	public long countIndividuals(List<Long> individualIds, String keywords) {
-		return _individualRepository.countByIdsInAndKeywords(
+		return _individualRepository.countByIdInAndKeywords(
 			individualIds, keywords);
 	}
 
@@ -902,7 +902,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		List<Long> individualIds, String keywords, int size, int start) {
 
 		List<Individual> individuals =
-			_individualRepository.findByIdsInAndKeywords(
+			_individualRepository.findByIdInAndKeywords(
 				individualIds, _escapeKeywords(keywords),
 				PageRequest.of(start, size));
 
