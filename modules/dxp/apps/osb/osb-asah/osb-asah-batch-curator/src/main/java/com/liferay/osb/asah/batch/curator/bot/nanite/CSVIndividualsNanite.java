@@ -109,7 +109,7 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 
 				List<CSVIndividual> csvIndividuals =
 					_csvIndividualDog.getCSVIndividuals(
-						dataSourceId, page++, 50, Sort.desc("id"));
+						dataSourceId, page++, 10000, Sort.desc("id"));
 
 				if (csvIndividuals.isEmpty()) {
 					break;
@@ -131,6 +131,10 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 					runLogDog.updateRunLogContextJSONObject(
 						runLogContextJSONObject, runLog.getId(),
 						WeDeployDataService.OSB_ASAH_FARO_INFO);
+				}
+
+				if (csvIndividuals.size() < 10000) {
+					break;
 				}
 			}
 

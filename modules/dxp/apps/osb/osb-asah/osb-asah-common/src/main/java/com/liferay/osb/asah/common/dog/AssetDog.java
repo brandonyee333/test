@@ -216,13 +216,17 @@ public class AssetDog {
 				_assetRepository.findByAssetTypeAndCanonicalURLIn(
 					assetType, cannonicalUrls,
 					PageRequest.of(
-						page++, 50, Sort.by(Sort.Direction.DESC, "id")));
+						page++, 10000, Sort.by(Sort.Direction.DESC, "id")));
 
 			if (currentAssets.isEmpty()) {
 				break;
 			}
 
 			assets.addAll(currentAssets);
+
+			if (currentAssets.size() < 10000) {
+				break;
+			}
 		}
 
 		Stream<Asset> stream = assets.stream();

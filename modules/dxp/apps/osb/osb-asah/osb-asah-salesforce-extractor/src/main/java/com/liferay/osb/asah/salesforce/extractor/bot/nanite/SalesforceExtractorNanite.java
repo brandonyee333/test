@@ -260,7 +260,7 @@ public class SalesforceExtractorNanite implements Nanite {
 				while (true) {
 					Page<SalesforceEntity> salesforceEntityPage =
 						_salesforceEntityDog.getSalesforceEntityPage(
-							_dataSourceId, 0, 50,
+							_dataSourceId, 0, 10000,
 							SalesforceEntity.Type.of(tableName));
 
 					if (salesforceEntityPage.getNumberOfElements() == 0) {

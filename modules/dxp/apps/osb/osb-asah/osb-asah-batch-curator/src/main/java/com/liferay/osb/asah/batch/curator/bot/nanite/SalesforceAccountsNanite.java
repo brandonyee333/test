@@ -102,7 +102,7 @@ public class SalesforceAccountsNanite extends BaseNanite {
 				List<SalesforceAuditEvent> salesforceAuditEvents =
 					_salesforceAuditEventDog.getSalesforceAuditEvents(
 						dataSourceId, SalesforceEntity.Type.ACCOUNT.getValue(),
-						page++, 50, Sort.asc("id"));
+						page++, 10000, Sort.asc("id"));
 
 				if (salesforceAuditEvents.isEmpty()) {
 					break;
@@ -112,6 +112,10 @@ public class SalesforceAccountsNanite extends BaseNanite {
 						salesforceAuditEvents) {
 
 					processSalesforceAuditEvent(salesforceAuditEvent);
+				}
+
+				if (salesforceAuditEvents.size() < 10000) {
+					break;
 				}
 			}
 

@@ -336,10 +336,8 @@ public class ChannelDog extends BaseFaroInfoDog {
 	}
 
 	private void _deleteAssets(List<Long> channelIds) throws Exception {
-		int page = 0;
-
 		while (true) {
-			List<Asset> assets = _assetDog.getAssets(channelIds, page++, 50);
+			List<Asset> assets = _assetDog.getAssets(channelIds, 0, 10000);
 
 			if (assets.isEmpty()) {
 				break;
@@ -361,6 +359,10 @@ public class ChannelDog extends BaseFaroInfoDog {
 						_assetDog.updateAsset(asset);
 					}
 				});
+
+			if (assets.size() < 10000) {
+				break;
+			}
 		}
 	}
 

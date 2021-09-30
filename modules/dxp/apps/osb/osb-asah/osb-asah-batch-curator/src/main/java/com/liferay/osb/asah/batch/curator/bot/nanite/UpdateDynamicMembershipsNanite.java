@@ -137,7 +137,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 				List<Segment> segments = _segmentDog.searchDynamicSegments(
 					individual.getDataSourceAccountPKs(), filterString,
 					includeAnonymousUsers, page++, individual.getSegmentIds(),
-					50, Sort.asc("id"));
+					10000, Sort.asc("id"));
 
 				if (segments.isEmpty()) {
 					break;
@@ -147,6 +147,10 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 					_updateMembershipForIndividual(
 						baseMembershipJSONObject, individual, segment,
 						modifiedDate);
+				}
+
+				if (segments.size() < 10000) {
+					break;
 				}
 			}
 		}

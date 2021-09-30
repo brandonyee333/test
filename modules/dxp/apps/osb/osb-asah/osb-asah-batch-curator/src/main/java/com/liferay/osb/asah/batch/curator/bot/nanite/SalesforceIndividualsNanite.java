@@ -85,8 +85,8 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 				List<SalesforceAuditEvent> salesforceAuditEvents =
 					_salesforceAuditEventDog.getSalesforceAuditEvents(
 						dataSourceId,
-						SalesforceEntity.Type.INDIVIDUAL.getValue(), page++, 50,
-						Sort.desc("id"));
+						SalesforceEntity.Type.INDIVIDUAL.getValue(), page++,
+						10000, Sort.desc("id"));
 
 				if (salesforceAuditEvents.isEmpty()) {
 					break;
@@ -96,6 +96,10 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 						salesforceAuditEvents) {
 
 					processSalesforceAuditEvent(salesforceAuditEvent);
+				}
+
+				if (salesforceAuditEvents.size() < 10000) {
+					break;
 				}
 			}
 
@@ -182,7 +186,7 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 
 				List<SalesforceEntity> individualSalesforceEntities =
 					_salesforceEntityDog.getSalesforceEntities(
-						dataSourceId, page++, 50,
+						dataSourceId, page++, 10000,
 						SalesforceEntity.Type.INDIVIDUAL);
 
 				if (individualSalesforceEntities.isEmpty()) {
@@ -214,6 +218,10 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 					runLogDog.updateRunLogContextJSONObject(
 						runLogContextJSONObject, runLog.getId(),
 						WeDeployDataService.OSB_ASAH_FARO_INFO);
+				}
+
+				if (individualSalesforceEntities.size() < 10000) {
+					break;
 				}
 			}
 
