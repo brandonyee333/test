@@ -49,12 +49,12 @@ public interface InterestRepository extends Repository<Interest, Long> {
 
 	@Cacheable
 	public List<Interest> findByOwnerIdAndOwnerType(
-		@Nullable Long ownerId, String ownerType, Pageable pageable);
+		Long ownerId, String ownerType, Pageable pageable);
 
 	@Cacheable
 	public List<Interest> findByOwnerTypeAndRecordedDate(
-		@Nullable Long interestId, String ownerType, Date recordedDate,
-		int size);
+		@Nullable Long interestId, @Nullable String ownerType,
+		@Nullable Date recordedDate, int size);
 
 	@Cacheable
 	public Interest getByNameAndOwnerIdAndOwnerTypeAndRecordedDate(

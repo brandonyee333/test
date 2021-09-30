@@ -26,6 +26,8 @@ import org.jooq.Record;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
+import org.springframework.lang.Nullable;
+
 /**
  * @author Robson Pastor
  */
@@ -36,7 +38,8 @@ public class InterestRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Interest> findByOwnerTypeAndRecordedDate(
-		Long interestId, String ownerType, Date recordedDate, int size) {
+		@Nullable Long interestId, @Nullable String ownerType,
+		@Nullable Date recordedDate, int size) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
