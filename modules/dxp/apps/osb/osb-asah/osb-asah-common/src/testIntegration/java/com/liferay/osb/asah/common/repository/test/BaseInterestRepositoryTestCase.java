@@ -16,8 +16,6 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Interest;
-import com.liferay.osb.asah.common.repository.ChannelRepository;
-import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.Repository;
 
@@ -143,12 +141,6 @@ public abstract class BaseInterestRepositoryTestCase
 	protected Repository<Interest, Long> getRepository() {
 		return _interestRepository;
 	}
-
-	@Autowired
-	private ChannelRepository _channelRepository;
-
-	@Autowired
-	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private InterestRepository _interestRepository;
