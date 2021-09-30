@@ -91,6 +91,8 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 		Long interestId = null;
 
+		List<Interest> newInterests = new ArrayList<>();
+
 		while (true) {
 			List<Interest> interests = _interestDog.getInterests(
 				interestId, "individual", DateUtil.addDays(dayDate, -1), 10000);
@@ -99,9 +101,11 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 				break;
 			}
 
-			for (Interest interest : interests) {
-				interestId = interest.getId();
+			Interest lastInterest = interests.get(interests.size() - 1);
 
+			interestId = lastInterest.getId();
+
+			for (Interest interest : interests) {
 				if (ownerIds.contains(interest.getOwnerId())) {
 					continue;
 				}
@@ -113,9 +117,11 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 					interest.setRecordedDate(dayDate);
 					interest.setScore(score);
 
-					_interestDog.addInterest(interest);
+					newInterests.add(interest);
 				}
 			}
+
+			_interestDog.addInterests(newInterests);
 		}
 
 		faroInfoElasticsearchInvoker.refresh();
@@ -207,7 +213,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	private void _deleteInterestScores(String dayDateString) throws Exception {
 		Date dayDate = DateUtil.toUTCDate(dayDateString);
 
-		_interestDog.deleteInterest(
+		_interestDog.deleteInterests(
 			"individual", DateUtil.addDays(dayDate, -2));
 
 		faroInfoElasticsearchInvoker.deleteByQuery(
@@ -325,6 +331,8 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		Map<String, Long> keywordsPageViewsMap = _getKeywordsPageViewsMap(
 			keywordInfosMap, urlPageViewsMap);
 
+		List<Interest> interests = new ArrayList<>();
+
 		for (Map.Entry<String, Long> entry :
 				_getURLsPageViewsEntrySet(
 					dayDateString, keywordInfosMap, ownerId)) {
@@ -349,21 +357,23 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 				continue;
 			}
 
-			interest = new Interest();
+			Interest newInterest = new Interest();
 
-			interest.setName(keyword);
-			interest.setOwnerId(ownerId);
-			interest.setOwnerType("individual");
-			interest.setRecordedDate(dayDate);
-			interest.setScore(score);
-			interest.setViews(keywordsPageViewsMap.get(keyword));
+			newInterest.setName(keyword);
+			newInterest.setOwnerId(ownerId);
+			newInterest.setOwnerType("individual");
+			newInterest.setRecordedDate(dayDate);
+			newInterest.setScore(score);
+			newInterest.setViews(keywordsPageViewsMap.get(keyword));
 
-			_interestDog.addInterest(interest);
+			interests.add(newInterest);
 
 			_addVisitedPages(
 				elasticsearchBulkRequestBuilder, dayDateString, ownerId,
 				keyword, keywordInfosMap.get(keyword), urlPageViewsMap);
 		}
+
+		_interestDog.addInterests(interests);
 
 		if (elasticsearchBulkRequestBuilder.hasActions()) {
 			elasticsearchBulkRequestBuilder.get();
