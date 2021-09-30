@@ -52,7 +52,7 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 			QueryBuilders.termQuery("ownerType", "individual-segment")
 		);
 
-		_interestDog.deleteInterest(individualSegmentId, "individual-segment");
+		_interestDog.deleteInterests(individualSegmentId, "individual-segment");
 
 		faroInfoElasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
 

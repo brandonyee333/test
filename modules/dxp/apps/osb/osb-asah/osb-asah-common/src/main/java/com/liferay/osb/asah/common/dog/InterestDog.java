@@ -21,8 +21,11 @@ import com.liferay.osb.asah.common.repository.InterestRepository;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections4.IterableUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -31,15 +34,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class InterestDog {
 
-	public Interest addInterest(Interest interest) {
-		return _interestRepository.save(interest);
+	public List<Interest> addInterests(List<Interest> interests) {
+		return IterableUtils.toList(_interestRepository.saveAll(interests));
 	}
 
-	public void deleteInterest(Long ownerId, String ownerType) {
+	public void deleteInterests(Long ownerId, String ownerType) {
 		_interestRepository.deleteByOwnerIdAndOwnerType(ownerId, ownerType);
 	}
 
-	public void deleteInterest(String ownerType, Date recordedDate) {
+	public void deleteInterests(String ownerType, Date recordedDate) {
 		_interestRepository.deleteByOwnerTypeAndRecordedDateLessThanEqual(
 			ownerType, recordedDate);
 	}
@@ -66,7 +69,8 @@ public class InterestDog {
 	}
 
 	public List<Interest> getInterests(
-		Long interestId, String ownerType, Date recordedDate, int size) {
+		@Nullable Long interestId, String ownerType, Date recordedDate,
+		int size) {
 
 		return _interestRepository.findByOwnerTypeAndRecordedDate(
 			interestId, ownerType, recordedDate, size);
