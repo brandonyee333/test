@@ -250,19 +250,16 @@ public class DataSourceDog {
 	public Page<DataSource> getDataSourcesPage(
 		String filterString, int page, int size, String[] sorts) {
 
+		FilterHelper filterHelper = new FilterHelper(
+			_defaultFilterStringConverterHelper, filterString,
+			_dataSourceFilterStringConverterHelper);
+
 		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
-			_dataSourceRepository.searchDataSources(
-				new FilterHelper(
-					_defaultFilterStringConverterHelper, filterString,
-					_dataSourceFilterStringConverterHelper),
-				pageRequest),
+			_dataSourceRepository.searchDataSources(filterHelper, pageRequest),
 			pageRequest,
-			() -> _dataSourceRepository.countDataSources(
-				new FilterHelper(
-					_defaultFilterStringConverterHelper, filterString,
-					_dataSourceFilterStringConverterHelper)));
+			() -> _dataSourceRepository.countDataSources(filterHelper));
 	}
 
 	public Long getDefaultChannelId(Long dataSourceId) {

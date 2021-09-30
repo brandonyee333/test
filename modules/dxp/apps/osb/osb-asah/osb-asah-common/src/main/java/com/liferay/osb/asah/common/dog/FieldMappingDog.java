@@ -292,21 +292,19 @@ public class FieldMappingDog {
 		@Nullable String filterString, int page, int size,
 		@Nullable String[] sorts) {
 
+		FilterHelper filterHelper = new FilterHelper(
+			_defaultFilterStringConverterHelper, filterString,
+			_fieldMappingFilterStringConverterHelper);
+
 		PageRequest pageRequest = PageRequest.of(
 			page, size,
 			SortUtil.getSort(Sort.by(Sort.Order.asc("fieldName")), sorts));
 
 		return PageableExecutionUtils.getPage(
 			_fieldMappingRepository.searchFieldMappings(
-				new FilterHelper(
-					_defaultFilterStringConverterHelper, filterString,
-					_fieldMappingFilterStringConverterHelper),
-				pageRequest),
+				filterHelper, pageRequest),
 			pageRequest,
-			() -> _fieldMappingRepository.countFieldMappings(
-				new FilterHelper(
-					_defaultFilterStringConverterHelper, filterString,
-					_fieldMappingFilterStringConverterHelper)));
+			() -> _fieldMappingRepository.countFieldMappings(filterHelper));
 	}
 
 	public Page<FieldMapping> searchIndividualFieldMappingsPage(

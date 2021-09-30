@@ -204,6 +204,8 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		String filterString, Long segmentId, int page, int size,
 		String[] sorts) {
 
+		FilterHelper filterHelper = new FilterHelper(filterString);
+
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
@@ -211,12 +213,11 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 
 		return PageableExecutionUtils.getPage(
 			_membershipChangeRepository.searchMembershipChanges(
-				new FilterHelper(filterString),
-				segment.getIncludeAnonymousUsers(), segmentId, pageRequest),
+				filterHelper, segment.getIncludeAnonymousUsers(), segmentId,
+				pageRequest),
 			pageRequest,
 			() -> _membershipChangeRepository.countMembershipChanges(
-				new FilterHelper(filterString),
-				segment.getIncludeAnonymousUsers(), segmentId));
+				filterHelper, segment.getIncludeAnonymousUsers(), segmentId));
 	}
 
 	public void updateIndividualNameForIndividual(

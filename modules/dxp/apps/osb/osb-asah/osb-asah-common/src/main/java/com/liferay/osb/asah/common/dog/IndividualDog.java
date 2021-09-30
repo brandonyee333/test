@@ -967,33 +967,31 @@ public class IndividualDog extends BaseFaroInfoDog {
 		String filterString, Boolean includeAnonymousUsers, Long segmentId,
 		int page, int size, String[] sorts) {
 
+		FilterHelper filterHelper = new FilterHelper(
+			_faroInfoIndividualsFilterStringConverterHelper, filterString,
+			_individualsFilterStringConverterHelper);
+
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
 		Long segmentChannelId = _getSegmentChannelId(segmentId);
 
 		List<Individual> individuals = _individualRepository.searchIndividuals(
-			null,
-			new FilterHelper(
-				_faroInfoIndividualsFilterStringConverterHelper, filterString,
-				_individualsFilterStringConverterHelper),
-			includeAnonymousUsers, segmentChannelId, segmentId, pageRequest);
+			null, filterHelper, includeAnonymousUsers, segmentChannelId,
+			segmentId, pageRequest);
 
 		return PageableExecutionUtils.getPage(
 			ListUtil.map(individuals, this::_populateIndividual), pageRequest,
 			() -> _individualRepository.countIndividuals(
-				null,
-				new FilterHelper(
-					_faroInfoIndividualsFilterStringConverterHelper,
-					filterString, _individualsFilterStringConverterHelper),
-				includeAnonymousUsers, segmentChannelId, segmentId));
+				null, filterHelper, includeAnonymousUsers, segmentChannelId,
+				segmentId));
 	}
 
 	public void updateDynamicMemberships(Date modifiedDate, Segment segment) {
 		Long individualSegmentId = segment.getId();
 
 		_updateDynamicAddMemberships(
-			segment.getChannelId(), true, segment.getFilter(),
+			segment.getChannelId(), segment.getFilter(),
 			BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 			individualSegmentId, modifiedDate);
 		updateDynamicRemoveMemberships(

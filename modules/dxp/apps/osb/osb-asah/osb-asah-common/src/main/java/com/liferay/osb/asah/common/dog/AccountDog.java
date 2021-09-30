@@ -486,22 +486,20 @@ public class AccountDog {
 			segmentSort = SortUtil.getSort(null, segmentSorts);
 		}
 
+		FilterHelper filterHelper = new FilterHelper(
+			_defaultFilterStringConverterHelper, filterString,
+			_accountsFilterStringConverterHelper);
+
 		List<Account> accounts = _populateAccounts(
 			_accountRepository.searchAccounts(
-				_getAccountPKs(segmentId), channelId,
-				new FilterHelper(
-					_defaultFilterStringConverterHelper, filterString,
-					_accountsFilterStringConverterHelper),
-				pageRequest, segmentSort),
+				_getAccountPKs(segmentId), channelId, filterHelper, pageRequest,
+				segmentSort),
 			channelId);
 
 		return PageableExecutionUtils.getPage(
 			accounts, pageRequest,
 			() -> _accountRepository.countAccounts(
-				_getAccountPKs(segmentId),
-				new FilterHelper(
-					_defaultFilterStringConverterHelper, filterString,
-					_accountsFilterStringConverterHelper)));
+				_getAccountPKs(segmentId), filterHelper));
 	}
 
 	public Account updateAccount(Account account) {

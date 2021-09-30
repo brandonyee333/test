@@ -97,19 +97,17 @@ public class ActivityGroupDog {
 	public Page<ActivityGroup> searchActivityGroupsPage(
 		String filterString, int page, int size, String[] sorts) {
 
+		FilterHelper filterHelper = new FilterHelper(
+			_faroInfoActivitiesFilterStringConverterHelper, filterString,
+			_activitiesFilterStringConverterHelper);
+
 		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
 			_activityGroupRepository.searchActivityGroups(
-				new FilterHelper(
-					_faroInfoActivitiesFilterStringConverterHelper,
-					filterString, _activitiesFilterStringConverterHelper),
-				pageRequest),
+				filterHelper, pageRequest),
 			pageRequest,
-			() -> _activityGroupRepository.countActivityGroups(
-				new FilterHelper(
-					_faroInfoActivitiesFilterStringConverterHelper,
-					filterString, _activitiesFilterStringConverterHelper)));
+			() -> _activityGroupRepository.countActivityGroups(filterHelper));
 	}
 
 	public boolean updateActivityGroup(Long ownerId, String userId) {

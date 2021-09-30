@@ -158,39 +158,32 @@ public class AssetDog {
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
+		FilterHelper filterHelper = new FilterHelper(
+			_faroInfoAssetFilterStringConverterHelper, filterString,
+			_defaultFilterStringConverterHelper);
+
 		return PageableExecutionUtils.getPage(
-			_assetRepository.findByFilterString(
-				new FilterHelper(
-					_faroInfoAssetFilterStringConverterHelper, filterString,
-					_defaultFilterStringConverterHelper),
-				pageRequest),
+			_assetRepository.findByFilterString(filterHelper, pageRequest),
 			pageRequest,
-			() -> _assetRepository.countByFilterString(
-				new FilterHelper(
-					_faroInfoAssetFilterStringConverterHelper, filterString,
-					_defaultFilterStringConverterHelper)));
+			() -> _assetRepository.countByFilterString(filterHelper));
 	}
 
 	public Page<Asset> getAssetPage(
 		String assetType, @Nullable String filterString,
 		@Nullable String keyword, int page, int size, Sort sort) {
 
+		FilterHelper filterHelper = new FilterHelper(
+			_faroInfoAssetFilterStringConverterHelper, filterString,
+			_defaultFilterStringConverterHelper);
+
 		PageRequest pageRequest = PageRequest.of(page, size, sort);
 
 		return PageableExecutionUtils.getPage(
 			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
-				assetType,
-				new FilterHelper(
-					_faroInfoAssetFilterStringConverterHelper, filterString,
-					_defaultFilterStringConverterHelper),
-				keyword, pageRequest),
+				assetType, filterHelper, keyword, pageRequest),
 			pageRequest,
 			() -> _assetRepository.countByAssetTypeAndFilterStringAndKeywords(
-				assetType,
-				new FilterHelper(
-					_faroInfoAssetFilterStringConverterHelper, filterString,
-					_defaultFilterStringConverterHelper),
-				keyword));
+				assetType, filterHelper, keyword));
 	}
 
 	public List<Asset> getAssets(List<Long> channelIds, int page, int size) {

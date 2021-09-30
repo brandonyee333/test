@@ -567,10 +567,7 @@ public abstract class BaseIndividualRepositoryTestCase
 	public void testGetIndividualDistributions() throws Exception {
 		List<Distribution> distributions =
 			individualRepository.getIndividualDistributions(
-				"age", "Number",
-				new FilterHelper(
-					_faroInfoIndividualsFilterStringConverterHelper, null,
-					_individualsFilterStringConverterHelper),
+				"age", "Number", FilterHelper.EMPTY,
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("values"))));
 
 		_assertEquals(
@@ -628,11 +625,7 @@ public abstract class BaseIndividualRepositoryTestCase
 	@Test
 	public void testSearchIndividuals2() {
 		List<Individual> individuals = individualRepository.searchIndividuals(
-			11L,
-			new FilterHelper(
-				_faroInfoIndividualsFilterStringConverterHelper, null,
-				_individualsFilterStringConverterHelper),
-			false, null, null,
+			11L, FilterHelper.EMPTY, false, null, null,
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(individuals.toString(), 1, individuals.size());

@@ -407,17 +407,18 @@ public class SegmentDog extends BaseFaroInfoDog {
 					accountId);
 		}
 
+		FilterHelper filterHelper = new FilterHelper(filterString);
+
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchSegments(
-				new FilterHelper(filterString),
-				_getIndividualSegmentIds(segment.getId()), pageRequest),
+				filterHelper, _getIndividualSegmentIds(segment.getId()),
+				pageRequest),
 			pageRequest,
 			() -> _segmentRepository.countSegments(
-				new FilterHelper(filterString),
-				_getIndividualSegmentIds(segment.getId())));
+				filterHelper, _getIndividualSegmentIds(segment.getId())));
 	}
 
 	public List<Segment> searchDynamicSegments(
@@ -450,16 +451,17 @@ public class SegmentDog extends BaseFaroInfoDog {
 		List<Long> fieldMappingIds = _fieldMappingDog.getFieldMappingIds(
 			dataSourceId);
 
+		FilterHelper filterHelper = new FilterHelper(filterString);
+
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchPreviewDisabledSegments(
-				fieldMappingIds, dataSourceId, new FilterHelper(filterString),
-				pageRequest),
+				fieldMappingIds, dataSourceId, filterHelper, pageRequest),
 			pageRequest,
 			() -> _segmentRepository.countPreviewDisabledSegments(
-				fieldMappingIds, dataSourceId, new FilterHelper(filterString)));
+				fieldMappingIds, dataSourceId, filterHelper));
 	}
 
 	public Page<Segment> searchSegmentsPage(
@@ -469,15 +471,16 @@ public class SegmentDog extends BaseFaroInfoDog {
 		List<Long> channelIds = ListUtil.map(
 			_channelDog.getChannels(dataSourceId), Channel::getId);
 
+		FilterHelper filterHelper = new FilterHelper(filterString);
+
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchSegments(
-				channelIds, new FilterHelper(filterString), pageRequest),
+				channelIds, filterHelper, pageRequest),
 			pageRequest,
-			() -> _segmentRepository.countSegments(
-				channelIds, new FilterHelper(filterString)));
+			() -> _segmentRepository.countSegments(channelIds, filterHelper));
 	}
 
 	public Page<Segment> searchSegmentsPage(
@@ -487,15 +490,16 @@ public class SegmentDog extends BaseFaroInfoDog {
 		List<Long> segmentIds = _membershipDog.getActiveIndividualSegmentIds(
 			individualId);
 
+		FilterHelper filterHelper = new FilterHelper(filterString);
+
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchSegments(
-				new FilterHelper(filterString), segmentIds, pageRequest),
+				filterHelper, segmentIds, pageRequest),
 			pageRequest,
-			() -> _segmentRepository.countSegments(
-				new FilterHelper(filterString), segmentIds));
+			() -> _segmentRepository.countSegments(filterHelper, segmentIds));
 	}
 
 	@CacheEvict("getReferencedAssetIds")

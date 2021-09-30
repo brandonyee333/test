@@ -284,14 +284,14 @@ public class FieldDog {
 		@Nullable String filterString, int page, int size,
 		@Nullable String[] sorts) {
 
+		FilterHelper filterHelper = new FilterHelper(filterString);
+
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
-			_fieldRepository.searchFields(
-				new FilterHelper(filterString), pageRequest),
-			pageRequest,
-			() -> _fieldRepository.countFields(new FilterHelper(filterString)));
+			_fieldRepository.searchFields(filterHelper, pageRequest),
+			pageRequest, () -> _fieldRepository.countFields(filterHelper));
 	}
 
 	public Field updateField(Field field) {
