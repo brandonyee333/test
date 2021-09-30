@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Robson Pastor
@@ -48,11 +49,12 @@ public interface InterestRepository extends Repository<Interest, Long> {
 
 	@Cacheable
 	public List<Interest> findByOwnerIdAndOwnerType(
-		Long ownerId, String ownerType, Pageable pageable);
+		@Nullable Long ownerId, String ownerType, Pageable pageable);
 
 	@Cacheable
 	public List<Interest> findByOwnerTypeAndRecordedDate(
-		Long interestId, String ownerType, Date recordedDate, int size);
+		@Nullable Long interestId, String ownerType, Date recordedDate,
+		int size);
 
 	@Cacheable
 	public Interest getByNameAndOwnerIdAndOwnerTypeAndRecordedDate(
