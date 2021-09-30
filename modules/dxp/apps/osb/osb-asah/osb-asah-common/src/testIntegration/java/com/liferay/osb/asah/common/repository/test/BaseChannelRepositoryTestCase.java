@@ -63,12 +63,10 @@ public abstract class BaseChannelRepositoryTestCase
 	public void testExistsByIdNotAndName() {
 		Channel channel = _channelRepository.save(new Channel("channel"));
 
-		Assert.assertEquals(
-			true,
+		Assert.assertTrue(
 			_channelRepository.existsByIdNotAndName(channel.getId(), "name"));
 
-		Assert.assertEquals(
-			false,
+		Assert.assertFalse(
 			_channelRepository.existsByIdNotAndName(_channel.getId(), "name"));
 	}
 

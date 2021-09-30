@@ -210,15 +210,13 @@ public abstract class BaseDataSourceRepositoryTestCase
 	public void testExistsByIdNotAndName() {
 		DataSource dataSource1 = _dataSources.get(0);
 
-		Assert.assertEquals(
-			false,
+		Assert.assertFalse(
 			_dataSourceRepository.existsByIdNotAndName(
 				dataSource1.getId(), "Liferay Brazil"));
 
 		DataSource dataSource2 = _dataSources.get(1);
 
-		Assert.assertEquals(
-			true,
+		Assert.assertTrue(
 			_dataSourceRepository.existsByIdNotAndName(
 				dataSource2.getId(), "Liferay Brazil"));
 	}

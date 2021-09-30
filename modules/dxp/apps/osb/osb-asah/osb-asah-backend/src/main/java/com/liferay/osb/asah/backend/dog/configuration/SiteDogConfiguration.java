@@ -144,6 +144,7 @@ public class SiteDogConfiguration extends BaseDogConfiguration {
 			SiteMetricType.BOUNCE_RATE);
 
 		_createBounceRateAggregations(builder);
+
 		builder.mapperFunction(
 			aggregations -> getBucketScriptAggregationValue(
 				aggregations, SiteMetricType.BOUNCE_RATE));
