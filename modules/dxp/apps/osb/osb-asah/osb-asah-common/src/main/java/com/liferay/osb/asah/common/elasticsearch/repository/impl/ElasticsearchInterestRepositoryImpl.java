@@ -30,6 +30,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -81,7 +82,7 @@ public class ElasticsearchInterestRepositoryImpl
 
 	@Override
 	public List<Interest> findByOwnerIdAndOwnerType(
-		Long ownerId, String ownerType, Pageable pageable) {
+		@Nullable Long ownerId, String ownerType, Pageable pageable) {
 
 		return toList(
 			new JSONArray(
