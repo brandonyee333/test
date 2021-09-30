@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.Repository;
-import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -96,10 +95,7 @@ public abstract class BaseInterestRepositoryTestCase
 		_interestRepository.deleteByOwnerIdAndOwnerType(
 			Long.valueOf(374790572703144534L), "individual");
 
-		Assert.assertEquals(
-			0,
-			_interestRepository.countByOwnerIdAndOwnerType(
-				374790572703144534L, "individual"));
+		Assert.assertEquals(2, _interestRepository.count());
 	}
 
 	@Test
@@ -118,8 +114,7 @@ public abstract class BaseInterestRepositoryTestCase
 
 		Assert.assertEquals(interests.toString(), 2, interests.size());
 		Assert.assertEquals(
-			Arrays.asList("compelling metrics", "sales"),
-			_getInterestNames(interests));
+			Arrays.asList(entityModels.get(2), entityModels.get(3)), interests);
 	}
 
 	@Test
@@ -129,8 +124,7 @@ public abstract class BaseInterestRepositoryTestCase
 				"javascript", 374790575409131096L, "individual",
 				DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
 
-		Assert.assertEquals(
-			Double.valueOf(2.614959778036198), interest.getScore());
+		Assert.assertEquals(entityModels.get(1), interest);
 	}
 
 	@Test
@@ -142,17 +136,12 @@ public abstract class BaseInterestRepositoryTestCase
 
 		Assert.assertEquals(interests.toString(), 2, interests.size());
 		Assert.assertEquals(
-			Arrays.asList("compelling metrics", "sales"),
-			_getInterestNames(interests));
+			Arrays.asList(entityModels.get(2), entityModels.get(3)), interests);
 	}
 
 	@Override
 	protected Repository<Interest, Long> getRepository() {
 		return _interestRepository;
-	}
-
-	private List<String> _getInterestNames(List<Interest> interests) {
-		return ListUtil.map(interests, Interest::getName);
 	}
 
 	@Autowired
