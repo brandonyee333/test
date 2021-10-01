@@ -412,8 +412,6 @@ public class DLAdminDisplayContext {
 			}
 		}
 		catch (NoSuchFolderException noSuchFolderException) {
-			_rootFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
-
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					StringBundler.concat(
