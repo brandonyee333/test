@@ -34,7 +34,6 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
-import com.liferay.osb.asah.common.parser.FilterStringParserException;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
@@ -633,21 +632,6 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 			100L, String.format(sb.toString(), "lt", 2), true, 0, 10, null);
 
 		Assert.assertEquals(individuals.toString(), 4, individuals.size());
-	}
-
-	@Test(expected = FilterStringParserException.class)
-	public void testSearchIndividuals3() {
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("(activities.filterByCount(filter='(activityKey eq ");
-		sb.append("''Form#formViewed#511687236573013375'' and day gt ");
-		sb.append("''last24Hours'')',operator='ge',");
-		sb.append("value=10000000000000000))");
-
-		_individualDog.searchIndividuals(
-			100L, sb.toString(), true, 0, 10, null);
-
-		Assert.fail();
 	}
 
 	@Test

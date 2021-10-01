@@ -32,7 +32,6 @@ import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.parser.FilterStringParserException;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.AccountRepository;
@@ -213,6 +212,18 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468677661047218L, 346468678682539385L, 346468679569640045L,
 			346468680492094349L, 346468683127812925L, 346468699875814972L,
 			346468700681239480L, 346468701457781206L);
+	}
+
+	@Test
+	public void testAccountsFilterByCountGtBigDecimal() {
+		testFilterString(
+			"activities.filterByCount(filter='(activityKey eq " +
+				"''Blog#blogViewed#509847305915450432'' and day gt " +
+					"''last24Hours'')',operator='ge',value=1e+26)");
+		testFilterString(
+			"activities.filterByCount(filter='(activityKey eq " +
+				"''Form#formViewed#511687236573013375'' and day gt " +
+					"''last24Hours'')',operator='ge',value=10000000000000000)");
 	}
 
 	@Test
@@ -493,15 +504,6 @@ public class IndividualsFilterStringConverterHelperTest {
 	}
 
 	@Test
-	public void testAccountsFilterByCountWithNonintegralValueThrowsException() {
-		_testFilterStringThrowsException(
-			null, null,
-			"accounts.filterByCount(filter='contains(" +
-				"organization/shippingCity/value, ''e'')', operator='gt', " +
-					"value=2.71)");
-	}
-
-	@Test
 	public void testAccountsFilterByCountWithNonnumericValueThrowsException() {
 		_testFilterStringThrowsException(
 			null, null,
@@ -730,20 +732,6 @@ public class IndividualsFilterStringConverterHelperTest {
 				"''Page#pageViewed#348853654381438580''', operator='ge', " +
 					"value=1)",
 			346468603851271125L, 346468605699756892L);
-	}
-
-	@Test(expected = FilterStringParserException.class)
-	public void testActivitiesFilterByCountGePositiveThrowException() {
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("(activities.filterByCount(filter='(activityKey eq ");
-		sb.append("''Form#formViewed#511687236573013375'' and day gt ");
-		sb.append("''last24Hours'')',operator='ge',");
-		sb.append("value=10000000000000000))");
-
-		testFilterString(sb.toString());
-
-		Assert.fail();
 	}
 
 	@Test

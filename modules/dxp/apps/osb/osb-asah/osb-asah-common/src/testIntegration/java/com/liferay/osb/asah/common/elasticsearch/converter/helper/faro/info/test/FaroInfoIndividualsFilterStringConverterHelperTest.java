@@ -155,6 +155,20 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 	}
 
 	@Test
+	public void testAccountsFilterByCountGtBigDecimal() throws Exception {
+		testFilterString(
+			"individuals",
+			"activities.filterByCount(filter='(activityKey eq " +
+				"''Blog#blogViewed#509847305915450432'' and day gt " +
+					"''last24Hours'')',operator='ge',value=1e+26)");
+		testFilterString(
+			"individuals",
+			"activities.filterByCount(filter='(activityKey eq " +
+				"''Form#formViewed#511687236573013375'' and day gt " +
+					"''last24Hours'')',operator='ge',value=10000000000000000)");
+	}
+
+	@Test
 	public void testAccountsFilterByCountGtNegative() throws Exception {
 		testFilterString(
 			"individuals",
@@ -433,15 +447,6 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"accounts.filterByCount(filter='" +
 				"organization/shippingState/value eq ''California''', " +
 					"operator='gt', value=0, value=1)");
-	}
-
-	@Test
-	public void testAccountsFilterByCountWithNonintegralValueThrowsException() {
-		testFilterStringThrowsException(
-			null, null,
-			"accounts.filterByCount(filter='contains(" +
-				"organization/shippingCity/value, ''e'')', operator='gt', " +
-					"value=2.71)");
 	}
 
 	@Test
