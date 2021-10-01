@@ -2,7 +2,7 @@ FROM elasticsearch:7.9.2
 
 ENV TAKE_FILE_OWNERSHIP true
 
-RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install --batch repository-s3
+RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install --batch repository-gcs
 
 COPY --chown=elasticsearch:root docker-resources/usr/share /usr/share
 COPY --chown=elasticsearch:root docker-resources/usr/tmp /usr/tmp
