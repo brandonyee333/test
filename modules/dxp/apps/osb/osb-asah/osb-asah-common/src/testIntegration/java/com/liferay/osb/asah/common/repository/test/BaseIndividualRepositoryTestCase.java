@@ -180,6 +180,23 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		individual1.setFields(fields);
 
+		Field field4 = new Field();
+
+		field4.setContext("custom");
+		field4.setDataSourceId(dataSource1.getId());
+		field4.setDataSourceName("Source 1");
+		field4.setFieldType("Text");
+		field4.setModifiedDate(date);
+		field4.setName("field4");
+		field4.setOwnerId(_individual1Id);
+		field4.setOwnerType("individual");
+		field4.setSourceName("Field 4");
+		field4.setValue("field four");
+
+		fieldRepository.save(field4);
+
+		individual1.setCustomFields(Collections.singleton(field4));
+
 		Segment segment = new Segment();
 
 		segment.setActiveIndividualCount(1L);
@@ -508,6 +525,20 @@ public abstract class BaseIndividualRepositoryTestCase
 		Individual individual = individuals.get(0);
 
 		Assert.assertEquals(_individual1Id, individual.getId());
+	}
+
+	@Test
+	public void testFindByIdWithCustomFields() {
+		Optional<Individual> individualOptional = individualRepository.findById(
+			_individual1Id);
+
+		Individual individual = individualOptional.get();
+
+		Assert.assertNotNull(individual);
+
+		Set<Field> customFields = individual.getCustomFields();
+
+		Assert.assertEquals(customFields.toString(), 1, customFields.size());
 	}
 
 	@Test

@@ -233,6 +233,15 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		_assertCustomFields(customFields, 42, "favoriteNumber");
 		_assertCustomFields(customFields, "english", "spokenLanguages");
 
+		userJSONObject.remove("expando");
+
+		individual = _individualDog.updateIndividual(
+			"1", userJSONObject, _liferayDataSource, individual);
+
+		_assertCustomFields(customFields, "1400 Montefino Ave", "address");
+		_assertCustomFields(customFields, 42, "favoriteNumber");
+		_assertCustomFields(customFields, "english", "spokenLanguages");
+
 		individual = _individualDog.updateIndividual(
 			"1",
 			userJSONObject.put(
