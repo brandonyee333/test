@@ -1345,26 +1345,11 @@ public class ElasticsearchIndividualRepositoryImpl
 		}
 
 		if (jsonObject.has("demographics")) {
-			JSONObject demographicsJSONObject = jsonObject.getJSONObject(
-				"demographics");
+			individual.setFields(_getFields(jsonObject, "demographics"));
+		}
 
-			Map<String, Object> map = demographicsJSONObject.toMap();
-
-			Collection<Object> values = map.values();
-
-			Stream<Object> stream = values.stream();
-
-			individual.setFields(
-				stream.map(
-					value -> {
-						List<Object> list = (List<Object>)value;
-
-						return objectMapper.convertValue(
-							list.get(0), Field.class);
-					}
-				).collect(
-					Collectors.toSet()
-				));
+		if (jsonObject.has("custom")) {
+			individual.setCustomFields(_getFields(jsonObject, "custom"));
 		}
 
 		return individual;
@@ -1630,6 +1615,26 @@ public class ElasticsearchIndividualRepositoryImpl
 
 		return boolQueryBuilder.filter(
 			QueryBuilders.existsQuery("demographics.email"));
+	}
+
+	private Set<Field> _getFields(JSONObject jsonObject, String key) {
+		JSONObject demographicsJSONObject = jsonObject.getJSONObject(key);
+
+		Map<String, Object> map = demographicsJSONObject.toMap();
+
+		Collection<Object> values = map.values();
+
+		Stream<Object> stream = values.stream();
+
+		return stream.map(
+			value -> {
+				List<Object> list = (List<Object>)value;
+
+				return objectMapper.convertValue(list.get(0), Field.class);
+			}
+		).collect(
+			Collectors.toSet()
+		);
 	}
 
 	private QueryBuilder _getKeywordsQueryBuilder(
