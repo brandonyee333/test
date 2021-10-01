@@ -320,6 +320,10 @@ public class DLAdminDisplayContext {
 		return _rootFolderInTrash;
 	}
 
+	public boolean isRootFolderNotFound() {
+		return _rootFolderNotFound;
+	}
+
 	public boolean isSearch() {
 		String mvcRenderCommandName = ParamUtil.getString(
 			_httpServletRequest, "mvcRenderCommandName");
@@ -409,6 +413,8 @@ public class DLAdminDisplayContext {
 						"Could not find folder {folderId=", _rootFolderId, "}"),
 					noSuchFolderException);
 			}
+
+			_rootFolderNotFound = true;
 		}
 		catch (PortalException portalException) {
 			throw new SystemException(portalException);
@@ -795,6 +801,7 @@ public class DLAdminDisplayContext {
 	private Long _repositoryId;
 	private long _rootFolderId;
 	private String _rootFolderName;
+	private boolean _rootFolderNotFound;
 	private SearchContainer<Object> _searchContainer;
 	private final ThemeDisplay _themeDisplay;
 	private final VersioningStrategy _versioningStrategy;
