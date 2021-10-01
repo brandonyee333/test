@@ -90,6 +90,8 @@ public class IndividualsUpgradeStep implements UpgradeStep {
 	private void _upgradeIndividualsJSONObjects() throws Exception {
 		JSONArrayIterator.of(
 			"individuals", _faroInfoElasticsearchInvoker, null
+		).setBatchSize(
+			10000
 		).setProcessJSONArrayUnsafeFunction(
 			this::_upgradeIndividuals
 		).setQueryBuilder(
