@@ -1279,9 +1279,12 @@ public class IndividualDog extends BaseFaroInfoDog {
 		List<Field> previousFields = _fieldDog.getOwnerIdFields(
 			"demographics", individualId);
 
-		_fieldDog.updateFields(
-			"custom", dataJSONObject, dataSource, individual, "individual",
-			"demographics", "email");
+		if (dataJSONObject.has("expando")) {
+			_fieldDog.updateFields(
+				"custom", dataJSONObject, dataSource, individual, "individual",
+				"demographics", "email");
+		}
+
 		_fieldDog.updateFields(
 			"demographics", dataJSONObject, dataSource, individual,
 			"individual", "demographics", "email");
