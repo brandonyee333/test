@@ -353,7 +353,8 @@ public class AccountEnvironmentLocalServiceImpl
 				!ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR) &&
 				!ProductEntryConstants.isDigitalEnterpriseVersion7_1(envLFR) &&
 				!ProductEntryConstants.isDigitalEnterpriseVersion7_2(envLFR) &&
-				!ProductEntryConstants.isDigitalEnterpriseVersion7_3(envLFR)) {
+				!ProductEntryConstants.isDigitalEnterpriseVersion7_3(envLFR) &&
+				!ProductEntryConstants.isDigitalEnterpriseVersion7_4(envLFR)) {
 
 				throw new AccountEnvironmentEnvLFRException();
 			}
@@ -375,7 +376,8 @@ public class AccountEnvironmentLocalServiceImpl
 			if (!ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR) &&
 				!ProductEntryConstants.isDigitalEnterpriseVersion7_1(envLFR) &&
 				!ProductEntryConstants.isDigitalEnterpriseVersion7_2(envLFR) &&
-				!ProductEntryConstants.isDigitalEnterpriseVersion7_3(envLFR)) {
+				!ProductEntryConstants.isDigitalEnterpriseVersion7_3(envLFR) &&
+				!ProductEntryConstants.isDigitalEnterpriseVersion7_4(envLFR)) {
 
 				throw new AccountEnvironmentEnvLFRException();
 			}

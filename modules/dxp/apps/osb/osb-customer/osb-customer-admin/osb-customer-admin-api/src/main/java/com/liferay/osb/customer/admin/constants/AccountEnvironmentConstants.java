@@ -77,6 +77,8 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_AS_JBOSS_EAP_7_3 = 27069;
 
+	public static final long ENV_AS_JBOSS_EAP_7_4 = 27072;
+
 	public static final long ENV_AS_JBOSS_TOMCAT_4_2 = 27021;
 
 	public static final long ENV_AS_JBOSS_TOMCAT_5_0 = 27022;
@@ -175,6 +177,10 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_AS_WILDFLY_17_0 = 27071;
 
+	public static final long ENV_AS_WILDFLY_18_0 = 27073;
+
+	public static final long ENV_AS_WILDFLY_23_0 = 27074;
+
 	public static final long ENV_BROWSER_ANDROID_BROWSER_4_3_PLUS = 37010;
 
 	public static final long ENV_BROWSER_CHROME = 37000;
@@ -225,6 +231,8 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_BROWSER_SAFARI_13 = 37023;
 
+	public static final long ENV_BROWSER_SAFARI_14 = 37025;
+
 	public static final long ENV_CS_AWS_AURORA = 39006;
 
 	public static final long ENV_CS_AWS_ELASTIC_COMPUTE_CLOUD = 39000;
@@ -241,7 +249,13 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_CS_GOOGLE_CLOUD_COMPUTE = 39007;
 
+	public static final long ENV_CS_GOOGLE_CLOUD_FILESTORE = 39009;
+
 	public static final long ENV_CS_GOOGLE_CLOUD_SQL = 39008;
+
+	public static final long ENV_CS_IBM_CLOUD_FILE_STORAGE = 39010;
+
+	public static final long ENV_CS_RED_HAT_OPENSHIFT_ON_IBM_CLOUD = 39011;
 
 	public static final long ENV_DB_AMAZON_AURORA = 28041;
 
@@ -321,6 +335,8 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_DB_POSTGRESQL_12 = 28052;
 
+	public static final long ENV_DB_POSTGRESQL_13 = 28053;
+
 	public static final long ENV_DB_SQL_SERVER_2000 = 28010;
 
 	public static final long ENV_DB_SQL_SERVER_2005 = 28011;
@@ -387,11 +403,13 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_OS_AIX_7_1 = 30011;
 
-	public static final long ENV_OS_AIX_7_X = 30046;
+	public static final long ENV_OS_AIX_7_2 = 30046;
 
 	public static final long ENV_OS_ALPINE_LINUX_3_8 = 30047;
 
 	public static final long ENV_OS_ALPINE_LINUX_3_10 = 30052;
+
+	public static final long ENV_OS_ALPINE_LINUX_3_13 = 30055;
 
 	public static final long ENV_OS_AMAZON_LINUX_2 = 30045;
 
@@ -430,6 +448,8 @@ public class AccountEnvironmentConstants {
 	public static final long ENV_OS_ORACLE_LINUX_6 = 30017;
 
 	public static final long ENV_OS_ORACLE_LINUX_7 = 30038;
+
+	public static final long ENV_OS_ORACLE_LINUX_8 = 30056;
 
 	public static final long ENV_OS_OTHER = 30006;
 
@@ -607,6 +627,9 @@ public class AccountEnvironmentConstants {
 		else if (ProductEntryConstants.isCommerceVersion3_0(listTypeId)) {
 			return _envCommerce30.get(envListType);
 		}
+		else if (ProductEntryConstants.isCommerceVersion4_0(listTypeId)) {
+			return _envCommerce40.get(envListType);
+		}
 		else if (ProductEntryConstants.isPortalVersion5_2(listTypeId)) {
 			return _envPortalVersion52.get(envListType);
 		}
@@ -638,6 +661,11 @@ public class AccountEnvironmentConstants {
 					listTypeId)) {
 
 			return _envDigitalEnterpriseVersion73.get(envListType);
+		}
+		else if (ProductEntryConstants.isDigitalEnterpriseVersion7_4(
+					listTypeId)) {
+
+			return _envDigitalEnterpriseVersion74.get(envListType);
 		}
 		else if ((listTypeId >=
 					ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_0_3) &&
@@ -681,7 +709,12 @@ public class AccountEnvironmentConstants {
 	private static final long[] _ENV_AS_DIGITAL_ENTERPRISE_VERSION_7_3 = {
 		ENV_AS_JBOSS_EAP_7_2, ENV_AS_JBOSS_EAP_7_3, ENV_AS_TOMCAT_9_0,
 		ENV_AS_WEBLOGIC_12C_R2, ENV_AS_WEBSPHERE_9_0, ENV_AS_WILDFLY_14_0,
-		ENV_AS_WILDFLY_17_0
+		ENV_AS_WILDFLY_17_0, ENV_AS_WILDFLY_18_0
+	};
+
+	private static final long[] _ENV_AS_DIGITAL_ENTERPRISE_VERSION_7_4 = {
+		ENV_AS_JBOSS_EAP_7_3, ENV_AS_JBOSS_EAP_7_4, ENV_AS_TOMCAT_9_0,
+		ENV_AS_WEBSPHERE_9_0, ENV_AS_WILDFLY_18_0, ENV_AS_WILDFLY_23_0
 	};
 
 	private static final long[] _ENV_AS_PORTAL_VERSION_5_2 = {
@@ -753,6 +786,12 @@ public class AccountEnvironmentConstants {
 		ENV_BROWSER_SAFARI_12, ENV_BROWSER_SAFARI_13
 	};
 
+	private static final long[] _ENV_BROWSER_DIGITAL_ENTERPRISE_VERSION_7_4 = {
+		ENV_BROWSER_CHROME, ENV_BROWSER_EDGE, ENV_BROWSER_FIREFOX,
+		ENV_BROWSER_FIREFOX_ESR, ENV_BROWSER_IOS_SAFARI,
+		ENV_BROWSER_MOBILE_CHROME, ENV_BROWSER_SAFARI_14
+	};
+
 	private static final long[] _ENV_BROWSER_PORTAL_VERSION_6_2 = {
 		ENV_BROWSER_ANDROID_BROWSER_4_3_PLUS, ENV_BROWSER_CHROME,
 		ENV_BROWSER_EDGE, ENV_BROWSER_FIREFOX, ENV_BROWSER_IE_6,
@@ -799,6 +838,15 @@ public class AccountEnvironmentConstants {
 		ENV_CS_GOOGLE_CLOUD_SQL
 	};
 
+	private static final long[] _ENV_CS_DIGITAL_ENTERPRISE_VERSION_7_4 = {
+		ENV_CS_AWS_ELASTIC_COMPUTE_CLOUD,
+		ENV_CS_AWS_RELATIONAL_DATABASE_SERVICE, ENV_CS_AWS_S3,
+		ENV_CS_AZURE_FILES, ENV_CS_AZURE_SQL_DATABASES,
+		ENV_CS_AZURE_VIRTUAL_MACHINES, ENV_CS_GOOGLE_CLOUD_COMPUTE,
+		ENV_CS_GOOGLE_CLOUD_SQL, ENV_CS_GOOGLE_CLOUD_FILESTORE,
+		ENV_CS_RED_HAT_OPENSHIFT_ON_IBM_CLOUD, ENV_CS_IBM_CLOUD_FILE_STORAGE
+	};
+
 	private static final long[] _ENV_CS_PORTAL_VERSION_6_2 = {
 		ENV_CS_AWS_ELASTIC_COMPUTE_CLOUD,
 		ENV_CS_AWS_RELATIONAL_DATABASE_SERVICE, ENV_CS_AWS_S3,
@@ -833,10 +881,17 @@ public class AccountEnvironmentConstants {
 	};
 
 	private static final long[] _ENV_DB_DIGITAL_ENTERPRISE_VERSION_7_3 = {
-		ENV_DB_AMAZON_AURORA, ENV_DB_DB2_11_5, ENV_DB_MARIADB_10_2,
+		ENV_DB_AMAZON_AURORA, ENV_DB_DB2_11_1, ENV_DB_MARIADB_10_2,
 		ENV_DB_MARIADB_10_4, ENV_DB_MYSQL_5_7, ENV_DB_MYSQL_8,
 		ENV_DB_ORACLE_19C, ENV_DB_POSTGRESQL_11, ENV_DB_POSTGRESQL_12,
 		ENV_DB_SQL_SERVER_2017, ENV_DB_SQL_SERVER_2019
+	};
+
+	private static final long[] _ENV_DB_DIGITAL_ENTERPRISE_VERSION_7_4 = {
+		ENV_DB_AMAZON_AURORA, ENV_DB_DB2_11_1, ENV_DB_DB2_11_5,
+		ENV_DB_MARIADB_10_2, ENV_DB_MARIADB_10_4, ENV_DB_MYSQL_5_7,
+		ENV_DB_MYSQL_8, ENV_DB_ORACLE_19C, ENV_DB_POSTGRESQL_12,
+		ENV_DB_POSTGRESQL_13, ENV_DB_SQL_SERVER_2017, ENV_DB_SQL_SERVER_2019
 	};
 
 	private static final long[] _ENV_DB_PORTAL_VERSION_5_2 = {
@@ -913,6 +968,14 @@ public class AccountEnvironmentConstants {
 		ENV_JVM_RED_HAT_OPENJDK_11
 	};
 
+	private static final long[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_4 = {
+		ENV_JVM_AMAZON_CORRETTO_JDK_8, ENV_JVM_AMAZON_CORRETTO_JDK_11,
+		ENV_JVM_AZUL_ZULU_JDK_8, ENV_JVM_AZUL_ZULU_JDK_11, ENV_JVM_IBM_J9_JDK_8,
+		ENV_JVM_ORACLE_JDK_8, ENV_JVM_ORACLE_JDK_11, ENV_JVM_ORACLE_OPENJDK_8,
+		ENV_JVM_ORACLE_OPENJDK_11, ENV_JVM_RED_HAT_OPENJDK_8,
+		ENV_JVM_RED_HAT_OPENJDK_11
+	};
+
 	private static final long[] _ENV_JVM_PORTAL_VERSION_6_1 = {
 		ENV_JVM_ORACLE_JDK_5, ENV_JVM_ORACLE_JDK_6, ENV_JVM_ORACLE_JDK_7,
 		ENV_JVM_ORACLE_JDK_8
@@ -947,6 +1010,10 @@ public class AccountEnvironmentConstants {
 		ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_3_10
 	};
 
+	private static final long[] _ENV_LFR_COMMERCE_VERSION_4_0 = {
+		ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_4_10
+	};
+
 	private static final long[] _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_0 = {
 		ENV_OS_AIX_7_1, ENV_OS_ALPINE_LINUX_3_8, ENV_OS_AMAZON_LINUX_2,
 		ENV_OS_CENTOS_6, ENV_OS_CENTOS_7, ENV_OS_DEBIAN_7, ENV_OS_DEBIAN_8,
@@ -968,7 +1035,7 @@ public class AccountEnvironmentConstants {
 	};
 
 	private static final long[] _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_2 = {
-		ENV_OS_AIX_7_X, ENV_OS_ALPINE_LINUX_3_8, ENV_OS_AMAZON_LINUX_2,
+		ENV_OS_AIX_7_2, ENV_OS_ALPINE_LINUX_3_8, ENV_OS_AMAZON_LINUX_2,
 		ENV_OS_CENTOS_7, ENV_OS_DEBIAN_9, ENV_OS_ORACLE_LINUX_7,
 		ENV_OS_RED_HAT_ENTERPRISE_7, ENV_OS_RED_HAT_ENTERPRISE_8,
 		ENV_OS_SOLARIS_11, ENV_OS_SUSE_ENTERPRISE_LINUX_12,
@@ -977,13 +1044,23 @@ public class AccountEnvironmentConstants {
 	};
 
 	private static final long[] _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_3 = {
-		ENV_OS_AIX_7_X, ENV_OS_ALPINE_LINUX_3_10, ENV_OS_AMAZON_LINUX_2,
+		ENV_OS_AIX_7_2, ENV_OS_ALPINE_LINUX_3_10, ENV_OS_AMAZON_LINUX_2,
 		ENV_OS_CENTOS_7, ENV_OS_CENTOS_8, ENV_OS_DEBIAN_10,
 		ENV_OS_ORACLE_LINUX_7, ENV_OS_RED_HAT_ENTERPRISE_7,
 		ENV_OS_RED_HAT_ENTERPRISE_8, ENV_OS_SOLARIS_11,
 		ENV_OS_SUSE_ENTERPRISE_LINUX_12, ENV_OS_SUSE_ENTERPRISE_LINUX_15,
 		ENV_OS_UBUNTU_LTS_18_04, ENV_OS_WINDOWS_SERVER_2016,
 		ENV_OS_WINDOWS_SERVER_2019
+	};
+
+	private static final long[] _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_4 = {
+		ENV_OS_AIX_7_2, ENV_OS_ALPINE_LINUX_3_13, ENV_OS_AMAZON_LINUX_2,
+		ENV_OS_CENTOS_7, ENV_OS_CENTOS_8, ENV_OS_DEBIAN_10,
+		ENV_OS_ORACLE_LINUX_7, ENV_OS_ORACLE_LINUX_8,
+		ENV_OS_RED_HAT_ENTERPRISE_7, ENV_OS_RED_HAT_ENTERPRISE_8,
+		ENV_OS_SOLARIS_11, ENV_OS_SUSE_ENTERPRISE_LINUX_12,
+		ENV_OS_SUSE_ENTERPRISE_LINUX_15, ENV_OS_UBUNTU_LTS_18_04,
+		ENV_OS_WINDOWS_SERVER_2016, ENV_OS_WINDOWS_SERVER_2019
 	};
 
 	private static final long[] _ENV_OS_PORTAL_VERSION_5_2 = {
@@ -1095,10 +1172,26 @@ public class AccountEnvironmentConstants {
 			ENV_SEARCH_ELASTICSEARCH_7_X
 		};
 
+	private static final long[]
+		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_4_ENTERPRISE = {
+			ENV_SEARCH_ELASTICSEARCH_7_X
+		};
+
+	private static final long[]
+		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_4_STANDARD = {
+			ENV_SEARCH_ELASTICSEARCH_7_X
+		};
+
+	private static final long[]
+		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_4_STANDARD_COMMERCE = {
+			ENV_SEARCH_ELASTICSEARCH_7_X
+		};
+
 	private static final Map<String, long[]> _envCommerce11 = new HashMap<>();
 	private static final Map<String, long[]> _envCommerce20 = new HashMap<>();
 	private static final Map<String, long[]> _envCommerce21 = new HashMap<>();
 	private static final Map<String, long[]> _envCommerce30 = new HashMap<>();
+	private static final Map<String, long[]> _envCommerce40 = new HashMap<>();
 	private static final Map<String, long[]> _envDigitalEnterpriseVersion70 =
 		new HashMap<>();
 	private static final Map<String, long[]> _envDigitalEnterpriseVersion71 =
@@ -1106,6 +1199,8 @@ public class AccountEnvironmentConstants {
 	private static final Map<String, long[]> _envDigitalEnterpriseVersion72 =
 		new HashMap<>();
 	private static final Map<String, long[]> _envDigitalEnterpriseVersion73 =
+		new HashMap<>();
+	private static final Map<String, long[]> _envDigitalEnterpriseVersion74 =
 		new HashMap<>();
 	private static final Map<String, long[]> _envPortalVersion52 =
 		new HashMap<>();
@@ -1138,6 +1233,10 @@ public class AccountEnvironmentConstants {
 		_envCommerce30.put(
 			ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS,
 			_ENV_LFR_COMMERCE_VERSION_3_0);
+
+		_envCommerce40.put(
+			ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS,
+			_ENV_LFR_COMMERCE_VERSION_4_0);
 
 		_envPortalVersion52.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_5_2);
 		_envPortalVersion52.put(
@@ -1254,6 +1353,28 @@ public class AccountEnvironmentConstants {
 		_envDigitalEnterpriseVersion73.put(
 			LIST_TYPE_ENV_SEARCH + ".standard.commerce",
 			_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_3_STANDARD_COMMERCE);
+
+		_envDigitalEnterpriseVersion74.put(
+			LIST_TYPE_ENV_AS, _ENV_AS_DIGITAL_ENTERPRISE_VERSION_7_4);
+		_envDigitalEnterpriseVersion74.put(
+			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_DIGITAL_ENTERPRISE_VERSION_7_4);
+		_envDigitalEnterpriseVersion74.put(
+			LIST_TYPE_ENV_CS, _ENV_CS_DIGITAL_ENTERPRISE_VERSION_7_4);
+		_envDigitalEnterpriseVersion74.put(
+			LIST_TYPE_ENV_DB, _ENV_DB_DIGITAL_ENTERPRISE_VERSION_7_4);
+		_envDigitalEnterpriseVersion74.put(
+			LIST_TYPE_ENV_JVM, _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_4);
+		_envDigitalEnterpriseVersion74.put(
+			LIST_TYPE_ENV_OS, _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_4);
+		_envDigitalEnterpriseVersion74.put(
+			LIST_TYPE_ENV_SEARCH + ".enterprise",
+			_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_4_ENTERPRISE);
+		_envDigitalEnterpriseVersion74.put(
+			LIST_TYPE_ENV_SEARCH + ".standard",
+			_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_4_STANDARD);
+		_envDigitalEnterpriseVersion74.put(
+			LIST_TYPE_ENV_SEARCH + ".standard.commerce",
+			_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_4_STANDARD_COMMERCE);
 
 		_envPortalVersionOther.put(
 			LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_OTHER);
