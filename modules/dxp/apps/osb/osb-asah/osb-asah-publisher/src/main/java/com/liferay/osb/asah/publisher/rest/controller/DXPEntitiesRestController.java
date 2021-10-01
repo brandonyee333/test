@@ -89,6 +89,9 @@ public class DXPEntitiesRestController {
 
 					type = DXPEntity.Type.CLASS_NAME_USER;
 				}
+				else if (type.equals(DXPEntity.Type.CLASS_NAME_USER)) {
+					jsonObject.putOnce("expando", new JSONArray());
+				}
 
 				if (dataSourceId == null) {
 					objectJSONObject.put(
