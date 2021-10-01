@@ -39,7 +39,7 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -53,6 +53,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -525,10 +528,14 @@ public class IndividualsFilterStringConverterHelper
 			throw new IllegalArgumentException("Unknown operator: " + operator);
 		}
 
-		BigInteger value = new BigInteger(argumentValues[2]);
+		BigDecimal value = new BigDecimal(argumentValues[2]);
 
-		if (value.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) == 1) {
-			throw new IllegalArgumentException("Invalid value: " + value);
+		if (value.compareTo(BigDecimal.valueOf(Integer.MAX_VALUE)) == 1) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Invalid value: " + value);
+			}
+
+			value = BigDecimal.valueOf(Integer.MAX_VALUE);
 		}
 
 		boolean checkEqualityOnly = _isEqualityOperator(operator);
@@ -965,6 +972,9 @@ public class IndividualsFilterStringConverterHelper
 
 	private static final String _BEHAVIORAL_CRITERIA_FIELD_NAME_PREFIX =
 		"activities/";
+
+	private static final Log _log = LogFactory.getLog(
+		IndividualsFilterStringConverterHelper.class);
 
 	private static final Pattern _pattern = Pattern.compile(
 		".*(score eq '(false|true)').*");
