@@ -37,6 +37,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -164,10 +166,17 @@ public class Individual implements Persistable<Long> {
 		return new Demographics(_customFields);
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonIgnore
 	@MappedCollection(idColumn = "ownerid")
 	public Set<Field> getCustomFields() {
-		return _customFields;
+		Stream<Field> stream = _customFields.stream();
+
+		return stream.filter(
+			field -> StringUtils.equals(field.getContext(), "custom")
+		).collect(
+			Collectors.toSet()
+		);
 	}
 
 	@JsonProperty("dataSourceAccountPKs")
@@ -197,10 +206,17 @@ public class Individual implements Persistable<Long> {
 		return _emailAddressHashed;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonIgnore
 	@MappedCollection(idColumn = "ownerid")
 	public Set<Field> getFields() {
-		return _fields;
+		Stream<Field> stream = _fields.stream();
+
+		return stream.filter(
+			field -> !StringUtils.equals(field.getContext(), "custom")
+		).collect(
+			Collectors.toSet()
+		);
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -770,7 +786,9 @@ public class Individual implements Persistable<Long> {
 			Stream<Field> stream = _fields.stream();
 
 			return stream.collect(
-				Collectors.toMap(Field::getName, Collections::singletonList));
+				Collectors.toMap(
+					Field::getName, Collections::singletonList,
+					(existing, replacement) -> replacement));
 		}
 
 		@JsonIgnore
