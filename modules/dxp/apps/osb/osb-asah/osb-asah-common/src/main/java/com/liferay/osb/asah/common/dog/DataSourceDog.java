@@ -497,6 +497,7 @@ public class DataSourceDog {
 		else if (providerType.equals("LIFERAY")) {
 			_asahMarkerDog.deleteAsahMarker(
 				dataSourceId.toString(), WeDeployDataService.OSB_ASAH_DXP_RAW);
+
 			_deleteData(
 				dataSourceId, "groups", "organizations", "roles", "teams",
 				"user-groups", "users");
@@ -506,7 +507,9 @@ public class DataSourceDog {
 			_asahMarkerDog.deleteAsahMarker(
 				dataSourceId.toString(),
 				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+
 			_deleteAccountReferences(dataSourceId);
+
 			_fieldDog.deleteFields(dataSourceId);
 			_salesforceEntityDog.deleteSalesforceEntities(dataSourceId);
 		}

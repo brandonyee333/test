@@ -87,6 +87,7 @@ public class OSBAsahBatchCuratorBot {
 			projectId,
 			() -> {
 				_unscheduleNanites();
+
 				_asahTaskManager.removeAsahTasks();
 			});
 	}
