@@ -652,7 +652,9 @@ public class EventRepositoryTest {
 		Assert.assertArrayEquals(new Integer[] {8, 1, 1, 1}, values.toArray());
 	}
 
-	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@SQLResource(
+		resourcePath = "test_event_count_grouped_by_event_date_last_7_days.sql"
+	)
 	@Test
 	public void testGetEventsCountGroupByEventDateLast7Days() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
@@ -673,7 +675,9 @@ public class EventRepositoryTest {
 			Matchers.arrayContainingInAnyOrder(values.toArray(new Integer[0])));
 	}
 
-	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@SQLResource(
+		resourcePath = "test_event_count_grouped_by_event_date_last_7_days.sql"
+	)
 	@Test
 	public void testGetEventsCountGroupByEventDateLast7DaysWithTimeZone() {
 		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
@@ -722,7 +726,9 @@ public class EventRepositoryTest {
 		Assert.assertTrue(eventsCountGroupByEventDate.isEmpty());
 	}
 
-	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@SQLResource(
+		resourcePath = "test_event_count_grouped_by_event_date_last_24_hours.sql"
+	)
 	@Test
 	public void testGetEventsCountGroupByEventDateLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
@@ -743,7 +749,9 @@ public class EventRepositoryTest {
 		Assert.assertEquals(Integer.valueOf(4), iterator.next());
 	}
 
-	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@SQLResource(
+		resourcePath = "test_event_count_grouped_by_event_date_last_24_hours.sql"
+	)
 	@Test
 	public void testGetEventsCountGroupByEventDateLast24HoursWithTimeZone() {
 		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
@@ -772,7 +780,9 @@ public class EventRepositoryTest {
 			expectedEventsCountGroupByEventDate, eventsCountGroupByEventDate);
 	}
 
-	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@SQLResource(
+		resourcePath = "test_event_count_grouped_by_event_date_last_7_days.sql"
+	)
 	@Test
 	public void testGetEventSessionsCountGroupByEventDateLast7Days() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
@@ -794,7 +804,9 @@ public class EventRepositoryTest {
 			Matchers.arrayContainingInAnyOrder(values.toArray(new Integer[0])));
 	}
 
-	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@SQLResource(
+		resourcePath = "test_event_count_grouped_by_event_date_last_7_days.sql"
+	)
 	@Test
 	public void testGetEventSessionsCountGroupByEventDateLast7DaysWithTimeZone() {
 		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
@@ -833,7 +845,9 @@ public class EventRepositoryTest {
 			eventSessionsCountGroupByEventDate);
 	}
 
-	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@SQLResource(
+		resourcePath = "test_event_count_grouped_by_event_date_last_24_hours.sql"
+	)
 	@Test
 	public void testGetEventSessionsCountGroupByEventDateLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
@@ -855,7 +869,9 @@ public class EventRepositoryTest {
 		Assert.assertEquals(Integer.valueOf(2), iterator.next());
 	}
 
-	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
+	@SQLResource(
+		resourcePath = "test_event_count_grouped_by_event_date_last_24_hours.sql"
+	)
 	@Test
 	public void testGetEventSessionsCountGroupByEventDateLast24HoursWithTimeZone() {
 		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
