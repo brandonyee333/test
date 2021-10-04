@@ -35,6 +35,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONObject;
 
@@ -59,23 +61,40 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 	@Override
 	public void run() {
-		while (true) {
-			List<String> messages = _messageSubscriber.pullMessages(100);
+		try {
+			while (true) {
+				long start = System.currentTimeMillis();
 
-			if (messages.isEmpty()) {
-				break;
+				List<String> messages = _messageSubscriber.pullMessages(100);
+
+				if (messages.isEmpty()) {
+					break;
+				}
+
+				Stream<String> stream = messages.stream();
+
+				stream.map(
+					JSONObject::new
+				).collect(
+					Collectors.groupingBy(
+						jsonObject -> jsonObject.getString("projectId"))
+				).forEach(
+					this::_run
+				);
+
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
+
+					_log.info(
+						String.format(
+							"%s processed %d messages in %d ms",
+							clazz.getSimpleName(), messages.size(),
+							System.currentTimeMillis() - start));
+				}
 			}
-
-			Stream<String> stream = messages.stream();
-
-			stream.map(
-				JSONObject::new
-			).collect(
-				Collectors.groupingBy(
-					jsonObject -> jsonObject.getString("projectId"))
-			).forEach(
-				this::_run
-			);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 	}
 
@@ -299,6 +318,9 @@ public class IndividualActivityFieldsNanite implements Nanite {
 			ProjectIdThreadLocal.remove();
 		}
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		IndividualActivityFieldsNanite.class);
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
