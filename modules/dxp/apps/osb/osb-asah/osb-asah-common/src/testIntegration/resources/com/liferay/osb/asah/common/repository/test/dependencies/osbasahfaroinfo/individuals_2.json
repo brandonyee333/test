@@ -1,0 +1,61 @@
+[
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 1,
+				"channelId": "100"
+			},
+			{
+				"channelId": "100"
+			},
+			{
+				"activitiesCount": 1
+			},
+			{
+			}
+		],
+		"channelIds": [
+			"100"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+		],
+		"dateCreated": "${now}",
+		"dateModified": "${now}",
+		"demographics": {
+		},
+		"id": "1",
+		"individualSegmentIds": [
+			"123"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "100",
+				"lastActivityDate": "${now}"
+			},
+			{
+				"channelId": "100"
+			},
+			{
+				"lastActivityDate": "${now}"
+			},
+			{
+			}
+		],
+		"previousActivityDates": [
+			{
+				"channelId": "100",
+				"lastActivityDate": "${now}"
+			},
+			{
+				"channelId": "100"
+			},
+			{
+				"lastActivityDate": "${now}"
+			},
+			{
+			}
+		]
+	}
+]
