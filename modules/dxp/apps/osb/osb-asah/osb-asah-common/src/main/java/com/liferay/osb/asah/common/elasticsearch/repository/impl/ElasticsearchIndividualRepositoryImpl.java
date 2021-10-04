@@ -1164,10 +1164,13 @@ public class ElasticsearchIndividualRepositoryImpl
 				JSONObject activitiesCountJSONObject =
 					activitiesCountsJSONArray.getJSONObject(i);
 
-				activitiesCountsMap.put(
-					activitiesCountJSONObject.getLong("channelId"),
-					JSONUtil.optLong(
-						null, activitiesCountJSONObject, "activitiesCount"));
+				long activitiesCount = activitiesCountJSONObject.optLong(
+					"activitiesCount");
+				long channelId = activitiesCountJSONObject.optLong("channelId");
+
+				if ((activitiesCount > 0) && (channelId > 0)) {
+					activitiesCountsMap.put(channelId, activitiesCount);
+				}
 			}
 		}
 
@@ -1177,16 +1180,8 @@ public class ElasticsearchIndividualRepositoryImpl
 			JSONArray lastActivityDatesJSONArray = jsonObject.getJSONArray(
 				"lastActivityDates");
 
-			for (int i = 0; i < lastActivityDatesJSONArray.length(); i++) {
-				JSONObject lastActivityDatesJSONObject =
-					lastActivityDatesJSONArray.getJSONObject(i);
-
-				lastActivityDatesMap.put(
-					lastActivityDatesJSONObject.getLong("channelId"),
-					DateUtil.toUTCDate(
-						lastActivityDatesJSONObject.getString(
-							"lastActivityDate")));
-			}
+			_updateActivityDatesMap(
+				lastActivityDatesJSONArray, lastActivityDatesMap);
 		}
 
 		Map<Long, Date> previousActivityDatesMap = new HashMap<>();
@@ -1195,16 +1190,8 @@ public class ElasticsearchIndividualRepositoryImpl
 			JSONArray previousActivityDatesJSONArray = jsonObject.getJSONArray(
 				"previousActivityDates");
 
-			for (int i = 0; i < previousActivityDatesJSONArray.length(); i++) {
-				JSONObject lastActivityDatesJSONObject =
-					previousActivityDatesJSONArray.getJSONObject(i);
-
-				previousActivityDatesMap.put(
-					lastActivityDatesJSONObject.getLong("channelId"),
-					DateUtil.toUTCDate(
-						lastActivityDatesJSONObject.getString(
-							"lastActivityDate")));
-			}
+			_updateActivityDatesMap(
+				previousActivityDatesJSONArray, previousActivityDatesMap);
 		}
 
 		Map<Long, IndividualChannel> individualChannelsMap = new HashMap<>();
@@ -1366,7 +1353,10 @@ public class ElasticsearchIndividualRepositoryImpl
 			JSONArray activitiesCountsJSONArray = new JSONArray();
 
 			for (Individual.ActivitiesCount activityCount : activitiesCounts) {
-				if (!Objects.isNull(activityCount.getActivitiesCount())) {
+				if ((activityCount != null) &&
+					(activityCount.getActivitiesCount() != null) &&
+					(activityCount.getChannelId() != null)) {
+
 					activitiesCountsJSONArray.put(
 						JSONUtil.put(
 							"activitiesCount",
@@ -1466,82 +1456,21 @@ public class ElasticsearchIndividualRepositoryImpl
 				"dataSourceIndividualPKs", dataSourceIndividualPKsJSONArray);
 		}
 
-		Set<Individual.LastActivityDate> lastActivityDates =
-			individual.getLastActivityDates();
-
-		if (CollectionUtils.isNotEmpty(lastActivityDates)) {
-			JSONArray lastActivityDatesJSONArray = new JSONArray();
-
-			for (Individual.LastActivityDate lastActivityDate :
-					lastActivityDates) {
-
-				if (!Objects.isNull(lastActivityDate.getLastActivityDate())) {
-					lastActivityDatesJSONArray.put(
-						JSONUtil.put(
-							"channelId",
-							String.valueOf(lastActivityDate.getChannelId())
-						).put(
-							"lastActivityDate",
-							DateUtil.toUTCString(
-								lastActivityDate.getLastActivityDate())
-						));
-				}
-			}
-
-			jsonObject.put("lastActivityDates", lastActivityDatesJSONArray);
-		}
+		_updateJSONObjectActivityDates(
+			"lastActivityDates", individual.getLastActivityDates(), jsonObject);
+		_updateJSONObjectActivityDates(
+			"previousActivityDates", individual.getPreviousActivityDates(),
+			jsonObject);
 
 		String id = jsonObject.optString(
 			"id", timeOrderedUuidGenerator.generateId());
 
 		jsonObject.put("id", id);
 
-		Set<Field> customFields = individual.getCustomFields();
-
-		if (CollectionUtils.isNotEmpty(customFields)) {
-			JSONObject customJSONObject = new JSONObject();
-
-			for (Field customField : customFields) {
-				JSONObject customFieldJSONObject = objectMapper.convertValue(
-					customField, JSONObject.class);
-
-				customFieldJSONObject.remove("id");
-
-				customFieldJSONObject.put(
-					"ownerId", jsonObject.getString("id"));
-
-				customJSONObject.put(
-					customField.getName(), JSONUtil.put(customFieldJSONObject));
-			}
-
-			jsonObject.put("custom", customJSONObject);
-		}
-		else {
-			jsonObject.remove("custom");
-		}
-
-		Set<Field> fields = individual.getFields();
-
-		if (CollectionUtils.isNotEmpty(fields)) {
-			JSONObject demographicsJSONObject = new JSONObject();
-
-			for (Field field : fields) {
-				JSONObject fieldJSONObject = objectMapper.convertValue(
-					field, JSONObject.class);
-
-				fieldJSONObject.remove("id");
-
-				fieldJSONObject.put("ownerId", jsonObject.getString("id"));
-
-				demographicsJSONObject.put(
-					field.getName(), JSONUtil.put(fieldJSONObject));
-			}
-
-			jsonObject.put("demographics", demographicsJSONObject);
-		}
-		else {
-			jsonObject.remove("demographics");
-		}
+		_updateIndividualFieldsJsonObject(
+			individual.getCustomFields(), "custom", jsonObject);
+		_updateIndividualFieldsJsonObject(
+			individual.getFields(), "demographics", jsonObject);
 
 		return jsonObject;
 	}
@@ -1706,6 +1635,83 @@ public class ElasticsearchIndividualRepositoryImpl
 		}
 
 		return sorts.toArray(new String[0]);
+	}
+
+	private void _updateActivityDatesMap(
+		JSONArray lastActivityDatesJSONArray,
+		Map<Long, Date> lastActivityDatesMap) {
+
+		for (int i = 0; i < lastActivityDatesJSONArray.length(); i++) {
+			JSONObject lastActivityDatesJSONObject =
+				lastActivityDatesJSONArray.optJSONObject(i);
+
+			if (lastActivityDatesJSONObject == null) {
+				continue;
+			}
+
+			long channelId = lastActivityDatesJSONObject.optLong("channelId");
+			String lastActivityDate = lastActivityDatesJSONObject.optString(
+				"lastActivityDate", null);
+
+			if ((channelId > 0) && (lastActivityDate != null)) {
+				lastActivityDatesMap.put(
+					channelId, DateUtil.toUTCDate(lastActivityDate));
+			}
+		}
+	}
+
+	private void _updateIndividualFieldsJsonObject(
+		Set<Field> individualFields, String jsonAttributeName,
+		JSONObject jsonObject) {
+
+		if (CollectionUtils.isNotEmpty(individualFields)) {
+			JSONObject individualFieldJSONObject = new JSONObject();
+
+			for (Field field : individualFields) {
+				JSONObject fieldJSONObject = objectMapper.convertValue(
+					field, JSONObject.class);
+
+				fieldJSONObject.remove("id");
+
+				fieldJSONObject.put("ownerId", jsonObject.getString("id"));
+
+				individualFieldJSONObject.put(
+					field.getName(), JSONUtil.put(fieldJSONObject));
+			}
+
+			jsonObject.put(jsonAttributeName, individualFieldJSONObject);
+		}
+		else {
+			jsonObject.remove(jsonAttributeName);
+		}
+	}
+
+	private void _updateJSONObjectActivityDates(
+		String activityDatesAttributeName,
+		Set<Individual.LastActivityDate> activityDates, JSONObject jsonObject) {
+
+		if (CollectionUtils.isNotEmpty(activityDates)) {
+			JSONArray activityDatesJSONArray = new JSONArray();
+
+			for (Individual.LastActivityDate activityDate : activityDates) {
+				if ((activityDate != null) &&
+					(activityDate.getLastActivityDate() != null) &&
+					(activityDate.getChannelId() != null)) {
+
+					activityDatesJSONArray.put(
+						JSONUtil.put(
+							"channelId",
+							String.valueOf(activityDate.getChannelId())
+						).put(
+							"lastActivityDate",
+							DateUtil.toUTCString(
+								activityDate.getLastActivityDate())
+						));
+				}
+			}
+
+			jsonObject.put(activityDatesAttributeName, activityDatesJSONArray);
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
