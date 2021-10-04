@@ -14,14 +14,25 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -86,6 +97,34 @@ public class DataSourceDogTest {
 		Assert.assertEquals("http://portal:8081", dataSource.getURL());
 	}
 
+	@Test
+	public void testGetDataSourcesJSONObjects() throws Exception {
+		DataSource dataSource = new DataSource();
+
+		dataSource.setName("Test Data Source");
+		dataSource.setProviderType("LIFERAY");
+
+		dataSource = _dataSourceDog.addDataSource(dataSource);
+
+		Channel channel = _channelDog.fetchDefaultChannel(dataSource.getId());
+
+		Individual individual = _individualDog.addIndividual(
+			channel.getId(), dataSource, null, "123");
+
+		Map<Long, JSONObject> dataSourcesJSONObjects =
+			_dataSourceDog.getDataSourcesJSONObjects(
+				Collections.singletonList(individual));
+
+		JSONObject jsonObject = dataSourcesJSONObjects.get(individual.getId());
+
+		JSONArray jsonArray = jsonObject.getJSONArray("data-sources");
+
+		Assert.assertEquals(
+			dataSource,
+			_objectMapper.convertValue(
+				jsonArray.getJSONObject(0), DataSource.class));
+	}
+
 	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -106,6 +145,15 @@ public class DataSourceDogTest {
 	}
 
 	@Autowired
+	private ChannelDog _channelDog;
+
+	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private IndividualDog _individualDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }
