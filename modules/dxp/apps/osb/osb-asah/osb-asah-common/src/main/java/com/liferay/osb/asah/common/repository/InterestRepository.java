@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Interest;
+import com.liferay.osb.asah.common.model.Distribution;
 
 import java.util.Date;
 import java.util.List;
@@ -59,5 +60,11 @@ public interface InterestRepository extends Repository<Interest, Long> {
 	@Cacheable
 	public Interest getByNameAndOwnerIdAndOwnerTypeAndRecordedDate(
 		String name, Long ownerId, String ownerType, Date recordedDate);
+
+	@Cacheable
+	public List<Distribution> getInterestDistributions(
+		@Nullable String keyword, @Nullable List<Long> ownerIds,
+		@Nullable String ownerType, @Nullable Date recordedDate,
+		@Nullable Double score, Pageable pageable);
 
 }
