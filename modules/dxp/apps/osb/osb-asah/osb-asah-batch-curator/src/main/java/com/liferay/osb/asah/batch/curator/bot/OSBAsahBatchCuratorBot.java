@@ -97,6 +97,7 @@ public class OSBAsahBatchCuratorBot {
 			projectId,
 			() -> {
 				_unscheduleNanites();
+
 				_scheduleNanites();
 			});
 	}
