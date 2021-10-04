@@ -163,6 +163,8 @@ public class ModulesStructureTest {
 		final String gitRepoSettingsGradleTemplate = _getGradleTemplate(
 			"dependencies/git_repo_settings_gradle.tmpl");
 
+		final Path cloudDirPath = _modulesDirPath.resolve("cloud");
+
 		Files.walkFileTree(
 			_modulesDirPath,
 			new SimpleFileVisitor<Path>() {
@@ -181,6 +183,10 @@ public class ModulesStructureTest {
 					if ((dirName.charAt(0) == '.') ||
 						_excludedDirNames.contains(dirName)) {
 
+						return FileVisitResult.SKIP_SUBTREE;
+					}
+
+					if (dirPath.equals(cloudDirPath)) {
 						return FileVisitResult.SKIP_SUBTREE;
 					}
 
