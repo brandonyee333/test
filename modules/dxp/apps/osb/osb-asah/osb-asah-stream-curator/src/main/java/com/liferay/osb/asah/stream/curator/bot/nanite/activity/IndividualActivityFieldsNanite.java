@@ -24,10 +24,12 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -170,47 +172,47 @@ public class IndividualActivityFieldsNanite implements Nanite {
 	private Set<Individual.LastActivityDate> _getPreviousActivityDates(
 		Individual individual, Map<Long, Date> oldLastActivityDatesMap) {
 
-		Set<Individual.LastActivityDate> oldPreviousActivityDates =
-			individual.getPreviousActivityDates();
+		Map<Long, Individual.LastActivityDate> previousActivityDatesMap =
+			new HashMap<>();
+		Set<Individual.LastActivityDate> previousActivityDates =
+			Optional.ofNullable(
+				individual.getPreviousActivityDates()
+			).orElse(
+				new HashSet<>()
+			);
 
-		Stream<Individual.LastActivityDate> oldPreviousActivityDatesStream =
-			oldPreviousActivityDates.stream();
+		if (!previousActivityDates.isEmpty()) {
+			for (Individual.LastActivityDate previousActivityDate :
+					previousActivityDates) {
 
-		Map<Long, Individual.LastActivityDate> oldPreviousActivityDatesMap =
-			oldPreviousActivityDatesStream.collect(
-				Collectors.toMap(
-					Individual.LastActivityDate::getChannelId,
-					Individual.LastActivityDate::new));
+				if ((previousActivityDate.getChannelId() != null) &&
+					(previousActivityDate.getLastActivityDate() != null)) {
 
-		Set<Individual.LastActivityDate> previousActivityDates = new HashSet<>(
-			oldPreviousActivityDatesMap.values());
+					previousActivityDatesMap.put(
+						previousActivityDate.getChannelId(),
+						previousActivityDate);
+				}
+			}
+		}
 
-		Set<Individual.LastActivityDate> newLastActivityDates =
-			individual.getLastActivityDates();
-
-		Stream<Individual.LastActivityDate> newLastActivityDatesStream =
-			newLastActivityDates.stream();
-
-		Map<Long, Date> newLastActivityDatesMap =
-			newLastActivityDatesStream.collect(
-				Collectors.toMap(
-					Individual.LastActivityDate::getChannelId,
-					Individual.LastActivityDate::getLastActivityDate));
+		previousActivityDates = new HashSet<>(
+			previousActivityDatesMap.values());
+		Map<Long, Date> lastActivityDatesMap = _lastActivityDatesSetToMap(
+			individual.getLastActivityDates());
 
 		for (Map.Entry<Long, Date> entrySet :
 				oldLastActivityDatesMap.entrySet()) {
 
-			if ((entrySet.getValue() == null) ||
-				DateUtils.isSameDay(entrySet.getValue(), DateUtil.newDate()) ||
+			if (DateUtils.isSameDay(entrySet.getValue(), DateUtil.newDate()) ||
 				DateUtils.isSameInstant(
 					entrySet.getValue(),
-					newLastActivityDatesMap.get(entrySet.getKey()))) {
+					lastActivityDatesMap.get(entrySet.getKey()))) {
 
 				continue;
 			}
 
 			Individual.LastActivityDate previousActivityDate =
-				oldPreviousActivityDatesMap.get(entrySet.getKey());
+				previousActivityDatesMap.get(entrySet.getKey());
 
 			if (previousActivityDate == null) {
 				previousActivityDates.add(
@@ -223,6 +225,33 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		}
 
 		return previousActivityDates;
+	}
+
+	private Map<Long, Date> _lastActivityDatesSetToMap(
+		Set<Individual.LastActivityDate> lastActivityDates) {
+
+		Map<Long, Date> lastActivityDatesMap = new HashMap<>();
+		lastActivityDates = Optional.ofNullable(
+			lastActivityDates
+		).orElse(
+			new HashSet<>()
+		);
+
+		if (!lastActivityDates.isEmpty()) {
+			for (Individual.LastActivityDate lastActivityDate :
+					lastActivityDates) {
+
+				if ((lastActivityDate.getChannelId() != null) &&
+					(lastActivityDate.getLastActivityDate() != null)) {
+
+					lastActivityDatesMap.put(
+						lastActivityDate.getChannelId(),
+						lastActivityDate.getLastActivityDate());
+				}
+			}
+		}
+
+		return lastActivityDatesMap;
 	}
 
 	private void _run(String projectId, List<JSONObject> messages) {
@@ -255,24 +284,18 @@ public class IndividualActivityFieldsNanite implements Nanite {
 				individual.setActivitiesCounts(
 					_getActivitiesCounts(ownerIdEntry.getValue(), individual));
 
-				Set<Individual.LastActivityDate> lastActivityDatesBeforeChange =
-					individual.getLastActivityDates();
-
-				Stream<Individual.LastActivityDate>
-					lastActivityDatesBeforeChangeStream =
-						lastActivityDatesBeforeChange.stream();
-
-				Map<Long, Date> lastActivityDatesMapBeforeChange =
-					lastActivityDatesBeforeChangeStream.collect(
-						Collectors.toMap(
-							Individual.LastActivityDate::getChannelId,
-							Individual.LastActivityDate::getLastActivityDate));
+				Map<Long, Date> lastActivityDatesMap =
+					_lastActivityDatesSetToMap(
+						individual.getLastActivityDates());
 
 				individual.setLastActivityDates(
 					_getLastActivityDates(ownerIdEntry.getValue(), individual));
-				individual.setPreviousActivityDates(
-					_getPreviousActivityDates(
-						individual, lastActivityDatesMapBeforeChange));
+
+				if (!lastActivityDatesMap.isEmpty()) {
+					individual.setPreviousActivityDates(
+						_getPreviousActivityDates(
+							individual, lastActivityDatesMap));
+				}
 
 				_individualDog.updateIndividual(individual);
 			}
