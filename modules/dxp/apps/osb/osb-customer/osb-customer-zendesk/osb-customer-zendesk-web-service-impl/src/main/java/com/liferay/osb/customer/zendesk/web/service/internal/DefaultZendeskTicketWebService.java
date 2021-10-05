@@ -119,6 +119,7 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 			ticketJSONObject.put(
 				"requester_id", zendeskTicket.getRequesterId());
 			ticketJSONObject.put("status", zendeskTicket.getStatus());
+			ticketJSONObject.put("tags", zendeskTicket.getTags());
 
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 

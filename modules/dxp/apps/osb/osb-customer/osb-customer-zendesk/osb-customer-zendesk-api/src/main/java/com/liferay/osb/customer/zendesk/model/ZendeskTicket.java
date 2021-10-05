@@ -16,6 +16,8 @@ package com.liferay.osb.customer.zendesk.model;
 
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
 
+import java.util.Set;
+
 /**
  * @author Amos Fong
  */
@@ -38,6 +40,10 @@ public class ZendeskTicket {
 
 	public String getSubject() {
 		return _subject;
+	}
+
+	public Set<String> getTags() {
+		return _tags;
 	}
 
 	public long getZendeskOrganizationId() {
@@ -72,6 +78,10 @@ public class ZendeskTicket {
 		_subject = subject;
 	}
 
+	public void setTags(Set<String> tags) {
+		_tags = tags;
+	}
+
 	public void setZendeskOrganizationId(long zendeskOrganizationId) {
 		_zendeskOrganizationId = zendeskOrganizationId;
 	}
@@ -84,6 +94,7 @@ public class ZendeskTicket {
 	private long _requesterId;
 	private String _status;
 	private String _subject;
+	private Set<String> _tags;
 	private long _zendeskOrganizationId;
 	private long _zendeskTicketId;
 
