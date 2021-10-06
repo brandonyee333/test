@@ -293,6 +293,34 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributorTest
 	}
 
 	@Test
+	public void testGetParametersShouldUseExistingItemSelectorURL() {
+		ThemeDisplay themeDisplay = _mockThemeDisplay();
+
+		when(
+			themeDisplay.isSignedIn()
+		).thenReturn(
+			Boolean.TRUE
+		);
+
+		DocumentLibraryDDMFormFieldTemplateContextContributor spy = _createSpy(
+			themeDisplay);
+
+		DDMFormField ddmFormField = new DDMFormField(
+			"field", "document_library");
+
+		String expectedItemSelectorURL = RandomTestUtil.randomString();
+
+		ddmFormField.setProperty("itemSelectorURL", expectedItemSelectorURL);
+
+		Map<String, Object> parameters = spy.getParameters(
+			ddmFormField, _createDDMFormFieldRenderingContext());
+
+		Assert.assertEquals(
+			expectedItemSelectorURL,
+			String.valueOf(parameters.get("itemSelectorURL")));
+	}
+
+	@Test
 	public void testGetParametersShouldUseFileEntryTitle() {
 		DocumentLibraryDDMFormFieldTemplateContextContributor spy = _createSpy(
 			_mockThemeDisplay());
