@@ -90,11 +90,11 @@ public class IndividualDTO {
 		_individualFieldDTO = new IndividualFieldDTO(individual.getFields());
 		_lastActivityDate = individual.getLastActivityDate();
 
-		Set<LastActivityDateDTO> lastActivityDateDTOs = SetUtil.map(
-			individual.getIndividualChannels(), LastActivityDateDTO::new);
+		Set<ActivityDateDTO> activityDateDTOS = SetUtil.map(
+			individual.getIndividualChannels(), ActivityDateDTO::new);
 
-		if (!lastActivityDateDTOs.isEmpty()) {
-			_lastActivityDateDTOs = lastActivityDateDTOs;
+		if (!activityDateDTOS.isEmpty()) {
+			_lastActivityDateDTOs = activityDateDTOS;
 		}
 
 		_lastEnrichmentDate = individual.getLastEnrichmentDate();
@@ -217,7 +217,7 @@ public class IndividualDTO {
 	}
 
 	@JsonProperty("lastActivityDates")
-	public Set<LastActivityDateDTO> getLastActivityDateDTOs() {
+	public Set<ActivityDateDTO> getLastActivityDateDTOs() {
 		return _lastActivityDateDTOs;
 	}
 
@@ -332,6 +332,79 @@ public class IndividualDTO {
 		}
 
 		private Long _activitiesCount;
+		private String _channelId;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public static class ActivityDateDTO {
+
+		public ActivityDateDTO() {
+		}
+
+		public ActivityDateDTO(IndividualChannel individualChannel) {
+			_channelId = String.valueOf(individualChannel.getChannelId());
+			_activityDate = individualChannel.getLastActivityDate();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof ActivityDateDTO)) {
+				return false;
+			}
+
+			ActivityDateDTO activityDateDTO = (ActivityDateDTO)obj;
+
+			if (Objects.equals(_activityDate, activityDateDTO._activityDate) &&
+				Objects.equals(_channelId, activityDateDTO._channelId)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonFormat(
+			pattern = DateUtil.PATTERN_ISO_8601,
+			shape = JsonFormat.Shape.STRING, timezone = "UTC"
+		)
+		@JsonProperty("lastActivityDate")
+		public Date getActivityDate() {
+			if (_activityDate == null) {
+				return null;
+			}
+
+			return new Date(_activityDate.getTime());
+		}
+
+		@JsonProperty("channelId")
+		public String getChannelId() {
+			return _channelId;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_channelId, _activityDate);
+		}
+
+		public void setActivityDate(Date activityDate) {
+			if (activityDate != null) {
+				_activityDate = new Date(activityDate.getTime());
+			}
+		}
+
+		public void setChannelId(String channelId) {
+			_channelId = channelId;
+		}
+
+		@Transient
+		private Date _activityDate;
+
+		@Transient
 		private String _channelId;
 
 	}
@@ -590,80 +663,6 @@ public class IndividualDTO {
 
 	}
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public static class LastActivityDateDTO {
-
-		public LastActivityDateDTO() {
-		}
-
-		public LastActivityDateDTO(IndividualChannel individualChannel) {
-			_channelId = String.valueOf(individualChannel.getChannelId());
-			_lastActivityDate = individualChannel.getLastActivityDate();
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-
-			if (!(obj instanceof LastActivityDateDTO)) {
-				return false;
-			}
-
-			LastActivityDateDTO lastActivityDateDTO = (LastActivityDateDTO)obj;
-
-			if (Objects.equals(_channelId, lastActivityDateDTO._channelId) &&
-				Objects.equals(
-					_lastActivityDate, lastActivityDateDTO._lastActivityDate)) {
-
-				return true;
-			}
-
-			return false;
-		}
-
-		@JsonProperty("channelId")
-		public String getChannelId() {
-			return _channelId;
-		}
-
-		@JsonFormat(
-			pattern = DateUtil.PATTERN_ISO_8601,
-			shape = JsonFormat.Shape.STRING, timezone = "UTC"
-		)
-		@JsonProperty("lastActivityDate")
-		public Date getLastActivityDate() {
-			if (_lastActivityDate == null) {
-				return null;
-			}
-
-			return new Date(_lastActivityDate.getTime());
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(_channelId, _lastActivityDate);
-		}
-
-		public void setChannelId(String channelId) {
-			_channelId = channelId;
-		}
-
-		public void setLastActivityDate(Date lastActivityDate) {
-			if (lastActivityDate != null) {
-				_lastActivityDate = new Date(lastActivityDate.getTime());
-			}
-		}
-
-		@Transient
-		private String _channelId;
-
-		@Transient
-		private Date _lastActivityDate;
-
-	}
-
 	private Long _activitiesCount;
 	private List<ActivitiesCountDTO> _activitiesCountDTOs;
 	private Set<String> _channelIds;
@@ -679,7 +678,7 @@ public class IndividualDTO {
 	private Set<IndividualDTO> _individualDTOs;
 	private IndividualFieldDTO _individualFieldDTO;
 	private Date _lastActivityDate;
-	private Set<LastActivityDateDTO> _lastActivityDateDTOs;
+	private Set<ActivityDateDTO> _lastActivityDateDTOs;
 	private Date _lastEnrichmentDate;
 	private Date _modifiedDate;
 	private Set<String> _organizationIds;

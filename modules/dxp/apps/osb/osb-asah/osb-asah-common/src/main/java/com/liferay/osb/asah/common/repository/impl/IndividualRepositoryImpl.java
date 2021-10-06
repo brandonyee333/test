@@ -1918,20 +1918,20 @@ public class IndividualRepositoryImpl extends BaseRepository {
 
 				individualChannels.add(individualChannel);
 
-				Set<Individual.LastActivityDate> lastActivityDates =
+				Set<Individual.ActivityDate> lastActivityDates =
 					individual.getLastActivityDates();
 
 				lastActivityDates.add(
-					new Individual.LastActivityDate(individualChannel));
+					new Individual.ActivityDate(individualChannel));
 
 				if (individualChannel.getPreviousActivityDate() != null) {
-					Set<Individual.LastActivityDate> previousActivityDates =
+					Set<Individual.ActivityDate> previousActivityDates =
 						individual.getPreviousActivityDates();
 
 					previousActivityDates.add(
-						new Individual.LastActivityDate(
-							individualChannel.getChannelId(),
-							individualChannel.getPreviousActivityDate()));
+						new Individual.ActivityDate(
+							individualChannel.getPreviousActivityDate(),
+							individualChannel.getChannelId()));
 				}
 			}
 		);

@@ -104,11 +104,11 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 
 		Individual individual = searchIndividuals.get(0);
 
-		for (Individual.LastActivityDate lastActivityDate :
+		for (Individual.ActivityDate lastActivityDate :
 				individual.getLastActivityDates()) {
 
 			if (Objects.equals(lastActivityDate.getChannelId(), channelId)) {
-				return lastActivityDate.getLastActivityDate();
+				return lastActivityDate.getActivityDate();
 			}
 		}
 

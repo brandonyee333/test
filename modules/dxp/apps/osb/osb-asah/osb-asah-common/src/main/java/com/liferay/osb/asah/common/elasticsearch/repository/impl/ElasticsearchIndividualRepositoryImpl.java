@@ -1688,14 +1688,14 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	private void _updateJSONObjectActivityDates(
 		String activityDatesAttributeName,
-		Set<Individual.LastActivityDate> activityDates, JSONObject jsonObject) {
+		Set<Individual.ActivityDate> activityDates, JSONObject jsonObject) {
 
 		if (CollectionUtils.isNotEmpty(activityDates)) {
 			JSONArray activityDatesJSONArray = new JSONArray();
 
-			for (Individual.LastActivityDate activityDate : activityDates) {
+			for (Individual.ActivityDate activityDate : activityDates) {
 				if ((activityDate != null) &&
-					(activityDate.getLastActivityDate() != null) &&
+					(activityDate.getActivityDate() != null) &&
 					(activityDate.getChannelId() != null)) {
 
 					activityDatesJSONArray.put(
@@ -1704,8 +1704,7 @@ public class ElasticsearchIndividualRepositoryImpl
 							String.valueOf(activityDate.getChannelId())
 						).put(
 							"lastActivityDate",
-							DateUtil.toUTCString(
-								activityDate.getLastActivityDate())
+							DateUtil.toUTCString(activityDate.getActivityDate())
 						));
 				}
 			}

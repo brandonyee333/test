@@ -58,35 +58,35 @@ public class ElasticsearchIndividualRepositoryTest
 
 		Assert.assertNotNull(individual);
 
-		Set<Individual.LastActivityDate> lastActivityDates =
+		Set<Individual.ActivityDate> lastActivityDates =
 			individual.getLastActivityDates();
 
 		Assert.assertEquals(
 			lastActivityDates.toString(), 1, lastActivityDates.size());
 
-		Iterator<Individual.LastActivityDate> lastActivityDateIterator =
+		Iterator<Individual.ActivityDate> lastActivityDateIterator =
 			lastActivityDates.iterator();
 
-		Individual.LastActivityDate lastActivityDate =
+		Individual.ActivityDate lastActivityDate =
 			lastActivityDateIterator.next();
 
 		Assert.assertNotNull(lastActivityDate.getChannelId());
-		Assert.assertNotNull(lastActivityDate.getLastActivityDate());
+		Assert.assertNotNull(lastActivityDate.getActivityDate());
 
-		Set<Individual.LastActivityDate> previousActivityDates =
+		Set<Individual.ActivityDate> previousActivityDates =
 			individual.getPreviousActivityDates();
 
 		Assert.assertEquals(
 			previousActivityDates.toString(), 1, previousActivityDates.size());
 
-		Iterator<Individual.LastActivityDate> previousActivityDateIterator =
+		Iterator<Individual.ActivityDate> previousActivityDateIterator =
 			lastActivityDates.iterator();
 
-		Individual.LastActivityDate previousActivityDate =
+		Individual.ActivityDate previousActivityDate =
 			previousActivityDateIterator.next();
 
 		Assert.assertNotNull(previousActivityDate.getChannelId());
-		Assert.assertNotNull(previousActivityDate.getLastActivityDate());
+		Assert.assertNotNull(previousActivityDate.getActivityDate());
 
 		Set<Individual.ActivitiesCount> activitiesCounts =
 			individual.getActivitiesCounts();
@@ -113,17 +113,17 @@ public class ElasticsearchIndividualRepositoryTest
 				new Individual.ActivitiesCount(1L, null),
 				new Individual.ActivitiesCount(), null));
 
-		Set<Individual.LastActivityDate> lastActivityDates = new HashSet<>(
+		Set<Individual.ActivityDate> lastActivityDates = new HashSet<>(
 			Arrays.asList(
-				new Individual.LastActivityDate(100L, DateUtil.newDate()),
-				new Individual.LastActivityDate(null, DateUtil.newDate()),
-				new Individual.LastActivityDate(), null));
+				new Individual.ActivityDate(DateUtil.newDate(), 100L),
+				new Individual.ActivityDate(DateUtil.newDate(), null),
+				new Individual.ActivityDate(), null));
 
-		Set<Individual.LastActivityDate> previousActivityDates = new HashSet<>(
+		Set<Individual.ActivityDate> previousActivityDates = new HashSet<>(
 			Arrays.asList(
-				new Individual.LastActivityDate(100L, DateUtil.newDate()),
-				new Individual.LastActivityDate(null, DateUtil.newDate()),
-				new Individual.LastActivityDate(), null));
+				new Individual.ActivityDate(DateUtil.newDate(), 100L),
+				new Individual.ActivityDate(DateUtil.newDate(), null),
+				new Individual.ActivityDate(), null));
 
 		Individual individual = new Individual();
 

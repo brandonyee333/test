@@ -1527,13 +1527,13 @@ public class IndividualDog extends BaseFaroInfoDog {
 					Collections.singleton(individualActivitiesCount));
 			});
 
-		Set<Individual.LastActivityDate> lastActivityDates =
+		Set<Individual.ActivityDate> lastActivityDates =
 			individual.getLastActivityDates();
 
-		Stream<Individual.LastActivityDate> lastActivityDatesStream =
+		Stream<Individual.ActivityDate> lastActivityDatesStream =
 			lastActivityDates.stream();
 
-		Optional<Individual.LastActivityDate> lastActivityDateOptional =
+		Optional<Individual.ActivityDate> lastActivityDateOptional =
 			lastActivityDatesStream.filter(
 				lastActivityDate -> Objects.equals(
 					lastActivityDate.getChannelId(), channelId)
@@ -1542,7 +1542,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		lastActivityDateOptional.ifPresent(
 			individualLastActivityDate -> {
 				individual.setLastActivityDate(
-					individualLastActivityDate.getLastActivityDate());
+					individualLastActivityDate.getActivityDate());
 				individual.setLastActivityDates(
 					Collections.singleton(individualLastActivityDate));
 			});

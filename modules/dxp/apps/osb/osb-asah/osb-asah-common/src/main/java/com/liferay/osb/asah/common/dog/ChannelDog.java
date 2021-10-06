@@ -593,17 +593,17 @@ public class ChannelDog extends BaseFaroInfoDog {
 	private void _updateLastActivityDates(
 		List<Long> channelIds, Individual individual) {
 
-		Set<Individual.LastActivityDate> lastActivityDates =
+		Set<Individual.ActivityDate> lastActivityDates =
 			individual.getLastActivityDates();
 
 		if (lastActivityDates != null) {
-			Iterator<Individual.LastActivityDate> iterator =
+			Iterator<Individual.ActivityDate> iterator =
 				lastActivityDates.iterator();
 
 			while (iterator.hasNext()) {
-				Individual.LastActivityDate lastActivityDate = iterator.next();
+				Individual.ActivityDate activityDate = iterator.next();
 
-				if (channelIds.contains(lastActivityDate.getChannelId())) {
+				if (channelIds.contains(activityDate.getChannelId())) {
 					iterator.remove();
 				}
 			}

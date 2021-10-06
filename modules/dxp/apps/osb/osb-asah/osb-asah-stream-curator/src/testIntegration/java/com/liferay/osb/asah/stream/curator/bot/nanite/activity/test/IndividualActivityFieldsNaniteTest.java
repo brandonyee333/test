@@ -306,19 +306,19 @@ public class IndividualActivityFieldsNaniteTest {
 	private void _assertLastActivitiesDates(
 		Long channelId, long expectedLastActivityDateCount,
 		String expectedLastActivityDateString,
-		Set<Individual.LastActivityDate> lastActivityDates) {
+		Set<Individual.ActivityDate> activityDates) {
 
 		Assert.assertEquals(
-			lastActivityDates.toString(), expectedLastActivityDateCount,
-			lastActivityDates.size());
+			activityDates.toString(), expectedLastActivityDateCount,
+			activityDates.size());
 
-		if (lastActivityDates.isEmpty()) {
+		if (activityDates.isEmpty()) {
 			return;
 		}
 
-		Stream<Individual.LastActivityDate> stream = lastActivityDates.stream();
+		Stream<Individual.ActivityDate> stream = activityDates.stream();
 
-		Individual.LastActivityDate individualLastActivityDate = stream.filter(
+		Individual.ActivityDate individualActivityDate = stream.filter(
 			lastActivityDate -> Objects.equals(
 				channelId, lastActivityDate.getChannelId())
 		).findFirst(
@@ -326,11 +326,10 @@ public class IndividualActivityFieldsNaniteTest {
 			null
 		);
 
-		Assert.assertNotNull(individualLastActivityDate);
+		Assert.assertNotNull(individualActivityDate);
 		Assert.assertEquals(
 			expectedLastActivityDateString,
-			DateUtil.toUTCString(
-				individualLastActivityDate.getLastActivityDate()));
+			DateUtil.toUTCString(individualActivityDate.getActivityDate()));
 	}
 
 	private void _testSingleTypeOfActivityExcluded(
@@ -377,13 +376,13 @@ public class IndividualActivityFieldsNaniteTest {
 			activitiesCount,
 			(long)individualActivitiesCount.getActivitiesCount());
 
-		Set<Individual.LastActivityDate> lastActivityDates =
+		Set<Individual.ActivityDate> lastActivityDates =
 			individual.getLastActivityDates();
 
-		Stream<Individual.LastActivityDate> lastActivityDatesStream =
+		Stream<Individual.ActivityDate> lastActivityDatesStream =
 			lastActivityDates.stream();
 
-		Individual.LastActivityDate individualLastActivityDate =
+		Individual.ActivityDate individualLastActivityDate =
 			lastActivityDatesStream.filter(
 				lastActivityDate -> Objects.equals(
 					channelId, lastActivityDate.getChannelId())
@@ -395,8 +394,7 @@ public class IndividualActivityFieldsNaniteTest {
 		Assert.assertNotNull(individualLastActivityDate);
 		Assert.assertEquals(
 			dateString,
-			DateUtil.toUTCString(
-				individualLastActivityDate.getLastActivityDate()));
+			DateUtil.toUTCString(individualLastActivityDate.getActivityDate()));
 	}
 
 	@Autowired
