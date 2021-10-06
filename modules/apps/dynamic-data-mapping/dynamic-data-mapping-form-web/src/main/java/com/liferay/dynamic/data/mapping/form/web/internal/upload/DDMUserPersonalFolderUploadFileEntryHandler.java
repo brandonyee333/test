@@ -77,13 +77,15 @@ public class DDMUserPersonalFolderUploadFileEntryHandler
 		try (InputStream inputStream = uploadPortletRequest.getFileAsStream(
 				_PARAMETER_NAME)) {
 
+			long repositoryId = ParamUtil.getLong(
+				uploadPortletRequest, "repositoryId");
 			String uniqueFileName = _uniqueFileNameProvider.provide(
 				fileName,
 				curFileName -> _exists(
 					themeDisplay.getScopeGroupId(), folderId, curFileName));
 
 			return _dlAppService.addFileEntry(
-				themeDisplay.getScopeGroupId(), folderId, uniqueFileName,
+				repositoryId, folderId, uniqueFileName,
 				uploadPortletRequest.getContentType(_PARAMETER_NAME),
 				uniqueFileName, _getDescription(uploadPortletRequest),
 				StringPool.BLANK, inputStream, size,
