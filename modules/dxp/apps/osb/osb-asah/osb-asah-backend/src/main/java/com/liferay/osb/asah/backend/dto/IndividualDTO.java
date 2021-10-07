@@ -63,6 +63,13 @@ public class IndividualDTO {
 			_activitiesCountDTOs = activitiesCountDTOs;
 		}
 
+		Set<ActivityDateDTO> activityDateDTOS = SetUtil.map(
+			individual.getIndividualChannels(), ActivityDateDTO::new);
+
+		if (!activityDateDTOS.isEmpty()) {
+			_activityDateDTOs = activityDateDTOS;
+		}
+
 		_channelIds = SetUtil.map(individual.getChannelIds(), String::valueOf);
 		_createDate = individual.getCreateDate();
 
@@ -89,14 +96,6 @@ public class IndividualDTO {
 			individual.getCustomFields());
 		_individualFieldDTO = new IndividualFieldDTO(individual.getFields());
 		_lastActivityDate = individual.getLastActivityDate();
-
-		Set<ActivityDateDTO> activityDateDTOS = SetUtil.map(
-			individual.getIndividualChannels(), ActivityDateDTO::new);
-
-		if (!activityDateDTOS.isEmpty()) {
-			_lastActivityDateDTOs = activityDateDTOS;
-		}
-
 		_lastEnrichmentDate = individual.getLastEnrichmentDate();
 		_modifiedDate = individual.getModifiedDate();
 		_organizationIds = SetUtil.map(
@@ -124,6 +123,11 @@ public class IndividualDTO {
 	@JsonProperty("activitiesCounts")
 	public List<ActivitiesCountDTO> getActivitiesCountDTOs() {
 		return _activitiesCountDTOs;
+	}
+
+	@JsonProperty("lastActivityDates")
+	public Set<ActivityDateDTO> getActivityDateDTOs() {
+		return _activityDateDTOs;
 	}
 
 	@JsonProperty("channelIds")
@@ -214,11 +218,6 @@ public class IndividualDTO {
 		}
 
 		return new Date(_lastActivityDate.getTime());
-	}
-
-	@JsonProperty("lastActivityDates")
-	public Set<ActivityDateDTO> getLastActivityDateDTOs() {
-		return _lastActivityDateDTOs;
 	}
 
 	@JsonFormat(
@@ -343,8 +342,8 @@ public class IndividualDTO {
 		}
 
 		public ActivityDateDTO(IndividualChannel individualChannel) {
-			_channelId = String.valueOf(individualChannel.getChannelId());
 			_activityDate = individualChannel.getLastActivityDate();
+			_channelId = String.valueOf(individualChannel.getChannelId());
 		}
 
 		@Override
@@ -388,7 +387,7 @@ public class IndividualDTO {
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(_channelId, _activityDate);
+			return Objects.hash(_activityDate, _channelId);
 		}
 
 		public void setActivityDate(Date activityDate) {
@@ -665,6 +664,7 @@ public class IndividualDTO {
 
 	private Long _activitiesCount;
 	private List<ActivitiesCountDTO> _activitiesCountDTOs;
+	private Set<ActivityDateDTO> _activityDateDTOs;
 	private Set<String> _channelIds;
 	private Date _createDate;
 	private Set<DataSourceAccountPKDTO> _dataSourceAccountPKDTOs;
@@ -678,7 +678,6 @@ public class IndividualDTO {
 	private Set<IndividualDTO> _individualDTOs;
 	private IndividualFieldDTO _individualFieldDTO;
 	private Date _lastActivityDate;
-	private Set<ActivityDateDTO> _lastActivityDateDTOs;
 	private Date _lastEnrichmentDate;
 	private Date _modifiedDate;
 	private Set<String> _organizationIds;

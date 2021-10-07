@@ -133,7 +133,8 @@ public class IndividualChannel {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_activitiesCount, _channelId, _individualId, _lastActivityDate);
+			_activitiesCount, _channelId, _individualId, _lastActivityDate,
+			_previousActivityDate);
 	}
 
 	public void setActivitiesCount(Long activitiesCount) {
