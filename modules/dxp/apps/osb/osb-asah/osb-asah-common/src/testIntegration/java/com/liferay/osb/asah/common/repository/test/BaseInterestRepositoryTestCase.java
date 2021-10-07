@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Interest;
+import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.Repository;
 
@@ -77,7 +79,17 @@ public abstract class BaseInterestRepositoryTestCase
 		interest4.setScore(1.4546849849874945);
 		interest4.setViews(4L);
 
-		setUpRepository(interest1, interest2, interest3, interest4);
+		Interest interest5 = new Interest();
+
+		interest5.setName("sales");
+		interest5.setOwnerId(374790572703144535L);
+		interest5.setOwnerType("individual");
+		interest5.setRecordedDate(
+			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
+		interest5.setScore(1.4546849849874945);
+		interest5.setViews(5L);
+
+		setUpRepository(interest1, interest2, interest3, interest4, interest5);
 	}
 
 	@Test
@@ -89,11 +101,19 @@ public abstract class BaseInterestRepositoryTestCase
 	}
 
 	@Test
+	public void testDeleteByNameAndRecordedDateGreaterThanEqual() {
+		_interestRepository.deleteByNameAndRecordedDateGreaterThanEqual(
+			"individual", DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
+
+		Assert.assertEquals(5, _interestRepository.count());
+	}
+
+	@Test
 	public void testDeleteByOwnerIdAndOwnerType() {
 		_interestRepository.deleteByOwnerIdAndOwnerType(
 			Long.valueOf(374790572703144534L), "individual");
 
-		Assert.assertEquals(2, _interestRepository.count());
+		Assert.assertEquals(3, _interestRepository.count());
 	}
 
 	@Test
@@ -101,7 +121,7 @@ public abstract class BaseInterestRepositoryTestCase
 		_interestRepository.deleteByOwnerTypeAndRecordedDateLessThanEqual(
 			"individual", DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
 
-		Assert.assertEquals(2, _interestRepository.count());
+		Assert.assertEquals(3, _interestRepository.count());
 	}
 
 	@Test
@@ -132,9 +152,33 @@ public abstract class BaseInterestRepositoryTestCase
 				null, "individual",
 				DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"), 10);
 
-		Assert.assertEquals(interests.toString(), 2, interests.size());
+		Assert.assertEquals(interests.toString(), 3, interests.size());
 		Assert.assertEquals(
-			Arrays.asList(entityModels.get(2), entityModels.get(3)), interests);
+			Arrays.asList(
+				entityModels.get(2), entityModels.get(3), entityModels.get(4)),
+			interests);
+	}
+
+	@Test
+	public void testGetInterestDistributions() {
+		List<Long> ownerIds = Arrays.asList(
+			374790572703144534L, 374790572703144535L);
+
+		List<Distribution> distributions =
+			_interestRepository.getInterestDistributions(
+				null, ownerIds, "individual",
+				DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"), null,
+				PageRequest.of(0, 10, Sort.desc("count")));
+
+		Assert.assertEquals(distributions.toString(), 2, distributions.size());
+
+		Distribution distribution = distributions.get(0);
+
+		Assert.assertEquals(
+			distribution.toString(), 2, (int)distribution.getCount());
+		Assert.assertEquals(
+			distribution.toString(), Arrays.asList("sales"),
+			distribution.getValues());
 	}
 
 	@Override
