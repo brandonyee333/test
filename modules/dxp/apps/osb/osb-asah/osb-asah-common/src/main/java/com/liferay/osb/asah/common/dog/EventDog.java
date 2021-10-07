@@ -77,8 +77,8 @@ public class EventDog {
 		TimeRange timeRange) {
 
 		return _eventRepository.countEvents(
-			channelId, individualId, keywords, timeRange,
-			_timeZoneDog.getTimeZoneId());
+			channelId, individualId, keywords, timeRange.getEndLocalDateTime(),
+			timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId());
 	}
 
 	public List<EventAttributeValue> getRecentEventAttributeValues(
@@ -94,7 +94,8 @@ public class EventDog {
 
 		List<Event> events = _eventRepository.searchEvents(
 			channelId, individualId, keywords,
-			PageRequest.of(page, size, Sort.desc("eventDate")), timeRange,
+			PageRequest.of(page, size, Sort.desc("eventDate")),
+			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
 			_timeZoneDog.getTimeZoneId());
 
 		Stream<Event> eventsStream = events.stream();

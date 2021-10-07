@@ -21,9 +21,10 @@ import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
 import com.liferay.osb.asah.common.model.Interval;
-import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.math.BigDecimal;
+
+import java.time.LocalDateTime;
 
 import java.util.Date;
 import java.util.List;
@@ -50,13 +51,15 @@ public interface EventRepository extends Repository<Event, Long> {
 
 	@Cacheable
 	public Integer countEvents(
-		Long channelId, Long individualId, String keywords, TimeRange timeRange,
-		String timeZoneId);
+		Long channelId, Long individualId, String keywords,
+		LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 	@Cacheable
 	public Integer countEventSessions(
-		Long channelId, Long individualId, String keywords, TimeRange timeRange,
-		String timeZoneId);
+		Long channelId, Long individualId, String keywords,
+		LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 	@Cacheable
 	public long countTotalEvents(
@@ -109,16 +112,19 @@ public interface EventRepository extends Repository<Event, Long> {
 	@Cacheable
 	public Map<String, Integer> getEventsCountGroupByEventDate(
 		Long channelId, Long individualId, Interval interval, String keywords,
-		TimeRange timeRange, String timeZoneId);
+		LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 	@Cacheable
 	public Map<String, Integer> getEventSessionsCountGroupByEventDate(
 		Long channelId, Long individualId, Interval interval, String keywords,
-		TimeRange timeRange, String timeZoneId);
+		LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 	@Cacheable
 	public List<Event> searchEvents(
 		Long channelId, Long individualId, String keywords, Pageable pageable,
-		TimeRange timeRange, String timeZoneId);
+		LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 }

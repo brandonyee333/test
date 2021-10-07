@@ -21,6 +21,7 @@ import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventRepository;
 
 import java.time.Clock;
@@ -40,6 +41,8 @@ public class EventHistogramDog {
 	public HistogramMetricBag getEventsCountHistogram(
 		SearchQueryContext searchQueryContext) {
 
+		TimeRange timeRange = searchQueryContext.getTimeRange();
+
 		return _createHistogramBag(
 			EventMetricType.TOTAL_EVENTS, searchQueryContext,
 			_eventRepository.getEventsCountGroupByEventDate(
@@ -47,12 +50,15 @@ public class EventHistogramDog {
 				Long.valueOf(searchQueryContext.getEntityId()),
 				searchQueryContext.getInterval(),
 				searchQueryContext.getKeywords(),
-				searchQueryContext.getTimeRange(),
+				timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId()));
 	}
 
 	public HistogramMetricBag getSessionsCountHistogram(
 		SearchQueryContext searchQueryContext) {
+
+		TimeRange timeRange = searchQueryContext.getTimeRange();
 
 		return _createHistogramBag(
 			EventMetricType.TOTAL_SESSIONS, searchQueryContext,
@@ -61,7 +67,8 @@ public class EventHistogramDog {
 				Long.valueOf(searchQueryContext.getEntityId()),
 				searchQueryContext.getInterval(),
 				searchQueryContext.getKeywords(),
-				searchQueryContext.getTimeRange(),
+				timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId()));
 	}
 
