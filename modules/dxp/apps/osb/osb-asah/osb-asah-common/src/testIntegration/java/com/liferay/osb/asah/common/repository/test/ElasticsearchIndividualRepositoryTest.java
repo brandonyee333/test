@@ -70,8 +70,8 @@ public class ElasticsearchIndividualRepositoryTest
 		Individual.ActivityDate lastActivityDate =
 			lastActivityDateIterator.next();
 
-		Assert.assertNotNull(lastActivityDate.getChannelId());
 		Assert.assertNotNull(lastActivityDate.getActivityDate());
+		Assert.assertNotNull(lastActivityDate.getChannelId());
 
 		Set<Individual.ActivityDate> previousActivityDates =
 			individual.getPreviousActivityDates();
@@ -85,8 +85,8 @@ public class ElasticsearchIndividualRepositoryTest
 		Individual.ActivityDate previousActivityDate =
 			previousActivityDateIterator.next();
 
-		Assert.assertNotNull(previousActivityDate.getChannelId());
 		Assert.assertNotNull(previousActivityDate.getActivityDate());
+		Assert.assertNotNull(previousActivityDate.getChannelId());
 
 		Set<Individual.ActivitiesCount> activitiesCounts =
 			individual.getActivitiesCounts();
@@ -100,8 +100,8 @@ public class ElasticsearchIndividualRepositoryTest
 		Individual.ActivitiesCount activitiesCount =
 			activitiesCountIterator.next();
 
-		Assert.assertNotNull(activitiesCount.getChannelId());
 		Assert.assertNotNull(activitiesCount.getActivitiesCount());
+		Assert.assertNotNull(activitiesCount.getChannelId());
 	}
 
 	@Test
