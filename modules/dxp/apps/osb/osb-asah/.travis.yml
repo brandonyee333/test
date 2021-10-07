@@ -11,6 +11,7 @@ cache:
     directories:
         - ${HOME}/.gradle/caches/
         - ${HOME}/.gradle/wrapper/
+        - docker_images
     timeout: 600
 dist: bionic
 env:
@@ -31,7 +32,9 @@ jobs:
                 test ${TRAVIS_REPO_SLUG} = "liferay/com-liferay-osb-asah-private" &&
                 ./gradlew coveralls
           before_script:
+              - docker load -i docker_images/images.tar || true
               - docker-compose -f docker-compose.integration-test.yml up -d
+              - docker save -o docker_images/images.tar $(docker images -a -q)
           script:
               - ./gradlew test --configure-on-demand --continue --parallel
               - ./gradlew testIntegration --configure-on-demand --continue
