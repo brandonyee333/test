@@ -17,6 +17,7 @@ package com.liferay.osb.asah.extractor.processor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
@@ -366,10 +367,16 @@ public class AnalyticsEventsMessageProcessor {
 	private void _sendAnalyticsEvent(AnalyticsEvent analyticsEvent) {
 		String analyticsEventJSON = analyticsEvent.toJSON();
 
+		Map<String, String> messageAttributes = new HashMap<>();
+
+		messageAttributes.put(
+			"eventDate", DateUtil.toUTCString(analyticsEvent.getEventDate()));
+
 		for (Channel channel :
 				_analyticsEventsChannels.getChannels(analyticsEvent)) {
 
-			_messageBus.sendMessage(channel, analyticsEventJSON);
+			_messageBus.sendMessage(
+				channel, analyticsEventJSON, messageAttributes);
 		}
 	}
 
