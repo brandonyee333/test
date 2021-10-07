@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.messaging;
 
+import java.util.Map;
+
 /**
  * @author Marcellus Tavares
  */
@@ -26,6 +28,9 @@ public interface MessageBus {
 		Channel channel, String messageSubscriberName);
 
 	public void sendMessage(Channel channel, String message);
+
+	public void sendMessage(
+		Channel channel, String message, Map<String, String> messageAttributes);
 
 	public void unregisterMessageListener(MessageListener messageListener);
 

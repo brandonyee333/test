@@ -36,6 +36,7 @@ import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageListener;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -59,13 +60,18 @@ import org.springframework.stereotype.Component;
 public class PubSubMessageBusImpl implements MessageBus {
 
 	public PubsubMessage createPubsubMessage(String message) {
-		return createPubsubMessage(message, null);
+		return createPubsubMessage(message, null, null);
 	}
 
 	public PubsubMessage createPubsubMessage(
-		String message, String orderingKey) {
+		String message, Map<String, String> messageAttributes,
+		String orderingKey) {
 
 		PubsubMessage.Builder builder = PubsubMessage.newBuilder();
+
+		if ((messageAttributes != null) && !messageAttributes.isEmpty()) {
+			builder.putAllAttributes(messageAttributes);
+		}
 
 		builder.setData(ByteString.copyFromUtf8(message));
 
@@ -125,6 +131,14 @@ public class PubSubMessageBusImpl implements MessageBus {
 
 	@Override
 	public void sendMessage(Channel channel, String message) {
+		sendMessage(channel, message, Collections.emptyMap());
+	}
+
+	@Override
+	public void sendMessage(
+		Channel channel, String message,
+		Map<String, String> messageAttributes) {
+
 		if (StringUtils.isBlank(message)) {
 			throw new IllegalArgumentException("Message is blank");
 		}
@@ -135,7 +149,8 @@ public class PubSubMessageBusImpl implements MessageBus {
 			if (channel == Channel.DXP_ENTITIES_MESSAGE) {
 				publisher.publish(
 					createPubsubMessage(
-						message, Channel.DXP_ENTITIES_MESSAGE.name()));
+						message, messageAttributes,
+						Channel.DXP_ENTITIES_MESSAGE.name()));
 			}
 			else {
 				publisher.publish(createPubsubMessage(message));
