@@ -39,6 +39,11 @@ public interface InterestRepository extends Repository<Interest, Long> {
 
 	@CacheEvict(allEntries = true)
 	@Modifying
+	public void deleteByNameAndRecordedDateGreaterThanEqual(
+		@Param("name") String name, @Param("recordedDate") Date recordedDate);
+
+	@CacheEvict(allEntries = true)
+	@Modifying
 	public void deleteByOwnerIdAndOwnerType(
 		@Param("ownerId") Long ownerId, @Param("ownerType") String ownerType);
 
