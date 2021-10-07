@@ -558,10 +558,8 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributor
 			return new HashMap<>();
 		}
 
-		long repositoryId = repository.getRepositoryId();
-
 		long ddmFormFolderId = _getDDMFormFolderId(
-			themeDisplay.getCompanyId(), repositoryId, httpServletRequest);
+			themeDisplay.getCompanyId(), repository.getRepositoryId(), httpServletRequest);
 
 		if (!themeDisplay.isSignedIn()) {
 			return HashMapBuilder.<String, Object>put(
@@ -593,7 +591,7 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributor
 		}
 
 		long privateUserFolderId = _getPrivateUserFolderId(
-			repositoryId, ddmFormFolderId, httpServletRequest,
+			repository.getRepositoryId(), ddmFormFolderId, httpServletRequest,
 			themeDisplay.getUser());
 
 		return HashMapBuilder.<String, Object>put(
@@ -610,7 +608,7 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributor
 
 				return _getItemSelectorURL(
 					ddmFormFieldRenderingContext, privateUserFolderId,
-					repositoryId, themeDisplay);
+					repository.getRepositoryId(), themeDisplay);
 			}
 		).build();
 	}
