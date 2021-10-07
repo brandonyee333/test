@@ -79,19 +79,25 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_events.sql")
 	@Test
 	public void testCountEventsLast24Hours() {
+		TimeRange timeRange = TimeRange.LAST_24_HOURS;
+
 		Assert.assertEquals(
 			Integer.valueOf(3),
 			_eventRepository.countEvents(
-				1L, 1L, null, TimeRange.LAST_24_HOURS, "UTC"));
+				1L, 1L, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), "UTC"));
 	}
 
 	@SQLResource(resourcePath = "test_events.sql")
 	@Test
 	public void testCountEventsWithKeywordsLast24Hours() {
+		TimeRange timeRange = TimeRange.LAST_24_HOURS;
+
 		Assert.assertEquals(
 			Integer.valueOf(1),
 			_eventRepository.countEvents(
-				1L, 1L, "form", TimeRange.LAST_24_HOURS, "UTC"));
+				1L, 1L, "form", timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), "UTC"));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -649,9 +655,12 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
 	@Test
 	public void testGetEventsCountGroupByEventDateLast7Days() {
+		TimeRange timeRange = TimeRange.LAST_7_DAYS;
+
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_eventRepository.getEventsCountGroupByEventDate(
-				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS, "UTC");
+				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), "UTC");
 
 		Assert.assertEquals(
 			eventsCountGroupByEventDate.toString(), 2,
@@ -672,9 +681,12 @@ public class EventRepositoryTest {
 		ZonedDateTime zonedDateTime = ZonedDateTime.now(
 			_timeZoneDog.getZoneId());
 
+		TimeRange timeRange = TimeRange.LAST_7_DAYS;
+
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_eventRepository.getEventsCountGroupByEventDate(
-				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS,
+				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
 		Assert.assertEquals(
@@ -713,9 +725,12 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
 	@Test
 	public void testGetEventsCountGroupByEventDateLast24Hours() {
+		TimeRange timeRange = TimeRange.LAST_24_HOURS;
+
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_eventRepository.getEventsCountGroupByEventDate(
-				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS, "UTC");
+				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), "UTC");
 
 		Assert.assertEquals(
 			eventsCountGroupByEventDate.toString(), 1,
@@ -736,9 +751,12 @@ public class EventRepositoryTest {
 		ZonedDateTime zonedDateTime = ZonedDateTime.now(
 			_timeZoneDog.getZoneId());
 
+		TimeRange timeRange = TimeRange.LAST_24_HOURS;
+
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_eventRepository.getEventsCountGroupByEventDate(
-				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS,
+				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
 		Assert.assertEquals(
@@ -757,9 +775,12 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
 	@Test
 	public void testGetEventSessionsCountGroupByEventDateLast7Days() {
+		TimeRange timeRange = TimeRange.LAST_7_DAYS;
+
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_eventRepository.getEventSessionsCountGroupByEventDate(
-				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS, "UTC");
+				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), "UTC");
 
 		Assert.assertEquals(
 			eventSessionsCountGroupByEventDate.toString(), 2,
@@ -781,9 +802,12 @@ public class EventRepositoryTest {
 		ZonedDateTime zonedDateTime = ZonedDateTime.now(
 			_timeZoneDog.getZoneId());
 
+		TimeRange timeRange = TimeRange.LAST_7_DAYS;
+
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_eventRepository.getEventSessionsCountGroupByEventDate(
-				1L, null, Interval.DAY, null, TimeRange.LAST_7_DAYS,
+				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
 		Assert.assertEquals(
@@ -812,9 +836,12 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_event_count_grouped_by_event_date.sql")
 	@Test
 	public void testGetEventSessionsCountGroupByEventDateLast24Hours() {
+		TimeRange timeRange = TimeRange.LAST_24_HOURS;
+
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_eventRepository.getEventSessionsCountGroupByEventDate(
-				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS, "UTC");
+				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), "UTC");
 
 		Assert.assertEquals(
 			eventSessionsCountGroupByEventDate.toString(), 1,
@@ -836,9 +863,12 @@ public class EventRepositoryTest {
 		ZonedDateTime zonedDateTime = ZonedDateTime.now(
 			_timeZoneDog.getZoneId());
 
+		TimeRange timeRange = TimeRange.LAST_24_HOURS;
+
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_eventRepository.getEventSessionsCountGroupByEventDate(
-				1L, null, Interval.HOUR, null, TimeRange.LAST_24_HOURS,
+				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
 		Assert.assertEquals(
@@ -858,9 +888,12 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_events.sql")
 	@Test
 	public void testSearchEventsLast24Hours() {
+		TimeRange timeRange = TimeRange.LAST_24_HOURS;
+
 		List<Event> events = _eventRepository.searchEvents(
 			1L, 1L, null, PageRequest.of(0, 50, Sort.desc("eventDate")),
-			TimeRange.LAST_24_HOURS, "UTC");
+			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
+			"UTC");
 
 		Assert.assertEquals(events.toString(), 3, events.size());
 
@@ -885,8 +918,11 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_events.sql")
 	@Test
 	public void testSearchEventsWithKeywordsLast24Hours() {
+		TimeRange timeRange = TimeRange.LAST_24_HOURS;
+
 		List<Event> events = _eventRepository.searchEvents(
-			1L, 1L, "form", PageRequest.of(0, 50), TimeRange.LAST_24_HOURS,
+			1L, 1L, "form", PageRequest.of(0, 50),
+			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
 			"UTC");
 
 		Assert.assertEquals(events.toString(), 1, events.size());
