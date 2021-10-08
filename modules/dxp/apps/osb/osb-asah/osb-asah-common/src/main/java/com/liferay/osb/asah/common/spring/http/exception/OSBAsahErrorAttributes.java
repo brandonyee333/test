@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.spring.http.exception;
 
 import java.util.Map;
 
+import javax.servlet.ServletException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -36,7 +38,19 @@ public class OSBAsahErrorAttributes extends DefaultErrorAttributes {
 	public Map<String, Object> getErrorAttributes(
 		WebRequest webRequest, ErrorAttributeOptions errorAttributeOptions) {
 
-		_log.error("Unable to process request", getError(webRequest));
+		Throwable throwable = getError(webRequest);
+
+		if (throwable != null) {
+			while ((throwable instanceof ServletException) &&
+				   (throwable.getCause() != null)) {
+
+				throwable = throwable.getCause();
+			}
+		}
+
+		_log.error(
+			"Unable to process request " + getMessage(webRequest, throwable),
+			throwable);
 
 		OSBAsahError osbAsahError = new OSBAsahError(
 			_environment.getActiveProfiles());
