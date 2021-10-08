@@ -240,15 +240,15 @@ function generate_wedeploy_profiles {
 
 	git add .wedeploy_profiles
 
-	git commit -m "Generate WeDeploy profiles at $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}" .wedeploy_profiles
+	git commit -m "Generate WeDeploy profiles at $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}-${ASAH_ENVIRONMENT_NAME}" .wedeploy_profiles
 }
 
 function generate_tag {
-	git tag $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH} HEAD
+	git tag $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}-${ASAH_ENVIRONMENT_NAME} HEAD
 }
 
 function get_docker_image_tag {
-	echo "liferaycloud/com-liferay-osb-asah-private:${1}-$(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}"
+	echo "liferaycloud/com-liferay-osb-asah-private:${1}-$(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}-${ASAH_ENVIRONMENT_NAME}"
 }
 
 function gradlew {
@@ -277,7 +277,7 @@ function main {
 function push_to_github {
 	git push origin
 	git push upstream
-	git push upstream $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}
+	git push upstream $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}-${ASAH_ENVIRONMENT_NAME}
 }
 
 function sed {
