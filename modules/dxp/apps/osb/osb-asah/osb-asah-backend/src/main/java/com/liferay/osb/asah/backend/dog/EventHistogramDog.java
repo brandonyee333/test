@@ -20,6 +20,7 @@ import com.liferay.osb.asah.backend.model.EventMetricType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventRepository;
@@ -48,7 +49,7 @@ public class EventHistogramDog {
 			_eventRepository.getEventsCountGroupByEventDate(
 				Long.valueOf(searchQueryContext.getChannelId()),
 				Long.valueOf(searchQueryContext.getEntityId()),
-				searchQueryContext.getInterval(),
+				_getInterval(searchQueryContext),
 				searchQueryContext.getKeywords(),
 				timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
@@ -65,7 +66,7 @@ public class EventHistogramDog {
 			_eventRepository.getEventSessionsCountGroupByEventDate(
 				Long.valueOf(searchQueryContext.getChannelId()),
 				Long.valueOf(searchQueryContext.getEntityId()),
-				searchQueryContext.getInterval(),
+				_getInterval(searchQueryContext),
 				searchQueryContext.getKeywords(),
 				timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
@@ -94,6 +95,18 @@ public class EventHistogramDog {
 		}
 
 		return histogramMetricBag;
+	}
+
+	private Interval _getInterval(SearchQueryContext searchQueryContext) {
+		TimeRange timeRange = searchQueryContext.getTimeRange();
+
+		if (timeRange.equals(TimeRange.LAST_24_HOURS) ||
+			timeRange.equals(TimeRange.YESTERDAY)) {
+
+			return Interval.HOUR;
+		}
+
+		return searchQueryContext.getInterval();
 	}
 
 	@Autowired
