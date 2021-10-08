@@ -39,6 +39,7 @@ import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilter
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
@@ -81,7 +82,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -423,8 +423,10 @@ public class IndividualDog extends BaseFaroInfoDog {
 			QueryBuilders.termQuery("ownerType", "individual")
 		);
 
-		elasticsearchInvoker.delete("interests", boolQueryBuilder);
 		elasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
+
+		_interestRepository.deleteByOwnerIdAndOwnerType(
+			individualId, "individual");
 
 		_membershipDog.deactivateMemberships(deletionDate, individualId);
 
@@ -670,7 +672,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	public Page<Distribution> getDistributionsPage(
-		String fieldName, String fieldType, @Nullable String filterString,
+		String fieldName, String fieldType, String filterString,
 		int numberOfBins, int size, String[] sorts) {
 
 		if (fieldType.equals("Number")) {
@@ -796,9 +798,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	public Page<Transformation> getTransformationsPage(
-		String apply, @Nullable Long channelId, @Nullable String filterString,
-		Boolean includeAnonymousUsers, @Nullable Long segmentId, int page,
-		int size) {
+		String apply, Long channelId, String filterString,
+		Boolean includeAnonymousUsers, Long segmentId, int page, int size) {
 
 		PageRequest pageRequest = PageRequest.of(
 			page, size,
@@ -1728,6 +1729,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 	@Autowired
 	private IndividualsFilterStringConverterHelper
 		_individualsFilterStringConverterHelper;
+
+	@Autowired
+	private InterestRepository _interestRepository;
 
 	@Autowired
 	private MembershipChangeDog _membershipChangeDog;

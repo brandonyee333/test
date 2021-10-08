@@ -21,38 +21,32 @@ import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.BucketOrder;
-import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.metrics.InternalCardinality;
 
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -75,18 +69,16 @@ public class InterestCompositionDog {
 	public CompositionResultBag getIndividualCompositionResultBag(
 		String channelId, String keywords, int size, Sort sort, int start) {
 
-		List<String> individualIds = _getIndividualIds(false, channelId, null);
-
 		return _getCompositionResultBag(
-			_getInterestQueryBuilder(individualIds, keywords), size, sort,
-			start, individualIds.size());
+			_getIndividualIds(false, channelId, null), keywords,
+			_getLastSuccessfulDate(), _getMinimumScore(), size, sort, start);
 	}
 
 	public CompositionResultBag getIndividualSegmentCompositionResultBag(
 		boolean active, String channelId, String keywords, Long segmentId,
 		int size, Sort sort, int start) {
 
-		List<String> individualIds = _getIndividualIds(
+		List<Long> individualIds = _getIndividualIds(
 			active, channelId, segmentId);
 
 		if (individualIds.isEmpty()) {
@@ -94,8 +86,8 @@ public class InterestCompositionDog {
 		}
 
 		return _getCompositionResultBag(
-			_getInterestQueryBuilder(individualIds, keywords), size, sort,
-			start, individualIds.size());
+			individualIds, keywords, _getLastSuccessfulDate(),
+			_getMinimumScore(), size, sort, start);
 	}
 
 	private boolean _calculateMaxCount(Sort sort, int start) {
@@ -108,124 +100,52 @@ public class InterestCompositionDog {
 		return false;
 	}
 
-	private BucketOrder _getBucketOrder(Sort sort) {
-		boolean asc = true;
-
-		if (StringUtils.equals(sort.getType(), "DESC")) {
-			asc = false;
-		}
-
-		if (StringUtils.equals(sort.getColumn(), "count")) {
-			return BucketOrder.compound(
-				BucketOrder.count(asc), BucketOrder.key(true));
-		}
-
-		return BucketOrder.compound(
-			BucketOrder.key(asc), BucketOrder.count(false));
-	}
-
 	private CompositionResultBag _getCompositionResultBag(
-		QueryBuilder queryBuilder, int size, Sort sort, int start,
-		long totalCount) {
+		List<Long> individualIds, String keyword, Date recordedDate,
+		Double score, int size, Sort sort, int start) {
 
 		List<Composition> compositions = new ArrayList<>();
 
-		boolean calculateMax = _calculateMaxCount(sort, start);
+		List<Distribution> distributions =
+			_interestRepository.getInterestDistributions(
+				keyword, individualIds, "individual", recordedDate, score,
+				PageRequest.of(start / size, size, sort));
 
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			"interests",
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"userInterests"
-					).field(
-						"name"
-					).order(
-						_getBucketOrder(sort)
-					).size(
-						Integer.MAX_VALUE
-					).subAggregation(
-						PipelineAggregatorBuilders.bucketSort(
-							"paginate", null
-						).from(
-							start
-						).size(
-							size
-						)
-					));
-
-				if (calculateMax) {
-					searchSourceBuilder.aggregation(
-						AggregationBuilders.terms(
-							"maxCount"
-						).field(
-							"name"
-						).order(
-							BucketOrder.count(false)
-						).size(
-							Integer.MAX_VALUE
-						).subAggregation(
-							PipelineAggregatorBuilders.bucketSort(
-								"paginate", null
-							).from(
-								0
-							).size(
-								1
-							)
-						));
-				}
-
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.cardinality(
-						"total"
-					).field(
-						"name"
-					));
-				searchSourceBuilder.query(queryBuilder);
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		if (DogUtil.isEmpty(aggregations)) {
+		if (distributions.isEmpty()) {
 			return new CompositionResultBag(compositions, 0, 0);
 		}
 
-		Terms terms = aggregations.get("userInterests");
+		for (Distribution distribution : distributions) {
+			List<Object> names = distribution.getValues();
 
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			compositions.add(
-				new Composition(bucket.getDocCount(), bucket.getKeyAsString()));
+			if (!names.isEmpty()) {
+				compositions.add(
+					new Composition(
+						distribution.getCount(), String.valueOf(names.get(0))));
+			}
 		}
 
-		InternalCardinality internalCardinality = aggregations.get("total");
+		if (_calculateMaxCount(sort, start)) {
+			List<Distribution> maxList =
+				_interestRepository.getInterestDistributions(
+					keyword, individualIds, "individual", recordedDate, score,
+					PageRequest.of(0, 1, Sort.desc("count")));
 
-		if (calculateMax) {
-			long maxCount = 0;
-
-			Terms maxCountTerms = aggregations.get("maxCount");
-
-			List<? extends Terms.Bucket> buckets = maxCountTerms.getBuckets();
-
-			if (!buckets.isEmpty()) {
-				Terms.Bucket bucket = buckets.get(0);
-
-				maxCount = bucket.getDocCount();
-			}
+			Distribution maxDistribution = maxList.get(0);
 
 			return new CompositionResultBag(
-				maxCount, compositions, internalCardinality.getValue(),
-				totalCount);
+				maxDistribution.getCount(), compositions, compositions.size(),
+				individualIds.size());
 		}
 
 		return new CompositionResultBag(
-			compositions, internalCardinality.getValue(), totalCount);
+			compositions, compositions.size(), individualIds.size());
 	}
 
-	private List<String> _getIndividualIds(
+	private List<Long> _getIndividualIds(
 		boolean active, String channelId, Long segmentId) {
 
-		List<String> individualIds = new ArrayList<>();
+		List<Long> individualIds = new ArrayList<>();
 
 		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 
@@ -256,7 +176,7 @@ public class InterestCompositionDog {
 			JSONArrayIterator.of(
 				"individuals", _faroInfoElasticsearchInvoker,
 				individualJSONObject -> {
-					individualIds.add(individualJSONObject.getString("id"));
+					individualIds.add(individualJSONObject.getLong("id"));
 
 					return null;
 				}
@@ -271,15 +191,7 @@ public class InterestCompositionDog {
 		return individualIds;
 	}
 
-	private QueryBuilder _getInterestQueryBuilder(
-		List<String> individualIds, String keywords) {
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("ownerType", "individual"));
-
-		BoolQueryBuilderUtil.filterTerms(
-			boolQueryBuilder, "ownerId", individualIds);
-
+	private Date _getLastSuccessfulDate() {
 		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
 			"IndividualInterestScoresNanite",
 			WeDeployDataService.OSB_ASAH_FARO_INFO);
@@ -288,61 +200,31 @@ public class InterestCompositionDog {
 			JSONObject asahMarkerContextJSONObject =
 				asahMarker.getContextJSONObject();
 
-			BoolQueryBuilderUtil.filterTerm(
-				boolQueryBuilder, "dateRecorded",
+			return DateUtil.toUTCDate(
 				asahMarkerContextJSONObject.optString(
 					"lastSuccessfulDay", null));
 		}
 
-		if (!StringUtils.isBlank(keywords)) {
-			boolQueryBuilder.filter(
-				BoolQueryBuilderUtil.should(
-					QueryBuilders.queryStringQuery(
-						String.format(
-							"%s:*%s*", "name",
-							QueryUtil.escapeKeywords(keywords)))
-				).should(
-					QueryBuilders.matchQuery(
-						"name", keywords
-					).fuzziness(
-						Fuzziness.AUTO
-					)
-				));
-		}
-
-		return _getInterestThresholdQueryBuilder(boolQueryBuilder);
+		return null;
 	}
 
-	private QueryBuilder _getInterestThresholdQueryBuilder(
-		QueryBuilder queryBuilder) {
-
+	private Double _getMinimumScore() {
 		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
 			"InterestThresholdScoreNanite",
 			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		if (asahMarker == null) {
-			return queryBuilder;
+			return null;
 		}
 
 		JSONObject asahMarkerContextJSONObject =
 			asahMarker.getContextJSONObject();
 
 		if (!asahMarkerContextJSONObject.has("score")) {
-			return queryBuilder;
+			return null;
 		}
 
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.rangeQuery(
-				"score"
-			).gte(
-				asahMarkerContextJSONObject.getDouble("score")
-			));
-
-		if (queryBuilder == null) {
-			return boolQueryBuilder;
-		}
-
-		return boolQueryBuilder.filter(queryBuilder);
+		return asahMarkerContextJSONObject.getDouble("score");
 	}
 
 	@Autowired
@@ -350,6 +232,9 @@ public class InterestCompositionDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private InterestRepository _interestRepository;
 
 	@Autowired
 	private SegmentDog _segmentDog;
