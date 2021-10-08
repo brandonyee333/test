@@ -17,6 +17,7 @@ package com.liferay.osb.asah.upgrade.v3_0_0;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -110,7 +111,7 @@ public class DXPEntityUpgradeStep implements UpgradeStep {
 			jsonObject.put("id", dxpEntityJSONObject.get("id"));
 		}
 
-		jsonObject.put("type", collectionName);
+		jsonObject.put("type", DXPEntity.Type.ofCollectionName(collectionName));
 
 		return jsonObject;
 	}
