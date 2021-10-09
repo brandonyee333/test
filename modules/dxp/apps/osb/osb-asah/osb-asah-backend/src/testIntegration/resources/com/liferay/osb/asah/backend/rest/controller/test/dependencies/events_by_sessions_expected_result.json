@@ -2,14 +2,40 @@
 	"data": {
 		"eventsByUserSessions": {
 			"__typename": "EventsByUserSession",
-			"totalEvents": 2,
+			"totalEvents": 3,
 			"userSessions": [
 				{
 					"__typename": "UserSession",
 					"browserName": "Chrome",
 					"completeDate": null,
 					"contentLanguageId": "contentLanguageId",
-					"createDate": null,
+					"createDate": "Fri Oct 08 01:27:00 UTC 2021",
+					"devicePixelRatio": "1",
+					"deviceType": "Chrome",
+					"events": [
+						{
+							"__typename": "Event",
+							"canonicalUrl": "canonicalUrlValue",
+							"name": "pageViewed",
+							"pageDescription": "pageDescriptionValue",
+							"pageKeywords": "pageKeywordsValue",
+							"pageTitle": "pageTitleValue",
+							"referrer": "referrerValue",
+							"url": "urlValue"
+						}
+					],
+					"languageId": "pt-BR",
+					"screenHeight": "970",
+					"screenWidth": "1920",
+					"timezoneOffset": "-3",
+					"userAgent": "UserAgent"
+				},
+				{
+					"__typename": "UserSession",
+					"browserName": "Chrome",
+					"completeDate": null,
+					"contentLanguageId": "contentLanguageId",
+					"createDate": "Fri Oct 08 01:00:00 UTC 2021",
 					"devicePixelRatio": "1",
 					"deviceType": "Chrome",
 					"events": [

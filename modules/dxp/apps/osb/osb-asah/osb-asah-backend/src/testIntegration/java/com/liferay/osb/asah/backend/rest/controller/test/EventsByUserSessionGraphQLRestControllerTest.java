@@ -82,32 +82,17 @@ public class EventsByUserSessionGraphQLRestControllerTest
 				_eventAttributeDefinitionDog.
 					fetchEventAttributeDefinitionByName("url"));
 
-		_createEvent(eventAttributeDefinitions, "assetClicked");
-		_createEvent(eventAttributeDefinitions, "assetDownloaded");
+		_createEvent(eventAttributeDefinitions, "assetClicked", "sessionId1");
+		_createEvent(
+			eventAttributeDefinitions, "assetDownloaded", "sessionId1");
+		_createEvent(eventAttributeDefinitions, "pageViewed", "sessionId2");
 
-		_cerebroInfoElasticsearchInvoker.add(
-			"user-sessions",
-			JSONUtil.put(
-				"browserName", "Chrome"
-			).put(
-				"contentLanguageId", "contentLanguageId"
-			).put(
-				"devicePixelRatio", "1"
-			).put(
-				"deviceType", "Chrome"
-			).put(
-				"id", "sessionId"
-			).put(
-				"languageId", "pt-BR"
-			).put(
-				"screenHeight", "970"
-			).put(
-				"screenWidth", "1920"
-			).put(
-				"timezoneOffset", "-3"
-			).put(
-				"userAgent", "UserAgent"
-			));
+		_createUserSession(
+			"sessionId1", "2021-10-08T01:00:00.000Z",
+			"2021-10-08T01:30:00.000Z");
+		_createUserSession(
+			"sessionId2", "2021-10-08T01:27:00.000Z",
+			"2021-10-08T02:05:00.000Z");
 	}
 
 	@After
@@ -118,7 +103,7 @@ public class EventsByUserSessionGraphQLRestControllerTest
 
 	private void _createEvent(
 		List<EventAttributeDefinition> eventAttributeDefinitions,
-		String eventDefinitionName) {
+		String eventDefinitionName, String sessionId) {
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName(eventDefinitionName);
@@ -135,7 +120,40 @@ public class EventsByUserSessionGraphQLRestControllerTest
 			).collect(
 				Collectors.toSet()
 			),
-			new Date(), eventDefinition.getId(), 1L, "sessionId", "userId");
+			new Date(), eventDefinition.getId(), 1L, sessionId, "userId");
+	}
+
+	private void _createUserSession(
+		String sessionId, String firstEventDateString,
+		String lastEventDateString) {
+
+		_cerebroInfoElasticsearchInvoker.add(
+			"user-sessions",
+			JSONUtil.put(
+				"browserName", "Chrome"
+			).put(
+				"contentLanguageId", "contentLanguageId"
+			).put(
+				"devicePixelRatio", "1"
+			).put(
+				"deviceType", "Chrome"
+			).put(
+				"firstEventDate", firstEventDateString
+			).put(
+				"id", sessionId
+			).put(
+				"languageId", "pt-BR"
+			).put(
+				"lastEventDate", lastEventDateString
+			).put(
+				"screenHeight", "970"
+			).put(
+				"screenWidth", "1920"
+			).put(
+				"timezoneOffset", "-3"
+			).put(
+				"userAgent", "UserAgent"
+			));
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
