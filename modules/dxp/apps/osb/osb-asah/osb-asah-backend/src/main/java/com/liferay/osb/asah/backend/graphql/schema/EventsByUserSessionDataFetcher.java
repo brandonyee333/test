@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.model.UserSession;
 
 import graphql.schema.DataFetchingEnvironment;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -64,6 +65,9 @@ public class EventsByUserSessionDataFetcher
 				dataFetchingEnvironment.getArgument("size"),
 				searchQueryContext.getTimeRange());
 
+		Comparator<UserSessionDTO> comparator = Comparator.comparing(
+			UserSessionDTO::getCreateDate);
+
 		Set<Map.Entry<UserSession, List<Tuple2<Event, EventDefinition>>>>
 			entrySet = tuple2s.entrySet();
 
@@ -75,6 +79,8 @@ public class EventsByUserSessionDataFetcher
 				entry -> new UserSessionDTO(
 					eventAttributeDefinitionIds, entry.getValue(),
 					entry.getKey())
+			).sorted(
+				comparator.reversed()
 			).collect(
 				Collectors.toList()
 			),
