@@ -48,7 +48,7 @@ public class UserSessionDTO {
 		_browserName = userSession.getBrowserName();
 		_completeDate = userSession.getCompleteDate();
 		_contentLanguageId = userSession.getContentLanguageId();
-		_createDate = userSession.getDate();
+		_createDate = userSession.getFirstEventDate();
 		_devicePixelRatio = userSession.getDevicePixelRatio();
 		_deviceType = userSession.getDeviceType();
 		_languageId = userSession.getLanguageId();
