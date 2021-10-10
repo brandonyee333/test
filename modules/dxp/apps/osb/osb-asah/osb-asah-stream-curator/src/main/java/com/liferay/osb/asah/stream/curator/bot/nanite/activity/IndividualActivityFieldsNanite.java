@@ -62,36 +62,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 	@Override
 	public void run() {
 		try {
-			while (true) {
-				long start = System.currentTimeMillis();
-
-				List<String> messages = _messageSubscriber.pullMessages(100);
-
-				if (messages.isEmpty()) {
-					break;
-				}
-
-				Stream<String> stream = messages.stream();
-
-				stream.map(
-					JSONObject::new
-				).collect(
-					Collectors.groupingBy(
-						jsonObject -> jsonObject.getString("projectId"))
-				).forEach(
-					this::_run
-				);
-
-				if (_log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
-
-					_log.info(
-						String.format(
-							"%s processed %d messages in %d ms",
-							clazz.getSimpleName(), messages.size(),
-							System.currentTimeMillis() - start));
-				}
-			}
+			_run();
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -266,6 +237,39 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		}
 
 		return previousActivityDates;
+	}
+
+	private void _run() {
+		while (true) {
+			long start = System.currentTimeMillis();
+
+			List<String> messages = _messageSubscriber.pullMessages(100);
+
+			if (messages.isEmpty()) {
+				break;
+			}
+
+			Stream<String> stream = messages.stream();
+
+			stream.map(
+				JSONObject::new
+			).collect(
+				Collectors.groupingBy(
+					jsonObject -> jsonObject.getString("projectId"))
+			).forEach(
+				this::_run
+			);
+
+			if (_log.isInfoEnabled()) {
+				Class<?> clazz = getClass();
+
+				_log.info(
+					String.format(
+						"%s processed %d messages in %d ms",
+						clazz.getSimpleName(), messages.size(),
+						System.currentTimeMillis() - start));
+			}
+		}
 	}
 
 	private void _run(String projectId, List<JSONObject> messages) {
