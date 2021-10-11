@@ -70,10 +70,6 @@ definition {
 			key_publicationName = "${publicationName}",
 			locator1 = "Publications#LIST_PUBLICATION_ELLIPSIS");
 
-		AssertElementPresent(
-			key_menuItem = "Publish",
-			locator1 = "MenuItem#ANY_MENU_ITEM");
-
 		ClickNoError(
 			key_menuItem = "Edit",
 			locator1 = "MenuItem#ANY_MENU_ITEM");
@@ -89,12 +85,12 @@ definition {
 			locator1 = "Publications#PUBLISHED_PUBLICATION_NAME");
 
 		Publications.inviteUsers(
-			publicationName = "${publicationName}",
+			publicationName = "New ${publicationName}",
 			userInvite = "userea2@liferay.com");
 
 		Publications.gotoReviewChanges(
 			gotoManagePublications = "true",
-			publicationName = "${publicationName}");
+			publicationName = "New ${publicationName}");
 
 		PublicationsChanges.openCommentsSidebar();
 
@@ -107,23 +103,19 @@ definition {
 
 		PublicationsChanges.deleteComment(commentValue = "It is not ready to Publish");
 
-		Publications.selectPublication(publicationName = "${publicationName}");
+		Publications.gotoPublish(
+			gotoManagePublications = "true",
+			publicationName = "New ${publicationName}");
 
-		// Workaround LPS-140292
+		Publications.publishPublication(publicationName = "New ${publicationName}");
 
-		/*Publications.publishPublication(publicationName = "${publicationName}");
-
-		Publications.viewPublicationPublished(publicationName = "${publicationName}");*/
+		Publications.viewPublicationPublished(publicationName = "New ${publicationName}");
 	}
 
 	macro assertPublisherPermissions {
 		Click(
 			key_publicationName = "${publicationName}",
 			locator1 = "Publications#LIST_PUBLICATION_ELLIPSIS");
-
-		AssertElementPresent(
-			key_menuItem = "Publish",
-			locator1 = "MenuItem#ANY_MENU_ITEM");
 
 		ClickNoError(
 			key_menuItem = "Invite Users",
@@ -170,13 +162,13 @@ definition {
 
 		PublicationsChanges.deleteComment(commentValue = "It is not ready to Publish");
 
-		Publications.selectPublication(publicationName = "${publicationName}");
+		Publications.gotoPublish(
+			gotoManagePublications = "true",
+			publicationName = "New ${publicationName}");
 
-		// Workaround LPS-140292
+		Publications.publishPublication(publicationName = "New ${publicationName}");
 
-		/*Publications.publishPublication(publicationName = "${publicationName}");
-
-		Publications.viewPublicationPublished(publicationName = "${publicationName}");*/
+		Publications.viewPublicationPublished(publicationName = "New ${publicationName}");
 	}
 
 	macro assertScheduledPublicationPublished {

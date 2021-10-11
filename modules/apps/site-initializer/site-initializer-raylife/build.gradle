@@ -1,12 +1,40 @@
 import com.liferay.gradle.util.OSDetector
 import com.liferay.gradle.util.StringUtil
 
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
+import java.util.Date
+import java.util.TimeZone
+
+import org.gradle.util.GUtil
+
 apply plugin: "com.liferay.node"
 
-task buildExtra
+configurations {
+	remoteApps
+}
 
-classes {
-	dependsOn buildExtra
+task buildRemoteApps
+task forceDeploy
+task zipRemoteApps(type: Zip)
+
+DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd.HHmm")
+
+dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"))
+
+String dateString = dateFormat.format(new Date())
+
+artifacts {
+	remoteApps zipRemoteApps
+}
+
+dependencies {
+	remoteApps ext: "zip", group: "com.liferay", name: "com.liferay.site.initializer.raylife.remote.apps", version: "20211011.1503"
+}
+
+forceDeploy {
+	finalizedBy deploy
 }
 
 node {
@@ -15,12 +43,63 @@ node {
 	useNpm = false
 }
 
-_createExtraTasks()
+processResources {
+	ResolvedConfiguration remoteAppsResolvedConfiguration = configurations.remoteApps.getResolvedConfiguration()
 
-private void _createExtraTasks() {
-	File extraDir = new File(projectDir, "extra")
+	if (gradle.startParameter.taskNames.contains("forceDeploy") || remoteAppsResolvedConfiguration.hasError()) {
+		dependsOn buildRemoteApps
 
-	extraDir.eachDir {
+		into("site-initializer/documents/remote-apps") {
+			from new File(buildDir, "remote-apps")
+		}
+	}
+	else {
+		into("site-initializer/documents/remote-apps") {
+			from zipTree(configurations.remoteApps.singleFile)
+		}
+	}
+}
+
+uploadRemoteApps {
+	doLast {
+		File buildGradleFile = file("build.gradle")
+
+		String content = buildGradleFile.getText("UTF-8")
+
+		content = content.replaceFirst(~/remoteApps ext: "zip", group: "com.liferay", name: "com.liferay.site.initializer.raylife.remote.apps", version: "(\w+\.\w+)"/) {
+			String all, String versionString ->
+
+			all.replace versionString, dateString
+		}
+
+		buildGradleFile.setText content, "UTF-8"
+	}
+
+	repositories {
+		mavenDeployer {
+			pom {
+				artifactId = GUtil.loadProperties(file("bnd.bnd"))["Bundle-SymbolicName"] + ".remote.apps"
+				groupId = "com.liferay"
+				version = dateString
+			}
+		}
+	}
+}
+
+zipRemoteApps {
+	dependsOn buildRemoteApps
+
+	archiveName "remote-apps.zip"
+	destinationDir new File(buildDir, "dist")
+	from new File(buildDir, "remote-apps")
+}
+
+_createRemoteAppsTasks()
+
+private void _createRemoteAppsTasks() {
+	File remoteAppsDir = new File(projectDir, "remote-apps")
+
+	remoteAppsDir.eachDir {
 		File dir ->
 
 		String suffix = dir.name.replaceAll(/[\.-](\w)/) {
@@ -68,11 +147,11 @@ private void _createExtraTasks() {
 				copy {
 					from new File(dir, "build/static")
 					include "js/*.js"
-					into new File(sourceSets.main.output.resourcesDir, "site-initializer/documents/extra/" + dir.name)
+					into new File(buildDir, "remote-apps/" + dir.name)
 				}
 			}
 		}
 
-		buildExtra.dependsOn yarnBuildTask
+		buildRemoteApps.finalizedBy yarnBuildTask
 	}
 }
