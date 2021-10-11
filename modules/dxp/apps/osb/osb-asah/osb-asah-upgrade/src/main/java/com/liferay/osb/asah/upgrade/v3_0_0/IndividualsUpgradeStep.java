@@ -15,18 +15,16 @@
 package com.liferay.osb.asah.upgrade.v3_0_0;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
-import org.elasticsearch.index.query.QueryBuilders;
+import java.util.Collections;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.script.Script;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,28 +40,6 @@ public class IndividualsUpgradeStep implements UpgradeStep {
 		_upgradeIndividualsIndexMapping();
 
 		_upgradeIndividualsJSONObjects();
-	}
-
-	private Void _upgradeIndividuals(JSONArray individualJSONArray) {
-		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-			_faroInfoElasticsearchInvoker.
-				createElasticsearchBulkRequestBuilder();
-
-		for (int i = 0; i < individualJSONArray.length(); i++) {
-			JSONObject individualJSONObject = individualJSONArray.getJSONObject(
-				i);
-
-			individualJSONObject.put("previousActivityDates", new JSONArray());
-
-			elasticsearchBulkRequestBuilder.update(
-				"individuals", individualJSONObject);
-		}
-
-		if (elasticsearchBulkRequestBuilder.hasActions()) {
-			elasticsearchBulkRequestBuilder.get();
-		}
-
-		return null;
 	}
 
 	private void _upgradeIndividualsIndexMapping() {
@@ -87,17 +63,17 @@ public class IndividualsUpgradeStep implements UpgradeStep {
 			"individuals", WeDeployDataService.OSB_ASAH_FARO_INFO);
 	}
 
-	private void _upgradeIndividualsJSONObjects() throws Exception {
-		JSONArrayIterator.of(
-			"individuals", _faroInfoElasticsearchInvoker, null
-		).setBatchSize(
-			10000
-		).setProcessJSONArrayUnsafeFunction(
-			this::_upgradeIndividuals
-		).setQueryBuilder(
+	private void _upgradeIndividualsJSONObjects() {
+		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
+			10000,
 			BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.existsQuery("previousActivityDates"))
-		).iterate();
+				QueryBuilders.existsQuery("previousActivityDates")),
+			true,
+			new Script(
+				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+				"ctx._source.previousActivityDates = []",
+				Collections.emptyMap()),
+			"individuals");
 	}
 
 	@Autowired
