@@ -69,9 +69,7 @@ public class SuppressionDog {
 		PageRequest pageRequest = PageRequest.of(page, size, sort);
 
 		if (StringUtils.isBlank(emailAddress)) {
-			return PageableExecutionUtils.getPage(
-				_suppressionRepository.findAll(pageRequest), pageRequest,
-				_suppressionRepository::count);
+			return _suppressionRepository.findAll(pageRequest);
 		}
 
 		return PageableExecutionUtils.getPage(

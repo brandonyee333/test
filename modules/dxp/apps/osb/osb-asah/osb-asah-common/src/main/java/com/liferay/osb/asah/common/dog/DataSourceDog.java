@@ -213,7 +213,10 @@ public class DataSourceDog {
 				providerType, _getPageable(size, sort));
 		}
 
-		return _dataSourceRepository.findAll(_getPageable(size, sort));
+		Page<DataSource> dataSources = _dataSourceRepository.findAll(
+			_getPageable(size, sort));
+
+		return dataSources.getContent();
 	}
 
 	public Map<Long, JSONObject> getDataSourcesJSONObjects(

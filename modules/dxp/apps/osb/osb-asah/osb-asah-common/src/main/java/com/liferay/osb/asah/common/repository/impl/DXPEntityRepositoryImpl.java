@@ -33,7 +33,9 @@ import org.jooq.SelectConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 
 /**
@@ -129,6 +131,14 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 	}
 
 	public Iterable<DXPEntity> findAll() {
+		throw new UnsupportedOperationException();
+	}
+
+	public Page<DXPEntity> findAll(Pageable pageable) {
+		throw new UnsupportedOperationException();
+	}
+
+	public Iterable<DXPEntity> findAll(Sort sort) {
 		throw new UnsupportedOperationException();
 	}
 

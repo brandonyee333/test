@@ -27,7 +27,10 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.domain.Sort;
 
 /**
  * @author Inácio Nery
@@ -100,10 +103,27 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 	}
 
 	@Test
-	public void testFindAll() {
+	public void testFindAll1() {
 		Repository<T, ID> repository = getRepository();
 
 		Assert.assertEquals(entityModels, repository.findAll());
+	}
+
+	@Test
+	public void testFindAll2() {
+		Repository<T, ID> repository = getRepository();
+
+		Page<T> page = repository.findAll(
+			PageRequest.of(0, entityModels.size(), Sort.by("id")));
+
+		Assert.assertEquals(entityModels, page.getContent());
+	}
+
+	@Test
+	public void testFindAll3() {
+		Repository<T, ID> repository = getRepository();
+
+		Assert.assertEquals(entityModels, repository.findAll(Sort.by("id")));
 	}
 
 	@Test

@@ -57,6 +57,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -129,6 +130,18 @@ public class ElasticsearchDXPEntityRepositoryImpl
 
 	@Override
 	public Iterable<DXPEntity> findAll() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Iterable<DXPEntity> findAll(
+		org.springframework.data.domain.Sort sort) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Page<DXPEntity> findAll(Pageable pageable) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -33,6 +33,8 @@ import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
@@ -70,8 +72,51 @@ public class ElasticsearchBlockedKeywordRepositoryImpl
 	}
 
 	@Override
-	public List<BlockedKeyword> findAll(Pageable pageable) {
-		return findByKeywordContainingIgnoreCase(null, pageable);
+	public Page<BlockedKeyword> findAll(Pageable pageable) {
+		return super.findAll(
+			PageRequest.of(
+				pageable.getPageNumber(), pageable.getPageSize(),
+				Sort.by(
+					Stream.of(
+						pageable.getSort()
+					).flatMap(
+						Sort::stream
+					).map(
+						order -> {
+							String property = order.getProperty();
+
+							if (Objects.equals(property, "keyword")) {
+								property = "keyword.raw";
+							}
+
+							return order.withProperty(property);
+						}
+					).collect(
+						Collectors.toList()
+					))));
+	}
+
+	@Override
+	public Iterable<BlockedKeyword> findAll(Sort sort) {
+		return super.findAll(
+			Sort.by(
+				Stream.of(
+					sort
+				).flatMap(
+					Sort::stream
+				).map(
+					order -> {
+						String property = order.getProperty();
+
+						if (Objects.equals(property, "keyword")) {
+							property = "keyword.raw";
+						}
+
+						return order.withProperty(property);
+					}
+				).collect(
+					Collectors.toList()
+				)));
 	}
 
 	@Override

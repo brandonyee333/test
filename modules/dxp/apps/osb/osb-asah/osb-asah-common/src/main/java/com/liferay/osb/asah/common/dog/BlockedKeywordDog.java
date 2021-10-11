@@ -108,9 +108,8 @@ public class BlockedKeywordDog extends BaseFaroInfoDog {
 						countByKeywordContainingIgnoreCase(keyword));
 		}
 
-		return PageableExecutionUtils.getPage(
-			_blockedKeywordRepository.findAll(PageRequest.of(page, size, sort)),
-			PageRequest.of(page, size, sort), _blockedKeywordRepository::count);
+		return _blockedKeywordRepository.findAll(
+			PageRequest.of(page, size, sort));
 	}
 
 	private List<BlockedKeyword> _createMissingBlockedKeywords(

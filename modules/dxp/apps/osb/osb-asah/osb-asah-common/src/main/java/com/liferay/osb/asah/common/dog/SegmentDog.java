@@ -269,7 +269,10 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public List<Segment> getSegments(int page, int size) {
-		return _segmentRepository.findAll(PageRequest.of(page, size));
+		Page<Segment> segments = _segmentRepository.findAll(
+			PageRequest.of(page, size));
+
+		return segments.getContent();
 	}
 
 	public List<Segment> getSegments(Iterable<Long> segmentIds) {
@@ -307,9 +310,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public Page<Segment> getSegmentsPage(int page, int size) {
-		return PageableExecutionUtils.getPage(
-			_segmentRepository.findAll(PageRequest.of(page, size)),
-			PageRequest.of(page, size), _segmentRepository::count);
+		return _segmentRepository.findAll(PageRequest.of(page, size));
 	}
 
 	public Page<Transformation> getTransformationsPage(

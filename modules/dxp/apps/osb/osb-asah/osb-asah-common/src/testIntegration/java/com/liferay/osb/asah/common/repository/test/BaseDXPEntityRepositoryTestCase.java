@@ -182,8 +182,20 @@ public abstract class BaseDXPEntityRepositoryTestCase
 
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
-	public void testFindAll() {
-		super.testFindAll();
+	public void testFindAll1() {
+		super.testFindAll1();
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public void testFindAll2() {
+		super.testFindAll2();
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public void testFindAll3() {
+		super.testFindAll3();
 	}
 
 	@Override

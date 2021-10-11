@@ -221,11 +221,8 @@ public class ChannelDog extends BaseFaroInfoDog {
 				() -> _channelRepository.countByNameContainingIgnoreCase(name));
 		}
 
-		return PageableExecutionUtils.getPage(
-			_channelRepository.findAll(
-				PageRequest.of(page, size, _getSort(sorts))),
-			PageRequest.of(page, size, _getSort(sorts)),
-			_channelRepository::count);
+		return _channelRepository.findAll(
+			PageRequest.of(page, size, _getSort(sorts)));
 	}
 
 	public Set<Long> getRemovedGroupIds(
