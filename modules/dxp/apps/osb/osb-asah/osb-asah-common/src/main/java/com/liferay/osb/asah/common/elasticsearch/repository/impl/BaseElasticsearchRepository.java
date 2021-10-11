@@ -43,9 +43,11 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.GenericTypeResolver;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 
 /**
  * @author Marcellus Tavares
@@ -112,10 +114,48 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 	}
 
 	@Override
-	public Iterable<T> findAll() {
+	public Page<T> findAll(Pageable pageable) {
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
-		return toList(elasticsearchInvoker.get(getCollectionName()));
+		return PageableExecutionUtils.getPage(
+			toList(
+				new JSONArray(
+					elasticsearchInvoker.get(
+						getCollectionName(),
+						searchSourceBuilder -> setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable)))),
+			pageable, () -> count());
+	}
+
+	@Override
+	public Iterable<T> findAll(Sort sort) {
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		return toList(
+			new JSONArray(
+				elasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						if (!sort.isUnsorted()) {
+							Stream.of(
+								sort
+							).flatMap(
+								Sort::stream
+							).forEach(
+								order -> {
+									SortOrder sortOrder = SortOrder.ASC;
+
+									if (order.isDescending()) {
+										sortOrder = SortOrder.DESC;
+									}
+
+									searchSourceBuilder.sort(
+										SortBuilderUtil.fieldSort(
+											order.getProperty(), sortOrder));
+								}
+							);
+						}
+					})));
 	}
 
 	@Override

@@ -18,15 +18,18 @@ import java.util.Optional;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Inácio Nery
  */
 @NoRepositoryBean
-public interface Repository<T, ID> extends CrudRepository<T, ID> {
+public interface Repository<T, ID> extends PagingAndSortingRepository<T, ID> {
 
 	@Cacheable
 	@Override
@@ -58,7 +61,17 @@ public interface Repository<T, ID> extends CrudRepository<T, ID> {
 
 	@Cacheable
 	@Override
-	public Iterable<T> findAll();
+	public default Iterable<T> findAll() {
+		return findAll(Sort.by("id"));
+	}
+
+	@Cacheable
+	@Override
+	public Page<T> findAll(Pageable pageable);
+
+	@Cacheable
+	@Override
+	public Iterable<T> findAll(Sort sort);
 
 	@Cacheable
 	@Override
