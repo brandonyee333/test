@@ -1620,6 +1620,10 @@ public class DDMFormAdminDisplayContext {
 			ddmFormFieldType ->
 				!ddmFormFieldType.getName(
 				).equals(
+					"ddm-image"
+				) &&
+				!ddmFormFieldType.getName(
+				).equals(
 					"geolocation"
 				) &&
 				!ddmFormFieldType.getName(
