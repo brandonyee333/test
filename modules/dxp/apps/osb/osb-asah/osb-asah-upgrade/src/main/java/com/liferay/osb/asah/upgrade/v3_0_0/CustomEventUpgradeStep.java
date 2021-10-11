@@ -62,7 +62,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Marcellus Tavares
@@ -121,6 +120,12 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 				if (hits.length == 0) {
 					while (!_completableFutures.isEmpty()) {
 						try {
+							if (_log.isDebugEnabled()) {
+								_log.debug(
+									"Waiting completable futures pending " +
+										"tasks");
+							}
+
 							Thread.sleep(1000);
 						}
 						catch (InterruptedException interruptedException) {
@@ -132,6 +137,25 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 					}
 
 					break;
+				}
+
+				if (_completableFutures.size() > 20) {
+					while (!_completableFutures.isEmpty()) {
+						try {
+							if (_log.isDebugEnabled()) {
+								_log.debug(
+									"Waiting on completable futures queue");
+							}
+
+							Thread.sleep(1000);
+						}
+						catch (InterruptedException interruptedException) {
+							_log.error(
+								interruptedException, interruptedException);
+						}
+
+						_completableFutures.removeIf(CompletableFuture::isDone);
+					}
 				}
 
 				if (_log.isDebugEnabled()) {
@@ -165,7 +189,12 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 					jsonArray.length() - 1);
 
 				id = jsonObject.getString("id");
+
+				_completableFutures.removeIf(CompletableFuture::isDone);
 			}
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 		finally {
 			JdbcTemplate jdbcTemplate =
@@ -175,58 +204,66 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		}
 	}
 
-	@Transactional
 	protected void upgradeActivities(
 		JSONArray activitiesJSONArray, String projectId) {
 
-		List<Map<String, Object>> eventAttributes = new ArrayList<>();
-		List<Map<String, Object>> events = new ArrayList<>();
+		try {
+			List<Map<String, Object>> eventAttributes = new ArrayList<>();
+			List<Map<String, Object>> events = new ArrayList<>();
 
-		long startTime = System.currentTimeMillis();
+			long startTime = System.currentTimeMillis();
 
-		ProjectIdThreadLocal.setProjectId(projectId);
+			ProjectIdThreadLocal.setProjectId(projectId);
 
-		for (int i = 0; i < activitiesJSONArray.length(); i++) {
-			JSONObject activityJSONObject = activitiesJSONArray.getJSONObject(
-				i);
+			for (int i = 0; i < activitiesJSONArray.length(); i++) {
+				JSONObject activityJSONObject =
+					activitiesJSONArray.getJSONObject(i);
 
-			AnalyticsEvent analyticsEvent = new AnalyticsEvent();
+				AnalyticsEvent analyticsEvent = new AnalyticsEvent();
 
-			analyticsEvent.setApplicationId(
-				activityJSONObject.getString("applicationId"));
-			analyticsEvent.setChannelId(
-				activityJSONObject.getString("channelId"));
-			analyticsEvent.setContext(_getEventContext(activityJSONObject));
-			analyticsEvent.setCreateDate(
-				DateUtil.toUTCDate(activityJSONObject.getString("endTime")));
-			analyticsEvent.setDataSourceId(
-				activityJSONObject.getString("dataSourceId"));
-			analyticsEvent.setEventDate(
-				DateUtil.toUTCDate(activityJSONObject.getString("endTime")));
+				analyticsEvent.setApplicationId(
+					activityJSONObject.getString("applicationId"));
+				analyticsEvent.setChannelId(
+					activityJSONObject.getString("channelId"));
+				analyticsEvent.setContext(_getEventContext(activityJSONObject));
+				analyticsEvent.setCreateDate(
+					DateUtil.toUTCDate(
+						activityJSONObject.getString("endTime")));
+				analyticsEvent.setDataSourceId(
+					activityJSONObject.getString("dataSourceId"));
+				analyticsEvent.setEventDate(
+					DateUtil.toUTCDate(
+						activityJSONObject.getString("endTime")));
 
-			JSONObject eventPropertiesJSONObject =
-				activityJSONObject.getJSONObject("eventProperties");
+				JSONObject eventPropertiesJSONObject =
+					activityJSONObject.getJSONObject("eventProperties");
 
-			analyticsEvent.setEventProperties(
-				_toSafeMap(eventPropertiesJSONObject.toMap()));
+				analyticsEvent.setEventProperties(
+					_toSafeMap(eventPropertiesJSONObject.toMap()));
 
-			analyticsEvent.setId(activityJSONObject.getString("id"));
-			analyticsEvent.setEventId(activityJSONObject.getString("eventId"));
-			analyticsEvent.setIndividualId(
-				activityJSONObject.getString("ownerId"));
-			analyticsEvent.setUserId(activityJSONObject.getString("userId"));
+				analyticsEvent.setId(activityJSONObject.getString("id"));
+				analyticsEvent.setEventId(
+					activityJSONObject.getString("eventId"));
+				analyticsEvent.setIndividualId(
+					activityJSONObject.getString("ownerId"));
+				analyticsEvent.setUserId(
+					activityJSONObject.getString("userId"));
 
-			_populateMaps(
-				analyticsEvent, eventAttributes, events,
-				activityJSONObject.getString("sessionId"));
+				_populateMaps(
+					analyticsEvent, eventAttributes, events,
+					activityJSONObject.getString("sessionId"));
 
-			if (events.size() == 1000) {
+				if (events.size() == 1000) {
+					_batchUpdate(eventAttributes, events, startTime);
+				}
+			}
+
+			if (!events.isEmpty()) {
 				_batchUpdate(eventAttributes, events, startTime);
 			}
 		}
-
-		if (!events.isEmpty()) {
-			_batchUpdate(eventAttributes, events, startTime);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 	}
 
@@ -316,7 +353,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(exception, exception);
+				_log.debug("Select initial Event ID failed");
 			}
 
 			return Optional.empty();
@@ -340,51 +377,47 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		EventDefinition eventDefinition = _eventStorageDog.storeEventDefinition(
 			analyticsEvent);
 
-		if (!eventDefinition.isBlocked()) {
-			Long eventId = _eventId.incrementAndGet();
+		Long eventId = _eventId.incrementAndGet();
 
-			Map<String, Object> eventsMap = new HashMap<>();
+		Map<String, Object> eventsMap = new HashMap<>();
 
-			eventsMap.put("analyticsEventId", analyticsEvent.getId());
-			eventsMap.put("applicationId", analyticsEvent.getApplicationId());
-			eventsMap.put(
-				"channelId", Long.valueOf(analyticsEvent.getChannelId()));
-			eventsMap.put("createDate", analyticsEvent.getCreateDate());
-			eventsMap.put(
-				"dataSourceId", Long.valueOf(analyticsEvent.getDataSourceId()));
-			eventsMap.put("eventDate", analyticsEvent.getEventDate());
-			eventsMap.put("eventDefinitionId", eventDefinition.getId());
-			eventsMap.put("id", eventId);
-			eventsMap.put(
-				"individualId",
-				Optional.ofNullable(
-					analyticsEvent.getIndividualId()
-				).map(
-					Long::valueOf
-				).orElse(
-					null
-				));
-			eventsMap.put("sessionId", sessionId);
-			eventsMap.put("userId", analyticsEvent.getUserId());
+		eventsMap.put("analyticsEventId", analyticsEvent.getId());
+		eventsMap.put("applicationId", analyticsEvent.getApplicationId());
+		eventsMap.put("channelId", Long.valueOf(analyticsEvent.getChannelId()));
+		eventsMap.put("createDate", analyticsEvent.getCreateDate());
+		eventsMap.put(
+			"dataSourceId", Long.valueOf(analyticsEvent.getDataSourceId()));
+		eventsMap.put("eventDate", analyticsEvent.getEventDate());
+		eventsMap.put("eventDefinitionId", eventDefinition.getId());
+		eventsMap.put("id", eventId);
+		eventsMap.put(
+			"individualId",
+			Optional.ofNullable(
+				analyticsEvent.getIndividualId()
+			).map(
+				Long::valueOf
+			).orElse(
+				null
+			));
+		eventsMap.put("sessionId", sessionId);
+		eventsMap.put("userId", analyticsEvent.getUserId());
 
-			events.add(eventsMap);
+		events.add(eventsMap);
 
-			for (EventAttribute eventAttribute :
-					_eventStorageDog.storeEventAttributes(
-						analyticsEvent, eventDefinition.getId())) {
+		for (EventAttribute eventAttribute :
+				_eventStorageDog.storeEventAttributes(
+					analyticsEvent, eventDefinition.getId())) {
 
-				Map<String, Object> eventAttributesMap = new HashMap<>();
+			Map<String, Object> eventAttributesMap = new HashMap<>();
 
-				eventAttributesMap.put(
-					"eventAttributeDefinitionId",
-					eventAttribute.getEventAttributeDefinitionId());
-				eventAttributesMap.put(
-					"eventDate", eventAttribute.getEventDate());
-				eventAttributesMap.put("eventId", eventId);
-				eventAttributesMap.put("value", eventAttribute.getValue());
+			eventAttributesMap.put(
+				"eventAttributeDefinitionId",
+				eventAttribute.getEventAttributeDefinitionId());
+			eventAttributesMap.put("eventDate", eventAttribute.getEventDate());
+			eventAttributesMap.put("eventId", eventId);
+			eventAttributesMap.put("value", eventAttribute.getValue());
 
-				eventAttributes.add(eventAttributesMap);
-			}
+			eventAttributes.add(eventAttributesMap);
 		}
 	}
 
