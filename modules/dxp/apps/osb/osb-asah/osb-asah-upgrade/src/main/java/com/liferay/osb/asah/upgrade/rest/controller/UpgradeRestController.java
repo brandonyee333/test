@@ -61,25 +61,26 @@ public class UpgradeRestController {
 
 	@PostMapping("/custom-event-upgrade/{projectId}")
 	public void startCustomEventUpgrade(@PathVariable String projectId) {
-		CompletableFuture<Void> completableFuture = _completableFutures.get(
-			projectId);
-
-		if (completableFuture != null) {
-			return;
-		}
-
 		Optional<Project> projectOptional = _fetchProject(projectId);
 
 		if (!projectOptional.isPresent()) {
 			throw new IllegalArgumentException("Invalid project ID");
 		}
 
-		_completableFutures.put(
-			projectId,
-			CompletableFuture.runAsync(
-				() -> ProjectIdThreadLocal.forProject(
-					projectId, () -> _customEventUpgradeStep.upgrade(null)),
-				_executorService));
+		_startCustomEventUpgrade(projectId);
+	}
+
+	@PostMapping("/custom-event-upgrades")
+	public void startCustomEventUpgrades() {
+		List<Project> projects = _projectDog.getProjects();
+
+		Stream<Project> stream = projects.stream();
+
+		stream.map(
+			Project::getId
+		).forEach(
+			this::_startCustomEventUpgrade
+		);
 	}
 
 	private Optional<Project> _fetchProject(String projectId) {
@@ -90,6 +91,22 @@ public class UpgradeRestController {
 		return stream.filter(
 			project -> Objects.equals(project.getId(), projectId)
 		).findAny();
+	}
+
+	private void _startCustomEventUpgrade(String projectId) {
+		CompletableFuture<Void> completableFuture = _completableFutures.get(
+			projectId);
+
+		if (completableFuture != null) {
+			return;
+		}
+
+		_completableFutures.put(
+			projectId,
+			CompletableFuture.runAsync(
+				() -> ProjectIdThreadLocal.forProject(
+					projectId, () -> _customEventUpgradeStep.upgrade(null)),
+				_executorService));
 	}
 
 	private JSONObject _toJSONObject(
