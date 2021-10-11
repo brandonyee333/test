@@ -678,9 +678,6 @@ public class EventRepositoryTest {
 	public void testGetEventsCountGroupByEventDateLast7DaysWithTimeZone() {
 		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
 
-		ZonedDateTime zonedDateTime = ZonedDateTime.now(
-			_timeZoneDog.getZoneId());
-
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
 		Map<String, Integer> eventsCountGroupByEventDate =
@@ -692,6 +689,9 @@ public class EventRepositoryTest {
 		Assert.assertEquals(
 			eventsCountGroupByEventDate.toString(), 2,
 			eventsCountGroupByEventDate.size());
+
+		ZonedDateTime zonedDateTime = ZonedDateTime.now(
+			_timeZoneDog.getZoneId());
 
 		Map<String, Integer> expectedCountGroupByEventDate =
 			new HashMap<String, Integer>() {
@@ -748,9 +748,6 @@ public class EventRepositoryTest {
 	public void testGetEventsCountGroupByEventDateLast24HoursWithTimeZone() {
 		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
 
-		ZonedDateTime zonedDateTime = ZonedDateTime.now(
-			_timeZoneDog.getZoneId());
-
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
 		Map<String, Integer> eventsCountGroupByEventDate =
@@ -762,6 +759,9 @@ public class EventRepositoryTest {
 		Assert.assertEquals(
 			eventsCountGroupByEventDate.toString(), 1,
 			eventsCountGroupByEventDate.size());
+
+		ZonedDateTime zonedDateTime = ZonedDateTime.now(
+			_timeZoneDog.getZoneId());
 
 		Map<String, Integer> expectedEventsCountGroupByEventDate =
 			Collections.singletonMap(
@@ -799,9 +799,6 @@ public class EventRepositoryTest {
 	public void testGetEventSessionsCountGroupByEventDateLast7DaysWithTimeZone() {
 		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
 
-		ZonedDateTime zonedDateTime = ZonedDateTime.now(
-			_timeZoneDog.getZoneId());
-
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
@@ -813,6 +810,9 @@ public class EventRepositoryTest {
 		Assert.assertEquals(
 			eventSessionsCountGroupByEventDate.toString(), 2,
 			eventSessionsCountGroupByEventDate.size());
+
+		ZonedDateTime zonedDateTime = ZonedDateTime.now(
+			_timeZoneDog.getZoneId());
 
 		Map<String, Integer> expectedEventSessionsCountGroupByEventDate =
 			new HashMap<String, Integer>() {
@@ -860,9 +860,6 @@ public class EventRepositoryTest {
 	public void testGetEventSessionsCountGroupByEventDateLast24HoursWithTimeZone() {
 		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
 
-		ZonedDateTime zonedDateTime = ZonedDateTime.now(
-			_timeZoneDog.getZoneId());
-
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
@@ -874,6 +871,9 @@ public class EventRepositoryTest {
 		Assert.assertEquals(
 			eventSessionsCountGroupByEventDate.toString(), 1,
 			eventSessionsCountGroupByEventDate.size());
+
+		ZonedDateTime zonedDateTime = ZonedDateTime.now(
+			_timeZoneDog.getZoneId());
 
 		Map<String, Integer> expectedEventSessionsCountGroupByEventDate =
 			Collections.singletonMap(

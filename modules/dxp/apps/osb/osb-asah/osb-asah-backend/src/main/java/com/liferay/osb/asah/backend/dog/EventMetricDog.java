@@ -34,9 +34,9 @@ public class EventMetricDog {
 	public EventMetric getEventMetric(SearchQueryContext searchQueryContext) {
 		EventMetric eventMetric = new EventMetric();
 
-		TimeRange timeRange = searchQueryContext.getTimeRange();
-
 		Metric totalEventsMetric = new Metric(EventMetricType.TOTAL_EVENTS);
+
+		TimeRange timeRange = searchQueryContext.getTimeRange();
 
 		totalEventsMetric.setValue(
 			(double)_eventRepository.countEvents(
