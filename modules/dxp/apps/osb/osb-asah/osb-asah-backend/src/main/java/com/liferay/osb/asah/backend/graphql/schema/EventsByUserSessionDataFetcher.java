@@ -52,6 +52,8 @@ public class EventsByUserSessionDataFetcher
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
+		Comparator<UserSessionDTO> comparator = Comparator.comparing(
+			UserSessionDTO::getCreateDate);
 		Map<String, Long> eventAttributeDefinitionIds =
 			_eventAttributeDefinitionDog.getEventAttributeDefinitionIdsByType(
 				EventAttributeDefinition.Type.GLOBAL);
@@ -64,9 +66,6 @@ public class EventsByUserSessionDataFetcher
 				dataFetchingEnvironment.getArgument("page"),
 				dataFetchingEnvironment.getArgument("size"),
 				searchQueryContext.getTimeRange());
-
-		Comparator<UserSessionDTO> comparator = Comparator.comparing(
-			UserSessionDTO::getCreateDate);
 
 		Set<Map.Entry<UserSession, List<Tuple2<Event, EventDefinition>>>>
 			entrySet = tuple2s.entrySet();
