@@ -282,7 +282,7 @@ public class EventDefinitionDogTest {
 		long count = _eventDefinitionDog.countEventDefinitions(
 			false, null, null, EventDefinition.Type.DEFAULT);
 
-		Assert.assertEquals(26, count);
+		Assert.assertEquals(27, count);
 
 		count = _eventDefinitionDog.countEventDefinitions(
 			false, null, null, EventDefinition.Type.CUSTOM);
@@ -293,7 +293,7 @@ public class EventDefinitionDogTest {
 	@Test
 	public void testCountEventDefinitionsWithKeyword() {
 		Assert.assertEquals(
-			Long.valueOf(4),
+			Long.valueOf(5),
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, "page", EventDefinition.Type.DEFAULT));
 	}
@@ -363,6 +363,7 @@ public class EventDefinitionDogTest {
 					add("documentPreviewed");
 					add("formSubmitted");
 					add("formViewed");
+					add("pageRead");
 					add("pageViewed");
 					add("webContentClicked");
 					add("webContentViewed");
