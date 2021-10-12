@@ -208,6 +208,10 @@ AUI.add(
 					},
 				},
 
+				requiredDescriptionEnabled: {
+					value: false,
+				},
+
 				strings: {
 					value: {
 						addNode: Liferay.Language.get('add-field'),
@@ -648,17 +652,29 @@ AUI.add(
 						}
 						else if (editingField.get('type') === 'ddm-image') {
 							if (attributeName === 'required') {
-								if (editingField.get('requiredDescription')) {
+								if (
+									instance.get('requiredDescriptionEnabled')
+								) {
+									if (
+										editingField.get('requiredDescription')
+									) {
+										instance._toggleImageDescriptionAsterisk(
+											editingField,
+											changed.value.newVal === 'true'
+										);
+									}
+
+									instance._toggleRequiredDescriptionPropertyModel(
+										editingField,
+										changed.value.newVal === 'true'
+									);
+								}
+								else {
 									instance._toggleImageDescriptionAsterisk(
 										editingField,
 										changed.value.newVal === 'true'
 									);
 								}
-
-								instance._toggleRequiredDescriptionPropertyModel(
-									editingField,
-									changed.value.newVal === 'true'
-								);
 							}
 							else if (
 								attributeName === 'requiredDescription' &&
@@ -923,6 +939,13 @@ AUI.add(
 								false
 							);
 
+							instance.MAP_HIDDEN_FIELD_ATTRS.DEFAULT.push(
+								'requiredDescription'
+							);
+						}
+						else if (
+							!instance.get('requiredDescriptionEnabled')
+						) {
 							instance.MAP_HIDDEN_FIELD_ATTRS.DEFAULT.push(
 								'requiredDescription'
 							);
