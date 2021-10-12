@@ -196,8 +196,10 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 				_completableFutures.removeIf(CompletableFuture::isDone);
 			}
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (RuntimeException runtimeException) {
+			_log.error(runtimeException, runtimeException);
+
+			throw runtimeException;
 		}
 		finally {
 			JdbcTemplate jdbcTemplate =
