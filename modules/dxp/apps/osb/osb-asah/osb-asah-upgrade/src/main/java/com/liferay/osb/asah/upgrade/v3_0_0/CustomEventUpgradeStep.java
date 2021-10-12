@@ -146,7 +146,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 							if (_log.isDebugEnabled()) {
 								_log.debug(
 									"Reached completable futures maximum " +
-										"queue size. Waiting unfinished " +
+										"queue size. Waiting for unfinished " +
 											"tasks.");
 							}
 
