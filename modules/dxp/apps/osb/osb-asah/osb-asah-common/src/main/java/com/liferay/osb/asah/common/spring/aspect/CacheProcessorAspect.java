@@ -42,6 +42,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.interceptor.KeyGenerator;
@@ -60,7 +61,7 @@ public class CacheProcessorAspect {
 	public Object processCacheable(ProceedingJoinPoint proceedingJoinPoint)
 		throws Throwable {
 
-		if (_cacheManager == null) {
+		if (!_cacheEnabled || (_cacheManager == null)) {
 			return proceedingJoinPoint.proceed();
 		}
 
@@ -129,7 +130,7 @@ public class CacheProcessorAspect {
 	public void processCacheEvict(JoinPoint joinPoint, Object returnObject)
 		throws Exception {
 
-		if (_cacheManager == null) {
+		if (!_cacheEnabled || (_cacheManager == null)) {
 			return;
 		}
 
@@ -185,7 +186,9 @@ public class CacheProcessorAspect {
 		value = "@annotation(com.liferay.osb.asah.common.spring.annotation.CachePut)"
 	)
 	public void processCachePut(JoinPoint joinPoint, Object returnObject) {
-		if ((_cacheManager == null) || !(returnObject instanceof JSONObject)) {
+		if (!_cacheEnabled || (_cacheManager == null) ||
+			!(returnObject instanceof JSONObject)) {
+
 			return;
 		}
 
@@ -353,6 +356,9 @@ public class CacheProcessorAspect {
 
 	private static final Log _log = LogFactory.getLog(
 		CacheProcessorAspect.class);
+
+	@Value("${osb.asah.cache.enabled:true}")
+	private boolean _cacheEnabled;
 
 	@Autowired(required = false)
 	private CacheManager _cacheManager;
