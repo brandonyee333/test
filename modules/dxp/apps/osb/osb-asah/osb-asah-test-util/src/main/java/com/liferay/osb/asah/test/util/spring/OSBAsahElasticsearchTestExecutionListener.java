@@ -108,6 +108,14 @@ public class OSBAsahElasticsearchTestExecutionListener
 
 	@Override
 	public void beforeTestClass(TestContext testContext) throws Exception {
+		if (!_elasticsearchIndexManager.exists("projects")) {
+			_elasticsearchIndexManager.create(
+				ResourceUtil.readResourceToString(
+					"dependencies/global/projects_index_configuration.json",
+					ElasticsearchIndexManager.class),
+				"projects");
+		}
+
 		ProjectIdThreadLocal.setProjectId("test");
 
 		Class<?> clazz = testContext.getTestClass();
