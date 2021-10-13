@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.SetUtil;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -91,8 +90,6 @@ public abstract class BaseDataSourceRepositoryTestCase
 		dataSource3.setWorkspaceURL("");
 
 		setUpRepository(dataSource1, dataSource2, dataSource3);
-
-		_dataSources = new ArrayList<>(entityModels);
 	}
 
 	@Test
@@ -208,13 +205,13 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 	@Test
 	public void testExistsByIdNotAndName() {
-		DataSource dataSource1 = _dataSources.get(0);
+		DataSource dataSource1 = entityModels.get(0);
 
 		Assert.assertFalse(
 			_dataSourceRepository.existsByIdNotAndName(
 				dataSource1.getId(), "Liferay Brazil"));
 
-		DataSource dataSource2 = _dataSources.get(1);
+		DataSource dataSource2 = entityModels.get(1);
 
 		Assert.assertTrue(
 			_dataSourceRepository.existsByIdNotAndName(
@@ -231,7 +228,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 		Assert.assertFalse(
 			_dataSourceRepository.existsByProviderType("LIFERAY"));
 
-		DataSource dataSource1 = _dataSources.get(0);
+		DataSource dataSource1 = entityModels.get(0);
 
 		dataSource1.setEnableAllSites(true);
 
@@ -266,7 +263,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 	@Test
 	public void testFindAll() {
 		Assert.assertEquals(
-			_dataSources,
+			entityModels,
 			_dataSourceRepository.findAll(
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id")))));
 	}
@@ -280,7 +277,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 	}
 
 	@Test
@@ -292,7 +289,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 	}
 
 	@Test
@@ -302,7 +299,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 	}
 
 	@Test
@@ -312,7 +309,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 	}
 
 	@Test
@@ -323,7 +320,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 	}
 
 	@Test
@@ -334,7 +331,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 3, dataSources.size());
 
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			new FilterHelper(
@@ -345,7 +342,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			new FilterHelper(
@@ -355,7 +352,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			new FilterHelper(
@@ -366,7 +363,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			new FilterHelper(
@@ -377,7 +374,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			new FilterHelper(
@@ -387,7 +384,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			new FilterHelper(
@@ -397,7 +394,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			new FilterHelper(
@@ -407,7 +404,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			new FilterHelper(
@@ -498,7 +495,6 @@ public abstract class BaseDataSourceRepositoryTestCase
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
 
-	private List<DataSource> _dataSources;
 	private final DefaultFilterStringConverterHelper
 		_defaultFilterStringConverterHelper =
 			new DefaultFilterStringConverterHelper();
