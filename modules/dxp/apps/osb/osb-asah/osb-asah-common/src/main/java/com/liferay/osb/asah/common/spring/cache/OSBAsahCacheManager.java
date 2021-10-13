@@ -15,6 +15,8 @@
 package com.liferay.osb.asah.common.spring.cache;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import com.esotericsoftware.kryo.util.Pool;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -32,6 +34,9 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -117,6 +122,44 @@ public class OSBAsahCacheManager implements CacheManager {
 		protected Kryo create() {
 			Kryo kryo = new Kryo();
 
+			kryo.register(
+				PageImpl.class,
+				new FieldSerializer<PageImpl<?>>(kryo, PageImpl.class) {
+
+					@Override
+					protected PageImpl<?> create(
+						Kryo kryo, Input input,
+						Class<? extends PageImpl<?>> clazz) {
+
+						return new PageImpl<>(Collections.emptyList());
+					}
+
+				});
+			kryo.register(
+				PageRequest.class,
+				new FieldSerializer<PageRequest>(kryo, PageRequest.class) {
+
+					@Override
+					protected PageRequest create(
+						Kryo kryo, Input input,
+						Class<? extends PageRequest> clazz) {
+
+						return PageRequest.of(0, 1);
+					}
+
+				});
+			kryo.register(
+				Sort.class,
+				new FieldSerializer<Sort>(kryo, Sort.class) {
+
+					@Override
+					protected Sort create(
+						Kryo kryo, Input input, Class<? extends Sort> clazz) {
+
+						return Sort.unsorted();
+					}
+
+				});
 			kryo.setRegistrationRequired(false);
 
 			return kryo;
