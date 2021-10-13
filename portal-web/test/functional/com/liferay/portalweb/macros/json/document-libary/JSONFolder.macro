@@ -1,4 +1,5 @@
 definition {
+
 	@summary = "This calls the JSON WS API to add a DL Folder"
 	macro addFolder {
 		var portalURL = JSONCompany.getPortalURL();
@@ -50,4 +51,5 @@ definition {
   			-d folderId=${folderId}
   		''';
 	}
+
 }
