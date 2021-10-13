@@ -61,9 +61,6 @@ public interface SegmentRepository extends Repository<Segment, Long> {
 	public boolean existsByName(String name);
 
 	@Cacheable
-	public List<Segment> findAll(Pageable pageable);
-
-	@Cacheable
 	public List<Segment> findByIdAfter(Long id, Pageable pageable);
 
 	@Cacheable

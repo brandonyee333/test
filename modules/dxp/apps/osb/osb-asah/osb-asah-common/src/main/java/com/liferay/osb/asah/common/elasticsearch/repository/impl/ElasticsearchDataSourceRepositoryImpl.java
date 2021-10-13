@@ -102,11 +102,6 @@ public class ElasticsearchDataSourceRepositoryImpl
 	}
 
 	@Override
-	public List<DataSource> findAll(Pageable pageable) {
-		return findByProviderType(null, pageable);
-	}
-
-	@Override
 	public List<DataSource> findByCredentialType(
 		String credentialType, Pageable pageable) {
 

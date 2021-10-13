@@ -72,11 +72,6 @@ public class ElasticsearchSuppressionRepositoryImpl
 	}
 
 	@Override
-	public List<Suppression> findAll(Pageable pageable) {
-		return findByEmailAddressContainingIgnoreCase(null, pageable);
-	}
-
-	@Override
 	public Optional<Suppression> findByEmailAddress(String emailAddress) {
 		JSONObject jsonObject = _faroInfoElasticsearchInvoker.fetch(
 			getCollectionName(),

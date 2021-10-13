@@ -48,9 +48,6 @@ public interface DataSourceRepository extends Repository<DataSource, Long> {
 		@Param("providerType") String providerType);
 
 	@Cacheable
-	public List<DataSource> findAll(Pageable pageable);
-
-	@Cacheable
 	public List<DataSource> findByCredentialType(
 		String credentialType, Pageable pageable);
 

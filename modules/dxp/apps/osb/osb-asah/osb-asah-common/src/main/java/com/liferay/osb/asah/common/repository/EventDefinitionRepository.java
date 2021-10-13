@@ -41,9 +41,6 @@ public interface EventDefinitionRepository
 		@Nullable EventDefinition.Type type);
 
 	@Cacheable
-	public List<EventDefinition> findAll(Pageable pageable);
-
-	@Cacheable
 	public Optional<EventDefinition> findByDisplayNameIgnoreCase(
 		String displayName);
 

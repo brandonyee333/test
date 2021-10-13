@@ -180,16 +180,6 @@ public abstract class BaseSegmentRepositoryTestCase
 		Assert.assertEquals(0, _segmentRepository.count());
 	}
 
-	@Override
-	@Test
-	public void testFindAll() {
-		super.testFindAll();
-
-		Assert.assertEquals(
-			Arrays.asList(entityModels.get(0)),
-			_segmentRepository.findAll(PageRequest.of(0, 1)));
-	}
-
 	@Test
 	public void testFindByNameAndStatus() {
 		Optional<Segment> segmentOptional =

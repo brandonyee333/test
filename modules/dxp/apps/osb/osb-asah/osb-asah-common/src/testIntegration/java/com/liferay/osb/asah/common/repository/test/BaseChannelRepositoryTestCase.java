@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -73,14 +72,6 @@ public abstract class BaseChannelRepositoryTestCase
 	@Test
 	public void testExistsByName() {
 		Assert.assertTrue(_channelRepository.existsByName("name"));
-	}
-
-	@Override
-	@Test
-	public void testFindAll() {
-		Assert.assertEquals(
-			Arrays.asList(_channel),
-			_channelRepository.findAll(PageRequest.of(0, 1)));
 	}
 
 	@Test

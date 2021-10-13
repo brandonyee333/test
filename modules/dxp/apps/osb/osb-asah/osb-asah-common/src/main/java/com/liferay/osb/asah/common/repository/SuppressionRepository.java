@@ -45,9 +45,6 @@ public interface SuppressionRepository extends Repository<Suppression, Long> {
 	public boolean existsByEmailAddressHashed(String emailAddressHashed);
 
 	@Cacheable
-	public List<Suppression> findAll(Pageable pageable);
-
-	@Cacheable
 	public Optional<Suppression> findByEmailAddress(String emailAddress);
 
 	@Cacheable

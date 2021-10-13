@@ -259,7 +259,6 @@ public abstract class BaseDataSourceRepositoryTestCase
 			_dataSourceRepository.existsByProviderType("LIFERAY"));
 	}
 
-	@Override
 	@Test
 	public void testFindAll() {
 		Assert.assertEquals(

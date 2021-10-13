@@ -41,9 +41,6 @@ public interface BlockedKeywordRepository
 	public void deleteByIdIn(@Param("ids") Set<Long> ids);
 
 	@Cacheable
-	public List<BlockedKeyword> findAll(Pageable pageable);
-
-	@Cacheable
 	public List<BlockedKeyword> findByKeywordContainingIgnoreCase(
 		String keyword, Pageable pageable);
 

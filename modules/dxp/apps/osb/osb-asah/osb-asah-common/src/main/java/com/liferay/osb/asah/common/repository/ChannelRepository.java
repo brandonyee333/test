@@ -46,9 +46,6 @@ public interface ChannelRepository extends Repository<Channel, Long> {
 	public boolean existsByName(String name);
 
 	@Cacheable
-	public List<Channel> findAll(Pageable pageable);
-
-	@Cacheable
 	public List<Channel> findByDataSourceId(
 		@Param("dataSourceId") Long dataSourceId);
 

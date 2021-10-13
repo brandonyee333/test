@@ -91,11 +91,6 @@ public class ElasticsearchChannelRepositoryImpl
 	}
 
 	@Override
-	public List<Channel> findAll(Pageable pageable) {
-		return findByNameContainingIgnoreCase(null, pageable);
-	}
-
-	@Override
 	public List<Channel> findByDataSourceId(Long dataSourceId) {
 		return toList(
 			_faroInfoElasticsearchInvoker.get(

@@ -159,16 +159,6 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	@Override
-	public List<Segment> findAll(Pageable pageable) {
-		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> setSearchSourceBuilderPage(
-						searchSourceBuilder, pageable))));
-	}
-
-	@Override
 	public List<Segment> findByIdAfter(Long id, Pageable pageable) {
 		return toList(
 			new JSONArray(

@@ -36,9 +36,6 @@ public interface EventAttributeDefinitionRepository
 		@Nullable EventAttributeDefinition.Type type);
 
 	@Cacheable
-	public List<EventAttributeDefinition> findAll(Pageable pageable);
-
-	@Cacheable
 	public Optional<EventAttributeDefinition> findByDisplayNameIgnoreCase(
 		String displayName);
 
