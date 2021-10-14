@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -115,7 +116,9 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 		Stream<DataSource> stream = dataSources.stream();
 
 		Map<Long, DataSource> dataSourcesById = stream.collect(
-			Collectors.toMap(DataSource::getId, Function.identity()));
+			Collectors.toMap(
+				DataSource::getId, Function.identity(), (id, dataSource) -> id,
+				LinkedHashMap::new));
 
 		_populateDataSourceOrganizations(dataSourcesById);
 		_populateDataSourceSite(dataSourcesById);

@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -136,7 +137,9 @@ public class ExperimentRepositoryImpl extends BaseRepository {
 		Stream<Experiment> stream = experiments.stream();
 
 		Map<Long, Experiment> experimentsById = stream.collect(
-			Collectors.toMap(Experiment::getId, Function.identity()));
+			Collectors.toMap(
+				Experiment::getId, Function.identity(), (id, experiment) -> id,
+				LinkedHashMap::new));
 
 		_populateExperimentMetrics(experimentsById);
 		_populateExperimentVariants(experimentsById);

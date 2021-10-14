@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -216,7 +217,7 @@ public class FormNanite extends BaseNanite<Form> {
 		).collect(
 			Collectors.toMap(
 				FormField::getName, Function.identity(),
-				_getFormFieldBinaryOperator())
+				_getFormFieldBinaryOperator(), LinkedHashMap::new)
 		);
 
 		List<FormField> formFields = new ArrayList<>(map.values());
@@ -296,7 +297,7 @@ public class FormNanite extends BaseNanite<Form> {
 		).collect(
 			Collectors.toMap(
 				FormPage::getPageIndex, Function.identity(),
-				_getFormPageBinaryOperator(oldForm))
+				_getFormPageBinaryOperator(oldForm), LinkedHashMap::new)
 		);
 
 		List<FormPage> formPages = new ArrayList<>(map.values());

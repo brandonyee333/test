@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -481,7 +482,9 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 		Stream<FieldMapping> stream = fieldMappings.stream();
 
 		Map<Long, FieldMapping> fieldMappingsById = stream.collect(
-			Collectors.toMap(FieldMapping::getId, Function.identity()));
+			Collectors.toMap(
+				FieldMapping::getId, Function.identity(),
+				(id, fieldMapping) -> id, LinkedHashMap::new));
 
 		_populateDataSourceFieldMappings(fieldMappingsById);
 

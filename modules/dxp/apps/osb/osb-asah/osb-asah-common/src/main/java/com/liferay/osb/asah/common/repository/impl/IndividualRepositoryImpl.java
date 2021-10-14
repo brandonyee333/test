@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -1947,7 +1948,9 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		Stream<Individual> stream = individuals.stream();
 
 		Map<Long, Individual> individualsById = stream.collect(
-			Collectors.toMap(Individual::getId, Function.identity()));
+			Collectors.toMap(
+				Individual::getId, Function.identity(), (id, individual) -> id,
+				LinkedHashMap::new));
 
 		_populateDataSourceIndividuals(individualsById);
 		_populateIndividualChannels(individualsById);

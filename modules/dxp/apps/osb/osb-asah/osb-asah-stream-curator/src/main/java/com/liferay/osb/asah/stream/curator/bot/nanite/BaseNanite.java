@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -143,7 +144,8 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 			getFilterPredicate()
 		).collect(
 			Collectors.toMap(
-				T::getPrimaryKey, Function.identity(), getBinaryOperator())
+				T::getPrimaryKey, Function.identity(), getBinaryOperator(),
+				LinkedHashMap::new)
 		);
 
 		Supplier<T> supplier = getModelSupplier();
@@ -164,8 +166,8 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 			map = modelsStream.collect(
 				Collectors.toMap(
-					T::getPrimaryKey, Function.identity(),
-					getBinaryOperator()));
+					T::getPrimaryKey, Function.identity(), getBinaryOperator(),
+					LinkedHashMap::new));
 		}
 
 		return map.values();
