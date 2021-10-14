@@ -260,14 +260,6 @@ public abstract class BaseDataSourceRepositoryTestCase
 	}
 
 	@Test
-	public void testFindAll() {
-		Assert.assertEquals(
-			entityModels,
-			_dataSourceRepository.findAll(
-				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id")))));
-	}
-
-	@Test
 	public void testFindByCredentialType() {
 		List<DataSource> dataSources =
 			_dataSourceRepository.findByCredentialType(
