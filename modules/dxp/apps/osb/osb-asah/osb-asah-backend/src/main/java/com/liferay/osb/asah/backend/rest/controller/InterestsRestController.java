@@ -14,11 +14,16 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.rest.response.embedded.InterestsEmbeddedJSONObjectCreator;
+import com.liferay.osb.asah.backend.dto.InterestDTO;
+import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
@@ -26,15 +31,27 @@ import com.liferay.osb.asah.common.rest.response.function.InterestsHistogramTran
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.time.LocalDateTime;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+
+import org.jetbrains.annotations.NotNull;
 
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,20 +72,25 @@ public class InterestsRestController
 				InterestsRestController {
 
 	@GetMapping("/{id}")
-	public String getInterest(
-			@PathVariable String id,
-			@RequestParam(required = false) String expand)
-		throws Exception {
+	public InterestDTO getInterestDTO(
+		@PathVariable Long id, @RequestParam(required = false) String expand) {
 
-		if (StringUtils.isEmpty(expand)) {
-			return toItemGetResponse("interests", id);
-		}
+		return _createEmbedded(expand, _interestDog.getInterest(id));
+	}
 
-		return toItemGetResponse(
-			"interests",
-			new InterestsEmbeddedJSONObjectCreator(
-				faroInfoElasticsearchInvoker, expand),
-			id);
+	@Cacheable
+	@GetMapping(params = "!apply")
+	public PageDTO<InterestDTO> getInterestDTOsPageDTO(
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(required = false) String expand,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
+
+		return _toPageDTO(
+			expand,
+			_interestDog.getInterestPage(
+				filterString, _getScore(), page, size, sorts));
 	}
 
 	@GetMapping("/keywords")
@@ -90,27 +112,6 @@ public class InterestsRestController
 	}
 
 	@Cacheable
-	@GetMapping(params = "!apply")
-	public String getInterests(
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(required = false) String expand,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
-
-		return toCollectionGetResponse(
-			"interests",
-			new InterestsEmbeddedJSONObjectCreator(
-				faroInfoElasticsearchInvoker, expand),
-			page,
-			_getInterestThresholdQueryBuilder(
-				FilterStringToQueryBuilderConverter.convert(filterString)),
-			size, sorts);
-	}
-
-	@Cacheable
 	@GetMapping(params = "apply")
 	public String getInterestTransformations(
 			@RequestParam String apply,
@@ -129,39 +130,192 @@ public class InterestsRestController
 			"interest-transformations");
 	}
 
-	private QueryBuilder _getInterestThresholdQueryBuilder(
-		QueryBuilder queryBuilder) {
+	private boolean _containsPageVisited(String expand) {
+		if (StringUtils.isEmpty(expand)) {
+			return false;
+		}
 
+		Set<String> expandParts = new HashSet<>(
+			Arrays.asList(expand.split(",")));
+
+		return expandParts.contains("pages-visited");
+	}
+
+	private InterestDTO _createEmbedded(String expand, Interest interest) {
+		return _getInterestDTO(
+			_containsPageVisited(expand), _getDaysRange(expand), interest);
+	}
+
+	private Set<InterestDTO> _createInterestDTOs(
+		String expand, List<Interest> interests) {
+
+		int days = _getDaysRange(expand);
+
+		boolean addPageVisited = _containsPageVisited(expand);
+
+		Set<InterestDTO> interestDTOs = new HashSet<>();
+
+		for (Interest interest : interests) {
+			interestDTOs.add(_getInterestDTO(addPageVisited, days, interest));
+		}
+
+		return interestDTOs;
+	}
+
+	private int _getDaysRange(String expand) {
+		if (StringUtils.isEmpty(expand)) {
+			return 0;
+		}
+
+		Set<String> expandParts = new HashSet<>(
+			Arrays.asList(expand.split(",")));
+
+		if (expandParts.contains("interest-aggregation-last-30-days")) {
+			return 30;
+		}
+		else if (expandParts.contains("interest-aggregation-last-60-days")) {
+			return 60;
+		}
+		else if (expand.contains("interest-aggregation-last-90-days")) {
+			return 90;
+		}
+
+		return 0;
+	}
+
+	private List<Map<String, Object>> _getInterestAggregations(
+		LocalDateTime endDayLocalDateTime, String name, Long ownerId,
+		String ownerType, LocalDateTime startDayLocalDateTime) {
+
+		List<Map<String, Object>> interestAggregationMap = new ArrayList<>();
+
+		List<Interest> interests = _interestDog.getInterests(
+			name, ownerId, ownerType, DateUtil.toUTCDate(startDayLocalDateTime),
+			DateUtil.toUTCDate(endDayLocalDateTime));
+
+		Map<LocalDateTime, Interest> interestMap = new HashMap<>();
+
+		for (Interest interest : interests) {
+			interestMap.put(
+				DateUtil.toLocalDateTime(
+					interest.getRecordedDate(), TimeZoneDogUtil.getZoneId()),
+				interest);
+		}
+
+		LocalDateTime currentDayLocalDateTime = startDayLocalDateTime;
+
+		while (currentDayLocalDateTime.compareTo(endDayLocalDateTime) <= 0) {
+			Interest interest = interestMap.get(currentDayLocalDateTime);
+
+			Map<String, Object> item = new HashMap<>();
+
+			item.put("intervalInitDate", currentDayLocalDateTime.toString());
+
+			if (interest != null) {
+				item.put("scoreAvg", interest.getScore());
+				item.put("totalElements", 1);
+				item.put("viewsSum", interest.getViews());
+			}
+			else {
+				item.put("scoreAvg", 0.0);
+				item.put("totalElements", 0);
+				item.put("viewsSum", 0);
+			}
+
+			interestAggregationMap.add(item);
+
+			currentDayLocalDateTime = currentDayLocalDateTime.plusDays(1);
+		}
+
+		return interestAggregationMap;
+	}
+
+	@NotNull
+	private InterestDTO _getInterestDTO(
+		boolean addPageVisited, int days, Interest interest) {
+
+		InterestDTO interestDTO = new InterestDTO(interest);
+
+		Map<String, Object> embedded = new HashMap<>();
+
+		if (days > 0) {
+			LocalDateTime endDayLocalDateTime = DateUtil.newDayLocalDateTime(
+				TimeZoneDogUtil.getZoneId());
+
+			embedded.put(
+				"interest-aggregation-last-" + days + "-days",
+				_getInterestAggregations(
+					endDayLocalDateTime, interest.getName(),
+					interest.getOwnerId(), interest.getOwnerType(),
+					endDayLocalDateTime.plusDays(1 - days)));
+		}
+
+		if (addPageVisited) {
+			embedded.put("pages-visited", _getVisitedPages(interest));
+		}
+
+		interestDTO.setEmbedded(embedded);
+
+		return interestDTO;
+	}
+
+	private Double _getScore() {
 		AsahMarker asahMarker = asahMarkerDog.fetchAsahMarker(
 			"InterestThresholdScoreNanite",
 			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		if (asahMarker == null) {
-			return queryBuilder;
+			return null;
 		}
 
 		JSONObject asahMarkerContextJSONObject =
 			asahMarker.getContextJSONObject();
 
-		if (!asahMarkerContextJSONObject.has("score")) {
-			return queryBuilder;
+		if (asahMarkerContextJSONObject.has("score")) {
+			return asahMarkerContextJSONObject.getDouble("score");
 		}
 
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.rangeQuery(
-				"score"
-			).gte(
-				asahMarkerContextJSONObject.getDouble("score")
-			));
+		return null;
+	}
 
-		if (queryBuilder == null) {
-			return boolQueryBuilder;
-		}
+	private List<Object> _getVisitedPages(Interest interest) {
+		return faroInfoElasticsearchInvoker.get(
+			"visited-pages",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery(
+					"day", DateUtil.toUTCString(interest.getRecordedDate()))
+			).filter(
+				QueryBuilders.termQuery("interestName", interest.getName())
+			).filter(
+				QueryBuilders.termQuery("ownerId", interest.getOwnerId())
+			).filter(
+				QueryBuilders.termQuery("ownerType", interest.getOwnerType())
+			)
+		).toList();
+	}
 
-		return boolQueryBuilder.filter(queryBuilder);
+	private PageDTO<InterestDTO> _toPageDTO(
+		InterestDTO interestDTO, Page<Interest> interestPage) {
+
+		return new PageDTO<>(
+			"_embedded", interestDTO, interestPage.getNumber(),
+			interestPage.getSize(), interestPage.getTotalElements(),
+			interestPage.getTotalPages());
+	}
+
+	private PageDTO<InterestDTO> _toPageDTO(
+		String expand, Page<Interest> interestPage) {
+
+		return _toPageDTO(
+			new InterestDTO(
+				_createInterestDTOs(expand, interestPage.getContent())),
+			interestPage);
 	}
 
 	@Autowired
 	private AssetDog _assetDog;
+
+	@Autowired
+	private InterestDog _interestDog;
 
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.rest.controller.InterestsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -48,6 +50,28 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class InterestsRestControllerTest {
+
+	@ElasticsearchIndex(
+		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "interests", resourcePath = "interests.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetInterestDTOsPageDTO() throws Exception {
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONArray(
+				"dependencies/expected_interests.json", this),
+			(JSONArray)JSONUtil.getValue(
+				_objectMapper.convertValue(
+					_interestsRestController.getInterestDTOsPageDTO(
+						null, 0, 20, null, null),
+					JSONObject.class),
+				"JSONObject/_embedded", "JSONArray/interests"),
+			false);
+	}
 
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,
@@ -88,27 +112,6 @@ public class InterestsRestControllerTest {
 			"JSONObject/_embedded", "JSONArray/interest-keywords");
 
 		Assert.assertEquals(0, keywordsJSONArray.length());
-	}
-
-	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@Test
-	public void testGetInterests() throws Exception {
-		JSONAssert.assertEquals(
-			ResourceUtil.readResourceToJSONArray(
-				"dependencies/expected_interests.json", this),
-			(JSONArray)JSONUtil.getValue(
-				new JSONObject(
-					_interestsRestController.getInterests(
-						null, 0, 20, null, null)),
-				"JSONObject/_embedded", "JSONArray/interests"),
-			false);
 	}
 
 	@ElasticsearchIndex(
@@ -280,5 +283,8 @@ public class InterestsRestControllerTest {
 
 	@Autowired
 	private InterestsRestController _interestsRestController;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }
