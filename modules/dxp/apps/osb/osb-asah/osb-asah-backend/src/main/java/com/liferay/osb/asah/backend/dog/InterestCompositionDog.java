@@ -200,9 +200,10 @@ public class InterestCompositionDog {
 			JSONObject asahMarkerContextJSONObject =
 				asahMarker.getContextJSONObject();
 
-			return DateUtil.toUTCDate(
-				asahMarkerContextJSONObject.optString(
-					"lastSuccessfulDay", null));
+			if (asahMarkerContextJSONObject.has("lastSuccessfulDay")) {
+				return DateUtil.toUTCDate(
+					asahMarkerContextJSONObject.getString("lastSuccessfulDay"));
+			}
 		}
 
 		return null;
