@@ -34,8 +34,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class InterestDog {
 
-	public List<Interest> addInterests(List<Interest> interests) {
-		return IterableUtils.toList(_interestRepository.saveAll(interests));
+	public void addInterests(List<Interest> interests) {
+		_interestRepository.saveAll(interests);
 	}
 
 	public void deleteInterests(Long ownerId, String ownerType) {
