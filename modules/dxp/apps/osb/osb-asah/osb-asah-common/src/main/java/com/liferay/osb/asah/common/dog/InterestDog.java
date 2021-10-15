@@ -14,8 +14,10 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.repository.InterestRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.Date;
@@ -75,11 +77,36 @@ public class InterestDog {
 				ownerId, ownerType));
 	}
 
+	public Page<Interest> getInterestPage(
+		String filterString, Double score, int page, int size, String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size, SortUtil.getSort(sorts));
+
+		FilterHelper filterHelper = new FilterHelper(filterString);
+
+		return PageableExecutionUtils.getPage(
+			_interestRepository.findByFilterStringAndScoreGreaterThanEqual(
+				filterHelper, score, pageRequest),
+			pageRequest,
+			() -> _interestRepository.countByFilterStringAndScore(
+				filterHelper, score));
+	}
+
 	public List<Interest> getInterests(
 		Long interestId, String ownerType, Date recordedDate, int size) {
 
 		return _interestRepository.findByOwnerTypeAndRecordedDate(
 			interestId, ownerType, recordedDate, size);
+	}
+
+	public List<Interest> getInterests(
+		String name, Long ownerId, String ownerType, Date recordedDateFrom,
+		Date recordedDateTo) {
+
+		return _interestRepository.
+			findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
+				name, ownerId, ownerType, recordedDateFrom, recordedDateTo);
 	}
 
 	@Autowired
