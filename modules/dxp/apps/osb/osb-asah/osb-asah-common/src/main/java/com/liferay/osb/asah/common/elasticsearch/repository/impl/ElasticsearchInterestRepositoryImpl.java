@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.repository.InterestRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -58,11 +59,20 @@ public class ElasticsearchInterestRepositoryImpl
 	implements InterestRepository {
 
 	@Override
+	public long countByFilterStringAndScore(
+		FilterHelper filterHelper, Double score) {
+
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(),
+			_buildQueryBuilder(filterHelper, null, null, null, null, score));
+	}
+
+	@Override
 	public long countByOwnerIdAndOwnerType(Long ownerId, String ownerType) {
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(),
 			_buildQueryBuilder(
-				null, Collections.singletonList(ownerId), ownerType, null,
+				null, null, Collections.singletonList(ownerId), ownerType, null,
 				null));
 	}
 
@@ -88,7 +98,7 @@ public class ElasticsearchInterestRepositoryImpl
 		_faroInfoElasticsearchInvoker.delete(
 			getCollectionName(),
 			_buildQueryBuilder(
-				null, Collections.singletonList(ownerId), ownerType, null,
+				null, null, Collections.singletonList(ownerId), ownerType, null,
 				null));
 	}
 
@@ -107,6 +117,24 @@ public class ElasticsearchInterestRepositoryImpl
 			).filter(
 				QueryBuilders.termQuery("ownerType", ownerType)
 			));
+	}
+
+	@Override
+	public List<Interest> findByFilterStringAndScoreGreaterThanEqual(
+		FilterHelper filterHelper, Double score, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_buildQueryBuilder(
+								filterHelper, null, null, null, null, score));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
 	}
 
 	@Override
@@ -216,7 +244,8 @@ public class ElasticsearchInterestRepositoryImpl
 			searchSourceBuilder -> {
 				searchSourceBuilder.query(
 					_buildQueryBuilder(
-						keyword, ownerIds, ownerType, recordedDate, score));
+						null, keyword, ownerIds, ownerType, recordedDate,
+						score));
 				searchSourceBuilder.aggregation(
 					AggregationBuilders.terms(
 						"userInterests"
@@ -268,11 +297,17 @@ public class ElasticsearchInterestRepositoryImpl
 	}
 
 	private QueryBuilder _buildQueryBuilder(
-		@Nullable String keywords, @Nullable List<Long> ownerIds,
-		@Nullable String ownerType, @Nullable Date recordedDate,
-		@Nullable Double score) {
+		@Nullable FilterHelper filterHelper, @Nullable String keywords,
+		@Nullable List<Long> ownerIds, @Nullable String ownerType,
+		@Nullable Date recordedDate, @Nullable Double score) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+		if ((filterHelper != null) &&
+			!StringUtils.isEmpty(filterHelper.getFilterString())) {
+
+			boolQueryBuilder.filter(filterHelper.getQueryBuilder());
+		}
 
 		if (!StringUtils.isBlank(keywords)) {
 			boolQueryBuilder.filter(
