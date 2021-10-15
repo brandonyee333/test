@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,10 @@ import org.springframework.lang.Nullable;
  */
 @Primary
 public interface InterestRepository extends Repository<Interest, Long> {
+
+	@Cacheable
+	public long countByFilterStringAndScore(
+		FilterHelper filterHelper, Double score);
 
 	@Cacheable
 	public long countByOwnerIdAndOwnerType(Long ownerId, String ownerType);
@@ -53,7 +58,11 @@ public interface InterestRepository extends Repository<Interest, Long> {
 		@Param("ownerType") String ownerType,
 		@Param("recordedDate") Date recordedDate);
 
-		@Cacheable
+	@Cacheable
+	public List<Interest> findByFilterStringAndScoreGreaterThanEqual(
+		FilterHelper filterHelper, Double score, Pageable pageable);
+
+	@Cacheable
 	public List<Interest>
 		findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
 			String name, Long ownerId, String ownerType, Date recordedDateFrom,
