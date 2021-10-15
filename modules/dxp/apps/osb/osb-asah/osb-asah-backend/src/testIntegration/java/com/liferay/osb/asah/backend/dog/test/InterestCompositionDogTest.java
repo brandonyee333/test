@@ -41,7 +41,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @ElasticsearchIndex(
-	name = "OSBAsahMarkers", resourcePath = "osbasahmarkers_info.json",
+	name = "OSBAsahMarkers", resourcePath = "osbasahmarkers_info_1.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
@@ -80,6 +80,10 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 			3, 3, 3);
 	}
 
+	@ElasticsearchIndex(
+		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers_info_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@Test
 	public void testGetIndividualCompositionResultBag() {
 		checkResults(
