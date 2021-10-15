@@ -107,7 +107,8 @@ public class ElasticsearchIndividualRepositoryImpl
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termsQuery(
-				"channelIds", Collections.singletonList(channelId))
+				"channelIds",
+				Collections.singletonList(String.valueOf(channelId)))
 		).filter(
 			QueryBuilders.termsQuery("individualSegmentIds", segmentIds)
 		);
@@ -700,6 +701,47 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
+	public List<Long>
+		findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
+			Long channelId, Date lastActivityDate, Long segmentId) {
+
+		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+
+		BoolQueryBuilderUtil.filterTerm(
+			boolQueryBuilder, "channelIds", String.valueOf(channelId));
+
+		if (!Objects.isNull(lastActivityDate)) {
+			boolQueryBuilder.filter(
+				QueryBuilders.nestedQuery(
+					"lastActivityDates",
+					QueryBuilders.rangeQuery(
+						"lastActivityDates.lastActivityDate"
+					).gt(
+						DateUtil.toUTCString(lastActivityDate)
+					),
+					ScoreMode.None));
+		}
+
+		if (!Objects.isNull(segmentId)) {
+			BoolQueryBuilderUtil.filterTerm(
+				boolQueryBuilder, "individualSegmentIds",
+				String.valueOf(segmentId));
+		}
+
+		return JSONUtil.toLongList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.fetchSource("id", null);
+						searchSourceBuilder.query(boolQueryBuilder);
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort("id"));
+					})),
+			"id");
+	}
+
+	@Override
 	public List<Long> findIdsByAnySegmentIds(Long segmentId) {
 		return JSONUtil.toLongList(
 			new JSONArray(
@@ -711,6 +753,8 @@ public class ElasticsearchIndividualRepositoryImpl
 							QueryBuilders.termQuery(
 								"individualSegmentIds",
 								String.valueOf(segmentId)));
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort("id"));
 					})),
 			"id");
 	}
@@ -1526,16 +1570,19 @@ public class ElasticsearchIndividualRepositoryImpl
 
 		if (segmentChannelId != null) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("channelIds", segmentChannelId));
+				QueryBuilders.termQuery(
+					"channelIds", String.valueOf(segmentChannelId)));
 		}
 		else if (channelId != null) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("channelIds", channelId));
+				QueryBuilders.termQuery(
+					"channelIds", String.valueOf(channelId)));
 		}
 
 		if (segmentId != null) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("individualSegmentIds", segmentId));
+				QueryBuilders.termQuery(
+					"individualSegmentIds", String.valueOf(segmentId)));
 		}
 
 		if (BooleanUtils.toBoolean(includeAnonymousUsers)) {

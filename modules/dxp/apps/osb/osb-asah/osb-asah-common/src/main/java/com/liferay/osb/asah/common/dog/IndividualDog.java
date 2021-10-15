@@ -721,6 +721,14 @@ public class IndividualDog extends BaseFaroInfoDog {
 			includeAnonymousUsers, segmentId);
 	}
 
+	public List<Long> getIndividualIds(
+		Long channelId, Date lastActivityDate, Long segmentId) {
+
+		return _individualRepository.
+			findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
+				channelId, lastActivityDate, segmentId);
+	}
+
 	public String getIndividualName(Long individualId) {
 		Individual individual = fetchIndividual(individualId);
 

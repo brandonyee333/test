@@ -900,6 +900,64 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	public List<Long>
+		findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
+			Long channelId, @Nullable Date lastActivityDate,
+			@Nullable Long segmentId) {
+
+		Condition condition = DSL.and(
+			DSL.field(
+				DSL.cast(
+					DSL.array(DSL.field("individual.channelids")), Long[].class)
+			).contains(
+				DSL.cast(DSL.array(channelId), Long[].class)
+			));
+
+		SelectSelectStep<Record1<Object>> selectSelectStep =
+			_dslContext.selectDistinct(DSL.field("individual.id"));
+
+		SelectJoinStep<Record1<Object>> selectJoinStep = selectSelectStep.from(
+			"Individual");
+
+		if (!Objects.isNull(lastActivityDate)) {
+			selectJoinStep.join(
+				"IndividualChannel"
+			).on(
+				DSL.field(
+					"individual.id"
+				).eq(
+					DSL.field("individualchannel.individualid")
+				),
+				DSL.field(
+					"individualchannel.lastactivitydate"
+				).gt(
+					lastActivityDate
+				)
+			);
+		}
+
+		if (!Objects.isNull(segmentId)) {
+			condition = condition.and(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.segmentids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(segmentId), Long[].class)
+				));
+		}
+
+		return selectJoinStep.where(
+			condition
+		).orderBy(
+			DSL.field(
+				"individual.id"
+			).asc()
+		).fetch(
+			record -> (Long)record.get("individual.id")
+		);
+	}
+
 	public Map<Long, Long> findIndividualCounts(
 		boolean includeAnonymousUsers, Long segmentId) {
 
@@ -1021,6 +1079,10 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				DSL.field(
 					"individual.emailaddresshashed"
 				).isNotNull())
+		).orderBy(
+			DSL.field(
+				"individual.id"
+			).asc()
 		).fetch(
 			record -> (Long)record.get("individual.id")
 		);

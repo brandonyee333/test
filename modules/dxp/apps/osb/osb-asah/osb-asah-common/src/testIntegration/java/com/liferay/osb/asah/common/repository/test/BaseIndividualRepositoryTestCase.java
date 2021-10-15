@@ -36,6 +36,8 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 
+import java.time.LocalDateTime;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -240,17 +242,18 @@ public abstract class BaseIndividualRepositoryTestCase
 		individual2 = individualRepository.save(individual2);
 
 		Individual individual3 = _addIndividualWithActivityDates(
-			channel1, null, DateUtil.addDays(date, -1));
+			channel1.getId(), null, DateUtil.addDays(date, -1));
 
 		_individual3Id = individual3.getId();
 
 		Individual individual4 = _addIndividualWithActivityDates(
-			channel1, null, null);
+			channel1.getId(), null, null);
 
 		_individual4Id = individual4.getId();
 
 		Individual individual5 = _addIndividualWithActivityDates(
-			channel1, DateUtil.addDays(date, -31), DateUtil.addDays(date, -31));
+			channel1.getId(), DateUtil.addDays(date, -31),
+			DateUtil.addDays(date, -31));
 
 		_individual5Id = individual5.getId();
 
@@ -588,6 +591,56 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
+	public void testFindIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds() {
+		LocalDateTime localDateTime = LocalDateTime.now();
+
+		Individual individual1 = _addIndividualWithActivityDates(
+			11L, DateUtil.toUTCDate(localDateTime.minusMinutes(1)), null);
+
+		Individual individual2 = new Individual();
+
+		individual2 = individualRepository.save(individual2);
+
+		individual2.setChannelIds(Collections.singleton(11L));
+		individual2.setIndividualChannels(
+			Collections.singleton(
+				new IndividualChannel(
+					0L, 11L, individual2.getId(), null, null)));
+
+		individual2 = individualRepository.save(individual2);
+
+		Assert.assertEquals(
+			Arrays.asList(
+				_individual1Id, _individual3Id, _individual4Id, _individual5Id,
+				individual1.getId(), individual2.getId()),
+			individualRepository.
+				findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
+					11L, null, null));
+
+		Assert.assertEquals(
+			Arrays.asList(_individual1Id, individual1.getId()),
+			individualRepository.
+				findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
+					11L, DateUtil.toUTCDate(localDateTime.minusMinutes(10)),
+					null));
+
+		Assert.assertEquals(
+			Arrays.asList(
+				_individual1Id, _individual3Id, _individual4Id, _individual5Id,
+				individual1.getId()),
+			individualRepository.
+				findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
+					11L, null, _segmentId));
+
+		Assert.assertEquals(
+			Arrays.asList(_individual1Id),
+			individualRepository.
+				findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
+					11L, DateUtil.toUTCDate(localDateTime.minusMinutes(1)),
+					_segmentId));
+	}
+
+	@Test
 	public void testFindIndividualCounts() {
 		Map<Long, Long> individualCounts =
 			individualRepository.findIndividualCounts(false, _segmentId);
@@ -773,17 +826,20 @@ public abstract class BaseIndividualRepositoryTestCase
 	protected SegmentRepository segmentRepository;
 
 	private Individual _addIndividualWithActivityDates(
-		Channel channel1, Date lastActivityDate, Date previousActivityDate) {
+		Long channelId, Date lastActivityDate, Date previousActivityDate) {
 
 		Individual individual = new Individual();
 
-		individual.setChannelIds(Collections.singleton(channel1.getId()));
+		individual.setChannelIds(Collections.singleton(channelId));
+		individual.setSegmentIds(Collections.singleton(_segmentId));
+
+		individual = individualRepository.save(individual);
+
 		individual.setIndividualChannels(
 			Collections.singleton(
 				new IndividualChannel(
-					0L, channel1.getId(), null, lastActivityDate,
+					0L, channelId, individual.getId(), lastActivityDate,
 					previousActivityDate)));
-		individual.setSegmentIds(Collections.singleton(_segmentId));
 
 		return individualRepository.save(individual);
 	}

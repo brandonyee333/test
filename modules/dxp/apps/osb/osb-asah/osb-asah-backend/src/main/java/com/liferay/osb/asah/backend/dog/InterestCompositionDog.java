@@ -17,13 +17,13 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.model.Composition;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.InterestRepository;
@@ -35,13 +35,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.search.join.ScoreMode;
-
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
@@ -145,50 +140,17 @@ public class InterestCompositionDog {
 	private List<Long> _getIndividualIds(
 		boolean active, String channelId, Long segmentId) {
 
-		List<Long> individualIds = new ArrayList<>();
-
-		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "channelIds", channelId);
+		Date date = null;
 
 		if (active) {
-			LocalDateTime nowLocalDateTime = LocalDateTime.now();
+			LocalDateTime newDayLocalDateTime = DateUtil.newDayLocalDateTime(
+				TimeZoneDogUtil.getZoneId());
 
-			boolQueryBuilder.filter(
-				QueryBuilders.nestedQuery(
-					"lastActivityDates",
-					QueryBuilders.rangeQuery(
-						"lastActivityDates.lastActivityDate"
-					).gt(
-						DateUtil.toUTCString(nowLocalDateTime.minusDays(30))
-					),
-					ScoreMode.None));
+			date = DateUtil.toUTCDate(newDayLocalDateTime.minusDays(30));
 		}
 
-		if (!Objects.isNull(segmentId)) {
-			BoolQueryBuilderUtil.filterTerm(
-				boolQueryBuilder, "individualSegmentIds",
-				String.valueOf(segmentId));
-		}
-
-		try {
-			JSONArrayIterator.of(
-				"individuals", _faroInfoElasticsearchInvoker,
-				individualJSONObject -> {
-					individualIds.add(individualJSONObject.getLong("id"));
-
-					return null;
-				}
-			).setQueryBuilder(
-				boolQueryBuilder
-			).iterate();
-		}
-		catch (Exception exception) {
-			throw new RuntimeException("Unable to get individuals", exception);
-		}
-
-		return individualIds;
+		return _individualDog.getIndividualIds(
+			Long.valueOf(channelId), date, segmentId);
 	}
 
 	private Date _getLastSuccessfulDate() {
@@ -233,6 +195,9 @@ public class InterestCompositionDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private InterestRepository _interestRepository;
