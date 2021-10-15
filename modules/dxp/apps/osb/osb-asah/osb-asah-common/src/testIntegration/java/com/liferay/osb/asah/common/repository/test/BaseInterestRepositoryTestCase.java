@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.Repository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -93,6 +94,14 @@ public abstract class BaseInterestRepositoryTestCase
 	}
 
 	@Test
+	public void testCountByFilterStringAndScore() {
+		Assert.assertEquals(
+			4,
+			_interestRepository.countByFilterStringAndScore(
+				new FilterHelper(null), 1.4546849849874945));
+	}
+
+	@Test
 	public void testCountByOwnerIdAndOwnerType() {
 		Assert.assertEquals(
 			2,
@@ -125,6 +134,19 @@ public abstract class BaseInterestRepositoryTestCase
 	}
 
 	@Test
+	public void testFindByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween() {
+		List<Interest> interests =
+			_interestRepository.
+				findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
+					"sales", 374790572703144535L, "individual",
+					DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"),
+					DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
+
+		Assert.assertEquals(interests.toString(), 1, interests.size());
+		Assert.assertEquals(Arrays.asList(entityModels.get(4)), interests);
+	}
+
+	@Test
 	public void testFindByOwnerIdAndOwnerType() {
 		List<Interest> interests =
 			_interestRepository.findByOwnerIdAndOwnerType(
@@ -136,17 +158,7 @@ public abstract class BaseInterestRepositoryTestCase
 	}
 
 	@Test
-	public void testGetByNameAndOwnerIdAndOwnerTypeAndRecordedDate() {
-		Interest interest =
-			_interestRepository.getByNameAndOwnerIdAndOwnerTypeAndRecordedDate(
-				"javascript", 374790575409131096L, "individual",
-				DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
-
-		Assert.assertEquals(entityModels.get(1), interest);
-	}
-
-	@Test
-	public void testGetByOwnerTypeAndRecordedDate() {
+	public void testFindByOwnerTypeAndRecordedDate() {
 		List<Interest> interests =
 			_interestRepository.findByOwnerTypeAndRecordedDate(
 				null, "individual",
@@ -157,6 +169,16 @@ public abstract class BaseInterestRepositoryTestCase
 			Arrays.asList(
 				entityModels.get(2), entityModels.get(3), entityModels.get(4)),
 			interests);
+	}
+
+	@Test
+	public void testGetByNameAndOwnerIdAndOwnerTypeAndRecordedDate() {
+		Interest interest =
+			_interestRepository.getByNameAndOwnerIdAndOwnerTypeAndRecordedDate(
+				"javascript", 374790575409131096L, "individual",
+				DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
+
+		Assert.assertEquals(entityModels.get(1), interest);
 	}
 
 	@Test
