@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
@@ -42,6 +44,45 @@ public class InterestRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
+	public long countByFilterStringAndScoreGreaterThanEqual(
+		FilterHelper filterHelper, @Nullable Double score) {
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return selectSelectStep.from(
+			"Interest"
+		).where(
+			_getConditions(filterHelper, null, null, null, null, null, score)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
+	public List<Interest> findByFilterStringAndScoreGreaterThanEqual(
+		@Nullable FilterHelper filterHelper, @Nullable Double score,
+		Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"Interest"
+		).where(
+			_getConditions(filterHelper, null, null, null, null, null, score)
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Interest(record.intoMap())
+		);
+	}
+
 	public List<Interest> findByOwnerTypeAndRecordedDate(
 		@Nullable Long interestId, @Nullable String ownerType,
 		@Nullable Date recordedDate, int size) {
@@ -52,7 +93,7 @@ public class InterestRepositoryImpl extends BaseRepository {
 			"Interest"
 		).where(
 			_getConditions(
-				null, interestId, null, ownerType, recordedDate, null)
+				null, null, interestId, null, ownerType, recordedDate, null)
 		).orderBy(
 			DSL.field("id")
 		).limit(
@@ -79,7 +120,7 @@ public class InterestRepositoryImpl extends BaseRepository {
 			"Interest"
 		).where(
 			_getConditions(
-				keyword, null, ownerIds, ownerType, recordedDate, score)
+				null, keyword, null, ownerIds, ownerType, recordedDate, score)
 		).groupBy(
 			DSL.field("name")
 		).orderBy(
@@ -96,11 +137,17 @@ public class InterestRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Condition> _getConditions(
-		@Nullable String keywords, @Nullable Long interestId,
-		@Nullable List<Long> ownerIds, @Nullable String ownerType,
-		@Nullable Date recordedDate, Double score) {
+		@Nullable FilterHelper filterHelper, @Nullable String keywords,
+		@Nullable Long interestId, @Nullable List<Long> ownerIds,
+		@Nullable String ownerType, @Nullable Date recordedDate, Double score) {
 
 		List<Condition> conditions = new ArrayList<>();
+
+		if ((filterHelper != null) &&
+			!StringUtils.isEmpty(filterHelper.getFilterString())) {
+
+			conditions.add(filterHelper.getCondition());
+		}
 
 		if (!StringUtils.isBlank(keywords)) {
 			conditions.add(
