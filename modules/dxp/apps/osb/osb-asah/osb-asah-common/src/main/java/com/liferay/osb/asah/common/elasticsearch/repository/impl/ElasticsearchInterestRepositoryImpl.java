@@ -110,6 +110,32 @@ public class ElasticsearchInterestRepositoryImpl
 	}
 
 	@Override
+	public List<Interest>
+		findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
+			String name, Long ownerId, String ownerType, Date recordedDateFrom,
+			Date recordedDateTo) {
+
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.rangeQuery(
+						"dateRecorded"
+					).gte(
+						DateUtil.toString(recordedDateFrom)
+					).lte(
+						DateUtil.toString(recordedDateTo)
+					)
+				).filter(
+					QueryBuilders.termQuery("name", name)
+				).filter(
+					QueryBuilders.termQuery("ownerId", ownerId)
+				).filter(
+					QueryBuilders.termQuery("ownerType", ownerType)
+				)));
+	}
+
+	@Override
 	public List<Interest> findByOwnerIdAndOwnerType(
 		@Nullable Long ownerId, String ownerType, Pageable pageable) {
 
