@@ -115,6 +115,8 @@ definition {
 	@priority = "5"
 	@refactorneeded
 	test EditFolderDocument {
+		property portal.acceptance = "kevin";
+
 		JSONLayout.addPublicLayout(
 			groupName = "Guest",
 			layoutName = "Test Content Page Name",
