@@ -16,16 +16,17 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.repository.InterestRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.Date;
 import java.util.List;
-
-import org.apache.commons.collections4.IterableUtils;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -53,6 +54,14 @@ public class InterestDog {
 		return _interestRepository.
 			getByNameAndOwnerIdAndOwnerTypeAndRecordedDate(
 				name, ownerId, ownerType, recordedDate);
+	}
+
+	public Interest getInterest(Long id) {
+		Optional<Interest> interestOptional = _interestRepository.findById(id);
+
+		return interestOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST, "There is no interest with id " + id));
 	}
 
 	public Page<Interest> getInterestPage(
