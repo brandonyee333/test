@@ -108,6 +108,8 @@ definition {
 	@description = "This is a test for LPS-130964. View visual feedback when drag items in Fragments and Widgets panel."
 	@priority = "4"
 	test ViewVisualFeedbackWhenDragItems {
+		property portal.acceptance = "Issac";
+
 		task ("Navigate to content page at edit mode") {
 			ContentPagesNavigator.openEditContentPage(
 				pageName = "Test Content Page Name",
@@ -175,6 +177,8 @@ definition {
 	@description = "This is a test for LPS-130964 and LPS-132890. View visual feedback when hover on items in Fragments and Widgets panel."
 	@priority = "4"
 	test ViewVisualFeedbackWhenHoverOnItems {
+		property portal.acceptance = "Issac";
+		
 		task ("Navigate to content page at edit mode") {
 			ContentPagesNavigator.openEditContentPage(
 				pageName = "Test Content Page Name",

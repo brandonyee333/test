@@ -328,6 +328,8 @@ definition {
 	@description = "This is a test for LPS-107285. When the Grid fragment is duplicated, the components in each of modules should also be duplicated."
 	@priority = "4"
 	test DuplicateGridWithElements {
+		property portal.acceptance = "Issac";
+		
 		task ("Add a Grid to page") {
 			ContentPagesNavigator.openEditContentPage(
 				pageName = "Content Page Name",
