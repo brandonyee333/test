@@ -53,6 +53,12 @@ public interface InterestRepository extends Repository<Interest, Long> {
 		@Param("ownerType") String ownerType,
 		@Param("recordedDate") Date recordedDate);
 
+		@Cacheable
+	public List<Interest>
+		findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
+			String name, Long ownerId, String ownerType, Date recordedDateFrom,
+			Date recordedDateTo);
+
 	@Cacheable
 	public List<Interest> findByOwnerIdAndOwnerType(
 		Long ownerId, String ownerType, Pageable pageable);
