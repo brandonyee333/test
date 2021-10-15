@@ -103,7 +103,7 @@ public class ProjectIdThreadLocal {
 		}
 
 		if ((projectId == null) || !projectId.matches("^[0-9A-Za-z]+$")) {
-			throw new InvalidProjectIdException();
+			throw new InvalidProjectIdException(projectId);
 		}
 
 		_projectId.set(projectId);

@@ -18,4 +18,9 @@ package com.liferay.osb.asah.common.multitenancy.exception;
  * @author André Miranda
  */
 public class InvalidProjectIdException extends RuntimeException {
+
+	public InvalidProjectIdException(String message) {
+		super(message);
+	}
+
 }
