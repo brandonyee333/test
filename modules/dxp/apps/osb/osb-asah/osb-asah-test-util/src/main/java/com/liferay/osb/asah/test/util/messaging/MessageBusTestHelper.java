@@ -35,7 +35,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * @author Marcellus Tavares
@@ -93,11 +92,9 @@ public class MessageBusTestHelper {
 		Publisher publisher = _createPublisher(channel);
 
 		for (int i = 0; i < messagesJSONArray.length(); i++) {
-			JSONObject jsonObject = messagesJSONArray.getJSONObject(i);
-
 			ApiFuture<String> apiFuture = publisher.publish(
 				_pubSubMessageBusImpl.createPubsubMessage(
-					jsonObject.toString()));
+					String.valueOf(messagesJSONArray.getJSONObject(i))));
 
 			apiFuture.get();
 		}

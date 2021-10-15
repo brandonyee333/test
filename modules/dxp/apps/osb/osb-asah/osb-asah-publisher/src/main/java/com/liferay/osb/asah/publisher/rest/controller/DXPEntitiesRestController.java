@@ -102,21 +102,20 @@ public class DXPEntitiesRestController {
 					objectJSONObject.put("osbAsahDataSourceId", dataSourceId);
 				}
 
-				JSONObject messageJSONObject = JSONUtil.put(
-					"context",
-					JSONUtil.put(
-						"action", action
-					).put(
-						"type", type
-					)
-				).put(
-					"object", objectJSONObject
-				).put(
-					"projectId", ProjectIdThreadLocal.getProjectId()
-				);
-
 				_messageBus.sendMessage(
-					Channel.DXP_ENTITIES_MESSAGE, messageJSONObject.toString());
+					Channel.DXP_ENTITIES_MESSAGE,
+					JSONUtil.put(
+						"context",
+						JSONUtil.put(
+							"action", action
+						).put(
+							"type", type
+						)
+					).put(
+						"object", objectJSONObject
+					).put(
+						"projectId", ProjectIdThreadLocal.getProjectId()
+					).toString());
 			}
 
 			return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);

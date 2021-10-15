@@ -167,15 +167,12 @@ public class SearchQueryHelper {
 			rangeQueryBuilder.lt("now/d");
 		}
 		else {
-			LocalDate startLocalDate = timeRange.getStartLocalDate();
-
-			rangeQueryBuilder.gte(startLocalDate.toString());
+			rangeQueryBuilder.gte(
+				String.valueOf(timeRange.getStartLocalDate()));
 
 			LocalDate endLocalDate = timeRange.getEndLocalDate();
 
-			endLocalDate = endLocalDate.plusDays(1);
-
-			rangeQueryBuilder.lt(endLocalDate.toString());
+			rangeQueryBuilder.lt(String.valueOf(endLocalDate.plusDays(1)));
 		}
 
 		return rangeQueryBuilder;

@@ -178,22 +178,20 @@ public class ChannelsRestControllerTest {
 
 		String randomGroupId = RandomTestUtil.randomId();
 
-		JSONObject inputChannelJSONObject = JSONUtil.put(
-			"dataSourceId", dataSourceId
-		).put(
-			"groups",
-			Collections.singleton(
-				JSONUtil.put(
-					"id", randomGroupId
-				).put(
-					"name", RandomTestUtil.randomString()
-				))
-		);
-
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_channelsRestController.patchChannel(
 				channelJSONObject.getLong("id"),
-				inputChannelJSONObject.toString()),
+				JSONUtil.put(
+					"dataSourceId", dataSourceId
+				).put(
+					"groups",
+					Collections.singleton(
+						JSONUtil.put(
+							"id", randomGroupId
+						).put(
+							"name", RandomTestUtil.randomString()
+						))
+				).toString()),
 			JSONObject.class);
 
 		JSONObject actualChannelJSONObject = responseJSONObject.getJSONObject(
@@ -219,21 +217,20 @@ public class ChannelsRestControllerTest {
 		String dataSourceId = RandomTestUtil.randomId();
 		String randomGroupId = RandomTestUtil.randomId();
 
-		JSONObject inputChannelJSONObject = JSONUtil.put(
-			"dataSourceId", dataSourceId
-		).put(
-			"groups",
-			Collections.singleton(
-				JSONUtil.put(
-					"id", randomGroupId
-				).put(
-					"name", RandomTestUtil.randomString()
-				))
-		);
-
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_channelsRestController.patchChannel(
-				123456789L, inputChannelJSONObject.toString()),
+				123456789L,
+				JSONUtil.put(
+					"dataSourceId", dataSourceId
+				).put(
+					"groups",
+					Collections.singleton(
+						JSONUtil.put(
+							"id", randomGroupId
+						).put(
+							"name", RandomTestUtil.randomString()
+						))
+				).toString()),
 			JSONObject.class);
 
 		JSONObject actualChannelJSONObject = responseJSONObject.getJSONObject(
@@ -337,21 +334,20 @@ public class ChannelsRestControllerTest {
 	)
 	@Test
 	public void testRemovedGroupIds() {
-		JSONObject inputChannelJSONObject = JSONUtil.put(
-			"dataSourceId", "123456789"
-		).put(
-			"groups",
-			Collections.singleton(
-				JSONUtil.put(
-					"id", RandomTestUtil.randomId()
-				).put(
-					"name", RandomTestUtil.randomString()
-				))
-		);
-
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_channelsRestController.patchChannel(
-				4324324324L, inputChannelJSONObject.toString()),
+				4324324324L,
+				JSONUtil.put(
+					"dataSourceId", "123456789"
+				).put(
+					"groups",
+					Collections.singleton(
+						JSONUtil.put(
+							"id", RandomTestUtil.randomId()
+						).put(
+							"name", RandomTestUtil.randomString()
+						))
+				).toString()),
 			JSONObject.class);
 
 		JSONArray removedGroupIdsJSONArray = responseJSONObject.optJSONArray(

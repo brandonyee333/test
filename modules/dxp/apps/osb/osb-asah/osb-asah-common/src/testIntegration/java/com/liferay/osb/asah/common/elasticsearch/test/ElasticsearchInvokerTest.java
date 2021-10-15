@@ -613,7 +613,7 @@ public class ElasticsearchInvokerTest {
 	}
 
 	private String _createIndexConfiguration() {
-		JSONObject jsonObject = JSONUtil.put(
+		return JSONUtil.put(
 			"mappings",
 			JSONUtil.put(
 				_collectionName,
@@ -628,9 +628,7 @@ public class ElasticsearchInvokerTest {
 					)))
 		).put(
 			"settings", JSONUtil.put("index.mapping.total_fields.limit", 5000)
-		);
-
-		return jsonObject.toString();
+		).toString();
 	}
 
 	private String _collectionName;
