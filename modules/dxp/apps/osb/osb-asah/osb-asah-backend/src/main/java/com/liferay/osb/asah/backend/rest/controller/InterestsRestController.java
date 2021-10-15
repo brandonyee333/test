@@ -279,19 +279,20 @@ public class InterestsRestController
 	}
 
 	private List<Object> _getVisitedPages(Interest interest) {
-		return faroInfoElasticsearchInvoker.get(
-			"visited-pages",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery(
-					"day", DateUtil.toUTCString(interest.getRecordedDate()))
-			).filter(
-				QueryBuilders.termQuery("interestName", interest.getName())
-			).filter(
-				QueryBuilders.termQuery("ownerId", interest.getOwnerId())
-			).filter(
-				QueryBuilders.termQuery("ownerType", interest.getOwnerType())
-			)
-		).toList();
+		return JSONUtil.toObjectList(
+			faroInfoElasticsearchInvoker.get(
+				"visited-pages",
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"day", DateUtil.toUTCString(interest.getRecordedDate()))
+				).filter(
+					QueryBuilders.termQuery("interestName", interest.getName())
+				).filter(
+					QueryBuilders.termQuery("ownerId", interest.getOwnerId())
+				).filter(
+					QueryBuilders.termQuery(
+						"ownerType", interest.getOwnerType())
+				)));
 	}
 
 	private PageDTO<InterestDTO> _toPageDTO(
