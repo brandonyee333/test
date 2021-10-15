@@ -34,7 +34,7 @@ jobs:
           before_script:
               - docker load -i docker_images/images.tar || true
               - docker-compose -f docker-compose.integration-test.yml up -d
-              - docker save -o docker_images/images.tar $(docker images -a -q)
+              - docker save $(docker images --format '{{.Repository}}:{{.Tag}}') -o docker_images/images.tar
           script:
               - ./gradlew test --configure-on-demand --continue --parallel
               - ./gradlew testIntegration --configure-on-demand --continue
