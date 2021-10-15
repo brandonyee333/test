@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.repository.ProjectRepository;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -31,6 +32,11 @@ import org.springframework.stereotype.Repository;
 public class ElasticsearchProjectRepositoryImpl
 	extends BaseElasticsearchRepository<Project, String>
 	implements ProjectRepository {
+
+	@Override
+	public Iterable<Project> findAll() {
+		return findAll(Sort.by("id.keyword"));
+	}
 
 	@PostConstruct
 	public void init() {
