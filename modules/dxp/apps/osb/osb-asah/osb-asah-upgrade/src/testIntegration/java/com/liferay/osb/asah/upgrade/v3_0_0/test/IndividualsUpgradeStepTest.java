@@ -14,18 +14,35 @@
 
 package com.liferay.osb.asah.upgrade.v3_0_0.test;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ClientUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchConnection;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
+import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
 import com.liferay.osb.asah.upgrade.v3_0_0.IndividualsUpgradeStep;
+
+import java.util.Collections;
+import java.util.Map;
+
+import org.elasticsearch.action.admin.indices.alias.Alias;
+import org.elasticsearch.action.admin.indices.template.delete.DeleteIndexTemplateRequestBuilder;
+import org.elasticsearch.action.admin.indices.template.put.PutIndexTemplateRequestBuilder;
+import org.elasticsearch.client.AdminClient;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.IndicesAdminClient;
 
 import org.json.JSONObject;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,27 +54,108 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
 public class IndividualsUpgradeStepTest {
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@Test
 	public void testUpgrade() throws Exception {
-		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.get(
-			"individuals", "338486037253283140");
+		_elasticsearchIndexManager.delete(
+			ElasticsearchIndexUtil.getIndexName(
+				"individuals", WeDeployDataService.OSB_ASAH_FARO_INFO));
 
-		Assert.assertFalse(individualJSONObject.has("previousActivityDates"));
+		_deleteIndividualsTemplate();
+
+		_addIndividualsTemplate();
+
+		_elasticsearchIndexManager.create(
+			true,
+			ResourceUtil.readResourceToString(
+				"dependencies/old_individuals_index_configuration.json", this),
+			ElasticsearchIndexUtil.getIndexName(
+				"individuals", WeDeployDataService.OSB_ASAH_FARO_INFO));
+
+		Map<String, Object> indexMappings =
+			_elasticsearchIndexManager.getIndexMappings(
+				"individuals", WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+		Map<String, Object> properties = (Map<String, Object>)indexMappings.get(
+			"properties");
+
+		Assert.assertFalse(properties.containsKey("previousActivityDates"));
 
 		_individualsUpgradeStep.upgrade("");
 
-		individualJSONObject = _faroInfoElasticsearchInvoker.get(
-			"individuals", "338486037253283140");
+		indexMappings = _elasticsearchIndexManager.getIndexMappings(
+			"individuals", WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-		Assert.assertTrue(individualJSONObject.has("previousActivityDates"));
+		properties = (Map<String, Object>)indexMappings.get("properties");
+
+		Assert.assertTrue(properties.containsKey("previousActivityDates"));
+
+		JSONAssert.assertEquals(
+			JSONUtil.put(
+				"properties",
+				JSONUtil.put(
+					"channelId", JSONUtil.put("type", "keyword")
+				).put(
+					"lastActivityDate", JSONUtil.put("type", "date")
+				)
+			).put(
+				"type", "nested"
+			),
+			new JSONObject(
+				(Map<String, Object>)properties.get("previousActivityDates")),
+			false);
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+	private void _addIndividualsTemplate() throws Exception {
+		Client client = _elasticsearchConnection.getTransportClient();
+
+		AdminClient adminClient = client.admin();
+
+		IndicesAdminClient indicesAdminClient = adminClient.indices();
+
+		PutIndexTemplateRequestBuilder putIndexTemplateRequestBuilder =
+			indicesAdminClient.preparePutTemplate(
+				"osbasahfaroinfo_individuals");
+
+		putIndexTemplateRequestBuilder.addAlias(new Alias("{index}_alias"));
+		putIndexTemplateRequestBuilder.setPatterns(
+			Collections.singletonList("*_osbasahfaroinfo_individuals"));
+
+		JSONObject indexConfigurationJSONObject =
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies/old_individuals_index_configuration.json", this);
+
+		putIndexTemplateRequestBuilder.setSource(
+			indexConfigurationJSONObject.toMap());
+
+		putIndexTemplateRequestBuilder.setVersion(
+			ReleaseInfo.getSchemaVersion());
+
+		ClientUtil.waitForConnection(client);
+
+		putIndexTemplateRequestBuilder.get();
+	}
+
+	private void _deleteIndividualsTemplate() {
+		Client client = _elasticsearchConnection.getTransportClient();
+
+		AdminClient adminClient = client.admin();
+
+		IndicesAdminClient indicesAdminClient = adminClient.indices();
+
+		DeleteIndexTemplateRequestBuilder deleteIndexTemplateRequestBuilder =
+			indicesAdminClient.prepareDeleteTemplate(
+				"osbasahfaroinfo_individuals");
+
+		ClientUtil.waitForConnection(client);
+
+		deleteIndexTemplateRequestBuilder.get();
+	}
+
+	@Autowired
+	private ElasticsearchConnection _elasticsearchConnection;
+
+	@Autowired
+	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Autowired
 	private IndividualsUpgradeStep _individualsUpgradeStep;
