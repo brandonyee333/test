@@ -145,6 +145,12 @@ public class ProductEntryLocalServiceImpl
 			licenses, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
+	public List<ProductEntry> getProductEntriesByEnvironment(int environment)
+		throws PortalException {
+
+		return productEntryPersistence.findByEnvironment(environment);
+	}
+
 	public ProductEntry getProductEntryByKoroneikiKey(
 			String koroneikiProductKey)
 		throws PortalException {

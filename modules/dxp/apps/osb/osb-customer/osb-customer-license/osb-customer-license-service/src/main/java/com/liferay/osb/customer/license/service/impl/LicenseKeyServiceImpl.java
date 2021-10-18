@@ -26,6 +26,7 @@ import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
 import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
+import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.customer.license.constants.LicenseKeyConstants;
@@ -47,6 +48,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -79,7 +81,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		try {
 			User user = getUser();
 
-			StringBundler sb = new StringBundler(7);
+			StringBundler sb = new StringBundler(8);
 
 			sb.append("accountKey eq '");
 			sb.append(accountEntry.getKoroneikiAccountKey());
@@ -87,7 +89,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			sb.append(user.getUuid());
 			sb.append("') and state eq 'active' and (property_type eq ");
 			sb.append("'primary' or contains(name, 'Commerce Subscription') ");
-			sb.append("or contains(name, 'DXP Cloud Subscription'))");
+			sb.append("or contains(name, 'DXP Cloud Subscription') ");
+			sb.append("or contains(name, 'Partnership'))");
 
 			List<ProductPurchaseView> productPurchaseViews =
 				_productPurchaseViewWebService.getProductPurchaseViews(
@@ -109,9 +112,16 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 					((curProductEntry.isDXP() ||
 					  curProductEntry.isDXPCloud()) &&
 					 productEntry.isDXP()) ||
-					(curProductEntry.isPortal() && productEntry.isPortal())) {
+					(curProductEntry.isPortal() && productEntry.isPortal()) ||
+					(ArrayUtil.contains(
+						ProductConstants.NAMES_PARTNERSHIP,
+						curProductEntry.getName()) &&
+					 (productEntry.isPortal() || productEntry.isDXP() ||
+					  productEntry.isCommerceSubscription()))) {
 
 					hasActiveProduct = true;
+
+					break;
 				}
 			}
 

@@ -37,8 +37,9 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 		<%
 		TreeSet<AccountEntry> accountEntries = new TreeSet<AccountEntry>(new AccountEntryNameComparator(true));
 		Map<String, Set<ProductEntry>> accountEntryProductEntriesMap = new HashMap<String, Set<ProductEntry>>();
+		Set<String> partnerAccountKeys = new HashSet<String>();
 
-		String filter = "customerContactUuids/any(s:s eq '" + user.getUuid() + "') and state eq 'active' and (property_type eq 'primary' or contains(name, 'Commerce Subscription') or contains(name, 'DXP Cloud Subscription'))";
+		String filter = "customerContactUuids/any(s:s eq '" + user.getUuid() + "') and state eq 'active' and (property_type eq 'primary' or contains(name, 'Commerce Subscription') or contains(name, 'DXP Cloud Subscription') or contains(name, 'Partnership'))";
 
 		List<ProductPurchaseView> productPurchaseViews = productPurchaseViewWebService.getProductPurchaseViews(StringPool.BLANK, filter, 1, 1000, StringPool.BLANK);
 
@@ -51,9 +52,25 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 
 			ProductPurchase productPurchase = productPurchases[0];
 
+			if (partnerAccountKeys.contains(productPurchase.getAccountKey())) {
+				continue;
+			}
+
 			AccountEntry accountEntry = AccountEntryLocalServiceUtil.fetchKoroneikiAccountEntry(productPurchase.getAccountKey());
 
 			if (accountEntry == null) {
+				continue;
+			}
+
+			Product product = productPurchaseView.getProduct();
+
+			if (ArrayUtil.contains(ProductConstants.NAMES_PARTNERSHIP, product.getName())) {
+				accountEntries.add(accountEntry);
+
+				accountEntryProductEntriesMap.put(productPurchase.getAccountKey(), new HashSet<>(ProductEntryLocalServiceUtil.getProductEntriesByEnvironment(ProductEntryConstants.ENVIRONMENT_DEVELOPMENT)));
+
+				partnerAccountKeys.add(productPurchase.getAccountKey());
+
 				continue;
 			}
 
