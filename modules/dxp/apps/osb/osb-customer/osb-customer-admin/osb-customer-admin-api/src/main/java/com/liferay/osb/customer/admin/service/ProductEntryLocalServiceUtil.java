@@ -273,6 +273,13 @@ public class ProductEntryLocalServiceUtil {
 		return getService().getProductEntries(start, end);
 	}
 
+	public static List<ProductEntry> getProductEntriesByEnvironment(
+			int environment)
+		throws PortalException {
+
+		return getService().getProductEntriesByEnvironment(environment);
+	}
+
 	/**
 	 * Returns the number of product entries.
 	 *

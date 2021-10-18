@@ -312,6 +312,15 @@ public class ProductEntryLocalServiceWrapper
 		return _productEntryLocalService.getProductEntries(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.customer.admin.model.ProductEntry>
+			getProductEntriesByEnvironment(int environment)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _productEntryLocalService.getProductEntriesByEnvironment(
+			environment);
+	}
+
 	/**
 	 * Returns the number of product entries.
 	 *

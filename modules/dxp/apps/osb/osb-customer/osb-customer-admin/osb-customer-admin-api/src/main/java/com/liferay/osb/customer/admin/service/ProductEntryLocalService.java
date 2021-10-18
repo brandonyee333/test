@@ -245,6 +245,10 @@ public interface ProductEntryLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ProductEntry> getProductEntries(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ProductEntry> getProductEntriesByEnvironment(int environment)
+		throws PortalException;
+
 	/**
 	 * Returns the number of product entries.
 	 *
