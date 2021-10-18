@@ -75,6 +75,23 @@ public class SecurityOncePerRequestFilterTest {
 			JSONUtil.put("faroBackendSecuritySignature", securitySignature));
 
 		_testGet("/api/1.0/individual-segments", securitySignature);
+
+		_testGet(
+			"/api/recommendations",
+			DigestUtils.sha256Hex(
+				_osbAsahFaroBackendSecurityToken.concat("http://localhost")));
+		_testGet(
+			"/api/reports/accounts",
+			DigestUtils.sha256Hex(
+				_osbAsahFaroBackendSecurityToken.concat("http://localhost")));
+		_testGet(
+			"/api/////recommendations",
+			DigestUtils.sha256Hex(
+				_osbAsahFaroBackendSecurityToken.concat("http://localhost")));
+		_testGet(
+			"/api////reports/accounts",
+			DigestUtils.sha256Hex(
+				_osbAsahFaroBackendSecurityToken.concat("http://localhost")));
 	}
 
 	private void _expectStatusForbidden(ResultActions resultActions)
