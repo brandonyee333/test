@@ -122,9 +122,7 @@ public abstract class BaseSecurityOncePerRequestFilter
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest httpServletRequest) {
-		if ((Objects.equals(httpServletRequest.getServerName(), "localhost") &&
-			 _environment.acceptsProfiles("!test")) ||
-			ServiceConstants.isInternalServiceURL(
+		if (ServiceConstants.isInternalServiceURL(
 				ServletRequestUtil.getURL(httpServletRequest))) {
 
 			return true;
