@@ -16,9 +16,7 @@ package com.liferay.osb.asah.backend.servlet.filter;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.servlet.filter.BaseSecurityOncePerRequestFilter;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -55,7 +53,12 @@ public class SecurityOncePerRequestFilter
 			return super.isInvalidRequest(httpServletRequest);
 		}
 
-		if (StringUtils.contains(httpServletRequest.getRequestURI(), "/api/")) {
+		if (StringUtils.contains(httpServletRequest.getRequestURI(), "/api/") &&
+			!StringUtils.contains(
+				httpServletRequest.getRequestURI(), "/recommendations") &&
+			!StringUtils.contains(
+				httpServletRequest.getRequestURI(), "/reports")) {
+
 			if (!_dataSourceDog.existsDataSource(
 					faroBackendSecuritySignature)) {
 
@@ -73,8 +76,5 @@ public class SecurityOncePerRequestFilter
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
 
 }
