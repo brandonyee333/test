@@ -1,3 +1,4 @@
 Bundle-Name: Liferay OSB Customer Zendesk Target Sync
 Bundle-SymbolicName: com.liferay.osb.customer.zendesk.target.sync
 Bundle-Version: 1.0.0
+-dsannotations-options: inherit

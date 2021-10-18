@@ -14,26 +14,15 @@
 
 package com.liferay.osb.customer.zendesk.servlet;
 
-import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.jira.rest.connector.service.JIRAIssueRESTService;
-import com.liferay.osb.customer.restful.servlet.SimpleRestfulServlet;
-import com.liferay.osb.customer.restful.servlet.exception.NoResourceException;
-import com.liferay.osb.customer.zendesk.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.http.HttpAuthManager;
-import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 
 import java.text.SimpleDateFormat;
@@ -64,7 +53,7 @@ import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
 	},
 	service = Servlet.class
 )
-public class ZendeskJiraServlet extends SimpleRestfulServlet {
+public class ZendeskJiraServlet extends ZendeskBaseServlet {
 
 	public void postJiraIssue(
 			HttpServletRequest request, HttpServletResponse response)
@@ -168,75 +157,6 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 			"/api/services/jira/links", jsonObject.toString());
 	}
 
-	protected JSONObject getRequestJSONObject(HttpServletRequest request)
-		throws PortalException {
-
-		StringBundler sb = new StringBundler();
-
-		String line = null;
-
-		try {
-			BufferedReader bufferedReader = request.getReader();
-
-			while ((line = bufferedReader.readLine()) != null) {
-				sb.append(line);
-			}
-
-			bufferedReader.close();
-		}
-		catch (Exception e) {
-			throw new PortalException(e);
-		}
-
-		return JSONFactoryUtil.createJSONObject(sb.toString());
-	}
-
-	@Override
-	protected String getResourceKey(HttpServletRequest request) {
-		return null;
-	}
-
-	@Override
-	protected String getResourceName(HttpServletRequest request)
-		throws NoResourceException {
-
-		String pathInfo = _http.fixPath(request.getPathInfo());
-
-		if (Validator.isNull(pathInfo)) {
-			throw new NoResourceException();
-		}
-
-		return pathInfo;
-	}
-
-	@Override
-	protected boolean isAuthorized(HttpServletRequest request) {
-		if (!request.isSecure()) {
-			return false;
-		}
-
-		try {
-			long basicUserId = _httpAuthManager.getBasicUserId(request);
-
-			long userId = _userLocalService.getUserIdByEmailAddress(
-				OSBCustomerConstants.COMPANY_ID,
-				ZendeskConnectorConfigurationValues.ZENDESK_AUTH_USER_EMAIL);
-
-			if (basicUserId != userId) {
-				return false;
-			}
-		}
-		catch (PortalException pe) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(pe, pe);
-			}
-
-			return false;
-		}
-
-		return true;
-	}
-
 	protected JSONObject updateZendeskFLSTicketTags(long zendeskTicketId)
 		throws PortalException {
 
@@ -260,20 +180,8 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 			jsonObject.toString());
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		ZendeskJiraServlet.class);
-
-	@Reference
-	private Http _http;
-
-	@Reference
-	private HttpAuthManager _httpAuthManager;
-
 	@Reference
 	private JIRAIssueRESTService _jiraIssueRESTService;
-
-	@Reference
-	private UserLocalService _userLocalService;
 
 	@Reference
 	private ZendeskBaseWebService _zendeskBaseWebService;
