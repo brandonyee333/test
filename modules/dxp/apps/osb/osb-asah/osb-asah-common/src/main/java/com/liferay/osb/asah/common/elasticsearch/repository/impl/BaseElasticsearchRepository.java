@@ -136,7 +136,11 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 				elasticsearchInvoker.get(
 					getCollectionName(),
 					searchSourceBuilder -> {
-						if (!sort.isUnsorted()) {
+						if (sort.isUnsorted()) {
+							searchSourceBuilder.sort(
+								SortBuilderUtil.fieldSort("id"));
+						}
+						else {
 							Stream.of(
 								sort
 							).flatMap(
@@ -283,25 +287,27 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 		Sort sort = pageable.getSort();
 
 		if (sort.isUnsorted()) {
-			return;
+			searchSourceBuilder.sort(SortBuilderUtil.fieldSort("id"));
 		}
+		else {
+			Stream.of(
+				sort
+			).flatMap(
+				Sort::stream
+			).forEach(
+				order -> {
+					SortOrder sortOrder = SortOrder.ASC;
 
-		Stream.of(
-			sort
-		).flatMap(
-			Sort::stream
-		).forEach(
-			order -> {
-				SortOrder sortOrder = SortOrder.ASC;
+					if (order.isDescending()) {
+						sortOrder = SortOrder.DESC;
+					}
 
-				if (order.isDescending()) {
-					sortOrder = SortOrder.DESC;
+					searchSourceBuilder.sort(
+						SortBuilderUtil.fieldSort(
+							order.getProperty(), sortOrder));
 				}
-
-				searchSourceBuilder.sort(
-					SortBuilderUtil.fieldSort(order.getProperty(), sortOrder));
-			}
-		);
+			);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
