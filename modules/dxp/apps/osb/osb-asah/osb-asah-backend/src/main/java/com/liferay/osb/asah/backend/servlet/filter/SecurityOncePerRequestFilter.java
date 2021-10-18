@@ -45,14 +45,6 @@ public class SecurityOncePerRequestFilter
 			return true;
 		}
 
-		if (StringUtils.startsWith(
-				httpServletRequest.getRequestURI(), "/api/recommendations") ||
-			StringUtils.startsWith(
-				httpServletRequest.getRequestURI(), "/api/reports")) {
-
-			return super.isInvalidRequest(httpServletRequest);
-		}
-
 		if (StringUtils.contains(httpServletRequest.getRequestURI(), "/api/") &&
 			!StringUtils.contains(
 				httpServletRequest.getRequestURI(), "/recommendations") &&
