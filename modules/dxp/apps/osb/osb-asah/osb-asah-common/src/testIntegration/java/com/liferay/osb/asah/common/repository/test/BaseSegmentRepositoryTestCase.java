@@ -43,6 +43,7 @@ import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 /**
  * @author Inácio Nery
@@ -58,8 +59,10 @@ public abstract class BaseSegmentRepositoryTestCase
 
 		segment1.setChannelId(channel1.getId());
 
+		segment1.setActivitiesCount(1L);
 		segment1.setCreateDate(new Date());
 		segment1.setFilter("(channelId eq '1')");
+		segment1.setLastActivityDate(new Date());
 		segment1.setName("Segment 1");
 		segment1.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
 		segment1.setReferencedAssetIds(SetUtil.of(3L, 4L));
@@ -120,7 +123,15 @@ public abstract class BaseSegmentRepositoryTestCase
 		segment3.setStatus("INACTIVE");
 		segment3.setType(Segment.Type.DYNAMIC);
 
-		setUpRepository(segment1, segment2, segment3);
+		Segment segment4 = new Segment();
+
+		segment4.setName("Account: 456");
+
+		setUpRepository(segment1, segment2, segment3, segment4);
+
+		segment1 = entityModels.get(0);
+
+		_segment1Id = segment1.getId();
 
 		segment3 = entityModels.get(2);
 
@@ -164,12 +175,12 @@ public abstract class BaseSegmentRepositoryTestCase
 
 	@Test
 	public void testCountByIdAfter() {
-		Assert.assertEquals(3, _segmentRepository.countByIdAfter(0L));
+		Assert.assertEquals(4, _segmentRepository.countByIdAfter(0L));
 
 		Segment segment = entityModels.get(0);
 
 		Assert.assertEquals(
-			2, _segmentRepository.countByIdAfter(segment.getId()));
+			3, _segmentRepository.countByIdAfter(segment.getId()));
 	}
 
 	@Test
@@ -177,7 +188,15 @@ public abstract class BaseSegmentRepositoryTestCase
 		_segmentRepository.deleteByChannelIdIn(
 			SetUtil.map(entityModels, Segment::getChannelId));
 
-		Assert.assertEquals(0, _segmentRepository.count());
+		Assert.assertEquals(1, _segmentRepository.count());
+	}
+
+	@Test
+	public void testFindByChannelIdIsNotNullOrNameStartingWith() {
+		Assert.assertEquals(
+			entityModels,
+			_segmentRepository.findByChannelIdIsNotNullOrNameStartingWith(
+				"Account: ", PageRequest.of(0, 10, Sort.by("id"))));
 	}
 
 	@Test
@@ -231,6 +250,28 @@ public abstract class BaseSegmentRepositoryTestCase
 		Assert.assertEquals(segments.toString(), 0, segments.size());
 	}
 
+	@Test
+	public void testUpdateActivitiesCountAndRemoveLastActivityDate() {
+		Optional<Segment> segmentOptional = _segmentRepository.findById(
+			_segment1Id);
+
+		Segment segment = segmentOptional.get();
+
+		Assert.assertEquals(1L, (long)segment.getActivitiesCount());
+
+		Assert.assertNotNull(segment.getLastActivityDate());
+
+		_segmentRepository.updateActivitiesCountAndRemoveLastActivityDate(0L);
+
+		segmentOptional = _segmentRepository.findById(_segment1Id);
+
+		segment = segmentOptional.get();
+
+		Assert.assertEquals(0L, (long)segment.getActivitiesCount());
+
+		Assert.assertNull(segment.getLastActivityDate());
+	}
+
 	@Override
 	protected Repository<Segment, Long> getRepository() {
 		return _segmentRepository;
@@ -259,6 +300,7 @@ public abstract class BaseSegmentRepositoryTestCase
 	@Autowired
 	private IndividualRepository _individualRepository;
 
+	private Long _segment1Id;
 	private Long _segment3Id;
 
 	@Autowired
