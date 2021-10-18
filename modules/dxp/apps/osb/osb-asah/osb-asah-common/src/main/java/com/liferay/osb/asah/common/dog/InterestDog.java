@@ -89,8 +89,9 @@ public class InterestDog {
 			_interestRepository.findByFilterStringAndScoreGreaterThanEqual(
 				filterHelper, score, pageRequest),
 			pageRequest,
-			() -> _interestRepository.countByFilterStringAndScore(
-				filterHelper, score));
+			() ->
+				_interestRepository.countByFilterStringAndScoreGreaterThanEqual(
+					filterHelper, score));
 	}
 
 	public List<Interest> getInterests(

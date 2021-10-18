@@ -36,7 +36,7 @@ import org.springframework.lang.Nullable;
 public interface InterestRepository extends Repository<Interest, Long> {
 
 	@Cacheable
-	public long countByFilterStringAndScore(
+	public long countByFilterStringAndScoreGreaterThanEqual(
 		FilterHelper filterHelper, Double score);
 
 	@Cacheable

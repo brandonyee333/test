@@ -59,7 +59,7 @@ public class ElasticsearchInterestRepositoryImpl
 	implements InterestRepository {
 
 	@Override
-	public long countByFilterStringAndScore(
+	public long countByFilterStringAndScoreGreaterThanEqual(
 		FilterHelper filterHelper, Double score) {
 
 		return _faroInfoElasticsearchInvoker.count(

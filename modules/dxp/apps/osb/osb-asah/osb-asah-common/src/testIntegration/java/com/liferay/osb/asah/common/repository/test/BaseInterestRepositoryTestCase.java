@@ -97,7 +97,7 @@ public abstract class BaseInterestRepositoryTestCase
 	public void testCountByFilterStringAndScore() {
 		Assert.assertEquals(
 			4,
-			_interestRepository.countByFilterStringAndScore(
+			_interestRepository.countByFilterStringAndScoreGreaterThanEqual(
 				new FilterHelper(null), 1.4546849849874945));
 	}
 
