@@ -145,7 +145,7 @@
 			UPDATE
 				Segment
 			SET
-				activitiesCount = :activitiesCount
+				activitiesCount = :activitiesCount,
 				lastActivityDate = NULL
 		]]>
 	</entry>
