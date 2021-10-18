@@ -135,7 +135,8 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 
 		int page = 0;
 
-		List<Segment> segments = _segmentDog.getSegments(page, 500);
+		List<Segment> segments = _segmentDog.getSegments(
+			"Account: ", page, 500);
 
 		while (!segments.isEmpty()) {
 			for (Segment segment : segments) {
@@ -147,37 +148,24 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 				}
 			}
 
-			segments = _segmentDog.getSegments(++page, 500);
+			segments = _segmentDog.getSegments("Account: ", ++page, 500);
 		}
 	}
 
 	private void _process(Segment segment) {
-		Long channelId = segment.getChannelId();
-		String name = segment.getName();
-		Long segmentId = segment.getId();
-
-		if ((channelId == null) && !name.startsWith("Account: ")) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Skipping segment due missing channel ID " + segmentId);
-			}
-
-			return;
-		}
-
 		if (segment.getActivitiesCount() == null) {
 			segment.setActivitiesCount(0L);
 
-			_segmentDog.updateSegment(segment, segmentId);
+			segment = _segmentDog.updateSegment(segment, segment.getId());
 		}
 
 		boolean includeAnonymousUsers = BooleanUtils.toBoolean(
 			segment.getIncludeAnonymousUsers());
 
 		long activitiesCount = _getActivitiesCount(
-			channelId, includeAnonymousUsers, segmentId);
+			segment.getChannelId(), includeAnonymousUsers, segment.getId());
 		Date lastActivityDate = _getLastActivityDate(
-			channelId, includeAnonymousUsers, segmentId);
+			segment.getChannelId(), includeAnonymousUsers, segment.getId());
 
 		if ((activitiesCount == segment.getActivitiesCount()) &&
 			Objects.nonNull(segment.getLastActivityDate()) &&

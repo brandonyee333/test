@@ -268,15 +268,13 @@ public class SegmentDog extends BaseFaroInfoDog {
 			() -> _segmentRepository.countByIdAfter(segmentId));
 	}
 
-	public List<Segment> getSegments(int page, int size) {
-		Page<Segment> segments = _segmentRepository.findAll(
-			PageRequest.of(page, size));
-
-		return segments.getContent();
-	}
-
 	public List<Segment> getSegments(Iterable<Long> segmentIds) {
 		return IterableUtils.toList(_segmentRepository.findAllById(segmentIds));
+	}
+
+	public List<Segment> getSegments(String name, int page, int size) {
+		return _segmentRepository.findByChannelIdIsNotNullOrNameStartingWith(
+			name, PageRequest.of(page, size));
 	}
 
 	public List<Segment> getSegments(

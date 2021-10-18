@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -28,12 +27,15 @@ import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.apache.commons.collections4.IterableUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -148,7 +150,8 @@ public class AccountDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	private void _assertAccountIndividualSegment() {
-		List<Segment> segments = _segmentDog.getSegments(0, 1);
+		List<Segment> segments = IterableUtils.toList(
+			_segmentRepository.findAll());
 
 		Assert.assertEquals(segments.toString(), 1, segments.size());
 
@@ -239,6 +242,6 @@ public class AccountDogTest extends BaseFaroInfoDogTestCase {
 	private DataSource _salesforceDataSource;
 
 	@Autowired
-	private SegmentDog _segmentDog;
+	private SegmentRepository _segmentRepository;
 
 }

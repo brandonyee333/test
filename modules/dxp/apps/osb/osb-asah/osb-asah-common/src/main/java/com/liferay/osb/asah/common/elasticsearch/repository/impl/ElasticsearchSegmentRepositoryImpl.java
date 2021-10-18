@@ -159,6 +159,27 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	@Override
+	public List<Segment> findByChannelIdIsNotNullOrNameStartingWith(
+		String name, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.should(
+								QueryBuilders.existsQuery("channelId")
+							).should(
+								QueryBuilders.prefixQuery("name", name)
+							));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
+	}
+
+	@Override
 	public List<Segment> findByIdAfter(Long id, Pageable pageable) {
 		return toList(
 			new JSONArray(
