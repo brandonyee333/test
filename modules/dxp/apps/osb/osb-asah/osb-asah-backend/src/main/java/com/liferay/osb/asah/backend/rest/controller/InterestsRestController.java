@@ -75,7 +75,9 @@ public class InterestsRestController
 	public InterestDTO getInterestDTO(
 		@PathVariable Long id, @RequestParam(required = false) String expand) {
 
-		return _createEmbedded(expand, _interestDog.getInterest(id));
+		return _getInterestDTO(
+			_containsPageVisited(expand), _getDaysRange(expand),
+			_interestDog.getInterest(id));
 	}
 
 	@Cacheable
@@ -139,11 +141,6 @@ public class InterestsRestController
 			Arrays.asList(expand.split(",")));
 
 		return expandParts.contains("pages-visited");
-	}
-
-	private InterestDTO _createEmbedded(String expand, Interest interest) {
-		return _getInterestDTO(
-			_containsPageVisited(expand), _getDaysRange(expand), interest);
 	}
 
 	private Set<InterestDTO> _createInterestDTOs(
