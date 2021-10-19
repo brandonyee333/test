@@ -63,7 +63,11 @@ public class UserSessionsUpgradeStep implements UpgradeStep {
 			}
 
 			JSONObject eventContextJSONObject =
-				latestActivityJSONObject.getJSONObject("eventContext");
+				latestActivityJSONObject.optJSONObject("eventContext");
+
+			if (eventContextJSONObject == null) {
+				continue;
+			}
 
 			userSessionJSONObject.put(
 				"contentLanguageId",
