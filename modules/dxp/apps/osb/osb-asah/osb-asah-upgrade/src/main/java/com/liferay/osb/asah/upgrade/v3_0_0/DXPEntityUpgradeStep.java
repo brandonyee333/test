@@ -90,6 +90,8 @@ public class DXPEntityUpgradeStep implements UpgradeStep {
 				collectionName,
 				_upgradeDXPEntityJSONObjects(
 					collectionName, dxpEntityJSONObject))
+		).setBatchSize(
+			10000
 		).setQueryBuilder(
 			BoolQueryBuilderUtil.mustNot(QueryBuilders.existsQuery("fields"))
 		).iterate();

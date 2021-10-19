@@ -108,6 +108,8 @@ public class SalesforceUpgradeStep implements UpgradeStep {
 						collectionName,
 						_upgradeSalesforceEntityJSONObjects(
 							salesforceEntityJSONObject, salesforceEntityType))
+			).setBatchSize(
+				10000
 			).setQueryBuilder(
 				BoolQueryBuilderUtil.mustNot(
 					QueryBuilders.existsQuery("fields"))
