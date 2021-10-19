@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
 import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.model.UserSession;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,15 +48,17 @@ public class UserSessionDTO {
 
 		_browserName = userSession.getBrowserName();
 		_completeDate = userSession.getCompleteDate();
-		_contentLanguageId = userSession.getContentLanguageId();
+		_contentLanguageId = StringUtil.get(
+			userSession.getContentLanguageId(), "");
 		_createDate = userSession.getFirstEventDate();
-		_devicePixelRatio = userSession.getDevicePixelRatio();
+		_devicePixelRatio = StringUtil.get(
+			userSession.getDevicePixelRatio(), "");
 		_deviceType = userSession.getDeviceType();
-		_languageId = userSession.getLanguageId();
-		_screenHeight = userSession.getScreenHeight();
-		_screenWidth = userSession.getScreenWidth();
-		_timezoneOffset = userSession.getTimezoneOffset();
-		_userAgent = userSession.getUserAgent();
+		_languageId = StringUtil.get(userSession.getLanguageId(), "");
+		_screenHeight = StringUtil.get(userSession.getScreenHeight(), "");
+		_screenWidth = StringUtil.get(userSession.getScreenWidth(), "");
+		_timezoneOffset = StringUtil.get(userSession.getTimezoneOffset(), "");
+		_userAgent = StringUtil.get(userSession.getUserAgent(), "");
 
 		tuple2s.forEach(
 			tuple -> _eventDTOs.add(
