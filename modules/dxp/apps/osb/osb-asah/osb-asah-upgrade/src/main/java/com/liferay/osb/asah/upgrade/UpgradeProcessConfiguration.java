@@ -48,7 +48,7 @@ public class UpgradeProcessConfiguration {
 			"2.12.3", "3.0.0", _assetsUpgradeStep, _channelsUpgradeStep,
 			_customEventUpgradeStep, _dataSourcesUpgradeStep,
 			_dxpEntityUpgradeStep, _individualsUpgradeStep,
-			_salesforceUpgradeStep, _userSessionsUpgradeStep);
+			_salesforceUpgradeStep);
 
 		return upgradeProcess;
 	}
