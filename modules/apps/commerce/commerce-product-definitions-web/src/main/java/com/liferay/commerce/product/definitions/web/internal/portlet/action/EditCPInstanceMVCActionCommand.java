@@ -292,6 +292,8 @@ public class EditCPInstanceMVCActionCommand extends BaseMVCActionCommand {
 				_getCommercePricingConfigurationKey(),
 				CommercePricingConstants.VERSION_2_0)) {
 
+			serviceContext = ServiceContextFactory.getInstance(actionRequest);
+
 			_updateCommercePriceEntry(
 				cpInstance, CommercePriceListConstants.TYPE_PRICE_LIST, price,
 				serviceContext);
