@@ -132,6 +132,8 @@ public class UserSessionsUpgradeStep implements UpgradeStep {
 	private void _upgradeUserSessionsJSONObjects() throws Exception {
 		JSONArrayIterator.of(
 			"user-sessions", _cerebroInfoElasticsearchInvoker, null
+		).setBatchSize(
+			10000
 		).setProcessJSONArrayUnsafeFunction(
 			this::_upgradeUserSession
 		).setQueryBuilder(
