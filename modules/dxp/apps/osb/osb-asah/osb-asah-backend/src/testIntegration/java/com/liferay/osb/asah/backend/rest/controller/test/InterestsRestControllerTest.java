@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.dto.InterestDTO;
 import com.liferay.osb.asah.backend.rest.controller.InterestsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -29,6 +30,8 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -52,6 +55,31 @@ import org.springframework.test.context.ContextConfiguration;
 public class InterestsRestControllerTest {
 
 	@ElasticsearchIndex(
+		name = "interests", resourcePath = "interests.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetInterestDTO() {
+		InterestDTO interestDTO = _interestsRestController.getInterestDTO(
+			123456L, null);
+
+		Assert.assertEquals(
+			interestDTO.toString(), "123456", interestDTO.getId());
+		Assert.assertEquals(
+			interestDTO.toString(), "My Javascript title",
+			interestDTO.getName());
+		Assert.assertEquals(
+			interestDTO.toString(), "337984659206412898",
+			interestDTO.getOwnerId());
+		Assert.assertEquals(
+			interestDTO.toString(), "individual", interestDTO.getOwnerType());
+
+		Map<String, Object> embeddedMap = interestDTO.getEmbedded();
+
+		Assert.assertEquals(interestDTO.toString(), 0, embeddedMap.size());
+	}
+
+	@ElasticsearchIndex(
 		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -71,6 +99,43 @@ public class InterestsRestControllerTest {
 					JSONObject.class),
 				"JSONObject/_embedded", "JSONArray/interests"),
 			false);
+	}
+
+	@ElasticsearchIndex(
+		name = "visited-pages", resourcePath = "visited_pages_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "interests", resourcePath = "interests.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetInterestDTOWithEmbedded() {
+		InterestDTO interestDTO = _interestsRestController.getInterestDTO(
+			123456L, "interest-aggregation-last-30-days,pages-visited");
+
+		Assert.assertEquals(
+			interestDTO.toString(), "123456", interestDTO.getId());
+		Assert.assertEquals(
+			interestDTO.toString(), "My Javascript title",
+			interestDTO.getName());
+		Assert.assertEquals(
+			interestDTO.toString(), "337984659206412898",
+			interestDTO.getOwnerId());
+		Assert.assertEquals(
+			interestDTO.toString(), "individual", interestDTO.getOwnerType());
+
+		Map<String, Object> embeddedMap = interestDTO.getEmbedded();
+
+		List<String> visitedPages = (List)embeddedMap.get("pages-visited");
+		List<String> interestAggregation = (List)embeddedMap.get(
+			"interest-aggregation-last-30-days");
+
+		Assert.assertEquals(embeddedMap.toString(), 2, embeddedMap.size());
+
+		Assert.assertEquals(visitedPages.toString(), 5, visitedPages.size());
+		Assert.assertEquals(
+			interestAggregation.toString(), 30, interestAggregation.size());
 	}
 
 	@RepositoryResource(
