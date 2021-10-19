@@ -72,6 +72,10 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) {
+		if (!_customEventUpgradeEnabled) {
+			return;
+		}
+
 		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
 		searchSourceBuilder.fetchSource(
@@ -500,6 +504,9 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 
 	@Value("${osb.asah.custom.event.upgrade.batch.size:10000}")
 	private int _customEventUpgradeBatchSize;
+
+	@Value("${osb.asah.custom.event.upgrade.enabled:true}")
+	private boolean _customEventUpgradeEnabled;
 
 	@Value("${osb.asah.custom.event.upgrade.thread.pool:10}")
 	private int _customEventUpgradeThreadPool;
