@@ -703,12 +703,15 @@ public class ElasticsearchIndividualRepositoryImpl
 	@Override
 	public List<Long>
 		findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
-			Long channelId, Date lastActivityDate, Long segmentId) {
+			@Nullable Long channelId, @Nullable Date lastActivityDate,
+			@Nullable Long segmentId) {
 
 		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "channelIds", String.valueOf(channelId));
+		if (!Objects.isNull(channelId)) {
+			BoolQueryBuilderUtil.filterTerm(
+				boolQueryBuilder, "channelIds", String.valueOf(channelId));
+		}
 
 		if (!Objects.isNull(lastActivityDate)) {
 			boolQueryBuilder.filter(

@@ -137,7 +137,7 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 	@Cacheable
 	public List<Long>
 		findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
-			Long channelId, @Nullable Date lastActivityDate,
+			@Nullable Long channelId, @Nullable Date lastActivityDate,
 			@Nullable Long segmentId);
 
 	@Cacheable

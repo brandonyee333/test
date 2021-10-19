@@ -902,16 +902,21 @@ public class IndividualRepositoryImpl extends BaseRepository {
 
 	public List<Long>
 		findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
-			Long channelId, @Nullable Date lastActivityDate,
+			@Nullable Long channelId, @Nullable Date lastActivityDate,
 			@Nullable Long segmentId) {
 
-		Condition condition = DSL.and(
-			DSL.field(
-				DSL.cast(
-					DSL.array(DSL.field("individual.channelids")), Long[].class)
-			).contains(
-				DSL.cast(DSL.array(channelId), Long[].class)
-			));
+		Condition condition = DSL.noCondition();
+
+		if (!Objects.isNull(channelId)) {
+			condition = DSL.and(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.channelids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(channelId), Long[].class)
+				));
+		}
 
 		SelectSelectStep<Record1<Object>> selectSelectStep =
 			_dslContext.selectDistinct(DSL.field("individual.id"));
