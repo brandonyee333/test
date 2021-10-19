@@ -861,6 +861,20 @@ public abstract class BaseDB implements DB {
 				new Filter(dbType.getName())),
 			-1);
 
+		String dbName = dbType.getName();
+
+		if (dbName.equals(DBType.ORACLE.getName())) {
+			return _applyMaxStringIndexLengthLimitationOracle(
+				template, stringIndexMaxLength);
+		}
+
+		return _applyMaxStringIndexLengthLimitationMySQL(
+			template, stringIndexMaxLength);
+	}
+
+	private String _applyMaxStringIndexLengthLimitationMySQL(
+		String template, int stringIndexMaxLength) {
+
 		Matcher matcher = _columnLengthPattern.matcher(template);
 
 		if (stringIndexMaxLength < 0) {
@@ -887,6 +901,57 @@ public abstract class BaseDB implements DB {
 		return sb.toString();
 	}
 
+	private String _applyMaxStringIndexLengthLimitationOracle(
+		String template, int stringIndexMaxLength) {
+
+		Matcher matcher = _columnPattern.matcher(template);
+
+		StringBuffer sb = new StringBuffer();
+
+		if (stringIndexMaxLength < 0) {
+			while (matcher.find()) {
+				String column = matcher.group(1);
+
+				matcher.appendReplacement(sb, column);
+			}
+		}
+		else {
+			while (matcher.find()) {
+				String column = matcher.group(1);
+
+				StringBundler replacementSB = new StringBundler(5);
+
+				if (column.startsWith("(")) {
+					replacementSB.append("\\(substr\\(");
+					replacementSB.append(column.substring(1));
+					replacementSB.append(", 1, ");
+					replacementSB.append(stringIndexMaxLength);
+					replacementSB.append("\\)");
+				}
+				else {
+					replacementSB.append("substr\\(");
+					replacementSB.append(column);
+					replacementSB.append(", 1, ");
+					replacementSB.append(stringIndexMaxLength);
+					replacementSB.append("\\)");
+				}
+
+				int length = Integer.valueOf(matcher.group(2));
+
+				if (length > stringIndexMaxLength) {
+					matcher.appendReplacement(sb, replacementSB.toString());
+				}
+				else {
+					matcher.appendReplacement(sb, column);
+				}
+			}
+		}
+
+		matcher.appendTail(sb);
+
+		return sb.toString();
+	}
+
 	private static final boolean _SUPPORTS_ALTER_COLUMN_NAME = true;
 
 	private static final boolean _SUPPORTS_ALTER_COLUMN_TYPE = true;
@@ -903,6 +968,8 @@ public abstract class BaseDB implements DB {
 
 	private static final Pattern _columnLengthPattern = Pattern.compile(
 		"\\[\\$COLUMN_LENGTH:(\\d+)\\$\\]");
+	private static final Pattern _columnPattern = Pattern.compile(
+		"(\\S+)\\[\\$COLUMN_LENGTH:(\\d+)\\$\\]");
 	private static final Pattern _templatePattern;
 
 	static {
