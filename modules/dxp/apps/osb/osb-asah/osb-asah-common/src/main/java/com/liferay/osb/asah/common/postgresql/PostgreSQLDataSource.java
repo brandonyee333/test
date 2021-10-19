@@ -41,7 +41,11 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  */
 public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 
-	public PostgreSQLDataSource(int hikariMaxPoolSize) {
+	public PostgreSQLDataSource(
+		int hikariMaxPoolSize, int hikariMinimumIdleSize) {
+
+		_hikariMinimumIdleSize = hikariMinimumIdleSize;
+
 		_hikariMaximumPoolSize = hikariMaxPoolSize;
 	}
 
@@ -99,7 +103,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 			TimeUnit.SECONDS.toMillis(40));
 		hikariDataSource.setMaximumPoolSize(_hikariMaximumPoolSize);
 		hikariDataSource.setMaxLifetime(TimeUnit.SECONDS.toMillis(120));
-		hikariDataSource.setMinimumIdle(5);
+		hikariDataSource.setMinimumIdle(_hikariMinimumIdleSize);
 		hikariDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
 		hikariDataSource.setUsername(CredentialConstants.POSTGRESQL_USER);
 
@@ -171,6 +175,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 		PostgreSQLDataSource.class);
 
 	private final int _hikariMaximumPoolSize;
+	private final int _hikariMinimumIdleSize;
 	private final Map<Object, DataSource> _resolvedDataSources =
 		new HashMap<>();
 

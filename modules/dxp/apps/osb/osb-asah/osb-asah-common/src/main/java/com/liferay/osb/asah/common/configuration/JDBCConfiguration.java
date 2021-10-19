@@ -111,7 +111,8 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 	@Primary
 	@Profile({"dev", "prod"})
 	public DataSource postgreSQLDataSource() {
-		return new PostgreSQLDataSource(_hikariMaximumPoolSize);
+		return new PostgreSQLDataSource(
+			_hikariMaximumPoolSize, _hikariMinimumIdleSize);
 	}
 
 	@Bean("postgreSQLDataSource")
@@ -205,5 +206,8 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 
 	@Value("${spring.datasource.hikari.maximum-pool-size:10}")
 	private int _hikariMaximumPoolSize;
+
+	@Value("${spring.datasource.hikari.minimum-idle-size:1}")
+	private int _hikariMinimumIdleSize;
 
 }
