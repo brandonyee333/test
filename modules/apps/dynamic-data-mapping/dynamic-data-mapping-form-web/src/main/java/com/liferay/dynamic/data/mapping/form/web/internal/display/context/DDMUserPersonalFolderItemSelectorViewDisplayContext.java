@@ -148,6 +148,10 @@ public class DDMUserPersonalFolderItemSelectorViewDisplayContext {
 			"folderId",
 			String.valueOf(
 				_ddmUserPersonalFolderItemSelectorCriterion.getFolderId()));
+		portletURL.setParameter(
+			"repositoryId",
+			String.valueOf(
+				_ddmUserPersonalFolderItemSelectorCriterion.getRepositoryId()));
 
 		return portletURL;
 	}
