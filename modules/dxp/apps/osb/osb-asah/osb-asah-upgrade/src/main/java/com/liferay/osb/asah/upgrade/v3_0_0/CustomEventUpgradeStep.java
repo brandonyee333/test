@@ -91,7 +91,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		searchSourceBuilder.sort("id");
 		searchSourceBuilder.trackTotalHits(false);
 
-		Optional<Event> eventOptional = _getEventOptional();
+		Optional<Event> eventOptional = _getEventOptional(true);
 
 		String id = eventOptional.map(
 			Event::getAnalyticsEventId
@@ -286,10 +286,20 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 				SqlParameterSourceUtils.createBatch(
 					events.toArray(new HashMap[0])));
 
-			_namedParameterJdbcTemplate.batchUpdate(
-				_SQL_INSERT_EVENT_ATTRIBUTES,
-				SqlParameterSourceUtils.createBatch(
-					eventAttributes.toArray(new HashMap[0])));
+			try {
+				_namedParameterJdbcTemplate.batchUpdate(
+					_SQL_INSERT_EVENT_ATTRIBUTES,
+					SqlParameterSourceUtils.createBatch(
+						eventAttributes.toArray(new HashMap[0])));
+			}
+			catch (Exception exception) {
+				_log.error("Retrying...", exception);
+
+				_namedParameterJdbcTemplate.batchUpdate(
+					_SQL_INSERT_EVENT_ATTRIBUTES,
+					SqlParameterSourceUtils.createBatch(
+						eventAttributes.toArray(new HashMap[0])));
+			}
 		}
 		catch (Exception exception) {
 			StringBuilder sb = new StringBuilder("Unable to store events ");
@@ -342,7 +352,7 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		return eventContext;
 	}
 
-	private Optional<Event> _getEventOptional() {
+	private Optional<Event> _getEventOptional(boolean retry) {
 		JdbcTemplate jdbcTemplate =
 			_namedParameterJdbcTemplate.getJdbcTemplate();
 
@@ -363,6 +373,19 @@ public class CustomEventUpgradeStep implements UpgradeStep {
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
 				_log.debug("Select initial Event ID failed");
+			}
+
+			if (retry) {
+				_log.error("Retrying...", exception);
+
+				try {
+					Thread.sleep(5000);
+				}
+				catch (InterruptedException interruptedException) {
+					_log.error(interruptedException, interruptedException);
+				}
+
+				return _getEventOptional(false);
 			}
 
 			return Optional.empty();
