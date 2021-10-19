@@ -59,7 +59,7 @@ public class UserSessionsUpgradeStep implements UpgradeStep {
 					userSessionJSONObject.getString("id"));
 
 			if (latestActivityJSONObject == null) {
-				return null;
+				continue;
 			}
 
 			JSONObject eventContextJSONObject =
