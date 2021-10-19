@@ -616,7 +616,6 @@ public abstract class BaseIndividualRepositoryTestCase
 			individualRepository.
 				findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
 					11L, null, null));
-
 		Assert.assertEquals(
 			Arrays.asList(
 				_individual1Id, _individual2Id, _individual3Id, _individual4Id,
