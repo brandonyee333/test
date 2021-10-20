@@ -43,7 +43,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
 public class EventHistogramDogTest {
 
-	@SQLResource(resourcePath = "test_events_count_histogram.sql")
+	@SQLResource(resourcePath = "test_events_count_histogram_last_24_hours.sql")
 	@Test
 	public void testTotalEventHistogramMetricsLast24Hours() {
 		List<HistogramMetric> histogramMetrics = _getEventsCountHistogram(
@@ -61,7 +61,7 @@ public class EventHistogramDogTest {
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
-	@SQLResource(resourcePath = "test_events_count_histogram.sql")
+	@SQLResource(resourcePath = "test_events_count_histogram_last_30_days.sql")
 	@Test
 	public void testTotalEventHistogramMetricsLast30Days() {
 		List<HistogramMetric> histogramMetrics = _getEventsCountHistogram(
@@ -125,7 +125,9 @@ public class EventHistogramDogTest {
 			0);
 	}
 
-	@SQLResource(resourcePath = "test_event_sessions_count_histogram.sql")
+	@SQLResource(
+		resourcePath = "test_event_sessions_count_histogram_last_24_hours.sql"
+	)
 	@Test
 	public void testTotalEventSessionHistogramMetricsLast24Hours() {
 		List<HistogramMetric> histogramMetrics = _getSessionsCountHistogram(
@@ -143,7 +145,9 @@ public class EventHistogramDogTest {
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
-	@SQLResource(resourcePath = "test_event_sessions_count_histogram.sql")
+	@SQLResource(
+		resourcePath = "test_event_sessions_count_histogram_last_30_days.sql"
+	)
 	@Test
 	public void testTotalEventSessionHistogramMetricsLast30Days() {
 		List<HistogramMetric> histogramMetrics = _getSessionsCountHistogram(
