@@ -122,7 +122,7 @@ public class DXPEntityUpgradeStep implements UpgradeStep {
 					dxpEntityJSONObject.getJSONObject("contact");
 
 				if (contactJSONObject.has("birthday")) {
-					Object birthday = dxpEntityJSONObject.get("birthday");
+					Object birthday = contactJSONObject.get("birthday");
 
 					try {
 						if (!NumberUtils.isCreatable(
