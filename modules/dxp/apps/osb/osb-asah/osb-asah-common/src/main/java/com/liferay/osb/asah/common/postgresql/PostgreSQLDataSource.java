@@ -42,8 +42,14 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 
 	public PostgreSQLDataSource(
-		int hikariMaxPoolSize, int hikariMinimumIdleSize) {
+		int hikariConnectionTimeout, int hikariIdleTimeout,
+		int hikariLeakDetectionThreshold, int hikariMaxPoolSize,
+		int hikariMaxLifetime, int hikariMinimumIdleSize) {
 
+		_hikariConnectionTimeout = hikariConnectionTimeout;
+		_hikariIdleTimeout = hikariIdleTimeout;
+		_hikariLeakDetectionThreshold = hikariLeakDetectionThreshold;
+		_hikariMaxLifetime = hikariMaxLifetime;
 		_hikariMinimumIdleSize = hikariMinimumIdleSize;
 
 		_hikariMaximumPoolSize = hikariMaxPoolSize;
@@ -96,13 +102,16 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 
 		hikariDataSource.setConnectionInitSql(
 			"SET TIME ZONE 'UTC'; CREATE SCHEMA IF NOT EXISTS " + dataSource);
-		hikariDataSource.setConnectionTimeout(TimeUnit.SECONDS.toMillis(30));
-		hikariDataSource.setIdleTimeout(TimeUnit.SECONDS.toMillis(60));
+		hikariDataSource.setConnectionTimeout(
+			TimeUnit.SECONDS.toMillis(_hikariConnectionTimeout));
+		hikariDataSource.setIdleTimeout(
+			TimeUnit.SECONDS.toMillis(_hikariIdleTimeout));
 		hikariDataSource.setJdbcUrl(_buildJdbcUrl(dataSource));
 		hikariDataSource.setLeakDetectionThreshold(
-			TimeUnit.SECONDS.toMillis(40));
+			TimeUnit.SECONDS.toMillis(_hikariLeakDetectionThreshold));
 		hikariDataSource.setMaximumPoolSize(_hikariMaximumPoolSize);
-		hikariDataSource.setMaxLifetime(TimeUnit.SECONDS.toMillis(120));
+		hikariDataSource.setMaxLifetime(
+			TimeUnit.SECONDS.toMillis(_hikariMaxLifetime));
 		hikariDataSource.setMinimumIdle(_hikariMinimumIdleSize);
 		hikariDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
 		hikariDataSource.setUsername(CredentialConstants.POSTGRESQL_USER);
@@ -174,7 +183,11 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 	private static final Log _log = LogFactory.getLog(
 		PostgreSQLDataSource.class);
 
+	private final int _hikariConnectionTimeout;
+	private final int _hikariIdleTimeout;
+	private final int _hikariLeakDetectionThreshold;
 	private final int _hikariMaximumPoolSize;
+	private final int _hikariMaxLifetime;
 	private final int _hikariMinimumIdleSize;
 	private final Map<Object, DataSource> _resolvedDataSources =
 		new HashMap<>();

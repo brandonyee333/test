@@ -112,7 +112,9 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 	@Profile({"dev", "prod"})
 	public DataSource postgreSQLDataSource() {
 		return new PostgreSQLDataSource(
-			_hikariMaximumPoolSize, _hikariMinimumIdleSize);
+			_hikariConnectionTimeout, _hikariIdleTimeout,
+			_hikariLeakDetectionThreshold, _hikariMaximumPoolSize,
+			_hikariMaxLifetime, _hikariMinimumIdleSize);
 	}
 
 	@Bean("postgreSQLDataSource")
@@ -204,8 +206,20 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 		return sb.toString();
 	}
 
+	@Value("${spring.datasource.hikari.connection-timeout:240}")
+	private int _hikariConnectionTimeout;
+
+	@Value("${spring.datasource.hikari.idle-timeout:60}")
+	private int _hikariIdleTimeout;
+
+	@Value("${spring.datasource.hikari.leak-detection-threshold:60}")
+	private int _hikariLeakDetectionThreshold;
+
 	@Value("${spring.datasource.hikari.maximum-pool-size:10}")
 	private int _hikariMaximumPoolSize;
+
+	@Value("${spring.datasource.hikari.max-lifetime:360}")
+	private int _hikariMaxLifetime;
 
 	@Value("${spring.datasource.hikari.minimum-idle-size:1}")
 	private int _hikariMinimumIdleSize;
