@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
@@ -37,17 +38,26 @@ public class TestExecutionListenerUtil {
 	public static String replaceSQLVariables(String sql) {
 		LocalDateTime localDateTime = LocalDateTime.now(Clock.systemUTC());
 
+		LocalDateTime newDayLocalDateTime = DateUtil.newDayLocalDateTime(
+			ZoneOffset.UTC);
+
 		return StringUtils.replaceEach(
-			_replaceTimeExpressions(sql, true), new String[] {"${now}"},
-			new String[] {localDateTime.format(_dateTimeFormatter)});
+			_replaceTimeExpressions(sql, true),
+			new String[] {"${now}", "${today}"},
+			new String[] {
+				localDateTime.format(_dateTimeFormatter),
+				newDayLocalDateTime.format(_dateTimeFormatter)
+			});
 	}
 
 	public static String replaceVariables(String json) {
 		return StringUtils.replaceEach(
 			_replaceTimeExpressions(json, false),
-			new String[] {"${now}", "\"${random_long}\""},
+			new String[] {"${now}", "${random_long}", "${today}"},
 			new String[] {
-				DateUtil.newDateString(), String.valueOf(RandomUtils.nextLong())
+				DateUtil.newDateString(),
+				String.valueOf(RandomUtils.nextLong()),
+				DateUtil.newDayDateString()
 			});
 	}
 
@@ -73,9 +83,7 @@ public class TestExecutionListenerUtil {
 
 	private static LocalDateTime _getStartLocalDateTime(String reference) {
 		if (reference.equals("today")) {
-			LocalDate localDate = LocalDate.now(Clock.systemUTC());
-
-			return localDate.atStartOfDay();
+			return DateUtil.newDayLocalDateTime(ZoneOffset.UTC);
 		}
 
 		return LocalDateTime.now(Clock.systemUTC());
