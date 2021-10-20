@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.rest.controller;
+package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.common.json.JSONUtil;
 

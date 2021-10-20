@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.rest.controller.test;
+package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;

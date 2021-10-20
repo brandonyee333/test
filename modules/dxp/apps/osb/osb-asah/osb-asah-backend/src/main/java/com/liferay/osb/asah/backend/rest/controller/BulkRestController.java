@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.rest.controller;
+package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.common.spring.http.Http;
 
@@ -53,7 +53,7 @@ public class BulkRestController {
 
 			String response = StringUtils.trim(
 				_http.exchange(
-					"http://localhost:" + _getPort(),
+					"http://osbasahbackend:" + _getPort(),
 					operationJSONObject.getString("url"),
 					HttpMethod.resolve(operationJSONObject.getString("method")),
 					operationJSONObject.optJSONObject("body")));

@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.rest.controller.test;
+package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.json.JSONUtil;
