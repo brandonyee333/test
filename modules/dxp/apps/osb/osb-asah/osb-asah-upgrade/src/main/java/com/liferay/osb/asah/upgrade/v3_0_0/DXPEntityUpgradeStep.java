@@ -23,6 +23,14 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
+
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -109,6 +117,38 @@ public class DXPEntityUpgradeStep implements UpgradeStep {
 
 			JSONObject jsonObject = new JSONObject();
 
+			if (dxpEntityJSONObject.has("contact")) {
+				JSONObject contactJSONObject =
+					dxpEntityJSONObject.getJSONObject("contact");
+
+				if (contactJSONObject.has("birthday")) {
+					Object birthday = dxpEntityJSONObject.get("birthday");
+
+					try {
+						if (!NumberUtils.isCreatable(
+								String.valueOf(birthday))) {
+
+							SimpleDateFormat simpleDateFormat =
+								new SimpleDateFormat(
+									"EEE MMM dd HH:mm:ss Z yyyy");
+
+							Date birthdayDate = simpleDateFormat.parse(
+								String.valueOf(birthday));
+
+							contactJSONObject.put(
+								"birthday", birthdayDate.getTime());
+						}
+					}
+					catch (Exception exception) {
+						_log.error(
+							"Could not parse the birthday " + birthday,
+							exception);
+
+						contactJSONObject.put("birthday", 0L);
+					}
+				}
+			}
+
 			if (dxpEntityJSONObject.has("osbAsahDataSourceId")) {
 				jsonObject.put(
 					"dataSourceId",
@@ -129,6 +169,9 @@ public class DXPEntityUpgradeStep implements UpgradeStep {
 
 		return jsonArray;
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		DXPEntityUpgradeStep.class);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
