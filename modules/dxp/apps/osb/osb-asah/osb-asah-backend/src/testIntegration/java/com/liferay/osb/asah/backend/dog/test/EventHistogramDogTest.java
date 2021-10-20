@@ -45,7 +45,7 @@ public class EventHistogramDogTest {
 
 	@SQLResource(resourcePath = "test_events_count_histogram.sql")
 	@Test
-	public void testTotalEventlHistogramMetricsLast24Hours() {
+	public void testTotalEventHistogramMetricsLast24Hours() {
 		List<HistogramMetric> histogramMetrics = _getEventsCountHistogram(
 			Interval.HOUR, TimeRange.LAST_24_HOURS);
 
@@ -63,7 +63,7 @@ public class EventHistogramDogTest {
 
 	@SQLResource(resourcePath = "test_events_count_histogram.sql")
 	@Test
-	public void testTotalEventlHistogramMetricsLast30Days() {
+	public void testTotalEventHistogramMetricsLast30Days() {
 		List<HistogramMetric> histogramMetrics = _getEventsCountHistogram(
 			Interval.DAY, TimeRange.LAST_30_DAYS);
 
@@ -83,7 +83,7 @@ public class EventHistogramDogTest {
 		resourcePath = "test_events_count_histogram_grouped_by_week.sql"
 	)
 	@Test
-	public void testTotalEventlHistogramMetricsLast30DaysGroupedByWeek() {
+	public void testTotalEventHistogramMetricsLast30DaysGroupedByWeek() {
 		double[] expectedValues = {1, 2, 1};
 
 		List<HistogramMetric> histogramMetrics = _getEventsCountHistogram(
@@ -106,7 +106,7 @@ public class EventHistogramDogTest {
 		resourcePath = "test_events_count_histogram_grouped_by_month.sql"
 	)
 	@Test
-	public void testTotalEventlHistogramMetricsLast90DaysGroupedByMonth() {
+	public void testTotalEventHistogramMetricsLast90DaysGroupedByMonth() {
 		double[] expectedValues = {1, 3};
 
 		List<HistogramMetric> histogramMetrics = _getEventsCountHistogram(
