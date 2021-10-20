@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.date.dog.util;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 /**
  * @author Geyson Silva
@@ -33,7 +34,7 @@ public class TimeZoneDogUtil {
 
 	public static ZoneId getZoneId() {
 		if (_timeZoneDogStatic == null) {
-			return ZoneId.of("UTC");
+			return ZoneOffset.UTC;
 		}
 
 		return _timeZoneDogStatic.getZoneId();

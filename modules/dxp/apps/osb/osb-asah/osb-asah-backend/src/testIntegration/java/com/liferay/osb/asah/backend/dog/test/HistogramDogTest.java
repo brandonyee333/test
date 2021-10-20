@@ -33,7 +33,7 @@ import java.math.BigDecimal;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 import java.util.List;
 
@@ -65,7 +65,7 @@ public class HistogramDogTest {
 			0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 		};
 
-		LocalDate localDate = LocalDate.now(ZoneId.of("UTC"));
+		LocalDate localDate = LocalDate.now(ZoneOffset.UTC);
 
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			Interval.DAY,

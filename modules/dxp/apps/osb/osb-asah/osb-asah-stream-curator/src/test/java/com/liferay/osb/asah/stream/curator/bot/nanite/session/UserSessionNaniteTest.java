@@ -21,7 +21,7 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 import java.util.Map;
 
@@ -83,7 +83,7 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 		Mockito.when(
 			timeZoneDog.getZoneId()
 		).thenReturn(
-			ZoneId.of("UTC")
+			ZoneOffset.UTC
 		);
 	}
 

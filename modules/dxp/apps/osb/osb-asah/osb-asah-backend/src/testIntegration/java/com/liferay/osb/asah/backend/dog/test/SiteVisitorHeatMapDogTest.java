@@ -28,6 +28,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -57,7 +58,7 @@ public class SiteVisitorHeatMapDogTest {
 	)
 	@Test
 	public void testVisitorHeatMapMetricsCustomRange() {
-		LocalDate localDate = LocalDate.now(ZoneId.of("UTC"));
+		LocalDate localDate = LocalDate.now(ZoneOffset.UTC);
 
 		List<HeatMapMetric> heatMapMetrics =
 			_siteVisitorHeatMapDog.getHeatMapMetrics(

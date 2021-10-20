@@ -36,7 +36,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
@@ -301,7 +301,7 @@ public class JobDogTest {
 
 		int count = 0;
 
-		LocalDateTime nowLocalDateTime = LocalDateTime.now(ZoneId.of("UTC"));
+		LocalDateTime nowLocalDateTime = LocalDateTime.now(ZoneOffset.UTC);
 
 		for (JobRun jobRun : jobRuns) {
 			if (jobRun.getJobRunStatus() != jobRunStatus) {

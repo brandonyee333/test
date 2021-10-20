@@ -25,7 +25,7 @@ import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 import java.util.ArrayList;
@@ -207,7 +207,7 @@ public class EventDefinitionDogTest {
 		Assert.assertNull(eventDefinition.getDisplayName());
 
 		ZonedDateTime zonedDateTime = ZonedDateTime.of(
-			2021, 4, 19, 12, 35, 0, 0, ZoneId.of("UTC"));
+			2021, 4, 19, 12, 35, 0, 0, ZoneOffset.UTC);
 
 		Assert.assertEquals(
 			Date.from(zonedDateTime.toInstant()),
@@ -232,11 +232,11 @@ public class EventDefinitionDogTest {
 		_eventDefinitionDog.blockEventDefinitions(eventDefinitionIds);
 
 		ZonedDateTime addNotificationZonedDateTime = ZonedDateTime.of(
-			2021, 4, 19, 0, 0, 0, 0, ZoneId.of("UTC"));
+			2021, 4, 19, 0, 0, 0, 0, ZoneOffset.UTC);
 		ZonedDateTime subscribedZonedDateTime = ZonedDateTime.of(
-			2021, 3, 29, 0, 0, 0, 0, ZoneId.of("UTC"));
+			2021, 3, 29, 0, 0, 0, 0, ZoneOffset.UTC);
 		ZonedDateTime unsubscribedZonedDateTime = ZonedDateTime.of(
-			2021, 2, 16, 0, 0, 0, 0, ZoneId.of("UTC"));
+			2021, 2, 16, 0, 0, 0, 0, ZoneOffset.UTC);
 
 		Map<String, Tuple2> expectedBlockedEventInfos =
 			new HashMap<String, Tuple2>() {

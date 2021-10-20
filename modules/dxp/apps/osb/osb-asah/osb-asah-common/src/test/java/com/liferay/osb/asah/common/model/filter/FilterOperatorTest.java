@@ -18,7 +18,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,14 +54,14 @@ public class FilterOperatorTest {
 				).ge(
 					DSL.date(
 						DateUtil.toDate(
-							startLocalDate.atStartOfDay(), ZoneId.of("UTC")))
+							startLocalDate.atStartOfDay(), ZoneOffset.UTC))
 				),
 				DSL.field(
 					"testField"
 				).le(
 					DSL.date(
 						DateUtil.toDate(
-							endLocalDate.atStartOfDay(), ZoneId.of("UTC")))
+							endLocalDate.atStartOfDay(), ZoneOffset.UTC))
 				)),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
@@ -229,7 +229,7 @@ public class FilterOperatorTest {
 				"testField"
 			).ge(
 				DSL.date(
-					DateUtil.toDate(localDate.atStartOfDay(), ZoneId.of("UTC")))
+					DateUtil.toDate(localDate.atStartOfDay(), ZoneOffset.UTC))
 			),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
@@ -279,7 +279,7 @@ public class FilterOperatorTest {
 				"testField"
 			).gt(
 				DSL.date(
-					DateUtil.toDate(localDate.atStartOfDay(), ZoneId.of("UTC")))
+					DateUtil.toDate(localDate.atStartOfDay(), ZoneOffset.UTC))
 			),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
@@ -329,7 +329,7 @@ public class FilterOperatorTest {
 				"testField"
 			).le(
 				DSL.date(
-					DateUtil.toDate(localDate.atStartOfDay(), ZoneId.of("UTC")))
+					DateUtil.toDate(localDate.atStartOfDay(), ZoneOffset.UTC))
 			),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
@@ -379,7 +379,7 @@ public class FilterOperatorTest {
 				"testField"
 			).lt(
 				DSL.date(
-					DateUtil.toDate(localDate.atStartOfDay(), ZoneId.of("UTC")))
+					DateUtil.toDate(localDate.atStartOfDay(), ZoneOffset.UTC))
 			),
 			filterOperator.getCondition(DSL.field("testField")));
 	}

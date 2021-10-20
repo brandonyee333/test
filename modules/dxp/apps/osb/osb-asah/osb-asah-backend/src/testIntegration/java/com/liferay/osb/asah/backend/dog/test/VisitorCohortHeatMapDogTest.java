@@ -30,6 +30,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 import java.util.HashMap;
@@ -203,7 +204,7 @@ public class VisitorCohortHeatMapDogTest {
 	@Test
 	public void testVisitorCohortHeatMetricsKnownVisitorsByDay() {
 		LocalDateTime localDateTime = DateUtil.newDayLocalDateTime(
-			ZoneId.of("UTC"));
+			ZoneOffset.UTC);
 
 		List<CohortHeatMapMetric> cohortHeatMapMetrics =
 			_getCohortHeatMapMetrics(
