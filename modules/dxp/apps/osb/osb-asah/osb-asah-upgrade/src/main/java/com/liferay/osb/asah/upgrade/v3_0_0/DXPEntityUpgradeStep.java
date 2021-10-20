@@ -25,6 +25,7 @@ import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,12 +46,12 @@ public class DXPEntityUpgradeStep implements UpgradeStep {
 		_upgradeDXPEntityIndexMapping("user-groups");
 		_upgradeDXPEntityIndexMapping("users");
 
-		_upgradeDXPEntityJSONObjects("groups");
-		_upgradeDXPEntityJSONObjects("organizations");
-		_upgradeDXPEntityJSONObjects("roles");
-		_upgradeDXPEntityJSONObjects("teams");
-		_upgradeDXPEntityJSONObjects("user-groups");
-		_upgradeDXPEntityJSONObjects("users");
+		_upgradeDXPEntityJSONArray("groups");
+		_upgradeDXPEntityJSONArray("organizations");
+		_upgradeDXPEntityJSONArray("roles");
+		_upgradeDXPEntityJSONArray("teams");
+		_upgradeDXPEntityJSONArray("user-groups");
+		_upgradeDXPEntityJSONArray("users");
 	}
 
 	private void _upgradeDXPEntityIndexMapping(String collectionName) {
@@ -81,41 +82,52 @@ public class DXPEntityUpgradeStep implements UpgradeStep {
 			collectionName, WeDeployDataService.OSB_ASAH_DXP_RAW);
 	}
 
-	private void _upgradeDXPEntityJSONObjects(String collectionName)
+	private void _upgradeDXPEntityJSONArray(String collectionName)
 		throws Exception {
 
 		JSONArrayIterator.of(
-			collectionName, _dxpRawElasticsearchInvoker,
-			dxpEntityJSONObject -> _dxpRawElasticsearchInvoker.replace(
-				collectionName,
-				_upgradeDXPEntityJSONObjects(
-					collectionName, dxpEntityJSONObject))
+			collectionName, _dxpRawElasticsearchInvoker, null
 		).setBatchSize(
 			10000
+		).setProcessJSONArrayUnsafeFunction(
+			dxpEntityJSONArray -> _dxpRawElasticsearchInvoker.add(
+				collectionName,
+				_upgradeDXPEntityJSONArray(collectionName, dxpEntityJSONArray))
 		).setQueryBuilder(
 			BoolQueryBuilderUtil.mustNot(QueryBuilders.existsQuery("fields"))
 		).iterate();
 	}
 
-	private JSONObject _upgradeDXPEntityJSONObjects(
-		String collectionName, JSONObject dxpEntityJSONObject) {
+	private JSONArray _upgradeDXPEntityJSONArray(
+		String collectionName, JSONArray dxpEntityJSONArray) {
 
-		JSONObject jsonObject = new JSONObject();
+		JSONArray jsonArray = new JSONArray();
 
-		if (dxpEntityJSONObject.has("osbAsahDataSourceId")) {
+		for (int i = 0; i < dxpEntityJSONArray.length(); i++) {
+			JSONObject dxpEntityJSONObject = dxpEntityJSONArray.getJSONObject(
+				i);
+
+			JSONObject jsonObject = new JSONObject();
+
+			if (dxpEntityJSONObject.has("osbAsahDataSourceId")) {
+				jsonObject.put(
+					"dataSourceId",
+					dxpEntityJSONObject.get("osbAsahDataSourceId"));
+			}
+
+			jsonObject.put("fields", dxpEntityJSONObject);
+
+			if (dxpEntityJSONObject.has("id")) {
+				jsonObject.put("id", dxpEntityJSONObject.get("id"));
+			}
+
 			jsonObject.put(
-				"dataSourceId", dxpEntityJSONObject.get("osbAsahDataSourceId"));
+				"type", DXPEntity.Type.ofCollectionName(collectionName));
+
+			jsonArray.put(jsonObject);
 		}
 
-		jsonObject.put("fields", dxpEntityJSONObject);
-
-		if (dxpEntityJSONObject.has("id")) {
-			jsonObject.put("id", dxpEntityJSONObject.get("id"));
-		}
-
-		jsonObject.put("type", DXPEntity.Type.ofCollectionName(collectionName));
-
-		return jsonObject;
+		return jsonArray;
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)

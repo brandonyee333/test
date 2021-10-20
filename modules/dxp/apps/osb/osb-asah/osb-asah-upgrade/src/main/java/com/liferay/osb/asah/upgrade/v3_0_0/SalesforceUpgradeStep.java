@@ -25,6 +25,7 @@ import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +42,12 @@ public class SalesforceUpgradeStep implements UpgradeStep {
 		_upgradeSalesforceEntityIndexMapping("Account");
 		_upgradeSalesforceEntityIndexMapping("individuals");
 
-		_upgradeSalesforceEntityJSONObjects(
+		_upgradeSalesforceEntityJSONArray(
 			"Account", SalesforceEntity.Type.ACCOUNT);
-		_upgradeSalesforceEntityJSONObjects(
+		_upgradeSalesforceEntityJSONArray(
 			"Contact", SalesforceEntity.Type.CONTACT);
-		_upgradeSalesforceEntityJSONObjects("Lead", SalesforceEntity.Type.LEAD);
-		_upgradeSalesforceEntityJSONObjects(
+		_upgradeSalesforceEntityJSONArray("Lead", SalesforceEntity.Type.LEAD);
+		_upgradeSalesforceEntityJSONArray(
 			"individuals", SalesforceEntity.Type.INDIVIDUAL);
 	}
 
@@ -69,30 +70,39 @@ public class SalesforceUpgradeStep implements UpgradeStep {
 			collectionName, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 	}
 
-	private JSONObject _upgradeSalesforceEntityJSONObjects(
-		JSONObject salesforceEntityJSONObject,
+	private JSONArray _upgradeSalesforceEntityJSONArray(
+		JSONArray salesforceEntityJSONArray,
 		SalesforceEntity.Type salesforceEntityType) {
 
-		JSONObject jsonObject = new JSONObject();
+		JSONArray jsonArray = new JSONArray();
 
-		if (salesforceEntityJSONObject.has("osbAsahDataSourceId")) {
-			jsonObject.put(
-				"dataSourceId",
-				salesforceEntityJSONObject.get("osbAsahDataSourceId"));
+		for (int i = 0; i < salesforceEntityJSONArray.length(); i++) {
+			JSONObject salesforceEntityJSONObject =
+				salesforceEntityJSONArray.getJSONObject(i);
+
+			JSONObject jsonObject = new JSONObject();
+
+			if (salesforceEntityJSONObject.has("osbAsahDataSourceId")) {
+				jsonObject.put(
+					"dataSourceId",
+					salesforceEntityJSONObject.get("osbAsahDataSourceId"));
+			}
+
+			jsonObject.put("fields", salesforceEntityJSONObject);
+
+			if (salesforceEntityJSONObject.has("id")) {
+				jsonObject.put("id", salesforceEntityJSONObject.get("id"));
+			}
+
+			jsonObject.put("type", salesforceEntityType.toString());
+
+			jsonArray.put(jsonObject);
 		}
 
-		jsonObject.put("fields", salesforceEntityJSONObject);
-
-		if (salesforceEntityJSONObject.has("id")) {
-			jsonObject.put("id", salesforceEntityJSONObject.get("id"));
-		}
-
-		jsonObject.put("type", salesforceEntityType.toString());
-
-		return jsonObject;
+		return jsonArray;
 	}
 
-	private void _upgradeSalesforceEntityJSONObjects(
+	private void _upgradeSalesforceEntityJSONArray(
 			String collectionName, SalesforceEntity.Type salesforceEntityType)
 		throws Exception {
 
@@ -102,14 +112,15 @@ public class SalesforceUpgradeStep implements UpgradeStep {
 
 		if (count > 0) {
 			JSONArrayIterator.of(
-				collectionName, _salesforceRawElasticsearchInvoker,
-				salesforceEntityJSONObject ->
-					_salesforceRawElasticsearchInvoker.replace(
-						collectionName,
-						_upgradeSalesforceEntityJSONObjects(
-							salesforceEntityJSONObject, salesforceEntityType))
+				collectionName, _salesforceRawElasticsearchInvoker, null
 			).setBatchSize(
 				10000
+			).setProcessJSONArrayUnsafeFunction(
+				salesforceEntityJSONArray ->
+					_salesforceRawElasticsearchInvoker.add(
+						collectionName,
+						_upgradeSalesforceEntityJSONArray(
+							salesforceEntityJSONArray, salesforceEntityType))
 			).setQueryBuilder(
 				BoolQueryBuilderUtil.mustNot(
 					QueryBuilders.existsQuery("fields"))
