@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.spring.http.Http;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,8 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.server.WebServer;
-import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,7 +52,7 @@ public class BulkRestController {
 
 			String response = StringUtils.trim(
 				_http.exchange(
-					"http://osbasahbackend:" + _getPort(),
+					ServiceConstants.URL_BACKEND_INTERNAL,
 					operationJSONObject.getString("url"),
 					HttpMethod.resolve(operationJSONObject.getString("method")),
 					operationJSONObject.optJSONObject("body")));
@@ -71,22 +70,7 @@ public class BulkRestController {
 		return responseJSONObject.toString();
 	}
 
-	private int _getPort() {
-		if (_servletWebServerApplicationContext != null) {
-			WebServer webServer =
-				_servletWebServerApplicationContext.getWebServer();
-
-			return webServer.getPort();
-		}
-
-		return 8080;
-	}
-
 	@Autowired
 	private Http _http;
-
-	@Autowired(required = false)
-	private ServletWebServerApplicationContext
-		_servletWebServerApplicationContext;
 
 }
