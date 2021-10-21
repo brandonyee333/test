@@ -80,6 +80,24 @@ public class InterestDogTest {
 		Assert.assertEquals("compelling metrics", interest.getName());
 	}
 
+	@ElasticsearchIndex(
+		name = "interests", resourcePath = "interests_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetInterestPageByFilterStringAndScore() {
+		Page<Interest> interestPage = _interestDog.getInterestPage(
+			"name eq 'javascript'", 0.1, 0, 20, null);
+
+		Assert.assertEquals(2, interestPage.getTotalElements());
+
+		List<Interest> interests = interestPage.getContent();
+
+		Interest interest = interests.get(0);
+
+		Assert.assertEquals("javascript", interest.getName());
+	}
+
 	@Autowired
 	private InterestDog _interestDog;
 
