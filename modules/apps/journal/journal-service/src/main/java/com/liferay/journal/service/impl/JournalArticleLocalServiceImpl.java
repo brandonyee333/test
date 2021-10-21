@@ -570,7 +570,7 @@ public class JournalArticleLocalServiceImpl
 		friendlyURLMap = _checkFriendlyURLMap(locale, friendlyURLMap, titleMap);
 
 		Map<String, String> urlTitleMap = _getURLTitleMap(
-			groupId, resourcePrimKey, friendlyURLMap, titleMap);
+			groupId, resourcePrimKey, friendlyURLMap, titleMap, content);
 
 		article.setUuid(serviceContext.getUuid());
 		article.setResourcePrimKey(resourcePrimKey);
@@ -1136,7 +1136,8 @@ public class JournalArticleLocalServiceImpl
 			locale, new HashMap(), newTitleMap);
 
 		Map<String, String> newUrlTitleMap = _getURLTitleMap(
-			groupId, resourcePrimKey, friendlyURLMap, newUniqueURLTitleMap);
+			groupId, resourcePrimKey, friendlyURLMap, newUniqueURLTitleMap,
+			oldArticle.getContent());
 
 		updateFriendlyURLs(newArticle, newUrlTitleMap, serviceContext);
 
@@ -5717,7 +5718,8 @@ public class JournalArticleLocalServiceImpl
 		Locale locale = getArticleDefaultLocale(content);
 
 		Map<String, String> urlTitleMap = _getURLTitleMap(
-			groupId, article.getResourcePrimKey(), friendlyURLMap, titleMap);
+			groupId, article.getResourcePrimKey(), friendlyURLMap, titleMap,
+			content);
 
 		String urlTitle = urlTitleMap.get(LocaleUtil.toLanguageId(locale));
 
@@ -8988,7 +8990,7 @@ public class JournalArticleLocalServiceImpl
 
 	private Map<String, String> _getURLTitleMap(
 		long groupId, long resourcePrimKey, Map<Locale, String> friendlyURLMap,
-		Map<Locale, String> titleMap) {
+		Map<Locale, String> titleMap, String content) {
 
 		Map<String, String> urlTitleMap = new HashMap<>();
 
@@ -9028,6 +9030,33 @@ public class JournalArticleLocalServiceImpl
 						resourcePrimKey, value, languageId);
 
 				urlTitleMap.put(languageId, urlTitle);
+			}
+		}
+
+		try {
+			Document document = SAXReaderUtil.read(content);
+
+			Element rootElement = document.getRootElement();
+
+			String availableLocales = GetterUtil.getString(
+				rootElement.attributeValue("available-locales"));
+			String defaultLocale = GetterUtil.getString(
+				rootElement.attributeValue("default-locale"));
+
+			String[] availableLocalesArray = availableLocales.split(
+				StringPool.COMMA);
+
+			String defaultTitle = urlTitleMap.get(defaultLocale);
+
+			for (String availableLocale : availableLocalesArray) {
+				if (Validator.isNull(urlTitleMap.get(availableLocale))) {
+					urlTitleMap.put(availableLocale, defaultTitle);
+				}
+			}
+		}
+		catch (DocumentException documentException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Invalid content:\n" + content);
 			}
 		}
 
