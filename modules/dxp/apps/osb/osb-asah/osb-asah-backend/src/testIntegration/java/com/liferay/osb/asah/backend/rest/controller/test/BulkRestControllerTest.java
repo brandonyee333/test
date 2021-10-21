@@ -14,41 +14,43 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.common.constants.HeaderConstants;
+import com.liferay.osb.asah.backend.rest.controller.BulkRestController;
+import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.common.spring.http.Http;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import io.restassured.response.ValidatableResponse;
-import io.restassured.specification.RequestSpecification;
-
-import java.util.Arrays;
-
-import org.hamcrest.Matchers;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Vishal Reddy
  */
-@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BulkRestControllerTest {
 
 	@Test
 	public void testPost() {
-		RequestSpecification requestSpecification = RestAssured.given();
+		Mockito.doAnswer(
+			invocationOnMock -> "[\"1\"]"
+		).when(
+			_http
+		).exchange(
+			ArgumentMatchers.any(), ArgumentMatchers.contains("dummy"),
+			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
+		);
 
-		requestSpecification = requestSpecification.body(
+		String responses = _bulkRestController.post(
 			String.valueOf(
 				JSONUtil.put(
 					"operations",
@@ -79,32 +81,17 @@ public class BulkRestControllerTest {
 							"method", "PUT"
 						).put(
 							"url", "/dummy"
-						))))
-		).contentType(
-			"application/json"
-		).header(
-			HeaderConstants.PROJECT_ID, "test"
-		);
+						)))));
 
-		requestSpecification.port(_serverPort);
-
-		Response response = requestSpecification.post("/bulk");
-
-		ValidatableResponse validatableResponse = response.then();
-
-		validatableResponse.body(
-			"responses.dummy",
-			Matchers.contains(
-				Arrays.asList(
-					Matchers.equalTo(4), Matchers.equalTo(1),
-					Matchers.equalTo(5), Matchers.equalTo(2),
-					Matchers.equalTo(3)))
-		).contentType(
-			ContentType.JSON
-		);
+		Assert.assertEquals(
+			"{\"responses\":[[\"1\"],[\"1\"],[\"1\"],[\"1\"],[\"1\"]]}",
+			responses);
 	}
 
-	@LocalServerPort
-	private int _serverPort;
+	@Autowired
+	private BulkRestController _bulkRestController;
+
+	@MockBean
+	private Http _http;
 
 }
