@@ -29,6 +29,7 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
+import org.jooq.Record2;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
@@ -93,7 +94,7 @@ public class InterestRepositoryImpl extends BaseRepository {
 			"Interest"
 		).where(
 			_getConditions(
-				null, null, interestId, null, ownerType, recordedDate, null)
+				null, interestId, null, null, ownerType, recordedDate, null)
 		).orderBy(
 			DSL.field("id")
 		).limit(
@@ -109,18 +110,19 @@ public class InterestRepositoryImpl extends BaseRepository {
 		@Nullable String ownerType, @Nullable Date recordedDate,
 		@Nullable Double score, Pageable pageable) {
 
-		SelectSelectStep selectSelectStep = _dslContext.select(
-			DSL.count(
-			).as(
-				"count"
-			),
-			DSL.field("name"));
+		SelectSelectStep<Record2<Integer, Object>> selectSelectStep =
+			_dslContext.select(
+				DSL.count(
+				).as(
+					"count"
+				),
+				DSL.field("name"));
 
 		return selectSelectStep.from(
 			"Interest"
 		).where(
 			_getConditions(
-				null, keyword, null, ownerIds, ownerType, recordedDate, score)
+				null, null, keyword, ownerIds, ownerType, recordedDate, score)
 		).groupBy(
 			DSL.field("name")
 		).orderBy(
@@ -137,8 +139,8 @@ public class InterestRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Condition> _getConditions(
-		@Nullable FilterHelper filterHelper, @Nullable String keywords,
-		@Nullable Long interestId, @Nullable List<Long> ownerIds,
+		@Nullable FilterHelper filterHelper, @Nullable Long interestId,
+		@Nullable String keywords, @Nullable List<Long> ownerIds,
 		@Nullable String ownerType, @Nullable Date recordedDate, Double score) {
 
 		List<Condition> conditions = new ArrayList<>();
