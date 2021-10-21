@@ -59,9 +59,7 @@ public class ProjectIdThreadLocal {
 		String projectId = _projectId.get();
 
 		if (projectId == null) {
-			_log.error("Project ID is not set");
-
-			return "global";
+			throw new IllegalStateException("Project ID is not set");
 		}
 
 		if (_log.isDebugEnabled()) {
