@@ -117,7 +117,7 @@ public class EventDogTest {
 
 	@Test
 	public void testGetRecentEventAttributeValues() {
-		Date date = DateUtil.newDayDate();
+		Date date1 = DateUtil.newDate();
 
 		EventAttributeDefinition eventAttributeDefinition =
 			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
@@ -130,25 +130,33 @@ public class EventDogTest {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageUnloaded");
 
+		EventAttribute eventAttribute = new EventAttribute(
+			null, eventAttributeDefinitionId, "testValue1");
+
+		eventAttribute.setEventDate(date1);
+
 		_eventDog.addEvent(
-			"analyticsEventId", "Page", channel.getId(), date, 1L,
-			new HashSet<EventAttribute>() {
-				{
-					add(
-						new EventAttribute(
-							null, eventAttributeDefinitionId, "testValue1"));
-					add(
-						new EventAttribute(
-							null, eventAttributeDefinitionId, "testValue2"));
-				}
-			},
-			date, eventDefinition.getId(), 1L, "sessionId", "userId");
+			"analyticsEventId1", "Page", channel.getId(), date1, 1L,
+			Collections.singleton(eventAttribute), date1,
+			eventDefinition.getId(), 1L, "sessionId", "userId");
+
+		Date date2 = DateUtil.newDate();
+
+		eventAttribute = new EventAttribute(
+			null, eventAttributeDefinitionId, "testValue2");
+
+		eventAttribute.setEventDate(date2);
+
+		_eventDog.addEvent(
+			"analyticsEventId2", "Page", channel.getId(), date2, 1L,
+			Collections.singleton(eventAttribute), date2,
+			eventDefinition.getId(), 1L, "sessionId", "userId");
 
 		Assert.assertEquals(
 			new ArrayList<EventAttributeValue>() {
 				{
-					add(new EventAttributeValue(date, "testValue1"));
-					add(new EventAttributeValue(date, "testValue2"));
+					add(new EventAttributeValue(date2, "testValue2"));
+					add(new EventAttributeValue(date1, "testValue1"));
 				}
 			},
 			_eventDog.getRecentEventAttributeValues(
