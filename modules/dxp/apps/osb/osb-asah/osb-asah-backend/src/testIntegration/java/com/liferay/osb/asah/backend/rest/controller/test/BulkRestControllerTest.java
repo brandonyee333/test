@@ -16,16 +16,20 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.backend.rest.controller.BulkRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.Http;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import org.junit.Assert;
+import org.json.JSONObject;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -41,17 +45,15 @@ public class BulkRestControllerTest {
 
 	@Test
 	public void testPost() {
-		Mockito.doAnswer(
-			invocationOnMock -> "[\"1\"]"
-		).when(
-			_http
-		).exchange(
-			ArgumentMatchers.any(), ArgumentMatchers.contains("dummy"),
-			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
-		);
+		_mockExchange("1", null, HttpMethod.GET, "/dummy");
+		_mockExchange("2", null, HttpMethod.POST, "/dummy?value=2");
+		_mockExchange("3", null, HttpMethod.PUT, "/dummy");
+		_mockExchange("4", null, HttpMethod.DELETE, "/dummy");
+		_mockExchange(
+			"5", JSONUtil.put("dummy", 5), HttpMethod.PATCH, "/dummy");
 
-		String responses = _bulkRestController.post(
-			String.valueOf(
+		JSONObject jsonObject = new JSONObject(
+			_bulkRestController.post(
 				JSONUtil.put(
 					"operations",
 					JSONUtil.putAll(
@@ -81,11 +83,33 @@ public class BulkRestControllerTest {
 							"method", "PUT"
 						).put(
 							"url", "/dummy"
-						)))));
+						))
+				).toString()));
 
-		Assert.assertEquals(
-			"{\"responses\":[[\"1\"],[\"1\"],[\"1\"],[\"1\"],[\"1\"]]}",
-			responses);
+		JSONAssert.assertEquals(
+			JSONUtil.put(
+				"responses",
+				JSONUtil.putAll(
+					JSONUtil.put("4"), JSONUtil.put("1"), JSONUtil.put("5"),
+					JSONUtil.put("2"), JSONUtil.put("3"))),
+			jsonObject, true);
+	}
+
+	private void _mockExchange(
+		String answer, JSONObject bodyJSONObject, HttpMethod httpMethod,
+		String url) {
+
+		Mockito.doAnswer(
+			invocationOnMock -> JSONUtil.put(
+				answer
+			).toString()
+		).when(
+			_http
+		).exchange(
+			ArgumentMatchers.eq(ServiceConstants.URL_BACKEND_INTERNAL),
+			ArgumentMatchers.eq(url), ArgumentMatchers.eq(httpMethod),
+			ArgumentMatchers.refEq(bodyJSONObject)
+		);
 	}
 
 	@Autowired
