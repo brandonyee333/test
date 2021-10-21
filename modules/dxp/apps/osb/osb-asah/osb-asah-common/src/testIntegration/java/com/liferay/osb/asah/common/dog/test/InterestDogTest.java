@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.dog.test;
 import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -37,6 +38,29 @@ import org.springframework.data.domain.Page;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahSpringBootApplication.class)
 public class InterestDogTest {
+
+	@ElasticsearchIndex(
+		name = "interests", resourcePath = "interests_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetInterest() {
+		Interest interest = _interestDog.getInterest(374790572703144534L);
+
+		Assert.assertEquals(
+			Long.valueOf(374790572703144534L), interest.getId());
+
+		Assert.assertEquals("compelling metrics", interest.getName());
+	}
+
+	@ElasticsearchIndex(
+		name = "interests", resourcePath = "interests_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test(expected = OSBAsahException.class)
+	public void testGetInterestBadRequest() {
+		_interestDog.getInterest(-374790572703144534L);
+	}
 
 	@ElasticsearchIndex(
 		name = "interests", resourcePath = "interests_info.json",
