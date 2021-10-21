@@ -36,6 +36,57 @@ definition {
 		}
 	}
 
+	@description = "This is a use case for LPS-79394. This test check that system settings scope is corrected."
+	@priority = "5"
+	test CheckSystemSettingsScopeIsCorrected {
+		property test.name.skip.portal.instance = "SystemSettings#CheckSystemSettingsScopeIsCorrected";
+
+		task ("Naviagte to system settings") {
+			ProductMenu.gotoPortlet(
+				category = "Configuration",
+				panel = "Control Panel",
+				portlet = "System Settings");
+		}
+
+		task ("Enable OpenSSO configuration") {
+			SystemSettings.gotoCategory(category = "Foundation");
+
+			SystemSettings.viewConfiguration(configurationName = "OpenSSO");
+
+			FormFields.enableCheckbox(fieldName = "enabled");
+
+			SystemSettings.saveConfiguration();
+		}
+
+		task ("Naviagte to instance settings") {
+			ProductMenu.gotoPortlet(
+				category = "Configuration",
+				panel = "Control Panel",
+				portlet = "Instance Settings");
+		}
+
+		task ("Disable OpenSSO configuration") {
+			PortalSettingsNavigator.gotoAuthenticationOpenSSO();
+
+			FormFields.disableCheckbox(fieldName = "opensso_enabled");
+
+			SystemSettings.saveConfiguration();
+		}
+
+		task ("Check system settings scope is corrected") {
+			ProductMenu.gotoPortlet(
+				category = "Configuration",
+				panel = "Control Panel",
+				portlet = "System Settings");
+
+			SystemSettings.gotoCategory(category = "Foundation");
+
+			SystemSettings.viewConfiguration(configurationName = "OpenSSO");
+
+			FormFields.viewCheckboxChecked(fieldName = "enabled");
+		}
+	}
+
 	@priority = "5"
 	test EditDefaultUserAssociationsOrganizationSites {
 		property test.name.skip.portal.instance = "CPPortalSettings#EditDefaultUserAssociationsOrganizationSites";
