@@ -15,12 +15,14 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.EventAttribute;
+import com.liferay.osb.asah.common.model.EventAttributeValue;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.repository.query.Param;
 
 /**
  * @author Marcellus Tavares
@@ -34,5 +36,10 @@ public interface EventAttributeRepository
 
 	@Cacheable
 	public List<EventAttribute> findByEventIdIn(Collection<Long> eventIds);
+
+	@Cacheable
+	public List<EventAttributeValue> findDistinctAttributeValues(
+		@Param("eventAttributeDefinitionId") Long eventAttributeDefinitionId,
+		@Param("size") int size);
 
 }

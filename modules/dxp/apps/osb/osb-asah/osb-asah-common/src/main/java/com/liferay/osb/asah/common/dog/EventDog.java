@@ -84,7 +84,7 @@ public class EventDog {
 	public List<EventAttributeValue> getRecentEventAttributeValues(
 		Long eventAttributeDefinitionId, int size) {
 
-		return _eventRepository.findDistinctAttributeValues(
+		return _eventAttributeRepository.findDistinctAttributeValues(
 			eventAttributeDefinitionId, size);
 	}
 

@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
-import com.liferay.osb.asah.common.model.EventAttributeValue;
 import com.liferay.osb.asah.common.model.Interval;
 
 import java.math.BigDecimal;
@@ -33,7 +32,6 @@ import java.util.Optional;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
 
 /**
@@ -74,11 +72,6 @@ public interface EventRepository extends Repository<Event, Long> {
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate, String timeZoneId);
-
-	@Cacheable
-	public List<EventAttributeValue> findDistinctAttributeValues(
-		@Param("eventAttributeDefinitionId") Long eventAttributeDefinitionId,
-		@Param("size") int size);
 
 	@Cacheable
 	public Optional<Event> findFirstByOrderByIdDesc();
