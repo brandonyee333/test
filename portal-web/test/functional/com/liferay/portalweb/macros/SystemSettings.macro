@@ -97,13 +97,17 @@ definition {
 
 	macro saveConfiguration {
 		if (IsElementPresent(locator1 = "Button#SAVE")) {
-			PortletEntry.save();
+			AssertClick(
+				locator1 = "Button#SAVE",
+				value1 = "Save");
 		}
 		else {
-			Button.clickUpdate();
-
-			Alert.viewSuccessMessage();
+			AssertClick(
+				locator1 = "Button#UPDATE",
+				value1 = "Update");
 		}
+
+		Alert.viewSuccessMessage();
 	}
 
 	macro viewConfiguration {
