@@ -25,6 +25,7 @@ import com.liferay.osb.asah.upgrade.v3_0_0.DataSourcesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.IndividualsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.SalesforceUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.UserSessionsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_1.EventDefinitionUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -50,6 +51,9 @@ public class UpgradeProcessConfiguration {
 			_dxpEntityUpgradeStep, _individualsUpgradeStep,
 			_salesforceUpgradeStep);
 
+		upgradeProcess.addUpgradeSteps(
+			"3.0.0", "3.0.1", _eventDefinitionUpgradeStep);
+
 		return upgradeProcess;
 	}
 
@@ -67,6 +71,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private DXPEntityUpgradeStep _dxpEntityUpgradeStep;
+
+	@Autowired
+	private EventDefinitionUpgradeStep _eventDefinitionUpgradeStep;
 
 	@Autowired
 	private IndividualsUpgradeStep _individualsUpgradeStep;
