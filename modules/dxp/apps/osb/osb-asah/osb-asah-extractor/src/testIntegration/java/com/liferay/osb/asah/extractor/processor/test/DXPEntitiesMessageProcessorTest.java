@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.extractor.processor.DXPEntitiesMessageProcessor;
@@ -68,6 +69,8 @@ public class DXPEntitiesMessageProcessorTest {
 				349978106408647035L, "emailAddress", "email", "Text"));
 
 		_dxpEntitiesMessageProcessor.processQueuedMessages();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
 			Collections.singletonMap("fields.roleId", 39521),
