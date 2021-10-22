@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.backend.graphql.GraphQLRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
@@ -107,6 +108,8 @@ public abstract class BaseGraphQLRestControllerTestCase {
 		mockHttpServletRequestBuilder.content(jsonObject.toString());
 		mockHttpServletRequestBuilder.contentType(
 			MediaType.APPLICATION_JSON_UTF8);
+		mockHttpServletRequestBuilder.header(
+			HeaderConstants.PROJECT_ID, "test");
 
 		ResultActions resultActions = _mockMvc.perform(
 			mockHttpServletRequestBuilder);

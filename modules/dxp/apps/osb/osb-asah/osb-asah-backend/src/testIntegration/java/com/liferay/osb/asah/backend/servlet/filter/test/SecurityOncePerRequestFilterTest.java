@@ -118,6 +118,8 @@ public class SecurityOncePerRequestFilterTest {
 
 		mockHttpServletRequestBuilder1.header(
 			HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE, securitySignature);
+		mockHttpServletRequestBuilder1.header(
+			HeaderConstants.PROJECT_ID, "test");
 
 		_expectStatusOK(_mockMvc.perform(mockHttpServletRequestBuilder1));
 
@@ -127,6 +129,8 @@ public class SecurityOncePerRequestFilterTest {
 		mockHttpServletRequestBuilder2.header(
 			HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE,
 			RandomTestUtil.randomUUID());
+		mockHttpServletRequestBuilder2.header(
+			HeaderConstants.PROJECT_ID, "test");
 
 		_expectStatusForbidden(
 			_mockMvc.perform(mockHttpServletRequestBuilder2));

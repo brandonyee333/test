@@ -181,6 +181,7 @@ public class DXPBatchEntitiesRestControllerTest {
 		HttpHeaders httpHeaders = new HttpHeaders();
 
 		httpHeaders.add(HeaderConstants.DATA_SOURCE_ID, "test-data-source-id");
+		httpHeaders.add(HeaderConstants.PROJECT_ID, "test");
 		httpHeaders.add("If-Modified-Since", DateUtil.newDateString());
 
 		ResponseEntity<Resource> responseEntity = _exchange(httpHeaders);
@@ -218,6 +219,7 @@ public class DXPBatchEntitiesRestControllerTest {
 		HttpHeaders httpHeaders = new HttpHeaders();
 
 		httpHeaders.add(HeaderConstants.DATA_SOURCE_ID, "test-data-source-id");
+		httpHeaders.add(HeaderConstants.PROJECT_ID, "test");
 		httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
 
 		ResponseEntity<Resource> responseEntity = _testRestTemplate.exchange(
@@ -248,6 +250,7 @@ public class DXPBatchEntitiesRestControllerTest {
 		HttpHeaders httpHeaders = new HttpHeaders();
 
 		httpHeaders.add(HeaderConstants.DATA_SOURCE_ID, "test-data-source-id");
+		httpHeaders.add(HeaderConstants.PROJECT_ID, "test");
 		httpHeaders.add("If-Modified-Since", _getModifiedSince());
 
 		return httpHeaders;

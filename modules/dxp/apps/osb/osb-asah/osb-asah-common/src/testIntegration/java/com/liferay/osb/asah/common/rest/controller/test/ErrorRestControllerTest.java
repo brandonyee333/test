@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.rest.controller.test;
 
+import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -46,6 +47,7 @@ public class ErrorRestControllerTest {
 	public void test() {
 		RequestSpecification requestSpecification = RestAssured.given();
 
+		requestSpecification.header(HeaderConstants.PROJECT_ID, "test");
 		requestSpecification.port(_serverPort);
 
 		Response response = requestSpecification.request(
