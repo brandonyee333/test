@@ -50,10 +50,18 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 			HeaderConstants.PROJECT_ID);
 
 		if (projectId == null) {
-			Matcher matcher = _urlPattern.matcher(
-				ServletRequestUtil.getOriginalURL(httpServletRequest));
+			String originalURL = ServletRequestUtil.getOriginalURL(
+				httpServletRequest);
+
+			Matcher matcher = _urlPattern.matcher(originalURL);
 
 			if (!matcher.find()) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to resolve the project ID from request " +
+							originalURL);
+				}
+
 				filterChain.doFilter(httpServletRequest, httpServletResponse);
 
 				return;
