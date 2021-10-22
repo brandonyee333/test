@@ -234,9 +234,10 @@
 	}
 
 	.edit-entry {
-		.alloy-editor-placeholder:before {
+		.alloy-editor.ae-placeholder ~ .alloy-editor-placeholder {
 			display: block;
 			text-align: inherit;
+			top: 0;
 			width: 100%;
 		}
 
@@ -244,11 +245,11 @@
 			padding-left: 0;
 			text-align: center;
 
-			&.alloy-editor-placeholder.ae-placeholder:not(:focus):not(.form-control) {
+			&.ae-placeholder:not(:focus):not(.form-control) {
 				border-left-width: 0;
 			}
 
-			&.alloy-editor-placeholder:before {
+			&.ae-placeholder {
 				border-color: inherit;
 				border-left: 2px solid;
 				display: inline-block;
