@@ -50,24 +50,12 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 			HeaderConstants.PROJECT_ID);
 
 		if (projectId == null) {
-			String originalURL = ServletRequestUtil.getOriginalURL(
-				httpServletRequest);
+			Matcher matcher = _urlPattern.matcher(
+				ServletRequestUtil.getOriginalURL(httpServletRequest));
 
-			Matcher matcher = _urlPattern.matcher(originalURL);
-
-			if (!matcher.find()) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Unable to resolve the project ID from request " +
-							originalURL);
-				}
-
-				filterChain.doFilter(httpServletRequest, httpServletResponse);
-
-				return;
+			if (matcher.find()) {
+				projectId = matcher.group(1);
 			}
-
-			projectId = matcher.group(1);
 		}
 
 		try {
@@ -76,7 +64,12 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 			filterChain.doFilter(httpServletRequest, httpServletResponse);
 		}
 		catch (InvalidProjectIdException invalidProjectIdException) {
-			_log.error(invalidProjectIdException, invalidProjectIdException);
+			String originalURL = ServletRequestUtil.getOriginalURL(
+				httpServletRequest);
+
+			_log.error(
+				"Unable to resolve the project ID from request " + originalURL,
+				invalidProjectIdException);
 
 			httpServletResponse.sendError(
 				HttpServletResponse.SC_BAD_REQUEST, "INVALID_PROJECT_ID");
