@@ -64,12 +64,10 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 			filterChain.doFilter(httpServletRequest, httpServletResponse);
 		}
 		catch (InvalidProjectIdException invalidProjectIdException) {
-			String originalURL = ServletRequestUtil.getOriginalURL(
-				httpServletRequest);
-
 			_log.error(
-				"Unable to resolve the project ID from request " + originalURL,
-				invalidProjectIdException);
+				String.format(
+					"Invalid project ID %s resolved from request %s", projectId,
+					ServletRequestUtil.getOriginalURL(httpServletRequest)));
 
 			httpServletResponse.sendError(
 				HttpServletResponse.SC_BAD_REQUEST, "INVALID_PROJECT_ID");
