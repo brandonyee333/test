@@ -18,11 +18,7 @@ import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
-import com.liferay.osb.asah.common.rest.response.DeleteResponse;
 import com.liferay.osb.asah.common.rest.response.ItemGetResponse;
-import com.liferay.osb.asah.common.rest.response.PatchResponse;
-import com.liferay.osb.asah.common.rest.response.PostResponse;
-import com.liferay.osb.asah.common.rest.response.PutResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
@@ -76,28 +72,6 @@ public abstract class BaseRestController {
 	}
 
 	protected String toCollectionGetResponse(
-			String collectionName,
-			EmbeddedJSONObjectCreator embeddedJSONObjectCreator,
-			List<FieldSortBuilder> fieldSortBuilders, int page,
-			QueryBuilder queryBuilder, int size, String[] sorts)
-		throws Exception {
-
-		return _toCollectionGetResponse(
-			collectionName, null, null, embeddedJSONObjectCreator,
-			fieldSortBuilders, page, queryBuilder, size, sorts);
-	}
-
-	protected String toCollectionGetResponse(
-			String collectionName, JSONArray embeddedJSONArray, int page,
-			QueryBuilder queryBuilder, int size)
-		throws Exception {
-
-		return _toCollectionGetResponse(
-			collectionName, embeddedJSONArray, null, null, null, page,
-			queryBuilder, size, null);
-	}
-
-	protected String toCollectionGetResponse(
 			String collectionName, JSONArray embeddedJSONArray,
 			String embeddedJSONArrayKey, int page, QueryBuilder queryBuilder,
 			int size)
@@ -106,16 +80,6 @@ public abstract class BaseRestController {
 		return _toCollectionGetResponse(
 			collectionName, embeddedJSONArray, embeddedJSONArrayKey, null, null,
 			page, queryBuilder, size, null);
-	}
-
-	protected String toDeleteResponse(String collectionName, String id) {
-		DeleteResponse deleteResponse = new DeleteResponse();
-
-		deleteResponse.setCollectionName(collectionName);
-		deleteResponse.setElasticsearchInvoker(faroInfoElasticsearchInvoker);
-		deleteResponse.setId(id);
-
-		return deleteResponse.respond();
 	}
 
 	protected ResponseEntity toDownloadResponse(File file, String fileName) {
@@ -158,46 +122,6 @@ public abstract class BaseRestController {
 			ResponseEntity.notFound();
 
 		return headersBuilder.build();
-	}
-
-	protected String toPatchResponse(
-			String collectionName, String id, String json)
-		throws Exception {
-
-		PatchResponse patchResponse = new PatchResponse();
-
-		patchResponse.setCollectionName(collectionName);
-		patchResponse.setElasticsearchInvoker(faroInfoElasticsearchInvoker);
-		patchResponse.setId(id);
-		patchResponse.setJSON(json);
-
-		return patchResponse.respond();
-	}
-
-	protected String toPostResponse(String collectionName, String json)
-		throws Exception {
-
-		PostResponse postResponse = new PostResponse();
-
-		postResponse.setCollectionName(collectionName);
-		postResponse.setElasticsearchInvoker(faroInfoElasticsearchInvoker);
-		postResponse.setJSON(json);
-
-		return postResponse.respond();
-	}
-
-	protected String toPutResponse(
-			String collectionName, String id, String json)
-		throws Exception {
-
-		PutResponse putResponse = new PutResponse();
-
-		putResponse.setCollectionName(collectionName);
-		putResponse.setElasticsearchInvoker(faroInfoElasticsearchInvoker);
-		putResponse.setId(id);
-		putResponse.setJSON(json);
-
-		return putResponse.respond();
 	}
 
 	protected String toTransformationGetResponse(
@@ -268,9 +192,6 @@ public abstract class BaseRestController {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	protected ElasticsearchInvoker salesforceRawElasticsearchInvoker;
 
 	private String _toCollectionGetResponse(
 			String collectionName, JSONArray embeddedJSONArray,
