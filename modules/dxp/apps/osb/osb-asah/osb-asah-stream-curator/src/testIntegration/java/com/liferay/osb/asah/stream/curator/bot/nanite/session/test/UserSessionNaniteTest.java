@@ -17,6 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.session.test;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.UserSessionNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
@@ -55,6 +56,8 @@ public class UserSessionNaniteTest {
 	public void testAnalyticsEventsAreTimeDelimited() {
 		_userSessionNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		JSONArray userSessionsJSONArray = _elasticsearchInvoker.get(
 			"user-sessions");
 
@@ -68,6 +71,8 @@ public class UserSessionNaniteTest {
 	@Test
 	public void testCreateOpenSession() {
 		_userSessionNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		JSONArray userSessionsJSONArray = _elasticsearchInvoker.get(
 			"user-sessions");
@@ -98,6 +103,8 @@ public class UserSessionNaniteTest {
 	@Test
 	public void testCreatePastSession() {
 		_userSessionNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		Assert.assertEquals(
 			2,
@@ -136,6 +143,8 @@ public class UserSessionNaniteTest {
 	@Test
 	public void testExpiredSession() {
 		_userSessionNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		JSONArray userSessionsJSONArray = new JSONArray(
 			_elasticsearchInvoker.get(
@@ -181,6 +190,8 @@ public class UserSessionNaniteTest {
 
 		_userSessionNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		userSessionsJSONArray = _elasticsearchInvoker.get("user-sessions");
 
 		Assert.assertEquals(1, userSessionsJSONArray.length());
@@ -211,6 +222,8 @@ public class UserSessionNaniteTest {
 		String modifiedDate = userSessionJSONObject.getString("modifiedDate");
 
 		_userSessionNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		userSessionsJSONArray = _elasticsearchInvoker.get("user-sessions");
 
@@ -243,6 +256,8 @@ public class UserSessionNaniteTest {
 		String modifiedDate = userSessionJSONObject.getString("modifiedDate");
 
 		_userSessionNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		userSessionsJSONArray = _elasticsearchInvoker.get("user-sessions");
 

@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.session.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.UserSessionFinalizerNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
@@ -63,6 +64,8 @@ public class UserSessionFinalizerNaniteTest {
 	public void testExpiredSessionMultipleInteractions() {
 		_userSessionFinalizerNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		Assert.assertEquals(
 			1,
 			_elasticsearchInvoker.count(
@@ -105,6 +108,8 @@ public class UserSessionFinalizerNaniteTest {
 	public void testExpiredSessionMultiplePageVisits() {
 		_userSessionFinalizerNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		Assert.assertEquals(
 			1,
 			_elasticsearchInvoker.count(
@@ -143,6 +148,8 @@ public class UserSessionFinalizerNaniteTest {
 	@Test
 	public void testExpiredSessionSingleInteraction() {
 		_userSessionFinalizerNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		Assert.assertEquals(
 			2,
@@ -190,6 +197,8 @@ public class UserSessionFinalizerNaniteTest {
 	@Test
 	public void testExpiredSessionUpdatesAssets() {
 		_userSessionFinalizerNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		Assert.assertEquals(
 			1,
@@ -265,6 +274,8 @@ public class UserSessionFinalizerNaniteTest {
 
 		_userSessionFinalizerNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", "366909399944215919");
 
@@ -335,6 +346,8 @@ public class UserSessionFinalizerNaniteTest {
 	public void testUpdatePageViews() {
 		_userSessionFinalizerNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		Assert.assertEquals(
 			1,
 			_elasticsearchInvoker.count(
@@ -370,6 +383,8 @@ public class UserSessionFinalizerNaniteTest {
 	@Test
 	public void testUpdateTimeOnPageSinglePage() {
 		_userSessionFinalizerNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		Assert.assertEquals(
 			1,

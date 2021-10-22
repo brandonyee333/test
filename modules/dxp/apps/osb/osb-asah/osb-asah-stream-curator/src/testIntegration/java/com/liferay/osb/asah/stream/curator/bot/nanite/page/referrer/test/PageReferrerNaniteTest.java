@@ -17,6 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.page.referrer.test;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.page.referrer.PageReferrerNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
@@ -50,6 +51,8 @@ public class PageReferrerNaniteTest {
 	@Test
 	public void testPageReferrerMetrics() throws Exception {
 		_pageReferrerNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(

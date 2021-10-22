@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.individual.IndividualNanite;
@@ -126,6 +127,8 @@ public class IndividualNaniteTest {
 
 		_individualNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get("blogs");
 
 		JSONAssert.assertEquals(
@@ -195,6 +198,8 @@ public class IndividualNaniteTest {
 		Assert.assertTrue(_individualDog.existsById(200L));
 
 		_individualNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		Assert.assertFalse(_individualDog.existsById(200L));
 
@@ -271,6 +276,8 @@ public class IndividualNaniteTest {
 
 		_individualNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		Assert.assertTrue(_individualDog.existsById(100L));
 		Assert.assertFalse(_individualDog.existsById(200L));
 	}
@@ -299,6 +306,8 @@ public class IndividualNaniteTest {
 	public void testMergeIndividualWithEmptyEmailAddress() {
 		_individualNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		JSONArray individualsJSONArray = _faroInfoElasticsearchInvoker.get(
 			"individuals",
 			QueryBuilders.termQuery(
@@ -326,6 +335,8 @@ public class IndividualNaniteTest {
 	@Test
 	public void testSkipUpdatePageAndAsset() {
 		_individualNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get("blogs");
 
@@ -359,6 +370,8 @@ public class IndividualNaniteTest {
 	@Test
 	public void testSuppressedUserUpdate() {
 		_individualNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
 			"user-sessions");
@@ -433,6 +446,8 @@ public class IndividualNaniteTest {
 		_individualDog.addIndividual(individual2, false);
 
 		_individualNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
 			"user-sessions");

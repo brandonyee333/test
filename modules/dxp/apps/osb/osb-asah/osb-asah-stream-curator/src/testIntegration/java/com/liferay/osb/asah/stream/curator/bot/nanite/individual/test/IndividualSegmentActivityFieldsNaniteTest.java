@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.individual.IndividualSegmentActivityFieldsNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
@@ -55,6 +56,8 @@ public class IndividualSegmentActivityFieldsNaniteTest {
 	@Test
 	public void test() throws Exception {
 		_individualSegmentActivityFieldsNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		Segment segment = _segmentDog.getSegment(461522890926789186L);
 

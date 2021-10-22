@@ -147,6 +147,8 @@ public class IndividualActivityFieldsNaniteTest {
 
 		_individualActivityFieldsNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		individual = _individualDog.fetchIndividual(individual.getId());
 
 		Set<Individual.ActivitiesCount> activitiesCounts =
@@ -179,6 +181,8 @@ public class IndividualActivityFieldsNaniteTest {
 
 		_individualActivityFieldsNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		individual = _individualDog.fetchIndividual(individual.getId());
 
 		_assertLastActivitiesDates(
@@ -191,6 +195,8 @@ public class IndividualActivityFieldsNaniteTest {
 			1, "Page", channelId, dateString, "pageViewed", individual);
 
 		_individualActivityFieldsNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		individual = _individualDog.fetchIndividual(individual.getId());
 
@@ -205,6 +211,8 @@ public class IndividualActivityFieldsNaniteTest {
 			individual);
 
 		_individualActivityFieldsNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		individual = _individualDog.fetchIndividual(individual.getId());
 
@@ -299,6 +307,8 @@ public class IndividualActivityFieldsNaniteTest {
 			individual);
 
 		_individualActivityFieldsNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		return _individualDog.fetchIndividual(individual.getId());
 	}

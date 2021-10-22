@@ -17,6 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.page.test;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.page.PageNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
@@ -54,6 +55,8 @@ public class PageNaniteTest {
 	@Test
 	public void testPageMetrics() throws Exception {
 		_pageNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(

@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.custom.CustomAssetDashboardNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
@@ -52,6 +53,8 @@ public class CustomAssetDashboardNaniteTest {
 	public void testAddDashboard() throws Exception {
 		_customAssetDashboardNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/expected_custom_asset_dashboards_info.json",
@@ -68,6 +71,8 @@ public class CustomAssetDashboardNaniteTest {
 	public void testSkipTitleUpdate() throws Exception {
 		_customAssetDashboardNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
 			_messageBus);
 
@@ -79,6 +84,8 @@ public class CustomAssetDashboardNaniteTest {
 				this));
 
 		_customAssetDashboardNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
@@ -92,6 +99,8 @@ public class CustomAssetDashboardNaniteTest {
 	public void testUpdateTitle() throws Exception {
 		_customAssetDashboardNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
 			_messageBus);
 
@@ -104,6 +113,8 @@ public class CustomAssetDashboardNaniteTest {
 
 		_customAssetDashboardNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		messageBusTestHelper.prepareMessageBusChannel(
 			Channel.ANALYTICS_EVENTS_CUSTOM_ASSET,
 			ResourceUtil.readResourceToJSONArray(
@@ -112,6 +123,8 @@ public class CustomAssetDashboardNaniteTest {
 				this));
 
 		_customAssetDashboardNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
 			"custom-asset-dashboards");

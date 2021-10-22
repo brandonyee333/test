@@ -17,6 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.form.test;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.form.FormNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
@@ -54,6 +55,8 @@ public class FormNaniteTest {
 	public void testFormAbandonmentsCount1() throws Exception {
 		_formNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		JSONObject jsonObject = _cerebroInfoElasticsearchInvoker.get(
 			"forms", "1");
 
@@ -72,6 +75,8 @@ public class FormNaniteTest {
 	public void testFormAbandonmentsCount2() throws Exception {
 		_formNanite.run();
 
+		ProjectIdThreadLocal.setProjectId("test");
+
 		JSONObject jsonObject = _cerebroInfoElasticsearchInvoker.get(
 			"forms", "1");
 
@@ -89,6 +94,8 @@ public class FormNaniteTest {
 	@Test
 	public void testFormMetrics() throws Exception {
 		_formNanite.run();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
