@@ -42,6 +42,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jdbc.core.convert.JdbcCustomConversions;
 import org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import org.springframework.data.relational.core.dialect.Dialect;
+import org.springframework.data.relational.core.dialect.PostgresDialect;
 import org.springframework.data.relational.core.mapping.NamingStrategy;
 import org.springframework.data.relational.core.mapping.RelationalPersistentProperty;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -71,6 +73,12 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 			Arrays.asList(
 				new JSONObjectToPGobjectConverter(),
 				new PGobjectToJSONObjectConverter()));
+	}
+
+	@Bean
+	@Override
+	public Dialect jdbcDialect(NamedParameterJdbcOperations operations) {
+		return PostgresDialect.INSTANCE;
 	}
 
 	@Bean
