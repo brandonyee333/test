@@ -47,6 +47,8 @@ public class OSBAsahElasticsearchTestExecutionListener
 
 	@Override
 	public void afterTestClass(TestContext testContext) {
+		ProjectIdThreadLocal.setProjectId("test");
+
 		Class<?> clazz = testContext.getTestClass();
 
 		ElasticsearchIndex[] elasticsearchIndices = clazz.getAnnotationsByType(
@@ -65,6 +67,8 @@ public class OSBAsahElasticsearchTestExecutionListener
 
 	@Override
 	public void afterTestMethod(TestContext testContext) {
+		ProjectIdThreadLocal.setProjectId("test");
+
 		Class<?> clazz = testContext.getTestClass();
 
 		if (!clazz.isAnnotationPresent(ElasticsearchIndex.class) &&
@@ -104,6 +108,8 @@ public class OSBAsahElasticsearchTestExecutionListener
 				cache.invalidate();
 			}
 		}
+
+		ProjectIdThreadLocal.remove();
 	}
 
 	@Override
@@ -137,6 +143,8 @@ public class OSBAsahElasticsearchTestExecutionListener
 	@Override
 	public void beforeTestMethod(TestContext testContext) throws Exception {
 		_elasticsearchIndexManager.addTemplates();
+
+		ProjectIdThreadLocal.setProjectId("test");
 
 		Set<ElasticsearchIndex> elasticsearchIndices =
 			AnnotatedElementUtils.findMergedRepeatableAnnotations(

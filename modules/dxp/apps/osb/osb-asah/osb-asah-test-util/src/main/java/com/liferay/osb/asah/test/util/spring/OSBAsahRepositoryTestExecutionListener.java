@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import java.lang.reflect.ParameterizedType;
@@ -44,6 +45,8 @@ public class OSBAsahRepositoryTestExecutionListener
 
 	@Override
 	public void afterTestClass(TestContext testContext) throws Exception {
+		ProjectIdThreadLocal.setProjectId("test");
+
 		ApplicationContext applicationContext =
 			testContext.getApplicationContext();
 
@@ -56,10 +59,14 @@ public class OSBAsahRepositoryTestExecutionListener
 			_clearRepository(
 				applicationContext, repositoryResource.repositoryClass());
 		}
+
+		ProjectIdThreadLocal.remove();
 	}
 
 	@Override
 	public void afterTestMethod(TestContext testContext) throws Exception {
+		ProjectIdThreadLocal.setProjectId("test");
+
 		ApplicationContext applicationContext =
 			testContext.getApplicationContext();
 
@@ -71,10 +78,14 @@ public class OSBAsahRepositoryTestExecutionListener
 			_clearRepository(
 				applicationContext, repositoryResource.repositoryClass());
 		}
+
+		ProjectIdThreadLocal.remove();
 	}
 
 	@Override
 	public void beforeTestClass(TestContext testContext) throws Exception {
+		ProjectIdThreadLocal.setProjectId("test");
+
 		Class<?> clazz = testContext.getTestClass();
 
 		RepositoryResource[] repositoryResources = clazz.getAnnotationsByType(
@@ -94,6 +105,8 @@ public class OSBAsahRepositoryTestExecutionListener
 
 	@Override
 	public void beforeTestMethod(TestContext testContext) throws Exception {
+		ProjectIdThreadLocal.setProjectId("test");
+
 		ApplicationContext applicationContext =
 			testContext.getApplicationContext();
 
