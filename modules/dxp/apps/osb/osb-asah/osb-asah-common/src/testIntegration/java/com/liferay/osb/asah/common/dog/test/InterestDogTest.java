@@ -45,12 +45,12 @@ public class InterestDogTest {
 	)
 	@Test
 	public void testGetInterest() {
-		Interest interest = _interestDog.getInterest(374790572703144534L);
+		Interest interest = _interestDog.getInterest(635452168436521350L);
 
 		Assert.assertEquals(
-			Long.valueOf(374790572703144534L), interest.getId());
+			Long.valueOf(635452168436521350L), interest.getId());
 
-		Assert.assertEquals("compelling metrics", interest.getName());
+		Assert.assertEquals("sales", interest.getName());
 	}
 
 	@ElasticsearchIndex(
@@ -59,7 +59,7 @@ public class InterestDogTest {
 	)
 	@Test(expected = OSBAsahException.class)
 	public void testGetInterestBadRequest() {
-		_interestDog.getInterest(-374790572703144534L);
+		_interestDog.getInterest(374790572703144534L);
 	}
 
 	@ElasticsearchIndex(
