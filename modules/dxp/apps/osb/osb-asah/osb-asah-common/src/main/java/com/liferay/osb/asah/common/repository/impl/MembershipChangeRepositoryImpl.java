@@ -34,6 +34,7 @@ import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Rachael Koestartyo
@@ -64,7 +65,7 @@ public class MembershipChangeRepositoryImpl {
 
 	public List<MembershipChange>
 		searchLastByDateChangedPeriodAndIndividualSegmentId(
-			Date dateChangedEnd, Date dateChangedStart,
+			Date dateChangedEnd, @Nullable Date dateChangedStart,
 			boolean includeAnonymousUsers, List<Long> individualSegmentIds) {
 
 		Field<Object> individualSegmentIdField = DSL.field(
@@ -73,8 +74,13 @@ public class MembershipChangeRepositoryImpl {
 
 		Condition condition = individualSegmentIdField.in(individualSegmentIds);
 
-		condition = condition.and(
-			modifiedDateField.between(dateChangedStart, dateChangedEnd));
+		if (dateChangedStart == null) {
+			condition = condition.and(modifiedDateField.le(dateChangedEnd));
+		}
+		else {
+			condition = condition.and(
+				modifiedDateField.between(dateChangedStart, dateChangedEnd));
+		}
 
 		if (!includeAnonymousUsers) {
 			condition = condition.and(

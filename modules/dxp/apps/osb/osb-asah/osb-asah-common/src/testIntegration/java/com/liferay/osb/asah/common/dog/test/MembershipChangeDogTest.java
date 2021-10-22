@@ -81,12 +81,12 @@ public class MembershipChangeDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@Test
-	public void testGetLastFrom30DaysByIndividualSegmentId() {
+	public void testGetLastBeforeTodayByIndividualSegmentsId() {
 		List<Long> segmentIds = new ArrayList(
 			_membershipChangeByIndividualSegmentId.keySet());
 
 		List<MembershipChange> membershipChanges =
-			_membershipChangeDog.getLastFrom30DaysByIndividualSegmentsId(
+			_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
 				segmentIds);
 
 		Assert.assertEquals(

@@ -147,6 +147,16 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 		membershipChanges =
 			_membershipChangeRepository.
 				searchLastByDateChangedPeriodAndIndividualSegmentId(
+					DateUtil.newEndOfDayDate(_newDayDate), null, false,
+					individualSegmentIds);
+
+		Assert.assertEquals(
+			membershipChanges.toString(), 1, membershipChanges.size());
+		Assert.assertEquals(_membershipChange, membershipChanges.get(0));
+
+		membershipChanges =
+			_membershipChangeRepository.
+				searchLastByDateChangedPeriodAndIndividualSegmentId(
 					DateUtil.newEndOfDayDate(_tomorrow),
 					DateUtil.newBeginningOfDayDate(_yesterday), false,
 					individualSegmentIds);

@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Marcellus Tavares
@@ -51,7 +52,7 @@ public interface MembershipChangeRepository
 	@Cacheable
 	public List<MembershipChange>
 		searchLastByDateChangedPeriodAndIndividualSegmentId(
-			Date dateChangedEnd, Date dateChangedStart,
+			Date dateChangedEnd, @Nullable Date dateChangedStart,
 			boolean includeAnonymousUsers, List<Long> individualSegmentIds);
 
 	@Cacheable

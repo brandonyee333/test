@@ -219,7 +219,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		Segment segment = _resetIndividualsCount(segmentDog.getSegment(id));
 
 		List<MembershipChange> membershipsChanges =
-			_membershipChangeDog.getLastFrom30DaysByIndividualSegmentsId(
+			_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
 				Collections.singletonList(segment.getId()));
 
 		if (!membershipsChanges.isEmpty()) {
@@ -269,7 +269,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 				Collectors.toMap(Segment::getId, this::_resetIndividualsCount));
 
 			List<MembershipChange> membershipsChanges =
-				_membershipChangeDog.getLastFrom30DaysByIndividualSegmentsId(
+				_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
 					new ArrayList<>(segmentsMap.keySet()));
 
 			for (MembershipChange membershipChange : membershipsChanges) {

@@ -34,6 +34,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.collapse.CollapseBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -42,6 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -88,7 +90,7 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 
 	public List<MembershipChange>
 		searchLastByDateChangedPeriodAndIndividualSegmentId(
-			Date dateChangedEnd, Date dateChangedStart,
+			Date dateChangedEnd, @Nullable Date dateChangedStart,
 			boolean includeAnonymousUsers, List<Long> individualSegmentIds) {
 
 		return toList(
@@ -101,15 +103,20 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 								FilterHelper.EMPTY, includeAnonymousUsers,
 								individualSegmentIds);
 
+						RangeQueryBuilder rangeQueryBuilder =
+							QueryBuilders.rangeQuery(
+								"dateChanged"
+							).lte(
+								DateUtil.toUTCString(dateChangedEnd)
+							);
+
+						if (dateChangedStart != null) {
+							rangeQueryBuilder = rangeQueryBuilder.gte(
+								DateUtil.toUTCString(dateChangedStart));
+						}
+
 						searchSourceBuilder.query(
-							boolQueryBuilder.filter(
-								QueryBuilders.rangeQuery(
-									"dateChanged"
-								).gte(
-									DateUtil.toUTCString(dateChangedStart)
-								).lte(
-									DateUtil.toUTCString(dateChangedEnd)
-								))
+							boolQueryBuilder.filter(rangeQueryBuilder)
 						).collapse(
 							new CollapseBuilder("individualSegmentId")
 						).sort(
