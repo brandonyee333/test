@@ -471,7 +471,8 @@ public class ElasticsearchAssetRepositoryImpl
 
 	@Override
 	public Map<String, Set<String>> getByAssetTypeAndChannelIdAndDatasourceId(
-		String assetType, Long channelId, @Nullable Long dataSourceId) {
+		String assetType, @Nullable Long channelId,
+		@Nullable Long dataSourceId) {
 
 		Map<String, Set<String>> assets = new HashMap<>();
 
@@ -509,8 +510,10 @@ public class ElasticsearchAssetRepositoryImpl
 			QueryBuilders.existsQuery("keywords.keyword")
 		);
 
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "channelIds", String.valueOf(channelId));
+		if (channelId != null) {
+			BoolQueryBuilderUtil.filterTerm(
+				boolQueryBuilder, "channelIds", String.valueOf(channelId));
+		}
 
 		if (dataSourceId != null) {
 			BoolQueryBuilderUtil.filterTerm(

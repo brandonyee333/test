@@ -248,13 +248,12 @@ public class AssetRepositoryImpl extends BaseRepository {
 	}
 
 	public Map<String, Set<String>> getByAssetTypeAndChannelIdAndDatasourceId(
-		String assetType, Long channelId, @Nullable Long dataSourceId) {
+		String assetType, @Nullable Long channelId,
+		@Nullable Long dataSourceId) {
 
 		Map<String, Set<String>> assets = new HashMap<>();
 
 		Condition condition = DSL.and(
-			DSL.condition(
-				String.format("%s = any (Asset.channelIds)", channelId)),
 			DSL.field(
 				"Asset.assetType"
 			).eq(
@@ -263,6 +262,12 @@ public class AssetRepositoryImpl extends BaseRepository {
 			DSL.field(
 				"AssetKeyword.keyword"
 			).isNotNull());
+
+		if (channelId != null) {
+			condition = condition.and(
+				DSL.condition(
+					String.format("%s = any (Asset.channelIds)", channelId)));
+		}
 
 		if (dataSourceId != null) {
 			condition = condition.and(

@@ -90,6 +90,7 @@ public interface AssetRepository extends Repository<Asset, Long> {
 
 	@Cacheable
 	public Map<String, Set<String>> getByAssetTypeAndChannelIdAndDatasourceId(
-		String assetType, Long channelId, @Nullable Long dataSourceId);
+		String assetType, @Nullable Long channelId,
+		@Nullable Long dataSourceId);
 
 }
