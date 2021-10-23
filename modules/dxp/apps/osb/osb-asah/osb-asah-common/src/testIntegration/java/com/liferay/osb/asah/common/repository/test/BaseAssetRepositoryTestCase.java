@@ -292,6 +292,7 @@ public abstract class BaseAssetRepositoryTestCase
 			keywords);
 	}
 
+	@Test
 	public void testGetByAssetTypeAndChannelIdAndDatasourceId() {
 		Map<String, Set<String>> assets =
 			_assetRepository.getByAssetTypeAndChannelIdAndDatasourceId(
@@ -318,6 +319,11 @@ public abstract class BaseAssetRepositoryTestCase
 		Collection<Set<String>> values = assets.values();
 
 		values.forEach(value -> Assert.assertFalse(value.isEmpty()));
+
+		Assert.assertEquals(
+			assets,
+			_assetRepository.getByAssetTypeAndChannelIdAndDatasourceId(
+				"Page", null, _dataSourceId));
 	}
 
 	@Override
