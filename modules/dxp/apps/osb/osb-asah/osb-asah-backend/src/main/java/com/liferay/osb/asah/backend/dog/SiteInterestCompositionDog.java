@@ -33,6 +33,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -122,7 +124,7 @@ public class SiteInterestCompositionDog {
 
 		Map<String, Set<String>> assetIds =
 			_assetDog.getAssetIdsGroupedByKeywords(
-				"Page", Long.valueOf(channelId),
+				"Page", NumberUtils.createLong(channelId),
 				Optional.ofNullable(
 					dataSourceId
 				).map(
