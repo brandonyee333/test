@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -74,6 +75,23 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 		}
 	}
 
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest httpServletRequest)
+		throws ServletException {
+
+		String method = httpServletRequest.getMethod();
+		String requestURI = httpServletRequest.getRequestURI();
+
+		if ((method.equals(HttpMethod.GET.name()) &&
+			 (requestURI.equals("/") || requestURI.equals("/context"))) ||
+			(method.equals(HttpMethod.OPTIONS.name()) &&
+			 (requestURI.equals("/") || requestURI.equals("/identity")))) {
+
+			return true;
+		}
+
+		return false;
+	}
 
 	private static final Pattern _urlPattern = Pattern.compile(
 		"^https://osbasah(?:backend|publisher)-(\\w+)\\.lfr\\.cloud");
