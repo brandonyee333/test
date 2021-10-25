@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.graphql.GraphQLRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.json.JSONObject;
@@ -60,26 +61,31 @@ public abstract class BaseGraphQLRestControllerTestCase {
 
 	@Test
 	public void testQuery() throws Exception {
-		String body = ResourceUtil.readResourceToString(
-			"dependencies/" + getBodyPath(), this);
+		try {
+			String body = ResourceUtil.readResourceToString(
+				"dependencies/" + getBodyPath(), this);
 
-		JSONObject bodyJSONObject = new JSONObject(body);
+			JSONObject bodyJSONObject = new JSONObject(body);
 
-		String query = ResourceUtil.readResourceToString(
-			"dependencies/" + getQueryPath(), this);
+			String query = ResourceUtil.readResourceToString(
+				"dependencies/" + getQueryPath(), this);
 
-		bodyJSONObject.put("query", query);
+			bodyJSONObject.put("query", query);
 
-		JSONObject responseJSONObject = _request(bodyJSONObject);
+			JSONObject responseJSONObject = _request(bodyJSONObject);
 
-		Assert.assertFalse(responseJSONObject.has("errors"));
+			Assert.assertFalse(responseJSONObject.has("errors"));
 
-		String expectedResultPath = getExpectedResultPath();
+			String expectedResultPath = getExpectedResultPath();
 
-		JSONAssert.assertEquals(
-			ResourceUtil.readResourceToJSONObject(
-				"dependencies/" + expectedResultPath, this),
-			responseJSONObject, false);
+			JSONAssert.assertEquals(
+				ResourceUtil.readResourceToJSONObject(
+					"dependencies/" + expectedResultPath, this),
+				responseJSONObject, false);
+		}
+		finally {
+			ProjectIdThreadLocal.setProjectId("test");
+		}
 	}
 
 	private void _expectContentTypeJSON(ResultActions resultActions)
