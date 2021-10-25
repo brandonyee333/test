@@ -1101,8 +1101,6 @@ definition {
 				emailList = "userea@liferay.com,user1@liferay.com",
 				pageName = "Blogs Page",
 				siteName = "Site Name");
-
-			ACUtils.closeAllSessions();
 		}
 
 		task ("View the documents page as different users") {
@@ -1112,8 +1110,6 @@ definition {
 				emailList = "user2@liferay.com,user3@liferay.com",
 				pageName = "Documents Page",
 				siteName = "Site Name");
-
-			ACUtils.closeAllSessions();
 		}
 
 		task ("View the web content page as different users") {
@@ -1122,7 +1118,6 @@ definition {
 				pageName = "Web Content Page",
 				siteName = "Site Name");
 
-			ACUtils.closeAllSessions();
 		}
 
 		task ("View the second blogs page as different users") {
@@ -1132,8 +1127,6 @@ definition {
 				emailList = "user6@liferay.com,user7@liferay.com",
 				pageName = "Blogs Second Page",
 				siteName = "Site Name");
-
-			ACUtils.closeAllSessions();
 		}
 
 		task ("View the second documents page as different users") {
@@ -1143,8 +1136,6 @@ definition {
 				emailList = "user8@liferay.com,user9@liferay.com",
 				pageName = "Documents Second Page",
 				siteName = "Site Name");
-
-			ACUtils.closeAllSessions();
 		}
 
 		task ("View the second web content page as different users") {
@@ -1153,7 +1144,7 @@ definition {
 				pageName = "Web Content Second Page",
 				siteName = "Site Name");
 
-			ACUtils.closeAllSessions();
+			ACUtils.closeAllSessionsAndWait();
 		}
 
 		task ("Switch to new property in AC") {
@@ -1170,12 +1161,6 @@ definition {
 
 		task ("Type the segment name") {
 			ACSegments.nameSegment(segmentName = "Static Segment Test");
-		}
-
-		task ("Select the 5 items in Add Members modal") {
-			Click(locator1 = "ACSegments#ADD_MEMBERS_BUTTON");
-
-			ACUtils.changePagination(itemsPerPage = "20");
 		}
 
 		task ("Add multiple members") {
