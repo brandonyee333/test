@@ -223,9 +223,9 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		Date date = DateUtil.newDayDate();
 
 		return _membershipChangeRepository.
-			searchLastByDateChangedPeriodAndIndividualSegmentId(
-				DateUtil.newEndOfDayDate(DateUtils.addDays(date, -1)), null,
-				false, individualSegmentIds);
+			searchLastByModifiedDateAndIndividualSegmentId(
+				null, false, individualSegmentIds,
+				DateUtil.newEndOfDayDate(DateUtils.addDays(date, -1)));
 	}
 
 	public Page<MembershipChange> searchMembershipChangesPages(

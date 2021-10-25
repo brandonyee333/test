@@ -51,9 +51,9 @@ public interface MembershipChangeRepository
 
 	@Cacheable
 	public List<MembershipChange>
-		searchLastByDateChangedPeriodAndIndividualSegmentId(
-			Date dateChangedEnd, @Nullable Date dateChangedStart,
-			boolean includeAnonymousUsers, List<Long> individualSegmentIds);
+		searchLastByModifiedDateAndIndividualSegmentId(
+			@Nullable Date fromModifiedDate, boolean includeAnonymousUsers,
+			List<Long> individualSegmentIds, Date toModifiedDate);
 
 	@Cacheable
 	public List<MembershipChange> searchMembershipChanges(

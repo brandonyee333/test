@@ -64,9 +64,9 @@ public class MembershipChangeRepositoryImpl {
 	}
 
 	public List<MembershipChange>
-		searchLastByDateChangedPeriodAndIndividualSegmentId(
-			Date dateChangedEnd, @Nullable Date dateChangedStart,
-			boolean includeAnonymousUsers, List<Long> individualSegmentIds) {
+		searchLastByModifiedDateAndIndividualSegmentId(
+			@Nullable Date fromModifiedDate, boolean includeAnonymousUsers,
+			List<Long> individualSegmentIds, Date toModifiedDate) {
 
 		Field<Object> individualSegmentIdField = DSL.field(
 			"individualsegmentid");
@@ -74,12 +74,12 @@ public class MembershipChangeRepositoryImpl {
 
 		Condition condition = individualSegmentIdField.in(individualSegmentIds);
 
-		if (dateChangedStart == null) {
-			condition = condition.and(modifiedDateField.le(dateChangedEnd));
+		if (fromModifiedDate == null) {
+			condition = condition.and(modifiedDateField.le(toModifiedDate));
 		}
 		else {
 			condition = condition.and(
-				modifiedDateField.between(dateChangedStart, dateChangedEnd));
+				modifiedDateField.between(fromModifiedDate, toModifiedDate));
 		}
 
 		if (!includeAnonymousUsers) {

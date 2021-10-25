@@ -89,9 +89,9 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 	}
 
 	public List<MembershipChange>
-		searchLastByDateChangedPeriodAndIndividualSegmentId(
-			Date dateChangedEnd, @Nullable Date dateChangedStart,
-			boolean includeAnonymousUsers, List<Long> individualSegmentIds) {
+		searchLastByModifiedDateAndIndividualSegmentId(
+			@Nullable Date fromModifiedDate, boolean includeAnonymousUsers,
+			List<Long> individualSegmentIds, Date toModifiedDate) {
 
 		return toList(
 			new JSONArray(
@@ -107,12 +107,12 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 							QueryBuilders.rangeQuery(
 								"dateChanged"
 							).lte(
-								DateUtil.toUTCString(dateChangedEnd)
+								DateUtil.toUTCString(toModifiedDate)
 							);
 
-						if (dateChangedStart != null) {
+						if (fromModifiedDate != null) {
 							rangeQueryBuilder = rangeQueryBuilder.gte(
-								DateUtil.toUTCString(dateChangedStart));
+								DateUtil.toUTCString(fromModifiedDate));
 						}
 
 						searchSourceBuilder.query(
