@@ -31,9 +31,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -142,9 +140,6 @@ public abstract class BaseSecurityOncePerRequestFilter
 
 	private static final Log _log = LogFactory.getLog(
 		BaseSecurityOncePerRequestFilter.class);
-
-	@Autowired
-	private Environment _environment;
 
 	@Value("${osb.asah.security.token}")
 	private String _osbAsahSecurityToken;
