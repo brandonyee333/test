@@ -29,9 +29,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -69,11 +66,6 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 			filterChain.doFilter(httpServletRequest, httpServletResponse);
 		}
 		catch (InvalidProjectIdException invalidProjectIdException) {
-			_log.error(
-				String.format(
-					"Invalid project ID %s resolved from request %s", projectId,
-					ServletRequestUtil.getOriginalURL(httpServletRequest)));
-
 			httpServletResponse.sendError(
 				HttpServletResponse.SC_BAD_REQUEST, "INVALID_PROJECT_ID");
 		}
@@ -82,8 +74,6 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 		}
 	}
 
-	private static final Log _log = LogFactory.getLog(
-		ProjectIdThreadLocalOncePerRequestFilter.class);
 
 	private static final Pattern _urlPattern = Pattern.compile(
 		"^https://osbasah(?:backend|publisher)-(\\w+)\\.lfr\\.cloud");
