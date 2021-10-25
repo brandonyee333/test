@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.repository.EventRepository;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -95,6 +96,8 @@ public class EventHistogramGraphQLRestControllerTest
 
 	@After
 	public void tearDown() throws Exception {
+		ProjectIdThreadLocal.setProjectId("test");
+
 		_eventRepository.deleteAll();
 
 		TimeZone.setDefault(_timeZone);

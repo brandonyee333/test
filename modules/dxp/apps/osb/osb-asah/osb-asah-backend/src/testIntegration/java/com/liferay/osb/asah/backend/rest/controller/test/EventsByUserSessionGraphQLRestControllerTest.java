@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.EventRepository;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -97,6 +98,8 @@ public class EventsByUserSessionGraphQLRestControllerTest
 
 	@After
 	public void tearDown() throws Exception {
+		ProjectIdThreadLocal.setProjectId("test");
+
 		_cerebroInfoElasticsearchInvoker.delete("user-sessions", "sessionId");
 		_eventRepository.deleteAll();
 	}
