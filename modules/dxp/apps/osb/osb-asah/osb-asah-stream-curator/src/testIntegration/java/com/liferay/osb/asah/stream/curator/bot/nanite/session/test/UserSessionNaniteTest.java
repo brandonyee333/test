@@ -17,8 +17,9 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.session.test;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
+import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.UserSessionNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -46,7 +47,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 	classes = OSBAsahCuratorSpringBootApplication.class,
 	properties = "osb.asah.user.session.events.storage.path:/tmp/user_session_events.snappy.parquet"
 )
-public class UserSessionNaniteTest {
+public class UserSessionNaniteTest extends BaseNaniteTestCase {
 
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_SESSION,
@@ -54,9 +55,7 @@ public class UserSessionNaniteTest {
 	)
 	@Test
 	public void testAnalyticsEventsAreTimeDelimited() {
-		_userSessionNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		JSONArray userSessionsJSONArray = _elasticsearchInvoker.get(
 			"user-sessions");
@@ -70,9 +69,7 @@ public class UserSessionNaniteTest {
 	)
 	@Test
 	public void testCreateOpenSession() {
-		_userSessionNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		JSONArray userSessionsJSONArray = _elasticsearchInvoker.get(
 			"user-sessions");
@@ -102,9 +99,7 @@ public class UserSessionNaniteTest {
 	)
 	@Test
 	public void testCreatePastSession() {
-		_userSessionNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		Assert.assertEquals(
 			2,
@@ -142,9 +137,7 @@ public class UserSessionNaniteTest {
 	)
 	@Test
 	public void testExpiredSession() {
-		_userSessionNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		JSONArray userSessionsJSONArray = new JSONArray(
 			_elasticsearchInvoker.get(
@@ -188,9 +181,7 @@ public class UserSessionNaniteTest {
 
 		String modifiedDate = userSessionJSONObject.getString("modifiedDate");
 
-		_userSessionNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		userSessionsJSONArray = _elasticsearchInvoker.get("user-sessions");
 
@@ -221,9 +212,7 @@ public class UserSessionNaniteTest {
 
 		String modifiedDate = userSessionJSONObject.getString("modifiedDate");
 
-		_userSessionNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		userSessionsJSONArray = _elasticsearchInvoker.get("user-sessions");
 
@@ -255,9 +244,7 @@ public class UserSessionNaniteTest {
 
 		String modifiedDate = userSessionJSONObject.getString("modifiedDate");
 
-		_userSessionNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		userSessionsJSONArray = _elasticsearchInvoker.get("user-sessions");
 
@@ -271,6 +258,11 @@ public class UserSessionNaniteTest {
 		Assert.assertEquals(
 			"0cbc8e60-99cd-11e9-9129-a75b6df1b957",
 			userSessionJSONObject.getString("userId"));
+	}
+
+	@Override
+	protected Nanite getNanite() {
+		return _userSessionNanite;
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)

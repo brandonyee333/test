@@ -17,8 +17,9 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.form.test;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
+import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.form.FormNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -41,7 +42,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class FormNaniteTest {
+public class FormNaniteTest extends BaseNaniteTestCase {
 
 	@ElasticsearchIndex(
 		name = "forms", resourcePath = "form_info_2.json",
@@ -53,9 +54,7 @@ public class FormNaniteTest {
 	)
 	@Test
 	public void testFormAbandonmentsCount1() throws Exception {
-		_formNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		JSONObject jsonObject = _cerebroInfoElasticsearchInvoker.get(
 			"forms", "1");
@@ -73,9 +72,7 @@ public class FormNaniteTest {
 	)
 	@Test
 	public void testFormAbandonmentsCount2() throws Exception {
-		_formNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		JSONObject jsonObject = _cerebroInfoElasticsearchInvoker.get(
 			"forms", "1");
@@ -93,14 +90,17 @@ public class FormNaniteTest {
 	)
 	@Test
 	public void testFormMetrics() throws Exception {
-		_formNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/expected_form_info.json", this),
 			_cerebroInfoElasticsearchInvoker.get("forms"), false);
+	}
+
+	@Override
+	protected Nanite getNanite() {
+		return _formNanite;
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)

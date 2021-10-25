@@ -25,8 +25,9 @@ import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
+import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.activity.ActivitiesNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -58,7 +59,7 @@ import org.springframework.data.domain.PageRequest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class ActivitiesNaniteTest {
+public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 	@Before
 	public void setUp() {
@@ -83,9 +84,7 @@ public class ActivitiesNaniteTest {
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/analytics_events_1.json", this));
 
-		_activitiesNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		Assert.assertEquals(
 			1,
@@ -117,9 +116,7 @@ public class ActivitiesNaniteTest {
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/analytics_events_1.json", this));
 
-		_activitiesNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		Assert.assertEquals(28, _assetRepository.count());
 
@@ -164,9 +161,7 @@ public class ActivitiesNaniteTest {
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/analytics_events_3.json", this));
 
-		_activitiesNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		JSONObject activityJSONObject = _faroInfoElasticsearchInvoker.fetch(
 			"activities",
@@ -197,9 +192,7 @@ public class ActivitiesNaniteTest {
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/analytics_events_1.json", this));
 
-		_activitiesNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		List<Asset> assets =
 			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
@@ -228,6 +221,11 @@ public class ActivitiesNaniteTest {
 		Assert.assertArrayEquals(
 			new String[] {"felix gogo shell", "knowledge", "reference"},
 			keywords);
+	}
+
+	@Override
+	protected Nanite getNanite() {
+		return _activitiesNanite;
 	}
 
 	@Autowired

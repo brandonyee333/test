@@ -18,8 +18,9 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
+import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.custom.CustomAssetDashboardNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
@@ -43,7 +44,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class CustomAssetDashboardNaniteTest {
+public class CustomAssetDashboardNaniteTest extends BaseNaniteTestCase {
 
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_CUSTOM_ASSET,
@@ -51,9 +52,7 @@ public class CustomAssetDashboardNaniteTest {
 	)
 	@Test
 	public void testAddDashboard() throws Exception {
-		_customAssetDashboardNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
@@ -69,9 +68,7 @@ public class CustomAssetDashboardNaniteTest {
 	)
 	@Test
 	public void testSkipTitleUpdate() throws Exception {
-		_customAssetDashboardNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
 			_messageBus);
@@ -83,9 +80,7 @@ public class CustomAssetDashboardNaniteTest {
 					"/analytics_events_custom_asset_channel_empty_title.json",
 				this));
 
-		_customAssetDashboardNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
@@ -97,9 +92,7 @@ public class CustomAssetDashboardNaniteTest {
 
 	@Test
 	public void testUpdateTitle() throws Exception {
-		_customAssetDashboardNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
 			_messageBus);
@@ -111,9 +104,7 @@ public class CustomAssetDashboardNaniteTest {
 					"/analytics_events_custom_asset_channel_update_1.json",
 				this));
 
-		_customAssetDashboardNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		messageBusTestHelper.prepareMessageBusChannel(
 			Channel.ANALYTICS_EVENTS_CUSTOM_ASSET,
@@ -122,9 +113,7 @@ public class CustomAssetDashboardNaniteTest {
 					"/analytics_events_custom_asset_channel_update_2.json",
 				this));
 
-		_customAssetDashboardNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
 			"custom-asset-dashboards");
@@ -135,6 +124,11 @@ public class CustomAssetDashboardNaniteTest {
 
 		Assert.assertEquals(
 			"Asset's Title Update 2", jsonObject.getString("assetTitle"));
+	}
+
+	@Override
+	protected Nanite getNanite() {
+		return _customAssetDashboardNanite;
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)

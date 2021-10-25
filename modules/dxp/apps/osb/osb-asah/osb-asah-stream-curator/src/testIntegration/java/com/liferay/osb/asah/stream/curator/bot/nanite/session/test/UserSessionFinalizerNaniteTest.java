@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.session.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.entity.Project;
-import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
+import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.UserSessionFinalizerNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -34,7 +34,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -49,12 +48,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 	classes = OSBAsahCuratorSpringBootApplication.class,
 	properties = "osb.asah.user.session.events.storage.path:/tmp/user_session_events.snappy.parquet"
 )
-public class UserSessionFinalizerNaniteTest {
-
-	@Before
-	public void setUp() {
-		_projectDog.addProject(new Project("test"));
-	}
+public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 
 	@ElasticsearchIndex(
 		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
@@ -70,9 +64,7 @@ public class UserSessionFinalizerNaniteTest {
 	)
 	@Test
 	public void testExpiredSessionMultipleInteractions() {
-		_userSessionFinalizerNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		Assert.assertEquals(
 			1,
@@ -114,9 +106,7 @@ public class UserSessionFinalizerNaniteTest {
 	)
 	@Test
 	public void testExpiredSessionMultiplePageVisits() {
-		_userSessionFinalizerNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		Assert.assertEquals(
 			1,
@@ -155,9 +145,7 @@ public class UserSessionFinalizerNaniteTest {
 	)
 	@Test
 	public void testExpiredSessionSingleInteraction() {
-		_userSessionFinalizerNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		Assert.assertEquals(
 			2,
@@ -204,9 +192,7 @@ public class UserSessionFinalizerNaniteTest {
 	)
 	@Test
 	public void testExpiredSessionUpdatesAssets() {
-		_userSessionFinalizerNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		Assert.assertEquals(
 			1,
@@ -282,9 +268,7 @@ public class UserSessionFinalizerNaniteTest {
 
 		String modifiedDate2 = userSessionJSONObject.getString("modifiedDate");
 
-		_userSessionFinalizerNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", "366909399944215919");
@@ -354,9 +338,7 @@ public class UserSessionFinalizerNaniteTest {
 	)
 	@Test
 	public void testUpdatePageViews() {
-		_userSessionFinalizerNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		Assert.assertEquals(
 			1,
@@ -392,9 +374,7 @@ public class UserSessionFinalizerNaniteTest {
 	)
 	@Test
 	public void testUpdateTimeOnPageSinglePage() {
-		_userSessionFinalizerNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		Assert.assertEquals(
 			1,
@@ -416,11 +396,13 @@ public class UserSessionFinalizerNaniteTest {
 		Assert.assertEquals(120000, pageJSONObject.getLong("timeOnPage"));
 	}
 
+	@Override
+	protected Nanite getNanite() {
+		return _userSessionFinalizerNanite;
+	}
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ProjectDog _projectDog;
 
 	@Autowired
 	private UserSessionFinalizerNanite _userSessionFinalizerNanite;

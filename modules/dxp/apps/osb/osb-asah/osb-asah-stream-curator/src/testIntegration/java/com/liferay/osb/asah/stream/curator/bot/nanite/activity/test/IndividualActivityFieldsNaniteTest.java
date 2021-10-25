@@ -31,6 +31,8 @@ import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
+import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.activity.IndividualActivityFieldsNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -58,7 +60,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class IndividualActivityFieldsNaniteTest {
+public class IndividualActivityFieldsNaniteTest extends BaseNaniteTestCase {
 
 	@Before
 	public void setUp() {
@@ -145,9 +147,7 @@ public class IndividualActivityFieldsNaniteTest {
 			32, "Document", channelId, DateUtil.addDays(yesterdayString, -40),
 			"documentPreviewed", individual);
 
-		_individualActivityFieldsNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		individual = _individualDog.fetchIndividual(individual.getId());
 
@@ -179,9 +179,7 @@ public class IndividualActivityFieldsNaniteTest {
 		_addActivities(
 			1, "Page", channelId, yesterdayString, "pageViewed", individual);
 
-		_individualActivityFieldsNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		individual = _individualDog.fetchIndividual(individual.getId());
 
@@ -194,9 +192,7 @@ public class IndividualActivityFieldsNaniteTest {
 		_addActivities(
 			1, "Page", channelId, dateString, "pageViewed", individual);
 
-		_individualActivityFieldsNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		individual = _individualDog.fetchIndividual(individual.getId());
 
@@ -210,9 +206,7 @@ public class IndividualActivityFieldsNaniteTest {
 			1, "Page", channelId, DateUtil.addDays(dateString, 1), "pageViewed",
 			individual);
 
-		_individualActivityFieldsNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		individual = _individualDog.fetchIndividual(individual.getId());
 
@@ -252,6 +246,11 @@ public class IndividualActivityFieldsNaniteTest {
 	@Test
 	public void testWebContentViewedActivitiesExcluded() {
 		_testSingleTypeOfActivityExcluded("WebContent", "webContentViewed");
+	}
+
+	@Override
+	protected Nanite getNanite() {
+		return _individualActivityFieldsNanite;
 	}
 
 	private void _addActivities(
@@ -306,9 +305,7 @@ public class IndividualActivityFieldsNaniteTest {
 			activitiesCount, applicationId, channelId, dateString, eventId,
 			individual);
 
-		_individualActivityFieldsNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		return _individualDog.fetchIndividual(individual.getId());
 	}

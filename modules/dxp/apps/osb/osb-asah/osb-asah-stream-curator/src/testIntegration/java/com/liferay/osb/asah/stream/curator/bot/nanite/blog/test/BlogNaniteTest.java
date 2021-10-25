@@ -17,8 +17,9 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.blog.test;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
+import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.blog.BlogNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -42,7 +43,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class BlogNaniteTest {
+public class BlogNaniteTest extends BaseNaniteTestCase {
 
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "blog_info_2.json",
@@ -54,9 +55,7 @@ public class BlogNaniteTest {
 	)
 	@Test
 	public void testBlogMetrics() throws Exception {
-		_blogNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
@@ -74,9 +73,7 @@ public class BlogNaniteTest {
 	)
 	@Test
 	public void testBlogRatingsMetric() {
-		_blogNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get("blogs");
 
@@ -94,9 +91,7 @@ public class BlogNaniteTest {
 	)
 	@Test
 	public void testBlogRatingsMetric2() {
-		_blogNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get("blogs");
 
@@ -106,6 +101,11 @@ public class BlogNaniteTest {
 
 		Assert.assertEquals(0, jsonObject.getInt("ratings"));
 		Assert.assertEquals(0.0, jsonObject.getDouble("ratingsScore"), 0);
+	}
+
+	@Override
+	protected Nanite getNanite() {
+		return _blogNanite;
 	}
 
 	@Autowired

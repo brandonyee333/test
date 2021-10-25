@@ -17,8 +17,9 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.page.referrer.test;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
+import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.page.referrer.PageReferrerNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -38,7 +39,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class PageReferrerNaniteTest {
+public class PageReferrerNaniteTest extends BaseNaniteTestCase {
 
 	@ElasticsearchIndex(
 		name = "page-referrers", resourcePath = "page_referrer_info.json",
@@ -50,14 +51,17 @@ public class PageReferrerNaniteTest {
 	)
 	@Test
 	public void testPageReferrerMetrics() throws Exception {
-		_pageReferrerNanite.run();
-
-		ProjectIdThreadLocal.setProjectId("test");
+		runNanite();
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/expected_page_referrer_info.json", this),
 			_elasticsearchInvoker.get("page-referrers"), false);
+	}
+
+	@Override
+	protected Nanite getNanite() {
+		return _pageReferrerNanite;
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
