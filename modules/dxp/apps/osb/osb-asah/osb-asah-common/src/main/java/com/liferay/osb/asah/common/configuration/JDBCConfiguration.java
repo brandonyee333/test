@@ -77,7 +77,9 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 
 	@Bean
 	@Override
-	public Dialect jdbcDialect(NamedParameterJdbcOperations operations) {
+	public Dialect jdbcDialect(
+		NamedParameterJdbcOperations namedParameterJdbcOperations) {
+
 		return PostgresDialect.INSTANCE;
 	}
 
