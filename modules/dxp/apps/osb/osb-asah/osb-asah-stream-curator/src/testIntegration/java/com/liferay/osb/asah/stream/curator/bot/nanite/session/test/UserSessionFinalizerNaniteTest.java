@@ -15,6 +15,8 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.session.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Project;
+import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.UserSessionFinalizerNanite;
@@ -32,6 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -47,6 +50,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 	properties = "osb.asah.user.session.events.storage.path:/tmp/user_session_events.snappy.parquet"
 )
 public class UserSessionFinalizerNaniteTest {
+
+	@Before
+	public void setUp() {
+		_projectDog.addProject(new Project("test"));
+	}
 
 	@ElasticsearchIndex(
 		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
@@ -262,6 +270,8 @@ public class UserSessionFinalizerNaniteTest {
 	)
 	@Test
 	public void testFinalizeCompletedSession() {
+		ProjectIdThreadLocal.setProjectId("test");
+
 		JSONObject userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", "366909399944215919");
 
@@ -408,6 +418,9 @@ public class UserSessionFinalizerNaniteTest {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ProjectDog _projectDog;
 
 	@Autowired
 	private UserSessionFinalizerNanite _userSessionFinalizerNanite;

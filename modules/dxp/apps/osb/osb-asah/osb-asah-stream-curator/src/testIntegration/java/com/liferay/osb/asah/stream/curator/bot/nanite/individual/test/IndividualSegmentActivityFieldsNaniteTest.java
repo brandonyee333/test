@@ -16,7 +16,9 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.individual.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -27,6 +29,7 @@ import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,6 +42,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
 public class IndividualSegmentActivityFieldsNaniteTest {
+
+	@Before
+	public void setUp() {
+		_projectDog.addProject(new Project("test"));
+	}
 
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_6_info.json",
@@ -70,6 +78,9 @@ public class IndividualSegmentActivityFieldsNaniteTest {
 	@Autowired
 	private IndividualSegmentActivityFieldsNanite
 		_individualSegmentActivityFieldsNanite;
+
+	@Autowired
+	private ProjectDog _projectDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;
