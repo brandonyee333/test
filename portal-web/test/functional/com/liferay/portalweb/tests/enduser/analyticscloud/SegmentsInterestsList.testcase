@@ -83,11 +83,6 @@ definition {
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8613 | Test Summary: Assert no interest found in segment"
 	@priority = "3"
 	test AssertNoInterestFoundInSegment {
-		property portal.upstream = "quarantine";
-
-		// AC Refactor: Test was written in a local to UAT test environment where data took hours to process and will need to be revisited.
-		// AC Refactor ticket: LRAC-9164
-
 		var usernameList = "user1,user2,user3,user4,user5";
 
 		var emailList = "user1@liferay.com,user2@liferay.com,user3@liferay.com,user4@liferay.com,user5@liferay.com";
