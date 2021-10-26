@@ -5,15 +5,15 @@
 	<entry key="EventAttribute.findDistinctAttributeValues">
 		<![CDATA[
 			SELECT
-				MAX(eventDate) as lastSeenDate,
-				value
+				MAX(EventAttribute.eventDate) as lastSeenDate,
+				EventAttribute.value
 			FROM
 				EventAttribute
 			WHERE
 				EventAttribute.eventAttributeDefinitionId =
 					:eventAttributeDefinitionId
 			GROUP BY
-				value
+				EventAttribute.value
 			ORDER BY
 				lastSeenDate DESC
 			LIMIT
