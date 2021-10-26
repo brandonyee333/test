@@ -92,6 +92,8 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 			_noticeableThreadPoolExecutor.getCorePoolSize());
 		destinationStatistics.setPendingMessageCount(
 			_noticeableThreadPoolExecutor.getPendingTaskCount());
+		destinationStatistics.setRejectedMessageCount(
+			_noticeableThreadPoolExecutor.getRejectedTaskCount());
 		destinationStatistics.setSentMessageCount(
 			_noticeableThreadPoolExecutor.getCompletedTaskCount());
 

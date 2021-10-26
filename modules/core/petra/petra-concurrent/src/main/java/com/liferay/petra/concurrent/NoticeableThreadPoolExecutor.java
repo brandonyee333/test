@@ -23,6 +23,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Shuyang Zhou
@@ -62,6 +63,8 @@ public class NoticeableThreadPoolExecutor
 			new SynchronousQueue<>(), threadFactory,
 			(runnable, threadPoolExecutor) -> {
 				if (threadPoolExecutor.isShutdown()) {
+					_rejectedTaskCounter.incrementAndGet();
+
 					rejectedExecutionHandler.rejectedExecution(
 						runnable, threadPoolExecutor);
 
@@ -75,6 +78,8 @@ public class NoticeableThreadPoolExecutor
 					taskQueue.put(runnable);
 				}
 				catch (InterruptedException interruptedException) {
+					_rejectedTaskCounter.incrementAndGet();
+
 					rejectedExecutionHandler.rejectedExecution(
 						runnable, threadPoolExecutor);
 				}
@@ -111,6 +116,8 @@ public class NoticeableThreadPoolExecutor
 				return thread;
 			},
 			(runnable, threadPoolExecutor) -> {
+				_rejectedTaskCounter.incrementAndGet();
+
 				DispatchRunnable dispatchRunnable = (DispatchRunnable)runnable;
 
 				rejectedExecutionHandler.rejectedExecution(
@@ -188,6 +195,10 @@ public class NoticeableThreadPoolExecutor
 		return _workerThreadPoolExecutor.getPoolSize();
 	}
 
+	public long getRejectedTaskCount() {
+		return _rejectedTaskCounter.get();
+	}
+
 	@Override
 	public boolean isShutdown() {
 		return _dispatcherThreadPoolExecutor.isShutdown();
@@ -247,6 +258,7 @@ public class NoticeableThreadPoolExecutor
 	}
 
 	private final ThreadPoolExecutor _dispatcherThreadPoolExecutor;
+	private final AtomicLong _rejectedTaskCounter = new AtomicLong();
 	private final List<Runnable> _shutdownTasks = new ArrayList<>();
 	private final DefaultNoticeableFuture<Void>
 		_terminationDefaultNoticeableFuture;
