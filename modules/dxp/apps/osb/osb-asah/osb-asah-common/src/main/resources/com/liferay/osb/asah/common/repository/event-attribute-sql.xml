@@ -11,7 +11,8 @@
 				EventAttribute
 			WHERE
 				EventAttribute.eventAttributeDefinitionId =
-					:eventAttributeDefinitionId
+					:eventAttributeDefinitionId AND
+				EventAttribute.eventDate >= CURRENT_DATE - INTERVAL '7 days'
 			GROUP BY
 				EventAttribute.value
 			ORDER BY
