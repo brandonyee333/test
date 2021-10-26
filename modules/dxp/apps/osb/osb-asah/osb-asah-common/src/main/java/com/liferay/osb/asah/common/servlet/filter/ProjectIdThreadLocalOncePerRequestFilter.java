@@ -76,9 +76,7 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 	}
 
 	@Override
-	protected boolean shouldNotFilter(HttpServletRequest httpServletRequest)
-		throws ServletException {
-
+	protected boolean shouldNotFilter(HttpServletRequest httpServletRequest) {
 		String method = httpServletRequest.getMethod();
 		String requestURI = httpServletRequest.getRequestURI();
 
