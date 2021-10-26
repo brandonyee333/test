@@ -18,7 +18,9 @@ import com.liferay.osb.asah.common.servlet.util.ServletRequestUtil;
 
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -53,11 +55,14 @@ public class OSBAsahErrorAttributes extends DefaultErrorAttributes {
 
 		ServletWebRequest servletWebRequest = (ServletWebRequest)webRequest;
 
+		HttpServletRequest httpServletRequest = servletWebRequest.getRequest();
+
 		_log.error(
 			String.format(
-				"Unable to process the request %s with error %s",
-				ServletRequestUtil.getOriginalURL(
-					servletWebRequest.getRequest()),
+				"Unable to process the request %s with path %s with error %s",
+				ServletRequestUtil.getOriginalURL(httpServletRequest),
+				httpServletRequest.getAttribute(
+					RequestDispatcher.FORWARD_SERVLET_PATH),
 				getMessage(webRequest, throwable)),
 			throwable);
 
