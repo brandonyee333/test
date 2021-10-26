@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
 import com.liferay.osb.asah.common.repository.EventAttributeRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
@@ -23,6 +24,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
@@ -46,44 +48,50 @@ public class EventAttributeRepositoryTest {
 	@SQLResource(resourcePath = "test_event_attributes.sql")
 	@Test
 	public void testFindDistinctAttributeValues() {
+		Date date = DateUtil.newDate();
+
 		Assert.assertEquals(
 			new ArrayList<EventAttributeValue>() {
 				{
 					add(
 						new EventAttributeValue(
-							_getExpectedDate(2021, Calendar.OCTOBER, 25),
-							"Windshield Wipers"));
+							_getExpectedDate(date, -1), "Windshield Wipers"));
 					add(
 						new EventAttributeValue(
-							_getExpectedDate(2021, Calendar.OCTOBER, 24),
-							"Wheels"));
+							_getExpectedDate(date, -2), "Wheels"));
 					add(
 						new EventAttributeValue(
-							_getExpectedDate(2021, Calendar.OCTOBER, 23),
-							"Plates"));
+							_getExpectedDate(date, -3), "Plates"));
 					add(
 						new EventAttributeValue(
-							_getExpectedDate(2021, Calendar.OCTOBER, 22),
-							"Apples"));
+							_getExpectedDate(date, -4), "Apples"));
 					add(
 						new EventAttributeValue(
-							_getExpectedDate(2021, Calendar.OCTOBER, 20),
-							"Hair Dye"));
+							_getExpectedDate(date, -6), "Hair Dye"));
 				}
 			},
 			_eventAttributeRepository.findDistinctAttributeValues(2001L, 5));
 	}
 
-	private Date _getExpectedDate(int year, int month, int date) {
+	@SQLResource(resourcePath = "test_event_attributes_1.sql")
+	@Test
+	public void testFindDistinctAttributeValuesNoMatchingValues() {
+		Assert.assertEquals(
+			Collections.emptyList(),
+			_eventAttributeRepository.findDistinctAttributeValues(2001L, 10));
+	}
+
+	private Date _getExpectedDate(Date date, int deltaDays) {
 		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
-		calendar.set(Calendar.DATE, date);
+		calendar.setTime(date);
+
+		calendar.add(Calendar.DATE, deltaDays);
+
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
 		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.MONTH, month);
 		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.YEAR, year);
 
 		return calendar.getTime();
 	}

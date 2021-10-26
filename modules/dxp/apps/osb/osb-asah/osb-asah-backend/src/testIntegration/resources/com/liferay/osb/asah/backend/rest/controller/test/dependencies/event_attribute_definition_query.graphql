@@ -5,7 +5,6 @@ query EventAttributeDefinition($displayName: String, $id: String) {
 		displayName
 		name
 		recentValues {
-			lastSeenDate
 			value
 		}
 		sampleValue
