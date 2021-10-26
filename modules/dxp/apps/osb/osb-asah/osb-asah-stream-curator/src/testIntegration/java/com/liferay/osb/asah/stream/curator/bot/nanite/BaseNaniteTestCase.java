@@ -14,12 +14,25 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.entity.Project;
+import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+
+import org.junit.Before;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Inácio Nery
  */
 public abstract class BaseNaniteTestCase {
+
+	@Before
+	public void setUp() {
+		_projectDog.addProject(new Project("test"));
+
+		ProjectIdThreadLocal.setProjectId("test");
+	}
 
 	protected abstract Nanite getNanite();
 
@@ -33,5 +46,8 @@ public abstract class BaseNaniteTestCase {
 			ProjectIdThreadLocal.setProjectId("test");
 		}
 	}
+
+	@Autowired
+	private ProjectDog _projectDog;
 
 }
