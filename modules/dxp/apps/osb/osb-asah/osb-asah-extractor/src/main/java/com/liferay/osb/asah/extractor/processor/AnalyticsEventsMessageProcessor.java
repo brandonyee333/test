@@ -336,6 +336,7 @@ public class AnalyticsEventsMessageProcessor {
 
 			analyticsEvent.setApplicationId(event.getApplicationId());
 			analyticsEvent.setChannelId(channelId);
+			analyticsEvent.setClientIP(analyticsEventsMessage.getClientIP());
 			analyticsEvent.setContext(context);
 			analyticsEvent.setCreateDate(
 				analyticsEventsMessage.getCreateDate());

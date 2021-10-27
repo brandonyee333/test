@@ -77,6 +77,7 @@ public class AnalyticsEvent implements Serializable {
 
 		if (Objects.equals(_applicationId, analyticsEvent._applicationId) &&
 			Objects.equals(_channelId, analyticsEvent._channelId) &&
+			Objects.equals(_clientIP, analyticsEvent._clientIP) &&
 			Objects.equals(_context, analyticsEvent._context) &&
 			Objects.equals(_createDate, analyticsEvent._createDate) &&
 			Objects.equals(_dataSourceId, analyticsEvent._dataSourceId) &&
@@ -101,6 +102,10 @@ public class AnalyticsEvent implements Serializable {
 
 	public String getChannelId() {
 		return _channelId;
+	}
+
+	public String getClientIP() {
+		return _clientIP;
 	}
 
 	public Map<String, String> getContext() {
@@ -182,7 +187,7 @@ public class AnalyticsEvent implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_applicationId, _channelId, _id, _context, _createDate,
+			_applicationId, _channelId, _clientIP, _id, _context, _createDate,
 			_dataSourceId, _eventDate, _eventId, _eventProperties, _projectId,
 			_projectTimeZoneId, _userId);
 	}
@@ -197,6 +202,10 @@ public class AnalyticsEvent implements Serializable {
 
 	public void setChannelId(String channelId) {
 		_channelId = channelId;
+	}
+
+	public void setClientIP(String clientIP) {
+		_clientIP = clientIP;
 	}
 
 	public void setContext(Map<String, String> context) {
@@ -281,6 +290,7 @@ public class AnalyticsEvent implements Serializable {
 
 	private String _applicationId;
 	private String _channelId;
+	private String _clientIP;
 	private Map<String, String> _context;
 	private Date _createDate = new Date();
 	private String _dataSourceId;
