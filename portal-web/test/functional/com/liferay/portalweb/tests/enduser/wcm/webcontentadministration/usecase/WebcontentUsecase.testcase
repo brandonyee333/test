@@ -2533,7 +2533,8 @@ definition {
 		);
 	}
 
-	@description = "This is a use case for LPS-101289."
+	@description = "This will be ignored until LPS-125429 is fixed. This is a use case for LPS-101289."
+	@ignore = "true"
 	@priority = "4"
 	test ViewCommentAfterEditingViaStage {
 		ProductMenu.gotoPortlet(

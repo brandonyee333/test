@@ -211,7 +211,8 @@ definition {
 			entryTitle = "Blogs Entry Title");
 	}
 
-	@description = "This is a use case for LPS-95589."
+	@description = "This will be ignored until LPS-95589 is fixed. This is a use case for LPS-95589."
+	@ignore = "true"
 	@priority = "4"
 	test ExportDMWithDeletedDocumentLink {
 		JSONGroup.addGroup(groupName = "Site Name");
@@ -1144,7 +1145,8 @@ definition {
 		WebContent.viewPGViaWCD(webContentContent = "Web Content Content");
 	}
 
-	@description = "This is a use case for LPS-88743."
+	@description = "This will be ignored until LPS-88743 is fixed.This is a use case for LPS-88743."
+	@ignore = "true"
 	@priority = "3"
 	test ExportImportWebContentCircularReference {
 		property portal.upstream = "quarantine";
@@ -1579,7 +1581,8 @@ definition {
 			siteName = "Site C");
 	}
 
-	@description = "This is a use case for LPS-97544 and LPS-90886."
+	@description = "This will be ignored until LPS-98557 is fixed.This is a use case for LPS-97544 and LPS-90886."
+	@ignore = "true"
 	@priority = "3"
 	test ImportStagedSiteWithCircularReference {
 		JSONGroup.addGroup(groupName = "Site Name");

@@ -33,7 +33,8 @@ definition {
 		Upgrade.viewAssetPublisher();
 	}
 
-	@description = "This is a use case for LPS-78284."
+	@description = "This will be ignored until LPS-89299 is fixed. This is a use case for LPS-78284."
+	@ignore = "true"
 	@priority = "5"
 	test ViewAssetPublisherArchive621021 {
 		property data.archive.type = "data-archive-asset-publisher";

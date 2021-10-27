@@ -154,7 +154,8 @@ definition {
 			siteName = "Site Name");
 	}
 
-	@description = "This is a use case for LPS-90127."
+	@description = "This will be ignored until LPS-103397 is fixed. This is a use case for LPS-90127."
+	@ignore = "true"
 	@priority = "3"
 	test ConfigureDDMStructureViaAPWhenNotStagedAssets {
 		Navigator.openSiteURL(siteName = "Site Name");

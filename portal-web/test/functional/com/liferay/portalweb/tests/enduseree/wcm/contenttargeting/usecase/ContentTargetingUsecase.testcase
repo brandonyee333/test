@@ -435,6 +435,8 @@ definition {
 		ContentTargetingCampaign.deleteAllCP();
 	}
 
+	@description = "This will be ignored until LRCI-1435 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test CampaignViewContentViewsReports {
 		property content.targeting.release = "true";
@@ -1062,6 +1064,8 @@ definition {
 		);
 	}
 
+	@description = "This will be ignored until LRCI-1435 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test CampaignViewTrackingActionReports {
 		property content.targeting.release = "true";
@@ -1313,6 +1317,8 @@ definition {
 		);
 	}
 
+	@description = "This will be ignored until LRCI-1435 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test CTValidationExportImport {
 		property content.targeting.release = "true";
@@ -1406,6 +1412,8 @@ definition {
 		);
 	}
 
+	@description = "This will be ignored until LRCI-1435 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test CTValidationStaging {
 		property content.targeting.release = "true";
@@ -1486,6 +1494,8 @@ definition {
 		);
 	}
 
+	@description = "This will be ignored until LRCI-1435 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test ExportImportDeletions {
 		property content.targeting.release = "true";
@@ -1700,6 +1710,8 @@ definition {
 		);
 	}
 
+	@description = "This will be ignored until LRCI-1435 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test ExportImportViewOnlyContentCTWithReferencedWCImported {
 		property content.targeting.release = "true";
@@ -3524,6 +3536,8 @@ definition {
 		ContentTargetingUserSegment.deleteAllCP();
 	}
 
+	@description = "This will be ignored until LRCI-1435 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test UserSegmentDisableAnonymousUserAnalytics {
 		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentDisableAnonymousUserAnalytics";
@@ -3831,6 +3845,8 @@ definition {
 		);
 	}
 
+	@description = "This will be ignored until LRCI-1435 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test UserSegmentViewAnonymousUserDefaultBehavior {
 		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentViewAnonymousUserDefaultBehavior";
@@ -4079,6 +4095,8 @@ definition {
 		);
 	}
 
+	@description = "This will be ignored until LRCI-1435 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test UserSegmentViewInSimulatorPG {
 		property content.targeting.release = "true";

@@ -50,6 +50,8 @@ definition {
 		}
 	}
 
+	@description = "This will be ignored until LRCI-1435 is fixed."
+	@ignore = "true"
 	@priority = "5"
 	test Smoke {
 		property content.targeting.release = "true";
