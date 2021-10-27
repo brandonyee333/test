@@ -14,14 +14,13 @@
 
 package com.liferay.osb.asah.common.spring.http.exception;
 
-import com.liferay.osb.asah.common.servlet.util.ServletRequestUtil;
-
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -29,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
@@ -59,10 +59,9 @@ public class OSBAsahErrorAttributes extends DefaultErrorAttributes {
 
 		_log.error(
 			String.format(
-				"Unable to process the request %s with path %s with error %s",
-				ServletRequestUtil.getOriginalURL(httpServletRequest),
-				httpServletRequest.getAttribute(
-					RequestDispatcher.FORWARD_SERVLET_PATH),
+				"Unable to process the request with origin %s to path %s " +
+					"with error %s",
+				_getOrigin(httpServletRequest), _getPath(httpServletRequest),
 				getMessage(webRequest, throwable)),
 			throwable);
 
@@ -73,6 +72,44 @@ public class OSBAsahErrorAttributes extends DefaultErrorAttributes {
 			super.getErrorAttributes(webRequest, errorAttributeOptions));
 
 		return osbAsahError.getErrorAttributes();
+	}
+
+	private String _getOrigin(HttpServletRequest httpServletRequest) {
+		String origin = httpServletRequest.getHeader(HttpHeaders.ORIGIN);
+
+		if (StringUtils.isNotBlank(origin)) {
+			return origin;
+		}
+
+		String referer = httpServletRequest.getHeader(HttpHeaders.REFERER);
+
+		if (StringUtils.isNotBlank(referer)) {
+			return referer;
+		}
+
+		return httpServletRequest.getRemoteAddr();
+	}
+
+	private String _getPath(HttpServletRequest httpServletRequest) {
+		String forwardRequestUri = String.valueOf(
+			httpServletRequest.getAttribute(
+				RequestDispatcher.FORWARD_REQUEST_URI));
+
+		if (StringUtils.isNotBlank(forwardRequestUri)) {
+			return forwardRequestUri;
+		}
+
+		String forwardServletPath = String.valueOf(
+			httpServletRequest.getAttribute(
+				RequestDispatcher.FORWARD_SERVLET_PATH));
+
+		if (StringUtils.isNotBlank(forwardServletPath)) {
+			return forwardServletPath;
+		}
+
+		return String.valueOf(
+			httpServletRequest.getAttribute(
+				RequestDispatcher.ERROR_REQUEST_URI));
 	}
 
 	private static final Log _log = LogFactory.getLog(
