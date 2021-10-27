@@ -102,12 +102,12 @@ public class InterestDog {
 	}
 
 	public List<Interest> getInterests(
-		String name, Long ownerId, String ownerType, Date recordedDateFrom,
-		Date recordedDateTo) {
+		String name, Long ownerId, String ownerType, Date fromRecordedDate,
+		Date toRecordedDate) {
 
 		return _interestRepository.
 			findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
-				name, ownerId, ownerType, recordedDateFrom, recordedDateTo);
+				name, ownerId, ownerType, fromRecordedDate, toRecordedDate);
 	}
 
 	@Autowired

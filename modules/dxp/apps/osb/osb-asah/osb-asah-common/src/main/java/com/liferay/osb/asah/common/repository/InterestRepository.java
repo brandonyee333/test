@@ -65,8 +65,8 @@ public interface InterestRepository extends Repository<Interest, Long> {
 	@Cacheable
 	public List<Interest>
 		findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
-			String name, Long ownerId, String ownerType, Date recordedDateFrom,
-			Date recordedDateTo);
+			String name, Long ownerId, String ownerType, Date fromRecordedDate,
+			Date toRecordedDate);
 
 	@Cacheable
 	public List<Interest> findByOwnerIdAndOwnerType(

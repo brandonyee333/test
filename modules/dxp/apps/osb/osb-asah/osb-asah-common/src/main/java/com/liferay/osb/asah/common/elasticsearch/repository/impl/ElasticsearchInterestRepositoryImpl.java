@@ -140,8 +140,8 @@ public class ElasticsearchInterestRepositoryImpl
 	@Override
 	public List<Interest>
 		findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
-			String name, Long ownerId, String ownerType, Date recordedDateFrom,
-			Date recordedDateTo) {
+			String name, Long ownerId, String ownerType, Date fromRecordedDate,
+			Date toRecordedDate) {
 
 		return toList(
 			_faroInfoElasticsearchInvoker.get(
@@ -150,9 +150,9 @@ public class ElasticsearchInterestRepositoryImpl
 					QueryBuilders.rangeQuery(
 						"dateRecorded"
 					).gte(
-						DateUtil.toString(recordedDateFrom)
+						DateUtil.toString(fromRecordedDate)
 					).lte(
-						DateUtil.toString(recordedDateTo)
+						DateUtil.toString(toRecordedDate)
 					)
 				).filter(
 					QueryBuilders.termQuery("name", name)
