@@ -2,7 +2,6 @@
 	{
 		"applicationId": "Blog",
 		"channelId": "420253908131944590",
-		"clientIP": "0.0.0.0",
 		"context": {
 			"article:published_time": "2021-01-28T21:00:00+00:00",
 			"article:section": "Blog",
@@ -58,7 +57,6 @@
 	{
 		"applicationId": "Blog",
 		"channelId": "420253908131944590",
-		"clientIP": "0.0.0.0",
 		"context": {
 			"article:published_time": "2021-01-28T21:00:00+00:00",
 			"article:section": "Blog",
@@ -114,7 +112,6 @@
 	{
 		"applicationId": "Blog",
 		"channelId": "420253908131944590",
-		"clientIP": "0.0.0.0",
 		"context": {
 			"article:published_time": "2021-01-28T21:00:00+00:00",
 			"article:section": "Blog",
@@ -170,7 +167,6 @@
 	{
 		"applicationId": "Blog",
 		"channelId": "420253908131944590",
-		"clientIP": "0.0.0.0",
 		"context": {
 			"article:published_time": "2021-01-28T21:00:00+00:00",
 			"article:section": "Blog",
@@ -226,7 +222,6 @@
 	{
 		"applicationId": "Blog",
 		"channelId": "420253908131944590",
-		"clientIP": "0.0.0.0",
 		"context": {
 			"article:published_time": "2021-01-28T21:00:00+00:00",
 			"article:section": "Blog",

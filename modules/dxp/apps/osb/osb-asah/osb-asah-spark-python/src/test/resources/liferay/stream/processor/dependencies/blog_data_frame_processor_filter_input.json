@@ -2,7 +2,6 @@
 	{
 		"applicationId": "Page",
 		"channelId": "420253908131944590",
-		"clientIP": "136.30.16.106",
 		"context": {
 			"article:published_time": "2016-07-19T18:07:37+00:00",
 			"browserName": "Firefox",
@@ -56,7 +55,6 @@
 	{
 		"applicationId": "WebContent",
 		"channelId": "420253908131944590",
-		"clientIP": "136.30.16.106",
 		"context": {
 			"article:published_time": "2016-07-19T18:07:37+00:00",
 			"browserName": "Firefox",
@@ -109,7 +107,6 @@
 	{
 		"applicationId": "Blog",
 		"channelId": "420253908131944590",
-		"clientIP": "73.220.173.45",
 		"context": {
 			"article:published_time": "2021-01-28T21:00:00+00:00",
 			"article:section": "Blog",

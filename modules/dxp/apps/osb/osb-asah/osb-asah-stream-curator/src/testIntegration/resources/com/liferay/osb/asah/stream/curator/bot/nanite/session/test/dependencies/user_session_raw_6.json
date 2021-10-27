@@ -2,7 +2,6 @@
 	{
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "0:0:0:0:0:0:0:1",
 		"context": {
 			"browserName": "Firefox",
 			"canonicalUrl": "http://192.168.108.90:8089/about",
@@ -35,7 +34,6 @@
 	{
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "0:0:0:0:0:0:0:1",
 		"context": {
 			"browserName": "Firefox",
 			"canonicalUrl": "http://192.168.108.90:8089/about",
@@ -68,7 +66,6 @@
 	{
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "0:0:0:0:0:0:0:1",
 		"context": {
 			"browserName": "Firefox",
 			"canonicalUrl": "http://192.168.108.90:8089/about",
@@ -101,7 +98,6 @@
 	{
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "0:0:0:0:0:0:0:1",
 		"context": {
 			"browserName": "Firefox",
 			"canonicalUrl": "http://192.168.108.90:8089/about",

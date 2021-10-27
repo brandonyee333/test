@@ -3,7 +3,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Form",
 		"channelId": "1",
-		"clientIP": "66.249.64.146",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",
@@ -47,7 +46,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Form",
 		"channelId": "1",
-		"clientIP": "66.249.64.146",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",
@@ -90,7 +88,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Form",
 		"channelId": "1",
-		"clientIP": "66.249.64.146",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",

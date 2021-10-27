@@ -3,7 +3,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/home?_3_assetTagNames=&_3_cur=2&_3_documentsSearchContainerPrimaryKeys=20_PORTLET_1648796%2C20_PORTLET_8289363%2C20_PORTLET_231885435%2C15_PORTLET_1945044%2C15_PORTLET_231496957%2C20_PORTLET_172586547%2C20_PORTLET_231852894%2C20_PORTLET_229317896%2C20_PORTLET_231909778%2C20_PORTLET_231588683%2C20_PORTLET_231563905%2C20_PORTLET_231396034%2C15_PORTLET_1843094%2C15_PORTLET_170393334%2C20_PORTLET_4433611%2C20_PORTLET_190765105%2C20_PORTLET_1695437%2C20_PORTLET_231596354%2C20_PORTLET_25807447%2C20_PORTLET_164378894&_3_entryClassName=&_3_folderId=&_3_formDate=1530100422264&_3_format=&_3_groupId=0&_3_keywords=tagsEntries%3Ausing+liferay&_3_modified=&_3_modifieddayFrom=12&_3_modifieddayTo=13&_3_modifiedfrom=20%2F05%2F2018&_3_modifiedmonthFrom=4&_3_modifiedmonthTo=4&_3_modifiedselection=0&_3_modifiedto=21%2F05%2F2018&_3_modifiedyearFrom=2018&_3_modifiedyearTo=2018&_3_struts_action=%2Fsearch%2Fsearch&_3_userName=&p_p_id=3&p_p_lifecycle=0&p_p_mode=view&p_p_state=maximized",
@@ -49,7 +48,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/home?_3_assetTagNames=&_3_cur=2&_3_documentsSearchContainerPrimaryKeys=20_PORTLET_1648796%2C20_PORTLET_8289363%2C20_PORTLET_231885435%2C15_PORTLET_1945044%2C15_PORTLET_231496957%2C20_PORTLET_172586547%2C20_PORTLET_231852894%2C20_PORTLET_229317896%2C20_PORTLET_231909778%2C20_PORTLET_231588683%2C20_PORTLET_231563905%2C20_PORTLET_231396034%2C15_PORTLET_1843094%2C15_PORTLET_170393334%2C20_PORTLET_4433611%2C20_PORTLET_190765105%2C20_PORTLET_1695437%2C20_PORTLET_231596354%2C20_PORTLET_25807447%2C20_PORTLET_164378894&_3_entryClassName=&_3_folderId=&_3_formDate=1530100422264&_3_format=&_3_groupId=0&_3_keywords=tagsEntries%3Ausing+liferay&_3_modified=&_3_modifieddayFrom=12&_3_modifieddayTo=13&_3_modifiedfrom=20%2F05%2F2018&_3_modifiedmonthFrom=4&_3_modifiedmonthTo=4&_3_modifiedselection=0&_3_modifiedto=21%2F05%2F2018&_3_modifiedyearFrom=2018&_3_modifiedyearTo=2018&_3_struts_action=%2Fsearch%2Fsearch&_3_userName=&p_p_id=3&p_p_lifecycle=0&p_p_mode=view&p_p_state=maximized",
@@ -95,7 +93,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/home?_3_assetTagNames=&_3_cur=2&_3_documentsSearchContainerPrimaryKeys=20_PORTLET_1648796%2C20_PORTLET_8289363%2C20_PORTLET_231885435%2C15_PORTLET_1945044%2C15_PORTLET_231496957%2C20_PORTLET_172586547%2C20_PORTLET_231852894%2C20_PORTLET_229317896%2C20_PORTLET_231909778%2C20_PORTLET_231588683%2C20_PORTLET_231563905%2C20_PORTLET_231396034%2C15_PORTLET_1843094%2C15_PORTLET_170393334%2C20_PORTLET_4433611%2C20_PORTLET_190765105%2C20_PORTLET_1695437%2C20_PORTLET_231596354%2C20_PORTLET_25807447%2C20_PORTLET_164378894&_3_entryClassName=&_3_folderId=&_3_formDate=1530100422264&_3_format=&_3_groupId=0&_3_keywords=tagsEntries%3Ausing+liferay&_3_modified=&_3_modifieddayFrom=12&_3_modifieddayTo=13&_3_modifiedfrom=20%2F05%2F2018&_3_modifiedmonthFrom=4&_3_modifiedmonthTo=4&_3_modifiedselection=0&_3_modifiedto=21%2F05%2F2018&_3_modifiedyearFrom=2018&_3_modifiedyearTo=2018&_3_struts_action=%2Fsearch%2Fsearch&_3_userName=&p_p_id=3&p_p_lifecycle=0&p_p_mode=view&p_p_state=maximized",
@@ -139,7 +136,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "150.249.192.22",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/search",
@@ -185,7 +181,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "150.249.192.22",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/search",
@@ -231,7 +226,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "150.249.192.22",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/search",
@@ -277,7 +271,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "150.249.192.22",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/search",
@@ -323,7 +316,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "150.249.192.22",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/search",
@@ -369,7 +361,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "150.249.192.22",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/search",
@@ -415,7 +406,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "150.249.192.22",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/search",
@@ -461,7 +451,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "150.249.192.22",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/search",
@@ -507,7 +496,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "150.249.192.22",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/search",
@@ -553,7 +541,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "150.249.192.22",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/search",
@@ -598,7 +585,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "150.249.192.22",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/search",
@@ -644,7 +630,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "150.249.192.22",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.0/develop/tutorials",
@@ -690,7 +675,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "150.249.192.22",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.0/develop/tutorials",
@@ -736,7 +720,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "216.221.228.6",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.1/deploy",
@@ -782,7 +765,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -825,7 +807,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Blog",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -871,7 +852,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Comment",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -918,7 +898,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Form",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -963,7 +942,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Form",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -1008,7 +986,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -1054,7 +1031,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -1100,7 +1076,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -1146,7 +1121,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -1192,7 +1166,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -1238,7 +1211,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -1284,7 +1256,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -1330,7 +1301,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -1376,7 +1346,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -1422,7 +1391,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -1468,7 +1436,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
@@ -1512,7 +1479,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "216.221.228.6",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.1/deploy",
@@ -1557,7 +1523,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "216.221.228.6",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.1/deploy",
@@ -1603,7 +1568,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "216.221.228.6",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.1/deploy",
@@ -1649,7 +1613,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "216.221.228.6",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.1/deploy",
@@ -1695,7 +1658,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "216.221.228.6",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.1/deploy",
@@ -1741,7 +1703,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "216.221.228.6",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.1/deploy",
@@ -1787,7 +1748,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "216.221.228.6",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.1/deploy",
@@ -1832,7 +1792,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "216.221.228.6",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.1/deploy",
@@ -1878,7 +1837,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -1922,7 +1880,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -1965,7 +1922,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Form",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2010,7 +1966,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2056,7 +2011,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2102,7 +2056,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2148,7 +2101,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2194,7 +2146,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2240,7 +2191,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2286,7 +2236,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2332,7 +2281,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2378,7 +2326,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2424,7 +2371,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2470,7 +2416,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2516,7 +2461,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2562,7 +2506,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2608,7 +2551,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -2652,7 +2594,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/press-release?title=liferay-names-xtivia-a-platinum-partner",
@@ -2693,7 +2634,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Form",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/press-release?title=liferay-names-xtivia-a-platinum-partner",
@@ -2736,7 +2676,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/press-release?title=liferay-names-xtivia-a-platinum-partner",
@@ -2780,7 +2719,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/press-release?title=liferay-names-xtivia-a-platinum-partner",
@@ -2824,7 +2762,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/press-release?title=liferay-names-xtivia-a-platinum-partner",
@@ -2868,7 +2805,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/press-release?title=liferay-names-xtivia-a-platinum-partner",
@@ -2912,7 +2848,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/press-release?title=liferay-names-xtivia-a-platinum-partner",
@@ -2956,7 +2891,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/press-release?title=liferay-names-xtivia-a-platinum-partner",
@@ -3000,7 +2934,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "66.249.64.150",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/press-release?title=liferay-names-xtivia-a-platinum-partner",
@@ -3042,7 +2975,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3086,7 +3018,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Form",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3131,7 +3062,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3177,7 +3107,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3223,7 +3152,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3269,7 +3197,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3315,7 +3242,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3361,7 +3287,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3407,7 +3332,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3453,7 +3377,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3499,7 +3422,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3545,7 +3467,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3591,7 +3512,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3637,7 +3557,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3683,7 +3602,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3729,7 +3647,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3772,7 +3689,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "176.63.105.25",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
@@ -3816,7 +3732,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "192.24.80.154",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.0/admin",
@@ -3861,7 +3776,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "192.24.80.154",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.0/admin",
@@ -3907,7 +3821,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "192.24.80.154",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.1/develop/reference",
@@ -3953,7 +3866,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "192.24.80.154",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/7.0/admin",
@@ -3999,7 +3911,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "192.24.80.154",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/search",
@@ -4044,7 +3955,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "192.24.80.154",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/search",
@@ -4090,7 +4000,6 @@
 		"analyticsKey": "a9ebf9d2-c69e-47f1-855f-c0ac0933b938",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "192.24.80.154",
 		"context": {
 			"browserName": "Chrome",
 			"canonicalUrl": "https://customer.liferay.com/documentation/6.1/admin",
@@ -4136,7 +4045,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Page",
 		"channelId": "1",
-		"clientIP": "66.249.64.146",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",
@@ -4178,7 +4086,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Form",
 		"channelId": "1",
-		"clientIP": "66.249.64.146",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",
@@ -4222,7 +4129,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "Form",
 		"channelId": "1",
-		"clientIP": "66.249.64.146",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",
@@ -4266,7 +4172,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.146",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",
@@ -4310,7 +4215,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.146",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",
@@ -4354,7 +4258,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.146",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",
@@ -4398,7 +4301,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.146",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",
@@ -4442,7 +4344,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.146",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",
@@ -4486,7 +4387,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.146",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",
@@ -4530,7 +4430,6 @@
 		"analyticsKey": "www.liferay.com",
 		"applicationId": "WebContent",
 		"channelId": "1",
-		"clientIP": "66.249.64.146",
 		"context": {
 			"browserName": "Unknown Crawler",
 			"canonicalUrl": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",

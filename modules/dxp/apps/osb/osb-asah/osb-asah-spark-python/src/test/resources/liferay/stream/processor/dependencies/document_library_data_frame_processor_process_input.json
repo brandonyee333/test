@@ -2,7 +2,6 @@
 	{
 		"applicationId": "Document",
 		"channelId": "420253908131944590",
-		"clientIP": "70.93.236.140",
 		"context": {
 			"article:published_time": "2016-07-19T18:07:37+00:00",
 			"browserName": "Chrome",
@@ -59,7 +58,6 @@
 	{
 		"applicationId": "Document",
 		"channelId": "420253908131944590",
-		"clientIP": "70.93.236.140",
 		"context": {
 			"article:published_time": "2016-07-19T18:07:37+00:00",
 			"browserName": "Chrome",
@@ -116,7 +114,6 @@
 	{
 		"applicationId": "Document",
 		"channelId": "420253908131944590",
-		"clientIP": "70.93.236.140",
 		"context": {
 			"article:published_time": "2016-07-19T18:07:37+00:00",
 			"browserName": "Chrome",
@@ -173,7 +170,6 @@
 	{
 		"applicationId": "Ratings",
 		"channelId": "420253908131944590",
-		"clientIP": "70.93.236.140",
 		"context": {
 			"article:published_time": "2016-07-19T18:07:37+00:00",
 			"browserName": "Chrome",
