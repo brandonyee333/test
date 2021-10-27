@@ -139,11 +139,40 @@ public abstract class BaseInterestRepositoryTestCase
 			_interestRepository.
 				findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
 					"sales", 374790572703144535L, "individual",
+					DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"),
+					DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
+
+		Assert.assertEquals(interests.toString(), 1, interests.size());
+		Assert.assertEquals(Arrays.asList(entityModels.get(4)), interests);
+
+		interests =
+			_interestRepository.
+				findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
+					"sales", 374790572703144535L, "individual",
 					DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"),
 					DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
 
 		Assert.assertEquals(interests.toString(), 1, interests.size());
 		Assert.assertEquals(Arrays.asList(entityModels.get(4)), interests);
+
+		interests =
+			_interestRepository.
+				findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
+					"sales", 374790572703144535L, "individual",
+					DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"),
+					DateUtil.toUTCDate("2021-09-15T00:00:00.000Z"));
+
+		Assert.assertEquals(interests.toString(), 1, interests.size());
+		Assert.assertEquals(Arrays.asList(entityModels.get(4)), interests);
+
+		interests =
+			_interestRepository.
+				findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
+					"sales", 374790572703144535L, "individual",
+					DateUtil.toUTCDate("2021-09-15T00:00:00.000Z"),
+					DateUtil.toUTCDate("2021-09-16T00:00:00.000Z"));
+
+		Assert.assertEquals(interests.toString(), 0, interests.size());
 	}
 
 	@Test
