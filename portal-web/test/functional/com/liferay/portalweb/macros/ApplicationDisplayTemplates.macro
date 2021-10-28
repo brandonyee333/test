@@ -129,6 +129,53 @@ definition {
 		SelectFrameTop(value1 = "relative=top");
 	}
 
+	macro addPGWithScript {
+		Portlet.gotoPortletOptions(
+			portletName = "${portletName}",
+			portletOption = "Configuration");
+
+		IFrame.selectConfigurationFrame();
+
+		Pause(locator1 = "5000");
+
+		if (IsElementPresent(locator1 = "Configuration#SETUP_DISPLAY_SETTINGS")) {
+			AssertClick(
+				locator1 = "Configuration#SETUP_DISPLAY_SETTINGS",
+				value1 = "Display Settings");
+		}
+		else if (IsElementPresent(locator1 = "Configuration#SETUP_DISPLAY_SETTINGS_PANEL")) {
+			Panel.expandPanel(panelHeading = "Display Settings");
+		}
+
+		AssertClick(
+			locator1 = "ApplicationDisplayTemplatesConfiguration#MANAGE_DISPLAY_TEMPLATES_LINK",
+			value1 = "Manage Display Templates for ${siteName}");
+
+		var key_adtType = "${adtType}";
+
+		SelectFrameTop();
+
+		SelectFrame(locator1 = "ApplicationDisplayTemplates#ADT_IFRAME");
+
+		LexiconEntry.gotoAdd();
+
+		var key_adtType = "${adtType}";
+
+		AssertVisible(locator1 = "ApplicationDisplayTemplates#PORTLET_PREFERENCES");
+
+		AssertElementPresent(locator1 = "ApplicationDisplayTemplates#PORTLET_PREFERENCES");
+
+		PortletEntry.inputName(name = "${adtType} Test ADT");
+
+		ApplicationDisplayTemplates.editADTScript(adtScript = "${script}");
+
+		AssertTextEquals(
+			locator1 = "ApplicationDisplayTemplates#ADT_TABLE_NAME_1",
+			value1 = "${adtType} Test ADT");
+
+		SelectFrameTop(value1 = "relative=top");
+	}
+
 	macro addPortletADTWithFieldEntry {
 		Portlet.gotoPortletOptions(
 			portletName = "${portletName}",
