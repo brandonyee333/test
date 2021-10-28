@@ -127,15 +127,17 @@ public class InterestsRestControllerTest {
 
 		Map<String, Object> embeddedMap = interestDTO.getEmbedded();
 
-		List<String> visitedPages = (List)embeddedMap.get("pages-visited");
-		List<String> interestAggregation = (List)embeddedMap.get(
-			"interest-aggregation-last-30-days");
-
 		Assert.assertEquals(embeddedMap.toString(), 2, embeddedMap.size());
 
-		Assert.assertEquals(visitedPages.toString(), 5, visitedPages.size());
+		List<String> interestAggregations = (List)embeddedMap.get(
+			"interest-aggregation-last-30-days");
+
 		Assert.assertEquals(
-			interestAggregation.toString(), 30, interestAggregation.size());
+			interestAggregations.toString(), 30, interestAggregations.size());
+
+		List<String> visitedPages = (List)embeddedMap.get("pages-visited");
+
+		Assert.assertEquals(visitedPages.toString(), 5, visitedPages.size());
 	}
 
 	@RepositoryResource(
