@@ -75,7 +75,7 @@ public class InterestsRestController
 	public InterestDTO getInterestDTO(
 		@PathVariable Long id, @RequestParam(required = false) String expand) {
 
-		return _getInterestDTO(
+		return _createInterestDTO(
 			_containsPageVisited(expand), _getDaysRange(expand),
 			_interestDog.getInterest(id));
 	}
@@ -143,6 +143,35 @@ public class InterestsRestController
 		return expandParts.contains("pages-visited");
 	}
 
+	@NotNull
+	private InterestDTO _createInterestDTO(
+		boolean addPageVisited, int days, Interest interest) {
+
+		InterestDTO interestDTO = new InterestDTO(interest);
+
+		Map<String, Object> embedded = new HashMap<>();
+
+		if (days > 0) {
+			LocalDateTime endDayLocalDateTime = DateUtil.newDayLocalDateTime(
+				TimeZoneDogUtil.getZoneId());
+
+			embedded.put(
+				"interest-aggregation-last-" + days + "-days",
+				_getInterestAggregations(
+					endDayLocalDateTime, interest.getName(),
+					interest.getOwnerId(), interest.getOwnerType(),
+					endDayLocalDateTime.plusDays(1 - days)));
+		}
+
+		if (addPageVisited) {
+			embedded.put("pages-visited", _getVisitedPages(interest));
+		}
+
+		interestDTO.setEmbedded(embedded);
+
+		return interestDTO;
+	}
+
 	private Set<InterestDTO> _createInterestDTOs(
 		String expand, List<Interest> interests) {
 
@@ -153,7 +182,8 @@ public class InterestsRestController
 		Set<InterestDTO> interestDTOs = new HashSet<>();
 
 		for (Interest interest : interests) {
-			interestDTOs.add(_getInterestDTO(addPageVisited, days, interest));
+			interestDTOs.add(
+				_createInterestDTO(addPageVisited, days, interest));
 		}
 
 		return interestDTOs;
@@ -184,8 +214,6 @@ public class InterestsRestController
 		LocalDateTime endDayLocalDateTime, String name, Long ownerId,
 		String ownerType, LocalDateTime startDayLocalDateTime) {
 
-		List<Map<String, Object>> interestAggregationMap = new ArrayList<>();
-
 		List<Interest> interests = _interestDog.getInterests(
 			name, ownerId, ownerType, DateUtil.toUTCDate(startDayLocalDateTime),
 			DateUtil.toUTCDate(endDayLocalDateTime));
@@ -200,6 +228,8 @@ public class InterestsRestController
 		}
 
 		LocalDateTime currentDayLocalDateTime = startDayLocalDateTime;
+
+		List<Map<String, Object>> interestAggregations = new ArrayList<>();
 
 		while (currentDayLocalDateTime.compareTo(endDayLocalDateTime) <= 0) {
 			Interest interest = interestMap.get(currentDayLocalDateTime);
@@ -219,41 +249,12 @@ public class InterestsRestController
 				item.put("viewsSum", 0);
 			}
 
-			interestAggregationMap.add(item);
+			interestAggregations.add(item);
 
 			currentDayLocalDateTime = currentDayLocalDateTime.plusDays(1);
 		}
 
-		return interestAggregationMap;
-	}
-
-	@NotNull
-	private InterestDTO _getInterestDTO(
-		boolean addPageVisited, int days, Interest interest) {
-
-		InterestDTO interestDTO = new InterestDTO(interest);
-
-		Map<String, Object> embedded = new HashMap<>();
-
-		if (days > 0) {
-			LocalDateTime endDayLocalDateTime = DateUtil.newDayLocalDateTime(
-				TimeZoneDogUtil.getZoneId());
-
-			embedded.put(
-				"interest-aggregation-last-" + days + "-days",
-				_getInterestAggregations(
-					endDayLocalDateTime, interest.getName(),
-					interest.getOwnerId(), interest.getOwnerType(),
-					endDayLocalDateTime.plusDays(1 - days)));
-		}
-
-		if (addPageVisited) {
-			embedded.put("pages-visited", _getVisitedPages(interest));
-		}
-
-		interestDTO.setEmbedded(embedded);
-
-		return interestDTO;
+		return interestAggregations;
 	}
 
 	private Double _getScore() {
