@@ -45,6 +45,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -69,19 +77,47 @@ public class DXPEntitiesMessageProcessor {
 			List<String> messages = _messageSubscriber.pullMessages(
 				_dxpEntitiesMessageProcessorPullMessagesSize);
 
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					String.format(
+						"Pulled %d DXP entity messages ", messages.size()));
+			}
+
 			if (messages.isEmpty()) {
 				break;
 			}
 
-			for (String message : messages) {
-				JSONObject jsonObject = new JSONObject(message);
+			Stream<String> stream = messages.stream();
 
-				ProjectIdThreadLocal.forProject(
-					jsonObject.getString("projectId"),
-					() -> _processMessage(jsonObject));
-			}
+			stream.map(
+				JSONObject::new
+			).collect(
+				Collectors.groupingBy(
+					jsonObject -> jsonObject.getString("projectId"))
+			).forEach(
+				this::_processQueuedMessagesAsync
+			);
 
 			_dxpEntitiesCounter.inc(messages.size());
+		}
+
+		while (_semaphore.availablePermits() <
+					_dxpEntitiesMessageProcessorConcurrentTasksLimit) {
+
+			try {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						String.format(
+							"Waiting for %d unfinished tasks",
+							_dxpEntitiesMessageProcessorConcurrentTasksLimit -
+								_semaphore.availablePermits()));
+				}
+
+				Thread.sleep(1000);
+			}
+			catch (InterruptedException interruptedException) {
+				_log.error(interruptedException, interruptedException);
+			}
 		}
 	}
 
@@ -155,6 +191,12 @@ public class DXPEntitiesMessageProcessor {
 		}
 
 		return null;
+	}
+
+	@PostConstruct
+	private void _init() {
+		_semaphore = new Semaphore(
+			_dxpEntitiesMessageProcessorConcurrentTasksLimit, true);
 	}
 
 	private void _processAssociationObject(
@@ -401,6 +443,51 @@ public class DXPEntitiesMessageProcessor {
 		}
 	}
 
+	private void _processQueuedMessagesAsync(
+		String projectId, List<JSONObject> jsonObjects) {
+
+		try {
+			_semaphore.acquire();
+
+			CompletableFuture.runAsync(
+				() -> {
+					try {
+						ProjectIdThreadLocal.setProjectId(projectId);
+
+						long start = System.currentTimeMillis();
+
+						for (JSONObject jsonObject : jsonObjects) {
+							_processMessage(jsonObject);
+						}
+
+						if (_log.isDebugEnabled()) {
+							_log.debug(
+								String.format(
+									"Successfully processed %d DXP entity " +
+										"message(s) in %d ms",
+									jsonObjects.size(),
+									System.currentTimeMillis() - start));
+						}
+					}
+					catch (Exception exception) {
+						_log.error(
+							"Unable to process DXP entity messages " +
+								jsonObjects.toString(),
+							exception);
+					}
+					finally {
+						_semaphore.release();
+
+						ProjectIdThreadLocal.remove();
+					}
+				},
+				_executorService);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
+		}
+	}
+
 	private void _processUserFieldObject(
 		String action, JSONObject objectJSONObject) {
 
@@ -474,11 +561,19 @@ public class DXPEntitiesMessageProcessor {
 	@Autowired
 	private DataSourceDog _dataSourceDog;
 
+	@Value(
+		"${osb.asah.dxp.entities.message.processor.concurrent.tasks.limit:15}"
+	)
+	private int _dxpEntitiesMessageProcessorConcurrentTasksLimit;
+
 	@Value("${osb.asah.dxp.entities.message.processor.pull.messages.size:50}")
 	private int _dxpEntitiesMessageProcessorPullMessagesSize;
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
+
+	private final ExecutorService _executorService =
+		Executors.newFixedThreadPool(10);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
@@ -500,6 +595,8 @@ public class DXPEntitiesMessageProcessor {
 
 	@Autowired
 	private SegmentDog _segmentDog;
+
+	private Semaphore _semaphore;
 
 	@Autowired
 	private SuppressionDog _suppressionDog;
