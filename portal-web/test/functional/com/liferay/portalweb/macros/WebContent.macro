@@ -954,6 +954,14 @@ definition {
 			value1 = "${webContentTitle} is not approved.");
 	}
 
+	macro clickChangeDefaultLanguage {
+		Click(locator1 = "Button#CHANGE");
+
+		Select(
+			locator1 = "Select#DEFAULT_LANGUAGE",
+			value1 = "Spanish (Spain)");
+	}
+
 	macro copyCP {
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Copy",
