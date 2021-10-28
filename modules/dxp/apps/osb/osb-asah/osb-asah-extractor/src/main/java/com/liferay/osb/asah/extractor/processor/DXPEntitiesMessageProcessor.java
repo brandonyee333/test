@@ -55,6 +55,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -65,7 +66,8 @@ public class DXPEntitiesMessageProcessor {
 
 	public void processQueuedMessages() {
 		while (true) {
-			List<String> messages = _messageSubscriber.pullMessages(50);
+			List<String> messages = _messageSubscriber.pullMessages(
+				_dxpEntitiesMessageProcessorPullMessagesSize);
 
 			if (messages.isEmpty()) {
 				break;
@@ -471,6 +473,9 @@ public class DXPEntitiesMessageProcessor {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Value("${osb.asah.dxp.entities.message.processor.pull.messages.size:50}")
+	private int _dxpEntitiesMessageProcessorPullMessagesSize;
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
