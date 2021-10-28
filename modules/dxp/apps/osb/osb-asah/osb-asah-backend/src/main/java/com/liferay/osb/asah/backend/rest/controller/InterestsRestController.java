@@ -214,6 +214,8 @@ public class InterestsRestController
 		LocalDateTime endDayLocalDateTime, String name, Long ownerId,
 		String ownerType, LocalDateTime startDayLocalDateTime) {
 
+		List<Map<String, Object>> interestAggregations = new ArrayList<>();
+
 		List<Interest> interests = _interestDog.getInterests(
 			name, ownerId, ownerType, DateUtil.toUTCDate(startDayLocalDateTime),
 			DateUtil.toUTCDate(endDayLocalDateTime));
@@ -228,8 +230,6 @@ public class InterestsRestController
 		}
 
 		LocalDateTime currentDayLocalDateTime = startDayLocalDateTime;
-
-		List<Map<String, Object>> interestAggregations = new ArrayList<>();
 
 		while (currentDayLocalDateTime.compareTo(endDayLocalDateTime) <= 0) {
 			Interest interest = interestMap.get(currentDayLocalDateTime);
