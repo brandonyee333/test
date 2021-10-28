@@ -2313,6 +2313,71 @@ definition {
 			structureName = "Basic Web Content");
 	}
 
+	@description = "This is a use case for LPS-83319. This test is Set And View Web Content with two translations"
+	@priority = "5"
+	test ViewChangeWebContentLanguage {
+		task ("Check Changeable Default Language setting") {
+			ProductMenu.gotoPortlet(
+				category = "Configuration",
+				panel = "Control Panel",
+				portlet = "System Settings");
+
+			SystemSettings.gotoCategory(category = "Web Experience");
+
+			SystemSettings.editConfiguration(configurationName = "Web Content Administration");
+
+			FormFields.enableCheckbox(fieldName = "changeableDefaultLanguage");
+
+			SystemSettings.saveConfiguration();
+		}
+
+		task ("Set Web Content with two translations") {
+			ProductMenu.gotoPortlet(
+				category = "Content",
+				panel = "Site Administration",
+				portlet = "Web Content");
+
+			WebContentNavigator.gotoAddCP();
+
+			WebContent.addCP(
+				webContentContent = "WC WebContent Content",
+				webContentTitle = "WC WebContent Title");
+
+			AssertClick(
+				locator1 = "Button#PUBLISH",
+				value1 = "Publish");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
+
+			DDLRecord.addTranslation(localizedLanguage = "Spanish (Spain)");
+
+			WebContent.addCP(
+				webContentContent = "WC Contenido de la web Contenido",
+				webContentTitle = "WC Contenido de la web Titulo");
+
+			AssertClick(
+				locator1 = "Button#PUBLISH",
+				value1 = "Publish");
+		}
+
+		task ("View Web Content with two translations") {
+			ProductMenu.gotoPortlet(
+				category = "Content",
+				panel = "Site Administration",
+				portlet = "Web Content");
+
+			WebContent.viewTitle(webContentTitle = "WC WebContent Title");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
+
+			WebContent.clickChangeDefaultLanguage();
+
+			WebContent.viewCP(
+				webContentContent = "WC Contenido de la web Contenido",
+				webContentTitle = "WC Contenido de la web Titulo");
+		}
+	}
+
 	@priority = "4"
 	test ViewContentNotLostWithBlankTitle {
 		Navigator.openURL();
