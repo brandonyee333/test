@@ -127,7 +127,7 @@
 </tr>
 <tr>
 	<td>CHANGE</td>
-	<td>//button[contains(.,'Change')]</td>
+	<td>//a[contains(.,'Change')]</td>
 	<td></td>
 </tr>
 <tr>
