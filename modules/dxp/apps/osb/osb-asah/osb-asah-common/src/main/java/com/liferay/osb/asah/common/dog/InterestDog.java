@@ -63,7 +63,7 @@ public class InterestDog {
 
 		return interestOptional.orElseThrow(
 			() -> new OSBAsahException(
-				HttpStatus.BAD_REQUEST, "There is no interest with id " + id));
+				HttpStatus.BAD_REQUEST, "There is no interest with ID " + id));
 	}
 
 	public Page<Interest> getInterestPage(
