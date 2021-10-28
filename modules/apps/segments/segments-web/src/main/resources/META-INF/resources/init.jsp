@@ -66,6 +66,9 @@ page import="com.liferay.segments.web.internal.security.permission.resource.Segm
 
 <%@ page import="java.util.Objects" %>
 
+<%@ page import="java.util.HashMap" %><%@
+page import="java.util.List" %>
+
 <%@ page import="javax.portlet.PortletURL" %>
 
 <liferay-frontend:defineObjects />
