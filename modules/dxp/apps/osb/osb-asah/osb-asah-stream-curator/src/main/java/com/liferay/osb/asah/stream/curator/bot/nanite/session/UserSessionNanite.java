@@ -46,6 +46,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -98,7 +101,9 @@ public class UserSessionNanite implements Nanite {
 	}
 
 	private void _createUserSession(
-		AnalyticsEvents analyticsEvents, boolean completed, String userId) {
+		AnalyticsEvents analyticsEvents, boolean completed,
+		List<CompletableFuture<Void>> storageCompletableFutures,
+		String userId) {
 
 		UserSession userSession = new UserSession();
 
@@ -168,7 +173,7 @@ public class UserSessionNanite implements Nanite {
 
 		_storeEvents(
 			analyticsEvents.getAnalyticsEventsList(),
-			jsonObject.getString("id"));
+			jsonObject.getString("id"), storageCompletableFutures);
 	}
 
 	private Individual _fetchIndividual(AnalyticsEvent analyticsEvent) {
@@ -272,7 +277,10 @@ public class UserSessionNanite implements Nanite {
 		return false;
 	}
 
-	private void _processAnalyticsEvents(List<AnalyticsEvent> analyticsEvents) {
+	private void _processAnalyticsEvents(
+		List<AnalyticsEvent> analyticsEvents,
+		List<CompletableFuture<Void>> storageCompletableFutures) {
+
 		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
 
 		Map<String, List<AnalyticsEvent>> groupedAnalyticEvents = stream.sorted(
@@ -336,12 +344,14 @@ public class UserSessionNanite implements Nanite {
 
 			_processAnalyticsEvents(
 				sessionAnalyticsEventsPair.getKey(),
-				sessionAnalyticsEventsPair.getValue());
+				sessionAnalyticsEventsPair.getValue(),
+				storageCompletableFutures);
 		}
 	}
 
 	private void _processAnalyticsEvents(
-		String userId, List<AnalyticsEvent> sessionAnalyticsEvents) {
+		String userId, List<AnalyticsEvent> sessionAnalyticsEvents,
+		List<CompletableFuture<Void>> storageCompletableFutures) {
 
 		sessionAnalyticsEvents.sort(
 			Comparator.comparing(AnalyticsEvent::getEventDate));
@@ -384,10 +394,14 @@ public class UserSessionNanite implements Nanite {
 						DateUtil.addDays(DateUtil.newDateString(), -1));
 
 					if (lastAnalyticsEventDate.before(yesterday)) {
-						_createUserSession(analyticsEvents, true, userId);
+						_createUserSession(
+							analyticsEvents, true, storageCompletableFutures,
+							userId);
 					}
 					else {
-						_createUserSession(analyticsEvents, false, userId);
+						_createUserSession(
+							analyticsEvents, false, storageCompletableFutures,
+							userId);
 					}
 				}
 				catch (Exception exception) {
@@ -395,11 +409,14 @@ public class UserSessionNanite implements Nanite {
 				}
 			}
 			else {
-				_createUserSession(analyticsEvents, true, userId);
+				_createUserSession(
+					analyticsEvents, true, storageCompletableFutures, userId);
 			}
 		}
 		else {
-			_updateUserSession(analyticsEvents, userSessionJSONObject);
+			_updateUserSession(
+				analyticsEvents, storageCompletableFutures,
+				userSessionJSONObject);
 		}
 	}
 
@@ -424,6 +441,22 @@ public class UserSessionNanite implements Nanite {
 				this::_run
 			);
 
+			while (!_runCompletableFutures.isEmpty()) {
+				try {
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							"Waiting run completable futures unfinished tasks");
+					}
+
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException interruptedException) {
+					_log.error(interruptedException, interruptedException);
+				}
+
+				_runCompletableFutures.removeIf(CompletableFuture::isDone);
+			}
+
 			if (_log.isInfoEnabled()) {
 				Class<?> clazz = getClass();
 
@@ -437,35 +470,113 @@ public class UserSessionNanite implements Nanite {
 	}
 
 	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
-		try {
-			ProjectIdThreadLocal.setProjectId(projectId);
+		_runCompletableFutures.removeIf(CompletableFuture::isDone);
 
-			_processAnalyticsEvents(analyticsEvents);
-		}
-		finally {
-			ProjectIdThreadLocal.remove();
+		_runCompletableFutures.add(
+			CompletableFuture.runAsync(
+				() -> {
+					ProjectIdThreadLocal.setProjectId(projectId);
+
+					List<CompletableFuture<Void>> storageCompletableFutures =
+						new ArrayList<>();
+
+					_processAnalyticsEvents(
+						analyticsEvents, storageCompletableFutures);
+
+					while (!storageCompletableFutures.isEmpty()) {
+						try {
+							if (_log.isDebugEnabled()) {
+								_log.debug(
+									"Waiting storage completable futures " +
+										"unfinished tasks");
+							}
+
+							Thread.sleep(1000);
+						}
+						catch (InterruptedException interruptedException) {
+							_log.error(
+								interruptedException, interruptedException);
+						}
+
+						storageCompletableFutures.removeIf(
+							CompletableFuture::isDone);
+					}
+				},
+				_runExecutorService));
+
+		if (_runCompletableFutures.size() > 20) {
+			while (!_runCompletableFutures.isEmpty()) {
+				try {
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							"Reached run completable futures maximum queue " +
+								"size. Waiting for unfinished tasks.");
+					}
+
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException interruptedException) {
+					_log.error(interruptedException, interruptedException);
+				}
+
+				_runCompletableFutures.removeIf(CompletableFuture::isDone);
+			}
 		}
 	}
 
 	private void _storeEvents(
-		List<AnalyticsEvent> analyticsEvents, String sessionId) {
+		List<AnalyticsEvent> analyticsEvents, String sessionId,
+		List<CompletableFuture<Void>> storageCompletableFutures) {
 
-		Assert.notBlank(sessionId, "Session ID is blank");
+		storageCompletableFutures.removeIf(CompletableFuture::isDone);
 
-		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-			try {
-				_eventStorageDog.store(analyticsEvent, sessionId);
-			}
-			catch (Exception exception) {
-				_log.error(
-					"Unable to store event " + analyticsEvent.toJSON(),
-					exception);
+		String projectId = ProjectIdThreadLocal.getProjectId();
+
+		storageCompletableFutures.add(
+			CompletableFuture.runAsync(
+				() -> {
+					ProjectIdThreadLocal.setProjectId(projectId);
+
+					Assert.notBlank(sessionId, "Session ID is blank");
+
+					for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+						try {
+							_eventStorageDog.store(analyticsEvent, sessionId);
+						}
+						catch (Exception exception) {
+							_log.error(
+								"Unable to store event " +
+									analyticsEvent.toJSON(),
+								exception);
+						}
+					}
+				},
+				_storageExecutorService));
+
+		if (storageCompletableFutures.size() > 20) {
+			while (!storageCompletableFutures.isEmpty()) {
+				try {
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							"Reached storage completable futures maximum " +
+								"queue size. Waiting for unfinished tasks.");
+					}
+
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException interruptedException) {
+					_log.error(interruptedException, interruptedException);
+				}
+
+				storageCompletableFutures.removeIf(CompletableFuture::isDone);
 			}
 		}
 	}
 
 	private void _updateUserSession(
-		AnalyticsEvents analyticsEvents, JSONObject userSessionJSONObject) {
+		AnalyticsEvents analyticsEvents,
+		List<CompletableFuture<Void>> storageCompletableFutures,
+		JSONObject userSessionJSONObject) {
 
 		long interactionsCount =
 			analyticsEvents.getInteractionsCount() +
@@ -510,7 +621,7 @@ public class UserSessionNanite implements Nanite {
 
 		_storeEvents(
 			analyticsEvents.getAnalyticsEventsList(),
-			userSessionJSONObject.getString("id"));
+			userSessionJSONObject.getString("id"), storageCompletableFutures);
 	}
 
 	private static final Log _log = LogFactory.getLog(UserSessionNanite.class);
@@ -530,7 +641,13 @@ public class UserSessionNanite implements Nanite {
 	@Autowired
 	private ObjectMapper _objectMapper;
 
+	private final List<CompletableFuture<Void>> _runCompletableFutures =
+		new ArrayList<>();
+	private final ExecutorService _runExecutorService =
+		Executors.newFixedThreadPool(10);
 	private String _sessionUpdateScriptSource;
+	private final ExecutorService _storageExecutorService =
+		Executors.newFixedThreadPool(10);
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
