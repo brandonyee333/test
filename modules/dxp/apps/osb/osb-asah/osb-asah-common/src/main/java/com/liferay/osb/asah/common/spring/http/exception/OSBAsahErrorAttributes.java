@@ -91,12 +91,12 @@ public class OSBAsahErrorAttributes extends DefaultErrorAttributes {
 	}
 
 	private String _getPath(HttpServletRequest httpServletRequest) {
-		String forwardRequestUri = String.valueOf(
+		String forwardRequestURI = String.valueOf(
 			httpServletRequest.getAttribute(
 				RequestDispatcher.FORWARD_REQUEST_URI));
 
-		if (StringUtils.isNotBlank(forwardRequestUri)) {
-			return forwardRequestUri;
+		if (StringUtils.isNotBlank(forwardRequestURI)) {
+			return forwardRequestURI;
 		}
 
 		String forwardServletPath = String.valueOf(
