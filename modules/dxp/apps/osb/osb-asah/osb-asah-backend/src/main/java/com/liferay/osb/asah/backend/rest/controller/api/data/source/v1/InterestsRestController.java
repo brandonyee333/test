@@ -261,14 +261,6 @@ public class InterestsRestController extends BaseRestController {
 		);
 	}
 
-	private void _logSearchResponseErrors(SearchResponse searchResponse) {
-		for (ShardSearchFailure shardSearchFailure :
-				searchResponse.getShardFailures()) {
-
-			_log.error(shardSearchFailure.getCause());
-		}
-	}
-
 	private static final Log _log = LogFactory.getLog(
 		InterestsRestController.class);
 
