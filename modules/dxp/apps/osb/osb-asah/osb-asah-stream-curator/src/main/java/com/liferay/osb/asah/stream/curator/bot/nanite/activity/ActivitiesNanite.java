@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -52,8 +53,13 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -108,6 +114,25 @@ public class ActivitiesNanite implements Nanite {
 				).forEach(
 					this::_run
 				);
+
+				while (_semaphore.availablePermits() <
+							_activitiesNaniteConcurrentTasksLimit) {
+
+					try {
+						if (_log.isDebugEnabled()) {
+							_log.debug(
+								String.format(
+									"Waiting for %d unfinished process tasks",
+									_activitiesNaniteConcurrentTasksLimit -
+										_semaphore.availablePermits()));
+						}
+
+						Thread.sleep(1000);
+					}
+					catch (InterruptedException interruptedException) {
+						_log.error(interruptedException, interruptedException);
+					}
+				}
 
 				if (_log.isInfoEnabled()) {
 					Class<?> clazz = getClass();
@@ -596,47 +621,74 @@ public class ActivitiesNanite implements Nanite {
 		return MapUtil.getString(analyticsEvent.getContext(), "title");
 	}
 
+	@PostConstruct
+	private void _init() {
+		_semaphore = new Semaphore(_activitiesNaniteConcurrentTasksLimit, true);
+	}
+
 	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
 		try {
-			ProjectIdThreadLocal.setProjectId(projectId);
+			_semaphore.acquire();
 
-			JSONArray activityJSONArray = new JSONArray();
+			CompletableFuture.runAsync(
+				() -> {
+					try {
+						ProjectIdThreadLocal.setProjectId(projectId);
 
-			for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-				if ((Objects.equals(
-						analyticsEvent.getApplicationId(), "Form") &&
-					 Objects.equals(
-						 analyticsEvent.getEventId(), "formViewed")) ||
-					(Objects.equals(
-						analyticsEvent.getApplicationId(), "Page") &&
-					 Objects.equals(
-						 analyticsEvent.getEventId(), "pageViewed"))) {
+						JSONArray activityJSONArray = new JSONArray();
 
-					JSONObject activityJSONObject = _getActivityJSONObject(
-						analyticsEvent);
+						for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+							if ((Objects.equals(
+									analyticsEvent.getApplicationId(),
+									"Form") &&
+								 Objects.equals(
+									 analyticsEvent.getEventId(),
+									 "formViewed")) ||
+								(Objects.equals(
+									analyticsEvent.getApplicationId(),
+									"Page") &&
+								 Objects.equals(
+									 analyticsEvent.getEventId(),
+									 "pageViewed"))) {
 
-					if (activityJSONObject != null) {
-						_addActivityJSONObject(activityJSONObject, projectId);
+								JSONObject activityJSONObject =
+									_getActivityJSONObject(analyticsEvent);
+
+								if (activityJSONObject != null) {
+									_addActivityJSONObject(
+										activityJSONObject, projectId);
+								}
+
+								continue;
+							}
+
+							JSONObject activityJSONObject =
+								_getActivityJSONObject(analyticsEvent);
+
+							if (activityJSONObject != null) {
+								activityJSONArray.put(activityJSONObject);
+							}
+						}
+
+						_addActivityJSONArray(activityJSONArray, projectId);
 					}
+					catch (Exception exception) {
+						List<String> analyticsEventsString = ListUtil.map(
+							analyticsEvents, AnalyticsEvent::toJSON);
 
-					continue;
-				}
-
-				JSONObject activityJSONObject = _getActivityJSONObject(
-					analyticsEvent);
-
-				if (activityJSONObject != null) {
-					activityJSONArray.put(activityJSONObject);
-				}
-			}
-
-			_addActivityJSONArray(activityJSONArray, projectId);
+						_log.error(
+							"Unable to process analytics events messages " +
+								analyticsEventsString,
+							exception);
+					}
+					finally {
+						_semaphore.release();
+					}
+				},
+				_executorService);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-		finally {
-			ProjectIdThreadLocal.remove();
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
 		}
 	}
 
@@ -678,6 +730,9 @@ public class ActivitiesNanite implements Nanite {
 			}
 		};
 
+	@Value("${osb.asah.activities.nanite.concurrent.tasks.limit:15}")
+	private int _activitiesNaniteConcurrentTasksLimit;
+
 	@Value("${osb.asah.activities.nanite.pull.messages.size:50}")
 	private int _activitiesNanitePullMessagesSize;
 
@@ -690,6 +745,9 @@ public class ActivitiesNanite implements Nanite {
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
+	private final ExecutorService _executorService =
+		Executors.newFixedThreadPool(10);
+
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
 
@@ -701,6 +759,8 @@ public class ActivitiesNanite implements Nanite {
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_ACTIVITY)
 	private MessageSubscriber _messageSubscriber;
+
+	private Semaphore _semaphore;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
