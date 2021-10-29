@@ -24,6 +24,7 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import java.time.ZoneOffset;
 
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.script.Script;
@@ -66,9 +67,13 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 		);
 
 		ReflectionTestUtils.setField(
+			nanite, "_semaphore", new Semaphore(10, true));
+		ReflectionTestUtils.setField(
 			nanite, "_sessionUpdateScriptSource",
 			ScriptUtil.loadScriptSource(
 				UserSessionNanite.class, "session_update_script.painless"));
+		ReflectionTestUtils.setField(
+			nanite, "_userSessionNaniteConcurrentTasksLimit", 10);
 
 		TimeZoneDog timeZoneDog = Mockito.mock(TimeZoneDog.class);
 

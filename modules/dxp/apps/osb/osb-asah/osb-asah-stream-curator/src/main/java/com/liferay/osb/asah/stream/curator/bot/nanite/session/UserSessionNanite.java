@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEvents;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.util.Assert;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -49,6 +50,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -84,12 +86,6 @@ public class UserSessionNanite implements Nanite {
 		return DateUtil.MINUTE;
 	}
 
-	@PostConstruct
-	public void init() {
-		_sessionUpdateScriptSource = ScriptUtil.loadScriptSource(
-			getClass(), "session_update_script.painless");
-	}
-
 	@Override
 	public void run() {
 		try {
@@ -101,8 +97,7 @@ public class UserSessionNanite implements Nanite {
 	}
 
 	private void _createUserSession(
-		AnalyticsEvents analyticsEvents, boolean completed,
-		List<CompletableFuture<Void>> storageCompletableFutures,
+		AnalyticsEvents analyticsEvents, boolean completed, Semaphore semaphore,
 		String userId) {
 
 		UserSession userSession = new UserSession();
@@ -172,8 +167,8 @@ public class UserSessionNanite implements Nanite {
 			_objectMapper.convertValue(userSession, JSONObject.class));
 
 		_storeEvents(
-			analyticsEvents.getAnalyticsEventsList(),
-			jsonObject.getString("id"), storageCompletableFutures);
+			analyticsEvents.getAnalyticsEventsList(), semaphore,
+			jsonObject.getString("id"));
 	}
 
 	private Individual _fetchIndividual(AnalyticsEvent analyticsEvent) {
@@ -188,7 +183,7 @@ public class UserSessionNanite implements Nanite {
 			analyticsEvent.getUserId());
 	}
 
-	private JSONObject _getUserSession(String userId, Date firstEventDate) {
+	private JSONObject _getUserSession(Date firstEventDate, String userId) {
 		LocalDateTime firstEventLocalDateTime = DateUtil.toLocalDateTime(
 			firstEventDate, _timeZoneDog.getZoneId());
 
@@ -266,6 +261,14 @@ public class UserSessionNanite implements Nanite {
 			));
 	}
 
+	@PostConstruct
+	private void _init() {
+		_semaphore = new Semaphore(
+			_userSessionNaniteConcurrentTasksLimit, true);
+		_sessionUpdateScriptSource = ScriptUtil.loadScriptSource(
+			getClass(), "session_update_script.painless");
+	}
+
 	private boolean _isSessionBounced(AnalyticsEvents analyticsEvents) {
 		long interactionsCount = analyticsEvents.getInteractionsCount();
 		long pageViewsCount = analyticsEvents.getPageViewsCount();
@@ -278,8 +281,7 @@ public class UserSessionNanite implements Nanite {
 	}
 
 	private void _processAnalyticsEvents(
-		List<AnalyticsEvent> analyticsEvents,
-		List<CompletableFuture<Void>> storageCompletableFutures) {
+		List<AnalyticsEvent> analyticsEvents, Semaphore semaphore) {
 
 		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
 
@@ -343,15 +345,14 @@ public class UserSessionNanite implements Nanite {
 				sessionAnalyticsEventsPairs) {
 
 			_processAnalyticsEvents(
-				sessionAnalyticsEventsPair.getKey(),
-				sessionAnalyticsEventsPair.getValue(),
-				storageCompletableFutures);
+				semaphore, sessionAnalyticsEventsPair.getValue(),
+				sessionAnalyticsEventsPair.getKey());
 		}
 	}
 
 	private void _processAnalyticsEvents(
-		String userId, List<AnalyticsEvent> sessionAnalyticsEvents,
-		List<CompletableFuture<Void>> storageCompletableFutures) {
+		Semaphore semaphore, List<AnalyticsEvent> sessionAnalyticsEvents,
+		String userId) {
 
 		sessionAnalyticsEvents.sort(
 			Comparator.comparing(AnalyticsEvent::getEventDate));
@@ -360,7 +361,7 @@ public class UserSessionNanite implements Nanite {
 			sessionAnalyticsEvents);
 
 		JSONObject userSessionJSONObject = _getUserSession(
-			userId, analyticsEvents.getFirstAnalyticsEventDate());
+			analyticsEvents.getFirstAnalyticsEventDate(), userId);
 
 		if (userSessionJSONObject == null) {
 			BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
@@ -395,13 +396,11 @@ public class UserSessionNanite implements Nanite {
 
 					if (lastAnalyticsEventDate.before(yesterday)) {
 						_createUserSession(
-							analyticsEvents, true, storageCompletableFutures,
-							userId);
+							analyticsEvents, true, semaphore, userId);
 					}
 					else {
 						_createUserSession(
-							analyticsEvents, false, storageCompletableFutures,
-							userId);
+							analyticsEvents, false, semaphore, userId);
 					}
 				}
 				catch (Exception exception) {
@@ -409,14 +408,12 @@ public class UserSessionNanite implements Nanite {
 				}
 			}
 			else {
-				_createUserSession(
-					analyticsEvents, true, storageCompletableFutures, userId);
+				_createUserSession(analyticsEvents, true, semaphore, userId);
 			}
 		}
 		else {
 			_updateUserSession(
-				analyticsEvents, storageCompletableFutures,
-				userSessionJSONObject);
+				analyticsEvents, semaphore, userSessionJSONObject);
 		}
 	}
 
@@ -441,11 +438,16 @@ public class UserSessionNanite implements Nanite {
 				this::_run
 			);
 
-			while (!_runCompletableFutures.isEmpty()) {
+			while (_semaphore.availablePermits() <
+						_userSessionNaniteConcurrentTasksLimit) {
+
 				try {
 					if (_log.isDebugEnabled()) {
 						_log.debug(
-							"Waiting run completable futures unfinished tasks");
+							String.format(
+								"Waiting for %d unfinished process tasks",
+								_userSessionNaniteConcurrentTasksLimit -
+									_semaphore.availablePermits()));
 					}
 
 					Thread.sleep(1000);
@@ -453,8 +455,6 @@ public class UserSessionNanite implements Nanite {
 				catch (InterruptedException interruptedException) {
 					_log.error(interruptedException, interruptedException);
 				}
-
-				_runCompletableFutures.removeIf(CompletableFuture::isDone);
 			}
 
 			if (_log.isInfoEnabled()) {
@@ -470,112 +470,111 @@ public class UserSessionNanite implements Nanite {
 	}
 
 	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
-		_runCompletableFutures.removeIf(CompletableFuture::isDone);
+		try {
+			_semaphore.acquire();
 
-		_runCompletableFutures.add(
 			CompletableFuture.runAsync(
 				() -> {
-					ProjectIdThreadLocal.setProjectId(projectId);
+					try {
+						ProjectIdThreadLocal.setProjectId(projectId);
 
-					List<CompletableFuture<Void>> storageCompletableFutures =
-						new ArrayList<>();
+						Semaphore semaphore = new Semaphore(
+							_userSessionNaniteConcurrentTasksLimit, true);
 
-					_processAnalyticsEvents(
-						analyticsEvents, storageCompletableFutures);
+						_processAnalyticsEvents(analyticsEvents, semaphore);
 
-					while (!storageCompletableFutures.isEmpty()) {
-						try {
-							if (_log.isDebugEnabled()) {
-								_log.debug(
-									"Waiting storage completable futures " +
-										"unfinished tasks");
+						while (semaphore.availablePermits() <
+									_userSessionNaniteConcurrentTasksLimit) {
+
+							try {
+								if (_log.isDebugEnabled()) {
+									_log.debug(
+										String.format(
+											"Waiting for %d unfinished store " +
+												"events tasks",
+											_userSessionNaniteConcurrentTasksLimit -
+												semaphore.availablePermits()));
+								}
+
+								Thread.sleep(1000);
 							}
-
-							Thread.sleep(1000);
+							catch (InterruptedException interruptedException) {
+								_log.error(
+									interruptedException, interruptedException);
+							}
 						}
-						catch (InterruptedException interruptedException) {
-							_log.error(
-								interruptedException, interruptedException);
-						}
+					}
+					catch (Exception exception) {
+						List<String> analyticsEventsString = ListUtil.map(
+							analyticsEvents, AnalyticsEvent::toJSON);
 
-						storageCompletableFutures.removeIf(
-							CompletableFuture::isDone);
+						_log.error(
+							"Unable to process analytics events messages " +
+								analyticsEventsString,
+							exception);
+					}
+					finally {
+						_semaphore.release();
 					}
 				},
-				_runExecutorService));
-
-		if (_runCompletableFutures.size() > 20) {
-			while (!_runCompletableFutures.isEmpty()) {
-				try {
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							"Reached run completable futures maximum queue " +
-								"size. Waiting for unfinished tasks.");
-					}
-
-					Thread.sleep(1000);
-				}
-				catch (InterruptedException interruptedException) {
-					_log.error(interruptedException, interruptedException);
-				}
-
-				_runCompletableFutures.removeIf(CompletableFuture::isDone);
-			}
+				_runExecutorService);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
 		}
 	}
 
 	private void _storeEvents(
-		List<AnalyticsEvent> analyticsEvents, String sessionId,
-		List<CompletableFuture<Void>> storageCompletableFutures) {
+		List<AnalyticsEvent> analyticsEvents, Semaphore semaphore,
+		String sessionId) {
 
-		storageCompletableFutures.removeIf(CompletableFuture::isDone);
+		try {
+			semaphore.acquire();
 
-		String projectId = ProjectIdThreadLocal.getProjectId();
+			String projectId = ProjectIdThreadLocal.getProjectId();
 
-		storageCompletableFutures.add(
 			CompletableFuture.runAsync(
 				() -> {
-					ProjectIdThreadLocal.setProjectId(projectId);
+					try {
+						ProjectIdThreadLocal.setProjectId(projectId);
 
-					Assert.notBlank(sessionId, "Session ID is blank");
+						Assert.notBlank(sessionId, "Session ID is blank");
 
-					for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-						try {
-							_eventStorageDog.store(analyticsEvent, sessionId);
+						for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+							try {
+								_eventStorageDog.store(
+									analyticsEvent, sessionId);
+							}
+							catch (Exception exception) {
+								_log.error(
+									"Unable to store event " +
+										analyticsEvent.toJSON(),
+									exception);
+							}
 						}
-						catch (Exception exception) {
-							_log.error(
-								"Unable to store event " +
-									analyticsEvent.toJSON(),
-								exception);
-						}
+					}
+					catch (Exception exception) {
+						List<String> analyticsEventsString = ListUtil.map(
+							analyticsEvents, AnalyticsEvent::toJSON);
+
+						_log.error(
+							"Unable to store analytics events " +
+								analyticsEventsString,
+							exception);
+					}
+					finally {
+						semaphore.release();
 					}
 				},
-				_storageExecutorService));
-
-		if (storageCompletableFutures.size() > 20) {
-			while (!storageCompletableFutures.isEmpty()) {
-				try {
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							"Reached storage completable futures maximum " +
-								"queue size. Waiting for unfinished tasks.");
-					}
-
-					Thread.sleep(1000);
-				}
-				catch (InterruptedException interruptedException) {
-					_log.error(interruptedException, interruptedException);
-				}
-
-				storageCompletableFutures.removeIf(CompletableFuture::isDone);
-			}
+				_storageExecutorService);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
 		}
 	}
 
 	private void _updateUserSession(
-		AnalyticsEvents analyticsEvents,
-		List<CompletableFuture<Void>> storageCompletableFutures,
+		AnalyticsEvents analyticsEvents, Semaphore semaphore,
 		JSONObject userSessionJSONObject) {
 
 		long interactionsCount =
@@ -620,8 +619,8 @@ public class UserSessionNanite implements Nanite {
 				"id", userSessionJSONObject.getString("id")));
 
 		_storeEvents(
-			analyticsEvents.getAnalyticsEventsList(),
-			userSessionJSONObject.getString("id"), storageCompletableFutures);
+			analyticsEvents.getAnalyticsEventsList(), semaphore,
+			userSessionJSONObject.getString("id"));
 	}
 
 	private static final Log _log = LogFactory.getLog(UserSessionNanite.class);
@@ -641,16 +640,18 @@ public class UserSessionNanite implements Nanite {
 	@Autowired
 	private ObjectMapper _objectMapper;
 
-	private final List<CompletableFuture<Void>> _runCompletableFutures =
-		new ArrayList<>();
 	private final ExecutorService _runExecutorService =
 		Executors.newFixedThreadPool(10);
+	private Semaphore _semaphore;
 	private String _sessionUpdateScriptSource;
 	private final ExecutorService _storageExecutorService =
 		Executors.newFixedThreadPool(10);
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
+
+	@Value("${osb.asah.user.session.nanite.concurrent.tasks.limit:15}")
+	private int _userSessionNaniteConcurrentTasksLimit;
 
 	@Value("${osb.asah.user.session.nanite.pull.messages.size:50}")
 	private int _userSessionNanitePullMessagesSize;
