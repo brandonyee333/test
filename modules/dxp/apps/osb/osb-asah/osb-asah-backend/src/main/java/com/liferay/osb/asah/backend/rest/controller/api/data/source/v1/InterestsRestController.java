@@ -15,15 +15,15 @@
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
+import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.InterestTopicDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.entity.InterestTopic;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -36,14 +36,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.search.join.ScoreMode;
 
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.ShardSearchFailure;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -89,7 +82,7 @@ public class InterestsRestController extends BaseRestController {
 		}
 
 		List<String> userInterestTerms = _getUserInterestTerms(
-			termsPerTopic, topicsLength, individual.getString("id"));
+			termsPerTopic, topicsLength, individual.getLong("id"));
 
 		List<Integer> topics = _getTopics(
 			userInterestTerms, termWeightThreshold);
@@ -171,6 +164,9 @@ public class InterestsRestController extends BaseRestController {
 		).toString();
 	}
 
+	@Autowired
+	protected InterestDog interestDog;
+
 	private void _addTermPerTopic(
 		InterestTopic interestTopic, Map<Integer, Topic> topics) {
 
@@ -250,39 +246,16 @@ public class InterestsRestController extends BaseRestController {
 	}
 
 	private List<String> _getUserInterestTerms(
-		int termsPerTopic, int topicsLength, String individualId) {
+		int termsPerTopic, int topicsLength, Long individualId) {
 
-		SearchResponse userInterestSearchResponse =
-			faroInfoElasticsearchInvoker.search(
-				"interests",
-				searchSourceBuilder -> {
-					BoolQueryBuilder query = BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("ownerId", individualId)
-					).filter(
-						QueryBuilders.termQuery("ownerType", "individual")
-					);
+		List<Interest> interests = interestDog.getInterests(
+			individualId, "individual", 0, topicsLength * termsPerTopic * 10,
+			new String[] {"score", "desc"});
 
-					searchSourceBuilder.query(query);
-
-					searchSourceBuilder.size(topicsLength * termsPerTopic * 10);
-					searchSourceBuilder.sort(
-						SortBuilderUtil.fieldSort("score", SortOrder.DESC));
-				});
-
-		if (userInterestSearchResponse.status() != RestStatus.OK) {
-			_logSearchResponseErrors(userInterestSearchResponse);
-
-			return Collections.emptyList();
-		}
-
-		SearchHits searchHits = userInterestSearchResponse.getHits();
-
-		Stream<SearchHit> stream = Arrays.stream(searchHits.getHits());
+		Stream<Interest> stream = interests.stream();
 
 		return stream.map(
-			SearchHit::getSourceAsMap
-		).map(
-			searchHitMap -> (String)searchHitMap.get("name")
+			interest -> interest.getName()
 		).collect(
 			Collectors.toList()
 		);
