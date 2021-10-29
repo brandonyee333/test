@@ -19,6 +19,7 @@ import com.liferay.osb.customer.account.entry.details.model.Event;
 import com.liferay.osb.customer.account.entry.details.model.impl.EventImpl;
 import com.liferay.osb.customer.account.entry.details.model.impl.EventModelImpl;
 import com.liferay.osb.customer.account.entry.details.service.persistence.EventPersistence;
+import com.liferay.osb.customer.account.entry.details.service.persistence.EventUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -3684,14 +3685,31 @@ public class EventPersistenceImpl
 				Integer.class.getName(), Long.class.getName(),
 				Long.class.getName()
 			});
+
+		_setEventUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setEventUtilPersistence(null);
+
 		entityCache.removeCache(EventImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setEventUtilPersistence(EventPersistence eventPersistence) {
+		try {
+			Field field = EventUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, eventPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

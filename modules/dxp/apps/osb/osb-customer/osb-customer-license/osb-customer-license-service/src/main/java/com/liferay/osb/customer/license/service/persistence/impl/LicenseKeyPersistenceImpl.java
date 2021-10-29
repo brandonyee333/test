@@ -19,6 +19,7 @@ import com.liferay.osb.customer.license.model.LicenseKey;
 import com.liferay.osb.customer.license.model.impl.LicenseKeyImpl;
 import com.liferay.osb.customer.license.model.impl.LicenseKeyModelImpl;
 import com.liferay.osb.customer.license.service.persistence.LicenseKeyPersistence;
+import com.liferay.osb.customer.license.service.persistence.LicenseKeyUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -13599,14 +13600,33 @@ public class LicenseKeyPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Boolean.class.getName(), Boolean.class.getName()
 			});
+
+		_setLicenseKeyUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setLicenseKeyUtilPersistence(null);
+
 		entityCache.removeCache(LicenseKeyImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setLicenseKeyUtilPersistence(
+		LicenseKeyPersistence licenseKeyPersistence) {
+
+		try {
+			Field field = LicenseKeyUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, licenseKeyPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

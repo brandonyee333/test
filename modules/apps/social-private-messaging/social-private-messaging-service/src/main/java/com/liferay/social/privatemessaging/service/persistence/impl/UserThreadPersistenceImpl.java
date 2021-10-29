@@ -40,6 +40,7 @@ import com.liferay.social.privatemessaging.model.UserThread;
 import com.liferay.social.privatemessaging.model.impl.UserThreadImpl;
 import com.liferay.social.privatemessaging.model.impl.UserThreadModelImpl;
 import com.liferay.social.privatemessaging.service.persistence.UserThreadPersistence;
+import com.liferay.social.privatemessaging.service.persistence.UserThreadUtil;
 
 import java.io.Serializable;
 
@@ -3458,14 +3459,33 @@ public class UserThreadPersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName()
 			});
+
+		_setUserThreadUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setUserThreadUtilPersistence(null);
+
 		entityCache.removeCache(UserThreadImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setUserThreadUtilPersistence(
+		UserThreadPersistence userThreadPersistence) {
+
+		try {
+			Field field = UserThreadUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, userThreadPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

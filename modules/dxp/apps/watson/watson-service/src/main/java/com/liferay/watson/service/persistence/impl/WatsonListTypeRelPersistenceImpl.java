@@ -38,6 +38,7 @@ import com.liferay.watson.model.WatsonListTypeRel;
 import com.liferay.watson.model.impl.WatsonListTypeRelImpl;
 import com.liferay.watson.model.impl.WatsonListTypeRelModelImpl;
 import com.liferay.watson.service.persistence.WatsonListTypeRelPersistence;
+import com.liferay.watson.service.persistence.WatsonListTypeRelUtil;
 
 import java.io.Serializable;
 
@@ -833,14 +834,34 @@ public class WatsonListTypeRelPersistenceImpl
 			WatsonListTypeRelModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setWatsonListTypeRelUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setWatsonListTypeRelUtilPersistence(null);
+
 		entityCache.removeCache(WatsonListTypeRelImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setWatsonListTypeRelUtilPersistence(
+		WatsonListTypeRelPersistence watsonListTypeRelPersistence) {
+
+		try {
+			Field field = WatsonListTypeRelUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonListTypeRelPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

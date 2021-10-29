@@ -25,10 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * The persistence utility for the loop participant assignment service. This utility wraps <code>com.liferay.osb.loop.service.persistence.impl.LoopParticipantAssignmentPersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
  *
@@ -367,29 +363,9 @@ public class LoopParticipantAssignmentUtil {
 	}
 
 	public static LoopParticipantAssignmentPersistence getPersistence() {
-		return _serviceTracker.getService();
+		return _persistence;
 	}
 
-	private static ServiceTracker
-		<LoopParticipantAssignmentPersistence,
-		 LoopParticipantAssignmentPersistence> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LoopParticipantAssignmentPersistence.class);
-
-		ServiceTracker
-			<LoopParticipantAssignmentPersistence,
-			 LoopParticipantAssignmentPersistence> serviceTracker =
-				new ServiceTracker
-					<LoopParticipantAssignmentPersistence,
-					 LoopParticipantAssignmentPersistence>(
-						 bundle.getBundleContext(),
-						 LoopParticipantAssignmentPersistence.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LoopParticipantAssignmentPersistence _persistence;
 
 }

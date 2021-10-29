@@ -37,9 +37,11 @@ import com.liferay.watson.model.WatsonVehicle;
 import com.liferay.watson.model.impl.WatsonVehicleImpl;
 import com.liferay.watson.model.impl.WatsonVehicleModelImpl;
 import com.liferay.watson.service.persistence.WatsonVehiclePersistence;
+import com.liferay.watson.service.persistence.WatsonVehicleUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -796,14 +798,34 @@ public class WatsonVehiclePersistenceImpl
 			WatsonVehicleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setWatsonVehicleUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setWatsonVehicleUtilPersistence(null);
+
 		entityCache.removeCache(WatsonVehicleImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setWatsonVehicleUtilPersistence(
+		WatsonVehiclePersistence watsonVehiclePersistence) {
+
+		try {
+			Field field = WatsonVehicleUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonVehiclePersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

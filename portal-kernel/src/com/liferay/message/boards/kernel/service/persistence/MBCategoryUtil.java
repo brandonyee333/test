@@ -15,7 +15,6 @@
 package com.liferay.message.boards.kernel.service.persistence;
 
 import com.liferay.message.boards.kernel.model.MBCategory;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -3408,14 +3407,9 @@ public class MBCategoryUtil {
 	}
 
 	public static MBCategoryPersistence getPersistence() {
-		if (_persistence == null) {
-			_persistence = (MBCategoryPersistence)PortalBeanLocatorUtil.locate(
-				MBCategoryPersistence.class.getName());
-		}
-
 		return _persistence;
 	}
 
-	private static MBCategoryPersistence _persistence;
+	private static volatile MBCategoryPersistence _persistence;
 
 }

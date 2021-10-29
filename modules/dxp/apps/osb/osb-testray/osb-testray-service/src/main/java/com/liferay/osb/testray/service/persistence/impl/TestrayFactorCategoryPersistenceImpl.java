@@ -19,6 +19,7 @@ import com.liferay.osb.testray.model.TestrayFactorCategory;
 import com.liferay.osb.testray.model.impl.TestrayFactorCategoryImpl;
 import com.liferay.osb.testray.model.impl.TestrayFactorCategoryModelImpl;
 import com.liferay.osb.testray.service.persistence.TestrayFactorCategoryPersistence;
+import com.liferay.osb.testray.service.persistence.TestrayFactorCategoryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -41,6 +42,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1162,14 +1164,34 @@ public class TestrayFactorCategoryPersistenceImpl
 			TestrayFactorCategoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N",
 			new String[] {Long.class.getName(), String.class.getName()});
+
+		_setTestrayFactorCategoryUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setTestrayFactorCategoryUtilPersistence(null);
+
 		entityCache.removeCache(TestrayFactorCategoryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setTestrayFactorCategoryUtilPersistence(
+		TestrayFactorCategoryPersistence testrayFactorCategoryPersistence) {
+
+		try {
+			Field field = TestrayFactorCategoryUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, testrayFactorCategoryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

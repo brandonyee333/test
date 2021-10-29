@@ -17,6 +17,7 @@ package com.liferay.portlet.documentlibrary.service.persistence.impl;
 import com.liferay.document.library.kernel.exception.NoSuchFileRankException;
 import com.liferay.document.library.kernel.model.DLFileRank;
 import com.liferay.document.library.kernel.service.persistence.DLFileRankPersistence;
+import com.liferay.document.library.kernel.service.persistence.DLFileRankUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -3493,14 +3494,33 @@ public class DLFileRankPersistenceImpl
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			});
+
+		_setDLFileRankUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setDLFileRankUtilPersistence(null);
+
 		EntityCacheUtil.removeCache(DLFileRankImpl.class.getName());
 
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setDLFileRankUtilPersistence(
+		DLFileRankPersistence dlFileRankPersistence) {
+
+		try {
+			Field field = DLFileRankUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, dlFileRankPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	private static final String _SQL_SELECT_DLFILERANK =

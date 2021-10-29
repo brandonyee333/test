@@ -19,6 +19,7 @@ import com.liferay.osb.customer.admin.model.AuditEntry;
 import com.liferay.osb.customer.admin.model.impl.AuditEntryImpl;
 import com.liferay.osb.customer.admin.model.impl.AuditEntryModelImpl;
 import com.liferay.osb.customer.admin.service.persistence.AuditEntryPersistence;
+import com.liferay.osb.customer.admin.service.persistence.AuditEntryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -42,6 +43,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
@@ -3696,14 +3698,33 @@ public class AuditEntryPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName(), Integer.class.getName()
 			});
+
+		_setAuditEntryUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setAuditEntryUtilPersistence(null);
+
 		entityCache.removeCache(AuditEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setAuditEntryUtilPersistence(
+		AuditEntryPersistence auditEntryPersistence) {
+
+		try {
+			Field field = AuditEntryUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, auditEntryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

@@ -25,10 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * The persistence utility for the watson child service. This utility wraps <code>com.liferay.watson.service.persistence.impl.WatsonChildPersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
  *
@@ -271,25 +267,9 @@ public class WatsonChildUtil {
 	}
 
 	public static WatsonChildPersistence getPersistence() {
-		return _serviceTracker.getService();
+		return _persistence;
 	}
 
-	private static ServiceTracker
-		<WatsonChildPersistence, WatsonChildPersistence> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(WatsonChildPersistence.class);
-
-		ServiceTracker<WatsonChildPersistence, WatsonChildPersistence>
-			serviceTracker =
-				new ServiceTracker
-					<WatsonChildPersistence, WatsonChildPersistence>(
-						bundle.getBundleContext(), WatsonChildPersistence.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WatsonChildPersistence _persistence;
 
 }

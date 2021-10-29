@@ -19,6 +19,7 @@ import com.liferay.osb.testray.model.TestrayRun;
 import com.liferay.osb.testray.model.impl.TestrayRunImpl;
 import com.liferay.osb.testray.model.impl.TestrayRunModelImpl;
 import com.liferay.osb.testray.service.persistence.TestrayRunPersistence;
+import com.liferay.osb.testray.service.persistence.TestrayRunUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -1191,14 +1192,33 @@ public class TestrayRunPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName()
 			});
+
+		_setTestrayRunUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setTestrayRunUtilPersistence(null);
+
 		entityCache.removeCache(TestrayRunImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setTestrayRunUtilPersistence(
+		TestrayRunPersistence testrayRunPersistence) {
+
+		try {
+			Field field = TestrayRunUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, testrayRunPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

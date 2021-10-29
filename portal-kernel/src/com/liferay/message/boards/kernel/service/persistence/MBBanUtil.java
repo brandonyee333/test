@@ -15,7 +15,6 @@
 package com.liferay.message.boards.kernel.service.persistence;
 
 import com.liferay.message.boards.kernel.model.MBBan;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -1229,14 +1228,9 @@ public class MBBanUtil {
 	}
 
 	public static MBBanPersistence getPersistence() {
-		if (_persistence == null) {
-			_persistence = (MBBanPersistence)PortalBeanLocatorUtil.locate(
-				MBBanPersistence.class.getName());
-		}
-
 		return _persistence;
 	}
 
-	private static MBBanPersistence _persistence;
+	private static volatile MBBanPersistence _persistence;
 
 }

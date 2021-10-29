@@ -17,6 +17,7 @@ package com.liferay.portlet.messageboards.service.persistence.impl;
 import com.liferay.message.boards.kernel.exception.NoSuchThreadException;
 import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.message.boards.kernel.service.persistence.MBThreadPersistence;
+import com.liferay.message.boards.kernel.service.persistence.MBThreadUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -14549,14 +14550,33 @@ public class MBThreadPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			});
+
+		_setMBThreadUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setMBThreadUtilPersistence(null);
+
 		EntityCacheUtil.removeCache(MBThreadImpl.class.getName());
 
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setMBThreadUtilPersistence(
+		MBThreadPersistence mbThreadPersistence) {
+
+		try {
+			Field field = MBThreadUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, mbThreadPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	private static Long _getTime(Date date) {

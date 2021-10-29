@@ -19,6 +19,7 @@ import com.liferay.osb.customer.admin.model.AccountAttachment;
 import com.liferay.osb.customer.admin.model.impl.AccountAttachmentImpl;
 import com.liferay.osb.customer.admin.model.impl.AccountAttachmentModelImpl;
 import com.liferay.osb.customer.admin.service.persistence.AccountAttachmentPersistence;
+import com.liferay.osb.customer.admin.service.persistence.AccountAttachmentUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -3100,14 +3101,34 @@ public class AccountAttachmentPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName(), Integer.class.getName()
 			});
+
+		_setAccountAttachmentUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setAccountAttachmentUtilPersistence(null);
+
 		entityCache.removeCache(AccountAttachmentImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setAccountAttachmentUtilPersistence(
+		AccountAttachmentPersistence accountAttachmentPersistence) {
+
+		try {
+			Field field = AccountAttachmentUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, accountAttachmentPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

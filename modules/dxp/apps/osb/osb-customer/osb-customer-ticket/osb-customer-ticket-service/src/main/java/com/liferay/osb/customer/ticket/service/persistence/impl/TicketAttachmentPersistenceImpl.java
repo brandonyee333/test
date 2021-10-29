@@ -19,6 +19,7 @@ import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.model.impl.TicketAttachmentImpl;
 import com.liferay.osb.customer.ticket.model.impl.TicketAttachmentModelImpl;
 import com.liferay.osb.customer.ticket.service.persistence.TicketAttachmentPersistence;
+import com.liferay.osb.customer.ticket.service.persistence.TicketAttachmentUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -2868,14 +2869,34 @@ public class TicketAttachmentPersistenceImpl
 			TicketAttachmentModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByZTI_T",
 			new String[] {Long.class.getName(), Integer.class.getName()});
+
+		_setTicketAttachmentUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setTicketAttachmentUtilPersistence(null);
+
 		entityCache.removeCache(TicketAttachmentImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setTicketAttachmentUtilPersistence(
+		TicketAttachmentPersistence ticketAttachmentPersistence) {
+
+		try {
+			Field field = TicketAttachmentUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, ticketAttachmentPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

@@ -42,6 +42,7 @@ import com.liferay.shopping.model.ShoppingOrder;
 import com.liferay.shopping.model.impl.ShoppingOrderImpl;
 import com.liferay.shopping.model.impl.ShoppingOrderModelImpl;
 import com.liferay.shopping.service.persistence.ShoppingOrderPersistence;
+import com.liferay.shopping.service.persistence.ShoppingOrderUtil;
 
 import java.io.Serializable;
 
@@ -3499,14 +3500,34 @@ public class ShoppingOrderPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			});
+
+		_setShoppingOrderUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setShoppingOrderUtilPersistence(null);
+
 		entityCache.removeCache(ShoppingOrderImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setShoppingOrderUtilPersistence(
+		ShoppingOrderPersistence shoppingOrderPersistence) {
+
+		try {
+			Field field = ShoppingOrderUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, shoppingOrderPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

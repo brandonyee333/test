@@ -19,6 +19,7 @@ import com.liferay.osb.loop.model.LoopPersonRel;
 import com.liferay.osb.loop.model.impl.LoopPersonRelImpl;
 import com.liferay.osb.loop.model.impl.LoopPersonRelModelImpl;
 import com.liferay.osb.loop.service.persistence.LoopPersonRelPersistence;
+import com.liferay.osb.loop.service.persistence.LoopPersonRelUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -769,14 +770,34 @@ public class LoopPersonRelPersistenceImpl
 			LoopPersonRelModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setLoopPersonRelUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setLoopPersonRelUtilPersistence(null);
+
 		entityCache.removeCache(LoopPersonRelImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setLoopPersonRelUtilPersistence(
+		LoopPersonRelPersistence loopPersonRelPersistence) {
+
+		try {
+			Field field = LoopPersonRelUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, loopPersonRelPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

@@ -19,6 +19,7 @@ import com.liferay.osb.loop.model.LoopParticipantAssignment;
 import com.liferay.osb.loop.model.impl.LoopParticipantAssignmentImpl;
 import com.liferay.osb.loop.model.impl.LoopParticipantAssignmentModelImpl;
 import com.liferay.osb.loop.service.persistence.LoopParticipantAssignmentPersistence;
+import com.liferay.osb.loop.service.persistence.LoopParticipantAssignmentUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -1152,14 +1153,35 @@ public class LoopParticipantAssignmentPersistenceImpl
 			LoopParticipantAssignmentModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByLDI_LPI",
 			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_setLoopParticipantAssignmentUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setLoopParticipantAssignmentUtilPersistence(null);
+
 		entityCache.removeCache(LoopParticipantAssignmentImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setLoopParticipantAssignmentUtilPersistence(
+		LoopParticipantAssignmentPersistence
+			loopParticipantAssignmentPersistence) {
+
+		try {
+			Field field = LoopParticipantAssignmentUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, loopParticipantAssignmentPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

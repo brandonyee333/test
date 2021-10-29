@@ -19,6 +19,7 @@ import com.liferay.osb.loop.model.LoopDivisionRel;
 import com.liferay.osb.loop.model.impl.LoopDivisionRelImpl;
 import com.liferay.osb.loop.model.impl.LoopDivisionRelModelImpl;
 import com.liferay.osb.loop.service.persistence.LoopDivisionRelPersistence;
+import com.liferay.osb.loop.service.persistence.LoopDivisionRelUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -39,6 +40,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1736,14 +1738,34 @@ public class LoopDivisionRelPersistenceImpl
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			});
+
+		_setLoopDivisionRelUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setLoopDivisionRelUtilPersistence(null);
+
 		entityCache.removeCache(LoopDivisionRelImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setLoopDivisionRelUtilPersistence(
+		LoopDivisionRelPersistence loopDivisionRelPersistence) {
+
+		try {
+			Field field = LoopDivisionRelUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, loopDivisionRelPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

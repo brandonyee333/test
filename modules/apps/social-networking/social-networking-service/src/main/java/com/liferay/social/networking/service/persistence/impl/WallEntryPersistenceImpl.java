@@ -38,9 +38,11 @@ import com.liferay.social.networking.model.WallEntry;
 import com.liferay.social.networking.model.impl.WallEntryImpl;
 import com.liferay.social.networking.model.impl.WallEntryModelImpl;
 import com.liferay.social.networking.service.persistence.WallEntryPersistence;
+import com.liferay.social.networking.service.persistence.WallEntryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -2469,14 +2471,33 @@ public class WallEntryPersistenceImpl
 			WallEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_U",
 			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_setWallEntryUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setWallEntryUtilPersistence(null);
+
 		entityCache.removeCache(WallEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setWallEntryUtilPersistence(
+		WallEntryPersistence wallEntryPersistence) {
+
+		try {
+			Field field = WallEntryUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, wallEntryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

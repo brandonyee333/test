@@ -17,6 +17,7 @@ package com.liferay.portlet.blogs.service.persistence.impl;
 import com.liferay.blogs.kernel.exception.NoSuchEntryException;
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.service.persistence.BlogsEntryPersistence;
+import com.liferay.blogs.kernel.service.persistence.BlogsEntryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -22913,14 +22914,33 @@ public class BlogsEntryPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Date.class.getName(), Integer.class.getName()
 			});
+
+		_setBlogsEntryUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setBlogsEntryUtilPersistence(null);
+
 		EntityCacheUtil.removeCache(BlogsEntryImpl.class.getName());
 
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setBlogsEntryUtilPersistence(
+		BlogsEntryPersistence blogsEntryPersistence) {
+
+		try {
+			Field field = BlogsEntryUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, blogsEntryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	private static Long _getTime(Date date) {

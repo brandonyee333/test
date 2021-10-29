@@ -15,7 +15,6 @@
 package com.liferay.message.boards.kernel.service.persistence;
 
 import com.liferay.message.boards.kernel.model.MBStatsUser;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -880,14 +879,9 @@ public class MBStatsUserUtil {
 	}
 
 	public static MBStatsUserPersistence getPersistence() {
-		if (_persistence == null) {
-			_persistence = (MBStatsUserPersistence)PortalBeanLocatorUtil.locate(
-				MBStatsUserPersistence.class.getName());
-		}
-
 		return _persistence;
 	}
 
-	private static MBStatsUserPersistence _persistence;
+	private static volatile MBStatsUserPersistence _persistence;
 
 }

@@ -15,7 +15,6 @@
 package com.liferay.message.boards.kernel.service.persistence;
 
 import com.liferay.message.boards.kernel.model.MBThreadFlag;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -1098,15 +1097,9 @@ public class MBThreadFlagUtil {
 	}
 
 	public static MBThreadFlagPersistence getPersistence() {
-		if (_persistence == null) {
-			_persistence =
-				(MBThreadFlagPersistence)PortalBeanLocatorUtil.locate(
-					MBThreadFlagPersistence.class.getName());
-		}
-
 		return _persistence;
 	}
 
-	private static MBThreadFlagPersistence _persistence;
+	private static volatile MBThreadFlagPersistence _persistence;
 
 }

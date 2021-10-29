@@ -17,6 +17,7 @@ package com.liferay.portlet.messageboards.service.persistence.impl;
 import com.liferay.message.boards.kernel.exception.NoSuchBanException;
 import com.liferay.message.boards.kernel.model.MBBan;
 import com.liferay.message.boards.kernel.service.persistence.MBBanPersistence;
+import com.liferay.message.boards.kernel.service.persistence.MBBanUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -4250,14 +4251,31 @@ public class MBBanPersistenceImpl
 			MBBanModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_B",
 			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_setMBBanUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setMBBanUtilPersistence(null);
+
 		EntityCacheUtil.removeCache(MBBanImpl.class.getName());
 
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setMBBanUtilPersistence(MBBanPersistence mbBanPersistence) {
+		try {
+			Field field = MBBanUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, mbBanPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	private static final String _SQL_SELECT_MBBAN =

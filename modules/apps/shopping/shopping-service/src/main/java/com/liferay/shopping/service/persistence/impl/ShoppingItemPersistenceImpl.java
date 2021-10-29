@@ -42,6 +42,7 @@ import com.liferay.shopping.model.ShoppingItem;
 import com.liferay.shopping.model.impl.ShoppingItemImpl;
 import com.liferay.shopping.model.impl.ShoppingItemModelImpl;
 import com.liferay.shopping.service.persistence.ShoppingItemPersistence;
+import com.liferay.shopping.service.persistence.ShoppingItemUtil;
 
 import java.io.Serializable;
 
@@ -2935,14 +2936,34 @@ public class ShoppingItemPersistenceImpl
 			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_S",
 			new String[] {Long.class.getName(), String.class.getName()});
+
+		_setShoppingItemUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setShoppingItemUtilPersistence(null);
+
 		entityCache.removeCache(ShoppingItemImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setShoppingItemUtilPersistence(
+		ShoppingItemPersistence shoppingItemPersistence) {
+
+		try {
+			Field field = ShoppingItemUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, shoppingItemPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

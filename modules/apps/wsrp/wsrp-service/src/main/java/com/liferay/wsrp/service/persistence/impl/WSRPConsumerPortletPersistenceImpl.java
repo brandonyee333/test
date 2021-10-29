@@ -42,6 +42,7 @@ import com.liferay.wsrp.model.WSRPConsumerPortlet;
 import com.liferay.wsrp.model.impl.WSRPConsumerPortletImpl;
 import com.liferay.wsrp.model.impl.WSRPConsumerPortletModelImpl;
 import com.liferay.wsrp.service.persistence.WSRPConsumerPortletPersistence;
+import com.liferay.wsrp.service.persistence.WSRPConsumerPortletUtil;
 
 import java.io.Serializable;
 
@@ -3027,14 +3028,34 @@ public class WSRPConsumerPortletPersistenceImpl
 			WSRPConsumerPortletModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByW_P",
 			new String[] {Long.class.getName(), String.class.getName()});
+
+		_setWSRPConsumerPortletUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setWSRPConsumerPortletUtilPersistence(null);
+
 		entityCache.removeCache(WSRPConsumerPortletImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setWSRPConsumerPortletUtilPersistence(
+		WSRPConsumerPortletPersistence wsrpConsumerPortletPersistence) {
+
+		try {
+			Field field = WSRPConsumerPortletUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, wsrpConsumerPortletPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

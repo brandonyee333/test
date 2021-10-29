@@ -19,6 +19,7 @@ import com.liferay.osb.loop.model.LoopUserNotificationEvent;
 import com.liferay.osb.loop.model.impl.LoopUserNotificationEventImpl;
 import com.liferay.osb.loop.model.impl.LoopUserNotificationEventModelImpl;
 import com.liferay.osb.loop.service.persistence.LoopUserNotificationEventPersistence;
+import com.liferay.osb.loop.service.persistence.LoopUserNotificationEventUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -2703,14 +2704,35 @@ public class LoopUserNotificationEventPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			});
+
+		_setLoopUserNotificationEventUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setLoopUserNotificationEventUtilPersistence(null);
+
 		entityCache.removeCache(LoopUserNotificationEventImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setLoopUserNotificationEventUtilPersistence(
+		LoopUserNotificationEventPersistence
+			loopUserNotificationEventPersistence) {
+
+		try {
+			Field field = LoopUserNotificationEventUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, loopUserNotificationEventPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

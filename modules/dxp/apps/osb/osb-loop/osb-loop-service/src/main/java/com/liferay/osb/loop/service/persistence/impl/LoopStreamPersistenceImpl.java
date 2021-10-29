@@ -19,6 +19,7 @@ import com.liferay.osb.loop.model.LoopStream;
 import com.liferay.osb.loop.model.impl.LoopStreamImpl;
 import com.liferay.osb.loop.model.impl.LoopStreamModelImpl;
 import com.liferay.osb.loop.service.persistence.LoopStreamPersistence;
+import com.liferay.osb.loop.service.persistence.LoopStreamUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -35,6 +36,8 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -735,14 +738,33 @@ public class LoopStreamPersistenceImpl
 			LoopStreamModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setLoopStreamUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setLoopStreamUtilPersistence(null);
+
 		entityCache.removeCache(LoopStreamImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setLoopStreamUtilPersistence(
+		LoopStreamPersistence loopStreamPersistence) {
+
+		try {
+			Field field = LoopStreamUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, loopStreamPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

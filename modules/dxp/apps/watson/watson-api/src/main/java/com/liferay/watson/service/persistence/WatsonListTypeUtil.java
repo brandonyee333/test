@@ -25,10 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * The persistence utility for the watson list type service. This utility wraps <code>com.liferay.watson.service.persistence.impl.WatsonListTypePersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
  *
@@ -276,26 +272,9 @@ public class WatsonListTypeUtil {
 	}
 
 	public static WatsonListTypePersistence getPersistence() {
-		return _serviceTracker.getService();
+		return _persistence;
 	}
 
-	private static ServiceTracker
-		<WatsonListTypePersistence, WatsonListTypePersistence> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WatsonListTypePersistence.class);
-
-		ServiceTracker<WatsonListTypePersistence, WatsonListTypePersistence>
-			serviceTracker =
-				new ServiceTracker
-					<WatsonListTypePersistence, WatsonListTypePersistence>(
-						bundle.getBundleContext(),
-						WatsonListTypePersistence.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WatsonListTypePersistence _persistence;
 
 }

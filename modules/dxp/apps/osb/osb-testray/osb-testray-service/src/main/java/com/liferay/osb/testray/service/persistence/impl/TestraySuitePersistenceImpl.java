@@ -20,6 +20,7 @@ import com.liferay.osb.testray.model.impl.TestraySuiteImpl;
 import com.liferay.osb.testray.model.impl.TestraySuiteModelImpl;
 import com.liferay.osb.testray.service.persistence.TestrayCasePersistence;
 import com.liferay.osb.testray.service.persistence.TestraySuitePersistence;
+import com.liferay.osb.testray.service.persistence.TestraySuiteUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -47,6 +48,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1132,9 +1134,13 @@ public class TestraySuitePersistenceImpl
 			TestraySuiteModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setTestraySuiteUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setTestraySuiteUtilPersistence(null);
+
 		entityCache.removeCache(TestraySuiteImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
@@ -1142,6 +1148,22 @@ public class TestraySuitePersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		TableMapperFactory.removeTableMapper("OSB_TestraySuites_TestrayCases");
+	}
+
+	private void _setTestraySuiteUtilPersistence(
+		TestraySuitePersistence testraySuitePersistence) {
+
+		try {
+			Field field = TestraySuiteUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, testraySuitePersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

@@ -37,9 +37,11 @@ import com.liferay.watson.model.WatsonPerson;
 import com.liferay.watson.model.impl.WatsonPersonImpl;
 import com.liferay.watson.model.impl.WatsonPersonModelImpl;
 import com.liferay.watson.service.persistence.WatsonPersonPersistence;
+import com.liferay.watson.service.persistence.WatsonPersonUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -790,14 +792,34 @@ public class WatsonPersonPersistenceImpl
 			WatsonPersonModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setWatsonPersonUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setWatsonPersonUtilPersistence(null);
+
 		entityCache.removeCache(WatsonPersonImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setWatsonPersonUtilPersistence(
+		WatsonPersonPersistence watsonPersonPersistence) {
+
+		try {
+			Field field = WatsonPersonUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonPersonPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

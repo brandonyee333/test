@@ -19,6 +19,7 @@ import com.liferay.osb.email.blacklist.model.BounceEntry;
 import com.liferay.osb.email.blacklist.model.impl.BounceEntryImpl;
 import com.liferay.osb.email.blacklist.model.impl.BounceEntryModelImpl;
 import com.liferay.osb.email.blacklist.service.persistence.BounceEntryPersistence;
+import com.liferay.osb.email.blacklist.service.persistence.BounceEntryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -36,6 +37,8 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.sql.Timestamp;
 
@@ -1920,14 +1923,34 @@ public class BounceEntryPersistenceImpl
 			BounceEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByEA_GtBD",
 			new String[] {String.class.getName(), Date.class.getName()});
+
+		_setBounceEntryUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setBounceEntryUtilPersistence(null);
+
 		entityCache.removeCache(BounceEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setBounceEntryUtilPersistence(
+		BounceEntryPersistence bounceEntryPersistence) {
+
+		try {
+			Field field = BounceEntryUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, bounceEntryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

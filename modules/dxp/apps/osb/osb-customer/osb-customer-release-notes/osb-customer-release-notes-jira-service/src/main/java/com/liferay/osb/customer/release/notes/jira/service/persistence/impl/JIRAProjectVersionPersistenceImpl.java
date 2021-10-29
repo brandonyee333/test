@@ -19,6 +19,7 @@ import com.liferay.osb.customer.release.notes.jira.model.JIRAProjectVersion;
 import com.liferay.osb.customer.release.notes.jira.model.impl.JIRAProjectVersionImpl;
 import com.liferay.osb.customer.release.notes.jira.model.impl.JIRAProjectVersionModelImpl;
 import com.liferay.osb.customer.release.notes.jira.service.persistence.JIRAProjectVersionPersistence;
+import com.liferay.osb.customer.release.notes.jira.service.persistence.JIRAProjectVersionUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -787,14 +788,34 @@ public class JIRAProjectVersionPersistenceImpl
 			JIRAProjectVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setJIRAProjectVersionUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setJIRAProjectVersionUtilPersistence(null);
+
 		entityCache.removeCache(JIRAProjectVersionImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setJIRAProjectVersionUtilPersistence(
+		JIRAProjectVersionPersistence jiraProjectVersionPersistence) {
+
+		try {
+			Field field = JIRAProjectVersionUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, jiraProjectVersionPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

@@ -17,6 +17,7 @@ package com.liferay.portlet.messageboards.service.persistence.impl;
 import com.liferay.message.boards.kernel.exception.NoSuchThreadFlagException;
 import com.liferay.message.boards.kernel.model.MBThreadFlag;
 import com.liferay.message.boards.kernel.service.persistence.MBThreadFlagPersistence;
+import com.liferay.message.boards.kernel.service.persistence.MBThreadFlagUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -3750,14 +3751,34 @@ public class MBThreadFlagPersistenceImpl
 			MBThreadFlagModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_T",
 			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_setMBThreadFlagUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setMBThreadFlagUtilPersistence(null);
+
 		EntityCacheUtil.removeCache(MBThreadFlagImpl.class.getName());
 
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setMBThreadFlagUtilPersistence(
+		MBThreadFlagPersistence mbThreadFlagPersistence) {
+
+		try {
+			Field field = MBThreadFlagUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, mbThreadFlagPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	private static final String _SQL_SELECT_MBTHREADFLAG =

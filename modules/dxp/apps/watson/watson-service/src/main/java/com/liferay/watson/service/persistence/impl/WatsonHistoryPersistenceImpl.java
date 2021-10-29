@@ -38,6 +38,7 @@ import com.liferay.watson.model.WatsonHistory;
 import com.liferay.watson.model.impl.WatsonHistoryImpl;
 import com.liferay.watson.model.impl.WatsonHistoryModelImpl;
 import com.liferay.watson.service.persistence.WatsonHistoryPersistence;
+import com.liferay.watson.service.persistence.WatsonHistoryUtil;
 
 import java.io.Serializable;
 
@@ -821,14 +822,34 @@ public class WatsonHistoryPersistenceImpl
 			WatsonHistoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setWatsonHistoryUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setWatsonHistoryUtilPersistence(null);
+
 		entityCache.removeCache(WatsonHistoryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setWatsonHistoryUtilPersistence(
+		WatsonHistoryPersistence watsonHistoryPersistence) {
+
+		try {
+			Field field = WatsonHistoryUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonHistoryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

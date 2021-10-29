@@ -19,6 +19,7 @@ import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.model.impl.CollaboratorImpl;
 import com.liferay.osb.customer.github.model.impl.CollaboratorModelImpl;
 import com.liferay.osb.customer.github.service.persistence.CollaboratorPersistence;
+import com.liferay.osb.customer.github.service.persistence.CollaboratorUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -42,6 +43,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Arrays;
@@ -3808,14 +3810,34 @@ public class CollaboratorPersistenceImpl
 			CollaboratorModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByGHUN_S",
 			new String[] {String.class.getName(), Integer.class.getName()});
+
+		_setCollaboratorUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setCollaboratorUtilPersistence(null);
+
 		entityCache.removeCache(CollaboratorImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setCollaboratorUtilPersistence(
+		CollaboratorPersistence collaboratorPersistence) {
+
+		try {
+			Field field = CollaboratorUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, collaboratorPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

@@ -38,6 +38,7 @@ import com.liferay.watson.model.WatsonReport;
 import com.liferay.watson.model.impl.WatsonReportImpl;
 import com.liferay.watson.model.impl.WatsonReportModelImpl;
 import com.liferay.watson.service.persistence.WatsonReportPersistence;
+import com.liferay.watson.service.persistence.WatsonReportUtil;
 
 import java.io.Serializable;
 
@@ -815,14 +816,34 @@ public class WatsonReportPersistenceImpl
 			WatsonReportModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setWatsonReportUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setWatsonReportUtilPersistence(null);
+
 		entityCache.removeCache(WatsonReportImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setWatsonReportUtilPersistence(
+		WatsonReportPersistence watsonReportPersistence) {
+
+		try {
+			Field field = WatsonReportUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonReportPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

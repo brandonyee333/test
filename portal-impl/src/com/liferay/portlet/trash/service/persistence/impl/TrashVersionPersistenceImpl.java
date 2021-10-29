@@ -35,9 +35,11 @@ import com.liferay.portlet.trash.model.impl.TrashVersionModelImpl;
 import com.liferay.trash.kernel.exception.NoSuchVersionException;
 import com.liferay.trash.kernel.model.TrashVersion;
 import com.liferay.trash.kernel.service.persistence.TrashVersionPersistence;
+import com.liferay.trash.kernel.service.persistence.TrashVersionUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -2209,14 +2211,34 @@ public class TrashVersionPersistenceImpl
 			TrashVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_setTrashVersionUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setTrashVersionUtilPersistence(null);
+
 		EntityCacheUtil.removeCache(TrashVersionImpl.class.getName());
 
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setTrashVersionUtilPersistence(
+		TrashVersionPersistence trashVersionPersistence) {
+
+		try {
+			Field field = TrashVersionUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, trashVersionPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	private static final String _SQL_SELECT_TRASHVERSION =

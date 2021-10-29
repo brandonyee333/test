@@ -19,6 +19,7 @@ import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.impl.AccountEntryImpl;
 import com.liferay.osb.customer.admin.model.impl.AccountEntryModelImpl;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryPersistence;
+import com.liferay.osb.customer.admin.service.persistence.AccountEntryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -2694,14 +2695,34 @@ public class AccountEntryPersistenceImpl
 			AccountEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByN_C",
 			new String[] {String.class.getName(), String.class.getName()});
+
+		_setAccountEntryUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setAccountEntryUtilPersistence(null);
+
 		entityCache.removeCache(AccountEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setAccountEntryUtilPersistence(
+		AccountEntryPersistence accountEntryPersistence) {
+
+		try {
+			Field field = AccountEntryUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, accountEntryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

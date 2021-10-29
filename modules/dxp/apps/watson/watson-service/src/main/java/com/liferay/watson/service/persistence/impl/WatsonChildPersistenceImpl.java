@@ -37,9 +37,11 @@ import com.liferay.watson.model.WatsonChild;
 import com.liferay.watson.model.impl.WatsonChildImpl;
 import com.liferay.watson.model.impl.WatsonChildModelImpl;
 import com.liferay.watson.service.persistence.WatsonChildPersistence;
+import com.liferay.watson.service.persistence.WatsonChildUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -786,14 +788,34 @@ public class WatsonChildPersistenceImpl
 			WatsonChildModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setWatsonChildUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setWatsonChildUtilPersistence(null);
+
 		entityCache.removeCache(WatsonChildImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setWatsonChildUtilPersistence(
+		WatsonChildPersistence watsonChildPersistence) {
+
+		try {
+			Field field = WatsonChildUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonChildPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

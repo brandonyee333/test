@@ -17,6 +17,7 @@ package com.liferay.portlet.documentlibrary.service.persistence.impl;
 import com.liferay.document.library.kernel.exception.NoSuchContentException;
 import com.liferay.document.library.kernel.model.DLContent;
 import com.liferay.document.library.kernel.service.persistence.DLContentPersistence;
+import com.liferay.document.library.kernel.service.persistence.DLContentUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -3142,14 +3143,33 @@ public class DLContentPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName(), String.class.getName()
 			});
+
+		_setDLContentUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setDLContentUtilPersistence(null);
+
 		EntityCacheUtil.removeCache(DLContentImpl.class.getName());
 
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setDLContentUtilPersistence(
+		DLContentPersistence dlContentPersistence) {
+
+		try {
+			Field field = DLContentUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, dlContentPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	private static final String _SQL_SELECT_DLCONTENT =

@@ -19,6 +19,7 @@ import com.liferay.osb.testray.model.TestrayProject;
 import com.liferay.osb.testray.model.impl.TestrayProjectImpl;
 import com.liferay.osb.testray.model.impl.TestrayProjectModelImpl;
 import com.liferay.osb.testray.service.persistence.TestrayProjectPersistence;
+import com.liferay.osb.testray.service.persistence.TestrayProjectUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -41,6 +42,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1126,14 +1128,34 @@ public class TestrayProjectPersistenceImpl
 			TestrayProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGI_N",
 			new String[] {Long.class.getName(), String.class.getName()});
+
+		_setTestrayProjectUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setTestrayProjectUtilPersistence(null);
+
 		entityCache.removeCache(TestrayProjectImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setTestrayProjectUtilPersistence(
+		TestrayProjectPersistence testrayProjectPersistence) {
+
+		try {
+			Field field = TestrayProjectUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, testrayProjectPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

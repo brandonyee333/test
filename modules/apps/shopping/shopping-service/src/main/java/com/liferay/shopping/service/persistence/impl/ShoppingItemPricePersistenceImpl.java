@@ -36,9 +36,11 @@ import com.liferay.shopping.model.ShoppingItemPrice;
 import com.liferay.shopping.model.impl.ShoppingItemPriceImpl;
 import com.liferay.shopping.model.impl.ShoppingItemPriceModelImpl;
 import com.liferay.shopping.service.persistence.ShoppingItemPricePersistence;
+import com.liferay.shopping.service.persistence.ShoppingItemPriceUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1335,14 +1337,34 @@ public class ShoppingItemPricePersistenceImpl
 			ShoppingItemPriceModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByItemId",
 			new String[] {Long.class.getName()});
+
+		_setShoppingItemPriceUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setShoppingItemPriceUtilPersistence(null);
+
 		entityCache.removeCache(ShoppingItemPriceImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setShoppingItemPriceUtilPersistence(
+		ShoppingItemPricePersistence shoppingItemPricePersistence) {
+
+		try {
+			Field field = ShoppingItemPriceUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, shoppingItemPricePersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

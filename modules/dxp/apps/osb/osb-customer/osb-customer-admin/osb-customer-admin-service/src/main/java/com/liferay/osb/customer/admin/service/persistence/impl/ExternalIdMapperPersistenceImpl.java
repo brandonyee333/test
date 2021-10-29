@@ -19,6 +19,7 @@ import com.liferay.osb.customer.admin.model.ExternalIdMapper;
 import com.liferay.osb.customer.admin.model.impl.ExternalIdMapperImpl;
 import com.liferay.osb.customer.admin.model.impl.ExternalIdMapperModelImpl;
 import com.liferay.osb.customer.admin.service.persistence.ExternalIdMapperPersistence;
+import com.liferay.osb.customer.admin.service.persistence.ExternalIdMapperUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -2781,14 +2782,34 @@ public class ExternalIdMapperPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				String.class.getName()
 			});
+
+		_setExternalIdMapperUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setExternalIdMapperUtilPersistence(null);
+
 		entityCache.removeCache(ExternalIdMapperImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setExternalIdMapperUtilPersistence(
+		ExternalIdMapperPersistence externalIdMapperPersistence) {
+
+		try {
+			Field field = ExternalIdMapperUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, externalIdMapperPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

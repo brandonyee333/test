@@ -19,6 +19,7 @@ import com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet;
 import com.liferay.osb.loop.asset.entry.set.model.impl.AssetEntrySetImpl;
 import com.liferay.osb.loop.asset.entry.set.model.impl.AssetEntrySetModelImpl;
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetPersistence;
+import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -7565,14 +7566,34 @@ public class AssetEntrySetPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			});
+
+		_setAssetEntrySetUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setAssetEntrySetUtilPersistence(null);
+
 		entityCache.removeCache(AssetEntrySetImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setAssetEntrySetUtilPersistence(
+		AssetEntrySetPersistence assetEntrySetPersistence) {
+
+		try {
+			Field field = AssetEntrySetUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, assetEntrySetPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

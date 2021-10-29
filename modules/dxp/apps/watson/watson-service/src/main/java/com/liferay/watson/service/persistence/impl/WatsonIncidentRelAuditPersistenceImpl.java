@@ -38,6 +38,7 @@ import com.liferay.watson.model.WatsonIncidentRelAudit;
 import com.liferay.watson.model.impl.WatsonIncidentRelAuditImpl;
 import com.liferay.watson.model.impl.WatsonIncidentRelAuditModelImpl;
 import com.liferay.watson.service.persistence.WatsonIncidentRelAuditPersistence;
+import com.liferay.watson.service.persistence.WatsonIncidentRelAuditUtil;
 
 import java.io.Serializable;
 
@@ -857,14 +858,34 @@ public class WatsonIncidentRelAuditPersistenceImpl
 			WatsonIncidentRelAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setWatsonIncidentRelAuditUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setWatsonIncidentRelAuditUtilPersistence(null);
+
 		entityCache.removeCache(WatsonIncidentRelAuditImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setWatsonIncidentRelAuditUtilPersistence(
+		WatsonIncidentRelAuditPersistence watsonIncidentRelAuditPersistence) {
+
+		try {
+			Field field = WatsonIncidentRelAuditUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonIncidentRelAuditPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

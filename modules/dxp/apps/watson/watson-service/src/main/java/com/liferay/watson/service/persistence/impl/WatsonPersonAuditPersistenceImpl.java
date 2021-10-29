@@ -37,9 +37,11 @@ import com.liferay.watson.model.WatsonPersonAudit;
 import com.liferay.watson.model.impl.WatsonPersonAuditImpl;
 import com.liferay.watson.model.impl.WatsonPersonAuditModelImpl;
 import com.liferay.watson.service.persistence.WatsonPersonAuditPersistence;
+import com.liferay.watson.service.persistence.WatsonPersonAuditUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -807,14 +809,34 @@ public class WatsonPersonAuditPersistenceImpl
 			WatsonPersonAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setWatsonPersonAuditUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setWatsonPersonAuditUtilPersistence(null);
+
 		entityCache.removeCache(WatsonPersonAuditImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setWatsonPersonAuditUtilPersistence(
+		WatsonPersonAuditPersistence watsonPersonAuditPersistence) {
+
+		try {
+			Field field = WatsonPersonAuditUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonPersonAuditPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

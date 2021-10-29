@@ -19,6 +19,7 @@ import com.liferay.osb.customer.admin.model.LicenseEntry;
 import com.liferay.osb.customer.admin.model.impl.LicenseEntryImpl;
 import com.liferay.osb.customer.admin.model.impl.LicenseEntryModelImpl;
 import com.liferay.osb.customer.admin.service.persistence.LicenseEntryPersistence;
+import com.liferay.osb.customer.admin.service.persistence.LicenseEntryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -2252,14 +2253,34 @@ public class LicenseEntryPersistenceImpl
 			LicenseEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByPEI_V",
 			new String[] {Long.class.getName(), Integer.class.getName()});
+
+		_setLicenseEntryUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setLicenseEntryUtilPersistence(null);
+
 		entityCache.removeCache(LicenseEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setLicenseEntryUtilPersistence(
+		LicenseEntryPersistence licenseEntryPersistence) {
+
+		try {
+			Field field = LicenseEntryUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, licenseEntryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

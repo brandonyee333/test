@@ -38,6 +38,7 @@ import com.liferay.watson.model.WatsonIncidentRel;
 import com.liferay.watson.model.impl.WatsonIncidentRelImpl;
 import com.liferay.watson.model.impl.WatsonIncidentRelModelImpl;
 import com.liferay.watson.service.persistence.WatsonIncidentRelPersistence;
+import com.liferay.watson.service.persistence.WatsonIncidentRelUtil;
 
 import java.io.Serializable;
 
@@ -832,14 +833,34 @@ public class WatsonIncidentRelPersistenceImpl
 			WatsonIncidentRelModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setWatsonIncidentRelUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setWatsonIncidentRelUtilPersistence(null);
+
 		entityCache.removeCache(WatsonIncidentRelImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setWatsonIncidentRelUtilPersistence(
+		WatsonIncidentRelPersistence watsonIncidentRelPersistence) {
+
+		try {
+			Field field = WatsonIncidentRelUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonIncidentRelPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

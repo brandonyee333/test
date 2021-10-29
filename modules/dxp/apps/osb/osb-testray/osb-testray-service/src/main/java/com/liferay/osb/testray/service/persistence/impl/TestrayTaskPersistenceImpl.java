@@ -20,6 +20,7 @@ import com.liferay.osb.testray.model.impl.TestrayTaskImpl;
 import com.liferay.osb.testray.model.impl.TestrayTaskModelImpl;
 import com.liferay.osb.testray.service.persistence.TestrayCaseTypePersistence;
 import com.liferay.osb.testray.service.persistence.TestrayTaskPersistence;
+import com.liferay.osb.testray.service.persistence.TestrayTaskUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -47,6 +48,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1139,9 +1141,13 @@ public class TestrayTaskPersistenceImpl
 			TestrayTaskModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setTestrayTaskUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setTestrayTaskUtilPersistence(null);
+
 		entityCache.removeCache(TestrayTaskImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
@@ -1150,6 +1156,22 @@ public class TestrayTaskPersistenceImpl
 
 		TableMapperFactory.removeTableMapper(
 			"OSB_TestrayTasks_TestrayCaseTypes");
+	}
+
+	private void _setTestrayTaskUtilPersistence(
+		TestrayTaskPersistence testrayTaskPersistence) {
+
+		try {
+			Field field = TestrayTaskUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, testrayTaskPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

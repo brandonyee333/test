@@ -19,6 +19,7 @@ import com.liferay.osb.email.blacklist.model.BlacklistEntry;
 import com.liferay.osb.email.blacklist.model.impl.BlacklistEntryImpl;
 import com.liferay.osb.email.blacklist.model.impl.BlacklistEntryModelImpl;
 import com.liferay.osb.email.blacklist.service.persistence.BlacklistEntryPersistence;
+import com.liferay.osb.email.blacklist.service.persistence.BlacklistEntryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -41,6 +42,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1105,14 +1107,34 @@ public class BlacklistEntryPersistenceImpl
 			BlacklistEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByEmailAddress",
 			new String[] {String.class.getName()});
+
+		_setBlacklistEntryUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setBlacklistEntryUtilPersistence(null);
+
 		entityCache.removeCache(BlacklistEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setBlacklistEntryUtilPersistence(
+		BlacklistEntryPersistence blacklistEntryPersistence) {
+
+		try {
+			Field field = BlacklistEntryUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, blacklistEntryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

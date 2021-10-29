@@ -19,6 +19,7 @@ import com.liferay.osb.testray.model.TestrayFactorOption;
 import com.liferay.osb.testray.model.impl.TestrayFactorOptionImpl;
 import com.liferay.osb.testray.model.impl.TestrayFactorOptionModelImpl;
 import com.liferay.osb.testray.service.persistence.TestrayFactorOptionPersistence;
+import com.liferay.osb.testray.service.persistence.TestrayFactorOptionUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -41,6 +42,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1155,14 +1157,34 @@ public class TestrayFactorOptionPersistenceImpl
 			TestrayFactorOptionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_N",
 			new String[] {Long.class.getName(), String.class.getName()});
+
+		_setTestrayFactorOptionUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setTestrayFactorOptionUtilPersistence(null);
+
 		entityCache.removeCache(TestrayFactorOptionImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setTestrayFactorOptionUtilPersistence(
+		TestrayFactorOptionPersistence testrayFactorOptionPersistence) {
+
+		try {
+			Field field = TestrayFactorOptionUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, testrayFactorOptionPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

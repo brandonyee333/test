@@ -19,6 +19,7 @@ import com.liferay.osb.customer.admin.model.ProjectSolution;
 import com.liferay.osb.customer.admin.model.impl.ProjectSolutionImpl;
 import com.liferay.osb.customer.admin.model.impl.ProjectSolutionModelImpl;
 import com.liferay.osb.customer.admin.service.persistence.ProjectSolutionPersistence;
+import com.liferay.osb.customer.admin.service.persistence.ProjectSolutionUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -36,6 +37,8 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -755,14 +758,34 @@ public class ProjectSolutionPersistenceImpl
 			ProjectSolutionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setProjectSolutionUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setProjectSolutionUtilPersistence(null);
+
 		entityCache.removeCache(ProjectSolutionImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setProjectSolutionUtilPersistence(
+		ProjectSolutionPersistence projectSolutionPersistence) {
+
+		try {
+			Field field = ProjectSolutionUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, projectSolutionPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

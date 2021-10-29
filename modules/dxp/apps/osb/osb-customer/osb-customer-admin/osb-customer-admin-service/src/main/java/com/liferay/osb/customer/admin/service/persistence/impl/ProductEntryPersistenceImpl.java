@@ -19,6 +19,7 @@ import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.model.impl.ProductEntryImpl;
 import com.liferay.osb.customer.admin.model.impl.ProductEntryModelImpl;
 import com.liferay.osb.customer.admin.service.persistence.ProductEntryPersistence;
+import com.liferay.osb.customer.admin.service.persistence.ProductEntryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -40,6 +41,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -2481,14 +2483,34 @@ public class ProductEntryPersistenceImpl
 			ProductEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByLicenses",
 			new String[] {Boolean.class.getName()});
+
+		_setProductEntryUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setProductEntryUtilPersistence(null);
+
 		entityCache.removeCache(ProductEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setProductEntryUtilPersistence(
+		ProductEntryPersistence productEntryPersistence) {
+
+		try {
+			Field field = ProductEntryUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, productEntryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

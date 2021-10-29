@@ -40,6 +40,7 @@ import com.liferay.watson.login.model.WatsonTokenAuthEntry;
 import com.liferay.watson.login.model.impl.WatsonTokenAuthEntryImpl;
 import com.liferay.watson.login.model.impl.WatsonTokenAuthEntryModelImpl;
 import com.liferay.watson.login.service.persistence.WatsonTokenAuthEntryPersistence;
+import com.liferay.watson.login.service.persistence.WatsonTokenAuthEntryUtil;
 
 import java.io.Serializable;
 
@@ -1734,14 +1735,34 @@ public class WatsonTokenAuthEntryPersistenceImpl
 			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_U",
 			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_setWatsonTokenAuthEntryUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setWatsonTokenAuthEntryUtilPersistence(null);
+
 		entityCache.removeCache(WatsonTokenAuthEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setWatsonTokenAuthEntryUtilPersistence(
+		WatsonTokenAuthEntryPersistence watsonTokenAuthEntryPersistence) {
+
+		try {
+			Field field = WatsonTokenAuthEntryUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonTokenAuthEntryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

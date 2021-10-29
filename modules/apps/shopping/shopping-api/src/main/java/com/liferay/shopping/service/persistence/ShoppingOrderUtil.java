@@ -25,10 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * The persistence utility for the shopping order service. This utility wraps <code>com.liferay.shopping.service.persistence.impl.ShoppingOrderPersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
  *
@@ -934,25 +930,9 @@ public class ShoppingOrderUtil {
 	}
 
 	public static ShoppingOrderPersistence getPersistence() {
-		return _serviceTracker.getService();
+		return _persistence;
 	}
 
-	private static ServiceTracker
-		<ShoppingOrderPersistence, ShoppingOrderPersistence> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ShoppingOrderPersistence.class);
-
-		ServiceTracker<ShoppingOrderPersistence, ShoppingOrderPersistence>
-			serviceTracker =
-				new ServiceTracker
-					<ShoppingOrderPersistence, ShoppingOrderPersistence>(
-						bundle.getBundleContext(),
-						ShoppingOrderPersistence.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ShoppingOrderPersistence _persistence;
 
 }

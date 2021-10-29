@@ -19,6 +19,7 @@ import com.liferay.osb.customer.admin.model.AccountEnvironment;
 import com.liferay.osb.customer.admin.model.impl.AccountEnvironmentImpl;
 import com.liferay.osb.customer.admin.model.impl.AccountEnvironmentModelImpl;
 import com.liferay.osb.customer.admin.service.persistence.AccountEnvironmentPersistence;
+import com.liferay.osb.customer.admin.service.persistence.AccountEnvironmentUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -41,6 +42,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -2390,14 +2392,34 @@ public class AccountEnvironmentPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			});
+
+		_setAccountEnvironmentUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setAccountEnvironmentUtilPersistence(null);
+
 		entityCache.removeCache(AccountEnvironmentImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setAccountEnvironmentUtilPersistence(
+		AccountEnvironmentPersistence accountEnvironmentPersistence) {
+
+		try {
+			Field field = AccountEnvironmentUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, accountEnvironmentPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

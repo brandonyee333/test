@@ -19,6 +19,7 @@ import com.liferay.osb.customer.release.notes.model.ReleaseNotes;
 import com.liferay.osb.customer.release.notes.model.impl.ReleaseNotesImpl;
 import com.liferay.osb.customer.release.notes.model.impl.ReleaseNotesModelImpl;
 import com.liferay.osb.customer.release.notes.service.persistence.ReleaseNotesPersistence;
+import com.liferay.osb.customer.release.notes.service.persistence.ReleaseNotesUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -2557,14 +2558,34 @@ public class ReleaseNotesPersistenceImpl
 			ReleaseNotesModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByJIRAIssueKeys",
 			new String[] {String.class.getName()});
+
+		_setReleaseNotesUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setReleaseNotesUtilPersistence(null);
+
 		entityCache.removeCache(ReleaseNotesImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setReleaseNotesUtilPersistence(
+		ReleaseNotesPersistence releaseNotesPersistence) {
+
+		try {
+			Field field = ReleaseNotesUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, releaseNotesPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

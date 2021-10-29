@@ -15,7 +15,6 @@
 package com.liferay.blogs.kernel.service.persistence;
 
 import com.liferay.blogs.kernel.model.BlogsEntry;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -6568,14 +6567,9 @@ public class BlogsEntryUtil {
 	}
 
 	public static BlogsEntryPersistence getPersistence() {
-		if (_persistence == null) {
-			_persistence = (BlogsEntryPersistence)PortalBeanLocatorUtil.locate(
-				BlogsEntryPersistence.class.getName());
-		}
-
 		return _persistence;
 	}
 
-	private static BlogsEntryPersistence _persistence;
+	private static volatile BlogsEntryPersistence _persistence;
 
 }

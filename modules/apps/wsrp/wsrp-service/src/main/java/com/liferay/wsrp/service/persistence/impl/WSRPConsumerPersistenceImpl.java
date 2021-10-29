@@ -41,6 +41,7 @@ import com.liferay.wsrp.model.WSRPConsumer;
 import com.liferay.wsrp.model.impl.WSRPConsumerImpl;
 import com.liferay.wsrp.model.impl.WSRPConsumerModelImpl;
 import com.liferay.wsrp.service.persistence.WSRPConsumerPersistence;
+import com.liferay.wsrp.service.persistence.WSRPConsumerUtil;
 
 import java.io.Serializable;
 
@@ -2608,14 +2609,34 @@ public class WSRPConsumerPersistenceImpl
 			WSRPConsumerModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()});
+
+		_setWSRPConsumerUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setWSRPConsumerUtilPersistence(null);
+
 		entityCache.removeCache(WSRPConsumerImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setWSRPConsumerUtilPersistence(
+		WSRPConsumerPersistence wsrpConsumerPersistence) {
+
+		try {
+			Field field = WSRPConsumerUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, wsrpConsumerPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

@@ -20,6 +20,7 @@ import com.liferay.osb.testray.model.impl.TestrayComponentImpl;
 import com.liferay.osb.testray.model.impl.TestrayComponentModelImpl;
 import com.liferay.osb.testray.service.persistence.TestrayCasePersistence;
 import com.liferay.osb.testray.service.persistence.TestrayComponentPersistence;
+import com.liferay.osb.testray.service.persistence.TestrayComponentUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -48,6 +49,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1479,9 +1481,13 @@ public class TestrayComponentPersistenceImpl
 			TestrayComponentModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByTPI_N",
 			new String[] {Long.class.getName(), String.class.getName()});
+
+		_setTestrayComponentUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setTestrayComponentUtilPersistence(null);
+
 		entityCache.removeCache(TestrayComponentImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
@@ -1490,6 +1496,22 @@ public class TestrayComponentPersistenceImpl
 
 		TableMapperFactory.removeTableMapper(
 			"OSB_TestrayCases_TestrayComponents");
+	}
+
+	private void _setTestrayComponentUtilPersistence(
+		TestrayComponentPersistence testrayComponentPersistence) {
+
+		try {
+			Field field = TestrayComponentUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, testrayComponentPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

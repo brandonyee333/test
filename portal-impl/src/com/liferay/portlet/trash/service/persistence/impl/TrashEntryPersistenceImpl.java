@@ -37,9 +37,11 @@ import com.liferay.portlet.trash.model.impl.TrashEntryModelImpl;
 import com.liferay.trash.kernel.exception.NoSuchEntryException;
 import com.liferay.trash.kernel.model.TrashEntry;
 import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
+import com.liferay.trash.kernel.service.persistence.TrashEntryUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
@@ -3360,14 +3362,33 @@ public class TrashEntryPersistenceImpl
 			TrashEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_setTrashEntryUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setTrashEntryUtilPersistence(null);
+
 		EntityCacheUtil.removeCache(TrashEntryImpl.class.getName());
 
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setTrashEntryUtilPersistence(
+		TrashEntryPersistence trashEntryPersistence) {
+
+		try {
+			Field field = TrashEntryUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, trashEntryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	private static Long _getTime(Date date) {

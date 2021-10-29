@@ -19,6 +19,7 @@ import com.liferay.osb.loop.model.LoopAuditEntry;
 import com.liferay.osb.loop.model.impl.LoopAuditEntryImpl;
 import com.liferay.osb.loop.model.impl.LoopAuditEntryModelImpl;
 import com.liferay.osb.loop.service.persistence.LoopAuditEntryPersistence;
+import com.liferay.osb.loop.service.persistence.LoopAuditEntryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -40,6 +41,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -799,14 +801,34 @@ public class LoopAuditEntryPersistenceImpl
 			LoopAuditEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setLoopAuditEntryUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setLoopAuditEntryUtilPersistence(null);
+
 		entityCache.removeCache(LoopAuditEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setLoopAuditEntryUtilPersistence(
+		LoopAuditEntryPersistence loopAuditEntryPersistence) {
+
+		try {
+			Field field = LoopAuditEntryUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, loopAuditEntryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

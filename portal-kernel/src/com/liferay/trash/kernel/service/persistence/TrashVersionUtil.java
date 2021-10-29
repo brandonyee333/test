@@ -14,7 +14,6 @@
 
 package com.liferay.trash.kernel.service.persistence;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -683,15 +682,9 @@ public class TrashVersionUtil {
 	}
 
 	public static TrashVersionPersistence getPersistence() {
-		if (_persistence == null) {
-			_persistence =
-				(TrashVersionPersistence)PortalBeanLocatorUtil.locate(
-					TrashVersionPersistence.class.getName());
-		}
-
 		return _persistence;
 	}
 
-	private static TrashVersionPersistence _persistence;
+	private static volatile TrashVersionPersistence _persistence;
 
 }

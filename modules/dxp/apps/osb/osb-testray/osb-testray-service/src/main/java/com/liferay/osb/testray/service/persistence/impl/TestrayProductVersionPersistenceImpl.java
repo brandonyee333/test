@@ -19,6 +19,7 @@ import com.liferay.osb.testray.model.TestrayProductVersion;
 import com.liferay.osb.testray.model.impl.TestrayProductVersionImpl;
 import com.liferay.osb.testray.model.impl.TestrayProductVersionModelImpl;
 import com.liferay.osb.testray.service.persistence.TestrayProductVersionPersistence;
+import com.liferay.osb.testray.service.persistence.TestrayProductVersionUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -41,6 +42,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1165,14 +1167,34 @@ public class TestrayProductVersionPersistenceImpl
 			TestrayProductVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_N",
 			new String[] {Long.class.getName(), String.class.getName()});
+
+		_setTestrayProductVersionUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setTestrayProductVersionUtilPersistence(null);
+
 		entityCache.removeCache(TestrayProductVersionImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setTestrayProductVersionUtilPersistence(
+		TestrayProductVersionPersistence testrayProductVersionPersistence) {
+
+		try {
+			Field field = TestrayProductVersionUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, testrayProductVersionPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

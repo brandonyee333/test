@@ -38,6 +38,7 @@ import com.liferay.watson.model.WatsonAddressAudit;
 import com.liferay.watson.model.impl.WatsonAddressAuditImpl;
 import com.liferay.watson.model.impl.WatsonAddressAuditModelImpl;
 import com.liferay.watson.service.persistence.WatsonAddressAuditPersistence;
+import com.liferay.watson.service.persistence.WatsonAddressAuditUtil;
 
 import java.io.Serializable;
 
@@ -838,14 +839,34 @@ public class WatsonAddressAuditPersistenceImpl
 			WatsonAddressAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setWatsonAddressAuditUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setWatsonAddressAuditUtilPersistence(null);
+
 		entityCache.removeCache(WatsonAddressAuditImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setWatsonAddressAuditUtilPersistence(
+		WatsonAddressAuditPersistence watsonAddressAuditPersistence) {
+
+		try {
+			Field field = WatsonAddressAuditUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonAddressAuditPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

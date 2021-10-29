@@ -19,6 +19,7 @@ import com.liferay.osb.customer.admin.model.AccountEnvironmentAttachment;
 import com.liferay.osb.customer.admin.model.impl.AccountEnvironmentAttachmentImpl;
 import com.liferay.osb.customer.admin.model.impl.AccountEnvironmentAttachmentModelImpl;
 import com.liferay.osb.customer.admin.service.persistence.AccountEnvironmentAttachmentPersistence;
+import com.liferay.osb.customer.admin.service.persistence.AccountEnvironmentAttachmentUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -2159,15 +2160,37 @@ public class AccountEnvironmentAttachmentPersistenceImpl
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByAEI_T",
 			new String[] {Long.class.getName(), Integer.class.getName()});
+
+		_setAccountEnvironmentAttachmentUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setAccountEnvironmentAttachmentUtilPersistence(null);
+
 		entityCache.removeCache(
 			AccountEnvironmentAttachmentImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setAccountEnvironmentAttachmentUtilPersistence(
+		AccountEnvironmentAttachmentPersistence
+			accountEnvironmentAttachmentPersistence) {
+
+		try {
+			Field field =
+				AccountEnvironmentAttachmentUtil.class.getDeclaredField(
+					"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, accountEnvironmentAttachmentPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

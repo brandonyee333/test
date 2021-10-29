@@ -39,6 +39,7 @@ import com.liferay.shopping.model.ShoppingCoupon;
 import com.liferay.shopping.model.impl.ShoppingCouponImpl;
 import com.liferay.shopping.model.impl.ShoppingCouponModelImpl;
 import com.liferay.shopping.service.persistence.ShoppingCouponPersistence;
+import com.liferay.shopping.service.persistence.ShoppingCouponUtil;
 
 import java.io.Serializable;
 
@@ -1665,14 +1666,34 @@ public class ShoppingCouponPersistenceImpl
 			ShoppingCouponModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCode",
 			new String[] {String.class.getName()});
+
+		_setShoppingCouponUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setShoppingCouponUtilPersistence(null);
+
 		entityCache.removeCache(ShoppingCouponImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setShoppingCouponUtilPersistence(
+		ShoppingCouponPersistence shoppingCouponPersistence) {
+
+		try {
+			Field field = ShoppingCouponUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, shoppingCouponPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@ServiceReference(type = EntityCache.class)
