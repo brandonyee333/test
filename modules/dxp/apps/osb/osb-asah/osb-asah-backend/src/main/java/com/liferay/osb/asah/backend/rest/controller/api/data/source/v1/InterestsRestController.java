@@ -18,7 +18,6 @@ import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.InterestTopicDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.entity.InterestTopic;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -81,11 +80,11 @@ public class InterestsRestController extends BaseRestController {
 				"There is no individual with user ID " + userId);
 		}
 
-		List<String> userInterestTerms = _getUserInterestTerms(
-			termsPerTopic, topicsLength, individual.getLong("id"));
-
 		List<Integer> topics = _getTopics(
-			userInterestTerms, termWeightThreshold);
+			interestDog.getTopNames(
+				individual.getLong("id"), "individual",
+				topicsLength * termsPerTopic * 10),
+			termWeightThreshold);
 
 		if (topics.isEmpty()) {
 			return toCollectionGetResponse("interest-topics", new JSONArray());
