@@ -91,6 +91,7 @@ const renderFragment = ({
 				>
 					<EditableProcessorContextProvider>
 						<AutoSelect />
+
 						<FragmentWithControls
 							item={fragment}
 							layoutData={layoutData}

@@ -50,7 +50,7 @@ import {createFormURL} from '../util/form.es';
 import {submitEmailContent} from '../util/submitEmailContent.es';
 import ErrorList from './ErrorList';
 
-export const FormBuilder = () => {
+export function FormBuilder() {
 	const {
 		autocompleteUserURL,
 		portletNamespace,
@@ -89,7 +89,7 @@ export const FormBuilder = () => {
 
 	const dispatch = useForm();
 
-	const emailContent = useRef({
+	const emailContentRef = useRef({
 		addresses: [],
 		message: Liferay.Util.sub(
 			Liferay.Language.get('please-fill-out-this-form-x'),
@@ -326,7 +326,7 @@ export const FormBuilder = () => {
 					body: (
 						<ShareFormModalBody
 							autocompleteUserURL={autocompleteUserURL}
-							emailContent={emailContent}
+							emailContent={emailContentRef}
 							localizedName={localizedName}
 							url={url}
 						/>
@@ -341,11 +341,12 @@ export const FormBuilder = () => {
 							>
 								{Liferay.Language.get('cancel')}
 							</ClayButton>
+
 							<ClayButton
 								displayType="primary"
 								onClick={() => {
 									submitEmailContent({
-										...emailContent.current,
+										...emailContentRef.current,
 										portletNamespace,
 										shareFormInstanceURL,
 									});
@@ -411,6 +412,7 @@ export const FormBuilder = () => {
 							)}
 						>
 							<DragLayer />
+
 							<Pages
 								editable={true}
 								fieldActions={[
@@ -478,6 +480,7 @@ export const FormBuilder = () => {
 						>
 							{Liferay.Language.get('Save')}
 						</ClayButton>
+
 						<ClayLink button displayType="link" href={redirectURL}>
 							{Liferay.Language.get('cancel')}
 						</ClayLink>
@@ -495,4 +498,4 @@ export const FormBuilder = () => {
 			/>
 		</>
 	);
-};
+}

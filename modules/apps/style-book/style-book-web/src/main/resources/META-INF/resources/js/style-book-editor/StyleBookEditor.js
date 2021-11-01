@@ -80,6 +80,7 @@ const StyleBookEditor = ({
 
 				<div className="d-flex">
 					<LayoutPreview />
+
 					<Sidebar />
 				</div>
 			</div>

@@ -137,6 +137,7 @@ const renderFragmentContent = ({
 			<EditableProcessorContextProvider>
 				<ControlsProvider>
 					<AutoSelect />
+
 					<FragmentContent
 						elementRef={ref}
 						fragmentEntryLinkId={FRAGMENT_ENTRY_LINK_ID}

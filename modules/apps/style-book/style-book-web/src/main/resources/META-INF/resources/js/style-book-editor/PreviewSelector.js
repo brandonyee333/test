@@ -207,6 +207,7 @@ export function LayoutSelector({layoutType}) {
 							}}
 						>
 							{layout.name}
+
 							{layout.private && (
 								<ClayIcon
 									className="ml-3"
@@ -216,6 +217,7 @@ export function LayoutSelector({layoutType}) {
 						</ClayDropDown.Item>
 					))}
 				</ClayDropDown.Group>
+
 				{totalLayouts > recentLayouts.length && (
 					<>
 						<ClayDropDown.Caption>

@@ -101,6 +101,7 @@ const renderRow = ({
 					})}
 				>
 					<AutoSelect />
+
 					<RowWithControls item={row} layoutData={layoutData} />
 				</StoreAPIContextProvider>
 			</ControlsProvider>
