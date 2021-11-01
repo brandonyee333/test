@@ -244,22 +244,6 @@ public class InterestsRestController extends BaseRestController {
 		);
 	}
 
-	private List<String> _getUserInterestTerms(
-		int termsPerTopic, int topicsLength, Long individualId) {
-
-		List<Interest> interests = interestDog.getInterests(
-			individualId, "individual", 0, topicsLength * termsPerTopic * 10,
-			new String[] {"score", "desc"});
-
-		Stream<Interest> stream = interests.stream();
-
-		return stream.map(
-			interest -> interest.getName()
-		).collect(
-			Collectors.toList()
-		);
-	}
-
 	private static final Log _log = LogFactory.getLog(
 		InterestsRestController.class);
 
