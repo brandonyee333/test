@@ -232,6 +232,17 @@ public abstract class BaseInterestRepositoryTestCase
 			distribution.getValues());
 	}
 
+	@Test
+	public void testGetTopNamesByOwnerIdAndOwnerType() {
+		List<String> names =
+			_interestRepository.getTopNamesByOwnerIdAndOwnerType(
+				374790572703144534L, "individual", 10);
+
+		Assert.assertEquals(
+			names.toString(), Arrays.asList("sales", "compelling metrics"),
+			names);
+	}
+
 	@Override
 	protected Repository<Interest, Long> getRepository() {
 		return _interestRepository;

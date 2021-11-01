@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.Interest;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -42,6 +43,7 @@ import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 
@@ -284,6 +286,29 @@ public class ElasticsearchInterestRepositoryImpl
 		}
 
 		return distributions;
+	}
+
+	@Override
+	public List<String> getTopNamesByOwnerIdAndOwnerType(
+		Long ownerId, String ownerType, int size) {
+
+		return JSONUtil.toStringList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.filter(
+								QueryBuilders.termQuery("ownerId", ownerId)
+							).filter(
+								QueryBuilders.termQuery("ownerType", ownerType)
+							));
+
+						searchSourceBuilder.size(size);
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort("score", SortOrder.DESC));
+					})),
+			"name");
 	}
 
 	@Override

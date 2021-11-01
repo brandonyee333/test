@@ -138,6 +138,39 @@ public class InterestRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public List<String> getTopNamesByOwnerIdAndOwnerType(
+		Long ownerId, String ownerType, int size) {
+
+		SelectSelectStep<Record1<String>> selectSelectStep = _dslContext.select(
+			DSL.field("name", String.class));
+
+		return selectSelectStep.from(
+			"Interest"
+		).where(
+			DSL.and(
+				DSL.field(
+					"ownerId"
+				).equal(
+					ownerId
+				),
+				DSL.field(
+					"ownerType"
+				).equal(
+					ownerType
+				))
+		).orderBy(
+			DSL.field(
+				"score"
+			).desc()
+		).limit(
+			size
+		).offset(
+			0
+		).fetch(
+			record -> (String)record.get("name")
+		);
+	}
+
 	private List<Condition> _getConditions(
 		@Nullable FilterHelper filterHelper, @Nullable Long interestId,
 		@Nullable String keywords, @Nullable List<Long> ownerIds,

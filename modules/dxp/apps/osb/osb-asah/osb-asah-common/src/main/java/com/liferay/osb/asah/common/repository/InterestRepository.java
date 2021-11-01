@@ -87,4 +87,8 @@ public interface InterestRepository extends Repository<Interest, Long> {
 		@Nullable String ownerType, @Nullable Date recordedDate,
 		@Nullable Double score, Pageable pageable);
 
+	@Cacheable
+	public List<String> getTopNamesByOwnerIdAndOwnerType(
+		Long ownerId, String ownerType, int size);
+
 }
