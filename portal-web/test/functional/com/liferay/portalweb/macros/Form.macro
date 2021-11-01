@@ -121,6 +121,24 @@ definition {
 			value1 = "${formPageName}");
 	}
 
+	macro editTitle {
+		var key_columnSize = "${columnSize}";
+
+		AssertVisible(locator1 = "Form#ADD_FIELD");
+
+		AssertVisible(locator1 = "Form#NAME_FIELD");
+
+		AssertVisible(locator1 = "Form#DESCRIPTION_FIELD");
+
+		Pause(locator1 = "5000");
+
+		Click(locator1 = "Form#NAME_FIELD");
+
+		Type(
+			locator1 = "Form#NAME_FIELD",
+			value1 = "${formName}");
+	}
+
 	macro gotoAddField {
 		var key_columnSize = "${columnSize}";
 
