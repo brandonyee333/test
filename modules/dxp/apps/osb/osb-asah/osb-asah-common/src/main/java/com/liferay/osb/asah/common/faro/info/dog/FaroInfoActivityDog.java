@@ -56,8 +56,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -66,7 +64,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class FaroInfoActivityDog extends BaseFaroInfoDog {
 
-	@CacheEvict(allEntries = true)
 	public void addActivity(JSONArray activityJSONArray) {
 		elasticsearchInvoker.add("activities", activityJSONArray);
 
@@ -102,7 +99,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			"UpdateDynamicMembershipsNanite", contextJSONArray);
 	}
 
-	@CacheEvict(allEntries = true)
 	public JSONObject addActivity(JSONObject activityJSONObject) {
 		activityJSONObject = elasticsearchInvoker.add(
 			"activities", activityJSONObject);
@@ -133,7 +129,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return activityJSONObject;
 	}
 
-	@CacheEvict(allEntries = true)
 	public void deleteActivies(Set<Long> channelIds) {
 		elasticsearchInvoker.delete(
 			"activities",
@@ -141,7 +136,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 				"channelId", SetUtil.map(channelIds, String::valueOf)));
 	}
 
-	@Cacheable
 	public JSONObject fetchLatestActivityJSONObject(
 		Long channelId, Long individualId) {
 
@@ -168,7 +162,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return activitiesJSONArray.getJSONObject(0);
 	}
 
-	@Cacheable
 	public JSONObject fetchLatestActivityJSONObject(String sessionId) {
 		return elasticsearchInvoker.fetch(
 			"activities",
@@ -181,7 +174,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			"eventContext");
 	}
 
-	@Cacheable
 	public JSONObject fetchLatestFormViewedActivity(
 		Date eventDate, String userId) {
 
@@ -214,7 +206,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return formViewedActivityJSONArray.getJSONObject(0);
 	}
 
-	@Cacheable
 	public String fetchLatestPageViewActivityId(String userId) {
 		JSONArray mostRecentPageViewActivitiesJSONArray = new JSONArray(
 			elasticsearchInvoker.get(
@@ -265,7 +256,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return boolQueryBuilder.filter(eventsBoolQueryBuilder);
 	}
 
-	@Cacheable
 	public String getFirstDayDateString() {
 		JSONArray activitiesJSONArray = new JSONArray(
 			elasticsearchInvoker.get(
@@ -284,7 +274,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return activityJSONObject.getString("day");
 	}
 
-	@Cacheable
 	public long getIndividualPageViews(String dayDateString, Long ownerId) {
 		return elasticsearchInvoker.count(
 			"activities",
@@ -299,7 +288,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			));
 	}
 
-	@Cacheable
 	public List<String> getOwnerIds(
 		boolean checkEqualityOnly, int minDocCount, QueryBuilder queryBuilder,
 		int value) {
@@ -343,7 +331,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return ownerIds;
 	}
 
-	@Cacheable
 	public List<String> getOwnerIds(QueryBuilder queryBuilder) {
 		List<String> ownerIds = new ArrayList<>();
 
@@ -384,7 +371,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return ownerIds;
 	}
 
-	@Cacheable
 	public Set<Long> getOwnerIds(String dayDateString) {
 		Set<Long> ownerIds = new HashSet<>();
 
@@ -445,7 +431,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return ownerIds;
 	}
 
-	@Cacheable
 	public long getTotalKeywordViews(String dayDateString, List<String> urls) {
 		return elasticsearchInvoker.count(
 			"activities",
@@ -460,7 +445,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			));
 	}
 
-	@Cacheable
 	public long getTotalPageViews(String dayDateString) {
 		return elasticsearchInvoker.count(
 			"activities",
@@ -473,7 +457,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			));
 	}
 
-	@Cacheable
 	public Map<String, Long> getURLPageViewsMap(
 		String endDayDateString, Long ownerId, String startDayDateString) {
 
@@ -568,7 +551,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return false;
 	}
 
-	@CacheEvict(allEntries = true)
 	public void updateOwnerId(Individual individual, String userId) {
 		elasticsearchInvoker.updateByQueryWithRetry(
 			QueryBuilders.termQuery("userId", userId), true,
@@ -609,7 +591,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		}
 	}
 
-	@CacheEvict(allEntries = true)
 	public void updateSessionId(UserSession userSession) {
 		Script script = new Script(
 			Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
