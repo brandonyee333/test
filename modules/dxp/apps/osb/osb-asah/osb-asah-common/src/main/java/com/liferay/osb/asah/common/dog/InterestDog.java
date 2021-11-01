@@ -110,6 +110,11 @@ public class InterestDog {
 				name, ownerId, ownerType, fromRecordedDate, toRecordedDate);
 	}
 
+	public List<String> getTopNames(Long ownerId, String ownerType, int size) {
+		return _interestRepository.getTopNamesByOwnerIdAndOwnerType(
+			ownerId, ownerType, size);
+	}
+
 	@Autowired
 	private InterestRepository _interestRepository;
 
