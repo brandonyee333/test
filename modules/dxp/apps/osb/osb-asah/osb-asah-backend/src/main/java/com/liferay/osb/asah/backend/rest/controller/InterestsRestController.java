@@ -19,7 +19,6 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
-import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.AsahMarker;
@@ -77,7 +76,7 @@ public class InterestsRestController
 
 		return _createInterestDTO(
 			_containsPageVisited(expand), _getDaysRange(expand),
-			_interestDog.getInterest(id));
+			interestDog.getInterest(id));
 	}
 
 	@Cacheable
@@ -91,7 +90,7 @@ public class InterestsRestController
 
 		return _toPageDTO(
 			expand,
-			_interestDog.getInterestPage(
+			interestDog.getInterestPage(
 				filterString, _getScore(), page, size, sorts));
 	}
 
@@ -216,7 +215,7 @@ public class InterestsRestController
 
 		List<Map<String, Object>> interestAggregations = new ArrayList<>();
 
-		List<Interest> interests = _interestDog.getInterests(
+		List<Interest> interests = interestDog.getInterests(
 			name, ownerId, ownerType, DateUtil.toUTCDate(startDayLocalDateTime),
 			DateUtil.toUTCDate(endDayLocalDateTime));
 
@@ -313,8 +312,5 @@ public class InterestsRestController
 
 	@Autowired
 	private AssetDog _assetDog;
-
-	@Autowired
-	private InterestDog _interestDog;
 
 }
