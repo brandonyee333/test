@@ -481,7 +481,9 @@ public class DDMIndexerImpl implements DDMIndexer {
 				document.addGeoLocation(
 					name.concat("_geolocation"), latitude, longitude);
 			}
-			else if (type.equals(DDMImpl.TYPE_SELECT)) {
+			else if (type.equals(DDMImpl.TYPE_RADIO) ||
+					 type.equals(DDMImpl.TYPE_SELECT)) {
+
 				JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
 					valueString);
 
