@@ -687,6 +687,7 @@ public class EventRepositoryImpl extends BaseRepository {
 				field
 			).having(
 				DSL.count(
+					field
 				).ge(
 					eventAnalysisFiltersByField.size()
 				)
