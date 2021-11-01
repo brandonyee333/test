@@ -109,6 +109,10 @@ public class EventDefinitionDog {
 			blocked, blockedReason, hidden, keyword, type);
 	}
 
+	public void deleteEventDefinitionById(Long id) {
+		_eventDefinitionRepository.deleteById(id);
+	}
+
 	public EventDefinition fetchEventDefinitionByDisplayName(
 		String displayName) {
 
