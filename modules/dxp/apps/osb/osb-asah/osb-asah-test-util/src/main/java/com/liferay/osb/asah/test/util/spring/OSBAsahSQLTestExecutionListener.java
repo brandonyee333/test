@@ -35,6 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.TestComponent;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -43,13 +44,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.TestContext;
-import org.springframework.test.context.support.AbstractTestExecutionListener;
 
 /**
  * @author Leslie Wong
  */
+@TestComponent
 public class OSBAsahSQLTestExecutionListener
-	extends AbstractTestExecutionListener {
+	extends BaseOSBAsahTestExecutionListener {
 
 	@Override
 	public void afterTestMethod(TestContext testContext) throws SQLException {
@@ -115,6 +116,8 @@ public class OSBAsahSQLTestExecutionListener
 
 	@Override
 	public void beforeTestClass(TestContext testContext) throws Exception {
+		super.beforeTestClass(testContext);
+
 		if (!_isTestExecutionListenerEnabled()) {
 			return;
 		}

@@ -32,18 +32,19 @@ import java.util.Set;
 import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestComponent;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.test.context.TestContext;
-import org.springframework.test.context.support.AbstractTestExecutionListener;
 
 /**
  * @author André Miranda
  * @author Marcellus Tavares
  */
+@TestComponent
 public class OSBAsahElasticsearchTestExecutionListener
-	extends AbstractTestExecutionListener {
+	extends BaseOSBAsahTestExecutionListener {
 
 	@Override
 	public void afterTestClass(TestContext testContext) {
@@ -114,6 +115,8 @@ public class OSBAsahElasticsearchTestExecutionListener
 
 	@Override
 	public void beforeTestClass(TestContext testContext) throws Exception {
+		super.beforeTestClass(testContext);
+
 		if (!_elasticsearchIndexManager.exists("projects")) {
 			_elasticsearchIndexManager.create(
 				ResourceUtil.readResourceToString(

@@ -16,7 +16,7 @@ package com.liferay.osb.asah.test.util.util;
 
 import java.util.Collection;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author Brian Wing Shun Chan
@@ -24,8 +24,8 @@ import org.junit.Assert;
 public class AssertTestUtil {
 
 	public static void assertSize(int expectedSize, Collection<?> actualList) {
-		Assert.assertEquals(
-			actualList.toString(), expectedSize, actualList.size());
+		Assertions.assertEquals(
+			expectedSize, actualList.size(), actualList.toString());
 	}
 
 }

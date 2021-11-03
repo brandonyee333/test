@@ -32,16 +32,17 @@ import java.util.stream.Stream;
 import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestComponent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.test.context.TestContext;
-import org.springframework.test.context.support.AbstractTestExecutionListener;
 
 /**
  * @author Marcos Martins
  */
+@TestComponent
 public class OSBAsahRepositoryTestExecutionListener
-	extends AbstractTestExecutionListener {
+	extends BaseOSBAsahTestExecutionListener {
 
 	@Override
 	public void afterTestClass(TestContext testContext) throws Exception {
@@ -84,6 +85,8 @@ public class OSBAsahRepositoryTestExecutionListener
 
 	@Override
 	public void beforeTestClass(TestContext testContext) throws Exception {
+		super.beforeTestClass(testContext);
+
 		ProjectIdThreadLocal.setProjectId("test");
 
 		Class<?> clazz = testContext.getTestClass();
