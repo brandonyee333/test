@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.model.impl.VirtualLayout;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.segments.constants.SegmentsExperienceConstants;
@@ -223,6 +224,13 @@ public class RenderFragmentLayoutTag extends IncludeTag {
 	}
 
 	private long[] _getSegmentsExperienceIds() {
+		long[] selectedSegmentsExperienceIds = ParamUtil.getLongValues(
+			request, "p_s_e_id");
+
+		if (selectedSegmentsExperienceIds.length > 0) {
+			return selectedSegmentsExperienceIds;
+		}
+
 		return GetterUtil.getLongValues(
 			request.getAttribute(SegmentsWebKeys.SEGMENTS_EXPERIENCE_IDS),
 			new long[] {SegmentsExperienceConstants.ID_DEFAULT});
