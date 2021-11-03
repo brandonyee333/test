@@ -12,11 +12,12 @@
  *
  */
 
-package com.liferay.osb.asah.stream.curator.bot.nanite;
+package com.liferay.osb.asah.stream.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
 import org.junit.Before;
 
