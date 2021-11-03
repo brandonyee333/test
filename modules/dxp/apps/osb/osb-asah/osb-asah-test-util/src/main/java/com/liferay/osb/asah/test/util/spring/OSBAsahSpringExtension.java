@@ -59,6 +59,8 @@ public class OSBAsahSpringExtension extends SpringExtension {
 		System.setProperty("spring.profiles.active", "test");
 
 		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+
+		super.beforeAll(context);
 	}
 
 	private boolean _isElasticsearchUp() {
