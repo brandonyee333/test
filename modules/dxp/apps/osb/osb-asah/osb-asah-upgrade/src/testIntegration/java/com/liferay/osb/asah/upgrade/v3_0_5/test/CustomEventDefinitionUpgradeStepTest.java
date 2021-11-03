@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.upgrade.v3_0_2.test;
+package com.liferay.osb.asah.upgrade.v3_0_5.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
-import com.liferay.osb.asah.upgrade.v3_0_2.CustomEventDefinitionUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_5.CustomEventDefinitionUpgradeStep;
 
 import java.util.Collections;
 import java.util.HashMap;
