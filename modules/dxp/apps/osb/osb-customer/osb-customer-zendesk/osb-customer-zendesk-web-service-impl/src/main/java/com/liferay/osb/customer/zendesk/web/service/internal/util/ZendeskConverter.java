@@ -25,7 +25,6 @@ import com.liferay.osb.customer.zendesk.model.ZendeskTicketComment;
 import com.liferay.osb.customer.zendesk.model.ZendeskTranslation;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
-import com.liferay.osb.customer.zendesk.model.ZendeskUserRelated;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -449,15 +448,6 @@ public class ZendeskConverter {
 		zendeskUserIdentity.setZendeskUserIdentityId(jsonObject.getLong("id"));
 
 		return zendeskUserIdentity;
-	}
-
-	public ZendeskUserRelated toZendeskUserRelated(JSONObject jsonObject) {
-		ZendeskUserRelated zendeskUserRelated = new ZendeskUserRelated();
-
-		zendeskUserRelated.setAssignedTickets(
-			jsonObject.getInt("assigned_tickets"));
-
-		return zendeskUserRelated;
 	}
 
 	public List<ZendeskUser> toZendeskUsers(JSONArray jsonArray)

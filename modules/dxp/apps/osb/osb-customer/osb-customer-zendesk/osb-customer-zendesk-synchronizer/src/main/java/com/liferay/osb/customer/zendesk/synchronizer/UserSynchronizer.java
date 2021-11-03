@@ -33,13 +33,11 @@ import com.liferay.osb.customer.zendesk.constants.ZendeskUserIdentityConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
-import com.liferay.osb.customer.zendesk.model.ZendeskUserRelated;
 import com.liferay.osb.customer.zendesk.util.PhoneUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskLocaleUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserIdentityWebService;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskUserRelatedWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactAccountView;
@@ -108,11 +106,15 @@ public class UserSynchronizer {
 			user.getEmailAddress());
 
 		if (zendeskUser.isAgent()) {
-			ZendeskUserRelated zendeskUserRelated =
-				_zendeskUserRelatedWebService.getZendeskUserRelated(
-					zendeskUser.getZendeskUserId());
+			Set<String> criteria = new HashSet<>();
 
-			if (zendeskUserRelated.getAssignedTickets() > 0) {
+			criteria.add("assignee:" + zendeskUser.getZendeskUserId());
+			criteria.add("status<closed");
+
+			List<ZendeskTicket> zendeskTickets =
+				_zendeskTicketWebService.getZendeskTickets(criteria);
+
+			if (!zendeskTickets.isEmpty()) {
 				sendEmail(zendeskUser);
 			}
 			else {
@@ -514,9 +516,6 @@ public class UserSynchronizer {
 
 	@Reference
 	private ZendeskUserIdentityWebService _zendeskUserIdentityWebService;
-
-	@Reference
-	private ZendeskUserRelatedWebService _zendeskUserRelatedWebService;
 
 	@Reference
 	private ZendeskUserWebService _zendeskUserWebService;
