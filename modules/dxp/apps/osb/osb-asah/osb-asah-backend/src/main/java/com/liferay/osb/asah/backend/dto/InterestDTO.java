@@ -34,6 +34,9 @@ import java.util.Set;
 @JsonRootName("interests")
 public class InterestDTO {
 
+	public InterestDTO() {
+	}
+
 	public InterestDTO(Interest interest) {
 		_id = StringUtil.get(interest.getId(), null);
 		_name = interest.getName();

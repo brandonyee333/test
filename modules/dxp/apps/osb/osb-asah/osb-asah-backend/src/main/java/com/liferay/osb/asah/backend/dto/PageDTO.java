@@ -28,6 +28,9 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PageDTO<T> {
 
+	public PageDTO() {
+	}
+
 	public PageDTO(List<T> results, Long total) {
 		_results = results;
 		_total = total;
@@ -69,6 +72,9 @@ public class PageDTO<T> {
 
 	private static class Page {
 
+		public Page() {
+		}
+
 		public Page(
 			Integer number, Integer size, Long totalElements,
 			Integer totalPages) {
@@ -99,10 +105,10 @@ public class PageDTO<T> {
 			return _totalPages;
 		}
 
-		private final Integer _number;
-		private final Integer _size;
-		private final Long _totalElements;
-		private final Integer _totalPages;
+		private Integer _number;
+		private Integer _size;
+		private Long _totalElements;
+		private Integer _totalPages;
 
 	}
 
