@@ -280,10 +280,6 @@ a.control-menu-icon,
 		flex-wrap: nowrap;
 		justify-content: flex-start;
 
-		@include media-breakpoint-up(md) {
-			flex-wrap: wrap;
-		}
-
 		> li > .lfr-portal-tooltip > .control-menu-icon {
 			@extend %control-menu-icon-monospaced;
 		}
