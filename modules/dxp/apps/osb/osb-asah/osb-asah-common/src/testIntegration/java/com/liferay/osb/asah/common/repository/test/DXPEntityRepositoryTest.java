@@ -21,7 +21,6 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListe
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.context.annotation.Import;
@@ -44,17 +43,4 @@ import org.springframework.test.context.TestExecutionListeners;
 	}
 )
 public class DXPEntityRepositoryTest extends BaseDXPEntityRepositoryTestCase {
-
-	@Override
-	@Test
-	public void testExistsById() {
-		super.testExistsById();
-	}
-
-	@Override
-	@Test
-	public void testFindById() {
-		super.testFindById();
-	}
-
 }

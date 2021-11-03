@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
@@ -50,7 +49,6 @@ import org.springframework.test.context.TestExecutionListeners;
 	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 )
 @ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
-@Import(JDBCTestConfiguration.class)
 @TestExecutionListeners(
 	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
 	value = {

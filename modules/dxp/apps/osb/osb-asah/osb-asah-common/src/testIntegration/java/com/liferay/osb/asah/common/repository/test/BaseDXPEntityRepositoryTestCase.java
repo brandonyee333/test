@@ -179,13 +179,6 @@ public abstract class BaseDXPEntityRepositoryTestCase
 
 	@Override
 	@Test
-	public void testExistsById() {
-		Assertions.assertThrows(
-			UnsupportedOperationException.class, super::testExistsById);
-	}
-
-	@Override
-	@Test
 	public void testFindAll1() {
 		Assertions.assertThrows(
 			UnsupportedOperationException.class, super::testFindAll1);
@@ -246,13 +239,6 @@ public abstract class BaseDXPEntityRepositoryTestCase
 		Assertions.assertEquals(
 			expectedDXPEntity.getId(), actualDXPEntity.getId(),
 			dxpEntities.toString());
-	}
-
-	@Override
-	@Test
-	public void testFindById() {
-		Assertions.assertThrows(
-			UnsupportedOperationException.class, super::testFindById);
 	}
 
 	@Test

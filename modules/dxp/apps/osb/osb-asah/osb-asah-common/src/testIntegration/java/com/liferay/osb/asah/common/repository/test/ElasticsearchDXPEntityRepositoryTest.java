@@ -20,6 +20,8 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListe
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.test.context.ContextConfiguration;
@@ -41,4 +43,19 @@ import org.springframework.test.context.TestExecutionListeners;
 )
 public class ElasticsearchDXPEntityRepositoryTest
 	extends BaseDXPEntityRepositoryTestCase {
+
+	@Override
+	@Test
+	public void testExistsById() {
+		Assertions.assertThrows(
+			UnsupportedOperationException.class, super::testExistsById);
+	}
+
+	@Override
+	@Test
+	public void testFindById() {
+		Assertions.assertThrows(
+			UnsupportedOperationException.class, super::testFindById);
+	}
+
 }
