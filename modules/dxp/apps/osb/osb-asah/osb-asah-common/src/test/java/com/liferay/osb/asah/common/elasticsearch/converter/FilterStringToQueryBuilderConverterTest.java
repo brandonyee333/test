@@ -21,8 +21,8 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Michael Bowerman
@@ -242,7 +242,7 @@ public class FilterStringToQueryBuilderConverterTest {
 					"(demographics/email/value ne null))",
 				new FaroInfoIndividualsFilterStringConverterHelper());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedQueryBuilder.toString(), actualQueryBuilder.toString());
 	}
 
@@ -473,7 +473,7 @@ public class FilterStringToQueryBuilderConverterTest {
 		QueryBuilder actualQueryBuilder =
 			FilterStringToQueryBuilderConverter.convert(actualFilterString);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedQueryBuilder.toString(), actualQueryBuilder.toString());
 	}
 
@@ -481,16 +481,16 @@ public class FilterStringToQueryBuilderConverterTest {
 		try {
 			FilterStringToQueryBuilderConverter.convert(filterString);
 
-			Assert.fail(
+			Assertions.fail(
 				filterString +
 					" did not throw an instance of IllegalArgumentException");
 		}
 		catch (Exception exception) {
 			Throwable cause = exception.getCause();
 
-			Assert.assertTrue(cause instanceof IllegalArgumentException);
+			Assertions.assertTrue(cause instanceof IllegalArgumentException);
 
-			Assert.assertEquals(cause.getMessage(), message);
+			Assertions.assertEquals(cause.getMessage(), message);
 		}
 	}
 

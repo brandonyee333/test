@@ -32,7 +32,10 @@ import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.Collections;
 import java.util.Date;
@@ -41,26 +44,36 @@ import java.util.Set;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Michael Bowerman
  * @author Vishal Reddy
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
@@ -100,24 +113,24 @@ public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 
 		membership = _membershipDog.addMembership(membership);
 
-		Assert.assertNotNull(membership);
+		Assertions.assertNotNull(membership);
 
 		JSONArray membershipsJSONArray = faroInfoElasticsearchInvoker.get(
 			"memberships");
 
-		Assert.assertEquals(1, membershipsJSONArray.length());
+		Assertions.assertEquals(1, membershipsJSONArray.length());
 
 		JSONAssert.assertEquals(
 			_objectMapper.convertValue(membership, JSONObject.class),
 			membershipsJSONArray.getJSONObject(0), false);
 
-		Assert.assertNotNull(membership.getId());
+		Assertions.assertNotNull(membership.getId());
 
 		individual = _individualDog.fetchIndividual(individual.getId());
 
 		Set<Long> segmentIds = individual.getSegmentIds();
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new Long[] {234L, 456L},
 			Matchers.arrayContainingInAnyOrder(
 				segmentIds.toArray(new Long[0])));
@@ -125,7 +138,7 @@ public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 		JSONArray membershipChangesJSONArray = faroInfoElasticsearchInvoker.get(
 			"membership-changes");
 
-		Assert.assertEquals(1, membershipChangesJSONArray.length());
+		Assertions.assertEquals(1, membershipChangesJSONArray.length());
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -154,18 +167,18 @@ public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 			_objectMapper.convertValue(
 				JSONUtil.put("status", "INACTIVE"), Membership.class));
 
-		Assert.assertNotNull(membership);
+		Assertions.assertNotNull(membership);
 
 		JSONArray membershipsJSONArray = faroInfoElasticsearchInvoker.get(
 			"memberships");
 
-		Assert.assertEquals(1, membershipsJSONArray.length());
+		Assertions.assertEquals(1, membershipsJSONArray.length());
 
 		JSONAssert.assertEquals(
 			JSONUtil.put("status", "INACTIVE"),
 			membershipsJSONArray.getJSONObject(0), false);
 
-		Assert.assertNotNull(membership.getId());
+		Assertions.assertNotNull(membership.getId());
 	}
 
 	@ElasticsearchIndex(
@@ -308,7 +321,7 @@ public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 		JSONArray individualSegmentIdsJSONArray =
 			individualJSONObject.getJSONArray("individualSegmentIds");
 
-		Assert.assertEquals(0, individualSegmentIdsJSONArray.length());
+		Assertions.assertEquals(0, individualSegmentIdsJSONArray.length());
 	}
 
 	@ElasticsearchIndex(
@@ -402,9 +415,10 @@ public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 		List<Long> individualIds = _membershipDog.getActiveIndividualIds(
 			338511398116723458L);
 
-		Assert.assertEquals(individualIds.toString(), 2, individualIds.size());
-		Assert.assertTrue(individualIds.contains(338486037253283140L));
-		Assert.assertTrue(individualIds.contains(338486041327913341L));
+		Assertions.assertEquals(
+			2, individualIds.size(), individualIds.toString());
+		Assertions.assertTrue(individualIds.contains(338486037253283140L));
+		Assertions.assertTrue(individualIds.contains(338486041327913341L));
 	}
 
 	@ElasticsearchIndex(
@@ -413,8 +427,8 @@ public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testIsMember() {
-		Assert.assertFalse(_membershipDog.isMember(0L, 0L));
-		Assert.assertTrue(
+		Assertions.assertFalse(_membershipDog.isMember(0L, 0L));
+		Assertions.assertTrue(
 			_membershipDog.isMember(338486041327913341L, 338511398116723458L));
 	}
 

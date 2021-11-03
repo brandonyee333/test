@@ -32,7 +32,7 @@ import java.time.ZoneOffset;
 
 import java.util.Date;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,7 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class BaseJobRunRepositoryTestCase
 	extends BaseRepositoryTestCase<JobRun, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		Job job = _addJob();
 

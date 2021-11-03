@@ -21,28 +21,40 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Matthew Kong
  */
+@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @ElasticsearchIndex(
 	name = "suppressions", resourcePath = "suppressions.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahSpringBootApplication.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class SuppressionDogTest {
 
 	@Test
@@ -50,9 +62,9 @@ public class SuppressionDogTest {
 		Page<Suppression> suppressionPage = _suppressionDog.getSuppressionPage(
 			null, 0, 10, Sort.desc("createDate"));
 
-		Assert.assertEquals(3, suppressionPage.getTotalElements());
+		Assertions.assertEquals(3, suppressionPage.getTotalElements());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Arrays.asList(
 				"jane.doe@gmail.com", "test@liferay.com", "john.doe@gmail.com"),
 			ListUtil.map(
@@ -64,13 +76,14 @@ public class SuppressionDogTest {
 		Page<Suppression> suppressionPage = _suppressionDog.getSuppressionPage(
 			"liferay", 0, 10, Sort.desc("createDate"));
 
-		Assert.assertEquals(1, suppressionPage.getTotalElements());
+		Assertions.assertEquals(1, suppressionPage.getTotalElements());
 
 		List<Suppression> suppressions = suppressionPage.getContent();
 
 		Suppression suppression = suppressions.get(0);
 
-		Assert.assertEquals("test@liferay.com", suppression.getEmailAddress());
+		Assertions.assertEquals(
+			"test@liferay.com", suppression.getEmailAddress());
 	}
 
 	@Autowired

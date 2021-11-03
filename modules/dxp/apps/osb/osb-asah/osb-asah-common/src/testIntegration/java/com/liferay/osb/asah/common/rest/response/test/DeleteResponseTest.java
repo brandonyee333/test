@@ -19,23 +19,35 @@ import com.liferay.osb.asah.common.rest.response.DeleteResponse;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Vishal Reddy
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class DeleteResponseTest {
 
 	@ElasticsearchIndex(
@@ -53,9 +65,9 @@ public class DeleteResponseTest {
 		JSONObject responseJSONObject = new JSONObject(
 			deleteResponse.respond());
 
-		Assert.assertTrue(responseJSONObject.getBoolean("deleted"));
+		Assertions.assertTrue(responseJSONObject.getBoolean("deleted"));
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_elasticsearchInvoker.exists(
 				"individuals", QueryBuilders.matchAllQuery()));
 	}

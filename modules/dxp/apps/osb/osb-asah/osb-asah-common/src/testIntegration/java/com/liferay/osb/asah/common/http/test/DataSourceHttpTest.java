@@ -45,7 +45,7 @@ import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorC
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Date;
@@ -60,13 +60,14 @@ import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -80,10 +81,10 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Leslie Wong
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_mock();
 	}
@@ -145,16 +146,16 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		Stream<Field> stream = fields.stream();
 
-		Assert.assertTrue(
-			"Adding data source with information on existing individual " +
-				"should update fields of existing individual",
+		Assertions.assertTrue(
 			stream.anyMatch(
-				field -> Objects.equals(field.getName(), "givenName")));
+				field -> Objects.equals(field.getName(), "givenName")),
+			"Adding data source with information on existing individual " +
+				"should update fields of existing individual");
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
+			!Objects.isNull(individual.getLastEnrichmentDate()),
 			"Updating individual from new data source should add an " +
-				"enrichment date",
-			!Objects.isNull(individual.getLastEnrichmentDate()));
+				"enrichment date");
 	}
 
 	@Test
@@ -165,22 +166,22 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 					"Liferay", RandomTestUtil.randomURL()));
 		}
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			4L,
 			faroInfoElasticsearchInvoker.count(
 				"data-sources", QueryBuilders.matchAllQuery()));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			faroInfoElasticsearchInvoker.exists(
 				"data-sources", QueryBuilders.termQuery("name", "Liferay")));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			faroInfoElasticsearchInvoker.exists(
 				"data-sources",
 				QueryBuilders.termQuery("name", "Liferay (1)")));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			faroInfoElasticsearchInvoker.exists(
 				"data-sources",
 				QueryBuilders.termQuery("name", "Liferay (2)")));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			faroInfoElasticsearchInvoker.exists(
 				"data-sources",
 				QueryBuilders.termQuery("name", "Liferay (3)")));
@@ -220,20 +221,20 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			_objectMapper.convertValue(
 				dataSourceJSONObject1, DataSource.class));
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
+			faroInfoElasticsearchInvoker.exists(
+				"csv-individuals",
+				QueryBuilders.termQuery(
+					"dataSourceId", Long.valueOf(dataSourceId1))),
 			"Found entry in csv-individuals collection with data source ID " +
-				dataSourceId1,
+				dataSourceId1);
+		Assertions.assertTrue(
 			faroInfoElasticsearchInvoker.exists(
 				"csv-individuals",
 				QueryBuilders.termQuery(
-					"dataSourceId", Long.valueOf(dataSourceId1))));
-		Assert.assertTrue(
+					"dataSourceId", Long.valueOf(dataSourceId2))),
 			"Unable to find entry in csv-individuals collection with data " +
-				"source ID " + dataSourceId2,
-			faroInfoElasticsearchInvoker.exists(
-				"csv-individuals",
-				QueryBuilders.termQuery(
-					"dataSourceId", Long.valueOf(dataSourceId2))));
+				"source ID " + dataSourceId2);
 	}
 
 	@Test
@@ -251,9 +252,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_dataSourceDog.deleteDataSource(dataSource);
 
-		Assert.assertFalse(
-			"Field mapping should have been deleted on data source deletion",
-			_fieldMappingDog.existsById(fieldMapping.getId()));
+		Assertions.assertFalse(
+			_fieldMappingDog.existsById(fieldMapping.getId()),
+			"Field mapping should have been deleted on data source deletion");
 	}
 
 	@Test
@@ -274,10 +275,10 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			individualId = 0L;
 		}
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
+			_individualDog.existsById(individualId),
 			"Individual was not deleted on data source deletion despite only " +
-				"containing fields from the deleted data source",
-			_individualDog.existsById(individualId));
+				"containing fields from the deleted data source");
 	}
 
 	@Test
@@ -306,8 +307,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_dataSourceDog.deleteDataSource(dataSource1);
 
-		Assert.assertFalse(
-			"Field mapping reference to deleted data source was not removed",
+		Assertions.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
 				"field-mappings",
 				BoolQueryBuilderUtil.filter(
@@ -315,10 +315,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				).filter(
 					QueryBuilders.existsQuery(
 						"dataSourceFieldNames." + dataSourceId1)
-				)));
-		Assert.assertTrue(
-			"Field mapping reference to existing data source was removed on " +
-				"deletion of another data source",
+				)),
+			"Field mapping reference to deleted data source was not removed");
+		Assertions.assertTrue(
 			faroInfoElasticsearchInvoker.exists(
 				"field-mappings",
 				BoolQueryBuilderUtil.filter(
@@ -326,7 +325,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				).filter(
 					QueryBuilders.existsQuery(
 						"dataSourceFieldNames." + dataSourceId2)
-				)));
+				)),
+			"Field mapping reference to existing data source was removed on " +
+				"deletion of another data source");
 	}
 
 	@Test
@@ -350,7 +351,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		segment = _segmentDog.getSegment(segment.getId());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"Individual dynamic segment with properties was not disabled " +
 				"when data source was deleted",
 			"DISABLED", segment.getState());
@@ -378,7 +379,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		segment = _segmentDog.getSegment(segment.getId());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"Individual dynamic segment with assets was not disabled when " +
 				"data source was deleted",
 			"DISABLED", segment.getState());
@@ -400,10 +401,10 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_dataSourceDog.deleteDataSource(dataSource);
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
+			_fieldMappingDog.existsById(fieldMapping.getId()),
 			"Field mappings created by the default user should not be " +
-				"deleted on data source deletion",
-			_fieldMappingDog.existsById(fieldMapping.getId()));
+				"deleted on data source deletion");
 	}
 
 	@Test
@@ -464,26 +465,27 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			individualId = 0L;
 		}
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
+			_individualDog.existsById(individualId),
 			"Individual was deleted even though another data source with " +
-				"data on the individual exists",
-			_individualDog.existsById(individualId));
+				"data on the individual exists");
 
 		individual = _individualDog.fetchIndividual(individualId);
 
-		Assert.assertFalse(
-			"Data source individual PK was not deleted on data source deletion",
+		Assertions.assertFalse(
 			_individualDog.existsByDataSourceIndividualPK(
-				dataSourceId2, individualId));
+				dataSourceId2, individualId),
+			"Data source individual PK was not deleted on data source " +
+				"deletion");
 
 		Set<Field> fields = individual.getFields();
 
 		Stream<Field> stream = fields.stream();
 
-		Assert.assertFalse(
-			"Individual field 'givenName' was not deleted",
+		Assertions.assertFalse(
 			stream.anyMatch(
-				field -> Objects.equals(field.getName(), "givenName")));
+				field -> Objects.equals(field.getName(), "givenName")),
+			"Individual field 'givenName' was not deleted");
 
 		stream = fields.stream();
 
@@ -494,14 +496,14 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			null
 		);
 
-		Assert.assertNotNull(emailField);
+		Assertions.assertNotNull(emailField);
 
-		Assert.assertEquals(dataSourceId1, emailField.getDataSourceId());
+		Assertions.assertEquals(dataSourceId1, emailField.getDataSourceId());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			lastEnrichmentDate, individual.getLastEnrichmentDate(),
 			"Data source deletion should not count towards individual " +
-				"enrichment",
-			lastEnrichmentDate, individual.getLastEnrichmentDate());
+				"enrichment");
 	}
 
 	@Test
@@ -529,48 +531,48 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			new FilterHelper("dataSourceId eq '" + dataSourceId1 + "'"),
 			PageRequest.of(0, 10));
 
-		Assert.assertFalse(assets.isEmpty());
+		Assertions.assertFalse(assets.isEmpty());
 
 		assets = _assetRepository.findByFilterString(
 			new FilterHelper("dataSourceId eq '" + dataSourceId2 + "'"),
 			PageRequest.of(0, 10));
 
-		Assert.assertFalse(assets.isEmpty());
+		Assertions.assertFalse(assets.isEmpty());
 
 		for (String index : new String[] {"activities", "activity-groups"}) {
-			Assert.assertTrue(
-				"Unable to find entry in " + index + " collection with data " +
-					"source ID " + dataSourceId1,
+			Assertions.assertTrue(
 				faroInfoElasticsearchInvoker.exists(
 					index,
-					QueryBuilders.termQuery("dataSourceId", dataSourceId1)));
-			Assert.assertTrue(
+					QueryBuilders.termQuery("dataSourceId", dataSourceId1)),
 				"Unable to find entry in " + index + " collection with data " +
-					"source ID " + dataSourceId2,
+					"source ID " + dataSourceId1);
+			Assertions.assertTrue(
 				faroInfoElasticsearchInvoker.exists(
 					index,
-					QueryBuilders.termQuery("dataSourceId", dataSourceId2)));
+					QueryBuilders.termQuery("dataSourceId", dataSourceId2)),
+				"Unable to find entry in " + index + " collection with data " +
+					"source ID " + dataSourceId2);
 		}
 
-		Assert.assertFalse(
-			"Individuals from deleted data source still exist",
+		Assertions.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
 				"individuals",
 				QueryBuilders.nestedQuery(
 					"dataSourceIndividualPKs",
 					QueryBuilders.termQuery(
 						"dataSourceIndividualPKs.dataSourceId", dataSourceId1),
-					ScoreMode.None)));
-		Assert.assertTrue(
-			"Individuals from data source " + dataSourceId2 + " were deleted " +
-				"when deleting data source " + dataSourceId1,
+					ScoreMode.None)),
+			"Individuals from deleted data source still exist");
+		Assertions.assertTrue(
 			faroInfoElasticsearchInvoker.exists(
 				"individuals",
 				QueryBuilders.nestedQuery(
 					"dataSourceIndividualPKs",
 					QueryBuilders.termQuery(
 						"dataSourceIndividualPKs.dataSourceId", dataSourceId2),
-					ScoreMode.None)));
+					ScoreMode.None)),
+			"Individuals from data source " + dataSourceId2 + " were deleted " +
+				"when deleting data source " + dataSourceId1);
 	}
 
 	@Test
@@ -595,48 +597,48 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_dataSourceDog.deleteDataSource(dataSource1);
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
+			faroInfoElasticsearchInvoker.exists(
+				"accounts",
+				QueryBuilders.termQuery(
+					"dataSourceId", String.valueOf(dataSourceId1))),
 			"Found entry in accounts collection with data source ID " +
-				dataSourceId1,
+				dataSourceId1);
+		Assertions.assertTrue(
 			faroInfoElasticsearchInvoker.exists(
 				"accounts",
 				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId1))));
-		Assert.assertTrue(
+					"dataSourceId", String.valueOf(dataSourceId2))),
 			"Unable to find entry in accounts collection with data source ID " +
-				dataSourceId2,
+				dataSourceId2);
+		Assertions.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
-				"accounts",
+				"fields",
 				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId2))));
-		Assert.assertFalse(
+					"dataSourceId", String.valueOf(dataSourceId1))),
 			"Found entry in fields collection with data source ID " +
-				dataSourceId1,
+				dataSourceId1);
+		Assertions.assertTrue(
 			faroInfoElasticsearchInvoker.exists(
 				"fields",
 				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId1))));
-		Assert.assertTrue(
+					"dataSourceId", String.valueOf(dataSourceId2))),
 			"Unable to find entry in fields collection with data source ID " +
-				dataSourceId2,
-			faroInfoElasticsearchInvoker.exists(
-				"fields",
+				dataSourceId2);
+		Assertions.assertFalse(
+			_salesforceRawElasticsearchInvoker.exists(
+				"individuals",
 				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId2))));
-		Assert.assertFalse(
+					"dataSourceId", String.valueOf(dataSourceId1))),
 			"Found entry in individuals collection with data source ID " +
-				dataSourceId1,
+				dataSourceId1);
+		Assertions.assertTrue(
 			_salesforceRawElasticsearchInvoker.exists(
 				"individuals",
 				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId1))));
-		Assert.assertTrue(
+					"dataSourceId", String.valueOf(dataSourceId2))),
 			"Unable to find entry in individuals collection with data source " +
-				"ID " + dataSourceId2,
-			_salesforceRawElasticsearchInvoker.exists(
-				"individuals",
-				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId2))));
+				"ID " + dataSourceId2);
 	}
 
 	@Test
@@ -652,10 +654,10 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		dataSource = _dataSourceDog.updateDataSourceConfiguration(
 			liferayDataSource);
 
-		Assert.assertEquals("bar", dataSource.getName());
+		Assertions.assertEquals("bar", dataSource.getName());
 	}
 
-	@Test(expected = Exception.class)
+	@Test
 	public void testUpdateDataSourceModifyingToDuplicateDataSourceName() {
 		_dataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSource(
@@ -665,22 +667,19 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			FaroInfoTestUtil.buildLiferayDataSource(
 				"foo", RandomTestUtil.randomURL()));
 
-		try {
-			DataSource liferayDataSource =
-				FaroInfoTestUtil.buildLiferayDataSource(
-					"bar", RandomTestUtil.randomURL());
+		DataSource liferayDataSource = FaroInfoTestUtil.buildLiferayDataSource(
+			"bar", RandomTestUtil.randomURL());
 
-			liferayDataSource.setId(dataSource.getId());
+		liferayDataSource.setId(dataSource.getId());
 
-			_dataSourceDog.updateDataSourceConfiguration(liferayDataSource);
-		}
-		catch (Exception exception) {
-			Assert.assertThat(
-				exception.getMessage(),
-				CoreMatchers.containsString("Duplicate data source name"));
+		Exception exception = Assertions.assertThrows(
+			Exception.class,
+			() -> _dataSourceDog.updateDataSourceConfiguration(
+				liferayDataSource));
 
-			throw exception;
-		}
+		MatcherAssert.assertThat(
+			exception.getMessage(),
+			CoreMatchers.containsString("Duplicate data source name"));
 	}
 
 	@Test
@@ -701,7 +700,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		dataSource = _dataSourceDog.updateDataSourceConfiguration(
 			liferayDataSource);
 
-		Assert.assertEquals(updatedURL, dataSource.getURL());
+		Assertions.assertEquals(updatedURL, dataSource.getURL());
 	}
 
 	private void _addActivityAndUserToLiferayDataSource(DataSource dataSource) {

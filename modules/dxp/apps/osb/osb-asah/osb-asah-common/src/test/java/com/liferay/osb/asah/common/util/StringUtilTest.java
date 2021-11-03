@@ -19,8 +19,8 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
@@ -31,46 +31,46 @@ public class StringUtilTest {
 
 	@Test
 	public void testGet() {
-		Assert.assertEquals("", StringUtil.get(null));
-		Assert.assertEquals("1", StringUtil.get(1));
-		Assert.assertEquals("a", StringUtil.get("a"));
+		Assertions.assertEquals("", StringUtil.get(null));
+		Assertions.assertEquals("1", StringUtil.get(1));
+		Assertions.assertEquals("a", StringUtil.get("a"));
 	}
 
 	@Test
 	public void testIsQuoted() {
-		Assert.assertFalse(StringUtil.isQuoted("'Hello World"));
-		Assert.assertTrue(StringUtil.isQuoted("'Hello World'"));
-		Assert.assertTrue(StringUtil.isQuoted("\"Hello World\""));
-		Assert.assertFalse(StringUtil.isQuoted("\"Hello World"));
-		Assert.assertFalse(StringUtil.isQuoted("Hello World"));
+		Assertions.assertFalse(StringUtil.isQuoted("'Hello World"));
+		Assertions.assertTrue(StringUtil.isQuoted("'Hello World'"));
+		Assertions.assertTrue(StringUtil.isQuoted("\"Hello World\""));
+		Assertions.assertFalse(StringUtil.isQuoted("\"Hello World"));
+		Assertions.assertFalse(StringUtil.isQuoted("Hello World"));
 
 		// String with single character
 
-		Assert.assertFalse(StringUtil.isQuoted("'"));
-		Assert.assertFalse(StringUtil.isQuoted("\""));
+		Assertions.assertFalse(StringUtil.isQuoted("'"));
+		Assertions.assertFalse(StringUtil.isQuoted("\""));
 
 		// String with two characters
 
-		Assert.assertTrue(StringUtil.isQuoted("''"));
-		Assert.assertTrue(StringUtil.isQuoted("\"\""));
+		Assertions.assertTrue(StringUtil.isQuoted("''"));
+		Assertions.assertTrue(StringUtil.isQuoted("\"\""));
 
 		// Blank string
 
-		Assert.assertFalse(StringUtil.isQuoted(""));
+		Assertions.assertFalse(StringUtil.isQuoted(""));
 	}
 
 	@Test
 	public void testToObject() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"'Hello World'", StringUtil.toObject("'''Hello World'''"));
-		Assert.assertEquals(0.5, StringUtil.toObject("0.5"));
-		Assert.assertEquals(5L, StringUtil.toObject("5"));
-		Assert.assertFalse((boolean)StringUtil.toObject("FALSE"));
-		Assert.assertNull(StringUtil.toObject("NULL"));
-		Assert.assertTrue((boolean)StringUtil.toObject("TRUE"));
-		Assert.assertFalse((boolean)StringUtil.toObject("false"));
-		Assert.assertNull(StringUtil.toObject("null"));
-		Assert.assertTrue((boolean)StringUtil.toObject("true"));
+		Assertions.assertEquals(0.5, StringUtil.toObject("0.5"));
+		Assertions.assertEquals(5L, StringUtil.toObject("5"));
+		Assertions.assertFalse((boolean)StringUtil.toObject("FALSE"));
+		Assertions.assertNull(StringUtil.toObject("NULL"));
+		Assertions.assertTrue((boolean)StringUtil.toObject("TRUE"));
+		Assertions.assertFalse((boolean)StringUtil.toObject("false"));
+		Assertions.assertNull(StringUtil.toObject("null"));
+		Assertions.assertTrue((boolean)StringUtil.toObject("true"));
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(JSONUtil.put("foo", "bar")),
@@ -89,7 +89,7 @@ public class StringUtilTest {
 			StringUtil.toObject("[1234,");
 		}
 		catch (IllegalArgumentException illegalArgumentException) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				"Unknown object [1234, used in filter",
 				illegalArgumentException.getMessage());
 		}
@@ -98,7 +98,7 @@ public class StringUtilTest {
 			StringUtil.toObject("{1234");
 		}
 		catch (IllegalArgumentException illegalArgumentException) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				"Unknown object {1234 used in filter",
 				illegalArgumentException.getMessage());
 		}
@@ -106,18 +106,21 @@ public class StringUtilTest {
 
 	@Test
 	public void testUnquote() {
-		Assert.assertEquals("", StringUtil.unquote(""));
-		Assert.assertEquals("Hello World", StringUtil.unquote("'Hello World'"));
-		Assert.assertEquals("'Hello World", StringUtil.unquote("'Hello World"));
-		Assert.assertEquals(
+		Assertions.assertEquals("", StringUtil.unquote(""));
+		Assertions.assertEquals(
+			"Hello World", StringUtil.unquote("'Hello World'"));
+		Assertions.assertEquals(
+			"'Hello World", StringUtil.unquote("'Hello World"));
+		Assertions.assertEquals(
 			"Hello World", StringUtil.unquote("\"Hello World\""));
-		Assert.assertEquals("Hello World", StringUtil.unquote("Hello World"));
+		Assertions.assertEquals(
+			"Hello World", StringUtil.unquote("Hello World"));
 	}
 
 	@Test
 	public void testUnquoteAndDecodeInnerQuotes() {
-		Assert.assertEquals("", StringUtil.unquoteAndDecodeInnerQuotes(""));
-		Assert.assertEquals(
+		Assertions.assertEquals("", StringUtil.unquoteAndDecodeInnerQuotes(""));
+		Assertions.assertEquals(
 			"'Hello World'",
 			StringUtil.unquoteAndDecodeInnerQuotes("'''Hello World'''"));
 	}

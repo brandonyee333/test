@@ -22,7 +22,10 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.time.ZoneOffset;
@@ -36,13 +39,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
@@ -51,7 +55,15 @@ import reactor.util.function.Tuples;
  * @author Leslie Wong
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class EventDefinitionDogTest {
 
 	@Test
@@ -61,15 +73,15 @@ public class EventDefinitionDogTest {
 				"Testing an event", "Test Event", null, "testEvent",
 				EventDefinition.Type.CUSTOM, null);
 
-		Assert.assertNotNull(eventDefinition);
-		Assert.assertEquals(
+		Assertions.assertNotNull(eventDefinition);
+		Assertions.assertEquals(
 			"Testing an event", eventDefinition.getDescription());
-		Assert.assertEquals("Test Event", eventDefinition.getDisplayName());
-		Assert.assertNotNull(eventDefinition.getId());
-		Assert.assertEquals("testEvent", eventDefinition.getName());
-		Assert.assertEquals(
+		Assertions.assertEquals("Test Event", eventDefinition.getDisplayName());
+		Assertions.assertNotNull(eventDefinition.getId());
+		Assertions.assertEquals("testEvent", eventDefinition.getName());
+		Assertions.assertEquals(
 			EventDefinition.Type.CUSTOM, eventDefinition.getType());
-		Assert.assertFalse(eventDefinition.isBlocked());
+		Assertions.assertFalse(eventDefinition.isBlocked());
 	}
 
 	@Test
@@ -79,14 +91,15 @@ public class EventDefinitionDogTest {
 				"Testing an event", "Test Event", null, "testEvent1",
 				EventDefinition.Type.CUSTOM, null);
 
-		Assert.assertEquals("Test Event", eventDefinition1.getDisplayName());
+		Assertions.assertEquals(
+			"Test Event", eventDefinition1.getDisplayName());
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.addEventDefinition(
 				"Testing an event", "Test Event", null, "testEvent2",
 				EventDefinition.Type.CUSTOM, null);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"Test Event (1)", eventDefinition2.getDisplayName());
 
 		EventDefinition eventDefinition3 =
@@ -94,7 +107,7 @@ public class EventDefinitionDogTest {
 				"Testing an event", "Test Event", null, "testEvent3",
 				EventDefinition.Type.CUSTOM, null);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"Test Event (2)", eventDefinition3.getDisplayName());
 	}
 
@@ -106,15 +119,16 @@ public class EventDefinitionDogTest {
 				"Testing an event", "Test Event 1", null, "testEvent1",
 				EventDefinition.Type.CUSTOM, null);
 
-		Assert.assertNotNull(eventDefinition);
-		Assert.assertEquals(
+		Assertions.assertNotNull(eventDefinition);
+		Assertions.assertEquals(
 			"Testing an event", eventDefinition.getDescription());
-		Assert.assertEquals("Test Event 1", eventDefinition.getDisplayName());
-		Assert.assertNotNull(eventDefinition.getId());
-		Assert.assertEquals("testEvent1", eventDefinition.getName());
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			"Test Event 1", eventDefinition.getDisplayName());
+		Assertions.assertNotNull(eventDefinition.getId());
+		Assertions.assertEquals("testEvent1", eventDefinition.getName());
+		Assertions.assertEquals(
 			EventDefinition.Type.CUSTOM, eventDefinition.getType());
-		Assert.assertFalse(eventDefinition.isBlocked());
+		Assertions.assertFalse(eventDefinition.isBlocked());
 
 		Date dayDate = DateUtil.newDayDate();
 		String url = "http://localhost:8080";
@@ -123,17 +137,19 @@ public class EventDefinitionDogTest {
 			"Testing an event", "Test Event 2", dayDate, "testEvent2",
 			EventDefinition.Type.CUSTOM, url);
 
-		Assert.assertNotNull(eventDefinition);
-		Assert.assertEquals(
+		Assertions.assertNotNull(eventDefinition);
+		Assertions.assertEquals(
 			"Testing an event", eventDefinition.getDescription());
-		Assert.assertEquals("Test Event 2", eventDefinition.getDisplayName());
-		Assert.assertNotNull(eventDefinition.getId());
-		Assert.assertEquals("testEvent2", eventDefinition.getName());
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			"Test Event 2", eventDefinition.getDisplayName());
+		Assertions.assertNotNull(eventDefinition.getId());
+		Assertions.assertEquals("testEvent2", eventDefinition.getName());
+		Assertions.assertEquals(
 			EventDefinition.Type.CUSTOM, eventDefinition.getType());
-		Assert.assertTrue(eventDefinition.isBlocked());
-		Assert.assertEquals(dayDate, eventDefinition.getBlockedLastSeenDate());
-		Assert.assertEquals(url, eventDefinition.getBlockedLastSeenURL());
+		Assertions.assertTrue(eventDefinition.isBlocked());
+		Assertions.assertEquals(
+			dayDate, eventDefinition.getBlockedLastSeenDate());
+		Assertions.assertEquals(url, eventDefinition.getBlockedLastSeenURL());
 	}
 
 	@Test
@@ -143,15 +159,15 @@ public class EventDefinitionDogTest {
 				"Testing an event", null, null, "testEvent",
 				EventDefinition.Type.CUSTOM, null);
 
-		Assert.assertNotNull(eventDefinition);
-		Assert.assertEquals(
+		Assertions.assertNotNull(eventDefinition);
+		Assertions.assertEquals(
 			"Testing an event", eventDefinition.getDescription());
-		Assert.assertEquals("testEvent", eventDefinition.getDisplayName());
-		Assert.assertNotNull(eventDefinition.getId());
-		Assert.assertEquals("testEvent", eventDefinition.getName());
-		Assert.assertEquals(
+		Assertions.assertEquals("testEvent", eventDefinition.getDisplayName());
+		Assertions.assertNotNull(eventDefinition.getId());
+		Assertions.assertEquals("testEvent", eventDefinition.getName());
+		Assertions.assertEquals(
 			EventDefinition.Type.CUSTOM, eventDefinition.getType());
-		Assert.assertFalse(eventDefinition.isBlocked());
+		Assertions.assertFalse(eventDefinition.isBlocked());
 	}
 
 	@Test
@@ -161,15 +177,15 @@ public class EventDefinitionDogTest {
 				"Testing an event", "", null, "testEvent",
 				EventDefinition.Type.CUSTOM, null);
 
-		Assert.assertNotNull(eventDefinition);
-		Assert.assertEquals(
+		Assertions.assertNotNull(eventDefinition);
+		Assertions.assertEquals(
 			"Testing an event", eventDefinition.getDescription());
-		Assert.assertEquals("testEvent", eventDefinition.getDisplayName());
-		Assert.assertNotNull(eventDefinition.getId());
-		Assert.assertEquals("testEvent", eventDefinition.getName());
-		Assert.assertEquals(
+		Assertions.assertEquals("testEvent", eventDefinition.getDisplayName());
+		Assertions.assertNotNull(eventDefinition.getId());
+		Assertions.assertEquals("testEvent", eventDefinition.getName());
+		Assertions.assertEquals(
 			EventDefinition.Type.CUSTOM, eventDefinition.getType());
-		Assert.assertFalse(eventDefinition.isBlocked());
+		Assertions.assertFalse(eventDefinition.isBlocked());
 	}
 
 	@Test
@@ -179,14 +195,15 @@ public class EventDefinitionDogTest {
 				"Testing an event", null, null, "testEvent",
 				EventDefinition.Type.CUSTOM, null);
 
-		Assert.assertEquals("testEvent", eventDefinition1.getDisplayName());
+		Assertions.assertEquals("testEvent", eventDefinition1.getDisplayName());
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.addEventDefinition(
 				"Testing an event", null, null, "TestEvent",
 				EventDefinition.Type.CUSTOM, null);
 
-		Assert.assertEquals("TestEvent (1)", eventDefinition2.getDisplayName());
+		Assertions.assertEquals(
+			"TestEvent (1)", eventDefinition2.getDisplayName());
 	}
 
 	@SQLResource(resourcePath = "test_block_event_definition.sql")
@@ -195,7 +212,7 @@ public class EventDefinitionDogTest {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("subscribed");
 
-		Assert.assertNotNull(eventDefinition);
+		Assertions.assertNotNull(eventDefinition);
 
 		_eventDefinitionDog.blockEventDefinitions(
 			Collections.singletonList(eventDefinition.getId()));
@@ -203,17 +220,17 @@ public class EventDefinitionDogTest {
 		eventDefinition = _eventDefinitionDog.fetchEventDefinitionByName(
 			"subscribed");
 
-		Assert.assertNull(eventDefinition.getDescription());
-		Assert.assertNull(eventDefinition.getDisplayName());
+		Assertions.assertNull(eventDefinition.getDescription());
+		Assertions.assertNull(eventDefinition.getDisplayName());
 
 		ZonedDateTime zonedDateTime = ZonedDateTime.of(
 			2021, 4, 19, 12, 35, 0, 0, ZoneOffset.UTC);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Date.from(zonedDateTime.toInstant()),
 			eventDefinition.getBlockedLastSeenDate());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"http://localhost:8089/web/guest/home",
 			eventDefinition.getBlockedLastSeenURL());
 	}
@@ -263,16 +280,16 @@ public class EventDefinitionDogTest {
 			EventDefinition eventDefinition =
 				_eventDefinitionDog.getEventDefinition(eventDefinitionId);
 
-			Assert.assertNull(eventDefinition.getDescription());
-			Assert.assertNull(eventDefinition.getDisplayName());
+			Assertions.assertNull(eventDefinition.getDescription());
+			Assertions.assertNull(eventDefinition.getDisplayName());
 
 			Tuple2 tuple2 = expectedBlockedEventInfos.get(
 				eventDefinition.getName());
 
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				tuple2.getT1(), eventDefinition.getBlockedLastSeenDate());
 
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				tuple2.getT2(), eventDefinition.getBlockedLastSeenURL());
 		}
 	}
@@ -282,17 +299,17 @@ public class EventDefinitionDogTest {
 		long count = _eventDefinitionDog.countEventDefinitions(
 			false, null, null, EventDefinition.Type.DEFAULT);
 
-		Assert.assertEquals(27, count);
+		Assertions.assertEquals(27, count);
 
 		count = _eventDefinitionDog.countEventDefinitions(
 			false, null, null, EventDefinition.Type.CUSTOM);
 
-		Assert.assertEquals(0, count);
+		Assertions.assertEquals(0, count);
 	}
 
 	@Test
 	public void testCountEventDefinitionsWithKeyword() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Long.valueOf(5),
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, "page", EventDefinition.Type.DEFAULT));
@@ -305,7 +322,7 @@ public class EventDefinitionDogTest {
 				"Testing an event", "Test Event", null, "testEvent",
 				EventDefinition.Type.CUSTOM, null);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventDefinition,
 			_eventDefinitionDog.fetchEventDefinitionByDisplayName(
 				"Test Event"));
@@ -318,7 +335,7 @@ public class EventDefinitionDogTest {
 				"Testing an event", "Test Event", null, "testEvent",
 				EventDefinition.Type.CUSTOM, null);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventDefinition,
 			_eventDefinitionDog.fetchEventDefinitionByDisplayName(
 				"test event"));
@@ -326,7 +343,7 @@ public class EventDefinitionDogTest {
 
 	@Test
 	public void testFetchEventDefinitionByDisplayNameNonexistent() {
-		Assert.assertNull(
+		Assertions.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByDisplayName(
 				"Does Not Exist"));
 	}
@@ -341,7 +358,7 @@ public class EventDefinitionDogTest {
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.fetchEventDefinitionByName("testEvent");
 
-		Assert.assertEquals(eventDefinition1, eventDefinition2);
+		Assertions.assertEquals(eventDefinition1, eventDefinition2);
 	}
 
 	@Test
@@ -381,7 +398,7 @@ public class EventDefinitionDogTest {
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.getEventDefinition(eventDefinition1.getId());
 
-		Assert.assertEquals(eventDefinition1, eventDefinition2);
+		Assertions.assertEquals(eventDefinition1, eventDefinition2);
 	}
 
 	@Test
@@ -480,12 +497,12 @@ public class EventDefinitionDogTest {
 		assetClickedEventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("assetClicked");
 
-		Assert.assertTrue(assetClickedEventDefinition.isHidden());
+		Assertions.assertTrue(assetClickedEventDefinition.isHidden());
 
 		assetClickedEventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("assetDownloaded");
 
-		Assert.assertTrue(assetClickedEventDefinition.isHidden());
+		Assertions.assertTrue(assetClickedEventDefinition.isHidden());
 	}
 
 	@SQLResource(resourcePath = "test_unblock_event_definition.sql")
@@ -502,25 +519,27 @@ public class EventDefinitionDogTest {
 		eventDefinition = _eventDefinitionDog.getEventDefinition(
 			eventDefinitionId);
 
-		Assert.assertFalse(eventDefinition.isBlocked());
-		Assert.assertNull(eventDefinition.getBlockedLastSeenDate());
-		Assert.assertNull(eventDefinition.getBlockedLastSeenURL());
-		Assert.assertNull(eventDefinition.getDescription());
-		Assert.assertEquals("subscribed", eventDefinition.getDisplayName());
+		Assertions.assertFalse(eventDefinition.isBlocked());
+		Assertions.assertNull(eventDefinition.getBlockedLastSeenDate());
+		Assertions.assertNull(eventDefinition.getBlockedLastSeenURL());
+		Assertions.assertNull(eventDefinition.getDescription());
+		Assertions.assertEquals("subscribed", eventDefinition.getDisplayName());
 	}
 
 	@SQLResource(
 		resourcePath = "test_unblock_event_definition_limit_overflow.sql"
 	)
-	@Test(expected = OSBAsahException.class)
+	@Test
 	public void testUnblockEventDefinitionLimitOverflow() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("subscribed100");
 
 		Long eventDefinitionId = eventDefinition.getId();
 
-		_eventDefinitionDog.unblockEventDefinitions(
-			Collections.singletonList(eventDefinitionId));
+		Assertions.assertThrows(
+			OSBAsahException.class,
+			() -> _eventDefinitionDog.unblockEventDefinitions(
+				Collections.singletonList(eventDefinitionId)));
 	}
 
 	@SQLResource(resourcePath = "test_unblock_event_definitions.sql")
@@ -543,37 +562,39 @@ public class EventDefinitionDogTest {
 			EventDefinition eventDefinition =
 				_eventDefinitionDog.getEventDefinition(eventDefinitionId);
 
-			Assert.assertFalse(eventDefinition.isBlocked());
-			Assert.assertNull(eventDefinition.getBlockedLastSeenDate());
-			Assert.assertNull(eventDefinition.getBlockedLastSeenURL());
-			Assert.assertNull(eventDefinition.getDescription());
-			Assert.assertEquals(
+			Assertions.assertFalse(eventDefinition.isBlocked());
+			Assertions.assertNull(eventDefinition.getBlockedLastSeenDate());
+			Assertions.assertNull(eventDefinition.getBlockedLastSeenURL());
+			Assertions.assertNull(eventDefinition.getDescription());
+			Assertions.assertEquals(
 				eventDefinition.getName(), eventDefinition.getDisplayName());
 		}
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("reviewAdded");
 
-		Assert.assertTrue(eventDefinition.isBlocked());
-		Assert.assertNotNull(eventDefinition.getBlockedLastSeenDate());
-		Assert.assertNotNull(eventDefinition.getBlockedLastSeenURL());
-		Assert.assertNull(eventDefinition.getDescription());
-		Assert.assertNull(eventDefinition.getDisplayName());
+		Assertions.assertTrue(eventDefinition.isBlocked());
+		Assertions.assertNotNull(eventDefinition.getBlockedLastSeenDate());
+		Assertions.assertNotNull(eventDefinition.getBlockedLastSeenURL());
+		Assertions.assertNull(eventDefinition.getDescription());
+		Assertions.assertNull(eventDefinition.getDisplayName());
 	}
 
 	@SQLResource(
 		resourcePath = "test_unblock_event_definitions_limit_overflow.sql"
 	)
-	@Test(expected = OSBAsahException.class)
+	@Test
 	public void testUnblockEventDefinitionsLimitOverflow() {
 		Page<EventDefinition> eventDefinitions =
 			_eventDefinitionDog.getEventDefinitionsPage(
 				true, null, null, 0, 5, Sort.asc("name"),
 				EventDefinition.Type.CUSTOM);
 
-		_eventDefinitionDog.unblockEventDefinitions(
-			ListUtil.map(
-				eventDefinitions.getContent(), EventDefinition::getId));
+		Assertions.assertThrows(
+			OSBAsahException.class,
+			() -> _eventDefinitionDog.unblockEventDefinitions(
+				ListUtil.map(
+					eventDefinitions.getContent(), EventDefinition::getId)));
 	}
 
 	@Test
@@ -581,7 +602,7 @@ public class EventDefinitionDogTest {
 		EventDefinition assetClickedEventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("assetClicked");
 
-		Assert.assertFalse(assetClickedEventDefinition.isHidden());
+		Assertions.assertFalse(assetClickedEventDefinition.isHidden());
 
 		_eventDefinitionDog.hideEventDefinitions(
 			Arrays.asList(assetClickedEventDefinition.getId()));
@@ -589,7 +610,7 @@ public class EventDefinitionDogTest {
 		assetClickedEventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("assetClicked");
 
-		Assert.assertTrue(assetClickedEventDefinition.isHidden());
+		Assertions.assertTrue(assetClickedEventDefinition.isHidden());
 
 		_eventDefinitionDog.unhideEventDefinitions(
 			Arrays.asList(assetClickedEventDefinition.getId()));
@@ -597,7 +618,7 @@ public class EventDefinitionDogTest {
 		assetClickedEventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("assetClicked");
 
-		Assert.assertFalse(assetClickedEventDefinition.isHidden());
+		Assertions.assertFalse(assetClickedEventDefinition.isHidden());
 	}
 
 	@Test
@@ -614,7 +635,7 @@ public class EventDefinitionDogTest {
 				eventDefinition1.getBlockedLastSeenURL(), null, null,
 				eventDefinition1.getId());
 
-		Assert.assertEquals(eventDefinition1, eventDefinition2);
+		Assertions.assertEquals(eventDefinition1, eventDefinition2);
 	}
 
 	@Test
@@ -630,7 +651,7 @@ public class EventDefinitionDogTest {
 			_eventDefinitionDog.updateEventDefinition(
 				null, null, newDescription, null, eventDefinition1.getId());
 
-		Assert.assertEquals(eventDefinition1, eventDefinition2);
+		Assertions.assertEquals(eventDefinition1, eventDefinition2);
 	}
 
 	@Test
@@ -646,22 +667,22 @@ public class EventDefinitionDogTest {
 			_eventDefinitionDog.updateEventDefinition(
 				null, null, null, newDisplayName, eventDefinition1.getId());
 
-		Assert.assertEquals(eventDefinition1, eventDefinition2);
+		Assertions.assertEquals(eventDefinition1, eventDefinition2);
 	}
 
 	private void _assertEventDefinitions(
 		Page<EventDefinition> actualEventDefinitionPage,
 		List<String> expectedEventDefinitionNames) {
 
-		Assert.assertEquals(
-			actualEventDefinitionPage.toString(),
+		Assertions.assertEquals(
 			expectedEventDefinitionNames.size(),
-			actualEventDefinitionPage.getNumberOfElements());
+			actualEventDefinitionPage.getNumberOfElements(),
+			actualEventDefinitionPage.toString());
 
 		for (EventDefinition actualEventDefinition :
 				actualEventDefinitionPage) {
 
-			Assert.assertTrue(
+			Assertions.assertTrue(
 				expectedEventDefinitionNames.contains(
 					actualEventDefinition.getName()));
 		}

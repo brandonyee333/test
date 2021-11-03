@@ -45,7 +45,10 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
@@ -64,21 +67,23 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 import org.yaml.snakeyaml.util.ArrayUtils;
 
@@ -86,10 +91,18 @@ import org.yaml.snakeyaml.util.ArrayUtils;
  * @author Rachael Koestartyo
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_liferayDataSource = FaroInfoTestUtil.buildLiferayDataSource();
 
@@ -295,7 +308,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 				dataSourceAccountPK.getAccountPKs())
 		);
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new String[] {"123"},
 			Matchers.arrayContainingInAnyOrder(
 				accountPKs.toArray(new String[0])));
@@ -329,7 +342,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 				dataSourceAccountPK.getAccountPKs())
 		);
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new String[] {"123", "456", "789"},
 			Matchers.arrayContainingInAnyOrder(
 				finalAccountPKs2.toArray(new String[0])));
@@ -387,7 +400,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		Set<Long> organizationIds = individual.getOrganizationIds();
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new Long[] {402139267512234420L, 402139268847589064L},
 			Matchers.arrayContainingInAnyOrder(
 				organizationIds.toArray(new Long[0])));
@@ -404,7 +417,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		segment.setChannelId(100L);
 		segment.setId(123L);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			3,
 			_individualDog.countActiveIndividualsFromLast30DaysBySegment(
 				segment));
@@ -431,7 +444,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		Set<Long> organizationIds = individual.getOrganizationIds();
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new Long[] {402139267512234420L},
 			Matchers.arrayContainingInAnyOrder(
 				organizationIds.toArray(new Long[0])));
@@ -454,12 +467,12 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		Page<Individual> individualPage = _individualDog.getIndividualPage(
 			"", null, 0, 10);
 
-		Assert.assertEquals(5, individualPage.getTotalElements());
-		Assert.assertEquals(
+		Assertions.assertEquals(5, individualPage.getTotalElements());
+		Assertions.assertEquals(
 			SetUtil.of("123", "124", "125", "126", "127"),
 			_getIndividualsCustomFieldValues(
 				individualPage.getContent(), "client_id"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			SetUtil.of("Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Mew"),
 			_getIndividualsDemographicsFieldValues(
 				individualPage.getContent(), "favoritePokemon"));
@@ -482,8 +495,8 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		Page<Individual> individualPage = _individualDog.getIndividualPage(
 			"mander", null, 0, 10);
 
-		Assert.assertEquals(1, individualPage.getTotalElements());
-		Assert.assertEquals(
+		Assertions.assertEquals(1, individualPage.getTotalElements());
+		Assertions.assertEquals(
 			SetUtil.of("Charmander"),
 			_getIndividualsDemographicsFieldValues(
 				individualPage.getContent(), "favoritePokemon"));
@@ -546,7 +559,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		Set<Long> segmentIds = individual.getSegmentIds();
 
-		Assert.assertEquals(segmentIds.toString(), 1, segmentIds.size());
+		Assertions.assertEquals(1, segmentIds.size(), segmentIds.toString());
 
 		_individualDog.removeSegmentId(individual, 338511398116723458L);
 
@@ -554,7 +567,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		segmentIds = individual.getSegmentIds();
 
-		Assert.assertEquals(segmentIds.toString(), 0, segmentIds.size());
+		Assertions.assertEquals(0, segmentIds.size(), segmentIds.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -571,7 +584,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 			100L, null, false, 0, 10,
 			new String[] {"demographics/givenName/value,asc"});
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			ArrayUtils.toUnmodifiableList(
 				new String[] {"alpha", "beta", "gamma", "omega", "theta"}),
 			_getGivenNames(individuals));
@@ -580,7 +593,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 			100L, null, false, 0, 10,
 			new String[] {"demographics/givenName/value,desc"});
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			ArrayUtils.toUnmodifiableList(
 				new String[] {"theta", "omega", "gamma", "beta", "alpha"}),
 			_getGivenNames(individuals));
@@ -589,7 +602,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 			null, null, false, 0, 10,
 			new String[] {"demographics/givenName/value,desc"});
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			ArrayUtils.toUnmodifiableList(
 				new String[] {"theta", "omega", "gamma", "beta", "alpha"}),
 			_getGivenNames(individuals));
@@ -615,32 +628,32 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		List<Individual> individuals = _individualDog.searchIndividuals(
 			100L, String.format(sb.toString(), "eq", 2), true, 0, 10, null);
 
-		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 
 		individuals = _individualDog.searchIndividuals(
 			100L, String.format(sb.toString(), "ge", 2), true, 0, 10, null);
 
-		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 
 		individuals = _individualDog.searchIndividuals(
 			100L, String.format(sb.toString(), "ge", 3), true, 0, 10, null);
 
-		Assert.assertEquals(individuals.toString(), 0, individuals.size());
+		Assertions.assertEquals(0, individuals.size(), individuals.toString());
 
 		individuals = _individualDog.searchIndividuals(
 			100L, String.format(sb.toString(), "gt", 0), true, 0, 10, null);
 
-		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 
 		individuals = _individualDog.searchIndividuals(
 			100L, String.format(sb.toString(), "le", 3), true, 0, 10, null);
 
-		Assert.assertEquals(individuals.toString(), 5, individuals.size());
+		Assertions.assertEquals(5, individuals.size(), individuals.toString());
 
 		individuals = _individualDog.searchIndividuals(
 			100L, String.format(sb.toString(), "lt", 2), true, 0, 10, null);
 
-		Assert.assertEquals(individuals.toString(), 4, individuals.size());
+		Assertions.assertEquals(4, individuals.size(), individuals.toString());
 	}
 
 	@Test
@@ -668,7 +681,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		Set<Long> segmentIds = individual.getSegmentIds();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new Long[] {234L}, segmentIds.toArray(new Long[0]));
 	}
 
@@ -748,7 +761,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		Set<Long> segmentIds = individual.getSegmentIds();
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new Long[] {338511398116723458L, 338511451975440187L},
 			Matchers.arrayContainingInAnyOrder(
 				segmentIds.toArray(new Long[0])));
@@ -759,7 +772,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
 			_segmentDog.getSegment(338511398116723458L));
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
 				"memberships",
 				BoolQueryBuilderUtil.filter(
@@ -798,7 +811,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 				QueryBuilders.termQuery("status", "INACTIVE")
 			));
 
-		Assert.assertEquals(3, membershipJSONArray.length());
+		Assertions.assertEquals(3, membershipJSONArray.length());
 	}
 
 	@ElasticsearchIndex(
@@ -889,7 +902,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		Set<Long> organizationIds = individual.getOrganizationIds();
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new Long[] {402139267512234420L, 402139268847589064L},
 			Matchers.arrayContainingInAnyOrder(
 				organizationIds.toArray(new Long[0])));
@@ -937,7 +950,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 			null
 		);
 
-		Assert.assertEquals("United States", countryField.getValue());
+		Assertions.assertEquals("United States", countryField.getValue());
 	}
 
 	@Test
@@ -998,12 +1011,12 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		page1JSONObject = cerebroInfoElasticsearchInvoker.fetch(
 			"pages", page1JSONObject.getString("id"));
 
-		Assert.assertTrue(page1JSONObject.getBoolean("knownIndividual"));
+		Assertions.assertTrue(page1JSONObject.getBoolean("knownIndividual"));
 
 		page2JSONObject = cerebroInfoElasticsearchInvoker.fetch(
 			"pages", page2JSONObject.getString("id"));
 
-		Assert.assertTrue(page2JSONObject.getBoolean("knownIndividual"));
+		Assertions.assertTrue(page2JSONObject.getBoolean("knownIndividual"));
 	}
 
 	private void _assertCustomFields(
@@ -1020,14 +1033,14 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 		);
 
 		if (values.isEmpty()) {
-			Assert.assertNull(expectedValue);
+			Assertions.assertNull(expectedValue);
 		}
 		else if (values.size() == 1) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				String.valueOf(expectedValue), String.valueOf(values.get(0)));
 		}
 		else {
-			Assert.assertThat(
+			MatcherAssert.assertThat(
 				(Object[])expectedValue,
 				Matchers.arrayContainingInAnyOrder(
 					values.toArray(new Object[0])));
@@ -1048,7 +1061,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		Set<String> individualPKs = dataSourceIndividualPK.getIndividualPKs();
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			expectedValue,
 			Matchers.arrayContainingInAnyOrder(
 				individualPKs.toArray(new Object[0])));
@@ -1068,7 +1081,7 @@ public class IndividualDogTest extends BaseFaroInfoDogTestCase {
 			null
 		);
 
-		Assert.assertEquals(expectedMiddleName, middleNameField.getValue());
+		Assertions.assertEquals(expectedMiddleName, middleNameField.getValue());
 	}
 
 	private List<String> _getGivenNames(List<Individual> individuals) {

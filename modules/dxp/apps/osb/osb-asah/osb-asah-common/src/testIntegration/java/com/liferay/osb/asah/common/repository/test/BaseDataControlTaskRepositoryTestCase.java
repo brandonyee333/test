@@ -24,9 +24,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +37,7 @@ import org.springframework.data.domain.PageRequest;
 public abstract class BaseDataControlTaskRepositoryTestCase
 	extends BaseRepositoryTestCase<DataControlTask, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		DataControlTask dataControlTask = new DataControlTask();
 
@@ -60,9 +60,9 @@ public abstract class BaseDataControlTaskRepositoryTestCase
 			_dataControlTaskRepository.searchDataControlTasks(
 				null, "joe", null, null, null, PageRequest.of(0, 10));
 
-		Assert.assertEquals(
-			dataControlTasks.toString(), 1, dataControlTasks.size());
-		Assert.assertEquals(_dataControlTask, dataControlTasks.get(0));
+		Assertions.assertEquals(
+			1, dataControlTasks.size(), dataControlTasks.toString());
+		Assertions.assertEquals(_dataControlTask, dataControlTasks.get(0));
 	}
 
 	@Test
@@ -73,9 +73,9 @@ public abstract class BaseDataControlTaskRepositoryTestCase
 				Arrays.asList(String.valueOf(DataControlTaskStatus.PENDING)),
 				null, PageRequest.of(0, 10));
 
-		Assert.assertEquals(
-			dataControlTasks.toString(), 1, dataControlTasks.size());
-		Assert.assertEquals(_dataControlTask, dataControlTasks.get(0));
+		Assertions.assertEquals(
+			1, dataControlTasks.size(), dataControlTasks.toString());
+		Assertions.assertEquals(_dataControlTask, dataControlTasks.get(0));
 	}
 
 	@Override

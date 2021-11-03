@@ -29,7 +29,10 @@ import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.math.BigDecimal;
 
@@ -42,20 +45,29 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Leslie Wong
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class EventAnalysisDogTest {
 
 	@SQLResource(resourcePath = "test_get_event_analysis.sql")
@@ -67,12 +79,12 @@ public class EventAnalysisDogTest {
 			TimeRange.of(
 				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")));
 
-		Assert.assertEquals(1, eventAnalysis.getCount());
-		Assert.assertEquals(0, eventAnalysis.getPage());
+		Assertions.assertEquals(1, eventAnalysis.getCount());
+		Assertions.assertEquals(0, eventAnalysis.getPage());
 
 		BigDecimal value = BigDecimal.valueOf(2);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0, value.compareTo((BigDecimal)eventAnalysis.getValue()));
 	}
 
@@ -353,9 +365,9 @@ public class EventAnalysisDogTest {
 			TimeRange.of(
 				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-10")));
 
-		Assert.assertEquals(1, eventAnalysis.getCount());
-		Assert.assertEquals(0, eventAnalysis.getPage());
-		Assert.assertEquals(9L, eventAnalysis.getValue());
+		Assertions.assertEquals(1, eventAnalysis.getCount());
+		Assertions.assertEquals(0, eventAnalysis.getPage());
+		Assertions.assertEquals(9L, eventAnalysis.getValue());
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
@@ -372,9 +384,9 @@ public class EventAnalysisDogTest {
 			TimeRange.of(
 				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-10")));
 
-		Assert.assertEquals(1, eventAnalysis.getCount());
-		Assert.assertEquals(0, eventAnalysis.getPage());
-		Assert.assertEquals(5L, eventAnalysis.getValue());
+		Assertions.assertEquals(1, eventAnalysis.getCount());
+		Assertions.assertEquals(0, eventAnalysis.getPage());
+		Assertions.assertEquals(5L, eventAnalysis.getValue());
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
@@ -391,9 +403,9 @@ public class EventAnalysisDogTest {
 			TimeRange.of(
 				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-10")));
 
-		Assert.assertEquals(1, eventAnalysis.getCount());
-		Assert.assertEquals(0, eventAnalysis.getPage());
-		Assert.assertEquals(7L, eventAnalysis.getValue());
+		Assertions.assertEquals(1, eventAnalysis.getCount());
+		Assertions.assertEquals(0, eventAnalysis.getPage());
+		Assertions.assertEquals(7L, eventAnalysis.getValue());
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
@@ -410,9 +422,9 @@ public class EventAnalysisDogTest {
 			TimeRange.of(
 				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-10")));
 
-		Assert.assertEquals(1, eventAnalysis.getCount());
-		Assert.assertEquals(0, eventAnalysis.getPage());
-		Assert.assertEquals(6L, eventAnalysis.getValue());
+		Assertions.assertEquals(1, eventAnalysis.getCount());
+		Assertions.assertEquals(0, eventAnalysis.getPage());
+		Assertions.assertEquals(6L, eventAnalysis.getValue());
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
@@ -526,9 +538,9 @@ public class EventAnalysisDogTest {
 			TimeRange.of(
 				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-18")));
 
-		Assert.assertEquals(1, eventAnalysis.getCount());
-		Assert.assertEquals(0, eventAnalysis.getPage());
-		Assert.assertEquals(1L, eventAnalysis.getValue());
+		Assertions.assertEquals(1, eventAnalysis.getCount());
+		Assertions.assertEquals(0, eventAnalysis.getPage());
+		Assertions.assertEquals(1L, eventAnalysis.getValue());
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis_with_filter.sql")
@@ -545,12 +557,12 @@ public class EventAnalysisDogTest {
 			TimeRange.of(
 				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-19")));
 
-		Assert.assertEquals(1, eventAnalysis.getCount());
-		Assert.assertEquals(0, eventAnalysis.getPage());
+		Assertions.assertEquals(1, eventAnalysis.getCount());
+		Assertions.assertEquals(0, eventAnalysis.getPage());
 
 		BigDecimal value = BigDecimal.valueOf(1);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0, value.compareTo((BigDecimal)eventAnalysis.getValue()));
 	}
 
@@ -563,9 +575,9 @@ public class EventAnalysisDogTest {
 			TimeRange.of(
 				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")));
 
-		Assert.assertEquals(1, eventAnalysis.getCount());
-		Assert.assertEquals(0, eventAnalysis.getPage());
-		Assert.assertEquals(7L, eventAnalysis.getValue());
+		Assertions.assertEquals(1, eventAnalysis.getCount());
+		Assertions.assertEquals(0, eventAnalysis.getPage());
+		Assertions.assertEquals(7L, eventAnalysis.getValue());
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis.sql")
@@ -577,9 +589,9 @@ public class EventAnalysisDogTest {
 			TimeRange.of(
 				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")));
 
-		Assert.assertEquals(1, eventAnalysis.getCount());
-		Assert.assertEquals(0, eventAnalysis.getPage());
-		Assert.assertEquals(10L, eventAnalysis.getValue());
+		Assertions.assertEquals(1, eventAnalysis.getCount());
+		Assertions.assertEquals(0, eventAnalysis.getPage());
+		Assertions.assertEquals(10L, eventAnalysis.getValue());
 	}
 
 	@Autowired

@@ -24,16 +24,16 @@ import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.Arrays;
 
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -42,7 +42,7 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Marcellus Tavares
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 public class ElasticsearchRepositoryTest {
 
 	@Test
@@ -54,8 +54,8 @@ public class ElasticsearchRepositoryTest {
 
 		Channel channel = elasticsearchRepository.add(new Channel("name"));
 
-		Assert.assertNotNull(channel.getId());
-		Assert.assertEquals("name", channel.getName());
+		Assertions.assertNotNull(channel.getId());
+		Assertions.assertEquals("name", channel.getName());
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class ElasticsearchRepositoryTest {
 			searchSourceBuilder -> searchSourceBuilder.sort(
 				SortBuilderUtil.fieldSort("id", SortOrder.ASC)));
 
-		Assert.assertEquals(channel.getId(), returnedChannel.getId());
+		Assertions.assertEquals(channel.getId(), returnedChannel.getId());
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class ElasticsearchRepositoryTest {
 		Channel returnedChannel = elasticsearchRepository.get(
 			String.valueOf(channel.getId()));
 
-		Assert.assertEquals(channel.getId(), returnedChannel.getId());
+		Assertions.assertEquals(channel.getId(), returnedChannel.getId());
 	}
 
 	@Test
@@ -107,8 +107,8 @@ public class ElasticsearchRepositoryTest {
 		ResultBag<Channel> resultBag = elasticsearchRepository.search(
 			QueryBuilders.matchAllQuery(), 20, Sort.desc("id"), 0);
 
-		Assert.assertEquals(3, resultBag.getTotal());
-		Assert.assertEquals(
+		Assertions.assertEquals(3, resultBag.getTotal());
+		Assertions.assertEquals(
 			Arrays.asList(channel3, channel2, channel1),
 			resultBag.getResults());
 	}

@@ -37,9 +37,9 @@ import java.util.Optional;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -51,7 +51,7 @@ import org.springframework.data.domain.Sort;
 public abstract class BaseSegmentRepositoryTestCase
 	extends BaseRepositoryTestCase<Segment, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		Segment segment1 = new Segment();
 
@@ -175,11 +175,11 @@ public abstract class BaseSegmentRepositoryTestCase
 
 	@Test
 	public void testCountByIdAfter() {
-		Assert.assertEquals(4, _segmentRepository.countByIdAfter(0L));
+		Assertions.assertEquals(4, _segmentRepository.countByIdAfter(0L));
 
 		Segment segment = entityModels.get(0);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			3, _segmentRepository.countByIdAfter(segment.getId()));
 	}
 
@@ -188,12 +188,12 @@ public abstract class BaseSegmentRepositoryTestCase
 		_segmentRepository.deleteByChannelIdIn(
 			SetUtil.map(entityModels, Segment::getChannelId));
 
-		Assert.assertEquals(1, _segmentRepository.count());
+		Assertions.assertEquals(1, _segmentRepository.count());
 	}
 
 	@Test
 	public void testFindByChannelIdIsNotNullOrNameStartingWith() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			entityModels,
 			_segmentRepository.findByChannelIdIsNotNullOrNameStartingWith(
 				"Account: ", PageRequest.of(0, 10, Sort.by("id"))));
@@ -204,17 +204,17 @@ public abstract class BaseSegmentRepositoryTestCase
 		Optional<Segment> segmentOptional =
 			_segmentRepository.findByNameAndStatus("Segment 1", "STARTED");
 
-		Assert.assertTrue(segmentOptional.isPresent());
+		Assertions.assertTrue(segmentOptional.isPresent());
 
 		segmentOptional = _segmentRepository.findByNameAndStatus(
 			"Segment 1", "END");
 
-		Assert.assertFalse(segmentOptional.isPresent());
+		Assertions.assertFalse(segmentOptional.isPresent());
 	}
 
 	@Test
 	public void testFindByReferencedAssetDataSourceIdsAndStateNotAndType() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Arrays.asList(entityModels.get(0), entityModels.get(1)),
 			_segmentRepository.
 				findByReferencedAssetDataSourceIdsAndStateNotAndType(
@@ -232,11 +232,11 @@ public abstract class BaseSegmentRepositoryTestCase
 			FilterHelper.EMPTY, false, PageRequest.of(0, 10),
 			Collections.singleton(_segment3Id));
 
-		Assert.assertEquals(segments.toString(), 1, segments.size());
+		Assertions.assertEquals(1, segments.size(), segments.toString());
 
 		Segment segment = segments.get(0);
 
-		Assert.assertEquals(_segment3Id, segment.getId());
+		Assertions.assertEquals(_segment3Id, segment.getId());
 
 		segments = _segmentRepository.searchDynamicSegments(
 			Collections.singleton(
@@ -247,7 +247,7 @@ public abstract class BaseSegmentRepositoryTestCase
 			FilterHelper.EMPTY, true, PageRequest.of(0, 10),
 			Collections.singleton(_segment3Id));
 
-		Assert.assertEquals(segments.toString(), 0, segments.size());
+		Assertions.assertEquals(0, segments.size(), segments.toString());
 	}
 
 	@Test
@@ -257,9 +257,9 @@ public abstract class BaseSegmentRepositoryTestCase
 
 		Segment segment = segmentOptional.get();
 
-		Assert.assertEquals(1L, (long)segment.getActivitiesCount());
+		Assertions.assertEquals(1L, (long)segment.getActivitiesCount());
 
-		Assert.assertNotNull(segment.getLastActivityDate());
+		Assertions.assertNotNull(segment.getLastActivityDate());
 
 		_segmentRepository.updateActivitiesCountAndRemoveLastActivityDate(0L);
 
@@ -267,9 +267,9 @@ public abstract class BaseSegmentRepositoryTestCase
 
 		segment = segmentOptional.get();
 
-		Assert.assertEquals(0L, (long)segment.getActivitiesCount());
+		Assertions.assertEquals(0L, (long)segment.getActivitiesCount());
 
-		Assert.assertNull(segment.getLastActivityDate());
+		Assertions.assertNull(segment.getLastActivityDate());
 	}
 
 	@Override

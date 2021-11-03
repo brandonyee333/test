@@ -23,9 +23,9 @@ import java.util.Optional;
 
 import org.apache.commons.collections4.IterableUtils;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +37,7 @@ import org.springframework.data.domain.Sort;
  */
 public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		Repository<T, ID> repository = getRepository();
 
@@ -48,7 +48,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 	public void testCount() {
 		Repository<T, ID> repository = getRepository();
 
-		Assert.assertEquals(entityModels.size(), repository.count());
+		Assertions.assertEquals(entityModels.size(), repository.count());
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 
 		repository.delete(entityModels.get(0));
 
-		Assert.assertEquals(entityModels.size() - 1, repository.count());
+		Assertions.assertEquals(entityModels.size() - 1, repository.count());
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 
 		repository.deleteAll();
 
-		Assert.assertEquals(0, repository.count());
+		Assertions.assertEquals(0, repository.count());
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 
 		repository.deleteAll(entityModels);
 
-		Assert.assertEquals(0, repository.count());
+		Assertions.assertEquals(0, repository.count());
 	}
 
 	@Test
@@ -84,13 +84,13 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 
 		ID id = model.getId();
 
-		Assert.assertNotNull(id);
+		Assertions.assertNotNull(id);
 
 		Repository<T, ID> repository = getRepository();
 
 		repository.deleteById(id);
 
-		Assert.assertEquals(entityModels.size() - 1, repository.count());
+		Assertions.assertEquals(entityModels.size() - 1, repository.count());
 	}
 
 	@Test
@@ -99,14 +99,14 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 
 		Repository<T, ID> repository = getRepository();
 
-		Assert.assertTrue(repository.existsById(model.getId()));
+		Assertions.assertTrue(repository.existsById(model.getId()));
 	}
 
 	@Test
 	public void testFindAll1() {
 		Repository<T, ID> repository = getRepository();
 
-		Assert.assertEquals(entityModels, repository.findAll());
+		Assertions.assertEquals(entityModels, repository.findAll());
 	}
 
 	@Test
@@ -116,21 +116,22 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 		Page<T> page = repository.findAll(
 			PageRequest.of(0, entityModels.size(), Sort.by("id")));
 
-		Assert.assertEquals(entityModels, page.getContent());
+		Assertions.assertEquals(entityModels, page.getContent());
 	}
 
 	@Test
 	public void testFindAll3() {
 		Repository<T, ID> repository = getRepository();
 
-		Assert.assertEquals(entityModels, repository.findAll(Sort.by("id")));
+		Assertions.assertEquals(
+			entityModels, repository.findAll(Sort.by("id")));
 	}
 
 	@Test
 	public void testFindAllById() {
 		Repository<T, ID> repository = getRepository();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			entityModels,
 			repository.findAllById(ListUtil.map(entityModels, T::getId)));
 	}
@@ -141,20 +142,20 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 
 		ID id = model.getId();
 
-		Assert.assertNotNull(id);
+		Assertions.assertNotNull(id);
 
 		Repository<T, ID> repository = getRepository();
 
 		Optional<T> modelOptional = repository.findById(id);
 
-		Assert.assertTrue(modelOptional.isPresent());
+		Assertions.assertTrue(modelOptional.isPresent());
 	}
 
 	@Test
 	public void testSave() {
 		Repository<T, ID> repository = getRepository();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			entityModels.get(0), repository.save(entityModels.get(0)));
 	}
 
@@ -162,7 +163,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
 	public void testSaveAll() {
 		Repository<T, ID> repository = getRepository();
 
-		Assert.assertEquals(entityModels, repository.saveAll(entityModels));
+		Assertions.assertEquals(entityModels, repository.saveAll(entityModels));
 	}
 
 	protected abstract Repository<T, ID> getRepository();

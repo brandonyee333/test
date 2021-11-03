@@ -30,7 +30,10 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
@@ -42,9 +45,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -53,13 +56,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Leslie Wong
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 @Import(JDBCTestConfiguration.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class EventStorageDogTest {
 
 	@Test
@@ -84,14 +96,14 @@ public class EventStorageDogTest {
 				Collections.singletonMap(
 					"newEventAttributeDefinition", "testValue"));
 
-			Assert.fail("Storing analytics event did not fail");
+			Assertions.fail("Storing analytics event did not fail");
 		}
 		catch (Exception exception) {
-			Assert.assertNull(
+			Assertions.assertNull(
 				_eventAttributeDefinitionDog.
 					fetchEventAttributeDefinitionByName(
 						"newEventAttributeDefinition"));
-			Assert.assertNull(
+			Assertions.assertNull(
 				_eventDefinitionDog.fetchEventDefinitionByName(
 					"newEventDefinition"));
 		}
@@ -113,14 +125,14 @@ public class EventStorageDogTest {
 			Collections.singletonMap("canonicalUrl", "http://127.0.0.1"),
 			Collections.emptyMap());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventDefinitionCount,
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, null, EventDefinition.Type.CUSTOM),
 			0.0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventCount, _eventDog.countEvents(null), 0.0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventAttributeDefinitionCount,
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
 				null, null, EventAttributeDefinition.Type.LOCAL),
@@ -143,14 +155,14 @@ public class EventStorageDogTest {
 			Collections.singletonMap("canonicalUrl", "http://127.0.0.1"),
 			Collections.emptyMap());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventDefinitionCount,
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, null, EventDefinition.Type.CUSTOM),
 			0.0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventCount, _eventDog.countEvents(null), 0.0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventAttributeDefinitionCount,
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
 				null, null, EventAttributeDefinition.Type.LOCAL),
@@ -181,23 +193,23 @@ public class EventStorageDogTest {
 			Collections.singletonMap("canonicalUrl", "http://127.0.0.1"),
 			Collections.singletonMap("newTestEventAttribute", "testValue"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventAttributeDefinitionCount,
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
 				null, null, EventAttributeDefinition.Type.LOCAL),
 			0.0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventCount, _eventDog.countEvents(eventDefinition.getId()),
 			0.0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventDefinitionCount,
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, null, EventDefinition.Type.CUSTOM),
 			0.0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Collections.singleton(eventDefinition.getId()),
 			_getEventDefinitionIds("newTestEventAttribute"));
-		Assert.assertNotNull(event.getSessionId());
+		Assertions.assertNotNull(event.getSessionId());
 	}
 
 	@Test
@@ -225,20 +237,20 @@ public class EventStorageDogTest {
 			Collections.singletonMap("canonicalUrl", "http://127.0.0.1"),
 			Collections.singletonMap("category", "testValue"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventAttributeDefinitionCount,
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
 				null, null, EventAttributeDefinition.Type.LOCAL),
 			0.0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventCount, _eventDog.countEvents(eventDefinition.getId()),
 			0.0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventDefinitionCount,
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, null, EventDefinition.Type.CUSTOM),
 			0.0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventDefinitionIds, _getEventDefinitionIds("category"));
 	}
 
@@ -262,15 +274,15 @@ public class EventStorageDogTest {
 			Collections.singletonMap("canonicalUrl", "http://127.0.0.1"),
 			Collections.singletonMap("title", "My First Site"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventAttributeDefinitionCount,
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
 				null, null, EventAttributeDefinition.Type.LOCAL),
 			0.0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventCount, _eventDog.countEvents(eventDefinition.getId()),
 			0.0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventDefinitionCount,
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, null, EventDefinition.Type.CUSTOM),
@@ -344,12 +356,12 @@ public class EventStorageDogTest {
 			Collections.singletonMap("canonicalUrl", "http://127.0.0.1"),
 			Collections.emptyMap());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventAttributeDefinitionCount,
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
 				null, null, EventAttributeDefinition.Type.LOCAL),
 			0.0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventDefinitionCount,
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, null, EventDefinition.Type.CUSTOM),
@@ -359,7 +371,7 @@ public class EventStorageDogTest {
 			_eventDefinitionDog.fetchEventDefinitionByName(
 				"newEventDefinition");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1, _eventDog.countEvents(eventDefinition.getId()), 0.0);
 	}
 
@@ -378,8 +390,8 @@ public class EventStorageDogTest {
 		EventAttribute actualEventAttribute = actualEventAttributesMap.get(
 			expectedEventAttributeDefinition.getId());
 
-		Assert.assertNotNull(actualEventAttribute);
-		Assert.assertEquals(
+		Assertions.assertNotNull(actualEventAttribute);
+		Assertions.assertEquals(
 			expectedEventAttributeValue, actualEventAttribute.getValue());
 	}
 

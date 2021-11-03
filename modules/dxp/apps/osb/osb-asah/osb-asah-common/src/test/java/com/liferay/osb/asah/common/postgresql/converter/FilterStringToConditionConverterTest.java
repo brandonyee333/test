@@ -19,8 +19,8 @@ import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilter
 import org.jooq.Condition;
 import org.jooq.impl.DSL;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Rachael Koestartyo
@@ -281,7 +281,7 @@ public class FilterStringToConditionConverterTest {
 				"(demographics/email/value ne null))",
 			new IndividualsFilterStringConverterHelper());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedCondition.toString(), actualCondition.toString());
 	}
 
@@ -524,7 +524,7 @@ public class FilterStringToConditionConverterTest {
 		Condition actualCondition = FilterStringToConditionConverter.convert(
 			actualFilterString);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedCondition.toString(), actualCondition.toString());
 	}
 
@@ -532,16 +532,16 @@ public class FilterStringToConditionConverterTest {
 		try {
 			FilterStringToConditionConverter.convert(filterString);
 
-			Assert.fail(
+			Assertions.fail(
 				filterString +
 					" did not throw an instance of IllegalArgumentException");
 		}
 		catch (Exception exception) {
 			Throwable cause = exception.getCause();
 
-			Assert.assertTrue(cause instanceof IllegalArgumentException);
+			Assertions.assertTrue(cause instanceof IllegalArgumentException);
 
-			Assert.assertEquals(cause.getMessage(), message);
+			Assertions.assertEquals(cause.getMessage(), message);
 		}
 	}
 

@@ -19,7 +19,10 @@ import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,22 +35,31 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Vishal Reddy
  * @author Leslie Wong
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class CollectionGetResponseTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		_elasticsearchInvoker.add(
 			"individuals",
@@ -146,7 +158,7 @@ public class CollectionGetResponseTest {
 		JSONArray individualsJSONArray = embeddedJSONObject.getJSONArray(
 			"individuals");
 
-		Assert.assertEquals(size, individualsJSONArray.length());
+		Assertions.assertEquals(size, individualsJSONArray.length());
 	}
 
 	private void _assertOrder(
@@ -169,7 +181,7 @@ public class CollectionGetResponseTest {
 			Collections.sort(expectedValues, Collections.reverseOrder());
 		}
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedValues.subList(0, 20),
 			_getValues(embeddedJSONObject.getJSONArray("individuals"), path));
 	}
@@ -180,11 +192,12 @@ public class CollectionGetResponseTest {
 
 		JSONObject pageJSONObject = jsonObject.getJSONObject("page");
 
-		Assert.assertEquals(number, pageJSONObject.getInt("number"));
-		Assert.assertEquals(size, pageJSONObject.getInt("size"));
-		Assert.assertEquals(
+		Assertions.assertEquals(number, pageJSONObject.getInt("number"));
+		Assertions.assertEquals(size, pageJSONObject.getInt("size"));
+		Assertions.assertEquals(
 			totalElements, pageJSONObject.getInt("totalElements"));
-		Assert.assertEquals(totalPages, pageJSONObject.getInt("totalPages"));
+		Assertions.assertEquals(
+			totalPages, pageJSONObject.getInt("totalPages"));
 	}
 
 	private JSONObject _getResponseJSONObject(

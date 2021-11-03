@@ -34,7 +34,10 @@ import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -55,16 +58,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Alejo Ceballos
@@ -72,8 +77,16 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Matthew Kong
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 @Import(JDBCTestConfiguration.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class EventRepositoryTest {
 
 	@SQLResource(resourcePath = "test_events.sql")
@@ -81,7 +94,7 @@ public class EventRepositoryTest {
 	public void testCountEventsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Integer.valueOf(3),
 			_eventRepository.countEvents(
 				1L, 1L, null, timeRange.getEndLocalDateTime(),
@@ -93,7 +106,7 @@ public class EventRepositoryTest {
 	public void testCountEventsWithKeywordsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Integer.valueOf(1),
 			_eventRepository.countEvents(
 				1L, 1L, "form", timeRange.getEndLocalDateTime(),
@@ -103,7 +116,7 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
 	public void testCountTotalEvents() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			8L,
 			_eventRepository.countTotalEvents(
 				1L,
@@ -121,7 +134,7 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
 	public void testCountTotalEventsWithTimeZone() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			6L,
 			_eventRepository.countTotalEvents(
 				1L,
@@ -139,7 +152,7 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
 	public void testCountUniqueIndividuals() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			6L,
 			_eventRepository.countUniqueIndividuals(
 				1L,
@@ -157,7 +170,7 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
 	public void testCountUniqueIndividualsWithTimeZone() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			5L,
 			_eventRepository.countUniqueIndividuals(
 				1L,
@@ -177,7 +190,7 @@ public class EventRepositoryTest {
 	)
 	@Test
 	public void testGetAverageEventCountPerIndividual() {
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			BigDecimal.valueOf(2),
 			Matchers.comparesEqualTo(
 				_eventRepository.getAverageEventCountPerIndividual(
@@ -198,7 +211,7 @@ public class EventRepositoryTest {
 	)
 	@Test
 	public void testGetAverageEventCountPerIndividualWithTimeZone() {
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			BigDecimal.valueOf(1.5),
 			Matchers.comparesEqualTo(
 				_eventRepository.getAverageEventCountPerIndividual(
@@ -229,7 +242,7 @@ public class EventRepositoryTest {
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new String[] {
 				"https://www.beryl.com/blogs", "https://www.beryl.com/design",
 				"https://www.beryl.com/products"
@@ -261,18 +274,18 @@ public class EventRepositoryTest {
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new Boolean[] {true, false, null}, keys.toArray());
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(new Integer[] {6, 4, 1}, values.toArray());
+		Assertions.assertArrayEquals(new Integer[] {6, 4, 1}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
 	public void testGetEventAttributeValuesCountBoolean() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			3,
 			_eventRepository.getEventAttributeValuesCount(
 				1L,
@@ -288,7 +301,7 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
 	public void testGetEventAttributeValuesCountDate() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			5,
 			_eventRepository.getEventAttributeValuesCount(
 				1L,
@@ -305,7 +318,7 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
 	public void testGetEventAttributeValuesCountDateWithTimeZone() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			_eventRepository.getEventAttributeValuesCount(
 				1L,
@@ -327,7 +340,7 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
 	public void testGetEventAttributeValuesCountDuration() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			6,
 			_eventRepository.getEventAttributeValuesCount(
 				1L,
@@ -343,7 +356,7 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
 	public void testGetEventAttributeValuesCountNumber() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			8,
 			_eventRepository.getEventAttributeValuesCount(
 				1L,
@@ -359,7 +372,7 @@ public class EventRepositoryTest {
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
 	@Test
 	public void testGetEventAttributeValuesCountString() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			3,
 			_eventRepository.getEventAttributeValuesCount(
 				1L,
@@ -388,7 +401,7 @@ public class EventRepositoryTest {
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new String[] {
 				"2021-5-13", "2021-5-10", "2019-5-10", "2020-5-13", "2021-1-13",
 				"2021-5-1", null
@@ -397,7 +410,7 @@ public class EventRepositoryTest {
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new Integer[] {4, 2, 1, 1, 1, 1, 1}, values.toArray());
 	}
 
@@ -423,12 +436,12 @@ public class EventRepositoryTest {
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new String[] {"2021-5-12", "2021-5-13"}, keys.toArray());
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(new Integer[] {5, 1}, values.toArray());
+		Assertions.assertArrayEquals(new Integer[] {5, 1}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -446,7 +459,7 @@ public class EventRepositoryTest {
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new BigInteger[] {
 				BigInteger.valueOf(0), BigInteger.valueOf(2000),
 				BigInteger.valueOf(4000), BigInteger.valueOf(8000),
@@ -456,7 +469,7 @@ public class EventRepositoryTest {
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new Integer[] {3, 3, 2, 1, 1, 1}, values.toArray());
 	}
 
@@ -476,13 +489,13 @@ public class EventRepositoryTest {
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new String[] {"2021-5", "2019-5", "2020-5", "2021-1", null},
 			keys.toArray());
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new Integer[] {7, 1, 1, 1, 1}, values.toArray());
 	}
 
@@ -501,7 +514,7 @@ public class EventRepositoryTest {
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new BigInteger[] {
 				BigInteger.valueOf(0), BigInteger.valueOf(10000), null
 			},
@@ -509,7 +522,7 @@ public class EventRepositoryTest {
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(new Integer[] {9, 1, 1}, values.toArray());
+		Assertions.assertArrayEquals(new Integer[] {9, 1, 1}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -535,7 +548,7 @@ public class EventRepositoryTest {
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(new Integer[] {6, 3, 2}, values.toArray());
+		Assertions.assertArrayEquals(new Integer[] {6, 3, 2}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -553,7 +566,7 @@ public class EventRepositoryTest {
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new String[] {
 				"https://www.beryl.com/design",
 				"https://www.beryl.com/products", "https://www.beryl.com/blogs"
@@ -562,7 +575,7 @@ public class EventRepositoryTest {
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(new Integer[] {4, 4, 3}, values.toArray());
+		Assertions.assertArrayEquals(new Integer[] {4, 4, 3}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -580,7 +593,7 @@ public class EventRepositoryTest {
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new String[] {
 				"https://www.beryl.com/design",
 				"https://www.beryl.com/products", "https://www.beryl.com/blogs"
@@ -589,7 +602,7 @@ public class EventRepositoryTest {
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(new Integer[] {4, 4, 2}, values.toArray());
+		Assertions.assertArrayEquals(new Integer[] {4, 4, 2}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -616,7 +629,7 @@ public class EventRepositoryTest {
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new String[] {
 				"https://www.beryl.com/products",
 				"https://www.beryl.com/design", "https://www.beryl.com/blogs"
@@ -625,7 +638,7 @@ public class EventRepositoryTest {
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(new Integer[] {4, 2, 1}, values.toArray());
+		Assertions.assertArrayEquals(new Integer[] {4, 2, 1}, values.toArray());
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -644,12 +657,13 @@ public class EventRepositoryTest {
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new Integer[] {2021, 2019, 2020, null}, keys.toArray());
 
 		Collection<Number> values = eventAttributeValues.values();
 
-		Assert.assertArrayEquals(new Integer[] {8, 1, 1, 1}, values.toArray());
+		Assertions.assertArrayEquals(
+			new Integer[] {8, 1, 1, 1}, values.toArray());
 	}
 
 	@SQLResource(
@@ -664,13 +678,13 @@ public class EventRepositoryTest {
 				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), "UTC");
 
-		Assert.assertEquals(
-			eventsCountGroupByEventDate.toString(), 2,
-			eventsCountGroupByEventDate.size());
+		Assertions.assertEquals(
+			2, eventsCountGroupByEventDate.size(),
+			eventsCountGroupByEventDate.toString());
 
 		Collection<Integer> values = eventsCountGroupByEventDate.values();
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new Integer[] {1, 2},
 			Matchers.arrayContainingInAnyOrder(values.toArray(new Integer[0])));
 	}
@@ -690,9 +704,9 @@ public class EventRepositoryTest {
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
-		Assert.assertEquals(
-			eventsCountGroupByEventDate.toString(), 2,
-			eventsCountGroupByEventDate.size());
+		Assertions.assertEquals(
+			2, eventsCountGroupByEventDate.size(),
+			eventsCountGroupByEventDate.toString());
 
 		ZonedDateTime zonedDateTime = ZonedDateTime.now(
 			_timeZoneDog.getZoneId());
@@ -715,7 +729,7 @@ public class EventRepositoryTest {
 				expectedCountGroupByEventDate.entrySet()) {
 
 			if (eventsCountGroupByEventDate.containsKey(entry.getKey())) {
-				Assert.assertEquals(
+				Assertions.assertEquals(
 					entry.getValue(),
 					eventsCountGroupByEventDate.get(entry.getKey()));
 
@@ -723,7 +737,7 @@ public class EventRepositoryTest {
 			}
 		}
 
-		Assert.assertTrue(eventsCountGroupByEventDate.isEmpty());
+		Assertions.assertTrue(eventsCountGroupByEventDate.isEmpty());
 	}
 
 	@SQLResource(
@@ -738,15 +752,15 @@ public class EventRepositoryTest {
 				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), "UTC");
 
-		Assert.assertEquals(
-			eventsCountGroupByEventDate.toString(), 1,
-			eventsCountGroupByEventDate.size());
+		Assertions.assertEquals(
+			1, eventsCountGroupByEventDate.size(),
+			eventsCountGroupByEventDate.toString());
 
 		Collection<Integer> values = eventsCountGroupByEventDate.values();
 
 		Iterator<Integer> iterator = values.iterator();
 
-		Assert.assertEquals(Integer.valueOf(4), iterator.next());
+		Assertions.assertEquals(Integer.valueOf(4), iterator.next());
 	}
 
 	@SQLResource(
@@ -764,9 +778,9 @@ public class EventRepositoryTest {
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
-		Assert.assertEquals(
-			eventsCountGroupByEventDate.toString(), 1,
-			eventsCountGroupByEventDate.size());
+		Assertions.assertEquals(
+			1, eventsCountGroupByEventDate.size(),
+			eventsCountGroupByEventDate.toString());
 
 		ZonedDateTime zonedDateTime = ZonedDateTime.now(
 			_timeZoneDog.getZoneId());
@@ -776,7 +790,7 @@ public class EventRepositoryTest {
 				_getLocalDateString(ChronoUnit.HOURS, null, -1, zonedDateTime),
 				4);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventsCountGroupByEventDate, eventsCountGroupByEventDate);
 	}
 
@@ -792,14 +806,14 @@ public class EventRepositoryTest {
 				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), "UTC");
 
-		Assert.assertEquals(
-			eventSessionsCountGroupByEventDate.toString(), 2,
-			eventSessionsCountGroupByEventDate.size());
+		Assertions.assertEquals(
+			2, eventSessionsCountGroupByEventDate.size(),
+			eventSessionsCountGroupByEventDate.toString());
 
 		Collection<Integer> values =
 			eventSessionsCountGroupByEventDate.values();
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new Integer[] {1, 2},
 			Matchers.arrayContainingInAnyOrder(values.toArray(new Integer[0])));
 	}
@@ -819,9 +833,9 @@ public class EventRepositoryTest {
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
-		Assert.assertEquals(
-			eventSessionsCountGroupByEventDate.toString(), 2,
-			eventSessionsCountGroupByEventDate.size());
+		Assertions.assertEquals(
+			2, eventSessionsCountGroupByEventDate.size(),
+			eventSessionsCountGroupByEventDate.toString());
 
 		ZonedDateTime zonedDateTime = ZonedDateTime.now(
 			_timeZoneDog.getZoneId());
@@ -840,7 +854,7 @@ public class EventRepositoryTest {
 				}
 			};
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventSessionsCountGroupByEventDate,
 			eventSessionsCountGroupByEventDate);
 	}
@@ -857,16 +871,16 @@ public class EventRepositoryTest {
 				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), "UTC");
 
-		Assert.assertEquals(
-			eventSessionsCountGroupByEventDate.toString(), 1,
-			eventSessionsCountGroupByEventDate.size());
+		Assertions.assertEquals(
+			1, eventSessionsCountGroupByEventDate.size(),
+			eventSessionsCountGroupByEventDate.toString());
 
 		Collection<Integer> values =
 			eventSessionsCountGroupByEventDate.values();
 
 		Iterator<Integer> iterator = values.iterator();
 
-		Assert.assertEquals(Integer.valueOf(2), iterator.next());
+		Assertions.assertEquals(Integer.valueOf(2), iterator.next());
 	}
 
 	@SQLResource(
@@ -884,9 +898,9 @@ public class EventRepositoryTest {
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
-		Assert.assertEquals(
-			eventSessionsCountGroupByEventDate.toString(), 1,
-			eventSessionsCountGroupByEventDate.size());
+		Assertions.assertEquals(
+			1, eventSessionsCountGroupByEventDate.size(),
+			eventSessionsCountGroupByEventDate.toString());
 
 		ZonedDateTime zonedDateTime = ZonedDateTime.now(
 			_timeZoneDog.getZoneId());
@@ -896,7 +910,7 @@ public class EventRepositoryTest {
 				_getLocalDateString(ChronoUnit.HOURS, null, -1, zonedDateTime),
 				2);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEventSessionsCountGroupByEventDate,
 			eventSessionsCountGroupByEventDate);
 	}
@@ -911,11 +925,11 @@ public class EventRepositoryTest {
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
 			"UTC");
 
-		Assert.assertEquals(events.toString(), 3, events.size());
+		Assertions.assertEquals(3, events.size(), events.toString());
 
 		Stream<Event> stream = events.stream();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new String[] {"blogClicked", "formViewed", "assetClicked"},
 			stream.map(
 				event -> {
@@ -941,7 +955,7 @@ public class EventRepositoryTest {
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
 			"UTC");
 
-		Assert.assertEquals(events.toString(), 1, events.size());
+		Assertions.assertEquals(1, events.size(), events.toString());
 	}
 
 	private void _assertBigDecimalEquals(
@@ -952,7 +966,8 @@ public class EventRepositoryTest {
 
 			actualValue = actualValue.setScale(scale, RoundingMode.HALF_UP);
 
-			Assert.assertEquals(0, actualValue.compareTo(expectedValues[i]));
+			Assertions.assertEquals(
+				0, actualValue.compareTo(expectedValues[i]));
 		}
 	}
 

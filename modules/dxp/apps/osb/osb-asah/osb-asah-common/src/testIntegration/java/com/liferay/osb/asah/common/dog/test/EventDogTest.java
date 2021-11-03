@@ -28,7 +28,10 @@ import com.liferay.osb.asah.common.model.EventAttributeValue;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,20 +40,29 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Leslie Wong
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 @Import(JDBCTestConfiguration.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class EventDogTest {
 
 	@Test
@@ -67,18 +79,19 @@ public class EventDogTest {
 			Collections.emptySet(), date, eventDefinition.getId(), 1L,
 			"sessionId", "abcdef");
 
-		Assert.assertEquals("analyticsEventId", event.getAnalyticsEventId());
-		Assert.assertEquals("Page", event.getApplicationId());
-		Assert.assertEquals(channel.getId(), event.getChannelId());
-		Assert.assertEquals(date, event.getCreateDate());
-		Assert.assertEquals(Long.valueOf(123456), event.getDataSourceId());
-		Assert.assertEquals(date, event.getEventDate());
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			"analyticsEventId", event.getAnalyticsEventId());
+		Assertions.assertEquals("Page", event.getApplicationId());
+		Assertions.assertEquals(channel.getId(), event.getChannelId());
+		Assertions.assertEquals(date, event.getCreateDate());
+		Assertions.assertEquals(Long.valueOf(123456), event.getDataSourceId());
+		Assertions.assertEquals(date, event.getEventDate());
+		Assertions.assertEquals(
 			eventDefinition.getId(), event.getEventDefinitionId());
-		Assert.assertEquals("sessionId", event.getSessionId());
-		Assert.assertEquals("abcdef", event.getUserId());
+		Assertions.assertEquals("sessionId", event.getSessionId());
+		Assertions.assertEquals("abcdef", event.getUserId());
 
-		Assert.assertNotNull(event.getId());
+		Assertions.assertNotNull(event.getId());
 	}
 
 	@Test
@@ -102,17 +115,17 @@ public class EventDogTest {
 			Collections.singleton(eventAttribute), date,
 			eventDefinition.getId(), 1L, "sessionId", "abcdef");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			eventAttributeDefinition.getId(),
 			eventAttribute.getEventAttributeDefinitionId());
-		Assert.assertEquals("987654321", eventAttribute.getValue());
+		Assertions.assertEquals("987654321", eventAttribute.getValue());
 
 		Set<EventAttribute> eventAttributes = event.getEventAttributes();
 
-		Assert.assertEquals(
-			eventAttributes.toString(), 1, eventAttributes.size());
+		Assertions.assertEquals(
+			1, eventAttributes.size(), eventAttributes.toString());
 
-		Assert.assertNotNull(eventAttribute.getId());
+		Assertions.assertNotNull(eventAttribute.getId());
 	}
 
 	@Test
@@ -152,7 +165,7 @@ public class EventDogTest {
 			Collections.singleton(eventAttribute), date2,
 			eventDefinition.getId(), 1L, "sessionId", "userId");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			new ArrayList<EventAttributeValue>() {
 				{
 					add(new EventAttributeValue(date2, "testValue2"));
@@ -209,15 +222,15 @@ public class EventDogTest {
 		List<Event> events = _eventDog.searchEvents(
 			channel.getId(), 1L, null, 0, 50, TimeRange.LAST_24_HOURS);
 
-		Assert.assertEquals(events.toString(), 2, events.size());
+		Assertions.assertEquals(2, events.size(), events.toString());
 
 		events.forEach(
 			event -> {
 				Set<EventAttribute> eventAttributes =
 					event.getEventAttributes();
 
-				Assert.assertEquals(
-					eventAttributes.toString(), 2, eventAttributes.size());
+				Assertions.assertEquals(
+					2, eventAttributes.size(), eventAttributes.toString());
 			});
 	}
 

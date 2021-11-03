@@ -48,7 +48,10 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
 import java.util.HashMap;
@@ -60,31 +63,41 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Rachael Koestartyo
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 @Import(JDBCTestConfiguration.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class IndividualsFilterStringConverterHelperTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		for (String collectionName : _COLLECTION_NAMES) {
 			_faroInfoElasticsearchInvoker.add(
@@ -157,7 +170,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468609906122549L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountEqZero() {
 		testFilterString(
@@ -321,7 +334,7 @@ public class IndividualsFilterStringConverterHelperTest {
 				"''Private''', operator='lt', value=-3)");
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountLtPositive() {
 		testFilterString(
@@ -375,7 +388,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468652526171339L, 346468651775874817L, 346468650664446754L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountNestedAnd() {
 		testFilterString(
@@ -388,7 +401,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468699875814972L, 346468701457781206L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountNestedOr() {
 		testFilterString(
@@ -416,7 +429,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468699875814972L, 346468700681239480L, 346468701457781206L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountUnnestedAnd() {
 		testFilterString(
@@ -431,7 +444,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468699875814972L, 346468700681239480L, 346468701457781206L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountUnnestedOr() {
 		testFilterString(
@@ -451,7 +464,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468683127812925L, 346468700681239480L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountWithApostrophe() {
 		testFilterString(
@@ -561,7 +574,7 @@ public class IndividualsFilterStringConverterHelperTest {
 				"organization/phone/value, ''0'')', value=0)");
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testAccountsFilterNestedAnd() {
 		testFilterString(
@@ -576,7 +589,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468701457781206L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testAccountsFilterUnnestedAnd() {
 		testFilterString(
@@ -633,7 +646,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			"accounts.filter(filter=organization/yearStarted/value lt 2000)");
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testActivitiesFilterBetweenDay() {
 		testFilterString(
@@ -687,7 +700,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468605699756892L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountEqZero() {
 		testFilterString(
@@ -908,7 +921,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468701457781206L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountNeZero() {
 		testFilterString(
@@ -974,7 +987,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468699875814972L, 346468603851271125L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testActivitiesFilterGtDay() {
 		testFilterString(
@@ -983,7 +996,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468609906122549L, 346468614337714393L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testActivitiesFilterInBetweenDay() {
 		testFilterString(
@@ -992,7 +1005,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468603851271125L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testActivitiesFilterLtDay() {
 		testFilterString(
@@ -1056,7 +1069,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468680492094349L, 346468683127812925L, 346468701457781206L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testOrganizationFilterGtModifiedDate() {
 		testFilterString(
@@ -1078,7 +1091,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468605699756892L, 346468608880878498L, 346468609906122549L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testOrganizationFilterLtModifiedDate() {
 		testFilterString(
@@ -1100,7 +1113,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			346468603851271125L);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testOrganizationFilterNameNotEq() {
 		testFilterString(
@@ -1310,7 +1323,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			Collectors.toList()
 		);
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			expectedIndividualIds,
 			Matchers.arrayContainingInAnyOrder(ids.toArray(new Long[0])));
 	}
@@ -1526,7 +1539,7 @@ public class IndividualsFilterStringConverterHelperTest {
 			FilterStringToConditionConverter.convert(
 				filterString, _individualsFilterStringConverterHelper);
 
-			Assert.fail();
+			Assertions.fail();
 		}
 		catch (Exception exception) {
 			if (expectedExceptionClass == null) {
@@ -1541,17 +1554,17 @@ public class IndividualsFilterStringConverterHelperTest {
 
 			Class<?> clazz = throwable.getClass();
 
-			Assert.assertEquals(
+			Assertions.assertEquals(
+				clazz, expectedExceptionClass,
 				"Expected innermost throwable to be of type " +
 					expectedExceptionClass.getName() + ", but was " +
-						clazz.getName(),
-				clazz, expectedExceptionClass);
+						clazz.getName());
 
 			if (expectedMessage == null) {
 				return;
 			}
 
-			Assert.assertEquals(expectedMessage, throwable.getMessage());
+			Assertions.assertEquals(expectedMessage, throwable.getMessage());
 		}
 	}
 

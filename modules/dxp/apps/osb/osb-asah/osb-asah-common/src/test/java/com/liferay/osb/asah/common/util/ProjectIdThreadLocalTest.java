@@ -16,17 +16,20 @@ package com.liferay.osb.asah.common.util;
 
 import com.liferay.osb.asah.common.multitenancy.exception.InvalidProjectIdException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author André Miranda
  */
 public class ProjectIdThreadLocalTest {
 
-	@Test(expected = InvalidProjectIdException.class)
+	@Test
 	public void testSetInvalidProjectId() {
-		ProjectIdThreadLocal.setProjectId("../../../now_whatever?param1=&");
+		Assertions.assertThrows(
+			InvalidProjectIdException.class,
+			() -> ProjectIdThreadLocal.setProjectId(
+				"../../../now_whatever?param1=&"));
 	}
 
 	@Test
@@ -34,7 +37,7 @@ public class ProjectIdThreadLocalTest {
 		ProjectIdThreadLocal.setProjectId(
 			"asah652a6babdba143d086a19db542781bc2");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"asah652a6babdba143d086a19db542781bc2",
 			ProjectIdThreadLocal.getProjectId());
 	}

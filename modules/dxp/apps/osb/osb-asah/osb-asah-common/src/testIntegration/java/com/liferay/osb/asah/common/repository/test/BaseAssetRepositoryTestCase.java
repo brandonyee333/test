@@ -38,11 +38,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -53,7 +54,7 @@ import org.springframework.data.domain.PageRequest;
 public abstract class BaseAssetRepositoryTestCase
 	extends BaseRepositoryTestCase<Asset, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		DataSource dataSource = _addDataSource();
 
@@ -111,14 +112,14 @@ public abstract class BaseAssetRepositoryTestCase
 
 	@Test
 	public void testCountAssetKeywords() {
-		Assert.assertEquals(5, _assetRepository.countAssetKeywords(null));
+		Assertions.assertEquals(5, _assetRepository.countAssetKeywords(null));
 
-		Assert.assertEquals(1, _assetRepository.countAssetKeywords("ROI"));
+		Assertions.assertEquals(1, _assetRepository.countAssetKeywords("ROI"));
 	}
 
 	@Test
 	public void testCountByAssetTypeAndCanonicalUrlIn() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			_assetRepository.countByAssetTypeAndCanonicalURLIn(
 				"Page",
@@ -134,8 +135,8 @@ public abstract class BaseAssetRepositoryTestCase
 				"Page", FilterHelper.EMPTY, null,
 				PageRequest.of(0, 20, Sort.desc("id")));
 
-		Assert.assertEquals(assets.toString(), 3, assets.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(3, assets.size(), assets.toString());
+		Assertions.assertEquals(
 			Arrays.asList(
 				"seize compelling action-items", "engineer intuitive models",
 				"empower holistic ROI"),
@@ -151,7 +152,7 @@ public abstract class BaseAssetRepositoryTestCase
 				"https://www.iva-tillman.com"),
 			PageRequest.of(0, 10));
 
-		Assert.assertEquals(assets.toString(), 2, assets.size());
+		Assertions.assertEquals(2, assets.size(), assets.toString());
 	}
 
 	@Test
@@ -165,8 +166,8 @@ public abstract class BaseAssetRepositoryTestCase
 					_defaultFilterStringConverterHelper),
 				null, PageRequest.of(0, 20, Sort.desc("id")));
 
-		Assert.assertEquals(assets.toString(), 1, assets.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(1, assets.size(), assets.toString());
+		Assertions.assertEquals(
 			Arrays.asList("seize compelling action-items"),
 			_getPageAssetTitles(assets));
 	}
@@ -182,8 +183,8 @@ public abstract class BaseAssetRepositoryTestCase
 					_defaultFilterStringConverterHelper),
 				null, PageRequest.of(0, 20, Sort.desc("id")));
 
-		Assert.assertEquals(assets.toString(), 1, assets.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(1, assets.size(), assets.toString());
+		Assertions.assertEquals(
 			Arrays.asList("engineer intuitive models"),
 			_getPageAssetTitles(assets));
 	}
@@ -199,8 +200,8 @@ public abstract class BaseAssetRepositoryTestCase
 					_defaultFilterStringConverterHelper),
 				null, PageRequest.of(0, 20, Sort.desc("id")));
 
-		Assert.assertEquals(assets.toString(), 1, assets.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(1, assets.size(), assets.toString());
+		Assertions.assertEquals(
 			Arrays.asList("empower holistic ROI"), _getPageAssetTitles(assets));
 	}
 
@@ -211,8 +212,8 @@ public abstract class BaseAssetRepositoryTestCase
 				"Page", FilterHelper.EMPTY, "seize",
 				PageRequest.of(0, 20, Sort.desc("id")));
 
-		Assert.assertEquals(assets.toString(), 1, assets.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(1, assets.size(), assets.toString());
+		Assertions.assertEquals(
 			Arrays.asList("seize compelling action-items"),
 			_getPageAssetTitles(assets));
 	}
@@ -235,7 +236,7 @@ public abstract class BaseAssetRepositoryTestCase
 			_assetRepository.findByAssetTypeAndAssetKeywordNotNull(
 				0L, "Page", 50);
 
-		Assert.assertEquals(assets.toString(), 3, assets.size());
+		Assertions.assertEquals(3, assets.size(), assets.toString());
 	}
 
 	@Test
@@ -243,17 +244,17 @@ public abstract class BaseAssetRepositoryTestCase
 		List<Asset> assets = _assetRepository.findByChannelIds(
 			Arrays.asList(1L, 2L), PageRequest.of(0, 10));
 
-		Assert.assertEquals(assets.toString(), 3, assets.size());
+		Assertions.assertEquals(3, assets.size(), assets.toString());
 
 		assets = _assetRepository.findByChannelIds(
 			Arrays.asList(2L), PageRequest.of(0, 10));
 
-		Assert.assertEquals(assets.toString(), 0, assets.size());
+		Assertions.assertEquals(0, assets.size(), assets.toString());
 
 		assets = _assetRepository.findByChannelIds(
 			Arrays.asList(1L), PageRequest.of(0, 10));
 
-		Assert.assertEquals(assets.toString(), 3, assets.size());
+		Assertions.assertEquals(3, assets.size(), assets.toString());
 	}
 
 	@Test
@@ -265,8 +266,8 @@ public abstract class BaseAssetRepositoryTestCase
 				_defaultFilterStringConverterHelper),
 			PageRequest.of(0, 20, Sort.desc("id")));
 
-		Assert.assertEquals(assets.toString(), 1, assets.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(1, assets.size(), assets.toString());
+		Assertions.assertEquals(
 			Arrays.asList("engineer intuitive models"),
 			_getPageAssetTitles(assets));
 	}
@@ -283,9 +284,9 @@ public abstract class BaseAssetRepositoryTestCase
 			Collectors.toList()
 		);
 
-		Assert.assertEquals(keywords.toString(), 5, keywords.size());
+		Assertions.assertEquals(5, keywords.size(), keywords.toString());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Arrays.asList(
 				"compelling action-items", "engineer", "holistic roi",
 				"intuitive", "models"),
@@ -298,13 +299,13 @@ public abstract class BaseAssetRepositoryTestCase
 			_assetRepository.getByAssetTypeAndChannelIdAndDatasourceId(
 				"Page", 1L, _dataSourceId);
 
-		Assert.assertEquals(assets.toString(), assets.size(), 5);
+		Assertions.assertEquals(assets.size(), 5, assets.toString());
 
 		Set<String> keySet = assets.keySet();
 
 		Stream<String> keyStream = keySet.stream();
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new String[] {
 				"holistic roi", "engineer", "intuitive", "models",
 				"compelling action-items"
@@ -318,9 +319,9 @@ public abstract class BaseAssetRepositoryTestCase
 
 		Collection<Set<String>> values = assets.values();
 
-		values.forEach(value -> Assert.assertFalse(value.isEmpty()));
+		values.forEach(value -> Assertions.assertFalse(value.isEmpty()));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			assets,
 			_assetRepository.getByAssetTypeAndChannelIdAndDatasourceId(
 				"Page", null, _dataSourceId));

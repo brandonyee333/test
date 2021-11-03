@@ -21,29 +21,41 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SalesforceEntityRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Marcellus Tavares
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 @Import(JDBCTestConfiguration.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class SalesforceEntityRepositoryTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_dataSource = _addDataSource();
 
@@ -90,12 +102,12 @@ public class SalesforceEntityRepositoryTest {
 					_dataSource.getId(), "Name", "Liferay",
 					SalesforceEntity.Type.ACCOUNT);
 
-		Assert.assertEquals(
-			salesforceEntities.toString(), 1, salesforceEntities.size());
+		Assertions.assertEquals(
+			1, salesforceEntities.size(), salesforceEntities.toString());
 
 		SalesforceEntity salesforceEntity = salesforceEntities.get(0);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			new SalesforceEntity(
 				"1", _dataSource.getId(), JSONUtil.put("Name", "Liferay"),
 				SalesforceEntity.Type.ACCOUNT),
@@ -110,8 +122,8 @@ public class SalesforceEntityRepositoryTest {
 					_dataSource.getId(), "Email", "test@liferay.com",
 					SalesforceEntity.Type.CONTACT, "AccountId");
 
-		Assert.assertEquals(accountIds.toString(), 2, accountIds.size());
-		Assert.assertEquals(Arrays.asList("1", "2"), accountIds);
+		Assertions.assertEquals(2, accountIds.size(), accountIds.toString());
+		Assertions.assertEquals(Arrays.asList("1", "2"), accountIds);
 	}
 
 	private DataSource _addDataSource() {

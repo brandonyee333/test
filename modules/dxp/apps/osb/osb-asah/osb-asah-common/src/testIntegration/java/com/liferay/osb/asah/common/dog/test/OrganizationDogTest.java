@@ -31,7 +31,10 @@ import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.DXPRawTestUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
@@ -42,22 +45,31 @@ import java.util.stream.Stream;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Matthew Kong
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_liferayDataSource = FaroInfoTestUtil.buildLiferayDataSource();
 
@@ -89,7 +101,7 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 		Organization organization = _organizationDog.addOrganization(
 			dxpRawOrganizationJSONObject, _liferayDataSource);
 
-		Assert.assertNotNull(
+		Assertions.assertNotNull(
 			_dxpEntityDog.fetchByFieldsAndType(
 				Collections.singletonMap("fields.name", organization.getName()),
 				DXPEntity.Type.ORGANIZATION));
@@ -105,26 +117,26 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 			null
 		);
 
-		Assert.assertEquals("1400 Montefino Ave", addressField.getValue());
+		Assertions.assertEquals("1400 Montefino Ave", addressField.getValue());
 
-		Assert.assertNotNull(organization.getCreateDate());
-		Assert.assertEquals(
+		Assertions.assertNotNull(organization.getCreateDate());
+		Assertions.assertEquals(
 			_liferayDataSource.getId(), organization.getDataSourceId());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			dxpRawOrganizationJSONObject.getString("name"),
 			organization.getName());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			dxpRawOrganizationJSONObject.getString("nameTreePath"),
 			organization.getNameTreePath());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Long.valueOf(
 				dxpRawOrganizationJSONObject.getLong("organizationId")),
 			organization.getOrganizationPK());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Long.valueOf(
 				dxpRawOrganizationJSONObject.getLong("parentOrganizationId")),
 			organization.getParentOrganizationPK());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			dxpRawOrganizationJSONObject.getString("type"),
 			organization.getType());
 	}
@@ -138,9 +150,9 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 		_organizationDog.deleteOrganization(organization);
 
-		Assert.assertEquals(0, _organizationRepository.count());
+		Assertions.assertEquals(0, _organizationRepository.count());
 
-		Assert.assertNull(
+		Assertions.assertNull(
 			_dxpEntityDog.fetchByFieldsAndType(
 				Collections.singletonMap("id", organization.getId()),
 				DXPEntity.Type.ORGANIZATION));
@@ -148,7 +160,7 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"UpdateDynamicMembershipsNanite");
 
-		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
+		Assertions.assertEquals(1, asahTasks.size(), asahTasks.toString());
 	}
 
 	@Test
@@ -165,7 +177,7 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 				organization.getDataSourceId(),
 				Collections.singletonList(organization.getOrganizationPK()));
 
-		Assert.assertFalse(organizations.isEmpty());
+		Assertions.assertFalse(organizations.isEmpty());
 	}
 
 	@Test
@@ -187,7 +199,7 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 			),
 			_liferayDataSource, organization);
 
-		Assert.assertEquals("marketing", organization.getName());
+		Assertions.assertEquals("marketing", organization.getName());
 
 		Set<Field> customFields = organization.getCustomFields();
 
@@ -200,22 +212,22 @@ public class OrganizationDogTest extends BaseFaroInfoDogTestCase {
 			null
 		);
 
-		Assert.assertNotNull(dateFoundedField.getValue());
+		Assertions.assertNotNull(dateFoundedField.getValue());
 
 		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
 			Collections.singletonMap("id", organization.getId()),
 			DXPEntity.Type.ORGANIZATION);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			organization,
 			_objectMapper.convertValue(
 				dxpEntity.getFieldsJSONObject(), Organization.class));
-		Assert.assertEquals("marketing", dxpEntity.getName());
+		Assertions.assertEquals("marketing", dxpEntity.getName());
 
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"UpdateDynamicMembershipsNanite");
 
-		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
+		Assertions.assertEquals(1, asahTasks.size(), asahTasks.toString());
 	}
 
 	@Autowired

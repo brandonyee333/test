@@ -29,9 +29,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -43,7 +43,7 @@ import org.springframework.data.domain.Sort;
 public abstract class BaseActivityGroupRepositoryTestCase
 	extends BaseRepositoryTestCase<ActivityGroup, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		ActivityGroup activityGroup = new ActivityGroup();
 
@@ -65,17 +65,17 @@ public abstract class BaseActivityGroupRepositoryTestCase
 
 	@Test
 	public void testCountActivityGroups() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(FilterHelper.EMPTY));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
 				new FilterHelper(
 					_faroInfoActivitiesFilterStringConverterHelper,
 					"channelId eq 12",
 					_activitiesFilterStringConverterHelper)));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0,
 			_activityGroupRepository.countActivityGroups(
 				new FilterHelper(
@@ -85,14 +85,14 @@ public abstract class BaseActivityGroupRepositoryTestCase
 
 		Date dayDate = _activityGroup.getDayDate();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0,
 			_activityGroupRepository.countActivityGroups(
 				new FilterHelper(
 					_faroInfoActivitiesFilterStringConverterHelper,
 					"day lt '" + _getDate(dayDate, false, false) + "'",
 					_activitiesFilterStringConverterHelper)));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
 				new FilterHelper(
@@ -100,7 +100,7 @@ public abstract class BaseActivityGroupRepositoryTestCase
 					"day lt '" + _getDate(dayDate, true, false) +
 						"' and day ge '" + _getDate(dayDate, false, true) + "'",
 					_activitiesFilterStringConverterHelper)));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
 				new FilterHelper(
@@ -108,27 +108,27 @@ public abstract class BaseActivityGroupRepositoryTestCase
 					"day ge '" + _getDate(dayDate, false, false) + "'",
 					_activitiesFilterStringConverterHelper)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
 				new FilterHelper(
 					_faroInfoActivitiesFilterStringConverterHelper,
 					"day gt 'last24Hours'",
 					_activitiesFilterStringConverterHelper)));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
 				new FilterHelper(
 					_faroInfoActivitiesFilterStringConverterHelper,
 					"day gt 'yesterday'",
 					_activitiesFilterStringConverterHelper)));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
 				new FilterHelper(
 					_faroInfoActivitiesFilterStringConverterHelper,
 					"ownerId eq 56", _activitiesFilterStringConverterHelper)));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0,
 			_activityGroupRepository.countActivityGroups(
 				new FilterHelper(
@@ -141,12 +141,12 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		_activityGroupRepository.deleteByChannelIdIn(
 			Collections.singleton(_activityGroup.getChannelId()));
 
-		Assert.assertEquals(0, _activityGroupRepository.count());
+		Assertions.assertEquals(0, _activityGroupRepository.count());
 	}
 
 	@Test
 	public void testFindByActivityTypeAndChannelIdAndDataSourceIdAndDayDateAndUserId() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			_activityGroup,
 			_activityGroupRepository.
 				findByActivityTypeAndChannelIdAndDataSourceIdAndDayDateAndUserId(
@@ -163,9 +163,9 @@ public abstract class BaseActivityGroupRepositoryTestCase
 				FilterHelper.EMPTY,
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(
-			activityGroups.toString(), 1, activityGroups.size());
-		Assert.assertEquals(_activityGroup, activityGroups.get(0));
+		Assertions.assertEquals(
+			1, activityGroups.size(), activityGroups.toString());
+		Assertions.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
 			new FilterHelper(
@@ -173,9 +173,9 @@ public abstract class BaseActivityGroupRepositoryTestCase
 				"channelId eq 12", _activitiesFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(
-			activityGroups.toString(), 1, activityGroups.size());
-		Assert.assertEquals(_activityGroup, activityGroups.get(0));
+		Assertions.assertEquals(
+			1, activityGroups.size(), activityGroups.toString());
+		Assertions.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
 			new FilterHelper(
@@ -183,8 +183,8 @@ public abstract class BaseActivityGroupRepositoryTestCase
 				"channelId eq 34", _activitiesFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(
-			activityGroups.toString(), 0, activityGroups.size());
+		Assertions.assertEquals(
+			0, activityGroups.size(), activityGroups.toString());
 
 		Date dayDate = _activityGroup.getDayDate();
 
@@ -195,8 +195,8 @@ public abstract class BaseActivityGroupRepositoryTestCase
 				_activitiesFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(
-			activityGroups.toString(), 0, activityGroups.size());
+		Assertions.assertEquals(
+			0, activityGroups.size(), activityGroups.toString());
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
 			new FilterHelper(
@@ -206,9 +206,9 @@ public abstract class BaseActivityGroupRepositoryTestCase
 				_activitiesFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(
-			activityGroups.toString(), 1, activityGroups.size());
-		Assert.assertEquals(_activityGroup, activityGroups.get(0));
+		Assertions.assertEquals(
+			1, activityGroups.size(), activityGroups.toString());
+		Assertions.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
 			new FilterHelper(
@@ -217,9 +217,9 @@ public abstract class BaseActivityGroupRepositoryTestCase
 				_activitiesFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(
-			activityGroups.toString(), 1, activityGroups.size());
-		Assert.assertEquals(_activityGroup, activityGroups.get(0));
+		Assertions.assertEquals(
+			1, activityGroups.size(), activityGroups.toString());
+		Assertions.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
 			new FilterHelper(
@@ -227,9 +227,9 @@ public abstract class BaseActivityGroupRepositoryTestCase
 				_activitiesFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(
-			activityGroups.toString(), 1, activityGroups.size());
-		Assert.assertEquals(_activityGroup, activityGroups.get(0));
+		Assertions.assertEquals(
+			1, activityGroups.size(), activityGroups.toString());
+		Assertions.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
 			new FilterHelper(
@@ -237,16 +237,16 @@ public abstract class BaseActivityGroupRepositoryTestCase
 				_activitiesFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(
-			activityGroups.toString(), 0, activityGroups.size());
+		Assertions.assertEquals(
+			0, activityGroups.size(), activityGroups.toString());
 	}
 
 	@Test
 	public void testUpdateOwnerId() {
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_activityGroupRepository.updateOwnerId(
 				90L, "347780e0-7a66-11e8-a0fc-8356dd2944fd"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
 				new FilterHelper(

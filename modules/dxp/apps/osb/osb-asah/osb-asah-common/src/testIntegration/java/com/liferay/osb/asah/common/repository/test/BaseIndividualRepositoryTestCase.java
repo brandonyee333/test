@@ -51,9 +51,9 @@ import java.util.stream.Stream;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -67,7 +67,7 @@ import org.yaml.snakeyaml.util.ArrayUtils;
 public abstract class BaseIndividualRepositoryTestCase
 	extends BaseRepositoryTestCase<Individual, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		DataSource dataSource1 = new DataSource("Liferay Brazil");
 
@@ -288,7 +288,7 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		Date monthAgoDate = DateUtil.addDays(endOfDayDate, -30);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
@@ -298,35 +298,35 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		Date yesterdayDate = DateUtil.addDays(date, -1);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 					11L, endOfDayDate, null,
 					Collections.singletonList(_segmentId), yesterdayDate,
 					null));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 					11L, endOfDayDate, endOfDayDate,
 					Collections.singletonList(_segmentId), yesterdayDate,
 					date));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 					11L, null, endOfDayDate,
 					Collections.singletonList(_segmentId), null,
 					yesterdayDate));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 					11L, endOfDayYesterdayDate, endOfDayDate,
 					Collections.singletonList(_segmentId), yesterdayDate,
 					yesterdayDate));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			individualRepository.
 				countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
@@ -342,7 +342,7 @@ public abstract class BaseIndividualRepositoryTestCase
 				findFieldNameByContextAndFieldTypeAndOwnerType(
 					"demographics", "Text", "individual");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			individualRepository.countByFieldNamesAndQueryAndSegmentId(
 				fieldNames, "eld", _segmentId));
@@ -350,14 +350,14 @@ public abstract class BaseIndividualRepositoryTestCase
 
 	@Test
 	public void testCountByIdAfter() {
-		Assert.assertEquals(5, individualRepository.countByIdAfter(0L));
-		Assert.assertEquals(
+		Assertions.assertEquals(5, individualRepository.countByIdAfter(0L));
+		Assertions.assertEquals(
 			4, individualRepository.countByIdAfter(_individual1Id));
 	}
 
 	@Test
 	public void testCountByIdInAndKeywords() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			individualRepository.countByIdInAndKeywords(
 				Collections.singletonList(_individual1Id), "liferay"));
@@ -365,7 +365,7 @@ public abstract class BaseIndividualRepositoryTestCase
 
 	@Test
 	public void testCountIndividuals() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			individualRepository.countIndividuals(
 				11L, FilterHelper.EMPTY, false, 11L, _segmentId));
@@ -373,7 +373,7 @@ public abstract class BaseIndividualRepositoryTestCase
 
 	@Test
 	public void testCountKnownIndividualsByAnySegmentIds() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			individualRepository.countKnownIndividualsByAnySegmentIds(
 				_segmentId));
@@ -381,7 +381,7 @@ public abstract class BaseIndividualRepositoryTestCase
 
 	@Test
 	public void testCountKnownIndividualsByIdIn() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			individualRepository.countKnownIndividualsByIdIn(
 				Arrays.asList(_individual1Id, _individual2Id)));
@@ -392,12 +392,12 @@ public abstract class BaseIndividualRepositoryTestCase
 		individualRepository.deleteByIdIn(
 			Arrays.asList(_individual1Id, _individual2Id));
 
-		Assert.assertEquals(3, individualRepository.count());
+		Assertions.assertEquals(3, individualRepository.count());
 	}
 
 	@Test
 	public void testExistsByChannelIdAndFilterStringAndId() {
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			individualRepository.existsByChannelIdAndFilterStringAndId(
 				11L,
 				new FilterHelper(
@@ -409,7 +409,7 @@ public abstract class BaseIndividualRepositoryTestCase
 
 	@Test
 	public void testExistsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId() {
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			individualRepository.
 				existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
 					11L,
@@ -422,7 +422,7 @@ public abstract class BaseIndividualRepositoryTestCase
 
 	@Test
 	public void testExistsByFilterStringAndId() {
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			individualRepository.existsByFilterStringAndId(
 				new FilterHelper(
 					_faroInfoIndividualsFilterStringConverterHelper,
@@ -437,7 +437,7 @@ public abstract class BaseIndividualRepositoryTestCase
 			individualRepository.findAccountPKsByChannelIdAndSegmentId(
 				11L, _segmentId);
 
-		Assert.assertEquals(Arrays.asList("1234", "5678"), accountPKs);
+		Assertions.assertEquals(Arrays.asList("1234", "5678"), accountPKs);
 	}
 
 	@Test
@@ -447,7 +447,7 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		Individual.ActivitiesCount activitiesCount = activitiesCounts.get(0);
 
-		Assert.assertEquals((Long)3L, activitiesCount.getActivitiesCount());
+		Assertions.assertEquals((Long)3L, activitiesCount.getActivitiesCount());
 	}
 
 	@Test
@@ -457,11 +457,11 @@ public abstract class BaseIndividualRepositoryTestCase
 				findAnonymousByCreateDateAndLastActivityDateAndId(
 					DateUtil.newDate(), null, 10);
 
-		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 
 		Individual individual = individuals.get(0);
 
-		Assert.assertEquals(_individual2Id, individual.getId());
+		Assertions.assertEquals(_individual2Id, individual.getId());
 	}
 
 	@Test
@@ -471,7 +471,7 @@ public abstract class BaseIndividualRepositoryTestCase
 				findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
 					1234L, 1L, "organizationIds", "23432-cd-3242-asf23");
 
-		Assert.assertNotNull(individual);
+		Assertions.assertNotNull(individual);
 	}
 
 	@Test
@@ -480,12 +480,12 @@ public abstract class BaseIndividualRepositoryTestCase
 			individualRepository.findByDataSourceIdAndIndividualPK(
 				1L, "23432-cd-3242-asf23");
 
-		Assert.assertNotNull(individual);
+		Assertions.assertNotNull(individual);
 
 		individual = individualRepository.findByDataSourceIdAndIndividualPK(
 			1L, "23432");
 
-		Assert.assertNull(individual);
+		Assertions.assertNull(individual);
 	}
 
 	@Test
@@ -493,7 +493,7 @@ public abstract class BaseIndividualRepositoryTestCase
 		Individual individual = individualRepository.findByEmailAddress(
 			"test@liferay.com");
 
-		Assert.assertNotNull(individual);
+		Assertions.assertNotNull(individual);
 	}
 
 	@Test
@@ -501,7 +501,7 @@ public abstract class BaseIndividualRepositoryTestCase
 		Individual individual = individualRepository.findByEmailAddressHashed(
 			DigestUtils.sha256Hex("test@liferay.com"));
 
-		Assert.assertNotNull(individual);
+		Assertions.assertNotNull(individual);
 	}
 
 	@Test
@@ -509,11 +509,11 @@ public abstract class BaseIndividualRepositoryTestCase
 		List<Individual> individuals = individualRepository.findByIdAfter(
 			_individual1Id - 1L, PageRequest.of(0, 1));
 
-		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 
 		Individual individual = individuals.get(0);
 
-		Assert.assertEquals(_individual1Id, individual.getId());
+		Assertions.assertEquals(_individual1Id, individual.getId());
 	}
 
 	@Test
@@ -523,11 +523,11 @@ public abstract class BaseIndividualRepositoryTestCase
 				Collections.singletonList(_individual1Id), "liferay",
 				PageRequest.of(0, 1));
 
-		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 
 		Individual individual = individuals.get(0);
 
-		Assert.assertEquals(_individual1Id, individual.getId());
+		Assertions.assertEquals(_individual1Id, individual.getId());
 	}
 
 	@Test
@@ -537,11 +537,12 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		Individual individual = individualOptional.get();
 
-		Assert.assertNotNull(individual);
+		Assertions.assertNotNull(individual);
 
 		Set<Field> customFields = individual.getCustomFields();
 
-		Assert.assertEquals(customFields.toString(), 1, customFields.size());
+		Assertions.assertEquals(
+			1, customFields.size(), customFields.toString());
 	}
 
 	@Test
@@ -555,11 +556,11 @@ public abstract class BaseIndividualRepositoryTestCase
 			individualRepository.findByFieldNamesAndQueryAndSegmentId(
 				fieldNames, "eld", _segmentId, PageRequest.of(0, 1));
 
-		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 
 		Individual individual = individuals.get(0);
 
-		Assert.assertEquals(_individual1Id, individual.getId());
+		Assertions.assertEquals(_individual1Id, individual.getId());
 	}
 
 	@Test
@@ -567,7 +568,7 @@ public abstract class BaseIndividualRepositoryTestCase
 		List<Individual> individuals = individualRepository.findBySegmentIds(
 			_segmentId);
 
-		Assert.assertEquals(individuals.toString(), 4, individuals.size());
+		Assertions.assertEquals(4, individuals.size(), individuals.toString());
 
 		Stream<Individual> stream = individuals.stream();
 
@@ -582,12 +583,12 @@ public abstract class BaseIndividualRepositoryTestCase
 				_individual1Id, _individual3Id, _individual4Id,
 				_individual5Id));
 
-		Assert.assertEquals(
-			actualIndividualIds.toString(), expectedIndividualIds.size(),
-			actualIndividualIds.size());
-		Assert.assertTrue(
-			actualIndividualIds.toString(),
-			expectedIndividualIds.containsAll(actualIndividualIds));
+		Assertions.assertEquals(
+			expectedIndividualIds.size(), actualIndividualIds.size(),
+			actualIndividualIds.toString());
+		Assertions.assertTrue(
+			expectedIndividualIds.containsAll(actualIndividualIds),
+			actualIndividualIds.toString());
 	}
 
 	@Test
@@ -609,14 +610,14 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		individual2 = individualRepository.save(individual2);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Arrays.asList(
 				_individual1Id, _individual3Id, _individual4Id, _individual5Id,
 				individual1.getId(), individual2.getId()),
 			individualRepository.
 				findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
 					11L, null, null));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Arrays.asList(
 				_individual1Id, _individual2Id, _individual3Id, _individual4Id,
 				_individual5Id, individual1.getId(), individual2.getId()),
@@ -624,14 +625,14 @@ public abstract class BaseIndividualRepositoryTestCase
 				findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
 					null, null, null));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Arrays.asList(_individual1Id, individual1.getId()),
 			individualRepository.
 				findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
 					11L, DateUtil.toUTCDate(localDateTime.minusMinutes(10)),
 					null));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Arrays.asList(
 				_individual1Id, _individual3Id, _individual4Id, _individual5Id,
 				individual1.getId()),
@@ -639,7 +640,7 @@ public abstract class BaseIndividualRepositoryTestCase
 				findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
 					11L, null, _segmentId));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Arrays.asList(_individual1Id),
 			individualRepository.
 				findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
@@ -652,12 +653,12 @@ public abstract class BaseIndividualRepositoryTestCase
 		Map<Long, Long> individualCounts =
 			individualRepository.findIndividualCounts(false, _segmentId);
 
-		Assert.assertEquals((Long)1L, individualCounts.get(11L));
+		Assertions.assertEquals((Long)1L, individualCounts.get(11L));
 	}
 
 	@Test
 	public void testFindKnownIndividualIds() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Arrays.asList(_individual1Id),
 			individualRepository.findKnownIndividualIds(
 				FilterHelper.EMPTY, _segmentId));
@@ -715,11 +716,11 @@ public abstract class BaseIndividualRepositoryTestCase
 		List<Individual> individuals = individualRepository.searchIndividuals(
 			1L, null, 10);
 
-		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 
 		Individual individual = individuals.get(0);
 
-		Assert.assertEquals(_individual1Id, individual.getId());
+		Assertions.assertEquals(_individual1Id, individual.getId());
 	}
 
 	@Test
@@ -731,7 +732,7 @@ public abstract class BaseIndividualRepositoryTestCase
 				_individualsFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("activitiesCount"))));
 
-		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 	}
 
 	@Test
@@ -740,7 +741,7 @@ public abstract class BaseIndividualRepositoryTestCase
 			11L, FilterHelper.EMPTY, false, null, null,
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(individuals.toString(), 1, individuals.size());
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 	}
 
 	@Test
@@ -753,7 +754,7 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		Individual individual = individualOptional.get();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Collections.singleton(234L), individual.getOrganizationIds());
 	}
 
@@ -855,8 +856,8 @@ public abstract class BaseIndividualRepositoryTestCase
 		Distribution distribution, int expectedCount,
 		List<Object> expectedValues) {
 
-		Assert.assertEquals(expectedCount, (int)distribution.getCount());
-		Assert.assertEquals(expectedValues, distribution.getValues());
+		Assertions.assertEquals(expectedCount, (int)distribution.getCount());
+		Assertions.assertEquals(expectedValues, distribution.getValues());
 	}
 
 	@Autowired

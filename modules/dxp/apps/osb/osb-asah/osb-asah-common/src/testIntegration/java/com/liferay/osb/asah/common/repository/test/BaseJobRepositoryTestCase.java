@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,7 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class BaseJobRepositoryTestCase
 	extends BaseRepositoryTestCase<Job, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		Job job = new Job();
 

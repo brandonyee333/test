@@ -32,7 +32,10 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.time.LocalDateTime;
@@ -45,19 +48,28 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Marcellus Tavares
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 @SpringBootTest(classes = OSBAsahSpringBootApplication.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class JobDogTest {
 
 	@Test
@@ -68,23 +80,24 @@ public class JobDogTest {
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,
 			"Product Recommendation Job", false);
 
-		Assert.assertNotNull(job);
-		Assert.assertNotNull(job.getId());
+		Assertions.assertNotNull(job);
+		Assertions.assertNotNull(job.getId());
 
 		List<JobParameter> jobParameters = new ArrayList<>(
 			job.getJobParameters());
 
 		JobParameter jobParameter = jobParameters.get(0);
 
-		Assert.assertEquals("parameter1", jobParameter.getName());
-		Assert.assertEquals("1.2", jobParameter.getValue());
+		Assertions.assertEquals("parameter1", jobParameter.getName());
+		Assertions.assertEquals("1.2", jobParameter.getValue());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			JobRunDataPeriod.LAST_30_DAYS, job.getJobRunDataPeriod());
-		Assert.assertEquals(JobRunFrequency.MANUAL, job.getJobRunFrequency());
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			JobRunFrequency.MANUAL, job.getJobRunFrequency());
+		Assertions.assertEquals(
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, job.getJobType());
-		Assert.assertEquals("Product Recommendation Job", job.getName());
+		Assertions.assertEquals("Product Recommendation Job", job.getName());
 	}
 
 	@ElasticsearchIndex(
@@ -102,7 +115,7 @@ public class JobDogTest {
 		Page<JobRun> jobRunPage = _jobRunDog.getJobRunPage(
 			1L, 0, 20, Sort.desc("id"));
 
-		Assert.assertEquals(0, jobRunPage.getTotalElements());
+		Assertions.assertEquals(0, jobRunPage.getTotalElements());
 	}
 
 	@Test
@@ -114,7 +127,7 @@ public class JobDogTest {
 			JobRunFrequency.MANUAL,
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, jobName, false);
 
-		Assert.assertEquals(job, _jobDog.fetchJob(jobName));
+		Assertions.assertEquals(job, _jobDog.fetchJob(jobName));
 	}
 
 	@ElasticsearchIndex(
@@ -125,8 +138,8 @@ public class JobDogTest {
 	public void testGetJob() {
 		Job job = _jobDog.getJob(1L);
 
-		Assert.assertNotNull(job);
-		Assert.assertEquals("Related Content Job", job.getName());
+		Assertions.assertNotNull(job);
+		Assertions.assertEquals("Related Content Job", job.getName());
 	}
 
 	@ElasticsearchIndex(
@@ -145,13 +158,13 @@ public class JobDogTest {
 			_jobRunDog.fetchLatestJobRunPublishedDateString(1L),
 			DateTimeFormatter.ofPattern(DateUtil.PATTERN_ISO_8601));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedRunLocalDateTime.getDayOfMonth(),
 			runLocalDateTime.getDayOfMonth());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedRunLocalDateTime.getMonthValue(),
 			runLocalDateTime.getMonthValue());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedRunLocalDateTime.getYear(), runLocalDateTime.getYear());
 	}
 
@@ -168,12 +181,12 @@ public class JobDogTest {
 		Page<JobRun> jobRunPage = _jobRunDog.getJobRunPage(
 			1L, 0, 10, Sort.desc("id"));
 
-		Assert.assertEquals(3, jobRunPage.getTotalElements());
+		Assertions.assertEquals(3, jobRunPage.getTotalElements());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Arrays.asList(3L, 2L, 1L),
 			_getJobRunsProperty(jobRunPage.getContent(), JobRun::getId));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Arrays.asList(
 				JobRunStatus.FAILED, JobRunStatus.PUBLISHED,
 				JobRunStatus.FAILED),
@@ -199,13 +212,13 @@ public class JobDogTest {
 
 		List<JobRun> jobRuns = jobRunPage.getContent();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			jobRunsMonthlyStatistics.getCompletedJobRuns(),
 			_countCurrentMonthJobRunsByStatus(jobRuns, JobRunStatus.COMPLETED));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			jobRunsMonthlyStatistics.getFailedJobRuns(),
 			_countCurrentMonthJobRunsByStatus(jobRuns, JobRunStatus.FAILED));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			jobRunsMonthlyStatistics.getRunningJobRuns(),
 			_countCurrentMonthJobRunsByStatus(jobRuns, JobRunStatus.RUNNING));
 	}
@@ -216,7 +229,7 @@ public class JobDogTest {
 	)
 	@Test
 	public void testGetJobStatusFailed() {
-		Assert.assertEquals(JobStatus.FAILED, _jobDog.getJobStatus(1L));
+		Assertions.assertEquals(JobStatus.FAILED, _jobDog.getJobStatus(1L));
 	}
 
 	@Test
@@ -226,7 +239,7 @@ public class JobDogTest {
 			JobRunFrequency.MANUAL,
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, "Job", false);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			JobStatus.PENDING, _jobDog.getJobStatus(job.getId()));
 	}
 
@@ -236,7 +249,7 @@ public class JobDogTest {
 	)
 	@Test
 	public void testGetJobStatusReady() {
-		Assert.assertEquals(JobStatus.READY, _jobDog.getJobStatus(1L));
+		Assertions.assertEquals(JobStatus.READY, _jobDog.getJobStatus(1L));
 	}
 
 	@ElasticsearchIndex(
@@ -245,7 +258,7 @@ public class JobDogTest {
 	)
 	@Test
 	public void testGetJobStatusRunning() {
-		Assert.assertEquals(JobStatus.RUNNING, _jobDog.getJobStatus(1L));
+		Assertions.assertEquals(JobStatus.RUNNING, _jobDog.getJobStatus(1L));
 	}
 
 	@Test
@@ -255,7 +268,7 @@ public class JobDogTest {
 			JobRunFrequency.EVERY_7_DAYS,
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, "Job", false);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			JobStatus.SCHEDULED, _jobDog.getJobStatus(job.getId()));
 	}
 
@@ -267,32 +280,32 @@ public class JobDogTest {
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,
 			"Product Recommendation Job", false);
 
-		Assert.assertNotNull(job);
-		Assert.assertNotNull(job.getId());
+		Assertions.assertNotNull(job);
+		Assertions.assertNotNull(job.getId());
 
 		job = _jobDog.updateJob(
 			job.getId(), SetUtil.of(new JobParameter("parameter1", "1.3")),
 			JobRunDataPeriod.LAST_180_DAYS, JobRunFrequency.EVERY_7_DAYS,
 			"Product Recommendation Job Updated", false);
 
-		Assert.assertNotNull(job);
-		Assert.assertNotNull(job.getId());
+		Assertions.assertNotNull(job);
+		Assertions.assertNotNull(job.getId());
 
 		List<JobParameter> jobParameters = new ArrayList<>(
 			job.getJobParameters());
 
 		JobParameter jobParameter = jobParameters.get(0);
 
-		Assert.assertEquals("parameter1", jobParameter.getName());
-		Assert.assertEquals("1.3", jobParameter.getValue());
+		Assertions.assertEquals("parameter1", jobParameter.getName());
+		Assertions.assertEquals("1.3", jobParameter.getValue());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			JobRunDataPeriod.LAST_180_DAYS, job.getJobRunDataPeriod());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			JobRunFrequency.EVERY_7_DAYS, job.getJobRunFrequency());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, job.getJobType());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"Product Recommendation Job Updated", job.getName());
 	}
 

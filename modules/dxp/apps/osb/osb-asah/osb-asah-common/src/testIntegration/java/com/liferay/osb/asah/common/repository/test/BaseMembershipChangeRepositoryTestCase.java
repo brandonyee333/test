@@ -37,9 +37,9 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang.time.DateUtils;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -50,7 +50,7 @@ import org.springframework.data.domain.PageRequest;
 public abstract class BaseMembershipChangeRepositoryTestCase
 	extends BaseRepositoryTestCase<MembershipChange, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_newDayDate = DateUtil.newDayDate();
 
@@ -89,7 +89,7 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 	public void testCountMembershipChanges() {
 		Segment segment = _segments.get(0);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			5,
 			_membershipChangeRepository.countMembershipChanges(
 				FilterHelper.EMPTY, false, segment.getId()));
@@ -102,17 +102,17 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 
 		Long membershipChangeId = _membershipChange.getId();
 
-		Assert.assertNotNull(membershipChangeId);
+		Assertions.assertNotNull(membershipChangeId);
 
 		Optional<MembershipChange> membershipChangeOptional =
 			_membershipChangeRepository.findById(membershipChangeId);
 
-		Assert.assertFalse(membershipChangeOptional.isPresent());
+		Assertions.assertFalse(membershipChangeOptional.isPresent());
 	}
 
 	@Test
 	public void testFindByIndividualId() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Optional.of(_membershipChange),
 			_membershipChangeRepository.findByIndividualId(
 				_membershipChange.getIndividualId()));
@@ -132,7 +132,7 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 					DateUtil.newEndOfDayDate(
 						DateUtils.addDays(_yesterday, -2)));
 
-		Assert.assertTrue(membershipChanges.isEmpty());
+		Assertions.assertTrue(membershipChanges.isEmpty());
 
 		membershipChanges =
 			_membershipChangeRepository.
@@ -141,9 +141,9 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 					individualSegmentIds,
 					DateUtil.newEndOfDayDate(_newDayDate));
 
-		Assert.assertEquals(
-			membershipChanges.toString(), 1, membershipChanges.size());
-		Assert.assertEquals(_membershipChange, membershipChanges.get(0));
+		Assertions.assertEquals(
+			1, membershipChanges.size(), membershipChanges.toString());
+		Assertions.assertEquals(_membershipChange, membershipChanges.get(0));
 
 		membershipChanges =
 			_membershipChangeRepository.
@@ -151,9 +151,9 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 					null, false, individualSegmentIds,
 					DateUtil.newEndOfDayDate(_newDayDate));
 
-		Assert.assertEquals(
-			membershipChanges.toString(), 1, membershipChanges.size());
-		Assert.assertEquals(_membershipChange, membershipChanges.get(0));
+		Assertions.assertEquals(
+			1, membershipChanges.size(), membershipChanges.toString());
+		Assertions.assertEquals(_membershipChange, membershipChanges.get(0));
 
 		membershipChanges =
 			_membershipChangeRepository.
@@ -161,9 +161,9 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 					DateUtil.newBeginningOfDayDate(_yesterday), false,
 					individualSegmentIds, DateUtil.newEndOfDayDate(_tomorrow));
 
-		Assert.assertEquals(
-			membershipChanges.toString(), 1, membershipChanges.size());
-		Assert.assertEquals(entityModels.get(4), membershipChanges.get(0));
+		Assertions.assertEquals(
+			1, membershipChanges.size(), membershipChanges.toString());
+		Assertions.assertEquals(entityModels.get(4), membershipChanges.get(0));
 
 		List<Segment> segments = _segments.subList(0, 2);
 
@@ -181,12 +181,12 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 					DateUtil.newBeginningOfDayDate(_yesterday), false,
 					segmentIds1, DateUtil.newEndOfDayDate(_tomorrow));
 
-		Assert.assertEquals(
-			membershipChanges.toString(), 2, membershipChanges.size());
+		Assertions.assertEquals(
+			2, membershipChanges.size(), membershipChanges.toString());
 
 		Stream<MembershipChange> stream2 = membershipChanges.stream();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			segmentIds1,
 			stream2.map(
 				MembershipChange::getIndividualSegmentId
@@ -197,7 +197,7 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 		for (MembershipChange membershipChange : membershipChanges) {
 			Long individualsCount = membershipChange.getIndividualsCount();
 
-			Assert.assertEquals(5L, individualsCount.longValue());
+			Assertions.assertEquals(5L, individualsCount.longValue());
 		}
 	}
 
@@ -210,9 +210,9 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 				FilterHelper.EMPTY, false, segment.getId(),
 				PageRequest.of(0, 1));
 
-		Assert.assertEquals(
-			membershipChanges.toString(), 1, membershipChanges.size());
-		Assert.assertEquals(entityModels.get(0), membershipChanges.get(0));
+		Assertions.assertEquals(
+			1, membershipChanges.size(), membershipChanges.toString());
+		Assertions.assertEquals(entityModels.get(0), membershipChanges.get(0));
 	}
 
 	@Test
@@ -222,17 +222,17 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 
 		Long membershipChangeId = _membershipChange.getId();
 
-		Assert.assertNotNull(membershipChangeId);
+		Assertions.assertNotNull(membershipChangeId);
 
 		Optional<MembershipChange> membershipChangeOptional =
 			_membershipChangeRepository.findById(membershipChangeId);
 
-		Assert.assertTrue(membershipChangeOptional.isPresent());
+		Assertions.assertTrue(membershipChangeOptional.isPresent());
 
 		MembershipChange actualMembershipChange =
 			membershipChangeOptional.get();
 
-		Assert.assertTrue(actualMembershipChange.getIndividualDeleted());
+		Assertions.assertTrue(actualMembershipChange.getIndividualDeleted());
 	}
 
 	@Test
@@ -242,17 +242,17 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 
 		Long membershipChangeId = _membershipChange.getId();
 
-		Assert.assertNotNull(membershipChangeId);
+		Assertions.assertNotNull(membershipChangeId);
 
 		Optional<MembershipChange> membershipChangeOptional =
 			_membershipChangeRepository.findById(membershipChangeId);
 
-		Assert.assertTrue(membershipChangeOptional.isPresent());
+		Assertions.assertTrue(membershipChangeOptional.isPresent());
 
 		MembershipChange actualMembershipChange =
 			membershipChangeOptional.get();
 
-		Assert.assertTrue(actualMembershipChange.getIndividualDeleted());
+		Assertions.assertTrue(actualMembershipChange.getIndividualDeleted());
 	}
 
 	@Test
@@ -262,17 +262,17 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 
 		Long membershipChangeId = _membershipChange.getId();
 
-		Assert.assertNotNull(membershipChangeId);
+		Assertions.assertNotNull(membershipChangeId);
 
 		Optional<MembershipChange> membershipChangeOptional =
 			_membershipChangeRepository.findById(membershipChangeId);
 
-		Assert.assertTrue(membershipChangeOptional.isPresent());
+		Assertions.assertTrue(membershipChangeOptional.isPresent());
 
 		MembershipChange actualMembershipChange =
 			membershipChangeOptional.get();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"Frank Sinatra", actualMembershipChange.getIndividualName());
 	}
 

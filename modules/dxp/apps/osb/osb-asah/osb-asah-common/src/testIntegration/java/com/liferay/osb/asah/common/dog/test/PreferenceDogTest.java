@@ -18,20 +18,32 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.entity.Preference;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Matthew Kong
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class PreferenceDogTest {
 
 	@Test
@@ -39,7 +51,7 @@ public class PreferenceDogTest {
 		Preference preference = _preferenceDog.getPreference(
 			"data-retention-period");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			String.valueOf(13 * DateUtil.MONTH), preference.getValue());
 
 		String dataRetentionPeriod = String.valueOf(7 * DateUtil.MONTH);
@@ -49,14 +61,14 @@ public class PreferenceDogTest {
 
 		preference = _preferenceDog.getPreference("data-retention-period");
 
-		Assert.assertEquals(dataRetentionPeriod, preference.getValue());
+		Assertions.assertEquals(dataRetentionPeriod, preference.getValue());
 
 		_preferenceDog.savePreference(
 			"data-retention-period", dataRetentionPeriod);
 
 		preference = _preferenceDog.getPreference("data-retention-period");
 
-		Assert.assertEquals(dataRetentionPeriod, preference.getValue());
+		Assertions.assertEquals(dataRetentionPeriod, preference.getValue());
 	}
 
 	@Autowired

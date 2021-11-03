@@ -24,9 +24,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +37,7 @@ import org.springframework.data.domain.PageRequest;
 public abstract class BaseChannelRepositoryTestCase
 	extends BaseRepositoryTestCase<Channel, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		setUpRepository(new Channel("name"));
 
@@ -46,7 +46,7 @@ public abstract class BaseChannelRepositoryTestCase
 
 	@Test
 	public void testCountByNameContainingIgnoreCase() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1, _channelRepository.countByNameContainingIgnoreCase("NAME"));
 	}
 
@@ -55,23 +55,23 @@ public abstract class BaseChannelRepositoryTestCase
 		_channelRepository.deleteByIdIn(
 			Collections.singleton(_channel.getId()));
 
-		Assert.assertEquals(0, _channelRepository.count());
+		Assertions.assertEquals(0, _channelRepository.count());
 	}
 
 	@Test
 	public void testExistsByIdNotAndName() {
 		Channel channel = _channelRepository.save(new Channel("channel"));
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_channelRepository.existsByIdNotAndName(channel.getId(), "name"));
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_channelRepository.existsByIdNotAndName(_channel.getId(), "name"));
 	}
 
 	@Test
 	public void testExistsByName() {
-		Assert.assertTrue(_channelRepository.existsByName("name"));
+		Assertions.assertTrue(_channelRepository.existsByName("name"));
 	}
 
 	@Test
@@ -85,17 +85,17 @@ public abstract class BaseChannelRepositoryTestCase
 
 		List<Channel> channels = _channelRepository.findByDataSourceId(123L);
 
-		Assert.assertEquals(channels.toString(), 1, channels.size());
+		Assertions.assertEquals(1, channels.size(), channels.toString());
 
 		Channel channel = channels.get(0);
 
 		Set<ChannelDataSource> channelDataSources =
 			channel.getChannelDataSources();
 
-		Assert.assertEquals(
-			channelDataSources.toString(), 1, channelDataSources.size());
+		Assertions.assertEquals(
+			1, channelDataSources.size(), channelDataSources.toString());
 
-		Assert.assertTrue(channelDataSources.contains(channelDataSource));
+		Assertions.assertTrue(channelDataSources.contains(channelDataSource));
 	}
 
 	@Test
@@ -111,17 +111,17 @@ public abstract class BaseChannelRepositoryTestCase
 			_channelRepository.findByDataSourceIdAndGroupIds(
 				123L, SetUtil.of(456L, 789L));
 
-		Assert.assertEquals(channels.toString(), 1, channels.size());
+		Assertions.assertEquals(1, channels.size(), channels.toString());
 
 		Channel channel = channels.get(0);
 
 		Set<ChannelDataSource> channelDataSources =
 			channel.getChannelDataSources();
 
-		Assert.assertEquals(
-			channelDataSources.toString(), 1, channelDataSources.size());
+		Assertions.assertEquals(
+			1, channelDataSources.size(), channelDataSources.toString());
 
-		Assert.assertTrue(channelDataSources.contains(channelDataSource));
+		Assertions.assertTrue(channelDataSources.contains(channelDataSource));
 	}
 
 	@Test
@@ -130,9 +130,9 @@ public abstract class BaseChannelRepositoryTestCase
 			_channelRepository.findByNameContainingIgnoreCase(
 				"NAME", PageRequest.of(0, 1));
 
-		Assert.assertEquals(channels.toString(), 1, channels.size());
+		Assertions.assertEquals(1, channels.size(), channels.toString());
 
-		Assert.assertEquals(_channel, channels.get(0));
+		Assertions.assertEquals(_channel, channels.get(0));
 	}
 
 	@Override

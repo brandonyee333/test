@@ -64,7 +64,10 @@ dependencies {
 
 	testCompile group: "io.rest-assured", name: "json-schema-validator", version: "3.2.0"
 	testCompile group: "io.rest-assured", name: "rest-assured", version: "3.2.0"
-	testCompile group: "junit", name: "junit", version: "4.12"
+
+	testCompile group: "org.junit.jupiter", name: "junit-jupiter", version: "5.8.1"
+	testCompile group: "org.junit.platform", name: "junit-platform-launcher", version: "1.8.1"
+
 	testCompile group: "org.skyscreamer", name: "jsonassert", transitive: false
 	testCompile group: "org.springframework.boot", name: "spring-boot-starter-test"
 	testCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
@@ -72,4 +75,12 @@ dependencies {
 
 jar {
 	enabled = true
+}
+
+test {
+	useJUnitPlatform()
+}
+
+testIntegration {
+	useJUnitPlatform()
 }

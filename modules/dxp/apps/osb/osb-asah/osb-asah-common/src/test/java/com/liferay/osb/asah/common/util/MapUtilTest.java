@@ -17,8 +17,8 @@ package com.liferay.osb.asah.common.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Vishal Reddy
@@ -40,14 +40,14 @@ public class MapUtilTest {
 			}
 		};
 
-		Assert.assertEquals(5, MapUtil.getLong(map, "int"));
-		Assert.assertEquals(5, MapUtil.getLong(map, "long"));
-		Assert.assertEquals(-5, MapUtil.getLong(map, "negative"));
-		Assert.assertEquals(5, MapUtil.getLong(map, "non-numeric", 5));
-		Assert.assertEquals(0, MapUtil.getLong(map, "null"));
-		Assert.assertEquals(5, MapUtil.getLong(map, "positive"));
-		Assert.assertEquals(5, MapUtil.getLong(map, "string"));
-		Assert.assertEquals(5, MapUtil.getLong(map, "stringArray"));
+		Assertions.assertEquals(5, MapUtil.getLong(map, "int"));
+		Assertions.assertEquals(5, MapUtil.getLong(map, "long"));
+		Assertions.assertEquals(-5, MapUtil.getLong(map, "negative"));
+		Assertions.assertEquals(5, MapUtil.getLong(map, "non-numeric", 5));
+		Assertions.assertEquals(0, MapUtil.getLong(map, "null"));
+		Assertions.assertEquals(5, MapUtil.getLong(map, "positive"));
+		Assertions.assertEquals(5, MapUtil.getLong(map, "string"));
+		Assertions.assertEquals(5, MapUtil.getLong(map, "stringArray"));
 	}
 
 	@Test
@@ -62,12 +62,12 @@ public class MapUtilTest {
 			}
 		};
 
-		Assert.assertEquals("5", MapUtil.getString(map, "int"));
-		Assert.assertEquals("5", MapUtil.getString(map, "long"));
-		Assert.assertNull(MapUtil.getString(map, "null"));
-		Assert.assertEquals("5", MapUtil.getString(map, "null", "5"));
-		Assert.assertEquals("5", MapUtil.getString(map, "string"));
-		Assert.assertEquals("5", MapUtil.getString(map, "stringArray"));
+		Assertions.assertEquals("5", MapUtil.getString(map, "int"));
+		Assertions.assertEquals("5", MapUtil.getString(map, "long"));
+		Assertions.assertNull(MapUtil.getString(map, "null"));
+		Assertions.assertEquals("5", MapUtil.getString(map, "null", "5"));
+		Assertions.assertEquals("5", MapUtil.getString(map, "string"));
+		Assertions.assertEquals("5", MapUtil.getString(map, "stringArray"));
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class MapUtilTest {
 			}
 		};
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			new HashMap<String, Integer>() {
 				{
 					put("test1", 5);

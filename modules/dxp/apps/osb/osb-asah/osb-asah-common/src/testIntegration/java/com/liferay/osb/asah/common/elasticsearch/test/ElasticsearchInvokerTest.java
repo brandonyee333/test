@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerImpl;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
@@ -50,12 +50,12 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
@@ -67,10 +67,10 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Rachael Koestartyo
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 public class ElasticsearchInvokerTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_elasticsearchInvoker = new ElasticsearchInvokerImpl(
 			_elasticsearchConnection.getTransportClient(),
@@ -88,7 +88,7 @@ public class ElasticsearchInvokerTest {
 			true, _createIndexConfiguration(), _indexName);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		_elasticsearchIndexManager.delete(_indexName);
 	}
@@ -139,7 +139,7 @@ public class ElasticsearchInvokerTest {
 			_collectionName,
 			JSONUtil.put("string", RandomTestUtil.randomHexString(4096)));
 
-		Assert.assertNotNull(actualJSONObject.getString("id"));
+		Assertions.assertNotNull(actualJSONObject.getString("id"));
 	}
 
 	@Test
@@ -149,7 +149,7 @@ public class ElasticsearchInvokerTest {
 		_elasticsearchInvoker.add(
 			_collectionName, JSONUtil.put("string", testString));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_elasticsearchInvoker.count(
 				_collectionName,
@@ -162,7 +162,7 @@ public class ElasticsearchInvokerTest {
 			_collectionName,
 			JSONUtil.put("string", RandomTestUtil.randomHexString(4096)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_elasticsearchInvoker.count(
 				_collectionName,
@@ -171,9 +171,9 @@ public class ElasticsearchInvokerTest {
 		boolean deleted = _elasticsearchInvoker.delete(
 			_collectionName, jsonObject);
 
-		Assert.assertTrue(deleted);
+		Assertions.assertTrue(deleted);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0,
 			_elasticsearchInvoker.count(
 				_collectionName,
@@ -196,7 +196,7 @@ public class ElasticsearchInvokerTest {
 
 		elasticsearchBulkRequestBuilder.get();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			15000,
 			_elasticsearchInvoker.count(
 				_collectionName, QueryBuilders.matchAllQuery()));
@@ -204,7 +204,7 @@ public class ElasticsearchInvokerTest {
 		_elasticsearchInvoker.deleteByQuery(
 			QueryBuilders.matchAllQuery(), true, _collectionName);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0,
 			_elasticsearchInvoker.count(
 				_collectionName, QueryBuilders.matchAllQuery()));
@@ -216,7 +216,7 @@ public class ElasticsearchInvokerTest {
 			_collectionName,
 			JSONUtil.put("string", RandomTestUtil.randomHexString(4096)));
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_elasticsearchInvoker.exists(
 				_collectionName,
 				QueryBuilders.termQuery("id", jsonObject.getString("id"))));
@@ -228,7 +228,7 @@ public class ElasticsearchInvokerTest {
 			_collectionName,
 			JSONUtil.put("string", RandomTestUtil.randomHexString(4096)));
 
-		Assert.assertNotNull(
+		Assertions.assertNotNull(
 			_elasticsearchInvoker.fetch(
 				_collectionName,
 				QueryBuilders.termQuery("id", jsonObject.getString("id"))));
@@ -240,7 +240,7 @@ public class ElasticsearchInvokerTest {
 			_collectionName,
 			JSONUtil.put("string", RandomTestUtil.randomHexString(4096)));
 
-		Assert.assertNull(
+		Assertions.assertNull(
 			_elasticsearchInvoker.fetch(
 				_collectionName,
 				QueryBuilders.termQuery(
@@ -265,7 +265,7 @@ public class ElasticsearchInvokerTest {
 		JSONAssert.assertEquals(expectedJSONObject, actualJSONObject, false);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testFieldIndexLimitExceeded() {
 		JSONObject expectedJSONObject = new JSONObject();
 
@@ -274,7 +274,10 @@ public class ElasticsearchInvokerTest {
 				String.valueOf(i), RandomTestUtil.randomHexString(4096));
 		}
 
-		_elasticsearchInvoker.add(_collectionName, expectedJSONObject);
+		Assertions.assertThrows(
+			IllegalArgumentException.class,
+			() -> _elasticsearchInvoker.add(
+				_collectionName, expectedJSONObject));
 	}
 
 	@Test
@@ -286,7 +289,7 @@ public class ElasticsearchInvokerTest {
 
 		JSONArray actualJSONArray = _elasticsearchInvoker.get(_collectionName);
 
-		Assert.assertEquals(1, actualJSONArray.length());
+		Assertions.assertEquals(1, actualJSONArray.length());
 
 		JSONAssert.assertEquals(expectedJSONArray, actualJSONArray, false);
 	}
@@ -315,7 +318,7 @@ public class ElasticsearchInvokerTest {
 		JSONArray actualJSONArray = _elasticsearchInvoker.get(
 			_collectionName, QueryBuilders.termQuery("string", testString));
 
-		Assert.assertEquals(1, actualJSONArray.length());
+		Assertions.assertEquals(1, actualJSONArray.length());
 
 		JSONAssert.assertEquals(expectedJSONArray, actualJSONArray, false);
 	}
@@ -345,9 +348,9 @@ public class ElasticsearchInvokerTest {
 		JSONObject actualJSONObject = _elasticsearchInvoker.get(
 			_collectionName, id);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			newTestString, actualJSONObject.getString("string"));
-		Assert.assertEquals(-1, actualJSONObject.optLong("value", -1));
+		Assertions.assertEquals(-1, actualJSONObject.optLong("value", -1));
 	}
 
 	@Test
@@ -375,9 +378,9 @@ public class ElasticsearchInvokerTest {
 		JSONObject actualJSONObject = _elasticsearchInvoker.get(
 			_collectionName, id);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			newTestString, actualJSONObject.getString("string"));
-		Assert.assertEquals(-1, actualJSONObject.optLong("value", -1));
+		Assertions.assertEquals(-1, actualJSONObject.optLong("value", -1));
 	}
 
 	@Test
@@ -390,7 +393,8 @@ public class ElasticsearchInvokerTest {
 		JSONObject actualJSONObject = _elasticsearchInvoker.get(
 			_collectionName, jsonObject.getString("id"));
 
-		Assert.assertEquals(testString, actualJSONObject.getString("string"));
+		Assertions.assertEquals(
+			testString, actualJSONObject.getString("string"));
 	}
 
 	@Test
@@ -425,19 +429,19 @@ public class ElasticsearchInvokerTest {
 
 		SearchHits searchHits = searchResponse.getHits();
 
-		Assert.assertEquals(3, HitsUtil.getTotalHitsCount(searchHits));
+		Assertions.assertEquals(3, HitsUtil.getTotalHitsCount(searchHits));
 
 		SearchHit[] hits = searchHits.getHits();
 
 		int hitsLength = hits.length;
 
-		Assert.assertEquals(0, hitsLength);
+		Assertions.assertEquals(0, hitsLength);
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
 		Sum sum = aggregations.get("sum");
 
-		Assert.assertEquals(testNumberSum, (int)sum.getValue());
+		Assertions.assertEquals(testNumberSum, (int)sum.getValue());
 	}
 
 	@Test
@@ -457,8 +461,9 @@ public class ElasticsearchInvokerTest {
 		JSONObject actualJSONObject = _elasticsearchInvoker.get(
 			_collectionName, id);
 
-		Assert.assertEquals(testString, actualJSONObject.getString("string"));
-		Assert.assertEquals(testNumber, actualJSONObject.getLong("value"));
+		Assertions.assertEquals(
+			testString, actualJSONObject.getString("string"));
+		Assertions.assertEquals(testNumber, actualJSONObject.getLong("value"));
 	}
 
 	@Test
@@ -479,8 +484,8 @@ public class ElasticsearchInvokerTest {
 					Collections.singletonMap("string", "string0")),
 				_collectionName);
 
-		Assert.assertEquals(1, bulkByScrollResponse.getUpdated());
-		Assert.assertEquals(0, bulkByScrollResponse.getVersionConflicts());
+		Assertions.assertEquals(1, bulkByScrollResponse.getUpdated());
+		Assertions.assertEquals(0, bulkByScrollResponse.getVersionConflicts());
 
 		JSONArray actualJSONArray = _elasticsearchInvoker.get(_collectionName);
 
@@ -519,13 +524,14 @@ public class ElasticsearchInvokerTest {
 					Collections.singletonMap("test", "test")),
 				_collectionName);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			(int)Math.ceil(expectedCount / 10000.0),
 			bulkByScrollResponse.getBatches());
-		Assert.assertEquals(expectedCount, bulkByScrollResponse.getUpdated());
+		Assertions.assertEquals(
+			expectedCount, bulkByScrollResponse.getUpdated());
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testUpdateWithConflict() {
 		JSONObject jsonObject = _elasticsearchInvoker.add(
@@ -556,8 +562,9 @@ public class ElasticsearchInvokerTest {
 		JSONObject actualJSONObject = _elasticsearchInvoker.fetch(
 			_collectionName, id);
 
-		Assert.assertEquals(testNumber, actualJSONObject.getLong("value"));
-		Assert.assertEquals(testString, actualJSONObject.getString("string"));
+		Assertions.assertEquals(testNumber, actualJSONObject.getLong("value"));
+		Assertions.assertEquals(
+			testString, actualJSONObject.getString("string"));
 
 		thread.interrupt();
 	}
@@ -589,8 +596,9 @@ public class ElasticsearchInvokerTest {
 			),
 			new Script("ctx._source.string1 = 'foo'"));
 
-		Assert.assertEquals("foo", actualJSONObject.getString("string1"));
-		Assert.assertEquals(testString2, actualJSONObject.getString("string2"));
+		Assertions.assertEquals("foo", actualJSONObject.getString("string1"));
+		Assertions.assertEquals(
+			testString2, actualJSONObject.getString("string2"));
 	}
 
 	@Test
@@ -608,8 +616,10 @@ public class ElasticsearchInvokerTest {
 			),
 			new Script("ctx._source.string1 = 'foo'"));
 
-		Assert.assertEquals(testString1, actualJSONObject.getString("string1"));
-		Assert.assertEquals(testString2, actualJSONObject.getString("string2"));
+		Assertions.assertEquals(
+			testString1, actualJSONObject.getString("string1"));
+		Assertions.assertEquals(
+			testString2, actualJSONObject.getString("string2"));
 	}
 
 	private String _createIndexConfiguration() {

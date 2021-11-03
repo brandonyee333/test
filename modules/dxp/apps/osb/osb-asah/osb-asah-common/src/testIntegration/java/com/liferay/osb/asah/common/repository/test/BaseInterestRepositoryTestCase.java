@@ -26,9 +26,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -39,7 +39,7 @@ import org.springframework.data.domain.PageRequest;
 public abstract class BaseInterestRepositoryTestCase
 	extends BaseRepositoryTestCase<Interest, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		Interest interest1 = new Interest();
 
@@ -96,7 +96,7 @@ public abstract class BaseInterestRepositoryTestCase
 
 	@Test
 	public void testCountByFilterStringAndScore() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			4,
 			_interestRepository.countByFilterStringAndScoreGreaterThanEqual(
 				new FilterHelper(null), 1.454684984987494));
@@ -104,7 +104,7 @@ public abstract class BaseInterestRepositoryTestCase
 
 	@Test
 	public void testCountByOwnerIdAndOwnerType() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			_interestRepository.countByOwnerIdAndOwnerType(
 				374790572703144534L, "individual"));
@@ -115,7 +115,7 @@ public abstract class BaseInterestRepositoryTestCase
 		_interestRepository.deleteByNameAndRecordedDateGreaterThanEqual(
 			"individual", DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
 
-		Assert.assertEquals(5, _interestRepository.count());
+		Assertions.assertEquals(5, _interestRepository.count());
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public abstract class BaseInterestRepositoryTestCase
 		_interestRepository.deleteByOwnerIdAndOwnerType(
 			Long.valueOf(374790572703144534L), "individual");
 
-		Assert.assertEquals(3, _interestRepository.count());
+		Assertions.assertEquals(3, _interestRepository.count());
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public abstract class BaseInterestRepositoryTestCase
 		_interestRepository.deleteByOwnerTypeAndRecordedDateLessThanEqual(
 			"individual", DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
 
-		Assert.assertEquals(3, _interestRepository.count());
+		Assertions.assertEquals(3, _interestRepository.count());
 	}
 
 	@Test
@@ -143,8 +143,8 @@ public abstract class BaseInterestRepositoryTestCase
 					DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"),
 					DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
 
-		Assert.assertEquals(interests.toString(), 1, interests.size());
-		Assert.assertEquals(Arrays.asList(entityModels.get(4)), interests);
+		Assertions.assertEquals(1, interests.size(), interests.toString());
+		Assertions.assertEquals(Arrays.asList(entityModels.get(4)), interests);
 
 		interests =
 			_interestRepository.
@@ -153,8 +153,8 @@ public abstract class BaseInterestRepositoryTestCase
 					DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"),
 					DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
 
-		Assert.assertEquals(interests.toString(), 1, interests.size());
-		Assert.assertEquals(Arrays.asList(entityModels.get(4)), interests);
+		Assertions.assertEquals(1, interests.size(), interests.toString());
+		Assertions.assertEquals(Arrays.asList(entityModels.get(4)), interests);
 
 		interests =
 			_interestRepository.
@@ -163,8 +163,8 @@ public abstract class BaseInterestRepositoryTestCase
 					DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"),
 					DateUtil.toUTCDate("2021-09-15T00:00:00.000Z"));
 
-		Assert.assertEquals(interests.toString(), 1, interests.size());
-		Assert.assertEquals(Arrays.asList(entityModels.get(4)), interests);
+		Assertions.assertEquals(1, interests.size(), interests.toString());
+		Assertions.assertEquals(Arrays.asList(entityModels.get(4)), interests);
 
 		interests =
 			_interestRepository.
@@ -173,7 +173,7 @@ public abstract class BaseInterestRepositoryTestCase
 					DateUtil.toUTCDate("2021-09-15T00:00:00.000Z"),
 					DateUtil.toUTCDate("2021-09-16T00:00:00.000Z"));
 
-		Assert.assertEquals(interests.toString(), 0, interests.size());
+		Assertions.assertEquals(0, interests.size(), interests.toString());
 	}
 
 	@Test
@@ -182,8 +182,8 @@ public abstract class BaseInterestRepositoryTestCase
 			_interestRepository.findByOwnerIdAndOwnerType(
 				374790572703144534L, "individual", PageRequest.of(0, 10));
 
-		Assert.assertEquals(interests.toString(), 2, interests.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(2, interests.size(), interests.toString());
+		Assertions.assertEquals(
 			Arrays.asList(entityModels.get(2), entityModels.get(3)), interests);
 	}
 
@@ -194,8 +194,8 @@ public abstract class BaseInterestRepositoryTestCase
 				null, "individual",
 				DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"), 10);
 
-		Assert.assertEquals(interests.toString(), 3, interests.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(3, interests.size(), interests.toString());
+		Assertions.assertEquals(
 			Arrays.asList(
 				entityModels.get(2), entityModels.get(3), entityModels.get(4)),
 			interests);
@@ -208,7 +208,7 @@ public abstract class BaseInterestRepositoryTestCase
 				"javascript", 374790575409131096L, "individual",
 				DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
 
-		Assert.assertEquals(entityModels.get(1), interest);
+		Assertions.assertEquals(entityModels.get(1), interest);
 	}
 
 	@Test
@@ -222,15 +222,16 @@ public abstract class BaseInterestRepositoryTestCase
 				DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"), null,
 				PageRequest.of(0, 10, Sort.desc("count")));
 
-		Assert.assertEquals(distributions.toString(), 2, distributions.size());
+		Assertions.assertEquals(
+			2, distributions.size(), distributions.toString());
 
 		Distribution distribution = distributions.get(0);
 
-		Assert.assertEquals(
-			distribution.toString(), 2, (int)distribution.getCount());
-		Assert.assertEquals(
-			distribution.toString(), Arrays.asList("sales"),
-			distribution.getValues());
+		Assertions.assertEquals(
+			2, (int)distribution.getCount(), distribution.toString());
+		Assertions.assertEquals(
+			Arrays.asList("sales"), distribution.getValues(),
+			distribution.toString());
 	}
 
 	@Test
@@ -240,8 +241,8 @@ public abstract class BaseInterestRepositoryTestCase
 				DateUtil.toUTCDate("2021-09-11T00:00:00.000Z"), null, "day",
 				DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
 
-		Assert.assertEquals(
-			transformations.toString(), 4, transformations.size());
+		Assertions.assertEquals(
+			4, transformations.size(), transformations.toString());
 
 		_assertTransformation(
 			"2021-09-11T00:00:00.000Z", 0, 0, 0, transformations.get(0));
@@ -263,8 +264,8 @@ public abstract class BaseInterestRepositoryTestCase
 				DateUtil.toUTCDate("2021-09-01T00:00:00.000Z"), null, "week",
 				DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
 
-		Assert.assertEquals(
-			transformations.toString(), 3, transformations.size());
+		Assertions.assertEquals(
+			3, transformations.size(), transformations.toString());
 		_assertTransformation(
 			"2021-08-30T00:00:00.000Z", 0D, 0D, 0, transformations.get(0));
 		_assertTransformation(
@@ -281,9 +282,8 @@ public abstract class BaseInterestRepositoryTestCase
 			_interestRepository.getTopNamesByOwnerIdAndOwnerType(
 				374790572703144534L, "individual", 10);
 
-		Assert.assertEquals(
-			names.toString(), Arrays.asList("sales", "compelling metrics"),
-			names);
+		Assertions.assertEquals(
+			Arrays.asList("sales", "compelling metrics"), names, names.toString());
 	}
 
 	@Override
@@ -295,11 +295,12 @@ public abstract class BaseInterestRepositoryTestCase
 		String intervalInitDate, double scoreAvg, double viewsSum,
 		long totalElements, Map<String, Object> transformation) {
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			intervalInitDate, transformation.get("intervalInitDate"));
-		Assert.assertEquals(scoreAvg, transformation.get("scoreAvg"));
-		Assert.assertEquals(totalElements, transformation.get("totalElements"));
-		Assert.assertEquals(viewsSum, transformation.get("viewsSum"));
+		Assertions.assertEquals(scoreAvg, transformation.get("scoreAvg"));
+		Assertions.assertEquals(
+			totalElements, transformation.get("totalElements"));
+		Assertions.assertEquals(viewsSum, transformation.get("viewsSum"));
 	}
 
 	@Autowired

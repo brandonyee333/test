@@ -26,7 +26,10 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Arrays;
@@ -38,23 +41,33 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author André Miranda
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 
 	@ElasticsearchIndex(
@@ -65,7 +78,7 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 	public void testAddChannelWithDuplicateName() {
 		Channel channel = _channelDog.addChannel("channel1");
 
-		Assert.assertEquals("channel1 (1)", channel.getName());
+		Assertions.assertEquals("channel1 (1)", channel.getName());
 	}
 
 	@ElasticsearchIndex(
@@ -97,14 +110,14 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 	public void testDeleteChannels() throws Exception {
 		_channelDog.deleteChannels(Arrays.asList(1L, 3L), null, null);
 
-		Assert.assertEquals(2, _assetRepository.count());
+		Assertions.assertEquals(2, _assetRepository.count());
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new String[] {"2"},
 			Matchers.arrayContainingInAnyOrder(
 				_getChannelAssetChannelIds(386700631786606770L)));
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new String[] {"2", "4"},
 			Matchers.arrayContainingInAnyOrder(
 				_getChannelAssetChannelIds(386700631786606772L)));
@@ -112,21 +125,21 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 		JSONArray blogsJSONArray = _cerebroInfoElasticsearchInvoker.get(
 			"blogs");
 
-		Assert.assertEquals(1, blogsJSONArray.length());
+		Assertions.assertEquals(1, blogsJSONArray.length());
 
 		JSONObject blogsJSONObject = blogsJSONArray.getJSONObject(0);
 
-		Assert.assertEquals("2", blogsJSONObject.getString("channelId"));
+		Assertions.assertEquals("2", blogsJSONObject.getString("channelId"));
 
 		JSONArray individualSegmentsJSONArray =
 			faroInfoElasticsearchInvoker.get("individual-segments");
 
-		Assert.assertEquals(1, individualSegmentsJSONArray.length());
+		Assertions.assertEquals(1, individualSegmentsJSONArray.length());
 
 		JSONObject individualSegmentJSONObject =
 			individualSegmentsJSONArray.getJSONObject(0);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"2", individualSegmentJSONObject.getString("channelId"));
 
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.get(
@@ -135,17 +148,19 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 		JSONArray individualActivitiesCountsJSONArray =
 			individualJSONObject.getJSONArray("activitiesCounts");
 
-		Assert.assertEquals(0, individualActivitiesCountsJSONArray.length());
+		Assertions.assertEquals(
+			0, individualActivitiesCountsJSONArray.length());
 
 		JSONArray channelIdsJSONArray = individualJSONObject.getJSONArray(
 			"channelIds");
 
-		Assert.assertEquals(0, channelIdsJSONArray.length());
+		Assertions.assertEquals(0, channelIdsJSONArray.length());
 
 		JSONArray individualLastActivityDatesJSONArray =
 			individualJSONObject.getJSONArray("lastActivityDates");
 
-		Assert.assertEquals(0, individualLastActivityDatesJSONArray.length());
+		Assertions.assertEquals(
+			0, individualLastActivityDatesJSONArray.length());
 
 		JSONObject accountJSONObject = faroInfoElasticsearchInvoker.get(
 			"accounts", "342313458385210529");
@@ -153,27 +168,27 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 		JSONArray accountActivitiesCountsJSONArray =
 			accountJSONObject.getJSONArray("activitiesCounts");
 
-		Assert.assertEquals(0, accountActivitiesCountsJSONArray.length());
+		Assertions.assertEquals(0, accountActivitiesCountsJSONArray.length());
 
 		JSONArray accountIndividualCountsJSONArray =
 			accountJSONObject.getJSONArray("individualCounts");
 
-		Assert.assertEquals(1, accountIndividualCountsJSONArray.length());
+		Assertions.assertEquals(1, accountIndividualCountsJSONArray.length());
 
 		JSONObject accountIndividualCountsJSONObject =
 			accountIndividualCountsJSONArray.getJSONObject(0);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"2", accountIndividualCountsJSONObject.getString("channelId"));
 
 		JSONArray channelsJSONArray = faroInfoElasticsearchInvoker.get(
 			"channels");
 
-		Assert.assertEquals(1, channelsJSONArray.length());
+		Assertions.assertEquals(1, channelsJSONArray.length());
 
 		JSONObject channelJSONObject = channelsJSONArray.getJSONObject(0);
 
-		Assert.assertEquals("2", channelJSONObject.getString("id"));
+		Assertions.assertEquals("2", channelJSONObject.getString("id"));
 	}
 
 	@ElasticsearchIndex(
@@ -185,10 +200,11 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 		Map<Long, String> channelNames = _channelDog.getChannelNamesByGroupIds(
 			405201047787757795L, SetUtil.of(123L, 456L, 789L));
 
-		Assert.assertEquals(channelNames.toString(), 2, channelNames.size());
-		Assert.assertEquals("channel1", channelNames.get(123L));
-		Assert.assertEquals("channel2", channelNames.get(456L));
-		Assert.assertNull(channelNames.get(789L));
+		Assertions.assertEquals(
+			2, channelNames.size(), channelNames.toString());
+		Assertions.assertEquals("channel1", channelNames.get(123L));
+		Assertions.assertEquals("channel2", channelNames.get(456L));
+		Assertions.assertNull(channelNames.get(789L));
 	}
 
 	@ElasticsearchIndex(
@@ -218,13 +234,14 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 
 		ChannelDataSource channelDataSource = channelDataSources.get(0);
 
-		Assert.assertEquals(SetUtil.of(123L), channelDataSource.getGroupIds());
+		Assertions.assertEquals(
+			SetUtil.of(123L), channelDataSource.getGroupIds());
 
 		channelDataSources = channelDataSourcesByDataSourceId.get(dataSourceId);
 
 		channelDataSource = channelDataSources.get(0);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			SetUtil.of(456L, 789L), channelDataSource.getGroupIds());
 
 		channelDataSources = channelDataSourcesByDataSourceId.get(
@@ -232,7 +249,8 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 
 		channelDataSource = channelDataSources.get(0);
 
-		Assert.assertEquals(SetUtil.of(321L), channelDataSource.getGroupIds());
+		Assertions.assertEquals(
+			SetUtil.of(321L), channelDataSource.getGroupIds());
 	}
 
 	@ElasticsearchIndex(
@@ -247,7 +265,7 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 
 		Channel channel = _channelDog.getChannel(1L);
 
-		Assert.assertEquals(name, channel.getName());
+		Assertions.assertEquals(name, channel.getName());
 	}
 
 	@ElasticsearchIndex(
@@ -264,13 +282,14 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 		ChannelDataSource channelDataSource1 = _findFirstChannelDataSource(
 			405201047787757795L, channel.getChannelDataSources());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			SetUtil.of(456L, 789L), channelDataSource1.getGroupIds());
 
 		ChannelDataSource channelDataSource2 = _findFirstChannelDataSource(
 			402135416847684684L, channel.getChannelDataSources());
 
-		Assert.assertEquals(SetUtil.of(321L), channelDataSource2.getGroupIds());
+		Assertions.assertEquals(
+			SetUtil.of(321L), channelDataSource2.getGroupIds());
 	}
 
 	@ElasticsearchIndex(
@@ -281,7 +300,7 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 	public void testPatchChannelWithDuplicateName() {
 		Channel channel = _channelDog.patchChannel(2L, null, null, "channel1");
 
-		Assert.assertEquals("channel1 (1)", channel.getName());
+		Assertions.assertEquals("channel1 (1)", channel.getName());
 	}
 
 	private ChannelDataSource _findFirstChannelDataSource(

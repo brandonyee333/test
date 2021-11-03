@@ -27,7 +27,10 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.Collections;
 
@@ -37,20 +40,29 @@ import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Leslie Wong
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class VisitedPagesTransformationJSONArrayFunctionTest {
 
 	@ElasticsearchIndex(
@@ -102,7 +114,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 				"visited-pages", null, _elasticsearchInvoker, 0, 20,
 				Collections.emptyList(), null, null);
 
-		Assert.assertEquals(0, transformationJSONArray.length());
+		Assertions.assertEquals(0, transformationJSONArray.length());
 	}
 
 	@ElasticsearchIndex(
@@ -125,7 +137,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 				"visited-pages", null, _elasticsearchInvoker, 0, 20,
 				Collections.emptyList(), null, null);
 
-		Assert.assertEquals(0, transformationJSONArray.length());
+		Assertions.assertEquals(0, transformationJSONArray.length());
 
 		transformationJSONArrayFunction =
 			new VisitedPagesTransformationJSONArrayFunction(
@@ -163,7 +175,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 				"visited-pages", null, _elasticsearchInvoker, 0, 20,
 				Collections.emptyList(), null, null);
 
-		Assert.assertEquals(0, transformationJSONArray.length());
+		Assertions.assertEquals(0, transformationJSONArray.length());
 	}
 
 	@ElasticsearchIndex(
@@ -257,7 +269,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 				"visited-pages", null, _elasticsearchInvoker, 3, 2,
 				Collections.emptyList(), null, null);
 
-		Assert.assertEquals(0, transformationJSONArray.length());
+		Assertions.assertEquals(0, transformationJSONArray.length());
 	}
 
 	@ElasticsearchIndex(

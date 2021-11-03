@@ -25,7 +25,10 @@ import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.HashMap;
@@ -33,23 +36,32 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Michael Bowerman
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class FieldDogTest extends BaseFaroInfoDogTestCase {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_dataSource = _dataSourceDog.addDataSource(
 			_objectMapper.convertValue(
@@ -61,7 +73,7 @@ public class FieldDogTest extends BaseFaroInfoDogTestCase {
 				_dataSource.getId(), "date", "date", "Date"));
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		_fieldDog.deleteFields(_dataSource.getId());
 		_fieldMappingDog.deleteFieldMapping(_fieldMapping);
@@ -158,10 +170,10 @@ public class FieldDogTest extends BaseFaroInfoDogTestCase {
 
 		String actualDateString = String.valueOf(dateField.getValue());
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
+			actualDateString.startsWith(expectedDateString),
 			"Expected date to start with \"" + expectedDateString +
-				"\" instead of \"" + actualDateString + "\"",
-			actualDateString.startsWith(expectedDateString));
+				"\" instead of \"" + actualDateString + "\"");
 	}
 
 	private DataSource _dataSource;

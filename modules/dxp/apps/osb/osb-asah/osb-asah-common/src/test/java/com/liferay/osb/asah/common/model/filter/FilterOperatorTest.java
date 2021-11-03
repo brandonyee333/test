@@ -25,8 +25,8 @@ import java.util.Collections;
 
 import org.jooq.impl.DSL;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Leslie Wong
@@ -47,7 +47,7 @@ public class FilterOperatorTest {
 		LocalDate startLocalDate = LocalDate.parse("2021-06-01");
 		LocalDate endLocalDate = LocalDate.parse("2021-06-23");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.and(
 				DSL.field(
 					"testField"
@@ -77,7 +77,7 @@ public class FilterOperatorTest {
 				}
 			});
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.and(
 				DSL.field(
 					"testField"
@@ -103,7 +103,7 @@ public class FilterOperatorTest {
 				}
 			});
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.and(
 				DSL.field(
 					"testField"
@@ -124,7 +124,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.STRING, "contains",
 			Collections.singletonList("testValue"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).containsIgnoreCase(
@@ -139,7 +139,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.STRING, "endsWith",
 			Collections.singletonList("testValue"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).endsWithIgnoreCase(
@@ -154,7 +154,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.DURATION, "eq",
 			Collections.singletonList("123"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).eq(
@@ -169,7 +169,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.STRING, "eq",
 			Collections.singletonList(null));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).isNull(),
@@ -182,7 +182,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.STRING, "eq",
 			Collections.singletonList("testValue"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).equalIgnoreCase(
@@ -191,27 +191,31 @@ public class FilterOperatorTest {
 			filterOperator.getCondition(DSL.field("testField")));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testFilterOperatorBadArgumentCount() {
-		FilterOperators.of(
-			EventAttributeDefinition.DataType.STRING, "contains",
-			new ArrayList<String>() {
-				{
-					add("test1");
-					add("test2");
-				}
-			});
+		Assertions.assertThrows(
+			IllegalArgumentException.class,
+			() -> FilterOperators.of(
+				EventAttributeDefinition.DataType.STRING, "contains",
+				new ArrayList<String>() {
+					{
+						add("test1");
+						add("test2");
+					}
+				}));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testFilterOperatorUnsupportedDataType() {
-		FilterOperators.of(
-			EventAttributeDefinition.DataType.STRING, "gt",
-			new ArrayList<String>() {
-				{
-					add("test");
-				}
-			});
+		Assertions.assertThrows(
+			IllegalArgumentException.class,
+			() -> FilterOperators.of(
+				EventAttributeDefinition.DataType.STRING, "gt",
+				new ArrayList<String>() {
+					{
+						add("test");
+					}
+				}));
 	}
 
 	@Test
@@ -224,7 +228,7 @@ public class FilterOperatorTest {
 
 		LocalDate localDate = LocalDate.parse(dateString);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).ge(
@@ -240,7 +244,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.DURATION, "ge",
 			Collections.singletonList("123"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).ge(
@@ -255,7 +259,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.NUMBER, "ge",
 			Collections.singletonList("123"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).ge(
@@ -274,7 +278,7 @@ public class FilterOperatorTest {
 
 		LocalDate localDate = LocalDate.parse(dateString);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).gt(
@@ -290,7 +294,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.DURATION, "gt",
 			Collections.singletonList("123"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).gt(
@@ -305,7 +309,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.NUMBER, "gt",
 			Collections.singletonList("123"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).gt(
@@ -324,7 +328,7 @@ public class FilterOperatorTest {
 
 		LocalDate localDate = LocalDate.parse(dateString);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).le(
@@ -340,7 +344,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.DURATION, "le",
 			Collections.singletonList("123"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).le(
@@ -355,7 +359,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.NUMBER, "le",
 			Collections.singletonList("123"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).le(
@@ -374,7 +378,7 @@ public class FilterOperatorTest {
 
 		LocalDate localDate = LocalDate.parse(dateString);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).lt(
@@ -390,7 +394,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.DURATION, "lt",
 			Collections.singletonList("123"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).lt(
@@ -405,7 +409,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.NUMBER, "lt",
 			Collections.singletonList("123"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).lt(
@@ -420,7 +424,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.STRING, "notContains",
 			Collections.singletonList("testValue"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).notContainsIgnoreCase(
@@ -435,7 +439,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.DURATION, "ne",
 			Collections.singletonList("123"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).ne(
@@ -450,7 +454,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.STRING, "ne",
 			Collections.singletonList(null));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).isNotNull(),
@@ -463,7 +467,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.STRING, "ne",
 			Collections.singletonList("testValue"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).notEqualIgnoreCase(
@@ -478,7 +482,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.STRING, "similarTo",
 			Collections.singletonList("test.*Value"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.lower(
 				DSL.field("testField", String.class)
 			).similarTo(
@@ -493,7 +497,7 @@ public class FilterOperatorTest {
 			EventAttributeDefinition.DataType.STRING, "startsWith",
 			Collections.singletonList("testValue"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DSL.field(
 				"testField"
 			).startsWithIgnoreCase(

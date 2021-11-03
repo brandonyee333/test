@@ -32,9 +32,9 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -46,7 +46,7 @@ import org.springframework.data.domain.Sort;
 public abstract class BaseExperimentRepositoryTestCase
 	extends BaseRepositoryTestCase<Experiment, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		Experiment experiment = new Experiment();
 
@@ -147,7 +147,7 @@ public abstract class BaseExperimentRepositoryTestCase
 			_experimentRepository.findByExperimentStatus(
 				ExperimentStatus.RUNNING);
 
-		Assert.assertEquals(experiments.toString(), 1, experiments.size());
+		Assertions.assertEquals(1, experiments.size(), experiments.toString());
 	}
 
 	@Test
@@ -156,7 +156,7 @@ public abstract class BaseExperimentRepositoryTestCase
 			_experimentRepository.searchExperimentsByChannelIdAndKeywords(
 				1L, null, PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(experiments.toString(), 1, experiments.size());
+		Assertions.assertEquals(1, experiments.size(), experiments.toString());
 	}
 
 	@Override

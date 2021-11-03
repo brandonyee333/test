@@ -22,7 +22,7 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
 import java.util.ArrayList;
@@ -35,9 +35,9 @@ import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
@@ -47,7 +47,7 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Leslie Wong
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 public class TermsAggregationTransformationJSONArrayFunctionTest {
 
 	@ElasticsearchIndex(
@@ -96,7 +96,7 @@ public class TermsAggregationTransformationJSONArrayFunctionTest {
 			"individuals", null, _elasticsearchInvoker, 0, 20,
 			Collections.emptyList(), null, null);
 
-		Assert.assertEquals(0, jsonArray.length());
+		Assertions.assertEquals(0, jsonArray.length());
 	}
 
 	@ElasticsearchIndex(

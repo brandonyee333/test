@@ -15,13 +15,13 @@
 package com.liferay.osb.asah.common.spring.cache.test;
 
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.lang.reflect.Method;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.interceptor.KeyGenerator;
@@ -31,7 +31,7 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Marcellus Tavares
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 public class OSBAsahCachingConfigurerSupportTest {
 
 	@Test
@@ -43,9 +43,9 @@ public class OSBAsahCachingConfigurerSupportTest {
 		Method method2 = clazz.getMethod(
 			"multiplyExact", Integer.class, Long.class);
 
-		Assert.assertNotEquals(method1.toString(), method2.toString());
+		Assertions.assertNotEquals(method1.toString(), method2.toString());
 
-		Assert.assertNotEquals(
+		Assertions.assertNotEquals(
 			_keyGenerator.generate(this, method1, 1, 2),
 			_keyGenerator.generate(this, method2, 1, 2));
 	}

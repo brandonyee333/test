@@ -24,12 +24,13 @@ import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
 import org.json.JSONArray;
 
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * @author Vishal Reddy
@@ -39,7 +40,7 @@ public abstract class BaseFaroInfoFilterStringConverterHelperTestCase {
 	public abstract FilterStringConverterHelper
 		getFilterStringConverterHelper();
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		for (String collectionName : _COLLECTION_NAMES) {
 			faroInfoElasticsearchInvoker.add(
@@ -59,7 +60,7 @@ public abstract class BaseFaroInfoFilterStringConverterHelperTestCase {
 			String... expectedIndividualIds)
 		throws Exception {
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			expectedIndividualIds,
 			Matchers.arrayContainingInAnyOrder(
 				JSONUtil.toStringArray(
@@ -78,7 +79,7 @@ public abstract class BaseFaroInfoFilterStringConverterHelperTestCase {
 			FilterStringToQueryBuilderConverter.convert(
 				filterString, getFilterStringConverterHelper());
 
-			Assert.fail();
+			Assertions.fail();
 		}
 		catch (Exception exception) {
 			if (expectedExceptionClass == null) {
@@ -93,17 +94,17 @@ public abstract class BaseFaroInfoFilterStringConverterHelperTestCase {
 
 			Class<?> clazz = throwable.getClass();
 
-			Assert.assertEquals(
+			Assertions.assertEquals(
+				clazz, expectedExceptionClass,
 				"Expected innermost throwable to be of type " +
 					expectedExceptionClass.getName() + ", but was " +
-						clazz.getName(),
-				clazz, expectedExceptionClass);
+						clazz.getName());
 
 			if (expectedMessage == null) {
 				return;
 			}
 
-			Assert.assertEquals(expectedMessage, throwable.getMessage());
+			Assertions.assertEquals(expectedMessage, throwable.getMessage());
 		}
 	}
 

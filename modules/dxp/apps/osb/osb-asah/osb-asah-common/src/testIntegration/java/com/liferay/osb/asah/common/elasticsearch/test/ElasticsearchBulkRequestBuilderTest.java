@@ -23,7 +23,7 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Arrays;
@@ -34,9 +34,9 @@ import org.elasticsearch.action.support.WriteRequest;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
@@ -47,7 +47,7 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Rachael Koestartyo
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 public class ElasticsearchBulkRequestBuilderTest {
 
 	@Test
@@ -71,12 +71,12 @@ public class ElasticsearchBulkRequestBuilderTest {
 			"individuals", individualJSONObject2.put("id", "2")
 		).get();
 
-		Assert.assertFalse(bulkResponse.hasFailures());
+		Assertions.assertFalse(bulkResponse.hasFailures());
 
-		Assert.assertFalse(elasticsearchBulkRequestBuilder.hasActions());
+		Assertions.assertFalse(elasticsearchBulkRequestBuilder.hasActions());
 
-		Assert.assertTrue(_elasticsearchInvoker.exists("individuals", "1"));
-		Assert.assertTrue(_elasticsearchInvoker.exists("individuals", "2"));
+		Assertions.assertTrue(_elasticsearchInvoker.exists("individuals", "1"));
+		Assertions.assertTrue(_elasticsearchInvoker.exists("individuals", "2"));
 
 		individualJSONObject1 = _elasticsearchInvoker.get("individuals", "1");
 		individualJSONObject2 = _elasticsearchInvoker.get("individuals", "2");
@@ -90,11 +90,13 @@ public class ElasticsearchBulkRequestBuilderTest {
 		individualJSONObject1 = _elasticsearchInvoker.get("individuals", "1");
 		individualJSONObject2 = _elasticsearchInvoker.get("individuals", "2");
 
-		Assert.assertFalse(bulkResponse.hasFailures());
-		Assert.assertFalse(elasticsearchBulkRequestBuilder.hasActions());
+		Assertions.assertFalse(bulkResponse.hasFailures());
+		Assertions.assertFalse(elasticsearchBulkRequestBuilder.hasActions());
 
-		Assert.assertEquals("test1", individualJSONObject1.getString("test"));
-		Assert.assertEquals("test2", individualJSONObject2.getString("test"));
+		Assertions.assertEquals(
+			"test1", individualJSONObject1.getString("test"));
+		Assertions.assertEquals(
+			"test2", individualJSONObject2.getString("test"));
 
 		bulkResponse = elasticsearchBulkRequestBuilder.delete(
 			"individuals", individualJSONObject1.getString("id")
@@ -102,12 +104,14 @@ public class ElasticsearchBulkRequestBuilderTest {
 			"individuals", individualJSONObject2.getString("id")
 		).get();
 
-		Assert.assertFalse(bulkResponse.hasFailures());
+		Assertions.assertFalse(bulkResponse.hasFailures());
 
-		Assert.assertFalse(elasticsearchBulkRequestBuilder.hasActions());
+		Assertions.assertFalse(elasticsearchBulkRequestBuilder.hasActions());
 
-		Assert.assertFalse(_elasticsearchInvoker.exists("individuals", "1"));
-		Assert.assertFalse(_elasticsearchInvoker.exists("individuals", "2"));
+		Assertions.assertFalse(
+			_elasticsearchInvoker.exists("individuals", "1"));
+		Assertions.assertFalse(
+			_elasticsearchInvoker.exists("individuals", "2"));
 	}
 
 	@Test
@@ -127,12 +131,12 @@ public class ElasticsearchBulkRequestBuilderTest {
 
 		BulkItemResponse[] bulkItemResponses = bulkResponse.getItems();
 
-		Assert.assertEquals(
-			Arrays.toString(bulkItemResponses), 1, bulkItemResponses.length);
+		Assertions.assertEquals(
+			1, bulkItemResponses.length, Arrays.toString(bulkItemResponses));
 
 		BulkItemResponse bulkItemResponse = bulkItemResponses[0];
 
-		Assert.assertFalse(bulkItemResponse.isFailed());
+		Assertions.assertFalse(bulkItemResponse.isFailed());
 
 		JSONAssert.assertEquals(
 			assetJSONObject,
@@ -161,14 +165,14 @@ public class ElasticsearchBulkRequestBuilderTest {
 			"assets", assetJSONObject
 		).get();
 
-		Assert.assertFalse(bulkResponse.hasFailures());
+		Assertions.assertFalse(bulkResponse.hasFailures());
 
-		Assert.assertFalse(elasticsearchBulkRequestBuilder.hasActions());
+		Assertions.assertFalse(elasticsearchBulkRequestBuilder.hasActions());
 
 		assetJSONObject = _elasticsearchInvoker.get(
 			"assets", assetJSONObject.getString("id"));
 
-		Assert.assertEquals(assetName, assetJSONObject.getString("name"));
+		Assertions.assertEquals(assetName, assetJSONObject.getString("name"));
 	}
 
 	@Autowired

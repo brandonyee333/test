@@ -20,24 +20,36 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Marcellus Tavares
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class RecommendationDogTest {
 
 	@ElasticsearchIndex(
@@ -53,7 +65,7 @@ public class RecommendationDogTest {
 			_recommendationDog.getItemRecommendationPage(
 				1L, 0, 20, Sort.desc("id"));
 
-		Assert.assertEquals(0, itemRecommendationPage.getTotalElements());
+		Assertions.assertEquals(0, itemRecommendationPage.getTotalElements());
 	}
 
 	@ElasticsearchIndex(
@@ -67,11 +79,11 @@ public class RecommendationDogTest {
 			_recommendationDog.getItemRecommendation(
 				"fd98459b712bf8a15c6f9a71e4ae52f641b25eb2");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"https://www-prd.liferay.com/services/training/online",
 			itemRecommendation.getItemId());
-		Assert.assertEquals(1, (long)itemRecommendation.getJobId());
-		Assert.assertEquals(
+		Assertions.assertEquals(1, (long)itemRecommendation.getJobId());
+		Assertions.assertEquals(
 			Arrays.asList(
 				"https://www-prd.liferay.com/blog",
 				"https://www-prd.liferay.com/resource"),
@@ -92,10 +104,10 @@ public class RecommendationDogTest {
 		List<ItemRecommendation> itemRecommendations =
 			itemRecommendationPage.getContent();
 
-		Assert.assertEquals(
-			itemRecommendations.toString(), 3, itemRecommendations.size());
+		Assertions.assertEquals(
+			3, itemRecommendations.size(), itemRecommendations.toString());
 
-		Assert.assertEquals(3, itemRecommendationPage.getTotalElements());
+		Assertions.assertEquals(3, itemRecommendationPage.getTotalElements());
 	}
 
 	@Autowired

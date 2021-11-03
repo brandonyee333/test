@@ -18,9 +18,9 @@ import com.liferay.osb.asah.common.entity.Preference;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.repository.Repository;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,14 +30,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class BasePreferenceRepositoryTestCase
 	extends BaseRepositoryTestCase<Preference, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		setUpRepository(new Preference("key", "value"));
 	}
 
 	@Test
 	public void testFindByKey() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			entityModels.get(0), _preferenceRepository.findByKey("key"));
 	}
 

@@ -28,9 +28,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,7 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class BaseDXPEntityRepositoryTestCase
 	extends BaseRepositoryTestCase<DXPEntity, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		DataSource dataSource1 = new DataSource("Liferay Brazil");
 
@@ -89,9 +89,10 @@ public abstract class BaseDXPEntityRepositoryTestCase
 	}
 
 	@Override
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void testCount() {
-		super.testCount();
+		Assertions.assertThrows(
+			UnsupportedOperationException.class, super::testCount);
 	}
 
 	@Override
@@ -116,13 +117,14 @@ public abstract class BaseDXPEntityRepositoryTestCase
 				},
 				1, type);
 
-		Assert.assertTrue(dxpEntities.isEmpty());
+		Assertions.assertTrue(dxpEntities.isEmpty());
 	}
 
 	@Override
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void testDeleteAll1() {
-		super.testDeleteAll1();
+		Assertions.assertThrows(
+			UnsupportedOperationException.class, super::testDeleteAll1);
 	}
 
 	@Override
@@ -144,7 +146,7 @@ public abstract class BaseDXPEntityRepositoryTestCase
 				},
 				1, DXPEntity.Type.USER);
 
-		Assert.assertTrue(dxpEntities.isEmpty());
+		Assertions.assertTrue(dxpEntities.isEmpty());
 	}
 
 	@Test
@@ -165,43 +167,49 @@ public abstract class BaseDXPEntityRepositoryTestCase
 				},
 				1, dxpEntity.getType());
 
-		Assert.assertTrue(dxpEntities.isEmpty());
+		Assertions.assertTrue(dxpEntities.isEmpty());
 	}
 
 	@Override
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void testDeleteById() {
-		super.testDeleteById();
+		Assertions.assertThrows(
+			UnsupportedOperationException.class, super::testDeleteById);
 	}
 
 	@Override
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void testExistsById() {
-		super.testExistsById();
+		Assertions.assertThrows(
+			UnsupportedOperationException.class, super::testExistsById);
 	}
 
 	@Override
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void testFindAll1() {
-		super.testFindAll1();
+		Assertions.assertThrows(
+			UnsupportedOperationException.class, super::testFindAll1);
 	}
 
 	@Override
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void testFindAll2() {
-		super.testFindAll2();
+		Assertions.assertThrows(
+			UnsupportedOperationException.class, super::testFindAll2);
 	}
 
 	@Override
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void testFindAll3() {
-		super.testFindAll3();
+		Assertions.assertThrows(
+			UnsupportedOperationException.class, super::testFindAll3);
 	}
 
 	@Override
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void testFindAllById() {
-		super.testFindAllById();
+		Assertions.assertThrows(
+			UnsupportedOperationException.class, super::testFindAllById);
 	}
 
 	@Test
@@ -219,7 +227,7 @@ public abstract class BaseDXPEntityRepositoryTestCase
 				},
 				3, DXPEntity.Type.USER);
 
-		Assert.assertEquals(dxpEntities.toString(), 1, dxpEntities.size());
+		Assertions.assertEquals(1, dxpEntities.size(), dxpEntities.toString());
 	}
 
 	@Test
@@ -235,15 +243,16 @@ public abstract class BaseDXPEntityRepositoryTestCase
 		DXPEntity expectedDXPEntity = entityModels.get(1);
 		DXPEntity actualDXPEntity = dxpEntities.get(0);
 
-		Assert.assertEquals(
-			dxpEntities.toString(), expectedDXPEntity.getId(),
-			actualDXPEntity.getId());
+		Assertions.assertEquals(
+			expectedDXPEntity.getId(), actualDXPEntity.getId(),
+			dxpEntities.toString());
 	}
 
 	@Override
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void testFindById() {
-		super.testFindById();
+		Assertions.assertThrows(
+			UnsupportedOperationException.class, super::testFindById);
 	}
 
 	@Test
@@ -252,7 +261,7 @@ public abstract class BaseDXPEntityRepositoryTestCase
 			_dxpEntityRepository.findByMembershipClassNameAndMembershipId(
 				DXPEntity.Type.GROUP.getClassName(), 20121L);
 
-		Assert.assertEquals(dxpEntities.toString(), 1, dxpEntities.size());
+		Assertions.assertEquals(1, dxpEntities.size(), dxpEntities.toString());
 	}
 
 	@Override

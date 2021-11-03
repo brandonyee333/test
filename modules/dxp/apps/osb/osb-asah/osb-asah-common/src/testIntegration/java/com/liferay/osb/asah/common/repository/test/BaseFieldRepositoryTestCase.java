@@ -26,9 +26,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -40,7 +40,7 @@ import org.springframework.data.domain.Sort;
 public abstract class BaseFieldRepositoryTestCase
 	extends BaseRepositoryTestCase<Field, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		Field field1 = new Field();
 
@@ -90,7 +90,7 @@ public abstract class BaseFieldRepositoryTestCase
 
 	@Test
 	public void testCountFields() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_fieldRepository.countFields(new FilterHelper("name eq 'field3'")));
 	}
@@ -101,28 +101,28 @@ public abstract class BaseFieldRepositoryTestCase
 			deleteByContextAndDataSourceIdAndNameAndOwnerIdInAndOwnerType(
 				"organization", 1L, "field1", Arrays.asList(10L), "account");
 
-		Assert.assertEquals(1, _fieldRepository.count());
+		Assertions.assertEquals(1, _fieldRepository.count());
 	}
 
 	@Test
 	public void testDeleteByContextAndOwnerId() {
 		_fieldRepository.deleteByContextAndOwnerId("organization", 10L);
 
-		Assert.assertEquals(0, _fieldRepository.count());
+		Assertions.assertEquals(0, _fieldRepository.count());
 	}
 
 	@Test
 	public void testDeleteByDataSourceId() {
 		_fieldRepository.deleteByDataSourceId(1L);
 
-		Assert.assertEquals(0, _fieldRepository.count());
+		Assertions.assertEquals(0, _fieldRepository.count());
 	}
 
 	@Test
 	public void testDeleteByOwnerIdAndOwnerType() {
 		_fieldRepository.deleteByOwnerIdAndOwnerType(10L, "account");
 
-		Assert.assertEquals(0, _fieldRepository.count());
+		Assertions.assertEquals(0, _fieldRepository.count());
 	}
 
 	@Test
@@ -130,12 +130,12 @@ public abstract class BaseFieldRepositoryTestCase
 		_fieldRepository.deleteByOwnerIdInAndOwnerType(
 			Arrays.asList(10L), "account");
 
-		Assert.assertEquals(0, _fieldRepository.count());
+		Assertions.assertEquals(0, _fieldRepository.count());
 	}
 
 	@Test
 	public void testExistsByNameAndOwnerId() {
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_fieldRepository.existsByNameAndOwnerId("field1", 10L));
 	}
 
@@ -146,7 +146,7 @@ public abstract class BaseFieldRepositoryTestCase
 				findByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
 					"organization", 1L, "field1", 10L, "account");
 
-		Assert.assertEquals(fields.toString(), 2, fields.size());
+		Assertions.assertEquals(2, fields.size(), fields.toString());
 
 		_assertFieldEquals(_field1, fields.get(0));
 		_assertFieldEquals(_field2, fields.get(1));
@@ -158,7 +158,7 @@ public abstract class BaseFieldRepositoryTestCase
 			_fieldRepository.findByContextAndDataSourceIdAndOwnerIdAndOwnerType(
 				"organization", 1L, 10L, "account");
 
-		Assert.assertEquals(fields.toString(), 3, fields.size());
+		Assertions.assertEquals(3, fields.size(), fields.toString());
 
 		_assertFieldEquals(_field1, fields.get(0));
 		_assertFieldEquals(_field2, fields.get(1));
@@ -172,7 +172,7 @@ public abstract class BaseFieldRepositoryTestCase
 				findByContextAndDataSourceIdAndOwnerIdInAndOwnerType(
 					"organization", 1L, Arrays.asList(10L), "account");
 
-		Assert.assertEquals(fields.toString(), 3, fields.size());
+		Assertions.assertEquals(3, fields.size(), fields.toString());
 
 		_assertFieldEquals(_field1, fields.get(0));
 		_assertFieldEquals(_field2, fields.get(1));
@@ -185,7 +185,7 @@ public abstract class BaseFieldRepositoryTestCase
 			_fieldRepository.findByContextAndNameAndOwnerIdAndOwnerType(
 				"organization", "field1", 10L, "account");
 
-		Assert.assertEquals(fields.toString(), 2, fields.size());
+		Assertions.assertEquals(2, fields.size(), fields.toString());
 
 		_assertFieldEquals(_field1, fields.get(0));
 		_assertFieldEquals(_field2, fields.get(1));
@@ -197,7 +197,7 @@ public abstract class BaseFieldRepositoryTestCase
 			_fieldRepository.findByContextAndNameAndOwnerIdInAndOwnerType(
 				"organization", "field1", Arrays.asList(10L), "account");
 
-		Assert.assertEquals(fields.toString(), 2, fields.size());
+		Assertions.assertEquals(2, fields.size(), fields.toString());
 
 		_assertFieldEquals(_field1, fields.get(0));
 		_assertFieldEquals(_field2, fields.get(1));
@@ -209,7 +209,7 @@ public abstract class BaseFieldRepositoryTestCase
 			_fieldRepository.findByContextAndOwnerIdAndOwnerType(
 				"organization", 10L, "account");
 
-		Assert.assertEquals(fields.toString(), 3, fields.size());
+		Assertions.assertEquals(3, fields.size(), fields.toString());
 
 		_assertFieldEquals(_field1, fields.get(0));
 		_assertFieldEquals(_field2, fields.get(1));
@@ -223,7 +223,7 @@ public abstract class BaseFieldRepositoryTestCase
 				findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
 					"organization", 10L);
 
-		Assert.assertEquals(fields.toString(), 2, fields.size());
+		Assertions.assertEquals(2, fields.size(), fields.toString());
 
 		_assertFieldEquals(_field2, fields.get(0));
 		_assertFieldEquals(_field3, fields.get(1));
@@ -236,7 +236,7 @@ public abstract class BaseFieldRepositoryTestCase
 				findByContextAndOwnerIdInGroupByMaxModifiedDateAndName(
 					"organization", Arrays.asList(10L));
 
-		Assert.assertEquals(fields.toString(), 2, fields.size());
+		Assertions.assertEquals(2, fields.size(), fields.toString());
 
 		_assertFieldEquals(_field2, fields.get(0));
 		_assertFieldEquals(_field3, fields.get(1));
@@ -248,7 +248,7 @@ public abstract class BaseFieldRepositoryTestCase
 			_fieldRepository.findByFieldTypeAndOwnerTypeAndValueIn(
 				"Text", "account", Collections.singletonList("field three"));
 
-		Assert.assertEquals(fields.toString(), 1, fields.size());
+		Assertions.assertEquals(1, fields.size(), fields.toString());
 
 		_assertFieldEquals(_field3, fields.get(0));
 	}
@@ -266,11 +266,11 @@ public abstract class BaseFieldRepositoryTestCase
 							"totalElements", "desc", "terms", "asc"
 						})));
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			transformations.contains(
 				new Transformation(
 					Collections.singletonMap("name", "field1"), 2)));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			transformations.contains(
 				new Transformation(
 					Collections.singletonMap("name", "field3"), 1)));
@@ -281,7 +281,7 @@ public abstract class BaseFieldRepositoryTestCase
 		List<Field> fields = _fieldRepository.searchFields(
 			new FilterHelper("name eq 'field1'"), PageRequest.of(0, 1));
 
-		Assert.assertEquals(fields.toString(), 1, fields.size());
+		Assertions.assertEquals(1, fields.size(), fields.toString());
 
 		_assertFieldEquals(_field1, fields.get(0));
 	}
@@ -292,22 +292,23 @@ public abstract class BaseFieldRepositoryTestCase
 	}
 
 	private void _assertFieldEquals(Field expectedField, Field actualField) {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedField.getContext(), actualField.getContext());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedField.getDataSourceId(), actualField.getDataSourceId());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedField.getDataSourceName(), actualField.getDataSourceName());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedField.getFieldType(), actualField.getFieldType());
-		Assert.assertEquals(expectedField.getName(), actualField.getName());
-		Assert.assertEquals(
+		Assertions.assertEquals(expectedField.getName(), actualField.getName());
+		Assertions.assertEquals(
 			expectedField.getOwnerId(), actualField.getOwnerId());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedField.getOwnerType(), actualField.getOwnerType());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedField.getSourceName(), actualField.getSourceName());
-		Assert.assertEquals(expectedField.getValue(), actualField.getValue());
+		Assertions.assertEquals(
+			expectedField.getValue(), actualField.getValue());
 	}
 
 	private Field _field1;

@@ -26,16 +26,16 @@ import javax.validation.ValidatorFactory;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Marcos Martins
  */
 public class AnalyticsEventsMessageTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		ValidatorFactory validatorFactory =
 			Validation.buildDefaultValidatorFactory();
@@ -70,7 +70,7 @@ public class AnalyticsEventsMessageTest {
 		Set<ConstraintViolation<AnalyticsEventsMessage>> violations =
 			_validator.validate(analyticsEventsMessage);
 
-		Assert.assertFalse(violations.isEmpty());
+		Assertions.assertFalse(violations.isEmpty());
 	}
 
 	private Validator _validator;

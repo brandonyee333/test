@@ -39,9 +39,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -55,7 +55,7 @@ import org.yaml.snakeyaml.util.ArrayUtils;
 public abstract class BaseAccountRepositoryTestCase
 	extends BaseRepositoryTestCase<Account, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		DataSource dataSource1 = new DataSource("Liferay Brazil");
 
@@ -173,7 +173,7 @@ public abstract class BaseAccountRepositoryTestCase
 
 	@Test
 	public void testCountAccounts() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			accountRepository.countAccounts(
 				null,
@@ -242,7 +242,8 @@ public abstract class BaseAccountRepositoryTestCase
 			"shippingPostalCode", "Text", FilterHelper.EMPTY,
 			PageRequest.of(0, 1, Sort.by(Sort.Order.asc("count"))));
 
-		Assert.assertEquals(distributions.toString(), 1, distributions.size());
+		Assertions.assertEquals(
+			1, distributions.size(), distributions.toString());
 
 		_assertEquals(
 			distributions.get(0), 1,
@@ -254,7 +255,8 @@ public abstract class BaseAccountRepositoryTestCase
 			"numberOfEmployees", "Number", FilterHelper.EMPTY,
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("values"))));
 
-		Assert.assertEquals(distributions.toString(), 10, distributions.size());
+		Assertions.assertEquals(
+			10, distributions.size(), distributions.toString());
 
 		_assertEquals(
 			distributions.get(0), 1,
@@ -301,12 +303,12 @@ public abstract class BaseAccountRepositoryTestCase
 				_accountsFilterStringConverterHelper),
 			pageRequest, Sort.by(Sort.Order.asc("individualCount")));
 
-		Assert.assertEquals(accounts.toString(), 1, accounts.size());
+		Assertions.assertEquals(1, accounts.size(), accounts.toString());
 
 		Optional<Account> accountOptional = accountRepository.findById(
 			_accountId);
 
-		Assert.assertEquals(accountOptional.orElse(null), accounts.get(0));
+		Assertions.assertEquals(accountOptional.orElse(null), accounts.get(0));
 	}
 
 	@Override
@@ -422,8 +424,8 @@ public abstract class BaseAccountRepositoryTestCase
 		Distribution distribution, int expectedCount,
 		List<Object> expectedValues) {
 
-		Assert.assertEquals(expectedCount, (int)distribution.getCount());
-		Assert.assertEquals(expectedValues, distribution.getValues());
+		Assertions.assertEquals(expectedCount, (int)distribution.getCount());
+		Assertions.assertEquals(expectedValues, distribution.getValues());
 	}
 
 	private Long _accountId;

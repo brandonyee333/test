@@ -25,7 +25,10 @@ import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.SetUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.ArrayList;
@@ -37,22 +40,31 @@ import java.util.Map;
 
 import org.apache.commons.lang3.time.DateUtils;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Alejo Ceballos
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class MembershipChangeDogTest extends BaseFaroInfoDogTestCase {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		List<String> channelNames = Arrays.asList(
 			RandomTestUtil.randomString(), RandomTestUtil.randomString());
@@ -89,13 +101,13 @@ public class MembershipChangeDogTest extends BaseFaroInfoDogTestCase {
 			_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
 				segmentIds);
 
-		Assert.assertEquals(
-			membershipChanges.toString(), 2, membershipChanges.size());
-		Assert.assertNotEquals(
+		Assertions.assertEquals(
+			2, membershipChanges.size(), membershipChanges.toString());
+		Assertions.assertNotEquals(
 			membershipChanges.get(0), membershipChanges.get(1));
 
 		for (MembershipChange membershipChange : membershipChanges) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				_membershipChangeByIndividualSegmentId.get(
 					membershipChange.getIndividualSegmentId()),
 				membershipChange);

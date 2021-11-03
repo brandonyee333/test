@@ -20,9 +20,9 @@ import com.liferay.osb.asah.common.repository.Repository;
 
 import java.util.Optional;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,7 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class BaseFieldMappingRepositoryTestCase
 	extends BaseRepositoryTestCase<FieldMapping, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		FieldMapping fieldMapping = new FieldMapping();
 
@@ -54,14 +54,14 @@ public abstract class BaseFieldMappingRepositoryTestCase
 					"custom", "Field 1", "selection-list", "Text",
 					"individual");
 
-		Assert.assertFalse(fieldMappingOptional.isPresent());
+		Assertions.assertFalse(fieldMappingOptional.isPresent());
 
 		fieldMappingOptional =
 			_fieldMappingRepository.
 				findByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType(
 					"custom", "Field 1", "input-field", "Text", "individual");
 
-		Assert.assertTrue(fieldMappingOptional.isPresent());
+		Assertions.assertTrue(fieldMappingOptional.isPresent());
 	}
 
 	@Override

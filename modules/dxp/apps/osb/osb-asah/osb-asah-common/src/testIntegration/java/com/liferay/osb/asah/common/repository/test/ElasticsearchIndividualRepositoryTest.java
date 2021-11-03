@@ -20,7 +20,10 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -31,17 +34,26 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Rachael Koestartyo
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class ElasticsearchIndividualRepositoryTest
 	extends BaseIndividualRepositoryTestCase {
 
@@ -56,13 +68,13 @@ public class ElasticsearchIndividualRepositoryTest
 
 		Individual individual = individualOptional.orElse(null);
 
-		Assert.assertNotNull(individual);
+		Assertions.assertNotNull(individual);
 
 		Set<Individual.ActivityDate> lastActivityDates =
 			individual.getLastActivityDates();
 
-		Assert.assertEquals(
-			lastActivityDates.toString(), 1, lastActivityDates.size());
+		Assertions.assertEquals(
+			1, lastActivityDates.size(), lastActivityDates.toString());
 
 		Iterator<Individual.ActivityDate> lastActivityDateIterator =
 			lastActivityDates.iterator();
@@ -70,14 +82,14 @@ public class ElasticsearchIndividualRepositoryTest
 		Individual.ActivityDate lastActivityDate =
 			lastActivityDateIterator.next();
 
-		Assert.assertNotNull(lastActivityDate.getActivityDate());
-		Assert.assertNotNull(lastActivityDate.getChannelId());
+		Assertions.assertNotNull(lastActivityDate.getActivityDate());
+		Assertions.assertNotNull(lastActivityDate.getChannelId());
 
 		Set<Individual.ActivityDate> previousActivityDates =
 			individual.getPreviousActivityDates();
 
-		Assert.assertEquals(
-			previousActivityDates.toString(), 1, previousActivityDates.size());
+		Assertions.assertEquals(
+			1, previousActivityDates.size(), previousActivityDates.toString());
 
 		Iterator<Individual.ActivityDate> previousActivityDateIterator =
 			lastActivityDates.iterator();
@@ -85,14 +97,14 @@ public class ElasticsearchIndividualRepositoryTest
 		Individual.ActivityDate previousActivityDate =
 			previousActivityDateIterator.next();
 
-		Assert.assertNotNull(previousActivityDate.getActivityDate());
-		Assert.assertNotNull(previousActivityDate.getChannelId());
+		Assertions.assertNotNull(previousActivityDate.getActivityDate());
+		Assertions.assertNotNull(previousActivityDate.getChannelId());
 
 		Set<Individual.ActivitiesCount> activitiesCounts =
 			individual.getActivitiesCounts();
 
-		Assert.assertEquals(
-			activitiesCounts.toString(), 1, activitiesCounts.size());
+		Assertions.assertEquals(
+			1, activitiesCounts.size(), activitiesCounts.toString());
 
 		Iterator<Individual.ActivitiesCount> activitiesCountIterator =
 			activitiesCounts.iterator();
@@ -100,8 +112,8 @@ public class ElasticsearchIndividualRepositoryTest
 		Individual.ActivitiesCount activitiesCount =
 			activitiesCountIterator.next();
 
-		Assert.assertNotNull(activitiesCount.getActivitiesCount());
-		Assert.assertNotNull(activitiesCount.getChannelId());
+		Assertions.assertNotNull(activitiesCount.getActivitiesCount());
+		Assertions.assertNotNull(activitiesCount.getChannelId());
 	}
 
 	@Test
@@ -141,21 +153,23 @@ public class ElasticsearchIndividualRepositoryTest
 		JSONArray activitiesCountsJSONArray = jsonObject.optJSONArray(
 			"activitiesCounts");
 
-		Assert.assertNotNull(jsonObject.toString(), activitiesCountsJSONArray);
-		Assert.assertEquals(1, activitiesCountsJSONArray.length());
+		Assertions.assertNotNull(
+			activitiesCountsJSONArray, jsonObject.toString());
+		Assertions.assertEquals(1, activitiesCountsJSONArray.length());
 
 		JSONArray lastActivityDatesJSONArray = jsonObject.optJSONArray(
 			"lastActivityDates");
 
-		Assert.assertNotNull(jsonObject.toString(), lastActivityDatesJSONArray);
-		Assert.assertEquals(1, lastActivityDatesJSONArray.length());
+		Assertions.assertNotNull(
+			lastActivityDatesJSONArray, jsonObject.toString());
+		Assertions.assertEquals(1, lastActivityDatesJSONArray.length());
 
 		JSONArray previousActivityDatesJSONArray = jsonObject.optJSONArray(
 			"previousActivityDates");
 
-		Assert.assertNotNull(
-			jsonObject.toString(), previousActivityDatesJSONArray);
-		Assert.assertEquals(1, previousActivityDatesJSONArray.length());
+		Assertions.assertNotNull(
+			previousActivityDatesJSONArray, jsonObject.toString());
+		Assertions.assertEquals(1, previousActivityDatesJSONArray.length());
 	}
 
 	@ElasticsearchIndex(

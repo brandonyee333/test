@@ -23,23 +23,35 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author André Miranda
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
@@ -47,7 +59,7 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 		DataSource dataSource = _dataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSource());
 
-		Assert.assertNotNull(
+		Assertions.assertNotNull(
 			_dataSourceDog.getDefaultChannelId(dataSource.getId()));
 	}
 
@@ -63,14 +75,14 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 	public void testChannelsCleared() {
 		_dataSourceDog.disconnectDataSource(405201047787757795L);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0,
 			faroInfoElasticsearchInvoker.count(
 				"channels",
 				QueryBuilders.termQuery(
 					"dataSources.id", "405201047787757795")));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			faroInfoElasticsearchInvoker.count(
 				"channels",
@@ -88,13 +100,13 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 			FaroInfoTestUtil.buildLiferayDataSource(
 				"Token Authentication", "Liferay", "http://localhost:8080"));
 
-		Assert.assertEquals("CREDENTIALS_VALID", dataSource.getState());
-		Assert.assertEquals("ACTIVE", dataSource.getStatus());
+		Assertions.assertEquals("CREDENTIALS_VALID", dataSource.getState());
+		Assertions.assertEquals("ACTIVE", dataSource.getStatus());
 
 		dataSource = _dataSourceDog.disconnectDataSource(dataSource.getId());
 
-		Assert.assertEquals("DISCONNECTED", dataSource.getState());
-		Assert.assertEquals("INACTIVE", dataSource.getStatus());
+		Assertions.assertEquals("DISCONNECTED", dataSource.getState());
+		Assertions.assertEquals("INACTIVE", dataSource.getStatus());
 	}
 
 	@ElasticsearchIndex(
@@ -111,9 +123,9 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 		DataSource dataSource = _dataSourceDog.patchDataSource(
 			liferayDataSource);
 
-		Assert.assertNotNull(dataSource.getPrivateKey());
-		Assert.assertNotNull(dataSource.getPublicKey());
-		Assert.assertEquals(
+		Assertions.assertNotNull(dataSource.getPrivateKey());
+		Assertions.assertNotNull(dataSource.getPublicKey());
+		Assertions.assertEquals(
 			"Token Authentication", dataSource.getCredentialType());
 	}
 

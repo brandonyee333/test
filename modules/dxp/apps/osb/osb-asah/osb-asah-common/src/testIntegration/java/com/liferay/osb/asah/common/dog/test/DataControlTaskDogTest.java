@@ -24,7 +24,10 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.io.File;
 
@@ -45,33 +48,42 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Matthew Kong
  */
+@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @ElasticsearchIndex(
 	name = "data-control-tasks", resourcePath = "data_control_tasks.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahSpringBootApplication.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class DataControlTaskDogTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		_tempPath = Files.createTempDirectory("temp");
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		File folder = _tempPath.toFile();
 
@@ -106,17 +118,17 @@ public class DataControlTaskDogTest {
 		JSONArray jsonArray = _elasticsearchInvoker.get(
 			"data-control-tasks", QueryBuilders.matchAllQuery());
 
-		Assert.assertEquals(6, jsonArray.length());
+		Assertions.assertEquals(6, jsonArray.length());
 
 		JSONObject dataControlTaskJSONObject = jsonArray.getJSONObject(4);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"test1@liferay.com",
 			dataControlTaskJSONObject.getString("emailAddress"));
 
 		dataControlTaskJSONObject = jsonArray.getJSONObject(5);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"test2@liferay.com",
 			dataControlTaskJSONObject.getString("emailAddress"));
 
@@ -142,7 +154,7 @@ public class DataControlTaskDogTest {
 			"suppressions",
 			QueryBuilders.termQuery("emailAddress", "test@liferay.com"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DataControlTaskStatus.PENDING.toString(),
 			suppressionJSONObject.getString("dataControlTaskStatus"));
 	}
@@ -240,10 +252,10 @@ public class DataControlTaskDogTest {
 		long expectedTotal, List<String> expectedResults,
 		Page<DataControlTask> dataControlTaskPage) {
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedTotal, dataControlTaskPage.getTotalElements());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedResults,
 			ListUtil.map(
 				dataControlTaskPage.getContent(),

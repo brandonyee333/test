@@ -17,8 +17,8 @@ package com.liferay.osb.asah.common.json;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Vishal Reddy
@@ -37,14 +37,15 @@ public class JSONArrayPaginatorTest {
 
 				processedCount += jsonArray.length();
 
-				Assert.assertEquals(start + jsonArray.length(), processedCount);
+				Assertions.assertEquals(
+					start + jsonArray.length(), processedCount);
 
 				return jsonArray;
 			}
 
 		};
 
-		Assert.assertEquals(0, testService.getUnread());
+		Assertions.assertEquals(0, testService.getUnread());
 	}
 
 	private static class TestService {

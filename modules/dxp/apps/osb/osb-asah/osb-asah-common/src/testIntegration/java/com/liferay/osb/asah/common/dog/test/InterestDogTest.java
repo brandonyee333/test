@@ -20,23 +20,35 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Marcellus Tavares
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahSpringBootApplication.class)
+@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class InterestDogTest {
 
 	@ElasticsearchIndex(
@@ -47,19 +59,21 @@ public class InterestDogTest {
 	public void testGetInterest() {
 		Interest interest = _interestDog.getInterest(635452168436521350L);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Long.valueOf(635452168436521350L), interest.getId());
 
-		Assert.assertEquals("sales", interest.getName());
+		Assertions.assertEquals("sales", interest.getName());
 	}
 
 	@ElasticsearchIndex(
 		name = "interests", resourcePath = "interests_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@Test(expected = OSBAsahException.class)
+	@Test
 	public void testGetInterestBadRequest() {
-		_interestDog.getInterest(374790572703144534L);
+		Assertions.assertThrows(
+			OSBAsahException.class,
+			() -> _interestDog.getInterest(374790572703144534L));
 	}
 
 	@ElasticsearchIndex(
@@ -71,13 +85,13 @@ public class InterestDogTest {
 		Page<Interest> interestPage = _interestDog.getInterestPage(
 			374790572703144534L, "individual", 20, 0);
 
-		Assert.assertEquals(1, interestPage.getTotalElements());
+		Assertions.assertEquals(1, interestPage.getTotalElements());
 
 		List<Interest> interests = interestPage.getContent();
 
 		Interest interest = interests.get(0);
 
-		Assert.assertEquals("compelling metrics", interest.getName());
+		Assertions.assertEquals("compelling metrics", interest.getName());
 	}
 
 	@ElasticsearchIndex(
@@ -89,13 +103,13 @@ public class InterestDogTest {
 		Page<Interest> interestPage = _interestDog.getInterestPage(
 			"name eq 'javascript'", 0.1, 0, 20, null);
 
-		Assert.assertEquals(2, interestPage.getTotalElements());
+		Assertions.assertEquals(2, interestPage.getTotalElements());
 
 		List<Interest> interests = interestPage.getContent();
 
 		Interest interest = interests.get(0);
 
-		Assert.assertEquals("javascript", interest.getName());
+		Assertions.assertEquals("javascript", interest.getName());
 	}
 
 	@Autowired

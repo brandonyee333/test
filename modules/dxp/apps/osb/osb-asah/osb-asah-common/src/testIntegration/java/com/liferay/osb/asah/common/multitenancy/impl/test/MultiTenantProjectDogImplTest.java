@@ -22,7 +22,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.multitenancy.impl.MultiTenantProjectDogImpl;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -30,10 +30,10 @@ import java.util.stream.Stream;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
@@ -48,10 +48,10 @@ import org.springframework.test.util.ReflectionTestUtils;
  * @author André Miranda
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 public class MultiTenantProjectDogImplTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		ElasticsearchInvoker elasticsearchInvoker =
 			_elasticsearchInvokerManager.getGlobalElasticsearchInvoker();
@@ -85,7 +85,7 @@ public class MultiTenantProjectDogImplTest {
 		ElasticsearchInvoker elasticsearchInvoker =
 			_elasticsearchInvokerManager.getGlobalElasticsearchInvoker();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new String[] {"project1", "project2", "project3", "project4"},
 			JSONUtil.toStringArray(elasticsearchInvoker.get("projects"), "id"));
 	}
@@ -101,7 +101,7 @@ public class MultiTenantProjectDogImplTest {
 		ElasticsearchInvoker elasticsearchInvoker =
 			_elasticsearchInvokerManager.getGlobalElasticsearchInvoker();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new String[] {"project1", "project3"},
 			JSONUtil.toStringArray(elasticsearchInvoker.get("projects"), "id"));
 	}
@@ -112,7 +112,7 @@ public class MultiTenantProjectDogImplTest {
 
 		Stream<Project> stream = projects.stream();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new String[] {"project1", "project2", "project3"},
 			stream.map(
 				Project::getId

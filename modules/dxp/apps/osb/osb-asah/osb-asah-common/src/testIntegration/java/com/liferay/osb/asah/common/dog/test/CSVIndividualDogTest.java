@@ -21,25 +21,37 @@ import com.liferay.osb.asah.common.entity.CSVIndividual;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Vishal Reddy
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class CSVIndividualDogTest {
 
 	@Test
@@ -50,20 +62,21 @@ public class CSVIndividualDogTest {
 		List<CSVIndividual> csvIndividuals =
 			_csvIndividualDog.getCSVIndividuals(123L, 0, 20, Sort.asc("id"));
 
-		Assert.assertEquals(
-			csvIndividuals.toString(), 2, csvIndividuals.size());
+		Assertions.assertEquals(
+			2, csvIndividuals.size(), csvIndividuals.toString());
 
 		csvIndividuals.forEach(
-			csvIndividual -> Assert.assertNotNull(csvIndividual.getId()));
+			csvIndividual -> Assertions.assertNotNull(csvIndividual.getId()));
 
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks();
 
-		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
+		Assertions.assertEquals(1, asahTasks.size(), asahTasks.toString());
 
 		AsahTask asahTask = asahTasks.get(0);
 
-		Assert.assertEquals("CSVIndividualsNanite", asahTask.getClassName());
-		Assert.assertNotNull(asahTask.getId());
+		Assertions.assertEquals(
+			"CSVIndividualsNanite", asahTask.getClassName());
+		Assertions.assertNotNull(asahTask.getId());
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(

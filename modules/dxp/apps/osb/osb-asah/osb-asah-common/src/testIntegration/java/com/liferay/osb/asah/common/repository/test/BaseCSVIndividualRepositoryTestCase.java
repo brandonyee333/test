@@ -25,9 +25,9 @@ import com.liferay.osb.asah.common.repository.Repository;
 
 import java.util.Arrays;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class BaseCSVIndividualRepositoryTestCase
 	extends BaseRepositoryTestCase<CSVIndividual, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		DataSource dataSource = new DataSource("Liferay Brazil");
 
@@ -79,7 +79,7 @@ public abstract class BaseCSVIndividualRepositoryTestCase
 
 	@Test
 	public void testFindByDataSourceIdAndFieldKeyEquals() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Arrays.asList(_csvIndividual2),
 			_csvIndividualRepository.findByDataSourceIdAndFieldKeyEquals(
 				1L, "givenName", "Ellie"));

@@ -22,31 +22,43 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Marcellus Tavares
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 @Import(JDBCTestConfiguration.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class RunLogRepositoryTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		RunLog runLog = new RunLog();
 
@@ -60,62 +72,62 @@ public class RunLogRepositoryTest {
 		_runLog = _runLogRepository.save(runLog);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		_runLogRepository.deleteAll();
 	}
 
 	@Test
 	public void testCount() {
-		Assert.assertEquals(1, _runLogRepository.count());
+		Assertions.assertEquals(1, _runLogRepository.count());
 	}
 
 	@Test
 	public void testDelete() {
 		_runLogRepository.delete(_runLog);
 
-		Assert.assertEquals(0, _runLogRepository.count());
+		Assertions.assertEquals(0, _runLogRepository.count());
 	}
 
 	@Test
 	public void testDeleteAll1() {
 		_runLogRepository.deleteAll();
 
-		Assert.assertEquals(0, _runLogRepository.count());
+		Assertions.assertEquals(0, _runLogRepository.count());
 	}
 
 	@Test
 	public void testDeleteAll2() {
 		_runLogRepository.deleteAll(Collections.singletonList(_runLog));
 
-		Assert.assertEquals(0, _runLogRepository.count());
+		Assertions.assertEquals(0, _runLogRepository.count());
 	}
 
 	@Test
 	public void testDeleteById() {
 		Long id = _runLog.getId();
 
-		Assert.assertNotNull(id);
+		Assertions.assertNotNull(id);
 
 		_runLogRepository.deleteById(id);
 
-		Assert.assertEquals(0, _runLogRepository.count());
+		Assertions.assertEquals(0, _runLogRepository.count());
 	}
 
 	@Test
 	public void testExistsById() {
-		Assert.assertTrue(_runLogRepository.existsById(_runLog.getId()));
+		Assertions.assertTrue(_runLogRepository.existsById(_runLog.getId()));
 	}
 
 	@Test
 	public void testFindAll() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Collections.singletonList(_runLog), _runLogRepository.findAll());
 	}
 
 	@Test
 	public void testFindAllById() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Collections.singletonList(_runLog),
 			_runLogRepository.findAllById(
 				Collections.singletonList(_runLog.getId())));
@@ -125,11 +137,11 @@ public class RunLogRepositoryTest {
 	public void testFindById() {
 		Long id = _runLog.getId();
 
-		Assert.assertNotNull(id);
+		Assertions.assertNotNull(id);
 
 		Optional<RunLog> modelOptional = _runLogRepository.findById(id);
 
-		Assert.assertTrue(modelOptional.isPresent());
+		Assertions.assertTrue(modelOptional.isPresent());
 	}
 
 	@Test
@@ -139,8 +151,8 @@ public class RunLogRepositoryTest {
 				findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
 					_runLog.getDataSourceId(), "IndividualNanite", null);
 
-		Assert.assertTrue(runLogOptional.isPresent());
-		Assert.assertEquals(_runLog, runLogOptional.get());
+		Assertions.assertTrue(runLogOptional.isPresent());
+		Assertions.assertEquals(_runLog, runLogOptional.get());
 	}
 
 	@Test
@@ -150,7 +162,7 @@ public class RunLogRepositoryTest {
 				findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
 					_runLog.getDataSourceId(), "SegmentNanite", null);
 
-		Assert.assertFalse(runLogOptional.isPresent());
+		Assertions.assertFalse(runLogOptional.isPresent());
 	}
 
 	@Test
@@ -160,18 +172,18 @@ public class RunLogRepositoryTest {
 				findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
 					null, "IndividualNanite", null);
 
-		Assert.assertTrue(runLogOptional.isPresent());
-		Assert.assertEquals(_runLog, runLogOptional.get());
+		Assertions.assertTrue(runLogOptional.isPresent());
+		Assertions.assertEquals(_runLog, runLogOptional.get());
 	}
 
 	@Test
 	public void testSave() {
-		Assert.assertEquals(_runLog, _runLogRepository.save(_runLog));
+		Assertions.assertEquals(_runLog, _runLogRepository.save(_runLog));
 	}
 
 	@Test
 	public void testSaveAll() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Collections.singletonList(_runLog),
 			_runLogRepository.saveAll(Collections.singletonList(_runLog)));
 	}

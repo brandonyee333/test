@@ -29,9 +29,9 @@ import org.apache.avro.SchemaBuilder;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecordBuilder;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -40,7 +40,7 @@ import org.springframework.test.util.ReflectionTestUtils;
  */
 public class JSONAvroTransformerTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_jsonAvroTransformer = new JSONAvroTransformer();
 
@@ -90,7 +90,7 @@ public class JSONAvroTransformerTest {
 		GenericData.Record actualRecord = _jsonAvroTransformer.transform(
 			JSONUtil.put("fruits", null), schema);
 
-		Assert.assertEquals(expectedRecord, actualRecord);
+		Assertions.assertEquals(expectedRecord, actualRecord);
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class JSONAvroTransformerTest {
 		GenericData.Record actualRecord = _jsonAvroTransformer.transform(
 			JSONUtil.put("fruits", JSONUtil.putAll("apple", "banana")), schema);
 
-		Assert.assertEquals(expectedRecord, actualRecord);
+		Assertions.assertEquals(expectedRecord, actualRecord);
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class JSONAvroTransformerTest {
 		GenericData.Record actualRecord = _jsonAvroTransformer.transform(
 			JSONUtil.put("compliant", false), schema);
 
-		Assert.assertEquals(expectedRecord, actualRecord);
+		Assertions.assertEquals(expectedRecord, actualRecord);
 	}
 
 	@Test
@@ -209,7 +209,7 @@ public class JSONAvroTransformerTest {
 		GenericData.Record actualRecord = _jsonAvroTransformer.transform(
 			JSONUtil.put("gender", "m"), schema);
 
-		Assert.assertEquals(expectedRecord, actualRecord);
+		Assertions.assertEquals(expectedRecord, actualRecord);
 	}
 
 	@Test
@@ -235,7 +235,7 @@ public class JSONAvroTransformerTest {
 		GenericData.Record actualRecord = _jsonAvroTransformer.transform(
 			JSONUtil.put("age", null), schema);
 
-		Assert.assertEquals(expectedRecord, actualRecord);
+		Assertions.assertEquals(expectedRecord, actualRecord);
 	}
 
 	@Test
@@ -256,7 +256,7 @@ public class JSONAvroTransformerTest {
 		GenericData.Record actualRecord = _jsonAvroTransformer.transform(
 			JSONUtil.put("age", null), schema);
 
-		Assert.assertEquals(expectedRecord, actualRecord);
+		Assertions.assertEquals(expectedRecord, actualRecord);
 	}
 
 	@Test
@@ -282,7 +282,7 @@ public class JSONAvroTransformerTest {
 		GenericData.Record actualRecord = _jsonAvroTransformer.transform(
 			JSONUtil.put("age", 18), schema);
 
-		Assert.assertEquals(expectedRecord, actualRecord);
+		Assertions.assertEquals(expectedRecord, actualRecord);
 	}
 
 	@Test
@@ -336,7 +336,7 @@ public class JSONAvroTransformerTest {
 				)),
 			schema);
 
-		Assert.assertEquals(expectedRecord, actualRecord);
+		Assertions.assertEquals(expectedRecord, actualRecord);
 	}
 
 	@Test
@@ -366,7 +366,7 @@ public class JSONAvroTransformerTest {
 		GenericData.Record actualRecord = _jsonAvroTransformer.transform(
 			JSONUtil.put("department", null), schema);
 
-		Assert.assertEquals(expectedRecord, actualRecord);
+		Assertions.assertEquals(expectedRecord, actualRecord);
 	}
 
 	@Test
@@ -392,7 +392,7 @@ public class JSONAvroTransformerTest {
 		GenericData.Record actualRecord = _jsonAvroTransformer.transform(
 			JSONUtil.put("company", null), schema);
 
-		Assert.assertEquals(expectedRecord, actualRecord);
+		Assertions.assertEquals(expectedRecord, actualRecord);
 	}
 
 	@Test
@@ -418,7 +418,7 @@ public class JSONAvroTransformerTest {
 		GenericData.Record actualRecord = _jsonAvroTransformer.transform(
 			JSONUtil.put("title", "Hello World"), schema);
 
-		Assert.assertEquals(expectedRecord, actualRecord);
+		Assertions.assertEquals(expectedRecord, actualRecord);
 	}
 
 	@Test
@@ -439,7 +439,7 @@ public class JSONAvroTransformerTest {
 		GenericData.Record actualRecord = _jsonAvroTransformer.transform(
 			JSONUtil.put("title", null), schema);
 
-		Assert.assertEquals(expectedRecord, actualRecord);
+		Assertions.assertEquals(expectedRecord, actualRecord);
 	}
 
 	@Test
@@ -465,7 +465,7 @@ public class JSONAvroTransformerTest {
 		GenericData.Record actualRecord = _jsonAvroTransformer.transform(
 			JSONUtil.put("name", "Joe"), schema);
 
-		Assert.assertEquals(expectedRecord, actualRecord);
+		Assertions.assertEquals(expectedRecord, actualRecord);
 	}
 
 	private GenericData.Record _buildRecord(

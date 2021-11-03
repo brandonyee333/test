@@ -33,7 +33,10 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,23 +51,32 @@ import org.apache.commons.lang3.RandomUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Michael Bowerman
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		for (int i = 0; i < 3; i++) {
 			DataSource dataSource = _dataSourceDog.addDataSource(
@@ -721,7 +733,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 		List<Segment> segments = _segmentDog.getSegments(
 			Arrays.asList(338511398116723457L, 338511451975440187L));
 
-		Assert.assertEquals(segments.toString(), 2, segments.size());
+		Assertions.assertEquals(2, segments.size(), segments.toString());
 
 		_assertSegment(2L, "Test Segment 0", segments.get(0));
 		_assertSegment(1L, "Test Segment 2", segments.get(1));
@@ -966,16 +978,16 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 		partialSegment = _segmentDog.updateSegment(
 			partialSegment, segment.getId());
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			CollectionUtils.isNotEmpty(
 				partialSegment.getReferencedFieldMappingIds()));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			segment.getReferencedFieldMappingIds(),
 			partialSegment.getReferencedFieldMappingIds());
 
 		segment = _segmentDog.getSegment(segment.getId());
 
-		Assert.assertEquals("Segment 2", segment.getName());
+		Assertions.assertEquals("Segment 2", segment.getName());
 	}
 
 	private void _assertAddSetsReferencedObjectIds(
@@ -1039,14 +1051,14 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 	private void _assertSameContents(
 		JSONArray actualValuesJSONArray, String[] expectedValues) {
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedValues.length, actualValuesJSONArray.length());
 
 		for (String value : expectedValues) {
-			Assert.assertTrue(
+			Assertions.assertTrue(
+				JSONUtil.hasValue(actualValuesJSONArray, value),
 				"Expected to find value " + value + " in JSONArray " +
-					actualValuesJSONArray,
-				JSONUtil.hasValue(actualValuesJSONArray, value));
+					actualValuesJSONArray);
 		}
 	}
 
@@ -1054,8 +1066,8 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 		Long expectedSegmentIndividualCount, String expectedSegmentName,
 		Segment actualSegment) {
 
-		Assert.assertEquals(expectedSegmentName, actualSegment.getName());
-		Assert.assertEquals(
+		Assertions.assertEquals(expectedSegmentName, actualSegment.getName());
+		Assertions.assertEquals(
 			expectedSegmentIndividualCount, actualSegment.getIndividualCount());
 	}
 

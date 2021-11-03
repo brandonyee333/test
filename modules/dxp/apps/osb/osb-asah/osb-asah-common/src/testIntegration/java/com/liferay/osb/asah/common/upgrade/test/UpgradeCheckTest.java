@@ -25,32 +25,44 @@ import com.liferay.osb.asah.common.upgrade.UpgradeCheck;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author André Miranda
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class UpgradeCheckTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		List<Project> projects = Arrays.asList(
 			new Project("project1"), new Project("project2"),
@@ -69,7 +81,7 @@ public class UpgradeCheckTest {
 		ReflectionTestUtils.setField(_upgradeCheck, "_projectDog", _projectDog);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		_elasticsearchIndexManager.delete(
 			"project1_*", "project2_*", "project3_*", "project4_*");
@@ -77,7 +89,7 @@ public class UpgradeCheckTest {
 
 	@Test
 	public void testCheckVersionEmpty() throws Exception {
-		Assert.assertTrue(_upgradeCheck.checkVersion());
+		Assertions.assertTrue(_upgradeCheck.checkVersion());
 	}
 
 	@Test
@@ -87,7 +99,7 @@ public class UpgradeCheckTest {
 		_addUpgradeMarker("project3", ReleaseInfo.getVersion());
 		_addUpgradeMarker("project4", "2.8.0");
 
-		Assert.assertTrue(_upgradeCheck.checkVersion());
+		Assertions.assertTrue(_upgradeCheck.checkVersion());
 	}
 
 	@Test
@@ -96,7 +108,7 @@ public class UpgradeCheckTest {
 		_addUpgradeMarker("project2", "2.8.0");
 		_addUpgradeMarker("project3", "2.8.0");
 
-		Assert.assertFalse(_upgradeCheck.checkVersion());
+		Assertions.assertFalse(_upgradeCheck.checkVersion());
 	}
 
 	@Test
@@ -105,7 +117,7 @@ public class UpgradeCheckTest {
 		_addUpgradeMarker("project2", ReleaseInfo.getVersion());
 		_addUpgradeMarker("project3", ReleaseInfo.getVersion());
 
-		Assert.assertTrue(_upgradeCheck.checkVersion());
+		Assertions.assertTrue(_upgradeCheck.checkVersion());
 	}
 
 	@Test
@@ -114,7 +126,7 @@ public class UpgradeCheckTest {
 		_addUpgradeMarker("project2", ReleaseInfo.getVersion());
 		_addUpgradeMarker("project3", "2.8.0");
 
-		Assert.assertFalse(_upgradeCheck.checkVersion());
+		Assertions.assertFalse(_upgradeCheck.checkVersion());
 	}
 
 	private void _addUpgradeMarker(String projectId, String version) {

@@ -27,9 +27,9 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -41,7 +41,7 @@ import org.springframework.data.domain.Sort;
 public abstract class BaseDataSourceRepositoryTestCase
 	extends BaseRepositoryTestCase<DataSource, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		DataSource dataSource1 = new DataSource("Liferay Brazil");
 
@@ -94,10 +94,10 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 	@Test
 	public void testCountDataSources() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			3, _dataSourceRepository.countDataSources(FilterHelper.EMPTY));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_dataSourceRepository.countDataSources(
 				new FilterHelper(
@@ -105,7 +105,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 					"credentials/type eq 'Token Authentication'",
 					_dataSourceFilterStringConverterHelper)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_dataSourceRepository.countDataSources(
 				new FilterHelper(
@@ -113,7 +113,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 					"name eq 'Liferay Brazil'",
 					_dataSourceFilterStringConverterHelper)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_dataSourceRepository.countDataSources(
 				new FilterHelper(
@@ -121,7 +121,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 					"provider/type eq 'LIFERAY'",
 					_dataSourceFilterStringConverterHelper)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_dataSourceRepository.countDataSources(
 				new FilterHelper(
@@ -129,35 +129,35 @@ public abstract class BaseDataSourceRepositoryTestCase
 					"contains(name, 'Liferay') and contains(name, 'Brazil')",
 					_dataSourceFilterStringConverterHelper)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_dataSourceRepository.countDataSources(
 				new FilterHelper(
 					_defaultFilterStringConverterHelper, "state eq 'READY'",
 					_dataSourceFilterStringConverterHelper)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_dataSourceRepository.countDataSources(
 				new FilterHelper(
 					_defaultFilterStringConverterHelper, "url eq null",
 					_dataSourceFilterStringConverterHelper)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_dataSourceRepository.countDataSources(
 				new FilterHelper(
 					_defaultFilterStringConverterHelper, "workspaceURL eq null",
 					_dataSourceFilterStringConverterHelper)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0,
 			_dataSourceRepository.countDataSources(
 				new FilterHelper(
 					_defaultFilterStringConverterHelper, "name eq 'Liferay'",
 					_dataSourceFilterStringConverterHelper)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			_dataSourceRepository.countDataSources(
 				new FilterHelper(
@@ -165,7 +165,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 					"contains(name, 'Liferay')",
 					_dataSourceFilterStringConverterHelper)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			_dataSourceRepository.countDataSources(
 				new FilterHelper(
@@ -173,7 +173,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 					"state eq ['CREDENTIALS_INVALID','CREDENTIALS_VALID']",
 					_dataSourceFilterStringConverterHelper)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0,
 			_dataSourceRepository.countDataSources(
 				new FilterHelper(
@@ -181,14 +181,14 @@ public abstract class BaseDataSourceRepositoryTestCase
 					"state eq 'IN_PROGRESS_DELETING'",
 					_dataSourceFilterStringConverterHelper)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			_dataSourceRepository.countDataSources(
 				new FilterHelper(
 					_defaultFilterStringConverterHelper, "url ne null",
 					_dataSourceFilterStringConverterHelper)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			_dataSourceRepository.countDataSources(
 				new FilterHelper(
@@ -198,7 +198,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 	@Test
 	public void testExistsByFaroBackendSecuritySignature() {
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_dataSourceRepository.existsByFaroBackendSecuritySignature(
 				"faroBackendSecuritySignature"));
 	}
@@ -207,25 +207,26 @@ public abstract class BaseDataSourceRepositoryTestCase
 	public void testExistsByIdNotAndName() {
 		DataSource dataSource1 = entityModels.get(0);
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_dataSourceRepository.existsByIdNotAndName(
 				dataSource1.getId(), "Liferay Brazil"));
 
 		DataSource dataSource2 = entityModels.get(1);
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_dataSourceRepository.existsByIdNotAndName(
 				dataSource2.getId(), "Liferay Brazil"));
 	}
 
 	@Test
 	public void testExistsByName() {
-		Assert.assertTrue(_dataSourceRepository.existsByName("Liferay Brazil"));
+		Assertions.assertTrue(
+			_dataSourceRepository.existsByName("Liferay Brazil"));
 	}
 
 	@Test
 	public void testExistsByProviderType() {
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_dataSourceRepository.existsByProviderType("LIFERAY"));
 
 		DataSource dataSource1 = entityModels.get(0);
@@ -234,7 +235,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		_dataSourceRepository.save(dataSource1);
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_dataSourceRepository.existsByProviderType("LIFERAY"));
 
 		dataSource1.setEnableAllSites(false);
@@ -242,7 +243,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		_dataSourceRepository.save(dataSource1);
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_dataSourceRepository.existsByProviderType("LIFERAY"));
 
 		DataSourceSite dataSourceSite = new DataSourceSite();
@@ -255,7 +256,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		_dataSourceRepository.save(dataSource1);
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_dataSourceRepository.existsByProviderType("LIFERAY"));
 	}
 
@@ -266,7 +267,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				"Token Authentication",
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+		Assertions.assertEquals(1, dataSources.size(), dataSources.toString());
 
 		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 	}
@@ -278,7 +279,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				"Token Authentication", "LIFERAY",
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+		Assertions.assertEquals(1, dataSources.size(), dataSources.toString());
 
 		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 	}
@@ -288,7 +289,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 		List<DataSource> dataSources = _dataSourceRepository.findByProviderType(
 			"LIFERAY");
 
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+		Assertions.assertEquals(1, dataSources.size(), dataSources.toString());
 
 		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 	}
@@ -298,7 +299,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 		List<DataSource> dataSources = _dataSourceRepository.findByProviderType(
 			"LIFERAY", PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+		Assertions.assertEquals(1, dataSources.size(), dataSources.toString());
 
 		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 	}
@@ -309,7 +310,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 			_dataSourceRepository.findByProviderTypeAndStatus(
 				"LIFERAY", "STARTED");
 
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+		Assertions.assertEquals(1, dataSources.size(), dataSources.toString());
 
 		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 	}
@@ -320,7 +321,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 			FilterHelper.EMPTY,
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 3, dataSources.size());
+		Assertions.assertEquals(3, dataSources.size(), dataSources.toString());
 
 		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
@@ -331,7 +332,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				_dataSourceFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+		Assertions.assertEquals(1, dataSources.size(), dataSources.toString());
 
 		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
@@ -341,7 +342,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				_dataSourceFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+		Assertions.assertEquals(1, dataSources.size(), dataSources.toString());
 
 		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
@@ -352,7 +353,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				_dataSourceFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+		Assertions.assertEquals(1, dataSources.size(), dataSources.toString());
 
 		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
@@ -363,7 +364,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				_dataSourceFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+		Assertions.assertEquals(1, dataSources.size(), dataSources.toString());
 
 		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
@@ -373,7 +374,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				_dataSourceFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+		Assertions.assertEquals(1, dataSources.size(), dataSources.toString());
 
 		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
@@ -383,7 +384,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				_dataSourceFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+		Assertions.assertEquals(1, dataSources.size(), dataSources.toString());
 
 		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
@@ -393,7 +394,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				_dataSourceFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+		Assertions.assertEquals(1, dataSources.size(), dataSources.toString());
 
 		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 
@@ -403,7 +404,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				_dataSourceFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 0, dataSources.size());
+		Assertions.assertEquals(0, dataSources.size(), dataSources.toString());
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			new FilterHelper(
@@ -412,7 +413,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				_dataSourceFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 2, dataSources.size());
+		Assertions.assertEquals(2, dataSources.size(), dataSources.toString());
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			new FilterHelper(
@@ -421,7 +422,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				_dataSourceFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 2, dataSources.size());
+		Assertions.assertEquals(2, dataSources.size(), dataSources.toString());
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			new FilterHelper(
@@ -430,7 +431,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				_dataSourceFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 0, dataSources.size());
+		Assertions.assertEquals(0, dataSources.size(), dataSources.toString());
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			new FilterHelper(
@@ -438,7 +439,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				_dataSourceFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 2, dataSources.size());
+		Assertions.assertEquals(2, dataSources.size(), dataSources.toString());
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			new FilterHelper(
@@ -446,7 +447,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 				_dataSourceFilterStringConverterHelper),
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 2, dataSources.size());
+		Assertions.assertEquals(2, dataSources.size(), dataSources.toString());
 	}
 
 	@Override
@@ -457,25 +458,25 @@ public abstract class BaseDataSourceRepositoryTestCase
 	private void _assertDataSourceEquals(
 		DataSource expectedDataSource, DataSource actualDataSource) {
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedDataSource.getCredentialType(),
 			actualDataSource.getCredentialType());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedDataSource.getDataSourceOrganizations(),
 			actualDataSource.getDataSourceOrganizations());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedDataSource.getFaroBackendSecuritySignature(),
 			actualDataSource.getFaroBackendSecuritySignature());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedDataSource.getName(), actualDataSource.getName());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedDataSource.getProviderType(),
 			actualDataSource.getProviderType());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedDataSource.getState(), actualDataSource.getState());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedDataSource.getStatus(), actualDataSource.getStatus());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedDataSource.getURL(), actualDataSource.getURL());
 	}
 

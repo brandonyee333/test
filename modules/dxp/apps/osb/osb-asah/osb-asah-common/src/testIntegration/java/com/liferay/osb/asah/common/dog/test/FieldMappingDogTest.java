@@ -23,7 +23,10 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.Collections;
 import java.util.Date;
@@ -32,18 +35,27 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Vishal Reddy
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class FieldMappingDogTest {
 
 	@Test
@@ -57,7 +69,7 @@ public class FieldMappingDogTest {
 			"custom", name, dataSource.getId(), "input-field", name, "Number",
 			"individual");
 
-		Assert.assertEquals(1, _fieldMappingRepository.count());
+		Assertions.assertEquals(1, _fieldMappingRepository.count());
 
 		Iterable<FieldMapping> fieldMappings =
 			_fieldMappingRepository.findAll();
@@ -66,15 +78,15 @@ public class FieldMappingDogTest {
 
 		FieldMapping fieldMapping = iterator.next();
 
-		Assert.assertEquals(name, fieldMapping.getDisplayName());
-		Assert.assertEquals(
+		Assertions.assertEquals(name, fieldMapping.getDisplayName());
+		Assertions.assertEquals(
 			"What_is_your_income_", fieldMapping.getFieldName());
 
 		_fieldMappingDog.addFieldMapping(
 			"custom", name, dataSource.getId(), "input-field", name, "Text",
 			"individual");
 
-		Assert.assertEquals(2, _fieldMappingRepository.count());
+		Assertions.assertEquals(2, _fieldMappingRepository.count());
 
 		Optional<FieldMapping> fieldMappingOptional =
 			_fieldMappingRepository.
@@ -83,7 +95,7 @@ public class FieldMappingDogTest {
 
 		fieldMapping = fieldMappingOptional.get();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"What_is_your_income__1", fieldMapping.getFieldName());
 	}
 
@@ -124,7 +136,7 @@ public class FieldMappingDogTest {
 			"custom", name, dataSource.getId(), "input-field", name, "Text",
 			"individual");
 
-		Assert.assertEquals(1, _fieldMappingRepository.count());
+		Assertions.assertEquals(1, _fieldMappingRepository.count());
 
 		Iterable<FieldMapping> fieldMappings =
 			_fieldMappingRepository.findAll();
@@ -133,8 +145,8 @@ public class FieldMappingDogTest {
 
 		FieldMapping fieldMapping = iterator.next();
 
-		Assert.assertEquals(name, fieldMapping.getDisplayName());
-		Assert.assertEquals(
+		Assertions.assertEquals(name, fieldMapping.getDisplayName());
+		Assertions.assertEquals(
 			"test______Invalid_Characters_____", fieldMapping.getFieldName());
 	}
 
@@ -149,7 +161,7 @@ public class FieldMappingDogTest {
 			"custom", name, dataSource.getId(), "input-field", name, "Number",
 			"individual");
 
-		Assert.assertEquals(1, _fieldMappingRepository.count());
+		Assertions.assertEquals(1, _fieldMappingRepository.count());
 
 		Iterable<FieldMapping> fieldMappings =
 			_fieldMappingRepository.findAll();
@@ -158,8 +170,8 @@ public class FieldMappingDogTest {
 
 		FieldMapping fieldMapping = iterator.next();
 
-		Assert.assertEquals(name, fieldMapping.getDisplayName());
-		Assert.assertEquals(
+		Assertions.assertEquals(name, fieldMapping.getDisplayName());
+		Assertions.assertEquals(
 			"What_is_your_income_", fieldMapping.getFieldName());
 
 		name = "What-is-your-income?";
@@ -168,7 +180,7 @@ public class FieldMappingDogTest {
 			"custom", name, dataSource.getId(), "input-field", name, "Number",
 			"individual");
 
-		Assert.assertEquals(2, _fieldMappingRepository.count());
+		Assertions.assertEquals(2, _fieldMappingRepository.count());
 
 		Optional<FieldMapping> fieldMappingOptional =
 			_fieldMappingRepository.findByContextAndDisplayNameAndOwnerType(
@@ -176,7 +188,7 @@ public class FieldMappingDogTest {
 
 		fieldMapping = fieldMappingOptional.get();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"What_is_your_income__1", fieldMapping.getFieldName());
 	}
 
@@ -189,7 +201,8 @@ public class FieldMappingDogTest {
 
 		fieldMapping = _fieldMappingRepository.save(fieldMapping);
 
-		Assert.assertTrue(_fieldMappingDog.deleteFieldMapping(fieldMapping));
+		Assertions.assertTrue(
+			_fieldMappingDog.deleteFieldMapping(fieldMapping));
 
 		fieldMapping = new FieldMapping();
 
@@ -198,9 +211,10 @@ public class FieldMappingDogTest {
 
 		fieldMapping = _fieldMappingRepository.save(fieldMapping);
 
-		Assert.assertFalse(_fieldMappingDog.deleteFieldMapping(fieldMapping));
+		Assertions.assertFalse(
+			_fieldMappingDog.deleteFieldMapping(fieldMapping));
 
-		Assert.assertEquals(1, _fieldMappingRepository.count());
+		Assertions.assertEquals(1, _fieldMappingRepository.count());
 	}
 
 	@Test
@@ -213,7 +227,7 @@ public class FieldMappingDogTest {
 
 		_fieldMappingRepository.save(fieldMapping);
 
-		Assert.assertNotNull(
+		Assertions.assertNotNull(
 			_fieldMappingDog.fetchFieldMapping(
 				"demographics", "email", "individual"));
 	}
@@ -232,12 +246,12 @@ public class FieldMappingDogTest {
 
 		FieldMapping fieldMapping = iterator.next();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Collections.singletonList(fieldMapping),
 			_fieldMappingDog.getFieldMappings(
 				Collections.singleton(fieldMapping.getId())));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Collections.emptyList(),
 			_fieldMappingDog.getFieldMappings(Collections.singleton(null)));
 	}
@@ -267,8 +281,8 @@ public class FieldMappingDogTest {
 		Map<String, String> dataSourceFieldNames =
 			fieldMapping.getDataSourceFieldNames();
 
-		Assert.assertFalse(dataSourceFieldNames.containsKey("123"));
-		Assert.assertTrue(dataSourceFieldNames.containsKey("234"));
+		Assertions.assertFalse(dataSourceFieldNames.containsKey("123"));
+		Assertions.assertTrue(dataSourceFieldNames.containsKey("234"));
 	}
 
 	@Test
@@ -296,7 +310,7 @@ public class FieldMappingDogTest {
 
 		_fieldMappingDog.addEmailFieldMapping(dataSource.getId());
 
-		Assert.assertEquals(1, _fieldMappingRepository.count());
+		Assertions.assertEquals(1, _fieldMappingRepository.count());
 
 		Iterable<FieldMapping> fieldMappings =
 			_fieldMappingRepository.findAll();
@@ -307,19 +321,19 @@ public class FieldMappingDogTest {
 
 		fieldMapping = _fieldMappingDog.fetchFieldMapping(fieldMapping.getId());
 
-		Assert.assertEquals("demographics", fieldMapping.getContext());
-		Assert.assertNotNull(fieldMapping.getCreateDate());
-		Assert.assertEquals("email", fieldMapping.getFieldName());
-		Assert.assertEquals(
+		Assertions.assertEquals("demographics", fieldMapping.getContext());
+		Assertions.assertNotNull(fieldMapping.getCreateDate());
+		Assertions.assertEquals("email", fieldMapping.getFieldName());
+		Assertions.assertEquals(
 			"http://schema.org/email", fieldMapping.getFieldType());
-		Assert.assertNotNull(fieldMapping.getModifiedDate());
-		Assert.assertEquals("individual", fieldMapping.getOwnerType());
-		Assert.assertEquals("MOST_RECENT", fieldMapping.getStrategyKey());
+		Assertions.assertNotNull(fieldMapping.getModifiedDate());
+		Assertions.assertEquals("individual", fieldMapping.getOwnerType());
+		Assertions.assertEquals("MOST_RECENT", fieldMapping.getStrategyKey());
 
 		Map<String, String> dataSourceFieldNames =
 			fieldMapping.getDataSourceFieldNames();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			emailFieldName,
 			dataSourceFieldNames.get(String.valueOf(dataSource.getId())));
 	}

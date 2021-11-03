@@ -21,9 +21,9 @@ import com.liferay.osb.asah.common.repository.Repository;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +35,7 @@ import org.springframework.data.domain.Sort;
 public abstract class BaseCustomAssetDashboardRepositoryTestCase
 	extends BaseRepositoryTestCase<CustomAssetDashboard, String> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		CustomAssetDashboard customAssetDashboard1 = new CustomAssetDashboard();
 
@@ -88,19 +88,19 @@ public abstract class BaseCustomAssetDashboardRepositoryTestCase
 
 	@Test
 	public void testCountCustomAssetDashboards() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			3,
 			_customAssetDashboardRepository.countCustomAssetDashboards(
 				1L, null));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			_customAssetDashboardRepository.countCustomAssetDashboards(
 				1L, "page"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_customAssetDashboardRepository.countCustomAssetDashboards(
 				2L, null));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0,
 			_customAssetDashboardRepository.countCustomAssetDashboards(
 				3L, null));
@@ -128,21 +128,21 @@ public abstract class BaseCustomAssetDashboardRepositoryTestCase
 			_customAssetDashboardRepository.searchCustomAssetDashboards(
 				1L, null, PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(
-			customAssetDashboards.toString(), 3, customAssetDashboards.size());
+		Assertions.assertEquals(
+			3, customAssetDashboards.size(), customAssetDashboards.toString());
 
 		customAssetDashboards =
 			_customAssetDashboardRepository.searchCustomAssetDashboards(
 				1L, "banner",
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(
-			customAssetDashboards.toString(), 1, customAssetDashboards.size());
+		Assertions.assertEquals(
+			1, customAssetDashboards.size(), customAssetDashboards.toString());
 
 		CustomAssetDashboard customAssetDashboard = customAssetDashboards.get(
 			0);
 
-		Assert.assertEquals("1", customAssetDashboard.getAssetId());
+		Assertions.assertEquals("1", customAssetDashboard.getAssetId());
 	}
 
 	@Override

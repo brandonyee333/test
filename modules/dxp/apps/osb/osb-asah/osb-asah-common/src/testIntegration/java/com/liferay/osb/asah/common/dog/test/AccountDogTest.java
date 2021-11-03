@@ -30,7 +30,10 @@ import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,22 +43,31 @@ import org.apache.commons.collections4.IterableUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Vishal Reddy
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class AccountDogTest extends BaseFaroInfoDogTestCase {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_salesforceDataSource = FaroInfoTestUtil.buildSalesforceDataSource();
 
@@ -97,24 +109,24 @@ public class AccountDogTest extends BaseFaroInfoDogTestCase {
 		JSONArray individualSegmentsJSONArray =
 			faroInfoElasticsearchInvoker.get("individual-segments");
 
-		Assert.assertEquals(0, individualSegmentsJSONArray.length());
+		Assertions.assertEquals(0, individualSegmentsJSONArray.length());
 
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"DeleteIndividualSegmentTasksNanite");
 
-		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
+		Assertions.assertEquals(1, asahTasks.size(), asahTasks.toString());
 
 		AsahTask asahTask = asahTasks.get(0);
 
 		JSONObject contextJSONObject = asahTask.getContextJSONObject();
 
-		Assert.assertNotNull(
+		Assertions.assertNotNull(
 			contextJSONObject.getString("individualSegmentId"));
 
 		Optional<Account> accountOptional = _accountRepository.findById(
 			accountId);
 
-		Assert.assertNull(accountOptional.orElse(null));
+		Assertions.assertNull(accountOptional.orElse(null));
 
 		_assertOSBTasksContextAfterUpdate(
 			"contains(filter, 'accounts.filterByCount(')");
@@ -153,7 +165,7 @@ public class AccountDogTest extends BaseFaroInfoDogTestCase {
 		List<Segment> segments = IterableUtils.toList(
 			_segmentRepository.findAll());
 
-		Assert.assertEquals(segments.toString(), 1, segments.size());
+		Assertions.assertEquals(1, segments.size(), segments.toString());
 
 		Segment segment = segments.get(0);
 
@@ -166,7 +178,8 @@ public class AccountDogTest extends BaseFaroInfoDogTestCase {
 		for (AsahTask asahTask : asahTasks) {
 			JSONObject contextJSONObject = asahTask.getContextJSONObject();
 
-			Assert.assertNotNull(contextJSONObject.getString("dateModified"));
+			Assertions.assertNotNull(
+				contextJSONObject.getString("dateModified"));
 
 			if (contextJSONObject.has("individualSegmentJSONObject")) {
 				_assertIndividualSegment(
@@ -185,43 +198,44 @@ public class AccountDogTest extends BaseFaroInfoDogTestCase {
 
 		Account account = accountOptional.get();
 
-		Assert.assertTrue(segment.getActivitiesCount() == 0);
-		Assert.assertNotNull(segment.getCreateDate());
-		Assert.assertNotNull(segment.getModifiedDate());
-		Assert.assertEquals(
+		Assertions.assertTrue(segment.getActivitiesCount() == 0);
+		Assertions.assertNotNull(segment.getCreateDate());
+		Assertions.assertNotNull(segment.getModifiedDate());
+		Assertions.assertEquals(
 			"((dataSourceAccountPKs/accountPKs eq '123'))",
 			segment.getFilter());
-		Assert.assertEquals("Account: " + account.getId(), segment.getName());
-		Assert.assertEquals("PROJECT", segment.getScope());
-		Assert.assertEquals(Segment.Type.DYNAMIC, segment.getType());
-		Assert.assertEquals("INACTIVE", segment.getStatus());
+		Assertions.assertEquals(
+			"Account: " + account.getId(), segment.getName());
+		Assertions.assertEquals("PROJECT", segment.getScope());
+		Assertions.assertEquals(Segment.Type.DYNAMIC, segment.getType());
+		Assertions.assertEquals("INACTIVE", segment.getStatus());
 	}
 
 	private void _assertOSBTasksContextAfterUpdate(String addFilter) {
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"UpdateDynamicMembershipsNanite");
 
-		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
+		Assertions.assertEquals(1, asahTasks.size(), asahTasks.toString());
 
 		AsahTask asahTask = asahTasks.get(0);
 
 		JSONObject contextJSONObject = asahTask.getContextJSONObject();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			addFilter, contextJSONObject.getString("addFilter"));
-		Assert.assertNotNull(contextJSONObject.getString("dateModified"));
-		Assert.assertEquals(
+		Assertions.assertNotNull(contextJSONObject.getString("dateModified"));
+		Assertions.assertEquals(
 			"contains(filter, 'accounts.filter(') or contains(filter, " +
 				"'accounts.filterByCount(')",
 			contextJSONObject.getString("removeFilter"));
 	}
 
 	private void _assertStandardFields(Account account) {
-		Assert.assertEquals("123", account.getAccountPK());
-		Assert.assertNotNull(account.getCreateDate());
-		Assert.assertNotNull(account.getDataSourceId());
-		Assert.assertNotNull(account.getId());
-		Assert.assertNotNull(account.getModifiedDate());
+		Assertions.assertEquals("123", account.getAccountPK());
+		Assertions.assertNotNull(account.getCreateDate());
+		Assertions.assertNotNull(account.getDataSourceId());
+		Assertions.assertNotNull(account.getId());
+		Assertions.assertNotNull(account.getModifiedDate());
 	}
 
 	@Autowired

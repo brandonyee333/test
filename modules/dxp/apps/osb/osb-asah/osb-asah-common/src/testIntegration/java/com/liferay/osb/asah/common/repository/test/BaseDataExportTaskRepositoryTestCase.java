@@ -21,9 +21,9 @@ import com.liferay.osb.asah.common.repository.Repository;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -33,7 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class BaseDataExportTaskRepositoryTestCase
 	extends BaseRepositoryTestCase<DataExportTask, Long> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		DataExportTask dataExportTask1 = new DataExportTask();
 
@@ -60,10 +60,10 @@ public abstract class BaseDataExportTaskRepositoryTestCase
 			_dataExportTaskRepository.findByStatus(
 				DataExportTask.Status.COMPLETED);
 
-		Assert.assertEquals(
-			dataExportTasks.toString(), 1, dataExportTasks.size());
+		Assertions.assertEquals(
+			1, dataExportTasks.size(), dataExportTasks.toString());
 
-		Assert.assertEquals(entityModels.get(0), dataExportTasks.get(0));
+		Assertions.assertEquals(entityModels.get(0), dataExportTasks.get(0));
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public abstract class BaseDataExportTaskRepositoryTestCase
 			_dataExportTaskRepository.findFirstByTypeOrderByIdDesc(
 				DataExportTask.Type.PAGE);
 
-		Assert.assertEquals(entityModels.get(1), dataExportTask);
+		Assertions.assertEquals(entityModels.get(1), dataExportTask);
 	}
 
 	@Override
