@@ -29,7 +29,9 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -42,7 +44,12 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.aggregations.bucket.histogram.ExtendedBounds;
+import org.elasticsearch.search.aggregations.bucket.histogram.InternalDateHistogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.NumericMetricsAggregation;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
@@ -311,6 +318,96 @@ public class ElasticsearchInterestRepositoryImpl
 	}
 
 	@Override
+	public List<Map<String, Object>> getTransformations(
+		Date fromDate, FilterHelper filterHelper, String period, Date toDate) {
+
+		ExtendedBounds extendedBounds = new ExtendedBounds(
+			DateUtil.toString(fromDate), DateUtil.toString(toDate));
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			getCollectionName(),
+			searchSourceBuilder -> {
+				DateHistogramAggregationBuilder aggregationBuilder =
+					AggregationBuilders.dateHistogram(period);
+
+				aggregationBuilder.dateHistogramInterval(
+					_getDateHistogramInterval(period)
+				).extendedBounds(
+					extendedBounds
+				).field(
+					"dateRecorded"
+				).minDocCount(
+					0
+				).subAggregation(
+					AggregationBuilders.avg(
+						"scoreAvg"
+					).field(
+						"score"
+					)
+				).subAggregation(
+					AggregationBuilders.sum(
+						"viewsSum"
+					).field(
+						"views"
+					)
+				);
+
+				searchSourceBuilder.aggregation(aggregationBuilder);
+
+				QueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+					QueryBuilders.rangeQuery(
+						"dateRecorded"
+					).gte(
+						DateUtil.toString(fromDate)
+					)
+				).filter(
+					QueryBuilders.rangeQuery(
+						"dateRecorded"
+					).lte(
+						DateUtil.toString(toDate)
+					)
+				).filter(
+					_buildQueryBuilder(
+						filterHelper, null, null, null, null, null)
+				);
+
+				searchSourceBuilder.query(boolQueryBuilder);
+
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		List<Map<String, Object>> transformations = new ArrayList();
+
+		InternalDateHistogram internalDateHistogram = aggregations.get(period);
+
+		for (InternalDateHistogram.Bucket bucket :
+				internalDateHistogram.getBuckets()) {
+
+			Aggregations innerAggregations = bucket.getAggregations();
+
+			transformations.add(
+				new HashMap<String, Object>() {
+					{
+						put("intervalInitDate", bucket.getKeyAsString());
+						put(
+							"scoreAvg",
+							_getAggregationValue(
+								innerAggregations, "scoreAvg"));
+						put("totalElements", bucket.getDocCount());
+						put(
+							"viewsSum",
+							_getAggregationValue(
+								innerAggregations, "viewsSum"));
+					}
+				});
+		}
+
+		return transformations;
+	}
+
+	@Override
 	protected String getCollectionName() {
 		return "interests";
 	}
@@ -377,6 +474,21 @@ public class ElasticsearchInterestRepositoryImpl
 		return boolQueryBuilder;
 	}
 
+	private double _getAggregationValue(
+		Aggregations aggregations, String name) {
+
+		NumericMetricsAggregation.SingleValue singleValue = aggregations.get(
+			name);
+
+		if ((singleValue == null) || Double.isNaN(singleValue.value()) ||
+			(singleValue.value() < 0)) {
+
+			return 0;
+		}
+
+		return singleValue.value();
+	}
+
 	private BucketOrder _getBucketOrder(Sort sort) {
 		List<BucketOrder> bucketOrders = new ArrayList<>();
 
@@ -391,6 +503,29 @@ public class ElasticsearchInterestRepositoryImpl
 			});
 
 		return BucketOrder.compound(bucketOrders);
+	}
+
+	private DateHistogramInterval _getDateHistogramInterval(
+		String computeFunctionString) {
+
+		if (computeFunctionString.equals("day")) {
+			return DateHistogramInterval.DAY;
+		}
+
+		if (computeFunctionString.equals("hour")) {
+			return DateHistogramInterval.HOUR;
+		}
+
+		if (computeFunctionString.equals("month")) {
+			return DateHistogramInterval.MONTH;
+		}
+
+		if (computeFunctionString.equals("week")) {
+			return DateHistogramInterval.WEEK;
+		}
+
+		throw new IllegalArgumentException(
+			"Unsupported compute function: " + computeFunctionString);
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)

@@ -14,22 +14,33 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
+import java.math.BigDecimal;
+
+import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
+import org.jooq.Record4;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
@@ -171,6 +182,91 @@ public class InterestRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public List<Map<String, Object>> getTransformations(
+		Date fromDate, FilterHelper filterHelper, String period, Date toDate) {
+
+		Field<Date> periodField = _getPeriodField(period);
+
+		List<Condition> conditions = _getConditions(
+			filterHelper, null, null, null, null, null, null);
+
+		conditions.add(
+			DSL.field(
+				"generatedDate"
+			).between(
+				fromDate, toDate
+			));
+
+		SelectSelectStep<Record4<Date, BigDecimal, Integer, BigDecimal>>
+			selectSelectStep = _dslContext.select(
+				periodField,
+				DSL.avg(
+					DSL.field("score", Double.class)
+				).as(
+					"scoreAvg"
+				),
+				DSL.count(
+					DSL.field("id")
+				).as(
+					"totalElements"
+				),
+				DSL.sum(
+					DSL.field("views", Long.class)
+				).as(
+					"viewsSum"
+				));
+
+		return selectSelectStep.from(
+			"Interest"
+		).rightOuterJoin(
+			DSL.table(
+				"generate_series({0}, {1}, '1 day'::interval) generatedDate",
+				new Timestamp(fromDate.getTime()),
+				new Timestamp(toDate.getTime()))
+		).on(
+			DSL.and(
+				DSL.field(
+					"recordedDate"
+				).equal(
+					DSL.field("generatedDate")
+				))
+		).where(
+			conditions
+		).groupBy(
+			periodField
+		).orderBy(
+			periodField
+		).fetch(
+			record -> new HashMap<String, Object>() {
+				{
+					put(
+						"intervalInitDate",
+						DateUtil.toUTCString(
+							record.getValue("intervalInitDate", Date.class)));
+					put(
+						"scoreAvg",
+						_getAggregationValue(
+							record.getValue("scoreAvg", Double.class)));
+					put(
+						"totalElements",
+						record.getValue("totalElements", Long.class));
+					put(
+						"viewsSum",
+						_getAggregationValue(
+							record.getValue("viewsSum", Double.class)));
+				}
+			}
+		);
+	}
+
+	private double _getAggregationValue(Double value) {
+		if ((value == null) || (value < 0)) {
+			return 0;
+		}
+
+		return value;
+	}
+
 	private List<Condition> _getConditions(
 		@Nullable FilterHelper filterHelper, @Nullable Long interestId,
 		@Nullable String keywords, @Nullable List<Long> ownerIds,
@@ -249,6 +345,26 @@ public class InterestRepositoryImpl extends BaseRepository {
 		return conditions;
 	}
 
+	private Field _getPeriodField(String period) {
+		if (!_validPeriods.contains(period)) {
+			throw new IllegalArgumentException("Invalid period: " + period);
+		}
+
+		return DSL.field(
+			"date_trunc({0}, generatedDate)", Date.class, period
+		).as(
+			"intervalInitDate"
+		);
+	}
+
 	private final DSLContext _dslContext;
+	private final Set<String> _validPeriods = new HashSet<String>() {
+		{
+			add("day");
+			add("hour");
+			add("month");
+			add("week");
+		}
+	};
 
 }
