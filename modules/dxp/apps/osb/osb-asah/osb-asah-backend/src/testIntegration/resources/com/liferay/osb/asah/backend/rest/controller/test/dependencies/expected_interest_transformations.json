@@ -1,0 +1,132 @@
+{
+	"_embedded": {
+		"interest-transformations": [
+			{
+				"intervalInitDate": "${today-19dT00:00:00.000Z}",
+				"scoreAvg": 0,
+				"totalElements": 0,
+				"viewsSum": 0
+			},
+			{
+				"intervalInitDate": "${today-18dT00:00:00.000Z}",
+				"scoreAvg": 0,
+				"totalElements": 0,
+				"viewsSum": 0
+			},
+			{
+				"intervalInitDate": "${today-17dT00:00:00.000Z}",
+				"scoreAvg": 0,
+				"totalElements": 0,
+				"viewsSum": 0
+			},
+			{
+				"intervalInitDate": "${today-16dT00:00:00.000Z}",
+				"scoreAvg": 0,
+				"totalElements": 0,
+				"viewsSum": 0
+			},
+			{
+				"intervalInitDate": "${today-15dT00:00:00.000Z}",
+				"scoreAvg": 0,
+				"totalElements": 0,
+				"viewsSum": 0
+			},
+			{
+				"intervalInitDate": "${today-14dT00:00:00.000Z}",
+				"scoreAvg": 0.6,
+				"totalElements": 1,
+				"viewsSum": 1
+			},
+			{
+				"intervalInitDate": "${today-13dT00:00:00.000Z}",
+				"scoreAvg": 0.2,
+				"totalElements": 1,
+				"viewsSum": 1
+			},
+			{
+				"intervalInitDate": "${today-12dT00:00:00.000Z}",
+				"scoreAvg": 0.5,
+				"totalElements": 1,
+				"viewsSum": 1
+			},
+			{
+				"intervalInitDate": "${today-11dT00:00:00.000Z}",
+				"scoreAvg": 0.4,
+				"totalElements": 1,
+				"viewsSum": 1
+			},
+			{
+				"intervalInitDate": "${today-10dT00:00:00.000Z}",
+				"scoreAvg": 0.3,
+				"totalElements": 1,
+				"viewsSum": 1
+			},
+			{
+				"intervalInitDate": "${today-9dT00:00:00.000Z}",
+				"scoreAvg": 0.1,
+				"totalElements": 1,
+				"viewsSum": 1
+			},
+			{
+				"intervalInitDate": "${today-8dT00:00:00.000Z}",
+				"scoreAvg": 0,
+				"totalElements": 0,
+				"viewsSum": 0
+			},
+			{
+				"intervalInitDate": "${today-7dT00:00:00.000Z}",
+				"scoreAvg": 0,
+				"totalElements": 0,
+				"viewsSum": 0
+			},
+			{
+				"intervalInitDate": "${today-6dT00:00:00.000Z}",
+				"scoreAvg": 0,
+				"totalElements": 0,
+				"viewsSum": 0
+			},
+			{
+				"intervalInitDate": "${today-5dT00:00:00.000Z}",
+				"scoreAvg": 0,
+				"totalElements": 0,
+				"viewsSum": 0
+			},
+			{
+				"intervalInitDate": "${today-4dT00:00:00.000Z}",
+				"scoreAvg": 0,
+				"totalElements": 0,
+				"viewsSum": 0
+			},
+			{
+				"intervalInitDate": "${today-3dT00:00:00.000Z}",
+				"scoreAvg": 0,
+				"totalElements": 0,
+				"viewsSum": 0
+			},
+			{
+				"intervalInitDate": "${today-2dT00:00:00.000Z}",
+				"scoreAvg": 0,
+				"totalElements": 0,
+				"viewsSum": 0
+			},
+			{
+				"intervalInitDate": "${today-1dT00:00:00.000Z}",
+				"scoreAvg": 0,
+				"totalElements": 0,
+				"viewsSum": 0
+			},
+			{
+				"intervalInitDate": "${today-0dT00:00:00.000Z}",
+				"scoreAvg": 0,
+				"totalElements": 0,
+				"viewsSum": 0
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 20,
+		"totalElements": 20,
+		"totalPages": 1
+	}
+}

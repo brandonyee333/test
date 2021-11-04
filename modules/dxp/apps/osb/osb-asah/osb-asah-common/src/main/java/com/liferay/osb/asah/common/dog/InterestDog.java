@@ -152,7 +152,7 @@ public class InterestDog {
 	}
 
 	private static final Pattern _periodPattern = Pattern.compile(
-		"compute\\((?<period>\\w+)\\((?<fieldname>\\w+)\\)\\)");
+		"compute\\((?<period>\\w+)\\((?<fieldName>\\w+)\\)\\)");
 
 	@Autowired
 	private InterestRepository _interestRepository;

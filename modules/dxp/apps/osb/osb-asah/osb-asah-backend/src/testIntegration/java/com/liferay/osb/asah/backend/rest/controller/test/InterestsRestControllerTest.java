@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -179,6 +180,43 @@ public class InterestsRestControllerTest {
 			"JSONObject/_embedded", "JSONArray/interest-keywords");
 
 		Assert.assertEquals(0, keywordsJSONArray.length());
+	}
+
+	@ElasticsearchIndex(
+		name = "interests", resourcePath = "interests_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetInterestTransformations() throws Exception {
+		JSONAssert.assertEquals(
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					"dependencies/expected_interest_transformations.json",
+					this)),
+			new JSONObject(
+				_interestsRestController.getInterestTransformations(
+					null, null, 0, 20)),
+			false);
+	}
+
+	@ElasticsearchIndex(
+		name = "interests", resourcePath = "interests_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetInterestTransformationsByApplyAndFilter()
+		throws Exception {
+
+		JSONAssert.assertEquals(
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					"dependencies" +
+						"/expected_interest_transformations_filtered.json",
+					this)),
+			new JSONObject(
+				_interestsRestController.getInterestTransformations(
+					"compute(day(dateRecorded))", "name eq 'abc'", 0, 20)),
+			false);
 	}
 
 	@ElasticsearchIndex(
