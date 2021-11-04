@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -47,7 +48,7 @@ public abstract class BaseInterestRepositoryTestCase
 		interest1.setOwnerType("individual");
 		interest1.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-12T00:00:00.000Z"));
-		interest1.setScore(1.7676619176489945);
+		interest1.setScore(1.767661917648994);
 		interest1.setViews(1L);
 
 		Interest interest2 = new Interest();
@@ -57,7 +58,7 @@ public abstract class BaseInterestRepositoryTestCase
 		interest2.setOwnerType("individual");
 		interest2.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
-		interest2.setScore(2.614959778036198);
+		interest2.setScore(2.61495977803619);
 		interest2.setViews(2L);
 
 		Interest interest3 = new Interest();
@@ -67,7 +68,7 @@ public abstract class BaseInterestRepositoryTestCase
 		interest3.setOwnerType("individual");
 		interest3.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
-		interest3.setScore(0.7702225204735745);
+		interest3.setScore(0.770222520473574);
 		interest3.setViews(3L);
 
 		Interest interest4 = new Interest();
@@ -77,7 +78,7 @@ public abstract class BaseInterestRepositoryTestCase
 		interest4.setOwnerType("individual");
 		interest4.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
-		interest4.setScore(1.4546849849874945);
+		interest4.setScore(1.454684984987494);
 		interest4.setViews(4L);
 
 		Interest interest5 = new Interest();
@@ -87,7 +88,7 @@ public abstract class BaseInterestRepositoryTestCase
 		interest5.setOwnerType("individual");
 		interest5.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
-		interest5.setScore(1.4546849849874945);
+		interest5.setScore(1.454684984987494);
 		interest5.setViews(5L);
 
 		setUpRepository(interest1, interest2, interest3, interest4, interest5);
@@ -98,7 +99,7 @@ public abstract class BaseInterestRepositoryTestCase
 		Assert.assertEquals(
 			4,
 			_interestRepository.countByFilterStringAndScoreGreaterThanEqual(
-				new FilterHelper(null), 1.4546849849874945));
+				new FilterHelper(null), 1.454684984987494));
 	}
 
 	@Test
@@ -233,6 +234,48 @@ public abstract class BaseInterestRepositoryTestCase
 	}
 
 	@Test
+	public void testGetInterestTransformationsByDay() {
+		List<Map<String, Object>> transformations =
+			_interestRepository.getTransformations(
+				DateUtil.toUTCDate("2021-09-11T00:00:00.000Z"), null, "day",
+				DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
+
+		Assert.assertEquals(
+			transformations.toString(), 4, transformations.size());
+
+		_assertTransformation(
+			"2021-09-11T00:00:00.000Z", 0, 0, 0, transformations.get(0));
+		_assertTransformation(
+			"2021-09-12T00:00:00.000Z", 1.767661917648994, 1, 1,
+			transformations.get(1));
+		_assertTransformation(
+			"2021-09-13T00:00:00.000Z", 2.61495977803619, 2, 1,
+			transformations.get(2));
+		_assertTransformation(
+			"2021-09-14T00:00:00.000Z", 1.2265308301495208, 12, 3,
+			transformations.get(3));
+	}
+
+	@Test
+	public void testGetInterestTransformationsByWeek() {
+		List<Map<String, Object>> transformations =
+			_interestRepository.getTransformations(
+				DateUtil.toUTCDate("2021-09-01T00:00:00.000Z"), null, "week",
+				DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
+
+		Assert.assertEquals(
+			transformations.toString(), 3, transformations.size());
+		_assertTransformation(
+			"2021-08-30T00:00:00.000Z", 0D, 0D, 0, transformations.get(0));
+		_assertTransformation(
+			"2021-09-06T00:00:00.000Z", 1.767661917648994D, 1D, 1,
+			transformations.get(1));
+		_assertTransformation(
+			"2021-09-13T00:00:00.000Z", 1.573638067121188D, 14D, 4,
+			transformations.get(2));
+	}
+
+	@Test
 	public void testGetTopNamesByOwnerIdAndOwnerType() {
 		List<String> names =
 			_interestRepository.getTopNamesByOwnerIdAndOwnerType(
@@ -246,6 +289,17 @@ public abstract class BaseInterestRepositoryTestCase
 	@Override
 	protected Repository<Interest, Long> getRepository() {
 		return _interestRepository;
+	}
+
+	private void _assertTransformation(
+		String intervalInitDate, double scoreAvg, double viewsSum,
+		long totalElements, Map<String, Object> transformation) {
+
+		Assert.assertEquals(
+			intervalInitDate, transformation.get("intervalInitDate"));
+		Assert.assertEquals(scoreAvg, transformation.get("scoreAvg"));
+		Assert.assertEquals(viewsSum, transformation.get("viewsSum"));
+		Assert.assertEquals(totalElements, transformation.get("totalElements"));
 	}
 
 	@Autowired
