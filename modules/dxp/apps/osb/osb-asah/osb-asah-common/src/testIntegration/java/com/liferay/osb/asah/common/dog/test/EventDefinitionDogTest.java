@@ -449,6 +449,7 @@ public class EventDefinitionDogTest {
 				EventDefinition.Type.DEFAULT),
 			new ArrayList<String>() {
 				{
+					add("VOTE");
 					add("assetDepthReached");
 					add("blogDepthReached");
 					add("fieldBlurred");
@@ -460,7 +461,6 @@ public class EventDefinitionDogTest {
 					add("shared");
 					add("tabBlurred");
 					add("tabFocused");
-					add("vote");
 				}
 			});
 	}
