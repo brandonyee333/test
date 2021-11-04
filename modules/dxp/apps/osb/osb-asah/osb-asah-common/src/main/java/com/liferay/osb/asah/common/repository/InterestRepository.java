@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -90,5 +91,10 @@ public interface InterestRepository extends Repository<Interest, Long> {
 	@Cacheable
 	public List<String> getTopNamesByOwnerIdAndOwnerType(
 		Long ownerId, String ownerType, int size);
+
+	@Cacheable
+	public List<Map<String, Object>> getTransformations(
+		Date endDate, @Nullable FilterHelper filterHelper, String period,
+		Date startDate);
 
 }
