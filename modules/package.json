@@ -11,7 +11,7 @@
 	},
 	"private": true,
 	"resolutions": {
-		"@liferay/eslint-plugin": "1.0.0"
+		"@liferay/eslint-plugin": "1.1.0"
 	},
 	"scripts": {
 		"checkFormat": "liferay-npm-scripts check",
