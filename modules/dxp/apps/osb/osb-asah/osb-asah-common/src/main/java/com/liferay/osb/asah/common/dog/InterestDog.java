@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.repository.InterestRepository;
@@ -23,6 +24,10 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -114,6 +119,40 @@ public class InterestDog {
 		return _interestRepository.getTopNamesByOwnerIdAndOwnerType(
 			ownerId, ownerType, size);
 	}
+
+	public JSONArray getTransformations(
+		String apply, String filterString, int page, int size) {
+
+		String period = "day";
+
+		if (apply != null) {
+			Matcher matcher = _periodPattern.matcher(apply);
+
+			if (!matcher.find()) {
+				throw new IllegalArgumentException("Invalid apply: " + apply);
+			}
+
+			String fieldName = matcher.group("fieldName");
+
+			if (!fieldName.equals("dateRecorded")) {
+				throw new IllegalArgumentException(
+					"Compute function not supported for " + fieldName);
+			}
+
+			period = matcher.group("period");
+		}
+
+		Date toDate = DateUtil.addDays(DateUtil.newDayDate(), -(page * size));
+
+		Date fromDate = DateUtil.addDays(toDate, 1 - size);
+
+		return new JSONArray(
+			_interestRepository.getTransformations(
+				fromDate, new FilterHelper(filterString), period, toDate));
+	}
+
+	private static final Pattern _periodPattern = Pattern.compile(
+		"compute\\((?<period>\\w+)\\((?<fieldname>\\w+)\\)\\)");
 
 	@Autowired
 	private InterestRepository _interestRepository;
