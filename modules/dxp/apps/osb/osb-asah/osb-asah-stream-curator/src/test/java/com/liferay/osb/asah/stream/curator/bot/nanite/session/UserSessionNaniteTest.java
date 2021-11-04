@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.session;
 
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dog.EventStorageDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -67,13 +68,18 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 		);
 
 		ReflectionTestUtils.setField(
-			nanite, "_semaphore", new Semaphore(10, true));
+			nanite, "_semaphore", new Semaphore(1, true));
 		ReflectionTestUtils.setField(
 			nanite, "_sessionUpdateScriptSource",
 			ScriptUtil.loadScriptSource(
 				UserSessionNanite.class, "session_update_script.painless"));
 		ReflectionTestUtils.setField(
-			nanite, "_userSessionNaniteConcurrentTasksLimit", 10);
+			nanite, "_userSessionNaniteConcurrentTasksLimit", 1);
+
+		EventStorageDog eventStorageDog = Mockito.mock(EventStorageDog.class);
+
+		ReflectionTestUtils.setField(
+			nanite, "_eventStorageDog", eventStorageDog);
 
 		TimeZoneDog timeZoneDog = Mockito.mock(TimeZoneDog.class);
 

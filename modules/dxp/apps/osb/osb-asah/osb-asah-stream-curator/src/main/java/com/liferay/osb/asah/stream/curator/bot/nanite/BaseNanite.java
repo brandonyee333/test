@@ -39,12 +39,20 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.annotation.PreDestroy;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -68,49 +76,29 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	@Override
 	public void run() {
 		try {
-			doRun();
+			_run();
 		}
 		catch (Exception exception) {
 			Log log = getLog();
 
 			log.error(exception, exception);
 		}
+
+		try {
+			_semaphore.acquire(4);
+		}
+		catch (InterruptedException interruptedException) {
+			Log log = getLog();
+
+			log.error(interruptedException, interruptedException);
+		}
+		finally {
+			_semaphore.release(4);
+		}
 	}
 
 	protected String digest(Object... objects) {
 		return NaniteUtil.digest(objects);
-	}
-
-	protected void doRun() throws Exception {
-		while (true) {
-			long start = System.currentTimeMillis();
-
-			List<AnalyticsEvent> analyticsEvents = pullAnalyticsEvents();
-
-			if (analyticsEvents.isEmpty()) {
-				break;
-			}
-
-			Stream<AnalyticsEvent> stream = analyticsEvents.stream();
-
-			stream.collect(
-				Collectors.groupingBy(AnalyticsEvent::getProjectId)
-			).forEach(
-				this::_run
-			);
-
-			Log log = getLog();
-
-			if (log.isInfoEnabled()) {
-				Class<?> clazz = getClass();
-
-				log.info(
-					String.format(
-						"%s processed %d events in %d ms",
-						clazz.getSimpleName(), analyticsEvents.size(),
-						System.currentTimeMillis() - start));
-			}
-		}
 	}
 
 	protected Function<T, String> getAssetPrimaryKeyGeneratorFunction() {
@@ -258,6 +246,26 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		return model;
 	}
 
+	@PreDestroy
+	private void _destroy() {
+		_reentrantLock.lock();
+
+		_executorService.shutdown();
+
+		try {
+			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+				_executorService.shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			Log log = getLog();
+
+			log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
+		}
+	}
+
 	private Function<AnalyticsEvent, T> _getMapperFunction() {
 		return analyticsEvent -> {
 			T t = _createModel(analyticsEvent);
@@ -284,14 +292,85 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		}
 	}
 
+	private void _run() throws Exception {
+		while (true) {
+			try {
+				_reentrantLock.lock();
+
+				long start = System.currentTimeMillis();
+
+				List<AnalyticsEvent> analyticsEvents = pullAnalyticsEvents();
+
+				if (analyticsEvents.isEmpty()) {
+					break;
+				}
+
+				Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+				stream.collect(
+					Collectors.groupingBy(AnalyticsEvent::getProjectId)
+				).forEach(
+					this::_run
+				);
+
+				Log log = getLog();
+
+				if (log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
+
+					log.info(
+						String.format(
+							"%s dispatched %d events in %d ms",
+							clazz.getSimpleName(), analyticsEvents.size(),
+							System.currentTimeMillis() - start));
+				}
+			}
+			finally {
+				_reentrantLock.unlock();
+			}
+		}
+	}
+
 	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
 		try {
-			ProjectIdThreadLocal.setProjectId(projectId);
+			_semaphore.acquire();
 
-			saveModels(getModels(analyticsEvents));
+			CompletableFuture.runAsync(
+				() -> {
+					long start = System.currentTimeMillis();
+
+					try {
+						ProjectIdThreadLocal.setProjectId(projectId);
+
+						saveModels(getModels(analyticsEvents));
+					}
+					catch (Exception exception) {
+						Log log = getLog();
+
+						log.error(exception.getMessage(), exception);
+					}
+					finally {
+						_semaphore.release();
+					}
+
+					Log log = getLog();
+
+					if (log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						log.info(
+							String.format(
+								"%s processed %d events in %d ms",
+								clazz.getSimpleName(), analyticsEvents.size(),
+								System.currentTimeMillis() - start));
+					}
+				},
+				_executorService);
 		}
-		finally {
-			ProjectIdThreadLocal.remove();
+		catch (InterruptedException interruptedException) {
+			Log log = getLog();
+
+			log.error(interruptedException, interruptedException);
 		}
 	}
 
@@ -407,10 +486,17 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
+	private final ExecutorService _executorService =
+		Executors.newFixedThreadPool(2);
+
 	@Autowired
 	private IndividualDog _individualDog;
 
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
+
 	@Autowired
 	private SegmentDog _segmentDog;
+
+	private final Semaphore _semaphore = new Semaphore(4, true);
 
 }

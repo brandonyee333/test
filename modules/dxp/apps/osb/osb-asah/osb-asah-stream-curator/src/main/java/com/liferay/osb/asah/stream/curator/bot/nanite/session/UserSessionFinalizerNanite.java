@@ -34,8 +34,14 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.session.arm.FinalizeUserSe
 
 import java.time.temporal.ChronoUnit;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
+
+import javax.annotation.PreDestroy;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -67,27 +73,21 @@ public class UserSessionFinalizerNanite implements Nanite {
 
 	@Override
 	public void run() {
-		List<Project> projects = Collections.emptyList();
-
 		try {
-			projects = _projectDog.getProjects();
+			_run();
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
 		}
 
-		for (Project project : projects) {
-			try {
-				ProjectIdThreadLocal.setProjectId(project.getId());
-
-				run(false);
-			}
-			catch (Exception exception) {
-				_log.error(exception, exception);
-			}
-			finally {
-				ProjectIdThreadLocal.remove();
-			}
+		try {
+			_semaphore.acquire(4);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
+		}
+		finally {
+			_semaphore.release(4);
 		}
 	}
 
@@ -169,6 +169,24 @@ public class UserSessionFinalizerNanite implements Nanite {
 			asahMarker, WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
 	}
 
+	@PreDestroy
+	private void _destroy() {
+		_reentrantLock.lock();
+
+		_executorService.shutdown();
+
+		try {
+			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+				_executorService.shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
+		}
+	}
+
 	private AsahMarker _getAsahMarker() {
 		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
 			"SessionNanite", WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
@@ -234,6 +252,38 @@ public class UserSessionFinalizerNanite implements Nanite {
 		);
 	}
 
+	private void _run() throws Exception {
+		for (Project project : _projectDog.getProjects()) {
+			try {
+				_reentrantLock.lock();
+
+				_semaphore.acquire();
+
+				CompletableFuture.runAsync(
+					() -> {
+						try {
+							ProjectIdThreadLocal.setProjectId(project.getId());
+
+							run(false);
+						}
+						catch (Exception exception) {
+							_log.error(exception.getMessage(), exception);
+						}
+						finally {
+							_semaphore.release();
+						}
+					},
+					_executorService);
+			}
+			catch (InterruptedException interruptedException) {
+				_log.error(interruptedException, interruptedException);
+			}
+			finally {
+				_reentrantLock.unlock();
+			}
+		}
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		UserSessionFinalizerNanite.class);
 
@@ -243,6 +293,9 @@ public class UserSessionFinalizerNanite implements Nanite {
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
+	private final ExecutorService _executorService =
+		Executors.newFixedThreadPool(2);
+
 	@Autowired
 	private FinalizeUserSessionArm _finalizeUserSessionArm;
 
@@ -251,6 +304,9 @@ public class UserSessionFinalizerNanite implements Nanite {
 
 	@Autowired
 	private ProjectDog _projectDog;
+
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
+	private final Semaphore _semaphore = new Semaphore(4, true);
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

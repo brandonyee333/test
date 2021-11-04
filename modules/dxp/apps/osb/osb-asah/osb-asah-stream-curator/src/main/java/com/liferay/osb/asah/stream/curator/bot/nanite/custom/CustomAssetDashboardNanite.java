@@ -28,8 +28,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.annotation.PreDestroy;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -62,6 +70,16 @@ public class CustomAssetDashboardNanite implements Nanite {
 		catch (Exception exception) {
 			_log.error(exception, exception);
 		}
+
+		try {
+			_semaphore.acquire(4);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
+		}
+		finally {
+			_semaphore.release(4);
+		}
 	}
 
 	private void _addCustomAssetDashboards(
@@ -82,6 +100,24 @@ public class CustomAssetDashboardNanite implements Nanite {
 		_customAssetDashboardRepository.save(customAssetDashboard);
 	}
 
+	@PreDestroy
+	private void _destroy() {
+		_reentrantLock.lock();
+
+		_executorService.shutdown();
+
+		try {
+			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+				_executorService.shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
+		}
+	}
+
 	private String _getCustomAssetPrimaryKey(AnalyticsEvent analyticsEvent) {
 		Map<String, String> eventProperties =
 			analyticsEvent.getEventProperties();
@@ -94,50 +130,85 @@ public class CustomAssetDashboardNanite implements Nanite {
 
 	private void _run() throws Exception {
 		while (true) {
-			long start = System.currentTimeMillis();
+			try {
+				_reentrantLock.lock();
 
-			List<AnalyticsEvent> analyticsEvents =
-				_messageSubscriber.pullMessages(
-					50, AnalyticsEvent::toAnalyticsEvent);
+				long start = System.currentTimeMillis();
 
-			if (analyticsEvents.isEmpty()) {
-				break;
+				List<AnalyticsEvent> analyticsEvents =
+					_messageSubscriber.pullMessages(
+						50, AnalyticsEvent::toAnalyticsEvent);
+
+				if (analyticsEvents.isEmpty()) {
+					break;
+				}
+
+				Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+				stream.collect(
+					Collectors.groupingBy(AnalyticsEvent::getProjectId)
+				).forEach(
+					this::_run
+				);
+
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
+
+					_log.info(
+						String.format(
+							"%s dispatched %d events in %d ms",
+							clazz.getSimpleName(), analyticsEvents.size(),
+							System.currentTimeMillis() - start));
+				}
 			}
-
-			Stream<AnalyticsEvent> stream = analyticsEvents.stream();
-
-			stream.collect(
-				Collectors.groupingBy(AnalyticsEvent::getProjectId)
-			).forEach(
-				this::_run
-			);
-
-			if (_log.isInfoEnabled()) {
-				Class<?> clazz = getClass();
-
-				_log.info(
-					String.format(
-						"%s processed %d events in %d ms",
-						clazz.getSimpleName(), analyticsEvents.size(),
-						System.currentTimeMillis() - start));
+			finally {
+				_reentrantLock.unlock();
 			}
 		}
 	}
 
 	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
 		try {
-			ProjectIdThreadLocal.setProjectId(projectId);
+			_semaphore.acquire();
 
-			Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+			CompletableFuture.runAsync(
+				() -> {
+					long start = System.currentTimeMillis();
 
-			stream.collect(
-				Collectors.groupingBy(this::_getCustomAssetPrimaryKey)
-			).forEach(
-				this::_addCustomAssetDashboards
-			);
+					try {
+						ProjectIdThreadLocal.setProjectId(projectId);
+
+						Stream<AnalyticsEvent> stream =
+							analyticsEvents.stream();
+
+						stream.collect(
+							Collectors.groupingBy(
+								this::_getCustomAssetPrimaryKey)
+						).forEach(
+							this::_addCustomAssetDashboards
+						);
+					}
+					catch (Exception exception) {
+						_log.error(exception.getMessage(), exception);
+					}
+					finally {
+						_semaphore.release();
+					}
+
+					if (_log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						_log.info(
+							String.format(
+								"%s processed %d events in %d ms",
+								clazz.getSimpleName(), analyticsEvents.size(),
+								System.currentTimeMillis() - start));
+					}
+				},
+				_executorService);
 		}
-		finally {
-			ProjectIdThreadLocal.remove();
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
 		}
 	}
 
@@ -183,9 +254,15 @@ public class CustomAssetDashboardNanite implements Nanite {
 	@Autowired
 	private CustomAssetDashboardRepository _customAssetDashboardRepository;
 
+	private final ExecutorService _executorService =
+		Executors.newFixedThreadPool(2);
+
 	@MessageSubscriber.Autowired(
 		channel = Channel.ANALYTICS_EVENTS_CUSTOM_ASSET
 	)
 	private MessageSubscriber _messageSubscriber;
+
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
+	private final Semaphore _semaphore = new Semaphore(4, true);
 
 }

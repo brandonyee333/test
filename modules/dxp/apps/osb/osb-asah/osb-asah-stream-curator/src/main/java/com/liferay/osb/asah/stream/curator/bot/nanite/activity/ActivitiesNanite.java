@@ -56,10 +56,13 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -94,59 +97,20 @@ public class ActivitiesNanite implements Nanite {
 	@Override
 	public void run() {
 		try {
-			while (true) {
-				long start = System.currentTimeMillis();
-
-				List<AnalyticsEvent> analyticsEvents =
-					_messageSubscriber.pullMessages(
-						_activitiesNanitePullMessagesSize,
-						AnalyticsEvent::toAnalyticsEvent);
-
-				if (analyticsEvents.isEmpty()) {
-					break;
-				}
-
-				Stream<AnalyticsEvent> stream = analyticsEvents.stream();
-
-				stream.distinct(
-				).collect(
-					Collectors.groupingBy(AnalyticsEvent::getProjectId)
-				).forEach(
-					this::_run
-				);
-
-				while (_semaphore.availablePermits() <
-							_activitiesNaniteConcurrentTasksLimit) {
-
-					try {
-						if (_log.isDebugEnabled()) {
-							_log.debug(
-								String.format(
-									"Waiting for %d unfinished process tasks",
-									_activitiesNaniteConcurrentTasksLimit -
-										_semaphore.availablePermits()));
-						}
-
-						Thread.sleep(1000);
-					}
-					catch (InterruptedException interruptedException) {
-						_log.error(interruptedException, interruptedException);
-					}
-				}
-
-				if (_log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
-
-					_log.info(
-						String.format(
-							"%s processed %d events in %d ms",
-							clazz.getSimpleName(), analyticsEvents.size(),
-							System.currentTimeMillis() - start));
-				}
-			}
+			_run();
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
+		}
+
+		try {
+			_semaphore.acquire(_activitiesNaniteConcurrentTasksLimit);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
+		}
+		finally {
+			_semaphore.release(_activitiesNaniteConcurrentTasksLimit);
 		}
 	}
 
@@ -197,6 +161,24 @@ public class ActivitiesNanite implements Nanite {
 		_sendActivityMessage(activityJSONObject, projectId);
 
 		_faroInfoActivityDog.addActivity(activityJSONObject);
+	}
+
+	@PreDestroy
+	private void _destroy() {
+		_reentrantLock.lock();
+
+		_executorService.shutdown();
+
+		try {
+			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+				_executorService.shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
+		}
 	}
 
 	private JSONObject _getActivityJSONObject(AnalyticsEvent analyticsEvent) {
@@ -626,12 +608,54 @@ public class ActivitiesNanite implements Nanite {
 		_semaphore = new Semaphore(_activitiesNaniteConcurrentTasksLimit, true);
 	}
 
+	private void _run() throws Exception {
+		while (true) {
+			try {
+				_reentrantLock.lock();
+
+				long start = System.currentTimeMillis();
+
+				List<AnalyticsEvent> analyticsEvents =
+					_messageSubscriber.pullMessages(
+						_activitiesNanitePullMessagesSize,
+						AnalyticsEvent::toAnalyticsEvent);
+
+				if (analyticsEvents.isEmpty()) {
+					break;
+				}
+
+				Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+				stream.collect(
+					Collectors.groupingBy(AnalyticsEvent::getProjectId)
+				).forEach(
+					this::_run
+				);
+
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
+
+					_log.info(
+						String.format(
+							"%s dispatched %d events in %d ms",
+							clazz.getSimpleName(), analyticsEvents.size(),
+							System.currentTimeMillis() - start));
+				}
+			}
+			finally {
+				_reentrantLock.unlock();
+			}
+		}
+	}
+
 	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
 		try {
 			_semaphore.acquire();
 
 			CompletableFuture.runAsync(
 				() -> {
+					long start = System.currentTimeMillis();
+
 					try {
 						ProjectIdThreadLocal.setProjectId(projectId);
 
@@ -683,6 +707,16 @@ public class ActivitiesNanite implements Nanite {
 					}
 					finally {
 						_semaphore.release();
+					}
+
+					if (_log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						_log.info(
+							String.format(
+								"%s processed %d events in %d ms",
+								clazz.getSimpleName(), analyticsEvents.size(),
+								System.currentTimeMillis() - start));
 					}
 				},
 				_executorService);
@@ -760,6 +794,7 @@ public class ActivitiesNanite implements Nanite {
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_ACTIVITY)
 	private MessageSubscriber _messageSubscriber;
 
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
 	private Semaphore _semaphore;
 
 	@Autowired

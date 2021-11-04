@@ -51,10 +51,13 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
@@ -93,6 +96,16 @@ public class UserSessionNanite implements Nanite {
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
+		}
+
+		try {
+			_semaphore.acquire(_userSessionNaniteConcurrentTasksLimit);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
+		}
+		finally {
+			_semaphore.release(_userSessionNaniteConcurrentTasksLimit);
 		}
 	}
 
@@ -169,6 +182,38 @@ public class UserSessionNanite implements Nanite {
 		_storeEvents(
 			analyticsEvents.getAnalyticsEventsList(), semaphore,
 			jsonObject.getString("id"));
+	}
+
+	@PreDestroy
+	private void _destroy() {
+		_reentrantLock.lock();
+
+		_runExecutorService.shutdown();
+		_storageExecutorService.shutdown();
+
+		try {
+			if (!_runExecutorService.awaitTermination(1, TimeUnit.MINUTES)) {
+				_runExecutorService.shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
+		}
+
+		try {
+			if (!_storageExecutorService.awaitTermination(
+					1, TimeUnit.MINUTES)) {
+
+				_storageExecutorService.shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
+		}
 	}
 
 	private Individual _fetchIndividual(AnalyticsEvent analyticsEvent) {
@@ -419,52 +464,40 @@ public class UserSessionNanite implements Nanite {
 
 	private void _run() throws Exception {
 		while (true) {
-			long start = System.currentTimeMillis();
+			try {
+				_reentrantLock.lock();
 
-			List<AnalyticsEvent> analyticsEvents =
-				_messageSubscriber.pullMessages(
-					_userSessionNanitePullMessagesSize,
-					AnalyticsEvent::toAnalyticsEvent);
+				long start = System.currentTimeMillis();
 
-			if (analyticsEvents.isEmpty()) {
-				break;
-			}
+				List<AnalyticsEvent> analyticsEvents =
+					_messageSubscriber.pullMessages(
+						_userSessionNanitePullMessagesSize,
+						AnalyticsEvent::toAnalyticsEvent);
 
-			Stream<AnalyticsEvent> stream = analyticsEvents.stream();
-
-			stream.collect(
-				Collectors.groupingBy(AnalyticsEvent::getProjectId)
-			).forEach(
-				this::_run
-			);
-
-			while (_semaphore.availablePermits() <
-						_userSessionNaniteConcurrentTasksLimit) {
-
-				try {
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							String.format(
-								"Waiting for %d unfinished process tasks",
-								_userSessionNaniteConcurrentTasksLimit -
-									_semaphore.availablePermits()));
-					}
-
-					Thread.sleep(1000);
+				if (analyticsEvents.isEmpty()) {
+					break;
 				}
-				catch (InterruptedException interruptedException) {
-					_log.error(interruptedException, interruptedException);
+
+				Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+				stream.collect(
+					Collectors.groupingBy(AnalyticsEvent::getProjectId)
+				).forEach(
+					this::_run
+				);
+
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
+
+					_log.info(
+						String.format(
+							"%s processed %d events in %d ms",
+							clazz.getSimpleName(), analyticsEvents.size(),
+							System.currentTimeMillis() - start));
 				}
 			}
-
-			if (_log.isInfoEnabled()) {
-				Class<?> clazz = getClass();
-
-				_log.info(
-					String.format(
-						"%s processed %d events in %d ms",
-						clazz.getSimpleName(), analyticsEvents.size(),
-						System.currentTimeMillis() - start));
+			finally {
+				_reentrantLock.unlock();
 			}
 		}
 	}
@@ -483,25 +516,17 @@ public class UserSessionNanite implements Nanite {
 
 						_processAnalyticsEvents(analyticsEvents, semaphore);
 
-						while (semaphore.availablePermits() <
-									_userSessionNaniteConcurrentTasksLimit) {
-
-							try {
-								if (_log.isDebugEnabled()) {
-									_log.debug(
-										String.format(
-											"Waiting for %d unfinished store " +
-												"events tasks",
-											_userSessionNaniteConcurrentTasksLimit -
-												semaphore.availablePermits()));
-								}
-
-								Thread.sleep(1000);
-							}
-							catch (InterruptedException interruptedException) {
-								_log.error(
-									interruptedException, interruptedException);
-							}
+						try {
+							semaphore.acquire(
+								_userSessionNaniteConcurrentTasksLimit);
+						}
+						catch (InterruptedException interruptedException) {
+							_log.error(
+								interruptedException, interruptedException);
+						}
+						finally {
+							semaphore.release(
+								_userSessionNaniteConcurrentTasksLimit);
 						}
 					}
 					catch (Exception exception) {
@@ -640,6 +665,7 @@ public class UserSessionNanite implements Nanite {
 	@Autowired
 	private ObjectMapper _objectMapper;
 
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
 	private final ExecutorService _runExecutorService =
 		Executors.newFixedThreadPool(10);
 	private Semaphore _semaphore;

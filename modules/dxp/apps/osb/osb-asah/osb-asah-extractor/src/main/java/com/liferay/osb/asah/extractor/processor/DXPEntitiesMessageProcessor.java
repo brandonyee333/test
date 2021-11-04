@@ -32,12 +32,9 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.DXPUser;
-import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-
-import io.prometheus.client.Counter;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -49,10 +46,13 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -73,51 +73,55 @@ import org.springframework.stereotype.Component;
 public class DXPEntitiesMessageProcessor {
 
 	public void processQueuedMessages() {
-		while (true) {
-			List<String> messages = _messageSubscriber.pullMessages(
-				_dxpEntitiesMessageProcessorPullMessagesSize);
+		try {
+			while (true) {
+				try {
+					_reentrantLock.lock();
 
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					String.format(
-						"Pulled %d DXP entity messages ", messages.size()));
+					List<String> messages = _messageSubscriber.pullMessages(
+						_dxpEntitiesMessageProcessorPullMessagesSize);
+
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							String.format(
+								"Pulled %d DXP entity messages ",
+								messages.size()));
+					}
+
+					if (messages.isEmpty()) {
+						break;
+					}
+
+					Stream<String> stream = messages.stream();
+
+					stream.map(
+						JSONObject::new
+					).collect(
+						Collectors.groupingBy(
+							jsonObject -> jsonObject.getString("projectId"))
+					).forEach(
+						this::_processQueuedMessagesAsync
+					);
+				}
+				finally {
+					_reentrantLock.unlock();
+				}
 			}
-
-			if (messages.isEmpty()) {
-				break;
-			}
-
-			Stream<String> stream = messages.stream();
-
-			stream.map(
-				JSONObject::new
-			).collect(
-				Collectors.groupingBy(
-					jsonObject -> jsonObject.getString("projectId"))
-			).forEach(
-				this::_processQueuedMessagesAsync
-			);
-
-			_dxpEntitiesCounter.inc(messages.size());
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 
-		while (_semaphore.availablePermits() <
-					_dxpEntitiesMessageProcessorConcurrentTasksLimit) {
-
-			try {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						String.format(
-							"Waiting for %d unfinished tasks",
-							_dxpEntitiesMessageProcessorConcurrentTasksLimit -
-								_semaphore.availablePermits()));
-				}
-
-				Thread.sleep(1000);
-			}
-			catch (InterruptedException interruptedException) {
-				_log.error(interruptedException, interruptedException);
-			}
+		try {
+			_semaphore.acquire(
+				_dxpEntitiesMessageProcessorConcurrentTasksLimit);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
+		}
+		finally {
+			_semaphore.release(
+				_dxpEntitiesMessageProcessorConcurrentTasksLimit);
 		}
 	}
 
@@ -158,6 +162,24 @@ public class DXPEntitiesMessageProcessor {
 			if (_log.isInfoEnabled()) {
 				_log.info(exception, exception);
 			}
+		}
+	}
+
+	@PreDestroy
+	private void _destroy() {
+		_reentrantLock.lock();
+
+		_executorService.shutdown();
+
+		try {
+			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+				_executorService.shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
 		}
 	}
 
@@ -552,8 +574,6 @@ public class DXPEntitiesMessageProcessor {
 				put("phones", "telephone");
 			}
 		};
-	private static final Counter _dxpEntitiesCounter = PrometheusUtil.counter(
-		"extractor_dxp_entities_count", "The number of extracted DXP entities");
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
@@ -592,6 +612,8 @@ public class DXPEntitiesMessageProcessor {
 
 	@Autowired
 	private OrganizationRepository _organizationRepository;
+
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
 
 	@Autowired
 	private SegmentDog _segmentDog;

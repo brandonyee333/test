@@ -31,8 +31,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.annotation.PreDestroy;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
@@ -56,7 +64,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 	@Override
 	public long getInterval() {
-		return DateUtil.SECOND * 5;
+		return DateUtil.MINUTE;
 	}
 
 	@Override
@@ -66,6 +74,16 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
+		}
+
+		try {
+			_semaphore.acquire(4);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
+		}
+		finally {
+			_semaphore.release(4);
 		}
 	}
 
@@ -92,6 +110,24 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		}
 
 		return activityDatesMap;
+	}
+
+	@PreDestroy
+	private void _destroy() {
+		_reentrantLock.lock();
+
+		_executorService.shutdown();
+
+		try {
+			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+				_executorService.shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
+		}
 	}
 
 	private Set<Individual.ActivitiesCount> _getActivitiesCounts(
@@ -241,90 +277,130 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 	private void _run() {
 		while (true) {
-			long start = System.currentTimeMillis();
+			try {
+				_reentrantLock.lock();
 
-			List<String> messages = _messageSubscriber.pullMessages(100);
+				long start = System.currentTimeMillis();
 
-			if (messages.isEmpty()) {
-				break;
+				List<String> messages = _messageSubscriber.pullMessages(100);
+
+				if (messages.isEmpty()) {
+					break;
+				}
+
+				Stream<String> stream = messages.stream();
+
+				stream.map(
+					JSONObject::new
+				).collect(
+					Collectors.groupingBy(
+						jsonObject -> jsonObject.getString("projectId"))
+				).forEach(
+					this::_run
+				);
+
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
+
+					_log.info(
+						String.format(
+							"%s dispatched %d messages in %d ms",
+							clazz.getSimpleName(), messages.size(),
+							System.currentTimeMillis() - start));
+				}
 			}
-
-			Stream<String> stream = messages.stream();
-
-			stream.map(
-				JSONObject::new
-			).collect(
-				Collectors.groupingBy(
-					jsonObject -> jsonObject.getString("projectId"))
-			).forEach(
-				this::_run
-			);
-
-			if (_log.isInfoEnabled()) {
-				Class<?> clazz = getClass();
-
-				_log.info(
-					String.format(
-						"%s processed %d messages in %d ms",
-						clazz.getSimpleName(), messages.size(),
-						System.currentTimeMillis() - start));
+			finally {
+				_reentrantLock.unlock();
 			}
 		}
 	}
 
 	private void _run(String projectId, List<JSONObject> messages) {
 		try {
-			ProjectIdThreadLocal.setProjectId(projectId);
+			_semaphore.acquire();
 
-			Stream<JSONObject> messagesStream = messages.stream();
+			CompletableFuture.runAsync(
+				() -> {
+					long start = System.currentTimeMillis();
 
-			Map<String, Map<String, Long>> ownerIdCounts =
-				messagesStream.collect(
-					Collectors.groupingBy(
-						jsonObject -> String.valueOf(jsonObject.get("ownerId")),
-						Collectors.groupingBy(
-							jsonObject -> String.valueOf(
-								jsonObject.get("channelId")),
-							Collectors.counting())));
+					try {
+						ProjectIdThreadLocal.setProjectId(projectId);
 
-			for (Map.Entry<String, Map<String, Long>> ownerIdEntry :
-					ownerIdCounts.entrySet()) {
+						Stream<JSONObject> messagesStream = messages.stream();
 
-				String ownerId = ownerIdEntry.getKey();
+						Map<String, Map<String, Long>> ownerIdCounts =
+							messagesStream.collect(
+								Collectors.groupingBy(
+									jsonObject -> String.valueOf(
+										jsonObject.get("ownerId")),
+									Collectors.groupingBy(
+										jsonObject -> String.valueOf(
+											jsonObject.get("channelId")),
+										Collectors.counting())));
 
-				Individual individual = _individualDog.fetchIndividual(
-					Long.valueOf(ownerId));
+						for (Map.Entry<String, Map<String, Long>> ownerIdEntry :
+								ownerIdCounts.entrySet()) {
 
-				if (individual == null) {
-					continue;
-				}
+							String ownerId = ownerIdEntry.getKey();
 
-				individual.setActivitiesCounts(
-					_getActivitiesCounts(ownerIdEntry.getValue(), individual));
+							Individual individual =
+								_individualDog.fetchIndividual(
+									Long.valueOf(ownerId));
 
-				Map<Long, Date> lastActivityDatesMap =
-					_convertActivityDatesSetToMap(
-						individual.getLastActivityDates());
+							if (individual == null) {
+								continue;
+							}
 
-				individual.setLastActivityDates(
-					_getLastActivityDates(ownerIdEntry.getValue(), individual));
+							individual.setActivitiesCounts(
+								_getActivitiesCounts(
+									ownerIdEntry.getValue(), individual));
 
-				if (!lastActivityDatesMap.isEmpty()) {
-					individual.setPreviousActivityDates(
-						_getPreviousActivityDates(
-							individual, lastActivityDatesMap));
-				}
+							Map<Long, Date> lastActivityDatesMap =
+								_convertActivityDatesSetToMap(
+									individual.getLastActivityDates());
 
-				_individualDog.updateIndividual(individual);
-			}
+							individual.setLastActivityDates(
+								_getLastActivityDates(
+									ownerIdEntry.getValue(), individual));
+
+							if (!lastActivityDatesMap.isEmpty()) {
+								individual.setPreviousActivityDates(
+									_getPreviousActivityDates(
+										individual, lastActivityDatesMap));
+							}
+
+							_individualDog.updateIndividual(individual);
+						}
+					}
+					catch (Exception exception) {
+						_log.error(exception.getMessage(), exception);
+					}
+					finally {
+						_semaphore.release();
+					}
+
+					if (_log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						_log.info(
+							String.format(
+								"%s processed %d messages in %d ms",
+								clazz.getSimpleName(), messages.size(),
+								System.currentTimeMillis() - start));
+					}
+				},
+				_executorService);
 		}
-		finally {
-			ProjectIdThreadLocal.remove();
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
 		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		IndividualActivityFieldsNanite.class);
+
+	private final ExecutorService _executorService =
+		Executors.newFixedThreadPool(2);
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
@@ -334,5 +410,8 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 	@MessageSubscriber.Autowired(channel = Channel.ACTIVE_INDIVIDUAL_IDS)
 	private MessageSubscriber _messageSubscriber;
+
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
+	private final Semaphore _semaphore = new Semaphore(4, true);
 
 }

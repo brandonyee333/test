@@ -31,12 +31,9 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
-import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
-
-import io.prometheus.client.Counter;
 
 import java.nio.charset.StandardCharsets;
 
@@ -50,10 +47,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -82,73 +86,55 @@ public class IndividualNanite implements Nanite {
 
 	@Override
 	public long getInterval() {
-		return DateUtil.SECOND;
+		return DateUtil.MINUTE;
+	}
+
+	@Override
+	public void run() {
+		try {
+			_run();
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+
+		try {
+			_semaphore.acquire(4);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
+		}
+		finally {
+			_semaphore.release(4);
+		}
+	}
+
+	@PreDestroy
+	private void _destroy() {
+		_reentrantLock.lock();
+
+		_executorService.shutdown();
+
+		try {
+			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+				_executorService.shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
+		}
 	}
 
 	@PostConstruct
-	public void init() {
+	private void _init() {
 		String[] collections = JSONUtil.toStringArray(
 			_elasticsearchIndexManager.getCollectionsJSONArray(
 				WeDeployDataService.OSB_ASAH_CEREBRO_INFO));
 
 		_collections = ArrayUtils.remove(
 			collections, ArrayUtils.indexOf(collections, "user-sessions"));
-	}
-
-	@Override
-	public void run() {
-		List<String> messages = _messageSubscriber.pullMessages(50);
-
-		if (messages.isEmpty()) {
-			return;
-		}
-
-		for (String message : messages) {
-			try {
-				JSONObject messageJSONObject = new JSONObject(message);
-
-				ProjectIdThreadLocal.setProjectId(
-					messageJSONObject.getString("projectId"));
-
-				String emailAddressHashed = messageJSONObject.getString(
-					"emailAddressHashed");
-
-				if ((emailAddressHashed == null) ||
-					MessageDigest.isEqual(
-						emailAddressHashed.getBytes(StandardCharsets.UTF_8),
-						_BLANK_EMAIL_HASH.getBytes(StandardCharsets.UTF_8))) {
-
-					continue;
-				}
-
-				if (!_suppressionDog.isSuppressed(null, emailAddressHashed)) {
-					Long channelId = JSONUtil.optLong(
-						null, messageJSONObject, "channelId");
-
-					Individual individual = _updateIndividual(
-						channelId, messageJSONObject.getLong("dataSourceId"),
-						emailAddressHashed,
-						messageJSONObject.getString("userId"));
-
-					_updatePagesAndAssets(
-						channelId, messageJSONObject.getLong("dataSourceId"),
-						individual, messageJSONObject.getString("userId"));
-
-					_updateUserSessions(
-						messageJSONObject.getLong("dataSourceId"),
-						individual.getId(),
-						messageJSONObject.getString("userId"));
-				}
-
-				_identityMessagesCount.inc();
-			}
-			catch (Exception exception) {
-				_log.error(exception.getMessage(), exception);
-			}
-			finally {
-				ProjectIdThreadLocal.remove();
-			}
-		}
 	}
 
 	private Set<Individual.ActivitiesCount> _mergeActivitiesCounts(
@@ -274,6 +260,129 @@ public class IndividualNanite implements Nanite {
 
 		_individualDog.deleteIndividual(
 			new Date(), anonymousIndividual.getId());
+	}
+
+	private void _run() throws Exception {
+		while (true) {
+			try {
+				_reentrantLock.lock();
+
+				long start = System.currentTimeMillis();
+
+				List<String> messages = _messageSubscriber.pullMessages(50);
+
+				if (messages.isEmpty()) {
+					return;
+				}
+
+				Stream<String> stream = messages.stream();
+
+				stream.map(
+					JSONObject::new
+				).collect(
+					Collectors.groupingBy(
+						jsonObject -> jsonObject.getString("projectId"))
+				).forEach(
+					this::_run
+				);
+
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
+
+					_log.info(
+						String.format(
+							"%s dispatched %d messages in %d ms",
+							clazz.getSimpleName(), messages.size(),
+							System.currentTimeMillis() - start));
+				}
+			}
+			finally {
+				_reentrantLock.unlock();
+			}
+		}
+	}
+
+	private void _run(String projectId, List<JSONObject> messageJSONObjects) {
+		try {
+			_semaphore.acquire();
+
+			CompletableFuture.runAsync(
+				() -> {
+					long start = System.currentTimeMillis();
+
+					try {
+						ProjectIdThreadLocal.setProjectId(projectId);
+
+						for (JSONObject messageJSONObject :
+								messageJSONObjects) {
+
+							try {
+								String emailAddressHashed =
+									messageJSONObject.getString(
+										"emailAddressHashed");
+
+								if ((emailAddressHashed == null) ||
+									MessageDigest.isEqual(
+										emailAddressHashed.getBytes(
+											StandardCharsets.UTF_8),
+										_BLANK_EMAIL_HASH.getBytes(
+											StandardCharsets.UTF_8))) {
+
+									continue;
+								}
+
+								if (!_suppressionDog.isSuppressed(
+										null, emailAddressHashed)) {
+
+									Long channelId = JSONUtil.optLong(
+										null, messageJSONObject, "channelId");
+
+									Individual individual = _updateIndividual(
+										channelId,
+										messageJSONObject.getLong(
+											"dataSourceId"),
+										emailAddressHashed,
+										messageJSONObject.getString("userId"));
+
+									_updatePagesAndAssets(
+										channelId,
+										messageJSONObject.getLong(
+											"dataSourceId"),
+										individual,
+										messageJSONObject.getString("userId"));
+
+									_updateUserSessions(
+										messageJSONObject.getLong(
+											"dataSourceId"),
+										individual.getId(),
+										messageJSONObject.getString("userId"));
+								}
+							}
+							catch (Exception exception) {
+								_log.error(exception.getMessage(), exception);
+							}
+						}
+					}
+					finally {
+						_semaphore.release();
+					}
+
+					if (_log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						_log.info(
+							String.format(
+								"%s processed %d messages in %d ms",
+								clazz.getSimpleName(),
+								messageJSONObjects.size(),
+								System.currentTimeMillis() - start));
+					}
+				},
+				_executorService);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
+		}
 	}
 
 	private Map<Long, Long> _toMap(
@@ -428,11 +537,6 @@ public class IndividualNanite implements Nanite {
 
 	private static final Log _log = LogFactory.getLog(IndividualNanite.class);
 
-	private static final Counter _identityMessagesCount =
-		PrometheusUtil.counter(
-			"stream_curator_identity_messages_count",
-			"The number of identity messages processed");
-
 	@Autowired
 	private ActivityGroupDog _activityGroupDog;
 
@@ -446,6 +550,9 @@ public class IndividualNanite implements Nanite {
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
+
+	private final ExecutorService _executorService =
+		Executors.newFixedThreadPool(2);
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
@@ -462,8 +569,12 @@ public class IndividualNanite implements Nanite {
 	@MessageSubscriber.Autowired(channel = Channel.IDENTITY_MESSAGE)
 	private MessageSubscriber _messageSubscriber;
 
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
+
 	@Autowired
 	private SegmentDog _segmentDog;
+
+	private final Semaphore _semaphore = new Semaphore(4, true);
 
 	@Autowired
 	private SuppressionDog _suppressionDog;

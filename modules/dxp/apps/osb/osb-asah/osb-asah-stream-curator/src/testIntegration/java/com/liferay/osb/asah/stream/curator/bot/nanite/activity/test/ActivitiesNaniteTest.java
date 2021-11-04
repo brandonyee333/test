@@ -44,6 +44,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,6 +69,11 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 		dataSource.setId(1L);
 
 		_dataSourceRepository.save(dataSource);
+	}
+
+	@After
+	public void tearDown() {
+		_dataSourceRepository.deleteById(1L);
 	}
 
 	@ElasticsearchIndex(

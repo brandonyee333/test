@@ -52,6 +52,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.locks.ReentrantLock;
+
+import javax.annotation.PreDestroy;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -70,32 +73,46 @@ import org.springframework.stereotype.Component;
 public class AnalyticsEventsMessageProcessor {
 
 	public void processQueuedMessages() throws Exception {
-		while (true) {
-			List<AnalyticsEventsMessage> analyticsEventsMessages =
-				_messageSubscriber.pullMessages(
-					50, AnalyticsEventsMessage::toAnalyticsEventsMessage);
+		try {
+			while (true) {
+				try {
+					_reentrantLock.lock();
 
-			if (analyticsEventsMessages.isEmpty()) {
-				break;
+					List<AnalyticsEventsMessage> analyticsEventsMessages =
+						_messageSubscriber.pullMessages(
+							50,
+							AnalyticsEventsMessage::toAnalyticsEventsMessage);
+
+					if (analyticsEventsMessages.isEmpty()) {
+						break;
+					}
+
+					for (AnalyticsEventsMessage analyticsEventsMessage :
+							analyticsEventsMessages) {
+
+						ProjectIdThreadLocal.forProject(
+							analyticsEventsMessage.getProjectId(),
+							() -> {
+								try {
+									_processMessage(analyticsEventsMessage);
+								}
+								catch (Exception exception) {
+									_log.error(
+										"Unable to process analytics events " +
+											"message " +
+												analyticsEventsMessage.toJSON(),
+										exception);
+								}
+							});
+					}
+				}
+				finally {
+					_reentrantLock.unlock();
+				}
 			}
-
-			for (AnalyticsEventsMessage analyticsEventsMessage :
-					analyticsEventsMessages) {
-
-				ProjectIdThreadLocal.forProject(
-					analyticsEventsMessage.getProjectId(),
-					() -> {
-						try {
-							_processMessage(analyticsEventsMessage);
-						}
-						catch (Exception exception) {
-							_log.error(
-								"Unable to process analytics events message " +
-									analyticsEventsMessage.toJSON(),
-								exception);
-						}
-					});
-			}
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 	}
 
@@ -128,6 +145,11 @@ public class AnalyticsEventsMessageProcessor {
 		}
 
 		return individual;
+	}
+
+	@PreDestroy
+	private void _destroy() {
+		_reentrantLock.lock();
 	}
 
 	private String _generateAnalyticsEventId(
@@ -418,6 +440,8 @@ public class AnalyticsEventsMessageProcessor {
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_MESSAGE)
 	private MessageSubscriber _messageSubscriber;
+
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
 
 	@Autowired
 	private SegmentDog _segmentDog;

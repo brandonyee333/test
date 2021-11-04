@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -29,7 +30,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
+
+import javax.annotation.PreDestroy;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.logging.Log;
@@ -57,11 +66,38 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 	@Override
 	public void run() {
 		try {
-			ProjectIdThreadLocal.forProjects(
-				_projectDog.getProjects(), this::_process);
+			_run();
 		}
 		catch (Exception exception) {
-			_log.error("Unable to process nanite", exception);
+			_log.error(exception, exception);
+		}
+
+		try {
+			_semaphore.acquire(4);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
+		}
+		finally {
+			_semaphore.release(4);
+		}
+	}
+
+	@PreDestroy
+	private void _destroy() {
+		_reentrantLock.lock();
+
+		_executorService.shutdown();
+
+		try {
+			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+				_executorService.shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
 		}
 	}
 
@@ -120,38 +156,6 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 			ProjectIdThreadLocal.getProjectId(), false);
 	}
 
-	private void _process() {
-		if (!_dataSourceDog.isAnalyticsConfigured()) {
-			if (_isAnalyticsConfigured()) {
-				_segmentDog.updateSegments(0L);
-			}
-
-			_setAnalyticsConfigured(false);
-
-			return;
-		}
-
-		_setAnalyticsConfigured(true);
-
-		int page = 0;
-
-		List<Segment> segments = _segmentDog.getSegments(
-			"Account: ", page, 500);
-
-		while (!segments.isEmpty()) {
-			for (Segment segment : segments) {
-				try {
-					_process(segment);
-				}
-				catch (Exception exception) {
-					_log.error(exception, exception);
-				}
-			}
-
-			segments = _segmentDog.getSegments("Account: ", ++page, 500);
-		}
-	}
-
 	private void _process(Segment segment) {
 		if (segment.getActivitiesCount() == null) {
 			segment.setActivitiesCount(0L);
@@ -183,6 +187,67 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 		_segmentDog.replaceSegment(segment);
 	}
 
+	private void _run() {
+		for (Project project : _projectDog.getProjects()) {
+			try {
+				_reentrantLock.lock();
+
+				_semaphore.acquire();
+
+				CompletableFuture.runAsync(
+					() -> {
+						try {
+							ProjectIdThreadLocal.setProjectId(project.getId());
+
+							if (!_dataSourceDog.isAnalyticsConfigured()) {
+								if (_isAnalyticsConfigured()) {
+									_segmentDog.updateSegments(0L);
+								}
+
+								_setAnalyticsConfigured(false);
+
+								return;
+							}
+
+							_setAnalyticsConfigured(true);
+
+							int page = 0;
+
+							List<Segment> segments = _segmentDog.getSegments(
+								"Account: ", page, 500);
+
+							while (!segments.isEmpty()) {
+								for (Segment segment : segments) {
+									try {
+										_process(segment);
+									}
+									catch (Exception exception) {
+										_log.error(exception, exception);
+									}
+								}
+
+								segments = _segmentDog.getSegments(
+									"Account: ", ++page, 500);
+							}
+						}
+						catch (Exception exception) {
+							_log.error(exception.getMessage(), exception);
+						}
+						finally {
+							_semaphore.release();
+						}
+					},
+					_executorService);
+			}
+			catch (InterruptedException interruptedException) {
+				_log.error(interruptedException, interruptedException);
+			}
+			finally {
+				_reentrantLock.unlock();
+			}
+		}
+	}
+
 	private void _setAnalyticsConfigured(boolean analyticsConfigured) {
 		_analyticsConfigured.put(
 			ProjectIdThreadLocal.getProjectId(), analyticsConfigured);
@@ -196,13 +261,20 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 	@Autowired
 	private DataSourceDog _dataSourceDog;
 
+	private final ExecutorService _executorService =
+		Executors.newFixedThreadPool(2);
+
 	@Autowired
 	private IndividualDog _individualDog;
 
 	@Autowired
 	private ProjectDog _projectDog;
 
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
+
 	@Autowired
 	private SegmentDog _segmentDog;
+
+	private final Semaphore _semaphore = new Semaphore(4, true);
 
 }
