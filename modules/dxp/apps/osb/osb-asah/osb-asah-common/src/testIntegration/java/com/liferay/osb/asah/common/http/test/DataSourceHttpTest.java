@@ -364,9 +364,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		segment = _segmentDog.getSegment(segment.getId());
 
 		Assertions.assertEquals(
+			"DISABLED", segment.getState(),
 			"Individual dynamic segment with properties was not disabled " +
-				"when data source was deleted",
-			"DISABLED", segment.getState());
+				"when data source was deleted");
 	}
 
 	@Test
@@ -392,9 +392,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		segment = _segmentDog.getSegment(segment.getId());
 
 		Assertions.assertEquals(
+			"DISABLED", segment.getState(),
 			"Individual dynamic segment with assets was not disabled when " +
-				"data source was deleted",
-			"DISABLED", segment.getState());
+				"data source was deleted");
 	}
 
 	@Test
