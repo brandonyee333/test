@@ -20,13 +20,11 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.rest.response.function.InterestsHistogramTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -42,7 +40,6 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.jetbrains.annotations.NotNull;
@@ -122,13 +119,14 @@ public class InterestsRestController
 			@RequestParam(defaultValue = "20") int size)
 		throws Exception {
 
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString);
-
-		return toTransformationGetResponse(
-			apply, "interests", page, queryBuilder, size, "dateRecorded",
-			new InterestsHistogramTransformationJSONArrayFunction(true),
-			"interest-transformations");
+		return JSONUtil.put(
+			"_embedded",
+			JSONUtil.put(
+				"interest-transformations",
+				interestDog.getTransformations(apply, filterString, page, size))
+		).put(
+			"page", getPageJSONObject(page, size, size)
+		).toString();
 	}
 
 	private boolean _containsPageVisited(String expand) {
