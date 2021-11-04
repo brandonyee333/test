@@ -39,9 +39,17 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 		Map<String, Set<ProductEntry>> accountEntryProductEntriesMap = new HashMap<String, Set<ProductEntry>>();
 		Set<String> partnerAccountKeys = new HashSet<String>();
 
-		String filter = "customerContactUuids/any(s:s eq '" + user.getUuid() + "') and state eq 'active' and (property_type eq 'primary' or contains(name, 'Commerce Subscription') or contains(name, 'DXP Cloud Subscription') or contains(name, 'Partnership'))";
+		StringBundler sb = new StringBundler(7);
 
-		List<ProductPurchaseView> productPurchaseViews = productPurchaseViewWebService.getProductPurchaseViews(StringPool.BLANK, filter, 1, 1000, StringPool.BLANK);
+		sb.append("customerContactUuids/any(s:s eq '");
+		sb.append(user.getUuid());
+		sb.append("') and state eq 'active' and (property_type eq 'primary' ");
+		sb.append("or contains(name, 'Commerce for DXP Cloud') ");
+		sb.append("or contains(name, 'Commerce Subscription') ");
+		sb.append("or contains(name, 'DXP Cloud Subscription') ");
+		sb.append("or contains(name, 'Partnership'))");
+
+		List<ProductPurchaseView> productPurchaseViews = productPurchaseViewWebService.getProductPurchaseViews(StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
 
 		for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
 			ProductPurchase[] productPurchases = productPurchaseView.getProductPurchases();

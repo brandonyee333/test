@@ -81,14 +81,15 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		try {
 			User user = getUser();
 
-			StringBundler sb = new StringBundler(8);
+			StringBundler sb = new StringBundler(9);
 
 			sb.append("accountKey eq '");
 			sb.append(accountEntry.getKoroneikiAccountKey());
 			sb.append("' and customerContactUuids/any(s:s eq '");
 			sb.append(user.getUuid());
 			sb.append("') and state eq 'active' and (property_type eq ");
-			sb.append("'primary' or contains(name, 'Commerce Subscription') ");
+			sb.append("'primary' or contains(name, 'Commerce for DXP Cloud') ");
+			sb.append("or contains(name, 'Commerce Subscription') ");
 			sb.append("or contains(name, 'DXP Cloud Subscription') ");
 			sb.append("or contains(name, 'Partnership'))");
 
@@ -107,7 +108,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 					_productEntryLocalService.getProductEntryByKoroneikiKey(
 						product.getKey());
 
-				if ((curProductEntry.isCommerceSubscription() &&
+				if (((curProductEntry.isCommerceForDXPCloud() ||
+					  curProductEntry.isCommerceSubscription()) &&
 					 productEntry.isCommerceSubscription()) ||
 					((curProductEntry.isDXP() ||
 					  curProductEntry.isDXPCloud()) &&

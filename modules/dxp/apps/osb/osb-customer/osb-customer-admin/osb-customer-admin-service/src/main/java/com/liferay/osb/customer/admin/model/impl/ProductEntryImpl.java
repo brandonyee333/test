@@ -145,6 +145,16 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		return false;
 	}
 
+	public boolean isCommerceForDXPCloud() {
+		String name = getName();
+
+		if (name.startsWith("Commerce for DXP Cloud")) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isCommerceSubscription() {
 		String name = getName();
 
