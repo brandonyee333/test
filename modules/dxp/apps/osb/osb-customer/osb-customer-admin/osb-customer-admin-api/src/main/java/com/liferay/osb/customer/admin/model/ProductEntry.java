@@ -98,6 +98,8 @@ public interface ProductEntry extends PersistedModel, ProductEntryModel {
 
 	public boolean isCommerce();
 
+	public boolean isCommerceForDXPCloud();
+
 	public boolean isCommerceSubscription();
 
 	public boolean isDeveloperTools();

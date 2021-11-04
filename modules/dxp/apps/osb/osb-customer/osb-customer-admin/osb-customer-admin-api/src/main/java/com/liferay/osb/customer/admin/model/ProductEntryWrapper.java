@@ -363,6 +363,11 @@ public class ProductEntryWrapper
 	}
 
 	@Override
+	public boolean isCommerceForDXPCloud() {
+		return _productEntry.isCommerceForDXPCloud();
+	}
+
+	@Override
 	public boolean isCommerceSubscription() {
 		return _productEntry.isCommerceSubscription();
 	}
