@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.ArrayList;
@@ -33,6 +34,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -57,30 +61,64 @@ public class EventAnalysisDog {
 
 		EventAnalysis eventAnalysis = new EventAnalysis();
 
-		eventAnalysis.setCount(
-			_getTotalPageCount(
-				channelId, eventAnalysisBreakdowns, eventAnalysisFilters,
-				eventDefinitionId, timeRange));
 		eventAnalysis.setPage(page);
-		eventAnalysis.setValue(
-			_getAnalysisCount(
-				analysisType, channelId, eventAnalysisFilters,
-				eventDefinitionId, timeRange));
+
+		String projectId = ProjectIdThreadLocal.getProjectId();
+
+		CompletableFuture<Void> completableFuture = CompletableFuture.runAsync(
+			() -> {
+				ProjectIdThreadLocal.setProjectId(projectId);
+
+				eventAnalysis.setValue(
+					_getAnalysisCount(
+						analysisType, channelId, eventAnalysisFilters,
+						eventDefinitionId, timeRange));
+			},
+			_executorService);
 
 		if (compareToPrevious) {
-			eventAnalysis.setPreviousValue(
-				_getAnalysisCount(
-					analysisType, channelId, eventAnalysisFilters,
-					eventDefinitionId, timeRange.getPreviousTimeRange()));
+			completableFuture = CompletableFuture.allOf(
+				completableFuture,
+				CompletableFuture.runAsync(
+					() -> {
+						ProjectIdThreadLocal.setProjectId(projectId);
+
+						eventAnalysis.setPreviousValue(
+							_getAnalysisCount(
+								analysisType, channelId, eventAnalysisFilters,
+								eventDefinitionId,
+								timeRange.getPreviousTimeRange()));
+					},
+					_executorService));
 		}
 
-		eventAnalysis.setBreakdownItems(
-			_getBreakdownItems(
-				analysisType, channelId, compareToPrevious, 0,
-				eventAnalysis.getValue(), eventAnalysisBreakdowns,
-				eventAnalysisFilters, eventDefinitionId,
-				PageRequest.of(page, size), null,
-				eventAnalysis.getPreviousValue(), timeRange));
+		completableFuture = CompletableFuture.allOf(
+			completableFuture.thenRunAsync(
+				() -> {
+					ProjectIdThreadLocal.setProjectId(projectId);
+
+					eventAnalysis.setBreakdownItems(
+						_getBreakdownItems(
+							analysisType, channelId, compareToPrevious, 0,
+							eventAnalysis.getValue(), eventAnalysisBreakdowns,
+							eventAnalysisFilters, eventDefinitionId,
+							PageRequest.of(page, size), null,
+							eventAnalysis.getPreviousValue(), timeRange));
+				},
+				_executorService),
+			CompletableFuture.runAsync(
+				() -> {
+					ProjectIdThreadLocal.setProjectId(projectId);
+
+					eventAnalysis.setCount(
+						_getTotalPageCount(
+							channelId, eventAnalysisBreakdowns,
+							eventAnalysisFilters, eventDefinitionId,
+							timeRange));
+				},
+				_executorService));
+
+		completableFuture.join();
 
 		return eventAnalysis;
 	}
@@ -389,6 +427,9 @@ public class EventAnalysisDog {
 
 	@Autowired
 	private EventRepository _eventRepository;
+
+	private final ExecutorService _executorService =
+		Executors.newFixedThreadPool(4);
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
