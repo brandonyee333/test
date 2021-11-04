@@ -44,6 +44,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PreDestroy;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.logging.Log;
@@ -159,6 +161,24 @@ public class SalesforceConfigurableBot {
 			nanite, clazz.getName() + "#" + configuration.getDataSourceId());
 
 		nanite.run();
+	}
+
+	@PreDestroy
+	private void _destroy() {
+		_scheduledExecutorService.shutdown();
+
+		try {
+			if (!_scheduledExecutorService.awaitTermination(
+					1, TimeUnit.MINUTES)) {
+
+				_scheduledExecutorService.shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
+		}
 	}
 
 	private void _monitorThreadPool() {

@@ -24,6 +24,11 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PreDestroy;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
@@ -80,6 +85,41 @@ public class AsahTaskScheduler {
 
 		scheduledFuture.cancel(false);
 	}
+
+	@PreDestroy
+	private void _destroy() {
+		_threadPoolTaskExecutor.shutdown();
+		_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.shutdown();
+
+		try {
+			if (!_threadPoolTaskExecutor.awaitTermination(
+					1, TimeUnit.MINUTES)) {
+
+				_threadPoolTaskExecutor.shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
+		}
+
+		try {
+			if (!_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.
+					awaitTermination(1, TimeUnit.MINUTES)) {
+
+				_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.
+					shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
+		}
+	}
+
+	private static final Log _log = LogFactory.getLog(AsahTaskScheduler.class);
 
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
 		new HashMap<>();

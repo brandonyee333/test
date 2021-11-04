@@ -16,6 +16,11 @@ package com.liferay.osb.asah.common.messaging.impl;
 
 import io.grpc.ManagedChannel;
 
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * @author Marcellus Tavares
  */
@@ -32,12 +37,26 @@ public class PubSubClient<T extends AutoCloseable> implements AutoCloseable {
 
 		if (_managedChannel != null) {
 			_managedChannel.shutdown();
+
+			try {
+				if (!_managedChannel.awaitTermination(1, TimeUnit.MINUTES)) {
+					_managedChannel.shutdownNow();
+				}
+			}
+			catch (InterruptedException interruptedException) {
+				_log.error(
+					"Interrupted while waiting for termination of managed " +
+						"channel",
+					interruptedException);
+			}
 		}
 	}
 
 	public T get() {
 		return _client;
 	}
+
+	private static final Log _log = LogFactory.getLog(PubSubClient.class);
 
 	private final T _client;
 	private final ManagedChannel _managedChannel;

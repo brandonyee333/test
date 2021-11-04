@@ -198,7 +198,9 @@ public class GoogleStorageArchiver {
 		_executorService.shutdown();
 
 		try {
-			_executorService.awaitTermination(1, TimeUnit.MINUTES);
+			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+				_executorService.shutdownNow();
+			}
 		}
 		catch (InterruptedException interruptedException) {
 			_log.error(

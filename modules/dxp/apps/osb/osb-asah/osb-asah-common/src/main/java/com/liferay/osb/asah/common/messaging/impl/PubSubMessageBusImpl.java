@@ -40,7 +40,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -240,12 +246,79 @@ public class PubSubMessageBusImpl implements MessageBus {
 
 	@PreDestroy
 	private void _destroy() {
+		ExecutorService executorService = Executors.newFixedThreadPool(5);
+
+		Semaphore semaphore = new Semaphore(10, true);
+
 		for (Subscriber subscriber : _messageListeners.values()) {
-			subscriber.stopAsync();
+			try {
+				semaphore.acquire();
+
+				CompletableFuture.runAsync(
+					() -> {
+						subscriber.stopAsync();
+
+						try {
+							subscriber.awaitTerminated(1, TimeUnit.MINUTES);
+						}
+						catch (TimeoutException timeoutException) {
+							_log.error(
+								"Timeout while waiting for termination of " +
+									"subscriber",
+								timeoutException);
+						}
+						finally {
+							semaphore.release();
+						}
+					},
+					executorService);
+			}
+			catch (InterruptedException interruptedException) {
+				_log.error(interruptedException, interruptedException);
+			}
 		}
 
 		for (Publisher publisher : _channels.values()) {
-			publisher.shutdown();
+			try {
+				semaphore.acquire();
+
+				CompletableFuture.runAsync(
+					() -> {
+						publisher.shutdown();
+
+						try {
+							publisher.awaitTermination(1, TimeUnit.MINUTES);
+						}
+						catch (InterruptedException interruptedException) {
+							_log.error(
+								"Interrupted while waiting for termination " +
+									"of publisher",
+								interruptedException);
+						}
+						finally {
+							semaphore.release();
+						}
+					},
+					executorService);
+			}
+			catch (InterruptedException interruptedException) {
+				_log.error(interruptedException, interruptedException);
+			}
+		}
+
+		try {
+			semaphore.acquire(10);
+
+			executorService.shutdown();
+
+			if (!executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+				executorService.shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
 		}
 	}
 
