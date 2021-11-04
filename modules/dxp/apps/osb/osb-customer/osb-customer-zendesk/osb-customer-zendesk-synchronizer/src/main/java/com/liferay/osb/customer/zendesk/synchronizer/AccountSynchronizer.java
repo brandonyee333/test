@@ -334,7 +334,8 @@ public class AccountSynchronizer {
 				for (ContactRole contactRole : contactRoles) {
 					String name = contactRole.getName();
 
-					if (name.equals(
+					if (name.equals(ContactRoleConstants.NAME_ADMINISTRATOR) ||
+						name.equals(
 							ContactRoleConstants.NAME_SUPPORT_DEVELOPER)) {
 
 						User curUser =

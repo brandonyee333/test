@@ -19,6 +19,8 @@ package com.liferay.osb.customer.koroneiki.constants;
  */
 public class ContactRoleConstants {
 
+	public static final String NAME_ADMINISTRATOR = "Administrator";
+
 	public static final String NAME_ADVOCACY_SPECIALIST = "Advocacy Specialist";
 
 	public static final String NAME_CUSTOMER_SUCCESS = "Customer Success";
@@ -43,7 +45,7 @@ public class ContactRoleConstants {
 	};
 
 	public static final String[] SUPPORT_CONTACT_ROLES = {
-		NAME_SUPPORT_DEVELOPER, NAME_SUPPORT_WATCHER,
+		NAME_ADMINISTRATOR, NAME_SUPPORT_DEVELOPER, NAME_SUPPORT_WATCHER,
 		NAME_SUPPORT_CLOSED_WATCHER
 	};
 
