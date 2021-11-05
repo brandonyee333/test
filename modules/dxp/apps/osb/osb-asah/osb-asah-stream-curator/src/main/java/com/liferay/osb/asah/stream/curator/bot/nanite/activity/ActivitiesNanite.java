@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
@@ -118,32 +119,42 @@ public class ActivitiesNanite implements Nanite {
 	}
 
 	private ActivityGroup _addActivityGroup(AnalyticsEvent analyticsEvent) {
-		String channelId = analyticsEvent.getChannelId();
-		String dataSourceId = analyticsEvent.getDataSourceId();
-
-		LocalDateTime eventLocalDateTime = DateUtil.toLocalDateTime(
-			analyticsEvent.getEventDate(), _timeZoneDog.getZoneId());
-
-		Date dayDate = DateUtil.toUTCDate(
-			eventLocalDateTime.with(LocalTime.MIDNIGHT));
-
 		String userId = analyticsEvent.getUserId();
 
-		ActivityGroup activityGroup = _activityGroupDog.fetchActivityGroup(
-			"BROWSE", Long.valueOf(channelId), Long.valueOf(dataSourceId),
-			dayDate, userId);
+		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+			getClass(), ProjectIdThreadLocal.getProjectId());
 
-		if (activityGroup != null) {
-			return _activityGroupDog.updatedActivityGroup(
-				activityGroup.getId(), analyticsEvent.getEventDate(),
-				eventLocalDateTime);
+		try {
+			reentrantLock.lock();
+
+			String channelId = analyticsEvent.getChannelId();
+			String dataSourceId = analyticsEvent.getDataSourceId();
+
+			LocalDateTime eventLocalDateTime = DateUtil.toLocalDateTime(
+				analyticsEvent.getEventDate(), _timeZoneDog.getZoneId());
+
+			Date dayDate = DateUtil.toUTCDate(
+				eventLocalDateTime.with(LocalTime.MIDNIGHT));
+
+			ActivityGroup activityGroup = _activityGroupDog.fetchActivityGroup(
+				"BROWSE", Long.valueOf(channelId), Long.valueOf(dataSourceId),
+				dayDate, userId);
+
+			if (activityGroup != null) {
+				return _activityGroupDog.updatedActivityGroup(
+					activityGroup.getId(), analyticsEvent.getEventDate(),
+					eventLocalDateTime);
+			}
+
+			return _activityGroupDog.addActivityGroup(
+				"BROWSE", Long.valueOf(channelId), Long.valueOf(dataSourceId),
+				dayDate, analyticsEvent.getEventDate(), eventLocalDateTime,
+				_getOwnerId(analyticsEvent), analyticsEvent.getEventDate(),
+				eventLocalDateTime, userId);
 		}
-
-		return _activityGroupDog.addActivityGroup(
-			"BROWSE", Long.valueOf(channelId), Long.valueOf(dataSourceId),
-			dayDate, analyticsEvent.getEventDate(), eventLocalDateTime,
-			_getOwnerId(analyticsEvent), analyticsEvent.getEventDate(),
-			eventLocalDateTime, userId);
+		finally {
+			reentrantLock.unlock();
+		}
 	}
 
 	private void _addActivityJSONArray(
@@ -296,24 +307,49 @@ public class ActivitiesNanite implements Nanite {
 		AnalyticsEvent analyticsEvent, String dataSourceAssetPK,
 		JSONObject eventPropertiesJSONObject) {
 
-		Asset asset = _assetDog.fetchAsset(
-			dataSourceAssetPK, Long.valueOf(analyticsEvent.getDataSourceId()));
+		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+			getClass(), ProjectIdThreadLocal.getProjectId());
 
-		if (asset != null) {
-			Set<Long> channelIds = asset.getChannelIds();
+		try {
+			reentrantLock.lock();
 
-			Long analyticsEventChannelId = Long.valueOf(
-				analyticsEvent.getChannelId());
+			Asset asset = _assetDog.fetchAsset(
+				dataSourceAssetPK,
+				Long.valueOf(analyticsEvent.getDataSourceId()));
 
-			boolean updated = false;
+			if (asset != null) {
+				Set<Long> channelIds = asset.getChannelIds();
 
-			if (channelIds.add(analyticsEventChannelId)) {
-				asset.setChannelIds(channelIds);
+				Long analyticsEventChannelId = Long.valueOf(
+					analyticsEvent.getChannelId());
 
-				updated = true;
-			}
+				boolean updated = false;
 
-			if (Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
+				if (channelIds.add(analyticsEventChannelId)) {
+					asset.setChannelIds(channelIds);
+
+					updated = true;
+				}
+
+				if (Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
+					if (updated) {
+						_assetDog.updateAsset(asset);
+					}
+
+					return asset;
+				}
+
+				String title = _getEventPropertiesTitle(
+					eventPropertiesJSONObject);
+
+				if (StringUtils.isNotEmpty(title) &&
+					!Objects.equals(asset.getTitle(), title)) {
+
+					asset.setTitle(title);
+
+					updated = true;
+				}
+
 				if (updated) {
 					_assetDog.updateAsset(asset);
 				}
@@ -321,45 +357,34 @@ public class ActivitiesNanite implements Nanite {
 				return asset;
 			}
 
-			String title = _getEventPropertiesTitle(eventPropertiesJSONObject);
+			if (Objects.equals(analyticsEvent.getApplicationId(), "Comment")) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to get asset for comment analytics event " +
+							"with data source PK " + dataSourceAssetPK +
+								" and data source ID " +
+									analyticsEvent.getDataSourceId());
+				}
 
-			if (StringUtils.isNotEmpty(title) &&
-				!Objects.equals(asset.getTitle(), title)) {
-
-				asset.setTitle(title);
-
-				updated = true;
+				return null;
 			}
 
-			if (updated) {
-				_assetDog.updateAsset(asset);
-			}
+			Map<String, String> context = analyticsEvent.getContext();
 
-			return asset;
+			return _assetDog.addAsset(
+				_getAssetKeywords(analyticsEvent.getApplicationId(), context),
+				analyticsEvent.getApplicationId(),
+				MapUtil.getString(context, "canonicalUrl"),
+				SetUtil.of(Long.valueOf(analyticsEvent.getChannelId())),
+				dataSourceAssetPK,
+				Long.valueOf(analyticsEvent.getDataSourceId()),
+				MapUtil.getString(context, "description"),
+				_getTitle(analyticsEvent, eventPropertiesJSONObject),
+				MapUtil.getString(context, "url"));
 		}
-
-		if (Objects.equals(analyticsEvent.getApplicationId(), "Comment")) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Unable to get asset for comment analytics event with " +
-						"data source PK " + dataSourceAssetPK + " and data " +
-							"source ID " + analyticsEvent.getDataSourceId());
-			}
-
-			return null;
+		finally {
+			reentrantLock.unlock();
 		}
-
-		Map<String, String> context = analyticsEvent.getContext();
-
-		return _assetDog.addAsset(
-			_getAssetKeywords(analyticsEvent.getApplicationId(), context),
-			analyticsEvent.getApplicationId(),
-			MapUtil.getString(context, "canonicalUrl"),
-			SetUtil.of(Long.valueOf(analyticsEvent.getChannelId())),
-			dataSourceAssetPK, Long.valueOf(analyticsEvent.getDataSourceId()),
-			MapUtil.getString(context, "description"),
-			_getTitle(analyticsEvent, eventPropertiesJSONObject),
-			MapUtil.getString(context, "url"));
 	}
 
 	private Set<AssetKeyword> _getAssetKeywords(

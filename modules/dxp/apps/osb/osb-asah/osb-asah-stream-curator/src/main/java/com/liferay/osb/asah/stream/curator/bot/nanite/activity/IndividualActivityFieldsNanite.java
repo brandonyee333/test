@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
+import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -343,33 +344,44 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 							String ownerId = ownerIdEntry.getKey();
 
-							Individual individual =
-								_individualDog.fetchIndividual(
-									Long.valueOf(ownerId));
+							ReentrantLock reentrantLock =
+								KeyReentrantLock.getReentrantLock(
+									getClass(), ownerId);
 
-							if (individual == null) {
-								continue;
+							try {
+								reentrantLock.lock();
+
+								Individual individual =
+									_individualDog.fetchIndividual(
+										Long.valueOf(ownerId));
+
+								if (individual == null) {
+									return;
+								}
+
+								individual.setActivitiesCounts(
+									_getActivitiesCounts(
+										ownerIdEntry.getValue(), individual));
+
+								Map<Long, Date> lastActivityDatesMap =
+									_convertActivityDatesSetToMap(
+										individual.getLastActivityDates());
+
+								individual.setLastActivityDates(
+									_getLastActivityDates(
+										ownerIdEntry.getValue(), individual));
+
+								if (!lastActivityDatesMap.isEmpty()) {
+									individual.setPreviousActivityDates(
+										_getPreviousActivityDates(
+											individual, lastActivityDatesMap));
+								}
+
+								_individualDog.updateIndividual(individual);
 							}
-
-							individual.setActivitiesCounts(
-								_getActivitiesCounts(
-									ownerIdEntry.getValue(), individual));
-
-							Map<Long, Date> lastActivityDatesMap =
-								_convertActivityDatesSetToMap(
-									individual.getLastActivityDates());
-
-							individual.setLastActivityDates(
-								_getLastActivityDates(
-									ownerIdEntry.getValue(), individual));
-
-							if (!lastActivityDatesMap.isEmpty()) {
-								individual.setPreviousActivityDates(
-									_getPreviousActivityDates(
-										individual, lastActivityDatesMap));
+							finally {
+								reentrantLock.unlock();
 							}
-
-							_individualDog.updateIndividual(individual);
 						}
 					}
 					catch (Exception exception) {

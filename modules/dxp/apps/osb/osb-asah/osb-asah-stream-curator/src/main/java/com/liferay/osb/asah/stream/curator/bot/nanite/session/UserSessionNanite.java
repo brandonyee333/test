@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.Acquisition;
@@ -381,66 +382,76 @@ public class UserSessionNanite implements Nanite {
 		Semaphore semaphore, List<AnalyticsEvent> sessionAnalyticsEvents,
 		String userId) {
 
-		sessionAnalyticsEvents.sort(
-			Comparator.comparing(AnalyticsEvent::getEventDate));
+		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+			getClass(), userId);
 
-		AnalyticsEvents analyticsEvents = new AnalyticsEvents(
-			sessionAnalyticsEvents);
+		try {
+			reentrantLock.lock();
+			sessionAnalyticsEvents.sort(
+				Comparator.comparing(AnalyticsEvent::getEventDate));
 
-		JSONObject userSessionJSONObject = _getUserSession(
-			analyticsEvents.getFirstAnalyticsEventDate(), userId);
+			AnalyticsEvents analyticsEvents = new AnalyticsEvents(
+				sessionAnalyticsEvents);
 
-		if (userSessionJSONObject == null) {
-			BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("completed", false)
-			).mustNot(
-				BoolQueryBuilderUtil.should(
-					QueryBuilders.rangeQuery(
-						"lastEventDate"
-					).lt(
-						"now-30m"
+			JSONObject userSessionJSONObject = _getUserSession(
+				analyticsEvents.getFirstAnalyticsEventDate(), userId);
+
+			if (userSessionJSONObject == null) {
+				BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("completed", false)
+				).mustNot(
+					BoolQueryBuilderUtil.should(
+						QueryBuilders.rangeQuery(
+							"lastEventDate"
+						).lt(
+							"now-30m"
+						)
+					).should(
+						QueryBuilders.rangeQuery(
+							"lastEventDate"
+						).lt(
+							"now/d"
+						)
 					)
-				).should(
-					QueryBuilders.rangeQuery(
-						"lastEventDate"
-					).lt(
-						"now/d"
-					)
-				)
-			).filter(
-				QueryBuilders.termQuery("userId", userId)
-			);
+				).filter(
+					QueryBuilders.termQuery("userId", userId)
+				);
 
-			if (!_cerebroInfoElasticsearchInvoker.exists(
-					"user-sessions", boolQueryBuilder)) {
+				if (!_cerebroInfoElasticsearchInvoker.exists(
+						"user-sessions", boolQueryBuilder)) {
 
-				try {
-					Date lastAnalyticsEventDate =
-						analyticsEvents.getLastAnalyticsEventDate();
+					try {
+						Date lastAnalyticsEventDate =
+							analyticsEvents.getLastAnalyticsEventDate();
 
-					Date yesterday = DateUtil.toUTCDate(
-						DateUtil.addDays(DateUtil.newDateString(), -1));
+						Date yesterday = DateUtil.toUTCDate(
+							DateUtil.addDays(DateUtil.newDateString(), -1));
 
-					if (lastAnalyticsEventDate.before(yesterday)) {
-						_createUserSession(
-							analyticsEvents, true, semaphore, userId);
+						if (lastAnalyticsEventDate.before(yesterday)) {
+							_createUserSession(
+								analyticsEvents, true, semaphore, userId);
+						}
+						else {
+							_createUserSession(
+								analyticsEvents, false, semaphore, userId);
+						}
 					}
-					else {
-						_createUserSession(
-							analyticsEvents, false, semaphore, userId);
+					catch (Exception exception) {
+						_log.error(exception, exception);
 					}
 				}
-				catch (Exception exception) {
-					_log.error(exception, exception);
+				else {
+					_createUserSession(
+						analyticsEvents, true, semaphore, userId);
 				}
 			}
 			else {
-				_createUserSession(analyticsEvents, true, semaphore, userId);
+				_updateUserSession(
+					analyticsEvents, semaphore, userSessionJSONObject);
 			}
 		}
-		else {
-			_updateUserSession(
-				analyticsEvents, semaphore, userSessionJSONObject);
+		finally {
+			reentrantLock.unlock();
 		}
 	}
 
