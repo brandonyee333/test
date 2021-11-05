@@ -78,6 +78,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
+
 /**
  * @author Michael Bowerman
  */
@@ -627,7 +630,10 @@ public class ActivitiesNanite implements Nanite {
 				Stream<AnalyticsEvent> stream = analyticsEvents.stream();
 
 				stream.collect(
-					Collectors.groupingBy(AnalyticsEvent::getProjectId)
+					Collectors.groupingBy(
+						analyticsEvent -> Tuples.of(
+							analyticsEvent.getProjectId(),
+							analyticsEvent.getUserId()))
 				).forEach(
 					this::_run
 				);
@@ -648,7 +654,9 @@ public class ActivitiesNanite implements Nanite {
 		}
 	}
 
-	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
+	private void _run(
+		Tuple2<String, String> tuple2, List<AnalyticsEvent> analyticsEvents) {
+
 		try {
 			_semaphore.acquire();
 
@@ -657,7 +665,7 @@ public class ActivitiesNanite implements Nanite {
 					long start = System.currentTimeMillis();
 
 					try {
-						ProjectIdThreadLocal.setProjectId(projectId);
+						ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
 						JSONArray activityJSONArray = new JSONArray();
 
@@ -680,7 +688,7 @@ public class ActivitiesNanite implements Nanite {
 
 								if (activityJSONObject != null) {
 									_addActivityJSONObject(
-										activityJSONObject, projectId);
+										activityJSONObject, tuple2.getT1());
 								}
 
 								continue;
@@ -694,7 +702,8 @@ public class ActivitiesNanite implements Nanite {
 							}
 						}
 
-						_addActivityJSONArray(activityJSONArray, projectId);
+						_addActivityJSONArray(
+							activityJSONArray, tuple2.getT1());
 					}
 					catch (Exception exception) {
 						List<String> analyticsEventsString = ListUtil.map(

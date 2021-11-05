@@ -59,7 +59,6 @@ import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -72,6 +71,9 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 /**
  * @author André Miranda
@@ -326,72 +328,52 @@ public class UserSessionNanite implements Nanite {
 	}
 
 	private void _processAnalyticsEvents(
-		List<AnalyticsEvent> analyticsEvents, Semaphore semaphore) {
+		List<AnalyticsEvent> analyticsEvents, Semaphore semaphore,
+		String userId) {
 
-		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+		List<List<AnalyticsEvent>> sessionsAnalyticsEvents = new ArrayList<>();
 
-		Map<String, List<AnalyticsEvent>> groupedAnalyticEvents = stream.sorted(
-			Comparator.comparing(AnalyticsEvent::getEventDate)
-		).collect(
-			Collectors.groupingBy(AnalyticsEvent::getUserId)
-		);
+		List<AnalyticsEvent> currentAnalyticsEvents = new ArrayList<>();
 
-		List<Pair<String, List<AnalyticsEvent>>> sessionAnalyticsEventsPairs =
-			new ArrayList<>();
+		AnalyticsEvent previousAnalyticsEvent = null;
 
-		for (Map.Entry<String, List<AnalyticsEvent>> entry :
-				groupedAnalyticEvents.entrySet()) {
+		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+			if (previousAnalyticsEvent != null) {
+				Date previousEventDate = previousAnalyticsEvent.getEventDate();
 
-			String userId = entry.getKey();
+				Instant previousEventInstant = previousEventDate.toInstant();
 
-			List<AnalyticsEvent> currentAnalyticsEvents = new ArrayList<>();
+				Date eventDate = analyticsEvent.getEventDate();
 
-			AnalyticsEvent previousAnalyticsEvent = null;
+				Instant eventInstant = eventDate.toInstant();
 
-			for (AnalyticsEvent analyticsEvent : entry.getValue()) {
-				if (previousAnalyticsEvent != null) {
-					Date previousEventDate =
-						previousAnalyticsEvent.getEventDate();
+				long daysDelta = ChronoUnit.DAYS.between(
+					previousEventInstant.truncatedTo(ChronoUnit.DAYS),
+					eventInstant.truncatedTo(ChronoUnit.DAYS));
 
-					Instant previousEventInstant =
-						previousEventDate.toInstant();
+				long minutesDelta = ChronoUnit.MINUTES.between(
+					previousEventInstant, eventInstant);
 
-					Date eventDate = analyticsEvent.getEventDate();
+				if ((daysDelta > 0) || (minutesDelta >= 30)) {
+					sessionsAnalyticsEvents.add(currentAnalyticsEvents);
 
-					Instant eventInstant = eventDate.toInstant();
-
-					long daysDelta = ChronoUnit.DAYS.between(
-						previousEventInstant.truncatedTo(ChronoUnit.DAYS),
-						eventInstant.truncatedTo(ChronoUnit.DAYS));
-
-					long minutesDelta = ChronoUnit.MINUTES.between(
-						previousEventInstant, eventInstant);
-
-					if ((daysDelta > 0) || (minutesDelta >= 30)) {
-						sessionAnalyticsEventsPairs.add(
-							Pair.of(userId, currentAnalyticsEvents));
-
-						currentAnalyticsEvents = new ArrayList<>();
-					}
+					currentAnalyticsEvents = new ArrayList<>();
 				}
-
-				currentAnalyticsEvents.add(analyticsEvent);
-
-				previousAnalyticsEvent = analyticsEvent;
 			}
 
-			if (!currentAnalyticsEvents.isEmpty()) {
-				sessionAnalyticsEventsPairs.add(
-					Pair.of(userId, currentAnalyticsEvents));
-			}
+			currentAnalyticsEvents.add(analyticsEvent);
+
+			previousAnalyticsEvent = analyticsEvent;
 		}
 
-		for (Pair<String, List<AnalyticsEvent>> sessionAnalyticsEventsPair :
-				sessionAnalyticsEventsPairs) {
+		if (!currentAnalyticsEvents.isEmpty()) {
+			sessionsAnalyticsEvents.add(currentAnalyticsEvents);
+		}
 
-			_processAnalyticsEvents(
-				semaphore, sessionAnalyticsEventsPair.getValue(),
-				sessionAnalyticsEventsPair.getKey());
+		for (List<AnalyticsEvent> sessionAnalyticsEvents :
+				sessionsAnalyticsEvents) {
+
+			_processAnalyticsEvents(semaphore, sessionAnalyticsEvents, userId);
 		}
 	}
 
@@ -480,8 +462,13 @@ public class UserSessionNanite implements Nanite {
 
 				Stream<AnalyticsEvent> stream = analyticsEvents.stream();
 
-				stream.collect(
-					Collectors.groupingBy(AnalyticsEvent::getProjectId)
+				stream.sorted(
+					Comparator.comparing(AnalyticsEvent::getEventDate)
+				).collect(
+					Collectors.groupingBy(
+						analyticsEvent -> Tuples.of(
+							analyticsEvent.getProjectId(),
+							analyticsEvent.getUserId()))
 				).forEach(
 					this::_run
 				);
@@ -502,19 +489,22 @@ public class UserSessionNanite implements Nanite {
 		}
 	}
 
-	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
+	private void _run(
+		Tuple2<String, String> tuple2, List<AnalyticsEvent> analyticsEvents) {
+
 		try {
 			_semaphore.acquire();
 
 			CompletableFuture.runAsync(
 				() -> {
 					try {
-						ProjectIdThreadLocal.setProjectId(projectId);
+						ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
 						Semaphore semaphore = new Semaphore(
 							_userSessionNaniteConcurrentTasksLimit, true);
 
-						_processAnalyticsEvents(analyticsEvents, semaphore);
+						_processAnalyticsEvents(
+							analyticsEvents, semaphore, tuple2.getT2());
 
 						try {
 							semaphore.acquire(
