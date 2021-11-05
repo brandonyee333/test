@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.rest.response.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.PutResponse;
@@ -29,7 +30,9 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Vishal Reddy
  */
-public class PutResponseTest implements OSBAsahTestExecutionListenersContext {
+public class PutResponseTest
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "put_response_individuals.json",

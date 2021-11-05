@@ -27,6 +27,5 @@ import org.springframework.test.context.TestExecutionListeners;
 		OSBAsahSQLTestExecutionListener.class
 	}
 )
-public interface OSBAsahTestExecutionListenersContext
-	extends OSBAsahSpringTestContext {
+public interface OSBAsahTestExecutionListenersContext {
 }

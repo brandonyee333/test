@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.rest.response.function.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.repository.AssetRepository;
@@ -51,7 +52,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 	resourcePath = "osbasahfaroinfo/assets.json"
 )
 public class ActivitiesAssetTransformationJSONArrayFunctionTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testApplyAscSort() throws Exception {

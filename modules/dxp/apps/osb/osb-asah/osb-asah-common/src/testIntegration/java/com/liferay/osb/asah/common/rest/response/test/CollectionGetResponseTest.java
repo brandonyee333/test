@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.rest.response.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -40,7 +41,8 @@ import org.junit.jupiter.api.Test;
  * @author Leslie Wong
  */
 public class CollectionGetResponseTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {

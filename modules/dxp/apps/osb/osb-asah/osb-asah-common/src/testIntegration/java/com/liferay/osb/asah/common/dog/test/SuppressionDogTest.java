@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.entity.Suppression;
 import com.liferay.osb.asah.common.model.Sort;
@@ -39,7 +40,8 @@ import org.springframework.data.domain.Page;
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 public class SuppressionDogTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testGetSuppressionResultBag() {

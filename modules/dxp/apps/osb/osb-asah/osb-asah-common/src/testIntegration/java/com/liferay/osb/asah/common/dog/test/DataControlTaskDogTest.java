@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.DataControlTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataControlTask;
@@ -60,7 +61,8 @@ import org.springframework.data.domain.Page;
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 public class DataControlTaskDogTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {

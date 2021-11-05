@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
@@ -46,7 +47,9 @@ import org.springframework.context.annotation.Import;
  * @author Leslie Wong
  */
 @Import(JDBCTestConfiguration.class)
-public class EventDogTest implements OSBAsahTestExecutionListenersContext {
+public class EventDogTest
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testAddEvent() {

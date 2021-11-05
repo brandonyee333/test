@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.entity.AsahTask;
@@ -36,7 +37,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Vishal Reddy
  */
 public class CSVIndividualDogTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testAddCSVIndividuals() {

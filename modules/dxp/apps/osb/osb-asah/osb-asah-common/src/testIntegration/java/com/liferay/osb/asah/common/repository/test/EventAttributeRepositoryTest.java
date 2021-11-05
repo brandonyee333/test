@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
 import com.liferay.osb.asah.common.repository.EventAttributeRepository;
@@ -39,7 +40,8 @@ import org.springframework.context.annotation.Import;
  */
 @Import(JDBCTestConfiguration.class)
 public class EventAttributeRepositoryTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@SQLResource(resourcePath = "test_event_attributes.sql")
 	@Test

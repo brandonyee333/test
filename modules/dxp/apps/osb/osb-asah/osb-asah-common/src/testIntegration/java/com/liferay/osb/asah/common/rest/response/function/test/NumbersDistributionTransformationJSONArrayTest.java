@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.rest.response.function.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.NumbersDistributionTransformationJSONArrayFunction;
@@ -37,7 +38,8 @@ import org.skyscreamer.jsonassert.JSONAssert;
  * @author Leslie Wong
  */
 public class NumbersDistributionTransformationJSONArrayTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals.json",

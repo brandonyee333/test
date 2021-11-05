@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.JobDog;
 import com.liferay.osb.asah.common.dog.JobRunDog;
@@ -53,7 +54,9 @@ import org.springframework.data.domain.Page;
 /**
  * @author Marcellus Tavares
  */
-public class JobDogTest implements OSBAsahTestExecutionListenersContext {
+public class JobDogTest
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testAddJob() {

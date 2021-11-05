@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
@@ -37,7 +38,8 @@ import org.junit.jupiter.api.BeforeEach;
  * @author Vishal Reddy
  */
 public abstract class BaseFaroInfoFilterStringConverterHelperTestCase
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	public abstract FilterStringConverterHelper
 		getFilterStringConverterHelper();

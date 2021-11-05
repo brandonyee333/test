@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.RecommendationDog;
 import com.liferay.osb.asah.common.entity.ItemRecommendation;
 import com.liferay.osb.asah.common.model.Sort;
@@ -34,7 +35,8 @@ import org.springframework.data.domain.Page;
  * @author Marcellus Tavares
  */
 public class RecommendationDogTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "recommended-items",

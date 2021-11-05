@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.rest.controller.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringTestContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import io.restassured.RestAssured;
@@ -36,7 +36,7 @@ import org.springframework.boot.web.server.LocalServerPort;
  * @author André Miranda
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ErrorRestControllerTest implements OSBAsahSpringTestContext {
+public class ErrorRestControllerTest implements OSBAsahCommonSpringTestContext {
 
 	@Test
 	public void test() {

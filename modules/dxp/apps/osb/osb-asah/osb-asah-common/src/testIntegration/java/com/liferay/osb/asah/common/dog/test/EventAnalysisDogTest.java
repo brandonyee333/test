@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.EventAnalysisDog;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
@@ -52,7 +53,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Leslie Wong
  */
 public class EventAnalysisDogTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@SQLResource(resourcePath = "test_get_event_analysis.sql")
 	@Test

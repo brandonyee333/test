@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.rest.response.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.rest.response.DeleteResponse;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -31,7 +32,8 @@ import org.junit.jupiter.api.Test;
  * @author Vishal Reddy
  */
 public class DeleteResponseTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "delete_response_individuals.json",

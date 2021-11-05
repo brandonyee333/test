@@ -12,9 +12,10 @@
  *
  */
 
-package com.liferay.osb.asah.test.util.spring;
+package com.liferay.osb.asah.common;
 
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -25,5 +26,5 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @ExtendWith(OSBAsahSpringExtension.class)
-public interface OSBAsahSpringTestContext {
+public interface OSBAsahCommonSpringTestContext {
 }

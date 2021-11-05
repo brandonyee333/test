@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.rest.response.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.PostResponse;
@@ -28,7 +29,9 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Vishal Reddy
  */
-public class PostResponseTest implements OSBAsahTestExecutionListenersContext {
+public class PostResponseTest
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testRespondWithDefaultProperties() throws Exception {

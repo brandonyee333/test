@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.postgresql.converter.helper.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -79,7 +80,8 @@ import org.springframework.data.domain.PageRequest;
  */
 @Import(JDBCTestConfiguration.class)
 public class IndividualsFilterStringConverterHelperTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {

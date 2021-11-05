@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchDump;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.storage.Storage;
@@ -30,7 +31,8 @@ import org.mockito.Mockito;
  * @author Marcellus Tavares
  */
 public class ElasticsearchDumpTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_info.json",

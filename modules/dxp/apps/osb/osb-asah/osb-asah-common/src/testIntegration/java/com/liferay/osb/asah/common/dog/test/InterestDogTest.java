@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -32,7 +33,9 @@ import org.springframework.data.domain.Page;
 /**
  * @author Marcellus Tavares
  */
-public class InterestDogTest implements OSBAsahTestExecutionListenersContext {
+public class InterestDogTest
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "interests", resourcePath = "interests_info.json",

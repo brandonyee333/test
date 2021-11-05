@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.rest.response.function.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
@@ -47,7 +48,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Leslie Wong
  */
 public class VisitedPagesTransformationJSONArrayFunctionTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",

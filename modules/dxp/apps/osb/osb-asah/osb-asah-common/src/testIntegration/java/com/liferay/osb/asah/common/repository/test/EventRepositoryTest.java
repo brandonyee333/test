@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
@@ -71,7 +72,8 @@ import org.springframework.data.domain.PageRequest;
  */
 @Import(JDBCTestConfiguration.class)
 public class EventRepositoryTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@SQLResource(resourcePath = "test_events.sql")
 	@Test

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.upgrade.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.entity.AsahMarker;
@@ -43,7 +44,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 /**
  * @author André Miranda
  */
-public class UpgradeCheckTest implements OSBAsahTestExecutionListenersContext {
+public class UpgradeCheckTest
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {

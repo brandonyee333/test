@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
@@ -35,7 +36,8 @@ import org.springframework.data.domain.PageRequest;
  */
 @Import(JDBCTestConfiguration.class)
 public class EventDefinitionRepositoryTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@SQLResource(resourcePath = "test_event_definition.sql")
 	@Test

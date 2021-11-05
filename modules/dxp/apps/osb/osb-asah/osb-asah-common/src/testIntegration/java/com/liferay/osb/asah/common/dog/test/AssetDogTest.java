@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -31,7 +32,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Michael Bowerman
  * @author Vishal Reddy
  */
-public class AssetDogTest implements OSBAsahTestExecutionListenersContext {
+public class AssetDogTest
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,

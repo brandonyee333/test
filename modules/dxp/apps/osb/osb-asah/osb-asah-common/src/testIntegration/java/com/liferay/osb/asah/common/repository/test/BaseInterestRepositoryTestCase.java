@@ -283,7 +283,8 @@ public abstract class BaseInterestRepositoryTestCase
 				374790572703144534L, "individual", 10);
 
 		Assertions.assertEquals(
-			Arrays.asList("sales", "compelling metrics"), names, names.toString());
+			Arrays.asList("sales", "compelling metrics"), names,
+			names.toString());
 	}
 
 	@Override

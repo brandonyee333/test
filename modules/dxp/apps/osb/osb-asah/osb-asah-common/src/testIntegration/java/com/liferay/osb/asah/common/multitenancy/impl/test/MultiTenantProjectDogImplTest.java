@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.multitenancy.impl.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.entity.Project;
@@ -21,7 +22,6 @@ import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.multitenancy.impl.MultiTenantProjectDogImpl;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringTestContext;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -44,7 +44,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 /**
  * @author André Miranda
  */
-public class MultiTenantProjectDogImplTest implements OSBAsahSpringTestContext {
+public class MultiTenantProjectDogImplTest
+	implements OSBAsahCommonSpringTestContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {

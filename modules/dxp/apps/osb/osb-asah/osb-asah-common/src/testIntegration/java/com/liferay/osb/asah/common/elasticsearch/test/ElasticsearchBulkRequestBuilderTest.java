@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.elasticsearch.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -44,7 +45,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Rachael Koestartyo
  */
 public class ElasticsearchBulkRequestBuilderTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void test() {

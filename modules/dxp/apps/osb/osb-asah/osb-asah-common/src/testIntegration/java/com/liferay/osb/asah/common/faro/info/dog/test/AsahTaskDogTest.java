@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -31,7 +32,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Vishal Reddy
  */
-public class AsahTaskDogTest implements OSBAsahTestExecutionListenersContext {
+public class AsahTaskDogTest
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void test() {

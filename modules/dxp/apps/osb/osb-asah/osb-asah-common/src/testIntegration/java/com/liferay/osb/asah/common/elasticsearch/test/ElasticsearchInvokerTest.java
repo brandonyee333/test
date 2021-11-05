@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchAliases;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
@@ -64,7 +65,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Rachael Koestartyo
  */
 public class ElasticsearchInvokerTest
-	implements OSBAsahTestExecutionListenersContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() {
