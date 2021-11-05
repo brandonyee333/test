@@ -303,7 +303,6 @@ public class ElasticsearchInterestRepositoryImpl
 							).filter(
 								QueryBuilders.termQuery("ownerType", ownerType)
 							));
-
 						searchSourceBuilder.size(size);
 						searchSourceBuilder.sort(
 							SortBuilderUtil.fieldSort("score", SortOrder.DESC));
