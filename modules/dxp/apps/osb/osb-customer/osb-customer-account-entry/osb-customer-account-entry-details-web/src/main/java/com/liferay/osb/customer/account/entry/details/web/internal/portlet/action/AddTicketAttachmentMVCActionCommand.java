@@ -24,11 +24,14 @@ import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -87,45 +90,62 @@ public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		long zendeskTicketId = ParamUtil.getLong(
-			actionRequest, "zendeskTicketId");
-		String fileRepositoryId = ParamUtil.getString(
-			actionRequest, "fileRepositoryId");
-		String fileName = ParamUtil.getString(actionRequest, "fileName");
-		long fileSize = ParamUtil.getLong(actionRequest, "fileSize");
-		int type = ParamUtil.getInteger(actionRequest, "type");
-		String comment = ParamUtil.getString(actionRequest, "comment");
-		boolean noPersonalData = ParamUtil.getBoolean(
-			actionRequest, "noPersonalData");
+		try {
+			long zendeskTicketId = ParamUtil.getLong(
+				actionRequest, "zendeskTicketId");
+			String fileRepositoryId = ParamUtil.getString(
+				actionRequest, "fileRepositoryId");
+			String fileName = ParamUtil.getString(actionRequest, "fileName");
+			long fileSize = ParamUtil.getLong(actionRequest, "fileSize");
+			int type = ParamUtil.getInteger(actionRequest, "type");
+			String comment = ParamUtil.getString(actionRequest, "comment");
+			boolean noPersonalData = ParamUtil.getBoolean(
+				actionRequest, "noPersonalData");
 
-		ZendeskTicket zendeskTicket = _zendeskTicketWebService.getZendeskTicket(
-			zendeskTicketId);
+			ZendeskTicket zendeskTicket =
+				_zendeskTicketWebService.getZendeskTicket(zendeskTicketId);
 
-		if (zendeskTicket.isClosed()) {
-			throw new ZendeskTicketClosedException();
+			if (zendeskTicket.isClosed()) {
+				throw new ZendeskTicketClosedException();
+			}
+
+			long accountEntryId = _zendeskMapperUtil.getAccountEntryId(
+				zendeskTicket.getZendeskOrganizationId());
+
+			boolean regionRestricted = true;
+
+			if (noPersonalData) {
+				regionRestricted = false;
+			}
+
+			ServiceContext serviceContext = ServiceContextFactory.getInstance(
+				TicketAttachment.class.getName(), actionRequest);
+
+			serviceContext.setAttribute("comment", comment);
+
+			TicketAttachment ticketAttachment =
+				_ticketAttachmentService.addTicketAttachment(
+					accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
+					fileSize, type, regionRestricted, serviceContext);
+
+			addEvent(actionRequest, ticketAttachment);
 		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
 
-		long accountEntryId = _zendeskMapperUtil.getAccountEntryId(
-			zendeskTicket.getZendeskOrganizationId());
+			SessionErrors.add(actionRequest, e.getClass(), e);
 
-		boolean regionRestricted = true;
+			actionResponse.setRenderParameter(
+				"mvcRenderCommandName", "/add_ticket_attachment");
 
-		if (noPersonalData) {
-			regionRestricted = false;
+			hideDefaultSuccessMessage(actionRequest);
 		}
-
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			TicketAttachment.class.getName(), actionRequest);
-
-		serviceContext.setAttribute("comment", comment);
-
-		TicketAttachment ticketAttachment =
-			_ticketAttachmentService.addTicketAttachment(
-				accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
-				fileSize, type, regionRestricted, serviceContext);
-
-		addEvent(actionRequest, ticketAttachment);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AddTicketAttachmentMVCActionCommand.class);
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;

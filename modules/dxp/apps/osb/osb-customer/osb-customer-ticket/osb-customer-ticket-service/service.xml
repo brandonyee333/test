@@ -46,4 +46,7 @@
 			<finder-column arrayable-operator="OR" name="type" />
 		</finder>
 	</entity>
+	<exceptions>
+		<exception>FileRepositoryConnection</exception>
+	</exceptions>
 </service-builder>

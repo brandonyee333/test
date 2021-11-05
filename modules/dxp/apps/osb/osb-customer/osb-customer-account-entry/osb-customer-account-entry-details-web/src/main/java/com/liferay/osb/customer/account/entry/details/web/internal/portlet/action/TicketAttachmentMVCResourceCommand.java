@@ -123,7 +123,7 @@ public class TicketAttachmentMVCResourceCommand extends BaseMVCResourceCommand {
 				_log.error(e, e);
 			}
 
-			SessionErrors.add(resourceRequest, e.getClass());
+			SessionErrors.add(resourceRequest, e.getClass(), e);
 
 			PortletURL portletURL = resourceResponse.createRenderURL();
 

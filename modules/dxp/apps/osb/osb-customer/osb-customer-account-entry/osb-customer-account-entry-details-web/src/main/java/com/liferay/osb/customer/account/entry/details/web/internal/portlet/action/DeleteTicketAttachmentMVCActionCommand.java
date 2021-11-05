@@ -87,7 +87,7 @@ public class DeleteTicketAttachmentMVCActionCommand
 				_log.debug(e, e);
 			}
 
-			SessionErrors.add(actionRequest, e.getClass());
+			SessionErrors.add(actionRequest, e.getClass(), e);
 
 			actionResponse.setRenderParameter(
 				"mvcRenderCommandName", "/view_account_entry");

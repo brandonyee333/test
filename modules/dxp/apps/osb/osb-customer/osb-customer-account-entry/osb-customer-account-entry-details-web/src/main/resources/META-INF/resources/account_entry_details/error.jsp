@@ -27,6 +27,16 @@
 			<c:when test="<%= SessionErrors.contains(renderRequest, FileNotFoundException.class.getName()) %>">
 				<liferay-ui:message key="the-selected-attachment-could-not-be-found" />
 			</c:when>
+			<c:when test="<%= SessionErrors.contains(renderRequest, FileRepositoryConnectionException.class.getName()) %>">
+
+				<%
+				FileRepositoryConnectionException fileRepositoryConnectionException = (FileRepositoryConnectionException)SessionErrors.get(renderRequest, FileRepositoryConnectionException.class.getName());
+
+				FileRepository fileRepository = fileRepositoryConnectionException.getFileRepository();
+				%>
+
+				<liferay-ui:message key='<%= "unable-to-connect-to-" + fileRepository.getName() + "-file-server" %>' />
+			</c:when>
 			<c:when test="<%= SessionErrors.contains(renderRequest, NoSuchTicketAttachmentException.class.getName()) %>">
 				<liferay-ui:message key="the-selected-attachment-no-longer-exists" />
 			</c:when>

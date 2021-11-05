@@ -46,6 +46,7 @@ page import="com.liferay.osb.customer.admin.service.permission.AccountEnvironmen
 page import="com.liferay.osb.customer.constants.OSBActionKeys" %><%@
 page import="com.liferay.osb.customer.github.configuration.GitHubConfigurationValues" %><%@
 page import="com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants" %><%@
+page import="com.liferay.osb.customer.ticket.exception.FileRepositoryConnectionException" %><%@
 page import="com.liferay.osb.customer.ticket.exception.NoSuchTicketAttachmentException" %><%@
 page import="com.liferay.osb.customer.ticket.model.TicketAttachment" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepository" %><%@

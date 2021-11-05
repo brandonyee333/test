@@ -23,6 +23,8 @@ import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
@@ -68,12 +70,21 @@ public class FileRepositoryTokenMVCResourceCommand
 		long accountEntryId = _zendeskMapperUtil.getAccountEntryId(
 			zendeskTicket.getZendeskOrganizationId());
 
-		TicketEntryPermissionChecker.check(
-			themeDisplay.getPermissionChecker(), accountEntryId,
-			TicketActionKeys.ADD_TICKET_ATTACHMENT);
+		String token = null;
 
-		String token = _fileRepositoryWebService.getToken(
-			fileRepositoryId, zendeskTicketId);
+		try {
+			TicketEntryPermissionChecker.check(
+				themeDisplay.getPermissionChecker(), accountEntryId,
+				TicketActionKeys.ADD_TICKET_ATTACHMENT);
+
+			token = _fileRepositoryWebService.getToken(
+				fileRepositoryId, zendeskTicketId);
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+		}
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
@@ -89,6 +100,9 @@ public class FileRepositoryTokenMVCResourceCommand
 		JSONPortletResponseUtil.writeJSON(
 			resourceRequest, resourceResponse, jsonObject);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		FileRepositoryTokenMVCResourceCommand.class);
 
 	@Reference
 	private FileRepositoryWebService _fileRepositoryWebService;

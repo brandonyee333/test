@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.ticket.internal.repository;
 
+import com.liferay.osb.customer.ticket.exception.FileRepositoryConnectionException;
 import com.liferay.osb.customer.ticket.repository.FileRepository;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryManager;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
@@ -37,51 +38,84 @@ public class FileRepositoryWebServiceImpl implements FileRepositoryWebService {
 	public String deleteFile(String fileRepositoryId, String filePath)
 		throws PortalException {
 
-		String deleteURL = getFileRepositoryURL(
-			fileRepositoryId, _END_POINT_ADMIN);
+		FileRepository fileRepository =
+			_fileRepositoryManager.getFileRepository(fileRepositoryId);
 
-		deleteURL = _http.addParameter(deleteURL, "cmd", "delete");
-		deleteURL = _http.addParameter(deleteURL, "filePath", filePath);
+		try {
+			String deleteURL = getFileRepositoryURL(
+				fileRepository, _END_POINT_ADMIN);
 
-		return sendRequest(deleteURL, true);
+			deleteURL = _http.addParameter(deleteURL, "cmd", "delete");
+			deleteURL = _http.addParameter(deleteURL, "filePath", filePath);
+
+			return sendRequest(deleteURL, true);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new FileRepositoryConnectionException(fileRepository);
+		}
 	}
 
 	public String getDownloadURL(String fileRepositoryId, String filePath)
 		throws PortalException {
 
-		String fileRepositoryURL = getFileRepositoryURL(
-			fileRepositoryId, _END_POINT_DOWNLOAD);
+		FileRepository fileRepository =
+			_fileRepositoryManager.getFileRepository(fileRepositoryId);
 
-		StringBundler sb = new StringBundler(3);
+		try {
+			String fileRepositoryURL = getFileRepositoryURL(
+				fileRepository, _END_POINT_DOWNLOAD);
 
-		sb.append(fileRepositoryURL);
-		sb.append(StringPool.FORWARD_SLASH);
-		sb.append(_http.encodePath(filePath));
+			StringBundler sb = new StringBundler(3);
 
-		String key = sendRequest(sb.toString(), true);
+			sb.append(fileRepositoryURL);
+			sb.append(StringPool.FORWARD_SLASH);
+			sb.append(_http.encodePath(filePath));
 
-		if ((key != null) && !key.startsWith("No key exists")) {
-			return fileRepositoryURL + StringPool.SLASH + key;
+			String key = sendRequest(sb.toString(), true);
+
+			if ((key != null) && !key.startsWith("No key exists")) {
+				return fileRepositoryURL + StringPool.SLASH + key;
+			}
+
+			return null;
 		}
+		catch (Exception e) {
+			_log.error(e, e);
 
-		return null;
+			throw new FileRepositoryConnectionException(fileRepository);
+		}
 	}
 
 	public String getToken(String fileRepositoryId, long zendeskTicketId)
 		throws PortalException {
 
-		String tokenURL = getFileRepositoryURL(
-			fileRepositoryId, _END_POINT_TOKEN);
+		FileRepository fileRepository =
+			_fileRepositoryManager.getFileRepository(fileRepositoryId);
 
-		String dirPath = getDirPath(zendeskTicketId);
+		try {
+			String tokenURL = getFileRepositoryURL(
+				fileRepository, _END_POINT_TOKEN);
 
-		tokenURL = _http.addParameter(tokenURL, "dirPath", dirPath);
+			String dirPath = getDirPath(zendeskTicketId);
 
-		return sendRequest(tokenURL, false);
+			tokenURL = _http.addParameter(tokenURL, "dirPath", dirPath);
+
+			return sendRequest(tokenURL, false);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new FileRepositoryConnectionException(fileRepository);
+		}
 	}
 
 	public String getUploadURL(String fileRepositoryId) {
-		return getFileRepositoryURL(fileRepositoryId, _END_POINT_UPLOAD);
+		FileRepository fileRepository =
+			_fileRepositoryManager.getFileRepository(fileRepositoryId);
+
+		return getFileRepositoryURL(fileRepository, _END_POINT_UPLOAD);
 	}
 
 	public String updateFile(
@@ -89,19 +123,29 @@ public class FileRepositoryWebServiceImpl implements FileRepositoryWebService {
 			String filePath)
 		throws PortalException {
 
-		String updateURL = getFileRepositoryURL(
-			fileRepositoryId, _END_POINT_ADMIN);
+		FileRepository fileRepository =
+			_fileRepositoryManager.getFileRepository(fileRepositoryId);
 
-		updateURL = _http.addParameter(updateURL, "cmd", "update");
+		try {
+			String updateURL = getFileRepositoryURL(
+				fileRepository, _END_POINT_ADMIN);
 
-		String dirPath = getDirPath(zendeskTicketId);
+			updateURL = _http.addParameter(updateURL, "cmd", "update");
 
-		updateURL = _http.addParameter(updateURL, "dirPath", dirPath);
+			String dirPath = getDirPath(zendeskTicketId);
 
-		updateURL = _http.addParameter(updateURL, "fileName", fileName);
-		updateURL = _http.addParameter(updateURL, "filePath", filePath);
+			updateURL = _http.addParameter(updateURL, "dirPath", dirPath);
 
-		return sendRequest(updateURL, true);
+			updateURL = _http.addParameter(updateURL, "fileName", fileName);
+			updateURL = _http.addParameter(updateURL, "filePath", filePath);
+
+			return sendRequest(updateURL, true);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new FileRepositoryConnectionException(fileRepository);
+		}
 	}
 
 	protected String getDirPath(long zendeskTicketId) {
@@ -109,28 +153,18 @@ public class FileRepositoryWebServiceImpl implements FileRepositoryWebService {
 	}
 
 	protected String getFileRepositoryURL(
-		String fileRepositoryId, String endPoint) {
-
-		FileRepository fileRepository =
-			_fileRepositoryManager.getFileRepository(fileRepositoryId);
+		FileRepository fileRepository, String endPoint) {
 
 		return fileRepository.getHost() + endPoint;
 	}
 
-	protected String sendRequest(String url, boolean post) {
-		try {
-			Http.Options options = new Http.Options();
+	protected String sendRequest(String url, boolean post) throws Exception {
+		Http.Options options = new Http.Options();
 
-			options.setLocation(url);
-			options.setPost(post);
+		options.setLocation(url);
+		options.setPost(post);
 
-			return _http.URLtoString(options);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		return null;
+		return _http.URLtoString(options);
 	}
 
 	private static final String _END_POINT_ADMIN = "/admin";

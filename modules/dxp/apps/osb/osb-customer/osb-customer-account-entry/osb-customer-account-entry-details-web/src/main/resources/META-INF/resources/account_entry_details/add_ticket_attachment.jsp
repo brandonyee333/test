@@ -37,6 +37,17 @@ FileRepository fileRepository = fileRepositoryManager.getDataRegionFileRepositor
 
 <div class="add-ticket-attachment" id="<portlet:namespace />addTicketAttachment"></div>
 
+<liferay-ui:error exception="<%= FileRepositoryConnectionException.class %>">
+
+	<%
+	FileRepositoryConnectionException fileRepositoryConnectionException = (FileRepositoryConnectionException)errorException;
+
+	FileRepository curFileRepository = fileRepositoryConnectionException.getFileRepository();
+	%>
+
+	<liferay-ui:message key='<%= "unable-to-connect-to-" + curFileRepository.getName() + "-file-server" %>' />
+</liferay-ui:error>
+
 <liferay-ui:error exception="<%= NoSuchAccountEntryException.class %>" message="the-project-could-not-be-found" />
 <liferay-ui:error exception="<%= NoSuchZendeskTicketException.class %>" message="the-ticket-could-not-be-found" />
 
