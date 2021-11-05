@@ -17,34 +17,17 @@ package com.liferay.osb.asah.common.dog.test;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.entity.Preference;
-import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Matthew Kong
  */
-@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
-@TestExecutionListeners(
-	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
-	value = {
-		OSBAsahElasticsearchTestExecutionListener.class,
-		OSBAsahRepositoryTestExecutionListener.class,
-		OSBAsahSQLTestExecutionListener.class
-	}
-)
-public class PreferenceDogTest {
+public class PreferenceDogTest implements OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testSavePreference() {

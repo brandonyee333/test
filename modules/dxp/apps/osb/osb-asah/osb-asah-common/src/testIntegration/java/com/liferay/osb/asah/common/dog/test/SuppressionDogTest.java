@@ -17,45 +17,29 @@ package com.liferay.osb.asah.common.dog.test;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.entity.Suppression;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Matthew Kong
  */
-@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @ElasticsearchIndex(
 	name = "suppressions", resourcePath = "suppressions.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
-@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
-@TestExecutionListeners(
-	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
-	value = {
-		OSBAsahElasticsearchTestExecutionListener.class,
-		OSBAsahRepositoryTestExecutionListener.class,
-		OSBAsahSQLTestExecutionListener.class
-	}
-)
-public class SuppressionDogTest {
+public class SuppressionDogTest
+	implements OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testGetSuppressionResultBag() {

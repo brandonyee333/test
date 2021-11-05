@@ -18,14 +18,10 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.time.ZoneOffset;
@@ -41,12 +37,9 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
@@ -54,17 +47,8 @@ import reactor.util.function.Tuples;
 /**
  * @author Leslie Wong
  */
-@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
-@TestExecutionListeners(
-	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
-	value = {
-		OSBAsahElasticsearchTestExecutionListener.class,
-		OSBAsahRepositoryTestExecutionListener.class,
-		OSBAsahSQLTestExecutionListener.class
-	}
-)
-public class EventDefinitionDogTest {
+public class EventDefinitionDogTest
+	implements OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testAddDefinition() {

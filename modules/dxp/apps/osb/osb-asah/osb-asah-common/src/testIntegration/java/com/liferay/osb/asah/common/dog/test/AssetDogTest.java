@@ -16,39 +16,22 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.repository.AssetRepository;
-import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Michael Bowerman
  * @author Vishal Reddy
  */
-@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
-@TestExecutionListeners(
-	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
-	value = {
-		OSBAsahElasticsearchTestExecutionListener.class,
-		OSBAsahRepositoryTestExecutionListener.class,
-		OSBAsahSQLTestExecutionListener.class
-	}
-)
-public class AssetDogTest {
+public class AssetDogTest implements OSBAsahTestExecutionListenersContext {
 
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,

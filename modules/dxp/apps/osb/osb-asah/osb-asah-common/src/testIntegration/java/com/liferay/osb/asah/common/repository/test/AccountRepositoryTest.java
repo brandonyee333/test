@@ -23,14 +23,9 @@ import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
 import java.util.HashSet;
@@ -41,27 +36,14 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Rachael Koestartyo
  */
-@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 @Import(JDBCTestConfiguration.class)
-@TestExecutionListeners(
-	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
-	value = {
-		OSBAsahElasticsearchTestExecutionListener.class,
-		OSBAsahRepositoryTestExecutionListener.class,
-		OSBAsahSQLTestExecutionListener.class
-	}
-)
 public class AccountRepositoryTest extends BaseAccountRepositoryTestCase {
 
 	@Override

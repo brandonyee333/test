@@ -14,25 +14,21 @@
 
 package com.liferay.osb.asah.common.spring.cache.test;
 
-import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringTestContext;
 
 import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.interceptor.KeyGenerator;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Marcellus Tavares
  */
-@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
-public class OSBAsahCachingConfigurerSupportTest {
+public class OSBAsahCachingConfigurerSupportTest
+	implements OSBAsahSpringTestContext {
 
 	@Test
 	public void testKeyGenerator() throws Exception {

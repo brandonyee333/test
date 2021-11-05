@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +36,8 @@ import org.springframework.data.domain.Sort;
 /**
  * @author Inácio Nery
  */
-public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID> {
+public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID>
+	implements OSBAsahTestExecutionListenersContext {
 
 	@AfterEach
 	public void tearDown() {

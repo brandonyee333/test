@@ -27,15 +27,11 @@ import com.liferay.osb.asah.common.model.JobRunsMonthlyStatistics;
 import com.liferay.osb.asah.common.model.JobStatus;
 import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.time.LocalDateTime;
@@ -50,27 +46,14 @@ import java.util.function.Function;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Marcellus Tavares
  */
-@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
-@SpringBootTest(classes = OSBAsahSpringBootApplication.class)
-@TestExecutionListeners(
-	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
-	value = {
-		OSBAsahElasticsearchTestExecutionListener.class,
-		OSBAsahRepositoryTestExecutionListener.class,
-		OSBAsahSQLTestExecutionListener.class
-	}
-)
-public class JobDogTest {
+public class JobDogTest implements OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testAddJob() {

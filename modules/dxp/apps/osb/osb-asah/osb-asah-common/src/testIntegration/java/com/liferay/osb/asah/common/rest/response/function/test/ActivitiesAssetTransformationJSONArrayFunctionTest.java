@@ -19,15 +19,11 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.ActivitiesAssetTransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
 
@@ -38,36 +34,24 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.json.JSONArray;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Matthew Kong
  */
-@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @ElasticsearchIndex(
 	name = "activities", resourcePath = "activities.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
-@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
 @RepositoryResource(
 	repositoryClass = AssetRepository.class,
 	resourcePath = "osbasahfaroinfo/assets.json"
 )
-@TestExecutionListeners(
-	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
-	value = {
-		OSBAsahElasticsearchTestExecutionListener.class,
-		OSBAsahRepositoryTestExecutionListener.class,
-		OSBAsahSQLTestExecutionListener.class
-	}
-)
-public class ActivitiesAssetTransformationJSONArrayFunctionTest {
+public class ActivitiesAssetTransformationJSONArrayFunctionTest
+	implements OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testApplyAscSort() throws Exception {

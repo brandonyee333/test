@@ -21,8 +21,7 @@ import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.multitenancy.impl.MultiTenantProjectDogImpl;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
-import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit5ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringTestContext;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -33,7 +32,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
@@ -41,15 +39,12 @@ import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author André Miranda
  */
-@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@ExtendWith(OSBAsahSpringJUnit5ClassRunner.class)
-public class MultiTenantProjectDogImplTest {
+public class MultiTenantProjectDogImplTest implements OSBAsahSpringTestContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {

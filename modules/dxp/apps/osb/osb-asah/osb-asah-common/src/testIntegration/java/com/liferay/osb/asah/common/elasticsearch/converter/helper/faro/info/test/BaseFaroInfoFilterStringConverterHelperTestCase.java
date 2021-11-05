@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBu
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +36,8 @@ import org.junit.jupiter.api.BeforeEach;
 /**
  * @author Vishal Reddy
  */
-public abstract class BaseFaroInfoFilterStringConverterHelperTestCase {
+public abstract class BaseFaroInfoFilterStringConverterHelperTestCase
+	implements OSBAsahTestExecutionListenersContext {
 
 	public abstract FilterStringConverterHelper
 		getFilterStringConverterHelper();
