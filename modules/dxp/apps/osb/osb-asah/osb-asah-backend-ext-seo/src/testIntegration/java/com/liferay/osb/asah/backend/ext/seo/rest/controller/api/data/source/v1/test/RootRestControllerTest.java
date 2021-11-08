@@ -22,7 +22,10 @@ import com.liferay.osb.asah.backend.ext.seo.spring.OSBAsahBackendExtSEOSpringBoo
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.Http;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Arrays;
@@ -31,27 +34,36 @@ import java.util.List;
 
 import org.json.JSONArray;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.HttpClientErrorException;
 
 /**
  * @author David Arques
  */
-@ContextConfiguration(classes = OSBAsahBackendExtSEOSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringExtension.class)
+@SpringBootTest(classes = OSBAsahBackendExtSEOSpringBootApplication.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 @TestPropertySource(properties = "osb.asah.seo.semrush.api.key=4d5e9886")
 public class RootRestControllerTest {
 
@@ -103,9 +115,9 @@ public class RootRestControllerTest {
 		List<TrafficSource> trafficSources =
 			_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
 
-		Assert.assertEquals(
-			trafficSources.toString(), 2, trafficSources.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			2, trafficSources.size(), trafficSources.toString());
+		Assertions.assertEquals(
 			new TrafficSource(
 				Collections.singletonList(
 					new CountrySearchKeywords(
@@ -116,7 +128,7 @@ public class RootRestControllerTest {
 							new SearchKeyword("liferay inc", 1, 260, 208)))),
 				"organic", 3400, 85.43D),
 			trafficSources.get(0));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			new TrafficSource(
 				Collections.singletonList(
 					new CountrySearchKeywords(
@@ -130,7 +142,7 @@ public class RootRestControllerTest {
 			trafficSources.get(1));
 	}
 
-	@Test(expected = HttpClientErrorException.class)
+	@Test
 	public void testGetTrafficSourcesWithDomainOrganicUniqueSEMrushAPIError() {
 		Mockito.doAnswer(
 			invocationOnMock -> JSONUtil.putAll(
@@ -167,7 +179,10 @@ public class RootRestControllerTest {
 			ArgumentMatchers.any()
 		);
 
-		_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
+		Assertions.assertThrows(
+			HttpClientErrorException.class,
+			() -> _rootRestController.getTrafficSources(
+				RandomTestUtil.randomURL()));
 	}
 
 	@Test
@@ -184,22 +199,24 @@ public class RootRestControllerTest {
 		List<TrafficSource> trafficSources =
 			_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
 
-		Assert.assertEquals(
-			trafficSources.toString(), 2, trafficSources.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			2, trafficSources.size(), trafficSources.toString());
+		Assertions.assertEquals(
 			new TrafficSource(Collections.emptyList(), "organic", 0, 0D),
 			trafficSources.get(0));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			new TrafficSource(Collections.emptyList(), "paid", 0, 0D),
 			trafficSources.get(1));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testGetTrafficSourcesWithEmptyURL() {
-		_rootRestController.getTrafficSources("");
+		Assertions.assertThrows(
+			IllegalArgumentException.class,
+			() -> _rootRestController.getTrafficSources(""));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testGetTrafficSourcesWithInvalidURL() {
 		Mockito.doAnswer(
 			invocationOnMock -> "[]"
@@ -219,7 +236,10 @@ public class RootRestControllerTest {
 			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
-		_rootRestController.getTrafficSources(RandomTestUtil.randomString());
+		Assertions.assertThrows(
+			IllegalArgumentException.class,
+			() -> _rootRestController.getTrafficSources(
+				RandomTestUtil.randomString()));
 	}
 
 	@Test
@@ -271,9 +291,9 @@ public class RootRestControllerTest {
 		List<TrafficSource> trafficSources =
 			_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
 
-		Assert.assertEquals(
-			trafficSources.toString(), 2, trafficSources.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			2, trafficSources.size(), trafficSources.toString());
+		Assertions.assertEquals(
 			new TrafficSource(
 				Arrays.asList(
 					new CountrySearchKeywords(
@@ -290,7 +310,7 @@ public class RootRestControllerTest {
 							new SearchKeyword("liferay inc", 1, 260, 208)))),
 				"organic", 6800, 85.43D),
 			trafficSources.get(0));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			new TrafficSource(
 				Arrays.asList(
 					new CountrySearchKeywords(
@@ -336,15 +356,15 @@ public class RootRestControllerTest {
 		List<TrafficSource> trafficSources =
 			_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
 
-		Assert.assertEquals(
-			trafficSources.toString(), 2, trafficSources.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			2, trafficSources.size(), trafficSources.toString());
+		Assertions.assertEquals(
 			new TrafficSource(
 				Collections.singletonList(
 					new CountrySearchKeywords("us", Collections.emptyList())),
 				"organic", 0, 0D),
 			trafficSources.get(0));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			new TrafficSource(
 				Collections.singletonList(
 					new CountrySearchKeywords("us", Collections.emptyList())),
@@ -352,12 +372,14 @@ public class RootRestControllerTest {
 			trafficSources.get(1));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testGetTrafficSourcesWithNullURL() {
-		_rootRestController.getTrafficSources(null);
+		Assertions.assertThrows(
+			IllegalArgumentException.class,
+			() -> _rootRestController.getTrafficSources(null));
 	}
 
-	@Test(expected = HttpClientErrorException.class)
+	@Test
 	public void testGetTrafficSourcesWithSEMrushAPIError() {
 		Mockito.doAnswer(
 			invocationOnMock -> JSONUtil.putAll(
@@ -384,10 +406,13 @@ public class RootRestControllerTest {
 			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
-		_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
+		Assertions.assertThrows(
+			HttpClientErrorException.class,
+			() -> _rootRestController.getTrafficSources(
+				RandomTestUtil.randomURL()));
 	}
 
-	@Test(expected = HttpClientErrorException.class)
+	@Test
 	public void testGetTrafficSourcesWithURLAdwordsSEMrushAPIError() {
 		Mockito.doAnswer(
 			invocationOnMock -> JSONUtil.putAll(
@@ -435,10 +460,13 @@ public class RootRestControllerTest {
 			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
-		_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
+		Assertions.assertThrows(
+			HttpClientErrorException.class,
+			() -> _rootRestController.getTrafficSources(
+				RandomTestUtil.randomURL()));
 	}
 
-	@Test(expected = HttpClientErrorException.class)
+	@Test
 	public void testGetTrafficSourcesWithURLOrganicSEMrushAPIError() {
 		Mockito.doAnswer(
 			invocationOnMock -> JSONUtil.putAll(
@@ -476,7 +504,10 @@ public class RootRestControllerTest {
 			ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any()
 		);
 
-		_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
+		Assertions.assertThrows(
+			HttpClientErrorException.class,
+			() -> _rootRestController.getTrafficSources(
+				RandomTestUtil.randomURL()));
 	}
 
 	@MockBean
