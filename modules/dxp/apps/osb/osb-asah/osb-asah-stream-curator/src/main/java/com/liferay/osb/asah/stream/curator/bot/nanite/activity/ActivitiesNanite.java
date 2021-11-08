@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -514,13 +513,6 @@ public class ActivitiesNanite implements Nanite {
 			}
 		}
 
-		String pageViewActivityId = _getPageViewActivityId(analyticsEvent);
-
-		if (pageViewActivityId != null) {
-			eventPropertiesJSONObject.put(
-				"pageViewActivityId", pageViewActivityId);
-		}
-
 		if (Objects.equals(analyticsEvent.getEventId(), "formSubmitted")) {
 			JSONObject formViewedActivityJSONObject =
 				_faroInfoActivityDog.fetchLatestFormViewedActivity(
@@ -581,17 +573,6 @@ public class ActivitiesNanite implements Nanite {
 		throw new IllegalStateException(
 			"Unable to find individual for owner ID " + ownerId +
 				" or user ID " + analyticsEvent.getUserId());
-	}
-
-	private String _getPageViewActivityId(AnalyticsEvent analyticsEvent) {
-		if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
-			Objects.equals(analyticsEvent.getEventId(), "pageViewed")) {
-
-			return String.valueOf(UUID.randomUUID());
-		}
-
-		return _faroInfoActivityDog.fetchLatestPageViewActivityId(
-			analyticsEvent.getUserId());
 	}
 
 	private String _getSessionId(AnalyticsEvent analyticsEvent, Long ownerId) {

@@ -206,38 +206,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return formViewedActivityJSONArray.getJSONObject(0);
 	}
 
-	public String fetchLatestPageViewActivityId(String userId) {
-		JSONArray mostRecentPageViewActivitiesJSONArray = new JSONArray(
-			elasticsearchInvoker.get(
-				"activities",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery("applicationId", "Page")
-						).filter(
-							QueryBuilders.termQuery("eventId", "pageViewed")
-						).filter(
-							QueryBuilders.termQuery("userId", userId)
-						));
-					searchSourceBuilder.size(1);
-					searchSourceBuilder.sort(
-						SortBuilderUtil.fieldSort("startTime", SortOrder.DESC));
-				}));
-
-		if (mostRecentPageViewActivitiesJSONArray.length() == 0) {
-			return null;
-		}
-
-		JSONObject mostRecentPageViewActivityJSONObject =
-			mostRecentPageViewActivitiesJSONArray.getJSONObject(0);
-
-		JSONObject eventPropertiesJSONObject =
-			mostRecentPageViewActivityJSONObject.getJSONObject(
-				"eventProperties");
-
-		return eventPropertiesJSONObject.optString("pageViewActivityId", null);
-	}
-
 	public QueryBuilder getEventsQueryBuilder(String ownerId) {
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("ownerId", ownerId));
