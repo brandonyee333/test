@@ -136,7 +136,7 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 		PullRequest.Builder builder = PullRequest.newBuilder();
 
 		builder.setMaxMessages(maxMessages);
-		builder.setReturnImmediately(true);
+		builder.setReturnImmediately(false);
 		builder.setSubscription(_subscription.getName());
 
 		return builder.build();
