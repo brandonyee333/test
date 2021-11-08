@@ -23,6 +23,9 @@ import java.net.Socket;
 
 import java.util.TimeZone;
 
+import javax.net.SocketFactory;
+import javax.net.ssl.SSLSocketFactory;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -73,7 +76,9 @@ public class OSBAsahSpringExtension extends SpringExtension {
 	}
 
 	private boolean _pingHost(String hostname, int port, int timeout) {
-		try (Socket socket = new Socket()) {
+		SocketFactory socketFactory = SSLSocketFactory.getDefault();
+
+		try (Socket socket = socketFactory.createSocket()) {
 			socket.connect(new InetSocketAddress(hostname, port), timeout);
 
 			return true;
