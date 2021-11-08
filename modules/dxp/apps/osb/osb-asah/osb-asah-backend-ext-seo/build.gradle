@@ -14,3 +14,7 @@ dependencies {
 jar {
 	enabled = true
 }
+
+testIntegration {
+	useJUnitPlatform()
+}
