@@ -157,6 +157,11 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
+				new ClassPathResource("sequences.sql")),
+			pgSimpleDataSource);
+
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(
 				true, true, null, new ClassPathResource("constraints.sql")),
 			pgSimpleDataSource);
 
