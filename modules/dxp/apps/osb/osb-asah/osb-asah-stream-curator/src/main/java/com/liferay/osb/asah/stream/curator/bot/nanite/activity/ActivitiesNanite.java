@@ -64,6 +64,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -87,6 +88,39 @@ import reactor.util.function.Tuples;
  */
 @Component
 public class ActivitiesNanite implements Nanite {
+
+	@Cacheable
+	public Set<AssetKeyword> getAssetKeywords(String text, String type) {
+		if (StringUtils.isEmpty(text)) {
+			return Collections.emptySet();
+		}
+
+		Stream<String> stream = Stream.of(text.split(","));
+
+		if (type.equals("keyword")) {
+			return stream.map(
+				String::toLowerCase
+			).map(
+				keyword -> new AssetKeyword(keyword, type)
+			).collect(
+				Collectors.toSet()
+			);
+		}
+
+		return stream.filter(
+			NLPUtil::isEnglish
+		).map(
+			NLPUtil::getKeywords
+		).flatMap(
+			Collection::stream
+		).map(
+			String::toLowerCase
+		).map(
+			keyword -> new AssetKeyword(keyword, type)
+		).collect(
+			Collectors.toSet()
+		);
+	}
 
 	@Override
 	public String getCollectionName() {
@@ -395,19 +429,29 @@ public class ActivitiesNanite implements Nanite {
 		}
 
 		try {
+			String projectId = ProjectIdThreadLocal.getProjectId();
+
 			CompletableFuture<Set<AssetKeyword>> descriptionCompletableFuture =
 				CompletableFuture.supplyAsync(
-					() -> _getAssetKeywords(
-						MapUtil.getString(context, "description"),
-						"description"));
+					() -> {
+						ProjectIdThreadLocal.setProjectId(projectId);
+
+						return _activitiesNanite.getAssetKeywords(
+							MapUtil.getString(context, "description"),
+							"description");
+					});
 
 			CompletableFuture<Set<AssetKeyword>> titleCompletableFuture =
 				CompletableFuture.supplyAsync(
-					() -> _getAssetKeywords(
-						MapUtil.getString(context, "title"), "title"));
+					() -> {
+						ProjectIdThreadLocal.setProjectId(projectId);
+
+						return _activitiesNanite.getAssetKeywords(
+							MapUtil.getString(context, "title"), "title");
+					});
 
 			Set<AssetKeyword> keywords = new HashSet<>(
-				_getAssetKeywords(
+				_activitiesNanite.getAssetKeywords(
 					MapUtil.getString(context, "keywords"), "keywords"));
 
 			keywords.addAll(descriptionCompletableFuture.get());
@@ -418,39 +462,6 @@ public class ActivitiesNanite implements Nanite {
 		catch (Exception exception) {
 			throw new RuntimeException(exception);
 		}
-	}
-
-	@Cacheable
-	private Set<AssetKeyword> _getAssetKeywords(String text, String type) {
-		if (StringUtils.isEmpty(text)) {
-			return Collections.emptySet();
-		}
-
-		Stream<String> stream = Stream.of(text.split(","));
-
-		if (type.equals("keyword")) {
-			return stream.map(
-				String::toLowerCase
-			).map(
-				keyword -> new AssetKeyword(keyword, type)
-			).collect(
-				Collectors.toSet()
-			);
-		}
-
-		return stream.filter(
-			NLPUtil::isEnglish
-		).map(
-			NLPUtil::getKeywords
-		).flatMap(
-			Collection::stream
-		).map(
-			String::toLowerCase
-		).map(
-			keyword -> new AssetKeyword(keyword, type)
-		).collect(
-			Collectors.toSet()
-		);
 	}
 
 	private String _getDataSourceAssetPK(
@@ -797,6 +808,9 @@ public class ActivitiesNanite implements Nanite {
 				put("WebContent", "articleId");
 			}
 		};
+
+	@Resource
+	private ActivitiesNanite _activitiesNanite;
 
 	@Value("${osb.asah.activities.nanite.concurrent.tasks.limit:15}")
 	private int _activitiesNaniteConcurrentTasksLimit;
