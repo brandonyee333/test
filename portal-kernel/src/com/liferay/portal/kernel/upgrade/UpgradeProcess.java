@@ -319,16 +319,14 @@ public abstract class UpgradeProcess
 		throws Exception {
 
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+			DB db = DBManagerUtil.getDB();
+			DBInspector dbInspector = new DBInspector(connection);
 			String tableName = getTableName(tableClass);
 
-			DatabaseMetaData databaseMetaData = connection.getMetaData();
-			DBInspector dbInspector = new DBInspector(connection);
-			DB db = DBManagerUtil.getDB();
-			ResultSet resultSet1;
+			ResultSet resultSet1 = null;
 
-			DBType dbType = db.getDBType();
-
-			if (dbType == DBType.ORACLE) {
+			if (db.getDBType() == DBType.ORACLE) {
 				resultSet1 = databaseMetaData.getIndexInfo(
 					dbInspector.getCatalog(), dbInspector.getSchema(),
 					dbInspector.normalizeName(tableName), false, true);
@@ -602,30 +600,30 @@ public abstract class UpgradeProcess
 	}
 
 	protected void removePrimaryKey(String tableName) throws Exception {
-		DatabaseMetaData databaseMetaData = connection.getMetaData();
+		DB db = DBManagerUtil.getDB();
 
 		DBInspector dbInspector = new DBInspector(connection);
 
 		String normalizedTableName = dbInspector.normalizeName(
-			tableName, databaseMetaData);
+			tableName, connection.getMetaData());
 
-		DB db = DBManagerUtil.getDB();
+		if ((db.getDBType() == DBType.SQLSERVER) ||
+			(db.getDBType() == DBType.SYBASE)) {
 
-		DBType dbType = db.getDBType();
-
-		if ((dbType == DBType.SQLSERVER) || (dbType == DBType.SYBASE)) {
 			String primaryKeyConstraintName = null;
 
-			if (dbType == DBType.SQLSERVER) {
-				try (PreparedStatement ps = connection.prepareStatement(
-						StringBundler.concat(
-							"select name from sys.key_constraints where type ",
-							"= 'PK' and OBJECT_NAME(parent_object_id) = '",
-							normalizedTableName, "'"));
-					ResultSet rs = ps.executeQuery()) {
+			if (db.getDBType() == DBType.SQLSERVER) {
+				try (PreparedStatement preparedStatement =
+						connection.prepareStatement(
+							StringBundler.concat(
+								"select name from sys.key_constraints where ",
+								"type = 'PK' and ",
+								"OBJECT_NAME(parent_object_id) = '",
+								normalizedTableName, "'"));
+					ResultSet resultSet = preparedStatement.executeQuery()) {
 
-					if (rs.next()) {
-						primaryKeyConstraintName = rs.getString("name");
+					if (resultSet.next()) {
+						primaryKeyConstraintName = resultSet.getString("name");
 					}
 				}
 			}
