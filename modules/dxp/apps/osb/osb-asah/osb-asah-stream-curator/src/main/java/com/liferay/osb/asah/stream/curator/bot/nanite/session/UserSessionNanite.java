@@ -489,7 +489,7 @@ public class UserSessionNanite implements Nanite {
 
 					_log.info(
 						String.format(
-							"%s processed %d events in %d ms",
+							"%s dispatched %d events in %d ms",
 							clazz.getSimpleName(), analyticsEvents.size(),
 							System.currentTimeMillis() - start));
 				}
@@ -508,6 +508,8 @@ public class UserSessionNanite implements Nanite {
 
 			CompletableFuture.runAsync(
 				() -> {
+					long start = System.currentTimeMillis();
+
 					try {
 						ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
@@ -541,6 +543,16 @@ public class UserSessionNanite implements Nanite {
 					}
 					finally {
 						_semaphore.release();
+					}
+
+					if (_log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						_log.info(
+							String.format(
+								"%s processed %d events in %d ms",
+								clazz.getSimpleName(), analyticsEvents.size(),
+								System.currentTimeMillis() - start));
 					}
 				},
 				_runExecutorService);
