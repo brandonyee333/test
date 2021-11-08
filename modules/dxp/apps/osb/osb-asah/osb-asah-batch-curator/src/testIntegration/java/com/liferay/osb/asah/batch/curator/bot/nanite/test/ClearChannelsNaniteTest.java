@@ -17,7 +17,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.ClearChannelsNanite;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
@@ -38,7 +37,6 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Date;
 import java.util.Optional;
@@ -47,19 +45,15 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 
 	@Test
@@ -67,7 +61,7 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 		DataSource dataSource = _dataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSource());
 
-		Assert.assertNotNull(dataSource);
+		Assertions.assertNotNull(dataSource);
 
 		Account account = _accountDog.addAccount(
 			FaroInfoTestUtil.buildAccount(dataSource));
@@ -100,8 +94,8 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 		_clearChannelsNanite.run(
 			JSONUtil.put("channelIds", JSONUtil.put(channelId)));
 
-		Assert.assertTrue(_accountRepository.existsById(account.getId()));
-		Assert.assertFalse(
+		Assertions.assertTrue(_accountRepository.existsById(account.getId()));
+		Assertions.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
 				"activities", activityJSONObject.getString("id")));
 
@@ -111,7 +105,7 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 			activityGroupId = 0L;
 		}
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_activityGroupRepository.existsById(activityGroupId));
 
 		Optional<Asset> assetOptional = _assetRepository.findById(
@@ -121,17 +115,18 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 				0L
 			));
 
-		Assert.assertFalse(assetOptional.isPresent());
+		Assertions.assertFalse(assetOptional.isPresent());
 
-		Assert.assertTrue(_channelRepository.existsById(channelId));
-		Assert.assertTrue(_dataSourceRepository.existsById(dataSource.getId()));
-		Assert.assertFalse(
+		Assertions.assertTrue(_channelRepository.existsById(channelId));
+		Assertions.assertTrue(
+			_dataSourceRepository.existsById(dataSource.getId()));
+		Assertions.assertFalse(
 			_segmentRepository.existsByName("Account: " + account.getId()));
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
 				"individuals",
 				QueryBuilders.termQuery("channelIds", channelId)));
-		Assert.assertEquals(1, _individualRepository.count());
+		Assertions.assertEquals(1, _individualRepository.count());
 	}
 
 	@Autowired

@@ -16,13 +16,13 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.test;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
+import com.liferay.osb.asah.batch.curator.OSBAsahBatchCuratorSpringTestContext;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.PageDataExporter;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.io.ByteArrayOutputStream;
 
@@ -31,19 +31,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
-
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Marcellus Tavares
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-public class PageDataExporterTest {
+public class PageDataExporterTest
+	implements OSBAsahBatchCuratorSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "pages_info.json",

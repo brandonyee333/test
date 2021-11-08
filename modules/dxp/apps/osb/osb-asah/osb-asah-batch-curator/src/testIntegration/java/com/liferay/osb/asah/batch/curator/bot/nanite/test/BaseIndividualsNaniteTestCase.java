@@ -32,8 +32,8 @@ import java.util.Objects;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,7 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		_individual1PK = generateIndividualPK();
 		_individual2PK = generateIndividualPK();
@@ -112,7 +112,7 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 		JSONArray individualsJSONArray = faroInfoElasticsearchInvoker.get(
 			"individuals");
 
-		Assert.assertEquals(2, individualsJSONArray.length());
+		Assertions.assertEquals(2, individualsJSONArray.length());
 
 		boolean individual1Exists = false;
 		boolean individual2Exists = false;
@@ -175,8 +175,8 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 			}
 		}
 
-		Assert.assertTrue(individual1Exists);
-		Assert.assertTrue(individual2Exists);
+		Assertions.assertTrue(individual1Exists);
+		Assertions.assertTrue(individual2Exists);
 	}
 
 	protected abstract String generateIndividualPK();
@@ -247,7 +247,7 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 		String fieldName, JSONObject individualJSONObject, String key,
 		String value) {
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			value,
 			JSONUtil.getValue(
 				individualJSONObject, "JSONObject/demographics",

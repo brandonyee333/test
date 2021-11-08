@@ -14,13 +14,17 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
+import com.liferay.osb.asah.batch.curator.OSBAsahBatchCuratorSpringTestContext;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public abstract class BaseNaniteTestCase {
+public abstract class BaseNaniteTestCase
+	implements OSBAsahBatchCuratorSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	protected ElasticsearchInvoker cerebroInfoElasticsearchInvoker;

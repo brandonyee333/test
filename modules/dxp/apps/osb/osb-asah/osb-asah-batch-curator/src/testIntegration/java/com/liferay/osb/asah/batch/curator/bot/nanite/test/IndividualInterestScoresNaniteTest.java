@@ -39,7 +39,6 @@ import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;
 
@@ -50,20 +49,18 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Edward Kwok-Yu Wong
  * @author Michael Bowerman
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(
+@ContextConfiguration(
 	classes = {
 		OSBAsahBatchCuratorSpringBootApplication.class,
 		NaniteTestConfiguration.class
@@ -71,7 +68,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 )
 public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		DataSource dataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildLiferayDataSource());
@@ -135,7 +132,7 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 		for (int i = 0; i < interestsJSONArray.length(); i++) {
 			JSONObject interestJSONObject = interestsJSONArray.getJSONObject(i);
 
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				DateUtil.addDays(dayDateString, -2),
 				interestJSONObject.getString("dateRecorded))"));
 		}
@@ -147,7 +144,7 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 			JSONObject visitedPageJSONObject =
 				visitedPagesJSONArray.getJSONObject(i);
 
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				DateUtil.addDays(dayDateString, -30),
 				visitedPageJSONObject.getString("day"));
 		}
@@ -172,10 +169,10 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 				QueryBuilders.termQuery("dateRecorded", dayDateString));
 
 			if (interestsJSONArray.length() == 0) {
-				Assert.assertTrue(
+				Assertions.assertTrue(
+					elapsedDays > 0,
 					"No positive interest scores were calculated for " +
-						dayDateString,
-					elapsedDays > 0);
+						dayDateString);
 
 				return;
 			}
@@ -233,13 +230,17 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
 		Long individualId = _individual.getId();
 
-		Assert.assertTrue(_membershipDog.isMember(individualId, segment1Id));
-		Assert.assertFalse(_membershipDog.isMember(individualId, segment2Id));
+		Assertions.assertTrue(
+			_membershipDog.isMember(individualId, segment1Id));
+		Assertions.assertFalse(
+			_membershipDog.isMember(individualId, segment2Id));
 
 		_individualInterestScoresNanite.run((JSONObject)null);
 
-		Assert.assertFalse(_membershipDog.isMember(individualId, segment1Id));
-		Assert.assertTrue(_membershipDog.isMember(individualId, segment2Id));
+		Assertions.assertFalse(
+			_membershipDog.isMember(individualId, segment1Id));
+		Assertions.assertTrue(
+			_membershipDog.isMember(individualId, segment2Id));
 	}
 
 	@Test
@@ -252,10 +253,10 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 		JSONArray interestsJSONArray = faroInfoElasticsearchInvoker.get(
 			"interests");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			0, interestsJSONArray.length(),
 			"Expected no interests to be generated, but interests were " +
-				"generated: " + interestsJSONArray,
-			0, interestsJSONArray.length());
+				"generated: " + interestsJSONArray);
 	}
 
 	@Test
@@ -282,7 +283,7 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
 		_individualInterestScoresNanite.run(dayDateString);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0,
 			faroInfoElasticsearchInvoker.count(
 				"visited-pages",
@@ -325,17 +326,17 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 				"score");
 
 			if (increasing) {
-				Assert.assertTrue(
+				Assertions.assertTrue(
+					currentDayScore > previousDayScore,
 					"Expected current day score " + currentDayScore + " to " +
 						"be greater than previous day score " +
-							previousDayScore,
-					currentDayScore > previousDayScore);
+							previousDayScore);
 			}
 			else {
-				Assert.assertTrue(
+				Assertions.assertTrue(
+					currentDayScore < previousDayScore,
 					"Expected current date score " + currentDayScore + " to " +
-						"be less than previous date score " + previousDayScore,
-					currentDayScore < previousDayScore);
+						"be less than previous date score " + previousDayScore);
 			}
 		}
 	}
@@ -348,12 +349,12 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
 			double score = interestJSONObject.getDouble("score");
 
-			Assert.assertTrue(
-				"Expected interest score to be greater than or equal to the " +
-					"threshold but was " + score + ": " + interestJSONObject,
+			Assertions.assertTrue(
 				score >=
 					IndividualInterestScoresNanite.
-						MINIMUM_INTEREST_SCORE_THRESHOLD);
+						MINIMUM_INTEREST_SCORE_THRESHOLD,
+				"Expected interest score to be greater than or equal to the " +
+					"threshold but was " + score + ": " + interestJSONObject);
 		}
 	}
 
@@ -379,10 +380,10 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 				QueryBuilders.termQuery("name", name)
 			));
 
-		Assert.assertNotNull(
+		Assertions.assertNotNull(
+			interestJSONObject,
 			"Unable to get interest score for keyword \"" + name + "\" for " +
-				"date " + dayDateString,
-			interestJSONObject);
+				"date " + dayDateString);
 
 		return interestJSONObject;
 	}

@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.InterestThresholdScoreNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.InterestScoreArm;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
@@ -35,29 +34,24 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Leslie Wong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_dataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildLiferayDataSource());
@@ -73,7 +67,7 @@ public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 	public void testNoThresholdWhenNoKeywords() throws Exception {
 		_interestThresholdScoreNanite.run(null);
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
 				"OSBAsahMarkers",
 				BoolQueryBuilderUtil.filter(
@@ -92,7 +86,7 @@ public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 
 		_interestThresholdScoreNanite.run(null);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			_interestScoreArm.computeThresholdScore("test"),
 			_getInterestThresholdScore(), _DELTA);
 	}
@@ -106,7 +100,7 @@ public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 
 		_interestThresholdScoreNanite.run(null);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			InterestScoreArm.MINIMUM_THRESHOLD_SCORE,
 			_getInterestThresholdScore(), _DELTA);
 	}
@@ -120,7 +114,7 @@ public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 
 		_interestThresholdScoreNanite.run(null);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			InterestScoreArm.MINIMUM_THRESHOLD_SCORE,
 			_getInterestThresholdScore(), _DELTA);
 	}
@@ -131,7 +125,7 @@ public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 
 		_interestThresholdScoreNanite.run(null);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			InterestScoreArm.MINIMUM_THRESHOLD_SCORE,
 			_getInterestThresholdScore(), _DELTA);
 	}

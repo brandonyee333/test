@@ -17,7 +17,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
@@ -48,7 +47,6 @@ import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
@@ -62,20 +60,16 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Vishal Reddy
  * @author Rachael Koestartyo
  * @author Michael Bowerman
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 	@Test
@@ -88,7 +82,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		segment = _segmentDog.getSegment(segment.getId());
 
-		Assert.assertEquals("READY", segment.getState());
+		Assertions.assertEquals("READY", segment.getState());
 	}
 
 	@Test
@@ -143,18 +137,18 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 		Long individual1Id = individual1.getId();
 		Long individual2Id = individual2.getId();
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_membershipDog.isMember(individual1Id, individualSegmentId));
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_membershipDog.isMember(individual2Id, individualSegmentId));
 
 		individualSegmentId = _updateDynamicMemberships(
 			"(((activities/ever ne 'Page#pageViewed#" +
 				assetJSONObject.getString("id") + "')))");
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_membershipDog.isMember(individual1Id, individualSegmentId));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_membershipDog.isMember(individual2Id, individualSegmentId));
 	}
 
@@ -169,7 +163,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		segment = _segmentDog.getSegment(segment.getId());
 
-		Assert.assertEquals("READY", segment.getState());
+		Assertions.assertEquals("READY", segment.getState());
 	}
 
 	@Test
@@ -244,22 +238,22 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		Long individual3Id = individual3.getId();
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_membershipDog.isMember(individual1Id, individualSegmentId));
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_membershipDog.isMember(individual2Id, individualSegmentId));
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_membershipDog.isMember(individual3Id, individualSegmentId));
 
 		individualSegmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''" + keyword + "'') and " +
 				"(score eq ''false'')')");
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_membershipDog.isMember(individual1Id, individualSegmentId));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_membershipDog.isMember(individual2Id, individualSegmentId));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_membershipDog.isMember(individual3Id, individualSegmentId));
 	}
 
@@ -324,18 +318,18 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 			"interests.filter(filter='(name eq ''test'') and (score eq " +
 				"''false'')')");
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_membershipDog.isMember(individual1Id, individualSegmentId));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_membershipDog.isMember(individual2Id, individualSegmentId));
 
 		individualSegmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''test'') and (score eq " +
 				"''true'')')");
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_membershipDog.isMember(individual1Id, individualSegmentId));
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_membershipDog.isMember(individual2Id, individualSegmentId));
 	}
 
@@ -376,14 +370,14 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 			"interests.filter(filter='(name eq ''test'') and (score eq " +
 				"''true'')')");
 
-		Assert.assertNull(
-			"No memberships should be added if no interest threshold exists",
+		Assertions.assertNull(
 			faroInfoElasticsearchInvoker.fetch(
 				"memberships",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
 						"individualSegmentId",
-						String.valueOf(individualSegmentId)))));
+						String.valueOf(individualSegmentId)))),
+			"No memberships should be added if no interest threshold exists");
 	}
 
 	@Test
@@ -423,7 +417,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		segment = _segmentRepository.save(segment);
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_membershipDog.isMember(individual.getId(), segment.getId()));
 
 		_updateDynamicMembershipsNanite.run(
@@ -435,7 +429,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 				"dateModified", DateUtil.newDateString()
 			));
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_membershipDog.isMember(individual.getId(), segment.getId()));
 
 		individual.setOrganizationIds(Collections.emptySet());
@@ -451,7 +445,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 					"]))"
 			));
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_membershipDog.isMember(individual.getId(), segment.getId()));
 	}
 
@@ -490,7 +484,8 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 		List<Long> individualIds = _membershipDog.getActiveIndividualIds(
 			segment.getId());
 
-		Assert.assertEquals(individualIds.toString(), 1, individualIds.size());
+		Assertions.assertEquals(
+			1, individualIds.size(), individualIds.toString());
 	}
 
 	@Test
@@ -527,7 +522,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		segment = _segmentRepository.save(segment);
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_membershipDog.isMember(individual.getId(), segment.getId()));
 
 		_updateDynamicMembershipsNanite.run(
@@ -539,7 +534,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 				"dateModified", DateUtil.newDateString()
 			));
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_membershipDog.isMember(individual.getId(), segment.getId()));
 
 		individual.setRoleIds(Collections.emptySet());
@@ -555,7 +550,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 					"]))"
 			));
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_membershipDog.isMember(individual.getId(), segment.getId()));
 	}
 
@@ -601,7 +596,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 		_updateDynamicMemberships(
 			"(((dataSourceAccountPKs/accountPKs eq '345')))");
 
-		Assert.assertEquals(1, _membershipRepository.count());
+		Assertions.assertEquals(1, _membershipRepository.count());
 
 		Iterable<Membership> iterable = _membershipRepository.findAll();
 
@@ -612,7 +607,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 		individual = _individualDog.fetchIndividual(
 			membership.getIndividualId());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Collections.singleton(
 				new Individual.DataSourceAccountPK(dataSourceIndividual)),
 			individual.getDataSourceAccountPKs());

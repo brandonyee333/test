@@ -15,37 +15,31 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.ExperimentNanite;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.http.ExperimentHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class ExperimentNaniteTest extends BaseNaniteTestCase {
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		faroInfoElasticsearchInvoker.add(
 			"experiments",
@@ -153,9 +147,10 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 		JSONObject experimentJSONObject = faroInfoElasticsearchInvoker.get(
 			"experiments", "1");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"RUNNING", experimentJSONObject.getString("status"));
-		Assert.assertNull(experimentJSONObject.optString("finishedDate", null));
+		Assertions.assertNull(
+			experimentJSONObject.optString("finishedDate", null));
 	}
 
 	private JSONObject _createExperimentVariantMetricJSONObject(
@@ -187,12 +182,12 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 		JSONObject experimentJSONObject = faroInfoElasticsearchInvoker.get(
 			"experiments", "1");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedStatus, experimentJSONObject.getString("status"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			winnerDXPVariantId,
 			experimentJSONObject.optString("winnerDXPVariantId", null));
-		Assert.assertNotNull(
+		Assertions.assertNotNull(
 			experimentJSONObject.optString("finishedDate", null));
 	}
 

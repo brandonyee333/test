@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.SalesforceAccountsNanite;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Field;
@@ -24,23 +23,18 @@ import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Michael Bowerman
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class SalesforceAccountsNaniteTest extends BaseNaniteTestCase {
 
 	@ElasticsearchIndex(
@@ -74,7 +68,7 @@ public class SalesforceAccountsNaniteTest extends BaseNaniteTestCase {
 		Account account = _accountDog.populateAccount(
 			accountOptional.get(), null);
 
-		Assert.assertNotNull(account);
+		Assertions.assertNotNull(account);
 
 		_assertField(
 			account, "342837044336786766", "accountPK", "Text", "id",
@@ -168,12 +162,12 @@ public class SalesforceAccountsNaniteTest extends BaseNaniteTestCase {
 
 		Field field = fields.get(0);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Long.valueOf(dataSourceId), field.getDataSourceId());
-		Assert.assertEquals(fieldType, field.getFieldType());
-		Assert.assertEquals(fieldName, field.getName());
-		Assert.assertEquals(sourceName, field.getSourceName());
-		Assert.assertEquals(value, field.getValue());
+		Assertions.assertEquals(fieldType, field.getFieldType());
+		Assertions.assertEquals(fieldName, field.getName());
+		Assertions.assertEquals(sourceName, field.getSourceName());
+		Assertions.assertEquals(value, field.getValue());
 	}
 
 	@Autowired

@@ -15,14 +15,12 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.DataControlNanite;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.io.File;
 
@@ -41,24 +39,20 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author Matthew Kong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class DataControlNaniteTest extends BaseNaniteTestCase {
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		_exportPath = Files.createTempDirectory("export");
 
@@ -66,7 +60,7 @@ public class DataControlNaniteTest extends BaseNaniteTestCase {
 			_dataControlNanite, "_exportPathName", _exportPath.toString());
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		File folder = _exportPath.toFile();
 
@@ -113,9 +107,9 @@ public class DataControlNaniteTest extends BaseNaniteTestCase {
 			JSONObject dataControlTask =
 				dataControlTasksJSONArray.getJSONObject(i);
 
-			Assert.assertNotNull(dataControlTask.getString("completeDate"));
-			Assert.assertNotNull(dataControlTask.getString("startDate"));
-			Assert.assertEquals(
+			Assertions.assertNotNull(dataControlTask.getString("completeDate"));
+			Assertions.assertNotNull(dataControlTask.getString("startDate"));
+			Assertions.assertEquals(
 				DataControlTaskStatus.COMPLETED.toString(),
 				dataControlTask.getString("status"));
 		}
@@ -123,12 +117,12 @@ public class DataControlNaniteTest extends BaseNaniteTestCase {
 		JSONArray suppressionsJSONArray = faroInfoElasticsearchInvoker.get(
 			"suppressions", QueryBuilders.matchAllQuery());
 
-		Assert.assertEquals(1, suppressionsJSONArray.length());
+		Assertions.assertEquals(1, suppressionsJSONArray.length());
 
 		JSONObject suppressionJSONObject = suppressionsJSONArray.getJSONObject(
 			0);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"jane.doe@liferay.com",
 			suppressionJSONObject.getString("emailAddress"));
 
@@ -139,14 +133,14 @@ public class DataControlNaniteTest extends BaseNaniteTestCase {
 					"fields.emailAddress", "john.doe@liferay.com"),
 				0, DXPEntity.Type.USER);
 
-		Assert.assertTrue(dxpEntities.isEmpty());
+		Assertions.assertTrue(dxpEntities.isEmpty());
 
-		Assert.assertNull(
+		Assertions.assertNull(
 			faroInfoElasticsearchInvoker.fetch(
 				"individuals",
 				QueryBuilders.termQuery(
 					"demographics.email.value", "john.doe@liferay.com")));
-		Assert.assertNull(
+		Assertions.assertNull(
 			_salesforceRawElasticsearchInvoker.fetch(
 				"individuals",
 				QueryBuilders.termQuery("email", "john.doe@liferay.com")));
@@ -155,7 +149,7 @@ public class DataControlNaniteTest extends BaseNaniteTestCase {
 
 		File file = path.toFile();
 
-		Assert.assertTrue(file.length() > 2000);
+		Assertions.assertTrue(file.length() > 2000);
 	}
 
 	private static final Log _log = LogFactory.getLog(

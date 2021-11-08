@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteIndividualSegmentTasksNanite;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipChangeDog;
@@ -28,7 +27,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
@@ -41,18 +39,14 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Leslie Wong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class DeleteIndividualSegmentTasksNaniteTest extends BaseNaniteTestCase {
 
 	@Test
@@ -94,26 +88,26 @@ public class DeleteIndividualSegmentTasksNaniteTest extends BaseNaniteTestCase {
 		_deleteIndividualSegmentTasksNanite.run(
 			JSONUtil.put("individualSegmentId", String.valueOf(segmentId)));
 
-		Assert.assertFalse(
-			"Entries within visited-pages related to the deleted individual " +
-				"segment should be deleted",
+		Assertions.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
 				"visited-pages",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("ownerId", segmentId)
 				).filter(
 					QueryBuilders.termQuery("ownerType", "individual-segment")
-				)));
+				)),
+			"Entries within visited-pages related to the deleted individual " +
+				"segment should be deleted");
 
 		for (String collectionName :
 				new String[] {"memberships", "membership-changes"}) {
 
-			Assert.assertFalse(
-				"Entries within " + collectionName + " related to the " +
-					"deleted individual segment should be deleted",
+			Assertions.assertFalse(
 				faroInfoElasticsearchInvoker.exists(
 					collectionName,
-					QueryBuilders.termQuery("individualSegmentId", segmentId)));
+					QueryBuilders.termQuery("individualSegmentId", segmentId)),
+				"Entries within " + collectionName + " related to the " +
+					"deleted individual segment should be deleted");
 		}
 
 		individual = _individualDog.fetchIndividual(individual.getId());
@@ -123,10 +117,10 @@ public class DeleteIndividualSegmentTasksNaniteTest extends BaseNaniteTestCase {
 		Iterator<Long> iterator = segmentIds.iterator();
 
 		while (iterator.hasNext()) {
-			Assert.assertNotSame(
+			Assertions.assertNotSame(
+				segmentId, iterator.next(),
 				"Individual segment ID should be removed from individual on " +
-					"individual segment deletion",
-				segmentId, iterator.next());
+					"individual segment deletion");
 		}
 	}
 

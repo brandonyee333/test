@@ -14,9 +14,8 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
+import com.liferay.osb.asah.batch.curator.OSBAsahBatchCuratorSpringTestContext;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteTempFilesNanite;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.io.File;
 
@@ -32,24 +31,21 @@ import java.time.ZoneOffset;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author Matthew Kong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-public class DeleteTempFilesNaniteTest {
+public class DeleteTempFilesNaniteTest
+	implements OSBAsahBatchCuratorSpringTestContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		_tempPath = Files.createTempDirectory("temp");
 
@@ -57,7 +53,7 @@ public class DeleteTempFilesNaniteTest {
 			_deleteTempFilesNanite, "_tempPathName", _tempPath.toString());
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		File folder = _tempPath.toFile();
 
@@ -97,11 +93,11 @@ public class DeleteTempFilesNaniteTest {
 
 		File oldCSVFile = oldCSVPath.toFile();
 
-		Assert.assertFalse(oldCSVFile.exists());
+		Assertions.assertFalse(oldCSVFile.exists());
 
 		File newCSVFile = newCSVPath.toFile();
 
-		Assert.assertTrue(newCSVFile.exists());
+		Assertions.assertTrue(newCSVFile.exists());
 	}
 
 	private static final Log _log = LogFactory.getLog(

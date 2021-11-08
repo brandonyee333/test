@@ -15,14 +15,12 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.InterestTopicsNanite;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.dog.InterestTopicDog;
 import com.liferay.osb.asah.common.entity.InterestTopic;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;
 import java.util.Objects;
@@ -31,18 +29,14 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Victor Oliveira
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
 
 	@RepositoryResource(
@@ -56,12 +50,13 @@ public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
 		List<InterestTopic> interestTopics =
 			_interestTopicDog.getInterestTopics();
 
-		Assert.assertFalse(interestTopics.isEmpty());
+		Assertions.assertFalse(interestTopics.isEmpty());
 
 		InterestTopic interestTopic = interestTopics.get(0);
 
-		Assert.assertTrue(StringUtils.isNotEmpty(interestTopic.getTerm()));
-		Assert.assertTrue(StringUtils.isNotEmpty(interestTopic.getTermType()));
+		Assertions.assertTrue(StringUtils.isNotEmpty(interestTopic.getTerm()));
+		Assertions.assertTrue(
+			StringUtils.isNotEmpty(interestTopic.getTermType()));
 	}
 
 	@ElasticsearchIndex(
@@ -79,9 +74,9 @@ public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
 		List<InterestTopic> interestTopics =
 			_interestTopicDog.getInterestTopics();
 
-		Assert.assertFalse(_matchAny(interestTopics, "java"));
-		Assert.assertFalse(_matchAny(interestTopics, "jquery"));
-		Assert.assertTrue(_matchAny(interestTopics, "php"));
+		Assertions.assertFalse(_matchAny(interestTopics, "java"));
+		Assertions.assertFalse(_matchAny(interestTopics, "jquery"));
+		Assertions.assertTrue(_matchAny(interestTopics, "php"));
 	}
 
 	private boolean _matchAny(List<InterestTopic> interestTopics, String term) {

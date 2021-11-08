@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.StaleDynamicIndividualSegmentsNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
@@ -38,7 +37,6 @@ import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.ArrayList;
@@ -54,11 +52,10 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
@@ -66,17 +63,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Leslie Wong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class StaleDynamicIndividualSegmentsNaniteTest
 	extends BaseNaniteTestCase {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_mock();
 
@@ -99,7 +93,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 		_individual = _individualDog.addIndividual(individual, false);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		faroInfoElasticsearchInvoker.delete(
 			"OSBAsahMarkers", "StaleDynamicIndividualSegmentsNanite");
@@ -121,19 +115,19 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			String individualSegmentActivityFilterDuration =
 				_getIndividualSegmentActivityFilterDuration(membership);
 
-			Assert.assertEquals(
+			Assertions.assertEquals(
+				"INACTIVE", membership.getStatus(),
 				"Membership should be deactivated if no activities were " +
 					"found for an individual within " +
-						individualSegmentActivityFilterDuration,
-				"INACTIVE", membership.getStatus());
+						individualSegmentActivityFilterDuration);
 
 			List<Long> individualIds = _individualDog.getIdsBySegmentId(
 				membership.getIndividualSegmentId());
 
-			Assert.assertFalse(
+			Assertions.assertFalse(
+				individualIds.contains(membership.getIndividualId()),
 				"Individual segment ID should be removed from individual " +
-					"when membership is deactivated",
-				individualIds.contains(membership.getIndividualId()));
+					"when membership is deactivated");
 		}
 	}
 
@@ -151,9 +145,9 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 			Membership membership = membershipOptional.get();
 
-			Assert.assertTrue(
-				"Membership should remain active if activities were found",
-				Objects.equals(membership.getStatus(), "ACTIVE"));
+			Assertions.assertTrue(
+				Objects.equals(membership.getStatus(), "ACTIVE"),
+				"Membership should remain active if activities were found");
 		}
 	}
 
@@ -177,16 +171,16 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 				_getIndividualSegmentActivityFilterDuration(membership);
 
 			if (Objects.equals(membership.getStatus(), "ACTIVE")) {
-				Assert.assertEquals(
+				Assertions.assertEquals(
+					"last7Days", individualSegmentActivityFilterDuration,
 					"Membership should remain active if activities were " +
-						"found within the last 7 days",
-					"last7Days", individualSegmentActivityFilterDuration);
+						"found within the last 7 days");
 			}
 			else {
-				Assert.assertEquals(
+				Assertions.assertEquals(
+					"today", individualSegmentActivityFilterDuration,
 					"Membership should be deactivated if no activities were " +
-						"found within today",
-					"today", individualSegmentActivityFilterDuration);
+						"found within today");
 			}
 		}
 	}
@@ -209,10 +203,10 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			String individualSegmentActivityFilterDuration =
 				_getIndividualSegmentActivityFilterDuration(membership);
 
-			Assert.assertTrue(
+			Assertions.assertTrue(
+				Objects.equals(membership.getStatus(), "ACTIVE"),
 				"Membership should remain active if activities were found " +
-					"within " + individualSegmentActivityFilterDuration,
-				Objects.equals(membership.getStatus(), "ACTIVE"));
+					"within " + individualSegmentActivityFilterDuration);
 		}
 	}
 
@@ -233,7 +227,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			JSONObject individualSegmentJSONObject =
 				individualSegmentsJSONArray.getJSONObject(i);
 
-			Assert.assertTrue(
+			Assertions.assertTrue(
 				faroInfoElasticsearchInvoker.exists(
 					"memberships",
 					BoolQueryBuilderUtil.filter(
@@ -251,7 +245,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			JSONObject individualSegmentJSONObject =
 				individualSegmentsJSONArray.getJSONObject(i);
 
-			Assert.assertFalse(
+			Assertions.assertFalse(
 				faroInfoElasticsearchInvoker.exists(
 					"memberships",
 					BoolQueryBuilderUtil.filter(

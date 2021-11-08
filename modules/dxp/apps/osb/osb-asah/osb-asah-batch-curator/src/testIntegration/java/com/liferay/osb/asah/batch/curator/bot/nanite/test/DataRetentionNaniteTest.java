@@ -15,25 +15,19 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.DataRetentionNanite;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Matthew Kong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class DataRetentionNaniteTest extends BaseNaniteTestCase {
 
 	@ElasticsearchIndex(
@@ -44,7 +38,7 @@ public class DataRetentionNaniteTest extends BaseNaniteTestCase {
 	public void testDeleteAssets() throws Exception {
 		_dataRetentionNanite.run(null);
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new String[] {"101", "102"},
 			JSONUtil.toStringArray(
 				_cerebroInfoElasticsearchInvoker.get("blogs"), "id"));
@@ -58,7 +52,7 @@ public class DataRetentionNaniteTest extends BaseNaniteTestCase {
 	public void testDeleteIndividuals() throws Exception {
 		_dataRetentionNanite.run(null);
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new String[] {"101", "104", "105"},
 			JSONUtil.toStringArray(
 				faroInfoElasticsearchInvoker.get("individuals"), "id"));

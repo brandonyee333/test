@@ -15,29 +15,23 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.CSVIndividualsNanite;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.HashMap;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Vishal Reddy
  * @author Leslie Wong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 
 	@Test
@@ -106,11 +100,11 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 		long individualCount = faroInfoElasticsearchInvoker.count(
 			"individuals", QueryBuilders.matchAllQuery());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			1, individualCount,
 			"Found " + individualCount + " individuals when 1 individual is " +
 				"expected from 3 CSV individuals with the same email address " +
-					"in different casing",
-			1, individualCount);
+					"in different casing");
 	}
 
 	@Override

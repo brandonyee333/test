@@ -14,23 +14,21 @@
 
 package com.liferay.osb.asah.batch.curator.bot.scheduling.test;
 
+import com.liferay.osb.asah.batch.curator.OSBAsahBatchCuratorSpringTestContext;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -39,11 +37,11 @@ import org.springframework.scheduling.support.CronTrigger;
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-public class AsahTaskSchedulerTest {
+public class AsahTaskSchedulerTest
+	implements OSBAsahBatchCuratorSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		Mockito.when(
 			_threadPoolTaskScheduler.schedule(
@@ -72,19 +70,21 @@ public class AsahTaskSchedulerTest {
 		Map<String, ScheduledFuture<?>> scheduledFuturesMap =
 			_asahTaskScheduler.getScheduledFuturesMap();
 
-		Assert.assertEquals(
-			scheduledFuturesMap.toString(), 1, scheduledFuturesMap.size());
-		Assert.assertTrue(
+		Assertions.assertEquals(
+			1, scheduledFuturesMap.size(), scheduledFuturesMap.toString());
+		Assertions.assertTrue(
 			scheduledFuturesMap.containsKey("450553576847486528"));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testScheduleFail() {
-		_asahTaskScheduler.schedule(
-			"",
-			() -> {
-			},
-			null);
+		Assertions.assertThrows(
+			IllegalArgumentException.class,
+			() -> _asahTaskScheduler.schedule(
+				"",
+				() -> {
+				},
+				null));
 	}
 
 	@Test
@@ -103,8 +103,8 @@ public class AsahTaskSchedulerTest {
 
 		_asahTaskScheduler.unschedule("450553576847486528");
 
-		Assert.assertEquals(
-			scheduledFuturesMap.toString(), 0, scheduledFuturesMap.size());
+		Assertions.assertEquals(
+			0, scheduledFuturesMap.size(), scheduledFuturesMap.toString());
 
 		Mockito.verify(
 			scheduledFuture, Mockito.times(1)
@@ -113,9 +113,11 @@ public class AsahTaskSchedulerTest {
 		);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testUnscheduleFail() {
-		_asahTaskScheduler.unschedule(null);
+		Assertions.assertThrows(
+			IllegalArgumentException.class,
+			() -> _asahTaskScheduler.unschedule(null));
 	}
 
 	@Autowired
