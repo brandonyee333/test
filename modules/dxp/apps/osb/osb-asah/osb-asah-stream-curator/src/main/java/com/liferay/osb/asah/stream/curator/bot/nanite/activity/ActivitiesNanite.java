@@ -173,9 +173,15 @@ public class ActivitiesNanite implements Nanite {
 				dayDate, userId);
 
 			if (activityGroup != null) {
-				return _activityGroupDog.updatedActivityGroup(
-					activityGroup.getId(), analyticsEvent.getEventDate(),
-					eventLocalDateTime);
+				Date endDate = activityGroup.getEndDate();
+
+				if (endDate.before(analyticsEvent.getEventDate())) {
+					activityGroup = _activityGroupDog.updatedActivityGroup(
+						activityGroup.getId(), analyticsEvent.getEventDate(),
+						eventLocalDateTime);
+				}
+
+				return activityGroup;
 			}
 
 			return _activityGroupDog.addActivityGroup(
