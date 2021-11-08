@@ -3958,9 +3958,9 @@ border-color: #EBEBEB; }
 color: #8C8C8C;
 font-size: 12px; }
 
-.taglib-discussion .alloy-editor-placeholder {
+.taglib-discussion .alloy-editor {
 min-height: 90px; }
-.taglib-discussion .alloy-editor-placeholder p {
+.taglib-discussion .alloy-editor p {
 	margin-bottom: 0; }
 .taglib-discussion .add-comment .row {
 margin-top: 30px; }
@@ -3986,9 +3986,9 @@ width: auto; }
 .taglib-discussion .lfr-discussion:hover .lfr-discussion-actions li a, .taglib-discussion .lfr-discussion .lfr-discussion-actions li a:focus {
 	clip: rect(auto auto auto auto);
 	position: static; }
-.taglib-discussion .lfr-discussion .lfr-discussion-form-edit .alloy-editor-placeholder {
+.taglib-discussion .lfr-discussion .lfr-discussion-form-edit .alloy-editor {
 	border-left: 2px solid transparent; }
-	.taglib-discussion .lfr-discussion .lfr-discussion-form-edit .alloy-editor-placeholder p {
+	.taglib-discussion .lfr-discussion .lfr-discussion-form-edit .alloy-editor p {
 	  margin-bottom: 10px; }
 .taglib-discussion .lfr-discussion-details {
 float: left;
@@ -4092,7 +4092,7 @@ height: 0; }
 border-top-color: rgba(176, 180, 187, 0.5); }
 .taglib-discussion .lfr-discussion.depth-0 {
 	border-top-color: #B0B4BB; }
-.taglib-discussion .lfr-discussion .lfr-discussion-form-edit .alloy-editor-placeholder {
+.taglib-discussion .lfr-discussion .lfr-discussion-form-edit .alloy-editor {
 	border-left-color: #DBDDE1; }
 @media (min-width: 768px) {
 .taglib-discussion .lfr-discussion-details .taglib-user-display {

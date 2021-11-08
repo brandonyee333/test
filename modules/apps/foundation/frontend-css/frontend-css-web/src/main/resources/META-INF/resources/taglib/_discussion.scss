@@ -2,7 +2,7 @@
 @import "mixins";
 
 .taglib-discussion {
-	.alloy-editor-placeholder {
+	.alloy-editor {
 		min-height: 90px;
 
 		p {
@@ -17,7 +17,7 @@
 	}
 
 	.lfr-discussion {
-		.lfr-discussion-form-edit .alloy-editor-placeholder {
+		.lfr-discussion-form-edit .alloy-editor {
 			border-left: 2px solid transparent;
 
 			p {

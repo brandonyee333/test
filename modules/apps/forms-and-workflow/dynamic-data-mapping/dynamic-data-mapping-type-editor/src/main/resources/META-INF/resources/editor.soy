@@ -30,8 +30,15 @@
 
 		<div class="input-group-container">
 			<div class="alloy-editor-container" id="{$name}Container">
-				<div class="alloy-editor alloy-editor-placeholder form-control" contenteditable="false" data-placeholder="{$placeholder}" id="{$name}Editor" name="{$name}Editor">
+				<div class="alloy-editor form-control" contenteditable="false" data-placeholder="{$placeholder}" id="{$name}Editor" name="{$name}Editor">
 					{$value|noAutoescape}
+				</div>
+
+				<div class="alloy-editor-placeholder">
+					{$placeholder}
+					{if $required}
+						<span class="text-warning">*</span>
+					{/if}
 				</div>
 			</div>
 

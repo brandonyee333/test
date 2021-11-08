@@ -152,10 +152,10 @@
 	}
 
 	.edit-entry {
-		.alloy-editor-placeholder:before {
+		.alloy-editor.ae-placeholder ~ .alloy-editor-placeholder {
 			display: block;
-			padding-right: 12px;
 			text-align: inherit;
+			top: 1.25rem;
 			width: 100%;
 		}
 
@@ -174,7 +174,7 @@
 		.cover-image-caption .alloy-editor {
 			padding-left: 0;
 
-			&.alloy-editor-placeholder:empty:not(:focus) {
+		~ .alloy-editor-placeholder:empty:not(:focus) {
 				border-left-width: 0;
 			}
 		}
@@ -234,7 +234,7 @@
 			margin-right: 30px;
 			margin-top: 0;
 
-			.alloy-editor-placeholder p {
+			.alloy-editor p {
 				margin-bottom: 0;
 			}
 		}

@@ -466,16 +466,12 @@ $horizontal-spacing: 35px;
 			margin: 0;
 		}
 
-		.ae-placeholder:empty:before {
-			content: attr(data-placeholder);
-		}
-
-		.alloy-editor.alloy-editor-placeholder,
-		.alloy-editor.alloy-editor-placeholder:empty:not(:focus),
+		.alloy-editor ~ .alloy-editor-placeholder,
+		.alloy-editor ~ .alloy-editor-placeholder:empty:not(:focus),
 		.ddl-form-name,
 		.ddl-form-description {
 			border-width: 0;
-			color: #FFF;
+			color: #2B4259;
 			margin: 0;
 			padding-left: 0;
 
