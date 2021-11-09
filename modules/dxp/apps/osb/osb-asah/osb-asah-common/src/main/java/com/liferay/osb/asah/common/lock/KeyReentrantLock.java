@@ -14,10 +14,12 @@
 
 package com.liferay.osb.asah.common.lock;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -25,16 +27,19 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class KeyReentrantLock {
 
-	public static synchronized ReentrantLock getReentrantLock(
-		Class<?> clazz, String key) {
-
-		return _reentrantLocks.computeIfAbsent(
+	public static ReentrantLock getReentrantLock(Class<?> clazz, String key) {
+		return _reentrantLocks.get(
 			ProjectIdThreadLocal.getProjectId() + "#" + clazz.getSimpleName() +
 				"#" + key,
 			computedKey -> new ReentrantLock());
 	}
 
-	private static final Map<String, ReentrantLock> _reentrantLocks =
-		new ConcurrentHashMap<>();
+	private static final Cache<String, ReentrantLock> _reentrantLocks =
+		Caffeine.newBuilder(
+		).expireAfterAccess(
+			10, TimeUnit.MINUTES
+		).maximumSize(
+			100000
+		).build();
 
 }
