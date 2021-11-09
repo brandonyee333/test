@@ -26,7 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 public class Geolocation {
 
 	public static Geolocation any() {
-		return _GEOLOCATION_ANY;
+		return new Geolocation(DataConstants.ANY, DataConstants.ANY);
 	}
 
 	public static Geolocation country(String country) {
@@ -83,9 +83,6 @@ public class Geolocation {
 		_country = country;
 		_region = region;
 	}
-
-	private static final Geolocation _GEOLOCATION_ANY = new Geolocation(
-		DataConstants.ANY, DataConstants.ANY);
 
 	private final String _country;
 	private final String _region;
