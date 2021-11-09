@@ -44,7 +44,7 @@ public interface EventAttributeDefinitionRepository
 		@Param("eventDefinitionId") Long eventDefinitionId);
 
 	@Cacheable
-	public EventAttributeDefinition findByName(String name);
+	public Optional<EventAttributeDefinition> findByName(String name);
 
 	@Cacheable
 	public List<EventAttributeDefinition> findByType(

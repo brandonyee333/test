@@ -100,7 +100,10 @@ public class EventAttributeDefinitionDog {
 	public EventAttributeDefinition fetchEventAttributeDefinitionByName(
 		String name) {
 
-		return _eventAttributeDefinitionRepository.findByName(name);
+		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
+			_eventAttributeDefinitionRepository.findByName(name);
+
+		return eventAttributeDefinitionOptional.orElse(null);
 	}
 
 	public EventAttributeDefinition.DataType getDataType(
