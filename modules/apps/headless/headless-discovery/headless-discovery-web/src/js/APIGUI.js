@@ -34,6 +34,10 @@ const APIGUI = () => {
 	const [showHeaders, setShowHeaders] = useState(false);
 	const [showGraphQL, setShowGraphQL] = useState(false);
 	const [headers, setHeaders] = useState([{key: '', value: ''}]);
+	const contextPath = window.location.pathname.substring(
+		0,
+		window.location.pathname.indexOf('/o/')
+	);
 
 	const {observer, onClose} = useModal({
 		onClose: () => setShowHeaders(false),
@@ -46,7 +50,7 @@ const APIGUI = () => {
 	};
 
 	useEffect(() => {
-		apiFetch('/o/openapi', 'get', {}).then((response) => {
+		apiFetch(contextPath + '/o/openapi', 'get', {}).then((response) => {
 			setEndpoints(
 				Object.keys(response)
 					.flatMap((key) => response[key])
@@ -58,7 +62,7 @@ const APIGUI = () => {
 	const graphQLFetcher = useCallback(
 		(graphQLParams) =>
 			apiFetch(
-				'/o/graphql',
+				contextPath + '/o/graphql',
 				'post',
 				graphQLParams,
 				'application/json',
