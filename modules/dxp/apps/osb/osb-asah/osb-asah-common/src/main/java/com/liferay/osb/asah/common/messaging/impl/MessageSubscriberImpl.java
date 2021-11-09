@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.common.messaging.impl;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+
 import com.google.api.gax.rpc.UnaryCallable;
 import com.google.cloud.pubsub.v1.stub.SubscriberStub;
 import com.google.protobuf.ByteString;
@@ -29,6 +32,7 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -74,11 +78,24 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 
 				ackIds.add(receivedMessage.getAckId());
 
-				PubsubMessage pubsubMessage = receivedMessage.getMessage();
+				String ackId = _ackIds.getIfPresent(receivedMessage.getAckId());
 
-				ByteString byteString = pubsubMessage.getData();
+				if (ackId == null) {
+					PubsubMessage pubsubMessage = receivedMessage.getMessage();
 
-				messages.add(byteString.toStringUtf8());
+					ByteString byteString = pubsubMessage.getData();
+
+					messages.add(byteString.toStringUtf8());
+
+					_ackIds.put(
+						receivedMessage.getAckId(), receivedMessage.getAckId());
+				}
+				else {
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							"Duplicated ackId: " + receivedMessage.getAckId());
+					}
+				}
 			}
 
 			if (!ackIds.isEmpty()) {
@@ -124,6 +141,13 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 
 	private static final Log _log = LogFactory.getLog(
 		MessageSubscriberImpl.class);
+
+	private static final Cache<String, String> _ackIds = Caffeine.newBuilder(
+	).expireAfterAccess(
+		10, TimeUnit.MINUTES
+	).maximumSize(
+		100000
+	).build();
 
 	private final PubSubClientFactory _pubSubClientFactory;
 	private final Subscription _subscription;
