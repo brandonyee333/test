@@ -93,7 +93,7 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 				else {
 					if (_log.isDebugEnabled()) {
 						_log.debug(
-							"Duplicated ackId: " + receivedMessage.getAckId());
+							"Duplicate ACK ID: " + receivedMessage.getAckId());
 					}
 				}
 			}
