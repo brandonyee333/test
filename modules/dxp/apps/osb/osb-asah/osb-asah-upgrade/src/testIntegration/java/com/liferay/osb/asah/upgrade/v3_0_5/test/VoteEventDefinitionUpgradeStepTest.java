@@ -18,19 +18,16 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dog.EventStorageDog;
-import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
-import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
-import com.liferay.osb.asah.upgrade.v3_0_5.CustomEventDefinitionUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_5.VoteEventDefinitionUpgradeStep;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,31 +43,19 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
-public class CustomEventDefinitionUpgradeStepTest {
+public class VoteEventDefinitionUpgradeStepTest {
 
 	@SQLResource(resourcePath = "custom_event_definition_upgrade_step_test.sql")
 	@Test
 	public void testUpgrade() throws Exception {
-		_eventStorageDog.store(
-			_createAnalyticsEvent("commentPosted", Collections.emptyMap()),
-			"1");
-		_eventStorageDog.store(
-			_createAnalyticsEvent("VOTE", Collections.emptyMap()), "1");
+		_eventStorageDog.store(_createAnalyticsEvent("VOTE"), "1");
 
 		EventDefinition voteEventDefinition = _getEventDefinition("VOTE");
 
 		Assert.assertEquals(
 			EventDefinition.Type.CUSTOM, voteEventDefinition.getType());
 
-		_customEventDefinitionUpgradeStep.upgrade("");
-
-		Assert.assertNull(
-			_eventDefinitionDog.fetchEventDefinitionByName("commentPosted"));
-
-		EventDefinition postedEventDefinition = _getEventDefinition("posted");
-
-		Assert.assertEquals(
-			1, _eventDog.countEvents(postedEventDefinition.getId()));
+		_voteEventDefinitionUpgradeStep.upgrade("");
 
 		Assert.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
@@ -86,68 +71,6 @@ public class CustomEventDefinitionUpgradeStepTest {
 
 	@SQLResource(resourcePath = "custom_event_definition_upgrade_step_test.sql")
 	@Test
-	public void testUpgradeCommentPosted() throws Exception {
-		Event event = _eventStorageDog.store(
-			_createAnalyticsEvent(
-				"commentPosted",
-				new HashMap<String, String>() {
-					{
-						put("className", "com.liferay.blogs.model.BlogsEntry");
-						put("classPK", "41543");
-						put("commentId", "42658");
-						put("text", "Test");
-					}
-				}),
-			"1");
-
-		EventDefinition postedEventDefinition = _getEventDefinition("posted");
-
-		Assert.assertNotEquals(
-			postedEventDefinition.getId(), event.getEventDefinitionId());
-
-		Assert.assertEquals(
-			0, _eventDog.countEvents(postedEventDefinition.getId()));
-
-		_customEventDefinitionUpgradeStep.upgrade("");
-
-		Long eventId = event.getId();
-
-		Assert.assertNotNull(eventId);
-
-		Optional<Event> eventOptional = _eventRepository.findById(eventId);
-
-		Assert.assertTrue(eventOptional.isPresent());
-
-		event = eventOptional.get();
-
-		postedEventDefinition = _getEventDefinition("posted");
-
-		Assert.assertEquals(
-			postedEventDefinition.getId(), event.getEventDefinitionId());
-	}
-
-	@SQLResource(resourcePath = "custom_event_definition_upgrade_step_test.sql")
-	@Test
-	public void testUpgradeNoCommentPosted() throws Exception {
-		_eventStorageDog.store(
-			_createAnalyticsEvent("posted", Collections.emptyMap()), "1");
-		_eventStorageDog.store(
-			_createAnalyticsEvent("posted", Collections.emptyMap()), "2");
-
-		_customEventDefinitionUpgradeStep.upgrade("");
-
-		EventDefinition eventDefinition = _getEventDefinition("posted");
-
-		Assert.assertEquals("posted", eventDefinition.getDisplayName());
-		Assert.assertEquals("posted", eventDefinition.getName());
-		Assert.assertEquals(
-			EventDefinition.Type.DEFAULT, eventDefinition.getType());
-		Assert.assertTrue(eventDefinition.isHidden());
-		Assert.assertEquals(2, _eventDog.countEvents(eventDefinition.getId()));
-	}
-
-	@SQLResource(resourcePath = "custom_event_definition_upgrade_step_test.sql")
-	@Test
 	public void testUpgradeNoVote1() throws Exception {
 		Assert.assertNotNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
@@ -155,7 +78,7 @@ public class CustomEventDefinitionUpgradeStepTest {
 		Assert.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("VOTE"));
 
-		_customEventDefinitionUpgradeStep.upgrade("");
+		_voteEventDefinitionUpgradeStep.upgrade("");
 
 		Assert.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
@@ -167,8 +90,7 @@ public class CustomEventDefinitionUpgradeStepTest {
 	@SQLResource(resourcePath = "custom_event_definition_upgrade_step_test.sql")
 	@Test
 	public void testUpgradeNoVote2() throws Exception {
-		_eventStorageDog.store(
-			_createAnalyticsEvent("VOTE", Collections.emptyMap()), "1");
+		_eventStorageDog.store(_createAnalyticsEvent("VOTE"), "1");
 
 		Assert.assertNotNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
@@ -177,7 +99,7 @@ public class CustomEventDefinitionUpgradeStepTest {
 
 		Assert.assertEquals("VOTE (1)", voteEventDefinition.getDisplayName());
 
-		_customEventDefinitionUpgradeStep.upgrade("");
+		_voteEventDefinitionUpgradeStep.upgrade("");
 
 		Assert.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
@@ -194,15 +116,14 @@ public class CustomEventDefinitionUpgradeStepTest {
 	@SQLResource(resourcePath = "custom_event_definition_upgrade_step_test.sql")
 	@Test
 	public void testUpgradePropertiesMaintained() throws Exception {
-		_eventStorageDog.store(
-			_createAnalyticsEvent("VOTE", Collections.emptyMap()), "1");
+		_eventStorageDog.store(_createAnalyticsEvent("VOTE"), "1");
 
 		EventDefinition eventDefinition = _getEventDefinition("VOTE");
 
 		_eventDefinitionDog.blockEventDefinitions(
 			Collections.singletonList(eventDefinition.getId()));
 
-		_customEventDefinitionUpgradeStep.upgrade("");
+		_voteEventDefinitionUpgradeStep.upgrade("");
 
 		eventDefinition = _getEventDefinition("VOTE");
 
@@ -215,10 +136,8 @@ public class CustomEventDefinitionUpgradeStepTest {
 	@SQLResource(resourcePath = "custom_event_definition_upgrade_step_test.sql")
 	@Test
 	public void testUpgradeWithVote() throws Exception {
-		_eventStorageDog.store(
-			_createAnalyticsEvent("VOTE", Collections.emptyMap()), "1");
-		_eventStorageDog.store(
-			_createAnalyticsEvent("vote", Collections.emptyMap()), "1");
+		_eventStorageDog.store(_createAnalyticsEvent("VOTE"), "1");
+		_eventStorageDog.store(_createAnalyticsEvent("vote"), "1");
 
 		EventDefinition voteEventDefinition1 = _getEventDefinition("vote");
 
@@ -232,7 +151,7 @@ public class CustomEventDefinitionUpgradeStepTest {
 		Assert.assertEquals(
 			EventDefinition.Type.CUSTOM, voteEventDefinition2.getType());
 
-		_customEventDefinitionUpgradeStep.upgrade("");
+		_voteEventDefinitionUpgradeStep.upgrade("");
 
 		voteEventDefinition1 = _getEventDefinition("vote");
 
@@ -247,14 +166,11 @@ public class CustomEventDefinitionUpgradeStepTest {
 			EventDefinition.Type.DEFAULT, voteEventDefinition2.getType());
 	}
 
-	private AnalyticsEvent _createAnalyticsEvent(
-		String eventId, Map<String, String> eventProperties) {
-
+	private AnalyticsEvent _createAnalyticsEvent(String eventId) {
 		AnalyticsEvent analyticsEvent = new AnalyticsEvent();
 
 		analyticsEvent.setApplicationId("Blog");
 		analyticsEvent.setChannelId("1");
-		analyticsEvent.setClientIP("localhost");
 		analyticsEvent.setContext(
 			new HashMap<String, String>() {
 				{
@@ -283,7 +199,7 @@ public class CustomEventDefinitionUpgradeStepTest {
 		analyticsEvent.setDataSourceId("1");
 		analyticsEvent.setEventDate(DateUtil.newDate());
 		analyticsEvent.setEventId(eventId);
-		analyticsEvent.setEventProperties(eventProperties);
+		analyticsEvent.setEventProperties(Collections.emptyMap());
 		analyticsEvent.setId(String.valueOf(UUID.randomUUID()));
 		analyticsEvent.setIndividualId("1");
 		analyticsEvent.setKnownIndividual(true);
@@ -304,9 +220,6 @@ public class CustomEventDefinitionUpgradeStepTest {
 	}
 
 	@Autowired
-	private CustomEventDefinitionUpgradeStep _customEventDefinitionUpgradeStep;
-
-	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
 
 	@Autowired
@@ -316,9 +229,9 @@ public class CustomEventDefinitionUpgradeStepTest {
 	private EventDog _eventDog;
 
 	@Autowired
-	private EventRepository _eventRepository;
+	private EventStorageDog _eventStorageDog;
 
 	@Autowired
-	private EventStorageDog _eventStorageDog;
+	private VoteEventDefinitionUpgradeStep _voteEventDefinitionUpgradeStep;
 
 }

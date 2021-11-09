@@ -16,10 +16,8 @@ package com.liferay.osb.asah.upgrade.v3_0_5;
 
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
-import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
-import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
@@ -28,8 +26,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,81 +45,10 @@ import org.springframework.stereotype.Component;
  * @author Leslie Wong
  */
 @Component
-public class CustomEventDefinitionUpgradeStep implements UpgradeStep {
+public class CommentPostedEventDefinitionUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
-		_mergeCommentPostedEventDefinition();
-
-		_swapVoteEventDefinition();
-	}
-
-	private String _getDisplayName(String displayName, Long eventDefinitionId) {
-		int nameCount = 0;
-		String originalName = displayName;
-
-		while (true) {
-			EventDefinition eventDefinition =
-				_eventDefinitionDog.fetchEventDefinitionByDisplayName(
-					displayName);
-
-			if ((eventDefinition == null) ||
-				eventDefinitionId.equals(eventDefinition.getId())) {
-
-				break;
-			}
-
-			displayName = String.format("%s (%d)", originalName, ++nameCount);
-		}
-
-		return displayName;
-	}
-
-	private List<Long> _getEventAttributeDefinitionIds(
-		EventDefinition eventDefinition) {
-
-		List<EventAttributeDefinition> eventAttributeDefinitions =
-			_eventAttributeDefinitionDog.
-				getEventAttributeDefinitionsByEventDefinitionId(
-					eventDefinition.getId());
-
-		Stream<EventAttributeDefinition> stream =
-			eventAttributeDefinitions.stream();
-
-		return stream.map(
-			EventAttributeDefinition::getId
-		).collect(
-			Collectors.toList()
-		);
-	}
-
-	private EventDefinition _getEventDefinition(String eventDefinitionName) {
-		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinitionByName(eventDefinitionName);
-
-		if (eventDefinition == null) {
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					String.format(
-						"Unable to find %s event definition. Skipping " +
-							"upgrade for %s",
-						eventDefinitionName,
-						ProjectIdThreadLocal.getProjectId()));
-			}
-
-			return null;
-		}
-
-		return eventDefinition;
-	}
-
-	@PostConstruct
-	private void _init() {
-		_namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-			_dataSource);
-	}
-
-	private void _mergeCommentPostedEventDefinition() {
 		EventDefinition commentPostedEventDefinition = _getEventDefinition(
 			"commentPosted");
 
@@ -187,77 +112,48 @@ public class CustomEventDefinitionUpgradeStep implements UpgradeStep {
 		}
 	}
 
-	private void _swapVoteEventDefinition() {
-		EventDefinition voteEventDefinition1 =
-			_eventDefinitionDog.fetchEventDefinitionByName("vote");
+	private List<Long> _getEventAttributeDefinitionIds(
+		EventDefinition eventDefinition) {
 
-		EventDefinition voteEventDefinition2 =
-			_eventDefinitionDog.fetchEventDefinitionByName("VOTE");
+		List<EventAttributeDefinition> eventAttributeDefinitions =
+			_eventAttributeDefinitionDog.
+				getEventAttributeDefinitionsByEventDefinitionId(
+					eventDefinition.getId());
 
-		if (voteEventDefinition2 == null) {
-			_updateNames(voteEventDefinition1, "VOTE");
+		Stream<EventAttributeDefinition> stream =
+			eventAttributeDefinitions.stream();
 
-			_eventDefinitionRepository.save(voteEventDefinition1);
-		}
-		else {
-			if (_eventDog.countEvents(voteEventDefinition1.getId()) > 0) {
-				voteEventDefinition2.setType(EventDefinition.Type.DEFAULT);
-				voteEventDefinition1.setBlocked(false);
-
-				_eventDefinitionRepository.save(voteEventDefinition2);
-
-				voteEventDefinition1.setType(EventDefinition.Type.CUSTOM);
-
-				_eventDefinitionRepository.save(voteEventDefinition1);
-			}
-			else {
-				_eventDefinitionDog.deleteEventDefinitionById(
-					voteEventDefinition1.getId());
-
-				if (voteEventDefinition2.isBlocked()) {
-					voteEventDefinition2.setBlocked(false);
-					voteEventDefinition2.setBlocked(false);
-					voteEventDefinition2.setBlockedLastSeenDate(null);
-					voteEventDefinition2.setBlockedLastSeenURL(null);
-					voteEventDefinition2.setBlockedReasonType(null);
-					voteEventDefinition2.setDisplayName(
-						_getDisplayName("VOTE", voteEventDefinition2.getId()));
-				}
-				else {
-					_updateNames(voteEventDefinition2, "VOTE");
-				}
-
-				voteEventDefinition2.setHidden(voteEventDefinition1.isHidden());
-				voteEventDefinition2.setType(EventDefinition.Type.DEFAULT);
-
-				_eventDefinitionRepository.save(voteEventDefinition2);
-
-				_namedParameterJdbcTemplate.batchUpdate(
-					_SQL_DELETE_EVENT_DEFINITION_EVENT_ATTRIBUTE_DEFINITION,
-					SqlParameterSourceUtils.createBatch(
-						Collections.singletonList(
-							Collections.singletonMap(
-								"eventDefinitionId",
-								voteEventDefinition1.getId()))));
-			}
-		}
+		return stream.map(
+			EventAttributeDefinition::getId
+		).collect(
+			Collectors.toList()
+		);
 	}
 
-	private void _updateNames(EventDefinition eventDefinition, String newName) {
-		String oldName = eventDefinition.getName();
+	private EventDefinition _getEventDefinition(String eventDefinitionName) {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName(eventDefinitionName);
 
-		eventDefinition.setName(newName);
+		if (eventDefinition == null) {
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					String.format(
+						"Unable to find %s event definition. Skipping " +
+							"upgrade for %s",
+						eventDefinitionName,
+						ProjectIdThreadLocal.getProjectId()));
+			}
 
-		String displayName = eventDefinition.getDisplayName();
-
-		Pattern pattern = Pattern.compile(oldName + " \\(\\d+\\)");
-
-		Matcher matcher = pattern.matcher(displayName);
-
-		if (displayName.equals(oldName) || matcher.matches()) {
-			eventDefinition.setDisplayName(
-				_getDisplayName(newName, eventDefinition.getId()));
+			return null;
 		}
+
+		return eventDefinition;
+	}
+
+	@PostConstruct
+	private void _init() {
+		_namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+			_dataSource);
 	}
 
 	private static final String
@@ -278,7 +174,7 @@ public class CustomEventDefinitionUpgradeStep implements UpgradeStep {
 							"(:globalEventAttributeDefinitionIds)";
 
 	private static final Log _log = LogFactory.getLog(
-		CustomEventDefinitionUpgradeStep.class);
+		CommentPostedEventDefinitionUpgradeStep.class);
 
 	@Autowired
 	private DataSource _dataSource;
@@ -288,12 +184,6 @@ public class CustomEventDefinitionUpgradeStep implements UpgradeStep {
 
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
-
-	@Autowired
-	private EventDefinitionRepository _eventDefinitionRepository;
-
-	@Autowired
-	private EventDog _eventDog;
 
 	private NamedParameterJdbcTemplate _namedParameterJdbcTemplate;
 

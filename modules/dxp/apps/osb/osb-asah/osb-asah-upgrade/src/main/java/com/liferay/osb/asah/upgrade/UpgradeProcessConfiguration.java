@@ -26,7 +26,8 @@ import com.liferay.osb.asah.upgrade.v3_0_0.IndividualsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.SalesforceUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.UserSessionsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_1.EventDefinitionUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_0_5.CustomEventDefinitionUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_5.CommentPostedEventDefinitionUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_5.VoteEventDefinitionUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -56,7 +57,8 @@ public class UpgradeProcessConfiguration {
 			"3.0.0", "3.0.1", _eventDefinitionUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"3.0.1", "3.0.5", _customEventDefinitionUpgradeStep);
+			"3.0.1", "3.0.5", _commentPostedEventDefinitionUpgradeStep,
+			_voteEventDefinitionUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -68,7 +70,8 @@ public class UpgradeProcessConfiguration {
 	private ChannelsUpgradeStep _channelsUpgradeStep;
 
 	@Autowired
-	private CustomEventDefinitionUpgradeStep _customEventDefinitionUpgradeStep;
+	private CommentPostedEventDefinitionUpgradeStep
+		_commentPostedEventDefinitionUpgradeStep;
 
 	@Autowired
 	private CustomEventUpgradeStep _customEventUpgradeStep;
@@ -96,5 +99,8 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private UserSessionsUpgradeStep _userSessionsUpgradeStep;
+
+	@Autowired
+	private VoteEventDefinitionUpgradeStep _voteEventDefinitionUpgradeStep;
 
 }
