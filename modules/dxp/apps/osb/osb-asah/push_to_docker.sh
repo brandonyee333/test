@@ -210,8 +210,7 @@ function generate_wedeploy_profiles {
 
 		generate_wedeploy_profile ${profile_name} ${service_name} ${file_path}
 
-		if [ ${profile_name} != "customer" ] &&
-		   [ ${profile_name} != "multitenant" ] ||
+		if [ ${profile_name} != "multitenant" ] ||
 		   [ ! ${PREVIOUS_GIT_HASH} ]
 		then
 			continue;
