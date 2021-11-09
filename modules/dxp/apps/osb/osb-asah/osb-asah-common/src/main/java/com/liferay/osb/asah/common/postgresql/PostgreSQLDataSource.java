@@ -20,9 +20,9 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import com.zaxxer.hikari.HikariDataSource;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.sql.DataSource;
@@ -67,23 +67,9 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 
 	@Override
 	protected DataSource determineTargetDataSource() {
-		Object lookupKey = determineCurrentLookupKey();
-
-		DataSource dataSource = _resolvedDataSources.get(lookupKey);
-
-		if (dataSource == null) {
-			dataSource = resolveSpecifiedDataSource(lookupKey);
-
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					String.format(
-						"DataSource %s created for %s", dataSource, lookupKey));
-			}
-
-			_resolvedDataSources.put(lookupKey, dataSource);
-		}
-
-		return dataSource;
+		return _resolvedDataSources.computeIfAbsent(
+			determineCurrentLookupKey(),
+			key -> resolveSpecifiedDataSource(key));
 	}
 
 	@Override
@@ -152,6 +138,13 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 				hikariDataSource);
 		}
 
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				String.format(
+					"DataSource %s created for %s", hikariDataSource,
+					dataSource));
+		}
+
 		return hikariDataSource;
 	}
 
@@ -190,6 +183,6 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 	private final int _hikariMaxLifetime;
 	private final int _hikariMinimumIdleSize;
 	private final Map<Object, DataSource> _resolvedDataSources =
-		new HashMap<>();
+		new ConcurrentHashMap<>();
 
 }
