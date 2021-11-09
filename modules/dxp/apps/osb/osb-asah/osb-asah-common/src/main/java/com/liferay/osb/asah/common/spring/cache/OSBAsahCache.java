@@ -45,7 +45,7 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 		Cache caffeineCache, Pool<Kryo> kryoPool, String name, Cache redisCache,
 		RedisTemplate<Object, Object> redisTemplate) {
 
-		super(false);
+		super(true);
 
 		_caffeineCache = caffeineCache;
 		_kryoPool = kryoPool;
@@ -111,12 +111,6 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 
 	@Override
 	public void put(Object key, Object value) {
-		if (!super.isAllowNullValues() && (value == null)) {
-			evict(key);
-
-			return;
-		}
-
 		_put(key, value);
 	}
 
@@ -296,6 +290,10 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 	}
 
 	private byte[] _serialize(Object object) {
+		if (object == null) {
+			return null;
+		}
+
 		Kryo kryo = _kryoPool.obtain();
 
 		try (ByteBufferOutput byteBufferOutput = new ByteBufferOutput(
