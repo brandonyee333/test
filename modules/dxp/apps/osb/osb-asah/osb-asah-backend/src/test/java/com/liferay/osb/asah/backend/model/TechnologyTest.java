@@ -20,8 +20,8 @@ import com.liferay.petra.string.StringPool;
 
 import java.util.Arrays;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -36,49 +36,49 @@ public class TechnologyTest extends BaseBeanTestCase<Technology> {
 	public void testBrowserName1() {
 		Technology technology = Technology.browserName(DataConstants.ANY);
 
-		Assert.assertEquals(Technology.any(), technology);
+		Assertions.assertEquals(Technology.any(), technology);
 	}
 
 	@Test
 	public void testBrowserName2() {
 		Technology technology = Technology.browserName(StringPool.BLANK);
 
-		Assert.assertEquals(Technology.any(), technology);
+		Assertions.assertEquals(Technology.any(), technology);
 	}
 
 	@Test
 	public void testBrowserName3() {
 		Technology technology = Technology.browserName(null);
 
-		Assert.assertEquals(Technology.any(), technology);
+		Assertions.assertEquals(Technology.any(), technology);
 	}
 
 	@Test
 	public void testDeviceType1() {
 		Technology technology = Technology.deviceType(DataConstants.ANY);
 
-		Assert.assertEquals(Technology.any(), technology);
+		Assertions.assertEquals(Technology.any(), technology);
 	}
 
 	@Test
 	public void testDeviceType2() {
 		Technology technology = Technology.deviceType(StringPool.BLANK);
 
-		Assert.assertEquals(Technology.any(), technology);
+		Assertions.assertEquals(Technology.any(), technology);
 	}
 
 	@Test
 	public void testDeviceType3() {
 		Technology technology = Technology.deviceType(null);
 
-		Assert.assertEquals(Technology.any(), technology);
+		Assertions.assertEquals(Technology.any(), technology);
 	}
 
 	@Test
 	public void testIsMobile1() {
 		Technology technology = Technology.deviceType(DataConstants.ANY);
 
-		Assert.assertFalse(technology.isMobile());
+		Assertions.assertFalse(technology.isMobile());
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class TechnologyTest extends BaseBeanTestCase<Technology> {
 		Technology technology = Technology.deviceType(
 			DataConstants.DEVICE_TYPE_MOBILE);
 
-		Assert.assertTrue(technology.isMobile());
+		Assertions.assertTrue(technology.isMobile());
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class TechnologyTest extends BaseBeanTestCase<Technology> {
 		Technology technology = Technology.deviceType(
 			DataConstants.DEVICE_TYPE_SMART_PHONE);
 
-		Assert.assertTrue(technology.isMobile());
+		Assertions.assertTrue(technology.isMobile());
 	}
 
 	@Test
@@ -102,28 +102,28 @@ public class TechnologyTest extends BaseBeanTestCase<Technology> {
 		Technology technology = Technology.deviceType(
 			DataConstants.DEVICE_TYPE_TABLET);
 
-		Assert.assertTrue(technology.isMobile());
+		Assertions.assertTrue(technology.isMobile());
 	}
 
 	@Test
 	public void testPlatformName1() {
 		Technology technology = Technology.platformName(DataConstants.ANY);
 
-		Assert.assertEquals(Technology.any(), technology);
+		Assertions.assertEquals(Technology.any(), technology);
 	}
 
 	@Test
 	public void testPlatformName2() {
 		Technology technology = Technology.platformName(StringPool.BLANK);
 
-		Assert.assertEquals(Technology.any(), technology);
+		Assertions.assertEquals(Technology.any(), technology);
 	}
 
 	@Test
 	public void testPlatformName3() {
 		Technology technology = Technology.platformName(null);
 
-		Assert.assertEquals(Technology.any(), technology);
+		Assertions.assertEquals(Technology.any(), technology);
 	}
 
 	@Override

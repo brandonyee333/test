@@ -25,8 +25,8 @@ import java.util.function.Supplier;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -75,7 +75,7 @@ public class PageMetricTest extends BaseBeanTestCase<PageMetric> {
 	public void testGetAssetType() {
 		PageMetric pageMetric = newInstance();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			AssetType.PAGE.getValue(), pageMetric.getAssetType());
 	}
 
@@ -83,7 +83,7 @@ public class PageMetricTest extends BaseBeanTestCase<PageMetric> {
 	public void testGetDefaultMetric() {
 		PageMetric pageMetric = newInstance();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			new Metric(PageMetricType.VIEWS), pageMetric.getDefaultMetric());
 	}
 

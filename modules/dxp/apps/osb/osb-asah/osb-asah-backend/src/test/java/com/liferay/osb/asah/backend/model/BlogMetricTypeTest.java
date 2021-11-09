@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.model;
 import com.liferay.osb.asah.backend.test.util.BaseEnumTestCase;
 import com.liferay.osb.asah.common.model.TrendClassification;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -29,21 +29,21 @@ public class BlogMetricTypeTest extends BaseEnumTestCase<BlogMetricType> {
 	public void testClicks() {
 		BlogMetricType blogMetricType = BlogMetricType.of("clicksMetric");
 
-		Assert.assertEquals(BlogMetricType.CLICKS, blogMetricType);
+		Assertions.assertEquals(BlogMetricType.CLICKS, blogMetricType);
 	}
 
 	@Test
 	public void testClicksFieldName() {
 		BlogMetricType blogMetricType = BlogMetricType.CLICKS;
 
-		Assert.assertEquals("clicks", blogMetricType.getFieldName());
+		Assertions.assertEquals("clicks", blogMetricType.getFieldName());
 	}
 
 	@Test
 	public void testClicksTrendClassificationOrder() {
 		BlogMetricType blogMetricType = BlogMetricType.CLICKS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			blogMetricType.getTrendClassificationOrder());
 	}
@@ -52,21 +52,21 @@ public class BlogMetricTypeTest extends BaseEnumTestCase<BlogMetricType> {
 	public void testComments() {
 		BlogMetricType blogMetricType = BlogMetricType.of("commentsMetric");
 
-		Assert.assertEquals(BlogMetricType.COMMENTS, blogMetricType);
+		Assertions.assertEquals(BlogMetricType.COMMENTS, blogMetricType);
 	}
 
 	@Test
 	public void testCommentsFieldName() {
 		BlogMetricType blogMetricType = BlogMetricType.COMMENTS;
 
-		Assert.assertEquals("comments", blogMetricType.getFieldName());
+		Assertions.assertEquals("comments", blogMetricType.getFieldName());
 	}
 
 	@Test
 	public void testCommentsTrendClassificationOrder() {
 		BlogMetricType blogMetricType = BlogMetricType.COMMENTS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			blogMetricType.getTrendClassificationOrder());
 	}
@@ -75,21 +75,21 @@ public class BlogMetricTypeTest extends BaseEnumTestCase<BlogMetricType> {
 	public void testRatings() {
 		BlogMetricType blogMetricType = BlogMetricType.of("ratingsMetric");
 
-		Assert.assertEquals(BlogMetricType.RATINGS, blogMetricType);
+		Assertions.assertEquals(BlogMetricType.RATINGS, blogMetricType);
 	}
 
 	@Test
 	public void testRatingsFieldName() {
 		BlogMetricType blogMetricType = BlogMetricType.RATINGS;
 
-		Assert.assertEquals("ratingsScore", blogMetricType.getFieldName());
+		Assertions.assertEquals("ratingsScore", blogMetricType.getFieldName());
 	}
 
 	@Test
 	public void testRatingsTrendClassificationOrder() {
 		BlogMetricType blogMetricType = BlogMetricType.RATINGS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			blogMetricType.getTrendClassificationOrder());
 	}
@@ -98,21 +98,21 @@ public class BlogMetricTypeTest extends BaseEnumTestCase<BlogMetricType> {
 	public void testReadingTime() {
 		BlogMetricType blogMetricType = BlogMetricType.of("readingTimeMetric");
 
-		Assert.assertEquals(BlogMetricType.READING_TIME, blogMetricType);
+		Assertions.assertEquals(BlogMetricType.READING_TIME, blogMetricType);
 	}
 
 	@Test
 	public void testReadingTimeFieldName() {
 		BlogMetricType blogMetricType = BlogMetricType.READING_TIME;
 
-		Assert.assertEquals("readTime", blogMetricType.getFieldName());
+		Assertions.assertEquals("readTime", blogMetricType.getFieldName());
 	}
 
 	@Test
 	public void testReadingTimeTrendClassificationOrder() {
 		BlogMetricType blogMetricType = BlogMetricType.READING_TIME;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			blogMetricType.getTrendClassificationOrder());
 	}
@@ -121,21 +121,21 @@ public class BlogMetricTypeTest extends BaseEnumTestCase<BlogMetricType> {
 	public void testViews() {
 		BlogMetricType blogMetricType = BlogMetricType.of("viewsMetric");
 
-		Assert.assertEquals(BlogMetricType.VIEWS, blogMetricType);
+		Assertions.assertEquals(BlogMetricType.VIEWS, blogMetricType);
 	}
 
 	@Test
 	public void testViewsFieldName() {
 		BlogMetricType blogMetricType = BlogMetricType.VIEWS;
 
-		Assert.assertEquals("views", blogMetricType.getFieldName());
+		Assertions.assertEquals("views", blogMetricType.getFieldName());
 	}
 
 	@Test
 	public void testViewsTrendClassificationOrder() {
 		BlogMetricType blogMetricType = BlogMetricType.VIEWS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			blogMetricType.getTrendClassificationOrder());
 	}

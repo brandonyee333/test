@@ -27,26 +27,28 @@ import io.improbable.keanu.vertices.dbl.nonprobabilistic.ConstantDoubleVertex;
 
 import org.apache.commons.math3.util.FastMath;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Edward Kwok-Yu Wong
  */
 public class CustomScrollDepthDistributionTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_random = new KeanuRandom(4);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testAllQuantilesZero() {
-		CustomScrollDepthDistribution.of(
-			DoubleTensor.create(0), DoubleTensor.create(0),
-			DoubleTensor.create(0), DoubleTensor.create(0),
-			DoubleTensor.create(0));
+		Assertions.assertThrows(
+			IllegalArgumentException.class,
+			() -> CustomScrollDepthDistribution.of(
+				DoubleTensor.create(0), DoubleTensor.create(0),
+				DoubleTensor.create(0), DoubleTensor.create(0),
+				DoubleTensor.create(0)));
 	}
 
 	@Test
@@ -74,7 +76,7 @@ public class CustomScrollDepthDistributionTest {
 					"f(%.2f) = %.4f%nCurrent f(%.2f) = %.4f",
 				previousP, previousResult, currentP, currentResult);
 
-			Assert.assertTrue(message, currentResult >= previousResult);
+			Assertions.assertTrue(currentResult >= previousResult, message);
 
 			previousP = currentP;
 			previousResult = currentResult;
@@ -105,11 +107,12 @@ public class CustomScrollDepthDistributionTest {
 			double outputDouble = outputTensor.getValue(0);
 
 			if ((value < 0) || (value > 100)) {
-				Assert.assertEquals(outputDouble, Double.NEGATIVE_INFINITY, 1);
+				Assertions.assertEquals(
+					outputDouble, Double.NEGATIVE_INFINITY, 1);
 			}
 			else {
-				Assert.assertTrue(
-					"Log probability is negative", outputDouble < 0);
+				Assertions.assertTrue(
+					outputDouble < 0, "Log probability is negative");
 			}
 		}
 	}
@@ -158,7 +161,7 @@ public class CustomScrollDepthDistributionTest {
 			}
 		}
 
-		Assert.assertEquals(1.0, sumOfAreas, .01);
+		Assertions.assertEquals(1.0, sumOfAreas, .01);
 	}
 
 	private <T> void _feedValue(
@@ -200,7 +203,7 @@ public class CustomScrollDepthDistributionTest {
 			);
 
 		if (outOfBoundsMaskDoubleTensor.sum() > 0) {
-			Assert.fail(
+			Assertions.fail(
 				"The resulting tensor generated values outside the expected " +
 					"range");
 		}

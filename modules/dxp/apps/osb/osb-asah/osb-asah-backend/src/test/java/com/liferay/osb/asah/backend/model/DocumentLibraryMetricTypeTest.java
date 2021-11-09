@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.model;
 import com.liferay.osb.asah.backend.test.util.BaseEnumTestCase;
 import com.liferay.osb.asah.common.model.TrendClassification;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -31,7 +31,7 @@ public class DocumentLibraryMetricTypeTest
 		DocumentLibraryMetricType documentLibraryMetricType =
 			DocumentLibraryMetricType.of("commentsMetric");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DocumentLibraryMetricType.COMMENTS, documentLibraryMetricType);
 	}
 
@@ -40,7 +40,7 @@ public class DocumentLibraryMetricTypeTest
 		DocumentLibraryMetricType documentLibraryMetricType =
 			DocumentLibraryMetricType.COMMENTS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"comments", documentLibraryMetricType.getFieldName());
 	}
 
@@ -49,7 +49,7 @@ public class DocumentLibraryMetricTypeTest
 		DocumentLibraryMetricType documentLibraryMetricType =
 			DocumentLibraryMetricType.COMMENTS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			documentLibraryMetricType.getTrendClassificationOrder());
 	}
@@ -59,7 +59,7 @@ public class DocumentLibraryMetricTypeTest
 		DocumentLibraryMetricType documentLibraryMetricType =
 			DocumentLibraryMetricType.of("downloadsMetric");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DocumentLibraryMetricType.DOWNLOADS, documentLibraryMetricType);
 	}
 
@@ -68,7 +68,7 @@ public class DocumentLibraryMetricTypeTest
 		DocumentLibraryMetricType documentLibraryMetricType =
 			DocumentLibraryMetricType.DOWNLOADS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"downloads", documentLibraryMetricType.getFieldName());
 	}
 
@@ -77,7 +77,7 @@ public class DocumentLibraryMetricTypeTest
 		DocumentLibraryMetricType documentLibraryMetricType =
 			DocumentLibraryMetricType.DOWNLOADS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			documentLibraryMetricType.getTrendClassificationOrder());
 	}
@@ -87,7 +87,7 @@ public class DocumentLibraryMetricTypeTest
 		DocumentLibraryMetricType documentLibraryMetricType =
 			DocumentLibraryMetricType.of("previewsMetric");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DocumentLibraryMetricType.PREVIEWS, documentLibraryMetricType);
 	}
 
@@ -96,7 +96,7 @@ public class DocumentLibraryMetricTypeTest
 		DocumentLibraryMetricType documentLibraryMetricType =
 			DocumentLibraryMetricType.PREVIEWS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"previews", documentLibraryMetricType.getFieldName());
 	}
 
@@ -105,7 +105,7 @@ public class DocumentLibraryMetricTypeTest
 		DocumentLibraryMetricType documentLibraryMetricType =
 			DocumentLibraryMetricType.PREVIEWS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			documentLibraryMetricType.getTrendClassificationOrder());
 	}
@@ -115,7 +115,7 @@ public class DocumentLibraryMetricTypeTest
 		DocumentLibraryMetricType documentLibraryMetricType =
 			DocumentLibraryMetricType.of("ratingsMetric");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DocumentLibraryMetricType.RATINGS, documentLibraryMetricType);
 	}
 
@@ -124,7 +124,7 @@ public class DocumentLibraryMetricTypeTest
 		DocumentLibraryMetricType documentLibraryMetricType =
 			DocumentLibraryMetricType.RATINGS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"ratingsScore", documentLibraryMetricType.getFieldName());
 	}
 
@@ -133,7 +133,7 @@ public class DocumentLibraryMetricTypeTest
 		DocumentLibraryMetricType documentLibraryMetricType =
 			DocumentLibraryMetricType.RATINGS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			documentLibraryMetricType.getTrendClassificationOrder());
 	}

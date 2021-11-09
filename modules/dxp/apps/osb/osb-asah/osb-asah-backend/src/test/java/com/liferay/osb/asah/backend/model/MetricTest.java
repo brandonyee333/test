@@ -29,8 +29,8 @@ import java.util.function.Supplier;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -54,7 +54,7 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 		metric.setPreviousValue(1000D);
 		metric.setValue(1000D);
 
-		Assert.assertEquals(0, metric.compare());
+		Assertions.assertEquals(0, metric.compare());
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 		metric.setPreviousValue(1005D);
 		metric.setValue(1000D);
 
-		Assert.assertEquals(-1, metric.compare());
+		Assertions.assertEquals(-1, metric.compare());
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 		metric.setPreviousValue(1000D);
 		metric.setValue(1005D);
 
-		Assert.assertEquals(1, metric.compare());
+		Assertions.assertEquals(1, metric.compare());
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 
 		metric.setValue(1005D);
 
-		Assert.assertEquals(0, metric.compare());
+		Assertions.assertEquals(0, metric.compare());
 	}
 
 	@Override
@@ -111,7 +111,8 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 		metric.setPreviousValue(50D);
 		metric.setValue(100D);
 
-		Assert.assertEquals(BigDecimal.valueOf(100.0D), metric.getPercentage());
+		Assertions.assertEquals(
+			BigDecimal.valueOf(100.0D), metric.getPercentage());
 	}
 
 	@Test
@@ -121,7 +122,7 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 		metric.setPreviousValue(0D);
 		metric.setValue(100D);
 
-		Assert.assertNull(metric.getPercentage());
+		Assertions.assertNull(metric.getPercentage());
 	}
 
 	@Test
@@ -131,7 +132,8 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 		metric.setPreviousValue(0.126170);
 		metric.setValue(0.115810);
 
-		Assert.assertEquals(BigDecimal.valueOf(-7.7), metric.getPercentage());
+		Assertions.assertEquals(
+			BigDecimal.valueOf(-7.7), metric.getPercentage());
 	}
 
 	@Test
@@ -140,7 +142,7 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 
 		metric.setPreviousValue(100D);
 
-		Assert.assertEquals(100D, metric.getPreviousValue(), 0D);
+		Assertions.assertEquals(100D, metric.getPreviousValue(), 0D);
 	}
 
 	@Test
@@ -153,7 +155,7 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 		Trend expectedTrend = new Trend(
 			TrendClassification.NEGATIVE, BigDecimal.valueOf(-50D));
 
-		Assert.assertEquals(expectedTrend, metric.getTrend());
+		Assertions.assertEquals(expectedTrend, metric.getTrend());
 	}
 
 	@Test
@@ -162,7 +164,7 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 
 		metric.setValue(100D);
 
-		Assert.assertEquals(100D, metric.getValue(), 0D);
+		Assertions.assertEquals(100D, metric.getValue(), 0D);
 	}
 
 	@Test
@@ -175,14 +177,14 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 
 		metric2.setValue(50D);
 
-		Assert.assertNotEquals(metric1.getValue(), metric2.getValue(), 0.0);
+		Assertions.assertNotEquals(metric1.getValue(), metric2.getValue(), 0.0);
 	}
 
 	@Test
 	public void testNeutralTrendClassification() {
 		Metric metric = new Metric(_metricType);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.NEUTRAL, metric.getTrendClassification());
 	}
 
@@ -193,7 +195,7 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 		metric.setPreviousValue(50D);
 		metric.setValue(100D);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.POSITIVE, metric.getTrendClassification());
 	}
 
@@ -204,7 +206,7 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 		metric.setPreviousValue(1000D);
 		metric.setValue(1001D);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.POSITIVE, metric.getTrendClassification());
 	}
 
@@ -215,7 +217,7 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 		metric.setPreviousValue(10000D);
 		metric.setValue(10001D);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.NEUTRAL, metric.getTrendClassification());
 	}
 

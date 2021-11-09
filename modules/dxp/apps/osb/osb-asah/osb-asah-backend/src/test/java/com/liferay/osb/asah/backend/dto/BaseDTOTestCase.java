@@ -16,8 +16,8 @@ package com.liferay.osb.asah.backend.dto;
 
 import java.lang.reflect.Constructor;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Marcos Martins
@@ -32,7 +32,7 @@ public abstract class BaseDTOTestCase {
 
 		Constructor<?> constructor = clazz.getDeclaredConstructor();
 
-		Assert.assertNotNull(constructor.newInstance());
+		Assertions.assertNotNull(constructor.newInstance());
 	}
 
 }

@@ -40,8 +40,8 @@ import java.util.function.Supplier;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -222,8 +222,8 @@ public abstract class BaseBeanTestCase<T> {
 
 		Object actualObject = getMethod.invoke(instance);
 
-		Assert.assertEquals(
-			fieldName + " is different", expectedObject, actualObject);
+		Assertions.assertEquals(
+			expectedObject, actualObject, fieldName + " is different");
 	}
 
 	private Object _newInstance(Class<?> clazz, String fieldName) {

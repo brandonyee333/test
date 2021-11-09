@@ -24,8 +24,8 @@ import java.util.function.Supplier;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -74,7 +74,7 @@ public class BlogMetricTest extends BaseBeanTestCase<BlogMetric> {
 	public void testGetAssetType() {
 		BlogMetric blogMetric = newInstance();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			AssetType.BLOG.getValue(), blogMetric.getAssetType());
 	}
 
@@ -82,7 +82,7 @@ public class BlogMetricTest extends BaseBeanTestCase<BlogMetric> {
 	public void testGetDefaultMetric() {
 		BlogMetric blogMetric = newInstance();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			new Metric(BlogMetricType.VIEWS), blogMetric.getDefaultMetric());
 	}
 

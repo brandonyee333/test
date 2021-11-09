@@ -19,8 +19,8 @@ import com.liferay.osb.asah.common.model.TrendClassification;
 
 import java.math.BigDecimal;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -34,7 +34,7 @@ public class TrendTest extends BaseBeanTestCase<Trend> {
 		trend.setPercentage(BigDecimal.valueOf(50D));
 		trend.setTrendClassification(TrendClassification.POSITIVE);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			trend,
 			new Trend(TrendClassification.POSITIVE, BigDecimal.valueOf(50D)));
 	}

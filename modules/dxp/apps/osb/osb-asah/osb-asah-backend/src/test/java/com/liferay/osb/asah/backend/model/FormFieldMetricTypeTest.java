@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.model;
 import com.liferay.osb.asah.backend.test.util.BaseEnumTestCase;
 import com.liferay.osb.asah.common.model.TrendClassification;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author André Miranda
@@ -31,7 +31,7 @@ public class FormFieldMetricTypeTest
 		FormFieldMetricType formFieldMetricType = FormFieldMetricType.of(
 			"fieldAbandonmentsMetric");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			FormFieldMetricType.FIELD_ABANDONMENTS, formFieldMetricType);
 	}
 
@@ -40,7 +40,8 @@ public class FormFieldMetricTypeTest
 		FormFieldMetricType formFieldMetricType =
 			FormFieldMetricType.FIELD_ABANDONMENTS;
 
-		Assert.assertEquals("abandonments", formFieldMetricType.getFieldName());
+		Assertions.assertEquals(
+			"abandonments", formFieldMetricType.getFieldName());
 	}
 
 	@Test
@@ -48,7 +49,7 @@ public class FormFieldMetricTypeTest
 		FormFieldMetricType formFieldMetricType =
 			FormFieldMetricType.FIELD_ABANDONMENTS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.DESC,
 			formFieldMetricType.getTrendClassificationOrder());
 	}
@@ -58,7 +59,7 @@ public class FormFieldMetricTypeTest
 		FormFieldMetricType formFieldMetricType = FormFieldMetricType.of(
 			"fieldInteractionsMetric");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			FormFieldMetricType.FIELD_INTERACTIONS, formFieldMetricType);
 	}
 
@@ -67,7 +68,7 @@ public class FormFieldMetricTypeTest
 		FormFieldMetricType formFieldMetricType = FormFieldMetricType.of(
 			"fieldInteractionsDurationMetric");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			FormFieldMetricType.FIELD_INTERACTION_DURATION,
 			formFieldMetricType);
 	}
@@ -77,7 +78,7 @@ public class FormFieldMetricTypeTest
 		FormFieldMetricType formFieldMetricType = FormFieldMetricType.of(
 			"fieldRefilledMetric");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			FormFieldMetricType.FIELD_REFILLED, formFieldMetricType);
 	}
 
@@ -86,7 +87,7 @@ public class FormFieldMetricTypeTest
 		FormFieldMetricType formFieldMetricType =
 			FormFieldMetricType.FIELD_INTERACTION_DURATION;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"interactionsDuration", formFieldMetricType.getFieldName());
 	}
 
@@ -95,7 +96,7 @@ public class FormFieldMetricTypeTest
 		FormFieldMetricType formFieldMetricType =
 			FormFieldMetricType.FIELD_INTERACTION_DURATION;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.DESC,
 			formFieldMetricType.getTrendClassificationOrder());
 	}
@@ -105,7 +106,8 @@ public class FormFieldMetricTypeTest
 		FormFieldMetricType formFieldMetricType =
 			FormFieldMetricType.FIELD_INTERACTIONS;
 
-		Assert.assertEquals("interactions", formFieldMetricType.getFieldName());
+		Assertions.assertEquals(
+			"interactions", formFieldMetricType.getFieldName());
 	}
 
 	@Test
@@ -113,7 +115,7 @@ public class FormFieldMetricTypeTest
 		FormFieldMetricType formFieldMetricType =
 			FormFieldMetricType.FIELD_INTERACTIONS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.DESC,
 			formFieldMetricType.getTrendClassificationOrder());
 	}
@@ -123,7 +125,7 @@ public class FormFieldMetricTypeTest
 		FormFieldMetricType formFieldMetricType =
 			FormFieldMetricType.FIELD_REFILLED;
 
-		Assert.assertEquals("refilled", formFieldMetricType.getFieldName());
+		Assertions.assertEquals("refilled", formFieldMetricType.getFieldName());
 	}
 
 	@Test
@@ -131,7 +133,7 @@ public class FormFieldMetricTypeTest
 		FormFieldMetricType formFieldMetricType =
 			FormFieldMetricType.FIELD_REFILLED;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.DESC,
 			formFieldMetricType.getTrendClassificationOrder());
 	}

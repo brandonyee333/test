@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.model;
 import com.liferay.osb.asah.backend.constants.DataConstants;
 import com.liferay.osb.asah.backend.test.util.BaseBeanTestCase;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -29,7 +29,7 @@ public class GeolocationTest extends BaseBeanTestCase<Geolocation> {
 	public void testCountry() {
 		Geolocation geolocation = Geolocation.country(DataConstants.ANY);
 
-		Assert.assertEquals(Geolocation.any(), geolocation);
+		Assertions.assertEquals(Geolocation.any(), geolocation);
 	}
 
 	@Test
@@ -37,14 +37,14 @@ public class GeolocationTest extends BaseBeanTestCase<Geolocation> {
 		Geolocation geolocation = Geolocation.region(
 			DataConstants.ANY, DataConstants.ANY);
 
-		Assert.assertEquals(Geolocation.any(), geolocation);
+		Assertions.assertEquals(Geolocation.any(), geolocation);
 	}
 
 	@Test
 	public void testRegion2() {
 		Geolocation geolocation = Geolocation.region(null, null);
 
-		Assert.assertEquals(Geolocation.any(), geolocation);
+		Assertions.assertEquals(Geolocation.any(), geolocation);
 	}
 
 	@Override

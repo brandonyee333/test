@@ -31,8 +31,8 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -83,7 +83,7 @@ public class MetricResolverBuilderTest
 
 		MetricResolver metricResolver = builder.build();
 
-		Assert.assertNotNull(metricResolver.getMapperFunction());
+		Assertions.assertNotNull(metricResolver.getMapperFunction());
 	}
 
 	@Test
@@ -96,7 +96,8 @@ public class MetricResolverBuilderTest
 
 		MetricResolver metricResolver = builder.build();
 
-		Assert.assertEquals(mapperFunction, metricResolver.getMapperFunction());
+		Assertions.assertEquals(
+			mapperFunction, metricResolver.getMapperFunction());
 	}
 
 	@Test
@@ -105,7 +106,7 @@ public class MetricResolverBuilderTest
 
 		MetricResolver metricResolver = builder.build();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TestMetricType.TEST, metricResolver.getMetricType());
 	}
 
@@ -141,7 +142,7 @@ public class MetricResolverBuilderTest
 
 		MetricResolver metricResolver = builder.build();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			setterBiConsumer, metricResolver.getSetterBiConsumer());
 	}
 

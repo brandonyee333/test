@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.model;
 import com.liferay.osb.asah.backend.test.util.BaseEnumTestCase;
 import com.liferay.osb.asah.common.model.TrendClassification;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -31,7 +31,8 @@ public class TrendClassificationTest
 		TrendClassification trendClassification = TrendClassification.classify(
 			-10, TrendClassification.Order.ASC);
 
-		Assert.assertEquals(TrendClassification.NEGATIVE, trendClassification);
+		Assertions.assertEquals(
+			TrendClassification.NEGATIVE, trendClassification);
 	}
 
 	@Test
@@ -39,7 +40,8 @@ public class TrendClassificationTest
 		TrendClassification trendClassification = TrendClassification.classify(
 			10, TrendClassification.Order.DESC);
 
-		Assert.assertEquals(TrendClassification.NEGATIVE, trendClassification);
+		Assertions.assertEquals(
+			TrendClassification.NEGATIVE, trendClassification);
 	}
 
 	@Test
@@ -47,7 +49,8 @@ public class TrendClassificationTest
 		TrendClassification trendClassification = TrendClassification.classify(
 			0, TrendClassification.Order.ASC);
 
-		Assert.assertEquals(TrendClassification.NEUTRAL, trendClassification);
+		Assertions.assertEquals(
+			TrendClassification.NEUTRAL, trendClassification);
 	}
 
 	@Test
@@ -55,7 +58,8 @@ public class TrendClassificationTest
 		TrendClassification trendClassification = TrendClassification.classify(
 			0, TrendClassification.Order.DESC);
 
-		Assert.assertEquals(TrendClassification.NEUTRAL, trendClassification);
+		Assertions.assertEquals(
+			TrendClassification.NEUTRAL, trendClassification);
 	}
 
 	@Test
@@ -63,7 +67,8 @@ public class TrendClassificationTest
 		TrendClassification trendClassification = TrendClassification.classify(
 			10, TrendClassification.Order.ASC);
 
-		Assert.assertEquals(TrendClassification.POSITIVE, trendClassification);
+		Assertions.assertEquals(
+			TrendClassification.POSITIVE, trendClassification);
 	}
 
 	@Test
@@ -71,7 +76,8 @@ public class TrendClassificationTest
 		TrendClassification trendClassification = TrendClassification.classify(
 			-10, TrendClassification.Order.DESC);
 
-		Assert.assertEquals(TrendClassification.POSITIVE, trendClassification);
+		Assertions.assertEquals(
+			TrendClassification.POSITIVE, trendClassification);
 	}
 
 	@Override

@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.test.util;
 
 import java.lang.reflect.Method;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery

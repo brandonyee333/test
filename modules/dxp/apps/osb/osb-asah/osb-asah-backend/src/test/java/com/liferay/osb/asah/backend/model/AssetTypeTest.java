@@ -16,42 +16,43 @@ package com.liferay.osb.asah.backend.model;
 
 import com.liferay.osb.asah.backend.test.util.BaseEnumTestCase;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
  */
 public class AssetTypeTest extends BaseEnumTestCase<AssetType> {
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testOfAsset() {
-		AssetType.of("asset");
+		Assertions.assertThrows(
+			IllegalArgumentException.class, () -> AssetType.of("asset"));
 	}
 
 	@Test
 	public void testOfBlog() {
-		Assert.assertEquals(AssetType.BLOG, AssetType.of("blog"));
+		Assertions.assertEquals(AssetType.BLOG, AssetType.of("blog"));
 	}
 
 	@Test
 	public void testOfDocument() {
-		Assert.assertEquals(AssetType.DOCUMENT, AssetType.of("document"));
+		Assertions.assertEquals(AssetType.DOCUMENT, AssetType.of("document"));
 	}
 
 	@Test
 	public void testOfForm() {
-		Assert.assertEquals(AssetType.FORM, AssetType.of("form"));
+		Assertions.assertEquals(AssetType.FORM, AssetType.of("form"));
 	}
 
 	@Test
 	public void testOfJournal() {
-		Assert.assertEquals(AssetType.JOURNAL, AssetType.of("journal"));
+		Assertions.assertEquals(AssetType.JOURNAL, AssetType.of("journal"));
 	}
 
 	@Test
 	public void testOfURL() {
-		Assert.assertEquals(AssetType.PAGE, AssetType.of("page"));
+		Assertions.assertEquals(AssetType.PAGE, AssetType.of("page"));
 	}
 
 	@Override

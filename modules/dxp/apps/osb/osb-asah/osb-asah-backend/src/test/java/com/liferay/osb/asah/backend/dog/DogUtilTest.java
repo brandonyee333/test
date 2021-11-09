@@ -23,8 +23,8 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.ShardSearchFailure;
 import org.elasticsearch.search.aggregations.Aggregations;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -36,7 +36,7 @@ public class DogUtilTest {
 
 	@Test
 	public void testEmptyAggregations() {
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			DogUtil.isEmpty(new Aggregations(Collections.emptyList())));
 	}
 
@@ -73,19 +73,19 @@ public class DogUtilTest {
 
 		List<Throwable> values = argumentCaptor.getAllValues();
 
-		Assert.assertEquals(exception1, values.get(0));
-		Assert.assertEquals(exception2, values.get(1));
+		Assertions.assertEquals(exception1, values.get(0));
+		Assertions.assertEquals(exception2, values.get(1));
 	}
 
 	@Test
 	public void testNotEmptyAggregations() {
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			DogUtil.isEmpty(new Aggregations(Collections.singletonList(null))));
 	}
 
 	@Test
 	public void testNullAggregations() {
-		Assert.assertTrue(DogUtil.isEmpty(null));
+		Assertions.assertTrue(DogUtil.isEmpty(null));
 	}
 
 }

@@ -26,8 +26,8 @@ import java.util.function.Supplier;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -68,7 +68,7 @@ public class AssetResolverBuilderTest
 		};
 
 		for (String assetFieldName : assetResolver.getAssetFieldNames()) {
-			Assert.assertTrue(assetFieldNames.contains(assetFieldName));
+			Assertions.assertTrue(assetFieldNames.contains(assetFieldName));
 		}
 	}
 
@@ -81,7 +81,7 @@ public class AssetResolverBuilderTest
 
 		AssetResolver<?> assetResolver = builder.build();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			assetIdFieldName, assetResolver.getAssetIdFieldName());
 	}
 
@@ -98,7 +98,7 @@ public class AssetResolverBuilderTest
 
 		AssetResolver<?> assetResolver = builder.build();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			fieldSetterBiConsumer,
 			assetResolver.getFieldSetterBiConsumer(fieldName));
 	}
@@ -122,7 +122,7 @@ public class AssetResolverBuilderTest
 
 		AssetResolver<?> assetResolver = builder.build();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			searchableFieldNames, assetResolver.getSearchableFieldNames());
 	}
 
@@ -137,7 +137,7 @@ public class AssetResolverBuilderTest
 
 		AssetResolver<?> assetResolver = builder.build();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			setterBiConsumer, assetResolver.getSetterBiConsumer());
 	}
 
@@ -151,7 +151,7 @@ public class AssetResolverBuilderTest
 
 		AssetResolver<?> assetResolver = builder.build();
 
-		Assert.assertEquals(supplier, assetResolver.getSupplier());
+		Assertions.assertEquals(supplier, assetResolver.getSupplier());
 	}
 
 	@Override

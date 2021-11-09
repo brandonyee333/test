@@ -24,8 +24,8 @@ import java.util.function.Supplier;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Marcellus Tavares
@@ -74,7 +74,7 @@ public class FormMetricTest extends BaseBeanTestCase<FormMetric> {
 	public void testGetAssetType() {
 		FormMetric formMetric = newInstance();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			AssetType.FORM.getValue(), formMetric.getAssetType());
 	}
 
@@ -82,7 +82,7 @@ public class FormMetricTest extends BaseBeanTestCase<FormMetric> {
 	public void testGetDefaultMetric() {
 		FormMetric formMetric = newInstance();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			new Metric(FormMetricType.SUBMISSIONS),
 			formMetric.getDefaultMetric());
 	}

@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.model;
 import com.liferay.osb.asah.backend.test.util.BaseEnumTestCase;
 import com.liferay.osb.asah.common.model.TrendClassification;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -31,7 +31,7 @@ public class PageReferrerMetricTypeTest
 		PageReferrerMetricType pageReferrerMetricType =
 			PageReferrerMetricType.of("accessMetric");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			PageReferrerMetricType.ACCESS, pageReferrerMetricType);
 	}
 
@@ -40,7 +40,8 @@ public class PageReferrerMetricTypeTest
 		PageReferrerMetricType pageReferrerMetricType =
 			PageReferrerMetricType.ACCESS;
 
-		Assert.assertEquals("access", pageReferrerMetricType.getFieldName());
+		Assertions.assertEquals(
+			"access", pageReferrerMetricType.getFieldName());
 	}
 
 	@Test
@@ -48,7 +49,7 @@ public class PageReferrerMetricTypeTest
 		PageReferrerMetricType pageReferrerMetricType =
 			PageReferrerMetricType.ACCESS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			pageReferrerMetricType.getTrendClassificationOrder());
 	}

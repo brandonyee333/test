@@ -37,8 +37,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.Mock;
 
@@ -59,23 +59,23 @@ public class MetricHelperTest {
 				clock, true, Interval.WEEK, _metricType,
 				timeRange.withClock(clock));
 
-		Assert.assertTrue(histogramMetricBag.isAsymmetricComparison());
+		Assertions.assertTrue(histogramMetricBag.isAsymmetricComparison());
 
 		histogramMetricBag = _metricHelper.createHistogramMetricBag(
 			clock, true, Interval.MONTH, _metricType,
 			timeRange.withClock(clock));
 
-		Assert.assertTrue(histogramMetricBag.isAsymmetricComparison());
+		Assertions.assertTrue(histogramMetricBag.isAsymmetricComparison());
 
 		histogramMetricBag = _metricHelper.createHistogramMetricBag(
 			clock, true, Interval.DAY, _metricType, timeRange.withClock(clock));
 
-		Assert.assertFalse(histogramMetricBag.isAsymmetricComparison());
+		Assertions.assertFalse(histogramMetricBag.isAsymmetricComparison());
 
 		histogramMetricBag = _metricHelper.createHistogramMetricBag(
 			clock, true, Interval.DAY, _metricType, TimeRange.LAST_24_HOURS);
 
-		Assert.assertFalse(histogramMetricBag.isAsymmetricComparison());
+		Assertions.assertFalse(histogramMetricBag.isAsymmetricComparison());
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class MetricHelperTest {
 			TimeRange.of(
 				LocalDate.parse("2018-12-12"), LocalDate.parse("2018-12-02")));
 
-		Assert.assertEquals(expectedKeys, actualKeys);
+		Assertions.assertEquals(expectedKeys, actualKeys);
 	}
 
 	@Test
@@ -109,8 +109,8 @@ public class MetricHelperTest {
 		List<HistogramMetric> histogramMetrics =
 			histogramMetricBag.getMetrics();
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), 3, histogramMetrics.size());
+		Assertions.assertEquals(
+			3, histogramMetrics.size(), histogramMetrics.toString());
 
 		histogramMetricBag = _metricHelper.createHistogramMetricBag(
 			clock, false, Interval.MONTH, _metricType,
@@ -118,8 +118,8 @@ public class MetricHelperTest {
 
 		histogramMetrics = histogramMetricBag.getMetrics();
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), 1, histogramMetrics.size());
+		Assertions.assertEquals(
+			1, histogramMetrics.size(), histogramMetrics.toString());
 	}
 
 	@Test
@@ -133,7 +133,8 @@ public class MetricHelperTest {
 			Interval.DAY, LocalDateTime.of(2018, 4, 1, 10, 30),
 			TimeRange.LAST_7_DAYS);
 
-		Assert.assertEquals(expectedKeys.toString(), expectedKeys, actualKeys);
+		Assertions.assertEquals(
+			expectedKeys, actualKeys, expectedKeys.toString());
 	}
 
 	@Test
@@ -152,7 +153,8 @@ public class MetricHelperTest {
 			Interval.DAY, LocalDateTime.of(2018, 4, 1, 10, 30),
 			TimeRange.LAST_24_HOURS);
 
-		Assert.assertEquals(expectedKeys.toString(), expectedKeys, actualKeys);
+		Assertions.assertEquals(
+			expectedKeys, actualKeys, expectedKeys.toString());
 	}
 
 	@Test
@@ -173,7 +175,7 @@ public class MetricHelperTest {
 			Interval.DAY, LocalDateTime.of(2018, 4, 1, 10, 30),
 			TimeRange.LAST_28_DAYS);
 
-		Assert.assertEquals(expectedKeys, actualKeys);
+		Assertions.assertEquals(expectedKeys, actualKeys);
 	}
 
 	@Test
@@ -194,7 +196,7 @@ public class MetricHelperTest {
 			Interval.DAY, LocalDateTime.of(2018, 4, 1, 10, 30),
 			TimeRange.LAST_30_DAYS);
 
-		Assert.assertEquals(expectedKeys, actualKeys);
+		Assertions.assertEquals(expectedKeys, actualKeys);
 	}
 
 	@Test
@@ -210,7 +212,8 @@ public class MetricHelperTest {
 			Interval.WEEK, LocalDateTime.of(2018, 11, 24, 10, 30),
 			TimeRange.LAST_90_DAYS);
 
-		Assert.assertEquals(expectedKeys, new ArrayList<>(metrics.keySet()));
+		Assertions.assertEquals(
+			expectedKeys, new ArrayList<>(metrics.keySet()));
 
 		List<String> expectedPreviousValueKeys = Arrays.asList(
 			"2018-05-27/2018-06-02", "2018-06-03/2018-06-09",
@@ -224,7 +227,8 @@ public class MetricHelperTest {
 		List<String> actualPreviousValueKeys = _getMetricValueKeys(
 			metrics.values(), Metric::getPreviousValueKey);
 
-		Assert.assertEquals(expectedPreviousValueKeys, actualPreviousValueKeys);
+		Assertions.assertEquals(
+			expectedPreviousValueKeys, actualPreviousValueKeys);
 
 		List<String> expectedValueKeys = Arrays.asList(
 			"2018-08-26/2018-09-01", "2018-09-02/2018-09-08",
@@ -238,7 +242,7 @@ public class MetricHelperTest {
 		List<String> actualValueKeys = _getMetricValueKeys(
 			metrics.values(), Metric::getValueKey);
 
-		Assert.assertEquals(expectedValueKeys, actualValueKeys);
+		Assertions.assertEquals(expectedValueKeys, actualValueKeys);
 	}
 
 	@Test
@@ -254,7 +258,8 @@ public class MetricHelperTest {
 			Interval.WEEK, LocalDateTime.of(2018, 11, 29, 10, 30),
 			TimeRange.LAST_90_DAYS);
 
-		Assert.assertEquals(expectedKeys, new ArrayList<>(metrics.keySet()));
+		Assertions.assertEquals(
+			expectedKeys, new ArrayList<>(metrics.keySet()));
 
 		List<String> expectedPreviousValueKeys = Arrays.asList(
 			"2018-05-27/2018-06-02", "2018-06-03/2018-06-09",
@@ -268,7 +273,8 @@ public class MetricHelperTest {
 		List<String> actualPreviousValueKeys = _getMetricValueKeys(
 			metrics.values(), Metric::getPreviousValueKey);
 
-		Assert.assertEquals(expectedPreviousValueKeys, actualPreviousValueKeys);
+		Assertions.assertEquals(
+			expectedPreviousValueKeys, actualPreviousValueKeys);
 
 		List<String> expectedValueKeys = Arrays.asList(
 			"2018-08-26/2018-09-01", "2018-09-02/2018-09-08",
@@ -282,7 +288,7 @@ public class MetricHelperTest {
 		List<String> actualValueKeys = _getMetricValueKeys(
 			metrics.values(), Metric::getValueKey);
 
-		Assert.assertEquals(expectedValueKeys, actualValueKeys);
+		Assertions.assertEquals(expectedValueKeys, actualValueKeys);
 	}
 
 	@Test
@@ -298,7 +304,8 @@ public class MetricHelperTest {
 			Interval.WEEK, LocalDateTime.of(2018, 12, 14, 10, 30),
 			TimeRange.LAST_90_DAYS);
 
-		Assert.assertEquals(expectedKeys, new ArrayList<>(metrics.keySet()));
+		Assertions.assertEquals(
+			expectedKeys, new ArrayList<>(metrics.keySet()));
 
 		List<String> expectedPreviousValueKeys = Arrays.asList(
 			"2018-06-10/2018-06-16", "2018-06-17/2018-06-23",
@@ -312,7 +319,8 @@ public class MetricHelperTest {
 		List<String> actualPreviousValueKeys = _getMetricValueKeys(
 			metrics.values(), Metric::getPreviousValueKey);
 
-		Assert.assertEquals(expectedPreviousValueKeys, actualPreviousValueKeys);
+		Assertions.assertEquals(
+			expectedPreviousValueKeys, actualPreviousValueKeys);
 
 		List<String> expectedValueKeys = Arrays.asList(
 			"2018-09-09/2018-09-15", "2018-09-16/2018-09-22",
@@ -326,7 +334,7 @@ public class MetricHelperTest {
 		List<String> actualValueKeys = _getMetricValueKeys(
 			metrics.values(), Metric::getValueKey);
 
-		Assert.assertEquals(expectedValueKeys, actualValueKeys);
+		Assertions.assertEquals(expectedValueKeys, actualValueKeys);
 	}
 
 	@Test
@@ -346,7 +354,8 @@ public class MetricHelperTest {
 			Interval.WEEK, LocalDateTime.of(2018, 12, 14, 10, 30),
 			TimeRange.LAST_180_DAYS);
 
-		Assert.assertEquals(expectedKeys, new ArrayList<>(metrics.keySet()));
+		Assertions.assertEquals(
+			expectedKeys, new ArrayList<>(metrics.keySet()));
 
 		List<String> expectedPreviousValueKeys = Arrays.asList(
 			"2017-12-17/2017-12-23", "2017-12-24/2017-12-30",
@@ -366,7 +375,8 @@ public class MetricHelperTest {
 		List<String> actualPreviousValueKeys = _getMetricValueKeys(
 			metrics.values(), Metric::getPreviousValueKey);
 
-		Assert.assertEquals(expectedPreviousValueKeys, actualPreviousValueKeys);
+		Assertions.assertEquals(
+			expectedPreviousValueKeys, actualPreviousValueKeys);
 
 		List<String> expectedValueKeys = Arrays.asList(
 			"2018-06-17/2018-06-23", "2018-06-24/2018-06-30",
@@ -386,7 +396,7 @@ public class MetricHelperTest {
 		List<String> actualValueKeys = _getMetricValueKeys(
 			metrics.values(), Metric::getValueKey);
 
-		Assert.assertEquals(expectedValueKeys, actualValueKeys);
+		Assertions.assertEquals(expectedValueKeys, actualValueKeys);
 	}
 
 	@Test
@@ -402,7 +412,8 @@ public class MetricHelperTest {
 			Interval.MONTH, LocalDateTime.of(2018, 12, 14, 10, 30),
 			TimeRange.LAST_YEAR);
 
-		Assert.assertEquals(expectedKeys, new ArrayList<>(metrics.keySet()));
+		Assertions.assertEquals(
+			expectedKeys, new ArrayList<>(metrics.keySet()));
 
 		List<String> expectedPreviousValueKeys = Arrays.asList(
 			"2016-12-01/2016-12-31", "2017-01-01/2017-01-31",
@@ -416,7 +427,8 @@ public class MetricHelperTest {
 		List<String> actualPreviousValueKeys = _getMetricValueKeys(
 			metrics.values(), Metric::getPreviousValueKey);
 
-		Assert.assertEquals(expectedPreviousValueKeys, actualPreviousValueKeys);
+		Assertions.assertEquals(
+			expectedPreviousValueKeys, actualPreviousValueKeys);
 
 		List<String> expectedValueKeys = Arrays.asList(
 			"2017-12-01/2017-12-31", "2018-01-01/2018-01-31",
@@ -430,7 +442,7 @@ public class MetricHelperTest {
 		List<String> actualValueKeys = _getMetricValueKeys(
 			metrics.values(), Metric::getValueKey);
 
-		Assert.assertEquals(expectedValueKeys, actualValueKeys);
+		Assertions.assertEquals(expectedValueKeys, actualValueKeys);
 	}
 
 	@Test
@@ -449,7 +461,7 @@ public class MetricHelperTest {
 			Interval.DAY, LocalDateTime.of(2018, 4, 1, 10, 30),
 			TimeRange.YESTERDAY);
 
-		Assert.assertEquals(expectedKeys, actualKeys);
+		Assertions.assertEquals(expectedKeys, actualKeys);
 	}
 
 	private Clock _createFixedClock(LocalDateTime localDateTime) {

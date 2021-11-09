@@ -19,7 +19,7 @@ import com.liferay.osb.asah.backend.test.util.BaseBeanTestCase;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery

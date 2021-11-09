@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.model;
 import com.liferay.osb.asah.backend.test.util.BaseEnumTestCase;
 import com.liferay.osb.asah.common.model.TrendClassification;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author André Miranda
@@ -31,7 +31,7 @@ public class FormPageMetricTypeTest
 		FormPageMetricType formPageMetricType = FormPageMetricType.of(
 			"pageAbandonmentsMetric");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			FormPageMetricType.PAGE_ABANDONMENTS, formPageMetricType);
 	}
 
@@ -40,7 +40,8 @@ public class FormPageMetricTypeTest
 		FormPageMetricType formPageMetricType =
 			FormPageMetricType.PAGE_ABANDONMENTS;
 
-		Assert.assertEquals("abandonments", formPageMetricType.getFieldName());
+		Assertions.assertEquals(
+			"abandonments", formPageMetricType.getFieldName());
 	}
 
 	@Test
@@ -48,7 +49,7 @@ public class FormPageMetricTypeTest
 		FormPageMetricType formPageMetricType =
 			FormPageMetricType.PAGE_ABANDONMENTS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.DESC,
 			formPageMetricType.getTrendClassificationOrder());
 	}
@@ -58,21 +59,22 @@ public class FormPageMetricTypeTest
 		FormPageMetricType formPageMetricType = FormPageMetricType.of(
 			"pageViewsMetric");
 
-		Assert.assertEquals(FormPageMetricType.PAGE_VIEWS, formPageMetricType);
+		Assertions.assertEquals(
+			FormPageMetricType.PAGE_VIEWS, formPageMetricType);
 	}
 
 	@Test
 	public void testPageViewsFieldName() {
 		FormPageMetricType formPageMetricType = FormPageMetricType.PAGE_VIEWS;
 
-		Assert.assertEquals("views", formPageMetricType.getFieldName());
+		Assertions.assertEquals("views", formPageMetricType.getFieldName());
 	}
 
 	@Test
 	public void testPageViewsTrendClassificationOrder() {
 		FormPageMetricType formPageMetricType = FormPageMetricType.PAGE_VIEWS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			formPageMetricType.getTrendClassificationOrder());
 	}

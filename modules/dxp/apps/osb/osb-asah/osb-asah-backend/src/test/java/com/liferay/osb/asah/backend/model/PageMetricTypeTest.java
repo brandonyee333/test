@@ -18,8 +18,8 @@ import com.liferay.osb.asah.backend.test.util.BaseEnumTestCase;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TrendClassification;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -31,21 +31,22 @@ public class PageMetricTypeTest extends BaseEnumTestCase<PageMetricType> {
 		PageMetricType pageMetricType = PageMetricType.of(
 			"avgTimeOnPageMetric");
 
-		Assert.assertEquals(PageMetricType.AVG_TIME_ON_PAGE, pageMetricType);
+		Assertions.assertEquals(
+			PageMetricType.AVG_TIME_ON_PAGE, pageMetricType);
 	}
 
 	@Test
 	public void testAvgTimeOnPageFieldName() {
 		PageMetricType pageMetricType = PageMetricType.AVG_TIME_ON_PAGE;
 
-		Assert.assertEquals("timeOnPage", pageMetricType.getFieldName());
+		Assertions.assertEquals("timeOnPage", pageMetricType.getFieldName());
 	}
 
 	@Test
 	public void testAvgTimeOnPageTrendClassificationOrder() {
 		PageMetricType pageMetricType = PageMetricType.AVG_TIME_ON_PAGE;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			pageMetricType.getTrendClassificationOrder());
 	}
@@ -54,21 +55,21 @@ public class PageMetricTypeTest extends BaseEnumTestCase<PageMetricType> {
 	public void testBounceRate() {
 		PageMetricType pageMetricType = PageMetricType.of("bounceRateMetric");
 
-		Assert.assertEquals(PageMetricType.BOUNCE_RATE, pageMetricType);
+		Assertions.assertEquals(PageMetricType.BOUNCE_RATE, pageMetricType);
 	}
 
 	@Test
 	public void testBounceRateFieldName() {
 		PageMetricType pageMetricType = PageMetricType.BOUNCE_RATE;
 
-		Assert.assertEquals("bounce", pageMetricType.getFieldName());
+		Assertions.assertEquals("bounce", pageMetricType.getFieldName());
 	}
 
 	@Test
 	public void testBounceRateTrendClassificationOrder() {
 		PageMetricType pageMetricType = PageMetricType.BOUNCE_RATE;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.DESC,
 			pageMetricType.getTrendClassificationOrder());
 	}
@@ -77,21 +78,21 @@ public class PageMetricTypeTest extends BaseEnumTestCase<PageMetricType> {
 	public void testDirectAccess() {
 		PageMetricType pageMetricType = PageMetricType.of("directAccessMetric");
 
-		Assert.assertEquals(PageMetricType.DIRECT_ACCESS, pageMetricType);
+		Assertions.assertEquals(PageMetricType.DIRECT_ACCESS, pageMetricType);
 	}
 
 	@Test
 	public void testDirectAccessFieldName() {
 		PageMetricType pageMetricType = PageMetricType.DIRECT_ACCESS;
 
-		Assert.assertEquals("directAccess", pageMetricType.getFieldName());
+		Assertions.assertEquals("directAccess", pageMetricType.getFieldName());
 	}
 
 	@Test
 	public void testDirectAccessTrendClassificationOrder() {
 		PageMetricType pageMetricType = PageMetricType.DIRECT_ACCESS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			pageMetricType.getTrendClassificationOrder());
 	}
@@ -100,21 +101,21 @@ public class PageMetricTypeTest extends BaseEnumTestCase<PageMetricType> {
 	public void testUsers() {
 		PageMetricType pageMetricType = PageMetricType.of("visitorsMetric");
 
-		Assert.assertEquals(PageMetricType.VISITORS, pageMetricType);
+		Assertions.assertEquals(PageMetricType.VISITORS, pageMetricType);
 	}
 
 	@Test
 	public void testUsersFieldName() {
 		PageMetricType pageMetricType = PageMetricType.VISITORS;
 
-		Assert.assertEquals("visitors", pageMetricType.getFieldName());
+		Assertions.assertEquals("visitors", pageMetricType.getFieldName());
 	}
 
 	@Test
 	public void testUsersTrendClassificationOrder() {
 		PageMetricType pageMetricType = PageMetricType.VISITORS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			pageMetricType.getTrendClassificationOrder());
 	}
@@ -123,21 +124,21 @@ public class PageMetricTypeTest extends BaseEnumTestCase<PageMetricType> {
 	public void testViews() {
 		PageMetricType pageMetricType = PageMetricType.of("viewsMetric");
 
-		Assert.assertEquals(PageMetricType.VIEWS, pageMetricType);
+		Assertions.assertEquals(PageMetricType.VIEWS, pageMetricType);
 	}
 
 	@Test
 	public void testViewsFieldName() {
 		PageMetricType pageMetricType = PageMetricType.VIEWS;
 
-		Assert.assertEquals("views", pageMetricType.getFieldName());
+		Assertions.assertEquals("views", pageMetricType.getFieldName());
 	}
 
 	@Test
 	public void testViewsTrendClassificationOrder() {
 		PageMetricType pageMetricType = PageMetricType.VIEWS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			pageMetricType.getTrendClassificationOrder());
 	}

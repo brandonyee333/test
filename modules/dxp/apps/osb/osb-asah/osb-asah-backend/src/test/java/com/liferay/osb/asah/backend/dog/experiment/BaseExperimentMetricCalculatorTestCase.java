@@ -34,7 +34,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
 import org.apache.commons.math3.util.FastMath;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -48,12 +48,12 @@ public abstract class BaseExperimentMetricCalculatorTestCase {
 		ExperimentMetric actualExperimentMetric, double expectedConfidenceLevel,
 		long expectedElapsedDays, long expectedEstimatedDaysLeft) {
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedConfidenceLevel,
-			actualExperimentMetric.getConfidenceLevel(), 1);
-		Assert.assertEquals(
+			actualExperimentMetric.getConfidenceLevel(), 1.0);
+		Assertions.assertEquals(
 			expectedElapsedDays, actualExperimentMetric.getElapsedDays(), 0.0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedEstimatedDaysLeft,
 			(long)actualExperimentMetric.getEstimatedDaysLeft());
 	}
@@ -63,7 +63,7 @@ public abstract class BaseExperimentMetricCalculatorTestCase {
 		String dxpVariantId, ExperimentVariantMetric experimentVariantMetric,
 		double improvement, double median, double probabilityToWin) {
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			dxpVariantId, experimentVariantMetric.getDXPVariantId());
 
 		BigDecimal[] confidenceIntervals =
@@ -76,7 +76,7 @@ public abstract class BaseExperimentMetricCalculatorTestCase {
 			confidenceIntervalRight, confidenceIntervals[1].doubleValue(),
 			getMarginOfErrorPercentageForInterval());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			improvement,
 			Optional.ofNullable(
 				experimentVariantMetric.getImprovement()
@@ -94,7 +94,7 @@ public abstract class BaseExperimentMetricCalculatorTestCase {
 			),
 			getMarginOfErrorPercentageForMedian());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			probabilityToWin,
 			Optional.ofNullable(
 				experimentVariantMetric.getProbabilityToWin()
@@ -201,7 +201,7 @@ public abstract class BaseExperimentMetricCalculatorTestCase {
 			delta = minimumDelta;
 		}
 
-		Assert.assertEquals(expected, actual, delta);
+		Assertions.assertEquals(expected, actual, delta);
 	}
 
 	protected Double[] readValuesFromFile(String path) throws IOException {

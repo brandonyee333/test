@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.model;
 import com.liferay.osb.asah.backend.test.util.BaseEnumTestCase;
 import com.liferay.osb.asah.common.model.TrendClassification;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -29,21 +29,21 @@ public class FormMetricTypeTest extends BaseEnumTestCase<FormMetricType> {
 	public void testAbandonments() {
 		FormMetricType formMetricType = FormMetricType.of("abandonmentsMetric");
 
-		Assert.assertEquals(FormMetricType.ABANDONMENTS, formMetricType);
+		Assertions.assertEquals(FormMetricType.ABANDONMENTS, formMetricType);
 	}
 
 	@Test
 	public void testAbandonmentsFieldName() {
 		FormMetricType formMetricType = FormMetricType.ABANDONMENTS;
 
-		Assert.assertEquals("abandonments", formMetricType.getFieldName());
+		Assertions.assertEquals("abandonments", formMetricType.getFieldName());
 	}
 
 	@Test
 	public void testAbandonmentsTrendClassificationOrder() {
 		FormMetricType formMetricType = FormMetricType.ABANDONMENTS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.DESC,
 			formMetricType.getTrendClassificationOrder());
 	}
@@ -53,21 +53,22 @@ public class FormMetricTypeTest extends BaseEnumTestCase<FormMetricType> {
 		FormMetricType formMetricType = FormMetricType.of(
 			"completionTimeMetric");
 
-		Assert.assertEquals(FormMetricType.COMPLETION_TIME, formMetricType);
+		Assertions.assertEquals(FormMetricType.COMPLETION_TIME, formMetricType);
 	}
 
 	@Test
 	public void testCompletionTimeFieldName() {
 		FormMetricType formMetricType = FormMetricType.COMPLETION_TIME;
 
-		Assert.assertEquals("submissionsTime", formMetricType.getFieldName());
+		Assertions.assertEquals(
+			"submissionsTime", formMetricType.getFieldName());
 	}
 
 	@Test
 	public void testCompletionTimeTrendClassificationOrder() {
 		FormMetricType completionTime = FormMetricType.COMPLETION_TIME;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.DESC,
 			completionTime.getTrendClassificationOrder());
 	}
@@ -76,21 +77,21 @@ public class FormMetricTypeTest extends BaseEnumTestCase<FormMetricType> {
 	public void testSubmissions() {
 		FormMetricType formMetricType = FormMetricType.of("submissionsMetric");
 
-		Assert.assertEquals(FormMetricType.SUBMISSIONS, formMetricType);
+		Assertions.assertEquals(FormMetricType.SUBMISSIONS, formMetricType);
 	}
 
 	@Test
 	public void testSubmissionsFieldName() {
 		FormMetricType formMetricType = FormMetricType.SUBMISSIONS;
 
-		Assert.assertEquals("submissions", formMetricType.getFieldName());
+		Assertions.assertEquals("submissions", formMetricType.getFieldName());
 	}
 
 	@Test
 	public void testSubmissionsTrendClassificationOrder() {
 		FormMetricType formMetricType = FormMetricType.SUBMISSIONS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			formMetricType.getTrendClassificationOrder());
 	}
@@ -99,21 +100,21 @@ public class FormMetricTypeTest extends BaseEnumTestCase<FormMetricType> {
 	public void testViews() {
 		FormMetricType formMetricType = FormMetricType.of("viewsMetric");
 
-		Assert.assertEquals(FormMetricType.VIEWS, formMetricType);
+		Assertions.assertEquals(FormMetricType.VIEWS, formMetricType);
 	}
 
 	@Test
 	public void testViewsFieldName() {
 		FormMetricType formMetricType = FormMetricType.VIEWS;
 
-		Assert.assertEquals("views", formMetricType.getFieldName());
+		Assertions.assertEquals("views", formMetricType.getFieldName());
 	}
 
 	@Test
 	public void testViewsTrendClassificationOrder() {
 		FormMetricType formMetricType = FormMetricType.VIEWS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			formMetricType.getTrendClassificationOrder());
 	}

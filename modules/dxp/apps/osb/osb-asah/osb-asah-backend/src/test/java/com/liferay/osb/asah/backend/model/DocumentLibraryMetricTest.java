@@ -24,8 +24,8 @@ import java.util.function.Supplier;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -48,7 +48,7 @@ public class DocumentLibraryMetricTest
 	public void testAssetType() {
 		DocumentLibraryMetric documentMetric = newInstance();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			AssetType.DOCUMENT.getValue(), documentMetric.getAssetType());
 	}
 
@@ -56,7 +56,7 @@ public class DocumentLibraryMetricTest
 	public void testDefaultMetric() {
 		DocumentLibraryMetric documentLibraryMetric = newInstance();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			new Metric(DocumentLibraryMetricType.DOWNLOADS),
 			documentLibraryMetric.getDefaultMetric());
 	}

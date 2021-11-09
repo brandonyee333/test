@@ -30,8 +30,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author André Miranda
@@ -138,7 +138,7 @@ public class BounceRateExperimentMetricCalculatorTest
 			63, 64, "Variant B", experimentVariantMetrics.get(2), 11, 63, 99);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testNoData() {
 		Experiment experiment = new Experiment();

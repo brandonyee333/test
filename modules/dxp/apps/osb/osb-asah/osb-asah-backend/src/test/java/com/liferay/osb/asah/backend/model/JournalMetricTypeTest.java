@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.model;
 import com.liferay.osb.asah.backend.test.util.BaseEnumTestCase;
 import com.liferay.osb.asah.common.model.TrendClassification;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
@@ -30,21 +30,22 @@ public class JournalMetricTypeTest extends BaseEnumTestCase<JournalMetricType> {
 		JournalMetricType journalMetricType = JournalMetricType.of(
 			"mostClicked");
 
-		Assert.assertEquals(JournalMetricType.MOST_CLICKED, journalMetricType);
+		Assertions.assertEquals(
+			JournalMetricType.MOST_CLICKED, journalMetricType);
 	}
 
 	@Test
 	public void testMostClickedFieldName() {
 		JournalMetricType journalMetricType = JournalMetricType.MOST_CLICKED;
 
-		Assert.assertEquals("clicks", journalMetricType.getFieldName());
+		Assertions.assertEquals("clicks", journalMetricType.getFieldName());
 	}
 
 	@Test
 	public void testMostClickedTrendClassificationOrder() {
 		JournalMetricType journalMetricType = JournalMetricType.MOST_CLICKED;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			journalMetricType.getTrendClassificationOrder());
 	}
@@ -54,21 +55,21 @@ public class JournalMetricTypeTest extends BaseEnumTestCase<JournalMetricType> {
 		JournalMetricType journalMetricType = JournalMetricType.of(
 			"viewsMetric");
 
-		Assert.assertEquals(JournalMetricType.VIEWS, journalMetricType);
+		Assertions.assertEquals(JournalMetricType.VIEWS, journalMetricType);
 	}
 
 	@Test
 	public void testViewsFieldName() {
 		JournalMetricType journalMetricType = JournalMetricType.VIEWS;
 
-		Assert.assertEquals("views", journalMetricType.getFieldName());
+		Assertions.assertEquals("views", journalMetricType.getFieldName());
 	}
 
 	@Test
 	public void testViewsTrendClassificationOrder() {
 		JournalMetricType journalMetricType = JournalMetricType.VIEWS;
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			TrendClassification.Order.ASC,
 			journalMetricType.getTrendClassificationOrder());
 	}
