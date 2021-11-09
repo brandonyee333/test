@@ -171,16 +171,6 @@ public class FaroInfoTestUtil {
 		JSONObject activityGroupJSONObject, JSONObject assetJSONObject,
 		Long channelId, String eventId, String[] eventProperties) {
 
-		return buildActivityJSONObject(
-			activityGroupJSONObject, assetJSONObject, channelId, eventId,
-			eventProperties, RandomTestUtil.randomUUID());
-	}
-
-	public static JSONObject buildActivityJSONObject(
-		JSONObject activityGroupJSONObject, JSONObject assetJSONObject,
-		Long channelId, String eventId, String[] eventProperties,
-		String pageViewActivityId) {
-
 		if ((eventProperties.length % 2) != 0) {
 			throw new IllegalArgumentException(
 				"Event properties must be an even length");
@@ -189,8 +179,7 @@ public class FaroInfoTestUtil {
 		String applicationId = assetJSONObject.getString("assetType");
 		String assetId = assetJSONObject.getString("id");
 
-		JSONObject eventPropertiesJSONObject = JSONUtil.put(
-			"pageViewActivityId", pageViewActivityId);
+		JSONObject eventPropertiesJSONObject = new JSONObject();
 
 		for (int i = 0; i < eventProperties.length; i += 2) {
 			eventPropertiesJSONObject.put(
@@ -249,16 +238,6 @@ public class FaroInfoTestUtil {
 			activityGroupJSONObject, assetJSONObject,
 			Long.parseLong(RandomStringUtils.randomNumeric(4)), eventId,
 			eventProperties);
-	}
-
-	public static JSONObject buildActivityJSONObject(
-		JSONObject activityGroupJSONObject, JSONObject assetJSONObject,
-		String eventId, String[] eventProperties, String pageViewActivityId) {
-
-		return buildActivityJSONObject(
-			activityGroupJSONObject, assetJSONObject,
-			Long.parseLong(RandomStringUtils.randomNumeric(4)), eventId,
-			eventProperties, pageViewActivityId);
 	}
 
 	public static JSONObject buildAssetJSONObject(

@@ -36,7 +36,6 @@ import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -179,21 +178,17 @@ public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 			pageAsset, JSONObject.class);
 
 		for (int i = 0; i < count; i++) {
-			String pageViewActivityId = RandomTestUtil.randomUUID();
-
 			faroInfoElasticsearchInvoker.add(
 				"activities",
 				FaroInfoTestUtil.buildActivityJSONObject(
 					_objectMapper.convertValue(activityGroup, JSONObject.class),
 					pageAssetJSONObject, "pageUnloaded",
-					new String[] {"viewDuration", "30000"},
-					pageViewActivityId));
+					new String[] {"viewDuration", "30000"}));
 			faroInfoElasticsearchInvoker.add(
 				"activities",
 				FaroInfoTestUtil.buildActivityJSONObject(
 					_objectMapper.convertValue(activityGroup, JSONObject.class),
-					pageAssetJSONObject, "pageViewed", new String[0],
-					pageViewActivityId));
+					pageAssetJSONObject, "pageViewed", new String[0]));
 		}
 	}
 
