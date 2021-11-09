@@ -27,7 +27,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class KeyReentrantLock {
 
-	public static ReentrantLock getReentrantLock(Class<?> clazz, String key) {
+	public static ReentrantLock getReentrantLock(Class<?> clazz, Object key) {
 		return _reentrantLocks.get(
 			ProjectIdThreadLocal.getProjectId() + "#" + clazz.getSimpleName() +
 				"#" + key,

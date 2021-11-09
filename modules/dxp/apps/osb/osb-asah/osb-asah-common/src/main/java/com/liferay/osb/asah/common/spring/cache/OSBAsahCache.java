@@ -20,10 +20,13 @@ import com.esotericsoftware.kryo.io.ByteBufferInput;
 import com.esotericsoftware.kryo.io.ByteBufferOutput;
 import com.esotericsoftware.kryo.util.Pool;
 
+import com.liferay.osb.asah.common.lock.KeyReentrantLock;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -66,23 +69,33 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public synchronized <T> T get(Object key, Callable<T> callable) {
-		Object value = lookup(key);
-
-		if (value != null) {
-			return (T)value;
-		}
+	public <T> T get(Object key, Callable<T> callable) {
+		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+			getClass(), key);
 
 		try {
-			value = callable.call();
-		}
-		catch (Throwable throwable) {
-			throw new ValueRetrievalException(key, callable, throwable);
-		}
+			reentrantLock.lock();
 
-		put(key, value);
+			Object value = lookup(key);
 
-		return (T)value;
+			if (value != null) {
+				return (T)value;
+			}
+
+			try {
+				value = callable.call();
+			}
+			catch (Throwable throwable) {
+				throw new ValueRetrievalException(key, callable, throwable);
+			}
+
+			put(key, value);
+
+			return (T)value;
+		}
+		finally {
+			reentrantLock.unlock();
+		}
 	}
 
 	@Override
@@ -108,13 +121,23 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 
 	@Override
 	public ValueWrapper putIfAbsent(Object key, Object value) {
-		ValueWrapper valueWrapper = toValueWrapper(lookup(key));
+		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+			getClass(), key);
 
-		if (valueWrapper == null) {
-			_put(key, value);
+		try {
+			reentrantLock.lock();
+
+			ValueWrapper valueWrapper = toValueWrapper(lookup(key));
+
+			if (valueWrapper == null) {
+				_put(key, value);
+			}
+
+			return valueWrapper;
 		}
-
-		return valueWrapper;
+		finally {
+			reentrantLock.unlock();
+		}
 	}
 
 	protected void clearCaffeineCache(Object key) {
