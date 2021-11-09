@@ -85,12 +85,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		}
 
 		try {
-			_semaphore.acquire(4);
-		}
-		catch (InterruptedException interruptedException) {
-			Log log = getLog();
-
-			log.error(interruptedException, interruptedException);
+			_semaphore.acquireUninterruptibly(4);
 		}
 		finally {
 			_semaphore.release(4);
@@ -332,46 +327,39 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	}
 
 	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
-		try {
-			_semaphore.acquire();
+		_semaphore.acquireUninterruptibly();
 
-			CompletableFuture.runAsync(
-				() -> {
-					long start = System.currentTimeMillis();
+		CompletableFuture.runAsync(
+			() -> {
+				long start = System.currentTimeMillis();
 
-					try {
-						ProjectIdThreadLocal.setProjectId(projectId);
+				try {
+					ProjectIdThreadLocal.setProjectId(projectId);
 
-						saveModels(getModels(analyticsEvents));
-					}
-					catch (Exception exception) {
-						Log log = getLog();
-
-						log.error(exception.getMessage(), exception);
-					}
-					finally {
-						_semaphore.release();
-					}
-
+					saveModels(getModels(analyticsEvents));
+				}
+				catch (Exception exception) {
 					Log log = getLog();
 
-					if (log.isInfoEnabled()) {
-						Class<?> clazz = getClass();
+					log.error(exception.getMessage(), exception);
+				}
+				finally {
+					_semaphore.release();
+				}
 
-						log.info(
-							String.format(
-								"%s processed %d events in %d ms",
-								clazz.getSimpleName(), analyticsEvents.size(),
-								System.currentTimeMillis() - start));
-					}
-				},
-				_executorService);
-		}
-		catch (InterruptedException interruptedException) {
-			Log log = getLog();
+				Log log = getLog();
 
-			log.error(interruptedException, interruptedException);
-		}
+				if (log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
+
+					log.info(
+						String.format(
+							"%s processed %d events in %d ms",
+							clazz.getSimpleName(), analyticsEvents.size(),
+							System.currentTimeMillis() - start));
+				}
+			},
+			_executorService);
 	}
 
 	private void _setAssetPrimaryKey(T model) {

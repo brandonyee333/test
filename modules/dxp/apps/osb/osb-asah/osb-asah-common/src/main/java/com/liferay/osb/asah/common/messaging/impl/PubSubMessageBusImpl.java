@@ -251,63 +251,53 @@ public class PubSubMessageBusImpl implements MessageBus {
 		Semaphore semaphore = new Semaphore(10, true);
 
 		for (Subscriber subscriber : _messageListeners.values()) {
-			try {
-				semaphore.acquire();
+			semaphore.acquireUninterruptibly();
 
-				CompletableFuture.runAsync(
-					() -> {
-						subscriber.stopAsync();
+			CompletableFuture.runAsync(
+				() -> {
+					subscriber.stopAsync();
 
-						try {
-							subscriber.awaitTerminated(1, TimeUnit.MINUTES);
-						}
-						catch (TimeoutException timeoutException) {
-							_log.error(
-								"Timeout while waiting for termination of " +
-									"subscriber",
-								timeoutException);
-						}
-						finally {
-							semaphore.release();
-						}
-					},
-					executorService);
-			}
-			catch (InterruptedException interruptedException) {
-				_log.error(interruptedException, interruptedException);
-			}
+					try {
+						subscriber.awaitTerminated(1, TimeUnit.MINUTES);
+					}
+					catch (TimeoutException timeoutException) {
+						_log.error(
+							"Timeout while waiting for termination of " +
+								"subscriber",
+							timeoutException);
+					}
+					finally {
+						semaphore.release();
+					}
+				},
+				executorService);
 		}
 
 		for (Publisher publisher : _channels.values()) {
-			try {
-				semaphore.acquire();
+			semaphore.acquireUninterruptibly();
 
-				CompletableFuture.runAsync(
-					() -> {
-						publisher.shutdown();
+			CompletableFuture.runAsync(
+				() -> {
+					publisher.shutdown();
 
-						try {
-							publisher.awaitTermination(1, TimeUnit.MINUTES);
-						}
-						catch (InterruptedException interruptedException) {
-							_log.error(
-								"Interrupted while waiting for termination " +
-									"of publisher",
-								interruptedException);
-						}
-						finally {
-							semaphore.release();
-						}
-					},
-					executorService);
-			}
-			catch (InterruptedException interruptedException) {
-				_log.error(interruptedException, interruptedException);
-			}
+					try {
+						publisher.awaitTermination(1, TimeUnit.MINUTES);
+					}
+					catch (InterruptedException interruptedException) {
+						_log.error(
+							"Interrupted while waiting for termination of " +
+								"publisher",
+							interruptedException);
+					}
+					finally {
+						semaphore.release();
+					}
+				},
+				executorService);
 		}
 
 		try {
-			semaphore.acquire(10);
+			semaphore.acquireUninterruptibly(10);
 
 			executorService.shutdown();
 

@@ -78,10 +78,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		}
 
 		try {
-			_semaphore.acquire(4);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
+			_semaphore.acquireUninterruptibly(4);
 		}
 		finally {
 			_semaphore.release(4);
@@ -317,95 +314,90 @@ public class IndividualActivityFieldsNanite implements Nanite {
 	}
 
 	private void _run(String projectId, List<JSONObject> messages) {
-		try {
-			_semaphore.acquire();
+		_semaphore.acquireUninterruptibly();
 
-			CompletableFuture.runAsync(
-				() -> {
-					long start = System.currentTimeMillis();
+		CompletableFuture.runAsync(
+			() -> {
+				long start = System.currentTimeMillis();
 
-					try {
-						ProjectIdThreadLocal.setProjectId(projectId);
+				try {
+					ProjectIdThreadLocal.setProjectId(projectId);
 
-						Stream<JSONObject> messagesStream = messages.stream();
+					Stream<JSONObject> messagesStream = messages.stream();
 
-						Map<String, Map<String, Long>> ownerIdCounts =
-							messagesStream.collect(
+					Map<String, Map<String, Long>> ownerIdCounts =
+						messagesStream.collect(
+							Collectors.groupingBy(
+								jsonObject -> String.valueOf(
+									jsonObject.get("ownerId")),
 								Collectors.groupingBy(
 									jsonObject -> String.valueOf(
-										jsonObject.get("ownerId")),
-									Collectors.groupingBy(
-										jsonObject -> String.valueOf(
-											jsonObject.get("channelId")),
-										Collectors.counting())));
+										jsonObject.get("channelId")),
+									Collectors.counting())));
 
-						for (Map.Entry<String, Map<String, Long>> ownerIdEntry :
-								ownerIdCounts.entrySet()) {
+					for (Map.Entry<String, Map<String, Long>> ownerIdEntry :
+							ownerIdCounts.entrySet()) {
 
-							String ownerId = ownerIdEntry.getKey();
+						String ownerId = ownerIdEntry.getKey();
 
-							ReentrantLock reentrantLock =
-								KeyReentrantLock.getReentrantLock(
-									getClass(), ownerId);
+						ReentrantLock reentrantLock =
+							KeyReentrantLock.getReentrantLock(
+								getClass(), ownerId);
 
-							try {
-								reentrantLock.lock();
+						try {
+							reentrantLock.lock();
 
-								Individual individual =
-									_individualDog.fetchIndividual(
-										Long.valueOf(ownerId));
+							Individual individual =
+								_individualDog.fetchIndividual(
+									Long.valueOf(ownerId));
 
-								if (individual == null) {
-									return;
-								}
-
-								individual.setActivitiesCounts(
-									_getActivitiesCounts(
-										ownerIdEntry.getValue(), individual));
-
-								Map<Long, Date> lastActivityDatesMap =
-									_convertActivityDatesSetToMap(
-										individual.getLastActivityDates());
-
-								individual.setLastActivityDates(
-									_getLastActivityDates(
-										ownerIdEntry.getValue(), individual));
-
-								if (!lastActivityDatesMap.isEmpty()) {
-									individual.setPreviousActivityDates(
-										_getPreviousActivityDates(
-											individual, lastActivityDatesMap));
-								}
-
-								_individualDog.updateIndividual(individual);
+							if (individual == null) {
+								return;
 							}
-							finally {
-								reentrantLock.unlock();
+
+							individual.setActivitiesCounts(
+								_getActivitiesCounts(
+									ownerIdEntry.getValue(), individual));
+
+							Map<Long, Date> lastActivityDatesMap =
+								_convertActivityDatesSetToMap(
+									individual.getLastActivityDates());
+
+							individual.setLastActivityDates(
+								_getLastActivityDates(
+									ownerIdEntry.getValue(), individual));
+
+							if (!lastActivityDatesMap.isEmpty()) {
+								individual.setPreviousActivityDates(
+									_getPreviousActivityDates(
+										individual, lastActivityDatesMap));
 							}
+
+							_individualDog.updateIndividual(individual);
+						}
+						finally {
+							reentrantLock.unlock();
 						}
 					}
-					catch (Exception exception) {
-						_log.error(exception.getMessage(), exception);
-					}
-					finally {
-						_semaphore.release();
-					}
+				}
+				catch (Exception exception) {
+					_log.error(exception.getMessage(), exception);
+				}
+				finally {
+					_semaphore.release();
+				}
 
-					if (_log.isInfoEnabled()) {
-						Class<?> clazz = getClass();
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
 
-						_log.info(
-							String.format(
-								"%s processed %d messages in %d ms",
-								clazz.getSimpleName(), messages.size(),
-								System.currentTimeMillis() - start));
-					}
-				},
-				_executorService);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
-		}
+					_log.info(
+						String.format(
+							"%s processed %d messages in %d ms",
+							clazz.getSimpleName(), messages.size(),
+							System.currentTimeMillis() - start));
+				}
+			},
+			_executorService);
 	}
 
 	private static final Log _log = LogFactory.getLog(

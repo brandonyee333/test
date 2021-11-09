@@ -113,11 +113,8 @@ public class DXPEntitiesMessageProcessor {
 		}
 
 		try {
-			_semaphore.acquire(
+			_semaphore.acquireUninterruptibly(
 				_dxpEntitiesMessageProcessorConcurrentTasksLimit);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
 		}
 		finally {
 			_semaphore.release(
@@ -468,46 +465,41 @@ public class DXPEntitiesMessageProcessor {
 	private void _processQueuedMessagesAsync(
 		String projectId, List<JSONObject> jsonObjects) {
 
-		try {
-			_semaphore.acquire();
+		_semaphore.acquireUninterruptibly();
 
-			CompletableFuture.runAsync(
-				() -> {
-					try {
-						ProjectIdThreadLocal.setProjectId(projectId);
+		CompletableFuture.runAsync(
+			() -> {
+				try {
+					ProjectIdThreadLocal.setProjectId(projectId);
 
-						long start = System.currentTimeMillis();
+					long start = System.currentTimeMillis();
 
-						for (JSONObject jsonObject : jsonObjects) {
-							_processMessage(jsonObject);
-						}
-
-						if (_log.isDebugEnabled()) {
-							_log.debug(
-								String.format(
-									"Successfully processed %d DXP entity " +
-										"message(s) in %d ms",
-									jsonObjects.size(),
-									System.currentTimeMillis() - start));
-						}
+					for (JSONObject jsonObject : jsonObjects) {
+						_processMessage(jsonObject);
 					}
-					catch (Exception exception) {
-						_log.error(
-							"Unable to process DXP entity messages " +
-								jsonObjects.toString(),
-							exception);
-					}
-					finally {
-						_semaphore.release();
 
-						ProjectIdThreadLocal.remove();
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							String.format(
+								"Successfully processed %d DXP entity " +
+									"message(s) in %d ms",
+								jsonObjects.size(),
+								System.currentTimeMillis() - start));
 					}
-				},
-				_executorService);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
-		}
+				}
+				catch (Exception exception) {
+					_log.error(
+						"Unable to process DXP entity messages " +
+							jsonObjects.toString(),
+						exception);
+				}
+				finally {
+					_semaphore.release();
+
+					ProjectIdThreadLocal.remove();
+				}
+			},
+			_executorService);
 	}
 
 	private void _processUserFieldObject(

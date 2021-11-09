@@ -72,10 +72,7 @@ public class CustomAssetDashboardNanite implements Nanite {
 		}
 
 		try {
-			_semaphore.acquire(4);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
+			_semaphore.acquireUninterruptibly(4);
 		}
 		finally {
 			_semaphore.release(4);
@@ -168,48 +165,41 @@ public class CustomAssetDashboardNanite implements Nanite {
 	}
 
 	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
-		try {
-			_semaphore.acquire();
+		_semaphore.acquireUninterruptibly();
 
-			CompletableFuture.runAsync(
-				() -> {
-					long start = System.currentTimeMillis();
+		CompletableFuture.runAsync(
+			() -> {
+				long start = System.currentTimeMillis();
 
-					try {
-						ProjectIdThreadLocal.setProjectId(projectId);
+				try {
+					ProjectIdThreadLocal.setProjectId(projectId);
 
-						Stream<AnalyticsEvent> stream =
-							analyticsEvents.stream();
+					Stream<AnalyticsEvent> stream = analyticsEvents.stream();
 
-						stream.collect(
-							Collectors.groupingBy(
-								this::_getCustomAssetPrimaryKey)
-						).forEach(
-							this::_addCustomAssetDashboards
-						);
-					}
-					catch (Exception exception) {
-						_log.error(exception.getMessage(), exception);
-					}
-					finally {
-						_semaphore.release();
-					}
+					stream.collect(
+						Collectors.groupingBy(this::_getCustomAssetPrimaryKey)
+					).forEach(
+						this::_addCustomAssetDashboards
+					);
+				}
+				catch (Exception exception) {
+					_log.error(exception.getMessage(), exception);
+				}
+				finally {
+					_semaphore.release();
+				}
 
-					if (_log.isInfoEnabled()) {
-						Class<?> clazz = getClass();
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
 
-						_log.info(
-							String.format(
-								"%s processed %d events in %d ms",
-								clazz.getSimpleName(), analyticsEvents.size(),
-								System.currentTimeMillis() - start));
-					}
-				},
-				_executorService);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
-		}
+					_log.info(
+						String.format(
+							"%s processed %d events in %d ms",
+							clazz.getSimpleName(), analyticsEvents.size(),
+							System.currentTimeMillis() - start));
+				}
+			},
+			_executorService);
 	}
 
 	private CustomAssetDashboard _updateCustomAssetDashboard(

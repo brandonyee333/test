@@ -99,10 +99,7 @@ public class IndividualNanite implements Nanite {
 		}
 
 		try {
-			_semaphore.acquire(4);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
+			_semaphore.acquireUninterruptibly(4);
 		}
 		finally {
 			_semaphore.release(4);
@@ -303,86 +300,75 @@ public class IndividualNanite implements Nanite {
 	}
 
 	private void _run(String projectId, List<JSONObject> messageJSONObjects) {
-		try {
-			_semaphore.acquire();
+		_semaphore.acquireUninterruptibly();
 
-			CompletableFuture.runAsync(
-				() -> {
-					long start = System.currentTimeMillis();
+		CompletableFuture.runAsync(
+			() -> {
+				long start = System.currentTimeMillis();
 
-					try {
-						ProjectIdThreadLocal.setProjectId(projectId);
+				try {
+					ProjectIdThreadLocal.setProjectId(projectId);
 
-						for (JSONObject messageJSONObject :
-								messageJSONObjects) {
+					for (JSONObject messageJSONObject : messageJSONObjects) {
+						try {
+							String emailAddressHashed =
+								messageJSONObject.getString(
+									"emailAddressHashed");
 
-							try {
-								String emailAddressHashed =
-									messageJSONObject.getString(
-										"emailAddressHashed");
+							if ((emailAddressHashed == null) ||
+								MessageDigest.isEqual(
+									emailAddressHashed.getBytes(
+										StandardCharsets.UTF_8),
+									_BLANK_EMAIL_HASH.getBytes(
+										StandardCharsets.UTF_8))) {
 
-								if ((emailAddressHashed == null) ||
-									MessageDigest.isEqual(
-										emailAddressHashed.getBytes(
-											StandardCharsets.UTF_8),
-										_BLANK_EMAIL_HASH.getBytes(
-											StandardCharsets.UTF_8))) {
-
-									continue;
-								}
-
-								if (!_suppressionDog.isSuppressed(
-										null, emailAddressHashed)) {
-
-									Long channelId = JSONUtil.optLong(
-										null, messageJSONObject, "channelId");
-
-									Individual individual = _updateIndividual(
-										channelId,
-										messageJSONObject.getLong(
-											"dataSourceId"),
-										emailAddressHashed,
-										messageJSONObject.getString("userId"));
-
-									_updatePagesAndAssets(
-										channelId,
-										messageJSONObject.getLong(
-											"dataSourceId"),
-										individual,
-										messageJSONObject.getString("userId"));
-
-									_updateUserSessions(
-										messageJSONObject.getLong(
-											"dataSourceId"),
-										individual.getId(),
-										messageJSONObject.getString("userId"));
-								}
+								continue;
 							}
-							catch (Exception exception) {
-								_log.error(exception.getMessage(), exception);
+
+							if (!_suppressionDog.isSuppressed(
+									null, emailAddressHashed)) {
+
+								Long channelId = JSONUtil.optLong(
+									null, messageJSONObject, "channelId");
+
+								Individual individual = _updateIndividual(
+									channelId,
+									messageJSONObject.getLong("dataSourceId"),
+									emailAddressHashed,
+									messageJSONObject.getString("userId"));
+
+								_updatePagesAndAssets(
+									channelId,
+									messageJSONObject.getLong("dataSourceId"),
+									individual,
+									messageJSONObject.getString("userId"));
+
+								_updateUserSessions(
+									messageJSONObject.getLong("dataSourceId"),
+									individual.getId(),
+									messageJSONObject.getString("userId"));
 							}
 						}
+						catch (Exception exception) {
+							_log.error(exception.getMessage(), exception);
+						}
 					}
-					finally {
-						_semaphore.release();
-					}
+				}
+				finally {
+					_semaphore.release();
+				}
 
-					if (_log.isInfoEnabled()) {
-						Class<?> clazz = getClass();
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
 
-						_log.info(
-							String.format(
-								"%s processed %d messages in %d ms",
-								clazz.getSimpleName(),
-								messageJSONObjects.size(),
-								System.currentTimeMillis() - start));
-					}
-				},
-				_executorService);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
-		}
+					_log.info(
+						String.format(
+							"%s processed %d messages in %d ms",
+							clazz.getSimpleName(), messageJSONObjects.size(),
+							System.currentTimeMillis() - start));
+				}
+			},
+			_executorService);
 	}
 
 	private Map<Long, Long> _toMap(

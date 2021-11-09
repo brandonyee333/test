@@ -73,10 +73,7 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 		}
 
 		try {
-			_semaphore.acquire(4);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
+			_semaphore.acquireUninterruptibly(4);
 		}
 		finally {
 			_semaphore.release(4);
@@ -192,7 +189,7 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 			try {
 				_reentrantLock.lock();
 
-				_semaphore.acquire();
+				_semaphore.acquireUninterruptibly();
 
 				CompletableFuture.runAsync(
 					() -> {
@@ -238,9 +235,6 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 						}
 					},
 					_executorService);
-			}
-			catch (InterruptedException interruptedException) {
-				_log.error(interruptedException, interruptedException);
 			}
 			finally {
 				_reentrantLock.unlock();

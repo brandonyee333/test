@@ -142,10 +142,8 @@ public class ActivitiesNanite implements Nanite {
 		}
 
 		try {
-			_semaphore.acquire(_activitiesNaniteConcurrentTasksLimit);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
+			_semaphore.acquireUninterruptibly(
+				_activitiesNaniteConcurrentTasksLimit);
 		}
 		finally {
 			_semaphore.release(_activitiesNaniteConcurrentTasksLimit);
@@ -693,82 +691,72 @@ public class ActivitiesNanite implements Nanite {
 	private void _run(
 		Tuple2<String, String> tuple2, List<AnalyticsEvent> analyticsEvents) {
 
-		try {
-			_semaphore.acquire();
+		_semaphore.acquireUninterruptibly();
 
-			CompletableFuture.runAsync(
-				() -> {
-					long start = System.currentTimeMillis();
+		CompletableFuture.runAsync(
+			() -> {
+				long start = System.currentTimeMillis();
 
-					try {
-						ProjectIdThreadLocal.setProjectId(tuple2.getT1());
+				try {
+					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
-						JSONArray activityJSONArray = new JSONArray();
+					JSONArray activityJSONArray = new JSONArray();
 
-						for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-							if ((Objects.equals(
-									analyticsEvent.getApplicationId(),
-									"Form") &&
-								 Objects.equals(
-									 analyticsEvent.getEventId(),
-									 "formViewed")) ||
-								(Objects.equals(
-									analyticsEvent.getApplicationId(),
-									"Page") &&
-								 Objects.equals(
-									 analyticsEvent.getEventId(),
-									 "pageViewed"))) {
-
-								JSONObject activityJSONObject =
-									_getActivityJSONObject(analyticsEvent);
-
-								if (activityJSONObject != null) {
-									_addActivityJSONObject(
-										activityJSONObject, tuple2.getT1());
-								}
-
-								continue;
-							}
+					for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+						if ((Objects.equals(
+								analyticsEvent.getApplicationId(), "Form") &&
+							 Objects.equals(
+								 analyticsEvent.getEventId(), "formViewed")) ||
+							(Objects.equals(
+								analyticsEvent.getApplicationId(), "Page") &&
+							 Objects.equals(
+								 analyticsEvent.getEventId(), "pageViewed"))) {
 
 							JSONObject activityJSONObject =
 								_getActivityJSONObject(analyticsEvent);
 
 							if (activityJSONObject != null) {
-								activityJSONArray.put(activityJSONObject);
+								_addActivityJSONObject(
+									activityJSONObject, tuple2.getT1());
 							}
+
+							continue;
 						}
 
-						_addActivityJSONArray(
-							activityJSONArray, tuple2.getT1());
-					}
-					catch (Exception exception) {
-						List<String> analyticsEventsString = ListUtil.map(
-							analyticsEvents, AnalyticsEvent::toJSON);
+						JSONObject activityJSONObject = _getActivityJSONObject(
+							analyticsEvent);
 
-						_log.error(
-							"Unable to process analytics events messages " +
-								analyticsEventsString,
-							exception);
-					}
-					finally {
-						_semaphore.release();
+						if (activityJSONObject != null) {
+							activityJSONArray.put(activityJSONObject);
+						}
 					}
 
-					if (_log.isInfoEnabled()) {
-						Class<?> clazz = getClass();
+					_addActivityJSONArray(activityJSONArray, tuple2.getT1());
+				}
+				catch (Exception exception) {
+					List<String> analyticsEventsString = ListUtil.map(
+						analyticsEvents, AnalyticsEvent::toJSON);
 
-						_log.info(
-							String.format(
-								"%s processed %d events in %d ms",
-								clazz.getSimpleName(), analyticsEvents.size(),
-								System.currentTimeMillis() - start));
-					}
-				},
-				_executorService);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
-		}
+					_log.error(
+						"Unable to process analytics events messages " +
+							analyticsEventsString,
+						exception);
+				}
+				finally {
+					_semaphore.release();
+				}
+
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
+
+					_log.info(
+						String.format(
+							"%s processed %d events in %d ms",
+							clazz.getSimpleName(), analyticsEvents.size(),
+							System.currentTimeMillis() - start));
+				}
+			},
+			_executorService);
 	}
 
 	private void _sendActivityMessage(

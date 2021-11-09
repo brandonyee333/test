@@ -102,10 +102,8 @@ public class UserSessionNanite implements Nanite {
 		}
 
 		try {
-			_semaphore.acquire(_userSessionNaniteConcurrentTasksLimit);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
+			_semaphore.acquireUninterruptibly(
+				_userSessionNaniteConcurrentTasksLimit);
 		}
 		finally {
 			_semaphore.release(_userSessionNaniteConcurrentTasksLimit);
@@ -503,112 +501,97 @@ public class UserSessionNanite implements Nanite {
 	private void _run(
 		Tuple2<String, String> tuple2, List<AnalyticsEvent> analyticsEvents) {
 
-		try {
-			_semaphore.acquire();
+		_semaphore.acquireUninterruptibly();
 
-			CompletableFuture.runAsync(
-				() -> {
-					long start = System.currentTimeMillis();
+		CompletableFuture.runAsync(
+			() -> {
+				long start = System.currentTimeMillis();
+
+				try {
+					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
+
+					Semaphore semaphore = new Semaphore(
+						_userSessionNaniteConcurrentTasksLimit, true);
+
+					_processAnalyticsEvents(
+						analyticsEvents, semaphore, tuple2.getT2());
 
 					try {
-						ProjectIdThreadLocal.setProjectId(tuple2.getT1());
-
-						Semaphore semaphore = new Semaphore(
-							_userSessionNaniteConcurrentTasksLimit, true);
-
-						_processAnalyticsEvents(
-							analyticsEvents, semaphore, tuple2.getT2());
-
-						try {
-							semaphore.acquire(
-								_userSessionNaniteConcurrentTasksLimit);
-						}
-						catch (InterruptedException interruptedException) {
-							_log.error(
-								interruptedException, interruptedException);
-						}
-						finally {
-							semaphore.release(
-								_userSessionNaniteConcurrentTasksLimit);
-						}
-					}
-					catch (Exception exception) {
-						List<String> analyticsEventsString = ListUtil.map(
-							analyticsEvents, AnalyticsEvent::toJSON);
-
-						_log.error(
-							"Unable to process analytics events messages " +
-								analyticsEventsString,
-							exception);
+						semaphore.acquireUninterruptibly(
+							_userSessionNaniteConcurrentTasksLimit);
 					}
 					finally {
-						_semaphore.release();
+						semaphore.release(
+							_userSessionNaniteConcurrentTasksLimit);
 					}
+				}
+				catch (Exception exception) {
+					List<String> analyticsEventsString = ListUtil.map(
+						analyticsEvents, AnalyticsEvent::toJSON);
 
-					if (_log.isInfoEnabled()) {
-						Class<?> clazz = getClass();
+					_log.error(
+						"Unable to process analytics events messages " +
+							analyticsEventsString,
+						exception);
+				}
+				finally {
+					_semaphore.release();
+				}
 
-						_log.info(
-							String.format(
-								"%s processed %d events in %d ms",
-								clazz.getSimpleName(), analyticsEvents.size(),
-								System.currentTimeMillis() - start));
-					}
-				},
-				_runExecutorService);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
-		}
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
+
+					_log.info(
+						String.format(
+							"%s processed %d events in %d ms",
+							clazz.getSimpleName(), analyticsEvents.size(),
+							System.currentTimeMillis() - start));
+				}
+			},
+			_runExecutorService);
 	}
 
 	private void _storeEvents(
 		List<AnalyticsEvent> analyticsEvents, Semaphore semaphore,
 		String sessionId) {
 
-		try {
-			semaphore.acquire();
+		semaphore.acquireUninterruptibly();
 
-			String projectId = ProjectIdThreadLocal.getProjectId();
+		String projectId = ProjectIdThreadLocal.getProjectId();
 
-			CompletableFuture.runAsync(
-				() -> {
-					try {
-						ProjectIdThreadLocal.setProjectId(projectId);
+		CompletableFuture.runAsync(
+			() -> {
+				try {
+					ProjectIdThreadLocal.setProjectId(projectId);
 
-						Assert.notBlank(sessionId, "Session ID is blank");
+					Assert.notBlank(sessionId, "Session ID is blank");
 
-						for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-							try {
-								_eventStorageDog.store(
-									analyticsEvent, sessionId);
-							}
-							catch (Exception exception) {
-								_log.error(
-									"Unable to store event " +
-										analyticsEvent.toJSON(),
-									exception);
-							}
+					for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+						try {
+							_eventStorageDog.store(analyticsEvent, sessionId);
+						}
+						catch (Exception exception) {
+							_log.error(
+								"Unable to store event " +
+									analyticsEvent.toJSON(),
+								exception);
 						}
 					}
-					catch (Exception exception) {
-						List<String> analyticsEventsString = ListUtil.map(
-							analyticsEvents, AnalyticsEvent::toJSON);
+				}
+				catch (Exception exception) {
+					List<String> analyticsEventsString = ListUtil.map(
+						analyticsEvents, AnalyticsEvent::toJSON);
 
-						_log.error(
-							"Unable to store analytics events " +
-								analyticsEventsString,
-							exception);
-					}
-					finally {
-						semaphore.release();
-					}
-				},
-				_storageExecutorService);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
-		}
+					_log.error(
+						"Unable to store analytics events " +
+							analyticsEventsString,
+						exception);
+				}
+				finally {
+					semaphore.release();
+				}
+			},
+			_storageExecutorService);
 	}
 
 	private void _updateUserSession(
