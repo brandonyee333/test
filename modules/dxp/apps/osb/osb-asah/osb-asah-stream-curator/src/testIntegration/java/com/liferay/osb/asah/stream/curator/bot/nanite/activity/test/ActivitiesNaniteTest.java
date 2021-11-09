@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.activity.test;
 
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -36,6 +39,7 @@ import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -229,6 +233,68 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 			keywords);
 	}
 
+	@ElasticsearchIndex(
+		name = "activity-groups", resourcePath = "activity_groups.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testLatestEventDateRemainsInActivityGroup() throws Exception {
+		ActivityGroup activityGroup = _activityGroupDog.fetchActivityGroup(
+			"BROWSE", 1L, 329107243010869661L,
+			DateUtil.toUTCDate("2019-02-06T00:00:00.000Z"),
+			"db1ed215-9ed2-46a4-90de-535604c02c65");
+
+		Date endTime = activityGroup.getEndDate();
+
+		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
+			_messageBus);
+
+		messageBusTestHelper.prepareMessageBusChannel(
+			Channel.ANALYTICS_EVENTS_ACTIVITY,
+			ResourceUtil.readResourceToJSONArray(
+				"dependencies/analytics_events_4.json", this));
+
+		runNanite();
+
+		activityGroup = _activityGroupDog.fetchActivityGroup(
+			"BROWSE", 1L, 329107243010869661L,
+			DateUtil.toUTCDate("2019-02-06T00:00:00.000Z"),
+			"db1ed215-9ed2-46a4-90de-535604c02c65");
+
+		Assert.assertEquals(endTime, activityGroup.getEndDate());
+	}
+
+	@ElasticsearchIndex(
+		name = "activity-groups", resourcePath = "activity_groups.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testLatestEventDateSavedInActivityGroup() throws Exception {
+		ActivityGroup activityGroup = _activityGroupDog.fetchActivityGroup(
+			"BROWSE", 1L, 329107243010869661L,
+			DateUtil.toUTCDate("2019-02-06T00:00:00.000Z"),
+			"db1ed215-9ed2-46a4-90de-535604c02c65");
+
+		Date endTime = activityGroup.getEndDate();
+
+		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
+			_messageBus);
+
+		messageBusTestHelper.prepareMessageBusChannel(
+			Channel.ANALYTICS_EVENTS_ACTIVITY,
+			ResourceUtil.readResourceToJSONArray(
+				"dependencies/analytics_events_2.json", this));
+
+		runNanite();
+
+		activityGroup = _activityGroupDog.fetchActivityGroup(
+			"BROWSE", 1L, 329107243010869661L,
+			DateUtil.toUTCDate("2019-02-06T00:00:00.000Z"),
+			"db1ed215-9ed2-46a4-90de-535604c02c65");
+
+		Assert.assertNotEquals(endTime, activityGroup.getEndDate());
+	}
+
 	@Override
 	protected Nanite getNanite() {
 		return _activitiesNanite;
@@ -236,6 +302,9 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 	@Autowired
 	private ActivitiesNanite _activitiesNanite;
+
+	@Autowired
+	private ActivityGroupDog _activityGroupDog;
 
 	@Autowired
 	private AssetRepository _assetRepository;

@@ -1,0 +1,47 @@
+[
+	{
+		"analyticsKey": "www.liferay.com",
+		"applicationId": "WebContent",
+		"channelId": "1",
+		"context": {
+			"browserName": "Unknown Crawler",
+			"canonicalUrl": "https://www.liferay.com/home?_3_assetTagNames=&_3_cur=2&_3_documentsSearchContainerPrimaryKeys=20_PORTLET_1648796%2C20_PORTLET_8289363%2C20_PORTLET_231885435%2C15_PORTLET_1945044%2C15_PORTLET_231496957%2C20_PORTLET_172586547%2C20_PORTLET_231852894%2C20_PORTLET_229317896%2C20_PORTLET_231909778%2C20_PORTLET_231588683%2C20_PORTLET_231563905%2C20_PORTLET_231396034%2C15_PORTLET_1843094%2C15_PORTLET_170393334%2C20_PORTLET_4433611%2C20_PORTLET_190765105%2C20_PORTLET_1695437%2C20_PORTLET_231596354%2C20_PORTLET_25807447%2C20_PORTLET_164378894&_3_entryClassName=&_3_folderId=&_3_formDate=1530100422264&_3_format=&_3_groupId=0&_3_keywords=tagsEntries%3Ausing+liferay&_3_modified=&_3_modifieddayFrom=12&_3_modifieddayTo=13&_3_modifiedfrom=20%2F05%2F2018&_3_modifiedmonthFrom=4&_3_modifiedmonthTo=4&_3_modifiedselection=0&_3_modifiedto=21%2F05%2F2018&_3_modifiedyearFrom=2018&_3_modifiedyearTo=2018&_3_struts_action=%2Fsearch%2Fsearch&_3_userName=&p_p_id=3&p_p_lifecycle=0&p_p_mode=view&p_p_state=maximized",
+			"channelId": "1",
+			"city": "Mountain View",
+			"contentLanguageId": "zh-CN",
+			"country": "United States",
+			"crawler": "False",
+			"description": "在最灵活的平台上构建现代化的内网、网站、门户和连接体验。",
+			"devicePixelRatio": "1",
+			"deviceType": "Desktop",
+			"keywords": "tagsentries:using liferay",
+			"languageId": "en-US",
+			"og:description": "在最灵活的平台上构建现代化的内网、网站、门户和连接体验。",
+			"og:image": "https://www.liferay.com/osb-community-theme/images/custom/open_graph_image.jpg",
+			"og:title": "Liferay: 数字化体验软件可根据您的需求量身定制",
+			"og:url": "https://www.liferay.com/zh/home?_3_assetTagNames=&_3_cur=2&_3_documentsSearchContainerPrimaryKeys=20_PORTLET_1648796%2C20_PORTLET_8289363%2C20_PORTLET_231885435%2C15_PORTLET_1945044%2C15_PORTLET_231496957%2C20_PORTLET_172586547%2C20_PORTLET_231852894%2C20_PORTLET_229317896%2C20_PORTLET_231909778%2C20_PORTLET_231588683%2C20_PORTLET_231563905%2C20_PORTLET_231396034%2C15_PORTLET_1843094%2C15_PORTLET_170393334%2C20_PORTLET_4433611%2C20_PORTLET_190765105%2C20_PORTLET_1695437%2C20_PORTLET_231596354%2C20_PORTLET_25807447%2C20_PORTLET_164378894&_3_entryClassName=&_3_folderId=&_3_formDate=1530100422264&_3_format=&_3_groupId=0&_3_keywords=tagsEntries%3Ausing+liferay&_3_modified=&_3_modifieddayFrom=12&_3_modifieddayTo=13&_3_modifiedfrom=20%2F05%2F2018&_3_modifiedmonthFrom=4&_3_modifiedmonthTo=4&_3_modifiedselection=0&_3_modifiedto=21%2F05%2F2018&_3_modifiedyearFrom=2018&_3_modifiedyearTo=2018&_3_struts_action=%2Fsearch%2Fsearch&_3_userName=&p_p_id=3&p_p_lifecycle=0&p_p_mode=view&p_p_state=maximized",
+			"platformName": "Unknown",
+			"referrer": "",
+			"region": "California",
+			"screenHeight": "1024",
+			"screenWidth": "1024",
+			"title": "Liferay: 数字化体验软件可根据您的需求量身定制",
+			"url": "https://www.liferay.com/zh/home?_3_formDate=1530100422264&p_p_id=3&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&_3_struts_action=%2Fsearch%2Fsearch&_3_cur=2&_3_format=&_3_keywords=tagsEntries%3Ausing+liferay&_3_groupId=0&_3_entryClassName=&_3_assetTagNames=&_3_folderId=&_3_userName=&_3_modified=&_3_modifiedselection=0&_3_modifiedfrom=20%2F05%2F2018&_3_modifieddayFrom=12&_3_modifiedmonthFrom=4&_3_modifiedyearFrom=2018&_3_modifiedto=21%2F05%2F2018&_3_modifieddayTo=13&_3_modifiedmonthTo=4&_3_modifiedyearTo=2018&_3_documentsSearchContainerPrimaryKeys=20_PORTLET_1648796%2C20_PORTLET_8289363%2C20_PORTLET_231885435%2C15_PORTLET_1945044%2C15_PORTLET_231496957%2C20_PORTLET_172586547%2C20_PORTLET_231852894%2C20_PORTLET_229317896%2C20_PORTLET_231909778%2C20_PORTLET_231588683%2C20_PORTLET_231563905%2C20_PORTLET_231396034%2C15_PORTLET_1843094%2C15_PORTLET_170393334%2C20_PORTLET_4433611%2C20_PORTLET_190765105%2C20_PORTLET_1695437%2C20_PORTLET_231596354%2C20_PORTLET_25807447%2C20_PORTLET_164378894",
+			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
+		},
+		"createDate": "2019-02-06T01:04:31.679Z",
+		"dataSourceId": "329107243010869661",
+		"eventDate": "2019-02-06T01:04:31.679Z",
+		"eventId": "webContentViewed",
+		"eventProperties": {
+			"articleId": "223156009",
+			"numberOfWords": "9",
+			"title": "Footer Contact Us"
+		},
+		"id": "310746565640329834",
+		"individualId": "384915117098020137",
+		"normalizedEventDate": 1530144000000,
+		"projectId": "test",
+		"userId": "db1ed215-9ed2-46a4-90de-535604c02c65"
+	}
+]
