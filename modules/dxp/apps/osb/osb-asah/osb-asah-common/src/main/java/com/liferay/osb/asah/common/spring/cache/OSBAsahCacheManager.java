@@ -116,7 +116,7 @@ public class OSBAsahCacheManager implements CacheManager {
 
 	private final CaffeineCacheManager _caffeineCacheManager;
 
-	private final Pool<Kryo> _kryoPool = new Pool<Kryo>(true, false, 8) {
+	private final Pool<Kryo> _kryoPool = new Pool<Kryo>(true, false, 1000) {
 
 		@Override
 		protected Kryo create() {
