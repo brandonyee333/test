@@ -66,7 +66,9 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 		Account account = _accountDog.addAccount(
 			FaroInfoTestUtil.buildAccount(dataSource));
 
-		Long channelId = _dataSourceDog.getDefaultChannelId(dataSource.getId());
+		Long dataSourceId = dataSource.getId();
+
+		Long channelId = _dataSourceDog.getDefaultChannelId(dataSourceId);
 
 		_segmentDog.addSegment(
 			FaroInfoTestUtil.buildAccountSegment(account, channelId));
@@ -76,12 +78,12 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 
 		ActivityGroup activityGroup = _activityGroupDog.addActivityGroup(
 			FaroInfoTestUtil.buildActivityGroup(
-				channelId, dataSource.getId(), new Date(), individual));
+				channelId, dataSourceId, new Date(), individual));
 
 		Asset asset = _assetRepository.save(
 			_objectMapper.convertValue(
 				FaroInfoTestUtil.buildAssetJSONObject(
-					"Page", channelId, dataSource.getId()),
+					"Page", channelId, dataSourceId),
 				Asset.class));
 
 		JSONObject activityJSONObject = faroInfoElasticsearchInvoker.add(
@@ -118,8 +120,7 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 		Assertions.assertFalse(assetOptional.isPresent());
 
 		Assertions.assertTrue(_channelRepository.existsById(channelId));
-		Assertions.assertTrue(
-			_dataSourceRepository.existsById(dataSource.getId()));
+		Assertions.assertTrue(_dataSourceRepository.existsById(dataSourceId));
 		Assertions.assertFalse(
 			_segmentRepository.existsByName("Account: " + account.getId()));
 		Assertions.assertFalse(
