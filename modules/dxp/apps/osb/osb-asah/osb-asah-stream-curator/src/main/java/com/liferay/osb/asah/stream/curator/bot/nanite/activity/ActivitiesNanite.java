@@ -787,7 +787,7 @@ public class ActivitiesNanite implements Nanite {
 	@Resource
 	private ActivitiesNanite _activitiesNanite;
 
-	@Value("${osb.asah.activities.nanite.concurrent.tasks.limit:15}")
+	@Value("${osb.asah.activities.nanite.concurrent.tasks.limit:30}")
 	private int _activitiesNaniteConcurrentTasksLimit;
 
 	@Value("${osb.asah.activities.nanite.pull.messages.size:50}")
@@ -803,7 +803,7 @@ public class ActivitiesNanite implements Nanite {
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	private final ExecutorService _executorService =
-		Executors.newFixedThreadPool(10);
+		Executors.newFixedThreadPool(20);
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
