@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dog.configuration.DogConfiguration;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.Individual;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.model.MetricType;
@@ -119,7 +120,7 @@ public class ReportIndividualDog {
 			_searchQueryHelper.createFilterBoolQueryBuilder(
 				DogUtil.getAssetIdOptional(
 					searchQueryContext.getAssetId(), dogConfiguration),
-				metricType, searchQueryContext);
+				metricType, searchQueryContext, _timeZoneDog.getTimeZoneId());
 
 		searchSourceBuilder.query(
 			filterBoolQueryBuilder.filter(
@@ -145,5 +146,8 @@ public class ReportIndividualDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -206,7 +207,7 @@ public class ExperimentDog {
 				setTimeRange(
 					_getTimeRange(
 						experiment.getStartedDateLocalDateTime(),
-						ZoneId.of(getTimeZoneId())));
+						_timeZoneDog.getZoneId()));
 				setVariantId(variantId);
 			}
 		};
@@ -578,5 +579,8 @@ public class ExperimentDog {
 
 	@Autowired
 	private HistogramDog _histogramDog;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

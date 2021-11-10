@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dog.configuration.DogConfiguration;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.Metric;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
@@ -121,7 +122,7 @@ public class SegmentMetricDog {
 			_searchQueryHelper.createFilterBoolQueryBuilder(
 				DogUtil.getAssetIdOptional(
 					searchQueryContext.getAssetId(), dogConfiguration),
-				metricType, searchQueryContext);
+				metricType, searchQueryContext, _timeZoneDog.getTimeZoneId());
 
 		queryBuilderOptional.ifPresent(boolQueryBuilder::filter);
 
@@ -245,5 +246,8 @@ public class SegmentMetricDog {
 	private SearchQueryHelper _searchQueryHelper;
 
 	private String _segmentScriptSource;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

@@ -87,11 +87,11 @@ public class SiteVisitorHeatMapDog {
 		searchQueryContext.setDataSourceId(assetId);
 		searchQueryContext.setChannelId(channelId);
 		searchQueryContext.setTimeRange(timeRange);
-		searchQueryContext.setTimeZoneId(_timeZoneDog.getTimeZoneId());
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
 			_getTermsAggregationBuilder(), Optional.empty(),
-			Collections.emptySet(), null, null, searchQueryContext);
+			Collections.emptySet(), null, null, searchQueryContext,
+			_timeZoneDog.getTimeZoneId());
 	}
 
 	private List<HeatMapMetric> _createHeatMapMetrics(

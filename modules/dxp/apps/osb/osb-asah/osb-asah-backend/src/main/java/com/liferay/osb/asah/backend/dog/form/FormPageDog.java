@@ -24,6 +24,7 @@ import com.liferay.osb.asah.backend.model.FormFieldMetricType;
 import com.liferay.osb.asah.backend.model.FormPageMetric;
 import com.liferay.osb.asah.backend.model.FormPageMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.petra.string.StringPool;
 
@@ -112,7 +113,7 @@ public class FormPageDog {
 
 		QueryBuilder queries = _searchQueryHelper.createFilterBoolQueryBuilder(
 			Optional.of(AssetId.of("assetId", searchQueryContext.getAssetId())),
-			searchQueryContext);
+			searchQueryContext, _timeZoneDog.getTimeZoneId());
 
 		searchSourceBuilder.query(queries);
 
@@ -289,5 +290,8 @@ public class FormPageDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

@@ -90,7 +90,8 @@ public class PageDog {
 
 		BoolQueryBuilder boolQueryBuilder =
 			_searchQueryHelper.createFilterBoolQueryBuilder(
-				Optional.empty(), searchQueryContext);
+				Optional.empty(), searchQueryContext,
+				_timeZoneDog.getTimeZoneId());
 
 		boolQueryBuilder.mustNot(
 			QueryBuilders.termQuery("referrer", StringPool.BLANK));

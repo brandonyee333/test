@@ -197,7 +197,6 @@ public class VisitorCohortHeatMapDog {
 		}
 
 		searchQueryContext.setDataSourceId(searchQueryContext.getAssetId());
-		searchQueryContext.setTimeZoneId(_timeZoneDog.getTimeZoneId());
 
 		return _searchQueryHelper.createSearchSourceBuilder(
 			dateHistogramAggregationBuilder, Optional.empty(),

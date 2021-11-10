@@ -115,7 +115,7 @@ public class VisitorHistogramDog {
 					searchQueryContext.getAssetId(), dogConfiguration),
 				Collections.emptySet(),
 				dogConfiguration.getQueryBuilder(searchQueryContext),
-				searchQueryContext);
+				searchQueryContext, _timeZoneDog.getTimeZoneId());
 		}
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
@@ -124,7 +124,7 @@ public class VisitorHistogramDog {
 				searchQueryContext.getAssetId(), dogConfiguration),
 			Collections.emptySet(),
 			dogConfiguration.getQueryBuilder(searchQueryContext),
-			searchQueryContext);
+			searchQueryContext, _timeZoneDog.getTimeZoneId());
 	}
 
 	private HistogramMetricBag _createHistogramMetricBag(

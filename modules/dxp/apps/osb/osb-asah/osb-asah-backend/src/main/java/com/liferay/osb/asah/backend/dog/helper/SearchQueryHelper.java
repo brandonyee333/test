@@ -56,10 +56,10 @@ public class SearchQueryHelper {
 
 	public BoolQueryBuilder createFilterBoolQueryBuilder(
 		Optional<AssetId> assetIdOptional, MetricType metricType,
-		SearchQueryContext searchQueryContext) {
+		SearchQueryContext searchQueryContext, String timeZoneId) {
 
 		BoolQueryBuilder boolQueryBuilder = createFilterBoolQueryBuilder(
-			assetIdOptional, searchQueryContext);
+			assetIdOptional, searchQueryContext, timeZoneId);
 
 		_addFieldRangeFilter(boolQueryBuilder, metricType);
 
@@ -68,7 +68,7 @@ public class SearchQueryHelper {
 
 	public BoolQueryBuilder createFilterBoolQueryBuilder(
 		Optional<AssetId> assetIdOptional,
-		SearchQueryContext searchQueryContext) {
+		SearchQueryContext searchQueryContext, String timeZoneId) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -86,8 +86,7 @@ public class SearchQueryHelper {
 			boolQueryBuilder, searchQueryContext.getTechnology());
 		_addTermsFilter(boolQueryBuilder, searchQueryContext.getTerms());
 		_addTimeRangeFilter(
-			boolQueryBuilder, searchQueryContext.getTimeRange(),
-			searchQueryContext.getTimeZoneId());
+			boolQueryBuilder, searchQueryContext.getTimeRange(), timeZoneId);
 		_addTitleFilter(boolQueryBuilder, searchQueryContext.getTitle());
 		_addURLFilter(
 			searchQueryContext.getAssetType(), boolQueryBuilder,
@@ -100,12 +99,12 @@ public class SearchQueryHelper {
 		Set<AggregationBuilder> aggregationBuilders,
 		Optional<AssetId> assetIdOptional,
 		Set<PipelineAggregationBuilder> pipelineAggregationBuilders,
-		QueryBuilder queryBuilder, SearchQueryContext searchQueryContext) {
+		QueryBuilder queryBuilder, SearchQueryContext searchQueryContext,
+		String timeZoneId) {
 
 		DateRangeAggregationBuilder dateRangeAggregationBuilder =
 			_createPeriodDateRangeAggregationBuilder(
-				searchQueryContext.getTimeRange(),
-				searchQueryContext.getTimeZoneId());
+				searchQueryContext.getTimeRange(), timeZoneId);
 
 		aggregationBuilders.forEach(
 			dateRangeAggregationBuilder::subAggregation);
@@ -119,8 +118,7 @@ public class SearchQueryHelper {
 		}
 
 		_addPeriodRangeFilter(
-			boolQueryBuilder, searchQueryContext.getTimeRange(),
-			searchQueryContext.getTimeZoneId());
+			boolQueryBuilder, searchQueryContext.getTimeRange(), timeZoneId);
 
 		return createSearchSourceBuilder(
 			dateRangeAggregationBuilder, assetIdOptional, boolQueryBuilder,
@@ -182,7 +180,7 @@ public class SearchQueryHelper {
 		AggregationBuilder aggregationBuilder,
 		Optional<AssetId> assetIdOptional, Set<String> assetIds,
 		AssetResolver<?> assetResolver, QueryBuilder queryBuilder,
-		SearchQueryContext searchQueryContext) {
+		SearchQueryContext searchQueryContext, String timeZoneId) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -202,29 +200,30 @@ public class SearchQueryHelper {
 
 		_addTimeRangeFilter(
 			assetIds, boolQueryBuilder, searchQueryContext.getTimeRange(),
-			searchQueryContext.getTimeZoneId());
+			timeZoneId);
 
 		return createSearchSourceBuilder(
 			_createDateRangeAggregationBuilder(
-				aggregationBuilder, searchQueryContext),
+				aggregationBuilder, searchQueryContext, timeZoneId),
 			assetIdOptional, boolQueryBuilder, searchQueryContext);
 	}
 
 	public SearchSourceBuilder createRangeSearchSourceBuilder(
 		AggregationBuilder aggregationBuilder,
 		Optional<AssetId> assetIdOptional, Set<String> assetIds,
-		MetricType metricType, SearchQueryContext searchQueryContext) {
+		MetricType metricType, SearchQueryContext searchQueryContext,
+		String timeZoneId) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
 		_addFieldRangeFilter(boolQueryBuilder, metricType);
 		_addTimeRangeFilter(
 			assetIds, boolQueryBuilder, searchQueryContext.getTimeRange(),
-			searchQueryContext.getTimeZoneId());
+			timeZoneId);
 
 		return createSearchSourceBuilder(
 			_createDateRangeAggregationBuilder(
-				aggregationBuilder, searchQueryContext),
+				aggregationBuilder, searchQueryContext, timeZoneId),
 			assetIdOptional, boolQueryBuilder, searchQueryContext);
 	}
 
@@ -232,12 +231,12 @@ public class SearchQueryHelper {
 		Set<AggregationBuilder> aggregationBuilders,
 		Optional<AssetId> assetIdOptional,
 		Set<PipelineAggregationBuilder> pipelineAggregationBuilders,
-		QueryBuilder queryBuilder, SearchQueryContext searchQueryContext) {
+		QueryBuilder queryBuilder, SearchQueryContext searchQueryContext,
+		String timeZoneId) {
 
 		DateRangeAggregationBuilder dateRangeAggregationBuilder =
 			_createDateRangeAggregationBuilder(
-				searchQueryContext.getTimeRange(),
-				searchQueryContext.getTimeZoneId());
+				searchQueryContext.getTimeRange(), timeZoneId);
 
 		aggregationBuilders.forEach(
 			dateRangeAggregationBuilder::subAggregation);
@@ -251,8 +250,7 @@ public class SearchQueryHelper {
 		}
 
 		_addTimeRangeFilter(
-			boolQueryBuilder, searchQueryContext.getTimeRange(),
-			searchQueryContext.getTimeZoneId());
+			boolQueryBuilder, searchQueryContext.getTimeRange(), timeZoneId);
 
 		return createSearchSourceBuilder(
 			dateRangeAggregationBuilder, assetIdOptional, boolQueryBuilder,
@@ -602,12 +600,11 @@ public class SearchQueryHelper {
 
 	private AggregationBuilder _createDateRangeAggregationBuilder(
 		AggregationBuilder childAggregationBuilder,
-		SearchQueryContext searchQueryContext) {
+		SearchQueryContext searchQueryContext, String timeZoneId) {
 
 		DateRangeAggregationBuilder dateRangeAggregationBuilder =
 			_createDateRangeAggregationBuilder(
-				searchQueryContext.getTimeRange(),
-				searchQueryContext.getTimeZoneId());
+				searchQueryContext.getTimeRange(), timeZoneId);
 
 		dateRangeAggregationBuilder.subAggregation(childAggregationBuilder);
 

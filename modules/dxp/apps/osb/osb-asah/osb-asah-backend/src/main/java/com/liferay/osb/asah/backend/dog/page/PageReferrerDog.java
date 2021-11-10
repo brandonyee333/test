@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.PageReferrerMetric;
 import com.liferay.osb.asah.backend.model.PageReferrerMetricType;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.petra.string.StringPool;
 
@@ -217,7 +218,8 @@ public class PageReferrerDog {
 			));
 		searchSourceBuilder.query(
 			_searchQueryHelper.createFilterBoolQueryBuilder(
-				Optional.empty(), searchQueryContext));
+				Optional.empty(), searchQueryContext,
+				_timeZoneDog.getTimeZoneId()));
 		searchSourceBuilder.size(0);
 
 		return searchSourceBuilder;
@@ -249,7 +251,8 @@ public class PageReferrerDog {
 		searchSourceBuilder.query(
 			BoolQueryBuilderUtil.filter(
 				_searchQueryHelper.createFilterBoolQueryBuilder(
-					Optional.empty(), searchQueryContext)
+					Optional.empty(), searchQueryContext,
+					_timeZoneDog.getTimeZoneId())
 			).filter(
 				QueryBuilders.termQuery("acquisitionChannel", "social")
 			).filter(
@@ -295,7 +298,8 @@ public class PageReferrerDog {
 		searchSourceBuilder.query(
 			BoolQueryBuilderUtil.filter(
 				_searchQueryHelper.createFilterBoolQueryBuilder(
-					Optional.empty(), searchQueryContext)
+					Optional.empty(), searchQueryContext,
+					_timeZoneDog.getTimeZoneId())
 			).filter(
 				QueryBuilders.existsQuery("acquisitionChannel")
 			).mustNot(
@@ -334,7 +338,8 @@ public class PageReferrerDog {
 		searchSourceBuilder.query(
 			BoolQueryBuilderUtil.filter(
 				_searchQueryHelper.createFilterBoolQueryBuilder(
-					Optional.empty(), searchQueryContext)
+					Optional.empty(), searchQueryContext,
+					_timeZoneDog.getTimeZoneId())
 			).filter(
 				QueryBuilders.termQuery("acquisitionChannel", "social")
 			).filter(
@@ -384,7 +389,8 @@ public class PageReferrerDog {
 
 		BoolQueryBuilder boolQueryBuilder =
 			_searchQueryHelper.createFilterBoolQueryBuilder(
-				Optional.empty(), searchQueryContext);
+				Optional.empty(), searchQueryContext,
+				_timeZoneDog.getTimeZoneId());
 
 		boolQueryBuilder.mustNot(
 			QueryBuilders.termQuery("referrer", StringPool.BLANK));
@@ -491,6 +497,9 @@ public class PageReferrerDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 	@Autowired
 	private TitleDog _titleDog;

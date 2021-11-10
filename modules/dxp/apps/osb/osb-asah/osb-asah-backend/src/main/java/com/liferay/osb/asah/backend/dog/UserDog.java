@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.dog.configuration.DogConfiguration;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -173,7 +174,7 @@ public class UserDog {
 			_searchQueryHelper.createFilterBoolQueryBuilder(
 				DogUtil.getAssetIdOptional(
 					searchQueryContext.getAssetId(), dogConfiguration),
-				metricType, searchQueryContext);
+				metricType, searchQueryContext, _timeZoneDog.getTimeZoneId());
 
 		boolQueryBuilder.filter(queryBuilder);
 
@@ -249,5 +250,8 @@ public class UserDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

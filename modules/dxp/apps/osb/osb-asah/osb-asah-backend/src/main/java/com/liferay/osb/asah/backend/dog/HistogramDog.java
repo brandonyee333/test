@@ -106,7 +106,7 @@ public class HistogramDog {
 			_getDateHistogramAggregationBuilder(
 				searchQueryContext.getInterval(),
 				searchQueryContext.getTimeRange(),
-				searchQueryContext.getTimeZoneId());
+				_timeZoneDog.getTimeZoneId());
 
 		MetricResolver metricResolver = dogConfiguration.getMetricResolver(
 			metricType);
@@ -130,7 +130,7 @@ public class HistogramDog {
 					searchQueryContext.getAssetId(), dogConfiguration),
 				Collections.emptySet(),
 				dogConfiguration.getQueryBuilder(searchQueryContext),
-				searchQueryContext);
+				searchQueryContext, _timeZoneDog.getTimeZoneId());
 		}
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
@@ -139,7 +139,7 @@ public class HistogramDog {
 				searchQueryContext.getAssetId(), dogConfiguration),
 			Collections.emptySet(),
 			dogConfiguration.getQueryBuilder(searchQueryContext),
-			searchQueryContext);
+			searchQueryContext, _timeZoneDog.getTimeZoneId());
 	}
 
 	private HistogramMetricBag _createHistogramMetricBag(

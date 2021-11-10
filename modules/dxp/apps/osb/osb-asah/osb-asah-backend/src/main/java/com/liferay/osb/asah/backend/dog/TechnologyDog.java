@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.Metric;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -111,7 +112,8 @@ public class TechnologyDog {
 			aggregationBuilder,
 			DogUtil.getAssetIdOptional(
 				searchQueryContext.getAssetId(), dogConfiguration),
-			Collections.emptySet(), metricType, searchQueryContext);
+			Collections.emptySet(), metricType, searchQueryContext,
+			_timeZoneDog.getTimeZoneId());
 	}
 
 	private SearchSourceBuilder _buildDeviceSearchSourceBuilder(
@@ -129,7 +131,8 @@ public class TechnologyDog {
 			deviceTypeAggregationBuilder,
 			DogUtil.getAssetIdOptional(
 				searchQueryContext.getAssetId(), dogConfiguration),
-			Collections.emptySet(), metricType, searchQueryContext);
+			Collections.emptySet(), metricType, searchQueryContext,
+			_timeZoneDog.getTimeZoneId());
 	}
 
 	private AggregationBuilder _createTermsAggregationBuilder(
@@ -213,5 +216,8 @@ public class TechnologyDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

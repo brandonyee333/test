@@ -148,8 +148,6 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 
 		searchQueryContext.setTerms(
 			dataFetchingEnvironment.getArgument("terms"));
-		searchQueryContext.setTimeZoneId(
-			dataFetchingEnvironment.getArgument("timeZoneId"));
 		searchQueryContext.setTitle(
 			dataFetchingEnvironment.getArgument("title"));
 		searchQueryContext.setURL(dataFetchingEnvironment.getArgument("url"));

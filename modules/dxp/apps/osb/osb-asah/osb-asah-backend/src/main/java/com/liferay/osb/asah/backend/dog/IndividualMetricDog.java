@@ -21,6 +21,7 @@ import com.liferay.osb.asah.backend.model.IndividualMetric;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.MetricType;
@@ -30,7 +31,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -40,6 +40,7 @@ import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -84,7 +85,7 @@ public class IndividualMetricDog {
 			).lte(
 				localDateTime.toString()
 			).timeZone(
-				searchQueryContext.getTimeZoneId()
+				_timeZoneDog.getTimeZoneId()
 			));
 
 		BoolQueryBuilderUtil.filterTerm(
@@ -123,8 +124,7 @@ public class IndividualMetricDog {
 
 		Metric metric = new Metric(metricResolver.getMetricType());
 
-		LocalDate localDate = LocalDate.now(
-			ZoneId.of(searchQueryContext.getTimeZoneId()));
+		LocalDate localDate = LocalDate.now(_timeZoneDog.getZoneId());
 
 		LocalDate previousLocalDate = _getPreviousLocalDate(
 			localDate, searchQueryContext.getTimeRange());
@@ -153,5 +153,8 @@ public class IndividualMetricDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

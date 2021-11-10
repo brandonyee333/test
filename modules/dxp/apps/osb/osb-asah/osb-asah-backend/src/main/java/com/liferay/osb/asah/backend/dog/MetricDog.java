@@ -22,6 +22,7 @@ import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.MetricType;
@@ -248,7 +249,7 @@ public class MetricDog {
 			cardinalityAggregationBuilder, Optional.empty(),
 			Collections.emptySet(), assetResolver,
 			dogConfiguration.getQueryBuilder(searchQueryContext),
-			searchQueryContext);
+			searchQueryContext, _timeZoneDog.getTimeZoneId());
 	}
 
 	private SearchSourceBuilder _buildAssetMetricSearchSourceBuilder(
@@ -291,7 +292,7 @@ public class MetricDog {
 					assetResolver.getAssetId(searchQueryContext.getAssetId())),
 				_getPipelineAggregationBuilders(metricResolvers),
 				dogConfiguration.getQueryBuilder(searchQueryContext),
-				searchQueryContext);
+				searchQueryContext, _timeZoneDog.getTimeZoneId());
 		}
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
@@ -300,7 +301,7 @@ public class MetricDog {
 				assetResolver.getAssetId(searchQueryContext.getAssetId())),
 			_getPipelineAggregationBuilders(metricResolvers),
 			dogConfiguration.getQueryBuilder(searchQueryContext),
-			searchQueryContext);
+			searchQueryContext, _timeZoneDog.getTimeZoneId());
 	}
 
 	private SearchSourceBuilder _buildAssetMetricsSearchSourceBuilder(
@@ -333,7 +334,7 @@ public class MetricDog {
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
 			termsAggregationBuilder, Optional.empty(), assetIds, assetResolver,
 			dogConfiguration.getQueryBuilder(searchQueryContext),
-			searchQueryContext);
+			searchQueryContext, _timeZoneDog.getTimeZoneId());
 	}
 
 	private BucketSortPipelineAggregationBuilder
@@ -622,5 +623,8 @@ public class MetricDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

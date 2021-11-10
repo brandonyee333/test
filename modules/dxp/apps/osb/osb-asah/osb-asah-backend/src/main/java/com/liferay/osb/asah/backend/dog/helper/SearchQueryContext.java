@@ -17,7 +17,6 @@ package com.liferay.osb.asah.backend.dog.helper;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Geolocation;
 import com.liferay.osb.asah.backend.model.Technology;
-import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
 
@@ -96,14 +95,6 @@ public class SearchQueryContext {
 
 	public TimeRange getTimeRange() {
 		return _timeRange;
-	}
-
-	public String getTimeZoneId() {
-		if (_timeZoneId == null) {
-			return TimeZoneDogUtil.getTimeZoneId();
-		}
-
-		return _timeZoneId;
 	}
 
 	public String getTitle() {
@@ -208,12 +199,6 @@ public class SearchQueryContext {
 		_timeRange = timeRange;
 	}
 
-	public void setTimeZoneId(String timeZoneId) {
-		if (timeZoneId != null) {
-			_timeZoneId = timeZoneId;
-		}
-	}
-
 	public void setTitle(String title) {
 		_title = title;
 	}
@@ -244,7 +229,6 @@ public class SearchQueryContext {
 	private Technology _technology = Technology.any();
 	private String _terms;
 	private TimeRange _timeRange = TimeRange.LAST_30_DAYS;
-	private String _timeZoneId;
 	private String _title;
 	private String _url;
 	private String _variantId;
