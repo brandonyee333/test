@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -215,6 +216,30 @@ public class FieldMappingDogTest {
 		Assert.assertNotNull(
 			_fieldMappingDog.fetchFieldMapping(
 				"demographics", "email", "individual"));
+	}
+
+	@Test
+	public void testGetFieldMappings() {
+		DataSource dataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildLiferayDataSource());
+
+		_fieldMappingDog.addEmailFieldMapping(dataSource.getId());
+
+		Iterable<FieldMapping> fieldMappings =
+			_fieldMappingRepository.findAll();
+
+		Iterator<FieldMapping> iterator = fieldMappings.iterator();
+
+		FieldMapping fieldMapping = iterator.next();
+
+		Assert.assertEquals(
+			Collections.singletonList(fieldMapping),
+			_fieldMappingDog.getFieldMappings(
+				Collections.singleton(fieldMapping.getId())));
+
+		Assert.assertEquals(
+			Collections.emptyList(),
+			_fieldMappingDog.getFieldMappings(Collections.singleton(null)));
 	}
 
 	@Test
