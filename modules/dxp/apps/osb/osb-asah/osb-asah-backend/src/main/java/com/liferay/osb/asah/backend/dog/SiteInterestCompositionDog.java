@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.Composition;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -59,10 +60,10 @@ public class SiteInterestCompositionDog {
 
 	public CompositionResultBag getCompositionResultBag(
 		String channelId, String dataSourceId, int size, int start,
-		TimeRange timeRange, String timeZoneId) {
+		TimeRange timeRange) {
 
 		Map<String, Set<String>> keywords = _getKeywords(
-			channelId, dataSourceId, timeRange, timeZoneId);
+			channelId, dataSourceId, timeRange);
 
 		if (keywords.isEmpty()) {
 			return new CompositionResultBag();
@@ -92,16 +93,15 @@ public class SiteInterestCompositionDog {
 
 		return new CompositionResultBag(
 			compositions.subList(start, end), compositions.size(),
-			_getTotalUsers(channelId, dataSourceId, timeRange, timeZoneId));
+			_getTotalUsers(channelId, dataSourceId, timeRange));
 	}
 
 	private BoolQueryBuilder _getActivitiesBoolQueryBuilder(
-		String channelId, String dataSourceId, TimeRange timeRange,
-		String timeZoneId) {
+		String channelId, String dataSourceId, TimeRange timeRange) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			_searchQueryHelper.createRangeQueryBuilder(
-				"endTime", timeRange, timeZoneId)
+				"endTime", timeRange, _timeZoneDog.getTimeZoneId())
 		).filter(
 			QueryBuilders.termQuery("applicationId", "Page")
 		).filter(
@@ -117,8 +117,7 @@ public class SiteInterestCompositionDog {
 	}
 
 	private Map<String, Set<String>> _getKeywords(
-		String channelId, String dataSourceId, TimeRange timeRange,
-		String timeZoneId) {
+		String channelId, String dataSourceId, TimeRange timeRange) {
 
 		Map<String, Set<String>> keywords = new HashMap<>();
 
@@ -134,7 +133,7 @@ public class SiteInterestCompositionDog {
 				));
 
 		Map<String, Set<String>> users = _getUsers(
-			channelId, dataSourceId, timeRange, timeZoneId);
+			channelId, dataSourceId, timeRange);
 
 		for (Map.Entry<String, Set<String>> entry : assetIds.entrySet()) {
 			Set<String> userIds = new HashSet<>();
@@ -156,8 +155,7 @@ public class SiteInterestCompositionDog {
 	}
 
 	private long _getTotalUsers(
-		String channelId, String dataSourceId, TimeRange timeRange,
-		String timeZoneId) {
+		String channelId, String dataSourceId, TimeRange timeRange) {
 
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			"activities",
@@ -175,7 +173,7 @@ public class SiteInterestCompositionDog {
 					));
 				searchSourceBuilder.query(
 					_getActivitiesBoolQueryBuilder(
-						channelId, dataSourceId, timeRange, timeZoneId));
+						channelId, dataSourceId, timeRange));
 				searchSourceBuilder.size(0);
 			});
 
@@ -192,8 +190,7 @@ public class SiteInterestCompositionDog {
 	}
 
 	private Map<String, Set<String>> _getUsers(
-		String channelId, String dataSourceId, TimeRange timeRange,
-		String timeZoneId) {
+		String channelId, String dataSourceId, TimeRange timeRange) {
 
 		Map<String, Set<String>> users = new HashMap<>();
 
@@ -232,8 +229,7 @@ public class SiteInterestCompositionDog {
 		searchSourceBuilder.aggregation(compositeAggregationBuilder);
 
 		searchSourceBuilder.query(
-			_getActivitiesBoolQueryBuilder(
-				channelId, dataSourceId, timeRange, timeZoneId));
+			_getActivitiesBoolQueryBuilder(channelId, dataSourceId, timeRange));
 		searchSourceBuilder.size(0);
 
 		while (true) {
@@ -288,5 +284,8 @@ public class SiteInterestCompositionDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.Composition;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
@@ -48,7 +49,7 @@ public class SearchTermCompositionDog {
 
 	public CompositionResultBag getCompositionResultBag(
 		String channelId, String dataSourceId, int size, int start,
-		TimeRange timeRange, String timeZoneId) {
+		TimeRange timeRange) {
 
 		List<Composition> compositions = new ArrayList<>();
 
@@ -84,7 +85,7 @@ public class SearchTermCompositionDog {
 
 				BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 					_searchQueryHelper.createRangeQueryBuilder(
-						"eventDate", timeRange, timeZoneId)
+						"eventDate", timeRange, _timeZoneDog.getTimeZoneId())
 				).filter(
 					QueryBuilders.existsQuery("searchTerm")
 				).mustNot(
@@ -126,5 +127,8 @@ public class SearchTermCompositionDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

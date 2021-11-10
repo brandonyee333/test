@@ -17,7 +17,6 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.AcquisitionCompositionDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -44,13 +43,10 @@ public class AcquisitionCompositionBagDataFetcher
 			searchQueryContext.getDataSourceId(),
 			dataFetchingEnvironment.getArgument("size"),
 			dataFetchingEnvironment.getArgument("start"),
-			searchQueryContext.getTimeRange(), _timeZoneDog.getTimeZoneId());
+			searchQueryContext.getTimeRange());
 	}
 
 	@Autowired
 	private AcquisitionCompositionDog _acquisitionCompositionDog;
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
 
 }

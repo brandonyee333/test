@@ -47,7 +47,7 @@ public class SearchTermCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetCompositionResultBag() {
 		checkResults(
 			_searchTermCompositionDog.getCompositionResultBag(
-				"2", "333962835564819979", 10, 0, TimeRange.of(90), "UTC"),
+				"2", "333962835564819979", 10, 0, TimeRange.of(90)),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("liferay", 3L);
@@ -61,11 +61,11 @@ public class SearchTermCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testTimeRangeCompositionResultBag() {
 		checkResults(
 			_searchTermCompositionDog.getCompositionResultBag(
-				"2", "333962835564819979", 10, 0, TimeRange.of(0), "UTC"),
+				"2", "333962835564819979", 10, 0, TimeRange.of(0)),
 			Collections.emptyMap(), 0, 0, 0);
 		checkResults(
 			_searchTermCompositionDog.getCompositionResultBag(
-				"2", "333962835564819979", 10, 0, TimeRange.of(30), "UTC"),
+				"2", "333962835564819979", 10, 0, TimeRange.of(30)),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("liferay", 3L);
@@ -75,7 +75,7 @@ public class SearchTermCompositionDogTest extends BaseCompositionDogTestCase {
 			3, 2, 4);
 		checkResults(
 			_searchTermCompositionDog.getCompositionResultBag(
-				"2", "333962835564819979", 10, 0, TimeRange.of(180), "UTC"),
+				"2", "333962835564819979", 10, 0, TimeRange.of(180)),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("liferay", 3L);
@@ -85,7 +85,7 @@ public class SearchTermCompositionDogTest extends BaseCompositionDogTestCase {
 			3, 2, 5);
 		checkResults(
 			_searchTermCompositionDog.getCompositionResultBag(
-				"2", "333962835564819979", 10, 0, TimeRange.of(365), "UTC"),
+				"2", "333962835564819979", 10, 0, TimeRange.of(365)),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("liferay", 4L);
@@ -99,8 +99,7 @@ public class SearchTermCompositionDogTest extends BaseCompositionDogTestCase {
 		checkResults(
 			_searchTermCompositionDog.getCompositionResultBag(
 				"2", "333962835564819979", 10, 0,
-				TimeRange.of(localDate.minusDays(3), localDate.minusDays(180)),
-				"UTC"),
+				TimeRange.of(localDate.minusDays(3), localDate.minusDays(180))),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("liferay dxp", 1L);

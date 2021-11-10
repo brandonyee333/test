@@ -205,9 +205,7 @@ public class ExperimentDog {
 			{
 				setExperimentId(experimentId);
 				setTimeRange(
-					_getTimeRange(
-						experiment.getStartedDateLocalDateTime(),
-						_timeZoneDog.getZoneId()));
+					_getTimeRange(experiment.getStartedDateLocalDateTime()));
 				setVariantId(variantId);
 			}
 		};
@@ -406,8 +404,8 @@ public class ExperimentDog {
 			experimentStartedDate.toInstant(), Instant.now());
 	}
 
-	private TimeRange _getTimeRange(
-		LocalDateTime startedDateLocalDateTime, ZoneId zoneId) {
+	private TimeRange _getTimeRange(LocalDateTime startedDateLocalDateTime) {
+		ZoneId zoneId = _timeZoneDog.getZoneId();
 
 		ZonedDateTime startZonedDateTime = ZonedDateTime.now(zoneId);
 

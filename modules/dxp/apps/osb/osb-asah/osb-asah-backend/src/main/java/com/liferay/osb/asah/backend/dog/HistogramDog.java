@@ -32,7 +32,6 @@ import com.liferay.petra.string.StringPool;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import java.util.Collections;
@@ -105,8 +104,7 @@ public class HistogramDog {
 		DateHistogramAggregationBuilder dateHistogramAggregationBuilder =
 			_getDateHistogramAggregationBuilder(
 				searchQueryContext.getInterval(),
-				searchQueryContext.getTimeRange(),
-				_timeZoneDog.getTimeZoneId());
+				searchQueryContext.getTimeRange());
 
 		MetricResolver metricResolver = dogConfiguration.getMetricResolver(
 			metricType);
@@ -226,14 +224,14 @@ public class HistogramDog {
 	}
 
 	private DateHistogramAggregationBuilder _getDateHistogramAggregationBuilder(
-		Interval interval, TimeRange timeRange, String timeZoneId) {
+		Interval interval, TimeRange timeRange) {
 
 		DateHistogramAggregationBuilder dateHistogramAggregationBuilder =
 			AggregationBuilders.dateHistogram("metric_over_time");
 
 		dateHistogramAggregationBuilder.field("eventDate");
 		dateHistogramAggregationBuilder.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-		dateHistogramAggregationBuilder.timeZone(ZoneId.of(timeZoneId));
+		dateHistogramAggregationBuilder.timeZone(_timeZoneDog.getZoneId());
 
 		if (timeRange.equals(TimeRange.LAST_24_HOURS) ||
 			timeRange.equals(TimeRange.YESTERDAY)) {
