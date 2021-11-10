@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +49,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 /**
  * @author Michael Bowerman
@@ -244,6 +246,10 @@ public class FieldMappingDog {
 	}
 
 	public List<FieldMapping> getFieldMappings(Set<Long> fieldMappingIds) {
+		if (CollectionUtils.isEmpty(fieldMappingIds)) {
+			return Collections.emptyList();
+		}
+
 		return IterableUtils.toList(
 			_fieldMappingRepository.findAllById(fieldMappingIds));
 	}
