@@ -88,6 +88,8 @@ public class FieldMapping implements Persistable<Long> {
 			Objects.equals(
 				_dataSourceFieldMappings,
 				fieldMapping._dataSourceFieldMappings) &&
+			Objects.equals(
+				_dataSourceFieldNames, fieldMapping._dataSourceFieldNames) &&
 			Objects.equals(_displayName, fieldMapping._displayName) &&
 			Objects.equals(_displayType, fieldMapping._displayType) &&
 			Objects.equals(_fieldName, fieldMapping._fieldName) &&
@@ -234,8 +236,9 @@ public class FieldMapping implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_author, _context, _createDate, _displayName, _displayType,
-			_fieldName, _fieldType, _id, _modifiedDate, _ownerType, _strategy);
+			_author, _context, _createDate, _dataSourceFieldMappings,
+			_dataSourceFieldNames, _displayName, _displayType, _fieldName,
+			_fieldType, _id, _modifiedDate, _ownerType, _strategy);
 	}
 
 	@JsonIgnore
@@ -447,6 +450,25 @@ public class FieldMapping implements Persistable<Long> {
 			_configurationJSONObject = _toJSONObject(configuration);
 		}
 
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof Strategy)) {
+				return false;
+			}
+
+			Strategy strategy = (Strategy)obj;
+
+			if (Objects.equals(_key, strategy._key)) {
+				return true;
+			}
+
+			return false;
+		}
+
 		@AccessType(AccessType.Type.PROPERTY)
 		@Column("strategyconfiguration")
 		@JsonProperty("configuration")
@@ -459,6 +481,11 @@ public class FieldMapping implements Persistable<Long> {
 		@JsonProperty("key")
 		public String getKey() {
 			return _key;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_key);
 		}
 
 		public void setConfigurationJSONObject(
