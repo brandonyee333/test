@@ -71,6 +71,7 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -427,10 +428,11 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	protected SegmentDog segmentDog;
 
 	private void _addReferencedObject(
-		String collectionName, Set<Long> referencedIds,
-		JSONObject referencedObjectsJSONObject) {
+			String collectionName, Set<Long> referencedIds,
+			JSONObject referencedObjectsJSONObject)
+		throws Exception {
 
-		if ((referencedIds == null) || referencedIds.isEmpty()) {
+		if (CollectionUtils.isEmpty(referencedIds)) {
 			referencedObjectsJSONObject.put(collectionName, new JSONArray());
 
 			return;
@@ -439,25 +441,17 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		JSONArray jsonArray = null;
 
 		if (DXPEntity.Type.ofCollectionName(collectionName) != null) {
-			Stream<Long> stream = referencedIds.stream();
-
 			List<? extends DXPEntity> dxpEntities =
 				_dxpEntityDog.findByAfterAndFieldsAndType(
 					null,
 					Collections.singletonMap(
-						"id",
-						stream.map(
-							String::valueOf
-						).collect(
-							Collectors.toList()
-						)),
+						"id", ListUtil.map(referencedIds, String::valueOf)),
 					0, DXPEntity.Type.ofCollectionName(collectionName));
 
-			jsonArray = new JSONArray(
-				ListUtil.map(
-					dxpEntities,
-					dxpEntity -> _objectMapper.convertValue(
-						dxpEntity, JSONObject.class)));
+			jsonArray = JSONUtil.toJSONArray(
+				dxpEntities,
+				dxpEntity -> _objectMapper.convertValue(
+					dxpEntity, JSONObject.class));
 		}
 		else {
 			jsonArray = faroInfoElasticsearchInvoker.get(
