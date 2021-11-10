@@ -88,9 +88,7 @@ public class AccountContactRoleMessageSubscriber
 
 			String topic = message.getTopic();
 
-			if (topic.equals(
-					"topic.pattern=koroneiki.account.contactrole.assigned")) {
-
+			if (topic.equals("koroneiki.account.contactrole.assigned")) {
 				if (_dxpCloudStatusPageSubscriptionUtil.hasActiveDXPCloud(
 						account.getKey())) {
 
