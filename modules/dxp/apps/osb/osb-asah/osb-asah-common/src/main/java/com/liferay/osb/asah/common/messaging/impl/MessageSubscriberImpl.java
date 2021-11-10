@@ -78,22 +78,25 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 
 				ackIds.add(receivedMessage.getAckId());
 
-				String ackId = _ackIds.getIfPresent(receivedMessage.getAckId());
+				PubsubMessage pubsubMessage = receivedMessage.getMessage();
 
-				if (ackId == null) {
-					PubsubMessage pubsubMessage = receivedMessage.getMessage();
+				String messageId = _messageIds.getIfPresent(
+					pubsubMessage.getMessageId());
 
+				if (messageId == null) {
 					ByteString byteString = pubsubMessage.getData();
 
 					messages.add(byteString.toStringUtf8());
 
-					_ackIds.put(
-						receivedMessage.getAckId(), receivedMessage.getAckId());
+					_messageIds.put(
+						pubsubMessage.getMessageId(),
+						pubsubMessage.getMessageId());
 				}
 				else {
 					if (_log.isDebugEnabled()) {
 						_log.debug(
-							"Duplicate ACK ID: " + receivedMessage.getAckId());
+							"Duplicate Message ID: " +
+								pubsubMessage.getMessageId());
 					}
 				}
 			}
@@ -142,12 +145,13 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 	private static final Log _log = LogFactory.getLog(
 		MessageSubscriberImpl.class);
 
-	private static final Cache<String, String> _ackIds = Caffeine.newBuilder(
-	).expireAfterAccess(
-		10, TimeUnit.MINUTES
-	).maximumSize(
-		100000
-	).build();
+	private static final Cache<String, String> _messageIds =
+		Caffeine.newBuilder(
+		).expireAfterAccess(
+			10, TimeUnit.MINUTES
+		).maximumSize(
+			100000
+		).build();
 
 	private final PubSubClientFactory _pubSubClientFactory;
 	private final Subscription _subscription;
