@@ -111,8 +111,7 @@ public class UserSessionNanite implements Nanite {
 	}
 
 	private void _createUserSession(
-		AnalyticsEvents analyticsEvents, boolean completed, Semaphore semaphore,
-		String userId) {
+		AnalyticsEvents analyticsEvents, boolean completed, String userId) {
 
 		UserSession userSession = new UserSession();
 
@@ -181,7 +180,7 @@ public class UserSessionNanite implements Nanite {
 			_objectMapper.convertValue(userSession, JSONObject.class));
 
 		_storeEvents(
-			analyticsEvents.getAnalyticsEventsList(), semaphore,
+			analyticsEvents.getAnalyticsEventsList(),
 			jsonObject.getString("id"));
 	}
 
@@ -189,25 +188,11 @@ public class UserSessionNanite implements Nanite {
 	private void _destroy() {
 		_reentrantLock.lock();
 
-		_runExecutorService.shutdown();
-		_storageExecutorService.shutdown();
+		_executorService.shutdown();
 
 		try {
-			if (!_runExecutorService.awaitTermination(1, TimeUnit.MINUTES)) {
-				_runExecutorService.shutdownNow();
-			}
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(
-				"Interrupted while waiting for termination of executor",
-				interruptedException);
-		}
-
-		try {
-			if (!_storageExecutorService.awaitTermination(
-					1, TimeUnit.MINUTES)) {
-
-				_storageExecutorService.shutdownNow();
+			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+				_executorService.shutdownNow();
 			}
 		}
 		catch (InterruptedException interruptedException) {
@@ -327,8 +312,7 @@ public class UserSessionNanite implements Nanite {
 	}
 
 	private void _processAnalyticsEvents(
-		List<AnalyticsEvent> analyticsEvents, Semaphore semaphore,
-		String userId) {
+		List<AnalyticsEvent> analyticsEvents, String userId) {
 
 		List<List<AnalyticsEvent>> sessionsAnalyticsEvents = new ArrayList<>();
 
@@ -372,13 +356,12 @@ public class UserSessionNanite implements Nanite {
 		for (List<AnalyticsEvent> sessionAnalyticsEvents :
 				sessionsAnalyticsEvents) {
 
-			_processAnalyticsEvents(semaphore, sessionAnalyticsEvents, userId);
+			_processSessionAnalyticsEvents(sessionAnalyticsEvents, userId);
 		}
 	}
 
-	private void _processAnalyticsEvents(
-		Semaphore semaphore, List<AnalyticsEvent> sessionAnalyticsEvents,
-		String userId) {
+	private void _processSessionAnalyticsEvents(
+		List<AnalyticsEvent> sessionAnalyticsEvents, String userId) {
 
 		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
 			getClass(), ProjectIdThreadLocal.getProjectId(), userId);
@@ -427,12 +410,10 @@ public class UserSessionNanite implements Nanite {
 							DateUtil.addDays(DateUtil.newDateString(), -1));
 
 						if (lastAnalyticsEventDate.before(yesterday)) {
-							_createUserSession(
-								analyticsEvents, true, semaphore, userId);
+							_createUserSession(analyticsEvents, true, userId);
 						}
 						else {
-							_createUserSession(
-								analyticsEvents, false, semaphore, userId);
+							_createUserSession(analyticsEvents, false, userId);
 						}
 					}
 					catch (Exception exception) {
@@ -440,13 +421,11 @@ public class UserSessionNanite implements Nanite {
 					}
 				}
 				else {
-					_createUserSession(
-						analyticsEvents, true, semaphore, userId);
+					_createUserSession(analyticsEvents, true, userId);
 				}
 			}
 			else {
-				_updateUserSession(
-					analyticsEvents, semaphore, userSessionJSONObject);
+				_updateUserSession(analyticsEvents, userSessionJSONObject);
 			}
 		}
 		finally {
@@ -511,20 +490,7 @@ public class UserSessionNanite implements Nanite {
 				try {
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
-					Semaphore semaphore = new Semaphore(
-						_userSessionNaniteConcurrentTasksLimit, true);
-
-					_processAnalyticsEvents(
-						analyticsEvents, semaphore, tuple2.getT2());
-
-					try {
-						semaphore.acquireUninterruptibly(
-							_userSessionNaniteConcurrentTasksLimit);
-					}
-					finally {
-						semaphore.release(
-							_userSessionNaniteConcurrentTasksLimit);
-					}
+					_processAnalyticsEvents(analyticsEvents, tuple2.getT2());
 				}
 				catch (Exception exception) {
 					List<String> analyticsEventsString = ListUtil.map(
@@ -549,55 +515,38 @@ public class UserSessionNanite implements Nanite {
 							System.currentTimeMillis() - start));
 				}
 			},
-			_runExecutorService);
+			_executorService);
 	}
 
 	private void _storeEvents(
-		List<AnalyticsEvent> analyticsEvents, Semaphore semaphore,
-		String sessionId) {
+		List<AnalyticsEvent> analyticsEvents, String sessionId) {
 
-		semaphore.acquireUninterruptibly();
+		try {
+			Assert.notBlank(sessionId, "Session ID is blank");
 
-		String projectId = ProjectIdThreadLocal.getProjectId();
-
-		CompletableFuture.runAsync(
-			() -> {
+			for (AnalyticsEvent analyticsEvent : analyticsEvents) {
 				try {
-					ProjectIdThreadLocal.setProjectId(projectId);
-
-					Assert.notBlank(sessionId, "Session ID is blank");
-
-					for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-						try {
-							_eventStorageDog.store(analyticsEvent, sessionId);
-						}
-						catch (Exception exception) {
-							_log.error(
-								"Unable to store event " +
-									analyticsEvent.toJSON(),
-								exception);
-						}
-					}
+					_eventStorageDog.store(analyticsEvent, sessionId);
 				}
 				catch (Exception exception) {
-					List<String> analyticsEventsString = ListUtil.map(
-						analyticsEvents, AnalyticsEvent::toJSON);
-
 					_log.error(
-						"Unable to store analytics events " +
-							analyticsEventsString,
+						"Unable to store event " + analyticsEvent.toJSON(),
 						exception);
 				}
-				finally {
-					semaphore.release();
-				}
-			},
-			_storageExecutorService);
+			}
+		}
+		catch (Exception exception) {
+			List<String> analyticsEventsString = ListUtil.map(
+				analyticsEvents, AnalyticsEvent::toJSON);
+
+			_log.error(
+				"Unable to store analytics events " + analyticsEventsString,
+				exception);
+		}
 	}
 
 	private void _updateUserSession(
-		AnalyticsEvents analyticsEvents, Semaphore semaphore,
-		JSONObject userSessionJSONObject) {
+		AnalyticsEvents analyticsEvents, JSONObject userSessionJSONObject) {
 
 		long interactionsCount =
 			analyticsEvents.getInteractionsCount() +
@@ -641,7 +590,7 @@ public class UserSessionNanite implements Nanite {
 				"id", userSessionJSONObject.getString("id")));
 
 		_storeEvents(
-			analyticsEvents.getAnalyticsEventsList(), semaphore,
+			analyticsEvents.getAnalyticsEventsList(),
 			userSessionJSONObject.getString("id"));
 	}
 
@@ -653,6 +602,9 @@ public class UserSessionNanite implements Nanite {
 	@Autowired
 	private EventStorageDog _eventStorageDog;
 
+	private final ExecutorService _executorService =
+		Executors.newFixedThreadPool(10);
+
 	@Autowired
 	private IndividualDog _individualDog;
 
@@ -663,12 +615,8 @@ public class UserSessionNanite implements Nanite {
 	private ObjectMapper _objectMapper;
 
 	private final ReentrantLock _reentrantLock = new ReentrantLock();
-	private final ExecutorService _runExecutorService =
-		Executors.newFixedThreadPool(10);
 	private Semaphore _semaphore;
 	private String _sessionUpdateScriptSource;
-	private final ExecutorService _storageExecutorService =
-		Executors.newFixedThreadPool(10);
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
