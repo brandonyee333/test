@@ -50,7 +50,24 @@ public class VoteEventDefinitionUpgradeStep implements UpgradeStep {
 		EventDefinition voteEventDefinitionUpperCase =
 			_eventDefinitionDog.fetchEventDefinitionByName("VOTE");
 
-		if (voteEventDefinitionUpperCase == null) {
+		if ((voteEventDefinitionLowerCase == null) &&
+			(voteEventDefinitionUpperCase == null)) {
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Neither VOTE nor vote event definitions found. Adding " +
+						"default VOTE event definition.");
+			}
+
+			EventDefinition eventDefinition =
+				_eventDefinitionDog.addEventDefinition(
+					null, null, null, "VOTE", EventDefinition.Type.DEFAULT,
+					null);
+
+			_eventDefinitionDog.hideEventDefinitions(
+				Collections.singletonList(eventDefinition.getId()));
+		}
+		else if (voteEventDefinitionUpperCase == null) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					"No VOTE events found. Renaming vote event definition to " +
@@ -62,6 +79,22 @@ public class VoteEventDefinitionUpgradeStep implements UpgradeStep {
 			_eventDefinitionRepository.save(voteEventDefinitionLowerCase);
 		}
 		else {
+			if (voteEventDefinitionLowerCase == null) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"vote event definition does not exist. Setting VOTE " +
+							"event definition to default.");
+				}
+
+				voteEventDefinitionUpperCase.setBlocked(false);
+				voteEventDefinitionUpperCase.setType(
+					EventDefinition.Type.DEFAULT);
+
+				_eventDefinitionRepository.save(voteEventDefinitionUpperCase);
+
+				return;
+			}
+
 			if (_eventDog.countEvents(voteEventDefinitionLowerCase.getId()) >
 					0) {
 
