@@ -495,6 +495,83 @@ definition {
 		WebContent.viewPGViaWCD(webContentContent = "WC WebContent Content");
 	}
 
+	@description = "This is a test for LPS-58698. Validate remote code execution can't privilege escalation in templates."
+	@priority = "5"
+	test ValidateRemoteCodeAndPrivilegeEscalation {
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Web Content");
+
+		WebContentNavigator.gotoManageStructures();
+
+		WebContentStructures.addCP(structureName = "WC Structure Name");
+
+		DynamicDataMapping.addField(
+			field = "Text",
+			fieldFieldLabel = "Text",
+			fieldName = "Text");
+
+		WebContentStructures.saveCP(structureName = "WC Structure Name");
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Web Content");
+
+		WebContentNavigator.gotoManageTemplates();
+
+		var templateScript = '''
+${objectUtil("com.liferay.portal.service.UserLocalServiceUtil").getService()}<br />
+${utilLocator.findUtil("com.liferay.portal.service.UserLocalService")}<br />
+${staticUtil["com.liferay.portal.service.UserLocalServiceUtil"].getService()}<br />
+
+${staticUtil["java.lang.Runtime"].getRuntime()}
+
+<#assign velocityBeanHandler = expandoRowLocalService.getInvocationHandler(expandoRowLocalService)>
+<#assign getRuntime=velocityBeanHandler.getClassLoader().loadClass("java.lang.Runtime").getMethod("getRuntime", null)>
+<#assign runtimeInstance=velocityBeanHandler.invoke(null, getRuntime, null)>
+${runtimeInstance}
+''';
+		WebContentTemplates.addCP(
+			templateFieldNames = "Text",
+			templateLanguage = "ftl",
+			templateName = "WC Template Name",
+			templateScript = "${templateScript}");
+
+		WebContentTemplates.addStructure(
+			structureName = "WC Structure Name",
+			templateFieldNames = "Text",
+			templateLanguage = "ftl");
+
+		DDLDataDefinition.save();
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Web Content");
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Name");
+
+		WebContent.addWithStructureCP(webContentTitle = "WC WebContent Title");
+
+		PortletEntry.publish();
+
+		Navigator.gotoPage(pageName = "Web Content Display Page");
+
+		WebContentDisplayPortlet.selectWebContent(webContentTitle = "WC WebContent Title");
+
+		IFrame.closeFrame();
+
+		AssertTextPresent(value1 = "An error occurred while processing the template.");
+	}
+
 	@priority = "4"
 	test ViewAllFileTypesEnabled {
 		property test.name.skip.portal.instance = "PGWebcontentdisplay#ViewAllFileTypesEnabled";
