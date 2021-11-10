@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
+import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
@@ -329,14 +330,31 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
 		_semaphore.acquireUninterruptibly();
 
+		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+			getClass(), projectId);
+
 		CompletableFuture.runAsync(
 			() -> {
-				long start = System.currentTimeMillis();
-
 				try {
+					reentrantLock.lock();
+
+					long start = System.currentTimeMillis();
+
 					ProjectIdThreadLocal.setProjectId(projectId);
 
 					saveModels(getModels(analyticsEvents));
+
+					Log log = getLog();
+
+					if (log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						log.info(
+							String.format(
+								"%s processed %d events in %d ms",
+								clazz.getSimpleName(), analyticsEvents.size(),
+								System.currentTimeMillis() - start));
+					}
 				}
 				catch (Exception exception) {
 					Log log = getLog();
@@ -344,19 +362,9 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 					log.error(exception.getMessage(), exception);
 				}
 				finally {
+					reentrantLock.unlock();
+
 					_semaphore.release();
-				}
-
-				Log log = getLog();
-
-				if (log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
-
-					log.info(
-						String.format(
-							"%s processed %d events in %d ms",
-							clazz.getSimpleName(), analyticsEvents.size(),
-							System.currentTimeMillis() - start));
 				}
 			},
 			_executorService);

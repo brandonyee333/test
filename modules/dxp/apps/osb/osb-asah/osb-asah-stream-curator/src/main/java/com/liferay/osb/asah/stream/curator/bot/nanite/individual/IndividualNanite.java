@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -302,11 +303,16 @@ public class IndividualNanite implements Nanite {
 	private void _run(String projectId, List<JSONObject> messageJSONObjects) {
 		_semaphore.acquireUninterruptibly();
 
+		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+			getClass(), projectId);
+
 		CompletableFuture.runAsync(
 			() -> {
-				long start = System.currentTimeMillis();
-
 				try {
+					long start = System.currentTimeMillis();
+
+					reentrantLock.lock();
+
 					ProjectIdThreadLocal.setProjectId(projectId);
 
 					for (JSONObject messageJSONObject : messageJSONObjects) {
@@ -353,19 +359,22 @@ public class IndividualNanite implements Nanite {
 							_log.error(exception.getMessage(), exception);
 						}
 					}
+
+					if (_log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						_log.info(
+							String.format(
+								"%s processed %d messages in %d ms",
+								clazz.getSimpleName(),
+								messageJSONObjects.size(),
+								System.currentTimeMillis() - start));
+					}
 				}
 				finally {
+					reentrantLock.unlock();
+
 					_semaphore.release();
-				}
-
-				if (_log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
-
-					_log.info(
-						String.format(
-							"%s processed %d messages in %d ms",
-							clazz.getSimpleName(), messageJSONObjects.size(),
-							System.currentTimeMillis() - start));
 				}
 			},
 			_executorService);

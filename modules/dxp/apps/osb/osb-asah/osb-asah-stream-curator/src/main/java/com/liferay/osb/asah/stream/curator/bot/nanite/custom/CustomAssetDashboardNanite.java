@@ -16,6 +16,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.custom;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
+import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
@@ -167,11 +168,16 @@ public class CustomAssetDashboardNanite implements Nanite {
 	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
 		_semaphore.acquireUninterruptibly();
 
+		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+			getClass(), projectId);
+
 		CompletableFuture.runAsync(
 			() -> {
-				long start = System.currentTimeMillis();
-
 				try {
+					reentrantLock.lock();
+
+					long start = System.currentTimeMillis();
+
 					ProjectIdThreadLocal.setProjectId(projectId);
 
 					Stream<AnalyticsEvent> stream = analyticsEvents.stream();
@@ -181,22 +187,24 @@ public class CustomAssetDashboardNanite implements Nanite {
 					).forEach(
 						this::_addCustomAssetDashboards
 					);
+
+					if (_log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						_log.info(
+							String.format(
+								"%s processed %d events in %d ms",
+								clazz.getSimpleName(), analyticsEvents.size(),
+								System.currentTimeMillis() - start));
+					}
 				}
 				catch (Exception exception) {
 					_log.error(exception.getMessage(), exception);
 				}
 				finally {
+					reentrantLock.unlock();
+
 					_semaphore.release();
-				}
-
-				if (_log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
-
-					_log.info(
-						String.format(
-							"%s processed %d events in %d ms",
-							clazz.getSimpleName(), analyticsEvents.size(),
-							System.currentTimeMillis() - start));
 				}
 			},
 			_executorService);

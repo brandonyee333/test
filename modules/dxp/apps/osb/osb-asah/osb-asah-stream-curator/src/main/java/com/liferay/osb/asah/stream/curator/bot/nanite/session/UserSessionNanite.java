@@ -385,6 +385,7 @@ public class UserSessionNanite implements Nanite {
 
 		try {
 			reentrantLock.lock();
+
 			sessionAnalyticsEvents.sort(
 				Comparator.comparing(AnalyticsEvent::getEventDate));
 

@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.DXPUser;
@@ -467,9 +468,14 @@ public class DXPEntitiesMessageProcessor {
 
 		_semaphore.acquireUninterruptibly();
 
+		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+			getClass(), projectId);
+
 		CompletableFuture.runAsync(
 			() -> {
 				try {
+					reentrantLock.lock();
+
 					ProjectIdThreadLocal.setProjectId(projectId);
 
 					long start = System.currentTimeMillis();
@@ -494,6 +500,8 @@ public class DXPEntitiesMessageProcessor {
 						exception);
 				}
 				finally {
+					reentrantLock.unlock();
+
 					_semaphore.release();
 
 					ProjectIdThreadLocal.remove();
