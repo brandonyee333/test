@@ -603,7 +603,7 @@ public class UserSessionNanite implements Nanite {
 	private EventStorageDog _eventStorageDog;
 
 	private final ExecutorService _executorService =
-		Executors.newFixedThreadPool(10);
+		Executors.newFixedThreadPool(20);
 
 	@Autowired
 	private IndividualDog _individualDog;
@@ -621,7 +621,7 @@ public class UserSessionNanite implements Nanite {
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
 
-	@Value("${osb.asah.user.session.nanite.concurrent.tasks.limit:15}")
+	@Value("${osb.asah.user.session.nanite.concurrent.tasks.limit:30}")
 	private int _userSessionNaniteConcurrentTasksLimit;
 
 	@Value("${osb.asah.user.session.nanite.pull.messages.size:50}")
