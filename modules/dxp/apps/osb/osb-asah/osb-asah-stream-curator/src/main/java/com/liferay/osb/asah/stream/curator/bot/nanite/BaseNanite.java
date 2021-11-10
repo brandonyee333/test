@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
-import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
@@ -61,6 +60,9 @@ import org.apache.commons.logging.Log;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 /**
  * @author Inácio Nery
@@ -304,7 +306,10 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 				Stream<AnalyticsEvent> stream = analyticsEvents.stream();
 
 				stream.collect(
-					Collectors.groupingBy(AnalyticsEvent::getProjectId)
+					Collectors.groupingBy(
+						analyticsEvent -> Tuples.of(
+							analyticsEvent.getProjectId(),
+							analyticsEvent.getUserId()))
 				).forEach(
 					this::_run
 				);
@@ -327,20 +332,17 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		}
 	}
 
-	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
-		_semaphore.acquireUninterruptibly();
+	private void _run(
+		Tuple2<String, String> tuple2, List<AnalyticsEvent> analyticsEvents) {
 
-		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), projectId);
+		_semaphore.acquireUninterruptibly();
 
 		CompletableFuture.runAsync(
 			() -> {
 				try {
-					reentrantLock.lock();
-
 					long start = System.currentTimeMillis();
 
-					ProjectIdThreadLocal.setProjectId(projectId);
+					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
 					saveModels(getModels(analyticsEvents));
 
@@ -362,8 +364,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 					log.error(exception.getMessage(), exception);
 				}
 				finally {
-					reentrantLock.unlock();
-
 					_semaphore.release();
 				}
 			},
