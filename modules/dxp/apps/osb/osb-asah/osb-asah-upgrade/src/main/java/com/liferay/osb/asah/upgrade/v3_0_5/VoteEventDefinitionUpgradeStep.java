@@ -55,7 +55,7 @@ public class VoteEventDefinitionUpgradeStep implements UpgradeStep {
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Neither VOTE nor vote event definitions found. Adding " +
+					"Neither VOTE nor vote event definitions exist. Adding " +
 						"default VOTE event definition.");
 			}
 
@@ -70,8 +70,8 @@ public class VoteEventDefinitionUpgradeStep implements UpgradeStep {
 		else if (voteEventDefinitionUpperCase == null) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"No VOTE events found. Renaming vote event definition to " +
-						"VOTE.");
+					"VOTE event definition does not exist. Renaming vote " +
+						"event definition to VOTE.");
 			}
 
 			_updateNames(voteEventDefinitionLowerCase, "VOTE");
