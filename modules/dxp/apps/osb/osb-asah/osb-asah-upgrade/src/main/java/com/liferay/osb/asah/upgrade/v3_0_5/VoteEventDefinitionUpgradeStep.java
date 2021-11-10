@@ -89,6 +89,14 @@ public class VoteEventDefinitionUpgradeStep implements UpgradeStep {
 							"definition.");
 				}
 
+				_namedParameterJdbcTemplate.batchUpdate(
+					_SQL_DELETE_EVENT_DEFINITION_EVENT_ATTRIBUTE_DEFINITION,
+					SqlParameterSourceUtils.createBatch(
+						Collections.singletonList(
+							Collections.singletonMap(
+								"eventDefinitionId",
+								voteEventDefinitionLowerCase.getId()))));
+
 				_eventDefinitionDog.deleteEventDefinitionById(
 					voteEventDefinitionLowerCase.getId());
 
@@ -111,14 +119,6 @@ public class VoteEventDefinitionUpgradeStep implements UpgradeStep {
 					EventDefinition.Type.DEFAULT);
 
 				_eventDefinitionRepository.save(voteEventDefinitionUpperCase);
-
-				_namedParameterJdbcTemplate.batchUpdate(
-					_SQL_DELETE_EVENT_DEFINITION_EVENT_ATTRIBUTE_DEFINITION,
-					SqlParameterSourceUtils.createBatch(
-						Collections.singletonList(
-							Collections.singletonMap(
-								"eventDefinitionId",
-								voteEventDefinitionLowerCase.getId()))));
 			}
 		}
 	}
