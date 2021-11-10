@@ -69,6 +69,58 @@ public class VoteEventDefinitionUpgradeStepTest {
 			1, _eventDog.countEvents(voteEventDefinition.getId()));
 	}
 
+	@SQLResource(
+		resourcePath = "custom_event_definition_upgrade_step_test_no_definition.sql"
+	)
+	@Test
+	public void testUpgradeCustomVoteOnly() throws Exception {
+		Assert.assertNull(
+			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
+
+		_eventStorageDog.store(_createAnalyticsEvent("VOTE"), "1");
+
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("VOTE");
+
+		Assert.assertNotNull(eventDefinition);
+
+		Assert.assertEquals(
+			EventDefinition.Type.CUSTOM, eventDefinition.getType());
+
+		_voteEventDefinitionUpgradeStep.upgrade("");
+
+		eventDefinition = _eventDefinitionDog.fetchEventDefinitionByName(
+			"VOTE");
+
+		Assert.assertEquals(
+			EventDefinition.Type.DEFAULT, eventDefinition.getType());
+	}
+
+	@SQLResource(
+		resourcePath = "custom_event_definition_upgrade_step_test_no_definition.sql"
+	)
+	@Test
+	public void testUpgradeNoDefinition() throws Exception {
+		Assert.assertNull(
+			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
+		Assert.assertNull(
+			_eventDefinitionDog.fetchEventDefinitionByName("VOTE"));
+
+		_voteEventDefinitionUpgradeStep.upgrade("");
+
+		Assert.assertNull(
+			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
+
+		EventDefinition eventDefinition = _getEventDefinition("VOTE");
+
+		Assert.assertEquals("VOTE", eventDefinition.getName());
+		Assert.assertEquals("VOTE", eventDefinition.getDisplayName());
+		Assert.assertEquals(
+			EventDefinition.Type.DEFAULT, eventDefinition.getType());
+		Assert.assertTrue(eventDefinition.isHidden());
+		Assert.assertFalse(eventDefinition.isBlocked());
+	}
+
 	@SQLResource(resourcePath = "custom_event_definition_upgrade_step_test.sql")
 	@Test
 	public void testUpgradeNoVote1() throws Exception {
