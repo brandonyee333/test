@@ -381,7 +381,7 @@ public class UserSessionNanite implements Nanite {
 		String userId) {
 
 		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), userId);
+			getClass(), ProjectIdThreadLocal.getProjectId(), userId);
 
 		try {
 			reentrantLock.lock();

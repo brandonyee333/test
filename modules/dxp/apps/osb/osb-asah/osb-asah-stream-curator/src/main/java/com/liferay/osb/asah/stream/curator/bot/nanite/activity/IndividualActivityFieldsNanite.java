@@ -342,7 +342,8 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 						ReentrantLock reentrantLock =
 							KeyReentrantLock.getReentrantLock(
-								getClass(), ownerId);
+								getClass(), ProjectIdThreadLocal.getProjectId(),
+								ownerId);
 
 						try {
 							reentrantLock.lock();

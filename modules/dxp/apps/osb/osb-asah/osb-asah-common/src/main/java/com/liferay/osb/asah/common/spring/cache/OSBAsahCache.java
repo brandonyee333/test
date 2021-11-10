@@ -21,6 +21,7 @@ import com.esotericsoftware.kryo.io.ByteBufferOutput;
 import com.esotericsoftware.kryo.util.Pool;
 
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -71,7 +72,7 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 	@SuppressWarnings("unchecked")
 	public <T> T get(Object key, Callable<T> callable) {
 		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), key);
+			getClass(), ProjectIdThreadLocal.getProjectId(), key);
 
 		try {
 			reentrantLock.lock();
@@ -122,7 +123,7 @@ public class OSBAsahCache extends AbstractValueAdaptingCache {
 	@Override
 	public ValueWrapper putIfAbsent(Object key, Object value) {
 		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), key);
+			getClass(), ProjectIdThreadLocal.getProjectId(), key);
 
 		try {
 			reentrantLock.lock();

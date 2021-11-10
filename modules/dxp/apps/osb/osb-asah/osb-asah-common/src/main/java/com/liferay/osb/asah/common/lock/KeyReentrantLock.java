@@ -17,8 +17,7 @@ package com.liferay.osb.asah.common.lock;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -27,10 +26,11 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class KeyReentrantLock {
 
-	public static ReentrantLock getReentrantLock(Class<?> clazz, Object key) {
+	public static ReentrantLock getReentrantLock(
+		Class<?> clazz, Object... keys) {
+
 		return _reentrantLocks.get(
-			ProjectIdThreadLocal.getProjectId() + "#" + clazz.getSimpleName() +
-				"#" + key,
+			clazz.getSimpleName() + "#" + Arrays.toString(keys),
 			computedKey -> new ReentrantLock());
 	}
 
