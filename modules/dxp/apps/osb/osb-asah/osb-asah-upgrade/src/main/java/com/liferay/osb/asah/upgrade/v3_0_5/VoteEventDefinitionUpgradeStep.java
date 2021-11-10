@@ -71,9 +71,9 @@ public class VoteEventDefinitionUpgradeStep implements UpgradeStep {
 							"definition types.");
 				}
 
+				voteEventDefinitionUpperCase.setBlocked(false);
 				voteEventDefinitionUpperCase.setType(
 					EventDefinition.Type.DEFAULT);
-				voteEventDefinitionLowerCase.setBlocked(false);
 
 				_eventDefinitionRepository.save(voteEventDefinitionUpperCase);
 
@@ -173,7 +173,7 @@ public class VoteEventDefinitionUpgradeStep implements UpgradeStep {
 				"eventDefinitionId = :eventDefinitionId";
 
 	private static final Log _log = LogFactory.getLog(
-		CommentPostedEventDefinitionUpgradeStep.class);
+		VoteEventDefinitionUpgradeStep.class);
 
 	@Autowired
 	private DataSource _dataSource;
