@@ -79,6 +79,18 @@ public class VoteEventDefinitionUpgradeStep implements UpgradeStep {
 			_eventDefinitionRepository.save(voteEventDefinitionLowerCase);
 		}
 		else {
+			EventDefinition.Type type = voteEventDefinitionUpperCase.getType();
+
+			if (type.equals(EventDefinition.Type.DEFAULT)) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"VOTE event definition is already of type default. " +
+							"Skipping.");
+				}
+
+				return;
+			}
+
 			if (voteEventDefinitionLowerCase == null) {
 				if (_log.isInfoEnabled()) {
 					_log.info(
