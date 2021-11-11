@@ -49,6 +49,8 @@ public class DocumentLibraryNanite extends BaseNanite<DocumentLibrary> {
 		return (DocumentLibrary oldDocumentLibrary,
 				DocumentLibrary newDocumentLibrary) -> {
 
+			_setTitle(oldDocumentLibrary, newDocumentLibrary);
+
 			mergeModels(oldDocumentLibrary, newDocumentLibrary);
 
 			oldDocumentLibrary.addComments(newDocumentLibrary.getComments());
@@ -142,6 +144,17 @@ public class DocumentLibraryNanite extends BaseNanite<DocumentLibrary> {
 			oldDocumentLibrary.setRatingsScore(
 				newDocumentLibrary.getRatingsScore());
 		}
+	}
+
+	private void _setTitle(
+		DocumentLibrary oldDocumentLibrary,
+		DocumentLibrary newDocumentLibrary) {
+
+		if (StringUtils.isEmpty(oldDocumentLibrary.getTitle())) {
+			oldDocumentLibrary.setTitle(newDocumentLibrary.getTitle());
+		}
+
+		newDocumentLibrary.setTitle(oldDocumentLibrary.getTitle());
 	}
 
 	private static final Log _log = LogFactory.getLog(
