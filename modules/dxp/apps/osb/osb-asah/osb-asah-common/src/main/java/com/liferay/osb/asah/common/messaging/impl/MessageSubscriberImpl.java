@@ -81,7 +81,8 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 				PubsubMessage pubsubMessage = receivedMessage.getMessage();
 
 				String messageId = _messageIds.getIfPresent(
-					pubsubMessage.getMessageId());
+					_subscription.getName() + "#" +
+						pubsubMessage.getMessageId());
 
 				if (messageId == null) {
 					ByteString byteString = pubsubMessage.getData();
@@ -89,7 +90,8 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 					messages.add(byteString.toStringUtf8());
 
 					_messageIds.put(
-						pubsubMessage.getMessageId(),
+						_subscription.getName() + "#" +
+							pubsubMessage.getMessageId(),
 						pubsubMessage.getMessageId());
 				}
 				else {
