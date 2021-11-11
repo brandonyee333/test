@@ -264,7 +264,7 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 	@Autowired
 	private ProjectDog _projectDog;
 
-	private final ReentrantLock _reentrantLock = new ReentrantLock();
+	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 
 	@Autowired
 	private SegmentDog _segmentDog;

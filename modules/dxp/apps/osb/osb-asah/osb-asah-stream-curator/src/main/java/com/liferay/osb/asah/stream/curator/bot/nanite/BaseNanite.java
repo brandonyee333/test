@@ -488,7 +488,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	@Autowired
 	private IndividualDog _individualDog;
 
-	private final ReentrantLock _reentrantLock = new ReentrantLock();
+	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 
 	@Autowired
 	private SegmentDog _segmentDog;

@@ -817,7 +817,7 @@ public class ActivitiesNanite implements Nanite {
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_ACTIVITY)
 	private MessageSubscriber _messageSubscriber;
 
-	private final ReentrantLock _reentrantLock = new ReentrantLock();
+	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 	private Semaphore _semaphore;
 
 	@Autowired

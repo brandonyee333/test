@@ -564,7 +564,7 @@ public class IndividualNanite implements Nanite {
 	@MessageSubscriber.Autowired(channel = Channel.IDENTITY_MESSAGE)
 	private MessageSubscriber _messageSubscriber;
 
-	private final ReentrantLock _reentrantLock = new ReentrantLock();
+	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 
 	@Autowired
 	private SegmentDog _segmentDog;

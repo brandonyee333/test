@@ -416,7 +416,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 	@MessageSubscriber.Autowired(channel = Channel.ACTIVE_INDIVIDUAL_IDS)
 	private MessageSubscriber _messageSubscriber;
 
-	private final ReentrantLock _reentrantLock = new ReentrantLock();
+	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 	private final Semaphore _semaphore = new Semaphore(4, true);
 
 }

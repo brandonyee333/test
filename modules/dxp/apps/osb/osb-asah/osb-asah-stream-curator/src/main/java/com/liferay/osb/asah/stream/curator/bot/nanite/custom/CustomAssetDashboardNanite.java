@@ -260,7 +260,7 @@ public class CustomAssetDashboardNanite implements Nanite {
 	)
 	private MessageSubscriber _messageSubscriber;
 
-	private final ReentrantLock _reentrantLock = new ReentrantLock();
+	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 	private final Semaphore _semaphore = new Semaphore(4, true);
 
 }

@@ -614,7 +614,7 @@ public class UserSessionNanite implements Nanite {
 	@Autowired
 	private ObjectMapper _objectMapper;
 
-	private final ReentrantLock _reentrantLock = new ReentrantLock();
+	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 	private Semaphore _semaphore;
 	private String _sessionUpdateScriptSource;
 

@@ -31,7 +31,7 @@ public class KeyReentrantLock {
 
 		return _reentrantLocks.get(
 			clazz.getSimpleName() + "#" + Arrays.toString(keys),
-			computedKey -> new ReentrantLock());
+			computedKey -> new ReentrantLock(true));
 	}
 
 	private static final Cache<String, ReentrantLock> _reentrantLocks =

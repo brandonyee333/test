@@ -613,7 +613,7 @@ public class DXPEntitiesMessageProcessor {
 	@Autowired
 	private OrganizationRepository _organizationRepository;
 
-	private final ReentrantLock _reentrantLock = new ReentrantLock();
+	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 
 	@Autowired
 	private SegmentDog _segmentDog;
