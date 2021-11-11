@@ -14,8 +14,9 @@
 
 package com.liferay.osb.asah.common.rest.controller.test;
 
-import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
+import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import io.restassured.RestAssured;
@@ -28,6 +29,7 @@ import io.restassured.specification.RequestSpecification;
 import org.hamcrest.Matchers;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -35,8 +37,12 @@ import org.springframework.boot.web.server.LocalServerPort;
 /**
  * @author André Miranda
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ErrorRestControllerTest implements OSBAsahCommonSpringTestContext {
+@ExtendWith(OSBAsahSpringExtension.class)
+@SpringBootTest(
+	classes = OSBAsahSpringBootApplication.class,
+	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
+public class ErrorRestControllerTest {
 
 	@Test
 	public void test() {
