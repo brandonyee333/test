@@ -372,7 +372,7 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test(expected = LayoutFriendlyURLsException.class)
-	public void testSameFriendlyURLDifferentLocaleDifferentLayoutSet()
+	public void testSameFriendlyURLDifferentLocalePrivateLayout()
 		throws Exception {
 
 		addLayout(
@@ -385,7 +385,7 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test(expected = LayoutFriendlyURLsException.class)
-	public void testSameFriendlyURLDifferentLocaleSameLayout()
+	public void testSameFriendlyURLDifferentLocalePublicLayout()
 		throws Exception {
 
 		addLayout(
