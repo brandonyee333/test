@@ -102,6 +102,24 @@ public class DocumentLibraryNaniteTest extends BaseNaniteTestCase {
 		Assert.assertEquals(0.0, jsonObject.getDouble("ratingsScore"), 0);
 	}
 
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_DOCUMENT,
+		resourcePath = "analytics_events_document_channel_4.json"
+	)
+	@Test
+	public void testDocumentLibraryTitleDoesNotChange() {
+		runNanite();
+
+		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
+			"document-libraries");
+
+		Assert.assertEquals(1, jsonArray.length());
+
+		JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+		Assert.assertEquals("test", jsonObject.getString("title"));
+	}
+
 	@Override
 	protected Nanite getNanite() {
 		return _documentLibraryNanite;

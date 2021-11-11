@@ -1,0 +1,36 @@
+[
+	{
+		"applicationId": "Document",
+		"context": {
+			"crawler": "False"
+		},
+		"eventId": "documentPreviewed",
+		"eventProperties": {
+			"fileEntryId": "53538",
+			"fileEntryUUID": "1e2f5042-9de1-43f6-6114-b7e722f33de4",
+			"groupId": "20121",
+			"title": "test",
+			"version": "1.1"
+		},
+		"id": "10",
+		"projectId": "test",
+		"userId": "11"
+	},
+	{
+		"applicationId": "Document",
+		"context": {
+			"crawler": "False"
+		},
+		"eventId": "documentDownloaded",
+		"eventProperties": {
+			"fileEntryId": "53538",
+			"fileEntryUUID": "1e2f5042-9de1-43f6-6114-b7e722f33de4",
+			"groupId": "20121",
+			"title": "test.png",
+			"version": "1.1"
+		},
+		"id": "20",
+		"projectId": "test",
+		"userId": "11"
+	}
+]
