@@ -150,22 +150,23 @@ public class ActivitiesNanite implements Nanite {
 	}
 
 	private ActivityGroup _addActivityGroup(AnalyticsEvent analyticsEvent) {
+		String channelId = analyticsEvent.getChannelId();
+		String dataSourceId = analyticsEvent.getDataSourceId();
+
+		LocalDateTime eventLocalDateTime = DateUtil.toLocalDateTime(
+			analyticsEvent.getEventDate(), _timeZoneDog.getZoneId());
+
+		Date dayDate = DateUtil.toUTCDate(
+			eventLocalDateTime.with(LocalTime.MIDNIGHT));
+
 		String userId = analyticsEvent.getUserId();
 
 		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), ProjectIdThreadLocal.getProjectId());
+			getClass(), ProjectIdThreadLocal.getProjectId(), "BROWSE",
+			channelId, dataSourceId, dayDate, userId);
 
 		try {
 			reentrantLock.lock();
-
-			String channelId = analyticsEvent.getChannelId();
-			String dataSourceId = analyticsEvent.getDataSourceId();
-
-			LocalDateTime eventLocalDateTime = DateUtil.toLocalDateTime(
-				analyticsEvent.getEventDate(), _timeZoneDog.getZoneId());
-
-			Date dayDate = DateUtil.toUTCDate(
-				eventLocalDateTime.with(LocalTime.MIDNIGHT));
 
 			ActivityGroup activityGroup = _activityGroupDog.fetchActivityGroup(
 				"BROWSE", Long.valueOf(channelId), Long.valueOf(dataSourceId),
@@ -345,7 +346,8 @@ public class ActivitiesNanite implements Nanite {
 		JSONObject eventPropertiesJSONObject) {
 
 		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), ProjectIdThreadLocal.getProjectId());
+			getClass(), ProjectIdThreadLocal.getProjectId(), dataSourceAssetPK,
+			analyticsEvent.getDataSourceId());
 
 		try {
 			reentrantLock.lock();
