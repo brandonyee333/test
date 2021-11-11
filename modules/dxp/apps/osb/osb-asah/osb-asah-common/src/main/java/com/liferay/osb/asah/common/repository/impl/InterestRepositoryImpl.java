@@ -183,7 +183,8 @@ public class InterestRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Map<String, Object>> getTransformations(
-		Date fromDate, FilterHelper filterHelper, String period, Date toDate) {
+		Date fromDate, @Nullable FilterHelper filterHelper, String period,
+		Date toDate) {
 
 		Field<Date> periodField = _getPeriodField(period);
 

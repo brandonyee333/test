@@ -319,10 +319,8 @@ public class ElasticsearchInterestRepositoryImpl
 
 	@Override
 	public List<Map<String, Object>> getTransformations(
-		Date fromDate, FilterHelper filterHelper, String period, Date toDate) {
-
-		ExtendedBounds extendedBounds = new ExtendedBounds(
-			DateUtil.toString(fromDate), DateUtil.toString(toDate));
+		Date fromDate, @Nullable FilterHelper filterHelper, String period,
+		Date toDate) {
 
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			getCollectionName(),
@@ -333,7 +331,8 @@ public class ElasticsearchInterestRepositoryImpl
 				aggregationBuilder.dateHistogramInterval(
 					_getDateHistogramInterval(period)
 				).extendedBounds(
-					extendedBounds
+					new ExtendedBounds(
+						DateUtil.toString(fromDate), DateUtil.toString(toDate))
 				).field(
 					"dateRecorded"
 				).minDocCount(
