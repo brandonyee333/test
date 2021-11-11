@@ -1,5 +1,5 @@
 Bundle-Name: Liferay Frontend Theme Styled
 Bundle-SymbolicName: com.liferay.frontend.theme.styled
-Bundle-Version: 2.1.20
+Bundle-Version: 2.1.21
 Liferay-Releng-Module-Group-Title: Themes
 -donotcopy: (npm-debug\.log)
