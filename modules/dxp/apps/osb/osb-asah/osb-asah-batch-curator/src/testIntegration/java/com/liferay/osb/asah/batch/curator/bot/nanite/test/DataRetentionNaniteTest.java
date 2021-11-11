@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Matthew Kong
  */
-public class DataRetentionNaniteTest extends BaseNaniteTestCase {
+public class DataRetentionNaniteTest
+	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "data_retention_blogs.json",

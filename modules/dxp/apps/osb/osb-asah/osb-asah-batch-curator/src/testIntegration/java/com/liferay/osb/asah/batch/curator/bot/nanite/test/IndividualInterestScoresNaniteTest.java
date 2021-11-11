@@ -39,6 +39,7 @@ import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 
@@ -66,7 +67,8 @@ import org.springframework.test.context.ContextConfiguration;
 		NaniteTestConfiguration.class
 	}
 )
-public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
+public class IndividualInterestScoresNaniteTest
+	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {

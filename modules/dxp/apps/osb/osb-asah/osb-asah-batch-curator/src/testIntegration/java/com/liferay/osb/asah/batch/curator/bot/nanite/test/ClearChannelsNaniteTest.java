@@ -37,6 +37,7 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Date;
 import java.util.Optional;
@@ -54,7 +55,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 /**
  * @author André Miranda
  */
-public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
+public class ClearChannelsNaniteTest
+	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void test() throws Exception {

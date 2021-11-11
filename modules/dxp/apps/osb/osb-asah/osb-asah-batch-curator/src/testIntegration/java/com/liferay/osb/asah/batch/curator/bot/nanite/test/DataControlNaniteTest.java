@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.io.File;
 
@@ -50,7 +51,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 /**
  * @author Matthew Kong
  */
-public class DataControlNaniteTest extends BaseNaniteTestCase {
+public class DataControlNaniteTest
+	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {

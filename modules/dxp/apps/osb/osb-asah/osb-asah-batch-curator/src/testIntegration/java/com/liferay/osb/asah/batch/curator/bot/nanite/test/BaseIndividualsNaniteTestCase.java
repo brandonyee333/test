@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Arrays;
@@ -40,7 +41,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Vishal Reddy
  */
-public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
+public abstract class BaseIndividualsNaniteTestCase
+	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {

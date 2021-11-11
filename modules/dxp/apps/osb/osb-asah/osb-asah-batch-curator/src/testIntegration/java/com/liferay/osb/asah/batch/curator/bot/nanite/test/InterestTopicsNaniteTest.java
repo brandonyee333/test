@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +38,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Victor Oliveira
  */
-public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
+public class InterestTopicsNaniteTest
+	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,

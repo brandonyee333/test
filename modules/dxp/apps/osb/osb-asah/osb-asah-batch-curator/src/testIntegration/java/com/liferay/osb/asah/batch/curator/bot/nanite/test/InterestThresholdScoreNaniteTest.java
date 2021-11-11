@@ -34,6 +34,7 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -49,7 +50,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Leslie Wong
  */
-public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
+public class InterestThresholdScoreNaniteTest
+	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() {

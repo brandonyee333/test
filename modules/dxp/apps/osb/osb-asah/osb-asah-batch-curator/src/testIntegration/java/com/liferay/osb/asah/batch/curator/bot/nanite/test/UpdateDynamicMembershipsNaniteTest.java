@@ -47,6 +47,7 @@ import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
@@ -70,7 +71,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Rachael Koestartyo
  * @author Michael Bowerman
  */
-public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
+public class UpdateDynamicMembershipsNaniteTest
+	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void test() throws Exception {
