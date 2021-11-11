@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.ArrayList;
@@ -44,7 +45,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Alejo Ceballos
  */
-public class MembershipChangeDogTest extends BaseFaroInfoDogTestCase {
+public class MembershipChangeDogTest
+	extends BaseFaroInfoDogTestCase
+	implements OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() {

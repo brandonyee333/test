@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,7 +45,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Michael Bowerman
  */
-public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
+public class FaroInfoActivityDogTest
+	extends BaseFaroInfoDogTestCase
+	implements OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testAddActivityTriggersAddsAsahTask() {

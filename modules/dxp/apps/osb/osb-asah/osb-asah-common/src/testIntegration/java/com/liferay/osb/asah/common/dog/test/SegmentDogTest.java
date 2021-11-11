@@ -32,6 +32,7 @@ import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +57,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 /**
  * @author Michael Bowerman
  */
-public class SegmentDogTest extends BaseFaroInfoDogTestCase {
+public class SegmentDogTest
+	extends BaseFaroInfoDogTestCase
+	implements OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() {

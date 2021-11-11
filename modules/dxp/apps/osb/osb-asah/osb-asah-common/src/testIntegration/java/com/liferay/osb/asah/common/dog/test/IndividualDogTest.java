@@ -44,6 +44,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
@@ -82,7 +83,9 @@ import org.yaml.snakeyaml.util.ArrayUtils;
 /**
  * @author Rachael Koestartyo
  */
-public class IndividualDogTest extends BaseFaroInfoDogTestCase {
+public class IndividualDogTest
+	extends BaseFaroInfoDogTestCase
+	implements OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() {

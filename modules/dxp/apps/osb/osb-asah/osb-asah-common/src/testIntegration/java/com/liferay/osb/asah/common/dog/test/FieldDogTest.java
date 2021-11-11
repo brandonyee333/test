@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.HashMap;
@@ -41,7 +42,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Michael Bowerman
  */
-public class FieldDogTest extends BaseFaroInfoDogTestCase {
+public class FieldDogTest
+	extends BaseFaroInfoDogTestCase
+	implements OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() {

@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -34,7 +35,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 /**
  * @author André Miranda
  */
-public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
+public class DataSourceDogTest
+	extends BaseFaroInfoDogTestCase
+	implements OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testAddDataSourceWithDefaultChannel() {

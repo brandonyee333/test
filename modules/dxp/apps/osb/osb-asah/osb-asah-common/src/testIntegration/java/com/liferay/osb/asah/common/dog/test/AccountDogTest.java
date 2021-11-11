@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +48,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Vishal Reddy
  */
-public class AccountDogTest extends BaseFaroInfoDogTestCase {
+public class AccountDogTest
+	extends BaseFaroInfoDogTestCase
+	implements OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() {

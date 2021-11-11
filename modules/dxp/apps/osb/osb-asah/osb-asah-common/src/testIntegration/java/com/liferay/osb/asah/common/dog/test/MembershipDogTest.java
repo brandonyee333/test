@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
 import java.util.Date;
@@ -56,7 +57,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Michael Bowerman
  * @author Vishal Reddy
  */
-public class MembershipDogTest extends BaseFaroInfoDogTestCase {
+public class MembershipDogTest
+	extends BaseFaroInfoDogTestCase
+	implements OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testAddMembershipWithActiveStatusAndAnonymousIndividual() {

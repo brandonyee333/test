@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Arrays;
@@ -50,7 +51,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author André Miranda
  */
-public class ChannelDogTest extends BaseFaroInfoDogTestCase {
+public class ChannelDogTest
+	extends BaseFaroInfoDogTestCase
+	implements OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "channels", resourcePath = "channels.json",
