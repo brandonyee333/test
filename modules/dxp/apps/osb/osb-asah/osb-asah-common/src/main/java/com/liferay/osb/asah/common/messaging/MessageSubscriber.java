@@ -36,12 +36,7 @@ public interface MessageSubscriber {
 		int maxMessages,
 		UnsafeFunction<String, T, Exception> modelMapperFunction);
 
-		for (String messageString : pullMessages(maxMessages)) {
-			messages.add(modelMapperFunction.apply(messageString));
-		}
-
-		return messages;
-	}
+	public <T> void sendAckIds(List<Message<T>> messages);
 
 	@Documented
 	@Retention(RetentionPolicy.RUNTIME)
