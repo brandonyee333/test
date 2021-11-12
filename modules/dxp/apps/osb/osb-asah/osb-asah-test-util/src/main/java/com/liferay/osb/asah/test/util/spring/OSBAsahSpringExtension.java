@@ -43,6 +43,18 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class OSBAsahSpringExtension extends SpringExtension {
 
 	@Override
+	public void afterAll(ExtensionContext context) throws Exception {
+	}
+
+	@Override
+	public void afterEach(ExtensionContext context) throws Exception {
+	}
+
+	@Override
+	public void afterTestExecution(ExtensionContext context) throws Exception {
+	}
+
+	@Override
 	public void beforeAll(ExtensionContext context) throws Exception {
 		if (!_isElasticsearchUp() || !_isPostgreSQLUp()) {
 			throw new IllegalStateException(
@@ -62,8 +74,20 @@ public class OSBAsahSpringExtension extends SpringExtension {
 		System.setProperty("spring.profiles.active", "test");
 
 		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+	}
 
-		super.beforeAll(context);
+	@Override
+	public void beforeEach(ExtensionContext context) throws Exception {
+	}
+
+	@Override
+	public void beforeTestExecution(ExtensionContext context) throws Exception {
+	}
+
+	@Override
+	public void postProcessTestInstance(
+			Object testInstance, ExtensionContext context)
+		throws Exception {
 	}
 
 	private boolean _isElasticsearchUp() {
