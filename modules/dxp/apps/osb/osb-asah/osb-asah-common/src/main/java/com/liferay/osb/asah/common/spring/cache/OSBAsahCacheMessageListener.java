@@ -66,6 +66,10 @@ public class OSBAsahCacheMessageListener implements MessageListener {
 			return;
 		}
 
+		if (_log.isDebugEnabled()) {
+			_log.debug("Received OSB Asah cache message");
+		}
+
 		_osbAsahCacheManager.clearCaffeineCache(
 			osbAsahCacheMessage.getName(), osbAsahCacheMessage.getKey());
 	}
