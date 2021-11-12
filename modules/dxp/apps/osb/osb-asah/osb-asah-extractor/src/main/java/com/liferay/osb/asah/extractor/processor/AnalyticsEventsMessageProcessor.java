@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.repository.FieldRepository;
@@ -42,6 +43,7 @@ import com.liferay.osb.asah.extractor.browscap.BrowscapEngine;
 import com.liferay.osb.asah.extractor.ip.geocoder.IPGeocoder;
 import com.liferay.osb.asah.extractor.ip.geocoder.IPInfo;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -374,23 +376,26 @@ public class AnalyticsEventsMessageProcessor {
 
 				long start = System.currentTimeMillis();
 
-				List<AnalyticsEventsMessage> analyticsEventsMessages =
+				List<Message<AnalyticsEventsMessage>> messages =
 					_messageSubscriber.pullMessages(
 						_analyticsEventsMessageProcessorPullMessagesSize,
 						AnalyticsEventsMessage::toAnalyticsEventsMessage);
 
-				if (analyticsEventsMessages.isEmpty()) {
+				if (messages.isEmpty()) {
 					break;
 				}
 
-				Stream<AnalyticsEventsMessage> stream =
-					analyticsEventsMessages.stream();
+				Stream<Message<AnalyticsEventsMessage>> stream =
+					messages.stream();
 
 				stream.collect(
 					Collectors.groupingBy(
-						analyticsEventsMessage -> Tuples.of(
-							analyticsEventsMessage.getProjectId(),
-							analyticsEventsMessage.getUserId()))
+						message -> {
+							AnalyticsEventsMessage analyticsEventsMessage = message.getObject();
+							return Tuples.of(
+								analyticsEventsMessage.getProjectId(),
+								analyticsEventsMessage.getUserId());
+						})
 				).forEach(
 					this::_processQueuedMessages
 				);
@@ -403,7 +408,7 @@ public class AnalyticsEventsMessageProcessor {
 							"%s dispatched %d analytics events messages in " +
 								"%d ms",
 							clazz.getSimpleName(),
-							analyticsEventsMessages.size(),
+							messages.size(),
 							System.currentTimeMillis() - start));
 				}
 			}
@@ -415,7 +420,7 @@ public class AnalyticsEventsMessageProcessor {
 
 	private void _processQueuedMessages(
 		Tuple2<String, String> tuple2,
-		List<AnalyticsEventsMessage> analyticsEventsMessages) {
+		List<Message<AnalyticsEventsMessage>> messages) {
 
 		_semaphore.acquireUninterruptibly();
 
@@ -423,16 +428,23 @@ public class AnalyticsEventsMessageProcessor {
 			() -> {
 				long start = System.currentTimeMillis();
 
+				List<Message<AnalyticsEventsMessage>> ackMessages =
+					new ArrayList<>();
+
+
 				try {
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
-					for (AnalyticsEventsMessage analyticsEventsMessage :
-							analyticsEventsMessages) {
+					for (Message<AnalyticsEventsMessage> message :
+							messages) {
 
 						try {
-							_processMessage(analyticsEventsMessage);
+							_processMessage(message.getObject());
+							ackMessages.add(message);
 						}
 						catch (Exception exception) {
+							AnalyticsEventsMessage analyticsEventsMessage =
+								message.getObject();
 							_log.error(
 								"Unable to process analytics events message " +
 									analyticsEventsMessage.toJSON(),
@@ -442,8 +454,10 @@ public class AnalyticsEventsMessageProcessor {
 				}
 				catch (Exception exception) {
 					List<String> analyticsEventsMessagesString = ListUtil.map(
-						analyticsEventsMessages,
-						AnalyticsEventsMessage::toJSON);
+						messages,
+						message->{AnalyticsEventsMessage analyticsEventsMessage =
+							message.getObject();
+							return analyticsEventsMessage.toJSON();});
 
 					_log.error(
 						"Unable to process analytics events messages " +
@@ -452,6 +466,7 @@ public class AnalyticsEventsMessageProcessor {
 				}
 				finally {
 					_semaphore.release();
+					_messageSubscriber.sendAckIds(ackMessages);
 				}
 
 				if (_log.isInfoEnabled()) {
@@ -462,7 +477,7 @@ public class AnalyticsEventsMessageProcessor {
 							"%s processed %d analytics events messages in %d " +
 								"ms",
 							clazz.getSimpleName(),
-							analyticsEventsMessages.size(),
+							messages.size(),
 							System.currentTimeMillis() - start));
 				}
 			},

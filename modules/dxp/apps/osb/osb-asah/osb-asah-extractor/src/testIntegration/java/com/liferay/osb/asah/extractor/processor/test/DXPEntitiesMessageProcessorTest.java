@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -96,17 +97,19 @@ public class DXPEntitiesMessageProcessorTest
 	public void testProcessQueuedMessagesRetainsOrder() throws Exception {
 		_dxpEntitiesMessageProcessor.processQueuedMessages();
 
-		List<String> messages = _messageSubscriber.pullMessages(50);
+		List<Message<String>> messages = _messageSubscriber.pullMessages(50);
 
 		Assertions.assertNotEquals(0, messages.size());
 
 		JSONArray jsonArray = new JSONArray();
 
-		for (String message : messages) {
-			JSONObject messageJSONObject = new JSONObject(message);
+		for (Message<String> message : messages) {
+			JSONObject messageJSONObject = new JSONObject(message.getObject());
 
 			jsonArray.put(messageJSONObject);
 		}
+
+		_messageSubscriber.sendAckIds(messages);
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(

@@ -32,6 +32,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -79,8 +80,9 @@ public class DXPEntitiesMessageProcessor {
 				try {
 					_reentrantLock.lock();
 
-					List<String> messages = _messageSubscriber.pullMessages(
+					List<Message<String>> messages = _messageSubscriber.pullMessages(
 						_dxpEntitiesMessageProcessorPullMessagesSize);
+
 
 					if (_log.isDebugEnabled()) {
 						_log.debug(
@@ -93,20 +95,21 @@ public class DXPEntitiesMessageProcessor {
 						break;
 					}
 
-					Stream<String> stream = messages.stream();
+					Stream<Message<String>> stream = messages.stream();
 
 					stream.map(
-						JSONObject::new
+						message -> new JSONObject(message.getObject())
 					).collect(
 						Collectors.groupingBy(
 							jsonObject -> jsonObject.getString("projectId"))
 					).forEach(
 						this::_processQueuedMessagesAsync
 					);
-				}
-				finally {
+					_messageSubscriber.sendAckIds(messages);
+				} finally {
 					_reentrantLock.unlock();
 				}
+
 			}
 		}
 		catch (Exception exception) {

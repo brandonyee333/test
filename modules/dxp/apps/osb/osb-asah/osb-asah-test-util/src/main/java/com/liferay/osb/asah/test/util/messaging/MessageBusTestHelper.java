@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.messaging.impl.MessageSubscriberImpl;
 import com.liferay.osb.asah.common.messaging.impl.PubSubClient;
 import com.liferay.osb.asah.common.messaging.impl.PubSubClientFactory;
 import com.liferay.osb.asah.common.messaging.impl.PubSubMessageBusImpl;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
@@ -129,11 +130,14 @@ public class MessageBusTestHelper {
 			_pubSubMessageBusImpl.getPubSubClientFactory(), subscription);
 
 		while (true) {
-			List<String> messages = messageSubscriberImpl.pullMessages(50);
+			List<Message<String>> messages = messageSubscriberImpl.pullMessages(
+				50);
 
 			if (messages.isEmpty()) {
 				break;
 			}
+
+			messageSubscriberImpl.sendAckIds(messages);
 		}
 	}
 

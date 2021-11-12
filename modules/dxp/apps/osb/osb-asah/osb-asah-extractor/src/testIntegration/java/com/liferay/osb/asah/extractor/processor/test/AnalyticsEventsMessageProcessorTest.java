@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.extractor.processor.AnalyticsEventsMessageProcessor;
@@ -70,12 +71,17 @@ public class AnalyticsEventsMessageProcessorTest
 	public void testProcessQueuedMessages() throws Exception {
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
+		List<Message<AnalyticsEvent>> messages =
+			_messageSubscriber.pullMessages(
+				50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assertions.assertNotEquals(0, analyticsEvents.size());
+		_messageSubscriber.sendAckIds(messages);
 
-		AnalyticsEvent analyticsEvent = analyticsEvents.get(0);
+		Assertions.assertNotEquals(0, messages.size());
+
+		Message<AnalyticsEvent> message = messages.get(0);
+
+		AnalyticsEvent analyticsEvent = message.getObject();
 
 		Assertions.assertEquals("Page", analyticsEvent.getApplicationId());
 		Assertions.assertEquals("pageViewed", analyticsEvent.getEventId());
@@ -117,10 +123,13 @@ public class AnalyticsEventsMessageProcessorTest
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
+		List<Message<AnalyticsEvent>> messages =
+			_messageSubscriber.pullMessages(
+				50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assertions.assertNotEquals(0, analyticsEvents.size());
+		_messageSubscriber.sendAckIds(messages);
+
+		Assertions.assertNotEquals(0, messages.size());
 	}
 
 	@ElasticsearchIndex(
@@ -169,10 +178,13 @@ public class AnalyticsEventsMessageProcessorTest
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
+		List<Message<AnalyticsEvent>> messages =
+			_messageSubscriber.pullMessages(
+				50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assertions.assertNotEquals(0, analyticsEvents.size());
+		_messageSubscriber.sendAckIds(messages);
+
+		Assertions.assertNotEquals(0, messages.size());
 	}
 
 	@ElasticsearchIndex(
@@ -187,11 +199,12 @@ public class AnalyticsEventsMessageProcessorTest
 	public void testProcessQueuedMessagesDataSourceInactive() throws Exception {
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
+		List<Message<AnalyticsEvent>> messages =
+			_messageSubscriber.pullMessages(
+				50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assertions.assertEquals(
-			0, analyticsEvents.size(), analyticsEvents.toString());
+		_messageSubscriber.sendAckIds(messages);
+		Assertions.assertEquals(0, messages.size(), messages.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -208,11 +221,13 @@ public class AnalyticsEventsMessageProcessorTest
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
+		List<Message<AnalyticsEvent>> messages =
+			_messageSubscriber.pullMessages(
+				50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assertions.assertEquals(
-			0, analyticsEvents.size(), analyticsEvents.toString());
+		_messageSubscriber.sendAckIds(messages);
+
+		Assertions.assertEquals(0, messages.size(), messages.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -233,11 +248,12 @@ public class AnalyticsEventsMessageProcessorTest
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
+		List<Message<AnalyticsEvent>> messages =
+			_messageSubscriber.pullMessages(
+				50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assertions.assertEquals(
-			1, analyticsEvents.size(), analyticsEvents.toString());
+		_messageSubscriber.sendAckIds(messages);
+		Assertions.assertEquals(1, messages.size(), messages.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -254,10 +270,15 @@ public class AnalyticsEventsMessageProcessorTest
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
+		List<Message<AnalyticsEvent>> messages =
+			_messageSubscriber.pullMessages(
+				50, AnalyticsEvent::toAnalyticsEvent);
 
-		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+		_messageSubscriber.sendAckIds(messages);
+
+		for (Message<AnalyticsEvent> message : messages) {
+			AnalyticsEvent analyticsEvent = message.getObject();
+
 			Map<String, String> context = analyticsEvent.getContext();
 
 			Assertions.assertEquals(
@@ -279,10 +300,15 @@ public class AnalyticsEventsMessageProcessorTest
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
+		List<Message<AnalyticsEvent>> messages =
+			_messageSubscriber.pullMessages(
+				50, AnalyticsEvent::toAnalyticsEvent);
 
-		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+		_messageSubscriber.sendAckIds(messages);
+
+		for (Message<AnalyticsEvent> message : messages) {
+			AnalyticsEvent analyticsEvent = message.getObject();
+
 			Map<String, String> context = analyticsEvent.getContext();
 
 			Assertions.assertNotEquals(
