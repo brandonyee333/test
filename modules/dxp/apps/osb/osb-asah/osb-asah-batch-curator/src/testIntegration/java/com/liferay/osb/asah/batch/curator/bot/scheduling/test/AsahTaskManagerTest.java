@@ -22,7 +22,9 @@ import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,13 +38,27 @@ import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
+import org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
  * @author André Miranda
  */
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.REPLACE_DEFAULTS,
+	value = {
+		DependencyInjectionTestExecutionListener.class,
+		MockitoTestExecutionListener.class,
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class,
+		ResetMocksTestExecutionListener.class
+	}
+)
 public class AsahTaskManagerTest
-	implements OSBAsahBatchCuratorSpringTestContext,
-			   OSBAsahTestExecutionListenersContext {
+	implements OSBAsahBatchCuratorSpringTestContext {
 
 	@ElasticsearchIndex(
 		name = "OSBAsahTasks", resourcePath = "osbasahtasks.json",

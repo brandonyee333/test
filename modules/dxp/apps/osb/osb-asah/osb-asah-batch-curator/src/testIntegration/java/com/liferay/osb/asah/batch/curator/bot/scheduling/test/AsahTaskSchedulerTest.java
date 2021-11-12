@@ -16,7 +16,9 @@ package com.liferay.osb.asah.batch.curator.bot.scheduling.test;
 
 import com.liferay.osb.asah.batch.curator.OSBAsahBatchCuratorSpringTestContext;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
-import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
@@ -30,16 +32,30 @@ import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
+import org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
  * @author André Miranda
  */
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.REPLACE_DEFAULTS,
+	value = {
+		DependencyInjectionTestExecutionListener.class,
+		MockitoTestExecutionListener.class,
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class,
+		ResetMocksTestExecutionListener.class
+	}
+)
 public class AsahTaskSchedulerTest
-	implements OSBAsahBatchCuratorSpringTestContext,
-			   OSBAsahTestExecutionListenersContext {
+	implements OSBAsahBatchCuratorSpringTestContext {
 
 	@BeforeEach
 	public void setUp() {
