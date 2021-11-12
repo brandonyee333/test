@@ -39,3 +39,7 @@ jar {
 test {
 	useJUnitPlatform()
 }
+
+testIntegration {
+	useJUnitPlatform()
+}
