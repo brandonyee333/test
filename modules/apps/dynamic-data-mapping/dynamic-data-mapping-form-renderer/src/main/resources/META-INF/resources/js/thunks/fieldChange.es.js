@@ -12,8 +12,6 @@
  * details.
  */
 
-import {debounce} from 'frontend-js-web';
-
 import {EVENT_TYPES} from '../actions/eventTypes.es';
 import {evaluate, mergePages} from '../util/evaluation.es';
 import {PagesVisitor} from '../util/visitors.es';
@@ -43,10 +41,6 @@ const getEditedPages = ({editingLanguageId, name, pages, value}) => {
 	);
 };
 
-const UPDATE_DELAY_MS = 50;
-
-const debounceFn = debounce((fn) => fn(), UPDATE_DELAY_MS);
-
 let lastEditedPages = [];
 
 export default function fieldChange({
@@ -66,7 +60,7 @@ export default function fieldChange({
 		// very expensive operation that causes many renderings in
 		// the application.
 
-		debounceFn(() => {
+		{
 			const {fieldInstance, value} = properties;
 			const {evaluable, fieldName} = fieldInstance;
 
@@ -155,5 +149,5 @@ export default function fieldChange({
 					value,
 				});
 			}
-		});
+		};
 }
