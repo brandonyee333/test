@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.messaging;
 
 import com.liferay.osb.asah.common.function.UnsafeFunction;
+import com.liferay.osb.asah.common.messaging.model.Message;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -22,7 +23,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,14 +30,11 @@ import java.util.List;
  */
 public interface MessageSubscriber {
 
-	public List<String> pullMessages(int maxMessages);
+	public List<Message<String>> pullMessages(int maxMessages);
 
-	public default <T> List<T> pullMessages(
-			int maxMessages,
-			UnsafeFunction<String, T, Exception> modelMapperFunction)
-		throws Exception {
-
-		List<T> messages = new ArrayList<>();
+	public <T> List<Message<T>> pullMessages(
+		int maxMessages,
+		UnsafeFunction<String, T, Exception> modelMapperFunction);
 
 		for (String messageString : pullMessages(maxMessages)) {
 			messages.add(modelMapperFunction.apply(messageString));
