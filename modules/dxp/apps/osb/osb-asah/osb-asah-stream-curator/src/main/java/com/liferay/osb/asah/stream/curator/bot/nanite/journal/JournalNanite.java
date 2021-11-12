@@ -16,6 +16,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.journal;
 
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.journal.Journal;
@@ -90,23 +91,23 @@ public class JournalNanite extends BaseNanite<Journal> {
 	}
 
 	@Override
-	protected List<AnalyticsEvent> pullAnalyticsEvents() throws Exception {
-		List<AnalyticsEvent> analyticsEvents = super.pullAnalyticsEvents();
+	protected List<Message<AnalyticsEvent>> pullAnalyticsEvents()
+		throws Exception {
 
-		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+		List<Message<AnalyticsEvent>> analyticsEvents =
+			super.pullAnalyticsEvents();
+
+		Stream<Message<AnalyticsEvent>> stream = analyticsEvents.stream();
+
+		super.sendAckIds(
+			stream.filter(
+				message -> _isWebContentClicked(message.getObject())
+			).collect(
+				Collectors.toList()
+			));
 
 		return stream.filter(
-			analyticsEvent -> {
-				if (Objects.equals(
-						analyticsEvent.getApplicationId(), "WebContent") &&
-					Objects.equals(
-						analyticsEvent.getEventId(), "webContentClicked")) {
-
-					return false;
-				}
-
-				return true;
-			}
+			message -> !_isWebContentClicked(message.getObject())
 		).collect(
 			Collectors.toList()
 		);
@@ -133,6 +134,16 @@ public class JournalNanite extends BaseNanite<Journal> {
 
 			journal.setAssetId(eventProperties.get("articleId"));
 		}
+	}
+
+	private boolean _isWebContentClicked(AnalyticsEvent analyticsEvent) {
+		if (Objects.equals(analyticsEvent.getApplicationId(), "WebContent") &&
+			Objects.equals(analyticsEvent.getEventId(), "webContentClicked")) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private void _setRatingScore(Journal oldJournal, Journal newJournal) {

@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.MapUtil;
@@ -641,18 +642,20 @@ public class ActivitiesNanite implements Nanite {
 
 				long start = System.currentTimeMillis();
 
-				List<AnalyticsEvent> analyticsEvents =
+				List<Message<AnalyticsEvent>> messages =
 					_messageSubscriber.pullMessages(
 						_activitiesNanitePullMessagesSize,
 						AnalyticsEvent::toAnalyticsEvent);
 
-				if (analyticsEvents.isEmpty()) {
+				if (messages.isEmpty()) {
 					break;
 				}
 
-				Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+				Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
-				stream.collect(
+				stream.map(
+					Message::getObject
+				).collect(
 					Collectors.groupingBy(
 						analyticsEvent -> Tuples.of(
 							analyticsEvent.getProjectId(),
@@ -661,13 +664,15 @@ public class ActivitiesNanite implements Nanite {
 					this::_run
 				);
 
+				_messageSubscriber.sendAckIds(messages);
+
 				if (_log.isInfoEnabled()) {
 					Class<?> clazz = getClass();
 
 					_log.info(
 						String.format(
 							"%s dispatched %d events in %d ms",
-							clazz.getSimpleName(), analyticsEvents.size(),
+							clazz.getSimpleName(), messages.size(),
 							System.currentTimeMillis() - start));
 				}
 			}

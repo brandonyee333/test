@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -133,31 +134,35 @@ public class CustomAssetDashboardNanite implements Nanite {
 
 				long start = System.currentTimeMillis();
 
-				List<AnalyticsEvent> analyticsEvents =
-					_messageSubscriber.pullMessages(
-						50, AnalyticsEvent::toAnalyticsEvent);
+			List<Message<AnalyticsEvent>> messages =
+				_messageSubscriber.pullMessages(
+					50, AnalyticsEvent::toAnalyticsEvent);
 
-				if (analyticsEvents.isEmpty()) {
-					break;
-				}
+			if (messages.isEmpty()) {
+				break;
+			}
 
-				Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+			Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
-				stream.collect(
-					Collectors.groupingBy(AnalyticsEvent::getProjectId)
-				).forEach(
-					this::_run
-				);
+			stream.map(
+				Message::getObject
+			).collect(
+				Collectors.groupingBy(AnalyticsEvent::getProjectId)
+			).forEach(
+				this::_run
+			);
 
-				if (_log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
+			_messageSubscriber.sendAckIds(messages);
 
-					_log.info(
-						String.format(
-							"%s dispatched %d events in %d ms",
-							clazz.getSimpleName(), analyticsEvents.size(),
-							System.currentTimeMillis() - start));
-				}
+			if (_log.isInfoEnabled()) {
+				Class<?> clazz = getClass();
+
+				_log.info(
+					String.format(
+						"%s processed %d events in %d ms",
+						clazz.getSimpleName(), messages.size(),
+						System.currentTimeMillis() - start));
+			}
 			}
 			finally {
 				_reentrantLock.unlock();

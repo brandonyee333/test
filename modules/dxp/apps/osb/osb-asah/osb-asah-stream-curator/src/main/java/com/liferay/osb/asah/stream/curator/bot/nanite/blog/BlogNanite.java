@@ -16,6 +16,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.blog;
 
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.util.NaniteUtil;
@@ -93,21 +94,23 @@ public class BlogNanite extends BaseNanite<Blog> {
 	}
 
 	@Override
-	protected List<AnalyticsEvent> pullAnalyticsEvents() throws Exception {
-		List<AnalyticsEvent> analyticsEvents = super.pullAnalyticsEvents();
+	protected List<Message<AnalyticsEvent>> pullAnalyticsEvents()
+		throws Exception {
 
-		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+		List<Message<AnalyticsEvent>> analyticsEvents =
+			super.pullAnalyticsEvents();
+
+		Stream<Message<AnalyticsEvent>> stream = analyticsEvents.stream();
+
+		super.sendAckIds(
+			stream.filter(
+				message -> _isSocialBookmarks(message.getObject())
+			).collect(
+				Collectors.toList()
+			));
 
 		return stream.filter(
-			analyticsEvent -> {
-				if (Objects.equals(
-						analyticsEvent.getApplicationId(), "SocialBookmarks")) {
-
-					return false;
-				}
-
-				return true;
-			}
+			message -> !_isSocialBookmarks(message.getObject())
 		).collect(
 			Collectors.toList()
 		);
@@ -154,6 +157,16 @@ public class BlogNanite extends BaseNanite<Blog> {
 		}
 
 		blog.setFirstEventDate(analyticsEvent.getEventDate());
+	}
+
+	private boolean _isSocialBookmarks(AnalyticsEvent analyticsEvent) {
+		if (Objects.equals(
+				analyticsEvent.getApplicationId(), "SocialBookmarks")) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private void _setRatingScore(Blog oldBlog, Blog newBlog) {

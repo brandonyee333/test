@@ -16,6 +16,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.page.referrer;
 
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.PageAcquisition;
 import com.liferay.osb.asah.common.util.MapUtil;
@@ -97,21 +98,23 @@ public class PageReferrerNanite extends BaseNanite<PageReferrer> {
 	}
 
 	@Override
-	protected List<AnalyticsEvent> pullAnalyticsEvents() throws Exception {
-		List<AnalyticsEvent> analyticsEvents = super.pullAnalyticsEvents();
+	protected List<Message<AnalyticsEvent>> pullAnalyticsEvents()
+		throws Exception {
 
-		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+		List<Message<AnalyticsEvent>> analyticsEvents =
+			super.pullAnalyticsEvents();
+
+		Stream<Message<AnalyticsEvent>> stream = analyticsEvents.stream();
+
+		super.sendAckIds(
+			stream.filter(
+				analyticsEvent -> !_isPageViewed(analyticsEvent.getObject())
+			).collect(
+				Collectors.toList()
+			));
 
 		return stream.filter(
-			analyticsEvent -> {
-				if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
-					Objects.equals(analyticsEvent.getEventId(), "pageViewed")) {
-
-					return true;
-				}
-
-				return false;
-			}
+			analyticsEvent -> _isPageViewed(analyticsEvent.getObject())
 		).collect(
 			Collectors.toList()
 		);
@@ -143,6 +146,16 @@ public class PageReferrerNanite extends BaseNanite<PageReferrer> {
 		PageAcquisition pageAcquisition = new PageAcquisition(referrer, url);
 
 		return pageAcquisition.getChannel();
+	}
+
+	private boolean _isPageViewed(AnalyticsEvent analyticsEvent) {
+		if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
+			Objects.equals(analyticsEvent.getEventId(), "pageViewed")) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private static final Log _log = LogFactory.getLog(PageReferrerNanite.class);

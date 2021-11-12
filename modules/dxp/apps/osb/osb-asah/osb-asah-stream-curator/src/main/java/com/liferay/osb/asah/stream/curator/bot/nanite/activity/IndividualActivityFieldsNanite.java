@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
@@ -280,25 +281,28 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 				long start = System.currentTimeMillis();
 
-				List<String> messages = _messageSubscriber.pullMessages(100);
+			List<Message<String>> messages = _messageSubscriber.pullMessages(
+				100);
 
 				if (messages.isEmpty()) {
 					break;
 				}
 
-				Stream<String> stream = messages.stream();
+			Stream<Message<String>> stream = messages.stream();
 
-				stream.map(
-					JSONObject::new
-				).collect(
-					Collectors.groupingBy(
-						jsonObject -> jsonObject.getString("projectId"))
-				).forEach(
-					this::_run
-				);
+			stream.map(
+				message -> new JSONObject(message.getObject())
+			).collect(
+				Collectors.groupingBy(
+					jsonObject -> jsonObject.getString("projectId"))
+			).forEach(
+				this::_run
+			);
 
-				if (_log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
+			_messageSubscriber.sendAckIds(messages);
+
+			if (_log.isInfoEnabled()) {
+				Class<?> clazz = getClass();
 
 					_log.info(
 						String.format(

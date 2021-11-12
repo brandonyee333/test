@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.Acquisition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEvents;
@@ -440,18 +441,20 @@ public class UserSessionNanite implements Nanite {
 
 				long start = System.currentTimeMillis();
 
-				List<AnalyticsEvent> analyticsEvents =
-					_messageSubscriber.pullMessages(
-						_userSessionNanitePullMessagesSize,
-						AnalyticsEvent::toAnalyticsEvent);
+			List<Message<AnalyticsEvent>> messages =
+				_messageSubscriber.pullMessages(
+					_userSessionNanitePullMessagesSize,
+					AnalyticsEvent::toAnalyticsEvent);
 
-				if (analyticsEvents.isEmpty()) {
-					break;
-				}
+			if (messages.isEmpty()) {
+				break;
+			}
 
-				Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+			Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
-				stream.sorted(
+				stream.map(
+					Message::getObject
+				).sorted(
 					Comparator.comparing(AnalyticsEvent::getEventDate)
 				).collect(
 					Collectors.groupingBy(
@@ -461,14 +464,14 @@ public class UserSessionNanite implements Nanite {
 				).forEach(
 					this::_run
 				);
-
+				_messageSubscriber.sendAckIds(messages);
 				if (_log.isInfoEnabled()) {
 					Class<?> clazz = getClass();
 
 					_log.info(
 						String.format(
 							"%s dispatched %d events in %d ms",
-							clazz.getSimpleName(), analyticsEvents.size(),
+							clazz.getSimpleName(), messages.size(),
 							System.currentTimeMillis() - start));
 				}
 			}

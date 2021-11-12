@@ -33,6 +33,8 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
+import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
@@ -272,17 +274,17 @@ public class IndividualNanite implements Nanite {
 
 				long start = System.currentTimeMillis();
 
-				List<JSONObject> messageJSONObjects =
-					_messageSubscriber.pullMessages(
-						_individualNanitePullMessagesSize, JSONObject::new);
+				List<Message<String>> messages = _messageSubscriber.pullMessages(_individualNanitePullMessagesSize);
 
-				if (messageJSONObjects.isEmpty()) {
+				if (messages.isEmpty()) {
 					return;
 				}
 
-				Stream<JSONObject> stream = messageJSONObjects.stream();
+				Stream<Message<String>> stream = messages.stream();
 
-				stream.collect(
+				stream.map(
+					message -> new JSONObject(message.getObject())
+				).collect(
 					Collectors.groupingBy(
 						jsonObject -> Tuples.of(
 							jsonObject.getString("projectId"),
@@ -291,13 +293,15 @@ public class IndividualNanite implements Nanite {
 					this::_run
 				);
 
+				_messageSubscriber.sendAckIds(messages);
+
 				if (_log.isInfoEnabled()) {
 					Class<?> clazz = getClass();
 
 					_log.info(
 						String.format(
 							"%s dispatched %d messages in %d ms",
-							clazz.getSimpleName(), messageJSONObjects.size(),
+							clazz.getSimpleName(), messages.size(),
 							System.currentTimeMillis() - start));
 				}
 			}
