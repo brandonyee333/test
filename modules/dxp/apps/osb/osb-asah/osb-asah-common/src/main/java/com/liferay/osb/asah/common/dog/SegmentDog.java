@@ -48,12 +48,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONObject;
 
@@ -81,7 +85,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		segment.setActivitiesCount(activitiesCount);
 		segment.setCreateDate(createDate);
-		segment.setFilter(filter);
+		segment.setFilter(processFilter(filter));
 		segment.setModifiedDate(modifiedDate);
 		segment.setName(name);
 		segment.setScope(scope);
@@ -102,6 +106,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 		else {
 			segment.setState("READY");
 		}
+
+		segment.setFilter(processFilter(segment.getFilter()));
 
 		segment = _segmentRepository.save(segment);
 
@@ -571,6 +577,23 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return _segmentRepository.save(segment);
 	}
 
+	protected String processFilter(String filter) {
+		if (filter != null) {
+			Matcher matcher = _pattern.matcher(filter);
+
+			while (matcher.find()) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("Invalid value: " + matcher.group());
+				}
+
+				filter = StringUtils.replace(
+					filter, matcher.group(), String.valueOf(Integer.MAX_VALUE));
+			}
+		}
+
+		return filter;
+	}
+
 	private void _addAsahTask(Segment segment) {
 		if (Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
 			_asahTaskDog.scheduleAsahTask(
@@ -1029,6 +1052,9 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 			BeanUtils.copyProperties(partialSegment, existingSegment);
 
+			existingSegment.setFilter(
+				processFilter(existingSegment.getFilter()));
+
 			existingSegment = _segmentRepository.save(existingSegment);
 
 			_addAsahTask(existingSegment);
@@ -1047,6 +1073,11 @@ public class SegmentDog extends BaseFaroInfoDog {
 		"referencedOrganizationIds", "referencedRoleIds", "referencedTeamIds",
 		"referencedUserGroupIds", "referencedUserIds"
 	};
+
+	private static final Log _log = LogFactory.getLog(SegmentDog.class);
+
+	private static final Pattern _pattern = Pattern.compile(
+		"[0-9]+[.]{0,1}[0-9]*([e][+]){1}[0-9]+");
 
 	@Autowired
 	private AccountDog _accountDog;
