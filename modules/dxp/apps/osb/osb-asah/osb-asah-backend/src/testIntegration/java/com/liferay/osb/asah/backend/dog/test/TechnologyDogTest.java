@@ -14,32 +14,30 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.TechnologyDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Lino Alves
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class TechnologyDogTest {
+public class TechnologyDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "journals", resourcePath = "technology_journal_info.json",
@@ -55,8 +53,8 @@ public class TechnologyDogTest {
 				}
 			});
 
-		Assert.assertEquals(
-			browserMetrics.toString(), 3, browserMetrics.size());
+		Assertions.assertEquals(
+			3, browserMetrics.size(), browserMetrics.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -73,7 +71,8 @@ public class TechnologyDogTest {
 				}
 			});
 
-		Assert.assertEquals(deviceMetrics.toString(), 2, deviceMetrics.size());
+		Assertions.assertEquals(
+			2, deviceMetrics.size(), deviceMetrics.toString());
 
 		DogTestUtil.assertMetric(5, deviceMetrics, "Desktop");
 		DogTestUtil.assertMetric(2, deviceMetrics, "Desktop", "Linux");

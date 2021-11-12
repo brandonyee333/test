@@ -14,31 +14,29 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.FieldMappingDog;
 import com.liferay.osb.asah.backend.model.FieldMapping;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Marcellus Tavares
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class FieldMappingDogTest {
+public class FieldMappingDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "field-mappings", resourcePath = "field_mappings_info.json",
@@ -50,8 +48,8 @@ public class FieldMappingDogTest {
 			_fieldMappingDog.getFieldMappingResultBag(
 				"demographics", "individual", 10, 0);
 
-		Assert.assertEquals(2, fieldMappingResultBag.getTotal());
-		Assert.assertEquals(
+		Assertions.assertEquals(2, fieldMappingResultBag.getTotal());
+		Assertions.assertEquals(
 			Arrays.asList("email", "favoritePokemon"),
 			_getFieldMappingsFieldNames(fieldMappingResultBag.getResults()));
 	}

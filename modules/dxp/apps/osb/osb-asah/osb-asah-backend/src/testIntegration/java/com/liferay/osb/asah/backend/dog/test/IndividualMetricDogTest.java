@@ -14,32 +14,30 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.IndividualMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.IndividualMetric;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.HashSet;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Matthew Kong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class IndividualMetricDogTest {
+public class IndividualMetricDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_histogram_info.json",
@@ -52,21 +50,23 @@ public class IndividualMetricDogTest {
 		Metric anonymousIndividualsMetric =
 			individualMetric.getAnonymousIndividualsMetric();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0, anonymousIndividualsMetric.getPreviousValue(), 0);
-		Assert.assertEquals(1, anonymousIndividualsMetric.getValue(), 0);
+		Assertions.assertEquals(1, anonymousIndividualsMetric.getValue(), 0);
 
 		Metric knownIndividualsMetric =
 			individualMetric.getKnownIndividualsMetric();
 
-		Assert.assertEquals(1, knownIndividualsMetric.getPreviousValue(), 0);
-		Assert.assertEquals(4, knownIndividualsMetric.getValue(), 0);
+		Assertions.assertEquals(
+			1, knownIndividualsMetric.getPreviousValue(), 0);
+		Assertions.assertEquals(4, knownIndividualsMetric.getValue(), 0);
 
 		Metric totalIndividualsMetric =
 			individualMetric.getTotalIndividualsMetric();
 
-		Assert.assertEquals(1, totalIndividualsMetric.getPreviousValue(), 0);
-		Assert.assertEquals(5, totalIndividualsMetric.getValue(), 0);
+		Assertions.assertEquals(
+			1, totalIndividualsMetric.getPreviousValue(), 0);
+		Assertions.assertEquals(5, totalIndividualsMetric.getValue(), 0);
 	}
 
 	private IndividualMetric _getIndividualMetric() {

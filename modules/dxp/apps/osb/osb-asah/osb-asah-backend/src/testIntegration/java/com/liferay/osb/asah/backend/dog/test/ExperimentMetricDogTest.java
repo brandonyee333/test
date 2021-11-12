@@ -14,35 +14,43 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataDog;
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataPoint;
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentMetricDog;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class ExperimentMetricDogTest {
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
+public class ExperimentMetricDogTest
+	implements OSBAsahBackendSpringTestContext {
 
 	@ElasticsearchIndex(
 		name = "experiments", resourcePath = "experiment_metrics_info.json",
@@ -57,9 +65,9 @@ public class ExperimentMetricDogTest {
 			_experimentMetricDog.calculateExperimentMetric(
 				_experimentDog.getExperiment(4L));
 
-		Assert.assertEquals(25.42, experimentMetric.getCompletion(), 0.1D);
+		Assertions.assertEquals(25.42, experimentMetric.getCompletion(), 0.1D);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Long.valueOf(18), experimentMetric.getEstimatedDaysLeft());
 	}
 
@@ -76,9 +84,9 @@ public class ExperimentMetricDogTest {
 			_experimentMetricDog.calculateExperimentMetric(
 				_experimentDog.getExperiment(4L));
 
-		Assert.assertNull(experimentMetric.getCompletion());
+		Assertions.assertNull(experimentMetric.getCompletion());
 
-		Assert.assertNull(experimentMetric.getEstimatedDaysLeft());
+		Assertions.assertNull(experimentMetric.getEstimatedDaysLeft());
 	}
 
 	@ElasticsearchIndex(
@@ -94,9 +102,9 @@ public class ExperimentMetricDogTest {
 			_experimentMetricDog.calculateExperimentMetric(
 				_experimentDog.getExperiment(4L));
 
-		Assert.assertEquals(61.3, experimentMetric.getCompletion(), 0.1D);
+		Assertions.assertEquals(61.3, experimentMetric.getCompletion(), 0.1D);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Long.valueOf(18), experimentMetric.getEstimatedDaysLeft());
 	}
 

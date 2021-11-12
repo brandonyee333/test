@@ -14,31 +14,29 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.page.PageReferrerDog;
 import com.liferay.osb.asah.backend.model.PageReferrerMetric;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Gabriel Ibson
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class PageReferrerDogTest {
+public class PageReferrerDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "page-referrers",
@@ -57,9 +55,9 @@ public class PageReferrerDogTest {
 					}
 				});
 
-		Assert.assertEquals(4, acquisitionChannels.get("direct"), 0);
-		Assert.assertEquals(2, acquisitionChannels.get("paid"), 0);
-		Assert.assertEquals(3, acquisitionChannels.get("referral"), 0);
+		Assertions.assertEquals(4, acquisitionChannels.get("direct"), 0);
+		Assertions.assertEquals(2, acquisitionChannels.get("paid"), 0);
+		Assertions.assertEquals(3, acquisitionChannels.get("referral"), 0);
 
 		acquisitionChannels = _pageReferrerDog.getAcquisitionChannels(
 			new SearchQueryContext() {
@@ -70,10 +68,10 @@ public class PageReferrerDogTest {
 				}
 			});
 
-		Assert.assertEquals(4, acquisitionChannels.get("direct"), 0);
-		Assert.assertEquals(2, acquisitionChannels.get("paid"), 0);
-		Assert.assertEquals(4, acquisitionChannels.get("referral"), 0);
-		Assert.assertEquals(5, acquisitionChannels.get("social"), 0);
+		Assertions.assertEquals(4, acquisitionChannels.get("direct"), 0);
+		Assertions.assertEquals(2, acquisitionChannels.get("paid"), 0);
+		Assertions.assertEquals(4, acquisitionChannels.get("referral"), 0);
+		Assertions.assertEquals(5, acquisitionChannels.get("social"), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -93,10 +91,11 @@ public class PageReferrerDogTest {
 			},
 			10);
 
-		Assert.assertEquals(pageReferrers.toString(), 3, pageReferrers.size());
-		Assert.assertEquals(3, pageReferrers.get("www.facebook.com"), 0);
-		Assert.assertEquals(6, pageReferrers.get("www.google.com"), 0);
-		Assert.assertEquals(1, pageReferrers.get("www.latimes.com"), 0);
+		Assertions.assertEquals(
+			3, pageReferrers.size(), pageReferrers.toString());
+		Assertions.assertEquals(3, pageReferrers.get("www.facebook.com"), 0);
+		Assertions.assertEquals(6, pageReferrers.get("www.google.com"), 0);
+		Assertions.assertEquals(1, pageReferrers.get("www.latimes.com"), 0);
 
 		pageReferrers = _pageReferrerDog.getPageReferrers(
 			"referrerHost",
@@ -109,10 +108,11 @@ public class PageReferrerDogTest {
 			},
 			10);
 
-		Assert.assertEquals(pageReferrers.toString(), 3, pageReferrers.size());
-		Assert.assertEquals(3, pageReferrers.get("www.facebook.com"), 0);
-		Assert.assertEquals(6, pageReferrers.get("www.google.com"), 0);
-		Assert.assertEquals(6, pageReferrers.get("www.latimes.com"), 0);
+		Assertions.assertEquals(
+			3, pageReferrers.size(), pageReferrers.toString());
+		Assertions.assertEquals(3, pageReferrers.get("www.facebook.com"), 0);
+		Assertions.assertEquals(6, pageReferrers.get("www.google.com"), 0);
+		Assertions.assertEquals(6, pageReferrers.get("www.latimes.com"), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -135,8 +135,8 @@ public class PageReferrerDogTest {
 					}
 				});
 
-		Assert.assertEquals(
-			pageReferrerMetrics.toString(), 2, pageReferrerMetrics.size());
+		Assertions.assertEquals(
+			2, pageReferrerMetrics.size(), pageReferrerMetrics.toString());
 
 		PageReferrerMetric pageReferrerMetric = pageReferrerMetrics.get(0);
 
@@ -160,13 +160,16 @@ public class PageReferrerDogTest {
 			},
 			10);
 
-		Assert.assertEquals(pageReferrers.toString(), 4, pageReferrers.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			4, pageReferrers.size(), pageReferrers.toString());
+		Assertions.assertEquals(
 			3, pageReferrers.get("https://www.facebook.com"), 0);
-		Assert.assertEquals(4, pageReferrers.get("https://www.google.com"), 0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			4, pageReferrers.get("https://www.google.com"), 0);
+		Assertions.assertEquals(
 			2, pageReferrers.get("https://www.google.com/test"), 0);
-		Assert.assertEquals(1, pageReferrers.get("https://www.latimes.com"), 0);
+		Assertions.assertEquals(
+			1, pageReferrers.get("https://www.latimes.com"), 0);
 
 		pageReferrers = _pageReferrerDog.getPageReferrers(
 			"referrerCanonicalUrl",
@@ -179,13 +182,16 @@ public class PageReferrerDogTest {
 			},
 			10);
 
-		Assert.assertEquals(pageReferrers.toString(), 4, pageReferrers.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			4, pageReferrers.size(), pageReferrers.toString());
+		Assertions.assertEquals(
 			3, pageReferrers.get("https://www.facebook.com"), 0);
-		Assert.assertEquals(4, pageReferrers.get("https://www.google.com"), 0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			4, pageReferrers.get("https://www.google.com"), 0);
+		Assertions.assertEquals(
 			2, pageReferrers.get("https://www.google.com/test"), 0);
-		Assert.assertEquals(6, pageReferrers.get("https://www.latimes.com"), 0);
+		Assertions.assertEquals(
+			6, pageReferrers.get("https://www.latimes.com"), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -205,9 +211,9 @@ public class PageReferrerDogTest {
 					}
 				});
 
-		Assert.assertEquals(3, socialReferrers.get("facebook"), 0);
-		Assert.assertEquals(4, socialReferrers.get("other"), 0);
-		Assert.assertEquals(6, socialReferrers.get("twitter"), 0);
+		Assertions.assertEquals(3, socialReferrers.get("facebook"), 0);
+		Assertions.assertEquals(4, socialReferrers.get("other"), 0);
+		Assertions.assertEquals(6, socialReferrers.get("twitter"), 0);
 	}
 
 	@Autowired

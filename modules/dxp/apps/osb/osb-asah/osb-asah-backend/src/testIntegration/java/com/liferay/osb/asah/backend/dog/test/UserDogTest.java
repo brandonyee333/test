@@ -14,29 +14,27 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.UserDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class UserDogTest {
+public class UserDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "journals", resourcePath = "user_journal_info.json",
@@ -47,7 +45,7 @@ public class UserDogTest {
 		long anonymousUsersCount = _userDog.getAnonymousUsersCount(
 			JournalMetricType.VIEWS, _searchQueryContext);
 
-		Assert.assertEquals(2, anonymousUsersCount);
+		Assertions.assertEquals(2, anonymousUsersCount);
 	}
 
 	@ElasticsearchIndex(
@@ -64,7 +62,7 @@ public class UserDogTest {
 		long knownUsersCount = _userDog.getKnownUsersCount(
 			JournalMetricType.VIEWS, _searchQueryContext);
 
-		Assert.assertEquals(4, knownUsersCount);
+		Assertions.assertEquals(4, knownUsersCount);
 	}
 
 	@ElasticsearchIndex(
@@ -82,7 +80,7 @@ public class UserDogTest {
 			_userDog.getNonsegmentedKnownUsersCount(
 				JournalMetricType.VIEWS, _searchQueryContext);
 
-		Assert.assertEquals(2, nonsegmentedKnownUsersCount);
+		Assertions.assertEquals(2, nonsegmentedKnownUsersCount);
 	}
 
 	@ElasticsearchIndex(
@@ -100,7 +98,7 @@ public class UserDogTest {
 			_userDog.getSegmentedAnonymousUsersCount(
 				JournalMetricType.VIEWS, _searchQueryContext);
 
-		Assert.assertEquals(1, segmentedAnonymousUsersCount);
+		Assertions.assertEquals(1, segmentedAnonymousUsersCount);
 	}
 
 	@ElasticsearchIndex(
@@ -117,7 +115,7 @@ public class UserDogTest {
 		long segmentedKnownUsersCount = _userDog.getSegmentedKnownUsersCount(
 			JournalMetricType.VIEWS, _searchQueryContext);
 
-		Assert.assertEquals(2, segmentedKnownUsersCount);
+		Assertions.assertEquals(2, segmentedKnownUsersCount);
 	}
 
 	private final SearchQueryContext _searchQueryContext =

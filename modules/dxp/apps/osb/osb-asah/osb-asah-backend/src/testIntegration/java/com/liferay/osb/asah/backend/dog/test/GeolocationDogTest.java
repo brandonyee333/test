@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.constants.DataConstants;
 import com.liferay.osb.asah.backend.dog.GeolocationDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
@@ -21,26 +22,23 @@ import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Lino Alves
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class GeolocationDogTest {
+public class GeolocationDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "journals", resourcePath = "geolocation_journal_info.json",
@@ -52,8 +50,8 @@ public class GeolocationDogTest {
 			JournalMetricType.VIEWS,
 			new SearchQueryContext("1", AssetType.JOURNAL));
 
-		Assert.assertEquals(
-			geolocationMetrics.toString(), 3, geolocationMetrics.size());
+		Assertions.assertEquals(
+			3, geolocationMetrics.size(), geolocationMetrics.toString());
 
 		DogTestUtil.assertMetric(2, geolocationMetrics, "Australia");
 		DogTestUtil.assertMetric(3, geolocationMetrics, "Brazil");
@@ -74,8 +72,8 @@ public class GeolocationDogTest {
 				}
 			});
 
-		Assert.assertEquals(
-			geolocationMetrics.toString(), 1, geolocationMetrics.size());
+		Assertions.assertEquals(
+			1, geolocationMetrics.size(), geolocationMetrics.toString());
 
 		DogTestUtil.assertMetric(1, geolocationMetrics, DataConstants.UNKNOWN);
 	}

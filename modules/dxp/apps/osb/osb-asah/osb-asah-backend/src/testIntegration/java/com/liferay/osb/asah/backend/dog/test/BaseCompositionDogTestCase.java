@@ -14,8 +14,10 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.model.Composition;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,12 +25,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author Shinn Lok
  */
-public abstract class BaseCompositionDogTestCase {
+public abstract class BaseCompositionDogTestCase
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	protected void checkResults(
 		CompositionResultBag compositionResultBag,
@@ -39,17 +43,17 @@ public abstract class BaseCompositionDogTestCase {
 
 		Stream<Composition> stream = results.stream();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedResults,
 			stream.collect(
 				Collectors.toMap(
 					Composition::getName, Composition::getCount,
 					(name, count) -> name, LinkedHashMap::new)));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedMaxCount, compositionResultBag.getMaxCount());
-		Assert.assertEquals(expectedTotal, compositionResultBag.getTotal());
-		Assert.assertEquals(
+		Assertions.assertEquals(expectedTotal, compositionResultBag.getTotal());
+		Assertions.assertEquals(
 			expectedTotalCount, compositionResultBag.getTotalCount());
 	}
 

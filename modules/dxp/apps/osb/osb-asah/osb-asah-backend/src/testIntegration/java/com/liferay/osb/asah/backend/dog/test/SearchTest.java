@@ -14,32 +14,30 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
 import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class SearchTest {
+public class SearchTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "search_blogs_info.json",
@@ -56,7 +54,7 @@ public class SearchTest {
 		int assetMetricsCount = _metricDog.getAssetMetricsCount(
 			searchQueryContext);
 
-		Assert.assertEquals(2, assetMetricsCount);
+		Assertions.assertEquals(2, assetMetricsCount);
 	}
 
 	@ElasticsearchIndex(
@@ -70,7 +68,7 @@ public class SearchTest {
 			_customAssetDashboardDog.getCustomAssetDashboardPage(
 				1L, "ASSET", 0, 10, Sort.asc("assetTitle"));
 
-		Assert.assertEquals(3, customAssetDashboardPage.getTotalElements());
+		Assertions.assertEquals(3, customAssetDashboardPage.getTotalElements());
 	}
 
 	@ElasticsearchIndex(
@@ -88,7 +86,7 @@ public class SearchTest {
 		int assetMetricsCount = _metricDog.getAssetMetricsCount(
 			searchQueryContext);
 
-		Assert.assertEquals(3, assetMetricsCount);
+		Assertions.assertEquals(3, assetMetricsCount);
 	}
 
 	@Autowired

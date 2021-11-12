@@ -14,16 +14,16 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.ActivityDog;
 import com.liferay.osb.asah.backend.model.Activity;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,19 +31,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Marcellus Tavares
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class ActivityDogTest {
+public class ActivityDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "activities", resourcePath = "activities_info_1.json",
@@ -54,8 +52,8 @@ public class ActivityDogTest {
 		ResultBag<Activity> activityResultBag =
 			_activityDog.getActivityResultBag(337984659206412898L, 20, 0);
 
-		Assert.assertEquals(2, activityResultBag.getTotal());
-		Assert.assertEquals(
+		Assertions.assertEquals(2, activityResultBag.getTotal());
+		Assertions.assertEquals(
 			SetUtil.of("pageLoaded", "pageViewed"),
 			_getActivitiesEventIds(activityResultBag.getResults()));
 	}
@@ -66,7 +64,7 @@ public class ActivityDogTest {
 	)
 	@Test
 	public void testGetEventContextKeys() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Arrays.asList("canonicalUrl", "country", "title", "url"),
 			_activityDog.getEventContextKeys());
 	}
@@ -81,7 +79,7 @@ public class ActivityDogTest {
 			_activityDog.getActivityResultBag(
 				"Page", null, "pageUnloaded", 3, 20, 0);
 
-		Assert.assertEquals(1, activityResultBag.getTotal());
+		Assertions.assertEquals(1, activityResultBag.getTotal());
 	}
 
 	@ElasticsearchIndex(
@@ -94,7 +92,7 @@ public class ActivityDogTest {
 			_activityDog.getActivityResultBag(
 				"Page", null, "pageUnloaded", 7, 20, 0);
 
-		Assert.assertEquals(2, activityResultBag.getTotal());
+		Assertions.assertEquals(2, activityResultBag.getTotal());
 	}
 
 	@ElasticsearchIndex(
@@ -110,7 +108,7 @@ public class ActivityDogTest {
 					new PropertyFilter("eventContext.country = Brazil", false)),
 				"pageUnloaded", 7, 20, 0);
 
-		Assert.assertEquals(1, activityResultBag.getTotal());
+		Assertions.assertEquals(1, activityResultBag.getTotal());
 	}
 
 	@ElasticsearchIndex(
@@ -126,8 +124,8 @@ public class ActivityDogTest {
 					new PropertyFilter("eventContext.country ~ Br.*", false)),
 				"pageUnloaded", 7, 20, 0);
 
-		Assert.assertEquals(2, activityResultBag.getTotal());
-		Assert.assertEquals(
+		Assertions.assertEquals(2, activityResultBag.getTotal());
+		Assertions.assertEquals(
 			SetUtil.of("Brazil", "Brunei"),
 			_getActivitiesEventContextProperty(
 				activityResultBag.getResults(), "country"));

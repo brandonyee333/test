@@ -14,18 +14,18 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.VisitorHistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -33,20 +33,18 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class VisitorHistogramDogTest {
+public class VisitorHistogramDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "pages",
@@ -58,12 +56,12 @@ public class VisitorHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			Interval.DAY, TimeRange.LAST_7_DAYS);
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), 7, histogramMetrics.size());
+		Assertions.assertEquals(
+			7, histogramMetrics.size(), histogramMetrics.toString());
 
 		double[] expectedValues = {0, 0, 1, 0, 0, 0, 1};
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
@@ -77,15 +75,15 @@ public class VisitorHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			Interval.DAY, TimeRange.LAST_24_HOURS);
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), 24, histogramMetrics.size());
+		Assertions.assertEquals(
+			24, histogramMetrics.size(), histogramMetrics.toString());
 
 		double[] expectedValues = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 1, 0, 0, 0, 0, 0, 0,
 			0
 		};
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
@@ -99,23 +97,23 @@ public class VisitorHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			Interval.DAY, TimeRange.LAST_28_DAYS);
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), 28, histogramMetrics.size());
+		Assertions.assertEquals(
+			28, histogramMetrics.size(), histogramMetrics.toString());
 
 		double[] expectedValues = new double[28];
 
 		Arrays.fill(expectedValues, 1);
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "pages",
 		resourcePath = "visitor_histogram_page_last_90_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
-	@Ignore
 	@Test
 	public void testVisitorHistogramMetricsLast90Days() {
 		double[] expectedValues = DogTestUtil.create90DaysHistogramBuckets();
@@ -123,7 +121,7 @@ public class VisitorHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			Interval.WEEK, TimeRange.LAST_90_DAYS);
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);
 
 		HistogramMetric histogramMetric = histogramMetrics.get(0);
@@ -136,7 +134,7 @@ public class VisitorHistogramDogTest {
 			histogramMetric = histogramMetrics.get(1);
 		}
 
-		Assert.assertEquals(1D, histogramMetric.getPreviousValue(), 0);
+		Assertions.assertEquals(1D, histogramMetric.getPreviousValue(), 0);
 	}
 
 	private double[] _getActualValues(List<HistogramMetric> histogramMetrics) {

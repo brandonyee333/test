@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
@@ -22,7 +22,7 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,13 +30,11 @@ import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
 /**
@@ -46,11 +44,11 @@ import org.springframework.data.domain.Page;
 	name = "data-sources", resourcePath = "data_sources.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class DXPEntityDogTest {
+public class DXPEntityDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		_faroInfoElasticsearchInvoker.delete(
 			"channels", QueryBuilders.matchAllQuery());
@@ -228,11 +226,11 @@ public class DXPEntityDogTest {
 				channelId, keywords, 10, sort, 0,
 				DXPEntity.Type.ofCollectionName(collectionName));
 
-		Assert.assertEquals(
-			dxpEntitiesPage.toString(), expectedTotal,
-			dxpEntitiesPage.getTotalElements());
+		Assertions.assertEquals(
+			expectedTotal, dxpEntitiesPage.getTotalElements(),
+			dxpEntitiesPage.toString());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedNames,
 			ListUtil.map(dxpEntitiesPage.getContent(), DXPEntity::getName));
 	}

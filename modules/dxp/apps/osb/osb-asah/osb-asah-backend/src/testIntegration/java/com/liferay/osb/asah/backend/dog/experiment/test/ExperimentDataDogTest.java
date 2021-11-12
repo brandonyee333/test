@@ -14,31 +14,29 @@
 
 package com.liferay.osb.asah.backend.dog.experiment.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataDog;
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataPoint;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Marcellus Tavares
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class ExperimentDataDogTest {
+public class ExperimentDataDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "pages_info.json",
@@ -54,8 +52,8 @@ public class ExperimentDataDogTest {
 				TimeRange.of(localDate.minusDays(1), localDate.minusDays(1)),
 				"1");
 
-		Assert.assertEquals(4, experimentDataPoint.getTrials());
-		Assert.assertEquals(3.0, experimentDataPoint.getValue(), 0);
+		Assertions.assertEquals(4, experimentDataPoint.getTrials());
+		Assertions.assertEquals(3.0, experimentDataPoint.getValue(), 0);
 	}
 
 	@Autowired

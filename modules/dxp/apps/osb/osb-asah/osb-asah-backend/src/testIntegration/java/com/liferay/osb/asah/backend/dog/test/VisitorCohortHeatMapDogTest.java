@@ -14,19 +14,19 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.VisitorCohortHeatMapDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.CohortHeatMapMetric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -41,19 +41,17 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Gabriel Ibson
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class VisitorCohortHeatMapDogTest {
+public class VisitorCohortHeatMapDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "pages",
@@ -65,7 +63,7 @@ public class VisitorCohortHeatMapDogTest {
 		List<CohortHeatMapMetric> cohortHeatMapMetrics =
 			_getCohortHeatMapMetrics(Interval.DAY, SiteMetricType.VISITORS);
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			_getExpectedRetentions(
 				new HashMap<Pair<Integer, Integer>, Double>() {
 					{
@@ -86,8 +84,8 @@ public class VisitorCohortHeatMapDogTest {
 				},
 				cohortHeatMapMetrics.size(), 8),
 			_getActualRetentions(cohortHeatMapMetrics), 0);
-		Assert.assertEquals(
-			cohortHeatMapMetrics.toString(), 43, cohortHeatMapMetrics.size());
+		Assertions.assertEquals(
+			43, cohortHeatMapMetrics.size(), cohortHeatMapMetrics.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -100,7 +98,7 @@ public class VisitorCohortHeatMapDogTest {
 		List<CohortHeatMapMetric> cohortHeatMapMetrics =
 			_getCohortHeatMapMetrics(Interval.MONTH, SiteMetricType.VISITORS);
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			_getExpectedRetentions(
 				new HashMap<Pair<Integer, Integer>, Double>() {
 					{
@@ -121,8 +119,8 @@ public class VisitorCohortHeatMapDogTest {
 				},
 				cohortHeatMapMetrics.size(), 7),
 			_getActualRetentions(cohortHeatMapMetrics), 0);
-		Assert.assertEquals(
-			cohortHeatMapMetrics.toString(), 34, cohortHeatMapMetrics.size());
+		Assertions.assertEquals(
+			34, cohortHeatMapMetrics.size(), cohortHeatMapMetrics.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -135,7 +133,7 @@ public class VisitorCohortHeatMapDogTest {
 		List<CohortHeatMapMetric> cohortHeatMapMetrics =
 			_getCohortHeatMapMetrics(Interval.WEEK, SiteMetricType.VISITORS);
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			_getExpectedRetentions(
 				new HashMap<Pair<Integer, Integer>, Double>() {
 					{
@@ -156,8 +154,8 @@ public class VisitorCohortHeatMapDogTest {
 				},
 				cohortHeatMapMetrics.size(), 7),
 			_getActualRetentions(cohortHeatMapMetrics), 0);
-		Assert.assertEquals(
-			cohortHeatMapMetrics.toString(), 34, cohortHeatMapMetrics.size());
+		Assertions.assertEquals(
+			34, cohortHeatMapMetrics.size(), cohortHeatMapMetrics.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -171,7 +169,7 @@ public class VisitorCohortHeatMapDogTest {
 			_getCohortHeatMapMetrics(
 				Interval.DAY, SiteMetricType.ANONYMOUS_VISITORS);
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			_getExpectedRetentions(
 				new HashMap<Pair<Integer, Integer>, Double>() {
 					{
@@ -192,8 +190,8 @@ public class VisitorCohortHeatMapDogTest {
 				},
 				cohortHeatMapMetrics.size(), 8),
 			_getActualRetentions(cohortHeatMapMetrics), 0);
-		Assert.assertEquals(
-			cohortHeatMapMetrics.toString(), 43, cohortHeatMapMetrics.size());
+		Assertions.assertEquals(
+			43, cohortHeatMapMetrics.size(), cohortHeatMapMetrics.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -210,7 +208,7 @@ public class VisitorCohortHeatMapDogTest {
 			_getCohortHeatMapMetrics(
 				Interval.DAY, SiteMetricType.KNOWN_VISITORS);
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			_getExpectedRetentions(
 				new HashMap<Pair<Integer, Integer>, Double>() {
 					{
@@ -227,11 +225,11 @@ public class VisitorCohortHeatMapDogTest {
 				},
 				cohortHeatMapMetrics.size(), 8),
 			_getActualRetentions(cohortHeatMapMetrics), 0);
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			_getExpectedRowKeys(localDateTime),
 			_getActualRowKeys(cohortHeatMapMetrics));
-		Assert.assertEquals(
-			cohortHeatMapMetrics.toString(), 43, cohortHeatMapMetrics.size());
+		Assertions.assertEquals(
+			43, cohortHeatMapMetrics.size(), cohortHeatMapMetrics.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -252,7 +250,7 @@ public class VisitorCohortHeatMapDogTest {
 			_getCohortHeatMapMetrics(
 				Interval.DAY, SiteMetricType.KNOWN_VISITORS);
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			_getExpectedRetentions(
 				new HashMap<Pair<Integer, Integer>, Double>() {
 					{
@@ -269,11 +267,11 @@ public class VisitorCohortHeatMapDogTest {
 				},
 				cohortHeatMapMetrics.size(), 8),
 			_getActualRetentions(cohortHeatMapMetrics), 0);
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			_getExpectedRowKeys(localDateTime),
 			_getActualRowKeys(cohortHeatMapMetrics));
-		Assert.assertEquals(
-			cohortHeatMapMetrics.toString(), 43, cohortHeatMapMetrics.size());
+		Assertions.assertEquals(
+			43, cohortHeatMapMetrics.size(), cohortHeatMapMetrics.toString());
 	}
 
 	private double[] _getActualRetentions(

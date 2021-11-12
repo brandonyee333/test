@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
@@ -25,7 +25,7 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,20 +34,18 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
 
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class DataSourceDogTest {
+public class DataSourceDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources_info.json",
@@ -55,7 +53,7 @@ public class DataSourceDogTest {
 	)
 	@Test
 	public void testDataSourceNotFound() {
-		Assert.assertNull(_dataSourceDog.fetchDataSource(0L));
+		Assertions.assertNull(_dataSourceDog.fetchDataSource(0L));
 	}
 
 	@ElasticsearchIndex(
@@ -67,7 +65,7 @@ public class DataSourceDogTest {
 		List<DataSource> dataSources = _dataSourceDog.getDataSources(
 			null, null, null, null);
 
-		Assert.assertEquals(dataSources.toString(), 4, dataSources.size());
+		Assertions.assertEquals(4, dataSources.size(), dataSources.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -80,7 +78,7 @@ public class DataSourceDogTest {
 	)
 	@Test
 	public void testGetChannelId() {
-		Assert.assertNotNull(
+		Assertions.assertNotNull(
 			_dataSourceDog.getDefaultChannelId(405057430327289648L));
 	}
 
@@ -92,9 +90,9 @@ public class DataSourceDogTest {
 	public void testGetDataSource() {
 		DataSource dataSource = _dataSourceDog.getDataSource(200L);
 
-		Assert.assertNotNull(dataSource);
-		Assert.assertEquals("Liferay 1", dataSource.getName());
-		Assert.assertEquals("http://portal:8081", dataSource.getURL());
+		Assertions.assertNotNull(dataSource);
+		Assertions.assertEquals("Liferay 1", dataSource.getName());
+		Assertions.assertEquals("http://portal:8081", dataSource.getURL());
 	}
 
 	@Test
@@ -119,7 +117,7 @@ public class DataSourceDogTest {
 
 		JSONArray jsonArray = jsonObject.getJSONArray("data-sources");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			dataSource,
 			_objectMapper.convertValue(
 				jsonArray.getJSONObject(0), DataSource.class));
@@ -135,13 +133,13 @@ public class DataSourceDogTest {
 			"Token Authentication", "LIFERAY", 1,
 			Sort.by(Sort.Order.desc("dateModified")));
 
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+		Assertions.assertEquals(1, dataSources.size(), dataSources.toString());
 
 		DataSource dataSource = dataSources.get(0);
 
-		Assert.assertEquals(Long.valueOf(400), dataSource.getId());
-		Assert.assertEquals("Liferay 3", dataSource.getName());
-		Assert.assertEquals("http://portal:8083", dataSource.getURL());
+		Assertions.assertEquals(Long.valueOf(400), dataSource.getId());
+		Assertions.assertEquals("Liferay 3", dataSource.getName());
+		Assertions.assertEquals("http://portal:8083", dataSource.getURL());
 	}
 
 	@Autowired

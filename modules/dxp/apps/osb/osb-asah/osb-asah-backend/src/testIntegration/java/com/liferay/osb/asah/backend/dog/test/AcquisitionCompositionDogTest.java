@@ -15,21 +15,17 @@
 package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.AcquisitionCompositionDog;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
 
 import java.util.LinkedHashMap;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Matthew Kong
@@ -38,8 +34,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 	name = "user-sessions", resourcePath = "user_sessions_info.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 )
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
 public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 
 	@Test

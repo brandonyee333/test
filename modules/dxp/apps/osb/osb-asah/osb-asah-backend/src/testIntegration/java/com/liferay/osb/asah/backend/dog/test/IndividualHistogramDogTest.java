@@ -14,33 +14,31 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.IndividualHistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Matthew Kong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class IndividualHistogramDogTest {
+public class IndividualHistogramDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_histogram_info.json",
@@ -51,15 +49,15 @@ public class IndividualHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			true, IndividualMetricType.TOTAL_INDIVIDUALS);
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), 30, histogramMetrics.size());
+		Assertions.assertEquals(
+			30, histogramMetrics.size(), histogramMetrics.toString());
 
 		double[] expectedValues = {
 			0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 2, 2
 		};
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
@@ -72,15 +70,15 @@ public class IndividualHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			null, IndividualMetricType.ANONYMOUS_INDIVIDUALS);
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), 30, histogramMetrics.size());
+		Assertions.assertEquals(
+			30, histogramMetrics.size(), histogramMetrics.toString());
 
 		double[] expectedValues = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1
 		};
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
@@ -93,15 +91,15 @@ public class IndividualHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			false, IndividualMetricType.TOTAL_INDIVIDUALS);
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), 30, histogramMetrics.size());
+		Assertions.assertEquals(
+			30, histogramMetrics.size(), histogramMetrics.toString());
 
 		double[] expectedValues = {
 			1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4,
 			4, 4, 4, 4, 4, 5, 5
 		};
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
@@ -114,15 +112,15 @@ public class IndividualHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			null, IndividualMetricType.KNOWN_INDIVIDUALS);
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), 30, histogramMetrics.size());
+		Assertions.assertEquals(
+			30, histogramMetrics.size(), histogramMetrics.toString());
 
 		double[] expectedValues = {
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2,
 			2, 2, 2, 3, 3, 4, 4
 		};
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
@@ -135,15 +133,15 @@ public class IndividualHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			null, IndividualMetricType.TOTAL_INDIVIDUALS);
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), 30, histogramMetrics.size());
+		Assertions.assertEquals(
+			30, histogramMetrics.size(), histogramMetrics.toString());
 
 		double[] expectedValues = {
 			1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4,
 			4, 4, 4, 4, 4, 5, 5
 		};
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 

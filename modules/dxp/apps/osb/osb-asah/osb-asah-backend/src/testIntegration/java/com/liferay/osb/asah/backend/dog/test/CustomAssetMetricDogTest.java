@@ -14,39 +14,29 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendTrinoSpringTestContext;
 import com.liferay.osb.asah.backend.dog.CustomAssetMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
-import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Marcellus Tavares
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@DirtiesContext
-@Import(JDBCTestConfiguration.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(properties = "osb.asah.trino.enabled=true")
-@SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
-public class CustomAssetMetricDogTest {
+public class CustomAssetMetricDogTest
+	implements OSBAsahBackendTrinoSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@SQLResource(
 		dataSource = "trinoDataSource",
@@ -73,9 +63,10 @@ public class CustomAssetMetricDogTest {
 		HistogramMetric lastHistogramMetric = histogramMetrics.get(
 			histogramMetrics.size() - 1);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Double.valueOf(7), lastHistogramMetric.getPreviousValue());
-		Assert.assertEquals(Double.valueOf(4), lastHistogramMetric.getValue());
+		Assertions.assertEquals(
+			Double.valueOf(4), lastHistogramMetric.getValue());
 	}
 
 	@Autowired

@@ -14,15 +14,15 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.SiteVisitorHeatMapDog;
 import com.liferay.osb.asah.backend.model.HeatMapMetric;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -37,20 +37,17 @@ import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Leslie Wong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class SiteVisitorHeatMapDogTest {
+public class SiteVisitorHeatMapDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
@@ -64,8 +61,8 @@ public class SiteVisitorHeatMapDogTest {
 			_siteVisitorHeatMapDog.getHeatMapMetrics(
 				null, "1", TimeRange.of(localDate, localDate.minusDays(49)));
 
-		Assert.assertEquals(
-			heatMapMetrics.toString(), 168, heatMapMetrics.size());
+		Assertions.assertEquals(
+			168, heatMapMetrics.size(), heatMapMetrics.toString());
 
 		double[] actualValues = _getActualValues(heatMapMetrics);
 
@@ -84,7 +81,7 @@ public class SiteVisitorHeatMapDogTest {
 		double[] expectedValues = _getExpectedValues(
 			expectedValuesMap, "UTC", heatMapMetrics.size());
 
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assertions.assertArrayEquals(expectedValues, actualValues, 0);
 	}
 
 	@ElasticsearchIndex(
@@ -99,7 +96,7 @@ public class SiteVisitorHeatMapDogTest {
 
 		double[] expectedValues = new double[heatMapMetrics.size()];
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(heatMapMetrics), 0);
 	}
 
@@ -127,7 +124,7 @@ public class SiteVisitorHeatMapDogTest {
 		double[] expectedValues = _getExpectedValues(
 			expectedValuesMap, "UTC", heatMapMetrics.size());
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(heatMapMetrics), 0);
 	}
 
@@ -157,7 +154,7 @@ public class SiteVisitorHeatMapDogTest {
 		double[] expectedValues = _getExpectedValues(
 			expectedValuesMap, "UTC", heatMapMetrics.size());
 
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assertions.assertArrayEquals(expectedValues, actualValues, 0);
 	}
 
 	@ElasticsearchIndex(
@@ -170,8 +167,8 @@ public class SiteVisitorHeatMapDogTest {
 			_siteVisitorHeatMapDog.getHeatMapMetrics(
 				null, "1", TimeRange.LAST_90_DAYS);
 
-		Assert.assertEquals(
-			heatMapMetrics.toString(), 168, heatMapMetrics.size());
+		Assertions.assertEquals(
+			168, heatMapMetrics.size(), heatMapMetrics.toString());
 
 		double[] actualValues = _getActualValues(heatMapMetrics);
 
@@ -192,7 +189,7 @@ public class SiteVisitorHeatMapDogTest {
 		double[] expectedValues = _getExpectedValues(
 			expectedValuesMap, "UTC", heatMapMetrics.size());
 
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assertions.assertArrayEquals(expectedValues, actualValues, 0);
 	}
 
 	@ElasticsearchIndex(
@@ -205,8 +202,8 @@ public class SiteVisitorHeatMapDogTest {
 			_siteVisitorHeatMapDog.getHeatMapMetrics(
 				null, "1", TimeRange.LAST_180_DAYS);
 
-		Assert.assertEquals(
-			heatMapMetrics.toString(), 168, heatMapMetrics.size());
+		Assertions.assertEquals(
+			168, heatMapMetrics.size(), heatMapMetrics.toString());
 
 		double[] actualValues = _getActualValues(heatMapMetrics);
 
@@ -230,7 +227,7 @@ public class SiteVisitorHeatMapDogTest {
 		double[] expectedValues = _getExpectedValues(
 			expectedValuesMap, "UTC", heatMapMetrics.size());
 
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assertions.assertArrayEquals(expectedValues, actualValues, 0);
 	}
 
 	@ElasticsearchIndex(
@@ -243,8 +240,8 @@ public class SiteVisitorHeatMapDogTest {
 			_siteVisitorHeatMapDog.getHeatMapMetrics(
 				null, "1", TimeRange.LAST_YEAR);
 
-		Assert.assertEquals(
-			heatMapMetrics.toString(), 168, heatMapMetrics.size());
+		Assertions.assertEquals(
+			168, heatMapMetrics.size(), heatMapMetrics.toString());
 
 		double[] actualValues = _getActualValues(heatMapMetrics);
 
@@ -269,14 +266,14 @@ public class SiteVisitorHeatMapDogTest {
 		double[] expectedValues = _getExpectedValues(
 			expectedValuesMap, "UTC", heatMapMetrics.size());
 
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assertions.assertArrayEquals(expectedValues, actualValues, 0);
 	}
 
+	//	@Disabled
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
-	@Ignore
 	@Test
 	public void testVisitorHeatMapMetricsWithTimeZone() {
 		_preferenceDog.savePreference("time-zone-id", "-07:00");
@@ -302,7 +299,7 @@ public class SiteVisitorHeatMapDogTest {
 		double[] expectedValues = _getExpectedValues(
 			expectedValuesMap, "-07:00", heatMapMetrics.size());
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(heatMapMetrics), 0);
 
 		_preferenceDog.savePreference("time-zone-id", "-03:00");
@@ -326,7 +323,7 @@ public class SiteVisitorHeatMapDogTest {
 		expectedValues = _getExpectedValues(
 			expectedValuesMap, "-03:00", heatMapMetrics.size());
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(heatMapMetrics), 0);
 	}
 
@@ -350,7 +347,7 @@ public class SiteVisitorHeatMapDogTest {
 		double[] expectedValues = _getExpectedValues(
 			expectedValuesMap, "UTC", heatMapMetrics.size());
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(heatMapMetrics), 0);
 	}
 

@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author Lino Alves
@@ -48,7 +48,7 @@ public class DogTestUtil {
 					return;
 				}
 
-				Assert.fail("Invalid keys: " + Arrays.toString(keys));
+				Assertions.fail("Invalid keys: " + Arrays.toString(keys));
 			}
 
 			metric = metricOptional.get();
@@ -56,11 +56,11 @@ public class DogTestUtil {
 			innerMetrics = metric.getMetrics();
 		}
 
-		Assert.assertEquals(expectedValue, metric.getValue(), 0.01);
+		Assertions.assertEquals(expectedValue, metric.getValue(), 0.01);
 	}
 
 	public static void assertMetric(double expectedValue, Metric metric) {
-		Assert.assertEquals(expectedValue, metric.getValue(), 0.01);
+		Assertions.assertEquals(expectedValue, metric.getValue(), 0.01);
 	}
 
 	public static double[] create90DaysHistogramBuckets() {

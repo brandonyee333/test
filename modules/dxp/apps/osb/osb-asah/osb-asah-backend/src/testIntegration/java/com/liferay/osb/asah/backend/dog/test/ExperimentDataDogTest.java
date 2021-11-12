@@ -14,14 +14,14 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataDog;
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataPoint;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,19 +29,17 @@ import java.time.ZoneOffset;
 
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class ExperimentDataDogTest {
+public class ExperimentDataDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "experiments", resourcePath = "experiments_info.json",
@@ -57,8 +55,8 @@ public class ExperimentDataDogTest {
 			_experimentDataDog.fetchContinuousDataPoints(
 				"1", PageMetricType.TIME_ON_PAGE);
 
-		Assert.assertEquals(
-			experimentDataPoints.toString(), 6, experimentDataPoints.size());
+		Assertions.assertEquals(
+			6, experimentDataPoints.size(), experimentDataPoints.toString());
 
 		_assertDataPoint(experimentDataPoints.get(0), 0, new Double[0]);
 		_assertDataPoint(experimentDataPoints.get(1), 0, new Double[0]);
@@ -110,8 +108,8 @@ public class ExperimentDataDogTest {
 			_experimentDataDog.fetchContinuousDataPoints(
 				PageMetricType.TIME_ON_PAGE, localDateTime.minusDays(2), "1");
 
-		Assert.assertEquals(
-			experimentDataPoints.toString(), 2, experimentDataPoints.size());
+		Assertions.assertEquals(
+			2, experimentDataPoints.size(), experimentDataPoints.toString());
 
 		_assertDataPoint(
 			experimentDataPoints.get(0), 3,
@@ -122,8 +120,8 @@ public class ExperimentDataDogTest {
 		experimentDataPoints = _experimentDataDog.fetchContinuousDataPoints(
 			PageMetricType.TIME_ON_PAGE, localDateTime.minusDays(2), "2");
 
-		Assert.assertEquals(
-			experimentDataPoints.toString(), 2, experimentDataPoints.size());
+		Assertions.assertEquals(
+			2, experimentDataPoints.size(), experimentDataPoints.toString());
 
 		_assertDataPoint(experimentDataPoints.get(0), 1, new Double[] {30000D});
 
@@ -155,16 +153,16 @@ public class ExperimentDataDogTest {
 		ExperimentDataPoint<Double> experimentDataPoint, long trials,
 		Double value) {
 
-		Assert.assertEquals(trials, experimentDataPoint.getTrials());
-		Assert.assertEquals(value, experimentDataPoint.getValue());
+		Assertions.assertEquals(trials, experimentDataPoint.getTrials());
+		Assertions.assertEquals(value, experimentDataPoint.getValue());
 	}
 
 	private void _assertDataPoint(
 		ExperimentDataPoint<Double[]> experimentDataPoint, long trials,
 		Double[] value) {
 
-		Assert.assertEquals(trials, experimentDataPoint.getTrials());
-		Assert.assertArrayEquals(value, experimentDataPoint.getValue());
+		Assertions.assertEquals(trials, experimentDataPoint.getTrials());
+		Assertions.assertArrayEquals(value, experimentDataPoint.getValue());
 	}
 
 	@Autowired

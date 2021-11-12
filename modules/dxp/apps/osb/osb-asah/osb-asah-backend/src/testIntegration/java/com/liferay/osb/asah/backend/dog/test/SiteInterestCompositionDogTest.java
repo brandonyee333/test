@@ -15,23 +15,19 @@
 package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.SiteInterestCompositionDog;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
 
 import java.util.LinkedHashMap;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Rachael Koestartyo
@@ -44,8 +40,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 	repositoryClass = AssetRepository.class,
 	resourcePath = "osbasahfaroinfo/assets_info.json"
 )
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
 public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 
 	@Test

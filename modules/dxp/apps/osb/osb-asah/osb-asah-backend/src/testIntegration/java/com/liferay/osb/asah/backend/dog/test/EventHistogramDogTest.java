@@ -14,34 +14,32 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.EventHistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class EventHistogramDogTest {
+public class EventHistogramDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@SQLResource(resourcePath = "test_events_count_histogram_last_24_hours.sql")
 	@Test
@@ -49,15 +47,15 @@ public class EventHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getEventsCountHistogram(
 			Interval.HOUR, TimeRange.LAST_24_HOURS);
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), 24, histogramMetrics.size());
+		Assertions.assertEquals(
+			24, histogramMetrics.size(), histogramMetrics.toString());
 
 		double[] expectedValues = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 1,
 			0
 		};
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
@@ -67,15 +65,15 @@ public class EventHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getEventsCountHistogram(
 			Interval.DAY, TimeRange.LAST_30_DAYS);
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), 30, histogramMetrics.size());
+		Assertions.assertEquals(
+			30, histogramMetrics.size(), histogramMetrics.toString());
 
 		double[] expectedValues = {
 			0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0,
 			0, 0, 0, 0, 0, 1, 0
 		};
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
@@ -91,7 +89,7 @@ public class EventHistogramDogTest {
 
 		Stream<HistogramMetric> stream = histogramMetrics.stream();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues,
 			_getActualValues(
 				stream.filter(
@@ -114,7 +112,7 @@ public class EventHistogramDogTest {
 
 		Stream<HistogramMetric> stream = histogramMetrics.stream();
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues,
 			_getActualValues(
 				stream.filter(
@@ -133,15 +131,15 @@ public class EventHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getSessionsCountHistogram(
 			Interval.HOUR, TimeRange.LAST_24_HOURS);
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), 24, histogramMetrics.size());
+		Assertions.assertEquals(
+			24, histogramMetrics.size(), histogramMetrics.toString());
 
 		double[] expectedValues = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 2, 0, 1,
 			0
 		};
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
@@ -153,15 +151,15 @@ public class EventHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getSessionsCountHistogram(
 			Interval.DAY, TimeRange.LAST_30_DAYS);
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), 30, histogramMetrics.size());
+		Assertions.assertEquals(
+			30, histogramMetrics.size(), histogramMetrics.toString());
 
 		double[] expectedValues = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0,
 			0, 0, 0, 0, 0, 1, 0
 		};
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 

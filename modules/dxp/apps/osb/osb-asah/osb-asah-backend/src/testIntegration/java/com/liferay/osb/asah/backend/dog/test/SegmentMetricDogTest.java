@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.SegmentMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
@@ -21,29 +22,26 @@ import com.liferay.osb.asah.backend.model.BlogMetricType;
 import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Lino Alves
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class SegmentMetricDogTest {
+public class SegmentMetricDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "segment_blogs_info.json",
@@ -57,10 +55,10 @@ public class SegmentMetricDogTest {
 
 		List<Metric> segmentMetrics = resultBag.getResults();
 
-		Assert.assertEquals(
-			segmentMetrics.toString(), 2, segmentMetrics.size());
+		Assertions.assertEquals(
+			2, segmentMetrics.size(), segmentMetrics.toString());
 
-		Assert.assertEquals(2, resultBag.getTotal());
+		Assertions.assertEquals(2, resultBag.getTotal());
 
 		DogTestUtil.assertMetric(1, segmentMetrics, "CEO");
 		DogTestUtil.assertMetric(2, segmentMetrics, "Developer");
@@ -78,10 +76,10 @@ public class SegmentMetricDogTest {
 
 		List<Metric> segmentMetrics = resultBag.getResults();
 
-		Assert.assertEquals(
-			segmentMetrics.toString(), 3, segmentMetrics.size());
+		Assertions.assertEquals(
+			3, segmentMetrics.size(), segmentMetrics.toString());
 
-		Assert.assertEquals(3, resultBag.getTotal());
+		Assertions.assertEquals(3, resultBag.getTotal());
 
 		DogTestUtil.assertMetric(1, segmentMetrics, "Developer");
 		DogTestUtil.assertMetric(2, segmentMetrics, "Manager");
@@ -101,10 +99,10 @@ public class SegmentMetricDogTest {
 
 		List<Metric> segmentMetrics = resultBag.getResults();
 
-		Assert.assertEquals(
-			segmentMetrics.toString(), 15, segmentMetrics.size());
+		Assertions.assertEquals(
+			15, segmentMetrics.size(), segmentMetrics.toString());
 
-		Assert.assertEquals(19, resultBag.getTotal());
+		Assertions.assertEquals(19, resultBag.getTotal());
 
 		DogTestUtil.assertMetric(13, segmentMetrics, "S");
 		DogTestUtil.assertMetric(13, segmentMetrics, "Q");

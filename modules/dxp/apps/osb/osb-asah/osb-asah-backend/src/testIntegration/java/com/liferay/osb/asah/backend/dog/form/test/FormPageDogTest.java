@@ -14,32 +14,30 @@
 
 package com.liferay.osb.asah.backend.dog.form.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.form.FormPageDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.test.DogTestUtil;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.FormFieldMetric;
 import com.liferay.osb.asah.backend.model.FormPageMetric;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Marcellus Tavares
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class FormPageDogTest {
+public class FormPageDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "forms", resourcePath = "forms_info.json",
@@ -50,8 +48,8 @@ public class FormPageDogTest {
 		List<FormPageMetric> formPageMetrics = _formPageDog.getFormPageMetrics(
 			new SearchQueryContext("37615", AssetType.FORM));
 
-		Assert.assertEquals(
-			formPageMetrics.toString(), 1, formPageMetrics.size());
+		Assertions.assertEquals(
+			1, formPageMetrics.size(), formPageMetrics.toString());
 
 		FormPageMetric formPageMetric = formPageMetrics.get(0);
 
@@ -60,12 +58,12 @@ public class FormPageDogTest {
 		List<FormFieldMetric> formFieldMetrics =
 			formPageMetric.getFormFieldMetrics();
 
-		Assert.assertEquals(
-			formFieldMetrics.toString(), 1, formPageMetrics.size());
+		Assertions.assertEquals(
+			1, formPageMetrics.size(), formFieldMetrics.toString());
 
 		FormFieldMetric formFieldMetric = formFieldMetrics.get(0);
 
-		Assert.assertEquals("TextField", formFieldMetric.getFieldName());
+		Assertions.assertEquals("TextField", formFieldMetric.getFieldName());
 
 		DogTestUtil.assertMetric(
 			0, formFieldMetric.getFieldAbandonmentsMetric());

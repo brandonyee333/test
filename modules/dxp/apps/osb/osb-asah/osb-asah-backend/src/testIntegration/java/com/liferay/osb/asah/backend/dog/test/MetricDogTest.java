@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetMetric;
@@ -27,12 +28,11 @@ import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.PageMetric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.LocalDateTime;
 
@@ -41,19 +41,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTestContextBootstrapper;
+import org.springframework.test.context.BootstrapWith;
 
 /**
  * @author Lino Alves
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class MetricDogTest {
+@BootstrapWith(SpringBootTestContextBootstrapper.class)
+public class MetricDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "asset_metric_blog_info_1.json",
@@ -65,12 +66,12 @@ public class MetricDogTest {
 			_createSearchQuery(
 				"1", AssetType.BLOG, null, TimeRange.LAST_7_DAYS, null));
 
-		Assert.assertNotNull(assetMetric);
-		Assert.assertEquals("1", assetMetric.getAssetId());
+		Assertions.assertNotNull(assetMetric);
+		Assertions.assertEquals("1", assetMetric.getAssetId());
 
 		List<String> urls = assetMetric.getURLs();
 
-		Assert.assertEquals(urls.toString(), 1, urls.size());
+		Assertions.assertEquals(1, urls.size(), urls.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -83,12 +84,12 @@ public class MetricDogTest {
 			_createSearchQuery(
 				"1", AssetType.BLOG, null, TimeRange.LAST_24_HOURS, null));
 
-		Assert.assertNotNull(assetMetric);
-		Assert.assertEquals("1", assetMetric.getAssetId());
+		Assertions.assertNotNull(assetMetric);
+		Assertions.assertEquals("1", assetMetric.getAssetId());
 
 		List<String> urls = assetMetric.getURLs();
 
-		Assert.assertTrue(urls.isEmpty());
+		Assertions.assertTrue(urls.isEmpty());
 	}
 
 	@ElasticsearchIndex(
@@ -106,11 +107,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(blogMetric);
+		Assertions.assertNotNull(blogMetric);
 
 		Metric ratingsMetric = blogMetric.getRatingsMetric();
 
-		Assert.assertEquals(0.8, ratingsMetric.getValue(), 0.01);
+		Assertions.assertEquals(0.8, ratingsMetric.getValue(), 0.01);
 	}
 
 	@ElasticsearchIndex(
@@ -128,11 +129,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(blogMetric);
+		Assertions.assertNotNull(blogMetric);
 
 		Metric ratingsMetric = blogMetric.getRatingsMetric();
 
-		Assert.assertEquals(0.6, ratingsMetric.getValue(), 0.1);
+		Assertions.assertEquals(0.6, ratingsMetric.getValue(), 0.1);
 	}
 
 	@ElasticsearchIndex(
@@ -150,11 +151,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(blogMetric);
+		Assertions.assertNotNull(blogMetric);
 
 		Metric ratingsMetric = blogMetric.getRatingsMetric();
 
-		Assert.assertEquals(0, ratingsMetric.getValue(), 0);
+		Assertions.assertEquals(0, ratingsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -173,15 +174,15 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(pageMetric);
+		Assertions.assertNotNull(pageMetric);
 
 		Metric ctpMetric = pageMetric.getCTPMetric();
 
-		Assert.assertEquals(2, ctpMetric.getValue(), 0);
+		Assertions.assertEquals(2, ctpMetric.getValue(), 0);
 
 		Metric ctrMetric = pageMetric.getCTRMetric();
 
-		Assert.assertEquals(3, ctrMetric.getValue(), 0);
+		Assertions.assertEquals(3, ctrMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -198,13 +199,13 @@ public class MetricDogTest {
 				assetId, AssetType.CUSTOM, null, TimeRange.LAST_24_HOURS,
 				null));
 
-		Assert.assertNotNull(assetMetric);
+		Assertions.assertNotNull(assetMetric);
 
-		Assert.assertEquals(assetId, assetMetric.getAssetId());
+		Assertions.assertEquals(assetId, assetMetric.getAssetId());
 
 		Metric metric = assetMetric.getDefaultMetric();
 
-		Assert.assertEquals(7, metric.getValue(), 0);
+		Assertions.assertEquals(7, metric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -223,11 +224,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(documentLibraryMetric);
+		Assertions.assertNotNull(documentLibraryMetric);
 
 		Metric ratingsMetric = documentLibraryMetric.getRatingsMetric();
 
-		Assert.assertEquals(0.5, ratingsMetric.getValue(), 0.1);
+		Assertions.assertEquals(0.5, ratingsMetric.getValue(), 0.1);
 	}
 
 	@ElasticsearchIndex(
@@ -245,11 +246,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(pageMetric);
+		Assertions.assertNotNull(pageMetric);
 
 		Metric viewsMetric = pageMetric.getViewsMetric();
 
-		Assert.assertEquals(9, viewsMetric.getValue(), 0);
+		Assertions.assertEquals(9, viewsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -267,11 +268,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(pageMetric);
+		Assertions.assertNotNull(pageMetric);
 
 		Metric viewsMetric = pageMetric.getViewsMetric();
 
-		Assert.assertEquals(0, viewsMetric.getValue(), 0);
+		Assertions.assertEquals(0, viewsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -289,11 +290,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(pageMetric);
+		Assertions.assertNotNull(pageMetric);
 
 		Metric viewsMetric = pageMetric.getViewsMetric();
 
-		Assert.assertEquals(11, viewsMetric.getValue(), 0);
+		Assertions.assertEquals(11, viewsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -311,11 +312,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(pageMetric);
+		Assertions.assertNotNull(pageMetric);
 
 		Metric viewsMetric = pageMetric.getViewsMetric();
 
-		Assert.assertEquals(11, viewsMetric.getValue(), 0);
+		Assertions.assertEquals(11, viewsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -333,11 +334,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(pageMetric);
+		Assertions.assertNotNull(pageMetric);
 
 		Metric viewsMetric = pageMetric.getViewsMetric();
 
-		Assert.assertEquals(14, viewsMetric.getValue(), 0);
+		Assertions.assertEquals(14, viewsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -355,11 +356,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(pageMetric);
+		Assertions.assertNotNull(pageMetric);
 
 		Metric viewsMetric = pageMetric.getViewsMetric();
 
-		Assert.assertEquals(15, viewsMetric.getValue(), 0);
+		Assertions.assertEquals(15, viewsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -385,11 +386,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(pageMetric);
+		Assertions.assertNotNull(pageMetric);
 
 		Metric viewsMetric = pageMetric.getViewsMetric();
 
-		Assert.assertEquals(6, viewsMetric.getValue(), 0);
+		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -407,11 +408,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(pageMetric);
+		Assertions.assertNotNull(pageMetric);
 
 		Metric viewsMetric = pageMetric.getViewsMetric();
 
-		Assert.assertEquals(17, viewsMetric.getValue(), 0);
+		Assertions.assertEquals(17, viewsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -429,11 +430,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(pageMetric);
+		Assertions.assertNotNull(pageMetric);
 
 		Metric viewsMetric = pageMetric.getViewsMetric();
 
-		Assert.assertEquals(6, viewsMetric.getValue(), 0);
+		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -446,13 +447,13 @@ public class MetricDogTest {
 			_createSearchQuery(
 				"1", AssetType.JOURNAL, null, TimeRange.LAST_7_DAYS, null));
 
-		Assert.assertNotNull(assetMetric);
+		Assertions.assertNotNull(assetMetric);
 
-		Assert.assertEquals("1", assetMetric.getAssetId());
+		Assertions.assertEquals("1", assetMetric.getAssetId());
 
 		Metric metric = assetMetric.getDefaultMetric();
 
-		Assert.assertEquals(2, metric.getValue(), 0);
+		Assertions.assertEquals(2, metric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -476,10 +477,11 @@ public class MetricDogTest {
 			},
 			10, null, 0);
 
-		Assert.assertEquals(assetMetrics.toString(), 3, assetMetrics.size());
+		Assertions.assertEquals(
+			3, assetMetrics.size(), assetMetrics.toString());
 
 		for (AssetMetric assetMetric : assetMetrics) {
-			Assert.assertTrue(set.contains(assetMetric.getAssetId()));
+			Assertions.assertTrue(set.contains(assetMetric.getAssetId()));
 		}
 	}
 
@@ -493,7 +495,7 @@ public class MetricDogTest {
 			_createSearchQuery(
 				null, AssetType.JOURNAL, null, TimeRange.LAST_7_DAYS, null));
 
-		Assert.assertEquals(4, assetMetricsCount);
+		Assertions.assertEquals(4, assetMetricsCount);
 	}
 
 	@ElasticsearchIndex(
@@ -514,17 +516,17 @@ public class MetricDogTest {
 			},
 			1000, null, 0);
 
-		Assert.assertNotNull(pageMetrics);
+		Assertions.assertNotNull(pageMetrics);
 
-		Assert.assertEquals(1, pageMetrics.size(), 0);
+		Assertions.assertEquals(1, pageMetrics.size(), 0);
 
 		PageMetric pageMetric = pageMetrics.get(0);
 
-		Assert.assertTrue(assetIds.contains(pageMetric.getAssetId()));
+		Assertions.assertTrue(assetIds.contains(pageMetric.getAssetId()));
 
 		Metric viewsMetric = pageMetric.getViewsMetric();
 
-		Assert.assertEquals(6, viewsMetric.getValue(), 0);
+		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -542,11 +544,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(pageMetric);
+		Assertions.assertNotNull(pageMetric);
 
 		Metric viewsMetric = pageMetric.getViewsMetric();
 
-		Assert.assertEquals(3, viewsMetric.getValue(), 0);
+		Assertions.assertEquals(3, viewsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -564,11 +566,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(pageMetric);
+		Assertions.assertNotNull(pageMetric);
 
 		Metric maxScrollDepthMetric = pageMetric.getMaxScrollDepthMetric();
 
-		Assert.assertEquals(100, maxScrollDepthMetric.getValue(), 0);
+		Assertions.assertEquals(100, maxScrollDepthMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -586,11 +588,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(pageMetric);
+		Assertions.assertNotNull(pageMetric);
 
 		Metric viewsMetric = pageMetric.getViewsMetric();
 
-		Assert.assertEquals(2, viewsMetric.getValue(), 0);
+		Assertions.assertEquals(2, viewsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -608,11 +610,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(pageMetric);
+		Assertions.assertNotNull(pageMetric);
 
 		Metric visitorsMetric = pageMetric.getVisitorsMetric();
 
-		Assert.assertEquals(4, visitorsMetric.getValue(), 0);
+		Assertions.assertEquals(4, visitorsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -632,20 +634,20 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(siteMetric);
+		Assertions.assertNotNull(siteMetric);
 
 		Metric sessionDurationMetric = siteMetric.getSessionDurationMetric();
 
-		Assert.assertEquals(445229, sessionDurationMetric.getValue(), 0);
+		Assertions.assertEquals(445229, sessionDurationMetric.getValue(), 0);
 
 		Metric sessionsMetric = siteMetric.getSessionsMetric();
 
-		Assert.assertEquals(5, sessionsMetric.getValue(), 0);
+		Assertions.assertEquals(5, sessionsMetric.getValue(), 0);
 
 		Metric sessionsPerVisitorMetric =
 			siteMetric.getSessionsPerVisitorMetric();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1.6666666666666667, sessionsPerVisitorMetric.getValue(), 0);
 	}
 
@@ -664,11 +666,11 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(siteMetric);
+		Assertions.assertNotNull(siteMetric);
 
 		Metric bounceRateMetric = siteMetric.getBounceRateMetric();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0.16666666666666666, bounceRateMetric.getValue(), 0);
 	}
 
@@ -689,20 +691,20 @@ public class MetricDogTest {
 				}
 			});
 
-		Assert.assertNotNull(siteMetric);
+		Assertions.assertNotNull(siteMetric);
 
 		Metric anonymousVisitorsMetric =
 			siteMetric.getAnonymousVisitorsMetric();
 
-		Assert.assertEquals(2, anonymousVisitorsMetric.getValue(), 0);
+		Assertions.assertEquals(2, anonymousVisitorsMetric.getValue(), 0);
 
 		Metric knownVisitorsMetric = siteMetric.getKnownVisitorsMetric();
 
-		Assert.assertEquals(1, knownVisitorsMetric.getValue(), 0);
+		Assertions.assertEquals(1, knownVisitorsMetric.getValue(), 0);
 
 		Metric visitorsMetric = siteMetric.getVisitorsMetric();
 
-		Assert.assertEquals(3, visitorsMetric.getValue(), 0);
+		Assertions.assertEquals(3, visitorsMetric.getValue(), 0);
 	}
 
 	private SearchQueryContext _createSearchQuery(

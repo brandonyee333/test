@@ -14,33 +14,31 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.ReportIndividualDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.BlogMetricType;
 import com.liferay.osb.asah.backend.model.Individual;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class ReportIndividualDogTest {
+public class ReportIndividualDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "segment_individuals_blogs_info.json",
@@ -65,20 +63,22 @@ public class ReportIndividualDogTest {
 			_reportIndividualDog.getIndividualResultBag(
 				null, BlogMetricType.VIEWS, searchQueryContext, 2, 1);
 
-		Assert.assertEquals(
-			individualResultBag.toString(), 3, individualResultBag.getTotal());
+		Assertions.assertEquals(
+			3, individualResultBag.getTotal(), individualResultBag.toString());
 
 		List<Individual> individuals = individualResultBag.getResults();
 
 		Individual individual = individuals.get(0);
 
-		Assert.assertEquals("Test1 Test1", individual.getName());
-		Assert.assertEquals("test1@liferay.com", individual.getEmailAddress());
+		Assertions.assertEquals("Test1 Test1", individual.getName());
+		Assertions.assertEquals(
+			"test1@liferay.com", individual.getEmailAddress());
 
 		individual = individuals.get(1);
 
-		Assert.assertEquals("Test2 Test2", individual.getName());
-		Assert.assertEquals("test2@liferay.com", individual.getEmailAddress());
+		Assertions.assertEquals("Test2 Test2", individual.getName());
+		Assertions.assertEquals(
+			"test2@liferay.com", individual.getEmailAddress());
 	}
 
 	@ElasticsearchIndex(
@@ -104,15 +104,15 @@ public class ReportIndividualDogTest {
 			_reportIndividualDog.getIndividualResultBag(
 				"john", BlogMetricType.VIEWS, searchQueryContext, 10, 0);
 
-		Assert.assertEquals(
-			individualResultBag.toString(), 1, individualResultBag.getTotal());
+		Assertions.assertEquals(
+			1, individualResultBag.getTotal(), individualResultBag.toString());
 
 		List<Individual> individuals = individualResultBag.getResults();
 
 		Individual individual = individuals.get(0);
 
-		Assert.assertEquals("John Doe", individual.getName());
-		Assert.assertEquals("john@acme.com", individual.getEmailAddress());
+		Assertions.assertEquals("John Doe", individual.getName());
+		Assertions.assertEquals("john@acme.com", individual.getEmailAddress());
 	}
 
 	@ElasticsearchIndex(
@@ -138,15 +138,15 @@ public class ReportIndividualDogTest {
 			_reportIndividualDog.getIndividualResultBag(
 				null, BlogMetricType.VIEWS, searchQueryContext, 2, 0);
 
-		Assert.assertEquals(
-			individualResultBag.toString(), 1, individualResultBag.getTotal());
+		Assertions.assertEquals(
+			1, individualResultBag.getTotal(), individualResultBag.toString());
 
 		List<Individual> individuals = individualResultBag.getResults();
 
 		Individual individual = individuals.get(0);
 
-		Assert.assertEquals("1", individual.getId());
-		Assert.assertEquals("john@acme.com", individual.getEmailAddress());
+		Assertions.assertEquals("1", individual.getId());
+		Assertions.assertEquals("john@acme.com", individual.getEmailAddress());
 	}
 
 	@Autowired

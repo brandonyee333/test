@@ -14,30 +14,28 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class CustomAssetDashboardDogTest {
+public class CustomAssetDashboardDogTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "custom-asset-dashboards",
@@ -46,7 +44,7 @@ public class CustomAssetDashboardDogTest {
 	)
 	@Test
 	public void testCustomAssetDashboardNotFound() {
-		Assert.assertNull(
+		Assertions.assertNull(
 			_customAssetDashboardDog.fetchCustomAssetDashboard("0"));
 	}
 
@@ -64,8 +62,8 @@ public class CustomAssetDashboardDogTest {
 			_customAssetDashboardDog.fetchCustomAssetDashboard(
 				customAssetDashboardId);
 
-		Assert.assertNotNull(customAssetDashboard);
-		Assert.assertEquals(
+		Assertions.assertNotNull(customAssetDashboard);
+		Assertions.assertEquals(
 			"Asset Title 1", customAssetDashboard.getAssetTitle());
 	}
 
@@ -80,14 +78,14 @@ public class CustomAssetDashboardDogTest {
 			_customAssetDashboardDog.getCustomAssetDashboardPage(
 				1L, null, 0, 10, Sort.asc("assetTitle"));
 
-		Assert.assertNotNull(customAssetDashboardPage);
-		Assert.assertEquals(3, customAssetDashboardPage.getTotalElements());
+		Assertions.assertNotNull(customAssetDashboardPage);
+		Assertions.assertEquals(3, customAssetDashboardPage.getTotalElements());
 
 		List<CustomAssetDashboard> customAssetDashboards =
 			customAssetDashboardPage.getContent();
 
-		Assert.assertEquals(
-			customAssetDashboards.toString(), 3, customAssetDashboards.size());
+		Assertions.assertEquals(
+			3, customAssetDashboards.size(), customAssetDashboards.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -101,19 +99,19 @@ public class CustomAssetDashboardDogTest {
 			_customAssetDashboardDog.getCustomAssetDashboardPage(
 				1L, null, 1, 1, Sort.asc("assetTitle"));
 
-		Assert.assertNotNull(customAssetDashboardPage);
-		Assert.assertEquals(3, customAssetDashboardPage.getTotalElements());
+		Assertions.assertNotNull(customAssetDashboardPage);
+		Assertions.assertEquals(3, customAssetDashboardPage.getTotalElements());
 
 		List<CustomAssetDashboard> customAssetDashboards =
 			customAssetDashboardPage.getContent();
 
-		Assert.assertEquals(
-			customAssetDashboards.toString(), 1, customAssetDashboards.size());
+		Assertions.assertEquals(
+			1, customAssetDashboards.size(), customAssetDashboards.toString());
 
 		CustomAssetDashboard customAssetDashboard = customAssetDashboards.get(
 			0);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"Asset Title 2", customAssetDashboard.getAssetTitle());
 	}
 
@@ -135,16 +133,17 @@ public class CustomAssetDashboardDogTest {
 						"\"chartType\":\"line\"}]}]}",
 				"123", "Pedro");
 
-		Assert.assertNotNull(customAssetDashboard);
-		Assert.assertEquals("1", customAssetDashboard.getAssetId());
-		Assert.assertEquals(
+		Assertions.assertNotNull(customAssetDashboard);
+		Assertions.assertEquals("1", customAssetDashboard.getAssetId());
+		Assertions.assertEquals(
 			"Asset Title 1", customAssetDashboard.getAssetTitle());
-		Assert.assertEquals("default", customAssetDashboard.getCategory());
-		Assert.assertEquals(
+		Assertions.assertEquals("default", customAssetDashboard.getCategory());
+		Assertions.assertEquals(
 			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9",
 			customAssetDashboard.getId());
-		Assert.assertEquals("123", customAssetDashboard.getModifiedByUserId());
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			"123", customAssetDashboard.getModifiedByUserId());
+		Assertions.assertEquals(
 			"Pedro", customAssetDashboard.getModifiedByUserName());
 	}
 
