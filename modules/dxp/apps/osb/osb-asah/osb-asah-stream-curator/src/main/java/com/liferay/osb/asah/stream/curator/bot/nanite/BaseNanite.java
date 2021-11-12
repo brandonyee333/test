@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -158,7 +159,12 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 		return map.values();
 	}
+	protected <T> void sendAckIds(List<Message<T>> messages) {
+		MessageSubscriber messageSubscriber = getMessageSubscriber();
 
+
+		messageSubscriber.sendAckIds(messages);
+	}
 	protected abstract Supplier<T> getModelSupplier();
 
 	protected abstract Function<T, String> getPrimaryKeyGeneratorFunction();
@@ -199,7 +205,9 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		return oldModel;
 	}
 
-	protected List<AnalyticsEvent> pullAnalyticsEvents() throws Exception {
+	protected List<Message<AnalyticsEvent>> pullAnalyticsEvents()
+		throws Exception {
+
 		MessageSubscriber messageSubscriber = getMessageSubscriber();
 
 		return messageSubscriber.pullMessages(
@@ -297,15 +305,17 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 				long start = System.currentTimeMillis();
 
-				List<AnalyticsEvent> analyticsEvents = pullAnalyticsEvents();
+				List<Message<AnalyticsEvent>> messages = pullAnalyticsEvents();
 
-				if (analyticsEvents.isEmpty()) {
+				if (messages.isEmpty()) {
 					break;
 				}
 
-				Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+				Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
-				stream.collect(
+				stream.map(
+					Message::getObject
+				).collect(
 					Collectors.groupingBy(
 						analyticsEvent -> Tuples.of(
 							analyticsEvent.getProjectId(),
@@ -313,6 +323,8 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 				).forEach(
 					this::_run
 				);
+
+				sendAckIds(messages);
 
 				Log log = getLog();
 
@@ -322,7 +334,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 					log.info(
 						String.format(
 							"%s dispatched %d events in %d ms",
-							clazz.getSimpleName(), analyticsEvents.size(),
+							clazz.getSimpleName(), messages.size(),
 							System.currentTimeMillis() - start));
 				}
 			}
