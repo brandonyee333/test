@@ -27,4 +27,13 @@ definition {
 			value1 = "${filePath}");
 	}
 
+	macro uploadTempFile {
+		var tempFileDirectory = selenium.getOutputDirName();
+		var filePath = "${tempFileDirectory}/${filePath}/${fileName}";
+
+		UploadFile(
+			locator1 = "TextInput#FILE",
+			value1 = "${filePath}");
+	}
+
 }
