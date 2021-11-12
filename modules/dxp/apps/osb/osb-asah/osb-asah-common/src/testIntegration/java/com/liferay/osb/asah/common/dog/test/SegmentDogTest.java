@@ -43,6 +43,7 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -626,6 +627,23 @@ public class SegmentDogTest
 	}
 
 	@Test
+	public void testAddSegmentWithInvalidValue() {
+		Segment segment = new Segment();
+
+		segment.setFilter("demographics/age/value ge 1.2345678901234568e+21");
+		segment.setIncludeAnonymousUsers(Boolean.FALSE);
+		segment.setModifiedDate(new Date());
+		segment.setName("Segment 1");
+		segment.setType(Segment.Type.DYNAMIC);
+
+		segment = _segmentDog.addSegment(segment);
+
+		Assert.assertTrue(
+			StringUtils.endsWith(
+				segment.getFilter(), String.valueOf(Integer.MAX_VALUE)));
+	}
+
+	@Test
 	public void testAddStartsWithFunction() {
 		_assertAddSetsReferencedObjectIds(
 			new String[0], new String[0],
@@ -973,6 +991,31 @@ public class SegmentDogTest
 		segment = _segmentDog.getSegment(segment.getId());
 
 		Assertions.assertEquals("Segment 2", segment.getName());
+	}
+
+	@Test
+	public void testUpdateSegmentWithInvalidValue() {
+		Segment segment = new Segment();
+
+		segment.setFilter("demographics/age/value ge 18");
+		segment.setIncludeAnonymousUsers(Boolean.FALSE);
+		segment.setModifiedDate(new Date());
+		segment.setName("Segment 1");
+		segment.setType(Segment.Type.DYNAMIC);
+
+		segment = _segmentDog.addSegment(segment);
+
+		Segment partialSegment = new Segment();
+
+		partialSegment.setFilter(
+			"demographics/age/value ge 1.2345678901234568e+21");
+
+		partialSegment = _segmentDog.updateSegment(
+			partialSegment, segment.getId());
+
+		Assert.assertTrue(
+			StringUtils.endsWith(
+				partialSegment.getFilter(), String.valueOf(Integer.MAX_VALUE)));
 	}
 
 	private void _assertAddSetsReferencedObjectIds(
