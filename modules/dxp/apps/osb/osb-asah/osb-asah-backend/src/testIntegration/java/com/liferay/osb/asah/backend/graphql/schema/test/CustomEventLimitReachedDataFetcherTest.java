@@ -14,11 +14,11 @@
 
 package com.liferay.osb.asah.backend.graphql.schema.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.graphql.schema.CustomEventLimitReachedDataFetcher;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.DataFetchingEnvironmentBuilder;
@@ -32,23 +32,21 @@ import java.util.stream.IntStream;
 
 import org.apache.commons.collections4.IterableUtils;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Marcos Martins
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class CustomEventLimitReachedDataFetcherTest {
+public class CustomEventLimitReachedDataFetcherTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		List<EventDefinition> eventDefinitions = IntStream.range(
 			1, 100
@@ -69,14 +67,14 @@ public class CustomEventLimitReachedDataFetcherTest {
 			_eventDefinitionRepository.saveAll(eventDefinitions));
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		_eventDefinitionRepository.deleteAll(_eventDefinitions);
 	}
 
 	@Test
 	public void testGetThresholdNotReached() {
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_customEventLimitReachedNotificationDataFetcher.get(
 				_getDataFetchingEnvironment()));
 	}
@@ -92,7 +90,7 @@ public class CustomEventLimitReachedDataFetcherTest {
 			IterableUtils.toList(
 				_eventDefinitionRepository.saveAll(eventDefinitions)));
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_customEventLimitReachedNotificationDataFetcher.get(
 				_getDataFetchingEnvironment()));
 	}
@@ -103,7 +101,7 @@ public class CustomEventLimitReachedDataFetcherTest {
 
 		_eventDefinitions.add(_eventDefinitionRepository.save(eventDefinition));
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_customEventLimitReachedNotificationDataFetcher.get(
 				_getDataFetchingEnvironment()));
 	}

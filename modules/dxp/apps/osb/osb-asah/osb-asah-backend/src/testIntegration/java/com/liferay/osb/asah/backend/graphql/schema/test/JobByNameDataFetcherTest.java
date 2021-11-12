@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.backend.graphql.schema.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.JobDTO;
 import com.liferay.osb.asah.backend.graphql.schema.JobByNameDataFetcher;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.entity.Job;
 import com.liferay.osb.asah.common.entity.JobParameter;
 import com.liferay.osb.asah.common.model.JobRunDataPeriod;
@@ -24,7 +24,7 @@ import com.liferay.osb.asah.common.model.JobRunFrequency;
 import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.common.repository.JobRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.DataFetchingEnvironmentBuilder;
@@ -32,23 +32,21 @@ import graphql.schema.DataFetchingEnvironmentBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class JobByNameDataFetcherTest {
+public class JobByNameDataFetcherTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		_jobRepository.deleteAll();
 	}
@@ -68,13 +66,13 @@ public class JobByNameDataFetcherTest {
 		JobDTO jobDTO = _jobByNameDataFetcher.get(
 			_getDataFetchingEnvironment(job.getName()));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			job.getJobRunDataPeriod(), jobDTO.getJobRunDataPeriod());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			job.getJobRunFrequency(), jobDTO.getJobRunFrequency());
-		Assert.assertEquals(job.getJobType(), jobDTO.getJobType());
-		Assert.assertEquals(job.getId(), Long.valueOf(jobDTO.getId()));
-		Assert.assertEquals(job.getName(), jobDTO.getName());
+		Assertions.assertEquals(job.getJobType(), jobDTO.getJobType());
+		Assertions.assertEquals(job.getId(), Long.valueOf(jobDTO.getId()));
+		Assertions.assertEquals(job.getName(), jobDTO.getName());
 	}
 
 	@Test
@@ -82,7 +80,7 @@ public class JobByNameDataFetcherTest {
 		JobDTO jobDTO = _jobByNameDataFetcher.get(
 			_getDataFetchingEnvironment("Product Recommendation Job"));
 
-		Assert.assertNull(jobDTO);
+		Assertions.assertNull(jobDTO);
 	}
 
 	private DataFetchingEnvironment _getDataFetchingEnvironment(String value) {

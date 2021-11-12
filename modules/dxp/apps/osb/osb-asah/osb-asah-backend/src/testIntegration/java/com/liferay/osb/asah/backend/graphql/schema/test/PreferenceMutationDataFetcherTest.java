@@ -14,11 +14,11 @@
 
 package com.liferay.osb.asah.backend.graphql.schema.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.graphql.schema.PreferenceMutationDataFetcher;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Preference;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.DataFetchingEnvironmentBuilder;
@@ -26,38 +26,43 @@ import graphql.schema.DataFetchingEnvironmentBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Matthew Kong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class PreferenceMutationDataFetcherTest {
+public class PreferenceMutationDataFetcherTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
-	@Test(expected = RuntimeException.class)
+	@Test
 	public void testAddInvalidKeyPreference() {
-		_preferenceMutationDataFetcher.get(
-			_getDataFetchingEnvironment(
-				"dummy-key", String.valueOf(7 * DateUtil.MONTH)));
+		Assertions.assertThrows(
+			RuntimeException.class,
+			() -> _preferenceMutationDataFetcher.get(
+				_getDataFetchingEnvironment(
+					"dummy-key", String.valueOf(7 * DateUtil.MONTH))));
 	}
 
-	@Test(expected = RuntimeException.class)
+	@Test
 	public void testAddInvalidValuePreference1() {
-		_preferenceMutationDataFetcher.get(
-			_getDataFetchingEnvironment(
-				"data-retention-period", String.valueOf(14 * DateUtil.MONTH)));
+		Assertions.assertThrows(
+			RuntimeException.class,
+			() -> _preferenceMutationDataFetcher.get(
+				_getDataFetchingEnvironment(
+					"data-retention-period",
+					String.valueOf(14 * DateUtil.MONTH))));
 	}
 
-	@Test(expected = RuntimeException.class)
+	@Test
 	public void testAddInvalidValuePreference2() {
-		_preferenceMutationDataFetcher.get(
-			_getDataFetchingEnvironment("data-retention-period", "0"));
+		Assertions.assertThrows(
+			RuntimeException.class,
+			() -> _preferenceMutationDataFetcher.get(
+				_getDataFetchingEnvironment("data-retention-period", "0")));
 	}
 
 	@Test
@@ -67,7 +72,7 @@ public class PreferenceMutationDataFetcherTest {
 		Preference preference = _preferenceMutationDataFetcher.get(
 			_getDataFetchingEnvironment("data-retention-period", value));
 
-		Assert.assertEquals(preference.getValue(), value);
+		Assertions.assertEquals(preference.getValue(), value);
 	}
 
 	private DataFetchingEnvironment _getDataFetchingEnvironment(

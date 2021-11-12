@@ -14,12 +14,12 @@
 
 package com.liferay.osb.asah.backend.graphql.schema.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.EventDTO;
 import com.liferay.osb.asah.backend.dto.EventsByUserSessionDTO;
 import com.liferay.osb.asah.backend.dto.UserSessionDTO;
 import com.liferay.osb.asah.backend.graphql.schema.EventsByUserSessionDataFetcher;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
@@ -32,7 +32,7 @@ import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -44,14 +44,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -59,11 +57,11 @@ import org.springframework.context.annotation.Import;
  * @author Marcos Martins
  */
 @Import(JDBCTestConfiguration.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class EventsByUserSessionDataFetcherTest {
+public class EventsByUserSessionDataFetcherTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		EventAttributeDefinition canonicalUrlEventAttributeDefinition =
 			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
@@ -88,7 +86,7 @@ public class EventsByUserSessionDataFetcherTest {
 			));
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		_cerebroInfoElasticsearchInvoker.delete("user-sessions", "sessionId");
 		_eventRepository.deleteAll();
@@ -105,25 +103,25 @@ public class EventsByUserSessionDataFetcherTest {
 					}
 				});
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Integer.valueOf(2), eventsByUserSessionDTO.getTotalEvents());
 
 		List<UserSessionDTO> userSessionDTOs =
 			eventsByUserSessionDTO.getUserSessionDTOs();
 
-		Assert.assertEquals(
-			userSessionDTOs.toString(), 1, userSessionDTOs.size());
+		Assertions.assertEquals(
+			1, userSessionDTOs.size(), userSessionDTOs.toString());
 
 		UserSessionDTO userSessionDTO = userSessionDTOs.get(0);
 
-		Assert.assertEquals("pt-BR", userSessionDTO.getLanguageId());
+		Assertions.assertEquals("pt-BR", userSessionDTO.getLanguageId());
 
 		List<EventDTO> eventDTOs = userSessionDTO.getEventDTOs();
 
-		Assert.assertEquals(eventDTOs.toString(), 2, eventDTOs.size());
+		Assertions.assertEquals(2, eventDTOs.size(), eventDTOs.toString());
 
 		eventDTOs.forEach(
-			eventDTO -> Assert.assertEquals(
+			eventDTO -> Assertions.assertEquals(
 				"canonicalUrlValue", eventDTO.getCanonicalUrl()));
 	}
 

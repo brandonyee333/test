@@ -14,12 +14,12 @@
 
 package com.liferay.osb.asah.backend.graphql.schema.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.ExperimentDTO;
 import com.liferay.osb.asah.backend.graphql.schema.ExperimentDataFetcher;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.DataFetchingEnvironmentBuilder;
@@ -27,19 +27,17 @@ import graphql.schema.DataFetchingEnvironmentBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Marcos Martins
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class ExperimentDataFetcherTest {
+public class ExperimentDataFetcherTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testGet() {
@@ -58,22 +56,22 @@ public class ExperimentDataFetcherTest {
 		ExperimentDTO actualExperimentDTO = _experimentDataFetcher.get(
 			_getDataFetchingEnvironment(expectedExperimentDTO.getId()));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedExperimentDTO.getDataSourceId(),
 			actualExperimentDTO.getDataSourceId());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedExperimentDTO.getDXPExperienceId(),
 			actualExperimentDTO.getDXPExperienceId());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedExperimentDTO.getDXPExperienceName(),
 			actualExperimentDTO.getDXPExperienceName());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedExperimentDTO.getDXPSegmentId(),
 			actualExperimentDTO.getDXPSegmentId());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedExperimentDTO.getDXPSegmentName(),
 			actualExperimentDTO.getDXPSegmentName());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedExperimentDTO.getName(), actualExperimentDTO.getName());
 	}
 

@@ -14,14 +14,14 @@
 
 package com.liferay.osb.asah.backend.graphql.schema.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.JobDTO;
 import com.liferay.osb.asah.backend.graphql.schema.CreateJobMutationDataFetcher;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.JobRunDataPeriod;
 import com.liferay.osb.asah.common.model.JobRunFrequency;
 import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.common.repository.JobRepository;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.DataFetchingEnvironmentBuilder;
@@ -29,23 +29,21 @@ import graphql.schema.DataFetchingEnvironmentBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class CreateJobMutationDataFetcherTest {
+public class CreateJobMutationDataFetcherTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		_jobRepository.deleteAll();
 	}
@@ -55,8 +53,8 @@ public class CreateJobMutationDataFetcherTest {
 		JobDTO jobDTO = _createJobMutationDataFetcher.get(
 			_getDataFetchingEnvironment("Model Name"));
 
-		Assert.assertNotNull(jobDTO.getId());
-		Assert.assertEquals("Model Name", jobDTO.getName());
+		Assertions.assertNotNull(jobDTO.getId());
+		Assertions.assertEquals("Model Name", jobDTO.getName());
 	}
 
 	private DataFetchingEnvironment _getDataFetchingEnvironment(String value) {
