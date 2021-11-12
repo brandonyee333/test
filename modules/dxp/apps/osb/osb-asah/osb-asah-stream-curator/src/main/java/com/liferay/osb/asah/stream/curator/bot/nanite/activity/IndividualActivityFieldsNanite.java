@@ -281,28 +281,28 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 				long start = System.currentTimeMillis();
 
-			List<Message<String>> messages = _messageSubscriber.pullMessages(
-				100);
+				List<Message<String>> messages =
+					_messageSubscriber.pullMessages(100);
 
 				if (messages.isEmpty()) {
 					break;
 				}
 
-			Stream<Message<String>> stream = messages.stream();
+				Stream<Message<String>> stream = messages.stream();
 
-			stream.map(
-				message -> new JSONObject(message.getObject())
-			).collect(
-				Collectors.groupingBy(
-					jsonObject -> jsonObject.getString("projectId"))
-			).forEach(
-				this::_run
-			);
+				stream.map(
+					message -> new JSONObject(message.getObject())
+				).collect(
+					Collectors.groupingBy(
+						jsonObject -> jsonObject.getString("projectId"))
+				).forEach(
+					this::_run
+				);
 
-			_messageSubscriber.sendAckIds(messages);
+				_messageSubscriber.sendAckIds(messages);
 
-			if (_log.isInfoEnabled()) {
-				Class<?> clazz = getClass();
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
 
 					_log.info(
 						String.format(

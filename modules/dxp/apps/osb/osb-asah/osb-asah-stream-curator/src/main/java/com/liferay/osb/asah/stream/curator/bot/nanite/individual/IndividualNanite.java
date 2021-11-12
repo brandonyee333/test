@@ -34,7 +34,6 @@ import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
-import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
@@ -274,7 +273,10 @@ public class IndividualNanite implements Nanite {
 
 				long start = System.currentTimeMillis();
 
-				List<Message<String>> messages = _messageSubscriber.pullMessages(_individualNanitePullMessagesSize);
+				List<Message<String>> messages =
+					_messageSubscriber.pullMessages(
+						_individualNanitePullMessagesSize
+					);
 
 				if (messages.isEmpty()) {
 					return;

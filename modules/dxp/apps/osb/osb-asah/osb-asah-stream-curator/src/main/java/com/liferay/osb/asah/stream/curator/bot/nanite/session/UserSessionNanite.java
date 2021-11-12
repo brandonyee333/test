@@ -441,16 +441,16 @@ public class UserSessionNanite implements Nanite {
 
 				long start = System.currentTimeMillis();
 
-			List<Message<AnalyticsEvent>> messages =
-				_messageSubscriber.pullMessages(
-					_userSessionNanitePullMessagesSize,
-					AnalyticsEvent::toAnalyticsEvent);
+				List<Message<AnalyticsEvent>> messages =
+					_messageSubscriber.pullMessages(
+						_userSessionNanitePullMessagesSize,
+						AnalyticsEvent::toAnalyticsEvent);
 
-			if (messages.isEmpty()) {
-				break;
-			}
+				if (messages.isEmpty()) {
+					break;
+				}
 
-			Stream<Message<AnalyticsEvent>> stream = messages.stream();
+				Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
 				stream.map(
 					Message::getObject
@@ -464,7 +464,9 @@ public class UserSessionNanite implements Nanite {
 				).forEach(
 					this::_run
 				);
+
 				_messageSubscriber.sendAckIds(messages);
+
 				if (_log.isInfoEnabled()) {
 					Class<?> clazz = getClass();
 

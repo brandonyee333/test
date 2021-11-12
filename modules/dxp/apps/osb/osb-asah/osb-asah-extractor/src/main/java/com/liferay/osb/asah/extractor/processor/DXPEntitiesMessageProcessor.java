@@ -80,9 +80,9 @@ public class DXPEntitiesMessageProcessor {
 				try {
 					_reentrantLock.lock();
 
-					List<Message<String>> messages = _messageSubscriber.pullMessages(
-						_dxpEntitiesMessageProcessorPullMessagesSize);
-
+					List<Message<String>> messages =
+						_messageSubscriber.pullMessages(
+							_dxpEntitiesMessageProcessorPullMessagesSize);
 
 					if (_log.isDebugEnabled()) {
 						_log.debug(
@@ -105,11 +105,12 @@ public class DXPEntitiesMessageProcessor {
 					).forEach(
 						this::_processQueuedMessagesAsync
 					);
+
 					_messageSubscriber.sendAckIds(messages);
-				} finally {
+				}
+				finally {
 					_reentrantLock.unlock();
 				}
-
 			}
 		}
 		catch (Exception exception) {

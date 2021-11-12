@@ -134,35 +134,35 @@ public class CustomAssetDashboardNanite implements Nanite {
 
 				long start = System.currentTimeMillis();
 
-			List<Message<AnalyticsEvent>> messages =
-				_messageSubscriber.pullMessages(
-					50, AnalyticsEvent::toAnalyticsEvent);
+				List<Message<AnalyticsEvent>> messages =
+					_messageSubscriber.pullMessages(
+						50, AnalyticsEvent::toAnalyticsEvent);
 
-			if (messages.isEmpty()) {
-				break;
-			}
+				if (messages.isEmpty()) {
+					break;
+				}
 
-			Stream<Message<AnalyticsEvent>> stream = messages.stream();
+				Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
-			stream.map(
-				Message::getObject
-			).collect(
-				Collectors.groupingBy(AnalyticsEvent::getProjectId)
-			).forEach(
-				this::_run
-			);
+				stream.map(
+					Message::getObject
+				).collect(
+					Collectors.groupingBy(AnalyticsEvent::getProjectId)
+				).forEach(
+					this::_run
+				);
 
-			_messageSubscriber.sendAckIds(messages);
+				_messageSubscriber.sendAckIds(messages);
 
-			if (_log.isInfoEnabled()) {
-				Class<?> clazz = getClass();
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
 
-				_log.info(
-					String.format(
-						"%s processed %d events in %d ms",
-						clazz.getSimpleName(), messages.size(),
-						System.currentTimeMillis() - start));
-			}
+					_log.info(
+						String.format(
+							"%s processed %d events in %d ms",
+							clazz.getSimpleName(), messages.size(),
+							System.currentTimeMillis() - start));
+				}
 			}
 			finally {
 				_reentrantLock.unlock();
