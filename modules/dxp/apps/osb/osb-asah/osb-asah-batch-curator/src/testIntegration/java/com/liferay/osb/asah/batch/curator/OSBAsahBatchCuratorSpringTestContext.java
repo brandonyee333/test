@@ -19,12 +19,12 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Alejo Ceballos
  */
-@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 @ExtendWith(OSBAsahSpringExtension.class)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public interface OSBAsahBatchCuratorSpringTestContext {
 }
