@@ -50,16 +50,19 @@ public interface ZendeskHeatScoreConstants {
 		"Solution Proposed";
 
 	public static int getAgeScore(long days) {
-		if (days <= 3) {
+		if (days <= 2) {
+			return 0;
+		}
+		else if (days <= 5) {
 			return 1;
 		}
-		else if (days <= 6) {
+		else if (days <= 8) {
 			return 2;
 		}
-		else if (days <= 9) {
+		else if (days <= 11) {
 			return 3;
 		}
-		else if (days <= 12) {
+		else if (days <= 14) {
 			return 4;
 		}
 
