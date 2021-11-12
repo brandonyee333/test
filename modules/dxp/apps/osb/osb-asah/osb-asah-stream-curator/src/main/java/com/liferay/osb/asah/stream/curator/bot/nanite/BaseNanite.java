@@ -159,12 +159,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 		return map.values();
 	}
-	protected <T> void sendAckIds(List<Message<T>> messages) {
-		MessageSubscriber messageSubscriber = getMessageSubscriber();
 
-
-		messageSubscriber.sendAckIds(messages);
-	}
 	protected abstract Supplier<T> getModelSupplier();
 
 	protected abstract Function<T, String> getPrimaryKeyGeneratorFunction();
@@ -217,6 +212,12 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	protected void saveModels(Collection<T> models) {
 		_cerebroInfoElasticsearchInvoker.save(
 			getCollectionName(), ModelMapper.toJSONArray(models));
+	}
+
+	protected <T> void sendAckIds(List<Message<T>> messages) {
+		MessageSubscriber messageSubscriber = getMessageSubscriber();
+
+		messageSubscriber.sendAckIds(messages);
 	}
 
 	protected abstract void setModelCustomProperties(
