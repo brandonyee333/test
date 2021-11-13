@@ -18,10 +18,15 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.function.UnsafeFunction;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.elasticsearch.index.query.QueryBuilder;
 
@@ -111,15 +116,25 @@ public abstract class BaseNaniteTestCase {
 		ReflectionTestUtils.setField(
 			nanite, "_messageSubscriber", messageSubscriber);
 
+		List<AnalyticsEvent> analyticsEvents = AnalyticsEvent.toAnalyticsEvents(
+			ResourceUtil.readResourceToString(fileName + "raw.json", nanite));
+
+		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+		List<Message<AnalyticsEvent>> messages = stream.map(
+			analyticsEvent -> new Message<>(
+				RandomTestUtil.randomUUID(), RandomTestUtil.randomUUID(),
+				analyticsEvent)
+		).collect(
+			Collectors.toList()
+		);
+
 		Mockito.when(
 			messageSubscriber.pullMessages(
 				ArgumentMatchers.anyInt(),
 				ArgumentMatchers.any(UnsafeFunction.class))
 		).thenReturn(
-			AnalyticsEvent.toAnalyticsEvents(
-				ResourceUtil.readResourceToString(
-					fileName + "raw.json", nanite)),
-			Collections.emptyList()
+			messages, Collections.emptyList()
 		);
 
 		prepare(elasticsearchInvoker, nanite, fileName);
