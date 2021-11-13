@@ -101,10 +101,9 @@ public class PageReferrerNanite extends BaseNanite<PageReferrer> {
 	protected List<Message<AnalyticsEvent>> pullAnalyticsEvents()
 		throws Exception {
 
-		List<Message<AnalyticsEvent>> analyticsEvents =
-			super.pullAnalyticsEvents();
+		List<Message<AnalyticsEvent>> messages = super.pullAnalyticsEvents();
 
-		Stream<Message<AnalyticsEvent>> stream = analyticsEvents.stream();
+		Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
 		super.sendAckIds(
 			stream.filter(
@@ -112,6 +111,8 @@ public class PageReferrerNanite extends BaseNanite<PageReferrer> {
 			).collect(
 				Collectors.toList()
 			));
+
+		stream = messages.stream();
 
 		return stream.filter(
 			analyticsEvent -> _isPageViewed(analyticsEvent.getObject())

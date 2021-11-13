@@ -94,10 +94,9 @@ public class JournalNanite extends BaseNanite<Journal> {
 	protected List<Message<AnalyticsEvent>> pullAnalyticsEvents()
 		throws Exception {
 
-		List<Message<AnalyticsEvent>> analyticsEvents =
-			super.pullAnalyticsEvents();
+		List<Message<AnalyticsEvent>> messages = super.pullAnalyticsEvents();
 
-		Stream<Message<AnalyticsEvent>> stream = analyticsEvents.stream();
+		Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
 		super.sendAckIds(
 			stream.filter(
@@ -105,6 +104,8 @@ public class JournalNanite extends BaseNanite<Journal> {
 			).collect(
 				Collectors.toList()
 			));
+
+		stream = messages.stream();
 
 		return stream.filter(
 			message -> !_isWebContentClicked(message.getObject())

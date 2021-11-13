@@ -97,10 +97,9 @@ public class BlogNanite extends BaseNanite<Blog> {
 	protected List<Message<AnalyticsEvent>> pullAnalyticsEvents()
 		throws Exception {
 
-		List<Message<AnalyticsEvent>> analyticsEvents =
-			super.pullAnalyticsEvents();
+		List<Message<AnalyticsEvent>> messages = super.pullAnalyticsEvents();
 
-		Stream<Message<AnalyticsEvent>> stream = analyticsEvents.stream();
+		Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
 		super.sendAckIds(
 			stream.filter(
@@ -108,6 +107,8 @@ public class BlogNanite extends BaseNanite<Blog> {
 			).collect(
 				Collectors.toList()
 			));
+
+		stream = messages.stream();
 
 		return stream.filter(
 			message -> !_isSocialBookmarks(message.getObject())
