@@ -276,7 +276,7 @@ definition {
 		task ("View the renamed page is shown in Pages admin") {
 			Click(locator1 = "Icon#ANGLE_LEFT_BACK");
 
-			ControlMenu.viewHeaderTitle(headerTitle = "New Test Page Name");
+			ControlMenu.viewHeaderTitle(headerTitle = "New Test Page Name *");
 		}
 
 		task ("View the renamed page is shown in Page Tree panel") {
