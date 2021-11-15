@@ -80,7 +80,7 @@ public class CommerceOrderItemCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(117);
+		StringBundler sb = new StringBundler(121);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -108,12 +108,12 @@ public class CommerceOrderItemCacheModel
 		sb.append(commercePriceListId);
 		sb.append(", CPInstanceId=");
 		sb.append(CPInstanceId);
+		sb.append(", CPMeasurementUnitId=");
+		sb.append(CPMeasurementUnitId);
 		sb.append(", CProductId=");
 		sb.append(CProductId);
-		sb.append(", parentCommerceOrderItemId=");
-		sb.append(parentCommerceOrderItemId);
-		sb.append(", shippingAddressId=");
-		sb.append(shippingAddressId);
+		sb.append(", decimalQuantity=");
+		sb.append(decimalQuantity);
 		sb.append(", deliveryGroup=");
 		sb.append(deliveryGroup);
 		sb.append(", deliveryMaxSubscriptionCycles=");
@@ -162,6 +162,8 @@ public class CommerceOrderItemCacheModel
 		sb.append(maxSubscriptionCycles);
 		sb.append(", name=");
 		sb.append(name);
+		sb.append(", parentCommerceOrderItemId=");
+		sb.append(parentCommerceOrderItemId);
 		sb.append(", printedNote=");
 		sb.append(printedNote);
 		sb.append(", promoPrice=");
@@ -172,6 +174,8 @@ public class CommerceOrderItemCacheModel
 		sb.append(quantity);
 		sb.append(", requestedDeliveryDate=");
 		sb.append(requestedDeliveryDate);
+		sb.append(", shippingAddressId=");
+		sb.append(shippingAddressId);
 		sb.append(", shipSeparately=");
 		sb.append(shipSeparately);
 		sb.append(", shippable=");
@@ -248,10 +252,9 @@ public class CommerceOrderItemCacheModel
 		commerceOrderItemImpl.setCommerceOrderId(commerceOrderId);
 		commerceOrderItemImpl.setCommercePriceListId(commercePriceListId);
 		commerceOrderItemImpl.setCPInstanceId(CPInstanceId);
+		commerceOrderItemImpl.setCPMeasurementUnitId(CPMeasurementUnitId);
 		commerceOrderItemImpl.setCProductId(CProductId);
-		commerceOrderItemImpl.setParentCommerceOrderItemId(
-			parentCommerceOrderItemId);
-		commerceOrderItemImpl.setShippingAddressId(shippingAddressId);
+		commerceOrderItemImpl.setDecimalQuantity(decimalQuantity);
 
 		if (deliveryGroup == null) {
 			commerceOrderItemImpl.setDeliveryGroup("");
@@ -323,6 +326,9 @@ public class CommerceOrderItemCacheModel
 			commerceOrderItemImpl.setName(name);
 		}
 
+		commerceOrderItemImpl.setParentCommerceOrderItemId(
+			parentCommerceOrderItemId);
+
 		if (printedNote == null) {
 			commerceOrderItemImpl.setPrintedNote("");
 		}
@@ -343,6 +349,7 @@ public class CommerceOrderItemCacheModel
 				new Date(requestedDeliveryDate));
 		}
 
+		commerceOrderItemImpl.setShippingAddressId(shippingAddressId);
 		commerceOrderItemImpl.setShipSeparately(shipSeparately);
 		commerceOrderItemImpl.setShippable(shippable);
 		commerceOrderItemImpl.setShippedQuantity(shippedQuantity);
@@ -409,11 +416,10 @@ public class CommerceOrderItemCacheModel
 
 		CPInstanceId = objectInput.readLong();
 
+		CPMeasurementUnitId = objectInput.readLong();
+
 		CProductId = objectInput.readLong();
-
-		parentCommerceOrderItemId = objectInput.readLong();
-
-		shippingAddressId = objectInput.readLong();
+		decimalQuantity = (BigDecimal)objectInput.readObject();
 		deliveryGroup = objectInput.readUTF();
 
 		deliveryMaxSubscriptionCycles = objectInput.readLong();
@@ -449,12 +455,16 @@ public class CommerceOrderItemCacheModel
 
 		maxSubscriptionCycles = objectInput.readLong();
 		name = objectInput.readUTF();
+
+		parentCommerceOrderItemId = objectInput.readLong();
 		printedNote = objectInput.readUTF();
 		promoPrice = (BigDecimal)objectInput.readObject();
 		promoPriceWithTaxAmount = (BigDecimal)objectInput.readObject();
 
 		quantity = objectInput.readInt();
 		requestedDeliveryDate = objectInput.readLong();
+
+		shippingAddressId = objectInput.readLong();
 
 		shipSeparately = objectInput.readBoolean();
 
@@ -515,11 +525,10 @@ public class CommerceOrderItemCacheModel
 
 		objectOutput.writeLong(CPInstanceId);
 
+		objectOutput.writeLong(CPMeasurementUnitId);
+
 		objectOutput.writeLong(CProductId);
-
-		objectOutput.writeLong(parentCommerceOrderItemId);
-
-		objectOutput.writeLong(shippingAddressId);
+		objectOutput.writeObject(decimalQuantity);
 
 		if (deliveryGroup == null) {
 			objectOutput.writeUTF("");
@@ -582,6 +591,8 @@ public class CommerceOrderItemCacheModel
 			objectOutput.writeUTF(name);
 		}
 
+		objectOutput.writeLong(parentCommerceOrderItemId);
+
 		if (printedNote == null) {
 			objectOutput.writeUTF("");
 		}
@@ -594,6 +605,8 @@ public class CommerceOrderItemCacheModel
 
 		objectOutput.writeInt(quantity);
 		objectOutput.writeLong(requestedDeliveryDate);
+
+		objectOutput.writeLong(shippingAddressId);
 
 		objectOutput.writeBoolean(shipSeparately);
 
@@ -649,9 +662,9 @@ public class CommerceOrderItemCacheModel
 	public long commerceOrderId;
 	public long commercePriceListId;
 	public long CPInstanceId;
+	public long CPMeasurementUnitId;
 	public long CProductId;
-	public long parentCommerceOrderItemId;
-	public long shippingAddressId;
+	public BigDecimal decimalQuantity;
 	public String deliveryGroup;
 	public long deliveryMaxSubscriptionCycles;
 	public int deliverySubscriptionLength;
@@ -676,11 +689,13 @@ public class CommerceOrderItemCacheModel
 	public boolean manuallyAdjusted;
 	public long maxSubscriptionCycles;
 	public String name;
+	public long parentCommerceOrderItemId;
 	public String printedNote;
 	public BigDecimal promoPrice;
 	public BigDecimal promoPriceWithTaxAmount;
 	public int quantity;
 	public long requestedDeliveryDate;
+	public long shippingAddressId;
 	public boolean shipSeparately;
 	public boolean shippable;
 	public int shippedQuantity;

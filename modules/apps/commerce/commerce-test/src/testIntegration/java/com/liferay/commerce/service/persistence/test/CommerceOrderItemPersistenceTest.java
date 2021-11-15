@@ -153,12 +153,12 @@ public class CommerceOrderItemPersistenceTest {
 
 		newCommerceOrderItem.setCPInstanceId(RandomTestUtil.nextLong());
 
+		newCommerceOrderItem.setCPMeasurementUnitId(RandomTestUtil.nextLong());
+
 		newCommerceOrderItem.setCProductId(RandomTestUtil.nextLong());
 
-		newCommerceOrderItem.setParentCommerceOrderItemId(
-			RandomTestUtil.nextLong());
-
-		newCommerceOrderItem.setShippingAddressId(RandomTestUtil.nextLong());
+		newCommerceOrderItem.setDecimalQuantity(
+			new BigDecimal(RandomTestUtil.nextDouble()));
 
 		newCommerceOrderItem.setDeliveryGroup(RandomTestUtil.randomString());
 
@@ -226,6 +226,9 @@ public class CommerceOrderItemPersistenceTest {
 
 		newCommerceOrderItem.setName(RandomTestUtil.randomString());
 
+		newCommerceOrderItem.setParentCommerceOrderItemId(
+			RandomTestUtil.nextLong());
+
 		newCommerceOrderItem.setPrintedNote(RandomTestUtil.randomString());
 
 		newCommerceOrderItem.setPromoPrice(
@@ -238,6 +241,8 @@ public class CommerceOrderItemPersistenceTest {
 
 		newCommerceOrderItem.setRequestedDeliveryDate(
 			RandomTestUtil.nextDate());
+
+		newCommerceOrderItem.setShippingAddressId(RandomTestUtil.nextLong());
 
 		newCommerceOrderItem.setShipSeparately(RandomTestUtil.randomBoolean());
 
@@ -313,14 +318,14 @@ public class CommerceOrderItemPersistenceTest {
 			existingCommerceOrderItem.getCPInstanceId(),
 			newCommerceOrderItem.getCPInstanceId());
 		Assert.assertEquals(
+			existingCommerceOrderItem.getCPMeasurementUnitId(),
+			newCommerceOrderItem.getCPMeasurementUnitId());
+		Assert.assertEquals(
 			existingCommerceOrderItem.getCProductId(),
 			newCommerceOrderItem.getCProductId());
 		Assert.assertEquals(
-			existingCommerceOrderItem.getParentCommerceOrderItemId(),
-			newCommerceOrderItem.getParentCommerceOrderItemId());
-		Assert.assertEquals(
-			existingCommerceOrderItem.getShippingAddressId(),
-			newCommerceOrderItem.getShippingAddressId());
+			existingCommerceOrderItem.getDecimalQuantity(),
+			newCommerceOrderItem.getDecimalQuantity());
 		Assert.assertEquals(
 			existingCommerceOrderItem.getDeliveryGroup(),
 			newCommerceOrderItem.getDeliveryGroup());
@@ -398,6 +403,9 @@ public class CommerceOrderItemPersistenceTest {
 			existingCommerceOrderItem.getName(),
 			newCommerceOrderItem.getName());
 		Assert.assertEquals(
+			existingCommerceOrderItem.getParentCommerceOrderItemId(),
+			newCommerceOrderItem.getParentCommerceOrderItemId());
+		Assert.assertEquals(
 			existingCommerceOrderItem.getPrintedNote(),
 			newCommerceOrderItem.getPrintedNote());
 		Assert.assertEquals(
@@ -414,6 +422,9 @@ public class CommerceOrderItemPersistenceTest {
 				existingCommerceOrderItem.getRequestedDeliveryDate()),
 			Time.getShortTimestamp(
 				newCommerceOrderItem.getRequestedDeliveryDate()));
+		Assert.assertEquals(
+			existingCommerceOrderItem.getShippingAddressId(),
+			newCommerceOrderItem.getShippingAddressId());
 		Assert.assertEquals(
 			existingCommerceOrderItem.isShipSeparately(),
 			newCommerceOrderItem.isShipSeparately());
@@ -545,11 +556,10 @@ public class CommerceOrderItemPersistenceTest {
 			true, "userId", true, "userName", true, "createDate", true,
 			"modifiedDate", true, "bookedQuantityId", true, "commerceOrderId",
 			true, "commercePriceListId", true, "CPInstanceId", true,
-			"CProductId", true, "parentCommerceOrderItemId", true,
-			"shippingAddressId", true, "deliveryGroup", true,
-			"deliveryMaxSubscriptionCycles", true, "deliverySubscriptionLength",
-			true, "deliverySubscriptionType", true,
-			"deliverySubscriptionTypeSettings", true, "depth", true,
+			"CPMeasurementUnitId", true, "CProductId", true, "decimalQuantity",
+			true, "deliveryGroup", true, "deliveryMaxSubscriptionCycles", true,
+			"deliverySubscriptionLength", true, "deliverySubscriptionType",
+			true, "deliverySubscriptionTypeSettings", true, "depth", true,
 			"discountAmount", true, "discountPercentageLevel1", true,
 			"discountPercentageLevel2", true, "discountPercentageLevel3", true,
 			"discountPercentageLevel4", true,
@@ -560,9 +570,10 @@ public class CommerceOrderItemPersistenceTest {
 			"discountWithTaxAmount", true, "finalPrice", true,
 			"finalPriceWithTaxAmount", true, "freeShipping", true, "height",
 			true, "manuallyAdjusted", true, "maxSubscriptionCycles", true,
-			"name", true, "printedNote", true, "promoPrice", true,
-			"promoPriceWithTaxAmount", true, "quantity", true,
-			"requestedDeliveryDate", true, "shipSeparately", true, "shippable",
+			"name", true, "parentCommerceOrderItemId", true, "printedNote",
+			true, "promoPrice", true, "promoPriceWithTaxAmount", true,
+			"quantity", true, "requestedDeliveryDate", true,
+			"shippingAddressId", true, "shipSeparately", true, "shippable",
 			true, "shippedQuantity", true, "shippingExtraPrice", true, "sku",
 			true, "subscription", true, "subscriptionLength", true,
 			"subscriptionType", true, "subscriptionTypeSettings", true,
@@ -891,12 +902,12 @@ public class CommerceOrderItemPersistenceTest {
 
 		commerceOrderItem.setCPInstanceId(RandomTestUtil.nextLong());
 
+		commerceOrderItem.setCPMeasurementUnitId(RandomTestUtil.nextLong());
+
 		commerceOrderItem.setCProductId(RandomTestUtil.nextLong());
 
-		commerceOrderItem.setParentCommerceOrderItemId(
-			RandomTestUtil.nextLong());
-
-		commerceOrderItem.setShippingAddressId(RandomTestUtil.nextLong());
+		commerceOrderItem.setDecimalQuantity(
+			new BigDecimal(RandomTestUtil.nextDouble()));
 
 		commerceOrderItem.setDeliveryGroup(RandomTestUtil.randomString());
 
@@ -962,6 +973,9 @@ public class CommerceOrderItemPersistenceTest {
 
 		commerceOrderItem.setName(RandomTestUtil.randomString());
 
+		commerceOrderItem.setParentCommerceOrderItemId(
+			RandomTestUtil.nextLong());
+
 		commerceOrderItem.setPrintedNote(RandomTestUtil.randomString());
 
 		commerceOrderItem.setPromoPrice(
@@ -973,6 +987,8 @@ public class CommerceOrderItemPersistenceTest {
 		commerceOrderItem.setQuantity(RandomTestUtil.nextInt());
 
 		commerceOrderItem.setRequestedDeliveryDate(RandomTestUtil.nextDate());
+
+		commerceOrderItem.setShippingAddressId(RandomTestUtil.nextLong());
 
 		commerceOrderItem.setShipSeparately(RandomTestUtil.randomBoolean());
 

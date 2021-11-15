@@ -48,10 +48,9 @@ public class CommerceOrderItemSoap implements Serializable {
 		soapModel.setCommerceOrderId(model.getCommerceOrderId());
 		soapModel.setCommercePriceListId(model.getCommercePriceListId());
 		soapModel.setCPInstanceId(model.getCPInstanceId());
+		soapModel.setCPMeasurementUnitId(model.getCPMeasurementUnitId());
 		soapModel.setCProductId(model.getCProductId());
-		soapModel.setParentCommerceOrderItemId(
-			model.getParentCommerceOrderItemId());
-		soapModel.setShippingAddressId(model.getShippingAddressId());
+		soapModel.setDecimalQuantity(model.getDecimalQuantity());
 		soapModel.setDeliveryGroup(model.getDeliveryGroup());
 		soapModel.setDeliveryMaxSubscriptionCycles(
 			model.getDeliveryMaxSubscriptionCycles());
@@ -89,12 +88,15 @@ public class CommerceOrderItemSoap implements Serializable {
 		soapModel.setManuallyAdjusted(model.isManuallyAdjusted());
 		soapModel.setMaxSubscriptionCycles(model.getMaxSubscriptionCycles());
 		soapModel.setName(model.getName());
+		soapModel.setParentCommerceOrderItemId(
+			model.getParentCommerceOrderItemId());
 		soapModel.setPrintedNote(model.getPrintedNote());
 		soapModel.setPromoPrice(model.getPromoPrice());
 		soapModel.setPromoPriceWithTaxAmount(
 			model.getPromoPriceWithTaxAmount());
 		soapModel.setQuantity(model.getQuantity());
 		soapModel.setRequestedDeliveryDate(model.getRequestedDeliveryDate());
+		soapModel.setShippingAddressId(model.getShippingAddressId());
 		soapModel.setShipSeparately(model.isShipSeparately());
 		soapModel.setShippable(model.isShippable());
 		soapModel.setShippedQuantity(model.getShippedQuantity());
@@ -274,6 +276,14 @@ public class CommerceOrderItemSoap implements Serializable {
 		_CPInstanceId = CPInstanceId;
 	}
 
+	public long getCPMeasurementUnitId() {
+		return _CPMeasurementUnitId;
+	}
+
+	public void setCPMeasurementUnitId(long CPMeasurementUnitId) {
+		_CPMeasurementUnitId = CPMeasurementUnitId;
+	}
+
 	public long getCProductId() {
 		return _CProductId;
 	}
@@ -282,20 +292,12 @@ public class CommerceOrderItemSoap implements Serializable {
 		_CProductId = CProductId;
 	}
 
-	public long getParentCommerceOrderItemId() {
-		return _parentCommerceOrderItemId;
+	public BigDecimal getDecimalQuantity() {
+		return _decimalQuantity;
 	}
 
-	public void setParentCommerceOrderItemId(long parentCommerceOrderItemId) {
-		_parentCommerceOrderItemId = parentCommerceOrderItemId;
-	}
-
-	public long getShippingAddressId() {
-		return _shippingAddressId;
-	}
-
-	public void setShippingAddressId(long shippingAddressId) {
-		_shippingAddressId = shippingAddressId;
+	public void setDecimalQuantity(BigDecimal decimalQuantity) {
+		_decimalQuantity = decimalQuantity;
 	}
 
 	public String getDeliveryGroup() {
@@ -522,6 +524,14 @@ public class CommerceOrderItemSoap implements Serializable {
 		_name = name;
 	}
 
+	public long getParentCommerceOrderItemId() {
+		return _parentCommerceOrderItemId;
+	}
+
+	public void setParentCommerceOrderItemId(long parentCommerceOrderItemId) {
+		_parentCommerceOrderItemId = parentCommerceOrderItemId;
+	}
+
 	public String getPrintedNote() {
 		return _printedNote;
 	}
@@ -560,6 +570,14 @@ public class CommerceOrderItemSoap implements Serializable {
 
 	public void setRequestedDeliveryDate(Date requestedDeliveryDate) {
 		_requestedDeliveryDate = requestedDeliveryDate;
+	}
+
+	public long getShippingAddressId() {
+		return _shippingAddressId;
+	}
+
+	public void setShippingAddressId(long shippingAddressId) {
+		_shippingAddressId = shippingAddressId;
 	}
 
 	public boolean getShipSeparately() {
@@ -691,9 +709,9 @@ public class CommerceOrderItemSoap implements Serializable {
 	private long _commerceOrderId;
 	private long _commercePriceListId;
 	private long _CPInstanceId;
+	private long _CPMeasurementUnitId;
 	private long _CProductId;
-	private long _parentCommerceOrderItemId;
-	private long _shippingAddressId;
+	private BigDecimal _decimalQuantity;
 	private String _deliveryGroup;
 	private long _deliveryMaxSubscriptionCycles;
 	private int _deliverySubscriptionLength;
@@ -718,11 +736,13 @@ public class CommerceOrderItemSoap implements Serializable {
 	private boolean _manuallyAdjusted;
 	private long _maxSubscriptionCycles;
 	private String _name;
+	private long _parentCommerceOrderItemId;
 	private String _printedNote;
 	private BigDecimal _promoPrice;
 	private BigDecimal _promoPriceWithTaxAmount;
 	private int _quantity;
 	private Date _requestedDeliveryDate;
+	private long _shippingAddressId;
 	private boolean _shipSeparately;
 	private boolean _shippable;
 	private int _shippedQuantity;
