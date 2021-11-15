@@ -689,9 +689,7 @@ definition {
 
 		AssertVisible(locator1 = "Icon#EDIT_PENCIL");
 
-		AssertTextEquals(
-			locator1 = "ControlMenu#HEADING",
-			value1 = "Test Content Page Name 1");
+		ControlMenu.viewHeaderTitle(headerTitle = "Test Content Page Name 1");
 	}
 
 	@description = "This is a test for LPS-106469. Reorder Child pages in the same level via drag and drop."
