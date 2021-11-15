@@ -323,9 +323,9 @@
 		<column name="commerceOrderId" type="long" />
 		<column name="commercePriceListId" type="long" />
 		<column name="CPInstanceId" type="long" />
+		<column name="CPMeasurementUnitId" type="long" />
 		<column name="CProductId" type="long" />
-		<column name="parentCommerceOrderItemId" type="long" />
-		<column name="shippingAddressId" type="long" />
+		<column name="decimalQuantity" type="BigDecimal" />
 		<column name="deliveryGroup" type="String" />
 		<column name="deliveryMaxSubscriptionCycles" type="long" />
 		<column name="deliverySubscriptionLength" type="int" />
@@ -350,11 +350,13 @@
 		<column name="manuallyAdjusted" type="boolean" />
 		<column name="maxSubscriptionCycles" type="long" />
 		<column localized="true" name="name" type="String" />
+		<column name="parentCommerceOrderItemId" type="long" />
 		<column name="printedNote" type="String" />
 		<column name="promoPrice" type="BigDecimal" />
 		<column name="promoPriceWithTaxAmount" type="BigDecimal" />
 		<column name="quantity" type="int" />
 		<column name="requestedDeliveryDate" type="Date" />
+		<column name="shippingAddressId" type="long" />
 		<column name="shipSeparately" type="boolean" />
 		<column name="shippable" type="boolean" />
 		<column name="shippedQuantity" type="int" />
