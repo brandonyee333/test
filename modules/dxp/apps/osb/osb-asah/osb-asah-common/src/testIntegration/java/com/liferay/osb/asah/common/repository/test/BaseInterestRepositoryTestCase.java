@@ -298,8 +298,8 @@ public abstract class BaseInterestRepositoryTestCase
 		Assert.assertEquals(
 			intervalInitDate, transformation.get("intervalInitDate"));
 		Assert.assertEquals(scoreAvg, transformation.get("scoreAvg"));
-		Assert.assertEquals(viewsSum, transformation.get("viewsSum"));
 		Assert.assertEquals(totalElements, transformation.get("totalElements"));
+		Assert.assertEquals(viewsSum, transformation.get("viewsSum"));
 	}
 
 	@Autowired
