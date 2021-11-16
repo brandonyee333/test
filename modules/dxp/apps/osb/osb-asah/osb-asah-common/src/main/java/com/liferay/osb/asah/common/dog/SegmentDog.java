@@ -32,7 +32,6 @@ import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
-import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ListUtil;
@@ -501,7 +500,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 			() -> _segmentRepository.countSegments(filterHelper, segmentIds));
 	}
 
-	@CacheEvict("getReferencedAssetIds")
 	public void setReferencedFields(Segment segment) {
 		Map<String, Set<String>> referencedObjectIds = _getReferencedObjectIds(
 			segment.getFilter(), null);
