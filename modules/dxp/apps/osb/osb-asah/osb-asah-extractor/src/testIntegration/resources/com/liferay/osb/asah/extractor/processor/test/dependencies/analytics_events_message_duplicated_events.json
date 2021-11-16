@@ -14,7 +14,7 @@
 		"events": [
 			{
 				"applicationId": "Page",
-				"eventDate": "2020-03-16T09:34:45.345Z",
+				"eventDate": "2020-03-16T09:34:45.340Z",
 				"eventId": "pageViewed",
 				"properties": {
 					"referrer": "https://www.google.com"
@@ -22,7 +22,7 @@
 			},
 			{
 				"applicationId": "Page",
-				"eventDate": "2020-03-16T09:34:45.345Z",
+				"eventDate": "2020-03-16T09:34:45.340Z",
 				"eventId": "pageViewed",
 				"properties": {
 					"referrer": "https://www.google.com"
