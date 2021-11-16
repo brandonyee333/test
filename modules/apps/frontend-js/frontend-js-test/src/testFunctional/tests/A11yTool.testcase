@@ -10,6 +10,16 @@ definition {
 	setUp {
 		TestCase.setUpPortalInstance();
 
+		Portlet.shutdownServer();
+
+		var newProperty = "com.liferay.portlet.single-page-application=false";
+
+		AntCommand(
+			locator1 = "build-test.xml",
+			value1 = "portal-ext-properties-update -Dadd.new.properties=true -Dupdate.properties=${newProperty}");
+
+		Portlet.startServer(deleteLiferayHome = "false");
+
 		User.firstLoginPG();
 
 		JSONLayout.addPublicLayout(
