@@ -17,6 +17,9 @@ package com.liferay.osb.asah.extractor.processor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
@@ -52,6 +55,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.PreDestroy;
@@ -375,6 +379,22 @@ public class AnalyticsEventsMessageProcessor {
 			analyticsEvent.setSegmentNames(segmentNames);
 			analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
 
+			String analyticsEventId = _analyticsEventIds.getIfPresent(
+				analyticsEvent.getId());
+
+			if (analyticsEventId != null) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Discarding duplicate analytics event : " +
+							analyticsEvent.toJSON());
+				}
+
+				continue;
+			}
+
+			_analyticsEventIds.put(
+				analyticsEvent.getId(), analyticsEvent.getId());
+
 			analyticsEvents.add(analyticsEvent);
 		}
 
@@ -404,6 +424,13 @@ public class AnalyticsEventsMessageProcessor {
 	private static final Log _log = LogFactory.getLog(
 		AnalyticsEventsMessageProcessor.class);
 
+	private static final Cache<String, String> _analyticsEventIds =
+		Caffeine.newBuilder(
+		).expireAfterAccess(
+			60, TimeUnit.MINUTES
+		).maximumSize(
+			100000
+		).build();
 	private static final Counter _analyticsEventsCounter =
 		PrometheusUtil.counter(
 			"extractor_analytics_events_count",
