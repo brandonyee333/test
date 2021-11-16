@@ -14,31 +14,29 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.PagesRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.LocalDate;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Shinn Lok
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class PagesRestControllerTest {
+public class PagesRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "pages.json",
@@ -46,7 +44,7 @@ public class PagesRestControllerTest {
 	)
 	@Test
 	public void testGetReadCount() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"3", _pagesRestController.getReadCount("https://liferay.com"));
 	}
 
@@ -63,13 +61,13 @@ public class PagesRestControllerTest {
 				"https://liferay.com", localDate, Interval.DAY.getKey(),
 				localDate.minusDays(2)));
 
-		Assert.assertEquals(3, responseJSONObject.get("value"));
+		Assertions.assertEquals(3, responseJSONObject.get("value"));
 
 		JSONObject histogramMetricJSONObject = (JSONObject)JSONUtil.getValue(
 			responseJSONObject, "JSONArray/histogram", "Object/0");
 
-		Assert.assertTrue(histogramMetricJSONObject.has("key"));
-		Assert.assertTrue(histogramMetricJSONObject.has("value"));
+		Assertions.assertTrue(histogramMetricJSONObject.has("key"));
+		Assertions.assertTrue(histogramMetricJSONObject.has("value"));
 	}
 
 	@ElasticsearchIndex(
@@ -78,7 +76,7 @@ public class PagesRestControllerTest {
 	)
 	@Test
 	public void testGetViewCount() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"6", _pagesRestController.getViewCount("https://liferay.com"));
 	}
 
@@ -95,13 +93,13 @@ public class PagesRestControllerTest {
 				"https://liferay.com", localDate, Interval.DAY.getKey(),
 				localDate.minusDays(2)));
 
-		Assert.assertEquals(6, responseJSONObject.get("value"));
+		Assertions.assertEquals(6, responseJSONObject.get("value"));
 
 		JSONObject histogramMetricJSONObject = (JSONObject)JSONUtil.getValue(
 			responseJSONObject, "JSONArray/histogram", "Object/0");
 
-		Assert.assertTrue(histogramMetricJSONObject.has("key"));
-		Assert.assertTrue(histogramMetricJSONObject.has("value"));
+		Assertions.assertTrue(histogramMetricJSONObject.has("key"));
+		Assertions.assertTrue(histogramMetricJSONObject.has("value"));
 	}
 
 	@Autowired

@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.ActivitiesRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -24,26 +24,24 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Shinn Lok
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class ActivitiesRestControllerTest {
+public class ActivitiesRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "activities", resourcePath = "activities.json",
@@ -93,8 +91,8 @@ public class ActivitiesRestControllerTest {
 			activityTransformationsJSONObject, "JSONObject/_embedded",
 			"JSONArray/activity-transformations");
 
-		Assert.assertEquals(48, jsonArray.length());
-		Assert.assertEquals(
+		Assertions.assertEquals(48, jsonArray.length());
+		Assertions.assertEquals(
 			1,
 			JSONUtil.getValue(
 				jsonArray.getJSONObject(jsonArray.length() - 1),
@@ -118,7 +116,7 @@ public class ActivitiesRestControllerTest {
 				"compute(day(day) as temp)/groupby((temp))", "userId eq 'abc'",
 				true, 0, null, null, 1));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0,
 			JSONUtil.getValue(
 				activityTransformationsJSONObject, "JSONObject/_embedded",
@@ -141,7 +139,7 @@ public class ActivitiesRestControllerTest {
 				"contains(object.name, 'clicks')", 0, 10,
 				new String[] {"count", "desc"}));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			4,
 			JSONUtil.getValue(
 				jsonObject, "JSONObject/_embedded",
@@ -152,7 +150,7 @@ public class ActivitiesRestControllerTest {
 				"(channelId eq '1') and contains(object.name, 'clicks')", 0, 10,
 				new String[] {"count", "desc"}));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			JSONUtil.getValue(
 				jsonObject, "JSONObject/_embedded",
@@ -174,7 +172,7 @@ public class ActivitiesRestControllerTest {
 				"contains(object.name, 'random')", 0, 10,
 				new String[] {"count", "desc"}));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0,
 			JSONUtil.getValue(
 				jsonObject, "JSONObject/page", "Object/totalElements"));

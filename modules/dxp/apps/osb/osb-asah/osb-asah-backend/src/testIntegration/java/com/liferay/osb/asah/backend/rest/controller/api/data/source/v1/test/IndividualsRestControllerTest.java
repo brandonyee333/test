@@ -14,29 +14,20 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import io.restassured.http.Method;
 import io.restassured.response.ValidatableResponse;
 
 import org.hamcrest.Matchers;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Vishal Reddy
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 
 	/**
@@ -45,6 +36,7 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 	 * DXPIndividualsNanite test, and retrieved from the WeDeploy data container
 	 * before the tests cleaned up the data.
 	 */
+	@Disabled
 	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -65,7 +57,6 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 		name = "users", resourcePath = "users.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
-	@Ignore
 	@Test
 	public void testGetIndividuals() {
 		ValidatableResponse validatableResponse = getValidatableResponse(

@@ -14,27 +14,25 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.DocumentLibrariesRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.LocalDate;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Matthew Kong
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class DocumentLibrariesRestControllerTest {
+public class DocumentLibrariesRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "document-libraries", resourcePath = "document-libraries.json",
@@ -42,7 +40,7 @@ public class DocumentLibrariesRestControllerTest {
 	)
 	@Test
 	public void testGetDownloadCount() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"10",
 			_documentLibrariesRestController.getDownloadCount(
 				"26413838", "480920708921930174", "480920708626120668", null,
@@ -55,7 +53,7 @@ public class DocumentLibrariesRestControllerTest {
 	)
 	@Test
 	public void testGetDownloadCountWithDates() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"8",
 			_documentLibrariesRestController.getDownloadCount(
 				"26413838", "480920708921930174", "480920708626120668",
@@ -68,7 +66,7 @@ public class DocumentLibrariesRestControllerTest {
 	)
 	@Test
 	public void testGetPreviewCount() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"11",
 			_documentLibrariesRestController.getPreviewCount(
 				"26413838", "480920708921930174", "480920708626120668", null,
@@ -81,7 +79,7 @@ public class DocumentLibrariesRestControllerTest {
 	)
 	@Test
 	public void testGetPreviewCountWithDates() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"3",
 			_documentLibrariesRestController.getPreviewCount(
 				"26413838", "480920708921930174", "480920708626120668",

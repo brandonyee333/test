@@ -14,15 +14,15 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.external.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.ReportAccountDTO;
 import com.liferay.osb.asah.backend.rest.controller.api.external.ReportRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,20 +30,18 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Marcellus Tavares
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class ReportRestControllerTest {
+public class ReportRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "field-mappings", resourcePath = "field_mappings_info.json",
@@ -62,18 +60,18 @@ public class ReportRestControllerTest {
 		ReportAccountDTO reportAccountDTO =
 			reportAccountDTOEntityModel.getContent();
 
-		Assert.assertNotNull(reportAccountDTO);
+		Assertions.assertNotNull(reportAccountDTO);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Long.valueOf(12), reportAccountDTO.getActiveIndividualsCount());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"2019-10-16T21:25:31.053Z",
 			DateUtil.toUTCString(reportAccountDTO.getCreateDate()));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"2019-10-16T21:26:31.053Z",
 			DateUtil.toUTCString(reportAccountDTO.getModifiedDate()));
-		Assert.assertEquals("379649798552539340", reportAccountDTO.getId());
-		Assert.assertEquals(
+		Assertions.assertEquals("379649798552539340", reportAccountDTO.getId());
+		Assertions.assertEquals(
 			Long.valueOf(13), reportAccountDTO.getIndividualCount());
 	}
 
@@ -99,10 +97,10 @@ public class ReportRestControllerTest {
 		ResultBag<EntityModel<ReportAccountDTO>> resultBag =
 			reportAccountDTOResultBagEntityModel.getContent();
 
-		Assert.assertNotNull(resultBag);
+		Assertions.assertNotNull(resultBag);
 
-		Assert.assertEquals(6, resultBag.getTotal());
-		Assert.assertEquals(
+		Assertions.assertEquals(6, resultBag.getTotal());
+		Assertions.assertEquals(
 			SetUtil.of(
 				"Heard Island and McDonald Islands", "Maldives", "Swaziland",
 				"Uzbekistan", "Virgin Islands"),

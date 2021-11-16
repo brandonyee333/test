@@ -14,30 +14,28 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.SessionsRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Rachael Koestartyo
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class SessionsRestControllerTest {
+public class SessionsRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "user_sessions_info.json",

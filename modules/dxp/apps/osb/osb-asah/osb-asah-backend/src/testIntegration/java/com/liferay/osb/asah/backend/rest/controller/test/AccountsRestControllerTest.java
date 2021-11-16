@@ -16,34 +16,33 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.AccountDTO;
 import com.liferay.osb.asah.backend.rest.controller.AccountsRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Vishal Reddy
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class AccountsRestControllerTest {
+public class AccountsRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "accounts", resourcePath = "accounts_1.json",
@@ -67,14 +66,14 @@ public class AccountsRestControllerTest {
 		AccountDTO accountDTO = _accountsRestController.getAccountDTO(
 			342313459339515838L, 888L);
 
-		Assert.assertEquals(0L, (long)accountDTO.getActivitiesCount());
-		Assert.assertEquals(10L, (long)accountDTO.getIndividualCount());
+		Assertions.assertEquals(0L, (long)accountDTO.getActivitiesCount());
+		Assertions.assertEquals(10L, (long)accountDTO.getIndividualCount());
 
 		accountDTO = _accountsRestController.getAccountDTO(
 			342313459339515838L, 999L);
 
-		Assert.assertEquals(1L, (long)accountDTO.getActivitiesCount());
-		Assert.assertEquals(0L, (long)accountDTO.getIndividualCount());
+		Assertions.assertEquals(1L, (long)accountDTO.getActivitiesCount());
+		Assertions.assertEquals(0L, (long)accountDTO.getIndividualCount());
 	}
 
 	@ElasticsearchIndex(
@@ -197,38 +196,32 @@ public class AccountsRestControllerTest {
 		name = "field-mappings", resourcePath = "field_mappings.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@Test(expected = Exception.class)
+	@Test
 	public void testGetAccountsDistributionInvalidFieldMapping1() {
-		try {
-			_accountsRestController.getDistributionDTOsPageDTO(
-				1L, 366573390725218129L, null, null, 10, 100, null);
-		}
-		catch (Exception exception) {
-			Assert.assertThat(
-				exception.getMessage(),
-				CoreMatchers.containsString("Invalid field mapping ID"));
+		Exception exception = Assertions.assertThrows(
+			Exception.class,
+			() -> _accountsRestController.getDistributionDTOsPageDTO(
+				1L, 366573390725218129L, null, null, 10, 100, null));
 
-			throw exception;
-		}
+		MatcherAssert.assertThat(
+			exception.getMessage(),
+			CoreMatchers.containsString("Invalid field mapping ID"));
 	}
 
 	@ElasticsearchIndex(
 		name = "field-mappings", resourcePath = "field_mappings.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@Test(expected = Exception.class)
+	@Test
 	public void testGetAccountsDistributionInvalidFieldMapping2() {
-		try {
-			_accountsRestController.getDistributionDTOsPageDTO(
-				1L, 340477857996688156L, null, null, 10, 100, null);
-		}
-		catch (Exception exception) {
-			Assert.assertThat(
-				exception.getMessage(),
-				CoreMatchers.containsString("Unable to use non-account field"));
+		Exception exception = Assertions.assertThrows(
+			Exception.class,
+			() -> _accountsRestController.getDistributionDTOsPageDTO(
+				1L, 340477857996688156L, null, null, 10, 100, null));
 
-			throw exception;
-		}
+		MatcherAssert.assertThat(
+			exception.getMessage(),
+			CoreMatchers.containsString("Unable to use non-account field"));
 	}
 
 	@ElasticsearchIndex(

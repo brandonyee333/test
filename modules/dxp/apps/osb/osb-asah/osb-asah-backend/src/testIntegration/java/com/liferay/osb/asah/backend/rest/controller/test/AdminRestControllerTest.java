@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.AdminRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahTask;
@@ -24,7 +24,7 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.List;
@@ -34,43 +34,41 @@ import org.everit.json.schema.ValidationException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Vishal Reddy
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class AdminRestControllerTest {
+public class AdminRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testClearCache() {
 		Cache cache1 = _cacheManager.getCache(
 			ProjectIdThreadLocal.getProjectId() + "#test");
 
-		Assert.assertNotNull(cache1);
+		Assertions.assertNotNull(cache1);
 
 		cache1.put("foo", "bar");
 
 		Cache cache2 = _cacheManager.getCache("test2#test");
 
-		Assert.assertNotNull(cache2);
+		Assertions.assertNotNull(cache2);
 
 		cache2.put("foo", "bar");
 
 		_adminRestController.clearCache();
 
-		Assert.assertNull(cache1.get("foo"));
-		Assert.assertNotNull(cache2.get("foo"));
+		Assertions.assertNull(cache1.get("foo"));
+		Assertions.assertNotNull(cache2.get("foo"));
 	}
 
 	@ElasticsearchIndex(
@@ -82,7 +80,8 @@ public class AdminRestControllerTest {
 		_adminRestController.deleteData(
 			"accounts", String.valueOf(WeDeployDataService.OSB_ASAH_FARO_INFO));
 
-		Assert.assertEquals(0, _elasticsearchInvoker.count("accounts", null));
+		Assertions.assertEquals(
+			0, _elasticsearchInvoker.count("accounts", null));
 	}
 
 	@Test
@@ -92,7 +91,8 @@ public class AdminRestControllerTest {
 			ResourceUtil.readResourceToString(
 				"dependencies/osbasahfaroinfo/accounts_1.json", this));
 
-		Assert.assertEquals(3, _elasticsearchInvoker.count("accounts", null));
+		Assertions.assertEquals(
+			3, _elasticsearchInvoker.count("accounts", null));
 	}
 
 	@Test
@@ -107,14 +107,14 @@ public class AdminRestControllerTest {
 
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks();
 
-		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
+		Assertions.assertEquals(1, asahTasks.size(), asahTasks.toString());
 
 		AsahTask asahTask = asahTasks.get(0);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IndividualInterestScoresNanite", asahTask.getClassName());
-		Assert.assertNull(asahTask.getCronExpression());
-		Assert.assertNotNull(asahTask.getId());
+		Assertions.assertNull(asahTask.getCronExpression());
+		Assertions.assertNotNull(asahTask.getId());
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -145,11 +145,11 @@ public class AdminRestControllerTest {
 
 		_adminRestController.run(jsonArray.toString());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0, _elasticsearchInvoker.count("OSBAsahMarkers", null));
 	}
 
-	@Test(expected = ValidationException.class)
+	@Test
 	public void testRunWithInvalidSchema() {
 		JSONArray jsonArray = new JSONArray();
 
@@ -157,7 +157,9 @@ public class AdminRestControllerTest {
 			JSONUtil.put(
 				RandomTestUtil.randomString(), RandomTestUtil.randomString()));
 
-		_adminRestController.run(jsonArray.toString());
+		Assertions.assertThrows(
+			ValidationException.class,
+			() -> _adminRestController.run(jsonArray.toString()));
 	}
 
 	@Autowired

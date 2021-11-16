@@ -45,7 +45,10 @@ import com.liferay.osb.asah.common.util.WeDeployServiceThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.faro.backend.http.DataSourceHttpTestConfiguration;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Date;
@@ -61,10 +64,10 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
@@ -74,23 +77,36 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
  * @author Rachael Koestartyo
  * @author Vishal Reddy
  */
-@ContextConfiguration(
+@ExtendWith(OSBAsahSpringExtension.class)
+@SpringBootTest(
 	classes = {
 		DataSourceHttpTestConfiguration.class,
 		OSBAsahBackendSpringBootApplication.class
 	}
 )
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.REPLACE_DEFAULTS,
+	value = {
+		DependencyInjectionTestExecutionListener.class,
+		MockitoTestExecutionListener.class,
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
 public class DataSourcesRestControllerTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_mock();
 	}
@@ -139,15 +155,15 @@ public class DataSourcesRestControllerTest {
 			_dataSourcesRestController.getDataSource(
 				dataSourceJSONObject.getLong("id")));
 
-		Assert.assertTrue(updateDataSourceJSONObject.has("deletionDate"));
-		Assert.assertEquals(
+		Assertions.assertTrue(updateDataSourceJSONObject.has("deletionDate"));
+		Assertions.assertEquals(
 			"IN_PROGRESS_DELETING",
 			updateDataSourceJSONObject.getString("state"));
 
 		_runDeleteDataSourcesNanite(updateDataSourceJSONObject);
 
-		Assert.assertFalse(_accountRepository.existsById(account.getId()));
-		Assert.assertTrue(
+		Assertions.assertFalse(_accountRepository.existsById(account.getId()));
+		Assertions.assertTrue(
 			_faroInfoElasticsearchInvoker.exists(
 				"activities", activityJSONObject.getString("id")));
 
@@ -157,18 +173,19 @@ public class DataSourcesRestControllerTest {
 			activityGroupId = 0L;
 		}
 
-		Assert.assertTrue(_activityGroupRepository.existsById(activityGroupId));
+		Assertions.assertTrue(
+			_activityGroupRepository.existsById(activityGroupId));
 
-		Assert.assertTrue(_assetRepository.existsById(asset.getId()));
-		Assert.assertFalse(
+		Assertions.assertTrue(_assetRepository.existsById(asset.getId()));
+		Assertions.assertFalse(
 			_faroInfoElasticsearchInvoker.exists(
 				"data-sources", dataSourceJSONObject.getString("id")));
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_faroInfoElasticsearchInvoker.exists(
 				"individual-segments",
 				QueryBuilders.termQuery(
 					"name", "Account: " + account.getId())));
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_faroInfoElasticsearchInvoker.exists(
 				"individuals",
 				QueryBuilders.nestedQuery(
@@ -197,7 +214,7 @@ public class DataSourcesRestControllerTest {
 		JSONArray dataSourcesJSONArray = (JSONArray)responseJSONObject.query(
 			"/_embedded/data-sources");
 
-		Assert.assertEquals(4, dataSourcesJSONArray.length());
+		Assertions.assertEquals(4, dataSourcesJSONArray.length());
 
 		Set<String> dataSourceNames = new HashSet<>();
 
@@ -208,10 +225,10 @@ public class DataSourcesRestControllerTest {
 			dataSourceNames.add(dataSourceJSONObject.getString("name"));
 		}
 
-		Assert.assertTrue(dataSourceNames.contains("Liferay"));
-		Assert.assertTrue(dataSourceNames.contains("Liferay (1)"));
-		Assert.assertTrue(dataSourceNames.contains("Liferay (2)"));
-		Assert.assertTrue(dataSourceNames.contains("Liferay (3)"));
+		Assertions.assertTrue(dataSourceNames.contains("Liferay"));
+		Assertions.assertTrue(dataSourceNames.contains("Liferay (1)"));
+		Assertions.assertTrue(dataSourceNames.contains("Liferay (2)"));
+		Assertions.assertTrue(dataSourceNames.contains("Liferay (3)"));
 	}
 
 	@Test
@@ -221,7 +238,7 @@ public class DataSourcesRestControllerTest {
 
 		// CSV individuals nanite is null
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"{}",
 			_dataSourcesRestController.getProgress(
 				csvDataSourceJSONObject.getLong("id")));
@@ -261,9 +278,9 @@ public class DataSourcesRestControllerTest {
 			_dataSourcesRestController.getProgress(
 				csvDataSourceJSONObject.getLong("id")));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1, progressJSONObject.getInt("processedOperations"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", progressJSONObject.getString("status"));
 
 		// CSV individuals nanite failed
@@ -329,11 +346,11 @@ public class DataSourcesRestControllerTest {
 		JSONArray dataSourcesJSONArray = embeddedJSONObject.getJSONArray(
 			"data-sources");
 
-		Assert.assertEquals(1, dataSourcesJSONArray.length());
+		Assertions.assertEquals(1, dataSourcesJSONArray.length());
 
 		JSONObject dataSourceJSONObject = dataSourcesJSONArray.getJSONObject(0);
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			dataSourceJSONObject.has("faroBackendSecuritySignature"));
 	}
 
@@ -346,7 +363,7 @@ public class DataSourcesRestControllerTest {
 			_dataSourcesRestController.getSalesforceAccountsFields(
 				salesforceDataSource.getId(), 3, 0));
 
-		Assert.assertEquals(3, jsonArray.length());
+		Assertions.assertEquals(3, jsonArray.length());
 	}
 
 	@Test
@@ -356,7 +373,7 @@ public class DataSourcesRestControllerTest {
 
 		// Salesforce extractor nanite is null
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			JSONUtil.put(
 				"accounts", new JSONObject()
 			).put(
@@ -397,11 +414,12 @@ public class DataSourcesRestControllerTest {
 		JSONObject accountsJSONObject = progressJSONObject.getJSONObject(
 			"accounts");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1, accountsJSONObject.getInt("processedOperations"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", accountsJSONObject.getString("status"));
-		Assert.assertEquals(2, accountsJSONObject.getInt("totalOperations"));
+		Assertions.assertEquals(
+			2, accountsJSONObject.getInt("totalOperations"));
 
 		// Salesforce accounts nanite is not null and date logged is earlier
 
@@ -438,11 +456,12 @@ public class DataSourcesRestControllerTest {
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1, accountsJSONObject.getInt("processedOperations"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", accountsJSONObject.getString("status"));
-		Assert.assertEquals(2, accountsJSONObject.getInt("totalOperations"));
+		Assertions.assertEquals(
+			2, accountsJSONObject.getInt("totalOperations"));
 
 		// Salesforce accounts nanite is not null and date logged is after
 
@@ -481,10 +500,11 @@ public class DataSourcesRestControllerTest {
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DateUtil.addDays(loggedDate, 1),
 			DateUtil.toUTCDate(accountsJSONObject.getString("dateRecorded")));
-		Assert.assertEquals("FAILED", accountsJSONObject.getString("status"));
+		Assertions.assertEquals(
+			"FAILED", accountsJSONObject.getString("status"));
 
 		try {
 			WeDeployServiceThreadLocal.setWeDeployDataService(
@@ -542,11 +562,12 @@ public class DataSourcesRestControllerTest {
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1, accountsJSONObject.getInt("processedOperations"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", accountsJSONObject.getString("status"));
-		Assert.assertEquals(2, accountsJSONObject.getInt("totalOperations"));
+		Assertions.assertEquals(
+			2, accountsJSONObject.getInt("totalOperations"));
 
 		// Salesforce extractor nanite failed
 
@@ -630,11 +651,12 @@ public class DataSourcesRestControllerTest {
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1, accountsJSONObject.getInt("processedOperations"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", accountsJSONObject.getString("status"));
-		Assert.assertEquals(2, accountsJSONObject.getInt("totalOperations"));
+		Assertions.assertEquals(
+			2, accountsJSONObject.getInt("totalOperations"));
 
 		// Salesforce extractor nanite started and initial run is false
 
@@ -679,11 +701,12 @@ public class DataSourcesRestControllerTest {
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2, accountsJSONObject.getInt("processedOperations"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", accountsJSONObject.getString("status"));
-		Assert.assertEquals(2, accountsJSONObject.getInt("totalOperations"));
+		Assertions.assertEquals(
+			2, accountsJSONObject.getInt("totalOperations"));
 	}
 
 	@Test
@@ -693,7 +716,7 @@ public class DataSourcesRestControllerTest {
 
 		// Salesforce extractor nanite is null
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			JSONUtil.put(
 				"accounts", new JSONObject()
 			).put(
@@ -790,11 +813,12 @@ public class DataSourcesRestControllerTest {
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2, individualsJSONObject.getInt("processedOperations"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", individualsJSONObject.getString("status"));
-		Assert.assertEquals(6, individualsJSONObject.getInt("totalOperations"));
+		Assertions.assertEquals(
+			6, individualsJSONObject.getInt("totalOperations"));
 
 		// Salesforce extractor nanite started and initial run is false
 
@@ -843,11 +867,12 @@ public class DataSourcesRestControllerTest {
 
 		individualsJSONObject = progressJSONObject.getJSONObject("individuals");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2, individualsJSONObject.getInt("processedOperations"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", individualsJSONObject.getString("status"));
-		Assert.assertEquals(6, individualsJSONObject.getInt("totalOperations"));
+		Assertions.assertEquals(
+			6, individualsJSONObject.getInt("totalOperations"));
 	}
 
 	@Test
@@ -877,12 +902,13 @@ public class DataSourcesRestControllerTest {
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
 
-		Assert.assertTrue(individualsJSONObject.has("dateRecorded"));
-		Assert.assertEquals(
+		Assertions.assertTrue(individualsJSONObject.has("dateRecorded"));
+		Assertions.assertEquals(
 			1, individualsJSONObject.getInt("processedOperations"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", individualsJSONObject.getString("status"));
-		Assert.assertEquals(3, individualsJSONObject.getInt("totalOperations"));
+		Assertions.assertEquals(
+			3, individualsJSONObject.getInt("totalOperations"));
 	}
 
 	@Test
@@ -943,12 +969,13 @@ public class DataSourcesRestControllerTest {
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
 
-		Assert.assertTrue(individualsJSONObject.has("dateRecorded"));
-		Assert.assertEquals(
+		Assertions.assertTrue(individualsJSONObject.has("dateRecorded"));
+		Assertions.assertEquals(
 			0, individualsJSONObject.getInt("processedOperations"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", individualsJSONObject.getString("status"));
-		Assert.assertEquals(3, individualsJSONObject.getInt("totalOperations"));
+		Assertions.assertEquals(
+			3, individualsJSONObject.getInt("totalOperations"));
 	}
 
 	@Test
@@ -994,12 +1021,13 @@ public class DataSourcesRestControllerTest {
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
 
-		Assert.assertTrue(individualsJSONObject.has("dateRecorded"));
-		Assert.assertEquals(
+		Assertions.assertTrue(individualsJSONObject.has("dateRecorded"));
+		Assertions.assertEquals(
 			1, individualsJSONObject.getInt("processedOperations"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", individualsJSONObject.getString("status"));
-		Assert.assertEquals(3, individualsJSONObject.getInt("totalOperations"));
+		Assertions.assertEquals(
+			3, individualsJSONObject.getInt("totalOperations"));
 	}
 
 	@Test
@@ -1094,12 +1122,13 @@ public class DataSourcesRestControllerTest {
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
 
-		Assert.assertTrue(individualsJSONObject.has("dateRecorded"));
-		Assert.assertEquals(
+		Assertions.assertTrue(individualsJSONObject.has("dateRecorded"));
+		Assertions.assertEquals(
 			2, individualsJSONObject.getInt("processedOperations"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", individualsJSONObject.getString("status"));
-		Assert.assertEquals(3, individualsJSONObject.getInt("totalOperations"));
+		Assertions.assertEquals(
+			3, individualsJSONObject.getInt("totalOperations"));
 	}
 
 	@Test
@@ -1166,12 +1195,13 @@ public class DataSourcesRestControllerTest {
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
 
-		Assert.assertTrue(individualsJSONObject.has("dateRecorded"));
-		Assert.assertEquals(
+		Assertions.assertTrue(individualsJSONObject.has("dateRecorded"));
+		Assertions.assertEquals(
 			5, individualsJSONObject.getInt("processedOperations"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", individualsJSONObject.getString("status"));
-		Assert.assertEquals(6, individualsJSONObject.getInt("totalOperations"));
+		Assertions.assertEquals(
+			6, individualsJSONObject.getInt("totalOperations"));
 	}
 
 	@Test
@@ -1233,12 +1263,13 @@ public class DataSourcesRestControllerTest {
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
 
-		Assert.assertTrue(individualsJSONObject.has("dateRecorded"));
-		Assert.assertEquals(
+		Assertions.assertTrue(individualsJSONObject.has("dateRecorded"));
+		Assertions.assertEquals(
 			2, individualsJSONObject.getInt("processedOperations"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", individualsJSONObject.getString("status"));
-		Assert.assertEquals(3, individualsJSONObject.getInt("totalOperations"));
+		Assertions.assertEquals(
+			3, individualsJSONObject.getInt("totalOperations"));
 	}
 
 	@Test
@@ -1300,8 +1331,8 @@ public class DataSourcesRestControllerTest {
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
 
-		Assert.assertTrue(individualsJSONObject.has("dateRecorded"));
-		Assert.assertEquals(
+		Assertions.assertTrue(individualsJSONObject.has("dateRecorded"));
+		Assertions.assertEquals(
 			"IN_PROGRESS", individualsJSONObject.getString("status"));
 	}
 
@@ -1314,7 +1345,7 @@ public class DataSourcesRestControllerTest {
 			_dataSourcesRestController.getSalesforceUsersFields(
 				salesforceDataSource.getId(), 3, 0));
 
-		Assert.assertEquals(3, jsonArray.length());
+		Assertions.assertEquals(3, jsonArray.length());
 	}
 
 	private void _mock() {

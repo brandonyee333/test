@@ -16,9 +16,9 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.InterestDTO;
 import com.liferay.osb.asah.backend.rest.controller.InterestsRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
 import java.util.Arrays;
@@ -37,23 +37,21 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Marcellus Tavares
  * @author Victor Oliveira
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class InterestsRestControllerTest {
+public class InterestsRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "interests", resourcePath = "interests.json",
@@ -64,20 +62,20 @@ public class InterestsRestControllerTest {
 		InterestDTO interestDTO = _interestsRestController.getInterestDTO(
 			123456L, null);
 
-		Assert.assertEquals(
-			interestDTO.toString(), "123456", interestDTO.getId());
-		Assert.assertEquals(
-			interestDTO.toString(), "My Javascript title",
-			interestDTO.getName());
-		Assert.assertEquals(
-			interestDTO.toString(), "337984659206412898",
-			interestDTO.getOwnerId());
-		Assert.assertEquals(
-			interestDTO.toString(), "individual", interestDTO.getOwnerType());
+		Assertions.assertEquals(
+			"123456", interestDTO.getId(), interestDTO.toString());
+		Assertions.assertEquals(
+			"My Javascript title", interestDTO.getName(),
+			interestDTO.toString());
+		Assertions.assertEquals(
+			"337984659206412898", interestDTO.getOwnerId(),
+			interestDTO.toString());
+		Assertions.assertEquals(
+			"individual", interestDTO.getOwnerType(), interestDTO.toString());
 
 		Map<String, Object> embeddedMap = interestDTO.getEmbedded();
 
-		Assert.assertEquals(interestDTO.toString(), 0, embeddedMap.size());
+		Assertions.assertEquals(0, embeddedMap.size(), interestDTO.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -115,30 +113,31 @@ public class InterestsRestControllerTest {
 		InterestDTO interestDTO = _interestsRestController.getInterestDTO(
 			123456L, "interest-aggregation-last-30-days,pages-visited");
 
-		Assert.assertEquals(
-			interestDTO.toString(), "123456", interestDTO.getId());
-		Assert.assertEquals(
-			interestDTO.toString(), "My Javascript title",
-			interestDTO.getName());
-		Assert.assertEquals(
-			interestDTO.toString(), "337984659206412898",
-			interestDTO.getOwnerId());
-		Assert.assertEquals(
-			interestDTO.toString(), "individual", interestDTO.getOwnerType());
+		Assertions.assertEquals(
+			"123456", interestDTO.getId(), interestDTO.toString());
+		Assertions.assertEquals(
+			"My Javascript title", interestDTO.getName(),
+			interestDTO.toString());
+		Assertions.assertEquals(
+			"337984659206412898", interestDTO.getOwnerId(),
+			interestDTO.toString());
+		Assertions.assertEquals(
+			"individual", interestDTO.getOwnerType(), interestDTO.toString());
 
 		Map<String, Object> embeddedMap = interestDTO.getEmbedded();
 
-		Assert.assertEquals(embeddedMap.toString(), 2, embeddedMap.size());
+		Assertions.assertEquals(2, embeddedMap.size(), embeddedMap.toString());
 
 		List<String> interestAggregations = (List)embeddedMap.get(
 			"interest-aggregation-last-30-days");
 
-		Assert.assertEquals(
-			interestAggregations.toString(), 30, interestAggregations.size());
+		Assertions.assertEquals(
+			30, interestAggregations.size(), interestAggregations.toString());
 
 		List<String> visitedPages = (List)embeddedMap.get("pages-visited");
 
-		Assert.assertEquals(visitedPages.toString(), 5, visitedPages.size());
+		Assertions.assertEquals(
+			5, visitedPages.size(), visitedPages.toString());
 	}
 
 	@RepositoryResource(
@@ -179,7 +178,7 @@ public class InterestsRestControllerTest {
 				_interestsRestController.getInterestKeywords(null, 0, 20)),
 			"JSONObject/_embedded", "JSONArray/interest-keywords");
 
-		Assert.assertEquals(0, keywordsJSONArray.length());
+		Assertions.assertEquals(0, keywordsJSONArray.length());
 	}
 
 	@ElasticsearchIndex(
@@ -247,9 +246,9 @@ public class InterestsRestControllerTest {
 			_interestsRestController.getTerms(100, 0.01, 11, "xxx-yyy-zzz");
 		}
 		catch (OSBAsahException osbAsahException) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				HttpStatus.BAD_REQUEST, osbAsahException.getHttpStatus());
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				"termsPerTopic * topicsLength must not exceed 1000",
 				osbAsahException.getMessage());
 		}
@@ -275,9 +274,9 @@ public class InterestsRestControllerTest {
 				10, 15, Collections.emptyList(), 0.01);
 		}
 		catch (OSBAsahException osbAsahException) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				HttpStatus.BAD_REQUEST, osbAsahException.getHttpStatus());
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				"page * size + size must not exceed 100",
 				osbAsahException.getMessage());
 		}
@@ -354,9 +353,9 @@ public class InterestsRestControllerTest {
 			_interestsRestController.getTerms(3, 0.01, 3, "xxx-yyy-zzz");
 		}
 		catch (OSBAsahException osbAsahException) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				HttpStatus.BAD_REQUEST, osbAsahException.getHttpStatus());
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				"There is no individual with user ID xxx-yyy-zzz",
 				osbAsahException.getMessage());
 		}
@@ -370,7 +369,7 @@ public class InterestsRestControllerTest {
 			"JSONArray/interest-terms");
 
 		for (int i = 0; i < interestTopicsJSONArray.length(); i++) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				expectedTerms[i], interestTopicsJSONArray.getString(i));
 		}
 	}

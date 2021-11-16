@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Arrays;
@@ -33,9 +32,8 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
@@ -45,7 +43,6 @@ import org.springframework.context.annotation.Import;
  * @author Marcos Martins
  */
 @Import(JDBCTestConfiguration.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class EventHistogramGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
 
@@ -64,7 +61,7 @@ public class EventHistogramGraphQLRestControllerTest
 		return "event_histogram_query.graphql";
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		List<EventAttributeDefinition> eventAttributeDefinitions =
 			Arrays.asList(
@@ -93,7 +90,7 @@ public class EventHistogramGraphQLRestControllerTest
 			DateUtil.toUTCDate("2021-07-02T00:00:00.000Z"), "assetDownloaded");
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		_eventRepository.deleteAll();
 

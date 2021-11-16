@@ -14,14 +14,9 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-
-import org.junit.runner.RunWith;
-
 /**
  * @author Leslie Wong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class EventAttributeDefinitionsGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
 

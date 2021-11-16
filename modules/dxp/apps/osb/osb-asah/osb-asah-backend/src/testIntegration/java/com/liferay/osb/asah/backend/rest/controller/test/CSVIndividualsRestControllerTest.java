@@ -14,14 +14,14 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.CSVIndividualsRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.List;
@@ -29,21 +29,19 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Vishal Reddy
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class CSVIndividualsRestControllerTest {
+public class CSVIndividualsRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testPostCSVIndividuals() throws Exception {
@@ -68,7 +66,7 @@ public class CSVIndividualsRestControllerTest {
 		JSONArray csvIndividualsJSONArray = _elasticsearchInvoker.get(
 			"csv-individuals");
 
-		Assert.assertEquals(2, csvIndividualsJSONArray.length());
+		Assertions.assertEquals(2, csvIndividualsJSONArray.length());
 
 		JSONAssert.assertEquals(jsonArray, csvIndividualsJSONArray, false);
 
@@ -76,13 +74,14 @@ public class CSVIndividualsRestControllerTest {
 
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks();
 
-		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
+		Assertions.assertEquals(1, asahTasks.size(), asahTasks.toString());
 
 		AsahTask asahTask = asahTasks.get(0);
 
-		Assert.assertEquals("CSVIndividualsNanite", asahTask.getClassName());
-		Assert.assertNull(asahTask.getCronExpression());
-		Assert.assertNotNull(asahTask.getId());
+		Assertions.assertEquals(
+			"CSVIndividualsNanite", asahTask.getClassName());
+		Assertions.assertNull(asahTask.getCronExpression());
+		Assertions.assertNotNull(asahTask.getId());
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -97,7 +96,7 @@ public class CSVIndividualsRestControllerTest {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			Assert.assertNotNull(jsonObject.getString("id"));
+			Assertions.assertNotNull(jsonObject.getString("id"));
 		}
 	}
 

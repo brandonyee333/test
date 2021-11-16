@@ -15,14 +15,10 @@
 package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-
-import org.junit.runner.RunWith;
 
 /**
  * @author Leslie Wong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SQLResource(
 	resourcePath = "blocked_custom_event_definitions_graphql_rest_controller_test.sql"
 )

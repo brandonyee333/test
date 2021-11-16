@@ -25,7 +25,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Arrays;
@@ -34,9 +33,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
@@ -46,7 +44,6 @@ import org.springframework.context.annotation.Import;
  * @author Marcos Martins
  */
 @Import(JDBCTestConfiguration.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class EventsByUserSessionGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
 
@@ -65,7 +62,7 @@ public class EventsByUserSessionGraphQLRestControllerTest
 		return "events_by_session_query.graphql";
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		List<EventAttributeDefinition> eventAttributeDefinitions =
 			Arrays.asList(
@@ -95,7 +92,7 @@ public class EventsByUserSessionGraphQLRestControllerTest
 			"2021-10-08T02:05:00.000Z");
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		_cerebroInfoElasticsearchInvoker.delete("user-sessions", "sessionId");
 		_eventRepository.deleteAll();

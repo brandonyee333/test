@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.IndividualSegmentsRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.FieldMapping;
@@ -32,7 +31,6 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import io.restassured.http.Method;
 import io.restassured.response.ValidatableResponse;
@@ -47,27 +45,22 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Vishal Reddy
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class IndividualSegmentsRestControllerTest
 	extends BaseRestControllerTestCase {
 
@@ -136,38 +129,38 @@ public class IndividualSegmentsRestControllerTest
 		JSONObject referencedObjectsJSONObject = (JSONObject)embedded.get(
 			"referenced-objects");
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new String[] {String.valueOf(asset.getId())},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("assets", referencedObjectsJSONObject)));
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new String[] {
 				String.valueOf(accountFieldMapping.getId()),
 				String.valueOf(individualFieldMapping.getId())
 			},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("field-mappings", referencedObjectsJSONObject)));
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new String[] {groupJSONObject.getString("id")},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("groups", referencedObjectsJSONObject)));
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new String[] {organizationJSONObject.getString("id")},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("organizations", referencedObjectsJSONObject)));
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new String[] {roleJSONObject.getString("id")},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("roles", referencedObjectsJSONObject)));
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new String[] {teamJSONObject.getString("id")},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("teams", referencedObjectsJSONObject)));
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new String[] {userGroupJSONObject.getString("id")},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("user-groups", referencedObjectsJSONObject)));
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new String[] {userJSONObject.getString("id")},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("users", referencedObjectsJSONObject)));
@@ -179,6 +172,7 @@ public class IndividualSegmentsRestControllerTest
 	 * DXPIndividualsNanite test, and retrieved from the WeDeploy data container
 	 * before the tests cleaned up the data.
 	 */
+	@Disabled
 	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -199,7 +193,6 @@ public class IndividualSegmentsRestControllerTest
 		name = "users", resourcePath = "users.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
-	@Ignore
 	@Test
 	public void testGetIndividualSegments() {
 		ValidatableResponse validatableResponse = getValidatableResponse(
@@ -236,7 +229,7 @@ public class IndividualSegmentsRestControllerTest
 		JSONArray individualSegmentsJSONArray = embeddedJSONObject.getJSONArray(
 			"individual-segments");
 
-		Assert.assertEquals(2, individualSegmentsJSONArray.length());
+		Assertions.assertEquals(2, individualSegmentsJSONArray.length());
 
 		responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.getSegmentDTOsPageDTOs(
@@ -249,7 +242,7 @@ public class IndividualSegmentsRestControllerTest
 		individualSegmentsJSONArray = embeddedJSONObject.getJSONArray(
 			"individual-segments");
 
-		Assert.assertEquals(1, individualSegmentsJSONArray.length());
+		Assertions.assertEquals(1, individualSegmentsJSONArray.length());
 	}
 
 	@ElasticsearchIndex(
@@ -276,7 +269,7 @@ public class IndividualSegmentsRestControllerTest
 			-1L
 		);
 
-		Assert.assertEquals(10L, activeIndividualCount);
+		Assertions.assertEquals(10L, activeIndividualCount);
 
 		long anonymousIndividualCount = Optional.ofNullable(
 			segmentDTO.getAnonymousIndividualCount()
@@ -284,7 +277,7 @@ public class IndividualSegmentsRestControllerTest
 			-1L
 		);
 
-		Assert.assertEquals(8L, anonymousIndividualCount);
+		Assertions.assertEquals(8L, anonymousIndividualCount);
 
 		long individualCount = Optional.ofNullable(
 			segmentDTO.getIndividualCount()
@@ -292,7 +285,7 @@ public class IndividualSegmentsRestControllerTest
 			-1L
 		);
 
-		Assert.assertEquals(10L, individualCount);
+		Assertions.assertEquals(10L, individualCount);
 
 		long knownIndividualCount = Optional.ofNullable(
 			segmentDTO.getKnownIndividualCount()
@@ -300,49 +293,49 @@ public class IndividualSegmentsRestControllerTest
 			-1L
 		);
 
-		Assert.assertEquals(2L, knownIndividualCount);
+		Assertions.assertEquals(2L, knownIndividualCount);
 
-		Assert.assertEquals("d-age-gt-50", segmentDTO.getName());
+		Assertions.assertEquals("d-age-gt-50", segmentDTO.getName());
 
 		Set<String> referencedAssetDataSourceIds =
 			segmentDTO.getReferencedAssetDataSourceIds();
 
-		Assert.assertTrue(referencedAssetDataSourceIds.isEmpty());
+		Assertions.assertTrue(referencedAssetDataSourceIds.isEmpty());
 
 		Set<String> referencedAssetIds = segmentDTO.getReferencedAssetIds();
 
-		Assert.assertTrue(referencedAssetIds.isEmpty());
+		Assertions.assertTrue(referencedAssetIds.isEmpty());
 
 		Set<String> referencedFieldMappingIds =
 			segmentDTO.getReferencedFieldMappingIds();
 
-		Assert.assertTrue(referencedFieldMappingIds.isEmpty());
+		Assertions.assertTrue(referencedFieldMappingIds.isEmpty());
 
 		Set<String> referencedGroupIds = segmentDTO.getReferencedGroupIds();
 
-		Assert.assertTrue(referencedGroupIds.isEmpty());
+		Assertions.assertTrue(referencedGroupIds.isEmpty());
 
 		Set<String> referencedOrganizationIds =
 			segmentDTO.getReferencedOrganizationIds();
 
-		Assert.assertTrue(referencedOrganizationIds.isEmpty());
+		Assertions.assertTrue(referencedOrganizationIds.isEmpty());
 
 		Set<String> referencedRoleIds = segmentDTO.getReferencedRoleIds();
 
-		Assert.assertTrue(referencedRoleIds.isEmpty());
+		Assertions.assertTrue(referencedRoleIds.isEmpty());
 
 		Set<String> referencedTeamIds = segmentDTO.getReferencedTeamIds();
 
-		Assert.assertTrue(referencedTeamIds.isEmpty());
+		Assertions.assertTrue(referencedTeamIds.isEmpty());
 
 		Set<String> referencedUserGroupIds =
 			segmentDTO.getReferencedUserGroupIds();
 
-		Assert.assertTrue(referencedUserGroupIds.isEmpty());
+		Assertions.assertTrue(referencedUserGroupIds.isEmpty());
 
 		Set<String> referencedUserIds = segmentDTO.getReferencedUserIds();
 
-		Assert.assertTrue(referencedUserIds.isEmpty());
+		Assertions.assertTrue(referencedUserIds.isEmpty());
 	}
 
 	@ElasticsearchIndex(
@@ -365,7 +358,7 @@ public class IndividualSegmentsRestControllerTest
 			-1L
 		);
 
-		Assert.assertEquals(0L, anonymousIndividualCount);
+		Assertions.assertEquals(0L, anonymousIndividualCount);
 
 		long individualCount = Optional.ofNullable(
 			segmentDTO.getIndividualCount()
@@ -373,7 +366,7 @@ public class IndividualSegmentsRestControllerTest
 			-1L
 		);
 
-		Assert.assertEquals(0L, individualCount);
+		Assertions.assertEquals(0L, individualCount);
 
 		long knownIndividualCount = Optional.ofNullable(
 			segmentDTO.getKnownIndividualCount()
@@ -381,7 +374,7 @@ public class IndividualSegmentsRestControllerTest
 			-1L
 		);
 
-		Assert.assertEquals(0L, knownIndividualCount);
+		Assertions.assertEquals(0L, knownIndividualCount);
 	}
 
 	@ElasticsearchIndex(
@@ -409,7 +402,7 @@ public class IndividualSegmentsRestControllerTest
 
 		Set<SegmentDTO> segmentDTOs = embedded.getSegmentDTOs();
 
-		Assert.assertEquals(segmentDTOs.toString(), 2, segmentDTOs.size());
+		Assertions.assertEquals(2, segmentDTOs.size(), segmentDTOs.toString());
 
 		Stream<SegmentDTO> stream = segmentDTOs.stream();
 
@@ -419,7 +412,7 @@ public class IndividualSegmentsRestControllerTest
 			Collectors.toList()
 		);
 
-		Assert.assertTrue(ids.containsAll(Arrays.asList("1", "2")));
+		Assertions.assertTrue(ids.containsAll(Arrays.asList("1", "2")));
 
 		for (SegmentDTO segmentDTO : segmentDTOs) {
 			long anonymousIndividualCount = Optional.ofNullable(
@@ -441,14 +434,14 @@ public class IndividualSegmentsRestControllerTest
 			);
 
 			if (Objects.equals(segmentDTO.getId(), "1")) {
-				Assert.assertEquals(0L, anonymousIndividualCount);
-				Assert.assertEquals(0L, individualCount);
-				Assert.assertEquals(0L, knownIndividualCount);
+				Assertions.assertEquals(0L, anonymousIndividualCount);
+				Assertions.assertEquals(0L, individualCount);
+				Assertions.assertEquals(0L, knownIndividualCount);
 			}
 			else if (Objects.equals(segmentDTO.getId(), "2")) {
-				Assert.assertEquals(0L, anonymousIndividualCount);
-				Assert.assertEquals(5L, individualCount);
-				Assert.assertEquals(5L, knownIndividualCount);
+				Assertions.assertEquals(0L, anonymousIndividualCount);
+				Assertions.assertEquals(5L, individualCount);
+				Assertions.assertEquals(5L, knownIndividualCount);
 			}
 		}
 	}

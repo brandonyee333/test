@@ -16,42 +16,41 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.IndividualDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.IndividualsRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Leslie Wong
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class IndividualsRestControllerTest {
+public class IndividualsRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "individual-segments",
@@ -91,11 +90,11 @@ public class IndividualsRestControllerTest {
 		JSONObject activeMembershipJSONObject =
 			embeddedJSONObject.getJSONObject("active-membership");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"123", activeMembershipJSONObject.getString("individualId"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"910", activeMembershipJSONObject.getString("individualSegmentId"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"ACTIVE", activeMembershipJSONObject.getString("status"));
 	}
 
@@ -126,14 +125,14 @@ public class IndividualsRestControllerTest {
 		JSONArray accountNamesJSONArray = (JSONArray)embedded.get(
 			"account-names");
 
-		Assert.assertEquals(4, accountNamesJSONArray.length());
-		Assert.assertTrue(
+		Assertions.assertEquals(4, accountNamesJSONArray.length());
+		Assertions.assertTrue(
 			JSONUtil.hasValue(accountNamesJSONArray, "Liferay, Inc."));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			JSONUtil.hasValue(accountNamesJSONArray, "Nozomi Project"));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			JSONUtil.hasValue(accountNamesJSONArray, "The Space Program"));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			JSONUtil.hasValue(
 				accountNamesJSONArray, "The World's Foremost Chess Club"));
 	}
@@ -160,7 +159,7 @@ public class IndividualsRestControllerTest {
 
 		JSONArray accountsJSONArray = (JSONArray)embedded.get("accounts");
 
-		Assert.assertEquals(4, accountsJSONArray.length());
+		Assertions.assertEquals(4, accountsJSONArray.length());
 	}
 
 	@ElasticsearchIndex(
@@ -182,7 +181,7 @@ public class IndividualsRestControllerTest {
 		JSONArray dataSourcesJSONArray = (JSONArray)embedded.get(
 			"data-sources");
 
-		Assert.assertEquals(2, dataSourcesJSONArray.length());
+		Assertions.assertEquals(2, dataSourcesJSONArray.length());
 	}
 
 	@ElasticsearchIndex(
@@ -209,7 +208,7 @@ public class IndividualsRestControllerTest {
 		JSONArray individualSegmentsJSONArray = (JSONArray)embedded.get(
 			"individual-segments");
 
-		Assert.assertEquals(2, individualSegmentsJSONArray.length());
+		Assertions.assertEquals(2, individualSegmentsJSONArray.length());
 	}
 
 	@ElasticsearchIndex(
@@ -229,8 +228,8 @@ public class IndividualsRestControllerTest {
 
 		Set<IndividualDTO> individualDTOs = individualDTO.getIndividualDTOs();
 
-		Assert.assertEquals(
-			individualDTOs.toString(), 1, individualDTOs.size());
+		Assertions.assertEquals(
+			1, individualDTOs.size(), individualDTOs.toString());
 
 		Stream<IndividualDTO> stream = individualDTOs.stream();
 
@@ -239,8 +238,8 @@ public class IndividualsRestControllerTest {
 			null
 		);
 
-		Assert.assertEquals(1, (long)individualDTO.getActivitiesCount());
-		Assert.assertEquals(
+		Assertions.assertEquals(1, (long)individualDTO.getActivitiesCount());
+		Assertions.assertEquals(
 			DateUtil.toUTCDate("2019-03-11T17:10:00.666Z"),
 			individualDTO.getLastActivityDate());
 	}
@@ -322,21 +321,16 @@ public class IndividualsRestControllerTest {
 		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@Test(expected = Exception.class)
-	public void testGetIndividualsDistributionInvalidFieldMappings()
-		throws Exception {
+	@Test
+	public void testGetIndividualsDistributionInvalidFieldMappings() {
+		Exception exception = Assertions.assertThrows(
+			Exception.class,
+			() -> _individualsRestController.getDistributionDTOsPageDTO(
+				331238757947565234L, null, 10, 100, null));
 
-		try {
-			_individualsRestController.getDistributionDTOsPageDTO(
-				331238757947565234L, null, 10, 100, null);
-		}
-		catch (Exception exception) {
-			Assert.assertThat(
-				exception.getMessage(),
-				CoreMatchers.containsString("Invalid field mapping ID"));
-
-			throw exception;
-		}
+		MatcherAssert.assertThat(
+			exception.getMessage(),
+			CoreMatchers.containsString("Invalid field mapping ID"));
 	}
 
 	@ElasticsearchIndex(
@@ -360,7 +354,7 @@ public class IndividualsRestControllerTest {
 
 		Map<String, SegmentDTO> contents = segmentDTOsPageDTOs.getContent();
 
-		Assert.assertNull(contents.get("910"));
+		Assertions.assertNull(contents.get("910"));
 	}
 
 	@Autowired

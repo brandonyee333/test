@@ -16,9 +16,9 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.BlockedKeywordDTO;
 import com.liferay.osb.asah.backend.rest.controller.BlockedKeywordsRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,22 +38,20 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Marcellus Tavares
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class BlockedKeywordsRestControllerTest {
+public class BlockedKeywordsRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
@@ -64,10 +62,10 @@ public class BlockedKeywordsRestControllerTest {
 		_blockedKeywordsRestController.deleteBlockedKeywords(
 			Arrays.asList(351238757269547424L, 351238757269547425L));
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_elasticsearchInvoker.exists(
 				"blocked-keywords", "351238757269547424"));
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_elasticsearchInvoker.exists(
 				"blocked-keywords", "351238757269547425"));
 	}
@@ -83,7 +81,7 @@ public class BlockedKeywordsRestControllerTest {
 				Collections.emptyList());
 		}
 		catch (OSBAsahException osbAsahException) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				"Empty blocked keyword IDs", osbAsahException.getMessage());
 		}
 	}
@@ -98,11 +96,12 @@ public class BlockedKeywordsRestControllerTest {
 			_blockedKeywordsRestController.getBlockedKeywordDTO(
 				351238757269547424L);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"2019-01-02T17:09:07.666Z",
 			DateUtil.toUTCString(blockedKeywordDTO.getCreateDate()));
-		Assert.assertEquals("351238757269547424", blockedKeywordDTO.getId());
-		Assert.assertEquals("liferay", blockedKeywordDTO.getKeyword());
+		Assertions.assertEquals(
+			"351238757269547424", blockedKeywordDTO.getId());
+		Assertions.assertEquals("liferay", blockedKeywordDTO.getKeyword());
 	}
 
 	@ElasticsearchIndex(
@@ -197,13 +196,13 @@ public class BlockedKeywordsRestControllerTest {
 					"keywords", JSONUtil.putAll("Liferay", "DXP", "Portal", " ")
 				).toString());
 
-		Assert.assertTrue(blockedKeywordDTO.getSucceeded());
+		Assertions.assertTrue(blockedKeywordDTO.getSucceeded());
 
 		List<BlockedKeywordDTO> blockedKeywordDTOs =
 			blockedKeywordDTO.getBlockedKeywordDTOs();
 
-		Assert.assertEquals(
-			blockedKeywordDTOs.toString(), 3, blockedKeywordDTOs.size());
+		Assertions.assertEquals(
+			3, blockedKeywordDTOs.size(), blockedKeywordDTOs.toString());
 
 		_assertBlockedKeyword(blockedKeywordDTOs, "liferay");
 		_assertBlockedKeyword(blockedKeywordDTOs, "dxp");
@@ -219,9 +218,9 @@ public class BlockedKeywordsRestControllerTest {
 				).toString());
 		}
 		catch (OSBAsahException osbAsahException) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				HttpStatus.BAD_REQUEST, osbAsahException.getHttpStatus());
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				"Empty keywords", osbAsahException.getMessage());
 		}
 	}
@@ -241,12 +240,12 @@ public class BlockedKeywordsRestControllerTest {
 		List<BlockedKeywordDTO> blockedKeywordDTOs =
 			blockedKeywordDTO.getBlockedKeywordDTOs();
 
-		Assert.assertEquals(
-			blockedKeywordDTOs.toString(), 3, blockedKeywordDTOs.size());
+		Assertions.assertEquals(
+			3, blockedKeywordDTOs.size(), blockedKeywordDTOs.toString());
 
-		Assert.assertFalse(_isDuplicate(blockedKeywordDTOs, "ac"));
-		Assert.assertTrue(_isDuplicate(blockedKeywordDTOs, "liferay"));
-		Assert.assertTrue(_isDuplicate(blockedKeywordDTOs, "portal"));
+		Assertions.assertFalse(_isDuplicate(blockedKeywordDTOs, "ac"));
+		Assertions.assertTrue(_isDuplicate(blockedKeywordDTOs, "liferay"));
+		Assertions.assertTrue(_isDuplicate(blockedKeywordDTOs, "portal"));
 	}
 
 	private void _assertBlockedKeyword(
@@ -255,12 +254,12 @@ public class BlockedKeywordsRestControllerTest {
 		BlockedKeywordDTO actualBlockedKeywordDTO = _getBlockedKeyword(
 			blockedKeywordDTOs, expectedKeyword);
 
-		Assert.assertNotNull(
-			"Blocked keyword not found", actualBlockedKeywordDTO);
-		Assert.assertEquals(
+		Assertions.assertNotNull(
+			actualBlockedKeywordDTO, "Blocked keyword not found");
+		Assertions.assertEquals(
 			expectedKeyword, actualBlockedKeywordDTO.getKeyword());
-		Assert.assertTrue(actualBlockedKeywordDTO.getCreateDate() != null);
-		Assert.assertTrue(actualBlockedKeywordDTO.getId() != null);
+		Assertions.assertTrue(actualBlockedKeywordDTO.getCreateDate() != null);
+		Assertions.assertTrue(actualBlockedKeywordDTO.getId() != null);
 	}
 
 	private BlockedKeywordDTO _getBlockedKeyword(
@@ -281,7 +280,8 @@ public class BlockedKeywordsRestControllerTest {
 		BlockedKeywordDTO blockedKeywordDTO = _getBlockedKeyword(
 			blockedKeywordDTOs, keyword);
 
-		Assert.assertNotNull("Blocked keyword not found", blockedKeywordDTO);
+		Assertions.assertNotNull(
+			blockedKeywordDTO, "Blocked keyword not found");
 
 		return BooleanUtils.toBoolean(blockedKeywordDTO.getDuplicate());
 	}

@@ -14,9 +14,12 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
+import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -32,17 +35,25 @@ import java.util.List;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
 /**
  * @author Vishal Reddy
  */
-public abstract class BaseRestControllerTestCase {
+@ExtendWith(OSBAsahSpringExtension.class)
+@SpringBootTest(
+	classes = OSBAsahBackendSpringBootApplication.class,
+	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
+public abstract class BaseRestControllerTestCase
+	implements OSBAsahTestExecutionListenersContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		Segment segment = new Segment();
 

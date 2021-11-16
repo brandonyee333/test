@@ -16,10 +16,10 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.DataSourceDTO;
 import com.liferay.osb.asah.backend.rest.controller.DataSourcesRestController;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.ChannelsRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.http.ChannelHttp;
@@ -28,7 +28,10 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
@@ -42,25 +45,38 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
+import org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.web.client.HttpClientErrorException;
 
 /**
  * @author Geyson Silva
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class ChannelsRestControllerTest {
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.REPLACE_DEFAULTS,
+	value = {
+		DependencyInjectionTestExecutionListener.class,
+		MockitoTestExecutionListener.class,
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class,
+		ResetMocksTestExecutionListener.class
+	}
+)
+public class ChannelsRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testDuplicateChannelName() {
@@ -85,7 +101,7 @@ public class ChannelsRestControllerTest {
 		JSONArray channelsJSONArray = (JSONArray)channelsJSONObject.query(
 			"/_embedded/channels");
 
-		Assert.assertEquals(5, channelsJSONArray.length());
+		Assertions.assertEquals(5, channelsJSONArray.length());
 
 		Set<String> channelNames = new HashSet<>();
 
@@ -95,12 +111,13 @@ public class ChannelsRestControllerTest {
 			channelNames.add(channelJSONObject.getString("name"));
 		}
 
-		Assert.assertTrue(channelNames.contains("Liferay Combined Property"));
-		Assert.assertTrue(
+		Assertions.assertTrue(
+			channelNames.contains("Liferay Combined Property"));
+		Assertions.assertTrue(
 			channelNames.contains("Liferay Combined Property (1)"));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			channelNames.contains("Liferay Combined Property (2)"));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			channelNames.contains("Liferay Combined Property (3)"));
 	}
 
@@ -117,7 +134,7 @@ public class ChannelsRestControllerTest {
 		JSONArray channelsJSONArray = (JSONArray)channelsJSONObject.query(
 			"/_embedded/channels");
 
-		Assert.assertEquals(3, channelsJSONArray.length());
+		Assertions.assertEquals(3, channelsJSONArray.length());
 	}
 
 	@Test
@@ -145,10 +162,10 @@ public class ChannelsRestControllerTest {
 							"combined"))));
 		}
 		catch (OSBAsahException osbAsahException) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				"Unable to create channel", osbAsahException.getMessage());
 
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				0,
 				_elasticsearchInvoker.count(
 					"channels", QueryBuilders.matchAllQuery()));
@@ -156,7 +173,7 @@ public class ChannelsRestControllerTest {
 			return;
 		}
 
-		Assert.fail("postChannels did not throw an exception");
+		Assertions.fail("postChannels did not throw an exception");
 	}
 
 	@ElasticsearchIndex(
@@ -205,7 +222,7 @@ public class ChannelsRestControllerTest {
 		JSONArray groupIdsJSONArray = dataSourceJSONObject.getJSONArray(
 			"groupIds");
 
-		Assert.assertEquals(randomGroupId, groupIdsJSONArray.getString(0));
+		Assertions.assertEquals(randomGroupId, groupIdsJSONArray.getString(0));
 	}
 
 	@ElasticsearchIndex(
@@ -239,7 +256,7 @@ public class ChannelsRestControllerTest {
 		JSONArray dataSourcesJSONArray = actualChannelJSONObject.getJSONArray(
 			"dataSources");
 
-		Assert.assertEquals(2, dataSourcesJSONArray.length());
+		Assertions.assertEquals(2, dataSourcesJSONArray.length());
 
 		Optional<JSONObject> dataSourceOptional = IntStream.range(
 			0, dataSourcesJSONArray.length()
@@ -250,14 +267,14 @@ public class ChannelsRestControllerTest {
 				dataSourceJSONObject.getString("id"))
 		).findFirst();
 
-		Assert.assertTrue(dataSourceOptional.isPresent());
+		Assertions.assertTrue(dataSourceOptional.isPresent());
 
 		JSONObject dataSourceJSONObject = dataSourceOptional.get();
 
 		JSONArray groupIdsJSONArray = dataSourceJSONObject.getJSONArray(
 			"groupIds");
 
-		Assert.assertEquals(randomGroupId, groupIdsJSONArray.getString(0));
+		Assertions.assertEquals(randomGroupId, groupIdsJSONArray.getString(0));
 	}
 
 	@ElasticsearchIndex(
@@ -278,7 +295,7 @@ public class ChannelsRestControllerTest {
 		JSONObject actualChannelJSONObject = responseJSONObject.getJSONObject(
 			"channel");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			randomName, actualChannelJSONObject.getString("name"));
 	}
 
@@ -296,7 +313,7 @@ public class ChannelsRestControllerTest {
 					FaroInfoTestUtil.buildChannelJSONObject(
 						dataSourceJSONObject.getString("id"), "combined"))));
 
-		Assert.assertEquals(1, channelsJSONArray.length());
+		Assertions.assertEquals(1, channelsJSONArray.length());
 
 		Mockito.verify(
 			_channelHttp, Mockito.times(2)
@@ -319,7 +336,7 @@ public class ChannelsRestControllerTest {
 					FaroInfoTestUtil.buildChannelJSONObject(
 						dataSourceJSONObject.getString("id"), "multiple"))));
 
-		Assert.assertEquals(2, channelsJSONArray.length());
+		Assertions.assertEquals(2, channelsJSONArray.length());
 
 		Mockito.verify(
 			_channelHttp, Mockito.times(3)
@@ -353,13 +370,13 @@ public class ChannelsRestControllerTest {
 		JSONArray removedGroupIdsJSONArray = responseJSONObject.optJSONArray(
 			"removedGroupIds");
 
-		Assert.assertEquals(2, removedGroupIdsJSONArray.length());
+		Assertions.assertEquals(2, removedGroupIdsJSONArray.length());
 
 		Set<String> removedGroupIds = JSONUtil.toStringSet(
 			removedGroupIdsJSONArray);
 
-		Assert.assertTrue(removedGroupIds.contains("123456"));
-		Assert.assertTrue(removedGroupIds.contains("654321"));
+		Assertions.assertTrue(removedGroupIds.contains("123456"));
+		Assertions.assertTrue(removedGroupIds.contains("654321"));
 	}
 
 	@MockBean

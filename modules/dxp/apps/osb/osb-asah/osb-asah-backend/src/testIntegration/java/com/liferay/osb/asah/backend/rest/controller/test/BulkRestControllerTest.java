@@ -14,17 +14,18 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.BulkRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.Http;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
 import org.json.JSONObject;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -33,15 +34,25 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
 import org.springframework.http.HttpMethod;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
  * @author Vishal Reddy
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class BulkRestControllerTest {
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.REPLACE_DEFAULTS,
+	value = {
+		DependencyInjectionTestExecutionListener.class,
+		MockitoTestExecutionListener.class,
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
+public class BulkRestControllerTest implements OSBAsahBackendSpringTestContext {
 
 	@Test
 	public void testPost() {

@@ -16,38 +16,37 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.FieldMappingDTO;
 import com.liferay.osb.asah.backend.rest.controller.FieldMappingsRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
 
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Shinn Lok
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class FieldMappingsRestControllerTest {
+public class FieldMappingsRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@Test(expected = Exception.class)
+	@Test
 	public void testDuplicateFieldMappingFieldName() {
 		FieldMapping fieldMapping =
 			FaroInfoTestUtil.buildIndividualFieldMapping(
@@ -59,16 +58,14 @@ public class FieldMappingsRestControllerTest {
 
 		_fieldMappingsRestController.postFieldMapping(fieldMappingDTO);
 
-		try {
-			_fieldMappingsRestController.postFieldMapping(fieldMappingDTO);
-		}
-		catch (Exception exception) {
-			Assert.assertThat(
-				exception.getMessage(),
-				CoreMatchers.containsString("Duplicate field name"));
+		Exception exception = Assertions.assertThrows(
+			Exception.class,
+			() -> _fieldMappingsRestController.postFieldMapping(
+				fieldMappingDTO));
 
-			throw exception;
-		}
+		MatcherAssert.assertThat(
+			exception.getMessage(),
+			CoreMatchers.containsString("Duplicate field name"));
 	}
 
 	@Autowired

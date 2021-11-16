@@ -14,13 +14,13 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
 import com.liferay.osb.asah.backend.dto.ExperimentDTO;
 import com.liferay.osb.asah.backend.dto.ExperimentVariantsDTO;
 import com.liferay.osb.asah.backend.dto.GoalDTO;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.ExperimentsRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentVariant;
@@ -30,28 +30,40 @@ import com.liferay.osb.asah.common.model.GoalMetric;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
  * @author Marcellus Tavares
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class ExperimentsRestControllerTest {
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.REPLACE_DEFAULTS,
+	value = {
+		DependencyInjectionTestExecutionListener.class,
+		MockitoTestExecutionListener.class,
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
+public class ExperimentsRestControllerTest
+	implements OSBAsahBackendSpringTestContext {
 
 	@ElasticsearchIndex(
 		name = "experiments", resourcePath = "experiments.json",
@@ -61,7 +73,7 @@ public class ExperimentsRestControllerTest {
 	public void testDeleteExperiment() {
 		_experimentsRestController.deleteExperiment(1L);
 
-		Assert.assertNull(_experimentDog.fetchExperiment(1L));
+		Assertions.assertNull(_experimentDog.fetchExperiment(1L));
 
 		Mockito.verifyZeroInteractions(_dxpClient);
 	}
@@ -84,7 +96,7 @@ public class ExperimentsRestControllerTest {
 		ExperimentDTO actualExperimentDTO =
 			_experimentsRestController.getExperiment(1L);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedExperimentDTO.getName(), actualExperimentDTO.getName());
 		_assertGoalDTO(
 			expectedExperimentDTO.getGoalDTO(),
@@ -115,27 +127,27 @@ public class ExperimentsRestControllerTest {
 		ExperimentDTO actualExperimentDTO =
 			_experimentsRestController.postExperiment(expectedExperimentDTO);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Long.valueOf(12345), actualExperimentDTO.getChannelId());
 
-		Assert.assertNotNull(actualExperimentDTO.getId());
-		Assert.assertEquals(
+		Assertions.assertNotNull(actualExperimentDTO.getId());
+		Assertions.assertEquals(
 			expectedExperimentDTO.getName(), actualExperimentDTO.getName());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedExperimentDTO.getDXPExperienceId(),
 			actualExperimentDTO.getDXPExperienceId());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedExperimentDTO.getDXPExperienceName(),
 			actualExperimentDTO.getDXPExperienceName());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedExperimentDTO.getDXPSegmentId(),
 			actualExperimentDTO.getDXPSegmentId());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedExperimentDTO.getDXPSegmentName(),
 			actualExperimentDTO.getDXPSegmentName());
 	}
 
-	@Test(expected = OSBAsahException.class)
+	@Test
 	public void testPostExperimentEstimatedDaysDurationWithInvalidTrafficSplit() {
 		ExperimentSettings experimentSettings = new ExperimentSettings();
 
@@ -147,8 +159,11 @@ public class ExperimentsRestControllerTest {
 				}
 			});
 
-		_experimentsRestController.postExperimentEstimatedDaysDuration(
-			1L, experimentSettings);
+		Assertions.assertThrows(
+			OSBAsahException.class,
+			() ->
+				_experimentsRestController.postExperimentEstimatedDaysDuration(
+					1L, experimentSettings));
 	}
 
 	@ElasticsearchIndex(
@@ -178,7 +193,7 @@ public class ExperimentsRestControllerTest {
 		ExperimentDTO actualExperimentDTO =
 			_experimentsRestController.getExperiment(1L);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedExperimentVariantsDTO.getExperimentVariantDTOs(),
 			actualExperimentDTO.getExperimentVariantDTOs());
 	}
@@ -207,9 +222,9 @@ public class ExperimentsRestControllerTest {
 	private void _assertGoalDTO(
 		GoalDTO actualGoalDTO, GoalDTO expectedGoalDTO) {
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedGoalDTO.getGoalMetric(), actualGoalDTO.getGoalMetric());
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			expectedGoalDTO.getTarget(), actualGoalDTO.getTarget());
 	}
 

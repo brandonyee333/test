@@ -19,13 +19,16 @@ import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
@@ -34,7 +37,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.web.ServletTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -48,7 +54,17 @@ import org.springframework.test.web.servlet.result.StatusResultMatchers;
  * @author André Miranda
  */
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringExtension.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.REPLACE_DEFAULTS,
+	value = {
+		DependencyInjectionTestExecutionListener.class,
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class,
+		ServletTestExecutionListener.class
+	}
+)
 @TestPropertySource(properties = "osb.asah.security.enabled=false")
 @WebMvcTest(GraphQLRestController.class)
 public abstract class BaseGraphQLRestControllerTestCase {
@@ -74,7 +90,7 @@ public abstract class BaseGraphQLRestControllerTestCase {
 
 			JSONObject responseJSONObject = _request(bodyJSONObject);
 
-			Assert.assertFalse(responseJSONObject.has("errors"));
+			Assertions.assertFalse(responseJSONObject.has("errors"));
 
 			String expectedResultPath = getExpectedResultPath();
 

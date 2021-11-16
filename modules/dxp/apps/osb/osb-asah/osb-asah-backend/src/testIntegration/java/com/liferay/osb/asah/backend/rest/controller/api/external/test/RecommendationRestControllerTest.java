@@ -14,40 +14,38 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.external.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.api.external.RecommendationRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * @author Marcellus Tavares
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class RecommendationRestControllerTest {
+public class RecommendationRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		RequestContextHolder.setRequestAttributes(
 			new ServletRequestAttributes(new MockHttpServletRequest()));
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		RequestContextHolder.resetRequestAttributes();
 	}
@@ -75,7 +73,7 @@ public class RecommendationRestControllerTest {
 					"url", "https://page-a"
 				).toString());
 
-		Assert.assertNotNull(pageRecommendationEntityModel);
+		Assertions.assertNotNull(pageRecommendationEntityModel);
 	}
 
 	@Autowired

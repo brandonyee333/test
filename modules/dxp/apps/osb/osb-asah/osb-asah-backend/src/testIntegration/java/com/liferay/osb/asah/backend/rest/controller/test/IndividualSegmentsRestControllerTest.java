@@ -16,11 +16,11 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.MembershipChangeDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.IndividualSegmentsRestController;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -31,7 +31,7 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Map;
 
@@ -40,22 +40,20 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Vishal Reddy
  * @author Rachael Koestartyo
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class IndividualSegmentsRestControllerTest {
+public class IndividualSegmentsRestControllerTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "channels", resourcePath = "channels_2.json",
@@ -65,13 +63,17 @@ public class IndividualSegmentsRestControllerTest {
 		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@Test(expected = OSBAsahException.class)
+	@Test
 	public void testAssignChannelAlreadyAssigned() throws Exception {
-		_individualSegmentsRestController.assignChannel(
-			1L, 327968823603500655L);
+		Assertions.assertThrows(
+			OSBAsahException.class,
+			() -> {
+				_individualSegmentsRestController.assignChannel(
+					1L, 327968823603500655L);
 
-		_individualSegmentsRestController.assignChannel(
-			1L, 327968823603500655L);
+				_individualSegmentsRestController.assignChannel(
+					1L, 327968823603500655L);
+			});
 	}
 
 	@ElasticsearchIndex(
@@ -100,9 +102,9 @@ public class IndividualSegmentsRestControllerTest {
 		JSONObject individualSegmentJSONObject = _elasticsearchInvoker.fetch(
 			"individual-segments", "366637689379787789");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"1", individualSegmentJSONObject.getString("channelId"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1, individualSegmentJSONObject.getInt("individualCount"));
 	}
 
@@ -134,10 +136,10 @@ public class IndividualSegmentsRestControllerTest {
 		JSONObject individualSegmentJSONObject = _elasticsearchInvoker.get(
 			"individual-segments", "338511451975440187");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"1", individualSegmentJSONObject.optString("channelId"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_elasticsearchInvoker.count(
 				"memberships",
@@ -197,14 +199,14 @@ public class IndividualSegmentsRestControllerTest {
 		JSONArray accountNamesJSONArray = embeddedJSONObject.getJSONArray(
 			"account-names");
 
-		Assert.assertEquals(4, accountNamesJSONArray.length());
-		Assert.assertTrue(
+		Assertions.assertEquals(4, accountNamesJSONArray.length());
+		Assertions.assertTrue(
 			JSONUtil.hasValue(accountNamesJSONArray, "Liferay, Inc."));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			JSONUtil.hasValue(accountNamesJSONArray, "Nozomi Project"));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			JSONUtil.hasValue(accountNamesJSONArray, "The Space Program"));
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			JSONUtil.hasValue(
 				accountNamesJSONArray, "The World's Foremost Chess Club"));
 	}
@@ -269,7 +271,7 @@ public class IndividualSegmentsRestControllerTest {
 		JSONArray individualsJSONArray = embeddedJSONObject.getJSONArray(
 			"individuals");
 
-		Assert.assertEquals(2, individualsJSONArray.length());
+		Assertions.assertEquals(2, individualsJSONArray.length());
 
 		// Does not include anonymous users
 
@@ -282,7 +284,7 @@ public class IndividualSegmentsRestControllerTest {
 
 		individualsJSONArray = embeddedJSONObject.getJSONArray("individuals");
 
-		Assert.assertEquals(1, individualsJSONArray.length());
+		Assertions.assertEquals(1, individualsJSONArray.length());
 	}
 
 	@ElasticsearchIndex(
@@ -325,7 +327,7 @@ public class IndividualSegmentsRestControllerTest {
 		JSONArray membershipChangesJSONArray = embeddedJSONObject.getJSONArray(
 			"membership-changes");
 
-		Assert.assertEquals(2, membershipChangesJSONArray.length());
+		Assertions.assertEquals(2, membershipChangesJSONArray.length());
 
 		// Does not include anonymous users
 
@@ -340,7 +342,7 @@ public class IndividualSegmentsRestControllerTest {
 		membershipChangesJSONArray = embeddedJSONObject.getJSONArray(
 			"memberships");
 
-		Assert.assertEquals(1, membershipChangesJSONArray.length());
+		Assertions.assertEquals(1, membershipChangesJSONArray.length());
 	}
 
 	@ElasticsearchIndex(
@@ -379,7 +381,7 @@ public class IndividualSegmentsRestControllerTest {
 		JSONArray membershipsJSONArray = embeddedJSONObject.getJSONArray(
 			"memberships");
 
-		Assert.assertEquals(2, membershipsJSONArray.length());
+		Assertions.assertEquals(2, membershipsJSONArray.length());
 
 		// Does not include anonymous users
 
@@ -392,7 +394,7 @@ public class IndividualSegmentsRestControllerTest {
 
 		membershipsJSONArray = embeddedJSONObject.getJSONArray("memberships");
 
-		Assert.assertEquals(1, membershipsJSONArray.length());
+		Assertions.assertEquals(1, membershipsJSONArray.length());
 	}
 
 	@Test
@@ -406,7 +408,7 @@ public class IndividualSegmentsRestControllerTest {
 				_objectMapper.convertValue(segment, SegmentDTO.class)),
 			JSONObject.class);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", responseJSONObject.getString("state"));
 	}
 
@@ -421,7 +423,7 @@ public class IndividualSegmentsRestControllerTest {
 				_objectMapper.convertValue(segment, SegmentDTO.class)),
 			JSONObject.class);
 
-		Assert.assertEquals("READY", responseJSONObject.getString("state"));
+		Assertions.assertEquals("READY", responseJSONObject.getString("state"));
 	}
 
 	@ElasticsearchIndex(
@@ -443,7 +445,7 @@ public class IndividualSegmentsRestControllerTest {
 
 		JSONObject dataSourceJSONObject = dataSourcesJSONArray.getJSONObject(0);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			3L,
 			JSONUtil.getValue(
 				_objectMapper.convertValue(
@@ -453,7 +455,7 @@ public class IndividualSegmentsRestControllerTest {
 							null, 0, 10, null),
 					JSONObject.class),
 				"JSONObject/page", "Object/totalElements"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2L,
 			JSONUtil.getValue(
 				_objectMapper.convertValue(
@@ -475,7 +477,7 @@ public class IndividualSegmentsRestControllerTest {
 				segment.getId(), new SegmentDTO(segment)),
 			JSONObject.class);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"IN_PROGRESS", responseJSONObject.getString("state"));
 	}
 
@@ -489,7 +491,7 @@ public class IndividualSegmentsRestControllerTest {
 				segment.getId(), new SegmentDTO(segment)),
 			JSONObject.class);
 
-		Assert.assertEquals("READY", responseJSONObject.getString("state"));
+		Assertions.assertEquals("READY", responseJSONObject.getString("state"));
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
