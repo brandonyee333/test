@@ -37,8 +37,8 @@ Map<String, MetricsModel<?>> metricsModelsMap = MetricsModelRegistryUtil.getMetr
 		>
 
 			<%
-			String modelClassName = (String)metricsModelEntry.getKey();
 			MetricsModel metricsModel = (MetricsModel)metricsModelEntry.getValue();
+			String modelClassName = (String)metricsModelEntry.getKey();
 			%>
 
 			<liferay-ui:search-container-column-text

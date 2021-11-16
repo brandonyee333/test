@@ -71,7 +71,7 @@ request.setAttribute(WebKeys.SEARCH_CONTAINER, structureSearch);
 	</liferay-frontend:management-bar-buttons>
 </liferay-frontend:management-bar>
 
-<aui:form action="<%= portletURL.toString() %>" cssClass="container-fluid-1280" method="post" name="selectStructureFm">
+<aui:form action="<%= portletURL %>" cssClass="container-fluid-1280" method="post" name="selectStructureFm">
 	<liferay-ui:search-container
 		searchContainer="<%= structureSearch %>"
 	>

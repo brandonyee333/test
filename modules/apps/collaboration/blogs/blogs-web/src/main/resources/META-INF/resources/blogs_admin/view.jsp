@@ -38,7 +38,7 @@ portletURL.setParameter("navigation", navigation);
 		<aui:nav-item href="<%= viewImagesURL %>" label="images" selected='<%= navigation.equals("images") %>' />
 	</aui:nav>
 
-	<aui:form action="<%= portletURL.toString() %>" name="searchFm">
+	<aui:form action="<%= portletURL %>" name="searchFm">
 		<aui:nav-bar-search>
 			<liferay-ui:input-search
 				markupView="lexicon"

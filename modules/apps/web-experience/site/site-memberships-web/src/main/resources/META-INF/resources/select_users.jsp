@@ -59,7 +59,7 @@ userSearch.setResults(users);
 
 	<c:if test="<%= (usersCount > 0) || searchTerms.isSearch() %>">
 		<aui:nav-bar-search>
-			<aui:form action="<%= viewUsersURL.toString() %>" name="searchFm">
+			<aui:form action="<%= viewUsersURL %>" name="searchFm">
 				<liferay-ui:input-search
 					autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) %>"
 					markupView="lexicon"

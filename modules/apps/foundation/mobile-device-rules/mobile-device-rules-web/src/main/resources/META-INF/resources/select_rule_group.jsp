@@ -57,7 +57,7 @@ ruleGroupSearch.setResults(mdrRuleGroups);
 	</aui:nav>
 
 	<aui:nav-bar-search>
-		<aui:form action="<%= portletURL.toString() %>" name="searchFm">
+		<aui:form action="<%= portletURL %>" name="searchFm">
 			<liferay-ui:input-search
 				markupView="lexicon"
 			/>
@@ -84,7 +84,7 @@ ruleGroupSearch.setResults(mdrRuleGroups);
 	</liferay-frontend:management-bar>
 </c:if>
 
-<aui:form action="<%= portletURL.toString() %>" cssClass="container-fluid-1280" method="post" name="selectRuleGroupFm">
+<aui:form action="<%= portletURL %>" cssClass="container-fluid-1280" method="post" name="selectRuleGroupFm">
 	<liferay-ui:search-container
 		searchContainer="<%= ruleGroupSearch %>"
 	>

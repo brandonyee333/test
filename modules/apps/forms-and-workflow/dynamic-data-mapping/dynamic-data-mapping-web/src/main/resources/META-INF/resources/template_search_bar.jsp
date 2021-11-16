@@ -52,7 +52,7 @@ if (resourceClassNameId == 0) {
 	</aui:nav>
 
 	<aui:nav-bar-search>
-		<aui:form action="<%= portletURL.toString() %>" method="post" name="searchForm">
+		<aui:form action="<%= portletURL %>" method="post" name="searchForm">
 			<liferay-util:include page="/template_search.jsp" servletContext="<%= application %>" />
 		</aui:form>
 	</aui:nav-bar-search>

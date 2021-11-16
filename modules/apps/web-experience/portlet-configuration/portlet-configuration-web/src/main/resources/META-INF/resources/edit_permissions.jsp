@@ -155,7 +155,7 @@ RoleSearchTerms searchTerms = (RoleSearchTerms)roleSearchContainer.getSearchTerm
 			<portlet:param name="roleTypes" value="<%= roleTypesParam %>" />
 		</portlet:actionURL>
 
-		<aui:form action="<%= updateRolePermissionsURL.toString() %>" cssClass="container-fluid-1280" method="post" name="fm">
+		<aui:form action="<%= updateRolePermissionsURL %>" cssClass="container-fluid-1280" method="post" name="fm">
 			<aui:input name="resourceId" type="hidden" value="<%= resource.getResourceId() %>" />
 
 			<%

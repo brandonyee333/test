@@ -53,7 +53,7 @@ data.put("qa-id", "navigation");
 			portletURL.setParameter("showEditActions", String.valueOf(journalDisplayContext.isShowEditActions()));
 			%>
 
-			<aui:form action="<%= portletURL.toString() %>" method="post" name="fm1">
+			<aui:form action="<%= portletURL %>" method="post" name="fm1">
 				<liferay-ui:input-search
 					markupView="lexicon"
 				/>
@@ -90,7 +90,7 @@ data.put("qa-id", "navigation");
 			PortletURL portletURL = journalDisplayContext.getPortletURL();
 			%>
 
-			<aui:form action="<%= portletURL.toString() %>" method="get" name="fm">
+			<aui:form action="<%= portletURL %>" method="get" name="fm">
 				<aui:input name="<%= ActionRequest.ACTION_NAME %>" type="hidden" />
 				<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 				<aui:input name="groupId" type="hidden" value="<%= scopeGroupId %>" />

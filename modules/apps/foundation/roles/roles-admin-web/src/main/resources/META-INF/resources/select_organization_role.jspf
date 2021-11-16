@@ -60,7 +60,7 @@ if (step == 1) {
 
 <aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
 	<aui:nav-bar-search>
-		<aui:form action="<%= portletURL.toString() %>" name="searchFm">
+		<aui:form action="<%= portletURL %>" name="searchFm">
 			<liferay-ui:input-search
 				markupView="lexicon"
 			/>
@@ -85,7 +85,7 @@ if (step == 1) {
 	</liferay-frontend:management-bar-buttons>
 </liferay-frontend:management-bar>
 
-<aui:form action="<%= portletURL.toString() %>" cssClass="container-fluid-1280" method="post" name="selectOrganizationRoleFm">
+<aui:form action="<%= portletURL %>" cssClass="container-fluid-1280" method="post" name="selectOrganizationRoleFm">
 	<c:choose>
 		<c:when test="<%= step == 1 %>">
 			<aui:input name="organizationId" type="hidden" />

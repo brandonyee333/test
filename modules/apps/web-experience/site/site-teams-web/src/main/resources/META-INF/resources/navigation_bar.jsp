@@ -52,7 +52,7 @@ portletURL.setParameter("teamId", String.valueOf(team.getTeamId()));
 
 	<c:if test="<%= searchEnabled %>">
 		<aui:nav-bar-search>
-			<aui:form action="<%= portletURL.toString() %>" name="searchFm">
+			<aui:form action="<%= portletURL %>" name="searchFm">
 				<liferay-portlet:renderURLParams varImpl="portletURL" />
 
 				<liferay-ui:input-search

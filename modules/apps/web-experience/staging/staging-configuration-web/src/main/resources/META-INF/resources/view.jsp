@@ -220,8 +220,8 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 								<div class="flex-container">
 
 									<%
-									boolean secureConnection = GetterUtil.getBoolean(liveGroupTypeSettings.getProperty("secureConnection"));
 									boolean overrideRemoteSiteURL = GetterUtil.getBoolean(liveGroupTypeSettings.getProperty("setRemoteSiteURL"));
+									boolean secureConnection = GetterUtil.getBoolean(liveGroupTypeSettings.getProperty("secureConnection"));
 									%>
 
 									<span class="flex-item-center staging-configuration-control-label <%= secureConnection ? "staging-configuration-control-label-bold" : StringPool.BLANK %>">

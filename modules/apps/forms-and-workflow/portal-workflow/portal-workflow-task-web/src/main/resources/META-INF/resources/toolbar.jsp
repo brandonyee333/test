@@ -31,7 +31,7 @@ portletURL.setParameter("tabs1", tabs1);
 	</aui:nav>
 
 	<aui:nav-bar-search>
-		<aui:form action="<%= portletURL.toString() %>" method="post" name="fm1">
+		<aui:form action="<%= portletURL %>" method="post" name="fm1">
 			<liferay-ui:search-form
 				page="/search.jsp"
 				servletContext="<%= application %>"

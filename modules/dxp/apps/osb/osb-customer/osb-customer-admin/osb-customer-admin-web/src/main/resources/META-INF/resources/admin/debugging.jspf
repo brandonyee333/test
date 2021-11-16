@@ -22,8 +22,8 @@
 
 <%
 Properties licenseProperties = (Properties)request.getAttribute("licenseProperties");
-Properties serverProperties = (Properties)request.getAttribute("serverProperties");
 Properties serverIdProperties = (Properties)request.getAttribute("serverIdProperties");
+Properties serverProperties = (Properties)request.getAttribute("serverProperties");
 %>
 
 <c:if test="<%= licenseProperties != null %>">

@@ -84,8 +84,8 @@
 				<span class="bold uppercase"><liferay-ui:message key="lifetime" />:</span>
 
 				<%
-				Date startDate = licenseKey.getStartDate();
 				Date expirationDate = licenseKey.getExpirationDate();
+				Date startDate = licenseKey.getStartDate();
 				%>
 
 				<%= (expirationDate.getTime() - startDate.getTime()) / Time.DAY %> <liferay-ui:message key="days" />

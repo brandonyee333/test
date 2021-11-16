@@ -101,7 +101,7 @@ TemplateSearchTerms templateSearchTerms = (TemplateSearchTerms)templateSearch.ge
 	</c:choose>
 </c:if>
 
-<aui:form action="<%= viewTemplateURL.toString() %>" method="post" name="fm">
+<aui:form action="<%= viewTemplateURL %>" method="post" name="fm">
 	<liferay-util:include page="/template_toolbar.jsp" servletContext="<%= application %>">
 		<liferay-util:param name="searchContainerId" value="ddmTemplates" />
 	</liferay-util:include>

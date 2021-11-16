@@ -114,7 +114,7 @@ request.setAttribute("edit_roles.jsp-portletURL", portletURL);
 	</aui:nav>
 
 	<aui:nav-bar-search>
-		<aui:form action="<%= portletURL.toString() %>" name="searchFm">
+		<aui:form action="<%= portletURL %>" name="searchFm">
 			<liferay-ui:input-search
 				autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) %>"
 				markupView="lexicon"
@@ -124,7 +124,7 @@ request.setAttribute("edit_roles.jsp-portletURL", portletURL);
 	</aui:nav-bar-search>
 </aui:nav-bar>
 
-<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
+<aui:form action="<%= portletURL %>" method="post" name="fm">
 	<aui:input name="tabs1" type="hidden" value="<%= tabs1 %>" />
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="groupId" type="hidden" value="<%= String.valueOf(group.getGroupId()) %>" />

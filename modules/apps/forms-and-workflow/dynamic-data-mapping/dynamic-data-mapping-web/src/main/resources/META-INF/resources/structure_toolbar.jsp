@@ -34,7 +34,7 @@ long classPK = ParamUtil.getLong(request, "classPK");
 	</aui:nav>
 
 	<aui:nav-bar-search searchContainer="<%= searchContainer %>">
-		<aui:form action="<%= searchURL.toString() %>" method="post" name="searchForm">
+		<aui:form action="<%= searchURL %>" method="post" name="searchForm">
 			<liferay-util:include page="/structure_search.jsp" servletContext="<%= application %>" />
 		</aui:form>
 	</aui:nav-bar-search>

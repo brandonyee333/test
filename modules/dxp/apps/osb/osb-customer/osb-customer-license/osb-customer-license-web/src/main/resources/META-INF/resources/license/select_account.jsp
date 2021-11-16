@@ -25,7 +25,7 @@ portletURL.setParameter("mvcPath", "/license/select_account.jsp");
 portletURL.setParameter("callback", callback);
 %>
 
-<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
+<aui:form action="<%= portletURL %>" method="post" name="fm">
 	<liferay-ui:tabs
 		names="accounts"
 	/>

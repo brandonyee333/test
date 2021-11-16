@@ -77,7 +77,7 @@ viewURL.setParameter("mvcRenderCommandName", "/shopping/view");
 		%>
 
 		<aui:nav-bar-search>
-			<aui:form action="<%= searchURL.toString() %>" name="searchFm">
+			<aui:form action="<%= searchURL %>" name="searchFm">
 				<liferay-ui:input-search
 					markupView="lexicon"
 				/>

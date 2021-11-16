@@ -52,7 +52,7 @@ userGroupSearch.setResults(userGroups);
 
 	<c:if test="<%= (userGroupsCount > 0) || searchTerms.isSearch() %>">
 		<aui:nav-bar-search>
-			<aui:form action="<%= viewUserGroupsURL.toString() %>" name="searchFm">
+			<aui:form action="<%= viewUserGroupsURL %>" name="searchFm">
 				<liferay-ui:input-search
 					autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) %>"
 					markupView="lexicon"

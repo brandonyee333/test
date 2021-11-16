@@ -95,7 +95,7 @@ couponSearch.setResults(coupons);
 	<portlet:param name="redirect" value="<%= currentURL %>" />
 </portlet:actionURL>
 
-<aui:form action="<%= editCouponURL.toString() %>" cssClass="container-fluid-1280" method="post" name="fm">
+<aui:form action="<%= editCouponURL %>" cssClass="container-fluid-1280" method="post" name="fm">
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.DELETE %>" />
 
 	<liferay-ui:search-container

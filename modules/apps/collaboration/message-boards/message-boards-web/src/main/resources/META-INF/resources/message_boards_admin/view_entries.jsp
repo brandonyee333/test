@@ -88,7 +88,7 @@ boolean portletTitleBasedNavigation = GetterUtil.getBoolean(portletConfig.getIni
 		/>
 	</c:if>
 
-	<aui:form action="<%= portletURL.toString() %>" method="get" name="fm">
+	<aui:form action="<%= portletURL %>" method="get" name="fm">
 		<aui:input name="<%= Constants.CMD %>" type="hidden" />
 
 		<liferay-ui:search-container

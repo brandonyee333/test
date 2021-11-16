@@ -30,7 +30,7 @@ String eventName = ParamUtil.getString(request, "eventName", liferayPortletRespo
 	<portlet:param name="includeBasicFileEntryType" value="<%= Boolean.TRUE.toString() %>" />
 </liferay-portlet:renderURL>
 
-<aui:form action="<%= portletURL.toString() %>" method="post" name="selectFileEntryTypeFm">
+<aui:form action="<%= portletURL %>" method="post" name="selectFileEntryTypeFm">
 	<liferay-ui:search-container
 		searchContainer='<%= new SearchContainer(renderRequest, new DisplayTerms(request), new DisplayTerms(request), SearchContainer.DEFAULT_CUR_PARAM, SearchContainer.DEFAULT_DELTA, portletURL, null, LanguageUtil.get(request, "there-are-no-results")) %>'
 	>

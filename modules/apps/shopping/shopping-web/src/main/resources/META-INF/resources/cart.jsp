@@ -331,9 +331,9 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 		<aui:fieldset>
 
 			<%
-			double subtotal = ShoppingUtil.calculateSubtotal(items);
 			double actualSubtotal = ShoppingUtil.calculateActualSubtotal(items);
 			double discountSubtotal = ShoppingUtil.calculateDiscountSubtotal(items);
+			double subtotal = ShoppingUtil.calculateSubtotal(items);
 			%>
 
 			<c:choose>

@@ -61,7 +61,7 @@ structureSearch.setOrderByType(ddmDisplayContext.getOrderByType());
 	<liferay-util:param name="groupId" value="<%= String.valueOf(groupId) %>" />
 </liferay-util:include>
 
-<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
+<aui:form action="<%= portletURL %>" method="post" name="fm">
 	<liferay-util:include page="/toolbar.jsp" servletContext="<%= application %>">
 		<liferay-util:param name="orderByCol" value="<%= ddmDisplayContext.getOrderByCol() %>" />
 		<liferay-util:param name="orderByType" value="<%= ddmDisplayContext.getOrderByType() %>" />

@@ -65,7 +65,7 @@ organizationSearch.setTotal(organizationsCount);
 
 	<c:if test="<%= (organizationsCount > 0) || searchTerms.isSearch() %>">
 		<aui:nav-bar-search>
-			<aui:form action="<%= viewOrganizationsURL.toString() %>" name="searchFm">
+			<aui:form action="<%= viewOrganizationsURL %>" name="searchFm">
 				<liferay-ui:input-search
 					autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) %>"
 					markupView="lexicon"

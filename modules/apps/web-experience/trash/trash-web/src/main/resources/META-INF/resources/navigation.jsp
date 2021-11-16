@@ -26,7 +26,7 @@
 	<aui:nav-bar-search>
 		<liferay-portlet:renderURL varImpl="searchURL" />
 
-		<aui:form action="<%= searchURL.toString() %>" method="get" name="searchFm">
+		<aui:form action="<%= searchURL %>" method="get" name="searchFm">
 			<liferay-portlet:renderURLParams varImpl="searchURL" />
 			<aui:input name="redirect" type="hidden" value='<%= ParamUtil.getString(request, "redirect") %>' />
 			<aui:input name="deleteTrashEntryIds" type="hidden" />

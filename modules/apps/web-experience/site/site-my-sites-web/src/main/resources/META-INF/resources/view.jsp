@@ -128,7 +128,7 @@ Map<Long, Integer> groupUsersCounts = UserLocalServiceUtil.searchCounts(company.
 	</liferay-frontend:management-bar-filters>
 </liferay-frontend:management-bar>
 
-<aui:form action="<%= portletURL.toString() %>" cssClass="container-fluid-1280" method="get" name="fm">
+<aui:form action="<%= portletURL %>" cssClass="container-fluid-1280" method="get" name="fm">
 	<liferay-ui:search-container
 		searchContainer="<%= groupSearch %>"
 	>

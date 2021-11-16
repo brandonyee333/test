@@ -125,7 +125,7 @@ else {
 			<portlet:param name="mvcPath" value="/view_search_results.jsp" />
 		</liferay-portlet:renderURL>
 
-		<aui:form action="<%= searchURL.toString() %>" method="get" name="fm1">
+		<aui:form action="<%= searchURL %>" method="get" name="fm1">
 			<liferay-portlet:renderURLParams varImpl="searchURL" />
 
 			<liferay-ui:input-search

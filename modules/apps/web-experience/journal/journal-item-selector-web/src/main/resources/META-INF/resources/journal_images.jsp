@@ -17,8 +17,8 @@
 <%@ include file="/init.jsp" %>
 
 <%
-JournalItemSelectorViewDisplayContext journalItemSelectorViewDisplayContext = (JournalItemSelectorViewDisplayContext)request.getAttribute(JournalItemSelectorView.JOURNAL_ITEM_SELECTOR_VIEW_DISPLAY_CONTEXT);
 String[] imageExtensions = PrefsPropsUtil.getStringArray(PropsKeys.JOURNAL_IMAGE_EXTENSIONS, StringPool.COMMA);
+JournalItemSelectorViewDisplayContext journalItemSelectorViewDisplayContext = (JournalItemSelectorViewDisplayContext)request.getAttribute(JournalItemSelectorView.JOURNAL_ITEM_SELECTOR_VIEW_DISPLAY_CONTEXT);
 %>
 
 <div class="container-fluid-1280 lfr-item-viewer" id="itemSelectorUploadContainer">

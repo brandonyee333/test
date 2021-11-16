@@ -53,7 +53,7 @@ roleSearch.setResults(roles);
 
 	<c:if test="<%= (rolesCount > 0) || searchTerms.isSearch() %>">
 		<aui:nav-bar-search>
-			<aui:form action="<%= portletURL.toString() %>" name="searchFm">
+			<aui:form action="<%= portletURL %>" name="searchFm">
 				<liferay-ui:input-search
 					autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) %>"
 					markupView="lexicon"

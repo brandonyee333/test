@@ -27,7 +27,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 		<liferay-ui:message key="select-an-account" />
 	</h1>
 
-	<aui:form action="<%= portletURL.toString() %>" method="post" name="searchFm">
+	<aui:form action="<%= portletURL %>" method="post" name="searchFm">
 		<liferay-ui:input-search
 			markupView="lexicon"
 			placeholder='<%= LanguageUtil.get(request, "search-accounts") %>'

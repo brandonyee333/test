@@ -33,7 +33,7 @@ long folderId = GetterUtil.getLong((String)request.getAttribute("view.jsp-folder
 				<portlet:param name="folderId" value="<%= String.valueOf(folderId) %>" />
 			</liferay-portlet:renderURL>
 
-			<aui:form action="<%= searchURL.toString() %>" name="searchFm">
+			<aui:form action="<%= searchURL %>" name="searchFm">
 				<liferay-ui:input-search
 					markupView="lexicon"
 				/>

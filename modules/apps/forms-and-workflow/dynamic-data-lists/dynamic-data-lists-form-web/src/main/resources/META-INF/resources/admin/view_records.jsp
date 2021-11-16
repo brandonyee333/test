@@ -73,7 +73,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "form-entries"));
 </liferay-frontend:management-bar>
 
 <div class="container-fluid-1280" id="<portlet:namespace />viewEntriesContainer">
-	<aui:form action="<%= searchURL.toString() %>" method="post" name="searchContainerForm">
+	<aui:form action="<%= searchURL %>" method="post" name="searchContainerForm">
 		<aui:input name="deleteRecordIds" type="hidden" />
 
 		<liferay-ui:search-container

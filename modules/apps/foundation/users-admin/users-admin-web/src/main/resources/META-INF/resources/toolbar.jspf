@@ -43,7 +43,7 @@
 	</aui:nav>
 
 	<aui:nav-bar-search>
-		<aui:form action="<%= portletURL.toString() %>" name="searchFm">
+		<aui:form action="<%= portletURL %>" name="searchFm">
 			<c:if test="<%= usersListView.equals(UserConstants.LIST_VIEW_FLAT_USERS) %>">
 				<aui:input name="navigation" type="hidden" value='<%= ParamUtil.getString(request, "navigation") %>' />
 			</c:if>

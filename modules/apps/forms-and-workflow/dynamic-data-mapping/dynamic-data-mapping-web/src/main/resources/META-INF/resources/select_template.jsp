@@ -63,7 +63,7 @@ templateSearch.setOrderByType(ddmDisplayContext.getOrderByType());
 	<liferay-util:param name="eventName" value="<%= eventName %>" />
 </liferay-util:include>
 
-<aui:form action="<%= selectURL.toString() %>" method="post" name="selectTemplateFm">
+<aui:form action="<%= selectURL %>" method="post" name="selectTemplateFm">
 	<aui:input name="templateId" type="hidden" value="<%= String.valueOf(templateId) %>" />
 	<aui:input name="classNameId" type="hidden" value="<%= String.valueOf(classNameId) %>" />
 	<aui:input name="classPK" type="hidden" value="<%= String.valueOf(classPK) %>" />

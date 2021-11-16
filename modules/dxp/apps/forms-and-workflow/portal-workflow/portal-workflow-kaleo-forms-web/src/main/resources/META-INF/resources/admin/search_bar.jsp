@@ -16,17 +16,13 @@
 
 <%@ include file="/admin/init.jsp" %>
 
-<%
-PortletURL portletURL = kaleoFormsAdminDisplayContext.getPortletURL();
-%>
-
 <aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
 	<aui:nav cssClass="navbar-nav">
 		<aui:nav-item label="processes" selected="<%= true %>" />
 	</aui:nav>
 
 	<aui:nav-bar-search>
-		<aui:form action="<%= portletURL.toString() %>" method="post" name="fm1">
+		<aui:form action="<%= kaleoFormsAdminDisplayContext.getPortletURL() %>" method="post" name="fm1">
 			<liferay-ui:input-search
 				markupView="lexicon"
 			/>

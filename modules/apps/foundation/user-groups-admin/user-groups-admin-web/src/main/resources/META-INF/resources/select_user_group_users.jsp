@@ -59,7 +59,7 @@ RowChecker rowChecker = new SetUserUserGroupChecker(renderResponse, userGroup);
 	</aui:nav>
 
 	<aui:nav-bar-search>
-		<aui:form action="<%= portletURL.toString() %>" name="searchFm">
+		<aui:form action="<%= portletURL %>" name="searchFm">
 			<liferay-ui:input-search
 				markupView="lexicon"
 			/>

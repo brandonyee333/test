@@ -18,12 +18,11 @@
 
 <%
 DDMDataProviderDisplayTerms displayTerms = new DDMDataProviderDisplayTerms(renderRequest);
-PortletURL portletURL = ddmDataProviderDisplayContext.getPortletURL();
 %>
 
 <aui:nav-bar cssClass="collapse-basic-search" id="toolbar" markupView="lexicon">
 	<aui:nav-bar-search>
-		<aui:form action="<%= portletURL.toString() %>" method="post" name="fm1">
+		<aui:form action="<%= ddmDataProviderDisplayContext.getPortletURL() %>" method="post" name="fm1">
 			<liferay-ui:search-toggle
 				autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) %>"
 				buttonLabel="search"

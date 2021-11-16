@@ -35,7 +35,7 @@ portletURL.setParameter("eventName", eventName);
 
 <aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
 	<aui:nav-bar-search>
-		<aui:form action="<%= portletURL.toString() %>" name="searchFm">
+		<aui:form action="<%= portletURL %>" name="searchFm">
 			<liferay-ui:input-search
 				markupView="lexicon"
 			/>
@@ -60,7 +60,7 @@ portletURL.setParameter("eventName", eventName);
 	</liferay-frontend:management-bar-buttons>
 </liferay-frontend:management-bar>
 
-<aui:form action="<%= portletURL.toString() %>" cssClass="container-fluid-1280" method="post" name="selectRegularRoleFm">
+<aui:form action="<%= portletURL %>" cssClass="container-fluid-1280" method="post" name="selectRegularRoleFm">
 	<liferay-ui:search-container
 		headerNames="name"
 		searchContainer="<%= new RoleSearch(renderRequest, portletURL) %>"

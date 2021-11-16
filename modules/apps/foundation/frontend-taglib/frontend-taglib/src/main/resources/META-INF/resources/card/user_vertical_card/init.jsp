@@ -20,8 +20,8 @@
 String colorCssClass = (String)request.getAttribute("liferay-frontend:card:colorCssClass");
 String footer = (String)request.getAttribute("liferay-frontend:card:footer");
 String header = (String)request.getAttribute("liferay-frontend:card:header");
+String portraitURL = (String)request.getAttribute("liferay-frontend:card:portraitURL");
 String subtitle = (String)request.getAttribute("liferay-frontend:card:subtitle");
 String title = (String)request.getAttribute("liferay-frontend:card:title");
-String portraitURL = (String)request.getAttribute("liferay-frontend:card:portraitURL");
 String userInitials = (String)request.getAttribute("liferay-frontend:card:userInitials");
 %>

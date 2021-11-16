@@ -67,7 +67,7 @@ viewDefinitionsURL.setParameter("navigation", "definitions");
 	</aui:nav>
 
 	<aui:nav-bar-search>
-		<aui:form action="<%= searchURL.toString() %>" method="post" name="fm1">
+		<aui:form action="<%= searchURL %>" method="post" name="fm1">
 			<liferay-util:include page="/workflow_definition_search.jsp" servletContext="<%= application %>" />
 		</aui:form>
 	</aui:nav-bar-search>

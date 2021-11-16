@@ -28,7 +28,7 @@ portletURL.setParameter("mvcPath", "/view.jsp");
 	</aui:nav>
 
 	<aui:nav-bar-search>
-		<aui:form action="<%= portletURL.toString() %>" method="post" name="fm1">
+		<aui:form action="<%= portletURL %>" method="post" name="fm1">
 			<liferay-util:include page="/record_set_search.jsp" servletContext="<%= application %>" />
 		</aui:form>
 	</aui:nav-bar-search>

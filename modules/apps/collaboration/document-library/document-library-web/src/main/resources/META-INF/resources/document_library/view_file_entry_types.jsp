@@ -35,7 +35,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "document-types"));
 	</liferay-portlet:renderURL>
 
 	<aui:nav-bar-search>
-		<aui:form action="<%= searchURL.toString() %>" method="post" name="fm">
+		<aui:form action="<%= searchURL %>" method="post" name="fm">
 			<liferay-ui:input-search
 				markupView="lexicon"
 			/>

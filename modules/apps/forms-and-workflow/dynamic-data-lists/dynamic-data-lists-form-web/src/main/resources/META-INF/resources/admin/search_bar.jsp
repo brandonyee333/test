@@ -16,10 +16,6 @@
 
 <%@ include file="/admin/init.jsp" %>
 
-<%
-PortletURL portletURL = ddlFormAdminDisplayContext.getPortletURL();
-%>
-
 <aui:nav-bar cssClass="collapse-basic-search" id="toolbar" markupView="lexicon">
 	<aui:nav cssClass="navbar-nav">
 		<aui:nav-item label="forms" selected="<%= true %>" />
@@ -27,7 +23,7 @@ PortletURL portletURL = ddlFormAdminDisplayContext.getPortletURL();
 
 	<c:if test="<%= ddlFormAdminDisplayContext.isShowSearch() %>">
 		<aui:nav-bar-search>
-			<aui:form action="<%= portletURL.toString() %>" method="post" name="fm1">
+			<aui:form action="<%= ddlFormAdminDisplayContext.getPortletURL() %>" method="post" name="fm1">
 				<liferay-ui:input-search
 					markupView="lexicon"
 				/>

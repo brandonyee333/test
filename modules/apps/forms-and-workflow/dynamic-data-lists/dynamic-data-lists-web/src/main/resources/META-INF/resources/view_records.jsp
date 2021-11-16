@@ -96,7 +96,7 @@ recordSearchContainer.setOrderByType(ddlViewRecordsDisplayContext.getOrderByType
 			<portlet:param name="recordSetId" value="<%= String.valueOf(recordSet.getRecordSetId()) %>" />
 		</portlet:renderURL>
 
-		<aui:form action="<%= searchURL.toString() %>" name="fm1">
+		<aui:form action="<%= searchURL %>" name="fm1">
 			<liferay-ui:input-search
 				autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) %>"
 				markupView="lexicon"
@@ -136,7 +136,7 @@ recordSearchContainer.setOrderByType(ddlViewRecordsDisplayContext.getOrderByType
 </liferay-frontend:management-bar>
 
 <div class="container-fluid-1280 view-records-container" id="<portlet:namespace />formContainer">
-	<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
+	<aui:form action="<%= portletURL %>" method="post" name="fm">
 		<aui:input name="recordIds" type="hidden" />
 
 		<liferay-ui:search-container

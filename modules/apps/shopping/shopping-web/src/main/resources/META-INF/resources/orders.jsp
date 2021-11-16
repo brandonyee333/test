@@ -25,7 +25,7 @@ portletURL.setParameter("tabs1", "order");
 
 <liferay-util:include page="/tabs1.jsp" servletContext="<%= application %>" />
 
-<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
+<aui:form action="<%= portletURL %>" method="post" name="fm">
 	<aui:input name="<%= Constants.CMD %>" type="hidden" />
 	<aui:input name="deleteOrderIds" type="hidden" />
 

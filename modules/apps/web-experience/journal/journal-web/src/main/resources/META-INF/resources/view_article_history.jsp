@@ -123,7 +123,7 @@ JournalArticle article = journalDisplayContext.getArticle();
 			</liferay-frontend:management-bar-action-buttons>
 		</liferay-frontend:management-bar>
 
-		<aui:form action="<%= portletURL.toString() %>" cssClass="container-fluid-1280" method="post" name="fm">
+		<aui:form action="<%= portletURL %>" cssClass="container-fluid-1280" method="post" name="fm">
 			<aui:input name="referringPortletResource" type="hidden" value="<%= referringPortletResource %>" />
 			<aui:input name="groupId" type="hidden" value="<%= String.valueOf(article.getGroupId()) %>" />
 

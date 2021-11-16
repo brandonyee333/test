@@ -67,7 +67,7 @@ RowChecker rowChecker = new UserGroupTeamChecker(renderResponse, team);
 
 	<c:if test="<%= (userGroupsCount > 0) || searchTerms.isSearch() %>">
 		<aui:nav-bar-search>
-			<aui:form action="<%= portletURL.toString() %>" name="searchFm">
+			<aui:form action="<%= portletURL %>" name="searchFm">
 				<liferay-ui:input-search
 					markupView="lexicon"
 				/>

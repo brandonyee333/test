@@ -55,7 +55,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "feeds"));
 
 	<c:if test="<%= (feedsCount > 0) || searchTerms.isSearch() %>">
 		<aui:nav-bar-search>
-			<aui:form action="<%= portletURL.toString() %>" method="post" name="searchFm">
+			<aui:form action="<%= portletURL %>" method="post" name="searchFm">
 				<liferay-ui:input-search
 					markupView="lexicon"
 				/>

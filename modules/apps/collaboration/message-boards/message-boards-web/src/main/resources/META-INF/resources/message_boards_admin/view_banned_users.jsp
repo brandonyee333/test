@@ -71,7 +71,7 @@ int totalBannedUsers = MBBanLocalServiceUtil.getBansCount(scopeGroupId);
 </liferay-frontend:management-bar>
 
 <div class="container-fluid-1280">
-	<aui:form action="<%= portletURL.toString() %>" method="get" name="fm">
+	<aui:form action="<%= portletURL %>" method="get" name="fm">
 		<aui:input name="<%= Constants.CMD %>" type="hidden" />
 		<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 

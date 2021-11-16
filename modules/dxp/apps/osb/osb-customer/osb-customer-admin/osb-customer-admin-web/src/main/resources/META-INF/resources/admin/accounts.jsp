@@ -20,7 +20,7 @@
 PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 %>
 
-<aui:form action="<%= portletURL.toString() %>" method="post">
+<aui:form action="<%= portletURL %>" method="post">
 	<liferay-ui:search-container
 		searchContainer="<%= new AccountEntrySearch(renderRequest, portletURL) %>"
 	>

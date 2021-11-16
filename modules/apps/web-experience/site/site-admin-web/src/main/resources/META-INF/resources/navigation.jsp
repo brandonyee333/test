@@ -30,7 +30,7 @@ pageContext.setAttribute("searchURL", searchURL);
 	</aui:nav>
 
 	<aui:nav-bar-search>
-		<aui:form action="<%= searchURL.toString() %>" name="searchFm">
+		<aui:form action="<%= searchURL %>" name="searchFm">
 			<liferay-portlet:renderURLParams varImpl="searchURL" />
 
 			<liferay-ui:input-search
