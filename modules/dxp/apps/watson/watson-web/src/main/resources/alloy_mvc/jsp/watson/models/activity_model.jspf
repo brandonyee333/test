@@ -229,16 +229,11 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 
 		watsonActivity.setWatsonIncidentId(watsonIncidentId);
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler sb = new StringBundler(3);
 
-		sb.append(StringPool.LESS_THAN);
-		sb.append("p");
-		sb.append(StringPool.GREATER_THAN);
+		sb.append("<p>");
 		sb.append(ParamUtil.getString(request, "description"));
-		sb.append(StringPool.LESS_THAN);
-		sb.append(StringPool.FORWARD_SLASH);
-		sb.append("p");
-		sb.append(StringPool.GREATER_THAN);
+		sb.append("</p>");
 
 		String narrative = sb.toString();
 

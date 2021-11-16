@@ -97,16 +97,11 @@ public static class WatsonDataMigrationUtil {
 			watsonActivity.setTypeWatsonListTypeId(WatsonListType.ACTIVITY_TYPE_INTERVIEW);
 			watsonActivity.setWatsonIncidentId(watsonIncident.getWatsonIncidentId());
 
-			StringBundler sb = new StringBundler(8);
+			StringBundler sb = new StringBundler(3);
 
-			sb.append(StringPool.LESS_THAN);
-			sb.append("p");
-			sb.append(StringPool.GREATER_THAN);
+			sb.append("<p>");
 			sb.append(StringUtil.replace(csvRecord.get("description"), CharPool.TAB, StringPool.SPACE));
-			sb.append(StringPool.LESS_THAN);
-			sb.append(StringPool.FORWARD_SLASH);
-			sb.append("p");
-			sb.append(StringPool.GREATER_THAN);
+			sb.append("</p>");
 
 			watsonActivity.setNarrative(sb.toString(), locale);
 
