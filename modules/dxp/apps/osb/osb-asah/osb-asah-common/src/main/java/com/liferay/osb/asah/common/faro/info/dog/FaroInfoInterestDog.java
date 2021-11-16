@@ -61,7 +61,7 @@ public class FaroInfoInterestDog extends BaseFaroInfoDog {
 		}
 	}
 
-	@CacheEvict({"getInterests", "getInterestTransformations"})
+	@CacheEvict({"getInterestDTOsPageDTO", "getInterestTransformations"})
 	public void clearCache() {
 	}
 
