@@ -204,8 +204,8 @@ definition {
 			webContentStatus = "Pending",
 			webContentTitle = "EXAMPLE");
 
- 		WebContent.viewStatus(
- 			webContentContent = "WC WebContent Content",
+		WebContent.viewStatus(
+			webContentContent = "WC WebContent Content",
 			webContentStatus = "Pending (Review)",
 			webContentTitle = "EXAMPLE");
 
@@ -246,8 +246,8 @@ definition {
 			webContentStatus = "Draft",
 			webContentTitle = "EXAMPLE");
 
- 		WebContent.viewStatus(
- 			webContentContent = "WC WebContent Content",
+		WebContent.viewStatus(
+			webContentContent = "WC WebContent Content",
 			webContentStatus = "Draft",
 			webContentTitle = "EXAMPLE");
 	}
