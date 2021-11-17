@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.repository.test;
 
+import com.liferay.osb.asah.backend.OSBAsahBackendTrinoSpringTestContext;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.Metric;
@@ -25,6 +26,9 @@ import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -38,23 +42,34 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.mockito.Mockito;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.TestExecutionListeners;
 
 /**
  * @author Marcellus Tavares
  */
-public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+	value = {
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class
+	}
+)
+public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>
+	implements OSBAsahBackendTrinoSpringTestContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		Mockito.when(
 			_timeZoneDog.getTimeZoneId()
@@ -71,7 +86,7 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 		TimeZoneDogUtil.setTimeZoneDog(_timeZoneDog);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		TimeZoneDogUtil.setTimeZoneDog(null);
 	}
@@ -80,12 +95,12 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 		Double[] expectedMetricValues, List<T> metrics,
 		Function<T, Metric> mapperFunction) {
 
-		Assert.assertEquals(
-			metrics.toString(), expectedMetricValues.length, metrics.size());
+		Assertions.assertEquals(
+			expectedMetricValues.length, metrics.size(), metrics.toString());
 
 		Stream<T> stream = metrics.stream();
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new Double[] {7D, 6D},
 			Matchers.arrayContainingInAnyOrder(
 				stream.map(
@@ -104,7 +119,7 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 
 		Stream<String> stream = canonicalUrls.stream();
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			new String[] {
 				"https://www.beryl.com/products/commercial/irrigation",
 				"https://www.beryl.com/delivery",
@@ -119,17 +134,17 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 		AssetMetricRepository<T> assetMetricRepository =
 			getAssetMetricRepository();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			assetMetricRepository.getIndividualsCount(
 				"e131fabc", 1L, false, metricType, timeRange),
 			0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			assetMetricRepository.getIndividualsCount(
 				"e131fabc", 1L, true, metricType, timeRange),
 			0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			4,
 			assetMetricRepository.getIndividualsCount(
 				"e131fabc", 1L, null, metricType, timeRange),
@@ -142,12 +157,12 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 		AssetMetricRepository<T> assetMetricRepository =
 			getAssetMetricRepository();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			assetMetricRepository.getSegmentedIndividualsCount(
 				"e131fabc", 1L, metricType, timeRange),
 			0);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			3,
 			assetMetricRepository.getNonsegmentedIndividualsCount(
 				"e131fabc", 1L, metricType, timeRange),
@@ -171,10 +186,10 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 		Set<Double> expectedMetricValues,
 		List<HistogramMetric> histogramMetrics) {
 
-		Assert.assertEquals(
-			histogramMetrics.toString(), expectedMetricValues.size(),
-			histogramMetrics.size());
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			expectedMetricValues.size(), histogramMetrics.size(),
+			histogramMetrics.toString());
+		Assertions.assertEquals(
 			expectedMetricValues,
 			SetUtil.map(histogramMetrics, HistogramMetric::getValue));
 	}
@@ -208,9 +223,9 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 				assetId, channelId, Interval.HOUR, metricType,
 				TimeRange.LAST_24_HOURS));
 
-		Assert.assertEquals(
-			shiftedLocalDateTimes.toString(), localDateTimes.size(),
-			shiftedLocalDateTimes.size());
+		Assertions.assertEquals(
+			localDateTimes.size(), shiftedLocalDateTimes.size(),
+			shiftedLocalDateTimes.toString());
 
 		for (int i = 0; i < localDateTimes.size(); i++) {
 
@@ -219,15 +234,15 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 			Duration duration = Duration.between(
 				localDateTimes.get(i), shiftedLocalDateTimes.get(i));
 
-			Assert.assertEquals(timeZoneDifference, duration.toHours());
+			Assertions.assertEquals(timeZoneDifference, duration.toHours());
 		}
 	}
 
 	protected void assertMetrics(
 		List<Tuple2<String, Double>> expectedMetrics, List<Metric> metrics) {
 
-		Assert.assertEquals(
-			metrics.toString(), expectedMetrics.size(), metrics.size());
+		Assertions.assertEquals(
+			expectedMetrics.size(), metrics.size(), metrics.toString());
 
 		for (int i = 0; i < expectedMetrics.size(); i++) {
 			Tuple2<String, Double> expectedMetricTuple2 = expectedMetrics.get(
@@ -235,9 +250,9 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric> {
 
 			Metric metric = metrics.get(i);
 
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				expectedMetricTuple2.getT1(), metric.getValueKey());
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				expectedMetricTuple2.getT2(), metric.getValue(), 0);
 		}
 	}

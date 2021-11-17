@@ -18,38 +18,25 @@ import com.liferay.osb.asah.backend.model.DocumentLibraryMetric;
 import com.liferay.osb.asah.backend.model.DocumentLibraryMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
-import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@DirtiesContext
-@Import(JDBCTestConfiguration.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(properties = "osb.asah.trino.enabled=true")
 @SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
 public class DocumentLibraryAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase<DocumentLibraryMetric> {
@@ -129,11 +116,11 @@ public class DocumentLibraryAssetMetricRepositoryTest
 				SetUtil.of(DocumentLibraryMetricType.PREVIEWS.getName()),
 				TimeRange.LAST_24_HOURS);
 
-		Assert.assertNotNull(documentLibraryMetric);
+		Assertions.assertNotNull(documentLibraryMetric);
 
 		Metric previewsMetric = documentLibraryMetric.getPreviewsMetric();
 
-		Assert.assertEquals(7D, previewsMetric.getValue(), 0);
+		Assertions.assertEquals(7D, previewsMetric.getValue(), 0);
 	}
 
 	@SQLResource(
@@ -200,11 +187,11 @@ public class DocumentLibraryAssetMetricRepositoryTest
 				SetUtil.of(DocumentLibraryMetricType.RATINGS.getName()),
 				TimeRange.LAST_24_HOURS);
 
-		Assert.assertNotNull(documentLibraryMetric);
+		Assertions.assertNotNull(documentLibraryMetric);
 
 		Metric ratingsMetric = documentLibraryMetric.getRatingsMetric();
 
-		Assert.assertEquals(2.33, ratingsMetric.getValue(), 0.01);
+		Assertions.assertEquals(2.33, ratingsMetric.getValue(), 0.01);
 	}
 
 	@SQLResource(

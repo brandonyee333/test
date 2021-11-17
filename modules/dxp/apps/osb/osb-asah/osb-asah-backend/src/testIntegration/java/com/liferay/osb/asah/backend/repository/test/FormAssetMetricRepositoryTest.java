@@ -18,38 +18,25 @@ import com.liferay.osb.asah.backend.model.FormMetric;
 import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
-import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@DirtiesContext
-@Import(JDBCTestConfiguration.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(properties = "osb.asah.trino.enabled=true")
 @SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
 public class FormAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase<FormMetric> {
@@ -142,11 +129,11 @@ public class FormAssetMetricRepositoryTest
 			"e131fabc", 1L, SetUtil.of(FormMetricType.VIEWS.getName()),
 			TimeRange.LAST_24_HOURS);
 
-		Assert.assertNotNull(formMetric);
+		Assertions.assertNotNull(formMetric);
 
 		Metric viewsMetric = formMetric.getViewsMetric();
 
-		Assert.assertEquals(7D, viewsMetric.getValue(), 0);
+		Assertions.assertEquals(7D, viewsMetric.getValue(), 0);
 	}
 
 	@SQLResource(
