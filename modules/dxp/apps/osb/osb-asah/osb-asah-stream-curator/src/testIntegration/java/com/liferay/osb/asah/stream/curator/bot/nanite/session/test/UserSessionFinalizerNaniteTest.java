@@ -22,7 +22,7 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.session.UserSessionFinaliz
 import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,9 +33,9 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,7 +43,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringExtension.class)
 @SpringBootTest(
 	classes = OSBAsahCuratorSpringBootApplication.class,
 	properties = "osb.asah.user.session.events.storage.path:/tmp/user_session_events.snappy.parquet"
@@ -66,7 +66,7 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 	public void testExpiredSessionMultipleInteractions() {
 		runNanite();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_elasticsearchInvoker.count(
 				"user-sessions", QueryBuilders.matchAllQuery()));
@@ -74,22 +74,23 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 		JSONObject sessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", QueryBuilders.matchAllQuery());
 
-		Assert.assertFalse(sessionJSONObject.getBoolean("bounced"));
-		Assert.assertTrue(sessionJSONObject.getBoolean("completed"));
-		Assert.assertEquals(226090544, sessionJSONObject.getLong("duration"));
-		Assert.assertEquals(
+		Assertions.assertFalse(sessionJSONObject.getBoolean("bounced"));
+		Assertions.assertTrue(sessionJSONObject.getBoolean("completed"));
+		Assertions.assertEquals(
+			226090544, sessionJSONObject.getLong("duration"));
+		Assertions.assertEquals(
 			"expired", sessionJSONObject.getString("completeReason"));
 
 		JSONObject pageJSONObject = _elasticsearchInvoker.fetch(
 			"pages", "372189498023251289");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			sessionJSONObject.getLong("id"),
 			pageJSONObject.getLong("sessionId"));
 
-		Assert.assertEquals(0, pageJSONObject.getLong("bounce"));
-		Assert.assertEquals(1, pageJSONObject.getLong("entrances"));
-		Assert.assertEquals(1, pageJSONObject.getLong("exits"));
+		Assertions.assertEquals(0, pageJSONObject.getLong("bounce"));
+		Assertions.assertEquals(1, pageJSONObject.getLong("entrances"));
+		Assertions.assertEquals(1, pageJSONObject.getLong("exits"));
 	}
 
 	@ElasticsearchIndex(
@@ -108,7 +109,7 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 	public void testExpiredSessionMultiplePageVisits() {
 		runNanite();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_elasticsearchInvoker.count(
 				"user-sessions", QueryBuilders.matchAllQuery()));
@@ -116,19 +117,19 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 		JSONObject sessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", QueryBuilders.matchAllQuery());
 
-		Assert.assertFalse(sessionJSONObject.getBoolean("bounced"));
-		Assert.assertTrue(sessionJSONObject.getBoolean("completed"));
-		Assert.assertEquals(270481, sessionJSONObject.getLong("duration"));
+		Assertions.assertFalse(sessionJSONObject.getBoolean("bounced"));
+		Assertions.assertTrue(sessionJSONObject.getBoolean("completed"));
+		Assertions.assertEquals(270481, sessionJSONObject.getLong("duration"));
 
 		JSONObject entryPageJSONObject = _elasticsearchInvoker.fetch(
 			"pages", "372250348521977621");
 
-		Assert.assertEquals(1, entryPageJSONObject.getInt("entrances"));
+		Assertions.assertEquals(1, entryPageJSONObject.getInt("entrances"));
 
 		JSONObject exitPageJSONObject = _elasticsearchInvoker.fetch(
 			"pages", "372250474665065927");
 
-		Assert.assertEquals(1, exitPageJSONObject.getInt("exits"));
+		Assertions.assertEquals(1, exitPageJSONObject.getInt("exits"));
 	}
 
 	@ElasticsearchIndex(
@@ -147,7 +148,7 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 	public void testExpiredSessionSingleInteraction() {
 		runNanite();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			_elasticsearchInvoker.count(
 				"user-sessions", QueryBuilders.matchAllQuery()));
@@ -155,25 +156,25 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 		JSONObject sessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", QueryBuilders.termQuery("completed", true));
 
-		Assert.assertTrue(sessionJSONObject.getBoolean("bounced"));
-		Assert.assertTrue(sessionJSONObject.getBoolean("completed"));
-		Assert.assertEquals(0, sessionJSONObject.getLong("duration"));
-		Assert.assertEquals(
+		Assertions.assertTrue(sessionJSONObject.getBoolean("bounced"));
+		Assertions.assertTrue(sessionJSONObject.getBoolean("completed"));
+		Assertions.assertEquals(0, sessionJSONObject.getLong("duration"));
+		Assertions.assertEquals(
 			"expired", sessionJSONObject.getString("completeReason"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			sessionJSONObject.getString("entryPage"),
 			sessionJSONObject.getString("exitPage"));
 
 		JSONArray pageJSONArray = _elasticsearchInvoker.get("pages");
 
-		Assert.assertEquals(1, pageJSONArray.length());
+		Assertions.assertEquals(1, pageJSONArray.length());
 
 		JSONObject pageJSONObject = pageJSONArray.getJSONObject(0);
 
-		Assert.assertEquals(1, pageJSONObject.getLong("bounce"));
-		Assert.assertEquals(1, pageJSONObject.getLong("entrances"));
-		Assert.assertEquals(1, pageJSONObject.getLong("exits"));
-		Assert.assertEquals(
+		Assertions.assertEquals(1, pageJSONObject.getLong("bounce"));
+		Assertions.assertEquals(1, pageJSONObject.getLong("entrances"));
+		Assertions.assertEquals(1, pageJSONObject.getLong("exits"));
+		Assertions.assertEquals(
 			sessionJSONObject.getLong("id"),
 			pageJSONObject.getLong("sessionId"));
 	}
@@ -194,7 +195,7 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 	public void testExpiredSessionUpdatesAssets() {
 		runNanite();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_elasticsearchInvoker.count(
 				"user-sessions", QueryBuilders.matchAllQuery()));
@@ -213,7 +214,7 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 					searchSourceBuilder.sort("firstEventDate", SortOrder.ASC);
 				}));
 
-		Assert.assertEquals(3, pagesJSONArray.length());
+		Assertions.assertEquals(3, pagesJSONArray.length());
 
 		Map<String, Long> timeOnPages = new HashMap<String, Long>() {
 			{
@@ -229,17 +230,17 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 			long timeOnPage = timeOnPages.get(
 				pageJSONObject.getString("title"));
 
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				timeOnPage, pageJSONObject.getLong("timeOnPage"));
 		}
 
 		JSONObject entryPageJSONObject = pagesJSONArray.getJSONObject(0);
 
-		Assert.assertEquals(1, entryPageJSONObject.getInt("entrances"));
+		Assertions.assertEquals(1, entryPageJSONObject.getInt("entrances"));
 
 		JSONObject exitPageJSONObject = pagesJSONArray.getJSONObject(1);
 
-		Assert.assertEquals(1, exitPageJSONObject.getInt("exits"));
+		Assertions.assertEquals(1, exitPageJSONObject.getInt("exits"));
 	}
 
 	@ElasticsearchIndex(
@@ -273,13 +274,14 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 		userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", "366909399944215919");
 
-		Assert.assertNotNull(userSessionJSONObject);
-		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
-		Assert.assertEquals(43994000, userSessionJSONObject.getInt("duration"));
-		Assert.assertEquals(
+		Assertions.assertNotNull(userSessionJSONObject);
+		Assertions.assertFalse(userSessionJSONObject.getBoolean("bounced"));
+		Assertions.assertEquals(
+			43994000, userSessionJSONObject.getInt("duration"));
+		Assertions.assertEquals(
 			"http://192.168.108.90:8089/page1",
 			userSessionJSONObject.getString("exitPage"));
-		Assert.assertNotEquals(
+		Assertions.assertNotEquals(
 			modifiedDate1, userSessionJSONObject.getString("modifiedDate"));
 
 		JSONArray pagesJSONArray = new JSONArray(
@@ -292,36 +294,36 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 					searchSourceBuilder.sort("lastEventDate", SortOrder.ASC);
 				}));
 
-		Assert.assertEquals(2, pagesJSONArray.length());
+		Assertions.assertEquals(2, pagesJSONArray.length());
 
 		JSONObject entryPageJSONObject = pagesJSONArray.getJSONObject(0);
 
-		Assert.assertEquals(0, entryPageJSONObject.getInt("bounce"));
-		Assert.assertEquals(1, entryPageJSONObject.getInt("entrances"));
-		Assert.assertEquals(0, entryPageJSONObject.getInt("exits"));
+		Assertions.assertEquals(0, entryPageJSONObject.getInt("bounce"));
+		Assertions.assertEquals(1, entryPageJSONObject.getInt("entrances"));
+		Assertions.assertEquals(0, entryPageJSONObject.getInt("exits"));
 
 		JSONObject exitPageJSONObject = pagesJSONArray.getJSONObject(1);
 
-		Assert.assertEquals(0, exitPageJSONObject.getInt("bounce"));
-		Assert.assertEquals(0, exitPageJSONObject.getInt("entrances"));
-		Assert.assertEquals(1, exitPageJSONObject.getInt("exits"));
-		Assert.assertEquals(
+		Assertions.assertEquals(0, exitPageJSONObject.getInt("bounce"));
+		Assertions.assertEquals(0, exitPageJSONObject.getInt("entrances"));
+		Assertions.assertEquals(1, exitPageJSONObject.getInt("exits"));
+		Assertions.assertEquals(
 			entryPageJSONObject.getString("sessionId"),
 			exitPageJSONObject.getString("sessionId"));
 
 		userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", "366909399944215920");
 
-		Assert.assertNotNull(userSessionJSONObject);
-		Assert.assertEquals(0, userSessionJSONObject.getInt("duration"));
-		Assert.assertEquals(
+		Assertions.assertNotNull(userSessionJSONObject);
+		Assertions.assertEquals(0, userSessionJSONObject.getInt("duration"));
+		Assertions.assertEquals(
 			modifiedDate2, userSessionJSONObject.getString("modifiedDate"));
 
 		userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", "366909399944215921");
 
-		Assert.assertNotNull(userSessionJSONObject);
-		Assert.assertFalse(userSessionJSONObject.getBoolean("completed"));
+		Assertions.assertNotNull(userSessionJSONObject);
+		Assertions.assertFalse(userSessionJSONObject.getBoolean("completed"));
 	}
 
 	@ElasticsearchIndex(
@@ -340,7 +342,7 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 	public void testUpdatePageViews() {
 		runNanite();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_elasticsearchInvoker.count(
 				"user-sessions", QueryBuilders.matchAllQuery()));
@@ -356,7 +358,7 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 		for (int i = 0; i < pagesJSONArray.length(); i++) {
 			JSONObject pageJSONObject = pagesJSONArray.getJSONObject(i);
 
-			Assert.assertTrue(pageJSONObject.getInt("views") > 0);
+			Assertions.assertTrue(pageJSONObject.getInt("views") > 0);
 		}
 	}
 
@@ -376,7 +378,7 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 	public void testUpdateTimeOnPageSinglePage() {
 		runNanite();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_elasticsearchInvoker.count(
 				"user-sessions", QueryBuilders.matchAllQuery()));
@@ -389,11 +391,11 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 			QueryBuilders.termQuery(
 				"sessionId", userSessionJSONObject.getString("id")));
 
-		Assert.assertEquals(1, pagesJSONArray.length());
+		Assertions.assertEquals(1, pagesJSONArray.length());
 
 		JSONObject pageJSONObject = pagesJSONArray.getJSONObject(0);
 
-		Assert.assertEquals(120000, pageJSONObject.getLong("timeOnPage"));
+		Assertions.assertEquals(120000, pageJSONObject.getLong("timeOnPage"));
 	}
 
 	@Override

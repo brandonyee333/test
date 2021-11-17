@@ -24,7 +24,7 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -32,9 +32,9 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,7 +42,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringExtension.class)
 @SpringBootTest(
 	classes = OSBAsahCuratorSpringBootApplication.class,
 	properties = "osb.asah.user.session.events.storage.path:/tmp/user_session_events.snappy.parquet"
@@ -60,7 +60,7 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 		JSONArray userSessionsJSONArray = _elasticsearchInvoker.get(
 			"user-sessions");
 
-		Assert.assertEquals(4, userSessionsJSONArray.length());
+		Assertions.assertEquals(4, userSessionsJSONArray.length());
 	}
 
 	@MessageBusChannel(
@@ -74,13 +74,13 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 		JSONArray userSessionsJSONArray = _elasticsearchInvoker.get(
 			"user-sessions");
 
-		Assert.assertEquals(1, userSessionsJSONArray.length());
+		Assertions.assertEquals(1, userSessionsJSONArray.length());
 
 		JSONObject userSessionJSONObject = userSessionsJSONArray.getJSONObject(
 			0);
 
-		Assert.assertTrue(userSessionJSONObject.getBoolean("bounced"));
-		Assert.assertEquals(
+		Assertions.assertTrue(userSessionJSONObject.getBoolean("bounced"));
+		Assertions.assertEquals(
 			"0cbc8e60-99cd-11e9-9129-a75b6df1b957",
 			userSessionJSONObject.getString("userId"));
 	}
@@ -101,7 +101,7 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 	public void testCreatePastSession() {
 		runNanite();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			_elasticsearchInvoker.count(
 				"user-sessions", QueryBuilders.matchAllQuery()));
@@ -115,16 +115,16 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 				QueryBuilders.termQuery("completed", true)
 			));
 
-		Assert.assertNotNull(
-			"Past events did not create completed session",
-			userSessionJSONObject);
-		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
-		Assert.assertEquals(
+		Assertions.assertNotNull(
+			userSessionJSONObject,
+			"Past events did not create completed session");
+		Assertions.assertFalse(userSessionJSONObject.getBoolean("bounced"));
+		Assertions.assertEquals(
 			"http://192.168.108.90:8089/about",
 			userSessionJSONObject.getString("entryPage"));
-		Assert.assertNotNull(
-			"Modified date was not added to user session",
-			userSessionJSONObject.optString("modifiedDate"));
+		Assertions.assertNotNull(
+			userSessionJSONObject.optString("modifiedDate"),
+			"Modified date was not added to user session");
 	}
 
 	@ElasticsearchIndex(
@@ -145,20 +145,20 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 				searhcSourceBuilder -> searhcSourceBuilder.sort(
 					"id", SortOrder.ASC)));
 
-		Assert.assertEquals(2, userSessionsJSONArray.length());
+		Assertions.assertEquals(2, userSessionsJSONArray.length());
 
 		JSONObject userSessionJSONObject = userSessionsJSONArray.getJSONObject(
 			0);
 
-		Assert.assertTrue(userSessionJSONObject.getBoolean("bounced"));
-		Assert.assertEquals(
+		Assertions.assertTrue(userSessionJSONObject.getBoolean("bounced"));
+		Assertions.assertEquals(
 			"0cbc8e60-99cd-11e9-9129-a75b6df1b957",
 			userSessionJSONObject.getString("userId"));
 
 		userSessionJSONObject = userSessionsJSONArray.getJSONObject(1);
 
-		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
-		Assert.assertEquals(
+		Assertions.assertFalse(userSessionJSONObject.getBoolean("bounced"));
+		Assertions.assertEquals(
 			"0cbc8e60-99cd-11e9-9129-a75b6df1b957",
 			userSessionJSONObject.getString("userId"));
 	}
@@ -185,12 +185,12 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 
 		userSessionsJSONArray = _elasticsearchInvoker.get("user-sessions");
 
-		Assert.assertEquals(1, userSessionsJSONArray.length());
+		Assertions.assertEquals(1, userSessionsJSONArray.length());
 
 		userSessionJSONObject = userSessionsJSONArray.getJSONObject(0);
 
-		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
-		Assert.assertNotEquals(
+		Assertions.assertFalse(userSessionJSONObject.getBoolean("bounced"));
+		Assertions.assertNotEquals(
 			modifiedDate, userSessionJSONObject.getString("modifiedDate"));
 	}
 
@@ -216,13 +216,13 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 
 		userSessionsJSONArray = _elasticsearchInvoker.get("user-sessions");
 
-		Assert.assertEquals(1, userSessionsJSONArray.length());
+		Assertions.assertEquals(1, userSessionsJSONArray.length());
 
 		userSessionJSONObject = userSessionsJSONArray.getJSONObject(0);
 
-		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
-		Assert.assertFalse(userSessionJSONObject.getBoolean("completed"));
-		Assert.assertNotEquals(
+		Assertions.assertFalse(userSessionJSONObject.getBoolean("bounced"));
+		Assertions.assertFalse(userSessionJSONObject.getBoolean("completed"));
+		Assertions.assertNotEquals(
 			modifiedDate, userSessionJSONObject.getString("modifiedDate"));
 	}
 
@@ -248,14 +248,14 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 
 		userSessionsJSONArray = _elasticsearchInvoker.get("user-sessions");
 
-		Assert.assertEquals(1, userSessionsJSONArray.length());
+		Assertions.assertEquals(1, userSessionsJSONArray.length());
 
 		userSessionJSONObject = userSessionsJSONArray.getJSONObject(0);
 
-		Assert.assertTrue(userSessionJSONObject.getBoolean("bounced"));
-		Assert.assertNotEquals(
+		Assertions.assertTrue(userSessionJSONObject.getBoolean("bounced"));
+		Assertions.assertNotEquals(
 			modifiedDate, userSessionJSONObject.getString("modifiedDate"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"0cbc8e60-99cd-11e9-9129-a75b6df1b957",
 			userSessionJSONObject.getString("userId"));
 	}

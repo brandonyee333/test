@@ -29,14 +29,13 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.activity.ActivitiesNanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
-import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -48,25 +47,23 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 
 /**
  * @author Vishal Reddy
  * @author Leslie Wong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class ActivitiesNaniteTest extends BaseNaniteTestCase {
+public class ActivitiesNaniteTest
+	extends BaseNaniteTestCase
+	implements OSBAsahStreamCuratorSpringTestContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource();
 
@@ -75,7 +72,7 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 		_dataSourceRepository.save(dataSource);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		_dataSourceRepository.deleteById(1L);
 	}
@@ -96,7 +93,7 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 		runNanite();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1,
 			_faroInfoElasticsearchInvoker.count(
 				"activities",
@@ -128,7 +125,7 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 		runNanite();
 
-		Assert.assertEquals(28, _assetRepository.count());
+		Assertions.assertEquals(28, _assetRepository.count());
 
 		List<Asset> assets =
 			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
@@ -137,17 +134,17 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 					"Strategy | Liferay Blogs",
 				PageRequest.of(0, 5));
 
-		Assert.assertFalse(assets.isEmpty());
+		Assertions.assertFalse(assets.isEmpty());
 
 		Asset asset = assets.get(0);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"https://www.liferay.com/blog?regionCategoryName=en-us&" +
 				"blogCategoryName=digital-strategy&" +
 					"title=8-best-practices-for-your-omnichannel-strategy",
 			asset.getDataSourceAssetPK());
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_faroInfoElasticsearchInvoker.exists(
 				"activities",
 				BoolQueryBuilderUtil.filter(
@@ -181,9 +178,9 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 		JSONObject eventPropertiesJSONObject = activityJSONObject.getJSONObject(
 			"eventProperties");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"24000", eventPropertiesJSONObject.getString("duration"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"GL Contact: Sales - MKTG FRM KK",
 			eventPropertiesJSONObject.getString("title"));
 	}
@@ -210,13 +207,13 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 				"Felix Gogo Shell - reference - Knowledge | \"Liferay",
 				PageRequest.of(0, 5));
 
-		Assert.assertFalse(assets.isEmpty());
+		Assertions.assertFalse(assets.isEmpty());
 
 		Asset asset = assets.get(0);
 
 		Set<AssetKeyword> assetKeywords = asset.getAssetKeywords();
 
-		Assert.assertFalse(assetKeywords.isEmpty());
+		Assertions.assertFalse(assetKeywords.isEmpty());
 
 		Stream<AssetKeyword> stream = assetKeywords.stream();
 
@@ -228,7 +225,7 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 		Arrays.sort(keywords);
 
-		Assert.assertArrayEquals(
+		Assertions.assertArrayEquals(
 			new String[] {"felix gogo shell", "knowledge", "reference"},
 			keywords);
 	}
@@ -261,7 +258,7 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 			DateUtil.toUTCDate("2019-02-06T00:00:00.000Z"),
 			"db1ed215-9ed2-46a4-90de-535604c02c65");
 
-		Assert.assertEquals(endTime, activityGroup.getEndDate());
+		Assertions.assertEquals(endTime, activityGroup.getEndDate());
 	}
 
 	@ElasticsearchIndex(
@@ -292,7 +289,7 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 			DateUtil.toUTCDate("2019-02-06T00:00:00.000Z"),
 			"db1ed215-9ed2-46a4-90de-535604c02c65");
 
-		Assert.assertNotEquals(endTime, activityGroup.getEndDate());
+		Assertions.assertNotEquals(endTime, activityGroup.getEndDate());
 	}
 
 	@Override

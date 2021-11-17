@@ -20,31 +20,29 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.arm.FinalizeUserSessionArm;
-import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 import java.util.Date;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class FinalizeUserSessionArmTest {
+public class FinalizeUserSessionArmTest
+	implements OSBAsahStreamCuratorSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_cerebroInfoElasticsearchInvoker.save(
 			"user-sessions", JSONUtil.put("id", "1"));
@@ -75,8 +73,8 @@ public class FinalizeUserSessionArmTest {
 			_cerebroInfoElasticsearchInvoker.get("user-sessions", "1"),
 			UserSession.class);
 
-		Assert.assertTrue(userSession.getCompleted());
-		Assert.assertEquals("inactivity", userSession.getCompleteReason());
+		Assertions.assertTrue(userSession.getCompleted());
+		Assertions.assertEquals("inactivity", userSession.getCompleteReason());
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)

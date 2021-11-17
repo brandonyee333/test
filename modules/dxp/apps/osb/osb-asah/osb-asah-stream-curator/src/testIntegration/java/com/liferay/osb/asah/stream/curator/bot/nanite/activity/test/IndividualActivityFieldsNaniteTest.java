@@ -31,12 +31,11 @@ import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.activity.IndividualActivityFieldsNanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
-import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Objects;
@@ -47,22 +46,20 @@ import org.apache.commons.lang3.RandomUtils;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Michael Bowerman
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class IndividualActivityFieldsNaniteTest extends BaseNaniteTestCase {
+public class IndividualActivityFieldsNaniteTest
+	extends BaseNaniteTestCase
+	implements OSBAsahStreamCuratorSpringTestContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource();
 
@@ -166,8 +163,8 @@ public class IndividualActivityFieldsNaniteTest extends BaseNaniteTestCase {
 				null
 			);
 
-		Assert.assertNotNull(individualActivitiesCount);
-		Assert.assertEquals(
+		Assertions.assertNotNull(individualActivitiesCount);
+		Assertions.assertEquals(
 			42L, (long)individualActivitiesCount.getActivitiesCount());
 
 		_assertLastActivitiesDates(
@@ -315,9 +312,9 @@ public class IndividualActivityFieldsNaniteTest extends BaseNaniteTestCase {
 		String expectedLastActivityDateString,
 		Set<Individual.ActivityDate> activityDates) {
 
-		Assert.assertEquals(
-			activityDates.toString(), expectedLastActivityDateCount,
-			activityDates.size());
+		Assertions.assertEquals(
+			expectedLastActivityDateCount, activityDates.size(),
+			activityDates.toString());
 
 		if (activityDates.isEmpty()) {
 			return;
@@ -333,8 +330,8 @@ public class IndividualActivityFieldsNaniteTest extends BaseNaniteTestCase {
 			null
 		);
 
-		Assert.assertNotNull(individualActivityDate);
-		Assert.assertEquals(
+		Assertions.assertNotNull(individualActivityDate);
+		Assertions.assertEquals(
 			expectedLastActivityDateString,
 			DateUtil.toUTCString(individualActivityDate.getActivityDate()));
 	}
@@ -349,8 +346,8 @@ public class IndividualActivityFieldsNaniteTest extends BaseNaniteTestCase {
 		Set<Individual.ActivitiesCount> activitiesCounts =
 			individual.getActivitiesCounts();
 
-		Assert.assertEquals(
-			activitiesCounts.toString(), 0, activitiesCounts.size());
+		Assertions.assertEquals(
+			0, activitiesCounts.size(), activitiesCounts.toString());
 	}
 
 	private void _testSingleTypeOfActivityIncluded(
@@ -378,8 +375,8 @@ public class IndividualActivityFieldsNaniteTest extends BaseNaniteTestCase {
 				null
 			);
 
-		Assert.assertNotNull(individualActivitiesCount);
-		Assert.assertEquals(
+		Assertions.assertNotNull(individualActivitiesCount);
+		Assertions.assertEquals(
 			activitiesCount,
 			(long)individualActivitiesCount.getActivitiesCount());
 
@@ -398,8 +395,8 @@ public class IndividualActivityFieldsNaniteTest extends BaseNaniteTestCase {
 				null
 			);
 
-		Assert.assertNotNull(individualLastActivityDate);
-		Assert.assertEquals(
+		Assertions.assertNotNull(individualLastActivityDate);
+		Assertions.assertEquals(
 			dateString,
 			DateUtil.toUTCString(individualLastActivityDate.getActivityDate()));
 	}

@@ -19,32 +19,29 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.custom.CustomAssetDashboardNanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
-import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Marcellus Tavares
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class CustomAssetDashboardNaniteTest extends BaseNaniteTestCase {
+public class CustomAssetDashboardNaniteTest
+	extends BaseNaniteTestCase
+	implements OSBAsahStreamCuratorSpringTestContext {
 
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_CUSTOM_ASSET,
@@ -118,11 +115,11 @@ public class CustomAssetDashboardNaniteTest extends BaseNaniteTestCase {
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
 			"custom-asset-dashboards");
 
-		Assert.assertEquals(1, jsonArray.length());
+		Assertions.assertEquals(1, jsonArray.length());
 
 		JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"Asset's Title Update 2", jsonObject.getString("assetTitle"));
 	}
 

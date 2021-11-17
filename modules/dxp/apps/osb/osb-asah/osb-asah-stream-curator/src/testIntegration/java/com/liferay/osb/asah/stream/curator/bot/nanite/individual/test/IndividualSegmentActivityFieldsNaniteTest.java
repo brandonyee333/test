@@ -19,28 +19,24 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.individual.IndividualSegmentActivityFieldsNanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
-import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Michael Bowerman
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
 public class IndividualSegmentActivityFieldsNaniteTest
-	extends BaseNaniteTestCase {
+	extends BaseNaniteTestCase
+	implements OSBAsahStreamCuratorSpringTestContext {
 
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_6_info.json",
@@ -61,8 +57,8 @@ public class IndividualSegmentActivityFieldsNaniteTest
 
 		Segment segment = _segmentDog.getSegment(461522890926789186L);
 
-		Assert.assertEquals(6, (long)segment.getActivitiesCount());
-		Assert.assertEquals(
+		Assertions.assertEquals(6, (long)segment.getActivitiesCount());
+		Assertions.assertEquals(
 			"2020-12-06T17:54:23.916Z",
 			DateUtil.toUTCString(segment.getLastActivityDate()));
 	}

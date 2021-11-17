@@ -32,13 +32,12 @@ import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.individual.IndividualNanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
-import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Collections;
 import java.util.Date;
@@ -53,21 +52,19 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class IndividualNaniteTest extends BaseNaniteTestCase {
+public class IndividualNaniteTest
+	extends BaseNaniteTestCase
+	implements OSBAsahStreamCuratorSpringTestContext {
 
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "blog_info_old.json",
@@ -200,11 +197,11 @@ public class IndividualNaniteTest extends BaseNaniteTestCase {
 
 		_individualDog.addIndividual(individual2, false);
 
-		Assert.assertTrue(_individualDog.existsById(200L));
+		Assertions.assertTrue(_individualDog.existsById(200L));
 
 		runNanite();
 
-		Assert.assertFalse(_individualDog.existsById(200L));
+		Assertions.assertFalse(_individualDog.existsById(200L));
 
 		Individual individual3 = _individualDog.fetchIndividualByEmailAddress(
 			"john@liferay.com");
@@ -222,7 +219,7 @@ public class IndividualNaniteTest extends BaseNaniteTestCase {
 			null
 		);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2, (long)individualActivitiesCount.getActivitiesCount());
 
 		stream = activitiesCounts.stream();
@@ -235,10 +232,10 @@ public class IndividualNaniteTest extends BaseNaniteTestCase {
 			null
 		);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1, (long)individualActivitiesCount.getActivitiesCount());
 
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_cerebroInfoElasticsearchInvoker.exists(
 				"pages",
 				BoolQueryBuilderUtil.shouldNot(
@@ -274,13 +271,13 @@ public class IndividualNaniteTest extends BaseNaniteTestCase {
 	)
 	@Test
 	public void testMergeIndividual2() {
-		Assert.assertTrue(_individualDog.existsById(100L));
-		Assert.assertTrue(_individualDog.existsById(200L));
+		Assertions.assertTrue(_individualDog.existsById(100L));
+		Assertions.assertTrue(_individualDog.existsById(200L));
 
 		runNanite();
 
-		Assert.assertTrue(_individualDog.existsById(100L));
-		Assert.assertFalse(_individualDog.existsById(200L));
+		Assertions.assertTrue(_individualDog.existsById(100L));
+		Assertions.assertFalse(_individualDog.existsById(200L));
 	}
 
 	@ElasticsearchIndex(
@@ -312,7 +309,7 @@ public class IndividualNaniteTest extends BaseNaniteTestCase {
 			QueryBuilders.termQuery(
 				"emailAddressHashed", DigestUtils.sha256Hex("")));
 
-		Assert.assertEquals(0, individualsJSONArray.length());
+		Assertions.assertEquals(0, individualsJSONArray.length());
 	}
 
 	@ElasticsearchIndex(
@@ -340,7 +337,8 @@ public class IndividualNaniteTest extends BaseNaniteTestCase {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject blogJSONObject = jsonArray.getJSONObject(i);
 
-			Assert.assertFalse(blogJSONObject.getBoolean("knownIndividual"));
+			Assertions.assertFalse(
+				blogJSONObject.getBoolean("knownIndividual"));
 		}
 	}
 
@@ -371,19 +369,19 @@ public class IndividualNaniteTest extends BaseNaniteTestCase {
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
 			"user-sessions");
 
-		Assert.assertEquals(1, jsonArray.length());
+		Assertions.assertEquals(1, jsonArray.length());
 
 		JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-		Assert.assertEquals("200", jsonObject.get("individualId"));
-		Assert.assertEquals("2", jsonObject.get("userId"));
+		Assertions.assertEquals("200", jsonObject.get("individualId"));
+		Assertions.assertEquals("2", jsonObject.get("userId"));
 
 		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
 			"individuals",
 			QueryBuilders.termQuery(
 				"demographics.email.value", "john@liferay.com"));
 
-		Assert.assertFalse(individualJSONObject.has("lastEnrichmentDate"));
+		Assertions.assertFalse(individualJSONObject.has("lastEnrichmentDate"));
 	}
 
 	@ElasticsearchIndex(
@@ -475,17 +473,18 @@ public class IndividualNaniteTest extends BaseNaniteTestCase {
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
 			"user-sessions");
 
-		Assert.assertEquals(1, jsonArray.length());
+		Assertions.assertEquals(1, jsonArray.length());
 
 		JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-		Assert.assertEquals("100", jsonObject.get("individualId"));
-		Assert.assertEquals("2", jsonObject.get("userId"));
+		Assertions.assertEquals("100", jsonObject.get("individualId"));
+		Assertions.assertEquals("2", jsonObject.get("userId"));
 
 		Individual individual3 = _individualDog.fetchIndividualByEmailAddress(
 			"john@liferay.com");
 
-		Assert.assertTrue(!Objects.isNull(individual3.getLastEnrichmentDate()));
+		Assertions.assertTrue(
+			!Objects.isNull(individual3.getLastEnrichmentDate()));
 	}
 
 	@Override

@@ -18,32 +18,29 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.document.library.DocumentLibraryNanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
-import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Pedro Queiroz
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class DocumentLibraryNaniteTest extends BaseNaniteTestCase {
+public class DocumentLibraryNaniteTest
+	extends BaseNaniteTestCase
+	implements OSBAsahStreamCuratorSpringTestContext {
 
 	@ElasticsearchIndex(
 		name = "document-libraries",
@@ -75,12 +72,12 @@ public class DocumentLibraryNaniteTest extends BaseNaniteTestCase {
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
 			"document-libraries");
 
-		Assert.assertEquals(1, jsonArray.length());
+		Assertions.assertEquals(1, jsonArray.length());
 
 		JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-		Assert.assertEquals(1, jsonObject.getInt("ratings"));
-		Assert.assertEquals(0.6, jsonObject.getDouble("ratingsScore"), 0);
+		Assertions.assertEquals(1, jsonObject.getInt("ratings"));
+		Assertions.assertEquals(0.6, jsonObject.getDouble("ratingsScore"), 0);
 	}
 
 	@MessageBusChannel(
@@ -94,12 +91,12 @@ public class DocumentLibraryNaniteTest extends BaseNaniteTestCase {
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
 			"document-libraries");
 
-		Assert.assertEquals(1, jsonArray.length());
+		Assertions.assertEquals(1, jsonArray.length());
 
 		JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-		Assert.assertEquals(0, jsonObject.getInt("ratings"));
-		Assert.assertEquals(0.0, jsonObject.getDouble("ratingsScore"), 0);
+		Assertions.assertEquals(0, jsonObject.getInt("ratings"));
+		Assertions.assertEquals(0.0, jsonObject.getDouble("ratingsScore"), 0);
 	}
 
 	@MessageBusChannel(
@@ -113,11 +110,11 @@ public class DocumentLibraryNaniteTest extends BaseNaniteTestCase {
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
 			"document-libraries");
 
-		Assert.assertEquals(1, jsonArray.length());
+		Assertions.assertEquals(1, jsonArray.length());
 
 		JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-		Assert.assertEquals("test", jsonObject.getString("title"));
+		Assertions.assertEquals("test", jsonObject.getString("title"));
 	}
 
 	@Override
