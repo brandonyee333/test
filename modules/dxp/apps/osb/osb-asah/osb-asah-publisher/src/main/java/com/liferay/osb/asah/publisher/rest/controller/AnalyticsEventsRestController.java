@@ -28,13 +28,23 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import io.prometheus.client.Histogram;
 import io.prometheus.client.SimpleTimer;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
@@ -146,6 +156,8 @@ public class AnalyticsEventsRestController {
 				analyticsEventsMessage.setEvents(events);
 			}
 
+			_removeDuplicatedEvents(analyticsEventsMessage);
+
 			analyticsEventsMessage.setProjectId(
 				ProjectIdThreadLocal.getProjectId());
 
@@ -194,6 +206,21 @@ public class AnalyticsEventsRestController {
 			_analyticsEventMessageIds.invalidate(
 				analyticsEventsMessage.getId());
 		}
+
+		List<AnalyticsEventsMessage.Event> events =
+			analyticsEventsMessage.getEvents();
+
+		Stream<AnalyticsEventsMessage.Event> stream = events.stream();
+
+		_analyticsEventIds.invalidateAll(
+			stream.map(
+				event -> AnalyticsEventUtil.generateAnalyticsEventId(
+					analyticsEventsMessage.getDataSourceId(), event,
+					analyticsEventsMessage.getProjectId(),
+					analyticsEventsMessage.getUserId())
+			).collect(
+				Collectors.toList()
+			));
 	}
 
 	private boolean _isValidAnalyticsEventMessageId(String id) {
@@ -208,11 +235,79 @@ public class AnalyticsEventsRestController {
 		return true;
 	}
 
+	private void _removeDuplicatedEvents(
+		AnalyticsEventsMessage analyticsEventsMessage) {
+
+		List<AnalyticsEventsMessage.Event> events =
+			analyticsEventsMessage.getEvents();
+
+		Stream<AnalyticsEventsMessage.Event> stream = events.stream();
+
+		analyticsEventsMessage.setEvents(
+			stream.filter(
+				event -> {
+					String analyticsEventId =
+						AnalyticsEventUtil.generateAnalyticsEventId(
+							analyticsEventsMessage.getDataSourceId(), event,
+							analyticsEventsMessage.getProjectId(),
+							analyticsEventsMessage.getUserId());
+
+					if (_analyticsEventIds.getIfPresent(analyticsEventId) !=
+							null) {
+
+						if (_log.isInfoEnabled()) {
+							_log.info(
+								"Discarting duplicate event:" +
+									analyticsEventId);
+						}
+
+						return false;
+					}
+
+					Date eventDate = event.getEventDate();
+
+					Instant instant = eventDate.toInstant();
+
+					ZonedDateTime zonedDateTime = instant.atZone(
+						ZoneId.of("UTC"));
+
+					Duration duration = Duration.between(
+						zonedDateTime.toLocalDateTime(),
+						LocalDateTime.now(ZoneOffset.UTC));
+
+					if ((duration.toMinutes() >= _CACHE_EXPIRATION_TIME) &&
+						(_eventDog.fetchEvent(analyticsEventId) != null)) {
+
+						if (_log.isInfoEnabled()) {
+							_log.info(
+								"Discarting duplicate event:" +
+									analyticsEventId);
+						}
+
+						return false;
+					}
+
+					_analyticsEventIds.put(analyticsEventId, analyticsEventId);
+
+					return true;
+				}
+			).collect(
+				Collectors.toList()
+			));
+	}
+
 	private static final long _CACHE_EXPIRATION_TIME = 60;
 
 	private static final Log _log = LogFactory.getLog(
 		AnalyticsEventsRestController.class);
 
+	private static final Cache<String, String> _analyticsEventIds =
+		Caffeine.newBuilder(
+		).expireAfterAccess(
+			_CACHE_EXPIRATION_TIME, TimeUnit.MINUTES
+		).maximumSize(
+			100000
+		).build();
 	private static final Cache<String, String> _analyticsEventMessageIds =
 		Caffeine.newBuilder(
 		).expireAfterAccess(
@@ -228,6 +323,7 @@ public class AnalyticsEventsRestController {
 		"^events\\[(\\d+)].*");
 
 	@Autowired
+	private EventDog _eventDog;
 
 	@Autowired
 	private MessageBus _messageBus;
