@@ -171,6 +171,22 @@ public class EventRepositoryTest
 				"America/Los_Angeles"));
 	}
 
+	@Test
+	public void testFindByAnalyticsEventId() {
+		Event event = new Event();
+
+		event.setAnalyticsEventId("1");
+		event.setChannelId(1L);
+		event.setSessionId("1");
+
+		_eventRepository.save(event);
+
+		Optional<Event> eventOptional = _eventRepository.findByAnalyticsEventId(
+			"1");
+
+		Assertions.assertTrue(eventOptional.isPresent());
+	}
+
 	@SQLResource(
 		resourcePath = "test_get_average_event_count_per_individual.sql"
 	)

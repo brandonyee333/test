@@ -137,6 +137,40 @@ public class AnalyticsEventsRestControllerTest
 	}
 
 	@Test
+	public void testPushAnalyticsEventsMessageIfDuplicateEvents()
+		throws Exception {
+
+		ResponseEntity<String> responseEntity = _exchange(
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					"dependencies" +
+						"/analytics_events_message_duplicated_events.json",
+					this)));
+
+		Assertions.assertThat(
+			responseEntity.getStatusCode()
+		).isEqualTo(
+			HttpStatus.valueOf(200)
+		);
+
+		ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(
+			String.class);
+
+		Mockito.verify(
+			_messageBus, Mockito.times(1)
+		).sendMessage(
+			ArgumentMatchers.any(), argumentCaptor.capture()
+		);
+
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToString(
+				"dependencies" +
+					"/analytics_events_message_duplicated_events_removed.json",
+				this),
+			argumentCaptor.getValue(), false);
+	}
+
+	@Test
 	public void testPushAnalyticsEventsMessageIfEmptyEvents() throws Exception {
 		ResponseEntity<String> responseEntity = _exchange(
 			TestExecutionListenerUtil.replaceVariables(
