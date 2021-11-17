@@ -385,7 +385,7 @@ public class AnalyticsEventsMessageProcessor {
 			if (analyticsEventId != null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(
-						"Discarding duplicate analytics event : " +
+						"Discarding duplicate analytics event: " +
 							analyticsEvent.toJSON());
 				}
 
