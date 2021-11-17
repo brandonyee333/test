@@ -21,32 +21,52 @@ import com.liferay.osb.asah.salesforce.extractor.bot.nanite.test.util.Salesforce
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
 import com.liferay.osb.asah.salesforce.extractor.spring.OSBAsahSalesforceExtractorSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
+import org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.web.ServletTestExecutionListener;
 
 /**
  * @author Vishal Reddy
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringExtension.class)
 @SpringBootTest(
 	classes = OSBAsahSalesforceExtractorSpringBootApplication.class,
 	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.REPLACE_DEFAULTS,
+	value = {
+		DependencyInjectionTestExecutionListener.class,
+		MockitoTestExecutionListener.class,
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class,
+		ResetMocksTestExecutionListener.class,
+		ServletTestExecutionListener.class
+	}
+)
 public class SalesforceExtractorConfigurationDogTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
-		Assume.assumeTrue(
+		Assumptions.assumeTrue(
 			StringUtils.isNotEmpty(
 				_salesforceExtractorConfiguration.
 					getSalesforceOAuthClientId()) &&
@@ -77,7 +97,7 @@ public class SalesforceExtractorConfigurationDogTest {
 			),
 			_salesforceExtractorConfiguration.getSalesforceURL());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"CREDENTIALS_VALID",
 			_salesforceExtractorConfigurationDog.getState(dataSource));
 	}
