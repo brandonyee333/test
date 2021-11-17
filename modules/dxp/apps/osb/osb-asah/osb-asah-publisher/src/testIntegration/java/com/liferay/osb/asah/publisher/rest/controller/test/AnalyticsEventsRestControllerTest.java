@@ -84,7 +84,7 @@ public class AnalyticsEventsRestControllerTest
 
 		ResponseEntity<String> responseEntity = _exchange(
 			ResourceUtil.readResourceToString(
-				"dependencies/analytics_events_message.json", this));
+				"dependencies/analytics_events_message_2.json", this));
 
 		Assertions.assertThat(
 			responseEntity.getStatusCode()
@@ -96,7 +96,7 @@ public class AnalyticsEventsRestControllerTest
 	@Test
 	public void testPushAnalyticsEventsMessage() throws Exception {
 		String body = ResourceUtil.readResourceToString(
-			"dependencies/analytics_events_message.json", this);
+			"dependencies/analytics_events_message_1.json", this);
 
 		ResponseEntity<String> responseEntity = _exchange(body);
 
@@ -248,7 +248,7 @@ public class AnalyticsEventsRestControllerTest
 		throws Exception {
 
 		String body = ResourceUtil.readResourceToString(
-			"dependencies/analytics_events_message.json", this);
+			"dependencies/analytics_events_message_2.json", this);
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 

@@ -25,14 +25,6 @@
 			"eventDate": "2017-10-23T12:50:05.489Z",
 			"eventId": "pageViewed",
 			"properties": {
-				"test1": ""
-			}
-		},
-		{
-			"applicationId": "Page",
-			"eventDate": "2017-10-23T12:50:05.489Z",
-			"eventId": "pageViewed",
-			"properties": {
 				"key01": "value01",
 				"key02": "value02",
 				"key03": "value03",
