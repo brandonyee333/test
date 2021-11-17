@@ -12,11 +12,14 @@ dependencies {
 	compile group: "xerces", name: "xercesImpl", version: "2.12.0"
 	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-common")
 
-	testIntegrationCompile group: "junit", name: "junit", version: "4.12"
 	testIntegrationCompile group: "org.springframework.boot", name: "spring-boot-starter-test"
 	testIntegrationCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
 }
 
 jar {
 	enabled = true
+}
+
+testIntegration {
+	useJUnitPlatform()
 }
