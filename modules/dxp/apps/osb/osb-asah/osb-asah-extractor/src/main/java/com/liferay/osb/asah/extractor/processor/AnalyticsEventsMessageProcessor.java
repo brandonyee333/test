@@ -34,6 +34,7 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.util.AnalyticsEventUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -45,7 +46,6 @@ import com.liferay.osb.asah.extractor.ip.geocoder.IPGeocoder;
 import com.liferay.osb.asah.extractor.ip.geocoder.IPInfo;
 
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -64,7 +64,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.PreDestroy;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -147,21 +146,6 @@ public class AnalyticsEventsMessageProcessor {
 				"Interrupted while waiting for termination of executor",
 				interruptedException);
 		}
-	}
-
-	private String _generateAnalyticsEventId(
-		String dataSourceId, AnalyticsEventsMessage.Event event,
-		String projectId, String userId) {
-
-		Date eventDate = event.getEventDate();
-
-		Map<String, String> eventProperties = event.getProperties();
-
-		return DigestUtils.sha256Hex(
-			String.join(
-				"#", projectId, dataSourceId, userId, event.getApplicationId(),
-				event.getEventId(), String.valueOf(eventProperties.hashCode()),
-				String.valueOf(eventDate.getTime())));
 	}
 
 	private Map<String, String> _getContext(
@@ -362,7 +346,7 @@ public class AnalyticsEventsMessageProcessor {
 			analyticsEvent.setEventProperties(
 				_getSafeEventProperties(event.getProperties()));
 			analyticsEvent.setId(
-				_generateAnalyticsEventId(
+				AnalyticsEventUtil.generateAnalyticsEventId(
 					dataSourceId, event, analyticsEventsMessage.getProjectId(),
 					analyticsEventsMessage.getUserId()));
 			analyticsEvent.setIndividualId(String.valueOf(individual.getId()));
