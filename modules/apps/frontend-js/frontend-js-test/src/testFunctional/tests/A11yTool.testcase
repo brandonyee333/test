@@ -304,6 +304,47 @@ definition {
 		takeScreenshot();
 	}
 
+	@description = "LPS-142333. To assert that filters reset to default after page refresh."
+	@priority = "2"
+	test FiltersAreResetToDefaultAfterPageRefresh {
+		property osgi.module.configuration.file.names = "com.liferay.frontend.js.a11y.web.internal.configuration.FFA11yConfiguration.config";
+		property osgi.module.configurations = "enable=B&quot;true&quot;";
+
+		// Workaround for side panel sometimes not displaying LPS-141442
+
+		while (IsElementNotPresent(locator1 = "A11yTool#VIOLATION_PANEL_HEADER")) {
+			Refresh();
+		}
+
+		task ("Set filter to critical.") {
+			A11yTool.setFilter(filterType = "Critical");
+
+			VerifyElementPresent(
+				key_impact = "critical",
+				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
+		}
+
+		task ("Refresh page and assert filters are default") {
+			Refresh();
+
+			AssertElementPresent(
+				key_impact = "critical",
+				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
+
+			AssertElementPresent(
+				key_impact = "serious",
+				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
+
+			AssertElementPresent(
+				key_impact = "moderate",
+				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
+
+			AssertElementPresent(
+				key_impact = "minor",
+				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
+		}
+	}
+
 	@description = "LPS-142271. Verifies violations are sorted by descending impact."
 	@priority = "4"
 	test OrdersViolationsByDescendingImpact {
