@@ -74,6 +74,9 @@ public interface EventRepository extends Repository<Event, Long> {
 		@Nullable Date rangeStartDate, String timeZoneId);
 
 	@Cacheable
+	public Optional<Event> findByAnalyticsEventId(String analyticsEventId);
+
+	@Cacheable
 	public Optional<Event> findFirstByOrderByIdDesc();
 
 	@Cacheable
