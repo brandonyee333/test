@@ -14,40 +14,40 @@
 
 package com.liferay.osb.asah.extractor.ip.geocoder;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * @author Inácio Nery
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class IPGeocoderTest {
 
 	@Test
 	public void testGetCity() {
 		IPInfo ipInfo = _ipGeocoder.getIPInfo(_IP);
 
-		Assert.assertEquals("Los Angeles", ipInfo.getCity());
+		Assertions.assertEquals("Los Angeles", ipInfo.getCity());
 	}
 
 	@Test
 	public void testGetCountry() {
 		IPInfo ipInfo = _ipGeocoder.getIPInfo(_IP);
 
-		Assert.assertEquals("United States", ipInfo.getCountry());
+		Assertions.assertEquals("United States", ipInfo.getCountry());
 	}
 
 	@Test
 	public void testGetRegion() {
 		IPInfo ipInfo = _ipGeocoder.getIPInfo(_IP);
 
-		Assert.assertEquals("California", ipInfo.getRegion());
+		Assertions.assertEquals("California", ipInfo.getRegion());
 	}
 
 	@Configuration

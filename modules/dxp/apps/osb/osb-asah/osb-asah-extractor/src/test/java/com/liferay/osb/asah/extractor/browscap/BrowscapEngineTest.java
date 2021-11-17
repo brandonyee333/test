@@ -14,19 +14,19 @@
 
 package com.liferay.osb.asah.extractor.browscap;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * @author Inácio Nery
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class BrowscapEngineTest {
 
 	@Test
@@ -34,7 +34,7 @@ public class BrowscapEngineTest {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
 			_USER_AGENT_MAC_OS_CHROME_DESKTOP);
 
-		Assert.assertEquals("Chrome", browscapDevice.getBrowserName());
+		Assertions.assertEquals("Chrome", browscapDevice.getBrowserName());
 	}
 
 	@Test
@@ -42,7 +42,7 @@ public class BrowscapEngineTest {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
 			_USER_AGENT_MAC_OS_FIREFOX_DESKTOP);
 
-		Assert.assertEquals("Firefox", browscapDevice.getBrowserName());
+		Assertions.assertEquals("Firefox", browscapDevice.getBrowserName());
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class BrowscapEngineTest {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
 			_CRAWLER_AGENT_YANDEX);
 
-		Assert.assertEquals("True", browscapDevice.getCrawler());
+		Assertions.assertEquals("True", browscapDevice.getCrawler());
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class BrowscapEngineTest {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
 			_CRAWLER_AGENT_GOOGLEBOT);
 
-		Assert.assertEquals("True", browscapDevice.getCrawler());
+		Assertions.assertEquals("True", browscapDevice.getCrawler());
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class BrowscapEngineTest {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
 			_USER_AGENT_ANDROID_CHROME_MOBILE);
 
-		Assert.assertEquals("False", browscapDevice.getCrawler());
+		Assertions.assertEquals("False", browscapDevice.getCrawler());
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class BrowscapEngineTest {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
 			_USER_AGENT_ANDROID_CHROME_MOBILE);
 
-		Assert.assertEquals("SmartPhone", browscapDevice.getDeviceType());
+		Assertions.assertEquals("SmartPhone", browscapDevice.getDeviceType());
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class BrowscapEngineTest {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
 			_USER_AGENT_MAC_OS_CHROME_DESKTOP);
 
-		Assert.assertEquals("Desktop", browscapDevice.getDeviceType());
+		Assertions.assertEquals("Desktop", browscapDevice.getDeviceType());
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class BrowscapEngineTest {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
 			_USER_AGENT_IOS_WEBKIT_IPOD);
 
-		Assert.assertEquals("Mobile", browscapDevice.getDeviceType());
+		Assertions.assertEquals("Mobile", browscapDevice.getDeviceType());
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class BrowscapEngineTest {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
 			_USER_AGENT_ANDROID_WEBKIT_TABLET);
 
-		Assert.assertEquals("Tablet", browscapDevice.getDeviceType());
+		Assertions.assertEquals("Tablet", browscapDevice.getDeviceType());
 	}
 
 	@Test
@@ -106,28 +106,28 @@ public class BrowscapEngineTest {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
 			_USER_AGENT_IOS_WEBKIT_IPAD);
 
-		Assert.assertEquals("Tablet", browscapDevice.getDeviceType());
+		Assertions.assertEquals("Tablet", browscapDevice.getDeviceType());
 	}
 
 	@Test
 	public void testGetDeviceType6() {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice("");
 
-		Assert.assertEquals("Unknown", browscapDevice.getDeviceType());
+		Assertions.assertEquals("Unknown", browscapDevice.getDeviceType());
 	}
 
 	@Test
 	public void testGetDeviceType7() {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice("   ");
 
-		Assert.assertEquals("Unknown", browscapDevice.getDeviceType());
+		Assertions.assertEquals("Unknown", browscapDevice.getDeviceType());
 	}
 
 	@Test
 	public void testGetDeviceType8() {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(null);
 
-		Assert.assertEquals("Unknown", browscapDevice.getDeviceType());
+		Assertions.assertEquals("Unknown", browscapDevice.getDeviceType());
 	}
 
 	@Test
@@ -135,7 +135,7 @@ public class BrowscapEngineTest {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
 			_USER_AGENT_MAC_OS_CHROME_DESKTOP);
 
-		Assert.assertEquals("macOS", browscapDevice.getPlatformName());
+		Assertions.assertEquals("macOS", browscapDevice.getPlatformName());
 	}
 
 	@Test
@@ -143,7 +143,7 @@ public class BrowscapEngineTest {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
 			_USER_AGENT_ANDROID_CHROME_MOBILE);
 
-		Assert.assertEquals("Android", browscapDevice.getPlatformName());
+		Assertions.assertEquals("Android", browscapDevice.getPlatformName());
 	}
 
 	@Configuration
