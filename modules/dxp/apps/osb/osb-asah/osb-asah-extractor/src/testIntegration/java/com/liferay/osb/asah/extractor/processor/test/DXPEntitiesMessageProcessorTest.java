@@ -25,12 +25,12 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.extractor.OSBAsahExtractorSpringTestContext;
 import com.liferay.osb.asah.extractor.processor.DXPEntitiesMessageProcessor;
-import com.liferay.osb.asah.extractor.spring.OSBAsahExtractorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,21 +38,19 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Rachael Koestartyo
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahExtractorSpringBootApplication.class)
-public class DXPEntitiesMessageProcessorTest {
+public class DXPEntitiesMessageProcessorTest
+	implements OSBAsahExtractorSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources.json",
@@ -76,13 +74,13 @@ public class DXPEntitiesMessageProcessorTest {
 			Collections.singletonMap("fields.roleId", 39521),
 			DXPEntity.Type.ROLE);
 
-		Assert.assertNotNull(dxpEntity);
+		Assertions.assertNotNull(dxpEntity);
 
 		Individual individual = _individualDog.fetchIndividualByEmailAddress(
 			"scott.lang@test.com");
 
-		Assert.assertNotNull(individual);
-		Assert.assertEquals(
+		Assertions.assertNotNull(individual);
+		Assertions.assertEquals(
 			SetUtil.of(dxpEntity.getId()), individual.getRoleIds());
 	}
 
@@ -100,7 +98,7 @@ public class DXPEntitiesMessageProcessorTest {
 
 		List<String> messages = _messageSubscriber.pullMessages(50);
 
-		Assert.assertNotEquals(0, messages.size());
+		Assertions.assertNotEquals(0, messages.size());
 
 		JSONArray jsonArray = new JSONArray();
 

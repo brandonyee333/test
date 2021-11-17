@@ -24,16 +24,17 @@ import com.liferay.osb.asah.extractor.processor.AnalyticsEventsMessageProcessor;
 import com.liferay.osb.asah.extractor.spring.OSBAsahExtractorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,12 +42,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 /**
  * @author Marcellus Tavares
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringExtension.class)
 @SpringBootTest(
 	classes = OSBAsahExtractorSpringBootApplication.class,
 	properties = "osb.asah.analytics.events.storage.path:/tmp/analytics_events.snappy.parquet"
 )
-public class AnalyticsEventsMessageProcessorTest {
+public class AnalyticsEventsMessageProcessorTest
+	implements OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources.json",
@@ -71,30 +73,30 @@ public class AnalyticsEventsMessageProcessorTest {
 		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
 			50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assert.assertNotEquals(0, analyticsEvents.size());
+		Assertions.assertNotEquals(0, analyticsEvents.size());
 
 		AnalyticsEvent analyticsEvent = analyticsEvents.get(0);
 
-		Assert.assertEquals("Page", analyticsEvent.getApplicationId());
-		Assert.assertEquals("pageViewed", analyticsEvent.getEventId());
+		Assertions.assertEquals("Page", analyticsEvent.getApplicationId());
+		Assertions.assertEquals("pageViewed", analyticsEvent.getEventId());
 
 		Map<String, String> eventProperties =
 			analyticsEvent.getEventProperties();
 
-		Assert.assertEquals("", eventProperties.get("x"));
-		Assert.assertEquals(
+		Assertions.assertEquals("", eventProperties.get("x"));
+		Assertions.assertEquals(
 			"http://www.google.com", eventProperties.get("referrer"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			analyticsEvent.getSegmentNames(),
 			new HashSet<>(Arrays.asList("Developer", "Support")));
 
 		Map<String, String> context = analyticsEvent.getContext();
 
-		Assert.assertEquals("", eventProperties.get("x"));
-		Assert.assertEquals("Chrome", context.get("browserName"));
-		Assert.assertEquals("Desktop", context.get("deviceType"));
-		Assert.assertEquals("macOS", context.get("platformName"));
+		Assertions.assertEquals("", eventProperties.get("x"));
+		Assertions.assertEquals("Chrome", context.get("browserName"));
+		Assertions.assertEquals("Desktop", context.get("deviceType"));
+		Assertions.assertEquals("macOS", context.get("platformName"));
 	}
 
 	@ElasticsearchIndex(
@@ -118,7 +120,7 @@ public class AnalyticsEventsMessageProcessorTest {
 		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
 			50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assert.assertNotEquals(0, analyticsEvents.size());
+		Assertions.assertNotEquals(0, analyticsEvents.size());
 	}
 
 	@ElasticsearchIndex(
@@ -170,7 +172,7 @@ public class AnalyticsEventsMessageProcessorTest {
 		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
 			50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assert.assertNotEquals(0, analyticsEvents.size());
+		Assertions.assertNotEquals(0, analyticsEvents.size());
 	}
 
 	@ElasticsearchIndex(
@@ -188,8 +190,8 @@ public class AnalyticsEventsMessageProcessorTest {
 		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
 			50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assert.assertEquals(
-			analyticsEvents.toString(), 0, analyticsEvents.size());
+		Assertions.assertEquals(
+			0, analyticsEvents.size(), analyticsEvents.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -209,8 +211,8 @@ public class AnalyticsEventsMessageProcessorTest {
 		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
 			50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assert.assertEquals(
-			analyticsEvents.toString(), 0, analyticsEvents.size());
+		Assertions.assertEquals(
+			0, analyticsEvents.size(), analyticsEvents.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -234,8 +236,8 @@ public class AnalyticsEventsMessageProcessorTest {
 		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
 			50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assert.assertEquals(
-			analyticsEvents.toString(), 1, analyticsEvents.size());
+		Assertions.assertEquals(
+			1, analyticsEvents.size(), analyticsEvents.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -258,7 +260,7 @@ public class AnalyticsEventsMessageProcessorTest {
 		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
 			Map<String, String> context = analyticsEvent.getContext();
 
-			Assert.assertEquals(
+			Assertions.assertEquals(
 				context.get("url"), context.get("canonicalUrl"));
 		}
 	}
@@ -283,7 +285,7 @@ public class AnalyticsEventsMessageProcessorTest {
 		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
 			Map<String, String> context = analyticsEvent.getContext();
 
-			Assert.assertNotEquals(
+			Assertions.assertNotEquals(
 				context.get("url"), context.get("canonicalUrl"));
 		}
 	}

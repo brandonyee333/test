@@ -18,9 +18,8 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.extractor.OSBAsahExtractorSpringTestContext;
 import com.liferay.osb.asah.extractor.processor.AnalyticsEventsChannels;
-import com.liferay.osb.asah.extractor.spring.OSBAsahExtractorSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,20 +29,17 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Marcellus Tavares
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahExtractorSpringBootApplication.class)
-public class AnalyticsEventsChannelsTest {
+public class AnalyticsEventsChannelsTest
+	implements OSBAsahExtractorSpringTestContext {
 
 	@Test
 	public void testAnalyticsEventsBlogChannel() throws Exception {
