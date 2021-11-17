@@ -14,12 +14,16 @@
 
 package com.liferay.osb.asah.publisher.rest.controller;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+
+import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.util.AnalyticsEventUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.publisher.cache.AnalyticsEventsMessageCache;
 
 import io.prometheus.client.Histogram;
 import io.prometheus.client.SimpleTimer;
@@ -73,7 +77,7 @@ public class AnalyticsEventsRestController {
 		SimpleTimer simpleTimer = new SimpleTimer();
 
 		try {
-			if (!_analyticsEventsMessageCache.add(
+			if (!_isValidAnalyticsEventMessageId(
 					analyticsEventsMessage.getId())) {
 
 				if (_log.isInfoEnabled()) {
@@ -85,6 +89,12 @@ public class AnalyticsEventsRestController {
 				return new ResponseEntity<>(
 					"Duplicate Message " + analyticsEventsMessage.getId(),
 					HttpStatus.OK);
+			}
+
+			if (analyticsEventsMessage.getId() != null) {
+				_analyticsEventMessageIds.put(
+					analyticsEventsMessage.getId(),
+					analyticsEventsMessage.getId());
 			}
 
 			String clientIP = httpHeaders.getFirst("X-Forwarded-For");
@@ -111,8 +121,7 @@ public class AnalyticsEventsRestController {
 				if (StringUtils.isEmpty(
 						analyticsEventsMessage.getDataSourceId())) {
 
-					_analyticsEventsMessageCache.remove(
-						analyticsEventsMessage.getId());
+					_invalidate(analyticsEventsMessage);
 
 					return new ResponseEntity<>(
 						errors.getAllErrors(), HttpStatus.BAD_REQUEST);
@@ -152,8 +161,7 @@ public class AnalyticsEventsRestController {
 					analyticsEventsMessage.toJSON());
 			}
 			else {
-				_analyticsEventsMessageCache.remove(
-					analyticsEventsMessage.getId());
+				_invalidate(analyticsEventsMessage);
 			}
 
 			if (eventsSize != events.size()) {
@@ -181,9 +189,37 @@ public class AnalyticsEventsRestController {
 		return indices;
 	}
 
+	private void _invalidate(AnalyticsEventsMessage analyticsEventsMessage) {
+		if (analyticsEventsMessage.getId() != null) {
+			_analyticsEventMessageIds.invalidate(
+				analyticsEventsMessage.getId());
+		}
+	}
+
+	private boolean _isValidAnalyticsEventMessageId(String id) {
+		if (id == null) {
+			return true;
+		}
+
+		if (_analyticsEventMessageIds.getIfPresent(id) != null) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private static final long _CACHE_EXPIRATION_TIME = 60;
+
 	private static final Log _log = LogFactory.getLog(
 		AnalyticsEventsRestController.class);
 
+	private static final Cache<String, String> _analyticsEventMessageIds =
+		Caffeine.newBuilder(
+		).expireAfterAccess(
+			_CACHE_EXPIRATION_TIME, TimeUnit.MINUTES
+		).maximumSize(
+			100000
+		).build();
 	private static final Histogram _eventRequestsHistogram =
 		PrometheusUtil.histogram(
 			"publisher_event_request_seconds",
@@ -192,7 +228,6 @@ public class AnalyticsEventsRestController {
 		"^events\\[(\\d+)].*");
 
 	@Autowired
-	private AnalyticsEventsMessageCache _analyticsEventsMessageCache;
 
 	@Autowired
 	private MessageBus _messageBus;
