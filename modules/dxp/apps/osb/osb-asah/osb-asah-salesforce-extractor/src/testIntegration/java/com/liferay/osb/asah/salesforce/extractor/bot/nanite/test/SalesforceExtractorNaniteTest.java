@@ -30,7 +30,8 @@ import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtract
 import com.liferay.osb.asah.salesforce.extractor.oauth2.SalesforceOAuth2Client;
 import com.liferay.osb.asah.salesforce.extractor.spring.OSBAsahSalesforceExtractorSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import com.sforce.soap.partner.DeleteResult;
 import com.sforce.soap.partner.SaveResult;
@@ -48,12 +49,12 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -64,7 +65,7 @@ import org.springframework.context.annotation.Primary;
 /**
  * @author Rachael Koestartyo
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringExtension.class)
 @SpringBootTest(
 	classes = {
 		OSBAsahSalesforceExtractorSpringBootApplication.class,
@@ -72,15 +73,16 @@ import org.springframework.context.annotation.Primary;
 			SalesforceExtractorNaniteTestConfiguration.class
 	}
 )
-public class SalesforceExtractorNaniteTest {
+public class SalesforceExtractorNaniteTest
+	implements OSBAsahTestExecutionListenersContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_elasticsearchIndexManager.clearIndices();
 
 		_elasticsearchIndexManager.checkIndices();
 
-		Assume.assumeTrue(
+		Assumptions.assumeTrue(
 			StringUtils.isNotEmpty(
 				_salesforceExtractorConfiguration.
 					getSalesforceAuthEndpoint()) &&
@@ -96,7 +98,7 @@ public class SalesforceExtractorNaniteTest {
 				_salesforceExtractorConfiguration.getSalesforceURL()));
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		_dataSourceRepository.deleteAll();
 		_salesforceRawElasticsearchInvoker.delete(
@@ -214,7 +216,7 @@ public class SalesforceExtractorNaniteTest {
 		for (int i = 0; i < tableJSONArray.length(); i++) {
 			JSONObject curTableJSONObject = tableJSONArray.getJSONObject(i);
 
-			Assert.assertNotNull(curTableJSONObject.opt("Name"));
+			Assertions.assertNotNull(curTableJSONObject.opt("Name"));
 		}
 	}
 
@@ -237,14 +239,15 @@ public class SalesforceExtractorNaniteTest {
 
 		_salesforceExtractorNanite.run();
 
-		Assert.assertNotNull(_salesforceRawElasticsearchInvoker.get("Account"));
+		Assertions.assertNotNull(
+			_salesforceRawElasticsearchInvoker.get("Account"));
 	}
 
 	private void _testAuditEventsTable() {
 		JSONArray auditEventsJSONArray = _salesforceRawElasticsearchInvoker.get(
 			"audit-events");
 
-		Assert.assertNotNull(auditEventsJSONArray);
+		Assertions.assertNotNull(auditEventsJSONArray);
 
 		boolean hasDelete = false;
 		boolean hasUpdate = false;
@@ -267,7 +270,7 @@ public class SalesforceExtractorNaniteTest {
 			}
 		}
 
-		Assert.assertTrue(hasDelete && hasUpdate);
+		Assertions.assertTrue(hasDelete && hasUpdate);
 	}
 
 	private void _testDeleteField() throws Exception {
@@ -316,7 +319,7 @@ public class SalesforceExtractorNaniteTest {
 		for (int i = 0; i < tableJSONArray.length(); i++) {
 			JSONObject curTableJSONObject = tableJSONArray.getJSONObject(i);
 
-			Assert.assertNull(curTableJSONObject.opt("OSBAsahTest__c"));
+			Assertions.assertNull(curTableJSONObject.opt("OSBAsahTest__c"));
 		}
 	}
 
@@ -348,7 +351,7 @@ public class SalesforceExtractorNaniteTest {
 		JSONArray jsonArray = _salesforceRawElasticsearchInvoker.get(
 			"OSBAsahTest__c");
 
-		Assert.assertEquals(0, jsonArray.length());
+		Assertions.assertEquals(0, jsonArray.length());
 	}
 
 	private void _testPopulateNewTables() throws Exception {
@@ -365,12 +368,12 @@ public class SalesforceExtractorNaniteTest {
 
 		JSONObject tableJSONObject = tablesJSONObject.getJSONObject("Account");
 
-		Assert.assertNotNull(tableJSONObject);
+		Assertions.assertNotNull(tableJSONObject);
 
 		JSONArray tableJSONArray = _salesforceRawElasticsearchInvoker.get(
 			"Account");
 
-		Assert.assertTrue(tableJSONArray.length() > 0);
+		Assertions.assertTrue(tableJSONArray.length() > 0);
 	}
 
 	private void _testSyncExistingTable() throws Exception {
@@ -413,7 +416,7 @@ public class SalesforceExtractorNaniteTest {
 			Thread.sleep(20000);
 		}
 
-		Assert.assertTrue(added);
+		Assertions.assertTrue(added);
 
 		List<DeleteResult> deleteResults =
 			_salesforcePartnerClientInvoker.deleteSObjects(
@@ -455,7 +458,7 @@ public class SalesforceExtractorNaniteTest {
 			Thread.sleep(20000);
 		}
 
-		Assert.assertTrue(deleted);
+		Assertions.assertTrue(deleted);
 	}
 
 	private static final SalesforceExtractorConfiguration

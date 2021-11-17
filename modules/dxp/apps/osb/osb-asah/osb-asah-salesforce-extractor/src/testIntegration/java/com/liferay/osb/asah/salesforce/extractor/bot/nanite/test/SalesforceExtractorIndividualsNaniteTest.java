@@ -25,7 +25,8 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorIndividualsNanite;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.test.util.SalesforceExtractorTestUtil;
 import com.liferay.osb.asah.salesforce.extractor.spring.OSBAsahSalesforceExtractorSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -35,11 +36,11 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,17 +51,18 @@ import org.springframework.context.annotation.Bean;
  * @author Pedro Queiroz
  * @author Rachael Koestartyo
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringExtension.class)
 @SpringBootTest(
 	classes = {
 		OSBAsahSalesforceExtractorSpringBootApplication.class,
-		SalesforceExtractorIndividualsNaniteTest.
-			SalesforceExtractorIndividualsNaniteTestConfiguration.class
+		SalesforceExtractorNaniteTest.
+			SalesforceExtractorNaniteTestConfiguration.class
 	}
 )
-public class SalesforceExtractorIndividualsNaniteTest {
+public class SalesforceExtractorIndividualsNaniteTest
+	implements OSBAsahTestExecutionListenersContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_elasticsearchIndexManager.clearIndices();
 
@@ -157,7 +159,7 @@ public class SalesforceExtractorIndividualsNaniteTest {
 					_leadSalesforceEntity, SalesforceAuditEvent.Type.UPDATE)));
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		_elasticsearchInvoker.delete("Account", QueryBuilders.matchAllQuery());
 		_elasticsearchInvoker.delete("Contact", QueryBuilders.matchAllQuery());
@@ -229,12 +231,13 @@ public class SalesforceExtractorIndividualsNaniteTest {
 		JSONArray individualsJSONArray = _elasticsearchInvoker.get(
 			"individuals");
 
-		Assert.assertEquals(1, individualsJSONArray.length());
+		Assertions.assertEquals(1, individualsJSONArray.length());
 
 		JSONObject individualJSONObject = individualsJSONArray.getJSONObject(0);
 
-		Assert.assertNull(individualJSONObject.optJSONArray("accountPKs"));
-		Assert.assertNull(individualJSONObject.optString("contactId", null));
+		Assertions.assertNull(individualJSONObject.optJSONArray("accountPKs"));
+		Assertions.assertNull(
+			individualJSONObject.optString("contactId", null));
 	}
 
 	private void _testDeleteLead() {
@@ -245,7 +248,7 @@ public class SalesforceExtractorIndividualsNaniteTest {
 		JSONArray individualsJSONArray = _elasticsearchInvoker.get(
 			"individuals");
 
-		Assert.assertEquals(0, individualsJSONArray.length());
+		Assertions.assertEquals(0, individualsJSONArray.length());
 	}
 
 	private void _testMergeIndividual() {
@@ -254,7 +257,7 @@ public class SalesforceExtractorIndividualsNaniteTest {
 		JSONArray individualsJSONArray = _elasticsearchInvoker.get(
 			"individuals");
 
-		Assert.assertEquals(1, individualsJSONArray.length());
+		Assertions.assertEquals(1, individualsJSONArray.length());
 
 		JSONObject individualJSONObject = individualsJSONArray.getJSONObject(0);
 
@@ -264,17 +267,17 @@ public class SalesforceExtractorIndividualsNaniteTest {
 		JSONArray accountPKsJSONArray = individualFieldsJSONObject.getJSONArray(
 			"accountPKs");
 
-		Assert.assertEquals("1", accountPKsJSONArray.get(0));
+		Assertions.assertEquals("1", accountPKsJSONArray.get(0));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"2", individualFieldsJSONObject.getString("contactId"));
-		Assert.assertNotNull(
+		Assertions.assertNotNull(
 			individualFieldsJSONObject.optString("dataSourceId"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"true", individualFieldsJSONObject.getString("doNotCall"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"3", individualFieldsJSONObject.getString("leadId"));
-		Assert.assertNotNull(
+		Assertions.assertNotNull(
 			individualFieldsJSONObject.optString("modifiedDate"));
 	}
 
