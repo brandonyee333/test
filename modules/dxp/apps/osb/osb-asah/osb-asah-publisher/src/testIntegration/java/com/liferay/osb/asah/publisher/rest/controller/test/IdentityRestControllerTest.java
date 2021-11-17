@@ -20,9 +20,8 @@ import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.publisher.spring.OSBAsahPublisherSpringBootApplication;
+import com.liferay.osb.asah.publisher.OSBAsahPublisherSpringTestContext;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -30,17 +29,15 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -53,14 +50,10 @@ import org.springframework.http.ResponseEntity;
 /**
  * @author Inácio Nery
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(
-	classes = OSBAsahPublisherSpringBootApplication.class,
-	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
-public class IdentityRestControllerTest {
+public class IdentityRestControllerTest
+	implements OSBAsahPublisherSpringTestContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JacksonTester.initFields(this, new ObjectMapper());
 	}
@@ -102,9 +95,9 @@ public class IdentityRestControllerTest {
 		JSONObject messageJSONObject = new JSONObject(
 			argumentCaptor.getValue());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"345085929068798696", messageJSONObject.getString("dataSourceId"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DigestUtils.sha256Hex(emailAddress),
 			messageJSONObject.getString("emailAddressHashed"));
 	}
@@ -141,9 +134,9 @@ public class IdentityRestControllerTest {
 		JSONObject messageJSONObject = new JSONObject(
 			argumentCaptor.getValue());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"345085929068798696", messageJSONObject.getString("dataSourceId"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			emailAddressHashed,
 			messageJSONObject.getString("emailAddressHashed"));
 	}
@@ -220,9 +213,9 @@ public class IdentityRestControllerTest {
 		JSONObject messageJSONObject = new JSONObject(
 			argumentCaptor.getValue());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			dataSourceId, messageJSONObject.getString("dataSourceId"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			DigestUtils.sha256Hex("nina.simone@liferay.com"),
 			messageJSONObject.getString("emailAddressHashed"));
 	}

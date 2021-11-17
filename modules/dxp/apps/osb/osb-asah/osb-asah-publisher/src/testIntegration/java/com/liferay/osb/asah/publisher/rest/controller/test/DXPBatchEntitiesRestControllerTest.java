@@ -19,9 +19,8 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.storage.StorageFactory;
+import com.liferay.osb.asah.publisher.OSBAsahPublisherSpringTestContext;
 import com.liferay.osb.asah.publisher.rest.controller.DXPBatchEntitiesRestController;
-import com.liferay.osb.asah.publisher.spring.OSBAsahPublisherSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.io.File;
@@ -38,9 +37,8 @@ import java.util.zip.ZipInputStream;
 
 import org.assertj.core.api.Assertions;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
@@ -49,7 +47,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.io.ClassPathResource;
@@ -67,14 +64,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 /**
  * @author Riccardo Ferrari
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(
-	classes = OSBAsahPublisherSpringBootApplication.class,
-	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
-public class DXPBatchEntitiesRestControllerTest {
+public class DXPBatchEntitiesRestControllerTest
+	implements OSBAsahPublisherSpringTestContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		MockitoAnnotations.openMocks(this);
 	}

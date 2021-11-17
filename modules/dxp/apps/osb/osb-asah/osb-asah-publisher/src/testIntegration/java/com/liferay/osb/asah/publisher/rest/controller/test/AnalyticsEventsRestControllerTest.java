@@ -20,17 +20,15 @@ import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.publisher.spring.OSBAsahPublisherSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.publisher.OSBAsahPublisherSpringTestContext;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
 import org.assertj.core.api.Assertions;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
@@ -39,7 +37,6 @@ import org.mockito.Mockito;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -53,14 +50,10 @@ import org.springframework.http.ResponseEntity;
 /**
  * @author Inácio Nery
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(
-	classes = OSBAsahPublisherSpringBootApplication.class,
-	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
-public class AnalyticsEventsRestControllerTest {
+public class AnalyticsEventsRestControllerTest
+	implements OSBAsahPublisherSpringTestContext {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JacksonTester.initFields(this, new ObjectMapper());
 	}
