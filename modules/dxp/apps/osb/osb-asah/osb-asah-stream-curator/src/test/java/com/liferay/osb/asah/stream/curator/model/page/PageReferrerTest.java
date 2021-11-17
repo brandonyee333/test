@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.stream.curator.model.page;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author André Miranda
@@ -29,10 +29,10 @@ public class PageReferrerTest {
 		pageReferrer.setReferrer(
 			"https://liferay.com/some-random-path?q=liferay portal");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"https://liferay.com/some-random-path?q=liferay portal",
 			pageReferrer.getReferrerCanonicalUrl());
-		Assert.assertEquals("liferay.com", pageReferrer.getReferrerHost());
+		Assertions.assertEquals("liferay.com", pageReferrer.getReferrerHost());
 	}
 
 	@Test
@@ -42,10 +42,11 @@ public class PageReferrerTest {
 		pageReferrer.setReferrer(
 			"http://www.google.com/?q=\"hsR=0'hsR={{31337*31337}}>&lt;hsR>");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"http://www.google.com/?q=\"hsR=0'hsR={{31337*31337}}>&lt;hsR>",
 			pageReferrer.getReferrerCanonicalUrl());
-		Assert.assertEquals("www.google.com", pageReferrer.getReferrerHost());
+		Assertions.assertEquals(
+			"www.google.com", pageReferrer.getReferrerHost());
 	}
 
 }

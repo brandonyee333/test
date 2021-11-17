@@ -19,8 +19,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Marcellus Tavares
@@ -31,7 +31,8 @@ public class PageScrollTest {
 	public void testEquals() {
 		Date date = new Date();
 
-		Assert.assertEquals(new PageScroll(25, date), new PageScroll(25, date));
+		Assertions.assertEquals(
+			new PageScroll(25, date), new PageScroll(25, date));
 	}
 
 	@Test
@@ -41,7 +42,7 @@ public class PageScrollTest {
 		PageScroll pageScroll1 = new PageScroll(25, date);
 		PageScroll pageScroll2 = new PageScroll(25, date);
 
-		Assert.assertEquals(pageScroll1.hashCode(), pageScroll2.hashCode());
+		Assertions.assertEquals(pageScroll1.hashCode(), pageScroll2.hashCode());
 	}
 
 	@Test
@@ -49,7 +50,8 @@ public class PageScrollTest {
 		PageScroll pageScroll1 = new PageScroll(25, _toDate(2016, 7, 19));
 		PageScroll pageScroll2 = new PageScroll(25, _toDate(2016, 7, 20));
 
-		Assert.assertNotEquals(pageScroll1.hashCode(), pageScroll2.hashCode());
+		Assertions.assertNotEquals(
+			pageScroll1.hashCode(), pageScroll2.hashCode());
 	}
 
 	@Test
@@ -59,12 +61,13 @@ public class PageScrollTest {
 		PageScroll pageScroll1 = new PageScroll(25, date);
 		PageScroll pageScroll2 = new PageScroll(30, date);
 
-		Assert.assertNotEquals(pageScroll1.hashCode(), pageScroll2.hashCode());
+		Assertions.assertNotEquals(
+			pageScroll1.hashCode(), pageScroll2.hashCode());
 	}
 
 	@Test
 	public void testNotEquals1() {
-		Assert.assertNotEquals(
+		Assertions.assertNotEquals(
 			new PageScroll(25, _toDate(2016, 7, 19)),
 			new PageScroll(25, _toDate(2016, 7, 20)));
 	}
@@ -73,7 +76,7 @@ public class PageScrollTest {
 	public void testNotEquals2() {
 		Date date = new Date();
 
-		Assert.assertNotEquals(
+		Assertions.assertNotEquals(
 			new PageScroll(25, date), new PageScroll(30, date));
 	}
 

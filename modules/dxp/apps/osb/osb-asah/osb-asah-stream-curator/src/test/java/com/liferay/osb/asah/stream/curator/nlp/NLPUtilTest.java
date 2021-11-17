@@ -21,13 +21,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Vishal Reddy
@@ -36,7 +37,7 @@ public class NLPUtilTest {
 
 	@Test
 	public void testGetKeywords() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			new HashSet<String>() {
 				{
 					add("EE");
@@ -76,24 +77,24 @@ public class NLPUtilTest {
 			"イントラネット", "デジタルトランスフォーメーション", "技術者向け", "用語解説");
 
 		for (String string : strings) {
-			Assert.assertFalse(NLPUtil.isEnglish(string));
+			Assertions.assertFalse(NLPUtil.isEnglish(string));
 		}
 	}
 
 	@Test
 	public void testIsEnglish_LongPhrase() {
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			NLPUtil.isEnglish("She sells seashells by the seashore."));
 	}
 
 	@Test
 	public void testIsEnglish_ShortPhrase() {
-		Assert.assertTrue(NLPUtil.isEnglish("hello world"));
+		Assertions.assertTrue(NLPUtil.isEnglish("hello world"));
 	}
 
 	@Test
 	public void testIsNotEnglish_Word() {
-		Assert.assertFalse(NLPUtil.isEnglish("khatam"));
+		Assertions.assertFalse(NLPUtil.isEnglish("khatam"));
 	}
 
 	private void _assertScoreWithinBounds(
@@ -107,7 +108,7 @@ public class NLPUtilTest {
 	private void _assertScoreWithinBounds(
 		double score, double lower, double upper) {
 
-		Assert.assertThat(
+		MatcherAssert.assertThat(
 			score,
 			Matchers.allOf(
 				Matchers.greaterThanOrEqualTo(lower),

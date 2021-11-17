@@ -32,8 +32,8 @@ import org.elasticsearch.script.Script;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
@@ -117,7 +117,7 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 
 		Map<String, Object> params = script.getParams();
 
-		Assert.assertEquals(params.toString(), 9, params.size());
+		Assertions.assertEquals(9, params.size(), params.toString());
 	}
 
 }
