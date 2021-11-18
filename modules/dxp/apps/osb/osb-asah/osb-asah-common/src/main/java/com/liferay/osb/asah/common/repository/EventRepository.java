@@ -30,46 +30,40 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
 
 /**
  * @author Leslie Wong
  */
-public interface EventRepository extends Repository<Event, Long> {
+public interface EventRepository
+	extends PagingAndSortingRepository<Event, Long> {
 
-	@Cacheable
 	public long countByChannelIdAndEventDateBetweenAndEventDefinitionId(
 		Long channelId, Date rangeStartDate, Date rangeEndDate,
 		long eventDefinitionId);
 
-	@Cacheable
 	public long countByEventDefinitionId(long eventDefinitionId);
 
-	@Cacheable
 	public Integer countEvents(
 		Long channelId, Long individualId, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
-	@Cacheable
 	public Integer countEventSessions(
 		Long channelId, Long individualId, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
-	@Cacheable
 	public long countTotalEvents(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate, String timeZoneId);
 
-	@Cacheable
 	public long countUniqueIndividuals(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
@@ -78,20 +72,16 @@ public interface EventRepository extends Repository<Event, Long> {
 
 	public Optional<Event> findByAnalyticsEventId(String analyticsEventId);
 
-	@Cacheable
 	public Optional<Event> findFirstByOrderByIdDesc();
 
-	@Cacheable
 	public Optional<Event> findLastSeenEvent(@Nullable Long eventDefinitionId);
 
-	@Cacheable
 	public BigDecimal getAverageEventCountPerIndividual(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate, String timeZoneId);
 
-	@Cacheable
 	public Map<Object, Number> getEventAttributeValues(
 		AnalysisType analysisType, @Nullable BreakdownItem breakdownItem,
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
@@ -100,32 +90,27 @@ public interface EventRepository extends Repository<Event, Long> {
 		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate,
 		String timeZoneId);
 
-	@Cacheable
 	public long getEventAttributeValuesCount(
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate, String timeZoneId);
 
-	@Cacheable
 	public Map<String, Integer> getEventsCountGroupByEventDate(
 		Long channelId, Long individualId, Interval interval, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
-	@Cacheable
 	public Map<String, Integer> getEventSessionsCountGroupByEventDate(
 		Long channelId, Long individualId, Interval interval, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
-	@Cacheable
 	public List<Event> searchEvents(
 		Long channelId, Long individualId, String keywords, Pageable pageable,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
-	@CacheEvict(allEntries = true)
 	@Modifying
 	public boolean updateIndividualIdByDataSourceIdAndUserId(
 		@Param("dataSourceId") Long dataSourceId,

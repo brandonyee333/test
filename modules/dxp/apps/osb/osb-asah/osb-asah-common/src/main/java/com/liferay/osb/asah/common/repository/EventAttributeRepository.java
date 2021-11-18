@@ -21,23 +21,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 /**
  * @author Marcellus Tavares
  */
 public interface EventAttributeRepository
-	extends Repository<EventAttribute, Long> {
+	extends PagingAndSortingRepository<EventAttribute, Long> {
 
-	@Cacheable
 	public Optional<EventAttribute> findByEventAttributeDefinitionIdAndEventId(
 		Long eventAttributeDefinitionId, Long eventId);
 
-	@Cacheable
 	public List<EventAttribute> findByEventIdIn(Collection<Long> eventIds);
 
-	@Cacheable
 	public List<EventAttributeValue> findDistinctAttributeValues(
 		@Param("eventAttributeDefinitionId") Long eventAttributeDefinitionId,
 		@Param("size") int size);
