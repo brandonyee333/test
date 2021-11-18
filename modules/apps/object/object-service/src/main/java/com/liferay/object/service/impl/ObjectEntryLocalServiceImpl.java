@@ -110,6 +110,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -421,7 +422,7 @@ public class ObjectEntryLocalServiceImpl
 		ObjectEntry objectEntry = objectEntryPersistence.findByPrimaryKey(
 			objectEntryId);
 
-		return getValues(objectEntry);
+		return 	getValues(objectEntry);
 	}
 
 	@Override
@@ -1245,6 +1246,7 @@ public class ObjectEntryLocalServiceImpl
 			values.put(name, (Boolean)object);
 		}
 		else if (clazz == Date.class) {
+			String s = new SimpleDateFormat("MM/dd/yyyy").format(object);
 			values.put(name, (Date)object);
 		}
 		else if (clazz == Double.class) {
