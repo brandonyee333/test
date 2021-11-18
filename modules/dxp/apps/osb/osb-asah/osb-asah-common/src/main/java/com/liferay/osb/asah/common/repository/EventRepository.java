@@ -42,10 +42,6 @@ import org.springframework.lang.Nullable;
 public interface EventRepository
 	extends PagingAndSortingRepository<Event, Long> {
 
-	public long countByChannelIdAndEventDateBetweenAndEventDefinitionId(
-		Long channelId, Date rangeStartDate, Date rangeEndDate,
-		long eventDefinitionId);
-
 	public long countByEventDefinitionId(long eventDefinitionId);
 
 	public Integer countEvents(
@@ -71,8 +67,6 @@ public interface EventRepository
 		@Nullable Date rangeStartDate, String timeZoneId);
 
 	public Optional<Event> findByAnalyticsEventId(String analyticsEventId);
-
-	public Optional<Event> findFirstByOrderByIdDesc();
 
 	public Optional<Event> findLastSeenEvent(@Nullable Long eventDefinitionId);
 
