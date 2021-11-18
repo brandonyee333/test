@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.common.messaging.impl;
 
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-
 import com.google.api.gax.rpc.UnaryCallable;
 import com.google.cloud.pubsub.v1.stub.SubscriberStub;
 import com.google.protobuf.ByteString;
@@ -34,7 +31,8 @@ import com.liferay.osb.asah.common.messaging.model.Message;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -64,15 +62,41 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 		return _pullMessages(maxMessages, modelMapperFunction);
 	}
 
-	@Override
-	public <T> void sendAckIds(List<Message<T>> messages) {
-		List<String> ackIds = new ArrayList<>();
-
-		for (Message message : messages) {
-			ackIds.add(message.getAckId());
+	public void sendAckIds(List<String> ackIds) {
+		if (_log.isDebugEnabled()) {
+			_log.debug("Sent ackIds: " + ackIds);
 		}
 
-		_sendAckIds(ackIds);
+		if (!ackIds.isEmpty()) {
+			try (PubSubClient<SubscriberStub> subscriberStubPubSubClient =
+					_pubSubClientFactory.createSubscriberStub()) {
+
+				SubscriberStub subscriberStub =
+					subscriberStubPubSubClient.get();
+
+				UnaryCallable<AcknowledgeRequest, Empty>
+					acknowledgeRequestUnaryCallable =
+						subscriberStub.acknowledgeCallable();
+
+				acknowledgeRequestUnaryCallable.call(
+					_buildAcknowledgeRequest(ackIds));
+			}
+			catch (Exception exception) {
+				_log.error(exception, exception);
+			}
+		}
+	}
+
+	@Override
+	public <T> void sendAcknowledgements(List<Message<T>> messages) {
+		Stream<Message<T>> stream = messages.stream();
+
+		sendAckIds(
+			stream.map(
+				Message::getAckId
+			).collect(
+				Collectors.toList()
+			));
 	}
 
 	private AcknowledgeRequest _buildAcknowledgeRequest(
@@ -90,7 +114,7 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 		PullRequest.Builder builder = PullRequest.newBuilder();
 
 		builder.setMaxMessages(maxMessages);
-		builder.setReturnImmediately(false);
+		builder.setReturnImmediately(true);
 		builder.setSubscription(_subscription.getName());
 
 		return builder.build();
@@ -120,8 +144,6 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 			PullResponse pullResponse = pullRequestUnaryCallable.call(
 				_buildPullRequest(maxMessages));
 
-			List<String> ackIds = new ArrayList<>();
-
 			for (ReceivedMessage receivedMessage :
 					pullResponse.getReceivedMessagesList()) {
 
@@ -129,38 +151,13 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 
 				PubsubMessage pubsubMessage = receivedMessage.getMessage();
 
-				String messageId = _messageIds.getIfPresent(
-					_subscription.getName() + "#" +
-						pubsubMessage.getMessageId());
+				ByteString byteString = pubsubMessage.getData();
 
-				if (messageId == null) {
-					ByteString byteString = pubsubMessage.getData();
-
-					messages.add(
-						new Message(
-							receivedMessage.getAckId(),
-							pubsubMessage.getMessageId(),
-							modelMapperFunction.apply(
-								byteString.toStringUtf8())));
-
-					_messageIds.put(
-						_subscription.getName() + "#" +
-							pubsubMessage.getMessageId(),
-						pubsubMessage.getMessageId());
-				}
-				else {
-					ackIds.add(receivedMessage.getAckId());
-
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							"Duplicate Message ID: " +
-								pubsubMessage.getMessageId());
-					}
-				}
-			}
-
-			if (!ackIds.isEmpty()) {
-				_sendAckIds(ackIds);
+				messages.add(
+					new Message(
+						receivedMessage.getAckId(),
+						pubsubMessage.getMessageId(),
+						modelMapperFunction.apply(byteString.toStringUtf8())));
 			}
 		}
 		catch (Exception exception) {
@@ -174,41 +171,8 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 		return messages;
 	}
 
-	private void _sendAckIds(List<String> ackIds) {
-		if (_log.isDebugEnabled()) {
-			_log.debug("Sent ackIds: " + ackIds);
-		}
-
-		if (!ackIds.isEmpty()) {
-			try (PubSubClient<SubscriberStub> subscriberStubPubSubClient =
-					_pubSubClientFactory.createSubscriberStub()) {
-
-				SubscriberStub subscriberStub =
-					subscriberStubPubSubClient.get();
-
-				UnaryCallable<AcknowledgeRequest, Empty>
-					acknowledgeRequestUnaryCallable =
-						subscriberStub.acknowledgeCallable();
-
-				acknowledgeRequestUnaryCallable.call(
-					_buildAcknowledgeRequest(ackIds));
-			}
-			catch (Exception exception) {
-				_log.error(exception, exception);
-			}
-		}
-	}
-
 	private static final Log _log = LogFactory.getLog(
 		MessageSubscriberImpl.class);
-
-	private static final Cache<String, String> _messageIds =
-		Caffeine.newBuilder(
-		).expireAfterAccess(
-			10, TimeUnit.MINUTES
-		).maximumSize(
-			100000
-		).build();
 
 	private final PubSubClientFactory _pubSubClientFactory;
 	private final Subscription _subscription;
