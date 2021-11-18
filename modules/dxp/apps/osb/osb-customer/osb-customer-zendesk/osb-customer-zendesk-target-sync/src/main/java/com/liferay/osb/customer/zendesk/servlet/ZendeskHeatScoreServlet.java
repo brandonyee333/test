@@ -99,13 +99,16 @@ public class ZendeskHeatScoreServlet extends ZendeskBaseServlet {
 
 		long zendeskTicketId = fieldsJSONObject.getLong("ticketId");
 		long heatScoreFieldId = fieldsJSONObject.getLong("heatScoreFieldId");
+		int heatScore = fieldsJSONObject.getInt("heatScore", 0);
 
 		int totalHeatScore =
 			ageScore + businessPriorityScore + casMetricsScore +
 				environmentScore + priorityScore + subStatusScore;
 
-		updateZendeskTicketHeatScore(
-			zendeskTicketId, heatScoreFieldId, totalHeatScore);
+		if (totalHeatScore != heatScore) {
+			updateZendeskTicketHeatScore(
+				zendeskTicketId, heatScoreFieldId, totalHeatScore);
+		}
 	}
 
 	protected JSONObject updateZendeskTicketHeatScore(
