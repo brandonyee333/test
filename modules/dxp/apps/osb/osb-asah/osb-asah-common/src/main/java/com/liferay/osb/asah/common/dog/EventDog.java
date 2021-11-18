@@ -82,6 +82,12 @@ public class EventDog {
 			timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId());
 	}
 
+	public Event fetchEvent(Long eventId) {
+		Optional<Event> eventOptional = _eventRepository.findById(eventId);
+
+		return eventOptional.orElse(null);
+	}
+
 	public Event fetchEvent(String analyticsEventId) {
 		Optional<Event> eventOptional = _eventRepository.findByAnalyticsEventId(
 			analyticsEventId);
