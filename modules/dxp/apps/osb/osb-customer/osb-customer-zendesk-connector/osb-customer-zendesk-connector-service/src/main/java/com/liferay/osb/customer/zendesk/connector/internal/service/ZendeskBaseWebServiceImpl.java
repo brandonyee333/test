@@ -40,6 +40,9 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.nio.charset.StandardCharsets;
 
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -491,6 +494,22 @@ public class ZendeskBaseWebServiceImpl
 		return false;
 	}
 
+	private boolean _isConflictError(Exception exception, int retryAttempts) {
+		if (exception instanceof JSONWebServiceTransportException) {
+			JSONWebServiceTransportException jsonWebServiceTransportException =
+				(JSONWebServiceTransportException)exception;
+
+			if ((jsonWebServiceTransportException.getStatus() == 409) &&
+				(retryAttempts < ZendeskConnectorConfigurationValues.
+					ZENDESK_API_RETRY_ATTEMPTS)) {
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private boolean _isRetry(Exception exception, int retryAttempts) {
 		if (!(exception instanceof JSONWebServiceInvocationException)) {
 			return false;
@@ -568,6 +587,11 @@ public class ZendeskBaseWebServiceImpl
 				return _put(endpoint, json, headers, ++retryAttempts);
 			}
 
+			if (_isConflictError(exception, retryAttempts)) {
+				return _put(
+					endpoint, _updateTimeStamp(json), headers, ++retryAttempts);
+			}
+
 			if (_isRetry(exception, retryAttempts)) {
 				_apiRetryWait();
 
@@ -576,6 +600,30 @@ public class ZendeskBaseWebServiceImpl
 
 			throw processedException(exception, endpoint, json, response);
 		}
+	}
+
+	private String _updateTimeStamp(String json) throws PortalException {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
+
+		SimpleDateFormat updateStampFormat = new SimpleDateFormat(
+			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		if (jsonObject.has("ticket")) {
+			JSONObject ticketJSONObject = jsonObject.getJSONObject("ticket");
+
+			if (ticketJSONObject.has("updated_stamp")) {
+				ticketJSONObject.put(
+					"updated_stamp", updateStampFormat.format(new Date()));
+
+				jsonObject.put("ticket", ticketJSONObject);
+			}
+		}
+		else if (jsonObject.has("updated_stamp")) {
+			jsonObject.put(
+				"updated_stamp", updateStampFormat.format(new Date()));
+		}
+
+		return jsonObject.toString();
 	}
 
 	private static final String _CREDENTIALS = _getCredentials(
