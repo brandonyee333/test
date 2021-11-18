@@ -17,6 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.individual;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -411,6 +412,13 @@ public class IndividualNanite implements Nanite {
 		_activityGroupDog.updateActivityGroup(individual.getId(), userId);
 	}
 
+	private void _updateEvents(
+		Long dataSourceId, Individual individual, String userId) {
+
+		_eventDog.updateEventsIndividualId(
+			dataSourceId, individual.getId(), userId);
+	}
+
 	private Individual _updateIndividual(
 			Long channelId, Long dataSourceId, String emailAddressHashed,
 			String userId)
@@ -457,6 +465,7 @@ public class IndividualNanite implements Nanite {
 		}
 
 		_updateActivitiesAndActivityGroups(individual2, userId);
+		_updateEvents(dataSourceId, individual2, userId);
 
 		return individual2;
 	}
@@ -553,6 +562,9 @@ public class IndividualNanite implements Nanite {
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
+
+	@Autowired
+	private EventDog _eventDog;
 
 	private final ExecutorService _executorService =
 		Executors.newFixedThreadPool(10);
