@@ -87,7 +87,7 @@ public class IndividualNanite implements Nanite {
 
 	@Override
 	public long getInterval() {
-		return DateUtil.MINUTE;
+		return DateUtil.SECOND;
 	}
 
 	@Override

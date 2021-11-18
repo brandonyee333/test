@@ -65,7 +65,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 	@Override
 	public long getInterval() {
-		return DateUtil.MINUTE;
+		return DateUtil.SECOND * 5;
 	}
 
 	@Override
