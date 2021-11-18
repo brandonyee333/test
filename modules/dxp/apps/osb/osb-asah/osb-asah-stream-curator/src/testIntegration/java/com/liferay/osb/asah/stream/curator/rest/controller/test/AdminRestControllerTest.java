@@ -19,13 +19,14 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.rest.controller.AdminRestController;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,12 +34,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringExtension.class)
 @SpringBootTest(
 	classes = OSBAsahCuratorSpringBootApplication.class,
 	properties = "osb.asah.user.session.events.storage.path:/tmp/user_session_events.snappy.parquet"
 )
-public class AdminRestControllerTest {
+public class AdminRestControllerTest
+	implements OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "page_info.json",
@@ -52,11 +54,11 @@ public class AdminRestControllerTest {
 	public void testCloseSessions() throws Exception {
 		_adminRestController.closeSessions();
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			2,
 			_elasticsearchInvoker.count(
 				"pages", QueryBuilders.existsQuery("sessionId")));
-		Assert.assertFalse(
+		Assertions.assertFalse(
 			_elasticsearchInvoker.exists(
 				"user-sessions", QueryBuilders.termQuery("completed", false)));
 	}
