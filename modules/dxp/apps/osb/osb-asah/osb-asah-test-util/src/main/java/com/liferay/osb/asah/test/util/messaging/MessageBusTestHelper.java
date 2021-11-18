@@ -137,7 +137,7 @@ public class MessageBusTestHelper {
 				break;
 			}
 
-			messageSubscriberImpl.sendAckIds(messages);
+			messageSubscriberImpl.sendAcknowledgements(messages);
 		}
 	}
 

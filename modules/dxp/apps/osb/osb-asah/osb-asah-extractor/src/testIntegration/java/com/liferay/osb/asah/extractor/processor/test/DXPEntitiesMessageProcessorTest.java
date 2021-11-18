@@ -109,7 +109,7 @@ public class DXPEntitiesMessageProcessorTest
 			jsonArray.put(messageJSONObject);
 		}
 
-		_messageSubscriber.sendAckIds(messages);
+		_messageSubscriber.sendAcknowledgements(messages);
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(

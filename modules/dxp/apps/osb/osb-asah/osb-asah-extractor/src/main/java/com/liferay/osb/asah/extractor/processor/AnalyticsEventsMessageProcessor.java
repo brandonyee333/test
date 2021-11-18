@@ -431,7 +431,6 @@ public class AnalyticsEventsMessageProcessor {
 				List<Message<AnalyticsEventsMessage>> ackMessages =
 					new ArrayList<>();
 
-
 				try {
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
@@ -466,7 +465,7 @@ public class AnalyticsEventsMessageProcessor {
 				}
 				finally {
 					_semaphore.release();
-					_messageSubscriber.sendAckIds(ackMessages);
+					_messageSubscriber.sendAcknowledgements(ackMessages);
 				}
 
 				if (_log.isInfoEnabled()) {

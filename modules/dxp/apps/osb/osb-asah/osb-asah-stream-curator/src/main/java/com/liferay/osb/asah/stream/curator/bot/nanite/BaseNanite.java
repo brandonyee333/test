@@ -121,10 +121,13 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 	protected abstract MessageSubscriber getMessageSubscriber();
 
-	protected Collection<T> getModels(List<AnalyticsEvent> analyticsEvents) {
-		Stream<AnalyticsEvent> analyticsEventsStream = analyticsEvents.stream();
+	protected Collection<T> getModels(List<Message<AnalyticsEvent>> messages) {
+		Stream<Message<AnalyticsEvent>> analyticsEventsStream =
+			messages.stream();
 
-		Map<String, T> map = analyticsEventsStream.distinct(
+		Map<String, T> map = analyticsEventsStream.map(
+			Message::getObject
+		).distinct(
 		).map(
 			_getMapperFunction()
 		).filter(
@@ -217,7 +220,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	protected <T> void sendAckIds(List<Message<T>> messages) {
 		MessageSubscriber messageSubscriber = getMessageSubscriber();
 
-		messageSubscriber.sendAckIds(messages);
+		messageSubscriber.sendAcknowledgements(messages);
 	}
 
 	protected abstract void setModelCustomProperties(
@@ -314,18 +317,18 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 				Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
-				stream.map(
-					Message::getObject
-				).collect(
+				stream.collect(
 					Collectors.groupingBy(
-						analyticsEvent -> Tuples.of(
-							analyticsEvent.getProjectId(),
-							analyticsEvent.getUserId()))
+						message -> {
+							AnalyticsEvent analyticsEvent = message.getObject();
+
+							return Tuples.of(
+								analyticsEvent.getProjectId(),
+								analyticsEvent.getUserId());
+						})
 				).forEach(
 					this::_run
 				);
-
-				sendAckIds(messages);
 
 				Log log = getLog();
 
@@ -346,7 +349,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	}
 
 	private void _run(
-		Tuple2<String, String> tuple2, List<AnalyticsEvent> analyticsEvents) {
+		Tuple2<String, String> tuple2, List<Message<AnalyticsEvent>> messages) {
 
 		_semaphore.acquireUninterruptibly();
 
@@ -357,7 +360,9 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
-					saveModels(getModels(analyticsEvents));
+					saveModels(getModels(messages));
+
+					sendAckIds(messages);
 
 					Log log = getLog();
 
@@ -367,7 +372,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 						log.info(
 							String.format(
 								"%s processed %d events in %d ms",
-								clazz.getSimpleName(), analyticsEvents.size(),
+								clazz.getSimpleName(), messages.size(),
 								System.currentTimeMillis() - start));
 					}
 				}

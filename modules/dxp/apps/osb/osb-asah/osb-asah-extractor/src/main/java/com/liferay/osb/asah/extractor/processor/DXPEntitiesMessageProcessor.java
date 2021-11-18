@@ -38,6 +38,7 @@ import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -98,7 +99,14 @@ public class DXPEntitiesMessageProcessor {
 					Stream<Message<String>> stream = messages.stream();
 
 					stream.map(
-						message -> new JSONObject(message.getObject())
+						message -> {
+							JSONObject jsonObject = new JSONObject(
+								message.getObject());
+
+							jsonObject.put("ackId", message.getAckId());
+
+							return jsonObject;
+						}
 					).collect(
 						Collectors.groupingBy(
 							jsonObject -> jsonObject.getString("projectId"))
@@ -106,7 +114,7 @@ public class DXPEntitiesMessageProcessor {
 						this::_processQueuedMessagesAsync
 					);
 
-					_messageSubscriber.sendAckIds(messages);
+					_messageSubscriber.sendAcknowledgements(messages);
 				}
 				finally {
 					_reentrantLock.unlock();
@@ -477,6 +485,8 @@ public class DXPEntitiesMessageProcessor {
 
 		CompletableFuture.runAsync(
 			() -> {
+				List<String> ackIds = new ArrayList<>();
+
 				try {
 					reentrantLock.lock();
 
@@ -486,6 +496,7 @@ public class DXPEntitiesMessageProcessor {
 
 					for (JSONObject jsonObject : jsonObjects) {
 						_processMessage(jsonObject);
+						ackIds.add(jsonObject.getString("ackId"));
 					}
 
 					if (_log.isDebugEnabled()) {
@@ -504,6 +515,7 @@ public class DXPEntitiesMessageProcessor {
 						exception);
 				}
 				finally {
+					_messageSubscriber.sendAckIds(ackIds);
 					reentrantLock.unlock();
 
 					_semaphore.release();

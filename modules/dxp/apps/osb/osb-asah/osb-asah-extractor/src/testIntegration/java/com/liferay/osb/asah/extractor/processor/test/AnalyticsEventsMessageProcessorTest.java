@@ -75,7 +75,7 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(messages);
+		_messageSubscriber.sendAcknowledgements(messages);
 
 		Assertions.assertNotEquals(0, messages.size());
 
@@ -127,7 +127,7 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(messages);
+		_messageSubscriber.sendAcknowledgements(messages);
 
 		Assertions.assertNotEquals(0, messages.size());
 	}
@@ -182,7 +182,7 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(messages);
+		_messageSubscriber.sendAcknowledgements(messages);
 
 		Assertions.assertNotEquals(0, messages.size());
 	}
@@ -203,7 +203,7 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(messages);
+		_messageSubscriber.sendAcknowledgements(messages);
 		Assertions.assertEquals(0, messages.size(), messages.toString());
 	}
 
@@ -225,7 +225,7 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(messages);
+		_messageSubscriber.sendAcknowledgements(messages);
 
 		Assertions.assertEquals(0, messages.size(), messages.toString());
 	}
@@ -252,7 +252,7 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(messages);
+		_messageSubscriber.sendAcknowledgements(messages);
 		Assertions.assertEquals(1, messages.size(), messages.toString());
 	}
 
@@ -274,7 +274,7 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(messages);
+		_messageSubscriber.sendAcknowledgements(messages);
 
 		for (Message<AnalyticsEvent> message : messages) {
 			AnalyticsEvent analyticsEvent = message.getObject();
@@ -304,7 +304,7 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(messages);
+		_messageSubscriber.sendAcknowledgements(messages);
 
 		for (Message<AnalyticsEvent> message : messages) {
 			AnalyticsEvent analyticsEvent = message.getObject();

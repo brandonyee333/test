@@ -44,6 +44,7 @@ import com.liferay.osb.asah.stream.curator.nlp.NLPUtil;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -653,18 +654,18 @@ public class ActivitiesNanite implements Nanite {
 
 				Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
-				stream.map(
-					Message::getObject
-				).collect(
+				stream.collect(
 					Collectors.groupingBy(
-						analyticsEvent -> Tuples.of(
-							analyticsEvent.getProjectId(),
-							analyticsEvent.getUserId()))
+						message -> {
+							AnalyticsEvent analyticsEvent = message.getObject();
+
+							return Tuples.of(
+								analyticsEvent.getProjectId(),
+								analyticsEvent.getUserId());
+						})
 				).forEach(
 					this::_run
 				);
-
-				_messageSubscriber.sendAckIds(messages);
 
 				if (_log.isInfoEnabled()) {
 					Class<?> clazz = getClass();
@@ -683,7 +684,7 @@ public class ActivitiesNanite implements Nanite {
 	}
 
 	private void _run(
-		Tuple2<String, String> tuple2, List<AnalyticsEvent> analyticsEvents) {
+		Tuple2<String, String> tuple2, List<Message<AnalyticsEvent>> messages) {
 
 		_semaphore.acquireUninterruptibly();
 
@@ -691,12 +692,16 @@ public class ActivitiesNanite implements Nanite {
 			() -> {
 				long start = System.currentTimeMillis();
 
+				List<Message<AnalyticsEvent>> ackMessages = new ArrayList<>();
+
 				try {
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
 					JSONArray activityJSONArray = new JSONArray();
 
-					for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+					for (Message<AnalyticsEvent> message : messages) {
+						AnalyticsEvent analyticsEvent = message.getObject();
+
 						if ((Objects.equals(
 								analyticsEvent.getApplicationId(), "Form") &&
 							 Objects.equals(
@@ -714,6 +719,8 @@ public class ActivitiesNanite implements Nanite {
 									activityJSONObject, tuple2.getT1());
 							}
 
+							ackMessages.add(message);
+
 							continue;
 						}
 
@@ -723,13 +730,20 @@ public class ActivitiesNanite implements Nanite {
 						if (activityJSONObject != null) {
 							activityJSONArray.put(activityJSONObject);
 						}
+
+						ackMessages.add(message);
 					}
 
 					_addActivityJSONArray(activityJSONArray, tuple2.getT1());
 				}
 				catch (Exception exception) {
 					List<String> analyticsEventsString = ListUtil.map(
-						analyticsEvents, AnalyticsEvent::toJSON);
+						messages,
+						message -> {
+							AnalyticsEvent analyticsEvent = message.getObject();
+
+							return analyticsEvent.toJSON();
+						});
 
 					_log.error(
 						"Unable to process analytics events messages " +
@@ -737,6 +751,7 @@ public class ActivitiesNanite implements Nanite {
 						exception);
 				}
 				finally {
+					_messageSubscriber.sendAcknowledgements(ackMessages);
 					_semaphore.release();
 				}
 
@@ -746,7 +761,7 @@ public class ActivitiesNanite implements Nanite {
 					_log.info(
 						String.format(
 							"%s processed %d events in %d ms",
-							clazz.getSimpleName(), analyticsEvents.size(),
+							clazz.getSimpleName(), messages.size(),
 							System.currentTimeMillis() - start));
 				}
 			},

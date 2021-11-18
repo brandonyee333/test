@@ -291,15 +291,20 @@ public class IndividualActivityFieldsNanite implements Nanite {
 				Stream<Message<String>> stream = messages.stream();
 
 				stream.map(
-					message -> new JSONObject(message.getObject())
+					message -> {
+						JSONObject jsonObject = new JSONObject(
+							message.getObject());
+
+						jsonObject.put("ackId", message.getAckId());
+
+						return jsonObject;
+					}
 				).collect(
 					Collectors.groupingBy(
 						jsonObject -> jsonObject.getString("projectId"))
 				).forEach(
 					this::_run
 				);
-
-				_messageSubscriber.sendAckIds(messages);
 
 				if (_log.isInfoEnabled()) {
 					Class<?> clazz = getClass();
@@ -339,6 +344,18 @@ public class IndividualActivityFieldsNanite implements Nanite {
 										jsonObject.get("channelId")),
 									Collectors.counting())));
 
+					messagesStream = messages.stream();
+
+					Map<String, List<String>> messageAckMap =
+						messagesStream.collect(
+							Collectors.groupingBy(
+								jsonObject -> String.valueOf(
+									jsonObject.get("ownerId")),
+								Collectors.mapping(
+									jsonObject -> String.valueOf(
+										jsonObject.get("ackId")),
+									Collectors.toList())));
+
 					for (Map.Entry<String, Map<String, Long>> ownerIdEntry :
 							ownerIdCounts.entrySet()) {
 
@@ -356,6 +373,9 @@ public class IndividualActivityFieldsNanite implements Nanite {
 									Long.valueOf(ownerId));
 
 							if (individual == null) {
+								_messageSubscriber.sendAckIds(
+									messageAckMap.get(ownerId));
+
 								return;
 							}
 
@@ -378,6 +398,8 @@ public class IndividualActivityFieldsNanite implements Nanite {
 							}
 
 							_individualDog.updateIndividual(individual);
+							_messageSubscriber.sendAckIds(
+								messageAckMap.get(ownerId));
 						}
 						finally {
 							reentrantLock.unlock();

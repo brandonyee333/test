@@ -313,15 +313,19 @@ public class UserSessionNanite implements Nanite {
 	}
 
 	private void _processAnalyticsEvents(
-		List<AnalyticsEvent> analyticsEvents, String userId) {
+		List<Message<AnalyticsEvent>> messages, String userId) {
 
-		List<List<AnalyticsEvent>> sessionsAnalyticsEvents = new ArrayList<>();
+		List<List<Message<AnalyticsEvent>>> messageSessionsAnalyticsEvents =
+			new ArrayList<>();
 
-		List<AnalyticsEvent> currentAnalyticsEvents = new ArrayList<>();
+		List<Message<AnalyticsEvent>> currentMessageAnalyticsEvents =
+			new ArrayList<>();
 
 		AnalyticsEvent previousAnalyticsEvent = null;
 
-		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+		for (Message<AnalyticsEvent> message : messages) {
+			AnalyticsEvent analyticsEvent = message.getObject();
+
 			if (previousAnalyticsEvent != null) {
 				Date previousEventDate = previousAnalyticsEvent.getEventDate();
 
@@ -339,30 +343,31 @@ public class UserSessionNanite implements Nanite {
 					previousEventInstant, eventInstant);
 
 				if ((daysDelta > 0) || (minutesDelta >= 30)) {
-					sessionsAnalyticsEvents.add(currentAnalyticsEvents);
+					messageSessionsAnalyticsEvents.add(
+						currentMessageAnalyticsEvents);
 
-					currentAnalyticsEvents = new ArrayList<>();
+					currentMessageAnalyticsEvents = new ArrayList<>();
 				}
 			}
 
-			currentAnalyticsEvents.add(analyticsEvent);
+			currentMessageAnalyticsEvents.add(message);
 
 			previousAnalyticsEvent = analyticsEvent;
 		}
 
-		if (!currentAnalyticsEvents.isEmpty()) {
-			sessionsAnalyticsEvents.add(currentAnalyticsEvents);
+		if (!currentMessageAnalyticsEvents.isEmpty()) {
+			messageSessionsAnalyticsEvents.add(currentMessageAnalyticsEvents);
 		}
 
-		for (List<AnalyticsEvent> sessionAnalyticsEvents :
-				sessionsAnalyticsEvents) {
+		for (List<Message<AnalyticsEvent>> sessionAnalyticsEvents :
+				messageSessionsAnalyticsEvents) {
 
 			_processSessionAnalyticsEvents(sessionAnalyticsEvents, userId);
 		}
 	}
 
 	private void _processSessionAnalyticsEvents(
-		List<AnalyticsEvent> sessionAnalyticsEvents, String userId) {
+		List<Message<AnalyticsEvent>> messages, String userId) {
 
 		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
 			getClass(), ProjectIdThreadLocal.getProjectId(), userId);
@@ -370,11 +375,14 @@ public class UserSessionNanite implements Nanite {
 		try {
 			reentrantLock.lock();
 
-			sessionAnalyticsEvents.sort(
-				Comparator.comparing(AnalyticsEvent::getEventDate));
+			Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
 			AnalyticsEvents analyticsEvents = new AnalyticsEvents(
-				sessionAnalyticsEvents);
+				stream.map(
+					Message::getObject
+				).collect(
+					Collectors.toList()
+				));
 
 			JSONObject userSessionJSONObject = _getUserSession(
 				analyticsEvents.getFirstAnalyticsEventDate(), userId);
@@ -428,6 +436,8 @@ public class UserSessionNanite implements Nanite {
 			else {
 				_updateUserSession(analyticsEvents, userSessionJSONObject);
 			}
+
+			_messageSubscriber.sendAcknowledgements(messages);
 		}
 		finally {
 			reentrantLock.unlock();
@@ -452,20 +462,25 @@ public class UserSessionNanite implements Nanite {
 
 				Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
-				stream.map(
-					Message::getObject
-				).sorted(
-					Comparator.comparing(AnalyticsEvent::getEventDate)
+				stream.sorted(
+					Comparator.comparing(
+						message -> {
+							AnalyticsEvent analyticsEvent = message.getObject();
+
+							return analyticsEvent.getEventDate();
+						})
 				).collect(
 					Collectors.groupingBy(
-						analyticsEvent -> Tuples.of(
-							analyticsEvent.getProjectId(),
-							analyticsEvent.getUserId()))
+						message -> {
+							AnalyticsEvent analyticsEvent = message.getObject();
+
+							return Tuples.of(
+								analyticsEvent.getProjectId(),
+								analyticsEvent.getUserId());
+						})
 				).forEach(
 					this::_run
 				);
-
-				_messageSubscriber.sendAckIds(messages);
 
 				if (_log.isInfoEnabled()) {
 					Class<?> clazz = getClass();
@@ -484,7 +499,7 @@ public class UserSessionNanite implements Nanite {
 	}
 
 	private void _run(
-		Tuple2<String, String> tuple2, List<AnalyticsEvent> analyticsEvents) {
+		Tuple2<String, String> tuple2, List<Message<AnalyticsEvent>> messages) {
 
 		_semaphore.acquireUninterruptibly();
 
@@ -495,11 +510,16 @@ public class UserSessionNanite implements Nanite {
 				try {
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
-					_processAnalyticsEvents(analyticsEvents, tuple2.getT2());
+					_processAnalyticsEvents(messages, tuple2.getT2());
 				}
 				catch (Exception exception) {
 					List<String> analyticsEventsString = ListUtil.map(
-						analyticsEvents, AnalyticsEvent::toJSON);
+						messages,
+						message -> {
+							AnalyticsEvent analyticsEvent = message.getObject();
+
+							return analyticsEvent.toJSON();
+						});
 
 					_log.error(
 						"Unable to process analytics events messages " +
@@ -516,7 +536,7 @@ public class UserSessionNanite implements Nanite {
 					_log.info(
 						String.format(
 							"%s processed %d events in %d ms",
-							clazz.getSimpleName(), analyticsEvents.size(),
+							clazz.getSimpleName(), messages.size(),
 							System.currentTimeMillis() - start));
 				}
 			},

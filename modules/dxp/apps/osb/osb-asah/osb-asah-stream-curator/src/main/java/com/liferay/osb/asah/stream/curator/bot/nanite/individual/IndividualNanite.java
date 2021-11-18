@@ -42,6 +42,7 @@ import java.nio.charset.StandardCharsets;
 
 import java.security.MessageDigest;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -285,7 +286,14 @@ public class IndividualNanite implements Nanite {
 				Stream<Message<String>> stream = messages.stream();
 
 				stream.map(
-					message -> new JSONObject(message.getObject())
+					message -> {
+						JSONObject jsonObject = new JSONObject(
+							message.getObject());
+
+						jsonObject.put("ackId", message.getAckId());
+
+						return jsonObject;
+					}
 				).collect(
 					Collectors.groupingBy(
 						jsonObject -> Tuples.of(
@@ -294,8 +302,6 @@ public class IndividualNanite implements Nanite {
 				).forEach(
 					this::_run
 				);
-
-				_messageSubscriber.sendAckIds(messages);
 
 				if (_log.isInfoEnabled()) {
 					Class<?> clazz = getClass();
@@ -330,6 +336,8 @@ public class IndividualNanite implements Nanite {
 
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
+					List<String> ackIds = new ArrayList<>();
+
 					for (JSONObject messageJSONObject : messageJSONObjects) {
 						try {
 							String emailAddressHashed =
@@ -342,6 +350,9 @@ public class IndividualNanite implements Nanite {
 										StandardCharsets.UTF_8),
 									_BLANK_EMAIL_HASH.getBytes(
 										StandardCharsets.UTF_8))) {
+
+								ackIds.add(
+									messageJSONObject.getString("ackId"));
 
 								continue;
 							}
@@ -369,11 +380,17 @@ public class IndividualNanite implements Nanite {
 									individual.getId(),
 									messageJSONObject.getString("userId"));
 							}
+
+							ackIds.add(messageJSONObject.getString("ackId"));
 						}
 						catch (Exception exception) {
 							_log.error(exception.getMessage(), exception);
 						}
+
+						ackIds.add(messageJSONObject.getString("ackId"));
 					}
+
+					_messageSubscriber.sendAckIds(ackIds);
 
 					if (_log.isInfoEnabled()) {
 						Class<?> clazz = getClass();

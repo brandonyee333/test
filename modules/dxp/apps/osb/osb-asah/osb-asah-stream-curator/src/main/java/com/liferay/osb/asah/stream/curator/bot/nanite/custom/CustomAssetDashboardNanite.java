@@ -144,15 +144,16 @@ public class CustomAssetDashboardNanite implements Nanite {
 
 				Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
-				stream.map(
-					Message::getObject
-				).collect(
-					Collectors.groupingBy(AnalyticsEvent::getProjectId)
+				stream.collect(
+					Collectors.groupingBy(
+						message -> {
+							AnalyticsEvent analyticsEvent = message.getObject();
+
+							return analyticsEvent.getProjectId();
+						})
 				).forEach(
 					this::_run
 				);
-
-				_messageSubscriber.sendAckIds(messages);
 
 				if (_log.isInfoEnabled()) {
 					Class<?> clazz = getClass();
@@ -170,7 +171,9 @@ public class CustomAssetDashboardNanite implements Nanite {
 		}
 	}
 
-	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
+	private void _run(
+		String projectId, List<Message<AnalyticsEvent>> messages) {
+
 		_semaphore.acquireUninterruptibly();
 
 		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
@@ -185,13 +188,17 @@ public class CustomAssetDashboardNanite implements Nanite {
 
 					ProjectIdThreadLocal.setProjectId(projectId);
 
-					Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+					Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
-					stream.collect(
+					stream.map(
+						Message::getObject
+					).collect(
 						Collectors.groupingBy(this::_getCustomAssetPrimaryKey)
 					).forEach(
 						this::_addCustomAssetDashboards
 					);
+
+					_messageSubscriber.sendAcknowledgements(messages);
 
 					if (_log.isInfoEnabled()) {
 						Class<?> clazz = getClass();
@@ -199,7 +206,7 @@ public class CustomAssetDashboardNanite implements Nanite {
 						_log.info(
 							String.format(
 								"%s processed %d events in %d ms",
-								clazz.getSimpleName(), analyticsEvents.size(),
+								clazz.getSimpleName(), messages.size(),
 								System.currentTimeMillis() - start));
 					}
 				}
