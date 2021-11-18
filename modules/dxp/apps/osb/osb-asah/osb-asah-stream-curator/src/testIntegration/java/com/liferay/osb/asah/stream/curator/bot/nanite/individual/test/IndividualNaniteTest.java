@@ -14,10 +14,15 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.individual.test;
 
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.EventDefinitionDog;
+import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
+import com.liferay.osb.asah.common.entity.Event;
+import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
@@ -36,6 +41,7 @@ import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -385,6 +391,36 @@ public class IndividualNaniteTest extends BaseNaniteTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_2_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.IDENTITY_MESSAGE,
+		resourcePath = "identity_message_2.json"
+	)
+	@Test
+	public void testUpdateEvents() {
+		Date date = DateUtil.newDayDate();
+
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
+
+		Event originalEvent = _eventDog.addEvent(
+			"analyticsEventId", "Page", 1L, date, 1L, Collections.emptySet(),
+			date, eventDefinition.getId(), 200L, "sessionId", "2");
+
+		runNanite();
+
+		Event updatedEvent = _eventDog.fetchEvent(originalEvent.getId());
+
+		Assert.assertEquals(Long.valueOf(100), updatedEvent.getIndividualId());
+	}
+
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "session_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
@@ -459,6 +495,12 @@ public class IndividualNaniteTest extends BaseNaniteTestCase {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
+	@Autowired
+	private EventDefinitionDog _eventDefinitionDog;
+
+	@Autowired
+	private EventDog _eventDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
