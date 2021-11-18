@@ -220,6 +220,31 @@ public class EventDogTest
 			});
 	}
 
+	@Test
+	public void testUpdateEventsIndividualId() {
+		Date date = DateUtil.newDayDate();
+
+		Channel channel = _channelDog.addChannel("Test Channel");
+
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
+
+		Event originalEvent = _eventDog.addEvent(
+			"analyticsEventId", "Page", channel.getId(), date, 123456L,
+			Collections.emptySet(), date, eventDefinition.getId(), 1L,
+			"sessionId", "abcdef");
+
+		Assertions.assertEquals(
+			Long.valueOf(1), originalEvent.getIndividualId());
+
+		_eventDog.updateEventsIndividualId(123456L, 2L, "abcdef");
+
+		Event updatedEvent = _eventDog.fetchEvent(originalEvent.getId());
+
+		Assertions.assertEquals(
+			updatedEvent.getIndividualId(), Long.valueOf(2));
+	}
+
 	@Autowired
 	private ChannelDog _channelDog;
 

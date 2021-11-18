@@ -30,8 +30,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
 
 /**
@@ -121,5 +124,12 @@ public interface EventRepository extends Repository<Event, Long> {
 		Long channelId, Long individualId, String keywords, Pageable pageable,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
+
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public boolean updateIndividualIdByDataSourceIdAndUserId(
+		@Param("dataSourceId") Long dataSourceId,
+		@Param("individualId") Long individualId,
+		@Param("userId") String userId);
 
 }
