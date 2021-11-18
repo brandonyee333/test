@@ -18,12 +18,15 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
+import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.service.DXPCloudStatusPageWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -45,6 +48,10 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = DXPCloudStatusPageSubscriptionUtil.class)
 public class DXPCloudStatusPageSubscriptionUtil {
+
+	public Map<String, String> getSubscribers() throws Exception {
+		return _getSubscribers();
+	}
 
 	public boolean hasActiveDXPCloud(String koroneikiAccountKey)
 		throws Exception {
@@ -125,6 +132,36 @@ public class DXPCloudStatusPageSubscriptionUtil {
 		return subscribers;
 	}
 
+	private boolean _hasPartnerWorker(User user) throws Exception {
+		for (String contactRoleName :
+				ContactRoleConstants.PARTNER_CONTACT_ROLES) {
+
+			ContactRole contactRole = _contactRoleWebService.fetchContactRole(
+				ContactRole.Type.ACCOUNT_CUSTOMER.toString(), contactRoleName);
+
+			if (contactRole == null) {
+				continue;
+			}
+
+			StringBundler sb = new StringBundler(5);
+
+			sb.append("contactUuidContactRoleKeys/any(s:s eq '");
+			sb.append(user.getUuid());
+			sb.append("_");
+			sb.append(contactRole.getKey());
+			sb.append("') and entitlements/any(s:s eq 'Partner')");
+
+			long accountsCount = _accountWebService.searchCount(
+				StringPool.BLANK, sb.toString());
+
+			if (accountsCount > 0) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private void _subscribe(User user, Map<String, String> subscribers)
 		throws Exception {
 
@@ -147,6 +184,10 @@ public class DXPCloudStatusPageSubscriptionUtil {
 
 	private void _unsubscribe(User user, Map<String, String> subscribers)
 		throws Exception {
+
+		if (_hasPartnerWorker(user)) {
+			return;
+		}
 
 		String subscriberId = subscribers.get(user.getEmailAddress());
 
@@ -175,6 +216,9 @@ public class DXPCloudStatusPageSubscriptionUtil {
 
 	@Reference
 	private AccountWebService _accountWebService;
+
+	@Reference
+	private ContactRoleWebService _contactRoleWebService;
 
 	@Reference
 	private ContactWebService _contactWebService;

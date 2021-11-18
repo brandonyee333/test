@@ -21,6 +21,7 @@ import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseViewWebService;
+import com.liferay.osb.customer.subscription.util.DXPCloudStatusPageSubscriptionUtil;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
@@ -157,6 +158,9 @@ public class SyncNewActiveProductPurchaseMessageListener
 					_accountReader.getTicketSupportEndDate(curProductPurchases),
 					_accountReader.getStatus(account));
 			}
+
+			_dxpCloudStatusPageSubscriptionUtil.syncAccount(
+				productPurchase.getAccountKey());
 		}
 	}
 
@@ -170,6 +174,10 @@ public class SyncNewActiveProductPurchaseMessageListener
 	private AccountWebService _accountWebService;
 
 	private Format _dateFormat;
+
+	@Reference
+	private DXPCloudStatusPageSubscriptionUtil
+		_dxpCloudStatusPageSubscriptionUtil;
 
 	@Reference
 	private FastDateFormatFactory _fastDateFormatFactory;

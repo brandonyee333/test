@@ -31,4 +31,5 @@ dependencies {
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-web-service-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-legacy:osb-customer-legacy-web-service-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-subscription:osb-customer-subscription-util")
 }
