@@ -24,11 +24,3 @@ processResources {
 		include "**/*.gz"
 	}
 }
-
-test {
-	useJUnitPlatform()
-}
-
-testIntegration {
-	useJUnitPlatform()
-}

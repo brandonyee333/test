@@ -49,11 +49,3 @@ if (!langDetectProfileDir.exists()) {
 jar {
 	enabled = true
 }
-
-test {
-	useJUnitPlatform()
-}
-
-testIntegration {
-	useJUnitPlatform()
-}

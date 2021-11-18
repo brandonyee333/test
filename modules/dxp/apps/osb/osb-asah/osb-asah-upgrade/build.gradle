@@ -12,18 +12,9 @@ dependencies {
 
 	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-common")
 
-	testCompile group: "junit", name: "junit", version: "4.12"
 	testCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
 }
 
 jar {
 	enabled = true
-}
-
-test {
-	useJUnitPlatform()
-}
-
-testIntegration {
-	useJUnitPlatform()
 }

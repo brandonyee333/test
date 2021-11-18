@@ -121,6 +121,8 @@ configure(javaSubprojects) {
 			showExceptions = true
 			showStackTraces = true
 		}
+
+		useJUnitPlatform()
 	}
 
 	testIntegration {
@@ -139,6 +141,8 @@ configure(javaSubprojects) {
 			showExceptions = true
 			showStackTraces = true
 		}
+
+		useJUnitPlatform()
 	}
 }
 
