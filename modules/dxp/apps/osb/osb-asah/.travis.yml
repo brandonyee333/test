@@ -1,22 +1,17 @@
 before_cache:
-    - rm -f ${HOME}/.gradle/caches/modules-2/modules-2.lock
-    - rm -fr ${HOME}/.gradle/caches/*/plugin-resolution/
-before_install:
-    - TMP_DAEMON=$(mktemp)
-    - sudo jq '."registry-mirrors" += ["https://mirror.gcr.io", "https://registry.access.redhat.com"]' /etc/docker/daemon.json > ${TMP_DAEMON}
-    - sudo mv ${TMP_DAEMON} /etc/docker/daemon.json
-    - sudo systemctl daemon-reload
-    - sudo systemctl restart docker
+    - rm -f .gradle/caches/modules-2/modules-2.lock
+    - rm -fr .gradle/caches/*/plugin-resolution/
 cache:
     directories:
-        - ${HOME}/.gradle/caches/
-        - ${HOME}/.gradle/wrapper/
+        - .gradle/caches/
+        - .gradle/wrapper/
         - docker_images
     timeout: 600
 dist: bionic
 env:
     global:
         - _JAVA_OPTIONS=-Xmx3g
+install: true
 jdk: openjdk8
 jobs:
     include:
@@ -34,7 +29,11 @@ jobs:
           before_script:
               - docker load -i docker_images/images.tar || true
               - docker-compose -f docker-compose.integration-test.yml up -d
-              - docker save $(docker images --format '{{.Repository}}:{{.Tag}}') -o docker_images/images.tar
+              - git diff --name-only ${TRAVIS_COMMIT_RANGE} | grep docker-compose.integration-test.yml; DOCKER_CHANGED=$?
+              - |
+                  if (( ${DOCKER_CHANGED} == 0 )); then
+                     docker save $(docker images --format '{{.Repository}}:{{.Tag}}') -o docker_images/images.tar
+                  fi
           script:
               - ./gradlew test --configure-on-demand --continue --parallel
               - ./gradlew testIntegration --configure-on-demand --continue
