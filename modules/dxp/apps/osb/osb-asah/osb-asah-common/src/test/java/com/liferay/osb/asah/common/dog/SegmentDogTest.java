@@ -38,7 +38,13 @@ public class SegmentDogTest {
 		Assert.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
 			_segmentDog.processFilter(
-				"demographics/age/value ge 12345678901234567262899398937898378787878"));
+				"demographics/age/value ge " +
+					"12345678901234567262899398937898378787878"));
+
+		Assert.assertEquals(
+			"demographics/age/value ge " + Integer.MAX_VALUE,
+			_segmentDog.processFilter(
+				"demographics/age/value ge 1.2345678901234568e+21"));
 
 		Assert.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
@@ -46,7 +52,8 @@ public class SegmentDogTest {
 				"demographics/age/value ge " + Integer.MAX_VALUE));
 
 		Assert.assertEquals(
-			"organizations.filter(filter='(dateModified gt 1580256740750)')",
+			"organizations.filter(filter='(dateModified gt " +
+				Integer.MAX_VALUE + ")')",
 			_segmentDog.processFilter(
 				"organizations.filter(filter='(dateModified gt " +
 					"1580256740750)')"));
