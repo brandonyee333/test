@@ -58,8 +58,9 @@ public class RootRestControllerTest {
 	@Test
 	public void testGetTrafficSources() {
 		Mockito.doAnswer(
-			invocationOnMock -> String.valueOf(
-				JSONUtil.putAll(JSONUtil.put("valueKey", "United States")))
+			invocationOnMock -> JSONUtil.putAll(
+				JSONUtil.put("valueKey", "United States")
+			).toString()
 		).when(
 			_http
 		).exchange(
@@ -132,8 +133,9 @@ public class RootRestControllerTest {
 	@Test(expected = HttpClientErrorException.class)
 	public void testGetTrafficSourcesWithDomainOrganicUniqueSEMrushAPIError() {
 		Mockito.doAnswer(
-			invocationOnMock -> String.valueOf(
-				JSONUtil.putAll(JSONUtil.put("valueKey", "United States")))
+			invocationOnMock -> JSONUtil.putAll(
+				JSONUtil.put("valueKey", "United States")
+			).toString()
 		).when(
 			_http
 		).exchange(
@@ -223,10 +225,10 @@ public class RootRestControllerTest {
 	@Test
 	public void testGetTrafficSourcesWithMultipleDatabases() {
 		Mockito.doAnswer(
-			invocationOnMock -> String.valueOf(
-				JSONUtil.putAll(
-					JSONUtil.put("valueKey", "Spain"),
-					JSONUtil.put("valueKey", "United States")))
+			invocationOnMock -> JSONUtil.putAll(
+				JSONUtil.put("valueKey", "Spain"),
+				JSONUtil.put("valueKey", "United States")
+			).toString()
 		).when(
 			_http
 		).exchange(
@@ -312,8 +314,9 @@ public class RootRestControllerTest {
 	@Test
 	public void testGetTrafficSourcesWithNothingFound() {
 		Mockito.doAnswer(
-			invocationOnMock -> String.valueOf(
-				JSONUtil.putAll(JSONUtil.put("valueKey", "United States")))
+			invocationOnMock -> JSONUtil.putAll(
+				JSONUtil.put("valueKey", "United States")
+			).toString()
 		).when(
 			_http
 		).exchange(
@@ -357,8 +360,9 @@ public class RootRestControllerTest {
 	@Test(expected = HttpClientErrorException.class)
 	public void testGetTrafficSourcesWithSEMrushAPIError() {
 		Mockito.doAnswer(
-			invocationOnMock -> String.valueOf(
-				JSONUtil.putAll(JSONUtil.put("valueKey", "United States")))
+			invocationOnMock -> JSONUtil.putAll(
+				JSONUtil.put("valueKey", "United States")
+			).toString()
 		).when(
 			_http
 		).exchange(
@@ -386,8 +390,9 @@ public class RootRestControllerTest {
 	@Test(expected = HttpClientErrorException.class)
 	public void testGetTrafficSourcesWithURLAdwordsSEMrushAPIError() {
 		Mockito.doAnswer(
-			invocationOnMock -> String.valueOf(
-				JSONUtil.putAll(JSONUtil.put("valueKey", "United States")))
+			invocationOnMock -> JSONUtil.putAll(
+				JSONUtil.put("valueKey", "United States")
+			).toString()
 		).when(
 			_http
 		).exchange(
@@ -436,8 +441,9 @@ public class RootRestControllerTest {
 	@Test(expected = HttpClientErrorException.class)
 	public void testGetTrafficSourcesWithURLOrganicSEMrushAPIError() {
 		Mockito.doAnswer(
-			invocationOnMock -> String.valueOf(
-				JSONUtil.putAll(JSONUtil.put("valueKey", "United States")))
+			invocationOnMock -> JSONUtil.putAll(
+				JSONUtil.put("valueKey", "United States")
+			).toString()
 		).when(
 			_http
 		).exchange(

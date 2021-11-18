@@ -39,7 +39,10 @@ public class PostResponseTest
 
 		postResponse.setCollectionName("individuals");
 		postResponse.setElasticsearchInvoker(_elasticsearchInvoker);
-		postResponse.setJSON(String.valueOf(JSONUtil.put("foo", "bar")));
+		postResponse.setJSON(
+			JSONUtil.put(
+				"foo", "bar"
+			).toString());
 
 		JSONObject responseJSONObject = new JSONObject(postResponse.respond());
 

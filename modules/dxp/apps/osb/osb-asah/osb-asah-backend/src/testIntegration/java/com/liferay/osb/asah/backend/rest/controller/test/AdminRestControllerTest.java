@@ -99,12 +99,11 @@ public class AdminRestControllerTest {
 	public void testPostTask() {
 		_adminRestController.postTask(
 			"IndividualInterestScoresNanite",
-			String.valueOf(
-				JSONUtil.put(
-					"dataSourceId", "123"
-				).put(
-					"type", "nanite"
-				)));
+			JSONUtil.put(
+				"dataSourceId", "123"
+			).put(
+				"type", "nanite"
+			).toString());
 
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks();
 

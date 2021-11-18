@@ -45,7 +45,10 @@ public class PutResponseTest
 		putResponse.setCollectionName("individuals");
 		putResponse.setElasticsearchInvoker(_elasticsearchInvoker);
 		putResponse.setId("123");
-		putResponse.setJSON(String.valueOf(JSONUtil.put("floo", "blar")));
+		putResponse.setJSON(
+			JSONUtil.put(
+				"floo", "blar"
+			).toString());
 
 		// TODO Our PUT responses actually behaves like a PATCH. We should fix
 		// this one day.
