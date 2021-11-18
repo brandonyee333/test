@@ -18,8 +18,8 @@ import com.liferay.osb.asah.spark.common.DateUtil;
 
 import java.sql.Timestamp;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Robson Pastor
@@ -33,9 +33,9 @@ public class DateUtilTest {
 		Timestamp afterTimestamp = DateUtil.toTimestamp(
 			"2018-09-15T10:00:01.000Z");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			afterTimestamp, DateUtil.max(beforeTimestamp, afterTimestamp));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			afterTimestamp, DateUtil.max(afterTimestamp, beforeTimestamp));
 	}
 
@@ -46,9 +46,9 @@ public class DateUtilTest {
 		Timestamp afterTimestamp = DateUtil.toTimestamp(
 			"2018-09-15T10:00:01.000Z");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			beforeTimestamp, DateUtil.min(beforeTimestamp, afterTimestamp));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			beforeTimestamp, DateUtil.min(afterTimestamp, beforeTimestamp));
 	}
 

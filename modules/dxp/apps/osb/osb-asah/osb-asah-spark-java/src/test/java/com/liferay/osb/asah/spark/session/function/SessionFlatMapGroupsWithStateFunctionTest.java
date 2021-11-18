@@ -27,8 +27,8 @@ import org.apache.spark.sql.execution.streaming.GroupStateImpl;
 import org.apache.spark.sql.streaming.GroupState;
 import org.apache.spark.sql.streaming.GroupStateTimeout;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import scala.Option;
 import scala.Some;
@@ -57,7 +57,7 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 
 		Session session = sessionIterator.next();
 
-		Assert.assertFalse(session.getFinished());
+		Assertions.assertFalse(session.getFinished());
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 
 		Session session = sessionIterator.next();
 
-		Assert.assertFalse(session.getFinished());
+		Assertions.assertFalse(session.getFinished());
 
 		List<Event> secondIterationEvents = Arrays.asList(
 			_createEvent("2021-06-22T10:01:30.001Z"));
@@ -90,13 +90,15 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 
 		Session expiredSession = sessionIterator.next();
 
-		Assert.assertTrue(session.getFinished());
-		Assert.assertEquals(firstIterationEvents, expiredSession.getEvents());
+		Assertions.assertTrue(session.getFinished());
+		Assertions.assertEquals(
+			firstIterationEvents, expiredSession.getEvents());
 
 		Session activeSession = sessionIterator.next();
 
-		Assert.assertFalse(activeSession.getFinished());
-		Assert.assertEquals(secondIterationEvents, activeSession.getEvents());
+		Assertions.assertFalse(activeSession.getFinished());
+		Assertions.assertEquals(
+			secondIterationEvents, activeSession.getEvents());
 	}
 
 	@Test
@@ -121,7 +123,7 @@ public class SessionFlatMapGroupsWithStateFunctionTest {
 
 		Session session = sessionIterator.next();
 
-		Assert.assertTrue(session.getFinished());
+		Assertions.assertTrue(session.getFinished());
 	}
 
 	private Event _createEvent(String eventDate) {

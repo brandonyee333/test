@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.spark.session.model;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Robson Pastor
@@ -24,19 +24,19 @@ public class EventTest {
 
 	@Test
 	public void testIsInteraction() {
-		Assert.assertFalse(Event.isInteraction("webContentViewed"));
-		Assert.assertTrue(Event.isInteraction("pageDepthReached"));
+		Assertions.assertFalse(Event.isInteraction("webContentViewed"));
+		Assertions.assertTrue(Event.isInteraction("pageDepthReached"));
 	}
 
 	@Test
 	public void testIsPageViewed() {
-		Assert.assertFalse(Event.isPageViewed("Page", "pageDepthReached"));
-		Assert.assertFalse(
+		Assertions.assertFalse(Event.isPageViewed("Page", "pageDepthReached"));
+		Assertions.assertFalse(
 			Event.isPageViewed("WebContent", "pageDepthReached"));
-		Assert.assertFalse(Event.isPageViewed("WebContent", "pageViewed"));
-		Assert.assertFalse(
+		Assertions.assertFalse(Event.isPageViewed("WebContent", "pageViewed"));
+		Assertions.assertFalse(
 			Event.isPageViewed("WebContent", "webContentViewed"));
-		Assert.assertTrue(Event.isPageViewed("Page", "pageViewed"));
+		Assertions.assertTrue(Event.isPageViewed("Page", "pageViewed"));
 	}
 
 }

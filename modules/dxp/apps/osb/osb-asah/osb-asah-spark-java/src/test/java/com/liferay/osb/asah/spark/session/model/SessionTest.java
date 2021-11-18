@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Robson Pastor
@@ -74,20 +74,21 @@ public class SessionTest {
 
 		List<Event> events = session.getEvents();
 
-		Assert.assertEquals(events.toString(), 2, events.size());
+		Assertions.assertEquals(2, events.size(), events.toString());
 
-		Assert.assertEquals(
-			_firstEventDate.toString(), _firstEventDate,
-			session.getFirstEventDate());
-		Assert.assertEquals(
-			_secondEventDate.toString(), _secondEventDate,
-			session.getLastEventDate());
-		Assert.assertFalse(session.getFinished());
-		Assert.assertFalse(session.isBounced());
+		Assertions.assertEquals(
+			_firstEventDate, session.getFirstEventDate(),
+			_firstEventDate.toString());
+		Assertions.assertEquals(
+			_secondEventDate, session.getLastEventDate(),
+			_secondEventDate.toString());
+		Assertions.assertFalse(session.getFinished());
+		Assertions.assertFalse(session.isBounced());
 
 		List<String> canonicalUrls = session.getCanonicalUrls();
 
-		Assert.assertEquals(canonicalUrls.toString(), 1, canonicalUrls.size());
+		Assertions.assertEquals(
+			1, canonicalUrls.size(), canonicalUrls.toString());
 	}
 
 	@Test
@@ -113,39 +114,40 @@ public class SessionTest {
 
 		Map<String, String> acquisition = session.getAcquisition();
 
-		Assert.assertEquals(
-			acquisition.toString(), "7010g000000nK1uAAE",
-			acquisition.get("campaign"));
-		Assert.assertEquals(
-			acquisition.toString(), "social", acquisition.get("channel"));
-		Assert.assertEquals(
-			acquisition.toString(), "linkedin-page-button",
-			acquisition.get("content"));
-		Assert.assertEquals(
-			acquisition.toString(), "social", acquisition.get("medium"));
-		Assert.assertEquals(
-			acquisition.toString(), "www.liferay.com",
-			acquisition.get("referrerHost"));
+		Assertions.assertEquals(
+			"7010g000000nK1uAAE", acquisition.get("campaign"),
+			acquisition.toString());
+		Assertions.assertEquals(
+			"social", acquisition.get("channel"), acquisition.toString());
+		Assertions.assertEquals(
+			"linkedin-page-button", acquisition.get("content"),
+			acquisition.toString());
+		Assertions.assertEquals(
+			"social", acquisition.get("medium"), acquisition.toString());
+		Assertions.assertEquals(
+			"www.liferay.com", acquisition.get("referrerHost"),
+			acquisition.toString());
 
 		List<String> canonicalUrls = session.getCanonicalUrls();
 
-		Assert.assertEquals(canonicalUrls.toString(), 1, canonicalUrls.size());
+		Assertions.assertEquals(
+			1, canonicalUrls.size(), canonicalUrls.toString());
 
 		List<Event> events = session.getEvents();
 
-		Assert.assertEquals(events.toString(), 1, events.size());
+		Assertions.assertEquals(1, events.size(), events.toString());
 
-		Assert.assertEquals(
-			_firstEventDate.toString(), _firstEventDate,
-			session.getFirstEventDate());
-		Assert.assertEquals(
-			_firstEventDate.toString(), _firstEventDate,
-			session.getLastEventDate());
-		Assert.assertEquals(
-			event.getProjectId(), event.getProjectId(), session.getProjectId());
-		Assert.assertFalse(session.getFinished());
-		Assert.assertEquals(session.getUserId(), event.getUserId());
-		Assert.assertTrue(session.isBounced());
+		Assertions.assertEquals(
+			_firstEventDate, session.getFirstEventDate(),
+			_firstEventDate.toString());
+		Assertions.assertEquals(
+			_firstEventDate, session.getLastEventDate(),
+			_firstEventDate.toString());
+		Assertions.assertEquals(
+			event.getProjectId(), session.getProjectId(), event.getProjectId());
+		Assertions.assertFalse(session.getFinished());
+		Assertions.assertEquals(session.getUserId(), event.getUserId());
+		Assertions.assertTrue(session.isBounced());
 	}
 
 	private final Map<String, String> _context = new HashMap<String, String>() {
