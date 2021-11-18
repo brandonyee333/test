@@ -36,7 +36,9 @@ public interface MessageSubscriber {
 		int maxMessages,
 		UnsafeFunction<String, T, Exception> modelMapperFunction);
 
-	public <T> void sendAckIds(List<Message<T>> messages);
+	public void sendAckIds(List<String> ackIds);
+
+	public <T> void sendAcknowledgements(List<Message<T>> messages);
 
 	@Documented
 	@Retention(RetentionPolicy.RUNTIME)
