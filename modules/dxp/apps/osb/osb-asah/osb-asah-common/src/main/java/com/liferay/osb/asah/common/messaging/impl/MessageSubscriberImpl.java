@@ -19,6 +19,7 @@ import com.google.cloud.pubsub.v1.stub.SubscriberStub;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Empty;
 import com.google.pubsub.v1.AcknowledgeRequest;
+import com.google.pubsub.v1.ModifyAckDeadlineRequest;
 import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.PullRequest;
 import com.google.pubsub.v1.PullResponse;
@@ -110,6 +111,19 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 		return builder.build();
 	}
 
+	private ModifyAckDeadlineRequest _buildModifyAckDeadlineRequest(
+		int ackDeadlineSeconds, List<String> ackIds) {
+
+		ModifyAckDeadlineRequest.Builder builder =
+			ModifyAckDeadlineRequest.newBuilder();
+
+		builder.setAckDeadlineSeconds(ackDeadlineSeconds);
+		builder.addAllAckIds(ackIds);
+		builder.setSubscription(_subscription.getName());
+
+		return builder.build();
+	}
+
 	private PullRequest _buildPullRequest(int maxMessages) {
 		PullRequest.Builder builder = PullRequest.newBuilder();
 
@@ -144,6 +158,8 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 			PullResponse pullResponse = pullRequestUnaryCallable.call(
 				_buildPullRequest(maxMessages));
 
+			List<String> ackIds = new ArrayList<>();
+
 			for (ReceivedMessage receivedMessage :
 					pullResponse.getReceivedMessagesList()) {
 
@@ -153,12 +169,20 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 
 				ByteString byteString = pubsubMessage.getData();
 
+				ackIds.add(receivedMessage.getAckId());
 				messages.add(
 					new Message(
 						receivedMessage.getAckId(),
 						pubsubMessage.getMessageId(),
 						modelMapperFunction.apply(byteString.toStringUtf8())));
 			}
+
+			UnaryCallable<ModifyAckDeadlineRequest, Empty>
+				modifyAckDeadlineCallable =
+					subscriberStub.modifyAckDeadlineCallable();
+
+			modifyAckDeadlineCallable.call(
+				_buildModifyAckDeadlineRequest(60, ackIds));
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
