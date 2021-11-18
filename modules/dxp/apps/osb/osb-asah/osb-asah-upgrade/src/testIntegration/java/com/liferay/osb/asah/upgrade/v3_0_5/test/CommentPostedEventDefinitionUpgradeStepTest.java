@@ -26,8 +26,8 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.repository.EventRepository;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_0_5.CommentPostedEventDefinitionUpgradeStep;
 
 import java.util.ArrayList;
@@ -39,19 +39,17 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Leslie Wong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
-public class CommentPostedEventDefinitionUpgradeStepTest {
+public class CommentPostedEventDefinitionUpgradeStepTest
+	implements OSBAsahTestExecutionListenersContext,
+			   OSBAsahUpgradeSpringTestContext {
 
 	@Test
 	public void testUpgrade() throws Exception {
@@ -61,12 +59,12 @@ public class CommentPostedEventDefinitionUpgradeStepTest {
 
 		_commentPostedEventDefinitionUpgradeStep.upgrade("");
 
-		Assert.assertNull(
+		Assertions.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("commentPosted"));
 
 		EventDefinition postedEventDefinition = _getEventDefinition("posted");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1, _eventDog.countEvents(postedEventDefinition.getId()));
 	}
 
@@ -91,20 +89,20 @@ public class CommentPostedEventDefinitionUpgradeStepTest {
 		Long commentPostedEventDefinitionId =
 			commentPostedEventDefinition.getId();
 
-		Assert.assertNotNull(commentPostedEventDefinitionId);
+		Assertions.assertNotNull(commentPostedEventDefinitionId);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			commentPostedEventDefinitionId, event.getEventDefinitionId());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1, _eventDog.countEvents(commentPostedEventDefinitionId));
 
 		EventDefinition postedEventDefinition = _getEventDefinition("posted");
 
-		Assert.assertNotEquals(
+		Assertions.assertNotEquals(
 			postedEventDefinition.getId(), event.getEventDefinitionId());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			0, _eventDog.countEvents(postedEventDefinition.getId()));
 
 		_commentPostedEventDefinitionUpgradeStep.upgrade("");
@@ -112,21 +110,22 @@ public class CommentPostedEventDefinitionUpgradeStepTest {
 		Optional<EventDefinition> commentPostedEventDefinitionOptional =
 			_eventDefinitionRepository.findById(commentPostedEventDefinitionId);
 
-		Assert.assertFalse(commentPostedEventDefinitionOptional.isPresent());
+		Assertions.assertFalse(
+			commentPostedEventDefinitionOptional.isPresent());
 
 		Long eventId = event.getId();
 
-		Assert.assertNotNull(eventId);
+		Assertions.assertNotNull(eventId);
 
 		Optional<Event> eventOptional = _eventRepository.findById(eventId);
 
-		Assert.assertTrue(eventOptional.isPresent());
+		Assertions.assertTrue(eventOptional.isPresent());
 
 		event = eventOptional.get();
 
 		postedEventDefinition = _getEventDefinition("posted");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			postedEventDefinition.getId(), event.getEventDefinitionId());
 
 		_assertEventAttributeDefinition(
@@ -153,12 +152,13 @@ public class CommentPostedEventDefinitionUpgradeStepTest {
 
 		EventDefinition eventDefinition = _getEventDefinition("posted");
 
-		Assert.assertEquals("posted", eventDefinition.getDisplayName());
-		Assert.assertEquals("posted", eventDefinition.getName());
-		Assert.assertEquals(
+		Assertions.assertEquals("posted", eventDefinition.getDisplayName());
+		Assertions.assertEquals("posted", eventDefinition.getName());
+		Assertions.assertEquals(
 			EventDefinition.Type.DEFAULT, eventDefinition.getType());
-		Assert.assertTrue(eventDefinition.isHidden());
-		Assert.assertEquals(2, _eventDog.countEvents(eventDefinition.getId()));
+		Assertions.assertTrue(eventDefinition.isHidden());
+		Assertions.assertEquals(
+			2, _eventDog.countEvents(eventDefinition.getId()));
 	}
 
 	private void _assertEventAttributeDefinition(
@@ -184,7 +184,7 @@ public class CommentPostedEventDefinitionUpgradeStepTest {
 					eventDefinitionEventAttributeDefinition.
 						getEventDefinitionId();
 
-				Assert.assertNotEquals(
+				Assertions.assertNotEquals(
 					commentPostedEventDefinitionId, eventDefinitionId);
 
 				if (eventDefinitionId.equals(postedEventDefinitionId)) {
@@ -192,12 +192,12 @@ public class CommentPostedEventDefinitionUpgradeStepTest {
 				}
 			}
 
-			Assert.assertTrue(
+			Assertions.assertTrue(
+				found,
 				String.format(
 					"Unable to find posted event definition for %s event " +
 						"attribute definition",
-					name),
-				found);
+					name));
 		}
 	}
 
@@ -251,7 +251,7 @@ public class CommentPostedEventDefinitionUpgradeStepTest {
 		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
 			_eventAttributeDefinitionRepository.findByName(name);
 
-		Assert.assertTrue(eventAttributeDefinitionOptional.isPresent());
+		Assertions.assertTrue(eventAttributeDefinitionOptional.isPresent());
 
 		return eventAttributeDefinitionOptional.get();
 	}
@@ -260,7 +260,7 @@ public class CommentPostedEventDefinitionUpgradeStepTest {
 		Optional<EventDefinition> eventDefinitionOptional =
 			_eventDefinitionRepository.findByName(name);
 
-		Assert.assertTrue(eventDefinitionOptional.isPresent());
+		Assertions.assertTrue(eventDefinitionOptional.isPresent());
 
 		return eventDefinitionOptional.get();
 	}

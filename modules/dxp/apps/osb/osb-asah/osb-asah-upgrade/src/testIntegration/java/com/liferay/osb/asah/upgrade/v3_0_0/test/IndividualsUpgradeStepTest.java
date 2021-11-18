@@ -22,8 +22,8 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_0_0.IndividualsUpgradeStep;
 
 import java.util.Collections;
@@ -38,21 +38,19 @@ import org.elasticsearch.client.IndicesAdminClient;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Marcos Martins
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
-public class IndividualsUpgradeStepTest {
+public class IndividualsUpgradeStepTest
+	implements OSBAsahTestExecutionListenersContext,
+			   OSBAsahUpgradeSpringTestContext {
 
 	@Test
 	public void testUpgrade() throws Exception {
@@ -78,7 +76,7 @@ public class IndividualsUpgradeStepTest {
 		Map<String, Object> properties = (Map<String, Object>)indexMappings.get(
 			"properties");
 
-		Assert.assertFalse(properties.containsKey("previousActivityDates"));
+		Assertions.assertFalse(properties.containsKey("previousActivityDates"));
 
 		_individualsUpgradeStep.upgrade("");
 
@@ -87,7 +85,7 @@ public class IndividualsUpgradeStepTest {
 
 		properties = (Map<String, Object>)indexMappings.get("properties");
 
-		Assert.assertTrue(properties.containsKey("previousActivityDates"));
+		Assertions.assertTrue(properties.containsKey("previousActivityDates"));
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(

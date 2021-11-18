@@ -14,8 +14,7 @@
 
 package com.liferay.osb.asah.upgrade.v3_0_6.test;
 
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
+import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_0_6.EventAttributeIndexUpgradeStep;
 
 import java.sql.Connection;
@@ -24,20 +23,17 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Marcos Martins
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
-public class EventAttributeIndexUpgradeStepTest {
+public class EventAttributeIndexUpgradeStepTest
+	implements OSBAsahUpgradeSpringTestContext {
 
 	@Test
 	public void testUpgrade() throws Exception {
@@ -66,12 +62,12 @@ public class EventAttributeIndexUpgradeStepTest {
 			resultSet.next();
 
 			if (exists) {
-				Assert.assertEquals(1, resultSet.getInt(1));
+				Assertions.assertEquals(1, resultSet.getInt(1));
 
 				return;
 			}
 
-			Assert.assertEquals(0, resultSet.getInt(1));
+			Assertions.assertEquals(0, resultSet.getInt(1));
 		}
 	}
 

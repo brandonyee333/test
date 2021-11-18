@@ -17,25 +17,23 @@ package com.liferay.osb.asah.upgrade.v3_0_0.test;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_0_0.UserSessionsUpgradeStep;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Marcellus Tavares
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
-public class UserSessionsUpgradeStepTest {
+public class UserSessionsUpgradeStepTest
+	implements OSBAsahTestExecutionListenersContext,
+			   OSBAsahUpgradeSpringTestContext {
 
 	@ElasticsearchIndex(
 		name = "activities", resourcePath = "activities.json",
@@ -52,11 +50,11 @@ public class UserSessionsUpgradeStepTest {
 		JSONObject userSessionJSONObject = _cerebroInfoElasticsearchInvoker.get(
 			"user-sessions", "436904627046006863");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"en-US", userSessionJSONObject.getString("contentLanguageId"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"en-US", userSessionJSONObject.getString("languageId"));
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"-07:00", userSessionJSONObject.getString("timezoneOffset"));
 	}
 

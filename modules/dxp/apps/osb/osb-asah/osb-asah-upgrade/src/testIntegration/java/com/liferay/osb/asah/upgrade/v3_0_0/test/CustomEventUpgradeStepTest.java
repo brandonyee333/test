@@ -19,27 +19,25 @@ import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_0_0.CustomEventUpgradeStep;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
 /**
  * @author Marcellus Tavares
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
-public class CustomEventUpgradeStepTest {
+public class CustomEventUpgradeStepTest
+	implements OSBAsahTestExecutionListenersContext,
+			   OSBAsahUpgradeSpringTestContext {
 
 	@ElasticsearchIndex(
 		name = "activities", resourcePath = "activities.json",
@@ -63,7 +61,7 @@ public class CustomEventUpgradeStepTest {
 			}
 		}
 
-		Assert.assertEquals(expectedEventsCount, _eventRepository.count());
+		Assertions.assertEquals(expectedEventsCount, _eventRepository.count());
 	}
 
 	@Autowired

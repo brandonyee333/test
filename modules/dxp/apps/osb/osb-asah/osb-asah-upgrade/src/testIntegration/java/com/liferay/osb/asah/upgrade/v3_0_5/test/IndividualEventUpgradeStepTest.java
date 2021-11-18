@@ -28,9 +28,9 @@ import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.FieldRepository;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
-import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
+import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_0_5.IndividualEventUpgradeStep;
 
 import java.util.Arrays;
@@ -39,19 +39,17 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Inácio Nery
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
-public class IndividualEventUpgradeStepTest {
+public class IndividualEventUpgradeStepTest
+	implements OSBAsahTestExecutionListenersContext,
+			   OSBAsahUpgradeSpringTestContext {
 
 	@Test
 	public void testUpgrade() throws Exception {
@@ -95,7 +93,7 @@ public class IndividualEventUpgradeStepTest {
 			channel.getId(), individual.getId(), null, 0, 10,
 			TimeRange.LAST_24_HOURS);
 
-		Assert.assertEquals(Arrays.asList(event1), events);
+		Assertions.assertEquals(Arrays.asList(event1), events);
 
 		_individualEventUpgradeStep.upgrade("");
 
@@ -105,7 +103,7 @@ public class IndividualEventUpgradeStepTest {
 			channel.getId(), individual.getId(), null, 0, 10,
 			TimeRange.LAST_24_HOURS);
 
-		Assert.assertEquals(Arrays.asList(event2, event1), events);
+		Assertions.assertEquals(Arrays.asList(event2, event1), events);
 	}
 
 	private Event _addEvent(

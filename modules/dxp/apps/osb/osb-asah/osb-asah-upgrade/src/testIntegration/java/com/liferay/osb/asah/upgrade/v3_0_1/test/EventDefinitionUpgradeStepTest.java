@@ -16,25 +16,23 @@ package com.liferay.osb.asah.upgrade.v3_0_1.test;
 
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_0_1.EventDefinitionUpgradeStep;
 
 import java.util.Optional;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Inácio Nery
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
-public class EventDefinitionUpgradeStepTest {
+public class EventDefinitionUpgradeStepTest
+	implements OSBAsahTestExecutionListenersContext,
+			   OSBAsahUpgradeSpringTestContext {
 
 	@Test
 	public void testUpgrade() throws Exception {
@@ -44,7 +42,7 @@ public class EventDefinitionUpgradeStepTest {
 
 		eventDefinition1 = _eventDefinitionRepository.save(eventDefinition1);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			EventDefinition.Type.CUSTOM, eventDefinition1.getType());
 
 		EventDefinition eventDefinition2 = new EventDefinition();
@@ -56,19 +54,19 @@ public class EventDefinitionUpgradeStepTest {
 
 		eventDefinition2 = _eventDefinitionRepository.save(eventDefinition2);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			EventDefinition.Type.CUSTOM, eventDefinition2.getType());
 
 		_eventDefinitionUpgradeStep.upgrade("");
 
 		eventDefinition1 = _getEventDefinition("pageRead");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			EventDefinition.Type.DEFAULT, eventDefinition1.getType());
 
 		eventDefinition2 = _getEventDefinition("test");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			EventDefinition.Type.CUSTOM, eventDefinition2.getType());
 	}
 
@@ -76,7 +74,7 @@ public class EventDefinitionUpgradeStepTest {
 		Optional<EventDefinition> eventDefinitionOptional =
 			_eventDefinitionRepository.findByName(name);
 
-		Assert.assertTrue(eventDefinitionOptional.isPresent());
+		Assertions.assertTrue(eventDefinitionOptional.isPresent());
 
 		return eventDefinitionOptional.get();
 	}

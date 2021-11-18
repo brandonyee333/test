@@ -19,25 +19,23 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_0_0.DataSourcesUpgradeStep;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Marcos Martins
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
-public class DataSourcesUpgradeStepTest {
+public class DataSourcesUpgradeStepTest
+	implements OSBAsahTestExecutionListenersContext,
+			   OSBAsahUpgradeSpringTestContext {
 
 	@ElasticsearchIndex(
 		name = "channels", resourcePath = "channels.json",
@@ -49,10 +47,10 @@ public class DataSourcesUpgradeStepTest {
 	)
 	@Test
 	public void testUpgrade() throws Exception {
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_elasticsearchIndexManager.exists("test_osbasahfaroinfo_channels"));
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			_elasticsearchIndexManager.exists(
 				"test_osbasahfaroinfo_data-sources"));
 

@@ -21,7 +21,10 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 import com.liferay.osb.asah.upgrade.UpgradeProcess;
 import com.liferay.osb.asah.upgrade.UpgradeProcessRunner;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
@@ -32,10 +35,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
@@ -46,15 +49,30 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
+import org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
  * @author André Miranda
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@ExtendWith(OSBAsahSpringExtension.class)
 @SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.REPLACE_DEFAULTS,
+	value = {
+		DependencyInjectionTestExecutionListener.class,
+		MockitoTestExecutionListener.class,
+		OSBAsahElasticsearchTestExecutionListener.class,
+		OSBAsahRepositoryTestExecutionListener.class,
+		OSBAsahSQLTestExecutionListener.class,
+		ResetMocksTestExecutionListener.class
+	}
+)
 public class UpgradeProcessRunnerTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		_elasticsearchIndexManager.delete(
 			"test1_osbasahfaroinfo_osbasahmarkers",
@@ -88,9 +106,9 @@ public class UpgradeProcessRunnerTest {
 
 		_upgradeProcessRunner.run();
 
-		Assert.assertEquals(projectIds.toString(), 2, projectIds.size());
-		Assert.assertTrue(projectIds.contains("test1"));
-		Assert.assertTrue(projectIds.contains("test2"));
+		Assertions.assertEquals(2, projectIds.size(), projectIds.toString());
+		Assertions.assertTrue(projectIds.contains("test1"));
+		Assertions.assertTrue(projectIds.contains("test2"));
 	}
 
 	@Test

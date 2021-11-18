@@ -22,8 +22,8 @@ import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_0_5.VoteEventDefinitionUpgradeStep;
 
 import java.util.Collections;
@@ -31,19 +31,17 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Leslie Wong
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
-public class VoteEventDefinitionUpgradeStepTest {
+public class VoteEventDefinitionUpgradeStepTest
+	implements OSBAsahTestExecutionListenersContext,
+			   OSBAsahUpgradeSpringTestContext {
 
 	@SQLResource(resourcePath = "custom_event_definition_upgrade_step_test.sql")
 	@Test
@@ -52,20 +50,20 @@ public class VoteEventDefinitionUpgradeStepTest {
 
 		EventDefinition voteEventDefinition = _getEventDefinition("VOTE");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			EventDefinition.Type.CUSTOM, voteEventDefinition.getType());
 
 		_voteEventDefinitionUpgradeStep.upgrade("");
 
-		Assert.assertNull(
+		Assertions.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
 
 		voteEventDefinition = _getEventDefinition("VOTE");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			EventDefinition.Type.DEFAULT, voteEventDefinition.getType());
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1, _eventDog.countEvents(voteEventDefinition.getId()));
 	}
 
@@ -74,7 +72,7 @@ public class VoteEventDefinitionUpgradeStepTest {
 	)
 	@Test
 	public void testUpgradeCustomVoteOnly() throws Exception {
-		Assert.assertNull(
+		Assertions.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
 
 		_eventStorageDog.store(_createAnalyticsEvent("VOTE"), "1");
@@ -82,9 +80,9 @@ public class VoteEventDefinitionUpgradeStepTest {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("VOTE");
 
-		Assert.assertNotNull(eventDefinition);
+		Assertions.assertNotNull(eventDefinition);
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			EventDefinition.Type.CUSTOM, eventDefinition.getType());
 
 		_voteEventDefinitionUpgradeStep.upgrade("");
@@ -92,7 +90,7 @@ public class VoteEventDefinitionUpgradeStepTest {
 		eventDefinition = _eventDefinitionDog.fetchEventDefinitionByName(
 			"VOTE");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			EventDefinition.Type.DEFAULT, eventDefinition.getType());
 	}
 
@@ -101,41 +99,41 @@ public class VoteEventDefinitionUpgradeStepTest {
 	)
 	@Test
 	public void testUpgradeNoDefinition() throws Exception {
-		Assert.assertNull(
+		Assertions.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
-		Assert.assertNull(
+		Assertions.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("VOTE"));
 
 		_voteEventDefinitionUpgradeStep.upgrade("");
 
-		Assert.assertNull(
+		Assertions.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
 
 		EventDefinition eventDefinition = _getEventDefinition("VOTE");
 
-		Assert.assertEquals("VOTE", eventDefinition.getName());
-		Assert.assertEquals("VOTE", eventDefinition.getDisplayName());
-		Assert.assertEquals(
+		Assertions.assertEquals("VOTE", eventDefinition.getName());
+		Assertions.assertEquals("VOTE", eventDefinition.getDisplayName());
+		Assertions.assertEquals(
 			EventDefinition.Type.DEFAULT, eventDefinition.getType());
-		Assert.assertTrue(eventDefinition.isHidden());
-		Assert.assertFalse(eventDefinition.isBlocked());
+		Assertions.assertTrue(eventDefinition.isHidden());
+		Assertions.assertFalse(eventDefinition.isBlocked());
 	}
 
 	@SQLResource(resourcePath = "custom_event_definition_upgrade_step_test.sql")
 	@Test
 	public void testUpgradeNoVote1() throws Exception {
-		Assert.assertNotNull(
+		Assertions.assertNotNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
 
-		Assert.assertNull(
+		Assertions.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("VOTE"));
 
 		_voteEventDefinitionUpgradeStep.upgrade("");
 
-		Assert.assertNull(
+		Assertions.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
 
-		Assert.assertNotNull(
+		Assertions.assertNotNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("VOTE"));
 	}
 
@@ -144,24 +142,25 @@ public class VoteEventDefinitionUpgradeStepTest {
 	public void testUpgradeNoVote2() throws Exception {
 		_eventStorageDog.store(_createAnalyticsEvent("VOTE"), "1");
 
-		Assert.assertNotNull(
+		Assertions.assertNotNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
 
 		EventDefinition voteEventDefinition = _getEventDefinition("VOTE");
 
-		Assert.assertEquals("VOTE (1)", voteEventDefinition.getDisplayName());
+		Assertions.assertEquals(
+			"VOTE (1)", voteEventDefinition.getDisplayName());
 
 		_voteEventDefinitionUpgradeStep.upgrade("");
 
-		Assert.assertNull(
+		Assertions.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByName("vote"));
 
 		voteEventDefinition = _getEventDefinition("VOTE");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			1, _eventDog.countEvents(voteEventDefinition.getId()));
-		Assert.assertEquals("VOTE", voteEventDefinition.getDisplayName());
-		Assert.assertEquals(
+		Assertions.assertEquals("VOTE", voteEventDefinition.getDisplayName());
+		Assertions.assertEquals(
 			EventDefinition.Type.DEFAULT, voteEventDefinition.getType());
 	}
 
@@ -179,10 +178,10 @@ public class VoteEventDefinitionUpgradeStepTest {
 
 		eventDefinition = _getEventDefinition("VOTE");
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			EventDefinition.Type.DEFAULT, eventDefinition.getType());
-		Assert.assertFalse(eventDefinition.isBlocked());
-		Assert.assertTrue(eventDefinition.isHidden());
+		Assertions.assertFalse(eventDefinition.isBlocked());
+		Assertions.assertTrue(eventDefinition.isHidden());
 	}
 
 	@SQLResource(resourcePath = "custom_event_definition_upgrade_step_test.sql")
@@ -193,28 +192,30 @@ public class VoteEventDefinitionUpgradeStepTest {
 
 		EventDefinition voteEventDefinition1 = _getEventDefinition("vote");
 
-		Assert.assertEquals("vote", voteEventDefinition1.getDisplayName());
-		Assert.assertEquals(
+		Assertions.assertEquals("vote", voteEventDefinition1.getDisplayName());
+		Assertions.assertEquals(
 			EventDefinition.Type.DEFAULT, voteEventDefinition1.getType());
 
 		EventDefinition voteEventDefinition2 = _getEventDefinition("VOTE");
 
-		Assert.assertEquals("VOTE (1)", voteEventDefinition2.getDisplayName());
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			"VOTE (1)", voteEventDefinition2.getDisplayName());
+		Assertions.assertEquals(
 			EventDefinition.Type.CUSTOM, voteEventDefinition2.getType());
 
 		_voteEventDefinitionUpgradeStep.upgrade("");
 
 		voteEventDefinition1 = _getEventDefinition("vote");
 
-		Assert.assertEquals("vote", voteEventDefinition1.getDisplayName());
-		Assert.assertEquals(
+		Assertions.assertEquals("vote", voteEventDefinition1.getDisplayName());
+		Assertions.assertEquals(
 			EventDefinition.Type.CUSTOM, voteEventDefinition1.getType());
 
 		voteEventDefinition2 = _getEventDefinition("VOTE");
 
-		Assert.assertEquals("VOTE (1)", voteEventDefinition2.getDisplayName());
-		Assert.assertEquals(
+		Assertions.assertEquals(
+			"VOTE (1)", voteEventDefinition2.getDisplayName());
+		Assertions.assertEquals(
 			EventDefinition.Type.DEFAULT, voteEventDefinition2.getType());
 	}
 
@@ -266,7 +267,7 @@ public class VoteEventDefinitionUpgradeStepTest {
 		Optional<EventDefinition> eventDefinitionOptional =
 			_eventDefinitionRepository.findByName(name);
 
-		Assert.assertTrue(eventDefinitionOptional.isPresent());
+		Assertions.assertTrue(eventDefinitionOptional.isPresent());
 
 		return eventDefinitionOptional.get();
 	}

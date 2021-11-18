@@ -25,8 +25,8 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_0_0.AssetsUpgradeStep;
 
 import java.util.Arrays;
@@ -42,21 +42,19 @@ import org.elasticsearch.client.IndicesAdminClient;
 
 import org.json.JSONObject;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
 /**
  * @author Inácio Nery
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
-public class AssetUpgradeStepTest {
+public class AssetUpgradeStepTest
+	implements OSBAsahTestExecutionListenersContext,
+			   OSBAsahUpgradeSpringTestContext {
 
 	@Test
 	public void testUpgrade() throws Exception {
@@ -85,7 +83,7 @@ public class AssetUpgradeStepTest {
 
 		List<String> keywords = _assetRepository.findKeywordByAssetType("Page");
 
-		Assert.assertEquals(keywords.toString(), 0, keywords.size());
+		Assertions.assertEquals(0, keywords.size(), keywords.toString());
 
 		_assetsUpgradeStep.upgrade("");
 
@@ -99,9 +97,9 @@ public class AssetUpgradeStepTest {
 
 		keywords = _assetRepository.findKeywordByAssetType("Page");
 
-		Assert.assertEquals(keywords.toString(), 1, keywords.size());
+		Assertions.assertEquals(1, keywords.size(), keywords.toString());
 
-		Assert.assertEquals(Arrays.asList("holistic ROI"), keywords);
+		Assertions.assertEquals(Arrays.asList("holistic ROI"), keywords);
 	}
 
 	private void _addAssetsTemplate() throws Exception {
