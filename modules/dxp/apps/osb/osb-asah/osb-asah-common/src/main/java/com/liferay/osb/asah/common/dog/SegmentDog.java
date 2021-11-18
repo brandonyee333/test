@@ -38,6 +38,8 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -586,8 +588,16 @@ public class SegmentDog extends BaseFaroInfoDog {
 					_log.warn("Invalid value: " + matcher.group());
 				}
 
-				filter = StringUtils.replace(
-					filter, matcher.group(), String.valueOf(Integer.MAX_VALUE));
+				BigDecimal bigDecimal = new BigDecimal(matcher.group());
+
+				BigDecimal maxIntegerBigDecimal = BigDecimal.valueOf(
+					Integer.MAX_VALUE);
+
+				if (bigDecimal.compareTo(maxIntegerBigDecimal) == 1) {
+					filter = StringUtils.replace(
+						filter, matcher.group(),
+						String.valueOf(Integer.MAX_VALUE));
+				}
 			}
 		}
 
@@ -1077,7 +1087,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 	private static final Log _log = LogFactory.getLog(SegmentDog.class);
 
 	private static final Pattern _pattern = Pattern.compile(
-		"[0-9]+[.]{0,1}[0-9]*([e][+]){1}[0-9]+");
+		"(?<=[ ])[0-9]+[.]{0,1}[0-9]*(([e][+]){1}[0-9]+){0,1}");
 
 	@Autowired
 	private AccountDog _accountDog;
