@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.v3_0_0.CustomEventUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.UserSessionsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_5.IndividualEventUpgradeStep;
 
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,11 @@ public class UpgradeRestController {
 		return _getUpgradesJSONArray(_customEventsCompletableFutures);
 	}
 
+	@GetMapping("/individual-event-upgrades")
+	public JSONArray getIndividualEventUpgrades() {
+		return _getUpgradesJSONArray(_individualEventsCompletableFutures);
+	}
+
 	@GetMapping("/user-sessions-upgrades")
 	public JSONArray getUserSessionsUpgrades() {
 		return _getUpgradesJSONArray(_userSessionsCompletableFutures);
@@ -81,6 +87,30 @@ public class UpgradeRestController {
 			Project::getId
 		).forEach(
 			this::_startCustomEventUpgrade
+		);
+	}
+
+	@PostMapping("/individual-event-upgrade/{projectId}")
+	public void startIndividualEventUpgrade(@PathVariable String projectId) {
+		Optional<Project> projectOptional = _fetchProject(projectId);
+
+		if (!projectOptional.isPresent()) {
+			throw new IllegalArgumentException("Invalid project ID");
+		}
+
+		_startIndividualEventUpgrade(projectId);
+	}
+
+	@PostMapping("/individual-event-upgrades")
+	public void startIndividualEventUpgrades() {
+		List<Project> projects = _projectDog.getProjects();
+
+		Stream<Project> stream = projects.stream();
+
+		stream.map(
+			Project::getId
+		).forEach(
+			this::_startIndividualEventUpgrade
 		);
 	}
 
@@ -148,6 +178,22 @@ public class UpgradeRestController {
 				_executorService));
 	}
 
+	private void _startIndividualEventUpgrade(String projectId) {
+		CompletableFuture<Void> completableFuture =
+			_individualEventsCompletableFutures.get(projectId);
+
+		if (completableFuture != null) {
+			return;
+		}
+
+		_individualEventsCompletableFutures.put(
+			projectId,
+			CompletableFuture.runAsync(
+				() -> ProjectIdThreadLocal.forProject(
+					projectId, () -> _individualEventUpgradeStep.upgrade(null)),
+				_executorService));
+	}
+
 	private void _startUserSessionsUpgrade(String projectId) {
 		CompletableFuture<Void> completableFuture =
 			_userSessionsCompletableFutures.get(projectId);
@@ -203,6 +249,11 @@ public class UpgradeRestController {
 
 	private final ExecutorService _executorService =
 		Executors.newSingleThreadExecutor();
+	private final Map<String, CompletableFuture<Void>>
+		_individualEventsCompletableFutures = new ConcurrentHashMap<>();
+
+	@Autowired
+	private IndividualEventUpgradeStep _individualEventUpgradeStep;
 
 	@Autowired
 	private ProjectDog _projectDog;
