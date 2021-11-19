@@ -15,9 +15,9 @@
 package com.liferay.osb.customer.admin.internal.events;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-import com.liferay.osb.customer.admin.constants.EntitlementConstants;
 import com.liferay.osb.customer.admin.internal.configuration.LoginPostActionConfiguration;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
+import com.liferay.osb.customer.koroneiki.constants.EntitlementConstants;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.legacy.web.service.LegacyWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;

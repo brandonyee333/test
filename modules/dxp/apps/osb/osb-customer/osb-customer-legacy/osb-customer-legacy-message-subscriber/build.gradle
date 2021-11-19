@@ -5,6 +5,7 @@ dependencies {
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-distributed-messaging:osb-customer-distributed-messaging-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-identity-management:osb-customer-identity-management-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-legacy:osb-customer-legacy-web-service-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk-util")
 }

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.legacy.message.subscriber;
 
-import com.liferay.osb.customer.admin.constants.EntitlementConstants;
+import com.liferay.osb.customer.koroneiki.constants.EntitlementConstants;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;

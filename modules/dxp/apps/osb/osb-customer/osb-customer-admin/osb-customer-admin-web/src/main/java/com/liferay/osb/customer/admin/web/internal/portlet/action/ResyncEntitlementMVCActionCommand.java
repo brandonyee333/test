@@ -14,9 +14,9 @@
 
 package com.liferay.osb.customer.admin.web.internal.portlet.action;
 
-import com.liferay.osb.customer.admin.constants.EntitlementConstants;
 import com.liferay.osb.customer.admin.web.internal.constants.CustomerAdminPortletKeys;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
+import com.liferay.osb.customer.koroneiki.constants.EntitlementConstants;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.portal.kernel.model.Organization;

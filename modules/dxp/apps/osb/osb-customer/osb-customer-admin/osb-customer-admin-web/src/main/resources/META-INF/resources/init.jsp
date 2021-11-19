@@ -27,7 +27,6 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.osb.customer.admin.constants.AccountAttachmentConstants" %><%@
 page import="com.liferay.osb.customer.admin.constants.AccountEntryConstants" %><%@
 page import="com.liferay.osb.customer.admin.constants.AccountEnvironmentConstants" %><%@
-page import="com.liferay.osb.customer.admin.constants.EntitlementConstants" %><%@
 page import="com.liferay.osb.customer.admin.constants.LicenseEntryConstants" %><%@
 page import="com.liferay.osb.customer.admin.constants.ProductEntryConstants" %><%@
 page import="com.liferay.osb.customer.admin.constants.WorkflowConstants" %><%@
@@ -53,6 +52,7 @@ page import="com.liferay.osb.customer.admin.web.internal.search.AccountEntryDisp
 page import="com.liferay.osb.customer.admin.web.internal.search.AccountEntrySearch" %><%@
 page import="com.liferay.osb.customer.admin.web.internal.search.AccountEntrySearchTerms" %><%@
 page import="com.liferay.osb.customer.constants.OSBCustomerConstants" %><%@
+page import="com.liferay.osb.customer.koroneiki.constants.EntitlementConstants" %><%@
 page import="com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants" %><%@
 page import="com.liferay.osb.customer.koroneiki.web.service.AccountWebService" %><%@
 page import="com.liferay.osb.customer.koroneiki.web.service.ProductWebService" %><%@

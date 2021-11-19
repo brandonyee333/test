@@ -14,10 +14,10 @@
 
 package com.liferay.osb.customer.web.internal.portlet.action;
 
-import com.liferay.osb.customer.admin.constants.EntitlementConstants;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.exception.EmailAddressDomainException;
 import com.liferay.osb.customer.exception.SubscriptionException;
+import com.liferay.osb.customer.koroneiki.constants.EntitlementConstants;
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.service.AuditFormLocalService;

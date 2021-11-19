@@ -14,9 +14,9 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
-import com.liferay.osb.customer.admin.constants.EntitlementConstants;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.customer.koroneiki.constants.EntitlementConstants;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
