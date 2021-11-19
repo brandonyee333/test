@@ -24,11 +24,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
 
@@ -36,7 +35,8 @@ import org.springframework.lang.Nullable;
  * @author Rachael Koestartyo
  */
 @Primary
-public interface IndividualRepository extends Repository<Individual, Long> {
+public interface IndividualRepository
+	extends PagingAndSortingRepository<Individual, Long> {
 
 	public long
 		countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
@@ -45,144 +45,111 @@ public interface IndividualRepository extends Repository<Individual, Long> {
 			@Nullable Date startLastActivityDate,
 			@Nullable Date startPreviousActivityDate);
 
-	@Cacheable
 	public long countByFieldNamesAndQueryAndSegmentId(
 		List<String> fieldNames, @Nullable String query,
 		@Nullable Long segmentId);
 
-	@Cacheable
 	public long countByIdAfter(Long id);
 
-	@Cacheable
 	public long countByIdInAndKeywords(
 		List<Long> ids, @Nullable String keywords);
 
-	@Cacheable
 	public long countIndividuals(
 		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId);
 
-	@Cacheable
 	public long countKnownIndividualsByAnySegmentIds(
 		@Param("segmentId") Long segmentId);
 
-	@Cacheable
 	public long countKnownIndividualsByIdIn(@Param("ids") List<Long> ids);
 
-	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteByIdIn(@Param("ids") List<Long> ids);
 
-	@Cacheable
 	public boolean existsByChannelIdAndFilterStringAndId(
 		@Nullable Long channelId, FilterHelper filterHelper, @Nullable Long id);
 
-	@Cacheable
 	public boolean
 		existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
 			@Nullable Long channelId, FilterHelper filterHelper,
 			Boolean includeAnonymousUsers, @Nullable Long id);
 
-	@Cacheable
 	public boolean existsByFilterStringAndId(
 		FilterHelper filterHelper, @Nullable Long id);
 
-	@Cacheable
 	public List<String> findAccountPKsByChannelIdAndSegmentId(
 		@Nullable Long channelId, @Nullable Long segmentId);
 
-	@Cacheable
 	public List<Individual.ActivitiesCount> findActivitiesCounts(
 		boolean includeAnonymousUsers, Long segmentId);
 
-	@Cacheable
 	public List<Individual> findAnonymousByCreateDateAndLastActivityDateAndId(
 		Date date, @Nullable Long id, int size);
 
-	@Cacheable
 	public Individual findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
 		Long associatedId, Long dataSourceId, String fieldName,
 		String individualPK);
 
-	@Cacheable
 	public List<Individual> findByChannelIdAndFilterStringAndIdIn(
 		@Nullable Long channelId, FilterHelper filterHelper, List<Long> ids);
 
-	@Cacheable
 	public Individual findByDataSourceIdAndIndividualPK(
 		Long dataSourceId, String individualPK);
 
-	@Cacheable
 	public Individual findByEmailAddress(String emailAddress);
 
-	@Cacheable
 	public Individual findByEmailAddressHashed(String emailAddressHashed);
 
-	@Cacheable
 	public List<Individual> findByFieldNamesAndQueryAndSegmentId(
 		List<String> fieldNames, @Nullable String query,
 		@Nullable Long segmentId, Pageable pageable);
 
-	@Cacheable
 	public List<Individual> findByIdAfter(Long id, Pageable pageable);
 
-	@Cacheable
 	public List<Individual> findByIdInAndKeywords(
 		List<Long> ids, @Nullable String keywords, Pageable pageable);
 
-	@Cacheable
 	public List<Individual> findBySegmentIds(Long segmentId);
 
-	@Cacheable
 	public List<Long>
 		findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
 			@Nullable Long channelId, @Nullable Date lastActivityDate,
 			@Nullable Long segmentId);
 
-	@Cacheable
 	public List<Long> findIdsByAnySegmentIds(
 		@Param("segmentId") Long segmentId);
 
-	@Cacheable
 	public Map<Long, Long> findIndividualCounts(
 		boolean includeAnonymousUsers, Long segmentId);
 
-	@Cacheable
 	public List<Long> findKnownIndividualIds(
 		FilterHelper filterHelper, Long segmentId);
 
-	@Cacheable
 	public List<Distribution> getIndividualDistributions(
 		String fieldName, String fieldType, FilterHelper filterHelper,
 		Pageable pageable);
 
-	@Cacheable
 	public List<Transformation> getIndividualTransformations(
 		String apply, @Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId, Pageable pageable);
 
-	@Cacheable
 	public List<Individual> searchIndividuals(
 		FilterHelper filterHelper, Pageable pageable);
 
-	@Cacheable
 	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long id, int size);
 
-	@Cacheable
 	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId, Pageable pageable);
 
-	@Cacheable
 	public List<Individual> searchIndividuals(
 		Long dataSourceId, @Nullable Long id, int size);
 
-	@CacheEvict(allEntries = true)
 	@Modifying
 	public void updateAssociatedIds(String fieldName, Set<Long> ids, Long id);
 
