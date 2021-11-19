@@ -638,7 +638,7 @@ public class SegmentDogTest
 
 		segment = _segmentDog.addSegment(segment);
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			StringUtils.endsWith(
 				segment.getFilter(), String.valueOf(Integer.MAX_VALUE)));
 	}
@@ -1013,7 +1013,7 @@ public class SegmentDogTest
 		partialSegment = _segmentDog.updateSegment(
 			partialSegment, segment.getId());
 
-		Assert.assertTrue(
+		Assertions.assertTrue(
 			StringUtils.endsWith(
 				partialSegment.getFilter(), String.valueOf(Integer.MAX_VALUE)));
 	}

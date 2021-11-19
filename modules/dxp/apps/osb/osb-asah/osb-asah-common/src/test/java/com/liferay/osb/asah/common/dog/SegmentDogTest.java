@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Marcos Martins
@@ -24,34 +24,34 @@ public class SegmentDogTest {
 
 	@Test
 	public void testProcessFilter() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"(accounts.filter(filter='(organization/rating/value eq '4.6')'))",
 			_segmentDog.processFilter(
 				"(accounts.filter(filter='(organization/rating/value eq " +
 					"'4.6')'))"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"demographics/additionalName/value eq 'Miles'",
 			_segmentDog.processFilter(
 				"demographics/additionalName/value eq 'Miles'"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
 			_segmentDog.processFilter(
 				"demographics/age/value ge " +
 					"12345678901234567262899398937898378787878"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
 			_segmentDog.processFilter(
 				"demographics/age/value ge 1.2345678901234568e+21"));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
 			_segmentDog.processFilter(
 				"demographics/age/value ge " + Integer.MAX_VALUE));
 
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			"organizations.filter(filter='(dateModified gt " +
 				Integer.MAX_VALUE + ")')",
 			_segmentDog.processFilter(
