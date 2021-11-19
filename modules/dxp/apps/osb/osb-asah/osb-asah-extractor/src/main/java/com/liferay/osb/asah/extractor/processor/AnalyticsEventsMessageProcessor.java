@@ -33,8 +33,8 @@ import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
-import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
@@ -43,8 +43,6 @@ import com.liferay.osb.asah.extractor.browscap.BrowscapDevice;
 import com.liferay.osb.asah.extractor.browscap.BrowscapEngine;
 import com.liferay.osb.asah.extractor.ip.geocoder.IPGeocoder;
 import com.liferay.osb.asah.extractor.ip.geocoder.IPInfo;
-
-import io.prometheus.client.Counter;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -55,8 +53,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PreDestroy;
 
@@ -67,7 +71,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 /**
  * @author Eddie Olson
@@ -78,45 +86,17 @@ public class AnalyticsEventsMessageProcessor {
 
 	public void processQueuedMessages() throws Exception {
 		try {
-			while (true) {
-				try {
-					_reentrantLock.lock();
-
-					List<AnalyticsEventsMessage> analyticsEventsMessages =
-						_messageSubscriber.pullMessages(
-							50,
-							AnalyticsEventsMessage::toAnalyticsEventsMessage);
-
-					if (analyticsEventsMessages.isEmpty()) {
-						break;
-					}
-
-					for (AnalyticsEventsMessage analyticsEventsMessage :
-							analyticsEventsMessages) {
-
-						ProjectIdThreadLocal.forProject(
-							analyticsEventsMessage.getProjectId(),
-							() -> {
-								try {
-									_processMessage(analyticsEventsMessage);
-								}
-								catch (Exception exception) {
-									_log.error(
-										"Unable to process analytics events " +
-											"message " +
-												analyticsEventsMessage.toJSON(),
-										exception);
-								}
-							});
-					}
-				}
-				finally {
-					_reentrantLock.unlock();
-				}
-			}
+			_processQueuedMessages();
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
+		}
+
+		try {
+			_semaphore.acquireUninterruptibly(15);
+		}
+		finally {
+			_semaphore.release(15);
 		}
 	}
 
@@ -154,6 +134,19 @@ public class AnalyticsEventsMessageProcessor {
 	@PreDestroy
 	private void _destroy() {
 		_reentrantLock.lock();
+
+		_executorService.shutdown();
+
+		try {
+			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+				_executorService.shutdownNow();
+			}
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(
+				"Interrupted while waiting for termination of executor",
+				interruptedException);
+		}
 	}
 
 	private String _generateAnalyticsEventId(
@@ -401,8 +394,108 @@ public class AnalyticsEventsMessageProcessor {
 		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
 			_sendAnalyticsEvent(analyticsEvent);
 		}
+	}
 
-		_analyticsEventsCounter.inc(analyticsEvents.size());
+	private void _processQueuedMessages() throws Exception {
+		while (true) {
+			try {
+				_reentrantLock.lock();
+
+				long start = System.currentTimeMillis();
+
+				List<AnalyticsEventsMessage> analyticsEventsMessages =
+					_messageSubscriber.pullMessages(
+						_analyticsEventsMessageProcessorPullMessagesSize,
+						AnalyticsEventsMessage::toAnalyticsEventsMessage);
+
+				if (analyticsEventsMessages.isEmpty()) {
+					break;
+				}
+
+				Stream<AnalyticsEventsMessage> stream =
+					analyticsEventsMessages.stream();
+
+				stream.collect(
+					Collectors.groupingBy(
+						analyticsEventsMessage -> Tuples.of(
+							analyticsEventsMessage.getProjectId(),
+							analyticsEventsMessage.getUserId()))
+				).forEach(
+					this::_processQueuedMessages
+				);
+
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
+
+					_log.info(
+						String.format(
+							"%s dispatched %d analytics events messages in " +
+								"%d ms",
+							clazz.getSimpleName(),
+							analyticsEventsMessages.size(),
+							System.currentTimeMillis() - start));
+				}
+			}
+			finally {
+				_reentrantLock.unlock();
+			}
+		}
+	}
+
+	private void _processQueuedMessages(
+		Tuple2<String, String> tuple2,
+		List<AnalyticsEventsMessage> analyticsEventsMessages) {
+
+		_semaphore.acquireUninterruptibly();
+
+		CompletableFuture.runAsync(
+			() -> {
+				long start = System.currentTimeMillis();
+
+				try {
+					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
+
+					for (AnalyticsEventsMessage analyticsEventsMessage :
+							analyticsEventsMessages) {
+
+						try {
+							_processMessage(analyticsEventsMessage);
+						}
+						catch (Exception exception) {
+							_log.error(
+								"Unable to process analytics events message " +
+									analyticsEventsMessage.toJSON(),
+								exception);
+						}
+					}
+				}
+				catch (Exception exception) {
+					List<String> analyticsEventsMessagesString = ListUtil.map(
+						analyticsEventsMessages,
+						AnalyticsEventsMessage::toJSON);
+
+					_log.error(
+						"Unable to process analytics events messages " +
+							analyticsEventsMessagesString,
+						exception);
+				}
+				finally {
+					_semaphore.release();
+				}
+
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
+
+					_log.info(
+						String.format(
+							"%s processed %d analytics events messages in %d " +
+								"ms",
+							clazz.getSimpleName(),
+							analyticsEventsMessages.size(),
+							System.currentTimeMillis() - start));
+				}
+			},
+			_executorService);
 	}
 
 	private void _sendAnalyticsEvent(AnalyticsEvent analyticsEvent) {
@@ -431,10 +524,6 @@ public class AnalyticsEventsMessageProcessor {
 		).maximumSize(
 			100000
 		).build();
-	private static final Counter _analyticsEventsCounter =
-		PrometheusUtil.counter(
-			"extractor_analytics_events_count",
-			"The number of extracted analytics events");
 	private static final ObjectMapper _objectMapper = new ObjectMapper() {
 		{
 			setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -444,11 +533,19 @@ public class AnalyticsEventsMessageProcessor {
 	@Autowired
 	private AnalyticsEventsChannels _analyticsEventsChannels;
 
+	@Value(
+		"${osb.asah.analytics.events.message.processor.pull.messages.size:50}"
+	)
+	private int _analyticsEventsMessageProcessorPullMessagesSize;
+
 	@Autowired
 	private BrowscapEngine _browscapEngine;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	private final ExecutorService _executorService =
+		Executors.newFixedThreadPool(10);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
@@ -472,6 +569,8 @@ public class AnalyticsEventsMessageProcessor {
 
 	@Autowired
 	private SegmentDog _segmentDog;
+
+	private final Semaphore _semaphore = new Semaphore(15, true);
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
