@@ -76,7 +76,9 @@ const withMoveableFields = (ChildComponent) => {
 				disableFieldDropTargets(this.element, pages);
 			}
 
-			this._refreshDragAndDrop();
+			if (!document.querySelector('.dragging')) {
+				this._refreshDragAndDrop();
+			}
 		}
 
 		_getClosestParent(node) {
