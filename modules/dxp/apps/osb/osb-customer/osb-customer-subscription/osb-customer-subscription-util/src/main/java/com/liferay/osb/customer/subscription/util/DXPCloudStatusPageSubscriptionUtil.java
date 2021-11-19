@@ -19,6 +19,7 @@ import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.customer.koroneiki.constants.EntitlementConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
@@ -143,13 +144,15 @@ public class DXPCloudStatusPageSubscriptionUtil {
 				continue;
 			}
 
-			StringBundler sb = new StringBundler(5);
+			StringBundler sb = new StringBundler(7);
 
 			sb.append("contactUuidContactRoleKeys/any(s:s eq '");
 			sb.append(user.getUuid());
 			sb.append("_");
 			sb.append(contactRole.getKey());
-			sb.append("') and entitlements/any(s:s eq 'Partner')");
+			sb.append("') and entitlements/any(s:s eq '");
+			sb.append(EntitlementConstants.NAME_PARTNER);
+			sb.append("')");
 
 			long accountsCount = _accountWebService.searchCount(
 				StringPool.BLANK, sb.toString());
@@ -185,13 +188,13 @@ public class DXPCloudStatusPageSubscriptionUtil {
 	private void _unsubscribe(User user, Map<String, String> subscribers)
 		throws Exception {
 
-		if (_hasPartnerWorker(user)) {
-			return;
-		}
-
 		String subscriberId = subscribers.get(user.getEmailAddress());
 
 		if (Validator.isNull(subscriberId)) {
+			return;
+		}
+
+		if (_hasPartnerWorker(user)) {
 			return;
 		}
 

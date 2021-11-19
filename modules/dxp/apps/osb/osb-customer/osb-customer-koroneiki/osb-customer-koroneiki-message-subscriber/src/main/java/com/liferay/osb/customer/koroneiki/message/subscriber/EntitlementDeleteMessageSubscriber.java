@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.koroneiki.message.subscriber;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-import com.liferay.osb.customer.admin.constants.EntitlementConstants;
+import com.liferay.osb.customer.koroneiki.constants.EntitlementConstants;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.subscription.util.DXPCloudStatusPageSubscriptionUtil;
 import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
@@ -56,10 +56,11 @@ public class EntitlementDeleteMessageSubscriber
 		JSONObject entitlementJSONObject = jsonObject.getJSONObject(
 			"entitlement");
 
+		String name = entitlementJSONObject.getString("name");
+
 		Organization organization = organizationLocalService.fetchOrganization(
 			OSBCustomerConstants.COMPANY_ID,
-			EntitlementConstants.ORGANIZATION_NAME_PREFIX +
-				entitlementJSONObject.getString("name"));
+			EntitlementConstants.ORGANIZATION_NAME_PREFIX + name);
 
 		if (organization == null) {
 			return;
@@ -87,9 +88,7 @@ public class EntitlementDeleteMessageSubscriber
 				organization.getOrganizationId(), user.getUserId());
 		}
 
-		String entitlementName = entitlementJSONObject.getString("name");
-
-		if (entitlementName.equals(EntitlementConstants.NAME_CUSTOMER_DXP)) {
+		if (name.equals(EntitlementConstants.NAME_CUSTOMER_DXP)) {
 			_dxpCloudStatusPageSubscriptionUtil.unsubscribe(user);
 		}
 	}

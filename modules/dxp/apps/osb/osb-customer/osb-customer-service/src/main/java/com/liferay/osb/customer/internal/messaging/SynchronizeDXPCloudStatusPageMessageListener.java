@@ -56,7 +56,7 @@ public class SynchronizeDXPCloudStatusPageMessageListener
 		String className = clazz.getName();
 
 		Trigger trigger = _triggerFactory.createTrigger(
-			className, className, null, null, 1, TimeUnit.DAY);
+			className, className, null, null, 1, TimeUnit.WEEK);
 
 		SchedulerEntry schedulerEntry = new SchedulerEntryImpl(
 			className, trigger);
