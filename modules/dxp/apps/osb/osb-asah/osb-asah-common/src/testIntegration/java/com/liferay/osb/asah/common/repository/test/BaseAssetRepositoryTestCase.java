@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -47,6 +46,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Rachael Koestartyo
@@ -328,7 +328,7 @@ public abstract class BaseAssetRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<Asset, Long> getRepository() {
+	protected PagingAndSortingRepository<Asset, Long> getRepository() {
 		return _assetRepository;
 	}
 

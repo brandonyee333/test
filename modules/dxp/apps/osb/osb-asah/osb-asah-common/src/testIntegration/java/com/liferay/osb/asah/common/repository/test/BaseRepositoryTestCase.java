@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
-import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -33,6 +32,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Inácio Nery
@@ -43,21 +43,21 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID>
 
 	@AfterEach
 	public void tearDown() {
-		Repository<T, ID> repository = getRepository();
+		PagingAndSortingRepository<T, ID> repository = getRepository();
 
 		repository.deleteAll();
 	}
 
 	@Test
 	public void testCount() {
-		Repository<T, ID> repository = getRepository();
+		PagingAndSortingRepository<T, ID> repository = getRepository();
 
 		Assertions.assertEquals(entityModels.size(), repository.count());
 	}
 
 	@Test
 	public void testDelete() {
-		Repository<T, ID> repository = getRepository();
+		PagingAndSortingRepository<T, ID> repository = getRepository();
 
 		repository.delete(entityModels.get(0));
 
@@ -66,7 +66,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID>
 
 	@Test
 	public void testDeleteAll1() {
-		Repository<T, ID> repository = getRepository();
+		PagingAndSortingRepository<T, ID> repository = getRepository();
 
 		repository.deleteAll();
 
@@ -75,7 +75,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID>
 
 	@Test
 	public void testDeleteAll2() {
-		Repository<T, ?> repository = getRepository();
+		PagingAndSortingRepository<T, ?> repository = getRepository();
 
 		repository.deleteAll(entityModels);
 
@@ -90,7 +90,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID>
 
 		Assertions.assertNotNull(id);
 
-		Repository<T, ID> repository = getRepository();
+		PagingAndSortingRepository<T, ID> repository = getRepository();
 
 		repository.deleteById(id);
 
@@ -101,21 +101,21 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID>
 	public void testExistsById() {
 		T model = entityModels.get(0);
 
-		Repository<T, ID> repository = getRepository();
+		PagingAndSortingRepository<T, ID> repository = getRepository();
 
 		Assertions.assertTrue(repository.existsById(model.getId()));
 	}
 
 	@Test
 	public void testFindAll1() {
-		Repository<T, ID> repository = getRepository();
+		PagingAndSortingRepository<T, ID> repository = getRepository();
 
 		Assertions.assertEquals(entityModels, repository.findAll());
 	}
 
 	@Test
 	public void testFindAll2() {
-		Repository<T, ID> repository = getRepository();
+		PagingAndSortingRepository<T, ID> repository = getRepository();
 
 		Page<T> page = repository.findAll(
 			PageRequest.of(0, entityModels.size(), Sort.by("id")));
@@ -125,7 +125,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID>
 
 	@Test
 	public void testFindAll3() {
-		Repository<T, ID> repository = getRepository();
+		PagingAndSortingRepository<T, ID> repository = getRepository();
 
 		Assertions.assertEquals(
 			entityModels, repository.findAll(Sort.by("id")));
@@ -133,7 +133,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID>
 
 	@Test
 	public void testFindAllById() {
-		Repository<T, ID> repository = getRepository();
+		PagingAndSortingRepository<T, ID> repository = getRepository();
 
 		Assertions.assertEquals(
 			entityModels,
@@ -148,7 +148,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID>
 
 		Assertions.assertNotNull(id);
 
-		Repository<T, ID> repository = getRepository();
+		PagingAndSortingRepository<T, ID> repository = getRepository();
 
 		Optional<T> modelOptional = repository.findById(id);
 
@@ -157,7 +157,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID>
 
 	@Test
 	public void testSave() {
-		Repository<T, ID> repository = getRepository();
+		PagingAndSortingRepository<T, ID> repository = getRepository();
 
 		Assertions.assertEquals(
 			entityModels.get(0), repository.save(entityModels.get(0)));
@@ -165,15 +165,15 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID>
 
 	@Test
 	public void testSaveAll() {
-		Repository<T, ID> repository = getRepository();
+		PagingAndSortingRepository<T, ID> repository = getRepository();
 
 		Assertions.assertEquals(entityModels, repository.saveAll(entityModels));
 	}
 
-	protected abstract Repository<T, ID> getRepository();
+	protected abstract PagingAndSortingRepository<T, ID> getRepository();
 
 	protected void setUpRepository(T... entityModels) {
-		Repository<T, ID> repository = getRepository();
+		PagingAndSortingRepository<T, ID> repository = getRepository();
 
 		this.entityModels = IterableUtils.toList(
 			repository.saveAll(Arrays.asList(entityModels)));

@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
@@ -34,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Inácio Nery
@@ -358,7 +358,7 @@ public abstract class BaseMembershipRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<Membership, Long> getRepository() {
+	protected PagingAndSortingRepository<Membership, Long> getRepository() {
 		return _membershipRepository;
 	}
 

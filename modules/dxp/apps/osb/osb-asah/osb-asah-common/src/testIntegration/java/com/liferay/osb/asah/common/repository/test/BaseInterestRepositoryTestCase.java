@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.InterestRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Arrays;
@@ -32,6 +31,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Robson Pastor
@@ -288,7 +288,7 @@ public abstract class BaseInterestRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<Interest, Long> getRepository() {
+	protected PagingAndSortingRepository<Interest, Long> getRepository() {
 		return _interestRepository;
 	}
 

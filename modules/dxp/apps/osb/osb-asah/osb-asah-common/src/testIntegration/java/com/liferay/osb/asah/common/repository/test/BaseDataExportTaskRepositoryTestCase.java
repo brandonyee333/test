@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.DataExportTask;
 import com.liferay.osb.asah.common.repository.DataExportTaskRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 
 import java.util.Date;
 import java.util.List;
@@ -26,6 +25,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Inácio Nery
@@ -76,7 +76,7 @@ public abstract class BaseDataExportTaskRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<DataExportTask, Long> getRepository() {
+	protected PagingAndSortingRepository<DataExportTask, Long> getRepository() {
 		return _dataExportTaskRepository;
 	}
 

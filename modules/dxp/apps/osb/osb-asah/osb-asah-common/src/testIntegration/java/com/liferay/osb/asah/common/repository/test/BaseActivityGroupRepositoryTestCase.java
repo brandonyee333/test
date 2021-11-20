@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.Faro
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.postgresql.converter.helper.ActivitiesFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.time.LocalDateTime;
@@ -36,6 +35,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Inácio Nery
@@ -255,7 +255,7 @@ public abstract class BaseActivityGroupRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<ActivityGroup, Long> getRepository() {
+	protected PagingAndSortingRepository<ActivityGroup, Long> getRepository() {
 		return _activityGroupRepository;
 	}
 

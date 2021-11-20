@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 
 import java.util.Arrays;
 
@@ -30,6 +29,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Marcellus Tavares
@@ -86,7 +86,7 @@ public abstract class BaseCSVIndividualRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<CSVIndividual, Long> getRepository() {
+	protected PagingAndSortingRepository<CSVIndividual, Long> getRepository() {
 		return _csvIndividualRepository;
 	}
 

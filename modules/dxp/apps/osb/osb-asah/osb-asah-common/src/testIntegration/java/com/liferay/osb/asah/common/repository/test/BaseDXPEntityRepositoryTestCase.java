@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -33,6 +32,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Marcos Martins
@@ -251,7 +251,7 @@ public abstract class BaseDXPEntityRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<DXPEntity, Long> getRepository() {
+	protected PagingAndSortingRepository<DXPEntity, Long> getRepository() {
 		return _dxpEntityRepository;
 	}
 

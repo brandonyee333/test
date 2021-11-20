@@ -16,13 +16,13 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.Preference;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Inácio Nery
@@ -42,7 +42,7 @@ public abstract class BasePreferenceRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<Preference, Long> getRepository() {
+	protected PagingAndSortingRepository<Preference, Long> getRepository() {
 		return _preferenceRepository;
 	}
 

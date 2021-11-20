@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 
 import java.util.Date;
 import java.util.List;
@@ -28,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author André Miranda
@@ -146,7 +146,9 @@ public abstract class BaseCustomAssetDashboardRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<CustomAssetDashboard, String> getRepository() {
+	protected PagingAndSortingRepository<CustomAssetDashboard, String>
+		getRepository() {
+
 		return _customAssetDashboardRepository;
 	}
 

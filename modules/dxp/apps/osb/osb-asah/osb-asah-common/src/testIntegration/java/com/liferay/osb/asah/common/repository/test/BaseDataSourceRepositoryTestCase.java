@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.entity.DataSourceOrganization;
 import com.liferay.osb.asah.common.entity.DataSourceSite;
 import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.SetUtil;
 
@@ -34,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Inácio Nery
@@ -451,7 +451,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<DataSource, Long> getRepository() {
+	protected PagingAndSortingRepository<DataSource, Long> getRepository() {
 		return _dataSourceRepository;
 	}
 

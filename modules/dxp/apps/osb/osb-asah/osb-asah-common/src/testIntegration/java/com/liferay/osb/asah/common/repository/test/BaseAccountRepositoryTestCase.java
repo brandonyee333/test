@@ -29,7 +29,6 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -46,6 +45,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import org.yaml.snakeyaml.util.ArrayUtils;
 
@@ -312,7 +312,7 @@ public abstract class BaseAccountRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<Account, Long> getRepository() {
+	protected PagingAndSortingRepository<Account, Long> getRepository() {
 		return accountRepository;
 	}
 

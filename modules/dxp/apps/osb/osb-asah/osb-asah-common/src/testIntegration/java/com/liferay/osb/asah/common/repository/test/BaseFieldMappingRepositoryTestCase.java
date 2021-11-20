@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 
 import java.util.Optional;
 
@@ -25,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Marcos Martins
@@ -65,7 +65,7 @@ public abstract class BaseFieldMappingRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<FieldMapping, Long> getRepository() {
+	protected PagingAndSortingRepository<FieldMapping, Long> getRepository() {
 		return _fieldMappingRepository;
 	}
 

@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.FieldRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Arrays;
@@ -33,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Rachael Koestartyo
@@ -287,7 +287,7 @@ public abstract class BaseFieldRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<Field, Long> getRepository() {
+	protected PagingAndSortingRepository<Field, Long> getRepository() {
 		return _fieldRepository;
 	}
 

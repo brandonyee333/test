@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.common.repository.JobRepository;
 import com.liferay.osb.asah.common.repository.JobRunRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.time.LocalDateTime;
@@ -35,6 +34,7 @@ import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Marcellus Tavares
@@ -61,7 +61,7 @@ public abstract class BaseJobRunRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<JobRun, Long> getRepository() {
+	protected PagingAndSortingRepository<JobRun, Long> getRepository() {
 		return _jobRunRepository;
 	}
 

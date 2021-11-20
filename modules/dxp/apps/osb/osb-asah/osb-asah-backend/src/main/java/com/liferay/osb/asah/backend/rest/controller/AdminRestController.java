@@ -45,7 +45,6 @@ import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -80,6 +79,7 @@ import org.json.JSONTokener;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -265,7 +265,8 @@ public class AdminRestController extends BaseRestController {
 	}
 
 	private <T, ID> void _addEntities(
-			Repository<T, ID> repository, String json, Class<T> modelClass)
+			PagingAndSortingRepository<T, ID> repository, String json,
+			Class<T> modelClass)
 		throws Exception {
 
 		JSONArray jsonArray = new JSONArray(json);

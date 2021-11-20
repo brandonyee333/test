@@ -16,7 +16,6 @@ package com.liferay.osb.asah.test.util.spring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -35,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestComponent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.test.context.TestContext;
 
 /**
@@ -127,10 +127,11 @@ public class OSBAsahRepositoryTestExecutionListener
 	private void _clearRepository(
 		ApplicationContext applicationContext, Class<?> repositoryClass) {
 
-		Repository repository = (Repository)applicationContext.getBean(
-			repositoryClass);
+		PagingAndSortingRepository pagingAndSortingRepository =
+			(PagingAndSortingRepository)applicationContext.getBean(
+				repositoryClass);
 
-		repository.deleteAll();
+		pagingAndSortingRepository.deleteAll();
 	}
 
 	private Class<?> _getEntityClass(Class<?> repositoryClass) {
@@ -148,8 +149,9 @@ public class OSBAsahRepositoryTestExecutionListener
 			RepositoryResource repositoryResource)
 		throws Exception {
 
-		Repository repository = (Repository)applicationContext.getBean(
-			repositoryResource.repositoryClass());
+		PagingAndSortingRepository pagingAndSortingRepository =
+			(PagingAndSortingRepository)applicationContext.getBean(
+				repositoryResource.repositoryClass());
 
 		JSONArray jsonArray = new JSONArray(
 			ResourceUtil.readResourceToString(
@@ -162,7 +164,7 @@ public class OSBAsahRepositoryTestExecutionListener
 		Class<?> entityClass = _getEntityClass(
 			repositoryResource.repositoryClass());
 
-		repository.saveAll(
+		pagingAndSortingRepository.saveAll(
 			stream.map(
 				object -> _objectMapper.convertValue(object, entityClass)
 			).collect(

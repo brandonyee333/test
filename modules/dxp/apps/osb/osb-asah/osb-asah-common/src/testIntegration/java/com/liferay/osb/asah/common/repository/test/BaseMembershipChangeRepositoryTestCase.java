@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
-import com.liferay.osb.asah.common.repository.Repository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -43,6 +42,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Marcellus Tavares
@@ -277,7 +277,9 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 	}
 
 	@Override
-	protected Repository<MembershipChange, Long> getRepository() {
+	protected PagingAndSortingRepository<MembershipChange, Long>
+		getRepository() {
+
 		return _membershipChangeRepository;
 	}
 
