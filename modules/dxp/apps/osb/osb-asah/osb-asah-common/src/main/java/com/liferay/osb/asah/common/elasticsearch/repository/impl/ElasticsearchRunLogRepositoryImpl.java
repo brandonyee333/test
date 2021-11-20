@@ -14,24 +14,40 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.RunLog;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
 import com.liferay.osb.asah.common.util.WeDeployServiceThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
@@ -39,18 +55,156 @@ import org.springframework.stereotype.Repository;
  * @author Marcellus Tavares
  */
 @Repository
-public class ElasticsearchRunLogRepositoryImpl
-	extends BaseElasticsearchRepository<RunLog, Long>
-	implements RunLogRepository {
+public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
+
+	@Override
+	public long count() {
+		ElasticsearchInvoker elasticsearchInvoker =
+			_resolveElasticsearchInvoker();
+
+		return elasticsearchInvoker.count(
+			_getCollectionName(), QueryBuilders.matchAllQuery());
+	}
+
+	@Override
+	public void delete(RunLog runLog) {
+		ElasticsearchInvoker elasticsearchInvoker =
+			_resolveElasticsearchInvoker();
+
+		elasticsearchInvoker.delete(
+			_getCollectionName(), String.valueOf(runLog.getId()));
+	}
+
+	@Override
+	public void deleteAll() {
+		ElasticsearchInvoker elasticsearchInvoker =
+			_resolveElasticsearchInvoker();
+
+		elasticsearchInvoker.delete(
+			_getCollectionName(), QueryBuilders.matchAllQuery());
+	}
+
+	@Override
+	public void deleteAll(Iterable<? extends RunLog> runLogs) {
+		ElasticsearchInvoker elasticsearchInvoker =
+			_resolveElasticsearchInvoker();
+
+		Stream<? extends RunLog> stream = StreamSupport.stream(
+			runLogs.spliterator(), false);
+
+		elasticsearchInvoker.deleteByQuery(
+			QueryBuilders.termsQuery(
+				"id",
+				stream.map(
+					RunLog::getId
+				).map(
+					String::valueOf
+				).collect(
+					Collectors.toList()
+				)),
+			true, _getCollectionName());
+	}
 
 	@Override
 	public void deleteByDataSourceId(Long dataSourceId) {
-		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+		ElasticsearchInvoker elasticsearchInvoker =
+			_resolveElasticsearchInvoker();
 
 		elasticsearchInvoker.delete(
-			getCollectionName(),
+			_getCollectionName(),
 			QueryBuilders.termQuery(
 				"dataSourceId", String.valueOf(dataSourceId)));
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		ElasticsearchInvoker elasticsearchInvoker =
+			_resolveElasticsearchInvoker();
+
+		elasticsearchInvoker.delete(_getCollectionName(), id.toString());
+	}
+
+	@Override
+	public boolean existsById(Long id) {
+		ElasticsearchInvoker elasticsearchInvoker =
+			_resolveElasticsearchInvoker();
+
+		return elasticsearchInvoker.exists(_getCollectionName(), id.toString());
+	}
+
+	@Override
+	public Iterable<RunLog> findAll() {
+		return findAll(Sort.by("id"));
+	}
+
+	@Override
+	public Page<RunLog> findAll(Pageable pageable) {
+		ElasticsearchInvoker elasticsearchInvoker =
+			_resolveElasticsearchInvoker();
+
+		return PageableExecutionUtils.getPage(
+			_toList(
+				new JSONArray(
+					elasticsearchInvoker.get(
+						_getCollectionName(),
+						searchSourceBuilder -> _setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable)))),
+			pageable, () -> count());
+	}
+
+	@Override
+	public Iterable<RunLog> findAll(Sort sort) {
+		ElasticsearchInvoker elasticsearchInvoker =
+			_resolveElasticsearchInvoker();
+
+		return _toList(
+			new JSONArray(
+				elasticsearchInvoker.get(
+					_getCollectionName(),
+					searchSourceBuilder -> {
+						if (sort.isUnsorted()) {
+							searchSourceBuilder.sort(
+								SortBuilderUtil.fieldSort("id"));
+						}
+						else {
+							Stream.of(
+								sort
+							).flatMap(
+								Sort::stream
+							).forEach(
+								order -> {
+									SortOrder sortOrder = SortOrder.ASC;
+
+									if (order.isDescending()) {
+										sortOrder = SortOrder.DESC;
+									}
+
+									searchSourceBuilder.sort(
+										SortBuilderUtil.fieldSort(
+											order.getProperty(), sortOrder));
+								}
+							);
+						}
+					})));
+	}
+
+	@Override
+	public Iterable<RunLog> findAllById(Iterable<Long> ids) {
+		ElasticsearchInvoker elasticsearchInvoker =
+			_resolveElasticsearchInvoker();
+
+		Stream<Long> stream = StreamSupport.stream(ids.spliterator(), false);
+
+		return _toList(
+			elasticsearchInvoker.get(
+				_getCollectionName(),
+				QueryBuilders.termsQuery(
+					"id",
+					stream.map(
+						String::valueOf
+					).collect(
+						Collectors.toList()
+					))));
 	}
 
 	@Override
@@ -77,28 +231,80 @@ public class ElasticsearchRunLogRepositoryImpl
 					QueryBuilders.existsQuery("dataSourceId")));
 		}
 
-		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+		ElasticsearchInvoker elasticsearchInvoker =
+			_resolveElasticsearchInvoker();
 
 		JSONObject jsonObject = elasticsearchInvoker.fetch(
-			getCollectionName(), boolQueryBuilder,
+			_getCollectionName(), boolQueryBuilder,
 			SortBuilderUtil.fieldSort("dateLogged", SortOrder.DESC), null,
 			null);
 
 		return Optional.ofNullable(
 			jsonObject
 		).map(
-			this::toEntity
+			this::_toEntity
 		);
 	}
 
 	@Override
-	protected String getCollectionName() {
-		return "run-logs";
+	public Optional<RunLog> findById(Long id) {
+		ElasticsearchInvoker elasticsearchInvoker =
+			_resolveElasticsearchInvoker();
+
+		return Optional.ofNullable(
+			elasticsearchInvoker.fetch(_getCollectionName(), id.toString())
+		).map(
+			this::_toEntity
+		);
 	}
 
 	@Override
-	protected ElasticsearchInvoker getElasticsearchInvoker() {
-		return _resolveElasticsearchInvoker();
+	@SuppressWarnings("unchecked")
+	public <S extends RunLog> S save(S runLog) {
+		ElasticsearchInvoker elasticsearchInvoker =
+			_resolveElasticsearchInvoker();
+
+		JSONObject jsonObject = _toJSONObject(runLog);
+
+		String id = jsonObject.optString(
+			"id", _timeOrderedUuidGenerator.generateId());
+
+		jsonObject.put("id", id);
+
+		return (S)_toEntity(
+			elasticsearchInvoker.add(_getCollectionName(), jsonObject));
+	}
+
+	@Override
+	public <S extends RunLog> Iterable<S> saveAll(Iterable<S> runLogs) {
+		List<S> list = new ArrayList<>();
+
+		JSONArray jsonArray = new JSONArray();
+
+		ElasticsearchInvoker elasticsearchInvoker =
+			_resolveElasticsearchInvoker();
+
+		runLogs.forEach(
+			runLog -> {
+				JSONObject jsonObject = _toJSONObject(runLog);
+
+				String id = jsonObject.optString(
+					"id", _timeOrderedUuidGenerator.generateId());
+
+				jsonObject.put("id", id);
+
+				jsonArray.put(jsonObject);
+
+				list.add((S)_toEntity(jsonObject));
+			});
+
+		elasticsearchInvoker.add(_getCollectionName(), jsonArray);
+
+		return list;
+	}
+
+	private String _getCollectionName() {
+		return "run-logs";
 	}
 
 	private ElasticsearchInvoker _resolveElasticsearchInvoker() {
@@ -127,13 +333,70 @@ public class ElasticsearchRunLogRepositoryImpl
 			"Unexpected WeDeploy data service value " + weDeployDataService);
 	}
 
+	private void _setSearchSourceBuilderPage(
+		SearchSourceBuilder searchSourceBuilder, Pageable pageable) {
+
+		searchSourceBuilder.from(
+			pageable.getPageNumber() * pageable.getPageSize());
+		searchSourceBuilder.size(pageable.getPageSize());
+
+		Sort sort = pageable.getSort();
+
+		if (sort.isUnsorted()) {
+			searchSourceBuilder.sort(SortBuilderUtil.fieldSort("id"));
+		}
+		else {
+			Stream.of(
+				sort
+			).flatMap(
+				Sort::stream
+			).forEach(
+				order -> {
+					SortOrder sortOrder = SortOrder.ASC;
+
+					if (order.isDescending()) {
+						sortOrder = SortOrder.DESC;
+					}
+
+					searchSourceBuilder.sort(
+						SortBuilderUtil.fieldSort(
+							order.getProperty(), sortOrder));
+				}
+			);
+		}
+	}
+
+	private RunLog _toEntity(JSONObject jsonObject) {
+		return _objectMapper.convertValue(jsonObject, RunLog.class);
+	}
+
+	private JSONObject _toJSONObject(RunLog runLog) {
+		return _objectMapper.convertValue(runLog, JSONObject.class);
+	}
+
+	private List<RunLog> _toList(JSONArray jsonArray) {
+		Stream<Object> stream = JSONUtil.toObjectStream(jsonArray);
+
+		return stream.map(
+			object -> _toEntity((JSONObject)object)
+		).collect(
+			Collectors.toList()
+		);
+	}
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
+	@Autowired
+	private ObjectMapper _objectMapper;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 }
