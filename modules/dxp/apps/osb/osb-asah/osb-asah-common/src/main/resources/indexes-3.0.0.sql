@@ -2,6 +2,8 @@ CREATE INDEX IF NOT EXISTS IX_EVENT_CIEDEDI ON Event (channelId, eventDate, even
 
 CREATE INDEX IF NOT EXISTS IX_EVENT_CIEDII ON Event (channelId, eventDate, individualId);
 
+CREATE INDEX IF NOT EXISTS IX_EVENT_DSIUI ON Event (dataSourceId, userId);
+
 CREATE INDEX IF NOT EXISTS IX_EVENT_EVENTDATE ON Event (eventDate);
 
 CREATE INDEX IF NOT EXISTS IX_EVENTATTRIBUTE_EADIED ON EventAttribute (eventattributeDefinitionId, eventDate);

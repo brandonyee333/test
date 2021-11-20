@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.v3_0_0.CustomEventUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.UserSessionsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_5.EventIndexUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_5.IndividualEventUpgradeStep;
 
 import java.util.List;
@@ -56,6 +57,11 @@ public class UpgradeRestController {
 		return _getUpgradesJSONArray(_customEventsCompletableFutures);
 	}
 
+	@GetMapping("/event-index-upgrades")
+	public JSONArray getEventIndexUpgrades() {
+		return _getUpgradesJSONArray(_eventIndexCompletableFutures);
+	}
+
 	@GetMapping("/individual-event-upgrades")
 	public JSONArray getIndividualEventUpgrades() {
 		return _getUpgradesJSONArray(_individualEventsCompletableFutures);
@@ -87,6 +93,30 @@ public class UpgradeRestController {
 			Project::getId
 		).forEach(
 			this::_startCustomEventUpgrade
+		);
+	}
+
+	@PostMapping("/event-index-upgrade/{projectId}")
+	public void startEventIndexUpgrade(@PathVariable String projectId) {
+		Optional<Project> projectOptional = _fetchProject(projectId);
+
+		if (!projectOptional.isPresent()) {
+			throw new IllegalArgumentException("Invalid project ID");
+		}
+
+		_startEventIndexUpgrade(projectId);
+	}
+
+	@PostMapping("/event-index-upgrades")
+	public void startEventIndexUpgrades() {
+		List<Project> projects = _projectDog.getProjects();
+
+		Stream<Project> stream = projects.stream();
+
+		stream.map(
+			Project::getId
+		).forEach(
+			this::_startEventIndexUpgrade
 		);
 	}
 
@@ -178,6 +208,33 @@ public class UpgradeRestController {
 				_executorService));
 	}
 
+	private void _startEventIndexUpgrade(String projectId) {
+		CompletableFuture<Void> completableFuture =
+			_eventIndexCompletableFutures.get(projectId);
+
+		if (completableFuture != null) {
+			return;
+		}
+
+		_eventIndexCompletableFutures.put(
+			projectId,
+			CompletableFuture.runAsync(
+				() -> ProjectIdThreadLocal.forProject(
+					projectId,
+					() -> {
+						try {
+							_eventIndexUpgradeStep.upgrade(null);
+						}
+						catch (Exception exception) {
+							_log.error(
+								"Unable to upgrade event index for " +
+									projectId,
+								exception);
+						}
+					}),
+				_executorService));
+	}
+
 	private void _startIndividualEventUpgrade(String projectId) {
 		CompletableFuture<Void> completableFuture =
 			_individualEventsCompletableFutures.get(projectId);
@@ -246,6 +303,12 @@ public class UpgradeRestController {
 
 	@Autowired
 	private CustomEventUpgradeStep _customEventUpgradeStep;
+
+	private final Map<String, CompletableFuture<Void>>
+		_eventIndexCompletableFutures = new ConcurrentHashMap<>();
+
+	@Autowired
+	private EventIndexUpgradeStep _eventIndexUpgradeStep;
 
 	private final ExecutorService _executorService =
 		Executors.newSingleThreadExecutor();
