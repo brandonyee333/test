@@ -72,7 +72,11 @@ import org.elasticsearch.script.Script;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 /**
  * @author André Miranda
@@ -100,10 +104,10 @@ public class IndividualNanite implements Nanite {
 		}
 
 		try {
-			_semaphore.acquireUninterruptibly(4);
+			_semaphore.acquireUninterruptibly(15);
 		}
 		finally {
-			_semaphore.release(4);
+			_semaphore.release(15);
 		}
 	}
 
@@ -267,19 +271,21 @@ public class IndividualNanite implements Nanite {
 
 				long start = System.currentTimeMillis();
 
-				List<String> messages = _messageSubscriber.pullMessages(50);
+				List<JSONObject> messageJSONObjects =
+					_messageSubscriber.pullMessages(
+						_individualNanitePullMessagesSize, JSONObject::new);
 
-				if (messages.isEmpty()) {
+				if (messageJSONObjects.isEmpty()) {
 					return;
 				}
 
-				Stream<String> stream = messages.stream();
+				Stream<JSONObject> stream = messageJSONObjects.stream();
 
-				stream.map(
-					JSONObject::new
-				).collect(
+				stream.collect(
 					Collectors.groupingBy(
-						jsonObject -> jsonObject.getString("projectId"))
+						jsonObject -> Tuples.of(
+							jsonObject.getString("projectId"),
+							jsonObject.getString("userId")))
 				).forEach(
 					this::_run
 				);
@@ -290,7 +296,7 @@ public class IndividualNanite implements Nanite {
 					_log.info(
 						String.format(
 							"%s dispatched %d messages in %d ms",
-							clazz.getSimpleName(), messages.size(),
+							clazz.getSimpleName(), messageJSONObjects.size(),
 							System.currentTimeMillis() - start));
 				}
 			}
@@ -300,11 +306,13 @@ public class IndividualNanite implements Nanite {
 		}
 	}
 
-	private void _run(String projectId, List<JSONObject> messageJSONObjects) {
+	private void _run(
+		Tuple2<String, String> tuple2, List<JSONObject> messageJSONObjects) {
+
 		_semaphore.acquireUninterruptibly();
 
 		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), projectId);
+			getClass(), tuple2.getT1(), tuple2.getT2());
 
 		CompletableFuture.runAsync(
 			() -> {
@@ -313,7 +321,7 @@ public class IndividualNanite implements Nanite {
 
 					reentrantLock.lock();
 
-					ProjectIdThreadLocal.setProjectId(projectId);
+					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
 					for (JSONObject messageJSONObject : messageJSONObjects) {
 						try {
@@ -547,7 +555,7 @@ public class IndividualNanite implements Nanite {
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	private final ExecutorService _executorService =
-		Executors.newFixedThreadPool(2);
+		Executors.newFixedThreadPool(10);
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
@@ -561,6 +569,9 @@ public class IndividualNanite implements Nanite {
 	@Autowired
 	private IndividualDog _individualDog;
 
+	@Value("${osb.asah.individual.nanite.pull.messages.size:50}")
+	private int _individualNanitePullMessagesSize;
+
 	@MessageSubscriber.Autowired(channel = Channel.IDENTITY_MESSAGE)
 	private MessageSubscriber _messageSubscriber;
 
@@ -569,7 +580,7 @@ public class IndividualNanite implements Nanite {
 	@Autowired
 	private SegmentDog _segmentDog;
 
-	private final Semaphore _semaphore = new Semaphore(4, true);
+	private final Semaphore _semaphore = new Semaphore(15, true);
 
 	@Autowired
 	private SuppressionDog _suppressionDog;
