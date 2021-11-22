@@ -79,7 +79,7 @@ import org.json.JSONTokener;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -265,7 +265,7 @@ public class AdminRestController extends BaseRestController {
 	}
 
 	private <T, ID> void _addEntities(
-			PagingAndSortingRepository<T, ID> repository, String json,
+			CrudRepository<T, ID> crudRepository, String json,
 			Class<T> modelClass)
 		throws Exception {
 
@@ -277,7 +277,7 @@ public class AdminRestController extends BaseRestController {
 
 			BeanUtils.setProperty(t, "isNew", true);
 
-			repository.save(t);
+			crudRepository.save(t);
 		}
 	}
 
