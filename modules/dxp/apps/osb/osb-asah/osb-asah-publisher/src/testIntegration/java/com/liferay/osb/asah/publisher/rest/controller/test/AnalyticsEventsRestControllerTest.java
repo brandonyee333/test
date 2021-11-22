@@ -84,7 +84,7 @@ public class AnalyticsEventsRestControllerTest
 
 		ResponseEntity<String> responseEntity = _exchange(
 			ResourceUtil.readResourceToString(
-				"dependencies/analytics_events_message_2.json", this));
+				"dependencies/analytics_events_message_3.json", this));
 
 		Assertions.assertThat(
 			responseEntity.getStatusCode()
@@ -144,7 +144,20 @@ public class AnalyticsEventsRestControllerTest
 			TestExecutionListenerUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					"dependencies" +
-						"/analytics_events_message_duplicated_events.json",
+						"/analytics_events_message_duplicated_events_1.json",
+					this)));
+
+		Assertions.assertThat(
+			responseEntity.getStatusCode()
+		).isEqualTo(
+			HttpStatus.valueOf(200)
+		);
+
+		responseEntity = _exchange(
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					"dependencies" +
+						"/analytics_events_message_duplicated_events_2.json",
 					this)));
 
 		Assertions.assertThat(
