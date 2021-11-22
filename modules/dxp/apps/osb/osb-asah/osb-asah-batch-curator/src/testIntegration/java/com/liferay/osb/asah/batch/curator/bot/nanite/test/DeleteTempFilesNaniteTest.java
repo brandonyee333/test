@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.OSBAsahBatchCuratorSpringTestContext;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteTempFilesNanite;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.io.File;
 
@@ -43,7 +44,8 @@ import org.springframework.test.util.ReflectionTestUtils;
  * @author Matthew Kong
  */
 public class DeleteTempFilesNaniteTest
-	implements OSBAsahBatchCuratorSpringTestContext {
+	implements OSBAsahBatchCuratorSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {
