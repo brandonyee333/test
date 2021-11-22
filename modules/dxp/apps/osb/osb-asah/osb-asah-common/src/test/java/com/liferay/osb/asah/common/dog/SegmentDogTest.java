@@ -17,44 +17,52 @@ package com.liferay.osb.asah.common.dog;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.test.util.ReflectionTestUtils;
+
 /**
  * @author Marcos Martins
  */
 public class SegmentDogTest {
 
 	@Test
-	public void testProcessFilter() {
+	public void testParserFilter() {
 		Assertions.assertEquals(
 			"(accounts.filter(filter='(organization/rating/value eq '4.6')'))",
-			_segmentDog.processFilter(
+			ReflectionTestUtils.invokeMethod(
+				_segmentDog, "_parserFilter",
 				"(accounts.filter(filter='(organization/rating/value eq " +
 					"'4.6')'))"));
 
 		Assertions.assertEquals(
 			"demographics/additionalName/value eq 'Miles'",
-			_segmentDog.processFilter(
+			ReflectionTestUtils.invokeMethod(
+				_segmentDog, "_parserFilter",
 				"demographics/additionalName/value eq 'Miles'"));
 
 		Assertions.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
-			_segmentDog.processFilter(
+			ReflectionTestUtils.invokeMethod(
+				_segmentDog, "_parserFilter",
 				"demographics/age/value ge " +
 					"12345678901234567262899398937898378787878"));
 
 		Assertions.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
-			_segmentDog.processFilter(
+			ReflectionTestUtils.invokeMethod(
+				_segmentDog, "_parserFilter",
 				"demographics/age/value ge 1.2345678901234568e+21"));
 
 		Assertions.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
-			_segmentDog.processFilter(
+			ReflectionTestUtils.invokeMethod(
+				_segmentDog, "_parserFilter",
 				"demographics/age/value ge " + Integer.MAX_VALUE));
 
 		Assertions.assertEquals(
 			"organizations.filter(filter='(dateModified gt " +
 				Integer.MAX_VALUE + ")')",
-			_segmentDog.processFilter(
+			ReflectionTestUtils.invokeMethod(
+				_segmentDog, "_parserFilter",
 				"organizations.filter(filter='(dateModified gt " +
 					"1580256740750)')"));
 	}

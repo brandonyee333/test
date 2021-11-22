@@ -87,7 +87,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		segment.setActivitiesCount(activitiesCount);
 		segment.setCreateDate(createDate);
-		segment.setFilter(processFilter(filter));
+		segment.setFilter(_parserFilter(filter));
 		segment.setModifiedDate(modifiedDate);
 		segment.setName(name);
 		segment.setScope(scope);
@@ -109,7 +109,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 			segment.setState("READY");
 		}
 
-		segment.setFilter(processFilter(segment.getFilter()));
+		segment.setFilter(_parserFilter(segment.getFilter()));
 
 		segment = _segmentRepository.save(segment);
 
@@ -579,31 +579,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return _segmentRepository.save(segment);
 	}
 
-	protected String processFilter(String filter) {
-		if (filter != null) {
-			Matcher matcher = _pattern.matcher(filter);
-
-			while (matcher.find()) {
-				if (_log.isWarnEnabled()) {
-					_log.warn("Invalid value: " + matcher.group());
-				}
-
-				BigDecimal bigDecimal = new BigDecimal(matcher.group());
-
-				BigDecimal maxIntegerBigDecimal = BigDecimal.valueOf(
-					Integer.MAX_VALUE);
-
-				if (bigDecimal.compareTo(maxIntegerBigDecimal) == 1) {
-					filter = StringUtils.replace(
-						filter, matcher.group(),
-						String.valueOf(Integer.MAX_VALUE));
-				}
-			}
-		}
-
-		return filter;
-	}
-
 	private void _addAsahTask(Segment segment) {
 		if (Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
 			_asahTaskDog.scheduleAsahTask(
@@ -795,6 +770,31 @@ public class SegmentDog extends BaseFaroInfoDog {
 		}
 
 		return referencedObjectIds;
+	}
+
+	private String _parserFilter(String filter) {
+		if (filter != null) {
+			Matcher matcher = _pattern.matcher(filter);
+
+			while (matcher.find()) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("Invalid value: " + matcher.group());
+				}
+
+				BigDecimal bigDecimal = new BigDecimal(matcher.group());
+
+				BigDecimal maxIntegerBigDecimal = BigDecimal.valueOf(
+					Integer.MAX_VALUE);
+
+				if (bigDecimal.compareTo(maxIntegerBigDecimal) == 1) {
+					filter = StringUtils.replace(
+						filter, matcher.group(),
+						String.valueOf(Integer.MAX_VALUE));
+				}
+			}
+		}
+
+		return filter;
 	}
 
 	private Exception _processLogicalOperator(
@@ -1063,7 +1063,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 			BeanUtils.copyProperties(partialSegment, existingSegment);
 
 			existingSegment.setFilter(
-				processFilter(existingSegment.getFilter()));
+				_parserFilter(existingSegment.getFilter()));
 
 			existingSegment = _segmentRepository.save(existingSegment);
 
