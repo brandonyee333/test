@@ -65,7 +65,9 @@ public abstract class BaseFieldMappingRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<FieldMapping, Long> getRepository() {
+	protected PagingAndSortingRepository<FieldMapping, Long>
+		getPagingAndSortingRepository() {
+
 		return _fieldMappingRepository;
 	}
 

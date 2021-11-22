@@ -759,7 +759,9 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Individual, Long> getRepository() {
+	protected PagingAndSortingRepository<Individual, Long>
+		getPagingAndSortingRepository() {
+
 		return individualRepository;
 	}
 

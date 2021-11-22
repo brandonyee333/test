@@ -255,7 +255,9 @@ public abstract class BaseActivityGroupRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<ActivityGroup, Long> getRepository() {
+	protected PagingAndSortingRepository<ActivityGroup, Long>
+		getPagingAndSortingRepository() {
+
 		return _activityGroupRepository;
 	}
 

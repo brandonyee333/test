@@ -136,7 +136,9 @@ public abstract class BaseChannelRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Channel, Long> getRepository() {
+	protected PagingAndSortingRepository<Channel, Long>
+		getPagingAndSortingRepository() {
+
 		return _channelRepository;
 	}
 

@@ -147,7 +147,7 @@ public abstract class BaseCustomAssetDashboardRepositoryTestCase
 
 	@Override
 	protected PagingAndSortingRepository<CustomAssetDashboard, String>
-		getRepository() {
+		getPagingAndSortingRepository() {
 
 		return _customAssetDashboardRepository;
 	}

@@ -42,7 +42,9 @@ public abstract class BasePreferenceRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Preference, Long> getRepository() {
+	protected PagingAndSortingRepository<Preference, Long>
+		getPagingAndSortingRepository() {
+
 		return _preferenceRepository;
 	}
 

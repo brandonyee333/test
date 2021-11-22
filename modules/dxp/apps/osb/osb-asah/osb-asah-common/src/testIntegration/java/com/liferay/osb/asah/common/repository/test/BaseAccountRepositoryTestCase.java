@@ -312,7 +312,9 @@ public abstract class BaseAccountRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Account, Long> getRepository() {
+	protected PagingAndSortingRepository<Account, Long>
+		getPagingAndSortingRepository() {
+
 		return accountRepository;
 	}
 

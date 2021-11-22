@@ -76,7 +76,9 @@ public abstract class BaseDataExportTaskRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<DataExportTask, Long> getRepository() {
+	protected PagingAndSortingRepository<DataExportTask, Long>
+		getPagingAndSortingRepository() {
+
 		return _dataExportTaskRepository;
 	}
 

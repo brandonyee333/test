@@ -55,7 +55,9 @@ public abstract class BaseJobRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Job, Long> getRepository() {
+	protected PagingAndSortingRepository<Job, Long>
+		getPagingAndSortingRepository() {
+
 		return _jobRunRepository;
 	}
 

@@ -358,7 +358,9 @@ public abstract class BaseMembershipRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Membership, Long> getRepository() {
+	protected PagingAndSortingRepository<Membership, Long>
+		getPagingAndSortingRepository() {
+
 		return _membershipRepository;
 	}
 

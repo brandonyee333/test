@@ -273,7 +273,9 @@ public abstract class BaseSegmentRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Segment, Long> getRepository() {
+	protected PagingAndSortingRepository<Segment, Long>
+		getPagingAndSortingRepository() {
+
 		return _segmentRepository;
 	}
 

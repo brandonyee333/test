@@ -288,7 +288,9 @@ public abstract class BaseInterestRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Interest, Long> getRepository() {
+	protected PagingAndSortingRepository<Interest, Long>
+		getPagingAndSortingRepository() {
+
 		return _interestRepository;
 	}
 

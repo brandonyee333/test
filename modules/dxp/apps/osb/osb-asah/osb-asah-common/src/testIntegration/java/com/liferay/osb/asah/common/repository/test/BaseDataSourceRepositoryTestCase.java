@@ -451,7 +451,9 @@ public abstract class BaseDataSourceRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<DataSource, Long> getRepository() {
+	protected PagingAndSortingRepository<DataSource, Long>
+		getPagingAndSortingRepository() {
+
 		return _dataSourceRepository;
 	}
 

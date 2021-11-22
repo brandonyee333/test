@@ -86,7 +86,9 @@ public abstract class BaseCSVIndividualRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<CSVIndividual, Long> getRepository() {
+	protected PagingAndSortingRepository<CSVIndividual, Long>
+		getPagingAndSortingRepository() {
+
 		return _csvIndividualRepository;
 	}
 

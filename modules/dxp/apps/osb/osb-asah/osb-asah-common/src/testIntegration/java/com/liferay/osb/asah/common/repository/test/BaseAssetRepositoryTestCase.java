@@ -328,7 +328,9 @@ public abstract class BaseAssetRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Asset, Long> getRepository() {
+	protected PagingAndSortingRepository<Asset, Long>
+		getPagingAndSortingRepository() {
+
 		return _assetRepository;
 	}
 

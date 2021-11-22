@@ -160,7 +160,9 @@ public abstract class BaseExperimentRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Experiment, Long> getRepository() {
+	protected PagingAndSortingRepository<Experiment, Long>
+		getPagingAndSortingRepository() {
+
 		return _experimentRepository;
 	}
 

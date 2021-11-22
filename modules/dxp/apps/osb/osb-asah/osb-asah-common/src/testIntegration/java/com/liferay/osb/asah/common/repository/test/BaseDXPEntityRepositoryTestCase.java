@@ -251,7 +251,9 @@ public abstract class BaseDXPEntityRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<DXPEntity, Long> getRepository() {
+	protected PagingAndSortingRepository<DXPEntity, Long>
+		getPagingAndSortingRepository() {
+
 		return _dxpEntityRepository;
 	}
 

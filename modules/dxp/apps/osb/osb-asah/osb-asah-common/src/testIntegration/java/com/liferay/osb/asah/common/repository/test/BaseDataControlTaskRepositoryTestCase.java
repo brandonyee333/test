@@ -80,7 +80,7 @@ public abstract class BaseDataControlTaskRepositoryTestCase
 
 	@Override
 	protected PagingAndSortingRepository<DataControlTask, Long>
-		getRepository() {
+		getPagingAndSortingRepository() {
 
 		return _dataControlTaskRepository;
 	}

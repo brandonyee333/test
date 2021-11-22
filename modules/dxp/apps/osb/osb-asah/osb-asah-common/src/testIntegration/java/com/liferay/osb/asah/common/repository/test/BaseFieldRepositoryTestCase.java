@@ -287,7 +287,9 @@ public abstract class BaseFieldRepositoryTestCase
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Field, Long> getRepository() {
+	protected PagingAndSortingRepository<Field, Long>
+		getPagingAndSortingRepository() {
+
 		return _fieldRepository;
 	}
 
