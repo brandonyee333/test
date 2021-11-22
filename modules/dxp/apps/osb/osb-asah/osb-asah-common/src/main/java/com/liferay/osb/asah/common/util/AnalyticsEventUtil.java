@@ -34,17 +34,11 @@ public class AnalyticsEventUtil {
 
 		Map<String, String> eventProperties = event.getProperties();
 
-		long eventDateTime = 0;
-
-		if (eventDate != null) {
-			eventDateTime = eventDate.getTime();
-		}
-
 		return DigestUtils.sha256Hex(
 			String.join(
 				"#", projectId, dataSourceId, userId, event.getApplicationId(),
 				event.getEventId(), String.valueOf(eventProperties.hashCode()),
-				String.valueOf(eventDateTime)));
+				String.valueOf(eventDate.getTime())));
 	}
 
 }

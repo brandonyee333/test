@@ -86,11 +86,7 @@ public class EventDog {
 		Optional<Event> eventOptional = _eventRepository.findByAnalyticsEventId(
 			analyticsEventId);
 
-		if (eventOptional.isPresent()) {
-			return eventOptional.get();
-		}
-
-		return null;
+		return eventOptional.orElse(null);
 	}
 
 	public List<EventAttributeValue> getRecentEventAttributeValues(

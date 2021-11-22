@@ -17,6 +17,7 @@ package com.liferay.osb.asah.publisher.rest.controller;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
@@ -28,13 +29,7 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import io.prometheus.client.Histogram;
 import io.prometheus.client.SimpleTimer;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -44,13 +39,13 @@ import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -87,8 +82,12 @@ public class AnalyticsEventsRestController {
 		SimpleTimer simpleTimer = new SimpleTimer();
 
 		try {
-			if (!_isValidAnalyticsEventMessageId(
-					analyticsEventsMessage.getId())) {
+			String analyticsEventsMessageId = analyticsEventsMessage.getId();
+
+			if ((analyticsEventsMessageId != null) &&
+				BooleanUtils.isTrue(
+					_analyticsEventMessageIds.getIfPresent(
+						analyticsEventsMessageId))) {
 
 				if (_log.isInfoEnabled()) {
 					_log.info(
@@ -97,14 +96,12 @@ public class AnalyticsEventsRestController {
 				}
 
 				return new ResponseEntity<>(
-					"Duplicate Message " + analyticsEventsMessage.getId(),
+					"Duplicate Message " + analyticsEventsMessageId,
 					HttpStatus.OK);
 			}
 
-			if (analyticsEventsMessage.getId() != null) {
-				_analyticsEventMessageIds.put(
-					analyticsEventsMessage.getId(),
-					analyticsEventsMessage.getId());
+			if (analyticsEventsMessageId != null) {
+				_analyticsEventMessageIds.put(analyticsEventsMessageId, true);
 			}
 
 			String clientIP = httpHeaders.getFirst("X-Forwarded-For");
@@ -125,13 +122,17 @@ public class AnalyticsEventsRestController {
 
 			int eventsSize = events.size();
 
-			List<FieldError> fieldErrors = errors.getFieldErrors();
+			List<FieldError> fieldErrors = new ArrayList<>(
+				errors.getFieldErrors());
 
 			if (errors.hasErrors()) {
 				if (StringUtils.isEmpty(
 						analyticsEventsMessage.getDataSourceId())) {
 
-					_invalidate(analyticsEventsMessage);
+					if (analyticsEventsMessageId != null) {
+						_analyticsEventMessageIds.invalidate(
+							analyticsEventsMessageId);
+					}
 
 					return new ResponseEntity<>(
 						errors.getAllErrors(), HttpStatus.BAD_REQUEST);
@@ -152,11 +153,46 @@ public class AnalyticsEventsRestController {
 				for (int index : _getInvalidEventIndices(fieldErrors)) {
 					events.remove(index);
 				}
-
-				analyticsEventsMessage.setEvents(events);
 			}
 
-			_removeDuplicatedEvents(analyticsEventsMessage);
+			Date now = DateUtil.newDate();
+
+			events.removeIf(
+				event -> {
+					String analyticsEventId =
+						AnalyticsEventUtil.generateAnalyticsEventId(
+							analyticsEventsMessage.getDataSourceId(), event,
+							analyticsEventsMessage.getProjectId(),
+							analyticsEventsMessage.getUserId());
+
+					long deltaMilliseconds = DateUtil.getDeltaMilliseconds(
+						event.getEventDate(), now);
+
+					if (BooleanUtils.isTrue(
+							_analyticsEventIds.getIfPresent(
+								analyticsEventId)) ||
+						((deltaMilliseconds > DateUtil.DAY) &&
+						 (_eventDog.fetchEvent(analyticsEventId) != null))) {
+
+						if (_log.isInfoEnabled()) {
+							_log.info(
+								"Discarting duplicate event: " +
+									analyticsEventId);
+						}
+
+						fieldErrors.add(
+							new FieldError(
+								"analyticsEventsMessage", "analyticsEventId",
+								analyticsEventId, false, null, null,
+								"Duplicate event"));
+
+						return true;
+					}
+
+					_analyticsEventIds.put(analyticsEventId, true);
+
+					return false;
+				});
 
 			analyticsEventsMessage.setProjectId(
 				ProjectIdThreadLocal.getProjectId());
@@ -173,7 +209,10 @@ public class AnalyticsEventsRestController {
 					analyticsEventsMessage.toJSON());
 			}
 			else {
-				_invalidate(analyticsEventsMessage);
+				if (analyticsEventsMessageId != null) {
+					_analyticsEventMessageIds.invalidate(
+						analyticsEventsMessageId);
+				}
 			}
 
 			if (eventsSize != events.size()) {
@@ -201,119 +240,22 @@ public class AnalyticsEventsRestController {
 		return indices;
 	}
 
-	private void _invalidate(AnalyticsEventsMessage analyticsEventsMessage) {
-		if (analyticsEventsMessage.getId() != null) {
-			_analyticsEventMessageIds.invalidate(
-				analyticsEventsMessage.getId());
-		}
-
-		List<AnalyticsEventsMessage.Event> events =
-			analyticsEventsMessage.getEvents();
-
-		Stream<AnalyticsEventsMessage.Event> stream = events.stream();
-
-		_analyticsEventIds.invalidateAll(
-			stream.map(
-				event -> AnalyticsEventUtil.generateAnalyticsEventId(
-					analyticsEventsMessage.getDataSourceId(), event,
-					analyticsEventsMessage.getProjectId(),
-					analyticsEventsMessage.getUserId())
-			).collect(
-				Collectors.toList()
-			));
-	}
-
-	private boolean _isValidAnalyticsEventMessageId(String id) {
-		if (id == null) {
-			return true;
-		}
-
-		if (_analyticsEventMessageIds.getIfPresent(id) != null) {
-			return false;
-		}
-
-		return true;
-	}
-
-	private void _removeDuplicatedEvents(
-		AnalyticsEventsMessage analyticsEventsMessage) {
-
-		List<AnalyticsEventsMessage.Event> events =
-			analyticsEventsMessage.getEvents();
-
-		Stream<AnalyticsEventsMessage.Event> stream = events.stream();
-
-		analyticsEventsMessage.setEvents(
-			stream.filter(
-				event -> {
-					String analyticsEventId =
-						AnalyticsEventUtil.generateAnalyticsEventId(
-							analyticsEventsMessage.getDataSourceId(), event,
-							analyticsEventsMessage.getProjectId(),
-							analyticsEventsMessage.getUserId());
-
-					if (_analyticsEventIds.getIfPresent(analyticsEventId) !=
-							null) {
-
-						if (_log.isInfoEnabled()) {
-							_log.info(
-								"Discarting duplicate event:" +
-									analyticsEventId);
-						}
-
-						return false;
-					}
-
-					Date eventDate = event.getEventDate();
-
-					Instant instant = eventDate.toInstant();
-
-					ZonedDateTime zonedDateTime = instant.atZone(
-						ZoneId.of("UTC"));
-
-					Duration duration = Duration.between(
-						zonedDateTime.toLocalDateTime(),
-						LocalDateTime.now(ZoneOffset.UTC));
-
-					if ((duration.toMinutes() >= _CACHE_EXPIRATION_TIME) &&
-						(_eventDog.fetchEvent(analyticsEventId) != null)) {
-
-						if (_log.isInfoEnabled()) {
-							_log.info(
-								"Discarting duplicate event:" +
-									analyticsEventId);
-						}
-
-						return false;
-					}
-
-					_analyticsEventIds.put(analyticsEventId, analyticsEventId);
-
-					return true;
-				}
-			).collect(
-				Collectors.toList()
-			));
-	}
-
-	private static final long _CACHE_EXPIRATION_TIME = 60;
-
 	private static final Log _log = LogFactory.getLog(
 		AnalyticsEventsRestController.class);
 
-	private static final Cache<String, String> _analyticsEventIds =
+	private static final Cache<String, Boolean> _analyticsEventIds =
 		Caffeine.newBuilder(
 		).expireAfterAccess(
-			_CACHE_EXPIRATION_TIME, TimeUnit.MINUTES
+			1, TimeUnit.DAYS
 		).maximumSize(
-			100000
+			2400000
 		).build();
-	private static final Cache<String, String> _analyticsEventMessageIds =
+	private static final Cache<String, Boolean> _analyticsEventMessageIds =
 		Caffeine.newBuilder(
 		).expireAfterAccess(
-			_CACHE_EXPIRATION_TIME, TimeUnit.MINUTES
+			1, TimeUnit.DAYS
 		).maximumSize(
-			100000
+			2400000
 		).build();
 	private static final Histogram _eventRequestsHistogram =
 		PrometheusUtil.histogram(
