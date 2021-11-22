@@ -342,10 +342,16 @@ public class AnalyticsEventsMessageProcessor {
 			analyticsEvent.setEventId(event.getEventId());
 			analyticsEvent.setEventProperties(
 				_getSafeEventProperties(event.getProperties()));
-			analyticsEvent.setId(
-				AnalyticsEventUtil.generateAnalyticsEventId(
+
+			String id = event.getId();
+
+			if (id == null) {
+				id = AnalyticsEventUtil.generateAnalyticsEventId(
 					dataSourceId, event, analyticsEventsMessage.getProjectId(),
-					analyticsEventsMessage.getUserId()));
+					analyticsEventsMessage.getUserId());
+			}
+
+			analyticsEvent.setId(id);
 			analyticsEvent.setIndividualId(String.valueOf(individual.getId()));
 			analyticsEvent.setKnownIndividual(knownIndividual);
 			analyticsEvent.setProjectId(analyticsEventsMessage.getProjectId());
