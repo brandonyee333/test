@@ -169,6 +169,10 @@ public class AnalyticsEventsMessage implements Serializable {
 			return _applicationId;
 		}
 
+		public String getId() {
+			return _id;
+		}
+		
 		@JsonFormat(
 			pattern = DateUtil.PATTERN_ISO_8601,
 			shape = JsonFormat.Shape.STRING, timezone = "UTC"
@@ -209,11 +213,15 @@ public class AnalyticsEventsMessage implements Serializable {
 		public void setEventId(String eventId) {
 			_eventId = eventId;
 		}
+		public void setId(String id) {
+			_id = id;
+		}
 
 		public void setProperties(Map<String, String> properties) {
 			_properties = properties;
 		}
 
+		private String _id;
 		private String _applicationId;
 		private Date _eventDate;
 		private String _eventId;
