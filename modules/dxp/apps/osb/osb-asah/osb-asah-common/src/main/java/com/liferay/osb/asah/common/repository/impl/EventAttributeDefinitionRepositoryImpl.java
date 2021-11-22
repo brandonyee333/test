@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinition;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -191,7 +192,13 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 			).groupBy(
 				DSL.field(table + ".name")
 			).orderBy(
-				getSortFields(pageable.getSort(), null)
+				getSortFields(
+					new HashMap<String, String>() {
+						{
+							put("displayName", "name");
+						}
+					},
+					pageable.getSort(), table)
 			).limit(
 				pageable.getPageSize()
 			).offset(
