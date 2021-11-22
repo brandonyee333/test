@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.multitenancy.impl.MultiTenantProjectDogImpl;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -45,7 +46,8 @@ import org.springframework.test.util.ReflectionTestUtils;
  * @author André Miranda
  */
 public class MultiTenantProjectDogImplTest
-	implements OSBAsahCommonSpringTestContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {

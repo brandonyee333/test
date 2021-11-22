@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.rest.controller.test;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import io.restassured.RestAssured;
@@ -42,7 +43,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 	classes = OSBAsahSpringBootApplication.class,
 	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-public class ErrorRestControllerTest {
+public class ErrorRestControllerTest
+	implements OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void test() {

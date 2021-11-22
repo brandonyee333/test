@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.spring.cache.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.lang.reflect.Method;
 
@@ -28,7 +29,8 @@ import org.springframework.cache.interceptor.KeyGenerator;
  * @author Marcellus Tavares
  */
 public class OSBAsahCachingConfigurerSupportTest
-	implements OSBAsahCommonSpringTestContext {
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@Test
 	public void testKeyGenerator() throws Exception {

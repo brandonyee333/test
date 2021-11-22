@@ -25,9 +25,7 @@ import com.liferay.osb.asah.common.upgrade.UpgradeCheck;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,27 +39,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
-import org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author André Miranda
  */
-@TestExecutionListeners(
-	mergeMode = TestExecutionListeners.MergeMode.REPLACE_DEFAULTS,
-	value = {
-		DependencyInjectionTestExecutionListener.class,
-		MockitoTestExecutionListener.class,
-		OSBAsahElasticsearchTestExecutionListener.class,
-		OSBAsahRepositoryTestExecutionListener.class,
-		OSBAsahSQLTestExecutionListener.class,
-		ResetMocksTestExecutionListener.class
-	}
-)
-public class UpgradeCheckTest implements OSBAsahCommonSpringTestContext {
+public class UpgradeCheckTest
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {
