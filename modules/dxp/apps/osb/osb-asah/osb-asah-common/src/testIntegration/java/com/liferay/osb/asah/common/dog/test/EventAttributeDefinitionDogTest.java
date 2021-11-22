@@ -392,6 +392,19 @@ public class EventAttributeDefinitionDogTest
 	public void testGetEventAttributeDefinitions() {
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
+				null, null, 0, 5, Sort.asc("displayName"),
+				EventAttributeDefinition.Type.LOCAL),
+			new HashMap<String, EventAttributeDefinition.DataType>() {
+				{
+					put("articleId", EventAttributeDefinition.DataType.STRING);
+					put("assetId", EventAttributeDefinition.DataType.STRING);
+					put("category", EventAttributeDefinition.DataType.STRING);
+					put("className", EventAttributeDefinition.DataType.STRING);
+					put("classPK", EventAttributeDefinition.DataType.STRING);
+				}
+			});
+		_assertEventAttributeDefinitions(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
 				null, null, 0, 5, Sort.asc("name"),
 				EventAttributeDefinition.Type.LOCAL),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
