@@ -326,18 +326,17 @@ public class PubSubMessageBusImpl implements MessageBus {
 	}
 
 	private Publisher _getOrCreatePublisher(Channel channel) throws Exception {
-		Publisher publisher = _channels.get(channel);
-
-		if (publisher != null) {
-			return publisher;
-		}
-
-		publisher = _pubSubClientFactory.createPublisher(
-			channel.isOrderingEnabled(), getProjectTopicName(channel));
-
-		_channels.put(channel, publisher);
-
-		return publisher;
+		return _channels.computeIfAbsent(
+			channel,
+			key -> {
+				try {
+					return _pubSubClientFactory.createPublisher(
+						key.isOrderingEnabled(), getProjectTopicName(key));
+				}
+				catch (Exception exception) {
+					throw new IllegalStateException(exception);
+				}
+			});
 	}
 
 	private Subscription _getOrCreateSubscription(
