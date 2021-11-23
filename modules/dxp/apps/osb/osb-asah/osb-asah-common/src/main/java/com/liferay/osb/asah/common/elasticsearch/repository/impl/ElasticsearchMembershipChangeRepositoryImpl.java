@@ -143,7 +143,7 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 								Collections.singletonList(segmentId)));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 

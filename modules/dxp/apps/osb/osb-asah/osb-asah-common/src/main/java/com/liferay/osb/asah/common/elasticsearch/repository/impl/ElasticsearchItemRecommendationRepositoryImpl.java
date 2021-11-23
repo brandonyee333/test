@@ -61,7 +61,7 @@ public class ElasticsearchItemRecommendationRepositoryImpl
 							QueryBuilders.termQuery("jobId", jobId.toString()));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 

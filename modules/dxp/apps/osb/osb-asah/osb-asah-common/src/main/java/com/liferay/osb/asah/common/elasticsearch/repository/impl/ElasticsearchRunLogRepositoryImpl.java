@@ -143,12 +143,12 @@ public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
 			_resolveElasticsearchInvoker();
 
 		return PageableExecutionUtils.getPage(
-			_toList(
+			_toRunLogs(
 				new JSONArray(
 					elasticsearchInvoker.get(
 						_getCollectionName(),
 						searchSourceBuilder -> _setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable)))),
+							pageable, searchSourceBuilder)))),
 			pageable, () -> count());
 	}
 
@@ -157,7 +157,7 @@ public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
 		ElasticsearchInvoker elasticsearchInvoker =
 			_resolveElasticsearchInvoker();
 
-		return _toList(
+		return _toRunLogs(
 			new JSONArray(
 				elasticsearchInvoker.get(
 					_getCollectionName(),
@@ -195,7 +195,7 @@ public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
 
 		Stream<Long> stream = StreamSupport.stream(ids.spliterator(), false);
 
-		return _toList(
+		return _toRunLogs(
 			elasticsearchInvoker.get(
 				_getCollectionName(),
 				QueryBuilders.termsQuery(
@@ -242,7 +242,7 @@ public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
 		return Optional.ofNullable(
 			jsonObject
 		).map(
-			this::_toEntity
+			this::_toRunLog
 		);
 	}
 
@@ -254,7 +254,7 @@ public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
 		return Optional.ofNullable(
 			elasticsearchInvoker.fetch(_getCollectionName(), id.toString())
 		).map(
-			this::_toEntity
+			this::_toRunLog
 		);
 	}
 
@@ -271,7 +271,7 @@ public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
 
 		jsonObject.put("id", id);
 
-		return (S)_toEntity(
+		return (S)_toRunLog(
 			elasticsearchInvoker.add(_getCollectionName(), jsonObject));
 	}
 
@@ -295,7 +295,7 @@ public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
 
 				jsonArray.put(jsonObject);
 
-				list.add((S)_toEntity(jsonObject));
+				list.add((S)_toRunLog(jsonObject));
 			});
 
 		elasticsearchInvoker.add(_getCollectionName(), jsonArray);
@@ -334,7 +334,7 @@ public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
 	}
 
 	private void _setSearchSourceBuilderPage(
-		SearchSourceBuilder searchSourceBuilder, Pageable pageable) {
+		Pageable pageable, SearchSourceBuilder searchSourceBuilder) {
 
 		searchSourceBuilder.from(
 			pageable.getPageNumber() * pageable.getPageSize());
@@ -366,19 +366,19 @@ public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
 		}
 	}
 
-	private RunLog _toEntity(JSONObject jsonObject) {
-		return _objectMapper.convertValue(jsonObject, RunLog.class);
-	}
-
 	private JSONObject _toJSONObject(RunLog runLog) {
 		return _objectMapper.convertValue(runLog, JSONObject.class);
 	}
 
-	private List<RunLog> _toList(JSONArray jsonArray) {
+	private RunLog _toRunLog(JSONObject jsonObject) {
+		return _objectMapper.convertValue(jsonObject, RunLog.class);
+	}
+
+	private List<RunLog> _toRunLogs(JSONArray jsonArray) {
 		Stream<Object> stream = JSONUtil.toObjectStream(jsonArray);
 
 		return stream.map(
-			object -> _toEntity((JSONObject)object)
+			object -> _toRunLog((JSONObject)object)
 		).collect(
 			Collectors.toList()
 		);

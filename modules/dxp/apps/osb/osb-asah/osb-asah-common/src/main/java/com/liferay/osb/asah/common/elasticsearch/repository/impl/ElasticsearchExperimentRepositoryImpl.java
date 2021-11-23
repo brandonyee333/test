@@ -69,7 +69,7 @@ public class ElasticsearchExperimentRepositoryImpl
 							_buildKeywordsQueryBuilder(channelId, keywords));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 

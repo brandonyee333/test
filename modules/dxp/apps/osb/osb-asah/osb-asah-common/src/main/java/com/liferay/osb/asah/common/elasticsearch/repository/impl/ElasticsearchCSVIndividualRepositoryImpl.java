@@ -89,7 +89,7 @@ public class ElasticsearchCSVIndividualRepositoryImpl
 								"dataSourceId", String.valueOf(dataSourceId)));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 

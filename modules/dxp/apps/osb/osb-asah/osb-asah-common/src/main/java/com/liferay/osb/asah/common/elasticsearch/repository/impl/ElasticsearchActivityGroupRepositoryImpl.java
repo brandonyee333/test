@@ -145,18 +145,18 @@ public class ElasticsearchActivityGroupRepositoryImpl
 	@Override
 	public Page<ActivityGroup> findAll(Pageable pageable) {
 		return PageableExecutionUtils.getPage(
-			_toList(
+			_toActivityGroups(
 				new JSONArray(
 					_faroInfoElasticsearchInvoker.get(
 						_getCollectionName(),
 						searchSourceBuilder -> _setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable)))),
+							pageable, searchSourceBuilder)))),
 			pageable, () -> count());
 	}
 
 	@Override
 	public Iterable<ActivityGroup> findAll(Sort sort) {
-		return _toList(
+		return _toActivityGroups(
 			new JSONArray(
 				_faroInfoElasticsearchInvoker.get(
 					_getCollectionName(),
@@ -191,7 +191,7 @@ public class ElasticsearchActivityGroupRepositoryImpl
 	public Iterable<ActivityGroup> findAllById(Iterable<Long> ids) {
 		Stream<Long> stream = StreamSupport.stream(ids.spliterator(), false);
 
-		return _toList(
+		return _toActivityGroups(
 			_faroInfoElasticsearchInvoker.get(
 				_getCollectionName(),
 				QueryBuilders.termsQuery(
@@ -227,7 +227,7 @@ public class ElasticsearchActivityGroupRepositoryImpl
 					QueryBuilders.termQuery("userId", userId)
 				))
 		).map(
-			this::_toEntity
+			this::_toActivityGroup
 		).orElse(
 			null
 		);
@@ -239,7 +239,7 @@ public class ElasticsearchActivityGroupRepositoryImpl
 			_faroInfoElasticsearchInvoker.fetch(
 				_getCollectionName(), id.toString())
 		).map(
-			this::_toEntity
+			this::_toActivityGroup
 		);
 	}
 
@@ -253,7 +253,7 @@ public class ElasticsearchActivityGroupRepositoryImpl
 
 		jsonObject.put("id", id);
 
-		return (S)_toEntity(
+		return (S)_toActivityGroup(
 			_faroInfoElasticsearchInvoker.add(
 				_getCollectionName(), jsonObject));
 	}
@@ -277,7 +277,7 @@ public class ElasticsearchActivityGroupRepositoryImpl
 
 				jsonArray.put(jsonObject);
 
-				list.add((S)_toEntity(jsonObject));
+				list.add((S)_toActivityGroup(jsonObject));
 			});
 
 		_faroInfoElasticsearchInvoker.add(_getCollectionName(), jsonArray);
@@ -333,7 +333,7 @@ public class ElasticsearchActivityGroupRepositoryImpl
 			JSONObject embeddedJSONObject = jsonObject.getJSONObject(
 				"_embedded");
 
-			return _toList(
+			return _toActivityGroups(
 				embeddedJSONObject.getJSONArray(_getCollectionName()));
 		}
 		catch (Exception exception) {
@@ -359,7 +359,7 @@ public class ElasticsearchActivityGroupRepositoryImpl
 	}
 
 	private void _setSearchSourceBuilderPage(
-		SearchSourceBuilder searchSourceBuilder, Pageable pageable) {
+		Pageable pageable, SearchSourceBuilder searchSourceBuilder) {
 
 		searchSourceBuilder.from(
 			pageable.getPageNumber() * pageable.getPageSize());
@@ -391,22 +391,22 @@ public class ElasticsearchActivityGroupRepositoryImpl
 		}
 	}
 
-	private ActivityGroup _toEntity(JSONObject jsonObject) {
+	private ActivityGroup _toActivityGroup(JSONObject jsonObject) {
 		return _objectMapper.convertValue(jsonObject, ActivityGroup.class);
+	}
+
+	private List<ActivityGroup> _toActivityGroups(JSONArray jsonArray) {
+		Stream<Object> stream = JSONUtil.toObjectStream(jsonArray);
+
+		return stream.map(
+			object -> _toActivityGroup((JSONObject)object)
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	private JSONObject _toJSONObject(ActivityGroup activityGroup) {
 		return _objectMapper.convertValue(activityGroup, JSONObject.class);
-	}
-
-	private List<ActivityGroup> _toList(JSONArray jsonArray) {
-		Stream<Object> stream = JSONUtil.toObjectStream(jsonArray);
-
-		return stream.map(
-			object -> _toEntity((JSONObject)object)
-		).collect(
-			Collectors.toList()
-		);
 	}
 
 	private static final Log _log = LogFactory.getLog(

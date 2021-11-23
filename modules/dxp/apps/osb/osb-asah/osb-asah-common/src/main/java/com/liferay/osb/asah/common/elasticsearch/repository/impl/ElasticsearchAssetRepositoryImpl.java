@@ -192,7 +192,7 @@ public class ElasticsearchAssetRepositoryImpl
 							));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 
@@ -212,7 +212,7 @@ public class ElasticsearchAssetRepositoryImpl
 
 						if (pageable != null) {
 							setSearchSourceBuilderPage(
-								searchSourceBuilder, pageable);
+								pageable, searchSourceBuilder);
 						}
 					})));
 	}
@@ -232,7 +232,7 @@ public class ElasticsearchAssetRepositoryImpl
 								ListUtil.map(channelIds, String::valueOf)));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 
@@ -269,7 +269,7 @@ public class ElasticsearchAssetRepositoryImpl
 							_buildQueryBuilder(filterHelper));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 

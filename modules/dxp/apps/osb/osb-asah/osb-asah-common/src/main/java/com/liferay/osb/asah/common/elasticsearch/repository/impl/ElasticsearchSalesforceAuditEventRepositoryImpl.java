@@ -71,7 +71,7 @@ public class ElasticsearchSalesforceAuditEventRepositoryImpl
 							));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 

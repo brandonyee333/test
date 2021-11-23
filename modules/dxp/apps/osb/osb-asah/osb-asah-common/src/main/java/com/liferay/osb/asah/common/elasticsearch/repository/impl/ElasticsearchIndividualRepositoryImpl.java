@@ -549,18 +549,18 @@ public class ElasticsearchIndividualRepositoryImpl
 	@Override
 	public Page<Individual> findAll(Pageable pageable) {
 		return PageableExecutionUtils.getPage(
-			_toList(
+			_toIndividuals(
 				new JSONArray(
 					_faroInfoElasticsearchInvoker.get(
 						_getCollectionName(),
 						searchSourceBuilder -> _setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable)))),
+							pageable, searchSourceBuilder)))),
 			pageable, () -> count());
 	}
 
 	@Override
 	public Iterable<Individual> findAll(Sort sort) {
-		return _toList(
+		return _toIndividuals(
 			new JSONArray(
 				_faroInfoElasticsearchInvoker.get(
 					_getCollectionName(),
@@ -595,7 +595,7 @@ public class ElasticsearchIndividualRepositoryImpl
 	public Iterable<Individual> findAllById(Iterable<Long> ids) {
 		Stream<Long> stream = StreamSupport.stream(ids.spliterator(), false);
 
-		return _toList(
+		return _toIndividuals(
 			_faroInfoElasticsearchInvoker.get(
 				_getCollectionName(),
 				QueryBuilders.termsQuery(
@@ -613,7 +613,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 		String dateString = DateUtil.toUTCString(date);
 
-		return _toList(
+		return _toIndividuals(
 			new JSONArray(
 				_faroInfoElasticsearchInvoker.get(
 					_getCollectionName(),
@@ -653,7 +653,7 @@ public class ElasticsearchIndividualRepositoryImpl
 		Long associatedId, Long dataSourceId, String fieldName,
 		String individualPK) {
 
-		return _toEntity(
+		return _toIndividual(
 			_faroInfoElasticsearchInvoker.fetch(
 				_getCollectionName(),
 				BoolQueryBuilderUtil.filter(
@@ -696,7 +696,7 @@ public class ElasticsearchIndividualRepositoryImpl
 					"id", ListUtil.map(ids, String::valueOf)));
 		}
 
-		return _toList(
+		return _toIndividuals(
 			_faroInfoElasticsearchInvoker.get(
 				_getCollectionName(), boolQueryBuilder));
 	}
@@ -705,7 +705,7 @@ public class ElasticsearchIndividualRepositoryImpl
 	public Individual findByDataSourceIdAndIndividualPK(
 		Long dataSourceId, String individualPK) {
 
-		return _toEntity(
+		return _toIndividual(
 			_faroInfoElasticsearchInvoker.fetch(
 				_getCollectionName(),
 				QueryBuilders.nestedQuery(
@@ -724,7 +724,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	@Override
 	public Individual findByEmailAddress(String emailAddress) {
-		return _toEntity(
+		return _toIndividual(
 			_faroInfoElasticsearchInvoker.fetch(
 				_getCollectionName(),
 				QueryBuilders.termQuery(
@@ -733,7 +733,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	@Override
 	public Individual findByEmailAddressHashed(String emailAddressHashed) {
-		return _toEntity(
+		return _toIndividual(
 			_faroInfoElasticsearchInvoker.fetch(
 				_getCollectionName(),
 				QueryBuilders.termQuery(
@@ -759,7 +759,7 @@ public class ElasticsearchIndividualRepositoryImpl
 					query, fieldNames.toArray(new String[0])));
 		}
 
-		return _toList(
+		return _toIndividuals(
 			new JSONArray(
 				_faroInfoElasticsearchInvoker.get(
 					_getCollectionName(),
@@ -777,13 +777,13 @@ public class ElasticsearchIndividualRepositoryImpl
 			_faroInfoElasticsearchInvoker.fetch(
 				_getCollectionName(), id.toString())
 		).map(
-			this::_toEntity
+			this::_toIndividual
 		);
 	}
 
 	@Override
 	public List<Individual> findByIdAfter(Long id, Pageable pageable) {
-		return _toList(
+		return _toIndividuals(
 			new JSONArray(
 				_faroInfoElasticsearchInvoker.get(
 					_getCollectionName(),
@@ -797,7 +797,7 @@ public class ElasticsearchIndividualRepositoryImpl
 						searchSourceBuilder.sort(SortBuilders.fieldSort("id"));
 
 						_setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 
@@ -824,7 +824,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	@Override
 	public List<Individual> findBySegmentIds(Long segmentId) {
-		return _toList(
+		return _toIndividuals(
 			_faroInfoElasticsearchInvoker.get(
 				_getCollectionName(),
 				QueryBuilders.termQuery(
@@ -1136,7 +1136,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 		jsonObject.put("id", id);
 
-		return (S)_toEntity(
+		return (S)_toIndividual(
 			_faroInfoElasticsearchInvoker.add(
 				_getCollectionName(), jsonObject));
 	}
@@ -1158,7 +1158,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 				jsonArray.put(jsonObject);
 
-				list.add((S)_toEntity(jsonObject));
+				list.add((S)_toIndividual(jsonObject));
 			});
 
 		_faroInfoElasticsearchInvoker.add(_getCollectionName(), jsonArray);
@@ -1170,7 +1170,7 @@ public class ElasticsearchIndividualRepositoryImpl
 	public List<Individual> searchIndividuals(
 		FilterHelper filterHelper, Pageable pageable) {
 
-		return _toList(
+		return _toIndividuals(
 			new JSONArray(
 				_faroInfoElasticsearchInvoker.get(
 					_getCollectionName(),
@@ -1179,7 +1179,7 @@ public class ElasticsearchIndividualRepositoryImpl
 							filterHelper.getQueryBuilder());
 
 						_setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 
@@ -1188,7 +1188,7 @@ public class ElasticsearchIndividualRepositoryImpl
 		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, Long id, int size) {
 
-		return _toList(
+		return _toIndividuals(
 			new JSONArray(
 				_faroInfoElasticsearchInvoker.get(
 					_getCollectionName(),
@@ -1255,7 +1255,7 @@ public class ElasticsearchIndividualRepositoryImpl
 			}
 		}
 
-		return _toList(
+		return _toIndividuals(
 			new JSONArray(
 				_faroInfoElasticsearchInvoker.get(
 					_getCollectionName(),
@@ -1320,7 +1320,7 @@ public class ElasticsearchIndividualRepositoryImpl
 	public List<Individual> searchIndividuals(
 		Long dataSourceId, Long id, int size) {
 
-		return _toList(
+		return _toIndividuals(
 			new JSONArray(
 				_faroInfoElasticsearchInvoker.get(
 					_getCollectionName(),
@@ -1533,7 +1533,7 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	private void _setSearchSourceBuilderPage(
-		SearchSourceBuilder searchSourceBuilder, Pageable pageable) {
+		Pageable pageable, SearchSourceBuilder searchSourceBuilder) {
 
 		searchSourceBuilder.from(
 			pageable.getPageNumber() * pageable.getPageSize());
@@ -1565,7 +1565,7 @@ public class ElasticsearchIndividualRepositoryImpl
 		}
 	}
 
-	private Individual _toEntity(JSONObject jsonObject) {
+	private Individual _toIndividual(JSONObject jsonObject) {
 		Individual individual = _objectMapper.convertValue(
 			jsonObject, Individual.class);
 
@@ -1761,6 +1761,16 @@ public class ElasticsearchIndividualRepositoryImpl
 		return individual;
 	}
 
+	private List<Individual> _toIndividuals(JSONArray jsonArray) {
+		Stream<Object> stream = JSONUtil.toObjectStream(jsonArray);
+
+		return stream.map(
+			object -> _toIndividual((JSONObject)object)
+		).collect(
+			Collectors.toList()
+		);
+	}
+
 	private JSONObject _toJSONObject(Individual individual) {
 		JSONObject jsonObject = _objectMapper.convertValue(
 			individual, JSONObject.class);
@@ -1892,16 +1902,6 @@ public class ElasticsearchIndividualRepositoryImpl
 			individual.getFields(), "demographics", jsonObject);
 
 		return jsonObject;
-	}
-
-	private List<Individual> _toList(JSONArray jsonArray) {
-		Stream<Object> stream = JSONUtil.toObjectStream(jsonArray);
-
-		return stream.map(
-			object -> _toEntity((JSONObject)object)
-		).collect(
-			Collectors.toList()
-		);
 	}
 
 	private void _updateActivityDatesMap(

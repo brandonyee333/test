@@ -62,7 +62,7 @@ public class ElasticsearchCustomAssetDashboardRepositoryImpl
 							_buildQueryBuilder(channelId, keywords));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 

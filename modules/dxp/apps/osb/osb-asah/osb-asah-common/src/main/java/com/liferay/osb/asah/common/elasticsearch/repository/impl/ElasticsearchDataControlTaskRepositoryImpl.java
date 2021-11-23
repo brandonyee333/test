@@ -72,7 +72,7 @@ public class ElasticsearchDataControlTaskRepositoryImpl
 								statuses, types));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 

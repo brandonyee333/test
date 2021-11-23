@@ -142,7 +142,7 @@ public class ElasticsearchInterestRepositoryImpl
 								filterHelper, null, null, null, null, score));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 
@@ -190,7 +190,7 @@ public class ElasticsearchInterestRepositoryImpl
 							));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 

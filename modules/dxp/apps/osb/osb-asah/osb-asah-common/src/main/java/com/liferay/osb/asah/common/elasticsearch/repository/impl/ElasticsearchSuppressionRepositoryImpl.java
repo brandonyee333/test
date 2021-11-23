@@ -97,7 +97,7 @@ public class ElasticsearchSuppressionRepositoryImpl
 							_buildQueryBuilder(emailAddress));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 

@@ -134,7 +134,7 @@ public class ElasticsearchDataSourceRepositoryImpl
 						searchSourceBuilder.query(boolQueryBuilder);
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 

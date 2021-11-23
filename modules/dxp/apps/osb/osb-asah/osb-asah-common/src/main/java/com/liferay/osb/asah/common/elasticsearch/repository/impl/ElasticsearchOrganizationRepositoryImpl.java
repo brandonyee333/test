@@ -165,7 +165,7 @@ public class ElasticsearchOrganizationRepositoryImpl
 							filterHelper.getQueryBuilder());
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 

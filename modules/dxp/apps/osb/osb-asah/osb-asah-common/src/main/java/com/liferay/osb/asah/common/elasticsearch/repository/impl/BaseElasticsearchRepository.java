@@ -123,7 +123,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 					elasticsearchInvoker.get(
 						getCollectionName(),
 						searchSourceBuilder -> setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable)))),
+							pageable, searchSourceBuilder)))),
 			pageable, () -> count());
 	}
 
@@ -278,7 +278,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 	}
 
 	protected void setSearchSourceBuilderPage(
-		SearchSourceBuilder searchSourceBuilder, Pageable pageable) {
+		Pageable pageable, SearchSourceBuilder searchSourceBuilder) {
 
 		searchSourceBuilder.from(
 			pageable.getPageNumber() * pageable.getPageSize());

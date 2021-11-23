@@ -175,7 +175,7 @@ public class ElasticsearchSegmentRepositoryImpl
 							));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 
@@ -195,7 +195,7 @@ public class ElasticsearchSegmentRepositoryImpl
 						searchSourceBuilder.sort(SortBuilders.fieldSort("id"));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 
@@ -479,7 +479,7 @@ public class ElasticsearchSegmentRepositoryImpl
 							));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 
@@ -565,7 +565,7 @@ public class ElasticsearchSegmentRepositoryImpl
 						searchSourceBuilder.query(finalBoolQueryBuilder);
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 
@@ -603,7 +603,7 @@ public class ElasticsearchSegmentRepositoryImpl
 						searchSourceBuilder.query(boolQueryBuilder);
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 
@@ -621,7 +621,7 @@ public class ElasticsearchSegmentRepositoryImpl
 							_getSegmentsQueryBuilder(filterHelper, segmentIds));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 
@@ -638,7 +638,7 @@ public class ElasticsearchSegmentRepositoryImpl
 							_getSegmentsQueryBuilder(channelIds, filterHelper));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 
@@ -700,7 +700,7 @@ public class ElasticsearchSegmentRepositoryImpl
 							));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 

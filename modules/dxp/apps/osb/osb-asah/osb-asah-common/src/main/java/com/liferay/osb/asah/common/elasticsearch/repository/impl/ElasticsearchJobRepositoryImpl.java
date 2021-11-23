@@ -58,7 +58,7 @@ public class ElasticsearchJobRepositoryImpl
 								"name.search", name));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 

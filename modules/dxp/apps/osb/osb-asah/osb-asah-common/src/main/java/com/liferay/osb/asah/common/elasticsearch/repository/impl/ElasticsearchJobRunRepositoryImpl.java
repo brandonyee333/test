@@ -83,7 +83,7 @@ public class ElasticsearchJobRunRepositoryImpl
 								"job.id", jobId.toString()));
 
 						setSearchSourceBuilderPage(
-							searchSourceBuilder, pageable);
+							pageable, searchSourceBuilder);
 					})));
 	}
 
