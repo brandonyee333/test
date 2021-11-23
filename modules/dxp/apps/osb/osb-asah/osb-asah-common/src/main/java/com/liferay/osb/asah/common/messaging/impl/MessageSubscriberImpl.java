@@ -29,12 +29,10 @@ import com.google.pubsub.v1.Subscription;
 import com.liferay.osb.asah.common.function.UnsafeFunction;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
-
 import com.liferay.osb.asah.common.util.ListUtil;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -64,7 +62,10 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 		return _pullMessages(maxMessages, modelMapperFunction);
 	}
 
-	public void sendAckIds(List<String> ackIds) {
+	@Override
+	public <T> void sendAcknowledgements(List<Message<T>> messages) {
+		List<String> ackIds = ListUtil.map(messages, Message::getAckId);
+
 		if (ackIds.isEmpty()) {
 			return;
 		}
@@ -72,8 +73,7 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 		try (PubSubClient<SubscriberStub> subscriberStubPubSubClient =
 				_pubSubClientFactory.createSubscriberStub()) {
 
-			SubscriberStub subscriberStub =
-				subscriberStubPubSubClient.get();
+			SubscriberStub subscriberStub = subscriberStubPubSubClient.get();
 
 			UnaryCallable<AcknowledgeRequest, Empty>
 				acknowledgeRequestUnaryCallable =
@@ -89,18 +89,6 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 		catch (Exception exception) {
 			_log.error("Unable to send acknowledge IDs " + ackIds, exception);
 		}
-	}
-
-	@Override
-	public <T> void sendAcknowledgements(List<Message<T>> messages) {
-		Stream<Message<T>> stream = messages.stream();
-
-		sendAckIds(
-			stream.map(
-				Message::getAckId
-			).collect(
-				Collectors.toList()
-			));
 	}
 
 	private AcknowledgeRequest _buildAcknowledgeRequest(
