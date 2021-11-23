@@ -16,22 +16,18 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.blog;
 
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
-import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.util.NaniteUtil;
 import com.liferay.osb.asah.stream.curator.model.blog.Blog;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -94,30 +90,6 @@ public class BlogNanite extends BaseNanite<Blog> {
 	}
 
 	@Override
-	protected List<Message<AnalyticsEvent>> pullAnalyticsEvents()
-		throws Exception {
-
-		List<Message<AnalyticsEvent>> messages = super.pullAnalyticsEvents();
-
-		Stream<Message<AnalyticsEvent>> stream = messages.stream();
-
-		super.sendAckIds(
-			stream.filter(
-				message -> _isSocialBookmarks(message.getObject())
-			).collect(
-				Collectors.toList()
-			));
-
-		stream = messages.stream();
-
-		return stream.filter(
-			message -> !_isSocialBookmarks(message.getObject())
-		).collect(
-			Collectors.toList()
-		);
-	}
-
-	@Override
 	protected void setModelCustomProperties(
 		AnalyticsEvent analyticsEvent, Blog blog) {
 
@@ -158,16 +130,6 @@ public class BlogNanite extends BaseNanite<Blog> {
 		}
 
 		blog.setFirstEventDate(analyticsEvent.getEventDate());
-	}
-
-	private boolean _isSocialBookmarks(AnalyticsEvent analyticsEvent) {
-		if (Objects.equals(
-				analyticsEvent.getApplicationId(), "SocialBookmarks")) {
-
-			return true;
-		}
-
-		return false;
 	}
 
 	private void _setRatingScore(Blog oldBlog, Blog newBlog) {
