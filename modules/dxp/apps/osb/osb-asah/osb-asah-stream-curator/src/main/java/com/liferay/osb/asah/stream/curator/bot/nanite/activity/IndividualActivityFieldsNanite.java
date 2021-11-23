@@ -360,7 +360,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 									Long.valueOf(ownerId));
 
 							if (individual == null) {
-								return;
+								continue;
 							}
 
 							individual.setActivitiesCounts(
