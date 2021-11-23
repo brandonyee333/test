@@ -276,8 +276,7 @@ public class IndividualNanite implements Nanite {
 
 				List<Message<String>> messages =
 					_messageSubscriber.pullMessages(
-						_individualNanitePullMessagesSize
-					);
+						_individualNanitePullMessagesSize);
 
 				if (messages.isEmpty()) {
 					return;

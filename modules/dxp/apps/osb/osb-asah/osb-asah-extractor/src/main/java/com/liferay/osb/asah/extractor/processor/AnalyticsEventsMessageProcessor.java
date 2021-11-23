@@ -391,7 +391,9 @@ public class AnalyticsEventsMessageProcessor {
 				stream.collect(
 					Collectors.groupingBy(
 						message -> {
-							AnalyticsEventsMessage analyticsEventsMessage = message.getObject();
+							AnalyticsEventsMessage analyticsEventsMessage =
+								message.getObject();
+
 							return Tuples.of(
 								analyticsEventsMessage.getProjectId(),
 								analyticsEventsMessage.getUserId());
@@ -407,8 +409,7 @@ public class AnalyticsEventsMessageProcessor {
 						String.format(
 							"%s dispatched %d analytics events messages in " +
 								"%d ms",
-							clazz.getSimpleName(),
-							messages.size(),
+							clazz.getSimpleName(), messages.size(),
 							System.currentTimeMillis() - start));
 				}
 			}
@@ -434,9 +435,7 @@ public class AnalyticsEventsMessageProcessor {
 				try {
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
-					for (Message<AnalyticsEventsMessage> message :
-							messages) {
-
+					for (Message<AnalyticsEventsMessage> message : messages) {
 						try {
 							_processMessage(message.getObject());
 							ackMessages.add(message);
@@ -444,6 +443,7 @@ public class AnalyticsEventsMessageProcessor {
 						catch (Exception exception) {
 							AnalyticsEventsMessage analyticsEventsMessage =
 								message.getObject();
+
 							_log.error(
 								"Unable to process analytics events message " +
 									analyticsEventsMessage.toJSON(),
@@ -454,9 +454,12 @@ public class AnalyticsEventsMessageProcessor {
 				catch (Exception exception) {
 					List<String> analyticsEventsMessagesString = ListUtil.map(
 						messages,
-						message->{AnalyticsEventsMessage analyticsEventsMessage =
-							message.getObject();
-							return analyticsEventsMessage.toJSON();});
+						message -> {
+							AnalyticsEventsMessage analyticsEventsMessage =
+								message.getObject();
+
+							return analyticsEventsMessage.toJSON();
+						});
 
 					_log.error(
 						"Unable to process analytics events messages " +
@@ -475,8 +478,7 @@ public class AnalyticsEventsMessageProcessor {
 						String.format(
 							"%s processed %d analytics events messages in %d " +
 								"ms",
-							clazz.getSimpleName(),
-							messages.size(),
+							clazz.getSimpleName(), messages.size(),
 							System.currentTimeMillis() - start));
 				}
 			},
