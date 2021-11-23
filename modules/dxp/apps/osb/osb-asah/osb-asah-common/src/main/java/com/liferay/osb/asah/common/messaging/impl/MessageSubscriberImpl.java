@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.function.UnsafeFunction;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 
+import com.liferay.osb.asah.common.util.ListUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,27 +65,29 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 	}
 
 	public void sendAckIds(List<String> ackIds) {
-		if (_log.isDebugEnabled()) {
-			_log.debug("Sent ackIds: " + ackIds);
+		if (ackIds.isEmpty()) {
+			return;
 		}
 
-		if (!ackIds.isEmpty()) {
-			try (PubSubClient<SubscriberStub> subscriberStubPubSubClient =
-					_pubSubClientFactory.createSubscriberStub()) {
+		try (PubSubClient<SubscriberStub> subscriberStubPubSubClient =
+				_pubSubClientFactory.createSubscriberStub()) {
 
-				SubscriberStub subscriberStub =
-					subscriberStubPubSubClient.get();
+			SubscriberStub subscriberStub =
+				subscriberStubPubSubClient.get();
 
-				UnaryCallable<AcknowledgeRequest, Empty>
-					acknowledgeRequestUnaryCallable =
-						subscriberStub.acknowledgeCallable();
+			UnaryCallable<AcknowledgeRequest, Empty>
+				acknowledgeRequestUnaryCallable =
+					subscriberStub.acknowledgeCallable();
 
-				acknowledgeRequestUnaryCallable.call(
-					_buildAcknowledgeRequest(ackIds));
+			acknowledgeRequestUnaryCallable.call(
+				_buildAcknowledgeRequest(ackIds));
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Successfully sent acknowledge IDs " + ackIds);
 			}
-			catch (Exception exception) {
-				_log.error(exception, exception);
-			}
+		}
+		catch (Exception exception) {
+			_log.error("Unable to send acknowledge IDs " + ackIds, exception);
 		}
 	}
 
