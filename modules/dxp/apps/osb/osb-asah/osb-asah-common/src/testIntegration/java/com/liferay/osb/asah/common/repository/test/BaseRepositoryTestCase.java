@@ -110,11 +110,14 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<ID>, ID>
 	public void testExistsById() {
 		T model = entityModels.get(0);
 
+		ID id = model.getId();
+
+		Assertions.assertNotNull(id);
+
 		PagingAndSortingRepository<T, ID> pagingAndSortingRepository =
 			getPagingAndSortingRepository();
 
-		Assertions.assertTrue(
-			pagingAndSortingRepository.existsById(model.getId()));
+		Assertions.assertTrue(pagingAndSortingRepository.existsById(id));
 	}
 
 	@Test
