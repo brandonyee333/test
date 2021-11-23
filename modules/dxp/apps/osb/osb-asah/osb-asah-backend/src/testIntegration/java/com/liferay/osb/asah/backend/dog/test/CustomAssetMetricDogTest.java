@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Marcellus Tavares
  */
+@SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
 public class CustomAssetMetricDogTest
 	implements OSBAsahBackendTrinoSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
