@@ -103,9 +103,9 @@ public abstract class BaseExperimentRepositoryTestCase
 		experimentMetric.setConfidenceLevel(0.95);
 		experimentMetric.setElapsedDays(1L);
 
-		LocalDate now = LocalDate.now();
+		LocalDate localDate = LocalDate.now();
 
-		LocalDate processedLocalDate = now.minusDays(2);
+		LocalDate processedLocalDate = localDate.minusDays(2);
 
 		experimentMetric.setProcessedLocalDateTime(
 			processedLocalDate.atStartOfDay());

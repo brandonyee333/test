@@ -209,13 +209,13 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	private void _beforeAdd(DataSourceDTO dataSourceDTO) {
-		Date now = DateUtil.newDate();
+		Date date = DateUtil.newDate();
 
-		dataSourceDTO.setCreateDate(now);
+		dataSourceDTO.setCreateDate(date);
 
 		dataSourceDTO.setId(null);
 
-		dataSourceDTO.setModifiedDate(now);
+		dataSourceDTO.setModifiedDate(date);
 	}
 
 	private void _beforeUpdate(DataSourceDTO dataSourceDTO) {

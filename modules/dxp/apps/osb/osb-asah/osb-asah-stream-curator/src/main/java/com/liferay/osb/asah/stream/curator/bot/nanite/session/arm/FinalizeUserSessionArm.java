@@ -191,7 +191,7 @@ public class FinalizeUserSessionArm {
 	}
 
 	private String _getCompleteReason(UserSession userSession) {
-		Instant now = Instant.now();
+		Instant instant = Instant.now();
 
 		Date lastEventDate = userSession.getLastEventDate();
 
@@ -199,13 +199,14 @@ public class FinalizeUserSessionArm {
 
 		long daysDelta = ChronoUnit.DAYS.between(
 			lastEventInstant.truncatedTo(ChronoUnit.DAYS),
-			now.truncatedTo(ChronoUnit.DAYS));
+			instant.truncatedTo(ChronoUnit.DAYS));
 
 		if (daysDelta > 0) {
 			return "expired";
 		}
 
-		long minutesDelta = ChronoUnit.MINUTES.between(lastEventInstant, now);
+		long minutesDelta = ChronoUnit.MINUTES.between(
+			lastEventInstant, instant);
 
 		if (minutesDelta >= _INACTIVITY_TIMEOUT_MINUTES) {
 			return "inactivity";

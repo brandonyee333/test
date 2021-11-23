@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.dto.FieldMappingDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
@@ -314,13 +315,13 @@ public class FieldMappingsRestController extends BaseRestController {
 	}
 
 	private void _beforeAdd(FieldMappingDTO fieldMappingDTO) {
-		Date now = new Date();
+		Date date = DateUtil.newDate();
 
-		fieldMappingDTO.setCreateDate(now);
+		fieldMappingDTO.setCreateDate(date);
 
 		fieldMappingDTO.setId(null);
 
-		fieldMappingDTO.setModifiedDate(now);
+		fieldMappingDTO.setModifiedDate(date);
 	}
 
 	private void _beforeUpdate(FieldMappingDTO fieldMappingDTO) {

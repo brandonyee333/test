@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
@@ -395,13 +396,13 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	public SegmentDTO postSegment(@RequestBody SegmentDTO segmentDTO) {
 		segmentDTO.setActivitiesCount(0L);
 
-		Date now = new Date();
+		Date date = DateUtil.newDate();
 
-		segmentDTO.setCreateDate(now);
+		segmentDTO.setCreateDate(date);
 
 		segmentDTO.setId(null);
 
-		segmentDTO.setModifiedDate(now);
+		segmentDTO.setModifiedDate(date);
 
 		return objectMapper.convertValue(
 			segmentDog.addSegment(

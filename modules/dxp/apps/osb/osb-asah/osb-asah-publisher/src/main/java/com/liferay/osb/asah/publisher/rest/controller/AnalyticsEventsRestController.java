@@ -155,7 +155,7 @@ public class AnalyticsEventsRestController {
 				}
 			}
 
-			Date now = DateUtil.newDate();
+			Date date = DateUtil.newDate();
 
 			events.removeIf(
 				event -> {
@@ -168,7 +168,7 @@ public class AnalyticsEventsRestController {
 					event.setId(analyticsEventsMessageId);
 
 					long deltaMilliseconds = DateUtil.getDeltaMilliseconds(
-						event.getEventDate(), now);
+						event.getEventDate(), date);
 
 					if (BooleanUtils.isTrue(
 							_analyticsEventIds.getIfPresent(
