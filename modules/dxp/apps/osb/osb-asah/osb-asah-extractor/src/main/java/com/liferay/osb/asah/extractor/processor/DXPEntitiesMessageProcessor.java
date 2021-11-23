@@ -38,7 +38,6 @@ import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -81,9 +80,10 @@ public class DXPEntitiesMessageProcessor {
 				try {
 					_reentrantLock.lock();
 
-					List<Message<String>> messages =
+					List<Message<JSONObject>> messages =
 						_messageSubscriber.pullMessages(
-							_dxpEntitiesMessageProcessorPullMessagesSize);
+							_dxpEntitiesMessageProcessorPullMessagesSize,
+							JSONObject::new);
 
 					if (_log.isDebugEnabled()) {
 						_log.debug(
@@ -96,25 +96,18 @@ public class DXPEntitiesMessageProcessor {
 						break;
 					}
 
-					Stream<Message<String>> stream = messages.stream();
+					Stream<Message<JSONObject>> stream = messages.stream();
 
-					stream.map(
-						message -> {
-							JSONObject jsonObject = new JSONObject(
-								message.getObject());
-
-							jsonObject.put("ackId", message.getAckId());
-
-							return jsonObject;
-						}
-					).collect(
+					stream.collect(
 						Collectors.groupingBy(
-							jsonObject -> jsonObject.getString("projectId"))
+							message -> {
+								JSONObject jsonObject = message.getObject();
+
+								return jsonObject.getString("projectId");
+							})
 					).forEach(
 						this::_processQueuedMessagesAsync
 					);
-
-					_messageSubscriber.sendAcknowledgements(messages);
 				}
 				finally {
 					_reentrantLock.unlock();
@@ -476,7 +469,7 @@ public class DXPEntitiesMessageProcessor {
 	}
 
 	private void _processQueuedMessagesAsync(
-		String projectId, List<JSONObject> jsonObjects) {
+		String projectId, List<Message<JSONObject>> messages) {
 
 		_semaphore.acquireUninterruptibly();
 
@@ -485,8 +478,6 @@ public class DXPEntitiesMessageProcessor {
 
 		CompletableFuture.runAsync(
 			() -> {
-				List<String> ackIds = new ArrayList<>();
-
 				try {
 					reentrantLock.lock();
 
@@ -494,9 +485,8 @@ public class DXPEntitiesMessageProcessor {
 
 					long start = System.currentTimeMillis();
 
-					for (JSONObject jsonObject : jsonObjects) {
-						_processMessage(jsonObject);
-						ackIds.add(jsonObject.getString("ackId"));
+					for (Message<JSONObject> message : messages) {
+						_processMessage(message.getObject());
 					}
 
 					if (_log.isDebugEnabled()) {
@@ -504,19 +494,20 @@ public class DXPEntitiesMessageProcessor {
 							String.format(
 								"Successfully processed %d DXP entity " +
 									"message(s) in %d ms",
-								jsonObjects.size(),
+								messages.size(),
 								System.currentTimeMillis() - start));
 					}
 				}
 				catch (Exception exception) {
 					_log.error(
 						"Unable to process DXP entity messages " +
-							jsonObjects.toString(),
+							messages.toString(),
 						exception);
 				}
 				finally {
 					reentrantLock.unlock();
-					_messageSubscriber.sendAckIds(ackIds);
+
+					_messageSubscriber.sendAcknowledgements(messages);
 
 					_semaphore.release();
 

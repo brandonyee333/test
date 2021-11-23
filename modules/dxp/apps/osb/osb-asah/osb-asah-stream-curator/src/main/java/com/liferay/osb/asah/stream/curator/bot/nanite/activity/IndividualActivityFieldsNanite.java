@@ -281,27 +281,22 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 				long start = System.currentTimeMillis();
 
-				List<Message<String>> messages =
-					_messageSubscriber.pullMessages(100);
+				List<Message<JSONObject>> messages =
+					_messageSubscriber.pullMessages(100, JSONObject::new);
 
 				if (messages.isEmpty()) {
 					break;
 				}
 
-				Stream<Message<String>> stream = messages.stream();
+				Stream<Message<JSONObject>> stream = messages.stream();
 
-				stream.map(
-					message -> {
-						JSONObject jsonObject = new JSONObject(
-							message.getObject());
-
-						jsonObject.put("ackId", message.getAckId());
-
-						return jsonObject;
-					}
-				).collect(
+				stream.collect(
 					Collectors.groupingBy(
-						jsonObject -> jsonObject.getString("projectId"))
+						message -> {
+							JSONObject jsonObject = message.getObject();
+
+							return jsonObject.getString("projectId");
+						})
 				).forEach(
 					this::_run
 				);
@@ -322,7 +317,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		}
 	}
 
-	private void _run(String projectId, List<JSONObject> messages) {
+	private void _run(String projectId, List<Message<JSONObject>> messages) {
 		_semaphore.acquireUninterruptibly();
 
 		CompletableFuture.runAsync(
@@ -332,29 +327,21 @@ public class IndividualActivityFieldsNanite implements Nanite {
 				try {
 					ProjectIdThreadLocal.setProjectId(projectId);
 
-					Stream<JSONObject> messagesStream = messages.stream();
+					Stream<Message<JSONObject>> messagesStream =
+						messages.stream();
 
 					Map<String, Map<String, Long>> ownerIdCounts =
-						messagesStream.collect(
+						messagesStream.map(
+							Message::getObject
+						).collect(
 							Collectors.groupingBy(
 								jsonObject -> String.valueOf(
 									jsonObject.get("ownerId")),
 								Collectors.groupingBy(
 									jsonObject -> String.valueOf(
 										jsonObject.get("channelId")),
-									Collectors.counting())));
-
-					messagesStream = messages.stream();
-
-					Map<String, List<String>> messageAckMap =
-						messagesStream.collect(
-							Collectors.groupingBy(
-								jsonObject -> String.valueOf(
-									jsonObject.get("ownerId")),
-								Collectors.mapping(
-									jsonObject -> String.valueOf(
-										jsonObject.get("ackId")),
-									Collectors.toList())));
+									Collectors.counting()))
+						);
 
 					for (Map.Entry<String, Map<String, Long>> ownerIdEntry :
 							ownerIdCounts.entrySet()) {
@@ -373,9 +360,6 @@ public class IndividualActivityFieldsNanite implements Nanite {
 									Long.valueOf(ownerId));
 
 							if (individual == null) {
-								_messageSubscriber.sendAckIds(
-									messageAckMap.get(ownerId));
-
 								return;
 							}
 
@@ -398,8 +382,6 @@ public class IndividualActivityFieldsNanite implements Nanite {
 							}
 
 							_individualDog.updateIndividual(individual);
-							_messageSubscriber.sendAckIds(
-								messageAckMap.get(ownerId));
 						}
 						finally {
 							reentrantLock.unlock();
@@ -410,6 +392,8 @@ public class IndividualActivityFieldsNanite implements Nanite {
 					_log.error(exception.getMessage(), exception);
 				}
 				finally {
+					_messageSubscriber.sendAcknowledgements(messages);
+
 					_semaphore.release();
 				}
 
