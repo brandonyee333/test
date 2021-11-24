@@ -530,7 +530,7 @@ public class IndividualsFilterStringConverterHelper
 
 		BigDecimal value = new BigDecimal(argumentValues[2]);
 
-		if (value.compareTo(BigDecimal.valueOf(Integer.MAX_VALUE)) == 1) {
+		if (value.compareTo(BigDecimal.valueOf(Integer.MAX_VALUE)) > 0) {
 			if (_log.isWarnEnabled()) {
 				_log.warn("Invalid value: " + value);
 			}

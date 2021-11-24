@@ -786,7 +786,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 				BigDecimal maxIntegerBigDecimal = BigDecimal.valueOf(
 					Integer.MAX_VALUE);
 
-				if (bigDecimal.compareTo(maxIntegerBigDecimal) == 1) {
+				if (bigDecimal.compareTo(maxIntegerBigDecimal) > 0) {
 					filter = StringUtils.replace(
 						filter, matcher.group(),
 						String.valueOf(Integer.MAX_VALUE));
