@@ -411,7 +411,8 @@ public class IndividualNaniteTest
 
 		Event updatedEvent = _eventDog.fetchEvent(originalEvent.getId());
 
-		Assert.assertEquals(Long.valueOf(100), updatedEvent.getIndividualId());
+		Assertions.assertEquals(
+			Long.valueOf(100), updatedEvent.getIndividualId());
 	}
 
 	@ElasticsearchIndex(
