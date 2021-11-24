@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.common.messaging.impl;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+
 import com.google.api.gax.rpc.UnaryCallable;
 import com.google.cloud.pubsub.v1.stub.SubscriberStub;
 import com.google.protobuf.ByteString;
@@ -30,7 +33,10 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -99,6 +105,32 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 	}
 
 	@Override
+	public <T> void registerException(Exception exception, Message<T> message) {
+		StackTraceElement[] stackTraceElements = _messageIds.getIfPresent(
+			_subscription.getName() + "#" + message.getId());
+
+		if ((stackTraceElements == null) ||
+			!Arrays.equals(stackTraceElements, exception.getStackTrace())) {
+
+			if (_log.isInfoEnabled()) {
+				_log.info("Retrying message " + message.getObject());
+			}
+
+			_messageIds.put(
+				_subscription.getName() + "#" + message.getId(),
+				exception.getStackTrace());
+		}
+		else {
+			_log.error("Discarting message " + message.getObject(), exception);
+
+			sendAckIds(Collections.singletonList(message.getAckId()));
+
+			_messageIds.invalidate(
+				_subscription.getName() + "#" + message.getId());
+		}
+	}
+
+	@Override
 	public void sendAckIds(List<String> ackIds) {
 		if (ackIds.isEmpty()) {
 			return;
@@ -148,6 +180,14 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 
 	private static final Log _log = LogFactory.getLog(
 		MessageSubscriberImpl.class);
+
+	private static final Cache<String, StackTraceElement[]> _messageIds =
+		Caffeine.newBuilder(
+		).expireAfterAccess(
+			7, TimeUnit.DAYS
+		).maximumSize(
+			100000
+		).build();
 
 	private final PubSubClientFactory _pubSubClientFactory;
 	private final Subscription _subscription;
