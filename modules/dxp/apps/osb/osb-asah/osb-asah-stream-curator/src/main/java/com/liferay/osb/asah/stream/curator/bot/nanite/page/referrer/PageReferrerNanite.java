@@ -71,7 +71,9 @@ public class PageReferrerNanite extends BaseNanite<PageReferrer> {
 
 	@Override
 	protected Predicate<PageReferrer> getFilterPredicate() {
-		return pageReferrer -> StringUtils.isNotBlank(pageReferrer.getURL());
+		return pageReferrer ->
+				(pageReferrer.getAccess() > 0 &&
+					StringUtils.isNotBlank(pageReferrer.getURL()));
 	}
 
 	@Override
@@ -98,32 +100,12 @@ public class PageReferrerNanite extends BaseNanite<PageReferrer> {
 	}
 
 	@Override
-	protected List<Message<AnalyticsEvent>> pullAnalyticsEvents()
-		throws Exception {
-
-		List<Message<AnalyticsEvent>> messages = super.pullAnalyticsEvents();
-
-		Stream<Message<AnalyticsEvent>> stream = messages.stream();
-
-		super.sendAckIds(
-			stream.filter(
-				analyticsEvent -> !_isPageViewed(analyticsEvent.getObject())
-			).collect(
-				Collectors.toList()
-			));
-
-		stream = messages.stream();
-
-		return stream.filter(
-			analyticsEvent -> _isPageViewed(analyticsEvent.getObject())
-		).collect(
-			Collectors.toList()
-		);
-	}
-
-	@Override
 	protected void setModelCustomProperties(
 		AnalyticsEvent analyticsEvent, PageReferrer pageReferrer) {
+
+		if (!_isPageViewed(analyticsEvent)) {
+			return;
+		}
 
 		pageReferrer.addAccessDate(analyticsEvent.getEventDate());
 		pageReferrer.setAccess(1);
