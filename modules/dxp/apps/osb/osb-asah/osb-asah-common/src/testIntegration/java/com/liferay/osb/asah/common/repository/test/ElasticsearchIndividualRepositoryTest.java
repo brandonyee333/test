@@ -124,7 +124,7 @@ public class ElasticsearchIndividualRepositoryTest
 		individual.setLastActivityDates(lastActivityDates);
 		individual.setPreviousActivityDates(previousActivityDates);
 
-		individual = getPagingAndSortingRepository().save(individual);
+		individual = individualRepository.save(individual);
 
 		String individualId = String.valueOf(individual.getId());
 
