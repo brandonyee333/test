@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.EventAnalysisDog;
-import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.AttributeType;
@@ -585,8 +584,5 @@ public class EventAnalysisDogTest
 
 	@Autowired
 	private ObjectMapper _objectMapper;
-
-	@Autowired
-	private PreferenceDog _preferenceDog;
 
 }

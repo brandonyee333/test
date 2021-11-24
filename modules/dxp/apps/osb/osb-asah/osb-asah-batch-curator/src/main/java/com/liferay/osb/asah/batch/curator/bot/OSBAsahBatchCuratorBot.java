@@ -18,7 +18,6 @@ import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskManager;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
@@ -279,9 +278,6 @@ public class OSBAsahBatchCuratorBot {
 	@Autowired(required = false)
 	@Qualifier("dataprocSparkManagerMonitoringNaniteRunnable")
 	private Runnable _dataprocSparkManagerMonitoringNaniteRunnable;
-
-	@Autowired
-	private DataSourceDog _dataSourceDog;
 
 	@Autowired(required = false)
 	@Qualifier("deleteDXPBatchEntitiesNaniteRunnable")

@@ -16,7 +16,6 @@ package com.liferay.osb.asah.batch.curator.rest.controller;
 
 import com.liferay.osb.asah.batch.curator.bot.OSBAsahBatchCuratorBot;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskManager;
-import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -82,9 +81,6 @@ public class NanitesRestController {
 
 	@Autowired
 	private AsahTaskManager _asahTaskManager;
-
-	@Autowired
-	private DataSourceDog _dataSourceDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
