@@ -28,7 +28,6 @@ import com.google.pubsub.v1.Subscription;
 import com.liferay.osb.asah.common.function.UnsafeFunction;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
-import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,71 +48,10 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 	}
 
 	@Override
-	public List<Message<String>> pullMessages(int maxMessages) {
-		return _pullMessages(maxMessages, String::toString);
-	}
-
-	@Override
 	public <T> List<Message<T>> pullMessages(
-		int maxMessages,
-		UnsafeFunction<String, T, Exception> modelMapperFunction) {
-
-		return _pullMessages(maxMessages, modelMapperFunction);
-	}
-
-	@Override
-	public <T> void sendAcknowledgements(List<Message<T>> messages) {
-		List<String> ackIds = ListUtil.map(messages, Message::getAckId);
-
-		if (ackIds.isEmpty()) {
-			return;
-		}
-
-		try (PubSubClient<SubscriberStub> subscriberStubPubSubClient =
-				_pubSubClientFactory.createSubscriberStub()) {
-
-			SubscriberStub subscriberStub = subscriberStubPubSubClient.get();
-
-			UnaryCallable<AcknowledgeRequest, Empty>
-				acknowledgeRequestUnaryCallable =
-					subscriberStub.acknowledgeCallable();
-
-			acknowledgeRequestUnaryCallable.call(
-				_buildAcknowledgeRequest(ackIds));
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Successfully sent acknowledge IDs " + ackIds);
-			}
-		}
-		catch (Exception exception) {
-			_log.error("Unable to send acknowledge IDs " + ackIds, exception);
-		}
-	}
-
-	private AcknowledgeRequest _buildAcknowledgeRequest(
-		Iterable<String> ackIds) {
-
-		AcknowledgeRequest.Builder builder = AcknowledgeRequest.newBuilder();
-
-		builder.addAllAckIds(ackIds);
-		builder.setSubscription(_subscription.getName());
-
-		return builder.build();
-	}
-
-	private PullRequest _buildPullRequest(int maxMessages) {
-		PullRequest.Builder builder = PullRequest.newBuilder();
-
-		builder.setMaxMessages(maxMessages);
-		builder.setReturnImmediately(true);
-		builder.setSubscription(_subscription.getName());
-
-		return builder.build();
-	}
-
-	private <T> List<Message<T>> _pullMessages(
-		int maxMessages,
-		UnsafeFunction<String, T, Exception> modelMapperFunction) {
+			int maxMessages,
+			UnsafeFunction<String, T, Exception> modelMapperFunction)
+		throws Exception {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
@@ -138,14 +76,12 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 			for (ReceivedMessage receivedMessage :
 					pullResponse.getReceivedMessagesList()) {
 
-				ackIds.add(receivedMessage.getAckId());
-
 				PubsubMessage pubsubMessage = receivedMessage.getMessage();
 
 				ByteString byteString = pubsubMessage.getData();
 
 				messages.add(
-					new Message(
+					new Message<>(
 						receivedMessage.getAckId(),
 						pubsubMessage.getMessageId(),
 						modelMapperFunction.apply(byteString.toStringUtf8())));
@@ -160,6 +96,54 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 		}
 
 		return messages;
+	}
+
+	@Override
+	public void sendAckIds(List<String> ackIds) {
+		if (ackIds.isEmpty()) {
+			return;
+		}
+
+		try (PubSubClient<SubscriberStub> subscriberStubPubSubClient =
+				_pubSubClientFactory.createSubscriberStub()) {
+
+			SubscriberStub subscriberStub = subscriberStubPubSubClient.get();
+
+			UnaryCallable<AcknowledgeRequest, Empty>
+				acknowledgeRequestUnaryCallable =
+					subscriberStub.acknowledgeCallable();
+
+			acknowledgeRequestUnaryCallable.call(
+				_buildAcknowledgeRequest(ackIds));
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Successfully sent ack IDs " + ackIds);
+			}
+		}
+		catch (Exception exception) {
+			_log.error("Unable to send ack IDs " + ackIds, exception);
+		}
+	}
+
+	private AcknowledgeRequest _buildAcknowledgeRequest(
+		Iterable<String> ackIds) {
+
+		AcknowledgeRequest.Builder builder = AcknowledgeRequest.newBuilder();
+
+		builder.addAllAckIds(ackIds);
+		builder.setSubscription(_subscription.getName());
+
+		return builder.build();
+	}
+
+	private PullRequest _buildPullRequest(int maxMessages) {
+		PullRequest.Builder builder = PullRequest.newBuilder();
+
+		builder.setMaxMessages(maxMessages);
+		builder.setReturnImmediately(true);
+		builder.setSubscription(_subscription.getName());
+
+		return builder.build();
 	}
 
 	private static final Log _log = LogFactory.getLog(

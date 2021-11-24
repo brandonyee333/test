@@ -30,13 +30,14 @@ import java.util.List;
  */
 public interface MessageSubscriber {
 
-	public List<Message<String>> pullMessages(int maxMessages);
-
 	public <T> List<Message<T>> pullMessages(
-		int maxMessages,
-		UnsafeFunction<String, T, Exception> modelMapperFunction);
+			int maxMessages,
+			UnsafeFunction<String, T, Exception> modelMapperFunction)
+		throws Exception;
 
-	public <T> void sendAcknowledgements(List<Message<T>> messages);
+	public <T> void registerException(Exception exception, Message<T> message);
+
+	public void sendAckIds(List<String> ackIds);
 
 	@Documented
 	@Retention(RetentionPolicy.RUNTIME)
