@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.extractor.processor.AnalyticsEventsMessageProcessor;
 import com.liferay.osb.asah.extractor.spring.OSBAsahExtractorSpringBootApplication;
@@ -75,7 +76,8 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAcknowledgements(messages);
+		_messageSubscriber.sendAckIds(
+			ListUtil.map(messages, Message::getAckId));
 
 		Assertions.assertNotEquals(0, messages.size());
 
@@ -127,7 +129,8 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAcknowledgements(messages);
+		_messageSubscriber.sendAckIds(
+			ListUtil.map(messages, Message::getAckId));
 
 		Assertions.assertNotEquals(0, messages.size());
 	}
@@ -182,7 +185,8 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAcknowledgements(messages);
+		_messageSubscriber.sendAckIds(
+			ListUtil.map(messages, Message::getAckId));
 
 		Assertions.assertNotEquals(0, messages.size());
 	}
@@ -203,7 +207,9 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAcknowledgements(messages);
+		_messageSubscriber.sendAckIds(
+			ListUtil.map(messages, Message::getAckId));
+
 		Assertions.assertEquals(0, messages.size(), messages.toString());
 	}
 
@@ -225,7 +231,8 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAcknowledgements(messages);
+		_messageSubscriber.sendAckIds(
+			ListUtil.map(messages, Message::getAckId));
 
 		Assertions.assertEquals(0, messages.size(), messages.toString());
 	}
@@ -252,7 +259,8 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAcknowledgements(messages);
+		_messageSubscriber.sendAckIds(
+			ListUtil.map(messages, Message::getAckId));
 		Assertions.assertEquals(1, messages.size(), messages.toString());
 	}
 
@@ -274,7 +282,8 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAcknowledgements(messages);
+		_messageSubscriber.sendAckIds(
+			ListUtil.map(messages, Message::getAckId));
 
 		for (Message<AnalyticsEvent> message : messages) {
 			AnalyticsEvent analyticsEvent = message.getObject();
@@ -304,7 +313,8 @@ public class AnalyticsEventsMessageProcessorTest
 			_messageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAcknowledgements(messages);
+		_messageSubscriber.sendAckIds(
+			ListUtil.map(messages, Message::getAckId));
 
 		for (Message<AnalyticsEvent> message : messages) {
 			AnalyticsEvent analyticsEvent = message.getObject();

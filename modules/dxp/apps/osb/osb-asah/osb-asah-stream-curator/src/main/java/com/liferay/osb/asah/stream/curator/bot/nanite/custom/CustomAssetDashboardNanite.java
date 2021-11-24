@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.util.NaniteUtil;
@@ -47,6 +48,9 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 /**
  * @author Marcellus Tavares
@@ -79,24 +83,6 @@ public class CustomAssetDashboardNanite implements Nanite {
 		finally {
 			_semaphore.release(4);
 		}
-	}
-
-	private void _addCustomAssetDashboards(
-		String customAssetPrimaryKey, List<AnalyticsEvent> analyticsEvents) {
-
-		Optional<CustomAssetDashboard> customAssetDashboardOptional =
-			_customAssetDashboardRepository.findById(customAssetPrimaryKey);
-
-		CustomAssetDashboard customAssetDashboard = _updateCustomAssetDashboard(
-			analyticsEvents,
-			customAssetDashboardOptional.orElse(new CustomAssetDashboard()),
-			customAssetPrimaryKey);
-
-		if (!customAssetDashboardOptional.isPresent()) {
-			customAssetDashboard.setIsNew(true);
-		}
-
-		_customAssetDashboardRepository.save(customAssetDashboard);
 	}
 
 	@PreDestroy
@@ -149,10 +135,12 @@ public class CustomAssetDashboardNanite implements Nanite {
 						message -> {
 							AnalyticsEvent analyticsEvent = message.getObject();
 
-							return analyticsEvent.getProjectId();
+							return Tuples.of(
+								analyticsEvent.getProjectId(),
+								_getCustomAssetPrimaryKey(analyticsEvent));
 						})
 				).forEach(
-					this::_run
+					this::_runAsync
 				);
 
 				if (_log.isInfoEnabled()) {
@@ -160,7 +148,7 @@ public class CustomAssetDashboardNanite implements Nanite {
 
 					_log.info(
 						String.format(
-							"%s processed %d events in %d ms",
+							"%s dispatched %d analytics events in %d ms",
 							clazz.getSimpleName(), messages.size(),
 							System.currentTimeMillis() - start));
 				}
@@ -171,13 +159,13 @@ public class CustomAssetDashboardNanite implements Nanite {
 		}
 	}
 
-	private void _run(
-		String projectId, List<Message<AnalyticsEvent>> messages) {
+	private void _runAsync(
+		Tuple2<String, String> tuple2, List<Message<AnalyticsEvent>> messages) {
 
 		_semaphore.acquireUninterruptibly();
 
 		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), projectId);
+			getClass(), tuple2);
 
 		CompletableFuture.runAsync(
 			() -> {
@@ -186,34 +174,50 @@ public class CustomAssetDashboardNanite implements Nanite {
 
 					long start = System.currentTimeMillis();
 
-					ProjectIdThreadLocal.setProjectId(projectId);
+					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
-					Stream<Message<AnalyticsEvent>> stream = messages.stream();
+					Optional<CustomAssetDashboard>
+						customAssetDashboardOptional =
+							_customAssetDashboardRepository.findById(
+								tuple2.getT2());
 
-					stream.map(
-						Message::getObject
-					).collect(
-						Collectors.groupingBy(this::_getCustomAssetPrimaryKey)
-					).forEach(
-						this::_addCustomAssetDashboards
-					);
+					CustomAssetDashboard customAssetDashboard =
+						_updateCustomAssetDashboard(
+							ListUtil.map(messages, Message::getObject),
+							customAssetDashboardOptional.orElse(
+								new CustomAssetDashboard()),
+							tuple2.getT2());
+
+					if (!customAssetDashboardOptional.isPresent()) {
+						customAssetDashboard.setIsNew(true);
+					}
+
+					_customAssetDashboardRepository.save(customAssetDashboard);
+
+					_messageSubscriber.sendAckIds(
+						ListUtil.map(messages, Message::getAckId));
 
 					if (_log.isInfoEnabled()) {
 						Class<?> clazz = getClass();
 
 						_log.info(
 							String.format(
-								"%s processed %d events in %d ms",
+								"%s processed %d analytics events in %d ms",
 								clazz.getSimpleName(), messages.size(),
 								System.currentTimeMillis() - start));
 					}
 				}
 				catch (Exception exception) {
-					_log.error(exception.getMessage(), exception);
+					messages.forEach(
+						message -> _messageSubscriber.registerException(
+							exception, message));
+
+					_log.error(
+						"Unable to process analytics events " +
+							ListUtil.map(messages, Message::getObject),
+						exception);
 				}
 				finally {
-					_messageSubscriber.sendAcknowledgements(messages);
-
 					reentrantLock.unlock();
 
 					_semaphore.release();

@@ -477,7 +477,7 @@ public class UserSessionNanite implements Nanite {
 								analyticsEvent.getUserId());
 						})
 				).forEach(
-					this::_run
+					this::_runAsync
 				);
 
 				if (_log.isInfoEnabled()) {
@@ -485,7 +485,7 @@ public class UserSessionNanite implements Nanite {
 
 					_log.info(
 						String.format(
-							"%s dispatched %d events in %d ms",
+							"%s dispatched %d analytics events in %d ms",
 							clazz.getSimpleName(), messages.size(),
 							System.currentTimeMillis() - start));
 				}
@@ -496,21 +496,38 @@ public class UserSessionNanite implements Nanite {
 		}
 	}
 
-	private void _run(
+	private void _runAsync(
 		Tuple2<String, String> tuple2, List<Message<AnalyticsEvent>> messages) {
 
 		_semaphore.acquireUninterruptibly();
 
 		CompletableFuture.runAsync(
 			() -> {
-				long start = System.currentTimeMillis();
-
 				try {
+					long start = System.currentTimeMillis();
+
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
 					_processAnalyticsEvents(messages, tuple2.getT2());
+
+					_messageSubscriber.sendAckIds(
+						ListUtil.map(messages, Message::getAckId));
+
+					if (_log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						_log.info(
+							String.format(
+								"%s processed %d analytics events in %d ms",
+								clazz.getSimpleName(), messages.size(),
+								System.currentTimeMillis() - start));
+					}
 				}
 				catch (Exception exception) {
+					messages.forEach(
+						message -> _messageSubscriber.registerException(
+							exception, message));
+
 					List<String> analyticsEventsString = ListUtil.map(
 						messages,
 						message -> {
@@ -520,24 +537,12 @@ public class UserSessionNanite implements Nanite {
 						});
 
 					_log.error(
-						"Unable to process analytics events messages " +
+						"Unable to process analytics events " +
 							analyticsEventsString,
 						exception);
 				}
 				finally {
-					_messageSubscriber.sendAcknowledgements(messages);
-
 					_semaphore.release();
-				}
-
-				if (_log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
-
-					_log.info(
-						String.format(
-							"%s processed %d events in %d ms",
-							clazz.getSimpleName(), messages.size(),
-							System.currentTimeMillis() - start));
 				}
 			},
 			_executorService);

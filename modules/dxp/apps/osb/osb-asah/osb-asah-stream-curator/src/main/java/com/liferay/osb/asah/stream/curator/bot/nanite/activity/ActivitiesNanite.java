@@ -33,7 +33,6 @@ import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
-import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -664,7 +663,7 @@ public class ActivitiesNanite implements Nanite {
 								analyticsEvent.getUserId());
 						})
 				).forEach(
-					this::_run
+					this::_runAsync
 				);
 
 				if (_log.isInfoEnabled()) {
@@ -672,7 +671,7 @@ public class ActivitiesNanite implements Nanite {
 
 					_log.info(
 						String.format(
-							"%s dispatched %d events in %d ms",
+							"%s dispatched %d analytics events in %d ms",
 							clazz.getSimpleName(), messages.size(),
 							System.currentTimeMillis() - start));
 				}
@@ -683,19 +682,26 @@ public class ActivitiesNanite implements Nanite {
 		}
 	}
 
-	private void _run(
+	private void _runAsync(
 		Tuple2<String, String> tuple2, List<Message<AnalyticsEvent>> messages) {
 
 		_semaphore.acquireUninterruptibly();
 
+		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+			getClass(), tuple2);
+
 		CompletableFuture.runAsync(
 			() -> {
-				long start = System.currentTimeMillis();
-
-				List<Message<AnalyticsEvent>> ackMessages = new ArrayList<>();
+				List<String> ackIds = new ArrayList<>();
 
 				try {
+					reentrantLock.lock();
+
+					long start = System.currentTimeMillis();
+
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
+
+					List<String> auxAckIds = new ArrayList<>();
 
 					JSONArray activityJSONArray = new JSONArray();
 
@@ -719,7 +725,7 @@ public class ActivitiesNanite implements Nanite {
 									activityJSONObject, tuple2.getT1());
 							}
 
-							ackMessages.add(message);
+							ackIds.add(message.getAckId());
 
 							continue;
 						}
@@ -729,41 +735,54 @@ public class ActivitiesNanite implements Nanite {
 
 						if (activityJSONObject != null) {
 							activityJSONArray.put(activityJSONObject);
-						}
 
-						ackMessages.add(message);
+							auxAckIds.add(message.getAckId());
+						}
 					}
 
 					_addActivityJSONArray(activityJSONArray, tuple2.getT1());
+
+					ackIds.addAll(auxAckIds);
+
+					if (_log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						_log.info(
+							String.format(
+								"%s processed %d analytics events in %d ms",
+								clazz.getSimpleName(), messages.size(),
+								System.currentTimeMillis() - start));
+					}
 				}
 				catch (Exception exception) {
-					List<String> analyticsEventsString = ListUtil.map(
-						messages,
+					Stream<Message<AnalyticsEvent>> stream = messages.stream();
+
+					List<String> analyticsEventsString = stream.filter(
+						message -> !ackIds.contains(message.getAckId())
+					).map(
 						message -> {
+							_messageSubscriber.registerException(
+								exception, message);
+
 							AnalyticsEvent analyticsEvent = message.getObject();
 
 							return analyticsEvent.toJSON();
-						});
+						}
+					).collect(
+						Collectors.toList()
+					);
 
 					_log.error(
-						"Unable to process analytics events messages " +
+						"Unable to process analytics events " +
 							analyticsEventsString,
 						exception);
 				}
 				finally {
-					_messageSubscriber.sendAcknowledgements(ackMessages);
+					_messageSubscriber.sendAckIds(ackIds);
+
+					reentrantLock.unlock();
 
 					_semaphore.release();
-				}
-
-				if (_log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
-
-					_log.info(
-						String.format(
-							"%s processed %d events in %d ms",
-							clazz.getSimpleName(), messages.size(),
-							System.currentTimeMillis() - start));
 				}
 			},
 			_executorService);

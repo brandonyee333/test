@@ -42,6 +42,7 @@ import java.nio.charset.StandardCharsets;
 
 import java.security.MessageDigest;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -293,7 +294,7 @@ public class IndividualNanite implements Nanite {
 								jsonObject.getString("userId"));
 						})
 				).forEach(
-					this::_run
+					this::_runAsync
 				);
 
 				if (_log.isInfoEnabled()) {
@@ -312,20 +313,22 @@ public class IndividualNanite implements Nanite {
 		}
 	}
 
-	private void _run(
+	private void _runAsync(
 		Tuple2<String, String> tuple2, List<Message<JSONObject>> messages) {
 
 		_semaphore.acquireUninterruptibly();
 
 		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), tuple2.getT1(), tuple2.getT2());
+			getClass(), tuple2);
 
 		CompletableFuture.runAsync(
 			() -> {
-				try {
-					long start = System.currentTimeMillis();
+				List<String> ackIds = new ArrayList<>();
 
+				try {
 					reentrantLock.lock();
+
+					long start = System.currentTimeMillis();
 
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
@@ -370,9 +373,17 @@ public class IndividualNanite implements Nanite {
 									individual.getId(),
 									messageJSONObject.getString("userId"));
 							}
+
+							ackIds.add(message.getAckId());
 						}
 						catch (Exception exception) {
-							_log.error(exception.getMessage(), exception);
+							_messageSubscriber.registerException(
+								exception, message);
+
+							_log.error(
+								"Unable to process message " +
+									message.getObject(),
+								exception);
 						}
 					}
 
@@ -386,8 +397,30 @@ public class IndividualNanite implements Nanite {
 								System.currentTimeMillis() - start));
 					}
 				}
+				catch (Exception exception) {
+					Stream<Message<JSONObject>> stream = messages.stream();
+
+					List<String> messagesString = stream.filter(
+						message -> !ackIds.contains(message.getAckId())
+					).map(
+						message -> {
+							_messageSubscriber.registerException(
+								exception, message);
+
+							JSONObject messageJSONObject = message.getObject();
+
+							return messageJSONObject.toString();
+						}
+					).collect(
+						Collectors.toList()
+					);
+
+					_log.error(
+						"Unable to process messages " + messagesString,
+						exception);
+				}
 				finally {
-					_messageSubscriber.sendAcknowledgements(messages);
+					_messageSubscriber.sendAckIds(ackIds);
 
 					reentrantLock.unlock();
 

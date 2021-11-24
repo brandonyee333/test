@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
@@ -52,6 +53,9 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 /**
  * @author Michael Bowerman
@@ -275,136 +279,135 @@ public class IndividualActivityFieldsNanite implements Nanite {
 	}
 
 	private void _run() {
-		while (true) {
-			try {
-				_reentrantLock.lock();
+		try {
+			while (true) {
+				try {
+					_reentrantLock.lock();
 
-				long start = System.currentTimeMillis();
+					long start = System.currentTimeMillis();
 
-				List<Message<JSONObject>> messages =
-					_messageSubscriber.pullMessages(100, JSONObject::new);
+					List<Message<JSONObject>> messages =
+						_messageSubscriber.pullMessages(100, JSONObject::new);
 
-				if (messages.isEmpty()) {
-					break;
+					if (messages.isEmpty()) {
+						break;
+					}
+
+					Stream<Message<JSONObject>> stream = messages.stream();
+
+					stream.collect(
+						Collectors.groupingBy(
+							message -> {
+								JSONObject jsonObject = message.getObject();
+
+								return Tuples.of(
+									jsonObject.getString("projectId"),
+									String.valueOf(jsonObject.get("ownerId")));
+							})
+					).forEach(
+						this::_runAsync
+					);
+
+					if (_log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						_log.info(
+							String.format(
+								"%s dispatched %d messages in %d ms",
+								clazz.getSimpleName(), messages.size(),
+								System.currentTimeMillis() - start));
+					}
 				}
-
-				Stream<Message<JSONObject>> stream = messages.stream();
-
-				stream.collect(
-					Collectors.groupingBy(
-						message -> {
-							JSONObject jsonObject = message.getObject();
-
-							return jsonObject.getString("projectId");
-						})
-				).forEach(
-					this::_run
-				);
-
-				if (_log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
-
-					_log.info(
-						String.format(
-							"%s dispatched %d messages in %d ms",
-							clazz.getSimpleName(), messages.size(),
-							System.currentTimeMillis() - start));
+				finally {
+					_reentrantLock.unlock();
 				}
 			}
-			finally {
-				_reentrantLock.unlock();
-			}
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 	}
 
-	private void _run(String projectId, List<Message<JSONObject>> messages) {
+	private void _runAsync(
+		Tuple2<String, String> tuple2, List<Message<JSONObject>> messages) {
+
 		_semaphore.acquireUninterruptibly();
+
+		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+			getClass(), tuple2);
 
 		CompletableFuture.runAsync(
 			() -> {
-				long start = System.currentTimeMillis();
-
 				try {
-					ProjectIdThreadLocal.setProjectId(projectId);
+					reentrantLock.lock();
 
-					Stream<Message<JSONObject>> messagesStream =
-						messages.stream();
+					long start = System.currentTimeMillis();
 
-					Map<String, Map<String, Long>> ownerIdCounts =
-						messagesStream.map(
+					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
+
+					Individual individual = _individualDog.fetchIndividual(
+						Long.valueOf(tuple2.getT2()));
+
+					if (individual != null) {
+						Stream<Message<JSONObject>> messagesStream =
+							messages.stream();
+
+						Map<String, Long> channelIdsCounts = messagesStream.map(
 							Message::getObject
 						).collect(
 							Collectors.groupingBy(
 								jsonObject -> String.valueOf(
-									jsonObject.get("ownerId")),
-								Collectors.groupingBy(
-									jsonObject -> String.valueOf(
-										jsonObject.get("channelId")),
-									Collectors.counting()))
+									jsonObject.get("channelId")),
+								Collectors.counting())
 						);
 
-					for (Map.Entry<String, Map<String, Long>> ownerIdEntry :
-							ownerIdCounts.entrySet()) {
+						individual.setActivitiesCounts(
+							_getActivitiesCounts(channelIdsCounts, individual));
 
-						String ownerId = ownerIdEntry.getKey();
+						Map<Long, Date> lastActivityDatesMap =
+							_convertActivityDatesSetToMap(
+								individual.getLastActivityDates());
 
-						ReentrantLock reentrantLock =
-							KeyReentrantLock.getReentrantLock(
-								getClass(), projectId, ownerId);
+						individual.setLastActivityDates(
+							_getLastActivityDates(
+								channelIdsCounts, individual));
 
-						try {
-							reentrantLock.lock();
-
-							Individual individual =
-								_individualDog.fetchIndividual(
-									Long.valueOf(ownerId));
-
-							if (individual == null) {
-								continue;
-							}
-
-							individual.setActivitiesCounts(
-								_getActivitiesCounts(
-									ownerIdEntry.getValue(), individual));
-
-							Map<Long, Date> lastActivityDatesMap =
-								_convertActivityDatesSetToMap(
-									individual.getLastActivityDates());
-
-							individual.setLastActivityDates(
-								_getLastActivityDates(
-									ownerIdEntry.getValue(), individual));
-
-							if (!lastActivityDatesMap.isEmpty()) {
-								individual.setPreviousActivityDates(
-									_getPreviousActivityDates(
-										individual, lastActivityDatesMap));
-							}
-
-							_individualDog.updateIndividual(individual);
+						if (!lastActivityDatesMap.isEmpty()) {
+							individual.setPreviousActivityDates(
+								_getPreviousActivityDates(
+									individual, lastActivityDatesMap));
 						}
-						finally {
-							reentrantLock.unlock();
-						}
+
+						_individualDog.updateIndividual(individual);
+					}
+
+					_messageSubscriber.sendAckIds(
+						ListUtil.map(messages, Message::getAckId));
+
+					if (_log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						_log.info(
+							String.format(
+								"%s processed %d messages in %d ms",
+								clazz.getSimpleName(), messages.size(),
+								System.currentTimeMillis() - start));
 					}
 				}
 				catch (Exception exception) {
-					_log.error(exception.getMessage(), exception);
+					messages.forEach(
+						message -> _messageSubscriber.registerException(
+							exception, message));
+
+					_log.error(
+						"Unable to process messages " +
+							ListUtil.map(messages, Message::getObject),
+						exception);
 				}
 				finally {
-					_messageSubscriber.sendAcknowledgements(messages);
+					reentrantLock.unlock();
 
 					_semaphore.release();
-				}
-
-				if (_log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
-
-					_log.info(
-						String.format(
-							"%s processed %d messages in %d ms",
-							clazz.getSimpleName(), messages.size(),
-							System.currentTimeMillis() - start));
 				}
 			},
 			_executorService);

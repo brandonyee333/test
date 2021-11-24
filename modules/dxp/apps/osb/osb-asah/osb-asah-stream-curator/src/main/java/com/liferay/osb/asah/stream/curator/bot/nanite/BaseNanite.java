@@ -20,9 +20,11 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
+import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -212,15 +214,24 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 			50, AnalyticsEvent::toAnalyticsEvent);
 	}
 
+	protected void registerException(
+		Exception exception, List<Message<AnalyticsEvent>> messages) {
+
+		MessageSubscriber messageSubscriber = getMessageSubscriber();
+
+		messages.forEach(
+			message -> messageSubscriber.registerException(exception, message));
+	}
+
 	protected void saveModels(Collection<T> models) {
 		_cerebroInfoElasticsearchInvoker.save(
 			getCollectionName(), ModelMapper.toJSONArray(models));
 	}
 
-	protected <T> void sendAcknowledgments(List<Message<T>> messages) {
+	protected void sendAckIds(List<String> ackIds) {
 		MessageSubscriber messageSubscriber = getMessageSubscriber();
 
-		messageSubscriber.sendAcknowledgements(messages);
+		messageSubscriber.sendAckIds(ackIds);
 	}
 
 	protected abstract void setModelCustomProperties(
@@ -327,7 +338,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 								analyticsEvent.getUserId());
 						})
 				).forEach(
-					this::_run
+					this::_runAsync
 				);
 
 				Log log = getLog();
@@ -337,7 +348,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 					log.info(
 						String.format(
-							"%s dispatched %d events in %d ms",
+							"%s dispatched %d analytics events in %d ms",
 							clazz.getSimpleName(), messages.size(),
 							System.currentTimeMillis() - start));
 				}
@@ -348,19 +359,26 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		}
 	}
 
-	private void _run(
+	private void _runAsync(
 		Tuple2<String, String> tuple2, List<Message<AnalyticsEvent>> messages) {
 
 		_semaphore.acquireUninterruptibly();
 
+		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+			getClass(), tuple2);
+
 		CompletableFuture.runAsync(
 			() -> {
 				try {
+					reentrantLock.lock();
+
 					long start = System.currentTimeMillis();
 
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
 					saveModels(getModels(messages));
+
+					sendAckIds(ListUtil.map(messages, Message::getAckId));
 
 					Log log = getLog();
 
@@ -369,18 +387,31 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 						log.info(
 							String.format(
-								"%s processed %d events in %d ms",
+								"%s processed %d analytics events in %d ms",
 								clazz.getSimpleName(), messages.size(),
 								System.currentTimeMillis() - start));
 					}
 				}
 				catch (Exception exception) {
+					registerException(exception, messages);
+
 					Log log = getLog();
 
-					log.error(exception.getMessage(), exception);
+					List<String> analyticsEventsString = ListUtil.map(
+						messages,
+						message -> {
+							AnalyticsEvent analyticsEvent = message.getObject();
+
+							return analyticsEvent.toJSON();
+						});
+
+					log.error(
+						"Unable to process analytics events " +
+							analyticsEventsString,
+						exception);
 				}
 				finally {
-					sendAcknowledgments(messages);
+					reentrantLock.unlock();
 
 					_semaphore.release();
 				}

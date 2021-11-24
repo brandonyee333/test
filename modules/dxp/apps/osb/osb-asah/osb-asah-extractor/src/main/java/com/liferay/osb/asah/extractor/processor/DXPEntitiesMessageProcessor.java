@@ -38,6 +38,7 @@ import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -80,17 +81,12 @@ public class DXPEntitiesMessageProcessor {
 				try {
 					_reentrantLock.lock();
 
+					long start = System.currentTimeMillis();
+
 					List<Message<JSONObject>> messages =
 						_messageSubscriber.pullMessages(
 							_dxpEntitiesMessageProcessorPullMessagesSize,
 							JSONObject::new);
-
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							String.format(
-								"Pulled %d DXP entity messages ",
-								messages.size()));
-					}
 
 					if (messages.isEmpty()) {
 						break;
@@ -108,6 +104,17 @@ public class DXPEntitiesMessageProcessor {
 					).forEach(
 						this::_processQueuedMessagesAsync
 					);
+
+					if (_log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						_log.info(
+							String.format(
+								"%s dispatched %d analytics events messages " +
+									"in %d ms",
+								clazz.getSimpleName(), messages.size(),
+								System.currentTimeMillis() - start));
+					}
 				}
 				finally {
 					_reentrantLock.unlock();
@@ -478,40 +485,71 @@ public class DXPEntitiesMessageProcessor {
 
 		CompletableFuture.runAsync(
 			() -> {
+				List<String> ackIds = new ArrayList<>();
+
 				try {
 					reentrantLock.lock();
 
-					ProjectIdThreadLocal.setProjectId(projectId);
-
 					long start = System.currentTimeMillis();
 
+					ProjectIdThreadLocal.setProjectId(projectId);
+
 					for (Message<JSONObject> message : messages) {
-						_processMessage(message.getObject());
+						try {
+							_processMessage(message.getObject());
+
+							ackIds.add(message.getAckId());
+						}
+						catch (Exception exception) {
+							_messageSubscriber.registerException(
+								exception, message);
+
+							_log.error(
+								"Unable to process analytics events message " +
+									message.getObject(),
+								exception);
+						}
 					}
 
-					if (_log.isDebugEnabled()) {
-						_log.debug(
+					if (_log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						_log.info(
 							String.format(
-								"Successfully processed %d DXP entity " +
-									"message(s) in %d ms",
-								messages.size(),
+								"%s processed %d analytics events messages " +
+									"in %d ms",
+								clazz.getSimpleName(), messages.size(),
 								System.currentTimeMillis() - start));
 					}
 				}
 				catch (Exception exception) {
+					Stream<Message<JSONObject>> stream = messages.stream();
+
+					List<String> messagesString = stream.filter(
+						message -> !ackIds.contains(message.getAckId())
+					).map(
+						message -> {
+							_messageSubscriber.registerException(
+								exception, message);
+
+							JSONObject messageJSONObject = message.getObject();
+
+							return messageJSONObject.toString();
+						}
+					).collect(
+						Collectors.toList()
+					);
+
 					_log.error(
-						"Unable to process DXP entity messages " +
-							messages.toString(),
+						"Unable to process messages " + messagesString,
 						exception);
 				}
 				finally {
-					_messageSubscriber.sendAcknowledgements(messages);
+					_messageSubscriber.sendAckIds(ackIds);
 
 					reentrantLock.unlock();
 
 					_semaphore.release();
-
-					ProjectIdThreadLocal.remove();
 				}
 			},
 			_executorService);

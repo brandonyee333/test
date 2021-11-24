@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
@@ -33,7 +34,6 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.util.AnalyticsEventUtil;
-import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
@@ -399,7 +399,7 @@ public class AnalyticsEventsMessageProcessor {
 								analyticsEventsMessage.getUserId());
 						})
 				).forEach(
-					this::_processQueuedMessages
+					this::_processQueuedMessagesAsync
 				);
 
 				if (_log.isInfoEnabled()) {
@@ -419,28 +419,36 @@ public class AnalyticsEventsMessageProcessor {
 		}
 	}
 
-	private void _processQueuedMessages(
+	private void _processQueuedMessagesAsync(
 		Tuple2<String, String> tuple2,
 		List<Message<AnalyticsEventsMessage>> messages) {
 
 		_semaphore.acquireUninterruptibly();
 
+		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+			getClass(), tuple2);
+
 		CompletableFuture.runAsync(
 			() -> {
-				long start = System.currentTimeMillis();
-
-				List<Message<AnalyticsEventsMessage>> ackMessages =
-					new ArrayList<>();
+				List<String> ackIds = new ArrayList<>();
 
 				try {
+					reentrantLock.lock();
+
+					long start = System.currentTimeMillis();
+
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
 					for (Message<AnalyticsEventsMessage> message : messages) {
 						try {
 							_processMessage(message.getObject());
-							ackMessages.add(message);
+
+							ackIds.add(message.getAckId());
 						}
 						catch (Exception exception) {
+							_messageSubscriber.registerException(
+								exception, message);
+
 							AnalyticsEventsMessage analyticsEventsMessage =
 								message.getObject();
 
@@ -450,16 +458,37 @@ public class AnalyticsEventsMessageProcessor {
 								exception);
 						}
 					}
+
+					if (_log.isInfoEnabled()) {
+						Class<?> clazz = getClass();
+
+						_log.info(
+							String.format(
+								"%s processed %d analytics events messages " +
+									"in %d ms",
+								clazz.getSimpleName(), messages.size(),
+								System.currentTimeMillis() - start));
+					}
 				}
 				catch (Exception exception) {
-					List<String> analyticsEventsMessagesString = ListUtil.map(
-						messages,
+					Stream<Message<AnalyticsEventsMessage>> stream =
+						messages.stream();
+
+					List<String> analyticsEventsMessagesString = stream.filter(
+						message -> !ackIds.contains(message.getAckId())
+					).map(
 						message -> {
+							_messageSubscriber.registerException(
+								exception, message);
+
 							AnalyticsEventsMessage analyticsEventsMessage =
 								message.getObject();
 
 							return analyticsEventsMessage.toJSON();
-						});
+						}
+					).collect(
+						Collectors.toList()
+					);
 
 					_log.error(
 						"Unable to process analytics events messages " +
@@ -467,20 +496,11 @@ public class AnalyticsEventsMessageProcessor {
 						exception);
 				}
 				finally {
-					_messageSubscriber.sendAcknowledgements(ackMessages);
+					_messageSubscriber.sendAckIds(ackIds);
+
+					reentrantLock.unlock();
 
 					_semaphore.release();
-				}
-
-				if (_log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
-
-					_log.info(
-						String.format(
-							"%s processed %d analytics events messages in %d " +
-								"ms",
-							clazz.getSimpleName(), messages.size(),
-							System.currentTimeMillis() - start));
 				}
 			},
 			_executorService);
