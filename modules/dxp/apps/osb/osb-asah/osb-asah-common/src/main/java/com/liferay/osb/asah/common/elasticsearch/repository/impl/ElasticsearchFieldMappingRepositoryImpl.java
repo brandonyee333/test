@@ -229,6 +229,7 @@ public class ElasticsearchFieldMappingRepositoryImpl
 					"dataSourceFieldNames." + dataSourceId)));
 	}
 
+	@Override
 	public List<String> findFieldNameByContextAndFieldTypeAndOwnerType(
 		String context, String fieldType, String ownerType) {
 

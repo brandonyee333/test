@@ -64,6 +64,7 @@ public class ActivitiesNaniteTest
 	implements OSBAsahStreamCuratorSpringTestContext {
 
 	@BeforeEach
+	@Override
 	public void setUp() {
 		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource();
 

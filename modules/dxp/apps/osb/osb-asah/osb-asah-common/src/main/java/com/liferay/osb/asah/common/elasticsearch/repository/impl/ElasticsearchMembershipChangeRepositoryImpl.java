@@ -88,6 +88,7 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 		);
 	}
 
+	@Override
 	public List<MembershipChange>
 		searchLastByModifiedDateAndIndividualSegmentId(
 			@Nullable Date fromModifiedDate, boolean includeAnonymousUsers,

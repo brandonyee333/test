@@ -53,10 +53,12 @@ public class OSBAsahCachingConfigurerSupportTest
 
 	private class Math {
 
+		@SuppressWarnings("unused")
 		public Double multiplyExact(Integer number1, Long number2) {
 			return (double)(number1 * number2);
 		}
 
+		@SuppressWarnings("unused")
 		public Double multiplyExact(Long number1, Integer number2) {
 			return (double)(number1 * number2);
 		}

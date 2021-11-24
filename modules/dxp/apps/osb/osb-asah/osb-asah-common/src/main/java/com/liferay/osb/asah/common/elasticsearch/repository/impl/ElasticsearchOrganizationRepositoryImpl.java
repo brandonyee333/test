@@ -71,6 +71,7 @@ public class ElasticsearchOrganizationRepositoryImpl
 				)));
 	}
 
+	@Override
 	public List<Organization> findByDataSourceIdAndOrganizationPKIn(
 		Long dataSourceId, Collection<Long> organizationPKs) {
 

@@ -199,6 +199,7 @@ public class ElasticsearchIndividualRepositoryImpl
 			_getCollectionName(), boolQueryBuilder);
 	}
 
+	@Override
 	public long countByFieldNamesAndQueryAndSegmentId(
 		List<String> fieldNames, @Nullable String query,
 		@Nullable Long segmentId) {
