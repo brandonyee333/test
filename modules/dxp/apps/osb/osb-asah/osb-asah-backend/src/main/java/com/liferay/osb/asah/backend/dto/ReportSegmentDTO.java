@@ -79,7 +79,7 @@ public class ReportSegmentDTO {
 		return _includeAnonymousUsers;
 	}
 
-	private Date _createDate;
+	private final Date _createDate;
 	private final String _id;
 	private final Boolean _includeAnonymousUsers;
 	private final Long _individualCount;
