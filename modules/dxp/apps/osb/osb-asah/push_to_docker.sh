@@ -63,17 +63,7 @@ function build_docker_image {
 		echo "COPY ./build/europe_west3_gcp_credentials.json europe_west3_gcp_credentials.json" >> ${file_name}/Dockerfile
 		echo "COPY ./build/southamerica_east1_gcp_credentials.json southamerica_east1_gcp_credentials.json" >> ${file_name}/Dockerfile
 		echo "COPY ./build/us_west1_gcp_credentials.json us_west1_gcp_credentials.json" >> ${file_name}/Dockerfile
-
 		echo "" >> ${file_name}/Dockerfile
-
-		if [ ${ASAH_ENVIRONMENT_NAME} == "prod" ]
-		then
-			echo "ENV OSB_FARO_FRONTEND_URL=https://analytics.liferay.com" >> ${file_name}/Dockerfile
-		elif [ ${ASAH_ENVIRONMENT_NAME} == "uat" ]
-		then
-			echo "ENV OSB_FARO_FRONTEND_URL=https://analytics-uat.liferay.com" >> ${file_name}/Dockerfile
-		fi
-
 		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
 	elif [ ${file_name} == osb-asah-elasticsearch-data-node ] ||
 		   [ ${file_name} == osb-asah-elasticsearch-master-node ]
@@ -98,13 +88,6 @@ function build_docker_image {
 }
 
 function check_repository {
-if [ ! "$(git rev-list -n 1 $PREVIOUS_GIT_HASH)" ]
-	then
-		echo "The previous Git hash is invalid.";
-
-		exit
-	fi
-
 	if [ ! -f ~/.asah/client.zip ]
 	then
 		echo "${HOME}/.asah/client.zip does not exist.";
@@ -210,16 +193,9 @@ function generate_wedeploy_profiles {
 
 		generate_wedeploy_profile ${profile_name} ${service_name} ${file_path}
 
-		if [ ${profile_name} != "multitenant" ] ||
-		   [ ! ${PREVIOUS_GIT_HASH} ]
+		if [ ${profile_name} != "multitenant" ] &&
+		   [ ${profile_name} != "staging" ]
 		then
-			continue;
-		fi
-
-		if [ $(git diff ${PREVIOUS_GIT_HASH} ${service_name} | wc -l) -gt 0 ]
-		then
-			generate_wedeploy_profile ${profile_name}-upgrade ${service_name} ${file_path}
-
 			continue;
 		fi
 
@@ -227,27 +203,19 @@ function generate_wedeploy_profiles {
 		then
 			continue;
 		fi
-
-		local file_content=$(<${service_name}/build.gradle)
-
-		if [ $(git diff ${PREVIOUS_GIT_HASH} osb-asah-common | wc -l) -gt 0 ] &&
-		   [[ ${file_content} == *\":dxp:apps:osb:osb-asah:osb-asah-common\"* ]]
-		then
-			generate_wedeploy_profile ${profile_name}-upgrade ${service_name} ${file_path}
-		fi
 	done
 
 	git add .wedeploy_profiles
 
-	git commit -m "Generate WeDeploy profiles at $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}-${ASAH_ENVIRONMENT_NAME}" .wedeploy_profiles
+	git commit -m "Generate WeDeploy profiles at $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}" .wedeploy_profiles
 }
 
 function generate_tag {
-	git tag $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}-${ASAH_ENVIRONMENT_NAME} HEAD
+	git tag $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH} HEAD
 }
 
 function get_docker_image_tag {
-	echo "liferaycloud/com-liferay-osb-asah-private:${1}-$(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}-${ASAH_ENVIRONMENT_NAME}"
+	echo "liferaycloud/com-liferay-osb-asah-private:${1}-$(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}"
 }
 
 function gradlew {
@@ -276,7 +244,7 @@ function main {
 function push_to_github {
 	git push origin
 	git push upstream
-	git push upstream $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}-${ASAH_ENVIRONMENT_NAME}
+	git push upstream $(date "${CURRENT_DATE}" +'%Y%m%d')-${GIT_HASH}
 }
 
 function sed {
@@ -288,20 +256,7 @@ function sed {
 	fi
 }
 
-if [ "$#" -ne 2 ]
-then
-	echo "Usage: push_to_docker [previous Git hash] [environment]"
-	exit 1
-elif [ ${2} != "prod" ] && [ ${2} != "uat" ]
-then
-	echo "Environment must be \"prod\" or \"uat\"."
-
-	exit 1
-fi
-
 CURRENT_DATE=$(date)
 GIT_HASH=$(git rev-parse --short=7 HEAD)
-PREVIOUS_GIT_HASH=${1}
-ASAH_ENVIRONMENT_NAME=${2}
 
 main
