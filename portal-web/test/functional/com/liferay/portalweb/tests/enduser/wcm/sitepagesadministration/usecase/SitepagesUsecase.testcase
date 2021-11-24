@@ -1037,8 +1037,10 @@ definition {
 			userName = "Test Test");
 	}
 
+	@description = "LPS-76981 - When editing a Link to URL type page Cancel button will not redirect to the URL."
 	@priority = "5"
 	test WebContentAdministrationSitesPageTypes {
+		property custom.properties = "redirect.url.ips.allowed=";
 		property testray.component.names = "Training";
 
 		var portalURL = PropsUtil.get("portal.url");
@@ -1069,6 +1071,16 @@ definition {
 			pageTypeURL = "https://www.google.com/",
 			siteName = "Page Type Test Site Name",
 			sitePageType = "Link to URL");
+
+		SitePageNavigator.gotoEditPage(page = "Link to URL");
+
+		PortletEntry.inputName(name = "Edit Link to URL Page");
+
+		AssertClick(
+			locator1 = "Button#CANCEL",
+			value1 = "Cancel");
+
+		AssertLocation(value1 = "${portalURL}/web/page-type-test-site-name");
 
 		Navigator.gotoSitePage(
 			pageName = "Blank Page",
