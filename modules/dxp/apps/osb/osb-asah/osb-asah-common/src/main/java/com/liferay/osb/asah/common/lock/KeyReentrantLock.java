@@ -39,7 +39,7 @@ public class KeyReentrantLock {
 		).expireAfterAccess(
 			10, TimeUnit.MINUTES
 		).maximumSize(
-			100000
+			1000000
 		).build();
 
 }
