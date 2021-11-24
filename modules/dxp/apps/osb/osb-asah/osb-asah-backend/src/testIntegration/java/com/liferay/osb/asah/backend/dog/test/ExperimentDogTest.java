@@ -197,8 +197,7 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 			3L);
 
 		Assertions.assertEquals(2, experimentMetric.getElapsedDays(), 0.0);
-		Assertions.assertEquals(
-			Long.valueOf(12), experimentMetric.getEstimatedDaysLeft());
+		Assertions.assertEquals(12, experimentMetric.getEstimatedDaysLeft());
 
 		List<ExperimentVariantMetric> experimentVariantMetrics =
 			new ArrayList<>(experimentMetric.getExperimentVariantMetrics());
@@ -353,7 +352,7 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 		Long totalSessions = _experimentDog.getExperimentSessions(1L);
 
 		Assertions.assertNotNull(totalSessions);
-		Assertions.assertEquals(9L, totalSessions.longValue());
+		Assertions.assertEquals(9L, totalSessions);
 	}
 
 	@ElasticsearchIndex(
@@ -366,13 +365,13 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 			1L, "1");
 
 		Assertions.assertNotNull(variantUniqueVisitors1);
-		Assertions.assertEquals(3L, variantUniqueVisitors1.longValue());
+		Assertions.assertEquals(3L, variantUniqueVisitors1);
 
 		Long variantUniqueVisitors2 = _experimentDog.getVariantUniqueVisitors(
 			1L, "2");
 
 		Assertions.assertNotNull(variantUniqueVisitors2);
-		Assertions.assertEquals(3L, variantUniqueVisitors2.longValue());
+		Assertions.assertEquals(3L, variantUniqueVisitors2);
 	}
 
 	private void _assertExperimentVariantMetric(

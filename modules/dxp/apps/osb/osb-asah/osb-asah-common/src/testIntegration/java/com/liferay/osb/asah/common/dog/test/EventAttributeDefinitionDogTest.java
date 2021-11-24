@@ -182,7 +182,7 @@ public class EventAttributeDefinitionDogTest
 	@Test
 	public void testCountEventAttributeDefinitions() {
 		Assertions.assertEquals(
-			Long.valueOf(30),
+			30,
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
 				null, null, EventAttributeDefinition.Type.LOCAL));
 	}
@@ -190,7 +190,7 @@ public class EventAttributeDefinitionDogTest
 	@Test
 	public void testCountEventAttributeDefinitionsWithKeyword() {
 		Assertions.assertEquals(
-			Long.valueOf(2),
+			2,
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
 				null, "file", EventAttributeDefinition.Type.LOCAL));
 	}

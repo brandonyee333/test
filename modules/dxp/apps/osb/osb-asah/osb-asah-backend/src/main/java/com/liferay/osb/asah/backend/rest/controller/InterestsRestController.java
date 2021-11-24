@@ -197,10 +197,12 @@ public class InterestsRestController
 		if (expandParts.contains("interest-aggregation-last-30-days")) {
 			return 30;
 		}
-		else if (expandParts.contains("interest-aggregation-last-60-days")) {
+
+		if (expandParts.contains("interest-aggregation-last-60-days")) {
 			return 60;
 		}
-		else if (expand.contains("interest-aggregation-last-90-days")) {
+
+		if (expand.contains("interest-aggregation-last-90-days")) {
 			return 90;
 		}
 

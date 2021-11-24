@@ -63,7 +63,7 @@ public class ReportRestControllerTest
 		Assertions.assertNotNull(reportAccountDTO);
 
 		Assertions.assertEquals(
-			Long.valueOf(12), reportAccountDTO.getActiveIndividualsCount());
+			12, reportAccountDTO.getActiveIndividualsCount());
 		Assertions.assertEquals(
 			"2019-10-16T21:25:31.053Z",
 			DateUtil.toUTCString(reportAccountDTO.getCreateDate()));
@@ -71,8 +71,7 @@ public class ReportRestControllerTest
 			"2019-10-16T21:26:31.053Z",
 			DateUtil.toUTCString(reportAccountDTO.getModifiedDate()));
 		Assertions.assertEquals("379649798552539340", reportAccountDTO.getId());
-		Assertions.assertEquals(
-			Long.valueOf(13), reportAccountDTO.getIndividualCount());
+		Assertions.assertEquals(13, reportAccountDTO.getIndividualCount());
 	}
 
 	@ElasticsearchIndex(

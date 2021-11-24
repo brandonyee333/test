@@ -127,8 +127,7 @@ public class ExperimentsRestControllerTest
 		ExperimentDTO actualExperimentDTO =
 			_experimentsRestController.postExperiment(expectedExperimentDTO);
 
-		Assertions.assertEquals(
-			Long.valueOf(12345), actualExperimentDTO.getChannelId());
+		Assertions.assertEquals(12345, actualExperimentDTO.getChannelId());
 
 		Assertions.assertNotNull(actualExperimentDTO.getId());
 		Assertions.assertEquals(

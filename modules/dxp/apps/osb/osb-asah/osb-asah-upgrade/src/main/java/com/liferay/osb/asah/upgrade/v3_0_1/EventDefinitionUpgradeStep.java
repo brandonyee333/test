@@ -60,12 +60,10 @@ public class EventDefinitionUpgradeStep implements UpgradeStep {
 					}
 				}
 			}
-			else {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"There is no event definition with name " +
-							defaultEventDefinitionName);
-				}
+			else if (_log.isDebugEnabled()) {
+				_log.debug(
+					"There is no event definition with name " +
+						defaultEventDefinitionName);
 			}
 		}
 	}

@@ -70,7 +70,7 @@ public class EventDogTest
 		Assertions.assertEquals("Page", event.getApplicationId());
 		Assertions.assertEquals(channel.getId(), event.getChannelId());
 		Assertions.assertEquals(date, event.getCreateDate());
-		Assertions.assertEquals(Long.valueOf(123456), event.getDataSourceId());
+		Assertions.assertEquals(123456, event.getDataSourceId());
 		Assertions.assertEquals(date, event.getEventDate());
 		Assertions.assertEquals(
 			eventDefinition.getId(), event.getEventDefinitionId());
@@ -234,15 +234,13 @@ public class EventDogTest
 			Collections.emptySet(), date, eventDefinition.getId(), 1L,
 			"sessionId", "abcdef");
 
-		Assertions.assertEquals(
-			Long.valueOf(1), originalEvent.getIndividualId());
+		Assertions.assertEquals(1, originalEvent.getIndividualId());
 
 		_eventDog.updateEventsIndividualId(123456L, 2L, "abcdef");
 
 		Event updatedEvent = _eventDog.fetchEvent(originalEvent.getId());
 
-		Assertions.assertEquals(
-			updatedEvent.getIndividualId(), Long.valueOf(2));
+		Assertions.assertEquals(updatedEvent.getIndividualId(), 2);
 	}
 
 	@Autowired

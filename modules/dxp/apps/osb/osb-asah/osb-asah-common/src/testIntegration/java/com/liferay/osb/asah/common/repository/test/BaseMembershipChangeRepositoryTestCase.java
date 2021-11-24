@@ -195,9 +195,7 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 			));
 
 		for (MembershipChange membershipChange : membershipChanges) {
-			Long individualsCount = membershipChange.getIndividualsCount();
-
-			Assertions.assertEquals(5L, individualsCount.longValue());
+			Assertions.assertEquals(5L, membershipChange.getIndividualsCount());
 		}
 	}
 

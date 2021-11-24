@@ -775,8 +775,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			_individualRepository.findByFieldNamesAndQueryAndSegmentId(
 				fieldNames, query, segmentId, pageRequest);
 
-		return ListUtil.map(
-			individuals, individual -> _populateIndividual(individual));
+		return ListUtil.map(individuals, this::_populateIndividual);
 	}
 
 	public List<Individual> getIndividualsBySegmentId(Long segmentId) {
@@ -1134,8 +1133,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			}
 			else {
 				individual.setFields(
-					new HashSet<Field>(
-						individualIdByField.get(individual.getId())));
+					new HashSet<>(individualIdByField.get(individual.getId())));
 
 				individual.setModifiedDate(new Date());
 

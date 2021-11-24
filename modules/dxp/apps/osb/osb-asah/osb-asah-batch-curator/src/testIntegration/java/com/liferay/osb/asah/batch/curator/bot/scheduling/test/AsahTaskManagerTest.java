@@ -207,8 +207,7 @@ public class AsahTaskManagerTest
 			new String[] {"DataControlNanite"},
 			asahTaskRunnable.getNaniteClassNames());
 		Assertions.assertEquals(
-			Long.valueOf(450553576847486530L),
-			asahTaskRunnable.getAsahTaskId());
+			450553576847486530L, asahTaskRunnable.getAsahTaskId());
 		Assertions.assertEquals("test", asahTaskRunnable.getProjectId());
 		Assertions.assertFalse(asahTaskRunnable.isForce());
 	}

@@ -64,10 +64,8 @@ public class FormAssetMetricDogTest
 		HistogramMetric lastHistogramMetric = histogramMetrics.get(
 			histogramMetrics.size() - 1);
 
-		Assertions.assertEquals(
-			Double.valueOf(7), lastHistogramMetric.getPreviousValue());
-		Assertions.assertEquals(
-			Double.valueOf(4), lastHistogramMetric.getValue());
+		Assertions.assertEquals(7, lastHistogramMetric.getPreviousValue());
+		Assertions.assertEquals(4, lastHistogramMetric.getValue());
 	}
 
 	@Autowired

@@ -114,12 +114,10 @@ public class OrganizationDogTest
 			dxpRawOrganizationJSONObject.getString("nameTreePath"),
 			organization.getNameTreePath());
 		Assertions.assertEquals(
-			Long.valueOf(
-				dxpRawOrganizationJSONObject.getLong("organizationId")),
+			dxpRawOrganizationJSONObject.getLong("organizationId"),
 			organization.getOrganizationPK());
 		Assertions.assertEquals(
-			Long.valueOf(
-				dxpRawOrganizationJSONObject.getLong("parentOrganizationId")),
+			dxpRawOrganizationJSONObject.getLong("parentOrganizationId"),
 			organization.getParentOrganizationPK());
 		Assertions.assertEquals(
 			dxpRawOrganizationJSONObject.getString("type"),

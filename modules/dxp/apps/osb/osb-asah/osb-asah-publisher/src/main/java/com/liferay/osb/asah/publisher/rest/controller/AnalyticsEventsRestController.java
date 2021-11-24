@@ -210,11 +210,8 @@ public class AnalyticsEventsRestController {
 					Channel.ANALYTICS_EVENTS_MESSAGE,
 					analyticsEventsMessage.toJSON());
 			}
-			else {
-				if (analyticsEventsMessageId != null) {
-					_analyticsEventMessageIds.invalidate(
-						analyticsEventsMessageId);
-				}
+			else if (analyticsEventsMessageId != null) {
+				_analyticsEventMessageIds.invalidate(analyticsEventsMessageId);
 			}
 
 			if (eventsSize != events.size()) {

@@ -194,7 +194,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 			pageable.getOffset()
 		).fetch(
 		).map(
-			record -> record.value1()
+			Record1::value1
 		);
 	}
 

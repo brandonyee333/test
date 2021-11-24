@@ -296,7 +296,7 @@ public class EventDefinitionDogTest
 	@Test
 	public void testCountEventDefinitionsWithKeyword() {
 		Assertions.assertEquals(
-			Long.valueOf(5),
+			5,
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, "page", EventDefinition.Type.DEFAULT));
 	}

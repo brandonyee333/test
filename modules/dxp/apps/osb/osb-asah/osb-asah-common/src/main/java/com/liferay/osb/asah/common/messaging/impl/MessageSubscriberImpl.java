@@ -94,12 +94,10 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 							pubsubMessage.getMessageId(),
 						pubsubMessage.getMessageId());
 				}
-				else {
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							"Duplicate Message ID: " +
-								pubsubMessage.getMessageId());
-					}
+				else if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Duplicate Message ID: " +
+							pubsubMessage.getMessageId());
 				}
 			}
 

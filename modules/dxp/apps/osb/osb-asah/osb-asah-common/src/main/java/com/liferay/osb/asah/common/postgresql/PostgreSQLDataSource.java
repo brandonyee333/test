@@ -68,8 +68,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 	@Override
 	protected DataSource determineTargetDataSource() {
 		return _resolvedDataSources.computeIfAbsent(
-			determineCurrentLookupKey(),
-			key -> resolveSpecifiedDataSource(key));
+			determineCurrentLookupKey(), this::resolveSpecifiedDataSource);
 	}
 
 	@Override

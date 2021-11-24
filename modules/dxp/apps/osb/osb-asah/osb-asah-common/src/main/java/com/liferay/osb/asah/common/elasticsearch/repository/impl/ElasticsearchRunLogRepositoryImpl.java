@@ -149,7 +149,7 @@ public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
 						_getCollectionName(),
 						searchSourceBuilder -> _setSearchSourceBuilderPage(
 							pageable, searchSourceBuilder)))),
-			pageable, () -> count());
+			pageable, this::count);
 	}
 
 	@Override

@@ -103,8 +103,7 @@ public class EventsByUserSessionDataFetcherTest
 					}
 				});
 
-		Assertions.assertEquals(
-			Integer.valueOf(2), eventsByUserSessionDTO.getTotalEvents());
+		Assertions.assertEquals(2, eventsByUserSessionDTO.getTotalEvents());
 
 		List<UserSessionDTO> userSessionDTOs =
 			eventsByUserSessionDTO.getUserSessionDTOs();

@@ -121,7 +121,7 @@ public abstract class BaseInterestRepositoryTestCase
 	@Test
 	public void testDeleteByOwnerIdAndOwnerType() {
 		_interestRepository.deleteByOwnerIdAndOwnerType(
-			Long.valueOf(374790572703144534L), "individual");
+			374790572703144534L, "individual");
 
 		Assertions.assertEquals(3, _interestRepository.count());
 	}

@@ -81,7 +81,7 @@ public class EventRepositoryTest
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
 		Assertions.assertEquals(
-			Integer.valueOf(3),
+			3,
 			_eventRepository.countEvents(
 				1L, 1L, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), "UTC"));
@@ -93,7 +93,7 @@ public class EventRepositoryTest
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
 		Assertions.assertEquals(
-			Integer.valueOf(1),
+			1,
 			_eventRepository.countEvents(
 				1L, 1L, "form", timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), "UTC"));
@@ -762,7 +762,7 @@ public class EventRepositoryTest
 
 		Iterator<Integer> iterator = values.iterator();
 
-		Assertions.assertEquals(Integer.valueOf(4), iterator.next());
+		Assertions.assertEquals(4, iterator.next());
 	}
 
 	@SQLResource(
@@ -882,7 +882,7 @@ public class EventRepositoryTest
 
 		Iterator<Integer> iterator = values.iterator();
 
-		Assertions.assertEquals(Integer.valueOf(2), iterator.next());
+		Assertions.assertEquals(2, iterator.next());
 	}
 
 	@SQLResource(

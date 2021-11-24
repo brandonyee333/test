@@ -399,7 +399,7 @@ public class ElasticsearchAssetRepositoryImpl
 		Stream<? extends Terms.Bucket> stream = buckets.stream();
 
 		return stream.map(
-			bucket -> bucket.getKeyAsString()
+			Terms.Bucket::getKeyAsString
 		).collect(
 			Collectors.toList()
 		);

@@ -67,8 +67,7 @@ public class ExperimentMetricDogTest
 
 		Assertions.assertEquals(25.42, experimentMetric.getCompletion(), 0.1D);
 
-		Assertions.assertEquals(
-			Long.valueOf(18), experimentMetric.getEstimatedDaysLeft());
+		Assertions.assertEquals(18, experimentMetric.getEstimatedDaysLeft());
 	}
 
 	@ElasticsearchIndex(
@@ -104,8 +103,7 @@ public class ExperimentMetricDogTest
 
 		Assertions.assertEquals(61.3, experimentMetric.getCompletion(), 0.1D);
 
-		Assertions.assertEquals(
-			Long.valueOf(18), experimentMetric.getEstimatedDaysLeft());
+		Assertions.assertEquals(18, experimentMetric.getEstimatedDaysLeft());
 	}
 
 	private void _mockVariantData(

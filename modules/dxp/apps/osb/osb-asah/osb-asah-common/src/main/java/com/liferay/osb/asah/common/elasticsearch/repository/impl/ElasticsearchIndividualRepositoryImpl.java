@@ -555,7 +555,7 @@ public class ElasticsearchIndividualRepositoryImpl
 						_getCollectionName(),
 						searchSourceBuilder -> _setSearchSourceBuilderPage(
 							pageable, searchSourceBuilder)))),
-			pageable, () -> count());
+			pageable, this::count);
 	}
 
 	@Override

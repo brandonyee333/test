@@ -45,8 +45,7 @@ public class InterestDogTest
 	public void testGetInterest() {
 		Interest interest = _interestDog.getInterest(635452168436521350L);
 
-		Assertions.assertEquals(
-			Long.valueOf(635452168436521350L), interest.getId());
+		Assertions.assertEquals(635452168436521350L, interest.getId());
 
 		Assertions.assertEquals("sales", interest.getName());
 	}

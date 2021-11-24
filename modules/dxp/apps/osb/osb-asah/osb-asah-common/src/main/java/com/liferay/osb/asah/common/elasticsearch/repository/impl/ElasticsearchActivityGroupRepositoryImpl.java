@@ -151,7 +151,7 @@ public class ElasticsearchActivityGroupRepositoryImpl
 						_getCollectionName(),
 						searchSourceBuilder -> _setSearchSourceBuilderPage(
 							pageable, searchSourceBuilder)))),
-			pageable, () -> count());
+			pageable, this::count);
 	}
 
 	@Override
