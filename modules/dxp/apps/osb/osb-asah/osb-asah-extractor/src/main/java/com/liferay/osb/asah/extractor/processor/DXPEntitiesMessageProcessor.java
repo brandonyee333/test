@@ -505,9 +505,9 @@ public class DXPEntitiesMessageProcessor {
 						exception);
 				}
 				finally {
-					reentrantLock.unlock();
-
 					_messageSubscriber.sendAcknowledgements(messages);
+
+					reentrantLock.unlock();
 
 					_semaphore.release();
 

@@ -436,8 +436,6 @@ public class UserSessionNanite implements Nanite {
 			else {
 				_updateUserSession(analyticsEvents, userSessionJSONObject);
 			}
-
-			_messageSubscriber.sendAcknowledgements(messages);
 		}
 		finally {
 			reentrantLock.unlock();
@@ -527,6 +525,8 @@ public class UserSessionNanite implements Nanite {
 						exception);
 				}
 				finally {
+					_messageSubscriber.sendAcknowledgements(messages);
+
 					_semaphore.release();
 				}
 

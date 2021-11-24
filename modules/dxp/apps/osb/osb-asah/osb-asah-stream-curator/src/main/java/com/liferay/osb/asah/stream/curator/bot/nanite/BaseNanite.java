@@ -217,7 +217,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 			getCollectionName(), ModelMapper.toJSONArray(models));
 	}
 
-	protected <T> void sendAckIds(List<Message<T>> messages) {
+	protected <T> void sendAcknowledgments(List<Message<T>> messages) {
 		MessageSubscriber messageSubscriber = getMessageSubscriber();
 
 		messageSubscriber.sendAcknowledgements(messages);
@@ -362,8 +362,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 					saveModels(getModels(messages));
 
-					sendAckIds(messages);
-
 					Log log = getLog();
 
 					if (log.isInfoEnabled()) {
@@ -382,6 +380,8 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 					log.error(exception.getMessage(), exception);
 				}
 				finally {
+					sendAcknowledgments(messages);
+
 					_semaphore.release();
 				}
 			},

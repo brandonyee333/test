@@ -387,9 +387,9 @@ public class IndividualNanite implements Nanite {
 					}
 				}
 				finally {
-					reentrantLock.unlock();
-
 					_messageSubscriber.sendAcknowledgements(messages);
+
+					reentrantLock.unlock();
 
 					_semaphore.release();
 				}

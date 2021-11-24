@@ -198,8 +198,6 @@ public class CustomAssetDashboardNanite implements Nanite {
 						this::_addCustomAssetDashboards
 					);
 
-					_messageSubscriber.sendAcknowledgements(messages);
-
 					if (_log.isInfoEnabled()) {
 						Class<?> clazz = getClass();
 
@@ -214,6 +212,8 @@ public class CustomAssetDashboardNanite implements Nanite {
 					_log.error(exception.getMessage(), exception);
 				}
 				finally {
+					_messageSubscriber.sendAcknowledgements(messages);
+
 					reentrantLock.unlock();
 
 					_semaphore.release();

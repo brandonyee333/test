@@ -467,8 +467,9 @@ public class AnalyticsEventsMessageProcessor {
 						exception);
 				}
 				finally {
-					_semaphore.release();
 					_messageSubscriber.sendAcknowledgements(ackMessages);
+
+					_semaphore.release();
 				}
 
 				if (_log.isInfoEnabled()) {
