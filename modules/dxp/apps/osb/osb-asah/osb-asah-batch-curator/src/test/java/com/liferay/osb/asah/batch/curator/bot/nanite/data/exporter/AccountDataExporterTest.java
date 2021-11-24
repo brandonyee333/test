@@ -21,7 +21,7 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 
 import java.io.ByteArrayOutputStream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
