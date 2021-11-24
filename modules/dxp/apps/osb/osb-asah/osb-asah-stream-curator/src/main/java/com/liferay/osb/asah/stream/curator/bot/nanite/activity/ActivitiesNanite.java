@@ -752,6 +752,7 @@ public class ActivitiesNanite implements Nanite {
 				}
 				finally {
 					_messageSubscriber.sendAcknowledgements(ackMessages);
+
 					_semaphore.release();
 				}
 

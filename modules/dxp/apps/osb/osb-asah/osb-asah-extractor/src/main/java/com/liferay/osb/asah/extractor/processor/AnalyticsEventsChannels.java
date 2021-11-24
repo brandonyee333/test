@@ -221,7 +221,7 @@ public class AnalyticsEventsChannels {
 			if (Objects.equals(
 					analyticsEvent.getApplicationId(), "WebContent") &&
 				Objects.equals(
-					 analyticsEvent.getEventId(), "webContentViewed")) {
+					analyticsEvent.getEventId(), "webContentViewed")) {
 
 				return true;
 			}
