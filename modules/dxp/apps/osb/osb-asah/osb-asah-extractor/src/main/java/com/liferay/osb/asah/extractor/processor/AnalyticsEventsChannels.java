@@ -220,10 +220,8 @@ public class AnalyticsEventsChannels {
 
 			if (Objects.equals(
 					analyticsEvent.getApplicationId(), "WebContent") &&
-				(Objects.equals(
-					analyticsEvent.getEventId(), "webContentClicked") ||
-				 Objects.equals(
-					 analyticsEvent.getEventId(), "webContentViewed"))) {
+				Objects.equals(
+					 analyticsEvent.getEventId(), "webContentViewed")) {
 
 				return true;
 			}

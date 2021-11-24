@@ -91,30 +91,6 @@ public class JournalNanite extends BaseNanite<Journal> {
 	}
 
 	@Override
-	protected List<Message<AnalyticsEvent>> pullAnalyticsEvents()
-		throws Exception {
-
-		List<Message<AnalyticsEvent>> messages = super.pullAnalyticsEvents();
-
-		Stream<Message<AnalyticsEvent>> stream = messages.stream();
-
-		super.sendAckIds(
-			stream.filter(
-				message -> _isWebContentClicked(message.getObject())
-			).collect(
-				Collectors.toList()
-			));
-
-		stream = messages.stream();
-
-		return stream.filter(
-			message -> !_isWebContentClicked(message.getObject())
-		).collect(
-			Collectors.toList()
-		);
-	}
-
-	@Override
 	protected void setModelCustomProperties(
 		AnalyticsEvent analyticsEvent, Journal journal) {
 
@@ -135,16 +111,6 @@ public class JournalNanite extends BaseNanite<Journal> {
 
 			journal.setAssetId(eventProperties.get("articleId"));
 		}
-	}
-
-	private boolean _isWebContentClicked(AnalyticsEvent analyticsEvent) {
-		if (Objects.equals(analyticsEvent.getApplicationId(), "WebContent") &&
-			Objects.equals(analyticsEvent.getEventId(), "webContentClicked")) {
-
-			return true;
-		}
-
-		return false;
 	}
 
 	private void _setRatingScore(Journal oldJournal, Journal newJournal) {
