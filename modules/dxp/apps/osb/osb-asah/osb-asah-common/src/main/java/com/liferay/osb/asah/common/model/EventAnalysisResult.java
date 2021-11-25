@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * @author Matthew Kong
  */
-public class EventAnalysis {
+public class EventAnalysisResult {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -28,17 +28,19 @@ public class EventAnalysis {
 			return true;
 		}
 
-		if (!(obj instanceof EventAnalysis)) {
+		if (!(obj instanceof EventAnalysisResult)) {
 			return false;
 		}
 
-		EventAnalysis eventAnalysis = (EventAnalysis)obj;
+		EventAnalysisResult eventAnalysisResult = (EventAnalysisResult)obj;
 
-		if (Objects.equals(_breakdownItems, eventAnalysis._breakdownItems) &&
-			Objects.equals(_count, eventAnalysis._count) &&
-			Objects.equals(_page, eventAnalysis._page) &&
-			Objects.equals(_previousValue, eventAnalysis._previousValue) &&
-			Objects.equals(_value, eventAnalysis._value)) {
+		if (Objects.equals(
+				_breakdownItems, eventAnalysisResult._breakdownItems) &&
+			Objects.equals(_count, eventAnalysisResult._count) &&
+			Objects.equals(_page, eventAnalysisResult._page) &&
+			Objects.equals(
+				_previousValue, eventAnalysisResult._previousValue) &&
+			Objects.equals(_value, eventAnalysisResult._value)) {
 
 			return true;
 		}
