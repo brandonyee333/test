@@ -60,6 +60,7 @@ public abstract class BaseSegmentRepositoryTestCase
 		segment1.setChannelId(channel1.getId());
 
 		segment1.setActivitiesCount(1L);
+		segment1.setAuthorName("Test Test");
 		segment1.setCreateDate(new Date());
 		segment1.setFilter("(channelId eq '1')");
 		segment1.setLastActivityDate(new Date());
@@ -77,6 +78,7 @@ public abstract class BaseSegmentRepositoryTestCase
 
 		segment2.setChannelId(channel2.getId());
 
+		segment2.setAuthorName("Marcos Martins");
 		segment2.setCreateDate(new Date());
 		segment2.setFilter("(channelId eq '2')");
 		segment2.setName("Segment 2");
@@ -114,6 +116,7 @@ public abstract class BaseSegmentRepositoryTestCase
 
 		Segment segment3 = new Segment();
 
+		segment3.setAuthorName("Test Test");
 		segment3.setChannelId(channel2.getId());
 		segment3.setCreateDate(new Date());
 		segment3.setFilter(
@@ -248,6 +251,27 @@ public abstract class BaseSegmentRepositoryTestCase
 			Collections.singleton(_segment3Id));
 
 		Assertions.assertEquals(0, segments.size(), segments.toString());
+	}
+
+	@Test
+	public void testSearchSegmentsOrderByAuthorName() {
+		List<Segment> segments = _segmentRepository.searchSegments(
+			Arrays.asList(1L, 2L), FilterHelper.EMPTY,
+			PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "author/name")));
+
+		Assertions.assertEquals(3, segments.size(), segments.toString());
+
+		Segment segment = segments.get(0);
+
+		Assertions.assertEquals("Marcos Martins", segment.getAuthorName());
+
+		segments = _segmentRepository.searchSegments(
+			Arrays.asList(1L, 2L), FilterHelper.EMPTY,
+			PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "author/name")));
+
+		segment = segments.get(2);
+
+		Assertions.assertEquals("Marcos Martins", segment.getAuthorName());
 	}
 
 	@Test
