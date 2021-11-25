@@ -1,0 +1,50 @@
+{
+	"data": {
+		"createEventAnalysis": {
+			"analysisType": "TOTAL",
+			"channelId": "2468",
+			"compareToPrevious": false,
+			"createdByUserId": "10",
+			"createdByUserName": "test",
+			"eventAnalysisBreakdowns": [
+				{
+					"attributeId": "23456",
+					"attributeType": "EVENT",
+					"binSize": 2000,
+					"dataType": "DURATION"
+				},
+				{
+					"attributeId": "12345",
+					"attributeType": "EVENT",
+					"dataType": "STRING"
+				}
+			],
+			"eventAnalysisFilters": [
+				{
+					"attributeId": "12345",
+					"attributeType": "EVENT",
+					"dataType": "STRING",
+					"operator": "contains",
+					"values": [
+						"test"
+					]
+				},
+				{
+					"attributeId": "23456",
+					"attributeType": "EVENT",
+					"dataType": "NUMBER",
+					"operator": "ge",
+					"values": [
+						"250"
+					]
+				}
+			],
+			"eventDefinitionId": "12345",
+			"modifiedByUserId": "10",
+			"modifiedByUserName": "test",
+			"name": "Analysis One",
+			"rangeEnd": "2021-05-12",
+			"rangeStart": "2021-05-11"
+		}
+	}
+}
