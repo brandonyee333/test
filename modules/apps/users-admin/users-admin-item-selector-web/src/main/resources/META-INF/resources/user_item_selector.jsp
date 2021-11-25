@@ -118,7 +118,7 @@ String displayStyle = userItemSelectorViewDisplayContext.getDisplayStyle();
 					var row = this.ancestor('tr');
 				</c:when>
 				<c:otherwise>
-					var row = this.ancestor('li');
+					var row = this.ancestor('dd');
 				</c:otherwise>
 			</c:choose>
 

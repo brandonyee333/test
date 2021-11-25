@@ -194,6 +194,10 @@ SearchContainer<Object> searchContainer = itemSelectorViewDescriptorRendererDisp
 						domElement = this.ancestor('tr');
 					}
 
+					if (domElement == null) {
+						domElement = this.ancestor('dd');
+					}
+
 					if (domElement != null) {
 						var itemValue = domElement.getDOM().dataset.value;
 
