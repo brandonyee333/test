@@ -348,6 +348,42 @@ type Event {
 	url: String
 }
 
+type EventAnalysis {
+	analysisType: AnalysisType
+	channelId: String
+	compareToPrevious: Boolean
+	createDate: String
+	createdByUserId: String
+	createdByUserName: String
+	eventAnalysisBreakdowns: [EventAnalysisBreakdown]
+	eventAnalysisFilters: [EventAnalysisFilter]
+	eventDefinitionId: String
+	id: String
+	modifiedDate: String
+	modifiedByUserId: String
+	modifiedByUserName: String
+	rangeEnd: String
+	rangeKey: Int
+	rangeStart: String
+}
+
+type EventAnalysisBreakdown {
+	attributeId: String
+	attributeType: String
+	binSize: Float
+	dataType: String
+	dateGrouping: String
+	sortType: String
+}
+
+type EventAnalysisFilter {
+	attributeId: String
+	attributeType: String
+	dataType: String
+	operator: String
+	values: [String]
+}
+
 type EventAnalysisResult {
 	breakdownItems: [BreakdownItem]
 	count: Int
@@ -630,6 +666,20 @@ type MutationType {
 	blockCustomEventDefinitions(
 		eventDefinitionIds: [String]!
 	): [Boolean]
+
+	createEventAnalysis(
+		analysisType: AnalysisType!
+		channelId: String!
+		compareToPrevious: Boolean!
+		eventAnalysisBreakdowns: [EventAnalysisBreakdownInput]
+		eventAnalysisFilters: [EventAnalysisFilterInput]
+		eventDefinitionId: String!
+		rangeEnd: String
+		rangeKey: Int
+		rangeStart: String
+		userId: String!
+		userName: String!
+	): EventAnalysis
 
 	createJob(
 		name: String!
