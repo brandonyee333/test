@@ -121,7 +121,7 @@ input DXPVariantSettings {
 	trafficSplit: Float!
 }
 
-input EventAnalysisBreakdown {
+input EventAnalysisBreakdownInput {
 	attributeId: String!
 	attributeType: AttributeType!
 	binSize: Float
@@ -130,7 +130,7 @@ input EventAnalysisBreakdown {
 	sortType: SortType
 }
 
-input EventAnalysisFilter {
+input EventAnalysisFilterInput {
 	attributeId: String!
 	attributeType: AttributeType!
 	dataType: EventAttributeDefinitionDataType!
@@ -944,8 +944,8 @@ type QueryType {
 		analysisType: AnalysisType!,
 		channelId: String!,
 		compareToPrevious: Boolean!,
-		eventAnalysisBreakdowns: [EventAnalysisBreakdown],
-		eventAnalysisFilters: [EventAnalysisFilter],
+		eventAnalysisBreakdowns: [EventAnalysisBreakdownInput],
+		eventAnalysisFilters: [EventAnalysisFilterInput],
 		eventDefinitionId: String!,
 		page: Int!,
 		rangeEnd: String,
