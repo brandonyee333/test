@@ -1,5 +1,6 @@
 before_cache:
     - rm -f .gradle/caches/modules-2/modules-2.lock
+    - rm -fr .gradle/caches/6.6.1/
     - rm -fr .gradle/caches/*/plugin-resolution/
 cache:
     directories:
@@ -29,7 +30,7 @@ jobs:
           before_script:
               - docker load -i docker_images/images.tar || true
               - docker-compose -f docker-compose.integration-test.yml up -d
-              - git diff --name-only ${TRAVIS_COMMIT_RANGE} | grep docker-compose.integration-test.yml; DOCKER_CHANGED=$?
+              - git diff --name-only ${TRAVIS_COMMIT_RANGE} | grep docker-compose.integration-test.yml || [ ! -f docker_images/images.tar ]; DOCKER_CHANGED=$?
               - |
                   if (( ${DOCKER_CHANGED} == 0 )); then
                      docker save $(docker images --format '{{.Repository}}:{{.Tag}}') -o docker_images/images.tar
