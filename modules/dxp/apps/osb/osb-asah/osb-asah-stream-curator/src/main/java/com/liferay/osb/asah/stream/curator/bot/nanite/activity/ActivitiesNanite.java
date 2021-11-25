@@ -778,9 +778,9 @@ public class ActivitiesNanite implements Nanite {
 						exception);
 				}
 				finally {
-					_messageSubscriber.sendAckIds(ackIds);
-
 					reentrantLock.unlock();
+
+					_messageSubscriber.sendAckIds(ackIds);
 
 					_semaphore.release();
 				}

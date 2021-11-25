@@ -496,9 +496,9 @@ public class AnalyticsEventsMessageProcessor {
 						exception);
 				}
 				finally {
-					_messageSubscriber.sendAckIds(ackIds);
-
 					reentrantLock.unlock();
+
+					_messageSubscriber.sendAckIds(ackIds);
 
 					_semaphore.release();
 				}
