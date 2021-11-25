@@ -30,6 +30,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -302,9 +304,14 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 						sortOrder = SortOrder.DESC;
 					}
 
+					String property = order.getProperty();
+
+					if (StringUtils.contains(property, "/")) {
+						property = StringUtils.replace(property, "/", ".");
+					}
+
 					searchSourceBuilder.sort(
-						SortBuilderUtil.fieldSort(
-							order.getProperty(), sortOrder));
+						SortBuilderUtil.fieldSort(property, sortOrder));
 				}
 			);
 		}
