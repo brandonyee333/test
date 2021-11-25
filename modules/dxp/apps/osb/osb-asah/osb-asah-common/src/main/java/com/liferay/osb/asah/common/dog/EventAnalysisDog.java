@@ -14,9 +14,13 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.entity.EventAnalysis;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
 import com.liferay.osb.asah.common.model.DateGrouping;
@@ -24,6 +28,7 @@ import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.EventAnalysisResult;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.EventAnalysisRepository;
 import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -32,11 +37,17 @@ import com.liferay.osb.asah.common.util.StringUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -50,6 +61,58 @@ import org.springframework.util.CollectionUtils;
  */
 @Component
 public class EventAnalysisDog {
+
+	public EventAnalysis addEventAnalysis(
+		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
+		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
+		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
+		TimeRange timeRange, Long userId, String userName) {
+
+		_validateEventAnalysisBreakdowns(eventAnalysisBreakdowns);
+
+		Date date = new Date();
+
+		EventAnalysis eventAnalysis = new EventAnalysis();
+
+		try {
+			eventAnalysis.setEventAnalysisBreakdownJSONArray(
+				JSONUtil.toJSONArray(
+					eventAnalysisBreakdowns,
+					eventAnalysisBreakdown -> _objectMapper.convertValue(
+						eventAnalysisBreakdown, JSONObject.class)));
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+
+		eventAnalysis.setChannelId(channelId);
+		eventAnalysis.setCompareToPrevious(compareToPrevious);
+		eventAnalysis.setCreateDate(date);
+		eventAnalysis.setCreatedByUserId(userId);
+		eventAnalysis.setCreatedByUserName(userName);
+		eventAnalysis.setEventAnalysisType(analysisType.name());
+		eventAnalysis.setEventDefinitionId(eventDefinitionId);
+
+		try {
+			eventAnalysis.setEventAnalysisFilterJSONArray(
+				JSONUtil.toJSONArray(
+					eventAnalysisFilters,
+					eventAnalysisFilter -> _objectMapper.convertValue(
+						eventAnalysisFilter, JSONObject.class)));
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+
+		eventAnalysis.setModifiedByUserId(userId);
+		eventAnalysis.setModifiedByUserName(userName);
+		eventAnalysis.setModifiedDate(date);
+		eventAnalysis.setRangeEnd(timeRange.getEndDate());
+		eventAnalysis.setRangeKey(timeRange.getRangeKey());
+		eventAnalysis.setRangeStart(timeRange.getStartDate());
+
+		return _eventAnalysisRepository.save(eventAnalysis);
+	}
 
 	public EventAnalysisResult getEventAnalysisResult(
 		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
@@ -422,6 +485,11 @@ public class EventAnalysisDog {
 		}
 	}
 
+	private static final Log _log = LogFactory.getLog(EventAnalysisDog.class);
+
+	@Autowired
+	private EventAnalysisRepository _eventAnalysisRepository;
+
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
 
@@ -430,6 +498,9 @@ public class EventAnalysisDog {
 
 	private final ExecutorService _executorService =
 		Executors.newFixedThreadPool(4);
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
