@@ -20,9 +20,9 @@ import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
 import com.liferay.osb.asah.common.model.DateGrouping;
-import com.liferay.osb.asah.common.model.EventAnalysis;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
+import com.liferay.osb.asah.common.model.EventAnalysisResult;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -51,7 +51,7 @@ import org.springframework.util.CollectionUtils;
 @Component
 public class EventAnalysisDog {
 
-	public EventAnalysis getEventAnalysis(
+	public EventAnalysisResult getEventAnalysisResult(
 		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
@@ -59,9 +59,9 @@ public class EventAnalysisDog {
 
 		_validateEventAnalysisBreakdowns(eventAnalysisBreakdowns);
 
-		EventAnalysis eventAnalysis = new EventAnalysis();
+		EventAnalysisResult eventAnalysisResult = new EventAnalysisResult();
 
-		eventAnalysis.setPage(page);
+		eventAnalysisResult.setPage(page);
 
 		String projectId = ProjectIdThreadLocal.getProjectId();
 
@@ -69,7 +69,7 @@ public class EventAnalysisDog {
 			() -> {
 				ProjectIdThreadLocal.setProjectId(projectId);
 
-				eventAnalysis.setValue(
+				eventAnalysisResult.setValue(
 					_getAnalysisCount(
 						analysisType, channelId, eventAnalysisFilters,
 						eventDefinitionId, timeRange));
@@ -83,7 +83,7 @@ public class EventAnalysisDog {
 					() -> {
 						ProjectIdThreadLocal.setProjectId(projectId);
 
-						eventAnalysis.setPreviousValue(
+						eventAnalysisResult.setPreviousValue(
 							_getAnalysisCount(
 								analysisType, channelId, eventAnalysisFilters,
 								eventDefinitionId,
@@ -97,20 +97,20 @@ public class EventAnalysisDog {
 				() -> {
 					ProjectIdThreadLocal.setProjectId(projectId);
 
-					eventAnalysis.setBreakdownItems(
+					eventAnalysisResult.setBreakdownItems(
 						_getBreakdownItems(
 							analysisType, channelId, compareToPrevious, 0,
-							eventAnalysis.getValue(), eventAnalysisBreakdowns,
-							eventAnalysisFilters, eventDefinitionId,
-							PageRequest.of(page, size), null,
-							eventAnalysis.getPreviousValue(), timeRange));
+							eventAnalysisResult.getValue(),
+							eventAnalysisBreakdowns, eventAnalysisFilters,
+							eventDefinitionId, PageRequest.of(page, size), null,
+							eventAnalysisResult.getPreviousValue(), timeRange));
 				},
 				_executorService),
 			CompletableFuture.runAsync(
 				() -> {
 					ProjectIdThreadLocal.setProjectId(projectId);
 
-					eventAnalysis.setCount(
+					eventAnalysisResult.setCount(
 						_getTotalPageCount(
 							channelId, eventAnalysisBreakdowns,
 							eventAnalysisFilters, eventDefinitionId,
@@ -120,7 +120,7 @@ public class EventAnalysisDog {
 
 		completableFuture.join();
 
-		return eventAnalysis;
+		return eventAnalysisResult;
 	}
 
 	private List<BreakdownItem> _createBreakdownItems(

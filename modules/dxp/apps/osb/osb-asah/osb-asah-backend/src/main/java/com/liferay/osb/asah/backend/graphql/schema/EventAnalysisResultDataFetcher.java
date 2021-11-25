@@ -18,9 +18,9 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.common.dog.EventAnalysisDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.AnalysisType;
-import com.liferay.osb.asah.common.model.EventAnalysis;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
+import com.liferay.osb.asah.common.model.EventAnalysisResult;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -36,10 +36,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "eventAnalysis", typeName = "QueryType")
-public class EventAnalysisDataFetcher extends BaseDataFetcher<EventAnalysis> {
+public class EventAnalysisResultDataFetcher
+	extends BaseDataFetcher<EventAnalysisResult> {
 
 	@Override
-	public EventAnalysis get(
+	public EventAnalysisResult get(
 		DataFetchingEnvironment environment,
 		SearchQueryContext searchQueryContext) {
 
@@ -52,7 +53,7 @@ public class EventAnalysisDataFetcher extends BaseDataFetcher<EventAnalysis> {
 			eventAnalysisFilter -> new EventAnalysisFilter(
 				(Map<String, Object>)eventAnalysisFilter));
 
-		return _eventAnalysisDog.getEventAnalysis(
+		return _eventAnalysisDog.getEventAnalysisResult(
 			AnalysisType.valueOf(environment.getArgument("analysisType")),
 			Long.valueOf(environment.getArgument("channelId")),
 			environment.getArgument("compareToPrevious"),

@@ -348,7 +348,7 @@ type Event {
 	url: String
 }
 
-type EventAnalysis {
+type EventAnalysisResult {
 	breakdownItems: [BreakdownItem]
 	count: Int
 	page: Int
@@ -952,7 +952,7 @@ type QueryType {
 		rangeKey: Int,
 		rangeStart: String,
 		size: Int!
-	): EventAnalysis
+	): EventAnalysisResult
 
 	eventAttributeDefinition(
 		displayName: String,
