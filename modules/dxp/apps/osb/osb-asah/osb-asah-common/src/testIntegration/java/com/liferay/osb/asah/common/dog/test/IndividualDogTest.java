@@ -893,6 +893,30 @@ public class IndividualDogTest
 				organizationIds.toArray(new Long[0])));
 	}
 
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_3.json"
+	)
+	@Test
+	public void testUpdateIndividualFirstEnrichmentDate() throws Exception {
+		Individual individual = _individualDog.updateIndividual(
+			null,
+			JSONUtil.put(
+				"contact",
+				JSONUtil.put(
+					"email", "john.doe@liferay.com"
+				).put(
+					"middleName", "Joseph"
+				)
+			).put(
+				"modifiedDate", System.currentTimeMillis()
+			),
+			_liferayDataSource,
+			_individualDog.getIndividual(523130384134494521L));
+
+		Assertions.assertNotNull(individual.getFirstEnrichmentDate());
+	}
+
 	@Test
 	public void testUpdateIndividualFromDifferentDataSourceIgnoresNullValue()
 		throws Exception {
