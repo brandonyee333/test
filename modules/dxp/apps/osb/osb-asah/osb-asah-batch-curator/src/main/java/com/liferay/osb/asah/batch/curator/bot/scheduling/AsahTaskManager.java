@@ -34,6 +34,8 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
@@ -69,6 +71,19 @@ public class AsahTaskManager {
 	public void executeAsahTask(AsahTask asahTask, boolean force) {
 		if (Objects.equals(
 				asahTask.getClassName(), "UpdateDynamicMembershipsNanite")) {
+
+			JSONObject contextJSONObject = asahTask.getContextJSONObject();
+
+			if (contextJSONObject != null) {
+				JSONObject individualJSONObject =
+					contextJSONObject.optJSONObject("individualJSONObject");
+
+				if (individualJSONObject != null) {
+					_asahTaskScheduler.
+						executeUpdateDynamicMembershipsNaniteAsync(
+							new AsahTaskRunnable(asahTask, this, false));
+				}
+			}
 
 			_asahTaskScheduler.executeUpdateDynamicMembershipsNanite(
 				new AsahTaskRunnable(asahTask, this, false));

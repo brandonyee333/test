@@ -25,8 +25,10 @@ import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -88,9 +91,20 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			"individualJSONObject");
 
 		if (individualJSONObject != null) {
-			_updateDynamicMembershipsForIndividual(
-				contextJSONObject.optString("filter", null),
-				individualJSONObject.getLong("id"), modifiedDate);
+			ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+				getClass(), ProjectIdThreadLocal.getProjectId(),
+				individualJSONObject.getLong("id"));
+
+			try {
+				reentrantLock.lock();
+
+				_updateDynamicMembershipsForIndividual(
+					contextJSONObject.optString("filter", null),
+					individualJSONObject.getLong("id"), modifiedDate);
+			}
+			finally {
+				reentrantLock.unlock();
+			}
 
 			return;
 		}

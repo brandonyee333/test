@@ -18,9 +18,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +51,16 @@ public class AsahTaskScheduler {
 
 		_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.execute(
 			asahTaskRunnable);
+	}
+
+	public void executeUpdateDynamicMembershipsNaniteAsync(
+		AsahTaskRunnable asahTaskRunnable) {
+
+		_semaphore.acquireUninterruptibly();
+
+		asahTaskRunnable.setSemaphore(_semaphore);
+
+		CompletableFuture.runAsync(asahTaskRunnable, _threadPoolTaskExecutor);
 	}
 
 	public Map<String, ScheduledFuture<?>> getScheduledFuturesMap() {
@@ -123,8 +135,9 @@ public class AsahTaskScheduler {
 
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
 		new HashMap<>();
+	private final Semaphore _semaphore = new Semaphore(50, true);
 	private final ExecutorService _threadPoolTaskExecutor =
-		Executors.newFixedThreadPool(10);
+		Executors.newFixedThreadPool(40);
 
 	@Autowired
 	private ThreadPoolTaskScheduler _threadPoolTaskScheduler;
