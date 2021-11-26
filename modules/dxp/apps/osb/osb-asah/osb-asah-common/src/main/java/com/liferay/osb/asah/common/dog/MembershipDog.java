@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -227,8 +228,9 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 		if (individual == null) {
 			_membershipChangeDog.addMembershipChangeForDeletedIndividual(
-				membership.getIndividualId(), individualCount,
-				knownIndividualCount, membership);
+				membership.getCreateDate(), membership.getIndividualId(),
+				individualCount, knownIndividualCount, deletionDate,
+				membership.getIndividualSegmentId());
 		}
 		else {
 			_membershipChangeDog.addMembershipChange(
@@ -237,7 +239,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 		}
 	}
 
-	public void deactivateMemberships(
+	public void deactivateMembershipByIndividuals(
 		Date deletionDate, List<Individual> individuals) {
 
 		List<Membership> memberships =
@@ -299,6 +301,57 @@ public class MembershipDog extends BaseFaroInfoDog {
 		}
 	}
 
+	public void deactivateMemberships(
+		Date deletionDate, List<Membership> memberships) {
+
+		for (Membership membership : memberships) {
+			membership.setModifiedDate(deletionDate);
+			membership.setRemovedDate(deletionDate);
+			membership.setStatus("INACTIVE");
+		}
+
+		_membershipRepository.saveAll(memberships);
+
+		Stream<Membership> stream = memberships.stream();
+
+		Map<Long, List<Membership>> membershipsMap = stream.collect(
+			Collectors.groupingBy(Membership::getIndividualSegmentId));
+
+		for (Map.Entry<Long, List<Membership>> entry :
+				membershipsMap.entrySet()) {
+
+			_individualDog.removeSegmentId(
+				_individualDog.fetchIndividuals(
+					SetUtil.map(entry.getValue(), Membership::getIndividualId)),
+				entry.getKey());
+
+			boolean includeAnonymousUsers = _segmentDog.isIncludeAnonymousUsers(
+				entry.getKey());
+
+			long knownIndividualCount = _individualDog.getKnownIndividualCount(
+				entry.getKey());
+
+			long individualCount = 0;
+
+			if (includeAnonymousUsers) {
+				individualCount = _getIndividualCount(entry.getKey());
+			}
+			else {
+				individualCount = knownIndividualCount;
+			}
+
+			_segmentDog.updateSegment(
+				individualCount, knownIndividualCount, entry.getKey());
+
+			for (Membership membership : entry.getValue()) {
+				_membershipChangeDog.addMembershipChangeForDeletedIndividual(
+					membership.getCreateDate(), membership.getIndividualId(),
+					individualCount, knownIndividualCount, deletionDate,
+					membership.getIndividualSegmentId());
+			}
+		}
+	}
+
 	public void deactivateMemberships(Date deletionDate, Long individualId) {
 		for (Membership membership :
 				_membershipRepository.findByIndividualIdAndStatus(
@@ -348,13 +401,6 @@ public class MembershipDog extends BaseFaroInfoDog {
 	public List<Long> getIndividualSegmentIds(Long individualId) {
 		return _membershipRepository.findTop20IndividualSegmentIdByIndividualId(
 			individualId);
-	}
-
-	public List<Membership> getMemberships(
-		Long individualSegmentId, String status) {
-
-		return _membershipRepository.findByIndividualSegmentIdAndStatus(
-			individualSegmentId, status);
 	}
 
 	public Map<Long, JSONObject> getMembershipsJSONObjects(
@@ -445,6 +491,13 @@ public class MembershipDog extends BaseFaroInfoDog {
 		return _membershipRepository.
 			existsByIndividualIdAndIndividualSegmentIdAndStatus(
 				individualId, individualSegmentId, "ACTIVE");
+	}
+
+	public List<Membership> searchMemberships(
+		Long individualSegmentId, Long membershipId, int size, String status) {
+
+		return _membershipRepository.searchMemberships(
+			membershipId, individualSegmentId, size, status);
 	}
 
 	private long _getIndividualCount(Long individualSegmentId) {

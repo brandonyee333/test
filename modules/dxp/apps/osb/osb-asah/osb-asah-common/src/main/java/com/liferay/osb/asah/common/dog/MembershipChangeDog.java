@@ -76,12 +76,12 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 	}
 
 	public void addMembershipChangeForDeletedIndividual(
-		Long individualId, long individualsCount, long knownIndividualsCount,
-		Membership membership) {
+		Date createDate, Long individualId, long individualsCount,
+		long knownIndividualsCount, Date modifiedDate, Long segmentId) {
 
 		MembershipChange membershipChange = new MembershipChange();
 
-		membershipChange.setJoinedDate(membership.getCreateDate());
+		membershipChange.setJoinedDate(createDate);
 		membershipChange.setIndividualDeleted(Boolean.TRUE);
 
 		Optional<MembershipChange> membershipChangeOptional =
@@ -94,7 +94,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 				individualEmail)
 		);
 
-		membershipChange.setIndividualId(membership.getIndividualId());
+		membershipChange.setIndividualId(individualId);
 
 		membershipChangeOptional.map(
 			MembershipChange::getIndividualName
@@ -103,10 +103,9 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		);
 
 		membershipChange.setIndividualsCount(individualsCount);
-		membershipChange.setIndividualSegmentId(
-			membership.getIndividualSegmentId());
+		membershipChange.setIndividualSegmentId(segmentId);
 		membershipChange.setKnownIndividualsCount(knownIndividualsCount);
-		membershipChange.setModifiedDate(membership.getModifiedDate());
+		membershipChange.setModifiedDate(modifiedDate);
 		membershipChange.setOperation("REMOVED");
 
 		_membershipChangeRepository.save(membershipChange);

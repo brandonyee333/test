@@ -266,7 +266,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 					}
 
 					if (!deactivateIndividuals.isEmpty()) {
-						_membershipDog.deactivateMemberships(
+						_membershipDog.deactivateMembershipByIndividuals(
 							deletionDate, deactivateIndividuals);
 					}
 

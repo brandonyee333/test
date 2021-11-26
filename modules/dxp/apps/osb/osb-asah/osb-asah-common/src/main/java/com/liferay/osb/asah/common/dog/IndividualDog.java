@@ -505,7 +505,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 		elasticsearchInvoker.delete("interests", boolQueryBuilder);
 		elasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
 
-		_membershipDog.deactivateMemberships(deletionDate, individuals);
+		_membershipDog.deactivateMembershipByIndividuals(
+			deletionDate, individuals);
 
 		_membershipChangeDog.updateMembershipChangeIndividualDeleted(
 			Boolean.TRUE, individualIds);
@@ -897,7 +898,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return _populateIndividual(_individualRepository.save(individual));
 	}
 
-	public void removeSegmentId(List<Individual> individuals, Long segmentId) {
+	public void removeSegmentId(
+		Iterable<Individual> individuals, Long segmentId) {
+
 		for (Individual individual : individuals) {
 			Set<Long> segmentIds = individual.getSegmentIds();
 
@@ -1028,12 +1031,16 @@ public class IndividualDog extends BaseFaroInfoDog {
 	public void updateDynamicMemberships(Date modifiedDate, Segment segment) {
 		Long individualSegmentId = segment.getId();
 
+		FilterHelper filterHelper = new FilterHelper(
+			_faroInfoIndividualsFilterStringConverterHelper,
+			segment.getFilter(), _individualsFilterStringConverterHelper);
+
 		_updateDynamicAddMemberships(
-			segment.getChannelId(), segment.getFilter(),
+			segment.getChannelId(), filterHelper,
 			BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 			individualSegmentId, modifiedDate);
-		updateDynamicRemoveMemberships(
-			segment.getChannelId(), segment.getFilter(),
+		_updateDynamicRemoveMemberships(
+			segment.getChannelId(), filterHelper,
 			BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 			individualSegmentId, modifiedDate);
 	}
@@ -1041,33 +1048,14 @@ public class IndividualDog extends BaseFaroInfoDog {
 	public void updateDynamicRemoveMemberships(
 		Date modifiedDate, Segment segment) {
 
-		updateDynamicRemoveMemberships(
-			segment.getChannelId(), segment.getFilter(),
+		FilterHelper filterHelper = new FilterHelper(
+			_faroInfoIndividualsFilterStringConverterHelper,
+			segment.getFilter(), _individualsFilterStringConverterHelper);
+
+		_updateDynamicRemoveMemberships(
+			segment.getChannelId(), filterHelper,
 			BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 			segment.getId(), modifiedDate);
-	}
-
-	public void updateDynamicRemoveMemberships(
-		Long channelId, String filterString, Boolean includeAnonymousUsers,
-		Long individualSegmentId, Date modifiedDate) {
-
-		for (Membership membership :
-				_membershipDog.getMemberships(individualSegmentId, "ACTIVE")) {
-
-			if (_individualRepository.
-					existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
-						channelId,
-						new FilterHelper(
-							_faroInfoIndividualsFilterStringConverterHelper,
-							filterString,
-							_individualsFilterStringConverterHelper),
-						includeAnonymousUsers, membership.getIndividualId())) {
-
-				continue;
-			}
-
-			_membershipDog.deactivateMembership(modifiedDate, membership);
-		}
 	}
 
 	public Individual updateIndividual(Individual individual) {
@@ -1425,6 +1413,20 @@ public class IndividualDog extends BaseFaroInfoDog {
 		);
 	}
 
+	private List<Membership> _getDeactivateMemberships(
+		List<Individual> individuals, List<Membership> memberships) {
+
+		List<Long> individualIds = ListUtil.map(individuals, Individual::getId);
+
+		Stream<Membership> stream = memberships.stream();
+
+		return stream.filter(
+			membership -> !individualIds.contains(membership.getIndividualId())
+		).collect(
+			Collectors.toList()
+		);
+	}
+
 	private Long _getSegmentChannelId(Long segmentId) {
 		return Optional.ofNullable(
 			segmentId
@@ -1568,20 +1570,17 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	private void _updateDynamicAddMemberships(
-		Long channelId, String filterString, Boolean includeAnonymousUsers,
-		Long individualSegmentId, Date modifiedDate) {
+		Long channelId, FilterHelper filterHelper,
+		Boolean includeAnonymousUsers, Long individualSegmentId,
+		Date modifiedDate) {
 
 		Long currentIndividualId = null;
-
-		FilterHelper filterHelper = new FilterHelper(
-			_faroInfoIndividualsFilterStringConverterHelper, filterString,
-			_individualsFilterStringConverterHelper);
 
 		while (true) {
 			List<Individual> individuals =
 				_individualRepository.searchIndividuals(
-					channelId, filterHelper, includeAnonymousUsers,
-					currentIndividualId, 10000);
+					channelId, filterHelper, currentIndividualId,
+					includeAnonymousUsers, 10000);
 
 			if (individuals.isEmpty()) {
 				break;
@@ -1605,6 +1604,39 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 			_membershipDog.addMemberships(
 				modifiedDate, individuals, individualSegmentId);
+		}
+	}
+
+	private void _updateDynamicRemoveMemberships(
+		Long channelId, FilterHelper filterHelper,
+		Boolean includeAnonymousUsers, Long individualSegmentId,
+		Date modifiedDate) {
+
+		Long currentMembershipId = null;
+
+		while (true) {
+			List<Membership> memberships = _membershipDog.searchMemberships(
+				individualSegmentId, currentMembershipId, 10000, "ACTIVE");
+
+			if (memberships.isEmpty()) {
+				break;
+			}
+
+			Membership lastMembership = memberships.get(memberships.size() - 1);
+
+			currentMembershipId = lastMembership.getId();
+
+			List<Long> individualIds = ListUtil.map(
+				memberships, Membership::getIndividualId);
+
+			List<Individual> individuals =
+				_individualRepository.searchIndividuals(
+					channelId, filterHelper, individualIds,
+					includeAnonymousUsers);
+
+			_membershipDog.deactivateMemberships(
+				modifiedDate,
+				_getDeactivateMemberships(individuals, memberships));
 		}
 	}
 
