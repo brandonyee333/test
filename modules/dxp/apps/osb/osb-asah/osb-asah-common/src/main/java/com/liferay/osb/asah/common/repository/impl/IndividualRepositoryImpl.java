@@ -356,46 +356,6 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		return _dslContext.fetchExists(selectOnConditionStep.where(condition));
 	}
 
-	public boolean
-		existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
-			@Nullable Long channelId, FilterHelper filterHelper,
-			Boolean includeAnonymousUsers, @Nullable Long id) {
-
-		SelectOnConditionStep<?> selectOnConditionStep =
-			_getSelectOnConditionStep(filterHelper, DSL.selectOne());
-
-		Condition condition = filterHelper.getCondition();
-
-		if (channelId != null) {
-			condition = condition.and(
-				DSL.field(
-					DSL.cast(
-						DSL.array(DSL.field("individual.channelids")),
-						Long[].class)
-				).contains(
-					DSL.cast(DSL.array(channelId), Long[].class)
-				));
-		}
-
-		if (!includeAnonymousUsers) {
-			condition = condition.and(
-				DSL.field(
-					"individual.emailAddressHashed"
-				).isNotNull());
-		}
-
-		if (id != null) {
-			condition = condition.and(
-				DSL.field(
-					"individual.id"
-				).eq(
-					id
-				));
-		}
-
-		return _dslContext.fetchExists(selectOnConditionStep.where(condition));
-	}
-
 	public boolean existsByFilterStringAndId(
 		FilterHelper filterHelper, @Nullable Long id) {
 
@@ -1392,63 +1352,6 @@ public class IndividualRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Individual> searchIndividuals(
-		Long channelId, FilterHelper filterHelper,
-		Boolean includeAnonymousUsers, Long id, int size) {
-
-		SelectOnConditionStep<?> selectOnConditionStep =
-			_getSelectOnConditionStep(
-				filterHelper,
-				_dslContext.select(
-					DSL.table(
-						"Individual"
-					).asterisk()));
-
-		Condition condition = filterHelper.getCondition();
-
-		if (channelId != null) {
-			condition = condition.and(
-				DSL.field(
-					DSL.cast(
-						DSL.array(DSL.field("individual.channelids")),
-						Long[].class)
-				).contains(
-					DSL.cast(DSL.array(channelId), Long[].class)
-				));
-		}
-
-		if (!includeAnonymousUsers) {
-			condition = condition.and(
-				DSL.field(
-					"individual.emailAddressHashed"
-				).isNotNull());
-		}
-
-		if (id != null) {
-			condition = condition.and(
-				DSL.field(
-					"individual.id"
-				).gt(
-					id
-				));
-		}
-
-		return _populateIndividuals(
-			selectOnConditionStep.where(
-				condition
-			).groupBy(
-				DSL.field("individual.id")
-			).orderBy(
-				DSL.field(
-					"individual.id"
-				).asc()
-			).limit(
-				size
-			).fetch(
-				record -> new Individual(record.intoMap())
-			));
-	}
-
-	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId, Pageable pageable) {
@@ -1515,6 +1418,118 @@ public class IndividualRepositoryImpl extends BaseRepository {
 				pageable.getPageSize()
 			).offset(
 				pageable.getOffset()
+			).fetch(
+				record -> new Individual(record.intoMap())
+			));
+	}
+
+	public List<Individual> searchIndividuals(
+		@Nullable Long channelId, FilterHelper filterHelper, List<Long> ids,
+		Boolean includeAnonymousUsers) {
+
+		SelectOnConditionStep<?> selectOnConditionStep =
+			_getSelectOnConditionStep(
+				filterHelper,
+				_dslContext.select(
+					DSL.table(
+						"Individual"
+					).asterisk()));
+
+		Condition condition = filterHelper.getCondition();
+
+		if (channelId != null) {
+			condition = condition.and(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.channelids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(channelId), Long[].class)
+				));
+		}
+
+		if (CollectionUtils.isNotEmpty(ids)) {
+			condition = condition.and(
+				DSL.field(
+					"individual.id"
+				).in(
+					ids
+				));
+		}
+
+		if (!includeAnonymousUsers) {
+			condition = condition.and(
+				DSL.field(
+					"individual.emailAddressHashed"
+				).isNotNull());
+		}
+
+		return _populateIndividuals(
+			selectOnConditionStep.where(
+				condition
+			).groupBy(
+				DSL.field("individual.id")
+			).orderBy(
+				DSL.field(
+					"individual.id"
+				).asc()
+			).fetch(
+				record -> new Individual(record.intoMap())
+			));
+	}
+
+	public List<Individual> searchIndividuals(
+		@Nullable Long channelId, FilterHelper filterHelper, @Nullable Long id,
+		Boolean includeAnonymousUsers, int size) {
+
+		SelectOnConditionStep<?> selectOnConditionStep =
+			_getSelectOnConditionStep(
+				filterHelper,
+				_dslContext.select(
+					DSL.table(
+						"Individual"
+					).asterisk()));
+
+		Condition condition = filterHelper.getCondition();
+
+		if (channelId != null) {
+			condition = condition.and(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("individual.channelids")),
+						Long[].class)
+				).contains(
+					DSL.cast(DSL.array(channelId), Long[].class)
+				));
+		}
+
+		if (id != null) {
+			condition = condition.and(
+				DSL.field(
+					"individual.id"
+				).gt(
+					id
+				));
+		}
+
+		if (!includeAnonymousUsers) {
+			condition = condition.and(
+				DSL.field(
+					"individual.emailAddressHashed"
+				).isNotNull());
+		}
+
+		return _populateIndividuals(
+			selectOnConditionStep.where(
+				condition
+			).groupBy(
+				DSL.field("individual.id")
+			).orderBy(
+				DSL.field(
+					"individual.id"
+				).asc()
+			).limit(
+				size
 			).fetch(
 				record -> new Individual(record.intoMap())
 			));

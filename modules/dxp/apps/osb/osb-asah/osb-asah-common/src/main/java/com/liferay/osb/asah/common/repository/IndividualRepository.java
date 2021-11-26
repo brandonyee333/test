@@ -70,11 +70,6 @@ public interface IndividualRepository
 	public boolean existsByChannelIdAndFilterStringAndId(
 		@Nullable Long channelId, FilterHelper filterHelper, @Nullable Long id);
 
-	public boolean
-		existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
-			@Nullable Long channelId, FilterHelper filterHelper,
-			Boolean includeAnonymousUsers, @Nullable Long id);
-
 	public boolean existsByFilterStringAndId(
 		FilterHelper filterHelper, @Nullable Long id);
 
@@ -140,12 +135,16 @@ public interface IndividualRepository
 
 	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, FilterHelper filterHelper,
-		Boolean includeAnonymousUsers, @Nullable Long id, int size);
-
-	public List<Individual> searchIndividuals(
-		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId, Pageable pageable);
+
+	public List<Individual> searchIndividuals(
+		@Nullable Long channelId, FilterHelper filterHelper, List<Long> ids,
+		Boolean includeAnonymousUsers);
+
+	public List<Individual> searchIndividuals(
+		@Nullable Long channelId, FilterHelper filterHelper, @Nullable Long id,
+		Boolean includeAnonymousUsers, int size);
 
 	public List<Individual> searchIndividuals(
 		Long dataSourceId, @Nullable Long id, int size);

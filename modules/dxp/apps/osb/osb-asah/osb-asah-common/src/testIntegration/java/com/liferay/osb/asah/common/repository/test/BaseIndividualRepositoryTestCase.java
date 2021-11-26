@@ -408,19 +408,6 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
-	public void testExistsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId() {
-		Assertions.assertTrue(
-			individualRepository.
-				existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
-					11L,
-					new FilterHelper(
-						_faroInfoIndividualsFilterStringConverterHelper,
-						"(demographics/field3/value eq 'field three')",
-						_individualsFilterStringConverterHelper),
-					false, _individual1Id));
-	}
-
-	@Test
 	public void testExistsByFilterStringAndId() {
 		Assertions.assertTrue(
 			individualRepository.existsByFilterStringAndId(
@@ -712,7 +699,7 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
-	public void testSearchIndividuals() {
+	public void testSearchIndividuals1() {
 		List<Individual> individuals = individualRepository.searchIndividuals(
 			1L, null, 10);
 
@@ -724,7 +711,7 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
-	public void testSearchIndividuals1() {
+	public void testSearchIndividuals2() {
 		List<Individual> individuals = individualRepository.searchIndividuals(
 			new FilterHelper(
 				_faroInfoIndividualsFilterStringConverterHelper,
@@ -736,10 +723,19 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
-	public void testSearchIndividuals2() {
+	public void testSearchIndividuals3() {
 		List<Individual> individuals = individualRepository.searchIndividuals(
 			11L, FilterHelper.EMPTY, false, null, null,
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
+	}
+
+	@Test
+	public void testSearchIndividuals4() {
+		List<Individual> individuals = individualRepository.searchIndividuals(
+			11L, FilterHelper.EMPTY,
+			Arrays.asList(_individual1Id, _individual2Id), false);
 
 		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 	}

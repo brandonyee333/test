@@ -367,28 +367,6 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
-	public boolean
-		existsByChannelIdAndFilterStringAndIncludeAnonymousUsersAndId(
-			@Nullable Long channelId, FilterHelper filterHelper,
-			Boolean includeAnonymousUsers, @Nullable Long id) {
-
-		BoolQueryBuilder boolQueryBuilder = _getBoolQueryBuilder(
-			channelId, filterHelper.getQueryBuilder(), includeAnonymousUsers,
-			null, null);
-
-		if (id != null) {
-			boolQueryBuilder = BoolQueryBuilderUtil.filter(
-				boolQueryBuilder
-			).filter(
-				QueryBuilders.termQuery("id", String.valueOf(id))
-			);
-		}
-
-		return _faroInfoElasticsearchInvoker.exists(
-			_getCollectionName(), boolQueryBuilder);
-	}
-
-	@Override
 	public boolean existsByFilterStringAndId(
 		FilterHelper filterHelper, @Nullable Long id) {
 
@@ -1187,31 +1165,6 @@ public class ElasticsearchIndividualRepositoryImpl
 	@Override
 	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, FilterHelper filterHelper,
-		Boolean includeAnonymousUsers, Long id, int size) {
-
-		return _toIndividuals(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					_getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_getBoolQueryBuilder(
-								channelId, filterHelper.getQueryBuilder(),
-								includeAnonymousUsers, null, null));
-
-						if (id != null) {
-							searchSourceBuilder.searchAfter(new Object[] {id});
-						}
-
-						searchSourceBuilder.size(size);
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("id"));
-					})));
-	}
-
-	@Override
-	public List<Individual> searchIndividuals(
-		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId, Pageable pageable) {
 
@@ -1314,6 +1267,56 @@ public class ElasticsearchIndividualRepositoryImpl
 								}
 							);
 						}
+					})));
+	}
+
+	@Override
+	public List<Individual> searchIndividuals(
+		@Nullable Long channelId, FilterHelper filterHelper, List<Long> ids,
+		Boolean includeAnonymousUsers) {
+
+		return _toIndividuals(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					_getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.fetchSource("id", null);
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.filter(
+								_getBoolQueryBuilder(
+									channelId, filterHelper.getQueryBuilder(),
+									includeAnonymousUsers, null, null)
+							).filter(
+								QueryBuilders.termsQuery(
+									"id", ListUtil.map(ids, String::valueOf))
+							));
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort("id"));
+					})));
+	}
+
+	@Override
+	public List<Individual> searchIndividuals(
+		@Nullable Long channelId, FilterHelper filterHelper, @Nullable Long id,
+		Boolean includeAnonymousUsers, int size) {
+
+		return _toIndividuals(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					_getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_getBoolQueryBuilder(
+								channelId, filterHelper.getQueryBuilder(),
+								includeAnonymousUsers, null, null));
+
+						if (id != null) {
+							searchSourceBuilder.searchAfter(new Object[] {id});
+						}
+
+						searchSourceBuilder.size(size);
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort("id"));
 					})));
 	}
 
