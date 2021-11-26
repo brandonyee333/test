@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.entity.Membership;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,8 @@ import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
+
+import org.springframework.lang.Nullable;
 
 /**
  * @author Inácio Nery
@@ -60,6 +64,46 @@ public class MembershipRepositoryImpl {
 			ascending ? aggregateFunction.asc() : aggregateFunction.desc()
 		).fetch(
 			0, Long.class
+		);
+	}
+
+	public List<Membership> searchMemberships(
+		@Nullable Long id, Long individualSegmentId, int size, String status) {
+
+		Condition condition = DSL.and(
+			DSL.field(
+				"individualSegmentId"
+			).eq(
+				individualSegmentId
+			),
+			DSL.field(
+				"status"
+			).eq(
+				status
+			));
+
+		if (id != null) {
+			condition = condition.and(
+				DSL.field(
+					"id"
+				).gt(
+					id
+				));
+		}
+
+		return _dslContext.select(
+		).from(
+			"Membership"
+		).where(
+			condition
+		).orderBy(
+			DSL.field(
+				"id"
+			).asc()
+		).limit(
+			size
+		).fetch(
+			record -> new Membership(record.intoMap())
 		);
 	}
 

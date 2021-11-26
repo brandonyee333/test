@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Inácio Nery
@@ -71,10 +72,6 @@ public interface MembershipRepository extends Repository<Membership, Long> {
 
 	@Cacheable
 	public List<Membership> findByIndividualSegmentIdAndStatus(
-		Long individualSegmentId, String status);
-
-	@Cacheable
-	public List<Membership> findByIndividualSegmentIdAndStatus(
 		Long individualSegmentId, String status, Pageable pageable);
 
 	@Cacheable
@@ -106,5 +103,9 @@ public interface MembershipRepository extends Repository<Membership, Long> {
 	@Cacheable
 	public List<Long> findTop20IndividualSegmentIdByIndividualId(
 		@Param("individualId") Long individualId);
+
+	@Cacheable
+	public List<Membership> searchMemberships(
+		@Nullable Long id, Long individualSegmentId, int size, String status);
 
 }

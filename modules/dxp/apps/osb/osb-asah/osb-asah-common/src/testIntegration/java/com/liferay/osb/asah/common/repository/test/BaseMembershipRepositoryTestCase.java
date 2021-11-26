@@ -197,26 +197,8 @@ public abstract class BaseMembershipRepositoryTestCase
 	public void testFindByIndividualSegmentIdAndStatus() {
 		List<Membership> memberships =
 			_membershipRepository.findByIndividualSegmentIdAndStatus(
-				34L, "ACTIVE");
-
-		Assertions.assertEquals(2, memberships.size(), memberships.toString());
-		Assertions.assertEquals(entityModels.get(0), memberships.get(0));
-		Assertions.assertEquals(entityModels.get(2), memberships.get(1));
-
-		memberships = _membershipRepository.findByIndividualSegmentIdAndStatus(
-			34L, "INACTIVE");
-
-		Assertions.assertEquals(0, memberships.size(), memberships.toString());
-
-		memberships = _membershipRepository.findByIndividualSegmentIdAndStatus(
-			56L, "INACTIVE");
-
-		Assertions.assertEquals(1, memberships.size(), memberships.toString());
-		Assertions.assertEquals(entityModels.get(1), memberships.get(0));
-
-		memberships = _membershipRepository.findByIndividualSegmentIdAndStatus(
-			34L, "ACTIVE",
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+				34L, "ACTIVE",
+				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assertions.assertEquals(2, memberships.size(), memberships.toString());
 		Assertions.assertEquals(entityModels.get(0), memberships.get(0));
@@ -355,6 +337,27 @@ public abstract class BaseMembershipRepositoryTestCase
 		Assertions.assertEquals(
 			1, individualSegmenIds.size(), individualSegmenIds.toString());
 		Assertions.assertEquals(34, individualSegmenIds.get(0));
+	}
+
+	@Test
+	public void testSearchMemberships() {
+		List<Membership> memberships = _membershipRepository.searchMemberships(
+			null, 34L, 10, "ACTIVE");
+
+		Assertions.assertEquals(2, memberships.size(), memberships.toString());
+		Assertions.assertEquals(entityModels.get(0), memberships.get(0));
+		Assertions.assertEquals(entityModels.get(2), memberships.get(1));
+
+		memberships = _membershipRepository.searchMemberships(
+			null, 34L, 10, "INACTIVE");
+
+		Assertions.assertEquals(0, memberships.size(), memberships.toString());
+
+		memberships = _membershipRepository.searchMemberships(
+			null, 56L, 10, "INACTIVE");
+
+		Assertions.assertEquals(1, memberships.size(), memberships.toString());
+		Assertions.assertEquals(entityModels.get(1), memberships.get(0));
 	}
 
 	@Override

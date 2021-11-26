@@ -45,6 +45,7 @@ import org.json.JSONObject;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -238,22 +239,6 @@ public class ElasticsearchMembershipRepositoryImpl
 					QueryBuilders.termsQuery(
 						"individualId",
 						ListUtil.map(individualIds, String::valueOf))
-				).filter(
-					QueryBuilders.termQuery("status", status)
-				)));
-	}
-
-	@Override
-	public List<Membership> findByIndividualSegmentIdAndStatus(
-		Long individualSegmentId, String status) {
-
-		return toList(
-			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"individualSegmentId",
-						String.valueOf(individualSegmentId))
 				).filter(
 					QueryBuilders.termQuery("status", status)
 				)));
@@ -518,6 +503,34 @@ public class ElasticsearchMembershipRepositoryImpl
 						searchSourceBuilder.size(20);
 					})),
 			"individualSegmentId");
+	}
+
+	@Override
+	public List<Membership> searchMemberships(
+		@Nullable Long id, Long individualSegmentId, int size, String status) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.filter(
+								QueryBuilders.termQuery(
+									"individualSegmentId",
+									String.valueOf(individualSegmentId))
+							).filter(
+								QueryBuilders.termQuery("status", status)
+							));
+
+						if (id != null) {
+							searchSourceBuilder.searchAfter(new Object[] {id});
+						}
+
+						searchSourceBuilder.size(size);
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort("id"));
+					})));
 	}
 
 	@Override
