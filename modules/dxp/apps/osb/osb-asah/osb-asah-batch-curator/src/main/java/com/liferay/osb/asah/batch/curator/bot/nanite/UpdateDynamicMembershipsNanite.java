@@ -62,15 +62,6 @@ import reactor.util.function.Tuples;
 public class UpdateDynamicMembershipsNanite extends BaseNanite {
 
 	@Override
-	public void logCompleted(
-		String asahTaskId, JSONObject contextJSONObject, long duration) {
-	}
-
-	@Override
-	public void logStart(JSONObject contextJSONObject) {
-	}
-
-	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
 		Date modifiedDate = DateUtil.toUTCDate(
 			contextJSONObject.getString("dateModified"));
