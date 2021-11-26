@@ -1271,6 +1271,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 			}
 		}
 
+		_setFirstEnrichmentDate(individual);
+
 		List<Field> previousFields = _fieldDog.getOwnerIdFields(
 			"demographics", individualId);
 
@@ -1307,8 +1309,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 		}
 
 		String oldIndividualName = getIndividualName(individualId);
-
-		_setFirstEnrichmentDate(individual);
 
 		JSONObject fieldsJSONObject = _fieldDog.getFieldsJSONObject(
 			"demographics", dataJSONObject, dataSource);
