@@ -121,6 +121,12 @@ public class OpenIdConnectSessionLocalServiceWrapper
 			openIdConnectSession);
 	}
 
+	@Override
+	public void deleteOpenIdConnectSessions(String configurationPid) {
+		_openIdConnectSessionLocalService.deleteOpenIdConnectSessions(
+			configurationPid);
+	}
+
 	/**
 	 * @throws PortalException
 	 */
@@ -244,6 +250,15 @@ public class OpenIdConnectSessionLocalServiceWrapper
 
 		return _openIdConnectSessionLocalService.fetchOpenIdConnectSession(
 			openIdConnectSessionId);
+	}
+
+	@Override
+	public com.liferay.portal.security.sso.openid.connect.persistence.model.
+		OpenIdConnectSession fetchOpenIdConnectSession(
+			String configurationPid, long userId) {
+
+		return _openIdConnectSessionLocalService.fetchOpenIdConnectSession(
+			configurationPid, userId);
 	}
 
 	@Override
