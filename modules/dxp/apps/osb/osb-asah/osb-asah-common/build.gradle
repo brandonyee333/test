@@ -4,6 +4,8 @@ apply plugin: "io.spring.dependency-management"
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 
+ext["junit-jupiter.version"] = "5.8.2"
+
 group = "com.liferay"
 
 bootJar {

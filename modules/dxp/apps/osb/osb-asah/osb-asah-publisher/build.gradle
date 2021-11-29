@@ -1,6 +1,8 @@
 apply plugin: "com.liferay.spring.boot.defaults"
 apply plugin: "io.spring.dependency-management"
 
+ext["junit-jupiter.version"] = "5.8.2"
+
 bootJar {
 	classifier = "application"
 }

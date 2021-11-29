@@ -4,7 +4,7 @@ dependencies {
 	compile group: "org.apache.spark", name: "spark-sql_2.12", version: "3.1.0"
 	compile group: "org.apache.spark", name: "spark-streaming_2.12", version: "3.1.0"
 
-	testCompile group: "org.junit.jupiter", name: "junit-jupiter", version: "5.8.1"
-	testCompile group: "org.junit.platform", name: "junit-platform-launcher", version: "1.8.1"
+	testCompile group: "org.junit.jupiter", name: "junit-jupiter", version: "5.8.2"
+	testCompile group: "org.junit.platform", name: "junit-platform-launcher", version: "1.8.2"
 	testCompile group: "org.mockito", name: "mockito-core", version: "3.11.2"
 }
