@@ -33,12 +33,12 @@ public class PreferenceDog {
 	public Preference getPreference(String key) {
 		Preference preference = _preferenceRepository.findByKey(key);
 
-		if (preference == null) {
-			preference = _preferenceRepository.save(
-				new Preference(key, _defaultPreferences.get(key)));
+		if (preference != null) {
+			return preference;
 		}
 
-		return preference;
+		return _preferenceRepository.save(
+			new Preference(key, _defaultPreferences.get(key)));
 	}
 
 	public Preference savePreference(String key, String value) {

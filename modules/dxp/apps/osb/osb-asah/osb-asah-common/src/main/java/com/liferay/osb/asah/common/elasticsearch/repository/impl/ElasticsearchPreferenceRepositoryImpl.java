@@ -108,7 +108,7 @@ public class ElasticsearchPreferenceRepositoryImpl
 	@Override
 	protected Preference toEntity(JSONObject jsonObject) {
 		return new Preference(
-			jsonObject.getString("id"), jsonObject.getString("value"));
+			jsonObject.getString("id"), jsonObject.optString("value", null));
 	}
 
 	@Override
