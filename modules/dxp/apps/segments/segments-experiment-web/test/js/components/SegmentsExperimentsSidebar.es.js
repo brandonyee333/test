@@ -31,7 +31,6 @@ import {
 } from '../../../src/main/resources/META-INF/resources/js/util/statuses.es';
 import {
 	controlVariant,
-	segmentsExperiences,
 	segmentsExperiment,
 	segmentsVariants,
 } from '../fixtures.es';
@@ -62,27 +61,18 @@ describe('SegmentsExperimentsSidebar', () => {
 		expect(message).not.toBe(null);
 	});
 
-	it('Renders ab testing panel with experience selected and zero experiments', () => {
-		const {getByDisplayValue, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
-		});
+	it('Renders ab testing panel with zero experiments', () => {
+		const {getByText} = renderApp();
 
-		getByDisplayValue(segmentsExperiences[0].name);
 		getByText('no-active-tests-were-found-for-the-selected-experience');
 		getByText('create-test-help-message');
 		getByText('create-test');
 	});
 
-	it('Renders ab testing panel with experience selected and an experiment', () => {
-		const {getByDisplayValue, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
+	it('Renders ab testing panel with an experiment', () => {
+		const {getByText} = renderApp({
 			initialSegmentsExperiment: segmentsExperiment,
 		});
-
-		const defaultExperience = getByDisplayValue(
-			segmentsExperiences[0].name
-		);
-		expect(defaultExperience).not.toBe(null);
 
 		getByText(segmentsExperiment.name);
 
@@ -94,9 +84,7 @@ describe('SegmentsExperimentsSidebar', () => {
 	});
 
 	it('Renders modal to create experiment when the user clicks on create test button', async () => {
-		const {getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
-		});
+		const {getByText} = renderApp();
 
 		const createTestButton = getByText('create-test');
 
@@ -157,7 +145,6 @@ describe('Variants', () => {
 
 	it('Renders no variants message', () => {
 		const {getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: segmentsExperiment,
 			initialSegmentsVariants: [segmentsVariants[0]],
 			selectedSegmentsExperienceId:
@@ -175,7 +162,6 @@ describe('Variants', () => {
 
 	it('Renders variant list', () => {
 		const {getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: segmentsExperiment,
 			initialSegmentsVariants: segmentsVariants,
 			selectedSegmentsExperienceId:
@@ -191,7 +177,6 @@ describe('Variants', () => {
 
 	it('Create variant button', async () => {
 		const {APIServiceMocks, getByLabelText, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: segmentsExperiment,
 			initialSegmentsVariants: segmentsVariants,
 			selectedSegmentsExperienceId:
@@ -242,13 +227,10 @@ describe('Review and Run test', () => {
 	afterEach(cleanup);
 
 	it('Can view review experiment modal', async () => {
-		const {getAllByDisplayValue, getByDisplayValue, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
+		const {getAllByDisplayValue, getByText} = renderApp({
 			initialSegmentsExperiment: segmentsExperiment,
 			initialSegmentsVariants: segmentsVariants,
 		});
-
-		getByDisplayValue(segmentsExperiences[0].name);
 
 		getByText(segmentsExperiment.name);
 
@@ -276,12 +258,9 @@ describe('Review and Run test', () => {
 			},
 		};
 
-		const {getByDisplayValue, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
+		const {getByText} = renderApp({
 			initialSegmentsExperiment: experiment,
 		});
-
-		getByDisplayValue(segmentsExperiences[0].name);
 
 		getByText(experiment.name);
 
@@ -293,13 +272,10 @@ describe('Review and Run test', () => {
 	});
 
 	it('Error messages appears when the user clicks in review and run and there is only the control variant created', async () => {
-		const {getByDisplayValue, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
+		const {getByText} = renderApp({
 			initialSegmentsExperiment: segmentsExperiment,
 			initialSegmentsVariants: controlVariant,
 		});
-
-		getByDisplayValue(segmentsExperiences[0].name);
 
 		getByText(segmentsExperiment.name);
 
@@ -312,7 +288,6 @@ describe('Review and Run test', () => {
 
 	it("Can run test that won't be editable", async () => {
 		const {APIServiceMocks, getByText, queryAllByLabelText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: segmentsExperiment,
 			initialSegmentsVariants: segmentsVariants,
 		});
@@ -367,7 +342,6 @@ describe('Review and Run test', () => {
 		};
 
 		const {queryAllByLabelText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: runningExperiment,
 			initialSegmentsVariants: segmentsVariants,
 		});
@@ -402,7 +376,6 @@ describe('Experiment History Tab', () => {
 		};
 
 		const {APIServiceMocks, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: runningExperiment,
 			initialSegmentsVariants: segmentsVariants,
 		});
@@ -440,7 +413,6 @@ describe('Experiment History Tab', () => {
 		};
 
 		const {APIServiceMocks, getByText, queryAllByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: noWinnerDeclaredExperiment,
 			initialSegmentsVariants: segmentsVariants,
 		});
@@ -537,7 +509,6 @@ describe('No Winner Declared', () => {
 
 	it('Experiment has basic no winner declared elements', () => {
 		const {getAllByText, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: {
 				...segmentsExperiment,
 				editable: false,
@@ -565,7 +536,6 @@ describe('No Winner Declared', () => {
 		global.confirm = jest.fn(() => true);
 
 		const {APIServiceMocks, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: {
 				...segmentsExperiment,
 				editable: false,
@@ -606,7 +576,6 @@ describe('No Winner Declared', () => {
 		global.confirm = jest.fn(() => false);
 
 		const {APIServiceMocks, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: {
 				...segmentsExperiment,
 				editable: false,
@@ -641,7 +610,6 @@ describe('Winner declared', () => {
 
 	it('Experiment has basic winner declared elements', () => {
 		const {getAllByText, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: {
 				...segmentsExperiment,
 				editable: false,
@@ -673,7 +641,6 @@ describe('Winner declared', () => {
 		global.confirm = jest.fn(() => true);
 
 		const {APIServiceMocks, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: {
 				...segmentsExperiment,
 				editable: false,
@@ -714,7 +681,6 @@ describe('Winner declared', () => {
 		global.confirm = jest.fn(() => true);
 
 		const {APIServiceMocks, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: {
 				...segmentsExperiment,
 				editable: false,
@@ -755,7 +721,6 @@ describe('Winner declared', () => {
 		global.confirm = jest.fn(() => false);
 
 		const {APIServiceMocks, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: {
 				...segmentsExperiment,
 				editable: false,
@@ -786,7 +751,6 @@ describe('Winner declared', () => {
 
 	it('Discard button action', async () => {
 		const {APIServiceMocks, getByText} = renderApp({
-			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: {
 				...segmentsExperiment,
 				editable: false,
