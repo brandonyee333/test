@@ -1,4 +1,4 @@
-query EventAnalysis($analysisType: AnalysisType!, $channelId: String!,  $compareToPrevious: Boolean!, $eventAnalysisFilters: [EventAnalysisFilter], $eventDefinitionId: String!, $page: Int!, $rangeEnd: String, $rangeStart: String, $size: Int!) {
+query EventAnalysis($analysisType: AnalysisType!, $channelId: String!, $compareToPrevious: Boolean!, $eventAnalysisFilters: [EventAnalysisFilterInput], $eventDefinitionId: String!, $page: Int!, $rangeEnd: String, $rangeStart: String, $size: Int!) {
 	eventAnalysis(analysisType: $analysisType, channelId: $channelId, compareToPrevious: $compareToPrevious, eventAnalysisFilters: $eventAnalysisFilters, eventDefinitionId: $eventDefinitionId, page: $page, rangeEnd: $rangeEnd, rangeStart: $rangeStart, size: $size) {
 		breakdownItems {
 			breakdownItems {
