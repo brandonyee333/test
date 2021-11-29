@@ -55,7 +55,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -69,7 +68,6 @@ import com.liferay.portal.kernel.util.comparator.PortletCategoryComparator;
 import com.liferay.portal.kernel.util.comparator.PortletTitleComparator;
 import com.liferay.portal.util.PortletCategoryUtil;
 import com.liferay.portal.util.WebAppPool;
-import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuPortletKeys;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -84,7 +82,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.portlet.PortletConfig;
-import javax.portlet.PortletURL;
 import javax.portlet.ResourceURL;
 
 import javax.servlet.ServletContext;
@@ -357,16 +354,9 @@ public class AddContentPanelDisplayContext {
 						curGroupId = group.getLiveGroupId();
 					}
 
-					PortletURL portletURL =
-						assetPublisherAddItemHolder.getPortletURL();
-
-					portletURL.setParameter(
-						"portletResource",
-						ProductNavigationControlMenuPortletKeys.
-							PRODUCT_NAVIGATION_CONTROL_MENU);
-
 					return _assetHelper.getAddURLPopUp(
-						curGroupId, _themeDisplay.getPlid(), portletURL, false,
+						curGroupId, _themeDisplay.getPlid(),
+						assetPublisherAddItemHolder.getPortletURL(), false,
 						_themeDisplay.getLayout());
 				}
 			).build()
@@ -622,13 +612,8 @@ public class AddContentPanelDisplayContext {
 	}
 
 	private String _getRedirectURL() throws Exception {
-		String layoutFullURL = PortalUtil.getLayoutFullURL(
+		return PortalUtil.getLayoutFullURL(
 			_themeDisplay.getLayout(), _themeDisplay);
-
-		return HttpUtil.addParameter(
-			layoutFullURL, "portletResource",
-			ProductNavigationControlMenuPortletKeys.
-				PRODUCT_NAVIGATION_CONTROL_MENU);
 	}
 
 	private List<Map<String, Object>> _getWidgetCategories(
