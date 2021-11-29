@@ -33,6 +33,23 @@ public class PreferenceDogTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@Test
+	public void testGetPreference() {
+		Preference preference = _preferenceDog.getPreference("key");
+
+		Assertions.assertEquals(null, preference.getValue());
+
+		_preferenceDog.savePreference("key", "value");
+
+		preference = _preferenceDog.getPreference("key");
+
+		Assertions.assertEquals("value", preference.getValue());
+
+		preference = _preferenceDog.getPreference("time-zone-id");
+
+		Assertions.assertEquals("UTC", preference.getValue());
+	}
+
+	@Test
 	public void testSavePreference() {
 		Preference preference = _preferenceDog.getPreference(
 			"data-retention-period");
