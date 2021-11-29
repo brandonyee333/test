@@ -43,19 +43,20 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class OSBAsahSpringExtension extends SpringExtension {
 
 	@Override
-	public void afterAll(ExtensionContext context) throws Exception {
+	public void afterAll(ExtensionContext extensionContext) throws Exception {
 	}
 
 	@Override
-	public void afterEach(ExtensionContext context) throws Exception {
+	public void afterEach(ExtensionContext extensionContext) throws Exception {
 	}
 
 	@Override
-	public void afterTestExecution(ExtensionContext context) throws Exception {
+	public void afterTestExecution(ExtensionContext extensionContext)
+		throws Exception {
 	}
 
 	@Override
-	public void beforeAll(ExtensionContext context) throws Exception {
+	public void beforeAll(ExtensionContext extensionContext) throws Exception {
 		if (!_isElasticsearchUp() || !_isPostgreSQLUp()) {
 			throw new IllegalStateException(
 				"Integration test infrastructure is not up. Please run " +
@@ -77,16 +78,17 @@ public class OSBAsahSpringExtension extends SpringExtension {
 	}
 
 	@Override
-	public void beforeEach(ExtensionContext context) throws Exception {
+	public void beforeEach(ExtensionContext extensionContext) throws Exception {
 	}
 
 	@Override
-	public void beforeTestExecution(ExtensionContext context) throws Exception {
+	public void beforeTestExecution(ExtensionContext extensionContext)
+		throws Exception {
 	}
 
 	@Override
 	public void postProcessTestInstance(
-			Object testInstance, ExtensionContext context)
+			Object testInstance, ExtensionContext extensionContext)
 		throws Exception {
 	}
 
