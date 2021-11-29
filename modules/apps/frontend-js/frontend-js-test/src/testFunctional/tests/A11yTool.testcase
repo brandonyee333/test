@@ -319,29 +319,30 @@ definition {
 		task ("Set filter to critical.") {
 			A11yTool.setFilter(filterType = "Critical");
 
+			A11yTool.setFilter(filterType = "Serious");
+
 			VerifyElementPresent(
 				key_impact = "critical",
 				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
+
+		 	VerifyElementPresent(
+				key_impact = "serious",
+				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
+
+			Click(locator1 = "A11yTool#FILTER_ELEMENT_ICON");
+			IsChecked(
+				key_fieldName = "Critical",
+				locator1 = "FormFields#CHECKBOX");
 		}
 
 		task ("Refresh page and assert filters are default") {
 			Refresh();
 
-			AssertElementPresent(
-				key_impact = "critical",
-				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
+			FormFields.viewCheckboxNotChecked(
+				fieldName = "Critical");
 
-			AssertElementPresent(
-				key_impact = "serious",
-				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
-
-			AssertElementPresent(
-				key_impact = "moderate",
-				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
-
-			AssertElementPresent(
-				key_impact = "minor",
-				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
+			FormFields.viewCheckboxNotChecked(
+				fieldName = "Serious");
 		}
 	}
 
