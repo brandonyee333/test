@@ -82,6 +82,8 @@ public class AsahTaskManager {
 					_asahTaskScheduler.
 						executeUpdateDynamicMembershipsNaniteAsync(
 							new AsahTaskRunnable(asahTask, this, false));
+
+					return;
 				}
 			}
 
