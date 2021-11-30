@@ -134,14 +134,14 @@ public class ElasticsearchDXPEntityRepositoryImpl
 	}
 
 	@Override
-	public Iterable<DXPEntity> findAll(
-		org.springframework.data.domain.Sort sort) {
-
+	public Page<DXPEntity> findAll(Pageable pageable) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public Page<DXPEntity> findAll(Pageable pageable) {
+	public Iterable<DXPEntity> findAll(
+		org.springframework.data.domain.Sort sort) {
+
 		throw new UnsupportedOperationException();
 	}
 
