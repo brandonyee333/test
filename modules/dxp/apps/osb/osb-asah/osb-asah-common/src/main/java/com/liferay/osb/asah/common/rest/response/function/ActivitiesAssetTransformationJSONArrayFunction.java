@@ -15,8 +15,10 @@
 package com.liferay.osb.asah.common.rest.response.function;
 
 import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 
@@ -50,8 +52,11 @@ import org.json.JSONArray;
 public class ActivitiesAssetTransformationJSONArrayFunction
 	implements TransformationJSONArrayFunction {
 
-	public ActivitiesAssetTransformationJSONArrayFunction(AssetDog assetDog) {
+	public ActivitiesAssetTransformationJSONArrayFunction(
+		AssetDog assetDog, DataSourceDog dataSourceDog) {
+
 		_assetDog = assetDog;
+		_dataSourceDog = dataSourceDog;
 	}
 
 	@Override
@@ -123,11 +128,20 @@ public class ActivitiesAssetTransformationJSONArrayFunction
 		for (Terms.Bucket bucket : terms.getBuckets()) {
 			Asset asset = assetsMap.get(bucket.getKeyAsString());
 
+			DataSource dataSource = _dataSourceDog.fetchDataSource(
+				asset.getDataSourceId());
+
+			if (dataSource == null) {
+				continue;
+			}
+
 			jsonArray.put(
 				JSONUtil.put(
 					"count", bucket.getDocCount()
 				).put(
 					"dataSourceAssetPK", asset.getDataSourceAssetPK()
+				).put(
+					"dataSourceName", dataSource.getName()
 				).put(
 					"id", String.valueOf(asset.getId())
 				).put(
@@ -162,6 +176,7 @@ public class ActivitiesAssetTransformationJSONArrayFunction
 	}
 
 	private final AssetDog _assetDog;
+	private final DataSourceDog _dataSourceDog;
 	private long _totalElements;
 
 }

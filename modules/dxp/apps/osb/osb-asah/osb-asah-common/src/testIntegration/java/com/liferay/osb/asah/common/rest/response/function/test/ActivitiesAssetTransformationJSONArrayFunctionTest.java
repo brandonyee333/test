@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.rest.response.function.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
@@ -58,7 +59,8 @@ public class ActivitiesAssetTransformationJSONArrayFunctionTest
 	@Test
 	public void testApplyAscSort() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
-			new ActivitiesAssetTransformationJSONArrayFunction(_assetDog);
+			new ActivitiesAssetTransformationJSONArrayFunction(
+				_assetDog, _dataSourceDog);
 
 		JSONAssert.assertEquals(
 			new JSONArray(
@@ -75,7 +77,8 @@ public class ActivitiesAssetTransformationJSONArrayFunctionTest
 	@Test
 	public void testApplyDescSort() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
-			new ActivitiesAssetTransformationJSONArrayFunction(_assetDog);
+			new ActivitiesAssetTransformationJSONArrayFunction(
+				_assetDog, _dataSourceDog);
 
 		JSONAssert.assertEquals(
 			new JSONArray(
@@ -91,6 +94,9 @@ public class ActivitiesAssetTransformationJSONArrayFunctionTest
 
 	@Autowired
 	private AssetDog _assetDog;
+
+	@Autowired
+	private DataSourceDog _dataSourceDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;

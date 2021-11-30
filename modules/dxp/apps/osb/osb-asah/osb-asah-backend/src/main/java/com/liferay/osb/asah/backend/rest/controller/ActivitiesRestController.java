@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
 import com.liferay.osb.asah.common.rest.response.function.ActivitiesAssetTransformationJSONArrayFunction;
@@ -93,12 +94,16 @@ public class ActivitiesRestController extends BaseRestController {
 			FilterStringToQueryBuilderConverter.convert(
 				filterString, _faroInfoActivitiesFilterStringConverterHelper),
 			size, null, sorts, null,
-			new ActivitiesAssetTransformationJSONArrayFunction(_assetDog),
+			new ActivitiesAssetTransformationJSONArrayFunction(
+				_assetDog, _dataSourceDog),
 			"asset-transformations");
 	}
 
 	@Autowired
 	private AssetDog _assetDog;
+
+	@Autowired
+	private DataSourceDog _dataSourceDog;
 
 	@Autowired
 	private FaroInfoActivitiesFilterStringConverterHelper
