@@ -118,7 +118,7 @@ public class FieldMappingDog {
 		if (fieldMappingOptional.isPresent()) {
 			FieldMapping fieldMapping = fieldMappingOptional.get();
 
-			removeDataSourceFieldName(dataSourceId, fieldMapping.getId());
+			removeDataSourceFieldName(dataSourceId, fieldMapping);
 		}
 
 		Date date = new Date();
@@ -276,9 +276,7 @@ public class FieldMappingDog {
 	}
 
 	public FieldMapping removeDataSourceFieldName(
-		Long dataSourceId, Long fieldMappingId) {
-
-		FieldMapping fieldMapping = fetchFieldMapping(fieldMappingId);
+		Long dataSourceId, FieldMapping fieldMapping) {
 
 		if (fieldMapping != null) {
 			Map<String, String> dataSourceFieldNames =
@@ -291,7 +289,7 @@ public class FieldMappingDog {
 			return _fieldMappingRepository.save(fieldMapping);
 		}
 
-		return fetchFieldMapping(fieldMappingId);
+		return null;
 	}
 
 	public Page<FieldMapping> searchFieldMappingsPage(

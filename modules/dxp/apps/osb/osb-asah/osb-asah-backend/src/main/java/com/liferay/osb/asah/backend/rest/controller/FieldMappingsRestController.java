@@ -125,7 +125,7 @@ public class FieldMappingsRestController extends BaseRestController {
 			StringUtils.isEmpty(dataSourceFieldName)) {
 
 			fieldMapping = _fieldMappingDog.removeDataSourceFieldName(
-				dataSourceId, id);
+				dataSourceId, fieldMapping);
 
 			Set<DataSourceFieldMapping> dataSourceFieldMappings =
 				fieldMapping.getDataSourceFieldMappings();
@@ -185,7 +185,7 @@ public class FieldMappingsRestController extends BaseRestController {
 
 			if (StringUtils.isEmpty(dataSourceFieldName)) {
 				fieldMapping = _fieldMappingDog.removeDataSourceFieldName(
-					dataSourceId, fieldMappingId);
+					dataSourceId, fieldMapping);
 
 				Set<DataSourceFieldMapping> dataSourceFieldMappings =
 					fieldMapping.getDataSourceFieldMappings();

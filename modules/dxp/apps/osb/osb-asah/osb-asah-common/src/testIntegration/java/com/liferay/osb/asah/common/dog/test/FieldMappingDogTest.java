@@ -262,7 +262,7 @@ public class FieldMappingDogTest
 		fieldMapping = _fieldMappingRepository.save(fieldMapping);
 
 		fieldMapping = _fieldMappingDog.removeDataSourceFieldName(
-			123L, fieldMapping.getId());
+			123L, fieldMapping);
 
 		Map<String, String> dataSourceFieldNames =
 			fieldMapping.getDataSourceFieldNames();

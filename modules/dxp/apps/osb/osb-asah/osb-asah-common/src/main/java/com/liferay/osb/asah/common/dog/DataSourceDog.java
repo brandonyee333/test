@@ -570,7 +570,7 @@ public class DataSourceDog {
 				_fieldMappingDog.getFieldMappings(dataSourceId)) {
 
 			fieldMapping = _fieldMappingDog.removeDataSourceFieldName(
-				dataSourceId, fieldMapping.getId());
+				dataSourceId, fieldMapping);
 
 			Map<String, String> dataSourceFieldNames =
 				fieldMapping.getDataSourceFieldNames();
