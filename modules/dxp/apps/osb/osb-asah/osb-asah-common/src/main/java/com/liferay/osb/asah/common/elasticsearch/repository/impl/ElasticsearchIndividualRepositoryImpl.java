@@ -1280,7 +1280,6 @@ public class ElasticsearchIndividualRepositoryImpl
 				_faroInfoElasticsearchInvoker.get(
 					_getCollectionName(),
 					searchSourceBuilder -> {
-						searchSourceBuilder.fetchSource("id", null);
 						searchSourceBuilder.query(
 							BoolQueryBuilderUtil.filter(
 								_getBoolQueryBuilder(
