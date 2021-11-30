@@ -327,19 +327,10 @@ public class FieldDog {
 				findByContextAndDataSourceIdAndOwnerIdInAndOwnerType(
 					context, dataSourceId, ownerIds, ownerType);
 
-		Map<String, List<Field>> existingFieldsMap = new HashMap<>();
+		Stream<Field> stream = existingFields.stream();
 
-		for (Field existingField : existingFields) {
-			List<Field> fields = new ArrayList<>();
-
-			if (existingFieldsMap.containsKey(existingField.getName())) {
-				fields = existingFieldsMap.get(existingField.getName());
-			}
-
-			fields.add(existingField);
-
-			existingFieldsMap.put(existingField.getName(), fields);
-		}
+		Map<String, List<Field>> existingFieldsMap = stream.collect(
+			Collectors.groupingBy(Field::getName));
 
 		List<Field> updatedFields = new ArrayList<>();
 
@@ -418,19 +409,10 @@ public class FieldDog {
 		List<Field> existingFields = _getFields(
 			context, dataSourceId, null, ownerId, ownerType);
 
-		Map<String, List<Field>> existingFieldsMap = new HashMap<>();
+		Stream<Field> stream = existingFields.stream();
 
-		for (Field existingField : existingFields) {
-			List<Field> fields = new ArrayList<>();
-
-			if (existingFieldsMap.containsKey(existingField.getName())) {
-				fields = existingFieldsMap.get(existingField.getName());
-			}
-
-			fields.add(existingField);
-
-			existingFieldsMap.put(existingField.getName(), fields);
-		}
+		Map<String, List<Field>> existingFieldsMap = stream.collect(
+			Collectors.groupingBy(Field::getName));
 
 		List<Field> newFields = buildFields(
 			context, dataJSONObject, dataSource, ownerId, ownerType);
