@@ -55,9 +55,8 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 
 	@Override
 	public <T> List<Message<T>> pullMessages(
-			int maxMessages,
-			UnsafeFunction<String, T, Exception> modelMapperFunction)
-		throws Exception {
+		int maxMessages,
+		UnsafeFunction<String, T, Exception> modelMapperUnsafeFunction) {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
@@ -90,7 +89,8 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 					new Message<>(
 						receivedMessage.getAckId(),
 						pubsubMessage.getMessageId(),
-						modelMapperFunction.apply(byteString.toStringUtf8())));
+						modelMapperUnsafeFunction.apply(
+							byteString.toStringUtf8())));
 			}
 		}
 		catch (Exception exception) {

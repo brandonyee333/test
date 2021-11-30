@@ -32,7 +32,7 @@ public interface MessageSubscriber {
 
 	public <T> List<Message<T>> pullMessages(
 			int maxMessages,
-			UnsafeFunction<String, T, Exception> modelMapperFunction)
+			UnsafeFunction<String, T, Exception> modelMapperUnsafeFunction)
 		throws Exception;
 
 	public <T> void registerException(Exception exception, Message<T> message);
