@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 
@@ -60,6 +61,7 @@ import org.springframework.web.bind.annotation.RestController;
 )
 public class ChannelsRestController extends BaseRestController {
 
+	@CacheEvict("getGraphQLExecutionResult")
 	@PostMapping("/clear")
 	public void clearChannel(@RequestBody List<String> ids) {
 		_asahTaskDog.scheduleAsahTask(
