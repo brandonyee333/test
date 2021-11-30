@@ -49,7 +49,7 @@ import SettingsTab from './settings_tab/index';
 const TABS = {
 	'query-builder': Liferay.Language.get('query-builder'),
 	'clause-contributors': Liferay.Language.get('clause-contributors'),
-	'settings': Liferay.Language.get('settings'),
+	settings: Liferay.Language.get('settings'),
 };
 /* eslint-enable sort-keys */
 
