@@ -197,6 +197,11 @@ public class EventAnalysis implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public String getName() {
+		return _name;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public Date getRangeEnd() {
 		if (_rangeEnd == null) {
 			return null;
@@ -300,6 +305,10 @@ public class EventAnalysis implements Persistable<Long> {
 		if (modifiedDate != null) {
 			_modifiedDate = new Date(modifiedDate.getTime());
 		}
+	}
+
+	public void setName(String name) {
+		_name = name;
 	}
 
 	public void setRangeEnd(Date rangeEnd) {

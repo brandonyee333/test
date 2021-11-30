@@ -110,6 +110,10 @@ public class EventAnalysisDTO {
 		return null;
 	}
 
+	public String getName() {
+		return _eventAnalysis.getName();
+	}
+
 	@GraphQLProperty("rangeEnd")
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,

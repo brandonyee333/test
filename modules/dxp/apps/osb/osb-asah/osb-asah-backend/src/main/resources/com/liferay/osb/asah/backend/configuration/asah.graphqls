@@ -362,6 +362,7 @@ type EventAnalysis {
 	modifiedDate: String
 	modifiedByUserId: String
 	modifiedByUserName: String
+	name: String
 	rangeEnd: String
 	rangeKey: Int
 	rangeStart: String
@@ -674,6 +675,7 @@ type MutationType {
 		eventAnalysisBreakdowns: [EventAnalysisBreakdownInput]
 		eventAnalysisFilters: [EventAnalysisFilterInput]
 		eventDefinitionId: String!
+		name: String!
 		rangeEnd: String
 		rangeKey: Int
 		rangeStart: String

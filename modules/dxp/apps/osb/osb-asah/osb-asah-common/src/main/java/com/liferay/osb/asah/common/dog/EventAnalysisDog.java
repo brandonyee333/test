@@ -66,7 +66,7 @@ public class EventAnalysisDog {
 		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
-		TimeRange timeRange, Long userId, String userName) {
+		String name, TimeRange timeRange, Long userId, String userName) {
 
 		_validateEventAnalysisBreakdowns(eventAnalysisBreakdowns);
 
@@ -107,6 +107,7 @@ public class EventAnalysisDog {
 		eventAnalysis.setModifiedByUserId(userId);
 		eventAnalysis.setModifiedByUserName(userName);
 		eventAnalysis.setModifiedDate(date);
+		eventAnalysis.setName(name);
 		eventAnalysis.setRangeEnd(timeRange.getEndDate());
 		eventAnalysis.setRangeKey(timeRange.getRangeKey());
 		eventAnalysis.setRangeStart(timeRange.getStartDate());

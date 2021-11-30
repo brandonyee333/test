@@ -80,7 +80,7 @@ public class CreateEventAnalysisMutationDataFetcher
 				eventAnalysisBreakdowns, eventAnalysisFilters,
 				Long.valueOf(
 					dataFetchingEnvironment.getArgument("eventDefinitionId")),
-				timeRange,
+				dataFetchingEnvironment.getArgument("name"), timeRange,
 				Long.valueOf(dataFetchingEnvironment.getArgument("userId")),
 				dataFetchingEnvironment.getArgument("userName")));
 	}
