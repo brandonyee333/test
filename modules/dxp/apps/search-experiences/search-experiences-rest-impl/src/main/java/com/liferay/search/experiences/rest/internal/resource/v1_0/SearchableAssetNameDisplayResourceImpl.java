@@ -14,8 +14,6 @@
 
 package com.liferay.search.experiences.rest.internal.resource.v1_0;
 
-import com.liferay.object.model.ObjectDefinition;
-import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -59,24 +57,9 @@ public class SearchableAssetNameDisplayResourceImpl
 	}
 
 	private String _getDisplayName(String className, String languageId) {
-		String modelResource = ResourceActionsUtil.getModelResource(
+		return ResourceActionsUtil.getModelResource(
 			LocaleUtil.fromLanguageId(languageId), className);
-
-		if (className.startsWith(ObjectDefinition.class.getName() + "#")) {
-			String[] parts = StringUtil.split(className, "#");
-
-			ObjectDefinition objectDefinition =
-				_objectDefinitionLocalService.fetchObjectDefinition(
-					GetterUtil.getLong(parts[1]));
-
-			modelResource = objectDefinition.getLabel(languageId);
-		}
-
-		return modelResource;
 	}
-
-	@Reference
-	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference
 	private SearchableAssetClassNamesProvider
