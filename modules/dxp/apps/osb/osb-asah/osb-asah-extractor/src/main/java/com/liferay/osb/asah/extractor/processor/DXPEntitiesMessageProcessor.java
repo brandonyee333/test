@@ -102,7 +102,8 @@ public class DXPEntitiesMessageProcessor {
 								return jsonObject.getString("projectId");
 							})
 					).forEach(
-						this::_processQueuedMessagesAsync
+						(projectId, messagesList) ->
+							_processQueuedMessagesAsync(messagesList, projectId)
 					);
 
 					if (_log.isInfoEnabled()) {
@@ -476,7 +477,7 @@ public class DXPEntitiesMessageProcessor {
 	}
 
 	private void _processQueuedMessagesAsync(
-		String projectId, List<Message<JSONObject>> messages) {
+		List<Message<JSONObject>> messages, String projectId) {
 
 		_semaphore.acquireUninterruptibly();
 

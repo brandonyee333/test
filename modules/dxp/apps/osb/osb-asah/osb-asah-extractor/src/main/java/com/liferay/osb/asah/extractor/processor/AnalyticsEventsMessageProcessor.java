@@ -399,7 +399,8 @@ public class AnalyticsEventsMessageProcessor {
 								analyticsEventsMessage.getUserId());
 						})
 				).forEach(
-					this::_processQueuedMessagesAsync
+					(tuple2, messagesList) -> _processQueuedMessagesAsync(
+						messagesList, tuple2)
 				);
 
 				if (_log.isInfoEnabled()) {
@@ -420,8 +421,8 @@ public class AnalyticsEventsMessageProcessor {
 	}
 
 	private void _processQueuedMessagesAsync(
-		Tuple2<String, String> tuple2,
-		List<Message<AnalyticsEventsMessage>> messages) {
+		List<Message<AnalyticsEventsMessage>> messages,
+		Tuple2<String, String> tuple2) {
 
 		_semaphore.acquireUninterruptibly();
 
