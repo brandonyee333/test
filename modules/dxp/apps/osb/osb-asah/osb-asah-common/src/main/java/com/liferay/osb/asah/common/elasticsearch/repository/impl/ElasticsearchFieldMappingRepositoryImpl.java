@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -52,6 +53,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -135,16 +137,27 @@ public class ElasticsearchFieldMappingRepositoryImpl
 		String context, Long dataSourceId, String ownerType) {
 
 		return toList(
-			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("context", context)
-				).filter(
-					QueryBuilders.existsQuery(
-						"dataSourceFieldNames." + dataSourceId)
-				).filter(
-					QueryBuilders.termQuery("ownerType", ownerType)
-				)));
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.filter(
+								QueryBuilders.termQuery("context", context)
+							).filter(
+								QueryBuilders.existsQuery(
+									"dataSourceFieldNames." + dataSourceId)
+							).filter(
+								QueryBuilders.termQuery("ownerType", ownerType)
+							));
+
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort("displayName"));
+
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort(
+								"modifiedDate", SortOrder.DESC));
+					})));
 	}
 
 	@Override

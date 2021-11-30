@@ -196,6 +196,10 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 					).eq(
 						ownerType
 					))
+			).orderBy(
+				DSL.field(
+					"fieldmapping.modifiedDate"
+				).desc()
 			).fetch(
 				record -> new FieldMapping(record.intoMap())
 			));
