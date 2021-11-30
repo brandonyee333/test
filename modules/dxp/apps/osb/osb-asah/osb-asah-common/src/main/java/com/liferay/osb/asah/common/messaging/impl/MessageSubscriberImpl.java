@@ -121,7 +121,7 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 				exception.getStackTrace());
 		}
 		else {
-			_log.error("Discarting message " + message.getObject(), exception);
+			_log.error("Discarding message " + message.getObject(), exception);
 
 			sendAckIds(Collections.singletonList(message.getAckId()));
 

@@ -178,7 +178,7 @@ public class AnalyticsEventsRestController {
 
 						if (_log.isInfoEnabled()) {
 							_log.info(
-								"Discarting duplicate event: " +
+								"Discarding duplicate event: " +
 									analyticsEventId);
 						}
 
