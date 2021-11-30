@@ -1113,40 +1113,6 @@ public class SXPElementModelImpl
 	}
 
 	@Override
-	public SXPElement cloneWithOriginalValues() {
-		SXPElementImpl sxpElementImpl = new SXPElementImpl();
-
-		sxpElementImpl.setMvccVersion(
-			this.<Long>getColumnOriginalValue("mvccVersion"));
-		sxpElementImpl.setUuid(this.<String>getColumnOriginalValue("uuid_"));
-		sxpElementImpl.setSXPElementId(
-			this.<Long>getColumnOriginalValue("sxpElementId"));
-		sxpElementImpl.setCompanyId(
-			this.<Long>getColumnOriginalValue("companyId"));
-		sxpElementImpl.setUserId(this.<Long>getColumnOriginalValue("userId"));
-		sxpElementImpl.setUserName(
-			this.<String>getColumnOriginalValue("userName"));
-		sxpElementImpl.setCreateDate(
-			this.<Date>getColumnOriginalValue("createDate"));
-		sxpElementImpl.setModifiedDate(
-			this.<Date>getColumnOriginalValue("modifiedDate"));
-		sxpElementImpl.setDescription(
-			this.<String>getColumnOriginalValue("description"));
-		sxpElementImpl.setElementDefinitionJSON(
-			this.<String>getColumnOriginalValue("elementDefinitionJSON"));
-		sxpElementImpl.setHidden(
-			this.<Boolean>getColumnOriginalValue("hidden_"));
-		sxpElementImpl.setReadOnly(
-			this.<Boolean>getColumnOriginalValue("readOnly"));
-		sxpElementImpl.setTitle(this.<String>getColumnOriginalValue("title"));
-		sxpElementImpl.setType(this.<Integer>getColumnOriginalValue("type_"));
-		sxpElementImpl.setStatus(
-			this.<Integer>getColumnOriginalValue("status"));
-
-		return sxpElementImpl;
-	}
-
-	@Override
 	public int compareTo(SXPElement sxpElement) {
 		long primaryKey = sxpElement.getPrimaryKey();
 

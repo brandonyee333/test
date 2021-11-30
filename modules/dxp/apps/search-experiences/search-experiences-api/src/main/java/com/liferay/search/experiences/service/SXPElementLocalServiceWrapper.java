@@ -26,10 +26,6 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
 public class SXPElementLocalServiceWrapper
 	implements ServiceWrapper<SXPElementLocalService>, SXPElementLocalService {
 
-	public SXPElementLocalServiceWrapper() {
-		this(null);
-	}
-
 	public SXPElementLocalServiceWrapper(
 		SXPElementLocalService sxpElementLocalService) {
 

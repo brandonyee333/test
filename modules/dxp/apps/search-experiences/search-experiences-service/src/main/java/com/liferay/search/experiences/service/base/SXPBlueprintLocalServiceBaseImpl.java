@@ -436,7 +436,6 @@ public abstract class SXPBlueprintLocalServiceBaseImpl
 	/**
 	 * @throws PortalException
 	 */
-	@Override
 	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
 
@@ -455,7 +454,6 @@ public abstract class SXPBlueprintLocalServiceBaseImpl
 			(SXPBlueprint)persistedModel);
 	}
 
-	@Override
 	public BasePersistence<SXPBlueprint> getBasePersistence() {
 		return sxpBlueprintPersistence;
 	}

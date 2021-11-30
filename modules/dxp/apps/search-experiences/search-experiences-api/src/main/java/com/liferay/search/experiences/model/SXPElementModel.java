@@ -506,7 +506,4 @@ public interface SXPElementModel
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException;
 
-	@Override
-	public SXPElement cloneWithOriginalValues();
-
 }

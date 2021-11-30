@@ -164,11 +164,6 @@ public class SXPBlueprintWrapper
 	}
 
 	@Override
-	public SXPBlueprint cloneWithOriginalValues() {
-		return wrap(model.cloneWithOriginalValues());
-	}
-
-	@Override
 	public String[] getAvailableLanguageIds() {
 		return model.getAvailableLanguageIds();
 	}

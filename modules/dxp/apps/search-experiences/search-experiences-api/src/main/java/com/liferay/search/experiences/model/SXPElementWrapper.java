@@ -157,11 +157,6 @@ public class SXPElementWrapper
 	}
 
 	@Override
-	public SXPElement cloneWithOriginalValues() {
-		return wrap(model.cloneWithOriginalValues());
-	}
-
-	@Override
 	public String[] getAvailableLanguageIds() {
 		return model.getAvailableLanguageIds();
 	}

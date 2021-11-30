@@ -390,7 +390,6 @@ public abstract class SXPElementLocalServiceBaseImpl
 	/**
 	 * @throws PortalException
 	 */
-	@Override
 	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
 
@@ -408,7 +407,6 @@ public abstract class SXPElementLocalServiceBaseImpl
 			(SXPElement)persistedModel);
 	}
 
-	@Override
 	public BasePersistence<SXPElement> getBasePersistence() {
 		return sxpElementPersistence;
 	}
