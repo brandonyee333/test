@@ -57,8 +57,8 @@ public class CreateEventAnalysisMutationDataFetcher
 
 		TimeRange timeRange = null;
 
-		if ((dataFetchingEnvironment.getArgument("rangeEnd") != null) &&
-			(dataFetchingEnvironment.getArgument("rangeStart") != null)) {
+		if (dataFetchingEnvironment.containsArgument("rangeEnd") &&
+			dataFetchingEnvironment.containsArgument("rangeStart")) {
 
 			timeRange = TimeRange.of(
 				LocalDate.parse(
@@ -66,7 +66,7 @@ public class CreateEventAnalysisMutationDataFetcher
 				LocalDate.parse(
 					dataFetchingEnvironment.getArgument("rangeStart")));
 		}
-		else if (dataFetchingEnvironment.getArgument("rangeKey") != null) {
+		else if (dataFetchingEnvironment.containsArgument("rangeKey")) {
 			timeRange = TimeRange.of(
 				(int)dataFetchingEnvironment.getArgument("rangeKey"));
 		}
