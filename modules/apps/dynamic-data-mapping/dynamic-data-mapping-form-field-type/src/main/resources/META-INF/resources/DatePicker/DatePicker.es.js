@@ -197,8 +197,6 @@ const DatePicker = ({
 		[defaultLanguageId, formatInEditingLocale, initialValue, locale]
 	);
 
-	
-
 	const [value, setValue] = useSyncValue(initialValueMemoized);
 	const [years, setYears] = useState(() => {
 		const currentYear = new Date().getFullYear();
