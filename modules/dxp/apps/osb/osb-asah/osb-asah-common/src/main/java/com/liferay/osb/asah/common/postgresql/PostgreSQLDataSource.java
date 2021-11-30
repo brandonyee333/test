@@ -112,44 +112,28 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 		else {
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
-					new ClassPathResource("functions-3.0.0.sql")),
+					new ClassPathResource("functions-current.sql")),
 				hikariDataSource);
 
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
-					new ClassPathResource("tables-3.0.0.sql")),
+					new ClassPathResource("tables-current.sql")),
 				hikariDataSource);
 
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
 					true, true, null,
-					new ClassPathResource("constraints-3.0.0.sql")),
+					new ClassPathResource("constraints-current.sql")),
 				hikariDataSource);
 
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
-					new ClassPathResource("indexes-3.0.0.sql")),
+					new ClassPathResource("indexes-current.sql")),
 				hikariDataSource);
 
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
 					new ClassPathResource("data-3.0.0.sql")),
-				hikariDataSource);
-
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					new ClassPathResource("tables-3.1.0.sql")),
-				hikariDataSource);
-
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					true, true, null,
-					new ClassPathResource("constraints-3.1.0.sql")),
-				hikariDataSource);
-
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					new ClassPathResource("indexes-3.1.0.sql")),
 				hikariDataSource);
 		}
 
