@@ -11,19 +11,11 @@ definition {
 
 		User.firstLoginPG();
 
-		JSONLayout.addPublicLayout(
-			groupName = "Guest",
-			layoutName = "Alloy Showcase");
+		Page.add(pageName = "Alloy Showcase");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "Alloy Showcase");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Alloy Showcase",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/guest/alloy-showcase");
 

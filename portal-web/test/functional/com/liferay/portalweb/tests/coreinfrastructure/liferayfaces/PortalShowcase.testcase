@@ -11,19 +11,11 @@ definition {
 
 		User.firstLoginPG();
 
-		JSONLayout.addPublicLayout(
-			groupName = "Guest",
-			layoutName = "Portal Showcase");
+		Page.add(pageName = "Portal Showcase");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "Portal Showcase");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Portal Showcase",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/guest/portal-showcase");
 

@@ -14,7 +14,7 @@ definition {
 
 		JSONGroup.addGroup(groupName = "Bridge Demos");
 
-		SitePages.openPagesAdmin(siteURLKey = "Bridge Demos");
+		Navigator.openSiteLanding(siteURLKey = "Bridge Demos");
 	}
 
 	tearDown {
@@ -30,19 +30,11 @@ definition {
 
 	@priority = "5"
 	test AlloyApplicantPortletSmoke {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Demos",
-			layoutName = "alloy-applicant");
+		Page.add(pageName = "alloy-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "alloy-applicant");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "alloy-applicant",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos/alloy-applicant");
 
@@ -122,19 +114,11 @@ definition {
 
 	@priority = "5"
 	test BootsFacesApplicantPortletSmoke {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Demos",
-			layoutName = "bootsfaces-applicant");
+		Page.add(pageName = "bootsfaces-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "bootsfaces-applicant");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "bootsfaces-applicant",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos/bootsfaces-applicant");
 
@@ -218,19 +202,11 @@ definition {
 
 	@priority = "5"
 	test ButterFacesApplicantPortletSmoke {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Demos",
-			layoutName = "butterfaces-applicant");
+		Page.add(pageName = "bootsfaces-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "bootsfaces-applicant");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "butterfaces-applicant",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos/butterfaces-applicant");
 
@@ -314,19 +290,11 @@ definition {
 
 	@priority = "5"
 	test JSF_IPCEventsPortletsSmoke {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Demos",
-			layoutName = "jsf-events");
+		Page.add(pageName = "jsf-events");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "jsf-events");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "jsf-events",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos/jsf-events");
 
@@ -371,19 +339,11 @@ definition {
 
 	@priority = "5"
 	test JSF_IPCPublicRenderParamsPortletsSmoke {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Demos",
-			layoutName = "jsf-prp");
+		Page.add(pageName = "jsf-prp");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "jsf-prp");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "jsf-prp",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos/jsf-prp");
 
@@ -428,19 +388,11 @@ definition {
 
 	@priority = "5"
 	test JSFApplicantPortletSmoke {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Demos",
-			layoutName = "jsf-applicant");
+		Page.add(pageName = "jsf-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "jsf-applicant");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "jsf-applicant",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos/jsf-applicant");
 
@@ -520,19 +472,11 @@ definition {
 
 	@priority = "5"
 	test JSFCDIApplicantPortletSmoke {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Demos",
-			layoutName = "jsf-cdi-applicant");
+		Page.add(pageName = "jsf-cdi-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "jsf-cdi-applicant");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "jsf-cdi-applicant",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos/jsf-cdi-applicant");
 
@@ -612,19 +556,11 @@ definition {
 
 	@priority = "5"
 	test JSFExportPDFPortletSmoke {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Demos",
-			layoutName = "jsf-pdf");
+		Page.add(pageName = "jsf-pdf");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "jsf-pdf");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "jsf-pdf",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos/jsf-pdf");
 
@@ -639,19 +575,11 @@ definition {
 
 	@priority = "5"
 	test JSFFlowsPortletSmoke {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Demos",
-			layoutName = "jsf flows");
+		Page.add(pageName = "jsf flows");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "jsf flows");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "jsf flows",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos/jsf-flows");
 
@@ -724,19 +652,11 @@ definition {
 
 	@priority = "5"
 	test JSFHTML5ApplicantPortletSmoke {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Demos",
-			layoutName = "jsf-html5-applicant");
+		Page.add(pageName = "jsf-html5-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "jsf-html5-applicant");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "jsf-html5-applicant",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos/jsf-html5-applicant");
 
@@ -816,19 +736,11 @@ definition {
 
 	@priority = "5"
 	test JSFJSPApplicantPortletSmoke {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Demos",
-			layoutName = "jsf-jsp-applicant");
+		Page.add(pageName = "jsf-jsp-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "jsf-jsp-applicant");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "jsf-jsp-applicant",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos/jsf-jsp-applicant");
 
@@ -900,19 +812,11 @@ definition {
 
 	@priority = "5"
 	test JSFSpringApplicantPortletSmoke {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Demos",
-			layoutName = "jsf-spring-applicant");
+		Page.add(pageName = "jsf-spring-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "jsf-spring-applicant");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "jsf-spring-applicant",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos");
 
@@ -992,19 +896,11 @@ definition {
 
 	@priority = "5"
 	test PrimeFacesCDIApplicantPortletSmoke {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Demos",
-			layoutName = "primefaces-applicant");
+		Page.add(pageName = "primefaces-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "primefaces-applicant");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "primefaces-applicant",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos/primefaces-applicant");
 
@@ -1091,19 +987,11 @@ definition {
 
 	@priority = "5"
 	test RichFacesCDIApplicantPortletSmoke {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Demos",
-			layoutName = "richfaces-applicant");
+		Page.add(pageName = "richfaces-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "richfaces-applicant");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "richfaces-applicant",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos/richfaces-applicant");
 
