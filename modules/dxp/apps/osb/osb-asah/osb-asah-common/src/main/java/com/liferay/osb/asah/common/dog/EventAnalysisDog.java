@@ -47,6 +47,7 @@ import java.util.concurrent.Executors;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,10 +77,8 @@ public class EventAnalysisDog {
 
 		try {
 			eventAnalysis.setEventAnalysisBreakdownJSONArray(
-				JSONUtil.toJSONArray(
-					eventAnalysisBreakdowns,
-					eventAnalysisBreakdown -> _objectMapper.convertValue(
-						eventAnalysisBreakdown, JSONObject.class)));
+				_objectMapper.convertValue(
+					eventAnalysisBreakdowns, JSONArray.class));
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -95,10 +94,8 @@ public class EventAnalysisDog {
 
 		try {
 			eventAnalysis.setEventAnalysisFilterJSONArray(
-				JSONUtil.toJSONArray(
-					eventAnalysisFilters,
-					eventAnalysisFilter -> _objectMapper.convertValue(
-						eventAnalysisFilter, JSONObject.class)));
+				_objectMapper.convertValue(
+					eventAnalysisFilters, JSONArray.class));
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
