@@ -18,10 +18,9 @@
 public static class TestrayFilterUtil {
 
 	public static String getFilterPreferencesKey(String controller, String action, long testrayProjectId) throws Exception {
-		StringBundler sb = new StringBundler(7);
+		StringBundler sb = new StringBundler(6);
 
-		sb.append("testray");
-		sb.append(StringPool.POUND);
+		sb.append("testray#");
 		sb.append(controller);
 		sb.append(StringPool.POUND);
 		sb.append(action);
