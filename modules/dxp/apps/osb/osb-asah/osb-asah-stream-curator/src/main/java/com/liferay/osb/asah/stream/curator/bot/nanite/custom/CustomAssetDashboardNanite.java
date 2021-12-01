@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.custom;
 
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
@@ -31,11 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -77,30 +73,14 @@ public class CustomAssetDashboardNanite implements Nanite {
 			_log.error(exception, exception);
 		}
 
-		try {
-			_semaphore.acquireUninterruptibly(15);
-		}
-		finally {
-			_semaphore.release(15);
-		}
+		_boundedExecutor.awaitPendingTasks();
 	}
 
 	@PreDestroy
 	private void _destroy() {
 		_reentrantLock.lock();
 
-		_executorService.shutdown();
-
-		try {
-			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
-				_executorService.shutdownNow();
-			}
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(
-				"Interrupted while waiting for termination of executor",
-				interruptedException);
-		}
+		_boundedExecutor.shutdown();
 	}
 
 	private String _getCustomAssetPrimaryKey(AnalyticsEvent analyticsEvent) {
@@ -162,16 +142,9 @@ public class CustomAssetDashboardNanite implements Nanite {
 	private void _runAsync(
 		Tuple2<String, String> tuple2, List<Message<AnalyticsEvent>> messages) {
 
-		_semaphore.acquireUninterruptibly();
-
-		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), tuple2);
-
-		CompletableFuture.runAsync(
+		_boundedExecutor.runAsync(
 			() -> {
 				try {
-					reentrantLock.lock();
-
 					long start = System.currentTimeMillis();
 
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
@@ -217,13 +190,8 @@ public class CustomAssetDashboardNanite implements Nanite {
 							ListUtil.map(messages, Message::getObject),
 						exception);
 				}
-				finally {
-					reentrantLock.unlock();
-
-					_semaphore.release();
-				}
 			},
-			_executorService);
+			() -> KeyReentrantLock.getReentrantLock(getClass(), tuple2));
 	}
 
 	private CustomAssetDashboard _updateCustomAssetDashboard(
@@ -265,11 +233,12 @@ public class CustomAssetDashboardNanite implements Nanite {
 	private static final Log _log = LogFactory.getLog(
 		CustomAssetDashboardNanite.class);
 
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(10, 15);
+
 	@Autowired
 	private CustomAssetDashboardRepository _customAssetDashboardRepository;
 
-	private final ExecutorService _executorService =
-		Executors.newFixedThreadPool(10);
 
 	@MessageSubscriber.Autowired(
 		channel = Channel.ANALYTICS_EVENTS_CUSTOM_ASSET
@@ -277,6 +246,5 @@ public class CustomAssetDashboardNanite implements Nanite {
 	private MessageSubscriber _messageSubscriber;
 
 	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
-	private final Semaphore _semaphore = new Semaphore(15, true);
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.activity;
 
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -34,11 +35,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -82,12 +78,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 			_log.error(exception, exception);
 		}
 
-		try {
-			_semaphore.acquireUninterruptibly(15);
-		}
-		finally {
-			_semaphore.release(15);
-		}
+		_boundedExecutor.awaitPendingTasks();
 	}
 
 	private Map<Long, Date> _convertActivityDatesSetToMap(
@@ -119,18 +110,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 	private void _destroy() {
 		_reentrantLock.lock();
 
-		_executorService.shutdown();
-
-		try {
-			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
-				_executorService.shutdownNow();
-			}
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(
-				"Interrupted while waiting for termination of executor",
-				interruptedException);
-		}
+		_boundedExecutor.shutdown();
 	}
 
 	private Set<Individual.ActivitiesCount> _getActivitiesCounts(
@@ -331,16 +311,9 @@ public class IndividualActivityFieldsNanite implements Nanite {
 	private void _runAsync(
 		Tuple2<String, String> tuple2, List<Message<JSONObject>> messages) {
 
-		_semaphore.acquireUninterruptibly();
-
-		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), tuple2);
-
-		CompletableFuture.runAsync(
+		_boundedExecutor.runAsync(
 			() -> {
 				try {
-					reentrantLock.lock();
-
 					long start = System.currentTimeMillis();
 
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
@@ -404,20 +377,15 @@ public class IndividualActivityFieldsNanite implements Nanite {
 							ListUtil.map(messages, Message::getObject),
 						exception);
 				}
-				finally {
-					reentrantLock.unlock();
-
-					_semaphore.release();
-				}
 			},
-			_executorService);
+			() -> KeyReentrantLock.getReentrantLock(getClass(), tuple2));
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		IndividualActivityFieldsNanite.class);
 
-	private final ExecutorService _executorService =
-		Executors.newFixedThreadPool(10);
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(10, 15);
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
@@ -429,6 +397,5 @@ public class IndividualActivityFieldsNanite implements Nanite {
 	private MessageSubscriber _messageSubscriber;
 
 	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
-	private final Semaphore _semaphore = new Semaphore(15, true);
 
 }

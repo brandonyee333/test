@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -42,11 +43,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -90,12 +86,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 			log.error(exception, exception);
 		}
 
-		try {
-			_semaphore.acquireUninterruptibly(15);
-		}
-		finally {
-			_semaphore.release(15);
-		}
+		_boundedExecutor.awaitPendingTasks();
 	}
 
 	protected String digest(Object... objects) {
@@ -271,20 +262,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	private void _destroy() {
 		_reentrantLock.lock();
 
-		_executorService.shutdown();
-
-		try {
-			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
-				_executorService.shutdownNow();
-			}
-		}
-		catch (InterruptedException interruptedException) {
-			Log log = getLog();
-
-			log.error(
-				"Interrupted while waiting for termination of executor",
-				interruptedException);
-		}
+		_boundedExecutor.shutdown();
 	}
 
 	private Function<AnalyticsEvent, T> _getMapperFunction() {
@@ -362,16 +340,9 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	private void _runAsync(
 		Tuple2<String, String> tuple2, List<Message<AnalyticsEvent>> messages) {
 
-		_semaphore.acquireUninterruptibly();
-
-		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), tuple2);
-
-		CompletableFuture.runAsync(
+		_boundedExecutor.runAsync(
 			() -> {
 				try {
-					reentrantLock.lock();
-
 					long start = System.currentTimeMillis();
 
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
@@ -410,13 +381,8 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 							analyticsEventsString,
 						exception);
 				}
-				finally {
-					reentrantLock.unlock();
-
-					_semaphore.release();
-				}
 			},
-			_executorService);
+			() -> KeyReentrantLock.getReentrantLock(getClass(), tuple2));
 	}
 
 	private void _setAssetPrimaryKey(T model) {
@@ -528,11 +494,12 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		}
 	}
 
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(10, 15);
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
-	private final ExecutorService _executorService =
-		Executors.newFixedThreadPool(10);
 
 	@Autowired
 	private IndividualDog _individualDog;
@@ -541,7 +508,5 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 	@Autowired
 	private SegmentDog _segmentDog;
-
-	private final Semaphore _semaphore = new Semaphore(15, true);
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.individual;
 
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
@@ -30,11 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
 
@@ -72,30 +68,14 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 			_log.error(exception, exception);
 		}
 
-		try {
-			_semaphore.acquireUninterruptibly(15);
-		}
-		finally {
-			_semaphore.release(15);
-		}
+		_boundedExecutor.awaitPendingTasks();
 	}
 
 	@PreDestroy
 	private void _destroy() {
 		_reentrantLock.lock();
 
-		_executorService.shutdown();
-
-		try {
-			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
-				_executorService.shutdownNow();
-			}
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(
-				"Interrupted while waiting for termination of executor",
-				interruptedException);
-		}
+		_boundedExecutor.shutdown();
 	}
 
 	private long _getActivitiesCount(
@@ -189,9 +169,7 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 			try {
 				_reentrantLock.lock();
 
-				_semaphore.acquireUninterruptibly();
-
-				CompletableFuture.runAsync(
+				_boundedExecutor.runAsync(
 					() -> {
 						try {
 							ProjectIdThreadLocal.setProjectId(project.getId());
@@ -230,11 +208,8 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 						catch (Exception exception) {
 							_log.error(exception.getMessage(), exception);
 						}
-						finally {
-							_semaphore.release();
-						}
 					},
-					_executorService);
+					null);
 			}
 			finally {
 				_reentrantLock.unlock();
@@ -251,12 +226,11 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 		IndividualSegmentActivityFieldsNanite.class);
 
 	private final Map<String, Boolean> _analyticsConfigured = new HashMap<>();
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(10, 15);
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	private final ExecutorService _executorService =
-		Executors.newFixedThreadPool(10);
 
 	@Autowired
 	private IndividualDog _individualDog;
@@ -268,7 +242,5 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 
 	@Autowired
 	private SegmentDog _segmentDog;
-
-	private final Semaphore _semaphore = new Semaphore(15, true);
 
 }

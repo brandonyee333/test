@@ -16,6 +16,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.session;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.EventStorageDog;
@@ -49,11 +50,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -102,13 +98,7 @@ public class UserSessionNanite implements Nanite {
 			_log.error(exception, exception);
 		}
 
-		try {
-			_semaphore.acquireUninterruptibly(
-				_userSessionNaniteConcurrentTasksLimit);
-		}
-		finally {
-			_semaphore.release(_userSessionNaniteConcurrentTasksLimit);
-		}
+		_boundedExecutor.awaitPendingTasks();
 	}
 
 	private void _createUserSession(
@@ -189,18 +179,7 @@ public class UserSessionNanite implements Nanite {
 	private void _destroy() {
 		_reentrantLock.lock();
 
-		_executorService.shutdown();
-
-		try {
-			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
-				_executorService.shutdownNow();
-			}
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(
-				"Interrupted while waiting for termination of executor",
-				interruptedException);
-		}
+		_boundedExecutor.shutdown();
 	}
 
 	private Individual _fetchIndividual(AnalyticsEvent analyticsEvent) {
@@ -295,8 +274,6 @@ public class UserSessionNanite implements Nanite {
 
 	@PostConstruct
 	private void _init() {
-		_semaphore = new Semaphore(
-			_userSessionNaniteConcurrentTasksLimit, true);
 		_sessionUpdateScriptSource = ScriptUtil.loadScriptSource(
 			getClass(), "session_update_script.painless");
 	}
@@ -499,9 +476,7 @@ public class UserSessionNanite implements Nanite {
 	private void _runAsync(
 		Tuple2<String, String> tuple2, List<Message<AnalyticsEvent>> messages) {
 
-		_semaphore.acquireUninterruptibly();
-
-		CompletableFuture.runAsync(
+		_boundedExecutor.runAsync(
 			() -> {
 				try {
 					long start = System.currentTimeMillis();
@@ -541,11 +516,8 @@ public class UserSessionNanite implements Nanite {
 							analyticsEventsString,
 						exception);
 				}
-				finally {
-					_semaphore.release();
-				}
 			},
-			_executorService);
+			null);
 	}
 
 	private void _storeEvents(
@@ -626,14 +598,14 @@ public class UserSessionNanite implements Nanite {
 
 	private static final Log _log = LogFactory.getLog(UserSessionNanite.class);
 
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(20, 30);
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private EventStorageDog _eventStorageDog;
-
-	private final ExecutorService _executorService =
-		Executors.newFixedThreadPool(20);
 
 	@Autowired
 	private IndividualDog _individualDog;
@@ -645,14 +617,10 @@ public class UserSessionNanite implements Nanite {
 	private ObjectMapper _objectMapper;
 
 	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
-	private Semaphore _semaphore;
 	private String _sessionUpdateScriptSource;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
-
-	@Value("${osb.asah.user.session.nanite.concurrent.tasks.limit:30}")
-	private int _userSessionNaniteConcurrentTasksLimit;
 
 	@Value("${osb.asah.user.session.nanite.pull.messages.size:50}")
 	private int _userSessionNanitePullMessagesSize;

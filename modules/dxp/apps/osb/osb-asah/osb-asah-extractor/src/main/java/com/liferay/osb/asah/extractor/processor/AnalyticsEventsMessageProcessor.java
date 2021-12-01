@@ -17,6 +17,7 @@ package com.liferay.osb.asah.extractor.processor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
@@ -52,11 +53,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -90,12 +86,7 @@ public class AnalyticsEventsMessageProcessor {
 			_log.error(exception, exception);
 		}
 
-		try {
-			_semaphore.acquireUninterruptibly(15);
-		}
-		finally {
-			_semaphore.release(15);
-		}
+		_boundedExecutor.awaitPendingTasks();
 	}
 
 	private Individual _addIndividual(
@@ -133,18 +124,7 @@ public class AnalyticsEventsMessageProcessor {
 	private void _destroy() {
 		_reentrantLock.lock();
 
-		_executorService.shutdown();
-
-		try {
-			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
-				_executorService.shutdownNow();
-			}
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(
-				"Interrupted while waiting for termination of executor",
-				interruptedException);
-		}
+		_boundedExecutor.shutdown();
 	}
 
 	private Map<String, String> _getContext(
@@ -424,87 +404,48 @@ public class AnalyticsEventsMessageProcessor {
 		List<Message<AnalyticsEventsMessage>> messages,
 		Tuple2<String, String> tuple2) {
 
-		_semaphore.acquireUninterruptibly();
-
-		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), tuple2);
-
-		CompletableFuture.runAsync(
+		_boundedExecutor.runAsync(
 			() -> {
 				List<String> ackIds = new ArrayList<>();
 
-				try {
-					reentrantLock.lock();
+				long start = System.currentTimeMillis();
 
-					long start = System.currentTimeMillis();
+				ProjectIdThreadLocal.setProjectId(tuple2.getT1());
 
-					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
+				for (Message<AnalyticsEventsMessage> message : messages) {
+					try {
+						_processMessage(message.getObject());
 
-					for (Message<AnalyticsEventsMessage> message : messages) {
-						try {
-							_processMessage(message.getObject());
-
-							ackIds.add(message.getAckId());
-						}
-						catch (Exception exception) {
-							_messageSubscriber.registerException(
-								exception, message);
-
-							AnalyticsEventsMessage analyticsEventsMessage =
-								message.getObject();
-
-							_log.error(
-								"Unable to process analytics events message " +
-									analyticsEventsMessage.toJSON(),
-								exception);
-						}
+						ackIds.add(message.getAckId());
 					}
+					catch (Exception exception) {
+						_messageSubscriber.registerException(
+							exception, message);
 
-					if (_log.isInfoEnabled()) {
-						Class<?> clazz = getClass();
+						AnalyticsEventsMessage analyticsEventsMessage =
+							message.getObject();
 
-						_log.info(
-							String.format(
-								"%s processed %d analytics events messages " +
-									"in %d ms",
-								clazz.getSimpleName(), messages.size(),
-								System.currentTimeMillis() - start));
+						_log.error(
+							"Unable to process analytics events message " +
+								analyticsEventsMessage.toJSON(),
+							exception);
 					}
 				}
-				catch (Exception exception) {
-					Stream<Message<AnalyticsEventsMessage>> stream =
-						messages.stream();
 
-					List<String> analyticsEventsMessagesString = stream.filter(
-						message -> !ackIds.contains(message.getAckId())
-					).map(
-						message -> {
-							_messageSubscriber.registerException(
-								exception, message);
+				_messageSubscriber.sendAckIds(ackIds);
 
-							AnalyticsEventsMessage analyticsEventsMessage =
-								message.getObject();
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
 
-							return analyticsEventsMessage.toJSON();
-						}
-					).collect(
-						Collectors.toList()
-					);
-
-					_log.error(
-						"Unable to process analytics events messages " +
-							analyticsEventsMessagesString,
-						exception);
-				}
-				finally {
-					reentrantLock.unlock();
-
-					_messageSubscriber.sendAckIds(ackIds);
-
-					_semaphore.release();
+					_log.info(
+						String.format(
+							"%s processed %d analytics events messages in %d " +
+								"ms",
+							clazz.getSimpleName(), messages.size(),
+							System.currentTimeMillis() - start));
 				}
 			},
-			_executorService);
+			() -> KeyReentrantLock.getReentrantLock(getClass(), tuple2));
 	}
 
 	private void _sendAnalyticsEvent(AnalyticsEvent analyticsEvent) {
@@ -540,14 +481,14 @@ public class AnalyticsEventsMessageProcessor {
 	)
 	private int _analyticsEventsMessageProcessorPullMessagesSize;
 
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(10, 15);
+
 	@Autowired
 	private BrowscapEngine _browscapEngine;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	private final ExecutorService _executorService =
-		Executors.newFixedThreadPool(10);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
@@ -571,8 +512,6 @@ public class AnalyticsEventsMessageProcessor {
 
 	@Autowired
 	private SegmentDog _segmentDog;
-
-	private final Semaphore _semaphore = new Semaphore(15, true);
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

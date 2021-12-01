@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.activity;
 
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
@@ -54,15 +55,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
@@ -141,13 +137,7 @@ public class ActivitiesNanite implements Nanite {
 			_log.error(exception, exception);
 		}
 
-		try {
-			_semaphore.acquireUninterruptibly(
-				_activitiesNaniteConcurrentTasksLimit);
-		}
-		finally {
-			_semaphore.release(_activitiesNaniteConcurrentTasksLimit);
-		}
+		_boundedExecutor.awaitPendingTasks();
 	}
 
 	private ActivityGroup _addActivityGroup(AnalyticsEvent analyticsEvent) {
@@ -220,18 +210,7 @@ public class ActivitiesNanite implements Nanite {
 	private void _destroy() {
 		_reentrantLock.lock();
 
-		_executorService.shutdown();
-
-		try {
-			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
-				_executorService.shutdownNow();
-			}
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(
-				"Interrupted while waiting for termination of executor",
-				interruptedException);
-		}
+		_boundedExecutor.shutdown();
 	}
 
 	private JSONObject _getActivityJSONObject(AnalyticsEvent analyticsEvent) {
@@ -630,11 +609,6 @@ public class ActivitiesNanite implements Nanite {
 		return MapUtil.getString(analyticsEvent.getContext(), "title");
 	}
 
-	@PostConstruct
-	private void _init() {
-		_semaphore = new Semaphore(_activitiesNaniteConcurrentTasksLimit, true);
-	}
-
 	private void _run() throws Exception {
 		while (true) {
 			try {
@@ -685,18 +659,11 @@ public class ActivitiesNanite implements Nanite {
 	private void _runAsync(
 		Tuple2<String, String> tuple2, List<Message<AnalyticsEvent>> messages) {
 
-		_semaphore.acquireUninterruptibly();
-
-		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), tuple2);
-
-		CompletableFuture.runAsync(
+		_boundedExecutor.runAsync(
 			() -> {
 				List<String> ackIds = new ArrayList<>();
 
 				try {
-					reentrantLock.lock();
-
 					long start = System.currentTimeMillis();
 
 					ProjectIdThreadLocal.setProjectId(tuple2.getT1());
@@ -778,14 +745,10 @@ public class ActivitiesNanite implements Nanite {
 						exception);
 				}
 				finally {
-					reentrantLock.unlock();
-
 					_messageSubscriber.sendAckIds(ackIds);
-
-					_semaphore.release();
 				}
 			},
-			_executorService);
+			() -> KeyReentrantLock.getReentrantLock(getClass(), tuple2));
 	}
 
 	private void _sendActivityMessage(
@@ -829,9 +792,6 @@ public class ActivitiesNanite implements Nanite {
 	@Resource
 	private ActivitiesNanite _activitiesNanite;
 
-	@Value("${osb.asah.activities.nanite.concurrent.tasks.limit:30}")
-	private int _activitiesNaniteConcurrentTasksLimit;
-
 	@Value("${osb.asah.activities.nanite.pull.messages.size:50}")
 	private int _activitiesNanitePullMessagesSize;
 
@@ -841,11 +801,11 @@ public class ActivitiesNanite implements Nanite {
 	@Autowired
 	private AssetDog _assetDog;
 
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(20, 30);
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
-	private final ExecutorService _executorService =
-		Executors.newFixedThreadPool(20);
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
@@ -860,7 +820,6 @@ public class ActivitiesNanite implements Nanite {
 	private MessageSubscriber _messageSubscriber;
 
 	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
-	private Semaphore _semaphore;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

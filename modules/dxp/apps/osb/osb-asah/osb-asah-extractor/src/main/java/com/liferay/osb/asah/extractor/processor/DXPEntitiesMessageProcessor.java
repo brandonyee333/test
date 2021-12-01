@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.extractor.processor;
 
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
@@ -45,16 +46,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -126,14 +121,7 @@ public class DXPEntitiesMessageProcessor {
 			_log.error(exception, exception);
 		}
 
-		try {
-			_semaphore.acquireUninterruptibly(
-				_dxpEntitiesMessageProcessorConcurrentTasksLimit);
-		}
-		finally {
-			_semaphore.release(
-				_dxpEntitiesMessageProcessorConcurrentTasksLimit);
-		}
+		_boundedExecutor.awaitPendingTasks();
 	}
 
 	private void _addAssociations(
@@ -180,18 +168,7 @@ public class DXPEntitiesMessageProcessor {
 	private void _destroy() {
 		_reentrantLock.lock();
 
-		_executorService.shutdown();
-
-		try {
-			if (!_executorService.awaitTermination(1, TimeUnit.MINUTES)) {
-				_executorService.shutdownNow();
-			}
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(
-				"Interrupted while waiting for termination of executor",
-				interruptedException);
-		}
+		_boundedExecutor.shutdown();
 	}
 
 	private String _getFieldType(String dataType, String displayType) {
@@ -224,12 +201,6 @@ public class DXPEntitiesMessageProcessor {
 		}
 
 		return null;
-	}
-
-	@PostConstruct
-	private void _init() {
-		_semaphore = new Semaphore(
-			_dxpEntitiesMessageProcessorConcurrentTasksLimit, true);
 	}
 
 	private void _processAssociationObject(
@@ -479,18 +450,11 @@ public class DXPEntitiesMessageProcessor {
 	private void _processQueuedMessagesAsync(
 		List<Message<JSONObject>> messages, String projectId) {
 
-		_semaphore.acquireUninterruptibly();
-
-		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), projectId);
-
-		CompletableFuture.runAsync(
+		_boundedExecutor.runAsync(
 			() -> {
 				List<String> ackIds = new ArrayList<>();
 
 				try {
-					reentrantLock.lock();
-
 					long start = System.currentTimeMillis();
 
 					ProjectIdThreadLocal.setProjectId(projectId);
@@ -523,37 +487,11 @@ public class DXPEntitiesMessageProcessor {
 								System.currentTimeMillis() - start));
 					}
 				}
-				catch (Exception exception) {
-					Stream<Message<JSONObject>> stream = messages.stream();
-
-					List<String> messagesString = stream.filter(
-						message -> !ackIds.contains(message.getAckId())
-					).map(
-						message -> {
-							_messageSubscriber.registerException(
-								exception, message);
-
-							JSONObject messageJSONObject = message.getObject();
-
-							return messageJSONObject.toString();
-						}
-					).collect(
-						Collectors.toList()
-					);
-
-					_log.error(
-						"Unable to process messages " + messagesString,
-						exception);
-				}
 				finally {
-					reentrantLock.unlock();
-
 					_messageSubscriber.sendAckIds(ackIds);
-
-					_semaphore.release();
 				}
 			},
-			_executorService);
+			() -> KeyReentrantLock.getReentrantLock(getClass(), projectId));
 	}
 
 	private void _processUserFieldObject(
@@ -624,22 +562,17 @@ public class DXPEntitiesMessageProcessor {
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
 
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(10, 15);
+
 	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	@Value(
-		"${osb.asah.dxp.entities.message.processor.concurrent.tasks.limit:15}"
-	)
-	private int _dxpEntitiesMessageProcessorConcurrentTasksLimit;
 
 	@Value("${osb.asah.dxp.entities.message.processor.pull.messages.size:50}")
 	private int _dxpEntitiesMessageProcessorPullMessagesSize;
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	private final ExecutorService _executorService =
-		Executors.newFixedThreadPool(10);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
@@ -663,8 +596,6 @@ public class DXPEntitiesMessageProcessor {
 
 	@Autowired
 	private SegmentDog _segmentDog;
-
-	private Semaphore _semaphore;
 
 	@Autowired
 	private SuppressionDog _suppressionDog;
