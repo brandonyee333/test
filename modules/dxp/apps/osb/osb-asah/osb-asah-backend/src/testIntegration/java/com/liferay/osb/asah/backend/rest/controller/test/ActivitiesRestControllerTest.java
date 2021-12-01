@@ -128,6 +128,10 @@ public class ActivitiesRestControllerTest
 		name = "activities", resourcePath = "activities.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources_3.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,
 		resourcePath = "osbasahfaroinfo/assets.json"
@@ -159,6 +163,10 @@ public class ActivitiesRestControllerTest
 
 	@ElasticsearchIndex(
 		name = "activities", resourcePath = "activities.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources_3.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(

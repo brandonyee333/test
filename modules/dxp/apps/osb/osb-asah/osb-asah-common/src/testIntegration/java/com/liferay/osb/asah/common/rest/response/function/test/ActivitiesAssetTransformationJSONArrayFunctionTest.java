@@ -48,6 +48,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 	name = "activities", resourcePath = "activities.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
+@ElasticsearchIndex(
+	name = "data-sources", resourcePath = "data_sources.json",
+	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+)
 @RepositoryResource(
 	repositoryClass = AssetRepository.class,
 	resourcePath = "osbasahfaroinfo/assets.json"

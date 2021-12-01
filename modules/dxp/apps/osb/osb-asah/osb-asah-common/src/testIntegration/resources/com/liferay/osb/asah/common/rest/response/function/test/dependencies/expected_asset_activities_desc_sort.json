@@ -2,18 +2,21 @@
 	{
 		"count": 3,
 		"dataSourceAssetPK": "https://www.Joaquin-Dibbert.biz",
+		"dataSourceName": "Liferay Data Source",
 		"id": "355525465840533643",
 		"name": "extend clicks-and-mortar e-tailers"
 	},
 	{
 		"count": 2,
 		"dataSourceAssetPK": "https://www.Terrance-Lueilwitz.biz",
+		"dataSourceName": "Liferay Data Source",
 		"id": "355525458918155906",
 		"name": "empower holistic ROI"
 	},
 	{
 		"count": 1,
 		"dataSourceAssetPK": "https://www.Ansel-Farrell.io",
+		"dataSourceName": "Liferay Data Source",
 		"id": "355525457185371626",
 		"name": "productize best-of-breed web services"
 	}
