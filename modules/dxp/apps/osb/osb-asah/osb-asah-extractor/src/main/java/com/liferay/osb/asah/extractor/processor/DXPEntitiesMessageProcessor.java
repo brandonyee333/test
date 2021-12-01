@@ -46,7 +46,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -73,47 +72,40 @@ public class DXPEntitiesMessageProcessor {
 	public void processQueuedMessages() {
 		try {
 			while (true) {
-				try {
-					_reentrantLock.lock();
+				long start = System.currentTimeMillis();
 
-					long start = System.currentTimeMillis();
+				List<Message<JSONObject>> messages =
+					_messageSubscriber.pullMessages(
+						_dxpEntitiesMessageProcessorPullMessagesSize,
+						JSONObject::new);
 
-					List<Message<JSONObject>> messages =
-						_messageSubscriber.pullMessages(
-							_dxpEntitiesMessageProcessorPullMessagesSize,
-							JSONObject::new);
-
-					if (messages.isEmpty()) {
-						break;
-					}
-
-					Stream<Message<JSONObject>> stream = messages.stream();
-
-					stream.collect(
-						Collectors.groupingBy(
-							message -> {
-								JSONObject jsonObject = message.getObject();
-
-								return jsonObject.getString("projectId");
-							})
-					).forEach(
-						(projectId, messagesList) ->
-							_processQueuedMessagesAsync(messagesList, projectId)
-					);
-
-					if (_log.isInfoEnabled()) {
-						Class<?> clazz = getClass();
-
-						_log.info(
-							String.format(
-								"%s dispatched %d analytics events messages " +
-									"in %d ms",
-								clazz.getSimpleName(), messages.size(),
-								System.currentTimeMillis() - start));
-					}
+				if (messages.isEmpty()) {
+					break;
 				}
-				finally {
-					_reentrantLock.unlock();
+
+				Stream<Message<JSONObject>> stream = messages.stream();
+
+				stream.collect(
+					Collectors.groupingBy(
+						message -> {
+							JSONObject jsonObject = message.getObject();
+
+							return jsonObject.getString("projectId");
+						})
+				).forEach(
+					(projectId, messagesList) -> _processQueuedMessagesAsync(
+						messagesList, projectId)
+				);
+
+				if (_log.isInfoEnabled()) {
+					Class<?> clazz = getClass();
+
+					_log.info(
+						String.format(
+							"%s dispatched %d analytics events messages in " +
+								"%d ms",
+							clazz.getSimpleName(), messages.size(),
+							System.currentTimeMillis() - start));
 				}
 			}
 		}
@@ -166,8 +158,6 @@ public class DXPEntitiesMessageProcessor {
 
 	@PreDestroy
 	private void _destroy() {
-		_reentrantLock.lock();
-
 		_boundedExecutor.shutdown();
 	}
 
@@ -591,8 +581,6 @@ public class DXPEntitiesMessageProcessor {
 
 	@Autowired
 	private OrganizationRepository _organizationRepository;
-
-	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 
 	@Autowired
 	private SegmentDog _segmentDog;

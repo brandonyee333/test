@@ -53,7 +53,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -122,8 +121,6 @@ public class AnalyticsEventsMessageProcessor {
 
 	@PreDestroy
 	private void _destroy() {
-		_reentrantLock.lock();
-
 		_boundedExecutor.shutdown();
 	}
 
@@ -351,51 +348,42 @@ public class AnalyticsEventsMessageProcessor {
 
 	private void _processQueuedMessages() throws Exception {
 		while (true) {
-			try {
-				_reentrantLock.lock();
+			long start = System.currentTimeMillis();
 
-				long start = System.currentTimeMillis();
+			List<Message<AnalyticsEventsMessage>> messages =
+				_messageSubscriber.pullMessages(
+					_analyticsEventsMessageProcessorPullMessagesSize,
+					AnalyticsEventsMessage::toAnalyticsEventsMessage);
 
-				List<Message<AnalyticsEventsMessage>> messages =
-					_messageSubscriber.pullMessages(
-						_analyticsEventsMessageProcessorPullMessagesSize,
-						AnalyticsEventsMessage::toAnalyticsEventsMessage);
-
-				if (messages.isEmpty()) {
-					break;
-				}
-
-				Stream<Message<AnalyticsEventsMessage>> stream =
-					messages.stream();
-
-				stream.collect(
-					Collectors.groupingBy(
-						message -> {
-							AnalyticsEventsMessage analyticsEventsMessage =
-								message.getObject();
-
-							return Tuples.of(
-								analyticsEventsMessage.getProjectId(),
-								analyticsEventsMessage.getUserId());
-						})
-				).forEach(
-					(tuple2, messagesList) -> _processQueuedMessagesAsync(
-						messagesList, tuple2)
-				);
-
-				if (_log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
-
-					_log.info(
-						String.format(
-							"%s dispatched %d analytics events messages in " +
-								"%d ms",
-							clazz.getSimpleName(), messages.size(),
-							System.currentTimeMillis() - start));
-				}
+			if (messages.isEmpty()) {
+				break;
 			}
-			finally {
-				_reentrantLock.unlock();
+
+			Stream<Message<AnalyticsEventsMessage>> stream = messages.stream();
+
+			stream.collect(
+				Collectors.groupingBy(
+					message -> {
+						AnalyticsEventsMessage analyticsEventsMessage =
+							message.getObject();
+
+						return Tuples.of(
+							analyticsEventsMessage.getProjectId(),
+							analyticsEventsMessage.getUserId());
+					})
+			).forEach(
+				(tuple2, messagesList) -> _processQueuedMessagesAsync(
+					messagesList, tuple2)
+			);
+
+			if (_log.isInfoEnabled()) {
+				Class<?> clazz = getClass();
+
+				_log.info(
+					String.format(
+						"%s dispatched %d analytics events messages in %d ms",
+						clazz.getSimpleName(), messages.size(),
+						System.currentTimeMillis() - start));
 			}
 		}
 	}
@@ -507,8 +495,6 @@ public class AnalyticsEventsMessageProcessor {
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_MESSAGE)
 	private MessageSubscriber _messageSubscriber;
-
-	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 
 	@Autowired
 	private SegmentDog _segmentDog;

@@ -43,7 +43,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -260,8 +259,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 	@PreDestroy
 	private void _destroy() {
-		_reentrantLock.lock();
-
 		_boundedExecutor.shutdown();
 	}
 
@@ -293,46 +290,39 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 	private void _run() throws Exception {
 		while (true) {
-			try {
-				_reentrantLock.lock();
+			long start = System.currentTimeMillis();
 
-				long start = System.currentTimeMillis();
+			List<Message<AnalyticsEvent>> messages = pullAnalyticsEvents();
 
-				List<Message<AnalyticsEvent>> messages = pullAnalyticsEvents();
-
-				if (messages.isEmpty()) {
-					break;
-				}
-
-				Stream<Message<AnalyticsEvent>> stream = messages.stream();
-
-				stream.collect(
-					Collectors.groupingBy(
-						message -> {
-							AnalyticsEvent analyticsEvent = message.getObject();
-
-							return Tuples.of(
-								analyticsEvent.getProjectId(),
-								analyticsEvent.getUserId());
-						})
-				).forEach(
-					this::_runAsync
-				);
-
-				Log log = getLog();
-
-				if (log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
-
-					log.info(
-						String.format(
-							"%s dispatched %d analytics events in %d ms",
-							clazz.getSimpleName(), messages.size(),
-							System.currentTimeMillis() - start));
-				}
+			if (messages.isEmpty()) {
+				break;
 			}
-			finally {
-				_reentrantLock.unlock();
+
+			Stream<Message<AnalyticsEvent>> stream = messages.stream();
+
+			stream.collect(
+				Collectors.groupingBy(
+					message -> {
+						AnalyticsEvent analyticsEvent = message.getObject();
+
+						return Tuples.of(
+							analyticsEvent.getProjectId(),
+							analyticsEvent.getUserId());
+					})
+			).forEach(
+				this::_runAsync
+			);
+
+			Log log = getLog();
+
+			if (log.isInfoEnabled()) {
+				Class<?> clazz = getClass();
+
+				log.info(
+					String.format(
+						"%s dispatched %d analytics events in %d ms",
+						clazz.getSimpleName(), messages.size(),
+						System.currentTimeMillis() - start));
 			}
 		}
 	}
@@ -503,8 +493,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 	@Autowired
 	private IndividualDog _individualDog;
-
-	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 
 	@Autowired
 	private SegmentDog _segmentDog;

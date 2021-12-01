@@ -35,8 +35,6 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.session.arm.FinalizeUserSe
 
 import java.time.temporal.ChronoUnit;
 
-import java.util.concurrent.locks.ReentrantLock;
-
 import javax.annotation.PreDestroy;
 
 import org.apache.commons.logging.Log;
@@ -159,8 +157,6 @@ public class UserSessionFinalizerNanite implements Nanite {
 
 	@PreDestroy
 	private void _destroy() {
-		_reentrantLock.lock();
-
 		_boundedExecutor.shutdown();
 	}
 
@@ -231,25 +227,18 @@ public class UserSessionFinalizerNanite implements Nanite {
 
 	private void _run() throws Exception {
 		for (Project project : _projectDog.getProjects()) {
-			try {
-				_reentrantLock.lock();
+			_boundedExecutor.runAsync(
+				() -> {
+					try {
+						ProjectIdThreadLocal.setProjectId(project.getId());
 
-				_boundedExecutor.runAsync(
-					() -> {
-						try {
-							ProjectIdThreadLocal.setProjectId(project.getId());
-
-							run(false);
-						}
-						catch (Exception exception) {
-							_log.error(exception.getMessage(), exception);
-						}
-					},
-					null);
-			}
-			finally {
-				_reentrantLock.unlock();
-			}
+						run(false);
+					}
+					catch (Exception exception) {
+						_log.error(exception.getMessage(), exception);
+					}
+				},
+				null);
 		}
 	}
 
@@ -273,8 +262,6 @@ public class UserSessionFinalizerNanite implements Nanite {
 
 	@Autowired
 	private ProjectDog _projectDog;
-
-	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

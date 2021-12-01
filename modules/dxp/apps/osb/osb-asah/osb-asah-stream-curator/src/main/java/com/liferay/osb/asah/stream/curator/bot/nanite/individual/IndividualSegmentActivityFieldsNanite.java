@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
 
 import javax.annotation.PreDestroy;
@@ -73,8 +72,6 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 
 	@PreDestroy
 	private void _destroy() {
-		_reentrantLock.lock();
-
 		_boundedExecutor.shutdown();
 	}
 
@@ -166,54 +163,47 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 
 	private void _run() {
 		for (Project project : _projectDog.getProjects()) {
-			try {
-				_reentrantLock.lock();
+			_boundedExecutor.runAsync(
+				() -> {
+					try {
+						ProjectIdThreadLocal.setProjectId(project.getId());
 
-				_boundedExecutor.runAsync(
-					() -> {
-						try {
-							ProjectIdThreadLocal.setProjectId(project.getId());
-
-							if (!_dataSourceDog.isAnalyticsConfigured()) {
-								if (_isAnalyticsConfigured()) {
-									_segmentDog.updateSegments(0L);
-								}
-
-								_setAnalyticsConfigured(false);
-
-								return;
+						if (!_dataSourceDog.isAnalyticsConfigured()) {
+							if (_isAnalyticsConfigured()) {
+								_segmentDog.updateSegments(0L);
 							}
 
-							_setAnalyticsConfigured(true);
+							_setAnalyticsConfigured(false);
 
-							int page = 0;
+							return;
+						}
 
-							List<Segment> segments = _segmentDog.getSegments(
-								"Account: ", page, 500);
+						_setAnalyticsConfigured(true);
 
-							while (!segments.isEmpty()) {
-								for (Segment segment : segments) {
-									try {
-										_process(segment);
-									}
-									catch (Exception exception) {
-										_log.error(exception, exception);
-									}
+						int page = 0;
+
+						List<Segment> segments = _segmentDog.getSegments(
+							"Account: ", page, 500);
+
+						while (!segments.isEmpty()) {
+							for (Segment segment : segments) {
+								try {
+									_process(segment);
 								}
-
-								segments = _segmentDog.getSegments(
-									"Account: ", ++page, 500);
+								catch (Exception exception) {
+									_log.error(exception, exception);
+								}
 							}
+
+							segments = _segmentDog.getSegments(
+								"Account: ", ++page, 500);
 						}
-						catch (Exception exception) {
-							_log.error(exception.getMessage(), exception);
-						}
-					},
-					null);
-			}
-			finally {
-				_reentrantLock.unlock();
-			}
+					}
+					catch (Exception exception) {
+						_log.error(exception.getMessage(), exception);
+					}
+				},
+				null);
 		}
 	}
 
@@ -237,8 +227,6 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 
 	@Autowired
 	private ProjectDog _projectDog;
-
-	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 
 	@Autowired
 	private SegmentDog _segmentDog;

@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -107,8 +106,6 @@ public class IndividualNanite implements Nanite {
 
 	@PreDestroy
 	private void _destroy() {
-		_reentrantLock.lock();
-
 		_boundedExecutor.shutdown();
 	}
 
@@ -249,46 +246,39 @@ public class IndividualNanite implements Nanite {
 
 	private void _run() throws Exception {
 		while (true) {
-			try {
-				_reentrantLock.lock();
+			long start = System.currentTimeMillis();
 
-				long start = System.currentTimeMillis();
+			List<Message<JSONObject>> messages =
+				_messageSubscriber.pullMessages(
+					_individualNanitePullMessagesSize, JSONObject::new);
 
-				List<Message<JSONObject>> messages =
-					_messageSubscriber.pullMessages(
-						_individualNanitePullMessagesSize, JSONObject::new);
-
-				if (messages.isEmpty()) {
-					return;
-				}
-
-				Stream<Message<JSONObject>> stream = messages.stream();
-
-				stream.collect(
-					Collectors.groupingBy(
-						message -> {
-							JSONObject jsonObject = message.getObject();
-
-							return Tuples.of(
-								jsonObject.getString("projectId"),
-								jsonObject.getString("userId"));
-						})
-				).forEach(
-					this::_runAsync
-				);
-
-				if (_log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
-
-					_log.info(
-						String.format(
-							"%s dispatched %d messages in %d ms",
-							clazz.getSimpleName(), messages.size(),
-							System.currentTimeMillis() - start));
-				}
+			if (messages.isEmpty()) {
+				return;
 			}
-			finally {
-				_reentrantLock.unlock();
+
+			Stream<Message<JSONObject>> stream = messages.stream();
+
+			stream.collect(
+				Collectors.groupingBy(
+					message -> {
+						JSONObject jsonObject = message.getObject();
+
+						return Tuples.of(
+							jsonObject.getString("projectId"),
+							jsonObject.getString("userId"));
+					})
+			).forEach(
+				this::_runAsync
+			);
+
+			if (_log.isInfoEnabled()) {
+				Class<?> clazz = getClass();
+
+				_log.info(
+					String.format(
+						"%s dispatched %d messages in %d ms",
+						clazz.getSimpleName(), messages.size(),
+						System.currentTimeMillis() - start));
 			}
 		}
 	}
@@ -596,8 +586,6 @@ public class IndividualNanite implements Nanite {
 
 	@MessageSubscriber.Autowired(channel = Channel.IDENTITY_MESSAGE)
 	private MessageSubscriber _messageSubscriber;
-
-	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 
 	@Autowired
 	private SegmentDog _segmentDog;

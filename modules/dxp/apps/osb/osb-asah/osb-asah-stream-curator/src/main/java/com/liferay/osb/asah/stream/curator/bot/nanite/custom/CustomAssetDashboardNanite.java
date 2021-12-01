@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -78,8 +77,6 @@ public class CustomAssetDashboardNanite implements Nanite {
 
 	@PreDestroy
 	private void _destroy() {
-		_reentrantLock.lock();
-
 		_boundedExecutor.shutdown();
 	}
 
@@ -95,46 +92,39 @@ public class CustomAssetDashboardNanite implements Nanite {
 
 	private void _run() throws Exception {
 		while (true) {
-			try {
-				_reentrantLock.lock();
+			long start = System.currentTimeMillis();
 
-				long start = System.currentTimeMillis();
+			List<Message<AnalyticsEvent>> messages =
+				_messageSubscriber.pullMessages(
+					50, AnalyticsEvent::toAnalyticsEvent);
 
-				List<Message<AnalyticsEvent>> messages =
-					_messageSubscriber.pullMessages(
-						50, AnalyticsEvent::toAnalyticsEvent);
-
-				if (messages.isEmpty()) {
-					break;
-				}
-
-				Stream<Message<AnalyticsEvent>> stream = messages.stream();
-
-				stream.collect(
-					Collectors.groupingBy(
-						message -> {
-							AnalyticsEvent analyticsEvent = message.getObject();
-
-							return Tuples.of(
-								analyticsEvent.getProjectId(),
-								_getCustomAssetPrimaryKey(analyticsEvent));
-						})
-				).forEach(
-					this::_runAsync
-				);
-
-				if (_log.isInfoEnabled()) {
-					Class<?> clazz = getClass();
-
-					_log.info(
-						String.format(
-							"%s dispatched %d analytics events in %d ms",
-							clazz.getSimpleName(), messages.size(),
-							System.currentTimeMillis() - start));
-				}
+			if (messages.isEmpty()) {
+				break;
 			}
-			finally {
-				_reentrantLock.unlock();
+
+			Stream<Message<AnalyticsEvent>> stream = messages.stream();
+
+			stream.collect(
+				Collectors.groupingBy(
+					message -> {
+						AnalyticsEvent analyticsEvent = message.getObject();
+
+						return Tuples.of(
+							analyticsEvent.getProjectId(),
+							_getCustomAssetPrimaryKey(analyticsEvent));
+					})
+			).forEach(
+				this::_runAsync
+			);
+
+			if (_log.isInfoEnabled()) {
+				Class<?> clazz = getClass();
+
+				_log.info(
+					String.format(
+						"%s dispatched %d analytics events in %d ms",
+						clazz.getSimpleName(), messages.size(),
+						System.currentTimeMillis() - start));
 			}
 		}
 	}
@@ -244,7 +234,5 @@ public class CustomAssetDashboardNanite implements Nanite {
 		channel = Channel.ANALYTICS_EVENTS_CUSTOM_ASSET
 	)
 	private MessageSubscriber _messageSubscriber;
-
-	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
 
 }
