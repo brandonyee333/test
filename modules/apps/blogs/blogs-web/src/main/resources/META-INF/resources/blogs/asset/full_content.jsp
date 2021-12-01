@@ -16,6 +16,12 @@
 
 <%@ include file="/init.jsp" %>
 
+<liferay-util:html-top
+	outputKey="blogs_common_main_css"
+>
+	<link href="<%= PortalUtil.getStaticResourceURL(request, application.getContextPath() + "/blogs/css/common_main.css") %>" rel="stylesheet" type="text/css" />
+</liferay-util:html-top>
+
 <liferay-util:dynamic-include key="com.liferay.blogs.web#/blogs/asset/full_content.jsp#pre" />
 
 <%
@@ -24,27 +30,29 @@ BlogsEntry entry = (BlogsEntry)request.getAttribute(WebKeys.BLOGS_ENTRY);
 String entryTitle = BlogsEntryUtil.getDisplayTitle(resourceBundle, entry);
 %>
 
-<div class="widget-mode-simple" data-analytics-asset-id="<%= String.valueOf(entry.getEntryId()) %>" data-analytics-asset-title="<%= HtmlUtil.escapeAttribute(entryTitle) %>" data-analytics-asset-type="blog">
-	<div class="widget-mode-simple-entry">
-		<div class="widget-content" id="<portlet:namespace /><%= entry.getEntryId() %>">
-			<liferay-util:include page="/blogs/entry_cover_image_caption.jsp" servletContext="<%= application %>">
-				<liferay-util:param name="coverImageCaption" value="<%= entry.getCoverImageCaption() %>" />
-				<liferay-util:param name="coverImageURL" value="<%= entry.getCoverImageURL(themeDisplay) %>" />
-			</liferay-util:include>
+<div class="portlet-blogs">
+	<div class="widget-mode-simple" data-analytics-asset-id="<%= String.valueOf(entry.getEntryId()) %>" data-analytics-asset-title="<%= HtmlUtil.escapeAttribute(entryTitle) %>" data-analytics-asset-type="blog">
+		<div class="widget-mode-simple-entry">
+			<div class="widget-content" id="<portlet:namespace /><%= entry.getEntryId() %>">
+				<liferay-util:include page="/blogs/entry_cover_image_caption.jsp" servletContext="<%= application %>">
+					<liferay-util:param name="coverImageCaption" value="<%= entry.getCoverImageCaption() %>" />
+					<liferay-util:param name="coverImageURL" value="<%= entry.getCoverImageURL(themeDisplay) %>" />
+				</liferay-util:include>
 
-			<%= entry.getContent() %>
-		</div>
+				<%= entry.getContent() %>
+			</div>
 
-		<liferay-expando:custom-attributes-available
-			className="<%= BlogsEntry.class.getName() %>"
-		>
-			<liferay-expando:custom-attribute-list
+			<liferay-expando:custom-attributes-available
 				className="<%= BlogsEntry.class.getName() %>"
-				classPK="<%= (entry != null) ? entry.getEntryId() : 0 %>"
-				editable="<%= false %>"
-				label="<%= true %>"
-			/>
-		</liferay-expando:custom-attributes-available>
+			>
+				<liferay-expando:custom-attribute-list
+					className="<%= BlogsEntry.class.getName() %>"
+					classPK="<%= (entry != null) ? entry.getEntryId() : 0 %>"
+					editable="<%= false %>"
+					label="<%= true %>"
+				/>
+			</liferay-expando:custom-attributes-available>
+		</div>
 	</div>
 </div>
 
