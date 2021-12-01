@@ -17,7 +17,7 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,34 +34,54 @@ public abstract class BaseFieldMappingRepositoryTestCase
 
 	@BeforeEach
 	public void setUp() {
-		FieldMapping fieldMapping = new FieldMapping();
+		FieldMapping fieldMapping1 = new FieldMapping();
 
-		fieldMapping.setContext("custom");
-		fieldMapping.setDisplayName("Field 1");
-		fieldMapping.setDisplayType("input-field");
-		fieldMapping.setFieldName("field1");
-		fieldMapping.setFieldType("Text");
-		fieldMapping.setOwnerType("individual");
+		fieldMapping1.setContext("custom");
+		fieldMapping1.setDisplayName("Field 1");
+		fieldMapping1.setDisplayType("input-field");
+		fieldMapping1.setFieldName("field1");
+		fieldMapping1.setFieldType("Text");
+		fieldMapping1.setOwnerType("individual");
 
-		setUpRepository(fieldMapping);
+		FieldMapping fieldMapping2 = new FieldMapping();
+
+		fieldMapping2.setContext("custom");
+		fieldMapping2.setDisplayName("Field 1");
+		fieldMapping2.setDisplayType("input-field");
+		fieldMapping2.setFieldName("field2");
+		fieldMapping2.setFieldType("Text");
+		fieldMapping2.setOwnerType("individual");
+
+		FieldMapping fieldMapping3 = new FieldMapping();
+
+		fieldMapping3.setContext("custom");
+		fieldMapping3.setDisplayName("Field 3");
+		fieldMapping3.setDisplayType("input-field");
+		fieldMapping3.setFieldName("field3");
+		fieldMapping3.setFieldType("Text");
+		fieldMapping3.setOwnerType("individual");
+
+		setUpRepository(fieldMapping1, fieldMapping2, fieldMapping3);
 	}
 
 	@Test
-	public void testFindByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType() {
-		Optional<FieldMapping> fieldMappingOptional =
-			_fieldMappingRepository.
-				findByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType(
-					"custom", "Field 1", "selection-list", "Text",
-					"individual");
+	public void testFindByContextAndDisplayNameAndOwnerType() {
+		List<FieldMapping> fieldMappings =
+			_fieldMappingRepository.findByContextAndDisplayNameAndOwnerType(
+				"custom", "Field 1", "individual");
 
-		Assertions.assertFalse(fieldMappingOptional.isPresent());
+		Assertions.assertEquals(2, fieldMappings.size());
 
-		fieldMappingOptional =
-			_fieldMappingRepository.
-				findByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType(
-					"custom", "Field 1", "input-field", "Text", "individual");
+		fieldMappings =
+			_fieldMappingRepository.findByContextAndDisplayNameAndOwnerType(
+				"custom", "Field 3", "individual");
 
-		Assertions.assertTrue(fieldMappingOptional.isPresent());
+		Assertions.assertEquals(1, fieldMappings.size());
+		fieldMappings =
+			_fieldMappingRepository.findByContextAndDisplayNameAndOwnerType(
+				"custom", "Field 4", "individual");
+
+		Assertions.assertEquals(0, fieldMappings.size());
 	}
 
 	@Override

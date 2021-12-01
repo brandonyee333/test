@@ -22,13 +22,16 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -57,12 +60,11 @@ public class FieldMappingDogTest
 
 		Assertions.assertEquals(1, _fieldMappingRepository.count());
 
-		Iterable<FieldMapping> fieldMappings =
-			_fieldMappingRepository.findAll();
+		List<FieldMapping> fieldMappings =
+			_fieldMappingRepository.findByContextAndDisplayNameAndOwnerType(
+				"custom", name, "individual");
 
-		Iterator<FieldMapping> iterator = fieldMappings.iterator();
-
-		FieldMapping fieldMapping = iterator.next();
+		FieldMapping fieldMapping = fieldMappings.get(0);
 
 		Assertions.assertEquals(name, fieldMapping.getDisplayName());
 		Assertions.assertEquals(
@@ -74,15 +76,40 @@ public class FieldMappingDogTest
 
 		Assertions.assertEquals(2, _fieldMappingRepository.count());
 
+		fieldMappings =
+			_fieldMappingRepository.findByContextAndDisplayNameAndOwnerType(
+				"custom", name, "individual");
+
+		Assertions.assertEquals(
+			Arrays.asList("What_is_your_income_", "What_is_your_income__1"),
+			ListUtil.map(fieldMappings, FieldMapping::getFieldName));
+
+		_fieldMappingDog.addFieldMapping(
+			"custom", name, dataSource.getId(), "input-field", name, "Number",
+			"individual");
+
+		Assertions.assertEquals(2, _fieldMappingRepository.count());
+
 		Optional<FieldMapping> fieldMappingOptional =
-			_fieldMappingRepository.
-				findByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType(
-					"custom", name, "input-field", "Text", "individual");
+			_fieldMappingRepository.findByContextAndFieldNameAndOwnerType(
+				"custom", "What_is_your_income_", "individual");
 
 		fieldMapping = fieldMappingOptional.get();
 
-		Assertions.assertEquals(
-			"What_is_your_income__1", fieldMapping.getFieldName());
+		Map<String, String> dataSourceFieldNames =
+			fieldMapping.getDataSourceFieldNames();
+
+		Assertions.assertTrue(dataSourceFieldNames.isEmpty());
+
+		fieldMappingOptional =
+			_fieldMappingRepository.findByContextAndFieldNameAndOwnerType(
+				"custom", "What_is_your_income__1", "individual");
+
+		fieldMapping = fieldMappingOptional.get();
+
+		dataSourceFieldNames = fieldMapping.getDataSourceFieldNames();
+
+		Assertions.assertFalse(dataSourceFieldNames.isEmpty());
 	}
 
 	@Test
@@ -168,11 +195,11 @@ public class FieldMappingDogTest
 
 		Assertions.assertEquals(2, _fieldMappingRepository.count());
 
-		Optional<FieldMapping> fieldMappingOptional =
+		List<FieldMapping> fieldMappingOptional =
 			_fieldMappingRepository.findByContextAndDisplayNameAndOwnerType(
 				"custom", name, "individual");
 
-		fieldMapping = fieldMappingOptional.get();
+		fieldMapping = fieldMappingOptional.get(0);
 
 		Assertions.assertEquals(
 			"What_is_your_income__1", fieldMapping.getFieldName());

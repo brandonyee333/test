@@ -161,42 +161,20 @@ public class ElasticsearchFieldMappingRepositoryImpl
 	}
 
 	@Override
-	public Optional<FieldMapping>
-		findByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType(
-			String context, String displayName, String displayType,
-			@Nullable String fieldType, String ownerType) {
+	public List<FieldMapping> findByContextAndDisplayNameAndOwnerType(
+		String context, String displayName, String ownerType) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("context", context)
 		).filter(
 			QueryBuilders.termQuery("displayName", displayName)
+		).filter(
+			QueryBuilders.termQuery("ownerType", ownerType)
 		);
 
-		if (StringUtils.isNotEmpty(displayType)) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("displayType", displayType));
-		}
-
-		if (StringUtils.isNotEmpty(fieldType)) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("fieldType", fieldType));
-		}
-
-		boolQueryBuilder.filter(
-			QueryBuilders.termQuery("ownerType", ownerType));
-
-		JSONObject fieldMappingJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			getCollectionName(), boolQueryBuilder);
-
-		return Optional.ofNullable(toEntity(fieldMappingJSONObject));
-	}
-
-	@Override
-	public Optional<FieldMapping> findByContextAndDisplayNameAndOwnerType(
-		String context, String displayName, String ownerType) {
-
-		return findByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType(
-			context, displayName, null, null, ownerType);
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(), boolQueryBuilder));
 	}
 
 	@Override
