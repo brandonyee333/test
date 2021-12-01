@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * @author Marcellus Tavares
  */
-public class Assert {
+public class Assert extends org.springframework.util.Assert {
 
 	public static void notBlank(CharSequence charSequence, String message) {
 		if (StringUtils.isBlank(charSequence)) {
