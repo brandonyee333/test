@@ -43,7 +43,7 @@ public class FieldMappingsRestControllerTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
+		name = "data-sources", resourcePath = "data_sources_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
