@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.EventAnalysis;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
 import com.liferay.osb.asah.common.model.DateGrouping;
@@ -40,6 +39,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -182,6 +182,59 @@ public class EventAnalysisDog {
 		completableFuture.join();
 
 		return eventAnalysisResult;
+	}
+
+	public EventAnalysis updateEventAnalysis(
+		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
+		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
+		List<EventAnalysisFilter> eventAnalysisFilters, Long eventAnalysisId,
+		Long eventDefinitionId, String name, TimeRange timeRange, Long userId,
+		String userName) {
+
+		_validateEventAnalysisBreakdowns(eventAnalysisBreakdowns);
+
+		Optional<EventAnalysis> eventAnalysisOptional =
+			_eventAnalysisRepository.findById(eventAnalysisId);
+
+		if (!eventAnalysisOptional.isPresent()) {
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST, "Event analysis is not found");
+		}
+
+		EventAnalysis eventAnalysis = eventAnalysisOptional.get();
+
+		try {
+			eventAnalysis.setEventAnalysisBreakdownJSONArray(
+				_objectMapper.convertValue(
+					eventAnalysisBreakdowns, JSONArray.class));
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+
+		eventAnalysis.setChannelId(channelId);
+		eventAnalysis.setCompareToPrevious(compareToPrevious);
+		eventAnalysis.setEventAnalysisType(analysisType.name());
+		eventAnalysis.setEventDefinitionId(eventDefinitionId);
+
+		try {
+			eventAnalysis.setEventAnalysisFilterJSONArray(
+				_objectMapper.convertValue(
+					eventAnalysisFilters, JSONArray.class));
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+
+		eventAnalysis.setModifiedByUserId(userId);
+		eventAnalysis.setModifiedByUserName(userName);
+		eventAnalysis.setModifiedDate(new Date());
+		eventAnalysis.setName(name);
+		eventAnalysis.setRangeEnd(timeRange.getEndDate());
+		eventAnalysis.setRangeKey(timeRange.getRangeKey());
+		eventAnalysis.setRangeStart(timeRange.getStartDate());
+
+		return _eventAnalysisRepository.save(eventAnalysis);
 	}
 
 	private List<BreakdownItem> _createBreakdownItems(
