@@ -1488,6 +1488,17 @@ public class PortletPreferencesLocalServiceTest {
 	}
 
 	protected void assertValues(
+			PortletPreferences portletPreferences, String name, String[] values)
+		throws Exception {
+
+		PortletPreferencesImpl portletPreferencesImpl =
+			PortletPreferencesImplTestUtil.toPortletPreferencesImpl(
+				portletPreferences);
+
+		assertValues(portletPreferencesImpl, name, values);
+	}
+
+	protected void assertValues(
 			javax.portlet.PortletPreferences jxPortletPreferences, String name,
 			String[] values)
 		throws Exception {
@@ -1501,17 +1512,6 @@ public class PortletPreferencesLocalServiceTest {
 		Assert.assertFalse(
 			portletPreferencesMap.toString(), portletPreferencesMap.isEmpty());
 		Assert.assertArrayEquals(values, portletPreferencesMap.get(name));
-	}
-
-	protected void assertValues(
-			PortletPreferences portletPreferences, String name, String[] values)
-		throws Exception {
-
-		PortletPreferencesImpl portletPreferencesImpl =
-			PortletPreferencesImplTestUtil.toPortletPreferencesImpl(
-				portletPreferences);
-
-		assertValues(portletPreferencesImpl, name, values);
 	}
 
 	protected void replaceService() throws Exception {
