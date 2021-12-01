@@ -91,10 +91,10 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		}
 
 		try {
-			_semaphore.acquireUninterruptibly(4);
+			_semaphore.acquireUninterruptibly(15);
 		}
 		finally {
-			_semaphore.release(4);
+			_semaphore.release(15);
 		}
 	}
 
@@ -532,7 +532,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	private final ExecutorService _executorService =
-		Executors.newFixedThreadPool(2);
+		Executors.newFixedThreadPool(10);
 
 	@Autowired
 	private IndividualDog _individualDog;
@@ -542,6 +542,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	@Autowired
 	private SegmentDog _segmentDog;
 
-	private final Semaphore _semaphore = new Semaphore(4, true);
+	private final Semaphore _semaphore = new Semaphore(15, true);
 
 }

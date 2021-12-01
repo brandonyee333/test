@@ -83,10 +83,10 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		}
 
 		try {
-			_semaphore.acquireUninterruptibly(4);
+			_semaphore.acquireUninterruptibly(15);
 		}
 		finally {
-			_semaphore.release(4);
+			_semaphore.release(15);
 		}
 	}
 
@@ -417,7 +417,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		IndividualActivityFieldsNanite.class);
 
 	private final ExecutorService _executorService =
-		Executors.newFixedThreadPool(2);
+		Executors.newFixedThreadPool(10);
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
@@ -429,6 +429,6 @@ public class IndividualActivityFieldsNanite implements Nanite {
 	private MessageSubscriber _messageSubscriber;
 
 	private final ReentrantLock _reentrantLock = new ReentrantLock(true);
-	private final Semaphore _semaphore = new Semaphore(4, true);
+	private final Semaphore _semaphore = new Semaphore(15, true);
 
 }
