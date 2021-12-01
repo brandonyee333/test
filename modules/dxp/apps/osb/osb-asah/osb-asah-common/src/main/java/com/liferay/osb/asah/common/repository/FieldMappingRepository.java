@@ -58,12 +58,6 @@ public interface FieldMappingRepository extends Repository<FieldMapping, Long> {
 		String context, Long dataSourceId, String ownerType);
 
 	@Cacheable
-	public Optional<FieldMapping>
-		findByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType(
-			String context, String displayName, String displayType,
-			String fieldType, String ownerType);
-
-	@Cacheable
 	public Optional<FieldMapping> findByContextAndDisplayNameAndOwnerType(
 		String context, String displayName, String ownerType);
 
