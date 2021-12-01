@@ -1,19 +1,11 @@
 definition {
 
 	macro addPageAndPortlet {
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Issues",
-			layoutName = "${portletName}");
+		Page.add(pageName = "${portletName}");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		SitePageNavigator.gotoEditPage(page = "${portletName}");
 
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "${portletName}",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		Page.editPageLayoutColumn(columnName = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/${pageURL}");
 
