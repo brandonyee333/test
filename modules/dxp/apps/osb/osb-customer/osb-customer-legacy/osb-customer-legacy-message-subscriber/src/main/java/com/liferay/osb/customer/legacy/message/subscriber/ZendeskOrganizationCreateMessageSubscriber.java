@@ -17,7 +17,11 @@ package com.liferay.osb.customer.legacy.message.subscriber;
 import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.ExternalIdMapper;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
+import com.liferay.osb.customer.koroneiki.constants.ExternalLinkConstants;
+import com.liferay.osb.customer.koroneiki.web.service.ExternalLinkWebService;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.portal.kernel.json.JSONObject;
 
 import java.util.List;
@@ -34,6 +38,39 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class ZendeskOrganizationCreateMessageSubscriber
 	extends BaseMessageSubscriber {
+
+	protected void addExternalLink(long accountEntryId, String entityId)
+		throws Exception {
+
+		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
+			accountEntryId);
+
+		String accountKey = accountEntry.getKoroneikiAccountKey();
+
+		List<ExternalLink> externalLinks =
+			_externalLinkWebService.getExternalLinks(accountKey, 1, 1000);
+
+		for (ExternalLink externalLink : externalLinks) {
+			String domain = externalLink.getDomain();
+			String entityName = externalLink.getEntityName();
+
+			if (domain.equals(ExternalLinkConstants.DOMAIN_ZENDESK) &&
+				entityName.equals(
+					ExternalLinkConstants.ENTITY_NAME_ZENDESK_ORGANIZATION)) {
+
+				return;
+			}
+		}
+
+		ExternalLink externalLink = new ExternalLink();
+
+		externalLink.setDomain(ExternalLinkConstants.DOMAIN_ZENDESK);
+		externalLink.setEntityName(
+			ExternalLinkConstants.ENTITY_NAME_ZENDESK_ORGANIZATION);
+		externalLink.setEntityId(entityId);
+
+		_externalLinkWebService.postExternalLink(accountKey, externalLink);
+	}
 
 	protected void doReceive(JSONObject jsonObject) throws Exception {
 		JSONObject organizationJSONObject = jsonObject.getJSONObject(
@@ -65,9 +102,17 @@ public class ZendeskOrganizationCreateMessageSubscriber
 					zendeskOrganizationId);
 			}
 		}
+
+		addExternalLink(accountEntryId, zendeskOrganizationId);
 	}
 
 	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
+
+	@Reference
 	private ExternalIdMapperLocalService _externalIdMapperLocalService;
+
+	@Reference
+	private ExternalLinkWebService _externalLinkWebService;
 
 }

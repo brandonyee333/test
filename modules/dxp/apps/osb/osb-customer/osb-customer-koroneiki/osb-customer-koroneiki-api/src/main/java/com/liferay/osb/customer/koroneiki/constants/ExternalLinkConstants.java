@@ -12,22 +12,16 @@
  *
  */
 
-package com.liferay.osb.customer.koroneiki.web.service;
-
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
-
-import java.util.List;
+package com.liferay.osb.customer.koroneiki.constants;
 
 /**
- * @author Kyle Bischof
+ * @author Rebecca Dai
  */
-public interface ExternalLinkWebService {
+public class ExternalLinkConstants {
 
-	public List<ExternalLink> getExternalLinks(
-			String accountKey, int page, int pageSize)
-		throws Exception;
+	public static final String DOMAIN_ZENDESK = "zendesk";
 
-	public void postExternalLink(String accountKey, ExternalLink externalLink)
-		throws Exception;
+	public static final String ENTITY_NAME_ZENDESK_ORGANIZATION =
+		"organization";
 
 }

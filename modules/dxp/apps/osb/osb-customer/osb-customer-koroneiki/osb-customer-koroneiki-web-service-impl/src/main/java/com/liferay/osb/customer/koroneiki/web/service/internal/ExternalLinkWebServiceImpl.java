@@ -21,6 +21,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Page;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Pagination;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.ExternalLinkResource;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,6 +55,13 @@ public class ExternalLinkWebServiceImpl implements ExternalLinkWebService {
 		}
 
 		return Collections.emptyList();
+	}
+
+	public void postExternalLink(String accountKey, ExternalLink externalLink)
+		throws Exception {
+
+		_externalLinkResource.postAccountAccountKeyExternalLink(
+			StringPool.BLANK, StringPool.BLANK, accountKey, externalLink);
 	}
 
 	@Activate
