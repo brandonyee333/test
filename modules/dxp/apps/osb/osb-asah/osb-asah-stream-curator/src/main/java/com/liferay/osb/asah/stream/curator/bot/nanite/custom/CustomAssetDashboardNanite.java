@@ -229,7 +229,6 @@ public class CustomAssetDashboardNanite implements Nanite {
 	@Autowired
 	private CustomAssetDashboardRepository _customAssetDashboardRepository;
 
-
 	@MessageSubscriber.Autowired(
 		channel = Channel.ANALYTICS_EVENTS_CUSTOM_ASSET
 	)

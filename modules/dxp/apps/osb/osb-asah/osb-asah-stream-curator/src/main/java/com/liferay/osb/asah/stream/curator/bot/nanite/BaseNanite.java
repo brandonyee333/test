@@ -490,7 +490,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
-
 	@Autowired
 	private IndividualDog _individualDog;
 
