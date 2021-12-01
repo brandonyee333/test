@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -132,6 +134,12 @@ public class ActivitiesAssetTransformationJSONArrayFunction
 				asset.getDataSourceId());
 
 			if (dataSource == null) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to find data source with ID " +
+							asset.getDataSourceId());
+				}
+
 				continue;
 			}
 
@@ -174,6 +182,9 @@ public class ActivitiesAssetTransformationJSONArrayFunction
 
 		return BucketOrder.count(false);
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		ActivitiesAssetTransformationJSONArrayFunction.class);
 
 	private final AssetDog _assetDog;
 	private final DataSourceDog _dataSourceDog;
