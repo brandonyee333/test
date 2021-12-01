@@ -351,6 +351,14 @@ public class DateUtil {
 		return dateFormat.format(date);
 	}
 
+	public static String toUTCString(
+		Date date, SimpleDateFormat simpleDateFormat) {
+
+		simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+		return simpleDateFormat.format(date);
+	}
+
 	public static String toUTCString(LocalDateTime localDateTime) {
 		ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneOffset.UTC);
 

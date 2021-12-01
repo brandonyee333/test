@@ -23,6 +23,8 @@ import com.liferay.osb.asah.common.entity.EventAnalysis;
 import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
 
+import java.text.SimpleDateFormat;
+
 import org.json.JSONArray;
 
 /**
@@ -116,13 +118,15 @@ public class EventAnalysisDTO {
 
 	@GraphQLProperty("rangeEnd")
 	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
 	@JsonProperty("rangeEnd")
 	public String getRangeEnd() {
 		if (_eventAnalysis.getRangeEnd() != null) {
-			return DateUtil.toUTCString(_eventAnalysis.getRangeEnd());
+			return DateUtil.toUTCString(
+				_eventAnalysis.getRangeEnd(),
+				new SimpleDateFormat("yyyy-MM-dd"));
 		}
 
 		return null;
@@ -134,13 +138,15 @@ public class EventAnalysisDTO {
 
 	@GraphQLProperty("rangeStart")
 	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
 	@JsonProperty("rangeStart")
 	public String getRangeStart() {
 		if (_eventAnalysis.getRangeStart() != null) {
-			return DateUtil.toUTCString(_eventAnalysis.getRangeStart());
+			return DateUtil.toUTCString(
+				_eventAnalysis.getRangeStart(),
+				new SimpleDateFormat("yyyy-MM-dd"));
 		}
 
 		return null;
