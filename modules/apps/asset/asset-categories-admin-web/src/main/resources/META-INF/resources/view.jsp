@@ -82,6 +82,7 @@
 															"viewVocabulariesURL", viewVocabulariesURL.toString()
 														).build()
 													%>'
+													cssClass="component-action"
 													dropdownItems="<%= assetCategoriesDisplayContext.getVocabulariesDropdownItems() %>"
 													propsTransformer="js/ActionsComponentPropsTransformer"
 												/>
@@ -213,7 +214,7 @@
 							</clay:content-col>
 
 							<clay:content-col
-								cssClass="component-action inline-item-after justify-content-end"
+								cssClass="inline-item-after justify-content-end"
 							>
 								<liferay-util:include page="/vocabulary_action.jsp" servletContext="<%= application %>" />
 							</clay:content-col>
