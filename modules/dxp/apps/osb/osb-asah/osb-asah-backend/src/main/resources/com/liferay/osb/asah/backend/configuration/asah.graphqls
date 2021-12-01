@@ -755,6 +755,22 @@ type MutationType {
 		eventDefinitionIds: [String]!
 	): [EventDefinition]
 
+	updateEventAnalysis(
+		analysisType: AnalysisType!
+		channelId: String!
+		compareToPrevious: Boolean!
+		eventAnalysisBreakdowns: [EventAnalysisBreakdownInput]
+		eventAnalysisFilters: [EventAnalysisFilterInput]
+		eventAnalysisId: String!
+		eventDefinitionId: String!
+		name: String!
+		rangeEnd: String
+		rangeKey: Int
+		rangeStart: String
+		userId: String!
+		userName: String!
+	): EventAnalysis
+
 	updateEventAttributeDefinition(
 		dataType: EventAttributeDefinitionDataType
 		description: String
