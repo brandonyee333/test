@@ -324,26 +324,6 @@ public class ElasticsearchQuerySuggester implements QuerySuggester {
 		}
 	}
 
-	protected SuggesterResult translate(
-		Suggest.Suggestion
-			<? extends Suggest.Suggestion.Entry
-				<? extends Suggest.Suggestion.Entry.Option>> suggestion) {
-
-		SuggesterResult suggesterResult = new SuggesterResult(
-			suggestion.getName());
-
-		for (Suggest.Suggestion.Entry<? extends Suggest.Suggestion.Entry.Option>
-				suggestionEntry : suggestion) {
-
-			SuggesterResult.Entry suggesterResultEntry = translate(
-				suggestionEntry);
-
-			suggesterResult.addEntry(suggesterResultEntry);
-		}
-
-		return suggesterResult;
-	}
-
 	protected SuggesterResult.Entry.Option translate(
 		Suggest.Suggestion.Entry.Option suggestionEntryOption) {
 
@@ -392,6 +372,26 @@ public class ElasticsearchQuerySuggester implements QuerySuggester {
 		}
 
 		return suggesterResultEntry;
+	}
+
+	protected SuggesterResult translate(
+		Suggest.Suggestion
+			<? extends Suggest.Suggestion.Entry
+				<? extends Suggest.Suggestion.Entry.Option>> suggestion) {
+
+		SuggesterResult suggesterResult = new SuggesterResult(
+			suggestion.getName());
+
+		for (Suggest.Suggestion.Entry<? extends Suggest.Suggestion.Entry.Option>
+				suggestionEntry : suggestion) {
+
+			SuggesterResult.Entry suggesterResultEntry = translate(
+				suggestionEntry);
+
+			suggesterResult.addEntry(suggesterResultEntry);
+		}
+
+		return suggesterResult;
 	}
 
 	@Reference(unbind = "-")
