@@ -112,7 +112,7 @@ public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 		return (target, method, params) -> {
 			StringBuilder sb = new StringBuilder();
 
-			Class<?> clazz = target.getClass();
+			Class<?> clazz = OSBAsahCacheUtil.extractTargetClass(target);
 
 			sb.append(clazz.getSimpleName());
 

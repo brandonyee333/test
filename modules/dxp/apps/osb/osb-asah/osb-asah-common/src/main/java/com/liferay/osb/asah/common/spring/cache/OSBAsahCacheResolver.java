@@ -46,7 +46,7 @@ public class OSBAsahCacheResolver implements CacheResolver {
 		sb.append(ProjectIdThreadLocal.getProjectId());
 		sb.append("#");
 
-		Class<?> clazz = target.getClass();
+		Class<?> clazz = OSBAsahCacheUtil.extractTargetClass(target);
 
 		sb.append(clazz.getName());
 
