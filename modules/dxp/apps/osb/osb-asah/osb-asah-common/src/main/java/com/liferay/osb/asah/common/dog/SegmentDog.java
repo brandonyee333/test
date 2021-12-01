@@ -549,17 +549,41 @@ public class SegmentDog extends BaseFaroInfoDog {
 				referencedObjectIds.get("referencedUserIds"), Long::valueOf));
 	}
 
-	public Segment updateSegment(
-		long individualCount, long knownIndividualCount, Long segmentId) {
-
+	public Segment updateSegment(Long segmentId) {
 		Segment existingSegment = getSegment(segmentId);
 
-		existingSegment.setAnonymousIndividualCount(
-			individualCount - knownIndividualCount);
-		existingSegment.setIndividualCount(individualCount);
-		existingSegment.setKnownIndividualCount(knownIndividualCount);
+		long knownIndividualCount = _individualDog.getKnownIndividualCount(
+			segmentId);
 
-		return _segmentRepository.save(existingSegment);
+		long individualCount = 0;
+
+		if (BooleanUtils.toBoolean(
+				existingSegment.getIncludeAnonymousUsers())) {
+
+			individualCount = _membershipDog.getIndividualCount(segmentId);
+		}
+		else {
+			individualCount = knownIndividualCount;
+		}
+
+		if (!Objects.equals(
+				existingSegment.getAnonymousIndividualCount(),
+				individualCount - knownIndividualCount) ||
+			!Objects.equals(
+				existingSegment.getIndividualCount(), individualCount) ||
+			!Objects.equals(
+				existingSegment.getKnownIndividualCount(),
+				knownIndividualCount)) {
+
+			existingSegment.setAnonymousIndividualCount(
+				individualCount - knownIndividualCount);
+			existingSegment.setIndividualCount(individualCount);
+			existingSegment.setKnownIndividualCount(knownIndividualCount);
+
+			return _segmentRepository.save(existingSegment);
+		}
+
+		return existingSegment;
 	}
 
 	public Segment updateSegment(Segment partialSegment, Long segmentId) {

@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -70,28 +71,12 @@ public class MembershipDog extends BaseFaroInfoDog {
 			return null;
 		}
 
-		long knownIndividualCount = _individualDog.getKnownIndividualCount(
-			membership.getIndividualSegmentId());
-
-		long individualCount = 0;
-
-		if (_segmentDog.isIncludeAnonymousUsers(
-				membership.getIndividualSegmentId())) {
-
-			individualCount = _getIndividualCount(
-				membership.getIndividualSegmentId());
-		}
-		else {
-			individualCount = knownIndividualCount;
-		}
-
-		_segmentDog.updateSegment(
-			individualCount, knownIndividualCount,
+		Segment segment = _segmentDog.updateSegment(
 			membership.getIndividualSegmentId());
 
 		_membershipChangeDog.addMembershipChange(
-			individual, individualCount, knownIndividualCount, membership,
-			"ADDED");
+			individual, segment.getIndividualCount(),
+			segment.getKnownIndividualCount(), membership, "ADDED");
 
 		return membership;
 	}
@@ -118,24 +103,11 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 		_individualDog.addSegmentId(individuals, individualSegmentId);
 
-		long knownIndividualCount = _individualDog.getKnownIndividualCount(
-			individualSegmentId);
-
-		long individualCount = 0;
-
-		if (_segmentDog.isIncludeAnonymousUsers(individualSegmentId)) {
-			individualCount = _getIndividualCount(individualSegmentId);
-		}
-		else {
-			individualCount = knownIndividualCount;
-		}
-
-		_segmentDog.updateSegment(
-			individualCount, knownIndividualCount, individualSegmentId);
+		Segment segment = _segmentDog.updateSegment(individualSegmentId);
 
 		_membershipChangeDog.addMembershipChanges(
-			createDate, individuals, individualCount, individualSegmentId,
-			knownIndividualCount, "ADDED");
+			createDate, individuals, segment.getIndividualCount(),
+			individualSegmentId, segment.getKnownIndividualCount(), "ADDED");
 	}
 
 	public List<Membership> addMemberships(List<Membership> memberships) {
@@ -151,33 +123,17 @@ public class MembershipDog extends BaseFaroInfoDog {
 			ListUtil.map(memberships, Membership::getIndividualId),
 			membership.getIndividualSegmentId());
 
-		boolean includeAnonymousUsers = _segmentDog.isIncludeAnonymousUsers(
-			membership.getIndividualSegmentId());
-
-		long knownIndividualSegmentCount =
-			_individualDog.getKnownIndividualCount(
-				membership.getIndividualSegmentId());
-
-		long individualCount = 0;
-
-		if (includeAnonymousUsers) {
-			individualCount = _getIndividualCount(
-				membership.getIndividualSegmentId());
-		}
-		else {
-			individualCount = knownIndividualSegmentCount;
-		}
-
-		_segmentDog.updateSegment(
-			individualCount, knownIndividualSegmentCount,
+		Segment segment = _segmentDog.updateSegment(
 			membership.getIndividualSegmentId());
 
 		long knownIndividualCount = _individualDog.getKnownIndividualCount(
 			ListUtil.map(memberships, Membership::getIndividualId));
 
 		_membershipChangeDog.addMembershipChanges(
-			includeAnonymousUsers, individualCount - memberships.size(),
-			knownIndividualSegmentCount - knownIndividualCount, memberships);
+			BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
+			segment.getIndividualCount() - memberships.size(),
+			segment.getKnownIndividualCount() - knownIndividualCount,
+			memberships);
 
 		return memberships;
 	}
@@ -206,36 +162,19 @@ public class MembershipDog extends BaseFaroInfoDog {
 		Individual individual = _individualDog.removeSegmentId(
 			membership.getIndividualId(), membership.getIndividualSegmentId());
 
-		boolean includeAnonymousUsers = _segmentDog.isIncludeAnonymousUsers(
-			membership.getIndividualSegmentId());
-
-		long knownIndividualCount = _individualDog.getKnownIndividualCount(
-			membership.getIndividualSegmentId());
-
-		long individualCount = 0;
-
-		if (includeAnonymousUsers) {
-			individualCount = _getIndividualCount(
-				membership.getIndividualSegmentId());
-		}
-		else {
-			individualCount = knownIndividualCount;
-		}
-
-		_segmentDog.updateSegment(
-			individualCount, knownIndividualCount,
+		Segment segment = _segmentDog.updateSegment(
 			membership.getIndividualSegmentId());
 
 		if (individual == null) {
 			_membershipChangeDog.addMembershipChangeForDeletedIndividual(
 				membership.getCreateDate(), membership.getIndividualId(),
-				individualCount, knownIndividualCount, deletionDate,
-				membership.getIndividualSegmentId());
+				segment.getIndividualCount(), segment.getKnownIndividualCount(),
+				deletionDate, membership.getIndividualSegmentId());
 		}
 		else {
 			_membershipChangeDog.addMembershipChange(
-				individual, individualCount, knownIndividualCount, membership,
-				"REMOVED");
+				individual, segment.getIndividualCount(),
+				segment.getKnownIndividualCount(), membership, "REMOVED");
 		}
 	}
 
@@ -277,27 +216,12 @@ public class MembershipDog extends BaseFaroInfoDog {
 			_individualDog.removeSegmentId(
 				individualsByMembership, entry.getKey());
 
-			boolean includeAnonymousUsers = _segmentDog.isIncludeAnonymousUsers(
-				entry.getKey());
-
-			long knownIndividualCount = _individualDog.getKnownIndividualCount(
-				entry.getKey());
-
-			long individualCount = 0;
-
-			if (includeAnonymousUsers) {
-				individualCount = _getIndividualCount(entry.getKey());
-			}
-			else {
-				individualCount = knownIndividualCount;
-			}
-
-			_segmentDog.updateSegment(
-				individualCount, knownIndividualCount, entry.getKey());
+			Segment segment = _segmentDog.updateSegment(entry.getKey());
 
 			_membershipChangeDog.addMembershipChanges(
-				deletionDate, individualsByMembership, individualCount,
-				entry.getKey(), knownIndividualCount, "REMOVED");
+				deletionDate, individualsByMembership,
+				segment.getIndividualCount(), entry.getKey(),
+				segment.getKnownIndividualCount(), "REMOVED");
 		}
 	}
 
@@ -325,28 +249,13 @@ public class MembershipDog extends BaseFaroInfoDog {
 					SetUtil.map(entry.getValue(), Membership::getIndividualId)),
 				entry.getKey());
 
-			boolean includeAnonymousUsers = _segmentDog.isIncludeAnonymousUsers(
-				entry.getKey());
-
-			long knownIndividualCount = _individualDog.getKnownIndividualCount(
-				entry.getKey());
-
-			long individualCount = 0;
-
-			if (includeAnonymousUsers) {
-				individualCount = _getIndividualCount(entry.getKey());
-			}
-			else {
-				individualCount = knownIndividualCount;
-			}
-
-			_segmentDog.updateSegment(
-				individualCount, knownIndividualCount, entry.getKey());
+			Segment segment = _segmentDog.updateSegment(entry.getKey());
 
 			for (Membership membership : entry.getValue()) {
 				_membershipChangeDog.addMembershipChangeForDeletedIndividual(
 					membership.getCreateDate(), membership.getIndividualId(),
-					individualCount, knownIndividualCount, deletionDate,
+					segment.getIndividualCount(),
+					segment.getKnownIndividualCount(), deletionDate,
 					membership.getIndividualSegmentId());
 			}
 		}
@@ -389,6 +298,11 @@ public class MembershipDog extends BaseFaroInfoDog {
 		return _membershipRepository.
 			findByIndividualIdAndIndividualSegmentIdInAndStatus(
 				individualId, individualSegmentIds, "ACTIVE");
+	}
+
+	public long getIndividualCount(Long individualSegmentId) {
+		return _membershipRepository.countByIndividualSegmentIdAndStatus(
+			individualSegmentId, "ACTIVE");
 	}
 
 	public List<Long> getIndividualIds(
@@ -498,11 +412,6 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 		return _membershipRepository.searchMemberships(
 			membershipId, individualSegmentId, size, status);
-	}
-
-	private long _getIndividualCount(Long individualSegmentId) {
-		return _membershipRepository.countByIndividualSegmentIdAndStatus(
-			individualSegmentId, "ACTIVE");
 	}
 
 	private Sort _getSort(String[] sorts) {
