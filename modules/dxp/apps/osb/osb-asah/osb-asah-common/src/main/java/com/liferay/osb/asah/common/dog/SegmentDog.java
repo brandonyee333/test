@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -35,6 +36,7 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
@@ -50,6 +52,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -550,40 +553,50 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public Segment updateSegment(Long segmentId) {
-		Segment existingSegment = getSegment(segmentId);
+		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
+			getClass(), ProjectIdThreadLocal.getProjectId(), segmentId);
 
-		long knownIndividualCount = _individualDog.getKnownIndividualCount(
-			segmentId);
+		try {
+			reentrantLock.lock();
 
-		long individualCount = 0;
+			Segment existingSegment = getSegment(segmentId);
 
-		if (BooleanUtils.toBoolean(
-				existingSegment.getIncludeAnonymousUsers())) {
+			long knownIndividualCount = _individualDog.getKnownIndividualCount(
+				segmentId);
 
-			individualCount = _membershipDog.getIndividualCount(segmentId);
+			long individualCount = 0;
+
+			if (BooleanUtils.toBoolean(
+					existingSegment.getIncludeAnonymousUsers())) {
+
+				individualCount = _membershipDog.getIndividualCount(segmentId);
+			}
+			else {
+				individualCount = knownIndividualCount;
+			}
+
+			if (!Objects.equals(
+					existingSegment.getAnonymousIndividualCount(),
+					individualCount - knownIndividualCount) ||
+				!Objects.equals(
+					existingSegment.getIndividualCount(), individualCount) ||
+				!Objects.equals(
+					existingSegment.getKnownIndividualCount(),
+					knownIndividualCount)) {
+
+				existingSegment.setAnonymousIndividualCount(
+					individualCount - knownIndividualCount);
+				existingSegment.setIndividualCount(individualCount);
+				existingSegment.setKnownIndividualCount(knownIndividualCount);
+
+				return _segmentRepository.save(existingSegment);
+			}
+
+			return existingSegment;
 		}
-		else {
-			individualCount = knownIndividualCount;
+		finally {
+			reentrantLock.unlock();
 		}
-
-		if (!Objects.equals(
-				existingSegment.getAnonymousIndividualCount(),
-				individualCount - knownIndividualCount) ||
-			!Objects.equals(
-				existingSegment.getIndividualCount(), individualCount) ||
-			!Objects.equals(
-				existingSegment.getKnownIndividualCount(),
-				knownIndividualCount)) {
-
-			existingSegment.setAnonymousIndividualCount(
-				individualCount - knownIndividualCount);
-			existingSegment.setIndividualCount(individualCount);
-			existingSegment.setKnownIndividualCount(knownIndividualCount);
-
-			return _segmentRepository.save(existingSegment);
-		}
-
-		return existingSegment;
 	}
 
 	public Segment updateSegment(Segment partialSegment, Long segmentId) {
