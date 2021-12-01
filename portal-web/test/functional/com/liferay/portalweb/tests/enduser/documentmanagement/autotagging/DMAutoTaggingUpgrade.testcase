@@ -32,15 +32,45 @@ definition {
 			dmDocumentTitle = "DM Document DOCX",
 			tagName = "alice");
 
+		Upgrade.editTagsAndDeleteAutoTaggedDM(
+			dmDocumentTitle = "Document Google Image AutoTagging",
+			tagName = "t-shirt");
+
+		Upgrade.editTagsAndDeleteAutoTaggedDM(
+			dmDocumentTitle = "Document Google Text AutoTagging",
+			tagName = "computers");
+
 		Upgrade.addAutoTaggedDM(
 			dmDocumentFile = "Commerce_Blue.jpg",
-			dmDocumentTitle = "DM Document JPG New",
+			dmDocumentTitle = "DM New Document JPG",
 			tagName = "jersey");
 
 		Upgrade.addAutoTaggedDM(
 			dmDocumentFile = "Alice's Adventures in Wonderland.pdf",
-			dmDocumentTitle = "DM Document PDF",
+			dmDocumentTitle = "DM New Document PDF",
 			tagName = "alice");
+
+		Upgrade.addAutoTaggedDM(
+			dmDocumentFile = "Commerce_Blue.jpg",
+			dmDocumentTitle = "Document New Google Image AutoTagging",
+			tagName = "pattern");
+
+		Upgrade.addAutoTaggedDM(
+			dmDocumentFile = "Document_3.docx",
+			dmDocumentTitle = "Document New Google Text AutoTagging",
+			tagName = "computers");
+
+		Upgrade.addAutoTagViaGogoShell(
+			blogEntryTitle = "Blogs Without Autotagging",
+			blogTagName = "dxp,business services",
+			blogTagNum = "5",
+			dmDocumentTitle = "DM Without Autotagging",
+			dmTagName = "jersey,t-shirt",
+			dmTagNum = "11",
+			webContentTitle = "WC Without Autotagging",
+			webContentTitleXml = '''<?xml version='1.0' encoding='UTF-8'?><root available-locales="en_US" default-locale="en_US"><Title language-id="en_US">WC Without Autotagging</Title></root>''',
+			wcTagName = "herbert,industrial",
+			wcTagNum = "5");
 	}
 
 	@priority = "5"
@@ -57,15 +87,45 @@ definition {
 			dmDocumentTitle = "DM Document DOCX",
 			tagName = "alice");
 
+		Upgrade.editTagsAndDeleteAutoTaggedDM(
+			dmDocumentTitle = "Document Google Image AutoTagging",
+			tagName = "t-shirt");
+
+		Upgrade.editTagsAndDeleteAutoTaggedDM(
+			dmDocumentTitle = "Document Google Text AutoTagging",
+			tagName = "computers");
+
 		Upgrade.addAutoTaggedDM(
 			dmDocumentFile = "Commerce_Blue.jpg",
-			dmDocumentTitle = "DM Document JPG New",
+			dmDocumentTitle = "DM New Document JPG",
 			tagName = "jersey");
 
 		Upgrade.addAutoTaggedDM(
 			dmDocumentFile = "Alice's Adventures in Wonderland.pdf",
-			dmDocumentTitle = "DM Document PDF",
+			dmDocumentTitle = "DM New Document PDF",
 			tagName = "alice");
+
+		Upgrade.addAutoTaggedDM(
+			dmDocumentFile = "Commerce_White.jpg",
+			dmDocumentTitle = "Document New Google Image AutoTagging",
+			tagName = "pattern");
+
+		Upgrade.addAutoTaggedDM(
+			dmDocumentFile = "Document_3.docx",
+			dmDocumentTitle = "Document New Google Text AutoTagging",
+			tagName = "computers");
+
+		Upgrade.addAutoTagViaGogoShell(
+			blogEntryTitle = "Blogs Without Autotagging",
+			blogTagName = "dxp,business services",
+			blogTagNum = "5",
+			dmDocumentTitle = "DM Without Autotagging",
+			dmTagName = "jersey,t-shirt",
+			dmTagNum = "11",
+			webContentTitle = "WC Without Autotagging",
+			webContentTitleXml = '''<?xml version='1.0' encoding='UTF-8'?><root available-locales="en_US" default-locale="en_US"><Title language-id="en_US">WC Without Autotagging</Title></root>''',
+			wcTagName = "herbert,industrial",
+			wcTagNum = "5");
 	}
 
 }
