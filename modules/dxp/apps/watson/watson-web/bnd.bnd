@@ -1,6 +1,0 @@
-Bundle-Name: Liferay Watson Web
-Bundle-SymbolicName: com.liferay.watson.web
-Bundle-Version: 1.0.0
-Export-Package: com.liferay.watson.web.constants
-Liferay-Releng-Module-Group-Title: Watson
-Web-ContextPath: /watson-web

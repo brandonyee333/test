@@ -1,5 +1,0 @@
-Bundle-Name: Liferay Watson Login Web
-Bundle-SymbolicName: com.liferay.watson.login.web
-Bundle-Version: 1.0.0
-Liferay-Releng-Module-Group-Title: Watson
-Web-ContextPath: /watson-login-web

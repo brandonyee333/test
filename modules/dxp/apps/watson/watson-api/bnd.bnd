@@ -1,8 +1,0 @@
-Bundle-Name: Liferay Watson API
-Bundle-SymbolicName: com.liferay.watson.api
-Bundle-Version: 1.0.0
-Export-Package:\
-	com.liferay.watson.exception,\
-	com.liferay.watson.model,\
-	com.liferay.watson.service,\
-	com.liferay.watson.service.persistence

@@ -1,9 +1,0 @@
-Bundle-Name: Liferay Watson Login API
-Bundle-SymbolicName: com.liferay.watson.login.api
-Bundle-Version: 1.0.0
-Export-Package:\
-	com.liferay.watson.login.constants,\
-	com.liferay.watson.login.exception,\
-	com.liferay.watson.login.model,\
-	com.liferay.watson.login.service,\
-	com.liferay.watson.login.service.persistence

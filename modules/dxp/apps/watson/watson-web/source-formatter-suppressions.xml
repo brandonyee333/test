@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-
-<suppressions>
-	<checkstyle>
-		<suppress checks="CamelCaseNameCheck" files="src/main/resources/alloy_mvc/jsp/watson/controllers/children_controller\.jsp" />
-		<suppress checks="CamelCaseNameCheck" files="src/main/resources/alloy_mvc/jsp/watson/controllers/incidents_controller\.jsp" />
-	</checkstyle>
-</suppressions>
