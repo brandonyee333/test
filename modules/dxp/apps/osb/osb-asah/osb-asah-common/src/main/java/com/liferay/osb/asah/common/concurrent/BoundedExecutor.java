@@ -111,7 +111,6 @@ public class BoundedExecutor {
 
 	private BoundedExecutor(ExecutorService executorService, int maxThreads) {
 		_executorService = executorService;
-
 		_maxThreads = maxThreads;
 
 		_semaphore = new Semaphore(maxThreads, true);
