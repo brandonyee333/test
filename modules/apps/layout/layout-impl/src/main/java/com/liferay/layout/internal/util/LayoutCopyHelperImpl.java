@@ -217,9 +217,18 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 			sourceLayout, targetLayout, serviceContext);
 
 		for (Map.Entry<Long, Long> entry : segmentsExperienceIds.entrySet()) {
+			String data = layoutPageTemplateStructure.getData(entry.getKey());
+
+			if (Validator.isNull(data)) {
+				_segmentsExperienceLocalService.deleteSegmentsExperience(
+					entry.getKey());
+
+				continue;
+			}
+
 			_copyLayoutPageTemplateStructureExperience(
-				layoutPageTemplateStructure, entry.getKey(), targetLayout,
-				fragmentEntryLinkMap, entry.getValue(), serviceContext);
+				data, targetLayout, fragmentEntryLinkMap, entry.getValue(),
+				serviceContext);
 		}
 
 		List<LayoutClassedModelUsage> sourceLayoutLayoutClassedModelUsages =
@@ -252,17 +261,10 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 	}
 
 	private void _copyLayoutPageTemplateStructureExperience(
-			LayoutPageTemplateStructure layoutPageTemplateStructure,
-			long segmentsExperienceId, Layout targetLayout,
+			String data, Layout targetLayout,
 			Map<Long, FragmentEntryLink> fragmentEntryLinkMap,
 			long targetSegmentsExperienceId, ServiceContext serviceContext)
 		throws Exception {
-
-		String data = layoutPageTemplateStructure.getData(segmentsExperienceId);
-
-		if (Validator.isNull(data)) {
-			return;
-		}
 
 		JSONObject dataJSONObject = _processDataJSONObject(
 			data, targetLayout, fragmentEntryLinkMap,
