@@ -163,17 +163,6 @@ public class FieldDog {
 				String modifiedDateString = _getModifiedDateString(
 					dataJSONObject, dataSource, ownerType);
 
-			if (value instanceof List) {
-				for (Object currentValue : (List<?>)value) {
-					Field field = _buildField(
-						context, dataSourceId, dataSource.getName(), fieldType,
-						modifiedDateString, fieldName, ownerId, ownerType,
-						dataSourceFieldName, currentValue);
-
-					fields.add(field);
-				}
-			}
-			else {
 				Field field = _buildField(
 					context, dataSourceId, dataSource.getName(), fieldType,
 					modifiedDateString, fieldName, ownerId, ownerType,
@@ -551,27 +540,13 @@ public class FieldDog {
 			String modifiedDateString = _getModifiedDateString(
 				dataJSONObject, dataSource, ownerType);
 
-			if (value instanceof List) {
-				for (Object currentValue : (List<?>)value) {
-					for (Long ownerId : ownerIds) {
-						Field field = _buildField(
-							context, dataSourceId, dataSource.getName(),
-							fieldType, modifiedDateString, fieldName, ownerId,
-							ownerType, dataSourceFieldName, currentValue);
+			for (Long ownerId : ownerIds) {
+				Field field = _buildField(
+					context, dataSourceId, dataSource.getName(), fieldType,
+					modifiedDateString, fieldName, ownerId, ownerType,
+					dataSourceFieldName, value);
 
-						fields.add(field);
-					}
-				}
-			}
-			else {
-				for (Long ownerId : ownerIds) {
-					Field field = _buildField(
-						context, dataSourceId, dataSource.getName(), fieldType,
-						modifiedDateString, fieldName, ownerId, ownerType,
-						dataSourceFieldName, value);
-
-					fields.add(field);
-				}
+				fields.add(field);
 			}
 		}
 
@@ -942,34 +917,18 @@ public class FieldDog {
 			String modifiedDateString = _getModifiedDateString(
 				dataJSONObject, dataSource, ownerType);
 
-			if (value instanceof List) {
-				for (Object currentValue : (List<?>)value) {
-					for (Long ownerId : ownerIds) {
-						Field field = _buildField(
-							context, dataSource.getId(), dataSource.getName(),
-							fieldType, modifiedDateString,
-							fieldMapping.getFieldName(), ownerId, ownerType,
-							dataSourceFieldName, currentValue);
+			for (Long ownerId : ownerIds) {
+				Field field = _buildField(
+					context, dataSource.getId(), dataSource.getName(),
+					fieldType, modifiedDateString, fieldMapping.getFieldName(),
+					ownerId, ownerType, dataSourceFieldName, value);
 
-						newFields.add(field);
-					}
-				}
-			}
-			else {
-				for (Long ownerId : ownerIds) {
-					Field field = _buildField(
-						context, dataSource.getId(), dataSource.getName(),
-						fieldType, modifiedDateString,
-						fieldMapping.getFieldName(), ownerId, ownerType,
-						dataSourceFieldName, value);
+				if (newFields.isEmpty() ||
+					_isUpdateField(
+						context, dataSource.getId(), field, newFields.get(0),
+						ownerType)) {
 
-					if (newFields.isEmpty() ||
-						_isUpdateField(
-							context, dataSource.getId(), field,
-							newFields.get(0), ownerType)) {
-
-						newFields.add(0, field);
-					}
+					newFields.add(0, field);
 				}
 			}
 		}
@@ -1065,30 +1024,17 @@ public class FieldDog {
 			String modifiedDateString = _getModifiedDateString(
 				dataJSONObject, dataSource, ownerType);
 
-			if (value instanceof List) {
-				for (Object currentValue : (List<?>)value) {
-					Field field = _buildField(
-						context, dataSource.getId(), dataSource.getName(),
-						fieldType, modifiedDateString,
-						fieldMapping.getFieldName(), ownerId, ownerType,
-						dataSourceFieldName, currentValue);
+			Field field = _buildField(
+				context, dataSource.getId(), dataSource.getName(), fieldType,
+				modifiedDateString, fieldMapping.getFieldName(), ownerId,
+				ownerType, dataSourceFieldName, value);
 
-					newFields.add(field);
-				}
-			}
-			else {
-				Field field = _buildField(
-					context, dataSource.getId(), dataSource.getName(),
-					fieldType, modifiedDateString, fieldMapping.getFieldName(),
-					ownerId, ownerType, dataSourceFieldName, value);
+			if (newFields.isEmpty() ||
+				_isUpdateField(
+					context, dataSource.getId(), field, newFields.get(0),
+					ownerType)) {
 
-				if (newFields.isEmpty() ||
-					_isUpdateField(
-						context, dataSource.getId(), field, newFields.get(0),
-						ownerType)) {
-
-					newFields.add(0, field);
-				}
+				newFields.add(0, field);
 			}
 		}
 
