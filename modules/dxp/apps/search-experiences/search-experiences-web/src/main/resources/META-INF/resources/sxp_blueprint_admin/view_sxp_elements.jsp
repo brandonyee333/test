@@ -24,7 +24,6 @@ ViewSXPElementsDisplayContext viewSXPElementsDisplayContext = (ViewSXPElementsDi
 	apiURL="<%= viewSXPElementsDisplayContext.getAPIURL() %>"
 	creationMenu="<%= viewSXPElementsDisplayContext.getCreationMenu() %>"
 	fdsActionDropdownItems="<%= viewSXPElementsDisplayContext.getFDSActionDropdownItems() %>"
-	formName="fm"
 	id="<%= SXPBlueprintAdminFDSNames.SXP_ELEMENTS %>"
 	itemsPerPage="<%= 20 %>"
 	namespace="<%= liferayPortletResponse.getNamespace() %>"

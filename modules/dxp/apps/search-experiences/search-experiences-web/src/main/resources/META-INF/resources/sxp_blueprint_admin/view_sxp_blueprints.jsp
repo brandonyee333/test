@@ -24,7 +24,6 @@ ViewSXPBlueprintsDisplayContext viewSXPBlueprintsDisplayContext = (ViewSXPBluepr
 	apiURL="<%= viewSXPBlueprintsDisplayContext.getAPIURL() %>"
 	creationMenu="<%= viewSXPBlueprintsDisplayContext.getCreationMenu() %>"
 	fdsActionDropdownItems="<%= viewSXPBlueprintsDisplayContext.getFDSActionDropdownItems() %>"
-	formName="fm"
 	id="<%= SXPBlueprintAdminFDSNames.SXP_BLUEPRINTS %>"
 	itemsPerPage="<%= 20 %>"
 	namespace="<%= liferayPortletResponse.getNamespace() %>"
