@@ -115,6 +115,16 @@ public class EventAnalysisDog {
 		eventAnalysisIds.forEach(this::_deleteEventAnalysis);
 	}
 
+	public EventAnalysis getEventAnalysis(Long eventAnalysisId) {
+		Optional<EventAnalysis> eventAnalysisOptional =
+			_eventAnalysisRepository.findById(eventAnalysisId);
+
+		return eventAnalysisOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is not event analysis with ID " + eventAnalysisId));
+	}
+
 	public EventAnalysisResult getEventAnalysisResult(
 		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
@@ -196,15 +206,7 @@ public class EventAnalysisDog {
 
 		_validateEventAnalysisBreakdowns(eventAnalysisBreakdowns);
 
-		Optional<EventAnalysis> eventAnalysisOptional =
-			_eventAnalysisRepository.findById(eventAnalysisId);
-
-		if (!eventAnalysisOptional.isPresent()) {
-			throw new OSBAsahException(
-				HttpStatus.BAD_REQUEST, "Event analysis is not found");
-		}
-
-		EventAnalysis eventAnalysis = eventAnalysisOptional.get();
+		EventAnalysis eventAnalysis = getEventAnalysis(eventAnalysisId);
 
 		try {
 			eventAnalysis.setEventAnalysisBreakdownJSONArray(
