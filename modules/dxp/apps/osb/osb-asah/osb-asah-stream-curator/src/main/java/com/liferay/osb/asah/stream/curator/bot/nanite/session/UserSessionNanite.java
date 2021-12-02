@@ -33,7 +33,6 @@ import com.liferay.osb.asah.common.model.Acquisition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEvents;
 import com.liferay.osb.asah.common.model.UserSession;
-import com.liferay.osb.asah.common.util.Assert;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -68,6 +67,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
@@ -504,7 +504,7 @@ public class UserSessionNanite implements Nanite {
 		List<AnalyticsEvent> analyticsEvents, String sessionId) {
 
 		try {
-			Assert.notBlank(sessionId, "Session ID is blank");
+			Assert.hasText(sessionId, "Session ID is blank");
 
 			for (AnalyticsEvent analyticsEvent : analyticsEvents) {
 				try {

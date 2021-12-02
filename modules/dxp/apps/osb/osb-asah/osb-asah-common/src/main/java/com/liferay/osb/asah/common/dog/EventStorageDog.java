@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
-import com.liferay.osb.asah.common.util.Assert;
 import com.liferay.osb.asah.common.util.MapUtil;
 
 import java.util.Date;
@@ -35,6 +34,7 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 /**
  * @author Leslie Wong
@@ -44,7 +44,7 @@ public class EventStorageDog {
 
 	@Transactional
 	public Event store(AnalyticsEvent analyticsEvent, String sessionId) {
-		Assert.notBlank(sessionId, "Session ID is blank");
+		Assert.hasText(sessionId, "Session ID is blank");
 
 		EventDefinition eventDefinition = storeEventDefinition(analyticsEvent);
 

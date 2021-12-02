@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.concurrent;
 
-import com.liferay.osb.asah.common.util.Assert;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
@@ -25,6 +23,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.springframework.util.Assert;
 
 /**
  * @author Marcellus Tavares
