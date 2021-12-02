@@ -112,6 +112,10 @@ public class EventAnalysisDog {
 		return _eventAnalysisRepository.save(eventAnalysis);
 	}
 
+	public void deleteEventAnalyses(List<Long> eventAnalysisIds) {
+		eventAnalysisIds.forEach(this::_deleteEventAnalysis);
+	}
+
 	public EventAnalysisResult getEventAnalysisResult(
 		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
@@ -325,6 +329,10 @@ public class EventAnalysisDog {
 		eventDefinitionBreakdownItem.setValue(value);
 
 		return Collections.singletonList(eventDefinitionBreakdownItem);
+	}
+
+	private void _deleteEventAnalysis(Long eventAnalysisId) {
+		_eventAnalysisRepository.deleteById(eventAnalysisId);
 	}
 
 	private Number _getAnalysisCount(
