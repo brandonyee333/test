@@ -229,7 +229,7 @@ public class IndividualDogTest
 
 		_assertCustomFields(customFields, "1400 Montefino Ave", "address");
 		_assertCustomFields(customFields, 42, "favoriteNumber");
-		_assertCustomFields(customFields, "english", "spokenLanguages");
+		_assertCustomFields(customFields, "[english]", "spokenLanguages");
 
 		userJSONObject.remove("expando");
 
@@ -238,7 +238,7 @@ public class IndividualDogTest
 
 		_assertCustomFields(customFields, "1400 Montefino Ave", "address");
 		_assertCustomFields(customFields, 42, "favoriteNumber");
-		_assertCustomFields(customFields, "english", "spokenLanguages");
+		_assertCustomFields(customFields, "[english]", "spokenLanguages");
 
 		individual = _individualDog.updateIndividual(
 			"1",
@@ -255,7 +255,7 @@ public class IndividualDogTest
 
 		_assertCustomFields(customFields, null, "address");
 		_assertCustomFields(customFields, 8, "favoriteNumber");
-		_assertCustomFields(customFields, "german", "spokenLanguages");
+		_assertCustomFields(customFields, "[german]", "spokenLanguages");
 	}
 
 	@Test
