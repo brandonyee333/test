@@ -35,7 +35,6 @@ import org.springframework.lang.Nullable;
 @Primary
 public interface AccountRepository extends Repository<Account, Long> {
 
-	@Cacheable
 	public long countAccounts(
 		@Nullable Set<String> accountPKs, FilterHelper filterHelper);
 
@@ -55,21 +54,17 @@ public interface AccountRepository extends Repository<Account, Long> {
 	@Cacheable
 	public List<Account> findByIdAfter(Long accountId, Pageable pageable);
 
-	@Cacheable
 	public List<Distribution> getAccountDistributions(
 		List<String> accountPKs, String fieldName, String fieldType,
 		FilterHelper filterHelper, Pageable pageable);
 
-	@Cacheable
 	public List<Transformation> getAccountTransformations(
 		String apply, @Nullable Long channelId, FilterHelper filterHelper,
 		Pageable pageable);
 
-	@Cacheable
 	public List<Account> searchAccounts(
 		FilterHelper filterHelper, Pageable pageable);
 
-	@Cacheable
 	public List<Account> searchAccounts(
 		@Nullable Set<String> accountPKs, @Nullable Long channelId,
 		FilterHelper filterHelper, Pageable pageable,

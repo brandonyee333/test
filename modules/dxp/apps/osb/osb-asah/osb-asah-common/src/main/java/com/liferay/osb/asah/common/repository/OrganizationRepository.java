@@ -39,7 +39,6 @@ public interface OrganizationRepository extends Repository<Organization, Long> {
 	public List<Organization> findByDataSourceIdAndOrganizationPKIn(
 		Long dataSourceId, Collection<Long> organizationPKs);
 
-	@Cacheable
 	public List<Transformation> getOrganizationTransformations(
 		String apply, FilterHelper filterHelper, Pageable pageable);
 
