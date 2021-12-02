@@ -2807,6 +2807,46 @@ definition {
 		);
 	}
 
+	@description = "This is a use case for LPS-103344. View the same name categorization of web content. This will be ignored until LPS-143193 is fixed."
+	@ignore = "true"
+	@priority = "4"
+	test ViewSameNameCategoriesViaWebContent {
+		JSONCategory.addVocabulary(
+			groupName = "Guest",
+			title = "Vocabulary Name");
+
+		for (var index : list "1,2") {
+			JSONCategory.addCategory(
+				groupName = "Guest",
+				title = "Category Name ${index}",
+				vocabularyName = "Vocabulary Name");
+		}
+
+		var subcategoryId = JSONCategory.addSubcategory(
+			groupName = "Guest",
+			parentCategoryName = "Category Name 1",
+			title = "Subcategory Name",
+			vocabularyName = "Vocabulary Name");
+
+		var subcategoryId2 = JSONCategory.addSubcategory(
+			groupName = "Guest",
+			parentCategoryName = "Category Name 2",
+			title = "Subcategory Name",
+			vocabularyName = "Vocabulary Name");
+
+		JSONWebcontent.addWebContent(
+			assetCategoryIds = "${subcategoryId},${subcategoryId2}",
+			content = "Web Content Content",
+			groupName = "Guest",
+			title = "Subcategory WC Title");
+
+		WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Subcategory WC Title");
+
+		WebContent.viewCategorizationCategoryCP(categoryNameList = "Subcategory Name,Subcategory Name");
+	}
+
 	@priority = "4"
 	test ViewSourceContainsNoGarbageData {
 		property testray.component.names = "Web Content Administration";
