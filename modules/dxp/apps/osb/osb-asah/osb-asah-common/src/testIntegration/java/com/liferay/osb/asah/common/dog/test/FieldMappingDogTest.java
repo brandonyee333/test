@@ -99,7 +99,7 @@ public class FieldMappingDogTest
 		Map<String, String> dataSourceFieldNames =
 			fieldMapping.getDataSourceFieldNames();
 
-		Assertions.assertTrue(dataSourceFieldNames.isEmpty());
+		Assertions.assertFalse(dataSourceFieldNames.isEmpty());
 
 		fieldMappingOptional =
 			_fieldMappingRepository.findByContextAndFieldNameAndOwnerType(
@@ -109,7 +109,7 @@ public class FieldMappingDogTest
 
 		dataSourceFieldNames = fieldMapping.getDataSourceFieldNames();
 
-		Assertions.assertFalse(dataSourceFieldNames.isEmpty());
+		Assertions.assertTrue(dataSourceFieldNames.isEmpty());
 	}
 
 	@Test

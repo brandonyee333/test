@@ -93,32 +93,41 @@ public class FieldMappingDog {
 			return;
 		}
 
-		Optional<FieldMapping> fieldMappingOptional =
-			_fieldMappingRepository.
-				findByContextAndDisplayNameAndDisplayTypeAndFieldTypeAndOwnerType(
-					context, fieldName, displayType, fieldType, ownerType);
-
-		if (fieldMappingOptional.isPresent()) {
-			FieldMapping fieldMapping = fieldMappingOptional.get();
-
-			fieldMapping.addDataSourceFieldMapping(
-				new DataSourceFieldMapping(
-					dataSourceId, fieldMapping.getId(), dataSourceFieldName));
-			fieldMapping.setModifiedDate(new Date());
-
-			_fieldMappingRepository.save(fieldMapping);
-
-			return;
-		}
-
-		fieldMappingOptional =
+		List<FieldMapping> fieldMappings =
 			_fieldMappingRepository.findByContextAndDisplayNameAndOwnerType(
 				context, fieldName, ownerType);
 
-		if (fieldMappingOptional.isPresent()) {
-			FieldMapping fieldMapping = fieldMappingOptional.get();
+		boolean fieldMappingExists = false;
 
-			removeDataSourceFieldName(dataSourceId, fieldMapping);
+		for (FieldMapping fieldMapping : fieldMappings) {
+			Map<String, String> dataSourceFieldNames =
+				fieldMapping.getDataSourceFieldNames();
+
+			boolean containsDataSourceName = Objects.equals(
+				dataSourceFieldName, dataSourceFieldNames.get(dataSourceId));
+
+			if (Objects.equals(displayType, fieldMapping.getDisplayType()) &&
+				Objects.equals(fieldType, fieldMapping.getFieldType())) {
+
+				if (!containsDataSourceName) {
+					fieldMapping.addDataSourceFieldMapping(
+						new DataSourceFieldMapping(
+							dataSourceId, fieldMapping.getId(),
+							dataSourceFieldName));
+					fieldMapping.setModifiedDate(new Date());
+
+					_fieldMappingRepository.save(fieldMapping);
+				}
+
+				fieldMappingExists = true;
+			}
+			else if (containsDataSourceName) {
+				removeDataSourceFieldName(dataSourceId, fieldMapping);
+			}
+		}
+
+		if (fieldMappingExists) {
+			return;
 		}
 
 		Date date = new Date();
