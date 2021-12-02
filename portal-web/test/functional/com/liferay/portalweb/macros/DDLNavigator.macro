@@ -60,9 +60,7 @@ definition {
 
 		LexiconEntry.gotoHeaderMenuItem(menuItem = "Manage Data Definitions");
 
-		if (IsTextEqual(
-				locator1 = "Portlet#HEADER",
-				value1 = "Data Definitions")) {
+		if (IsTextEqual(locator1 = "Portlet#HEADER", value1 = "Data Definitions")) {
 			AssertTextEquals(
 				locator1 = "Portlet#HEADER",
 				value1 = "Data Definitions");

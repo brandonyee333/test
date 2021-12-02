@@ -56,7 +56,7 @@ definition {
 			panel = "Site Administration",
 			portlet = "Tags");
 
-		Tag.addInvalidCP(tagName = "&apos;tag&apos;");
+		Tag.addInvalidCP(tagName = "'tag'");
 
 		Navigator.openURL();
 

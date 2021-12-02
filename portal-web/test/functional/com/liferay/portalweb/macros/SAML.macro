@@ -20,7 +20,7 @@ definition {
 
 		SAMLPortlet.configureIdentityProvider();
 
-		if ((isSet(idpSessionIdleTimeout)) || (isSet(idpSessionMaximumAge))) {
+		if (isSet(idpSessionIdleTimeout) || isSet(idpSessionMaximumAge)) {
 			SAMLRole.configureIdentityProvider(
 				idpSessionIdleTimeout = "${idpSessionIdleTimeout}",
 				idpSessionMaximumAge = "${idpSessionMaximumAge}");
@@ -116,7 +116,7 @@ definition {
 				locator1 = "TextInput#PASSWORD",
 				value1 = "test");
 
-			if (("${rememberMeChecked}" == "true") && (isSet(rememberMeChecked))) {
+			if (("${rememberMeChecked}" == "true") && isSet(rememberMeChecked)) {
 				Check(locator1 = "Checkbox#REMEMBER_ME");
 			}
 
@@ -145,7 +145,7 @@ definition {
 				locator1 = "UserBar#USER_SIGN_IN",
 				value1 = "Sign In");
 
-			if (!(("${idpLoggedIn}" == "true") && (isSet(idpLoggedIn)))) {
+			if (!(("${idpLoggedIn}" == "true") && isSet(idpLoggedIn))) {
 				Type(
 					locator1 = "TextInput#EMAIL_ADDRESS",
 					value1 = "test@liferay.com");
@@ -154,7 +154,7 @@ definition {
 					locator1 = "TextInput#PASSWORD",
 					value1 = "test");
 
-				if (("${rememberMeChecked}" == "true") && (isSet(rememberMeChecked))) {
+				if (("${rememberMeChecked}" == "true") && isSet(rememberMeChecked)) {
 					Check(locator1 = "Checkbox#REMEMBER_ME");
 				}
 

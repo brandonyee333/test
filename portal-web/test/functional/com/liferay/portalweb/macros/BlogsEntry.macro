@@ -1207,9 +1207,7 @@ definition {
 		var key_entryContent = "${entryContent}";
 		var key_entryTitle = "${entryTitle}";
 
-		if (IsTextEqual(
-				locator1 = "Blogs#ENTRY_COMMENTS_COUNT",
-				value1 = "2")) {
+		if (IsTextEqual(locator1 = "Blogs#ENTRY_COMMENTS_COUNT", value1 = "2")) {
 			AssertTextEquals(
 				locator1 = "Blogs#ENTRY_COMMENTS_COUNT",
 				value1 = "2");

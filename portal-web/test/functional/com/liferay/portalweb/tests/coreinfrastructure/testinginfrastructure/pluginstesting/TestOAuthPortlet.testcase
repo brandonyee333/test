@@ -29,14 +29,11 @@ definition {
 
 		var applicationCredentials = TestOAuth.getApplicationCredentials(applicationName = "oauth1");
 
-		var consumerSecret = TestOAuth.getConsumerSecret(
-			applicationCredentials = "${applicationCredentials}"
-		);
+		var consumerSecret = TestOAuth.getConsumerSecret(applicationCredentials = "${applicationCredentials}");
 
 		var consumerKey = TestOAuth.getConsumerKey(
 			applicationCredentials = "${applicationCredentials}",
-			consumerSecret = "${consumerSecret}"
-		);
+			consumerSecret = "${consumerSecret}");
 
 		Page.add(pageName = "Test Page");
 

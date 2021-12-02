@@ -327,6 +327,7 @@ definition {
 		Panel.expandPanel(panelHeading = "Small Image");
 
 		Click.clickAt(locator1 = "WCEditWebContent#USE_SMALL_IMAGE_CHECKBOX");
+
 		Click(locator1 = "WCEditWebContent#SMALL_IMAGE_URL");
 
 		Type(
@@ -383,7 +384,7 @@ definition {
 
 		MenuItem.click(menuItem = "${localizedLanguage}");
 
-		if (!(IsElementPresent(locator1 = "Translation#SELECTED_LOCALE", value1 = "${localizedLanguage}", key_localizedLanguage = "${localizedLanguage}"))) {
+		if (!(IsElementPresent(key_localizedLanguage = "${localizedLanguage}", locator1 = "Translation#SELECTED_LOCALE", value1 = "${localizedLanguage}"))) {
 			Click(
 				key_localizedLanguage = "${localizedLanguage}",
 				locator1 = "Translation#CURRENT_LOCALE");
@@ -640,7 +641,7 @@ definition {
 			Check(locator1 = "DDMField#BOOLEAN");
 		}
 
-		if ((isSet(dateFieldName)) && (isSet(webContentDate))) {
+		if (isSet(dateFieldName) && isSet(webContentDate)) {
 			Type(
 				key_fieldName = "${dateFieldName}",
 				locator1 = "TextInput#DDM",
@@ -763,7 +764,7 @@ definition {
 			SelectFrame(value1 = "relative=top");
 		}
 
-		if ((isSet(webContentText)) && (isSet(textFieldName))) {
+		if (isSet(webContentText) && isSet(textFieldName)) {
 			Type(
 				key_fieldName = "${textFieldName}",
 				locator1 = "TextInput#DDM",
@@ -1841,7 +1842,7 @@ definition {
 
 		Click.makeVisibleClickAt(locator1 = "Portlet#OPTIONS_ICON");
 
-		if (IsElementPresent(locator1 = "MenuItem#ANY_MENU_ITEM", key_menuItem = "Edit Web Content")) {
+		if (IsElementPresent(key_menuItem = "Edit Web Content", locator1 = "MenuItem#ANY_MENU_ITEM")) {
 			AssertTextEquals.assertPartialText(
 				key_menuItem = "Edit Web Content",
 				locator1 = "MenuItem#ANY_MENU_ITEM",

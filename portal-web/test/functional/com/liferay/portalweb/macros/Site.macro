@@ -1107,6 +1107,7 @@ definition {
 		}
 		else if ("${siteNameInvalid}" == "Null") {
 			Alert.viewErrorMessage(errorMessage = "Your request failed to complete.");
+
 			Alert.viewSecondErrorMessage(errorMessage = "The Site Name cannot be blank, numeric or a reserved word such as null. The Site Name cannot contain the following invalid characters: *.");
 
 			AssertTextEquals(

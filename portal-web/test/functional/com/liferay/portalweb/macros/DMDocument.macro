@@ -302,7 +302,7 @@ definition {
 
 		PortletEntry.inputDescription(description = "${dmDocumentDescription}");
 
-		if ((isSet(date)) && (isSet(dateFieldName))) {
+		if (isSet(date) && isSet(dateFieldName)) {
 			Type(
 				key_fieldName = "${dateFieldName}",
 				locator1 = "TextInput#DDM_FUZZY",
@@ -321,7 +321,7 @@ definition {
 				value1 = "${selectOption}");
 		}
 
-		if ((isSet(textBox)) && (isSet(textBoxFieldName))) {
+		if (isSet(textBox) && isSet(textBoxFieldName)) {
 			Type(
 				key_fieldName = "${textBoxFieldName}",
 				locator1 = "DDMField#TEXT_BOX",
@@ -1535,7 +1535,7 @@ definition {
 
 		Click(locator1 = "Icon#INFO");
 
-		if ((isSet(dmDocumentSize)) && (!(contains("${dmDocumentSize}", "{dmDocumentSize}")))) {
+		if (isSet(dmDocumentSize) && !(contains("${dmDocumentSize}", "{dmDocumentSize}"))) {
 			var key_dmDocumentSize = "${dmDocumentSize}";
 
 			AssertVisible(locator1 = "DocumentsAndMediaDocument#DOCUMENT_DETAILS_DOWNLOAD");

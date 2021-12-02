@@ -324,7 +324,7 @@ definition {
 			chartType = "column diagram",
 			chartWidth = "55%",
 			dataRange = "last 12 months",
-			displayActivityCounterName = "blog entries of This site&apos;s users");
+			displayActivityCounterName = "blog entries of This site's users");
 
 		Navigator.openURL();
 
@@ -354,7 +354,7 @@ definition {
 
 		SocialActivity.viewPGViaGroupStatistics(
 			currentValue = "3",
-			siteStatistics = "Users&apos; Blog Entries");
+			siteStatistics = "Users' Blog Entries");
 	}
 
 }

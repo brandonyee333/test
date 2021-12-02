@@ -2,9 +2,7 @@ definition {
 
 	macro getRemoteServerVersion {
 		var curl = "http://localhost:9200";
-
 		var serverInfo = JSONCurlUtil.get("${curl}");
-
 		var serverVersion = RegexUtil.replace("${serverInfo}", "number&quot; : &quot;(\d+\.\d+\.\d+)", "1");
 
 		echo("Version of the remote Elasticsearch server on port 9200: ${serverVersion}");
@@ -20,7 +18,7 @@ definition {
 
 	@description = "Elasticsearch provides a Cluster Health API (http://localhost:9200/_cluster/health?pretty=true) to easily view the current status of the cluster."
 	macro viewClusterStatusViaClusterHealthAPI {
-		Navigator.openSpecificURL(url = "http://localhost:9200/_cluster/health?level=indices&amp;pretty");
+		Navigator.openSpecificURL(url = "http://localhost:9200/_cluster/health?level=indices&pretty");
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "//body",

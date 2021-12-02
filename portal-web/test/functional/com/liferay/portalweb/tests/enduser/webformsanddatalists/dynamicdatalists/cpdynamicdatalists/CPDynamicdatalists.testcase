@@ -3738,7 +3738,7 @@ definition {
 		var character21 = ''';''';
 
 		var character22 = ''':''';
-		var character23 = "&apos;";
+		var character23 = "'";
 
 		var character24 = '''"''';
 

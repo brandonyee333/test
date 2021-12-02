@@ -427,7 +427,7 @@ definition {
 	}
 
 	macro tearDownCP {
-		if ("${siteScopeName}" =="Global") {
+		if ("${siteScopeName}" == "Global") {
 			Navigator.openSiteLanding(siteURLKey = "Global");
 		}
 		else {

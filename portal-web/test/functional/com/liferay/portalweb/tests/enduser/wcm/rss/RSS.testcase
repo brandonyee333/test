@@ -66,7 +66,7 @@ definition {
 		RSSPortlet.addFeed(
 			buttonRowIndexNumber = "1",
 			feedRowIndexNumber = "2",
-			feedTitle = "Latimes &gt; Technology News",
+			feedTitle = "Latimes > Technology News",
 			feedType = "file",
 			feedUrlLink = "rss2.0.xml");
 
@@ -83,7 +83,7 @@ definition {
 		RSSPortlet.addFeed(
 			buttonRowIndexNumber = "1",
 			feedRowIndexNumber = "3",
-			feedTitle = "Reuters &gt; Sports News",
+			feedTitle = "Reuters > Sports News",
 			feedType = "file",
 			feedUrlLink = "reuters_sports_news.xml");
 
@@ -160,7 +160,7 @@ definition {
 
 		RSSPortlet.addFeed(
 			feedRowIndexNumber = "0",
-			feedTitle = "Latimes &gt; Technology News",
+			feedTitle = "Latimes > Technology News",
 			feedType = "file",
 			feedUrlLink = "rss2.0.xml");
 
@@ -170,7 +170,7 @@ definition {
 			pageName = "Site Page Name",
 			siteName = "Site Name");
 
-		RSSPortlet.viewDisplayFeedTitle(feedTitle = "Latimes &gt; Technology News");
+		RSSPortlet.viewDisplayFeedTitle(feedTitle = "Latimes > Technology News");
 	}
 
 	@priority = "3"
@@ -380,7 +380,7 @@ definition {
 
 		RSSPortlet.addFeed(
 			feedRowIndexNumber = "0",
-			feedTitle = "Latimes &gt; Technology News",
+			feedTitle = "Latimes > Technology News",
 			feedType = "file",
 			feedUrlLink = "rss2.0.xml");
 
@@ -388,7 +388,7 @@ definition {
 
 		Navigator.gotoPage(pageName = "Page Name");
 
-		RSSPortlet.viewDisplayFeedTitle(feedTitle = "Latimes &gt; Technology News");
+		RSSPortlet.viewDisplayFeedTitle(feedTitle = "Latimes > Technology News");
 
 		Portlet.gotoPortletOptions(
 			portletName = "RSS Publisher",
@@ -400,7 +400,7 @@ definition {
 
 		Navigator.gotoPage(pageName = "Page Name");
 
-		RSSPortlet.viewDeleteFeed(feedTitle = "Latimes &gt; Technology News");
+		RSSPortlet.viewDeleteFeed(feedTitle = "Latimes > Technology News");
 	}
 
 	@priority = "3"

@@ -21,9 +21,7 @@ definition {
 	}
 
 	macro acceptEndUserLicenseAgreement {
-		if (IsElementPresent(
-				locator1 = "Button#I_AGREE",
-				value1 = "I Agree")) {
+		if (IsElementPresent(locator1 = "Button#I_AGREE", value1 = "I Agree")) {
 			AssertClick(
 				locator1 = "Button#I_AGREE",
 				value1 = "I Agree");
@@ -1597,7 +1595,7 @@ definition {
 			User.loginLocalizationPG(localization = "${localization}");
 		}
 
-		if ((isSet(authenticationMethod)) && ("${authenticationMethod}" == "By Screen Name")) {
+		if (isSet(authenticationMethod) && ("${authenticationMethod}" == "By Screen Name")) {
 			Type(
 				locator1 = "TextInput#SCREEN_NAME",
 				value1 = "${userScreenName}");
@@ -1612,7 +1610,7 @@ definition {
 			locator1 = "TextInput#PASSWORD",
 			value1 = "${password}");
 
-		if ((isSet(rememberMeChecked)) && ("${rememberMeChecked}" == "true")) {
+		if (isSet(rememberMeChecked) && ("${rememberMeChecked}" == "true")) {
 			Check(locator1 = "Checkbox#REMEMBER_ME");
 		}
 
@@ -1743,16 +1741,14 @@ definition {
 		if (IsElementPresent.pauseIsElementPresent(locator1 = "TextInput#EMAIL_ADDRESS")) {
 			SelectWindow.selectWindowNoSPARefresh(locator1 = "title=Terms of Use - ${siteName}");
 
-			if (IsElementPresent.pauseIsElementPresent(
-					locator1 = "Button#I_AGREE",
-					value1 = "I Agree")) {
+			if (IsElementPresent.pauseIsElementPresent(locator1 = "Button#I_AGREE", value1 = "I Agree")) {
 				AssertClick(
 					locator1 = "Button#I_AGREE",
 					value1 = "I Agree");
 			}
 
 			if (IsElementPresent.pauseIsElementPresent(locator1 = "TextInput#PASSWORD")) {
-				if ((isSet(syntaxCheckingEnabled)) && ("${syntaxCheckingEnabled}" == "true")) {
+				if (isSet(syntaxCheckingEnabled) && ("${syntaxCheckingEnabled}" == "true")) {
 					Type(
 						locator1 = "TextInput#PASSWORD",
 						value1 = "${resetPassword}");
@@ -1870,16 +1866,14 @@ definition {
 				value1 = "Allow Once");
 		}
 
-		if (IsElementPresent.pauseIsElementPresent(
-				locator1 = "Button#I_AGREE",
-				value1 = "I Agree")) {
+		if (IsElementPresent.pauseIsElementPresent(locator1 = "Button#I_AGREE", value1 = "I Agree")) {
 			AssertClick(
 				locator1 = "Button#I_AGREE",
 				value1 = "I Agree");
 		}
 
 		if (IsElementPresent.pauseIsElementPresent(locator1 = "TextInput#PASSWORD")) {
-			if ((isSet(syntaxCheckingEnabled)) && ("${syntaxCheckingEnabled}" == "true")) {
+			if (isSet(syntaxCheckingEnabled) && ("${syntaxCheckingEnabled}" == "true")) {
 				Type(
 					locator1 = "TextInput#PASSWORD",
 					value1 = "${resetPassword}");
@@ -1987,7 +1981,7 @@ definition {
 
 	macro resetPassword {
 		if (IsElementPresent.pauseIsElementPresent(locator1 = "TextInput#PASSWORD")) {
-			if ((isSet(syntaxCheckingEnabled)) && ("${syntaxCheckingEnabled}" == "true")) {
+			if (isSet(syntaxCheckingEnabled) && ("${syntaxCheckingEnabled}" == "true")) {
 				Type(
 					locator1 = "TextInput#PASSWORD",
 					value1 = "${resetPassword}");
@@ -1997,7 +1991,7 @@ definition {
 					value1 = "${resetPassword}");
 			}
 			else {
-				if ((isSet(setupWizardEnabled)) && ("${setupWizardEnabled}" == "true")) {
+				if (isSet(setupWizardEnabled) && ("${setupWizardEnabled}" == "true")) {
 					Type(
 						locator1 = "TextInput#PASSWORD",
 						value1 = "test2");
@@ -2082,9 +2076,7 @@ definition {
 			locator1 = "Button#SIGN_IN",
 			value1 = "Sign In");
 
-		if (IsElementPresent.pauseIsElementPresent(
-				locator1 = "Button#I_AGREE",
-				value1 = "I Agree")) {
+		if (IsElementPresent.pauseIsElementPresent(locator1 = "Button#I_AGREE", value1 = "I Agree")) {
 			AssertClick(
 				locator1 = "Button#I_AGREE",
 				value1 = "I Agree");
@@ -2103,7 +2095,7 @@ definition {
 			value1 = "Verify");
 
 		if (IsElementPresent.pauseIsElementPresent(locator1 = "TextInput#PASSWORD")) {
-			if ((isSet(syntaxCheckingEnabled)) && ("${syntaxCheckingEnabled}" == "true")) {
+			if (isSet(syntaxCheckingEnabled) && ("${syntaxCheckingEnabled}" == "true")) {
 				Type(
 					locator1 = "TextInput#PASSWORD",
 					value1 = "${resetPassword}");
@@ -2377,7 +2369,6 @@ definition {
 
 			while ("${i}" != "${emailAddressCount}") {
 				var i = ${i} + 1;
-
 				var key_emailAddress = "${emailAddressPrefix}${i}@liferay.com";
 
 				AssertTextEquals.assertValue(

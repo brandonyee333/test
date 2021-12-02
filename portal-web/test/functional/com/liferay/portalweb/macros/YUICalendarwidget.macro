@@ -1,7 +1,6 @@
 definition {
 
 	macro addDate {
-
 		/*
 		To ensure the desired month will always be reached, please set the date in current year.
 		*/
@@ -10,7 +9,7 @@ definition {
 		var currentDateYear = DateUtil.getCurrentYear();
 
 		if ("${currentDateMonth}" != "12") {
-			while (IsElementNotPresent(locator1 = "YUICalendarWidget#DATEPICKER_SPECIFIC_MONTH_YEAR", key_month = "December", key_year = "${currentDateYear}")) {
+			while (IsElementNotPresent(key_month = "December", key_year = "${currentDateYear}", locator1 = "YUICalendarWidget#DATEPICKER_SPECIFIC_MONTH_YEAR")) {
 				Click(locator1 = "YUICalendarWidget#NEXT_MONTH_ARROW");
 			}
 		}

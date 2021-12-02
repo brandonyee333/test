@@ -46,7 +46,7 @@ definition {
 
 		WikiEntry.addPageTitle(wikiPageTitle = "MediaWiki Page Title");
 
-		WikiEntry.addMediaWikiDescription(wikiPageContent = "&apos;&apos;MediaWiki Page Content&apos;&apos;");
+		WikiEntry.addMediaWikiDescription(wikiPageContent = "''MediaWiki Page Content''");
 
 		PortletEntry.publish();
 
@@ -67,7 +67,7 @@ definition {
 
 		WikiEntry.addPageTitle(wikiPageTitle = "MediaWiki Child Page Title");
 
-		WikiEntry.addMediaWikiDescription(wikiPageContent = "&apos;&apos;MediaWiki Child Page Content&apos;&apos;");
+		WikiEntry.addMediaWikiDescription(wikiPageContent = "''MediaWiki Child Page Content''");
 
 		PortletEntry.publish();
 

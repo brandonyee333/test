@@ -17,14 +17,9 @@ definition {
 	function mouseOverClickNavigation {
 		WaitForSPARefresh();
 
-		selenium.clickAt(
-			"//div[contains(@class,'portlet')]/span[contains(.,'Navigation Menu')]",
-			""
-		);
+		selenium.clickAt("//div[contains(@class,'portlet')]/span[contains(.,'Navigation Menu')]", "");
 
-		selenium.waitForElementPresent(
-			"//script[contains(@src,'/frontend-js-web/liferay/sign_in_modal.js')]"
-		);
+		selenium.waitForElementPresent("//script[contains(@src,'/frontend-js-web/liferay/sign_in_modal.js')]");
 
 		MouseOver.mouseOver();
 

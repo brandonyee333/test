@@ -91,7 +91,7 @@ definition {
 
 	@priority = "3"
 	test AddPageWithEscapeCharacter {
-		Page.add(pageName = "Tester&apos;s Page");
+		Page.add(pageName = "Tester's Page");
 	}
 
 	@priority = "3"

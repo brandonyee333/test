@@ -912,7 +912,7 @@ definition {
 			page = "Public Pages");
 
 		Page.addJavaScript(
-			javaScript = "alert(&apos;Welcome to Russia.&apos;);",
+			javaScript = "alert('Welcome to Russia.');",
 			pageName = "Arenas");
 
 		Confirm(value1 = "Welcome to Russia.");

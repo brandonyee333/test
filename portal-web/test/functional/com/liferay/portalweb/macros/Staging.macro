@@ -498,7 +498,7 @@ definition {
 			}
 		}
 
-		if ((!(isSet(checkContentNameList))) && (!(isSet(uncheckContentNameList)))) {
+		if (!(isSet(checkContentNameList)) && !(isSet(uncheckContentNameList))) {
 			Check(locator1 = "Select#CONTENT_ALL_CONTENT");
 		}
 	}
@@ -686,7 +686,7 @@ definition {
 			AssertElementPresent(locator1 = "Staging#STAGING_PUBLISH_TO_LIVE_BUTTON");
 		}
 
-		if ((IsElementPresent(locator1 = "Staging#STAGING_MENU_READY_FOR_PUBLICATION")) && (!(isSet(pleaseDoNotMarkAsReady)))) {
+		if ((IsElementPresent(locator1 = "Staging#STAGING_MENU_READY_FOR_PUBLICATION")) && !(isSet(pleaseDoNotMarkAsReady))) {
 			Check.toggleSwitch(locator1 = "Staging#STAGING_MENU_READY_FOR_PUBLICATION");
 		}
 

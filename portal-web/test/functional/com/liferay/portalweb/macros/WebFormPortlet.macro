@@ -67,7 +67,7 @@ definition {
 				value1 = "${wfFieldType}");
 		}
 
-		if ((("${wfFieldType}" == "Options") || ("${wfFieldType}" == "Radio Buttons")) && (isSet(optionsList))) {
+		if ((("${wfFieldType}" == "Options") || ("${wfFieldType}" == "Radio Buttons")) && isSet(optionsList)) {
 			var key_wfNewFieldName = "${wfNewFieldName}";
 
 			Type(

@@ -71,7 +71,7 @@ definition {
 
 		User.addCP(
 			userEmailAddress = "userea@liferay.com",
-			userFirstName = "&lt;userfn&gt;",
+			userFirstName = "<userfn>",
 			userLastName = "userln",
 			userScreenName = "usersn");
 
@@ -82,7 +82,7 @@ definition {
 
 		User.viewCP(
 			userEmailAddress = "userea@liferay.com",
-			userFirstName = "&lt;userfn&gt;",
+			userFirstName = "<userfn>",
 			userLastName = "userln",
 			userScreenName = "usersn");
 

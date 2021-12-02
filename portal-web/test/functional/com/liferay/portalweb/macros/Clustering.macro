@@ -11,10 +11,10 @@ definition {
 
 		var liferayHome = PropsUtil.get("liferay.home.dir.name");
 		var fileContent = FileUtil.read("${liferayHome}/cluster${bundleIndex}.log");
-
 		var ipAddress = StringUtil.extractLast("${fileContent}", "Setting JGroups outgoing IP address to");
 		var ipAddress = StringUtil.extractFirst("${ipAddress}", "and interface to");
 		var ipAddress = StringUtil.trim("${ipAddress}");
+
 		return "${ipAddress}";
 
 		echo("outgoing IP Address of ${nodePort} is ${ipAddress}");

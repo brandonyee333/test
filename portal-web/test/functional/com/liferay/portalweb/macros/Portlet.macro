@@ -117,7 +117,7 @@ definition {
 	macro assertServerStartup {
 		var startupPauseCount = "0";
 
-		while ((!(IsElementPresent(locator1 = "UserBar#USER_SIGN_IN"))) && ("${startupPauseCount}" != "12")) {
+		while (!(IsElementPresent(locator1 = "UserBar#USER_SIGN_IN")) && ("${startupPauseCount}" != "12")) {
 			Refresh();
 
 			Pause(locator1 = "10000");
@@ -236,7 +236,7 @@ definition {
 		}
 
 		if (isSet(portletOption)) {
-			if (IsElementPresent(locator1 = "MenuItem#ANY_MENU_ITEM", key_menuItem = "${portletOption}")) {
+			if (IsElementPresent(key_menuItem = "${portletOption}", locator1 = "MenuItem#ANY_MENU_ITEM")) {
 				AssertClick(
 					key_menuItem = "${portletOption}",
 					locator1 = "MenuItem#ANY_MENU_ITEM",
@@ -249,12 +249,12 @@ definition {
 	}
 
 	macro gotoSpecificPortletOptions {
-		if (("${portletName}" == "Web Content Display") && (isSet(order))) {
+		if (("${portletName}" == "Web Content Display") && isSet(order)) {
 			var key_order = "${order}";
 
 			Click.makeVisibleClickAt(locator1 = "WCD#SPECIFIC_BORDERLESS_ELLIPSIS_ICON");
 		}
-		else if (("${portletName}" == "Asset Publisher") && (isSet(order))) {
+		else if (("${portletName}" == "Asset Publisher") && isSet(order)) {
 			var key_order = "${order}";
 
 			Click.makeVisibleClickAt(locator1 = "AP#SPECIFIC_BORDERLESS_ELLIPSIS_ICON");
@@ -274,7 +274,7 @@ definition {
 	}
 
 	macro selectTreeNode {
-		if (IsElementPresent(locator1 = "Treeview#NODE_UNSELECTED", key_nodeName = "${nodeName}")) {
+		if (IsElementPresent(key_nodeName = "${nodeName}", locator1 = "Treeview#NODE_UNSELECTED")) {
 			AssertClick.assertPartialTextClickAt(
 				key_nodeName = "${nodeName}",
 				locator1 = "Treeview#NODE_UNSELECTED",
@@ -378,7 +378,7 @@ definition {
 			locator1 = "NavBar#APPLICATION_SEARCH_FIELD",
 			value1 = "${portletName}");
 
-		var portletLocator = "//span[@data-title=&quot;${portletName}&quot; and contains(@class,&apos;add-content-item&apos;)]";
+		var portletLocator = "//span[@data-title=&quot;${portletName}&quot; and contains(@class,'add-content-item')]";
 
 		AssertElementNotPresent(locator1 = "${portletLocator}");
 	}
