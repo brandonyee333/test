@@ -706,6 +706,10 @@ type MutationType {
 		types: [DataControlTaskType]!
 	): Boolean
 
+	deleteEventAnalyses(
+		eventAnalysisIds: [String]!
+	): [Boolean]
+
 	deleteExperiment(
 		experimentId: String!
 	): Boolean
