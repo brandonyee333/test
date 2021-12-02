@@ -104,7 +104,8 @@ public class FieldMappingDog {
 				fieldMapping.getDataSourceFieldNames();
 
 			boolean containsDataSourceName = Objects.equals(
-				dataSourceFieldName, dataSourceFieldNames.get(dataSourceId));
+				dataSourceFieldName,
+				dataSourceFieldNames.get(String.valueOf(dataSourceId)));
 
 			if (Objects.equals(displayType, fieldMapping.getDisplayType()) &&
 				Objects.equals(fieldType, fieldMapping.getFieldType())) {

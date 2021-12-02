@@ -156,21 +156,19 @@ public class FieldDog {
 					fieldMapping.getDisplayType(), fieldName, fieldType,
 					!iterator.hasNext(), initialValue.toString());
 
-				if (value == null) {
-					continue;
+				if (value != null) {
+					String modifiedDateString = _getModifiedDateString(
+						dataJSONObject, dataSource, ownerType);
+
+					Field field = _buildField(
+						context, dataSourceId, dataSource.getName(), fieldType,
+						modifiedDateString, fieldName, ownerId, ownerType,
+						dataSourceFieldName, value);
+
+					fields.add(field);
+
+					break;
 				}
-
-				String modifiedDateString = _getModifiedDateString(
-					dataJSONObject, dataSource, ownerType);
-
-				Field field = _buildField(
-					context, dataSourceId, dataSource.getName(), fieldType,
-					modifiedDateString, fieldName, ownerId, ownerType,
-					dataSourceFieldName, value);
-
-				fields.add(field);
-
-				break;
 			}
 		}
 
