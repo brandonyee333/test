@@ -50,7 +50,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -344,76 +343,66 @@ public class UserSessionNanite implements Nanite {
 	private void _processSessionAnalyticsEvents(
 		List<Message<AnalyticsEvent>> messages, String userId) {
 
-		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), ProjectIdThreadLocal.getProjectId(), userId);
+		Stream<Message<AnalyticsEvent>> stream = messages.stream();
 
-		try {
-			reentrantLock.lock();
+		AnalyticsEvents analyticsEvents = new AnalyticsEvents(
+			stream.map(
+				Message::getObject
+			).collect(
+				Collectors.toList()
+			));
 
-			Stream<Message<AnalyticsEvent>> stream = messages.stream();
+		JSONObject userSessionJSONObject = _getUserSession(
+			analyticsEvents.getFirstAnalyticsEventDate(), userId);
 
-			AnalyticsEvents analyticsEvents = new AnalyticsEvents(
-				stream.map(
-					Message::getObject
-				).collect(
-					Collectors.toList()
-				));
-
-			JSONObject userSessionJSONObject = _getUserSession(
-				analyticsEvents.getFirstAnalyticsEventDate(), userId);
-
-			if (userSessionJSONObject == null) {
-				BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("completed", false)
-				).mustNot(
-					BoolQueryBuilderUtil.should(
-						QueryBuilders.rangeQuery(
-							"lastEventDate"
-						).lt(
-							"now-30m"
-						)
-					).should(
-						QueryBuilders.rangeQuery(
-							"lastEventDate"
-						).lt(
-							"now/d"
-						)
+		if (userSessionJSONObject == null) {
+			BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("completed", false)
+			).mustNot(
+				BoolQueryBuilderUtil.should(
+					QueryBuilders.rangeQuery(
+						"lastEventDate"
+					).lt(
+						"now-30m"
 					)
-				).filter(
-					QueryBuilders.termQuery("userId", userId)
-				);
+				).should(
+					QueryBuilders.rangeQuery(
+						"lastEventDate"
+					).lt(
+						"now/d"
+					)
+				)
+			).filter(
+				QueryBuilders.termQuery("userId", userId)
+			);
 
-				if (!_cerebroInfoElasticsearchInvoker.exists(
-						"user-sessions", boolQueryBuilder)) {
+			if (!_cerebroInfoElasticsearchInvoker.exists(
+					"user-sessions", boolQueryBuilder)) {
 
-					try {
-						Date lastAnalyticsEventDate =
-							analyticsEvents.getLastAnalyticsEventDate();
+				try {
+					Date lastAnalyticsEventDate =
+						analyticsEvents.getLastAnalyticsEventDate();
 
-						Date yesterday = DateUtil.toUTCDate(
-							DateUtil.addDays(DateUtil.newDateString(), -1));
+					Date yesterday = DateUtil.toUTCDate(
+						DateUtil.addDays(DateUtil.newDateString(), -1));
 
-						if (lastAnalyticsEventDate.before(yesterday)) {
-							_createUserSession(analyticsEvents, true, userId);
-						}
-						else {
-							_createUserSession(analyticsEvents, false, userId);
-						}
+					if (lastAnalyticsEventDate.before(yesterday)) {
+						_createUserSession(analyticsEvents, true, userId);
 					}
-					catch (Exception exception) {
-						_log.error(exception, exception);
+					else {
+						_createUserSession(analyticsEvents, false, userId);
 					}
 				}
-				else {
-					_createUserSession(analyticsEvents, true, userId);
+				catch (Exception exception) {
+					_log.error(exception, exception);
 				}
 			}
 			else {
-				_updateUserSession(analyticsEvents, userSessionJSONObject);
+				_createUserSession(analyticsEvents, true, userId);
 			}
 		}
-		finally {
-			reentrantLock.unlock();
+		else {
+			_updateUserSession(analyticsEvents, userSessionJSONObject);
 		}
 	}
 
@@ -508,7 +497,7 @@ public class UserSessionNanite implements Nanite {
 						exception);
 				}
 			},
-			null);
+			KeyReentrantLock.getReentrantLock(getClass(), tuple2));
 	}
 
 	private void _storeEvents(
@@ -590,7 +579,7 @@ public class UserSessionNanite implements Nanite {
 	private static final Log _log = LogFactory.getLog(UserSessionNanite.class);
 
 	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(20, 30);
+		BoundedExecutor.newBoundedExecutor(30, 20);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;

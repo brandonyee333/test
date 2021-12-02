@@ -16,78 +16,72 @@ package com.liferay.osb.asah.common.concurrent;
 
 import com.liferay.osb.asah.common.util.Assert;
 
-import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Supplier;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.springframework.lang.Nullable;
 
 /**
  * @author Marcellus Tavares
  */
 public class BoundedExecutor {
 
-	public static BoundedExecutor newBoundedExecutor(int nThreads, int bound) {
+	public static BoundedExecutor newBoundedExecutor(
+		int maxThreads, int threadPoolSize) {
+
+		Assert.state(
+			threadPoolSize > 0, "Thread pool size must be greater than 0");
+
+		if (maxThreads < threadPoolSize) {
+			maxThreads = threadPoolSize;
+		}
+
 		return new BoundedExecutor(
-			Executors.newFixedThreadPool(nThreads), bound);
-	}
-
-	public BoundedExecutor(
-		ExecutorService executorService, int concurrentTasksLimit) {
-
-		_executorService = executorService;
-
-		_bound = concurrentTasksLimit;
-
-		_semaphore = new Semaphore(concurrentTasksLimit, true);
+			Executors.newFixedThreadPool(threadPoolSize), maxThreads);
 	}
 
 	public void awaitPendingTasks() {
 		try {
-			_semaphore.acquireUninterruptibly(_bound);
+			_semaphore.acquireUninterruptibly(_maxThreads);
 		}
 		finally {
-			_semaphore.release(_bound);
+			_semaphore.release(_maxThreads);
 		}
 	}
 
-	public void runAsync(
-		Runnable task,
-		@Nullable Supplier<ReentrantLock> reentrantLockSupplier) {
+	public void runAsync(Runnable asyncRunnable) {
+		runAsync(asyncRunnable, null);
+	}
 
-		Assert.notNull(task, "The task is null");
+	public void runAsync(Runnable asyncRunnable, ReentrantLock reentrantLock) {
+		Assert.notNull(asyncRunnable, "The asynchronous runnable is null");
 
 		_semaphore.acquireUninterruptibly();
-
-		Optional<ReentrantLock> reentrantLockOptional = Optional.ofNullable(
-			reentrantLockSupplier
-		).map(
-			Supplier::get
-		);
 
 		try {
 			_executorService.execute(
 				() -> {
 					try {
-						reentrantLockOptional.ifPresent(ReentrantLock::lock);
+						if (reentrantLock != null) {
+							reentrantLock.lock();
+						}
 
-						task.run();
+						asyncRunnable.run();
 					}
 					catch (Exception exception) {
 						_log.error(
-							"Uncaught exception on the asynchronous task",
+							"Uncaught exception on the asynchronous runnable",
 							exception);
 					}
 					finally {
-						reentrantLockOptional.ifPresent(ReentrantLock::unlock);
+						if (reentrantLock != null) {
+							reentrantLock.unlock();
+						}
 
 						_semaphore.release();
 					}
@@ -115,10 +109,18 @@ public class BoundedExecutor {
 		}
 	}
 
+	private BoundedExecutor(ExecutorService executorService, int maxThreads) {
+		_executorService = executorService;
+
+		_maxThreads = maxThreads;
+
+		_semaphore = new Semaphore(maxThreads, true);
+	}
+
 	private static final Log _log = LogFactory.getLog(BoundedExecutor.class);
 
-	private final int _bound;
 	private final ExecutorService _executorService;
+	private final int _maxThreads;
 	private final Semaphore _semaphore;
 
 }

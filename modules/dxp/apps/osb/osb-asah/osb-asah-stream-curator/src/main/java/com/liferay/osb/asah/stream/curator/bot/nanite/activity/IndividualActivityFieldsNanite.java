@@ -368,14 +368,14 @@ public class IndividualActivityFieldsNanite implements Nanite {
 						exception);
 				}
 			},
-			() -> KeyReentrantLock.getReentrantLock(getClass(), tuple2));
+			KeyReentrantLock.getReentrantLock(getClass(), tuple2));
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		IndividualActivityFieldsNanite.class);
 
 	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(10, 15);
+		BoundedExecutor.newBoundedExecutor(15, 10);
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;

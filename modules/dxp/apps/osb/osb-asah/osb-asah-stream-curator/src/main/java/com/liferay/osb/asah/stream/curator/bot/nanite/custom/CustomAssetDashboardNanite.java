@@ -181,7 +181,7 @@ public class CustomAssetDashboardNanite implements Nanite {
 						exception);
 				}
 			},
-			() -> KeyReentrantLock.getReentrantLock(getClass(), tuple2));
+			KeyReentrantLock.getReentrantLock(getClass(), tuple2));
 	}
 
 	private CustomAssetDashboard _updateCustomAssetDashboard(
@@ -224,7 +224,7 @@ public class CustomAssetDashboardNanite implements Nanite {
 		CustomAssetDashboardNanite.class);
 
 	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(10, 15);
+		BoundedExecutor.newBoundedExecutor(15, 10);
 
 	@Autowired
 	private CustomAssetDashboardRepository _customAssetDashboardRepository;

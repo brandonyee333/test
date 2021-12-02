@@ -481,7 +481,7 @@ public class DXPEntitiesMessageProcessor {
 					_messageSubscriber.sendAckIds(ackIds);
 				}
 			},
-			() -> KeyReentrantLock.getReentrantLock(getClass(), projectId));
+			KeyReentrantLock.getReentrantLock(getClass(), projectId));
 	}
 
 	private void _processUserFieldObject(
@@ -553,7 +553,7 @@ public class DXPEntitiesMessageProcessor {
 	private AsahTaskDog _asahTaskDog;
 
 	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(10, 15);
+		BoundedExecutor.newBoundedExecutor(15, 10);
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;

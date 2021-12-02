@@ -372,7 +372,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 						exception);
 				}
 			},
-			() -> KeyReentrantLock.getReentrantLock(getClass(), tuple2));
+			KeyReentrantLock.getReentrantLock(getClass(), tuple2));
 	}
 
 	private void _setAssetPrimaryKey(T model) {
@@ -485,7 +485,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	}
 
 	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(10, 15);
+		BoundedExecutor.newBoundedExecutor(15, 10);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;

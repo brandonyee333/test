@@ -30,6 +30,7 @@ import com.google.pubsub.v1.PushConfig;
 import com.google.pubsub.v1.Subscription;
 import com.google.pubsub.v1.Topic;
 
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
@@ -40,11 +41,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -246,14 +243,11 @@ public class PubSubMessageBusImpl implements MessageBus {
 
 	@PreDestroy
 	private void _destroy() {
-		ExecutorService executorService = Executors.newFixedThreadPool(5);
-
-		Semaphore semaphore = new Semaphore(10, true);
+		BoundedExecutor boundedExecutor = BoundedExecutor.newBoundedExecutor(
+			10, 5);
 
 		for (Subscriber subscriber : _messageListeners.values()) {
-			semaphore.acquireUninterruptibly();
-
-			CompletableFuture.runAsync(
+			boundedExecutor.runAsync(
 				() -> {
 					subscriber.stopAsync();
 
@@ -266,17 +260,11 @@ public class PubSubMessageBusImpl implements MessageBus {
 								"subscriber",
 							timeoutException);
 					}
-					finally {
-						semaphore.release();
-					}
-				},
-				executorService);
+				});
 		}
 
 		for (Publisher publisher : _channels.values()) {
-			semaphore.acquireUninterruptibly();
-
-			CompletableFuture.runAsync(
+			boundedExecutor.runAsync(
 				() -> {
 					publisher.shutdown();
 
@@ -289,27 +277,12 @@ public class PubSubMessageBusImpl implements MessageBus {
 								"publisher",
 							interruptedException);
 					}
-					finally {
-						semaphore.release();
-					}
-				},
-				executorService);
+				});
 		}
 
-		try {
-			semaphore.acquireUninterruptibly(10);
+		boundedExecutor.awaitPendingTasks();
 
-			executorService.shutdown();
-
-			if (!executorService.awaitTermination(1, TimeUnit.MINUTES)) {
-				executorService.shutdownNow();
-			}
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(
-				"Interrupted while waiting for termination of executor",
-				interruptedException);
-		}
+		boundedExecutor.shutdown();
 	}
 
 	private Set<String> _fetchTopicNames(TopicAdminClient topicAdminClient) {

@@ -739,7 +739,7 @@ public class ActivitiesNanite implements Nanite {
 					_messageSubscriber.sendAckIds(ackIds);
 				}
 			},
-			() -> KeyReentrantLock.getReentrantLock(getClass(), tuple2));
+			KeyReentrantLock.getReentrantLock(getClass(), tuple2));
 	}
 
 	private void _sendActivityMessage(
@@ -793,7 +793,7 @@ public class ActivitiesNanite implements Nanite {
 	private AssetDog _assetDog;
 
 	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(20, 30);
+		BoundedExecutor.newBoundedExecutor(30, 20);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;

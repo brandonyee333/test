@@ -237,8 +237,7 @@ public class UserSessionFinalizerNanite implements Nanite {
 					catch (Exception exception) {
 						_log.error(exception.getMessage(), exception);
 					}
-				},
-				null);
+				});
 		}
 	}
 
@@ -249,7 +248,7 @@ public class UserSessionFinalizerNanite implements Nanite {
 	private AsahMarkerDog _asahMarkerDog;
 
 	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(10, 15);
+		BoundedExecutor.newBoundedExecutor(15, 10);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;

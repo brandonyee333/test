@@ -386,7 +386,7 @@ public class IndividualNanite implements Nanite {
 					_messageSubscriber.sendAckIds(ackIds);
 				}
 			},
-			() -> KeyReentrantLock.getReentrantLock(getClass(), tuple2));
+			KeyReentrantLock.getReentrantLock(getClass(), tuple2));
 	}
 
 	private Map<Long, Long> _toMap(
@@ -553,7 +553,7 @@ public class IndividualNanite implements Nanite {
 	private ActivityGroupDog _activityGroupDog;
 
 	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(10, 15);
+		BoundedExecutor.newBoundedExecutor(15, 10);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;

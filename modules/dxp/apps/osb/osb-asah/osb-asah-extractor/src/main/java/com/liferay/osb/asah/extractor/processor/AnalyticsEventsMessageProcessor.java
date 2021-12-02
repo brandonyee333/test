@@ -433,7 +433,7 @@ public class AnalyticsEventsMessageProcessor {
 							System.currentTimeMillis() - start));
 				}
 			},
-			() -> KeyReentrantLock.getReentrantLock(getClass(), tuple2));
+			KeyReentrantLock.getReentrantLock(getClass(), tuple2));
 	}
 
 	private void _sendAnalyticsEvent(AnalyticsEvent analyticsEvent) {
@@ -470,7 +470,7 @@ public class AnalyticsEventsMessageProcessor {
 	private int _analyticsEventsMessageProcessorPullMessagesSize;
 
 	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(10, 15);
+		BoundedExecutor.newBoundedExecutor(15, 10);
 
 	@Autowired
 	private BrowscapEngine _browscapEngine;

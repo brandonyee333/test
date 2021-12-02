@@ -202,8 +202,7 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 					catch (Exception exception) {
 						_log.error(exception.getMessage(), exception);
 					}
-				},
-				null);
+				});
 		}
 	}
 
@@ -217,7 +216,7 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 
 	private final Map<String, Boolean> _analyticsConfigured = new HashMap<>();
 	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(10, 15);
+		BoundedExecutor.newBoundedExecutor(15, 10);
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
