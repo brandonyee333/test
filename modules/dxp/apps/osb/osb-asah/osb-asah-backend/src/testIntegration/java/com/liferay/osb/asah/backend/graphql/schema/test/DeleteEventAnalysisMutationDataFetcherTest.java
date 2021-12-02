@@ -18,9 +18,11 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.EventAnalysisDTO;
 import com.liferay.osb.asah.backend.graphql.schema.CreateEventAnalysisMutationDataFetcher;
 import com.liferay.osb.asah.backend.graphql.schema.DeleteEventAnalysisMutationDataFetcher;
+import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AttributeType;
 import com.liferay.osb.asah.common.model.DateGrouping;
 import com.liferay.osb.asah.common.repository.EventAnalysisRepository;
+import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -33,6 +35,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +47,17 @@ public class DeleteEventAnalysisMutationDataFetcherTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@BeforeEach
+	public void setUp() {
+		_eventDefinition = _eventDefinitionRepository.save(
+			_createEventDefinition(10));
+	}
+
 	@AfterEach
 	public void tearDown() {
 		_eventAnalysisRepository.deleteAll();
+
+		_eventDefinitionRepository.delete(_eventDefinition);
 	}
 
 	@Test
@@ -61,6 +72,17 @@ public class DeleteEventAnalysisMutationDataFetcherTest
 			_getDeleteDataFetchingEnvironment(eventAnalysisDTO.getId()));
 
 		Assertions.assertEquals(0, _eventAnalysisRepository.count());
+	}
+
+	private EventDefinition _createEventDefinition(int index) {
+		EventDefinition eventDefinition = new EventDefinition();
+
+		eventDefinition.setBlocked(false);
+		eventDefinition.setHidden(false);
+		eventDefinition.setName("Event Definition " + index);
+		eventDefinition.setType(EventDefinition.Type.CUSTOM);
+
+		return eventDefinition;
 	}
 
 	private DataFetchingEnvironment _getDataFetchingEnvironment() {
@@ -97,7 +119,8 @@ public class DeleteEventAnalysisMutationDataFetcherTest
 						put("values", Arrays.asList("one", "two", "three"));
 					}
 				}));
-		arguments.put("eventDefinitionId", "10");
+		arguments.put(
+			"eventDefinitionId", String.valueOf(_eventDefinition.getId()));
 		arguments.put("name", "Analysis 1");
 		arguments.put("rangeKey", 1);
 		arguments.put("userId", "20");
@@ -138,5 +161,10 @@ public class DeleteEventAnalysisMutationDataFetcherTest
 
 	@Autowired
 	private EventAnalysisRepository _eventAnalysisRepository;
+
+	private EventDefinition _eventDefinition;
+
+	@Autowired
+	private EventDefinitionRepository _eventDefinitionRepository;
 
 }
