@@ -17,8 +17,6 @@ package com.liferay.osb.asah.upgrade.rest.controller;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.upgrade.v3_0_0.CustomEventUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_0_0.UserSessionsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_5.EventIndexUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_5.IndividualEventUpgradeStep;
 
@@ -52,11 +50,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UpgradeRestController {
 
-	@GetMapping("/custom-event-upgrades")
-	public JSONArray getCustomEventUpgrades() {
-		return _getUpgradesJSONArray(_customEventsCompletableFutures);
-	}
-
 	@GetMapping("/event-index-upgrades")
 	public JSONArray getEventIndexUpgrades() {
 		return _getUpgradesJSONArray(_eventIndexCompletableFutures);
@@ -65,35 +58,6 @@ public class UpgradeRestController {
 	@GetMapping("/individual-event-upgrades")
 	public JSONArray getIndividualEventUpgrades() {
 		return _getUpgradesJSONArray(_individualEventsCompletableFutures);
-	}
-
-	@GetMapping("/user-sessions-upgrades")
-	public JSONArray getUserSessionsUpgrades() {
-		return _getUpgradesJSONArray(_userSessionsCompletableFutures);
-	}
-
-	@PostMapping("/custom-event-upgrade/{projectId}")
-	public void startCustomEventUpgrade(@PathVariable String projectId) {
-		Optional<Project> projectOptional = _fetchProject(projectId);
-
-		if (!projectOptional.isPresent()) {
-			throw new IllegalArgumentException("Invalid project ID");
-		}
-
-		_startCustomEventUpgrade(projectId);
-	}
-
-	@PostMapping("/custom-event-upgrades")
-	public void startCustomEventUpgrades() {
-		List<Project> projects = _projectDog.getProjects();
-
-		Stream<Project> stream = projects.stream();
-
-		stream.map(
-			Project::getId
-		).forEach(
-			this::_startCustomEventUpgrade
-		);
 	}
 
 	@PostMapping("/event-index-upgrade/{projectId}")
@@ -144,30 +108,6 @@ public class UpgradeRestController {
 		);
 	}
 
-	@PostMapping("/user-sessions-upgrade/{projectId}")
-	public void startUserSessionsUpgrade(@PathVariable String projectId) {
-		Optional<Project> projectOptional = _fetchProject(projectId);
-
-		if (!projectOptional.isPresent()) {
-			throw new IllegalArgumentException("Invalid project ID");
-		}
-
-		_startUserSessionsUpgrade(projectId);
-	}
-
-	@PostMapping("/user-sessions-upgrades")
-	public void startUserSessionsUpgrades() {
-		List<Project> projects = _projectDog.getProjects();
-
-		Stream<Project> stream = projects.stream();
-
-		stream.map(
-			Project::getId
-		).forEach(
-			this::_startUserSessionsUpgrade
-		);
-	}
-
 	private Optional<Project> _fetchProject(String projectId) {
 		List<Project> projects = _projectDog.getProjects();
 
@@ -190,22 +130,6 @@ public class UpgradeRestController {
 		}
 
 		return jsonArray;
-	}
-
-	private void _startCustomEventUpgrade(String projectId) {
-		CompletableFuture<Void> completableFuture =
-			_customEventsCompletableFutures.get(projectId);
-
-		if (completableFuture != null) {
-			return;
-		}
-
-		_customEventsCompletableFutures.put(
-			projectId,
-			CompletableFuture.runAsync(
-				() -> ProjectIdThreadLocal.forProject(
-					projectId, () -> _customEventUpgradeStep.upgrade(null)),
-				_executorService));
 	}
 
 	private void _startEventIndexUpgrade(String projectId) {
@@ -251,33 +175,6 @@ public class UpgradeRestController {
 				_executorService));
 	}
 
-	private void _startUserSessionsUpgrade(String projectId) {
-		CompletableFuture<Void> completableFuture =
-			_userSessionsCompletableFutures.get(projectId);
-
-		if (completableFuture != null) {
-			return;
-		}
-
-		_userSessionsCompletableFutures.put(
-			projectId,
-			CompletableFuture.runAsync(
-				() -> ProjectIdThreadLocal.forProject(
-					projectId,
-					() -> {
-						try {
-							_userSessionsUpgradeStep.upgrade(null);
-						}
-						catch (Exception exception) {
-							_log.error(
-								"Unable to upgrade user sessions for " +
-									projectId,
-								exception);
-						}
-					}),
-				_executorService));
-	}
-
 	private JSONObject _toJSONObject(
 		CompletableFuture<Void> completableFuture, String projectId) {
 
@@ -299,12 +196,6 @@ public class UpgradeRestController {
 		UpgradeRestController.class);
 
 	private final Map<String, CompletableFuture<Void>>
-		_customEventsCompletableFutures = new ConcurrentHashMap<>();
-
-	@Autowired
-	private CustomEventUpgradeStep _customEventUpgradeStep;
-
-	private final Map<String, CompletableFuture<Void>>
 		_eventIndexCompletableFutures = new ConcurrentHashMap<>();
 
 	@Autowired
@@ -320,11 +211,5 @@ public class UpgradeRestController {
 
 	@Autowired
 	private ProjectDog _projectDog;
-
-	private final Map<String, CompletableFuture<Void>>
-		_userSessionsCompletableFutures = new ConcurrentHashMap<>();
-
-	@Autowired
-	private UserSessionsUpgradeStep _userSessionsUpgradeStep;
 
 }
