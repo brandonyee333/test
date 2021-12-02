@@ -1,0 +1,144 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.backend.graphql.schema.test;
+
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
+import com.liferay.osb.asah.backend.dto.EventAnalysisDTO;
+import com.liferay.osb.asah.backend.graphql.schema.CreateEventAnalysisMutationDataFetcher;
+import com.liferay.osb.asah.backend.graphql.schema.UpdateEventAnalysisMutationDataFetcher;
+import com.liferay.osb.asah.common.model.AttributeType;
+import com.liferay.osb.asah.common.model.DateGrouping;
+import com.liferay.osb.asah.common.repository.EventAnalysisRepository;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+
+import graphql.schema.DataFetchingEnvironment;
+import graphql.schema.DataFetchingEnvironmentBuilder;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+/**
+ * @author Rachael Koestartyo
+ */
+public class UpdateEventAnalysisMutationDataFetcherTest
+	implements OSBAsahBackendSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
+
+	@AfterEach
+	public void tearDown() {
+		_eventAnalysisRepository.deleteAll();
+	}
+
+	@Test
+	public void testGet() {
+		EventAnalysisDTO eventAnalysisDTO =
+			_createEventAnalysisMutationDataFetcher.get(
+				_getDataFetchingEnvironment(null, "20", "Test"));
+
+		Assertions.assertEquals("20", eventAnalysisDTO.getCreatedByUserId());
+		Assertions.assertEquals(
+			"Test", eventAnalysisDTO.getCreatedByUserName());
+		Assertions.assertEquals("20", eventAnalysisDTO.getModifiedByUserId());
+		Assertions.assertEquals(
+			"Test", eventAnalysisDTO.getModifiedByUserName());
+
+		eventAnalysisDTO = _updateEventAnalysisMutationDataFetcher.get(
+			_getDataFetchingEnvironment(
+				eventAnalysisDTO.getId(), "21", "Test Test"));
+
+		Assertions.assertEquals("20", eventAnalysisDTO.getCreatedByUserId());
+		Assertions.assertEquals(
+			"Test", eventAnalysisDTO.getCreatedByUserName());
+		Assertions.assertEquals("21", eventAnalysisDTO.getModifiedByUserId());
+		Assertions.assertEquals(
+			"Test Test", eventAnalysisDTO.getModifiedByUserName());
+	}
+
+	private DataFetchingEnvironment _getDataFetchingEnvironment(
+		String eventAnalysisId, String userId, String userName) {
+
+		DataFetchingEnvironmentBuilder dataFetchingEnvironmentBuilder =
+			DataFetchingEnvironmentBuilder.newDataFetchingEnvironment();
+
+		Map<String, Object> arguments = new HashMap<>();
+
+		arguments.put("analysisType", "TOTAL");
+		arguments.put("channelId", "1");
+		arguments.put("compareToPrevious", Boolean.FALSE);
+		arguments.put(
+			"eventAnalysisBreakdowns",
+			Collections.singletonList(
+				new HashMap<String, Object>() {
+					{
+						put("attributeId", "100");
+						put("attributeType", AttributeType.EVENT);
+						put("binSize", 10);
+						put("dataType", "STRING");
+						put("dateGrouping", DateGrouping.MONTH);
+						put("sortType", "ASC");
+					}
+				}));
+		arguments.put(
+			"eventAnalysisFilters",
+			Collections.singletonList(
+				new HashMap<String, Object>() {
+					{
+						put("attributeId", "100");
+						put("attributeType", AttributeType.EVENT);
+						put("dataType", "STRING");
+						put("operator", "eq");
+						put("values", Arrays.asList("one", "two", "three"));
+					}
+				}));
+
+		if (StringUtils.isNotEmpty(eventAnalysisId)) {
+			arguments.put("eventAnalysisId", eventAnalysisId);
+		}
+
+		arguments.put("eventDefinitionId", "10");
+		arguments.put("name", "Analysis 1");
+		arguments.put("rangeKey", 1);
+		arguments.put("userId", userId);
+		arguments.put("userName", userName);
+
+		dataFetchingEnvironmentBuilder.arguments(arguments);
+
+		dataFetchingEnvironmentBuilder.context(new HashMap<>());
+
+		return dataFetchingEnvironmentBuilder.build();
+	}
+
+	@Autowired
+	private CreateEventAnalysisMutationDataFetcher
+		_createEventAnalysisMutationDataFetcher;
+
+	@Autowired
+	private EventAnalysisRepository _eventAnalysisRepository;
+
+	@Autowired
+	private UpdateEventAnalysisMutationDataFetcher
+		_updateEventAnalysisMutationDataFetcher;
+
+}
