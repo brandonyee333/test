@@ -124,28 +124,44 @@ public class FieldDog {
 		List<FieldMapping> fieldMappings = _getFieldMappings(
 			context, dataSourceId, ownerType);
 
-		for (FieldMapping fieldMapping : fieldMappings) {
-			Map<String, String> dataSourceFieldNames =
-				fieldMapping.getDataSourceFieldNames();
+		Stream<FieldMapping> stream = fieldMappings.stream();
 
-			String dataSourceFieldName = dataSourceFieldNames.getOrDefault(
-				String.valueOf(dataSourceId), null);
+		Map<String, List<FieldMapping>> fieldMappingsMap = stream.collect(
+			Collectors.groupingBy(
+				fieldMapping -> _getDataSourceFieldName(
+					dataSourceId, fieldMapping)));
 
-			Object value = fieldsJSONObject.opt(dataSourceFieldName);
+		for (Map.Entry<String, List<FieldMapping>> entry :
+				fieldMappingsMap.entrySet()) {
 
-			if (value == null) {
-				continue;
-			}
+			String dataSourceFieldName = entry.getKey();
 
-			String fieldName = fieldMapping.getFieldName();
-			String fieldType = fieldMapping.getFieldType();
+			List<FieldMapping> fieldMappingsList = entry.getValue();
 
-			value = _deserializeValue(
-				fieldMapping.getDisplayType(), fieldName, fieldType,
-				value.toString());
+			Iterator<FieldMapping> iterator = fieldMappingsList.iterator();
 
-			String modifiedDateString = _getModifiedDateString(
-				dataJSONObject, dataSource, ownerType);
+			while (iterator.hasNext()) {
+				FieldMapping fieldMapping = iterator.next();
+
+				Object initialValue = fieldsJSONObject.opt(dataSourceFieldName);
+
+				if (initialValue == null) {
+					continue;
+				}
+
+				String fieldName = fieldMapping.getFieldName();
+				String fieldType = fieldMapping.getFieldType();
+
+				Object value = _deserializeValue(
+					fieldMapping.getDisplayType(), fieldName, fieldType,
+					!iterator.hasNext(), initialValue.toString());
+
+				if (value == null) {
+					continue;
+				}
+
+				String modifiedDateString = _getModifiedDateString(
+					dataJSONObject, dataSource, ownerType);
 
 			if (value instanceof List) {
 				for (Object currentValue : (List<?>)value) {
@@ -164,6 +180,8 @@ public class FieldDog {
 					dataSourceFieldName, value);
 
 				fields.add(field);
+
+				break;
 			}
 		}
 
@@ -527,7 +545,7 @@ public class FieldDog {
 			String fieldType = fieldMapping.getFieldType();
 
 			value = _deserializeValue(
-				fieldMapping.getDisplayType(), fieldName, fieldType,
+				fieldMapping.getDisplayType(), fieldName, fieldType, true,
 				value.toString());
 
 			String modifiedDateString = _getModifiedDateString(
@@ -562,7 +580,7 @@ public class FieldDog {
 
 	private Object _deserializeValue(
 		String displayType, String fieldName, String fieldType,
-		String valueString) {
+		boolean logException, String valueString) {
 
 		if (StringUtils.isEmpty(valueString)) {
 			return null;
@@ -579,7 +597,8 @@ public class FieldDog {
 
 				return stream.map(
 					value -> _deserializeValue(
-						null, fieldName, fieldType, value.toString())
+						null, fieldName, fieldType, logException,
+						value.toString())
 				).collect(
 					Collectors.toList()
 				);
@@ -631,10 +650,12 @@ public class FieldDog {
 			return valueString;
 		}
 		catch (Exception exception) {
-			_log.error(
-				"Unable to deserialize value " + valueString + " from field " +
-					fieldName + " to " + fieldType,
-				exception);
+			if (logException) {
+				_log.error(
+					"Unable to deserialize value '" + valueString +
+						"' from field " + fieldName + " to " + fieldType,
+					exception);
+			}
 		}
 
 		return null;
@@ -697,6 +718,15 @@ public class FieldDog {
 		}
 
 		return null;
+	}
+
+	private String _getDataSourceFieldName(
+		Long dataSourceId, FieldMapping fieldMapping) {
+
+		Map<String, String> dataSourceFieldNames =
+			fieldMapping.getDataSourceFieldNames();
+
+		return dataSourceFieldNames.get(String.valueOf(dataSourceId));
 	}
 
 	private List<FieldMapping> _getFieldMappings(
@@ -906,7 +936,7 @@ public class FieldDog {
 			String fieldType = fieldMapping.getFieldType();
 
 			value = _deserializeValue(
-				fieldMapping.getDisplayType(), fieldName, fieldType,
+				fieldMapping.getDisplayType(), fieldName, fieldType, true,
 				value.toString());
 
 			String modifiedDateString = _getModifiedDateString(
@@ -1029,7 +1059,7 @@ public class FieldDog {
 			String fieldType = fieldMapping.getFieldType();
 
 			value = _deserializeValue(
-				fieldMapping.getDisplayType(), fieldName, fieldType,
+				fieldMapping.getDisplayType(), fieldName, fieldType, true,
 				value.toString());
 
 			String modifiedDateString = _getModifiedDateString(
