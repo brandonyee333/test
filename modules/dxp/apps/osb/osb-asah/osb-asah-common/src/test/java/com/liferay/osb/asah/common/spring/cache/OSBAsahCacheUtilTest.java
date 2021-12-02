@@ -45,8 +45,8 @@ public class OSBAsahCacheUtilTest {
 	public void testExtractTargetClassWithProxyAndProxiedInterface() {
 		ProxyFactory proxyFactory = new ProxyFactory();
 
-		proxyFactory.setTarget(new DummySimpleClass());
 		proxyFactory.addInterface(DummySimpleInterface.class);
+		proxyFactory.setTarget(new DummySimpleClass());
 
 		Object target = OSBAsahCacheUtil.extractTargetClass(
 			proxyFactory.getProxy());
