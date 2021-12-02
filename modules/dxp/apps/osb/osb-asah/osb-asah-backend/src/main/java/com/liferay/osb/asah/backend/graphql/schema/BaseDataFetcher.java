@@ -131,8 +131,8 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 		searchQueryContext.setKeywords(
 			dataFetchingEnvironment.getArgument("keywords"));
 
-		if (dataFetchingEnvironment.containsArgument("rangeEnd") &&
-			dataFetchingEnvironment.containsArgument("rangeStart")) {
+		if ((dataFetchingEnvironment.getArgument("rangeEnd") != null) &&
+			(dataFetchingEnvironment.getArgument("rangeStart") != null)) {
 
 			searchQueryContext.setTimeRange(
 				TimeRange.of(
@@ -141,7 +141,7 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 					LocalDate.parse(
 						dataFetchingEnvironment.getArgument("rangeStart"))));
 		}
-		else if (dataFetchingEnvironment.containsArgument("rangeKey")) {
+		else if (dataFetchingEnvironment.getArgument("rangeKey") != null) {
 			searchQueryContext.setRangeKey(
 				dataFetchingEnvironment.getArgument("rangeKey"));
 		}
