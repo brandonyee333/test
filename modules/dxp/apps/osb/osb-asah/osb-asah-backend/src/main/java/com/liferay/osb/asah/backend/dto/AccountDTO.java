@@ -62,10 +62,10 @@ public class AccountDTO {
 		_createDate = account.getCreateDate();
 		_dataSourceId = StringUtil.get(account.getDataSourceId(), null);
 		_id = StringUtil.get(account.getId(), null);
-		_individualCount = account.getIndividualCount();
+		_individualsCount = account.getIndividualsCount();
 
 		List<IndividualCountDTO> individualCountDTOs = ListUtil.map(
-			account.getIndividualCounts(), IndividualCountDTO::new);
+			account.getIndividualsCounts(), IndividualCountDTO::new);
 
 		if (!individualCountDTOs.isEmpty()) {
 			_individualCountDTOs = individualCountDTOs;
@@ -133,14 +133,15 @@ public class AccountDTO {
 		return _id;
 	}
 
-	@JsonProperty("individualCount")
-	public Long getIndividualCount() {
-		return _individualCount;
-	}
-
 	@JsonProperty("individualCounts")
 	public List<IndividualCountDTO> getIndividualCountDTOs() {
 		return _individualCountDTOs;
+	}
+
+	@JsonAlias("individualsCount")
+	@JsonProperty("individualCount")
+	public Long getIndividualsCount() {
+		return _individualsCount;
 	}
 
 	@JsonAlias("modifiedDate")
@@ -272,7 +273,7 @@ public class AccountDTO {
 			Account.AccountIndividualCount accountIndividualCount) {
 
 			_channelId = String.valueOf(accountIndividualCount.getChannelId());
-			_individualCount = accountIndividualCount.getIndividualCount();
+			_individualsCount = accountIndividualCount.getIndividualsCount();
 		}
 
 		@Override
@@ -289,7 +290,7 @@ public class AccountDTO {
 
 			if (Objects.equals(_channelId, individualCountDTO._channelId) &&
 				Objects.equals(
-					_individualCount, individualCountDTO._individualCount)) {
+					_individualsCount, individualCountDTO._individualsCount)) {
 
 				return true;
 			}
@@ -302,26 +303,27 @@ public class AccountDTO {
 			return _channelId;
 		}
 
+		@JsonAlias("individualsCount")
 		@JsonProperty("individualCount")
-		public Long getIndividualCount() {
-			return _individualCount;
+		public Long getIndividualsCount() {
+			return _individualsCount;
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(_channelId, _individualCount);
+			return Objects.hash(_channelId, _individualsCount);
 		}
 
 		public void setChannelId(String channelId) {
 			_channelId = channelId;
 		}
 
-		public void setIndividualCount(Long individualCount) {
-			_individualCount = individualCount;
+		public void setIndividualsCount(Long individualsCount) {
+			_individualsCount = individualsCount;
 		}
 
 		private String _channelId;
-		private Long _individualCount;
+		private Long _individualsCount;
 
 	}
 
@@ -334,8 +336,8 @@ public class AccountDTO {
 	private Date _createDate;
 	private String _dataSourceId;
 	private String _id;
-	private Long _individualCount;
 	private List<IndividualCountDTO> _individualCountDTOs;
+	private Long _individualsCount;
 	private Date _modifiedDate;
 
 }

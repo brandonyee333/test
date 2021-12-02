@@ -162,14 +162,6 @@ public class PagesRestController extends BaseRestController {
 			size);
 	}
 
-	@GetMapping("/read-count")
-	public String getReadCount(@RequestParam String canonicalURL) {
-		return String.valueOf(
-			_pageDog.getMetricValue(
-				Optional.of(canonicalURL), Optional.empty(),
-				PageMetricType.READS, Optional.empty(), Optional.empty()));
-	}
-
 	@GetMapping("/read-counts")
 	public String getReadCounts(
 		@RequestParam String canonicalURL,
@@ -184,6 +176,14 @@ public class PagesRestController extends BaseRestController {
 		return _getHistogramMetrics(
 			canonicalURL, endLocalDate, interval, PageMetricType.READS,
 			startLocalDate);
+	}
+
+	@GetMapping("/read-count")
+	public String getReadsCount(@RequestParam String canonicalURL) {
+		return String.valueOf(
+			_pageDog.getMetricValue(
+				Optional.of(canonicalURL), Optional.empty(),
+				PageMetricType.READS, Optional.empty(), Optional.empty()));
 	}
 
 	@GetMapping("/social-page-referrers")
@@ -223,14 +223,6 @@ public class PagesRestController extends BaseRestController {
 			});
 	}
 
-	@GetMapping("/view-count")
-	public String getViewCount(@RequestParam String canonicalURL) {
-		return String.valueOf(
-			_pageDog.getMetricValue(
-				Optional.of(canonicalURL), Optional.empty(),
-				PageMetricType.VIEWS, Optional.empty(), Optional.empty()));
-	}
-
 	@GetMapping("/view-counts")
 	public String getViewCounts(
 		@RequestParam String canonicalURL,
@@ -245,6 +237,14 @@ public class PagesRestController extends BaseRestController {
 		return _getHistogramMetrics(
 			canonicalURL, endLocalDate, interval, PageMetricType.VIEWS,
 			startLocalDate);
+	}
+
+	@GetMapping("/view-count")
+	public String getViewsCount(@RequestParam String canonicalURL) {
+		return String.valueOf(
+			_pageDog.getMetricValue(
+				Optional.of(canonicalURL), Optional.empty(),
+				PageMetricType.VIEWS, Optional.empty(), Optional.empty()));
 	}
 
 	private String _getHistogramMetrics(

@@ -47,9 +47,9 @@ public class SegmentDTO {
 	}
 
 	public SegmentDTO(Segment segment) {
-		_activeIndividualCount = segment.getActiveIndividualCount();
+		_activeIndividualsCount = segment.getActiveIndividualsCount();
 		_activitiesCount = segment.getActivitiesCount();
-		_anonymousIndividualCount = segment.getAnonymousIndividualCount();
+		_anonymousIndividualsCount = segment.getAnonymousIndividualsCount();
 
 		AuthorDTO authorDTO = new AuthorDTO(segment);
 
@@ -63,8 +63,8 @@ public class SegmentDTO {
 		_filterMetadata = segment.getFilterMetadata();
 		_id = StringUtil.get(segment.getId(), null);
 		_includeAnonymousUsers = segment.getIncludeAnonymousUsers();
-		_individualCount = segment.getIndividualCount();
-		_knownIndividualCount = segment.getKnownIndividualCount();
+		_individualsCount = segment.getIndividualsCount();
+		_knownIndividualsCount = segment.getKnownIndividualsCount();
 		_lastActivityDate = segment.getLastActivityDate();
 		_modifiedDate = segment.getModifiedDate();
 		_name = segment.getName();
@@ -96,9 +96,10 @@ public class SegmentDTO {
 		_segmentDTOs = segmentDTOs;
 	}
 
+	@JsonAlias("activeIndividualsCount")
 	@JsonProperty("activeIndividualCount")
-	public Long getActiveIndividualCount() {
-		return _activeIndividualCount;
+	public Long getActiveIndividualsCount() {
+		return _activeIndividualsCount;
 	}
 
 	@JsonProperty("activitiesCount")
@@ -106,9 +107,10 @@ public class SegmentDTO {
 		return _activitiesCount;
 	}
 
+	@JsonAlias("anonymousIndividualsCount")
 	@JsonProperty("anonymousIndividualCount")
-	public Long getAnonymousIndividualCount() {
-		return _anonymousIndividualCount;
+	public Long getAnonymousIndividualsCount() {
+		return _anonymousIndividualsCount;
 	}
 
 	@JsonProperty("author")
@@ -160,14 +162,16 @@ public class SegmentDTO {
 		return _includeAnonymousUsers;
 	}
 
+	@JsonAlias("individualsCount")
 	@JsonProperty("individualCount")
-	public Long getIndividualCount() {
-		return _individualCount;
+	public Long getIndividualsCount() {
+		return _individualsCount;
 	}
 
+	@JsonAlias("knownIndividualsCount")
 	@JsonProperty("knownIndividualCount")
-	public Long getKnownIndividualCount() {
-		return _knownIndividualCount;
+	public Long getKnownIndividualsCount() {
+		return _knownIndividualsCount;
 	}
 
 	@JsonFormat(
@@ -273,16 +277,16 @@ public class SegmentDTO {
 		return _type;
 	}
 
-	public void setActiveIndividualCount(Long activeIndividualCount) {
-		_activeIndividualCount = activeIndividualCount;
+	public void setActiveIndividualsCount(Long activeIndividualsCount) {
+		_activeIndividualsCount = activeIndividualsCount;
 	}
 
 	public void setActivitiesCount(Long activitiesCount) {
 		_activitiesCount = activitiesCount;
 	}
 
-	public void setAnonymousIndividualCount(Long anonymousIndividualCount) {
-		_anonymousIndividualCount = anonymousIndividualCount;
+	public void setAnonymousIndividualsCount(Long anonymousIndividualsCount) {
+		_anonymousIndividualsCount = anonymousIndividualsCount;
 	}
 
 	public void setAuthorDTO(AuthorDTO authorDTO) {
@@ -319,12 +323,12 @@ public class SegmentDTO {
 		_includeAnonymousUsers = includeAnonymousUsers;
 	}
 
-	public void setIndividualCount(Long individualCount) {
-		_individualCount = individualCount;
+	public void setIndividualsCount(Long individualsCount) {
+		_individualsCount = individualsCount;
 	}
 
-	public void setKnownIndividualCount(Long knownIndividualCount) {
-		_knownIndividualCount = knownIndividualCount;
+	public void setKnownIndividualsCount(Long knownIndividualsCount) {
+		_knownIndividualsCount = knownIndividualsCount;
 	}
 
 	public void setLastActivityDate(Date lastActivityDate) {
@@ -466,9 +470,9 @@ public class SegmentDTO {
 
 	}
 
-	private Long _activeIndividualCount;
+	private Long _activeIndividualsCount;
 	private Long _activitiesCount;
-	private Long _anonymousIndividualCount;
+	private Long _anonymousIndividualsCount;
 	private AuthorDTO _authorDTO;
 	private String _channelId;
 	private Date _createDate;
@@ -477,8 +481,8 @@ public class SegmentDTO {
 	private String _filterMetadata;
 	private String _id;
 	private Boolean _includeAnonymousUsers;
-	private Long _individualCount;
-	private Long _knownIndividualCount;
+	private Long _individualsCount;
+	private Long _knownIndividualsCount;
 	private Date _lastActivityDate;
 	private Date _modifiedDate;
 	private String _name;

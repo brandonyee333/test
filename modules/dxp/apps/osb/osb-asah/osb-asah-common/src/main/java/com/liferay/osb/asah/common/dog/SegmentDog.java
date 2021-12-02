@@ -561,33 +561,34 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 			Segment existingSegment = getSegment(segmentId);
 
-			long knownIndividualCount = _individualDog.getKnownIndividualCount(
-				segmentId);
+			long knownIndividualsCount =
+				_individualDog.getKnownIndividualsCount(segmentId);
 
-			long individualCount = 0;
+			long individualsCount = 0;
 
 			if (BooleanUtils.toBoolean(
 					existingSegment.getIncludeAnonymousUsers())) {
 
-				individualCount = _membershipDog.getIndividualCount(segmentId);
+				individualsCount = _membershipDog.getIndividualsCount(
+					segmentId);
 			}
 			else {
-				individualCount = knownIndividualCount;
+				individualsCount = knownIndividualsCount;
 			}
 
 			if (!Objects.equals(
-					existingSegment.getAnonymousIndividualCount(),
-					individualCount - knownIndividualCount) ||
+					existingSegment.getAnonymousIndividualsCount(),
+					individualsCount - knownIndividualsCount) ||
 				!Objects.equals(
-					existingSegment.getIndividualCount(), individualCount) ||
+					existingSegment.getIndividualsCount(), individualsCount) ||
 				!Objects.equals(
-					existingSegment.getKnownIndividualCount(),
-					knownIndividualCount)) {
+					existingSegment.getKnownIndividualsCount(),
+					knownIndividualsCount)) {
 
-				existingSegment.setAnonymousIndividualCount(
-					individualCount - knownIndividualCount);
-				existingSegment.setIndividualCount(individualCount);
-				existingSegment.setKnownIndividualCount(knownIndividualCount);
+				existingSegment.setAnonymousIndividualsCount(
+					individualsCount - knownIndividualsCount);
+				existingSegment.setIndividualsCount(individualsCount);
+				existingSegment.setKnownIndividualsCount(knownIndividualsCount);
 
 				return _segmentRepository.save(existingSegment);
 			}
@@ -983,7 +984,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		Account account = _accountDog.getAccount(
 			Long.valueOf(name.substring(_ACCOUNT_PREFIX.length())), null);
 
-		account.setActiveIndividualsCount(segment.getActiveIndividualCount());
+		account.setActiveIndividualsCount(segment.getActiveIndividualsCount());
 		account.setActivitiesCount(segment.getActivitiesCount());
 
 		if (Objects.nonNull(segment.getActivitiesCount())) {
@@ -1009,27 +1010,27 @@ public class SegmentDog extends BaseFaroInfoDog {
 			}
 		}
 
-		account.setIndividualCount(segment.getIndividualCount());
+		account.setIndividualsCount(segment.getIndividualsCount());
 
-		if (Objects.nonNull(segment.getIndividualCount())) {
+		if (Objects.nonNull(segment.getIndividualsCount())) {
 			Map<Long, Long> channelIndividualCounts =
 				_individualDog.getIndividualCounts(
 					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 					segment.getId());
 
 			if (!channelIndividualCounts.isEmpty()) {
-				Set<Account.AccountIndividualCount> individualCounts =
+				Set<Account.AccountIndividualCount> individualsCounts =
 					new HashSet<>();
 
 				for (Map.Entry<Long, Long> entry :
 						channelIndividualCounts.entrySet()) {
 
-					individualCounts.add(
+					individualsCounts.add(
 						new Account.AccountIndividualCount(
 							entry.getKey(), entry.getValue()));
 				}
 
-				account.setIndividualCounts(individualCounts);
+				account.setIndividualsCounts(individualsCounts);
 			}
 		}
 

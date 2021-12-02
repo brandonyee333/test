@@ -786,15 +786,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return ListUtil.map(individuals, this::_populateIndividual);
 	}
 
-	public long getKnownIndividualCount(List<Long> ids) {
-		return _individualRepository.countKnownIndividualsByIdIn(ids);
-	}
-
-	public long getKnownIndividualCount(Long segmentId) {
-		return _individualRepository.countKnownIndividualsByAnySegmentIds(
-			segmentId);
-	}
-
 	public List<Long> getKnownIndividualIds(
 		String filterString, Long segmentId) {
 
@@ -802,6 +793,15 @@ public class IndividualDog extends BaseFaroInfoDog {
 			new FilterHelper(
 				_faroInfoIndividualsFilterStringConverterHelper, filterString,
 				_individualsFilterStringConverterHelper),
+			segmentId);
+	}
+
+	public long getKnownIndividualsCount(List<Long> ids) {
+		return _individualRepository.countKnownIndividualsByIdIn(ids);
+	}
+
+	public long getKnownIndividualsCount(Long segmentId) {
+		return _individualRepository.countKnownIndividualsByAnySegmentIds(
 			segmentId);
 	}
 

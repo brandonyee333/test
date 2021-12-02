@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -36,8 +37,8 @@ public class ReportSegmentDTO {
 		_createDate = segment.getCreateDate();
 		_id = StringUtil.get(segment.getId());
 		_includeAnonymousUsers = segment.getIncludeAnonymousUsers();
-		_individualCount = segment.getIndividualCount();
-		_knownIndividualCount = segment.getKnownIndividualCount();
+		_individualsCount = segment.getIndividualsCount();
+		_knownIndividualsCount = segment.getKnownIndividualsCount();
 		_name = segment.getName();
 		_segmentType = String.valueOf(segment.getType());
 	}
@@ -59,12 +60,16 @@ public class ReportSegmentDTO {
 		return _id;
 	}
 
-	public Long getIndividualCount() {
-		return _individualCount;
+	@JsonAlias("individualsCount")
+	@JsonProperty("individualCount")
+	public Long getIndividualsCount() {
+		return _individualsCount;
 	}
 
-	public Long getKnownIndividualCount() {
-		return _knownIndividualCount;
+	@JsonAlias("knownIndividualsCount")
+	@JsonProperty("knownIndividualCount")
+	public Long getKnownIndividualsCount() {
+		return _knownIndividualsCount;
 	}
 
 	public String getName() {
@@ -82,8 +87,8 @@ public class ReportSegmentDTO {
 	private final Date _createDate;
 	private final String _id;
 	private final Boolean _includeAnonymousUsers;
-	private final Long _individualCount;
-	private final Long _knownIndividualCount;
+	private final Long _individualsCount;
+	private final Long _knownIndividualsCount;
 	private final String _name;
 	private final String _segmentType;
 

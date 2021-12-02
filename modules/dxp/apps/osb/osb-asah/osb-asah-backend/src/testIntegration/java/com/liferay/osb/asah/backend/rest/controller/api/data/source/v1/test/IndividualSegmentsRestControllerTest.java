@@ -263,37 +263,37 @@ public class IndividualSegmentsRestControllerTest
 		SegmentDTO segmentDTO = _individualSegmentsRestController.getSegmentDTO(
 			327968823603500655L, "referenced-objects");
 
-		long activeIndividualCount = Optional.ofNullable(
-			segmentDTO.getActiveIndividualCount()
+		long activeIndividualsCount = Optional.ofNullable(
+			segmentDTO.getActiveIndividualsCount()
 		).orElse(
 			-1L
 		);
 
-		Assertions.assertEquals(10L, activeIndividualCount);
+		Assertions.assertEquals(10L, activeIndividualsCount);
 
-		long anonymousIndividualCount = Optional.ofNullable(
-			segmentDTO.getAnonymousIndividualCount()
+		long anonymousIndividualsCount = Optional.ofNullable(
+			segmentDTO.getAnonymousIndividualsCount()
 		).orElse(
 			-1L
 		);
 
-		Assertions.assertEquals(8L, anonymousIndividualCount);
+		Assertions.assertEquals(8L, anonymousIndividualsCount);
 
-		long individualCount = Optional.ofNullable(
-			segmentDTO.getIndividualCount()
+		long individualsCount = Optional.ofNullable(
+			segmentDTO.getIndividualsCount()
 		).orElse(
 			-1L
 		);
 
-		Assertions.assertEquals(10L, individualCount);
+		Assertions.assertEquals(10L, individualsCount);
 
-		long knownIndividualCount = Optional.ofNullable(
-			segmentDTO.getKnownIndividualCount()
+		long knownIndividualsCount = Optional.ofNullable(
+			segmentDTO.getKnownIndividualsCount()
 		).orElse(
 			-1L
 		);
 
-		Assertions.assertEquals(2L, knownIndividualCount);
+		Assertions.assertEquals(2L, knownIndividualsCount);
 
 		Assertions.assertEquals("d-age-gt-50", segmentDTO.getName());
 
@@ -352,29 +352,29 @@ public class IndividualSegmentsRestControllerTest
 		SegmentDTO segmentDTO = _individualSegmentsRestController.getSegmentDTO(
 			1L, null);
 
-		long anonymousIndividualCount = Optional.ofNullable(
-			segmentDTO.getAnonymousIndividualCount()
+		long anonymousIndividualsCount = Optional.ofNullable(
+			segmentDTO.getAnonymousIndividualsCount()
 		).orElse(
 			-1L
 		);
 
-		Assertions.assertEquals(0L, anonymousIndividualCount);
+		Assertions.assertEquals(0L, anonymousIndividualsCount);
 
-		long individualCount = Optional.ofNullable(
-			segmentDTO.getIndividualCount()
+		long individualsCount = Optional.ofNullable(
+			segmentDTO.getIndividualsCount()
 		).orElse(
 			-1L
 		);
 
-		Assertions.assertEquals(0L, individualCount);
+		Assertions.assertEquals(0L, individualsCount);
 
-		long knownIndividualCount = Optional.ofNullable(
-			segmentDTO.getKnownIndividualCount()
+		long knownIndividualsCount = Optional.ofNullable(
+			segmentDTO.getKnownIndividualsCount()
 		).orElse(
 			-1L
 		);
 
-		Assertions.assertEquals(0L, knownIndividualCount);
+		Assertions.assertEquals(0L, knownIndividualsCount);
 	}
 
 	@ElasticsearchIndex(
@@ -415,33 +415,33 @@ public class IndividualSegmentsRestControllerTest
 		Assertions.assertTrue(ids.containsAll(Arrays.asList("1", "2")));
 
 		for (SegmentDTO segmentDTO : segmentDTOs) {
-			long anonymousIndividualCount = Optional.ofNullable(
-				segmentDTO.getAnonymousIndividualCount()
+			long anonymousIndividualsCount = Optional.ofNullable(
+				segmentDTO.getAnonymousIndividualsCount()
 			).orElse(
 				-1L
 			);
 
-			long individualCount = Optional.ofNullable(
-				segmentDTO.getIndividualCount()
+			long individualsCount = Optional.ofNullable(
+				segmentDTO.getIndividualsCount()
 			).orElse(
 				-1L
 			);
 
-			long knownIndividualCount = Optional.ofNullable(
-				segmentDTO.getKnownIndividualCount()
+			long knownIndividualsCount = Optional.ofNullable(
+				segmentDTO.getKnownIndividualsCount()
 			).orElse(
 				-1L
 			);
 
 			if (Objects.equals(segmentDTO.getId(), "1")) {
-				Assertions.assertEquals(0L, anonymousIndividualCount);
-				Assertions.assertEquals(0L, individualCount);
-				Assertions.assertEquals(0L, knownIndividualCount);
+				Assertions.assertEquals(0L, anonymousIndividualsCount);
+				Assertions.assertEquals(0L, individualsCount);
+				Assertions.assertEquals(0L, knownIndividualsCount);
 			}
 			else if (Objects.equals(segmentDTO.getId(), "2")) {
-				Assertions.assertEquals(0L, anonymousIndividualCount);
-				Assertions.assertEquals(5L, individualCount);
-				Assertions.assertEquals(5L, knownIndividualCount);
+				Assertions.assertEquals(0L, anonymousIndividualsCount);
+				Assertions.assertEquals(5L, individualsCount);
+				Assertions.assertEquals(5L, knownIndividualsCount);
 			}
 		}
 	}

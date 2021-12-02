@@ -101,12 +101,12 @@ public class IndividualSegmentsRestController
 	public SegmentDTO putIndividualSegment(
 		@PathVariable Long id, @RequestBody SegmentDTO segmentDTO) {
 
-		segmentDTO.setActiveIndividualCount(null);
+		segmentDTO.setActiveIndividualsCount(null);
 		segmentDTO.setActivitiesCount(null);
-		segmentDTO.setAnonymousIndividualCount(null);
+		segmentDTO.setAnonymousIndividualsCount(null);
 		segmentDTO.setCreateDate(null);
-		segmentDTO.setIndividualCount(null);
-		segmentDTO.setKnownIndividualCount(null);
+		segmentDTO.setIndividualsCount(null);
+		segmentDTO.setKnownIndividualsCount(null);
 		segmentDTO.setModifiedDate(new Date());
 
 		return objectMapper.convertValue(

@@ -463,10 +463,10 @@ public class AccountRepositoryImpl extends BaseRepository {
 			"accountId"
 		);
 		Field<Object> activitiesCountField = DSL.field("activitiesCount");
-		Field<Object> individualCountField = DSL.field("individualCount");
+		Field<Object> individualsCountField = DSL.field("individualsCount");
 
 		return selectSelectStep.select(
-			accountIdField, activitiesCountField, individualCountField
+			accountIdField, activitiesCountField, individualsCountField
 		).from(
 			"Segment"
 		).where(

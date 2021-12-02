@@ -502,20 +502,21 @@ public class ElasticsearchAccountRepositoryImpl
 			jsonObject.put("activitiesCounts", activitiesCountsJSONArray);
 		}
 
-		Set<Account.AccountIndividualCount> individualCounts =
-			account.getIndividualCounts();
+		Set<Account.AccountIndividualCount> individualsCounts =
+			account.getIndividualsCounts();
 
-		if (CollectionUtils.isNotEmpty(individualCounts)) {
+		if (CollectionUtils.isNotEmpty(individualsCounts)) {
 			JSONArray individualsCountsJSONArray = new JSONArray();
 
-			for (Account.AccountIndividualCount individualCount :
-					individualCounts) {
+			for (Account.AccountIndividualCount individualsCount :
+					individualsCounts) {
 
 				individualsCountsJSONArray.put(
 					JSONUtil.put(
-						"channelId", individualCount.getChannelId()
+						"channelId", individualsCount.getChannelId()
 					).put(
-						"individualCount", individualCount.getIndividualCount()
+						"individualCount",
+						individualsCount.getIndividualsCount()
 					));
 			}
 

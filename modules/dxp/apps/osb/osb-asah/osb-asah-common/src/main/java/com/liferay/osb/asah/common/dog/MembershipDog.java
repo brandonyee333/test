@@ -75,8 +75,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 			membership.getIndividualSegmentId());
 
 		_membershipChangeDog.addMembershipChange(
-			individual, segment.getIndividualCount(),
-			segment.getKnownIndividualCount(), membership, "ADDED");
+			individual, segment.getIndividualsCount(),
+			segment.getKnownIndividualsCount(), membership, "ADDED");
 
 		return membership;
 	}
@@ -106,8 +106,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 		Segment segment = _segmentDog.updateSegment(individualSegmentId);
 
 		_membershipChangeDog.addMembershipChanges(
-			createDate, individuals, segment.getIndividualCount(),
-			individualSegmentId, segment.getKnownIndividualCount(), "ADDED");
+			createDate, individuals, segment.getIndividualsCount(),
+			individualSegmentId, segment.getKnownIndividualsCount(), "ADDED");
 	}
 
 	public List<Membership> addMemberships(List<Membership> memberships) {
@@ -126,13 +126,13 @@ public class MembershipDog extends BaseFaroInfoDog {
 		Segment segment = _segmentDog.updateSegment(
 			membership.getIndividualSegmentId());
 
-		long knownIndividualCount = _individualDog.getKnownIndividualCount(
+		long knownIndividualsCount = _individualDog.getKnownIndividualsCount(
 			ListUtil.map(memberships, Membership::getIndividualId));
 
 		_membershipChangeDog.addMembershipChanges(
 			BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
-			segment.getIndividualCount() - memberships.size(),
-			segment.getKnownIndividualCount() - knownIndividualCount,
+			segment.getIndividualsCount() - memberships.size(),
+			segment.getKnownIndividualsCount() - knownIndividualsCount,
 			memberships);
 
 		return memberships;
@@ -168,13 +168,14 @@ public class MembershipDog extends BaseFaroInfoDog {
 		if (individual == null) {
 			_membershipChangeDog.addMembershipChangeForDeletedIndividual(
 				membership.getCreateDate(), membership.getIndividualId(),
-				segment.getIndividualCount(), segment.getKnownIndividualCount(),
-				deletionDate, membership.getIndividualSegmentId());
+				segment.getIndividualsCount(),
+				segment.getKnownIndividualsCount(), deletionDate,
+				membership.getIndividualSegmentId());
 		}
 		else {
 			_membershipChangeDog.addMembershipChange(
-				individual, segment.getIndividualCount(),
-				segment.getKnownIndividualCount(), membership, "REMOVED");
+				individual, segment.getIndividualsCount(),
+				segment.getKnownIndividualsCount(), membership, "REMOVED");
 		}
 	}
 
@@ -220,8 +221,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 			_membershipChangeDog.addMembershipChanges(
 				deletionDate, individualsByMembership,
-				segment.getIndividualCount(), entry.getKey(),
-				segment.getKnownIndividualCount(), "REMOVED");
+				segment.getIndividualsCount(), entry.getKey(),
+				segment.getKnownIndividualsCount(), "REMOVED");
 		}
 	}
 
@@ -254,8 +255,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 			for (Membership membership : entry.getValue()) {
 				_membershipChangeDog.addMembershipChangeForDeletedIndividual(
 					membership.getCreateDate(), membership.getIndividualId(),
-					segment.getIndividualCount(),
-					segment.getKnownIndividualCount(), deletionDate,
+					segment.getIndividualsCount(),
+					segment.getKnownIndividualsCount(), deletionDate,
 					membership.getIndividualSegmentId());
 			}
 		}
@@ -300,16 +301,16 @@ public class MembershipDog extends BaseFaroInfoDog {
 				individualId, individualSegmentIds, "ACTIVE");
 	}
 
-	public long getIndividualCount(Long individualSegmentId) {
-		return _membershipRepository.countByIndividualSegmentIdAndStatus(
-			individualSegmentId, "ACTIVE");
-	}
-
 	public List<Long> getIndividualIds(
 		List<Long> individualSegmentIds, int max, int min, boolean ascending) {
 
 		return _membershipRepository.findIndividualIdByIndividualSegmentIdIn(
 			individualSegmentIds, max, min, ascending);
+	}
+
+	public long getIndividualsCount(Long individualSegmentId) {
+		return _membershipRepository.countByIndividualSegmentIdAndStatus(
+			individualSegmentId, "ACTIVE");
 	}
 
 	public List<Long> getIndividualSegmentIds(Long individualId) {

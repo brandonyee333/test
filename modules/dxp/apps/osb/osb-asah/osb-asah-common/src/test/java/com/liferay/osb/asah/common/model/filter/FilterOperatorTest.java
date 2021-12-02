@@ -192,7 +192,7 @@ public class FilterOperatorTest {
 	}
 
 	@Test
-	public void testFilterOperatorBadArgumentCount() {
+	public void testFilterOperatorBadArgumentsCount() {
 		Assertions.assertThrows(
 			IllegalArgumentException.class,
 			() -> FilterOperators.of(

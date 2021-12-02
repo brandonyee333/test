@@ -135,14 +135,16 @@ public class Account implements Persistable<Long> {
 		return _id;
 	}
 
+	@JsonAlias("individualsCount")
 	@JsonProperty("individualCount")
-	public Long getIndividualCount() {
-		return _individualCount;
+	public Long getIndividualsCount() {
+		return _individualsCount;
 	}
 
+	@JsonAlias("individualsCounts")
 	@JsonProperty("individualCounts")
-	public Set<AccountIndividualCount> getIndividualCounts() {
-		return _accountIndividualCounts;
+	public Set<AccountIndividualCount> getIndividualsCounts() {
+		return _accountIndividualsCounts;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -217,14 +219,14 @@ public class Account implements Persistable<Long> {
 		_id = id;
 	}
 
-	public void setIndividualCount(Long individualCount) {
-		_individualCount = individualCount;
+	public void setIndividualsCount(Long individualsCount) {
+		_individualsCount = individualsCount;
 	}
 
-	public void setIndividualCounts(
-		Set<AccountIndividualCount> accountIndividualCounts) {
+	public void setIndividualsCounts(
+		Set<AccountIndividualCount> accountIndividualsCounts) {
 
-		_accountIndividualCounts = accountIndividualCounts;
+		_accountIndividualsCounts = accountIndividualsCounts;
 	}
 
 	public void setIsNew(Boolean isNew) {
@@ -309,9 +311,9 @@ public class Account implements Persistable<Long> {
 		public AccountIndividualCount() {
 		}
 
-		public AccountIndividualCount(Long channelId, Long individualCount) {
+		public AccountIndividualCount(Long channelId, Long individualsCount) {
 			_channelId = channelId;
-			_individualCount = individualCount;
+			_individualsCount = individualsCount;
 		}
 
 		@Override
@@ -329,8 +331,8 @@ public class Account implements Persistable<Long> {
 
 			if (Objects.equals(_channelId, accountIndividualCount._channelId) &&
 				Objects.equals(
-					_individualCount,
-					accountIndividualCount._individualCount)) {
+					_individualsCount,
+					accountIndividualCount._individualsCount)) {
 
 				return true;
 			}
@@ -344,29 +346,30 @@ public class Account implements Persistable<Long> {
 			return _channelId;
 		}
 
+		@JsonAlias("individualsCount")
 		@JsonProperty("individualCount")
-		public Long getIndividualCount() {
-			return _individualCount;
+		public Long getIndividualsCount() {
+			return _individualsCount;
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(_channelId, _individualCount);
+			return Objects.hash(_channelId, _individualsCount);
 		}
 
 		public void setChannelId(Long channelId) {
 			_channelId = channelId;
 		}
 
-		public void setIndividualCount(Long individualCount) {
-			_individualCount = individualCount;
+		public void setIndividualsCount(Long individualsCount) {
+			_individualsCount = individualsCount;
 		}
 
 		@Transient
 		private Long _channelId;
 
 		@Transient
-		private Long _individualCount;
+		private Long _individualsCount;
 
 	}
 
@@ -426,7 +429,7 @@ public class Account implements Persistable<Long> {
 		new HashSet<>();
 
 	@Transient
-	private Set<AccountIndividualCount> _accountIndividualCounts =
+	private Set<AccountIndividualCount> _accountIndividualsCounts =
 		new HashSet<>();
 
 	@Transient
@@ -451,7 +454,7 @@ public class Account implements Persistable<Long> {
 	private Long _id;
 
 	@Transient
-	private Long _individualCount;
+	private Long _individualsCount;
 
 	@Transient
 	private Boolean _isNew;

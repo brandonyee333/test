@@ -78,7 +78,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
-		return _getEventCount(
+		return _getEventsCount(
 			channelId, DSL.count(), individualId, keywords,
 			rangeEndLocalDateTime, rangeStartLocalDateTime, timeZoneId);
 	}
@@ -88,7 +88,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
-		return _getEventCount(
+		return _getEventsCount(
 			channelId, DSL.countDistinct(DSL.field("sessionId")), individualId,
 			keywords, rangeEndLocalDateTime, rangeStartLocalDateTime,
 			timeZoneId);
@@ -723,7 +723,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		return conditions;
 	}
 
-	private Integer _getEventCount(
+	private Integer _getEventsCount(
 		Long channelId, AggregateFunction<Integer> countAggregateFunction,
 		Long individualId, String keywords, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {

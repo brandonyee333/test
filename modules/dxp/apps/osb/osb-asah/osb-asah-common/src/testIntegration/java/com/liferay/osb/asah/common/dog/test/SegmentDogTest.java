@@ -1091,12 +1091,13 @@ public class SegmentDogTest
 	}
 
 	private void _assertSegment(
-		Long expectedSegmentIndividualCount, String expectedSegmentName,
+		Long expectedSegmentIndividualsCount, String expectedSegmentName,
 		Segment actualSegment) {
 
 		Assertions.assertEquals(expectedSegmentName, actualSegment.getName());
 		Assertions.assertEquals(
-			expectedSegmentIndividualCount, actualSegment.getIndividualCount());
+			expectedSegmentIndividualsCount,
+			actualSegment.getIndividualsCount());
 	}
 
 	private void _assertUpdateSetsReferencedObjectIds(

@@ -93,7 +93,7 @@ public class IndividualSegmentsRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testAssignChannelModifiesIndividualCount() throws Exception {
+	public void testAssignChannelModifiesIndividualsCount() throws Exception {
 		_individualSegmentsRestController.assignChannel(
 			1L, 366637689379787789L);
 

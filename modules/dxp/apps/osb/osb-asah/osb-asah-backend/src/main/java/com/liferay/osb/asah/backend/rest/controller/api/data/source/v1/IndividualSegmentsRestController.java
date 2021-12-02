@@ -228,7 +228,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			_updateSegmentCounts(membershipsChanges.get(0), segment);
 		}
 
-		segment.setActiveIndividualCount(
+		segment.setActiveIndividualsCount(
 			_individualDog.countActiveIndividualsFromLast30DaysBySegment(
 				segment));
 
@@ -538,9 +538,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	private Segment _resetIndividualsCount(Segment segment) {
-		segment.setAnonymousIndividualCount(0L);
-		segment.setIndividualCount(0L);
-		segment.setKnownIndividualCount(0L);
+		segment.setAnonymousIndividualsCount(0L);
+		segment.setIndividualsCount(0L);
+		segment.setKnownIndividualsCount(0L);
 
 		return segment;
 	}
@@ -613,11 +613,11 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			return;
 		}
 
-		segment.setAnonymousIndividualCount(
+		segment.setAnonymousIndividualsCount(
 			membershipChange.getIndividualsCount() -
 				membershipChange.getKnownIndividualsCount());
-		segment.setIndividualCount(membershipChange.getIndividualsCount());
-		segment.setKnownIndividualCount(
+		segment.setIndividualsCount(membershipChange.getIndividualsCount());
+		segment.setKnownIndividualsCount(
 			membershipChange.getKnownIndividualsCount());
 	}
 

@@ -64,7 +64,7 @@ public class FaroInfoTestUtil {
 		account.setCreateDate(date);
 		account.setDataSourceId(dataSourceId);
 		account.setId(id);
-		account.setIndividualCount(0L);
+		account.setIndividualsCount(0L);
 
 		Field field = new Field();
 
@@ -105,7 +105,7 @@ public class FaroInfoTestUtil {
 		segment.setFilter(
 			"((dataSourceAccountPKs/accountPKs eq '" + account.getAccountPK() +
 				"'))");
-		segment.setIndividualCount(0L);
+		segment.setIndividualsCount(0L);
 		segment.setModifiedDate(date);
 		segment.setName("Account: " + account.getId());
 		segment.setScope("PROJECT");
@@ -331,7 +331,7 @@ public class FaroInfoTestUtil {
 
 		Segment segment = new Segment();
 
-		segment.setActiveIndividualCount(0L);
+		segment.setActiveIndividualsCount(0L);
 
 		if (channelId != null) {
 			segment.setChannelId(channelId);
@@ -342,7 +342,7 @@ public class FaroInfoTestUtil {
 		segment.setCreateDate(date);
 
 		segment.setFilter(filterString);
-		segment.setIndividualCount(0L);
+		segment.setIndividualsCount(0L);
 		segment.setModifiedDate(date);
 		segment.setName(RandomTestUtil.randomString());
 		segment.setScope("PROJECT");
@@ -355,7 +355,7 @@ public class FaroInfoTestUtil {
 	public static Segment buildDynamicSegment(String filterString) {
 		Segment segment = new Segment();
 
-		segment.setActiveIndividualCount(0L);
+		segment.setActiveIndividualsCount(0L);
 		segment.setChannelId(
 			Long.parseLong(RandomStringUtils.randomNumeric(4)));
 
@@ -364,7 +364,7 @@ public class FaroInfoTestUtil {
 		segment.setCreateDate(date);
 
 		segment.setFilter(filterString);
-		segment.setIndividualCount(0L);
+		segment.setIndividualsCount(0L);
 		segment.setModifiedDate(date);
 		segment.setName(RandomTestUtil.randomString());
 		segment.setScope("PROJECT");
@@ -875,13 +875,13 @@ public class FaroInfoTestUtil {
 	public static Segment buildStaticSegment() {
 		Segment segment = new Segment();
 
-		segment.setActiveIndividualCount(0L);
+		segment.setActiveIndividualsCount(0L);
 
 		Date date = new Date();
 
 		segment.setCreateDate(date);
 
-		segment.setIndividualCount(0L);
+		segment.setIndividualsCount(0L);
 		segment.setModifiedDate(date);
 		segment.setName(RandomTestUtil.randomString());
 		segment.setScope("PROJECT");

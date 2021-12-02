@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DocumentLibrariesRestController extends BaseRestController {
 
 	@GetMapping("/download-count")
-	public String getDownloadCount(
+	public String getDownloadsCount(
 		String assetId, @RequestParam(required = false) String channelId,
 		@RequestParam(required = false) String dataSourceId,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -59,7 +59,7 @@ public class DocumentLibrariesRestController extends BaseRestController {
 	}
 
 	@GetMapping("/preview-count")
-	public String getPreviewCount(
+	public String getPreviewsCount(
 		String assetId, @RequestParam(required = false) String channelId,
 		@RequestParam(required = false) String dataSourceId,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

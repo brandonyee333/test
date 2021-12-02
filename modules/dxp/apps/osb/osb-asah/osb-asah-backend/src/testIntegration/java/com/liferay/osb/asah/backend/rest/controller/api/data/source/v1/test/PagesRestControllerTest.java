@@ -43,16 +43,6 @@ public class PagesRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testGetReadCount() {
-		Assertions.assertEquals(
-			"3", _pagesRestController.getReadCount("https://liferay.com"));
-	}
-
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@Test
 	public void testGetReadCounts() {
 		LocalDate localDate = LocalDate.now();
 
@@ -75,9 +65,9 @@ public class PagesRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testGetViewCount() {
+	public void testGetReadsCount() {
 		Assertions.assertEquals(
-			"6", _pagesRestController.getViewCount("https://liferay.com"));
+			"3", _pagesRestController.getReadsCount("https://liferay.com"));
 	}
 
 	@ElasticsearchIndex(
@@ -100,6 +90,16 @@ public class PagesRestControllerTest
 
 		Assertions.assertTrue(histogramMetricJSONObject.has("key"));
 		Assertions.assertTrue(histogramMetricJSONObject.has("value"));
+	}
+
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "pages.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testGetViewsCount() {
+		Assertions.assertEquals(
+			"6", _pagesRestController.getViewsCount("https://liferay.com"));
 	}
 
 	@Autowired

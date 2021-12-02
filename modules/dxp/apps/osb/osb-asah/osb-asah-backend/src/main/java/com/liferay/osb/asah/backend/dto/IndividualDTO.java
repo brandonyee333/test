@@ -561,7 +561,7 @@ public class IndividualDTO {
 			Account.AccountIndividualCount accountIndividualCount) {
 
 			_channelId = String.valueOf(accountIndividualCount.getChannelId());
-			_individualCount = accountIndividualCount.getIndividualCount();
+			_individualsCount = accountIndividualCount.getIndividualsCount();
 		}
 
 		@Override
@@ -578,7 +578,7 @@ public class IndividualDTO {
 
 			if (Objects.equals(_channelId, individualCountDTO._channelId) &&
 				Objects.equals(
-					_individualCount, individualCountDTO._individualCount)) {
+					_individualsCount, individualCountDTO._individualsCount)) {
 
 				return true;
 			}
@@ -591,26 +591,27 @@ public class IndividualDTO {
 			return _channelId;
 		}
 
+		@JsonAlias("individualsCount")
 		@JsonProperty("individualCount")
-		public Long getIndividualCount() {
-			return _individualCount;
+		public Long getIndividualsCount() {
+			return _individualsCount;
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(_channelId, _individualCount);
+			return Objects.hash(_channelId, _individualsCount);
 		}
 
 		public void setChannelId(String channelId) {
 			_channelId = channelId;
 		}
 
-		public void setIndividualCount(Long individualCount) {
-			_individualCount = individualCount;
+		public void setIndividualsCount(Long individualsCount) {
+			_individualsCount = individualsCount;
 		}
 
 		private String _channelId;
-		private Long _individualCount;
+		private Long _individualsCount;
 
 	}
 

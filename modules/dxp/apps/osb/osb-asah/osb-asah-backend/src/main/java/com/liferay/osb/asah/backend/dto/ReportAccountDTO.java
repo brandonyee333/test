@@ -47,7 +47,7 @@ public class ReportAccountDTO {
 		_activeIndividualsCount = account.getActiveIndividualsCount();
 		_createDate = account.getCreateDate();
 		_id = StringUtil.get(account.getId(), null);
-		_individualCount = account.getIndividualCount();
+		_individualsCount = account.getIndividualsCount();
 		_modifiedDate = account.getModifiedDate();
 		_reportAccountPropertiesDTO = new ReportAccountPropertiesDTO(
 			_getAccountOrganizationProperties(account.getOrganization()));
@@ -81,8 +81,8 @@ public class ReportAccountDTO {
 	}
 
 	@JsonProperty("individualsCount")
-	public Long getIndividualCount() {
-		return _individualCount;
+	public Long getIndividualsCount() {
+		return _individualsCount;
 	}
 
 	@JsonFormat(
@@ -165,7 +165,7 @@ public class ReportAccountDTO {
 	private Long _activeIndividualsCount;
 	private Date _createDate;
 	private String _id;
-	private Long _individualCount;
+	private Long _individualsCount;
 	private Date _modifiedDate;
 	private Set<ReportAccountDTO> _reportAccountDTOs;
 	private ReportAccountPropertiesDTO _reportAccountPropertiesDTO;

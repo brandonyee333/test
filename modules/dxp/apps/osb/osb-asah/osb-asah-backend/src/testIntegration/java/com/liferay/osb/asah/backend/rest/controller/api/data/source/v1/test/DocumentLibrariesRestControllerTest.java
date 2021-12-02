@@ -39,23 +39,10 @@ public class DocumentLibrariesRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testGetDownloadCount() {
-		Assertions.assertEquals(
-			"10",
-			_documentLibrariesRestController.getDownloadCount(
-				"26413838", "480920708921930174", "480920708626120668", null,
-				null));
-	}
-
-	@ElasticsearchIndex(
-		name = "document-libraries", resourcePath = "document-libraries.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@Test
 	public void testGetDownloadCountWithDates() {
 		Assertions.assertEquals(
 			"8",
-			_documentLibrariesRestController.getDownloadCount(
+			_documentLibrariesRestController.getDownloadsCount(
 				"26413838", "480920708921930174", "480920708626120668",
 				LocalDate.of(2021, 5, 20), LocalDate.of(2021, 5, 1)));
 	}
@@ -65,10 +52,10 @@ public class DocumentLibrariesRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testGetPreviewCount() {
+	public void testGetDownloadsCount() {
 		Assertions.assertEquals(
-			"11",
-			_documentLibrariesRestController.getPreviewCount(
+			"10",
+			_documentLibrariesRestController.getDownloadsCount(
 				"26413838", "480920708921930174", "480920708626120668", null,
 				null));
 	}
@@ -81,9 +68,22 @@ public class DocumentLibrariesRestControllerTest
 	public void testGetPreviewCountWithDates() {
 		Assertions.assertEquals(
 			"3",
-			_documentLibrariesRestController.getPreviewCount(
+			_documentLibrariesRestController.getPreviewsCount(
 				"26413838", "480920708921930174", "480920708626120668",
 				LocalDate.of(2021, 5, 20), LocalDate.of(2021, 5, 1)));
+	}
+
+	@ElasticsearchIndex(
+		name = "document-libraries", resourcePath = "document-libraries.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testGetPreviewsCount() {
+		Assertions.assertEquals(
+			"11",
+			_documentLibrariesRestController.getPreviewsCount(
+				"26413838", "480920708921930174", "480920708626120668", null,
+				null));
 	}
 
 	@Autowired

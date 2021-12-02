@@ -175,7 +175,7 @@ public class EventAnalysisDog {
 					ProjectIdThreadLocal.setProjectId(projectId);
 
 					eventAnalysisResult.setCount(
-						_getTotalPageCount(
+						_getTotalPagesCount(
 							channelId, eventAnalysisBreakdowns,
 							eventAnalysisFilters, eventDefinitionId,
 							timeRange));
@@ -441,7 +441,7 @@ public class EventAnalysisDog {
 			Collections.singletonList(value));
 	}
 
-	private long _getTotalPageCount(
+	private long _getTotalPagesCount(
 		Long channelId, List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
 		TimeRange timeRange) {

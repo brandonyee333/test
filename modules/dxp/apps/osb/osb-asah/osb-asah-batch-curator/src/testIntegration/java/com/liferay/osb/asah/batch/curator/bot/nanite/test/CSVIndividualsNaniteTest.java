@@ -97,12 +97,12 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 				"type", "reprocess"
 			));
 
-		long individualCount = faroInfoElasticsearchInvoker.count(
+		long individualsCount = faroInfoElasticsearchInvoker.count(
 			"individuals", QueryBuilders.matchAllQuery());
 
 		Assertions.assertEquals(
-			1, individualCount,
-			"Found " + individualCount + " individuals when 1 individual is " +
+			1, individualsCount,
+			"Found " + individualsCount + " individuals when 1 individual is " +
 				"expected from 3 CSV individuals with the same email address " +
 					"in different casing");
 	}

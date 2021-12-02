@@ -67,13 +67,13 @@ public class AccountsRestControllerTest
 			342313459339515838L, 888L);
 
 		Assertions.assertEquals(0L, (long)accountDTO.getActivitiesCount());
-		Assertions.assertEquals(10L, (long)accountDTO.getIndividualCount());
+		Assertions.assertEquals(10L, (long)accountDTO.getIndividualsCount());
 
 		accountDTO = _accountsRestController.getAccountDTO(
 			342313459339515838L, 999L);
 
 		Assertions.assertEquals(1L, (long)accountDTO.getActivitiesCount());
-		Assertions.assertEquals(0L, (long)accountDTO.getIndividualCount());
+		Assertions.assertEquals(0L, (long)accountDTO.getIndividualsCount());
 	}
 
 	@ElasticsearchIndex(

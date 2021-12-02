@@ -71,7 +71,7 @@ public class ReportRestControllerTest
 			"2019-10-16T21:26:31.053Z",
 			DateUtil.toUTCString(reportAccountDTO.getModifiedDate()));
 		Assertions.assertEquals("379649798552539340", reportAccountDTO.getId());
-		Assertions.assertEquals(13, reportAccountDTO.getIndividualCount());
+		Assertions.assertEquals(13, reportAccountDTO.getIndividualsCount());
 	}
 
 	@ElasticsearchIndex(

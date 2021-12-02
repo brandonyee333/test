@@ -347,9 +347,9 @@ public class AccountDog {
 
 		if (segment != null) {
 			account.setActiveIndividualsCount(
-				segment.getActiveIndividualCount());
+				segment.getActiveIndividualsCount());
 			account.setActivitiesCount(segment.getActivitiesCount());
-			account.setIndividualCount(segment.getIndividualCount());
+			account.setIndividualsCount(segment.getIndividualsCount());
 
 			List<Individual.ActivitiesCount> individualActivitiesCounts =
 				_individualDog.getActivitiesCounts(
@@ -378,18 +378,18 @@ public class AccountDog {
 					segment.getId());
 
 			if (!channelIndividualCounts.isEmpty()) {
-				Set<Account.AccountIndividualCount> individualCounts =
+				Set<Account.AccountIndividualCount> individualsCounts =
 					new HashSet<>();
 
 				for (Map.Entry<Long, Long> entry :
 						channelIndividualCounts.entrySet()) {
 
-					individualCounts.add(
+					individualsCounts.add(
 						new Account.AccountIndividualCount(
 							entry.getKey(), entry.getValue()));
 				}
 
-				account.setIndividualCounts(individualCounts);
+				account.setIndividualsCounts(individualsCounts);
 			}
 		}
 
@@ -414,28 +414,30 @@ public class AccountDog {
 				account.setActivitiesCount(0L);
 			}
 
-			Set<Account.AccountIndividualCount> individualCounts =
-				account.getIndividualCounts();
+			Set<Account.AccountIndividualCount> individualsCounts =
+				account.getIndividualsCounts();
 
-			if (individualCounts.isEmpty()) {
-				account.setIndividualCount(0L);
+			if (individualsCounts.isEmpty()) {
+				account.setIndividualsCount(0L);
 			}
 
-			for (Account.AccountIndividualCount individualCount :
-					individualCounts) {
+			for (Account.AccountIndividualCount individualsCount :
+					individualsCounts) {
 
-				if (Objects.equals(channelId, individualCount.getChannelId())) {
-					account.setIndividualCount(
-						individualCount.getIndividualCount());
+				if (Objects.equals(
+						channelId, individualsCount.getChannelId())) {
+
+					account.setIndividualsCount(
+						individualsCount.getIndividualsCount());
 
 					break;
 				}
 
-				account.setIndividualCount(0L);
+				account.setIndividualsCount(0L);
 			}
 
 			account.setActivitiesCounts(null);
-			account.setIndividualCounts(null);
+			account.setIndividualsCounts(null);
 		}
 
 		return account;
