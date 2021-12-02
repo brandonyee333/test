@@ -1,0 +1,9 @@
+{
+	"operationName": "DeleteEventAnalysis",
+	"variables": {
+		"eventAnalysisIds": [
+			"2345",
+			"2346"
+		]
+	}
+}

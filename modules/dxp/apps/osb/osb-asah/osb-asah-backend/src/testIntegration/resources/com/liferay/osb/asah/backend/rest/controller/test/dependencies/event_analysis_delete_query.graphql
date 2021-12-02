@@ -1,0 +1,3 @@
+mutation DeleteEventAnalysis($eventAnalysisIds: [String]!) {
+	deleteEventAnalyses(eventAnalysisIds: $eventAnalysisIds)
+}

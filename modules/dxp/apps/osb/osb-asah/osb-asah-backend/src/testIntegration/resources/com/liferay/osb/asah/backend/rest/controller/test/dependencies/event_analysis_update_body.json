@@ -1,0 +1,34 @@
+{
+	"operationName": "UpdateEventAnalysis",
+	"variables": {
+		"analysisType": "TOTAL",
+		"channelId": "2468",
+		"compareToPrevious": false,
+		"eventAnalysisBreakdowns": [
+			{
+				"attributeId": "23456",
+				"attributeType": "EVENT",
+				"binSize": 2000,
+				"dataType": "DURATION"
+			}
+		],
+		"eventAnalysisFilters": [
+			{
+				"attributeId": "12345",
+				"attributeType": "EVENT",
+				"dataType": "STRING",
+				"operator": "contains",
+				"values": [
+					"test"
+				]
+			}
+		],
+		"eventAnalysisId": "2345",
+		"eventDefinitionId": "12345",
+		"name": "Analysis Two",
+		"rangeEnd": "2021-05-12",
+		"rangeStart": "2021-05-11",
+		"userId": "10",
+		"userName": "Test"
+	}
+}

@@ -1,0 +1,37 @@
+{
+	"data": {
+		"updateEventAnalysis": {
+			"analysisType": "TOTAL",
+			"channelId": "2468",
+			"compareToPrevious": false,
+			"createdByUserId": "10",
+			"createdByUserName": "Test",
+			"eventAnalysisBreakdowns": [
+				{
+					"attributeId": "23456",
+					"attributeType": "EVENT",
+					"binSize": 2000,
+					"dataType": "DURATION"
+				}
+			],
+			"eventAnalysisFilters": [
+				{
+					"attributeId": "12345",
+					"attributeType": "EVENT",
+					"dataType": "STRING",
+					"operator": "contains",
+					"values": [
+						"test"
+					]
+				}
+			],
+			"eventDefinitionId": "12345",
+			"id": "2345",
+			"modifiedByUserId": "10",
+			"modifiedByUserName": "Test",
+			"name": "Analysis Two",
+			"rangeEnd": "2021-05-12",
+			"rangeStart": "2021-05-11"
+		}
+	}
+}
