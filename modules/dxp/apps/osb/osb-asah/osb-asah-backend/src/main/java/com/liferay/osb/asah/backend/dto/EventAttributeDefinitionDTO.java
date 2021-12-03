@@ -22,11 +22,11 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinition;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * @author Leslie Wong
@@ -52,16 +52,21 @@ public class EventAttributeDefinitionDTO {
 				eventAttributeDefinition.
 					getEventDefinitionEventAttributeDefinitions());
 
-		Collections.sort(
-			eventDefinitionEventAttributeDefinitions,
+		Stream<EventDefinitionEventAttributeDefinition> stream =
+			eventDefinitionEventAttributeDefinitions.stream();
+
+		_sampleValue = stream.filter(
+			eventDefinitionEventAttributeDefinition ->
+				eventDefinitionEventAttributeDefinition.getSampleValue() != null
+		).sorted(
 			Comparator.comparing(
-				EventDefinitionEventAttributeDefinition::getEventDefinitionId));
-
-		EventDefinitionEventAttributeDefinition
-			eventDefinitionEventAttributeDefinition =
-				eventDefinitionEventAttributeDefinitions.get(0);
-
-		_sampleValue = eventDefinitionEventAttributeDefinition.getSampleValue();
+				EventDefinitionEventAttributeDefinition::getEventDefinitionId)
+		).findFirst(
+		).map(
+			EventDefinitionEventAttributeDefinition::getSampleValue
+		).orElse(
+			null
+		);
 
 		_type = eventAttributeDefinition.getType();
 	}
