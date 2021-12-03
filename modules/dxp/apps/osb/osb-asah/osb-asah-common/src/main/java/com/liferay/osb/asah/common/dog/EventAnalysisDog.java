@@ -122,7 +122,7 @@ public class EventAnalysisDog {
 		return eventAnalysisOptional.orElseThrow(
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
-				"There is not event analysis with ID " + eventAnalysisId));
+				"There is no event analysis with ID " + eventAnalysisId));
 	}
 
 	public EventAnalysisResult getEventAnalysisResult(
