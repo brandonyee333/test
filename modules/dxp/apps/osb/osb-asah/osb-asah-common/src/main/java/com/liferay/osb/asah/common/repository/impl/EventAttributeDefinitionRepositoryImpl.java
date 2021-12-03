@@ -73,6 +73,9 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			DSL.table(
 				"EventAttributeDefinition"
+			).asterisk(),
+			DSL.table(
+				"EventDefinitionEventAttributeDefinition"
 			).asterisk());
 
 		Field<Object> idField = DSL.field("id");
