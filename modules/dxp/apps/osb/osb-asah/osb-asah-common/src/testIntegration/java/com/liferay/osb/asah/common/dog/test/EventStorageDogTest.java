@@ -28,6 +28,9 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
+import com.liferay.osb.asah.common.repository.EventAttributeRepository;
+import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
@@ -39,12 +42,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentMatchers;
@@ -74,6 +79,11 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 	}
 )
 public class EventStorageDogTest implements OSBAsahCommonSpringTestContext {
+
+	@BeforeEach
+	public void setUp() {
+		_channel = _channelDog.addChannel("Test Channel");
+	}
 
 	@Test
 	public void testEventStorageTransactional() {
@@ -138,6 +148,93 @@ public class EventStorageDogTest implements OSBAsahCommonSpringTestContext {
 			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
 				null, null, EventAttributeDefinition.Type.LOCAL),
 			0.0);
+	}
+
+	@Test
+	public void testStoreEventAttributes() {
+		EventDefinition eventDefinition = new EventDefinition();
+
+		eventDefinition.setBlocked(false);
+		eventDefinition.setDisplayName("test");
+		eventDefinition.setHidden(false);
+		eventDefinition.setName("test");
+		eventDefinition.setType(EventDefinition.Type.DEFAULT);
+
+		eventDefinition = _eventDefinitionRepository.save(eventDefinition);
+
+		EventAttributeDefinition eventAttributeDefinition =
+			new EventAttributeDefinition();
+
+		eventAttributeDefinition.setDataType(
+			EventAttributeDefinition.DataType.STRING);
+		eventAttributeDefinition.setDisplayName("eventAttributeDefinitionTest");
+		eventAttributeDefinition.setEventDefinitionEventAttributeDefinitions(
+			Collections.singleton(
+				new EventDefinitionEventAttributeDefinition(
+					eventDefinition.getId(), null)));
+		eventAttributeDefinition.setName("eventAttributeDefinitionTest");
+		eventAttributeDefinition.setType(EventAttributeDefinition.Type.LOCAL);
+
+		_eventAttributeDefinitionRepository.save(eventAttributeDefinition);
+
+		AnalyticsEvent analyticsEvent = new AnalyticsEvent();
+
+		analyticsEvent.setApplicationId("Page");
+		analyticsEvent.setChannelId(String.valueOf(_channel.getId()));
+		analyticsEvent.setCreateDate(DateUtil.newDayDate());
+		analyticsEvent.setContext(Collections.emptyMap());
+		analyticsEvent.setDataSourceId("1");
+		analyticsEvent.setEventId("testEvent");
+		analyticsEvent.setEventProperties(
+			Collections.singletonMap(
+				"eventAttributeDefinitionTest", "testValue"));
+		analyticsEvent.setId("1");
+		analyticsEvent.setIndividualId("1");
+		analyticsEvent.setKnownIndividual(true);
+		analyticsEvent.setProjectId("123456789");
+		analyticsEvent.setSegmentNames(Collections.emptySet());
+		analyticsEvent.setUserId(RandomTestUtil.randomUUID());
+
+		Set<EventAttribute> eventAttributes =
+			_eventStorageDog.storeEventAttributes(
+				analyticsEvent, eventDefinition.getId());
+
+		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
+			eventAttributes.stream(
+			).filter(
+				eventAttribute -> eventAttribute.getValue() != null
+			).map(
+				eventAttribute ->
+					_eventAttributeDefinitionDog.getEventAttributeDefinition(
+						eventAttribute.getEventAttributeDefinitionId())
+			).findFirst();
+
+		eventAttributeDefinition = eventAttributeDefinitionOptional.get();
+
+		Set<EventDefinitionEventAttributeDefinition>
+			eventDefinitionEventAttributeDefinitions =
+				eventAttributeDefinition.
+					getEventDefinitionEventAttributeDefinitions();
+
+		Long eventDefinitionId = eventDefinition.getId();
+
+		Optional<EventDefinitionEventAttributeDefinition>
+			eventDefinitionEventAttributeDefinitionsOptional =
+				eventDefinitionEventAttributeDefinitions.stream(
+				).filter(
+					eventDefinitionEventAttributeDefinition ->
+						eventDefinitionId.equals(
+							eventDefinitionEventAttributeDefinition.
+								getEventDefinitionId())
+				).findFirst();
+
+		EventDefinitionEventAttributeDefinition
+			eventDefinitionEventAttributeDefinition =
+				eventDefinitionEventAttributeDefinitionsOptional.get();
+
+		Assertions.assertEquals(
+			"testValue",
+			eventDefinitionEventAttributeDefinition.getSampleValue());
 	}
 
 	@SQLResource(resourcePath = "test_store_definition_limit_reached.sql")
@@ -422,12 +519,10 @@ public class EventStorageDogTest implements OSBAsahCommonSpringTestContext {
 		String eventId, Map<String, String> eventContext,
 		Map<String, String> eventProperties) {
 
-		Channel channel = _channelDog.addChannel("Test Channel");
-
 		AnalyticsEvent analyticsEvent = new AnalyticsEvent();
 
 		analyticsEvent.setApplicationId("Page");
-		analyticsEvent.setChannelId(String.valueOf(channel.getId()));
+		analyticsEvent.setChannelId(String.valueOf(_channel.getId()));
 		analyticsEvent.setCreateDate(DateUtil.newDayDate());
 		analyticsEvent.setContext(eventContext);
 		analyticsEvent.setDataSourceId("1");
@@ -444,6 +539,8 @@ public class EventStorageDogTest implements OSBAsahCommonSpringTestContext {
 			analyticsEvent, RandomTestUtil.randomId());
 	}
 
+	private Channel _channel;
+
 	@Autowired
 	private ChannelDog _channelDog;
 
@@ -451,7 +548,17 @@ public class EventStorageDogTest implements OSBAsahCommonSpringTestContext {
 	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
 
 	@Autowired
+	private EventAttributeDefinitionRepository
+		_eventAttributeDefinitionRepository;
+
+	@Autowired
+	private EventAttributeRepository _eventAttributeRepository;
+
+	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
+
+	@Autowired
+	private EventDefinitionRepository _eventDefinitionRepository;
 
 	@SpyBean
 	private EventDog _eventDog;
