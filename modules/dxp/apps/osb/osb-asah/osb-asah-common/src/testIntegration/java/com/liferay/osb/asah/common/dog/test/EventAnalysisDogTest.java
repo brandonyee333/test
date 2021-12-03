@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.EventAnalysisDog;
+import com.liferay.osb.asah.common.entity.EventAnalysis;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.AttributeType;
@@ -26,6 +27,7 @@ import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.EventAnalysisResult;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.EventAnalysisRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -54,6 +56,68 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class EventAnalysisDogTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
+
+	@SQLResource(resourcePath = "test_event_analysis.sql")
+	@Test
+	public void testEventAnalysis() {
+		EventAnalysis eventAnalysis = _eventAnalysisDog.addEventAnalysis(
+			AnalysisType.TOTAL, 1L, false,
+			Collections.singletonList(
+				new EventAnalysisBreakdown(
+					"1", AttributeType.EVENT, 10,
+					EventAttributeDefinition.DataType.STRING, DateGrouping.DAY,
+					"ASC")),
+			Collections.singletonList(
+				new EventAnalysisFilter(
+					"1", AttributeType.EVENT,
+					EventAttributeDefinition.DataType.STRING, "eq",
+					Collections.singletonList("value"))),
+			246810L, "Event Analysis",
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")),
+			100L, "Test");
+
+		Assertions.assertEquals(1, _eventAnalysisRepository.count());
+		Assertions.assertNotNull(eventAnalysis);
+		Assertions.assertNotNull(eventAnalysis.getId());
+
+		EventAnalysis updatedEventAnalysis =
+			_eventAnalysisDog.updateEventAnalysis(
+				AnalysisType.TOTAL, 1L, false,
+				Collections.singletonList(
+					new EventAnalysisBreakdown(
+						"1", AttributeType.EVENT, 10,
+						EventAttributeDefinition.DataType.STRING,
+						DateGrouping.DAY, "ASC")),
+				Collections.singletonList(
+					new EventAnalysisFilter(
+						"1", AttributeType.EVENT,
+						EventAttributeDefinition.DataType.STRING, "eq",
+						Collections.singletonList("value"))),
+				eventAnalysis.getId(), 246810L, "Event Analysis Update",
+				TimeRange.of(
+					LocalDate.parse("2021-06-01"),
+					LocalDate.parse("2021-05-15")),
+				101L, "Test Test");
+
+		Assertions.assertNotNull(updatedEventAnalysis);
+		Assertions.assertNotNull(updatedEventAnalysis.getId());
+		Assertions.assertEquals(
+			100L, updatedEventAnalysis.getCreatedByUserId());
+		Assertions.assertEquals(
+			"Test", updatedEventAnalysis.getCreatedByUserName());
+		Assertions.assertEquals(
+			101L, updatedEventAnalysis.getModifiedByUserId());
+		Assertions.assertEquals(
+			"Test Test", updatedEventAnalysis.getModifiedByUserName());
+		Assertions.assertEquals(
+			"Event Analysis Update", updatedEventAnalysis.getName());
+
+		_eventAnalysisDog.deleteEventAnalyses(
+			Collections.singletonList(updatedEventAnalysis.getId()));
+
+		Assertions.assertEquals(0, _eventAnalysisRepository.count());
+	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis.sql")
 	@Test
@@ -635,6 +699,9 @@ public class EventAnalysisDogTest
 
 	@Autowired
 	private EventAnalysisDog _eventAnalysisDog;
+
+	@Autowired
+	private EventAnalysisRepository _eventAnalysisRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
