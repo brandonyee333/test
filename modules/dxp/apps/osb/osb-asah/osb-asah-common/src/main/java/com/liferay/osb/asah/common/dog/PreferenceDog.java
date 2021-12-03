@@ -34,7 +34,8 @@ public class PreferenceDog {
 		Preference preference = _preferenceRepository.findByKey(key);
 
 		if (preference == null) {
-			preference = new Preference(key, _defaultPreferences.get(key));
+			preference = _preferenceRepository.save(
+				new Preference(key, _defaultPreferences.get(key)));
 		}
 
 		return preference;
