@@ -116,7 +116,10 @@ public class EventStorageDog {
 		Stream<EventDefinitionEventAttributeDefinition> stream =
 			eventDefinitionEventAttributeDefinitions.stream();
 
-		return stream.map(
+		return stream.filter(
+			eventDefinitionEventAttributeDefinition ->
+				eventDefinitionEventAttributeDefinition.getSampleValue() != null
+		).map(
 			EventDefinitionEventAttributeDefinition::getEventDefinitionId
 		).collect(
 			Collectors.toSet()
@@ -150,6 +153,12 @@ public class EventStorageDog {
 
 			if ((eventAttributeDefinitionId != null) &&
 				!eventDefinitionIds.contains(eventDefinitionId)) {
+
+				eventDefinitionEventAttributeDefinitions.removeIf(
+					eventDefinitionEventAttributeDefinition ->
+						eventDefinitionId.equals(
+							eventDefinitionEventAttributeDefinition.
+								getEventDefinitionId()));
 
 				eventDefinitionEventAttributeDefinitions.add(
 					new EventDefinitionEventAttributeDefinition(
