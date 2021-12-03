@@ -186,6 +186,17 @@
 	<td>//label[contains(@for,'javascript')]</td>
 	<td></td>
 </tr>
+<!--CONFIGURATION-->
+<tr>
+	<td>PUBLIC_PAGES_CONFIGURATION</td>
+	<td>//div[contains(@class,'miller-columns-item-quick-action')]//a[contains(@href,'privateLayout=false')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PRIVATE_PAGES_CONFIGURATION</td>
+	<td>//div[contains(@class,'miller-columns-item-quick-action')]//a[contains(@href,'privateLayout=true')]</td>
+	<td></td>
+</tr>
 </tbody>
 </table>
 </body>

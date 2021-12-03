@@ -781,4 +781,90 @@ definition {
 		}
 	}
 
+	@description = "This is a test for LPS-140834. Stylebook can't be selected when public theme matches master page's theme."
+	@priority = "4"
+	test StyleBookCannotBeSelectedWhenPublicThemeMatchesMasterPageTheme {
+		task ("Add a public page and change it's theme to Minium") {
+			SitePages.openPagesAdmin(siteURLKey = "Test Site Name");
+
+			JSONLayout.addPublicLayout(
+				groupName = "Test Site Name",
+				layoutName = "home");
+
+			ProductMenu.gotoPortlet(
+				category = "Site Builder",
+				portlet = "Pages");
+
+			Click(locator1 = "SitePages#PUBLIC_PAGES_CONFIGURATION");
+
+			Theme.changeCurrentTheme(themeName = "Minium");
+
+			PortletEntry.save();
+		}
+
+		task ("Add a private page and change it's theme to Speedwell") {
+			JSONLayout.addPrivateLayout(
+				groupName = "Test Site Name",
+				layoutName = "test");
+
+			ProductMenu.gotoPortlet(
+				category = "Site Builder",
+				portlet = "Pages");
+
+			Page.view(
+				pageName = "test",
+				privacy = "Private Pages");
+
+			Click(locator1 = "SitePages#PRIVATE_PAGES_CONFIGURATION");
+
+			Theme.changeCurrentTheme(themeName = "Speedwell");
+
+			PortletEntry.save();
+		}
+
+		task ("Add a style book") {
+			StyleBooksAdmin.openStyleBooksAdmin(siteURLKey = "test-site-name");
+
+			StyleBooksAdmin.addStyleBooks(styleBookName = "Test Style Book Name");
+		}
+
+		task ("Add a custom master page") {
+			JSONLayoutpagetemplate.addMasterPageTemplateEntry(
+				groupName = "Test Site Name",
+				masterPageTemplateEntryName = "Custom Masters Page Template");
+		}
+
+		task ("Change master page's theme to Minium") {
+			MastersPageTemplatesAdmin.openMastersAdmin(siteURLKey = "test-site-name");
+
+			MastersPageTemplatesAdmin.gotoMasters(masterLayoutName = "Custom Masters Page Template");
+
+			PageEditor.gotoTab(tabName = "Page Design Options");
+
+			Click(locator1 = "PageEditor#MORE_LINK");
+
+			Theme.configureLookAndFeelSpecificLook();
+
+			Theme.changeCurrentTheme(themeName = "Minium");
+
+			PortletEntry.save();
+
+			Navigator.gotoBack();
+		}
+
+		task ("Select style book via Page Design Options panel") {
+			PageEditor.gotoTab(tabName = "Page Design Options");
+
+			Navigator.gotoNavTab(navTab = "Style Book");
+
+			StyleBooks.selectStyleBookViaPageDesignOptions(styleBookName = "Test Style Book Name");
+
+			AssertElementPresent(
+				key_card = "Test Style Book Name",
+				locator1 = "Card#CARD_SELECTED");
+
+			Button.click(button = "Publish Master");
+		}
+	}
+
 }
