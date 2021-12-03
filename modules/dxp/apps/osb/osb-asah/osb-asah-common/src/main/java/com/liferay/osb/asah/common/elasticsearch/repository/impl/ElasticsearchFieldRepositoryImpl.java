@@ -43,6 +43,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -430,6 +431,21 @@ public class ElasticsearchFieldRepositoryImpl
 
 			return Collections.emptyList();
 		}
+	}
+
+	@Override
+	public void updateDataSourceNameByDataSourceId(
+		Long dataSourceId, String dataSourceName) {
+
+		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
+			QueryBuilders.termQuery(
+				"dataSourceId", String.valueOf(dataSourceId)),
+			true,
+			new Script(
+				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+				"ctx._source.dataSourceName = params.dataSourceName",
+				Collections.singletonMap("dataSourceName", dataSourceName)),
+			getCollectionName());
 	}
 
 	@Override

@@ -116,4 +116,9 @@ public interface FieldRepository extends Repository<Field, Long> {
 	public List<Field> searchFields(
 		FilterHelper filterHelper, Pageable pageable);
 
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void updateDataSourceNameByDataSourceId(
+		Long dataSourceId, String dataSourceName);
+
 }

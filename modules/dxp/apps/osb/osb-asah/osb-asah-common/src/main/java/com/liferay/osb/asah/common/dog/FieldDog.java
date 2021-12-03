@@ -301,6 +301,11 @@ public class FieldDog {
 			pageRequest, () -> _fieldRepository.countFields(filterHelper));
 	}
 
+	public void updateDataSourceName(Long dataSourceId, String dataSourceName) {
+		_fieldRepository.updateDataSourceNameByDataSourceId(
+			dataSourceId, dataSourceName);
+	}
+
 	public Field updateField(Long fieldId, Field field) {
 		field.setId(fieldId);
 

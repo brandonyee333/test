@@ -28,6 +28,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
+import org.jooq.UpdateSetFirstStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Pageable;
@@ -127,6 +128,23 @@ public class FieldRepositoryImpl extends BaseRepository {
 		).fetch(
 			record -> new Field(record.intoMap())
 		);
+	}
+
+	public void updateDataSourceNameByDataSourceId(
+		Long dataSourceId, String dataSourceName) {
+
+		UpdateSetFirstStep<Record> update = _dslContext.update(
+			DSL.table("Field"));
+
+		update.set(
+			DSL.field("dataSourceName"), dataSourceName
+		).where(
+			DSL.field(
+				"dataSourceId"
+			).eq(
+				dataSourceId
+			)
+		).execute();
 	}
 
 	private Condition _getIncludeCondition(
