@@ -4,7 +4,7 @@
 	</Match>
 	<Match>
 		<Bug pattern="PATH_TRAVERSAL_IN" />
-		<Class name="com.liferay.osb.asah.backend.graphql.schema.DataControlTaskMutationDataFetcher" />
+		<Class name="com.liferay.osb.asah.backend.graphql.schema.DataControlTasksMutationDataFetcher" />
 		<Method name="_getPath" />
 	</Match>
 	<Match>
