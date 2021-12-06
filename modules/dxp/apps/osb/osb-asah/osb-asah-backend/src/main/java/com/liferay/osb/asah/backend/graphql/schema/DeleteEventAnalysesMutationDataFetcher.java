@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "deleteEventAnalyses", typeName = "MutationType")
-public class DeleteEventAnalysisMutationDataFetcher
+public class DeleteEventAnalysesMutationDataFetcher
 	implements DataFetcher<Void> {
 
 	@Override

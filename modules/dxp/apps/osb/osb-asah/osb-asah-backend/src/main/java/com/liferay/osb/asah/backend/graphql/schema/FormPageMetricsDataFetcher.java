@@ -14,14 +14,14 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.ExperimentDog;
-import com.liferay.osb.asah.backend.dto.ExperimentMetricDTO;
+import com.liferay.osb.asah.backend.dog.form.FormPageDog;
+import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.FormPageMetric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
-import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,23 +30,19 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-@GraphQLTypeWiring(fieldName = "metrics", typeName = "Experiment")
-public class ExperimentMetricDataFetcher
-	implements DataFetcher<ExperimentMetricDTO> {
+@GraphQLTypeWiring(fieldName = "formPageMetrics", typeName = "FormMetric")
+public class FormPageMetricsDataFetcher
+	extends BaseDataFetcher<List<FormPageMetric>> {
 
 	@Override
-	public ExperimentMetricDTO get(
-		DataFetchingEnvironment dataFetchingEnvironment) {
+	public List<FormPageMetric> get(
+		DataFetchingEnvironment dataFetchingEnvironment,
+		SearchQueryContext searchQueryContext) {
 
-		Map<String, Object> context = dataFetchingEnvironment.getContext();
-
-		String experimentId = (String)context.get("experimentId");
-
-		return new ExperimentMetricDTO(
-			_experimentDog.getExperimentMetric(Long.valueOf(experimentId)));
+		return _formPageDog.getFormPageMetrics(searchQueryContext);
 	}
 
 	@Autowired
-	private ExperimentDog _experimentDog;
+	private FormPageDog _formPageDog;
 
 }

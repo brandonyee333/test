@@ -14,53 +14,43 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.model.AssetMetric;
+import com.liferay.osb.asah.backend.dog.page.PageReferrerDog;
 import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.model.PageReferrerMetric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
 import graphql.schema.DataFetchingEnvironment;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Inácio Nery
+ * @author Leonardo Barros
  */
 @Component
-@GraphQLTypeWiring(fieldName = "assetPages", typeName = "QueryType")
-public class PageDataFetcher extends BaseDataFetcher<List<AssetMetric>> {
+@GraphQLTypeWiring(fieldName = "pageReferrerMetrics", typeName = "PageMetric")
+public class PageReferrerMetricsDataFetcher
+	extends BaseDataFetcher<List<PageReferrerMetric>> {
 
 	@Override
-	public List<AssetMetric> get(
+	public List<PageReferrerMetric> get(
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		AssetMetric assetMetric = _metricDog.getAssetMetric(searchQueryContext);
+		return _pageReferrerDog.getPageReferrerMetrics(searchQueryContext);
+	}
 
-		List<String> canonicalUrls = assetMetric.getCanonicalUrls();
+	@Override
+	protected AssetType getAssetType(
+		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		if (canonicalUrls.isEmpty()) {
-			return Collections.emptyList();
-		}
-
-		searchQueryContext.setAssetType(AssetType.PAGE);
-
-		Map<String, Object> context = dataFetchingEnvironment.getContext();
-
-		return _metricDog.getAssetMetrics(
-			new HashSet<>(canonicalUrls), searchQueryContext,
-			(Set<String>)context.get("selectedMetrics"), 1000, null, 0);
+		return AssetType.PAGE;
 	}
 
 	@Autowired
-	private MetricDog _metricDog;
+	private PageReferrerDog _pageReferrerDog;
 
 }

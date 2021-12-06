@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "dataControlTasks", typeName = "MutationType")
-public class DataControlTaskMutationDataFetcher
+public class DataControlTasksMutationDataFetcher
 	implements DataFetcher<Boolean> {
 
 	@Override

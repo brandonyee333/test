@@ -14,12 +14,11 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.dog.page.PageReferrerDog;
-import com.liferay.osb.asah.backend.model.AssetType;
-import com.liferay.osb.asah.backend.model.PageReferrerMetric;
+import com.liferay.osb.asah.common.dog.JobDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.util.ListUtil;
 
+import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
@@ -28,29 +27,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Leonardo Barros
+ * @author Marcellus Tavares
  */
 @Component
-@GraphQLTypeWiring(fieldName = "pageReferrerMetrics", typeName = "PageMetric")
-public class PageReferrerDataFetcher
-	extends BaseDataFetcher<List<PageReferrerMetric>> {
+@GraphQLTypeWiring(fieldName = "deleteJobs", typeName = "MutationType")
+public class DeleteJobsMutationDataFetcher
+	extends BaseExperimentDataFetcher implements DataFetcher<Void> {
 
 	@Override
-	public List<PageReferrerMetric> get(
-		DataFetchingEnvironment dataFetchingEnvironment,
-		SearchQueryContext searchQueryContext) {
+	public Void get(DataFetchingEnvironment dataFetchingEnvironment) {
+		List<String> jobIds = dataFetchingEnvironment.getArgument("jobIds");
 
-		return _pageReferrerDog.getPageReferrerMetrics(searchQueryContext);
-	}
+		_jobDog.deleteJobs(ListUtil.map(jobIds, Long::valueOf));
 
-	@Override
-	protected AssetType getAssetType(
-		DataFetchingEnvironment dataFetchingEnvironment) {
-
-		return AssetType.PAGE;
+		return null;
 	}
 
 	@Autowired
-	private PageReferrerDog _pageReferrerDog;
+	private JobDog _jobDog;
 
 }

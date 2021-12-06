@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.graphql.schema.test;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.EventAnalysisDTO;
 import com.liferay.osb.asah.backend.graphql.schema.CreateEventAnalysisMutationDataFetcher;
-import com.liferay.osb.asah.backend.graphql.schema.DeleteEventAnalysisMutationDataFetcher;
+import com.liferay.osb.asah.backend.graphql.schema.DeleteEventAnalysesMutationDataFetcher;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AttributeType;
 import com.liferay.osb.asah.common.model.DateGrouping;
@@ -68,7 +68,7 @@ public class DeleteEventAnalysisMutationDataFetcherTest
 
 		Assertions.assertEquals(1, _eventAnalysisRepository.count());
 
-		_deleteEventAnalysisMutationDataFetcher.get(
+		_deleteEventAnalysesMutationDataFetcher.get(
 			_getDeleteDataFetchingEnvironment(eventAnalysisDTO.getId()));
 
 		Assertions.assertEquals(0, _eventAnalysisRepository.count());
@@ -156,8 +156,8 @@ public class DeleteEventAnalysisMutationDataFetcherTest
 		_createEventAnalysisMutationDataFetcher;
 
 	@Autowired
-	private DeleteEventAnalysisMutationDataFetcher
-		_deleteEventAnalysisMutationDataFetcher;
+	private DeleteEventAnalysesMutationDataFetcher
+		_deleteEventAnalysesMutationDataFetcher;
 
 	@Autowired
 	private EventAnalysisRepository _eventAnalysisRepository;

@@ -17,12 +17,10 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
 import com.liferay.osb.asah.backend.dto.ExperimentMetricDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,21 +30,20 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-@GraphQLTypeWiring(fieldName = "metricsHistogram", typeName = "Experiment")
+@GraphQLTypeWiring(fieldName = "metrics", typeName = "Experiment")
 public class ExperimentMetricsDataFetcher
-	implements DataFetcher<List<ExperimentMetricDTO>> {
+	implements DataFetcher<ExperimentMetricDTO> {
 
 	@Override
-	public List<ExperimentMetricDTO> get(
+	public ExperimentMetricDTO get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
 		Map<String, Object> context = dataFetchingEnvironment.getContext();
 
 		String experimentId = (String)context.get("experimentId");
 
-		return ListUtil.map(
-			_experimentDog.getExperimentMetrics(Long.valueOf(experimentId)),
-			ExperimentMetricDTO::new);
+		return new ExperimentMetricDTO(
+			_experimentDog.getExperimentMetric(Long.valueOf(experimentId)));
 	}
 
 	@Autowired

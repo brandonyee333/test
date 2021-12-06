@@ -36,7 +36,7 @@ import org.springframework.stereotype.Component;
 	fieldName = "sessionsHistogram", typeName = "ExperimentVariant"
 )
 @GraphQLTypeWiring(fieldName = "sessionsHistogram", typeName = "Experiment")
-public class ExperimentSessionHistogramMetricsDataFetcher
+public class ExperimentSessionsHistogramMetricsDataFetcher
 	implements DataFetcher<List<HistogramMetric>> {
 
 	@Override

@@ -19,7 +19,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.EventDTO;
 import com.liferay.osb.asah.backend.dto.EventsByUserSessionDTO;
 import com.liferay.osb.asah.backend.dto.UserSessionDTO;
-import com.liferay.osb.asah.backend.graphql.schema.EventsByUserSessionDataFetcher;
+import com.liferay.osb.asah.backend.graphql.schema.EventsByUserSessionsDataFetcher;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
@@ -95,7 +95,7 @@ public class EventsByUserSessionDataFetcherTest
 	@Test
 	public void testGet() {
 		EventsByUserSessionDTO eventsByUserSessionDTO =
-			_eventsByUserSessionDataFetcher.get(
+			_eventsByUserSessionsDataFetcher.get(
 				_getDataFetchingEnvironment(),
 				new SearchQueryContext() {
 					{
@@ -182,6 +182,6 @@ public class EventsByUserSessionDataFetcherTest
 	private EventRepository _eventRepository;
 
 	@Autowired
-	private EventsByUserSessionDataFetcher _eventsByUserSessionDataFetcher;
+	private EventsByUserSessionsDataFetcher _eventsByUserSessionsDataFetcher;
 
 }

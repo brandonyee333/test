@@ -14,7 +14,8 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.common.dog.JobDog;
+import com.liferay.osb.asah.backend.dog.ExperimentDog;
+import com.liferay.osb.asah.backend.dto.ExperimentMetricDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -22,6 +23,7 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,20 +32,24 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-@GraphQLTypeWiring(fieldName = "deleteJobs", typeName = "MutationType")
-public class DeleteJobMutationDataFetcher
-	extends BaseExperimentDataFetcher implements DataFetcher<Void> {
+@GraphQLTypeWiring(fieldName = "metricsHistogram", typeName = "Experiment")
+public class ExperimentMetricsHistogramDataFetcher
+	implements DataFetcher<List<ExperimentMetricDTO>> {
 
 	@Override
-	public Void get(DataFetchingEnvironment dataFetchingEnvironment) {
-		List<String> jobIds = dataFetchingEnvironment.getArgument("jobIds");
+	public List<ExperimentMetricDTO> get(
+		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		_jobDog.deleteJobs(ListUtil.map(jobIds, Long::valueOf));
+		Map<String, Object> context = dataFetchingEnvironment.getContext();
 
-		return null;
+		String experimentId = (String)context.get("experimentId");
+
+		return ListUtil.map(
+			_experimentDog.getExperimentMetrics(Long.valueOf(experimentId)),
+			ExperimentMetricDTO::new);
 	}
 
 	@Autowired
-	private JobDog _jobDog;
+	private ExperimentDog _experimentDog;
 
 }

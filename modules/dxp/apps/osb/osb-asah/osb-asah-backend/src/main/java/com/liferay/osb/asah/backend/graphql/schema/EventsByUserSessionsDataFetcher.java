@@ -44,7 +44,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "eventsByUserSessions", typeName = "QueryType")
-public class EventsByUserSessionDataFetcher
+public class EventsByUserSessionsDataFetcher
 	extends BaseDataFetcher<EventsByUserSessionDTO> {
 
 	@Override
