@@ -60,8 +60,7 @@ public class EventAttributeDefinitionDTOTest extends BaseDTOTestCase {
 			EventAttributeDefinition.DataType.STRING,
 			eventAttributeDefinitionDTO.getDataType());
 
-		Assertions.assertEquals(
-			null, eventAttributeDefinitionDTO.getDescription());
+		Assertions.assertNull(eventAttributeDefinitionDTO.getDescription());
 
 		Assertions.assertEquals(
 			"canonicalUrl", eventAttributeDefinitionDTO.getDisplayName());

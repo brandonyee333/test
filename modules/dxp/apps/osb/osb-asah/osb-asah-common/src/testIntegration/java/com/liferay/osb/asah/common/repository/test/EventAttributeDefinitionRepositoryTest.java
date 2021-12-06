@@ -55,7 +55,7 @@ public class EventAttributeDefinitionRepositoryTest
 			_eventAttributeDefinitionRepository.searchEventAttributeDefinitions(
 				eventDefinition.getId(), null, PageRequest.of(1, 10), null);
 
-		Assertions.assertFalse(eventAttributeDefinitions.get(0) == null);
+		Assertions.assertNotNull(eventAttributeDefinitions.get(0));
 
 		EventAttributeDefinition eventAttributeDefinition =
 			eventAttributeDefinitions.get(0);
