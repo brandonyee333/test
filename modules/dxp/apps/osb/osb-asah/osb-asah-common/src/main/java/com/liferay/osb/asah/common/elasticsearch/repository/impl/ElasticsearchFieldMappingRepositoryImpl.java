@@ -150,10 +150,8 @@ public class ElasticsearchFieldMappingRepositoryImpl
 							).filter(
 								QueryBuilders.termQuery("ownerType", ownerType)
 							));
-
 						searchSourceBuilder.sort(
 							SortBuilderUtil.fieldSort("displayName"));
-
 						searchSourceBuilder.sort(
 							SortBuilderUtil.fieldSort(
 								"modifiedDate", SortOrder.DESC));
