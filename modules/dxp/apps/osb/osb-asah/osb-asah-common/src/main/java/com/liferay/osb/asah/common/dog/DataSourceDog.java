@@ -36,6 +36,7 @@ import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorC
 import com.liferay.osb.asah.common.security.Encryptor;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.security.KeyPair;
@@ -52,6 +53,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -290,7 +292,28 @@ public class DataSourceDog {
 
 		DataSource existingDataSource = getDataSource(id);
 
+		String name = existingDataSource.getName();
+
 		BeanUtils.copyProperties(dataSource, existingDataSource);
+
+		if (!StringUtils.equals(dataSource.getName(), name)) {
+			String projectId = ProjectIdThreadLocal.getProjectId();
+
+			CompletableFuture.runAsync(
+				() -> {
+					ProjectIdThreadLocal.setProjectId(projectId);
+
+					_fieldDog.updateDataSourceName(id, dataSource.getName());
+				});
+
+			CompletableFuture.runAsync(
+				() -> {
+					ProjectIdThreadLocal.setProjectId(projectId);
+
+					_individualDog.updateDataSourceName(
+						id, dataSource.getName());
+				});
+		}
 
 		return updateDataSourceConfiguration(existingDataSource);
 	}
