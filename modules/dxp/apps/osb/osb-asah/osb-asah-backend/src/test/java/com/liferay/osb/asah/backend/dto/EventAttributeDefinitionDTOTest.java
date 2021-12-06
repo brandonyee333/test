@@ -21,8 +21,6 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 /**
  * @author Leilany Ulisses
  */
@@ -81,8 +79,5 @@ public class EventAttributeDefinitionDTOTest extends BaseDTOTestCase {
 			EventAttributeDefinition.Type.GLOBAL,
 			eventAttributeDefinitionDTO.getType());
 	}
-
-	@Autowired
-	private EventAttributeDefinitionDTO _eventAttributeDefinitionDTO;
 
 }
