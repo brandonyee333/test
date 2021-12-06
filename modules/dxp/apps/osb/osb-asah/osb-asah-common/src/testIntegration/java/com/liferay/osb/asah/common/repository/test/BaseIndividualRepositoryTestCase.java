@@ -754,6 +754,31 @@ public abstract class BaseIndividualRepositoryTestCase
 			Collections.singleton(234L), individual.getOrganizationIds());
 	}
 
+	@Test
+	public void testUpdateDataSourceNameByDataSourceId() {
+		individualRepository.updateDataSourceNameByDataSourceId(
+			1L, "Data Source Name Edited");
+
+		List<Individual> individuals = individualRepository.searchIndividuals(
+			1L, null, 10);
+
+		individuals.forEach(
+			individual -> {
+				Set<Field> customFields = individual.getCustomFields();
+
+				customFields.forEach(
+					customField -> Assertions.assertEquals(
+						"Data Source Name Edited",
+						customField.getDataSourceName()));
+
+				Set<Field> fields = individual.getFields();
+
+				fields.forEach(
+					field -> Assertions.assertEquals(
+						"Data Source Name Edited", field.getDataSourceName()));
+			});
+	}
+
 	@Override
 	protected PagingAndSortingRepository<Individual, Long>
 		getPagingAndSortingRepository() {

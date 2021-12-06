@@ -286,6 +286,20 @@ public abstract class BaseFieldRepositoryTestCase
 		_assertFieldEquals(_field1, fields.get(0));
 	}
 
+	@Test
+	public void testUpdateDataSourceNameByDataSourceId() {
+		_fieldRepository.updateDataSourceNameByDataSourceId(
+			1L, "Source 1 Edited");
+
+		List<Field> fields =
+			_fieldRepository.findByContextAndDataSourceIdAndOwnerIdAndOwnerType(
+				"organization", 1L, 10L, "account");
+
+		fields.forEach(
+			field -> Assertions.assertEquals(
+				"Source 1 Edited", field.getDataSourceName()));
+	}
+
 	@Override
 	protected PagingAndSortingRepository<Field, Long>
 		getPagingAndSortingRepository() {

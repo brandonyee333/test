@@ -14,15 +14,26 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.DataSourceIndividual;
+import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
+import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -94,6 +105,85 @@ public class DataSourceDogTest
 		Assertions.assertEquals("INACTIVE", dataSource.getStatus());
 	}
 
+	@Test
+	public void testPatchDataSource() throws Exception {
+		DataSource dataSource = new DataSource();
+
+		dataSource.setId(405201047787757795L);
+		dataSource.setIsNew(true);
+		dataSource.setName("Test Data Source");
+		dataSource.setProviderType("LIFERAY");
+
+		dataSource = _dataSourceDog.addDataSource(dataSource);
+
+		DXPEntity dxpEntity = new DXPEntity();
+
+		dxpEntity.setDataSourceId(dataSource.getId());
+		dxpEntity.setDataSourceName("Data Source Test");
+		dxpEntity.setIsNew(true);
+
+		_dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.USER);
+
+		Individual individual = new Individual();
+
+		individual.addDataSourceIndividual(
+			new DataSourceIndividual(
+				Collections.emptySet(), 405201047787757795L, null,
+				Collections.singleton("123")));
+
+		Field emailField = new Field();
+
+		emailField.setContext("demographics");
+		emailField.setDataSourceId(dataSource.getId());
+		emailField.setDataSourceName("Source 1");
+		emailField.setFieldType("Text");
+		emailField.setName("email");
+		emailField.setOwnerId(123L);
+		emailField.setOwnerType("individual");
+		emailField.setSourceName("emailAddress");
+		emailField.setValue("test@liferay.com");
+
+		_fieldRepository.save(emailField);
+
+		individual.setFields(Collections.singleton(emailField));
+
+		individual.setId(123L);
+
+		individual = _individualDog.addIndividual(individual, false);
+
+		dataSource.setName("Edited Data Source Test");
+
+		dataSource = _dataSourceDog.patchDataSource(dataSource);
+
+		Thread.sleep(500);
+
+		Assertions.assertEquals(
+			"Edited Data Source Test", dataSource.getName());
+
+		List<Field> fields =
+			_fieldRepository.
+				findByContextAndOwnerIdInGroupByMaxModifiedDateAndName(
+					"demographics", Collections.singletonList(123L));
+
+		fields.forEach(
+			field -> Assertions.assertEquals(
+				"Edited Data Source Test", field.getDataSourceName()));
+
+		individual = _individualDog.getIndividual(individual.getId());
+
+		Set<Field> customFields = individual.getCustomFields();
+
+		customFields.forEach(
+			customField -> Assertions.assertEquals(
+				"Edited Data Source Test", customField.getDataSourceName()));
+
+		Set<Field> individualFields = individual.getFields();
+
+		individualFields.forEach(
+			field -> Assertions.assertEquals(
+				"Edited Data Source Test", field.getDataSourceName()));
+	}
+
 	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -119,5 +209,14 @@ public class DataSourceDogTest
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
+
+	@Autowired
+	private FieldRepository _fieldRepository;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 }

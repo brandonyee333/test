@@ -30,6 +30,7 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,6 +104,14 @@ public class IndividualRepositoryTest extends BaseIndividualRepositoryTestCase {
 		}
 
 		super.testGetIndividualDistributions();
+	}
+
+	@Override
+	@Test
+	public void testUpdateDataSourceNameByDataSourceId() {
+		Assertions.assertThrows(
+			UnsupportedOperationException.class,
+			super::testUpdateDataSourceNameByDataSourceId);
 	}
 
 	@Autowired
