@@ -152,4 +152,8 @@ public interface IndividualRepository
 	@Modifying
 	public void updateAssociatedIds(String fieldName, Set<Long> ids, Long id);
 
+	@Modifying
+	public void updateDataSourceNameByDataSourceId(
+		Long dataSourceId, String dataSourceName);
+
 }

@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
@@ -1354,6 +1355,26 @@ public class ElasticsearchIndividualRepositoryImpl
 				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
 				_getScriptSource(fieldName),
 				Collections.singletonMap(fieldName, ids)));
+	}
+
+	@Override
+	public void updateDataSourceNameByDataSourceId(
+		Long dataSourceId, String dataSourceName) {
+
+		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.nestedQuery(
+					"dataSourceIndividualPKs",
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termQuery(
+							"dataSourceIndividualPKs.dataSourceId",
+							String.valueOf(dataSourceId))),
+					ScoreMode.None)),
+			true,
+			ScriptUtil.createScript(
+				getClass(), "individual_script.painless",
+				Collections.singletonMap("dataSourceName", dataSourceName)),
+			_getCollectionName());
 	}
 
 	private QueryBuilder _buildQueryBuilder(List<Long> ids, String keywords) {

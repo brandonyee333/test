@@ -1599,6 +1599,12 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		).execute();
 	}
 
+	public void updateDataSourceNameByDataSourceId(
+		Long dataSourceId, String dataSourceName) {
+
+		throw new UnsupportedOperationException();
+	}
+
 	private List<Condition> _getConditions(List<Long> ids, String keywords) {
 		List<Condition> conditions = new ArrayList<>();
 

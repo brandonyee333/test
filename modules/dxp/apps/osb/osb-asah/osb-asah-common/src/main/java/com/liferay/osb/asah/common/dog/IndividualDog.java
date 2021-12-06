@@ -1028,6 +1028,11 @@ public class IndividualDog extends BaseFaroInfoDog {
 				segmentId));
 	}
 
+	public void updateDataSourceName(Long dataSourceId, String dataSourceName) {
+		_individualRepository.updateDataSourceNameByDataSourceId(
+			dataSourceId, dataSourceName);
+	}
+
 	public void updateDynamicMemberships(Date modifiedDate, Segment segment) {
 		Long individualSegmentId = segment.getId();
 

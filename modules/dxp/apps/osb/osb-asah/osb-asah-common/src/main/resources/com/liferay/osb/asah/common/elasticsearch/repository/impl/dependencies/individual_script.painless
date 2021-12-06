@@ -1,0 +1,7 @@
+for (key in ctx._source.custom.keySet()) {
+	ctx._source.custom[key][0].dataSourceName = params.dataSourceName;
+}
+
+for (key in ctx._source.demographics.keySet()) {
+	ctx._source.demographics[key][0].dataSourceName = params.dataSourceName;
+}
