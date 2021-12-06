@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -112,7 +113,7 @@ public class EventAnalysisDog {
 	}
 
 	public void deleteEventAnalyses(List<Long> eventAnalysisIds) {
-		eventAnalysisIds.forEach(this::_deleteEventAnalysis);
+		_eventAnalysisRepository.deleteByIdIn(new HashSet<>(eventAnalysisIds));
 	}
 
 	public EventAnalysis getEventAnalysis(Long eventAnalysisId) {
@@ -330,10 +331,6 @@ public class EventAnalysisDog {
 		eventDefinitionBreakdownItem.setValue(value);
 
 		return Collections.singletonList(eventDefinitionBreakdownItem);
-	}
-
-	private void _deleteEventAnalysis(Long eventAnalysisId) {
-		_eventAnalysisRepository.deleteById(eventAnalysisId);
 	}
 
 	private Number _getAnalysisCount(

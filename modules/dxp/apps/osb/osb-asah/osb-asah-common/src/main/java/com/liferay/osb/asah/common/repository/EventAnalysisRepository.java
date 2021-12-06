@@ -16,9 +16,20 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.EventAnalysis;
 
+import java.util.Set;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.repository.query.Param;
+
 /**
  * @author Rachael Koestartyo
  */
 public interface EventAnalysisRepository
 	extends Repository<EventAnalysis, Long> {
+
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void deleteByIdIn(@Param("ids") Set<Long> ids);
+
 }
