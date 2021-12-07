@@ -245,24 +245,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	@JSONWebService
-	public String generateCommerceLicenseKey(
-			String owner, Date startDate, long licenseLifetime)
-		throws Exception {
-
-		validateJSONWebServicePermissions();
-
-		Date expirationDate = new Date(startDate.getTime() + licenseLifetime);
-
-		LicenseKey licenseKey = _createLicenseKey(
-			LicenseEntryConstants.TYPE_ENTERPRISE, 3, "Liferay Commerce",
-			ProductEntryConstants.PRODUCT_ID_COMMERCE, 1, owner, 0,
-			"Trial Activation Key", StringPool.BLANK, StringPool.BLANK,
-			StringPool.BLANK, StringPool.BLANK, startDate, expirationDate);
-
-		return _licenseKeyExporter.toLI(licenseKey);
-	}
-
-	@JSONWebService
 	public String generateWeDeployLicenseKey(
 			String owner, Date startDate, long licenseLifetime)
 		throws Exception {

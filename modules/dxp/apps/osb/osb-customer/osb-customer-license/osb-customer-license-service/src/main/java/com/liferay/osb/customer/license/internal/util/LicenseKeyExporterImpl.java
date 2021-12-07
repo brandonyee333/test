@@ -16,7 +16,6 @@ package com.liferay.osb.customer.license.internal.util;
 
 import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
 import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
-import com.liferay.osb.customer.license.constants.LicenseKeyConstants;
 import com.liferay.osb.customer.license.generator.KeyGenerator;
 import com.liferay.osb.customer.license.model.LicenseKey;
 import com.liferay.osb.customer.license.model.LicenseKeySet;
@@ -24,9 +23,6 @@ import com.liferay.osb.customer.license.util.LicenseKeyExporter;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.xml.DocUtil;
-import com.liferay.portal.kernel.io.Base64OutputStream;
-import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -41,8 +37,6 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 import java.text.DateFormat;
 
@@ -127,99 +121,6 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		FileUtil.write(file, toXML(licenseKey));
 
 		return file;
-	}
-
-	public String toLI(LicenseKey licenseKey) throws IOException {
-		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
-			new UnsyncByteArrayOutputStream();
-		ObjectOutputStream objectOutputStream = null;
-
-		try {
-			objectOutputStream = new ObjectOutputStream(
-				new Base64OutputStream(unsyncByteArrayOutputStream));
-
-			objectOutputStream.writeInt(4);
-			objectOutputStream.writeUTF(
-				GetterUtil.getString(licenseKey.getAccountEntryName()));
-			objectOutputStream.writeUTF(
-				GetterUtil.getString(licenseKey.getDescription()));
-			objectOutputStream.writeObject(licenseKey.getExpirationDate());
-
-			String[] hostNames = null;
-
-			if (Validator.isNotNull(licenseKey.getHostName())) {
-				hostNames = new String[] {licenseKey.getHostName()};
-			}
-			else {
-				hostNames = new String[0];
-			}
-
-			objectOutputStream.writeObject(hostNames);
-
-			objectOutputStream.writeObject(
-				StringUtil.split(licenseKey.getIpAddresses()));
-			objectOutputStream.writeUTF(
-				GetterUtil.getString(licenseKey.getKey()));
-			objectOutputStream.writeLong(System.currentTimeMillis());
-			objectOutputStream.writeUTF(
-				GetterUtil.getString(licenseKey.getLicenseEntryName()));
-			objectOutputStream.writeUTF(
-				GetterUtil.getString(licenseKey.getLicenseEntryType()));
-			objectOutputStream.writeUTF(
-				String.valueOf(licenseKey.getLicenseVersion()));
-
-			objectOutputStream.writeObject(
-				StringUtil.split(licenseKey.getMacAddresses()));
-			objectOutputStream.writeInt(licenseKey.getMaxHttpSessions());
-			objectOutputStream.writeInt(licenseKey.getMaxServers());
-			objectOutputStream.writeLong(licenseKey.getMaxConcurrentUsers());
-			objectOutputStream.writeLong(licenseKey.getMaxUsers());
-
-			String sizing = StringPool.BLANK;
-
-			if (licenseKey.getSizing() > 0) {
-				sizing = LanguageUtil.get(
-					LocaleUtil.US,
-					LicenseKeyConstants.getSizingLabel(licenseKey.getSizing()));
-			}
-
-			objectOutputStream.writeUTF(sizing);
-
-			objectOutputStream.writeUTF(
-				GetterUtil.getString(licenseKey.getOwner()));
-			objectOutputStream.writeUTF(
-				GetterUtil.getString(licenseKey.getProductEntryName()));
-			objectOutputStream.writeUTF(
-				GetterUtil.getString(licenseKey.getProductId()));
-			objectOutputStream.writeUTF(
-				String.valueOf(licenseKey.getProductVersion()));
-
-			String[] serverIds = null;
-
-			if (Validator.isNotNull(licenseKey.getServerId())) {
-				serverIds = new String[] {licenseKey.getServerId()};
-			}
-			else {
-				serverIds = new String[0];
-			}
-
-			objectOutputStream.writeObject(serverIds);
-
-			objectOutputStream.writeObject(licenseKey.getStartDate());
-
-			objectOutputStream.flush();
-
-			return new String(unsyncByteArrayOutputStream.toByteArray());
-		}
-		finally {
-			if (objectOutputStream != null) {
-				objectOutputStream.close();
-			}
-
-			if (unsyncByteArrayOutputStream != null) {
-				unsyncByteArrayOutputStream.close();
-			}
-		}
 	}
 
 	public String toXML(LicenseKey licenseKey) throws Exception {
