@@ -18,10 +18,10 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
+import com.liferay.portal.kernel.test.CaptureHandler;
+import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.test.log.LogCapture;
-import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.search.experiences.rest.client.dto.v1_0.SXPBlueprint;
 import com.liferay.search.experiences.rest.client.dto.v1_0.SearchResponse;
 import com.liferay.search.experiences.rest.client.dto.v1_0.util.SXPBlueprintUtil;
@@ -29,6 +29,7 @@ import com.liferay.search.experiences.rest.client.pagination.Pagination;
 import com.liferay.search.experiences.rest.client.problem.Problem;
 
 import java.util.Collections;
+import java.util.logging.Level;
 
 import org.hamcrest.CoreMatchers;
 
@@ -126,10 +127,9 @@ public class SearchResponseResourceTest
 							Collections.singletonMap(
 								"logExceptionsOnly", false)))) {
 
-				try (LogCapture logCapture =
-						LoggerTestUtil.configureLog4JLogger(
-							_CLASS_NAME_EXCEPTION_MAPPER,
-							LoggerTestUtil.ERROR)) {
+				try (CaptureHandler captureHandler =
+						JDKLoggerTestUtil.configureJDKLogger(
+							_CLASS_NAME_EXCEPTION_MAPPER, Level.SEVERE)) {
 
 					_postSearch(_read());
 				}
@@ -149,9 +149,10 @@ public class SearchResponseResourceTest
 					new HashMapDictionary<>(
 						Collections.singletonMap("logExceptionsOnly", true)))) {
 
-			try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-					_CLASS_NAME_ELASTICSEARCH_INDEX_SEARCHER,
-					LoggerTestUtil.ERROR)) {
+			try (CaptureHandler captureHandler =
+					JDKLoggerTestUtil.configureJDKLogger(
+						_CLASS_NAME_ELASTICSEARCH_INDEX_SEARCHER,
+						Level.SEVERE)) {
 
 				SearchResponse searchResponse = _postSearch(_read());
 
@@ -167,8 +168,9 @@ public class SearchResponseResourceTest
 		throws Exception {
 
 		try {
-			try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-					_CLASS_NAME_EXCEPTION_MAPPER, LoggerTestUtil.ERROR)) {
+			try (CaptureHandler captureHandler =
+					JDKLoggerTestUtil.configureJDKLogger(
+						_CLASS_NAME_EXCEPTION_MAPPER, Level.SEVERE)) {
 
 				_postSearch(_read());
 
