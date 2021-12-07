@@ -183,6 +183,17 @@ public class EventAttributeDefinitionDog {
 			eventDefinitionId);
 	}
 
+	public List<EventAttributeDefinition> getEventAttributeDefinitionsByType(
+		EventAttributeDefinition.Type type) {
+
+		if (Objects.equals(type, EventAttributeDefinition.Type.ALL)) {
+			return IterableUtils.toList(
+				_eventAttributeDefinitionRepository.findAll());
+		}
+
+		return _eventAttributeDefinitionRepository.findByType(type);
+	}
+
 	public Page<EventAttributeDefinition> getEventAttributeDefinitionsPage(
 		Long eventDefinitionId, String keyword, int page, int size, Sort sort,
 		EventAttributeDefinition.Type type) {
