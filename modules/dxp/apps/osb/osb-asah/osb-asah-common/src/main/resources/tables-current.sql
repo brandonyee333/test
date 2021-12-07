@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS EventAnalysis (
 	modifiedDate TIMESTAMPTZ,
 	modifiedByUserId BIGINT,
 	modifiedByUserName TEXT,
-	name VARCHAR(255) UNIQUE,
+	name VARCHAR(255),
 	rangeEnd TIMESTAMPTZ,
 	rangeKey INTEGER,
 	rangeStart TIMESTAMPTZ

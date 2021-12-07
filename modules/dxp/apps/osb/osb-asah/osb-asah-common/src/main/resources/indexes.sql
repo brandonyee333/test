@@ -22,6 +22,8 @@ CREATE INDEX IF NOT EXISTS IX_MEMBERSHIPCHANGE_ISIMD ON MembershipChange (indivi
 
 CREATE UNIQUE INDEX IF NOT EXISTS IX_ACTIVITYGROUP_ATCIDSIDDUI ON ActivityGroup (activityType, channelId, dataSourceId, dayDate, userId);
 
+CREATE UNIQUE INDEX IF NOT EXISTS IX_EVENTANALYSIS_CIN ON EventAnalysis (channelId, name);
+
 CREATE UNIQUE INDEX IF NOT EXISTS IX_EVENTATTRIBUTE_EADIEDEI ON EventAttribute (eventAttributeDefinitionId, eventDate, eventId);
 
 CREATE UNIQUE INDEX IF NOT EXISTS IX_INTEREST_NOIOTRD ON Interest (name, ownerId, ownerType, recordedDate);
