@@ -1012,7 +1012,7 @@ type QueryType {
 		start: Int!
 	): AssetMetricBag
 
-	eventAnalysis(
+	eventAnalysisResult(
 		analysisType: AnalysisType!,
 		channelId: String!,
 		compareToPrevious: Boolean!,

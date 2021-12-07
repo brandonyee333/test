@@ -1,5 +1,5 @@
 {
-	"operationName": "EventAnalysis",
+	"operationName": "EventAnalysisResult",
 	"variables": {
 		"analysisType": "TOTAL",
 		"channelId": "2468",

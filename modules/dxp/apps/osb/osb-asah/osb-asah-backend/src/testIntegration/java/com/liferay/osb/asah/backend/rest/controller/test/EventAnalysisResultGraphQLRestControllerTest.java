@@ -19,23 +19,25 @@ import com.liferay.osb.asah.test.util.annotation.SQLResource;
 /**
  * @author Leslie Wong
  */
-@SQLResource(resourcePath = "event_analysis_graphql_rest_controller_test.sql")
-public class EventAnalysisGraphQLRestControllerTest
+@SQLResource(
+	resourcePath = "event_analysis_result_graphql_rest_controller_test.sql"
+)
+public class EventAnalysisResultGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
 
 	@Override
 	public String getBodyPath() {
-		return "event_analysis_body.json";
+		return "event_analysis_result_body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "expected_event_analysis.json";
+		return "expected_event_analysis_result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "event_analysis_query.graphql";
+		return "event_analysis_result_query.graphql";
 	}
 
 }

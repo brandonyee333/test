@@ -1,0 +1,17 @@
+query EventAnalysisResult($analysisType: AnalysisType!, $channelId: String!, $compareToPrevious: Boolean!, $eventDefinitionId: String!, $page: Int!, $rangeEnd: String, $rangeStart: String, $size: Int!) {
+	eventAnalysisResult(analysisType: $analysisType, channelId: $channelId, compareToPrevious: $compareToPrevious, eventDefinitionId: $eventDefinitionId, page: $page, rangeEnd: $rangeEnd, rangeStart: $rangeStart, size: $size) {
+		breakdownItems {
+			breakdownItems {
+				leafNode
+				name
+				value
+			},
+			leafNode
+			name
+			value
+		}
+		count
+		page
+		value
+	}
+}

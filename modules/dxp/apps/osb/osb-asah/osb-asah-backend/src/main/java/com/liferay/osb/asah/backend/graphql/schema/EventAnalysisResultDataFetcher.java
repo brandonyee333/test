@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component;
  * @author Matthew Kong
  */
 @Component
-@GraphQLTypeWiring(fieldName = "eventAnalysis", typeName = "QueryType")
+@GraphQLTypeWiring(fieldName = "eventAnalysisResult", typeName = "QueryType")
 public class EventAnalysisResultDataFetcher
 	extends BaseDataFetcher<EventAnalysisResult> {
 
