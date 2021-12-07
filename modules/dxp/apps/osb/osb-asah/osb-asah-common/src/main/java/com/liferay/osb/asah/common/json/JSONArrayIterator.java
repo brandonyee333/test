@@ -189,17 +189,15 @@ public class JSONArrayIterator {
 						elasticsearchBulkRequestBuilder.get();
 
 					if (bulkResponse.hasFailures()) {
-						if (_log.isInfoEnabled()) {
-							_log.error(
-								"Unable to process bulk operation " +
-									bulkResponse.buildFailureMessage());
-						}
+						_log.error(
+							"Unable to process bulk operation " +
+								bulkResponse.buildFailureMessage());
 
 						throw new Exception(bulkResponse.buildFailureMessage());
 					}
 
-					if (_log.isInfoEnabled()) {
-						_log.info(
+					if (_log.isDebugEnabled()) {
+						_log.debug(
 							"Processed " + processedCount + " " +
 								_collectionName);
 					}

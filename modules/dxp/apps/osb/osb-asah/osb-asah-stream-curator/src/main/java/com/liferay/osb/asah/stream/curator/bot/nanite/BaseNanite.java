@@ -315,10 +315,10 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 			Log log = getLog();
 
-			if (log.isInfoEnabled()) {
+			if (log.isDebugEnabled()) {
 				Class<?> clazz = getClass();
 
-				log.info(
+				log.debug(
 					String.format(
 						"%s dispatched %d analytics events in %d ms",
 						clazz.getSimpleName(), messages.size(),
@@ -343,10 +343,10 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 					Log log = getLog();
 
-					if (log.isInfoEnabled()) {
+					if (log.isDebugEnabled()) {
 						Class<?> clazz = getClass();
 
-						log.info(
+						log.debug(
 							String.format(
 								"%s processed %d analytics events in %d ms",
 								clazz.getSimpleName(), messages.size(),

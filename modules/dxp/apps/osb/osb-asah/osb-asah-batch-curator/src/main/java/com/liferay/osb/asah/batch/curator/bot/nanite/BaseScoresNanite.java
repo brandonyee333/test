@@ -78,10 +78,10 @@ public abstract class BaseScoresNanite extends BaseNanite {
 
 			run(lastSuccessfulDayDateString);
 
-			if (_log.isInfoEnabled()) {
+			if (_log.isDebugEnabled()) {
 				Class<?> clazz = getClass();
 
-				_log.info(
+				_log.debug(
 					String.format(
 						"Processed %s for %s in %d ms", clazz.getSimpleName(),
 						lastSuccessfulDayDateString,

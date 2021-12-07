@@ -213,8 +213,8 @@ public class CacheProcessorAspect {
 
 			cache.clear();
 
-			if (_log.isInfoEnabled()) {
-				_log.info("Cache cleared: " + cache.getName());
+			if (_log.isDebugEnabled()) {
+				_log.debug("Cache cleared: " + cache.getName());
 			}
 		}
 	}

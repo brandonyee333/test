@@ -226,8 +226,8 @@ public class OSBAsahBatchCuratorBot {
 			() -> ProjectIdThreadLocal.forProject(projectId, runnable),
 			scopedScheduledTaskId);
 
-		if (_log.isInfoEnabled()) {
-			_log.info(
+		if (_log.isDebugEnabled()) {
+			_log.debug(
 				String.format(
 					"%s scheduled to run at %s (%s) for project %s",
 					scheduledTaskId, cronExpression, timeZoneId, projectId));
@@ -252,8 +252,8 @@ public class OSBAsahBatchCuratorBot {
 		String projectId = ProjectIdThreadLocal.getProjectId();
 
 		for (String scheduledTask : _scheduledTasks.get(projectId)) {
-			if (_log.isInfoEnabled()) {
-				_log.info(scheduledTask + " unscheduled");
+			if (_log.isDebugEnabled()) {
+				_log.debug(scheduledTask + " unscheduled");
 			}
 
 			_asahTaskScheduler.unschedule(scheduledTask);

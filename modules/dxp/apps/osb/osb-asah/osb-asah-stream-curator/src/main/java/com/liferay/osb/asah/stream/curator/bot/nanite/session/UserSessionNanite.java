@@ -441,10 +441,10 @@ public class UserSessionNanite implements Nanite {
 				this::_runAsync
 			);
 
-			if (_log.isInfoEnabled()) {
+			if (_log.isDebugEnabled()) {
 				Class<?> clazz = getClass();
 
-				_log.info(
+				_log.debug(
 					String.format(
 						"%s dispatched %d analytics events in %d ms",
 						clazz.getSimpleName(), messages.size(),
@@ -468,10 +468,10 @@ public class UserSessionNanite implements Nanite {
 					_messageSubscriber.sendAckIds(
 						ListUtil.map(messages, Message::getAckId));
 
-					if (_log.isInfoEnabled()) {
+					if (_log.isDebugEnabled()) {
 						Class<?> clazz = getClass();
 
-						_log.info(
+						_log.debug(
 							String.format(
 								"%s processed %d analytics events in %d ms",
 								clazz.getSimpleName(), messages.size(),

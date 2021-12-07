@@ -266,8 +266,8 @@ public class AnalyticsEventsMessageProcessor {
 		}
 
 		if (!_isValidURL(context)) {
-			if (_log.isInfoEnabled()) {
-				_log.info(
+			if (_log.isDebugEnabled()) {
+				_log.debug(
 					"Discarding message from invalid host: " +
 						analyticsEventsMessage.toJSON());
 			}
@@ -376,10 +376,10 @@ public class AnalyticsEventsMessageProcessor {
 					messagesList, tuple2)
 			);
 
-			if (_log.isInfoEnabled()) {
+			if (_log.isDebugEnabled()) {
 				Class<?> clazz = getClass();
 
-				_log.info(
+				_log.debug(
 					String.format(
 						"%s dispatched %d analytics events messages in %d ms",
 						clazz.getSimpleName(), messages.size(),
@@ -422,10 +422,10 @@ public class AnalyticsEventsMessageProcessor {
 
 				_messageSubscriber.sendAckIds(ackIds);
 
-				if (_log.isInfoEnabled()) {
+				if (_log.isDebugEnabled()) {
 					Class<?> clazz = getClass();
 
-					_log.info(
+					_log.debug(
 						String.format(
 							"%s processed %d analytics events messages in %d " +
 								"ms",

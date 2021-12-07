@@ -635,10 +635,10 @@ public class ActivitiesNanite implements Nanite {
 				this::_runAsync
 			);
 
-			if (_log.isInfoEnabled()) {
+			if (_log.isDebugEnabled()) {
 				Class<?> clazz = getClass();
 
-				_log.info(
+				_log.debug(
 					String.format(
 						"%s dispatched %d analytics events in %d ms",
 						clazz.getSimpleName(), messages.size(),
@@ -702,10 +702,10 @@ public class ActivitiesNanite implements Nanite {
 
 					ackIds.addAll(auxAckIds);
 
-					if (_log.isInfoEnabled()) {
+					if (_log.isDebugEnabled()) {
 						Class<?> clazz = getClass();
 
-						_log.info(
+						_log.debug(
 							String.format(
 								"%s processed %d analytics events in %d ms",
 								clazz.getSimpleName(), messages.size(),

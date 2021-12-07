@@ -61,8 +61,8 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 
 		Log log = getLog();
 
-		if (log.isInfoEnabled()) {
-			log.info(
+		if (log.isDebugEnabled()) {
+			log.debug(
 				"Processing audit events for data source ID " + dataSourceId);
 		}
 

@@ -282,10 +282,10 @@ public class IndividualActivityFieldsNanite implements Nanite {
 					this::_runAsync
 				);
 
-				if (_log.isInfoEnabled()) {
+				if (_log.isDebugEnabled()) {
 					Class<?> clazz = getClass();
 
-					_log.info(
+					_log.debug(
 						String.format(
 							"%s dispatched %d messages in %d ms",
 							clazz.getSimpleName(), messages.size(),
@@ -347,10 +347,10 @@ public class IndividualActivityFieldsNanite implements Nanite {
 					_messageSubscriber.sendAckIds(
 						ListUtil.map(messages, Message::getAckId));
 
-					if (_log.isInfoEnabled()) {
+					if (_log.isDebugEnabled()) {
 						Class<?> clazz = getClass();
 
-						_log.info(
+						_log.debug(
 							String.format(
 								"%s processed %d messages in %d ms",
 								clazz.getSimpleName(), messages.size(),

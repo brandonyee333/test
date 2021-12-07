@@ -460,8 +460,8 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 
 			long time = System.currentTimeMillis();
 
-			if (_log.isInfoEnabled()) {
-				_log.info(
+			if (_log.isDebugEnabled()) {
+				_log.debug(
 					String.format(
 						"%s: Curate %s", ProjectIdThreadLocal.getProjectId(),
 						entityTypeName));
@@ -489,8 +489,8 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 
 				processedCount += salesforceAuditEvents.size();
 
-				if (_log.isInfoEnabled()) {
-					_log.info(
+				if (_log.isDebugEnabled()) {
+					_log.debug(
 						String.format(
 							"%s: Curated %s %s records",
 							ProjectIdThreadLocal.getProjectId(), processedCount,
@@ -498,8 +498,8 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 				}
 			}
 
-			if (_log.isInfoEnabled()) {
-				_log.info(
+			if (_log.isDebugEnabled()) {
+				_log.debug(
 					String.format(
 						"%s: Curated %s in %s",
 						ProjectIdThreadLocal.getProjectId(), entityTypeName,

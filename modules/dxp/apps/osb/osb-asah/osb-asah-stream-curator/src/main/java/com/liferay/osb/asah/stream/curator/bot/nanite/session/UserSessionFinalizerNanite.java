@@ -137,10 +137,10 @@ public class UserSessionFinalizerNanite implements Nanite {
 
 			_finalizeUserSessionArm.processSessions(userSessions);
 
-			if (_log.isInfoEnabled()) {
+			if (_log.isDebugEnabled()) {
 				Class<?> clazz = getClass();
 
-				_log.info(
+				_log.debug(
 					String.format(
 						"%s processed %d sessions in %d ms",
 						clazz.getSimpleName(), userSessions.length,

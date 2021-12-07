@@ -97,10 +97,10 @@ public class DXPEntitiesMessageProcessor {
 						messagesList, projectId)
 				);
 
-				if (_log.isInfoEnabled()) {
+				if (_log.isDebugEnabled()) {
 					Class<?> clazz = getClass();
 
-					_log.info(
+					_log.debug(
 						String.format(
 							"%s dispatched %d analytics events messages in " +
 								"%d ms",
@@ -150,9 +150,7 @@ public class DXPEntitiesMessageProcessor {
 				});
 		}
 		catch (Exception exception) {
-			if (_log.isInfoEnabled()) {
-				_log.info(exception, exception);
-			}
+			_log.error(exception, exception);
 		}
 	}
 
@@ -360,9 +358,7 @@ public class DXPEntitiesMessageProcessor {
 				_segmentDog.disableDynamicSegments(dxpEntity.getId(), type);
 			}
 			catch (Exception exception) {
-				if (_log.isInfoEnabled()) {
-					_log.info(exception, exception);
-				}
+				_log.error(exception, exception);
 			}
 
 			_dxpEntityDog.delete(dxpEntity);
@@ -431,9 +427,7 @@ public class DXPEntitiesMessageProcessor {
 			}
 		}
 		catch (Exception exception) {
-			if (_log.isInfoEnabled()) {
-				_log.info(exception, exception);
-			}
+			_log.error(exception, exception);
 		}
 	}
 
@@ -466,10 +460,10 @@ public class DXPEntitiesMessageProcessor {
 						}
 					}
 
-					if (_log.isInfoEnabled()) {
+					if (_log.isDebugEnabled()) {
 						Class<?> clazz = getClass();
 
-						_log.info(
+						_log.debug(
 							String.format(
 								"%s processed %d analytics events messages " +
 									"in %d ms",
@@ -527,9 +521,7 @@ public class DXPEntitiesMessageProcessor {
 			}
 		}
 		catch (Exception exception) {
-			if (_log.isInfoEnabled()) {
-				_log.info(exception, exception);
-			}
+			_log.error(exception, exception);
 		}
 	}
 

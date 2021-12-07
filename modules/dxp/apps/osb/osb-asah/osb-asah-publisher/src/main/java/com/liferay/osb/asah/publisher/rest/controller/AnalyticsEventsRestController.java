@@ -89,8 +89,8 @@ public class AnalyticsEventsRestController {
 					_analyticsEventMessageIds.getIfPresent(
 						analyticsEventsMessageId))) {
 
-				if (_log.isInfoEnabled()) {
-					_log.info(
+				if (_log.isDebugEnabled()) {
+					_log.debug(
 						"Discarding duplicate message: " +
 							analyticsEventsMessage.toJSON());
 				}
@@ -176,8 +176,8 @@ public class AnalyticsEventsRestController {
 						((deltaMilliseconds > DateUtil.DAY) &&
 						 (_eventDog.fetchEvent(analyticsEventId) != null))) {
 
-						if (_log.isInfoEnabled()) {
-							_log.info(
+						if (_log.isDebugEnabled()) {
+							_log.debug(
 								"Discarding duplicate event: " +
 									analyticsEventId);
 						}

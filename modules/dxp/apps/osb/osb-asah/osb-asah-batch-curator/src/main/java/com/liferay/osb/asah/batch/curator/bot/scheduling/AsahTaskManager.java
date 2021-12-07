@@ -177,8 +177,8 @@ public class AsahTaskManager {
 					asahTask.getClassName());
 		}
 
-		if (_log.isInfoEnabled()) {
-			_log.info(
+		if (_log.isDebugEnabled()) {
+			_log.debug(
 				String.format(
 					"Scheduling task %s according cron expression %s",
 					asahTask.getId(), asahTask.getCronExpression()));

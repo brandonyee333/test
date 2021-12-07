@@ -240,8 +240,8 @@ public class ExperimentNanite extends BaseNanite {
 				experimentStatus, winnerDXPVariantId);
 		}
 
-		if (_log.isInfoEnabled()) {
-			_log.info("Updated metrics for experiment " + experimentId);
+		if (_log.isDebugEnabled()) {
+			_log.debug("Updated metrics for experiment " + experimentId);
 		}
 
 		_experimentRepository.save(experiment);
