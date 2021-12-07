@@ -306,11 +306,6 @@ public class DataSourceDog {
 					ProjectIdThreadLocal.setProjectId(projectId);
 
 					_fieldDog.updateDataSourceName(id, dataSource.getName());
-				});
-
-			_boundedExecutor.runAsync(
-				() -> {
-					ProjectIdThreadLocal.setProjectId(projectId);
 
 					_individualDog.updateDataSourceName(
 						id, dataSource.getName());
