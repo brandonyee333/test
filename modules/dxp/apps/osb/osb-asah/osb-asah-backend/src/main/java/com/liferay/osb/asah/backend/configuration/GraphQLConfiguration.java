@@ -176,6 +176,8 @@ public class GraphQLConfiguration {
 		_wireGraphQLTypeProperty(
 			builder, "dxpVariantId", "DXPVariantId", "VariantMetrics");
 		_wireGraphQLTypeProperty(
+			builder, "eventAnalyses", "results", "EventAnalysisBag");
+		_wireGraphQLTypeProperty(
 			builder, "eventAttributeDefinitions", "results",
 			"EventAttributeDefinitionBag");
 		_wireGraphQLTypeProperty(
