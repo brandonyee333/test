@@ -47,6 +47,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -74,6 +77,7 @@ public class EventAnalysisDog {
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
 		String name, TimeRange timeRange, Long userId, String userName) {
 
+		_validateEventAnalysisName(channelId, null, name);
 		_validateEventAnalysisBreakdowns(eventAnalysisBreakdowns);
 
 		Date date = new Date();
@@ -226,6 +230,7 @@ public class EventAnalysisDog {
 		Long eventDefinitionId, String name, TimeRange timeRange, Long userId,
 		String userName) {
 
+		_validateEventAnalysisName(channelId, eventAnalysisId, name);
 		_validateEventAnalysisBreakdowns(eventAnalysisBreakdowns);
 
 		EventAnalysis eventAnalysis = getEventAnalysis(eventAnalysisId);
@@ -570,6 +575,29 @@ public class EventAnalysisDog {
 						HttpStatus.BAD_REQUEST, "Invalid bin size " + binSize);
 				}
 			}
+		}
+	}
+
+	private void _validateEventAnalysisName(
+		Long channelId, @Nullable Long id, String name) {
+
+		if (StringUtils.isBlank(name)) {
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST, "Name cannot be blank");
+		}
+
+		Optional<EventAnalysis> eventAnalysisOptional =
+			_eventAnalysisRepository.findByChannelIdAndNameIgnoreCase(
+				channelId, name);
+
+		EventAnalysis eventAnalysis = eventAnalysisOptional.orElse(null);
+
+		if ((eventAnalysis != null) &&
+			!Objects.equals(eventAnalysis.getId(), id)) {
+
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				String.format("Name %s is already used", name));
 		}
 	}
 
