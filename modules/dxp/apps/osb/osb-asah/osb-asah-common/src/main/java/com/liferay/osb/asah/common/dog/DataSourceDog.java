@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
@@ -53,9 +54,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.annotation.PreDestroy;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -299,14 +301,14 @@ public class DataSourceDog {
 		if (!StringUtils.equals(dataSource.getName(), name)) {
 			String projectId = ProjectIdThreadLocal.getProjectId();
 
-			CompletableFuture.runAsync(
+			_boundedExecutor.runAsync(
 				() -> {
 					ProjectIdThreadLocal.setProjectId(projectId);
 
 					_fieldDog.updateDataSourceName(id, dataSource.getName());
 				});
 
-			CompletableFuture.runAsync(
+			_boundedExecutor.runAsync(
 				() -> {
 					ProjectIdThreadLocal.setProjectId(projectId);
 
@@ -657,6 +659,11 @@ public class DataSourceDog {
 		}
 	}
 
+	@PreDestroy
+	private void _destroy() {
+		_boundedExecutor.shutdown();
+	}
+
 	private List<Long> _getDataIds(String collectionName, Long dataSourceId) {
 		List<? extends DXPEntity> dxpEntities =
 			_dxpEntityDog.findByAfterAndFieldsAndType(
@@ -792,6 +799,9 @@ public class DataSourceDog {
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
+
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(10, 1);
 
 	@Autowired
 	private ChannelDog _channelDog;
