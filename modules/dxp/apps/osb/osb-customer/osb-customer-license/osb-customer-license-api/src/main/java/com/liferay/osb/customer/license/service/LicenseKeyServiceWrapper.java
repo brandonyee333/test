@@ -90,15 +90,6 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
-	public String generateCommerceLicenseKey(
-			String owner, java.util.Date startDate, long licenseLifetime)
-		throws Exception {
-
-		return _licenseKeyService.generateCommerceLicenseKey(
-			owner, startDate, licenseLifetime);
-	}
-
-	@Override
 	public String generateWeDeployLicenseKey(
 			String owner, java.util.Date startDate, long licenseLifetime)
 		throws Exception {

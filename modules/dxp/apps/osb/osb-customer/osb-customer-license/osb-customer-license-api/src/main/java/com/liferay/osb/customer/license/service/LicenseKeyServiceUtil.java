@@ -92,14 +92,6 @@ public class LicenseKeyServiceUtil {
 			owner, startDate, licenseLifetime);
 	}
 
-	public static String generateCommerceLicenseKey(
-			String owner, java.util.Date startDate, long licenseLifetime)
-		throws Exception {
-
-		return getService().generateCommerceLicenseKey(
-			owner, startDate, licenseLifetime);
-	}
-
 	public static String generateWeDeployLicenseKey(
 			String owner, java.util.Date startDate, long licenseLifetime)
 		throws Exception {

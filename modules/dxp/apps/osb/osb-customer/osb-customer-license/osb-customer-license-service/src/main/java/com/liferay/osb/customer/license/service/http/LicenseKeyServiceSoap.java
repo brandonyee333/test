@@ -164,24 +164,6 @@ public class LicenseKeyServiceSoap {
 		}
 	}
 
-	public static String generateCommerceLicenseKey(
-			String owner, java.util.Date startDate, long licenseLifetime)
-		throws RemoteException {
-
-		try {
-			String returnValue =
-				LicenseKeyServiceUtil.generateCommerceLicenseKey(
-					owner, startDate, licenseLifetime);
-
-			return returnValue;
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
 	public static String generateWeDeployLicenseKey(
 			String owner, java.util.Date startDate, long licenseLifetime)
 		throws RemoteException {

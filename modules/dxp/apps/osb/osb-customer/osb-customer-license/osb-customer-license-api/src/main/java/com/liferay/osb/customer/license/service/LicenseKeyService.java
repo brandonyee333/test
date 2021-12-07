@@ -93,11 +93,6 @@ public interface LicenseKeyService extends BaseService {
 		throws Exception;
 
 	@JSONWebService
-	public String generateCommerceLicenseKey(
-			String owner, Date startDate, long licenseLifetime)
-		throws Exception;
-
-	@JSONWebService
 	public String generateWeDeployLicenseKey(
 			String owner, Date startDate, long licenseLifetime)
 		throws Exception;
