@@ -43,7 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Rachael Koestartyo
  */
-public class DeleteEventAnalysisMutationDataFetcherTest
+public class DeleteEventAnalysesMutationDataFetcherTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 

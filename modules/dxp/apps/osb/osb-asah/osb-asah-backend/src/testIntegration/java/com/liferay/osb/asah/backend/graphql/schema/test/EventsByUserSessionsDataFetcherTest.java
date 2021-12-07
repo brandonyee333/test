@@ -57,7 +57,7 @@ import org.springframework.context.annotation.Import;
  * @author Marcos Martins
  */
 @Import(JDBCTestConfiguration.class)
-public class EventsByUserSessionDataFetcherTest
+public class EventsByUserSessionsDataFetcherTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
