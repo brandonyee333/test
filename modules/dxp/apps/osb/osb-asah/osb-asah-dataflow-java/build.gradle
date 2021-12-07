@@ -1,0 +1,15 @@
+dependencies {
+	compile group: "org.apache.beam", name: "beam-runners-direct-java", version: "2.22.0"
+	compile group: "org.apache.beam", name: "beam-runners-google-cloud-dataflow-java", version: "2.22.0"
+	compile group: "org.apache.beam", name: "beam-sdks-java-core", version: "2.22.0"
+	compile group: "org.apache.beam", name: "beam-sdks-java-extensions-google-cloud-platform-core", version: "2.22.0"
+	compile group: "org.apache.beam", name: "beam-sdks-java-io-google-cloud-platform", version: "2.22.0"
+}
+
+task execute(type: JavaExec)
+
+execute {
+	args System.hasProperty("exec.args") ? System.getProperty("exec.args").split() : []
+	classpath = sourceSets.main.runtimeClasspath
+	main = System.getProperty("exec.mainClass")
+}
