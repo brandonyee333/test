@@ -205,7 +205,7 @@ public class FieldMappingDog {
 		return fieldOptional.orElseThrow(
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
-				"There is no field with ID " + fieldMappingId));
+				"There is no field mapping with ID " + fieldMappingId));
 	}
 
 	public List<Long> getFieldMappingIds(Long dataSourceId) {
