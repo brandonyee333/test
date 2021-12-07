@@ -198,6 +198,9 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 					))
 			).orderBy(
 				DSL.field(
+					"fieldmapping.displayName"
+				).asc(),
+				DSL.field(
 					"fieldmapping.modifiedDate"
 				).desc()
 			).fetch(

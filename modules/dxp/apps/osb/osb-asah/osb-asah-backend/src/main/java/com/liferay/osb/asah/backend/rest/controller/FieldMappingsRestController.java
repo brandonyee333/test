@@ -114,7 +114,7 @@ public class FieldMappingsRestController extends BaseRestController {
 	public String patchFieldMapping(
 		@PathVariable Long id, @RequestBody Map<String, Object> map) {
 
-		FieldMapping fieldMapping = _fieldMappingDog.fetchFieldMapping(id);
+		FieldMapping fieldMapping = _fieldMappingDog.getFieldMapping(id);
 
 		String dataSourceFieldName = String.valueOf(map.get("fieldName"));
 		Long dataSourceId = Long.valueOf(
