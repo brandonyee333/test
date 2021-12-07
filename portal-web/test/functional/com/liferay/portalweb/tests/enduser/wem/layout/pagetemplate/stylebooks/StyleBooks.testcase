@@ -784,6 +784,8 @@ definition {
 	@description = "This is a test for LPS-140834. Stylebook can't be selected when public theme matches master page's theme."
 	@priority = "4"
 	test SelectStyleBookInMasterPageWhenUsePublicPagesTheme {
+		property portal.release = "false";
+
 		task ("Add a public page and change it's theme to Minium") {
 			SitePages.openPagesAdmin(siteURLKey = "Test Site Name");
 
