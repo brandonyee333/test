@@ -3702,6 +3702,7 @@ public class JenkinsResultsParserUtil {
 			}
 		}
 
+
 		url = fixURL(url);
 
 		String key = url.replace("//", "/");
@@ -3716,6 +3717,9 @@ public class JenkinsResultsParserUtil {
 			if ((cachedFile != null) && cachedFile.exists()) {
 				return new FileInputStream(cachedFile);
 			}
+		}
+		else {
+			url = fixFileURL(url);
 		}
 
 		int retryCount = 0;
@@ -5449,6 +5453,8 @@ public class JenkinsResultsParserUtil {
 		"http(?:|s):\\/\\/test-(?<cohortNumber>[\\d]{1})-" +
 			"(?<masterNumber>[\\d]{1,2}).*(?:|\\.liferay\\.com)\\/+job\\/+" +
 				"(?<jobName>[\\w\\W]*?)\\/+(?<buildNumber>[0-9]*)");
+	private static final Pattern _urlQueryStringPattern = Pattern.compile(
+		"\\&??(\\w++)=([^\\?]*)");
 	private static final File _userHomeDir = new File(
 		System.getProperty("user.home"));
 
