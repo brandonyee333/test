@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.entity.EventAnalysis;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.cache.annotation.CacheEvict;
@@ -38,6 +39,9 @@ public interface EventAnalysisRepository
 	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteByIdIn(@Param("ids") Set<Long> ids);
+
+	public Optional<EventAnalysis> findByChannelIdAndNameIgnoreCase(
+		Long channelId, String name);
 
 	@Cacheable
 	public List<EventAnalysis> searchEventAnalyses(
