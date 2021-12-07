@@ -113,11 +113,13 @@ public class EventAnalysisDTO {
 	}
 
 	@GraphQLProperty("eventAnalysisBreakdowns")
+	@JsonProperty("eventAnalysisBreakdowns")
 	public List<EventAnalysisBreakdownDTO> getEventAnalysisBreakdownDTOs() {
 		return _eventAnalysisBreakdownDTOs;
 	}
 
 	@GraphQLProperty("eventAnalysisFilters")
+	@JsonProperty("eventAnalysisFilters")
 	public List<EventAnalysisFilterDTO> getEventAnalysisFilterDTOs() {
 		return _eventAnalysisFilterDTOs;
 	}
