@@ -16,11 +16,15 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.EventAnalysis;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Rachael Koestartyo
@@ -28,8 +32,15 @@ import org.springframework.data.repository.query.Param;
 public interface EventAnalysisRepository
 	extends Repository<EventAnalysis, Long> {
 
+	@Cacheable
+	public long countEventAnalyses(Long channelId, @Nullable String keyword);
+
 	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteByIdIn(@Param("ids") Set<Long> ids);
+
+	@Cacheable
+	public List<EventAnalysis> searchEventAnalyses(
+		Long channelId, @Nullable String keyword, Pageable pageable);
 
 }
