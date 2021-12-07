@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
@@ -42,6 +43,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author André Miranda
@@ -153,9 +155,15 @@ public class DataSourceDogTest
 
 		dataSource.setName("Edited Data Source Test");
 
+		BoundedExecutor boundedExecutor = BoundedExecutor.newBoundedExecutor(
+			10, 1);
+
+		ReflectionTestUtils.setField(
+			_dataSourceDog, "_boundedExecutor", boundedExecutor);
+
 		dataSource = _dataSourceDog.patchDataSource(dataSource);
 
-		Thread.sleep(500);
+		boundedExecutor.awaitPendingTasks();
 
 		Assertions.assertEquals(
 			"Edited Data Source Test", dataSource.getName());
