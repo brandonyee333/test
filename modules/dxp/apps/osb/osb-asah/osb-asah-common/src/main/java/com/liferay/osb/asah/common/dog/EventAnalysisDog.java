@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.model.DateGrouping;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.EventAnalysisResult;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventAnalysisRepository;
 import com.liferay.osb.asah.common.repository.EventRepository;
@@ -40,6 +41,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -51,9 +53,12 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -114,6 +119,22 @@ public class EventAnalysisDog {
 
 	public void deleteEventAnalyses(List<Long> eventAnalysisIds) {
 		_eventAnalysisRepository.deleteByIdIn(new HashSet<>(eventAnalysisIds));
+	}
+
+	public Page<EventAnalysis> getEventAnalysesPage(
+		Long channelId, @Nullable String keyword, int page, int size,
+		Sort sort) {
+
+		_validate(sort);
+
+		PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+		return PageableExecutionUtils.getPage(
+			_eventAnalysisRepository.searchEventAnalyses(
+				channelId, keyword, pageRequest),
+			pageRequest,
+			() -> _eventAnalysisRepository.countEventAnalyses(
+				channelId, keyword));
 	}
 
 	public EventAnalysis getEventAnalysis(Long eventAnalysisId) {
@@ -510,6 +531,16 @@ public class EventAnalysisDog {
 			channelId, eventAnalysisBreakdowns.get(0), eventAnalysisFilters,
 			eventDefinitionId, timeRange.getEndDate(), timeRange.getStartDate(),
 			_timeZoneDog.getTimeZoneId());
+	}
+
+	private void _validate(Sort sort) {
+		String sortColumn = sort.getColumn();
+
+		if (!Objects.equals(sortColumn, "name")) {
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"Unable to sort event analysis by " + sortColumn);
+		}
 	}
 
 	private void _validateEventAnalysisBreakdowns(
