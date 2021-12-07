@@ -4,9 +4,4 @@
 		<Class name="com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener" />
 		<Method name="afterTestMethod" />
 	</Match>
-	<Match>
-		<Bug pattern="UNENCRYPTED_SOCKET" />
-		<Class name="com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner" />
-		<Method name="_pingHost" />
-	</Match>
 </FindBugsFilter>
