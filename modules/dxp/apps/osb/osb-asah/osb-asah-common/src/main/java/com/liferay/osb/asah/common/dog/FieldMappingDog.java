@@ -77,9 +77,7 @@ public class FieldMappingDog {
 	}
 
 	public FieldMapping addFieldMapping(FieldMapping fieldMapping) {
-		fieldMapping = _fieldMappingRepository.save(fieldMapping);
-
-		return fetchFieldMapping(fieldMapping.getId());
+		return _fieldMappingRepository.save(fieldMapping);
 	}
 
 	public void addFieldMapping(
@@ -178,10 +176,6 @@ public class FieldMappingDog {
 	}
 
 	public FieldMapping fetchFieldMapping(Long fieldMappingId) {
-		if (fieldMappingId == null) {
-			return null;
-		}
-
 		Optional<FieldMapping> fieldMappingOptional =
 			_fieldMappingRepository.findById(fieldMappingId);
 
@@ -288,18 +282,14 @@ public class FieldMappingDog {
 	public FieldMapping removeDataSourceFieldName(
 		Long dataSourceId, FieldMapping fieldMapping) {
 
-		if (fieldMapping != null) {
-			Map<String, String> dataSourceFieldNames =
-				fieldMapping.getDataSourceFieldNames();
+		Map<String, String> dataSourceFieldNames =
+			fieldMapping.getDataSourceFieldNames();
 
-			dataSourceFieldNames.remove(String.valueOf(dataSourceId));
+		dataSourceFieldNames.remove(String.valueOf(dataSourceId));
 
-			fieldMapping.setDataSourceFieldNames(dataSourceFieldNames);
+		fieldMapping.setDataSourceFieldNames(dataSourceFieldNames);
 
-			return _fieldMappingRepository.save(fieldMapping);
-		}
-
-		return null;
+		return _fieldMappingRepository.save(fieldMapping);
 	}
 
 	public Page<FieldMapping> searchFieldMappingsPage(
