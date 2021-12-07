@@ -791,6 +791,8 @@ definition {
 				groupName = "Test Site Name",
 				layoutName = "home");
 
+			SitePages.openPagesAdmin(siteURLKey = "test-site-name");
+
 			ProductMenu.gotoPortlet(
 				category = "Site Builder",
 				portlet = "Pages");
