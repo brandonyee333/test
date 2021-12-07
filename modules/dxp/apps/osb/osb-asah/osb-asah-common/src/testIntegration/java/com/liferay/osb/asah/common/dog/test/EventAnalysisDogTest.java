@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.model.EventAnalysisResult;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventAnalysisRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.json.JSONObject;
 
@@ -120,6 +122,116 @@ public class EventAnalysisDogTest
 			Collections.singletonList(updatedEventAnalysis.getId()));
 
 		Assertions.assertEquals(0, _eventAnalysisRepository.count());
+	}
+
+	@SQLResource(resourcePath = "test_event_analysis_name.sql")
+	@Test
+	public void testEventAnalysisName() {
+
+		// Test "add" with empty name
+
+		Exception exception = Assertions.assertThrows(
+			OSBAsahException.class, () -> _addEventAnalysis(1L, " "));
+
+		Assertions.assertEquals("Name cannot be blank", exception.getMessage());
+
+		// Test "add" with already existing name in the
+		// same channel (case-insensitive)
+
+		String eventAnalysisName1 = "ADD EVENT ANALYSIS IN THE SAME CHANNEL";
+
+		exception = Assertions.assertThrows(
+			OSBAsahException.class,
+			() -> {
+				_addEventAnalysis(1L, eventAnalysisName1.toLowerCase());
+				_addEventAnalysis(1L, eventAnalysisName1);
+			});
+
+		Assertions.assertEquals(
+			String.format("Name %s is already used", eventAnalysisName1),
+			exception.getMessage());
+
+		// Test "add" with already existing name in a
+		// different channel (case-insensitive)
+
+		EventAnalysis eventAnalysis1 = _addEventAnalysis(
+			2L, eventAnalysisName1);
+
+		Assertions.assertNotNull(eventAnalysis1);
+
+		Optional<Long> eventAnalysisIdOptional = Optional.of(
+			eventAnalysis1.getId());
+
+		Long eventAnalysisId = eventAnalysisIdOptional.orElse(0L);
+
+		Optional<EventAnalysis> eventAnalysisOptional1 =
+			_eventAnalysisRepository.findById(eventAnalysisId);
+
+		EventAnalysis eventAnalysis2 = eventAnalysisOptional1.orElse(null);
+
+		Assertions.assertNotNull(eventAnalysis2);
+
+		// Test "update" with empty name
+
+		exception = Assertions.assertThrows(
+			OSBAsahException.class,
+			() -> _updateEventAnalysis(eventAnalysis2, null));
+
+		Assertions.assertEquals("Name cannot be blank", exception.getMessage());
+
+		// Test "update" with already existing name for a
+		// different record in the same channel (case-insensitive)
+
+		String eventAnalysisName2 = "UPDATE EVENT ANALYSIS IN THE SAME CHANNEL";
+
+		exception = Assertions.assertThrows(
+			OSBAsahException.class,
+			() -> {
+				_addEventAnalysis(
+					eventAnalysis2.getChannelId(),
+					eventAnalysisName2.toLowerCase());
+				_updateEventAnalysis(eventAnalysis2, eventAnalysisName2);
+			});
+
+		Assertions.assertEquals(
+			String.format("Name %s is already used", eventAnalysisName2),
+			exception.getMessage());
+
+		// Test "update" with already existing name for a different
+		// record in a different channel (case-insensitive)
+
+		EventAnalysis eventAnalysis3 = _updateEventAnalysis(
+			eventAnalysis2, eventAnalysisName1);
+
+		Assertions.assertNotNull(eventAnalysis3);
+
+		eventAnalysisIdOptional = Optional.of(eventAnalysis3.getId());
+
+		eventAnalysisId = eventAnalysisIdOptional.orElse(0L);
+
+		Optional<EventAnalysis> eventAnalysisOptional2 =
+			_eventAnalysisRepository.findById(eventAnalysisId);
+
+		EventAnalysis eventAnalysis4 = eventAnalysisOptional2.orElse(null);
+
+		Assertions.assertNotNull(eventAnalysis4);
+
+		// Test "update" with already existing name for the same
+		// record (case-insensitive)
+
+		eventAnalysis4 = _updateEventAnalysis(
+			eventAnalysis4, eventAnalysis4.getName());
+
+		Assertions.assertNotNull(eventAnalysis4);
+
+		eventAnalysisIdOptional = Optional.of(eventAnalysis4.getId());
+
+		eventAnalysisId = eventAnalysisIdOptional.orElse(0L);
+
+		Optional<EventAnalysis> eventAnalysisOptional3 =
+			_eventAnalysisRepository.findById(eventAnalysisId);
+
+		Assertions.assertNotNull(eventAnalysisOptional3.orElse(null));
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analyses.sql")
@@ -712,6 +824,29 @@ public class EventAnalysisDogTest
 		Assertions.assertEquals(1, eventAnalysisResult.getCount());
 		Assertions.assertEquals(0, eventAnalysisResult.getPage());
 		Assertions.assertEquals(10L, eventAnalysisResult.getValue());
+	}
+
+	private EventAnalysis _addEventAnalysis(Long channelId, String name) {
+		return _eventAnalysisDog.addEventAnalysis(
+			AnalysisType.TOTAL, channelId, false, Collections.emptyList(),
+			Collections.emptyList(), 246810L, name,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")),
+			100L, "Test");
+	}
+
+	private EventAnalysis _updateEventAnalysis(
+		EventAnalysis eventAnalysis, String name) {
+
+		return _eventAnalysisDog.updateEventAnalysis(
+			AnalysisType.valueOf(eventAnalysis.getEventAnalysisType()),
+			eventAnalysis.getChannelId(), eventAnalysis.getCompareToPrevious(),
+			Collections.emptyList(), Collections.emptyList(),
+			eventAnalysis.getId(), eventAnalysis.getEventDefinitionId(), name,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")),
+			eventAnalysis.getModifiedByUserId(),
+			eventAnalysis.getModifiedByUserName());
 	}
 
 	@Autowired
