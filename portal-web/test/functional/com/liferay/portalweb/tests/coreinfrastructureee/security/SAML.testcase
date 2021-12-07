@@ -16,7 +16,7 @@ definition {
 		User.firstLoginPG();
 	}
 
-	@description = "This is a use case for LPS-32577. Add user inherited roles as SAML attribute statements."
+	@description = "This is a use case for LPS-32577. Add user inherited roles as SAML attribute statements. "
 	@priority = "5"
 	@uitest
 	test AddUserInheritedRolesAsSAMLAttributeStatements {
