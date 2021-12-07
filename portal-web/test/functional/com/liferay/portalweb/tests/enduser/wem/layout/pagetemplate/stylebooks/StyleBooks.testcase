@@ -795,11 +795,9 @@ definition {
 				category = "Site Builder",
 				portlet = "Pages");
 
-			Click(locator1 = "SitePages#PUBLIC_PAGES_CONFIGURATION");
-
-			Theme.changeCurrentTheme(themeName = "Minium");
-
-			PortletEntry.save();
+			Site.changeCurrentTheme(
+				pageName = "Public Pages",
+				themeName = "Minium");
 		}
 
 		task ("Add a private page and change it's theme to Speedwell") {
@@ -811,11 +809,9 @@ definition {
 				category = "Site Builder",
 				portlet = "Pages");
 
-			Click(locator1 = "SitePages#PRIVATE_PAGES_CONFIGURATION");
-
-			Theme.changeCurrentTheme(themeName = "Speedwell");
-
-			PortletEntry.save();
+			Site.changeCurrentTheme(
+				pageName = "Private Pages",
+				themeName = "Speedwell");
 		}
 
 		task ("Add a style book") {

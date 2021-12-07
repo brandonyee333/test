@@ -1588,4 +1588,18 @@ definition {
 		AssertLocation(value1 = "${sitePageURL}");
 	}
 
+	macro changeCurrentTheme {
+		SitePages.togglePrivacy(privacy = "${pageName}");
+
+		Click(
+			key_pageName = "${pageName}",
+			locator1 = "Icon#COG_PAGE");
+
+		Navigator.gotoNavTab(navTab = "Look and Feel");
+
+		Theme.changeCurrentTheme(themeName = "${themeName}");
+
+		PortletEntry.save();
+	}
+
 }
