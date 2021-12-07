@@ -368,6 +368,11 @@ type EventAnalysis {
 	rangeStart: String
 }
 
+type EventAnalysisBag {
+	eventAnalyses: [EventAnalysis]
+	total: Int
+}
+
 type EventAnalysisBreakdown {
 	attributeId: String
 	attributeType: String
@@ -1011,6 +1016,14 @@ type QueryType {
 		sort: Sort!,
 		start: Int!
 	): AssetMetricBag
+
+	eventAnalyses(
+		channelId: String!,
+		keyword: String,
+		page: Int!,
+		size: Int!,
+		sort: Sort!
+	): EventAnalysisBag
 
 	eventAnalysisResult(
 		analysisType: AnalysisType!,
