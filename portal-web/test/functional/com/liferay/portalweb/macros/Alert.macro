@@ -55,6 +55,8 @@ definition {
 	macro viewSuccessMessage {
 		AssertVisible(locator1 = "Message#SUCCESS");
 
+		Click(locator1 = "Message#SUCCESS");
+
 		Pause(locator1 = "5000");
 
 		Alert._closeMessage(messageType = "SUCCESS");
