@@ -1005,13 +1005,13 @@ public class DLFileEntryFinderImpl
 
 		if ((orderByComparator != null) &&
 			(StringUtil.containsIgnoreCase(
-				orderByComparator.getOrderBy(), _READ_COUNT_FIELD,
+				orderByComparator.getOrderBy(), "readCount",
 				StringPool.COMMA) ||
 			 StringUtil.containsIgnoreCase(
-				 orderByComparator.getOrderBy(), _READ_COUNT_FIELD + " ASC",
+				 orderByComparator.getOrderBy(), "readCount ASC",
 				 StringPool.COMMA) ||
 			 StringUtil.containsIgnoreCase(
-				 orderByComparator.getOrderBy(), _READ_COUNT_FIELD + " DESC",
+				 orderByComparator.getOrderBy(), "readCount DESC",
 				 StringPool.COMMA))) {
 
 			return true;
@@ -1019,7 +1019,5 @@ public class DLFileEntryFinderImpl
 
 		return false;
 	}
-
-	private static final String _READ_COUNT_FIELD = "readCount";
 
 }
