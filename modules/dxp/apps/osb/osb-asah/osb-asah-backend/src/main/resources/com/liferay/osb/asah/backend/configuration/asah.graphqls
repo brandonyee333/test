@@ -1025,6 +1025,10 @@ type QueryType {
 		sort: Sort!
 	): EventAnalysisBag
 
+	eventAnalysis(
+		eventAnalysisId: String!
+	): EventAnalysis
+
 	eventAnalysisResult(
 		analysisType: AnalysisType!,
 		channelId: String!,
