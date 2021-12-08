@@ -1,0 +1,13 @@
+query EventAnalyses($channelId: String!, $keyword: String, $page: Int!, $size: Int!, $sort: Sort!) {
+	eventAnalyses(channelId: $channelId, keyword: $keyword, page: $page, size: $size, sort: $sort) {
+		eventAnalyses {
+			... on EventAnalysis {
+				createdByUserName
+				id
+				modifiedDate
+				name
+			}
+		}
+		total
+	}
+}

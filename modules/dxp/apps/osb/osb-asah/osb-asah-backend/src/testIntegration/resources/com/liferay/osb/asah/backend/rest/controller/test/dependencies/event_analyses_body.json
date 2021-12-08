@@ -1,0 +1,13 @@
+{
+	"operationName": "EventAnalyses",
+	"variables": {
+		"channelId": "2468",
+		"keyword": "Event",
+		"page": 0,
+		"size": 5,
+		"sort": {
+			"column": "name",
+			"type": "ASC"
+		}
+	}
+}

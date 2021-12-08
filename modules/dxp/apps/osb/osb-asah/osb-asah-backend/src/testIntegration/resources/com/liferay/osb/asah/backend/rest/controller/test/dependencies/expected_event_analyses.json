@@ -1,0 +1,21 @@
+{
+	"data": {
+		"eventAnalyses": {
+			"eventAnalyses": [
+				{
+					"createdByUserName": "Test",
+					"id": "2345",
+					"modifiedDate": "2021-05-12T18:12:00.000Z",
+					"name": "Event Analysis 1"
+				},
+				{
+					"createdByUserName": "Test",
+					"id": "2346",
+					"modifiedDate": "2021-05-12T18:12:00.000Z",
+					"name": "Event Analysis 2"
+				}
+			],
+			"total": 2
+		}
+	}
+}
