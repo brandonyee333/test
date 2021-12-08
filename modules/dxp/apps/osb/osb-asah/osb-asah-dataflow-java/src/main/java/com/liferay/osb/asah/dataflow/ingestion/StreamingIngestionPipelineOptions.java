@@ -25,24 +25,16 @@ import org.apache.beam.sdk.options.Validation;
 public interface StreamingIngestionPipelineOptions
 	extends DataflowPipelineOptions {
 
-	@Description(
-		"Pub/Sub Subscription to consume from. The name should be in the format of projects/<project-id>/subscriptions/<subscription-name>."
-	)
 	@Validation.Required
 	public String getInputSubscription();
 
-	@Description("The directory to output files to. Must end with a slash.")
 	@Validation.Required
 	public String getOutputDirectory();
 
 	@Default.String("output")
-	@Description("The output file name prefix. Default to 'output'.")
 	public String getOutputFileNamePrefix();
 
 	@Default.Long(5)
-	@Description(
-		"The window duration in which data will be written in minutes. Defaults to 5."
-	)
 	public long getWindowDuration();
 
 	public void setInputSubscription(String inputSubscription);
