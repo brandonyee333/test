@@ -26,9 +26,11 @@ import com.liferay.osb.asah.common.model.DateGrouping;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.EventAnalysisResult;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventAnalysisRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -49,6 +51,7 @@ import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Leslie Wong
@@ -117,6 +120,20 @@ public class EventAnalysisDogTest
 			Collections.singletonList(updatedEventAnalysis.getId()));
 
 		Assertions.assertEquals(0, _eventAnalysisRepository.count());
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analyses.sql")
+	@Test
+	public void testGetEventAnalysesPage() {
+		Page<EventAnalysis> eventAnalysesPage =
+			_eventAnalysisDog.getEventAnalysesPage(
+				1L, "1", 0, 10, Sort.asc("name"));
+
+		List<Long> eventAnalysisIds = ListUtil.map(
+			eventAnalysesPage.getContent(), EventAnalysis::getId);
+
+		Assertions.assertEquals(1, eventAnalysisIds.size());
+		Assertions.assertEquals(2345L, eventAnalysisIds.get(0));
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis.sql")
