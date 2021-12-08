@@ -1,9 +1,9 @@
 #!/bin/bash
 
+export MAIN_CLASS_NAME=com.liferay.osb.asah.dataflow.ingestion.StreamingIngestionPipeline
+export PIPELINE_FOLDER=gs://ac-dataflow
 export PROJECT_ID=$(gcloud config get-value project)
 export REGION='us-central1'
-export PIPELINE_FOLDER=gs://ac-dataflow
-export MAIN_CLASS_NAME=com.liferay.osb.asah.dataflow.ingestion.StreamingIngestionPipeline
 export RUNNER=DataflowRunner
 
 ../gradlew clean compileJava execute \
