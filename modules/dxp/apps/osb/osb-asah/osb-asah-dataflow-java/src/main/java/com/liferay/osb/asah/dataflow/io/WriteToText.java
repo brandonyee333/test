@@ -90,7 +90,7 @@ public class WriteToText {
 
 			return resourceId.resolve(
 				String.format(
-					"%s/%s%s", _dateFormatter.print(intervalWindow.start()),
+					"%s/%s%s", _dateDateTimeFormatter.print(intervalWindow.start()),
 					_getFileNameForWindow(intervalWindow),
 					outputFileHints.getSuggestedFilenameSuffix()),
 				ResolveOptions.StandardResolveOptions.RESOLVE_FILE);
@@ -105,14 +105,14 @@ public class WriteToText {
 
 			return String.format(
 				"%s-%s-to-%s", filePrefix,
-				_timeFormatter.print(intervalWindow.start()),
-				_timeFormatter.print(intervalWindow.end()));
+				_timeDateTimeFormatter.print(intervalWindow.start()),
+				_timeDateTimeFormatter.print(intervalWindow.end()));
 		}
 
-		private static final DateTimeFormatter _dateFormatter =
+		private static final DateTimeFormatter _dateDateTimeFormatter =
 			ISODateTimeFormat.date(
 			).withZoneUTC();
-		private static final DateTimeFormatter _timeFormatter =
+		private static final DateTimeFormatter _timeDateTimeFormatter =
 			ISODateTimeFormat.hourMinute(
 			).withZoneUTC();
 
