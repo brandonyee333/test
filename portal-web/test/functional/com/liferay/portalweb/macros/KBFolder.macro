@@ -72,7 +72,7 @@ definition {
 			locator1 = "KnowledgeBase#FOLDER_SELECT_DROPDOWN",
 			value1 = "${kbFolderName}");
 
-		AssertClick(
+		Click.clickNoMouseOver(
 			locator1 = "KnowledgeBase#FOLDER_SELECT_OPTION",
 			value1 = "${kbFolderName}");
 	}
