@@ -3385,6 +3385,7 @@ definition {
 		WebContent.viewRelatedAssetsPGViaWCD(assetTitle = "WC WebContent 5 Title");
 	}
 
+	@description = "This is a use case for LPS-89641."
 	@priority = "4"
 	test WebcontentAdministrationTemplateValidation {
 		ProductMenu.gotoPortlet(
@@ -3407,6 +3408,20 @@ definition {
 		);
 
 		WebContentStructures.saveCP();
+
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Copy",
+			rowEntry = "WC Structure Name");
+
+		PortletEntry.inputName(name = "WC Structure Name Copy");
+
+		AssertClick(
+			locator1 = "Button#COPY",
+			value1 = "Copy");
+
+		LexiconEntry.viewEntryName(rowEntry = "WC Structure Name");
+
+		LexiconEntry.viewEntryName(rowEntry = "WC Structure Name Copy");
 
 		Navigator.openURL();
 
