@@ -1,0 +1,13 @@
+query DataSource($dataSourceId: String!) {
+    dataSource(dataSourceId: $dataSourceId) {
+        contactsSyncDetails {
+            selected
+        }
+        id
+        name
+        sitesSyncDetails {
+            selected
+        }
+        url
+    }
+}

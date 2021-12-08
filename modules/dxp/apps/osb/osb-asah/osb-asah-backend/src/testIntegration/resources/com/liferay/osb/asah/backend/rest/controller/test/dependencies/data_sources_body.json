@@ -1,0 +1,12 @@
+{
+	"operationName": "DataSources",
+	"variables": {
+		"credentialsType": "Token Authentication",
+		"size": 1,
+		"sort": {
+			"column": "dateCreated",
+			"type": "DESC"
+		},
+		"type": "Liferay"
+	}
+}

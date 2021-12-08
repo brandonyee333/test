@@ -1,0 +1,14 @@
+{
+	"data": {
+		"dataSource": {
+			"contactsSyncDetails": {
+				"selected": false
+			},
+			"id": "331238757269547423",
+			"name": "Test Liferay DXP",
+			"sitesSyncDetails": {
+				"selected": true
+			}
+		}
+	}
+}

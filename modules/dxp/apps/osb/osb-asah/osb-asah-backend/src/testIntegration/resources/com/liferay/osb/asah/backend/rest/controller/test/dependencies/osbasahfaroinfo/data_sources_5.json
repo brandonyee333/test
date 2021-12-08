@@ -1,0 +1,74 @@
+[
+	{
+		"author": null,
+		"credentials": {
+			"type": "Token Authentication"
+		},
+		"dateCreated": "2021-12-09T17:09:07.666Z",
+		"dateModified": "2021-12-09T17:09:07.666Z",
+		"deletionDate": null,
+		"details": {
+			"contactsSelected": false,
+			"sitesSelected": true
+		},
+		"id": "331238757269547423",
+		"name": "Liferay Test DXP 1",
+		"provider": {
+			"type": "LIFERAY"
+		},
+		"state": "CREDENTIALS_VALID",
+		"status": "ACTIVE",
+		"url": "http://test.dxp-1.com",
+		"workspaceURL": "http://localhost:8080/workspace/33394"
+	},
+	{
+		"author": null,
+		"credentials": {
+			"type": "Token Authentication"
+		},
+		"dateCreated": "2021-12-10T17:09:07.666Z",
+		"dateModified": "2021-12-10T17:09:07.666Z",
+		"details": {
+			"contactsSelected": true,
+			"sitesSelected": false
+		},
+		"id": "346306699042460013",
+		"name": "Liferay Test DXP 2",
+		"provider": {
+			"type": "LIFERAY"
+		},
+		"state": "CREDENTIALS_VALID",
+		"status": "ACTIVE",
+		"url": "https://test.dxp-2.com",
+		"workspaceURL": "http://localhost:8080/workspace/33395"
+	},
+	{
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"credentials": {
+			"oAuthClientId": "51257d7c-dadb-4ba2-9c96-a10dc6199865",
+			"oAuthClientSecret": "251161e6-40b0-419a-931a-1bf7b5fe7e3d",
+			"oAuthRefreshToken": "d3301593-b14c-4e50-8fde-c5cb5ae6ff27",
+			"type": "OAuth 2 Authentication"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"id": "346308771486495553",
+		"name": "Test Data Source 2",
+		"provider": {
+			"accountsConfiguration": {
+				"enableAllAccounts": true
+			},
+			"contactsConfiguration": {
+				"enableAllContacts": true,
+				"enableAllLeads": true
+			},
+			"type": "SALESFORCE"
+		},
+		"state": "CREDENTIALS_VALID",
+		"status": "ACTIVE",
+		"url": "https://test.salesforce-2.com"
+	}
+]

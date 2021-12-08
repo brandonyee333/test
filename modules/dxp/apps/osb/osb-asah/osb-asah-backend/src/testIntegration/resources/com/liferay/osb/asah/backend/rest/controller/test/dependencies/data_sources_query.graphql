@@ -1,0 +1,13 @@
+query DataSources($credentialsType: String, $size: Int, $sort: Sort, $type: String) {
+    dataSources(credentialsType: $credentialsType, size: $size, sort: $sort, type: $type) {
+        contactsSyncDetails {
+            selected
+        }
+        id
+        name
+        sitesSyncDetails {
+            selected
+        }
+        url
+    }
+}

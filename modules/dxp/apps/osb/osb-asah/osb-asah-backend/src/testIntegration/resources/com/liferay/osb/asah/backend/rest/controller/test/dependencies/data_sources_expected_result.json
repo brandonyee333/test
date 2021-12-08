@@ -1,0 +1,17 @@
+{
+	"data": {
+		"dataSources": [
+			{
+				"contactsSyncDetails": {
+					"selected": true
+				},
+				"id": "346306699042460013",
+				"name": "Liferay Test DXP 2",
+				"sitesSyncDetails": {
+					"selected": false
+				},
+				"url": "https://test.dxp-2.com"
+			}
+		]
+	}
+}
