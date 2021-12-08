@@ -53,13 +53,13 @@ public class StreamingIngestionPipeline {
 			)
 		).apply(
 			streamingIngestionPipelineOptions.getWindowDuration() +
-				" minute(s) Window",
+				" Minutes Window",
 			Window.into(
 				FixedWindows.of(
 					Duration.standardMinutes(
 						streamingIngestionPipelineOptions.getWindowDuration())))
 		).apply(
-			"Write File(s)",
+			"Write Files",
 			new WriteToText.WriteOneFilePerWindow(
 				streamingIngestionPipelineOptions.getOutputFileNamePrefix(),
 				streamingIngestionPipelineOptions.getOutputDirectory())
