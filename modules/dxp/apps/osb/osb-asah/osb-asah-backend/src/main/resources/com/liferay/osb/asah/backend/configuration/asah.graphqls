@@ -40,6 +40,11 @@ enum DataControlTaskType {
 	UNSUPPRESS
 }
 
+enum DataSourceConfigurationStatus {
+	CONFIGURED
+	UNCONFIGURED
+}
+
 enum DateGrouping {
 	DAY
 	MONTH
@@ -306,9 +311,17 @@ type DataControlTaskBag {
 }
 
 type DataSource {
+	contactsSyncDetails: DataSourceSyncDetail
 	id: String
 	name: String
+	sitesSyncDetails: DataSourceSyncDetail
 	url: String
+}
+
+type DataSourceSyncDetail {
+	count: Int
+	lastSyncDate: String
+	selected: Boolean
 }
 
 type DocumentMetric implements AssetMetric {
