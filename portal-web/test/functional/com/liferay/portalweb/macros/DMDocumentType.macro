@@ -163,9 +163,7 @@ definition {
 			locator1 = "NavBar#BASIC_SEARCH_FIELD",
 			value1 = "DM Document Type");
 
-		AssertClick(
-			locator1 = "NavBar#BASIC_SEARCH_BUTTON",
-			value1 = "Search");
+		Click(locator1 = "Icon#BASIC_SEARCH");
 
 		while (IsElementPresent(locator1 = "DocumentsAndMediaDocumentTypes#DOCUMENT_TYPES_TABLE_ACTIONS_1")) {
 			Click(locator1 = "DocumentsAndMediaDocumentTypes#DOCUMENT_TYPES_TABLE_ACTIONS_1");
