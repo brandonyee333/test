@@ -164,6 +164,12 @@ function FieldRow({
 		setShowDropDown(false);
 	};
 
+	const _handleKeyDown = (event) => {
+		if (event.key === 'Enter') {
+			event.preventDefault();
+		}
+	};
+
 	const _handleFieldKeyDown = (event) => {
 		_handleKeyDown(event);
 
@@ -178,12 +184,6 @@ function FieldRow({
 
 	const _handleLocaleChange = (event) =>
 		onChange({locale: event.target.value});
-
-	const _handleKeyDown = (event) => {
-		if (event.key === 'Enter') {
-			event.preventDefault();
-		}
-	};
 
 	const _isLocalizable = () => languageIdPosition > -1 || !isEmpty(locale);
 

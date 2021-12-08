@@ -80,7 +80,11 @@ function EditSXPBlueprintForm({
 	);
 
 	const _getFormInput = (key) => {
-		for (const pair of new FormData(formRef.current).entries()) {
+		const pairs = new FormData(formRef.current).entries();
+
+		for (let i = 0; i < pairs.length; i++) {
+			const pair = pairs[i];
+
 			if (pair[0].includes(`${namespace}${key}`)) {
 				return pair[1];
 			}

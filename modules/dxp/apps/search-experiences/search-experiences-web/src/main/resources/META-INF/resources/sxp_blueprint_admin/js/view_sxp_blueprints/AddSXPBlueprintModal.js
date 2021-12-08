@@ -383,6 +383,7 @@ export function AddSXPBlueprintModal({
 	editSXPBlueprintURL,
 	portletNamespace,
 }) {
+	const [visibleModal, setVisibleModal] = useState(false);
 	const {observer, onClose} = useModal({
 		onClose: () => setVisibleModal(false),
 	});
@@ -399,7 +400,6 @@ export function AddSXPBlueprintModal({
 		setQueryPrefilterContributors,
 	] = useState(null);
 	const [searchableTypes, setSearchableTypes] = useState(null);
-	const [visibleModal, setVisibleModal] = useState(false);
 
 	useEffect(() => {
 		Liferay.on(ADD_EVENT, () => setVisibleModal(true));
