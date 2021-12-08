@@ -366,6 +366,7 @@ type EventAnalysis {
 	rangeEnd: String
 	rangeKey: Int
 	rangeStart: String
+	referencedObjects: EventAnalysisReferencedObject
 }
 
 type EventAnalysisBag {
@@ -388,6 +389,11 @@ type EventAnalysisFilter {
 	dataType: String
 	operator: String
 	values: [String]
+}
+
+type EventAnalysisReferencedObject {
+	eventAttributeDefinitions: [EventAttributeDefinition]
+	eventDefinition: EventDefinition
 }
 
 type EventAnalysisResult {
