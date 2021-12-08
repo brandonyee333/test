@@ -7,8 +7,6 @@ export MAIN_CLASS_NAME=com.liferay.osb.asah.dataflow.ingestion.StreamingIngestio
 export RUNNER=DataflowRunner
 
 ../gradlew clean compileJava execute \
--Dexec.mainClass=${MAIN_CLASS_NAME} \
--Dexec.cleanupDaemonThreads=false \
 -Dexec.args=" \
 	--inputSubscription=projects/${PROJECT_ID}/subscriptions/dataflow_subscription \
 	--outputDirectory=${PIPELINE_FOLDER}/output-data \
@@ -18,3 +16,5 @@ export RUNNER=DataflowRunner
 	--runner=${RUNNER}"
 	--stagingLocation=${PIPELINE_FOLDER}/staging \
 	--tempLocation=${PIPELINE_FOLDER}/temp \
+-Dexec.cleanupDaemonThreads=false \
+-Dexec.mainClass=${MAIN_CLASS_NAME}
