@@ -1,0 +1,6 @@
+{
+	"operationName": "EventAnalysis",
+	"variables": {
+		"eventAnalysisId": "2345"
+	}
+}

@@ -1,0 +1,70 @@
+{
+	"data": {
+		"eventAnalysis": {
+			"analysisType": "TOTAL",
+			"channelId": "2468",
+			"compareToPrevious": false,
+			"createDate": "2021-05-12T18:12:00.000Z",
+			"createdByUserId": "10",
+			"createdByUserName": "Test",
+			"eventAnalysisBreakdowns": [
+				{
+					"attributeId": "12345",
+					"attributeType": "EVENT",
+					"binSize": 2000,
+					"dataType": "STRING"
+				},
+				{
+					"attributeId": "23456",
+					"attributeType": "EVENT",
+					"dataType": "NUMBER"
+				}
+			],
+			"eventAnalysisFilters": [
+				{
+					"attributeId": "34567",
+					"attributeType": "EVENT",
+					"dataType": "NUMBER",
+					"operator": "ge",
+					"values": [
+						"250"
+					]
+				}
+			],
+			"eventDefinitionId": "246810",
+			"id": "2345",
+			"modifiedByUserId": "10",
+			"modifiedByUserName": "Test",
+			"modifiedDate": "2021-05-12T18:12:00.000Z",
+			"name": "Event Analysis 1",
+			"rangeEnd": "2021-05-12",
+			"rangeStart": "2021-05-11",
+			"referencedObjects": {
+				"eventAttributeDefinitions": [
+					{
+						"dataType": "STRING",
+						"displayName": "Test Attribute 1",
+						"id": "12345",
+						"type": "LOCAL"
+					},
+					{
+						"dataType": "NUMBER",
+						"displayName": "Test Attribute 2",
+						"id": "23456",
+						"type": "LOCAL"
+					},
+					{
+						"dataType": "NUMBER",
+						"displayName": "Test Attribute 3",
+						"id": "34567",
+						"type": "LOCAL"
+					}
+				],
+				"eventDefinition": {
+					"displayName": "Test Display Name 1",
+					"id": "246810"
+				}
+			}
+		}
+	}
+}
