@@ -90,7 +90,8 @@ public class WriteToText {
 
 			return resourceId.resolve(
 				String.format(
-					"%s/%s%s", _dateDateTimeFormatter.print(intervalWindow.start()),
+					"%s/%s%s",
+					_dateDateTimeFormatter.print(intervalWindow.start()),
 					_getFileNameForWindow(intervalWindow),
 					outputFileHints.getSuggestedFilenameSuffix()),
 				ResolveOptions.StandardResolveOptions.RESOLVE_FILE);
