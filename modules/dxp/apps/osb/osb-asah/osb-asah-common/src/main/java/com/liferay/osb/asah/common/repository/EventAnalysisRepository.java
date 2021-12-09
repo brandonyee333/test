@@ -40,6 +40,7 @@ public interface EventAnalysisRepository
 	@Modifying
 	public void deleteByIdIn(@Param("ids") Set<Long> ids);
 
+	@Cacheable
 	public Optional<EventAnalysis> findByChannelIdAndNameIgnoreCase(
 		Long channelId, String name);
 

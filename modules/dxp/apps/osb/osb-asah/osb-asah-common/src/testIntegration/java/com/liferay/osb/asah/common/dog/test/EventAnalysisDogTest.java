@@ -127,16 +127,10 @@ public class EventAnalysisDogTest
 	@SQLResource(resourcePath = "test_event_analysis_name.sql")
 	@Test
 	public void testEventAnalysisName() {
-
-		// Test "add" with empty name
-
 		Exception exception = Assertions.assertThrows(
 			OSBAsahException.class, () -> _addEventAnalysis(1L, " "));
 
 		Assertions.assertEquals("Name cannot be blank", exception.getMessage());
-
-		// Test "add" with already existing name in the
-		// same channel (case-insensitive)
 
 		String eventAnalysisName1 = "ADD EVENT ANALYSIS IN THE SAME CHANNEL";
 
@@ -150,9 +144,6 @@ public class EventAnalysisDogTest
 		Assertions.assertEquals(
 			String.format("Name %s is already used", eventAnalysisName1),
 			exception.getMessage());
-
-		// Test "add" with already existing name in a
-		// different channel (case-insensitive)
 
 		EventAnalysis eventAnalysis1 = _addEventAnalysis(
 			2L, eventAnalysisName1);
@@ -171,16 +162,11 @@ public class EventAnalysisDogTest
 
 		Assertions.assertNotNull(eventAnalysis2);
 
-		// Test "update" with empty name
-
 		exception = Assertions.assertThrows(
 			OSBAsahException.class,
 			() -> _updateEventAnalysis(eventAnalysis2, null));
 
 		Assertions.assertEquals("Name cannot be blank", exception.getMessage());
-
-		// Test "update" with already existing name for a
-		// different record in the same channel (case-insensitive)
 
 		String eventAnalysisName2 = "UPDATE EVENT ANALYSIS IN THE SAME CHANNEL";
 
@@ -197,9 +183,6 @@ public class EventAnalysisDogTest
 			String.format("Name %s is already used", eventAnalysisName2),
 			exception.getMessage());
 
-		// Test "update" with already existing name for a different
-		// record in a different channel (case-insensitive)
-
 		EventAnalysis eventAnalysis3 = _updateEventAnalysis(
 			eventAnalysis2, eventAnalysisName1);
 
@@ -215,9 +198,6 @@ public class EventAnalysisDogTest
 		EventAnalysis eventAnalysis4 = eventAnalysisOptional2.orElse(null);
 
 		Assertions.assertNotNull(eventAnalysis4);
-
-		// Test "update" with already existing name for the same
-		// record (case-insensitive)
 
 		eventAnalysis4 = _updateEventAnalysis(
 			eventAnalysis4, eventAnalysis4.getName());

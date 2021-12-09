@@ -47,8 +47,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.annotation.Nullable;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -579,7 +577,7 @@ public class EventAnalysisDog {
 	}
 
 	private void _validateEventAnalysisName(
-		Long channelId, @Nullable Long id, String name) {
+		Long channelId, @Nullable Long eventAnalysisId, String name) {
 
 		if (StringUtils.isBlank(name)) {
 			throw new OSBAsahException(
@@ -593,7 +591,7 @@ public class EventAnalysisDog {
 		EventAnalysis eventAnalysis = eventAnalysisOptional.orElse(null);
 
 		if ((eventAnalysis != null) &&
-			!Objects.equals(eventAnalysis.getId(), id)) {
+			!Objects.equals(eventAnalysis.getId(), eventAnalysisId)) {
 
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
