@@ -8,17 +8,17 @@ query EventAnalysisResult($analysisType: AnalysisType!, $channelId: String!, $co
 						name
 						previousValue
 						value
-					},
+					}
 					leafNode
 					name
 					previousValue
 					value
-				},
+				}
 				leafNode
 				name
 				previousValue
 				value
-			},
+			}
 			leafNode
 			name
 			previousValue

@@ -1,30 +1,30 @@
 mutation UpdateEventAnalysis($analysisType: AnalysisType!, $channelId: String!, $compareToPrevious: Boolean!, $eventAnalysisBreakdowns: [EventAnalysisBreakdownInput], $eventAnalysisFilters: [EventAnalysisFilterInput], $eventAnalysisId: String!, $eventDefinitionId: String!, $name: String!, $rangeEnd: String, $rangeKey: Int, $rangeStart: String, $userId: String!, $userName: String!) {
 	updateEventAnalysis(analysisType: $analysisType, channelId: $channelId, compareToPrevious: $compareToPrevious, eventAnalysisBreakdowns: $eventAnalysisBreakdowns, eventAnalysisFilters: $eventAnalysisFilters, eventAnalysisId: $eventAnalysisId, eventDefinitionId: $eventDefinitionId, name: $name, rangeEnd: $rangeEnd, rangeKey: $rangeKey, rangeStart: $rangeStart, userId: $userId, userName: $userName) {
-		analysisType,
-		channelId,
-		compareToPrevious,
-		createdByUserId,
-		createdByUserName,
+		analysisType
+		channelId
+		compareToPrevious
+		createdByUserId
+		createdByUserName
 		eventAnalysisBreakdowns {
-			attributeId,
-			attributeType,
-			binSize,
+			attributeId
+			attributeType
+			binSize
 			dataType
-		},
+		}
 		eventAnalysisFilters {
-			attributeId,
-			attributeType,
-			dataType,
-			operator,
+			attributeId
+			attributeType
+			dataType
+			operator
 			values
-		},
-		eventDefinitionId,
-		id,
-		modifiedByUserId,
-		modifiedByUserName,
-		name,
-		rangeEnd,
-		rangeKey,
+		}
+		eventDefinitionId
+		id
+		modifiedByUserId
+		modifiedByUserName
+		name
+		rangeEnd
+		rangeKey
 		rangeStart
 	}
 }
