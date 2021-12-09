@@ -1,42 +1,42 @@
 query EventAnalysis($eventAnalysisId: String!) {
 	eventAnalysis(eventAnalysisId: $eventAnalysisId) {
-		analysisType,
-		channelId,
-		compareToPrevious,
-		createDate,
-		createdByUserId,
-		createdByUserName,
+		analysisType
+		channelId
+		compareToPrevious
+		createDate
+		createdByUserId
+		createdByUserName
 		eventAnalysisBreakdowns {
-			attributeId,
-			attributeType,
-			binSize,
+			attributeId
+			attributeType
+			binSize
 			dataType
-		},
+		}
 		eventAnalysisFilters {
-			attributeId,
-			attributeType,
-			dataType,
-			operator,
+			attributeId
+			attributeType
+			dataType
+			operator
 			values
-		},
-		eventDefinitionId,
-		id,
-		modifiedByUserId,
-		modifiedByUserName,
-		modifiedDate,
-		name,
-		rangeEnd,
-		rangeKey,
+		}
+		eventDefinitionId
+		id
+		modifiedByUserId
+		modifiedByUserName
+		modifiedDate
+		name
+		rangeEnd
+		rangeKey
 		rangeStart
 		referencedObjects {
 			eventAttributeDefinitions {
-				dataType,
-				displayName,
-				id,
+				dataType
+				displayName
+				id
 				type
 			}
 			eventDefinition {
-				displayName,
+				displayName
 				id
 			}
 		}

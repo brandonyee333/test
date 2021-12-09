@@ -5,7 +5,7 @@ query EventAnalysisResult($analysisType: AnalysisType!, $channelId: String!, $co
 				leafNode
 				name
 				value
-			},
+			}
 			leafNode
 			name
 			value
