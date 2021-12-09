@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.dog.configuration;
 
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.resolver.AssetResolver;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetMetric;
@@ -26,8 +25,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
-
-import org.elasticsearch.index.query.QueryBuilder;
 
 /**
  * @author Marcellus Tavares
@@ -59,7 +56,5 @@ public interface DogConfiguration {
 	public Set<MetricResolver> getMetricResolvers(Set<String> selectedMetrics);
 
 	public Function<String, MetricType> getMetricTypeResolverFunction();
-
-	public QueryBuilder getQueryBuilder(SearchQueryContext searchQueryContext);
 
 }

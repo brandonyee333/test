@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
+import com.liferay.osb.asah.backend.dog.resolver.AssetResolver;
 import com.liferay.osb.asah.backend.model.HeatMapMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
@@ -90,7 +91,7 @@ public class SiteVisitorHeatMapDog {
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
 			_getTermsAggregationBuilder(), Optional.empty(),
-			Collections.emptySet(), null, null, searchQueryContext,
+			Collections.emptySet(), (AssetResolver)null, searchQueryContext,
 			_timeZoneDog.getTimeZoneId());
 	}
 

@@ -113,18 +113,16 @@ public class VisitorHistogramDog {
 				Collections.singleton(scriptedMetricAggregationBuilder),
 				DogUtil.getAssetIdOptional(
 					searchQueryContext.getAssetId(), dogConfiguration),
-				Collections.emptySet(),
-				dogConfiguration.getQueryBuilder(searchQueryContext),
-				searchQueryContext, _timeZoneDog.getTimeZoneId());
+				Collections.emptySet(), searchQueryContext,
+				_timeZoneDog.getTimeZoneId());
 		}
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
 			Collections.singleton(scriptedMetricAggregationBuilder),
 			DogUtil.getAssetIdOptional(
 				searchQueryContext.getAssetId(), dogConfiguration),
-			Collections.emptySet(),
-			dogConfiguration.getQueryBuilder(searchQueryContext),
-			searchQueryContext, _timeZoneDog.getTimeZoneId());
+			Collections.emptySet(), searchQueryContext,
+			_timeZoneDog.getTimeZoneId());
 	}
 
 	private HistogramMetricBag _createHistogramMetricBag(

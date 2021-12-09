@@ -37,7 +37,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
@@ -99,8 +98,7 @@ public class SearchQueryHelper {
 		Set<AggregationBuilder> aggregationBuilders,
 		Optional<AssetId> assetIdOptional,
 		Set<PipelineAggregationBuilder> pipelineAggregationBuilders,
-		QueryBuilder queryBuilder, SearchQueryContext searchQueryContext,
-		String timeZoneId) {
+		SearchQueryContext searchQueryContext, String timeZoneId) {
 
 		DateRangeAggregationBuilder dateRangeAggregationBuilder =
 			_createPeriodDateRangeAggregationBuilder(
@@ -112,10 +110,6 @@ public class SearchQueryHelper {
 			dateRangeAggregationBuilder::subAggregation);
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		if (queryBuilder != null) {
-			boolQueryBuilder.filter(queryBuilder);
-		}
 
 		_addPeriodRangeFilter(
 			boolQueryBuilder, searchQueryContext.getTimeRange(), timeZoneId);
@@ -179,14 +173,10 @@ public class SearchQueryHelper {
 	public SearchSourceBuilder createRangeSearchSourceBuilder(
 		AggregationBuilder aggregationBuilder,
 		Optional<AssetId> assetIdOptional, Set<String> assetIds,
-		AssetResolver<?> assetResolver, QueryBuilder queryBuilder,
-		SearchQueryContext searchQueryContext, String timeZoneId) {
+		AssetResolver<?> assetResolver, SearchQueryContext searchQueryContext,
+		String timeZoneId) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		if (queryBuilder != null) {
-			boolQueryBuilder.filter(queryBuilder);
-		}
 
 		BoolQueryBuilder assetIdsBoolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -231,8 +221,7 @@ public class SearchQueryHelper {
 		Set<AggregationBuilder> aggregationBuilders,
 		Optional<AssetId> assetIdOptional,
 		Set<PipelineAggregationBuilder> pipelineAggregationBuilders,
-		QueryBuilder queryBuilder, SearchQueryContext searchQueryContext,
-		String timeZoneId) {
+		SearchQueryContext searchQueryContext, String timeZoneId) {
 
 		DateRangeAggregationBuilder dateRangeAggregationBuilder =
 			_createDateRangeAggregationBuilder(
@@ -244,10 +233,6 @@ public class SearchQueryHelper {
 			dateRangeAggregationBuilder::subAggregation);
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		if (queryBuilder != null) {
-			boolQueryBuilder.filter(queryBuilder);
-		}
 
 		_addTimeRangeFilter(
 			boolQueryBuilder, searchQueryContext.getTimeRange(), timeZoneId);

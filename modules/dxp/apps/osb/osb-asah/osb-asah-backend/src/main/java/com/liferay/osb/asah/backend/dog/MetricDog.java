@@ -247,9 +247,8 @@ public class MetricDog {
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
 			cardinalityAggregationBuilder, Optional.empty(),
-			Collections.emptySet(), assetResolver,
-			dogConfiguration.getQueryBuilder(searchQueryContext),
-			searchQueryContext, _timeZoneDog.getTimeZoneId());
+			Collections.emptySet(), assetResolver, searchQueryContext,
+			_timeZoneDog.getTimeZoneId());
 	}
 
 	private SearchSourceBuilder _buildAssetMetricSearchSourceBuilder(
@@ -291,7 +290,6 @@ public class MetricDog {
 				Optional.of(
 					assetResolver.getAssetId(searchQueryContext.getAssetId())),
 				_getPipelineAggregationBuilders(metricResolvers),
-				dogConfiguration.getQueryBuilder(searchQueryContext),
 				searchQueryContext, _timeZoneDog.getTimeZoneId());
 		}
 
@@ -300,7 +298,6 @@ public class MetricDog {
 			Optional.of(
 				assetResolver.getAssetId(searchQueryContext.getAssetId())),
 			_getPipelineAggregationBuilders(metricResolvers),
-			dogConfiguration.getQueryBuilder(searchQueryContext),
 			searchQueryContext, _timeZoneDog.getTimeZoneId());
 	}
 
@@ -333,7 +330,6 @@ public class MetricDog {
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
 			termsAggregationBuilder, Optional.empty(), assetIds, assetResolver,
-			dogConfiguration.getQueryBuilder(searchQueryContext),
 			searchQueryContext, _timeZoneDog.getTimeZoneId());
 	}
 

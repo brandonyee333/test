@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.backend.dog.configuration;
 
 import com.liferay.osb.asah.backend.dog.DogUtil;
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.resolver.AssetResolver;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetType;
@@ -161,16 +160,6 @@ public class PageDogConfiguration extends BaseDogConfiguration {
 	@Override
 	public Function<String, MetricType> getMetricTypeResolverFunction() {
 		return PageMetricType::of;
-	}
-
-	@Override
-	public QueryBuilder getQueryBuilder(SearchQueryContext searchQueryContext) {
-		if (searchQueryContext.isIncludeActiveSessions()) {
-			return null;
-		}
-
-		return QueryBuilders.existsQuery(
-			PageMetricType.SESSIONS.getFieldName());
 	}
 
 	@Override

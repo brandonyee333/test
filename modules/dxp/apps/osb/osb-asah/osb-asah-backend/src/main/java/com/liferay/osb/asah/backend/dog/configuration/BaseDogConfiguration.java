@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.backend.dog.configuration;
 
 import com.liferay.osb.asah.backend.dog.DogUtil;
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
@@ -31,7 +30,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
@@ -50,11 +48,6 @@ import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
  * @author Marcellus Tavares
  */
 public abstract class BaseDogConfiguration implements DogConfiguration {
-
-	@Override
-	public QueryBuilder getQueryBuilder(SearchQueryContext searchQueryContext) {
-		return null;
-	}
 
 	protected Consumer<TermsAggregationBuilder>
 		createBucketOrderTermsAggregationBuilderConsumer(
