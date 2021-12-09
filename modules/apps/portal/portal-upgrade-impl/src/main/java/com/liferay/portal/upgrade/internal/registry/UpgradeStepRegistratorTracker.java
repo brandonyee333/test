@@ -16,6 +16,7 @@ package com.liferay.portal.upgrade.internal.registry;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.lang.SafeClosable;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -31,7 +32,6 @@ import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Dictionary;
 import java.util.List;
 import java.util.Properties;
@@ -73,9 +73,8 @@ public class UpgradeStepRegistratorTracker {
 	@Reference
 	private ReleaseLocalService _releaseLocalService;
 
-	private ServiceTracker
-		<UpgradeStepRegistrator, Collection<ServiceRegistration<UpgradeStep>>>
-			_serviceTracker;
+	private ServiceTracker<UpgradeStepRegistrator, SafeCloseable>
+		_serviceTracker;
 
 	@Reference
 	private SwappedLogExecutor _swappedLogExecutor;
@@ -85,11 +84,10 @@ public class UpgradeStepRegistratorTracker {
 
 	private class UpgradeStepRegistratorServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer
-			<UpgradeStepRegistrator,
-			 Collection<ServiceRegistration<UpgradeStep>>> {
+			<UpgradeStepRegistrator, SafeCloseable> {
 
 		@Override
-		public Collection<ServiceRegistration<UpgradeStep>> addingService(
+		public SafeCloseable addingService(
 			ServiceReference<UpgradeStepRegistrator> serviceReference) {
 
 			UpgradeStepRegistrator upgradeStepRegistrator =
@@ -180,25 +178,27 @@ public class UpgradeStepRegistratorTracker {
 				}
 			}
 
-			return serviceRegistrations;
+			return () -> {
+				for (ServiceRegistration<UpgradeStep> serviceRegistration :
+						serviceRegistrations) {
+
+					serviceRegistration.unregister();
+				}
+			};
 		}
 
 		@Override
 		public void modifiedService(
 			ServiceReference<UpgradeStepRegistrator> serviceReference,
-			Collection<ServiceRegistration<UpgradeStep>> serviceRegistrations) {
+			SafeCloseable safeCloseable) {
 		}
 
 		@Override
 		public void removedService(
 			ServiceReference<UpgradeStepRegistrator> serviceReference,
-			Collection<ServiceRegistration<UpgradeStep>> serviceRegistrations) {
+			SafeCloseable safeCloseable) {
 
-			for (ServiceRegistration<UpgradeStep> serviceRegistration :
-					serviceRegistrations) {
-
-				serviceRegistration.unregister();
-			}
+			safeCloseable.close();
 		}
 
 		private final Log _log = LogFactoryUtil.getLog(
