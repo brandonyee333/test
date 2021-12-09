@@ -37,6 +37,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -48,6 +49,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class SiteVisitorHeatMapDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
+
+	@AfterEach
+	public void tearDown() {
+		_preferenceDog.savePreference("time-zone-id", "UTC");
+	}
 
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
@@ -269,7 +275,6 @@ public class SiteVisitorHeatMapDogTest
 		Assertions.assertArrayEquals(expectedValues, actualValues, 0);
 	}
 
-	//	@Disabled
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

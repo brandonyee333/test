@@ -58,6 +58,7 @@ import java.util.stream.Stream;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -75,6 +76,11 @@ public class EventRepositoryTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@AfterEach
+	public void tearDown() {
+		_preferenceDog.savePreference("time-zone-id", "UTC");
+	}
+
 	@SQLResource(resourcePath = "test_events.sql")
 	@Test
 	public void testCountEventsLast24Hours() {
@@ -84,7 +90,8 @@ public class EventRepositoryTest
 			3,
 			_eventRepository.countEvents(
 				1L, 1L, null, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(), "UTC"));
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_events.sql")
@@ -96,7 +103,8 @@ public class EventRepositoryTest
 			1,
 			_eventRepository.countEvents(
 				1L, 1L, "form", timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(), "UTC"));
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -114,7 +122,7 @@ public class EventRepositoryTest
 				246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
-				"UTC"));
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -150,7 +158,7 @@ public class EventRepositoryTest
 				246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
-				"UTC"));
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -205,7 +213,7 @@ public class EventRepositoryTest
 					246810L,
 					DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 					DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
-					"UTC")));
+					_timeZoneDog.getTimeZoneId())));
 	}
 
 	@SQLResource(
@@ -240,7 +248,8 @@ public class EventRepositoryTest
 					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -272,7 +281,8 @@ public class EventRepositoryTest
 					EventAttributeDefinition.DataType.BOOLEAN, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -297,7 +307,7 @@ public class EventRepositoryTest
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				"UTC"));
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -314,7 +324,7 @@ public class EventRepositoryTest
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				"UTC"));
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -352,7 +362,7 @@ public class EventRepositoryTest
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				"UTC"));
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -368,7 +378,7 @@ public class EventRepositoryTest
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				"UTC"));
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -384,7 +394,7 @@ public class EventRepositoryTest
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				"UTC"));
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -399,7 +409,8 @@ public class EventRepositoryTest
 					"DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -457,7 +468,8 @@ public class EventRepositoryTest
 					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -487,7 +499,8 @@ public class EventRepositoryTest
 					"DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -512,7 +525,8 @@ public class EventRepositoryTest
 					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -538,7 +552,8 @@ public class EventRepositoryTest
 					EventAttributeDefinition.DataType.NUMBER, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -564,7 +579,8 @@ public class EventRepositoryTest
 					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -591,7 +607,8 @@ public class EventRepositoryTest
 					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -627,7 +644,8 @@ public class EventRepositoryTest
 					EventAttributeDefinition.DataType.STRING, null, "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -655,7 +673,8 @@ public class EventRepositoryTest
 					"DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)), "UTC");
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
 
 		Set<Object> keys = eventAttributeValues.keySet();
 
@@ -678,7 +697,8 @@ public class EventRepositoryTest
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_eventRepository.getEventsCountGroupByEventDate(
 				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(), "UTC");
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
 
 		Assertions.assertEquals(
 			2, eventsCountGroupByEventDate.size(),
@@ -752,7 +772,8 @@ public class EventRepositoryTest
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_eventRepository.getEventsCountGroupByEventDate(
 				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(), "UTC");
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
 
 		Assertions.assertEquals(
 			1, eventsCountGroupByEventDate.size(),
@@ -806,7 +827,8 @@ public class EventRepositoryTest
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_eventRepository.getEventSessionsCountGroupByEventDate(
 				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(), "UTC");
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
 
 		Assertions.assertEquals(
 			2, eventSessionsCountGroupByEventDate.size(),
@@ -871,7 +893,8 @@ public class EventRepositoryTest
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_eventRepository.getEventSessionsCountGroupByEventDate(
 				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(), "UTC");
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
 
 		Assertions.assertEquals(
 			1, eventSessionsCountGroupByEventDate.size(),
@@ -925,7 +948,7 @@ public class EventRepositoryTest
 		List<Event> events = _eventRepository.searchEvents(
 			1L, 1L, null, PageRequest.of(0, 50, Sort.desc("eventDate")),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
-			"UTC");
+			_timeZoneDog.getTimeZoneId());
 
 		Assertions.assertEquals(3, events.size(), events.toString());
 
@@ -955,7 +978,7 @@ public class EventRepositoryTest
 		List<Event> events = _eventRepository.searchEvents(
 			1L, 1L, "form", PageRequest.of(0, 50),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
-			"UTC");
+			_timeZoneDog.getTimeZoneId());
 
 		Assertions.assertEquals(1, events.size(), events.toString());
 	}

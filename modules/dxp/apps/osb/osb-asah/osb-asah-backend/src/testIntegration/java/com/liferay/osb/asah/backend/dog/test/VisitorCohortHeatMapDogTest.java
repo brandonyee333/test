@@ -45,6 +45,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -56,6 +57,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class VisitorCohortHeatMapDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
+
+	@AfterEach
+	public void tearDown() {
+		_preferenceDog.savePreference("time-zone-id", "UTC");
+	}
 
 	@ElasticsearchIndex(
 		name = "pages",
