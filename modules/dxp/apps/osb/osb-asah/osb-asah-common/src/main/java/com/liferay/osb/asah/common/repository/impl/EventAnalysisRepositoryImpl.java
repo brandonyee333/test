@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.EventAnalysis;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
@@ -50,7 +48,7 @@ public class EventAnalysisRepositoryImpl extends BaseRepository {
 		return selectSelectStep.from(
 			"EventAnalysis"
 		).where(
-			_getConditions(channelId, keyword)
+			_getCondition(channelId, keyword)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -66,7 +64,7 @@ public class EventAnalysisRepositoryImpl extends BaseRepository {
 		).from(
 			"EventAnalysis"
 		).where(
-			_getConditions(channelId, keyword)
+			_getCondition(channelId, keyword)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
@@ -89,23 +87,23 @@ public class EventAnalysisRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	private List<Condition> _getConditions(Long channelId, String keyword) {
-		List<Condition> conditions = new ArrayList<>();
-
-		conditions.add(
-			DSL.field(
-				"EventAnalysis.channelId"
-			).eq(
-				channelId
-			));
+	private Condition _getCondition(Long channelId, String keyword) {
+		Condition condition = DSL.field(
+			"EventAnalysis.channelId"
+		).eq(
+			channelId
+		);
 
 		if (StringUtils.isNotEmpty(keyword)) {
-			Field<Object> nameField = DSL.field("name");
-
-			conditions.add(nameField.containsIgnoreCase(keyword));
+			condition = condition.and(
+				DSL.field(
+					"name"
+				).containsIgnoreCase(
+					keyword
+				));
 		}
 
-		return conditions;
+		return condition;
 	}
 
 	private final DSLContext _dslContext;
