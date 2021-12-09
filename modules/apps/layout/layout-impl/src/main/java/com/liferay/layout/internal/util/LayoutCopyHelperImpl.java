@@ -226,9 +226,14 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 				continue;
 			}
 
-			_copyLayoutPageTemplateStructureExperience(
+			JSONObject dataJSONObject = _processDataJSONObject(
 				data, targetLayout, fragmentEntryLinkMap, entry.getValue(),
 				serviceContext);
+
+			_layoutPageTemplateStructureLocalService.
+				updateLayoutPageTemplateStructureData(
+					targetLayout.getGroupId(), targetLayout.getPlid(),
+					entry.getValue(), dataJSONObject.toString());
 		}
 
 		List<LayoutClassedModelUsage> sourceLayoutLayoutClassedModelUsages =
@@ -258,22 +263,6 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 					targetLayout.getPlid(), serviceContext);
 			}
 		}
-	}
-
-	private void _copyLayoutPageTemplateStructureExperience(
-			String data, Layout targetLayout,
-			Map<Long, FragmentEntryLink> fragmentEntryLinkMap,
-			long targetSegmentsExperienceId, ServiceContext serviceContext)
-		throws Exception {
-
-		JSONObject dataJSONObject = _processDataJSONObject(
-			data, targetLayout, fragmentEntryLinkMap,
-			targetSegmentsExperienceId, serviceContext);
-
-		_layoutPageTemplateStructureLocalService.
-			updateLayoutPageTemplateStructureData(
-				targetLayout.getGroupId(), targetLayout.getPlid(),
-				targetSegmentsExperienceId, dataJSONObject.toString());
 	}
 
 	private void _copyPortletPermissions(
