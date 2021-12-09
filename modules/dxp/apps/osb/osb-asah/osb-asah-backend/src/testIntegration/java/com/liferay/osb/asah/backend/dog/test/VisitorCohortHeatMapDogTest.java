@@ -36,14 +36,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.WeekFields;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -137,67 +133,57 @@ public class VisitorCohortHeatMapDogTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testVisitorCohortHeatMetricsAllVisitorsByWeekExceptSunday() {
+	public void testVisitorCohortHeatMetricsAllVisitorsByWeek() {
+		List<CohortHeatMapMetric> cohortHeatMapMetrics =
+			_getCohortHeatMapMetrics(Interval.WEEK, SiteMetricType.VISITORS);
+
+		HashMap<Pair<Integer, Integer>, Double> expectedRetentionsMap;
+
 		LocalDate localDate = LocalDate.now(
 			Clock.system(_timeZoneDog.getZoneId()));
 
 		if (DayOfWeek.SUNDAY.equals(localDate.getDayOfWeek())) {
-			return;
+			expectedRetentionsMap =
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(0, 5), 100.0);
+						put(Pair.of(0, 6), 100.0);
+						put(Pair.of(1, 0), 62.5);
+						put(Pair.of(1, 5), 60.0);
+						put(Pair.of(1, 6), 66.66666666666666);
+						put(Pair.of(2, 0), 40.0);
+						put(Pair.of(2, 5), 40.0);
+					}
+				};
+		}
+		else {
+			expectedRetentionsMap =
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(0, 4), 100.0);
+						put(Pair.of(0, 5), 100.0);
+						put(Pair.of(0, 6), 100.0);
+						put(Pair.of(1, 0), 60.0);
+						put(Pair.of(1, 4), 60.0);
+						put(Pair.of(1, 5), 66.66666666666666);
+						put(Pair.of(1, 6), 50.0);
+						put(Pair.of(2, 0), 37.5);
+						put(Pair.of(2, 4), 40.0);
+						put(Pair.of(2, 5), 33.33333333333333);
+						put(Pair.of(3, 0), 20.0);
+						put(Pair.of(3, 4), 20.0);
+					}
+				};
 		}
 
-		HashMap<Pair<Integer, Integer>, Double> expectedRetentionsMap =
-			new HashMap<Pair<Integer, Integer>, Double>() {
-				{
-					put(Pair.of(0, 0), 100.0);
-					put(Pair.of(0, 4), 100.0);
-					put(Pair.of(0, 5), 100.0);
-					put(Pair.of(0, 6), 100.0);
-					put(Pair.of(1, 0), 60.0);
-					put(Pair.of(1, 4), 60.0);
-					put(Pair.of(1, 5), 66.66666666666666);
-					put(Pair.of(1, 6), 50.0);
-					put(Pair.of(2, 0), 37.5);
-					put(Pair.of(2, 4), 40.0);
-					put(Pair.of(2, 5), 33.33333333333333);
-					put(Pair.of(3, 0), 20.0);
-					put(Pair.of(3, 4), 20.0);
-				}
-			};
-
-		_assertCohortHeatMapMetricsAllVisitorsByWeek(
-			expectedRetentionsMap, localDate);
-	}
-
-	@ElasticsearchIndex(
-		name = "pages",
-		resourcePath = "visitor_cohort_heat_map_by_week_page_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@Test
-	public void testVisitorCohortHeatMetricsAllVisitorsByWeekOnSunday() {
-		LocalDate localDate = LocalDate.now(
-			Clock.system(_timeZoneDog.getZoneId()));
-
-		if (!DayOfWeek.SUNDAY.equals(localDate.getDayOfWeek())) {
-			return;
-		}
-
-		HashMap<Pair<Integer, Integer>, Double> expectedRetentionsMap =
-			new HashMap<Pair<Integer, Integer>, Double>() {
-				{
-					put(Pair.of(0, 0), 100.0);
-					put(Pair.of(0, 5), 100.0);
-					put(Pair.of(0, 6), 100.0);
-					put(Pair.of(1, 0), 62.5);
-					put(Pair.of(1, 5), 60.0);
-					put(Pair.of(1, 6), 66.66666666666666);
-					put(Pair.of(2, 0), 40.0);
-					put(Pair.of(2, 5), 40.0);
-				}
-			};
-
-		_assertCohortHeatMapMetricsAllVisitorsByWeek(
-			expectedRetentionsMap, localDate);
+		Assertions.assertArrayEquals(
+			_getExpectedRetentions(
+				expectedRetentionsMap, cohortHeatMapMetrics.size(), 7),
+			_getActualRetentions(cohortHeatMapMetrics), 0);
+		Assertions.assertEquals(
+			34, cohortHeatMapMetrics.size(), cohortHeatMapMetrics.toString());
 	}
 
 	@ElasticsearchIndex(
@@ -314,49 +300,6 @@ public class VisitorCohortHeatMapDogTest
 			_getActualRowKeys(cohortHeatMapMetrics));
 		Assertions.assertEquals(
 			43, cohortHeatMapMetrics.size(), cohortHeatMapMetrics.toString());
-	}
-
-	private void _assertCohortHeatMapMetricsAllVisitorsByWeek(
-		HashMap<Pair<Integer, Integer>, Double> expectedRetentionsMap,
-		LocalDate localDate) {
-
-		WeekFields weekFields = WeekFields.of(Locale.US);
-
-		LocalDate startLocalDate = localDate.with(
-			weekFields.getFirstDayOfWeek());
-
-		LocalDate rangeStartLocalDate = startLocalDate.minusDays(7);
-
-		Set<String> localDatesStrings = new TreeSet<>();
-
-		for (int i = 1; i < 7; i++) {
-			LocalDate beforeStartLocalDate = rangeStartLocalDate.minusDays(
-				7 * i);
-
-			localDatesStrings.add(
-				beforeStartLocalDate.format(_dateTimeFormatter));
-		}
-
-		Set<String> expectedLocalDatesStrings = new TreeSet<>();
-
-		List<CohortHeatMapMetric> cohortHeatMapMetrics =
-			_getCohortHeatMapMetrics(Interval.WEEK, SiteMetricType.VISITORS);
-
-		for (CohortHeatMapMetric cohortHeatMapMetric : cohortHeatMapMetrics) {
-			if (cohortHeatMapMetric.getRowKey() != null) {
-				expectedLocalDatesStrings.add(cohortHeatMapMetric.getRowKey());
-			}
-		}
-
-		Assertions.assertArrayEquals(
-			_getExpectedRetentions(
-				expectedRetentionsMap, cohortHeatMapMetrics.size(), 7),
-			_getActualRetentions(cohortHeatMapMetrics), 0);
-
-		Assertions.assertEquals(
-			34, cohortHeatMapMetrics.size(), cohortHeatMapMetrics.toString());
-
-		Assertions.assertEquals(expectedLocalDatesStrings, localDatesStrings);
 	}
 
 	private double[] _getActualRetentions(
