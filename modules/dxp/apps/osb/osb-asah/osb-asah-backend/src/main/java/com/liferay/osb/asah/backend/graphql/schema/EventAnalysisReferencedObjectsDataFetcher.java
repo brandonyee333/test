@@ -21,13 +21,13 @@ import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -53,29 +53,19 @@ public class EventAnalysisReferencedObjectsDataFetcher
 		List<EventAttributeDefinition> eventAttributeDefinitions =
 			new ArrayList<>();
 
-		List<EventAnalysisDTO.EventAnalysisBreakdownDTO>
-			eventAnalysisBreakdownDTOs =
-				eventAnalysisDTO.getEventAnalysisBreakdownDTOs();
+		eventAttributeDefinitions.addAll(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
+				ListUtil.map(
+					eventAnalysisDTO.getEventAnalysisBreakdownDTOs(),
+					eventAnalysisBreakdownDTO -> Long.valueOf(
+						eventAnalysisBreakdownDTO.getAttributeId()))));
 
-		Stream<EventAnalysisDTO.EventAnalysisBreakdownDTO>
-			eventAnalysisBreakdownDTOsStream =
-				eventAnalysisBreakdownDTOs.stream();
-
-		eventAnalysisBreakdownDTOsStream.forEach(
-			eventAnalysisBreakdownDTO -> eventAttributeDefinitions.add(
-				_eventAttributeDefinitionDog.getEventAttributeDefinition(
-					Long.valueOf(eventAnalysisBreakdownDTO.getAttributeId()))));
-
-		List<EventAnalysisDTO.EventAnalysisFilterDTO> eventAnalysisFilterDTOs =
-			eventAnalysisDTO.getEventAnalysisFilterDTOs();
-
-		Stream<EventAnalysisDTO.EventAnalysisFilterDTO>
-			eventAnalysisFilterDTOsStream = eventAnalysisFilterDTOs.stream();
-
-		eventAnalysisFilterDTOsStream.forEach(
-			eventAnalysisFilterDTO -> eventAttributeDefinitions.add(
-				_eventAttributeDefinitionDog.getEventAttributeDefinition(
-					Long.valueOf(eventAnalysisFilterDTO.getAttributeId()))));
+		eventAttributeDefinitions.addAll(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
+				ListUtil.map(
+					eventAnalysisDTO.getEventAnalysisFilterDTOs(),
+					eventAnalysisFilterDTO -> Long.valueOf(
+						eventAnalysisFilterDTO.getAttributeId()))));
 
 		return new EventAnalysisReferencedObjectDTO(
 			eventDefinition, eventAttributeDefinitions);

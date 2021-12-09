@@ -35,6 +35,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
@@ -164,6 +165,14 @@ public class EventAttributeDefinitionDog {
 			Collectors.toMap(
 				EventAttributeDefinition::getName,
 				EventAttributeDefinition::getId));
+	}
+
+	public List<EventAttributeDefinition> getEventAttributeDefinitions(
+		List<Long> eventAttributeDefinitionIds) {
+
+		return IterableUtils.toList(
+			_eventAttributeDefinitionRepository.findAllById(
+				eventAttributeDefinitionIds));
 	}
 
 	public List<EventAttributeDefinition>
