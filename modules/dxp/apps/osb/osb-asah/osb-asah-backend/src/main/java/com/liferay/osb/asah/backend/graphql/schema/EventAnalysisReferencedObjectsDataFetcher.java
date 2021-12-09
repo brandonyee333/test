@@ -59,7 +59,6 @@ public class EventAnalysisReferencedObjectsDataFetcher
 					eventAnalysisDTO.getEventAnalysisBreakdownDTOs(),
 					eventAnalysisBreakdownDTO -> Long.valueOf(
 						eventAnalysisBreakdownDTO.getAttributeId()))));
-
 		eventAttributeDefinitions.addAll(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
 				ListUtil.map(
