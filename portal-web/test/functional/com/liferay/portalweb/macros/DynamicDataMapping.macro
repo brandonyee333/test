@@ -676,7 +676,9 @@ definition {
 			Click(locator1 = "DDMEditStructure#FORM_FIELD_1_NO_LABEL");
 		}
 		else {
-			DoubleClick(locator1 = "DDMEditStructure#FORM_FIELD");
+			AssertClick.assertPartialTextClickAt(
+				locator1 = "DDMEditStructure#FORM_FIELD",
+				value1 = "${fieldFieldLabel}");
 		}
 
 		AssertTextNotEquals.assertNotPartialText(
