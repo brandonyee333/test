@@ -1,0 +1,13 @@
+query GlobalEventAttributeDefinitions {
+    globalEventAttributeDefinitions {
+        ... on EventAttributeDefinition {
+            dataType
+            description
+            displayName
+            name
+            sampleValue
+            type
+            __typename
+        }
+    }
+}
