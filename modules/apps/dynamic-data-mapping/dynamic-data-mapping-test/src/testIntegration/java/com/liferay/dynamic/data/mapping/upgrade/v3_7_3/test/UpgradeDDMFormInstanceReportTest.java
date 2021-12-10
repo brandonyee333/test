@@ -277,6 +277,11 @@ public class UpgradeDDMFormInstanceReportTest {
 					}
 				}
 
+				@Override
+				public void registerInitialUpgradeSteps(
+					UpgradeStep... upgradeSteps) {
+				}
+
 			});
 	}
 

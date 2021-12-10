@@ -292,6 +292,11 @@ public class UpgradeDDMStructureTest {
 					}
 				}
 
+				@Override
+				public void registerInitialUpgradeSteps(
+					UpgradeStep... upgradeSteps) {
+				}
+
 			});
 	}
 

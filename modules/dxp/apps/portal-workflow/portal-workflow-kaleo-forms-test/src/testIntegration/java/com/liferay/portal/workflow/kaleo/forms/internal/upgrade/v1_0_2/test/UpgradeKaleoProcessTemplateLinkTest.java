@@ -223,6 +223,11 @@ public class UpgradeKaleoProcessTemplateLinkTest {
 					}
 				}
 
+				@Override
+				public void registerInitialUpgradeSteps(
+					UpgradeStep... upgradeSteps) {
+				}
+
 			});
 	}
 

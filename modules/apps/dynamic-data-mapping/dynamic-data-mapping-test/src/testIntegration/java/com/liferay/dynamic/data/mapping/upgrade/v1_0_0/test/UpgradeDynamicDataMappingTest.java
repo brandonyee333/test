@@ -1757,6 +1757,11 @@ public class UpgradeDynamicDataMappingTest {
 					}
 				}
 
+				@Override
+				public void registerInitialUpgradeSteps(
+					UpgradeStep... upgradeSteps) {
+				}
+
 			});
 	}
 
