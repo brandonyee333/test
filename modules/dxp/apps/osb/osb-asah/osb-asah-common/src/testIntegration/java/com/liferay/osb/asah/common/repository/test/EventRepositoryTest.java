@@ -738,28 +738,17 @@ public class EventRepositoryTest
 				{
 					put(
 						_getLocalDateString(
-							ChronoUnit.DAYS, -2, null, zonedDateTime),
+							ChronoUnit.DAYS, -3, null, zonedDateTime),
 						2);
 					put(
 						_getLocalDateString(
-							ChronoUnit.DAYS, -5, null, zonedDateTime),
+							ChronoUnit.DAYS, -6, null, zonedDateTime),
 						1);
 				}
 			};
 
-		for (Map.Entry<String, Integer> entry :
-				expectedCountGroupByEventDate.entrySet()) {
-
-			if (eventsCountGroupByEventDate.containsKey(entry.getKey())) {
-				Assertions.assertEquals(
-					entry.getValue(),
-					eventsCountGroupByEventDate.get(entry.getKey()));
-
-				eventsCountGroupByEventDate.remove(entry.getKey());
-			}
-		}
-
-		Assertions.assertTrue(eventsCountGroupByEventDate.isEmpty());
+		Assertions.assertEquals(
+			expectedCountGroupByEventDate, eventsCountGroupByEventDate);
 	}
 
 	@SQLResource(
@@ -869,11 +858,11 @@ public class EventRepositoryTest
 				{
 					put(
 						_getLocalDateString(
-							ChronoUnit.DAYS, -2, null, zonedDateTime),
+							ChronoUnit.DAYS, -3, null, zonedDateTime),
 						2);
 					put(
 						_getLocalDateString(
-							ChronoUnit.DAYS, -5, null, zonedDateTime),
+							ChronoUnit.DAYS, -6, null, zonedDateTime),
 						1);
 				}
 			};
