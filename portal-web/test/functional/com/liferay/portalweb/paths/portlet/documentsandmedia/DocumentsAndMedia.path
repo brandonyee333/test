@@ -82,6 +82,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ICON_DOCUMENT_CHECKBOX_LAST</td>
+	<td>xpath=(//li[contains(@data-title,'${key_dmDocumentTitle}')]//input)[2]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ICON_DOCUMENT_TITLE</td>
 	<td>//span[contains(@class,'lfr-card-title-text') and contains(.,'${key_dmDocumentTitle}')]</td>
 	<td></td>
