@@ -817,6 +817,14 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
+	macro checkLastDocumentCheckboxCP {
+		ScrollBy(value1 = "0, 1000");
+
+		Check(
+			key_dmDocumentTitle = "${dmDocumentTitle}",
+			locator1 = "DocumentsAndMedia#ICON_DOCUMENT_CHECKBOX_LAST");
+	}
+
 	macro checkoutCP {
 		Click(
 			key_dmDocumentTitle = "${dmDocumentTitle}",
