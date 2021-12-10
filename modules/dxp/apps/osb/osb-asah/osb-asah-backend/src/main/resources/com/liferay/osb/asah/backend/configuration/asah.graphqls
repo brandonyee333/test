@@ -1130,6 +1130,8 @@ type QueryType {
 		start: Int!
 	): AssetMetricBag
 
+	globalEventAttributeDefinitions: [EventAttributeDefinition]
+
 	groups(
 		channelId: String,
 		keywords: String,
