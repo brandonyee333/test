@@ -263,7 +263,9 @@ definition {
 			webContentContent = "Web Content Content",
 			webContentTitle = "Web Content Title");
 
-		WebContent.viewEditWCViaWCD(webContentContent = "Web Content Content");
+		WebContent.viewEditWCViaWCD(
+			webContentContent = "Web Content Content",
+			webContentTitle = "Web Content Title");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -297,7 +299,9 @@ definition {
 			pageName = "Staging Test Page",
 			siteName = "Site Name");
 
-		WebContent.viewEditWCViaWCD(webContentContent = "Web Content Content");
+		WebContent.viewEditWCViaWCD(
+			webContentContent = "Web Content Content",
+			webContentTitle = "Web Content Title");
 	}
 
 	@priority = "5"
