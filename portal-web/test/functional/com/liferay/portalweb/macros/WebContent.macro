@@ -1,7 +1,9 @@
 definition {
 
 	macro _gotoAddPGViaWCD {
-		Click.makeVisibleClickAt(locator1 = "WCD#ADD_WEB_CONTENT");
+		MouseOver.mouseOverNotVisible(locator1 = "WCD#ADD_WEB_CONTENT");
+
+		Click(locator1 = "WCD#ADD_WEB_CONTENT");
 
 		var key_structureName = "Basic Web Content";
 
@@ -1838,9 +1840,7 @@ definition {
 	macro viewEditWCViaWCD {
 		AssertElementPresent(locator1 = "WCD#WEB_CONTENT_CONTENT");
 
-		MouseOver(locator1 = "WC#BODY");
-
-		Click.makeVisibleClickAt(locator1 = "Portlet#OPTIONS_ICON");
+		WebContentNavigator.gotoArticleMenuPGViaWCD(webContentTitle = "${webContentTitle}");
 
 		if (IsElementPresent(key_menuItem = "Edit Web Content", locator1 = "MenuItem#ANY_MENU_ITEM")) {
 			AssertTextEquals.assertPartialText(
