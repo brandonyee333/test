@@ -55,7 +55,9 @@ definition {
 
 		Click(locator1 = "Search#SEARCH_FIELD");
 
-		Click.makeVisibleClickAt(locator1 = "Search#SEARCH_PORTLET_OPTIONS_WRENCH");
+		MouseOver.mouseOverNotVisible(locator1 = "Search#SEARCH_PORTLET_OPTIONS_WRENCH");
+
+		Click(locator1 = "Search#SEARCH_PORTLET_OPTIONS_WRENCH");
 
 		MenuItem.click(menuItem = "Configuration");
 
