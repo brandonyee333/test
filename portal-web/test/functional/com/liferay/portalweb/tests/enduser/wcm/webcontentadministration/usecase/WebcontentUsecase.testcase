@@ -29,6 +29,10 @@ definition {
 			WebContentStructures.tearDownCP(siteScopeName = "${globalSiteName}");
 
 			Page.tearDownPG();
+
+			Site.tearDownCP();
+
+			Organization.tearDownCP();
 		}
 	}
 
