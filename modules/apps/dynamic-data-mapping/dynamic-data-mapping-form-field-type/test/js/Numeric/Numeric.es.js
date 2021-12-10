@@ -289,4 +289,28 @@ describe('Field Numeric', () => {
 
 		expect(container.querySelector('input').value).toBe('23');
 	});
+
+	it('check if large number inputs are allowed', () => {
+		const {container} = render(
+			<NumericWithProvider
+				{...defaultNumericConfig}
+				key="input"
+				onChange={jest.fn()}
+			/>
+		);
+
+		const input = container.querySelector('input');
+
+		fireEvent.change(input, {
+			target: {
+				value: '111111111111111111111',
+			},
+		});
+
+		act(() => {
+			jest.runAllTimers();
+		});
+
+		expect(input.value).toBe('111111111111111111111');
+	});
 });

@@ -48,7 +48,11 @@ const getValue = (dataType, symbols, value) => {
 		decimalSymbol = ',';
 	}
 
-	if (dataType === 'integer' && newValue) {
+	if (
+		dataType === 'integer' &&
+		newValue &&
+		newValue.includes(decimalSymbol)
+	) {
 		newValue = String(Math.round(newValue.replace(decimalSymbol, '.')));
 	}
 
