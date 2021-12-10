@@ -360,7 +360,7 @@
 </tr>
 <tr>
 	<td>PAGE_NAVIGATION_BAR</td>
-	<td>//nav[@id='navigation']</td>
+	<td>//div[@id='navigationCollapse']</td>
 	<td></td>
 </tr>
 <tr>
