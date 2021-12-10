@@ -229,10 +229,14 @@ definition {
 		if (isSet(portletName)) {
 			var key_portletName = "${portletName}";
 
-			Click.makeVisibleClickAt(locator1 = "Portlet#SPECIFIC_BORDERLESS_ELLIPSIS_ICON");
+			MouseOver.mouseOverNotVisible(locator1 = "Portlet#SPECIFIC_BORDERLESS_ELLIPSIS_ICON");
+
+			Click.waitForMenuToggleJSClick(locator1 = "Portlet#SPECIFIC_BORDERLESS_ELLIPSIS_ICON");
 		}
 		else {
-			Click.makeVisibleClickAt(locator1 = "Portlet#OPTIONS_ICON");
+			MouseOver.mouseOverNotVisible(locator1 = "Portlet#OPTIONS_ICON");
+
+			Click.waitForMenuToggleJSClick(locator1 = "Portlet#OPTIONS_ICON");
 		}
 
 		if (isSet(portletOption)) {
