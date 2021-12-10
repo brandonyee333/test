@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Trend;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.Interval;
+import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.TrendClassification;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -288,6 +289,36 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 			0, 1, 1, 1, 2, 3, 2, 1, 7, 0, 1, 0, 3, 0, 1, 1, 2, 2, 1, 2, 4, 2, 3,
 			2
 		};
+
+		Assertions.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "histogram_pages_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testHistogramPagesMetricsMissingSessionId() {
+		HistogramMetricBag histogramMetricBag =
+			_histogramDog.getHistogramMetricBag(
+				true, PageMetricType.VIEWS,
+				new SearchQueryContext(null, AssetType.PAGE) {
+					{
+						//setCanonicalUrl("http://192.168.108.90:8080/");
+						//setChannelId("1");
+						setInterval(Interval.DAY.getKey());
+						setTimeRange(TimeRange.LAST_7_DAYS);
+					}
+				});
+
+		List<HistogramMetric> histogramMetrics =
+			histogramMetricBag.getMetrics();
+
+		Assertions.assertEquals(
+			7, histogramMetrics.size(), histogramMetrics.toString());
+
+		double[] expectedValues = {0, 5, 0, 1, 4, 3, 2};
 
 		Assertions.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);

@@ -416,6 +416,28 @@ public class MetricDogTest
 	}
 
 	@ElasticsearchIndex(
+		name = "pages", resourcePath = "pages_info_3.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testGetAssetMetricMissingSessionId() {
+		PageMetric pageMetric = _metricDog.getAssetMetric(
+			_createSearchQuery(
+				null, AssetType.PAGE, null, TimeRange.LAST_7_DAYS, null),
+			new HashSet<String>() {
+				{
+					add(PageMetricType.VIEWS.getName());
+				}
+			});
+
+		Assertions.assertNotNull(pageMetric);
+
+		Metric viewsMetric = pageMetric.getViewsMetric();
+
+		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
+	}
+
+	@ElasticsearchIndex(
 		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)

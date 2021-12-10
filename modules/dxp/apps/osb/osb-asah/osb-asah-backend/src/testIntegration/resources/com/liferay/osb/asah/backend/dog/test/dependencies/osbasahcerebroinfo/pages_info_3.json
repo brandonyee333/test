@@ -1,0 +1,137 @@
+[
+	{
+		"bounce": 1,
+		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
+		"channelId": "1",
+		"city": null,
+		"country": null,
+		"ctaClicks": 0,
+		"dataSourceId": "333962835564819755",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
+			"${now-1d}"
+		],
+		"eventDate": "${now-1d}",
+		"experimentId": "",
+		"firstEventDate": "${now-1d}",
+		"formSubmissions": 0,
+		"id": "1",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": null,
+		"interactionDates": [
+			"${now-1d}",
+			"${now-1d}"
+		],
+		"knownIndividual": false,
+		"lastEventDate": "${now-1d}",
+		"modifiedDate": "${now-1d}",
+		"pageScrolls": [
+			{
+				"depth": 50,
+				"eventDate": "${now-1d}"
+			},
+			{
+				"depth": 100,
+				"eventDate": "${now-1d}"
+			}
+		],
+		"platformName": "Unknown",
+		"region": null,
+		"segmentNames": [
+		],
+		"sessionId": "1",
+		"timeOnPage": 445229,
+		"title": "Page 1",
+		"url": "http://192.168.108.90:8080/",
+		"userId": "1",
+		"variantId": "",
+		"views": 1
+	},
+	{
+		"bounce": 0,
+		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
+		"channelId": "1",
+		"city": null,
+		"country": null,
+		"ctaClicks": 0,
+		"dataSourceId": "333962835564819755",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
+			"${now-1d}"
+		],
+		"eventDate": "${now-1d}",
+		"experimentId": "10",
+		"firstEventDate": "${now-1d}",
+		"formSubmissions": 0,
+		"id": "2",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": null,
+		"interactionDates": [
+		],
+		"knownIndividual": false,
+		"lastEventDate": "${now-1d}",
+		"modifiedDate": "${now-1d}",
+		"pageScrolls": [
+		],
+		"platformName": "Unknown",
+		"region": null,
+		"segmentNames": [
+		],
+		"sessionId": null,
+		"timeOnPage": 445229,
+		"title": "Page 1",
+		"url": "http://192.168.108.90:8080/",
+		"userId": "2",
+		"variantId": "1",
+		"views": 2
+	},
+	{
+		"bounce": 0,
+		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
+		"channelId": "1",
+		"city": null,
+		"country": null,
+		"ctaClicks": 2,
+		"dataSourceId": "333962835564819755",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
+			"${now-1d}"
+		],
+		"eventDate": "${now-1d}",
+		"experimentId": "20",
+		"firstEventDate": "${now-1d}",
+		"formSubmissions": 0,
+		"id": "3",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": "1",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "${now-1d}",
+		"modifiedDate": "${now-1d}",
+		"pageScrolls": [
+		],
+		"platformName": "Unknown",
+		"region": null,
+		"segmentNames": [
+		],
+		"timeOnPage": 445229,
+		"title": "Page 1",
+		"url": "http://192.168.108.90:8080/",
+		"userId": "3",
+		"variantId": "2",
+		"views": 3
+	}
+]
