@@ -2140,16 +2140,14 @@ definition {
 			locator1 = "Dropdown#FILTER_VALUES",
 			value1 = "Active");
 
-		if (IsElementPresent(locator1 = "ContentRow#ENTRY_CONTENT_ROW_1")) {
-			Check.checkAll(locator1 = "Checkbox#SELECT_ALL");
+		while (IsElementPresent(locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER", key_rowNumber = "2")) {
+			Click.waitForMenuToggleJSClick(
+				key_rowNumber = "2",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER_ELLIPSIS");
 
-			AssertClickNoError(
-				locator1 = "Button#DEACTIVATE",
-				value1 = "Deactivate");
+			MenuItem.clickNoError(menuItem = "Deactivate");
 
-			Confirm(value1 = "Are you sure you want to deactivate the selected users?");
-
-			Alert.viewSuccessMessage();
+			AssertConfirm(value1 = "Are you sure you want to deactivate this?");
 		}
 
 		Click(locator1 = "Dropdown#FILTER");
