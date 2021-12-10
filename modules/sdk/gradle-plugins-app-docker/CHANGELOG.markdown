@@ -76,7 +76,7 @@
 - [LPS-86588] Upgrade gradle-docker-plugin to 3.6.1 for Gradle 4.10.2
 (3afdd4d33b)
 - [LPS-86589] Update readme (4280a3d596)
-- [LPS-86589] Test Gradle plugins from Gradle 2.14.1 to 3.5.1 (6df521a506)
+- [LPS-86589] Test Gradle plugins from Gradle 2.15.0 to 3.5.1 (6df521a506)
 - [LPS-71117] Test plugins with Gradle up to 3.5.1 (c3e12d1cf3)
 - [LPS-71117] Update supported Gradle versions in READMEs (fdcc16c0d4)
 

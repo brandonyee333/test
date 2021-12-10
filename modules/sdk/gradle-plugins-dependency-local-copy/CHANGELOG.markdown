@@ -32,7 +32,7 @@
 - [LPS-87192] Add variable gradleVersion (no logic changes) (2f7c0b2fe4)
 - [LPS-85609] Fix for CI (test only 4.10.2) (4eed005731)
 - [LPS-85609] Test plugins up to Gradle 4.10.2 (60905bc960)
-- [LPS-86589] Test Gradle plugins from Gradle 2.14.1 to 3.5.1 (6df521a506)
+- [LPS-86589] Test Gradle plugins from Gradle 2.15.0 to 3.5.1 (6df521a506)
 - [LPS-71117] Test plugins with Gradle up to 3.5.1 (c3e12d1cf3)
 
 ### Dependencies

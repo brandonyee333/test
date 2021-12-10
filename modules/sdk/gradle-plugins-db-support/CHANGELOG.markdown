@@ -59,7 +59,7 @@ in gradle-util * Replace gradle osgi plugin dependency by local OsgiHelper
 - [LPS-85609] Test plugins up to Gradle 4.10.2 (60905bc960)
 - [LPS-85609] Update supported Gradle versions (d79b89682b)
 - [LPS-86589] Update readme (4280a3d596)
-- [LPS-86589] Test Gradle plugins from Gradle 2.14.1 to 3.5.1 (6df521a506)
+- [LPS-86589] Test Gradle plugins from Gradle 2.15.0 to 3.5.1 (6df521a506)
 - [LPS-71117] Test plugins with Gradle up to 3.5.1 (c3e12d1cf3)
 - [LPS-71117] Update supported Gradle versions in READMEs (fdcc16c0d4)
 - [LPS-77425] Partial revert of d25f48516a9ad080bcbd50e228979853d3f2dda5

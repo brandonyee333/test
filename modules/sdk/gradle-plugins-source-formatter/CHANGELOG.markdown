@@ -2101,7 +2101,7 @@ version 1.0.846.
 
 ### Commits
 - [LPS-86589] Update readme (4280a3d596)
-- [LPS-86589] Test Gradle plugins from Gradle 2.14.1 to 3.5.1 (6df521a506)
+- [LPS-86589] Test Gradle plugins from Gradle 2.15.0 to 3.5.1 (6df521a506)
 
 ### Dependencies
 - [LPS-86556] Update the com.liferay.source.formatter dependency to version
