@@ -33,6 +33,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -450,6 +455,70 @@ public class EventAttributeDefinitionDogTest
 			).collect(
 				Collectors.toSet()
 			));
+	}
+
+	@Test
+	public void testGetEventAttributeDefinitionsByType() {
+		String[] globalEventAttributeDefinitionNames = {
+			"canonicalUrl", "pageDescription", "pageKeywords", "pageTitle",
+			"referrer", "url"
+		};
+
+		List<EventAttributeDefinition> eventAttributeDefinitions =
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionsByType(
+				EventAttributeDefinition.Type.GLOBAL);
+
+		Stream<EventAttributeDefinition> stream =
+			eventAttributeDefinitions.stream();
+
+		MatcherAssert.assertThat(
+			stream.map(
+				EventAttributeDefinition::getName
+			).collect(
+				Collectors.toList()
+			),
+			Matchers.containsInAnyOrder(globalEventAttributeDefinitionNames));
+
+		String[] localEventAttributeDefinitionNames = {
+			"articleId", "assetId", "category", "className", "classPK",
+			"commentId", "depth", "elementId", "entryId", "fieldName",
+			"fileEntryId", "fileEntryUUID", "focusDuration", "formId",
+			"groupId", "href", "numberOfWords", "page", "pageLoadTime",
+			"preview", "ratingType", "score", "sessionId", "src", "tagName",
+			"text", "title", "type", "version", "viewDuration"
+		};
+
+		eventAttributeDefinitions =
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionsByType(
+				EventAttributeDefinition.Type.LOCAL);
+
+		stream = eventAttributeDefinitions.stream();
+
+		MatcherAssert.assertThat(
+			stream.map(
+				EventAttributeDefinition::getName
+			).collect(
+				Collectors.toList()
+			),
+			Matchers.containsInAnyOrder(localEventAttributeDefinitionNames));
+
+		String[] allEventAttributeDefinitionNames = ArrayUtils.addAll(
+			globalEventAttributeDefinitionNames,
+			localEventAttributeDefinitionNames);
+
+		eventAttributeDefinitions =
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionsByType(
+				EventAttributeDefinition.Type.ALL);
+
+		stream = eventAttributeDefinitions.stream();
+
+		MatcherAssert.assertThat(
+			stream.map(
+				EventAttributeDefinition::getName
+			).collect(
+				Collectors.toList()
+			),
+			Matchers.containsInAnyOrder(allEventAttributeDefinitionNames));
 	}
 
 	@SQLResource(
