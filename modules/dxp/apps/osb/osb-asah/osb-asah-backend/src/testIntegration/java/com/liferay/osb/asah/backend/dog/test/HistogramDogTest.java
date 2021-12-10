@@ -305,8 +305,6 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 				true, PageMetricType.VIEWS,
 				new SearchQueryContext(null, AssetType.PAGE) {
 					{
-						//setCanonicalUrl("http://192.168.108.90:8080/");
-						//setChannelId("1");
 						setInterval(Interval.DAY.getKey());
 						setTimeRange(TimeRange.LAST_7_DAYS);
 					}
