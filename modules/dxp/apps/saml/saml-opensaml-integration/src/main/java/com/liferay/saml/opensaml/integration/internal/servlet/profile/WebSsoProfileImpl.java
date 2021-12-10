@@ -2106,6 +2106,10 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 
 			NameID nameID = subject.getNameID();
 
+			if (Validator.isNull(nameID.getValue())) {
+				continue;
+			}
+
 			SAMLSubjectNameIdentifierContext samlSubjectNameIdentifierContext =
 				messageContext.getSubcontext(
 					SAMLSubjectNameIdentifierContext.class);
