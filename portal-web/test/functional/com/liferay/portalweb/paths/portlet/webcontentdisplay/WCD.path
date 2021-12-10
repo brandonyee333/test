@@ -11,6 +11,11 @@
 
 <tbody>
 <tr>
+	<td>ARTICLE_ELLIPSIS_ICON</td>
+	<td>//div[contains(.,'${key_webContentTitle}')][contains(@class,'portlet-content')]//a[span/*[name()='svg'][contains(@class,'icon-ellipsis')]]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ADD_WEB_CONTENT</td>
 	<td>//*[@data-qa-id='addButton']//a[contains(@id,'JournalContent')]</td>
 	<td></td>
