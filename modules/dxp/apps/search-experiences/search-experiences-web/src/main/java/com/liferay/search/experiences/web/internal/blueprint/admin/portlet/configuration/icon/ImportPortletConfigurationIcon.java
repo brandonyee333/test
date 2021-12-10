@@ -14,7 +14,6 @@
 
 package com.liferay.search.experiences.web.internal.blueprint.admin.portlet.configuration.icon;
 
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
@@ -28,6 +27,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.search.experiences.constants.SXPActionKeys;
 import com.liferay.search.experiences.constants.SXPConstants;
 import com.liferay.search.experiences.constants.SXPPortletKeys;
+import com.liferay.search.experiences.web.internal.compat.petra.portlet.url.builder.PortletURLBuilder;
 
 import java.util.ResourceBundle;
 

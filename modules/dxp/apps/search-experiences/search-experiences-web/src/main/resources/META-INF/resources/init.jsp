@@ -26,7 +26,6 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.JSPNavigationItemList" %><%@
-page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.util.HashMapBuilder" %><%@
 page import="com.liferay.portal.kernel.util.LocaleUtil" %><%@
@@ -35,6 +34,7 @@ page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.search.experiences.web.internal.blueprint.admin.constants.SXPBlueprintAdminFDSNames" %><%@
 page import="com.liferay.search.experiences.web.internal.blueprint.admin.display.context.ViewSXPBlueprintsDisplayContext" %><%@
 page import="com.liferay.search.experiences.web.internal.blueprint.admin.display.context.ViewSXPElementsDisplayContext" %><%@
+page import="com.liferay.search.experiences.web.internal.compat.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.search.experiences.web.internal.constants.SXPWebKeys" %>
 
 <liferay-frontend:defineObjects />
