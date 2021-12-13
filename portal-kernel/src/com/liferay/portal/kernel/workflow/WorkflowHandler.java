@@ -87,6 +87,10 @@ public interface WorkflowHandler<T> {
 
 	public boolean isAssetTypeSearchable();
 
+	public default boolean isCommentable() {
+		return true;
+	}
+
 	public boolean isScopeable();
 
 	public boolean isVisible();
