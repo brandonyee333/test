@@ -20,14 +20,12 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
 /**
  * @author Inácio Nery
  */
-@Primary
 public interface DataSourceRepository extends Repository<DataSource, Long> {
 
 	@Cacheable
