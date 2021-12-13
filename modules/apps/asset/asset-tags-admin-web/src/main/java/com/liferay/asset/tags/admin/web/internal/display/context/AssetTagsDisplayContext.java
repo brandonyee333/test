@@ -185,7 +185,7 @@ public class AssetTagsDisplayContext {
 			return _tagsSearchContainer;
 		}
 
-		SearchContainer<AssetTag> tagsSearchContainer = new SearchContainer(
+		SearchContainer<AssetTag> tagsSearchContainer = new SearchContainer<>(
 			_renderRequest, _renderResponse.createRenderURL(), null,
 			"there-are-no-tags");
 
