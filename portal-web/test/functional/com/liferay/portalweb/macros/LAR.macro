@@ -358,7 +358,7 @@ definition {
 		}
 
 		if (isSet(uncheckSubContent)) {
-			Click(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
+			Click.clickNoMouseOver(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
 
 			var key_contentName = "${mainContent}";
 
@@ -378,7 +378,7 @@ definition {
 		}
 
 		if (isSet(uncheckSubSubContent)) {
-			Check(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
+			Click.clickNoMouseOver(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
 
 			var key_contentName = "${contentName}";
 
@@ -399,7 +399,7 @@ definition {
 		}
 
 		if (isSet(contentDateRange)) {
-			Click(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
+			Click.clickNoMouseOver(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
 
 			Click(locator1 = "Radio#CHOOSE_CONTENT_DATE_RANGE_CHANGE");
 
@@ -417,7 +417,7 @@ definition {
 		}
 
 		if (isSet(lastDateRange)) {
-			Click(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
+			Click.clickNoMouseOver(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
 
 			Click(locator1 = "Radio#RANGE_LAST");
 
