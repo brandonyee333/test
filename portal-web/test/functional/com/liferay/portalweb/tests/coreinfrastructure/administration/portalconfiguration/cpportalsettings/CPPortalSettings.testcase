@@ -66,6 +66,8 @@ definition {
 		}
 
 		task ("Disable OpenSSO Configuration") {
+			Panel.expandPanel(panelHeading = "Authentication");
+
 			PortalSettingsNavigator.gotoAuthenticationOpenSSO();
 
 			FormFields.disableCheckbox(fieldName = "opensso_enabled");
