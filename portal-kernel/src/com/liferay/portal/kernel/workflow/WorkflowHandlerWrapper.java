@@ -147,6 +147,11 @@ public class WorkflowHandlerWrapper<T> implements WorkflowHandler<T> {
 	}
 
 	@Override
+	public boolean isCommentable() {
+		return _workflowHandler.isCommentable();
+	}
+
+	@Override
 	public boolean isScopeable() {
 		return _workflowHandler.isScopeable();
 	}
