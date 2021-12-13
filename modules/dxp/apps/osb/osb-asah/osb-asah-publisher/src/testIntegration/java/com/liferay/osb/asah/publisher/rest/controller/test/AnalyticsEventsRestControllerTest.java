@@ -23,9 +23,18 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.publisher.OSBAsahPublisherSpringTestContext;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.apache.commons.lang3.RandomStringUtils;
 
 import org.assertj.core.api.Assertions;
+
+import org.json.JSONObject;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -320,6 +329,48 @@ public class AnalyticsEventsRestControllerTest
 		);
 
 		JSONAssert.assertEquals(body, argumentCaptor.getValue(), false);
+	}
+
+	@Test
+	public void testPushAnalyticsEventsMessageIfMoreThanOneEvent()
+		throws Exception {
+
+		String body = ResourceUtil.readResourceToString(
+			"dependencies/analytics_events_message_4.json", this);
+
+		_exchange(body);
+
+		ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(
+			String.class);
+
+		Mockito.verify(
+			_messageBus, Mockito.times(1)
+		).sendMessage(
+			ArgumentMatchers.any(), argumentCaptor.capture()
+		);
+
+		JSONObject jsonObject = new JSONObject(argumentCaptor.getValue());
+
+		List<String> eventIds = JSONUtil.toList(
+			jsonObject.getJSONArray("events"),
+			eventJSONObject -> eventJSONObject.getString("id"));
+
+		Stream<String> stream = eventIds.stream();
+
+		Map<String, String> eventIdsMap = stream.collect(
+			Collectors.toMap(
+				Function.identity(), Function.identity(),
+				(oldEventId, newEventId) -> oldEventId));
+
+		Set<String> keySet = eventIdsMap.keySet();
+
+		Assertions.assertThat(
+			keySet
+		).as(
+			eventIdsMap.toString()
+		).hasSize(
+			2
+		);
 	}
 
 	private <T> ResponseEntity<String> _exchange(T body) {
