@@ -165,7 +165,7 @@ public class AnalyticsEventsRestController {
 							analyticsEventsMessage.getProjectId(),
 							analyticsEventsMessage.getUserId());
 
-					event.setId(analyticsEventsMessageId);
+					event.setId(analyticsEventId);
 
 					long deltaMilliseconds = DateUtil.getDeltaMilliseconds(
 						event.getEventDate(), date);
