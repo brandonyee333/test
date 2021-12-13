@@ -117,7 +117,6 @@ portletURL.setWindowState(LiferayWindowState.POP_UP);
 
 <liferay-ui:search-container
 	emptyResultsMessage="no-users-were-found"
-	iteratorURL="<%= portletURL %>"
 	total="<%= searchResults.size() %>"
 >
 	<liferay-ui:search-container-results
@@ -175,7 +174,9 @@ portletURL.setWindowState(LiferayWindowState.POP_UP);
 		/>
 	</liferay-ui:search-container-row>
 
-	<liferay-ui:search-iterator />
+	<liferay-ui:search-iterator
+		paginate="<%= false %>"
+	/>
 </liferay-ui:search-container>
 
 <c:if test="<%= showMissingAttributeMessage %>">
