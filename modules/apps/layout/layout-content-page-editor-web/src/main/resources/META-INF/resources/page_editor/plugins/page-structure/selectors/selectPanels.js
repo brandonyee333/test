@@ -12,6 +12,7 @@
  * details.
  */
 
+import {EDITABLE_FRAGMENT_ENTRY_PROCESSOR} from '../../../app/config/constants/editableFragmentEntryProcessor';
 import {EDITABLE_TYPES} from '../../../app/config/constants/editableTypes';
 import {FRAGMENT_CONFIGURATION_ROLES} from '../../../app/config/constants/fragmentConfigurationRoles';
 import {ITEM_TYPES} from '../../../app/config/constants/itemTypes';
@@ -108,13 +109,21 @@ export const selectPanels = (activeItemId, activeItemType, state) => {
 	else if (activeItemType === ITEM_TYPES.editable) {
 		const [fragmentEntryLinkId] = activeItemId.split('-');
 
-		const {itemId} =
-			Object.values(state.layoutData.items).find(
-				(item) =>
-					item.config.fragmentEntryLinkId === fragmentEntryLinkId
-			) || {};
+		const editableId = activeItemId.substr(
+			activeItemId.indexOf('-') + 1,
+			activeItemId.length
+		);
 
-		activeItem = state.editables[itemId]?.[activeItemId];
+		activeItem = {
+			editableId,
+			editableValueNamespace: EDITABLE_FRAGMENT_ENTRY_PROCESSOR,
+			fragmentEntryLinkId,
+			itemId: activeItemId,
+			type:
+				state.fragmentEntryLinks[fragmentEntryLinkId].editableTypes[
+					editableId
+				],
+		};
 	}
 
 	if (!activeItem) {
