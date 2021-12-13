@@ -924,6 +924,13 @@ definition {
 		BlogsEntry.viewPG(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title");
+
+		ProductMenu.gotoPortlet(
+			category = "Sites",
+			panel = "Control Panel",
+			portlet = "Sites");
+
+		Site.deleteAllCP();
 	}
 
 	@priority = "5"
