@@ -31,6 +31,7 @@ definition {
 
 		var key_endDate = "${endDate}";
 		var key_endDateTime = "${endDateTime}";
+		var key_eventTitle = "${eventTitle}";
 		var key_startDate = "${startDate}";
 		var key_startDateTime = "${startDateTime}";
 
