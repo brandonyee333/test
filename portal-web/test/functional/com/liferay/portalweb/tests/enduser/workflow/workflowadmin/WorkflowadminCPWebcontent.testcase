@@ -143,6 +143,8 @@ definition {
 	@description = "LRQA-70845 Verify that cannot bypass workflow by duplicating article."
 	@priority = "5"
 	test CannotBypassWorkflowByduplicatingArticle {
+		property test.name.skip.portal.instance = "WorkflowadminCPWebcontent#CannotBypassWorkflowByduplicatingArticle";
+
 		Workflow.configureWorkflowViaFolderInfo(workflowDefinition = "Single Approver (Version 1)");
 
 		ProductMenu.gotoPortlet(
