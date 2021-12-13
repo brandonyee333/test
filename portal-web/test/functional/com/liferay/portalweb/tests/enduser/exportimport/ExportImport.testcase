@@ -25,6 +25,8 @@ definition {
 			Page.tearDownPG();
 
 			Site.tearDownCP();
+
+			DMDocument.tearDownCP();
 		}
 	}
 
