@@ -49,6 +49,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portlet.documentlibrary.store.StoreFactory;
 
 import java.util.List;
 
@@ -237,6 +238,9 @@ public class AddDefaultLayoutPortalInstanceLifecycleListener
 
 	@Reference
 	private RoleLocalService _roleLocalService;
+
+	@Reference(target = "(dl.store.impl.enabled=true)")
+	private StoreFactory _storeFactory;
 
 	@Reference
 	private UserLocalService _userLocalService;
