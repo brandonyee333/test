@@ -1,0 +1,35 @@
+[
+	{
+		"activitiesCount": 0,
+		"anonymousIndividualCount": 0,
+		"channelId": "1",
+		"dateCreated": "2020-12-21T17:54:23.740Z",
+		"dateModified": "2020-12-21T17:54:23.740Z",
+		"id": "461522890926789186",
+		"individualCount": 3,
+		"knownIndividualCount": 3,
+		"name": "6oPWu9uD",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+		],
+		"referencedGroupIds": [
+		],
+		"referencedOrganizationIds": [
+		],
+		"referencedRoleIds": [
+		],
+		"referencedTeamIds": [
+		],
+		"referencedUserGroupIds": [
+		],
+		"referencedUserIds": [
+		],
+		"scope": "PROJECT",
+		"segmentType": "STATIC",
+		"state": "READY",
+		"status": "ACTIVE"
+	}
+]

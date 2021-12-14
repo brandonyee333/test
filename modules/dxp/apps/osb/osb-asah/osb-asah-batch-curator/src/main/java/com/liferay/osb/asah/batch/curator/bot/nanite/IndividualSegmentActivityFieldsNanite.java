@@ -12,19 +12,14 @@
  *
  */
 
-package com.liferay.osb.asah.stream.curator.bot.nanite.individual;
+package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -33,11 +28,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import javax.annotation.PreDestroy;
-
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -46,33 +41,49 @@ import org.springframework.stereotype.Component;
  * @author Michael Bowerman
  */
 @Component
-public class IndividualSegmentActivityFieldsNanite implements Nanite {
+public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 
 	@Override
-	public String getCollectionName() {
-		return "individual-segments";
+	public boolean isLogRunEnabled() {
+		return true;
 	}
 
 	@Override
-	public long getInterval() {
-		return DateUtil.MINUTE;
-	}
+	public void run(JSONObject contextJSONObject) throws Exception {
+		if (!_dataSourceDog.isAnalyticsConfigured()) {
+			if (_isAnalyticsConfigured()) {
+				_segmentDog.updateSegments(0L);
+			}
 
-	@Override
-	public void run() {
-		try {
-			_run();
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+			_setAnalyticsConfigured(false);
+
+			return;
 		}
 
-		_boundedExecutor.awaitPendingTasks();
+		_setAnalyticsConfigured(true);
+
+		int page = 0;
+
+		List<Segment> segments = _segmentDog.getSegments(
+			"Account: ", page, 500);
+
+		while (!segments.isEmpty()) {
+			for (Segment segment : segments) {
+				try {
+					_process(segment);
+				}
+				catch (Exception exception) {
+					_log.error(exception, exception);
+				}
+			}
+
+			segments = _segmentDog.getSegments("Account: ", ++page, 500);
+		}
 	}
 
-	@PreDestroy
-	private void _destroy() {
-		_boundedExecutor.shutdown();
+	@Override
+	protected Log getLog() {
+		return _log;
 	}
 
 	private long _getActivitiesCount(
@@ -161,51 +172,6 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 		_segmentDog.replaceSegment(segment);
 	}
 
-	private void _run() {
-		for (Project project : _projectDog.getProjects()) {
-			_boundedExecutor.runAsync(
-				() -> {
-					try {
-						ProjectIdThreadLocal.setProjectId(project.getId());
-
-						if (!_dataSourceDog.isAnalyticsConfigured()) {
-							if (_isAnalyticsConfigured()) {
-								_segmentDog.updateSegments(0L);
-							}
-
-							_setAnalyticsConfigured(false);
-
-							return;
-						}
-
-						_setAnalyticsConfigured(true);
-
-						int page = 0;
-
-						List<Segment> segments = _segmentDog.getSegments(
-							"Account: ", page, 500);
-
-						while (!segments.isEmpty()) {
-							for (Segment segment : segments) {
-								try {
-									_process(segment);
-								}
-								catch (Exception exception) {
-									_log.error(exception, exception);
-								}
-							}
-
-							segments = _segmentDog.getSegments(
-								"Account: ", ++page, 500);
-						}
-					}
-					catch (Exception exception) {
-						_log.error(exception.getMessage(), exception);
-					}
-				});
-		}
-	}
-
 	private void _setAnalyticsConfigured(boolean analyticsConfigured) {
 		_analyticsConfigured.put(
 			ProjectIdThreadLocal.getProjectId(), analyticsConfigured);
@@ -215,17 +181,12 @@ public class IndividualSegmentActivityFieldsNanite implements Nanite {
 		IndividualSegmentActivityFieldsNanite.class);
 
 	private final Map<String, Boolean> _analyticsConfigured = new HashMap<>();
-	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(15, 10);
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
 
 	@Autowired
 	private IndividualDog _individualDog;
-
-	@Autowired
-	private ProjectDog _projectDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

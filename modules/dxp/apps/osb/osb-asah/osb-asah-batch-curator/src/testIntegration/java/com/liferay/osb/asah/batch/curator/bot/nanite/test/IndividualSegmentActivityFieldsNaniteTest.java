@@ -12,19 +12,17 @@
  *
  */
 
-package com.liferay.osb.asah.stream.curator.bot.nanite.individual.test;
+package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
+import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFieldsNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext;
-import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
-import com.liferay.osb.asah.stream.curator.bot.nanite.individual.IndividualSegmentActivityFieldsNanite;
-import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,16 +33,14 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Michael Bowerman
  */
 public class IndividualSegmentActivityFieldsNaniteTest
-	extends BaseNaniteTestCase
-	implements OSBAsahStreamCuratorSpringTestContext {
+	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_6_info.json",
+		name = "individuals", resourcePath = "individuals_3.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individual-segments",
-		resourcePath = "individual_segments_2_info.json",
+		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
@@ -53,7 +49,7 @@ public class IndividualSegmentActivityFieldsNaniteTest
 	)
 	@Test
 	public void test() throws Exception {
-		runNanite();
+		_individualSegmentActivityFieldsNanite.run(null);
 
 		Segment segment = _segmentDog.getSegment(461522890926789186L);
 
@@ -61,11 +57,6 @@ public class IndividualSegmentActivityFieldsNaniteTest
 		Assertions.assertEquals(
 			"2020-12-06T17:54:23.916Z",
 			DateUtil.toUTCString(segment.getLastActivityDate()));
-	}
-
-	@Override
-	protected Nanite getNanite() {
-		return _individualSegmentActivityFieldsNanite;
 	}
 
 	@Autowired
