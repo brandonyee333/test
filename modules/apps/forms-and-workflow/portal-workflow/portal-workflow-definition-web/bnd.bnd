@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal Workflow Definition Web
 Bundle-SymbolicName: com.liferay.portal.workflow.definition.web
-Bundle-Version: 1.0.31
+Bundle-Version: 1.0.32
 Liferay-Releng-Module-Group-Title: Workflow
 Provide-Capability:\
 	liferay.resource.bundle;\
