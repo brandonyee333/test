@@ -115,6 +115,7 @@ public class AsahTaskScheduler {
 				"Interrupted while waiting for termination of executor",
 				interruptedException);
 		}
+		_threadPoolTaskScheduler.setAwaitTerminationSeconds(60);
 
 		try {
 			if (!_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.
@@ -129,6 +130,7 @@ public class AsahTaskScheduler {
 				"Interrupted while waiting for termination of executor",
 				interruptedException);
 		}
+		_threadPoolTaskScheduler.shutdown();
 	}
 
 	private static final Log _log = LogFactory.getLog(AsahTaskScheduler.class);
