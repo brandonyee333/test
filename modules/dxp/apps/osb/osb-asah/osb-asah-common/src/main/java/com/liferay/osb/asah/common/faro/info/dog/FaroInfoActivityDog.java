@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -90,8 +88,7 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 						activityJSONObject.getString("activityKey") + "')"
 				).put(
 					"individualJSONObject",
-					elasticsearchInvoker.get(
-						"individuals", activityJSONObject.getString("ownerId"))
+					JSONUtil.put("id", activityJSONObject.getLong("ownerId"))
 				));
 		}
 
@@ -122,8 +119,7 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 					activityJSONObject.getString("activityKey") + "')"
 			).put(
 				"individualJSONObject",
-				elasticsearchInvoker.get(
-					"individuals", activityJSONObject.getString("ownerId"))
+				JSONUtil.put("id", activityJSONObject.getLong("ownerId"))
 			));
 
 		return activityJSONObject;
@@ -554,7 +550,7 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 						activityJSONObject.getString("activityKey") + ")"
 				).put(
 					"individualJSONObject",
-					_objectMapper.convertValue(individual, JSONObject.class)
+					JSONUtil.put("id", individual.getId())
 				));
 		}
 	}
@@ -601,9 +597,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;

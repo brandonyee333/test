@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -175,7 +173,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 					DateUtil.toUTCString(individual.getModifiedDate())
 				).put(
 					"individualJSONObject",
-					_objectMapper.convertValue(individual, JSONObject.class)
+					JSONUtil.put("id", individual.getId())
 				));
 		}
 
@@ -1485,8 +1483,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 				"dateModified",
 				DateUtil.toUTCString(individual.getModifiedDate())
 			).put(
-				"individualJSONObject",
-				_objectMapper.convertValue(individual, JSONObject.class)
+				"individualJSONObject", JSONUtil.put("id", individual.getId())
 			));
 
 		String newIndividualName = FaroInfoIndividualUtil.getIndividualName(
@@ -1781,9 +1778,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private MembershipDog _membershipDog;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private OrganizationDog _organizationDog;
