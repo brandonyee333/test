@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -72,13 +73,11 @@ public class OSBAsahBatchCuratorBot {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void onStartup() {
-		try {
-			ProjectIdThreadLocal.forProjects(
-				_projectDog.getProjects(), this::_init);
+		for (Project project : _projectDog.getProjects()) {
+			_init(project.getId());
 		}
-		catch (Exception exception) {
-			_log.error("Unable to schedule nanites", exception);
-		}
+
+		_projectDog.addConsumer(this::_init);
 	}
 
 	public void removeNanitesSchedule(String projectId) {
@@ -183,31 +182,42 @@ public class OSBAsahBatchCuratorBot {
 			"StaleDynamicIndividualSegmentsNanite");
 	}
 
-	private void _init() {
-		_elasticsearchInvoker.updateByQueryWithRetry(
-			QueryBuilders.termQuery("status", "STARTED"), true,
-			new Script(
-				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-				"ctx._source.status = 'INTERRUPTED'", Collections.emptyMap()),
-			"run-logs");
+	private void _init(String projectId) {
+		try {
+			ProjectIdThreadLocal.setProjectId(projectId);
 
-		_asahTaskManager.runNanites("DataRetentionNanite");
+			_elasticsearchInvoker.updateByQueryWithRetry(
+				QueryBuilders.termQuery("status", "STARTED"), true,
+				new Script(
+					Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+					"ctx._source.status = 'INTERRUPTED'",
+					Collections.emptyMap()),
+				"run-logs");
 
-		_asahTaskManager.runNanites("DeleteTempFilesNanite");
+			_asahTaskManager.runNanites("DataRetentionNanite");
 
-		_asahTaskManager.runNanites("InterestThresholdScoreNanite");
+			_asahTaskManager.runNanites("DeleteTempFilesNanite");
 
-		_asahTaskManager.runNanites("InterestTopicsNanite");
+			_asahTaskManager.runNanites("InterestThresholdScoreNanite");
 
-		_asahTaskManager.runNanites("IndividualInterestScoresNanite");
+			_asahTaskManager.runNanites("InterestTopicsNanite");
 
-		_asahTaskManager.runNanites("StaleDynamicIndividualSegmentsNanite");
+			_asahTaskManager.runNanites("IndividualInterestScoresNanite");
 
-		_asahTaskManager.executeAsahTasks();
+			_asahTaskManager.runNanites("StaleDynamicIndividualSegmentsNanite");
 
-		_asahTaskManager.scheduleAsahTasks();
+			_asahTaskManager.executeAsahTasks();
 
-		_scheduleNanites();
+			_asahTaskManager.scheduleAsahTasks();
+
+			_scheduleNanites();
+		}
+		catch (Exception exception) {
+			_log.error("Unable to schedule nanites", exception);
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
 	}
 
 	private void _scheduleNanite(Runnable runnable, String scheduledTaskId) {

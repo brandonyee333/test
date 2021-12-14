@@ -21,7 +21,11 @@ import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.logging.Log;
@@ -36,6 +40,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjectDog {
 
+	public void addConsumer(Consumer<String> consumer) {
+		_consumers.add(consumer);
+	}
+
 	public void addProject(Project project) {
 		try {
 			ProjectIdThreadLocal.setGlobalContext(true);
@@ -46,7 +54,9 @@ public class ProjectDog {
 			ProjectIdThreadLocal.setGlobalContext(false);
 		}
 
-		_createSnapshots(project.getId());
+		for (Consumer<String> consumer : _consumers) {
+			consumer.accept(project.getId());
+		}
 
 		ProjectIdThreadLocal.forProject(
 			project, _nanitesHttp::rescheduleNanites);
@@ -77,6 +87,11 @@ public class ProjectDog {
 		}
 	}
 
+	@PostConstruct
+	public void init() {
+		_consumers.add(this::_createSnapshots);
+	}
+
 	private void _createSnapshots(String projectId) {
 		try {
 			if (_projectRepository instanceof
@@ -95,6 +110,8 @@ public class ProjectDog {
 	}
 
 	private static final Log _log = LogFactory.getLog(ProjectDog.class);
+
+	private final List<Consumer<String>> _consumers = new ArrayList<>();
 
 	@Autowired
 	private ElasticsearchSnapshotManager _elasticsearchSnapshotManager;

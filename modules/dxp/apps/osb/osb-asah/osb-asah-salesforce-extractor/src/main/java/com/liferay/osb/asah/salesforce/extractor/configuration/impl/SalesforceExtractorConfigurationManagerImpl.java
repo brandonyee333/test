@@ -29,7 +29,6 @@ import com.liferay.osb.asah.salesforce.extractor.oauth2.SalesforceOAuth2Client;
 import com.liferay.petra.salesforce.client.partner.SalesforcePartnerClient;
 import com.liferay.petra.salesforce.client.partner.SalesforcePartnerClientImpl;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -192,18 +191,11 @@ public class SalesforceExtractorConfigurationManagerImpl
 
 	@PostConstruct
 	public void init() throws Exception {
-		List<Project> projects = _projectDog.getProjects();
-
-		for (Project project : projects) {
-			try {
-				ProjectIdThreadLocal.setProjectId(project.getId());
-
-				_initConfigurations(project.getId());
-			}
-			finally {
-				ProjectIdThreadLocal.remove();
-			}
+		for (Project project : _projectDog.getProjects()) {
+			_init(project.getId());
 		}
+
+		_projectDog.addConsumer(this::_init);
 	}
 
 	@Override
@@ -258,6 +250,17 @@ public class SalesforceExtractorConfigurationManagerImpl
 
 	private SalesforceBotRunnable _getSalesforceBotRunnable(String projectId) {
 		return _salesforceConfigurableBot.getSalesforceBotRunnable(projectId);
+	}
+
+	private void _init(String projectId) {
+		try {
+			ProjectIdThreadLocal.setProjectId(projectId);
+
+			_initConfigurations(projectId);
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
 	}
 
 	private void _initConfigurations(String projectId) {
