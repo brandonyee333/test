@@ -12,17 +12,13 @@
  *
  */
 
-package com.liferay.osb.asah.stream.curator.bot.nanite.session.test;
+package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
+import com.liferay.osb.asah.batch.curator.bot.nanite.UserSessionFinalizerNanite;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
-import com.liferay.osb.asah.stream.curator.bot.nanite.session.UserSessionFinalizerNanite;
-import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
-import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,20 +31,14 @@ import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author André Miranda
  */
-@ExtendWith(OSBAsahSpringExtension.class)
-@SpringBootTest(
-	classes = OSBAsahCuratorSpringBootApplication.class,
-	properties = "osb.asah.user.session.events.storage.path:/tmp/user_session_events.snappy.parquet"
-)
-public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
+public class UserSessionFinalizerNaniteTest
+	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
 		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
@@ -59,12 +49,12 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "user_session_info_old_4.json",
+		name = "user-sessions", resourcePath = "user_session_info_old_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testExpiredSessionMultipleInteractions() {
-		runNanite();
+	public void testExpiredSessionMultipleInteractions() throws Exception {
+		_userSessionFinalizerNanite.run(null);
 
 		Assertions.assertEquals(
 			1,
@@ -102,12 +92,12 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "user_session_info_old_5.json",
+		name = "user-sessions", resourcePath = "user_session_info_old_3.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testExpiredSessionMultiplePageVisits() {
-		runNanite();
+	public void testExpiredSessionMultiplePageVisits() throws Exception {
+		_userSessionFinalizerNanite.run(null);
 
 		Assertions.assertEquals(
 			1,
@@ -141,12 +131,12 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "user_session_info_old_3.json",
+		name = "user-sessions", resourcePath = "user_session_info_old_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testExpiredSessionSingleInteraction() {
-		runNanite();
+	public void testExpiredSessionSingleInteraction() throws Exception {
+		_userSessionFinalizerNanite.run(null);
 
 		Assertions.assertEquals(
 			2,
@@ -184,16 +174,16 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "page_info_old_6.json",
+		name = "pages", resourcePath = "page_info_old_4.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "user_session_info_old_9.json",
+		name = "user-sessions", resourcePath = "user_session_info_old_4.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testExpiredSessionUpdatesAssets() {
-		runNanite();
+	public void testExpiredSessionUpdatesAssets() throws Exception {
+		_userSessionFinalizerNanite.run(null);
 
 		Assertions.assertEquals(
 			1,
@@ -248,17 +238,15 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "page_info_old_9.json",
+		name = "pages", resourcePath = "page_info_old_7.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "user_session_info_old_12.json",
+		name = "user-sessions", resourcePath = "user_session_info_old_7.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testFinalizeCompletedSession() {
-		ProjectIdThreadLocal.setProjectId("test");
-
+	public void testFinalizeCompletedSession() throws Exception {
 		JSONObject userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", "366909399944215919");
 
@@ -269,7 +257,7 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 
 		String modifiedDate2 = userSessionJSONObject.getString("modifiedDate");
 
-		runNanite();
+		_userSessionFinalizerNanite.run(null);
 
 		userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", "366909399944215919");
@@ -331,16 +319,16 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "page_info_old_7.json",
+		name = "pages", resourcePath = "page_info_old_5.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "user_session_info_old_10.json",
+		name = "user-sessions", resourcePath = "user_session_info_old_5.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testUpdatePageViews() {
-		runNanite();
+	public void testUpdatePageViews() throws Exception {
+		_userSessionFinalizerNanite.run(null);
 
 		Assertions.assertEquals(
 			1,
@@ -367,16 +355,16 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "page_info_old_8.json",
+		name = "pages", resourcePath = "page_info_old_6.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "user_session_info_old_11.json",
+		name = "user-sessions", resourcePath = "user_session_info_old_6.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testUpdateTimeOnPageSinglePage() {
-		runNanite();
+	public void testUpdateTimeOnPageSinglePage() throws Exception {
+		_userSessionFinalizerNanite.run(null);
 
 		Assertions.assertEquals(
 			1,
@@ -396,11 +384,6 @@ public class UserSessionFinalizerNaniteTest extends BaseNaniteTestCase {
 		JSONObject pageJSONObject = pagesJSONArray.getJSONObject(0);
 
 		Assertions.assertEquals(120000, pageJSONObject.getLong("timeOnPage"));
-	}
-
-	@Override
-	protected Nanite getNanite() {
-		return _userSessionFinalizerNanite;
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)

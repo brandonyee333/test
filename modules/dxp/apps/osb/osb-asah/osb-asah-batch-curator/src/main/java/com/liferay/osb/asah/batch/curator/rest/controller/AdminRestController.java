@@ -12,9 +12,9 @@
  *
  */
 
-package com.liferay.osb.asah.stream.curator.rest.controller;
+package com.liferay.osb.asah.batch.curator.rest.controller;
 
-import com.liferay.osb.asah.stream.curator.bot.nanite.session.UserSessionFinalizerNanite;
+import com.liferay.osb.asah.batch.curator.bot.nanite.UserSessionFinalizerNanite;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Profile("!prod")
 @RequestMapping("/admin")
 @RestController(
-	"com.liferay.osb.asah.stream.curator.rest.controller.AdminRestController"
+	"com.liferay.osb.asah.batch.curator.rest.controller.AdminRestController"
 )
 public class AdminRestController {
 

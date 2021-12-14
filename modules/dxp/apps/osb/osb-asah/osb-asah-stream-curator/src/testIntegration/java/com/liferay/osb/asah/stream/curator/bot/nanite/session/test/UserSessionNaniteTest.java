@@ -83,11 +83,11 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "page_info_old_4.json",
+		name = "pages", resourcePath = "page_info_old_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "user_session_info_old_6.json",
+		name = "user-sessions", resourcePath = "user_session_info_old_3.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@MessageBusChannel(
@@ -161,7 +161,7 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "user_session_info_old_7.json",
+		name = "user-sessions", resourcePath = "user_session_info_old_4.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@MessageBusChannel(
@@ -192,7 +192,7 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "user_session_info_old_8.json",
+		name = "user-sessions", resourcePath = "user_session_info_old_5.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@MessageBusChannel(

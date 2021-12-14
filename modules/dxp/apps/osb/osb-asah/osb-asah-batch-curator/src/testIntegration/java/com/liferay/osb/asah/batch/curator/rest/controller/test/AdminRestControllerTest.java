@@ -12,12 +12,12 @@
  *
  */
 
-package com.liferay.osb.asah.stream.curator.rest.controller.test;
+package com.liferay.osb.asah.batch.curator.rest.controller.test;
 
+import com.liferay.osb.asah.batch.curator.rest.controller.AdminRestController;
+import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.stream.curator.rest.controller.AdminRestController;
-import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -35,10 +35,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author André Miranda
  */
 @ExtendWith(OSBAsahSpringExtension.class)
-@SpringBootTest(
-	classes = OSBAsahCuratorSpringBootApplication.class,
-	properties = "osb.asah.user.session.events.storage.path:/tmp/user_session_events.snappy.parquet"
-)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class AdminRestControllerTest
 	implements OSBAsahTestExecutionListenersContext {
 

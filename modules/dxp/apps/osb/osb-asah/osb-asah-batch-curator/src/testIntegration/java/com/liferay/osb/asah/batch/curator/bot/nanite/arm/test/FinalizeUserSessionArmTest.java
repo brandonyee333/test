@@ -12,16 +12,16 @@
  *
  */
 
-package com.liferay.osb.asah.stream.curator.bot.nanite.session.test;
+package com.liferay.osb.asah.batch.curator.bot.nanite.arm.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.batch.curator.OSBAsahBatchCuratorSpringTestContext;
+import com.liferay.osb.asah.batch.curator.bot.nanite.arm.FinalizeUserSessionArm;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext;
-import com.liferay.osb.asah.stream.curator.bot.nanite.session.arm.FinalizeUserSessionArm;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.OffsetDateTime;
@@ -39,7 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author André Miranda
  */
 public class FinalizeUserSessionArmTest
-	implements OSBAsahStreamCuratorSpringTestContext,
+	implements OSBAsahBatchCuratorSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach

@@ -1,32 +1,26 @@
 [
 	{
-		"acquisition": {
-			"campaign": null,
-			"channel": "referral",
-			"content": null,
-			"medium": "referral",
-			"source": "172.16.22.54",
-			"term": null
-		},
-		"bounced": false,
-		"browserName": "Chrome",
+		"bounced": true,
+		"browserName": "Firefox",
 		"channelId": "1",
 		"city": null,
 		"completeReason": "inactivity",
-		"completed": false,
+		"completed": true,
 		"country": null,
-		"dataSourceId": "372049829876793298",
-		"date": "2019-08-14T02:00:00.000Z",
+		"dataSourceId": "362055312804551713",
+		"date": "2019-09-09T07:55:21.364Z",
 		"duration": 0,
-		"entryPage": "http://172.16.22.54:8089/web/guest",
-		"firstEventDate": "2019-08-14T02:34:24.547Z",
-		"id": "372189498053954253",
-		"individualId": "372049916046453108",
+		"entryPage": "http://192.168.108.90:8089/",
+		"exitPage": "http://192.168.108.90:8089/",
+		"firstEventDate": "2019-09-09T07:55:21.364Z",
+		"id": "366909399944215919",
+		"individualId": "366909392432123952",
 		"interactionsCount": 0,
-		"lastEventDate": "2019-08-16T17:22:35.091Z",
-		"pageViewsCount": 2,
-		"platformName": "Windows",
+		"lastEventDate": "2019-09-09T07:55:21.364Z",
+		"modifiedDate": "2019-09-09T07:55:21.364Z",
+		"pageViewsCount": 1,
+		"platformName": "Linux",
 		"region": null,
-		"userId": "f65a3f60-a72c-11e9-91db-cf7c057c158a"
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
 	}
 ]

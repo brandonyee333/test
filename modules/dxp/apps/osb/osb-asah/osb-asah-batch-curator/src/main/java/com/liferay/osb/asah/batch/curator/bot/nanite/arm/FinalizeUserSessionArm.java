@@ -12,13 +12,10 @@
  *
  */
 
-package com.liferay.osb.asah.stream.curator.bot.nanite.session.arm;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+package com.liferay.osb.asah.batch.curator.bot.nanite.arm;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -114,20 +111,12 @@ public class FinalizeUserSessionArm {
 				Optional.ofNullable(
 					userSession.getIndividualId()
 				).map(
-					individualId -> _objectMapper.convertValue(
-						_individualDog.fetchIndividual(
-							Long.valueOf(userSession.getIndividualId())),
-						JSONObject.class)
+					individualId -> JSONUtil.put(
+						"id", Long.valueOf(individualId))
 				).orElse(
 					null
 				)
 			));
-	}
-
-	public void processSessions(UserSession[] userSessions) {
-		for (UserSession userSession : userSessions) {
-			processSession(userSession);
-		}
 	}
 
 	public void updateActivitiesAndAssets(UserSession userSession) {
@@ -666,14 +655,5 @@ public class FinalizeUserSessionArm {
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private IndividualDog _individualDog;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 }

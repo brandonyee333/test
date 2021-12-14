@@ -12,28 +12,22 @@
  *
  */
 
-package com.liferay.osb.asah.stream.curator.bot.nanite.session;
+package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.batch.curator.bot.nanite.arm.FinalizeUserSessionArm;
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
-import com.liferay.osb.asah.common.date.CountdownTimer;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahMarker;
-import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.UserSession;
-import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
-import com.liferay.osb.asah.stream.curator.bot.nanite.session.arm.FinalizeUserSessionArm;
-
-import java.time.temporal.ChronoUnit;
 
 import javax.annotation.PreDestroy;
 
@@ -53,28 +47,11 @@ import org.springframework.stereotype.Component;
  * @author André Miranda
  */
 @Component
-public class UserSessionFinalizerNanite implements Nanite {
+public class UserSessionFinalizerNanite extends BaseNanite {
 
 	@Override
-	public String getCollectionName() {
-		return "user-session";
-	}
-
-	@Override
-	public long getInterval() {
-		return DateUtil.MINUTE * 5;
-	}
-
-	@Override
-	public void run() {
-		try {
-			_run();
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-
-		_boundedExecutor.awaitPendingTasks();
+	public boolean isLogRunEnabled() {
+		return true;
 	}
 
 	public void run(boolean force) throws Exception {
@@ -112,10 +89,7 @@ public class UserSessionFinalizerNanite implements Nanite {
 			)
 		).iterate();
 
-		CountdownTimer countdownTimer = new CountdownTimer(
-			ChronoUnit.MINUTES, 5);
-
-		while (countdownTimer.isRunning()) {
+		while (true) {
 			long start = System.currentTimeMillis();
 
 			String userSessionsJSON = _cerebroInfoElasticsearchInvoker.get(
@@ -125,7 +99,7 @@ public class UserSessionFinalizerNanite implements Nanite {
 						_getQueryBuilder(
 							dateString, force,
 							lastSuccessfulSessionFinalizerDate));
-					searchSourceBuilder.size(50);
+					searchSourceBuilder.size(500);
 				});
 
 			UserSession[] userSessions = _objectMapper.readValue(
@@ -135,7 +109,21 @@ public class UserSessionFinalizerNanite implements Nanite {
 				break;
 			}
 
-			_finalizeUserSessionArm.processSessions(userSessions);
+			String projectId = ProjectIdThreadLocal.getProjectId();
+
+			for (UserSession userSession : userSessions) {
+				_boundedExecutor.runAsync(
+					() -> {
+						try {
+							ProjectIdThreadLocal.setProjectId(projectId);
+
+							_finalizeUserSessionArm.processSession(userSession);
+						}
+						catch (Exception exception) {
+							_log.error(exception.getMessage(), exception);
+						}
+					});
+			}
 
 			if (_log.isDebugEnabled()) {
 				Class<?> clazz = getClass();
@@ -153,6 +141,18 @@ public class UserSessionFinalizerNanite implements Nanite {
 
 		_asahMarkerDog.updateAsahMarker(
 			asahMarker, WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
+
+		_boundedExecutor.awaitPendingTasks();
+	}
+
+	@Override
+	public void run(JSONObject contextJSONObject) throws Exception {
+		run(false);
+	}
+
+	@Override
+	protected Log getLog() {
+		return _log;
 	}
 
 	@PreDestroy
@@ -225,22 +225,6 @@ public class UserSessionFinalizerNanite implements Nanite {
 		);
 	}
 
-	private void _run() throws Exception {
-		for (Project project : _projectDog.getProjects()) {
-			_boundedExecutor.runAsync(
-				() -> {
-					try {
-						ProjectIdThreadLocal.setProjectId(project.getId());
-
-						run(false);
-					}
-					catch (Exception exception) {
-						_log.error(exception.getMessage(), exception);
-					}
-				});
-		}
-	}
-
 	private static final Log _log = LogFactory.getLog(
 		UserSessionFinalizerNanite.class);
 
@@ -258,9 +242,6 @@ public class UserSessionFinalizerNanite implements Nanite {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
-
-	@Autowired
-	private ProjectDog _projectDog;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

@@ -146,6 +146,11 @@ public class OSBAsahBatchCuratorBot {
 		_asahTaskManager.runNanitesForAllProjects("ExperimentNanite");
 	}
 
+	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
+	public void runUserSessionFinalizerNanite() {
+		_asahTaskManager.runNanitesForAllProjects("UserSessionFinalizerNanite");
+	}
+
 	private String _buildCronExpression(int second, int minute) {
 		return String.format("%d %d 0 * * ?", second, minute);
 	}
