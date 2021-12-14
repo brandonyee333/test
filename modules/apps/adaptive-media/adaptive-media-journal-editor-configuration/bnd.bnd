@@ -1,5 +1,5 @@
 Bundle-Name: Liferay Adaptive Media Journal Editor Configuration
 Bundle-SymbolicName: com.liferay.adaptive.media.journal.editor.configuration
-Bundle-Version: 1.0.11
+Bundle-Version: 1.0.12
 Liferay-Releng-Module-Group-Title: Adaptive Media
 -dsannotations-options: inherit
