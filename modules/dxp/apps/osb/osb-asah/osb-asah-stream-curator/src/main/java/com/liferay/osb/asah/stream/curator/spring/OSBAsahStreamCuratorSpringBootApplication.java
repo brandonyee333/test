@@ -23,11 +23,12 @@ import org.springframework.context.annotation.ComponentScan;
  * @author Brian Wing Shun Chan
  */
 @ComponentScan("com.liferay.osb.asah.stream.curator")
-public class OSBAsahCuratorSpringBootApplication
+public class OSBAsahStreamCuratorSpringBootApplication
 	extends OSBAsahSpringBootApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OSBAsahCuratorSpringBootApplication.class, args);
+		SpringApplication.run(
+			OSBAsahStreamCuratorSpringBootApplication.class, args);
 	}
 
 }

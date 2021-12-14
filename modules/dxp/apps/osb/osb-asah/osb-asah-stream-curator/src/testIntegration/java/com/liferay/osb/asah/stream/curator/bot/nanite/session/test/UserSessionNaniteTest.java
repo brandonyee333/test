@@ -21,7 +21,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.UserSessionNanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
-import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
+import com.liferay.osb.asah.stream.curator.spring.OSBAsahStreamCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
@@ -43,10 +43,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author André Miranda
  */
 @ExtendWith(OSBAsahSpringExtension.class)
-@SpringBootTest(
-	classes = OSBAsahCuratorSpringBootApplication.class,
-	properties = "osb.asah.user.session.events.storage.path:/tmp/user_session_events.snappy.parquet"
-)
+@SpringBootTest(classes = OSBAsahStreamCuratorSpringBootApplication.class)
 public class UserSessionNaniteTest extends BaseNaniteTestCase {
 
 	@MessageBusChannel(

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.stream.curator;
 
-import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
+import com.liferay.osb.asah.stream.curator.spring.OSBAsahStreamCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +25,6 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Alejo Ceballos
  */
 @ExtendWith(OSBAsahSpringExtension.class)
-@SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
+@SpringBootTest(classes = OSBAsahStreamCuratorSpringBootApplication.class)
 public interface OSBAsahStreamCuratorSpringTestContext {
 }

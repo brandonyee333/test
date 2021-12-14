@@ -66,11 +66,6 @@ public class OSBAsahBatchCuratorBot {
 	public void clearCache() {
 	}
 
-	@Scheduled(fixedDelay = DateUtil.HOUR * 6)
-	public void curateExperiments() {
-		_asahTaskManager.runNanitesForAllProjects("ExperimentNanite");
-	}
-
 	@EventListener(ApplicationReadyEvent.class)
 	public void onStartup() {
 		for (Project project : _projectDog.getProjects()) {
@@ -119,12 +114,12 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
-	public void runDataControlTasks() {
+	public void runDataControlNanite() {
 		_asahTaskManager.runNanitesForAllProjects("DataControlNanite");
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
-	public void runDataExportTasks() {
+	public void runDataExportNanite() {
 		_asahTaskManager.runNanitesForAllProjects("DataExportNanite");
 	}
 
@@ -144,6 +139,11 @@ public class OSBAsahBatchCuratorBot {
 				"Unable to execute DataprocSparkManagerMonitoringNanite",
 				exception);
 		}
+	}
+
+	@Scheduled(fixedDelay = DateUtil.HOUR * 6)
+	public void runExperimentNanite() {
+		_asahTaskManager.runNanitesForAllProjects("ExperimentNanite");
 	}
 
 	private String _buildCronExpression(int second, int minute) {
