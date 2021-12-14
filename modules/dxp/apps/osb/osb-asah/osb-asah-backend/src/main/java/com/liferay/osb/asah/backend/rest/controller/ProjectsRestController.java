@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.entity.Project;
-import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 
 import java.util.List;
 

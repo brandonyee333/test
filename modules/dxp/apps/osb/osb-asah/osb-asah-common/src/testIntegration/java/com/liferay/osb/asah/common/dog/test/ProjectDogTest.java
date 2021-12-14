@@ -12,16 +12,15 @@
  *
  */
 
-package com.liferay.osb.asah.common.multitenancy.impl.test;
+package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
+import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.multitenancy.impl.MultiTenantProjectDogImpl;
-import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
@@ -45,7 +44,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 /**
  * @author André Miranda
  */
-public class MultiTenantProjectDogImplTest
+public class ProjectDogTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
@@ -60,19 +59,17 @@ public class MultiTenantProjectDogImplTest
 		elasticsearchInvoker.add("projects", JSONUtil.put("id", "project2"));
 		elasticsearchInvoker.add("projects", JSONUtil.put("id", "project3"));
 
-		_multiTenantProjectDogImpl = new MultiTenantProjectDogImpl(
-			_postCreationConsumer, _projectRepository);
+		_projectDog.addConsumer(_consumer);
 
-		ReflectionTestUtils.setField(
-			_multiTenantProjectDogImpl, "_nanitesHttp", _nanitesHttp);
+		ReflectionTestUtils.setField(_projectDog, "_nanitesHttp", _nanitesHttp);
 	}
 
 	@Test
 	public void testAddProject() {
-		_multiTenantProjectDogImpl.addProject(new Project("project4"));
+		_projectDog.addProject(new Project("project4"));
 
 		Mockito.verify(
-			_postCreationConsumer, Mockito.times(1)
+			_consumer, Mockito.times(1)
 		).accept(
 			ArgumentMatchers.eq("project4")
 		);
@@ -90,7 +87,7 @@ public class MultiTenantProjectDogImplTest
 
 	@Test
 	public void testDeleteProject() {
-		_multiTenantProjectDogImpl.deleteProject("project2");
+		_projectDog.deleteProject("project2");
 
 		Mockito.verify(
 			_nanitesHttp, Mockito.times(1)
@@ -106,7 +103,7 @@ public class MultiTenantProjectDogImplTest
 
 	@Test
 	public void testGetProjects() throws Exception {
-		List<Project> projects = _multiTenantProjectDogImpl.getProjects();
+		List<Project> projects = _projectDog.getProjects();
 
 		Stream<Project> stream = projects.stream();
 
@@ -118,18 +115,16 @@ public class MultiTenantProjectDogImplTest
 			).toArray());
 	}
 
+	@Mock
+	private Consumer<String> _consumer;
+
 	@Autowired
 	private ElasticsearchInvokerManager _elasticsearchInvokerManager;
-
-	private MultiTenantProjectDogImpl _multiTenantProjectDogImpl;
 
 	@MockBean
 	private NanitesHttp _nanitesHttp;
 
-	@Mock
-	private Consumer<String> _postCreationConsumer;
-
 	@Autowired
-	private ProjectRepository _projectRepository;
+	private ProjectDog _projectDog;
 
 }

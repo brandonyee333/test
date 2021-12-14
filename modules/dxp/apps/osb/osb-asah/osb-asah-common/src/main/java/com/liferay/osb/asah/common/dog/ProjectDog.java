@@ -12,35 +12,30 @@
  *
  */
 
-package com.liferay.osb.asah.common.multitenancy.impl;
+package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
+import com.liferay.osb.asah.common.elasticsearch.repository.impl.ElasticsearchProjectRepositoryImpl;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.http.NanitesHttp;
-import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author André Miranda
  */
-public class MultiTenantProjectDogImpl implements ProjectDog {
+@Component
+public class ProjectDog {
 
-	public MultiTenantProjectDogImpl(
-		Consumer<String> postCreationConsumer,
-		ProjectRepository projectRepository) {
-
-		_postCreationConsumer = postCreationConsumer;
-		_projectRepository = projectRepository;
-	}
-
-	@Override
 	public void addProject(Project project) {
 		try {
 			ProjectIdThreadLocal.setGlobalContext(true);
@@ -51,15 +46,12 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 			ProjectIdThreadLocal.setGlobalContext(false);
 		}
 
-		if (_postCreationConsumer != null) {
-			_postCreationConsumer.accept(project.getId());
-		}
+		_createSnapshots(project.getId());
 
 		ProjectIdThreadLocal.forProject(
 			project, _nanitesHttp::rescheduleNanites);
 	}
 
-	@Override
 	public void deleteProject(String projectId) {
 		ProjectIdThreadLocal.forProject(
 			projectId, _nanitesHttp::removeSchedule);
@@ -74,7 +66,6 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 		}
 	}
 
-	@Override
 	public List<Project> getProjects() {
 		try {
 			ProjectIdThreadLocal.setGlobalContext(true);
@@ -86,10 +77,32 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 		}
 	}
 
+	private void _createSnapshots(String projectId) {
+		try {
+			if (_projectRepository instanceof
+					ElasticsearchProjectRepositoryImpl) {
+
+				_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
+					projectId);
+			}
+		}
+		catch (Exception exception) {
+			_log.error(
+				"Unable to create snapshot lifecycle policy for project " +
+					projectId,
+				exception);
+		}
+	}
+
+	private static final Log _log = LogFactory.getLog(ProjectDog.class);
+
+	@Autowired
+	private ElasticsearchSnapshotManager _elasticsearchSnapshotManager;
+
 	@Autowired
 	private NanitesHttp _nanitesHttp;
 
-	private final Consumer<String> _postCreationConsumer;
-	private final ProjectRepository _projectRepository;
+	@Autowired
+	private ProjectRepository _projectRepository;
 
 }

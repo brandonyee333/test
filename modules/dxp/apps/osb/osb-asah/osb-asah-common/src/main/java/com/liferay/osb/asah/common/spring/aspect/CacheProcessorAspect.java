@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.spring.aspect;
 
-import com.liferay.osb.asah.common.multitenancy.ProjectDog;
+import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;

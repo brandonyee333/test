@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.util;
 
+import com.liferay.osb.asah.common.dog.exception.InvalidProjectIdException;
 import com.liferay.osb.asah.common.entity.Project;
-import com.liferay.osb.asah.common.multitenancy.exception.InvalidProjectIdException;
 
 import java.util.Collections;
 import java.util.List;

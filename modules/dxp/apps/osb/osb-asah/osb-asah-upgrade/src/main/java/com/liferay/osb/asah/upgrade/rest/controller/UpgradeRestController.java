@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.upgrade.rest.controller;
 
+import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.entity.Project;
-import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.v3_0_5.EventIndexUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_5.IndividualEventUpgradeStep;

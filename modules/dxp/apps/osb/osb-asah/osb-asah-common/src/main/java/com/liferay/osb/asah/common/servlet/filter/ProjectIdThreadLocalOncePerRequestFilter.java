@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.servlet.filter;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
-import com.liferay.osb.asah.common.multitenancy.exception.InvalidProjectIdException;
+import com.liferay.osb.asah.common.dog.exception.InvalidProjectIdException;
 import com.liferay.osb.asah.common.servlet.util.ServletRequestUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 

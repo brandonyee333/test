@@ -12,21 +12,15 @@
  *
  */
 
-package com.liferay.osb.asah.common.multitenancy;
-
-import com.liferay.osb.asah.common.entity.Project;
-
-import java.util.List;
+package com.liferay.osb.asah.common.dog.exception;
 
 /**
  * @author André Miranda
  */
-public interface ProjectDog {
+public class InvalidProjectIdException extends RuntimeException {
 
-	public void addProject(Project project);
-
-	public void deleteProject(String projectId);
-
-	public List<Project> getProjects();
+	public InvalidProjectIdException(String message) {
+		super(message);
+	}
 
 }

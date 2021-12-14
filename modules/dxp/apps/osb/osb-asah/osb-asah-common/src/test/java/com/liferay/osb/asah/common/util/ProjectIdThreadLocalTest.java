@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.util;
 
-import com.liferay.osb.asah.common.multitenancy.exception.InvalidProjectIdException;
+import com.liferay.osb.asah.common.dog.exception.InvalidProjectIdException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
