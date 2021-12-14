@@ -1,6 +1,6 @@
 Bundle-Name: Liferay LCS Security
 Bundle-SymbolicName: com.liferay.lcs.security
-Bundle-Version: 1.0.14
+Bundle-Version: 1.0.15
 Export-Package: com.liferay.lcs.security
 Import-Package:\
 	com.liferay.portal.kernel.model;version="[1.0.0,99.0.0)",\
