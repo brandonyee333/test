@@ -342,7 +342,7 @@ definition {
 		}
 
 		if ("${contentDateRange}" == "All") {
-			Click(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
+			Click.clickNoMouseOver(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
 
 			Click(locator1 = "Radio#CHOOSE_CONTENT_DATE_RANGE_CHANGE");
 
@@ -352,7 +352,7 @@ definition {
 		}
 
 		if ("${contentDateRange}" == "Date Range") {
-			Click(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
+			Click.clickNoMouseOver(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
 
 			Click(locator1 = "Radio#CHOOSE_CONTENT_DATE_RANGE_CHANGE");
 
@@ -370,7 +370,7 @@ definition {
 		}
 
 		if ("${contentDateRange}" == "Last") {
-			Click(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
+			Click.clickNoMouseOver(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
 
 			Click(locator1 = "Radio#CHOOSE_CONTENT_DATE_RANGE_CHANGE");
 
@@ -420,7 +420,7 @@ definition {
 		}
 
 		if (isSet(uncheckSubContent)) {
-			Click(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
+			Click.clickNoMouseOver(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
 
 			var key_uncheckContent = "${uncheckSubContent}";
 
@@ -436,7 +436,7 @@ definition {
 		}
 
 		if (isSet(uncheckSubSubContent)) {
-			Click(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
+			Click.clickNoMouseOver(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
 
 			var key_contentName = "${contentName}";
 
