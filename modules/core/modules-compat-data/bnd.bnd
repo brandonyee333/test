@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Modules Compat Data
 Bundle-SymbolicName: com.liferay.modules.compat.data
-Bundle-Version: 1.2.7
+Bundle-Version: 1.2.8
 Export-Package:\
 	com.liferay.frontend.css.rtl.converter,\
 	com.liferay.petra.collection.stack,\
