@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.Arrays;
-import java.util.concurrent.Semaphore;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -102,15 +101,6 @@ public class AsahTaskRunnable implements Runnable {
 				"Unable to run nanites " + Arrays.toString(_naniteClassNames),
 				exception);
 		}
-		finally {
-			if (_semaphore != null) {
-				_semaphore.release();
-			}
-		}
-	}
-
-	public void setSemaphore(Semaphore semaphore) {
-		_semaphore = semaphore;
 	}
 
 	private void _deleteAsahTask() {
@@ -169,6 +159,5 @@ public class AsahTaskRunnable implements Runnable {
 	private final boolean _force;
 	private final String[] _naniteClassNames;
 	private String _projectId;
-	private Semaphore _semaphore;
 
 }

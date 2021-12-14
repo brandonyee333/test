@@ -17,19 +17,9 @@ package com.liferay.osb.asah.batch.curator.bot.scheduling;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PreDestroy;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -41,27 +31,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AsahTaskScheduler {
-
-	public void execute(AsahTaskRunnable asahTaskRunnable) {
-		_threadPoolTaskExecutor.execute(asahTaskRunnable);
-	}
-
-	public void executeUpdateDynamicMembershipsNanite(
-		AsahTaskRunnable asahTaskRunnable) {
-
-		_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.execute(
-			asahTaskRunnable);
-	}
-
-	public void executeUpdateDynamicMembershipsNaniteAsync(
-		AsahTaskRunnable asahTaskRunnable) {
-
-		_semaphore.acquireUninterruptibly();
-
-		asahTaskRunnable.setSemaphore(_semaphore);
-
-		CompletableFuture.runAsync(asahTaskRunnable, _threadPoolTaskExecutor);
-	}
 
 	public Map<String, ScheduledFuture<?>> getScheduledFuturesMap() {
 		return Collections.unmodifiableMap(_scheduledFuturesMap);
@@ -100,55 +69,15 @@ public class AsahTaskScheduler {
 
 	@PreDestroy
 	private void _destroy() {
-		_threadPoolTaskExecutor.shutdown();
-		_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.shutdown();
-
-		try {
-			if (!_threadPoolTaskExecutor.awaitTermination(
-					1, TimeUnit.MINUTES)) {
-
-				_threadPoolTaskExecutor.shutdownNow();
-			}
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(
-				"Interrupted while waiting for termination of executor",
-				interruptedException);
-		}
 		_threadPoolTaskScheduler.setAwaitTerminationSeconds(60);
 
-		try {
-			if (!_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.
-					awaitTermination(1, TimeUnit.MINUTES)) {
-
-				_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.
-					shutdownNow();
-			}
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(
-				"Interrupted while waiting for termination of executor",
-				interruptedException);
-		}
 		_threadPoolTaskScheduler.shutdown();
 	}
 
-	private static final Log _log = LogFactory.getLog(AsahTaskScheduler.class);
-
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
 		new HashMap<>();
-	private final Semaphore _semaphore = new Semaphore(50, true);
-	private final ExecutorService _threadPoolTaskExecutor =
-		Executors.newFixedThreadPool(40);
 
 	@Autowired
 	private ThreadPoolTaskScheduler _threadPoolTaskScheduler;
-
-	private final ExecutorService
-		_updateDynamicMembershipsNaniteThreadPoolTaskExecutor =
-			new ThreadPoolExecutor(
-				1, 1, 0, TimeUnit.MILLISECONDS,
-				new ArrayBlockingQueue<>(100000),
-				new AsahRetryRejectedExecutionHandler());
 
 }

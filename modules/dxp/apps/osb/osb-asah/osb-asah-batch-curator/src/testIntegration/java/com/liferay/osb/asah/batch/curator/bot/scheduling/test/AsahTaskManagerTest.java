@@ -18,6 +18,7 @@ import com.liferay.osb.asah.batch.curator.OSBAsahBatchCuratorSpringTestContext;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskManager;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskRunnable;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -28,14 +29,17 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author André Miranda
@@ -43,6 +47,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class AsahTaskManagerTest
 	implements OSBAsahBatchCuratorSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
+
+	@BeforeEach
+	public void setUp() throws Exception {
+		ReflectionTestUtils.setField(
+			_asahTaskManager, "_boundedExecutor", _boundedExecutor);
+		ReflectionTestUtils.setField(
+			_asahTaskManager, "_updateDynamicMembershipsNaniteBoundedExecutor",
+			_updateDynamicMembershipsNaniteBoundedExecutor);
+	}
 
 	@ElasticsearchIndex(
 		name = "OSBAsahTasks", resourcePath = "osbasahtasks.json",
@@ -69,8 +82,8 @@ public class AsahTaskManagerTest
 			ArgumentCaptor.forClass(AsahTaskRunnable.class);
 
 		Mockito.verify(
-			_asahTaskScheduler, Mockito.times(1)
-		).execute(
+			_boundedExecutor, Mockito.times(1)
+		).runAsync(
 			argumentCaptor.capture()
 		);
 
@@ -98,8 +111,8 @@ public class AsahTaskManagerTest
 			ArgumentCaptor.forClass(AsahTaskRunnable.class);
 
 		Mockito.verify(
-			_asahTaskScheduler, Mockito.times(1)
-		).executeUpdateDynamicMembershipsNanite(
+			_updateDynamicMembershipsNaniteBoundedExecutor, Mockito.times(1)
+		).runAsync(
 			argumentCaptor.capture()
 		);
 
@@ -124,8 +137,8 @@ public class AsahTaskManagerTest
 		_asahTaskManager.executeAsahTasks();
 
 		Mockito.verify(
-			_asahTaskScheduler, Mockito.times(2)
-		).execute(
+			_boundedExecutor, Mockito.times(2)
+		).runAsync(
 			ArgumentMatchers.any(AsahTaskRunnable.class)
 		);
 	}
@@ -143,8 +156,8 @@ public class AsahTaskManagerTest
 			ArgumentCaptor.forClass(AsahTaskRunnable.class);
 
 		Mockito.verify(
-			_asahTaskScheduler, Mockito.times(1)
-		).executeUpdateDynamicMembershipsNanite(
+			_updateDynamicMembershipsNaniteBoundedExecutor, Mockito.times(1)
+		).runAsync(
 			argumentCaptor.capture()
 		);
 
@@ -159,8 +172,8 @@ public class AsahTaskManagerTest
 		Assertions.assertFalse(asahTaskRunnable.isForce());
 
 		Mockito.verify(
-			_asahTaskScheduler, Mockito.times(1)
-		).execute(
+			_boundedExecutor, Mockito.times(1)
+		).runAsync(
 			argumentCaptor.capture()
 		);
 
@@ -220,5 +233,11 @@ public class AsahTaskManagerTest
 
 	@MockBean
 	private AsahTaskScheduler _asahTaskScheduler;
+
+	@Mock
+	private BoundedExecutor _boundedExecutor;
+
+	@Mock
+	private BoundedExecutor _updateDynamicMembershipsNaniteBoundedExecutor;
 
 }

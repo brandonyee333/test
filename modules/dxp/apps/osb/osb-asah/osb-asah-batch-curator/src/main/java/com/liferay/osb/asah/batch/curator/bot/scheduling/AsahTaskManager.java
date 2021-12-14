@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.batch.curator.bot.scheduling;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
@@ -30,6 +31,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -79,19 +81,18 @@ public class AsahTaskManager {
 					contextJSONObject.optJSONObject("individualJSONObject");
 
 				if (individualJSONObject != null) {
-					_asahTaskScheduler.
-						executeUpdateDynamicMembershipsNaniteAsync(
-							new AsahTaskRunnable(asahTask, this, false));
+					_boundedExecutor.runAsync(
+						new AsahTaskRunnable(asahTask, this, false));
 
 					return;
 				}
 			}
 
-			_asahTaskScheduler.executeUpdateDynamicMembershipsNanite(
+			_updateDynamicMembershipsNaniteBoundedExecutor.runAsync(
 				new AsahTaskRunnable(asahTask, this, false));
 		}
 		else {
-			_asahTaskScheduler.execute(
+			_boundedExecutor.runAsync(
 				new AsahTaskRunnable(asahTask, this, force));
 		}
 	}
@@ -148,7 +149,7 @@ public class AsahTaskManager {
 	}
 
 	public void runNanites(String... naniteClassNames) {
-		_asahTaskScheduler.execute(
+		_boundedExecutor.runAsync(
 			new AsahTaskRunnable(
 				this, ProjectIdThreadLocal.getProjectId(), naniteClassNames));
 	}
@@ -158,7 +159,7 @@ public class AsahTaskManager {
 			List<Project> projects = _projectDog.getProjects();
 
 			for (Project project : projects) {
-				_asahTaskScheduler.execute(
+				_boundedExecutor.runAsync(
 					new AsahTaskRunnable(
 						this, project.getId(), naniteClassNames));
 			}
@@ -211,6 +212,12 @@ public class AsahTaskManager {
 		_asahTaskScheduler.unschedule(String.valueOf(asahTaskId));
 	}
 
+	@PreDestroy
+	private void _destroy() {
+		_boundedExecutor.shutdown();
+		_updateDynamicMembershipsNaniteBoundedExecutor.shutdown();
+	}
+
 	private static final Log _log = LogFactory.getLog(AsahTaskManager.class);
 
 	@Autowired
@@ -218,6 +225,9 @@ public class AsahTaskManager {
 
 	@Autowired
 	private AsahTaskScheduler _asahTaskScheduler;
+
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(50, 40);
 
 	@Autowired
 	private List<Nanite> _nanites;
@@ -229,5 +239,9 @@ public class AsahTaskManager {
 
 	@Autowired
 	private RunLogDog _runLogDog;
+
+	private final BoundedExecutor
+		_updateDynamicMembershipsNaniteBoundedExecutor =
+			BoundedExecutor.newBoundedExecutor(100000, 1);
 
 }
