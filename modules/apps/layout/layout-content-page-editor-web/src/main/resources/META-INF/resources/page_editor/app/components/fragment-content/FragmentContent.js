@@ -263,6 +263,7 @@ const FragmentContent = ({
 						}
 					)}
 					contentRef={elementRef}
+					data={{fragmentEntryLinkId}}
 					getPortals={getPortals}
 					globalContext={globalContext}
 					markup={content}
