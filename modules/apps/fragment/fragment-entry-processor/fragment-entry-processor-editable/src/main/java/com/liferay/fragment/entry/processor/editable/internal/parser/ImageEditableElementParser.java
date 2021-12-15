@@ -39,6 +39,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jsoup.nodes.Element;
 
@@ -178,7 +180,9 @@ public class ImageEditableElementParser implements EditableElementParser {
 				"data-fileentryid", String.valueOf(fileEntryId));
 		}
 
-		if (Validator.isNotNull(value)) {
+		Matcher matcher = _pattern.matcher(replaceableElement.attr("src"));
+
+		if (Validator.isNotNull(value) && !matcher.matches()) {
 			replaceableElement.attr("src", _html.unescape(value));
 		}
 
@@ -243,6 +247,9 @@ public class ImageEditableElementParser implements EditableElementParser {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ImageEditableElementParser.class);
+
+	private static final Pattern _pattern = Pattern.compile(
+		"\\[resources:(.+?)\\]");
 
 	@Reference
 	private Html _html;
