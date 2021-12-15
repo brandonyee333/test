@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
 import com.liferay.osb.asah.common.elasticsearch.repository.impl.ElasticsearchProjectRepositoryImpl;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.http.NanitesHttp;
+import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
@@ -56,6 +57,10 @@ public class ProjectDog {
 
 		for (Consumer<String> consumer : _consumers) {
 			consumer.accept(project.getId());
+		}
+
+		if (_postgreSQLSchemaManager != null) {
+			_postgreSQLSchemaManager.create();
 		}
 
 		ProjectIdThreadLocal.forProject(
@@ -121,5 +126,8 @@ public class ProjectDog {
 
 	@Autowired
 	private ProjectRepository _projectRepository;
+
+	@Autowired
+	private PostgreSQLSchemaManager _postgreSQLSchemaManager;
 
 }
