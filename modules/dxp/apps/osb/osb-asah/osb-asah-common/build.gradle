@@ -5,6 +5,7 @@ sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 
 ext["junit-jupiter.version"] = "5.8.2"
+ext["log4j2.version"] = "2.16.0"
 
 group = "com.liferay"
 
