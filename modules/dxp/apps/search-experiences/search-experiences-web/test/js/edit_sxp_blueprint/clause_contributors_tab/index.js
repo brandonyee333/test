@@ -90,7 +90,7 @@ describe('QueryBuilder', () => {
 			5
 		);
 
-		const {findAllByText, getAllByLabelText} = renderClause({
+		const {findAllByText, getAllByText} = renderClause({
 			frameworkConfig: {
 				clauseContributorsExcludes: [],
 				clauseContributorsIncludes: activeKeywordContributors,
@@ -101,7 +101,7 @@ describe('QueryBuilder', () => {
 			exact: false,
 		});
 
-		expect(getAllByLabelText('on').length).toEqual(
+		expect(getAllByText('on').length).toEqual(
 			activeKeywordContributors.length
 		);
 	});
