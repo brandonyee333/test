@@ -127,8 +127,8 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 	public DataSource postgreSQLDataSource() {
 		return new PostgreSQLDataSource(
 			_hikariConnectionTimeout, _hikariIdleTimeout,
-			_hikariLeakDetectionThreshold, _hikariMaximumPoolSize,
-			_hikariMaxLifetime, _hikariMinimumIdleSize);
+			_hikariLeakDetectionThreshold, _hikariMaxLifetime,
+			_hikariMaximumPoolSize, _hikariMinimumIdleSize);
 	}
 
 	@Bean("postgreSQLDataSource")

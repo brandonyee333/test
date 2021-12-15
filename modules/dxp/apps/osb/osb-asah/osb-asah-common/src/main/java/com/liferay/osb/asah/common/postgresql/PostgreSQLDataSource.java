@@ -39,17 +39,17 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 
 	public PostgreSQLDataSource(
 		int hikariConnectionTimeout, int hikariIdleTimeout,
-		int hikariLeakDetectionThreshold, int hikariMaxPoolSize,
-		int hikariMaxLifetime, int hikariMinimumIdleSize) {
+		int hikariLeakDetectionThreshold, int hikariMaxLifetime,
+		int hikariMaximumPoolSize, int hikariMinimumIdleSize) {
 
 		_hikariConnectionTimeout = hikariConnectionTimeout;
 		_hikariIdleTimeout = hikariIdleTimeout;
 		_hikariLeakDetectionThreshold = hikariLeakDetectionThreshold;
 		_hikariMaxLifetime = hikariMaxLifetime;
+		_hikariMaximumPoolSize = hikariMaximumPoolSize;
 		_hikariMinimumIdleSize = hikariMinimumIdleSize;
 
 		_global = false;
-		_hikariMaximumPoolSize = hikariMaxPoolSize;
 	}
 
 	@Override
