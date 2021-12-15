@@ -28,6 +28,7 @@ import com.liferay.osb.asah.upgrade.v3_0_1.EventDefinitionUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_5.CommentPostedEventDefinitionUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_5.VoteEventDefinitionUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_6.EventAttributeIndexUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_1_0.EventAnalysisUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -63,6 +64,9 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"3.0.5", "3.0.6", _eventAttributeIndexUpgradeStep);
 
+		upgradeProcess.addUpgradeSteps(
+			"3.0.6", "3.1.0", _eventAnalysisUpgradeStep);
+
 		return upgradeProcess;
 	}
 
@@ -84,6 +88,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private DXPEntityUpgradeStep _dxpEntityUpgradeStep;
+
+	@Autowired
+	private EventAnalysisUpgradeStep _eventAnalysisUpgradeStep;
 
 	@Autowired
 	private EventAttributeIndexUpgradeStep _eventAttributeIndexUpgradeStep;
