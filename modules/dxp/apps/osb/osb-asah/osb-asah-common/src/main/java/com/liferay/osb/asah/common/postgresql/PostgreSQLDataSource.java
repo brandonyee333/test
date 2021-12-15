@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -31,9 +30,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 /**
@@ -52,11 +48,16 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 		_hikariMaxLifetime = hikariMaxLifetime;
 		_hikariMinimumIdleSize = hikariMinimumIdleSize;
 
+		_global = false;
 		_hikariMaximumPoolSize = hikariMaxPoolSize;
 	}
 
 	@Override
 	public void afterPropertiesSet() {
+	}
+
+	public boolean isGlobal() {
+		return _global;
 	}
 
 	@Override
@@ -76,7 +77,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 		throws IllegalArgumentException {
 
 		if (dataSource == null) {
-			dataSource = "global";
+			_global = true;
 		}
 
 		if (dataSource instanceof DataSource) {
@@ -101,40 +102,8 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 		hikariDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
 		hikariDataSource.setUsername(CredentialConstants.POSTGRESQL_USER);
 
-		if (Objects.equals("global", dataSource)) {
+		if (_global) {
 			hikariDataSource.setMaximumPoolSize(2);
-
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					new ClassPathResource("global_tables.sql")),
-				hikariDataSource);
-		}
-		else {
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					new ClassPathResource("functions-current.sql")),
-				hikariDataSource);
-
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					new ClassPathResource("tables-current.sql")),
-				hikariDataSource);
-
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					true, true, null,
-					new ClassPathResource("constraints-current.sql")),
-				hikariDataSource);
-
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					new ClassPathResource("indexes-current.sql")),
-				hikariDataSource);
-
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					new ClassPathResource("data-3.0.0.sql")),
-				hikariDataSource);
 		}
 
 		if (_log.isInfoEnabled()) {
@@ -175,6 +144,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 	private static final Log _log = LogFactory.getLog(
 		PostgreSQLDataSource.class);
 
+	private boolean _global;
 	private final int _hikariConnectionTimeout;
 	private final int _hikariIdleTimeout;
 	private final int _hikariLeakDetectionThreshold;
