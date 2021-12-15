@@ -423,7 +423,7 @@ definition {
 			value1 = "- ${wikiPage1Title}");
 
 		AssertClick(
-			locator1 = "Button#CHANGE",
+			locator1 = "Button#CHANGE_PARENT",
 			value1 = "Change Parent");
 
 		Alert.viewSuccessMessage();
