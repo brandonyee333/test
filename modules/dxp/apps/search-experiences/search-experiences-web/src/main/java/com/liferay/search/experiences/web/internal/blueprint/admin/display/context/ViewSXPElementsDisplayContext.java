@@ -72,9 +72,6 @@ public class ViewSXPElementsDisplayContext {
 				LanguageUtil.get(_sxpRequestHelper.getRequest(), "export"),
 				"get", null, "blank"),
 			new ClayDataSetActionDropdownItem(
-				LanguageUtil.get(
-					_sxpRequestHelper.getRequest(),
-					"are-you-sure-you-want-to-delete-this-entry"),
 				getAPIURL() + "/{id}", "trash", "delete",
 				LanguageUtil.get(_sxpRequestHelper.getRequest(), "delete"),
 				"delete", null, "async"));
