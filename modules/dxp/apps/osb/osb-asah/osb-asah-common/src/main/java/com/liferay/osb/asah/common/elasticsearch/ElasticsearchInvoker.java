@@ -33,6 +33,8 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.collapse.CollapseBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 
 import org.json.JSONArray;
@@ -83,15 +85,66 @@ public interface ElasticsearchInvoker {
 
 	public JSONObject fetch(String collectionName, String id);
 
+	public JSONArray get(
+		CollapseBuilder collapseBuilder, String collectionName,
+		List<FieldSortBuilder> fieldSortBuilders, QueryBuilder queryBuilder);
+
 	public JSONArray get(String collectionName);
 
 	public String get(
 		String collectionName, Consumer<SearchSourceBuilder> consumer);
 
+	public JSONArray get(
+		String collectionName, FieldSortBuilder fieldSortBuilder, int size);
+
+	public JSONArray get(
+		String collectionName, FieldSortBuilder fieldSortBuilder,
+		QueryBuilder queryBuilder, int size);
+
+	public JSONArray get(
+		String collectionName, FieldSortBuilder fieldSortBuilder,
+		String[] includes, QueryBuilder queryBuilder, int size);
+
+	public JSONArray get(
+		String collectionName, int from, QueryBuilder queryBuilder, int size);
+
+	public JSONArray get(
+		String collectionName, List<FieldSortBuilder> fieldSortBuilders);
+
+	public JSONArray get(
+		String collectionName, List<FieldSortBuilder> fieldSortBuilders,
+		int from, int size);
+
+	public JSONArray get(
+		String collectionName, List<FieldSortBuilder> fieldSortBuilders,
+		int from, QueryBuilder queryBuilder, int size);
+
+	public JSONArray get(
+		String collectionName, List<FieldSortBuilder> fieldSortBuilders,
+		QueryBuilder queryBuilder);
+
+	public JSONArray get(
+		String collectionName, List<FieldSortBuilder> fieldSortBuilders,
+		String[] includes);
+
+	public JSONArray get(
+		String collectionName, List<FieldSortBuilder> fieldSortBuilders,
+		String[] includes, QueryBuilder queryBuilder);
+
 	public JSONArray get(String collectionName, QueryBuilder queryBuilder);
+
+	public JSONArray get(
+		String collectionName, QueryBuilder queryBuilder, int size);
 
 	public JSONObject get(String collectionName, String id)
 		throws ResourceNotFoundException;
+
+	public JSONArray get(
+		String collectionName, String[] includes, QueryBuilder queryBuilder);
+
+	public JSONArray get(
+		String collectionName, String[] includes, QueryBuilder queryBuilder,
+		int size);
 
 	public MultiSearchResponse multiSearch(
 		String collectionName, List<SearchSourceBuilder> searchRequestBuilders);

@@ -24,12 +24,9 @@ import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -76,6 +73,8 @@ import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.collapse.CollapseBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 
 import org.json.JSONArray;
@@ -421,8 +420,19 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	@Override
+	public JSONArray get(
+		CollapseBuilder collapseBuilder, String collectionName,
+		List<FieldSortBuilder> fieldSortBuilders, QueryBuilder queryBuilder) {
+
+		return _getAll(
+			collapseBuilder, collectionName, null, queryBuilder,
+			fieldSortBuilders.toArray(new FieldSortBuilder[0]));
+	}
+
+	@Override
 	public JSONArray get(String collectionName) {
-		return _get(_prepareSearch(_elasticsearchAliases.get(collectionName)));
+		return _getAll(
+			null, collectionName, null, null, SortBuilderUtil.fieldSort("id"));
 	}
 
 	@Override
@@ -446,19 +456,112 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	@Override
+	public JSONArray get(
+		String collectionName, FieldSortBuilder fieldSortBuilder, int size) {
+
+		return _get(collectionName, null, null, null, size, fieldSortBuilder);
+	}
+
+	public JSONArray get(
+		String collectionName, FieldSortBuilder fieldSortBuilder,
+		QueryBuilder queryBuilder, int size) {
+
+		return _get(
+			collectionName, null, null, queryBuilder, size, fieldSortBuilder);
+	}
+
+	@Override
+	public JSONArray get(
+		String collectionName, FieldSortBuilder fieldSortBuilder,
+		String[] includes, QueryBuilder queryBuilder, int size) {
+
+		return _get(
+			collectionName, null, includes, queryBuilder, size,
+			fieldSortBuilder);
+	}
+
+	@Override
+	public JSONArray get(
+		String collectionName, int from, QueryBuilder queryBuilder, int size) {
+
+		return _get(
+			collectionName, from, null, queryBuilder, size,
+			SortBuilderUtil.fieldSort("id"));
+	}
+
+	@Override
+	public JSONArray get(
+		String collectionName, List<FieldSortBuilder> fieldSortBuilders) {
+
+		return _getAll(
+			null, collectionName, null, null,
+			fieldSortBuilders.toArray(new FieldSortBuilder[0]));
+	}
+
+	@Override
+	public JSONArray get(
+		String collectionName, List<FieldSortBuilder> fieldSortBuilders,
+		int from, int size) {
+
+		return _get(
+			collectionName, from, null, null, size,
+			fieldSortBuilders.toArray(new FieldSortBuilder[0]));
+	}
+
+	@Override
+	public JSONArray get(
+		String collectionName, List<FieldSortBuilder> fieldSortBuilders,
+		int from, QueryBuilder queryBuilder, int size) {
+
+		return _get(
+			collectionName, from, null, queryBuilder, size,
+			fieldSortBuilders.toArray(new FieldSortBuilder[0]));
+	}
+
+	@Override
+	public JSONArray get(
+		String collectionName, List<FieldSortBuilder> fieldSortBuilders,
+		QueryBuilder queryBuilder) {
+
+		return _getAll(
+			null, collectionName, null, queryBuilder,
+			fieldSortBuilders.toArray(new FieldSortBuilder[0]));
+	}
+
+	@Override
+	public JSONArray get(
+		String collectionName, List<FieldSortBuilder> fieldSortBuilders,
+		String[] includes) {
+
+		return _getAll(
+			null, collectionName, includes, null,
+			fieldSortBuilders.toArray(new FieldSortBuilder[0]));
+	}
+
+	@Override
+	public JSONArray get(
+		String collectionName, List<FieldSortBuilder> fieldSortBuilders,
+		String[] includes, QueryBuilder queryBuilder) {
+
+		return _getAll(
+			null, collectionName, includes, queryBuilder,
+			fieldSortBuilders.toArray(new FieldSortBuilder[0]));
+	}
+
+	@Override
 	public JSONArray get(String collectionName, QueryBuilder queryBuilder) {
-		if (queryBuilder == null) {
-			return get(collectionName);
-		}
+		return _getAll(
+			null, collectionName, null, queryBuilder,
+			SortBuilderUtil.fieldSort("id"));
+	}
 
-		SearchRequestBuilder searchRequestBuilder = _prepareSearch(
-			_elasticsearchAliases.get(collectionName));
+	@Override
+	public JSONArray get(
+		String collectionName, QueryBuilder queryBuilder, int size) {
+		return _get(
 
-		searchRequestBuilder.addSort(SortBuilderUtil.fieldSort("id"));
-		searchRequestBuilder.setQuery(queryBuilder);
-		searchRequestBuilder.setTrackTotalHits(true);
-
-		return _get(searchRequestBuilder);
+			collectionName, null, null, queryBuilder, size,
+			SortBuilderUtil.fieldSort("id"));
 	}
 
 	@Override
@@ -472,6 +575,25 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		}
 
 		return jsonObject;
+	}
+
+	@Override
+	public JSONArray get(
+		String collectionName, String[] includes, QueryBuilder queryBuilder) {
+
+		return _getAll(
+			null, collectionName, includes, queryBuilder,
+			SortBuilderUtil.fieldSort("id"));
+	}
+
+	@Override
+	public JSONArray get(
+		String collectionName, String[] includes, QueryBuilder queryBuilder,
+		int size) {
+
+		return _get(
+			collectionName, null, includes, queryBuilder, size,
+			SortBuilderUtil.fieldSort("id"));
 	}
 
 	@Override
@@ -851,40 +973,103 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		return searchRequestBuilder.setSource(searchSourceBuilder);
 	}
 
-	private JSONArray _get(SearchRequestBuilder searchRequestBuilder) {
+	private JSONArray _get(
+		String collectionName, Integer from, String[] includes,
+		QueryBuilder queryBuilder, int size,
+		FieldSortBuilder... fieldSortBuilders) {
+
 		JSONArray jsonArray = new JSONArray();
 
-		searchRequestBuilder.setSize(10000);
-		searchRequestBuilder.setTrackTotalHits(true);
+		SearchRequestBuilder searchRequestBuilder = _prepareSearch(
+			_elasticsearchAliases.get(collectionName));
+
+		for (FieldSortBuilder fieldSortBuilder : fieldSortBuilders) {
+			searchRequestBuilder.addSort(fieldSortBuilder);
+		}
+
+		if (from != null) {
+			searchRequestBuilder.setFrom(from);
+		}
+
+		if (includes != null) {
+			searchRequestBuilder.setFetchSource(includes, null);
+		}
+
+		if (queryBuilder != null) {
+			searchRequestBuilder.setQuery(queryBuilder);
+		}
+
+		searchRequestBuilder.setSize(size);
 
 		ClientUtil.waitForConnection(_client);
 
-		String id = "0";
+		SearchResponse searchResponse = searchRequestBuilder.get();
+
+		SearchHits searchHits = searchResponse.getHits();
+
+		SearchHit[] hits = searchHits.getHits();
+
+		for (SearchHit searchHit : hits) {
+			jsonArray.put(new JSONObject(searchHit.getSourceAsString()));
+		}
+
+		return jsonArray;
+	}
+
+	private JSONArray _getAll(
+		CollapseBuilder collapseBuilder, String collectionName,
+		String[] includes, QueryBuilder queryBuilder,
+		FieldSortBuilder... fieldSortBuilders) {
+
+		JSONArray jsonArray = new JSONArray();
+
+		SearchRequestBuilder searchRequestBuilder = _prepareSearch(
+			_elasticsearchAliases.get(collectionName));
+
+		for (FieldSortBuilder fieldSortBuilder : fieldSortBuilders) {
+			searchRequestBuilder.addSort(fieldSortBuilder);
+		}
+
+		if (collapseBuilder != null) {
+			searchRequestBuilder.setCollapse(collapseBuilder);
+		}
+
+		if (includes != null) {
+			searchRequestBuilder.setFetchSource(includes, null);
+		}
+
+		if (queryBuilder != null) {
+			searchRequestBuilder.setQuery(queryBuilder);
+		}
+
+		searchRequestBuilder.setSize(10000);
+
+		ClientUtil.waitForConnection(_client);
+
+		Object[] fieldValues = null;
 
 		while (true) {
-			searchRequestBuilder.searchAfter(new Object[] {id});
+			if (fieldValues != null) {
+				searchRequestBuilder.searchAfter(fieldValues);
+			}
 
 			SearchResponse searchResponse = searchRequestBuilder.get();
 
 			SearchHits searchHits = searchResponse.getHits();
 
-			if (!HitsUtil.hasHits(searchHits)) {
+			SearchHit[] hits = searchHits.getHits();
+
+			for (SearchHit searchHit : hits) {
+				jsonArray.put(new JSONObject(searchHit.getSourceAsString()));
+			}
+
+			if (hits.length < 10000) {
 				break;
 			}
 
-			Stream<SearchHit> stream = Arrays.stream(searchHits.getHits());
+			SearchHit searchHit = hits[hits.length - 1];
 
-			List<JSONObject> jsonObjects = stream.map(
-				searchHit -> new JSONObject(searchHit.getSourceAsString())
-			).collect(
-				Collectors.toList()
-			);
-
-			JSONObject jsonObject = jsonObjects.get(jsonObjects.size() - 1);
-
-			id = jsonObject.getString("id");
-
-			jsonArray.put(jsonObjects);
+			fieldValues = searchHit.getSortValues();
 		}
 
 		return jsonArray;
