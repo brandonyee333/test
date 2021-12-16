@@ -694,6 +694,50 @@ definition {
 			value1 = "Test Content Page Name 1");
 	}
 
+	@description = "This is a test for LPS-106469. Reorder Child pages in the same level via drag and drop."
+	@priority = "4"
+	test MoveChildPageInSameLevel {
+		JSONLayout.addPublicLayout(
+			groupName = "Test Site Name",
+			layoutName = "Test Page Name");
+
+		for (var n : list "1,2,3") {
+			JSONLayout.addPublicLayout(
+				groupName = "Test Site Name",
+				layoutName = "Child Page Name ${n}",
+				parentLayoutName = "Test Page Name",
+				type = "content");
+
+			ContentPagesNavigator.openEditContentPage(
+				pageName = "Child Page Name ${n}",
+				siteName = "Test Site Name");
+
+			PageEditor.clickPublish();
+		}
+
+		SitePages.openPagesAdmin(siteURLKey = "test-site-name");
+
+		for (var n : list "1,2,3") {
+			Page.view(
+				depth = "3",
+				pageName = "Child Page Name ${n}",
+				privacy = "Public Pages");
+		}
+
+		SitePages.movePageToPageUp(
+			pageName = "Child Page Name 2",
+			pageNameTo = "Child Page Name 1");
+
+		for (var n : list "2,1,3") {
+			Page.view(
+				depth = "3",
+				pageName = "Child Page Name ${n}",
+				privacy = "Public Pages");
+		}
+
+		AssertConsoleTextNotPresent(value1 = "javax.portlet.PortletException: java.lang.NullPointerException");
+	}
+
 	@description = "This is for LPS-110108. Move child page to parent page level via drag and drop."
 	@priority = "4"
 	test MoveChildPageToParentLevel {
