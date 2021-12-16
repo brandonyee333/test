@@ -115,18 +115,25 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public List<Asset> findByAssetTypeAndFilterString(
+		String assetType, FilterHelper filterHelper) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
+			_getAssetTable(assetType, filterHelper, null));
+
+		return selectJoinStep.fetch(this::_toAsset);
+	}
+
 	public List<Asset> findByAssetTypeAndFilterStringAndKeywords(
-		String assetType, FilterHelper filterHelper, @Nullable String keywords,
-		@Nullable Pageable pageable) {
+		String assetType, FilterHelper filterHelper, String keywords,
+		Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
 			_getAssetTable(assetType, filterHelper, keywords));
-
-		if (pageable == null) {
-			return selectJoinStep.fetch(this::_toAsset);
-		}
 
 		return selectJoinStep.orderBy(
 			getSortFields(pageable.getSort(), null)

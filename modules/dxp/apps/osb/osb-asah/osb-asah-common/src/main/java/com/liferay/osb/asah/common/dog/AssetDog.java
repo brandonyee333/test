@@ -237,13 +237,12 @@ public class AssetDog {
 	}
 
 	public List<Asset> getAssets(String assetType, String assetKeyword) {
-		return _assetRepository.findByAssetTypeAndFilterStringAndKeywords(
+		return _assetRepository.findByAssetTypeAndFilterString(
 			assetType,
 			new FilterHelper(
 				_faroInfoAssetFilterStringConverterHelper,
 				String.format("keywords/keyword eq '%s'", assetKeyword),
-				_defaultFilterStringConverterHelper),
-			null, null);
+				_defaultFilterStringConverterHelper));
 	}
 
 	public long getAssetsCount(

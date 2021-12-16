@@ -130,10 +130,8 @@ public abstract class BaseAssetRepositoryTestCase
 
 	@Test
 	public void testFindByAssetType() {
-		List<Asset> assets =
-			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
-				"Page", FilterHelper.EMPTY, null,
-				PageRequest.of(0, 20, Sort.desc("id")));
+		List<Asset> assets = _assetRepository.findByAssetTypeAndFilterString(
+			"Page", FilterHelper.EMPTY);
 
 		Assertions.assertEquals(3, assets.size(), assets.toString());
 		Assertions.assertEquals(
@@ -157,14 +155,12 @@ public abstract class BaseAssetRepositoryTestCase
 
 	@Test
 	public void testFindByAssetTypeAndFilterString1() {
-		List<Asset> assets =
-			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
-				"Page",
-				new FilterHelper(
-					_faroInfoAssetFilterStringConverterHelper,
-					"similarTo(title, 'seize.*')",
-					_defaultFilterStringConverterHelper),
-				null, PageRequest.of(0, 20, Sort.desc("id")));
+		List<Asset> assets = _assetRepository.findByAssetTypeAndFilterString(
+			"Page",
+			new FilterHelper(
+				_faroInfoAssetFilterStringConverterHelper,
+				"similarTo(title, 'seize.*')",
+				_defaultFilterStringConverterHelper));
 
 		Assertions.assertEquals(1, assets.size(), assets.toString());
 		Assertions.assertEquals(
@@ -174,14 +170,12 @@ public abstract class BaseAssetRepositoryTestCase
 
 	@Test
 	public void testFindByAssetTypeAndFilterString2() {
-		List<Asset> assets =
-			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
-				"Page",
-				new FilterHelper(
-					_faroInfoAssetFilterStringConverterHelper,
-					"title eq 'engineer intuitive models'",
-					_defaultFilterStringConverterHelper),
-				null, PageRequest.of(0, 20, Sort.desc("id")));
+		List<Asset> assets = _assetRepository.findByAssetTypeAndFilterString(
+			"Page",
+			new FilterHelper(
+				_faroInfoAssetFilterStringConverterHelper,
+				"title eq 'engineer intuitive models'",
+				_defaultFilterStringConverterHelper));
 
 		Assertions.assertEquals(1, assets.size(), assets.toString());
 		Assertions.assertEquals(
@@ -191,14 +185,12 @@ public abstract class BaseAssetRepositoryTestCase
 
 	@Test
 	public void testFindByAssetTypeAndFilterString3() {
-		List<Asset> assets =
-			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
-				"Page",
-				new FilterHelper(
-					_faroInfoAssetFilterStringConverterHelper,
-					"url eq 'https://www.terrance-lueilwitz.biz'",
-					_defaultFilterStringConverterHelper),
-				null, PageRequest.of(0, 20, Sort.desc("id")));
+		List<Asset> assets = _assetRepository.findByAssetTypeAndFilterString(
+			"Page",
+			new FilterHelper(
+				_faroInfoAssetFilterStringConverterHelper,
+				"url eq 'https://www.terrance-lueilwitz.biz'",
+				_defaultFilterStringConverterHelper));
 
 		Assertions.assertEquals(1, assets.size(), assets.toString());
 		Assertions.assertEquals(
@@ -206,7 +198,7 @@ public abstract class BaseAssetRepositoryTestCase
 	}
 
 	@Test
-	public void testFindByAssetTypeAndKeyword2() {
+	public void testFindByAssetTypeAndFilterStringAndKeywords() {
 		List<Asset> assets =
 			_assetRepository.findByAssetTypeAndFilterStringAndKeywords(
 				"Page", FilterHelper.EMPTY, "seize",
