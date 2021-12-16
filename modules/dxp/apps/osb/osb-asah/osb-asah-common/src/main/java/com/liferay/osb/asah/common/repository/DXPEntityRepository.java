@@ -52,6 +52,10 @@ public interface DXPEntityRepository extends Repository<DXPEntity, Long> {
 		DXPEntity.Type type);
 
 	@Cacheable
+	public List<DXPEntity> findByFieldsAndType(
+		Map<String, Object> fields, DXPEntity.Type type);
+
+	@Cacheable
 	public List<DXPEntity> findByMembershipClassNameAndMembershipId(
 		String membershipClassName, Long membershipId);
 

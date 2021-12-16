@@ -128,12 +128,10 @@ public class DataControlNaniteTest
 			"jane.doe@liferay.com",
 			suppressionJSONObject.getString("emailAddress"));
 
-		List<DXPEntity> dxpEntities =
-			_dxpEntityRepository.findByAfterAndFieldsAndType(
-				null,
-				Collections.singletonMap(
-					"fields.emailAddress", "john.doe@liferay.com"),
-				0, DXPEntity.Type.USER);
+		List<DXPEntity> dxpEntities = _dxpEntityRepository.findByFieldsAndType(
+			Collections.singletonMap(
+				"fields.emailAddress", "john.doe@liferay.com"),
+			DXPEntity.Type.USER);
 
 		Assertions.assertTrue(dxpEntities.isEmpty());
 

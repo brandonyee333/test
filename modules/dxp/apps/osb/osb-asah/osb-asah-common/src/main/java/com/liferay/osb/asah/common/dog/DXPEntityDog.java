@@ -74,9 +74,8 @@ public class DXPEntityDog {
 	public DXPEntity fetchByFieldsAndType(
 		Map<String, Object> fields, DXPEntity.Type type) {
 
-		List<DXPEntity> dxpEntities =
-			_dxpEntityRepository.findByAfterAndFieldsAndType(
-				null, fields, 0, type);
+		List<DXPEntity> dxpEntities = _dxpEntityRepository.findByFieldsAndType(
+			fields, type);
 
 		if ((dxpEntities == null) || dxpEntities.isEmpty()) {
 			return null;
@@ -92,6 +91,12 @@ public class DXPEntityDog {
 			_dxpEntityRepository.findByAfterAndFieldsAndType(
 				after, fields, size, type),
 			type);
+	}
+
+	public List<? extends DXPEntity> findByFieldsAndType(
+		Map<String, Object> fields, DXPEntity.Type type) {
+
+		return _dxpEntityRepository.findByFieldsAndType(fields, type);
 	}
 
 	public List<DXPUser> findDXPUsersByMembershipClassNameAndMembershipId(

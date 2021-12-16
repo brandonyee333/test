@@ -451,11 +451,10 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		if (DXPEntity.Type.ofCollectionName(collectionName) != null) {
 			List<? extends DXPEntity> dxpEntities =
-				_dxpEntityDog.findByAfterAndFieldsAndType(
-					null,
+				_dxpEntityDog.findByFieldsAndType(
 					Collections.singletonMap(
 						"id", ListUtil.map(referencedIds, String::valueOf)),
-					0, DXPEntity.Type.ofCollectionName(collectionName));
+					DXPEntity.Type.ofCollectionName(collectionName));
 
 			jsonArray = JSONUtil.toJSONArray(
 				dxpEntities,

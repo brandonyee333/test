@@ -137,19 +137,16 @@ public abstract class BaseDXPEntityRepositoryTestCase
 	public void testDeleteAll2() {
 		_dxpEntityRepository.deleteAll(entityModels);
 
-		List<DXPEntity> dxpEntities =
-			_dxpEntityRepository.findByAfterAndFieldsAndType(
-				null,
-				new HashMap<String, Object>() {
-					{
-						put("dataSourceId", 123L);
-						put(
-							"fields." + DXPEntity.Type.USER.getIdFieldName(),
-							ListUtil.map(
-								entityModels, DXPEntity::getIdFieldValue));
-					}
-				},
-				1, DXPEntity.Type.USER);
+		List<DXPEntity> dxpEntities = _dxpEntityRepository.findByFieldsAndType(
+			new HashMap<String, Object>() {
+				{
+					put("dataSourceId", 123L);
+					put(
+						"fields." + DXPEntity.Type.USER.getIdFieldName(),
+						ListUtil.map(entityModels, DXPEntity::getIdFieldValue));
+				}
+			},
+			DXPEntity.Type.USER);
 
 		Assertions.assertTrue(dxpEntities.isEmpty());
 	}
@@ -161,16 +158,14 @@ public abstract class BaseDXPEntityRepositoryTestCase
 		_dxpEntityRepository.deleteByFieldNameAndFieldValueAndType(
 			"fields.emailAddress", "john.doe@liferay.com", DXPEntity.Type.USER);
 
-		List<DXPEntity> dxpEntities =
-			_dxpEntityRepository.findByAfterAndFieldsAndType(
-				null,
-				new HashMap<String, Object>() {
-					{
-						put("dataSourceId", dxpEntity.getDataSourceId());
-						put("fields.emailAddress", "john.doe@liferay.com");
-					}
-				},
-				1, dxpEntity.getType());
+		List<DXPEntity> dxpEntities = _dxpEntityRepository.findByFieldsAndType(
+			new HashMap<String, Object>() {
+				{
+					put("dataSourceId", dxpEntity.getDataSourceId());
+					put("fields.emailAddress", "john.doe@liferay.com");
+				}
+			},
+			dxpEntity.getType());
 
 		Assertions.assertTrue(dxpEntities.isEmpty());
 	}
@@ -212,18 +207,16 @@ public abstract class BaseDXPEntityRepositoryTestCase
 
 	@Test
 	public void testFindByFieldsAndType() {
-		List<DXPEntity> dxpEntities =
-			_dxpEntityRepository.findByAfterAndFieldsAndType(
-				null,
-				new HashMap<String, Object>() {
-					{
-						put("dataSourceId", 123);
-						put("fields.contact.jobTitle", "electrician");
-						put("fields.lastName", "Doe");
-						put("fields.memberships." + _CLASS_NAME_GROUP, "20122");
-					}
-				},
-				3, DXPEntity.Type.USER);
+		List<DXPEntity> dxpEntities = _dxpEntityRepository.findByFieldsAndType(
+			new HashMap<String, Object>() {
+				{
+					put("dataSourceId", 123);
+					put("fields.contact.jobTitle", "electrician");
+					put("fields.lastName", "Doe");
+					put("fields.memberships." + _CLASS_NAME_GROUP, "20122");
+				}
+			},
+			DXPEntity.Type.USER);
 
 		Assertions.assertEquals(1, dxpEntities.size(), dxpEntities.toString());
 	}

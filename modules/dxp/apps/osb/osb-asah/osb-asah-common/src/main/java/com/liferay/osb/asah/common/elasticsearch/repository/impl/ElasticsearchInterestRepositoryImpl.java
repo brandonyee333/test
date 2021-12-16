@@ -251,10 +251,6 @@ public class ElasticsearchInterestRepositoryImpl
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			getCollectionName(),
 			searchSourceBuilder -> {
-				searchSourceBuilder.query(
-					_buildQueryBuilder(
-						null, keyword, ownerIds, ownerType, recordedDate,
-						score));
 				searchSourceBuilder.aggregation(
 					AggregationBuilders.terms(
 						"userInterests"
@@ -273,6 +269,11 @@ public class ElasticsearchInterestRepositoryImpl
 							pageable.getPageSize()
 						)
 					));
+				searchSourceBuilder.query(
+					_buildQueryBuilder(
+						null, keyword, ownerIds, ownerType, recordedDate,
+						score));
+				searchSourceBuilder.size(0);
 			});
 
 		Aggregations aggregations = searchResponse.getAggregations();

@@ -80,6 +80,8 @@ public class NumbersDistributionTransformationJSONArrayFunction
 				if (queryBuilder != null) {
 					searchSourceBuilder.query(queryBuilder);
 				}
+
+				searchSourceBuilder.size(0);
 			});
 
 		Aggregations aggregations = searchResponse.getAggregations();
@@ -148,6 +150,7 @@ public class NumbersDistributionTransformationJSONArrayFunction
 				searchSourceBuilder.aggregation(aggregationBuilder);
 
 				searchSourceBuilder.query(boolQueryBuilder);
+				searchSourceBuilder.size(0);
 			});
 
 		aggregations = searchResponse.getAggregations();

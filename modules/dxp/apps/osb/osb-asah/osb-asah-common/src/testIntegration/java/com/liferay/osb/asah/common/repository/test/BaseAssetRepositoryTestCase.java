@@ -138,8 +138,8 @@ public abstract class BaseAssetRepositoryTestCase
 		Assertions.assertEquals(3, assets.size(), assets.toString());
 		Assertions.assertEquals(
 			Arrays.asList(
-				"seize compelling action-items", "engineer intuitive models",
-				"empower holistic ROI"),
+				"empower holistic ROI", "engineer intuitive models",
+				"seize compelling action-items"),
 			_getPageAssetTitles(assets));
 	}
 

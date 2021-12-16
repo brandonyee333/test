@@ -188,6 +188,32 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			record -> new DXPEntity(record.intoMap()));
 	}
 
+	public List<DXPEntity> findByFieldsAndType(
+		Map<String, Object> fields, DXPEntity.Type type) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		SelectConditionStep<Record> selectConditionStep = selectSelectStep.from(
+			DSL.table(DXPEntity.class.getSimpleName())
+		).where(
+			DSL.field(
+				"type"
+			).eq(
+				type.toString()
+			)
+		);
+
+		for (Map.Entry<String, Object> field : fields.entrySet()) {
+			selectConditionStep.and(
+				_createCondition(field.getKey(), field.getValue()));
+		}
+
+		selectConditionStep.orderBy(DSL.field("id"));
+
+		return selectConditionStep.fetch(
+			record -> new DXPEntity(record.intoMap()));
+	}
+
 	public Optional<DXPEntity> findById(Long id) {
 		throw new UnsupportedOperationException();
 	}

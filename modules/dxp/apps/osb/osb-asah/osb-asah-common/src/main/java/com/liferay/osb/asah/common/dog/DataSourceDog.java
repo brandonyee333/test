@@ -663,8 +663,8 @@ public class DataSourceDog {
 
 	private List<Long> _getDataIds(String collectionName, Long dataSourceId) {
 		List<? extends DXPEntity> dxpEntities =
-			_dxpEntityDog.findByAfterAndFieldsAndType(
-				null, Collections.singletonMap("dataSourceId", dataSourceId), 0,
+			_dxpEntityDog.findByFieldsAndType(
+				Collections.singletonMap("dataSourceId", dataSourceId),
 				DXPEntity.Type.ofCollectionName(collectionName));
 
 		Stream<? extends DXPEntity> stream = dxpEntities.stream();

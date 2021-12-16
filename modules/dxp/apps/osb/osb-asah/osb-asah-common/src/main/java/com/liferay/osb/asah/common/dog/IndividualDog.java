@@ -650,8 +650,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		}
 
 		List<? extends DXPEntity> dxpEntities =
-			_dxpEntityDog.findByAfterAndFieldsAndType(
-				null,
+			_dxpEntityDog.findByFieldsAndType(
 				new HashMap<String, Object>() {
 					{
 						put(
@@ -659,7 +658,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 							classPKs);
 					}
 				},
-				0, dxpEntityType);
+				dxpEntityType);
 
 		Stream<? extends DXPEntity> stream = dxpEntities.stream();
 

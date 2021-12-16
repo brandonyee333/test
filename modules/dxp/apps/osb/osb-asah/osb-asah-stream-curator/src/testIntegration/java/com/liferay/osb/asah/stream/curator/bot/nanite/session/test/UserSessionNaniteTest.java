@@ -16,6 +16,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.session.test;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
@@ -26,8 +27,9 @@ import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 
+import java.util.Arrays;
+
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -136,11 +138,8 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 	public void testExpiredSession() {
 		runNanite();
 
-		JSONArray userSessionsJSONArray = new JSONArray(
-			_elasticsearchInvoker.get(
-				"user-sessions",
-				searhcSourceBuilder -> searhcSourceBuilder.sort(
-					"id", SortOrder.ASC)));
+		JSONArray userSessionsJSONArray = _elasticsearchInvoker.get(
+			"user-sessions", Arrays.asList(SortBuilderUtil.fieldSort("id")));
 
 		Assertions.assertEquals(2, userSessionsJSONArray.length());
 

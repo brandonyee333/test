@@ -164,15 +164,22 @@ public class ElasticsearchDXPEntityRepositoryImpl
 					searchSourceBuilder.searchAfter(new Long[] {after});
 				}
 
-				if (size > 0) {
-					searchSourceBuilder.size(size);
-				}
+				searchSourceBuilder.size(size);
 
 				searchSourceBuilder.sort(
 					SortBuilderUtil.fieldSort("id", SortOrder.ASC));
 			});
 
 		return _toList(searchResponse.getHits());
+	}
+
+	@Override
+	public List<DXPEntity> findByFieldsAndType(
+		Map<String, Object> fields, DXPEntity.Type type) {
+
+		return _toList(
+			_dxpRawElasticsearchInvoker.get(
+				type.getCollectionName(), _createQueryBuilder(fields)));
 	}
 
 	@Override
@@ -184,14 +191,12 @@ public class ElasticsearchDXPEntityRepositoryImpl
 	public List<DXPEntity> findByMembershipClassNameAndMembershipId(
 		String membershipClassName, Long membershipId) {
 
-		SearchResponse searchResponse = _dxpRawElasticsearchInvoker.search(
-			"users",
-			searchSourceBuilder -> searchSourceBuilder.query(
+		return _toList(
+			_dxpRawElasticsearchInvoker.get(
+				"users",
 				QueryBuilders.termQuery(
 					"fields.memberships." + membershipClassName,
 					membershipId)));
-
-		return _toList(searchResponse.getHits());
 	}
 
 	@Override

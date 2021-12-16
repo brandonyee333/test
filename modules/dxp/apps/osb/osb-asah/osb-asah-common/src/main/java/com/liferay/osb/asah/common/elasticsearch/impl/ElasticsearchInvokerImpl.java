@@ -559,8 +559,17 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	public SearchResponse search(
 		String collectionName, SearchSourceBuilder searchSourceBuilder) {
 
-		SearchRequestBuilder searchRequestBuilder = _createSearchRequestBuilder(
-			collectionName, searchSourceBuilder);
+		if (searchSourceBuilder.size() == -1) {
+			throw new IllegalArgumentException("Size must be defined");
+		}
+
+		SearchRequestBuilder searchRequestBuilder = _prepareSearch(
+			_elasticsearchAliases.get(collectionName));
+
+		searchSourceBuilder.trackTotalHits(true);
+
+		searchRequestBuilder = searchRequestBuilder.setSource(
+			searchSourceBuilder);
 
 		ClientUtil.waitForConnection(_client);
 

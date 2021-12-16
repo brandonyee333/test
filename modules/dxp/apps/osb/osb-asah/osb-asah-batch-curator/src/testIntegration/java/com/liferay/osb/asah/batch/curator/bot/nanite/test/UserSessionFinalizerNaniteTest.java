@@ -16,10 +16,12 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.UserSessionFinalizerNanite;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -193,16 +195,12 @@ public class UserSessionFinalizerNaniteTest
 		JSONObject userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", QueryBuilders.matchAllQuery());
 
-		JSONArray pagesJSONArray = new JSONArray(
-			_elasticsearchInvoker.get(
-				"pages",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						QueryBuilders.termQuery(
-							"sessionId",
-							userSessionJSONObject.getString("id")));
-					searchSourceBuilder.sort("firstEventDate", SortOrder.ASC);
-				}));
+		JSONArray pagesJSONArray = _elasticsearchInvoker.get(
+			"pages",
+			QueryBuilders.termQuery(
+				"sessionId", userSessionJSONObject.getString("id")),
+			Arrays.asList(
+				SortBuilderUtil.fieldSort("firstEventDate", SortOrder.ASC)));
 
 		Assertions.assertEquals(3, pagesJSONArray.length());
 
@@ -272,15 +270,10 @@ public class UserSessionFinalizerNaniteTest
 		Assertions.assertNotEquals(
 			modifiedDate1, userSessionJSONObject.getString("modifiedDate"));
 
-		JSONArray pagesJSONArray = new JSONArray(
-			_elasticsearchInvoker.get(
-				"pages",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						QueryBuilders.termQuery(
-							"sessionId", "366909399944215919"));
-					searchSourceBuilder.sort("lastEventDate", SortOrder.ASC);
-				}));
+		JSONArray pagesJSONArray = _elasticsearchInvoker.get(
+			"pages", QueryBuilders.termQuery("sessionId", "366909399944215919"),
+			Arrays.asList(
+				SortBuilderUtil.fieldSort("lastEventDate", SortOrder.ASC)));
 
 		Assertions.assertEquals(2, pagesJSONArray.length());
 

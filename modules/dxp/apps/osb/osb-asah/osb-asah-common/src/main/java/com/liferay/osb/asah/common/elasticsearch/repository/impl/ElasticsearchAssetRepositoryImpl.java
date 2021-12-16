@@ -357,13 +357,6 @@ public class ElasticsearchAssetRepositoryImpl
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			getCollectionName(),
 			searchSourceBuilder -> {
-				if (StringUtils.isNotBlank(keywords)) {
-					searchSourceBuilder.query(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.wildcardQuery(
-								"keywords.keyword", "*" + keywords + "*")));
-				}
-
 				searchSourceBuilder.aggregation(
 					AggregationBuilders.terms(
 						"keywords/keyword"
@@ -384,6 +377,15 @@ public class ElasticsearchAssetRepositoryImpl
 							pageable.getPageSize()
 						)
 					));
+
+				if (StringUtils.isNotBlank(keywords)) {
+					searchSourceBuilder.query(
+						BoolQueryBuilderUtil.filter(
+							QueryBuilders.wildcardQuery(
+								"keywords.keyword", "*" + keywords + "*")));
+				}
+
+				searchSourceBuilder.size(0);
 			});
 
 		Aggregations aggregations = searchResponse.getAggregations();
