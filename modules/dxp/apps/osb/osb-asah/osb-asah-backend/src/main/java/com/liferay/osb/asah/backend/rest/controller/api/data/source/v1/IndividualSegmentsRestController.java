@@ -222,6 +222,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		List<MembershipChange> membershipsChanges =
 			_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
+				BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 				Collections.singletonList(segment.getId()));
 
 		if (!membershipsChanges.isEmpty()) {

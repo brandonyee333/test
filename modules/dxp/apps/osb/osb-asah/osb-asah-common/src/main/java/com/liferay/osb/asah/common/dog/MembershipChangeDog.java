@@ -217,14 +217,21 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 	}
 
 	public List<MembershipChange> getLastBeforeTodayByIndividualSegmentsId(
-		List<Long> individualSegmentIds) {
+		boolean includeAnonymous, List<Long> individualSegmentIds) {
 
 		Date date = DateUtil.newDayDate();
 
 		return _membershipChangeRepository.
 			searchLastByModifiedDateAndIndividualSegmentId(
-				null, false, individualSegmentIds,
+				null, includeAnonymous, individualSegmentIds,
 				DateUtil.newEndOfDayDate(DateUtils.addDays(date, -1)));
+	}
+
+	public List<MembershipChange> getLastBeforeTodayByIndividualSegmentsId(
+		List<Long> individualSegmentIds) {
+
+		return getLastBeforeTodayByIndividualSegmentsId(
+			false, individualSegmentIds);
 	}
 
 	public Page<MembershipChange> searchMembershipChangesPages(
