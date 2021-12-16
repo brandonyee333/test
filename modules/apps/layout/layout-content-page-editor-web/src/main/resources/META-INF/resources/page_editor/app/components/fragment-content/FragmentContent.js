@@ -19,15 +19,11 @@ import React, {useCallback, useEffect, useState} from 'react';
 
 import selectCanConfigureWidgets from '../../selectors/selectCanConfigureWidgets';
 import selectSegmentsExperienceId from '../../selectors/selectSegmentsExperienceId';
-import {useDispatch, useSelector, useSelectorCallback} from '../../store/index';
+import {useSelector, useSelectorCallback} from '../../store/index';
 import {getFrontendTokenValue} from '../../utils/getFrontendTokenValue';
 import {getResponsiveConfig} from '../../utils/getResponsiveConfig';
 import loadBackgroundImage from '../../utils/loadBackgroundImage';
-import {
-	useGetContent,
-	useGetFieldValue,
-	useToControlsId,
-} from '../CollectionItemContext';
+import {useGetContent, useGetFieldValue} from '../CollectionItemContext';
 import {useGlobalContext} from '../GlobalContext';
 import UnsafeHTML from '../UnsafeHTML';
 import {useIsProcessorEnabled} from './EditableProcessorContext';
@@ -44,11 +40,9 @@ const FragmentContent = ({
 	item,
 	withinTopper = false,
 }) => {
-	const dispatch = useDispatch();
 	const isMounted = useIsMounted();
 	const isProcessorEnabled = useIsProcessorEnabled();
 	const globalContext = useGlobalContext();
-	const toControlsId = useToControlsId();
 	const getFieldValue = useGetFieldValue();
 
 	const canConfigureWidgets = useSelector(selectCanConfigureWidgets);

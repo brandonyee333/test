@@ -24,7 +24,6 @@ import selectCanUpdatePageStructure from '../../selectors/selectCanUpdatePageStr
 import {useSelector, useSelectorCallback} from '../../store/index';
 import {deepEqual} from '../../utils/checkDeepEqual';
 import isMapped from '../../utils/isMapped';
-import {useToControlsId} from '../CollectionItemContext';
 import {
 	useActivationOrigin,
 	useActiveItemType,
@@ -66,7 +65,6 @@ function FragmentContentInteractionsFilter({
 	const languageId = useSelector((state) => state.languageId);
 	const selectItem = useSelectItem();
 	const setEditableProcessorUniqueId = useSetEditableProcessorUniqueId();
-	const toControlsId = useToControlsId();
 
 	const editableValues = useSelectorCallback(
 		(state) =>
