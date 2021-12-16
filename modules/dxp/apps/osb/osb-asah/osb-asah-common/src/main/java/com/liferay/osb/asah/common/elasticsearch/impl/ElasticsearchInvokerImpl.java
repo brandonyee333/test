@@ -843,27 +843,42 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	private JSONArray _get(SearchRequestBuilder searchRequestBuilder) {
-		searchRequestBuilder.setSize(_ELASTICSEARCH_MAX_SIZE);
+		JSONArray jsonArray = new JSONArray();
+
+		searchRequestBuilder.setSize(10000);
 		searchRequestBuilder.setTrackTotalHits(true);
 
 		ClientUtil.waitForConnection(_client);
 
-		SearchResponse searchResponse = searchRequestBuilder.get();
+		String id = "0";
 
-		SearchHits searchHits = searchResponse.getHits();
+		while (true) {
+			searchRequestBuilder.searchAfter(new Object[] {id});
 
-		if (!HitsUtil.hasHits(searchHits)) {
-			return new JSONArray();
-		}
+			SearchResponse searchResponse = searchRequestBuilder.get();
 
-		Stream<SearchHit> stream = Arrays.stream(searchHits.getHits());
+			SearchHits searchHits = searchResponse.getHits();
 
-		return new JSONArray(
-			stream.map(
+			if (!HitsUtil.hasHits(searchHits)) {
+				break;
+			}
+
+			Stream<SearchHit> stream = Arrays.stream(searchHits.getHits());
+
+			List<JSONObject> jsonObjects = stream.map(
 				searchHit -> new JSONObject(searchHit.getSourceAsString())
 			).collect(
 				Collectors.toList()
-			));
+			);
+
+			JSONObject jsonObject = jsonObjects.get(jsonObjects.size() - 1);
+
+			id = jsonObject.getString("id");
+
+			jsonArray.put(jsonObjects);
+		}
+
+		return jsonArray;
 	}
 
 	private List<String> _getExistingIndices(
