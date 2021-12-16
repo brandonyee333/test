@@ -32,7 +32,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.ResourceNotFoundException;
-import org.elasticsearch.action.ActionFuture;
 import org.elasticsearch.action.admin.indices.refresh.RefreshAction;
 import org.elasticsearch.action.admin.indices.refresh.RefreshRequestBuilder;
 import org.elasticsearch.action.admin.indices.refresh.RefreshResponse;
@@ -44,13 +43,10 @@ import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetRequestBuilder;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
-import org.elasticsearch.action.search.ClearScrollRequest;
-import org.elasticsearch.action.search.ClearScrollResponse;
 import org.elasticsearch.action.search.MultiSearchRequestBuilder;
 import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchScrollRequestBuilder;
 import org.elasticsearch.action.support.IndicesOptions;
 import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
@@ -190,22 +186,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	@Override
-	public boolean clearScroll(String scrollId) throws Exception {
-		ClearScrollRequest clearScrollRequest = new ClearScrollRequest();
-
-		clearScrollRequest.addScrollId(scrollId);
-
-		ActionFuture<ClearScrollResponse> actionFuture = _client.clearScroll(
-			clearScrollRequest);
-
-		ClientUtil.waitForConnection(_client);
-
-		ClearScrollResponse clearScrollResponse = actionFuture.get();
-
-		return clearScrollResponse.isSucceeded();
-	}
-
-	@Override
 	public long count(String collectionName, QueryBuilder queryBuilder) {
 		SearchRequestBuilder searchRequestBuilder = _prepareSearch(
 			_elasticsearchAliases.get(collectionName));
@@ -228,11 +208,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		return ElasticsearchBulkRequestBuilder.create(
 			_client, _elasticsearchAliases,
 			ElasticsearchIndexUtil.getIndexNamespace(_weDeployDataService));
-	}
-
-	@Override
-	public boolean delete(String collectionName, JSONObject jsonObject) {
-		return delete(collectionName, String.valueOf(jsonObject.get("id")));
 	}
 
 	@Override
@@ -385,15 +360,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	@Override
-	public JSONObject fetch(
-		String collectionName, QueryBuilder queryBuilder, String sourceExclude,
-		String sourceInclude) {
-
-		return fetch(
-			collectionName, queryBuilder, null, sourceExclude, sourceInclude);
-	}
-
-	@Override
 	public JSONObject fetch(String collectionName, String id) {
 		try {
 			GetRequestBuilder getRequestBuilder = _client.prepareGet(
@@ -433,26 +399,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	public JSONArray get(String collectionName) {
 		return _getAll(
 			null, collectionName, null, null, SortBuilderUtil.fieldSort("id"));
-	}
-
-	@Override
-	public String get(
-		String collectionName, Consumer<SearchSourceBuilder> consumer) {
-
-		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
-		consumer.accept(searchSourceBuilder);
-
-		SearchResponse searchResponse = search(
-			collectionName, searchSourceBuilder);
-
-		JSONArray jsonArray = new JSONArray();
-
-		for (SearchHit searchHit : searchResponse.getHits()) {
-			jsonArray.put(searchHit.getSourceAsMap());
-		}
-
-		return jsonArray.toString();
 	}
 
 	@Override
@@ -558,8 +504,8 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	@Override
 	public JSONArray get(
 		String collectionName, QueryBuilder queryBuilder, int size) {
-		return _get(
 
+		return _get(
 			collectionName, null, null, queryBuilder, size,
 			SortBuilderUtil.fieldSort("id"));
 	}
@@ -594,26 +540,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		return _get(
 			collectionName, null, includes, queryBuilder, size,
 			SortBuilderUtil.fieldSort("id"));
-	}
-
-	@Override
-	public MultiSearchResponse multiSearch(
-		String collectionName,
-		List<SearchSourceBuilder> searchRequestBuilders) {
-
-		MultiSearchRequestBuilder multiSearchRequestBuilder =
-			_client.prepareMultiSearch();
-
-		multiSearchRequestBuilder.setIndicesOptions(
-			IndicesOptions.lenientExpandOpen());
-
-		for (SearchSourceBuilder searchRequestBuilder : searchRequestBuilders) {
-			multiSearchRequestBuilder.add(
-				_createSearchRequestBuilder(
-					collectionName, searchRequestBuilder));
-		}
-
-		return multiSearchRequestBuilder.get();
 	}
 
 	@Override
@@ -699,39 +625,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	@Override
-	public SearchResponse searchScroll(
-		String collectionName, Consumer<SearchSourceBuilder> consumer,
-		long keepAliveInSeconds) {
-
-		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
-		consumer.accept(searchSourceBuilder);
-
-		SearchRequestBuilder searchRequestBuilder = _createSearchRequestBuilder(
-			collectionName, searchSourceBuilder);
-
-		searchRequestBuilder.setScroll(
-			TimeValue.timeValueSeconds(keepAliveInSeconds));
-
-		ClientUtil.waitForConnection(_client);
-
-		return searchRequestBuilder.get();
-	}
-
-	@Override
-	public SearchResponse searchScroll(String scrollId, long keepAliveSeconds) {
-		SearchScrollRequestBuilder searchScrollRequestBuilder =
-			_client.prepareSearchScroll(scrollId);
-
-		searchScrollRequestBuilder.setScroll(
-			TimeValue.timeValueSeconds(keepAliveSeconds));
-
-		ClientUtil.waitForConnection(_client);
-
-		return searchScrollRequestBuilder.get();
-	}
-
-	@Override
 	public JSONObject update(String collectionName, JSONObject jsonObject) {
 		return update(
 			collectionName, String.valueOf(jsonObject.get("id")), jsonObject);
@@ -769,61 +662,22 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public BulkByScrollResponse updateByQuery(
-		int batchSize, QueryBuilder queryBuilder, boolean refresh,
-		Script script, String... collectionNames) {
-
-		List<String> indices = _getExistingIndices(
-			queryBuilder, collectionNames);
-
-		if (indices.isEmpty()) {
-			return new BulkByScrollResponse(
-				TimeValue.ZERO,
-				new BulkByScrollTask.Status(
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, TimeValue.ZERO, 0F, null,
-					TimeValue.ZERO),
-				Collections.emptyList(), Collections.emptyList(), false);
-		}
-
-		UpdateByQueryRequestBuilder updateByQueryRequestBuilder =
-			new UpdateByQueryRequestBuilder(
-				_client, UpdateByQueryAction.INSTANCE);
-
-		updateByQueryRequestBuilder.abortOnVersionConflict(false);
-		updateByQueryRequestBuilder.filter(queryBuilder);
-		updateByQueryRequestBuilder.refresh(refresh);
-		updateByQueryRequestBuilder.script(script);
-		updateByQueryRequestBuilder.source(indices.toArray(new String[0]));
-
-		UpdateByQueryRequest updateByQueryRequest =
-			updateByQueryRequestBuilder.request();
-
-		updateByQueryRequest.setBatchSize(batchSize);
-
-		ClientUtil.waitForConnection(_client);
-
-		return updateByQueryRequestBuilder.get();
-	}
-
-	@Override
-	public BulkByScrollResponse updateByQuery(
 		QueryBuilder queryBuilder, boolean refresh, Script script,
 		String... collectionNames) {
 
-		return updateByQuery(
-			_ELASTICSEARCH_MAX_SIZE, queryBuilder, refresh, script,
-			collectionNames);
+		return _updateByQuery(queryBuilder, refresh, script, collectionNames);
 	}
 
 	@Override
 	public boolean updateByQueryWithRetry(
-		int batchSize, QueryBuilder queryBuilder, boolean refresh,
-		Script script, String... collectionNames) {
+		QueryBuilder queryBuilder, boolean refresh, Script script,
+		String... collectionNames) {
 
 		int retry = 0;
 
 		while (true) {
-			BulkByScrollResponse bulkByScrollResponse = updateByQuery(
-				batchSize, queryBuilder, refresh, script, collectionNames);
+			BulkByScrollResponse bulkByScrollResponse = _updateByQuery(
+				queryBuilder, refresh, script, collectionNames);
 
 			List<BulkItemResponse.Failure> bulkFailures =
 				bulkByScrollResponse.getBulkFailures();
@@ -852,59 +706,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	@Override
-	public boolean updateByQueryWithRetry(
-		QueryBuilder queryBuilder, boolean refresh, Script script,
-		String... collectionNames) {
-
-		return updateByQueryWithRetry(
-			_ELASTICSEARCH_MAX_SIZE, queryBuilder, refresh, script,
-			collectionNames);
-	}
-
-	@Override
-	public boolean upsert(String collectionName, JSONArray jsonArray) {
-		if ((jsonArray == null) || (jsonArray.length() == 0)) {
-			return false;
-		}
-
-		BulkRequestBuilder bulkRequestBuilder = _client.prepareBulk();
-
-		bulkRequestBuilder.setRefreshPolicy(
-			WriteRequest.RefreshPolicy.IMMEDIATE);
-
-		String indexAlias = _elasticsearchAliases.check(collectionName);
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			jsonObject = new JSONObject(jsonObject.toString());
-
-			UpdateRequestBuilder updateRequestBuilder = _client.prepareUpdate(
-				indexAlias, collectionName,
-				String.valueOf(jsonObject.get("id")));
-
-			updateRequestBuilder.setDoc(
-				jsonObject.toString(), XContentType.JSON);
-			updateRequestBuilder.setDocAsUpsert(true);
-			updateRequestBuilder.setRetryOnConflict(5);
-
-			bulkRequestBuilder.add(updateRequestBuilder);
-		}
-
-		ClientUtil.waitForConnection(_client);
-
-		BulkResponse bulkResponse = bulkRequestBuilder.get();
-
-		if (bulkResponse.hasFailures()) {
-			_log.error(bulkResponse.buildFailureMessage());
-
-			return false;
-		}
-
-		return true;
-	}
-
-	@Override
 	public JSONObject upsert(String collectionName, JSONObject jsonObject) {
 		UpdateRequestBuilder updateRequestBuilder = _client.prepareUpdate(
 			_elasticsearchAliases.check(collectionName), collectionName,
@@ -924,53 +725,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		GetResult getResult = updateResponse.getGetResult();
 
 		return new JSONObject(getResult.getSource());
-	}
-
-	@Override
-	public JSONObject upsert(
-		String collectionName, String id, JSONObject jsonObject,
-		Script script) {
-
-		UpdateRequestBuilder updateRequestBuilder = _client.prepareUpdate(
-			_elasticsearchAliases.check(collectionName), collectionName, id);
-
-		updateRequestBuilder.setFetchSource(true);
-		updateRequestBuilder.setRefreshPolicy(
-			WriteRequest.RefreshPolicy.IMMEDIATE);
-		updateRequestBuilder.setRetryOnConflict(5);
-		updateRequestBuilder.setScript(script);
-		updateRequestBuilder.setUpsert(
-			jsonObject.toString(), XContentType.JSON);
-
-		ClientUtil.waitForConnection(_client);
-
-		UpdateResponse updateResponse = updateRequestBuilder.get();
-
-		GetResult getResult = updateResponse.getGetResult();
-
-		return new JSONObject(getResult.getSource());
-	}
-
-	private SearchRequestBuilder _createSearchRequestBuilder(
-		String collectionName, SearchSourceBuilder searchSourceBuilder) {
-
-		SearchRequestBuilder searchRequestBuilder = _prepareSearch(
-			_elasticsearchAliases.get(collectionName));
-
-		if (searchSourceBuilder.size() == -1) {
-			int from = searchSourceBuilder.from();
-
-			if (from > 0) {
-				searchSourceBuilder.size(_ELASTICSEARCH_MAX_SIZE - from);
-			}
-			else {
-				searchSourceBuilder.size(_ELASTICSEARCH_MAX_SIZE);
-			}
-		}
-
-		searchSourceBuilder.trackTotalHits(true);
-
-		return searchRequestBuilder.setSource(searchSourceBuilder);
 	}
 
 	private JSONArray _get(
@@ -1150,7 +904,41 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		return new JSONObject(getResult.getSource());
 	}
 
-	private static final int _ELASTICSEARCH_MAX_SIZE = 10000;
+	private BulkByScrollResponse _updateByQuery(
+		QueryBuilder queryBuilder, boolean refresh, Script script,
+		String... collectionNames) {
+
+		List<String> indices = _getExistingIndices(
+			queryBuilder, collectionNames);
+
+		if (indices.isEmpty()) {
+			return new BulkByScrollResponse(
+				TimeValue.ZERO,
+				new BulkByScrollTask.Status(
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, TimeValue.ZERO, 0F, null,
+					TimeValue.ZERO),
+				Collections.emptyList(), Collections.emptyList(), false);
+		}
+
+		UpdateByQueryRequestBuilder updateByQueryRequestBuilder =
+			new UpdateByQueryRequestBuilder(
+				_client, UpdateByQueryAction.INSTANCE);
+
+		updateByQueryRequestBuilder.abortOnVersionConflict(false);
+		updateByQueryRequestBuilder.filter(queryBuilder);
+		updateByQueryRequestBuilder.refresh(refresh);
+		updateByQueryRequestBuilder.script(script);
+		updateByQueryRequestBuilder.source(indices.toArray(new String[0]));
+
+		UpdateByQueryRequest updateByQueryRequest =
+			updateByQueryRequestBuilder.request();
+
+		updateByQueryRequest.setBatchSize(10000);
+
+		ClientUtil.waitForConnection(_client);
+
+		return updateByQueryRequestBuilder.get();
+	}
 
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchInvokerImpl.class);

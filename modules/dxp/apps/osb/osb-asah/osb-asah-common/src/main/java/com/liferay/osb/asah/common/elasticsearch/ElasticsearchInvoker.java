@@ -27,7 +27,6 @@ import java.util.function.Consumer;
 
 import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.action.admin.indices.refresh.RefreshResponse;
-import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
@@ -53,14 +52,10 @@ public interface ElasticsearchInvoker {
 
 	public JSONObject add(String collectionName, JSONObject jsonObject);
 
-	public boolean clearScroll(String scrollId) throws Exception;
-
 	public long count(String collectionName, QueryBuilder queryBuilder);
 
 	public ElasticsearchBulkRequestBuilder
 		createElasticsearchBulkRequestBuilder();
-
-	public boolean delete(String collectionName, JSONObject jsonObject);
 
 	public void delete(String collectionName, QueryBuilder queryBuilder);
 
@@ -79,10 +74,6 @@ public interface ElasticsearchInvoker {
 		String collectionName, QueryBuilder queryBuilder,
 		SortBuilder<?> sortBuilder, String sourceExclude, String sourceInclude);
 
-	public JSONObject fetch(
-		String collectionName, QueryBuilder queryBuilder, String sourceExclude,
-		String sourceInclude);
-
 	public JSONObject fetch(String collectionName, String id);
 
 	public JSONArray get(
@@ -90,9 +81,6 @@ public interface ElasticsearchInvoker {
 		List<FieldSortBuilder> fieldSortBuilders, QueryBuilder queryBuilder);
 
 	public JSONArray get(String collectionName);
-
-	public String get(
-		String collectionName, Consumer<SearchSourceBuilder> consumer);
 
 	public JSONArray get(
 		String collectionName, FieldSortBuilder fieldSortBuilder, int size);
@@ -146,9 +134,6 @@ public interface ElasticsearchInvoker {
 		String collectionName, String[] includes, QueryBuilder queryBuilder,
 		int size);
 
-	public MultiSearchResponse multiSearch(
-		String collectionName, List<SearchSourceBuilder> searchRequestBuilders);
-
 	public RefreshResponse refresh();
 
 	public JSONObject replace(String collectionName, JSONObject jsonObject);
@@ -163,12 +148,6 @@ public interface ElasticsearchInvoker {
 	public SearchResponse search(
 		String collectionName, SearchSourceBuilder searchSourceBuilder);
 
-	public SearchResponse searchScroll(
-		String collectionName, Consumer<SearchSourceBuilder> consumer,
-		long keepAliveInSeconds);
-
-	public SearchResponse searchScroll(String scrollId, long timeValueSeconds);
-
 	public JSONObject update(String collectionName, JSONObject jsonObject);
 
 	public JSONObject update(
@@ -177,27 +156,14 @@ public interface ElasticsearchInvoker {
 	public JSONObject update(String collectionName, String id, Script script);
 
 	public BulkByScrollResponse updateByQuery(
-		int batchSize, QueryBuilder queryBuilder, boolean refresh,
-		Script script, String... collectionNames);
-
-	public BulkByScrollResponse updateByQuery(
 		QueryBuilder queryBuilder, boolean refresh, Script script,
 		String... collectionNames);
 
 	public boolean updateByQueryWithRetry(
-		int batchSize, QueryBuilder queryBuilder, boolean refresh,
-		Script script, String... collectionNames);
-
-	public boolean updateByQueryWithRetry(
 		QueryBuilder queryBuilder, boolean refresh, Script script,
 		String... collectionNames);
-
-	public boolean upsert(String collectionName, JSONArray jsonArray);
 
 	public JSONObject upsert(String collectionName, JSONObject jsonObject);
-
-	public JSONObject upsert(
-		String collectionName, String id, JSONObject jsonObject, Script script);
 
 	@Documented
 	@Retention(RetentionPolicy.RUNTIME)

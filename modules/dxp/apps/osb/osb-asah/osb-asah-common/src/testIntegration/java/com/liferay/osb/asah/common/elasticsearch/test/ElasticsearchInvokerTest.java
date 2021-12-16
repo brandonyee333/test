@@ -155,30 +155,6 @@ public class ElasticsearchInvokerTest
 	}
 
 	@Test
-	public void testDelete() {
-		JSONObject jsonObject = _elasticsearchInvoker.add(
-			_collectionName,
-			JSONUtil.put("string", RandomTestUtil.randomHexString(4096)));
-
-		Assertions.assertEquals(
-			1,
-			_elasticsearchInvoker.count(
-				_collectionName,
-				QueryBuilders.termQuery("id", jsonObject.getString("id"))));
-
-		boolean deleted = _elasticsearchInvoker.delete(
-			_collectionName, jsonObject);
-
-		Assertions.assertTrue(deleted);
-
-		Assertions.assertEquals(
-			0,
-			_elasticsearchInvoker.count(
-				_collectionName,
-				QueryBuilders.termQuery("id", jsonObject.getString("id"))));
-	}
-
-	@Test
 	public void testDeleteByQuery() {
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
 			_elasticsearchInvoker.createElasticsearchBulkRequestBuilder();
@@ -565,59 +541,6 @@ public class ElasticsearchInvokerTest
 			testString, actualJSONObject.getString("string"));
 
 		thread.interrupt();
-	}
-
-	@Test
-	public void testUpsertExisting() {
-		String testString1 = RandomTestUtil.randomHexString(64);
-		String testString2 = RandomTestUtil.randomHexString(64);
-
-		JSONObject jsonObject = _elasticsearchInvoker.add(
-			_collectionName,
-			JSONUtil.put(
-				"string1", testString1
-			).put(
-				"string2", testString2
-			));
-
-		String id = jsonObject.getString("id");
-
-		String testString3 = RandomTestUtil.randomHexString(64);
-		String testString4 = RandomTestUtil.randomHexString(64);
-
-		JSONObject actualJSONObject = _elasticsearchInvoker.upsert(
-			_collectionName, id,
-			JSONUtil.put(
-				"string1", testString3
-			).put(
-				"string2", testString4
-			),
-			new Script("ctx._source.string1 = 'foo'"));
-
-		Assertions.assertEquals("foo", actualJSONObject.getString("string1"));
-		Assertions.assertEquals(
-			testString2, actualJSONObject.getString("string2"));
-	}
-
-	@Test
-	public void testUpsertNew() {
-		String testId = RandomTestUtil.randomHexString(64);
-		String testString1 = RandomTestUtil.randomHexString(64);
-		String testString2 = RandomTestUtil.randomHexString(64);
-
-		JSONObject actualJSONObject = _elasticsearchInvoker.upsert(
-			_collectionName, testId,
-			JSONUtil.put(
-				"string1", testString1
-			).put(
-				"string2", testString2
-			),
-			new Script("ctx._source.string1 = 'foo'"));
-
-		Assertions.assertEquals(
-			testString1, actualJSONObject.getString("string1"));
-		Assertions.assertEquals(
-			testString2, actualJSONObject.getString("string2"));
 	}
 
 	private String _createIndexConfiguration() {
