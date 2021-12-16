@@ -32,8 +32,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
-import org.json.JSONArray;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -74,17 +72,13 @@ public class ElasticsearchJobRunRepositoryImpl
 	@Override
 	public List<JobRun> findByJobId(Long jobId, Pageable pageable) {
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							QueryBuilders.termQuery(
-								"job.id", jobId.toString()));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				QueryBuilders.termQuery("job.id", jobId.toString()),
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -92,27 +86,20 @@ public class ElasticsearchJobRunRepositoryImpl
 		Long jobId, LocalDateTime endCreateLocalDateTime,
 		LocalDateTime startCreateLocalDateTime) {
 
+		RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
+			"createdDate");
+
+		rangeQueryBuilder.lt(DateUtil.toUTCString(endCreateLocalDateTime));
+		rangeQueryBuilder.gte(DateUtil.toUTCString(startCreateLocalDateTime));
+
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						RangeQueryBuilder rangeQueryBuilder =
-							QueryBuilders.rangeQuery("createdDate");
-
-						rangeQueryBuilder.lt(
-							DateUtil.toUTCString(endCreateLocalDateTime));
-						rangeQueryBuilder.gte(
-							DateUtil.toUTCString(startCreateLocalDateTime));
-
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								rangeQueryBuilder
-							).filter(
-								QueryBuilders.termQuery(
-									"job.id", jobId.toString())
-							));
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					rangeQueryBuilder
+				).filter(
+					QueryBuilders.termQuery("job.id", jobId.toString())
+				)));
 	}
 
 	@Override

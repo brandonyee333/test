@@ -151,70 +151,63 @@ public class ElasticsearchAssetRepositoryImpl
 		Long assetId, String assetType, int size) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termQuery("assetType", assetType)
-							).filter(
-								QueryBuilders.existsQuery("keywords.keyword")
-							));
-
-						if (assetId != null) {
-							searchSourceBuilder.searchAfter(
-								new Object[] {assetId});
-						}
-
-						searchSourceBuilder.size(size);
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("id"));
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(), SortBuilderUtil.fieldSort("id"),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("assetType", assetType)
+				).filter(
+					QueryBuilders.existsQuery("keywords.keyword")
+				).filter(
+					QueryBuilders.rangeQuery(
+						"id"
+					).gt(
+						assetId
+					)
+				),
+				size));
 	}
 
 	@Override
 	public List<Asset> findByAssetTypeAndCanonicalURLIn(
-		String assetType, Collection<String> canonicalUrls,
-		@Nullable Pageable pageable) {
+		String assetType, Collection<String> canonicalUrls, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termQuery("assetType", assetType)
-							).filter(
-								QueryBuilders.termsQuery(
-									"canonicalUrl", canonicalUrls)
-							));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("assetType", assetType)
+				).filter(
+					QueryBuilders.termsQuery("canonicalUrl", canonicalUrls)
+				),
+				pageable.getPageSize()));
+	}
 
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+	@Override
+	public List<Asset> findByAssetTypeAndFilterString(
+		@Nullable String assetType, FilterHelper filterHelper) {
+
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				_buildQueryBuilder(assetType, filterHelper, null)));
 	}
 
 	@Override
 	public List<Asset> findByAssetTypeAndFilterStringAndKeywords(
-		@Nullable String assetType, FilterHelper filterHelper,
-		@Nullable String keywords, @Nullable Pageable pageable) {
+		@Nullable String assetType, FilterHelper filterHelper, String keywords,
+		Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_buildQueryBuilder(
-								assetType, filterHelper, keywords));
-
-						if (pageable != null) {
-							setSearchSourceBuilderPage(
-								pageable, searchSourceBuilder);
-						}
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				_buildQueryBuilder(assetType, filterHelper, keywords),
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -222,18 +215,14 @@ public class ElasticsearchAssetRepositoryImpl
 		List<Long> channelIds, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							QueryBuilders.termsQuery(
-								"channelIds",
-								ListUtil.map(channelIds, String::valueOf)));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				QueryBuilders.termsQuery(
+					"channelIds", ListUtil.map(channelIds, String::valueOf)),
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -261,16 +250,12 @@ public class ElasticsearchAssetRepositoryImpl
 		FilterHelper filterHelper, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_buildQueryBuilder(filterHelper));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(), _buildQueryBuilder(filterHelper),
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -369,10 +354,7 @@ public class ElasticsearchAssetRepositoryImpl
 							"groupBySort",
 							_getFieldSortBuilders(pageable.getSort())
 						).from(
-							Math.max(
-								0,
-								pageable.getPageNumber() *
-									pageable.getPageSize())
+							Math.max(0, (int)pageable.getOffset())
 						).size(
 							pageable.getPageSize()
 						)

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.dog.test;
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.http.NanitesHttp;
@@ -24,6 +25,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -85,7 +87,12 @@ public class ProjectDogTest
 
 		Assertions.assertArrayEquals(
 			new String[] {"project1", "project2", "project3", "project4"},
-			JSONUtil.toStringArray(elasticsearchInvoker.get("projects"), "id"));
+			JSONUtil.toStringArray(
+				elasticsearchInvoker.get(
+					"projects",
+					Arrays.asList(SortBuilderUtil.fieldSort("id.keyword")),
+					new String[] {"id"}),
+				"id"));
 	}
 
 	@Test
@@ -101,7 +108,12 @@ public class ProjectDogTest
 
 		Assertions.assertArrayEquals(
 			new String[] {"project1", "project3"},
-			JSONUtil.toStringArray(elasticsearchInvoker.get("projects"), "id"));
+			JSONUtil.toStringArray(
+				elasticsearchInvoker.get(
+					"projects",
+					Arrays.asList(SortBuilderUtil.fieldSort("id.keyword")),
+					new String[] {"id"}),
+				"id"));
 	}
 
 	@Test

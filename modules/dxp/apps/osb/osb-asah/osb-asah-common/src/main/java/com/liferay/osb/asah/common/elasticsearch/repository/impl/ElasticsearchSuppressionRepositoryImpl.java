@@ -30,7 +30,6 @@ import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.data.domain.Pageable;
@@ -89,16 +88,10 @@ public class ElasticsearchSuppressionRepositoryImpl
 		String emailAddress, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_buildQueryBuilder(emailAddress));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(), getFieldSortBuilders(pageable.getSort()),
+				(int)pageable.getOffset(), _buildQueryBuilder(emailAddress),
+				pageable.getPageSize()));
 	}
 
 	@Override

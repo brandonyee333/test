@@ -197,10 +197,10 @@ public class UserSessionFinalizerNaniteTest
 
 		JSONArray pagesJSONArray = _elasticsearchInvoker.get(
 			"pages",
-			QueryBuilders.termQuery(
-				"sessionId", userSessionJSONObject.getString("id")),
 			Arrays.asList(
-				SortBuilderUtil.fieldSort("firstEventDate", SortOrder.ASC)));
+				SortBuilderUtil.fieldSort("firstEventDate", SortOrder.ASC)),
+			QueryBuilders.termQuery(
+				"sessionId", userSessionJSONObject.getString("id")));
 
 		Assertions.assertEquals(3, pagesJSONArray.length());
 
@@ -271,9 +271,10 @@ public class UserSessionFinalizerNaniteTest
 			modifiedDate1, userSessionJSONObject.getString("modifiedDate"));
 
 		JSONArray pagesJSONArray = _elasticsearchInvoker.get(
-			"pages", QueryBuilders.termQuery("sessionId", "366909399944215919"),
+			"pages",
 			Arrays.asList(
-				SortBuilderUtil.fieldSort("lastEventDate", SortOrder.ASC)));
+				SortBuilderUtil.fieldSort("lastEventDate", SortOrder.ASC)),
+			QueryBuilders.termQuery("sessionId", "366909399944215919"));
 
 		Assertions.assertEquals(2, pagesJSONArray.length());
 

@@ -40,7 +40,6 @@ import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregati
 import org.elasticsearch.search.aggregations.bucket.composite.TermsValuesSourceBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.data.domain.Pageable;
@@ -249,18 +248,11 @@ public class ElasticsearchSalesforceEntityRepositoryImpl
 		Long dataSourceId, SalesforceEntity.Type type, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_salesforceRawElasticsearchInvoker.get(
-					_getCollectionName(type),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							QueryUtil.buildSearchQueryBuilder(
-								"dataSourceId", String.valueOf(dataSourceId)));
-
-						searchSourceBuilder.from(
-							pageable.getPageNumber() * pageable.getPageSize());
-						searchSourceBuilder.size(pageable.getPageSize());
-					})));
+			_salesforceRawElasticsearchInvoker.get(
+				_getCollectionName(type), (int)pageable.getOffset(),
+				QueryUtil.buildSearchQueryBuilder(
+					"dataSourceId", String.valueOf(dataSourceId)),
+				pageable.getPageSize()));
 	}
 
 	@Override

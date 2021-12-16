@@ -22,6 +22,8 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.io.OutputStream;
 
+import org.elasticsearch.index.query.QueryBuilders;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,19 +44,17 @@ public class PageDataExporter extends BaseDataExporter {
 
 	@Override
 	protected JSONObject doGetResultPageJSONObject(String after) {
-		JSONArray results = new JSONArray(
-			_elasticsearchInvoker.get(
-				"pages",
-				searchSourceBuilder -> {
-					searchSourceBuilder.searchAfter(new String[] {after});
-					searchSourceBuilder.size(_PAGE_SIZE);
-					searchSourceBuilder.sort(SortBuilderUtil.fieldSort("id"));
-				}));
+		JSONArray jsonArray = _elasticsearchInvoker.get(
+			"pages", SortBuilderUtil.fieldSort("id"),
+			QueryBuilders.rangeQuery(
+				"id"
+			).gt(
+				after
+			),
+			50);
 
-		return JSONUtil.put("results", results);
+		return JSONUtil.put("results", jsonArray);
 	}
-
-	private static final int _PAGE_SIZE = 50;
 
 	private final ElasticsearchInvoker _elasticsearchInvoker;
 

@@ -24,8 +24,6 @@ import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -56,23 +54,18 @@ public class ElasticsearchSalesforceAuditEventRepositoryImpl
 		Long dataSourceId, String entityTypeName, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_salesforceRawElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termQuery(
-									"dataSourceId",
-									String.valueOf(dataSourceId))
-							).filter(
-								QueryBuilders.termQuery(
-									"typeName", entityTypeName)
-							));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_salesforceRawElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"dataSourceId", String.valueOf(dataSourceId))
+				).filter(
+					QueryBuilders.termQuery("typeName", entityTypeName)
+				),
+				pageable.getPageSize()));
 	}
 
 	@Override

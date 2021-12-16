@@ -155,32 +155,20 @@ public class CollectionGetResponse extends BaseGetResponse {
 			return _embeddedJSONArray;
 		}
 
-		return new JSONArray(
-			elasticsearchInvoker.get(
-				collectionName,
-				searchSourceBuilder -> {
-					searchSourceBuilder.from(page * size);
-					searchSourceBuilder.size(size);
+		for (Pair<String, SortOrder> sortOrderPair : sortOrderPairs) {
+			fieldSortBuilders.add(
+				SortBuilderUtil.fieldSort(
+					sortOrderPair.getKey(), sortOrderPair.getValue()));
+		}
 
-					if (queryBuilder != null) {
-						searchSourceBuilder.query(queryBuilder);
-					}
+		if (queryBuilder != null) {
+			return elasticsearchInvoker.get(
+				collectionName, fieldSortBuilders, page * size, queryBuilder,
+				size);
+		}
 
-					for (FieldSortBuilder fieldSortBuilder :
-							fieldSortBuilders) {
-
-						searchSourceBuilder.sort(fieldSortBuilder);
-					}
-
-					for (Pair<String, SortOrder> sortOrderPair :
-							sortOrderPairs) {
-
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort(
-								sortOrderPair.getKey(),
-								sortOrderPair.getValue()));
-					}
-				}));
+		return elasticsearchInvoker.get(
+			collectionName, fieldSortBuilders, page * size, size);
 	}
 
 	private JSONObject _getPageJSONObject() {

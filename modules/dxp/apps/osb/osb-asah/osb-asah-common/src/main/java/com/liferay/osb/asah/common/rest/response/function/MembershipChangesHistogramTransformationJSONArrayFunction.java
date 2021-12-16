@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.rest.response.function;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.BaseTransformationJSONArrayFunction;
 
@@ -139,25 +140,20 @@ public class MembershipChangesHistogramTransformationJSONArrayFunction
 		long individualsCount = 0;
 		long knownIndividualsCount = 0;
 
-		JSONArray membershipChangesJSONArray = new JSONArray(
-			elasticsearchInvoker.get(
-				collectionName,
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						BoolQueryBuilderUtil.filter(
-							queryBuilder
-						).filter(
-							QueryBuilders.rangeQuery(
-								"dateChanged"
-							).lt(
-								startDayDateString
-							).timeZone(
-								TimeZoneDogUtil.getTimeZoneId()
-							)
-						));
-					searchSourceBuilder.size(1);
-					searchSourceBuilder.sort("id", SortOrder.DESC);
-				}));
+		JSONArray membershipChangesJSONArray = elasticsearchInvoker.get(
+			collectionName, SortBuilderUtil.fieldSort("id", SortOrder.DESC),
+			BoolQueryBuilderUtil.filter(
+				queryBuilder
+			).filter(
+				QueryBuilders.rangeQuery(
+					"dateChanged"
+				).lt(
+					startDayDateString
+				).timeZone(
+					TimeZoneDogUtil.getTimeZoneId()
+				)
+			),
+			1);
 
 		if (membershipChangesJSONArray.length() > 0) {
 			JSONObject membershipChangeJSONObject =

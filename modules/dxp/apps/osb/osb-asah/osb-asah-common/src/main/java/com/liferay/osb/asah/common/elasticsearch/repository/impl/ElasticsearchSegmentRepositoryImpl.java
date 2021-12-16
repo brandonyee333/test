@@ -163,40 +163,33 @@ public class ElasticsearchSegmentRepositoryImpl
 		String name, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.should(
-								QueryBuilders.existsQuery("channelId")
-							).should(
-								QueryBuilders.prefixQuery("name", name)
-							));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				BoolQueryBuilderUtil.should(
+					QueryBuilders.existsQuery("channelId")
+				).should(
+					QueryBuilders.prefixQuery("name", name)
+				),
+				pageable.getPageSize()));
 	}
 
 	@Override
 	public List<Segment> findByIdAfter(Long id, Pageable pageable) {
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							QueryBuilders.rangeQuery(
-								"id"
-							).gt(
-								id
-							));
-						searchSourceBuilder.sort(SortBuilders.fieldSort("id"));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				QueryBuilders.rangeQuery(
+					"id"
+				).gt(
+					id
+				),
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -458,29 +451,24 @@ public class ElasticsearchSegmentRepositoryImpl
 	public List<Segment> searchDynamicSegments(
 		FilterHelper filterHelper, Pageable pageable) {
 
+		QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
+
+		if (filterHelper.getFilterString() != null) {
+			queryBuilder = filterHelper.getQueryBuilder();
+		}
+
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						QueryBuilder queryBuilder =
-							QueryBuilders.matchAllQuery();
-
-						if (filterHelper.getFilterString() != null) {
-							queryBuilder = filterHelper.getQueryBuilder();
-						}
-
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								queryBuilder
-							).filter(
-								QueryBuilders.termQuery(
-									"segmentType", "DYNAMIC")
-							));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				BoolQueryBuilderUtil.filter(
+					queryBuilder
+				).filter(
+					QueryBuilders.termQuery("segmentType", "DYNAMIC")
+				),
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -558,15 +546,12 @@ public class ElasticsearchSegmentRepositoryImpl
 		BoolQueryBuilder finalBoolQueryBuilder = boolQueryBuilder;
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(finalBoolQueryBuilder);
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(), finalBoolQueryBuilder,
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -574,37 +559,29 @@ public class ElasticsearchSegmentRepositoryImpl
 		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
 		FilterHelper filterHelper, Pageable pageable) {
 
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.should(
+			QueryBuilders.termQuery(
+				"referencedAssetDataSourceIds", dataSourceId)
+		).should(
+			QueryBuilders.termsQuery(
+				"referencedFieldMappingIds", dataSourceFieldMappingIds)
+		);
+
+		if (!StringUtils.isEmpty(filterHelper.getFilterString())) {
+			boolQueryBuilder = BoolQueryBuilderUtil.filter(
+				boolQueryBuilder
+			).filter(
+				filterHelper.getQueryBuilder()
+			);
+		}
+
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						BoolQueryBuilder boolQueryBuilder =
-							BoolQueryBuilderUtil.should(
-								QueryBuilders.termQuery(
-									"referencedAssetDataSourceIds",
-									dataSourceId)
-							).should(
-								QueryBuilders.termsQuery(
-									"referencedFieldMappingIds",
-									dataSourceFieldMappingIds)
-							);
-
-						if (!StringUtils.isEmpty(
-								filterHelper.getFilterString())) {
-
-							boolQueryBuilder = BoolQueryBuilderUtil.filter(
-								boolQueryBuilder
-							).filter(
-								filterHelper.getQueryBuilder()
-							);
-						}
-
-						searchSourceBuilder.query(boolQueryBuilder);
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(), boolQueryBuilder,
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -613,16 +590,13 @@ public class ElasticsearchSegmentRepositoryImpl
 		Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_getSegmentsQueryBuilder(filterHelper, segmentIds));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				_getSegmentsQueryBuilder(filterHelper, segmentIds),
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -630,16 +604,13 @@ public class ElasticsearchSegmentRepositoryImpl
 		List<Long> channelIds, FilterHelper filterHelper, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_getSegmentsQueryBuilder(channelIds, filterHelper));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				_getSegmentsQueryBuilder(channelIds, filterHelper),
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -686,22 +657,19 @@ public class ElasticsearchSegmentRepositoryImpl
 		String filter, String state, String status, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.regexpQuery("filter", filter)
-							).filter(
-								QueryBuilders.termQuery("state", state)
-							).filter(
-								QueryBuilders.termQuery("status", status)
-							));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.regexpQuery("filter", filter)
+				).filter(
+					QueryBuilders.termQuery("state", state)
+				).filter(
+					QueryBuilders.termQuery("status", status)
+				),
+				pageable.getPageSize()));
 	}
 
 	@Override

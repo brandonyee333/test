@@ -17,12 +17,14 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +41,6 @@ import org.elasticsearch.script.Script;
 import org.elasticsearch.search.collapse.CollapseBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.data.domain.Pageable;
@@ -94,38 +95,28 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 			@Nullable Date fromModifiedDate, boolean includeAnonymousUsers,
 			List<Long> individualSegmentIds, Date toModifiedDate) {
 
+		BoolQueryBuilder boolQueryBuilder = (BoolQueryBuilder)_getQueryBuilder(
+			FilterHelper.EMPTY, includeAnonymousUsers, individualSegmentIds);
+
+		RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
+			"dateChanged"
+		).lte(
+			DateUtil.toUTCString(toModifiedDate)
+		);
+
+		if (fromModifiedDate != null) {
+			rangeQueryBuilder = rangeQueryBuilder.gte(
+				DateUtil.toUTCString(fromModifiedDate));
+		}
+
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						BoolQueryBuilder boolQueryBuilder =
-							(BoolQueryBuilder)_getQueryBuilder(
-								FilterHelper.EMPTY, includeAnonymousUsers,
-								individualSegmentIds);
-
-						RangeQueryBuilder rangeQueryBuilder =
-							QueryBuilders.rangeQuery(
-								"dateChanged"
-							).lte(
-								DateUtil.toUTCString(toModifiedDate)
-							);
-
-						if (fromModifiedDate != null) {
-							rangeQueryBuilder = rangeQueryBuilder.gte(
-								DateUtil.toUTCString(fromModifiedDate));
-						}
-
-						searchSourceBuilder.query(
-							boolQueryBuilder.filter(rangeQueryBuilder)
-						).collapse(
-							new CollapseBuilder("individualSegmentId")
-						).sort(
-							"dateChanged", SortOrder.DESC
-						).sort(
-							"individualsCount", SortOrder.DESC
-						);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				new CollapseBuilder("individualSegmentId"), getCollectionName(),
+				Arrays.asList(
+					SortBuilderUtil.fieldSort("dateChanged", SortOrder.DESC),
+					SortBuilderUtil.fieldSort(
+						"individualsCount", SortOrder.DESC)),
+				boolQueryBuilder.filter(rangeQueryBuilder)));
 	}
 
 	@Override
@@ -134,18 +125,15 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 		Long segmentId, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_getQueryBuilder(
-								filterHelper, includeAnonymousUsers,
-								Collections.singletonList(segmentId)));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				_getQueryBuilder(
+					filterHelper, includeAnonymousUsers,
+					Collections.singletonList(segmentId)),
+				pageable.getPageSize()));
 	}
 
 	@Override

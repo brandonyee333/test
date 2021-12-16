@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -137,25 +138,19 @@ public class ElasticsearchFieldMappingRepositoryImpl
 		String context, Long dataSourceId, String ownerType) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termQuery("context", context)
-							).filter(
-								QueryBuilders.existsQuery(
-									"dataSourceFieldNames." + dataSourceId)
-							).filter(
-								QueryBuilders.termQuery("ownerType", ownerType)
-							));
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("displayName"));
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort(
-								"modifiedDate", SortOrder.DESC));
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				Arrays.asList(
+					SortBuilderUtil.fieldSort("displayName"),
+					SortBuilderUtil.fieldSort("dateModified", SortOrder.DESC)),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("context", context)
+				).filter(
+					QueryBuilders.existsQuery(
+						"dataSourceFieldNames." + dataSourceId)
+				).filter(
+					QueryBuilders.termQuery("ownerType", ownerType)
+				)));
 	}
 
 	@Override

@@ -30,8 +30,6 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -54,16 +52,13 @@ public class ElasticsearchCustomAssetDashboardRepositoryImpl
 		Long channelId, String keywords, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_cerebroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_buildQueryBuilder(channelId, keywords));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_cerebroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				_buildQueryBuilder(channelId, keywords),
+				pageable.getPageSize()));
 	}
 
 	@Override

@@ -135,21 +135,14 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 	public JSONObject fetchLatestActivityJSONObject(
 		Long channelId, Long individualId) {
 
-		JSONArray activitiesJSONArray = new JSONArray(
-			elasticsearchInvoker.get(
-				"activities",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						BoolQueryBuilderUtil.filter(
-							getEventsQueryBuilder(String.valueOf(individualId))
-						).filter(
-							QueryBuilders.termQuery(
-								"channelId", String.valueOf(channelId))
-						));
-					searchSourceBuilder.size(1);
-					searchSourceBuilder.sort(
-						SortBuilderUtil.fieldSort("endTime", SortOrder.DESC));
-				}));
+		JSONArray activitiesJSONArray = elasticsearchInvoker.get(
+			"activities", SortBuilderUtil.fieldSort("endTime", SortOrder.DESC),
+			BoolQueryBuilderUtil.filter(
+				getEventsQueryBuilder(String.valueOf(individualId))
+			).filter(
+				QueryBuilders.termQuery("channelId", String.valueOf(channelId))
+			),
+			1);
 
 		if (activitiesJSONArray.length() == 0) {
 			return null;
@@ -173,27 +166,20 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 	public JSONObject fetchLatestFormViewedActivity(
 		Date eventDate, String userId) {
 
-		JSONArray formViewedActivityJSONArray = new JSONArray(
-			elasticsearchInvoker.get(
-				"activities",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.rangeQuery(
-								"endTime"
-							).lt(
-								DateUtil.toUTCString(eventDate)
-							)
-						).filter(
-							QueryBuilders.termQuery("eventId", "formViewed")
-						).filter(
-							QueryBuilders.termQuery("userId", userId)
-						));
-
-					searchSourceBuilder.size(1);
-					searchSourceBuilder.sort(
-						SortBuilderUtil.fieldSort("endTime", SortOrder.DESC));
-				}));
+		JSONArray formViewedActivityJSONArray = elasticsearchInvoker.get(
+			"activities", SortBuilderUtil.fieldSort("endTime", SortOrder.DESC),
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.rangeQuery(
+					"endTime"
+				).lt(
+					DateUtil.toUTCString(eventDate)
+				)
+			).filter(
+				QueryBuilders.termQuery("eventId", "formViewed")
+			).filter(
+				QueryBuilders.termQuery("userId", userId)
+			),
+			1);
 
 		if (formViewedActivityJSONArray.length() == 0) {
 			return null;
@@ -221,13 +207,8 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 	}
 
 	public String getFirstDayDateString() {
-		JSONArray activitiesJSONArray = new JSONArray(
-			elasticsearchInvoker.get(
-				"activities",
-				searchSourceBuilder -> {
-					searchSourceBuilder.size(1);
-					searchSourceBuilder.sort(SortBuilderUtil.fieldSort("day"));
-				}));
+		JSONArray activitiesJSONArray = elasticsearchInvoker.get(
+			"activities", SortBuilderUtil.fieldSort("day"), 1);
 
 		if (activitiesJSONArray.length() == 0) {
 			return null;

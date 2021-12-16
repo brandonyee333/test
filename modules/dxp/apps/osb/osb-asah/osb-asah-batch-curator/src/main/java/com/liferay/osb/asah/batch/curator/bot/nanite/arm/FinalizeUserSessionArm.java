@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
@@ -219,16 +220,9 @@ public class FinalizeUserSessionArm {
 	}
 
 	private JSONObject _getExitPageJSONObject(UserSession userSession) {
-		JSONArray exitPageJSONArray = new JSONArray(
-			_cerebroInfoElasticsearchInvoker.get(
-				"pages",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						QueryBuilders.termQuery(
-							"sessionId", userSession.getId()));
-					searchSourceBuilder.size(1);
-					searchSourceBuilder.sort("lastEventDate", SortOrder.DESC);
-				}));
+		JSONArray exitPageJSONArray = _cerebroInfoElasticsearchInvoker.get(
+			"pages", SortBuilderUtil.fieldSort("lastEventDate", SortOrder.DESC),
+			QueryBuilders.termQuery("sessionId", userSession.getId()), 1);
 
 		if (exitPageJSONArray.length() == 0) {
 			return null;
@@ -383,16 +377,9 @@ public class FinalizeUserSessionArm {
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
 		UserSession userSession) {
 
-		JSONArray entryPageJSONArray = new JSONArray(
-			_cerebroInfoElasticsearchInvoker.get(
-				"pages",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						QueryBuilders.termQuery(
-							"sessionId", userSession.getId()));
-					searchSourceBuilder.size(1);
-					searchSourceBuilder.sort("firstEventDate", SortOrder.ASC);
-				}));
+		JSONArray entryPageJSONArray = _cerebroInfoElasticsearchInvoker.get(
+			"pages", SortBuilderUtil.fieldSort("firstEventDate", SortOrder.ASC),
+			QueryBuilders.termQuery("sessionId", userSession.getId()), 1);
 
 		if (entryPageJSONArray.length() > 0) {
 			JSONObject entryPageJSONObject = entryPageJSONArray.getJSONObject(
@@ -428,21 +415,13 @@ public class FinalizeUserSessionArm {
 			return;
 		}
 
-		JSONArray pagesJSONArray = new JSONArray(
-			_cerebroInfoElasticsearchInvoker.get(
-				"pages",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						QueryBuilders.termQuery(
-							"sessionId", userSession.getId()));
-
-					searchSourceBuilder.fetchSource(
-						new String[] {
-							"directAccessDates", "eventDate", "id",
-							"indirectAccessDates", "interactionDates", "url"
-						},
-						null);
-				}));
+		JSONArray pagesJSONArray = _cerebroInfoElasticsearchInvoker.get(
+			"pages",
+			new String[] {
+				"directAccessDates", "eventDate", "id", "indirectAccessDates",
+				"interactionDates", "url"
+			},
+			QueryBuilders.termQuery("sessionId", userSession.getId()));
 
 		if (pagesJSONArray.length() == 0) {
 			return;
@@ -599,23 +578,16 @@ public class FinalizeUserSessionArm {
 				continue;
 			}
 
-			JSONArray pagesJSONArray = new JSONArray(
-				_cerebroInfoElasticsearchInvoker.get(
-					"pages",
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								queryBuilder
-							).filter(
-								QueryBuilders.termQuery(
-									"title", matcher.group("title"))
-							).filter(
-								QueryBuilders.termQuery(
-									"url", matcher.group("url"))
-							));
-						searchSourceBuilder.size(1);
-						searchSourceBuilder.sort("eventDate", SortOrder.ASC);
-					}));
+			JSONArray pagesJSONArray = _cerebroInfoElasticsearchInvoker.get(
+				"pages", SortBuilderUtil.fieldSort("eventDate", SortOrder.ASC),
+				BoolQueryBuilderUtil.filter(
+					queryBuilder
+				).filter(
+					QueryBuilders.termQuery("title", matcher.group("title"))
+				).filter(
+					QueryBuilders.termQuery("url", matcher.group("url"))
+				),
+				1);
 
 			if (pagesJSONArray.length() == 0) {
 				continue;

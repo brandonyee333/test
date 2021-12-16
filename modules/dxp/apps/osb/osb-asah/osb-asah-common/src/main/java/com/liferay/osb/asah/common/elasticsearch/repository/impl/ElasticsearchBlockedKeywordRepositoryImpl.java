@@ -30,9 +30,6 @@ import java.util.stream.Stream;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-
-import org.json.JSONArray;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -132,23 +129,12 @@ public class ElasticsearchBlockedKeywordRepositoryImpl
 		}
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.from(
-							pageable.getPageNumber() * pageable.getPageSize());
-						searchSourceBuilder.query(boolQueryBuilder);
-						searchSourceBuilder.size(pageable.getPageSize());
-
-						for (FieldSortBuilder fieldSortBuilder :
-								getFieldSortBuilders(
-									getSortFieldNameConversionMap(),
-									pageable.getSort())) {
-
-							searchSourceBuilder.sort(fieldSortBuilder);
-						}
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(), boolQueryBuilder,
+				pageable.getPageSize()));
 	}
 
 	@Override

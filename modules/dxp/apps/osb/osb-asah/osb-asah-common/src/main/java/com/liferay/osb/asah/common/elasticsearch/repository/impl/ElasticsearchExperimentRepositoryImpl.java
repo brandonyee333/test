@@ -31,8 +31,6 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -61,16 +59,13 @@ public class ElasticsearchExperimentRepositoryImpl
 		Long channelId, @Nullable String keywords, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_buildKeywordsQueryBuilder(channelId, keywords));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				_buildKeywordsQueryBuilder(channelId, keywords),
+				pageable.getPageSize()));
 	}
 
 	@Override

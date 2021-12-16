@@ -145,21 +145,17 @@ public class ElasticsearchAccountRepositoryImpl
 	@Override
 	public List<Account> findByIdAfter(Long accountId, Pageable pageable) {
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							QueryBuilders.rangeQuery(
-								"id"
-							).gt(
-								accountId
-							));
-						searchSourceBuilder.sort(SortBuilders.fieldSort("id"));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				QueryBuilders.rangeQuery(
+					"id"
+				).gt(
+					accountId
+				),
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -332,16 +328,12 @@ public class ElasticsearchAccountRepositoryImpl
 		FilterHelper filterHelper, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							filterHelper.getQueryBuilder());
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(), filterHelper.getQueryBuilder(),
+				pageable.getPageSize()));
 	}
 
 	@Override

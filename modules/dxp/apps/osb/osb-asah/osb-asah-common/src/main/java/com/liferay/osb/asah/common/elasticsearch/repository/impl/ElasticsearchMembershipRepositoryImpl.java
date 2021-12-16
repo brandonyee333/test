@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +41,6 @@ import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.data.domain.Pageable;
@@ -302,27 +302,21 @@ public class ElasticsearchMembershipRepositoryImpl
 			List<Long> individualIds, Long individualSegmentId, String status) {
 
 		return JSONUtil.toLongList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.fetchSource("individualId", null);
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termsQuery(
-									"individualId",
-									ListUtil.map(
-										individualIds, String::valueOf))
-							).filter(
-								QueryBuilders.termQuery(
-									"individualSegmentId",
-									String.valueOf(individualSegmentId))
-							).filter(
-								QueryBuilders.termQuery("status", status)
-							));
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("individualId"));
-					})),
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				Arrays.asList(SortBuilderUtil.fieldSort("individualId")),
+				new String[] {"individualId"},
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termsQuery(
+						"individualId",
+						ListUtil.map(individualIds, String::valueOf))
+				).filter(
+					QueryBuilders.termQuery(
+						"individualSegmentId",
+						String.valueOf(individualSegmentId))
+				).filter(
+					QueryBuilders.termQuery("status", status)
+				)),
 			"individualId");
 	}
 
@@ -423,23 +417,16 @@ public class ElasticsearchMembershipRepositoryImpl
 		Long individualId, String status) {
 
 		return JSONUtil.toLongList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.fetchSource(
-							"individualSegmentId", null);
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termQuery(
-									"individualId",
-									String.valueOf(individualId))
-							).filter(
-								QueryBuilders.termQuery("status", status)
-							));
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("individualSegmentId"));
-					})),
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				Arrays.asList(SortBuilderUtil.fieldSort("individualSegmentId")),
+				new String[] {"individualSegmentId"},
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"individualId", String.valueOf(individualId))
+				).filter(
+					QueryBuilders.termQuery("status", status)
+				)),
 			"individualSegmentId");
 	}
 
@@ -491,17 +478,11 @@ public class ElasticsearchMembershipRepositoryImpl
 		Long individualId) {
 
 		return JSONUtil.toLongList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.fetchSource(
-							"individualSegmentId", null);
-						searchSourceBuilder.query(
-							QueryBuilders.termQuery(
-								"individualId", String.valueOf(individualId)));
-						searchSourceBuilder.size(20);
-					})),
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(), new String[] {"individualSegmentId"},
+				QueryBuilders.termQuery(
+					"individualId", String.valueOf(individualId)),
+				20),
 			"individualSegmentId");
 	}
 
@@ -510,27 +491,22 @@ public class ElasticsearchMembershipRepositoryImpl
 		@Nullable Long id, Long individualSegmentId, int size, String status) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termQuery(
-									"individualSegmentId",
-									String.valueOf(individualSegmentId))
-							).filter(
-								QueryBuilders.termQuery("status", status)
-							));
-
-						if (id != null) {
-							searchSourceBuilder.searchAfter(new Object[] {id});
-						}
-
-						searchSourceBuilder.size(size);
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("id"));
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(), SortBuilderUtil.fieldSort("id"),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.rangeQuery(
+						"id"
+					).gt(
+						id
+					)
+				).filter(
+					QueryBuilders.termQuery(
+						"individualSegmentId",
+						String.valueOf(individualSegmentId))
+				).filter(
+					QueryBuilders.termQuery("status", status)
+				),
+				size));
 	}
 
 	@Override

@@ -25,8 +25,6 @@ import java.util.Optional;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -49,17 +47,13 @@ public class ElasticsearchJobRepositoryImpl
 		String name, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							QueryUtil.buildSearchQueryBuilder(
-								"name.search", name));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				QueryUtil.buildSearchQueryBuilder("name.search", name),
+				pageable.getPageSize()));
 	}
 
 	@Override

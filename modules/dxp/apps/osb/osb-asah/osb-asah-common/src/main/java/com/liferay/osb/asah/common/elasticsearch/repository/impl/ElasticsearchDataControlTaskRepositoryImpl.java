@@ -32,8 +32,6 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -62,18 +60,14 @@ public class ElasticsearchDataControlTaskRepositoryImpl
 		List<String> statuses, List<String> types, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_buildQueryBuilder(
-								batchId, emailAddress, startCreateDate,
-								statuses, types));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				_buildQueryBuilder(
+					batchId, emailAddress, startCreateDate, statuses, types),
+				pageable.getPageSize()));
 	}
 
 	@Override

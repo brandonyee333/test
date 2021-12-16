@@ -532,45 +532,18 @@ public class ElasticsearchIndividualRepositoryImpl
 	public Page<Individual> findAll(Pageable pageable) {
 		return PageableExecutionUtils.getPage(
 			_toIndividuals(
-				new JSONArray(
-					_faroInfoElasticsearchInvoker.get(
-						_getCollectionName(),
-						searchSourceBuilder -> _setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder)))),
+				_faroInfoElasticsearchInvoker.get(
+					_getCollectionName(),
+					_getFieldSortBuilders(pageable.getSort()),
+					(int)pageable.getOffset(), pageable.getPageSize())),
 			pageable, this::count);
 	}
 
 	@Override
 	public Iterable<Individual> findAll(Sort sort) {
 		return _toIndividuals(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					_getCollectionName(),
-					searchSourceBuilder -> {
-						if (sort.isUnsorted()) {
-							searchSourceBuilder.sort(
-								SortBuilderUtil.fieldSort("id"));
-						}
-						else {
-							Stream.of(
-								sort
-							).flatMap(
-								Sort::stream
-							).forEach(
-								order -> {
-									SortOrder sortOrder = SortOrder.ASC;
-
-									if (order.isDescending()) {
-										sortOrder = SortOrder.DESC;
-									}
-
-									searchSourceBuilder.sort(
-										SortBuilderUtil.fieldSort(
-											order.getProperty(), sortOrder));
-								}
-							);
-						}
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(), _getFieldSortBuilders(sort)));
 	}
 
 	@Override
@@ -596,38 +569,33 @@ public class ElasticsearchIndividualRepositoryImpl
 		String dateString = DateUtil.toUTCString(date);
 
 		return _toIndividuals(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					_getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.rangeQuery(
-									"dateCreated"
-								).lt(
-									dateString
-								)
-							).mustNot(
-								QueryBuilders.nestedQuery(
-									"lastActivityDates",
-									QueryBuilders.rangeQuery(
-										"lastActivityDates.lastActivityDate"
-									).gt(
-										dateString
-									),
-									ScoreMode.None)
-							).mustNot(
-								QueryBuilders.existsQuery("demographics.email")
-							));
-
-						if (id != null) {
-							searchSourceBuilder.searchAfter(new Object[] {id});
-						}
-
-						searchSourceBuilder.size(size);
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("id"));
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(), SortBuilderUtil.fieldSort("id"),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.rangeQuery(
+						"dateCreated"
+					).lt(
+						dateString
+					)
+				).filter(
+					QueryBuilders.rangeQuery(
+						"id"
+					).gt(
+						id
+					)
+				).mustNot(
+					QueryBuilders.nestedQuery(
+						"lastActivityDates",
+						QueryBuilders.rangeQuery(
+							"lastActivityDates.lastActivityDate"
+						).gt(
+							dateString
+						),
+						ScoreMode.None)
+				).mustNot(
+					QueryBuilders.existsQuery("demographics.email")
+				),
+				size));
 	}
 
 	@Override
@@ -742,15 +710,10 @@ public class ElasticsearchIndividualRepositoryImpl
 		}
 
 		return _toIndividuals(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					_getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.from(
-							pageable.getPageNumber() * pageable.getPageSize());
-						searchSourceBuilder.query(boolQueryBuilder);
-						searchSourceBuilder.size(pageable.getPageSize());
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(), _getFieldSortBuilders(pageable.getSort()),
+				(int)pageable.getOffset(), boolQueryBuilder,
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -766,21 +729,15 @@ public class ElasticsearchIndividualRepositoryImpl
 	@Override
 	public List<Individual> findByIdAfter(Long id, Pageable pageable) {
 		return _toIndividuals(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					_getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							QueryBuilders.rangeQuery(
-								"id"
-							).gt(
-								id
-							));
-						searchSourceBuilder.sort(SortBuilders.fieldSort("id"));
-
-						_setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(), _getFieldSortBuilders(pageable.getSort()),
+				(int)pageable.getOffset(),
+				QueryBuilders.rangeQuery(
+					"id"
+				).gt(
+					id
+				),
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -845,33 +802,18 @@ public class ElasticsearchIndividualRepositoryImpl
 		}
 
 		return JSONUtil.toLongList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					_getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.fetchSource("id", null);
-						searchSourceBuilder.query(boolQueryBuilder);
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("id"));
-					})),
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(), new String[] {"id"}, boolQueryBuilder),
 			"id");
 	}
 
 	@Override
 	public List<Long> findIdsByAnySegmentIds(Long segmentId) {
 		return JSONUtil.toLongList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					_getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.fetchSource("id", null);
-						searchSourceBuilder.query(
-							QueryBuilders.termQuery(
-								"individualSegmentIds",
-								String.valueOf(segmentId)));
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("id"));
-					})),
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(), new String[] {"id"},
+				QueryBuilders.termQuery(
+					"individualSegmentIds", String.valueOf(segmentId))),
 			"id");
 	}
 
@@ -1182,16 +1124,10 @@ public class ElasticsearchIndividualRepositoryImpl
 		FilterHelper filterHelper, Pageable pageable) {
 
 		return _toIndividuals(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					_getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							filterHelper.getQueryBuilder());
-
-						_setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(), _getFieldSortBuilders(pageable.getSort()),
+				(int)pageable.getOffset(), filterHelper.getQueryBuilder(),
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -1241,65 +1177,48 @@ public class ElasticsearchIndividualRepositoryImpl
 			}
 		}
 
+		if (!newSorts.isEmpty()) {
+			List<Pair<String, SortOrder>> sortOrderPairs =
+				SortBuilderUtil.getSortOrderPairs(
+					newSorts.toArray(new String[0]));
+
+			for (Pair<String, SortOrder> sortOrderPair : sortOrderPairs) {
+				fieldSortBuilders.add(
+					SortBuilderUtil.fieldSort(
+						sortOrderPair.getKey(), sortOrderPair.getValue()));
+			}
+		}
+		else {
+			Stream.of(
+				pageable.getSort()
+			).flatMap(
+				Sort::stream
+			).forEach(
+				sort -> {
+					SortOrder sortOrder = SortOrder.ASC;
+
+					if (sort.isDescending()) {
+						sortOrder = SortOrder.DESC;
+					}
+
+					String property = sort.getProperty();
+
+					property = property.replace('/', '.');
+
+					fieldSortBuilders.add(
+						SortBuilderUtil.fieldSort(property, sortOrder));
+				}
+			);
+		}
+
 		return _toIndividuals(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					_getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_getBoolQueryBuilder(
-								channelId, filterHelper.getQueryBuilder(),
-								includeAnonymousUsers, segmentChannelId,
-								segmentId));
-
-						searchSourceBuilder.from(
-							pageable.getPageNumber() * pageable.getPageSize());
-						searchSourceBuilder.size(pageable.getPageSize());
-
-						for (FieldSortBuilder fieldSortBuilder :
-								fieldSortBuilders) {
-
-							searchSourceBuilder.sort(fieldSortBuilder);
-						}
-
-						if (!newSorts.isEmpty()) {
-							List<Pair<String, SortOrder>> sortOrderPairs =
-								SortBuilderUtil.getSortOrderPairs(
-									newSorts.toArray(new String[0]));
-
-							for (Pair<String, SortOrder> sortOrderPair :
-									sortOrderPairs) {
-
-								searchSourceBuilder.sort(
-									SortBuilderUtil.fieldSort(
-										sortOrderPair.getKey(),
-										sortOrderPair.getValue()));
-							}
-						}
-						else {
-							Stream.of(
-								pageable.getSort()
-							).flatMap(
-								Sort::stream
-							).forEach(
-								sort -> {
-									SortOrder sortOrder = SortOrder.ASC;
-
-									if (sort.isDescending()) {
-										sortOrder = SortOrder.DESC;
-									}
-
-									String property = sort.getProperty();
-
-									property = property.replace('/', '.');
-
-									searchSourceBuilder.sort(
-										SortBuilderUtil.fieldSort(
-											property, sortOrder));
-								}
-							);
-						}
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(), fieldSortBuilders,
+				(int)pageable.getOffset(),
+				_getBoolQueryBuilder(
+					channelId, filterHelper.getQueryBuilder(),
+					includeAnonymousUsers, segmentChannelId, segmentId),
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -1308,22 +1227,16 @@ public class ElasticsearchIndividualRepositoryImpl
 		Boolean includeAnonymousUsers) {
 
 		return _toIndividuals(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					_getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								_getBoolQueryBuilder(
-									channelId, filterHelper.getQueryBuilder(),
-									includeAnonymousUsers, null, null)
-							).filter(
-								QueryBuilders.termsQuery(
-									"id", ListUtil.map(ids, String::valueOf))
-							));
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("id"));
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					_getBoolQueryBuilder(
+						channelId, filterHelper.getQueryBuilder(),
+						includeAnonymousUsers, null, null)
+				).filter(
+					QueryBuilders.termsQuery(
+						"id", ListUtil.map(ids, String::valueOf))
+				)));
 	}
 
 	@Override
@@ -1332,23 +1245,20 @@ public class ElasticsearchIndividualRepositoryImpl
 		Boolean includeAnonymousUsers, int size) {
 
 		return _toIndividuals(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					_getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_getBoolQueryBuilder(
-								channelId, filterHelper.getQueryBuilder(),
-								includeAnonymousUsers, null, null));
-
-						if (id != null) {
-							searchSourceBuilder.searchAfter(new Object[] {id});
-						}
-
-						searchSourceBuilder.size(size);
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("id"));
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(), SortBuilderUtil.fieldSort("id"),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.rangeQuery(
+						"id"
+					).gt(
+						id
+					)
+				).filter(
+					_getBoolQueryBuilder(
+						channelId, filterHelper.getQueryBuilder(),
+						includeAnonymousUsers, null, null)
+				),
+				size));
 	}
 
 	@Override
@@ -1356,26 +1266,23 @@ public class ElasticsearchIndividualRepositoryImpl
 		Long dataSourceId, Long id, int size) {
 
 		return _toIndividuals(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					_getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							QueryBuilders.nestedQuery(
-								"dataSourceIndividualPKs",
-								QueryBuilders.termQuery(
-									"dataSourceIndividualPKs.dataSourceId",
-									String.valueOf(dataSourceId)),
-								ScoreMode.None));
-
-						if (id != null) {
-							searchSourceBuilder.searchAfter(new Object[] {id});
-						}
-
-						searchSourceBuilder.size(size);
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("id"));
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(), SortBuilderUtil.fieldSort("id"),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.rangeQuery(
+						"id"
+					).gt(
+						id
+					)
+				).filter(
+					QueryBuilders.nestedQuery(
+						"dataSourceIndividualPKs",
+						QueryBuilders.termQuery(
+							"dataSourceIndividualPKs.dataSourceId",
+							String.valueOf(dataSourceId)),
+						ScoreMode.None)
+				),
+				size));
 	}
 
 	@Override
@@ -1506,6 +1413,33 @@ public class ElasticsearchIndividualRepositoryImpl
 		);
 	}
 
+	private List<FieldSortBuilder> _getFieldSortBuilders(Sort sort) {
+		List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
+
+		if ((sort == null) || sort.isUnsorted()) {
+			fieldSortBuilders.add(SortBuilderUtil.fieldSort("id"));
+
+			return fieldSortBuilders;
+		}
+
+		for (Sort.Order order : sort.toList()) {
+			String fieldName = order.getProperty();
+
+			fieldName = fieldName.replace('/', '.');
+
+			SortOrder sortOrder = SortOrder.ASC;
+
+			if (order.isDescending()) {
+				sortOrder = SortOrder.DESC;
+			}
+
+			fieldSortBuilders.add(
+				SortBuilderUtil.fieldSort(fieldName, sortOrder));
+		}
+
+		return fieldSortBuilders;
+	}
+
 	private QueryBuilder _getKeywordsQueryBuilder(
 		String keywords, String... fieldNames) {
 
@@ -1585,39 +1519,6 @@ public class ElasticsearchIndividualRepositoryImpl
 		List<Aggregation> aggregationList = aggregations.asList();
 
 		return aggregationList.isEmpty();
-	}
-
-	private void _setSearchSourceBuilderPage(
-		Pageable pageable, SearchSourceBuilder searchSourceBuilder) {
-
-		searchSourceBuilder.from(
-			pageable.getPageNumber() * pageable.getPageSize());
-		searchSourceBuilder.size(pageable.getPageSize());
-
-		Sort sort = pageable.getSort();
-
-		if (sort.isUnsorted()) {
-			searchSourceBuilder.sort(SortBuilderUtil.fieldSort("id"));
-		}
-		else {
-			Stream.of(
-				sort
-			).flatMap(
-				Sort::stream
-			).forEach(
-				order -> {
-					SortOrder sortOrder = SortOrder.ASC;
-
-					if (order.isDescending()) {
-						sortOrder = SortOrder.DESC;
-					}
-
-					searchSourceBuilder.sort(
-						SortBuilderUtil.fieldSort(
-							order.getProperty(), sortOrder));
-				}
-			);
-		}
 	}
 
 	private Individual _toIndividual(JSONObject jsonObject) {

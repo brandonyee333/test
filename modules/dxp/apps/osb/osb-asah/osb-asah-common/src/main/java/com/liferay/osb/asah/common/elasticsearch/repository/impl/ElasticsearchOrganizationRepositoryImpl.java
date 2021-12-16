@@ -76,17 +76,13 @@ public class ElasticsearchOrganizationRepositoryImpl
 		Long dataSourceId, Collection<Long> organizationPKs) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> searchSourceBuilder.query(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery(
-								"dataSourceId", dataSourceId)
-						).filter(
-							QueryBuilders.termsQuery(
-								"organizationPK", organizationPKs)
-						)))));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("dataSourceId", dataSourceId)
+				).filter(
+					QueryBuilders.termsQuery("organizationPK", organizationPKs)
+				)));
 	}
 
 	@Override
@@ -158,16 +154,12 @@ public class ElasticsearchOrganizationRepositoryImpl
 		FilterHelper filterHelper, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							filterHelper.getQueryBuilder());
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(), filterHelper.getQueryBuilder(),
+				pageable.getPageSize()));
 	}
 
 	@Override

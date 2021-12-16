@@ -46,7 +46,7 @@ import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
@@ -146,45 +146,43 @@ public class ElasticsearchActivityGroupRepositoryImpl
 	public Page<ActivityGroup> findAll(Pageable pageable) {
 		return PageableExecutionUtils.getPage(
 			_toActivityGroups(
-				new JSONArray(
-					_faroInfoElasticsearchInvoker.get(
-						_getCollectionName(),
-						searchSourceBuilder -> _setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder)))),
+				_faroInfoElasticsearchInvoker.get(
+					_getCollectionName(),
+					_getFieldSortBuilders(pageable.getSort()),
+					(int)pageable.getOffset(), pageable.getPageSize())),
 			pageable, this::count);
 	}
 
 	@Override
 	public Iterable<ActivityGroup> findAll(Sort sort) {
+		List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
+
+		if (sort.isUnsorted()) {
+			fieldSortBuilders.add(SortBuilderUtil.fieldSort("id"));
+		}
+		else {
+			Stream.of(
+				sort
+			).flatMap(
+				Sort::stream
+			).forEach(
+				order -> {
+					SortOrder sortOrder = SortOrder.ASC;
+
+					if (order.isDescending()) {
+						sortOrder = SortOrder.DESC;
+					}
+
+					fieldSortBuilders.add(
+						SortBuilderUtil.fieldSort(
+							order.getProperty(), sortOrder));
+				}
+			);
+		}
+
 		return _toActivityGroups(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					_getCollectionName(),
-					searchSourceBuilder -> {
-						if (sort.isUnsorted()) {
-							searchSourceBuilder.sort(
-								SortBuilderUtil.fieldSort("id"));
-						}
-						else {
-							Stream.of(
-								sort
-							).flatMap(
-								Sort::stream
-							).forEach(
-								order -> {
-									SortOrder sortOrder = SortOrder.ASC;
-
-									if (order.isDescending()) {
-										sortOrder = SortOrder.DESC;
-									}
-
-									searchSourceBuilder.sort(
-										SortBuilderUtil.fieldSort(
-											order.getProperty(), sortOrder));
-								}
-							);
-						}
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(), fieldSortBuilders));
 	}
 
 	@Override
@@ -358,37 +356,31 @@ public class ElasticsearchActivityGroupRepositoryImpl
 		return "activity-groups";
 	}
 
-	private void _setSearchSourceBuilderPage(
-		Pageable pageable, SearchSourceBuilder searchSourceBuilder) {
+	private List<FieldSortBuilder> _getFieldSortBuilders(Sort sort) {
+		List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
 
-		searchSourceBuilder.from(
-			pageable.getPageNumber() * pageable.getPageSize());
-		searchSourceBuilder.size(pageable.getPageSize());
+		if ((sort == null) || sort.isUnsorted()) {
+			fieldSortBuilders.add(SortBuilderUtil.fieldSort("id"));
 
-		Sort sort = pageable.getSort();
-
-		if (sort.isUnsorted()) {
-			searchSourceBuilder.sort(SortBuilderUtil.fieldSort("id"));
+			return fieldSortBuilders;
 		}
-		else {
-			Stream.of(
-				sort
-			).flatMap(
-				Sort::stream
-			).forEach(
-				order -> {
-					SortOrder sortOrder = SortOrder.ASC;
 
-					if (order.isDescending()) {
-						sortOrder = SortOrder.DESC;
-					}
+		for (Sort.Order order : sort.toList()) {
+			String fieldName = order.getProperty();
 
-					searchSourceBuilder.sort(
-						SortBuilderUtil.fieldSort(
-							order.getProperty(), sortOrder));
-				}
-			);
+			fieldName = fieldName.replace('/', '.');
+
+			SortOrder sortOrder = SortOrder.ASC;
+
+			if (order.isDescending()) {
+				sortOrder = SortOrder.DESC;
+			}
+
+			fieldSortBuilders.add(
+				SortBuilderUtil.fieldSort(fieldName, sortOrder));
 		}
+
+		return fieldSortBuilders;
 	}
 
 	private ActivityGroup _toActivityGroup(JSONObject jsonObject) {

@@ -37,7 +37,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
@@ -144,11 +144,10 @@ public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
 
 		return PageableExecutionUtils.getPage(
 			_toRunLogs(
-				new JSONArray(
-					elasticsearchInvoker.get(
-						_getCollectionName(),
-						searchSourceBuilder -> _setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder)))),
+				elasticsearchInvoker.get(
+					_getCollectionName(),
+					_getFieldSortBuilders(pageable.getSort()),
+					(int)pageable.getOffset(), pageable.getPageSize())),
 			pageable, this::count);
 	}
 
@@ -158,34 +157,8 @@ public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
 			_resolveElasticsearchInvoker();
 
 		return _toRunLogs(
-			new JSONArray(
-				elasticsearchInvoker.get(
-					_getCollectionName(),
-					searchSourceBuilder -> {
-						if (sort.isUnsorted()) {
-							searchSourceBuilder.sort(
-								SortBuilderUtil.fieldSort("id"));
-						}
-						else {
-							Stream.of(
-								sort
-							).flatMap(
-								Sort::stream
-							).forEach(
-								order -> {
-									SortOrder sortOrder = SortOrder.ASC;
-
-									if (order.isDescending()) {
-										sortOrder = SortOrder.DESC;
-									}
-
-									searchSourceBuilder.sort(
-										SortBuilderUtil.fieldSort(
-											order.getProperty(), sortOrder));
-								}
-							);
-						}
-					})));
+			elasticsearchInvoker.get(
+				_getCollectionName(), _getFieldSortBuilders(sort)));
 	}
 
 	@Override
@@ -307,6 +280,33 @@ public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
 		return "run-logs";
 	}
 
+	private List<FieldSortBuilder> _getFieldSortBuilders(Sort sort) {
+		List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
+
+		if ((sort == null) || sort.isUnsorted()) {
+			fieldSortBuilders.add(SortBuilderUtil.fieldSort("id"));
+
+			return fieldSortBuilders;
+		}
+
+		for (Sort.Order order : sort.toList()) {
+			String fieldName = order.getProperty();
+
+			fieldName = fieldName.replace('/', '.');
+
+			SortOrder sortOrder = SortOrder.ASC;
+
+			if (order.isDescending()) {
+				sortOrder = SortOrder.DESC;
+			}
+
+			fieldSortBuilders.add(
+				SortBuilderUtil.fieldSort(fieldName, sortOrder));
+		}
+
+		return fieldSortBuilders;
+	}
+
 	private ElasticsearchInvoker _resolveElasticsearchInvoker() {
 		WeDeployDataService weDeployDataService =
 			WeDeployServiceThreadLocal.getWeDeployDataService();
@@ -331,39 +331,6 @@ public class ElasticsearchRunLogRepositoryImpl implements RunLogRepository {
 
 		throw new IllegalStateException(
 			"Unexpected WeDeploy data service value " + weDeployDataService);
-	}
-
-	private void _setSearchSourceBuilderPage(
-		Pageable pageable, SearchSourceBuilder searchSourceBuilder) {
-
-		searchSourceBuilder.from(
-			pageable.getPageNumber() * pageable.getPageSize());
-		searchSourceBuilder.size(pageable.getPageSize());
-
-		Sort sort = pageable.getSort();
-
-		if (sort.isUnsorted()) {
-			searchSourceBuilder.sort(SortBuilderUtil.fieldSort("id"));
-		}
-		else {
-			Stream.of(
-				sort
-			).flatMap(
-				Sort::stream
-			).forEach(
-				order -> {
-					SortOrder sortOrder = SortOrder.ASC;
-
-					if (order.isDescending()) {
-						sortOrder = SortOrder.DESC;
-					}
-
-					searchSourceBuilder.sort(
-						SortBuilderUtil.fieldSort(
-							order.getProperty(), sortOrder));
-				}
-			);
-		}
 	}
 
 	private JSONObject _toJSONObject(RunLog runLog) {

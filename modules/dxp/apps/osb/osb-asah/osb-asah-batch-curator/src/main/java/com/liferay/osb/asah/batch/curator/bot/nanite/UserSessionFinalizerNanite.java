@@ -25,9 +25,12 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+
+import java.util.List;
 
 import javax.annotation.PreDestroy;
 
@@ -38,6 +41,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,20 +96,18 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 		while (true) {
 			long start = System.currentTimeMillis();
 
-			String userSessionsJSON = _cerebroInfoElasticsearchInvoker.get(
+			JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
 				"user-sessions",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						_getQueryBuilder(
-							dateString, force,
-							lastSuccessfulSessionFinalizerDate));
-					searchSourceBuilder.size(500);
-				});
+				_getQueryBuilder(
+					dateString, force, lastSuccessfulSessionFinalizerDate),
+				500);
 
-			UserSession[] userSessions = _objectMapper.readValue(
-				userSessionsJSON, UserSession[].class);
+			List<UserSession> userSessions = JSONUtil.toList(
+				jsonArray,
+				jsonObject -> _objectMapper.convertValue(
+					jsonObject, UserSession.class));
 
-			if (userSessions.length == 0) {
+			if (userSessions.isEmpty()) {
 				break;
 			}
 
@@ -131,7 +133,7 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 				_log.debug(
 					String.format(
 						"%s processed %d sessions in %d ms",
-						clazz.getSimpleName(), userSessions.length,
+						clazz.getSimpleName(), userSessions.size(),
 						System.currentTimeMillis() - start));
 			}
 		}

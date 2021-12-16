@@ -52,8 +52,6 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.NumericMetricsAggregation;
 import org.elasticsearch.search.sort.SortOrder;
 
-import org.json.JSONArray;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
@@ -133,17 +131,13 @@ public class ElasticsearchInterestRepositoryImpl
 		FilterHelper filterHelper, Double score, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							_buildQueryBuilder(
-								filterHelper, null, null, null, null, score));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				_buildQueryBuilder(filterHelper, null, null, null, null, score),
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -177,21 +171,17 @@ public class ElasticsearchInterestRepositoryImpl
 		@Nullable Long ownerId, String ownerType, Pageable pageable) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termQuery(
-									"ownerId", String.valueOf(ownerId))
-							).filter(
-								QueryBuilders.termQuery("ownerType", ownerType)
-							));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
+				).filter(
+					QueryBuilders.termQuery("ownerType", ownerType)
+				),
+				pageable.getPageSize()));
 	}
 
 	@Override
@@ -199,28 +189,23 @@ public class ElasticsearchInterestRepositoryImpl
 		Long interestId, String ownerType, Date recordedDate, int size) {
 
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termQuery(
-									"dateRecorded",
-									DateUtil.toString(recordedDate))
-							).filter(
-								QueryBuilders.termQuery("ownerType", ownerType)
-							));
-
-						if (interestId != null) {
-							searchSourceBuilder.searchAfter(
-								new Object[] {interestId});
-						}
-
-						searchSourceBuilder.size(size);
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("id"));
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(), SortBuilderUtil.fieldSort("id"),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.rangeQuery(
+						"id"
+					).gt(
+						interestId
+					)
+				).filter(
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termQuery(
+							"dateRecorded", DateUtil.toString(recordedDate))
+					).filter(
+						QueryBuilders.termQuery("ownerType", ownerType)
+					)
+				),
+				size));
 	}
 
 	@Override
@@ -264,7 +249,7 @@ public class ElasticsearchInterestRepositoryImpl
 						PipelineAggregatorBuilders.bucketSort(
 							"paginate", null
 						).from(
-							pageable.getPageNumber() * pageable.getPageSize()
+							(int)pageable.getOffset()
 						).size(
 							pageable.getPageSize()
 						)
@@ -301,20 +286,15 @@ public class ElasticsearchInterestRepositoryImpl
 		Long ownerId, String ownerType, int size) {
 
 		return JSONUtil.toStringList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termQuery("ownerId", ownerId)
-							).filter(
-								QueryBuilders.termQuery("ownerType", ownerType)
-							));
-						searchSourceBuilder.size(size);
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("score", SortOrder.DESC));
-					})),
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				SortBuilderUtil.fieldSort("score", SortOrder.DESC),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("ownerId", ownerId)
+				).filter(
+					QueryBuilders.termQuery("ownerType", ownerType)
+				),
+				size),
 			"name");
 	}
 

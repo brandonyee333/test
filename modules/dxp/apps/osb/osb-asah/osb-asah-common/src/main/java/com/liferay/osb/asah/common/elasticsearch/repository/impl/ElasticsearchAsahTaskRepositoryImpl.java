@@ -24,8 +24,6 @@ import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
-
 import org.springframework.stereotype.Repository;
 
 /**
@@ -39,42 +37,27 @@ public class ElasticsearchAsahTaskRepositoryImpl
 	@Override
 	public List<AsahTask> findByClassName(String className) {
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							QueryBuilders.termQuery("className", className));
-						searchSourceBuilder.size(ELASTICSEARCH_MAX_SIZE);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				QueryBuilders.termQuery("className", className)));
 	}
 
 	@Override
 	public List<AsahTask> findByCronExpressionIsNotNull() {
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.existsQuery("cronExpression")));
-						searchSourceBuilder.size(ELASTICSEARCH_MAX_SIZE);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.existsQuery("cronExpression"))));
 	}
 
 	@Override
 	public List<AsahTask> findByCronExpressionIsNull() {
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.mustNot(
-								QueryBuilders.existsQuery("cronExpression")));
-						searchSourceBuilder.size(ELASTICSEARCH_MAX_SIZE);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				BoolQueryBuilderUtil.mustNot(
+					QueryBuilders.existsQuery("cronExpression"))));
 	}
 
 	@Override

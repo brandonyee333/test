@@ -23,8 +23,6 @@ import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -53,16 +51,13 @@ public class ElasticsearchItemRecommendationRepositoryImpl
 	@Override
 	public List<ItemRecommendation> findByJobId(Long jobId, Pageable pageable) {
 		return toList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							QueryBuilders.termQuery("jobId", jobId.toString()));
-
-						setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder);
-					})));
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				(int)pageable.getOffset(),
+				QueryBuilders.termQuery("jobId", jobId.toString()),
+				pageable.getPageSize()));
 	}
 
 	@Override

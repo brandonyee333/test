@@ -122,11 +122,11 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 
 		return PageableExecutionUtils.getPage(
 			toList(
-				new JSONArray(
-					elasticsearchInvoker.get(
-						getCollectionName(),
-						searchSourceBuilder -> setSearchSourceBuilderPage(
-							pageable, searchSourceBuilder)))),
+				elasticsearchInvoker.get(
+					getCollectionName(),
+					getFieldSortBuilders(
+						getSortFieldNameConversionMap(), pageable.getSort()),
+					(int)pageable.getOffset(), pageable.getPageSize())),
 			pageable, () -> count());
 	}
 
@@ -135,17 +135,9 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
 		return toList(
-			new JSONArray(
-				elasticsearchInvoker.get(
-					getCollectionName(),
-					searchSourceBuilder -> {
-						for (FieldSortBuilder fieldSortBuilder :
-								getFieldSortBuilders(
-									getSortFieldNameConversionMap(), sort)) {
-
-							searchSourceBuilder.sort(fieldSortBuilder);
-						}
-					})));
+			elasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(getSortFieldNameConversionMap(), sort)));
 	}
 
 	@Override
@@ -279,6 +271,10 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 		return getFieldSortBuilders(getSortFieldNameConversionMap(), sort);
 	}
 
+	protected int getFrom(Pageable pageable) {
+		return (int)pageable.getOffset();
+	}
+
 	protected Map<String, String> getSortFieldNameConversionMap() {
 		return Collections.emptyMap();
 	}
@@ -311,8 +307,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 	protected void setSearchSourceBuilderPage(
 		Pageable pageable, SearchSourceBuilder searchSourceBuilder) {
 
-		searchSourceBuilder.from(
-			pageable.getPageNumber() * pageable.getPageSize());
+		searchSourceBuilder.from((int)pageable.getOffset());
 		searchSourceBuilder.size(pageable.getPageSize());
 
 		for (FieldSortBuilder fieldSortBuilder :

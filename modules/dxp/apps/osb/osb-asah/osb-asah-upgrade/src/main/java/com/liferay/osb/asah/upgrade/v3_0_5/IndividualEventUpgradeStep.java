@@ -42,8 +42,6 @@ import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortBuilders;
 
-import org.json.JSONArray;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -107,25 +105,19 @@ public class IndividualEventUpgradeStep implements UpgradeStep {
 
 	private List<Long> _getIndividualIds(long currentIndividualId) {
 		return JSONUtil.toLongList(
-			new JSONArray(
-				_faroInfoElasticsearchInvoker.get(
-					"individuals",
-					searchSourceBuilder -> {
-						searchSourceBuilder.fetchSource("id", null);
-						searchSourceBuilder.from(0);
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.existsQuery("demographics.email")
-							).filter(
-								QueryBuilders.rangeQuery(
-									"id"
-								).gt(
-									currentIndividualId
-								)
-							));
-						searchSourceBuilder.size(1000);
-						searchSourceBuilder.sort(SortBuilders.fieldSort("id"));
-					})),
+			_faroInfoElasticsearchInvoker.get(
+				"individuals", SortBuilders.fieldSort("id"),
+				new String[] {"id"},
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.existsQuery("demographics.email")
+				).filter(
+					QueryBuilders.rangeQuery(
+						"id"
+					).gt(
+						currentIndividualId
+					)
+				),
+				1000),
 			"id");
 	}
 

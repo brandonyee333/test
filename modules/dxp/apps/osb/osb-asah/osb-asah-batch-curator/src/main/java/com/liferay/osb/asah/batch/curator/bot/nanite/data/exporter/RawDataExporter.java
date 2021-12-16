@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -23,6 +24,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import java.io.OutputStream;
 
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
@@ -50,21 +52,21 @@ public class RawDataExporter extends BaseDataExporter {
 
 	@Override
 	protected JSONObject doGetResultPageJSONObject(String after) {
-		JSONArray jsonArray = new JSONArray(
-			_elasticsearchInvoker.get(
-				_collectionName,
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(_queryBuilder);
-					searchSourceBuilder.searchAfter(new String[] {after});
-					searchSourceBuilder.size(_PAGE_SIZE);
-					searchSourceBuilder.sort(
-						SortBuilderUtil.fieldSort("id", SortOrder.ASC));
-				}));
+		JSONArray jsonArray = _elasticsearchInvoker.get(
+			_collectionName, SortBuilderUtil.fieldSort("id", SortOrder.ASC),
+			BoolQueryBuilderUtil.filter(
+				_queryBuilder
+			).filter(
+				QueryBuilders.rangeQuery(
+					"id"
+				).gt(
+					after
+				)
+			),
+			50);
 
 		return JSONUtil.put("results", jsonArray);
 	}
-
-	private static final int _PAGE_SIZE = 50;
 
 	private final String _collectionName;
 	private final ElasticsearchInvoker _elasticsearchInvoker;
