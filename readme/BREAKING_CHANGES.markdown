@@ -853,7 +853,9 @@ There are some examples in Liferay code. For example, [DDMIndexerImpl](https://g
 You can also restore the legacy behavior from System Settings and continue using `ddm__keyword__*` and `ddm__text__*` fields.
 
 1. Go to *System Settings* &rarr; *Dynamic Data Mapping* &rarr; *Dynamic Data Mapping Indexer*.
+
 1. Select *Enable Legacy Dynamic Data Mapping Index Fields*.
+
 1. Execute a full reindex.
 
 #### Why was this change made?
