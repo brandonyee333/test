@@ -78,7 +78,7 @@ public class MembershipChangeDogTest
 	}
 
 	@Test
-	public void testGetLastBeforeTodayByIndividualSegmentsId() {
+	public void testGetLastBeforeTodayByIndividualSegmentsId1() {
 		List<Long> segmentIds = new ArrayList(
 			_membershipChangeByIndividualSegmentId.keySet());
 
@@ -97,6 +97,43 @@ public class MembershipChangeDogTest
 					membershipChange.getIndividualSegmentId()),
 				membershipChange);
 		}
+	}
+
+	@Test
+	public void testGetLastBeforeTodayByIndividualSegmentsId2() {
+		Date date = DateUtil.newDayDate();
+
+		Segment segment = _addSegment(
+			_channelRepository.save(new Channel(RandomTestUtil.randomString())),
+			DateUtils.addDays(date, -1));
+
+		segment.setIncludeAnonymousUsers(true);
+
+		segment = _segmentRepository.save(segment);
+
+		MembershipChange membershipChange = _addMembershipChange(
+			1, DateUtils.addDays(date, -1), segment);
+
+		membershipChange.setIndividualEmail(null);
+
+		_membershipChangeRepository.save(membershipChange);
+
+		List<MembershipChange> membershipChanges =
+			_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
+				false, Arrays.asList(segment.getId()));
+
+		Assertions.assertTrue(membershipChanges.isEmpty());
+
+		membershipChanges =
+			_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
+				true, Arrays.asList(segment.getId()));
+
+		Assertions.assertEquals(
+			1, membershipChanges.size(), membershipChanges.toString());
+
+		membershipChange = membershipChanges.get(0);
+
+		Assertions.assertNull(membershipChange.getIndividualEmail());
 	}
 
 	private MembershipChange _addMembershipChange(
