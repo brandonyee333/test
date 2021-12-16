@@ -190,7 +190,7 @@ services:
             - OSB_ASAH_LOCAL_CLUSTER_URL=http://{service}:8080
             - OSB_API_URL=http://osbapiemulator:3000
             - OSB_ASAH_SECURITY_TOKEN=2FKFRgScjV5jOuBR9x0Vu1FGYMtxtmKK
-        image: liferay/com-liferay-osb-faro:latest
+        image: liferay/com-liferay-osb-faro:master
         ports:
             - "11311:11311"
             - "8000:8000"
