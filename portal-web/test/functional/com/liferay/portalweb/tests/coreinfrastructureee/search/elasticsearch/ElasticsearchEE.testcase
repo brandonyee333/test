@@ -249,6 +249,7 @@ definition {
 
 	@priority = "5"
 	test ElasticsearchRemoteWithMarvelAndKibanaAndShieldSmokeTest {
+		property custom.properties = "default.layout.template.id=1_column";
 		property elastic.kibana.enabled = "true";
 		property elastic.shield.enabled = "true";
 		property osgi.app.includes = "portal-search-elasticsearch-marvel";
@@ -276,6 +277,7 @@ definition {
 
 	@priority = "5"
 	test ElasticsearchRemoteWithMarvelAndKibanaSmokeTest {
+		property custom.properties = "default.layout.template.id=1_column";
 		property elastic.kibana.enabled = "true";
 		property osgi.app.includes = "portal-search-elasticsearch-marvel";
 		property plugins.deployment.type = "osgi";
