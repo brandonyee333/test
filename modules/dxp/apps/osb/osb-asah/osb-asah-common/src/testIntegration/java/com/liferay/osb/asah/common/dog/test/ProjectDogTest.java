@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManage
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class ProjectDogTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
-	public void setUp() throws Exception {
+	public void setUp() {
 		ElasticsearchInvoker elasticsearchInvoker =
 			_elasticsearchInvokerManager.getGlobalElasticsearchInvoker();
 
@@ -61,7 +62,11 @@ public class ProjectDogTest
 
 		_projectDog.addConsumer(_consumer);
 
-		ReflectionTestUtils.setField(_projectDog, "_nanitesHttp", _nanitesHttp);
+		ReflectionTestUtils.setField(
+			_projectDog, "_nanitesHttp", _nanitesHttp);
+		ReflectionTestUtils.setField(
+			_projectDog, "_postgreSQLSchemaManager",
+			_postgreSQLSchemaManager);
 	}
 
 	@Test
@@ -102,7 +107,7 @@ public class ProjectDogTest
 	}
 
 	@Test
-	public void testGetProjects() throws Exception {
+	public void testGetProjects() {
 		List<Project> projects = _projectDog.getProjects();
 
 		Stream<Project> stream = projects.stream();
@@ -123,6 +128,9 @@ public class ProjectDogTest
 
 	@MockBean
 	private NanitesHttp _nanitesHttp;
+
+	@MockBean
+	private PostgreSQLSchemaManager _postgreSQLSchemaManager;
 
 	@Autowired
 	private ProjectDog _projectDog;
