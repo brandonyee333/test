@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.postgresql.impl;
 
 import com.liferay.osb.asah.common.postgresql.PostgreSQLDataSource;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -33,6 +34,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.security.util.InMemoryResource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -57,7 +59,8 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 			(PostgreSQLDataSource)_dataSource;
 
 		if (!postgreSQLDataSource.isGlobal()) {
-			throw new IllegalStateException("Unable to create global schema");
+			throw new IllegalStateException(
+				"Unable to create global schema on a non global context");
 		}
 
 		DatabasePopulatorUtils.execute(
@@ -76,6 +79,21 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 
 			return;
 		}
+
+		PostgreSQLDataSource postgreSQLDataSource =
+			(PostgreSQLDataSource)_dataSource;
+
+		if (postgreSQLDataSource.isGlobal()) {
+			throw new IllegalStateException(
+				"Unable to create schema on a global context");
+		}
+
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(
+				new InMemoryResource(
+					"CREATE SCHEMA IF NOT EXISTS " +
+						ProjectIdThreadLocal.getProjectId())),
+			_dataSource);
 
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(

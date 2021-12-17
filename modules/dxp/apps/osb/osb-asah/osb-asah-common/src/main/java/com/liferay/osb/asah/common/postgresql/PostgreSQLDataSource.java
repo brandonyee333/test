@@ -86,8 +86,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 
 		HikariDataSource hikariDataSource = new HikariDataSource();
 
-		hikariDataSource.setConnectionInitSql(
-			"SET TIME ZONE 'UTC'; CREATE SCHEMA IF NOT EXISTS " + dataSource);
+		hikariDataSource.setConnectionInitSql("SET TIME ZONE 'UTC';");
 		hikariDataSource.setConnectionTimeout(
 			TimeUnit.SECONDS.toMillis(_hikariConnectionTimeout));
 		hikariDataSource.setIdleTimeout(
