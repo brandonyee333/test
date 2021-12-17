@@ -687,6 +687,8 @@ public class DLAdminDisplayContext {
 		searchContext.setKeywords(
 			ParamUtil.getString(_httpServletRequest, "keywords"));
 
+		searchContext.setLocale(_themeDisplay.getSiteDefaultLocale());
+
 		QueryConfig queryConfig = searchContext.getQueryConfig();
 
 		queryConfig.setSearchSubfolders(true);
