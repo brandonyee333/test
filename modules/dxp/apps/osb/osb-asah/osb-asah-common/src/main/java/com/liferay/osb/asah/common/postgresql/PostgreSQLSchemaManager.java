@@ -19,6 +19,8 @@ package com.liferay.osb.asah.common.postgresql;
  */
 public interface PostgreSQLSchemaManager {
 
+	public void createGlobalSchema();
+
 	public void createSchema();
 
 	public boolean existsTable(String tableName);

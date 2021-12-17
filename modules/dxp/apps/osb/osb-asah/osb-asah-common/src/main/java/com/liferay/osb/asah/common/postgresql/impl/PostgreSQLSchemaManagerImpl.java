@@ -40,7 +40,7 @@ import org.springframework.stereotype.Component;
 public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 
 	@Override
-	public void createSchema() {
+	public void createGlobalSchema() {
 		if (!(_postgreSQLDataSource instanceof PostgreSQLDataSource)) {
 			return;
 		}
@@ -53,7 +53,12 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 				new ResourceDatabasePopulator(
 					new ClassPathResource("tables-global.sql")),
 				_postgreSQLDataSource);
+		}
+	}
 
+	@Override
+	public void createSchema() {
+		if (!(_postgreSQLDataSource instanceof PostgreSQLDataSource)) {
 			return;
 		}
 
