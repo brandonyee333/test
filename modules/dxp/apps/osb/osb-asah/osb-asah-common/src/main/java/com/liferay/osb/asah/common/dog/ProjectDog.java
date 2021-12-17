@@ -59,8 +59,10 @@ public class ProjectDog {
 			consumer.accept(project.getId());
 		}
 
-		if (_postgreSQLSchemaManager != null) {
-			_postgreSQLSchemaManager.create();
+		_postgreSQLSchemaManager.createSchema();
+
+		if (_postCreationConsumer != null) {
+			_postCreationConsumer.accept(project.getId());
 		}
 
 		ProjectIdThreadLocal.forProject(
