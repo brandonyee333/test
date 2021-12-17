@@ -43,36 +43,35 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 
 	@Override
 	public void createGlobalSchema() {
-		if (!(_postgreSQLDataSource instanceof PostgreSQLDataSource)) {
+		if (!(_dataSource instanceof PostgreSQLDataSource)) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"createGlobalSchema has no effect on data source " +
-						_postgreSQLDataSource);
+						_dataSource);
 			}
 
 			return;
 		}
 
-		PostgreSQLDataSource dataSource =
-			(PostgreSQLDataSource)_postgreSQLDataSource;
+		PostgreSQLDataSource postgreSQLDataSource =
+			(PostgreSQLDataSource)_dataSource;
 
-		if (!dataSource.isGlobal()) {
+		if (!postgreSQLDataSource.isGlobal()) {
 			throw new IllegalStateException("Unable to create global schema");
 		}
 
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
 				new ClassPathResource("tables-global.sql")),
-			_postgreSQLDataSource);
+			_dataSource);
 	}
 
 	@Override
 	public void createSchema() {
-		if (!(_postgreSQLDataSource instanceof PostgreSQLDataSource)) {
+		if (!(_dataSource instanceof PostgreSQLDataSource)) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"createSchema has no effect on data source " +
-						_postgreSQLDataSource);
+					"createSchema has no effect on data source " + _dataSource);
 			}
 
 			return;
@@ -81,32 +80,32 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
 				new ClassPathResource("functions.sql")),
-			_postgreSQLDataSource);
+			_dataSource);
 
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
 				new ClassPathResource("tables-current.sql")),
-			_postgreSQLDataSource);
+			_dataSource);
 
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
 				true, true, null,
 				new ClassPathResource("constraints-current.sql")),
-			_postgreSQLDataSource);
+			_dataSource);
 
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
 				new ClassPathResource("indexes-current.sql")),
-			_postgreSQLDataSource);
+			_dataSource);
 
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(new ClassPathResource("data.sql")),
-			_postgreSQLDataSource);
+			_dataSource);
 	}
 
 	@Override
 	public boolean existsTable(String tableName) {
-		try (Connection connection = _postgreSQLDataSource.getConnection()) {
+		try (Connection connection = _dataSource.getConnection()) {
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
 
 			ResultSet resultSet = databaseMetaData.getTables(
@@ -125,6 +124,6 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 
 	@Autowired
 	@Qualifier("postgreSQLDataSource")
-	private DataSource _postgreSQLDataSource;
+	private DataSource _dataSource;
 
 }
