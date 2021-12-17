@@ -34,6 +34,8 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -73,7 +75,8 @@ public class EventAnalysisDog {
 		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
-		String name, TimeRange timeRange, Long userId, String userName) {
+		String name, LocalDate rangeEnd, Integer rangeKey, LocalDate rangeStart,
+		Long userId, String userName) {
 
 		_validateEventAnalysisName(channelId, null, name);
 		_validateEventAnalysisBreakdowns(eventAnalysisBreakdowns);
@@ -112,9 +115,9 @@ public class EventAnalysisDog {
 		eventAnalysis.setModifiedByUserName(userName);
 		eventAnalysis.setModifiedDate(date);
 		eventAnalysis.setName(name);
-		eventAnalysis.setRangeEnd(timeRange.getEndDate());
-		eventAnalysis.setRangeKey(timeRange.getRangeKey());
-		eventAnalysis.setRangeStart(timeRange.getStartDate());
+		eventAnalysis.setRangeEnd(rangeEnd);
+		eventAnalysis.setRangeKey(rangeKey);
+		eventAnalysis.setRangeStart(rangeStart);
 
 		return _eventAnalysisRepository.save(eventAnalysis);
 	}
@@ -225,8 +228,8 @@ public class EventAnalysisDog {
 		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventAnalysisId,
-		Long eventDefinitionId, String name, TimeRange timeRange, Long userId,
-		String userName) {
+		Long eventDefinitionId, String name, LocalDate rangeEnd,
+		Integer rangeKey, LocalDate rangeStart, Long userId, String userName) {
 
 		_validateEventAnalysisName(channelId, eventAnalysisId, name);
 		_validateEventAnalysisBreakdowns(eventAnalysisBreakdowns);
@@ -260,9 +263,9 @@ public class EventAnalysisDog {
 		eventAnalysis.setModifiedByUserName(userName);
 		eventAnalysis.setModifiedDate(new Date());
 		eventAnalysis.setName(name);
-		eventAnalysis.setRangeEnd(timeRange.getEndDate());
-		eventAnalysis.setRangeKey(timeRange.getRangeKey());
-		eventAnalysis.setRangeStart(timeRange.getStartDate());
+		eventAnalysis.setRangeEnd(rangeEnd);
+		eventAnalysis.setRangeKey(rangeKey);
+		eventAnalysis.setRangeStart(rangeStart);
 
 		return _eventAnalysisRepository.save(eventAnalysis);
 	}

@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
-import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetcher;
@@ -55,20 +54,20 @@ public class UpdateEventAnalysisMutationDataFetcher
 			eventAnalysisFilter -> new EventAnalysisFilter(
 				(Map<String, Object>)eventAnalysisFilter));
 
-		TimeRange timeRange = null;
+		LocalDate rangeEnd = null;
+		Integer rangeKey = null;
+		LocalDate rangeStart = null;
 
 		if ((dataFetchingEnvironment.getArgument("rangeEnd") != null) &&
 			(dataFetchingEnvironment.getArgument("rangeStart") != null)) {
 
-			timeRange = TimeRange.of(
-				LocalDate.parse(
-					dataFetchingEnvironment.getArgument("rangeEnd")),
-				LocalDate.parse(
-					dataFetchingEnvironment.getArgument("rangeStart")));
+			rangeEnd = LocalDate.parse(
+				dataFetchingEnvironment.getArgument("rangeEnd"));
+			rangeStart = LocalDate.parse(
+				dataFetchingEnvironment.getArgument("rangeStart"));
 		}
 		else if (dataFetchingEnvironment.getArgument("rangeKey") != null) {
-			timeRange = TimeRange.of(
-				(int)dataFetchingEnvironment.getArgument("rangeKey"));
+			rangeKey = dataFetchingEnvironment.getArgument("rangeKey");
 		}
 
 		return new EventAnalysisDTO(
@@ -82,7 +81,8 @@ public class UpdateEventAnalysisMutationDataFetcher
 					dataFetchingEnvironment.getArgument("eventAnalysisId")),
 				Long.valueOf(
 					dataFetchingEnvironment.getArgument("eventDefinitionId")),
-				dataFetchingEnvironment.getArgument("name"), timeRange,
+				dataFetchingEnvironment.getArgument("name"), rangeEnd, rangeKey,
+				rangeStart,
 				Long.valueOf(dataFetchingEnvironment.getArgument("userId")),
 				dataFetchingEnvironment.getArgument("userName")));
 	}
