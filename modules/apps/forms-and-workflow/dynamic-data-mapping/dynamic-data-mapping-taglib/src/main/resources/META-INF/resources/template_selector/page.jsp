@@ -98,6 +98,7 @@ Group ddmTemplateGroup = GroupLocalServiceUtil.getGroup(ddmTemplateGroupId);
 					mvcPath: '/view_template.jsp',
 					navigationStartsOn: '<%= DDMNavigationHelper.VIEW_TEMPLATES %>',
 					refererPortletName: '<%= PortletKeys.PORTLET_DISPLAY_TEMPLATE %>',
+					refreshOpenerOnClose: true,
 					title: '<%= UnicodeLanguageUtil.get(request, "application-display-templates") %>'
 				},
 				function(event) {
