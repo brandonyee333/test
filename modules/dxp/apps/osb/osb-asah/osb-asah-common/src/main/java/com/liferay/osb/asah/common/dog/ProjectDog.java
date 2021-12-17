@@ -128,9 +128,9 @@ public class ProjectDog {
 	private NanitesHttp _nanitesHttp;
 
 	@Autowired
-	private ProjectRepository _projectRepository;
+	private PostgreSQLSchemaManager _postgreSQLSchemaManager;
 
 	@Autowired
-	private PostgreSQLSchemaManager _postgreSQLSchemaManager;
+	private ProjectRepository _projectRepository;
 
 }

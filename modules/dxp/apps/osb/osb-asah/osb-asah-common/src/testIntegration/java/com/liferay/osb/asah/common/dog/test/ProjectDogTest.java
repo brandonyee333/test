@@ -62,11 +62,9 @@ public class ProjectDogTest
 
 		_projectDog.addConsumer(_consumer);
 
+		ReflectionTestUtils.setField(_projectDog, "_nanitesHttp", _nanitesHttp);
 		ReflectionTestUtils.setField(
-			_projectDog, "_nanitesHttp", _nanitesHttp);
-		ReflectionTestUtils.setField(
-			_projectDog, "_postgreSQLSchemaManager",
-			_postgreSQLSchemaManager);
+			_projectDog, "_postgreSQLSchemaManager", _postgreSQLSchemaManager);
 	}
 
 	@Test
