@@ -27,7 +27,7 @@ import com.liferay.osb.asah.common.model.AttributeType;
 import com.liferay.osb.asah.common.model.DateGrouping;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -164,14 +164,8 @@ public class EventAnalysisDTO {
 		timezone = "UTC"
 	)
 	@JsonProperty("rangeEnd")
-	public String getRangeEnd() {
-		if (_eventAnalysis.getRangeEnd() != null) {
-			return DateUtil.toUTCString(
-				_eventAnalysis.getRangeEnd(),
-				new SimpleDateFormat("yyyy-MM-dd"));
-		}
-
-		return null;
+	public LocalDate getRangeEnd() {
+		return _eventAnalysis.getRangeEnd();
 	}
 
 	public Integer getRangeKey() {
@@ -184,14 +178,8 @@ public class EventAnalysisDTO {
 		timezone = "UTC"
 	)
 	@JsonProperty("rangeStart")
-	public String getRangeStart() {
-		if (_eventAnalysis.getRangeStart() != null) {
-			return DateUtil.toUTCString(
-				_eventAnalysis.getRangeStart(),
-				new SimpleDateFormat("yyyy-MM-dd"));
-		}
-
-		return null;
+	public LocalDate getRangeStart() {
+		return _eventAnalysis.getRangeStart();
 	}
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)

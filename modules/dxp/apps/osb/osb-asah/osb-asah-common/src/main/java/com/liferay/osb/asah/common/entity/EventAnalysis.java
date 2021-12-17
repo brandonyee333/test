@@ -18,6 +18,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.common.util.BeanUtils;
 
+import java.time.LocalDate;
+
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -47,7 +49,7 @@ public class EventAnalysis implements Persistable<Long> {
 		JSONArray eventAnalysisFilterJSONArray, String eventAnalysisType,
 		Long eventDefinitionId, Long modifiedByUserId,
 		String modifiedByUserName, Date modifiedDate, String name,
-		Date rangeEnd, Integer rangeKey, Date rangeStart) {
+		LocalDate rangeEnd, Integer rangeKey, LocalDate rangeStart) {
 
 		_channelId = channelId;
 		_compareToPrevious = compareToPrevious;
@@ -62,9 +64,9 @@ public class EventAnalysis implements Persistable<Long> {
 		_modifiedByUserName = modifiedByUserName;
 		_modifiedDate = new Date(modifiedDate.getTime());
 		_name = name;
-		_rangeEnd = new Date(rangeEnd.getTime());
+		_rangeEnd = rangeEnd;
 		_rangeKey = rangeKey;
-		_rangeStart = new Date(rangeStart.getTime());
+		_rangeStart = rangeStart;
 	}
 
 	public EventAnalysis(Map<String, Object> source) {
@@ -202,12 +204,8 @@ public class EventAnalysis implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Date getRangeEnd() {
-		if (_rangeEnd == null) {
-			return null;
-		}
-
-		return new Date(_rangeEnd.getTime());
+	public LocalDate getRangeEnd() {
+		return _rangeEnd;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -216,12 +214,8 @@ public class EventAnalysis implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Date getRangeStart() {
-		if (_rangeStart == null) {
-			return null;
-		}
-
-		return new Date(_rangeStart.getTime());
+	public LocalDate getRangeStart() {
+		return _rangeStart;
 	}
 
 	@Override
@@ -311,20 +305,16 @@ public class EventAnalysis implements Persistable<Long> {
 		_name = name;
 	}
 
-	public void setRangeEnd(Date rangeEnd) {
-		if (rangeEnd != null) {
-			_rangeEnd = new Date(rangeEnd.getTime());
-		}
+	public void setRangeEnd(LocalDate rangeEnd) {
+		_rangeEnd = rangeEnd;
 	}
 
 	public void setRangeKey(Integer rangeKey) {
 		_rangeKey = rangeKey;
 	}
 
-	public void setRangeStart(Date rangeStart) {
-		if (rangeStart != null) {
-			_rangeStart = new Date(rangeStart.getTime());
-		}
+	public void setRangeStart(LocalDate rangeStart) {
+		_rangeStart = rangeStart;
 	}
 
 	@Transient
@@ -373,12 +363,12 @@ public class EventAnalysis implements Persistable<Long> {
 	private String _name;
 
 	@Transient
-	private Date _rangeEnd;
+	private LocalDate _rangeEnd;
 
 	@Transient
 	private Integer _rangeKey;
 
 	@Transient
-	private Date _rangeStart;
+	private LocalDate _rangeStart;
 
 }
