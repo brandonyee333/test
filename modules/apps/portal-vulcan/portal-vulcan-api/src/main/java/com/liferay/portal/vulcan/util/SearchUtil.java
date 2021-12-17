@@ -140,6 +140,25 @@ public class SearchUtil {
 			indexer.searchCount(searchContext));
 	}
 
+	public static <T> Page<T> search(
+			Map<String, Map<String, String>> actions,
+			UnsafeConsumer<BooleanQuery, Exception> booleanQueryUnsafeConsumer,
+			Filter filter, String indexerClassName, String keywords,
+			Pagination pagination,
+			UnsafeConsumer<QueryConfig, Exception> queryConfigUnsafeConsumer,
+			UnsafeConsumer<SearchContext, Exception>
+				searchContextUnsafeConsumer,
+			Sort[] sorts,
+			UnsafeFunction<Document, T, Exception> transformUnsafeFunction)
+		throws Exception {
+
+		return search(
+			actions, booleanQueryUnsafeConsumer, filter,
+			Class.forName(indexerClassName), keywords, pagination,
+			queryConfigUnsafeConsumer, searchContextUnsafeConsumer, sorts,
+			transformUnsafeFunction);
+	}
+
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #search(Map,
 	 *             UnsafeConsumer, Filter, Class, String, Pagination,
