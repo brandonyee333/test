@@ -49,6 +49,8 @@ public class ProjectDog {
 		try {
 			ProjectIdThreadLocal.setGlobalContext(true);
 
+			_postgreSQLSchemaManager.createSchema();
+
 			_projectRepository.save(project);
 		}
 		finally {
