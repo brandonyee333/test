@@ -35,13 +35,15 @@ public class PostgreSQLSchemaManagerImplTest
 
 	@Test
 	public void test() {
-		_postgreSQLSchemaManager.create();
+		_postgreSQLSchemaManager.createSchema();
 
-		Assertions.assertTrue(_postgreSQLSchemaManager.exists("Event"));
-		Assertions.assertTrue(_postgreSQLSchemaManager.exists("EventAnalysis"));
+		Assertions.assertTrue(_postgreSQLSchemaManager.existsTable("Event"));
 		Assertions.assertTrue(
-			_postgreSQLSchemaManager.exists("EventDefinition"));
-		Assertions.assertFalse(_postgreSQLSchemaManager.exists("projects"));
+			_postgreSQLSchemaManager.existsTable("EventAnalysis"));
+		Assertions.assertTrue(
+			_postgreSQLSchemaManager.existsTable("EventDefinition"));
+		Assertions.assertFalse(
+			_postgreSQLSchemaManager.existsTable("projects"));
 	}
 
 	@Autowired

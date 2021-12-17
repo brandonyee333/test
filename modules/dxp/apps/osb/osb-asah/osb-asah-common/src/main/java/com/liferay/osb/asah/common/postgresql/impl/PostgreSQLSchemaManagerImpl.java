@@ -40,25 +40,21 @@ import org.springframework.stereotype.Component;
 public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 
 	@Override
-	public void create() {
+	public void createSchema() {
 		if (!(_postgreSQLDataSource instanceof PostgreSQLDataSource)) {
+			return;
+		}
+
+		PostgreSQLDataSource dataSource =
+			(PostgreSQLDataSource)_postgreSQLDataSource;
+
+		if (dataSource.isGlobal()) {
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
 					new ClassPathResource("tables-global.sql")),
 				_postgreSQLDataSource);
-		}
-		else {
-			PostgreSQLDataSource dataSource =
-				(PostgreSQLDataSource)_postgreSQLDataSource;
 
-			if (dataSource.isGlobal()) {
-				DatabasePopulatorUtils.execute(
-					new ResourceDatabasePopulator(
-						new ClassPathResource("tables-global.sql")),
-					_postgreSQLDataSource);
-
-				return;
-			}
+			return;
 		}
 
 		DatabasePopulatorUtils.execute(
@@ -88,7 +84,7 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 	}
 
 	@Override
-	public boolean exists(String tableName) {
+	public boolean existsTable(String tableName) {
 		try (Connection connection = _postgreSQLDataSource.getConnection()) {
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
 
