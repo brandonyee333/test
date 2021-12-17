@@ -61,14 +61,13 @@ public class ProjectDog {
 			consumer.accept(project.getId());
 		}
 
-		_postgreSQLSchemaManager.createSchema();
-
-		if (_postCreationConsumer != null) {
-			_postCreationConsumer.accept(project.getId());
-		}
-
 		ProjectIdThreadLocal.forProject(
-			project, _nanitesHttp::rescheduleNanites);
+			project,
+			() -> {
+				_postgreSQLSchemaManager.createSchema();
+
+				_nanitesHttp.rescheduleNanites();
+			});
 	}
 
 	public void deleteProject(String projectId) {
