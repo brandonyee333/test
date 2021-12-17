@@ -25,6 +25,8 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,23 +44,37 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 	@Override
 	public void createGlobalSchema() {
 		if (!(_postgreSQLDataSource instanceof PostgreSQLDataSource)) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"createGlobalSchema has no effect on data source " +
+						_postgreSQLDataSource);
+			}
+
 			return;
 		}
 
 		PostgreSQLDataSource dataSource =
 			(PostgreSQLDataSource)_postgreSQLDataSource;
 
-		if (dataSource.isGlobal()) {
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					new ClassPathResource("tables-global.sql")),
-				_postgreSQLDataSource);
+		if (!dataSource.isGlobal()) {
+			throw new IllegalStateException("Unable to create global schema");
 		}
+
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(
+				new ClassPathResource("tables-global.sql")),
+			_postgreSQLDataSource);
 	}
 
 	@Override
 	public void createSchema() {
 		if (!(_postgreSQLDataSource instanceof PostgreSQLDataSource)) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"createSchema has no effect on data source " +
+						_postgreSQLDataSource);
+			}
+
 			return;
 		}
 
@@ -103,6 +119,9 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 			return false;
 		}
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		PostgreSQLSchemaManagerImpl.class);
 
 	@Autowired
 	@Qualifier("postgreSQLDataSource")
