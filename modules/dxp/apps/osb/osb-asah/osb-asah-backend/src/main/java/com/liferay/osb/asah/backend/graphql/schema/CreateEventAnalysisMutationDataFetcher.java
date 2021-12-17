@@ -55,7 +55,6 @@ public class CreateEventAnalysisMutationDataFetcher
 				(Map<String, Object>)eventAnalysisFilter));
 
 		LocalDate rangeEnd = null;
-		Integer rangeKey = null;
 		LocalDate rangeStart = null;
 
 		if ((dataFetchingEnvironment.getArgument("rangeEnd") != null) &&
@@ -65,9 +64,6 @@ public class CreateEventAnalysisMutationDataFetcher
 				dataFetchingEnvironment.getArgument("rangeEnd"));
 			rangeStart = LocalDate.parse(
 				dataFetchingEnvironment.getArgument("rangeStart"));
-		}
-		else if (dataFetchingEnvironment.getArgument("rangeKey") != null) {
-			rangeKey = dataFetchingEnvironment.getArgument("rangeKey");
 		}
 
 		return new EventAnalysisDTO(
@@ -79,8 +75,8 @@ public class CreateEventAnalysisMutationDataFetcher
 				eventAnalysisBreakdowns, eventAnalysisFilters,
 				Long.valueOf(
 					dataFetchingEnvironment.getArgument("eventDefinitionId")),
-				dataFetchingEnvironment.getArgument("name"), rangeEnd, rangeKey,
-				rangeStart,
+				dataFetchingEnvironment.getArgument("name"), rangeEnd,
+				dataFetchingEnvironment.getArgument("rangeKey"), rangeStart,
 				Long.valueOf(dataFetchingEnvironment.getArgument("userId")),
 				dataFetchingEnvironment.getArgument("userName")));
 	}
