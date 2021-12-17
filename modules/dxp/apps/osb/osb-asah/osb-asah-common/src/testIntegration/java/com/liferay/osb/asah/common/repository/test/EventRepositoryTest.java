@@ -60,6 +60,7 @@ import org.hamcrest.Matchers;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -711,6 +712,7 @@ public class EventRepositoryTest
 			Matchers.arrayContainingInAnyOrder(values.toArray(new Integer[0])));
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "test_event_count_grouped_by_event_date_last_7_days.sql"
 	)
@@ -831,6 +833,7 @@ public class EventRepositoryTest
 			Matchers.arrayContainingInAnyOrder(values.toArray(new Integer[0])));
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "test_event_count_grouped_by_event_date_last_7_days.sql"
 	)
@@ -959,6 +962,7 @@ public class EventRepositoryTest
 			).toArray());
 	}
 
+	@Disabled
 	@SQLResource(resourcePath = "test_events.sql")
 	@Test
 	public void testSearchEventsWithKeywordsLast24Hours() {
