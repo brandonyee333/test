@@ -29,6 +29,7 @@ import com.liferay.osb.asah.upgrade.v3_0_10.SnapshotRepositoryUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_5.CommentPostedEventDefinitionUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_5.VoteEventDefinitionUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_6.EventAttributeIndexUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_1_0.DataSourceMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.EventAnalysisUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,8 @@ public class UpgradeProcessConfiguration {
 			"3.0.6", "3.0.10", _snapshotRepositoryUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"3.0.10", "3.1.0", _eventAnalysisUpgradeStep);
+			"3.0.10", "3.1.0", _dataSourceMigrationUpgradeStep,
+			_eventAnalysisUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -86,6 +88,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private CustomEventUpgradeStep _customEventUpgradeStep;
+
+	@Autowired
+	private DataSourceMigrationUpgradeStep _dataSourceMigrationUpgradeStep;
 
 	@Autowired
 	private DataSourcesUpgradeStep _dataSourcesUpgradeStep;
