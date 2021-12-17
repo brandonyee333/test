@@ -27,6 +27,8 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.DataFetchingEnvironmentBuilder;
 
+import java.time.LocalDate;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -78,6 +80,12 @@ public class CreateEventAnalysisMutationDataFetcherTest
 			eventAnalysisDTO.getEventAnalysisFilterDTOs();
 
 		Assertions.assertEquals(1, eventAnalysisFilterDTOs.size());
+
+		Assertions.assertEquals(
+			LocalDate.of(2021, 12, 31), eventAnalysisDTO.getRangeEnd());
+		Assertions.assertNull(eventAnalysisDTO.getRangeKey());
+		Assertions.assertEquals(
+			LocalDate.of(2021, 12, 1), eventAnalysisDTO.getRangeStart());
 	}
 
 	private EventDefinition _createEventDefinition(int index) {
@@ -128,7 +136,9 @@ public class CreateEventAnalysisMutationDataFetcherTest
 		arguments.put(
 			"eventDefinitionId", String.valueOf(_eventDefinition.getId()));
 		arguments.put("name", "Analysis 1");
-		arguments.put("rangeKey", 1);
+		arguments.put("rangeEnd", "2021-12-31");
+		arguments.put("rangeKey", null);
+		arguments.put("rangeStart", "2021-12-01");
 		arguments.put("userId", "20");
 		arguments.put("userName", "Test");
 

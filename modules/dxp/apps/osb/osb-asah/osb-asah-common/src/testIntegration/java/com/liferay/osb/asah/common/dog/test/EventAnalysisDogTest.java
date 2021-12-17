@@ -77,14 +77,18 @@ public class EventAnalysisDogTest
 					"1", AttributeType.EVENT,
 					EventAttributeDefinition.DataType.STRING, "eq",
 					Collections.singletonList("value"))),
-			246810L, "Event Analysis",
-			TimeRange.of(
-				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")),
-			100L, "Test");
+			246810L, "Event Analysis", LocalDate.parse("2021-06-01"), null,
+			LocalDate.parse("2021-05-15"), 100L, "Test");
 
 		Assertions.assertEquals(1, _eventAnalysisRepository.count());
+
 		Assertions.assertNotNull(eventAnalysis);
 		Assertions.assertNotNull(eventAnalysis.getId());
+		Assertions.assertNull(eventAnalysis.getRangeKey());
+		Assertions.assertEquals(
+			LocalDate.of(2021, 6, 1), eventAnalysis.getRangeEnd());
+		Assertions.assertEquals(
+			LocalDate.of(2021, 5, 15), eventAnalysis.getRangeStart());
 
 		EventAnalysis updatedEventAnalysis =
 			_eventAnalysisDog.updateEventAnalysis(
@@ -99,14 +103,13 @@ public class EventAnalysisDogTest
 						"1", AttributeType.EVENT,
 						EventAttributeDefinition.DataType.STRING, "eq",
 						Collections.singletonList("value"))),
-				eventAnalysis.getId(), 246810L, "Event Analysis Update",
-				TimeRange.of(
-					LocalDate.parse("2021-06-01"),
-					LocalDate.parse("2021-05-15")),
-				101L, "Test Test");
+				eventAnalysis.getId(), 246810L, "Event Analysis Update", null,
+				0, null, 101L, "Test Test");
 
 		Assertions.assertNotNull(updatedEventAnalysis);
 		Assertions.assertNotNull(updatedEventAnalysis.getId());
+		Assertions.assertNull(updatedEventAnalysis.getRangeEnd());
+		Assertions.assertNull(updatedEventAnalysis.getRangeStart());
 		Assertions.assertEquals(
 			100L, updatedEventAnalysis.getCreatedByUserId());
 		Assertions.assertEquals(
@@ -117,6 +120,7 @@ public class EventAnalysisDogTest
 			"Test Test", updatedEventAnalysis.getModifiedByUserName());
 		Assertions.assertEquals(
 			"Event Analysis Update", updatedEventAnalysis.getName());
+		Assertions.assertEquals(0, updatedEventAnalysis.getRangeKey());
 
 		_eventAnalysisDog.deleteEventAnalyses(
 			Collections.singletonList(updatedEventAnalysis.getId()));
@@ -810,8 +814,7 @@ public class EventAnalysisDogTest
 		return _eventAnalysisDog.addEventAnalysis(
 			AnalysisType.TOTAL, channelId, false, Collections.emptyList(),
 			Collections.emptyList(), 246810L, name,
-			TimeRange.of(
-				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")),
+			LocalDate.parse("2021-06-01"), null, LocalDate.parse("2021-05-15"),
 			100L, "Test");
 	}
 
@@ -823,8 +826,7 @@ public class EventAnalysisDogTest
 			eventAnalysis.getChannelId(), eventAnalysis.getCompareToPrevious(),
 			Collections.emptyList(), Collections.emptyList(),
 			eventAnalysis.getId(), eventAnalysis.getEventDefinitionId(), name,
-			TimeRange.of(
-				LocalDate.parse("2021-06-01"), LocalDate.parse("2021-05-15")),
+			LocalDate.parse("2021-06-01"), null, LocalDate.parse("2021-05-15"),
 			eventAnalysis.getModifiedByUserId(),
 			eventAnalysis.getModifiedByUserName());
 	}
