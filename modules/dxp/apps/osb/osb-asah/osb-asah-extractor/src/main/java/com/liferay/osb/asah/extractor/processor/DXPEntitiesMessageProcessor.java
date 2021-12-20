@@ -348,7 +348,7 @@ public class DXPEntitiesMessageProcessor {
 					put(
 						"dataSourceId",
 						objectJSONObject.getString("osbAsahDataSourceId"));
-					put("userId", objectJSONObject.optInt("userId"));
+					put("fields.userId", objectJSONObject.optInt("userId"));
 				}
 			},
 			DXPEntity.Type.USER);
