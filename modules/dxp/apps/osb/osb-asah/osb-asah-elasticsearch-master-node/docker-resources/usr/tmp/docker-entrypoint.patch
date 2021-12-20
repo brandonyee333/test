@@ -3,26 +3,15 @@
 > 
 59d60
 <     [[ -f /usr/share/elasticsearch/config/elasticsearch.keystore ]] || (run_as_other_user_if_needed elasticsearch-keystore create)
-73a75,96
-> fi
-> 
-> if [[ -n "$S3_REPOSITORY_ACCESS_KEY" ]]; then
->   if ! (run_as_other_user_if_needed elasticsearch-keystore list | grep -q '^s3.client.asah.access_key$'); then
->     (run_as_other_user_if_needed echo $S3_REPOSITORY_ACCESS_KEY | /usr/share/elasticsearch/bin/elasticsearch-keystore add -x s3.client.asah.access_key)
+75a77,82
+> if [[ -n "$GCS_CREDENTIALS" ]]; then
+>   if ! (run_as_other_user_if_needed elasticsearch-keystore list | grep -q '^gcs.client.default.credentials_file$'); then
+>     (run_as_other_user_if_needed echo $GCS_CREDENTIALS | /usr/share/elasticsearch/bin/elasticsearch-keystore add -x gcs.client.default.credentials_file)
 >   fi
 > fi
 > 
-> if [[ -n "$S3_REPOSITORY_SECRET_KEY" ]]; then
->   if ! (run_as_other_user_if_needed elasticsearch-keystore list | grep -q '^s3.client.asah.secret_key$'); then
->     (run_as_other_user_if_needed echo $S3_REPOSITORY_SECRET_KEY | /usr/share/elasticsearch/bin/elasticsearch-keystore add -x s3.client.asah.secret_key)
->   fi
-> fi
-> 
-> if [[ -n "$WORKSPACE_USER_PASSWORD" ]]; then
->   if ! (run_as_other_user_if_needed elasticsearch-users list | grep -q ': workspace_user$'); then
->     (run_as_other_user_if_needed /usr/share/elasticsearch/bin/elasticsearch-users useradd workspace_user -p $WORKSPACE_USER_PASSWORD -r workspace_user)
->   fi
-> else
->   echo "No WORKSPACE_USER_PASSWORD defined"
-> 
->   exit 1
+83c96
+< run_as_other_user_if_needed /usr/share/elasticsearch/bin/elasticsearch <<<"$KEYSTORE_PASSWORD"
+---
+> run_as_other_user_if_needed /usr/share/elasticsearch/bin/elasticsearch <<<"$KEYSTORE_PASSWORD"
+\ No newline at end of file
