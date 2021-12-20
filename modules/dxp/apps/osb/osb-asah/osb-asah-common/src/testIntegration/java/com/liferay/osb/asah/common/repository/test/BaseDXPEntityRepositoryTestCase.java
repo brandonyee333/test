@@ -23,15 +23,20 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
+import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -248,6 +253,37 @@ public abstract class BaseDXPEntityRepositoryTestCase
 				DXPEntity.Type.GROUP.getClassName(), 20121L);
 
 		Assertions.assertEquals(1, dxpEntities.size(), dxpEntities.toString());
+	}
+
+	@Test
+	public void testSearchByDataSourceIdsAndKeywordsAndTypeSortedByName() {
+		List<DXPEntity> dxpEntities =
+			_dxpEntityRepository.searchByDataSourceIdsAndKeywordsAndType(
+				Arrays.asList(123L), null, DXPEntity.Type.USER,
+				PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "name")));
+
+		Assertions.assertEquals(2, dxpEntities.size(), dxpEntities.toString());
+
+		DXPEntity dxpEntity = dxpEntities.get(0);
+
+		JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
+
+		Assertions.assertEquals(
+			"Jane", fieldsJSONObject.getString("firstName"));
+
+		dxpEntities =
+			_dxpEntityRepository.searchByDataSourceIdsAndKeywordsAndType(
+				Arrays.asList(123L), null, DXPEntity.Type.USER,
+				PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "name")));
+
+		dxpEntity = dxpEntities.get(0);
+
+		fieldsJSONObject = dxpEntity.getFieldsJSONObject();
+
+		Assertions.assertEquals(
+			"John", fieldsJSONObject.getString("firstName"));
+
+		Assertions.assertEquals(2, dxpEntities.size(), dxpEntities.toString());
 	}
 
 	@Override
