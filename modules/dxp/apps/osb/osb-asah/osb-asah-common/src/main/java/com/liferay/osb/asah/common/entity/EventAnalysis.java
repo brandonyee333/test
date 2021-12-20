@@ -49,7 +49,8 @@ public class EventAnalysis implements Persistable<Long> {
 		JSONArray eventAnalysisFilterJSONArray, String eventAnalysisType,
 		Long eventDefinitionId, Long modifiedByUserId,
 		String modifiedByUserName, Date modifiedDate, String name,
-		LocalDate rangeEnd, Integer rangeKey, LocalDate rangeStart) {
+		LocalDate rangeEndLocalDate, Integer rangeKey,
+		LocalDate rangeStartLocalDate) {
 
 		_channelId = channelId;
 		_compareToPrevious = compareToPrevious;
@@ -64,9 +65,9 @@ public class EventAnalysis implements Persistable<Long> {
 		_modifiedByUserName = modifiedByUserName;
 		_modifiedDate = new Date(modifiedDate.getTime());
 		_name = name;
-		_rangeEnd = rangeEnd;
+		_rangeEndLocalDate = rangeEndLocalDate;
 		_rangeKey = rangeKey;
-		_rangeStart = rangeStart;
+		_rangeStartLocalDate = rangeStartLocalDate;
 	}
 
 	public EventAnalysis(Map<String, Object> source) {
@@ -109,9 +110,11 @@ public class EventAnalysis implements Persistable<Long> {
 				_modifiedByUserName, eventAnalysis._modifiedByUserName) &&
 			Objects.equals(_modifiedDate, eventAnalysis._modifiedDate) &&
 			Objects.equals(_name, eventAnalysis._name) &&
-			Objects.equals(_rangeEnd, eventAnalysis._rangeEnd) &&
+			Objects.equals(
+				_rangeEndLocalDate, eventAnalysis._rangeEndLocalDate) &&
 			Objects.equals(_rangeKey, eventAnalysis._rangeKey) &&
-			Objects.equals(_rangeStart, eventAnalysis._rangeStart)) {
+			Objects.equals(
+				_rangeStartLocalDate, eventAnalysis._rangeStartLocalDate)) {
 
 			return true;
 		}
@@ -204,8 +207,10 @@ public class EventAnalysis implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public LocalDate getRangeEnd() {
-		return _rangeEnd;
+	@Column("rangeend")
+	@JsonProperty("rangeEnd")
+	public LocalDate getRangeEndLocalDate() {
+		return _rangeEndLocalDate;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -214,8 +219,10 @@ public class EventAnalysis implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public LocalDate getRangeStart() {
-		return _rangeStart;
+	@Column("rangestart")
+	@JsonProperty("rangeStart")
+	public LocalDate getRangeStartLocalDate() {
+		return _rangeStartLocalDate;
 	}
 
 	@Override
@@ -225,7 +232,8 @@ public class EventAnalysis implements Persistable<Long> {
 			_createdByUserName, _eventAnalysisBreakdownJSONArray,
 			_eventAnalysisFilterJSONArray, _eventAnalysisType,
 			_eventDefinitionId, _id, _modifiedByUserId, _modifiedByUserName,
-			_modifiedDate, _name, _rangeEnd, _rangeKey, _rangeStart);
+			_modifiedDate, _name, _rangeEndLocalDate, _rangeKey,
+			_rangeStartLocalDate);
 	}
 
 	@Override
@@ -305,16 +313,16 @@ public class EventAnalysis implements Persistable<Long> {
 		_name = name;
 	}
 
-	public void setRangeEnd(LocalDate rangeEnd) {
-		_rangeEnd = rangeEnd;
+	public void setRangeEndLocalDate(LocalDate rangeEndLocalDate) {
+		_rangeEndLocalDate = rangeEndLocalDate;
 	}
 
 	public void setRangeKey(Integer rangeKey) {
 		_rangeKey = rangeKey;
 	}
 
-	public void setRangeStart(LocalDate rangeStart) {
-		_rangeStart = rangeStart;
+	public void setRangeStartLocalDate(LocalDate rangeStartLocalDate) {
+		_rangeStartLocalDate = rangeStartLocalDate;
 	}
 
 	@Transient
@@ -363,12 +371,12 @@ public class EventAnalysis implements Persistable<Long> {
 	private String _name;
 
 	@Transient
-	private LocalDate _rangeEnd;
+	private LocalDate _rangeEndLocalDate;
 
 	@Transient
 	private Integer _rangeKey;
 
 	@Transient
-	private LocalDate _rangeStart;
+	private LocalDate _rangeStartLocalDate;
 
 }

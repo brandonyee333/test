@@ -164,8 +164,8 @@ public class EventAnalysisDTO {
 		timezone = "UTC"
 	)
 	@JsonProperty("rangeEnd")
-	public LocalDate getRangeEnd() {
-		return _eventAnalysis.getRangeEnd();
+	public LocalDate getRangeEndLocalDate() {
+		return _eventAnalysis.getRangeEndLocalDate();
 	}
 
 	public Integer getRangeKey() {
@@ -178,8 +178,8 @@ public class EventAnalysisDTO {
 		timezone = "UTC"
 	)
 	@JsonProperty("rangeStart")
-	public LocalDate getRangeStart() {
-		return _eventAnalysis.getRangeStart();
+	public LocalDate getRangeStartLocalDate() {
+		return _eventAnalysis.getRangeStartLocalDate();
 	}
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)

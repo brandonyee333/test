@@ -82,10 +82,12 @@ public class CreateEventAnalysisMutationDataFetcherTest
 		Assertions.assertEquals(1, eventAnalysisFilterDTOs.size());
 
 		Assertions.assertEquals(
-			LocalDate.of(2021, 12, 31), eventAnalysisDTO.getRangeEnd());
+			LocalDate.of(2021, 12, 31),
+			eventAnalysisDTO.getRangeEndLocalDate());
 		Assertions.assertNull(eventAnalysisDTO.getRangeKey());
 		Assertions.assertEquals(
-			LocalDate.of(2021, 12, 1), eventAnalysisDTO.getRangeStart());
+			LocalDate.of(2021, 12, 1),
+			eventAnalysisDTO.getRangeStartLocalDate());
 	}
 
 	private EventDefinition _createEventDefinition(int index) {

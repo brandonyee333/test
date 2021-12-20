@@ -54,15 +54,15 @@ public class UpdateEventAnalysisMutationDataFetcher
 			eventAnalysisFilter -> new EventAnalysisFilter(
 				(Map<String, Object>)eventAnalysisFilter));
 
-		LocalDate rangeEnd = null;
-		LocalDate rangeStart = null;
+		LocalDate rangeEndLocalDate = null;
+		LocalDate rangeStartLocalDate = null;
 
 		if ((dataFetchingEnvironment.getArgument("rangeEnd") != null) &&
 			(dataFetchingEnvironment.getArgument("rangeStart") != null)) {
 
-			rangeEnd = LocalDate.parse(
+			rangeEndLocalDate = LocalDate.parse(
 				dataFetchingEnvironment.getArgument("rangeEnd"));
-			rangeStart = LocalDate.parse(
+			rangeStartLocalDate = LocalDate.parse(
 				dataFetchingEnvironment.getArgument("rangeStart"));
 		}
 
@@ -77,8 +77,9 @@ public class UpdateEventAnalysisMutationDataFetcher
 					dataFetchingEnvironment.getArgument("eventAnalysisId")),
 				Long.valueOf(
 					dataFetchingEnvironment.getArgument("eventDefinitionId")),
-				dataFetchingEnvironment.getArgument("name"), rangeEnd,
-				dataFetchingEnvironment.getArgument("rangeKey"), rangeStart,
+				dataFetchingEnvironment.getArgument("name"), rangeEndLocalDate,
+				dataFetchingEnvironment.getArgument("rangeKey"),
+				rangeStartLocalDate,
 				Long.valueOf(dataFetchingEnvironment.getArgument("userId")),
 				dataFetchingEnvironment.getArgument("userName")));
 	}

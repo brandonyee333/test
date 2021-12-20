@@ -75,8 +75,8 @@ public class EventAnalysisDog {
 		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
-		String name, LocalDate rangeEnd, Integer rangeKey, LocalDate rangeStart,
-		Long userId, String userName) {
+		String name, LocalDate rangeEndLocalDate, Integer rangeKey,
+		LocalDate rangeStartLocalDate, Long userId, String userName) {
 
 		_validateEventAnalysisName(channelId, null, name);
 		_validateEventAnalysisBreakdowns(eventAnalysisBreakdowns);
@@ -115,9 +115,9 @@ public class EventAnalysisDog {
 		eventAnalysis.setModifiedByUserName(userName);
 		eventAnalysis.setModifiedDate(date);
 		eventAnalysis.setName(name);
-		eventAnalysis.setRangeEnd(rangeEnd);
+		eventAnalysis.setRangeEndLocalDate(rangeEndLocalDate);
 		eventAnalysis.setRangeKey(rangeKey);
-		eventAnalysis.setRangeStart(rangeStart);
+		eventAnalysis.setRangeStartLocalDate(rangeStartLocalDate);
 
 		return _eventAnalysisRepository.save(eventAnalysis);
 	}
@@ -228,8 +228,9 @@ public class EventAnalysisDog {
 		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventAnalysisId,
-		Long eventDefinitionId, String name, LocalDate rangeEnd,
-		Integer rangeKey, LocalDate rangeStart, Long userId, String userName) {
+		Long eventDefinitionId, String name, LocalDate rangeEndLocalDate,
+		Integer rangeKey, LocalDate rangeStartLocalDate, Long userId,
+		String userName) {
 
 		_validateEventAnalysisName(channelId, eventAnalysisId, name);
 		_validateEventAnalysisBreakdowns(eventAnalysisBreakdowns);
@@ -263,9 +264,9 @@ public class EventAnalysisDog {
 		eventAnalysis.setModifiedByUserName(userName);
 		eventAnalysis.setModifiedDate(new Date());
 		eventAnalysis.setName(name);
-		eventAnalysis.setRangeEnd(rangeEnd);
+		eventAnalysis.setRangeEndLocalDate(rangeEndLocalDate);
 		eventAnalysis.setRangeKey(rangeKey);
-		eventAnalysis.setRangeStart(rangeStart);
+		eventAnalysis.setRangeStartLocalDate(rangeStartLocalDate);
 
 		return _eventAnalysisRepository.save(eventAnalysis);
 	}

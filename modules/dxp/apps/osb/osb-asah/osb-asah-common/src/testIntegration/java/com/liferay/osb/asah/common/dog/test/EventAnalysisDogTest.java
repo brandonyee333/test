@@ -86,9 +86,9 @@ public class EventAnalysisDogTest
 		Assertions.assertNotNull(eventAnalysis.getId());
 		Assertions.assertNull(eventAnalysis.getRangeKey());
 		Assertions.assertEquals(
-			LocalDate.of(2021, 6, 1), eventAnalysis.getRangeEnd());
+			LocalDate.of(2021, 6, 1), eventAnalysis.getRangeEndLocalDate());
 		Assertions.assertEquals(
-			LocalDate.of(2021, 5, 15), eventAnalysis.getRangeStart());
+			LocalDate.of(2021, 5, 15), eventAnalysis.getRangeStartLocalDate());
 
 		EventAnalysis updatedEventAnalysis =
 			_eventAnalysisDog.updateEventAnalysis(
@@ -108,8 +108,8 @@ public class EventAnalysisDogTest
 
 		Assertions.assertNotNull(updatedEventAnalysis);
 		Assertions.assertNotNull(updatedEventAnalysis.getId());
-		Assertions.assertNull(updatedEventAnalysis.getRangeEnd());
-		Assertions.assertNull(updatedEventAnalysis.getRangeStart());
+		Assertions.assertNull(updatedEventAnalysis.getRangeEndLocalDate());
+		Assertions.assertNull(updatedEventAnalysis.getRangeStartLocalDate());
 		Assertions.assertEquals(
 			100L, updatedEventAnalysis.getCreatedByUserId());
 		Assertions.assertEquals(
