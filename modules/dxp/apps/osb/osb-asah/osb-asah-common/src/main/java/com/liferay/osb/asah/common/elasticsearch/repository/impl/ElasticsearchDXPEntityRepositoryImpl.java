@@ -247,7 +247,7 @@ public class ElasticsearchDXPEntityRepositoryImpl
 
 			for (Sort.Order order : pageable.getSort()) {
 				if (!StringUtils.equals(type.getCollectionName(), "users") ||
-					!StringUtils.equals(order.getProperty(), "fields.name")) {
+					!StringUtils.equals(order.getProperty(), "name")) {
 
 					sorts.add(order.getProperty());
 				}
