@@ -31,6 +31,8 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectSelectStep;
+import org.jooq.SortField;
+import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Page;
@@ -234,6 +236,36 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		).fetch(
 			record -> new DXPEntity(record.intoMap())
 		);
+	}
+
+	@Override
+	protected Collection<SortField<?>> getSortFields(
+		Sort sort, Table<?> table) {
+
+		List<Sort.Order> orders = new ArrayList<>();
+
+		for (Sort.Order order : sort) {
+			String property = order.getProperty();
+
+			if (StringUtils.endsWith(property, "name")) {
+				orders.add(
+					new Sort.Order(
+						order.getDirection(),
+						_createFieldPath("fields.firstName")));
+				orders.add(
+					new Sort.Order(
+						order.getDirection(),
+						_createFieldPath("fields.lastName")));
+
+				continue;
+			}
+
+			orders.add(
+				new Sort.Order(
+					order.getDirection(), _createFieldPath(property)));
+		}
+
+		return super.getSortFields(Sort.by(orders), table);
 	}
 
 	private Condition _createCondition(String fieldKey, Object fieldValue) {
