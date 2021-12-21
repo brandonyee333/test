@@ -58,15 +58,12 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 		PostgreSQLDataSource postgreSQLDataSource =
 			(PostgreSQLDataSource)_dataSource;
 
-		if (!postgreSQLDataSource.isGlobal()) {
-			throw new IllegalStateException(
-				"Unable to create global schema on a nonglobal context");
+		if (postgreSQLDataSource.isGlobal()) {
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("tables-global.sql")),
+				_dataSource);
 		}
-
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(
-				new ClassPathResource("tables-global.sql")),
-			_dataSource);
 	}
 
 	@Override
