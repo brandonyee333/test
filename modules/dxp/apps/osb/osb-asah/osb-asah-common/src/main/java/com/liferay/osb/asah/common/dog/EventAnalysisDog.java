@@ -585,7 +585,7 @@ public class EventAnalysisDog {
 
 		if (StringUtils.isBlank(name)) {
 			throw new OSBAsahException(
-				HttpStatus.BAD_REQUEST, "Name cannot be blank");
+				HttpStatus.BAD_REQUEST, "NAME_CANNOT_BE_BLANK");
 		}
 
 		Optional<EventAnalysis> eventAnalysisOptional =
@@ -598,8 +598,7 @@ public class EventAnalysisDog {
 			!Objects.equals(eventAnalysis.getId(), eventAnalysisId)) {
 
 			throw new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				String.format("Name %s is already used", name));
+				HttpStatus.BAD_REQUEST, "NAME_IS_ALREADY_USED");
 		}
 	}
 
