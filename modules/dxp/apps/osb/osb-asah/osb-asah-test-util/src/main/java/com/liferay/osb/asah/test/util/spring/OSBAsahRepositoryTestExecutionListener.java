@@ -154,8 +154,10 @@ public class OSBAsahRepositoryTestExecutionListener
 				repositoryResource.repositoryClass());
 
 		JSONArray jsonArray = new JSONArray(
-			ResourceUtil.readResourceToString(
-				"dependencies/" + repositoryResource.resourcePath(), clazz));
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					"dependencies/" + repositoryResource.resourcePath(),
+					clazz)));
 
 		List<Object> jsonObjectList = jsonArray.toList();
 
