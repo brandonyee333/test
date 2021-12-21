@@ -49,18 +49,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 	name = "activities", resourcePath = "activities.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
-@RepositoryResource(
-	repositoryClass = AssetRepository.class,
-	resourcePath = "osbasahfaroinfo/assets.json"
-)
-@RepositoryResource(
-	repositoryClass = DataSourceRepository.class,
-	resourcePath = "osbasahfaroinfo/data_sources.json"
-)
 public class ActivitiesAssetTransformationJSONArrayFunctionTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
 	@Test
 	public void testApplyAscSort() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
@@ -79,6 +79,14 @@ public class ActivitiesAssetTransformationJSONArrayFunctionTest
 			true);
 	}
 
+	@RepositoryResource(
+		repositoryClass = AssetRepository.class,
+		resourcePath = "osbasahfaroinfo/assets.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
 	@Test
 	public void testApplyDescSort() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
