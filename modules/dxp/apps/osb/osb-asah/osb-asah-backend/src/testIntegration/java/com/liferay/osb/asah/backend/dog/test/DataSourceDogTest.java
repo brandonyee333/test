@@ -133,7 +133,7 @@ public class DataSourceDogTest
 	public void testGetFilteredDataSources() {
 		List<DataSource> dataSources = _dataSourceDog.getDataSources(
 			"Token Authentication", "LIFERAY", 1,
-			Sort.by(Sort.Order.desc("dateModified")));
+			Sort.by(Sort.Order.desc("modifiedDate")));
 
 		Assertions.assertEquals(1, dataSources.size(), dataSources.toString());
 
