@@ -72,6 +72,28 @@ public class SuppressionDogTest
 			"test@liferay.com", suppression.getEmailAddress());
 	}
 
+	@Test
+	public void testGetSuppressionResultBagWithCache() {
+		Page<Suppression> suppressionPage = null;
+
+		int count = 0;
+
+		while (count < 2) {
+			suppressionPage = _suppressionDog.getSuppressionPage(
+				null, 0, 10, Sort.desc("createDate"));
+
+			count++;
+		}
+
+		Assertions.assertEquals(3, suppressionPage.getTotalElements());
+
+		Assertions.assertEquals(
+			Arrays.asList(
+				"jane.doe@gmail.com", "test@liferay.com", "john.doe@gmail.com"),
+			ListUtil.map(
+				suppressionPage.getContent(), Suppression::getEmailAddress));
+	}
+
 	@Autowired
 	private SuppressionDog _suppressionDog;
 
