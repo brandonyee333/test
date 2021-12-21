@@ -1,1 +1,0 @@
-INSERT INTO Channel (id, name) VALUES (420253908131944590, 'Test Channel');

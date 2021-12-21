@@ -17,13 +17,6 @@ package com.liferay.osb.asah.upgrade;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.upgrade.v0_0_0.ProjectsIndexUpgradeStep;
 import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_0_0.AssetsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_0_0.ChannelsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_0_0.CustomEventUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_0_0.DXPEntityUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_0_0.DataSourcesUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_0_0.IndividualsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_0_0.SalesforceUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_1.EventDefinitionUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_10.SnapshotRepositoryUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_5.CommentPostedEventDefinitionUpgradeStep;
@@ -51,12 +44,6 @@ public class UpgradeProcessConfiguration {
 			_snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.12.3", "3.0.0", _assetsUpgradeStep, _channelsUpgradeStep,
-			_customEventUpgradeStep, _dataSourcesUpgradeStep,
-			_dxpEntityUpgradeStep, _individualsUpgradeStep,
-			_salesforceUpgradeStep);
-
-		upgradeProcess.addUpgradeSteps(
 			"3.0.0", "3.0.1", _eventDefinitionUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
@@ -77,26 +64,11 @@ public class UpgradeProcessConfiguration {
 	}
 
 	@Autowired
-	private AssetsUpgradeStep _assetsUpgradeStep;
-
-	@Autowired
-	private ChannelsUpgradeStep _channelsUpgradeStep;
-
-	@Autowired
 	private CommentPostedEventDefinitionUpgradeStep
 		_commentPostedEventDefinitionUpgradeStep;
 
 	@Autowired
-	private CustomEventUpgradeStep _customEventUpgradeStep;
-
-	@Autowired
 	private DataSourceMigrationUpgradeStep _dataSourceMigrationUpgradeStep;
-
-	@Autowired
-	private DataSourcesUpgradeStep _dataSourcesUpgradeStep;
-
-	@Autowired
-	private DXPEntityUpgradeStep _dxpEntityUpgradeStep;
 
 	@Autowired
 	private EventAnalysisUpgradeStep _eventAnalysisUpgradeStep;
@@ -108,13 +80,7 @@ public class UpgradeProcessConfiguration {
 	private EventDefinitionUpgradeStep _eventDefinitionUpgradeStep;
 
 	@Autowired
-	private IndividualsUpgradeStep _individualsUpgradeStep;
-
-	@Autowired
 	private ProjectsIndexUpgradeStep _projectsIndexUpgradeStep;
-
-	@Autowired
-	private SalesforceUpgradeStep _salesforceUpgradeStep;
 
 	@Autowired
 	private SnapshotRepositoryUpgradeStep _snapshotRepositoryUpgradeStep;
