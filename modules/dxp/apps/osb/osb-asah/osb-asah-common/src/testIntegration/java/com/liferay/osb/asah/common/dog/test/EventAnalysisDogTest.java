@@ -134,7 +134,7 @@ public class EventAnalysisDogTest
 		Exception exception = Assertions.assertThrows(
 			OSBAsahException.class, () -> _addEventAnalysis(1L, " "));
 
-		Assertions.assertEquals("Name cannot be blank", exception.getMessage());
+		Assertions.assertEquals("NAME_CANNOT_BE_BLANK", exception.getMessage());
 
 		String eventAnalysisName1 = "ADD EVENT ANALYSIS IN THE SAME CHANNEL";
 
@@ -145,9 +145,7 @@ public class EventAnalysisDogTest
 				_addEventAnalysis(1L, eventAnalysisName1);
 			});
 
-		Assertions.assertEquals(
-			String.format("Name %s is already used", eventAnalysisName1),
-			exception.getMessage());
+		Assertions.assertEquals("NAME_IS_ALREADY_USED", exception.getMessage());
 
 		EventAnalysis eventAnalysis1 = _addEventAnalysis(
 			2L, eventAnalysisName1);
@@ -170,7 +168,7 @@ public class EventAnalysisDogTest
 			OSBAsahException.class,
 			() -> _updateEventAnalysis(eventAnalysis2, null));
 
-		Assertions.assertEquals("Name cannot be blank", exception.getMessage());
+		Assertions.assertEquals("NAME_CANNOT_BE_BLANK", exception.getMessage());
 
 		String eventAnalysisName2 = "UPDATE EVENT ANALYSIS IN THE SAME CHANNEL";
 
@@ -183,9 +181,7 @@ public class EventAnalysisDogTest
 				_updateEventAnalysis(eventAnalysis2, eventAnalysisName2);
 			});
 
-		Assertions.assertEquals(
-			String.format("Name %s is already used", eventAnalysisName2),
-			exception.getMessage());
+		Assertions.assertEquals("NAME_IS_ALREADY_USED", exception.getMessage());
 
 		EventAnalysis eventAnalysis3 = _updateEventAnalysis(
 			eventAnalysis2, eventAnalysisName1);
