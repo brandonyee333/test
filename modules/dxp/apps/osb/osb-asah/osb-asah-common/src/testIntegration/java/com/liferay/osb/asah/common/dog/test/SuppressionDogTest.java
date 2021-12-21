@@ -25,6 +25,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -74,24 +75,25 @@ public class SuppressionDogTest
 
 	@Test
 	public void testGetSuppressionResultBagWithCache() {
-		Page<Suppression> suppressionPage = null;
+		IntStream.range(
+			1, 4
+		).forEach(
+			i -> {
+				Page<Suppression> suppressionPage =
+					_suppressionDog.getSuppressionPage(
+						null, 0, 10, Sort.desc("createDate"));
 
-		int count = 0;
+				Assertions.assertEquals(3, suppressionPage.getTotalElements());
 
-		while (count < 2) {
-			suppressionPage = _suppressionDog.getSuppressionPage(
-				null, 0, 10, Sort.desc("createDate"));
-
-			count++;
-		}
-
-		Assertions.assertEquals(3, suppressionPage.getTotalElements());
-
-		Assertions.assertEquals(
-			Arrays.asList(
-				"jane.doe@gmail.com", "test@liferay.com", "john.doe@gmail.com"),
-			ListUtil.map(
-				suppressionPage.getContent(), Suppression::getEmailAddress));
+				Assertions.assertEquals(
+					Arrays.asList(
+						"jane.doe@gmail.com", "test@liferay.com",
+						"john.doe@gmail.com"),
+					ListUtil.map(
+						suppressionPage.getContent(),
+						Suppression::getEmailAddress));
+			}
+		);
 	}
 
 	@Autowired
