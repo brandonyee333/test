@@ -202,16 +202,10 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testDeleteCSVDataSource() throws Exception {
 		JSONObject dataSourceJSONObject1 = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildCSVDataSourceJSONObject(),
-					DataSource.class)),
+			_dataSourceDog.addDataSource(FaroInfoTestUtil.buildCSVDataSource()),
 			JSONObject.class);
 		JSONObject dataSourceJSONObject2 = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildCSVDataSourceJSONObject(),
-					DataSource.class)),
+			_dataSourceDog.addDataSource(FaroInfoTestUtil.buildCSVDataSource()),
 			JSONObject.class);
 
 		String dataSourceId1 = dataSourceJSONObject1.getString("id");

@@ -233,15 +233,14 @@ public class DataSourcesRestControllerTest {
 
 	@Test
 	public void testGetCSVDataSourceProgress() {
-		JSONObject csvDataSourceJSONObject = _faroInfoElasticsearchInvoker.add(
-			"data-sources", FaroInfoTestUtil.buildCSVDataSourceJSONObject());
+		DataSource csvDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildCSVDataSource());
 
 		// CSV individuals nanite is null
 
 		Assertions.assertEquals(
 			"{}",
-			_dataSourcesRestController.getProgress(
-				csvDataSourceJSONObject.getLong("id")));
+			_dataSourcesRestController.getProgress(csvDataSource.getId()));
 
 		// CSV individuals nanite started
 
@@ -260,7 +259,7 @@ public class DataSourcesRestControllerTest {
 							).put(
 								"totalOperations", 1
 							));
-						setDataSourceId(csvDataSourceJSONObject.getLong("id"));
+						setDataSourceId(csvDataSource.getId());
 						setDateLogged(DateUtil.newDate());
 						setNaniteClassName("CSVIndividualsNanite");
 						setStatus("STARTED");
@@ -275,8 +274,7 @@ public class DataSourcesRestControllerTest {
 		}
 
 		JSONObject progressJSONObject = new JSONObject(
-			_dataSourcesRestController.getProgress(
-				csvDataSourceJSONObject.getLong("id")));
+			_dataSourcesRestController.getProgress(csvDataSource.getId()));
 
 		Assertions.assertEquals(
 			1, progressJSONObject.getInt("processedOperations"));
@@ -302,7 +300,7 @@ public class DataSourcesRestControllerTest {
 							).put(
 								"totalOperations", 1
 							));
-						setDataSourceId(csvDataSourceJSONObject.getLong("id"));
+						setDataSourceId(csvDataSource.getId());
 						setDateLogged(loggedDate);
 						setNaniteClassName("CSVIndividualsNanite");
 						setStatus("FAILED");
@@ -323,8 +321,7 @@ public class DataSourcesRestControllerTest {
 				"status", "FAILED"
 			),
 			new JSONObject(
-				_dataSourcesRestController.getProgress(
-					csvDataSourceJSONObject.getLong("id"))),
+				_dataSourcesRestController.getProgress(csvDataSource.getId())),
 			true);
 	}
 

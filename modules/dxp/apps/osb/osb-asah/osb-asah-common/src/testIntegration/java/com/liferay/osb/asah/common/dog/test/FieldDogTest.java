@@ -49,9 +49,7 @@ public class FieldDogTest
 	@BeforeEach
 	public void setUp() {
 		_dataSource = _dataSourceDog.addDataSource(
-			_objectMapper.convertValue(
-				FaroInfoTestUtil.buildCSVDataSourceJSONObject(),
-				DataSource.class));
+			FaroInfoTestUtil.buildCSVDataSource());
 
 		_fieldMapping = _fieldMappingDog.addFieldMapping(
 			FaroInfoTestUtil.buildIndividualFieldMapping(

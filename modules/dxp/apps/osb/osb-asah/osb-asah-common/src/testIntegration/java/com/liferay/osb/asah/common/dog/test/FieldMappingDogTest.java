@@ -115,10 +115,7 @@ public class FieldMappingDogTest
 	@Test
 	public void testAddEmailFieldMappingCSVDataSource() {
 		_testAddEmailFieldMapping(
-			_dataSourceRepository.save(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildCSVDataSourceJSONObject(),
-					DataSource.class)),
+			_dataSourceRepository.save(FaroInfoTestUtil.buildCSVDataSource()),
 			"email");
 	}
 
@@ -301,10 +298,7 @@ public class FieldMappingDogTest
 	@Test
 	public void testUpdateEmailFieldMapping() {
 		_testAddEmailFieldMapping(
-			_dataSourceRepository.save(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildCSVDataSourceJSONObject(),
-					DataSource.class)),
+			_dataSourceRepository.save(FaroInfoTestUtil.buildCSVDataSource()),
 			"email");
 
 		_testAddEmailFieldMapping(

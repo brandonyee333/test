@@ -287,26 +287,25 @@ public class FaroInfoTestUtil {
 		);
 	}
 
-	public static JSONObject buildCSVDataSourceJSONObject() {
-		String dateString = DateUtil.newDateString();
+	public static DataSource buildCSVDataSource() {
+		DataSource dataSource = new DataSource();
 
-		return JSONUtil.put(
-			"about", RandomTestUtil.randomMultipleWordString(20, 50)
-		).put(
-			"author", _getAuthorJSONObject()
-		).put(
-			"dateCreated", dateString
-		).put(
-			"dateModified", dateString
-		).put(
-			"description", RandomTestUtil.randomMultipleWordString(20, 50)
-		).put(
-			"name", RandomTestUtil.randomMultipleWordString(5, 20)
-		).put(
-			"provider", JSONUtil.put("type", "CSV")
-		).put(
-			"status", "ACTIVE"
-		);
+		dataSource.setAuthorId(
+			Long.valueOf(RandomStringUtils.randomNumeric(5, 7)));
+		dataSource.setAuthorName(RandomTestUtil.randomFullName());
+
+		Date date = new Date();
+
+		dataSource.setCreateDate(date);
+
+		dataSource.setId(Long.valueOf(_timeOrderedUuidGenerator.generateId()));
+		dataSource.setIsNew(Boolean.TRUE);
+		dataSource.setModifiedDate(date);
+		dataSource.setName(RandomTestUtil.randomMultipleWordString(5, 20));
+		dataSource.setProviderType("CSV");
+		dataSource.setStatus("ACTIVE");
+
+		return dataSource;
 	}
 
 	public static JSONObject buildCSVIndividualJSONObject(

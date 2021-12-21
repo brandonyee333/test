@@ -17,7 +17,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
@@ -54,9 +53,7 @@ public abstract class BaseIndividualsNaniteTestCase
 		if (type.equals("CSV")) {
 			_dataSourceJSONObject = _objectMapper.convertValue(
 				_dataSourceDog.addDataSource(
-					_objectMapper.convertValue(
-						FaroInfoTestUtil.buildCSVDataSourceJSONObject(),
-						DataSource.class)),
+					FaroInfoTestUtil.buildCSVDataSource()),
 				JSONObject.class);
 		}
 		else if (type.equals("LIFERAY")) {
