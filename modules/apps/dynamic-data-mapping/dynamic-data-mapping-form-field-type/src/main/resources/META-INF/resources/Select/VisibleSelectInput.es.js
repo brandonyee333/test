@@ -17,7 +17,7 @@ import ClayLabel from '@clayui/label';
 import classNames from 'classnames';
 import React, {forwardRef} from 'react';
 
-const LabelOptionListItem = ({onCloseButtonClicked, option}) => (
+const LabelOptionListItem = ({onCloseButtonClicked, option, readOnly}) => (
 	<li>
 		<ClayLabel
 			className="ddm-select-option-label"
@@ -31,6 +31,7 @@ const LabelOptionListItem = ({onCloseButtonClicked, option}) => (
 				},
 			}}
 			value={option.value}
+			withClose={!readOnly}
 		>
 			{option.label}
 		</ClayLabel>
@@ -118,6 +119,7 @@ const VisibleSelectInput = forwardRef(
 									key={`${option.value}-${option.label}`}
 									onCloseButtonClicked={onCloseButtonClicked}
 									option={option}
+									readOnly={readOnly}
 								/>
 							);
 						})
