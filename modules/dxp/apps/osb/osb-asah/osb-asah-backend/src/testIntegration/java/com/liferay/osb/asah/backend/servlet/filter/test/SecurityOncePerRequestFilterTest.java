@@ -17,7 +17,8 @@ package com.liferay.osb.asah.backend.servlet.filter.test;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
@@ -86,9 +87,12 @@ public class SecurityOncePerRequestFilterTest {
 		String securitySignature = DigestUtils.sha256Hex(
 			uuid.concat("http://localhost"));
 
-		_elasticsearchInvoker.add(
-			"data-sources",
-			JSONUtil.put("faroBackendSecuritySignature", securitySignature));
+		DataSource dataSource = new DataSource();
+
+		dataSource.setFaroBackendSecuritySignature(securitySignature);
+		dataSource.setIsNew(Boolean.TRUE);
+
+		_dataSourceRepository.save(dataSource);
 
 		_testGet("/api/1.0/individual-segments", securitySignature);
 
@@ -151,6 +155,9 @@ public class SecurityOncePerRequestFilterTest {
 		_expectStatusForbidden(
 			_mockMvc.perform(mockHttpServletRequestBuilder2));
 	}
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;

@@ -184,15 +184,14 @@ public class AnalyticsEventsMessageProcessorTest
 	public void testProcessQueuedMessagesDataSourceCreatedDynamically()
 		throws Exception {
 
-		_elasticsearchInvoker.add(
-			"data-sources",
-			JSONUtil.put(
-				"id", "990121114030678099"
-			).put(
-				"provider", JSONUtil.put("type", "LIFERAY")
-			).put(
-				"status", "ACTIVE"
-			));
+		DataSource dataSource = new DataSource();
+
+		dataSource.setId(990121114030678099L);
+		dataSource.setIsNew(Boolean.TRUE);
+		dataSource.setProviderType("LIFERAY");
+		dataSource.setStatus("ACTIVE");
+
+		_dataSourceRepository.save(dataSource);
 
 		_elasticsearchInvoker.add(
 			"channels",
@@ -397,6 +396,9 @@ public class AnalyticsEventsMessageProcessorTest
 
 	@Autowired
 	private AnalyticsEventsMessageProcessor _analyticsEventsMessageProcessor;
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;

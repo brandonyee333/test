@@ -38,6 +38,7 @@ import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -178,25 +179,17 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 					"Liferay", RandomTestUtil.randomURL()));
 		}
 
-		Assertions.assertEquals(
-			4L,
-			faroInfoElasticsearchInvoker.count(
-				"data-sources", QueryBuilders.matchAllQuery()));
+		List<DataSource> dataSources = _dataSourceDog.getDataSources();
+
+		Assertions.assertEquals(4L, dataSources.size());
+
+		Assertions.assertTrue(_dataSourceRepository.existsByName("Liferay"));
 		Assertions.assertTrue(
-			faroInfoElasticsearchInvoker.exists(
-				"data-sources", QueryBuilders.termQuery("name", "Liferay")));
+			_dataSourceRepository.existsByName("Liferay (1)"));
 		Assertions.assertTrue(
-			faroInfoElasticsearchInvoker.exists(
-				"data-sources",
-				QueryBuilders.termQuery("name", "Liferay (1)")));
+			_dataSourceRepository.existsByName("Liferay (2)"));
 		Assertions.assertTrue(
-			faroInfoElasticsearchInvoker.exists(
-				"data-sources",
-				QueryBuilders.termQuery("name", "Liferay (2)")));
-		Assertions.assertTrue(
-			faroInfoElasticsearchInvoker.exists(
-				"data-sources",
-				QueryBuilders.termQuery("name", "Liferay (3)")));
+			_dataSourceRepository.existsByName("Liferay (3)"));
 	}
 
 	@Test
@@ -649,8 +642,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testUpdateDataSourceModifiesDataSourceName() {
-		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource(
-			"foo", RandomTestUtil.randomURL());
+		DataSource dataSource = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildLiferayDataSource(
+				"foo", RandomTestUtil.randomURL()));
 
 		DataSource liferayDataSource = FaroInfoTestUtil.buildLiferayDataSource(
 			"bar", RandomTestUtil.randomURL());
@@ -826,6 +820,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;

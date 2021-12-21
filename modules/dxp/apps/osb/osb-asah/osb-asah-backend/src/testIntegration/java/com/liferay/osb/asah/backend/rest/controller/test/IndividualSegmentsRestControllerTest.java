@@ -442,19 +442,13 @@ public class IndividualSegmentsRestControllerTest
 	)
 	@Test
 	public void testPreviewDisabledSegments() throws Exception {
-		JSONArray dataSourcesJSONArray = _elasticsearchInvoker.get(
-			"data-sources");
-
-		JSONObject dataSourceJSONObject = dataSourcesJSONArray.getJSONObject(0);
-
 		Assertions.assertEquals(
 			3L,
 			JSONUtil.getValue(
 				_objectMapper.convertValue(
 					_individualSegmentsRestController.
 						getPreviewDisabledSegmentDTOsPageDTOs(
-							Long.valueOf(dataSourceJSONObject.getString("id")),
-							null, 0, 10, null),
+							351238757269547424L, null, 0, 10, null),
 					JSONObject.class),
 				"JSONObject/page", "Object/totalElements"));
 		Assertions.assertEquals(
@@ -463,8 +457,8 @@ public class IndividualSegmentsRestControllerTest
 				_objectMapper.convertValue(
 					_individualSegmentsRestController.
 						getPreviewDisabledSegmentDTOsPageDTOs(
-							Long.valueOf(dataSourceJSONObject.getString("id")),
-							"((status eq 'ACTIVE'))", 0, 10, null),
+							351238757269547424L, "((status eq 'ACTIVE'))", 0,
+							10, null),
 					JSONObject.class),
 				"JSONObject/page", "Object/totalElements"));
 	}
