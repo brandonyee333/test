@@ -94,6 +94,8 @@ public class DataSourceDog {
 
 		dataSource = _dataSourceRepository.save(dataSource);
 
+		dataSource.setIsNew(Boolean.FALSE);
+
 		if (Objects.equals(providerType, "CSV")) {
 			dataSource.setState("READY");
 		}
