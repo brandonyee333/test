@@ -160,6 +160,19 @@ public class OSBAsahCacheManager implements CacheManager {
 					}
 
 				});
+			kryo.register(
+				Sort.Order.class,
+				new FieldSerializer<Sort.Order>(kryo, Sort.Order.class) {
+
+					@Override
+					protected Sort.Order create(
+						Kryo kryo, Input input,
+						Class<? extends Sort.Order> clazz) {
+
+						return Sort.Order.by("id");
+					}
+
+				});
 			kryo.setRegistrationRequired(false);
 
 			return kryo;
