@@ -69,6 +69,13 @@ public class CreateEventAnalysisMutationDataFetcherTest
 				_getDataFetchingEnvironment());
 
 		Assertions.assertNotNull(eventAnalysisDTO.getId());
+		Assertions.assertEquals(
+			LocalDate.of(2021, 12, 31),
+			eventAnalysisDTO.getRangeEndLocalDate());
+		Assertions.assertNull(eventAnalysisDTO.getRangeKey());
+		Assertions.assertEquals(
+			LocalDate.of(2021, 12, 1),
+			eventAnalysisDTO.getRangeStartLocalDate());
 
 		List<EventAnalysisDTO.EventAnalysisBreakdownDTO>
 			eventAnalysisBreakdownDTOs =
@@ -80,14 +87,6 @@ public class CreateEventAnalysisMutationDataFetcherTest
 			eventAnalysisDTO.getEventAnalysisFilterDTOs();
 
 		Assertions.assertEquals(1, eventAnalysisFilterDTOs.size());
-
-		Assertions.assertEquals(
-			LocalDate.of(2021, 12, 31),
-			eventAnalysisDTO.getRangeEndLocalDate());
-		Assertions.assertNull(eventAnalysisDTO.getRangeKey());
-		Assertions.assertEquals(
-			LocalDate.of(2021, 12, 1),
-			eventAnalysisDTO.getRangeStartLocalDate());
 	}
 
 	private EventDefinition _createEventDefinition(int index) {
