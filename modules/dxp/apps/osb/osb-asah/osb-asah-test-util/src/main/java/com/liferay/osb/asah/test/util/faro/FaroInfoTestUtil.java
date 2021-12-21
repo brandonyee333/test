@@ -624,6 +624,7 @@ public class FaroInfoTestUtil {
 		dataSource.setAuthorName(authorJSONObject.getString("name"));
 		dataSource.setCreateDate(date);
 		dataSource.setCredentialType(authenticationType);
+		dataSource.setIsNew(Boolean.TRUE);
 		dataSource.setModifiedDate(date);
 		dataSource.setName(name);
 		dataSource.setURL(url);
@@ -829,6 +830,7 @@ public class FaroInfoTestUtil {
 		dataSource.setEnableAllContacts(true);
 		dataSource.setEnableAllLeads(true);
 		dataSource.setId(Long.valueOf(_timeOrderedUuidGenerator.generateId()));
+		dataSource.setIsNew(Boolean.TRUE);
 		dataSource.setModifiedDate(date);
 		dataSource.setName(RandomTestUtil.randomMultipleWordString(5, 20));
 		dataSource.setProviderType("SALESFORCE");

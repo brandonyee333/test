@@ -656,6 +656,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			"bar", RandomTestUtil.randomURL());
 
 		liferayDataSource.setId(dataSource.getId());
+		liferayDataSource.setIsNew(Boolean.FALSE);
 
 		dataSource = _dataSourceDog.updateDataSourceConfiguration(
 			liferayDataSource);
@@ -702,6 +703,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			dataSourceName, updatedURL);
 
 		liferayDataSource.setId(dataSource.getId());
+		liferayDataSource.setIsNew(Boolean.FALSE);
 
 		dataSource = _dataSourceDog.updateDataSourceConfiguration(
 			liferayDataSource);

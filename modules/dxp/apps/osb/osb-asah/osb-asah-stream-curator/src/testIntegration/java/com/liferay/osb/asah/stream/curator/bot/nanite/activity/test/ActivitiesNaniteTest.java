@@ -69,6 +69,7 @@ public class ActivitiesNaniteTest
 		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource();
 
 		dataSource.setId(1L);
+		dataSource.setIsNew(Boolean.TRUE);
 
 		_dataSourceRepository.save(dataSource);
 	}
