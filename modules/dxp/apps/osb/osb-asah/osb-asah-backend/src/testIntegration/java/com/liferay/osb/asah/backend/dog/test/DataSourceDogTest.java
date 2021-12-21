@@ -23,8 +23,10 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
@@ -47,18 +49,18 @@ public class DataSourceDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources_info.json"
 	)
 	@Test
 	public void testDataSourceNotFound() {
 		Assertions.assertNull(_dataSourceDog.fetchDataSource(0L));
 	}
 
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources_info.json"
 	)
 	@Test
 	public void testGetAllDataSources() {
@@ -72,9 +74,9 @@ public class DataSourceDogTest
 		name = "channels", resourcePath = "channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources_info.json"
 	)
 	@Test
 	public void testGetChannelId() {
@@ -82,9 +84,9 @@ public class DataSourceDogTest
 			_dataSourceDog.getDefaultChannelId(405057430327289648L));
 	}
 
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources_info.json"
 	)
 	@Test
 	public void testGetDataSource() {
@@ -123,9 +125,9 @@ public class DataSourceDogTest
 				jsonArray.getJSONObject(0), DataSource.class));
 	}
 
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources_info.json"
 	)
 	@Test
 	public void testGetFilteredDataSources() {

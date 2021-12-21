@@ -15,18 +15,21 @@
 package com.liferay.osb.asah.extractor.processor.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.extractor.processor.AnalyticsEventsMessageProcessor;
 import com.liferay.osb.asah.extractor.spring.OSBAsahExtractorSpringBootApplication;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -71,10 +74,6 @@ public class AnalyticsEventsMessageProcessorTest
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -85,6 +84,10 @@ public class AnalyticsEventsMessageProcessorTest
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
 		resourcePath = "analytics_events_message_channel_1.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@Test
 	public void testProcessQueuedMessages() throws Exception {
@@ -135,13 +138,13 @@ public class AnalyticsEventsMessageProcessorTest
 		name = "channels", resourcePath = "channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
 		resourcePath = "analytics_events_message_channel_2.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@Test
 	public void testProcessQueuedMessagesAssignMissingChannelId()
@@ -166,16 +169,16 @@ public class AnalyticsEventsMessageProcessorTest
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
 		resourcePath = "analytics_events_message_channel_4.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@Test
 	public void testProcessQueuedMessagesDataSourceCreatedDynamically()
@@ -227,13 +230,13 @@ public class AnalyticsEventsMessageProcessorTest
 		);
 	}
 
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
 		resourcePath = "analytics_events_message_channel_5.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@Test
 	public void testProcessQueuedMessagesDataSourceInactive() throws Exception {
@@ -255,13 +258,13 @@ public class AnalyticsEventsMessageProcessorTest
 		);
 	}
 
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
 		resourcePath = "analytics_events_message_channel_3.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@Test
 	public void testProcessQueuedMessagesDiscardDueMissingChannelId()
@@ -289,13 +292,13 @@ public class AnalyticsEventsMessageProcessorTest
 		name = "channels", resourcePath = "channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
 		resourcePath = "analytics_events_message_duplicated_events.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@Test
 	public void testProcessQueuedMessagesDiscardDuplicatedEvents()
@@ -318,13 +321,13 @@ public class AnalyticsEventsMessageProcessorTest
 		);
 	}
 
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
 		resourcePath = "analytics_events_message_canonical_url_1.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@Test
 	public void testProcessQueuedMessagesMissingCanonicalUrl()
@@ -355,13 +358,13 @@ public class AnalyticsEventsMessageProcessorTest
 		);
 	}
 
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
 		resourcePath = "analytics_events_message_canonical_url_2.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@Test
 	public void testProcessQueuedMessagesNotReplacingCanonicalUrl()

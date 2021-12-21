@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.ActivitiesAssetTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -48,13 +49,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 	name = "activities", resourcePath = "activities.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
-@ElasticsearchIndex(
-	name = "data-sources", resourcePath = "data_sources.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-)
 @RepositoryResource(
 	repositoryClass = AssetRepository.class,
 	resourcePath = "osbasahfaroinfo/assets.json"
+)
+@RepositoryResource(
+	repositoryClass = DataSourceRepository.class,
+	resourcePath = "osbasahfaroinfo/data_sources.json"
 )
 public class ActivitiesAssetTransformationJSONArrayFunctionTest
 	implements OSBAsahCommonSpringTestContext,

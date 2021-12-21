@@ -20,9 +20,11 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
@@ -42,9 +44,9 @@ import org.springframework.data.domain.Page;
 /**
  * @author Matthew Kong
  */
-@ElasticsearchIndex(
-	name = "data-sources", resourcePath = "data_sources.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+@RepositoryResource(
+	repositoryClass = DataSourceRepository.class,
+	resourcePath = "osbasahfaroinfo/data_sources.json"
 )
 public class DXPEntityDogTest
 	implements OSBAsahBackendSpringTestContext,
