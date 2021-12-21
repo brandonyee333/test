@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestComponent;
@@ -158,6 +159,15 @@ public class OSBAsahRepositoryTestExecutionListener
 				ResourceUtil.readResourceToString(
 					"dependencies/" + repositoryResource.resourcePath(),
 					clazz)));
+
+		jsonArray.forEach(
+			object -> {
+				JSONObject jsonObject = (JSONObject)object;
+
+				if (!jsonObject.has("isNew")) {
+					jsonObject.put("isNew", true);
+				}
+			});
 
 		List<Object> jsonObjectList = jsonArray.toList();
 
