@@ -214,7 +214,7 @@ public class DXPEntityDogTest
 	public void testGetUsersSearchAndSort() {
 		_testGetDXPEntities(
 			null, "users", Arrays.asList("Bruno Badmin", "Bruno Admin"), 2,
-			"Bruno", Sort.desc("fields.name"));
+			"Bruno", Sort.desc("name"));
 	}
 
 	private void _testGetDXPEntities(
