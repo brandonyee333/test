@@ -23,7 +23,9 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -252,6 +254,10 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 
 	protected abstract ElasticsearchInvoker getElasticsearchInvoker();
 
+	protected Map<String, String> getSortReplacementProperties() {
+		return Collections.emptyMap();
+	}
+
 	protected boolean isEmpty(Aggregations aggregations) {
 		if (aggregations == null) {
 			return true;
@@ -302,11 +308,10 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 						sortOrder = SortOrder.DESC;
 					}
 
-					String property = order.getProperty();
-
 					searchSourceBuilder.sort(
 						SortBuilderUtil.fieldSort(
-							property.replace('/', '.'), sortOrder));
+							_replaceSortProperty(order.getProperty()),
+							sortOrder));
 				}
 			);
 		}
@@ -348,5 +353,14 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 
 	protected final TimeOrderedUuidGenerator timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
+
+	private String _replaceSortProperty(String property) {
+		Map<String, String> replacementProperties =
+			getSortReplacementProperties();
+
+		property = replacementProperties.getOrDefault(property, property);
+
+		return property.replace('/', '.');
+	}
 
 }

@@ -23,8 +23,10 @@ import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.logging.Log;
@@ -240,6 +242,16 @@ public class ElasticsearchDataSourceRepositoryImpl
 	@Override
 	protected ElasticsearchInvoker getElasticsearchInvoker() {
 		return _faroInfoElasticsearchInvoker;
+	}
+
+	@Override
+	protected Map<String, String> getSortReplacementProperties() {
+		return new HashMap<String, String>() {
+			{
+				put("createDate", "dateCreated");
+				put("modifiedDate", "dateModified");
+			}
+		};
 	}
 
 	private static final Log _log = LogFactory.getLog(
