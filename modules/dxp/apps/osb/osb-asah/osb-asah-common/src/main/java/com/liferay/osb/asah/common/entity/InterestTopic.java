@@ -32,6 +32,9 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 public class InterestTopic implements Persistable<Long> {
 
+	public InterestTopic() {
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

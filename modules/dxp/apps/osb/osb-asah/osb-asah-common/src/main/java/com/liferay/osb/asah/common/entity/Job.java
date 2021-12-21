@@ -42,6 +42,9 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 public class Job implements Persistable<Long> {
 
+	public Job() {
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

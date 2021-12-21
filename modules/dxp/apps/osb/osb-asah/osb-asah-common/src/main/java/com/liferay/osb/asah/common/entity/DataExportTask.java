@@ -33,6 +33,9 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 public class DataExportTask implements Persistable<Long> {
 
+	public DataExportTask() {
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

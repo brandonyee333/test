@@ -36,6 +36,9 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 public class Suppression implements Persistable<Long> {
 
+	public Suppression() {
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

@@ -32,6 +32,9 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 public class ItemRecommendation implements Persistable<String> {
 
+	public ItemRecommendation() {
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

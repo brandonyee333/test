@@ -39,6 +39,10 @@ public class Sort extends org.springframework.data.domain.Sort {
 		return new Sort(sort.get("column"), sort.get("type"));
 	}
 
+	public Sort() {
+		super(Collections.emptyList());
+	}
+
 	public Sort(String column, String type) {
 		super(
 			Collections.singletonList(
@@ -56,7 +60,7 @@ public class Sort extends org.springframework.data.domain.Sort {
 		return _type;
 	}
 
-	private final String _column;
-	private final String _type;
+	private String _column;
+	private String _type;
 
 }
