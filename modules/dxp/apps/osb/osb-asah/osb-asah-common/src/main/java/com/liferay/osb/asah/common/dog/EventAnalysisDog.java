@@ -30,7 +30,9 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventAnalysisRepository;
 import com.liferay.osb.asah.common.repository.EventRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahDuplicateNameException;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahNameException;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
 
@@ -584,8 +586,7 @@ public class EventAnalysisDog {
 		Long channelId, @Nullable Long eventAnalysisId, String name) {
 
 		if (StringUtils.isBlank(name)) {
-			throw new OSBAsahException(
-				HttpStatus.BAD_REQUEST, "NAME_CANNOT_BE_BLANK");
+			throw new OSBAsahNameException();
 		}
 
 		Optional<EventAnalysis> eventAnalysisOptional =
@@ -597,8 +598,7 @@ public class EventAnalysisDog {
 		if ((eventAnalysis != null) &&
 			!Objects.equals(eventAnalysis.getId(), eventAnalysisId)) {
 
-			throw new OSBAsahException(
-				HttpStatus.BAD_REQUEST, "NAME_IS_ALREADY_USED");
+			throw new OSBAsahDuplicateNameException();
 		}
 	}
 

@@ -29,7 +29,8 @@ import com.liferay.osb.asah.common.model.EventAnalysisResult;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventAnalysisRepository;
-import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahDuplicateNameException;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahNameException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
@@ -132,14 +133,14 @@ public class EventAnalysisDogTest
 	@Test
 	public void testEventAnalysisName() {
 		Exception exception = Assertions.assertThrows(
-			OSBAsahException.class, () -> _addEventAnalysis(1L, " "));
+			OSBAsahNameException.class, () -> _addEventAnalysis(1L, " "));
 
 		Assertions.assertEquals("NAME_CANNOT_BE_BLANK", exception.getMessage());
 
 		String eventAnalysisName1 = "ADD EVENT ANALYSIS IN THE SAME CHANNEL";
 
 		exception = Assertions.assertThrows(
-			OSBAsahException.class,
+			OSBAsahDuplicateNameException.class,
 			() -> {
 				_addEventAnalysis(1L, eventAnalysisName1.toLowerCase());
 				_addEventAnalysis(1L, eventAnalysisName1);
@@ -165,7 +166,7 @@ public class EventAnalysisDogTest
 		Assertions.assertNotNull(eventAnalysis2);
 
 		exception = Assertions.assertThrows(
-			OSBAsahException.class,
+			OSBAsahNameException.class,
 			() -> _updateEventAnalysis(eventAnalysis2, null));
 
 		Assertions.assertEquals("NAME_CANNOT_BE_BLANK", exception.getMessage());
@@ -173,7 +174,7 @@ public class EventAnalysisDogTest
 		String eventAnalysisName2 = "UPDATE EVENT ANALYSIS IN THE SAME CHANNEL";
 
 		exception = Assertions.assertThrows(
-			OSBAsahException.class,
+			OSBAsahDuplicateNameException.class,
 			() -> {
 				_addEventAnalysis(
 					eventAnalysis2.getChannelId(),
