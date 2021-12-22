@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.spring.http.exception;
 
-import org.json.JSONObject;
-
 import org.springframework.http.HttpStatus;
 
 /**
@@ -23,34 +21,16 @@ import org.springframework.http.HttpStatus;
  */
 public class OSBAsahException extends RuntimeException {
 
-	public OSBAsahException(HttpStatus httpStatus) {
-		_httpStatus = httpStatus;
-	}
-
 	public OSBAsahException(HttpStatus httpStatus, String message) {
 		super(message);
 
 		_httpStatus = httpStatus;
 	}
 
-	public OSBAsahException(
-		JSONObject debugInfoJSONObject, HttpStatus httpStatus, String message) {
-
-		super(message);
-
-		_debugInfoJSONObject = debugInfoJSONObject;
-		_httpStatus = httpStatus;
-	}
-
-	public JSONObject getDebugInfoJSONObject() {
-		return _debugInfoJSONObject;
-	}
-
 	public HttpStatus getHttpStatus() {
 		return _httpStatus;
 	}
 
-	private JSONObject _debugInfoJSONObject;
 	private final HttpStatus _httpStatus;
 
 }

@@ -87,8 +87,7 @@ public class ResponseEntityExceptionHandler {
 		OSBAsahException osbAsahException) {
 
 		return _getResponseEntity(
-			osbAsahException.getDebugInfoJSONObject(), osbAsahException,
-			handlerMethod, httpServletRequest,
+			osbAsahException, handlerMethod, httpServletRequest,
 			osbAsahException.getHttpStatus());
 	}
 
