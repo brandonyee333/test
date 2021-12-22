@@ -1,12 +1,10 @@
 [
 	{
-		"author": null,
 		"credentials": {
 			"type": "Token Authentication"
 		},
 		"dateCreated": "2021-12-09T17:09:07.666Z",
 		"dateModified": "2021-12-09T17:09:07.666Z",
-		"deletionDate": null,
 		"details": {
 			"contactsSelected": false,
 			"sitesSelected": true
@@ -22,7 +20,6 @@
 		"workspaceURL": "http://localhost:8080/workspace/33394"
 	},
 	{
-		"author": null,
 		"credentials": {
 			"type": "Token Authentication"
 		},

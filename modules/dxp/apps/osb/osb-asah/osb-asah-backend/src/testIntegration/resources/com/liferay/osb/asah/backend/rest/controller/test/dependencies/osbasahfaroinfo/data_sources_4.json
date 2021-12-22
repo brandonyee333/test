@@ -1,12 +1,10 @@
 [
 	{
-		"author": null,
 		"credentials": {
 			"type": "Token Authentication"
 		},
 		"dateCreated": "2021-12-10T17:09:07.666Z",
 		"dateModified": "2021-12-10T17:09:07.666Z",
-		"deletionDate": null,
 		"details": {
 			"contactsSelected": false,
 			"sitesSelected": true
