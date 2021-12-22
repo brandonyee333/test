@@ -115,7 +115,7 @@
 				"searchTerm": {
 					"fields": {
 						"search": {
-							"normalizer": "folding_normalizer",
+							"normalizer": "case_insensitive_sort",
 							"type": "keyword"
 						}
 					},
@@ -173,6 +173,13 @@
 				}
 			},
 			"normalizer": {
+				"case_insensitive_sort": {
+					"filter": [
+						"lowercase",
+						"trim"
+					],
+					"type": "custom"
+				},
 				"folding_normalizer": {
 					"filter": [
 						"asciifolding",
