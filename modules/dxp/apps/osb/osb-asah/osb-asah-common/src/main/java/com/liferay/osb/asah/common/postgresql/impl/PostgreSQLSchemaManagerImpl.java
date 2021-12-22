@@ -72,7 +72,7 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 		}
 		else {
 			throw new IllegalStateException(
-				"Unable to create global schema on a non-global context");
+				"Unable to create global schema on a nonglobal context");
 		}
 	}
 
