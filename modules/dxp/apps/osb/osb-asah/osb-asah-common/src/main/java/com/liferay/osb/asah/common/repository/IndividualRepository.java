@@ -130,6 +130,13 @@ public interface IndividualRepository
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
 		@Nullable Long segmentId, Pageable pageable);
 
+	@Modifying
+	public void removeSegmentId(@Param("segmentId") Long segmentId);
+
+	@Modifying
+	public void removeSegmentIdByIdIn(
+		@Param("ids") Set<Long> ids, @Param("segmentId") Long segmentId);
+
 	public List<Individual> searchIndividuals(
 		FilterHelper filterHelper, Pageable pageable);
 

@@ -51,4 +51,24 @@
 				Individual.id
 		]]>
 	</entry>
+	<entry key="Individual.removeSegmentId">
+		<![CDATA[
+			UPDATE
+				Individual
+			SET
+			 	segmentIds = array_remove(segmentIds, :segmentId)
+			WHERE
+				:segmentId = ANY(Individual.segmentIds)
+		]]>
+	</entry>
+	<entry key="Individual.removeSegmentIdByIdIn">
+		<![CDATA[
+			UPDATE
+				Individual
+			SET
+			 	segmentIds = array_remove(segmentIds, :segmentId)
+			WHERE
+				Individual.id IN (:ids)
+		]]>
+	</entry>
 </properties>
