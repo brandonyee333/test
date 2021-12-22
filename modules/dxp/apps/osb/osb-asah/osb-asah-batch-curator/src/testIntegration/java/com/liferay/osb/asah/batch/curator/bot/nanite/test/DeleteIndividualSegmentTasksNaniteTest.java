@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -34,6 +35,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.RandomUtils;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -71,6 +73,8 @@ public class DeleteIndividualSegmentTasksNaniteTest
 		Individual individual = FaroInfoTestUtil.buildIndividual(dataSource);
 
 		individual.setSegmentIds(Collections.singleton(segmentId));
+
+		_fieldRepository.saveAll(individual.getFields());
 
 		_individualDog.addIndividual(individual, false);
 
@@ -114,6 +118,8 @@ public class DeleteIndividualSegmentTasksNaniteTest
 
 		individual = _individualDog.fetchIndividual(individual.getId());
 
+		Assertions.assertFalse(CollectionUtils.isEmpty(individual.getFields()));
+
 		Set<Long> segmentIds = individual.getSegmentIds();
 
 		Iterator<Long> iterator = segmentIds.iterator();
@@ -132,6 +138,9 @@ public class DeleteIndividualSegmentTasksNaniteTest
 	@Autowired
 	private DeleteIndividualSegmentTasksNanite
 		_deleteIndividualSegmentTasksNanite;
+
+	@Autowired
+	private FieldRepository _fieldRepository;
 
 	@Autowired
 	private IndividualDog _individualDog;
