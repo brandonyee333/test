@@ -22,7 +22,7 @@ import org.springframework.http.HttpStatus;
 public class OSBAsahNameException extends OSBAsahException {
 
 	public OSBAsahNameException() {
-		super(HttpStatus.BAD_REQUEST, "NAME_CANNOT_BE_BLANK");
+		super(HttpStatus.BAD_REQUEST, "Name cannot be blank");
 	}
 
 }

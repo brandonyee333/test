@@ -22,7 +22,7 @@ import org.springframework.http.HttpStatus;
 public class OSBAsahDuplicateNameException extends OSBAsahException {
 
 	public OSBAsahDuplicateNameException() {
-		super(HttpStatus.BAD_REQUEST, "NAME_IS_ALREADY_USED");
+		super(HttpStatus.BAD_REQUEST, "Name is already used");
 	}
 
 }
