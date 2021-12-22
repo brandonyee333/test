@@ -21,8 +21,6 @@ import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -60,20 +58,9 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 
 		membershipDog.deleteMembership(individualSegmentId);
 
-		JSONArrayIterator.of(
-			"individuals", faroInfoElasticsearchInvoker,
-			jsonObject -> {
-				_individualDog.removeSegmentId(
-					_objectMapper.convertValue(jsonObject, Individual.class),
-					individualSegmentId);
-
-				return null;
-			}
-		).setMonitoringConsumers(
-			this::monitorProcessedCount, this::monitorQueueSize
-		).setQueryBuilder(
-			QueryBuilders.termQuery("individualSegmentIds", individualSegmentId)
-		).iterate();
+		_individualDog.removeSegmentId(
+			_individualDog.getIndividualsBySegmentId(individualSegmentId),
+			individualSegmentId);
 	}
 
 	@Autowired
