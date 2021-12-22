@@ -60,6 +60,13 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 		if (Objects.equals("global", ProjectIdThreadLocal.getProjectId())) {
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
+					new InMemoryResource(
+						"CREATE SCHEMA IF NOT EXISTS " +
+							ProjectIdThreadLocal.getProjectId())),
+				_dataSource);
+
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
 					new ClassPathResource("tables-global.sql")),
 				_dataSource);
 		}
