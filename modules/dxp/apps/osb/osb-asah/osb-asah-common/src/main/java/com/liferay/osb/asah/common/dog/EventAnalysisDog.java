@@ -129,7 +129,7 @@ public class EventAnalysisDog {
 	}
 
 	public Page<EventAnalysis> getEventAnalysesPage(
-		Long channelId, @Nullable String keyword, int page, int size,
+		Long channelId, @Nullable String keywords, int page, int size,
 		Sort sort) {
 
 		_validate(sort);
@@ -138,10 +138,10 @@ public class EventAnalysisDog {
 
 		return PageableExecutionUtils.getPage(
 			_eventAnalysisRepository.searchEventAnalyses(
-				channelId, keyword, pageRequest),
+				channelId, keywords, pageRequest),
 			pageRequest,
 			() -> _eventAnalysisRepository.countEventAnalyses(
-				channelId, keyword));
+				channelId, keywords));
 	}
 
 	public EventAnalysis getEventAnalysis(Long eventAnalysisId) {

@@ -41,14 +41,14 @@ public class EventAnalysisRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countEventAnalyses(Long channelId, @Nullable String keyword) {
+	public long countEventAnalyses(Long channelId, @Nullable String keywords) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
 			"EventAnalysis"
 		).where(
-			_getCondition(channelId, keyword)
+			_getCondition(channelId, keywords)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -57,14 +57,14 @@ public class EventAnalysisRepositoryImpl extends BaseRepository {
 	}
 
 	public List<EventAnalysis> searchEventAnalyses(
-		Long channelId, @Nullable String keyword, Pageable pageable) {
+		Long channelId, @Nullable String keywords, Pageable pageable) {
 
 		return _dslContext.select(
 			DSL.asterisk()
 		).from(
 			"EventAnalysis"
 		).where(
-			_getCondition(channelId, keyword)
+			_getCondition(channelId, keywords)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
@@ -87,19 +87,19 @@ public class EventAnalysisRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	private Condition _getCondition(Long channelId, String keyword) {
+	private Condition _getCondition(Long channelId, String keywords) {
 		Condition condition = DSL.field(
 			"EventAnalysis.channelId"
 		).eq(
 			channelId
 		);
 
-		if (StringUtils.isNotEmpty(keyword)) {
+		if (StringUtils.isNotEmpty(keywords)) {
 			condition = condition.and(
 				DSL.field(
 					"name"
 				).containsIgnoreCase(
-					keyword
+					keywords
 				));
 		}
 

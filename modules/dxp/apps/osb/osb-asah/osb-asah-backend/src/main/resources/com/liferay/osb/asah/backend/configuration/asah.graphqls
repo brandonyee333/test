@@ -1038,7 +1038,7 @@ type QueryType {
 
 	eventAnalyses(
 		channelId: String!,
-		keyword: String,
+		keywords: String,
 		page: Int!,
 		size: Int!,
 		sort: Sort!

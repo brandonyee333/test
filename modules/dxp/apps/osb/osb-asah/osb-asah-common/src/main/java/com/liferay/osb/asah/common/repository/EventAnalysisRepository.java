@@ -34,7 +34,7 @@ public interface EventAnalysisRepository
 	extends Repository<EventAnalysis, Long> {
 
 	@Cacheable
-	public long countEventAnalyses(Long channelId, @Nullable String keyword);
+	public long countEventAnalyses(Long channelId, @Nullable String keywords);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
@@ -46,6 +46,6 @@ public interface EventAnalysisRepository
 
 	@Cacheable
 	public List<EventAnalysis> searchEventAnalyses(
-		Long channelId, @Nullable String keyword, Pageable pageable);
+		Long channelId, @Nullable String keywords, Pageable pageable);
 
 }

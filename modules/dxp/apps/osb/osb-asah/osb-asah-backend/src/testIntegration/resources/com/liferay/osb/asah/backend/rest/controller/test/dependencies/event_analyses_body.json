@@ -2,7 +2,7 @@
 	"operationName": "EventAnalyses",
 	"variables": {
 		"channelId": "2468",
-		"keyword": "Event",
+		"keywords": "Event",
 		"page": 0,
 		"size": 5,
 		"sort": {

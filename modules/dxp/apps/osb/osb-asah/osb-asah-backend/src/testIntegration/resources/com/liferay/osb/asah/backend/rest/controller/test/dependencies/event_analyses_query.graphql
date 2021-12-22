@@ -1,5 +1,5 @@
-query EventAnalyses($channelId: String!, $keyword: String, $page: Int!, $size: Int!, $sort: Sort!) {
-	eventAnalyses(channelId: $channelId, keyword: $keyword, page: $page, size: $size, sort: $sort) {
+query EventAnalyses($channelId: String!, $keywords: String, $page: Int!, $size: Int!, $sort: Sort!) {
+	eventAnalyses(channelId: $channelId, keywords: $keywords, page: $page, size: $size, sort: $sort) {
 		eventAnalyses {
 			... on EventAnalysis {
 				createdByUserName

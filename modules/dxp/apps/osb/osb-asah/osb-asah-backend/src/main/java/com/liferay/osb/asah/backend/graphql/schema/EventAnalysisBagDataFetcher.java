@@ -47,7 +47,7 @@ public class EventAnalysisBagDataFetcher
 		Page<EventAnalysis> eventAnalysesPage =
 			_eventAnalysisDog.getEventAnalysesPage(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
-				dataFetchingEnvironment.getArgument("keyword"),
+				dataFetchingEnvironment.getArgument("keywords"),
 				dataFetchingEnvironment.getArgument("page"),
 				dataFetchingEnvironment.getArgument("size"),
 				Sort.of(dataFetchingEnvironment.getArgument("sort")));
