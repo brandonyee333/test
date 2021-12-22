@@ -23,6 +23,8 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import java.util.Objects;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
@@ -55,14 +57,15 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 			return;
 		}
 
-		PostgreSQLDataSource postgreSQLDataSource =
-			(PostgreSQLDataSource)_dataSource;
-
-		if (postgreSQLDataSource.isGlobal()) {
+		if (Objects.equals("global", ProjectIdThreadLocal.getProjectId())) {
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
 					new ClassPathResource("tables-global.sql")),
 				_dataSource);
+		}
+		else {
+			throw new IllegalStateException(
+				"Unable to create global schema on a non-global context");
 		}
 	}
 
@@ -77,10 +80,7 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 			return;
 		}
 
-		PostgreSQLDataSource postgreSQLDataSource =
-			(PostgreSQLDataSource)_dataSource;
-
-		if (postgreSQLDataSource.isGlobal()) {
+		if (Objects.equals("global", ProjectIdThreadLocal.getProjectId())) {
 			throw new IllegalStateException(
 				"Unable to create schema on a global context");
 		}
