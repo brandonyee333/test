@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -48,16 +49,10 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 		_hikariMaxLifetime = hikariMaxLifetime;
 		_hikariMaximumPoolSize = hikariMaximumPoolSize;
 		_hikariMinimumIdleSize = hikariMinimumIdleSize;
-
-		_global = false;
 	}
 
 	@Override
 	public void afterPropertiesSet() {
-	}
-
-	public boolean isGlobal() {
-		return _global;
 	}
 
 	@Override
@@ -77,7 +72,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 		throws IllegalArgumentException {
 
 		if (dataSource == null) {
-			_global = true;
+			dataSource = "global";
 		}
 
 		if (dataSource instanceof DataSource) {
@@ -101,7 +96,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 		hikariDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
 		hikariDataSource.setUsername(CredentialConstants.POSTGRESQL_USER);
 
-		if (_global) {
+		if (Objects.equals("global", dataSource)) {
 			hikariDataSource.setMaximumPoolSize(2);
 		}
 
@@ -143,7 +138,6 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 	private static final Log _log = LogFactory.getLog(
 		PostgreSQLDataSource.class);
 
-	private boolean _global;
 	private final int _hikariConnectionTimeout;
 	private final int _hikariIdleTimeout;
 	private final int _hikariLeakDetectionThreshold;
