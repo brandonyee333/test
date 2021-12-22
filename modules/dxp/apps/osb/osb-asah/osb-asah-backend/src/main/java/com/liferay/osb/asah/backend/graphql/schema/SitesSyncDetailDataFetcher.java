@@ -28,10 +28,10 @@ import org.springframework.stereotype.Component;
 @Component
 @GraphQLTypeWiring(fieldName = "sitesSyncDetails", typeName = "DataSource")
 public class SitesSyncDetailDataFetcher
-	extends BaseDataFetcher<DataSourceDTO.ProviderDTO.SitesSyncDetailDTO> {
+	extends BaseDataFetcher<DataSourceDTO.ProviderDTO.DetailDTO> {
 
 	@Override
-	public DataSourceDTO.ProviderDTO.SitesSyncDetailDTO get(
+	public DataSourceDTO.ProviderDTO.DetailDTO get(
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 

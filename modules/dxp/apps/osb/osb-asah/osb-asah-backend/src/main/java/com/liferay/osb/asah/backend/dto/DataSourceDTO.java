@@ -24,8 +24,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.liferay.osb.asah.backend.dto.DataSourceDTO.ProviderDTO.AccountsConfigurationDTO;
 import com.liferay.osb.asah.backend.dto.DataSourceDTO.ProviderDTO.AnalyticsConfigurationDTO;
 import com.liferay.osb.asah.backend.dto.DataSourceDTO.ProviderDTO.ContactsConfigurationDTO;
-import com.liferay.osb.asah.backend.dto.DataSourceDTO.ProviderDTO.ContactsSyncDetailDTO;
-import com.liferay.osb.asah.backend.dto.DataSourceDTO.ProviderDTO.SitesSyncDetailDTO;
+import com.liferay.osb.asah.backend.dto.DataSourceDTO.ProviderDTO.DetailDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceOrganization;
@@ -70,8 +69,8 @@ public class DataSourceDTO {
 
 		_deletionDate = dataSource.getDeletionDate();
 
-		ContactsSyncDetailDTO contactsSyncDetailDTO = new ContactsSyncDetailDTO(
-			dataSource);
+		DetailDTO contactsSyncDetailDTO = new DetailDTO(
+			dataSource.getContactsSelected());
 
 		if (!contactsSyncDetailDTO.isEmpty()) {
 			_contactsSyncDetailDTO = contactsSyncDetailDTO;
@@ -89,8 +88,8 @@ public class DataSourceDTO {
 			_providerDTO = providerDTO;
 		}
 
-		SitesSyncDetailDTO sitesSyncDetailDTO = new SitesSyncDetailDTO(
-			dataSource);
+		DetailDTO sitesSyncDetailDTO = new DetailDTO(
+			dataSource.getSitesSelected());
 
 		if (!sitesSyncDetailDTO.isEmpty()) {
 			_sitesSyncDetailDTO = sitesSyncDetailDTO;
@@ -127,7 +126,7 @@ public class DataSourceDTO {
 	}
 
 	@JsonProperty("contactsSyncDetails")
-	public ContactsSyncDetailDTO getContactsSyncDetailDTO() {
+	public DetailDTO getContactsSyncDetailDTO() {
 		return _contactsSyncDetailDTO;
 	}
 
@@ -223,7 +222,7 @@ public class DataSourceDTO {
 	}
 
 	@JsonProperty("sitesSyncDetails")
-	public SitesSyncDetailDTO getSitesSyncDetailDTO() {
+	public DetailDTO getSitesSyncDetailDTO() {
 		return _sitesSyncDetailDTO;
 	}
 
@@ -274,10 +273,8 @@ public class DataSourceDTO {
 		_contactsConfigurationDTO = contactsConfigurationDTO;
 	}
 
-	public void setContactsSyncDetailDTO(
-		ContactsSyncDetailDTO contactsSyncDetailDTO) {
-
-		_contactsSyncDetailDTO = contactsSyncDetailDTO;
+	public void setContactsSyncDetailDTO(DetailDTO detailDTO) {
+		_contactsSyncDetailDTO = detailDTO;
 	}
 
 	public void setCreateDate(Date createDate) {
@@ -345,8 +342,8 @@ public class DataSourceDTO {
 		_providerDTO = providerDTO;
 	}
 
-	public void setSitesSyncDetailDTO(SitesSyncDetailDTO sitesSyncDetailDTO) {
-		_sitesSyncDetailDTO = sitesSyncDetailDTO;
+	public void setSitesSyncDetailDTO(DetailDTO detailDTO) {
+		_sitesSyncDetailDTO = detailDTO;
 	}
 
 	public void setState(String state) {
@@ -1303,13 +1300,13 @@ public class DataSourceDTO {
 		}
 
 		@JsonInclude(JsonInclude.Include.NON_NULL)
-		public static class ContactsSyncDetailDTO extends DetailDTO {
+		public static class DetailDTO {
 
-			public ContactsSyncDetailDTO() {
+			public DetailDTO() {
 			}
 
-			public ContactsSyncDetailDTO(DataSource dataSource) {
-				selected = dataSource.getContactsSelected();
+			public DetailDTO(Boolean selected) {
+				_selected = selected;
 			}
 
 			@Override
@@ -1318,82 +1315,35 @@ public class DataSourceDTO {
 					return true;
 				}
 
-				if (!(obj instanceof ContactsSyncDetailDTO)) {
+				if (!(obj instanceof DetailDTO)) {
 					return false;
 				}
 
-				ContactsSyncDetailDTO contactsSyncDetailDTO =
-					(ContactsSyncDetailDTO)obj;
+				DetailDTO detailDTO = (DetailDTO)obj;
 
-				if (Objects.equals(selected, contactsSyncDetailDTO.selected)) {
+				if (Objects.equals(_selected, detailDTO._selected)) {
 					return true;
 				}
 
 				return false;
 			}
-
-			@Override
-			public int hashCode() {
-				return Objects.hash(selected);
-			}
-
-			@JsonIgnore
-			public boolean isEmpty() {
-				return equals(new ContactsSyncDetailDTO());
-			}
-
-		}
-
-		@JsonInclude(JsonInclude.Include.NON_NULL)
-		public abstract static class DetailDTO {
 
 			@JsonProperty("selected")
 			public Boolean getSelected() {
-				return selected;
-			}
-
-			protected Boolean selected;
-
-		}
-
-		@JsonInclude(JsonInclude.Include.NON_NULL)
-		public static class SitesSyncDetailDTO extends DetailDTO {
-
-			public SitesSyncDetailDTO() {
-			}
-
-			public SitesSyncDetailDTO(DataSource dataSource) {
-				selected = dataSource.getSitesSelected();
-			}
-
-			@Override
-			public boolean equals(Object obj) {
-				if (this == obj) {
-					return true;
-				}
-
-				if (!(obj instanceof SitesSyncDetailDTO)) {
-					return false;
-				}
-
-				SitesSyncDetailDTO sitesSyncDetailDTO = (SitesSyncDetailDTO)obj;
-
-				if (Objects.equals(selected, sitesSyncDetailDTO.selected)) {
-					return true;
-				}
-
-				return false;
+				return _selected;
 			}
 
 			@Override
 			public int hashCode() {
-				return Objects.hash(selected);
+				return Objects.hash(_selected);
 			}
 
 			@JsonIgnore
 			public boolean isEmpty() {
-				return equals(new SitesSyncDetailDTO());
+				return equals(new DetailDTO());
 			}
+
+			private Boolean _selected;
 
 		}
 
@@ -1409,7 +1359,7 @@ public class DataSourceDTO {
 	private AuthorDTO _authorDTO;
 	private String _channelId;
 	private ContactsConfigurationDTO _contactsConfigurationDTO;
-	private ContactsSyncDetailDTO _contactsSyncDetailDTO;
+	private DetailDTO _contactsSyncDetailDTO;
 	private Date _createDate;
 	private CredentialDTO _credentialDTO;
 	private Set<DataSourceDTO> _dataSourceDTOs;
@@ -1423,7 +1373,7 @@ public class DataSourceDTO {
 	private Date _modifiedDate;
 	private String _name;
 	private ProviderDTO _providerDTO;
-	private SitesSyncDetailDTO _sitesSyncDetailDTO;
+	private DetailDTO _sitesSyncDetailDTO;
 	private String _state;
 	private String _status;
 	private String _url;
