@@ -245,7 +245,7 @@ public class ElasticsearchDataSourceRepositoryImpl
 	}
 
 	@Override
-	protected Map<String, String> getSortReplacementProperties() {
+	protected Map<String, String> getSortFieldNameConversionMap() {
 		return new HashMap<String, String>() {
 			{
 				put("createDate", "dateCreated");

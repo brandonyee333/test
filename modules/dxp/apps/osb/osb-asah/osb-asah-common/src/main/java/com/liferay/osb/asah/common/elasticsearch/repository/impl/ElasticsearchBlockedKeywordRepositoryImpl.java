@@ -16,12 +16,13 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,7 +30,7 @@ import java.util.stream.Stream;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import org.json.JSONArray;
 
@@ -140,30 +141,13 @@ public class ElasticsearchBlockedKeywordRepositoryImpl
 						searchSourceBuilder.query(boolQueryBuilder);
 						searchSourceBuilder.size(pageable.getPageSize());
 
-						Stream.of(
-							pageable.getSort()
-						).flatMap(
-							Sort::stream
-						).findFirst(
-						).ifPresent(
-							sort -> {
-								String property = sort.getProperty();
+						for (FieldSortBuilder fieldSortBuilder :
+								getFieldSortBuilders(
+									getSortFieldNameConversionMap(),
+									pageable.getSort())) {
 
-								if (Objects.equals(property, "keyword")) {
-									property = "keyword.raw";
-								}
-
-								SortOrder sortOrder = SortOrder.ASC;
-
-								if (sort.isDescending()) {
-									sortOrder = SortOrder.DESC;
-								}
-
-								searchSourceBuilder.sort(
-									SortBuilderUtil.fieldSort(
-										property, sortOrder));
-							}
-						);
+							searchSourceBuilder.sort(fieldSortBuilder);
+						}
 					})));
 	}
 
@@ -183,6 +167,11 @@ public class ElasticsearchBlockedKeywordRepositoryImpl
 	@Override
 	protected ElasticsearchInvoker getElasticsearchInvoker() {
 		return _faroInfoElasticsearchInvoker;
+	}
+
+	@Override
+	protected Map<String, String> getSortFieldNameConversionMap() {
+		return Collections.singletonMap("keyword", "keyword.raw");
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)

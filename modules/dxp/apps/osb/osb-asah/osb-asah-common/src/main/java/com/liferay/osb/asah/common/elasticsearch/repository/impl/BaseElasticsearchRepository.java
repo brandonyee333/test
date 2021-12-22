@@ -38,6 +38,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
@@ -138,28 +139,11 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 				elasticsearchInvoker.get(
 					getCollectionName(),
 					searchSourceBuilder -> {
-						if (sort.isUnsorted()) {
-							searchSourceBuilder.sort(
-								SortBuilderUtil.fieldSort("id"));
-						}
-						else {
-							Stream.of(
-								sort
-							).flatMap(
-								Sort::stream
-							).forEach(
-								order -> {
-									SortOrder sortOrder = SortOrder.ASC;
+						for (FieldSortBuilder fieldSortBuilder :
+								getFieldSortBuilders(
+									getSortFieldNameConversionMap(), sort)) {
 
-									if (order.isDescending()) {
-										sortOrder = SortOrder.DESC;
-									}
-
-									searchSourceBuilder.sort(
-										SortBuilderUtil.fieldSort(
-											order.getProperty(), sortOrder));
-								}
-							);
+							searchSourceBuilder.sort(fieldSortBuilder);
 						}
 					})));
 	}
@@ -254,7 +238,48 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 
 	protected abstract ElasticsearchInvoker getElasticsearchInvoker();
 
-	protected Map<String, String> getSortReplacementProperties() {
+	protected List<FieldSortBuilder> getFieldSortBuilders(
+		Map<String, String> fieldNames, Sort sort) {
+
+		List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
+
+		if ((sort == null) || sort.isUnsorted()) {
+			fieldSortBuilders.add(SortBuilderUtil.fieldSort("id"));
+
+			return fieldSortBuilders;
+		}
+
+		if (fieldNames == null) {
+			fieldNames = Collections.emptyMap();
+		}
+
+		for (Sort.Order order : sort.toList()) {
+			String fieldName = order.getProperty();
+
+			if (fieldNames.containsKey(fieldName)) {
+				fieldName = fieldNames.get(fieldName);
+			}
+
+			fieldName = fieldName.replace('/', '.');
+
+			SortOrder sortOrder = SortOrder.ASC;
+
+			if (order.isDescending()) {
+				sortOrder = SortOrder.DESC;
+			}
+
+			fieldSortBuilders.add(
+				SortBuilderUtil.fieldSort(fieldName, sortOrder));
+		}
+
+		return fieldSortBuilders;
+	}
+
+	protected List<FieldSortBuilder> getFieldSortBuilders(Sort sort) {
+		return getFieldSortBuilders(getSortFieldNameConversionMap(), sort);
+	}
+
+	protected Map<String, String> getSortFieldNameConversionMap() {
 		return Collections.emptyMap();
 	}
 
@@ -290,30 +315,11 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 			pageable.getPageNumber() * pageable.getPageSize());
 		searchSourceBuilder.size(pageable.getPageSize());
 
-		Sort sort = pageable.getSort();
+		for (FieldSortBuilder fieldSortBuilder :
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort())) {
 
-		if (sort.isUnsorted()) {
-			searchSourceBuilder.sort(SortBuilderUtil.fieldSort("id"));
-		}
-		else {
-			Stream.of(
-				sort
-			).flatMap(
-				Sort::stream
-			).forEach(
-				order -> {
-					SortOrder sortOrder = SortOrder.ASC;
-
-					if (order.isDescending()) {
-						sortOrder = SortOrder.DESC;
-					}
-
-					searchSourceBuilder.sort(
-						SortBuilderUtil.fieldSort(
-							_replaceSortProperty(order.getProperty()),
-							sortOrder));
-				}
-			);
+			searchSourceBuilder.sort(fieldSortBuilder);
 		}
 	}
 
@@ -353,14 +359,5 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 
 	protected final TimeOrderedUuidGenerator timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
-
-	private String _replaceSortProperty(String property) {
-		Map<String, String> replacementProperties =
-			getSortReplacementProperties();
-
-		property = replacementProperties.getOrDefault(property, property);
-
-		return property.replace('/', '.');
-	}
 
 }
