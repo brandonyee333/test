@@ -699,6 +699,59 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
+	public void testRemoveSegmentId() {
+		Optional<Individual> individualOptional = individualRepository.findById(
+			_individual1Id);
+
+		Individual individual = individualOptional.get();
+
+		Assertions.assertNotNull(individual);
+
+		Set<Long> segmentIds = individual.getSegmentIds();
+
+		Assertions.assertEquals(1, segmentIds.size(), segmentIds.toString());
+
+		individualRepository.removeSegmentId(_segmentId);
+
+		individualOptional = individualRepository.findById(_individual1Id);
+
+		individual = individualOptional.get();
+
+		Assertions.assertNotNull(individual);
+
+		segmentIds = individual.getSegmentIds();
+
+		Assertions.assertEquals(0, segmentIds.size(), segmentIds.toString());
+	}
+
+	@Test
+	public void testRemoveSegmentIdByIdIn() {
+		Optional<Individual> individualOptional = individualRepository.findById(
+			_individual1Id);
+
+		Individual individual = individualOptional.get();
+
+		Assertions.assertNotNull(individual);
+
+		Set<Long> segmentIds = individual.getSegmentIds();
+
+		Assertions.assertEquals(1, segmentIds.size(), segmentIds.toString());
+
+		individualRepository.removeSegmentIdByIdIn(
+			Collections.singleton(_individual1Id), _segmentId);
+
+		individualOptional = individualRepository.findById(_individual1Id);
+
+		individual = individualOptional.get();
+
+		Assertions.assertNotNull(individual);
+
+		segmentIds = individual.getSegmentIds();
+
+		Assertions.assertEquals(0, segmentIds.size(), segmentIds.toString());
+	}
+
+	@Test
 	public void testSearchIndividuals1() {
 		List<Individual> individuals = individualRepository.searchIndividuals(
 			1L, null, 10);
