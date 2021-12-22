@@ -361,6 +361,7 @@ gradle.beforeProject {
 			node {
 				global = false
 				nodeVersion = "6.6.0"
+				useNpm = true
 			}
 
 			npmInstall {
