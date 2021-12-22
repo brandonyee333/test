@@ -14,9 +14,13 @@ In the _Setup_ tab, use the _DDM Structure Key_ dropdown and select either _OSB-
 There is separate portlet named _Downloads_. Place it on the same page as the _OSB Downloads Display_ portlet and follow the same instructions to open _Configuration_.
 
 Inside the _Setup_ tab, do the following in the _ESA_, _Evaluation EULA_, and _Studio EULA_ tabs:
+
 1. Leave _Language_ as _English (United States)_ unless told otherwise.
+
 2. _URL_ field will be an address to the EULA's agreement content. For testing purposes, any url could work (e.g. _http://localhost:8080?test=test_).
+
 3. _Version Displayed_ should be 1.0.
+
 4. _Required to Accept_ should be 1.0.
 
 #### Custom Fields
@@ -108,7 +112,9 @@ Accepting EULA once will prevent the modal from showing up again. If more testin
 _Control Panel_ > _Users_ > _Users and Organizations_ > find current user > _Miscellaneous_ tab and make sure the following boxes are empty:
 
 1. _osbCustomerESA_
+
 2. _osbCustomerEvaulationEULA_
+
 3. _osbCustomerStudioEULA_
 
 After saving, terms and conditions for _ESA_, _Evaluation EULA_, and _Studio EULA_ will have to be accepted again in order to proceed to download.

@@ -10,6 +10,7 @@
 * [MySQL](https://dev.mysql.com/downloads/) or [MariaDB](https://mariadb.org/download/)
 
 ### Setup
+
 1. Create a new database.
 
 2. Download a [Tomcat SP6 bundle](http://mirrors/files.liferay.com/private/ee/portal/7.0.10.6/liferay-dxp-digital-enterprise-tomcat-7.0-sp6-20171010144253003.zip).

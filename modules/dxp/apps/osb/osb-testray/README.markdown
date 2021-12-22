@@ -104,21 +104,26 @@
 ## Set Up Testray
 
 1. Log in
+
 1. Remove Hello World Portlet
 	1. Hello World kabab menu > Remove
+
 1. Add Testray to the page
 	1. (+) button in the top right side of the page
 	1. Open Applications section
 	1. Click Tools > Testray > Add
+
 1. Apply Testray Theme
 	1. Left menu > Liferay DXP > Navigation > Public Pages kabab menu > Configure
 	1. Change Current Theme to _OSB Testray_
 	1. Make sure to Save before navigating away
+
 1. Enable Basic Authentication
 	1. Click Manage (bottom left) > Manage Server (which takes you to the Control Panel)
 	1. Navigate to Left Menu > Configuration > System Settings > Foundation
 	1. Go to _Auto Login Basic Authentication Header_, enable it, and save
 	1. Go to _Basic Auth Header Verifiers_, add a new entry (plus sign in the bottom right), enter `*/testray/*` for the field `URLs Includes`, and save
+
 1. Create a Dashboard User (while possibly not strictly necessary, this will help avoid exceptions)
 	1. Click Manage (bottom left) > Manage Server (which takes you to the Control Panel)
 	1. Navigate to Left Menu > Users > Users and Organizations
@@ -138,14 +143,17 @@
 	1. In the upper right of the Project Directory click the blue button labeled `+ New Project`
 	1. Enter `Liferay Portal 7.1` as the name, and click `Add`
 	1. Click on `Liferay Portal 7.1` in the search container
+
 1. Add a Routine
 	1. In the page that opens up, click the blue button `+ Add Routine`
 	1. Enter `Hotfix Tester` as the name, and click `Add`
+
 1. Add a Case Type
 	1. Click on Manage (bottom left) > Case Types
 		1. There seems to be a bug at the moment blocking this navigation. To work around, change the URL to `.../-/testray/case_types`.
 	1. Click `Add Case Type`
 	1. In the page that opens up, enter `Automated Functional Test` as the name, and click `Add`
+
 1. Import test results
 	1. Import the test file located in this directory via curl command:
 		```
