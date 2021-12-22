@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.spring.http.exception;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.http.HttpStatus;
 
 /**
@@ -22,15 +24,30 @@ import org.springframework.http.HttpStatus;
 public class OSBAsahException extends RuntimeException {
 
 	public OSBAsahException(HttpStatus httpStatus, String message) {
+		this(
+			httpStatus, message,
+			StringUtils.replaceAll(
+				StringUtils.lowerCase(message), "\\s+", "-"));
+	}
+
+	public OSBAsahException(
+		HttpStatus httpStatus, String message, String messageKey) {
+
 		super(message);
 
 		_httpStatus = httpStatus;
+		_messageKey = messageKey;
 	}
 
 	public HttpStatus getHttpStatus() {
 		return _httpStatus;
 	}
 
+	public String getMessageKey() {
+		return _messageKey;
+	}
+
 	private final HttpStatus _httpStatus;
+	private final String _messageKey;
 
 }

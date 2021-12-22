@@ -78,7 +78,7 @@ public class ResponseEntityExceptionHandler {
 
 		return _getResponseEntity(
 			jsonObject, methodArgumentNotValidException, handlerMethod,
-			httpServletRequest, HttpStatus.BAD_REQUEST);
+			httpServletRequest, HttpStatus.BAD_REQUEST, null);
 	}
 
 	@ExceptionHandler(OSBAsahException.class)
@@ -87,8 +87,8 @@ public class ResponseEntityExceptionHandler {
 		OSBAsahException osbAsahException) {
 
 		return _getResponseEntity(
-			osbAsahException, handlerMethod, httpServletRequest,
-			osbAsahException.getHttpStatus());
+			null, osbAsahException, handlerMethod, httpServletRequest,
+			osbAsahException.getHttpStatus(), osbAsahException.getMessageKey());
 	}
 
 	@ExceptionHandler(ResourceNotFoundException.class)
@@ -125,13 +125,14 @@ public class ResponseEntityExceptionHandler {
 		HttpServletRequest httpServletRequest, HttpStatus httpStatus) {
 
 		return _getResponseEntity(
-			null, exception, handlerMethod, httpServletRequest, httpStatus);
+			null, exception, handlerMethod, httpServletRequest, httpStatus,
+			null);
 	}
 
 	private ResponseEntity<OSBAsahError> _getResponseEntity(
 		JSONObject debugInfoJSONObject, Exception exception,
 		HandlerMethod handlerMethod, HttpServletRequest httpServletRequest,
-		HttpStatus httpStatus) {
+		HttpStatus httpStatus, String messageKey) {
 
 		if (_shouldLogError(exception, handlerMethod)) {
 			_log.error("Unable to process request", exception);
@@ -154,6 +155,11 @@ public class ResponseEntityExceptionHandler {
 		osbAsahError.setErrorAttribute("exception", clazz.getName());
 
 		osbAsahError.setErrorAttribute("message", exception.getMessage());
+
+		if (messageKey != null) {
+			osbAsahError.setErrorAttribute("messageKey", messageKey);
+		}
+
 		osbAsahError.setErrorAttribute(
 			"path", httpServletRequest.getRequestURI());
 		osbAsahError.setErrorAttribute("status", httpStatus.value());
