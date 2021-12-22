@@ -159,8 +159,11 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 		membership = _membershipRepository.save(membership);
 
-		Individual individual = _individualDog.removeSegmentId(
+		_individualDog.removeSegmentId(
 			membership.getIndividualId(), membership.getIndividualSegmentId());
+
+		Individual individual = _individualDog.fetchIndividual(
+			membership.getIndividualId());
 
 		Segment segment = _segmentDog.updateSegment(
 			membership.getIndividualSegmentId());
@@ -215,7 +218,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 			);
 
 			_individualDog.removeSegmentId(
-				individualsByMembership, entry.getKey());
+				SetUtil.map(individualsByMembership, Individual::getId),
+				entry.getKey());
 
 			Segment segment = _segmentDog.updateSegment(entry.getKey());
 
@@ -246,8 +250,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 				membershipsMap.entrySet()) {
 
 			_individualDog.removeSegmentId(
-				_individualDog.fetchIndividuals(
-					SetUtil.map(entry.getValue(), Membership::getIndividualId)),
+				SetUtil.map(entry.getValue(), Membership::getIndividualId),
 				entry.getKey());
 
 			Segment segment = _segmentDog.updateSegment(entry.getKey());

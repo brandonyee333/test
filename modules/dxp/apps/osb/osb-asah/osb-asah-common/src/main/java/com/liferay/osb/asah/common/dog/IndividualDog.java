@@ -870,54 +870,17 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return updateIndividual(individual);
 	}
 
-	public Individual removeSegmentId(Individual individual, Long segmentId) {
-		if (individual == null) {
-			return null;
-		}
-
-		Long individualId = individual.getId();
-
-		if (individualId == null) {
-			return individual;
-		}
-
-		Set<Long> segmentIds = individual.getSegmentIds();
-
-		Iterator<Long> iterator = segmentIds.iterator();
-
-		while (iterator.hasNext()) {
-			if (Objects.equals(segmentId, iterator.next())) {
-				iterator.remove();
-
-				break;
-			}
-		}
-
-		return _populateIndividual(_individualRepository.save(individual));
+	public void removeSegmentId(Long segmentId) {
+		_individualRepository.removeSegmentId(segmentId);
 	}
 
-	public void removeSegmentId(
-		Iterable<Individual> individuals, Long segmentId) {
-
-		for (Individual individual : individuals) {
-			Set<Long> segmentIds = individual.getSegmentIds();
-
-			Iterator<Long> iterator = segmentIds.iterator();
-
-			while (iterator.hasNext()) {
-				if (Objects.equals(segmentId, iterator.next())) {
-					iterator.remove();
-
-					break;
-				}
-			}
-		}
-
-		_individualRepository.saveAll(individuals);
+	public void removeSegmentId(Long individualId, Long segmentId) {
+		_individualRepository.removeSegmentIdByIdIn(
+			Collections.singleton(individualId), segmentId);
 	}
 
-	public Individual removeSegmentId(Long individualId, Long segmentId) {
-		return removeSegmentId(fetchIndividual(individualId), segmentId);
+	public void removeSegmentId(Set<Long> individualIds, Long segmentId) {
+		_individualRepository.removeSegmentIdByIdIn(individualIds, segmentId);
 	}
 
 	public List<Individual> searchIndividuals(

@@ -58,9 +58,7 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 
 		membershipDog.deleteMembership(individualSegmentId);
 
-		_individualDog.removeSegmentId(
-			_individualDog.getIndividualsBySegmentId(individualSegmentId),
-			individualSegmentId);
+		_individualDog.removeSegmentId(individualSegmentId);
 	}
 
 	@Autowired

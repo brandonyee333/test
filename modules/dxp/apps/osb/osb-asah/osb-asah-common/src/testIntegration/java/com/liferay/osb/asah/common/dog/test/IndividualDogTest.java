@@ -546,7 +546,7 @@ public class IndividualDogTest
 
 		Assertions.assertEquals(1, segmentIds.size(), segmentIds.toString());
 
-		_individualDog.removeSegmentId(individual, 338511398116723458L);
+		_individualDog.removeSegmentId(individual.getId(), 338511398116723458L);
 
 		individual = _individualDog.fetchIndividual(338486041327913341L);
 
