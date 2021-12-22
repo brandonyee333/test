@@ -120,6 +120,11 @@ public class DataSourceDTO {
 		return _authorDTO;
 	}
 
+	@JsonProperty("channelId")
+	public String getChannelId() {
+		return _channelId;
+	}
+
 	@JsonProperty("contactsConfiguration")
 	public ContactsConfigurationDTO getContactsConfigurationDTO() {
 		return _contactsConfigurationDTO;
