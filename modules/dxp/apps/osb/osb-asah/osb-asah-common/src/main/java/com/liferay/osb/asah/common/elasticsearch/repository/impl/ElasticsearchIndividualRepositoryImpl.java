@@ -124,7 +124,9 @@ public class ElasticsearchIndividualRepositoryImpl
 				"channelIds",
 				Collections.singletonList(String.valueOf(channelId)))
 		).filter(
-			QueryBuilders.termsQuery("individualSegmentIds", segmentIds)
+			QueryBuilders.termsQuery(
+				"individualSegmentIds",
+				ListUtil.map(segmentIds, String::valueOf))
 		);
 
 		BoolQueryBuilder lastActivityDatesBoolQueryBuilder = null;
@@ -1408,7 +1410,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	private QueryBuilder _buildQueryBuilder(List<Long> ids, String keywords) {
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termsQuery("id", ids));
+			QueryBuilders.termsQuery("id", ListUtil.map(ids, String::valueOf)));
 
 		if (!StringUtils.isBlank(keywords)) {
 			boolQueryBuilder.filter(
