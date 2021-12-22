@@ -145,7 +145,7 @@
 <!--ADD_FIELD-->
 <tr>
 	<td>ADD_FIELD</td>
-	<td>//button[contains(@class,'add-button-large')]/span | //div[contains(@class,'portlet-forms')]//button[contains(@class,'ddm-add-field')]</td>
+	<td>//button[contains(@class,'add-button-large')]/span | //nav[contains(@class,'management-bar')]//button[contains(@class,'ddm-add-field')]</td>
 	<td></td>
 </tr>
 <tr>
