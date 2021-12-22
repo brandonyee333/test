@@ -67,20 +67,14 @@ public class ElasticsearchSnapshotManagerImpl
 			builder.put(
 				"base_path", "workspaces/" + projectId
 			).put(
-				"bucket", "asah"
-			).put(
-				"client", "asah"
+				"bucket", System.getenv("ELASTICSEARCH_SNAPSHOT_BUCKET")
 			).put(
 				"compress", "true"
 			).put(
-				"endpoint", "https://s3.us-west-1.amazonaws.com"
-			).put(
 				"readonly", "false"
-			).put(
-				"region", "us-west-1"
 			));
 
-		putRepositoryRequest.type("s3");
+		putRepositoryRequest.type("gcs");
 
 		_snapshotClient.createRepository(
 			putRepositoryRequest, RequestOptions.DEFAULT);
