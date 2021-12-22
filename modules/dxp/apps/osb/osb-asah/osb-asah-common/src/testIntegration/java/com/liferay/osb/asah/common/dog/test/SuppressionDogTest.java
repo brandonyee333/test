@@ -84,7 +84,6 @@ public class SuppressionDogTest
 						null, 0, 10, Sort.desc("createDate"));
 
 				Assertions.assertEquals(3, suppressionPage.getTotalElements());
-
 				Assertions.assertEquals(
 					Arrays.asList(
 						"jane.doe@gmail.com", "test@liferay.com",
