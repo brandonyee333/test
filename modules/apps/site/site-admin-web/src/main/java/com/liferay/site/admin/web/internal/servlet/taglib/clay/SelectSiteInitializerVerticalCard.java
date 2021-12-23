@@ -16,6 +16,7 @@ package com.liferay.site.admin.web.internal.servlet.taglib.clay;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.soy.VerticalCard;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -26,7 +27,6 @@ import com.liferay.site.admin.web.internal.util.SiteInitializerItem;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.ActionRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -53,24 +53,29 @@ public class SelectSiteInitializerVerticalCard implements VerticalCard {
 		return HashMapBuilder.put(
 			"add-site-url",
 			() -> {
-				PortletURL addSiteURL = _renderResponse.createActionURL();
-
-				addSiteURL.setParameter(ActionRequest.ACTION_NAME, "addGroup");
-
-				addSiteURL.setParameter(
-					"mvcPath", "/select_layout_set_prototype_entry.jsp");
+				PortletURL addSiteURL = _renderResponse.createRenderURL();
 
 				long parentGroupId = ParamUtil.getLong(
 					_httpServletRequest, "parentGroupId");
 
 				addSiteURL.setParameter(
-					"parentGroupId", String.valueOf(parentGroupId));
-
+					"mvcRenderCommandName", "/site_admin/add_group");
+				addSiteURL.setParameter(
+					"backURL",
+					ParamUtil.getString(_httpServletRequest, "redirect"));
 				addSiteURL.setParameter(
 					"creationType", _siteInitializerItem.getType());
 				addSiteURL.setParameter(
+					"layoutSetPrototypeId",
+					String.valueOf(
+						_siteInitializerItem.getLayoutSetPrototypeId()));
+				addSiteURL.setParameter(
+					"parentGroupId", String.valueOf(parentGroupId));
+				addSiteURL.setParameter(
 					"siteInitializerKey",
 					_siteInitializerItem.getSiteInitializerKey());
+
+				addSiteURL.setWindowState(LiferayWindowState.POP_UP);
 
 				return addSiteURL.toString();
 			}
