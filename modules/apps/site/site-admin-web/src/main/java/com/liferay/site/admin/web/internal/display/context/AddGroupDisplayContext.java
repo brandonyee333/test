@@ -17,6 +17,8 @@ package com.liferay.site.admin.web.internal.display.context;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryServiceUtil;
 import com.liferay.asset.kernel.service.AssetVocabularyServiceUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -77,7 +79,23 @@ public class AddGroupDisplayContext {
 			(ThemeDisplay)_httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		_groupsIds = new long[] {themeDisplay.getCompanyGroupId()};
+		long[] groupsIds = {themeDisplay.getCompanyGroupId()};
+
+		if (_getParentGroupId() > 0) {
+			try {
+				groupsIds = PortalUtil.getCurrentAndAncestorSiteGroupIds(
+					_getParentGroupId());
+			}
+			catch (Exception exception) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(exception, exception);
+				}
+
+				return groupsIds;
+			}
+		}
+
+		_groupsIds = groupsIds;
 
 		return _groupsIds;
 	}
@@ -133,6 +151,9 @@ public class AddGroupDisplayContext {
 
 		return _parentGroupId;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AddGroupDisplayContext.class);
 
 	private long[] _groupsIds;
 	private final HttpServletRequest _httpServletRequest;
