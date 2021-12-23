@@ -17,7 +17,7 @@ dependencies {
 task execute(type: JavaExec)
 
 execute {
-	args System.hasProperty("exec.args") ? System.getProperty("exec.args").split() : []
+	args System.getProperty("exec.args") ? System.getProperty("exec.args").split() : []
 	classpath = sourceSets.main.runtimeClasspath
 	main = System.getProperty("exec.mainClass")
 }
