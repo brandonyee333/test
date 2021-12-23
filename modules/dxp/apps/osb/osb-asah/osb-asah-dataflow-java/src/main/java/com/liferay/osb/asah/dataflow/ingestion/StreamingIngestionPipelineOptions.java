@@ -45,9 +45,9 @@ public interface StreamingIngestionPipelineOptions
 
 	@Default.Long(5)
 	@Description(
-		"Returns the window duration in minutes in which the data will be written. The default is 5 minutes."
+		"Returns the interval in minutes in which the data will be written. The default is 5 minutes."
 	)
-	public long getWindowDuration();
+	public long getWriteInterval();
 
 	public void setInputSubscription(String inputSubscription);
 
@@ -55,6 +55,6 @@ public interface StreamingIngestionPipelineOptions
 
 	public void setOutputFileNamePrefix(String outputFileNamePrefix);
 
-	public void setWindowDuration(long value);
+	public void setWriteInterval(long value);
 
 }

@@ -20,8 +20,11 @@ import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.PipelineResult;
 import org.apache.beam.sdk.io.gcp.pubsub.PubsubIO;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
+import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.transforms.windowing.FixedWindows;
 import org.apache.beam.sdk.transforms.windowing.Window;
+import org.apache.beam.sdk.values.PCollection;
+import org.apache.beam.sdk.values.PDone;
 
 import org.joda.time.Duration;
 
@@ -45,27 +48,53 @@ public class StreamingIngestionPipeline {
 
 		Pipeline pipeline = Pipeline.create(streamingIngestionPipelineOptions);
 
-		pipeline.apply(
-			"Read Pub/Sub Messages",
+		PCollection<String> pubSubMessages = pipeline.apply(
+			"Read PubSub Messages",
 			PubsubIO.readStrings(
 			).fromSubscription(
 				streamingIngestionPipelineOptions.getInputSubscription()
-			)
-		).apply(
-			streamingIngestionPipelineOptions.getWindowDuration() +
-				" Minutes Window",
-			Window.into(
-				FixedWindows.of(
-					Duration.standardMinutes(
-						streamingIngestionPipelineOptions.getWindowDuration())))
-		).apply(
-			"Write Files",
-			new WriteToText.WriteOneFilePerWindow(
+			));
+
+		pubSubMessages.apply(
+			"Backup PubSub Messages",
+			new BackupPubSubMessages(
+				streamingIngestionPipelineOptions.getOutputDirectory(),
 				streamingIngestionPipelineOptions.getOutputFileNamePrefix(),
-				streamingIngestionPipelineOptions.getOutputDirectory())
-		);
+				streamingIngestionPipelineOptions.getWriteInterval()));
 
 		return pipeline.run();
+	}
+
+	public static class BackupPubSubMessages
+		extends PTransform<PCollection<String>, PDone> {
+
+		public BackupPubSubMessages(
+			String outputDirectory, String outputFileNamePrefix,
+			long writeIntervalInMinutes) {
+
+			_outputDirectory = outputDirectory;
+			_outputFileNamePrefix = outputFileNamePrefix;
+			_writeIntervalInMinutes = writeIntervalInMinutes;
+		}
+
+		@Override
+		public PDone expand(PCollection<String> pCollection) {
+			return pCollection.apply(
+				_writeIntervalInMinutes + " Minutes Window",
+				Window.into(
+					FixedWindows.of(
+						Duration.standardMinutes(_writeIntervalInMinutes)))
+			).apply(
+				"Write Files",
+				new WriteToText.WriteOneFilePerWindow(
+					_outputFileNamePrefix, _outputDirectory)
+			);
+		}
+
+		private final String _outputDirectory;
+		private final String _outputFileNamePrefix;
+		private final long _writeIntervalInMinutes;
+
 	}
 
 }
