@@ -737,7 +737,7 @@ public class DataDefinitionResourceImpl
 			).put(
 				"replace",
 				addAction(
-					ActionKeys.PERMISSIONS, "putDataDefinitionPermission",
+					ActionKeys.PERMISSIONS, "putDataDefinitionPermissionsPage",
 					resourceName, dataDefinitionId)
 			).build(),
 			dataDefinitionId, resourceName, null);

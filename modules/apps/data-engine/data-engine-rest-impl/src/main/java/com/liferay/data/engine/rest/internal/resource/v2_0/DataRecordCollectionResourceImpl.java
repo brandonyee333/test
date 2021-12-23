@@ -274,8 +274,9 @@ public class DataRecordCollectionResourceImpl
 			).put(
 				"replace",
 				addAction(
-					ActionKeys.PERMISSIONS, "putDataRecordCollectionPermission",
-					resourceName, dataRecordCollectionId)
+					ActionKeys.PERMISSIONS,
+					"putDataRecordCollectionPermissionsPage", resourceName,
+					dataRecordCollectionId)
 			).build(),
 			dataRecordCollectionId, resourceName, null);
 	}
