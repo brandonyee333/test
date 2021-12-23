@@ -1,0 +1,27 @@
+[
+	{
+		"mode": "NULLABLE",
+		"name": "sessionStart",
+		"type": "TIMESTAMP"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "projectId",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "channelId",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "sessionId",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "sessionEnd",
+		"type": "TIMESTAMP"
+	}
+]

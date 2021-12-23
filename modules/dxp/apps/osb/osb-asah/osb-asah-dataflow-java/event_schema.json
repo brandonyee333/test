@@ -1,0 +1,147 @@
+[
+	{
+		"mode": "NULLABLE",
+		"name": "applicationId",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "browserName",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "canonicalUrl",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "channelId",
+		"type": "NUMERIC"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "city",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "contentLanguageId",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "context",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "country",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "createDate",
+		"type": "TIMESTAMP"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "dataSourceId",
+		"type": "NUMERIC"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "description",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "deviceType",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "eventDate",
+		"type": "TIMESTAMP"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "eventId",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "eventProperties",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "experienceId",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "id",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "languageId",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "platformName",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "projectId",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "projectTimeZoneId",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "referrer",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "region",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "sessionId",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "timezoneOffset",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "title",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "url",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "userId",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "variantId",
+		"type": "STRING"
+	}
+]

@@ -1,0 +1,32 @@
+[
+	{
+		"mode": "NULLABLE",
+		"name": "channelId",
+		"type": "NUMERIC"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "eventDate",
+		"type": "TIMESTAMP"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "id",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "projectId",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "propertyName",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "propertyValue",
+		"type": "STRING"
+	}
+]
