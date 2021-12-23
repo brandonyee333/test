@@ -109,4 +109,19 @@ definition {
 		}
 	}
 
+	macro getServerVersion {
+		ApplicationsMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Search");
+
+		WaitForSPARefresh();
+
+		Panel.expandPanel(panel = "Nodes (1)");
+
+		var serverVersion = selenium.getText("SearchAdmin#SERVER_VERSION");
+
+		return "${serverVersion}";
+	}
+
 }
