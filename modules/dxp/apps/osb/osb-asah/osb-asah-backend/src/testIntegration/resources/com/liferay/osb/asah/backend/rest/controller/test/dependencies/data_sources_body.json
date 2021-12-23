@@ -4,9 +4,9 @@
 		"credentialsType": "Token Authentication",
 		"size": 1,
 		"sort": {
-			"column": "dateCreated",
+			"column": "id",
 			"type": "DESC"
 		},
-		"type": "Liferay"
+		"type": "LIFERAY"
 	}
 }
