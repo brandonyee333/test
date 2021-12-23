@@ -14,6 +14,8 @@
 
 package com.liferay.site.admin.web.internal.handler;
 
+import com.liferay.asset.kernel.exception.AssetCategoryException;
+import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.DuplicateGroupException;
@@ -59,7 +61,38 @@ public class GroupExceptionRequestHandler {
 
 		String errorMessage = null;
 
-		if (portalException instanceof DuplicateGroupException) {
+		if (portalException instanceof AssetCategoryException) {
+			AssetCategoryException assetCategoryException =
+				(AssetCategoryException)portalException;
+
+			AssetVocabulary assetVocabulary =
+				assetCategoryException.getVocabulary();
+
+			String assetVocabularyTitle = StringPool.BLANK;
+
+			if (assetVocabulary != null) {
+				assetVocabularyTitle = assetVocabulary.getTitle(
+					themeDisplay.getLocale());
+			}
+
+			if (assetCategoryException.getType() ==
+					AssetCategoryException.AT_LEAST_ONE_CATEGORY) {
+
+				errorMessage = LanguageUtil.format(
+					themeDisplay.getRequest(),
+					"please-select-at-least-one-category-for-x",
+					assetVocabularyTitle);
+			}
+			else if (assetCategoryException.getType() ==
+						AssetCategoryException.TOO_MANY_CATEGORIES) {
+
+				errorMessage = LanguageUtil.format(
+					themeDisplay.getRequest(),
+					"you-cannot-select-more-than-one-category-for-x",
+					assetVocabularyTitle);
+			}
+		}
+		else if (portalException instanceof DuplicateGroupException) {
 			errorMessage = LanguageUtil.get(
 				themeDisplay.getRequest(), "please-enter-a-unique-name");
 		}
