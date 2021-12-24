@@ -22,7 +22,7 @@
 </tr>
 <tr>
 	<td>CHECKOUT_SUCCESS</td>
-	<td>//div[contains(@class,'content')]//div[contains(@class,'alert-info')]</td>
+	<td>//div[contains(@class,'content')]//div[contains(@class,'alert-info') and not(contains(@class,'center'))]</td>
 	<td></td>
 </tr>
 <tr>
