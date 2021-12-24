@@ -15,8 +15,10 @@
 package com.liferay.osb.asah.extractor.processor.test;
 
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
+import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
@@ -36,6 +38,10 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -68,6 +74,10 @@ public class DXPEntitiesMessageProcessorTest
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				349978106408647035L, "emailAddress", "email", "Text"));
 
+		_fieldMappingDog.addFieldMapping(
+			"custom", "type-Text", 349978106408647035L, "input-field",
+			"type-Text", "Text", "individual");
+
 		_dxpEntitiesMessageProcessor.processQueuedMessages();
 
 		ProjectIdThreadLocal.setProjectId("test");
@@ -84,6 +94,25 @@ public class DXPEntitiesMessageProcessorTest
 		Assertions.assertNotNull(individual);
 		Assertions.assertEquals(
 			SetUtil.of(dxpEntity.getId()), individual.getRoleIds());
+
+		Individual.Demographics customDemographics =
+			individual.getCustomDemographics();
+
+		Set<Field> fields = customDemographics.getFields();
+
+		Assertions.assertEquals(1, fields.size());
+
+		Stream<Field> stream = fields.stream();
+
+		Optional<Field> fieldOptional = stream.filter(
+			field -> Objects.equals("type-Text", field.getSourceName())
+		).findFirst();
+
+		Assertions.assertNotNull(fieldOptional);
+
+		Field field = fieldOptional.get();
+
+		Assertions.assertEquals("Old User", field.getValue());
 	}
 
 	@ElasticsearchIndex(
@@ -125,6 +154,9 @@ public class DXPEntitiesMessageProcessorTest
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
+
+	@Autowired
+	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
 	private FieldMappingRepository _fieldMappingRepository;

@@ -120,5 +120,33 @@
 			"userId": 39473
 		},
 		"projectId": "test"
+	},
+	{
+		"context": {
+			"action": "update",
+			"type": "com.liferay.portal.kernel.model.User"
+		},
+		"object": {
+			"contact": {
+				"birthday": "0",
+				"classPK": 39473,
+				"contactId": 39474,
+				"createDate": "1627050629498",
+				"emailAddress": "scott.lang@test.com",
+				"firstName": "Scott",
+				"jobTitle": "",
+				"lastName": "Lang",
+				"modifiedDate": "1627050657301"
+			},
+			"createDate": 1627050629498,
+			"emailAddress": "scott.lang@test.com",
+			"expando": {
+				"type-Text": "Old User"
+			},
+			"modifiedDate": 1627050657301,
+			"osbAsahDataSourceId": "349978106408647035",
+			"userId": "39473"
+		},
+		"projectId": "test"
 	}
 ]
