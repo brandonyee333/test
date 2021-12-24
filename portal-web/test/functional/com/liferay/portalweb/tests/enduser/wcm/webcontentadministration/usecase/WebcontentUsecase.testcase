@@ -882,6 +882,112 @@ definition {
 		);
 	}
 
+	@description = "LPS-102795 - Adding Translations to removable fields sets contents to null."
+	@priority = "4"
+	test AddTranslationsToRemovableFields {
+		JSONGroup.addGroup(groupName = "Test Site Name");
+
+		JSONLayout.addPublicLayout(
+			groupName = "Test Site Name",
+			layoutName = "Web Content Display Page");
+
+		JSONLayout.addWidgetToPublicLayout(
+			groupName = "Test Site Name",
+			layoutName = "Web Content Display Page",
+			widgetName = "Web Content Display");
+
+		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+		WebContentNavigator.gotoManageStructures();
+
+		WebContentStructures.addCP(
+			structureDescription = "WC Structure Description",
+			structureName = "WC Structure Name");
+
+		DynamicDataMapping.addField(
+			field = "Text Box",
+			fieldFieldLabel = "Text Box",
+			fieldName = "TextBox");
+
+		DynamicDataMapping.editFieldRepeatable(fieldFieldLabel = "Text Box");
+
+		WebContentStructures.saveCP(structureName = "WC Structure Name");
+
+		WebContentNavigator.gotoManageTemplatesViaStructures(structureName = "WC Structure Name");
+
+		var templateScript = '''
+#if (!$TextBox.getSiblings().isEmpty())
+	#foreach ($cur_TextBox in $TextBox.getSiblings())
+		$cur_TextBox.getData()
+	#end
+#end
+''';
+
+		WebContentTemplates.addCP(
+			templateName = "WC Template Name",
+			templateScript = "${templateScript}");
+
+		PortletEntry.save();
+
+		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Name");
+
+		WebContent.addWithStructureCP(
+			fieldName = "TextBox",
+			structureName = "WC Structure Name",
+			webContentTextBox = "English Title",
+			webContentTitle = "WC Title");
+
+		DDLRecord.addRepeatableField(fieldName = "TextBox");
+
+		Type(
+			key_fieldName = "TextBox",
+			locator1 = "DDMField#TEXT_BOX_2",
+			value1 = "Content");
+
+		PortletEntry.publish();
+
+		Navigator.gotoSitePage(
+			pageName = "Web Content Display Page",
+			siteName = "Test Site Name");
+
+		WebContentDisplayPortlet.selectWebContent(webContentTitle = "WC Title");
+
+		Navigator.openSiteURL(siteName = "Test Site Name");
+
+		Portlet.viewBody(
+			portletBody = "English Title Content",
+			portletName = "WC Title");
+
+		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "WC Title");
+
+		DDLRecord.addTranslation(localizedLanguage = "Spanish (Spain)");
+
+		Type(
+			key_fieldName = "TextBox",
+			locator1 = "DDMField#TEXT_BOX",
+			value1 = "Spanish Title");
+
+		PortletEntry.publish();
+
+		Navigator.gotoSitePage(
+			pageName = "Web Content Display Page",
+			siteName = "Test Site Name");
+
+		Portlet.viewBody(
+			portletBody = "English Title Content",
+			portletName = "WC Title");
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "es/web/test-site-name");
+
+		Portlet.viewBody(
+			portletBody = "Spanish Title Content",
+			portletName = "WC Title");
+	}
+
 	@priority = "4"
 	test AddVideoViaWebContent {
 		property custom.properties = "editor.wysiwyg.portal-impl.portlet.ddm.text_html.ftl=ckeditor";
