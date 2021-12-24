@@ -370,6 +370,7 @@ public class DXPEntitiesMessageProcessor {
 
 			if (dxpEntity != null) {
 				newDXPEntity.setId(dxpEntity.getId());
+				newDXPEntity.setType(type);
 
 				_dxpEntityDog.updateDXPEntity(newDXPEntity);
 			}
