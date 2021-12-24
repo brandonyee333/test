@@ -6,10 +6,6 @@ definition {
 
 	macro _addField {
 		if (IsElementNotPresent(locator1 = "Form#SIDEBAR_CLOSE")) {
-			MouseOver.mouseOverNotVisible(locator1 = "Form#ADD_FIELD");
-
-			ScrollBy(value1 = "0, 230");
-
 			Click(locator1 = "Form#ADD_FIELD");
 		}
 	}
@@ -343,8 +339,6 @@ definition {
 	}
 
 	macro gotoAddField {
-		WaitForElementPresent(locator1 = "Form#DESCRIPTION_FIELD");
-
 		Form._addField();
 
 		if (isSet(localeElements)) {
@@ -364,13 +358,13 @@ definition {
 		}
 
 		if (isSet(local)) {
-			DragAndDrop.dragAndDropToObject(
+			DragAndDrop.dragAndDropPortletToPortlet(
 				locator1 = "Form#ADD_FIELD_TYPE",
 				locator2 = "Form#ADD_FIELD_POSITION_1",
 				value1 = "${fieldType}");
 		}
 		else {
-			DragAndDrop.dragAndDropToObject(
+			DragAndDrop.dragAndDropPortletToPortlet(
 				locator1 = "Form#ADD_FIELD_TYPE",
 				locator2 = "Form#ADD_FIELD_POSITION",
 				value1 = "${fieldType}");
