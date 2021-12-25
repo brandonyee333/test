@@ -62,7 +62,11 @@ definition {
 
 			PortletEntry.inputName(name = "${siteName}");
 
-			Modal.save();
+			Button.clickAdd();
+
+			SelectFrameTop();
+
+			Alert.viewSuccessMessage();
 		}
 
 		if ("${siteType}" == "Site Template") {
@@ -133,7 +137,11 @@ definition {
 
 		PortletEntry.inputName(name = "${siteName}");
 
-		Modal.save();
+		Button.clickAdd();
+
+		SelectFrameTop();
+
+		Alert.viewSuccessMessage();
 
 		AssertTextEquals(
 			locator1 = "SitesEditSite#DETAILS_NAME",
@@ -1124,7 +1132,7 @@ definition {
 
 		PortletEntry.inputName(name = "${siteName}");
 
-		Button.clickSave();
+		Button.clickAdd();
 
 		if ("${siteNameInvalid}" == "Duplicate") {
 			AssertTextEquals.assertPartialText(
