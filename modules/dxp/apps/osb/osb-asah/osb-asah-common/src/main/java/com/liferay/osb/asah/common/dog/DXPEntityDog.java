@@ -88,8 +88,10 @@ public class DXPEntityDog {
 	public List<? extends DXPEntity> findByAfterAndFieldsAndType(
 		Long after, Map<String, Object> fields, int size, DXPEntity.Type type) {
 
-		return _dxpEntityRepository.findByAfterAndFieldsAndType(
-			after, fields, size, type);
+		return _mapDXPEntities(
+			_dxpEntityRepository.findByAfterAndFieldsAndType(
+				after, fields, size, type),
+			type);
 	}
 
 	public List<DXPUser> findDXPUsersByMembershipClassNameAndMembershipId(
