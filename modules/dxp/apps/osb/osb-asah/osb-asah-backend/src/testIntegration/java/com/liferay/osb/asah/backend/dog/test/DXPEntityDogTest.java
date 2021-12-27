@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -27,6 +28,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -59,6 +61,27 @@ public class DXPEntityDogTest
 		_dxpEntityDog.deleteByType(DXPEntity.Type.TEAM);
 		_dxpEntityDog.deleteByType(DXPEntity.Type.USER);
 		_dxpEntityDog.deleteByType(DXPEntity.Type.USER_GROUP);
+	}
+
+	@ElasticsearchIndex(
+		name = "users", resourcePath = "users.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	)
+	@Test
+	public void testFindByAfterAndFieldsAndType() {
+		List<? extends DXPEntity> dxpEntities =
+			_dxpEntityDog.findByAfterAndFieldsAndType(
+				null,
+				Collections.singletonMap("fields.screenName", "bruno.admin"),
+				10, DXPEntity.Type.USER);
+
+		Stream<? extends DXPEntity> stream = dxpEntities.stream();
+
+		stream.map(
+			dxpEntity -> (DXPUser)dxpEntity
+		).forEach(
+			dxpUser -> Assertions.assertNotNull(dxpUser.getName())
+		);
 	}
 
 	@ElasticsearchIndex(
