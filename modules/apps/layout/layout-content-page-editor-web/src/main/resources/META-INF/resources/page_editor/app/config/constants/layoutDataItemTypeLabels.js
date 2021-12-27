@@ -18,6 +18,7 @@ export const LAYOUT_DATA_ITEM_TYPE_LABELS = {
 	column: Liferay.Language.get('module'),
 	container: Liferay.Language.get('container'),
 	dropZone: Liferay.Language.get('drop-zone'),
+	form: Liferay.Language.get('form'),
 	fragment: Liferay.Language.get('fragment'),
 	root: Liferay.Language.get('root'),
 	row: Liferay.Language.get('grid'),

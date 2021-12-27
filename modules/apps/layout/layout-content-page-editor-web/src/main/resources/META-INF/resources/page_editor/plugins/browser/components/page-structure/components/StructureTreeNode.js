@@ -468,6 +468,8 @@ function computeHover({
 			targetItem.type === LAYOUT_DATA_ITEM_TYPES.fragment;
 		const targetIsContainer =
 			targetItem.type === LAYOUT_DATA_ITEM_TYPES.container;
+		const targetIsForm =
+			targetItem.type === LAYOUT_DATA_ITEM_TYPES.form;
 		const targetIsEmpty =
 			layoutDataRef.current.items[targetItem.itemId]?.children.length ===
 			0;
@@ -475,7 +477,7 @@ function computeHover({
 
 		return (
 			targetPositionWithMiddle === TARGET_POSITIONS.MIDDLE &&
-			(targetIsEmpty || targetIsColumn || targetIsContainer) &&
+			(targetIsEmpty || targetIsColumn || targetIsContainer || targetIsForm) &&
 			!targetIsFragment &&
 			!targetIsParent
 		);

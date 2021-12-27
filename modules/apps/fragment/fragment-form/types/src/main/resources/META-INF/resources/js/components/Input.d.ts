@@ -12,17 +12,16 @@
  * details.
  */
 
-import hasDropZoneChild from '../components/layout-data-items/hasDropZoneChild';
-import {LAYOUT_DATA_ITEM_TYPES} from '../config/constants/layoutDataItemTypes';
-
-export default function canBeSaved(item, layoutData) {
-	switch (item.type) {
-		case LAYOUT_DATA_ITEM_TYPES.form:
-		case LAYOUT_DATA_ITEM_TYPES.container:
-		case LAYOUT_DATA_ITEM_TYPES.row:
-			return !hasDropZoneChild(item, layoutData);
-
-		default:
-			return false;
-	}
+import React from 'react';
+interface IInputProps extends React.HTMLAttributes<HTMLElement> {
+	disabled?: boolean;
+	error?: string;
+	feedbackMessage?: string;
+	id: string;
+	label: string;
+	name: string;
+	required?: boolean;
+	value: string;
 }
+declare const Input: React.FC<IInputProps>;
+export default Input;

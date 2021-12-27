@@ -12,17 +12,20 @@
  * details.
  */
 
-import hasDropZoneChild from '../components/layout-data-items/hasDropZoneChild';
-import {LAYOUT_DATA_ITEM_TYPES} from '../config/constants/layoutDataItemTypes';
+import ClayForm from '@clayui/form';
+import classNames from 'classnames';
+import React from 'react';
 
-export default function canBeSaved(item, layoutData) {
-	switch (item.type) {
-		case LAYOUT_DATA_ITEM_TYPES.form:
-		case LAYOUT_DATA_ITEM_TYPES.container:
-		case LAYOUT_DATA_ITEM_TYPES.row:
-			return !hasDropZoneChild(item, layoutData);
-
-		default:
-			return false;
-	}
+interface IErrorFeedbackProps extends React.HTMLAttributes<HTMLElement> {
+	error: string;
 }
+
+const ErrorFeedback: React.FC<IErrorFeedbackProps> = ({className, error}) => (
+	<ClayForm.FeedbackGroup className={classNames(className)}>
+		<ClayForm.FeedbackItem>
+			<span>{error}</span>
+		</ClayForm.FeedbackItem>
+	</ClayForm.FeedbackGroup>
+);
+
+export default ErrorFeedback;

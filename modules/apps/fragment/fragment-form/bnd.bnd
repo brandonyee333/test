@@ -1,0 +1,5 @@
+Bundle-Name: Liferay Fragment Form
+Bundle-SymbolicName: com.liferay.fragment.form
+Bundle-Version: 1.0.0
+Web-ContextPath: /fragment-form
+-dsannotations-options: inherit

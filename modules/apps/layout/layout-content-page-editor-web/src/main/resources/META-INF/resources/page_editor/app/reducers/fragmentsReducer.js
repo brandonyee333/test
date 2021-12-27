@@ -86,6 +86,15 @@ export default function fragmentsReducer(fragments = [], action) {
 					},
 					{
 						data: {
+							itemType: LAYOUT_DATA_ITEM_TYPES.form,
+						},
+						icon: 'form',
+						itemId: 'form',
+						label: LAYOUT_DATA_ITEM_TYPE_LABELS.form,
+						type: 'form',
+					},
+					{
+						data: {
 							itemType: LAYOUT_DATA_ITEM_TYPES.row,
 						},
 						icon: 'table',

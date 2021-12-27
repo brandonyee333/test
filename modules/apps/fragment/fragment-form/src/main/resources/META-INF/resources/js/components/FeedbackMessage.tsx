@@ -12,17 +12,23 @@
  * details.
  */
 
-import hasDropZoneChild from '../components/layout-data-items/hasDropZoneChild';
-import {LAYOUT_DATA_ITEM_TYPES} from '../config/constants/layoutDataItemTypes';
+import ClayForm from '@clayui/form';
+import React from 'react';
 
-export default function canBeSaved(item, layoutData) {
-	switch (item.type) {
-		case LAYOUT_DATA_ITEM_TYPES.form:
-		case LAYOUT_DATA_ITEM_TYPES.container:
-		case LAYOUT_DATA_ITEM_TYPES.row:
-			return !hasDropZoneChild(item, layoutData);
-
-		default:
-			return false;
-	}
+interface IFeedbackMessageProps extends React.HTMLAttributes<HTMLElement> {
+	feedbackMessage: string;
 }
+
+const FeedbackMessage: React.FC<IFeedbackMessageProps> = ({
+	feedbackMessage,
+}) => {
+	return (
+		<ClayForm.FeedbackGroup>
+			<ClayForm.FeedbackItem>
+				<ClayForm.Text>{feedbackMessage}</ClayForm.Text>
+			</ClayForm.FeedbackItem>
+		</ClayForm.FeedbackGroup>
+	);
+};
+
+export default FeedbackMessage;

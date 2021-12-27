@@ -28,6 +28,7 @@ export default function canBeDuplicated(
 
 		case LAYOUT_DATA_ITEM_TYPES.container:
 		case LAYOUT_DATA_ITEM_TYPES.row:
+		case LAYOUT_DATA_ITEM_TYPES.form:
 			return !hasDropZoneChild(item, layoutData);
 
 		case LAYOUT_DATA_ITEM_TYPES.fragment: {

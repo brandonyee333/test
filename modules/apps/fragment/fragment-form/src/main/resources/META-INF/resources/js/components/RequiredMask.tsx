@@ -12,17 +12,21 @@
  * details.
  */
 
-import hasDropZoneChild from '../components/layout-data-items/hasDropZoneChild';
-import {LAYOUT_DATA_ITEM_TYPES} from '../config/constants/layoutDataItemTypes';
+import ClayIcon from '@clayui/icon';
+import React from 'react';
 
-export default function canBeSaved(item, layoutData) {
-	switch (item.type) {
-		case LAYOUT_DATA_ITEM_TYPES.form:
-		case LAYOUT_DATA_ITEM_TYPES.container:
-		case LAYOUT_DATA_ITEM_TYPES.row:
-			return !hasDropZoneChild(item, layoutData);
+const RequiredMask: React.FC<React.HTMLAttributes<HTMLElement>> = () => {
+	return (
+		<>
+			<span className="ml-1 reference-mark text-warning">
+				<ClayIcon symbol="asterisk" />
+			</span>
 
-		default:
-			return false;
-	}
-}
+			<span className="hide-accessible">
+			  Mandatory
+			</span>
+		</>
+	);
+};
+
+export default RequiredMask;
