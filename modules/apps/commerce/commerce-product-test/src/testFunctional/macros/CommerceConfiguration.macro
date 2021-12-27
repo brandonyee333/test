@@ -37,7 +37,7 @@ definition {
 		Navigator.openURL();
 
 		CommerceNavigator.gotoPortlet(
-			category = "Order Management",
+			category = "Inventory Management",
 			portlet = "Orders");
 
 		Refresh();

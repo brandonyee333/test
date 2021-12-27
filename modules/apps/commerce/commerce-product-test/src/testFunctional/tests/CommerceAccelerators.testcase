@@ -398,7 +398,7 @@ definition {
 			productUnitPrice = "50.00");
 
 		CommerceNavigator.gotoPortlet(
-			category = "Order Management",
+			category = "Inventory Management",
 			portlet = "Orders");
 
 		CommerceNavigator.gotoOrderEntryViaAdmin(status = "Open");
@@ -411,7 +411,7 @@ definition {
 			productTotalPrice = "100.00");
 
 		CommerceNavigator.gotoPortlet(
-			category = "Order Management",
+			category = "Inventory Management",
 			portlet = "Orders");
 
 		CommerceNavigator.gotoOrderEntryViaAdmin(status = "Pending");
@@ -536,7 +536,7 @@ definition {
 		Refresh();
 
 		CommerceNavigator.gotoPortlet(
-			category = "Order Management",
+			category = "Inventory Management",
 			portlet = "Orders");
 
 		CommerceNavigator.gotoOrderEntryViaAdmin(status = "Open");
@@ -549,7 +549,7 @@ definition {
 			productTotalPrice = "100.00");
 
 		CommerceNavigator.gotoPortlet(
-			category = "Order Management",
+			category = "Inventory Management",
 			portlet = "Orders");
 
 		CommerceNavigator.gotoOrderEntryViaAdmin(status = "Pending");

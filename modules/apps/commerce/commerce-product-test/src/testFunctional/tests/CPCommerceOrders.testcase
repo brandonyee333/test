@@ -86,7 +86,7 @@ definition {
 			shippingMethod = "Standard");
 
 		CommerceNavigator.gotoPortlet(
-			category = "Order Management",
+			category = "Inventory Management",
 			portlet = "Orders");
 
 		CommerceNavigator.gotoOrderEntryViaAdmin(status = "Pending");
@@ -96,7 +96,7 @@ definition {
 			orderItemSKU = "MIN93015");
 
 		CommerceNavigator.gotoPortlet(
-			category = "Order Management",
+			category = "Inventory Management",
 			portlet = "Orders");
 
 		CommerceNavigator.gotoOrderEntryViaAdmin(status = "Pending");
