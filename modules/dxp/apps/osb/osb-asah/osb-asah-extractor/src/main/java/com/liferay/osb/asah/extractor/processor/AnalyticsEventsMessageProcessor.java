@@ -279,10 +279,10 @@ public class AnalyticsEventsMessageProcessor {
 		String dataSourceId = analyticsEventsMessage.getDataSourceId();
 
 		if (StringUtil.isNull(channelId) || StringUtils.isBlank(channelId)) {
-			channelId = String.valueOf(
-				_dataSourceDog.getDefaultChannelId(Long.valueOf(dataSourceId)));
+			Long channelIdLong = _dataSourceDog.getDefaultChannelId(
+				Long.valueOf(dataSourceId));
 
-			if (StringUtils.isBlank(channelId)) {
+			if (channelIdLong == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(
 						"Discarding message because channel ID is invalid: " +
@@ -291,6 +291,8 @@ public class AnalyticsEventsMessageProcessor {
 
 				return;
 			}
+
+			channelId = String.valueOf(channelIdLong);
 		}
 
 		Set<AnalyticsEvent> analyticsEvents = new TreeSet<>(
