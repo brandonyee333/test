@@ -938,11 +938,13 @@ public class IndividualsFilterStringConverterHelper
 			return null;
 		}
 
+		JSONObject fieldsJSONObject = userJSONObject.getJSONObject("fields");
+
 		Condition condition = DSL.and(
 			DSL.field(
 				"datasourceindividual.datasourceid"
 			).eq(
-				userJSONObject.getLong("osbAsahDataSourceId")
+				userJSONObject.getLong("dataSourceId")
 			),
 			DSL.field(
 				DSL.cast(
@@ -950,7 +952,8 @@ public class IndividualsFilterStringConverterHelper
 					String[].class)
 			).contains(
 				DSL.cast(
-					DSL.array(userJSONObject.getString("uuid")), String[].class)
+					DSL.array(fieldsJSONObject.getString("uuid")),
+					String[].class)
 			));
 
 		if (negate) {
