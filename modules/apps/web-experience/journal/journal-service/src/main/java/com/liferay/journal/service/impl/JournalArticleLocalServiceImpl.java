@@ -3461,7 +3461,8 @@ public class JournalArticleLocalServiceImpl
 				Math.min(
 					maxLength - suffix.length(), normalizedUrlTitle.length()));
 
-			curUrlTitle = prefix + suffix;
+			curUrlTitle = FriendlyURLNormalizerUtil.normalizeWithEncoding(
+				prefix + suffix);
 		}
 
 		return curUrlTitle;
