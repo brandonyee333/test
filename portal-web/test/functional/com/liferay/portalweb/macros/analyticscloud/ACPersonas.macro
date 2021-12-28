@@ -1,0 +1,37 @@
+definition {
+
+	macro addRandomEvent {
+
+		Type(locator1 = "ACPersonas#RANDOM_EVENT_NAME",
+             value1 = "${randomEventName}");
+
+		Type(locator1 = "ACPersonas#ATTRIBUTE_COUNT",
+             value1 = "${attributeCount}");
+
+        Click(locator1 = "ACPersonas#GENERATE_RANDOM_EVENT_BUTTON");
+	}
+
+    macro addCustomEvent {
+        Type(locator1 = "ACPersonas#PLACEMENT_ATTRIBUTES",
+             value1 = "${placementAttributes}");
+
+        Type(locator1 = "ACPersonas#ATTRIBUTE_VALUES",
+             value1 = "${attributeValues}");
+
+        Click(locator1 = "ACPersonas#GENERATE_CUSTOM_EVENT_BUTTON");
+
+    }
+
+    macro buySwimwear {
+        Click(locator1 = "ACPersonas#BUY_SWIM_SUIT");
+    }
+
+    macro buyBoard {
+        Click(locator1 = "ACPersonas#BUY_BOARD");
+    }
+
+    macro buyGear {
+        Click(locator1 = "ACPersonas#BUY_GEAR");
+    }
+
+}

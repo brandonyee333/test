@@ -1,0 +1,101 @@
+<html>
+<head>
+<title>ACPersonas</title>
+</head>
+
+<body>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr><td rowspan="1" colspan="3">ACPersonas</td></tr>
+</thead>
+
+<tbody>
+<tr>
+	<td>RANDOM_EVENT_NAME</td>
+	<td>//div[contains(@class,'journal-content-article')]//input[@id='event-name-random']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ATTRIBUTE_COUNT</td>
+	<td>//div[contains(@class,'journal-content-article')]//input[@id='count']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>RANDOM_EVENT_COUNT</td>
+	<td>//div[contains(@class,'journal-content-article')]//input[@id='times']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CUSTOM_EVENT_NAME</td>
+	<td>//div[contains(@class,'journal-content-article')]//input[@id='name-custom']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CUSTOM_EVENT_COUNT</td>
+	<td>//div[contains(@class,'journal-content-article')]//input[@id='times-custom']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>STRING_CHECK_BOX</td>
+	<td>//div[contains(@class,'journal-content-article')]//input[@id='string']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NUMBER_CHECK_BOX</td>
+	<td>//div[contains(@class,'journal-content-article')]//input[@id='number']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DATE_CHECK_BOX</td>
+	<td>//div[contains(@class,'journal-content-article')]//input[@id='date']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DURATION_CHECK_BOX</td>
+	<td>//div[contains(@class,'journal-content-article')]//input[@id='duration']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>BOOLEAN_CHECK_BOX</td>
+	<td>//div[contains(@class,'journal-content-article')]//input[@id='boolean']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GENERATE_RANDOM_EVENT_BUTTON</td>
+	<td>//div[contains(@class,'journal-content-article')]//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GENERATE_CUSTOM_EVENT_BUTTON</td>
+	<td>//div[contains(@class,'journal-content-article')]//input[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PLACEMENT_ATTRIBUTES</td>
+	<td>//div[contains(@class,'inline-block-child')]//textarea[@id='placements']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ATTRIBUTE_VALUES</td>
+	<td>//div[contains(@class,'inline-block-child')]//textarea[@id='expected']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>BUY_SWIM_SUIT</td>
+	<td>//button[contains(@class,'mybutton-shop') and contains(@onclick,'buySurfwear')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>BUY_BOARD</td>
+	<td>//button[contains(@class,'mybutton-shop') and contains(@onclick,'buyBoard')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>BUY_GEAR</td>
+	<td>//button[contains(@class,'mybutton-shop') and contains(@onclick,'buyGear')]</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html> 
