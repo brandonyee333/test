@@ -140,11 +140,12 @@ definition {
 
 	macro clickPortletPlusIconPG {
 		MouseOver.mouseOverNotVisible(
-				key_portletName = "${portletName}",
-				locator1 = "Portlet#ICON_PLUS_SIGN");
+			key_portletName = "${portletName}",
+			locator1 = "Portlet#ICON_PLUS_SIGN");
+
 		Click(
-				key_portletName = "${portletName}",
-				locator1 = "Portlet#ICON_PLUS_SIGN");
+			key_portletName = "${portletName}",
+			locator1 = "Portlet#ICON_PLUS_SIGN");
 	}
 
 	macro configureCustomStylesViaLookandfeelPG {
