@@ -32,7 +32,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 public class IndividualsFilterStringConverterHelperTest {
 
 	@Test
-	public void test() {
+	public void testGetUserIdCondition() {
 		ElasticsearchInvoker elasticsearchInvoker = Mockito.mock(
 			ElasticsearchInvoker.class);
 
@@ -53,6 +53,8 @@ public class IndividualsFilterStringConverterHelperTest {
 		Condition condition = (Condition)ReflectionTestUtils.invokeMethod(
 			_individualsFilterStringConverterHelper, "_getUserIdCondition",
 			false, "1");
+
+		Assertions.assertNotNull(condition);
 
 		Assertions.assertEquals(
 			"(\n  datasourceindividual.datasourceid = 1\n" +
