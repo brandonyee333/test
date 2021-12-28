@@ -79,19 +79,46 @@ public class IndividualSegmentsRestControllerTest
 				1L, "email", "email", "Text"));
 		JSONObject groupJSONObject = _dxpRawElasticsearchInvoker.add(
 			"groups",
-			JSONUtil.put("fields", JSONUtil.put("name", "groupName")));
+			JSONUtil.put(
+				"dataSourceId", 1L
+			).put(
+				"fields", JSONUtil.put("name", "groupName")
+			));
 		JSONObject organizationJSONObject = _dxpRawElasticsearchInvoker.add(
 			"organizations",
-			JSONUtil.put("fields", JSONUtil.put("name", "organizationName")));
+			JSONUtil.put(
+				"dataSourceId", 1L
+			).put(
+				"fields", JSONUtil.put("name", "organizationName")
+			));
 		JSONObject roleJSONObject = _dxpRawElasticsearchInvoker.add(
-			"roles", JSONUtil.put("fields", JSONUtil.put("name", "roleName")));
+			"roles",
+			JSONUtil.put(
+				"dataSourceId", 1L
+			).put(
+				"fields", JSONUtil.put("name", "roleName")
+			));
 		JSONObject teamJSONObject = _dxpRawElasticsearchInvoker.add(
-			"teams", JSONUtil.put("fields", JSONUtil.put("name", "teamName")));
+			"teams",
+			JSONUtil.put(
+				"dataSourceId", 1L
+			).put(
+				"fields", JSONUtil.put("name", "teamName")
+			));
 		JSONObject userGroupJSONObject = _dxpRawElasticsearchInvoker.add(
 			"user-groups",
-			JSONUtil.put("fields", JSONUtil.put("name", "userGroupName")));
+			JSONUtil.put(
+				"dataSourceId", 1L
+			).put(
+				"fields", JSONUtil.put("name", "userGroupName")
+			));
 		JSONObject userJSONObject = _dxpRawElasticsearchInvoker.add(
-			"users", JSONUtil.put("fields", JSONUtil.put("name", "userName")));
+			"users",
+			JSONUtil.put(
+				"dataSourceId", 1L
+			).put(
+				"fields", JSONUtil.put("name", "userName")
+			));
 
 		Segment segment = new Segment();
 
