@@ -1,1030 +1,1486 @@
 {
-		"Users": [{
- 		 "User Groups": ["Business: Accounting"],
- 		 "First Name": "Jane",
- 		 "Last Name": "Phillips",
- 		 "Screen Name": "j.phillips",
- 		 "Male": false,
- 		 "Job Title": "Associate Professor",
- 		 "Email Address": "jane.phillips@spaceprogram.liferay.com",
-	"Organizations": []
-
-		}, {
- 		 "User Groups": ["Business: Accounting"],
- 		 "First Name": "Theodore",
- 		 "Last Name": "Andersen",
- 		 "Screen Name": "t.andersen",
- 		 "Male": true,
- 		 "Job Title": "Assistant Professor",
- 		 "Email Address": "theodore.andersen@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Business: Business Administration"],
- 		 "First Name": "Oliver",
- 		 "Last Name": "Wainwright",
- 		 "Screen Name": "o.wainwright",
- 		 "Male": true,
- 		 "Job Title": "Associate Professor",
- 		 "Email Address": "oliver.wainwright@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Business: Business Administration"],
- 		 "First Name": "Eloise",
- 		 "Last Name": "Blake",
- 		 "Screen Name": "e.blake",
- 		 "Male": false,
- 		 "Job Title": "Assistant Professor",
- 		 "Email Address": "eloise.blake@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Wolfgang",
- 		 "Last Name": "von Richter",
- 		 "Screen Name": "w.vonrichter",
- 		 "Male": true,
- 		 "Job Title": "Associate Professor",
- 		 "Email Address": "wolfgang.vonrichter@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Beatrice",
- 		 "Last Name": "Maurier",
- 		 "Screen Name": "b.maurier",
- 		 "Male": false,
- 		 "Job Title": "Assistant Professor",
- 		 "Email Address": "beatrice.maurier@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Edward",
- 		 "Last Name": "Knight",
- 		 "Screen Name": "e.knight",
- 		 "Male": true,
- 		 "Job Title": "Associate Professor",
- 		 "Email Address": "edward.knight@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Electrical Engineering"],
- 		 "First Name": "Margaret",
- 		 "Last Name": "Walker",
- 		 "Screen Name": "m.walker",
- 		 "Male": false,
- 		 "Job Title": "Associate Professor",
- 		 "Email Address": "margaret.walker@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Electrical Engineering"],
- 		 "First Name": "Pierre",
- 		 "Last Name": "Novola ",
- 		 "Screen Name": "p.novola",
- 		 "Male": true,
- 		 "Job Title": "Assistant Professor",
- 		 "Email Address": "pierre.novola@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Mechanical Engineering"],
- 		 "First Name": "Leo",
- 		 "Last Name": "Blythe",
- 		 "Screen Name": "l.blythe",
- 		 "Male": true,
- 		 "Job Title": "Associate Professor",
- 		 "Email Address": "leo.blythe@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Mechanical Engineering"],
- 		 "First Name": "Samira",
- 		 "Last Name": "Maalouf",
- 		 "Screen Name": "s.maalouf",
- 		 "Male": false,
- 		 "Job Title": "Assistant Professor",
- 		 "Email Address": "samira.maalouf@spaceprogram.liferay.com",
-	 	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Computer Engineering"],
- 		 "First Name": "Harriet",
- 		 "Last Name": "Winters",
- 		 "Screen Name": "h.winters",
- 		 "Male": false,
- 		 "Job Title": "Associate Professor",
- 		 "Email Address": "harriet.winters@spaceprogram.liferay.com",
-	 	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Computer Engineering"],
- 		 "First Name": "Agatha",
- 		 "Last Name": "Saylor",
- 		 "Screen Name": "a.saylor",
- 		 "Male": false,
- 		 "Job Title": "Assistant Professor",
- 		 "Email Address": "agatha.saylor@spaceprogram.liferay.com",
-	 	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Civil Engineering"],
- 		 "First Name": "Glen",
- 		 "Last Name": "Powers",
- 		 "Screen Name": "g.powers",
- 		 "Male": true,
- 		 "Job Title": "Associate Professor",
- 		 "Email Address": "glen.powers@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Civil Engineering"],
- 		 "First Name": "Benedict",
- 		 "Last Name": "Mills",
- 		 "Screen Name": "b.mills",
- 		 "Male": true,
- 		 "Job Title": "Assistant Professor",
- 		 "Email Address": "benedict.mills@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Aeronautics"],
- 		 "First Name": "Josefina",
- 		 "Last Name": "Suarez",
- 		 "Screen Name": "j.suarez",
- 		 "Male": false,
- 		 "Job Title": "Associate Professor",
- 		 "Email Address": "josefina.suarez@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Aeronautics"],
- 		 "First Name": "Andrew",
- 		 "Last Name": "Washington",
- 		 "Screen Name": "a.washington",
- 		 "Male": true,
- 		 "Job Title": "Assistant Professor",
- 		 "Email Address": "andrew.washington@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Aeronautics"],
- 		 "First Name": "Peter",
- 		 "Last Name": "Vance ",
- 		 "Screen Name": "p.vance",
- 		 "Male": true,
- 		 "Job Title": "Assistant Professor",
- 		 "Email Address": "peter.vance@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Alessandro",
- 		 "Last Name": "Mancelli",
- 		 "Screen Name": "a.mancelli",
- 		 "Male": true,
- 		 "Job Title": "Associate Professor",
- 		 "Email Address": "alessandro.mancelli@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Anya",
- 		 "Last Name": "Alexis",
- 		 "Screen Name": "a.alexis",
- 		 "Male": false,
- 		 "Job Title": "Assistant Professor",
- 		 "Email Address": "anya.alexis@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Business: Accounting"],
- 		 "First Name": "Sally",
- 		 "Last Name": "Beech",
- 		 "Screen Name": "s.beech",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "sally.beech@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Business: Accounting"],
- 		 "First Name": "Alfred",
- 		 "Last Name": "Wilson",
- 		 "Screen Name": "a.wilson",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "alfred.wilson@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Business: Accounting"],
- 		 "First Name": "Jonathan",
- 		 "Last Name": "Prince",
- 		 "Screen Name": "j.prince",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "jonathan.prince@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Business: Accounting"],
- 		 "First Name": "Chester",
- 		 "Last Name": "Okoye",
- 		 "Screen Name": "c.okoye",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "chester.okoye@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Business: Accounting"],
- 		 "First Name": "Dallas",
- 		 "Last Name": "Freeman",
- 		 "Screen Name": "d.freeman",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "dallas.freeman@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Business: Accounting"],
- 		 "First Name": "Anne",
- 		 "Last Name": "Shephard",
- 		 "Screen Name": "a.shephard",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "anne.shephard@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Business: Business Administration"],
- 		 "First Name": "Elizabeth",
- 		 "Last Name": "Howard",
- 		 "Screen Name": "e.howard",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "elizabeth.howard@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Business: Business Administration"],
- 		 "First Name": "Clement",
- 		 "Last Name": "Sorensen",
- 		 "Screen Name": "c.sorensen",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "clement.sorensen@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Business: Business Administration"],
- 		 "First Name": "Gerald",
- 		 "Last Name": "Snow",
- 		 "Screen Name": "g.snow",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "gerald.snow@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Business: Business Administration"],
- 		 "First Name": "Fitz",
- 		 "Last Name": "Worthing",
- 		 "Screen Name": "f.worthing",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "fitz.worthing@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Business: Business Administration"],
- 		 "First Name": "Katrina",
- 		 "Last Name": "Rose",
- 		 "Screen Name": "k.rose",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "katrina.rose@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Talia ",
- 		 "Last Name": "Townsend",
- 		 "Screen Name": "t.townsend",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "talia.townsend@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Iefan",
- 		 "Last Name": "Owain",
- 		 "Screen Name": "i.owain",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "iefan.owain@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Henry",
- 		 "Last Name": "Frederickson",
- 		 "Screen Name": "h.frederickson",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "henry.frederickson@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Se-ra",
- 		 "Last Name": "Kang",
- 		 "Screen Name": "s.kang",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "sera.kang@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Bronwin",
- 		 "Last Name": "Bakersfield",
- 		 "Screen Name": "b.bakersfield",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "bronwin.bakersfield@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Martin",
- 		 "Last Name": "Collins",
- 		 "Screen Name": "m.collins",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "martin.collins@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Charles",
- 		 "Last Name": "Tinley",
- 		 "Screen Name": "c.tinley",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "charles.tinley@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Alan",
- 		 "Last Name": "Vangaard",
- 		 "Screen Name": "a.vangaard",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "alan.vangaard@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, 	 {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Adeline",
- 		 "Last Name": "Nimri",
- 		 "Screen Name": "a.nimri",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "adeline.nimri@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, 	 {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Jonathon",
- 		 "Last Name": "Sharp",
- 		 "Screen Name": "j.sharp",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "jonathon.sharp@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Caroline",
- 		 "Last Name": "Harper",
- 		 "Screen Name": "c.harper",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "caroline.harper@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Agricultural Science"],
- 		 "First Name": "Lisa",
- 		 "Last Name": "Chau",
- 		 "Screen Name": "l.chau",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "lisa.chau@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Electrical Engineering"],
- 		 "First Name": "Clark",
- 		 "Last Name": "Waterford",
- 		 "Screen Name": "c.waterford",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "clark.waterford@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Electrical Engineering"],
- 		 "First Name": "Giada",
- 		 "Last Name": "Barelli",
- 		 "Screen Name": "g.barelli",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "giada.barelli@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Electrical Engineering"],
- 		 "First Name": "Rupert",
- 		 "Last Name": "Kelly",
- 		 "Screen Name": "r.kelly",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "rupert.kelly@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Electrical Engineering"],
- 		 "First Name": "Tabitha",
- 		 "Last Name": "Doolittle",
- 		 "Screen Name": "t.doolittle",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "tabitha.doolittle@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Electrical Engineering"],
- 		 "First Name": "Jakob",
- 		 "Last Name": "Miller",
- 		 "Screen Name": "j.miller",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "jakob.miller@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Electrical Engineering"],
- 		 "First Name": "Lila",
- 		 "Last Name": "Martinez",
- 		 "Screen Name": "l.martinez",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "lila.martinez@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Electrical Engineering"],
- 		 "First Name": "Nolan",
- 		 "Last Name": "Blackstone",
- 		 "Screen Name": "n.blackstone",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "nolan.blackstone@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Mechanical Engineering"],
- 		 "First Name": "Seamus",
- 		 "Last Name": "Alba",
- 		 "Screen Name": "s.alba",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "seamus.alba@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Mechanical Engineering"],
- 		 "First Name": "Russell",
- 		 "Last Name": "Hawthorne",
- 		 "Screen Name": "r.hawthorne",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "russell.hawthorne@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Mechanical Engineering"],
- 		 "First Name": "Noel",
- 		 "Last Name": "Barritz",
- 		 "Screen Name": "n.barritz",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "noel.barritz@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Mechanical Engineering"],
- 		 "First Name": "Harrison",
- 		 "Last Name": "Fleet",
- 		 "Screen Name": "h.fleet",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "harrison.fleet@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Mechanical Engineering"],
- 		 "First Name": "Sara",
- 		 "Last Name": "Shumacher",
- 		 "Screen Name": "s.shumacher",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "sara.shumacher@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Mechanical Engineering"],
- 		 "First Name": "Omar",
- 		 "Last Name": "Qasim",
- 		 "Screen Name": "o.qasim",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "omar.qasim@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Mechanical Engineering"],
- 		 "First Name": "Bertram",
- 		 "Last Name": "Williams",
- 		 "Screen Name": "b.williams",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "bertram.williams@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Mechanical Engineering"],
- 		 "First Name": "Emma",
- 		 "Last Name": "Gruber",
- 		 "Screen Name": "e.gruber",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "emma.gruber@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Computer Engineering"],
- 		 "First Name": "Julio",
- 		 "Last Name": "Gonzalez",
- 		 "Screen Name": "j.gonzalez",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "julio.gonzalez@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Computer Engineering"],
- 		 "First Name": "Larry",
- 		 "Last Name": "Chan",
- 		 "Screen Name": "l.chan",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "larry.chan@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Computer Engineering"],
- 		 "First Name": "John",
- 		 "Last Name": "Luther",
- 		 "Screen Name": "j.luther",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "john.luther@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Computer Engineering"],
- 		 "First Name": "Femi",
- 		 "Last Name": "Solarin",
- 		 "Screen Name": "f.solarin",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "femi.solarin@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Computer Engineering"],
- 		 "First Name": "Trey",
- 		 "Last Name": "Lincoln",
- 		 "Screen Name": "t.lincoln",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "trey.lincoln@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Computer Engineering"],
- 		 "First Name": "Elinor",
- 		 "Last Name": "Maltov",
- 		 "Screen Name": "e.maltov",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "elinor.maltov@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Computer Engineering"],
- 		 "First Name": "Raymond",
- 		 "Last Name": "Redding",
- 		 "Screen Name": "r.redding",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "raymond.redding@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Computer Engineering"],
- 		 "First Name": "Gary",
- 		 "Last Name": "Libinski",
- 		 "Screen Name": "g.libinski",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "gary.libinski@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Computer Engineering"],
- 		 "First Name": "Elisabeth",
- 		 "Last Name": "James",
- 		 "Screen Name": "e.james",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "elisabeth.james@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Civil Engineering"],
- 		 "First Name": "Philip",
- 		 "Last Name": "Morrow",
- 		 "Screen Name": "p.morrow",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "philip.morrow@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Civil Engineering"],
- 		 "First Name": "David",
- 		 "Last Name": "Harrington",
- 		 "Screen Name": "d.harrington",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "david.harrington@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Civil Engineering"],
- 		 "First Name": "Kathryn",
- 		 "Last Name": "Williamson",
- 		 "Screen Name": "k.williamson",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "kathryn.williamson@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Civil Engineering"],
- 		 "First Name": "Gretchen",
- 		 "Last Name": "Hall",
- 		 "Screen Name": "g.hall",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "gretchen.hall@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Civil Engineering"],
- 		 "First Name": "Joseph",
- 		 "Last Name": "White",
- 		 "Screen Name": "j.white",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "joseph.white@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Civil Engineering"],
- 		 "First Name": "Lucia",
- 		 "Last Name": "Carson",
- 		 "Screen Name": "l.carson",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "lucia.carson@spacepogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Civil Engineering"],
- 		 "First Name": "Terence",
- 		 "Last Name": "Buchanan",
- 		 "Screen Name": "t.buchanan",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "terence.buchanan@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Civil Engineering"],
- 		 "First Name": "Laura",
- 		 "Last Name": "Hill",
- 		 "Screen Name": "l.hill",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "laura.hill@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Aeronautics"],
- 		 "First Name": "Maureen",
- 		 "Last Name": "Castleton",
- 		 "Screen Name": "m.castleton",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "maureen.castleton@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Aeronautics"],
- 		 "First Name": "Jean",
- 		 "Last Name": "Cauvin",
- 		 "Screen Name": "j.cauvin",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "jean.cauvin@spaceprogram.liferay.com",
- 		 "Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Aeronautics"],
- 		 "First Name": "Faith",
- 		 "Last Name": "Edwards",
- 		 "Screen Name": "f.edwards",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "faith.edwards@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Aeronautics"],
- 		 "First Name": "Charlotte",
- 		 "Last Name": "Devereaux",
- 		 "Screen Name": "c.devereaux",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "charlotte.devereaux@spaceprogram.liferay.com",
-	"Organizations": []
-	 }, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Aeronautics"],
- 		 "First Name": "Susan",
- 		 "Last Name": "Fields",
- 		 "Screen Name": "s.fields",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "susan.fields@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Aeronautics"],
- 		 "First Name": "Sarah",
- 		 "Last Name": "Kim",
- 		 "Screen Name": "s.kim",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "sarah.kim@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Aeronautics"],
- 		 "First Name": "George",
- 		 "Last Name": "Brandon",
- 		 "Screen Name": "g.brandon",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "george.brandon@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Aeronautics"],
- 		 "First Name": "Ciaran",
- 		 "Last Name": "Flannigan",
- 		 "Screen Name": "c.flannigan",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "ciaran.flannigan@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Aeronautics"],
- 		 "First Name": "Brittany",
- 		 "Last Name": "Smithson",
- 		 "Screen Name": "b.smithson",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "brittany.smithson@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Aeronautics"],
- 		 "First Name": "Alec",
- 		 "Last Name": "Hart",
- 		 "Screen Name": "a.hart",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "alec.hart@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Catriona",
- 		 "Last Name": "Spirozo",
- 		 "Screen Name": "c.spirozo",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "catriona.spirozo@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Samuel",
- 		 "Last Name": "Eisenhower",
- 		 "Screen Name": "s.eisenhower",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "samuel.eisenhower@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Jerry",
- 		 "Last Name": "Sterling",
- 		 "Screen Name": "j.sterling",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "jerry.sterling@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Nathan",
- 		 "Last Name": "Bridges",
- 		 "Screen Name": "n.bridges",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "nathan.bridges@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Nova",
- 		 "Last Name": "Noran",
- 		 "Screen Name": "n.noran",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "nova.noran@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Andrea",
- 		 "Last Name": "Patterson",
- 		 "Screen Name": "a.patterson",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "andrea.patterson@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Tate",
- 		 "Last Name": "Forzano",
- 		 "Screen Name": "t.forzano",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "tate.forzano@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Christopher",
- 		 "Last Name": "Farris",
- 		 "Screen Name": "c.farris",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "christopher.farris@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Darius",
- 		 "Last Name": "Stevens",
- 		 "Screen Name": "d.stevens",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "darius.stevens@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Soon-Ye",
- 		 "Last Name": "Park",
- 		 "Screen Name": "s.park",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "soonye.park@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Archibald",
- 		 "Last Name": "Kim",
- 		 "Screen Name": "a.kim",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "archibald.kim@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Meg",
- 		 "Last Name": "Ladd",
- 		 "Screen Name": "m.ladd",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "meg.ladd@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Sarah",
- 		 "Last Name": "Gregson",
- 		 "Screen Name": "s.gregson",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "sarah.gregson@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Nicholas",
- 		 "Last Name": "Kingston",
- 		 "Screen Name": "n.kingston",
- 		 "Male": true,
- 		 "Job Title": "Student",
- 		 "Email Address": "nicholas.kingston@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Engineering: Aerospace Engineering: Astronautics"],
- 		 "First Name": "Marie",
- 		 "Last Name": "Cheveaux",
- 		 "Screen Name": "m.cheveaux",
- 		 "Male": false,
- 		 "Job Title": "Student",
- 		 "Email Address": "marie.cheveaux@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Human Resources"],
- 		 "First Name": "Karl",
- 		 "Last Name": "Breckinridge",
- 		 "Screen Name": "k.breckinridge",
- 		 "Male": true,
- 		 "Job Title": "Director of Human Resources",
- 		 "Email Address": "karl.breckinridge@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Human Resources"],
- 		 "First Name": "Tara",
- 		 "Last Name": "Paulson",
- 		 "Screen Name": "t.paulson",
- 		 "Male": false,
- 		 "Job Title": "Assistant Director of Human Resources",
- 		 "Email Address": "tara.paulson@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Human Resources"],
- 		 "First Name": "Frank",
- 		 "Last Name": "Ashberry",
- 		 "Screen Name": "f.ashberry",
- 		 "Male": true,
- 		 "Job Title": "Human Resources Assistant",
- 		 "Email Address": "frank.ashberry@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Human Resources"],
- 		 "First Name": "Helene",
- 		 "Last Name": "Mervil",
- 		 "Screen Name": "h.mervil",
- 		 "Male": false,
- 		 "Job Title": "Human Resources Assistant",
- 		 "Email Address": "helene.mervil@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Human Resources"],
- 		 "First Name": "Marco",
- 		 "Last Name": "Lim",
- 		 "Screen Name": "m.lim",
- 		 "Male": true,
- 		 "Job Title": "Human Resources Secretary",
- 		 "Email Address": "marco.lim@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Human Resources"],
- 		 "First Name": "Isabel",
- 		 "Last Name": "Macarthur",
- 		 "Screen Name": "i.macarthur",
- 		 "Male": false,
- 		 "Job Title": "Human Resources Coordinator",
- 		 "Email Address": "isabel.macarthur@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Human Resources"],
- 		 "First Name": "Simon",
- 		 "Last Name": "Manning",
- 		 "Screen Name": "s.manning",
- 		 "Male": true,
- 		 "Job Title": "Human Resources Generalist",
- 		 "Email Address": "simon.manning@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Human Resources"],
- 		 "First Name": "Mary",
- 		 "Last Name": "Tyler",
- 		 "Screen Name": "m.tyler",
- 		 "Male": false,
- 		 "Job Title": "Human Resources Feedback Manager",
- 		 "Email Address": "mary.tyler@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Human Resources"],
- 		 "First Name": "Percy",
- 		 "Last Name": "Woods",
- 		 "Screen Name": "p.woods",
- 		 "Male": true,
- 		 "Job Title": "Human Resources Specialist",
- 		 "Email Address": "percy.woods@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Human Resources"],
- 		 "First Name": "Leonore",
- 		 "Last Name": "Christie",
- 		 "Screen Name": "l.christie",
- 		 "Male": false,
- 		 "Job Title": "Human Resources Associate",
- 		 "Email Address": "leonore.christie@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Board Member"],
- 		 "First Name": "Antony",
- 		 "Last Name": "Carelli",
- 		 "Screen Name": "a.carelli",
- 		 "Male": true,
- 		 "Job Title": "Chairman of the Board",
- 		 "Email Address": "antony.carelli@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Board Member"],
- 		 "First Name": "Edith",
- 		 "Last Name": "Adams",
- 		 "Screen Name": "e.adams",
- 		 "Male": false,
- 		 "Job Title": "Senior Member of the Board",
- 		 "Email Address": "edith.adams@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Board Member"],
- 		 "First Name": "Harold",
- 		 "Last Name": "Vance",
- 		 "Screen Name": "h.vance",
- 		 "Male": true,
- 		 "Job Title": "Senior Member of the Board",
- 		 "Email Address": "harold.vance@spaceprogram.liferay.com",
-	"Organizations": []
-		}, {
- 		 "User Groups": ["Board Member"],
- 		 "First Name": "Victoria",
- 		 "Last Name": "Allen",
- 		 "Screen Name": "v.allen",
- 		 "Male": false,
- 		 "Job Title": "Junior Member of the Board",
- 		 "Email Address": "victoria.allen@spaceprogram.liferay.com",
-	"Organizations": []
-		}]
+	"Users": [
+		{
+			"Email Address": "jane.phillips@spaceprogram.liferay.com",
+			"First Name": "Jane",
+			"Job Title": "Associate Professor",
+			"Last Name": "Phillips",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "j.phillips",
+			"User Groups": [
+				"Business: Accounting"
+			]
+		},
+		{
+			"Email Address": "theodore.andersen@spaceprogram.liferay.com",
+			"First Name": "Theodore",
+			"Job Title": "Assistant Professor",
+			"Last Name": "Andersen",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "t.andersen",
+			"User Groups": [
+				"Business: Accounting"
+			]
+		},
+		{
+			"Email Address": "oliver.wainwright@spaceprogram.liferay.com",
+			"First Name": "Oliver",
+			"Job Title": "Associate Professor",
+			"Last Name": "Wainwright",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "o.wainwright",
+			"User Groups": [
+				"Business: Business Administration"
+			]
+		},
+		{
+			"Email Address": "eloise.blake@spaceprogram.liferay.com",
+			"First Name": "Eloise",
+			"Job Title": "Assistant Professor",
+			"Last Name": "Blake",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "e.blake",
+			"User Groups": [
+				"Business: Business Administration"
+			]
+		},
+		{
+			"Email Address": "wolfgang.vonrichter@spaceprogram.liferay.com",
+			"First Name": "Wolfgang",
+			"Job Title": "Associate Professor",
+			"Last Name": "von Richter",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "w.vonrichter",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "beatrice.maurier@spaceprogram.liferay.com",
+			"First Name": "Beatrice",
+			"Job Title": "Assistant Professor",
+			"Last Name": "Maurier",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "b.maurier",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "edward.knight@spaceprogram.liferay.com",
+			"First Name": "Edward",
+			"Job Title": "Associate Professor",
+			"Last Name": "Knight",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "e.knight",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "margaret.walker@spaceprogram.liferay.com",
+			"First Name": "Margaret",
+			"Job Title": "Associate Professor",
+			"Last Name": "Walker",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "m.walker",
+			"User Groups": [
+				"Engineering: Electrical Engineering"
+			]
+		},
+		{
+			"Email Address": "pierre.novola@spaceprogram.liferay.com",
+			"First Name": "Pierre",
+			"Job Title": "Assistant Professor",
+			"Last Name": "Novola ",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "p.novola",
+			"User Groups": [
+				"Engineering: Electrical Engineering"
+			]
+		},
+		{
+			"Email Address": "leo.blythe@spaceprogram.liferay.com",
+			"First Name": "Leo",
+			"Job Title": "Associate Professor",
+			"Last Name": "Blythe",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "l.blythe",
+			"User Groups": [
+				"Engineering: Mechanical Engineering"
+			]
+		},
+		{
+			"Email Address": "samira.maalouf@spaceprogram.liferay.com",
+			"First Name": "Samira",
+			"Job Title": "Assistant Professor",
+			"Last Name": "Maalouf",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "s.maalouf",
+			"User Groups": [
+				"Engineering: Mechanical Engineering"
+			]
+		},
+		{
+			"Email Address": "harriet.winters@spaceprogram.liferay.com",
+			"First Name": "Harriet",
+			"Job Title": "Associate Professor",
+			"Last Name": "Winters",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "h.winters",
+			"User Groups": [
+				"Engineering: Computer Engineering"
+			]
+		},
+		{
+			"Email Address": "agatha.saylor@spaceprogram.liferay.com",
+			"First Name": "Agatha",
+			"Job Title": "Assistant Professor",
+			"Last Name": "Saylor",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "a.saylor",
+			"User Groups": [
+				"Engineering: Computer Engineering"
+			]
+		},
+		{
+			"Email Address": "glen.powers@spaceprogram.liferay.com",
+			"First Name": "Glen",
+			"Job Title": "Associate Professor",
+			"Last Name": "Powers",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "g.powers",
+			"User Groups": [
+				"Engineering: Civil Engineering"
+			]
+		},
+		{
+			"Email Address": "benedict.mills@spaceprogram.liferay.com",
+			"First Name": "Benedict",
+			"Job Title": "Assistant Professor",
+			"Last Name": "Mills",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "b.mills",
+			"User Groups": [
+				"Engineering: Civil Engineering"
+			]
+		},
+		{
+			"Email Address": "josefina.suarez@spaceprogram.liferay.com",
+			"First Name": "Josefina",
+			"Job Title": "Associate Professor",
+			"Last Name": "Suarez",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "j.suarez",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Aeronautics"
+			]
+		},
+		{
+			"Email Address": "andrew.washington@spaceprogram.liferay.com",
+			"First Name": "Andrew",
+			"Job Title": "Assistant Professor",
+			"Last Name": "Washington",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "a.washington",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Aeronautics"
+			]
+		},
+		{
+			"Email Address": "peter.vance@spaceprogram.liferay.com",
+			"First Name": "Peter",
+			"Job Title": "Assistant Professor",
+			"Last Name": "Vance ",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "p.vance",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Aeronautics"
+			]
+		},
+		{
+			"Email Address": "alessandro.mancelli@spaceprogram.liferay.com",
+			"First Name": "Alessandro",
+			"Job Title": "Associate Professor",
+			"Last Name": "Mancelli",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "a.mancelli",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "anya.alexis@spaceprogram.liferay.com",
+			"First Name": "Anya",
+			"Job Title": "Assistant Professor",
+			"Last Name": "Alexis",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "a.alexis",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "sally.beech@spaceprogram.liferay.com",
+			"First Name": "Sally",
+			"Job Title": "Student",
+			"Last Name": "Beech",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "s.beech",
+			"User Groups": [
+				"Business: Accounting"
+			]
+		},
+		{
+			"Email Address": "alfred.wilson@spaceprogram.liferay.com",
+			"First Name": "Alfred",
+			"Job Title": "Student",
+			"Last Name": "Wilson",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "a.wilson",
+			"User Groups": [
+				"Business: Accounting"
+			]
+		},
+		{
+			"Email Address": "jonathan.prince@spaceprogram.liferay.com",
+			"First Name": "Jonathan",
+			"Job Title": "Student",
+			"Last Name": "Prince",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "j.prince",
+			"User Groups": [
+				"Business: Accounting"
+			]
+		},
+		{
+			"Email Address": "chester.okoye@spaceprogram.liferay.com",
+			"First Name": "Chester",
+			"Job Title": "Student",
+			"Last Name": "Okoye",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "c.okoye",
+			"User Groups": [
+				"Business: Accounting"
+			]
+		},
+		{
+			"Email Address": "dallas.freeman@spaceprogram.liferay.com",
+			"First Name": "Dallas",
+			"Job Title": "Student",
+			"Last Name": "Freeman",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "d.freeman",
+			"User Groups": [
+				"Business: Accounting"
+			]
+		},
+		{
+			"Email Address": "anne.shephard@spaceprogram.liferay.com",
+			"First Name": "Anne",
+			"Job Title": "Student",
+			"Last Name": "Shephard",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "a.shephard",
+			"User Groups": [
+				"Business: Accounting"
+			]
+		},
+		{
+			"Email Address": "elizabeth.howard@spaceprogram.liferay.com",
+			"First Name": "Elizabeth",
+			"Job Title": "Student",
+			"Last Name": "Howard",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "e.howard",
+			"User Groups": [
+				"Business: Business Administration"
+			]
+		},
+		{
+			"Email Address": "clement.sorensen@spaceprogram.liferay.com",
+			"First Name": "Clement",
+			"Job Title": "Student",
+			"Last Name": "Sorensen",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "c.sorensen",
+			"User Groups": [
+				"Business: Business Administration"
+			]
+		},
+		{
+			"Email Address": "gerald.snow@spaceprogram.liferay.com",
+			"First Name": "Gerald",
+			"Job Title": "Student",
+			"Last Name": "Snow",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "g.snow",
+			"User Groups": [
+				"Business: Business Administration"
+			]
+		},
+		{
+			"Email Address": "fitz.worthing@spaceprogram.liferay.com",
+			"First Name": "Fitz",
+			"Job Title": "Student",
+			"Last Name": "Worthing",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "f.worthing",
+			"User Groups": [
+				"Business: Business Administration"
+			]
+		},
+		{
+			"Email Address": "katrina.rose@spaceprogram.liferay.com",
+			"First Name": "Katrina",
+			"Job Title": "Student",
+			"Last Name": "Rose",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "k.rose",
+			"User Groups": [
+				"Business: Business Administration"
+			]
+		},
+		{
+			"Email Address": "talia.townsend@spaceprogram.liferay.com",
+			"First Name": "Talia ",
+			"Job Title": "Student",
+			"Last Name": "Townsend",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "t.townsend",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "iefan.owain@spaceprogram.liferay.com",
+			"First Name": "Iefan",
+			"Job Title": "Student",
+			"Last Name": "Owain",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "i.owain",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "henry.frederickson@spaceprogram.liferay.com",
+			"First Name": "Henry",
+			"Job Title": "Student",
+			"Last Name": "Frederickson",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "h.frederickson",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "sera.kang@spaceprogram.liferay.com",
+			"First Name": "Se-ra",
+			"Job Title": "Student",
+			"Last Name": "Kang",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "s.kang",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "bronwin.bakersfield@spaceprogram.liferay.com",
+			"First Name": "Bronwin",
+			"Job Title": "Student",
+			"Last Name": "Bakersfield",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "b.bakersfield",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "martin.collins@spaceprogram.liferay.com",
+			"First Name": "Martin",
+			"Job Title": "Student",
+			"Last Name": "Collins",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "m.collins",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "charles.tinley@spaceprogram.liferay.com",
+			"First Name": "Charles",
+			"Job Title": "Student",
+			"Last Name": "Tinley",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "c.tinley",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "alan.vangaard@spaceprogram.liferay.com",
+			"First Name": "Alan",
+			"Job Title": "Student",
+			"Last Name": "Vangaard",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "a.vangaard",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "adeline.nimri@spaceprogram.liferay.com",
+			"First Name": "Adeline",
+			"Job Title": "Student",
+			"Last Name": "Nimri",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "a.nimri",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "jonathon.sharp@spaceprogram.liferay.com",
+			"First Name": "Jonathon",
+			"Job Title": "Student",
+			"Last Name": "Sharp",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "j.sharp",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "caroline.harper@spaceprogram.liferay.com",
+			"First Name": "Caroline",
+			"Job Title": "Student",
+			"Last Name": "Harper",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "c.harper",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "lisa.chau@spaceprogram.liferay.com",
+			"First Name": "Lisa",
+			"Job Title": "Student",
+			"Last Name": "Chau",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "l.chau",
+			"User Groups": [
+				"Agricultural Science"
+			]
+		},
+		{
+			"Email Address": "clark.waterford@spaceprogram.liferay.com",
+			"First Name": "Clark",
+			"Job Title": "Student",
+			"Last Name": "Waterford",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "c.waterford",
+			"User Groups": [
+				"Engineering: Electrical Engineering"
+			]
+		},
+		{
+			"Email Address": "giada.barelli@spaceprogram.liferay.com",
+			"First Name": "Giada",
+			"Job Title": "Student",
+			"Last Name": "Barelli",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "g.barelli",
+			"User Groups": [
+				"Engineering: Electrical Engineering"
+			]
+		},
+		{
+			"Email Address": "rupert.kelly@spaceprogram.liferay.com",
+			"First Name": "Rupert",
+			"Job Title": "Student",
+			"Last Name": "Kelly",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "r.kelly",
+			"User Groups": [
+				"Engineering: Electrical Engineering"
+			]
+		},
+		{
+			"Email Address": "tabitha.doolittle@spaceprogram.liferay.com",
+			"First Name": "Tabitha",
+			"Job Title": "Student",
+			"Last Name": "Doolittle",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "t.doolittle",
+			"User Groups": [
+				"Engineering: Electrical Engineering"
+			]
+		},
+		{
+			"Email Address": "jakob.miller@spaceprogram.liferay.com",
+			"First Name": "Jakob",
+			"Job Title": "Student",
+			"Last Name": "Miller",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "j.miller",
+			"User Groups": [
+				"Engineering: Electrical Engineering"
+			]
+		},
+		{
+			"Email Address": "lila.martinez@spaceprogram.liferay.com",
+			"First Name": "Lila",
+			"Job Title": "Student",
+			"Last Name": "Martinez",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "l.martinez",
+			"User Groups": [
+				"Engineering: Electrical Engineering"
+			]
+		},
+		{
+			"Email Address": "nolan.blackstone@spaceprogram.liferay.com",
+			"First Name": "Nolan",
+			"Job Title": "Student",
+			"Last Name": "Blackstone",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "n.blackstone",
+			"User Groups": [
+				"Engineering: Electrical Engineering"
+			]
+		},
+		{
+			"Email Address": "seamus.alba@spaceprogram.liferay.com",
+			"First Name": "Seamus",
+			"Job Title": "Student",
+			"Last Name": "Alba",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "s.alba",
+			"User Groups": [
+				"Engineering: Mechanical Engineering"
+			]
+		},
+		{
+			"Email Address": "russell.hawthorne@spaceprogram.liferay.com",
+			"First Name": "Russell",
+			"Job Title": "Student",
+			"Last Name": "Hawthorne",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "r.hawthorne",
+			"User Groups": [
+				"Engineering: Mechanical Engineering"
+			]
+		},
+		{
+			"Email Address": "noel.barritz@spaceprogram.liferay.com",
+			"First Name": "Noel",
+			"Job Title": "Student",
+			"Last Name": "Barritz",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "n.barritz",
+			"User Groups": [
+				"Engineering: Mechanical Engineering"
+			]
+		},
+		{
+			"Email Address": "harrison.fleet@spaceprogram.liferay.com",
+			"First Name": "Harrison",
+			"Job Title": "Student",
+			"Last Name": "Fleet",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "h.fleet",
+			"User Groups": [
+				"Engineering: Mechanical Engineering"
+			]
+		},
+		{
+			"Email Address": "sara.shumacher@spaceprogram.liferay.com",
+			"First Name": "Sara",
+			"Job Title": "Student",
+			"Last Name": "Shumacher",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "s.shumacher",
+			"User Groups": [
+				"Engineering: Mechanical Engineering"
+			]
+		},
+		{
+			"Email Address": "omar.qasim@spaceprogram.liferay.com",
+			"First Name": "Omar",
+			"Job Title": "Student",
+			"Last Name": "Qasim",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "o.qasim",
+			"User Groups": [
+				"Engineering: Mechanical Engineering"
+			]
+		},
+		{
+			"Email Address": "bertram.williams@spaceprogram.liferay.com",
+			"First Name": "Bertram",
+			"Job Title": "Student",
+			"Last Name": "Williams",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "b.williams",
+			"User Groups": [
+				"Engineering: Mechanical Engineering"
+			]
+		},
+		{
+			"Email Address": "emma.gruber@spaceprogram.liferay.com",
+			"First Name": "Emma",
+			"Job Title": "Student",
+			"Last Name": "Gruber",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "e.gruber",
+			"User Groups": [
+				"Engineering: Mechanical Engineering"
+			]
+		},
+		{
+			"Email Address": "julio.gonzalez@spaceprogram.liferay.com",
+			"First Name": "Julio",
+			"Job Title": "Student",
+			"Last Name": "Gonzalez",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "j.gonzalez",
+			"User Groups": [
+				"Engineering: Computer Engineering"
+			]
+		},
+		{
+			"Email Address": "larry.chan@spaceprogram.liferay.com",
+			"First Name": "Larry",
+			"Job Title": "Student",
+			"Last Name": "Chan",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "l.chan",
+			"User Groups": [
+				"Engineering: Computer Engineering"
+			]
+		},
+		{
+			"Email Address": "john.luther@spaceprogram.liferay.com",
+			"First Name": "John",
+			"Job Title": "Student",
+			"Last Name": "Luther",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "j.luther",
+			"User Groups": [
+				"Engineering: Computer Engineering"
+			]
+		},
+		{
+			"Email Address": "femi.solarin@spaceprogram.liferay.com",
+			"First Name": "Femi",
+			"Job Title": "Student",
+			"Last Name": "Solarin",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "f.solarin",
+			"User Groups": [
+				"Engineering: Computer Engineering"
+			]
+		},
+		{
+			"Email Address": "trey.lincoln@spaceprogram.liferay.com",
+			"First Name": "Trey",
+			"Job Title": "Student",
+			"Last Name": "Lincoln",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "t.lincoln",
+			"User Groups": [
+				"Engineering: Computer Engineering"
+			]
+		},
+		{
+			"Email Address": "elinor.maltov@spaceprogram.liferay.com",
+			"First Name": "Elinor",
+			"Job Title": "Student",
+			"Last Name": "Maltov",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "e.maltov",
+			"User Groups": [
+				"Engineering: Computer Engineering"
+			]
+		},
+		{
+			"Email Address": "raymond.redding@spaceprogram.liferay.com",
+			"First Name": "Raymond",
+			"Job Title": "Student",
+			"Last Name": "Redding",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "r.redding",
+			"User Groups": [
+				"Engineering: Computer Engineering"
+			]
+		},
+		{
+			"Email Address": "gary.libinski@spaceprogram.liferay.com",
+			"First Name": "Gary",
+			"Job Title": "Student",
+			"Last Name": "Libinski",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "g.libinski",
+			"User Groups": [
+				"Engineering: Computer Engineering"
+			]
+		},
+		{
+			"Email Address": "elisabeth.james@spaceprogram.liferay.com",
+			"First Name": "Elisabeth",
+			"Job Title": "Student",
+			"Last Name": "James",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "e.james",
+			"User Groups": [
+				"Engineering: Computer Engineering"
+			]
+		},
+		{
+			"Email Address": "philip.morrow@spaceprogram.liferay.com",
+			"First Name": "Philip",
+			"Job Title": "Student",
+			"Last Name": "Morrow",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "p.morrow",
+			"User Groups": [
+				"Engineering: Civil Engineering"
+			]
+		},
+		{
+			"Email Address": "david.harrington@spaceprogram.liferay.com",
+			"First Name": "David",
+			"Job Title": "Student",
+			"Last Name": "Harrington",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "d.harrington",
+			"User Groups": [
+				"Engineering: Civil Engineering"
+			]
+		},
+		{
+			"Email Address": "kathryn.williamson@spaceprogram.liferay.com",
+			"First Name": "Kathryn",
+			"Job Title": "Student",
+			"Last Name": "Williamson",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "k.williamson",
+			"User Groups": [
+				"Engineering: Civil Engineering"
+			]
+		},
+		{
+			"Email Address": "gretchen.hall@spaceprogram.liferay.com",
+			"First Name": "Gretchen",
+			"Job Title": "Student",
+			"Last Name": "Hall",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "g.hall",
+			"User Groups": [
+				"Engineering: Civil Engineering"
+			]
+		},
+		{
+			"Email Address": "joseph.white@spaceprogram.liferay.com",
+			"First Name": "Joseph",
+			"Job Title": "Student",
+			"Last Name": "White",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "j.white",
+			"User Groups": [
+				"Engineering: Civil Engineering"
+			]
+		},
+		{
+			"Email Address": "lucia.carson@spacepogram.liferay.com",
+			"First Name": "Lucia",
+			"Job Title": "Student",
+			"Last Name": "Carson",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "l.carson",
+			"User Groups": [
+				"Engineering: Civil Engineering"
+			]
+		},
+		{
+			"Email Address": "terence.buchanan@spaceprogram.liferay.com",
+			"First Name": "Terence",
+			"Job Title": "Student",
+			"Last Name": "Buchanan",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "t.buchanan",
+			"User Groups": [
+				"Engineering: Civil Engineering"
+			]
+		},
+		{
+			"Email Address": "laura.hill@spaceprogram.liferay.com",
+			"First Name": "Laura",
+			"Job Title": "Student",
+			"Last Name": "Hill",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "l.hill",
+			"User Groups": [
+				"Engineering: Civil Engineering"
+			]
+		},
+		{
+			"Email Address": "maureen.castleton@spaceprogram.liferay.com",
+			"First Name": "Maureen",
+			"Job Title": "Student",
+			"Last Name": "Castleton",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "m.castleton",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Aeronautics"
+			]
+		},
+		{
+			"Email Address": "jean.cauvin@spaceprogram.liferay.com",
+			"First Name": "Jean",
+			"Job Title": "Student",
+			"Last Name": "Cauvin",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "j.cauvin",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Aeronautics"
+			]
+		},
+		{
+			"Email Address": "faith.edwards@spaceprogram.liferay.com",
+			"First Name": "Faith",
+			"Job Title": "Student",
+			"Last Name": "Edwards",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "f.edwards",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Aeronautics"
+			]
+		},
+		{
+			"Email Address": "charlotte.devereaux@spaceprogram.liferay.com",
+			"First Name": "Charlotte",
+			"Job Title": "Student",
+			"Last Name": "Devereaux",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "c.devereaux",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Aeronautics"
+			]
+		},
+		{
+			"Email Address": "susan.fields@spaceprogram.liferay.com",
+			"First Name": "Susan",
+			"Job Title": "Student",
+			"Last Name": "Fields",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "s.fields",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Aeronautics"
+			]
+		},
+		{
+			"Email Address": "sarah.kim@spaceprogram.liferay.com",
+			"First Name": "Sarah",
+			"Job Title": "Student",
+			"Last Name": "Kim",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "s.kim",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Aeronautics"
+			]
+		},
+		{
+			"Email Address": "george.brandon@spaceprogram.liferay.com",
+			"First Name": "George",
+			"Job Title": "Student",
+			"Last Name": "Brandon",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "g.brandon",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Aeronautics"
+			]
+		},
+		{
+			"Email Address": "ciaran.flannigan@spaceprogram.liferay.com",
+			"First Name": "Ciaran",
+			"Job Title": "Student",
+			"Last Name": "Flannigan",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "c.flannigan",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Aeronautics"
+			]
+		},
+		{
+			"Email Address": "brittany.smithson@spaceprogram.liferay.com",
+			"First Name": "Brittany",
+			"Job Title": "Student",
+			"Last Name": "Smithson",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "b.smithson",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Aeronautics"
+			]
+		},
+		{
+			"Email Address": "alec.hart@spaceprogram.liferay.com",
+			"First Name": "Alec",
+			"Job Title": "Student",
+			"Last Name": "Hart",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "a.hart",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Aeronautics"
+			]
+		},
+		{
+			"Email Address": "catriona.spirozo@spaceprogram.liferay.com",
+			"First Name": "Catriona",
+			"Job Title": "Student",
+			"Last Name": "Spirozo",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "c.spirozo",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "samuel.eisenhower@spaceprogram.liferay.com",
+			"First Name": "Samuel",
+			"Job Title": "Student",
+			"Last Name": "Eisenhower",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "s.eisenhower",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "jerry.sterling@spaceprogram.liferay.com",
+			"First Name": "Jerry",
+			"Job Title": "Student",
+			"Last Name": "Sterling",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "j.sterling",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "nathan.bridges@spaceprogram.liferay.com",
+			"First Name": "Nathan",
+			"Job Title": "Student",
+			"Last Name": "Bridges",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "n.bridges",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "nova.noran@spaceprogram.liferay.com",
+			"First Name": "Nova",
+			"Job Title": "Student",
+			"Last Name": "Noran",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "n.noran",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "andrea.patterson@spaceprogram.liferay.com",
+			"First Name": "Andrea",
+			"Job Title": "Student",
+			"Last Name": "Patterson",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "a.patterson",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "tate.forzano@spaceprogram.liferay.com",
+			"First Name": "Tate",
+			"Job Title": "Student",
+			"Last Name": "Forzano",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "t.forzano",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "christopher.farris@spaceprogram.liferay.com",
+			"First Name": "Christopher",
+			"Job Title": "Student",
+			"Last Name": "Farris",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "c.farris",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "darius.stevens@spaceprogram.liferay.com",
+			"First Name": "Darius",
+			"Job Title": "Student",
+			"Last Name": "Stevens",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "d.stevens",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "soonye.park@spaceprogram.liferay.com",
+			"First Name": "Soon-Ye",
+			"Job Title": "Student",
+			"Last Name": "Park",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "s.park",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "archibald.kim@spaceprogram.liferay.com",
+			"First Name": "Archibald",
+			"Job Title": "Student",
+			"Last Name": "Kim",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "a.kim",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "meg.ladd@spaceprogram.liferay.com",
+			"First Name": "Meg",
+			"Job Title": "Student",
+			"Last Name": "Ladd",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "m.ladd",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "sarah.gregson@spaceprogram.liferay.com",
+			"First Name": "Sarah",
+			"Job Title": "Student",
+			"Last Name": "Gregson",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "s.gregson",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "nicholas.kingston@spaceprogram.liferay.com",
+			"First Name": "Nicholas",
+			"Job Title": "Student",
+			"Last Name": "Kingston",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "n.kingston",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "marie.cheveaux@spaceprogram.liferay.com",
+			"First Name": "Marie",
+			"Job Title": "Student",
+			"Last Name": "Cheveaux",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "m.cheveaux",
+			"User Groups": [
+				"Engineering: Aerospace Engineering: Astronautics"
+			]
+		},
+		{
+			"Email Address": "karl.breckinridge@spaceprogram.liferay.com",
+			"First Name": "Karl",
+			"Job Title": "Director of Human Resources",
+			"Last Name": "Breckinridge",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "k.breckinridge",
+			"User Groups": [
+				"Human Resources"
+			]
+		},
+		{
+			"Email Address": "tara.paulson@spaceprogram.liferay.com",
+			"First Name": "Tara",
+			"Job Title": "Assistant Director of Human Resources",
+			"Last Name": "Paulson",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "t.paulson",
+			"User Groups": [
+				"Human Resources"
+			]
+		},
+		{
+			"Email Address": "frank.ashberry@spaceprogram.liferay.com",
+			"First Name": "Frank",
+			"Job Title": "Human Resources Assistant",
+			"Last Name": "Ashberry",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "f.ashberry",
+			"User Groups": [
+				"Human Resources"
+			]
+		},
+		{
+			"Email Address": "helene.mervil@spaceprogram.liferay.com",
+			"First Name": "Helene",
+			"Job Title": "Human Resources Assistant",
+			"Last Name": "Mervil",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "h.mervil",
+			"User Groups": [
+				"Human Resources"
+			]
+		},
+		{
+			"Email Address": "marco.lim@spaceprogram.liferay.com",
+			"First Name": "Marco",
+			"Job Title": "Human Resources Secretary",
+			"Last Name": "Lim",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "m.lim",
+			"User Groups": [
+				"Human Resources"
+			]
+		},
+		{
+			"Email Address": "isabel.macarthur@spaceprogram.liferay.com",
+			"First Name": "Isabel",
+			"Job Title": "Human Resources Coordinator",
+			"Last Name": "Macarthur",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "i.macarthur",
+			"User Groups": [
+				"Human Resources"
+			]
+		},
+		{
+			"Email Address": "simon.manning@spaceprogram.liferay.com",
+			"First Name": "Simon",
+			"Job Title": "Human Resources Generalist",
+			"Last Name": "Manning",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "s.manning",
+			"User Groups": [
+				"Human Resources"
+			]
+		},
+		{
+			"Email Address": "mary.tyler@spaceprogram.liferay.com",
+			"First Name": "Mary",
+			"Job Title": "Human Resources Feedback Manager",
+			"Last Name": "Tyler",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "m.tyler",
+			"User Groups": [
+				"Human Resources"
+			]
+		},
+		{
+			"Email Address": "percy.woods@spaceprogram.liferay.com",
+			"First Name": "Percy",
+			"Job Title": "Human Resources Specialist",
+			"Last Name": "Woods",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "p.woods",
+			"User Groups": [
+				"Human Resources"
+			]
+		},
+		{
+			"Email Address": "leonore.christie@spaceprogram.liferay.com",
+			"First Name": "Leonore",
+			"Job Title": "Human Resources Associate",
+			"Last Name": "Christie",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "l.christie",
+			"User Groups": [
+				"Human Resources"
+			]
+		},
+		{
+			"Email Address": "antony.carelli@spaceprogram.liferay.com",
+			"First Name": "Antony",
+			"Job Title": "Chairman of the Board",
+			"Last Name": "Carelli",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "a.carelli",
+			"User Groups": [
+				"Board Member"
+			]
+		},
+		{
+			"Email Address": "edith.adams@spaceprogram.liferay.com",
+			"First Name": "Edith",
+			"Job Title": "Senior Member of the Board",
+			"Last Name": "Adams",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "e.adams",
+			"User Groups": [
+				"Board Member"
+			]
+		},
+		{
+			"Email Address": "harold.vance@spaceprogram.liferay.com",
+			"First Name": "Harold",
+			"Job Title": "Senior Member of the Board",
+			"Last Name": "Vance",
+			"Male": true,
+			"Organizations": [
+			],
+			"Screen Name": "h.vance",
+			"User Groups": [
+				"Board Member"
+			]
+		},
+		{
+			"Email Address": "victoria.allen@spaceprogram.liferay.com",
+			"First Name": "Victoria",
+			"Job Title": "Junior Member of the Board",
+			"Last Name": "Allen",
+			"Male": false,
+			"Organizations": [
+			],
+			"Screen Name": "v.allen",
+			"User Groups": [
+				"Board Member"
+			]
+		}
+	]
 }

@@ -11,7 +11,14 @@
 	<state>
 		<name>Submitted</name>
 		<metadata>
-			<![CDATA[{"xy":[21,205]}]]>
+			<![CDATA[
+				{
+					"xy": [
+						21,
+						205
+					]
+				}
+			]]>
 		</metadata>
 		<initial>true</initial>
 		<transitions>
@@ -25,7 +32,15 @@
 	<state>
 		<name>Published</name>
 		<metadata>
-			<![CDATA[{"terminal":true,"xy":[833,202]}]]>
+			<![CDATA[
+				{
+					"terminal": true,
+					"xy": [
+						833,
+						202
+					]
+				}
+			]]>
 		</metadata>
 		<actions>
 			<action>
@@ -42,7 +57,14 @@
 	<task>
 		<name>Board Member Review 1</name>
 		<metadata>
-			<![CDATA[{"xy":[381,13]}]]>
+			<![CDATA[
+				{
+					"xy": [
+						381,
+						13
+					]
+				}
+			]]>
 		</metadata>
 		<actions>
 			<notification>
@@ -105,7 +127,14 @@
 	<task>
 		<name>Board Member Review 2</name>
 		<metadata>
-			<![CDATA[{"xy":[380,143]}]]>
+			<![CDATA[
+				{
+					"xy": [
+						380,
+						143
+					]
+				}
+			]]>
 		</metadata>
 		<actions>
 			<notification>
@@ -168,7 +197,14 @@
 	<task>
 		<name>Board Member Review 3</name>
 		<metadata>
-			<![CDATA[{"xy":[380,282]}]]>
+			<![CDATA[
+				{
+					"xy": [
+						380,
+						282
+					]
+				}
+			]]>
 		</metadata>
 		<actions>
 			<notification>
@@ -231,7 +267,14 @@
 	<task>
 		<name>Board Member Review 4</name>
 		<metadata>
-			<![CDATA[{"xy":[381,420]}]]>
+			<![CDATA[
+				{
+					"xy": [
+						381,
+						420
+					]
+				}
+			]]>
 		</metadata>
 		<actions>
 			<notification>

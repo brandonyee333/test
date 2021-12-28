@@ -12,105 +12,134 @@
 	<state>
 		<name>Submission</name>
 		<metadata>
-			<![CDATA[{"xy":[10,217]}]]>
-</metadata>
-<initial>true</initial>
-<transitions>
-<transition>
-<name>Submit for Grading</name>
-<target>Grading</target>
-<default>true</default>
-</transition>
-</transitions>
-</state>
-<state>
-<name>Graded</name>
-<metadata>
-<![CDATA[{"terminal":true,"xy":[746,212]}]]>
-</metadata>
-<actions>
-<action>
-<name>Approve</name>
-<description>Approve</description>
-<script>
+			<![CDATA[
+				{
+					"xy": [
+						10,
+						217
+					]
+				}
+			]]>
+		</metadata>
+		<initial>true</initial>
+		<transitions>
+			<transition>
+				<name>Submit for Grading</name>
+				<target>Grading</target>
+				<default>true</default>
+			</transition>
+		</transitions>
+	</state>
+	<state>
+		<name>Graded</name>
+		<metadata>
+<![CDATA[
+	{
+		"terminal": true,
+		"xy": [
+			746,
+			212
+		]
+	}
+]]>
+		</metadata>
+		<actions>
+			<action>
+				<name>Approve</name>
+				<description>Approve</description>
+				<script>
 <![CDATA[Packages.com.liferay.portal.kernel.workflow.WorkflowStatusManagerUtil.updateStatus(Packages.com.liferay.portal.kernel.workflow.WorkflowConstants.getLabelStatus("approved"), workflowContext);]]>
-</script>
-<script-language>javascript</script-language>
-<execution-type>onEntry</execution-type>
-</action>
-</actions>
-</state>
-<task>
-<name>Grading</name>
-<metadata>
-<![CDATA[{"xy":[359,191]}]]>
-</metadata>
-<actions>
-<notification>
-<name>Assignment Submission Notification</name>
-<description>
-</description>
-<template>
+				</script>
+				<script-language>javascript</script-language>
+				<execution-type>onEntry</execution-type>
+			</action>
+		</actions>
+	</state>
+	<task>
+		<name>Grading</name>
+		<metadata>
+<![CDATA[
+	{
+		"xy": [
+			359,
+			191
+		]
+	}
+]]>
+		</metadata>
+		<actions>
+			<notification>
+				<name>Assignment Submission Notification</name>
+				<description>
+				</description>
+				<template>
 <![CDATA[A students has submitted an assignment for grading!]]>
-</template>
-<template-language>text</template-language>
-<notification-type>user-notification</notification-type>
-<recipients>
-<assignees/>
-</recipients>
-<execution-type>onAssignment</execution-type>
-</notification>
-<notification>
-<name>Graded Notification</name>
-<description>
-</description>
-<template>
+				</template>
+				<template-language>text</template-language>
+				<notification-type>user-notification</notification-type>
+				<recipients>
+					<assignees/>
+				</recipients>
+				<execution-type>onAssignment</execution-type>
+			</notification>
+			<notification>
+				<name>Graded Notification</name>
+				<description>
+				</description>
+				<template>
 <![CDATA[Your assignment has been graded. Grades will be posted soon!]]>
-</template>
-<template-language>text</template-language>
-<notification-type>user-notification</notification-type>
-<recipients>
-<user/>
-</recipients>
-<execution-type>onExit</execution-type>
-</notification>
-</actions>
-<assignments>
-<roles>
-<role>
-<role-type>site</role-type>
-<name>Site Administrator</name>
-<auto-create>false</auto-create>
-</role>
-</roles>
-</assignments>
-<transitions>
-<transition>
-<name>Mark as Graded</name>
-<target>Graded</target>
-<default>true</default>
-</transition>
-<transition>
-<name>Reject Submission</name>
-<target>Update</target>
-<default>false</default>
-</transition>
-</transitions>
-</task>
-<task>
-<name>Update</name>
-<metadata>
-<![CDATA[{"xy":[0,0]}]]>
-</metadata>
-<assignments>
-<user/>
-</assignments>
-<transitions>
-<transition>
-<name>Resubmit for Grading</name>
-<target>Grading</target>
-<default>true</default>
-</transition>
-</transitions>
-</task>
+				</template>
+				<template-language>text</template-language>
+				<notification-type>user-notification</notification-type>
+				<recipients>
+					<user/>
+				</recipients>
+				<execution-type>onExit</execution-type>
+			</notification>
+		</actions>
+		<assignments>
+			<roles>
+				<role>
+					<role-type>site</role-type>
+					<name>Site Administrator</name>
+					<auto-create>false</auto-create>
+				</role>
+			</roles>
+		</assignments>
+		<transitions>
+			<transition>
+				<name>Mark as Graded</name>
+				<target>Graded</target>
+				<default>true</default>
+			</transition>
+			<transition>
+				<name>Reject Submission</name>
+				<target>Update</target>
+				<default>false</default>
+			</transition>
+		</transitions>
+	</task>
+	<task>
+		<name>Update</name>
+		<metadata>
+<![CDATA[
+	{
+		"xy": [
+			0,
+			0
+		]
+	}
+]]>
+		</metadata>
+		<assignments>
+			<user/>
+		</assignments>
+		<transitions>
+			<transition>
+				<name>Resubmit for Grading</name>
+				<target>Grading</target>
+				<default>true</default>
+			</transition>
+		</transitions>
+	</task>
 </workflow-definition>
