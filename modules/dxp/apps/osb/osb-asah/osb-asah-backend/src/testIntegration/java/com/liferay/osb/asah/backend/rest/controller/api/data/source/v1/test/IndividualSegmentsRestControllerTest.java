@@ -35,6 +35,7 @@ import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import io.restassured.http.Method;
 import io.restassured.response.ValidatableResponse;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -286,7 +287,7 @@ public class IndividualSegmentsRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetSegmentDTO() throws Exception {
+	public void testGetSegmentDTO1() throws Exception {
 		SegmentDTO segmentDTO = _individualSegmentsRestController.getSegmentDTO(
 			327968823603500655L, "referenced-objects");
 
@@ -367,6 +368,19 @@ public class IndividualSegmentsRestControllerTest
 
 	@ElasticsearchIndex(
 		name = "individual-segments",
+		resourcePath = "individual_segments_3.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetSegmentDTO2() throws Exception {
+		SegmentDTO segmentDTO = _individualSegmentsRestController.getSegmentDTO(
+			327968823603500655L, null);
+
+		Assertions.assertNotEquals(0L, segmentDTO.getKnownIndividualsCount());
+	}
+
+	@ElasticsearchIndex(
+		name = "individual-segments",
 		resourcePath = "individual_segments_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -418,7 +432,7 @@ public class IndividualSegmentsRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetSegmentDTOsPageDTOs() throws Exception {
+	public void testGetSegmentDTOsPageDTOs1() throws Exception {
 		PageDTO<SegmentDTO> pageDTO =
 			_individualSegmentsRestController.getSegmentDTOsPageDTOs(
 				1L, null, 0, 50, new String[0]);
@@ -471,6 +485,30 @@ public class IndividualSegmentsRestControllerTest
 				Assertions.assertEquals(5L, knownIndividualsCount);
 			}
 		}
+	}
+
+	@ElasticsearchIndex(
+		name = "individual-segments",
+		resourcePath = "individual_segments_3.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetSegmentDTOsPageDTOs2() {
+		PageDTO<SegmentDTO> pageDTO =
+			_individualSegmentsRestController.getSegmentDTOsPageDTOs(
+				1L, null, 0, 50, new String[0]);
+
+		Map<String, SegmentDTO> content = pageDTO.getContent();
+
+		SegmentDTO embedded = content.get("_embedded");
+
+		List<SegmentDTO> segmentDTOs = new ArrayList(embedded.getSegmentDTOs());
+
+		Assertions.assertEquals(1, segmentDTOs.size(), segmentDTOs.toString());
+
+		SegmentDTO segmentDTO = segmentDTOs.get(0);
+
+		Assertions.assertNotEquals(0L, segmentDTO.getKnownIndividualsCount());
 	}
 
 	private String[] _getIds(

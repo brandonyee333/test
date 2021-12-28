@@ -1,0 +1,27 @@
+[
+	{
+		"activitiesCount": 1,
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"dateCreated": "2018-12-15T16:02:01.824Z",
+		"dateModified": "2018-12-15T16:02:01.824Z",
+		"filter": "((dataSourceAccountPKs/accountPKs eq '0016C00000BKWWJQA5'))",
+		"filterMetadata": "32906",
+		"id": "327968823603500655",
+		"individualCount": 10,
+		"name": "Account: 342313459339515838",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+			"340477857996688156"
+		],
+		"scope": "PROJECT",
+		"segmentType": "STATIC",
+		"state": "READY",
+		"status": "ACTIVE"
+	}
+]
