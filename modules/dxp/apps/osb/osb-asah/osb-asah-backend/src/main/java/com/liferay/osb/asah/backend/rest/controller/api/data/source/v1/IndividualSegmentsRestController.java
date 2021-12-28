@@ -218,20 +218,24 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			@RequestParam(required = false) String expand)
 		throws Exception {
 
-		Segment segment = _resetIndividualsCount(segmentDog.getSegment(id));
+		Segment segment = segmentDog.getSegment(id);
 
-		List<MembershipChange> membershipsChanges =
-			_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
-				BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
-				Collections.singletonList(segment.getId()));
+		if (segment.getType() == Segment.Type.DYNAMIC) {
+			segment = _resetIndividualsCount(segmentDog.getSegment(id));
 
-		if (!membershipsChanges.isEmpty()) {
-			_updateSegmentCounts(membershipsChanges.get(0), segment);
+			List<MembershipChange> membershipsChanges =
+				_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
+					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
+					Collections.singletonList(segment.getId()));
+
+			if (!membershipsChanges.isEmpty()) {
+				_updateSegmentCounts(membershipsChanges.get(0), segment);
+			}
+
+			segment.setActiveIndividualsCount(
+				_individualDog.countActiveIndividualsFromLast30DaysBySegment(
+					segment));
 		}
-
-		segment.setActiveIndividualsCount(
-			_individualDog.countActiveIndividualsFromLast30DaysBySegment(
-				segment));
 
 		SegmentDTO segmentDTO = new SegmentDTO(segment);
 
@@ -268,8 +272,11 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		if (segmentsPage.getTotalElements() > 0) {
 			Stream<Segment> stream = segmentsPage.stream();
 
-			Map<Long, Segment> segmentsMap = stream.collect(
-				Collectors.toMap(Segment::getId, this::_resetIndividualsCount));
+			Map<Long, Segment> segmentsMap = stream.filter(
+				segment -> segment.getType() == Segment.Type.DYNAMIC
+			).collect(
+				Collectors.toMap(Segment::getId, this::_resetIndividualsCount)
+			);
 
 			List<MembershipChange> membershipsChanges =
 				_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
