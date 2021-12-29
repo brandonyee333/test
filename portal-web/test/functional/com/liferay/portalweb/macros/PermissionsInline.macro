@@ -96,6 +96,21 @@ definition {
 		}
 	}
 
+	macro gotoCalendarConfigurationPG {
+		var key_portletName = "Calendar";
+		var portletOption = "Permissions";
+
+		MouseOver.mouseOverInvisible(locator1 = "Portlet#SPECIFIC_BORDERLESS_ELLIPSIS_ICON");
+
+		Click(locator1 = "Portlet#SPECIFIC_BORDERLESS_ELLIPSIS_ICON");
+
+		if (isSet(portletOption)) {
+			MenuItem.click(menuItem = "${portletOption}");
+		}
+
+		SelectFrame(locator1 = "IFrame#MODAL_BODY");
+	}
+
 	macro gotoConfigurationPG {
 		if (isSet(portletOption)) {
 			var optionName = "${portletOption}";
