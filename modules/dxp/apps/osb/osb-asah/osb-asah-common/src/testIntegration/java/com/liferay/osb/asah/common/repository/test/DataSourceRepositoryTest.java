@@ -485,9 +485,9 @@ public class DataSourceRepositoryTest
 			expectedDataSource.getURL(), actualDataSource.getURL());
 	}
 
-	private final DataSourceFilterStringConverterHelper
-		_dataSourceFilterStringConverterHelper =
-			new DataSourceFilterStringConverterHelper();
+	@Autowired
+	private DataSourceFilterStringConverterHelper
+		_dataSourceFilterStringConverterHelper;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;

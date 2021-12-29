@@ -15,13 +15,33 @@
 package com.liferay.osb.asah.common.postgresql.converter.helper;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
+import com.liferay.osb.asah.common.dog.ChannelDog;
+import com.liferay.osb.asah.common.entity.Channel;
+import com.liferay.osb.asah.common.entity.ChannelDataSource;
+import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.impl.DSL;
+
+import org.json.JSONArray;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Rachael Koestartyo
  */
+@Component
 public class DataSourceFilterStringConverterHelper
 	extends DefaultFilterStringConverterHelper {
 
@@ -34,5 +54,47 @@ public class DataSourceFilterStringConverterHelper
 			}
 		};
 	}
+
+	@Override
+	public Condition getLogicFunctionCondition(
+		String fieldName, String operator, String valueString) {
+
+		if (fieldName.equals("channelId") && operator.equals("eq")) {
+			Field<Long> field = DSL.field("id", Long.class);
+
+			return field.in(_getDataSourceIds(valueString));
+		}
+
+		return null;
+	}
+
+	private Set<Long> _getDataSourceIds(String valueString) {
+		Object value = StringUtil.toObject(valueString);
+
+		if (value instanceof JSONArray) {
+			List<Channel> channels = _channelDog.getChannels(
+				JSONUtil.toLongList((JSONArray)value));
+
+			Stream<Channel> stream = channels.stream();
+
+			return stream.flatMap(
+				channel -> channel.getChannelDataSources(
+				).stream()
+			).map(
+				ChannelDataSource::getDataSourceId
+			).collect(
+				Collectors.toSet()
+			);
+		}
+
+		Channel channel = _channelDog.getChannel((Long)value);
+
+		return SetUtil.map(
+			channel.getChannelDataSources(),
+			ChannelDataSource::getDataSourceId);
+	}
+
+	@Autowired
+	private ChannelDog _channelDog;
 
 }

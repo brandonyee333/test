@@ -806,9 +806,9 @@ public class DataSourceDog {
 	@Autowired
 	private CSVIndividualDog _csvIndividualDog;
 
-	private final DataSourceFilterStringConverterHelper
-		_dataSourceFilterStringConverterHelper =
-			new DataSourceFilterStringConverterHelper();
+	@Autowired
+	private DataSourceFilterStringConverterHelper
+		_dataSourceFilterStringConverterHelper;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
