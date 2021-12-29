@@ -57,6 +57,15 @@ public class ElasticsearchSnapshotManagerImpl
 		_createSnapshotLifecyclePolicy(projectId);
 	}
 
+	@Override
+	public void createSnapshotRepository(String projectId) throws Exception {
+		if (!_environment.acceptsProfiles("prod")) {
+			return;
+		}
+
+		_createRepository(projectId);
+	}
+
 	private void _createRepository(String projectId) throws Exception {
 		PutRepositoryRequest putRepositoryRequest = new PutRepositoryRequest(
 			projectId);
