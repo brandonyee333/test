@@ -25,6 +25,7 @@ import com.liferay.osb.asah.upgrade.v3_0_0.DataSourcesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.IndividualsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_0.SalesforceUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_1.EventDefinitionUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_0_10.SnapshotRepositoryUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_5.CommentPostedEventDefinitionUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_5.VoteEventDefinitionUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_6.EventAttributeIndexUpgradeStep;
@@ -65,7 +66,10 @@ public class UpgradeProcessConfiguration {
 			"3.0.5", "3.0.6", _eventAttributeIndexUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"3.0.6", "3.1.0", _eventAnalysisUpgradeStep);
+			"3.0.6", "3.0.10", _snapshotRepositoryUpgradeStep);
+
+		upgradeProcess.addUpgradeSteps(
+			"3.0.10", "3.1.0", _eventAnalysisUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -106,6 +110,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private SalesforceUpgradeStep _salesforceUpgradeStep;
+
+	@Autowired
+	private SnapshotRepositoryUpgradeStep _snapshotRepositoryUpgradeStep;
 
 	@Autowired
 	private SnapshotsUpgradeStep _snapshotsUpgradeStep;
