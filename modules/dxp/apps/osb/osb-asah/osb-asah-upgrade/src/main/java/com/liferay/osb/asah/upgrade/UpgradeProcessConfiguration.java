@@ -24,6 +24,7 @@ import com.liferay.osb.asah.upgrade.v3_0_5.VoteEventDefinitionUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_6.EventAttributeIndexUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.DataSourceMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.EventAnalysisUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_1_0.PagesUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -58,7 +59,7 @@ public class UpgradeProcessConfiguration {
 
 		upgradeProcess.addUpgradeSteps(
 			"3.0.10", "3.1.0", _dataSourceMigrationUpgradeStep,
-			_eventAnalysisUpgradeStep);
+			_eventAnalysisUpgradeStep, _pagesUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -78,6 +79,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private EventDefinitionUpgradeStep _eventDefinitionUpgradeStep;
+
+	@Autowired
+	private PagesUpgradeStep _pagesUpgradeStep;
 
 	@Autowired
 	private ProjectsIndexUpgradeStep _projectsIndexUpgradeStep;
