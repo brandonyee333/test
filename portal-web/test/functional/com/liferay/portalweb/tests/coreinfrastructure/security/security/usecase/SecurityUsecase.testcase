@@ -182,7 +182,7 @@ out.println(PortalUtil.escapeRedirect("/"));
 
 		Navigator.openSpecificURL(url = "${portalURL}/web/test");
 
-		PermissionsInline.gotoConfigurationPG(portletName = "Calendar");
+		PermissionsInline.gotoCalendarConfigurationPG();
 	}
 
 	@priority = "5"
