@@ -56,11 +56,12 @@ export function ImagePropertiesPanel({item}) {
 		`[data-fragment-entry-link-id="${fragmentEntryLinkId}"]`
 	);
 
-	const editableElement =
-		fragmentElement.querySelector(`lfr-editable[id="${item.itemId}"]`) ||
-		fragmentElement.querySelector(
-			`[data-lfr-editable-id="${item.itemId}"]`
-		);
+	const editableElement = fragmentElement
+		? fragmentElement.querySelector(`lfr-editable[id="${item.itemId}"]`) ||
+		  fragmentElement.querySelector(
+				`[data-lfr-editable-id="${item.itemId}"]`
+		  )
+		: undefined;
 
 	const [imageSize, setImageSize] = useState(null);
 
