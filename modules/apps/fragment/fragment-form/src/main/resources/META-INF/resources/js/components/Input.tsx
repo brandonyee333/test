@@ -20,6 +20,9 @@ import ErrorFeedback from './ErrorFeedback';
 import FeedbackMessage from './FeedbackMessage';
 import RequiredMask from './RequiredMask';
 
+import {useLiferayState} from '@liferay/frontend-js-react-web';
+import {State} from '@liferay/frontend-js-state-web';
+
 interface IInputProps extends React.HTMLAttributes<HTMLElement> {
 	disabled?: boolean;
 	error?: string;
