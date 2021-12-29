@@ -19,9 +19,9 @@ import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,27 +71,27 @@ public class DataSourceFilterStringConverterHelper
 	private Set<Long> _getDataSourceIds(String valueString) {
 		Object value = StringUtil.toObject(valueString);
 
+		List<Long> channelIds;
+
 		if (value instanceof JSONArray) {
-			List<Channel> channels = _channelDog.getChannels(
-				JSONUtil.toLongList((JSONArray)value));
-
-			Stream<Channel> stream = channels.stream();
-
-			return stream.flatMap(
-				channel -> channel.getChannelDataSources(
-				).stream()
-			).map(
-				ChannelDataSource::getDataSourceId
-			).collect(
-				Collectors.toSet()
-			);
+			channelIds = JSONUtil.toLongList((JSONArray)value);
+		}
+		else {
+			channelIds = Collections.singletonList((Long)value);
 		}
 
-		Channel channel = _channelDog.getChannel((Long)value);
+		List<Channel> channels = _channelDog.getChannels(channelIds);
 
-		return SetUtil.map(
-			channel.getChannelDataSources(),
-			ChannelDataSource::getDataSourceId);
+		Stream<Channel> stream = channels.stream();
+
+		return stream.flatMap(
+			channel -> channel.getChannelDataSources(
+			).stream()
+		).map(
+			ChannelDataSource::getDataSourceId
+		).collect(
+			Collectors.toSet()
+		);
 	}
 
 	@Autowired
