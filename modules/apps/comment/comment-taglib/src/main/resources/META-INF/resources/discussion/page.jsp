@@ -733,7 +733,7 @@ StagingGroupHelper stagingGroupHelper = StagingGroupHelperUtil.getStagingGroupHe
 							Liferay.Util.ns('<%= namespace %>', {
 								className: '<%= discussionTaglibHelper.getClassName() %>',
 								classPK: '<%= discussionTaglibHelper.getClassPK() %>',
-								skipEditorLoading: true,
+								skipEditorLoading: false,
 							}),
 							portletNode.refreshURLData || {}
 						)
