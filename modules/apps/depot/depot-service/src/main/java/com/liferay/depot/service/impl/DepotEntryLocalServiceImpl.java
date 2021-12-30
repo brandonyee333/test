@@ -168,7 +168,7 @@ public class DepotEntryLocalServiceImpl extends DepotEntryLocalServiceBaseImpl {
 				"Unstage depot entry " + depotEntryId + " before deleting it");
 		}
 
-		_resourceLocalService.deleteResource(
+		resourceLocalService.deleteResource(
 			depotEntry, ResourceConstants.SCOPE_INDIVIDUAL);
 
 		return super.deleteDepotEntry(depotEntryId);
