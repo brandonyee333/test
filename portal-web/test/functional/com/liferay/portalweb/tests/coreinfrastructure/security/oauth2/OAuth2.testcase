@@ -1028,6 +1028,7 @@ definition {
 		property environment.acceptance = "true";
 		property portal.acceptance = "true";
 		property portal.upstream = "quarantine";
+		property test.name.skip.portal.instance = "OAuth2#ViewAndRevokeGrantedAuthorizations";
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Security",
