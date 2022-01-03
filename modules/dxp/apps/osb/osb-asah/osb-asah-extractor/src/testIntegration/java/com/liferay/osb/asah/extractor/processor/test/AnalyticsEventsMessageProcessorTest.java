@@ -17,6 +17,7 @@ package com.liferay.osb.asah.extractor.processor.test;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
@@ -35,11 +36,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author Marcellus Tavares
@@ -51,6 +57,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 )
 public class AnalyticsEventsMessageProcessorTest
 	implements OSBAsahTestExecutionListenersContext {
+
+	@BeforeEach
+	public void setUp() {
+		_messageMessageSubscriber = Mockito.spy(
+			_messageBus.registerMessageSubscriber(
+				Channel.ANALYTICS_EVENTS_MESSAGE,
+				AnalyticsEventsMessageProcessor.class.getName()));
+
+		ReflectionTestUtils.setField(
+			_analyticsEventsMessageProcessor, "_messageSubscriber",
+			_messageMessageSubscriber);
+	}
 
 	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources.json",
@@ -73,10 +91,10 @@ public class AnalyticsEventsMessageProcessorTest
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
 		List<Message<AnalyticsEvent>> messages =
-			_messageSubscriber.pullMessages(
+			_pageMessageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(
+		_pageMessageSubscriber.sendAckIds(
 			ListUtil.map(messages, Message::getAckId));
 
 		Assertions.assertNotEquals(0, messages.size());
@@ -105,6 +123,12 @@ public class AnalyticsEventsMessageProcessorTest
 		Assertions.assertEquals("Chrome", context.get("browserName"));
 		Assertions.assertEquals("Desktop", context.get("deviceType"));
 		Assertions.assertEquals("macOS", context.get("platformName"));
+
+		Mockito.verify(
+			_messageMessageSubscriber, Mockito.never()
+		).registerException(
+			ArgumentMatchers.any(), ArgumentMatchers.any()
+		);
 	}
 
 	@ElasticsearchIndex(
@@ -126,13 +150,19 @@ public class AnalyticsEventsMessageProcessorTest
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
 		List<Message<AnalyticsEvent>> messages =
-			_messageSubscriber.pullMessages(
+			_pageMessageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(
+		_pageMessageSubscriber.sendAckIds(
 			ListUtil.map(messages, Message::getAckId));
 
-		Assertions.assertNotEquals(0, messages.size());
+		Assertions.assertEquals(1, messages.size(), messages.toString());
+
+		Mockito.verify(
+			_messageMessageSubscriber, Mockito.never()
+		).registerException(
+			ArgumentMatchers.any(), ArgumentMatchers.any()
+		);
 	}
 
 	@ElasticsearchIndex(
@@ -182,13 +212,19 @@ public class AnalyticsEventsMessageProcessorTest
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
 		List<Message<AnalyticsEvent>> messages =
-			_messageSubscriber.pullMessages(
+			_pageMessageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(
+		_pageMessageSubscriber.sendAckIds(
 			ListUtil.map(messages, Message::getAckId));
 
 		Assertions.assertNotEquals(0, messages.size());
+
+		Mockito.verify(
+			_messageMessageSubscriber, Mockito.never()
+		).registerException(
+			ArgumentMatchers.any(), ArgumentMatchers.any()
+		);
 	}
 
 	@ElasticsearchIndex(
@@ -204,13 +240,19 @@ public class AnalyticsEventsMessageProcessorTest
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
 		List<Message<AnalyticsEvent>> messages =
-			_messageSubscriber.pullMessages(
+			_pageMessageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(
+		_pageMessageSubscriber.sendAckIds(
 			ListUtil.map(messages, Message::getAckId));
 
 		Assertions.assertEquals(0, messages.size(), messages.toString());
+
+		Mockito.verify(
+			_messageMessageSubscriber, Mockito.never()
+		).registerException(
+			ArgumentMatchers.any(), ArgumentMatchers.any()
+		);
 	}
 
 	@ElasticsearchIndex(
@@ -228,13 +270,19 @@ public class AnalyticsEventsMessageProcessorTest
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
 		List<Message<AnalyticsEvent>> messages =
-			_messageSubscriber.pullMessages(
+			_pageMessageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(
+		_pageMessageSubscriber.sendAckIds(
 			ListUtil.map(messages, Message::getAckId));
 
 		Assertions.assertEquals(0, messages.size(), messages.toString());
+
+		Mockito.verify(
+			_messageMessageSubscriber, Mockito.never()
+		).registerException(
+			ArgumentMatchers.any(), ArgumentMatchers.any()
+		);
 	}
 
 	@ElasticsearchIndex(
@@ -256,12 +304,18 @@ public class AnalyticsEventsMessageProcessorTest
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
 		List<Message<AnalyticsEvent>> messages =
-			_messageSubscriber.pullMessages(
+			_pageMessageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(
+		_pageMessageSubscriber.sendAckIds(
 			ListUtil.map(messages, Message::getAckId));
 		Assertions.assertEquals(1, messages.size(), messages.toString());
+
+		Mockito.verify(
+			_messageMessageSubscriber, Mockito.never()
+		).registerException(
+			ArgumentMatchers.any(), ArgumentMatchers.any()
+		);
 	}
 
 	@ElasticsearchIndex(
@@ -279,10 +333,10 @@ public class AnalyticsEventsMessageProcessorTest
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
 		List<Message<AnalyticsEvent>> messages =
-			_messageSubscriber.pullMessages(
+			_pageMessageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(
+		_pageMessageSubscriber.sendAckIds(
 			ListUtil.map(messages, Message::getAckId));
 
 		for (Message<AnalyticsEvent> message : messages) {
@@ -293,6 +347,12 @@ public class AnalyticsEventsMessageProcessorTest
 			Assertions.assertEquals(
 				context.get("url"), context.get("canonicalUrl"));
 		}
+
+		Mockito.verify(
+			_messageMessageSubscriber, Mockito.never()
+		).registerException(
+			ArgumentMatchers.any(), ArgumentMatchers.any()
+		);
 	}
 
 	@ElasticsearchIndex(
@@ -310,10 +370,10 @@ public class AnalyticsEventsMessageProcessorTest
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
 		List<Message<AnalyticsEvent>> messages =
-			_messageSubscriber.pullMessages(
+			_pageMessageSubscriber.pullMessages(
 				50, AnalyticsEvent::toAnalyticsEvent);
 
-		_messageSubscriber.sendAckIds(
+		_pageMessageSubscriber.sendAckIds(
 			ListUtil.map(messages, Message::getAckId));
 
 		for (Message<AnalyticsEvent> message : messages) {
@@ -324,6 +384,12 @@ public class AnalyticsEventsMessageProcessorTest
 			Assertions.assertNotEquals(
 				context.get("url"), context.get("canonicalUrl"));
 		}
+
+		Mockito.verify(
+			_messageMessageSubscriber, Mockito.never()
+		).registerException(
+			ArgumentMatchers.any(), ArgumentMatchers.any()
+		);
 	}
 
 	@Autowired
@@ -332,7 +398,12 @@ public class AnalyticsEventsMessageProcessorTest
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
+	@Autowired
+	private MessageBus _messageBus;
+
+	private MessageSubscriber _messageMessageSubscriber;
+
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_PAGE)
-	private MessageSubscriber _messageSubscriber;
+	private MessageSubscriber _pageMessageSubscriber;
 
 }

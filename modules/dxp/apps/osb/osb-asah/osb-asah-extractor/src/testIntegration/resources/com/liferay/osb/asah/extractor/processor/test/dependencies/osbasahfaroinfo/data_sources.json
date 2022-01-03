@@ -18,6 +18,15 @@
 		"status": "ACTIVE"
 	},
 	{
+		"id": "350121114030678000",
+		"name": "192.168.108.90",
+		"provider": {
+			"type": "LIFERAY"
+		},
+		"state": "READY",
+		"status": "ACTIVE"
+	},
+	{
 		"id": "880121114030678088",
 		"name": "LIFERAY-DATASOURCE-INACTIVE",
 		"provider": {
