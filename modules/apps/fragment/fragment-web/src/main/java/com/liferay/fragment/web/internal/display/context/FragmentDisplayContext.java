@@ -692,7 +692,7 @@ public class FragmentDisplayContext {
 		}
 
 		_orderByCol = ParamUtil.getString(
-			_httpServletRequest, "orderByCol", "create-date");
+			_httpServletRequest, "orderByCol", "modified-date");
 
 		return _orderByCol;
 	}
