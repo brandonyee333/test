@@ -215,6 +215,84 @@ definition {
 			version = "1.1");
 	}
 
+	@description = "This is a test for LPS-141766. Copied Web Contents don't have FriendlyURLEntries."
+	@priority = "4"
+	test CopiedWebContentHasItsOwnFriendlyURL {
+		task ("Add two Public Pages") {
+			JSONLayout.addPublicLayout(
+				groupName = "Test Site Name",
+				layoutName = "Test Page 1");
+
+			JSONLayout.addPublicLayout(
+				groupName = "Test Site Name",
+				layoutName = "Test Page 2");
+		}
+
+		task ("Add an Asset Publisher to each Public Page") {
+			JSONLayout.addWidgetToPublicLayout(
+				groupName = "Test Site Name",
+				layoutName = "Test Page 1",
+				widgetName = "Asset Publisher");
+
+			JSONLayout.addWidgetToPublicLayout(
+				groupName = "Test Site Name",
+				layoutName = "Test Page 2",
+				widgetName = "Asset Publisher");
+		}
+
+		task ("Set Asset Publisher in the second page as the Default Asset Publisher") {
+			Navigator.gotoSitePage(
+				pageName = "Test Page 2",
+				siteName = "Test Site Name");
+
+			AssetPublisherPortlet.configureDisplaySettings(displaySettings = "Set as the Default Asset Publisher for This Page");
+		}
+
+		task ("Add the first web content and select the display page template in web content") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoAddCP();
+
+			WebContent.addCP(
+				webContentContent = "WC WebContent Content",
+				webContentTitle = "WC WebContent 1");
+
+			WebContent.editDisplayPage(
+				pageName = "Test Page 2",
+				pageType = "Public Pages");
+
+			Button.clickPublish();
+		}
+
+		task ("Copy the Web Content") {
+			LexiconEntry.gotoEntryMenuItem(
+				menuItem = "Copy",
+				rowEntry = "WC WebContent 1");
+		}
+
+		task ("Add the second web content and select the display page template in web content") {
+			WebContentNavigator.gotoAddCP();
+
+			WebContent.addCP(
+				webContentContent = "WC WebContent Content",
+				webContentTitle = "WC WebContent 2");
+
+			WebContent.editDisplayPage(
+				pageName = "Test Page 2",
+				pageType = "Public Pages");
+
+			Button.clickPublish();
+		}
+
+		task ("View the friendly URL shown in address") {
+			WebContentNavigator.gotoEntryMenuItem(
+				entry = "WC WebContent 1 Duplicate 2",
+				menuItem = "View Content");
+
+			AssertLocation.assertPartialLocation(value1 = "web/test-site-name/-/wc-webcontent-1-duplicate-2");
+		}
+	}
+
 	@priority = "5"
 	test DeleteWebContent {
 		property portal.acceptance = "true";
