@@ -66,6 +66,24 @@ public class IndividualNaniteTest
 	extends BaseNaniteTestCase
 	implements OSBAsahStreamCuratorSpringTestContext {
 
+	@MessageBusChannel(
+		channel = Channel.IDENTITY_MESSAGE,
+		resourcePath = "identity_message_5.json"
+	)
+	@Test
+	public void testAddIndividuals() {
+		runNanite();
+
+		Assertions.assertNotNull(
+			_individualDog.fetchIndividualByEmailAddressHashed(
+				"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b93" +
+					"4ca495991b7852b850"));
+		Assertions.assertNotNull(
+			_individualDog.fetchIndividualByEmailAddressHashed(
+				"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b93" +
+					"4ca495991b7852b851"));
+	}
+
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "blog_info_old.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
