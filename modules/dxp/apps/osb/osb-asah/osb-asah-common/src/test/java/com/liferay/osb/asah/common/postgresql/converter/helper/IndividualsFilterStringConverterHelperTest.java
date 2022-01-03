@@ -55,7 +55,6 @@ public class IndividualsFilterStringConverterHelperTest {
 			false, "1");
 
 		Assertions.assertNotNull(condition);
-
 		Assertions.assertEquals(
 			"(\n  datasourceindividual.datasourceid = 1\n" +
 				"  and cast(array[datasourceindividual.individualpks] as " +
