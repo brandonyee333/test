@@ -177,7 +177,7 @@ public class RedirectEntryLocalServiceImpl
 	public RedirectEntry deleteRedirectEntry(RedirectEntry redirectEntry)
 		throws PortalException {
 
-		_resourceLocalService.deleteResource(
+		resourceLocalService.deleteResource(
 			redirectEntry.getCompanyId(), RedirectEntry.class.getName(),
 			ResourceConstants.SCOPE_INDIVIDUAL,
 			redirectEntry.getRedirectEntryId());
