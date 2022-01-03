@@ -26,7 +26,6 @@ import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
@@ -442,24 +441,20 @@ public class IndividualNanite implements Nanite {
 			_mergeIndividual(individual1, dataSourceId, individual2, userId);
 		}
 		else if ((individual1 == null) && (individual2 == null)) {
-			DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
-
 			if (Objects.isNull(channelId)) {
 				channelId = _dataSourceDog.getDefaultChannelId(dataSourceId);
 			}
 
 			return _individualDog.addIndividual(
-				channelId, dataSource, emailAddressHashed, userId);
+				channelId, dataSourceId, emailAddressHashed, userId);
 		}
 		else {
-			DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
-
 			if (individual1 == null) {
 				individual1 = individual2;
 			}
 
 			_individualDog.addDataSourceIndividualPK(
-				userId, dataSource.getId(), individual1);
+				userId, dataSourceId, individual1);
 
 			individual2 = _updateIndividual(emailAddressHashed, individual1);
 		}

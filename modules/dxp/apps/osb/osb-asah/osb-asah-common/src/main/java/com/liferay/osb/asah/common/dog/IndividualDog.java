@@ -181,7 +181,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	public Individual addIndividual(
-		Long channelId, DataSource dataSource, String emailAddressHashed,
+		Long channelId, Long dataSourceId, String emailAddressHashed,
 		String userId) {
 
 		Set<Long> channelIds = new HashSet<>();
@@ -199,7 +199,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		individual.setDataSourceIndividuals(
 			Collections.singleton(
 				new DataSourceIndividual(
-					Collections.emptySet(), dataSource.getId(), null,
+					Collections.emptySet(), dataSourceId, null,
 					Collections.singleton(userId))));
 		individual.setEmailAddressHashed(emailAddressHashed);
 		individual.setModifiedDate(date);
