@@ -135,7 +135,7 @@ public class BasicFragmentEntryVerticalCard extends FragmentEntryVerticalCard {
 			System.currentTimeMillis() - modifiedDate.getTime(), true);
 
 		return LanguageUtil.format(
-			_httpServletRequest, "x-ago", modifiedDateDescription);
+			_httpServletRequest, "modified-x-ago", modifiedDateDescription);
 	}
 
 	@Override
