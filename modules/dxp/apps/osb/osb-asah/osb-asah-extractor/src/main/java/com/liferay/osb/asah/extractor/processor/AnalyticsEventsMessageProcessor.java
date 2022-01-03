@@ -99,8 +99,7 @@ public class AnalyticsEventsMessageProcessor {
 
 		if (individual == null) {
 			individual = _individualDog.addIndividual(
-				channelId, _dataSourceDog.getDataSource(dataSourceId), null,
-				userId);
+				channelId, dataSourceId, null, userId);
 		}
 		else {
 			Set<Long> channelIds = individual.getChannelIds();

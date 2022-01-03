@@ -63,7 +63,7 @@ public class IndividualEventUpgradeStepTest
 		Channel channel = _channelDog.fetchDefaultChannel(dataSource.getId());
 
 		Individual individual = _individualDog.addIndividual(
-			channel.getId(), dataSource,
+			channel.getId(), dataSource.getId(),
 			DigestUtils.sha256Hex("test@liferay.com"), "123");
 
 		Field field = new Field();

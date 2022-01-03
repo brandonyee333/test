@@ -107,7 +107,7 @@ public class DataSourceDogTest
 		Channel channel = _channelDog.fetchDefaultChannel(dataSource.getId());
 
 		Individual individual = _individualDog.addIndividual(
-			channel.getId(), dataSource, null, "123");
+			channel.getId(), dataSource.getId(), null, "123");
 
 		Map<Long, JSONObject> dataSourcesJSONObjects =
 			_dataSourceDog.getDataSourcesJSONObjects(
