@@ -190,6 +190,8 @@ public class ImageEditorDLDisplayContextHelper {
 
 		template.put("namespace", liferayPortletResponse.getNamespace());
 
+		template.put("redirectURL", _themeDisplay.getURLCurrent());
+
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 
 		template.processTemplate(unsyncStringWriter);
