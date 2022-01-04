@@ -33,6 +33,7 @@ definition {
 			groupNameMap = "${groupNameMap}",
 			manualMembership = "${manualMembership}",
 			parentGroupId = "${parentGroupId}",
+			portalURL = "${portalURL}",
 			type = "${type}");
 	}
 
