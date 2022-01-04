@@ -133,8 +133,7 @@ public class ElasticsearchBlockedKeywordRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(), boolQueryBuilder,
-				pageable.getPageSize()));
+				getFrom(pageable), boolQueryBuilder, pageable.getPageSize()));
 	}
 
 	@Override

@@ -167,7 +167,7 @@ public class ElasticsearchSegmentRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				BoolQueryBuilderUtil.should(
 					QueryBuilders.existsQuery("channelId")
 				).should(
@@ -183,7 +183,7 @@ public class ElasticsearchSegmentRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				QueryBuilders.rangeQuery(
 					"id"
 				).gt(
@@ -462,7 +462,7 @@ public class ElasticsearchSegmentRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				BoolQueryBuilderUtil.filter(
 					queryBuilder
 				).filter(
@@ -550,7 +550,7 @@ public class ElasticsearchSegmentRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(), finalBoolQueryBuilder,
+				getFrom(pageable), finalBoolQueryBuilder,
 				pageable.getPageSize()));
 	}
 
@@ -580,8 +580,7 @@ public class ElasticsearchSegmentRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(), boolQueryBuilder,
-				pageable.getPageSize()));
+				getFrom(pageable), boolQueryBuilder, pageable.getPageSize()));
 	}
 
 	@Override
@@ -594,7 +593,7 @@ public class ElasticsearchSegmentRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				_getSegmentsQueryBuilder(filterHelper, segmentIds),
 				pageable.getPageSize()));
 	}
@@ -608,7 +607,7 @@ public class ElasticsearchSegmentRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				_getSegmentsQueryBuilder(channelIds, filterHelper),
 				pageable.getPageSize()));
 	}
@@ -661,7 +660,7 @@ public class ElasticsearchSegmentRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.regexpQuery("filter", filter)
 				).filter(

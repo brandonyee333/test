@@ -64,7 +64,7 @@ public class ElasticsearchDataControlTaskRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				_buildQueryBuilder(
 					batchId, emailAddress, startCreateDate, statuses, types),
 				pageable.getPageSize()));

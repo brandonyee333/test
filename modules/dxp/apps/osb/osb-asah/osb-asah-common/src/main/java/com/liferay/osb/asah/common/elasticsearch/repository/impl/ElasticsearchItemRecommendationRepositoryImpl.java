@@ -55,7 +55,7 @@ public class ElasticsearchItemRecommendationRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				QueryBuilders.termQuery("jobId", jobId.toString()),
 				pageable.getPageSize()));
 	}

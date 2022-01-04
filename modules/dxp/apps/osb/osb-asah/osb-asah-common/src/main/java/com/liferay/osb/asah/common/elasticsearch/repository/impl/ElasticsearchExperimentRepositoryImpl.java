@@ -63,7 +63,7 @@ public class ElasticsearchExperimentRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				_buildKeywordsQueryBuilder(channelId, keywords),
 				pageable.getPageSize()));
 	}

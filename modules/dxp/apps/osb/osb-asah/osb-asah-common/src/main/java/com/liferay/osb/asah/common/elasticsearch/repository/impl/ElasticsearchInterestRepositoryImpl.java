@@ -135,7 +135,7 @@ public class ElasticsearchInterestRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				_buildQueryBuilder(filterHelper, null, null, null, null, score),
 				pageable.getPageSize()));
 	}

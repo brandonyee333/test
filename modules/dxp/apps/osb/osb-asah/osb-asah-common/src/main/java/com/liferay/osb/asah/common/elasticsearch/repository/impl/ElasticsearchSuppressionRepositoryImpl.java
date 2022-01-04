@@ -90,7 +90,7 @@ public class ElasticsearchSuppressionRepositoryImpl
 		return toList(
 			_faroInfoElasticsearchInvoker.get(
 				getCollectionName(), getFieldSortBuilders(pageable.getSort()),
-				(int)pageable.getOffset(), _buildQueryBuilder(emailAddress),
+				getFrom(pageable), _buildQueryBuilder(emailAddress),
 				pageable.getPageSize()));
 	}
 

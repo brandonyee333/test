@@ -76,7 +76,7 @@ public class ElasticsearchJobRunRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				QueryBuilders.termQuery("job.id", jobId.toString()),
 				pageable.getPageSize()));
 	}

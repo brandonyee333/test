@@ -176,7 +176,7 @@ public class ElasticsearchAssetRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("assetType", assetType)
 				).filter(
@@ -205,7 +205,7 @@ public class ElasticsearchAssetRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				_buildQueryBuilder(assetType, filterHelper, keywords),
 				pageable.getPageSize()));
 	}
@@ -219,7 +219,7 @@ public class ElasticsearchAssetRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				QueryBuilders.termsQuery(
 					"channelIds", ListUtil.map(channelIds, String::valueOf)),
 				pageable.getPageSize()));
@@ -254,7 +254,7 @@ public class ElasticsearchAssetRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(), _buildQueryBuilder(filterHelper),
+				getFrom(pageable), _buildQueryBuilder(filterHelper),
 				pageable.getPageSize()));
 	}
 
@@ -354,7 +354,7 @@ public class ElasticsearchAssetRepositoryImpl
 							"groupBySort",
 							_getFieldSortBuilders(pageable.getSort())
 						).from(
-							Math.max(0, (int)pageable.getOffset())
+							Math.max(0, getFrom(pageable))
 						).size(
 							pageable.getPageSize()
 						)

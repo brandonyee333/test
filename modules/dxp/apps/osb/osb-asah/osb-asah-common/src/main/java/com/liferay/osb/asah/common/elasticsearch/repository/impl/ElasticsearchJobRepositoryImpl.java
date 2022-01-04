@@ -51,7 +51,7 @@ public class ElasticsearchJobRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				QueryUtil.buildSearchQueryBuilder("name.search", name),
 				pageable.getPageSize()));
 	}

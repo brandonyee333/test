@@ -249,7 +249,7 @@ public class ElasticsearchSalesforceEntityRepositoryImpl
 
 		return toList(
 			_salesforceRawElasticsearchInvoker.get(
-				_getCollectionName(type), (int)pageable.getOffset(),
+				_getCollectionName(type), getFrom(pageable),
 				QueryUtil.buildSearchQueryBuilder(
 					"dataSourceId", String.valueOf(dataSourceId)),
 				pageable.getPageSize()));

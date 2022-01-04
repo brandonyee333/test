@@ -56,8 +56,7 @@ public class ElasticsearchCustomAssetDashboardRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
-				_buildQueryBuilder(channelId, keywords),
+				getFrom(pageable), _buildQueryBuilder(channelId, keywords),
 				pageable.getPageSize()));
 	}
 

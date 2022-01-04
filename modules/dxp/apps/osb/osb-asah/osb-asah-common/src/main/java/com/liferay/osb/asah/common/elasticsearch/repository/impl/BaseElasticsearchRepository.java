@@ -126,7 +126,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 					getCollectionName(),
 					getFieldSortBuilders(
 						getSortFieldNameConversionMap(), pageable.getSort()),
-					(int)pageable.getOffset(), pageable.getPageSize())),
+					getFrom(pageable), pageable.getPageSize())),
 			pageable, () -> count());
 	}
 
@@ -307,7 +307,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 	protected void setSearchSourceBuilderPage(
 		Pageable pageable, SearchSourceBuilder searchSourceBuilder) {
 
-		searchSourceBuilder.from((int)pageable.getOffset());
+		searchSourceBuilder.from(getFrom(pageable));
 		searchSourceBuilder.size(pageable.getPageSize());
 
 		for (FieldSortBuilder fieldSortBuilder :

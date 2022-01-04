@@ -129,7 +129,7 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				_getQueryBuilder(
 					filterHelper, includeAnonymousUsers,
 					Collections.singletonList(segmentId)),

@@ -158,7 +158,7 @@ public class ElasticsearchOrganizationRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(), filterHelper.getQueryBuilder(),
+				getFrom(pageable), filterHelper.getQueryBuilder(),
 				pageable.getPageSize()));
 	}
 

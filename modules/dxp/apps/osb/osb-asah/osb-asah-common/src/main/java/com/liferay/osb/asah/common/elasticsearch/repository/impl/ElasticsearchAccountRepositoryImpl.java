@@ -149,7 +149,7 @@ public class ElasticsearchAccountRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				QueryBuilders.rangeQuery(
 					"id"
 				).gt(
@@ -332,7 +332,7 @@ public class ElasticsearchAccountRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(), filterHelper.getQueryBuilder(),
+				getFrom(pageable), filterHelper.getQueryBuilder(),
 				pageable.getPageSize()));
 	}
 

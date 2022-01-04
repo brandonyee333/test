@@ -58,7 +58,7 @@ public class ElasticsearchSalesforceAuditEventRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
 						"dataSourceId", String.valueOf(dataSourceId))

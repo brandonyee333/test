@@ -82,7 +82,7 @@ public class ElasticsearchCSVIndividualRepositoryImpl
 				getCollectionName(),
 				getFieldSortBuilders(
 					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				getFrom(pageable),
 				QueryBuilders.termQuery(
 					"dataSourceId", String.valueOf(dataSourceId)),
 				pageable.getPageSize()));
