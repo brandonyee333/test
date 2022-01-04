@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,7 +43,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -53,7 +53,7 @@ import org.springframework.stereotype.Component;
 public class DataSourceMigrationUpgradeStep implements UpgradeStep {
 
 	@Override
-	public void upgrade(String version) throws Exception {
+	public void upgrade(String version) {
 		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
 		searchSourceBuilder.searchAfter(new Object[] {_getDataSourceId(true)});
@@ -99,13 +99,11 @@ public class DataSourceMigrationUpgradeStep implements UpgradeStep {
 	}
 
 	private Long _getDataSourceId(boolean retry) {
-		JdbcTemplate jdbcTemplate =
-			_namedParameterJdbcTemplate.getJdbcTemplate();
-
 		try {
 			return Optional.ofNullable(
-				jdbcTemplate.queryForObject(
-					_SQL_SELECT_DATA_SOURCE, (rs, rowNum) -> rs.getLong("id"))
+				_namedParameterJdbcTemplate.queryForObject(
+					_SQL_SELECT_LATEST_DATA_SOURCE_ID, Collections.emptyMap(),
+					(rs, rowNum) -> rs.getLong("id"))
 			).orElse(
 				0L
 			);
@@ -138,7 +136,7 @@ public class DataSourceMigrationUpgradeStep implements UpgradeStep {
 			_dataSource);
 	}
 
-	private static final String _SQL_SELECT_DATA_SOURCE =
+	private static final String _SQL_SELECT_LATEST_DATA_SOURCE_ID =
 		"SELECT id FROM datasource ORDER BY id DESC LIMIT 1";
 
 	private static final Log _log = LogFactory.getLog(
