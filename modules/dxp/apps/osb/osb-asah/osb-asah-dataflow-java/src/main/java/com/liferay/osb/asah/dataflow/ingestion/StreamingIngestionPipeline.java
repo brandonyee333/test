@@ -54,6 +54,9 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import org.joda.time.Duration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Marcellus Tavares
  */
@@ -135,8 +138,14 @@ public class StreamingIngestionPipeline {
 				processContext.output(analyticsEvent);
 			}
 			catch (Exception exception) {
+				_logger.error(
+					"Unable to parse Analytics Event Message {}",
+					processContext.element());
 			}
 		}
+
+		private static final Logger _logger = LoggerFactory.getLogger(
+			AnalyticsEventParser.class);
 
 	}
 
