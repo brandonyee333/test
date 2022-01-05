@@ -7,8 +7,8 @@
                 elementDockbar.style.display = 'none';
                 var eventTarget = event.target;
                 eventTarget.addEventListener('keydown', function (event) {
-                    // ctrl+shift+l
-                    if (event.shiftKey && event.ctrlKey && event.which === 76) {
+                    // ctrl+shift/alt+l
+                    if ((event.shiftKey || event.altKey) && event.ctrlKey && event.keyCode === 76) {
                         if (elementDockbar.style.display === "none") {
                             elementDockbar.style.display = "block";
                         } else {
