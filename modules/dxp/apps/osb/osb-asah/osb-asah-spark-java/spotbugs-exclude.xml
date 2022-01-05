@@ -1,5 +1,0 @@
-<FindBugsFilter>
-	<Match>
-		<Class name="com.liferay.osb.asah.spark.common.BaseSparkApplication" />
-	</Match>
-</FindBugsFilter>
