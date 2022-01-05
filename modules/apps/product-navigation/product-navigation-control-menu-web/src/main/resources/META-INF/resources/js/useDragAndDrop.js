@@ -28,6 +28,8 @@ import addPortlet from './addPortlet';
 import {LAYOUT_DATA_ITEM_TYPES} from './constants/layoutDataItemTypes';
 import {POSITIONS} from './constants/positions';
 
+const DROP_ACTIVE_VALID_CLASS = 'yui3-dd-drop-active-valid';
+
 const DROP_CLASS = 'yui3-dd-drop';
 
 const DROP_OVER_CLASS = 'yui3-dd-drop-over';
@@ -117,6 +119,7 @@ export const useDropClear = (targetItem) => {
 
 			if (dropTargetColumn) {
 				dropTargetColumn.classList.remove(DROP_OVER_CLASS);
+				dropTargetColumn.classList.remove(DROP_ACTIVE_VALID_CLASS);
 			}
 
 			setDropTargetColumn(null);
@@ -194,8 +197,11 @@ export const useDropTarget = (targetItem) => {
 	const itemIsDroppable = (item) => item.classList.contains(DROP_CLASS);
 	const itemIsDropzone = (item) => item.classList.contains(DROP_ZONE_CLASS);
 
-	const [, setDropTargetRef] = useDrop({
+	const [{validDrop}, setDropTargetRef] = useDrop({
 		accept: Object.values(LAYOUT_DATA_ITEM_TYPES),
+		collect: (monitor) => ({
+			validDrop: monitor.canDrop(),
+		}),
 		drop(item, monitor) {
 			setDropTargetColumn(null);
 
@@ -209,6 +215,7 @@ export const useDropTarget = (targetItem) => {
 
 			if (!item.disabled) {
 				dropTargetColumn.classList.remove(DROP_OVER_CLASS);
+				dropTargetColumn.classList.remove(DROP_ACTIVE_VALID_CLASS);
 
 				addPortlet({item, plid, targetItem, targetPosition});
 
@@ -239,11 +246,15 @@ export const useDropTarget = (targetItem) => {
 			if (dropTargetColumn !== parentTargetItem) {
 				if (dropTargetColumn) {
 					dropTargetColumn.classList.remove(DROP_OVER_CLASS);
+					dropTargetColumn.classList.remove(DROP_ACTIVE_VALID_CLASS);
 				}
 				setDropTargetColumn(parentTargetItem);
 
 				if (targetItemIsDropzone) {
 					parentTargetItem.classList.add(DROP_OVER_CLASS);
+				}
+				else if (validDrop) {
+					parentTargetItem.classList.add(DROP_ACTIVE_VALID_CLASS);
 				}
 			}
 
