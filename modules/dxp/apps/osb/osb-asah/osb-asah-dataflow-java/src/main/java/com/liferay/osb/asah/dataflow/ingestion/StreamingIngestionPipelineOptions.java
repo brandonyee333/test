@@ -25,6 +25,12 @@ import org.apache.beam.sdk.options.Validation;
 public interface StreamingIngestionPipelineOptions
 	extends DataflowPipelineOptions {
 
+	@Validation.Required
+	public String getEventPropertiesTableName();
+
+	@Validation.Required
+	public String getEventTableName();
+
 	@Description(
 		"Returns the pub/sub subscription input name. The name should be in the format of projects/<project-id>/subscriptions/<subscription-name>."
 	)
@@ -43,17 +49,41 @@ public interface StreamingIngestionPipelineOptions
 	)
 	public String getOutputFileNamePrefix();
 
+	@Validation.Required
+	public String getSessionTableName();
+
+	@Default.Long(5)
+	public long getSessionWindowAllowedLateness();
+
+	@Default.Long(1)
+	public long getSessionWindowEarlyFiringsInterval();
+
+	@Default.Long(30)
+	public long getSessionWindowGapDuration();
+
 	@Default.Long(5)
 	@Description(
 		"Returns the interval in minutes in which the data will be written. The default is 5 minutes."
 	)
 	public long getWriteInterval();
 
+	public void setEventPropertiesTableName(String eventPropertiesTableName);
+
+	public void setEventTableName(String eventTableName);
+
 	public void setInputSubscription(String inputSubscription);
 
 	public void setOutputDirectory(String outputDirectory);
 
 	public void setOutputFileNamePrefix(String outputFileNamePrefix);
+
+	public void setSessionTableName(String sessionTableName);
+
+	public void setSessionWindowAllowedLateness(long value);
+
+	public void setSessionWindowEarlyFiringsInterval(long value);
+
+	public void setSessionWindowGapDuration(long value);
 
 	public void setWriteInterval(long value);
 
