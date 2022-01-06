@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.util.ReleaseInfo;
-import com.liferay.osb.asah.upgrade.v0_0_0.ProjectsIndexUpgradeStep;
+import com.liferay.osb.asah.upgrade.v0_0_0.GlobalSchemaUpgradeStep;
 import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_1.EventDefinitionUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_10.SnapshotRepositoryUpgradeStep;
@@ -41,7 +41,7 @@ public class UpgradeProcessConfiguration {
 		UpgradeProcess upgradeProcess = new UpgradeProcess();
 
 		upgradeProcess.addUpgradeSteps(
-			"0.0.0", ReleaseInfo.getVersion(), _projectsIndexUpgradeStep,
+			"0.0.0", ReleaseInfo.getVersion(), _globalSchemaUpgradeStep,
 			_snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
@@ -81,10 +81,10 @@ public class UpgradeProcessConfiguration {
 	private EventDefinitionUpgradeStep _eventDefinitionUpgradeStep;
 
 	@Autowired
-	private PagesUpgradeStep _pagesUpgradeStep;
+	private GlobalSchemaUpgradeStep _globalSchemaUpgradeStep;
 
 	@Autowired
-	private ProjectsIndexUpgradeStep _projectsIndexUpgradeStep;
+	private PagesUpgradeStep _pagesUpgradeStep;
 
 	@Autowired
 	private SnapshotRepositoryUpgradeStep _snapshotRepositoryUpgradeStep;

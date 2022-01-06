@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
  * @author André Miranda
  */
 @Component
-public class ProjectsIndexUpgradeStep implements UpgradeStep {
+public class GlobalSchemaUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
