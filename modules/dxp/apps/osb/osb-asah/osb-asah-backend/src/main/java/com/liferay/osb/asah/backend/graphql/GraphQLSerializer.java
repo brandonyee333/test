@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -52,7 +54,28 @@ public class GraphQLSerializer {
 			map.put(
 				"errors",
 				ListUtil.map(
-					graphQLErrors, GraphqlErrorHelper::toSpecification));
+					graphQLErrors,
+					graphQLError -> {
+						Map<String, Object> specification =
+							GraphqlErrorHelper.toSpecification(graphQLError);
+
+						JSONObject jsonObject = _objectMapper.convertValue(
+							graphQLError, JSONObject.class);
+
+						if (jsonObject.has("exception")) {
+							JSONObject exceptionJSONObject =
+								jsonObject.getJSONObject("exception");
+
+							if (exceptionJSONObject.has("messageKey")) {
+								specification.put(
+									"messageKey",
+									exceptionJSONObject.getString(
+										"messageKey"));
+							}
+						}
+
+						return specification;
+					}));
 		}
 
 		return _objectMapper.writeValueAsString(map);
