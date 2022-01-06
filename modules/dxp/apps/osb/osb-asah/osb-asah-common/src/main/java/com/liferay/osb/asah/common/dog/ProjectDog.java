@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
-import com.liferay.osb.asah.common.elasticsearch.repository.impl.ElasticsearchProjectRepositoryImpl;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
@@ -102,12 +101,8 @@ public class ProjectDog {
 
 	private void _createSnapshots(String projectId) {
 		try {
-			if (_projectRepository instanceof
-					ElasticsearchProjectRepositoryImpl) {
-
-				_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
-					projectId);
-			}
+			_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
+				projectId);
 		}
 		catch (Exception exception) {
 			_log.error(
