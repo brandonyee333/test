@@ -17,7 +17,7 @@ package com.liferay.search.experiences.web.internal.blueprint.admin.constants;
 /**
  * @author Kevin Tan
  */
-public class SXPBlueprintAdminFDSNames {
+public class SXPBlueprintAdminClayDataSetDisplayNames {
 
 	public static final String SXP_BLUEPRINTS = "sxpBlueprints";
 
