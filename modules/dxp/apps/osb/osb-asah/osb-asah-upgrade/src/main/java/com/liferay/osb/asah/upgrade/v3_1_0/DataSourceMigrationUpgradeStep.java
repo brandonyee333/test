@@ -17,30 +17,24 @@ package com.liferay.osb.asah.upgrade.v3_1_0;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -54,48 +48,25 @@ public class DataSourceMigrationUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) {
-		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
-		searchSourceBuilder.searchAfter(new Object[] {_getDataSourceId(true)});
-		searchSourceBuilder.sort("id");
-		searchSourceBuilder.trackTotalHits(false);
-
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			"data-sources", searchSourceBuilder);
-
-		SearchHits searchHits = searchResponse.getHits();
-
-		SearchHit[] hits = searchHits.getHits();
-
-		if (hits.length == 0) {
-			return;
-		}
-
-		Stream<SearchHit> searchHitStream = Arrays.stream(hits);
-
-		JSONArray dataSourcesJSONArray = new JSONArray(
-			searchHitStream.parallel(
-			).map(
-				SearchHit::getSourceAsString
-			).map(
-				JSONObject::new
-			).collect(
-				Collectors.toList()
+		JSONArray dataSourceJSONArray = _faroInfoElasticsearchInvoker.get(
+			"data-sources",
+			Collections.singletonList(
+				SortBuilderUtil.fieldSort("id", SortOrder.ASC)),
+			QueryBuilders.rangeQuery(
+				"id"
+			).gt(
+				_getDataSourceId(true)
 			));
 
-		List<Object> dataSourceObjectList = dataSourcesJSONArray.toList();
+		dataSourceJSONArray.forEach(
+			dataSourceObject -> {
+				DataSource dataSource = _objectMapper.convertValue(
+					dataSourceObject, DataSource.class);
 
-		Stream<Object> objectStream = dataSourceObjectList.stream();
-
-		objectStream.map(
-			object -> _objectMapper.convertValue(object, DataSource.class)
-		).forEach(
-			dataSource -> {
 				dataSource.setIsNew(Boolean.TRUE);
 
 				_dataSourceRepository.save(dataSource);
-			}
-		);
+			});
 	}
 
 	private Long _getDataSourceId(boolean retry) {
