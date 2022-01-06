@@ -618,7 +618,7 @@ definition {
 
 		var depotId = JSONGroupAPI._getDepotIdByName(depotName = "${depotName}");
 
-		if (contains("${baseURL}", "{baseURL}")) {
+		if (!(isSet(baseURL))) {
 			var baseURL = PropsUtil.get("portal.url");
 		}
 
@@ -630,7 +630,7 @@ definition {
 
 		var depotId = JSONGroupAPI._getDepotIdByName(depotName = "${depotName}");
 
-		if (contains("${baseURL}", "{baseURL}")) {
+		if (!(isSet(baseURL))) {
 			var baseURL = PropsUtil.get("portal.url");
 		}
 
@@ -642,7 +642,7 @@ definition {
 		var siteNameURL = StringUtil.lowerCase("${siteNameURL}");
 		var baseURL = "${baseURL}";
 
-		if (contains("${baseURL}", "{baseURL}")) {
+		if (!(isSet(baseURL))) {
 			var baseURL = PropsUtil.get("portal.url");
 		}
 
@@ -654,7 +654,7 @@ definition {
 		var siteNameURL = StringUtil.lowerCase("${siteNameURL}");
 		var baseURL = "${baseURL}";
 
-		if (contains("${baseURL}", "{baseURL}")) {
+		if (!(isSet(baseURL))) {
 			var baseURL = PropsUtil.get("portal.url");
 		}
 
