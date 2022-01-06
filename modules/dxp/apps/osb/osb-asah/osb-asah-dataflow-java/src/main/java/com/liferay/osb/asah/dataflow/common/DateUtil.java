@@ -24,7 +24,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateUtil {
 
-	public static ZonedDateTime parseUTCZonedDateTime(String dateString) {
+	public static ZonedDateTime toUTCZonedDateTime(String dateString) {
 		LocalDateTime localDateTime = LocalDateTime.parse(
 			dateString, _dateTimeFormatter);
 

@@ -88,7 +88,7 @@ public class StreamingIngestionPipeline {
 
 		pubsubMessages.apply(
 			"Backup PubSub Messages",
-			new BackupPubSubMessages(
+			new BackupPubsubMessages(
 				streamingIngestionPipelineOptions.getOutputDirectory(),
 				streamingIngestionPipelineOptions.getOutputFileNamePrefix(),
 				streamingIngestionPipelineOptions.getWriteInterval()));
@@ -149,10 +149,10 @@ public class StreamingIngestionPipeline {
 
 	}
 
-	public static class BackupPubSubMessages
+	public static class BackupPubsubMessages
 		extends PTransform<PCollection<String>, PDone> {
 
-		public BackupPubSubMessages(
+		public BackupPubsubMessages(
 			String outputDirectory, String outputFileNamePrefix,
 			long writeIntervalInMinutes) {
 
@@ -519,7 +519,7 @@ public class StreamingIngestionPipeline {
 					@Override
 					public String apply(AnalyticsEvent analyticsEvent) {
 						ZonedDateTime utcZonedDateTime =
-							DateUtil.parseUTCZonedDateTime(
+							DateUtil.toUTCZonedDateTime(
 								analyticsEvent.eventDate);
 
 						ZonedDateTime projectZonedDateTime =
