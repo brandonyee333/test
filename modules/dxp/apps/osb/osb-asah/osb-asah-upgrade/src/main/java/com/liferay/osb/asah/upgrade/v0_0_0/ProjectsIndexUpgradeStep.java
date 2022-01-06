@@ -14,12 +14,9 @@
 
 package com.liferay.osb.asah.upgrade.v0_0_0;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
-import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,25 +29,17 @@ public class ProjectsIndexUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
-		if (_elasticsearchIndexManager.exists("projects")) {
-			if (_log.isInfoEnabled()) {
-				_log.info("Skipping, projects index already exists");
-			}
+		try {
+			ProjectIdThreadLocal.setGlobalContext(true);
 
-			return;
+			_postgreSQLSchemaManager.createGlobalSchema();
 		}
-
-		_elasticsearchIndexManager.create(
-			ResourceUtil.readResourceToString(
-				"dependencies/global/projects_index_configuration.json",
-				ElasticsearchIndexManager.class),
-			"projects");
+		finally {
+			ProjectIdThreadLocal.setGlobalContext(false);
+		}
 	}
 
-	private static final Log _log = LogFactory.getLog(
-		ProjectsIndexUpgradeStep.class);
-
 	@Autowired
-	private ElasticsearchIndexManager _elasticsearchIndexManager;
+	private PostgreSQLSchemaManager _postgreSQLSchemaManager;
 
 }
