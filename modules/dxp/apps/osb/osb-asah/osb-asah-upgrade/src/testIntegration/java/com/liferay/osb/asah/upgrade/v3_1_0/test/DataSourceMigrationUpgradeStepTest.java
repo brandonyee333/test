@@ -48,6 +48,10 @@ public class DataSourceMigrationUpgradeStepTest
 
 	@BeforeEach
 	public void setUp() throws Exception {
+		ProjectIdThreadLocal.setProjectId("test");
+
+		_dataSourceDog.deleteDataSources();
+
 		_elasticsearchIndexManager.delete("test_osbasahfaroinfo_data-sources");
 
 		_elasticsearchIndexManager.create(
@@ -61,14 +65,14 @@ public class DataSourceMigrationUpgradeStepTest
 	}
 
 	@AfterEach
-	public void tearDown() {
+	public void tearDown() throws Exception {
 		_elasticsearchIndexManager.delete("test_osbasahfaroinfo_data-sources");
+
+		_dataSourceDog.deleteDataSources();
 	}
 
 	@Test
 	public void testUpgrade() throws Exception {
-		ProjectIdThreadLocal.setProjectId("test");
-
 		JSONArray jsonArray = new JSONArray(
 			TestExecutionListenerUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
