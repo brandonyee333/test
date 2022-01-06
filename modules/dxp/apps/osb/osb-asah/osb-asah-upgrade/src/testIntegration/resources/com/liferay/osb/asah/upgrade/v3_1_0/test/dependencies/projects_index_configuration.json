@@ -1,0 +1,16 @@
+{
+	"mappings": {
+		"projects": {
+			"properties": {
+				"id": {
+					"fields": {
+						"keyword": {
+							"type": "keyword"
+						}
+					},
+					"type": "text"
+				}
+			}
+		}
+	}
+}
