@@ -16,22 +16,19 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.ProjectDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.http.NanitesHttp;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
+import com.liferay.osb.asah.common.repository.ProjectRepository;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,20 +50,18 @@ public class ProjectDogTest
 
 	@BeforeEach
 	public void setUp() {
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerManager.getGlobalElasticsearchInvoker();
-
-		elasticsearchInvoker.delete("projects", QueryBuilders.matchAllQuery());
-
-		elasticsearchInvoker.add("projects", JSONUtil.put("id", "project1"));
-		elasticsearchInvoker.add("projects", JSONUtil.put("id", "project2"));
-		elasticsearchInvoker.add("projects", JSONUtil.put("id", "project3"));
-
 		_projectDog.addConsumer(_consumer);
 
 		ReflectionTestUtils.setField(_projectDog, "_nanitesHttp", _nanitesHttp);
 		ReflectionTestUtils.setField(
 			_projectDog, "_postgreSQLSchemaManager", _postgreSQLSchemaManager);
+	}
+
+	@AfterEach
+	public void tearDown() {
+		_projectRepository.deleteAll();
+
+		ProjectIdThreadLocal.setGlobalContext(false);
 	}
 
 	@Test
@@ -82,19 +77,12 @@ public class ProjectDogTest
 			_nanitesHttp, Mockito.times(1)
 		).rescheduleNanites();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerManager.getGlobalElasticsearchInvoker();
+		ProjectIdThreadLocal.setGlobalContext(true);
 
-		Assertions.assertArrayEquals(
-			new String[] {"project1", "project2", "project3", "project4"},
-			JSONUtil.toStringArray(
-				elasticsearchInvoker.get(
-					"projects",
-					Arrays.asList(SortBuilderUtil.fieldSort("id.keyword")),
-					new String[] {"id"}),
-				"id"));
+		Assertions.assertTrue(_projectRepository.existsById("project4"));
 	}
 
+	@SQLResource(resourcePath = "test_projects.sql")
 	@Test
 	public void testDeleteProject() {
 		_projectDog.deleteProject("project2");
@@ -103,19 +91,14 @@ public class ProjectDogTest
 			_nanitesHttp, Mockito.times(1)
 		).removeSchedule();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerManager.getGlobalElasticsearchInvoker();
+		ProjectIdThreadLocal.setGlobalContext(true);
 
-		Assertions.assertArrayEquals(
-			new String[] {"project1", "project3"},
-			JSONUtil.toStringArray(
-				elasticsearchInvoker.get(
-					"projects",
-					Arrays.asList(SortBuilderUtil.fieldSort("id.keyword")),
-					new String[] {"id"}),
-				"id"));
+		Assertions.assertTrue(_projectRepository.existsById("project1"));
+		Assertions.assertFalse(_projectRepository.existsById("project2"));
+		Assertions.assertTrue(_projectRepository.existsById("project3"));
 	}
 
+	@SQLResource(resourcePath = "test_projects.sql")
 	@Test
 	public void testGetProjects() {
 		List<Project> projects = _projectDog.getProjects();
@@ -133,9 +116,6 @@ public class ProjectDogTest
 	@Mock
 	private Consumer<String> _consumer;
 
-	@Autowired
-	private ElasticsearchInvokerManager _elasticsearchInvokerManager;
-
 	@MockBean
 	private NanitesHttp _nanitesHttp;
 
@@ -144,5 +124,8 @@ public class ProjectDogTest
 
 	@Autowired
 	private ProjectDog _projectDog;
+
+	@Autowired
+	private ProjectRepository _projectRepository;
 
 }
