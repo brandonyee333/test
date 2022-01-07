@@ -90,6 +90,10 @@ public class ProjectIdThreadLocal {
 		}
 	}
 
+	public static void setProject(Project project) {
+		setProjectId(project.getId());
+	}
+
 	public static void setProjectId(String projectId) {
 		if (_log.isDebugEnabled()) {
 			_log.debug("setProjectId " + projectId);

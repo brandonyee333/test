@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.upgrade.v0_0_0;
 
 import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +28,7 @@ public class GlobalSchemaUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
-		try {
-			ProjectIdThreadLocal.setGlobalContext(true);
-
-			_postgreSQLSchemaManager.createGlobalSchema();
-		}
-		finally {
-			ProjectIdThreadLocal.setGlobalContext(false);
-		}
+		_postgreSQLSchemaManager.createGlobalSchema();
 	}
 
 	@Autowired

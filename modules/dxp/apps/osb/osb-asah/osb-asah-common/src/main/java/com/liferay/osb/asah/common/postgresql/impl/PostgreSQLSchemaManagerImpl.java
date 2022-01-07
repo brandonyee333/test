@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.postgresql.impl;
 
+import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLDataSource;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -22,8 +23,6 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import java.util.Objects;
 
 import javax.sql.DataSource;
 
@@ -57,7 +56,9 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 			return;
 		}
 
-		if (Objects.equals("global", ProjectIdThreadLocal.getProjectId())) {
+		try {
+			ProjectIdThreadLocal.setGlobalContext(true);
+
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
 					new InMemoryResource(
@@ -69,15 +70,18 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 				new ResourceDatabasePopulator(
 					new ClassPathResource("tables-global.sql")),
 				_dataSource);
+
+			if (_log.isInfoEnabled()) {
+				_log.info("Global schema created successfully");
+			}
 		}
-		else {
-			throw new IllegalStateException(
-				"Unable to create global schema on a nonglobal context");
+		finally {
+			ProjectIdThreadLocal.setGlobalContext(false);
 		}
 	}
 
 	@Override
-	public void createSchema() {
+	public void createSchema(Project project) {
 		if (!(_dataSource instanceof PostgreSQLDataSource)) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
@@ -87,57 +91,74 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 			return;
 		}
 
-		if (Objects.equals("global", ProjectIdThreadLocal.getProjectId())) {
-			throw new IllegalStateException(
-				"Unable to create schema on a global context");
+		try {
+			ProjectIdThreadLocal.setProject(project);
+
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new InMemoryResource(
+						"CREATE SCHEMA IF NOT EXISTS " +
+							ProjectIdThreadLocal.getProjectId())),
+				_dataSource);
+
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("functions.sql")),
+				_dataSource);
+
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("tables-current.sql")),
+				_dataSource);
+
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					true, true, null,
+					new ClassPathResource("constraints-current.sql")),
+				_dataSource);
+
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("indexes-current.sql")),
+				_dataSource);
+
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("data.sql")),
+				_dataSource);
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					String.format(
+						"Schema for project %s created successfully",
+						project.getId()));
+			}
 		}
-
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(
-				new InMemoryResource(
-					"CREATE SCHEMA IF NOT EXISTS " +
-						ProjectIdThreadLocal.getProjectId())),
-			_dataSource);
-
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(
-				new ClassPathResource("functions.sql")),
-			_dataSource);
-
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(
-				new ClassPathResource("tables-current.sql")),
-			_dataSource);
-
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(
-				true, true, null,
-				new ClassPathResource("constraints-current.sql")),
-			_dataSource);
-
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(
-				new ClassPathResource("indexes-current.sql")),
-			_dataSource);
-
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(new ClassPathResource("data.sql")),
-			_dataSource);
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
 	}
 
 	@Override
-	public boolean existsTable(String tableName) {
-		try (Connection connection = _dataSource.getConnection()) {
-			DatabaseMetaData databaseMetaData = connection.getMetaData();
+	public boolean existsTable(Project project, String tableName) {
+		try {
+			ProjectIdThreadLocal.setProject(project);
 
-			ResultSet resultSet = databaseMetaData.getTables(
-				null, null, StringUtils.lowerCase(tableName),
-				new String[] {"TABLE"});
+			try (Connection connection = _dataSource.getConnection()) {
+				DatabaseMetaData databaseMetaData = connection.getMetaData();
 
-			return resultSet.next();
+				ResultSet resultSet = databaseMetaData.getTables(
+					null, null, StringUtils.lowerCase(tableName),
+					new String[] {"TABLE"});
+
+				return resultSet.next();
+			}
+			catch (SQLException sqlException) {
+				return false;
+			}
 		}
-		catch (SQLException sqlException) {
-			return false;
+		finally {
+			ProjectIdThreadLocal.remove();
 		}
 	}
 

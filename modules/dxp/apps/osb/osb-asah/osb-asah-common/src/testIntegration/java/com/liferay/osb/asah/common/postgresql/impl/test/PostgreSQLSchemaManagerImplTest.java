@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.postgresql.impl.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
+import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -35,12 +36,16 @@ public class PostgreSQLSchemaManagerImplTest
 
 	@Test
 	public void test() {
-		Assertions.assertTrue(_postgreSQLSchemaManager.existsTable("Event"));
+		Project project = new Project("test");
+
 		Assertions.assertTrue(
-			_postgreSQLSchemaManager.existsTable("EventAnalysis"));
+			_postgreSQLSchemaManager.existsTable(project, "Event"));
 		Assertions.assertTrue(
-			_postgreSQLSchemaManager.existsTable("EventDefinition"));
-		Assertions.assertFalse(_postgreSQLSchemaManager.existsTable("Project"));
+			_postgreSQLSchemaManager.existsTable(project, "EventAnalysis"));
+		Assertions.assertTrue(
+			_postgreSQLSchemaManager.existsTable(project, "EventDefinition"));
+		Assertions.assertTrue(
+			_postgreSQLSchemaManager.existsTable(project, "Project"));
 	}
 
 	@Autowired

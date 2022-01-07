@@ -58,13 +58,10 @@ public class ProjectDog {
 			consumer.accept(project.getId());
 		}
 
-		ProjectIdThreadLocal.forProject(
-			project,
-			() -> {
-				_postgreSQLSchemaManager.createSchema();
+		_postgreSQLSchemaManager.createSchema(project);
 
-				_nanitesHttp.rescheduleNanites();
-			});
+		ProjectIdThreadLocal.forProject(
+			project, _nanitesHttp::rescheduleNanites);
 	}
 
 	public void deleteProject(String projectId) {

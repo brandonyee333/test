@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.postgresql;
 
+import com.liferay.osb.asah.common.entity.Project;
+
 /**
  * @author Rachael Koestartyo
  */
@@ -21,8 +23,8 @@ public interface PostgreSQLSchemaManager {
 
 	public void createGlobalSchema();
 
-	public void createSchema();
+	public void createSchema(Project project);
 
-	public boolean existsTable(String tableName);
+	public boolean existsTable(Project project, String tableName);
 
 }
