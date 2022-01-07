@@ -37,6 +37,7 @@ import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -103,6 +104,12 @@ public class OSBAsahCacheManager implements CacheManager {
 
 		RedisCacheManager.RedisCacheManagerBuilder redisCacheManagerBuilder =
 			RedisCacheManager.builder();
+
+		RedisCacheConfiguration redisCacheConfiguration =
+			RedisCacheConfiguration.defaultCacheConfig();
+
+		redisCacheManagerBuilder.cacheDefaults(
+			redisCacheConfiguration.entryTtl(Duration.ofDays(2)));
 
 		redisCacheManagerBuilder.cacheWriter(
 			RedisCacheWriter.nonLockingRedisCacheWriter(
