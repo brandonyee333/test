@@ -238,6 +238,8 @@ definition {
 
 		KaleoDesigner.selectNode(nodeNodeLabel = "review");
 
+		ScrollWebElementIntoView.scrollWebElementIntoViewTop(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_ASSIGNMENTS");
+
 		KaleoDesigner.editNodeAssignments(
 			nodeAssignmentType = "Role",
 			roleTitle = "Reviewer Name");
