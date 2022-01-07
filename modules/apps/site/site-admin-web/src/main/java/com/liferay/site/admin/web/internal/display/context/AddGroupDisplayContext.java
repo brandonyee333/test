@@ -17,7 +17,6 @@ package com.liferay.site.admin.web.internal.display.context;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryServiceUtil;
 import com.liferay.asset.kernel.service.AssetVocabularyServiceUtil;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -26,6 +25,8 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.List;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.PortletURL;
 import javax.portlet.RenderResponse;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,26 +44,28 @@ public class AddGroupDisplayContext {
 	}
 
 	public String getAddGroupURL() {
-		return PortletURLBuilder.createActionURL(
-			_renderResponse
-		).setActionName(
-			"/site_admin/add_group"
-		).setBackURL(
-			ParamUtil.getString(
-				_httpServletRequest, "backURL",
-				ParamUtil.getString(_httpServletRequest, "redirect"))
-		).setParameter(
+		PortletURL addSiteURL = _renderResponse.createActionURL();
+
+		long parentGroupId = ParamUtil.getLong(
+			_httpServletRequest, "parentGroupId");
+
+		long layoutSetPropertyId = ParamUtil.getLong(
+			_httpServletRequest, "layoutSetPrototypeId");
+
+		addSiteURL.setParameter(ActionRequest.ACTION_NAME, "addGroup");
+		addSiteURL.setParameter(
+			"backURL", ParamUtil.getString(_httpServletRequest, "redirect"));
+		addSiteURL.setParameter(
 			"creationType",
-			ParamUtil.getString(_httpServletRequest, "creationType")
-		).setParameter(
-			"layoutSetPrototypeId",
-			ParamUtil.getLong(_httpServletRequest, "layoutSetPrototypeId")
-		).setParameter(
-			"parentGroupId", _getParentGroupId()
-		).setParameter(
+			ParamUtil.getString(_httpServletRequest, "creationType"));
+		addSiteURL.setParameter(
+			"layoutSetPrototypeId", String.valueOf(layoutSetPropertyId));
+		addSiteURL.setParameter("parentGroupId", String.valueOf(parentGroupId));
+		addSiteURL.setParameter(
 			"siteInitializerKey",
-			ParamUtil.getString(_httpServletRequest, "siteInitializerKey")
-		).buildString();
+			ParamUtil.getString(_httpServletRequest, "siteInitializerKey"));
+
+		return addSiteURL.toString();
 	}
 
 	public long[] getGroupIds() {
