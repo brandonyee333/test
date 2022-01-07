@@ -103,7 +103,8 @@ public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 		return new JedisPool(
 			jedisConnectionFactory.getPoolConfig(),
 			jedisConnectionFactory.getHostName(),
-			jedisConnectionFactory.getPort(), 10000);
+			jedisConnectionFactory.getPort(),
+			jedisConnectionFactory.getTimeout());
 	}
 
 	@Bean
