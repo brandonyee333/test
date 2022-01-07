@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 public class GlobalSchemaUpgradeStep implements UpgradeStep {
 
 	@Override
-	public void upgrade(String version) throws Exception {
+	public void upgrade(String version) {
 		_postgreSQLSchemaManager.createGlobalSchema();
 	}
 
