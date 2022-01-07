@@ -28,7 +28,6 @@ import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoInterestsFilterStringConverterHelper;
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoSessionsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Organization;
@@ -983,10 +982,6 @@ public class IndividualsFilterStringConverterHelper
 	@Autowired
 	private FaroInfoInterestsFilterStringConverterHelper
 		_faroInfoInterestsFilterStringConverterHelper;
-
-	@Autowired
-	private FaroInfoSessionsFilterStringConverterHelper
-		_faroInfoSessionsFilterStringConverterHelper;
 
 	@Autowired
 	private MembershipDog _membershipDog;

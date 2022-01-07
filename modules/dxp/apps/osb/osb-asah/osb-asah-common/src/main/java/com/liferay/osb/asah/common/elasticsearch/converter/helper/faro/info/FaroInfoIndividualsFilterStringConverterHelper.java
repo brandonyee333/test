@@ -924,10 +924,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoOrganizationsFilterStringConverterHelper;
 
 	@Autowired
-	private FaroInfoSessionsFilterStringConverterHelper
-		_faroInfoSessionsFilterStringConverterHelper;
-
-	@Autowired
 	private MembershipDog _membershipDog;
 
 	@Autowired
