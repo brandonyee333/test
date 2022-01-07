@@ -702,6 +702,24 @@ public class IndividualDogTest
 
 		_segmentDog.addSegment(segment2);
 
+		Segment segment3 = new Segment();
+
+		segment3.setFilter("");
+		segment3.setFilterMetadata("0");
+		segment3.setId(338511451975440190L);
+		segment3.setModifiedDate(
+			DateUtil.toUTCDate("2022-01-06T20:27:47.622Z"));
+		segment3.setName("Test Segment 3");
+		segment3.setScope("PROJECT");
+		segment3.setType(Segment.Type.DYNAMIC);
+		segment3.setFilter(
+			"(sessions.filter(filter='(context/country eq ''Germany'' and " +
+				"completeDate gt ''last24Hours'')'))");
+		segment3.setState("READY");
+		segment3.setStatus("ACTIVE");
+
+		_segmentDog.addSegment(segment3);
+
 		Individual individual = new Individual();
 
 		individual.setId(338486037253283140L);
@@ -767,6 +785,17 @@ public class IndividualDogTest
 					QueryBuilders.termQuery(
 						"individualId", "338486037253283140")
 				)));
+
+		_individualDog.updateDynamicMemberships(
+			DateUtil.toUTCDate("2022-01-06T20:26:53.218Z"),
+			_segmentDog.getSegment(338511451975440190L));
+
+		Assertions.assertFalse(
+			faroInfoElasticsearchInvoker.exists(
+				"memberships",
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"individualSegmentId", "338511451975440190"))));
 	}
 
 	@ElasticsearchIndex(
