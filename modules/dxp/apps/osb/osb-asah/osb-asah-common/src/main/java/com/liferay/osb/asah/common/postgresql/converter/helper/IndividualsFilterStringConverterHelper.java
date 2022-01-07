@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.OrganizationDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.dog.UserSessionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
@@ -57,13 +58,9 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -638,14 +635,18 @@ public class IndividualsFilterStringConverterHelper
 			return _getOrganizationsFilterFunctionCondition(filterString);
 		}
 
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString, _faroInfoSessionsFilterStringConverterHelper);
+		List<Long> individualIds = _userSessionDog.getIndividualIds(
+			filterString);
 
-		if (queryBuilder == null) {
-			queryBuilder = QueryBuilders.matchAllQuery();
+		if (individualIds.isEmpty()) {
+			return DSL.noCondition();
 		}
 
-		return _getSessionsFilterFunctionCondition(queryBuilder);
+		return DSL.field(
+			"individual.id"
+		).in(
+			individualIds
+		);
 	}
 
 	private List<Long> _getIndividualIds(String activityKey, String fieldName)
@@ -891,45 +892,6 @@ public class IndividualsFilterStringConverterHelper
 		return DSL.not(DSL.noCondition());
 	}
 
-	private Condition _getSessionsFilterFunctionCondition(
-		QueryBuilder queryBuilder) {
-
-		List<Long> individualIds = new ArrayList<>();
-
-		SearchResponse searchResponse = _cerebroInfoElasticsearchInvoker.search(
-			"user-sessions",
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"individualIds"
-					).field(
-						"individualId"
-					).size(
-						Integer.MAX_VALUE
-					));
-				searchSourceBuilder.query(queryBuilder);
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		Terms terms = aggregations.get("individualIds");
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			individualIds.add(Long.valueOf(bucket.getKeyAsString()));
-		}
-
-		if (individualIds.isEmpty()) {
-			return DSL.noCondition();
-		}
-
-		return DSL.field(
-			"individual.id"
-		).in(
-			individualIds
-		);
-	}
-
 	private Condition _getUserIdCondition(boolean negate, String userId) {
 		JSONObject userJSONObject = _dxpRawElasticsearchInvoker.fetch(
 			"users", userId);
@@ -1038,5 +1000,8 @@ public class IndividualsFilterStringConverterHelper
 
 	@Autowired
 	private SegmentDog _segmentDog;
+
+	@Autowired
+	private UserSessionDog _userSessionDog;
 
 }

@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.dog.UserSessionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
@@ -55,13 +56,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.search.join.ScoreMode;
 
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 
 import org.json.JSONObject;
 
@@ -603,14 +600,8 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			return _getOrganizationsFilterFunctionQueryBuilder(filterString);
 		}
 
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString, _faroInfoSessionsFilterStringConverterHelper);
-
-		if (queryBuilder == null) {
-			queryBuilder = QueryBuilders.matchAllQuery();
-		}
-
-		return _getSessionsFilterFunctionQueryBuilder(queryBuilder);
+		return QueryBuilders.termsQuery(
+			"id", _userSessionDog.getIndividualIds(filterString));
 	}
 
 	private List<String> _getIndividualIds(String activityKey, String fieldName)
@@ -839,37 +830,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		return BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery());
 	}
 
-	private QueryBuilder _getSessionsFilterFunctionQueryBuilder(
-		QueryBuilder queryBuilder) {
-
-		List<String> individualIds = new ArrayList<>();
-
-		SearchResponse searchResponse = _cerebroInfoElasticsearchInvoker.search(
-			"user-sessions",
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"individualIds"
-					).field(
-						"individualId"
-					).size(
-						Integer.MAX_VALUE
-					));
-				searchSourceBuilder.query(queryBuilder);
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		Terms terms = aggregations.get("individualIds");
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			individualIds.add(bucket.getKeyAsString());
-		}
-
-		return QueryBuilders.termsQuery("id", individualIds);
-	}
-
 	private QueryBuilder _getUserIdQueryBuilder(boolean negate, String userId) {
 		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
 			Collections.singletonMap("id", userId), DXPEntity.Type.USER);
@@ -972,5 +932,8 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 	@Autowired
 	private SegmentDog _segmentDog;
+
+	@Autowired
+	private UserSessionDog _userSessionDog;
 
 }
