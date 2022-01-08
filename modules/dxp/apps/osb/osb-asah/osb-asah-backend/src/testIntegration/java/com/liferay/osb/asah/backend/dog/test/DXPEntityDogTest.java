@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -90,9 +91,9 @@ public class DXPEntityDogTest
 		name = "groups", resourcePath = "groups.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
-	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@Test
 	public void testGetGroups() {
@@ -144,12 +145,12 @@ public class DXPEntityDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "teams", resourcePath = "teams.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	)
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@Test
 	public void testGetTeams() {
@@ -174,12 +175,12 @@ public class DXPEntityDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "users", resourcePath = "users.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	)
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@Test
 	public void testGetUsers() {
@@ -212,12 +213,12 @@ public class DXPEntityDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "users", resourcePath = "users.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	)
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@Test
 	public void testGetUsersSearch() {

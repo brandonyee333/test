@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -134,13 +135,13 @@ public class AnalyticsEventsMessageProcessorTest
 		);
 	}
 
-	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
 		resourcePath = "analytics_events_message_channel_2.json"
+	)
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
@@ -287,13 +288,13 @@ public class AnalyticsEventsMessageProcessorTest
 		);
 	}
 
-	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
 		resourcePath = "analytics_events_message_duplicated_events.json"
+	)
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,

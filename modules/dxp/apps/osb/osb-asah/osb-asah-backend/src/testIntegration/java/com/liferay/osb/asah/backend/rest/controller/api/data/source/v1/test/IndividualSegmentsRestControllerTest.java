@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -233,13 +234,13 @@ public class IndividualSegmentsRestControllerTest
 	}
 
 	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individual-segments",
 		resourcePath = "individual_segments_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
@@ -421,10 +422,6 @@ public class IndividualSegmentsRestControllerTest
 	}
 
 	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individual-segments",
 		resourcePath = "individual_segments_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -432,6 +429,10 @@ public class IndividualSegmentsRestControllerTest
 	@ElasticsearchIndex(
 		name = "membership-changes", resourcePath = "membership_changes_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels_2.json"
 	)
 	@Test
 	public void testGetSegmentDTOsPageDTOs1() throws Exception {

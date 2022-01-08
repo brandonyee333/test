@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -55,9 +56,9 @@ public class ChannelDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@Test
 	public void testAddChannelWithDuplicateName() {
@@ -75,10 +76,6 @@ public class ChannelDogTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individual-segments",
 		resourcePath = "individual_segments_delete_channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -90,6 +87,10 @@ public class ChannelDogTest
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,
 		resourcePath = "osbasahfaroinfo/assets_delete_channels.json"
+	)
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@Test
 	public void testDeleteChannels() throws Exception {
@@ -176,9 +177,9 @@ public class ChannelDogTest
 		Assertions.assertEquals("2", channelJSONObject.getString("id"));
 	}
 
-	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@Test
 	public void testGetChannelNamesByGroupIds() {
@@ -192,9 +193,9 @@ public class ChannelDogTest
 		Assertions.assertNull(channelNames.get(789L));
 	}
 
-	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@Test
 	public void testPatchChannelAddGroups() {
@@ -238,9 +239,9 @@ public class ChannelDogTest
 			SetUtil.of(321L), channelDataSource.getGroupIds());
 	}
 
-	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@Test
 	public void testPatchChannelName() {
@@ -253,9 +254,9 @@ public class ChannelDogTest
 		Assertions.assertEquals(name, channel.getName());
 	}
 
-	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@Test
 	public void testPatchChannelReplaceGroups() {
@@ -277,9 +278,9 @@ public class ChannelDogTest
 			SetUtil.of(321L), channelDataSource2.getGroupIds());
 	}
 
-	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@Test
 	public void testPatchChannelWithDuplicateName() {

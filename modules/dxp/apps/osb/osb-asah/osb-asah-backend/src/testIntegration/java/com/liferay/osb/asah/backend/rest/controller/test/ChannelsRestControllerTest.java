@@ -24,10 +24,10 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
@@ -123,9 +123,9 @@ public class ChannelsRestControllerTest
 			channelNames.contains("Liferay Combined Property (3)"));
 	}
 
-	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels_1.json"
 	)
 	@Test
 	public void testGetChannels() {
@@ -227,9 +227,9 @@ public class ChannelsRestControllerTest
 		Assertions.assertEquals(randomGroupId, groupIdsJSONArray.getString(0));
 	}
 
-	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels_1.json"
 	)
 	@Test
 	public void testPatchChannelNewDataSource() {
@@ -279,9 +279,9 @@ public class ChannelsRestControllerTest
 		Assertions.assertEquals(randomGroupId, groupIdsJSONArray.getString(0));
 	}
 
-	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels_1.json"
 	)
 	@Test
 	public void testPatchChannelRename() {
@@ -347,9 +347,9 @@ public class ChannelsRestControllerTest
 		);
 	}
 
-	@ElasticsearchIndex(
-		name = "channels", resourcePath = "channels_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels_1.json"
 	)
 	@Test
 	public void testRemovedGroupIds() {
