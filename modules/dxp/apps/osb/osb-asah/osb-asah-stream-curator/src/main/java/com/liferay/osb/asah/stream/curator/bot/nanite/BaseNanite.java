@@ -485,7 +485,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	}
 
 	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(15, 10);
+		BoundedExecutor.newBoundedExecutor(30, 20);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
