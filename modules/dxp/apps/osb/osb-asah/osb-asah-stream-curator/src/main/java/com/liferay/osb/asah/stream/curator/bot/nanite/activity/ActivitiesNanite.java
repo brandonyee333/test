@@ -793,7 +793,7 @@ public class ActivitiesNanite implements Nanite {
 	private AssetDog _assetDog;
 
 	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(30, 20);
+		BoundedExecutor.newBoundedExecutor(50, 40);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
